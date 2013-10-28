@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<places>
+	<parent name="Ter Mur">
+		<parent name="Towns">
+			<parent name="Royal City">
+				<child name="Royal City Moongate" x="855" y="3526" z="-43" />
+			</parent>
+			<parent name="Holy City">
+				<child name="Holy City Moongate" x="928" y="3989" z="-40" />
+                	</parent>
+                        <parent name="Dugan">
+				<child name="Dugan" x="1107" y="1131" z="-52" />
+                	</parent>
+                </parent>
+		<parent name="Dungeons">
+			<parent name="Tomb of Kings">
+				<child name="Enterance" x="997" y="3843" z="-41" />
+				<child name="Gate to Stygian Abyss" x="38" y="29" z="0" />
+			</parent>
+			<parent name="Stygian Abyss">
+				<child name="Exit to Tomb of Kings" x="946" y="71" z="72" />
+				<child name="Exit to Underworld" x="521" y="921" z="36" />
+				<child name="Abyssal Lair Entrance" x="985" y="366" z="-11" />
+				<child name="Cavern of the Discarded" x="912" y="501" z="-12" />
+				<child name="Clan Scratch" x="959" y="548" z="-14" />
+				<child name="Crimson Veins" x="974" y="164" z="-11" />
+				<child name="Enslaved Goblins" x="581" y="815" z="-45" />
+				<child name="Fairy Dragon Lair" x="888" y="277" z="3" />
+				<child name="Fire Temple Ruins" x="519" y="765" z="-92" />
+				<child name="Hydra" x="793" y="753" z="53" />
+				<child name="Lands of the Lich" x="538" y="656" z="8" />
+				<child name="Lava Caldera" x="587" y="895" z="-73" />
+				<child name="Medusa's Lair" x="818" y="755" z="50" />
+				<child name="Passage of Tears" x="685" y="579" z="-15" />
+				<child name="Secret Garden" x="462" y="719" z="22" />
+				<child name="Serpent Lair" x="711" y="720" z="-11" />
+				<child name="Silver Sapling" x="341" y="619" z="26" />
+				<child name="Stygian Dragon Lair Entrance" x="851" y="279" z="-12" />
+				<child name="Sutek the Mage" x="924" y="595" z="-14" />
+			</parent>
+			<parent name="Underworld">
+				<child name="Enterance" x="1128" y="1211" z="-2" />
+			</parent>
+		</parent>
+		<parent name="Sites">
+			<parent name="Regions">
+				<child name="Atoll Bend" x="1118" y="3408" z="-42" />
+				<child name="Chicken Chase" x="560" y="3412" z="37" />
+				<child name="City Residential" x="952" y="3531" z="-43" />
+				<child name="Coral Desert" x="1047" y="2980" z="62" />
+				<child name="Fishermans Reach" x="631" y="3035" z="36" />
+				<child name="Gated Isle" x="703" y="3934" z="-31" />
+				<child name="High Plain" x="863" y="2931" z="38" />
+				<child name="Holy City Island" x="996" y="3905" z="-42" />
+				<child name="Kepetch Waste" x="447" y="3188" z="20" />
+				<child name="Lava Lake" x="407" y="3010" z="-24" />
+				<child name="Lavapit Pyramid" x="740" y="3691" z="-43" />
+				<child name="Lost Settlement" x="526" y="3822" z="-44" />
+				<child name="Northern Steppes" x="822" y="3063" z="61" />
+				<child name="Raptor Island" x="816" y="3778" z="-42" />
+				<child name="Royal Park" x="711" y="3255" z="38" />
+				<child name="Shrine of Singularity" x="995" y="3814" z="-23" />
+				<child name="Slith Valley" x="1078" y="3331" z="-42" />
+				<child name="Spider Island" x="1115" y="3730" z="-42" />
+				<child name="Spiders Guarde" x="1109" y="3606" z="-45" />
+				<child name="Talon Point" x="676" y="3831" z="-39" />
+				<child name="Treefellow Course" x="570" y="2936" z="39" />
+				<child name="Void Isle" x="440" y="3577" z="38" />
+				<child name="Walled Circus" x="370" y="3273" z="0" />
+				<child name="Waterfall Point" x="661" y="2894" z="39" />
+                       </parent>
+		</parent>
+		
+	</parent>
+</places>

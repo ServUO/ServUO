@@ -1,0 +1,157 @@
+
+STEP: 1 (RECOMMENDED)
+-----------------------------------------
+To automatically add xmlpoints support to newly created characters. 
+In CharacterCreation.cs around 722.
+
+Find:  
+
+			new WelcomeTimer( newChar ).Start();
+		}
+
+Replace with This:
+
+			new WelcomeTimer( newChar ).Start();
+			// Xml Spawner 3.26c XmlPoints - SOF
+			XmlAttach.AttachTo(newChar, new XmlPoints());
+			// Xml Spawner 3.26c XmlPoints - EOF
+		}
+
+
+STEP 2:  (RECOMMENDED)
+----------------------------------------------
+To support consensual pvp between players for points through the use of Challenges.
+In Notoriety.cs in the Mobile_AllowHarmful method around line 140.
+
+Find:
+	
+		 return true; // Uncontroled NPCs are only restricted by the young system
+	     }
+
+Replace with This:
+
+		 return true; // Uncontroled NPCs are only restricted by the young system
+	     }
+ 
+		// Xml Spawner 3.26c XmlPoints - SOF
+		if(XmlPoints.AreChallengers(from,target))
+      			return true;	
+		// Xml Spawner 3.26c XmlPoints - EOF
+
+
+#2B)-----------------------
+in Mobile_AllowBeneficial in Notoriety.cs around line 98 change.
+
+Find:
+	
+	if ( target is BaseCreature && !((BaseCreature)target).Controlled )
+ 		return false; // Players cannot heal uncontroled mobiles
+
+Replace with This:
+
+	if ( target is BaseCreature && !((BaseCreature)target).Controlled )
+ 		return false; // Players cannot heal uncontroled mobiles
+   
+	// Xml Spawner 2.36c XmlPoints - SOF
+	if (XmlPoints.AreInAnyGame(target))
+                return XmlPoints.AreTeamMembers(from,target);
+	// Xml Spawner 2.36c XmlPoints - EOF
+
+
+#2C)-----------------------
+And in MobileNotoriety in Notoriety.cs around line 349. 
+
+Find:
+
+		if( target.Criminal )
+			return Notoriety.Criminal;
+
+Replace with This:
+
+		if( target.Criminal )
+			return Notoriety.Criminal;
+		// Xml Spawner 3.26c XmlPoints - SOF
+		if(XmlPoints.AreTeamMembers(source,target))
+               		return Notoriety.Ally;
+		else
+		if(XmlPoints.AreChallengers(source,target))
+               	return Notoriety.Enemy;
+		// Xml Spawner 3.26c XmlPoints - EOF
+
+
+STEP :3 (RECOMMENDED)
+-----------------------------------------------
+To support overriding insurance fees/award during challenge games.
+In PlayerMobile.cs in the CheckInsuranceOnDeath method around line 2458.
+
+Find:
+
+	private bool CheckInsuranceOnDeath( Item item )
+	{
+	    if ( InsuranceEnabled && item.Insured )
+	    {
+
+Replaces with This:
+
+        private bool CheckInsuranceOnDeath(Item item)
+        {
+            if (InsuranceEnabled && item.Insured)
+            {
+                // Xml Spawner 3.26c XmlPoints - EOF
+               if(XmlPoints.InsuranceIsFree(this, m_InsuranceAward))
+               {
+                   item.PayedInsurance = true;
+                   return true;
+               }
+		// Xml Spawner 3.26c XmlPoints - EOF
+                if (AutoRenewInsurance)
+
+
+#3A)-----------------------------------
+And In PlayerMobile.cs in the OnDeath method around line 2665.
+
+Find:	
+
+	Faction.HandleDeath( this, killer );
+
+Replaces with This:
+
+        // Xml Spawner 3.26c XmlPoints - SOF
+	if(!XmlPoints.AreChallengers(this, killer))
+	// Xml Spawner 3.26c XmlPoints - EOF
+        Faction.HandleDeath(this, killer);
+
+
+===============================================================
+
+
+STEP 9:  (OPTIONAL)
+--------------------------------------------------
+to display kills and deaths below the players name on mouseover add this to playermobile.cs.
+In PlayerMobile.cs in the GetProperties method around line 3700.
+
+Find:
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+
+            base.GetProperties(list);
+
+Replace with This:
+
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+
+            base.GetProperties(list);
+
+	    // Xml Spawner 3.26c XmlPoints Refresh - SOF
+   	    XmlPoints a = (XmlPoints)XmlAttach.FindAttachment(this, typeof(XmlPoints));
+
+   	    if (a != null)
+   	    {
+    	    	  list.Add(1070722, "Kills {0} / Deaths {1} : Rank={2}", a.Kills, a.Deaths, a.Rank);
+   	    }
+	    // Xml Spawner 3.26c XmlPoints Refresh - EOF
+		
+========================================================

@@ -1,0 +1,105 @@
+# Graph vertices
+# {V:}VertexID{tab, }X{tab, }Y{tab, }Z{tab, }Teleporter
+# {S:}ShopID{tab, }ShopID{tab, }...
+# {N:}VertexID{tab, }VertexID{tab, }...
+V:	0	2707	2154	0	False
+S:	41
+N:	1
+V:	1	2707	2163	0	False
+N:	2	0	30
+V:	2	2715	2165	0	False
+N:	6	3	1
+V:	3	2715	2179	0	False
+S:	22	50
+N:	2	4
+V:	4	2724	2190	0	False
+N:	3	5
+V:	5	2730	2193	0	False
+S:	32	26
+N:	4
+V:	6	2723	2159	0	False
+N:	2	9	7
+V:	7	2735	2166	0	False
+N:	6	8
+V:	8	2751	2167	-2	False
+S:	40
+N:	7
+V:	9	2729	2146	0	False
+N:	10	6
+V:	10	2737	2129	0	False
+N:	11	9	14
+V:	11	2748	2128	0	False
+N:	10	12
+V:	12	2762	2129	0	False
+N:	11	13
+V:	13	2776	2137	0	False
+N:	12
+V:	14	2734	2120	0	False
+N:	45	10
+V:	15	2715	2114	0	False
+N:	17	16	45
+V:	16	2715	2105	0	False
+S:	42
+N:	15
+V:	17	2683	2115	0	False
+N:	26	18	15
+V:	18	2672	2114	0	False
+N:	26	17	19
+V:	19	2667	2108	0	False
+N:	18	21	20
+V:	20	2668	2098	4	False
+N:	19
+V:	21	2656	2108	0	False
+N:	19	22
+V:	22	2648	2103	4	False
+N:	21	23
+V:	23	2637	2099	10	False
+S:	28	38	1
+N:	22	24
+V:	24	2636	2090	10	False
+S:	35
+N:	23
+V:	25	2681	2129	0	False
+N:	28	27	26
+V:	26	2681	2121	0	False
+N:	25	17	18
+V:	27	2674	2131	0	False
+N:	25
+V:	28	2683	2146	0	False
+N:	29	25
+V:	29	2684	2156	0	False
+N:	30	28
+V:	30	2686	2164	0	False
+N:	31	29	1
+V:	31	2685	2174	0	False
+N:	32	30
+V:	32	2673	2190	0	False
+N:	34	33	31
+V:	33	2665	2193	3	False
+N:	32
+V:	34	2674	2210	0	False
+N:	35	32
+V:	35	2685	2221	0	False
+N:	37	36	34
+V:	36	2692	2211	0	False
+N:	35
+V:	37	2695	2230	0	False
+N:	39	38	35
+V:	38	2690	2235	2	False
+S:	3	51	29	19
+N:	37
+V:	39	2710	2236	0	False
+N:	44	40	37
+V:	40	2715	2218	0	False
+N:	39
+V:	41	2743	2240	0	False
+N:	42	43	44
+V:	42	2747	2252	0	False
+S:	2	46	8	48
+N:	41
+V:	43	2756	2227	0	False
+N:	41
+V:	44	2728	2240	0	False
+N:	41	39
+V:	45	2726	2115	0	False
+N:	15	14

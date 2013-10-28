@@ -1,0 +1,73 @@
+using System;
+using Server;
+using Server.Items;
+using Server.Mobiles;
+using Server.Spells;
+using Server.Targeting;
+
+namespace Server.Spells.Mystic
+{
+	public class Spell : MysticSpell
+	{
+		public override int RequiredMana{ get{ return ; } }
+		public override double RequiredSkill{ get{ return ; } }
+
+		private static SpellInfo m_Info = new SpellInfo(
+				"Name", "Power Words",
+				230,
+				9022,
+				Reagent.BlackPearl,
+				Reagent.Bloodmoss,
+				Reagent.Garlic,
+				Reagent.Ginseng,
+				Reagent.MandrakeRoot,
+				Reagent.Nightshade,
+				Reagent.SulfurousAsh,
+				Reagent.SpidersSilk,
+				Reagent.BatWing,
+				Reagent.GraveDust,
+				Reagent.DaemonBlood,
+				Reagent.NoxCrystal,
+				Reagent.PigIron,
+				Reagent.Bone,
+				Reagent.DragonBlood,
+				Reagent.FertileDirt,
+				Reagent.DemonBone
+			);
+
+		public Spell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
+		{
+		}
+
+		public override void OnCast()
+		{
+			Caster.Target = new MysticSpellTarget( this, TargetFlags.None );
+		}
+
+		public override void OnTarget( Object o )
+		{
+			Mobile target = o as Mobile;
+
+			if ( target == null )
+			{
+				return;
+			}
+			else if ( CheckHSequence( target ) )
+			{
+
+
+				Caster.SendLocalizedMessage(  ); //
+				Caster.PlaySound( 0x );
+			}
+
+
+			FinishSequence();
+		}
+	}
+}
+/*
+
+
+
+
+*/

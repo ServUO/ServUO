@@ -1,0 +1,55 @@
+##############
+## By Nerun ##
+##############
+overrideid 106
+overridemap 2
+overridemintime 5
+overridemaxtime 10
+##
+## Destard Dungeon
+##
+## Level 1 - First Big Lair (entrance)
+##
+*|Dragon|Drake|Wyvern||||5209|965|-40|2|2|10|50|30|1|1|2|1|0|0|0
+*|Dragon|Drake|||||5247|956|-40|2|2|10|50|30|1|1|2|0|0|0|0
+*|Dragon|Drake|Wyvern||||5280|955|-40|2|2|10|50|30|1|1|2|1|0|0|0
+*|Dragon|Drake|Wyvern||||5284|926|-40|2|2|10|50|30|1|1|2|1|0|0|0
+*|Dragon|Drake|Wyvern||||5214|917|-40|2|2|10|50|30|1|1|2|1|0|0|0
+*|TreasureLevel3|TreasureLevel4|||||5241|945|-40|2|1|2|10|10|1|1|2|0|0|0|0
+##
+## Level 1 - Left Arm
+##
+*|Giantserpent||||||5161|940|0|2|2|10|50|20|1|6|0|0|0|0|0
+*|Wyvern|Dragon|Drake||||5149|907|0|2|2|10|20|15|1|1|1|1|0|0|0
+*|TreasureLevel2|TreasureLevel3|||||5141|915|0|2|1|2|25|25|1|1|2|0|0|0|0
+##
+## Level 1 - Right Arm
+##
+*|Waterelemental||||||5352|934|-5|2|2|10|10|10|1|4|0|0|0|0|0
+*|TreasureLevel3|TreasureLevel4|||||5317|980|0|2|1|2|7|7|1|1|2|0|0|0|0
+##
+## Level 1 - Second Big Lair (near Shrine)
+##
+*|Giantserpent||||||5250|869|0|2|2|10|50|30|1|6|0|0|0|0|0
+*|Dragon|Drake|Wyvern||||5226|826|0|2|2|10|50|30|1|1|2|1|0|0|0
+*|Dragon|Drake|Wyvern||||5269|811|7|2|2|10|50|30|1|1|2|1|0|0|0
+*|Drake|Wyvern|||||5307|815|0|2|2|10|50|30|1|1|1|0|0|0|0
+*|Waterelemental||||||5294|842|0|2|2|10|50|30|1|4|0|0|0|0|0
+*|Waterelemental||||||5203|787|5|2|2|10|25|12|1|4|0|0|0|0|0
+*|TreasureLevel2|TreasureLevel3|||||5229|841|1|2|1|2|10|10|1|1|2|0|0|0|0
+*|TreasureLevel3||||||5205|778|0|2|1|2|7|7|1|1|0|0|0|0|0
+##
+## Level 2
+##
+*|Drake|Shadowwyrm|Wyvern||||5141|834|0|2|2|10|50|30|1|1|1|1|0|0|0
+*|Daemon|Evilmage|||||5169|836|0|2|2|10|50|30|1|2|1|0|0|0|0
+*|Drake|Shadowwyrm|Wyvern||||5152|869|0|2|2|10|50|25|1|1|1|1|0|0|0
+*|TreasureLevel4:TreasureLevel3:TreasureLevel2||||||5153|842|0|2|1|2|40|40|1|4|0|0|0|0|0
+##
+## Level 3 - Ancient Wyrm Lair
+##
+*|Fireelemental||||||5141|968|0|2|2|10|10|10|1|1|0|0|0|0|0
+*|Wyvern:Wyvern:Giantserpent||||||5157|997|0|2|2|10|50|20|1|3|0|0|0|0|0
+*|Ancientwyrm||||||5185|1006|0|2|2|10|50|20|1|1|0|0|0|0|0
+*|TreasureLevel3|TreasureLevel4|||||5143|986|0|2|1|2|10|10|1|1|2|0|0|0|0
+*|TreasureLevel3|TreasureLevel4|||||5183|1007|0|2|1|2|10|10|1|1|2|0|0|0|0

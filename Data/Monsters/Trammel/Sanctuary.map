@@ -1,0 +1,19 @@
+##############################
+##   XML Spawns by Erica    ##
+## Convert/Adapted By Nerun ##
+##############################
+overrideid 117
+overridemap 2
+overrridemintime 5
+overridemaxtime 10
+##
+## Sanctuary
+##
+*|chicken:bird|dog|cat|cow:bull|pig|boar|6263|118|-10|1|5|10|20|20|1|6|3|3|6|3|3
+*|ratman:ratmanarcher:chiikkaha:titan:cyclops:rat|ratman:ratmanarcher|chiikkaha|titan|cyclops|rat|6349|89|-20|1|5|10|70|70|1|18|4|2|2|2|2
+*|ratman:ratmanarcher:ratmanmage:changeling:doppleganger|dog:chicken:cat:boar:bird|gargoyle|titan|cyclops|orcishmage:orcscout|6168|117|0|1|5|10|30|30|1|11|9|3|3|3|5
+*|ogrelord:orcishlord:ratman|bird:cow:bull:pig:chicken|||||6189|71|0|1|5|10|25|25|1|8|4|0|0|0|0
+*|titan:ettin:doppleganger:mougguur|dog:chicken:rat:cow:bull|orcbomber:orcbrute:orc|snake:gargoyle:ogre|||6187|101|0|1|5|10|25|25|1|10|10|7|7|0|0
+*|bird:chicken:rat:dog|doppleganger|||||6184|29|0|1|5|10|10|10|1|6|3|0|0|0|0
+*|szavetra:imp:titan:snake:ratman:doppleganger:gargoyle|cow:bull:chicken:bird:pig:dog:goat:cat:rat|orc:orccaptain:orcishmage|ogre:ogre:ogrelord|||6265|48|-10|1|5|10|30|30|1|22|18|9|4|0|0
+*|changeling:ratman:ettin:titan:ratmanarcher:ratmanmage|goat:pig:cow:bull:rat|gargoyleenforcer:gargoyledestroyer:gargoyle|snake|||6191|155|0|1|5|10|25|25|1|18|12|9|3|0|0

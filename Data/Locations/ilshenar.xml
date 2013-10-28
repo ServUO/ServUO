@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<places>
+	<parent name="Ilshenar">
+		<parent name="Cities">
+			<parent name="Ancient Citadel">
+				<child name="Entrance" x="1518" y="568" z="-14" />
+			</parent>
+			<parent name="Gargoyle City">
+				<child name="Bank" x="852" y="602" z="-40" />
+				<child name="Central Area" x="836" y="641" z="-20" />
+			</parent>
+			<parent name="Lakeshire">
+				<child name="Central Area" x="1203" y="1124" z="-25" />
+			</parent>
+			<parent name="Mistas">
+				<child name="Central Area" x="820" y="1073" z="-30" />
+			</parent>
+			<parent name="Montor">
+				<child name="Central Area" x="1643" y="310" z="48" />
+			</parent>
+			<parent name="Req Volon">
+				<child name="Central Area" x="1362" y="1073" z="-13" />
+			</parent>
+			<parent name="Savage Camp">
+				<child name="Central Area" x="1251" y="743" z="-80" />
+			</parent>
+			<parent name="Terort Skitas">
+				<child name="Entrance" x="567" y="437" z="21" />
+			</parent>
+		</parent>
+		<parent name="Dungeons">
+			<parent name="Ankh">
+				<child name="Entrance" x="576" y="1150" z="-100" />
+				<child name="Level 1" x="155" y="1482" z="-28" />
+				<child name="Kirin passage" x="11" y="874" z="-28" />
+				<child name="Serpentine Passage" x="396" y="1578" z="-28" />
+			</parent>
+			<parent name="Blood">
+				<child name="Entrance" x="1747" y="1228" z="-1" />
+				<child name="Level 1" x="2114" y="834" z="-28" />
+			</parent>
+			<parent name="Exodus">
+				<child name="Entrance" x="835" y="777" z="-80" />
+				<child name="Level 1" x="1974" y="115" z="-28" />
+			</parent>
+			<parent name="Rock">
+				<child name="Entrance" x="1788" y="573" z="70" />
+				<child name="Level 1" x="2188" y="318" z="-7" />
+				<child name="Level 2" x="2188" y="28" z="-27" />
+			</parent>
+			<parent name="Sorcerers">
+				<child name="Entrance" x="548" y="462" z="-53" />
+				<child name="Level 1" x="428" y="109" z="-28" />
+				<child name="Level 2" x="240" y="23" z="-18" />
+				<child name="Level 3" x="272" y="136" z="-28" />
+				<child name="Level 4" x="132" y="124" z="-28" />
+				<child name="Level 5" x="236" y="121" z="-28" />
+			</parent>
+			<parent name="Spectre">
+				<child name="Entrance" x="1363" y="1033" z="-8" />
+				<child name="Level 1" x="1982" y="1103" z="-28" />
+			</parent>
+			<parent name="Wisp">
+				<child name="Entrance" x="651" y="1302" z="-58" />
+				<child name="Level 1" x="627" y="1525" z="-28" />
+				<child name="Level 2" x="718" y="1492" z="-28" />
+				<child name="Level 3" x="832" y="1551" z="-28" />
+				<child name="Level 4" x="960" y="1428" z="-28" />
+				<child name="Level 5" x="942" y="1465" z="-33" />
+				<child name="Level 6" x="866" y="1434" z="-28" />
+				<child name="Level 7" x="807" y="1548" z="-28" />
+				<child name="Level 8" x="754" y="1479" z="-28" />
+			</parent>
+		</parent>
+		<parent name="Caves">
+			<parent name="Ancient Lair">
+				<child name="Entrance" x="940" y="504" z="-30" />
+				<child name="Level 1" x="85" y="746" z="-28" />
+			</parent>
+			<parent name="Lizard Passage">
+				<child name="Entrance" x="314" y="1334" z="-36" />
+				<child name="Level 1" x="329" y="1589" z="-18" />
+				<child name="Level 2" x="227" y="1337" z="-18" />
+			</parent>
+			<parent name="Mushroom Cave">
+				<child name="Entrance" x="1459" y="1329" z="-24" />
+			</parent>
+			<parent name="Rat Cave">
+				<child name="Entrance" x="1034" y="1153" z="-23" />
+				<child name="Level 1" x="1348" y="1510" z="-3" />
+				<child name="Level 2" x="1247" y="1511" z="-28" />
+			</parent>
+			<parent name="Spider Cave">
+				<child name="Entrance" x="1421" y="913" z="-19" />
+				<child name="Level 1" x="1786" y="991" z="-28" />
+				<child name="Level 2" x="1517" y="877" z="10" />
+				<child name="Ethereal Keep" x="1365" y="1102" z="-26" />
+			</parent>
+		</parent>
+		<parent name="Shrines">
+			<child name="Compassion" x="1217" y="469" z="-13" />
+			<child name="Honesty" x="720" y="1356" z="-60" />
+			<child name="Honor" x="748" y="728" z="-29" />
+			<child name="Humility" x="287" y="1016" z="0" />
+			<child name="Justice" x="987" y="1007" z="-35" />
+			<child name="Sacrifice" x="1175" y="1287" z="-30" />
+			<child name="Spirituality" x="1532" y="1341" z="-3" />
+			<child name="Valor" x="527" y="218" z="-44" />
+		</parent>
+	</parent>
+</places>

@@ -1,0 +1,19 @@
+#########################
+## By Shai'Tan Malkier ##
+#########################
+overrideid 408
+overridemap 4
+overridemintime 5
+overridemaxtime 10
+##
+## Bedlam
+##
+*|RedDeath||||||110|1643|1|4|5|10|4|4|1|1|0|0|0|0|0
+*|Gibberling|GoreFiend|RottingCorpse||||87|1617|0|4|5|10|15|15|1|2|2|2|0|0|0
+*|SirPatrick|Gibberling|GoreFiend||||99|1661|0|4|5|6|15|15|1|1|2|2|0|0|0
+*|SkeletalMage|Gibberling|GoreFiend|Skeleton|||99|1651|0|4|5|10|15|15|3|1|2|2|3|0|0
+*|LadyJennifyr|GIbberling|GoreFiend|RottingCorpse|||81|1667|0|4|5|10|15|15|1|1|2|2|1|0|0
+*|MasterMikael||||||108|1670|1|4|5|10|10|10|1|1|0|0|0|0|0
+*|MasterTheophilus||||||89|1627|1|4|5|10|6|7|1|1|0|0|0|0|0
+*|LadyMarai||||||104|1659|1|4|5|10|11|11|1|1|0|0|0|0|0
+*|MasterJonath||||||116|1675|1|4|5|10|11|11|1|1|0|0|0|0|0

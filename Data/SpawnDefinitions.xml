@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<spawnDefinitions>
+	<spawnGroup name="Escortables">
+		<object type="EscortableMage" />
+		<object type="Noble" />
+		<object type="SeekerOfAdventure" />
+	</spawnGroup>
+	<spawnGroup name="TownAnimals">
+		<object type="Cat" />
+		<object type="Dog" />
+	</spawnGroup>
+	<spawnGroup name="Reagents">
+		<object type="BlackPearl" />
+		<object type="Bloodmoss" />
+		<object type="Garlic" />
+		<object type="Ginseng" />
+		<object type="MandrakeRoot" />
+		<object type="Nightshade" />
+		<object type="SulfurousAsh" />
+		<object type="SpidersSilk" />
+	</spawnGroup>
+</spawnDefinitions>

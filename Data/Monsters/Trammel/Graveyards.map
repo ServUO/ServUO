@@ -1,0 +1,31 @@
+##############
+## By Nerun ##
+##############
+overrideid 108
+overridemap 2
+overridemintime 5
+overridemaxtime 10
+##
+## Graveyards
+##
+## Britain Graveyard
+*|Spectre:Wraith|Skeleton|Zombie||||1369|1475|10|2|5|10|30|20|1|2|3|4|0|0|0
+##
+## Jhelom Graveyard
+*|Spectre:Wraith:Shade|Skeleton|Zombie||||1285|3731|0|2|5|10|15|10|1|2|3|4|0|0|0
+##
+## Cove Graveyard
+*|Spectre:Shade:Wraith|Lich|Skeleton|Zombie|||2438|1100|8|2|5|10|20|10|1|1|1|1|1|0|0
+##
+## Moonglow Graveyard
+*|Spectre:Shade:Wraith|Skeleton|Zombie||||4545|1317|8|2|5|10|20|10|1|1|1|2|0|0|0
+##*|Lich||||||4543|1314|8|2|5|10|20|10|1|1|0|0|0|0|0
+##
+## Vesper Graveyard
+*|Spectre:Wraith|Skeleton|Zombie||||2758|867|0|2|5|10|20|20|1|2|3|4|0|0|0
+##
+## Yew Graveyard
+*|Skeleton||||||722|1119|0|2|5|10|20|20|1|10|0|0|0|0|0
+##
+## Haven Graveyard
+*|zombie:skeleton||||||3407|2652|48|2|5|10|15|10|1|4|0|0|0|0|0

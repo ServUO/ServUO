@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<places>
+	<parent name="Tokuno Islands">
+		<parent name="Towns">
+			<parent name="Zento">
+				<child name="Zento Moongate" x="802" y="1204" z="25" />
+				<child name="Zento Bank" x="735" y="1255" z="30" />
+			</parent>
+		</parent>
+		<parent name="Dungeons">
+			<parent name="Fan Dancer's Dojo">
+				<child name="Entrance" x="977" y="218" z="23" />
+			</parent>
+			<parent name="Yomotsu Mines">
+				<child name="Entrance" x="259" y="785" z="64" />
+			</parent>
+		</parent>
+		<parent name="Sites">
+			<parent name="Makoto-Jima">
+				<child name="Moongate" x="802" y="1204" z="25" />
+				<child name="Shrine" x="718" y="1161" z="25" />
+				<child name="The Waste" x="724" y="943" z="42" />
+			</parent>
+			<parent name="Isamu-Jima">			
+				<child name="Moongate" x="1169" y="998" z="41" />
+				<child name="Shrine" x="1047" y="512" z="15" />
+				<child name="Lotus Lakes" x="1066" y="817" z="20" />
+				<child name="Mount Sho" x="1159" y="696" z="70" />
+				<child name="Dragon Valley" x="948" y="432" z="8" />
+				<child name="Winter Spur" x="926" y="162" z="34" />
+			</parent>
+			<parent name="Homare-Jima">
+				<child name="Moongate" x="270" y="628" z="15" />
+				<child name="Shrine" x="295" y="712" z="55" />
+				<child name="Field of Echoes" x="160" y="654" z="36" />
+				<child name="Crane Marsh" x="232" y="1107" z="10" />
+				<child name="Bushido Dojo" x="334" y="407" z="32" />
+				<child name="Kitsune Woods" x="523" y="520" z="32" />
+			</parent>
+		</parent>
+	</parent>
+</places>

@@ -1,0 +1,53 @@
+##############
+## By Nerun ##
+##############
+overrideid 210
+overridemap 1
+overridemintime 5
+overridemaxtime 10
+##
+## Ice Dungeon
+##
+## Level 1
+##
+*|Arcticogrelord||||||5771|224|-2|2|5|10|20|10|1|1|0|0|0|0|0
+*|Iceserpent|Snowelemental|Ratman|Frosttroll|Frostspider||5799|188|-6|2|5|10|25|10|1|2|1|1|1|1|0
+*|Frostspider|Frostooze|Icesnake||||5867|218|-4|2|5|10|25|15|1|1|2|1|0|0|0
+*|Ratmanmage||||||5850|219|-3|2|5|10|20|10|1|1|0|0|0|0|0
+*|Arcticogrelord||||||5814|237|0|2|5|7|15|15|1|1|0|0|0|0|0
+*|Whitewyrm||||||5752|144|9|2|2|5|10|10|1|1|0|0|0|0|0
+*|Frostooze|Frostspider|Iceelemental:Snowelemental|Icesnake|Frosttroll||5839|159|0|2|5|10|20|15|1|1|1|1|1|1|0
+*|Frostooze|Frostspider|Iceelemental:Snowelemental|Icesnake|Frosttroll||5785|161|-6|2|5|10|20|18|1|1|1|1|1|1|0
+*|Iceserpent|Ratman|Snowelemental:Iceelemental|Frosttroll|||5757|213|-7|2|5|10|20|15|1|3|1|4|2|0|0
+*|Iceserpent|Snowelemental:Iceelemental|Frosttroll|Ratman|||5681|191|-6|2|5|10|20|15|1|3|4|1|1|0|0
+*|Iceserpent|Snowelemental:Iceelemental|||||5731|176|-5|2|5|10|35|25|1|9|9|0|0|0|0
+## Treasures
+*|TreasureLevel2||||||5848|226|0|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel3||||||5683|197|-4|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel3||||||5721|147|-1|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel3||||||5758|139|5|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel3||||||5754|211|-6|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel3||||||5833|242|-2|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel3||||||5854|227|0|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel3||||||5772|188|-3|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5837|245|-5|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5751|140|10|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5763|187|0|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5756|203|-2|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5712|145|-34|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5684|181|-5|2|1|2|1|1|1|1|0|0|0|0|0
+##
+## Ratman Room
+##
+*|Ratman|Ratmanarcher|Ratmanmage||||5831|358|-1|2|5|10|25|15|1|12|7|5|0|0|0
+*|TreasureLevel2||||||5838|355|0|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel3||||||5824|363|0|2|1|2|1|1|1|1|0|0|0|0|0
+##
+## Ice Demon Lair
+##
+*|Icefiend||||||5680|306|0|2|5|15|20|10|1|1|0|0|0|0|0
+*|Icefiend||||||5669|330|0|2|5|15|20|10|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5696|303|0|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5682|314|0|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5666|331|0|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5676|331|0|2|1|2|1|1|1|1|0|0|0|0|0

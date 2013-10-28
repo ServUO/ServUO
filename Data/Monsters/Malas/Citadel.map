@@ -1,0 +1,26 @@
+##############################
+##   XML Spawns by Erica    ##
+## Convert/Adapted By Nerun ##
+##############################
+overrideid 406
+overridemap 4
+overridemintime 5
+overridemaxtime 10
+##
+## Citadel
+##
+*|serpentsfangassassin:tigersclawthief||||||179|1869|0|4|5|10|10|10|1|4|0|0|0|0|0
+*|DragonsFlameGrandMage||||||185|1920|0|4|5|10|7|7|1|2|0|0|0|0|0
+*|serpentsfangassassin:dragonsflamemage||||||155|1869|0|4|5|10|10|10|1|4|0|0|0|0|0
+*|serpentsfangassassin:tigersclawthief:eliteninja||||||145|1898|0|4|5|10|25|25|1|3|0|0|0|0|0
+*|serpentsfangassassin:dragonsflamemage:eliteninja||||||174|1900|0|4|5|10|20|20|1|5|0|0|0|0|0
+*|serpentsfangassassin:tigersclawthief:dragonsflamemage:eliteninja||||||181|1883|0|4|5|10|5|5|1|8|0|0|0|0|0
+*|dragonsflamemage:serpentsfangassassin||||||183|1961|0|4|5|10|20|20|1|2|0|0|0|0|0
+*|serpentsfangassassin:tigersclawthief:DragonsFlameGrandMage:dragonsflamemage:eliteninja||||||139|1868|0|4|5|10|8|8|1|7|0|0|0|0|0
+*|serpentsfangassassin:serpentsfanghighexecutioner||||||170|1974|0|4|5|10|5|5|1|3|0|0|0|0|0
+*|DragonsFlameGrandMage:serpentsfangassassin||||||140|1974|0|4|5|10|8|8|1|2|0|0|0|0|0
+*|DragonsFlameGrandMage:dragonsflamemage||||||134|1947|0|4|5|10|7|7|1|2|0|0|0|0|0
+*|eliteninja:serpentsfangassassin:dragonsflamemage||||||81|1892|0|4|5|10|5|5|1|4|0|0|0|0|0
+*|tigersclawthief:tigersclawMaster||||||142|1921|0|4|5|10|5|5|1|4|0|0|0|0|0
+*|dragonsflamemage:eliteninja||||||77|1883|0|4|5|10|5|5|1|4|0|0|0|0|0
+*|serpentsfangassassin:eliteninja||||||82|1875|0|4|5|10|5|5|1|4|0|0|0|0|0

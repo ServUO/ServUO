@@ -1,0 +1,47 @@
+overrideid 636
+overridemap 6
+overridemintime 5
+overridemaxtime 10
+
+##
+## Holy City
+##
+*|Spammer||||||996|3937|-42|4|2|10|5|0|402|1|0|0|0|0|0
+*|Gargoylebaker||||||976|3881|-42|2|2|10|5|0|1|1|0|0|0|0|0
+*|Gargoyleblacksmith|blacksmithguildmaster|||||1010|3883|-42|2|2|10|5|0|1|1|1|0|0|0|0
+*|Gargoylehealer|healerguildmaster|||||1013|3913|0|2|2|10| 5|0|1|1|1|0|0|0|0
+*|Gargoyletinker|tinkerguildmaster|||||977|3909|-42|2|2|10|5|0|1|1|1|0|0|0|0
+*|Gargoyleinnkeeper||||||943|3924|-42|2|2|10|5|0|1|1|0|0|0|0|0
+*|Gargoyleblacksmith|blacksmithguildmaster|||||1020|3884|-42|2|2|10|5|0|1|1|1|0|0|0|0
+##
+## Royal City City
+##
+*|Aurvidlem||||||792|3427|-10|4|2|10|1|0|402|1|0|0|0|0|0
+*|Beninort||||||792|3436|-10|4|2|10|1|0|402|1|0|0|0|0|0
+*|Ansikart||||||801|3427|-10|4|2|10|1|0|402|1|0|0|0|0|0
+
+*|Spammer||||||810|3477|-20|4|2|10|5|0|402|1|0|0|0|0|0
+*|Gargoyleinnkeeper||||||740|3466|-19|2|2|10|5|0|1|1|0|0|0|0|0
+*|scribe||||||772|3467|-20|1|5|10|5|0|1|1|0|0|0|0|0
+*|herbalist|Gargoylealchemist|customhairstylist||||773|3478|-20|1|5|10|5|0|1|1|1|1|0|0|0
+*|GargoyleMageVendor|Gargoylealchemist|mageguildmaster||||772|3490|-20|1|5|10|5|0|1|1|1|1|0|0|0
+*|Gargoylehealer|healerguildmaster|||||783|3491|-20|1|5|10|5|0|1|1|1|0|0|0|0
+*|provisioner|Gargoylecobbler|||||797|3494|0|1|5|10|5|0|1|1|1|0|0|0|0
+*|Gargoylebaker||||||805|3491|-20|2|2|10|5|0|1|1|0|0|0|0|0
+*|Gargoylebutcher||||||817|3456|-10|1|5|10|5|0|1|1|0|0|0|0|0
+*|carpenter|Gargoylearchitect|realestatebroker||||817|3438|0|1|5|10|5|0|1|1|1|1|0|0|0
+*|Gargoyletinker|tinkerguildmaster|||||817|3426|0|2|2|10|5|0|1|1|1|0|0|0|0
+*|Gargoyleblacksmith|blacksmithguildmaster|||||816|3419|0|2|2|10|5|0|1|1|1|0|0|0|0
+*|tailor|Gargoyleweaver|tailorguildmaster||||805|3397|0|1|5|10|5|0|1|1|1|1|0|0|0
+*|tanner|Gargoylefurtrader|||||804|3387|0|1|5|10|5|0|1|1|1|0|0|0|0
+*|Gargoyleanimaltrainer||||||851|3404|-20|1|5|10|5|0|1|1|0|0|0|0|0
+*|Gargoylebanker|minter|||||833|3439|-20|1|5|10|5|0|1|1|1|0|0|0|0
+*|Gargoylebanker|minter|||||843|3439|-20|1|5|10|5|0|1|1|1|0|0|0|0
+*|tailor|Gargoyleweaver|||||702|3435|-20|1|5|10|5|0|1|1|1|1|0|0|0
+*|armorer|weaponsmith|||||727|3425|-20|1|5|10|5|0|1|1|1|0|0|0|0
+*|farmer|Veterinarian|||||715|3446|-20|1|5|10|5|0|1|1|1|0|0|0|0
+*|tavernkeeper|Gargoylewaiter|barkeeper||||713|3438|-20|1|5|10|5|0|1|1|1|1|1|0|0
+*|farmer|Veterinarian|||||794|3446|-10|1|5|10|5|0|1|1|1|0|0|0|0
+*|Gargoylejeweler||||||779|3431|-10|1|5|10|5|0|1|1|0|0|0|0|0
+*|towncrier||||||842|3453|-18|2|5|10|4|0|1|1|0|0|0|0|0
+*|Percolem||||||710|3436|-20|2|5|2|2|0|1|1|0|0|0|0|0

@@ -1,0 +1,13 @@
+##############################
+##   XML Spawns by Erica    ##
+## Convert/Adapted By Nerun ##
+##############################
+overrideid 114
+overridemap 2
+overridemintime 5
+overridemaxtime 10
+##
+## Painted Caves
+##
+*|cat:dog:rat|cat|dog|rat|||6279|880|1|2|5|10|30|30|1|6|1|1|1|0|0
+*|troglodyte|grobu|lurg|giantrat|||6275|879|-2|2|5|10|30|30|1|3|3|3|3|0|0

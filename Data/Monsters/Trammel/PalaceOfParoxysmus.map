@@ -1,0 +1,31 @@
+##############################
+##   XML Spawns by Erica    ##
+## Convert/Adapted By Nerun ##
+##############################
+overrideid 115
+overridemap 2
+overridemintime 5
+overridemaxtime 10
+##
+## Palace of Paroxysmus
+##
+*|plaguebeast:corrosiveslime||||||6305|603|-50|1|5|10|4|4|1|4|0|0|0|0|0
+*|InterredGrizzle|corrosiveslime|poisonelemental|balron:succubus:daemon|plaguebeastlord:plaguebeast:plaguespawn||6384|580|-50|1|5|10|30|30|1|4|4|3|9|11|0
+*|poisonelemental||||||6328|517|-50|1|5|10|10|10|1|4|0|0|0|0|0
+*|plaguebeast:corrosiveslime|poisonelemental:plaguespawn|||||6354|455|-40|1|5|10|20|20|1|5|5|0|0|0|0
+*|plaguebeast:plaguespawn|toxicelemental:corrosiveslime|||||6416|447|-40|1|5|10|20|20|1|8|7|0|0|0|0
+*|balron:succubus:daemon|corrosiveslime|plaguebeastlord:plaguebeast:plaguespawn|InterredGrizzle:poisonelemental|||6466|543|-50|1|5|10|30|30|1|6|3|8|5|0|0
+*|chaosdaemon:moloch|succubus:daemon|balron||||6292|462|-50|1|5|10|40|40|1|7|7|4|0|0|0
+*|earthelemental:corrosiveslime||||||6298|395|60|1|5|4|6|8|1|2|0|0|0|0|0
+*|toxicelemental:plaguespawn|toxicelemental|plaguespawn||||6404|378|-40|1|5|10|18|18|1|2|1|1|0|0|0
+*|plaguespawn:plaguebeast:toxicelemental:corrosiveslime:poisonelemental|plaguespawn|plaguebeast|toxicelemental|corrosiveslime|poisonelemental|6418|358|-40|1|5|10|25|25|1|12|2|2|2|2|2
+*|earthelemental:corrosiveslime:toxicelemental:plaguespawn|earthelemental|corrosiveslime|toxicelemental|plaguespawn||6319|348|60|1|5|10|20|20|1|5|1|1|1|1|0
+*|toxicelemental:earthelemental:corrosiveslime|toxicelemental|earthelemental|corrosiveslime|||6249|352|60|1|5|10|15|15|1|6|1|1|1|0|0
+*|poisonelemental||||||6285|353|60|1|5|10|5|5|1|1|0|0|0|0|0
+*|earthelemental:corrosiveslime||||||6353|400|60|1|5|10|10|10|1|4|0|0|0|0|0
+*|corrosiveslime||||||6408|411|-40|1|5|10|10|10|5|4|0|0|0|0|0
+*|putrefier||||||6284|622|-50|1|5|10|10|10|5|1|0|0|0|0|0
+*|plaguebeast:corrosiveslime||||||6351|626|-50|1|5|10|10|10|1|4|0|0|0|0|0
+*|plaguebeast:corrosiveslime||||||6349|650|-52|1|5|10|10|10|1|4|0|0|0|0|0
+*|InterredGrizzle:corrosiveslime||||||6345|586|-50|1|5|10|10|10|1|4|0|0|0|0|0
+*|poisonelemental:corrosiveslime||||||6339|559|-50|1|5|10|10|10|1|4|0|0|0|0|0

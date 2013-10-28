@@ -1,0 +1,29 @@
+###########################
+##      By UltimaIX      ##
+## (aka Yrenwick Dragon) ##
+###########################
+overrideid 501
+overridemintime 5
+overridemaxtime 10
+##
+*|fandancer||||||977|218|23|5|5|20|15|15|1|4|0|0|0|0|0
+*|daemon|hellhound|succubus||||78|546|-1|4|5|20|15|15|1|1|2|1|0|0|0
+*|daemon|hellhound|succubus||||110|540|-1|4|5|20|15|15|1|1|2|1|0|0|0
+*|fandancer|ronin|||||96|540|-1|4|5|20|20|15|1|1|1|0|0|0|0
+*|daemon|headlessone|||||100|499|-1|4|5|20|20|20|1|1|1|0|0|0|0
+*|daemon|headlessone|hordeminion||||64|488|-1|4|5|20|20|20|1|2|2|2|0|0|0
+*|fandancer|headlessone|hordeminion|daemon|||70|376|-1|4|5|20|30|25|1|3|3|3|1|0|0
+*|hordeminion|headlessone|||||120|415|-1|4|5|20|10|10|1|2|2|0|0|0|0
+*|headlessone||||||99|387|-1|4|5|20|10|10|1|4|0|0|0|0|0
+*|headlessone||||||123|387|-1|4|5|20|10|10|1|4|0|0|0|0|0
+*|headlessone||||||79|521|-1|4|5|20|10|5|1|3|0|0|0|0|0
+*|fandancer||||||88|332|-1|4|5|20|20|20|1|4|0|0|0|0|0
+*|hordeminion|headlessone|succubus||||97|467|-1|4|5|20|20|20|1|2|1|1|0|0|0
+*|hordeminion|headlessone|||||111|352|-1|4|5|20|10|10|1|2|2|0|0|0|0
+*|hordeminion|fandancer|oni|daemon|||173|615|-1|4|5|20|20|20|1|2|2|2|2|0|0
+*|headlessone|fandancer|||||147|646|-1|4|5|20|5|5|1|2|2|0|0|0|0
+*|hordeminion|hellcat|balron||||175|660|-1|4|5|20|20|20|1|3|2|1|0|0|0
+*|fandancer||||||142|692|-1|4|5|20|20|20|1|2|0|0|0|0|0
+*|hellhound|succubus|||||106|685|-1|4|5|20|20|20|1|1|1|0|0|0|0
+*|fandancer|hellcat|balron||||110|649|-1|4|5|20|10|10|1|1|1|1|0|0|0
+*|fandancer|hellhound|hellcat||||134|651|-1|4|5|20|5|5|1|2|1|1|0|0|0

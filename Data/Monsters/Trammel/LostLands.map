@@ -1,0 +1,341 @@
+##############
+## By Nerun ##
+##############
+overrideid 111
+overridemap 2
+overridemintime 5
+overridemaxtime 10
+##
+## T2A - Lost Lands
+##
+## Papua
+##
+*|Swampdragon||||||5728|3209|-3|2|5|10|100|100|1|7|0|0|0|0|0
+##
+## T2ADesertMain
+##
+*|Imp|Scorpion|Desertostard|Orc|Orcishlord|Stoneharpy|5457|2651|45|2|5|10|150|150|1|15|15|6|9|6|3
+*|Stonegargoyle|Wyvern|Mummy|Ettin|||5457|2651|45|2|5|10|150|150|1|3|6|4|6|0|0
+*|Imp|Scorpion|Desertostard|Orc|Orcishlord|Stoneharpy|5520|2890|33|2|5|10|100|100|1|10|10|4|6|4|3
+*|Stonegargoyle|Wyvern|Mummy|Ettin|||5520|2890|33|2|5|10|100|100|1|3|4|2|4|0|0
+##
+## T2ADesCent
+##
+*|Gazer|Reaper|Scorpion|Giantserpent|Troll||5580|2885|6|2|5|10|15|15|1|3|2|3|2|2|0
+##
+## T2ADryCenter
+##
+*|Corpser|Giantspider|Troll|Harpy|Ettin|Gazer|5557|2625|0|2|5|10|40|40|1|3|3|3|6|3|3
+##
+## T2ACyclop
+##
+*|Cyclops|Titan|||||5394|2530|6|2|5|10|25|15|1|5|3|0|0|0|0
+##
+## T2ADesertFinal
+##
+*|Imp|Scorpion|Desertostard|Orc|Orcishlord|Wyvern|5711|2494|46|2|5|10|80|80|1|3|3|1|3|2|1
+*|Ettin||||||5711|2494|46|2|5|10|80|80|1|2|0|0|0|0|0
+##
+## T2ABaseOph
+##
+*|Ophidianarchmage|Ophidianmage|Ophidianmatriarch|Ophidianknight|Ophidianwarrior||5765|2637|39|2|5|10|30|25|1|3|6|3|4|10|0
+##
+## T2AWyvern
+##
+*|Wyvern|Drake|Imp|Mongbat|||5697|2626|-2|2|5|10|30|25|1|2|4|1|2|0|0
+##
+## T2ASmallDesert
+##
+*|Imp|Scorpion|Desertostard|Orc|Orcishlord|Stoneharpy|5729|2767|-1|2|5|10|70|60|1|8|8|3|5|3|3
+*|Stonegargoyle|Wyvern|Mummy|Ettin|||5729|2767|-1|2|5|10|70|60|1|3|3|3|5|0|0
+##
+## T2ALava
+##
+*|Hellhound|Lavalizard|Fireelemental|Efreet|Hellcat|Lavaserpent|5724|2949|31|2|5|10|75|65|1|8|8|10|4|6|8
+*|Lavasnake||||||5724|2949|31|2|5|10|75|65|1|15|0|0|0|0|0
+##
+## T2AWyvIsle
+##
+*|Wyvern||||||5863|2470|46|2|5|10|25|25|1|6|0|0|0|0|0
+##
+## T2AIce1
+##
+*|Iceserpent|Icesnake|Frosttroll|Snowelemental|Whitewolf|Walrus|5501|2361|27|2|5|10|75|40|1|4|8|4|4|5|5
+*|Polarbear||||||5501|2361|27|2|5|10|75|40|1|5|0|0|0|0|0
+*|Iceserpent|Icesnake|Frosttroll|Snowelemental|Whitewolf|Walrus|5351|2359|0|2|5|10|75|40|1|4|7|4|4|5|5
+*|Polarbear||||||5351|2359|0|2|5|10|75|40|1|5|0|0|0|0|0
+##
+## T2AIce2
+##
+*|Iceserpent|Icesnake|Frosttroll|Snowelemental|Whitewolf|Walrus|5173|2368|21|2|5|10|50|30|1|4|10|4|4|3|3
+*|Polarbear||||||5173|2368|21|2|5|10|50|30|1|3|0|0|0|0|0
+##
+## T2ALastIceIsle
+##
+*|Iceserpent|Icesnake|Snowelemental|Whitewolf|Walrus|Polarbear|6091|2379|25|2|5|10|60|30|1|6|10|3|3|3|3
+##
+## T2AIceFinal
+##
+*|Iceserpent|Icesnake|Frosttroll|Snowelemental|Whitewolf|Walrus|5967|2370|44|2|5|10|75|50|1|6|4|4|4|4|4
+*|Polarbear||||||5967|2370|44|2|5|10|75|50|1|4|0|0|0|0|0
+*|Iceserpent|Icesnake|Frosttroll|Snowelemental|Whitewolf|Walrus|5817|2367|42|2|5|10|75|50|1|6|3|3|3|4|4
+*|Polarbear||||||5817|2367|42|2|5|10|75|50|1|4|0|0|0|0|0
+##
+## T2AFor3
+##
+*|Gorilla|Panther|Giantserpent|Silverserpent|Mongbat||5756|3453|-2|2|5|10|130|130|1|10|10|10|2|10|0
+##
+## T2ASwamp
+##
+*|Gianttoad|Swampdragon|Giantrat|Alligator|Sewerrat|Plaguebeast|5985|3441|17|2|5|10|90|80|1|8|5|12|12|11|2
+*|Bullfrog|Swamptentacle|Bogling|Bogthing|||5985|3441|17|2|5|10|90|80|1|15|5|13|3|0|0
+##
+## T2AUndead
+##
+*|Boneknight|Skeletalknight|Bonemagi|Skeleton|Wraith|Ghoul|5220|3664|-1|2|5|10|25|20|1|3|3|3|6|4|4
+##
+## T2ASavage
+##
+*|Savagerider|Savage|Savageshaman||||5212|3619|0|2|5|10|15|10|1|3|9|3|0|0|0
+##
+## T2ADeer
+##
+*|Horse|Orc|Orcishlord|Greathart|Hind|Ridablellama|5347|3449|17|2|5|10|50|50|1|4|8|4|4|16|4
+*|Horse|Orc|Orcishlord|Greathart|Hind|Ridablellama|5243|3548|14|2|5|10|50|50|1|4|8|4|4|16|4
+*|Horse|Orc|Orcishlord|Greathart|Hind|Ridablellama|5250|3449|16|2|5|10|50|50|1|4|8|4|4|16|4
+*|Horse|Orc|Orcishlord|Greathart|Hind|Ridablellama|5349|3547|-1|2|5|10|50|50|1|4|8|4|4|16|4
+##
+## T2AWild1
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5201|3162|53|2|5|10|50|50|1|6|4|4|2|2|2
+*|Hind|Llama|Timberwolf||||5201|3162|53|2|5|10|50|50|1|2|2|2|0|0|0
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5251|3301|-2|2|5|10|50|50|1|6|4|4|2|2|2
+*|Hind|Llama|Timberwolf||||5251|3301|-2|2|5|10|50|50|1|2|2|2|0|0|0
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5250|3401|1|2|5|10|50|50|1|6|4|4|2|2|2
+*|Hind|Llama|Timberwolf||||5250|3401|1|2|5|10|50|50|1|2|2|2|0|0|0
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5351|3401|30|2|5|10|50|50|1|6|4|4|2|2|2
+*|Hind|Llama|Timberwolf||||5351|3401|30|2|5|10|50|50|1|2|2|2|0|0|0
+##
+## T2AWild1&2 - 1
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|6018|3673|18|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|6018|3673|18|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|6018|3673|18|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||6018|3673|18|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 2
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|6022|3773|18|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|6022|3773|18|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|6022|3773|18|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||6022|3773|18|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 3
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|6022|2874|16|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|6022|2874|16|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|6022|2874|16|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||6022|2874|16|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 4
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|6022|3971|17|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|6022|3971|17|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|6022|3971|17|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||6022|3971|17|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 5
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5920|3675|12|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5920|3675|12|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5920|3675|12|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5920|3675|12|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 6
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5921|3777|28|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5921|3777|28|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5921|3777|28|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5921|3777|28|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 7
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5919|3875|16|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5919|3875|16|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5919|3875|16|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5919|3875|16|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 8
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5918|3975|1|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5918|3975|1|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5918|3975|1|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5918|3975|1|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 9
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5820|3675|0|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5820|3675|0|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5820|3675|0|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5820|3675|0|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 10
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5820|3775|48|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5820|3775|48|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5820|3775|48|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5820|3775|48|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 11
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5818|3876|18|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5818|3876|18|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5818|3876|18|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5818|3876|18|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 12
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5819|3974|16|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5819|3974|16|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5819|3974|16|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5819|3974|16|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 13
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5721|3675|22|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5721|3675|22|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5721|3675|22|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5721|3675|22|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 14
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5722|3776|32|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5722|3776|32|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5722|3776|32|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5722|3776|32|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 15
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5721|3876|-3|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5721|3876|-3|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5721|3876|-3|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5721|3876|-3|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 16
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5721|3975|21|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5721|3975|21|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5721|3975|21|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5721|3975|21|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 17
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5623|3676|-3|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5623|3676|-3|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5623|3676|-3|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5623|3676|-3|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 18
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5621|3775|2|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5621|3775|2|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5621|3775|2|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5621|3775|2|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 19
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5623|3875|15|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5623|3875|15|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5623|3875|15|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5623|3875|15|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 20
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5624|3975|-3|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5624|3975|-3|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5624|3975|-3|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5624|3975|-3|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 21
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5523|3676|45|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5523|3676|45|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5523|3676|45|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5523|3676|45|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 22
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5521|3775|8|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5521|3775|8|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5521|3775|8|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5521|3775|8|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 23
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5521|3875|-1|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5521|3875|-1|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5521|3875|-1|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5521|3875|-1|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild1&2 - 24
+##
+*|Brownbear:Grizzlybear:Blackbear|Horse:Ridablellama|Rabbit:JackRabbit|Bird|Cougar|Greathart|5478|3587|3|2|5|10|50|50|1|3|2|2|1|1|1
+*|Hind|Llama|Timberwolf|Corpser|Ettin|Forestostard|5478|3587|3|2|5|10|50|50|1|1|1|1|1|1|2
+*|Gazer|Giantspider|Harpy|Headlessone|Lizardman|Mongbat|5478|3587|3|2|5|10|50|50|1|1|1|1|1|3|1
+*|Rat|Ratman|Reaper|Troll|||5478|3587|3|2|5|10|50|50|1|1|1|1|2|0|0
+##
+## T2AWild3
+##
+*|Forestostard|Ridablellama|||||5520|3939|42|2|5|10|25|25|1|3|3|0|0|0|0
+##
+## T2AFrenz
+##
+*|Frenziedostard||||||5784|3951|20|2|5|10|35|35|1|8|0|0|0|0|0
+##
+## T2ASpawner1
+##
+*|Imp|Mongbat|||||5764|2585|-4|2|5|10|75|2|1|2|5|0|0|0|0
+*|Imp|Harpy|Headlessone|Scorpion|Stoneharpy|Wyvern|5838|2651|0|2|5|10|75|2|1|1|1|1|1|1|1
+##
+## T2ASpawner2
+##
+*|Rabbit:JackRabbit|Bird|Rat|Hind|Llama|Horse|5218|3786|1|2|5|10|50|50|1|20|15|5|4|3|3
+*|Mongbat|Greathart|||||5218|3786|1|2|5|10|50|50|1|4|1|0|0|0|0
+*|Rabbit:JackRabbit|Bird|Rat|Hind|Llama|Horse|5371|3820|-2|2|5|10|50|50|1|20|15|5|4|3|3
+*|Mongbat|Greathart|||||5371|3820|-2|2|5|10|50|50|1|4|1|0|0|0|0
+*|Rabbit:JackRabbit|Bird|Rat|Hind|Llama|Horse|5368|3887|0|2|5|10|50|50|1|20|15|5|4|3|3
+*|Mongbat|Greathart|||||5368|3887|0|2|5|10|50|50|1|4|1|0|0|0|0
+*|Rabbit:JackRabbit|Bird|Rat|Hind|Llama|Horse|5367|4003|19|2|5|10|50|50|1|20|15|5|4|3|3
+*|Mongbat|Greathart|||||5367|4003|19|2|5|10|50|50|1|4|1|0|0|0|0
+*|Rabbit:JackRabbit|Bird|Rat|Hind|Llama|Horse|5466|4005|-1|2|5|10|50|50|1|20|15|5|4|3|3
+*|Mongbat|Greathart|||||5466|4005|-1|2|5|10|50|50|1|4|1|0|0|0|0
+##
+## T2ABull
+##
+*|Bull|Greathart|Cow||||5194|3885|-1|2|5|10|45|32|1|10|6|6|0|0|0
+*|Bull|Greathart|Cow||||5200|3895|2|2|5|10|20|10|1|2|2|2|0|0|0
+##
+## T2ASheep
+##
+*|Sheep|Goat|Bull|Chicken|||5159|3913|1|2|2|5|10|15|10|7|1|1|1|1|0|0
+##
+## T2AFor1
+##
+*|Gorilla|Panther|Giantserpent|Silverserpent|Mongbat||5570|3153|14|2|5|10|80|60|1|6|6|6|1|6|0
+##
+## T2AFor2
+##
+*|Gorilla|Panther|Giantserpent|Mongbat|Silverserpent||5440|3292|-4|2|5|10|62|56|1|5|5|5|5|1|0
+*|Gorilla|Panther|Giantserpent|Mongbat|Silverserpent||5566|3292|4|2|5|10|62|56|1|5|5|5|5|1|0
+##
+## T2ATera1
+##
+*|Terathanmatriarch|Terathanavenger|Terathandrone|Terathanwarrior|||5454|3136|-60|2|5|10|25|25|1|2|4|10|10|0|0
+##
+## T2Aopp
+##
+*|Ophidianmatriarch:Ophidianarchmage|Ophidianmage|Ophidianknight:Ophidianwarrior||||5490|3071|15|2|5|10|25|5|1|1|1|2|0|0|0
+*|Ophidianmatriarch:Ophidianarchmage|Ophidianmage|Ophidianknight:Ophidianwarrior||||5467|3078|-3|2|5|10|25|5|1|1|1|2|0|0|0
+*|Ophidianmatriarch:Ophidianarchmage|Ophidianmage|Ophidianknight:Ophidianwarrior||||5446|3074|3|2|5|10|25|5|1|1|1|2|0|0|0
+*|Ophidianmatriarch:Ophidianarchmage|Ophidianmage|Ophidianknight:Ophidianwarrior||||5432|3079|-4|2|5|10|25|5|1|1|1|2|0|0|0
+*|Ophidianmatriarch:Ophidianarchmage|Ophidianmage|Ophidianknight:Ophidianwarrior||||5408|3077|16|2|5|10|25|5|1|1|1|2|0|0|0

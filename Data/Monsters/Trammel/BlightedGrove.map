@@ -1,0 +1,23 @@
+##############################
+##   XML Spawns by Erica    ##
+## Convert/Adapted By Nerun ##
+##############################
+overrideid 101
+overridemap 2
+overridemintime 5
+overridemaxtime 10
+##
+## Blighted Grove
+##
+*|tangle:bogling:alligator:reaper:corpser:changeling:whippingvine||||||6507|843|0|2|5|10|10|10|1|8|0|0|0|0|0
+*|giantserpent:gianttoad:harpy:silverserpent:snake:bogling||||||6513|871|0|2|5|10|35|35|1|17|0|0|0|0|0
+*|frighteneddryad||||||6500|875|0|2|5|10|0|0|1|1|0|0|0|0|0
+*|harpy:changeling:changeling||||||6585|878|0|2|5|10|10|10|1|7|0|0|0|0|0
+*|abscess:hydra:bogthing||||||6535|848|0|2|5|10|10|10|1|4|0|0|0|0|0
+*|insanedryad||||||6540|872|0|2|5|10|5|5|1|1|0|0|0|0|0
+*|giantserpent:swamptentacle:reaper:bogling:alligator:harpy:whippingvine||||||6518|870|0|2|5|10|40|40|1|9|0|0|0|0|0
+*|insanedryad||||||6489|897|0|2|5|10|5|5|1|1|0|0|0|0|0
+*|insanedryad||||||6518|879|0|2|5|10|5|5|1|1|0|0|0|0|0
+*|Coil||||||6520|893|0|2|5|10|5|5|1|1|0|0|0|0|0
+*|Thrasher||||||6510|907|0|2|5|10|5|5|1|1|0|0|0|0|0
+*|Saliva||||||6586|878|0|2|5|10|5|5|1|1|0|0|0|0|0

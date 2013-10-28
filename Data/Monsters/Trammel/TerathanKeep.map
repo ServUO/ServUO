@@ -1,0 +1,62 @@
+##############
+## By Nerun ##
+##############
+overrideid 121
+overridemap 2
+overridemintime 5
+overridemaxtime 10
+##
+## Lost Lands
+## Terathan Keep Dungeon
+##
+## Terathan Keep
+##
+*|Balron|Dragon|Drake|Nightmare|||5296|1561|0|2|5|15|20|10|1|1|1|1|1|0|0
+*|Ophidianarchmage|Ophidianknight|Ophidianmage|Ophidianwarrior|Ophidianmatriarch||5296|1562|0|2|5|15|20|10|1|1|1|1|1|1|0
+*|Terathanavenger|Terathandrone|Terathanmatriarch|Terathanwarrior|||5297|1565|0|2|5|15|20|10|1|1|1|1|1|0|0
+##
+*|Balron|Dragon|Drake|Nightmare|||5342|1553|0|2|5|15|20|10|1|1|1|1|1|0|0
+*|Ophidianarchmage|Ophidianknight|Ophidianmage|Ophidianwarrior|Ophidianmatriarch||5342|1552|0|2|5|15|20|10|1|1|1|1|1|1|0
+*|Terathanavenger|Terathandrone|Terathanmatriarch|Terathanwarrior|||5343|1551|0|2|5|15|20|10|1|1|1|1|1|0|0
+##
+*|Balron|Dragon|Drake|Nightmare|||5334|1613|0|2|5|15|20|10|1|1|1|1|1|0|0
+*|Ophidianarchmage|Ophidianknight|Ophidianmage|Ophidianwarrior|Ophidianmatriarch||5334|1614|0|2|5|15|20|10|1|1|1|1|1|1|0
+*|Terathanavenger|Terathandrone|Terathanmatriarch|Terathanwarrior|||5335|1615|0|2|5|15|20|10|1|1|1|1|1|0|0
+##
+*|TreasureLevel3||||||5348|1552|0|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5345|1551|0|2|1|2|1|1|1|2|0|0|0|0|0
+##
+## Ophidian Territory
+##
+*|Balron|Dragon|Drake|Nightmare|||5344|1757|-125|2|5|15|20|10|1|1|1|1|1|0|0
+*|Ophidianarchmage|Ophidianknight|Ophidianmage|Ophidianwarrior|Ophidianmatriarch||5345|1757|-125|2|5|15|20|10|1|1|1|1|1|1|0
+*|Terathanavenger|Terathandrone|Terathanmatriarch|Terathanwarrior|||5346|1756|-125|2|5|15|20|10|1|1|1|1|1|0|0
+##
+*|Balron|Dragon|Drake|Nightmare|||5335|1706|-70|2|5|15|20|10|1|1|1|1|1|0|0
+*|Ophidianarchmage|Ophidianknight|Ophidianmage|Ophidianwarrior|Ophidianmatriarch||5335|1707|-70|2|5|15|20|10|1|1|1|1|1|1|0
+*|Terathanavenger|Terathandrone|Terathanmatriarch|Terathanwarrior|||5336|1708|-70|2|5|15|20|10|1|1|1|1|1|0|0
+##
+*|Balron|Dragon|Drake|Nightmare|||5270|1695|0|2|5|15|20|10|1|1|1|1|1|0|0
+*|Ophidianarchmage|Ophidianknight|Ophidianmage|Ophidianwarrior|Ophidianmatriarch||5270|1694|0|2|5|15|20|10|1|1|1|1|1|1|0
+*|Terathanavenger|Terathandrone|Terathanmatriarch|Terathanwarrior|||5271|1693|0|2|5|15|20|10|1|1|1|1|1|0|0
+##
+*|TreasureLevel3||||||5365|1707|-71|2|1|2|1|1|1|1|0|0|0|0|0
+*|TreasureLevel4||||||5363|1709|-75|2|1|2|1|1|1|2|0|0|0|0|0
+##
+*|Balron|Dragon|Drake|Nightmare|||5176|1702|0|2|5|15|20|10|1|1|1|1|1|0|0
+*|Ophidianarchmage|Ophidianknight|Ophidianmage|Ophidianwarrior|Ophidianmatriarch||5176|1701|2|2|5|15|20|10|1|1|1|1|1|1|0
+*|Terathanavenger|Terathandrone|Terathanmatriarch|Terathanwarrior|||5177|1700|1|2|5|15|20|10|1|1|1|1|1|0|0
+##
+## Champion Room
+##
+*|Balron|Dragon|Drake|Nightmare|||5132|1624|0|2|5|15|20|10|1|1|1|1|1|0|0
+*|Ophidianarchmage|Ophidianknight|Ophidianmage|Ophidianwarrior|Ophidianmatriarch||5132|1623|0|2|5|15|20|10|1|1|1|1|1|1|0
+*|Terathanavenger|Terathandrone|Terathanmatriarch|Terathanwarrior|||5134|1625|0|2|5|15|20|10|1|1|1|1|1|0|0
+##
+*|Balron|Dragon|Drake|Nightmare|||5160|1586|-15|2|5|15|20|10|1|1|1|1|1|0|0
+*|Ophidianarchmage|Ophidianknight|Ophidianmage|Ophidianwarrior|Ophidianmatriarch||5163|1585|-15|2|5|15|20|10|1|1|1|1|1|1|0
+*|Terathanavenger|Terathandrone|Terathanmatriarch|Terathanwarrior|||5161|1584|-15|2|5|15|20|10|1|1|1|1|1|0|0
+##
+*|Balron|Dragon|Drake|Nightmare|||5200|1565|0|2|5|15|20|10|1|1|1|1|1|0|0
+*|Ophidianarchmage|Ophidianknight|Ophidianmage|Ophidianwarrior|Ophidianmatriarch||5201|1566|0|2|5|15|20|10|1|1|1|1|1|1|0
+*|Terathanavenger|Terathandrone|Terathanmatriarch|Terathanwarrior|||5200|1568|0|2|5|15|20|10|1|1|1|1|1|0|0

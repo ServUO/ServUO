@@ -1,0 +1,64 @@
+##############
+## By Nerun ##
+##############
+overrideid 123
+overridemap 2
+overridemintime 5
+overridemaxtime 10
+##
+## Britain Chaos/Order Guards
+##
+*|Orderguard||||||1400|1623|28|2|5|10|1|0|1|1|0|0|0|0|0
+*|Orderguard||||||1400|1628|28|2|5|10|1|0|1|1|0|0|0|0|0
+*|Chaosguard||||||1521|1457|15|2|5|10|1|0|1|1|0|0|0|0|0
+*|Chaosguard||||||1525|1457|15|2|5|10|1|0|1|1|0|0|0|0|0
+##
+## Town Criers
+##
+*|Towncrier||||||1662|1611|19|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||1421|1698|0|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||2254|1207|0|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||5290|3987|37|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||3515|2569|14|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||1330|3778|0|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||3721|2161|20|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||2515|557|0|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||4451|1153|0|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||3773|1308|0|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||5685|3148|-4|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||2891|3474|15|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||603|2141|0|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||1914|2687|0|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||1829|2811|0|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||2895|686|0|2|5|10|5|1|1|1|0|0|0|0|0
+*|Towncrier||||||627|864|0|2|5|10|5|1|1|1|0|0|0|0|0
+##
+## Hire
+##
+*|HireBard:HireBardArcher:HireBeggar:HireFighter:HireMage|HireRanger:HireRangerArcher:HireSailor:HireThief:HirePaladin|||||1399|3743|-21|2|5|15|10|10|1|5|5|0|0|0|0
+##
+## Escorts
+##
+*|Escortablemage:Seekerofadventure:Noble||||||1483|1760|-2|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||1372|3916|-2|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||1126|3688|-2|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||3674|2291|-2|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||4398|1049|-2|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||3815|1217|0|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||3749|1404|0|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||3645|2661|-2|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||2994|3451|16|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||673|2235|-3|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||573|2246|0|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||2068|2854|0|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||3041|827|-3|2|5|15|20|10|1|3|0|0|0|0|0
+*|Escortablemage:Seekerofadventure:Noble||||||631|883|0|2|5|15|20|10|1|3|0|0|0|0|0
+##
+## Treasures
+##
+## Trinsic Bank
+*|TreasureLevel3|TreasureLevel4|||||1813|2834|0|2|1|2|2|2|1|1|2|0|0|0|0
+## Vesper Bank
+*|TreasureLevel1||||||2875|675|0|2|1|2|2|2|1|6|0|0|0|0|0
+*|TreasureLevel1|TreasureLevel2|||||2874|692|0|2|1|2|1|1|1|1|1|0|0|0|0
+*|TreasureLevel2|TreasureLevel3|||||2884|692|0|2|1|2|1|1|1|2|1|0|0|0|0

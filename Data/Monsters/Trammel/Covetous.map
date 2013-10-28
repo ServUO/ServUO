@@ -1,0 +1,73 @@
+##############
+## By Nerun ##
+##############
+overrideid 103
+overridemap 2
+overridemintime 5
+overridemaxtime 10
+##
+## Covetous Dungeon
+##
+## Level 1
+##
+*|Harpy||||||5472|1877|0|2|1|10|25|10|1|6|0|0|0|0|0
+*|Headlessone||||||5453|1905|0|2|2|10|25|5|1|4|0|0|0|0|0
+*|Stoneharpy||||||5443|1918|0|2|2|10|30|7|1|2|0|0|0|0|0
+*|Gazer|Gazerlarva|||||5418|1876|0|2|2|10|30|10|1|4|2|0|0|0|0
+*|Gazer|Gazerlarva|||||5411|1901|0|2|2|10|20|10|1|2|2|0|0|0|0
+*|Corpser||||||5393|1921|0|2|2|10|5|5|1|3|0|0|0|0|0
+*|Corpser||||||5400|1937|0|2|2|10|5|5|1|3|0|0|0|0|0
+*|TreasureLevel1|TreasureLevel2|||||5452|1891|0|2|1|2|2|2|1|1|2|0|0|0|0
+*|TreasureLevel2|TreasureLevel3|||||5399|1859|0|2|1|2|5|5|1|1|2|0|0|0|0
+*|TreasureLevel1|TreasureLevel2|||||5387|1911|0|2|1|2|2|2|1|1|2|0|0|0|0
+*|TreasureLevel2|TreasureLevel3|Corpser||||5411|1932|0|2|2|10|7|7|1|1|2|6|0|0|0
+##
+## Level 2
+##
+*|Headlessone||||||5577|2006|0|2|2|10|20|10|1|2|0|0|0|0|0
+*|Headlessone||||||5593|2017|0|2|2|10|20|10|1|2|0|0|0|0|0
+*|Headlessone||||||5558|2025|0|2|2|10|20|10|1|2|0|0|0|0|0
+*|Harpy|Stoneharpy|||||5498|1998|0|2|2|10|30|15|1|8|1|0|0|0|0
+*|Giantspider|Dreadspider|||||5474|2035|0|2|2|10|25|10|1|2|1|0|0|0|0
+*|Slime||||||5469|2019|0|2|2|10|25|10|1|5|0|0|0|0|0
+*|Waterelemental||||||5445|2030|-3|2|2|10|15|15|1|2|0|0|0|0|0
+*|Giantspider|Dreadspider|||||5440|2023|0|2|2|10|25|15|1|2|2|0|0|0|0
+*|Giantspider|Dreadspider|||||5473|1991|0|2|2|10|25|9|1|2|2|0|0|0|0
+*|Gazer|Gazerlarva|Eldergazer||||5457|1971|0|2|2|10|25|15|1|4|2|1|0|0|0
+*|Corpser||||||5436|1972|0|2|2|10|5|5|1|3|0|0|0|0|0
+*|Corpser||||||5417|1975|0|2|2|10|5|5|1|3|0|0|0|0|0
+*|Gazer|Gazerlarva|||||5429|1989|0|2|2|10|25|15|1|2|2|0|0|0|0
+*|Corpser||||||5425|1992|0|2|2|10|5|5|1|2|0|0|0|0|0
+*|Gazer||||||5388|2012|0|2|2|10|5|5|1|2|0|0|0|0|0
+*|TreasureLevel2|TreasureLevel3|||||5503|2002|0|2|1|2|5|5|1|1|2|0|0|0|0
+*|TreasureLevel2|Corpser|||||5413|2000|0|2|2|10|10|10|1|1|7|0|0|0|0
+*|TreasureLevel2|TreasureLevel3|||||5460|1975|0|2|1|2|7|7|1|1|2|0|0|0|0
+*|TreasureLevel3|TreasureLevel4|||||5448|2027|0|2|1|2|8|8|1|1|2|0|0|0|0
+##
+## Skeleton Passage
+##
+*|Skeleton||||||2456|861|0|2|2|10|25|10|1|4|0|0|0|0|0
+*|Skeleton||||||2480|863|0|2|2|10|25|10|1|4|0|0|0|0|0
+*|Skeleton||||||2493|883|0|2|2|10|25|10|1|4|0|0|0|0|0
+*|Skeleton||||||2513|862|0|2|2|10|25|10|1|4|0|0|0|0|0
+##
+## Level 3
+##
+*|Mummy|Shade|Skeletalknight|Skeleton:Zombie|Spectre|Wraith|5560|1903|0|2|2|10|25|15|1|1|1|1|2|1|1
+*|Mummy|Shade|Skeletalknight|Skeleton:Zombie|Spectre|Wraith|5596|1903|0|2|2|10|25|15|1|1|1|1|2|1|1
+*|Mummy|Shade|Skeletalknight|Skeleton:Zombie|Spectre|Wraith|5560|1876|0|2|2|10|25|15|1|1|1|1|2|1|1
+*|Boneknight|Skeleton|Zombie|Shade|||5603|1875|0|2|2|10|25|8|1|3|1|1|1|0|0
+*|Boneknight|Skeleton|Zombie|Shade|||5617|1861|0|2|2|10|25|8|1|3|1|1|1|0|0
+*|Boneknight|Skeleton|Zombie|Shade|TreasureLevel3|TreasureLevel4|5615|1838|0|2|2|10|25|8|1|3|1|1|1|1|2
+*|Lich|Spectre|Skeleton||||5579|1859|0|2|2|10|25|11|1|7|3|1|0|0|0
+*|Mummy|Shade|Skeletalknight|Skeleton:Zombie|Spectre|Wraith|5560|1843|0|2|2|10|40|15|1|1|1|1|2|1|1
+##
+## Undead Prison
+##
+*|Mummy|Shade|Skeletalknight|Skeleton:Zombie|Spectre|Wraith|5528|1808|0|2|2|10|30|15|1|1|1|1|3|1|1
+*|Rottingcorpse|TreasureLevel3|TreasureLevel4||||5504|1808|0|2|2|10|12|3|1|1|1|2|0|0|0
+##
+## Dragon's Lair
+##
+*|Dragon|Drake|||||5452|1799|0|2|2|10|30|20|1|1|2|0|0|0|0
+*|TreasureLevel3|TreasureLevel4|||||5461|1818|0|2|1|2|8|8|1|1|2|0|0|0|0

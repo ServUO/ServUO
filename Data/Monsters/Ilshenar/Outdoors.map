@@ -1,0 +1,360 @@
+##############
+## By Nerun ##
+##############
+overrideid 306
+overridemintime 5
+overridemaxtime 10
+##
+## Ilshenar Northeast
+##
+## South Montor
+*|Dragon||||||1763|344|52|3|5|10|30|30|1|1|0|0|0|0|0
+*|Earthelemental||||||1790|435|-10|3|5|10|25|20|1|3|0|0|0|0|0
+*|Mongbat|Airelemental|Giantspider|Earthelemental|Scorpion||1805|469|-9|3|5|10|50|50|1|5|1|1|3|4|0
+*|Stonegargoyle||||||1852|484|-13|3|5|10|20|10|1|3|0|0|0|0|0
+*|Brigand||||||1856|517|-14|3|5|10|30|30|1|3|0|0|0|0|0
+*|Airelemental||||||1775|530|66|3|5|10|10|10|1|1|0|0|0|0|0
+*|Wyvern|Mummy|||||1828|601|38|3|5|10|40|40|1|2|6|0|0|0|0
+*|Orccamp||||||1717|606|17|3|5|10|0|0|1|1|0|0|0|0|0
+## Desert
+*|Desertostard|Stoneharpy|Gargoyle|Wyvern|Efreet|Lichlord|1647|602|-14|3|5|10|30|30|1|5|1|2|2|1|1
+*|Desertostard|Stoneharpy|Gargoyle|Wyvern|Efreet||1593|602|7|3|5|10|30|30|1|5|2|2|1|2|0
+*|Earthelemental:Scorpion||||||1700|546|5|3|5|10|30|30|1|14|0|0|0|0|0
+*|Ratman|Ratmanarcher:Ratmanmage|||||1580|538|-14|3|5|10|7|5|1|2|1|0|0|0|0
+*|Ratman|Ratmanarcher:Ratmanmage|||||1580|554|-13|3|5|10|7|5|1|1|1|0|0|0|0
+*|Earthelemental||||||1534|631|-14|3|5|10|15|5|1|2|0|0|0|0|0
+*|Earthelemental||||||1530|667|-14|3|5|10|15|5|1|2|0|0|0|0|0
+*|Shade:Spectre:Wraith|Skeleton|Ghoul|Zombie|||1534|600|-14|3|5|10|25|15|1|7|5|2|2|0|0
+*|Imp||||||1445|681|-1|3|5|10|20|20|1|3|0|0|0|0|0
+## Glacier/Tunnels
+*|Harpy||||||1400|687|32|3|5|10|25|25|1|3|0|0|0|0|0
+*|Frosttroll|Drake|Snowelemental|Iceelemental|||1352|667|111|3|5|10|22|22|1|3|2|2|2|0|0
+*|Frosttroll|Iceelemental|Iceserpent|Frostspider|||1372|623|111|3|5|10|30|25|1|4|1|2|2|0|0
+*|Frosttroll|Snowelemental|Iceelemental|Drake|||1316|633|106|3|5|10|30|10|1|2|1|1|1|0|0
+## Green/Mountains
+*|Skeleton|Shade:Spectre:Wraith|Ghoul|Zombie|||1442|576|-11|3|5|10|15|10|1|5|6|2|2|0|0
+*|Skeleton|Shade:Spectre|Zombie|Efreet|||1400|572|-13|3|5|10|15|15|1|4|4|2|1|0|0
+*|Orc|Orccaptain|Ettin|Troll|Orcishmage||1421|517|1|3|5|10|40|30|1|3|1|2|2|1|0
+*|Healercamp||||||1358|498|3|3|5|10|0|0|1|1|0|0|0|0|0
+*|Gargoyle||||||1319|560|-4|3|5|10|15|15|1|3|0|0|0|0|0
+*|Ratman|Ratmanarcher|Ratmanmage||||1237|473|-4|3|5|10|20|15|1|3|1|1|0|0|0
+*|Drake|Harpy|||||1275|401|-1|3|5|10|40|35|1|2|4|0|0|0|0
+*|Troll||||||1445|384|22|3|5|10|30|30|1|4|0|0|0|0|0
+*|Ancientwyrm||||||1416|317|74|3|5|10|7|7|1|1|0|0|0|0|0
+*|Imp|Daemon|||||1496|280|-10|3|5|10|10|10|1|3|1|0|0|0|0
+*|Ettin||||||1464|241|2|3|5|10|20|10|1|1|0|0|0|0|0
+*|Ettin||||||1503|239|-7|3|5|10|20|10|1|1|0|0|0|0|0
+*|Imp||||||1571|253|14|3|5|10|25|10|1|3|0|0|0|0|0
+## Swamp near savage
+*|Sewerrat|Corpser|Bogling|Giantrat|Alligator|Mongbat|1070|750|-80|3|5|10|30|30|1|4|2|2|2|2|2
+*|Lizardman|Plaguebeast|Toxicelemental||||1070|750|-80|3|5|10|30|30|1|4|2|1|0|0|0
+*|Sewerrat|Corpser|Bogling|Giantrat|Alligator|Mongbat|1135|743|-80|3|5|10|30|30|1|4|2|2|2|2|2
+*|Lizardman|Plaguebeast|Toxicelemental|Bogthing|||1135|743|-80|3|5|10|30|30|1|4|2|1|1|0|0
+*|Sewerrat|Corpser|Bogling|Giantrat|Alligator|Mongbat|1160|681|-80|3|5|10|30|30|1|4|2|1|2|2|1
+*|Lizardman|Plaguebeast|||||1160|681|-80|3|5|10|30|30|1|3|1|0|0|0|0
+## Controller Tower
+*|Golemcontroller|Golem|||||1097|702|-79|3|5|10|7|5|1|1|1|0|0|0|0
+*|Golemcontroller|Golem|||||1087|698|-80|3|5|10|7|2|1|1|1|0|0|0|0
+*|Golemcontroller||||||1086|702|-60|3|5|10|5|5|1|2|0|0|0|0|0
+*|Golemcontroller|Golem|||||1098|698|-60|3|5|10|5|1|1|1|1|0|0|0|0
+*|Golem||||||1091|702|-40|3|5|10|10|5|1|1|0|0|0|0|0
+##
+## Ruined Castle
+## Level 1
+*|Jukamage||||||1084|675|-80|3|5|10|15|3|1|1|0|0|0|0|0
+*|Jukawarrior||||||1059|675|-79|3|5|10|7|7|1|1|0|0|0|0|0
+*|Jukawarrior||||||1060|659|-80|3|5|10|7|3|1|1|0|0|0|0|0
+*|Jukawarrior||||||1060|643|-80|3|5|10|7|3|1|1|0|0|0|0|0
+*|Jukamage||||||1075|628|-80|3|5|10|7|3|1|1|0|0|0|0|0
+*|Jukawarrior||||||1092|628|-80|3|5|10|7|3|1|1|0|0|0|0|0
+*|Jukawarrior||||||1083|638|-80|3|5|10|5|5|1|1|0|0|0|0|0
+*|Jukamage||||||1095|638|-80|3|5|10|5|5|1|1|0|0|0|0|0
+*|Jukawarrior||||||1095|664|-80|3|5|10|5|5|1|1|0|0|0|0|0
+*|Jukalord||||||1083|664|-80|3|5|10|5|5|1|1|0|0|0|0|0
+*|Jukalord||||||1070|639|-79|3|5|10|5|5|1|1|0|0|0|0|0
+*|Jukamage|Jukawarrior|||||1070|650|-79|3|5|10|7|5|1|1|1|0|0|0|0
+## Level 2
+*|Jukawarrior||||||1072|651|-60|3|5|10|6|6|1|1|0|0|0|0|0
+*|Jukawarrior||||||1083|628|-60|3|5|10|15|3|1|1|0|0|0|0|0
+*|Jukamage||||||1107|627|-59|3|5|10|7|3|1|1|0|0|0|0|0
+*|Betrayer||||||1083|675|-60|3|5|10|15|3|1|1|0|0|0|0|0
+*|Jukamage|Jukawarrior|Juggernaut||||1088|661|-60|3|5|10|10|9|1|1|1|1|0|0|0
+*|Betrayer|Jukalord|Jukawarrior||||1090|646|-60|3|5|10|10|3|1|1|1|1|0|0|0
+*|Jukamage|Jukalord|Jukawarrior||||1088|637|-60|3|5|10|10|4|1|2|1|1|0|0|0
+## Level 3
+*|Betrayer||||||1060|652|-40|3|5|10|15|3|1|1|0|0|0|0|0
+*|Betrayer|Golemcontroller|||||1083|651|-40|3|5|10|25|10|1|1|3|0|0|0|0
+*|Juggernaut|Golem|||||1083|651|-40|3|5|10|25|10|1|3|1|0|0|0|0
+## Level 4
+*|Golemcontroller|Gargoyle|||||1084|652|-20|3|5|10|25|10|1|2|2|0|0|0|0
+##
+## Meer
+##
+*|Meerwarrior|Meermage|Meercaptain|Meereternal|||1772|67|-28|3|5|10|25|20|1|3|2|2|1|0|0
+*|Meerwarrior|Meermage|Meercaptain|Meereternal|||1803|66|-28|3|5|10|25|20|1|4|2|1|1|0|0
+##############
+## By Nerun ##
+##############
+##
+## Ilshenar Northwest
+##
+## Undead Camp
+##
+*|Skeleton|Wraith|Skeletalknight|Zombie|Skeletalmage|Wyvern|855|464|-2|3|5|10|20|20|1|6|2|4|3|3|2
+##
+## Pass of Karnaugh
+##
+*|Dreadspider|Poisonelemental|Stonegargoyle|Wyvern|Skeleton|Skeletalknight|1041|272|56|3|5|10|25|25|1|2|1|1|1|1|1
+*|Lich|Shade:Spectre:Wraith|Zombie|Ghoul|||1041|272|56|3|5|10|25|25|1|1|3|1|1|0|0
+*|Dreadspider|Stonegargoyle|Wyvern|Skeleton|Skeletalmage|Eldergazer|1000|272|56|3|5|10|25|25|1|1|2|1|1|1|1
+*|Lichlord|Shade:Spectre:Wraith|Zombie|Ghoul|||1000|272|56|3|5|10|25|25|1|1|3|1|1|0|0
+##
+## Memorial to Gwenno
+##
+*|Eldergazer|Gazer|||||748|492|-64|3|5|10|10|10|1|1|2|0|0|0|0
+##
+## Near undead camp
+##
+*|Skeleton|Shade:Spectre:Wraith|Ghoul|Zombie|Skeletalknight:Boneknight|Skeletalmage:Bonemagi|783|448|-47|3|5|10|25|25|1|4|4|2|2|2|2
+*|Lich|Lichlord|||||783|448|-47|3|5|10|25|25|1|1|1|0|0|0|0
+*|Skeleton|Shade:Spectre:Wraith|Ghoul|Zombie|Skeletalknight:Boneknight|Skeletalmage:Bonemagi|742|440|-59|3|5|10|25|25|1|4|4|2|2|2|2
+*|Lich|Lichlord|||||742|440|-59|3|5|10|25|25|1|1|1|0|0|0|0
+##
+## Cyclopse Garden / Camp
+##
+*|Cyclops||||||756|208|-40|3|5|10|10|10|1|4|0|0|0|0|0
+*|Cyclops|Titan|Ettin||||739|264|-54|3|5|10|35|35|1|1|1|2|0|0|0
+*|Cyclops|Titan|Ettin||||778|264|-38|3|5|10|35|35|1|1|1|2|0|0|0
+##
+## Bandit Town
+##
+*|Brigand|Evilmage|||||511|545|-60|3|5|10|25|20|1|4|2|0|0|0|0
+##
+*|Wyvern||||||638|555|-75|3|5|10|40|40|1|3|0|0|0|0|0
+*|Wyvern||||||565|343|-77|3|5|10|40|40|1|2|0|0|0|0|0
+*|Eldergazer|Gazer|||||489|488|-62|3|5|10|25|25|1|1|2|0|0|0|0
+*|Dragon||||||385|421|-62|3|5|10|30|20|1|1|0|0|0|0|0
+*|Dragon||||||447|425|-60|3|5|10|30|20|1|1|0|0|0|0|0
+*|Dragon||||||445|366|-66|3|5|10|30|30|1|1|0|0|0|0|0
+*|Dragon||||||445|318|-64|3|5|10|30|30|1|1|0|0|0|0|0
+*|Wyvern|Giantspider|Dreadspider||||370|264|-52|3|5|10|15|15|1|1|2|1|0|0|0
+*|Wyvern|Giantspider|Dreadspider||||409|264|-44|3|5|10|15|15|1|1|2|1|0|0|0
+*|Wyvern|Giantspider|Dreadspider||||449|264|-57|3|5|10|15|15|1|1|2|1|0|0|0
+##
+## Desert near Gargoyle City
+##
+*|Mongbat|Earthelemental|Scorpion|Sandvortex|Ridgeback|Efreet|964|638|-80|3|5|10|50|40|1|5|5|5|5|1|1
+##
+## Around Ancient Lair
+##
+*|Earthelemental||||||981|470|-80|3|5|10|15|10|1|1|0|0|0|0|0
+*|Imp|Golemcontroller|||||978|471|-80|3|5|10|15|10|1|1|1|0|0|0|0
+*|Lavalizard||||||973|460|-80|3|5|10|15|10|1|1|0|0|0|0|0
+*|Earthelemental||||||964|456|-80|3|5|10|15|10|1|1|0|0|0|0|0
+*|Exodusoverseer||||||963|456|-80|3|5|10|10|5|1|1|0|0|0|0|0
+*|Imp||||||941|471|-38|3|5|10|10|4|1|1|0|0|0|0|0
+*|Gargoyle||||||946|430|-80|3|5|10|15|10|1|4|0|0|0|0|0
+*|Lich|Ghoul|Zombie|Shade:Wraith:Spectre|||878|527|-77|3|5|10|20|10|1|1|1|4|1|0|0
+*|Imp||||||938|453|-80|3|5|10|15|10|1|2|0|0|0|0|0
+*|Earthelemental||||||960|524|-80|3|5|10|15|5|1|1|0|0|0|0|0
+*|Earthelemental||||||911|502|-80|3|5|10|15|5|1|1|0|0|0|0|0
+*|Imp||||||930|519|-80|3|5|10|15|5|1|1|0|0|0|0|0
+##
+## Under Desert near Gargoyle City
+##
+*|golemcontroller||||||808|781|-80|3|5|10|10|10|1|1|0|0|0|0|0
+*|quagmire||||||853|762|-80|3|5|10|17|17|1|3|0|0|0|0|0
+*|chaosdaemon|Moloch|Doppleganger||||821|758|-80|3|5|10|17|17|1|1|1|1|0|0|0
+*|quagmire|Doppleganger|ArcaneDaemon||||821|802|-80|3|5|10|17|17|1|1|1|1|0|0|0
+*|chaosdaemon|Moloch|||||858|799|-80|3|5|10|17|17|1|2|1|0|0|0|0
+*|chaosdaemon||||||879|781|-80|3|5|10|10|10|1|1|0|0|0|0|0
+*|earthelemental||||||907|780|-80|3|5|10|20|20|1|4|0|0|0|0|0
+*|earthelemental||||||987|791|-80|3|5|10|20|20|1|4|0|0|0|0|0
+##
+## Non-OSI spawns (animals)
+##
+*|Airelemental||||||275|453|-53|3|5|10|50|30|1|1|0|0|0|0|0
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|652|555|-72|3|5|10|75|50|1|5|2|5|3|3|2
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|685|340|-64|3|5|10|170|125|1|15|9|9|9|9|9
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|460|469|-49|3|5|10|75|50|1|5|2|5|3|3|2
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|377|340|-14|3|5|10|150|100|1|9|5|6|5|5|5
+##############
+## By Nerun ##
+##############
+##
+## Ilshenar Southeast
+##
+## Healing Temple
+##
+*|Wanderinghealer||||||1083|968|-38|3|5|10|30|30|1|5|0|0|0|0|0
+##
+## Ratman Village
+##
+*|ratmanmage|ratmanarcher|ratman||||1059|1153|-24|3|5|10|15|15|1|2|2|4|0|0|0
+##
+## Brigand Tower
+##
+*|Brigand||||||1129|1236|-4|3|5|10|12|12|1|4|0|0|0|0|0
+##
+## Camps
+##
+*|Bankercamp||||||1186|1223|-20|3|5|10|0|0|1|1|0|0|0|0|0
+*|Healercamp||||||1519|1019|-6|3|5|10|0|0|1|1|0|0|0|0|0
+##
+## Southeast forest
+##
+*|Pixie|Horse|||||1592|1191|-20|3|5|10|70|70|1|5|3|0|0|0|0
+*|Unicorn||||||1592|1191|-20|3|5|10|50|50|1|1|0|0|0|0|0
+*|Pixie|Horse|||||1480|1207|-18|3|5|10|70|70|1|5|3|0|0|0|0
+*|Unicorn||||||1480|1207|-18|3|5|10|50|50|1|1|0|0|0|0|0
+*|Pixie|Horse|||||1318|1246|-13|3|5|10|50|40|1|3|1|0|0|0|0
+##
+## Sacrifice Graveyard
+##
+*|Skeleton:Zombie:Ghoul||||||1183|1287|-30|3|5|10|10|5|1|3|0|0|0|0|0
+##
+## Sheep farm
+##
+*|Sheep||||||1319|1331|-14|3|5|10|10|10|1|3|0|0|0|0|0
+##
+## Blood Dungeon entrance
+##
+*|Skeleton||||||1733|1161|-5|3|5|10|30|30|1|7|0|0|0|0|0
+*|Skeleton|Skeletalknight:Boneknight|Imp||||1747|1221|-1|3|5|10|25|15|1|4|4|3|0|0|0
+##
+## Harpy Nest
+##
+*|Harpy|Stoneharpy|||||1678|971|10|3|5|10|15|15|1|3|1|0|0|0|0
+##
+## Tower (near twin oaks tavern)
+##
+*|Evilmagelord||||||1674|1074|32|3|5|10|5|0|1|1|0|0|0|0|0
+##
+## Abandoned building
+##
+*|Giantrat||||||1585|990|20|3|5|10|10|0|1|2|0|0|0|0|0
+##
+## Spider Wood
+##
+*|Giantspider|Dreadspider|Reaper||||1436|960|-22|3|5|10|40|40|1|5|2|2|0|0|0
+##
+## Bet-Lem Reg
+##
+*|Pixie||||||1249|957|-14|3|5|10|10|10|1|5|0|0|0|0|0
+##
+## Exit Passage
+##
+*|Troll||||||1360|888|-21|3|5|10|40|10|1|3|0|0|0|0|0
+##
+## Spider Dungeon
+##
+*|Dreadspider|Giantspider|||||1817|976|-28|3|5|10|45|45|1|7|13|0|0|0|0
+##
+## Spider Dungeon Shrine
+##
+*|Giantspider||||||1504|878|10|3|5|10|20|15|1|4|0|0|0|0|0
+##############
+## By Nerun ##
+##############
+##
+## Ilshenar Southwest
+##
+## The Deuce's Vinculum Inn
+##
+*|ratmanmage|ratmanarcher|ratman||||664|668|5|3|5|10|10|7|1|1|1|1|0|0|0
+*|ratmanarcher|ratman|||||664|665|-15|3|5|10|10|7|1|2|2|0|0|0|0
+*|ratmanmage|ratman|||||664|665|-35|3|5|10|10|10|1|1|2|0|0|0|0
+##
+## Ratman Lair
+##
+*|ratmanmage|ratmanarcher|ratman||||644|819|-44|3|5|10|25|20|1|3|3|9|0|0|0
+##
+## Camps
+##
+*|Bankercamp||||||961|924|-37|3|5|10|0|0|1|1|0|0|0|0|0
+*|Magecamp||||||567|807|-74|3|5|10|0|0|1|1|0|0|0|0|0
+*|Magecamp||||||830|1206|-70|3|5|10|0|0|1|1|0|0|0|0|0
+##
+## Lava Vent / Champ "Humility"
+##
+*|Ratman|Ratmanmage|Ratmanarcher|Giantspider|Hellhound|Slime|485|891|-82|3|5|10|40|40|1|5|1|2|2|2|2
+*|Jwilson||||||487|890|-82|3|5|10|40|40|1|1|0|0|0|0|0
+##
+## Graveyard
+##
+*|Skeleton|Spectre:Shade:Wraith|Ghoul|Zombie|Skeletalknight:Boneknight|Skeletalmage:Bonemagi|330|881|-73|3|5|10|25|25|1|4|5|1|1|2|4
+*|Lich||||||325|893|-72|3|5|10|10|10|1|1|0|0|0|0|0
+*|Lich||||||366|881|-73|3|5|10|7|7|1|1|0|0|0|0|0
+*|Lichlord||||||338|863|-72|3|5|10|7|7|1|1|0|0|0|0|0
+##
+## Undead Fort
+##
+*|Skeleton|Spectre:Shade:Wraith|Ghoul|Zombie|||353|1140|-54|3|5|10|20|20|1|7|3|2|3|0|0
+*|Shade||||||354|1140|-52|3|5|10|5|5|1|1|0|0|0|0|0
+##
+## Nox Tereg
+##
+*|Swamptentacle|Gianttoad|Alligator|Reaper|Corpser||430|1176|-68|3|5|10|60|60|1|4|12|14|4|6|0
+*|Swamptentacle|Gianttoad|Alligator|Reaper|Corpser||350|1204|-38|3|5|10|40|40|1|2|5|6|2|3|0
+##
+## Abandoned Tower Swamp
+##
+*|Swamptentacle|Gianttoad|Lizardman|Alligator:Reaper:Corpser|||400|1334|-37|3|5|10|70|70|1|5|8|5|0|0|0
+##
+## Lizardman Camp
+##
+*|Lizardman||||||291|1313|-25|3|5|10|30|30|1|7|0|0|0|0|0
+*|Lizardman||||||295|1348|-26|3|5|10|30|30|1|8|0|0|0|0|0
+##
+## Lizardman camp / Cave Passage
+##
+*|Lizardman||||||302|1580|-29|3|5|10|15|10|1|2|0|0|0|0|0
+*|Lizardman||||||325|1576|-28|3|5|10|15|4|1|1|0|0|0|0|0
+##
+## Ancient Wyrm's Lair
+##
+*|Ancientwyrm|Wyvern|Lavalizard||||223|1360|-15|3|5|10|20|20|1|1|2|3|0|0|0
+##
+## Elemental Canyon
+##
+*|Efreet||||||278|1440|15|3|5|10|10|10|1|1|0|0|0|0|0
+*|Fireelemental|Airelemental|Imp||||314|1436|16|3|5|10|25|15|1|1|1|2|0|0|0
+*|Fireelemental|Airelemental|Imp||||350|1441|17|3|5|10|25|15|1|1|1|2|0|0|0
+##
+## Dead Forest
+##
+*|Fireelemental|Airelemental|||||438|1431|15|3|5|10|30|20|1|2|2|0|0|0|0
+##
+## Wisp Dungeon Entrance
+##
+*|Mongbat|Wisp|Imp||||648|1321|-57|3|5|10|25|25|1|6|2|4|0|0|0
+##
+## Honesty
+##
+*|Imp|Gazer|||||722|1354|-61|3|5|10|20|20|1|4|2|0|0|0|0
+##
+## Near "Justice"
+##
+*|Waterelemental||||||913|935|-34|3|5|10|10|10|1|2|0|0|0|0|0
+*|Reaper|Mongbat|Imp||||963|1028|-31|3|5|10|40|20|1|2|4|3|0|0|0
+*|Headlessone|Mongbat|Imp||||935|1159|13|3|5|10|40|20|1|3|3|4|0|0|0
+##
+## Cyclopse's Pyramid
+##
+*|Ettin||||||822|1324|-80|3|5|10|25|25|1|6|0|0|0|0|0
+*|Titan|Cyclops|Ettin||||902|1308|-71|3|5|10|40|35|1|2|4|6|0|0|0
+##
+## Non-OSI spawns (animals)
+##
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|646|1209|-93|3|5|10|50|40|1|4|2|3|2|2|2
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|605|1061|-84|3|5|10|55|45|1|4|2|3|2|2|2
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|564|1142|-99|3|5|10|65|45|1|4|2|3|2|2|2
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|681|1125|-73|3|5|10|65|50|1|4|2|3|2|2|2
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|703|984|-68|3|5|10|65|50|1|4|2|3|2|2|2
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|605|973|-82|3|5|10|65|50|1|4|2|3|2|2|2
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|514|1225|-66|3|5|10|40|30|1|4|1|2|1|1|1
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|733|1238|-68|3|5|10|65|50|1|4|2|3|2|2|2
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|397|958|-80|3|5|10|70|50|1|4|2|3|2|2|2
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|468|874|-80|3|5|10|50|40|1|4|2|3|2|2|2
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|630|828|-55|3|5|10|110|85|1|7|3|4|4|4|3
+*|Tropicalbird|Boar|Snake:Giantserpent|Forestostard|Gorilla|Panther|588|674|-60|3|5|10|100|75|1|7|3|4|4|4|3

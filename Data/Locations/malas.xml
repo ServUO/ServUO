@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<places>
+	<parent name="Malas">
+		<parent name="Towns">
+			<parent name="Luna">
+				<child name="Luna Moongate" x="1015" y="527" z="-65" />
+				<child name="Luna Bank" x="991" y="519" z="-50" />
+				<child name="Clothier's Colors" x="976" y="527" z="-50" />
+				<child name="Grand Arena" x="961" y="638" z="-90" />
+				<child name="Hardwoods and More" x="1002" y="512" z="-50" />
+				<child name="Paladin's Stopover" x="1005" y="519" z="-30" />
+				<child name="Proud Bridle" x="1023" y="503" z="-70" />
+				<child name="Open Market" x="992" y="512" z="-50" />
+				<child name="Sage's Refuge" x="1002" y="527" z="-50" />
+				<child name="Shining Blades" x="976" y="512" z="-50" />
+				<child name="Shrine of Wisdom" x="976" y="510" z="-30" />
+				<child name="Vault of Secrets" x="1072" y="457" z="-90" />
+			</parent>
+			<parent name="Umbra">
+				<child name="Umbra Moongate" x="1998" y="1387" z="-85" />
+				<child name="Umbra Bridge" x="1941" y="1321" z="-88" />
+				<child name="Armoury of Souls" x="1984" y="1367" z="-80" />
+				<child name="Bloodletter's Guild" x="2084" y="1372" z="-75" />
+				<child name="Critter Pens" x="1992" y="1326" z="-90" />
+				<child name="Darkweave" x="2079" y="1338" z="-81" />
+				<child name="Ghast Refectory" x="2017" y="1354" z="-90" />
+				<child name="Gravedigger's Apparatus" x="2016" y="1328" z="-80" />
+				<child name="Lich's Hoard" x="2051" y="1398" z="-90" />
+				<child name="Necromancer Ampitheater" x="2024" y="1383" z="-80" />
+				<child name="Skeleton Swill" x="2030" y="1350" z="-90" />
+				<child name="Wailing Banshee Inn" x="2039" y="1317" z="-84" />
+				<child name="Warped Woodworks" x="2066" y="1288" z="-80" />
+			</parent>
+		</parent>
+		<parent name="Dungeons">
+			<parent name="Doom">
+				<child name="Entrance" x="2367" y="1268" z="-85" />
+				<child name="Tunnel" x="2352" y="1267" z="-110" />
+				<child name="Inside" x="381" y="133" z="33" />
+				<child name="Gauntlet" x="433" y="331" z="-2" />
+				<child name="Guardian's Room" x="365" y="15" z="-1"/>
+				<child name="Lamp Room" x="470" y="95" z="-1"/>
+			</parent>
+		</parent>
+		<parent name="Sites">
+			<parent name="Points of Interest">
+				<child name="Broken Mountains" x="1111" y="1461" z="-90" />
+				<child name="Corrupted Forest" x="2172" y="1144" z="-87" />
+				<child name="Crumbling Continent" x="736" y="1180" z="-95" />
+				<child name="Crystal Fens" x="1388" y="616" z="-85" />
+				<child name="Divide of the Abyss" x="1545" y="877" z="-85" />
+				<child name="Dry Highlands" x="2128" y="1668" z="-90" />
+				<child name="Forgotten Pyramid" x="1825" y="1799" z="-50" />
+				<child name="Gravewater Lake" x="1596" y="1656" z="-115" />
+				<child name="Grimswind Ruins" x="2192" y="330" z="-90" />
+				<child name="Northern Crags" x="1580" y="384" z="-50" />
+				<child name="Orc Fortress" x="1340" y="1226" z="-90" />
+				<child name="Hanse's Hostel" x="1065" y="1435" z="-90" />
+			</parent>
+			<parent name="Caves and Mines">
+				<child name="Mine 1" x="2082" y="574" z="-90" />
+				<child name="Mine 2" x="2157" y="456" z="-90" />
+				<child name="Mine 3" x="1811" y="359" z="-90" />
+				<child name="Mine 4" x="1790" y="475" z="-90" />
+				<child name="Mine 5" x="1628" y="432" z="-86" />
+				<child name="Mine 6" x="1658" y="304" z="-90" />
+				<child name="Mine 7" x="1071" y="247" z="-90" />
+				<child name="Mine 8" x="1095" y="197" z="-90" />
+				<child name="Mine 9" x="1195" y="511" z="-90" />
+			</parent>
+			<parent name="Orc Forts">
+				<child name="Fort 1" x="912" y="193" z="-79" />
+				<child name="Fort 2" x="1666" y="362" z="-50" />
+				<child name="Fort 3" x="1364" y="599" z="-86" />
+				<child name="Fort 4" x="1205" y="705" z="-88" />
+				<child name="Fort 5" x="1257" y="1331" z="-90" />
+				<child name="Fort 6" x="1598" y="1825" z="-110" />
+			</parent>
+		</parent>
+	</parent>
+</places>

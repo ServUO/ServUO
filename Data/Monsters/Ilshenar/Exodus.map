@@ -1,0 +1,31 @@
+##############
+## By Nerun ##
+##############
+overrideid 304
+overridemintime 5
+overridemaxtime 10
+##
+## Exodus Dungeon
+##
+*|EnslavedGargoyle:GolemController||||||1980|116|-28|3|5|10|40|30|1|2|0|0|0|0|0
+*|ExodusMinion||||||1939|116|-28|3|5|10|25|15|1|1|0|0|0|0|0
+*|GolemController:ExodusOverseer||||||1894|116|-28|3|5|10|30|20|1|2|0|0|0|0|0
+*|GolemController||||||1964|164|-28|3|5|10|15|10|1|1|0|0|0|0|0
+*|GolemController||||||1932|164|-28|3|5|10|15|10|1|1|0|0|0|0|0
+*|GolemController:Golem||||||1932|196|-28|3|5|10|20|15|1|2|0|0|0|0|0
+*|GargoyleDestroyer||||||1895|160|-28|3|5|10|15|10|1|1|0|0|0|0|0
+*|ExodusOverseer:ExodusMinion||||||1979|192|-28|3|5|10|20|15|1|2|0|0|0|0|0
+*|GolemController||||||1996|164|-28|3|5|10|15|10|1|1|0|0|0|0|0
+*|GargoyleEnforcer||||||2032|184|-28|3|5|10|15|10|1|1|0|0|0|0|0
+*|GargoyleEnforcer||||||2063|183|-28|3|5|10|15|10|1|1|0|0|0|0|0
+*|GargoyleEnforcer:GargoyleDestroyer||||||2058|163|-28|3|5|10|15|10|1|2|0|0|0|0|0
+*|GolemController:Golem:ExodusMinion||||||2044|143|-28|3|5|10|15|10|1|3|0|0|0|0|0
+*|GolemController:ExodusOverseer||||||2071|116|-28|3|5|10|15|10|1|2|0|0|0|0|0
+*|ExodusMinion:Golem||||||2044|87|-28|3|5|10|15|10|1|2|0|0|0|0|0
+*|GargoyleEnforcer||||||2031|48|-28|3|5|10|15|10|1|1|0|0|0|0|0
+*|GargoyleDestroyer||||||2038|67|-28|3|5|10|15|10|1|1|0|0|0|0|0
+*|GolemController||||||1995|67|-28|3|5|10|20|10|1|1|0|0|0|0|0
+*|ExodusOverseer:ExodusMinion:GolemController||||||1980|39|-28|3|5|10|15|10|1|3|0|0|0|0|0
+*|GolemController||||||1931|67|-28|3|5|10|15|10|1|1|0|0|0|0|0
+*|GargoyleDestroyer||||||1896|72|-28|3|5|10|15|10|1|1|0|0|0|0|0
+*|GolemController:Golem||||||1932|35|-28|3|5|10|20|15|1|2|0|0|0|0|0

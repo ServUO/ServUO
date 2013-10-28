@@ -1,0 +1,40 @@
+##############
+## By Nerun ##
+##############
+overrideid 402
+overridemintime 5
+overridemaxtime 10
+##
+## North Malas
+##
+## Crystal Forest
+##
+## birds = mutatch, nightingale and finch
+*|Crystalelemental|Skitteringhopper|Bird|Hind|Greathart|Rabbit|1674|659|-84|4|5|10|120|100|1|3|3|3|2|1|3
+*|Crystalelemental|Skitteringhopper|Bird|Hind|Greathart|Rabbit|1434|607|-89|4|5|10|120|100|1|3|3|3|2|1|3
+*|Crystalelemental|Skitteringhopper|Bird|Hind|Greathart|Rabbit|1194|638|-84|4|5|10|120|100|1|4|4|4|3|1|4
+*|Crystalelemental|Skitteringhopper|Bird|Hind|Greathart|Rabbit|920|356|-85|4|5|10|70|60|1|4|4|4|3|1|4
+##
+## Ice Caves
+##
+## birds = kingfisher and swifts
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|1659|112|-80|4|5|10|20|20|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|1869|480|-50|4|5|10|40|40|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|2121|597|-50|4|5|10|20|20|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|1980|660|-50|4|5|10|40|40|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|2233|555|-90|4|5|10|60|60|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|1137|223|-50|4|5|10|40|20|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|1381|340|-50|4|5|10|40|40|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|1710|403|-50|4|5|10|40|20|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|766|114|-90|4|5|10|20|20|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|1206|191|-50|4|5|10|40|20|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|2030|500|-50|4|5|10|70|40|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|1482|347|-50|4|5|10|60|40|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|1023|192|-50|4|5|10|20|20|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|1274|300|-50|4|5|10|40|40|1|2|1|1|1|1|1
+*|bird|walrus|snowleopard|whitewolf|icesnake|polarbear|1587|386|-50|4|5|10|40|40|1|2|1|1|1|1|1
+##
+## Other
+##
+*|Unicorn||||||2205|145|-90|4|5|10|50|50|1|3|0|0|0|0|0
+*|Gorefiend||||||2291|295|-90|4|5|10|60|60|1|6|0|0|0|0|0

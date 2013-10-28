@@ -1,0 +1,16 @@
+/ServUO.exe.config
+/ServUO.pdb
+/EmergencyBackup.exe
+/EmergencyBackup.exe.config
+/EmergencyBackup.pdb
+/ServUO.exe
+/Server/obj
+/Server/Server.csproj.user
+/Scripts/Output
+/Scripts/obj
+/Scripts/Scripts.csproj.user
+/Logs
+/Saves
+*.log
+/EmergencyBackup/obj
+/EmergencyBackup/EmergencyBackup.csproj.user

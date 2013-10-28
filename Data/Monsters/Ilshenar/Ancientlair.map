@@ -1,0 +1,15 @@
+##############
+## By Nerun ##
+##############
+overrideid 301
+##
+## Ancient LairCave
+##
+*|AncientWyrm||||||50|689|-28|3|10|20|15|30|1|1|0|0|0|0|0
+overridemintime 5
+overridemaxtime 10
+*|fireelemental:lavalizard||||||115|716|-28|3|5|10|15|15|1|3|0|0|0|0|0
+*|fireelemental:lavalizard||||||131|78|0|3|5|10|10|10|1|1|0|0|0|0|0
+*|fireelemental:lavalizard||||||54|718|-28|3|5|10|10|10|1|1|0|0|0|0|0
+*|fireelemental|lavalizard|||||82|718|-28|3|5|10|15|15|1|2|2|0|0|0|0
+*|fireelemental:lavalizard||||||79|687|-28|3|5|10|10|10|1|1|0|0|0|0|0

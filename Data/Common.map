@@ -1,0 +1,864 @@
+3
+-stairs: 5170 1569 1 
+-healer: 575 537 3 
+-healer: 682 297 3 
+-baker: 1514 611 3 
++ruins: 1586 1004 3 abandoned building
++landmark: 478 1531 3 abandoned mage tower
++ruins: 412 1363 3 abandoned tower
++landmark: 575 1140 3 abandoned tower
+-bank: 652 820 0 Abbey Banker
+-inn: 610 810 0 Abbey Innkeeper
++scenic: 1738 174 3 the Abyss
+-painter: 4525 1060 0 Academy of Arts
+-provisioner: 5737 3262 0 Adventure Outfitters
+-tailor: 1981 2838 0 Adventurer's Clothing
+-provisioner: 535 867 0 The Adventurer's Friend
+-tailor: 1355 3779 0 Adventurer's Needle
+-provisioner: 2992 638 0 The Adventurer's Supplies
+-inn: 3672 2654 1 The Albatross
+-tavern: 3668 2652 2 The Albatross Bar and Grill
+-mage: 5301 88 0 The Alchemist of Wind
++Terrain: 1460 448 3 Alexandrella's Bowl
+-shipwright: 3632 2640 1 Anchors Aweigh
++ruins: 1516 542 3 Ancient Citadel
++landmark: 221 1363 3 ancient wyrm's lair
++scenic: 1414 317 3 ancient wyrm's lair
+-arms: 808 697 3 Anglo-In-Lem
+-arms: 808 586 3 Angra-Char-In-Lem
+-gypsystable: 1225 563 3 animal pen
+-gypsystable: 1388 428 3 animal pen
++shrine: 3359 2679 2 Ank of Sacrifice
+-point of interest: 3746 2576 2 Archer Targets
+-arms: 1497 614 3 an armourer
+-armourers guild: 3587 2601 2 Armoury
+-arms: 1637 1693 0 Artistic Armour
+-rogues guild: 1442 1662 0 Artists' Guild
+-bank: 854 680 3 Atri-Aur
+-bank: 855 603 3 Atri-Aur
+-tinker: 766 641 3 Atri-Ben-In-Ailem
+-baker: 1880 2802 0 Baked Delights
+-baker: 3755 2227 0 Baker's Dozen
+-baker: 1364 3732 0 Baker's Dozen
++ruins: 512 546 3 bandit town
++landmark: 437 1558 3 bandstand
++scenic: 748 489 3 bandstand
+-gypsybank: 1226 554 3 a bank
+-bank: 1610 556 3 a bank
+-bank: 1813 2825 0 Bank of Britannia: Trinsic Branch
+-bank: 3734 2149 0 Bank of Magincia
+-bank: 2503 552 0 Bank of Minoc
+-bank: 3764 1317 0 Bank of Nujel'm
+-bank: 3695 2511 1 Bank of Ocllo
+-bank: 587 2146 0 Bank of Skara Brae
+-bardic guild: 3740 1197 0 Bardic Guild
+-bardic guild: 3666 2531 2 Bardic Guild
+-bardic guild: 3665 2531 1 The Bardic Guild
+-inn: 5197 4060 0 The Barely Inn
+-tavern: 2475 397 0 The Barnacle
+-point of interest: 1962 2691 0 Barracks
+-point of interest: 1937 2711 0 Barracks
+-point of interest: 1938 2688 0 Barracks
++Island: 2122 2755 0 Barrier Isle
+-stable: 571 2119 0 Beasts of Burden
++Terrain: 5542 2999 0 Beggars Gorge
+-provisioner: 826 679 3 Ben-In-Lem
+-provisioner: 824 602 3 Ben-In-Lem
+-tanner: 1431 1612 0 The Best Hides of Britain
++ruins: 1249 955 3 Bet-Lem Reg
+-tanner: 3602 2615 1 Better Leather Tannery
+-blacksmith: 3007 3408 0 Blacksmith
+-blacksmith: 3594 2595 2 Blacksmith
+-bowyer: 590 2205 0 Bloody Bowman
+-carpenter: 565 1011 0 Bloody Thumb Woodworks
+-tavern: 1498 1691 0 The Blue Boar
+-inn: 3671 2615 2 The Bountiful Harvest
+-inn: 3673 2614 1 The Bountiful Harvest
+-butcher: 582 2186 0 Bountiful Meats
+-bowyer: 3745 2585 2 Bowyers
+-baker: 3683 2171 0 The Bread Basket
+-bridge: 1789 2923 0 bridge
+-bridge: 1778 2848 0 bridge
++landmark: 1123 1236 3 brigand tower
++town: 1546 1634 0 Britain
++graveyard: 1371 1482 0 Britain Cemetery
+-docks: 1470 1765 0 Britain Docks
++moongate: 1336 1997 0 Britain Moongate
+-library: 1409 1590 0 Britain Public Library
+-blacksmiths guild: 1348 1778 0 Britain's Blacksmith Guild
+-provisioner: 1469 1668 0 Britain's Premier Provisioners and Fish Shoppe
+-reagents: 3013 3353 0 Britainian Herbs
+-point of interest: 1507 1567 0 Britannia Animal Care
++landmark: 295 764 0 Britannia Prison
+-provisioner: 1850 2796 0 Britannia Provisions
+-docks: 1437 1761 0 Britain Docks
+-docks: 1484 1755 0 Britain Docks
++landmark: 4511 1376 0 Britannia Royal Zoo
+-inn: 2967 3408 0 The Broken Arrow Inn
+-warriors guild: 1939 2739 0 The Brotherhood of Trinsic
+-weapons guild: 1362 3700 0 Brothers In Arms
+-mage: 2885 651 0 The Bubbling Brew
+-point of interest: 2667 2087 0 Buccaneer's Bath
++town: 2720 2110 0 Buccaneer's Den
+-docks: 2752 2155 0 Buccaneer's Den Docks
+-tanner: 2707 2178 0 Buccaneer's Den Leatherworks
++moongate: 2711 2234 1 Buccaneer's Den Moongate
+-stable: 1510 1543 0 The Bucking Horse Stables
+-vet: 1509 1571 0 Britannia Animal Care
+-carpenter: 628 2160 0 Builder's Delight
+-inn: 5310 34 0 bunkhouse
+-other: 1288 769 3 Burning Corpse
+-beekeeper: 2959 707 0 The Busy Bees
+-gypsymaiden: 1400 434 3 provisioner..
+-butcher: 2991 779 0 The Butcher's Knife
+-provisioner: 2838 868 0 The Adventurer's Friend
+-arms: 1475 3865 0 Call to Arms
++scenic: 768 1284 3 campfire
+-carpenter: 3642 2504 2 Carpenters of Haven
+-carpenter: 5691 3209 0 The Carpentry House
+-tavern: 1427 1716 0 The Cat's Lair
+-cavalry guild: 1578 1558 0 Cavalry Guild
++dungeon: 314 1329 3 cave passage
++dungeon: 226 1336 3 cave passage
++graveyard: 2437 1104 0 cemetery
++graveyard: 5696 3660 0 cemetery passage
+-exit: 533 1532 3 central dungeon
++dungeon: 576 1156 3 central dungeon
++dungeon: 664 929 3 central dungeon
+-exit: 155 1474 3 central dungeon
+-exit: 4 1267 3 central dungeon
+-point of interest: 1538 1597 0 The Chamber of Virtue
++champion: 462 926 3 Champ "Humility"
++champion: 1645 1108 3 Champ "Lord Oaks and the Forest Queen" 
++champion: 383 329 3 Champ "Valor"
++champion: 5511 2360 1 Champ 1 "Ice West"
++champion: 5559 3757 1 Champ 10 "Wild" (Lord Oaks)
++champion: 5982 3882 1 Champ 11 "Khaldun"
++champion: 5724 3991 1 Champ 12 "Tortoise"
++champion: 6038 2400 1 Champ 2 "Ice East"
++champion: 5549 2640 1 Champ 3 "Oasis"
++champion: 5636 2916 1 Champ 4 "Desert"
++champion: 6035 2944 1 Champ 5 "Terra Sanctum"
++champion: 5267 3171 1 Champ 6 "Marble"
++champion: 5281 3368 1 Champ 7 "Damwin"
++champion: 5954 3475 1 Champ 8 "Hopper's Boog"
++champion: 5207 3637 1 Champ 9 "City of Death"
++champion: 5178 708 1 Champ Deceit: Neira (Unholy Terror)
++champion: 5259 837 1 Champ Destard: Rikktor (Cold Blood)
++champion: 5557 826 1 Champ of Despice: Barracoon (Vermin Horde)
++champion: 5814 1351 1 Champ of Fire: Semidar (Abyss)
++champion: 5189 1605 1 Champ of the Tera-Keep: Mephistis (Arachnid)
+-warriors guild: 2841 907 0 The Champion's of Light
++moongate: 1721 218 3 Chaos
++shrine: 1749 234 3 Chaos
++shrine: 1458 844 0 Chaos
+-point of interest: 3727 1361 0 The Chessboard
++Body of Water: 5260 3737 0 Cibilo Creek
+-gate: 1370 3868 0 City Gate
+-gate: 1475 3690 0 City Gate
+-gate: 3657 1202 0 City Gates
++ruins: 5219 3645 0 City of the Dead
+-butcher: 1449 1723 0 The Cleaver
+-painter: 2906 710 0 The Colored Canvass
++marble patio: 3599 2491 2 Companion Hall
++moongate: 1215 467 3 Compassion
++shrine: 1210 477 3 Compassion
++shrine: 1858 874 0 Compassion
++landmark: 1091 703 3 Controller Tower
+-guild: 2948 3349 0 Counselor's Guild
+-guild: 3721 2177 0 Counselor's Guild
+-guild: 610 2128 0 Counselor's Guild
+-guild: 2434 438 0 Counselor's Guild
+-guild: 1498 1518 0 Counselor's Guild
+-guild: 3769 1190 0 Counselor's Guild
+-guild: 616 980 0 Counselor's Guild
+-guild: 4478 1126 0 Counselor's Guild
+-guild: 1418 3703 0 Counselor's Guild
+-guild: 2843 944 0 Counselor's Guild
+-guild: 1893 2838 0 Counselor's Guild
+-guild: 1628 1664 0 Counselor's Guild
+-guild: 3667 2502 1 Counselor's Guild Hall
++landmark: 370 899 0 Court of Truth
++town: 2263 1237 0 Cove
+-docks: 2256 1181 0 Cove Dock
++dungeon: 2499 916 0 Covetous
+-exit: 5456 1863 0 Covetous
+-customs: 1476 1745 0 Customs
+-blacksmith: 2637 2090 0 Cutlass Smithing
++Terrain: 5139 2903 0 Cyclops Valley
++landmark: 758 208 3 cyclopse camp
+-exit: 1014 1507 3 cyclopse dungeon
++dungeon: 904 1362 3 cyclopse dungeon
++scenic: 747 247 3 cyclopse garden
++landmark: 907 1283 3 cyclopse's pyramid
+-bridge: 1521 1673 0 Cypress Bridge
++landmark: 894 1000 3 dam
++Terrain: 5265 3270 0 Damwin Thicket
++Terrain: 429 1433 3 dead forest
+-arms: 1359 3763 0 Deadly Intentions
+-point of interest: 3715 1383 0 Debtor's Prison
++dungeon: 4111 429 0 Deceit
+-exit: 5188 638 0 Deceit
+-healer: 647 1087 0 Deep Forest Healing
++town: 5227 3978 0 Delucia
+-stable: 5297 4007 0 Delucia Stable
+-tailor: 5234 4025 0 Delucia Tailor
++Terrain: 966 637 3 Desert
++town: 1506 622 3 Desert Outpost
++town: 1608 550 3 Desert Outpost
++dungeon: 1296 1082 0 Despise
+-exit: 5588 632 0 Despise
++dungeon: 1176 2635 0 Destard
+-exit: 5244 1007 0 Destard
+-inn: 665 665 3 The Deuce's Vinculum Inn
+-tavern: 2972 3425 0 The Dog and Lion Pub
+-point of interest: 39 688 3 Dragon's Egg
++dungeon: 940 502 3 Dragon's Lair
+-point of interest: 1397 3744 0 The Dueling Pit
+-bank: 1655 1606 0 East Britain Bank
++scenic: 2587 492 0 The East Mines
+-point of interest: 1608 1622 0 East Side Park
+-bridge: 2083 2796 0 East Trinsic Bridge
++dungeon: 349 1428 3 Elemental Arena
+-exit: 20 1197 3 Elemental Arena
++Terrain: 312 1442 3 Elemental Canyon
++landmark: 635 851 0 Empath Abbey
+-mages guild: 4545 860 0 Encyclopedia Magicka
+-mage: 1843 2711 0 Encyclopedia Magicka
+-gate: 1200 704 3 Entrance
++landmark: 5165 246 0 entrance
++dungeon: 1236 583 3 Entrance to Central Area
++dungeon: 710 667 3 Entrance to Central Area
+-reagents: 1498 1659 0 Ethereal Goods
++dungeon: 1363 1032 3 Etherial Tombs
+-exit: 1982 1106 3 Etherial Tombs
+-healer: 1364 1051 3 etherial warrior castle healer
++dungeon: 1140 593 3 Exit to Ilshenar
++dungeon: 911 451 3 Exit to Ilshenar
+-inn: 606 2243 0 The Falconer's Inn
+-jeweler: 3661 2183 0 The Family Jewels
+-other: 3708 2588 2 Farm
+-other: 3739 2563 2 Farm
+-other: 3731 2635 2 Farm
+-market: 4481 1085 0 Farmer's Market
+-market: 1392 3824 0 Farmer's Market
+-market: 611 2157 0 Farmer's Market
+-market: 3019 766 0 Farmer's Market
+-provisioner: 2216 1192 0 The Farmer's Market
+-butcher: 4395 1137 0 The Fatted Calf
+-butcher: 1455 4026 0 Finest Cuts
++dungeon: 2922 3402 0 Fire
++dungeon: 5757 2909 0 Fire
+-exit: 5687 1424 0 Fire (B)
+-exit: 5792 1415 0 Fire (LL)
+-theater: 3685 2477 1 First Academy of Music
+-bank: 1425 1690 0 The First Bank of Britain
+-bank: 4471 1156 0 First Bank of Moonglow and Tinker's Guild
+-blacksmith: 1395 3705 0 First Defense
+-library: 1494 1715 0 The First Library of Britain
+-stable: 2010 2807 0 First Trinsic Stablery
+-tavern: 3012 3457 0 Fisherman's Brew
+-fishermans guild: 2963 813 0 The Fisherman's Guild
+-fishermans guild: 3685 2256 0 Fisherman's Guild and Supplies
+-market: 3013 781 0 Fisherman's Warf
++scenic: 1589 1190 3 flowstone
++scenic: 596 946 3 a flowstone surrounded by runes
+-blacksmith: 1261 582 3 a forge
++scenic: 1606 1265 3 forge
+-blacksmith: 2471 564 0 The Forgery
+-point of interest: 792 641 3 Fountain
++landmark: 447 1526 3 fountain
+-other: 5331 707 1 from Ancient Wyrm's Lair - Teleporter
+-other: 5201 1564 1 from Despice- and Ancient-Wyrm-Teleporter
+-other: 5164 1009 1 from Despice-Teleporter
+-other: 5606 802 1 from Fire-and Deceit-Teleporter
+-other: 5171 1586 1 from Starroom-Teleporter
+-other: 5814 3548 1 from Teleporter T1 "Ice West"
+-other: 5958 2345 1 from Teleporter T2 "Ice East"
+-other: 5522 3921 1 from Teleporter T3 "Ice East"
+-other: 6089 2400 1 from Teleporter T4 Northeast of "Ice East"
+-other: 5490 2348 1 from Teleporter T5 South of Papua
+-other: 5972 2418 1 from Teleporter T6 East of Delucia
+-other: 5143 1774 1 from Tera- Keep-Teleporter
+-other: 5876 1378 1 from Tera-Keep-Teleporter
+-carpenter: 1435 3820 0 From Tree to Yew
+-shipwright: 3667 2252 0 The Furled Sail
+-tinker: 2899 790 0 The Gadget's Corner
+-tinker: 1404 3805 0 Gadgets and Things
+-point of interest: 3633 2597 2 Garden with Waterfall
++landmark: 946 427 3 Gargoyle Mining Camp
++teleporter: 2618 980 0 gate to Buccaneer's Den
++teleporter: 2728 2133 0 gate to mainland
+-point of interest: 1635 1561 0 Gazebo
+-tinker: 2461 457 0 Gears and Gadgets
++Body of Water: 5804 3468 0 The Gentle River
++Body of Water: 5838 3766 0 The Gentle River
++scenic: 1197 1034 3 giant yew tree
+-jeweler: 1655 1642 0 A Girl's Best Friend
++Terrain: 1352 664 3 glacier
+-miners guild: 2505 432 0 The Golden Pick Axe
+-baker: 1450 1617 0 Good Eats
+-arms: 654 2163 0 Gore Galore
++graveyard: 327 889 3 graveyard
++graveyard: 3649 2859 2 Graveyard
++graveyard: 3404 2653 2 graveyard
+-tavern: 3730 2218 0 Great Horns Tavern
+-bowyer: 624 1147 0 Great Oak Bowyer
+-shipwright: 634 1038 0 Great Oak Vessels
+-bridge: 1383 1746 0 Gung Farmer's Bridge
++scenic: 2533 654 0 Gypsy Camp
++town: 1240 565 3 gypsy caravan
++town: 1380 425 3 gypsy caravan
+-blacksmith: 1418 1547 0 The Hammer and Anvil
+-carpenter: 2917 798 0 The Hammer and Nail
+-arms: 3632 2595 1 Hammer and Steel Smithy
+-armourers guild: 1437 3884 0 Hand of Death
++scenic: 1675 965 3 harpy nest
++town: 3664 2558 2 Haven
+-blacksmith: 3645 2617 2 The Haven Blacksmith
+-tinker: 3667 2506 2 Haven Clockworks and Tinker Shop
+-docks: 3655 2665 2 Haven Docks
++moongate: 3763 2771 2 Haven Moongate
+-library: 3615 2476 2 Haven Public Library
+-thieves guild: 3693 2509 2 The Haven Thieves' Guild
++scenic: 1201 762 3 Hay Fields
++scenic: 1269 727 3 Hay Fields
+-healer: 5191 3989 0 a Healer
+-healer: 1472 1607 0 Healer of Britain
+-healer: 2709 2130 0 Healer of Buccaneer's Den
+-healer: 3687 2227 0 Healer of Magincia
+-healer: 3629 2608 1 Healer of Ocllo
+-healer: 623 2218 0 Healer of Skara Brae
+-healer: 2920 856 0 Healer of Vesper
+-healer: 532 958 0 Healer of Yew
+-healer: 284 536 3 healer's hut
+-fortuneteller: 1235 543 3 healer's hut
+-fortuneteller: 1407 428 3 healer's hut
+-healer: 1628 548 3 healer's hut
+-healer: 1518 619 3 healer's hut
+-healer: 3665 2581 2 The Healers of Haven
+-healer: 2577 599 0 The Healing Hand
+-healer: 2245 1231 0 The Healing Hand
+-healer: 5737 3222 0 The Healing Hand
+-healer: 1093 955 3 a healing temple
+-arms: 1443 1650 0 Heavy Metal Armorer
++scenic: 1146 2215 0 Hedge Maze
+-reagents: 4416 1133 0 Herbal Splendor
++moongate: 722 1366 3 Honesty
++shrine: 719 1351 3 Honesty
++shrine: 4212 563 0 Honesty
++moongate: 744 724 3 Honor
++shrine: 748 731 3 Honor
++shrine: 1723 3527 0 Honor
+-blacksmith: 1937 2771 0 Honorable Arms
++Terrain: 5978 3447 0 Hoppers Bog
+-tavern: 1452 3770 0 The Horse's Head
++moongate: 281 1016 3 Humility
++shrine: 287 1013 3 Humility
++shrine: 4274 3697 0 Humility
++landmark: 3715 2838 2 Hunters Cabin
+-mage: 5296 3978 0 Hut of Magics
++dungeon: 4722 3814 0 Hythloth
+-exit: 5904 16 0 Hythloth
++dungeon: 5203 2328 0 Ice
++dungeon: 1996 80 0 Ice
+-exit: 5882 243 0 Ice (B)
+-exit: 5875 147 0 Ice (LL)
+-exit: 84 750 3 Ilshenar Central Area
+-healer: 872 586 3 In-Mani-Lem
+-mage: 1590 1654 0 Incantations & Enchantments
+-inn: 1620 554 3 an inn
+-inn: 2778 966 0 The Ironwood Inn
+-arms: 2865 852 0 The Ironworks
++teleporter: 2494 3576 0 island temple portal
++Body of Water: 5274 2883 0 J'Fer Sok
+-point of interest: 1855 2769 0 Jail
++landmark: 5291 1169 0 jail
+-jeweler: 3778 1172 0 Jewel of the Isle
+-jeweler: 1605 541 3 a jeweler
++town: 1359 3671 0 Jhelom
+-arms: 1456 3850 0 Jhelom Armory
+-bank: 1317 3773 0 Jhelom Bank and Jeweler
++graveyard: 1283 3731 0 Jhelom Cemetery
+-docks: 1512 3989 0 Jhelom Docks
+-docks: 1372 3908 0 Jhelom Docks
+-docks: 1504 3693 0 Jhelom Docks
+-docks: 1125 3687 0 Jhelom Docks
+-healer: 1416 3779 0 Jhelom Healer
+-library: 1387 3771 0 Jhelom Library
+-mage: 1425 3980 0 Jhelom Mage
++moongate: 1500 3772 0 Jhelom Moongate
+-tailor: 1455 4006 0 Jhelom's Fine Tailoring
+-baker: 554 991 0 The Jolly Baker
+-inn: 5775 3161 0 The Just Inn
++moongate: 987 1011 3 Justice
++shrine: 985 1005 3 Justice
++shrine: 1300 633 0 Justice
+-tavern: 1935 2796 0 The Keg and Anchor
++dungeon: 6009 3775 1 Khaldun
++dungeon: 5882 3819 1 Khaldun
+-theater: 1449 1590 0 The King's Men Theater
+-jeweler: 859 698 3 Klar-Lap-In-Lem
++Terrain: 5382 2343 0 Kos Heb
++Terrain: 5954 2363 0 Kos Heb
++ruins: 1200 1127 3 Lakeshire/Mireg
+-guild: 872 686 3 Lap-In-Lem
+-guild: 792 617 3 Lap-In-Lem
+-provisioner: 3673 2595 2 Last Chance Provisioners
+-provisioner: 3635 2573 1 Last Chance Provisioners
++Terrain: 480 882 3 lava vent
+-library: 5238 144 0 The Learned Mage
++Body of Water: 1688 840 3 Lenmir Antinmolas
+-library: 868 657 3 Librum
+-library: 869 625 3 Librum
++landmark: 3457 3056 2 Lighthouse
++landmark: 5671 2391 0 lighthouse passage
+-mage: 3632 2573 2 The Little Shop of Magic
++ruins: 292 1356 3 lizard man camp
+-gate: 401 1251 3 lizzardman gate
+-gate: 367 1261 3 lizzardman gate
++landmark: 3595 2865 2 Loggers Camp
++landmark: 1530 1428 0 Lord Blackthorn's Castle
++landmark: 1323 1624 0 Lord British's Castle
+-bard: 1455 1557 0 Lord British's Conservatory of Music
+-tailor: 1385 1593 0 Lord British's Tailor
+-arms: 1365 1575 0 The Lord's Arms
+-tailor: 1467 1686 0 The Lord's Clothiers
++landmark: 4312 1000 0 The Lyceaeum
+-gypsybank: 1405 439 3 a bank
+-fortuneteller: 1394 441 3 a mage
+-mage: 1505 611 3 a mage
+-baker: 5351 56 0 Mage's Appetite
+-baker: 4392 1068 0 Mage's Bread
+-bridge: 1520 1578 0 Mage's Bridge
+-carpenter: 4416 1085 0 The Mage's Seat
+-provisioner: 5154 97 0 Mage's Things
+-mage: 602 2180 0 Mages' Menagerie
+-mage: 2918 672 0 The Magical Light
+-reagents: 5215 117 0 Magical Supplies
+-reagents: 2992 844 0 The Magician's Friend
++town: 3735 2200 0 Magincia
+-docks: 3674 2293 0 Magincia Docks
+-miners guild: 3665 2140 0 Magincia Miner's Guild
++moongate: 3564 2140 0 Magincia Moongate
+-point of interest: 3796 2259 0 Magincia Parliment
+-mage: 3704 2222 0 Magincia's Magicka
+-gate: 1477 1638 0 The Main Gate
+-shipwright: 2994 815 0 The Majestic Boat
+-shipwright: 3636 2642 2 Mapmaker's of Haven
+-tavern: 2901 908 0 The Marsh Hall
+-illusionists guild: 4626 1207 0 Masters of Illusion
+-miners guild: 2455 487 0 The Matewan
++scenic: 753 493 3 memorial to Gwenno
+-merchants guild: 1474 1597 0 The Merchant's Guild
+-merchants guild: 3703 2249 0 The Merchant's Guild
+-other: 1947 2677 0 Mess Hall
+-arms: 4392 1117 0 The Mighty Axe
++Minax's Fortress: 5778 3376 1 Minax's Fortress
+-miners guild: 1417 1578 0 The Miner's Guild
+-miners guild: 3754 2704 2 Miners
++landmark: 2590 532 0 Mining Camp
++landmark: 3498 2844 2 Mining Cave
++landmark: 3610 2740 2 Mining Cave
++town: 2502 522 0 Minoc
++moongate: 2702 692 0 Minoc Moongate
+-point of interest: 2429 528 0 Minoc Town Hall
+-bank: 2881 684 0 The Mint of Vesper
++landmark: 821 1060 3 Mistas
+-inn: 774 1144 3 Mistas Regsit
++landmark: 3589 2808 2 Mongbat Tower
++landmark: 1668 292 3 Montor
++town: 4457 1117 0 Moonglow
++graveyard: 4541 1319 0 Moonglow Cemetery
+-docks: 4406 1038 0 Moonglow Docks
+-healer: 4388 1082 0 Moonglow Healer
++moongate: 4468 1284 0 Moonglow Moongate
+-reagents: 4412 1111 0 Moonglow Reagent Shop
+-inn: 4484 1064 0 Moonglow Student Hostel
+-mage: 4448 1090 0 Moonglow's Finest Alchemy
+-arms: 586 2170 0 More Than Just Mail
+-inn: 1360 3815 0 The Morning Star Inn
++Terrain: 3690 2760 2 Mountain Pass
++dungeon: 1457 1329 3 mushroom caves
+-exit: 1478 1495 3 mushroom caves
+-other: 2891 744 0 The Musician's Hall
+-mage: 659 2141 0 Mystic Treasures
+-bard: 2424 555 0 The Mystical Lute
+-tavern: 3769 1218 0 Mystical Spirits
+-baker: 5746 3200 0 Nature's Best Baked Goods
+-exit: 2188 319 3 ne dungeon
++dungeon: 1788 569 3 ne dungeon
+-provisioner: 1441 3796 0 Needful Things
+-warriors guild: 2482 428 0 The New World Order
+-docks: 2940 3410 0 North Docks
++scenic: 2452 79 0 The North Mines
+-inn: 1458 1525 0 The North Side Inn
+-bridge: 1550 1529 0 The Northern Bridge
+-baker: 3610 2572 1 Now You're Cookin'
++Terrain: 420 1196 3 Nox Tereg
++town: 3600 1231 0 Nujel'm
+-blacksmith: 3546 1185 0 Nujel'm Blacksmith
+-fletcher: 3546 1194 0 Nujel'm Bowry
+-butcher: 3555 1171 0 Nujel'm Butcher
++graveyard: 3529 1141 0 Nujel'm Cemetery
+-point of interest: 3723 1396 0 Nujel'm Court
+-point of interest: 3690 1284 0 Nujel'm Palace
+-tanner: 3545 1178 0 Nujel'm Tannery
+-theater: 3739 1231 0 Nujel'm Theater
++dungeon: 548 454 3 nw dungeon
+-exit: 427 112 3 nw dungeon
++dungeon: 556 427 3 nw dungeon
+-carpenter: 2513 477 0 The Oak Throne
+-shipwright: 1416 1754 0 The Oaken Oar
++Body of Water: 993 620 3 Oasis
++Terrain: 5543 2618 0 oasis
+-fishermans guild: 1437 3750 0 Ocean's Treasure
++town: 3664 2558 1 Ocllo
+-docks: 3633 2654 1 Ocllo Docks
+-docks: 3654 2664 1 Ocllo Docks
+-library: 3612 2466 1 Ocllo Public Library
++landmark: 3519 2787 2 Old Mine Entrance - Closed
+-provisioner: 2456 428 0 The Old Miners' Supplies
+-blacksmith: 630 2194 0 On Guard Armoury
++ruins: 5765 2618 0 Ophidian Lair
++landmark: 18 950 3 The Oracle
++dungeon: 1014 1434 0 Orc Cave
++ruins: 632 1484 0 Orc Fort
++ruins: 2176 1372 0 Orc Fort
++ruins: 5211 3611 0 Orc Fort
++scenic: 1183 1188 3 orchard
+-miners guild: 2855 734 0 The Ore of Vesper
+-painter: 3638 2499 1 Paint and More
+-library: 2003 2726 0 Paladin's Library
++town: 5751 3231 0 Papua
+-docks: 5827 3256 0 Papua dock
+-tailor: 5754 3273 0 Papua Tailor
+-point of interest: 1893 2763 0 park
+-point of interest: 5251 58 0 park
++Terrain: 1028 272 3 Pass of Karnaugh
++landmark: 881 1303 3 passage
++landmark: 857 1312 3 passage
++dungeon: 6075 3330 0 passage to Britain
++dungeon: 1628 3318 0 passage to Delucia
++landmark: 2775 893 0 passage to Lost Cemetery
++landmark: 2404 218 0 passage to Lost Lands
++landmark: 6084 3674 0 passage to North Mines
++dungeon: 5150 4063 0 passage to Trinsic
++dungeon: 5138 3665 0 passage to Trinsic
+-jeweler: 1447 3981 0 The Pearl of Jhelom
+-jeweler: 1895 2809 0 The Pearl of Trinsic
+-inn: 2715 2098 0 The Peg Leg Inn
+-theater: 1424 4016 0 Performing Arts Centre
+-shipwright: 5805 3270 0 Pier 39
+-thieves guild: 2659 2194 0 Pirate's Den
+-tavern: 2680 2238 0 The Pirate's Plunder
+-provisioner: 2735 2254 0 Pirate's Provisioners
+-bank: 2731 2188 0 A Place Fer Yer Stuff
+-baker: 2975 3358 0 Plenty O' Dough
++scenic: 1548 1192 3 pool
+-gate: 1421 1633 0 Poor Gate
++Body of Water: 495 370 3 Pormir Felwis
++Body of Water: 706 469 3 Pormir Harm
++Body of Water: 1128 816 3 Pormir Priin "River of Unity"
++teleporter: 5905 4069 0 portal to island temple
++teleporter: 5733 3190 0 portal to Moonglow (recsu)
++teleporter: 4540 845 0 portal to Papua (recdu)
++landmark: 826 777 3 Power Core
+-jeweler: 1451 1679 0 Premier Gems
+-butcher: 3714 2651 2 The Prime Cut Butcher Shop
+-provisioner: 1602 1712 0 Profuse Provisions
+-provisioner: 1598 539 3 a provisioner
+-blacksmith: 3554 1202 0 Public Smithing
+-fletcher: 1470 1578 0 Quality Fletching
+-fletcher: 2861 812 0 The Ranger's Tool
+-warriors guild: 3740 2692 2 Rangers Cabin
+-archers guild: 554 2145 0 Rangers' Guild
++landmark: 645 817 3 ratman lair
+-exit: 1348 1510 3 ratman mine
++dungeon: 1030 1154 3 ratman mine
++ruins: 1069 1151 3 ratman village
++scenic: 1280 734 3 Reagent Garden
+-reagents: 5714 3202 0 The Reagent Shop
+-provisioner: 1852 2831 0 Red's Curious Goods
++landmark: 1362 1073 3 Reg Volom
+-inn: 3732 1306 0 Restful Slumber
+-healer: 369 1432 3 resurrection tree
+-arms: 5805 3300 0 The Revenge Shoppe
+-point of interest: 1280 779 3 Ridgeback Pen
+-tailor: 1547 1659 0 The Right Fit
+-bridge: 1512 1705 0 River's Gate Bridge
++Body of Water: 5360 3396 0 The Ru
++Body of Water: 5457 3831 0 The Ru
++ruins: 1084 651 3 Ruined Castle
++ruins: 653 933 3 ruined tower
++ruins: 875 524 3 Ruined Villa
++ruins: 337 864 3 ruins
+-inn: 2033 2801 0 The Rusty Anchor
++moongate: 1174 1286 3 Sacrifice
++shrine: 1171 1288 3 Sacrifice
++shrine: 3355 289 0 Sacrifice
+-shipwright: 1452 3747 0 Sailor's Keeper
++Terrain: 5724 2923 0 Sak Teb
+-tavern: 1620 1586 0 The Salty Dog
++landmark: 1044 519 3 Savage Camp
++landmark: 1238 733 3 Savage Clan Settlement
+-carpenter: 1430 1597 0 The Saw Horse
+-tailor: 4458 1060 0 Scholar's Cut
+-provisioner: 4417 1064 0 The Scholar's Goods
+-inn: 4401 1165 0 The Scholar's Inn
++dungeon: 1747 1235 3 se dungeon
+-exit: 2114 830 3 se dungeon
++Body of Water: 5937 2660 0 Sea of Harmony
+-shipwright: 3700 1214 0 Seaborne Ships
+-customs: 3717 1228 1 Seaborne Ships
+-library: 5243 179 0 Seat of Knowledge
+-bank: 3620 2617 2 The Second Bank of Haven
+-arms: 4440 1162 0 Second Defense Armory
+-arms: 1441 3719 0 Second Skin
+-inn: 5165 30 0 Seeker's Inn
+-point of interest: 1541 1685 0 Senator Robin's House and Office
+-butcher: 2912 3485 0 Serpent Hold Meats
++landmark: 2986 2887 0 Serpent Pillar (doracron)
++landmark: 425 3279 0 Serpent Pillar (doracron)
++landmark: 5974 2694 0 Serpent Pillar (sueacron)
++landmark: 5266 2757 0 Serpent Pillar (sueacron)
+-warriors guild: 3031 3350 0 Serpent Warriors
+-arms: 3018 3433 0 Serpent's Arms
++town: 3025 3498 0 Serpent's Hold
+-bank: 2880 3472 0 Serpent's Hold Bank
+-healer: 2997 3428 0 Serpent's Hold Healer
+-stable: 3036 3464 0 Serpent's Hold Stablery
+-mage: 3002 3350 0 Serpent's Spells
++dungeon: 811 874 3 Serpentine Passage
++Terrain: 5470 3515 0 Serpents Cousins
+-stable: 2905 3517 0 Serpents Hold Stablery
++dungeon: 1492 1641 0 sewer entrance
+-baker: 3628 2540 2 The Shakin' Bakery
++Body of Water: 5902 3106 0 Shallow Sea
+-exit: 5396 129 0 Shame
++dungeon: 512 1559 0 Shame
+-inn: 554 2178 0 The Shattered Skull
+-tailor: 650 2180 0 Shear Pleasure
+-provisioner: 1318 1328 3 sheep farm
+-jeweler: 2882 723 0 The Shimmering Jewel
+-arms: 1895 2653 0 Shining Path Armory
++shrine: 1106 404 3 Shrine of the Virtues
+-tavern: 3736 1255 0 The Silver Bow
+-bowyer: 3054 3369 0 Silver Serpent Bows
+-tailor: 2881 3503 0 Silver Serpent Tailors
++town: 595 2263 0 Skara Brae
+-docks: 648 2235 0 Skara Brae Docks
+-docks: 672 2235 0 Skara Brae Docks
++moongate: 645 2068 0 Skara Brae Moongate
+-point of interest: 565 2213 0 Skara Brae Town Hall
+-tailor: 896 610 3 Skis-In-Lem
+-butcher: 2438 410 0 The Slaughtered Cow
++landmark: 1442 1122 3 small lumber camp
++Body of Water: 5789 2430 0 Sok' Gah
+-shipwright: 2026 2845 0 Sons Of The Sea
+-mage: 1485 1550 0 The Sorcerer's Delight
+-sorcerers guild: 4684 1412 0 The Sorcerer's Guild
+-mage: 3628 2541 1 The Sorceror's Guild
+-stable: 1296 1759 0 Sosarian Steeds
+-docks: 3006 3465 0 South Dock
+-gate: 2003 2921 0 South Gate
+-butcher: 5700 3279 0 The Southside Butchery
+-stable: 5671 3287 0 Southside Stables
++dungeon: 1420 910 3 spider dungeon
+-exit: 1787 993 3 spider dungeon
++dungeon: 1490 879 3 spider dungeon
++Terrain: 1447 964 3 spider wood
+-tailor: 2961 621 0 The Spinning Wheel
+-tailor: 2840 885 0 The Spinning Wheel
++moongate: 1532 1340 3 Spirituality
++shrine: 1526 1340 3 Spirituality
++shrine: 1595 2490 0 Spirituality
+-stable: 1499 619 3 the stables
+-stable: 2526 375 0 Stables
+-stable: 1385 1658 0 The Stables
+-inn: 3695 2160 0 The Stag and Lion
++moongate: 5153 1760 1 Standard-Moongate
++teleporter: 5173 1589 1 Starroom
++landmark: 466 1584 3 statue
++scenic: 1701 291 3 statue room
+-point of interest: 2465 522 0 statues
++scenic: 728 475 3 stepping stones
+-tailor: 3667 2586 1 A Stitch In Time
+-tailor: 3687 2477 2 A Stitch in Time Tailor Shop
+-tailor: 3666 2235 0 Stitchin' Time
+-jeweler: 5662 3150 0 Strange Rocks
+-arms: 1481 1584 0 Strength and Steel
+-tanner: 2524 524 0 The Stretched Hide
+-bowyer: 564 968 0 The Sturdy Bow
+-provisioner: 578 2227 0 Sundry Supplies
+-shipwright: 592 2277 0 Superior Ships
+-provisioner: 3008 3389 0 Supplies
+-provisioner: 5219 4012 0 The Supply Depot
+-provisioner: 2530 551 0 The Survival Shop
++Terrain: 1124 739 3 Swamp
+-inn: 1493 1619 0 Sweet Dreams
+-butcher: 3708 2649 1 Sweet Meat
++teleporter: 5443 2325 1 T1 to the Southeast of Papua
++teleporter: 6053 2407 1 T2 to the Northwest of Champ 2 "Ice East"
++teleporter: 5996 2367 1 T3 to the East of Delucia
++teleporter: 6080 2340 1 T4 to the South of this Point
++teleporter: 5731 3420 1 T5 to "Ice West"
++teleporter: 5503 3971 1 T6 to "Ice East"
+-tailor: 1600 552 3 a tailor
+-tailor: 3774 1265 0 Tailor of the Isle
+-tanner: 517 986 0 The Tanned Hide
+-tanner: 2860 999 0 Tanner's Shop
++teleporter: 4442 1122 0 teleporter park
++teleporter: 1414 3829 0 teleporters
++scenic: 4708 1116 0 Telescope
+-guild: 894 673 3 Ter-An-Eks-Por
+-mage: 840 571 3 Ter-Ort-Lem
+-inn: 840 707 3 Ter-Zu
++dungeon: 5426 3120 0 Terathan Keep
+-exit: 5340 1599 0 Terathan Keep
++Body of Water: 1620 420 3 Termir Flam "The Lake of Fire"
++Body of Water: 1316 1120 3 Termir Ilshen "Ilshen's Lake"
++landmark: 580 420 3 Terort Skitas "Temple of Knowledge"
++Terrain: 6028 2933 0 Terra Sanctum
+-tinker: 3720 2126 0 The Tic-Toc Shop
+-tinker: 1253 588 3 a tinker
+-tinker: 2940 3500 0 Tinker of the Isle
+-tinkers guild: 1422 1654 0 Tinker's Guild
+-tinkers guild: 1848 2680 0 Tinker's Guild
+-tinker: 5726 3243 0 Tinker's Paradise
++teleporter: 5506 814 1 to Ancient Wyrm's Lair (Destard lvl 3)
++teleporter: 5682 1437 1 to Ancient Wyrm's Lair (Destard lvl 3)
+-exit: 6031 1500 0 to Britain
++teleporter: 5682 1440 1 to Champ "Despice"
++teleporter: 5265 683 1 to Champ "Despice"
++teleporter: 5360 1540 1 to Champ "Fire"
++teleporter: 5265 669 1 to Champ "Fire"
++teleporter: 5145 973 1 to Champ "Terathan Keep"
++teleporter: 5506 817 1 to Champ "Terathan Keep"
++teleporter: 5140 1773 1 to Champ "Terathan Keep"
+-exit: 6026 1344 0 to City of the Dead
++teleporter: 5356 1540 1 to Deceit (lvl 4)
++teleporter: 5140 973 1 to Deceit (lvl 4)
+-exit: 6004 1379 0 to Delucia
+-exit: 6141 1430 0 to Hoppers Bog
++landmark: 318 789 0 to lighthouse
++landmark: 1958 2068 0 to Lost Lands
++landmark: 5126 3144 0 to Marble Building
++teleporter: 5199 71 0 to park
++teleporter: 1516 879 3 to Reg Volom (the island)
++teleporter: 1363 1105 3 to spider dungeon
+-exit: 5191 152 0 to surface
++teleporter: 5217 18 0 to town
+-exit: 5899 1410 0 to Trinsic forest
++Body of Water: 5771 4050 0 Tortoise Lagoon
++landmark: 1675 1074 3 tower
+-gate: 2281 1210 0 town gate
+-point of interest: 3732 2583 2 Training Dummies
+-point of interest: 1972 2698 0 Training Ground
++landmark: 1256 865 0 Training Tower
+-inn: 1844 2735 0 The Traveler's Inn
++scenic: 1038 701 3 Tribal Berry Orchard
+-mage: 5731 3183 0 Tricks of the Trade
++town: 1879 2766 0 Trinsic
+-butcher: 1991 2887 0 The Trinsic Cut
+-docks: 2072 2856 0 Trinsic Docks
+-tanner: 1991 2867 0 Trinsic Fine Skins
+-healer: 1911 2805 0 Trinsic Healer
+-point of interest: 1895 2719 0 Trinsic Meeting Hall
++moongate: 1829 2949 0 Trinsic Moongate
+-bank: 1897 2684 0 Trinsic Royal Bank
+-stable: 1822 2739 0 Trinsic Stablery
+-warriors guild: 2019 2748 0 Trinsic Training Hall
+-inn: 1566 1049 3 Twin Oaks Tavern
+-baker: 2998 760 0 The Twisted Oven
++ruins: 856 463 3 undead camp
++ruins: 360 1140 3 undead fort
+-tavern: 1547 1768 0 The Unicorn's Horn
++landmark: 3610 2585 2 Uzeraan's Mansion
+-point of interest: 3595 2588 2 Uzeraan, Keeper of Quests
++moongate: 528 216 3 Valor
++shrine: 529 212 3 Valor
++shrine: 2491 3933 0 Valor
++scenic: 1211 763 3 Vegetable Patch
++landmark: 836 641 3 Ver Lor Reg
++town: 2884 839 0 Vesper
++graveyard: 2753 867 0 Vesper Cemetery
+-customs: 2944 934 0 Vesper Customs
+-docks: 3017 827 0 Vesper Docks
+-docks: 3034 827 0 Vesper Docks
+-point of interest: 2743 980 0 Vesper Guard Tower
+-point of interest: 2923 981 0 Vesper Museum
+-inn: 2962 885 0 Vesper Youth Hostel
+-carpenter: 2627 2100 0 Violente Woodworks
+-bridge: 1520 1628 0 Virtue's Pass
+-point of interest: 948 492 3 Volcano
++scenic: 1651 2890 0 Volcano Tunnel
+-arms: 2533 576 0 Warrior's Battle Gear
+-blacksmith: 1419 3859 0 Warrior's Bounty
+-arms: 2835 805 0 Warrior's Companion
+-arms: 2217 1170 0 The Warrior's Supplies
+-warriors guild: 3058 3400 0 The Warriors' Guild
+-warriors guild: 1341 1733 0 The Warriors' Guild
+-gate: 5313 3970 0 Watch Gates
+-point of interest: 1619 1760 0 The Watch Tower
+-point of interest: 5265 3939 0 Watch Tower and Keep
++landmark: 917 993 3 watchpost
+-point of interest: 2212 1115 0 watchtower
++scenic: 1712 3005 0 waterfall
+-inn: 1585 1591 0 The Wayfarer's Inn
+-weapons guild: 3731 2578 2 Weaponsmith
+-gate: 1831 2779 0 West Trinsic Gate
++dungeon: 1361 890 0 Wind
++town: 5252 104 0 Wind
+-mage: 5148 60 0 Wind Alchemy
+-bank: 5346 74 0 Wind Bank
+-healer: 5263 129 0 Wind Healer
+-tailor: 5203 86 0 Windy Clothes
+-inn: 5218 175 0 Windy Inn
++dungeon: 652 1301 3 wisp dungeon
++dungeon: 2042 226 0 Wrong
+-exit: 5825 632 0 Wrong
++Terrain: 5604 2742 0 Y'Nah Teb
+-bank: 5275 3977 0 Ye Olde Eleventh Bank
+-bank: 5669 3131 0 Ye Olde Loan and Savings
+-point of interest: 618 886 0 Ye Olde Winery
++town: 504 942 0 Yew
++graveyard: 722 1117 0 Yew Cemetery
+-point of interest: 553 826 0 Yew Mill
++moongate: 771 754 0 Yew Moongate
+-butcher: 529 1008 0 Yew's Finest Cuts
+-blacksmith: 792 665 3 Zhel-In-Lem
+-blacksmith: 5225 4000 0 Zoot's Hammer
+-bank: 989 520 4
+-blacksmith: 976 512 4
+-tailor: 976 527 4
+-tanner: 978 528 4
+-chivalrykeeper: 1016 514 4
+-chivalrykeeper: 961 517 4
+-holymage: 1004 528 4
+-reagents: 1004 526 4
+-tinker: 1003 512 4
+-carpenter: 1004 514 4
+-jeweler: 995 510 4
+-provisioner: 991 510 4
+-inn: 989 527 4
+-stable: 1027 494 4
+-healer: 1029 520 4
+-healer: 950 520 4
+-blacksmith: 1977 1365 4
+-stable: 1992 1315 4
+-provisioner: 2011 1326 4
+-baker: 2017 1356 4
+-tavern: 2027 1353 4
+-mage: 2023 1379 4
+-reagents: 2025 1387 4
+-jeweler: 2045 1397 4
+-bank: 2048 1343 4
+-inn: 2037 1311 4
+-tinker: 2066 1282 4
+-carpenter: 2060 1283 4
+-tailor: 2083 1322 4
+-tanner: 2078 1327 4
+-healer: 2068 1372 4
+-inn: 1056 1434 4
+-tavern: 1051 1434 4

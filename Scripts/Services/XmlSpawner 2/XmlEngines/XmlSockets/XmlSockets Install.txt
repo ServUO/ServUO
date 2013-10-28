@@ -1,0 +1,129 @@
+SIDE NOTE: This Distro Only, We Have Installed BaseWeapon & BaseArmor.
+----------------------------------------------------------------------
+
+STEP 1:
+-----------------------------------------
+at the end of the BaseArmor constructor In BaseArmor.cs around line 1442.
+
+Find:
+
+	m_AosSkillBonuses = new AosSkillBonuses( this );
+
+Replace with This:
+
+m_AosSkillBonuses = new AosSkillBonuses( this );  
+// Xml Spawner XmlSockets - SOF
+// mod to randomly add sockets and socketability features to armor. These settings will yield
+// 2% drop rate of socketed/socketable items
+// 0.1% chance of 5 sockets
+// 0.5% of 4 sockets
+// 3% chance of 3 sockets
+// 15% chance of 2 sockets
+// 50% chance of 1 socket
+// the remainder will be 0 socket (31.4% in this case)
+// uncomment the next line to prevent artifacts from being socketed
+// if(ArtifactRarity == 0)
+XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
+// Xml Spawner XmlSockets - EOF
+
+
+============================================================
+
+
+STEP 2:
+-----------------------------------------
+At the end of the BaseWeapon constructor In BaseWeapon.cs around line 3450.
+
+Find: 
+	m_AosSkillBonuses = new AosSkillBonuses( this );
+
+Replace with This:
+
+m_AosSkillBonuses = new AosSkillBonuses( this );  
+// Xml Spawner XmlSockets - SOF
+// mod to randomly add sockets and socketability features to armor. These settings will yield
+// 2% drop rate of socketed/socketable items
+// 0.1% chance of 5 sockets
+// 0.5% of 4 sockets
+// 3% chance of 3 sockets
+// 15% chance of 2 sockets
+// 50% chance of 1 socket
+// the remainder will be 0 socket (31.4% in this case)
+// uncomment the next line to prevent artifacts from being socketed
+// if(ArtifactRarity == 0)
+XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
+// Xml Spawner XmlSockets - EOF
+
+
+==========================================
+
+
+STEP 3:
+-----------------------------------------
+At the end of the BaseJewel constructor in Scripts/Items/Jewels/BaseJewel.cs.
+
+Find:
+
+	Layer = layer;
+
+Replace with This:
+
+Layer = layer;
+// Xml Spawner 3.26c XmlSockets - SOF
+// mod to randomly add sockets and socketability features to weapons. These settings will yield
+// 2% drop rate of socketed/socketable items
+// 0.1% chance of 5 sockets
+// 0.5% of 4 sockets
+// 3% chance of 3 sockets
+// 15% chance of 2 sockets
+// 50% chance of 1 socket
+// the remainder will be 0 socket (31.4% in this case)
+// uncomment the next line to prevent artifacts from being socketed
+// if(ArtifactRarity == 0)
+XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
+// Xml Spawner 3.26c XmlSockets - EOF
+
+
+==============================================
+
+
+STEP 4:
+----------------------------------------------------
+In the BaseCreature class in Scripts/Engines/AI/Creature/BaseCreature.cs.
+
+Find:
+
+public override void OnBeforeSpawn( Point3D location, Map m )
+{
+ if ( Paragon.CheckConvert( this, location, m ) )
+  IsParagon = true;
+
+ base.OnBeforeSpawn( location, m );
+}
+
+Replace with This:
+
+public override void OnBeforeSpawn( Point3D location, Map m )
+{
+ if ( Paragon.CheckConvert( this, location, m ) )
+  IsParagon = true;
+
+// Xml Spawner 3.26c XmlSockets - SOF
+           // mod to randomly add socket features to tamable creatures. These settings will yield
+           // 2% drop rate of socketed/socketable items
+           // 0.1% chance of 5 sockets
+           // 0.5% of 4 sockets
+           // 3% chance of 3 sockets
+           // 15% chance of 2 sockets
+           // 50% chance of 1 socket
+           // the remainder will be 0 socket (31.4% in this case)
+    // Adding new sockets will require a minimum of 100 Veterinary skill and 30 emeralds
+           if(Tamable)
+               XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0, SkillName.Veterinary, 100.0, typeof(Emerald), 30);
+// Xml Spawner 3.26c XmlSockets - SOF
+
+ base.OnBeforeSpawn( location, m );
+}
+
+
+==============================================

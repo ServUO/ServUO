@@ -1,0 +1,26 @@
+##############################
+##   XML Spawns by Erica    ##
+## Convert/Adapted By Nerun ##
+##############################
+overrideid 407
+overridemap 4
+overridemintime 5
+overridemaxtime 10
+##
+## Labyrinth
+##
+*|drake:airelemental|rat:snake|||||366|1928|0|4|5|10|20|20|1|4|4|0|0|0|0
+*|minotaur|snake|||||384|1932|10|2|5|10|10|10|1|3|2|0|0|0|0
+*|miasma||||||335|1920|0|4|5|10|5|5|1|1|0|0|0|0|0
+*|wanderinghealer||||||1740|990|-80|4|5|10|15|15|1|1|0|0|0|0|0
+*|Scorpion|Snake|||||1742|990|-84|4|5|10|12|12|1|6|4|0|0|0|0
+*|rend||||||336|1888|0|4|5|10|10|10|1|1|0|0|0|0|0
+*|squirrel:rat||||||346|1959|0|4|5|10|10|10|1|4|0|0|0|0|0
+*|minotaur:minotaurscout|squirrel:tropicalbird:bird:cat|||||392|1917|0|4|5|10|20|20|1|6|9|0|0|0|0
+*|eagle:cat:bird:tropicalbird:minotaurscout||||||390|1883|0|4|5|10|10|10|1|8|0|0|0|0|0
+*|reptalon:minotaur||||||355|1918|0|4|5|10|20|20|1|6|0|0|0|0|0
+*|tropicalbird:bird:minotaurscout||||||346|1910|0|4|5|10|12|12|1|6|0|0|0|0|0
+*|minotaur|rat:tropicalbird|||||427|1923|5|4|5|10|15|15|1|6|4|0|0|0|0
+*|tropicalbird:eagle:rat:bird|minotaur|||||348|1948|0|2|5|10|15|15|1|12|4|0|0|0|0
+*|pyre||||||415|1897|5|4|5|10|5|5|1|1|0|0|0|0|0
+*|flurry:grim:mistral:tempest||||||361|1906|0|4|5|10|20|20|1|4|0|0|0|0|0

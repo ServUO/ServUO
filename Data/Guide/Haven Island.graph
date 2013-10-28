@@ -1,0 +1,8 @@
+# Graph vertices
+# {V:}VertexID{tab, }X{tab, }Y{tab, }Z{tab, }Teleporter
+# {S:}ShopID{tab, }ShopID{tab, }...
+# {N:}VertexID{tab, }VertexID{tab, }...
+V:	0	3422	2533	17	False
+N:	1	43
+V:	1	3419	2527	17	False
+N:	0

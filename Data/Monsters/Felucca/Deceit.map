@@ -1,0 +1,57 @@
+##############
+## By Nerun ##
+##############
+overrideid 204
+overridemap 1
+overridemintime 5
+overridemaxtime 10
+##
+## Deceit Dungeon
+##
+## Level 1
+##
+*|Mummy|Skeleton|Zombie||||5187|603|0|2|2|10|35|18|1|1|3|1|0|0|0
+*|Waterelemental||||||5186|575|0|2|2|10|12|8|1|2|0|0|0|0|0
+*|Skeleton||||||5187|545|0|2|2|10|25|6|1|2|0|0|0|0|0
+*|Mummy|Skeleton|Zombie||||5163|567|0|2|2|10|25|6|1|1|3|1|0|0|0
+*|Skeleton|Zombie|||||5145|553|-40|2|2|10|35|8|1|2|2|0|0|0|0
+*|Skeleton|Zombie|||||5147|579|-50|2|2|10|25|7|1|2|2|0|0|0|0
+*|Skeleton|Zombie|||||5147|598|-50|2|2|10|25|7|1|2|2|0|0|0|0
+*|Skeleton|Zombie|||||5145|622|-50|2|2|10|25|8|1|2|2|0|0|0|0
+*|Skeleton|Spectre|||||5212|531|0|2|2|10|25|8|1|2|1|0|0|0|0
+*|Ghoul|Shade|Skeleton|Zombie|||5219|552|0|2|2|10|25|10|1|3|1|1|1|0|0
+*|Ghoul|Shade|Skeleton|Zombie|||5219|573|0|2|2|10|25|10|1|3|1|1|1|0|0
+*|TreasureLevel2|TreasureLevel3|||||5145|618|-50|2|1|2|7|7|1|1|2|0|0|0|0
+##
+## Level 2
+##
+*|Ghoul|Skeleton|Wraith|Zombie|||5307|546|0|2|2|10|25|10|1|1|1|1|1|0|0
+*|Ghoul|Skeleton|Wraith|Zombie|||5327|542|0|2|2|10|25|10|1|1|1|1|1|0|0
+*|Ghoul|Skeleton|Wraith|Zombie|||5286|542|0|2|2|10|25|10|1|1|1|1|1|0|0
+*|Ghoul|Wraith|||||5283|583|0|2|2|10|25|10|1|2|1|0|0|0|0
+*|Ghoul|Mummy|Shade|Wraith|Zombie||5318|578|0|2|2|10|25|10|1|1|1|1|1|1|0
+*|Boneknight|Skeletalknight|||||5342|582|0|2|2|10|25|10|1|4|4|0|0|0|0
+*|Ghoul|Shade|Skeleton|Wraith|||5299|603|0|2|2|10|25|10|1|1|1|2|1|0|0
+*|Bonemagi||||||5295|623|-5|2|2|10|10|6|1|3|0|0|0|0|0
+*|Ghoul|Shade|Skeleton|Wraith|Zombie||5322|626|0|2|2|10|25|15|1|1|1|2|1|1|0
+*|TreasureLevel2|TreasureLevel3|||||5323|571|0|2|1|2|2|2|1|1|2|0|0|0|0
+##
+## Level 3
+##
+*|Ghoul|Shade|Spectre|Wraith|||5139|661|0|2|2|10|25|15|1|1|1|1|1|0|0
+*|Lich||||||5190|655|0|2|2|10|25|10|1|2|0|0|0|0|0
+*|Ghoul|Shade|Spectre|Wraith|||5170|678|0|2|2|10|25|10|1|1|1|1|1|0|0
+*|Ghoul|Lich|Spectre|Wraith|||5151|718|0|2|2|10|25|10|1|1|3|1|1|0|0
+*|Ghoul|Poisonelemental|||||5192|695|0|2|2|10|20|10|1|1|1|0|0|0|0
+*|Ghoul|Poisonelemental|||||5183|727|0|2|2|10|20|10|1|1|1|0|0|0|0
+*|Ghoul|Shade|Spectre|Wraith|||5212|674|-20|2|2|10|25|12|1|1|1|1|1|0|0
+*|Lich||||||5219|734|-20|2|2|10|25|15|1|4|0|0|0|0|0
+*|TreasureLevel2|TreasureLevel3|Lich||||5150|742|0|2|2|10|15|3|1|1|2|2|0|0|0
+##
+## Level 4
+##
+*|Ghoul|Lich|||||5307|675|-20|2|2|10|25|10|1|2|1|0|0|0|0
+*|Fireelemental||||||5280|675|8|2|2|10|25|10|1|2|0|0|0|0|0
+*|Lich||||||5320|708|0|2|2|10|25|10|1|2|0|0|0|0|0
+*|TreasureLevel3|TreasureLevel4|Lich|Lichlord|Silverserpent||5314|748|-20|2|2|10|25|8|1|1|2|3|1|2|0
+*|TreasureLevel2|TreasureLevel3|Lich||||5267|690|0|2|2|10|35|2|1|1|2|2|0|0|0
