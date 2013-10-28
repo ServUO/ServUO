@@ -347,7 +347,7 @@ namespace Server.Mobiles
 		public int VASTotalMonsterFame { get { return m_VASTotalMonsterFame; } set { m_VASTotalMonsterFame = value; } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int ToothAche { get { return CandyCane.GetToothAche(this); } set { CandyCane.SetToothAche(this, value); } }
+		public int ToothAche { get { return BaseSweet.GetToothAche(this); } set { BaseSweet.SetToothAche(this, value, true); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool MechanicalLife { get { return GetFlag(PlayerFlag.MechanicalLife); } set { SetFlag(PlayerFlag.MechanicalLife, value); } }

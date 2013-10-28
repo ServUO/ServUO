@@ -72,7 +72,7 @@ namespace Server.Items
 		}
 
 		public override int LabelNumber { get { return 1112117; } } // clippers
-
+		
 		[Constructable]
 		public Clippers()
 			: base(0x0DFC)

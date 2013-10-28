@@ -6,7 +6,6 @@
 
 #region References
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
@@ -1840,9 +1839,9 @@ namespace Server.Mobiles
 					string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
 
 					from.SendLocalizedMessage(1043248, args);
-						// The pet refuses to be transferred because it will not obey ~1_NAME~.~3_BLANK~
+					// The pet refuses to be transferred because it will not obey ~1_NAME~.~3_BLANK~
 					to.SendLocalizedMessage(1043249, args);
-						// The pet will not accept you as a master because it does not trust you.~3_BLANK~
+					// The pet will not accept you as a master because it does not trust you.~3_BLANK~
 
 					return false;
 				}
@@ -1851,9 +1850,9 @@ namespace Server.Mobiles
 					string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
 
 					from.SendLocalizedMessage(1043250, args);
-						// The pet refuses to be transferred because it will not obey you sufficiently.~3_BLANK~
+					// The pet refuses to be transferred because it will not obey you sufficiently.~3_BLANK~
 					to.SendLocalizedMessage(1043251, args);
-						// The pet will not accept you as a master because it does not trust ~2_NAME~.~3_BLANK~
+					// The pet will not accept you as a master because it does not trust ~2_NAME~.~3_BLANK~
 				}
 				else if (accepted && (to.Followers + m_Creature.ControlSlots) > to.FollowersMax)
 				{
@@ -1949,18 +1948,18 @@ namespace Server.Mobiles
 					string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
 
 					from.SendLocalizedMessage(1043248, args);
-						// The pet refuses to be transferred because it will not obey ~1_NAME~.~3_BLANK~
+					// The pet refuses to be transferred because it will not obey ~1_NAME~.~3_BLANK~
 					to.SendLocalizedMessage(1043249, args);
-						// The pet will not accept you as a master because it does not trust you.~3_BLANK~
+					// The pet will not accept you as a master because it does not trust you.~3_BLANK~
 				}
 				else if (!m_Mobile.CanBeControlledBy(from))
 				{
 					string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
 
 					from.SendLocalizedMessage(1043250, args);
-						// The pet refuses to be transferred because it will not obey you sufficiently.~3_BLANK~
+					// The pet refuses to be transferred because it will not obey you sufficiently.~3_BLANK~
 					to.SendLocalizedMessage(1043251, args);
-						// The pet will not accept you as a master because it does not trust ~2_NAME~.~3_BLANK~
+					// The pet will not accept you as a master because it does not trust ~2_NAME~.~3_BLANK~
 				}
 				else if (TransferItem.IsInCombat(m_Mobile))
 				{
@@ -2225,7 +2224,7 @@ namespace Server.Mobiles
 			return (res == MoveResult.Success || res == MoveResult.SuccessAutoTurn || (badStateOk && res == MoveResult.BadState));
 		}
 
-		private static readonly Queue m_Obstacles = new Queue();
+		private static readonly Queue<Item> m_Obstacles = new Queue<Item>();
 
 		public virtual MoveResult DoMoveImpl(Direction d)
 		{
@@ -2335,7 +2334,7 @@ namespace Server.Mobiles
 
 						while (m_Obstacles.Count > 0)
 						{
-							Item item = (Item)m_Obstacles.Dequeue();
+							Item item = m_Obstacles.Dequeue();
 
 							if (item is BaseDoor)
 							{

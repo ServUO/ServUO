@@ -4518,13 +4518,13 @@ namespace Server
 					{
 						reject = LRReason.CannotLift;
 					}
-						#region Mondain's Legacy
+					#region Mondain's Legacy
 					else if (item.QuestItem && amount != item.Amount && !from.IsStaff())
 					{
 						reject = LRReason.Inspecific;
 						from.SendLocalizedMessage(1074868); // Stacks of quest items cannot be unstacked.
 					}
-						#endregion
+					#endregion
 
 					else if (!item.IsAccessibleTo(from))
 					{
@@ -4756,37 +4756,22 @@ namespace Server
 					var eable = map.GetClientsInRange(m_Location);
 					Packet p = null;
 
-					bool sameLoc = false;
+					foreach(NetState ns in eable) {
+						if (ns.StygianAbyss)
+								continue;
 
-					foreach (NetState ns in eable)
-					{
-						if (ns.Mobile != this && ns.Mobile.CanSee(this) && ns.Mobile.InLOS(this) && ns.Mobile.CanSee(root))
-						{
-							if (p == null)
-							{
+						if( ns.Mobile != this && ns.Mobile.CanSee( this ) && ns.Mobile.InLOS( this ) && ns.Mobile.CanSee( root ) ) {
+							if (p == null) {
 								IEntity trg;
 
 								if (root == null)
-								{
 									trg = new Entity(Serial.Zero, item.Location, map);
-								}
 								else
-								{
 									trg = new Entity(((Item)root).Serial, ((Item)root).Location, map);
-								}
-
-								if (m_Location == trg.Location)
-								{
-									sameLoc = true;
-								}
 
 								p = Packet.Acquire(new DragEffect(this, trg, item.ItemID, item.Hue, item.Amount));
 							}
 
-							if (ns.StygianAbyss && sameLoc)
-							{
-								continue; // prevents crash
-							}
 							ns.Send(p);
 						}
 					}
@@ -5838,6 +5823,7 @@ namespace Server
 						{
 							m_Hair = new HairInfo(reader);
 						}
+
 						if ((hairflag & 0x02) != 0)
 						{
 							m_FacialHair = new FacialHairInfo(reader);
@@ -6289,6 +6275,7 @@ namespace Server
 			{
 				hairflag |= 0x01;
 			}
+
 			if (m_FacialHair != null)
 			{
 				hairflag |= 0x02;
@@ -6300,6 +6287,7 @@ namespace Server
 			{
 				m_Hair.Serialize(writer);
 			}
+
 			if ((hairflag & 0x02) != 0)
 			{
 				m_FacialHair.Serialize(writer);
@@ -6687,46 +6675,80 @@ namespace Server
 						if (p == null)
 						{
 							#region SA
-							if (Race == Race.Gargoyle)
+							if (Body.IsGargoyle)
 							{
 								frameCount = 10;
 
-								if (action >= 200 && action <= 259 && !Flying)
+								if (Flying)
 								{
-									action = 17;
+									if (action >= 200 && action <= 270)
+									{
+										action = 75;
+									}
+									else
+									{
+										switch (action)
+										{
+											case 9:
+											case 10:
+											case 11:
+												action = 71;
+												break;
+											case 12:
+											case 13:
+											case 14:
+												action = 72;
+												break;
+											case 18:
+											case 19:
+												action = 71;
+												break;
+											case 20:
+												action = 77;
+												break;
+											case 31:
+												action = 71;
+												break;
+											case 34:
+												action = 78;
+												break;
+										}
+									}
 								}
-								if (action >= 260 && action <= 270 && !Flying)
+								else
 								{
-									action = 16;
-								}
-								if (action >= 200 && action <= 259 && Flying)
-								{
-									action = 75;
-								}
-								if (action >= 260 && action <= 270 && Flying)
-								{
-									action = 75;
-								}
-
-								if (action == 31 && Flying)
-								{
-									action = 71;
-								}
-								if (action == 20 && Flying)
-								{
-									action = 77;
-								}
-								if (action >= 9 && action <= 11 && Flying)
-								{
-									action = 71;
-								}
-								if (action >= 12 && action <= 14 && Flying)
-								{
-									action = 72;
-								}
-								if (action == 34 && Flying)
-								{
-									action = 78;
+									if (action >= 260 && action <= 270)
+									{
+										action = 16;
+									}
+									else if (action >= 200 && action < 260)
+									{
+										action = 17;
+									}
+									else
+									{
+										switch (action)
+										{
+											case 9:
+												action = 13;
+												break;
+											case 10:
+												action = 14;
+												break;
+											case 11:
+												action = 13;
+												break;
+											case 12:
+											case 13:
+											case 14:
+												action = 12;
+												break;
+											case 18:
+											case 19:
+												action = 9;
+												break;
+										}
+									}
 								}
 							}
 							#endregion
@@ -11245,9 +11267,9 @@ namespace Server
 			}
 			else
 			{
-				while (m_DeltaQueueR.Count > 0)
+				while (m_DeltaQueue.Count > 0)
 				{
-					m_DeltaQueueR.Dequeue().ProcessDelta();
+					m_DeltaQueue.Dequeue().ProcessDelta();
 				}
 			}
 

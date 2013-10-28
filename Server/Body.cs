@@ -163,6 +163,10 @@ namespace Server
 
 		public bool IsEquipment { get { return m_BodyID >= 0 && m_BodyID < m_Types.Length && m_Types[m_BodyID] == BodyType.Equipment; } }
 
+		#region Stygian Abyss
+		public bool IsGargoyle { get { return m_BodyID == 666 || m_BodyID == 667 || m_BodyID == 694 || m_BodyID == 695; } }
+		#endregion
+
 		public int BodyID { get { return m_BodyID; } }
 
 		public static implicit operator int(Body a)

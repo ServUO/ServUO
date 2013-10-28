@@ -20,51 +20,97 @@ using Server.Network;
 namespace Server
 {
 	public delegate void CharacterCreatedEventHandler(CharacterCreatedEventArgs e);
+
 	public delegate void OpenDoorMacroEventHandler(OpenDoorMacroEventArgs e);
+
 	public delegate void SpeechEventHandler(SpeechEventArgs e);
+
 	public delegate void LoginEventHandler(LoginEventArgs e);
+
 	public delegate void ServerListEventHandler(ServerListEventArgs e);
+
 	public delegate void MovementEventHandler(MovementEventArgs e);
+
 	public delegate void HungerChangedEventHandler(HungerChangedEventArgs e);
+
 	public delegate void CrashedEventHandler(CrashedEventArgs e);
+
 	public delegate void ShutdownEventHandler(ShutdownEventArgs e);
+
 	public delegate void HelpRequestEventHandler(HelpRequestEventArgs e);
+
 	public delegate void DisarmRequestEventHandler(DisarmRequestEventArgs e);
+
 	public delegate void StunRequestEventHandler(StunRequestEventArgs e);
+
 	public delegate void OpenSpellbookRequestEventHandler(OpenSpellbookRequestEventArgs e);
+
 	public delegate void CastSpellRequestEventHandler(CastSpellRequestEventArgs e);
+
 	public delegate void BandageTargetRequestEventHandler(BandageTargetRequestEventArgs e);
+
 	public delegate void AnimateRequestEventHandler(AnimateRequestEventArgs e);
+
 	public delegate void LogoutEventHandler(LogoutEventArgs e);
+
 	public delegate void SocketConnectEventHandler(SocketConnectEventArgs e);
+
 	public delegate void ConnectedEventHandler(ConnectedEventArgs e);
+
 	public delegate void DisconnectedEventHandler(DisconnectedEventArgs e);
+
 	public delegate void RenameRequestEventHandler(RenameRequestEventArgs e);
+
 	public delegate void PlayerDeathEventHandler(PlayerDeathEventArgs e);
+
 	public delegate void VirtueGumpRequestEventHandler(VirtueGumpRequestEventArgs e);
+
 	public delegate void VirtueItemRequestEventHandler(VirtueItemRequestEventArgs e);
+
 	public delegate void VirtueMacroRequestEventHandler(VirtueMacroRequestEventArgs e);
+
 	public delegate void ChatRequestEventHandler(ChatRequestEventArgs e);
+
 	public delegate void AccountLoginEventHandler(AccountLoginEventArgs e);
+
 	public delegate void PaperdollRequestEventHandler(PaperdollRequestEventArgs e);
+
 	public delegate void ProfileRequestEventHandler(ProfileRequestEventArgs e);
+
 	public delegate void ChangeProfileRequestEventHandler(ChangeProfileRequestEventArgs e);
+
 	public delegate void AggressiveActionEventHandler(AggressiveActionEventArgs e);
+
 	public delegate void GameLoginEventHandler(GameLoginEventArgs e);
+
 	public delegate void DeleteRequestEventHandler(DeleteRequestEventArgs e);
+
 	public delegate void WorldLoadEventHandler();
+
 	public delegate void WorldSaveEventHandler(WorldSaveEventArgs e);
+
 	public delegate void SetAbilityEventHandler(SetAbilityEventArgs e);
+
 	public delegate void FastWalkEventHandler(FastWalkEventArgs e);
+
 	public delegate void ServerStartedEventHandler();
+
 	public delegate void CreateGuildHandler(CreateGuildEventArgs e);
+
 	public delegate void GuildGumpRequestHandler(GuildGumpRequestArgs e);
+
 	public delegate void QuestGumpRequestHandler(QuestGumpRequestArgs e);
+
 	public delegate void ClientVersionReceivedHandler(ClientVersionReceivedArgs e);
+
 	public delegate void OnKilledByEventHandler(OnKilledByEventArgs e);
+
 	public delegate void OnItemUseEventHandler(OnItemUseEventArgs e);
+
 	public delegate void OnEnterRegionEventHandler(OnEnterRegionEventArgs e);
+
 	public delegate void OnConsumeEventHandler(OnConsumeEventArgs e);
+
 	public delegate void OnPropertyChangedEventHandler(OnPropertyChangedEventArgs e);
 
 	public class ClientVersionReceivedArgs : EventArgs

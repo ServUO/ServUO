@@ -1,202 +1,249 @@
+#region Header
+// **********
+// ServUO - HolidayFoods.cs
+// **********
+#endregion
+
+#region References
 using System;
 using System.Collections.Generic;
+#endregion
 
 namespace Server.Items
 {
-    public class CandyCane : Food
-    {
-        private static Dictionary<Mobile, CandyCaneTimer> m_ToothAches;
-        [Constructable]
-        public CandyCane()
-            : this(0x2bdd + Utility.Random(4))
-        {
-        }
+	public abstract class BaseSweet : Food
+	{
+		private static readonly Dictionary<Mobile, ToothAcheTimer> _ToothAches = new Dictionary<Mobile, ToothAcheTimer>();
 
-        public CandyCane(int itemID)
-            : base(itemID)
-        {
-            this.Stackable = false;
-            this.LootType = LootType.Blessed;
-        }
+		public static Dictionary<Mobile, ToothAcheTimer> ToothAches { get { return _ToothAches; } }
 
-        public CandyCane(Serial serial)
-            : base(serial)
-        {
-        }
+		private static ToothAcheTimer EnsureTimer(Mobile m, int acidity)
+		{
+			if (!_ToothAches.ContainsKey(m))
+			{
+				_ToothAches.Add(m, new ToothAcheTimer(m, acidity));
+			}
+			else
+			{
+				_ToothAches[m].Acidity += acidity;
+			}
 
-        public static Dictionary<Mobile, CandyCaneTimer> ToothAches
-        {
-            get
-            {
-                return m_ToothAches;
-            }
-            set
-            {
-                m_ToothAches = value;
-            }
-        }
-        public static void Initialize()
-        {
-            m_ToothAches = new Dictionary<Mobile, CandyCaneTimer>();
-        }
+			_ToothAches[m].Running = true;
 
-        public static int GetToothAche(Mobile from)
-        {
-            CandyCaneTimer timer;
+			return _ToothAches[m];
+		}
 
-            if (m_ToothAches.TryGetValue(from, out timer))
-                return timer.Eaten;
+		public static void SetToothAche(Mobile from, int acidity, bool direct)
+		{
+			ToothAcheTimer t = EnsureTimer(from, acidity);
+		
+			if (direct)
+			{
+				t.Acidity = acidity;
+			}
+		}
 
-            return 0;
-        }
+		public static int GetToothAche(Mobile m)
+		{
+			ToothAcheTimer t;
 
-        public static void SetToothAche(Mobile from, int value)
-        {
-            EnsureTimer(from).Eaten = value;
-        }
+			return _ToothAches.TryGetValue(m, out t) ? t.Acidity : 0;
+		}
 
-        public override bool CheckHunger(Mobile from)
-        {
-            EnsureTimer(from).Eaten += 32;
+		public static bool CureToothAche(Mobile m)
+		{
+			return m != null && _ToothAches.Remove(m);
+		}
 
-            from.SendLocalizedMessage(1077387); // You feel as if you could eat as much as you wanted!
-            return true;
-        }
+		public virtual bool GivesToothAche { get { return true; } }
+		public virtual int Acidity { get { return 32; } }
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.Write((int)0); // version
-        }
+		public BaseSweet(int itemID)
+			: base(itemID)
+		{ }
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            int version = reader.ReadInt();
-        }
+		public BaseSweet(int amount, int itemID)
+			: base(amount, itemID)
+		{ }
 
-        private static CandyCaneTimer EnsureTimer(Mobile from)
-        {
-            CandyCaneTimer timer;
+		public BaseSweet(Serial serial)
+			: base(serial)
+		{ }
 
-            if (!m_ToothAches.TryGetValue(from, out timer))
-                m_ToothAches[from] = timer = new CandyCaneTimer(from);
+		public override bool CheckHunger(Mobile from)
+		{
+			if (GivesToothAche)
+			{
+				EnsureTimer(from, Acidity);
+			}
 
-            return timer;
-        }
+			from.SendLocalizedMessage(1077387); // You feel as if you could eat as much as you wanted!
+			return true;
+		}
 
-        public class CandyCaneTimer : Timer
-        {
-            private readonly Mobile m_Eater;
-            private int m_Eaten;
-            public CandyCaneTimer(Mobile eater)
-                : base(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30))
-            {
-                this.m_Eater = eater;
-                this.Priority = TimerPriority.FiveSeconds;
-                this.Start();
-            }
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
 
-            public Mobile Eater
-            {
-                get
-                {
-                    return this.m_Eater;
-                }
-            }
-            public int Eaten
-            {
-                get
-                {
-                    return this.m_Eaten;
-                }
-                set
-                {
-                    this.m_Eaten = value;
-                }
-            }
-            protected override void OnTick()
-            {
-                --this.m_Eaten;
+			writer.Write(0); // version
+		}
 
-                if (this.m_Eater == null || this.m_Eater.Deleted || this.m_Eaten <= 0)
-                {
-                    this.Stop();
-                    m_ToothAches.Remove(this.m_Eater);
-                }
-                else if (this.m_Eater.Map != Map.Internal && this.m_Eater.Alive)
-                {
-                    if (this.m_Eaten > 60)
-                    {
-                        this.m_Eater.Say(1077388 + Utility.Random(5));
-                        /* ARRGH! My tooth hurts sooo much!
-                        * You just can't find a good Britannian dentist these days...
-                        * My teeth!
-                        * MAKE IT STOP!
-                        * AAAH! It feels like someone kicked me in the teeth!
-                        */
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
 
-                        if (Utility.RandomBool() && this.m_Eater.Body.IsHuman && !this.m_Eater.Mounted)
-                            this.m_Eater.Animate(32, 5, 1, true, false, 0);
-                    }
-                    else if (this.m_Eaten == 60)
-                    {
-                        this.m_Eater.SendLocalizedMessage(1077393); // The extreme pain in your teeth subsides.
-                    }
-                }
-            }
-        }
-    }
+			reader.ReadInt(); // version
+		}
 
-    public class GingerBreadCookie : Food
-    {
-        private readonly int[] m_Messages =
-        {
-            0,
-            1077396, // Noooo!
-            1077397, // Please don't eat me... *whimper*
-            1077405, // Not the face!
-            1077406, // Ahhhhhh! My foot’s gone!
-            1077407, // Please. No! I have gingerkids!
-            1077408, // No, no! I’m really made of poison. Really.
-            1077409 // Run, run as fast as you can! You can't catch me! I'm the gingerbread man!
-        };
-        [Constructable]
-        public GingerBreadCookie()
-            : base(Utility.RandomBool() ? 0x2be1 : 0x2be2)
-        {
-            this.Stackable = false;
-            this.LootType = LootType.Blessed;
-        }
+		public class ToothAcheTimer : Timer
+		{
+			public Mobile ConsumedBy { get; private set; }
+			public int Acidity { get; set; }
 
-        public GingerBreadCookie(Serial serial)
-            : base(serial)
-        {
-        }
+			public ToothAcheTimer(Mobile consumedBy, int acidity)
+				: base(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30))
+			{
+				ConsumedBy = consumedBy;
+				Acidity = acidity;
 
-        public override bool Eat(Mobile from)
-        {
-            int message = this.m_Messages[Utility.Random(this.m_Messages.Length)];
+				Priority = TimerPriority.FiveSeconds;
 
-            if (message != 0)
-            {
-                this.SendLocalizedMessageTo(from, message);
-                return false;
-            }
+				Start();
+			}
 
-            return base.Eat(from);
-        }
+			private bool Invalidate()
+			{
+				return ConsumedBy != null && _ToothAches.ContainsKey(ConsumedBy) && !ConsumedBy.Deleted && Acidity > 0 &&
+					   ConsumedBy.Map != null && ConsumedBy.Map != Map.Internal && ConsumedBy.Alive;
+			}
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.Write((int)0); // version
-        }
+			protected override void OnTick()
+			{
+				--Acidity;
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            int version = reader.ReadInt();
-        }
-    }
+				if (!Invalidate())
+				{
+					Stop();
+
+					if (ConsumedBy != null)
+					{
+						_ToothAches.Remove(ConsumedBy);
+					}
+
+					return;
+				}
+				
+				if (Acidity == 60)
+				{
+					ConsumedBy.SendLocalizedMessage(1077393); // The extreme pain in your teeth subsides.
+					return;
+				}
+
+				if (Acidity <= 60)
+				{
+					return;
+				}
+
+				/* 
+				* ARRGH! My tooth hurts sooo much!
+				* You just can't find a good Britannian dentist these days...
+				* My teeth!
+				* MAKE IT STOP!
+				* AAAH! It feels like someone kicked me in the teeth!
+				*/
+				ConsumedBy.Say(1077388 + Utility.Random(5));
+
+				if (Utility.RandomBool() && ConsumedBy.Body.IsHuman && !ConsumedBy.Mounted)
+				{
+					ConsumedBy.Animate(32, 5, 1, true, false, 0);
+				}
+			}
+		}
+	}
+
+	public class CandyCane : BaseSweet
+	{
+		[Constructable]
+		public CandyCane()
+			: this(0x2bdd + Utility.Random(4))
+		{ }
+
+		public CandyCane(int itemID)
+			: base(itemID)
+		{
+			Stackable = false;
+			LootType = LootType.Blessed;
+		}
+
+		public CandyCane(Serial serial)
+			: base(serial)
+		{ }
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write(0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+			
+			reader.ReadInt();
+		}
+	}
+
+	public class GingerBreadCookie : BaseSweet
+	{
+		private readonly int[] m_Messages =
+		{
+			0, 1077396, // Noooo!
+			1077397, // Please don't eat me... *whimper*
+			1077405, // Not the face!
+			1077406, // Ahhhhhh! My foot’s gone!
+			1077407, // Please. No! I have gingerkids!
+			1077408, // No, no! I’m really made of poison. Really.
+			1077409 // Run, run as fast as you can! You can't catch me! I'm the gingerbread man!
+		};
+
+		[Constructable]
+		public GingerBreadCookie()
+			: base(Utility.RandomBool() ? 0x2be1 : 0x2be2)
+		{
+			Stackable = false;
+			LootType = LootType.Blessed;
+		}
+
+		public GingerBreadCookie(Serial serial)
+			: base(serial)
+		{ }
+
+		public override bool Eat(Mobile from)
+		{
+			int message = m_Messages[Utility.Random(m_Messages.Length)];
+
+			if (message != 0)
+			{
+				SendLocalizedMessageTo(from, message);
+				return false;
+			}
+
+			return base.Eat(from);
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+			
+			writer.Write(0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+			
+			reader.ReadInt();
+		}
+	}
 }

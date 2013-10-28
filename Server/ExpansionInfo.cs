@@ -51,14 +51,14 @@ namespace Server
 		SixthCharacterSlot = 0x00000020,
 		SE = 0x00000040,
 		ML = 0x00000080,
-		Unk1 = 0x00000100,
-		Unk2 = 0x00000200,
-		Unk3 = 0x00000400,
-		Unk4 = 0x00000800,
+		EigthAge = 0x00000100,
+		NinthAge = 0x00000200, /* Crystal/Shadow Custom House Tiles */
+		TenthAge = 0x00000400,
+		InceasedStorage = 0x00000800, /* Increased Housing/Bank Storage */
 		SeventhCharacterSlot = 0x00001000,
-		Unk5 = 0x00002000,
-		Unk6 = 0x00004000,
-		Unk7 = 0x00008000,
+		RoleplayFaces = 0x00002000,
+		TrialAccount = 0x00004000,
+		LiveAccount = 0x00008000,
 		SA = 0x00010000,
 		HS = 0x00020000,
 		Gothic = 0x00040000,
@@ -69,11 +69,11 @@ namespace Server
 		ExpansionUOR = ExpansionT2A | UOR,
 		ExpansionUOTD = ExpansionUOR | UOTD,
 		ExpansionLBR = ExpansionUOTD | LBR,
-		ExpansionAOS = ExpansionLBR | AOS | Unk7,
+		ExpansionAOS = ExpansionLBR | AOS | LiveAccount,
 		ExpansionSE = ExpansionAOS | SE,
-		ExpansionML = ExpansionSE | ML | Unk2,
+		ExpansionML = ExpansionSE | ML | NinthAge,
 		ExpansionSA = ExpansionML | SA | Gothic | Rustic,
-		ExpansionHS = ExpansionSA
+		ExpansionHS = ExpansionSA | HS
 	}
 
 	[Flags]
@@ -81,7 +81,7 @@ namespace Server
 	{
 		None = 0x00000000,
 		Unk1 = 0x00000001,
-		Unk2 = 0x00000002,
+		OverwriteConfigButton = 0x00000002,
 		OneCharacterSlot = 0x00000004,
 		ContextMenus = 0x00000008,
 		SlotLimit = 0x00000010,
@@ -89,11 +89,13 @@ namespace Server
 		SixthCharacterSlot = 0x00000040,
 		SE = 0x00000080,
 		ML = 0x00000100,
-		Unk4 = 0x00000200,
-		Unk5 = 0x00000400,
-		Unk6 = 0x00000800,
+		Unk2 = 0x00000200,
+		UO3DClientType = 0x00000400,
+		Unk3 = 0x00000800,
 		SeventhCharacterSlot = 0x00001000,
-		Unk7 = 0x00002000,
+		Unk4 = 0x00002000,
+		NewMovementSystem = 0x00004000,
+		NewFeluccaAreas = 0x00008000,
 
 		ExpansionNone = ContextMenus, //
 		ExpansionT2A = ContextMenus, //

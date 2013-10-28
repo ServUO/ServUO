@@ -1,389 +1,337 @@
-﻿using System;
+﻿#region Header
+// **********
+// ServUO - ToolbarInfo.cs
+// **********
+#endregion
+
+#region References
 using System.Collections.Generic;
+
+using CustomsFramework;
+
 using Server;
 using Server.Commands;
-using CustomsFramework;
+#endregion
 
 namespace Services.Toolbar.Core
 {
-    public class ToolbarInfo
-    {
-        private int _Font, _Skin;
-        private bool _Phantom, _Stealth, _Reverse, _Lock;
-        private Point2D _Dimensions;
-        private List<string> _Entries = new List<string>();
-        private List<Point3D> _Points = new List<Point3D>();
+	public class ToolbarInfo
+	{
+		private int _Font, _Skin;
+		private bool _Phantom, _Stealth, _Reverse, _Lock;
+		private Point2D _Dimensions;
+		private List<string> _Entries = new List<string>();
+		private List<Point3D> _Points = new List<Point3D>();
 
-        public ToolbarInfo(Point2D dimensions, List<string> entries, int skin, List<Point3D> points,
-            int font, bool[] switches)
-        {
-            _Dimensions = dimensions;
-            _Entries = entries;
-            _Skin = skin;
-            _Points = points;
-            _Font = font;
-            _Phantom = switches[0];
-            _Stealth = switches[1];
-            _Reverse = switches[2];
-            _Lock = switches[3];
-        }
+		public ToolbarInfo(
+			Point2D dimensions, List<string> entries, int skin, List<Point3D> points, int font, bool[] switches)
+		{
+			_Dimensions = dimensions;
+			_Entries = entries;
+			_Skin = skin;
+			_Points = points;
+			_Font = font;
+			_Phantom = switches[0];
+			_Stealth = switches[1];
+			_Reverse = switches[2];
+			_Lock = switches[3];
+		}
 
-        public int Font
-        {
-            get
-            {
-                return _Font;
-            }
-            set
-            {
-                _Font = value;
-            }
-        }
+		public int Font { get { return _Font; } set { _Font = value; } }
+		public int Skin { get { return _Skin; } set { _Skin = value; } }
+		public bool Phantom { get { return _Phantom; } set { _Phantom = value; } }
+		public bool Stealth { get { return _Stealth; } set { _Stealth = value; } }
+		public bool Reverse { get { return _Reverse; } set { _Reverse = value; } }
+		public bool Lock { get { return _Lock; } set { _Lock = value; } }
+		public int Rows { get { return _Dimensions.X; } set { _Dimensions.X = value; } }
+		public int Collumns { get { return _Dimensions.Y; } set { _Dimensions.Y = value; } }
+		public List<string> Entries { get { return _Entries; } set { _Entries = value; } }
+		public List<Point3D> Points { get { return _Points; } set { _Points = value; } }
 
-        public int Skin
-        {
-            get
-            {
-                return _Skin;
-            }
-            set
-            {
-                _Skin = value;
-            }
-        }
+		public static ToolbarInfo CreateNew(Mobile from)
+		{
+			Point2D dimensions = DefaultDimensions(from.AccessLevel);
+			var entries = DefaultEntries(from.AccessLevel);
+			var points = new List<Point3D>();
 
-        public bool Phantom
-        {
-            get
-            {
-                return _Phantom;
-            }
-            set
-            {
-                _Phantom = value;
-            }
-        }
+			for (int i = entries.Count; i <= 135; i++)
+			{
+				entries.Add("-*UNUSED*-");
+			}
 
-        public bool Stealth
-        {
-            get
-            {
-                return _Stealth;
-            }
-            set
-            {
-                _Stealth = value;
-            }
-        }
+			return new ToolbarInfo(dimensions, entries, 0, points, 0, new[] {true, false, false, true});
+		}
 
-        public bool Reverse
-        {
-            get
-            {
-                return _Reverse;
-            }
-            set
-            {
-                _Reverse = value;
-            }
-        }
+		public static List<string> DefaultEntries(AccessLevel level)
+		{
+			var entries = new List<string>();
 
-        public bool Lock
-        {
-            get
-            {
-                return _Lock;
-            }
-            set
-            {
-                _Lock = value;
-            }
-        }
+			switch (level)
+			{
+				case AccessLevel.Player:
+					{
+						break;
+					}
+				case AccessLevel.VIP:
+					{
+						break;
+					}
+				case AccessLevel.Counselor:
+					{
+						entries.Add(CommandSystem.Prefix + "GMBody");
+						entries.Add(CommandSystem.Prefix + "StaffRunebook");
+						entries.Add(CommandSystem.Prefix + "SpeedBoost");
+						entries.Add(CommandSystem.Prefix + "M Tele");
+						entries.Add(CommandSystem.Prefix + "Where");
+						entries.Add(CommandSystem.Prefix + "Who");
 
-        public int Rows
-        {
-            get
-            {
-                return _Dimensions.X;
-            }
-            set
-            {
-                _Dimensions.X = value;
-            }
-        }
+						break;
+					}
+				case AccessLevel.Decorator:
+					{
+						entries.Add(CommandSystem.Prefix + "GMBody");
+						entries.Add(CommandSystem.Prefix + "StaffRunebook");
+						entries.Add(CommandSystem.Prefix + "SpeedBoost");
+						entries.Add(CommandSystem.Prefix + "M Tele");
+						entries.Add(CommandSystem.Prefix + "Where");
+						entries.Add(CommandSystem.Prefix + "Who");
 
-        public int Collumns
-        {
-            get
-            {
-                return _Dimensions.Y;
-            }
-            set
-            {
-                _Dimensions.Y = value;
-            }
-        }
+						for (int j = 0; j < 3; j++)
+						{
+							entries.Add("-*UNUSED*-");
+						}
 
-        public List<string> Entries
-        {
-            get
-            {
-                return _Entries;
-            }
-            set
-            {
-                _Entries = value;
-            }
-        }
+						entries.Add(CommandSystem.Prefix + "Add");
+						entries.Add(CommandSystem.Prefix + "Remove");
+						entries.Add(CommandSystem.Prefix + "Move");
+						entries.Add(CommandSystem.Prefix + "ShowArt");
+						entries.Add(CommandSystem.Prefix + "Get ItemID");
+						entries.Add(CommandSystem.Prefix + "Get Hue");
 
-        public List<Point3D> Points
-        {
-            get
-            {
-                return _Points;
-            }
-            set
-            {
-                _Points = value;
-            }
-        }
+						break;
+					}
+				case AccessLevel.Spawner:
+					{
+						entries.Add(CommandSystem.Prefix + "GMBody");
+						entries.Add(CommandSystem.Prefix + "StaffRunebook");
+						entries.Add(CommandSystem.Prefix + "SpeedBoost");
+						entries.Add(CommandSystem.Prefix + "M Tele");
+						entries.Add(CommandSystem.Prefix + "Where");
+						entries.Add(CommandSystem.Prefix + "Who");
 
-        public static ToolbarInfo CreateNew(Mobile from)
-        {
-            Point2D dimensions = DefaultDimensions(from.AccessLevel);
-            List<string> entries = DefaultEntries(from.AccessLevel);
-            List<Point3D> points = new List<Point3D>();
+						for (int j = 0; j < 3; j++)
+						{
+							entries.Add("-*UNUSED*-");
+						}
 
-            for (int i = entries.Count; i <= 135; i++)
-                entries.Add("-*UNUSED*-");
+						entries.Add(CommandSystem.Prefix + "Add");
+						entries.Add(CommandSystem.Prefix + "Remove");
+						entries.Add(CommandSystem.Prefix + "XmlAdd");
+						entries.Add(CommandSystem.Prefix + "XmlFind");
+						entries.Add(CommandSystem.Prefix + "XmlShow");
+						entries.Add(CommandSystem.Prefix + "XmlHide");
 
-            return new ToolbarInfo(dimensions, entries, 0, points, 0, new bool[] { true, false, false, true });
-        }
+						break;
+					}
+				case AccessLevel.GameMaster:
+					{
+						entries.Add(CommandSystem.Prefix + "GMBody");
+						entries.Add(CommandSystem.Prefix + "StaffRunebook");
+						entries.Add(CommandSystem.Prefix + "SpeedBoost");
+						entries.Add(CommandSystem.Prefix + "M Tele");
+						entries.Add(CommandSystem.Prefix + "Where");
+						entries.Add(CommandSystem.Prefix + "Who");
 
-        public static List<string> DefaultEntries(AccessLevel level)
-        {
-            List<string> entries = new List<string>();
+						for (int j = 0; j < 3; j++)
+						{
+							entries.Add("-*UNUSED*-");
+						}
 
-            switch (level)
-            {
-                case AccessLevel.Player:
-                    {
-                        break;
-                    }
-                case AccessLevel.VIP:
-                    {
-                        break;
-                    }
-                case AccessLevel.Counselor:
-                    {
-                        entries.Add(CommandSystem.Prefix + "GMBody"); entries.Add(CommandSystem.Prefix + "StaffRunebook");
-                        entries.Add(CommandSystem.Prefix + "SpeedBoost"); entries.Add(CommandSystem.Prefix + "M Tele");
-                        entries.Add(CommandSystem.Prefix + "Where"); entries.Add(CommandSystem.Prefix + "Who");
+						entries.Add(CommandSystem.Prefix + "Add");
+						entries.Add(CommandSystem.Prefix + "Remove");
+						entries.Add(CommandSystem.Prefix + "Props");
+						entries.Add(CommandSystem.Prefix + "Move");
+						entries.Add(CommandSystem.Prefix + "Kill");
+						entries.Add(CommandSystem.Prefix + "Follow");
 
-                        break;
-                    }
-                case AccessLevel.Decorator:
-                    {
-                        entries.Add(CommandSystem.Prefix + "GMBody"); entries.Add(CommandSystem.Prefix + "StaffRunebook");
-                        entries.Add(CommandSystem.Prefix + "SpeedBoost"); entries.Add(CommandSystem.Prefix + "M Tele");
-                        entries.Add(CommandSystem.Prefix + "Where"); entries.Add(CommandSystem.Prefix + "Who");
+						break;
+					}
+				case AccessLevel.Seer:
+					{
+						goto case AccessLevel.GameMaster;
+					}
+				case AccessLevel.Administrator:
+					{
+						entries.Add(CommandSystem.Prefix + "Admin");
+						entries.Add(CommandSystem.Prefix + "StaffRunebook");
+						entries.Add(CommandSystem.Prefix + "SpeedBoost");
+						entries.Add(CommandSystem.Prefix + "M Tele");
+						entries.Add(CommandSystem.Prefix + "Where");
+						entries.Add(CommandSystem.Prefix + "Who");
 
-                        for (int j = 0; j < 3; j++)
-                            entries.Add("-*UNUSED*-");
+						for (int j = 0; j < 3; j++)
+						{
+							entries.Add("-*UNUSED*-");
+						}
 
-                        entries.Add(CommandSystem.Prefix + "Add"); entries.Add(CommandSystem.Prefix + "Remove");
-                        entries.Add(CommandSystem.Prefix + "Move"); entries.Add(CommandSystem.Prefix + "ShowArt");
-                        entries.Add(CommandSystem.Prefix + "Get ItemID"); entries.Add(CommandSystem.Prefix + "Get Hue");
+						entries.Add(CommandSystem.Prefix + "Props");
+						entries.Add(CommandSystem.Prefix + "Move");
+						entries.Add(CommandSystem.Prefix + "Add");
+						entries.Add(CommandSystem.Prefix + "Remove");
+						entries.Add(CommandSystem.Prefix + "ViewEquip");
+						entries.Add(CommandSystem.Prefix + "Kill");
 
-                        break;
-                    }
-                case AccessLevel.Spawner:
-                    {
-                        entries.Add(CommandSystem.Prefix + "GMBody"); entries.Add(CommandSystem.Prefix + "StaffRunebook");
-                        entries.Add(CommandSystem.Prefix + "SpeedBoost"); entries.Add(CommandSystem.Prefix + "M Tele");
-                        entries.Add(CommandSystem.Prefix + "Where"); entries.Add(CommandSystem.Prefix + "Who");
+						break;
+					}
+				case AccessLevel.Developer:
+					{
+						goto case AccessLevel.Administrator;
+					}
+				case AccessLevel.CoOwner:
+					{
+						goto case AccessLevel.Administrator;
+					}
+				case AccessLevel.Owner:
+					{
+						goto case AccessLevel.Administrator;
+					}
+			}
+			return entries;
+		}
 
-                        for (int j = 0; j < 3; j++)
-                            entries.Add("-*UNUSED*-");
+		public static Point2D DefaultDimensions(AccessLevel level)
+		{
+			Point2D dimensions = new Point2D();
 
-                        entries.Add(CommandSystem.Prefix + "Add"); entries.Add(CommandSystem.Prefix + "Remove");
-                        entries.Add(CommandSystem.Prefix + "XmlAdd"); entries.Add(CommandSystem.Prefix + "XmlFind");
-                        entries.Add(CommandSystem.Prefix + "XmlShow"); entries.Add(CommandSystem.Prefix + "XmlHide");
+			switch (level)
+			{
+				case AccessLevel.Player:
+					{
+						dimensions.X = 0;
+						dimensions.Y = 0;
+						break;
+					}
+				case AccessLevel.VIP:
+					{
+						goto case AccessLevel.Player;
+					}
+				case AccessLevel.Counselor:
+					{
+						dimensions.X = 6;
+						dimensions.Y = 1;
+						break;
+					}
+				case AccessLevel.Decorator:
+					{
+						dimensions.X = 6;
+						dimensions.Y = 2;
+						break;
+					}
+				case AccessLevel.Spawner:
+					{
+						goto case AccessLevel.Decorator;
+					}
+				case AccessLevel.GameMaster:
+					{
+						goto case AccessLevel.Decorator;
+					}
+				case AccessLevel.Seer:
+					{
+						goto case AccessLevel.Decorator;
+					}
+				case AccessLevel.Administrator:
+					{
+						goto case AccessLevel.Decorator;
+					}
+				case AccessLevel.Developer:
+					{
+						goto case AccessLevel.Decorator;
+					}
+				case AccessLevel.CoOwner:
+					{
+						goto case AccessLevel.Decorator;
+					}
+				case AccessLevel.Owner:
+					{
+						goto case AccessLevel.Decorator;
+					}
+			}
+			return dimensions;
+		}
 
-                        break;
-                    }
-                case AccessLevel.GameMaster:
-                    {
-                        entries.Add(CommandSystem.Prefix + "GMBody"); entries.Add(CommandSystem.Prefix + "StaffRunebook");
-                        entries.Add(CommandSystem.Prefix + "SpeedBoost"); entries.Add(CommandSystem.Prefix + "M Tele");
-                        entries.Add(CommandSystem.Prefix + "Where"); entries.Add(CommandSystem.Prefix + "Who");
+		public ToolbarInfo(GenericReader reader)
+		{
+			Deserialize(reader);
+		}
 
-                        for (int j = 0; j < 3; j++)
-                            entries.Add("-*UNUSED*-");
+		public void Serialize(GenericWriter writer)
+		{
+			writer.WriteVersion(0);
 
-                        entries.Add(CommandSystem.Prefix + "Add"); entries.Add(CommandSystem.Prefix + "Remove");
-                        entries.Add(CommandSystem.Prefix + "Props"); entries.Add(CommandSystem.Prefix + "Move");
-                        entries.Add(CommandSystem.Prefix + "Kill"); entries.Add(CommandSystem.Prefix + "Follow");
+			writer.Write(_Font);
+			writer.Write(_Phantom);
+			writer.Write(_Stealth);
+			writer.Write(_Reverse);
+			writer.Write(_Lock);
 
-                        break;
-                    }
-                case AccessLevel.Seer:
-                    {
-                        goto case AccessLevel.GameMaster;
-                    }
-                case AccessLevel.Administrator:
-                    {
-                        entries.Add(CommandSystem.Prefix + "Admin"); entries.Add(CommandSystem.Prefix + "StaffRunebook");
-                        entries.Add(CommandSystem.Prefix + "SpeedBoost"); entries.Add(CommandSystem.Prefix + "M Tele");
-                        entries.Add(CommandSystem.Prefix + "Where"); entries.Add(CommandSystem.Prefix + "Who");
+			writer.Write(_Dimensions);
 
-                        for (int j = 0; j < 3; j++)
-                            entries.Add("-*UNUSED*-");
+			writer.Write(_Entries.Count);
 
-                        entries.Add(CommandSystem.Prefix + "Props"); entries.Add(CommandSystem.Prefix + "Move");
-                        entries.Add(CommandSystem.Prefix + "Add"); entries.Add(CommandSystem.Prefix + "Remove");
-                        entries.Add(CommandSystem.Prefix + "ViewEquip"); entries.Add(CommandSystem.Prefix + "Kill");
+			foreach (string t in _Entries)
+			{
+				writer.Write(t);
+			}
 
-                        break;
-                    }
-                case AccessLevel.Developer:
-                    {
-                        goto case AccessLevel.Administrator;
-                    }
-                case AccessLevel.CoOwner:
-                    {
-                        goto case AccessLevel.Administrator;
-                    }
-                case AccessLevel.Owner:
-                    {
-                        goto case AccessLevel.Administrator;
-                    }
-            }
-            return entries;
-        }
+			writer.Write(_Skin);
 
-        public static Point2D DefaultDimensions(AccessLevel level)
-        {
-            Point2D dimensions = new Point2D();
+			writer.Write(_Points.Count);
 
-            switch (level)
-            {
-                case AccessLevel.Player:
-                    {
-                        dimensions.X = 0; dimensions.Y = 0;
-                        break;
-                    }
-                case AccessLevel.VIP:
-                    {
-                        goto case AccessLevel.Player;
-                    }
-                case AccessLevel.Counselor:
-                    {
-                        dimensions.X = 6; dimensions.Y = 1;
-                        break;
-                    }
-                case AccessLevel.Decorator:
-                    {
-                        dimensions.X = 6; dimensions.Y = 2;
-                        break;
-                    }
-                case AccessLevel.Spawner:
-                    {
-                        goto case AccessLevel.Decorator;
-                    }
-                case AccessLevel.GameMaster:
-                    {
-                        goto case AccessLevel.Decorator;
-                    }
-                case AccessLevel.Seer:
-                    {
-                        goto case AccessLevel.Decorator;
-                    }
-                case AccessLevel.Administrator:
-                    {
-                        goto case AccessLevel.Decorator;
-                    }
-                case AccessLevel.Developer:
-                    {
-                        goto case AccessLevel.Decorator;
-                    }
-                case AccessLevel.CoOwner:
-                    {
-                        goto case AccessLevel.Decorator;
-                    }
-                case AccessLevel.Owner:
-                    {
-                        goto case AccessLevel.Decorator;
-                    }
-            }
-            return dimensions;
-        }
+			foreach (Point3D t in _Points)
+			{
+				writer.Write(t);
+			}
+		}
 
-        public ToolbarInfo(GenericReader reader)
-        {
-            Deserialize(reader);
-        }
+		private void Deserialize(GenericReader reader)
+		{
+			int version = reader.ReadInt();
 
-        public void Serialize(GenericWriter writer)
-        {
-            Utilities.WriteVersion(writer, 0);
+			_Dimensions = new Point2D();
+			_Entries = new List<string>();
+			_Points = new List<Point3D>();
 
-            writer.Write(this._Font);
-            writer.Write(this._Phantom);
-            writer.Write(this._Stealth);
-            writer.Write(this._Reverse);
-            writer.Write(this._Lock);
+			switch (version)
+			{
+				case 0:
+					{
+						_Font = reader.ReadInt();
+						_Phantom = reader.ReadBool();
+						_Stealth = reader.ReadBool();
+						_Reverse = reader.ReadBool();
+						_Lock = reader.ReadBool();
 
-            writer.Write(this._Dimensions);
+						_Dimensions = reader.ReadPoint2D();
 
-            writer.Write(this._Entries.Count);
+						int count = reader.ReadInt();
 
-            for (int i = 0; i < this._Entries.Count; i++)
-                writer.Write(this._Entries[i]);
+						for (int i = 0; i < count; i++)
+						{
+							_Entries.Add(reader.ReadString());
+						}
 
-            writer.Write(this._Skin);
+						_Skin = reader.ReadInt();
 
-            writer.Write(this._Points.Count);
+						count = reader.ReadInt();
 
-            for (int i = 0; i < this._Points.Count; i++)
-                writer.Write(this._Points[i]);
-        }
+						for (int i = 0; i < count; i++)
+						{
+							_Points.Add(reader.ReadPoint3D());
+						}
 
-        private void Deserialize(GenericReader reader)
-        {
-            int version = reader.ReadInt();
-
-            _Dimensions = new Point2D();
-            _Entries = new List<string>();
-            _Points = new List<Point3D>();
-
-            switch (version)
-            {
-                case 0:
-                    {
-                        _Font = reader.ReadInt();
-                        _Phantom = reader.ReadBool();
-                        _Stealth = reader.ReadBool();
-                        _Reverse = reader.ReadBool();
-                        _Lock = reader.ReadBool();
-
-                        _Dimensions = reader.ReadPoint2D();
-                        
-                        int count = reader.ReadInt();
-
-                        for (int i = 0; i < count; i++)
-                            _Entries.Add(reader.ReadString());
-
-                        _Skin = reader.ReadInt();
-
-                        count = reader.ReadInt();
-
-                        for (int i = 0; i < count; i++)
-                            _Points.Add(reader.ReadPoint3D());
-
-                        break;
-                    }
-            }
-        }
-    }
+						break;
+					}
+			}
+		}
+	}
 }

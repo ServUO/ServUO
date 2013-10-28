@@ -43,7 +43,7 @@ namespace Server.Network
 
 #if NewAsyncSockets
 		private SocketAsyncEventArgs m_ReceiveEventArgs, m_SendEventArgs;
-        #else
+#else
 		private AsyncCallback m_OnReceive, m_OnSend;
 #endif
 
@@ -589,7 +589,7 @@ namespace Server.Network
 #if NewAsyncSockets
 						m_SendEventArgs.SetBuffer( gram.Buffer, 0, gram.Length );
 						Send_Start();
-                        #else
+#else
 							try
 							{
 								m_Socket.BeginSend(gram.Buffer, 0, gram.Length, SocketFlags.None, m_OnSend, m_Socket);

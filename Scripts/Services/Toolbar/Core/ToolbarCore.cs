@@ -1,132 +1,102 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region Header
+// **********
+// ServUO - ToolbarCore.cs
+// **********
+#endregion
+
+#region References
+using System;
+
+using CustomsFramework;
+
 using Server;
 using Server.Commands;
 using Server.Gumps;
-using Server.Items;
-using CustomsFramework;
+
+using Services.Toolbar.Gumps;
+#endregion
 
 namespace Services.Toolbar.Core
 {
-    public partial class ToolbarCore : BaseCore
-    {
-        public const string SystemVersion = "2.2";
-        public const string ReleaseDate = "February 17, 2013";
+	public class ToolbarCore : BaseCore
+	{
+		public const string SystemVersion = "2.3";
+		public const string ReleaseDate = "October 28, 2013";
 
-        public static void Initialize()
-        {
-            ToolbarCore core = World.GetCore(typeof(ToolbarCore)) as ToolbarCore;
+		public static ToolbarCore Instance { get; private set; }
 
-            if (core == null)
-                core = new ToolbarCore();
+		public static void Initialize()
+		{
+			Instance = World.GetCore(typeof(ToolbarCore)) as ToolbarCore ?? new ToolbarCore();
 
-            CommandHandlers.Register("Toolbar", AccessLevel.VIP, Toolbar_OnCommand);
-            EventSink.Login += OnLogin;
-            EventSink.PlayerDeath += OnPlayerDeath;
-        }
+			CommandHandlers.Register("Toolbar", AccessLevel.VIP, Toolbar_OnCommand);
 
-        public ToolbarCore()
-        {
-            this.Enabled = true;
-        }
+			EventSink.Login += OnLogin;
+			EventSink.PlayerDeath += OnPlayerDeath;
+		}
 
-        public ToolbarCore(CustomSerial serial)
-            : base(serial)
-        {
-        }
+		private static void OnLogin(LoginEventArgs e)
+		{
+			if (e.Mobile.AccessLevel >= AccessLevel.VIP)
+			{
+				SendToolbar(e.Mobile);
+			}
+		}
 
-        public override string Name
-        {
-            get
-            {
-                return @"Toolbar Core";
-            }
-        }
+		public static void OnPlayerDeath(PlayerDeathEventArgs e)
+		{
+			if (e.Mobile.AccessLevel < AccessLevel.VIP)
+			{
+				return;
+			}
 
-        public override string Description
-        {
-            get
-            {
-                return @"Core that maintains the [Toolbar system.";
-            }
-        }
+			e.Mobile.CloseGump(typeof(ToolbarGump));
 
-        public override string Version
-        {
-            get
-            {
-                return SystemVersion;
-            }
-        }
+			Timer.DelayCall(TimeSpan.FromSeconds(2.0), SendToolbar, e.Mobile);
+		}
 
-        public override AccessLevel EditLevel
-        {
-            get
-            {
-                return AccessLevel.Developer;
-            }
-        }
+		[Usage("Toolbar")]
+		public static void Toolbar_OnCommand(CommandEventArgs e)
+		{
+			SendToolbar(e.Mobile);
+		}
 
-        public override Gump SettingsGump
-        {
-            get
-            {
-                return null;
-            }
-        }
+		public static void SendToolbar(Mobile m)
+		{
+			ToolbarModule module = m.GetModule(typeof(ToolbarModule)) as ToolbarModule ?? new ToolbarModule(m);
 
-        private static void OnLogin(LoginEventArgs e)
-        {
-            if (e.Mobile.AccessLevel >= AccessLevel.VIP)
-            {
-                SendToolbar(e.Mobile);
-            }
-        }
+			m.CloseGump(typeof(ToolbarGump));
+			m.SendGump(new ToolbarGump(module.ToolbarInfo));
+		}
 
-        public static void OnPlayerDeath(PlayerDeathEventArgs e)
-        {
-            if (e.Mobile.AccessLevel >= AccessLevel.VIP)
-            {
-                e.Mobile.CloseGump(typeof(Gumps.ToolbarGump));
-                object[] arg = new object[] { e.Mobile };
-                Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(SendToolbar), arg);
-            }
-        }
+		public ToolbarCore()
+		{
+			Enabled = true;
+		}
 
-        [Usage("Toolbar")]
-        public static void Toolbar_OnCommand(CommandEventArgs e)
-        {
-            SendToolbar(e.Mobile);
-        }
+		public ToolbarCore(CustomSerial serial)
+			: base(serial)
+		{ }
 
-        public static void SendToolbar(Mobile from)
-        {
-            ToolbarModule module = @from.GetModule(typeof(ToolbarModule)) as ToolbarModule ?? new ToolbarModule(@from);
+		public override string Name { get { return @"Toolbar Core"; } }
+		public override string Description { get { return @"Core that maintains the [Toolbar system."; } }
+		public override string Version { get { return SystemVersion; } }
+		public override AccessLevel EditLevel { get { return AccessLevel.Developer; } }
+		public override Gump SettingsGump { get { return null; } }
 
-            from.CloseGump(typeof (Gumps.ToolbarGump));
-            from.SendGump(new Gumps.ToolbarGump(module.ToolbarInfo));
-        }
 
-        public static void SendToolbar(object state)
-        {
-            object[] states = (object[])state;
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
 
-            Mobile m = (Mobile)states[0];
-            SendToolbar(m);
-        }
+			writer.WriteVersion(0);
+		}
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
 
-            Utilities.WriteVersion(writer, 0);
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
+			reader.ReadInt();
+		}
+	}
 }

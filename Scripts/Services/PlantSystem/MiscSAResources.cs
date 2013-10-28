@@ -1,180 +1,137 @@
-using System;
+#region Header
+// **********
+// ServUO - MiscSAResources.cs
+// **********
+#endregion
+
+#region References
 using Server.Engines.Plants;
+#endregion
 
 namespace Server.Items
 {
-    public class DryReeds : Item
-    {
-        private PlantHue m_PlantHue;
-        [Constructable]
-        public DryReeds()
-            : this(1)
-        {
-        }
+	public class DryReeds : Item
+	{
+		public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+		public override int LabelNumber { get { return 1112248; } } // Dry Reeds
 
-        [Constructable]
-        public DryReeds(int amount)
-            : base(0x1BD5)
-        {
-            this.Stackable = true;
-            this.Amount = amount;
-        }
+		private PlantHue m_PlantHue;
 
-        public DryReeds(Serial serial)
-            : base(serial)
-        {
-        }
+		[CommandProperty(AccessLevel.GameMaster)]
+		public PlantHue PlantHue
+		{
+			get { return m_PlantHue; }
+			set
+			{
+				m_PlantHue = value;
+				Hue = PlantHueInfo.GetInfo(value).Hue;
+				InvalidateProperties();
+			}
+		}
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public PlantHue PlantHue
-        {
-            get
-            {
-                return this.m_PlantHue;
-            }
-            set
-            {
-                this.m_PlantHue = value;
-                this.Hue = PlantHueInfo.GetInfo(value).Hue;
-                this.InvalidateProperties();
-            }
-        }
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112248;
-            }
-        }// Dry Reeds
-        public override void AddNameProperty(ObjectPropertyList list)
-        {
-            PlantHueInfo hueInfo = PlantHueInfo.GetInfo(this.m_PlantHue);
-            
-            if (this.Amount > 1)
-                list.Add(1113275, "{0}\t{1}", this.Amount, "#" + hueInfo.Name);  // ~1_COLOR~ Softened Reeds
-            else 
-                list.Add(1112289, "#" + hueInfo.Name);  // ~1_COLOR~ dry reeds
-        }
+		public virtual bool RetainsColor { get { return true; } }
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
+		[Constructable]
+		public DryReeds()
+			: this(1)
+		{ }
 
-            writer.Write((int)1); // version
+		[Constructable]
+		public DryReeds(int amount)
+			: base(0x1BD5)
+		{
+			Stackable = true;
+			Amount = amount;
+		}
 
-            writer.Write((int)this.m_PlantHue);
-        }
+		public DryReeds(Serial serial)
+			: base(serial)
+		{ }
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
+		public override void AddNameProperty(ObjectPropertyList list)
+		{
+			list.Add(1112289, "#" + PlantHueInfo.GetInfo(m_PlantHue).Name); // ~1_COLOR~ dry reeds
+		}
 
-            int version = reader.ReadInt();
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
 
-            switch (version)
-            {
-                case 1:
-                    this.m_PlantHue = (PlantHue)reader.ReadInt();
-                    break;
-            }
-        }
-    }
+			writer.Write(1); // version
 
-    public class SoftenedReeds : Item
-    {
-        private PlantHue m_PlantHue;
-        [Constructable]
-        public SoftenedReeds()
-            : this(1)
-        {
-        }
+			writer.Write((int)m_PlantHue);
+		}
 
-        [Constructable]
-        public SoftenedReeds(int amount)
-            : base(0x4006)
-        {
-            this.Stackable = true;
-            this.Amount = amount;
-        }
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
 
-        public SoftenedReeds(Serial serial)
-            : base(serial)
-        {
-        }
+			int version = reader.ReadInt();
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public PlantHue PlantHue
-        {
-            get
-            {
-                return this.m_PlantHue;
-            }
-            set
-            {
-                this.m_PlantHue = value;
-                this.Hue = PlantHueInfo.GetInfo(value).Hue;
-                this.InvalidateProperties();
-            }
-        }
-        public override bool ForceShowProperties
-        {
-            get
-            {
-                return ObjectPropertyList.Enabled;
-            }
-        }
-        public bool RetainsColorFrom
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112246;
-            }
-        }// Softened Reeds
-        public override void AddNameProperty(ObjectPropertyList list)
-        {
-            PlantHueInfo hueInfo = PlantHueInfo.GetInfo(this.m_PlantHue);
+			switch (version)
+			{
+				case 1:
+					m_PlantHue = (PlantHue)reader.ReadInt();
+					break;
+			}
+		}
+	}
 
-            if (this.Amount > 1)
-                list.Add(1113323, "{0}\t{1}", this.Amount, "#" + hueInfo.Name);  // ~1_COLOR~ Softened Reeds
-            else 
-                list.Add(1112346, "#" + hueInfo.Name);  // ~1_COLOR~ Softened Reeds
-        }
+	public class SoftenedReeds : Item
+	{
+		public override bool ForceShowProperties { get { return ObjectPropertyList.Enabled; } }
+		public override int LabelNumber { get { return 1112246; } } // Softened Reeds
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
+		private PlantHue m_PlantHue;
 
-            writer.Write((int)1); // version
+		[CommandProperty(AccessLevel.GameMaster)]
+		public PlantHue PlantHue
+		{
+			get { return m_PlantHue; }
+			set
+			{
+				m_PlantHue = value;
+				Hue = PlantHueInfo.GetInfo(value).Hue;
+				InvalidateProperties();
+			}
+		}
 
-            writer.Write((int)this.m_PlantHue);
-        }
+		public virtual bool RetainsColor { get { return true; } }
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
+		[Constructable]
+		public SoftenedReeds()
+			: this(1)
+		{ }
 
-            int version = reader.ReadInt();
+		[Constructable]
+		public SoftenedReeds(int amount)
+			: base(0x4006)
+		{
+			Stackable = true;
+			Amount = amount;
+		}
 
-            switch (version)
-            {
-                case 1:
-                    this.m_PlantHue = (PlantHue)reader.ReadInt();
-                    break;
-            }
-        }
-    }
+		public SoftenedReeds(Serial serial)
+			: base(serial)
+		{ }
+
+		public override void AddNameProperty(ObjectPropertyList list)
+		{
+			list.Add(1112346, "#" + PlantHueInfo.GetInfo(m_PlantHue).Name); // ~1_COLOR~ Softened Reeds
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write(1); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			reader.ReadInt();
+		}
+	}
 }
