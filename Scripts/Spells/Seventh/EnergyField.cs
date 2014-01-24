@@ -164,6 +164,9 @@ namespace Server.Spells.Seventh
                     noto = Notoriety.Compute(this.m_Caster, m);
                     if (noto == Notoriety.Enemy || noto == Notoriety.Ally)
                         return false;
+
+                    if (m.Map != null && (m.Map.Rules & MapRules.FreeMovement) == 0)
+                        return false;
                 }
                 return base.OnMoveOver(m);
             }
