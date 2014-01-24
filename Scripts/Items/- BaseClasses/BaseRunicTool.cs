@@ -116,11 +116,18 @@ namespace Server.Items
             m_Props.SetAll(false);
 
             if (weapon is BaseRanged)
+            {
                 m_Props.Set(2, true); // ranged weapons cannot be ubws or mageweapon
+            }
+            else
+            {
+            	m_Props.Set(25, true); // Only bows can be Balanced
+            	m_Props.Set(26, true); // Only bows have Velocity
+            }
 
             for (int i = 0; i < attributeCount; ++i)
             {
-                int random = GetUniqueRandom(25);
+                int random = GetUniqueRandom(27);
 
                 if (random == -1)
                     break;
@@ -250,6 +257,14 @@ namespace Server.Items
                     case 24:
                         GetElementalDamages(weapon);
                         break;
+                    case 25:
+                        BaseRanged brb = weapon as BaseRanged;
+                        brb.Balanced = true;
+                        break;
+                    case 26:
+                        BaseRanged brv = weapon as BaseRanged;
+                    	brv.Velocity = (Utility.RandomMinMax(2,50));
+                   		break;
                 }
             }
         }
