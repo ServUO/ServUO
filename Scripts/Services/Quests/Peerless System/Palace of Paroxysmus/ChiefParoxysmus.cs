@@ -40,6 +40,7 @@ namespace Server.Mobiles
 			
             this.PackResources(8);
             this.PackTalismans(5);
+            Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(SpawnBulbous));  //BulbousPutrification
         }
 
         public ChiefParoxysmus(Serial serial)
@@ -192,7 +193,7 @@ namespace Server.Mobiles
 
         public virtual void SpawnBulbous()
         {
-            for (int i = 0; i < 3; i ++)
+            for (int i = 0; i < 3; i++)
             {
                 Mobile blobus = new BulbousPutrification();
                 blobus.MoveToWorld(this.GetSpawnPosition(4), this.Map);
