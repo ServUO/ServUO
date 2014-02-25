@@ -105,6 +105,8 @@ namespace Server.Items
 
             if (context != null && context.DoNotColor)
                 this.Hue = 0;
+            else
+                this.Hue = resHue;
 
             return quality;
         }
