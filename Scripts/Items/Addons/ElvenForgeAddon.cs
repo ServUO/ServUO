@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public ElvenForgeAddon()
         {
-            this.AddComponent(new AddonComponent(0x2DD8), 0, 0, 0);
+            AddComponent(new ForgeComponent(0x2DD8), 0, 0, 0);
         }
 
         public ElvenForgeAddon(Serial serial)
