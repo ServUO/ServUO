@@ -22,7 +22,7 @@ namespace Server.Spells.Spellweaving
         {
             get
             {
-                return 80.0;
+                return 83.0;
             }
         }
         public override int RequiredMana
