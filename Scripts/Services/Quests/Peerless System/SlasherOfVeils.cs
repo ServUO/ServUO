@@ -83,14 +83,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return true;
+                return false;
             }
         }
         public override bool BardImmune
         {
             get
             {
-                return true;
+                return false;
             }
         }
         public override int GetIdleSound()

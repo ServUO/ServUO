@@ -128,14 +128,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return true;
+                return false;
             }
         }
         public override bool Unprovokable
         {
             get
             {
-                return true;
+                return false;
             }
         }
         public override bool AreaPeaceImmune
