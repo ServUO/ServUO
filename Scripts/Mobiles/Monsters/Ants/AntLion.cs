@@ -67,7 +67,17 @@ namespace Server.Mobiles
             orepile.ItemID = 0x19B9;
             this.PackItem(orepile);
             // TODO: skeleton
-        }
+			
+			if ( 0.07 >= Utility.RandomDouble() )
+			{
+				switch ( Utility.Random( 3 ) )
+				{
+					case 0: PackItem( new UnknownBardSkeleton() ); break;
+					case 1: PackItem( new UnknownMageSkeleton() ); break;
+					case 2: PackItem( new UnknownRogueSkeleton() ); break;
+				}
+			}					
+        }		
 
         public AntLion(Serial serial)
             : base(serial)
