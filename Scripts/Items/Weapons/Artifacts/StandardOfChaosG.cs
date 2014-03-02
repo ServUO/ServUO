@@ -20,6 +20,7 @@ namespace Server.Items
             this.Attributes.WeaponDamage = -40;
             this.Attributes.CastSpeed = 1;
             this.AosElementDamages.Chaos = 100;		
+			this.StrRequirement = 40;
         }
 
         public StandardOfChaosG(Serial serial)
