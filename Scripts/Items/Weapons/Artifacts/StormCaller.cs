@@ -9,6 +9,7 @@ namespace Server.Items
             : base()
         {
             this.Name = ("Storm Caller");
+			this.Weight = 4;
 		
             this.Hue = 456;
             this.WeaponAttributes.BattleLust = 1;
