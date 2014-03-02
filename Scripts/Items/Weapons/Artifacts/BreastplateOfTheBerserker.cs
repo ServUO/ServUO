@@ -10,11 +10,14 @@ namespace Server.Items
             this.Name = ("Breastplate Of The Berserker");
 		
             this.Hue = 1172;	
+			this.Weight = 10;
 		
             this.Attributes.WeaponSpeed = 10;
             this.Attributes.WeaponDamage = 15;		
             this.Attributes.LowerManaCost = 4;
             this.Attributes.BonusHits = 5;			
+			this.Attributes.RegenStam = 3;
+			this.StrRequirement = 95;
         }
 
         public BreastplateOfTheBerserker(Serial serial)
