@@ -3059,6 +3059,8 @@ namespace Server
 		private static readonly Packet[][] m_MovingPacketCache = new Packet[2][] {new Packet[8], new Packet[8]};
 
 		private bool m_Pushing;
+        private bool m_IgnoreMobiles;
+        private bool m_IsStealthing;
 
 		public bool Pushing { get { return m_Pushing; } set { m_Pushing = value; } }
 
@@ -3517,7 +3519,7 @@ namespace Server
 
 		public virtual bool CheckShove(Mobile shoved)
 		{
-			if ((m_Map.Rules & MapRules.FreeMovement) == 0)
+            if (!m_IgnoreMobiles && (m_Map.Rules & MapRules.FreeMovement) == 0)
 			{
 				if (!shoved.Alive || !Alive || shoved.IsDeadBondedPet || IsDeadBondedPet)
 				{
@@ -5807,6 +5809,12 @@ namespace Server
 
 			switch (version)
 			{
+                case 32:
+                    {
+                        m_IgnoreMobiles = reader.ReadBool();
+
+                        goto case 31;
+                    }
 				case 31:
 					{
 						m_LastStrGain = reader.ReadDeltaTime();
@@ -6263,7 +6271,9 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(31); // version
+			writer.Write(32); // version
+
+            writer.Write(m_IgnoreMobiles);
 
 			writer.WriteDeltaTime(m_LastStrGain);
 			writer.WriteDeltaTime(m_LastIntGain);
@@ -6814,6 +6824,27 @@ namespace Server
 		[CommandProperty(AccessLevel.Counselor)]
 		public Skills Skills { get { return m_Skills; } set { } }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IgnoreMobiles
+        {
+            get { return m_IgnoreMobiles; }
+            set
+            {
+                if (m_IgnoreMobiles != value)
+                {
+                    m_IgnoreMobiles = value;
+                    Delta(MobileDelta.Flags);
+                }
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsStealthing
+        {
+            get { return m_IsStealthing; }
+            set { m_IsStealthing = value; }
+        }
+
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
 		public AccessLevel AccessLevel
 		{
@@ -6892,6 +6923,8 @@ namespace Server
 			{
 				Hidden = false;
 			}
+
+            m_IsStealthing = false;
 
 			DisruptiveAction(); // Anything that unhides you will also distrupt meditation
 		}
@@ -8460,6 +8493,11 @@ namespace Server
 				flags |= 0x80;
 			}
 
+            if (m_IgnoreMobiles)
+            {
+                flags |= 0x10;
+            }
+
 			return flags;
 		}
 
@@ -8497,6 +8535,11 @@ namespace Server
 			{
 				flags |= 0x80;
 			}
+
+            if (m_IgnoreMobiles)
+            {
+                flags |= 0x10;
+            }
 
 			return flags;
 		}

@@ -216,8 +216,6 @@ namespace Server.Mobiles
 		private TimeSpan m_NpcGuildGameTime;
 		private PlayerFlag m_Flags;
 		private int m_Profession;
-		private bool m_IsStealthing; // IsStealthing should be moved to Server.Mobiles
-		private bool m_IgnoreMobiles; // IgnoreMobiles should be moved to Server.Mobiles
 
 		private int m_NonAutoreinsuredItems;
 		// number of items that could not be automaitically reinsured because gold in bank was not enough
@@ -289,27 +287,6 @@ namespace Server.Mobiles
 		public int Profession { get { return m_Profession; } set { m_Profession = value; } }
 
 		public int StepsTaken { get; set; }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool IsStealthing // IsStealthing should be moved to Server.Mobiles
-		{
-			get { return m_IsStealthing; }
-			set { m_IsStealthing = value; }
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool IgnoreMobiles // IgnoreMobiles should be moved to Server.Mobiles
-		{
-			get { return m_IgnoreMobiles; }
-			set
-			{
-				if (m_IgnoreMobiles != value)
-				{
-					m_IgnoreMobiles = value;
-					Delta(MobileDelta.Flags);
-				}
-			}
-		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public NpcGuild NpcGuild { get { return m_NpcGuild; } set { m_NpcGuild = value; } }
@@ -712,22 +689,12 @@ namespace Server.Mobiles
 		{
 			int flags = base.GetPacketFlags();
 
-			if (m_IgnoreMobiles)
-			{
-				flags |= 0x10;
-			}
-
 			return flags;
 		}
 
 		public override int GetOldPacketFlags()
 		{
 			int flags = base.GetOldPacketFlags();
-
-			if (m_IgnoreMobiles)
-			{
-				flags |= 0x10;
-			}
 
 			return flags;
 		}
@@ -1373,8 +1340,6 @@ namespace Server.Mobiles
 			InvisibilitySpell.RemoveTimer(this);
 
 			base.RevealingAction();
-
-			m_IsStealthing = false; // IsStealthing should be moved to Server.Mobiles
 		}
 
 		public override void OnHiddenChanged()
@@ -2444,7 +2409,7 @@ namespace Server.Mobiles
 
 		public override bool CheckShove(Mobile shoved)
 		{
-			if (m_IgnoreMobiles || TransformationSpellHelper.UnderTransformation(shoved, typeof(WraithFormSpell)))
+			if (TransformationSpellHelper.UnderTransformation(shoved, typeof(WraithFormSpell)))
 			{
 				return true;
 			}
@@ -3745,11 +3710,6 @@ namespace Server.Mobiles
 			if (m_ChampionTitles == null)
 			{
 				m_ChampionTitles = new ChampionTitleInfo();
-			}
-
-			if (IsPlayer())
-			{
-				m_IgnoreMobiles = true;
 			}
 
 			var list = Stabled;
