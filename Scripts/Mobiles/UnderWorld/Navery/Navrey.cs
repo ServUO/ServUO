@@ -67,7 +67,17 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-
+ 
+ 
+ 
+ 
+        public override bool AlwaysMurderer
+        {
+             get
+            {
+                return true;
+            }
+        }
         public override Poison PoisonImmune
         {
             get
