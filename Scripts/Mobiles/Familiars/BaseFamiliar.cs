@@ -96,11 +96,29 @@ namespace Server.Mobiles
 
 			if (AIObject != null && AIObject.WalkMobileRange(master, 5, true, 1, 1))
 			{
-				Warmode = master.Warmode;
-				Combatant = master.Combatant;
+                if ((master.Combatant !=null) && (InRange(master.Combatant, 1)))
+                {
+		            Warmode = master.Warmode;
+		            Combatant = master.Combatant;
 
-				CurrentSpeed = 0.10;
-			}
+		            CurrentSpeed = 0.10;
+			    }
+
+                if ((master.Combatant !=null) && (!InRange(master.Combatant, 1)))
+                {
+                    Warmode = false;
+                    FocusMob = Combatant = null;
+                    CurrentSpeed = 0.01;
+                }
+
+                if (master.Combatant == null)
+                {
+                    Warmode = false;
+                    FocusMob = Combatant = null;
+                    CurrentSpeed = 0.01;
+                }
+ 
+            }
 			else
 			{
 				Warmode = false;
