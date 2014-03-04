@@ -2,19 +2,22 @@ using System;
 
 namespace Server.Items
 {
-    public class SignOfOrder : GargishOrderShield
+    public class GargishSignOfOrder : GargishOrderShield
     {
         [Constructable]
-        public SignOfOrder()
+        public GargishSignOfOrder()
             : base()
         {
+			this.Name = "Sign of Order";
+			
             this.SkillBonuses.SetValues(0, SkillName.Chivalry, 10.0);
-            this.Attributes.AttackChance = 20;
-            this.Attributes.DefendChance = 15;
+            this.Attributes.AttackChance = 5;
+            this.Attributes.DefendChance = 10;
             this.Attributes.CastSpeed = 1;
+			this.Attributes.CastRecovery = 1;
         }
 
-        public SignOfOrder(Serial serial)
+        public GargishSignOfOrder(Serial serial)
             : base(serial)
         {
         }
@@ -68,6 +71,22 @@ namespace Server.Items
                 return 255;
             }
         }
+		
+        public override Race RequiredRace
+        {
+            get
+            {
+                return Race.Gargoyle;
+            }
+        }
+        public override bool CanBeWornByGargoyles
+        {
+            get
+            {
+                return true;
+            }
+        }		
+		
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);

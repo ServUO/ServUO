@@ -12,8 +12,8 @@ namespace Server.Items
             this.Hue = 1177;
 		
             this.AbsorptionAttributes.EaterFire = 20;
-            this.WeaponAttributes.HitFireball = 30;	
-            this.Attributes.AttackChance = 10;
+            this.WeaponAttributes.HitFireball = 60;	
+            this.Attributes.AttackChance = 15;
             this.Attributes.WeaponDamage = 50;
             this.WeaponAttributes.UseBestSkill = 1;	
         }

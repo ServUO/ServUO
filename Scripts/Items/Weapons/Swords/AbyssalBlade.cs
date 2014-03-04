@@ -23,19 +23,27 @@ namespace Server.Items
             : base(serial)
         {
         }
+		
+		 public override float MlSpeed
+        {
+            get
+            {
+                return 3.75f;
+            }
+        }		
 
         public override int InitMinHits
         {
             get
             {
-                return 31;
+                return 255;
             }
         }
         public override int InitMaxHits
         {
             get
             {
-                return 100;
+                return 255;
             }
         }
         public override bool CanBeWornByGargoyles

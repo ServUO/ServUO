@@ -64,7 +64,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(BurningAmber), typeof(DraconisWrath), typeof(DragonHideShield), typeof(FallenMysticsSpellbook), typeof(LifeSyphon), typeof(SignOfOrder), typeof(VampiricEssence) };
+                return new Type[] { typeof(BurningAmber), typeof(DraconisWrath), typeof(DragonHideShield), typeof(FallenMysticsSpellbook), typeof(LifeSyphon), typeof(GargishSignOfOrder), typeof(HumanSignOfOrder), typeof(VampiricEssence) };
             }
         }
         public override Type[] SharedSAList

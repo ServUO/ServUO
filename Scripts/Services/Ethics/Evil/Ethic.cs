@@ -17,7 +17,7 @@ namespace Server.Ethics.Evil
                     new UnholyItem(),
                     new SummonFamiliar(),
                     new VileBlade(),
-                    new Blight(),
+                    new BlightPower(),
                     new UnholyShield(),
                     new UnholySteed(),
                     new UnholyWord()

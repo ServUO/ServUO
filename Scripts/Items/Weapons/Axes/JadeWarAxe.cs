@@ -29,14 +29,14 @@ namespace Server.Items
         {
             get
             {
-                return 31;
+                return 255;
             }
         }
         public override int InitMaxHits
         {
             get
             {
-                return 80;
+                return 255;
             }
         }
         public override HarvestSystem HarvestSystem

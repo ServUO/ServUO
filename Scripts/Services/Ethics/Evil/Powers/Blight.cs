@@ -3,9 +3,9 @@ using Server.Spells;
 
 namespace Server.Ethics.Evil
 {
-    public sealed class Blight : Power
+    public sealed class BlightPower : Power
     {
-        public Blight()
+        public BlightPower()
         {
             this.m_Definition = new PowerDefinition(
                 15,
