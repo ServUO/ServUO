@@ -42,7 +42,7 @@ namespace Server.Spells.Mystic
                 for (int i = 0; i < stones.Length; i++)
                     stones[i].Delete();
 
-                int amount = (int)(this.Caster.Skills[this.DamageSkill].Value / 10);
+                int amount = (Caster.Skills.Mysticism.Fixed / 10) + (Caster.Skills.Focus.Fixed / 10);
                 this.Caster.PlaySound(0x651);
                 this.Caster.Backpack.DropItem(new HealingStone(this.Caster, amount));
                 this.Caster.SendLocalizedMessage(1080115); // A Healing Stone appears in your backpack.
