@@ -17,26 +17,27 @@ namespace Server.Mobiles
             this.Body = 0x190;
             this.Hue = 0x83EC;
 
-            this.SetStr(305, 425);
+            this.SetStr(283, 425);
             this.SetDex(72, 150);
             this.SetInt(505, 750);
 
-            this.SetHits(4200);
+            this.SetHits(12000);
             this.SetStam(102, 300);
+            this.SetMana(505, 750);
 
-            this.SetDamage(25, 35);
+            this.SetDamage(29, 38);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 60, 70);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            this.SetResistance(ResistanceType.Physical, 65, 75);
+            this.SetResistance(ResistanceType.Fire, 70, 80);
+            this.SetResistance(ResistanceType.Cold, 65, 80);
+            this.SetResistance(ResistanceType.Poison, 70, 75);
+            this.SetResistance(ResistanceType.Energy, 70, 80);
 
             this.SetSkill(SkillName.MagicResist, 100.0);
-            this.SetSkill(SkillName.Tactics, 97.6, 100.0);
-            this.SetSkill(SkillName.Wrestling, 97.6, 100.0);
+            this.SetSkill(SkillName.Tactics, 118.3, 120.2);
+            this.SetSkill(SkillName.Wrestling, 118.4, 122.7);
 
             this.Fame = 22500;
             this.Karma = -22500;
@@ -321,8 +322,11 @@ namespace Server.Mobiles
                     this.m_Owner.BodyMod = 0;
                     this.m_Owner.HueMod = -1;
                     this.m_Owner.EndAction(typeof(PolymorphSpell));
-                    this.m_Owner.SlayerVulnerabilities.Remove("Vermin");
-                    this.m_Owner.SlayerVulnerabilities.Remove("Repond");
+                    if (this.m_Owner.SlayerVulnerabilities != null)
+                    {
+                        this.m_Owner.SlayerVulnerabilities.Remove("Vermin");
+                        this.m_Owner.SlayerVulnerabilities.Remove("Repond");    
+                    }
                 }
             }
         }
