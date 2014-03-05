@@ -47,7 +47,7 @@ namespace Server.Items
 
             m_Table[TalismanSlayerName.Vermin] = new Type[]
             {
-                typeof(RatmanMage), typeof(RatmanMage), typeof(RatmanArcher), typeof(Barracoon),
+                typeof(RatmanMage), typeof(RatmanMage), typeof(RatmanArcher), //typeof(Barracoon),
                 typeof(Ratman), typeof(Sewerrat), typeof(Rat), typeof(GiantRat) //, typeof( Chiikkaha )
             };
 
@@ -122,6 +122,16 @@ namespace Server.Items
 
         public static bool Slays(TalismanSlayerName name, Mobile m)
         {
+
+            if (m.SpecialSlayerMechanics)
+            {
+                if (m.SlayerVulnerabilities.Contains(name.ToString()))
+                    return true;
+                else
+                    return false;
+                
+            }
+
             if (!m_Table.ContainsKey(name))
                 return false;
 
