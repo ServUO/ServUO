@@ -51,6 +51,8 @@ namespace Server.Mobiles
 
             this.HairItemID = 0x203B; // Short Hair
             this.HairHue = 0x94;
+
+            this.m_SpecialSlayerMechanics = true;
         }
 
         public Barracoon(Serial serial)
@@ -194,7 +196,9 @@ namespace Server.Mobiles
 
                 m.BodyMod = 42;
                 m.HueMod = 0;
-
+                if (m == this)
+                    m_SlayerVulnerabilities.Add("Vermin");
+   
                 new ExpirePolymorphTimer(m).Start();
             }
         }
@@ -303,13 +307,15 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            m_SlayerVulnerabilities.Clear();
         }
 
         private class ExpirePolymorphTimer : Timer
         {
-            private readonly Mobile m_Owner;
+            private Mobile m_Owner;
             public ExpirePolymorphTimer(Mobile owner)
-                : base(TimeSpan.FromMinutes(3.0))
+                : base(TimeSpan.FromMinutes(1.0)) //3.0
             {
                 this.m_Owner = owner;
 
@@ -323,6 +329,7 @@ namespace Server.Mobiles
                     this.m_Owner.BodyMod = 0;
                     this.m_Owner.HueMod = -1;
                     this.m_Owner.EndAction(typeof(PolymorphSpell));
+                    this.m_Owner.SlayerVulnerabilities.Remove("Vermin");
                 }
             }
         }
