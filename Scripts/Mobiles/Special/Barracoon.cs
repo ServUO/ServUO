@@ -266,10 +266,10 @@ namespace Server.Mobiles
             if (0.6 >= Utility.RandomDouble()) // 60% chance to polymorph attacker into a ratman
                 this.Polymorph(target);
 
-            if (0.2 >= Utility.RandomDouble()) // 20% chance to more ratmen
+            if (0.1 >= Utility.RandomDouble()) // 10% chance to more ratmen
                 this.SpawnRatmen(target);
 
-            if (this.Hits < 500 && !this.IsBodyMod) // Baracoon is low on life, polymorph into a ratman
+            if (0.05 >= Utility.RandomDouble() && !this.IsBodyMod) // 5% chance to polymorph into a ratman
                 this.Polymorph(this);
         }
 
@@ -307,7 +307,7 @@ namespace Server.Mobiles
         {
             private Mobile m_Owner;
             public ExpirePolymorphTimer(Mobile owner)
-                : base(TimeSpan.FromMinutes(1.0)) //3.0
+                : base(TimeSpan.FromMinutes(3.0)) //3.0
             {
                 this.m_Owner = owner;
 
