@@ -184,20 +184,12 @@ namespace Server.Mobiles
 
             if (m.BeginAction(typeof(PolymorphSpell)))
             {
-                Item disarm = m.FindItemOnLayer(Layer.OneHanded);
-
-                if (disarm != null && disarm.Movable)
-                    m.AddToBackpack(disarm);
-
-                disarm = m.FindItemOnLayer(Layer.TwoHanded);
-
-                if (disarm != null && disarm.Movable)
-                    m.AddToBackpack(disarm);
-
                 m.BodyMod = 42;
                 m.HueMod = 0;
-                if (m == this)
+                if (m == this) { 
                     m_SlayerVulnerabilities.Add("Vermin");
+                    m_SlayerVulnerabilities.Add("Repond");
+                }
    
                 new ExpirePolymorphTimer(m).Start();
             }
@@ -330,6 +322,7 @@ namespace Server.Mobiles
                     this.m_Owner.HueMod = -1;
                     this.m_Owner.EndAction(typeof(PolymorphSpell));
                     this.m_Owner.SlayerVulnerabilities.Remove("Vermin");
+                    this.m_Owner.SlayerVulnerabilities.Remove("Repond");
                 }
             }
         }
