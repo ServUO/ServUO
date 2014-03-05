@@ -837,6 +837,14 @@ namespace Server
 
 		private int[] m_Resistances;
 
+        protected List<string> m_SlayerVulnerabilities = new List<string>();
+        protected bool m_SpecialSlayerMechanics = false;
+
+        public List<String> SlayerVulnerabilities { get { return m_SlayerVulnerabilities; } }
+
+        [CommandProperty(AccessLevel.Decorator)]
+        public bool SpecialSlayerMechanics { get { return m_SpecialSlayerMechanics; } }
+  
 		public int[] Resistances { get { return m_Resistances; } }
 
 		public virtual int BasePhysicalResistance { get { return 0; } }
@@ -5809,6 +5817,27 @@ namespace Server
 
 			switch (version)
 			{
+                case 33:
+                    {
+                        m_SpecialSlayerMechanics = reader.ReadBool();
+
+                        if (reader.ReadBool())
+                        {
+                            int length = reader.ReadInt();
+
+                            for (int i = 0; i < length; i++)
+                            {
+                                m_SlayerVulnerabilities.Add(reader.ReadString());
+                            }
+
+                        }
+                        else
+                        {
+                            m_SlayerVulnerabilities = new List<string>();
+                        }
+
+                        goto case 32;
+                    }
                 case 32:
                     {
                         m_IgnoreMobiles = reader.ReadBool();
@@ -6271,8 +6300,26 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(32); // version
+			writer.Write(33); // version
 
+            writer.Write(m_SpecialSlayerMechanics);
+
+            if (m_SlayerVulnerabilities != null && m_SlayerVulnerabilities.Count > 0)
+            {
+                writer.Write(true);
+
+                writer.Write(m_SlayerVulnerabilities.Count);
+
+                for (int i = 0; i < m_SlayerVulnerabilities.Count; i++)
+                {
+                    writer.Write(m_SlayerVulnerabilities[i]);
+                }
+            }
+            else
+            {
+                writer.Write(false);
+            }
+            
             writer.Write(m_IgnoreMobiles);
 
 			writer.WriteDeltaTime(m_LastStrGain);

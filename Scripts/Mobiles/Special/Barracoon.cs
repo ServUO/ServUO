@@ -17,26 +17,27 @@ namespace Server.Mobiles
             this.Body = 0x190;
             this.Hue = 0x83EC;
 
-            this.SetStr(305, 425);
+            this.SetStr(283, 425);
             this.SetDex(72, 150);
             this.SetInt(505, 750);
 
-            this.SetHits(4200);
+            this.SetHits(12000);
             this.SetStam(102, 300);
+            this.SetMana(505, 750);
 
-            this.SetDamage(25, 35);
+            this.SetDamage(29, 38);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 60, 70);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            this.SetResistance(ResistanceType.Physical, 65, 75);
+            this.SetResistance(ResistanceType.Fire, 70, 80);
+            this.SetResistance(ResistanceType.Cold, 65, 80);
+            this.SetResistance(ResistanceType.Poison, 70, 75);
+            this.SetResistance(ResistanceType.Energy, 70, 80);
 
             this.SetSkill(SkillName.MagicResist, 100.0);
-            this.SetSkill(SkillName.Tactics, 97.6, 100.0);
-            this.SetSkill(SkillName.Wrestling, 97.6, 100.0);
+            this.SetSkill(SkillName.Tactics, 118.3, 120.2);
+            this.SetSkill(SkillName.Wrestling, 118.4, 122.7);
 
             this.Fame = 22500;
             this.Karma = -22500;
@@ -51,6 +52,8 @@ namespace Server.Mobiles
 
             this.HairItemID = 0x203B; // Short Hair
             this.HairHue = 0x94;
+
+            this.m_SpecialSlayerMechanics = true;
         }
 
         public Barracoon(Serial serial)
@@ -182,19 +185,13 @@ namespace Server.Mobiles
 
             if (m.BeginAction(typeof(PolymorphSpell)))
             {
-                Item disarm = m.FindItemOnLayer(Layer.OneHanded);
-
-                if (disarm != null && disarm.Movable)
-                    m.AddToBackpack(disarm);
-
-                disarm = m.FindItemOnLayer(Layer.TwoHanded);
-
-                if (disarm != null && disarm.Movable)
-                    m.AddToBackpack(disarm);
-
                 m.BodyMod = 42;
                 m.HueMod = 0;
-
+                if (m == this) { 
+                    m_SlayerVulnerabilities.Add("Vermin");
+                    m_SlayerVulnerabilities.Add("Repond");
+                }
+   
                 new ExpirePolymorphTimer(m).Start();
             }
         }
@@ -270,10 +267,10 @@ namespace Server.Mobiles
             if (0.6 >= Utility.RandomDouble()) // 60% chance to polymorph attacker into a ratman
                 this.Polymorph(target);
 
-            if (0.2 >= Utility.RandomDouble()) // 20% chance to more ratmen
+            if (0.1 >= Utility.RandomDouble()) // 10% chance to more ratmen
                 this.SpawnRatmen(target);
 
-            if (this.Hits < 500 && !this.IsBodyMod) // Baracoon is low on life, polymorph into a ratman
+            if (0.05 >= Utility.RandomDouble() && !this.IsBodyMod) // 5% chance to polymorph into a ratman
                 this.Polymorph(this);
         }
 
@@ -303,13 +300,15 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            m_SlayerVulnerabilities.Clear();
         }
 
         private class ExpirePolymorphTimer : Timer
         {
-            private readonly Mobile m_Owner;
+            private Mobile m_Owner;
             public ExpirePolymorphTimer(Mobile owner)
-                : base(TimeSpan.FromMinutes(3.0))
+                : base(TimeSpan.FromMinutes(3.0)) //3.0
             {
                 this.m_Owner = owner;
 
@@ -323,6 +322,11 @@ namespace Server.Mobiles
                     this.m_Owner.BodyMod = 0;
                     this.m_Owner.HueMod = -1;
                     this.m_Owner.EndAction(typeof(PolymorphSpell));
+                    if (this.m_Owner.SlayerVulnerabilities != null)
+                    {
+                        this.m_Owner.SlayerVulnerabilities.Remove("Vermin");
+                        this.m_Owner.SlayerVulnerabilities.Remove("Repond");    
+                    }
                 }
             }
         }

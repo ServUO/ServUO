@@ -109,6 +109,15 @@ namespace Server.Items
         }
         public bool Slays(Mobile m)
         {
+
+            if (m.SpecialSlayerMechanics)
+            {
+                if (m.SlayerVulnerabilities.Contains(m_Name.ToString()))
+                    return true;
+                else
+                    return false;
+            }
+
             Type t = m.GetType();
 
             for (int i = 0; i < this.m_Types.Length; ++i)
