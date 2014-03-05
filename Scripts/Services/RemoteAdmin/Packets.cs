@@ -151,9 +151,9 @@ namespace Server.RemoteAdmin
     public sealed class UOGInfo : Packet
     {
         public UOGInfo(string str)
-            : base(0x52, str.Length + 6)// 'R'
+            : base(0x53, str.Length + 7)// 'S'
         {
-            this.m_Stream.WriteAsciiFixed("unUO", 4);
+            this.m_Stream.WriteAsciiFixed("ervUO", 5);
             this.m_Stream.WriteAsciiNull(str);
         }
     }
