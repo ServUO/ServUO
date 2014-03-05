@@ -144,6 +144,10 @@ namespace Server.Items
             {
                 m.SendLocalizedMessage(1049616); // You are too busy to do that at the moment.
             }
+            else if (m.Holding != null)
+            {
+                m.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
+            }
             else if (this.m_TargetMap != null && this.m_TargetMap != Map.Internal)
             {
                 BaseCreature.TeleportPets(m, this.m_Target, this.m_TargetMap);
