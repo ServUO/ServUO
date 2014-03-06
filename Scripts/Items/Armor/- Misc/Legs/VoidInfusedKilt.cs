@@ -18,6 +18,7 @@ namespace Server.Items
             this.Attributes.RegenMana = 1;
             this.Attributes.RegenStam = 1;
             this.AbsorptionAttributes.EaterDamage = 10;
+			this.StrRequirement = 80;
         }
 
         public VoidInfusedKilt(Serial serial)
