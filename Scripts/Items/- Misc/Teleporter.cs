@@ -296,7 +296,12 @@ namespace Server.Items
 
 		public override bool OnMoveOver(Mobile m)
 		{
-			if (m_Active && CanTeleport(m))
+            if (m.Holding != null)
+            {
+                m.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
+                return true;
+            } 
+            else if (m_Active && CanTeleport(m))
 			{
 				StartTeleport(m);
 				return false;
