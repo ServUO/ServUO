@@ -113,6 +113,14 @@ namespace Server.Mobiles
             return 1587;
         }
 
+		public override bool AlwaysMurderer
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.AosSuperBoss, 4);
