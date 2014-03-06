@@ -11,7 +11,7 @@ namespace Server.Items
         {
             this.Name = ("Shroud Of The Condemned");
 		
-            this.Hue = 1;
+            this.Hue = 2075;
             this.Attributes.BonusHits = 3;
             this.Attributes.BonusInt = 5;
         }
