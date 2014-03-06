@@ -8,8 +8,12 @@ namespace Server.Items
         public DragonHideShield()
             : base()
         {
+			this.Name = "Dragon Hide Shield";
+			
+			this.Hue = 44;
+		
             this.AbsorptionAttributes.EaterFire = 20;
-            this.Attributes.BonusHits = 2;
+            this.Attributes.RegenHits = 2;
             this.Attributes.DefendChance = 10;
         }
 
@@ -67,6 +71,22 @@ namespace Server.Items
                 return 255;
             }
         }
+		
+        public override Race RequiredRace
+        {
+            get
+            {
+                return Race.Gargoyle;
+            }
+        }
+        public override bool CanBeWornByGargoyles
+        {
+            get
+            {
+                return true;
+            }
+        }		
+	
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
