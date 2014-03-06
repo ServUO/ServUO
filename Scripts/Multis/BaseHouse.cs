@@ -2126,7 +2126,8 @@ namespace Server.Multis
                 case SecureLevel.Anyone:
                     return true;
                 case SecureLevel.Guild:
-                    return this.IsGuildMember(m);
+                    return this.IsGuildMember(m) | this.IsOwner(m);
+//Check
             }
 
             return false;
