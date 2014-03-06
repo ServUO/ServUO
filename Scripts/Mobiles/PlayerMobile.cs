@@ -1681,7 +1681,7 @@ namespace Server.Mobiles
 						#region Mondain's Legacy
 						AnimalFormContext context = AnimalForm.GetContext(this);
 
-						if (skill == SkillName.Stealing && context.StealingMod.Value > 0)
+						if (skill == SkillName.Stealing && context.StealingMod != null && context.StealingMod.Value > 0)
 						{
 							continue;
 						}
