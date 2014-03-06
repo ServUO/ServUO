@@ -42,12 +42,12 @@ namespace Server.Gumps
 
             //fundo cinza
             //x, y, largura, altura, item
-            this.AddBackground(0, 0, 240, 450, 5054);
+            this.AddBackground(0, 0, 240, 475, 5054);
             //----------
             this.AddLabel(40, 2, 200, "CREATE WORLD GUMP");
             //fundo branco
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 385, 3004);
+            this.AddImageTiled(10, 20, 220, 410, 3004);
             //----------
             this.AddLabel(20, 26, 246, "Generate Moongen ");
             this.AddLabel(20, 51, 246, "Generate Door");
@@ -61,9 +61,10 @@ namespace Server.Gumps
             this.AddLabel(20, 251, 200, "Generate StealArties");
             this.AddLabel(20, 276, 200, "Generate SHTel");
             this.AddLabel(20, 301, 200, "Generate SecretLoc");
-            this.AddLabel(20, 326, 246, "Decorate Mondain's");
-            this.AddLabel(20, 351, 246, "Decorate Stygian");
-            this.AddLabel(20, 376, 246, "GenPrimevalLichLever");
+            this.AddLabel(20, 326, 200, "Generate Factions");
+            this.AddLabel(20, 351, 246, "Decorate Mondain's");
+            this.AddLabel(20, 376, 246, "Decorate Stygian");
+            this.AddLabel(20, 401, 246, "GenPrimevalLichLever");
             //Options
             //Options
             this.AddCheck(180, 23, 210, 211, true, 101);
@@ -78,13 +79,14 @@ namespace Server.Gumps
             this.AddCheck(180, 248, 210, 211, true, 110);
             this.AddCheck(180, 273, 210, 211, true, 111);
             this.AddCheck(180, 298, 210, 211, true, 112);
-            this.AddCheck(180, 323, 210, 211, true, 113);
-            this.AddCheck(180, 348, 210, 211, true, 114);
-            this.AddCheck(180, 373, 210, 211, true, 115);  
+            this.AddCheck(180, 323, 210, 211, true, 116);
+            this.AddCheck(180, 348, 210, 211, true, 113);
+            this.AddCheck(180, 373, 210, 211, true, 114);
+            this.AddCheck(180, 398, 210, 211, true, 115);  
    
             //Ok, Cancel (x, y, ?, ?, ?)
-            this.AddButton(60, 415, 247, 249, 1, GumpButtonType.Reply, 0);
-            this.AddButton(130, 415, 241, 243, 0, GumpButtonType.Reply, 0);
+            this.AddButton(60, 440, 247, 249, 1, GumpButtonType.Reply, 0);
+            this.AddButton(130, 440, 241, 243, 0, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState state, RelayInfo info) 
@@ -194,6 +196,11 @@ namespace Server.Gumps
                             {
                                 CommandSystem.Handle(from, String.Format("{0}GenLichPuzzle", prefix));
                                 from.Say("Primeval Lich Puzzle Generated!");  
+                            }
+
+                            if (Selections.Contains(116) == true)
+                            {
+                                CommandSystem.Handle(from, String.Format("{0}GenerateFactions", prefix));
                             }
                         }
 
