@@ -130,6 +130,10 @@ namespace Server.Spells.Fourth
             {
                 this.Caster.SendLocalizedMessage(502412); // There are no charges left on that item.
             }
+            else if (this.Caster.Holding != null)
+            {
+                this.Caster.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
+            }
             else if (this.CheckSequence())
             {
                 BaseCreature.TeleportPets(this.Caster, loc, map, true);

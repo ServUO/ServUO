@@ -1,8 +1,10 @@
 using System;
+using Server.Network;
 
 namespace Server.Items
 {
-    public class AbyssalCloth : Item
+	[FlipableAttribute(0x1765, 0x1767)]
+    public class AbyssalCloth : Item, ICommodity, IScissorable
     {
         [Constructable]
         public AbyssalCloth()
@@ -12,7 +14,7 @@ namespace Server.Items
 
         [Constructable]
         public AbyssalCloth(int amount)
-            : base(0x3183)
+            : base(0x1767)
         {
             this.Stackable = true;
             this.Amount = amount;			
@@ -31,6 +33,22 @@ namespace Server.Items
                 return 1113350;
             }
         }// abyssal cloth
+		
+        int ICommodity.DescriptionNumber
+        {
+            get
+            {
+                return this.LabelNumber;
+            }
+        }
+        bool ICommodity.IsDeedable
+        {
+            get
+            {
+                return true;
+            }
+        }
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -43,6 +61,23 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+        }
+		
+		public override void OnSingleClick(Mobile from)
+        {
+            int number = (this.Amount == 1) ? 1049124 : 1049123;
+
+            from.Send(new MessageLocalized(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, number, "", this.Amount.ToString()));
+        }
+		
+		public bool Scissor(Mobile from, Scissors scissors)
+        {
+            if (this.Deleted || !from.CanSee(this))
+                return false;
+
+            base.ScissorHelper(from, new Bandage(), 1);
+
+            return true;
         }
     }
 }

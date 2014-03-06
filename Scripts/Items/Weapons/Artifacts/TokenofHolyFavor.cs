@@ -11,8 +11,8 @@ namespace Server.Items
 		
             this.Hue = 96;
             this.Attributes.BonusHits = 5;
-            this.Attributes.CastRecovery = 1;
-            this.Attributes.CastSpeed = 2;
+            this.Attributes.CastRecovery = 2;
+            this.Attributes.CastSpeed = 1;
             this.Attributes.DefendChance = 10;
             this.Attributes.AttackChance = 10;
             this.Attributes.SpellDamage = 4;
