@@ -17,6 +17,7 @@ namespace Server.Items
             this.Attributes.DefendChance = 10;
             this.Attributes.WeaponSpeed = 25;
             this.Attributes.WeaponDamage = 50;
+			this.StrRequirement = 10;
         }
 
         public BladeOfBattle(Serial serial)
@@ -38,6 +39,22 @@ namespace Server.Items
                 return 255;
             }
         }
+		
+        public override int AosMinDamage
+        {
+            get
+            {
+                return 9;
+            }
+        }
+        public override int AosMaxDamage
+        {
+            get
+            {
+                return 13;
+            }
+        }		
+		
         public override bool CanBeWornByGargoyles
         {
             get

@@ -17,7 +17,9 @@ namespace Server.Items
             typeof(EnchantedTitanLegBone), typeof(GwennosHarp), typeof(IolosLute),
             typeof(LunaLance), typeof(NightsKiss), typeof(NoxRangersHeavyCrossbow),
             typeof(PolarBearMask), typeof(VioletCourage), typeof(HeartOfTheLion),
-            typeof(ColdBlood), typeof(AlchemistsBauble)
+            typeof(ColdBlood), typeof(AlchemistsBauble), typeof(CaptainQuacklebushsCutlass),
+			typeof(ForgedPardon), typeof(ShieldOfInvulnerability), typeof(AncientShipModelOfTheHMSCape),
+			typeof(AdmiralHeartyRum)
         };
         private int m_Level;
         private DateTime m_DeleteTime;

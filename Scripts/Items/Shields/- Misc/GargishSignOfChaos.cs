@@ -2,19 +2,22 @@ using System;
 
 namespace Server.Items
 {
-    public class SignOfChaos : GargishChaosShield
+    public class GargishSignOfChaos : GargishChaosShield
     {
         [Constructable]
-        public SignOfChaos()
+        public GargishSignOfChaos()
             : base()
         {
-            this.ArmorAttributes.SoulCharge = 30;
+			this.Name = "Sign of Chaos";
+			this.Hue = 2075;
+		
+            this.ArmorAttributes.SoulCharge = 20;
             this.Attributes.AttackChance = 5;
             this.Attributes.DefendChance = 10;
             this.Attributes.CastSpeed = 1;
         }
 
-        public SignOfChaos(Serial serial)
+        public GargishSignOfChaos(Serial serial)
             : base(serial)
         {
         }
@@ -68,6 +71,22 @@ namespace Server.Items
                 return 255;
             }
         }
+		
+        public override Race RequiredRace
+        {
+            get
+            {
+                return Race.Gargoyle;
+            }
+        }
+        public override bool CanBeWornByGargoyles
+        {
+            get
+            {
+                return true;
+            }
+        }			
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);

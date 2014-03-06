@@ -10,6 +10,7 @@ namespace Server.Items
             this.Name = ("Mantle Of The Fallen");
 		
             this.Hue = 1512;	
+			this.Weight = 6;
 		
             this.Attributes.LowerRegCost = 25;
             this.Attributes.BonusInt = 8;
@@ -17,6 +18,7 @@ namespace Server.Items
             this.Attributes.RegenMana = 1;	
             //AbsorptionAttributes.CastingFocus = 3;
             this.Attributes.SpellDamage = 5;
+			this.StrRequirement = 25;
         }
 
         public MantleOfTheFallen(Serial serial)
