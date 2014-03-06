@@ -92,7 +92,10 @@ namespace Server.Mobiles
 						c.DropItem(new FairyDragonWing());
 						break;
 					case 3:
-						c.DropItem(new SignOfChaos());
+						c.DropItem(new GargishSignOfChaos());
+						break;
+					case 4:
+						c.DropItem(new HumanSignOfChaos());
 						break;
 				}
 			}
