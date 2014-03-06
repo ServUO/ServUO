@@ -17,6 +17,7 @@ namespace Server.Items
             //AbsorptionAttributes.CastingFocus = 2;
             this.Attributes.LowerManaCost = 8;
             this.Attributes.LowerRegCost = 10;
+			this.StrRequirement = 20;
         }
 
         public SummonersKilt(Serial serial)
