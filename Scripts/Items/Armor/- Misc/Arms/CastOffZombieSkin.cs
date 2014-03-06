@@ -10,12 +10,14 @@ namespace Server.Items
             this.Name = ("Cast-Off Zombie Skin");
 		
             this.Hue = 1893;	
+			this.Weight = 4;
 		
             this.SkillBonuses.SetValues(0, SkillName.Necromancy, 5.0);	
             this.SkillBonuses.SetValues(1, SkillName.SpiritSpeak, 5.0);	
             this.Attributes.LowerManaCost = 5;
             this.Attributes.LowerRegCost = 8;
             this.Attributes.IncreasedKarmaLoss = 5;
+			this.StrRequirement = 25;
         }
 
         public CastOffZombieSkin(Serial serial)
