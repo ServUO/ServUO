@@ -127,6 +127,7 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.Gems, 8);
         }
 
+
         public override void OnThink()
         {
             base.OnThink();
