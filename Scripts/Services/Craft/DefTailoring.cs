@@ -85,7 +85,7 @@ namespace Server.Engines.Craft
 
         public override bool RetainsColorFrom(CraftItem item, Type type)
         {
-            if (type != typeof(Cloth) && type != typeof(UncutCloth))
+            if (type != typeof(Cloth) && type != typeof(UncutCloth) && type != typeof(AbyssalCloth))
                 return false;
 
             type = item.ItemType;

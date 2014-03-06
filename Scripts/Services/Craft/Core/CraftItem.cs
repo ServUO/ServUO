@@ -337,7 +337,7 @@ namespace Server.Engines.Craft
 			new[] {typeof(YewLog), typeof(YewBoard)}, new[] {typeof(Leather), typeof(Hides)},
 			new[] {typeof(SpinedLeather), typeof(SpinedHides)}, new[] {typeof(HornedLeather), typeof(HornedHides)},
 			new[] {typeof(BarbedLeather), typeof(BarbedHides)}, new[] {typeof(BlankMap), typeof(BlankScroll)},
-			new[] {typeof(Cloth), typeof(UncutCloth)}, new[] {typeof(CheeseWheel), typeof(CheeseWedge)},
+			new[] {typeof(Cloth), typeof(UncutCloth), typeof(AbyssalCloth)}, new[] {typeof(CheeseWheel), typeof(CheeseWedge)},
 			new[] {typeof(Pumpkin), typeof(SmallPumpkin)}, new[] {typeof(WoodenBowlOfPeas), typeof(PewterBowlOfPeas)}
 		};
 
@@ -357,7 +357,7 @@ namespace Server.Engines.Craft
 			#region Mondain's Legacy
 			typeof(Board), typeof(Log),
 			#endregion
-			typeof(BaseIngot), typeof(BaseOre), typeof(BaseLeather), typeof(BaseHides), typeof(UncutCloth), typeof(Cloth),
+			typeof(BaseIngot), typeof(BaseOre), typeof(BaseLeather), typeof(BaseHides), typeof(AbyssalCloth), typeof(UncutCloth), typeof(Cloth),
 			typeof(BaseGranite), typeof(BaseScales), typeof(PlantClippings), typeof(DryReeds), typeof(SoftenedReeds),
 			typeof(PlantPigment), typeof(BaseContainer)
 		};
