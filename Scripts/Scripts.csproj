@@ -1384,7 +1384,7 @@
     <Compile Include=".\Items\Shields\- Misc\MysticsGuard.cs" />
     <Compile Include=".\Items\Shields\- Misc\PillarOfStrength.cs" />
     <Compile Include=".\Items\Shields\- Misc\SentinelsGuard.cs" />
-    <Compile Include=".\Items\Shields\- Misc\SignOfChaos.cs" />
+    <Compile Include="Items\Shields\- Misc\GargishSignOfChaos.cs" />
     <Compile Include=".\Items\Shields\- Misc\SmallPlateShield.cs" />
     <Compile Include=".\Items\Shields\- Misc\WallOfHungryMouths.cs" />
     <Compile Include=".\Items\Shields\Artifacts\Aegis.cs" />
@@ -4548,6 +4548,7 @@
     <Compile Include="Items\Deeds\ForgedPardon.cs" />
     <Compile Include="Items\Food\AdmiralHeartyRum.cs" />
     <Compile Include="Items\Shields\- Misc\GargishSignOfOrder.cs" />
+    <Compile Include="Items\Shields\- Misc\HumanSignOfChaos.cs" />
     <Compile Include="Items\Shields\- Misc\HumanSignOfOrder.cs" />
   </ItemGroup>
   <ItemGroup>
