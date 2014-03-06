@@ -4544,6 +4544,9 @@
     <Compile Include=".\Targets\MoveTarget.cs" />
     <Compile Include=".\Targets\PickMoveTarget.cs" />
     <Compile Include="Items\Containers\UnknownSkeletons.cs" />
+    <Compile Include="Items\Decoration Artifacts\MLDecorationArtifacts.cs" />
+    <Compile Include="Items\Deeds\ForgedPardon.cs" />
+    <Compile Include="Items\Food\AdmiralHeartyRum.cs" />
     <Compile Include="Items\Shields\- Misc\GargishSignOfOrder.cs" />
     <Compile Include="Items\Shields\- Misc\HumanSignOfOrder.cs" />
   </ItemGroup>
