@@ -1,7 +1,7 @@
 ﻿using System;
 using Server;
 
-namespace Server.Items.Food
+namespace Server.Items
 {
     /* 
     FUN FACT: Although never officially confirmed, it is thought this item is named after a player, Admiral Ruffie,
