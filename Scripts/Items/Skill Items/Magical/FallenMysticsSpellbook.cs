@@ -6,7 +6,13 @@ namespace Server.Items
     {
         [Constructable]
         public FallenMysticsSpellbook()
-            : base()
+            : this((ulong)0)
+        {
+        }
+
+        [Constructable]
+        public FallenMysticsSpellbook(ulong content)
+            : base(content, 0x2D9D)
         {
             this.Name = ("Fallen Mystic's Spellbook");
 		
@@ -26,6 +32,29 @@ namespace Server.Items
             : base(serial)
         {
         }
+		
+        public override SpellbookType SpellbookType
+        {
+            get
+            {
+                return SpellbookType.Mystic;
+            }
+        }
+        public override int BookOffset
+        {
+            get
+            {
+                return 677;
+            }
+        }
+        public override int BookCount
+        {
+            get
+            {
+                return 16;
+            }
+        }		
+		
 
         public override void Serialize(GenericWriter writer)
         {
