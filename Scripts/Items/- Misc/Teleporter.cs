@@ -240,7 +240,13 @@ namespace Server.Items
 
 		public virtual void StartTeleport(Mobile m)
 		{
-			if (m_Delay == TimeSpan.Zero)
+
+            if (m.Holding != null)
+            {
+                m.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
+                return;
+            } 
+            else if (m_Delay == TimeSpan.Zero)
 			{
 				DoTeleport(m);
 			}
