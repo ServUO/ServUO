@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public PutridUndeadGargoyle()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a Putrid Undead Gargoyle";
+            this.Name = "a putrid undead gargoyle";
             this.Body = 722;
             this.BaseSoundID = 372;
             this.Hue = 1778;
@@ -49,6 +49,15 @@ namespace Server.Mobiles
 
             if (0.05 > Utility.RandomDouble())
                 this.PackItem(new UndyingFlesh());
+
+            if (0.05 > Utility.RandomDouble())
+                this.PackItem(new TatteredAncientScroll());
+
+            if (0.10 > Utility.RandomDouble())
+                this.PackItem(new InfusedGlassStave());
+
+            if (0.15 > Utility.RandomDouble())
+                this.PackItem(new AncientPotteryFragments());
         }
 
         public PutridUndeadGargoyle(Serial serial)
