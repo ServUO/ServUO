@@ -12,26 +12,27 @@ namespace Server.Mobiles
             this.Name = "a toxic slith";
             this.Body = 734; 
 
-            this.SetStr(223, 306);
-            this.SetDex(231, 258);
-            this.SetInt(30, 35);
+            this.SetStr(219, 330);
+            this.SetDex(46, 65);
+            this.SetInt(25, 38);
 
-            this.SetHits(197, 215);
-            this.SetStam(231, 258);
+            this.SetHits(182, 209);
+            this.SetStam(230, 279);
+			this.SetMana(0, 3);
 
             this.SetDamage(6, 24);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 35, 45);
-            this.SetResistance(ResistanceType.Fire, 0, 9);
-            this.SetResistance(ResistanceType.Cold, 5, 10);
+            this.SetResistance(ResistanceType.Physical, 36, 44);
+            this.SetResistance(ResistanceType.Fire, 6, 10);
+            this.SetResistance(ResistanceType.Cold, 6, 10);
             this.SetResistance(ResistanceType.Poison, 100, 100);
-            this.SetResistance(ResistanceType.Energy, 5, 7);
+            this.SetResistance(ResistanceType.Energy, 6, 10);
 
-            this.SetSkill(SkillName.MagicResist, 95.4, 98.3);
-            this.SetSkill(SkillName.Tactics, 85.5, 90.9);
-            this.SetSkill(SkillName.Wrestling, 90.4, 95.1);
+            this.SetSkill(SkillName.MagicResist, 95.4, 98.9);
+            this.SetSkill(SkillName.Tactics, 84.3, 91.5);
+            this.SetSkill(SkillName.Wrestling, 89.3, 97.9);
 
             this.Tamable = false;
             this.ControlSlots = 1;
@@ -57,7 +58,7 @@ namespace Server.Mobiles
                 return 6;
             }
         }
-        //public ovverride int DragonBlood{ get{ return 6; } }
+        public override int DragonBlood{ get{ return 6; } }
         public override int Hides
         {
             get
