@@ -14,33 +14,35 @@ namespace Server.Mobiles
             this.Body = 737;
             this.Hue = 1141;
 
-            this.SetStr(250, 255);
-            this.SetDex(150, 155);
-            this.SetInt(300, 310);
+            this.SetStr(225, 268);
+            this.SetDex(145, 165);
+            this.SetInt(285, 310);
 
             this.SetHits(150, 160);
+			this.SetMana(285, 310);
+			this.SetStam(145, 165);
 
             this.SetDamage(15, 18);
 
             this.SetDamageType(ResistanceType.Physical, 70);
             this.SetDamageType(ResistanceType.Poison, 30);
 
-            this.SetResistance(ResistanceType.Physical, 30);
-            this.SetResistance(ResistanceType.Fire, 25, 30);
-            this.SetResistance(ResistanceType.Cold, 30, 35);
+            this.SetResistance(ResistanceType.Physical, 30, 35);
+            this.SetResistance(ResistanceType.Fire, 20, 30);
+            this.SetResistance(ResistanceType.Cold, 25, 35);
             this.SetResistance(ResistanceType.Poison, 100);
-            this.SetResistance(ResistanceType.Energy, 30, 35);
+            this.SetResistance(ResistanceType.Energy, 25, 35);
 
-            this.SetSkill(SkillName.Anatomy, 80.0, 85.0);
-            this.SetSkill(SkillName.MagicResist, 65.0, 70.0);
-            this.SetSkill(SkillName.Poisoning, 65.0, 70.0);
-            this.SetSkill(SkillName.Tactics, 85.0, 90.0);
-            this.SetSkill(SkillName.Wrestling, 90.0, 95.0);
+            this.SetSkill(SkillName.Anatomy, 80.0, 90.0);
+            this.SetSkill(SkillName.MagicResist, 60.0, 75.0);
+            this.SetSkill(SkillName.Poisoning, 62.3, 77.2);
+            this.SetSkill(SkillName.Tactics, 84.1, 95.9);
+            this.SetSkill(SkillName.Wrestling, 80.2, 90.0);
             this.SetSkill(SkillName.Hiding, 105.0, 110.0);
             this.SetSkill(SkillName.Stealth, 105.0, 110.0);
 
             this.Tamable = true;
-            this.ControlSlots = 1;
+            this.ControlSlots = 2;
             this.MinTameSkill = 59.1;
 
             this.AddItem(new Gold(300));
