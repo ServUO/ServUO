@@ -16,22 +16,22 @@ namespace Server.Mobiles
             this.Name = "a bloodworm";
             this.Body = 287;
 
-            this.SetStr(420);
+            this.SetStr(401, 473);
             this.SetDex(80);
-            this.SetInt(18);
+            this.SetInt(18, 19);
 
-            this.SetHits(365);
+            this.SetHits(374, 422);
 
             this.SetDamage(11, 17);
 
             this.SetDamageType(ResistanceType.Physical, 60);
             this.SetDamageType(ResistanceType.Poison, 40);
-
-            this.SetResistance(ResistanceType.Physical, 49);
-            this.SetResistance(ResistanceType.Fire, 50);
-            this.SetResistance(ResistanceType.Cold, 35);
-            this.SetResistance(ResistanceType.Poison, 69);
-            this.SetResistance(ResistanceType.Energy, 26);
+				
+            this.SetResistance(ResistanceType.Physical, 52, 55);
+            this.SetResistance(ResistanceType.Fire, 42, 50);
+            this.SetResistance(ResistanceType.Cold, 29, 31);
+            this.SetResistance(ResistanceType.Poison, 69, 75);
+            this.SetResistance(ResistanceType.Energy, 26, 27);
 
             this.SetSkill(SkillName.MagicResist, 35.0);
             this.SetSkill(SkillName.Tactics, 100.0);
