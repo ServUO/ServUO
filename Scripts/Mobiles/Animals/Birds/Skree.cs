@@ -12,11 +12,11 @@ namespace Server.Mobiles
             this.Name = "a skree";
             this.Body = 733; 
 
-            this.SetStr(305, 330);
-            this.SetDex(114, 119);
-            this.SetInt(191, 260);
+            this.SetStr(297, 330);
+            this.SetDex(96, 124);
+            this.SetInt(188, 260);
 
-            this.SetHits(228, 310);
+            this.SetHits(205, 300);
 
             this.SetDamage(5, 7);
 
@@ -26,14 +26,14 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Fire, 45, 55);
             this.SetResistance(ResistanceType.Cold, 25, 40);
             this.SetResistance(ResistanceType.Poison, 55, 65);
-            this.SetResistance(ResistanceType.Energy, 26, 40);
+            this.SetResistance(ResistanceType.Energy, 25, 40);
 
-            this.SetSkill(SkillName.EvalInt, 90.8, 99.7);
-            this.SetSkill(SkillName.Magery, 100.0, 115.0);
-            this.SetSkill(SkillName.Meditation, 69.7, 73.7);
-            this.SetSkill(SkillName.MagicResist, 75.3, 82.6);
-            this.SetSkill(SkillName.Tactics, 20.1, 24.2);
-            this.SetSkill(SkillName.Wrestling, 22.9, 32.7);
+            this.SetSkill(SkillName.EvalInt, 90.6, 100.0);
+            this.SetSkill(SkillName.Magery, 90.2, 114.2);
+            this.SetSkill(SkillName.Meditation, 65.3, 75.0);
+            this.SetSkill(SkillName.MagicResist, 75.1, 90.0);
+            this.SetSkill(SkillName.Tactics, 20.2, 24.7);
+            this.SetSkill(SkillName.Wrestling, 20.2, 34.8);
 
             this.Tamable = true;
             this.ControlSlots = 4;
@@ -63,7 +63,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return 6;
+                return 5;
             }
         }
         public override void GenerateLoot()
