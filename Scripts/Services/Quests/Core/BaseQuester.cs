@@ -42,6 +42,11 @@ namespace Server.Engines.Quests
         {
         }
 
+        public override void CheckMorph()
+        {
+            // Don't morph me!
+        }
+
         public override bool IsActiveVendor
         {
             get
