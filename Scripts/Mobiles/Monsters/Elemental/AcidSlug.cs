@@ -14,22 +14,21 @@ namespace Server.Mobiles
             this.Body = 51;
             this.Hue = 44;
 
-            this.SetStr(250, 290);
-            this.SetDex(70, 105);
-            this.SetInt(10, 30);
+			this.SetStr(213, 294);
+			this.SetDex(80, 82);
+            this.SetInt(18, 22);
 
-            this.SetHits(300, 350);
+			this.SetHits(333, 370);
 
-            this.SetDamage(11, 17);
+			this.SetDamage(21, 28);
 
-            this.SetDamageType(ResistanceType.Physical, 60);
-            this.SetDamageType(ResistanceType.Poison, 40);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 15);
+            this.SetResistance(ResistanceType.Physical, 10, 15);
             this.SetResistance(ResistanceType.Fire, 0);
-            this.SetResistance(ResistanceType.Cold, 15);
-            this.SetResistance(ResistanceType.Poison, 70);
-            this.SetResistance(ResistanceType.Energy, 15);
+            this.SetResistance(ResistanceType.Cold, 10, 15);
+            this.SetResistance(ResistanceType.Poison, 60, 70);
+            this.SetResistance(ResistanceType.Energy, 10, 15);
 
             this.SetSkill(SkillName.MagicResist, 25.0);
             this.SetSkill(SkillName.Tactics, 30.0, 50.0);
