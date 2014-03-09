@@ -42,6 +42,12 @@ namespace Server.Mobiles
             this.PackReg(6);
             this.PackItem(new Robe(Utility.RandomNeutralHue())); // TODO: Proper hue
             this.PackItem(new Sandals());
+			switch (Utility.Random(18))
+            {
+                case 0: PackItem(new BloodOathScroll()); break;
+                case 1: PackItem(new CurseWeaponScroll()); break;
+                case 2: PackItem(new StrangleScroll()); break;
+			}
         }
 
         public EvilMage(Serial serial)

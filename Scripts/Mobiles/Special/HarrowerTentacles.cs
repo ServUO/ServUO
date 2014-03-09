@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -58,6 +59,12 @@ namespace Server.Mobiles
 
             this.PackReg(50);
             this.PackNecroReg(15, 75);
+
+			switch (Utility.Random(3))
+            {
+                case 0: PackItem(new VampiricEmbraceScroll()); break;
+			}
+
         }
 
         public HarrowerTentacles(Serial serial)

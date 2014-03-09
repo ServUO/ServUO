@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -47,6 +48,12 @@ namespace Server.Mobiles
             this.VirtualArmor = 30;
 
             this.PackReg(10);
+
+			switch (Utility.Random(6))
+            {
+                case 0: PackItem(new PainSpikeScroll()); break;
+			}
+
         }
 
         public OphidianMage(Serial serial)

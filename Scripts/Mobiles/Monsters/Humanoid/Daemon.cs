@@ -1,5 +1,6 @@
 using System;
 using Server.Factions;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -40,6 +41,17 @@ namespace Server.Mobiles
             this.Karma = -15000;
 
             this.VirtualArmor = 58;
+
+			switch (Utility.Random(20))
+            {
+                case 0: PackItem(new LichFormScroll()); break;
+                case 1: PackItem(new PoisonStrikeScroll()); break;
+                case 2: PackItem(new StrangleScroll()); break;
+                case 3: PackItem(new VengefulSpiritScroll()); break;
+				case 4: PackItem(new WitherScroll()); break;
+			}
+
+
             this.ControlSlots = Core.SE ? 4 : 5;
         }
 

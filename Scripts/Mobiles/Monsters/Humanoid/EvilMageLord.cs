@@ -43,6 +43,13 @@ namespace Server.Mobiles
             this.Karma = -10500;
 
             this.VirtualArmor = 16;
+			switch (Utility.Random(16))
+            {
+                case 0: PackItem(new BloodOathScroll()); break;
+                case 1: PackItem(new CurseWeaponScroll()); break;
+                case 2: PackItem(new StrangleScroll()); break;
+                case 3: PackItem(new LichFormScroll()); break;
+			}
             this.PackReg(23);
             if (Utility.RandomBool())
                 this.PackItem(new Shoes());

@@ -1,5 +1,6 @@
 using System;
 using Server.Misc;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -45,6 +46,20 @@ namespace Server.Mobiles
 
             if (0.02 > Utility.RandomDouble())
                 this.PackStatue();
+
+			switch (Utility.Random(60))
+            {
+                case 0: PackItem(new AnimateDeadScroll()); break;
+                case 1: PackItem(new BloodOathScroll()); break;
+                case 2: PackItem(new CorpseSkinScroll()); break;
+                case 3: PackItem(new CurseWeaponScroll()); break;
+				case 4: PackItem(new EvilOmenScroll()); break;
+				case 5: PackItem(new HorrificBeastScroll()); break;
+				case 6: PackItem(new MindRotScroll()); break;
+				case 7: PackItem(new PainSpikeScroll()); break;
+				case 8: PackItem(new WraithFormScroll()); break;
+				case 9: PackItem(new PoisonStrikeScroll()); break; 
+			}
         }
 
         public RatmanMage(Serial serial)

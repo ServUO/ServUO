@@ -44,6 +44,11 @@ namespace Server.Mobiles
 
             this.PackReg(6);
 
+			switch (Utility.Random(8))
+            {
+                case 0: PackItem(new CorpseSkinScroll()); break;
+			}
+
             if (0.05 > Utility.RandomDouble())
                 this.PackItem(new OrcishKinMask());
         }
