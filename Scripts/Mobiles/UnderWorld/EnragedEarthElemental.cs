@@ -10,29 +10,31 @@ namespace Server.Mobiles
         public EnragedEarthElemental()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an enraged earth elemental";
+            this.Name = "Enraged Earth Elemental";
             this.Body = 14;
             this.BaseSoundID = 268;
 
-            this.SetStr(125, 129);
-            this.SetDex(66, 86);
-            this.SetInt(71, 92);
+            this.SetStr(147, 155);
+            this.SetDex(78, 89);
+            this.SetInt(94, 110);
 
             this.SetHits(500, 505);
+			this.SetMana(94, 110);
+			this.SetStam(78, 89);
 
             this.SetDamage(9, 16);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 60, 62);
-            this.SetResistance(ResistanceType.Fire, 20, 24);
-            this.SetResistance(ResistanceType.Cold, 20, 29);
-            this.SetResistance(ResistanceType.Poison, 45, 50);
-            this.SetResistance(ResistanceType.Energy, 15, 25);
+            this.SetResistance(ResistanceType.Physical, 59, 65);
+            this.SetResistance(ResistanceType.Fire, 20, 30);
+            this.SetResistance(ResistanceType.Cold, 21, 28);
+            this.SetResistance(ResistanceType.Poison, 47, 51);
+            this.SetResistance(ResistanceType.Energy, 30, 33);
 
-            this.SetSkill(SkillName.MagicResist, 90.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 60.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.1, 120.0);
+            this.SetSkill(SkillName.MagicResist, 100.0);
+            this.SetSkill(SkillName.Tactics, 100.0);
+            this.SetSkill(SkillName.Wrestling, 120.0);
 
             this.Fame = 3500;
             this.Karma = -3500;
