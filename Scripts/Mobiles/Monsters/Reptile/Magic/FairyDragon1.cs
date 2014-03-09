@@ -25,6 +25,8 @@ namespace Server.Mobiles
 			SetInt(401, 580);
 
 			SetHits(393, 409);
+			SetMana(401, 580);
+			SetStam(97, 103);
 
 			SetDamage(15, 20);
 
@@ -33,19 +35,19 @@ namespace Server.Mobiles
 			SetDamageType(ResistanceType.Poison, 25);
 			SetDamageType(ResistanceType.Energy, 25);
 
-			SetResistance(ResistanceType.Physical, 15, 30);
-			SetResistance(ResistanceType.Fire, 40, 50);
-			SetResistance(ResistanceType.Cold, 40, 50);
-			SetResistance(ResistanceType.Poison, 40, 45);
-			SetResistance(ResistanceType.Energy, 40, 50);
+			SetResistance(ResistanceType.Physical, 18, 29);
+			SetResistance(ResistanceType.Fire, 42, 48);
+			SetResistance(ResistanceType.Cold, 43, 50);
+			SetResistance(ResistanceType.Poison, 43, 45);
+			SetResistance(ResistanceType.Energy, 40, 46);
 
 			SetSkill(SkillName.EvalInt, 10.4, 50.0);
 			SetSkill(SkillName.Magery, 20.0, 30.0);
-			SetSkill(SkillName.Anatomy, 65.0, 73.6);
+			SetSkill(SkillName.Anatomy, 65.6, 73.6);
 			SetSkill(SkillName.Mysticism, 35.0, 55.0);
 			SetSkill(SkillName.Meditation, 1.5, 3.5);
-			SetSkill(SkillName.MagicResist, 120.2, 125.1);
-			SetSkill(SkillName.Tactics, 93.8, 98.5);
+			SetSkill(SkillName.MagicResist, 120.2, 125.0);
+			SetSkill(SkillName.Tactics, 94.3, 98.5);
 			SetSkill(SkillName.Wrestling, 83.1, 89.9);
 
 			PackReg(20);
