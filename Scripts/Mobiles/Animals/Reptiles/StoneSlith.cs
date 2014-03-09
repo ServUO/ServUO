@@ -14,27 +14,27 @@ namespace Server.Mobiles
             this.Body = 734; 
 
             this.SetStr(250, 300);
-            this.SetDex(76, 90);
-            this.SetInt(34, 69);
+            this.SetDex(76, 94);
+            this.SetInt(56, 80);
 
-            this.SetHits(154, 166);
-            this.SetStam(76, 90);
-            this.SetMana(34, 69);
+            this.SetHits(157, 168);
+            this.SetStam(76, 94);
+            this.SetMana(45, 80);
 
             this.SetDamage(6, 24);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 50, 55);
+            this.SetResistance(ResistanceType.Physical, 45, 55);
             this.SetResistance(ResistanceType.Fire, 20, 30);
             this.SetResistance(ResistanceType.Cold, 10, 20);
             this.SetResistance(ResistanceType.Poison, 30, 40);
             this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.MagicResist, 86.8, 95.1);
-            this.SetSkill(SkillName.Tactics, 82.6, 88.6);
-            this.SetSkill(SkillName.Wrestling, 75.8, 87.4);
-            this.SetSkill(SkillName.Anatomy, 0.0, 2.9);
+            this.SetSkill(SkillName.MagicResist, 88.9, 96.7);
+            this.SetSkill(SkillName.Tactics, 84.5, 97.2);
+            this.SetSkill(SkillName.Wrestling, 76.3, 96.4);
+            this.SetSkill(SkillName.Anatomy, 0.0);
 
             this.Tamable = true;
             this.ControlSlots = 2;
@@ -60,7 +60,7 @@ namespace Server.Mobiles
                 return 1;
             }
         }
-        //public ovverride int DragonBlood{ get{ return 6; } }
+        public override int DragonBlood{ get{ return 6; } }
         public override int Hides
         {
             get
