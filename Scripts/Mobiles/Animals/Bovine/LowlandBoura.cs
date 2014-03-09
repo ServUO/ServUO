@@ -15,26 +15,28 @@ namespace Server.Mobiles
             this.Name = "a lowland boura";
             this.Body = 715;
 
-            this.SetStr(337, 411);
-            this.SetDex(82, 93);
-            this.SetInt(23, 25);
+            this.SetStr(315, 448);
+            this.SetDex(78, 94);
+            this.SetInt(21, 25);
 
-            this.SetHits(438, 553);
+            this.SetHits(432, 591);
+			this.SetMana(21, 25);
+			this.SetStam(78, 94);
 
             this.SetDamage(18, 23);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
             this.SetResistance(ResistanceType.Physical, 50, 60);
-            this.SetResistance(ResistanceType.Fire, 35, 40);
+            this.SetResistance(ResistanceType.Fire, 30, 40);
             this.SetResistance(ResistanceType.Cold, 10, 20);
             this.SetResistance(ResistanceType.Poison, 30, 40);
             this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.Anatomy, 81.2, 84.4);
-            this.SetSkill(SkillName.MagicResist, 70.7, 75.0);
-            this.SetSkill(SkillName.Tactics, 83.4, 86.7);
-            this.SetSkill(SkillName.Wrestling, 95.1, 97.3);
+            this.SetSkill(SkillName.Anatomy, 80.3, 88.5);
+            this.SetSkill(SkillName.MagicResist, 69.0, 79.6);
+            this.SetSkill(SkillName.Tactics, 78.8, 86.9);
+            this.SetSkill(SkillName.Wrestling, 86.8, 98.6);
 
             this.Tamable = true;
             this.ControlSlots = 3;
@@ -71,7 +73,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
+                return FoodType.FruitsAndVegies;
             }
         }
         public override int GetIdleSound()
