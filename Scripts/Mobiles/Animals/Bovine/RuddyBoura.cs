@@ -15,28 +15,28 @@ namespace Server.Mobiles
             this.Name = "a ruddy boura";
             this.Body = 715;
 
-            this.SetStr(396, 480);
-            this.SetDex(68, 82);
-            this.SetInt(16, 20);
+            this.SetStr(329, 435);
+            this.SetDex(67, 83);
+            this.SetInt(15, 20);
 
-            this.SetHits(435, 509);
-            this.SetStam(68, 82);
-            this.SetMana(16, 20);
+            this.SetHits(421, 542);
+            this.SetStam(67, 83);
+            this.SetMana(15, 20);
 
             this.SetDamage(16, 20);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 50, 60);
-            this.SetResistance(ResistanceType.Fire, 35, 40);
-            this.SetResistance(ResistanceType.Cold, 10, 20);
+            this.SetResistance(ResistanceType.Physical, 45, 50);
+            this.SetResistance(ResistanceType.Fire, 30, 40);
+            this.SetResistance(ResistanceType.Cold, 30, 40);
             this.SetResistance(ResistanceType.Poison, 30, 40);
             this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.Anatomy, 86.6, 88.8);
-            this.SetSkill(SkillName.MagicResist, 69.7, 87.7);
-            this.SetSkill(SkillName.Tactics, 83.3, 88.8);
-            this.SetSkill(SkillName.Wrestling, 86.6, 87.9);
+            this.SetSkill(SkillName.Anatomy, 81.6, 88.2);
+            this.SetSkill(SkillName.MagicResist, 66.5, 73.9);
+            this.SetSkill(SkillName.Tactics, 81.3, 88.8);
+            this.SetSkill(SkillName.Wrestling, 83.6, 94.5);
 
             this.Tamable = true;
             this.ControlSlots = 2;
@@ -62,8 +62,8 @@ namespace Server.Mobiles
                 return 20;
             }
         }
-        //public override int Fur{ get{ return 30; } }
-        //public ovveride int DragonBlood{ get{ return 8; } }
+        public override int Fur{ get{ return 30; } }
+        public override int DragonBlood{ get{ return 8; } }
         public override HideType HideType
         {
             get
