@@ -12,27 +12,29 @@ namespace Server.Mobiles
             this.Name = "a fire ant";
             this.Body = 738; 
 
-            this.SetStr(225);
-            this.SetDex(108);
-            this.SetInt(25);
+            this.SetStr(201, 246);
+            this.SetDex(103, 115);
+            this.SetInt(16, 29);
 
-            this.SetHits(299);
+            this.SetHits(254, 289);
+			this.SetMana(16, 29);
+			this.SetStam(103, 121);
 
             this.SetDamage(15, 18);
 
             this.SetDamageType(ResistanceType.Physical, 40);
             this.SetDamageType(ResistanceType.Fire, 60);
 
-            this.SetResistance(ResistanceType.Physical, 52);
-            this.SetResistance(ResistanceType.Fire, 96);
-            this.SetResistance(ResistanceType.Cold, 36);
-            this.SetResistance(ResistanceType.Poison, 40);
-            this.SetResistance(ResistanceType.Energy, 36);
+            this.SetResistance(ResistanceType.Physical, 45, 55);
+            this.SetResistance(ResistanceType.Fire, 95, 97);
+            this.SetResistance(ResistanceType.Cold, 36, 42);
+            this.SetResistance(ResistanceType.Poison, 37, 45);
+            this.SetResistance(ResistanceType.Energy, 36, 44);
 
-            this.SetSkill(SkillName.Anatomy, 8.7);
-            this.SetSkill(SkillName.MagicResist, 53.1);
-            this.SetSkill(SkillName.Tactics, 77.2);
-            this.SetSkill(SkillName.Wrestling, 75.4);
+            this.SetSkill(SkillName.Anatomy, 0);
+            this.SetSkill(SkillName.MagicResist, 46.7, 58.2);
+            this.SetSkill(SkillName.Tactics, 71.9, 82.8);
+            this.SetSkill(SkillName.Wrestling, 71.5, 83.4);
         }
 
         public FireAnt(Serial serial)
