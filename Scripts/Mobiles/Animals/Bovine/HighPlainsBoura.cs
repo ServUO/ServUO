@@ -15,26 +15,26 @@ namespace Server.Mobiles
             this.Name = "a high plains boura";
             this.Body = 715;
 
-            this.SetStr(400, 435);
-            this.SetDex(90, 96);
+            this.SetStr(377, 518);
+            this.SetDex(87, 103);
             this.SetInt(25, 30);
 
-            this.SetHits(555, 618);
+            this.SetHits(575, 666);
 
-            this.SetDamage(20, 25);
+            this.SetDamage(20, 24);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 50, 60);
-            this.SetResistance(ResistanceType.Fire, 35, 40);
-            this.SetResistance(ResistanceType.Cold, 10, 20);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
+            this.SetResistance(ResistanceType.Physical, 55, 65);
+            this.SetResistance(ResistanceType.Fire, 30, 40);
+            this.SetResistance(ResistanceType.Cold, 50, 60);
+            this.SetResistance(ResistanceType.Poison, 40, 50);
             this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.Anatomy, 95.2, 105.4);
-            this.SetSkill(SkillName.MagicResist, 60.7, 70.0);
-            this.SetSkill(SkillName.Tactics, 95.4, 105.7);
-            this.SetSkill(SkillName.Wrestling, 105.1, 115.3);
+            this.SetSkill(SkillName.Anatomy, 96.5, 104.0);
+            this.SetSkill(SkillName.MagicResist, 67.1, 74.5);
+            this.SetSkill(SkillName.Tactics, 95.8, 102.6);
+            this.SetSkill(SkillName.Wrestling, 100.5, 111.4);
 
             this.Tamable = true;
             this.ControlSlots = 3;
@@ -71,7 +71,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
+                return FoodType.FruitsAndVegies;
             }
         }
         public override int GetIdleSound()
