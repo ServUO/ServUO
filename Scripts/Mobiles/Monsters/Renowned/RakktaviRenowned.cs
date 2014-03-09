@@ -16,11 +16,13 @@ namespace Server.Mobiles
             this.Body = 0x8E;
             this.BaseSoundID = 437;
 
-            this.SetStr(146, 180);
-            this.SetDex(240, 300);
-            this.SetInt(300, 350);
+            this.SetStr(119);
+            this.SetDex(279);
+            this.SetInt(327);
 
-            this.SetHits(45000, 50000);
+            this.SetHits(50000);
+			this.SetMana(327);
+			this.SetStam(279);
 
             this.SetDamage(8, 10);
 
@@ -32,11 +34,11 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Poison, 10, 20);
             this.SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.Anatomy, 60.2, 100.0);
+            this.SetSkill(SkillName.Anatomy, 0);
             this.SetSkill(SkillName.Archery, 80.1, 90.0);
-            this.SetSkill(SkillName.MagicResist, 65.1, 90.0);
-            this.SetSkill(SkillName.Tactics, 50.1, 75.0);
-            this.SetSkill(SkillName.Wrestling, 50.1, 75.0);
+            this.SetSkill(SkillName.MagicResist, 66.0);
+            this.SetSkill(SkillName.Tactics, 68.1);
+            this.SetSkill(SkillName.Wrestling, 85.5);
 
             this.Fame = 6500;
             this.Karma = -6500;
@@ -46,7 +48,7 @@ namespace Server.Mobiles
             this.PackItem(new EssenceBalance());
 			
             this.AddItem(new Bow());
-            this.PackItem(new Arrow(Utility.RandomMinMax(50, 70)));
+            this.PackItem(new Arrow(Utility.RandomMinMax(10, 30)));
         }
 
         public RakktaviRenowned(Serial serial)
