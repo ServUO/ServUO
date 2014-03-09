@@ -12,22 +12,24 @@ namespace Server.Mobiles
             this.Name = "a rotworm";
             this.Body = 732;
 
-            this.SetStr(244);
+            this.SetStr(222, 277);
             this.SetDex(80);
-            this.SetInt(17);
+            this.SetInt(16, 20);
 
-            this.SetHits(215);
+            this.SetHits(204, 247);
+			this.SetMana(16, 20);
+			this.SetStam(50);
 
             this.SetDamage(1, 5);
 
             this.SetDamageType(ResistanceType.Physical, 100);
             //SetDamageType( ResistanceType.Poison, 40 );
 
-            this.SetResistance(ResistanceType.Physical, 37);
-            this.SetResistance(ResistanceType.Fire, 30);
-            this.SetResistance(ResistanceType.Cold, 35);
-            this.SetResistance(ResistanceType.Poison, 73);
-            this.SetResistance(ResistanceType.Energy, 26);
+            this.SetResistance(ResistanceType.Physical, 36, 43);
+            this.SetResistance(ResistanceType.Fire, 30, 39);
+            this.SetResistance(ResistanceType.Cold, 28, 35);
+            this.SetResistance(ResistanceType.Poison, 65, 75);
+            this.SetResistance(ResistanceType.Energy, 25, 35);
 
             this.SetSkill(SkillName.MagicResist, 25.0);
             this.SetSkill(SkillName.Tactics, 25.0);
