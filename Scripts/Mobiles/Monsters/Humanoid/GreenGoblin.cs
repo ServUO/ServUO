@@ -15,28 +15,28 @@ namespace Server.Mobiles
             this.Body = 723;
             this.BaseSoundID = 0x45A;
 
-            this.SetStr(329, 329);
-            this.SetDex(67, 67);
-            this.SetInt(137, 137);
+            this.SetStr(252, 343);
+            this.SetDex(60, 74);
+            this.SetInt(117, 148);
 
-            this.SetHits(191, 191);
-            this.SetStam(67, 67);
-            this.SetMana(137, 137);
+            this.SetHits(162, 208);
+            this.SetStam(60, 74);
+            this.SetMana(117, 148);
 
             this.SetDamage(5, 7);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 49, 49);
-            this.SetResistance(ResistanceType.Fire, 37, 37);
-            this.SetResistance(ResistanceType.Cold, 35, 35);
-            this.SetResistance(ResistanceType.Poison, 17, 17);
-            this.SetResistance(ResistanceType.Energy, 15, 15);
+            this.SetResistance(ResistanceType.Physical, 40, 50);
+            this.SetResistance(ResistanceType.Fire, 30, 39);
+            this.SetResistance(ResistanceType.Cold, 27, 35);
+            this.SetResistance(ResistanceType.Poison, 11, 20);
+            this.SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.MagicResist, 123.9, 123.9);
-            this.SetSkill(SkillName.Tactics, 87.3, 87.3);
-            this.SetSkill(SkillName.Anatomy, 81.3, 81.3);
-            this.SetSkill(SkillName.Wrestling, 101.0, 101.0);
+            this.SetSkill(SkillName.MagicResist, 120.5, 128.8);
+            this.SetSkill(SkillName.Tactics, 80.9, 89.9);
+            this.SetSkill(SkillName.Anatomy, 83.1, 89.6);
+            this.SetSkill(SkillName.Wrestling, 93.0, 108.3);
 
             this.Fame = 1500;
             this.Karma = -1500;
