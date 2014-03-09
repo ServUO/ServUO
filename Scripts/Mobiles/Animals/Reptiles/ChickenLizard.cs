@@ -12,22 +12,24 @@ namespace Server.Mobiles
             this.Name = "a chicken lizard";
             this.Body = 716;
 
-            this.SetStr(78, 87);
-            this.SetDex(87, 92);
-            this.SetInt(8);
+            this.SetStr(74, 95);
+            this.SetDex(78, 95);
+            this.SetInt(6, 10);
 
-            this.SetHits(77, 82);
+            this.SetHits(74, 95);
+			this.SetMana(6, 10);
+			this.SetStam(78, 95);
 
             this.SetDamage(2, 5);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 18, 20);
-            this.SetResistance(ResistanceType.Fire, 7, 14);
+            this.SetResistance(ResistanceType.Physical, 15, 20);
+            this.SetResistance(ResistanceType.Fire, 5, 15);
 
-            this.SetSkill(SkillName.MagicResist, 0.0, 28.5);
-            this.SetSkill(SkillName.Tactics, 0.0, 41.3);
-            this.SetSkill(SkillName.Wrestling, 0.0, 35.8);
+            this.SetSkill(SkillName.MagicResist, 25.1, 29.6);
+            this.SetSkill(SkillName.Tactics, 30.1, 44.9);
+            this.SetSkill(SkillName.Wrestling, 26.2, 38.2);
 
             this.Tamable = true;
             this.ControlSlots = 1;
@@ -57,7 +59,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return FoodType.Meat;
+                return FoodType.GrainsAndHay;
             }
         }
         public override int GetIdleSound()
