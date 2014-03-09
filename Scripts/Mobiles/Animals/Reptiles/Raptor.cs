@@ -12,11 +12,13 @@ namespace Server.Mobiles
             this.Name = "a raptor";
             this.Body = 730; 
 
-            this.SetStr(407, 455);
-            this.SetDex(139, 153);
-            this.SetInt(104, 135);
+            this.SetStr(401, 464);
+            this.SetDex(131, 154);
+            this.SetInt(102, 150);
 
-            this.SetHits(347, 392);
+            this.SetHits(342, 400);
+			this.SetMana(102, 150);
+			this.SetStam(131, 154);
 
             this.SetDamage(11, 17);
 
@@ -34,7 +36,7 @@ namespace Server.Mobiles
 
             this.Tamable = true;
             this.ControlSlots = 2;
-            this.MinTameSkill = 65.1;
+            this.MinTameSkill = 107.1;
         }
 
         public Raptor(Serial serial)
