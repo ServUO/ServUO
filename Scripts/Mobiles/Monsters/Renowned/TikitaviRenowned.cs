@@ -16,25 +16,27 @@ namespace Server.Mobiles
             this.Body = 42;
             this.BaseSoundID = 437;
 
-            this.SetStr(300, 350);
-            this.SetDex(100, 150);
-            this.SetInt(200, 250);
+            this.SetStr(315, 354);
+            this.SetDex(139, 177);
+            this.SetInt(243, 288);
 
-            this.SetHits(45000, 50000);
+            this.SetHits(50000);
+			this.SetMana(243, 288);
+			this.SetStam(139, 177);
 
             this.SetDamage(7, 9);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 25, 30);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 20, 35);
-            this.SetResistance(ResistanceType.Poison, 10, 20);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            this.SetResistance(ResistanceType.Physical, 26, 28);
+            this.SetResistance(ResistanceType.Fire, 22, 25);
+            this.SetResistance(ResistanceType.Cold, 30, 38);
+            this.SetResistance(ResistanceType.Poison, 14, 17);
+            this.SetResistance(ResistanceType.Energy, 15, 18);
 
-            this.SetSkill(SkillName.MagicResist, 35.1, 60.0);
-            this.SetSkill(SkillName.Tactics, 50.1, 75.0);
-            this.SetSkill(SkillName.Wrestling, 50.1, 75.0);
+            this.SetSkill(SkillName.MagicResist, 40.4);
+            this.SetSkill(SkillName.Tactics, 73.6);
+            this.SetSkill(SkillName.Wrestling, 66.5);
 
             this.Fame = 1500;
             this.Karma = -1500;
