@@ -12,27 +12,29 @@ namespace Server.Mobiles
             this.Name = "a kepetch ambusher";
             this.Body = 726;
 
-            this.SetStr(440, 446);
-            this.SetDex(229, 254);
-            this.SetInt(46, 46);
+            this.SetStr(451, 455);
+            this.SetDex(258, 267);
+            this.SetInt(43, 47);
 
-            this.SetHits(533, 544);
+            this.SetHits(511, 543);
+			this.SetStam(258, 267);
+			this.SetMana(43, 47);
 
             this.SetDamage(7, 17);
 
             this.SetDamageType(ResistanceType.Physical, 80);
             this.SetDamageType(ResistanceType.Poison, 20);
 
-            this.SetResistance(ResistanceType.Physical, 73, 95);
-            this.SetResistance(ResistanceType.Fire, 57, 70);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 55, 65);
-            this.SetResistance(ResistanceType.Energy, 70, 95);
+            this.SetResistance(ResistanceType.Physical, 60, 75);
+            this.SetResistance(ResistanceType.Fire, 50, 60);
+            this.SetResistance(ResistanceType.Cold, 45, 55);
+            this.SetResistance(ResistanceType.Poison, 50, 70);
+            this.SetResistance(ResistanceType.Energy, 55, 75);
 
-            this.SetSkill(SkillName.Anatomy, 104.3, 114.1);
-            this.SetSkill(SkillName.MagicResist, 94.6, 97.4);
-            this.SetSkill(SkillName.Tactics, 110.4, 123.5);
-            this.SetSkill(SkillName.Wrestling, 107.3, 113.9);
+            this.SetSkill(SkillName.Anatomy, 110.2, 112.4);
+            this.SetSkill(SkillName.MagicResist, 95.8, 97.5);
+            this.SetSkill(SkillName.Tactics, 107.9, 112.4);
+            this.SetSkill(SkillName.Wrestling, 103.7, 109.3);
         }
 
         public KepetchAmbusher(Serial serial)
