@@ -359,6 +359,17 @@ namespace Server.Engines.Harvest
                         else
                             chest.DropItem(new SpecialFishingNet());
 
+						if (0.02 >= Utility.RandomDouble()) //2% chance
+						{
+						switch (Utility.Random(3))
+						{
+						case 0 : chest.DropItem(new BronzedArmorValkyrie()); break;
+						case 1 : chest.DropItem(new EnchantedKelpWovenLeggings()); break;
+						case 2 : chest.DropItem(new RunedDriftwoodBow()); break;	
+						case 3 : chest.DropItem(new AntiqueWeddingDress()); break;
+						}
+						}
+
                         chest.Movable = true;
                         chest.Locked = false;
                         chest.TrapType = TrapType.None;
