@@ -12,9 +12,11 @@ namespace Server.Items
         };
         private static readonly CureLevelInfo[] m_AosLevelInfo = new CureLevelInfo[]
         {
-            new CureLevelInfo(Poison.Lesser, 0.75),
-            new CureLevelInfo(Poison.Regular, 0.50),
-            new CureLevelInfo(Poison.Greater, 0.25)
+            new CureLevelInfo(Poison.Lesser, 1.00),
+            new CureLevelInfo(Poison.Regular, 0.35),
+            new CureLevelInfo(Poison.Greater, 0.15),
+			new CureLevelInfo(Poison.Deadly, 0.10),
+			new CureLevelInfo(Poison.Lethal, 0.05)
         };
         [Constructable]
         public LesserCurePotion()
