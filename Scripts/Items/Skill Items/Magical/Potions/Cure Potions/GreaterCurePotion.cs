@@ -16,9 +16,9 @@ namespace Server.Items
         {
             new CureLevelInfo(Poison.Lesser, 1.00),
             new CureLevelInfo(Poison.Regular, 1.00),
-            new CureLevelInfo(Poison.Greater, 1.00),
-            new CureLevelInfo(Poison.Deadly, 0.95),
-            new CureLevelInfo(Poison.Lethal, 0.75)
+            new CureLevelInfo(Poison.Greater, 0.75),
+            new CureLevelInfo(Poison.Deadly, 0.45),
+            new CureLevelInfo(Poison.Lethal, 0.25)
         };
         [Constructable]
         public GreaterCurePotion()
