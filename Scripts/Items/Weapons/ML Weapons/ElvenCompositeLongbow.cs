@@ -63,14 +63,14 @@ namespace Server.Items
         {
             get
             {
-                return 12;
+                return 15;
             }
         }
         public override int AosMaxDamage
         {
             get
             {
-                return 16;
+                return 19;
             }
         }
         public override int AosSpeed
@@ -84,7 +84,7 @@ namespace Server.Items
         {
             get
             {
-                return 4.00f;
+                return 3.75f;
             }
         }
         public override int OldStrengthReq
