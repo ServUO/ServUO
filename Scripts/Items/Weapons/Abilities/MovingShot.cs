@@ -16,7 +16,7 @@ namespace Server.Items
         {
             get
             {
-                return 15;
+                return 20;
             }
         }
         public override int AccuracyBonus
