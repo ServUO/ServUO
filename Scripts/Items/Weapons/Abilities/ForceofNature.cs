@@ -17,7 +17,7 @@ namespace Server.Items
         {
             get
             {
-                return 40;
+                return 35;
             }
         }
         public static bool RemoveCurse(Mobile m)
