@@ -42,14 +42,14 @@ namespace Server.Items
         {
             get
             {
-                return 14;
+                return 13;
             }
         }
         public override int AosMaxDamage
         {
             get
             {
-                return 15;
+                return 17;
             }
         }
         public override int AosSpeed
