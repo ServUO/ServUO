@@ -71,7 +71,7 @@ namespace Server.Items
         {
             get
             {
-                return Core.ML ? 22 : 20;
+                return Core.ML ? 22 : 22;
             }
         }
         public override int AosSpeed
