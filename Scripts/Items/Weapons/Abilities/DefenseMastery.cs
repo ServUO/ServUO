@@ -17,7 +17,7 @@ namespace Server.Items
         {
             get
             {
-                return 30;
+                return 20;
             }
         }
         public static bool GetMalus(Mobile targ, ref int damageMalus)

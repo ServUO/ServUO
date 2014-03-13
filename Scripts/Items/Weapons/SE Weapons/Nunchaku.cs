@@ -28,7 +28,7 @@ namespace Server.Items
         {
             get
             {
-                return WeaponAbility.Feint;
+                return WeaponAbility.DoubleStrike;
             }
         }
         public override int AosStrengthReq
@@ -42,14 +42,14 @@ namespace Server.Items
         {
             get
             {
-                return 11;
+                return 12;
             }
         }
         public override int AosMaxDamage
         {
             get
             {
-                return 13;
+                return 15;
             }
         }
         public override int AosSpeed

@@ -15,7 +15,7 @@ namespace Server.Items
         {
             get
             {
-                return 25;
+                return 20;
             }
         }
         public override double DamageScalar

@@ -15,7 +15,7 @@ namespace Server.Items
         {
             get
             {
-                return 30;
+                return 15;
             }
         }
         public override bool OnBeforeDamage(Mobile attacker, Mobile defender)

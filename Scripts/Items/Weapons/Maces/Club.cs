@@ -21,7 +21,7 @@ namespace Server.Items
         {
             get
             {
-                return WeaponAbility.ShadowStrike;
+                return WeaponAbility.CrushingBlow;
             }
         }
         public override WeaponAbility SecondaryAbility
@@ -42,14 +42,14 @@ namespace Server.Items
         {
             get
             {
-                return 11;
+                return 10;
             }
         }
         public override int AosMaxDamage
         {
             get
             {
-                return 13;
+                return 14;
             }
         }
         public override int AosSpeed

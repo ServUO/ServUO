@@ -29,7 +29,7 @@ namespace Server.Items
         {
             get
             {
-                return WeaponAbility.Block;
+                return WeaponAbility.DualWield;
             }
         }
         public override int AosStrengthReq
@@ -50,7 +50,7 @@ namespace Server.Items
         {
             get
             {
-                return 12;
+                return 13;
             }
         }
         public override int AosSpeed

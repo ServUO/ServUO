@@ -29,7 +29,7 @@ namespace Server.Items
         {
             get
             {
-                return WeaponAbility.ParalyzingBlow;
+                return WeaponAbility.ForceOfNature;
             }
         }
         public override int AosStrengthReq
@@ -50,7 +50,7 @@ namespace Server.Items
         {
             get
             {
-                return 17;
+                return 18;
             }
         }
         public override int AosSpeed

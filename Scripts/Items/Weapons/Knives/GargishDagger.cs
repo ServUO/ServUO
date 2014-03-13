@@ -22,14 +22,14 @@ namespace Server.Items
         {
             get
             {
-                return WeaponAbility.InfectiousStrike;
+                return WeaponAbility.ShadowStrike;
             }
         }
         public override WeaponAbility SecondaryAbility
         {
             get
             {
-                return WeaponAbility.ShadowStrike;
+                return WeaponAbility.InfectiousStrike;
             }
         }
         public override int AosStrengthReq
@@ -50,7 +50,7 @@ namespace Server.Items
         {
             get
             {
-                return 11;
+                return 12;
             }
         }
         public override int AosSpeed

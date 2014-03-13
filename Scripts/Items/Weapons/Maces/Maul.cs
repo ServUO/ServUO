@@ -21,7 +21,7 @@ namespace Server.Items
         {
             get
             {
-                return WeaponAbility.CrushingBlow;
+                return WeaponAbility.DoubleStrike;
             }
         }
         public override WeaponAbility SecondaryAbility
@@ -49,7 +49,7 @@ namespace Server.Items
         {
             get
             {
-                return 16;
+                return 18;
             }
         }
         public override int AosSpeed

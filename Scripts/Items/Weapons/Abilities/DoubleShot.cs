@@ -15,7 +15,7 @@ namespace Server.Items
         {
             get
             {
-                return 30;
+                return 35;
             }
         }
         public override bool CheckSkills(Mobile from)

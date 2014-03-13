@@ -18,7 +18,7 @@ namespace Server.Items
         {
             get
             {
-                return 30;
+                return 25;
             }
         }
         public override bool RequiresSE

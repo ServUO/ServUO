@@ -50,7 +50,7 @@ namespace Server.Items
         {
             get
             {
-                return 14;
+                return 15;
             }
         }
         public override int AosSpeed

@@ -17,7 +17,7 @@ namespace Server.Items
         {
             get
             {
-                return 30;
+                return 20;
             }
         }
         public static bool GetBonus(Mobile targ, ref int bonus)
