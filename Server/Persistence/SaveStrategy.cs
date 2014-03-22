@@ -1,37 +1,40 @@
-#region Header
-// **********
-// ServUO - SaveStrategy.cs
-// **********
-#endregion
+using System;
 
 namespace Server
 {
-	public abstract class SaveStrategy
-	{
-		public static SaveStrategy Acquire()
-		{
-			if (Core.MultiProcessor)
-			{
-				int processorCount = Core.ProcessorCount;
+    public abstract class SaveStrategy
+    {
+        public abstract string Name { get; }
+        public static SaveStrategy Acquire()
+        {
+            if (Core.MultiProcessor)
+            {
+                int processorCount = Core.ProcessorCount;
 
-				if (processorCount > 2)
-				{
-					return new DualSaveStrategy(); // return new DynamicSaveStrategy();
-				}
-				else
-				{
-					return new DualSaveStrategy();
-				}
-			}
-			else
-			{
-				return new StandardSaveStrategy();
-			}
-		}
+#if DynamicSaveStrategy
+                if (processorCount > 2)
+                {
+                    return new DynamicSaveStrategy();
+                }
+#else
+                if (processorCount > 16)
+                {
+                    return new ParallelSaveStrategy(processorCount);
+                }
+#endif
+                else
+                {
+                    return new DualSaveStrategy();
+                }
+            }
+            else
+            {
+                return new StandardSaveStrategy();
+            }
+        }
 
-		public abstract string Name { get; }
-		public abstract void Save(SaveMetrics metrics, bool permitBackgroundWrite);
+        public abstract void Save(SaveMetrics metrics, bool permitBackgroundWrite);
 
-		public abstract void ProcessDecay();
-	}
+        public abstract void ProcessDecay();
+    }
 }
