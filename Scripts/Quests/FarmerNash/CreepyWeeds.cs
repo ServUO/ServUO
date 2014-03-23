@@ -68,9 +68,9 @@ namespace Server.Items
 						if (Utility.RandomDouble() < 0.20)
                         {
                             fnpitchfork.MoveToWorld(loc, map);
-                            from.SendMessage("You find Farmer Nash's pitchfork under one of the brambles of weeds. You pick up the pitchfork and put it in your backpack.");
-							break; 
+                            from.SendMessage("You find Farmer Nash's pitchfork under one of the brambles of weeds. You pick up the pitchfork and put it in your backpack."); 
                         }
+						break;
                   }
              }
         }
