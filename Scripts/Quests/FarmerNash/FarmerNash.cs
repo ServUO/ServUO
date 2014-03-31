@@ -1,5 +1,9 @@
 using System;
+using Server;
 using Server.Items;
+using System.Collections;
+using System.Collections.Generic;
+using Server.Mobiles;
 
 namespace Server.Engines.Quests
 { 
@@ -61,9 +65,57 @@ namespace Server.Engines.Quests
             return Core.SA;
         }
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
+                public override void OnAccept()
+		{
+                       base.OnAccept();
+
+		       Map map2 = Map.TerMur;
+
+                       int X = 922;
+                       int Y = 3864;     
+
+                       for (int i = 0; i < 10; ++i)
+                       {
+                          for (int j = 0; j < 13; ++j)
+                          {  
+                              Item creep = new CreepyWeeds();
+                              Point3D loc = new Point3D(X, Y, -40);      
+                              creep.MoveToWorld(loc, map2);       
+
+                               Y += 1;                    
+                          } 
+                            
+                          Y = 3864; 
+                          X += 1;                              
+                       }  
+                }
+     
+                public override void OnCompleted()
+		{
+                   Owner.SendLocalizedMessage( 1072273, null, 0x23 ); // You've completed a quest!  Don't forget to collect your reward.							
+		   Owner.PlaySound( CompleteSound );
+
+		   Map map = Map.TerMur;
+
+	           ArrayList list = new ArrayList(); 
+
+                   Point3D loc = new Point3D(922, 3864, -40); 
+
+	           IPooledEnumerable eable2 = map.GetItemsInRange( loc, 20 );
+
+	           foreach( Item item2 in eable2 )
+	           {
+                        if ( item2 is CreepyWeeds ) 
+                           list.Add(item2); 
+	           } 
+
+	           foreach (Item item in list) 
+                        item.Delete(); 
+		}      
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
 
             writer.Write((int)0); // version
         }

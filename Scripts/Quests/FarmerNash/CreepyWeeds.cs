@@ -1,6 +1,10 @@
 using System;
-using Server.Mobiles;
+using Server;
 using Server.Network;
+using Server.Regions;
+using Server.Mobiles;
+using Server.Items;
+using Server.Targeting;
 
 namespace Server.Items
 {
@@ -11,7 +15,13 @@ namespace Server.Items
             : base(0x0CB8)
         {
             this.Name = "Creepy Weeds";
-            this.Weight = 1;		
+            this.Weight = 1;
+			this.Movable = false;	
+
+                        Timer.DelayCall(TimeSpan.FromMinutes(10.0), delegate()
+                        {
+                            this.Delete();                                       
+                        });
         }
 
         public CreepyWeeds(Serial serial)
@@ -37,7 +47,7 @@ namespace Server.Items
                 Ballem ballem = new Ballem();
                 FNPitchfork fnpitchfork = new FNPitchfork();
 
-                switch (Utility.Random(6))
+                switch (Utility.Random(18))
                 {
                     case 0:
                         snake.MoveToWorld(loc, map);
@@ -54,20 +64,15 @@ namespace Server.Items
                     case 4:
                         ballem.MoveToWorld(loc, map);
                         break;
-                    case 5:
-                        if (Utility.RandomDouble() < 0.20)
+                    case 5: case 10: case 15:
+						if (Utility.RandomDouble() < 0.20)
                         {
                             fnpitchfork.MoveToWorld(loc, map);
-                            from.SendMessage("You find Farmer Nash's pitchfork under one of the brambles of weeds. You pick up the pitchfork and put it in your backpack.");
-                            break;
+                            from.SendMessage("You find Farmer Nash's pitchfork under one of the brambles of weeds. You pick up the pitchfork and put it in your backpack."); 
                         }
-                        else
-                        {
-                            silverserpent.MoveToWorld(loc, map);
-                            break;
-                        }
-                }
-            }
+						break;
+                  }
+             }
         }
 
         public override void Serialize(GenericWriter writer)

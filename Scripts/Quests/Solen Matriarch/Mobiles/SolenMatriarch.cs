@@ -27,6 +27,10 @@ namespace Server.Engines.Quests.Matriarch
         {
         }
 
+        public override void CheckMorph()
+        {          
+        }
+
         public abstract bool RedSolen { get; }
         public override bool DisallowAllMoves
         {

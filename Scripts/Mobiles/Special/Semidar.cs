@@ -19,7 +19,7 @@ namespace Server.Mobiles
             this.SetDex(102, 200);
             this.SetInt(601, 750);
 
-            this.SetHits(1500);
+            this.SetHits(10000);
             this.SetStam(103, 250);
 
             this.SetDamage(29, 35);
@@ -27,11 +27,11 @@ namespace Server.Mobiles
             this.SetDamageType(ResistanceType.Physical, 75);
             this.SetDamageType(ResistanceType.Fire, 25);
 
-            this.SetResistance(ResistanceType.Physical, 20, 30);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Cold, 20, 30);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            this.SetResistance(ResistanceType.Physical, 75, 90);
+            this.SetResistance(ResistanceType.Fire, 65, 75);
+            this.SetResistance(ResistanceType.Cold, 60, 70);
+            this.SetResistance(ResistanceType.Poison, 65, 75);
+            this.SetResistance(ResistanceType.Energy, 65, 75);
 
             this.SetSkill(SkillName.EvalInt, 95.1, 100.0);
             this.SetSkill(SkillName.Magery, 90.1, 105.0);
@@ -84,13 +84,6 @@ namespace Server.Mobiles
             get
             {
                 return new MonsterStatuetteType[] { };
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
             }
         }
         public override Poison PoisonImmune
