@@ -12,6 +12,19 @@ namespace Server.Mobiles
         {
             this.Name = "Black Order High Executioner";
             this.Title = "of the Serpent's Fang Sect";
+            this.SetStr(545, 560);
+            this.SetDex(160, 175);
+            this.SetInt(160, 175);
+
+            this.SetHits(800);
+            this.SetStam(190, 205);
+
+            this.SetDamage(15, 20);
+
+            this.Fame = 25000;
+            this.Karma = -25000;
+
+            this.VirtualArmor = 60;
         }
 
         public SerpentsFangHighExecutioner(Serial serial)
@@ -47,9 +60,11 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);	
-			
-            if (Utility.RandomDouble() < 0.2)
+
                 c.DropItem(new SerpentFangKey());
+
+            if (Utility.RandomDouble() < 0.5)
+                c.DropItem(new SerpentFangSectBadge());
         }
 
         public override void Serialize(GenericWriter writer)
