@@ -149,6 +149,8 @@ namespace Server.Engines.Harvest
         {
             PlayerMobile player = from as PlayerMobile;
 
+                        Container pack = from.Backpack;
+
             if (player != null)
             {
                 QuestSystem qs = player.Quest;
@@ -170,10 +172,37 @@ namespace Server.Engines.Harvest
                             player.SendLocalizedMessage(1055087, "", 0x2C); // You pull a shellfish out of the water, but it doesn't have a rainbow pearl.
                         }
 
+						return true;
+					}
+				}    
+
+                foreach ( BaseQuest quest in player.Quests )
+                {
+                    if ( quest is SomethingFishy )
+                    {   							
+						if ( Utility.RandomDouble() < 0.1 && ( from.Region != null && from.Region.IsPartOf( "AbyssEntrance" ) ) )
+						{
+							Item red = new RedHerring(); 
+							pack.AddItem( red );
+                            player.SendLocalizedMessage( 1095047, "", 0x23 ); // You pull a shellfish out of the water, but it doesn't have a rainbow pearl.
+                            break;
+						}	
                         return true;
-                    }
-                }
-            }
+				    }
+                        
+					if ( quest is ScrapingtheBottom )
+                    {
+                        if ( Utility.RandomDouble() < 0.1 && ( from.Region != null && from.Region.IsPartOf( "AbyssEntrance" ) ) )
+						{
+							Item mug = new MudPuppy(); 
+                            pack.AddItem( mug );
+                            player.SendLocalizedMessage( 1095064, "", 0x23 ); // You pull a shellfish out of the water, but it doesn't have a rainbow pearl.
+                            break;
+				        }	
+						return true;
+                    }					
+				}				
+			}
 
             return false;
         }
