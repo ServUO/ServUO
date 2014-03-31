@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Travesty()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a travesty";
+            this.Name = "Travesty";
             this.Body = 0x108;
 
             this.SetStr(909, 949);
