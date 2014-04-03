@@ -44,22 +44,15 @@ namespace Server.Items
                 from.SendLocalizedMessage(1042753, "Bedlam"); // ~1_SOMETHING~ has been temporarily disabled.
                 return;
             }
-
+		
             if (from is PlayerMobile)
             {
                 PlayerMobile player = (PlayerMobile)from;
-
+				
                 if (player.Bedlam)
-                {
-                    foreach (BaseCreature b in from.GetMobilesInRange(5))
-                    {
-                        if (b.Controlled && b.ControlMaster == player && player.InRange(b, 2))
-                            b.MoveToWorld(new Point3D(121, 1682, 0), Map);
-                    }
-                    player.MoveToWorld(new Point3D(121, 1682, 0), Map);
-                }
+                    player.MoveToWorld(new Point3D(121, 1682, 0), this.Map);
                 else
-                    player.SendLocalizedMessage(1074276); // You press and push on the iron maiden, but nothing happens.			
+                    player.SendLocalizedMessage(1074276); // You press and push on the iron maiden, but nothing happens.				
             }
         }
 
