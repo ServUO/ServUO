@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -166,6 +167,14 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.Rich);
             this.AddLoot(LootPack.LowScrolls);
             this.AddLoot(LootPack.Potions);
+        }
+
+		public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.3)
+                c.DropItem(new UnicornRibs());
         }
 
         public override void Serialize(GenericWriter writer)

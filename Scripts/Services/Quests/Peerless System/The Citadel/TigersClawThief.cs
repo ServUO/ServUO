@@ -41,21 +41,21 @@ namespace Server.Mobiles
 				
             // TODO quest items
 
-            this.SetStr(225, 275);
-            this.SetDex(175, 275);
-            this.SetInt(85, 105);
+            this.SetStr(340, 360);
+            this.SetDex(400, 415);
+            this.SetInt(200, 215);
 
-            this.SetHits(250, 275);
+            this.SetHits(800, 815);
 
-            this.SetDamage(14, 22);
+            this.SetDamage(13, 15);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 35, 60);
-            this.SetResistance(ResistanceType.Fire, 45, 65);
-            this.SetResistance(ResistanceType.Cold, 25, 45);
-            this.SetResistance(ResistanceType.Poison, 40, 60);
-            this.SetResistance(ResistanceType.Energy, 40, 65);
+            this.SetResistance(ResistanceType.Physical, 45, 65);
+            this.SetResistance(ResistanceType.Fire, 60, 70);
+            this.SetResistance(ResistanceType.Cold, 55, 60);
+            this.SetResistance(ResistanceType.Poison, 30, 50);
+            this.SetResistance(ResistanceType.Energy, 30, 50);
                   
             this.SetSkill(SkillName.MagicResist, 80.0, 100.0);
             this.SetSkill(SkillName.Tactics, 115.0, 130.0);
@@ -67,8 +67,8 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Hiding, 100.0, 120.0);
             this.SetSkill(SkillName.Stealth, 100.0, 120.0);
 
-            this.Fame = 5000;
-            this.Karma = -5000;
+            this.Fame = 13000;
+            this.Karma = -13000;
 
             this.VirtualArmor = 58;
         }
@@ -95,6 +95,16 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.AosFilthyRich, 4);
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.3)
+                c.DropItem(new TigerClawSectBadge());
+            if (Utility.RandomDouble() < 0.05)
+                c.DropItem(new TigerClawKey());
         }
 
         public override void Serialize(GenericWriter writer)

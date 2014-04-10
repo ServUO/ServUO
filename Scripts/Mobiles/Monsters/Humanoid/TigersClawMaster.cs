@@ -12,6 +12,18 @@ namespace Server.Mobiles
         {
             this.Name = "Black Order Master";
             this.Title = "of the Serpent's Fang Sect";
+            this.SetStr(440, 460);
+            this.SetDex(400, 415);
+            this.SetInt(200, 215);
+
+            this.SetHits(850, 875);
+
+            this.SetDamage(15, 20);
+
+            this.Fame = 25000;
+            this.Karma = -25000;
+
+            this.VirtualArmor = 60;
         }
 
         public TigersClawMaster(Serial serial)
@@ -42,8 +54,10 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);	
 			
-            if (Utility.RandomDouble() < 0.2)
                 c.DropItem(new TigerClawKey());
+
+            if (Utility.RandomDouble() < 0.5)
+                c.DropItem(new TigerClawSectBadge());
         }
 
         public override void Serialize(GenericWriter writer)

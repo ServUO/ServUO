@@ -58,6 +58,37 @@ namespace Server.Spells
 
     public class SpellHelper
     {
+
+        #region Spell Mastery Focus
+        public static bool HasSpellMastery(Mobile m)
+        {
+            //Publish 71 PVP Spell damage increase cap changes. If you have GM of one school of magic and no others, you are "focused" in that school of magic and have 30% sdi cap instead of 15%.
+            List<SkillName> schools = new List<SkillName>()
+            {
+                SkillName.Magery,
+                SkillName.AnimalTaming,
+                SkillName.Musicianship,
+                SkillName.Mysticism,
+                SkillName.Spellweaving,
+                SkillName.Chivalry,
+                SkillName.Necromancy,
+                SkillName.Bushido,
+                SkillName.Ninjitsu
+            };
+
+            bool spellMastery = false;
+
+            foreach (SkillName skill in schools)
+            {
+                if (m.Skills[skill].Base >= 30.0 && spellMastery)
+                    return false;
+                if (m.Skills[skill].Base >= 100.0)
+                    spellMastery = true;
+            }
+            return spellMastery;
+        }
+#endregion 
+
         private static readonly TimeSpan AosDamageDelay = TimeSpan.FromSeconds(1.0);
         private static readonly TimeSpan OldDamageDelay = TimeSpan.FromSeconds(0.5);
 

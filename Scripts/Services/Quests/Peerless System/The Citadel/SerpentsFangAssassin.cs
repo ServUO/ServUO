@@ -42,21 +42,21 @@ namespace Server.Mobiles
             item.Hue = 0x51D;
             this.AddItem(item);
 
-            this.SetStr(325, 375);
-            this.SetDex(175, 275);
-            this.SetInt(85, 105);
+            this.SetStr(440, 460);
+            this.SetDex(160, 175);
+            this.SetInt(160, 175);
 
-            this.SetHits(350, 375);
+            this.SetHits(440, 460);
 
-            this.SetDamage(14, 22);
+            this.SetDamage(13, 15);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 35, 60);
-            this.SetResistance(ResistanceType.Fire, 45, 65);
-            this.SetResistance(ResistanceType.Cold, 25, 45);
-            this.SetResistance(ResistanceType.Poison, 40, 60);
-            this.SetResistance(ResistanceType.Energy, 40, 65);
+            this.SetResistance(ResistanceType.Physical, 65, 75);
+            this.SetResistance(ResistanceType.Fire, 50, 60);
+            this.SetResistance(ResistanceType.Cold, 55, 60);
+            this.SetResistance(ResistanceType.Poison, 30, 50);
+            this.SetResistance(ResistanceType.Energy, 30, 50);
 
             this.SetSkill(SkillName.MagicResist, 80.0, 100.0);
             this.SetSkill(SkillName.Tactics, 115.0, 130.0);
@@ -68,8 +68,8 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Hiding, 100.0, 120.0);
             this.SetSkill(SkillName.Stealth, 100.0, 120.0);
 
-            this.Fame = 5000;
-            this.Karma = -5000;
+            this.Fame = 13000;
+            this.Karma = -13000;
 
             this.VirtualArmor = 58;
         }
@@ -104,6 +104,8 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.3)
                 c.DropItem(new SerpentFangSectBadge());
+            if (Utility.RandomDouble() < 0.05)
+                c.DropItem(new SerpentFangKey());
         }
 
         public override void Serialize(GenericWriter writer)

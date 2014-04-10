@@ -163,10 +163,18 @@ namespace Server.Spells
 			sdiBonus += ArcaneEmpowermentSpell.GetSpellBonus(m_Caster, playerVsPlayer);
 			#endregion
 
-			// PvP spell damage increase cap of 15% from an item’s magic property
-			if (playerVsPlayer && sdiBonus > 15)
+			// PvP spell damage increase cap of 15% from an item’s magic property, 30% if spell school focused.
+			if (playerVsPlayer)
 			{
-				sdiBonus = 15;
+			    if (SpellHelper.HasSpellMastery(m_Caster) && sdiBonus > 30)
+                {
+                    sdiBonus = 30;
+                }
+
+                if (!SpellHelper.HasSpellMastery(m_Caster) && sdiBonus > 15)
+                {
+                    sdiBonus = 15;
+                }
 			}
 
 			damageBonus += sdiBonus;
