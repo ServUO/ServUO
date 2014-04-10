@@ -26,25 +26,26 @@ namespace Server.Items
                 return 30;
             }
         }
-        public static bool IsBleeding(Mobile m)
+		
+		public static bool IsBleeding(Mobile m)
         {
             return m_Table.Contains(m);
         }
-
-        public static void BeginBleed(Mobile m, Mobile from)
+		
+		public static void BeginBleed(Mobile m, Mobile from, bool blooddrinker)
         {
             Timer t = (Timer)m_Table[m];
 
             if (t != null)
                 t.Stop();
 
-            t = new InternalTimer(from, m);
+            t = new InternalTimer(from, m, blooddrinker);
             m_Table[m] = t;
 
             t.Start();
         }
 
-        public static void DoBleed(Mobile m, Mobile from, int level)
+        public static void DoBleed(Mobile m, Mobile from, int level, bool blooddrinker)
         {
             if (m.Alive)
             {
@@ -55,6 +56,11 @@ namespace Server.Items
 
                 m.PlaySound(0x133);
                 m.Damage(damage, from);
+				
+				if (blooddrinker)
+				{
+					from.Heal(damage, from, true); // Check for OSI message accuracy instead of standard heal message
+				}
 
                 Blood blood = new Blood();
 
@@ -81,10 +87,27 @@ namespace Server.Items
             if (message)
                 m.SendLocalizedMessage(1060167); // The bleeding wounds have healed, you are no longer bleeding!
         }
+		
+		public static bool CheckBloodDrink(Mobile attacker)
+		{
+			Item onehand = attacker.FindItemOnLayer( Layer.OneHanded );
+			Item twohand = attacker.FindItemOnLayer( Layer.TwoHanded );
+
+			BaseWeapon bw = null;
+			if (onehand is BaseWeapon)
+				bw = onehand as BaseWeapon;
+			else if (twohand is BaseWeapon)
+				bw = twohand as BaseWeapon;
+
+		    if (bw !=null)
+                return (bw.WeaponAttributes.BloodDrinker != 0);
+
+		    return false;
+		}
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker) || !this.CheckMana(attacker, true))
+            if (!Validate(attacker) || !CheckMana(attacker, true))
                 return;
 
             ClearCurrentAbility(attacker);
@@ -108,10 +131,12 @@ namespace Server.Items
                 defender.NonlocalOverheadMessage(MessageType.Regular, 0x21, 1060758, defender.Name); // ~1_NAME~ is bleeding profusely
             }
 
+            bool blooddrinker = CheckBloodDrink(attacker);
+
             defender.PlaySound(0x133);
             defender.FixedParticles(0x377A, 244, 25, 9950, 31, 0, EffectLayer.Waist);
-
-            BeginBleed(defender, attacker);
+			
+			BeginBleed(defender, attacker, blooddrinker);
         }
 
         private class InternalTimer : Timer
@@ -119,20 +144,22 @@ namespace Server.Items
             private readonly Mobile m_From;
             private readonly Mobile m_Mobile;
             private int m_Count;
-            public InternalTimer(Mobile from, Mobile m)
+			private readonly bool m_blooddrinker;
+            public InternalTimer(Mobile from, Mobile m, bool blooddrinker)
                 : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
             {
-                this.m_From = from;
-                this.m_Mobile = m;
-                this.Priority = TimerPriority.TwoFiftyMS;
-            }
+                m_From = from;
+                m_Mobile = m;
+                Priority = TimerPriority.TwoFiftyMS;
+				m_blooddrinker = blooddrinker;
+			}
 
             protected override void OnTick()
             {
-                DoBleed(this.m_Mobile, this.m_From, 5 - this.m_Count);
+                DoBleed(m_Mobile, m_From, 5 - m_Count, m_blooddrinker);
 
-                if (++this.m_Count == 5)
-                    EndBleed(this.m_Mobile, true);
+                if (++m_Count == 5)
+                    EndBleed(m_Mobile, true);
             }
         }
     }
