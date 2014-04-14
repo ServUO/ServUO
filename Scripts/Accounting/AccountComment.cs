@@ -76,7 +76,7 @@ namespace Server.Accounting
 
             xml.WriteAttributeString("addedBy", this.m_AddedBy);
 
-            xml.WriteAttributeString("lastModified", XmlConvert.ToString(this.m_LastModified, XmlDateTimeSerializationMode.Local));
+            xml.WriteAttributeString("lastModified", XmlConvert.ToString(this.m_LastModified, XmlDateTimeSerializationMode.Utc));
 
             xml.WriteString(this.m_Content);
 
