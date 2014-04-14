@@ -74,7 +74,7 @@ namespace Server.Engines.Reports
             if (val == null)
                 return DateTime.MinValue;
 
-            return XmlConvert.ToDateTime(val, XmlDateTimeSerializationMode.Local);
+            return XmlConvert.ToDateTime(val, XmlDateTimeSerializationMode.Utc);
         }
 
         public override bool BeginChildren()
