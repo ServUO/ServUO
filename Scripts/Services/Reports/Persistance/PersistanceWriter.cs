@@ -68,7 +68,7 @@ namespace Server.Engines.Reports
         public override void SetDateTime(string key, DateTime value)
         {
             if (value != DateTime.MinValue)
-                this.m_Xml.WriteAttributeString(key, XmlConvert.ToString(value, XmlDateTimeSerializationMode.Local));
+                this.m_Xml.WriteAttributeString(key, XmlConvert.ToString(value, XmlDateTimeSerializationMode.Utc));
         }
 
         public override void BeginObject(PersistableType typeID)
