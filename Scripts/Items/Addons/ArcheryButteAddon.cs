@@ -106,7 +106,7 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             if ((from.Weapon is Boomerang || from.Weapon is Cyclone || from.Weapon is BaseThrown) && from.InRange(this.GetWorldLocation(), 1))
-                this.Fire(from);            
+                this.Fire(from);
             if ((this.m_Arrows > 0 || this.m_Bolts > 0) && from.InRange(this.GetWorldLocation(), 1))
                 this.Gather(from);
             else
@@ -134,7 +134,7 @@ namespace Server.Items
             BaseRanged bow = from.Weapon as BaseRanged;
             BaseThrown trow = from.Weapon as BaseThrown;
 
-            if (bow == null || trow == null)
+            if (bow == null && trow == null)
             {
                 this.SendLocalizedMessageTo(from, 500593); // You must practice with ranged weapons on this.
                 return;
@@ -205,36 +205,41 @@ namespace Server.Items
 
             ScoreEntry se = this.GetEntryFor(from);
 
-            if (!from.CheckSkill(bow.Skill, this.m_MinSkill, this.m_MaxSkill))
+            if (from.Weapon == trow)
             {
-                from.PlaySound(bow.MissSound);
+                if (!from.CheckSkill(trow.Skill, this.m_MinSkill, this.m_MaxSkill))
+                {
+                    from.PlaySound(trow.MissSound);
 
-                this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 500604, from.Name); // You miss the target altogether.
+                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 500604, from.Name); // You miss the target altogether.
 
-                se.Record(0);
+                    se.Record(0);
 
-                if (se.Count == 1)
-                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1062719, se.Total.ToString());
-                else
-                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1042683, String.Format("{0}\t{1}", se.Total, se.Count));
+                    if (se.Count == 1)
+                        this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1062719, se.Total.ToString());
+                    else
+                        this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1042683, String.Format("{0}\t{1}", se.Total, se.Count));
 
-                return;
+                    return;
+                }
             }
-            
-            else if (!from.CheckSkill(trow.Skill, this.m_MinSkill, this.m_MaxSkill))
+            else if (from.Weapon == bow)
             {
-                from.PlaySound(trow.MissSound);
- 
-                this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 500604, from.Name); // You miss the target altogether.
- 
-                se.Record(0);
- 
-                if (se.Count == 1)
-                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1062719, se.Total.ToString());
-                else
-                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1042683, String.Format("{0}\t{1}", se.Total, se.Count));
- 
-                return;
+                if (!from.CheckSkill(bow.Skill, this.m_MinSkill, this.m_MaxSkill))
+                {
+                    from.PlaySound(bow.MissSound);
+
+                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 500604, from.Name); // You miss the target altogether.
+
+                    se.Record(0);
+
+                    if (se.Count == 1)
+                        this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1062719, se.Total.ToString());
+                    else
+                        this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1042683, String.Format("{0}\t{1}", se.Total, se.Count));
+
+                    return;
+                }
             }
             Effects.PlaySound(this.Location, this.Map, 0x2B1);
 
@@ -309,7 +314,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
