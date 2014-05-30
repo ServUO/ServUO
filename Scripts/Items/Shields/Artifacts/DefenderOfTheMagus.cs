@@ -14,7 +14,45 @@ namespace Server.Items
             this.Attributes.SpellChanneling = 1;
             this.Attributes.DefendChance = 10;				
             this.Attributes.CastRecovery = 1;
-            //TODO: Random Resonance, Random Resistance
+            //Random Resonance:
+            switch (Utility.Random(5))
+            {
+                case 0:
+                    this.AbsorptionAttributes.ResonanceCold = 10;
+                    break;
+                case 1:
+                    this.AbsorptionAttributes.ResonanceFire = 10;
+                    break;
+                case 2:
+                    this.AbsorptionAttributes.ResonanceKinetic = 10;
+                    break;
+                case 3:
+                    this.AbsorptionAttributes.ResonancePoison = 10;
+                    break;
+                case 4:
+                    this.AbsorptionAttributes.ResonanceEnergy = 10;
+                    break;
+            }
+            //Random Resist:
+            switch (Utility.Random(5))
+            {
+                case 0:
+                    this.ColdBonus = 10;
+                    break;
+                case 1:
+                    this.FireBonus = 10;
+                    break;
+                case 2:
+                    this.PhysicalBonus = 10;
+                    break;
+                case 3:
+                    this.PoisonBonus = 10;
+                    break;
+                case 4:
+                    this.EnergyBonus = 10;
+                    break;
+            }
+
         }
 
         public DefenderOfTheMagus(Serial serial)
