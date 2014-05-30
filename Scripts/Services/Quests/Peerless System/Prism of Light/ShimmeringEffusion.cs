@@ -79,6 +79,9 @@ namespace Server.Mobiles
                         break;
                 }
             }
+
+            if (Utility.RandomDouble() < 0.10)
+                c.DropItem(new HumanFeyLeggings());
 			
             if (Utility.RandomDouble() < 0.05)
                 c.DropItem(new FerretImprisonedInCrystal());		

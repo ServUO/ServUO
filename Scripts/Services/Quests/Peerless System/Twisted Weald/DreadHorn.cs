@@ -214,7 +214,10 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);		
 			
-            c.DropItem(new DreadHornMane());	
+            c.DropItem(new DreadHornMane());
+
+            if (Utility.RandomDouble() < 0.10)
+                c.DropItem(new HumanFeyLeggings());
 			
             if (Utility.RandomDouble() < 0.6)
                 c.DropItem(new TaintedMushroom());
