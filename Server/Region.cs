@@ -85,7 +85,28 @@ namespace Server
 		Paws,
 		SelimsBar,
 		SerpentIsleCombat_U7,
-		ValoriaShips
+		ValoriaShips,
+		TheWanderer,
+		Castle,
+		Festival,
+		Honor,
+		Medieval,
+		BattleOnStones,
+		Docktown,
+		GargoyleQueen,
+		GenericCombat,
+		Holycity,
+		HumanLevel,
+		LoginLoop,
+		NorthernForestBattleonStones,
+		PrimevalLich,
+		QueenPalace,
+		RoyalCity,
+		SlasherVeil,
+		StygianAbyss,
+		StygianDragon,
+		Void,
+		CodexShrine
 	}
 
 	public class Region : IComparable
