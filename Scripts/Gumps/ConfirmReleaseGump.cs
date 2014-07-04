@@ -1,4 +1,5 @@
 using System;
+using Server;
 using Server.Mobiles;
 
 namespace Server.Gumps
@@ -38,7 +39,14 @@ namespace Server.Gumps
                     if (this.m_Pet.Map == this.m_From.Map && this.m_Pet.InRange(this.m_From, 14))
                     {
                         this.m_Pet.ControlTarget = null;
-                        this.m_Pet.ControlOrder = OrderType.Release;
+
+                        // >>> [1st change of 1]
+                        if (m_Pet is BaseHire)
+                            m_Pet.ControlOrder = OrderType.Dismiss;
+                        else
+                            m_Pet.ControlOrder = OrderType.Release;
+                        //						m_Pet.ControlOrder = OrderType.Release;
+                        // end 1st
                     }
                 }
             }
