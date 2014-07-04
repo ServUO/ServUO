@@ -101,10 +101,19 @@ namespace Server.SkillHandlers
 
                     m.AllowedStealthSteps = steps;
 
-                    PlayerMobile pm = m as PlayerMobile; // IsStealthing should be moved to Server.Mobiles
-
-                    if (pm != null)
+                    // ------ NERUN's DISTRO - Orc Scout bug fix -----
+                    if (m is PlayerMobile)
+                    {
+                        PlayerMobile pm = m as PlayerMobile; // IsStealthing should be moved to Server.Mobiles
                         pm.IsStealthing = true;
+                    }
+                    /*
+                                        PlayerMobile pm = m as PlayerMobile; // IsStealthing should be moved to Server.Mobiles
+
+                                        if( pm != null )
+                                                pm.IsStealthing = true;
+                    */
+                    // ------ END
 
                     m.SendLocalizedMessage(502730); // You begin to move quietly.
 

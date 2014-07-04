@@ -9,6 +9,28 @@ using Server.Network;
 
 namespace Server.Engines.Quests
 {
+    // Nerun's Distro Addition -- 1 of 1 --begin
+    public class QuestButton
+    {
+        public static void Initialize()
+        {
+            EventSink.QuestGumpRequest += new QuestGumpRequestHandler(EventSink_QuestGumpRequest);
+        }
+
+        private static void EventSink_QuestGumpRequest(QuestGumpRequestArgs args)
+        {
+            PlayerMobile pm = args.Mobile as PlayerMobile;
+
+            if (pm == null)
+                return;
+
+            QuestSystem qs = pm.Quest;
+
+            if (qs != null)
+                qs.ShowQuestLog();
+        }
+    }
+    // --------------------------------------end
     public delegate void QuestCallback();
 
     public abstract class QuestSystem
@@ -124,7 +146,7 @@ namespace Server.Engines.Quests
                     {
                         DateTime endTime = restartInfo.RestartTime;
 
-                        if (DateTime.UtcNow < endTime)
+                        if (DateTime.Now < endTime)
                         {
                             inRestartPeriod = true;
                             return false;
