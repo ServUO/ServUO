@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public ElvenSpinningwheelEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x2DD9), 0, 0, 0);
+            this.AddComponent(new AddonComponent(0x2E3D), 0, 0, 0);
         }
 
         public ElvenSpinningwheelEastAddon(Serial serial)
@@ -48,10 +48,8 @@ namespace Server.Items
         {
             switch ( c.ItemID )
             {
-                case 0x2E3D:
-                case 0x101D:
-                case 0x10A5:
-                    --c.ItemID;
+                case 0x2E3C:
+                    ++c.ItemID;
                     break;
             }
         }
@@ -65,10 +63,8 @@ namespace Server.Items
             {
                 switch ( c.ItemID )
                 {
-                    case 0x2DD9:
-                    case 0x101C:
-                    case 0x10A4:
-                        ++c.ItemID;
+                    case 0x2E3D:
+                        --c.ItemID;
                         break;
                 }
             }
@@ -85,11 +81,8 @@ namespace Server.Items
             {
                 switch ( c.ItemID )
                 {
-                    case 0x1016:
-                    case 0x101A:
-                    case 0x101D:
-                    case 0x10A5:
-                        --c.ItemID;
+                    case 0x2E3C:
+                        ++c.ItemID;
                         break;
                 }
             }

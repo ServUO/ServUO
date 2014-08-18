@@ -9,7 +9,7 @@ namespace Server.Multis
         private Mobile m_Prisoner;
         [Constructable]
         public HumanBrigandCamp()
-            : base(0x1DE0)
+            : base(0x10EE)
         {
         }
 
