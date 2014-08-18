@@ -140,10 +140,13 @@ namespace CustomsFramework.Systems.VIPSystem
         private void DonatorMessage(Mobile from)
         {
             VIPCore core = World.GetCore(typeof(VIPCore)) as VIPCore;
-
-            from.SendMessage("Thank you for donating and helping make this a better place!");
-            from.SendMessage("You have been given your VIP Bonuses, they will expire in {0}.", core.ServiceTimespan.TotalDays);
-            from.SendMessage("Use [VIP to view your VIP bonuses and settings.");
+			
+			if (core != null)
+			{
+				from.SendMessage("Thank you for donating and helping make this a better place!");
+				from.SendMessage("You have been given your VIP Bonuses, they will expire in {0}.", core.ServiceTimespan.TotalDays);
+				from.SendMessage("Use [VIP to view your VIP bonuses and settings.");
+			}
         }
     }
 }
