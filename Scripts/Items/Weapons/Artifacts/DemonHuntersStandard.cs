@@ -6,19 +6,18 @@ namespace Server.Items
     {
         [Constructable]
         public DemonHuntersStandard()
-            : base(0xF62)
         {
-            this.Name = ("Demon Hunter's Standard");
+            Name = ("Demon Hunter's Standard");
 		
-            this.Hue = 1377;	
+            Hue = 1377;	
 			
-            this.Attributes.CastSpeed = 1;			
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 50;
-            this.WeaponAttributes.HitLeechStam = 50;
-            this.WeaponAttributes.HitLightning = 40;	
-            this.WeaponAttributes.HitLowerDefend = 30;
-            this.Slayer = SlayerName.DaemonDismissal;
+            Attributes.CastSpeed = 1;			
+            Attributes.WeaponSpeed = 25;
+            Attributes.WeaponDamage = 50;
+            WeaponAttributes.HitLeechStam = 50;
+            WeaponAttributes.HitLightning = 40;	
+            WeaponAttributes.HitLowerDefend = 30;
+            Slayer = SlayerName.DaemonDismissal;
         }
 
         public DemonHuntersStandard(Serial serial)
