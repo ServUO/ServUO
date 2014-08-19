@@ -117,7 +117,6 @@ namespace Server.Multis
             Point3D p = this.GetRandomSpawnPoint(3);
 			
             this.AddMobile(this.m_Prisoner, 0, p.X, p.Y, p.Z);
-            Console.WriteLine(this.Location.ToString());
         }
 
         public override void AddItem(Item item, int xOffset, int yOffset, int zOffset)
