@@ -331,10 +331,10 @@ namespace Server.Engines.Craft
 
 		private static readonly Type[][] m_TypesTable = new[]
 		{
-			new[] {typeof(Log), typeof(Board)}, new[] {typeof(HeartwoodLog), typeof(HeartwoodBoard)},
-			new[] {typeof(BloodwoodLog), typeof(BloodwoodBoard)}, new[] {typeof(FrostwoodLog), typeof(FrostwoodBoard)},
-			new[] {typeof(OakLog), typeof(OakBoard)}, new[] {typeof(AshLog), typeof(AshBoard)},
-			new[] {typeof(YewLog), typeof(YewBoard)}, new[] {typeof(Leather), typeof(Hides)},
+			new[] {typeof(Board), typeof(Log)}, new[] {typeof(HeartwoodBoard), typeof(HeartwoodLog)},
+			new[] {typeof(BloodwoodBoard), typeof(BloodwoodLog)}, new[] {typeof(FrostwoodBoard), typeof(FrostwoodLog)},
+			new[] {typeof(OakBoard), typeof(OakLog)}, new[] {typeof(AshBoard), typeof(AshLog)},
+			new[] {typeof(YewBoard), typeof(YewLog)}, new[] {typeof(Leather), typeof(Hides)},
 			new[] {typeof(SpinedLeather), typeof(SpinedHides)}, new[] {typeof(HornedLeather), typeof(HornedHides)},
 			new[] {typeof(BarbedLeather), typeof(BarbedHides)}, new[] {typeof(BlankMap), typeof(BlankScroll)},
 			new[] {typeof(Cloth), typeof(UncutCloth), typeof(AbyssalCloth)}, new[] {typeof(CheeseWheel), typeof(CheeseWedge)},

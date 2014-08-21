@@ -22,6 +22,7 @@ namespace Server.Engines.Craft
         private bool m_CanEnhance;
         #region SA
         private bool m_QuestOption;
+		private bool m_CanAlter;
         #endregion
 
         private readonly CraftItemCol m_CraftItems;
@@ -200,6 +201,18 @@ namespace Server.Engines.Craft
             set
             {
                 this.m_QuestOption = value;
+            }
+        }
+		
+		public bool CanAlter
+        {
+            get
+            {
+                return this.m_CanAlter;
+            }
+            set
+            {
+                this.m_CanAlter = value;
             }
         }
         #endregion

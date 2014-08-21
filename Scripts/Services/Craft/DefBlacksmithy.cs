@@ -977,6 +977,7 @@ namespace Server.Engines.Craft
             Repair = true;
             MarkOption = true;
             CanEnhance = Core.AOS;
+			CanAlter = Core.SA;
         }
     }
 

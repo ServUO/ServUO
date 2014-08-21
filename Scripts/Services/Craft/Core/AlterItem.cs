@@ -11,82 +11,133 @@ namespace Server.Engines.Craft
         public static Dictionary<Type, Type> TypeList = new Dictionary<Type, Type>();
         public static void Configure()
         {
-            // Weapons
-            TypeList.Add(typeof(VikingSword), typeof(StoneWarSword));
-            TypeList.Add(typeof(BoneHarvester), typeof(GlassSword));
-            TypeList.Add(typeof(ElvenMachete), typeof(GlassSword));
-            TypeList.Add(typeof(Katana), typeof(GargishKatana));
-            TypeList.Add(typeof(Cutlass), typeof(GlassSword));
-            TypeList.Add(typeof(Cleaver), typeof(GargishCleaver));
-            TypeList.Add(typeof(RadiantScimitar), typeof(GlassSword));
-            TypeList.Add(typeof(Scimitar), typeof(GlassSword));
-            TypeList.Add(typeof(Longsword), typeof(DreadSword));
-            TypeList.Add(typeof(Broadsword), typeof(BloodBlade));
-            TypeList.Add(typeof(Bardiche), typeof(GargishBardiche));
-            TypeList.Add(typeof(Halberd), typeof(GargishTalwar));
-            TypeList.Add(typeof(NoDachi), typeof(GargishTalwar));
-            TypeList.Add(typeof(Daisho), typeof(GargishDaisho));
-            TypeList.Add(typeof(RuneBlade), typeof(GargishTalwar));
-            TypeList.Add(typeof(CrescentBlade), typeof(GargishTalwar));
-            TypeList.Add(typeof(Scythe), typeof(GargishScythe));
-            TypeList.Add(typeof(WarFork), typeof(GargishWarFork));
-            TypeList.Add(typeof(WarCleaver), typeof(GargishCleaver));
-            TypeList.Add(typeof(AssassinSpike), typeof(Shortblade));
-            TypeList.Add(typeof(Kryss), typeof(GargishKryss));
-            TypeList.Add(typeof(WarHammer), typeof(GargishWarHammer));
-            TypeList.Add(typeof(WarMace), typeof(DiscMace));
-            TypeList.Add(typeof(Mace), typeof(DiscMace));
-            TypeList.Add(typeof(Maul), typeof(GargishMaul));
-            TypeList.Add(typeof(Scepter), typeof(DiscMace));
-            TypeList.Add(typeof(Club), typeof(DiscMace));
-            TypeList.Add(typeof(HammerPick), typeof(DiscMace));
-            TypeList.Add(typeof(DiamondMace), typeof(DiscMace));
-            TypeList.Add(typeof(WildStaff), typeof(GargishGnarledStaff));
-            TypeList.Add(typeof(WarAxe), typeof(DiscMace));
-            TypeList.Add(typeof(Tetsubo), typeof(GlassStaff));
-            TypeList.Add(typeof(Tessen), typeof(GargishTessen));
-            TypeList.Add(typeof(BlackStaff), typeof(GlassStaff));
-            TypeList.Add(typeof(QuarterStaff), typeof(GlassStaff));
-            TypeList.Add(typeof(GnarledStaff), typeof(GargishGnarledStaff));
-            TypeList.Add(typeof(OrnateAxe), typeof(GargishBattleAxe));
-            TypeList.Add(typeof(DoubleAxe), typeof(DualShortAxes));
-            TypeList.Add(typeof(ExecutionersAxe), typeof(DualShortAxes));
-            TypeList.Add(typeof(Axe), typeof(GargishAxe));
-            TypeList.Add(typeof(TwoHandedAxe), typeof(DualShortAxes));
-            TypeList.Add(typeof(LargeBattleAxe), typeof(GargishBattleAxe));
-            TypeList.Add(typeof(Spear), typeof(DualPointedSpear));
-            TypeList.Add(typeof(Kama), typeof(DualPointedSpear));
-            TypeList.Add(typeof(Sai), typeof(DualPointedSpear));
-            TypeList.Add(typeof(ShortSpear), typeof(DualPointedSpear));
-            TypeList.Add(typeof(BladedStaff), typeof(DualPointedSpear));
-            TypeList.Add(typeof(DoubleBladedStaff), typeof(DualPointedSpear));
-            TypeList.Add(typeof(Dagger), typeof(GargishDagger));
-            TypeList.Add(typeof(SkinningKnife), typeof(GargishButcherKnife));
-
+            //****BlackSmithy****//
             // Shields
-            TypeList.Add(typeof(MetalKiteShield), typeof(GargishKiteShield));
-            TypeList.Add(typeof(WoodenKiteShield), typeof(LargeStoneShield));
             TypeList.Add(typeof(Buckler), typeof(SmallPlateShield));
             TypeList.Add(typeof(BronzeShield), typeof(SmallPlateShield));
             TypeList.Add(typeof(HeaterShield), typeof(LargePlateShield));
-            TypeList.Add(typeof(WoodenShield), typeof(GargishWoodenShield));
             TypeList.Add(typeof(MetalShield), typeof(MediumPlateShield));
+            TypeList.Add(typeof(MetalKiteShield), typeof(GargishKiteShield));
+            TypeList.Add(typeof(WoodenShield), typeof(GargishWoodenShield));
             TypeList.Add(typeof(ChaosShield), typeof(GargishChaosShield));
             TypeList.Add(typeof(OrderShield), typeof(GargishOrderShield));
 
-            // Leather Armor
-            TypeList.Add(typeof(FemaleLeatherChest), typeof(FemaleGargishLeatherChest));
-            TypeList.Add(typeof(LeatherShorts), typeof(GargishLeatherKilt));
-            TypeList.Add(typeof(LeatherSkirt), typeof(FemaleGargishLeatherKilt));
-            TypeList.Add(typeof(LeatherBustierArms), typeof(FemaleGargishLeatherArms));
-            TypeList.Add(typeof(LeatherChest), typeof(GargishLeatherChest));
-            TypeList.Add(typeof(LeatherArms), typeof(GargishLeatherArms));
-            TypeList.Add(typeof(LeatherLegs), typeof(GargishLeatherLegs));
+            //Platemail
+            TypeList.Add(typeof(FemalePlateChest), typeof(FemaleGargishPlateChest));
+            TypeList.Add(typeof(PlateChest), typeof(GargishPlateChest));
+            TypeList.Add(typeof(PlateArms), typeof(GargishPlateArms));
+            TypeList.Add(typeof(PlateLegs), typeof(GargishPlateLegs));
+            TypeList.Add(typeof(PlateDo), typeof(GargishPlateChest));
+            TypeList.Add(typeof(PlateHaidate), typeof(GargishPlateLegs));
+            TypeList.Add(typeof(PlateHiroSode), typeof(GargishPlateArms));
+            TypeList.Add(typeof(PlateSuneate), typeof(GargishPlateLegs));
+            
+            // Weapons
+            TypeList.Add(typeof(BattleAxe), typeof(GargishBattleAxe));
+            TypeList.Add(typeof(BoneHarvester), typeof(GargishBoneHarvester));
+            TypeList.Add(typeof(Katana), typeof(GargishKatana));
+            TypeList.Add(typeof(Tekagi), typeof(GargishTekagi));
+            TypeList.Add(typeof(Lance), typeof(GargishLance));
+            TypeList.Add(typeof(Pike), typeof(GargishPike));
+            TypeList.Add(typeof(Bardiche), typeof(GargishBardiche));
+            TypeList.Add(typeof(Daisho), typeof(GargishDaisho));
+            TypeList.Add(typeof(Scythe), typeof(GargishScythe));
+            TypeList.Add(typeof(WarFork), typeof(GargishWarFork));
+            TypeList.Add(typeof(Kryss), typeof(GargishKryss));
+            TypeList.Add(typeof(WarHammer), typeof(GargishWarHammer));
+            TypeList.Add(typeof(Maul), typeof(GargishMaul));
+            TypeList.Add(typeof(Tessen), typeof(GargishTessen));
+            TypeList.Add(typeof(Axe), typeof(GargishAxe));
+            TypeList.Add(typeof(Dagger), typeof(GargishDagger));
+            TypeList.Add(typeof(Broadsword), typeof(DreadSword));
+            TypeList.Add(typeof(Longsword), typeof(DreadSword));
+            TypeList.Add(typeof(CrescentBlade), typeof(GargishTalwar));
+            TypeList.Add(typeof(NoDachi), typeof(GargishTalwar));
+            TypeList.Add(typeof(RuneBlade), typeof(GargishTalwar));
+            TypeList.Add(typeof(Halberd), typeof(GargishTalwar));
+            TypeList.Add(typeof(VikingSword), typeof(StoneWarSword));
+            TypeList.Add(typeof(Lajatang), typeof(DualPointedSpear));
+            TypeList.Add(typeof(Kama), typeof(DualPointedSpear));
+            TypeList.Add(typeof(Sai), typeof(DualPointedSpear));
+            TypeList.Add(typeof(ElvenSpellblade), typeof(DualPointedSpear));
+            TypeList.Add(typeof(BladedStaff), typeof(DualPointedSpear));
+            TypeList.Add(typeof(DoubleBladedStaff), typeof(DualPointedSpear));
+            TypeList.Add(typeof(Spear), typeof(DualPointedSpear));
+            TypeList.Add(typeof(ShortSpear), typeof(DualPointedSpear));
+            TypeList.Add(typeof(WarCleaver), typeof(Shortblade));
+            TypeList.Add(typeof(AssassinSpike), typeof(Shortblade));
+            TypeList.Add(typeof(Leafblade), typeof(BloodBlade));
+            TypeList.Add(typeof(DoubleAxe), typeof(DualShortAxes));
+            TypeList.Add(typeof(ExecutionersAxe), typeof(DualShortAxes));
+            TypeList.Add(typeof(LargeBattleAxe), typeof(DualShortAxes));
+            TypeList.Add(typeof(TwoHandedAxe), typeof(DualShortAxes));
+            TypeList.Add(typeof(OrnateAxe), typeof(DualShortAxes));
+            TypeList.Add(typeof(WarAxe), typeof(DiscMace));
+            TypeList.Add(typeof(HammerPick), typeof(DiscMace));
+            TypeList.Add(typeof(Mace), typeof(DiscMace));
+            TypeList.Add(typeof(Scepter), typeof(DiscMace));
+            TypeList.Add(typeof(WarMace), typeof(DiscMace));
+            TypeList.Add(typeof(DiamondMace), typeof(DiscMace));
 
-            // Wooden Armor
-            TypeList.Add(typeof(WoodlandChest), typeof(GargishStoneChest));
-            TypeList.Add(typeof(WoodlandArms), typeof(GargishStoneArms));
-            TypeList.Add(typeof(WoodlandLegs), typeof(GargishStoneLegs));
+            //****Carpentry****//
+            TypeList.Add(typeof(GnarledStaff), typeof(GargishGnarledStaff));
+            #region Need Implementation
+            //****Tailoring****//
+            //Misc
+            /*  TypeList.Add(typeof(BodySash), typeof(GargishSash));
+                TypeList.Add(typeof(HalfApron), typeof(GargoyleHalfApron));
+                TypeList.Add(typeof(Kilt), typeof(GargishClothKilt));
+
+                //Footwear
+                TypeList.Add(typeof(FurBoots), typeof(LeatherTalons));
+                TypeList.Add(typeof(Boots), typeof(LeatherTalons));
+                TypeList.Add(typeof(ThighBoots), typeof(LeatherTalons));
+                TypeList.Add(typeof(Shoes), typeof(LeatherTalons));
+                TypeList.Add(typeof(Sandals), typeof(LeatherTalons));
+                TypeList.Add(typeof(NinjaTabi), typeof(LeatherTalons));
+                TypeList.Add(typeof(SamuraiTabi), typeof(LeatherTalons));
+                TypeList.Add(typeof(Waraji), typeof(LeatherTalons));
+                TypeList.Add(typeof(ElvenBoots), typeof(LeatherTalons));
+
+                //Quivers & Cloaks
+                TypeList.Add(typeof(ElvenQuiver), typeof(GargishClothWingArmor));
+                TypeList.Add(typeof(QuiverOfBlight), typeof(GargishClothWingArmor));
+                TypeList.Add(typeof(QuiverOfFire), typeof(GargishClothWingArmor));
+                TypeList.Add(typeof(QuiverOfIce), typeof(GargishClothWingArmor));
+                TypeList.Add(typeof(QuiverOfLightning), typeof(GargishClothWingArmor));
+                TypeList.Add(typeof(QuiverOfElements), typeof(GargishClothWingArmor));
+                TypeList.Add(typeof(QuiverOfRage), typeof(GargishClothWingArmor));
+                TypeList.Add(typeof(QuiverOfInfinity), typeof(GargishClothWingArmor));
+                TypeList.Add(typeof(Cloak), typeof(GargishClothWingArmor));
+                TypeList.Add(typeof(RewardCloak), typeof(GargishClothWingArmor));
+                TypeList.Add(typeof(FurCape), typeof(GargishClothWingArmor)); */
+            #endregion
+
+            //Leather Armor
+            TypeList.Add(typeof(LeatherBustierArms), typeof(FemaleGargishLeatherChest));
+            TypeList.Add(typeof(FemaleLeatherChest), typeof(FemaleGargishLeatherChest));
+            TypeList.Add(typeof(LeatherShorts), typeof(GargishLeatherLegs));
+            TypeList.Add(typeof(LeatherSkirt), typeof(GargishLeatherLegs));
+            TypeList.Add(typeof(LeatherChest), typeof(GargishLeatherChest));
+            TypeList.Add(typeof(LeatherLegs), typeof(GargishLeatherLegs));
+            TypeList.Add(typeof(LeatherArms), typeof(GargishLeatherArms));
+            TypeList.Add(typeof(FemaleLeafChest), typeof(FemaleGargishLeatherChest));
+            TypeList.Add(typeof(LeafArms), typeof(GargishLeatherArms));
+            TypeList.Add(typeof(LeafChest), typeof(GargishLeatherChest));
+            TypeList.Add(typeof(LeafLegs), typeof(GargishLeatherLegs));
+            TypeList.Add(typeof(LeafTonlet), typeof(GargishLeatherLegs));
+            TypeList.Add(typeof(LeatherDo), typeof(GargishLeatherChest));
+            TypeList.Add(typeof(LeatherHaidate), typeof(GargishLeatherLegs));
+            TypeList.Add(typeof(LeatherHiroSode), typeof(GargishLeatherArms));
+            TypeList.Add(typeof(LeatherSuneate), typeof(GargishLeatherLegs));
+            TypeList.Add(typeof(LeatherNinjaJacket), typeof(GargishLeatherChest));
+            TypeList.Add(typeof(LeatherNinjaPants), typeof(GargishLeatherLegs));
+
+            //****Tinker****//
+            TypeList.Add(typeof(Hatchet), typeof(DualShortAxes));
+            TypeList.Add(typeof(ButcherKnife), typeof(GargishButcherKnife));
+            TypeList.Add(typeof(Cleaver), typeof(GargishCleaver));
+                      
         }
 
         public static void BeginTarget(Mobile from, CraftSystem system, BaseTool tool)
