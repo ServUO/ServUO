@@ -192,11 +192,15 @@ namespace Server.Engines.Craft
             }
 
             olditem.Delete();
+			olditem.OnAfterDuped(newitem);
+			newitem.Parent = null;
 
             if (from.Backpack == null)
                 newitem.MoveToWorld(from.Location, from.Map);
             else
                 from.Backpack.DropItem(newitem);
+				
+			newitem.InvalidateProperties();
 
             return true;
         }
