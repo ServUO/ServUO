@@ -147,6 +147,10 @@ namespace Server.Misc
             if (XmlPoints.AreInAnyGame(target))
                 return XmlPoints.AreTeamMembers(from, target);
 
+            if (from is PlayerMobile && ((PlayerMobile)from).Young && target is BaseCreature &&
+                ((BaseCreature) target).Controlled)
+                return true;
+
             if (from is PlayerMobile && ((PlayerMobile)from).Young && (!(target is PlayerMobile) || !((PlayerMobile)target).Young))
                 return false; // Young players cannot perform beneficial actions towards older players
 
