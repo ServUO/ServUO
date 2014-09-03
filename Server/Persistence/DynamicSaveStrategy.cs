@@ -125,7 +125,7 @@ namespace Server
 
                     writer.QueueForIndex(item, size);
 
-                    if (item.Decays && item.Parent == null && item.Map != Map.Internal && DateTime.Now > (item.LastMoved + item.DecayTime))
+                    if (item.Decays && item.Parent == null && item.Map != Map.Internal && DateTime.UtcNow > (item.LastMoved + item.DecayTime))
                     {
                         this._decayBag.Add(item);
                     }

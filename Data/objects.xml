@@ -3370,14 +3370,11 @@
 				<object type="Server.Items.WhitePearlBracelet" gfx="4230" />
 			</category>
 			<category title="Suits">
-				<object type="Server.Items.AdminRobe" gfx="8271" />
-				<object type="Server.Items.CounselorRobe" gfx="8271" hue="3" />
 				<object type="Server.Items.DeathShroud" gfx="8270" />
 				<object type="Server.Items.DupreSuit" gfx="8272" />
-				<object type="Server.Items.GMRobe" gfx="8271" hue="38" />
+				<object type="Server.Items.StaffRobe" gfx="8271" hue="38" />
 				<object type="Server.Items.LordBlackthorneSuit" gfx="8259" />
 				<object type="Server.Items.LordBritishSuit" gfx="8258" />
-				<object type="Server.Items.SeerRobe" gfx="8271" hue="467" />
 			</category>
 			<category title="Weapons">
 				<category title="Artifacts">

@@ -21,7 +21,7 @@ namespace CustomsFramework.Systems.VIPSystem
         {
             get
             {
-                return "VIP Deed - Loot Gold From Corpses, Ledger Needed";
+                return "VIP Deed - Free House Decoration";
             }
         }
         public override void Serialize(GenericWriter writer)

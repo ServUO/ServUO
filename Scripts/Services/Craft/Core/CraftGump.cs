@@ -73,9 +73,6 @@ namespace Server.Engines.Craft
             this.AddButton(270, 542, 4005, 4007, GetButtonID(6, 2), GumpButtonType.Reply, 0);
             this.AddHtmlLocalized(305, 545, 150, 18, 1044013, LabelColor, false, false); // MAKE LAST
 
-            this.AddButton(270, 502, 4005, 4007, GetButtonID(6, 9), GumpButtonType.Reply, 0);
-            this.AddLabel(304, 505, 1152, @"ALTER ITEM (GARGOYLE)");
-
             this.AddButton(270, 522, 4005, 4007, GetButtonID(6, 10), GumpButtonType.Reply, 0);
             this.AddHtmlLocalized(305, 525, 150, 18, 1112533 + (context == null ? 0 : (int)context.QuestOption), LabelColor, false, false); // QUEST ITEM
 
@@ -111,6 +108,14 @@ namespace Server.Engines.Craft
             {
                 this.AddButton(270, 482, 4005, 4007, GetButtonID(6, 8), GumpButtonType.Reply, 0);
                 this.AddHtmlLocalized(305, 485, 150, 18, 1061001, LabelColor, false, false); // ENHANCE ITEM
+            }
+            // ****************************************
+			
+			// Alter option
+            if (craftSystem.CanAlter)
+            {
+				this.AddButton(270, 502, 4005, 4007, GetButtonID(6, 9), GumpButtonType.Reply, 0);
+				this.AddHtmlLocalized(304, 505, 1152, 18, 1094726, LabelColor, false, false); // ALTER ITEM
             }
             // ****************************************
 
@@ -627,7 +632,8 @@ namespace Server.Engines.Craft
                                 #region SA
                             case 9: // Alter Item (Gargoyle)
                                 {
-                                    break;
+                                    AlterItem.BeginTarget(this.m_From, system, this.m_Tool);
+									break;
                                 }
                             case 10: // Quest Item/Non Quest Item toggle
                                 {
