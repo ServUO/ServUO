@@ -69,34 +69,52 @@ namespace Server.Mobiles
 			AddLoot(LootPack.MedScrolls);
 		}
 
-		public override void OnDeath(Container c)
-		{
-			base.OnDeath(c);
+        public override void OnDeath(Container c)
+        {
 
-			if (Utility.RandomDouble() < 0.20)
-			{
-				switch (Utility.Random(4))
-				{
-					case 0:
-						c.DropItem(new EssenceDiligence());
-						break;
-					case 1:
-						c.DropItem(new FairyDragonWing());
-						break;
-					case 2:
-						c.DropItem(new FaeryDust());
-						break;
-					case 3:
-						c.DropItem(new FeyWings());
-						break;
-				}
+            base.OnDeath(c);
+            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
+            if (0.25 > Utility.RandomDouble() && reg.Name == "Stygian Dragon Lair Entrance")
+            {
+                switch (Utility.Random(2))
+                {
+                    case 0: c.DropItem(new EssenceDiligence()); break;
+                    case 1: c.DropItem(new FaeryDust()); break;
+                }
+            }
+            if (Utility.RandomDouble() <= 0.25)
+            {
+                switch (Utility.Random(2))
+                {
+                    case 0:
+                        c.DropItem(new FeyWings());
+                        break;
+                    case 1:
+                        c.DropItem(new FairyDragonWing());
+                        break;
 
-				if (Utility.RandomDouble() < 0.30)
-				{
-					c.DropItem(new DraconicOrbKeyBlue());
-				}
-			}
-		}
+                }
+            }
+
+            if (Utility.RandomDouble() < 0.30)
+            {
+                switch (Utility.Random(4))
+                {
+                    case 0:
+                        c.DropItem(new DraconicOrbKey());
+                        break;
+                    case 1:
+                        c.DropItem(new DraconicOrbKeyBlue());
+                        break;
+                    case 2:
+                        c.DropItem(new DraconicOrbKeyRed());
+                        break;
+                    case 3:
+                        c.DropItem(new DraconicOrbKeyOrange());
+                        break;
+                }
+            }
+        }
 
 		public override int GetIdleSound()
 		{

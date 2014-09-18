@@ -52,15 +52,23 @@ namespace Server.Mobiles
             if (0.02 > Utility.RandomDouble())
                 this.PackStatue();				
         }
-		
+
         public override void OnDeath(Container c)
         {
-            base.OnDeath(c);		
-				
-            #region Mondain's Legacy
-            if (Utility.RandomDouble() < 0.3)
-                c.DropItem(new PixieLeg());
-            #endregion
+            base.OnDeath(c);
+            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
+            if (0.25 > Utility.RandomDouble() && reg.Name == "The Secret Gardens")
+            {
+                switch (Utility.Random(2))
+                {
+                    case 0: c.DropItem(new EssenceFeeling()); break;
+                    case 1: c.DropItem(new FaeryDust()); break;
+                }
+                #region Mondain's Legacy
+                if (Utility.RandomDouble() < 0.3)
+                    c.DropItem(new PixieLeg());
+                #endregion
+            }
         }
 
         public override void GenerateLoot()

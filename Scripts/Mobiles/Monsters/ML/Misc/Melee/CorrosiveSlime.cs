@@ -45,26 +45,9 @@ namespace Server.Mobiles
             this.MinTameSkill = 23.1;
         }
 
-        public override void OnDeath( Container c )
-        {
-            if ( Utility.Random( 10 ) == 0 )
-            {
-                Item item;
-                 
-                switch ( Utility.Random( 3 ))
-                {
-                    default:
-                    case 0: item = new GelatanousSkull(); break;
-                    case 1: item = new CoagulatedLegs(); break;
-                    case 2: item = new PartiallyDigestedTorso(); break;
-                }
-                 
-                c.DropItem( item );
-            }
-             
-            base.OnDeath( c );
-        }
         
+             
+           
         public CorrosiveSlime(Serial serial)
             : base(serial)
         {
@@ -96,7 +79,30 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.Poor);
             this.AddLoot(LootPack.Gems);
         }
+        public override void OnDeath(Container c)
+        {
+            if (Utility.Random(10) == 0)
+            {
+                Item item;
 
+                switch (Utility.Random(3))
+                {
+                    default:
+                    case 0: item = new GelatanousSkull(); break;
+                    case 1: item = new CoagulatedLegs(); break;
+                    case 2: item = new PartiallyDigestedTorso(); break;
+                }
+
+                base.OnDeath(c);
+                Region reg = Region.Find(c.GetWorldLocation(), c.Map);
+                if (0.25 > Utility.RandomDouble() && reg.Name == "Passage of Tears")
+                {
+                    if (Utility.RandomDouble() < 0.6)
+                        c.DropItem(new EssenceSingularity());
+
+                }
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

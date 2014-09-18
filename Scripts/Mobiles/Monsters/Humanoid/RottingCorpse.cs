@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -88,7 +89,17 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.FilthyRich, 2);
         }
+        public override void OnDeath(Container c)
+        {
 
+            base.OnDeath(c);
+            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
+            if (0.25 > Utility.RandomDouble() && reg.Name == "The Lands of the Lich")
+            {
+                if (Utility.RandomDouble() < 0.6)
+                    c.DropItem(new EssenceDirection());
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

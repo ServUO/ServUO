@@ -168,12 +168,11 @@ namespace Server.Mobiles
                         {
                             double dist = Math.Sqrt(x * x + y * y);
 
-                            if (dist <= 12)
-                                new GoodiesTimer(map, this.X + x, this.Y + y).Start();
+                            
                         }
                     }
                 }
-        
+
                 this.m_DamageEntries = new Dictionary<Mobile, int>();
 
                 this.RegisterDamageTo(this);
@@ -201,68 +200,6 @@ namespace Server.Mobiles
             }
 
             base.OnDeath(c);
-        }
-
-        private class GoodiesTimer : Timer
-        {
-            private readonly Map m_Map;
-            private readonly int m_X;
-            private readonly int m_Y;
-            public GoodiesTimer(Map map, int x, int y)
-                : base(TimeSpan.FromSeconds(Utility.RandomDouble() * 10.0))
-            {
-                this.m_Map = map;
-                this.m_X = x;
-                this.m_Y = y;
-            }
-
-            protected override void OnTick()
-            {
-                int z = this.m_Map.GetAverageZ(this.m_X, this.m_Y);
-                bool canFit = this.m_Map.CanFit(this.m_X, this.m_Y, z, 6, false, false);
-
-                for (int i = -3; !canFit && i <= 3; ++i)
-                {
-                    canFit = this.m_Map.CanFit(this.m_X, this.m_Y, z + i, 6, false, false);
-
-                    if (canFit)
-                        z += i;
-                }
-
-                if (!canFit)
-                    return;
-
-                Gold g = new Gold(500, 1000);
-				
-                g.MoveToWorld(new Point3D(this.m_X, this.m_Y, z), this.m_Map);
-
-                if (0.5 >= Utility.RandomDouble())
-                {
-                    switch ( Utility.Random(3) )
-                    {
-                        case 0: // Fire column
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
-                                Effects.PlaySound(g, g.Map, 0x208);
-
-                                break;
-                            }
-                        case 1: // Explosion
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x36BD, 20, 10, 5044);
-                                Effects.PlaySound(g, g.Map, 0x307);
-
-                                break;
-                            }
-                        case 2: // Ball of fire
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x36FE, 10, 10, 5052);
-
-                                break;
-                            }
-                    }
-                }
-            }
         }
     }
 }

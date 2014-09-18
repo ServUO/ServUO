@@ -63,7 +63,17 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.Meager);
         }
+        public override void OnDeath(Container c)
+        {
 
+            base.OnDeath(c);
+            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
+            if (1.0 > Utility.RandomDouble() && reg.Name == "The Lands of the Lich")
+            {
+                if (Utility.RandomDouble() < 0.6)
+                    c.DropItem(new EssenceDirection());
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
