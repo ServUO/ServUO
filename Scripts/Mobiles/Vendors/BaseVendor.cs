@@ -333,17 +333,6 @@ namespace Server.Mobiles
 			{
 				return;
 			}
-
-			if (Female = GetGender())
-			{
-				Body = 0x191;
-				Name = NameList.RandomName("female");
-			}
-			else
-			{
-				Body = 0x190;
-				Name = NameList.RandomName("male");
-			}
 		}
 
 		public virtual bool CheckTokuno()
@@ -641,8 +630,13 @@ namespace Server.Mobiles
 
 			Utility.AssignRandomHair(this, hairHue);
 			Utility.AssignRandomFacialHair(this, hairHue);
-
-			if (Female)
+			
+			if (Body == 0x191)
+			{
+				FacialHairItemID = 0;
+			}
+						
+			if (Body == 0x191)
 			{
 				switch (Utility.Random(6))
 				{
