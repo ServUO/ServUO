@@ -1396,7 +1396,14 @@ namespace Server
 					}
 					else
 					{
-						Mobile m = m_CurrentList[m_CurrentIndex].Mobile;
+
+                        if (m_CurrentList.Count == 0)
+                            return false;
+
+                        if (m_CurrentIndex > m_CurrentList.Count)
+                            return false;
+
+                        Mobile m = m_CurrentList[m_CurrentIndex].Mobile;
 
 						if (m != null && !m.Deleted && m_Bounds.Contains(m.Location))
 						{
