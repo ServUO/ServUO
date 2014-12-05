@@ -39,6 +39,8 @@ namespace Server.Mobiles
             this.Karma = -5500;
 
             this.VirtualArmor = 54;
+
+            this.tameable = false;
         }
 
         public Grim(Serial serial)
