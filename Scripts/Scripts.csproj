@@ -4581,6 +4581,7 @@
     <Compile Include="Items\Shields\- Misc\GargishSignOfOrder.cs" />
     <Compile Include="Items\Shields\- Misc\HumanSignOfChaos.cs" />
     <Compile Include="Items\Shields\- Misc\HumanSignOfOrder.cs" />
+    <Compile Include="Items\Skill Items\Misc\ScrollBinderDeed.cs" />
     <Compile Include="Items\Weapons\Artifacts\LightInTheVoid.cs" />
     <Compile Include="Items\Weapons\Artifacts\RunedDriftwoodBow.cs" />
     <Compile Include="Items\Weapons\Artifacts\StaffOfResonance.cs" />

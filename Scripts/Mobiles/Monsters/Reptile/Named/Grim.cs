@@ -40,7 +40,7 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 54;
 
-            this.tameable = false;
+            this.Tamable = false;
         }
 
         public Grim(Serial serial)
