@@ -6,7 +6,7 @@ namespace Server.Items
     {
         [Constructable]
         public SwordOfShatteredHopes()
-            : base(0x90C)
+            : base()
         {
             this.Name = ("Sword Of Shattered Hopes");
 		
