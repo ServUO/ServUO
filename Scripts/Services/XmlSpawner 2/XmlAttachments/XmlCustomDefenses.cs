@@ -554,7 +554,7 @@ namespace Server.Engines.XmlSpawner2
 
             if (this.Expiration > TimeSpan.Zero)
             {
-                msg = String.Format("{0}\nexpires in {0} mins ", msg, this.Expiration.TotalMinutes);
+                msg = String.Format("{0}\nexpires in {1} mins ", msg, this.Expiration.TotalMinutes);
             }
 
             return msg;

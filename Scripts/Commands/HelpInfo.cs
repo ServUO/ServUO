@@ -350,25 +350,28 @@ namespace Server.Commands
 
         public class CommandInfoGump : Gump
         {
+            private CommandInfo m_Info;
+
             public CommandInfoGump(CommandInfo info)
-                : this(info, 320, 200)
+                : this(info, 320, 210)
             {
             }
 
             public CommandInfoGump(CommandInfo info, int width, int height)
                 : base(300, 50)
             {
+                m_Info = info;
                 this.AddPage(0);
 
                 this.AddBackground(0, 0, width, height, 5054);
 
-                //AddImageTiled( 10, 10, width - 20, 20, 2624 );
-                //AddAlphaRegion( 10, 10, width - 20, 20 );
-                //AddHtmlLocalized( 10, 10, width - 20, 20, header, headerColor, false, false );
                 this.AddHtml(10, 10, width - 20, 20, this.Color(this.Center(info.Name), 0xFF0000), false, false);
 
-                //AddImageTiled( 10, 40, width - 20, height - 80, 2624 );
-                //AddAlphaRegion( 10, 40, width - 20, height - 80 );
+                this.AddHtml(10, height - 30, 50, 20, this.Color("Params:", 0x00FF00), false, false);
+                this.AddAlphaRegion(65, height - 34, 170, 28);
+                this.AddTextEntry(70, height - 30, 160, 20, 789, 0, "");
+                this.AddHtml(250, height - 30, 30, 20, this.Color("Go", 0x00FF00), false, false);
+                this.AddButton(280, height - 30, 0xFA6, 0xFA7, 99, GumpButtonType.Reply, 0);
 
                 StringBuilder sb = new StringBuilder();
 
@@ -403,6 +406,21 @@ namespace Server.Commands
                 this.AddHtml(10, 40, width - 20, height - 80, sb.ToString(), false, true);
                 //AddImageTiled( 10, height - 30, width - 20, 20, 2624 );
                 //AddAlphaRegion( 10, height - 30, width - 20, 20 );
+            }
+
+            public override void OnResponse(NetState sender, RelayInfo info)
+            {
+                if (info.ButtonID == 99)
+                    try
+                    {
+                        Mobile from = sender.Mobile;
+                        string command = CommandSystem.Prefix + m_Info.Name + " " + info.TextEntries[0].Text;
+                        CommandSystem.Handle(from, command);
+                    }
+                    catch
+                    {
+                    }
+                //else close the gump silently
             }
 
             public string Color(string text, int color)

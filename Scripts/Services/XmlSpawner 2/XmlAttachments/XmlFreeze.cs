@@ -47,7 +47,7 @@ namespace Server.Engines.XmlSpawner2
 
             if (this.Expiration > TimeSpan.Zero)
             {
-                return String.Format("Freeze expires in {1} secs", this.Expiration.TotalSeconds);
+                return String.Format("Freeze expires in {0} secs", this.Expiration.TotalSeconds);
             }
             else
             {

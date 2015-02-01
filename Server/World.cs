@@ -843,7 +843,7 @@ namespace Server
 
 				throw new Exception(
 					String.Format(
-						"Load failed (items={0}, mobiles={1}, guilds={2}, customs={3}, type={6}, serial={7})",
+						"Load failed (items={0}, mobiles={1}, guilds={2}, data={3}, type={4}, serial={5})",
 						failedItems,
 						failedMobiles,
 						failedGuilds,

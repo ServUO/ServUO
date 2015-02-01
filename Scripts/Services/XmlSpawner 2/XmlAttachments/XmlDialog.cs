@@ -2217,7 +2217,7 @@ namespace Server.Engines.XmlSpawner2
                 this.AddBackground(10, 200, 200, 130, 5054);
 
                 this.AddLabel(20, 210, 33, String.Format("{0} exists.", filename));
-                this.AddLabel(20, 230, 33, String.Format("Overwrite?", filename));
+                this.AddLabel(20, 230, 33, "Overwrite?");
                 this.AddRadio(35, 255, 9721, 9724, false, 1); // accept/yes radio
                 this.AddRadio(135, 255, 9721, 9724, true, 2); // decline/no radio
                 this.AddHtmlLocalized(72, 255, 200, 30, 1049016, 0x7fff, false, false); // Yes
