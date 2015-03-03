@@ -1,0 +1,42 @@
+using System;
+
+namespace Server.Items
+{
+    public class GobletOfCelebration : Item  //1075272 = You drink from the goblet of celebration
+    {
+        [Constructable]
+        public GobletOfCelebration()
+            : base(0x09B3)
+        {
+            this.LootType = LootType.Blessed;
+            this.Weight = 1.0;
+            this.Hue = 1790;
+        }
+
+        public GobletOfCelebration(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override int LabelNumber
+        {
+            get
+            {
+                return 1075309; // Goblet Of Celebration
+            }
+        }
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+}

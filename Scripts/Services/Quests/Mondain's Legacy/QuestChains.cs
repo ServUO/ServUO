@@ -21,7 +21,10 @@ namespace Server.Engines.Quests
         SpellweavingS,
         UnfadingMemories,
         PercolemTheHunter,
-        KingVernixQuests
+        KingVernixQuests,
+        DoughtyWarriors,
+        HonorOfDeBoors,
+        LaifemTheWeaver
     }
 
     public class BaseChain

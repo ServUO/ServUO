@@ -1,0 +1,132 @@
+
+using System;
+using Server;
+using Server.Targeting;
+using Server.Misc;
+using Server.Mobiles;
+using Server.Items;
+
+namespace Server.Items
+{
+    public class ChronicleGargoyleQueenVolI : Item, IUsesRemaining
+    {
+
+        public override int LabelNumber { get { return 1150914; } } //Chronicle of the Gargoyle Queen Vol. I
+
+        private static readonly TimeSpan LossDelay = TimeSpan.FromMinutes(10.0);
+        private static readonly int LossAmount = 50;
+        private static readonly TimeSpan UseDelay = TimeSpan.FromMinutes(10.0);
+
+        private DateTime m_LastClicked;
+        public DateTime LastClicked { get { return m_LastClicked; } set { m_LastClicked = value; } }
+
+
+        private int m_UsesRemaining;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int UsesRemaining
+        {
+            get { return m_UsesRemaining; }
+            set { m_UsesRemaining = value; InvalidateProperties(); }
+        }
+
+        public virtual bool ShowUsesRemaining
+        {
+            get { return true; }
+            set { }
+        }
+
+        [Constructable]
+        public ChronicleGargoyleQueenVolI()
+            : this(500)
+        {
+        }
+
+        [Constructable]
+        public ChronicleGargoyleQueenVolI(int uses)
+            : base(0xFF2)
+        {
+
+            Weight = 1.0;
+            m_UsesRemaining = uses;
+        }
+
+        public ChronicleGargoyleQueenVolI(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+
+            if (!IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                return;
+            }
+
+            if (DateTime.Now < m_LastClicked + TimeSpan.FromMinutes(10.0))
+            {
+                from.SendMessage("You must wait 10 minutes to use this again.");
+                return;
+            }
+
+            else if (m_UsesRemaining > 0)
+            {
+                from.AddStatMod(new StatMod(StatType.Int, "Chronicle of the Gargoyle Queen Vol. I", 50, TimeSpan.FromMinutes(10.0)));
+                from.SendLocalizedMessage(1071292); // Mana +50
+                //from.SendMessage(89, "As you stoke the coals your chance to smelt ore increases.");
+                //Effects.SendLocationEffect(new Point3D(X + 1, Y, Z + 5), Map, 0x3735, 13);
+                //Effects.PlaySound(from.Location, from.Map, 0x2B);  // Bellows
+                m_UsesRemaining -= 1;
+
+                LastClicked = DateTime.Now;
+                return;
+
+            }
+            else if (m_UsesRemaining <= 0)
+            {
+                from.SendMessage(36, "That item does not have any charges left.");
+                return;
+            }
+
+
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (ShowUsesRemaining)
+                list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)1); // version
+            writer.WriteDeltaTime((DateTime)m_LastClicked);
+            writer.Write((int)m_UsesRemaining);
+
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+            switch (version)
+            {
+                case 1:
+                    m_LastClicked = reader.ReadDeltaTime();
+                    m_UsesRemaining = reader.ReadInt();
+                    goto case 0;
+                case 0:
+                    break;
+            }
+        }
+
+    }
+}

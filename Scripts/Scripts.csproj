@@ -4589,9 +4589,28 @@
     <Compile Include="Quests\SA Barreraak Quest\Barreraak.cs" />
     <Compile Include="Quests\SA Barreraak Quest\BarreraakRing.cs" />
     <Compile Include="Quests\SA Barreraak Quest\RedHerring.cs" />
+    <Compile Include="Quests\SA Doughty Warriors\DoughtyWarriorsQuest.cs" />
+    <Compile Include="Quests\SA Doughty Warriors\SashOfMight.cs" />
     <Compile Include="Quests\SA Gretchen Quest\BaseExplodingTarPotion.cs" />
     <Compile Include="Quests\SA Gretchen Quest\ExplodingTarPotion.cs" />
     <Compile Include="Quests\SA Gretchen Quest\Gretchen.cs" />
+    <Compile Include="Quests\SA Honor of De Boors\BagOfJewels.cs" />
+    <Compile Include="Quests\SA Honor of De Boors\DeBoorShield.cs" />
+    <Compile Include="Quests\SA Honor of De Boors\GobletOfCelebration.cs" />
+    <Compile Include="Quests\SA Honor of De Boors\HonorOfDeBoorsQuest.cs" />
+    <Compile Include="Quests\SA Termur Aliabeth Quests\Aliabeth.cs" />
+    <Compile Include="Quests\SA Termur Aliabeth Quests\AverageImbuingBag.cs" />
+    <Compile Include="Quests\SA Termur Aliabeth Quests\ValuableImbuingBag.cs" />
+    <Compile Include="Quests\SA Termur Laifem Quest\BritannianWool.cs" />
+    <Compile Include="Quests\SA Termur Laifem Quest\Laifem.cs" />
+    <Compile Include="Quests\SA Termur Laifem Quest\LaifemItems.cs" />
+    <Compile Include="Quests\SA Termur Laifem Quest\VariableCarpetDeed\goldcarpetAddon.cs" />
+    <Compile Include="Quests\SA Termur Laifem Quest\VariableCarpetDeed\VariableCarpetAddon.cs" />
+    <Compile Include="Quests\SA Termur Laifem Quest\VariableCarpetDeed\VariableCarpetAddonDeed.cs" />
+    <Compile Include="Quests\SA Termur Zhah Quest\Items\ChronicleGargoyleQueenVolI.cs" />
+    <Compile Include="Quests\SA Termur Zhah Quest\Items\ZhahQuestItems.cs" />
+    <Compile Include="Quests\SA Termur Zhah Quest\MinionOfScelestus.cs" />
+    <Compile Include="Quests\SA Termur Zhah Quest\Zhah.cs" />
     <Compile Include="Quests\SA Xenrr Quest\MudPuppy.cs" />
     <Compile Include="Quests\SA Xenrr Quest\Xenrr.cs" />
     <Compile Include="Quests\SA Xenrr Quest\XenrrFishingPole.cs" />
@@ -4620,6 +4639,11 @@
       <Project>{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}</Project>
       <Name>Server</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Quests\SA Honor of De Boors\GobletOfCelebration.cs.bac" />
+    <None Include="Quests\SA Termur Zhah Quest\AthenaeumTeleporter.cs.bac" />
+    <None Include="Quests\SA Termur Zhah Quest\Items\ChronicleGargoyleQueenVolI.cs.bac" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
