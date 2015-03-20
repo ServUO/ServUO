@@ -118,7 +118,7 @@ namespace Server.Network
 			Register(0xB6, 9, true, ObjectHelpRequest);
 			Register(0xB8, 0, true, ProfileReq);
 			Register(0xBB, 9, false, AccountID);
-			Register(0xBD, 0, false, ClientVersion);
+			Register(0xBD, 0, true, ClientVersion);
 			Register(0xBE, 0, true, AssistVersion);
 			Register(0xBF, 0, true, ExtendedCommand);
 			Register(0xC2, 0, true, UnicodePromptResponse);
