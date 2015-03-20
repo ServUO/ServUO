@@ -22,6 +22,8 @@ namespace Server.Mobiles
             typeof(Venom),
             typeof(BreastplateOfTheBerserker),
         };
+		
+        private DateTime m_Delay;
         [Constructable]
         public Navrey()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -67,9 +69,6 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
- 
- 
- 
  
         public override bool AlwaysMurderer
         {
@@ -121,7 +120,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
+            this.AddLoot(LootPack.AosSuperBoss, 9);
         }
 
         public override void OnDeath(Container c)
@@ -176,8 +175,12 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if (Utility.RandomDouble() < 0.03)
+			if (DateTime.UtcNow > this.m_Delay)
+            {
+                this.m_Delay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 30));
+				if (Utility.RandomDouble() < 0.50)
                 this.DoSpecialAbility();
+			}
         }
 
         // override so Navrey will ignore players paralyzed in webs
@@ -207,7 +210,7 @@ namespace Server.Mobiles
                 this.Direction = this.GetDirectionTo(m);
                 Item web = new NavreyParalyzingWeb();
                 if (Utility.RandomDouble() > 0.1)
-                    m.Paralyze(TimeSpan.FromSeconds(60));
+                    m.Paralyze(TimeSpan.FromSeconds(15));
                 web.MoveToWorld(m.Location, this.Map);
             }
         }

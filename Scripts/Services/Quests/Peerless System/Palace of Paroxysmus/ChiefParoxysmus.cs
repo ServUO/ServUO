@@ -106,6 +106,9 @@ namespace Server.Mobiles
                     c.DropItem(new StringOfPartsOfParoxysmusVictims());
                     break;
             }
+
+            if (Utility.RandomDouble() < 0.10)
+                c.DropItem(new HumanFeyLeggings());
 			
             if (Utility.RandomDouble() < 0.6)				
                 c.DropItem(new ParrotItem());
