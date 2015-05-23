@@ -2576,7 +2576,7 @@
     <Compile Include=".\Mobiles\Monsters\Demonoid\FireDaemon.cs" />
     <Compile Include=".\Mobiles\Monsters\Demonoid\MaddeningHorror.cs" />
     <Compile Include=".\Mobiles\Monsters\Demonoid\Niporailem.cs" />
-    <Compile Include=".\Mobiles\Monsters\Demonoid\RotWorm.cs" />
+    <Compile Include=".\Mobiles\Monsters\Demonoid\Rotworm.cs" />
     <Compile Include=".\Mobiles\Monsters\Demonoid\UsagralemBallem.cs" />
     <Compile Include=".\Mobiles\Monsters\Elemental\AcidElemental.cs" />
     <Compile Include=".\Mobiles\Monsters\Elemental\AcidSlug.cs" />

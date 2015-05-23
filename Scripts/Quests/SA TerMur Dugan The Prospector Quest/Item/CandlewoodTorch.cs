@@ -22,6 +22,8 @@ namespace Server.Items
 {
     public class CandlewoodTorch : BaseShield
     {
+        public bool Burning { get { return ItemID == 0xA12; } }
+
         [Constructable]
         public CandlewoodTorch()
             : base(0xF6B)
