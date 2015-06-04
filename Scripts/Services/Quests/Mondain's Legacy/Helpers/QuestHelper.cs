@@ -721,6 +721,11 @@ namespace Server.Engines.Quests
             return false;
         }
 
+        public static bool HasQuest<T>( PlayerMobile from ) where T : BaseQuest
+        {
+            return GetQuest( from, typeof( T ) ) != null;
+        }
+
         public static BaseQuest GetQuest(PlayerMobile from, Type type)
         {
             if (type == null)
