@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Xml;
 using Server.Commands;
+using Server.Engines.InstancedPeerless;
 using Server.Engines.Quests;
 using Server.Items;
 using Server.Mobiles;
@@ -562,51 +563,20 @@ namespace Server
             }
 
             // Stygian Dragon Lair - Abyss
-            altar = new StygianDragonAltar();
+            StygianDragonPlatform sAltar = new StygianDragonPlatform();
 
-            if (!FindItem(363, 157, 5, Map.TerMur, altar))
+            if (!FindItem(363, 157, 5, Map.TerMur, sAltar))
             {
-                altar.MoveToWorld(new Point3D(363, 157, 0), Map.TerMur);
-                tele = new PeerlessTeleporter(altar);
-                tele.PointDest = altar.ExitDest;
+                sAltar.MoveToWorld(new Point3D(363, 157, 0), Map.TerMur);
 
-                tele.MoveToWorld(new Point3D(305, 159, 105), Map.TerMur);
-
-                brazier = new StygianDragonBrazier((StygianDragonAltar)altar, 0x207B);
-                brazier.MoveToWorld(new Point3D(362, 156, 5), Map.TerMur);
-
-                brazier = new StygianDragonBrazier((StygianDragonAltar)altar, 0x207B);
-                brazier.MoveToWorld(new Point3D(364, 156, 7), Map.TerMur);
-
-                brazier = new StygianDragonBrazier((StygianDragonAltar)altar, 0x207B);
-                brazier.MoveToWorld(new Point3D(364, 158, 7), Map.TerMur);
-
-                brazier = new StygianDragonBrazier((StygianDragonAltar)altar, 0x207B);
-                brazier.MoveToWorld(new Point3D(362, 158, 7), Map.TerMur);
             }
 
             //Medusa Lair - Abyss
-            altar = new MedusaAltar();
+            MedusaPlatform mAltar = new MedusaPlatform();
 
-            if (!FindItem(822, 756, 56, Map.TerMur, altar))
+            if (!FindItem(822, 756, 56, Map.TerMur, mAltar))
             {
-                altar.MoveToWorld(new Point3D(822, 756, 56), Map.TerMur);
-                tele = new PeerlessTeleporter(altar);
-                tele.PointDest = altar.ExitDest;
-
-                tele.MoveToWorld(new Point3D(840, 926, -5), Map.TerMur);
-
-                nest = new MedusaNest((MedusaAltar)altar, 0x207B);
-                nest.MoveToWorld(new Point3D(821, 755, 56), Map.TerMur);
-
-                nest = new MedusaNest((MedusaAltar)altar, 0x207B);
-                nest.MoveToWorld(new Point3D(823, 755, 56), Map.TerMur);
-
-                nest = new MedusaNest((MedusaAltar)altar, 0x207B);
-                nest.MoveToWorld(new Point3D(821, 757, 56), Map.TerMur);
-
-                nest = new MedusaNest((MedusaAltar)altar, 0x207B);
-                nest.MoveToWorld(new Point3D(823, 757, 56), Map.TerMur);
+                mAltar.MoveToWorld(new Point3D(822, 756, 56), Map.TerMur);
             }
 
             e.Mobile.SendMessage("Mondain's Legacy world generating complete.");
