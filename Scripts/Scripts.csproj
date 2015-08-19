@@ -4647,6 +4647,19 @@
     <Compile Include="Quests\SA Xenrr Quest\MudPuppy.cs" />
     <Compile Include="Quests\SA Xenrr Quest\Xenrr.cs" />
     <Compile Include="Quests\SA Xenrr Quest\XenrrFishingPole.cs" />
+    <Compile Include="Services\Instanced Peerless\ConfirmExitInstanceGump.cs" />
+    <Compile Include="Services\Instanced Peerless\ConfirmJoinInstanceGump.cs" />
+    <Compile Include="Services\Instanced Peerless\InstanceEnterGate.cs" />
+    <Compile Include="Services\Instanced Peerless\InstanceExitGate.cs" />
+    <Compile Include="Services\Instanced Peerless\InstanceRegion.cs" />
+    <Compile Include="Services\Instanced Peerless\Medusa\MedusaPlatform.cs" />
+    <Compile Include="Services\Instanced Peerless\Medusa\RareSerpentEgg.cs" />
+    <Compile Include="Services\Instanced Peerless\PeerlessInstance.cs" />
+    <Compile Include="Services\Instanced Peerless\PeerlessKeyBrazier.cs" />
+    <Compile Include="Services\Instanced Peerless\PeerlessPlatform.cs" />
+    <Compile Include="Services\Instanced Peerless\RejoinInstanceGump.cs" />
+    <Compile Include="Services\Instanced Peerless\Stygian Dragon\DraconicOrb.cs" />
+    <Compile Include="Services\Instanced Peerless\Stygian Dragon\StygianDragonPlatform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".\Quests\SA Sacred Quest\Sacred Quest Questions-Answers.txt" />
