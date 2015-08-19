@@ -2487,11 +2487,11 @@ namespace Server.Items
 			// Inscription bonus
 			int inscribeSkill = attacker.Skills[SkillName.Inscribe].Fixed;
 
-			damageBonus += inscribeSkill / 200;
+
 
 			if (inscribeSkill >= 1000)
 			{
-				damageBonus += 5;
+				damageBonus += 10;
 			}
 
 			if (attacker.Player)
@@ -3182,8 +3182,11 @@ namespace Server.Items
 			if (Type == WeaponType.Axe)
 			{
 				double lumberValue = attacker.Skills[SkillName.Lumberjacking].Value;
-
-				modifiers += ((lumberValue / 5.0) / 100.0);
+			    lumberValue = (lumberValue/5.0)/100.0;
+			    if (lumberValue > 0.2)
+			        lumberValue = 0.2;
+			    
+				modifiers += lumberValue;
 
 				if (lumberValue >= 100.0)
 				{

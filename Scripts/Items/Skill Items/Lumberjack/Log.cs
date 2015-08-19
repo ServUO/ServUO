@@ -89,7 +89,7 @@ namespace Server.Items
 		{
 			if ( Deleted || !from.CanSee( this ) ) 
 				return false;
-			else if ( from.Skills.Carpentry.Value < skill &&
+			if ( from.Skills.Carpentry.Value < skill ||
 				from.Skills.Lumberjacking.Value < skill )
 			{
 				item.Delete();
@@ -146,7 +146,7 @@ namespace Server.Items
 
 		public override bool Axe(Mobile from, BaseAxe axe)
 		{
-			if (!TryCreateBoards(from, 95, new Board()))
+			if (!TryCreateBoards(from, 0, new Board()))
 				return false;
 
 			return true;

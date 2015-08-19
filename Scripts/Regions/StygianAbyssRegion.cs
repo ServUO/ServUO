@@ -20,7 +20,7 @@ namespace Server.Regions
 
         public override bool OnBeginSpellCast(Mobile m, ISpell s)
         {
-            if ((s is GateTravelSpell || s is MarkSpell || s is SacredJourneySpell) && m.IsPlayer())
+            if ((s is GateTravelSpell || s is MarkSpell) && m.IsPlayer())
             {
                 m.SendLocalizedMessage(501802); // Thy spell doth not appear to work...
 				
