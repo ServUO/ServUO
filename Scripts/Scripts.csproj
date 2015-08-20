@@ -4582,6 +4582,24 @@
     <Compile Include="Items\Shields\- Misc\GargishSignOfOrder.cs" />
     <Compile Include="Items\Shields\- Misc\HumanSignOfChaos.cs" />
     <Compile Include="Items\Shields\- Misc\HumanSignOfOrder.cs" />
+    <Compile Include="Items\Skill Items\Begging\1\waterpitcher.cs" />
+    <Compile Include="Items\Skill Items\Begging\1\frenchbread.cs" />
+    <Compile Include="Items\Skill Items\Begging\2\Cheese.cs" />
+    <Compile Include="Items\Skill Items\Begging\2\Dates.cs" />
+    <Compile Include="Items\Skill Items\Begging\2\LiquorPitcher.cs" />
+    <Compile Include="Items\Skill Items\Begging\2\Shirt.cs" />
+    <Compile Include="Items\Skill Items\Begging\2\Stew.cs" />
+    <Compile Include="Items\Skill Items\Begging\2\Pizza.cs" />
+    <Compile Include="Items\Skill Items\Begging\2\Lantern.cs" />
+    <Compile Include="Items\Skill Items\Begging\3\Bedroll.cs" />
+    <Compile Include="Items\Skill Items\Begging\3\Wine.cs" />
+    <Compile Include="Items\Skill Items\Begging\3\Cookies.cs" />
+    <Compile Include="Items\Skill Items\Begging\3\FishingPole.cs" />
+    <Compile Include="Items\Skill Items\Begging\3\Fish Steak.cs" />
+    <Compile Include="Items\Skill Items\Begging\3\Sake.cs" />
+    <Compile Include="Items\Skill Items\Begging\3\Turnip.cs" />
+    <Compile Include="Items\Skill Items\Begging\3\FlowerGarland.cs" />
+    <Compile Include="Items\Skill Items\Begging\3\WinePitcher.cs" />
     <Compile Include="Items\Skill Items\Misc\ScrollBinderDeed.cs" />
     <Compile Include="Items\Suits\Costumes\BaseCostume.cs" />
     <Compile Include="Items\Suits\Costumes\BloodwormCostume.cs" />
@@ -4691,6 +4709,7 @@
     <None Include="Quests\SA Termur Zhah Quest\AthenaeumTeleporter.cs.bac" />
     <None Include="Quests\SA Termur Zhah Quest\Items\ChronicleGargoyleQueenVolI.cs.bac" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
