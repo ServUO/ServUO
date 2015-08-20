@@ -307,6 +307,11 @@ namespace Server
 
 				while (!Core.Closing)
 				{
+                    if (World.Loading || World.Saving)
+                    {
+                        m_Signal.WaitOne(1, false);
+                        continue;
+                    }
 					ProcessChanged();
 
 					loaded = false;
