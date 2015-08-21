@@ -80,14 +80,10 @@ namespace Server.Engines.BulkOrders
 
         public static SmallTailorBOD CreateRandomFor(Mobile m)
         {
-            SmallBulkEntry[] entries;
-            bool useMaterials;
+            bool useMaterials = Utility.RandomBool();
 
             double theirSkill = m.Skills[SkillName.Tailoring].Base;
-            if (useMaterials = Utility.RandomBool() && theirSkill >= 6.2) // Ugly, but the easiest leather BOD is Leather Cap which requires at least 6.2 skill.
-                entries = SmallBulkEntry.TailorLeather;
-            else
-                entries = SmallBulkEntry.TailorCloth;
+            var entries = theirSkill >= 6.2 ? SmallBulkEntry.TailorLeather : SmallBulkEntry.TailorCloth;
 
             if (entries.Length > 0)
             {
