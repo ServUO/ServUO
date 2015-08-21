@@ -1,0 +1,43 @@
+<Spawns>
+  <Points>
+    <Name>XmlUseExamples</Name>
+    <UniqueId>53b071d8-bda2-46ff-9ee1-8ab1c0593661</UniqueId>
+    <Map>Felucca</Map>
+    <X>5439</X>
+    <Y>1154</Y>
+    <Width>10</Width>
+    <Height>10</Height>
+    <CentreX>5444</CentreX>
+    <CentreY>1159</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>11</MaxCount>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <AllowNPCTriggering>False</AllowNPCTriggering>
+    <SpawnOnTrigger>False</SpawnOnTrigger>
+    <SmartSpawning>False</SmartSpawning>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>metalbox/name/Pandora's box/ATTACH/&lt;XmlUse/failureaction/@GUMP,Access Denied,0/You lack the karma to open this:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SETONSPAWN,1/ATTACHMENT,XmlUse,,condition/@GETONTRIGMOB,karma&gt;0:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SETONSPAWN,1/ATTACHMENT,xmluse,,successaction/@GUMP,Pandora's box,0/You have opened Pandora's box. Good has turned to evil. ; SETONTRIGMOB/karma/-1000/MSG/You feel the touch of evil ; SENDMSG/You have become dishonored by your actions.:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=metaldoor,1/name/Massive door/ATTACH/&lt;XmlUse/failureaction/@GUMP,No Access,0/You lack the strength to use this.:MX=1:SB=2:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SETONSPAWN,2/ATTACHMENT,XmlUse,,condition/@GETONTRIGMOB,str&gt;70:MX=1:SB=2:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=horse/name/Knight's mount/ATTACH/&lt;XmlUse/failureaction/@SENDMSG/You lack the chivalry to ride this.:MX=1:SB=3:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SETONSPAWN,3/ATTACHMENT,XmlUse,,condition/@GETONTRIGMOB,skills.chivalry.value&gt;90:MX=1:SB=3:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=static,3635/ATTACH/&lt;XmlUse,0,10/successaction/@daemon/name/BrazierBeast ; SENDMSG/Here comes BrazierBeast!&gt;:MX=1:SB=4:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SETONSPAWN,4/ATTACHMENT,XmlUse,,condition/@GETONTRIGMOB,fame&gt;1000:MX=1:SB=4:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=static,3798/name/Free Regs/ATTACH/&lt;XmlUse,0,10/successaction/@bag/ADD/ginseng,50/ADD/bloodmoss,50/ADD/blackpearl,50&gt;:MX=1:SB=5:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=static,13962/name/Magic Portal/ATTACH/&lt;xmluse/successaction/@SETONTRIGMOB/map/ilshenar/location/(1217,469,-13)&gt;:MX=1:SB=6:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+  </Points>
+</Spawns>

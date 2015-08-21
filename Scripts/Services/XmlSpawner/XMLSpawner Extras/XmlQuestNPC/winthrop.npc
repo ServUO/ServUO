@@ -1,0 +1,103 @@
+<?xml version="1.0" standalone="yes"?>
+<XmlQuestNPC>
+  <NPC>
+    <Name>Winthrop</Name>
+    <Running>True</Running>
+    <ProximityRange>4</ProximityRange>
+    <TriggerOnCarried>Dracondar's lute</TriggerOnCarried>
+    <NoTriggerOnCarried>Dracondar's lute,1</NoTriggerOnCarried>
+    <AllowGhost>False</AllowGhost>
+    <ResetTime>0.5</ResetTime>
+    <ConfigFile>winthrop</ConfigFile>
+  </NPC>
+
+----------------------------
+Default starting point
+----------------------------
+<SpeechEntry>
+    <EntryNumber>0</EntryNumber>
+    <ID>0</ID>
+    <DependsOn>999</DependsOn>
+  </SpeechEntry>
+
+  <SpeechEntry>
+    <EntryNumber>1</EntryNumber>
+    <ID>1</ID>
+    <Text>coughs</Text>
+    <Keywords>dracondar's lute</Keywords>
+    <DependsOn>33</DependsOn>
+<SpeechStyle>Emote</SpeechStyle>
+    <Pause>3</Pause>
+  </SpeechEntry>
+
+  <SpeechEntry>
+    <EntryNumber>2</EntryNumber>
+    <ID>2</ID>
+    <Text>Why, I know nothing of that. Who told you such a thing?</Text>
+    <DependsOn>1</DependsOn>
+    <Pause>8</Pause>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>3</EntryNumber>
+    <ID>3</ID>
+    <Text>Leave here immediately, or I will summon the guards.</Text>
+    <DependsOn>2</DependsOn>
+    <Keywords>samantha</Keywords>
+    <Pause>5</Pause>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>4</EntryNumber>
+    <ID>4</ID>
+    <PrePause>4</PrePause>
+    <Text>That snake. She has always envied me.</Text>
+    <Keywords>no,not,never,stay</Keywords>
+    <DependsOn>3</DependsOn>
+    <Pause>3</Pause>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>5</EntryNumber>
+    <ID>5</ID>
+    <PrePause>4</PrePause>
+    <Text>Very well, I will tell you what you want.</Text>
+    <DependsOn>4</DependsOn>
+    <Pause>6</Pause>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>6</EntryNumber>
+    <ID>6</ID>
+    <PrePause>4</PrePause>
+    <Text>The lute is buried deep in the dungeon deceit with only skulls to hear its songs.</Text>
+    <DependsOn>5</DependsOn>
+    <Action>SETONCARRIED,Dracondar's lute/completed1/true/objective2/Unearth the lute.</Action>
+    <Pause>3</Pause>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>7</EntryNumber>
+    <ID>7</ID>
+    <PrePause>2</PrePause>
+    <Text>Oh, what have I done! No! no! noooooo!.</Text>
+    <DependsOn>6</DependsOn>
+    <Action>SETONSPAWN,DracondarQuest#2,1/poison/greater/hits/5.</Action>
+    <Pause>3</Pause>
+  </SpeechEntry>
+
+
+----------------------------
+Here is the banter section
+----------------------------
+
+  <SpeechEntry>
+    <EntryNumber>33</EntryNumber>
+    <ID>33</ID>
+    <Text>What are you doing here?</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+
+
+</XmlQuestNPC>

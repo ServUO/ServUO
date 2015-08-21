@@ -153,8 +153,8 @@ namespace Server.Items
 		{
 			Timer timer = m_Delay[ m ] as Timer;
 
-			if ( timer != null && timer.Next > DateTime.Now )
-				return (int) (timer.Next - DateTime.Now).TotalSeconds;
+			if ( timer != null && timer.Next > DateTime.UtcNow )
+				return (int) (timer.Next - DateTime.UtcNow).TotalSeconds;
 
 			return 0;
 		}

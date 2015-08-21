@@ -1,0 +1,46 @@
+<?xml version="1.0" standalone="yes"?>
+<Spawns>
+  <Points>
+    <Name>Lootpack#1</Name>
+    <UniqueId>9f94481c-21f4-4b2c-9f87-ed1ef8a368ec</UniqueId>
+    <Map>Felucca</Map>
+    <X>5446</X>
+    <Y>1139</Y>
+    <Width>10</Width>
+    <Height>10</Height>
+    <CentreX>5451</CentreX>
+    <CentreY>1144</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>0</MinDelay>
+    <MaxDelay>0</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0.00833333333333333</DespawnTime>
+    <ProximityRange>5</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage>a chest appears!</ProximityTriggerMessage>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>2</MinRefractory>
+    <MaxRefractory>2</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>metalchest/ADD/LOOTPACK,ultrarich/hue/1150/movable/false:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+</Spawns>

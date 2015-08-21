@@ -65,7 +65,7 @@ namespace Server.Items
                 return;
             }
 
-            if (DateTime.Now < m_LastClicked + TimeSpan.FromMinutes(10.0))
+            if (DateTime.UtcNow < m_LastClicked + TimeSpan.FromMinutes(10.0))
             {
                 from.SendMessage("You must wait 10 minutes to use this again.");
                 return;
@@ -80,7 +80,7 @@ namespace Server.Items
                 //Effects.PlaySound(from.Location, from.Map, 0x2B);  // Bellows
                 m_UsesRemaining -= 1;
 
-                LastClicked = DateTime.Now;
+                LastClicked = DateTime.UtcNow;
                 return;
 
             }

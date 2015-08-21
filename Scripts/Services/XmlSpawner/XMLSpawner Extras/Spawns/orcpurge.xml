@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="yes"?>
+<Spawns>
+  <Points>
+    <Name>OrcPurge#1</Name>
+    <UniqueId>874fe463-dbeb-476c-a467-8e1833208326</UniqueId>
+    <Map>Felucca</Map>
+    <X>5435</X>
+    <Y>1158</Y>
+    <Width>10</Width>
+    <Height>10</Height>
+    <CentreX>5440</CentreX>
+    <CentreY>1163</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>14</MaxCount>
+    <MinDelay>10</MinDelay>
+    <MaxDelay>10</MaxDelay>
+    <DelayInSec>True</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>2</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>orc:MX=7:SB=1:RT=0:TO=0:KL=0:OBJ=IF/GETONSPAWN,1,COUNT=0/55:MX=1:SB=2:RT=0:TO=0:KL=0:OBJ=IF/GETONSPAWN,1,COUNT&gt;2/33:MX=1:SB=2:RT=0:TO=0:KL=0:OBJ=IF/GETONSPAWN,1,COUNT&gt;5/44:MX=1:SB=2:RT=0:TO=0:KL=0:OBJ=GOTO/1:MX=1:SB=5:RT=0:TO=0:KL=0:OBJ=BCAST/Isnt anyone going to clear out these orcs?:MX=1:SB=33:RT=0:TO=0:KL=0:OBJ=BCAST/We are being overrun!:MX=1:SB=44:RT=0:TO=0:KL=0:OBJ=BCAST/Calm is restored. The orcs have been purged.:MX=1:SB=55:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+</Spawns>

@@ -1,0 +1,1347 @@
+<?xml version="1.0" standalone="yes"?>
+<Spawns>
+  <Points>
+    <Name>DoomRare#5</Name>
+    <UniqueId>afeef04b-a845-4ab0-8c9c-f2d1b41561e1</UniqueId>
+    <Map>Malas</Map>
+    <X>361</X>
+    <Y>31</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>361</CentreX>
+    <CentreY>31</CentreY>
+    <CentreZ>5</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>75</MinDelay>
+    <MaxDelay>90</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>skullcandle:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#4</Name>
+    <UniqueId>0289eed5-fb4b-4ef3-a5d7-28f70ac02fe4</UniqueId>
+    <Map>Malas</Map>
+    <X>349</X>
+    <Y>31</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>349</CentreX>
+    <CentreY>31</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>75</MinDelay>
+    <MaxDelay>90</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>skinnedgoat:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#3</Name>
+    <UniqueId>3b3579ea-71df-4594-970d-6f0eda0c5d56</UniqueId>
+    <Map>Malas</Map>
+    <X>348</X>
+    <Y>42</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>348</CentreX>
+    <CentreY>42</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>75</MinDelay>
+    <MaxDelay>90</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>skinneddeer:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#2</Name>
+    <UniqueId>9c9bc49c-d1cc-4934-9928-6f68de98df3e</UniqueId>
+    <Map>Malas</Map>
+    <X>311</X>
+    <Y>57</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>311</CentreX>
+    <CentreY>57</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>75</MinDelay>
+    <MaxDelay>90</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>rock1:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#7</Name>
+    <UniqueId>1b4572f5-6e1f-49ce-8d2f-af3961ce5f7f</UniqueId>
+    <Map>Malas</Map>
+    <X>489</X>
+    <Y>370</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>489</CentreX>
+    <CentreY>370</CentreY>
+    <CentreZ>5</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>1380</MinDelay>
+    <MaxDelay>1500</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>doomtarot:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#8</Name>
+    <UniqueId>77d19f37-520a-467c-8f63-04a9d4942063</UniqueId>
+    <Map>Malas</Map>
+    <X>490</X>
+    <Y>370</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>490</CentreX>
+    <CentreY>370</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>1380</MinDelay>
+    <MaxDelay>1500</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>reversedbackpack:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#1</Name>
+    <UniqueId>d9069dac-f44d-4135-9df0-57fe20519492</UniqueId>
+    <Map>Malas</Map>
+    <X>259</X>
+    <Y>78</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>259</CentreX>
+    <CentreY>78</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>43200</MinDelay>
+    <MaxDelay>44640</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>zyronicclaw/STEALABLE/true/movable/false:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#6</Name>
+    <UniqueId>c1af6c26-827f-4dc2-b05e-7efa706702c5</UniqueId>
+    <Map>Malas</Map>
+    <X>483</X>
+    <Y>364</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>483</CentreX>
+    <CentreY>364</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>120000</MinDelay>
+    <MaxDelay>132000</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>doomruinedpainting:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#23</Name>
+    <UniqueId>e35b2157-264c-452e-b75b-6990a97f35df</UniqueId>
+    <Map>Malas</Map>
+    <X>432</X>
+    <Y>18</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>432</CentreX>
+    <CentreY>18</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>1380</MinDelay>
+    <MaxDelay>1500</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>hangingstuddedleggingseast/z/INC,6:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#17</Name>
+    <UniqueId>2720e162-ae7e-46b5-85aa-39ca2e672775</UniqueId>
+    <Map>Malas</Map>
+    <X>469</X>
+    <Y>96</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>469</CentreX>
+    <CentreY>96</CentreY>
+    <CentreZ>5</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>42000</MinDelay>
+    <MaxDelay>45000</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>inquisitorsresolution/STEALABLE/true/movable/false:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#28</Name>
+    <UniqueId>de3b5701-2e8a-4320-82b6-d50a99e6692f</UniqueId>
+    <Map>Malas</Map>
+    <X>428</X>
+    <Y>23</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>428</CentreX>
+    <CentreY>23</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>6600</MinDelay>
+    <MaxDelay>7800</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>cocoon:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#27</Name>
+    <UniqueId>2d7aabfa-38fb-46eb-a58f-f812e0faef93</UniqueId>
+    <Map>Malas</Map>
+    <X>423</X>
+    <Y>23</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>423</CentreX>
+    <CentreY>23</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>1380</MinDelay>
+    <MaxDelay>1500</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>eggcase:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#26</Name>
+    <UniqueId>7e8fe3d4-42e9-4e06-aba0-19ceea063adf</UniqueId>
+    <Map>Malas</Map>
+    <X>433</X>
+    <Y>11</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>433</CentreX>
+    <CentreY>11</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>19800</MinDelay>
+    <MaxDelay>21600</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>doomsaddle:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#25</Name>
+    <UniqueId>7cd23234-aa29-495b-8e21-5e01d4e3c3e9</UniqueId>
+    <Map>Malas</Map>
+    <X>432</X>
+    <Y>19</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>432</CentreX>
+    <CentreY>19</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>180</MinDelay>
+    <MaxDelay>240</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>stretchedhide:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#24</Name>
+    <UniqueId>4b9cc6d5-3a18-4ec5-b51a-aef3eb982415</UniqueId>
+    <Map>Malas</Map>
+    <X>462</X>
+    <Y>11</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>462</CentreX>
+    <CentreY>11</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>180</MinDelay>
+    <MaxDelay>240</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>doombrazier:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#22</Name>
+    <UniqueId>fdf5b3e7-29ee-472c-85f7-9f31985ad225</UniqueId>
+    <Map>Malas</Map>
+    <X>446</X>
+    <Y>9</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>446</CentreX>
+    <CentreY>9</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>1380</MinDelay>
+    <MaxDelay>1500</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>hangingstuddedleggingssouth/z/INC,6:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#21</Name>
+    <UniqueId>9229a5b5-5bf4-4a8c-a195-a1b92f9202f9</UniqueId>
+    <Map>Malas</Map>
+    <X>492</X>
+    <Y>8</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>492</CentreX>
+    <CentreY>8</CentreY>
+    <CentreZ>5</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>6600</MinDelay>
+    <MaxDelay>7800</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>hangingstuddedtunicsouth/z/INC,2:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#20</Name>
+    <UniqueId>a9d6b47d-0be9-4814-8239-0f07e0b142e3</UniqueId>
+    <Map>Malas</Map>
+    <X>483</X>
+    <Y>8</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>483</CentreX>
+    <CentreY>8</CentreY>
+    <CentreZ>8</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>6600</MinDelay>
+    <MaxDelay>7800</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>hangingstuddedtuniceast:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#19</Name>
+    <UniqueId>34bafe2d-8fd1-4b4c-8dfd-e19fb261819a</UniqueId>
+    <Map>Malas</Map>
+    <X>460</X>
+    <Y>9</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>460</CentreX>
+    <CentreY>9</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>19200</MinDelay>
+    <MaxDelay>21000</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>hangingleathertunic/z/INC,6:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#18</Name>
+    <UniqueId>45b4fa77-da5e-4c74-aec7-02a803c72aa0</UniqueId>
+    <Map>Malas</Map>
+    <X>497</X>
+    <Y>53</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>497</CentreX>
+    <CentreY>53</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>1380</MinDelay>
+    <MaxDelay>1500</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>gruesomestandard:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#16</Name>
+    <UniqueId>7420af8e-f54c-48b1-bb41-75516ea9f61b</UniqueId>
+    <Map>Malas</Map>
+    <X>465</X>
+    <Y>97</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>465</CentreX>
+    <CentreY>97</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>340</MinDelay>
+    <MaxDelay>400</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>doomlamppost:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#15</Name>
+    <UniqueId>e4a92079-9864-4432-b39b-1c6c25e795a2</UniqueId>
+    <Map>Malas</Map>
+    <X>354</X>
+    <Y>176</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>354</CentreX>
+    <CentreY>176</CentreY>
+    <CentreZ>3</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>42000</MinDelay>
+    <MaxDelay>45000</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>titanshammer/STEALABLE/true/movable/false:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#14</Name>
+    <UniqueId>d8909f48-5c72-4238-b596-0cf9df86887d</UniqueId>
+    <Map>Malas</Map>
+    <X>415</X>
+    <Y>201</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>415</CentreX>
+    <CentreY>201</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>340</MinDelay>
+    <MaxDelay>400</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>doombooks:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#13</Name>
+    <UniqueId>d4b2b974-61e1-4650-9ed9-baa976f34a74</UniqueId>
+    <Map>Malas</Map>
+    <X>430</X>
+    <Y>191</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>430</CentreX>
+    <CentreY>191</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>340</MinDelay>
+    <MaxDelay>400</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>stackedbooks:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#12</Name>
+    <UniqueId>2763ecd0-de48-493f-bd9e-66b7d7b83e7e</UniqueId>
+    <Map>Malas</Map>
+    <X>370</X>
+    <Y>389</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>370</CentreX>
+    <CentreY>389</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>42000</MinDelay>
+    <MaxDelay>45000</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>bladeoftherighteous/STEALABLE/true/movable/false:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#11</Name>
+    <UniqueId>628e7416-11ed-4883-bafc-f5194f6f31e1</UniqueId>
+    <Map>Malas</Map>
+    <X>381</X>
+    <Y>375</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>381</CentreX>
+    <CentreY>375</CentreY>
+    <CentreZ>10</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>75</MinDelay>
+    <MaxDelay>90</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>doombottle:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#10</Name>
+    <UniqueId>85f9a1e0-6931-4446-af76-0f845de068e5</UniqueId>
+    <Map>Malas</Map>
+    <X>383</X>
+    <Y>375</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>383</CentreX>
+    <CentreY>375</CentreY>
+    <CentreZ>6</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>1380</MinDelay>
+    <MaxDelay>1500</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>bloodywater:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+  <Points>
+    <Name>DoomRare#9</Name>
+    <UniqueId>aa3ae285-1199-40aa-82df-f38ade3dcd73</UniqueId>
+    <Map>Malas</Map>
+    <X>378</X>
+    <Y>371</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>378</CentreX>
+    <CentreY>371</CentreY>
+    <CentreZ>-1</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>75</MinDelay>
+    <MaxDelay>90</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage />
+    <ObjectPropertyName />
+    <ItemTriggerName />
+    <NoItemTriggerName />
+    <PlayerPropertyName />
+    <TriggerProbability>1</TriggerProbability>
+    <SpeechTrigger />
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>damagedbooks:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+</Spawns>
