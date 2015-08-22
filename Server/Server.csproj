@@ -215,7 +215,4 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.XML" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
 </Project>
