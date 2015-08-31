@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.InteropServices;
@@ -31,8 +32,9 @@ namespace Server
 		private static Thread timerThread;
 		private static string m_BaseDirectory;
 		private static string m_ExePath;
+
 		private static readonly List<string> m_DataDirectories = new List<string>();
-		private static Assembly m_Assembly;
+
 		private static Process m_Process;
 		private static Thread m_Thread;
 		private static bool m_Service;
@@ -47,9 +49,7 @@ namespace Server
 		private static DateTime m_ProfileStart;
 		private static TimeSpan m_ProfileTime;
 
-		private static MessagePump m_MessagePump;
-
-		public static MessagePump MessagePump { get { return m_MessagePump; } set { m_MessagePump = value; } }
+		public static MessagePump MessagePump { get; set; }
 
 		public static Slice Slice;
 
@@ -92,8 +92,8 @@ namespace Server
 		internal static bool HaltOnWarning { get { return m_HaltOnWarning; } }
 		internal static bool VBdotNet { get { return m_VBdotNET; } }
 		public static List<string> DataDirectories { get { return m_DataDirectories; } }
-		public static Assembly Assembly { get { return m_Assembly; } set { m_Assembly = value; } }
-		public static Version Version { get { return m_Assembly.GetName().Version; } }
+		public static Assembly Assembly { get; set; }
+		public static Version Version { get { return Assembly.GetName().Version; } }
 		public static Process Process { get { return m_Process; } }
 		public static Thread Thread { get { return m_Thread; } }
 		public static MultiTextWriter MultiConsoleOut { get { return m_MultiConOut; } }
@@ -116,38 +116,26 @@ namespace Server
 		*/
 
 		private static readonly bool _HighRes = Stopwatch.IsHighResolution;
-		private static readonly double _Frequency = 1000.0 / Stopwatch.Frequency;
 
-		public static long TickCount
+		private static readonly double _HighFrequency = 1000.0 / Stopwatch.Frequency;
+		private static readonly double _LowFrequency = 1000.0 / TimeSpan.TicksPerSecond;
+
+		private static bool _UseHRT;
+
+		public static bool UsingHighResolutionTiming { get { return _UseHRT && _HighRes && !Unix; } }
+
+		public static long TickCount { get { return (long)Ticks; } }
+
+		public static double Ticks
 		{
 			get
 			{
-				long t = 0;
-
-				// TODO: Unreliable with certain system configurations.
-				if (_HighRes)
+				if (_UseHRT && _HighRes && !Unix)
 				{
-					SafeNativeMethods.QueryPerformanceCounter(out t);
-				}
-				else
-				{
-					t = DateTime.UtcNow.Ticks;
+					return Stopwatch.GetTimestamp() * _HighFrequency;
 				}
 
-				return (long)(t * _Frequency);
-
-				/* We don't really need this, but it may be useful in the future.
-				uint t = (uint)Environment.TickCount;
-
-				if (_LastTickCount.Value > t) // Wrapped
-				{
-					_HighOrder.Value += 0x100000000;
-				}
-
-				_LastTickCount.Value = t;
-
-				return _HighOrder.Value | _LastTickCount.Value;
-				*/
+				return DateTime.UtcNow.Ticks * _LowFrequency;
 			}
 		}
 
@@ -172,9 +160,9 @@ namespace Server
 
 			string fullPath = null;
 
-			for (int i = 0; i < m_DataDirectories.Count; ++i)
+			foreach (string p in m_DataDirectories)
 			{
-				fullPath = Path.Combine(m_DataDirectories[i], path);
+				fullPath = Path.Combine(p, path);
 
 				if (File.Exists(fullPath))
 				{
@@ -193,43 +181,30 @@ namespace Server
 		}
 
 		#region Expansions
-		private static Expansion m_Expansion;
-		public static Expansion Expansion { get { return m_Expansion; } set { m_Expansion = value; } }
+		public static Expansion Expansion { get; set; }
 
-		public static bool T2A { get { return m_Expansion >= Expansion.T2A; } }
+		public static bool T2A { get { return Expansion >= Expansion.T2A; } }
 
-		public static bool UOR { get { return m_Expansion >= Expansion.UOR; } }
+		public static bool UOR { get { return Expansion >= Expansion.UOR; } }
 
-		public static bool UOTD { get { return m_Expansion >= Expansion.UOTD; } }
+		public static bool UOTD { get { return Expansion >= Expansion.UOTD; } }
 
-		public static bool LBR { get { return m_Expansion >= Expansion.LBR; } }
+		public static bool LBR { get { return Expansion >= Expansion.LBR; } }
 
-		public static bool AOS { get { return m_Expansion >= Expansion.AOS; } }
+		public static bool AOS { get { return Expansion >= Expansion.AOS; } }
 
-		public static bool SE { get { return m_Expansion >= Expansion.SE; } }
+		public static bool SE { get { return Expansion >= Expansion.SE; } }
 
-		public static bool ML { get { return m_Expansion >= Expansion.ML; } }
+		public static bool ML { get { return Expansion >= Expansion.ML; } }
 
-		public static bool SA { get { return m_Expansion >= Expansion.SA; } }
+		public static bool SA { get { return Expansion >= Expansion.SA; } }
 
-		public static bool HS { get { return m_Expansion >= Expansion.HS; } }
+		public static bool HS { get { return Expansion >= Expansion.HS; } }
 
-        public static bool TOL { get { return m_Expansion >= Expansion.TOL; } }
+		public static bool TOL { get { return Expansion >= Expansion.TOL; } }
 		#endregion
 
-		public static string ExePath
-		{
-			get
-			{
-				if (m_ExePath == null)
-				{
-					m_ExePath = Assembly.Location;
-					//m_ExePath = Process.GetCurrentProcess().MainModule.FileName;
-				}
-
-				return m_ExePath;
-			}
-		}
+		public static string ExePath { get { return m_ExePath ?? (m_ExePath = Assembly.Location); } }
 
 		public static string BaseDirectory
 		{
@@ -282,9 +257,9 @@ namespace Server
 				{
 					try
 					{
-						for (int i = 0; i < m_MessagePump.Listeners.Length; i++)
+						foreach (Listener l in MessagePump.Listeners)
 						{
-							m_MessagePump.Listeners[i].Dispose();
+							l.Dispose();
 						}
 					}
 					catch
@@ -343,27 +318,15 @@ namespace Server
 		private static bool m_Closing;
 		public static bool Closing { get { return m_Closing; } }
 
-		private static long m_CycleIndex = 1;
+		private static int m_CycleIndex = 1;
 		private static readonly float[] m_CyclesPerSecond = new float[100];
 
-		public static float CyclesPerSecond { get { return m_CyclesPerSecond[(m_CycleIndex - 1) % m_CyclesPerSecond.Length]; } }
-
-		public static float AverageCPS
+		public static float CyclesPerSecond
 		{
-			get
-			{
-				float t = 0.0f;
-				int c = 0;
-
-				for (int i = 0; i < m_CycleIndex && i < m_CyclesPerSecond.Length; ++i)
-				{
-					t += m_CyclesPerSecond[i];
-					++c;
-				}
-
-				return (t / Math.Max(c, 1));
-			}
+			get { return m_CyclesPerSecond[(m_CycleIndex - 1) % m_CyclesPerSecond.Length]; }
 		}
+
+		public static float AverageCPS { get { return m_CyclesPerSecond.Take(m_CycleIndex).Average(); } }
 
 		public static void Kill()
 		{
@@ -417,31 +380,35 @@ namespace Server
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
 
-			for (int i = 0; i < args.Length; ++i)
+			foreach (string a in args)
 			{
-				if (Insensitive.Equals(args[i], "-debug"))
+				if (Insensitive.Equals(a, "-debug"))
 				{
 					m_Debug = true;
 				}
-				else if (Insensitive.Equals(args[i], "-service"))
+				else if (Insensitive.Equals(a, "-service"))
 				{
 					m_Service = true;
 				}
-				else if (Insensitive.Equals(args[i], "-profile"))
+				else if (Insensitive.Equals(a, "-profile"))
 				{
 					Profiling = true;
 				}
-				else if (Insensitive.Equals(args[i], "-nocache"))
+				else if (Insensitive.Equals(a, "-nocache"))
 				{
 					m_Cache = false;
 				}
-				else if (Insensitive.Equals(args[i], "-haltonwarning"))
+				else if (Insensitive.Equals(a, "-haltonwarning"))
 				{
 					m_HaltOnWarning = true;
 				}
-				else if (Insensitive.Equals(args[i], "-vb"))
+				else if (Insensitive.Equals(a, "-vb"))
 				{
 					m_VBdotNET = true;
+				}
+				else if (Insensitive.Equals(a, "-usehrt"))
+				{
+					_UseHRT = true;
 				}
 			}
 
@@ -466,7 +433,7 @@ namespace Server
 
 			m_Thread = Thread.CurrentThread;
 			m_Process = Process.GetCurrentProcess();
-			m_Assembly = Assembly.GetEntryAssembly();
+			Assembly = Assembly.GetEntryAssembly();
 
 			if (m_Thread != null)
 			{
@@ -479,10 +446,12 @@ namespace Server
 			}
 
 			Timer.TimerThread ttObj = new Timer.TimerThread();
-			timerThread = new Thread(ttObj.TimerMain);
-			timerThread.Name = "Timer Thread";
+			timerThread = new Thread(ttObj.TimerMain)
+			{
+				Name = "Timer Thread"
+			};
 
-			Version ver = m_Assembly.GetName().Version;
+			Version ver = Assembly.GetName().Version;
 
 			String publishNumber = "";
 
@@ -508,7 +477,11 @@ namespace Server
 			Utility.PopColor();
 			Utility.PushColor(ConsoleColor.Cyan);
 			Console.WriteLine(
-				"ServUO - [http://www.servuo.com] Version {0}.{1}, Build {2}.{3}", ver.Major, ver.Minor, ver.Build, ver.Revision);
+				"ServUO - [http://www.servuo.com] Version {0}.{1}, Build {2}.{3}",
+				ver.Major,
+				ver.Minor,
+				ver.Build,
+				ver.Revision);
 			Console.WriteLine("Publish {0}", publishNumber);
 			Utility.PopColor();
 
@@ -561,7 +534,18 @@ namespace Server
 				Utility.PopColor();
 			}
 
+			if (_UseHRT)
+			{
+				Utility.PushColor(ConsoleColor.DarkYellow);
+				Console.WriteLine(
+					"Core: Requested high resolution timing ({0})",
+					UsingHighResolutionTiming ? "Supported" : "Unsupported");
+				Utility.PopColor();
+			}
+
+			Utility.PushColor(ConsoleColor.DarkYellow);
 			Console.WriteLine("RandomImpl: {0} ({1})", RandomImpl.Type.Name, RandomImpl.IsHardwareRNG ? "Hardware" : "Software");
+			Utility.PopColor();
 
 			_OpenUOSDK = new OpenUOSDK();
 
@@ -591,13 +575,13 @@ namespace Server
 
 			ScriptCompiler.Invoke("Initialize");
 
-			MessagePump messagePump = m_MessagePump = new MessagePump();
+			MessagePump messagePump = MessagePump = new MessagePump();
 
 			timerThread.Start();
 
-			for (int i = 0; i < Map.AllMaps.Count; ++i)
+			foreach (Map m in Map.AllMaps)
 			{
-				Map.AllMaps[i].Tiles.Force();
+				m.Tiles.Force();
 			}
 
 			NetState.Initialize();
@@ -609,7 +593,7 @@ namespace Server
 				long now, last = TickCount;
 
 				const int sampleInterval = 100;
-				const float ticksPerSecond = (float)(1000 * sampleInterval);
+				const float ticksPerSecond = 1000.0f * sampleInterval;
 
 				long sample = 0;
 
@@ -631,12 +615,14 @@ namespace Server
 						Slice();
 					}
 
-					if ((++sample % sampleInterval) == 0)
+					if (sample++ % sampleInterval != 0)
 					{
-						now = TickCount;
-						m_CyclesPerSecond[m_CycleIndex++ % m_CyclesPerSecond.Length] = ticksPerSecond / (now - last);
-						last = now;
+						continue;
 					}
+
+					now = TickCount;
+					m_CyclesPerSecond[m_CycleIndex++ % m_CyclesPerSecond.Length] = ticksPerSecond / (now - last);
+					last = now;
 				}
 			}
 			catch (Exception e)
@@ -681,13 +667,26 @@ namespace Server
 					Utility.Separate(sb, "-vb", " ");
 				}
 
+				if (_UseHRT)
+				{
+					Utility.Separate(sb, "-usehrt", " ");
+				}
+
 				return sb.ToString();
 			}
 		}
 
+		private static int m_GlobalUpdateRange = 18;
+
+		public static int GlobalUpdateRange { get { return m_GlobalUpdateRange; } set { m_GlobalUpdateRange = value; } }
+
 		private static int m_GlobalMaxUpdateRange = 24;
 
-		public static int GlobalMaxUpdateRange { get { return m_GlobalMaxUpdateRange; } set { m_GlobalMaxUpdateRange = value; } }
+		public static int GlobalMaxUpdateRange
+		{
+			get { return m_GlobalMaxUpdateRange; }
+			set { m_GlobalMaxUpdateRange = value; }
+		}
 
 		private static int m_ItemCount, m_MobileCount, m_CustomsCount;
 
@@ -703,14 +702,14 @@ namespace Server
 
 			VerifySerialization(Assembly.GetCallingAssembly());
 
-			for (int a = 0; a < ScriptCompiler.Assemblies.Length; ++a)
+			foreach (Assembly a in ScriptCompiler.Assemblies)
 			{
-				VerifySerialization(ScriptCompiler.Assemblies[a]);
+				VerifySerialization(a);
 			}
 		}
 
-		private static readonly Type[] m_SerialTypeArray = new Type[1] {typeof(Serial)};
-		private static readonly Type[] m_CustomsSerialTypeArray = new Type[1] {typeof(CustomSerial)};
+		private static readonly Type[] m_SerialTypeArray = {typeof(Serial)};
+		private static readonly Type[] m_CustomsSerialTypeArray = {typeof(CustomSerial)};
 
 		private static void VerifyType(Type t)
 		{
@@ -720,12 +719,10 @@ namespace Server
 			{
 				if (isItem)
 				{
-					// ++m_ItemCount;
 					Interlocked.Increment(ref m_ItemCount);
 				}
 				else
 				{
-					// ++m_MobileCount;
 					Interlocked.Increment(ref m_MobileCount);
 				}
 
@@ -733,34 +730,17 @@ namespace Server
 
 				try
 				{
-					/*
-					if( isItem && t.IsPublic && !t.IsAbstract )
-					{
-					ConstructorInfo cInfo = t.GetConstructor( Type.EmptyTypes );
-
-					if( cInfo == null )
-					{
-					if (warningSb == null)
-					warningSb = new StringBuilder();
-
-					warningSb.AppendLine("       - No zero paramater constructor");
-					}
-					}*/
-
 					if (t.GetConstructor(m_SerialTypeArray) == null)
 					{
-						if (warningSb == null)
-						{
-							warningSb = new StringBuilder();
-						}
+						warningSb = new StringBuilder();
 
 						warningSb.AppendLine("       - No serialization constructor");
 					}
 
 					if (
 						t.GetMethod(
-							"Serialize", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ==
-						null)
+							"Serialize",
+							BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
 					{
 						if (warningSb == null)
 						{
@@ -772,8 +752,8 @@ namespace Server
 
 					if (
 						t.GetMethod(
-							"Deserialize", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ==
-						null)
+							"Deserialize",
+							BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
 					{
 						if (warningSb == null)
 						{
@@ -785,12 +765,14 @@ namespace Server
 
 					if (warningSb != null && warningSb.Length > 0)
 					{
+						Utility.PushColor(ConsoleColor.Yellow);
 						Console.WriteLine("Warning: {0}\n{1}", t, warningSb);
+						Utility.PopColor();
 					}
 				}
 				catch
 				{
-					Utility.PushColor(ConsoleColor.Red);
+					Utility.PushColor(ConsoleColor.Yellow);
 					Console.WriteLine("Warning: Exception in serialization verification of type {0}", t);
 					Utility.PopColor();
 				}
@@ -805,18 +787,15 @@ namespace Server
 				{
 					if (t.GetConstructor(m_CustomsSerialTypeArray) == null)
 					{
-						if (warningSb == null)
-						{
-							warningSb = new StringBuilder();
-						}
+						warningSb = new StringBuilder();
 
 						warningSb.AppendLine("       - No serialization constructor");
 					}
 
 					if (
 						t.GetMethod(
-							"Serialize", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ==
-						null)
+							"Serialize",
+							BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
 					{
 						if (warningSb == null)
 						{
@@ -828,8 +807,8 @@ namespace Server
 
 					if (
 						t.GetMethod(
-							"Deserialize", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ==
-						null)
+							"Deserialize",
+							BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
 					{
 						if (warningSb == null)
 						{
@@ -841,12 +820,14 @@ namespace Server
 
 					if (warningSb != null && warningSb.Length > 0)
 					{
+						Utility.PushColor(ConsoleColor.Yellow);
 						Console.WriteLine("Warning: {0}\n{1}", t, warningSb);
+						Utility.PopColor();
 					}
 				}
 				catch
 				{
-					Utility.PushColor(ConsoleColor.Red);
+					Utility.PushColor(ConsoleColor.Yellow);
 					Console.WriteLine("Warning: Exception in serialization verification of type {0}", t);
 					Utility.PopColor();
 				}
@@ -855,22 +836,20 @@ namespace Server
 
 		private static void VerifySerialization(Assembly a)
 		{
-			if (a == null)
+			if (a != null)
 			{
-				return;
+				Parallel.ForEach(a.GetTypes(), VerifyType);
 			}
-
-			Parallel.ForEach(a.GetTypes(), t => { VerifyType(t); });
 		}
 	}
 
-	public class FileLogger : TextWriter, IDisposable
+	public class FileLogger : TextWriter
 	{
-		private readonly string m_FileName;
-		private bool m_NewLine;
 		public const string DateFormat = "[MMMM dd hh:mm:ss.f tt]: ";
 
-		public string FileName { get { return m_FileName; } }
+		private bool _NewLine;
+
+		public string FileName { get; private set; }
 
 		public FileLogger(string file)
 			: this(file, false)
@@ -878,60 +857,59 @@ namespace Server
 
 		public FileLogger(string file, bool append)
 		{
-			m_FileName = file;
+			FileName = file;
+
 			using (
-				StreamWriter writer =
+				var writer =
 					new StreamWriter(
-						new FileStream(m_FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
+						new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
 			{
 				writer.WriteLine(">>>Logging started on {0}.", DateTime.UtcNow.ToString("f"));
 				//f = Tuesday, April 10, 2001 3:51 PM 
 			}
-			m_NewLine = true;
+
+			_NewLine = true;
 		}
 
 		public override void Write(char ch)
 		{
-			using (
-				StreamWriter writer = new StreamWriter(
-					new FileStream(m_FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+			using (var writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
 			{
-				if (m_NewLine)
+				if (_NewLine)
 				{
 					writer.Write(DateTime.UtcNow.ToString(DateFormat));
-					m_NewLine = false;
+					_NewLine = false;
 				}
+
 				writer.Write(ch);
 			}
 		}
 
 		public override void Write(string str)
 		{
-			using (
-				StreamWriter writer = new StreamWriter(
-					new FileStream(m_FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+			using (var writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
 			{
-				if (m_NewLine)
+				if (_NewLine)
 				{
 					writer.Write(DateTime.UtcNow.ToString(DateFormat));
-					m_NewLine = false;
+					_NewLine = false;
 				}
+
 				writer.Write(str);
 			}
 		}
 
 		public override void WriteLine(string line)
 		{
-			using (
-				StreamWriter writer = new StreamWriter(
-					new FileStream(m_FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+			using (var writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
 			{
-				if (m_NewLine)
+				if (_NewLine)
 				{
 					writer.Write(DateTime.UtcNow.ToString(DateFormat));
 				}
+
 				writer.WriteLine(line);
-				m_NewLine = true;
+				_NewLine = true;
 			}
 		}
 
@@ -940,13 +918,13 @@ namespace Server
 
 	public class MultiTextWriter : TextWriter
 	{
-		private readonly List<TextWriter> m_Streams;
+		private readonly List<TextWriter> _Streams;
 
 		public MultiTextWriter(params TextWriter[] streams)
 		{
-			m_Streams = new List<TextWriter>(streams);
+			_Streams = new List<TextWriter>(streams);
 
-			if (m_Streams.Count < 0)
+			if (_Streams.Count < 0)
 			{
 				throw new ArgumentException("You must specify at least one stream.");
 			}
@@ -954,27 +932,27 @@ namespace Server
 
 		public void Add(TextWriter tw)
 		{
-			m_Streams.Add(tw);
+			_Streams.Add(tw);
 		}
 
 		public void Remove(TextWriter tw)
 		{
-			m_Streams.Remove(tw);
+			_Streams.Remove(tw);
 		}
 
 		public override void Write(char ch)
 		{
-			for (int i = 0; i < m_Streams.Count; i++)
+			foreach (var t in _Streams)
 			{
-				m_Streams[i].Write(ch);
+				t.Write(ch);
 			}
 		}
 
 		public override void WriteLine(string line)
 		{
-			for (int i = 0; i < m_Streams.Count; i++)
+			foreach (var t in _Streams)
 			{
-				m_Streams[i].WriteLine(line);
+				t.WriteLine(line);
 			}
 		}
 

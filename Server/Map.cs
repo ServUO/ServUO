@@ -1823,7 +1823,7 @@ namespace Server
 
 				if (e != null)
 				{
-					e._Pool = pool;
+					e._Pool.AddRange(pool);
 				}
 				else
 				{
@@ -1834,11 +1834,11 @@ namespace Server
 			}
 
 			private bool _IsDisposed;
-			private IEnumerable<T> _Pool;
+			private List<T> _Pool;
 
 			public PooledEnumerable(IEnumerable<T> pool)
 			{
-				_Pool = pool;
+				_Pool = new List<T>(pool);
 			}
 
 			IEnumerator IEnumerable.GetEnumerator()
@@ -1858,7 +1858,7 @@ namespace Server
 					return;
 				}
 
-				_Pool = null;
+				_Pool.Clear();
 
 				lock (((ICollection)_Buffer).SyncRoot)
 				{
@@ -1869,6 +1869,9 @@ namespace Server
 			public void Dispose()
 			{
 				_IsDisposed = true;
+
+				_Pool.Clear();
+				_Pool.TrimExcess();
 				_Pool = null;
 			}
 		}
