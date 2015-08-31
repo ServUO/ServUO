@@ -19,8 +19,12 @@ namespace Server.Accounting
 		int Limit { get; }
 		int Count { get; }
 		Mobile this[int index] { get; set; }
+
         #region Gold Account
-        bool DepositCurrency(double amount);
+		int TotalGold { get; }
+		int TotalPlat { get; }
+
+		bool DepositCurrency(double amount);
         bool DepositGold(int amount);
         bool DepositPlat(int amount);
 
@@ -31,8 +35,8 @@ namespace Server.Accounting
         void GetGoldBalance(out int gold, out double totalGold);
         void GetPlatBalance(out int plat, out double totalPlat);
         void GetBalance(out int gold, out double totalGold, out int plat, out double totalPlat);
-
 	    #endregion
+
 		void Delete();
 		void SetPassword(string password);
 		bool CheckPassword(string password);
