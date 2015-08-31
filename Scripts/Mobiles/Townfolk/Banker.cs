@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Server.Accounting;
 using Server.ContextMenus;
 using Server.Items;
 using Server.Network;
@@ -370,12 +369,10 @@ namespace Server.Mobiles
 							}
 							else
 							{
-								var box = e.Mobile.FindBankNoCreate();
-
-								Say(1042759, box != null ? box.TotalGold.ToString("#,0") : "0"); // Thy current bank balance is ~1_AMOUNT~ gold.
+								Say(1042759, GetBalance(e.Mobile).ToString("#,0")); // Thy current bank balance is ~1_AMOUNT~ gold.
 							}
-							break;
 						}
+							break;
 						case 0x0002: // *bank*
 						{
 							e.Handled = true;
@@ -387,9 +384,8 @@ namespace Server.Mobiles
 							}
 
 							e.Mobile.BankBox.Open();
-
-							break;
 						}
+							break;
 						case 0x0003: // *check*
 						{
 							e.Handled = true;
@@ -443,14 +439,13 @@ namespace Server.Mobiles
 									}
 									else
 									{
-										Say(1042673, AffixType.Append, amount.ToString(), "");
-											// Into your bank box I have placed a check in the amount of:
+										Say(1042673, AffixType.Append, amount.ToString("#,0"), "");
+										// Into your bank box I have placed a check in the amount of:
 									}
 								}
 							}
-
-							break;
 						}
+							break;
 					}
 				}
 			}
