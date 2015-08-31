@@ -12,7 +12,7 @@ namespace Server
 {
 	public class CurrentExpansion
 	{
-		private static readonly Expansion Expansion = Expansion.HS;
+		private static readonly Expansion Expansion = Expansion.TOL;
 
 		public static void Configure()
 		{

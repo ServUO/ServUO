@@ -167,6 +167,8 @@ namespace Server.Network
 		}
 	}
 
+
+
 	public sealed class DisplaySecureTrade : Packet
 	{
 		public DisplaySecureTrade(Mobile them, Container first, Container second, string name)
@@ -214,6 +216,37 @@ namespace Server.Network
 			m_Stream.Write((second ? 1 : 0));
 		}
 	}
+	
+		public sealed class UpdateSecureTradeGold : Packet
+	{
+            public UpdateSecureTradeGold(Container cont, int gold, int plat)
+			: base(0x6F)
+		{
+			EnsureCapacity(16);
+
+			m_Stream.Write((byte)3); // UpdateGold
+			m_Stream.Write(cont.Serial);
+            m_Stream.Write(gold);
+            m_Stream.Write(plat);
+
+			
+		}
+	}
+
+        public sealed class UpdateSecureTradeGoldLedger : Packet
+        {
+            public UpdateSecureTradeGoldLedger(Container cont, int gold, int plat)
+                : base(0x6F)
+            {
+                EnsureCapacity(16);
+
+                m_Stream.Write((byte)4); // UpdateGoldLedger
+                m_Stream.Write(cont.Serial);
+                m_Stream.Write(gold);
+                m_Stream.Write(plat);
+
+            }
+        }
 
 	public sealed class SecureTradeEquip : Packet
 	{

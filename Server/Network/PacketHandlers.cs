@@ -382,17 +382,47 @@ namespace Server.Network
 							if (trade != null && trade.From.Mobile == state.Mobile)
 							{
 								trade.From.Accepted = value;
-								trade.Update();
+								trade.Update(0);
 							}
 							else if (trade != null && trade.To.Mobile == state.Mobile)
 							{
 								trade.To.Accepted = value;
-								trade.Update();
+								trade.Update(0);
 							}
 						}
 
 						break;
 					}
+
+                case 3: //updateGold
+			    {
+                    if (Core.TOL)
+			        {
+			            Serial serial = pvSrc.ReadInt32();
+
+			            SecureTradeContainer cont = World.FindItem(serial) as SecureTradeContainer;
+			            if (cont != null)
+			            {
+			                SecureTrade trade = cont.Trade;
+			                int gold = (pvSrc.ReadInt32());
+			                int plat = (pvSrc.ReadInt32());
+			                if (trade != null && trade.From.Mobile == state.Mobile)
+			                {
+			                    trade.From.Gold = gold;
+			                    trade.From.Plat = plat;
+			                    trade.Update(1);
+			                }
+			                else if (trade != null && trade.To.Mobile == state.Mobile)
+			                {
+			                    trade.To.Gold = gold;
+			                    trade.To.Plat = plat;
+			                    trade.Update(2);
+			                }
+
+			            }
+			        }
+			        break;
+			    }
 			}
 		}
 
