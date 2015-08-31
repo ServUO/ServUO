@@ -112,20 +112,33 @@ namespace Server.Gumps
 
                         if (toGive != null)
                         {
-                            BankBox box = this.m_Mobile.BankBox;
-
-                            if (box.TryDropItem(this.m_Mobile, toGive, false))
+                            if (Core.TOL)
                             {
-                                if (toGive is BankCheck)
-                                    this.m_Mobile.SendLocalizedMessage(1060397, ((BankCheck)toGive).Worth.ToString()); // ~1_AMOUNT~ gold has been deposited into your bank box.
-
-                                this.m_House.RemoveKeys(this.m_Mobile);
-                                this.m_House.Delete();
+                                m_Mobile.Account.DepositGold(m_House.Price);
+                                toGive.Delete();
+                                m_Mobile.SendLocalizedMessage(1060397,
+                                            m_House.Price.ToString());
+                                // ~1_AMOUNT~ gold has been deposited into your bank box.
                             }
                             else
                             {
-                                toGive.Delete();
-                                this.m_Mobile.SendLocalizedMessage(500390); // Your bank box is full.
+                                BankBox box = this.m_Mobile.BankBox;
+
+                                if (box.TryDropItem(this.m_Mobile, toGive, false))
+                                {
+                                    if (toGive is BankCheck)
+                                        this.m_Mobile.SendLocalizedMessage(1060397,
+                                            ((BankCheck) toGive).Worth.ToString());
+                                            // ~1_AMOUNT~ gold has been deposited into your bank box.
+
+                                    this.m_House.RemoveKeys(this.m_Mobile);
+                                    this.m_House.Delete();
+                                }
+                                else
+                                {
+                                    toGive.Delete();
+                                    this.m_Mobile.SendLocalizedMessage(500390); // Your bank box is full.
+                                }
                             }
                         }
                         else

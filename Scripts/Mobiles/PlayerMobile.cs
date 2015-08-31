@@ -3761,7 +3761,8 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(29); // version old 28
+			writer.Write(29); // version
+
 
 			// Version 29
 			writer.Write(m_GauntletPoints);

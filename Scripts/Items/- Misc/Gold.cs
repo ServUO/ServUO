@@ -1,4 +1,6 @@
 using System;
+using Server.Accounting;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -44,6 +46,20 @@ namespace Server.Items
                 return 0x2E5;
             else
                 return 0x2E6;
+        }
+
+
+        public override bool OnDroppedInto(Mobile @from, Container target, Point3D p)
+        {
+            if (Core.TOL && (target is BankBox || target.Parent is BankBox || IsChildOf(from.BankBox)))
+            {
+                Account acnt = (Account) from.Account;
+                acnt.DepositGold(Amount);
+                Delete();
+                from.SendLocalizedMessage(1042763,Amount.ToString());
+                return true;
+            }
+            return base.OnDroppedInto(@from, target, p);
         }
 
         public override int GetTotal(TotalType type)

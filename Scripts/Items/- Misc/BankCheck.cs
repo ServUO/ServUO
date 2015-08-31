@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using Server.Accounting;
 using Server.Engines.Quests;
 using Server.Mobiles;
 using Server.Network;
@@ -92,6 +93,19 @@ namespace Server.Items
                 worth = this.m_Worth.ToString();
 
             list.Add(1060738, worth); // value: ~1_val~
+        }
+
+        public override bool OnDroppedInto(Mobile @from, Container target, Point3D p)
+        {
+            if (Core.TOL && (target is BankBox || target.Parent is BankBox || IsChildOf(from.BankBox)))
+            {
+                Account acnt = (Account)from.Account;
+                acnt.DepositGold(Worth);
+                Delete();
+                from.SendLocalizedMessage(1042763, Worth.ToString());
+                return true;
+            }
+            return base.OnDroppedInto(@from, target, p);
         }
 
         public override void OnSingleClick(Mobile from)

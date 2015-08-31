@@ -86,7 +86,7 @@ namespace Server.Items
 			{
 				m_Trade.From.Accepted = false;
 				m_Trade.To.Accepted = false;
-				m_Trade.Update();
+				m_Trade.Update(0);
 			}
 		}
 

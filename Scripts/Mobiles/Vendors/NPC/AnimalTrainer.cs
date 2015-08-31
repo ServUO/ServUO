@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Accounting;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Items;
@@ -262,8 +263,17 @@ namespace Server.Mobiles
                 return;
 
             Container bank = from.FindBankNoCreate();
+            if (Core.TOL)
+            {
+                Account acnt = (Account)from.Account;
+                int balance = acnt.TotalGold;
+                if ((from.Backpack == null || from.Backpack.GetAmount(typeof(Gold)) < 30) && (bank == null || acnt.TotalGold < 30))
+                {
+                    this.SayTo(from, 1042556); // Thou dost not have enough gold, not even in thy bank account.
+                }
+            }
 
-            if ((from.Backpack == null || from.Backpack.GetAmount(typeof(Gold)) < 30) && (bank == null || bank.GetAmount(typeof(Gold)) < 30))
+            else if ((from.Backpack == null || from.Backpack.GetAmount(typeof(Gold)) < 30) && (bank == null || bank.GetAmount(typeof(Gold)) < 30))
             {
                 this.SayTo(from, 1042556); // Thou dost not have enough gold, not even in thy bank account.
             }
@@ -326,28 +336,64 @@ namespace Server.Mobiles
             {
                 Container bank = from.FindBankNoCreate();
 
-                if ((from.Backpack != null && from.Backpack.ConsumeTotal(typeof(Gold), 30)) || (bank != null && bank.ConsumeTotal(typeof(Gold), 30)))
+                if (Core.TOL)
                 {
-                    pet.ControlTarget = null;
-                    pet.ControlOrder = OrderType.Stay;
-                    pet.Internalize();
+                    Account acnt = (Account) from.Account;
+                    int balance = acnt.TotalGold;
 
-                    pet.SetControlMaster(null);
-                    pet.SummonMaster = null;
+                    if ((from.Backpack != null && from.Backpack.ConsumeTotal(typeof (Gold), 30)) ||
+                        (bank != null && Banker.Withdraw(from, 30)))
+                    {
+                        pet.ControlTarget = null;
+                        pet.ControlOrder = OrderType.Stay;
+                        pet.Internalize();
 
-                    pet.IsStabled = true;
-                    pet.StabledBy = from;
+                        pet.SetControlMaster(null);
+                        pet.SummonMaster = null;
 
-                    if (Core.SE)
-                        pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully happy
+                        pet.IsStabled = true;
+                        pet.StabledBy = from;
 
-                    from.Stabled.Add(pet);
+                        if (Core.SE)
+                            pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully happy
 
-                    this.SayTo(from, Core.AOS ? 1049677 : 502679); // [AOS: Your pet has been stabled.] Very well, thy pet is stabled. Thou mayst recover it by saying 'claim' to me. In one real world week, I shall sell it off if it is not claimed!
+                        from.Stabled.Add(pet);
+
+                        this.SayTo(from, Core.AOS ? 1049677 : 502679);
+                            // [AOS: Your pet has been stabled.] Very well, thy pet is stabled. Thou mayst recover it by saying 'claim' to me. In one real world week, I shall sell it off if it is not claimed!
+                    }
+                    else
+                    {
+                        this.SayTo(from, 502677); // But thou hast not the funds in thy bank account!
+                    }
                 }
                 else
                 {
-                    this.SayTo(from, 502677); // But thou hast not the funds in thy bank account!
+                    if ((from.Backpack != null && from.Backpack.ConsumeTotal(typeof (Gold), 30)) ||
+                        (bank != null && bank.ConsumeTotal(typeof (Gold), 30)))
+                    {
+                        pet.ControlTarget = null;
+                        pet.ControlOrder = OrderType.Stay;
+                        pet.Internalize();
+
+                        pet.SetControlMaster(null);
+                        pet.SummonMaster = null;
+
+                        pet.IsStabled = true;
+                        pet.StabledBy = from;
+
+                        if (Core.SE)
+                            pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully happy
+
+                        from.Stabled.Add(pet);
+
+                        this.SayTo(from, Core.AOS ? 1049677 : 502679);
+                            // [AOS: Your pet has been stabled.] Very well, thy pet is stabled. Thou mayst recover it by saying 'claim' to me. In one real world week, I shall sell it off if it is not claimed!
+                    }
+                    else
+                    {
+                        this.SayTo(from, 502677); // But thou hast not the funds in thy bank account!
+                    }
                 }
             }
         }

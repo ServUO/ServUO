@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Accounting;
 using Server.ContextMenus;
 using Server.Items;
 using Server.Network;
@@ -37,30 +38,39 @@ namespace Server.Mobiles
         public static int GetBalance(Mobile from)
         {
             Item[] gold, checks;
-
             return GetBalance(from, out gold, out checks);
         }
 
         public static int GetBalance(Mobile from, out Item[] gold, out Item[] checks)
         {
             int balance = 0;
-
-            Container bank = from.FindBankNoCreate();
-
-            if (bank != null)
+            if (Core.TOL)
             {
-                gold = bank.FindItemsByType(typeof(Gold));
-                checks = bank.FindItemsByType(typeof(BankCheck));
+                gold = null;
+                checks = null;
+                Account acnt = (Account)from.Account;
+                balance = acnt.TotalGold;
 
-                for (int i = 0; i < gold.Length; ++i)
-                    balance += gold[i].Amount;
-
-                for (int i = 0; i < checks.Length; ++i)
-                    balance += ((BankCheck)checks[i]).Worth;
             }
             else
             {
-                gold = checks = new Item[0];
+                Container bank = from.FindBankNoCreate();
+
+                if (bank != null)
+                {
+                    gold = bank.FindItemsByType(typeof(Gold));
+                    checks = bank.FindItemsByType(typeof(BankCheck));
+
+                    for (int i = 0; i < gold.Length; ++i)
+                        balance += gold[i].Amount;
+
+                    for (int i = 0; i < checks.Length; ++i)
+                        balance += ((BankCheck)checks[i]).Worth;
+                }
+                else
+                {
+                    gold = checks = new Item[0];
+                }
             }
 
             return balance;
@@ -68,6 +78,16 @@ namespace Server.Mobiles
 
         public static bool Withdraw(Mobile from, int amount)
         {
+            if (Core.TOL)
+            {
+                Account acnt = (Account)from.Account;
+
+                if (acnt.WithdrawCurrency(amount))
+                    return true;
+                //continue to check if there is gold available in the bank that is not in the gold account somehow. Backward compatibility. 
+            }
+
+
             Item[] gold, checks;
             int balance = GetBalance(from, out gold, out checks);
 
@@ -105,6 +125,7 @@ namespace Server.Mobiles
             }
 
             return true;
+
         }
 
         public static bool Deposit(Mobile from, int amount)
@@ -112,6 +133,13 @@ namespace Server.Mobiles
             BankBox box = from.FindBankNoCreate();
             if (box == null)
                 return false;
+
+            if (Core.TOL)
+            {
+                var acnt = from.Account;
+                acnt.DepositCurrency(amount);
+                return true;
+            }
 
             List<Item> items = new List<Item>();
 
@@ -158,6 +186,13 @@ namespace Server.Mobiles
             BankBox box = from.FindBankNoCreate();
             if (box == null)
                 return 0;
+
+            if (Core.TOL)
+            {
+                var acnt = from.Account;
+                acnt.DepositCurrency(amount);
+                return amount;
+            }
 
             int amountLeft = amount;
             while (amountLeft > 0)
@@ -242,7 +277,7 @@ namespace Server.Mobiles
                 {
                     int keyword = e.Keywords[i];
 
-                    switch ( keyword )
+                    switch (keyword)
                     {
                         case 0x0000: // *withdraw*
                             {
@@ -277,15 +312,36 @@ namespace Server.Mobiles
                                     {
                                         BankBox box = e.Mobile.FindBankNoCreate();
 
-                                        if (box == null || !box.ConsumeTotal(typeof(Gold), amount))
+                                        if (Core.TOL)
                                         {
-                                            this.Say(500384); // Ah, art thou trying to fool me? Thou hast not so much gold!
+                                            Account acnt = (Account)e.Mobile.Account;
+                                            int gold = acnt.TotalGold;
+
+                                            if (box == null || !Withdraw(e.Mobile, amount))
+                                            {
+                                                this.Say(500384);
+                                                // Ah, art thou trying to fool me? Thou hast not so much gold!
+                                            }
+                                            else
+                                            {
+                                                //acnt.TotalGold = -amount;
+                                                pack.DropItem(new Gold(amount));
+
+                                                this.Say(1010005); // Thou hast withdrawn gold from thy account.
+                                            }
                                         }
                                         else
                                         {
-                                            pack.DropItem(new Gold(amount));
+                                            if (box == null || !box.ConsumeTotal(typeof(Gold), amount))
+                                            {
+                                                this.Say(500384); // Ah, art thou trying to fool me? Thou hast not so much gold!
+                                            }
+                                            else
+                                            {
+                                                pack.DropItem(new Gold(amount));
 
-                                            this.Say(1010005); // Thou hast withdrawn gold from thy account.
+                                                this.Say(1010005); // Thou hast withdrawn gold from thy account.
+                                            }
                                         }
                                     }
                                 }
@@ -302,13 +358,20 @@ namespace Server.Mobiles
                                     break;
                                 }
 
-                                BankBox box = e.Mobile.FindBankNoCreate();
-
-                                if (box != null)
-                                    this.Say(1042759, box.TotalGold.ToString()); // Thy current bank balance is ~1_AMOUNT~ gold.
+                                if (Core.TOL)
+                                {
+                                    Account acnt = (Account)e.Mobile.Account;
+                                    int gold = acnt.TotalGold;
+                                    int plat = acnt.TotalPlat;
+                                    this.Say(1155855, plat + "\t" + gold);
+                                    // Thy current bank balance is ~1_AMOUNT~ platinum and ~2_AMOUNT~ gold.
+                                }
                                 else
-                                    this.Say(1042759, "0"); // Thy current bank balance is ~1_AMOUNT~ gold.
+                                {
+                                    BankBox box = e.Mobile.FindBankNoCreate();
 
+                                    this.Say(1042759, box != null ? box.TotalGold.ToString() : "0"); // Thy current bank balance is ~1_AMOUNT~ gold.
+                                }
                                 break;
                             }
                         case 0x0002: // *bank*
@@ -328,7 +391,8 @@ namespace Server.Mobiles
                         case 0x0003: // *check*
                             {
                                 e.Handled = true;
-
+                                if (Core.TOL)
+                                    break;
                                 if (e.Mobile.Criminal)
                                 {
                                     this.Say(500389); // I will not do business with a criminal!

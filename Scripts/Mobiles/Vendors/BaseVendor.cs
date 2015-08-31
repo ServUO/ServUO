@@ -8,7 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using Server.Accounting;
 using Server.ContextMenus;
 using Server.Engines.BulkOrders;
 using Server.Factions;
@@ -1328,7 +1328,25 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (!bought && totalCost >= 2000)
+            // tol
+		    if (!bought && totalCost >= 2000 && Core.TOL)
+		    {
+		        var acnt = buyer.Account;
+		        if (cont != null && acnt.WithdrawCurrency(totalCost))
+		        {
+                    bought = true;
+                    fromBank = true;
+                }
+                else
+                {
+                    SayTo(buyer, 500191); //Begging thy pardon, but thy bank account lacks these funds.
+                }
+
+
+		    }
+
+
+			else if (!bought && totalCost >= 2000)
 			{
 				cont = buyer.FindBankNoCreate();
 				if (cont != null && cont.ConsumeTotal(typeof(Gold), totalCost))
@@ -1341,6 +1359,8 @@ namespace Server.Mobiles
 					SayTo(buyer, 500191); //Begging thy pardon, but thy bank account lacks these funds.
 				}
 			}
+
+
 
 			if (!bought)
 			{

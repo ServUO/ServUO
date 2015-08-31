@@ -309,6 +309,11 @@ namespace Server.Items
                     {
                         this.m_Bag.Charges -= (Core.ML ? reqCharges : 1);
 
+                        if (Core.TOL && item is Gold)
+                        {
+                            from.Account.DepositGold(item.Amount);
+                            item.Delete();
+                        }
                         MessageHelper.SendLocalizedMessageTo(this.m_Bag, from, 1054150, 0x59); // The item was placed in your bank box.
                     }
                 }
