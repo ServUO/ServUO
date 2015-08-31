@@ -48,19 +48,30 @@ namespace Server.Items
                 return 0x2E6;
         }
 
+#if NEWPARENT
+		public override void OnAdded(IEntity parent)
+#else
+		public override void OnAdded(object parent)
+#endif
+		{
+			base.OnAdded(parent);
 
-        public override bool OnDroppedInto(Mobile @from, Container target, Point3D p)
-        {
-            if (Core.TOL && (target is BankBox || target.Parent is BankBox || IsChildOf(from.BankBox)))
-            {
-                Account acnt = (Account) from.Account;
-                acnt.DepositGold(Amount);
-                Delete();
-                from.SendLocalizedMessage(1042763,Amount.ToString());
-                return true;
-            }
-            return base.OnDroppedInto(@from, target, p);
-        }
+			if (!Core.TOL || !(parent is BankBox))
+			{
+				return;
+			}
+
+			var owner = ((BankBox)parent).Owner;
+
+			if (owner.Account == null || !owner.Account.DepositGold(Amount))
+			{
+				return;
+			}
+
+			owner.SendLocalizedMessage(1042763, Amount.ToString("#,0"));
+
+			Delete();
+		}
 
         public override int GetTotal(TotalType type)
         {

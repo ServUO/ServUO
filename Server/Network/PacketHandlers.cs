@@ -354,20 +354,56 @@ namespace Server.Network
 			switch (pvSrc.ReadByte())
 			{
 				case 1: // Cancel
+				{
+					Serial serial = pvSrc.ReadInt32();
+
+					SecureTradeContainer cont = World.FindItem(serial) as SecureTradeContainer;
+
+					if (cont != null)
 					{
-						Serial serial = pvSrc.ReadInt32();
+						SecureTrade trade = cont.Trade;
 
-						SecureTradeContainer cont = World.FindItem(serial) as SecureTradeContainer;
-
-						if (cont != null && cont.Trade != null &&
-							(cont.Trade.From.Mobile == state.Mobile || cont.Trade.To.Mobile == state.Mobile))
+						if (trade != null)
 						{
-							cont.Trade.Cancel();
+							if (trade.From.Mobile == state.Mobile || trade.To.Mobile == state.Mobile)
+							{
+								trade.Cancel();
+							}
 						}
-
-						break;
 					}
+				}
+					break;
 				case 2: // Check
+				{
+					Serial serial = pvSrc.ReadInt32();
+
+					SecureTradeContainer cont = World.FindItem(serial) as SecureTradeContainer;
+
+					if (cont != null)
+					{
+						SecureTrade trade = cont.Trade;
+
+						bool value = pvSrc.ReadInt32() != 0;
+
+						if (trade != null)
+						{
+							if (trade.From.Mobile == state.Mobile)
+							{
+								trade.From.Accepted = value;
+								trade.Update();
+							}
+							else if (trade.To.Mobile == state.Mobile)
+							{
+								trade.To.Accepted = value;
+								trade.Update();
+							}
+						}
+					}
+				}
+					break;
+				case 3: // Update Gold
+				{
+					if (Core.TOL)
 					{
 						Serial serial = pvSrc.ReadInt32();
 
@@ -375,54 +411,30 @@ namespace Server.Network
 
 						if (cont != null)
 						{
+							int gold = pvSrc.ReadInt32();
+							int plat = pvSrc.ReadInt32();
+
 							SecureTrade trade = cont.Trade;
 
-							bool value = (pvSrc.ReadInt32() != 0);
-
-							if (trade != null && trade.From.Mobile == state.Mobile)
+							if (trade != null)
 							{
-								trade.From.Accepted = value;
-								trade.Update(0);
-							}
-							else if (trade != null && trade.To.Mobile == state.Mobile)
-							{
-								trade.To.Accepted = value;
-								trade.Update(0);
+								if (trade.From.Mobile == state.Mobile)
+								{
+									trade.From.Gold = gold;
+									trade.From.Plat = plat;
+									trade.UpdateFromCurrency();
+								}
+								else if (trade.To.Mobile == state.Mobile)
+								{
+									trade.To.Gold = gold;
+									trade.To.Plat = plat;
+									trade.UpdateToCurrency();
+								}
 							}
 						}
-
-						break;
 					}
-
-                case 3: //updateGold
-			    {
-                    if (Core.TOL)
-			        {
-			            Serial serial = pvSrc.ReadInt32();
-
-			            SecureTradeContainer cont = World.FindItem(serial) as SecureTradeContainer;
-			            if (cont != null)
-			            {
-			                SecureTrade trade = cont.Trade;
-			                int gold = (pvSrc.ReadInt32());
-			                int plat = (pvSrc.ReadInt32());
-			                if (trade != null && trade.From.Mobile == state.Mobile)
-			                {
-			                    trade.From.Gold = gold;
-			                    trade.From.Plat = plat;
-			                    trade.Update(1);
-			                }
-			                else if (trade != null && trade.To.Mobile == state.Mobile)
-			                {
-			                    trade.To.Gold = gold;
-			                    trade.To.Plat = plat;
-			                    trade.Update(2);
-			                }
-
-			            }
-			        }
-			        break;
-			    }
+				}
+					break;
 			}
 		}
 

@@ -1313,69 +1313,49 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			bought = (buyer.AccessLevel >= AccessLevel.GameMaster);
+			bought = buyer.AccessLevel >= AccessLevel.GameMaster;
 
 			cont = buyer.Backpack;
+			
 			if (!bought && cont != null)
 			{
 				if (cont.ConsumeTotal(typeof(Gold), totalCost))
 				{
 					bought = true;
 				}
-				else if (totalCost < 2000)
-				{
-					SayTo(buyer, 500192); //Begging thy pardon, but thou casnt afford that.
-				}
 			}
 
-            // tol
-		    if (!bought && totalCost >= 2000 && Core.TOL)
-		    {
-		        var acnt = buyer.Account;
-		        if (cont != null && acnt.WithdrawCurrency(totalCost))
-		        {
-                    bought = true;
-                    fromBank = true;
-                }
-                else
-                {
-                    SayTo(buyer, 500191); //Begging thy pardon, but thy bank account lacks these funds.
-                }
-
-
-		    }
-
-
-			else if (!bought && totalCost >= 2000)
+			if (!bought && totalCost >= 2000)
 			{
-				cont = buyer.FindBankNoCreate();
-				if (cont != null && cont.ConsumeTotal(typeof(Gold), totalCost))
+				if (Core.TOL && buyer.Account != null && buyer.Account.WithdrawGold(totalCost))
 				{
 					bought = true;
 					fromBank = true;
 				}
 				else
 				{
-					SayTo(buyer, 500191); //Begging thy pardon, but thy bank account lacks these funds.
+					cont = buyer.FindBankNoCreate();
+					
+					if (cont != null && cont.ConsumeTotal(typeof(Gold), totalCost))
+					{
+						bought = true;
+						fromBank = true;
+					}
 				}
 			}
 
-
-
 			if (!bought)
 			{
+				// ? Begging thy pardon, but thy bank account lacks these funds. 
+				// : Begging thy pardon, but thou casnt afford that.
+				SayTo(buyer, totalCost >= 2000 ? 500191 : 500192);
+
 				return false;
 			}
-			else
-			{
-				buyer.PlaySound(0x32);
-			}
 
-			cont = buyer.Backpack;
-			if (cont == null)
-			{
-				cont = buyer.BankBox;
-			}
+			buyer.PlaySound(0x32);
+			
+			cont = buyer.Backpack ?? buyer.BankBox;
 
 			foreach (BuyItemResponse buy in validBuy)
 			{
@@ -1416,6 +1396,7 @@ namespace Server.Mobiles
 								if (ssi.IsResellable(item))
 								{
 									Item buyItem;
+
 									if (amount >= item.Amount)
 									{
 										buyItem = item;

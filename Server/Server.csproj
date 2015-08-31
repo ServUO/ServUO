@@ -190,8 +190,6 @@
     <Compile Include="Random.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OpenUO.Ultima.dll" />
-    <Content Include="OpenUO.Ultima.Windows.Forms.dll" />
     <Content Include="servuo.ico" />
   </ItemGroup>
   <ItemGroup>

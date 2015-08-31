@@ -203,50 +203,32 @@ namespace Server.Network
 		}
 	}
 
+	public enum TradeFlag : byte
+	{
+		Display = 0x0,
+		Close = 0x1,
+		Update = 0x2,
+		UpdateGold = 0x3,
+		UpdateLedger = 0x4
+	}
+
 	public sealed class UpdateSecureTrade : Packet
 	{
 		public UpdateSecureTrade(Container cont, bool first, bool second)
+			: this(cont, TradeFlag.Update, first ? 1 : 0, second ? 1 : 0)
+		{ }
+
+		public UpdateSecureTrade(Container cont, TradeFlag flag, int first, int second)
 			: base(0x6F)
 		{
-			EnsureCapacity(8);
+			EnsureCapacity(17);
 
-			m_Stream.Write((byte)2); // Update
+			m_Stream.Write((byte)flag);
 			m_Stream.Write(cont.Serial);
-			m_Stream.Write((first ? 1 : 0));
-			m_Stream.Write((second ? 1 : 0));
+			m_Stream.Write(first);
+			m_Stream.Write(second);
 		}
 	}
-	
-		public sealed class UpdateSecureTradeGold : Packet
-	{
-            public UpdateSecureTradeGold(Container cont, int gold, int plat)
-			: base(0x6F)
-		{
-			EnsureCapacity(16);
-
-			m_Stream.Write((byte)3); // UpdateGold
-			m_Stream.Write(cont.Serial);
-            m_Stream.Write(gold);
-            m_Stream.Write(plat);
-
-			
-		}
-	}
-
-        public sealed class UpdateSecureTradeGoldLedger : Packet
-        {
-            public UpdateSecureTradeGoldLedger(Container cont, int gold, int plat)
-                : base(0x6F)
-            {
-                EnsureCapacity(16);
-
-                m_Stream.Write((byte)4); // UpdateGoldLedger
-                m_Stream.Write(cont.Serial);
-                m_Stream.Write(gold);
-                m_Stream.Write(plat);
-
-            }
-        }
 
 	public sealed class SecureTradeEquip : Packet
 	{

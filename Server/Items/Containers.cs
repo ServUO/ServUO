@@ -152,5 +152,15 @@ namespace Server.Items
 				return false;
 			}
 		}
+
+		public override int GetTotal(TotalType type)
+		{
+			if (Core.TOL && Owner != null && Owner.Account != null)
+			{
+				return Owner.Account.TotalGold;
+			}
+
+			return base.GetTotal(type);
+		}
 	}
 }

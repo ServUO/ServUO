@@ -11,6 +11,7 @@ using Server.Network;
 
 namespace Server.Accounting
 {
+	[PropertyObject]
     public class Account : IAccount, IComparable, IComparable<Account>
     {
         public static readonly TimeSpan YoungDuration = TimeSpan.FromHours(40.0);
@@ -32,6 +33,7 @@ namespace Server.Accounting
         private IPAddress[] m_LoginIPs;
         private HardwareInfo m_HardwareInfo;
         private Timer m_YoungTimer;
+
         public Account(string username, string password)
         {
             this.m_Username = username;
@@ -123,7 +125,8 @@ namespace Server.Accounting
             }
 
             TimeSpan totalGameTime = Utility.GetXMLTimeSpan(Utility.GetText(node["totalGameTime"], null), TimeSpan.Zero);
-            if (totalGameTime == TimeSpan.Zero)
+           
+			if (totalGameTime == TimeSpan.Zero)
             {
                 for (int i = 0; i < this.m_Mobiles.Length; i++)
                 {
@@ -133,6 +136,7 @@ namespace Server.Accounting
                         totalGameTime += m.GameTime;
                 }
             }
+
             this.m_TotalGameTime = totalGameTime;
 
             if (this.Young)
@@ -155,6 +159,7 @@ namespace Server.Accounting
                 this.m_HardwareInfo = value;
             }
         }
+
         /// <summary>
         /// List of IP addresses for restricted access. '*' wildcard supported. If the array contains zero entries, all IP addresses are allowed.
         /// </summary>
@@ -169,6 +174,7 @@ namespace Server.Accounting
                 this.m_IPRestrictions = value;
             }
         }
+
         /// <summary>
         /// List of IP addresses which have successfully logged into this account.
         /// </summary>
@@ -183,6 +189,7 @@ namespace Server.Accounting
                 this.m_LoginIPs = value;
             }
         }
+
         /// <summary>
         /// List of account comments. Type of contained objects is AccountComment.
         /// </summary>
@@ -195,6 +202,7 @@ namespace Server.Accounting
                 return this.m_Comments;
             }
         }
+
         /// <summary>
         /// List of account tags. Type of contained objects is AccountTag.
         /// </summary>
@@ -207,6 +215,7 @@ namespace Server.Accounting
                 return this.m_Tags;
             }
         }
+
         /// <summary>
         /// Account username. Case insensitive validation.
         /// </summary>
@@ -221,8 +230,7 @@ namespace Server.Accounting
                 this.m_Username = value;
             }
         }
-
-
+		
         /// <summary>
         /// Account password. Plain text. Case sensitive validation. May be null.
         /// </summary>
@@ -237,6 +245,7 @@ namespace Server.Accounting
                 this.m_PlainPassword = value;
             }
         }
+
         /// <summary>
         /// Account password. Hashed with MD5. May be null.
         /// </summary>
@@ -251,6 +260,7 @@ namespace Server.Accounting
                 this.m_CryptPassword = value;
             }
         }
+
         /// <summary>
         /// Account username and password hashed with SHA1. May be null.
         /// </summary>
@@ -265,6 +275,7 @@ namespace Server.Accounting
                 this.m_NewCryptPassword = value;
             }
         }
+
         /// <summary>
         /// Initial AccessLevel for new characters created on this account.
         /// </summary>
@@ -279,6 +290,7 @@ namespace Server.Accounting
                 this.m_AccessLevel = value;
             }
         }
+
         /// <summary>
         /// Internal bitfield of account flags. Consider using direct access properties (Banned, Young), or GetFlag/SetFlag methods
         /// </summary>
@@ -293,6 +305,7 @@ namespace Server.Accounting
                 this.m_Flags = value;
             }
         }
+
         /// <summary>
         /// Gets or sets a flag indiciating if this account is banned.
         /// </summary>
@@ -325,6 +338,7 @@ namespace Server.Accounting
                 this.SetFlag(0, value);
             }
         }
+
         /// <summary>
         /// Gets or sets a flag indicating if the characters created on this account will have the young status.
         /// </summary>
@@ -345,6 +359,7 @@ namespace Server.Accounting
                 }
             }
         }
+
         /// <summary>
         /// The date and time of when this account was created.
         /// </summary>
@@ -355,6 +370,7 @@ namespace Server.Accounting
                 return this.m_Created;
             }
         }
+
         /// <summary>
         /// Gets or sets the date and time when this account was last accessed.
         /// </summary>
@@ -369,6 +385,7 @@ namespace Server.Accounting
                 this.m_LastLogin = value;
             }
         }
+
         /// <summary>
         /// An account is considered inactive based upon LastLogin and InactiveDuration.  If the account is empty, it is based upon EmptyInactiveDuration
         /// </summary>
@@ -384,6 +401,7 @@ namespace Server.Accounting
                 return (inactiveLength > ((this.Count == 0) ? EmptyInactiveDuration : InactiveDuration));
             }
         }
+
         /// <summary>
         /// Gets the total game time of this account, also considering the game time of characters
         /// that have been deleted.
@@ -403,6 +421,7 @@ namespace Server.Accounting
                 return this.m_TotalGameTime;
             }
         }
+
         /// <summary>
         /// Gets the current number of characters on this account.
         /// </summary>
@@ -421,6 +440,7 @@ namespace Server.Accounting
                 return count;
             }
         }
+
         /// <summary>
         /// Gets the maximum amount of characters allowed to be created on this account. Values other than 1, 5, 6, or 7 are not supported by the client.
         /// </summary>
@@ -431,6 +451,7 @@ namespace Server.Accounting
                 return (Core.SA ? 7 : Core.AOS ? 6 : 5);
             }
         }
+
         /// <summary>
         /// Gets the maxmimum amount of characters that this account can hold.
         /// </summary>
@@ -441,8 +462,10 @@ namespace Server.Accounting
                 return this.m_Mobiles.Length;
             }
         }
+
         /// <summary>
-        /// Gets or sets the character at a specified index for this account. Out of bound index values are handled; null returned for get, ignored for set.
+        /// Gets or sets the character at a specified index for this account. 
+        /// Out of bound index values are handled; null returned for get, ignored for set.
         /// </summary>
         public Mobile this[int index]
         {
@@ -477,6 +500,7 @@ namespace Server.Accounting
                 }
             }
         }
+
         public static string HashMD5(string phrase)
         {
             if (m_MD5HashProvider == null)
@@ -506,19 +530,47 @@ namespace Server.Accounting
         }
 
         #region Gold Account
-        public double CurrencyThreshold = 1000000000;
+		/// <summary>
+		/// This amount specifies the value at which point Gold turns to Platinum.
+		/// By default, when 1,000,000,000 Gold is accumulated, it will transform
+		/// into 1 Platinum.
+		/// </summary>
+        public static double CurrencyThreshold = 1000000000;
 
+		/// <summary>
+		/// This amount represents the total amount of currency owned by the player.
+		/// It is cumulative of both Gold and Platinum, the absolute total amount of
+		/// Gold owned by the player can be found by multiplying this value by the
+		/// CurrencyThreshold value.
+		/// </summary>
+		[CommandProperty(AccessLevel.Administrator)]
         public double TotalCurrency { get; private set; }
 
+		/// <summary>
+		/// This amount represents the current amount of Gold owned by the player.
+		/// The value does not include the value of Platinum and ranges from
+		/// 0 to 999,999,999 by default.
+		/// </summary>
         [CommandProperty(AccessLevel.Administrator)]
         public int TotalGold
         {
             get { return (int)Math.Floor((TotalCurrency - Math.Truncate(TotalCurrency)) * Math.Max(1.0, CurrencyThreshold)); }
         }
 
+		/// <summary>
+		/// This amount represents the current amount of Platinum owned by the player.
+		/// The value does not include the value of Gold and ranges from
+		/// 0 to 2,147,483,647 by default.
+		/// One Platinum represents the value of CurrencyThreshold in Gold.
+		/// </summary>
         [CommandProperty(AccessLevel.Administrator)]
-        public int TotalPlat { get { return (int)Math.Truncate(TotalCurrency); } }
+		public int TotalPlat { get { return (int)Math.Truncate(TotalCurrency); } }
 
+		/// <summary>
+		/// Attempts to deposit the given amount of Gold and Platinum into this account.
+		/// </summary>
+		/// <param name="amount">Amount to deposit.</param>
+		/// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
         public bool DepositCurrency(double amount)
         {
             if (amount <= 0)
@@ -530,16 +582,33 @@ namespace Server.Accounting
             return true;
         }
 
+		/// <summary>
+		/// Attempts to deposit the given amount of Gold into this account.
+		/// If the given amount is greater than the CurrencyThreshold, 
+		/// Platinum will be deposited to offset the difference.
+		/// </summary>
+		/// <param name="amount">Amount to deposit.</param>
+		/// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
         public bool DepositGold(int amount)
         {
             return DepositCurrency(amount / Math.Max(1.0, CurrencyThreshold));
         }
 
+		/// <summary>
+		/// Attempts to deposit the given amount of Platinum into this account.
+		/// </summary>
+		/// <param name="amount">Amount to deposit.</param>
+		/// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
         public bool DepositPlat(int amount)
         {
             return DepositCurrency(amount);
         }
 
+		/// <summary>
+		/// Attempts to withdraw the given amount of Platinum and Gold from this account.
+		/// </summary>
+		/// <param name="amount">Amount to withdraw.</param>
+		/// <returns>True if successful, false if balance was too low.</returns>
         public bool WithdrawCurrency(double amount)
         {
             if (amount <= 0)
@@ -556,28 +625,57 @@ namespace Server.Accounting
             return true;
         }
 
+		/// <summary>
+		/// Attempts to withdraw the given amount of Gold from this account.
+		/// If the given amount is greater than the CurrencyThreshold, 
+		/// Platinum will be withdrawn to offset the difference.
+		/// </summary>
+		/// <param name="amount">Amount to withdraw.</param>
+		/// <returns>True if successful, false if balance was too low.</returns>
         public bool WithdrawGold(int amount)
         {
             return WithdrawCurrency(amount / Math.Max(1.0, CurrencyThreshold));
         }
 
+		/// <summary>
+		/// Attempts to withdraw the given amount of Platinum from this account.
+		/// </summary>
+		/// <param name="amount">Amount to withdraw.</param>
+		/// <returns>True if successful, false if balance was too low.</returns>
         public bool WithdrawPlat(int amount)
         {
             return WithdrawCurrency(amount);
         }
 
+		/// <summary>
+		/// Gets the total balance of Gold for this account.
+		/// </summary>
+		/// <param name="gold">Gold value, Platinum exclusive</param>
+		/// <param name="totalGold">Gold value, Platinum inclusive</param>
         public void GetGoldBalance(out int gold, out double totalGold)
         {
             gold = TotalGold;
             totalGold = TotalCurrency * Math.Max(1.0, CurrencyThreshold);
         }
 
+		/// <summary>
+		/// Gets the total balance of Platinum for this account.
+		/// </summary>
+		/// <param name="plat">Platinum value, Gold exclusive</param>
+		/// <param name="totalPlat">Platinum value, Gold inclusive</param>
         public void GetPlatBalance(out int plat, out double totalPlat)
         {
             plat = TotalPlat;
             totalPlat = TotalCurrency;
         }
 
+		/// <summary>
+		/// Gets the total balance of Gold and Platinum for this account.
+		/// </summary>
+		/// <param name="gold">Gold value, Platinum exclusive</param>
+		/// <param name="totalGold">Gold value, Platinum inclusive</param>
+		/// <param name="plat">Platinum value, Gold exclusive</param>
+		/// <param name="totalPlat">Platinum value, Gold inclusive</param>
         public void GetBalance(out int gold, out double totalGold, out int plat, out double totalPlat)
         {
             GetGoldBalance(out gold, out totalGold);

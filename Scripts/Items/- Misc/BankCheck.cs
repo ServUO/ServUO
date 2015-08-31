@@ -1,198 +1,227 @@
+#region Header
+// **********
+// ServUO - BankCheck.cs
+// **********
+#endregion
+
+#region References
 using System;
-using System.Globalization;
-using Server.Accounting;
-using Server.Engines.Quests;
+
+using Server.Engines.Quests.Haven;
+using Server.Engines.Quests.Necro;
 using Server.Mobiles;
 using Server.Network;
-using Haven = Server.Engines.Quests.Haven;
-using Necro = Server.Engines.Quests.Necro;
+
+using CashBankCheckObjective = Server.Engines.Quests.Necro.CashBankCheckObjective;
+#endregion
 
 namespace Server.Items
 {
-    public class BankCheck : Item
-    {
-        private int m_Worth;
-        public BankCheck(Serial serial)
-            : base(serial)
-        {
-        }
+	public class BankCheck : Item
+	{
+		private int m_Worth;
 
-        [Constructable]
-        public BankCheck(int worth)
-            : base(0x14F0)
-        {
-            this.Weight = 1.0;
-            this.Hue = 0x34;
-            this.LootType = LootType.Blessed;
+		public BankCheck(Serial serial)
+			: base(serial)
+		{ }
 
-            this.m_Worth = worth;
-        }
+		[Constructable]
+		public BankCheck(int worth)
+			: base(0x14F0)
+		{
+			Weight = 1.0;
+			Hue = 0x34;
+			LootType = LootType.Blessed;
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int Worth
-        {
-            get
-            {
-                return this.m_Worth;
-            }
-            set
-            {
-                this.m_Worth = value;
-                this.InvalidateProperties();
-            }
-        }
-        public override bool DisplayLootType
-        {
-            get
-            {
-                return Core.AOS;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041361;
-            }
-        }// A bank check
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
+			m_Worth = worth;
+		}
 
-            writer.Write((int)0); // version
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int Worth
+		{
+			get { return m_Worth; }
+			set
+			{
+				m_Worth = value;
+				InvalidateProperties();
+			}
+		}
 
-            writer.Write((int)this.m_Worth);
-        }
+		public override bool DisplayLootType { get { return Core.AOS; } }
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            this.LootType = LootType.Blessed;
+		public override int LabelNumber { get { return 1041361; } } // A bank check
 
-            int version = reader.ReadInt();
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
 
-            switch ( version )
-            {
-                case 0:
-                    {
-                        this.m_Worth = reader.ReadInt();
-                        break;
-                    }
-            }
-        }
+			writer.Write(0); // version
 
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
+			writer.Write(m_Worth);
+		}
 
-            string worth;
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+			LootType = LootType.Blessed;
 
-            if (Core.ML)
-                worth = this.m_Worth.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
-            else
-                worth = this.m_Worth.ToString();
+			var version = reader.ReadInt();
 
-            list.Add(1060738, worth); // value: ~1_val~
-        }
+			switch (version)
+			{
+				case 0:
+				{
+					m_Worth = reader.ReadInt();
+					break;
+				}
+			}
+		}
 
-        public override bool OnDroppedInto(Mobile @from, Container target, Point3D p)
-        {
-            if (Core.TOL && (target is BankBox || target.Parent is BankBox || IsChildOf(from.BankBox)))
-            {
-                Account acnt = (Account)from.Account;
-                acnt.DepositGold(Worth);
-                Delete();
-                from.SendLocalizedMessage(1042763, Worth.ToString());
-                return true;
-            }
-            return base.OnDroppedInto(@from, target, p);
-        }
+		public override void GetProperties(ObjectPropertyList list)
+		{
+			base.GetProperties(list);
 
-        public override void OnSingleClick(Mobile from)
-        {
-            from.Send(new MessageLocalizedAffix(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, 1041361, "", AffixType.Append, String.Concat(" ", this.m_Worth.ToString()), "")); // A bank check:
-        }
+			var worth = Core.ML ? m_Worth.ToString("#,0") : m_Worth.ToString();
 
-        public override void OnDoubleClick(Mobile from)
-        {
-            BankBox box = from.FindBankNoCreate();
+			list.Add(1060738, worth); // value: ~1_val~
+		}
 
-            if (box != null && this.IsChildOf(box))
-            {
-                this.Delete();
+#if NEWPARENT
+		public override void OnAdded(IEntity parent)
+#else
+		public override void OnAdded(object parent)
+#endif
+		{
+ 			base.OnAdded(parent);
 
-                int deposited = 0;
+			if (!Core.TOL || !(parent is BankBox))
+			{
+				return;
+			}
 
-                int toAdd = this.m_Worth;
+			var owner = ((BankBox)parent).Owner;
 
-                Gold gold;
+			if (owner.Account == null || !owner.Account.DepositGold(m_Worth))
+			{
+				return;
+			}
 
-                while (toAdd > 60000)
-                {
-                    gold = new Gold(60000);
+			owner.SendLocalizedMessage(1042763, m_Worth.ToString("#,0"));
 
-                    if (box.TryDropItem(from, gold, false))
-                    {
-                        toAdd -= 60000;
-                        deposited += 60000;
-                    }
-                    else
-                    {
-                        gold.Delete();
+			Delete();
+		}
 
-                        from.AddToBackpack(new BankCheck(toAdd));
-                        toAdd = 0;
+		public override void OnSingleClick(Mobile from)
+		{
+			from.Send(
+				new MessageLocalizedAffix(
+					Serial,
+					ItemID,
+					MessageType.Label,
+					0x3B2,
+					3,
+					1041361,
+					"",
+					AffixType.Append,
+					String.Concat(" ", m_Worth.ToString()),
+					"")); // A bank check:
+		}
 
-                        break;
-                    }
-                }
+		public override void OnDoubleClick(Mobile from)
+		{
+			// This probably isn't OSI accurate, but we can't just make the quests redundant.
+			// Double-clicking the BankCheck in your pack will now credit your account.
 
-                if (toAdd > 0)
-                {
-                    gold = new Gold(toAdd);
+			var box = Core.TOL ? from.Backpack : from.FindBankNoCreate();
 
-                    if (box.TryDropItem(from, gold, false))
-                    {
-                        deposited += toAdd;
-                    }
-                    else
-                    {
-                        gold.Delete();
+			if (box == null || !IsChildOf(box))
+			{
+				from.SendLocalizedMessage(Core.TOL ? 1080058 : 1047026); 
+				// This must be in your backpack to use it. : That must be in your bank box to use it.
+				return;
+			}
 
-                        from.AddToBackpack(new BankCheck(toAdd));
-                    }
-                }
+			Delete();
 
-                // Gold was deposited in your account:
-                from.SendLocalizedMessage(1042672, true, " " + deposited.ToString());
+			var deposited = 0;
+			var toAdd = m_Worth;
 
-                PlayerMobile pm = from as PlayerMobile;
+			if (Core.TOL && from.Account != null && from.Account.DepositGold(toAdd))
+			{
+				deposited = toAdd;
+				toAdd = 0;
+			}
 
-                if (pm != null)
-                {
-                    QuestSystem qs = pm.Quest;
+			if (toAdd > 0)
+			{
+				Gold gold;
 
-                    if (qs is Necro.DarkTidesQuest)
-                    {
-                        QuestObjective obj = qs.FindObjective(typeof(Necro.CashBankCheckObjective));
+				while (toAdd > 60000)
+				{
+					gold = new Gold(60000);
 
-                        if (obj != null && !obj.Completed)
-                            obj.Complete();
-                    }
+					if (box.TryDropItem(from, gold, false))
+					{
+						toAdd -= 60000;
+						deposited += 60000;
+					}
+					else
+					{
+						gold.Delete();
 
-                    if (qs is Haven.UzeraanTurmoilQuest)
-                    {
-                        QuestObjective obj = qs.FindObjective(typeof(Haven.CashBankCheckObjective));
+						from.AddToBackpack(new BankCheck(toAdd));
+						toAdd = 0;
 
-                        if (obj != null && !obj.Completed)
-                            obj.Complete();
-                    }
-                }
-            }
-            else
-            {
-                from.SendLocalizedMessage(1047026); // That must be in your bank box to use it.
-            }
-        }
-    }
+						break;
+					}
+				}
+
+				if (toAdd > 0)
+				{
+					gold = new Gold(toAdd);
+
+					if (box.TryDropItem(from, gold, false))
+					{
+						deposited += toAdd;
+					}
+					else
+					{
+						gold.Delete();
+
+						from.AddToBackpack(new BankCheck(toAdd));
+					}
+				}
+			}
+
+			// Gold was deposited in your account:
+			from.SendLocalizedMessage(1042672, true, deposited.ToString("#,0"));
+
+			var pm = from as PlayerMobile;
+
+			if (pm != null)
+			{
+				var qs = pm.Quest;
+
+				if (qs is DarkTidesQuest)
+				{
+					var obj = qs.FindObjective(typeof(CashBankCheckObjective));
+
+					if (obj != null && !obj.Completed)
+					{
+						obj.Complete();
+					}
+				}
+
+				if (qs is UzeraanTurmoilQuest)
+				{
+					var obj = qs.FindObjective(typeof(Engines.Quests.Haven.CashBankCheckObjective));
+
+					if (obj != null && !obj.Completed)
+					{
+						obj.Complete();
+					}
+				}
+			}
+		}
+	}
 }

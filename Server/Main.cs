@@ -28,26 +28,25 @@ namespace Server
 
 	public static class Core
 	{
-		private static bool m_Crashed;
-		private static Thread timerThread;
-		private static string m_BaseDirectory;
-		private static string m_ExePath;
+		static Core()
+		{
+			DataDirectories = new List<string>();
 
-		private static readonly List<string> m_DataDirectories = new List<string>();
+			GlobalMaxUpdateRange = 24;
+			GlobalUpdateRange = 18;
+		}
 
-		private static Process m_Process;
-		private static Thread m_Thread;
-		private static bool m_Service;
-		private static bool m_Debug;
-		private static bool m_Cache = true;
-		private static bool m_HaltOnWarning;
-		private static bool m_VBdotNET;
-		private static MultiTextWriter m_MultiConOut;
+		private static bool _Crashed;
+		private static Thread _TimerThread;
+		private static string _BaseDirectory;
+		private static string _ExePath;
+
+		private static bool _Cache = true;
 		private static OpenUOSDK _OpenUOSDK;
 
-		private static bool m_Profiling;
-		private static DateTime m_ProfileStart;
-		private static TimeSpan m_ProfileTime;
+		private static bool _Profiling;
+		private static DateTime _ProfileStart;
+		private static TimeSpan _ProfileTime;
 
 		public static MessagePump MessagePump { get; set; }
 
@@ -55,22 +54,22 @@ namespace Server
 
 		public static bool Profiling
 		{
-			get { return m_Profiling; }
+			get { return _Profiling; }
 			set
 			{
-				if (m_Profiling == value)
+				if (_Profiling == value)
 				{
 					return;
 				}
 
-				m_Profiling = value;
+				_Profiling = value;
 
-				if (m_ProfileStart > DateTime.MinValue)
+				if (_ProfileStart > DateTime.MinValue)
 				{
-					m_ProfileTime += DateTime.UtcNow - m_ProfileStart;
+					_ProfileTime += DateTime.UtcNow - _ProfileStart;
 				}
 
-				m_ProfileStart = (m_Profiling ? DateTime.UtcNow : DateTime.MinValue);
+				_ProfileStart = (_Profiling ? DateTime.UtcNow : DateTime.MinValue);
 			}
 		}
 
@@ -78,47 +77,47 @@ namespace Server
 		{
 			get
 			{
-				if (m_ProfileStart > DateTime.MinValue)
+				if (_ProfileStart > DateTime.MinValue)
 				{
-					return m_ProfileTime + (DateTime.UtcNow - m_ProfileStart);
+					return _ProfileTime + (DateTime.UtcNow - _ProfileStart);
 				}
 
-				return m_ProfileTime;
+				return _ProfileTime;
 			}
 		}
 
-		public static bool Service { get { return m_Service; } }
-		public static bool Debug { get { return m_Debug; } }
-		internal static bool HaltOnWarning { get { return m_HaltOnWarning; } }
-		internal static bool VBdotNet { get { return m_VBdotNET; } }
-		public static List<string> DataDirectories { get { return m_DataDirectories; } }
-		public static Assembly Assembly { get; set; }
-		public static Version Version { get { return Assembly.GetName().Version; } }
-		public static Process Process { get { return m_Process; } }
-		public static Thread Thread { get { return m_Thread; } }
-		public static MultiTextWriter MultiConsoleOut { get { return m_MultiConOut; } }
+		public static bool Service { get; private set; }
+		public static bool Debug { get; private set; }
 
-		/* DateTime.Now and DateTime.UtcNow are based on actual system clock time.
+		public static bool HaltOnWarning { get; private set; }
+		public static bool VBdotNet { get; private set; }
+
+		public static List<string> DataDirectories { get; private set; }
+
+		public static Assembly Assembly { get; set; }
+
+		public static Version Version { get { return Assembly.GetName().Version; } }
+
+		public static Process Process { get; private set; }
+		public static Thread Thread { get; private set; }
+
+		public static MultiTextWriter MultiConsoleOut { get; private set; }
+
+		/* 
+		 * DateTime.Now and DateTime.UtcNow are based on actual system clock time.
 		 * The resolution is acceptable but large clock jumps are possible and cause issues.
 		 * GetTickCount and GetTickCount64 have poor resolution.
 		 * GetTickCount64 is unavailable on Windows XP and Windows Server 2003.
 		 * Stopwatch.GetTimestamp() (QueryPerformanceCounter) is high resolution, but
-		 * somewhat expensive to call and unreliable with certain system configurations.
+		 * somewhat expensive to call because of its defference to DateTime.Now,
+		 * which is why Stopwatch has been used to verify HRT before calling GetTimestamp(),
+		 * enabling the usage of DateTime.UtcNow instead.
 		 */
-
-		/* The following implementation contains an effective substitute for GetTickCount64 that
-		 * is reliable as long as it is retrieved once every 2^32 ms (~49 days).
-		 */
-
-		/* We don't really need this, but it may be useful in the future.
-		private static ThreadLocal<long> _HighOrder = new ThreadLocal<long>();
-		private static ThreadLocal<uint> _LastTickCount = new ThreadLocal<uint>();
-		*/
 
 		private static readonly bool _HighRes = Stopwatch.IsHighResolution;
 
 		private static readonly double _HighFrequency = 1000.0 / Stopwatch.Frequency;
-		private static readonly double _LowFrequency = 1000.0 / TimeSpan.TicksPerSecond;
+		private const double _LowFrequency = 1000.0 / TimeSpan.TicksPerSecond;
 
 		private static bool _UseHRT;
 
@@ -141,26 +140,21 @@ namespace Server
 
 		public static readonly bool Is64Bit = Environment.Is64BitProcess;
 
-		private static bool m_MultiProcessor;
-		private static int m_ProcessorCount;
+		public static bool MultiProcessor { get; private set; }
+		public static int ProcessorCount { get; private set; }
 
-		public static bool MultiProcessor { get { return m_MultiProcessor; } }
-		public static int ProcessorCount { get { return m_ProcessorCount; } }
-
-		private static bool m_Unix;
-
-		public static bool Unix { get { return m_Unix; } }
+		public static bool Unix { get; private set; }
 
 		public static string FindDataFile(string path)
 		{
-			if (m_DataDirectories.Count == 0)
+			if (DataDirectories.Count == 0)
 			{
 				throw new InvalidOperationException("Attempted to FindDataFile before DataDirectories list has been filled.");
 			}
 
 			string fullPath = null;
 
-			foreach (string p in m_DataDirectories)
+			foreach (string p in DataDirectories)
 			{
 				fullPath = Path.Combine(p, path);
 
@@ -184,50 +178,41 @@ namespace Server
 		public static Expansion Expansion { get; set; }
 
 		public static bool T2A { get { return Expansion >= Expansion.T2A; } }
-
 		public static bool UOR { get { return Expansion >= Expansion.UOR; } }
-
 		public static bool UOTD { get { return Expansion >= Expansion.UOTD; } }
-
 		public static bool LBR { get { return Expansion >= Expansion.LBR; } }
-
 		public static bool AOS { get { return Expansion >= Expansion.AOS; } }
-
 		public static bool SE { get { return Expansion >= Expansion.SE; } }
-
 		public static bool ML { get { return Expansion >= Expansion.ML; } }
-
 		public static bool SA { get { return Expansion >= Expansion.SA; } }
-
 		public static bool HS { get { return Expansion >= Expansion.HS; } }
-
 		public static bool TOL { get { return Expansion >= Expansion.TOL; } }
 		#endregion
 
-		public static string ExePath { get { return m_ExePath ?? (m_ExePath = Assembly.Location); } }
+		public static string ExePath { get { return _ExePath ?? (_ExePath = Assembly.Location); } }
 
 		public static string BaseDirectory
 		{
 			get
 			{
-				if (m_BaseDirectory == null)
+				if (_BaseDirectory == null)
 				{
 					try
 					{
-						m_BaseDirectory = ExePath;
+						_BaseDirectory = ExePath;
 
-						if (m_BaseDirectory.Length > 0)
+						if (_BaseDirectory.Length > 0)
 						{
-							m_BaseDirectory = Path.GetDirectoryName(m_BaseDirectory);
+							_BaseDirectory = Path.GetDirectoryName(_BaseDirectory);
 						}
 					}
 					catch
 					{
-						m_BaseDirectory = "";
+						_BaseDirectory = "";
 					}
 				}
 
-				return m_BaseDirectory;
+				return _BaseDirectory;
 			}
 		}
 
@@ -238,7 +223,7 @@ namespace Server
 
 			if (e.IsTerminating)
 			{
-				m_Crashed = true;
+				_Crashed = true;
 
 				bool close = false;
 
@@ -253,7 +238,7 @@ namespace Server
 				catch
 				{ }
 
-				if (!close && !m_Service)
+				if (!close && !Service)
 				{
 					try
 					{
@@ -273,7 +258,7 @@ namespace Server
 			}
 		}
 
-		internal enum ConsoleEventType
+		private enum ConsoleEventType
 		{
 			CTRL_C_EVENT,
 			CTRL_BREAK_EVENT,
@@ -282,25 +267,19 @@ namespace Server
 			CTRL_SHUTDOWN_EVENT
 		}
 
-		internal delegate bool ConsoleEventHandler(ConsoleEventType type);
+		private delegate bool ConsoleEventHandler(ConsoleEventType type);
 
-		internal static ConsoleEventHandler m_ConsoleEventHandler;
+		private static ConsoleEventHandler m_ConsoleEventHandler;
 
-		internal class SafeNativeMethods
-		{
-			[DllImport("kernel32")]
-			internal static extern bool QueryPerformanceCounter(out long value);
-		}
-
-		internal class UnsafeNativeMethods
+		private static class UnsafeNativeMethods
 		{
 			[DllImport("Kernel32")]
-			internal static extern bool SetConsoleCtrlHandler(ConsoleEventHandler callback, bool add);
+			public static extern bool SetConsoleCtrlHandler(ConsoleEventHandler callback, bool add);
 		}
 
 		private static bool OnConsoleEvent(ConsoleEventType type)
 		{
-			if (World.Saving || (m_Service && type == ConsoleEventType.CTRL_LOGOFF_EVENT))
+			if (World.Saving || (Service && type == ConsoleEventType.CTRL_LOGOFF_EVENT))
 			{
 				return true;
 			}
@@ -315,18 +294,14 @@ namespace Server
 			HandleClosed();
 		}
 
-		private static bool m_Closing;
-		public static bool Closing { get { return m_Closing; } }
+		public static bool Closing { get; private set; }
 
-		private static int m_CycleIndex = 1;
-		private static readonly float[] m_CyclesPerSecond = new float[100];
+		private static int _CycleIndex = 1;
+		private static readonly float[] _CyclesPerSecond = new float[100];
 
-		public static float CyclesPerSecond
-		{
-			get { return m_CyclesPerSecond[(m_CycleIndex - 1) % m_CyclesPerSecond.Length]; }
-		}
+		public static float CyclesPerSecond { get { return _CyclesPerSecond[(_CycleIndex - 1) % _CyclesPerSecond.Length]; } }
 
-		public static float AverageCPS { get { return m_CyclesPerSecond.Take(m_CycleIndex).Average(); } }
+		public static float AverageCPS { get { return _CyclesPerSecond.Take(_CycleIndex).Average(); } }
 
 		public static void Kill()
 		{
@@ -342,23 +317,23 @@ namespace Server
 				Process.Start(ExePath, Arguments);
 			}
 
-			m_Process.Kill();
+			Process.Kill();
 		}
 
 		private static void HandleClosed()
 		{
-			if (m_Closing)
+			if (Closing)
 			{
 				return;
 			}
 
-			m_Closing = true;
+			Closing = true;
 
 			Console.Write("Exiting...");
 
 			World.WaitForWriteCompletion();
 
-			if (!m_Crashed)
+			if (!_Crashed)
 			{
 				EventSink.InvokeShutdown(new ShutdownEventArgs());
 			}
@@ -368,11 +343,11 @@ namespace Server
 			Console.WriteLine("done");
 		}
 
-		private static readonly AutoResetEvent m_Signal = new AutoResetEvent(true);
+		private static readonly AutoResetEvent _Signal = new AutoResetEvent(true);
 
 		public static void Set()
 		{
-			m_Signal.Set();
+			_Signal.Set();
 		}
 
 		public static void Main(string[] args)
@@ -384,11 +359,11 @@ namespace Server
 			{
 				if (Insensitive.Equals(a, "-debug"))
 				{
-					m_Debug = true;
+					Debug = true;
 				}
 				else if (Insensitive.Equals(a, "-service"))
 				{
-					m_Service = true;
+					Service = true;
 				}
 				else if (Insensitive.Equals(a, "-profile"))
 				{
@@ -396,15 +371,15 @@ namespace Server
 				}
 				else if (Insensitive.Equals(a, "-nocache"))
 				{
-					m_Cache = false;
+					_Cache = false;
 				}
 				else if (Insensitive.Equals(a, "-haltonwarning"))
 				{
-					m_HaltOnWarning = true;
+					HaltOnWarning = true;
 				}
 				else if (Insensitive.Equals(a, "-vb"))
 				{
-					m_VBdotNET = true;
+					VBdotNet = true;
 				}
 				else if (Insensitive.Equals(a, "-usehrt"))
 				{
@@ -414,30 +389,30 @@ namespace Server
 
 			try
 			{
-				if (m_Service)
+				if (Service)
 				{
 					if (!Directory.Exists("Logs"))
 					{
 						Directory.CreateDirectory("Logs");
 					}
 
-					Console.SetOut(m_MultiConOut = new MultiTextWriter(new FileLogger("Logs/Console.log")));
+					Console.SetOut(MultiConsoleOut = new MultiTextWriter(new FileLogger("Logs/Console.log")));
 				}
 				else
 				{
-					Console.SetOut(m_MultiConOut = new MultiTextWriter(Console.Out));
+					Console.SetOut(MultiConsoleOut = new MultiTextWriter(Console.Out));
 				}
 			}
 			catch
 			{ }
 
-			m_Thread = Thread.CurrentThread;
-			m_Process = Process.GetCurrentProcess();
+			Thread = Thread.CurrentThread;
+			Process = Process.GetCurrentProcess();
 			Assembly = Assembly.GetEntryAssembly();
 
-			if (m_Thread != null)
+			if (Thread != null)
 			{
-				m_Thread.Name = "Core Thread";
+				Thread.Name = "Core Thread";
 			}
 
 			if (BaseDirectory.Length > 0)
@@ -446,7 +421,8 @@ namespace Server
 			}
 
 			Timer.TimerThread ttObj = new Timer.TimerThread();
-			timerThread = new Thread(ttObj.TimerMain)
+
+			_TimerThread = new Thread(ttObj.TimerMain)
 			{
 				Name = "Timer Thread"
 			};
@@ -457,23 +433,12 @@ namespace Server
 
 			if (File.Exists("publish.txt"))
 			{
-				try
-				{
-					FileStream fs = new FileStream("publish.txt", FileMode.Open, FileAccess.Read, FileShare.Read);
-					StreamReader sr = new StreamReader(fs);
-
-					publishNumber = sr.ReadLine();
-
-					sr.Close();
-					fs.Close();
-				}
-				catch
-				{ }
+				publishNumber = File.ReadAllText("publish.txt");
 			}
 
 			// Added to help future code support on forums, as a 'check' people can ask for to it see if they recompiled core or not
 			Utility.PushColor(ConsoleColor.DarkGreen);
-			Console.WriteLine(@"----------------------------------------------------------------------------");
+			Console.WriteLine(new String('-', Console.BufferWidth));
 			Utility.PopColor();
 			Utility.PushColor(ConsoleColor.Cyan);
 			Console.WriteLine(
@@ -494,29 +459,30 @@ namespace Server
 				Utility.PopColor();
 			}
 
-			m_ProcessorCount = Environment.ProcessorCount;
+			ProcessorCount = Environment.ProcessorCount;
 
-			if (m_ProcessorCount > 1)
+			if (ProcessorCount > 1)
 			{
-				m_MultiProcessor = true;
+				MultiProcessor = true;
 			}
 
-			if (m_MultiProcessor || Is64Bit)
+			if (MultiProcessor || Is64Bit)
 			{
 				Utility.PushColor(ConsoleColor.Green);
 				Console.WriteLine(
 					"Core: Optimizing for {0} {2}processor{1}",
-					m_ProcessorCount,
-					m_ProcessorCount == 1 ? "" : "s",
+					ProcessorCount,
+					ProcessorCount == 1 ? "" : "s",
 					Is64Bit ? "64-bit " : "");
 				Utility.PopColor();
 			}
 
 			int platform = (int)Environment.OSVersion.Platform;
+
 			if (platform == 4 || platform == 128)
 			{
 				// MS 4, MONO 128
-				m_Unix = true;
+				Unix = true;
 				Utility.PushColor(ConsoleColor.Yellow);
 				Console.WriteLine("Core: Unix environment detected");
 				Utility.PopColor();
@@ -549,13 +515,13 @@ namespace Server
 
 			_OpenUOSDK = new OpenUOSDK();
 
-			while (!ScriptCompiler.Compile(m_Debug, m_Cache))
+			while (!ScriptCompiler.Compile(Debug, _Cache))
 			{
 				Utility.PushColor(ConsoleColor.Red);
 				Console.WriteLine("Scripts: One or more scripts failed to compile or no script files were found.");
 				Utility.PopColor();
 
-				if (m_Service)
+				if (Service)
 				{
 					return;
 				}
@@ -577,7 +543,7 @@ namespace Server
 
 			MessagePump messagePump = MessagePump = new MessagePump();
 
-			timerThread.Start();
+			_TimerThread.Start();
 
 			foreach (Map m in Map.AllMaps)
 			{
@@ -597,9 +563,9 @@ namespace Server
 
 				long sample = 0;
 
-				while (!m_Closing)
+				while (!Closing)
 				{
-					m_Signal.WaitOne();
+					_Signal.WaitOne();
 
 					Mobile.ProcessDeltaQueue();
 					Item.ProcessDeltaQueue();
@@ -621,7 +587,7 @@ namespace Server
 					}
 
 					now = TickCount;
-					m_CyclesPerSecond[m_CycleIndex++ % m_CyclesPerSecond.Length] = ticksPerSecond / (now - last);
+					_CyclesPerSecond[_CycleIndex++ % _CyclesPerSecond.Length] = ticksPerSecond / (now - last);
 					last = now;
 				}
 			}
@@ -652,17 +618,17 @@ namespace Server
 					Utility.Separate(sb, "-profile", " ");
 				}
 
-				if (!m_Cache)
+				if (!_Cache)
 				{
 					Utility.Separate(sb, "-nocache", " ");
 				}
 
-				if (m_HaltOnWarning)
+				if (HaltOnWarning)
 				{
 					Utility.Separate(sb, "-haltonwarning", " ");
 				}
 
-				if (m_VBdotNET)
+				if (VBdotNet)
 				{
 					Utility.Separate(sb, "-vb", " ");
 				}
@@ -676,18 +642,9 @@ namespace Server
 			}
 		}
 
-		private static int m_GlobalUpdateRange = 18;
-
-		public static int GlobalUpdateRange { get { return m_GlobalUpdateRange; } set { m_GlobalUpdateRange = value; } }
-
-		private static int m_GlobalMaxUpdateRange = 24;
-
-		public static int GlobalMaxUpdateRange
-		{
-			get { return m_GlobalMaxUpdateRange; }
-			set { m_GlobalMaxUpdateRange = value; }
-		}
-
+		public static int GlobalUpdateRange { get; set; }
+		public static int GlobalMaxUpdateRange { get; set; }
+		
 		private static int m_ItemCount, m_MobileCount, m_CustomsCount;
 
 		public static int ScriptItems { get { return m_ItemCount; } }
