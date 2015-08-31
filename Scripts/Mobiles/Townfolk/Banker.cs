@@ -81,8 +81,9 @@ namespace Server.Mobiles
             if (Core.TOL)
             {
                 Account acnt = (Account)from.Account;
+                double tolAmount = amount/acnt.CurrencyThreshold;
 
-                if (acnt.WithdrawCurrency(amount))
+                if (acnt.WithdrawCurrency(tolAmount))
                     return true;
                 //continue to check if there is gold available in the bank that is not in the gold account somehow. Backward compatibility. 
             }
