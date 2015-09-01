@@ -5,6 +5,8 @@
 #endregion
 
 #region References
+using System;
+
 using Server.Network;
 #endregion
 
@@ -12,32 +14,34 @@ namespace Server
 {
 	public class CurrentExpansion
 	{
-		private static readonly Expansion Expansion = Expansion.TOL;
+		public static readonly Expansion Expansion = Expansion.TOL;
 
+		[CallPriority(Int32.MinValue)]
 		public static void Configure()
 		{
 			Core.Expansion = Expansion;
 
-			bool Enabled = Core.AOS;
+			ObjectPropertyList.Enabled = Core.AOS;
 
-			Mobile.InsuranceEnabled = Enabled;
-			ObjectPropertyList.Enabled = Enabled;
-			Mobile.VisibleDamageType = Enabled ? VisibleDamageType.Related : VisibleDamageType.None;
-			Mobile.GuildClickMessage = !Enabled;
-			Mobile.AsciiClickMessage = !Enabled;
+			Mobile.InsuranceEnabled = Core.AOS;
+			Mobile.VisibleDamageType = Core.AOS ? VisibleDamageType.Related : VisibleDamageType.None;
+			Mobile.GuildClickMessage = !Core.AOS;
+			Mobile.AsciiClickMessage = !Core.AOS;
 
-			if (Enabled)
+			if (!Core.AOS)
 			{
-				AOS.DisableStatInfluences();
-
-				if (ObjectPropertyList.Enabled)
-				{
-					PacketHandlers.SingleClickProps = true; // single click for everything is overriden to check object property list
-				}
-
-				Mobile.ActionDelay = 1000;
-				Mobile.AOSStatusHandler = AOS.GetStatus;
+				return;
 			}
+
+			AOS.DisableStatInfluences();
+
+			if (ObjectPropertyList.Enabled)
+			{
+				PacketHandlers.SingleClickProps = true; // single click for everything is overriden to check object property list
+			}
+
+			Mobile.ActionDelay = 1000;
+			Mobile.AOSStatusHandler = AOS.GetStatus;
 		}
 	}
 }
