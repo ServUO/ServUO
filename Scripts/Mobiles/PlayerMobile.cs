@@ -766,7 +766,7 @@ namespace Server.Mobiles
 		{
 			if (IsStaff())
 			{
-				return int.MaxValue;
+				return 100;
 			}
 
 			int max = base.GetMaxResistance(type);
@@ -781,7 +781,7 @@ namespace Server.Mobiles
 				max += 5; //Intended to go after the 60 max from curse
 			}
 
-			return max;
+			return Math.Max(MinPlayerResistance, Math.Min(MaxPlayerResistance, max));
 		}
 
 		protected override void OnRaceChange(Race oldRace)
@@ -848,6 +848,11 @@ namespace Server.Mobiles
 
 		public override int GetMinResistance(ResistanceType type)
 		{
+			if (IsStaff())
+			{
+				return -100;
+			}
+
 			int magicResist = (int)(Skills[SkillName.MagicResist].Value * 10);
 			int min = int.MinValue;
 
@@ -860,19 +865,7 @@ namespace Server.Mobiles
 				min = (magicResist - 400) / 15;
 			}
 
-			if (min > MaxPlayerResistance)
-			{
-				min = MaxPlayerResistance;
-			}
-
-			int baseMin = base.GetMinResistance(type);
-
-			if (min < baseMin)
-			{
-				min = baseMin;
-			}
-
-			return min;
+			return Math.Max(MinPlayerResistance, Math.Min(MaxPlayerResistance, min));
 		}
 
 		public override void OnManaChange(int oldValue)
