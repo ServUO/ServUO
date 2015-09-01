@@ -5194,11 +5194,9 @@ namespace Server.Items
 
 			PlayerConstructed = true;
 
-			Type resourceType = typeRes;
-
-			if (resourceType == null)
+			if (typeRes == null)
 			{
-				resourceType = craftItem.Resources.GetAt(0).ItemType;
+				typeRes = craftItem.Resources.GetAt(0).ItemType;
 			}
 
 			if (Core.AOS)
@@ -5206,7 +5204,7 @@ namespace Server.Items
 				#region Mondain's Legacy
 				if (!craftItem.ForceNonExceptional)
 				{
-					Resource = CraftResources.GetFromType(resourceType);
+					Resource = CraftResources.GetFromType(typeRes);
 				}
 				#endregion
 
@@ -5218,7 +5216,7 @@ namespace Server.Items
 				}
 
 				// Mondain's Legacy Mod
-				if (craftItem != null && !craftItem.ForceNonExceptional)
+				if (!craftItem.ForceNonExceptional)
 				{
 					if (tool is BaseRunicTool)
 					{
@@ -5255,7 +5253,7 @@ namespace Server.Items
 				// Mondain's Legacy Mod
 				if (craftItem != null && !craftItem.ForceNonExceptional)
 				{
-					CraftResource thisResource = CraftResources.GetFromType(resourceType);
+					CraftResource thisResource = CraftResources.GetFromType(typeRes);
 
 					if (thisResource == ((BaseRunicTool)tool).Resource)
 					{

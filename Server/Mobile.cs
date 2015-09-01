@@ -3735,7 +3735,7 @@ namespace Server
 			}
 		}
 
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.Owner)]
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
 		public IAccount Account { get; set; }
 
 		private bool m_Deleted;
