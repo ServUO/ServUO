@@ -2520,22 +2520,18 @@ namespace Server.Items
             #region Mondain's Legacy
             if (!craftItem.ForceNonExceptional)
             {
-                Type type = typeRes;
+				if (typeRes == null)
+					typeRes = craftItem.Resources.GetAt(0).ItemType;
 
-                if (type == null)
-                    type = craftItem.Resources.GetAt(0).ItemType;
-
-                this.Resource = CraftResources.GetFromType(type);
+				Resource = CraftResources.GetFromType(typeRes);
             }
             #endregion
 
-            Type resourceType = typeRes;
+			if (typeRes == null)
+				typeRes = craftItem.Resources.GetAt(0).ItemType;
 
-            if (resourceType == null)
-                resourceType = craftItem.Resources.GetAt(0).ItemType;
-
-            this.Resource = CraftResources.GetFromType(resourceType);
-            this.PlayerConstructed = true;
+			Resource = CraftResources.GetFromType(typeRes);
+            PlayerConstructed = true;
 
             CraftContext context = craftSystem.GetContext(from);
 
@@ -2577,58 +2573,52 @@ namespace Server.Items
                 }
             }
 
+            if (Core.AOS && tool is BaseRunicTool)
+                ((BaseRunicTool)tool).ApplyAttributesTo(this);
+
             #region Mondain's Legacy
-            if (craftItem != null && !craftItem.ForceNonExceptional)
+            if (Core.ML && !craftItem.ForceNonExceptional)
             {
-                if (Core.AOS && tool is BaseRunicTool)
-                    ((BaseRunicTool)tool).ApplyAttributesTo(this);
+                CraftResourceInfo resInfo = CraftResources.GetInfo(this.m_Resource);
 
-                if (Core.ML)
+                if (resInfo == null)
+                    return quality;
+
+                CraftAttributeInfo attrInfo = resInfo.AttributeInfo;
+
+                if (attrInfo == null)
+                    return quality;
+
+                if (this.m_Resource != CraftResource.Heartwood)
                 {
-                    CraftResourceInfo resInfo = CraftResources.GetInfo(this.m_Resource);
-
-                    if (resInfo == null)
-                        return quality;
-
-                    CraftAttributeInfo attrInfo = resInfo.AttributeInfo;
-
-                    if (attrInfo == null)
-                        return quality;
-
-                    if (this.m_Resource != CraftResource.Heartwood)
+                    this.m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
+                    this.m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;
+                    this.m_AosAttributes.RegenHits += attrInfo.ArmorRegenHits;
+                    this.m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
+                }
+                else
+                {
+                    switch (Utility.Random(5))
                     {
-                        this.m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
-                        this.m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;
-                        this.m_AosAttributes.RegenHits += attrInfo.ArmorRegenHits;
-                        this.m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
-                    }
-                    else
-                    {
-                        switch (Utility.Random(5))
-                        {
-                            case 0:
-                                this.m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
-                                break;
-                            case 1:
-                                this.m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;
-                                break;
-                            case 2:
-                                this.m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
-                                break;
-                            case 3:
-                                this.m_AosAttributes.Luck += attrInfo.ArmorLuck;
-                                break;
-                            case 4:
-                                this.m_AosArmorAttributes.LowerStatReq += attrInfo.ArmorLowerRequirements;
-                                break;
-                        }
+                        case 0:
+                            this.m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
+                            break;
+                        case 1:
+                            this.m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;
+                            break;
+                        case 2:
+                            this.m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
+                            break;
+                        case 3:
+                            this.m_AosAttributes.Luck += attrInfo.ArmorLuck;
+                            break;
+                        case 4:
+                            this.m_AosArmorAttributes.LowerStatReq += attrInfo.ArmorLowerRequirements;
+                            break;
                     }
                 }
             }
             #endregion
-
-            if (Core.AOS && tool is BaseRunicTool)
-                ((BaseRunicTool)tool).ApplyAttributesTo(this);
 
             return quality;
         }
