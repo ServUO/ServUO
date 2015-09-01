@@ -42,7 +42,6 @@ namespace Server
 		private static string _ExePath;
 
 		private static bool _Cache = true;
-		private static OpenUOSDK _OpenUOSDK;
 
 		private static bool _Profiling;
 		private static DateTime _ProfileStart;
@@ -512,9 +511,7 @@ namespace Server
 			Utility.PushColor(ConsoleColor.DarkYellow);
 			Console.WriteLine("RandomImpl: {0} ({1})", RandomImpl.Type.Name, RandomImpl.IsHardwareRNG ? "Hardware" : "Software");
 			Utility.PopColor();
-
-			_OpenUOSDK = new OpenUOSDK();
-
+			
 			while (!ScriptCompiler.Compile(Debug, _Cache))
 			{
 				Utility.PushColor(ConsoleColor.Red);

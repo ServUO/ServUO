@@ -7,7 +7,7 @@ namespace Server.Gumps
     {
         public CustomCoreGumpling(Int32 width, Int32 height, Int32 coreLabelHue, String coreLabel, Boolean coreEnabled, GumpResponse coreEnabledChanged, String version, GumpResponse saveButtonPressed) : base(0, 0)
         {
-            Bitmap text = OpenUOSDK.AsciiFontFactory.GetText<Bitmap>(1, coreLabel, 0);
+			Bitmap text = Ultima.ASCIIText.DrawText(1, coreLabel);
 
             Add(new StoneyBackground(width, height));
             Add(new GumpLabel((width - text.Width) / 2, 4, coreLabelHue, coreLabel));

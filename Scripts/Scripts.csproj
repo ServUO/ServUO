@@ -14,9 +14,9 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ServUO, Framework_4_0</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ServUO</DefineConstants>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -25,7 +25,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Output\</OutputPath>
-    <DefineConstants>TRACE;ServUO, Framework_4_0</DefineConstants>
+    <DefineConstants>TRACE;ServUO</DefineConstants>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -36,24 +36,15 @@
     <RootNamespace>Server</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenUO.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OpenUO.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenUO.Ultima, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OpenUO.Ultima.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenUO.Ultima.Windows.Forms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OpenUO.Ultima.Windows.Forms.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include=".\Accounting\AccessRestrictions.cs" />
@@ -4797,6 +4788,10 @@
     <ProjectReference Include="..\Server\Server.csproj">
       <Project>{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}</Project>
       <Name>Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ultima\Ultima.csproj">
+      <Project>{e08cfbe4-e013-44ee-8829-426d05bc083f}</Project>
+      <Name>Ultima</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1025,89 +1025,35 @@ namespace Server
 		{
 			try
 			{
-				return OpenUOSDK.ArtFactory.GetStatic<Bitmap>(itemID);
+				return Ultima.Art.GetStatic(itemID);
 			}
 			catch
 			{
 				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Error: Not able to read client files.");
+				Console.WriteLine("Ultima Art: Unable to read client files.");
 				Utility.PopColor();
 			}
 
 			return null;
 		}
 
-		public static unsafe void Measure(Bitmap bmp, out int xMin, out int yMin, out int xMax, out int yMax)
+		public static void Measure(Bitmap bmp, out int xMin, out int yMin, out int xMax, out int yMax)
 		{
-			xMin = yMin = 0;
-			xMax = yMax = -1;
+			Ultima.Art.Measure(bmp, out xMin, out yMin, out xMax, out yMax);
+		}
 
-			if (bmp == null || bmp.Width <= 0 || bmp.Height <= 0)
-			{
-				return;
-			}
+		public static Rectangle MeasureBound(Bitmap bmp)
+		{
+			int xMin, yMin, xMax, yMax;
+			Measure(bmp, out xMin, out yMin, out xMax, out yMax);
+			return new Rectangle(xMin, yMin, xMax - xMin, yMax - yMin);
+		}
 
-			BitmapData bd = bmp.LockBits(
-				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format16bppArgb1555);
-
-			int delta = (bd.Stride >> 1) - bd.Width;
-			int lineDelta = bd.Stride >> 1;
-
-			var pBuffer = (ushort*)bd.Scan0;
-			var pLineEnd = pBuffer + bd.Width;
-			var pEnd = pBuffer + (bd.Height * lineDelta);
-
-			bool foundPixel = false;
-
-			int x = 0, y = 0;
-
-			while (pBuffer < pEnd)
-			{
-				while (pBuffer < pLineEnd)
-				{
-					ushort c = *pBuffer++;
-
-					if ((c & 0x8000) != 0)
-					{
-						if (!foundPixel)
-						{
-							foundPixel = true;
-							xMin = xMax = x;
-							yMin = yMax = y;
-						}
-						else
-						{
-							if (x < xMin)
-							{
-								xMin = x;
-							}
-
-							if (y < yMin)
-							{
-								yMin = y;
-							}
-
-							if (x > xMax)
-							{
-								xMax = x;
-							}
-
-							if (y > yMax)
-							{
-								yMax = y;
-							}
-						}
-					}
-					++x;
-				}
-
-				pBuffer += delta;
-				pLineEnd += lineDelta;
-				++y;
-				x = 0;
-			}
-
-			bmp.UnlockBits(bd);
+		public static Size MeasureSize(Bitmap bmp)
+		{
+			int xMin, yMin, xMax, yMax;
+			Measure(bmp, out xMin, out yMin, out xMax, out yMax);
+			return new Size(xMax - xMin, yMax - yMin);
 		}
 		#endregion
 
