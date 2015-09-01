@@ -1041,6 +1041,11 @@ namespace Server
 
 		public virtual int GetMinResistance(ResistanceType type)
 		{
+			if (m_Player)
+			{
+				return m_MinPlayerResistance;
+			}
+
 			return -100;
 		}
 
