@@ -17,7 +17,7 @@
 
 @ECHO ON
 
-%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /r:"%CURPATH%SevenZipSharp.dll" /target:exe /out:"%CURPATH%ServUO.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /nowarn:0618 /debug /nologo /optimize /unsafe
+%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /target:exe /out:"%CURPATH%ServUO.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /nowarn:0618 /debug /nologo /optimize /unsafe
 
 @ECHO OFF
 
