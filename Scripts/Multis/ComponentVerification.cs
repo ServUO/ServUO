@@ -45,7 +45,7 @@ namespace Server.Multis
             if (val == -1)
                 return false;
 
-            return (val == 0 || (ExpansionInfo.CurrentExpansion.CustomHousingFlag & val) != 0);
+            return (val == 0 || ((uint)ExpansionInfo.CoreExpansion.CustomHousingFlag & val) != 0);
         }
 
         private int[] CreateTable(int length)

@@ -3157,7 +3157,7 @@ m_Stream.Write( (int) renderMode );
 		public SupportedFeatures(NetState ns)
 			: base(0xB9, ns.ExtendedSupportedFeatures ? 5 : 3)
 		{
-			FeatureFlags flags = ExpansionInfo.CurrentExpansion.SupportedFeatures;
+			FeatureFlags flags = ExpansionInfo.CoreExpansion.SupportedFeatures;
 
 			flags |= m_AdditionalFlags;
 
@@ -4540,7 +4540,7 @@ m_Stream.Write( (int) renderMode );
 				m_Stream.Write(0);
 			}
 
-			CharacterListFlags flags = ExpansionInfo.CurrentExpansion.CharacterListFlags;
+			CharacterListFlags flags = ExpansionInfo.CoreExpansion.CharacterListFlags;
 
 			if (count > 6)
 			{
@@ -4644,7 +4644,7 @@ m_Stream.Write( (int) renderMode );
 				m_Stream.WriteAsciiFixed(ci.Building, 31);
 			}
 
-			CharacterListFlags flags = ExpansionInfo.CurrentExpansion.CharacterListFlags;
+			CharacterListFlags flags = ExpansionInfo.CoreExpansion.CharacterListFlags;
 
 			if (count > 6)
 			{
