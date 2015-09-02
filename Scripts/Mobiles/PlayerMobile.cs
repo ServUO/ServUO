@@ -1821,7 +1821,7 @@ namespace Server.Mobiles
 					 * There is a "Trade" cliloc below 3000000 that can be used (1077728)
 					 * but using it will suppress custom coloring support.
 					 */
-					list.Add(new CallbackEntry(6113, () => OpenTrade(from, null))); // Transfer
+					list.Add(new CallbackEntry(6113, () => OpenTrade(from))); // Transfer
 				}
 
 				if (Alive && Core.Expansion >= Expansion.AOS)
