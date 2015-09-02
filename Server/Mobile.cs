@@ -10503,32 +10503,37 @@ namespace Server
 
 		public virtual bool OpenTrade(Mobile from, Item offer)
 		{
+			if (!from.Player || !Player || !from.Alive || !Alive)
+			{
+				return false;
+			}
+
 			NetState ourState = m_NetState;
 			NetState theirState = from.m_NetState;
 
-			if (ourState != null && theirState != null)
+			if (ourState == null || theirState == null)
 			{
-				SecureTradeContainer cont = theirState.FindTradeContainer(this);
-
-				if (!from.CheckTrade(this, offer, cont, true, true, 0, 0))
-				{
-					return false;
-				}
-
-				if (cont == null)
-				{
-					cont = theirState.AddTrade(ourState);
-				}
-
-				if (offer != null)
-				{
-					cont.DropItem(offer);
-				}
-
-				return true;
+				return false;
 			}
 
-			return false;
+			SecureTradeContainer cont = theirState.FindTradeContainer(this);
+
+			if (!from.CheckTrade(this, offer, cont, true, true, 0, 0))
+			{
+				return false;
+			}
+
+			if (cont == null)
+			{
+				cont = theirState.AddTrade(ourState);
+			}
+
+			if (offer != null)
+			{
+				cont.DropItem(offer);
+			}
+
+			return true;
 		}
 
 		/// <summary>
@@ -10551,14 +10556,13 @@ namespace Server
 
 				return false;
 			}
-			else if (from.Player && Player && from.Alive && Alive && from.InRange(Location, 2))
+			
+			if (from.InRange(Location, 2))
 			{
 				return OpenTrade(from, dropped);
 			}
-			else
-			{
-				return false;
-			}
+
+			return false;
 		}
 
 		public virtual bool CheckEquip(Item item)
