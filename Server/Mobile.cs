@@ -10496,6 +10496,41 @@ namespace Server
 			return true;
 		}
 
+		public bool OpenTrade(Mobile from)
+		{
+			return OpenTrade(from, null);
+		}
+
+		public virtual bool OpenTrade(Mobile from, Item offer)
+		{
+			NetState ourState = m_NetState;
+			NetState theirState = from.m_NetState;
+
+			if (ourState != null && theirState != null)
+			{
+				SecureTradeContainer cont = theirState.FindTradeContainer(this);
+
+				if (!from.CheckTrade(this, offer, cont, true, true, 0, 0))
+				{
+					return false;
+				}
+
+				if (cont == null)
+				{
+					cont = theirState.AddTrade(ourState);
+				}
+
+				if (offer != null)
+				{
+					cont.DropItem(offer);
+				}
+
+				return true;
+			}
+
+			return false;
+		}
+
 		/// <summary>
 		///     Overridable. Event invoked when a Mobile (<paramref name="from" />) drops an
 		///     <see cref="Item">
@@ -10518,29 +10553,7 @@ namespace Server
 			}
 			else if (from.Player && Player && from.Alive && Alive && from.InRange(Location, 2))
 			{
-				NetState ourState = m_NetState;
-				NetState theirState = from.m_NetState;
-
-				if (ourState != null && theirState != null)
-				{
-					SecureTradeContainer cont = theirState.FindTradeContainer(this);
-
-					if (!from.CheckTrade(this, dropped, cont, true, true, 0, 0))
-					{
-						return false;
-					}
-
-					if (cont == null)
-					{
-						cont = theirState.AddTrade(ourState);
-					}
-
-					cont.DropItem(dropped);
-
-					return true;
-				}
-
-				return false;
+				return OpenTrade(from, dropped);
 			}
 			else
 			{
