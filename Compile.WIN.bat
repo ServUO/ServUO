@@ -18,7 +18,7 @@
 
 @ECHO ON
 
-%CSCPATH%csc.exe /target:library /out:"%CURPATH%Ultima.dll" /recurse:"%SDKPATH%*.cs" /d:Framework_4_0 /nowarn:0618 /debug /nologo /optimize /unsafe
+%CSCPATH%csc.exe /target:library /out:"%CURPATH%Ultima.dll" /recurse:"%SDKPATH%*.cs" /d:ServUO /nowarn:0618 /debug /nologo /optimize /unsafe
 
 @ECHO OFF
 
