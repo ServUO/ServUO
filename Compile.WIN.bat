@@ -1,9 +1,34 @@
 @SET CURPATH=%~dp0
 @SET CSCPATH=%windir%\Microsoft.NET\Framework\v4.0.30319\
 
+@SET SDKPATH=%CURPATH%Ultima\
 @SET SRVPATH=%CURPATH%Server\
 
 @TITLE: ServUO - http://www.servuo.com
+
+::##########
+
+@ECHO:
+@ECHO: Compile Ultima SDK
+@ECHO:
+
+@PAUSE
+
+@DEL "%CURPATH%Ultima.dll"
+
+@ECHO ON
+
+%CSCPATH%csc.exe /target:library /out:"%CURPATH%Ultima.dll" /recurse:"%SDKPATH%*.cs" /d:Framework_4_0 /nowarn:0618 /debug /nologo /optimize /unsafe
+
+@ECHO OFF
+
+@ECHO:
+@ECHO: Done!
+@ECHO:
+
+@PAUSE
+
+@CLS
 
 ::##########
 
@@ -17,7 +42,7 @@
 
 @ECHO ON
 
-%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /target:exe /out:"%CURPATH%ServUO.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /nowarn:0618 /debug /nologo /optimize /unsafe
+%CSCPATH%csc.exe /win32icon:"%SRVPATH%servuo.ico" /r:"%CURPATH%Ultima.dll" /target:exe /out:"%CURPATH%ServUO.exe" /recurse:"%SRVPATH%*.cs" /d:ServUO /nowarn:0618 /debug /nologo /optimize /unsafe
 
 @ECHO OFF
 
