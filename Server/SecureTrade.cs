@@ -205,7 +205,10 @@ namespace Server
 					"Your offer has been updated to reflect the difference.");
 
 				right.Mobile.Send(new UpdateSecureTrade(right.Container, TradeFlag.UpdateGold, gold, plat));
+				
 			}
+			else
+				right.Mobile.Send(new UpdateSecureTrade(right.Container, TradeFlag.UpdateGold, left.Gold, left.Plat));
 		}
 
 		public void Update()
