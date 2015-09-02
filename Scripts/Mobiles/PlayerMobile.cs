@@ -1813,7 +1813,7 @@ namespace Server.Mobiles
 			}
 			else
 			{
-				if (Core.TOL)
+				if (Core.TOL && from.InRange(this, 2))
 				{
 					/* TODO:
 					 * Find a cliloc in the 3000000+ range that has the text "Trade"; 
