@@ -1815,13 +1815,7 @@ namespace Server.Mobiles
 			{
 				if (Core.TOL && from.InRange(this, 2))
 				{
-					/* TODO:
-					 * Find a cliloc in the 3000000+ range that has the text "Trade"; 
-					 * OSI may add this at some point for TOL.
-					 * There is a "Trade" cliloc below 3000000 that can be used (1077728)
-					 * but using it will suppress custom coloring support.
-					 */
-					list.Add(new CallbackEntry(6113, () => OpenTrade(from))); // Transfer
+					list.Add(new CallbackEntry(1077728, () => OpenTrade(from))); // Trade
 				}
 
 				if (Alive && Core.Expansion >= Expansion.AOS)
