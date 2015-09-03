@@ -19,6 +19,8 @@ namespace Server
 
 		public override double DefaultWeight { get { return 0; } }
 
+		public override string DefaultName { get { return "Offer Of Currency"; } }
+
 		private int _Plat;
 
 		public int Plat
@@ -45,7 +47,7 @@ namespace Server
 				InvalidateProperties();
 			}
 		}
-
+		
 		public VirtualCheck(int plat, int gold)
 			: base(0x14F0)
 		{
