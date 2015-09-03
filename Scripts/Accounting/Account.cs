@@ -55,7 +55,8 @@ namespace Server.Accounting
 				BankBox box;
 				List<Gold> gold;
 				List<BankCheck> checks;
-				int share = 0, shared, diff;
+				long share = 0, shared;
+				int diff;
 
 				foreach (var a in Accounts.GetAccounts().OfType<Account>().Where(a => a.Count > 0))
 				{
@@ -118,7 +119,7 @@ namespace Server.Accounting
 								{
 									if (shared > 60000)
 									{
-										diff = Math.Min(10000000, shared);
+										diff = (int)Math.Min(10000000, shared);
 
 										if (a.WithdrawGold(diff))
 										{
@@ -131,7 +132,7 @@ namespace Server.Accounting
 									}
 									else
 									{
-										diff = Math.Min(60000, shared);
+										diff = (int)Math.Min(60000, shared);
 
 										if (a.WithdrawGold(diff))
 										{
