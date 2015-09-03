@@ -90,6 +90,16 @@ namespace Server.Items
 			}
 		}
 
+		public override bool IsChildVisibleTo(Mobile m, Item child)
+		{
+			if (child is VirtualCheck)
+			{
+				return m.NetState == null || !m.NetState.NewSecureTrading;
+			}
+
+			return base.IsChildVisibleTo(m, child);
+		}
+
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);

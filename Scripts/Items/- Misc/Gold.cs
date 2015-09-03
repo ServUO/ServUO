@@ -51,29 +51,62 @@ namespace Server.Items
 #if NEWPARENT
 		public override void OnAdded(IEntity parent)
 #else
-		public override void OnAdded(object parent)
+	    public override void OnAdded(object parent)
 #endif
-		{
-			base.OnAdded(parent);
+	    {
+		    base.OnAdded(parent);
 
-			if (!Core.TOL || !(parent is BankBox))
+		    if (!Core.TOL)
+		    {
+			    return;
+		    }
+
+		    Mobile owner = null;
+			SecureTradeInfo tradeInfo = null;
+
+		    parent = RootParent;
+
+		    if (parent is SecureTradeContainer)
+		    {
+			    var trade = (SecureTradeContainer)parent;
+
+			    if (trade.Trade.From.Container == trade)
+			    {
+				    tradeInfo = trade.Trade.From;
+					owner = tradeInfo.Mobile;
+			    }
+			    else if (trade.Trade.To.Container == trade)
+				{
+					tradeInfo = trade.Trade.To;
+					owner = tradeInfo.Mobile;
+			    }
+		    }
+		    else if (parent is BankBox)
+		    {
+			    owner = ((BankBox)parent).Owner;
+		    }
+
+		    if (owner == null || owner.Account == null || !owner.Account.DepositGold(Amount))
+		    {
+			    return;
+		    }
+
+			if (tradeInfo != null)
 			{
-				return;
+				var total = Amount / Math.Max(1.0, Account.CurrencyThreshold);
+				var plat = (int)Math.Truncate(total);
+				var gold = (int)(total - plat) * Account.CurrencyThreshold;
+
+				tradeInfo.Plat += plat;
+				tradeInfo.Gold += gold;
 			}
 
-			var owner = ((BankBox)parent).Owner;
+		    owner.SendLocalizedMessage(1042763, Amount.ToString("#,0"));
 
-			if (owner.Account == null || !owner.Account.DepositGold(Amount))
-			{
-				return;
-			}
+		    Delete();
+	    }
 
-			owner.SendLocalizedMessage(1042763, Amount.ToString("#,0"));
-
-			Delete();
-		}
-
-        public override int GetTotal(TotalType type)
+	    public override int GetTotal(TotalType type)
         {
             int baseTotal = base.GetTotal(type);
 

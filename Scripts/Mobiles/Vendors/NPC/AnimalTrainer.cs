@@ -236,13 +236,10 @@ namespace Server.Mobiles
 			{
 				SayTo(from, 502673); // I can not stable summoned creatures.
 			}
-				#region Mondain's Legacy
 			else if (pet.Allured)
 			{
 				SayTo(from, 1048053); // You can't stable that!
 			}
-				#endregion
-
 			else if ((pet is PackLlama || pet is PackHorse || pet is Beetle) &&
 					 (pet.Backpack != null && pet.Backpack.Items.Count > 0))
 			{
@@ -276,7 +273,9 @@ namespace Server.Mobiles
 				from.Stabled.Add(pet);
 
 				SayTo(from, Core.AOS ? 1049677 : 502679);
-				// [AOS: Your pet has been stabled.] Very well, thy pet is stabled. Thou mayst recover it by saying 'claim' to me. In one real world week, I shall sell it off if it is not claimed!
+				// [AOS: Your pet has been stabled.] Very well, thy pet is stabled. 
+				// Thou mayst recover it by saying 'claim' to me. In one real world week, 
+				// I shall sell it off if it is not claimed!
 			}
 			else
 			{

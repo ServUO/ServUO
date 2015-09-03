@@ -5,16 +5,93 @@
 #endregion
 
 #region References
+using System;
+
 using Server.Items;
 using Server.Network;
 #endregion
 
 namespace Server
 {
+	public sealed class VirtualCheck : Item
+	{
+		public override bool IsVirtualItem { get { return true; } }
+
+		public override double DefaultWeight { get { return 0; } }
+
+		private int _Plat;
+
+		public int Plat
+		{
+			get
+			{
+				return _Plat;
+			}
+			set
+			{
+				_Plat = value;
+				InvalidateProperties();
+			}
+		}
+
+		private int _Gold;
+
+		public int Gold
+		{
+			get { return _Gold; }
+			set
+			{
+				_Gold = value;
+				InvalidateProperties();
+			}
+		}
+
+		public VirtualCheck(int plat, int gold)
+			: base(0x14F0)
+		{
+			Plat = plat;
+			Gold = gold;
+
+			Movable = false;
+		}
+
+		public override void OnSingleClick(Mobile from)
+		{
+			from.Send(
+				new MessageLocalizedAffix(
+					Serial,
+					ItemID,
+					MessageType.Label,
+					0x3B2,
+					3,
+					1041361,
+					"",
+					AffixType.Append,
+					String.Format("{0:#,0} platinum, {1:#,0} gold", Plat, Gold),
+					"")); // A bank check:
+		}
+
+		public override void GetProperties(ObjectPropertyList list)
+		{
+			base.GetProperties(list);
+
+			list.Add(1060738, String.Format("{0:#,0} platinum, {1:#,0} gold", Plat, Gold)); // value: ~1_val~
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{ }
+
+		public override void Deserialize(GenericReader reader)
+		{
+			Delete();
+		}
+	}
+
 	public class SecureTrade
 	{
 		private readonly SecureTradeInfo m_From;
 		private readonly SecureTradeInfo m_To;
+
 		private bool m_Valid;
 
 		public SecureTrade(Mobile from, Mobile to)
@@ -27,6 +104,9 @@ namespace Server
 			var from6017 = (from.NetState != null && from.NetState.ContainerGridLines);
 			var to6017 = (to.NetState != null && to.NetState.ContainerGridLines);
 
+			var from704565 = (from.NetState != null && from.NetState.NewSecureTrading);
+			var to704565 = (to.NetState != null && to.NetState.NewSecureTrading);
+			
 			from.Send(new MobileStatus(from, to));
 			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
@@ -53,10 +133,9 @@ namespace Server
 			from.Send(new DisplaySecureTrade(to, m_From.Container, m_To.Container, to.Name));
 			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
-			if (Core.TOL && from.Account != null)
+			if (Core.TOL && from.Account != null && from704565)
 			{
-				from.Send(
-					new UpdateSecureTrade(m_From.Container, TradeFlag.UpdateLedger, from.Account.TotalGold, from.Account.TotalPlat));
+				from.Send(new UpdateSecureTrade(m_From.Container, TradeFlag.UpdateLedger, from.Account.TotalGold, from.Account.TotalPlat));
 			}
 
 			to.Send(new MobileStatus(to, from));
@@ -85,7 +164,7 @@ namespace Server
 			to.Send(new DisplaySecureTrade(from, m_To.Container, m_From.Container, from.Name));
 			to.Send(new UpdateSecureTrade(m_To.Container, false, false));
 
-			if (Core.TOL && to.Account != null)
+			if (Core.TOL && to.Account != null && to704565)
 			{
 				to.Send(new UpdateSecureTrade(m_To.Container, TradeFlag.UpdateLedger, to.Account.TotalGold, to.Account.TotalPlat));
 			}
@@ -93,6 +172,7 @@ namespace Server
 
 		public SecureTradeInfo From { get { return m_From; } }
 		public SecureTradeInfo To { get { return m_To; } }
+
 		public bool Valid { get { return m_Valid; } }
 
 		public void Cancel()
@@ -110,6 +190,11 @@ namespace Server
 				{
 					var item = list[i];
 
+					if (item == m_From.VirtualCheck)
+					{
+						continue;
+					}
+
 					item.OnSecureTrade(m_From.Mobile, m_To.Mobile, m_From.Mobile, false);
 
 					if (!item.Deleted)
@@ -126,6 +211,11 @@ namespace Server
 				if (i < list.Count)
 				{
 					var item = list[i];
+
+					if (item == m_To.VirtualCheck)
+					{
+						continue;
+					}
 
 					item.OnSecureTrade(m_To.Mobile, m_From.Mobile, m_To.Mobile, false);
 
@@ -164,9 +254,9 @@ namespace Server
 			{
 				ns.RemoveTrade(this);
 			}
-
-			Timer.DelayCall(m_From.Container.Delete);
-			Timer.DelayCall(m_To.Container.Delete);
+			
+			Timer.DelayCall(m_From.Dispose);
+			Timer.DelayCall(m_To.Dispose);
 		}
 
 		public void UpdateFromCurrency()
@@ -205,7 +295,10 @@ namespace Server
 					"Your offer has been updated to reflect the difference.");
 			}
 
+			if (right.Mobile.NetState != null && right.Mobile.NetState.NewSecureTrading)
+			{
 				right.Mobile.Send(new UpdateSecureTrade(right.Container, TradeFlag.UpdateGold, left.Gold, left.Plat));
+			}
 		}
 
 		public void Update()
@@ -227,6 +320,11 @@ namespace Server
 					{
 						var item = list[i];
 
+						if (item == m_From.VirtualCheck)
+						{
+							continue;
+						}
+
 						if (!item.AllowSecureTrade(m_From.Mobile, m_To.Mobile, m_To.Mobile, true))
 						{
 							allowed = false;
@@ -241,6 +339,11 @@ namespace Server
 					if (i < list.Count)
 					{
 						var item = list[i];
+
+						if (item == m_To.VirtualCheck)
+						{
+							continue;
+						}
 
 						if (!item.AllowSecureTrade(m_To.Mobile, m_From.Mobile, m_From.Mobile, true))
 						{
@@ -352,6 +455,11 @@ namespace Server
 					{
 						var item = list[i];
 
+						if (item == m_From.VirtualCheck)
+						{
+							continue;
+						}
+
 						item.OnSecureTrade(m_From.Mobile, m_To.Mobile, m_To.Mobile, true);
 
 						if (!item.Deleted)
@@ -368,6 +476,11 @@ namespace Server
 					if (i < list.Count)
 					{
 						var item = list[i];
+
+						if (item == m_To.VirtualCheck)
+						{
+							continue;
+						}
 
 						item.OnSecureTrade(m_To.Mobile, m_From.Mobile, m_From.Mobile, true);
 
@@ -388,26 +501,40 @@ namespace Server
 		}
 	}
 
-	public class SecureTradeInfo
+	public class SecureTradeInfo : IDisposable
 	{
-		private readonly SecureTradeContainer m_Container;
-		private readonly Mobile m_Mobile;
-		private readonly SecureTrade m_Owner;
+		public SecureTrade Owner { get; private set; }
+		public Mobile Mobile { get; private set; }
+		public SecureTradeContainer Container { get; private set; }
+		public VirtualCheck VirtualCheck { get; private set; }
+
+		public int Gold { get { return VirtualCheck.Gold; } set { VirtualCheck.Gold = value; } }
+		public int Plat { get { return VirtualCheck.Plat; } set { VirtualCheck.Plat = value; } }
+
+		public bool Accepted { get; set; }
 
 		public SecureTradeInfo(SecureTrade owner, Mobile m, SecureTradeContainer c)
 		{
-			m_Owner = owner;
-			m_Mobile = m;
-			m_Container = c;
+			Owner = owner;
+			Mobile = m;
+			Container = c;
 
-			m_Mobile.AddItem(m_Container);
+			VirtualCheck = new VirtualCheck(0, 0);
+			Container.DropItem(VirtualCheck);
+			
+			Mobile.AddItem(Container);
 		}
 
-		public SecureTrade Owner { get { return m_Owner; } }
-		public Mobile Mobile { get { return m_Mobile; } }
-		public SecureTradeContainer Container { get { return m_Container; } }
-		public int Gold { get; set; }
-		public int Plat { get; set; }
-		public bool Accepted { get; set; }
+		public void Dispose()
+		{
+			VirtualCheck.Delete();
+			VirtualCheck = null;
+
+			Container.Delete();
+			Container = null;
+
+			Mobile = null;
+			Owner = null;
+		}
 	}
 }

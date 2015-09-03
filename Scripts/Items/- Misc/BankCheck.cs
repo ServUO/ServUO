@@ -7,6 +7,7 @@
 #region References
 using System;
 
+using Server.Accounting;
 using Server.Engines.Quests.Haven;
 using Server.Engines.Quests.Necro;
 using Server.Mobiles;
@@ -92,18 +93,51 @@ namespace Server.Items
 		public override void OnAdded(object parent)
 #endif
 		{
- 			base.OnAdded(parent);
+			base.OnAdded(parent);
 
-			if (!Core.TOL || !(parent is BankBox))
+			if (!Core.TOL)
 			{
 				return;
 			}
 
-			var owner = ((BankBox)parent).Owner;
+			Mobile owner = null;
+			SecureTradeInfo tradeInfo = null;
 
-			if (owner.Account == null || !owner.Account.DepositGold(m_Worth))
+			parent = RootParent;
+
+			if (parent is SecureTradeContainer)
+			{
+				var trade = (SecureTradeContainer)parent;
+
+				if (trade.Trade.From.Container == trade)
+				{
+					tradeInfo = trade.Trade.From;
+					owner = tradeInfo.Mobile;
+				}
+				else if (trade.Trade.To.Container == trade)
+				{
+					tradeInfo = trade.Trade.To;
+					owner = tradeInfo.Mobile;
+				}
+			}
+			else if (parent is BankBox)
+			{
+				owner = ((BankBox)parent).Owner;
+			}
+
+			if (owner == null || owner.Account == null || !owner.Account.DepositGold(m_Worth))
 			{
 				return;
+			}
+
+			if (tradeInfo != null)
+			{
+				var total = m_Worth / Math.Max(1.0, Account.CurrencyThreshold);
+				var plat = (int)Math.Truncate(total);
+				var gold = (int)(total - plat) * Account.CurrencyThreshold;
+
+				tradeInfo.Plat += plat;
+				tradeInfo.Gold += gold;
 			}
 
 			owner.SendLocalizedMessage(1042763, m_Worth.ToString("#,0"));

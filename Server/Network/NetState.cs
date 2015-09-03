@@ -175,6 +175,7 @@ namespace Server.Network
 		private static readonly ClientVersion m_Version70160 = new ClientVersion("7.0.16.0");
 		private static readonly ClientVersion m_Version70300 = new ClientVersion("7.0.30.0");
 		private static readonly ClientVersion m_Version70331 = new ClientVersion("7.0.33.1");
+		private static readonly ClientVersion m_Version704565 = new ClientVersion("7.0.45.65");
 
 		private ProtocolChanges _ProtocolChanges;
 
@@ -193,6 +194,7 @@ namespace Server.Network
 			NewCharacterCreation = 0x00000400,
 			ExtendedStatus = 0x00000800,
 			NewMobileIncoming = 0x00001000,
+			NewSecureTrading = 0x00002000,
 
 			Version400a = NewSpellbook,
 			Version407a = Version400a | DamagePacket,
@@ -206,7 +208,8 @@ namespace Server.Network
 			Version70130 = Version7090 | NewCharacterList,
 			Version70160 = Version70130 | NewCharacterCreation,
 			Version70300 = Version70160 | ExtendedStatus,
-			Version70331 = Version70300 | NewMobileIncoming
+			Version70331 = Version70300 | NewMobileIncoming,
+			Version704565 = Version70331 | NewSecureTrading
 		}
 
 		public bool NewSpellbook { get { return ((_ProtocolChanges & ProtocolChanges.NewSpellbook) != 0); } }
@@ -222,6 +225,7 @@ namespace Server.Network
 		public bool NewCharacterCreation { get { return ((_ProtocolChanges & ProtocolChanges.NewCharacterCreation) != 0); } }
 		public bool ExtendedStatus { get { return ((_ProtocolChanges & ProtocolChanges.ExtendedStatus) != 0); } }
 		public bool NewMobileIncoming { get { return ((_ProtocolChanges & ProtocolChanges.NewMobileIncoming) != 0); } }
+		public bool NewSecureTrading { get { return ((_ProtocolChanges & ProtocolChanges.NewSecureTrading) != 0); } }
 
 		public bool IsUOTDClient { get { return ((m_Flags & ClientFlags.UOTD) != 0 || (m_Version != null && m_Version.Type == ClientType.UOTD)); } }
 

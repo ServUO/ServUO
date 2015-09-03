@@ -167,8 +167,6 @@ namespace Server.Network
 		}
 	}
 
-
-
 	public sealed class DisplaySecureTrade : Packet
 	{
 		public DisplaySecureTrade(Mobile them, Container first, Container second, string name)
