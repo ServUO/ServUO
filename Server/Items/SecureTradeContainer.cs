@@ -30,16 +30,12 @@ namespace Server.Items
 
 		public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
 		{
-			Mobile to;
+			if (item == Trade.From.VirtualCheck || item == Trade.To.VirtualCheck)
+			{
+				return true;
+			}
 
-			if (Trade.From.Container != this)
-			{
-				to = Trade.From.Mobile;
-			}
-			else
-			{
-				to = Trade.To.Mobile;
-			}
+			var to = Trade.From.Container != this ? Trade.From.Mobile : Trade.To.Mobile;
 
 			return m.CheckTrade(to, item, this, message, checkItems, plusItems, plusWeight);
 		}
@@ -62,22 +58,34 @@ namespace Server.Items
 
 		public override void OnItemAdded(Item item)
 		{
-			ClearChecks();
+			if (item != Trade.From.VirtualCheck && item != Trade.To.VirtualCheck)
+			{
+				ClearChecks();
+			}
 		}
 
 		public override void OnItemRemoved(Item item)
 		{
-			ClearChecks();
+			if (item != Trade.From.VirtualCheck && item != Trade.To.VirtualCheck)
+			{
+				ClearChecks();
+			}
 		}
 
 		public override void OnSubItemAdded(Item item)
 		{
-			ClearChecks();
+			if (item != Trade.From.VirtualCheck && item != Trade.To.VirtualCheck)
+			{
+				ClearChecks();
+			}
 		}
 
 		public override void OnSubItemRemoved(Item item)
 		{
-			ClearChecks();
+			if (item != Trade.From.VirtualCheck && item != Trade.To.VirtualCheck)
+			{
+				ClearChecks();
+			}
 		}
 
 		public void ClearChecks()

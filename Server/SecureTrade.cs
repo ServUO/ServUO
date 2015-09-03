@@ -67,18 +67,7 @@ namespace Server
 
 		public override void OnSingleClick(Mobile from)
 		{
-			from.Send(
-				new MessageLocalizedAffix(
-					Serial,
-					ItemID,
-					MessageType.Label,
-					0x3B2,
-					3,
-					1041361,
-					"",
-					AffixType.Append,
-					String.Format("{0:#,0} platinum, {1:#,0} gold", Plat, Gold),
-					"")); // A bank check:
+			LabelTo(from, "Offer: {0:#,0} platinum, {1:#,0} gold", Plat, Gold);
 		}
 
 		public override void GetProperties(ObjectPropertyList list)
@@ -528,11 +517,11 @@ namespace Server
 			Owner = owner;
 			Mobile = m;
 			Container = c;
+			
+			Mobile.AddItem(Container);
 
 			VirtualCheck = new VirtualCheck(0, 0);
 			Container.DropItem(VirtualCheck);
-			
-			Mobile.AddItem(Container);
 		}
 
 		public void Dispose()
