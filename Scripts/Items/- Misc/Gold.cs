@@ -95,7 +95,7 @@ namespace Server.Items
 			{
 				var total = Amount / Math.Max(1.0, Account.CurrencyThreshold);
 				var plat = (int)Math.Truncate(total);
-				var gold = (int)(total - plat) * Account.CurrencyThreshold;
+				var gold = (int)((total - plat) * Account.CurrencyThreshold);
 
 				tradeInfo.Plat += plat;
 				tradeInfo.Gold += gold;
