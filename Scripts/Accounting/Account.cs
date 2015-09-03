@@ -65,7 +65,7 @@ namespace Server.Accounting
 						if (!Core.TOL)
 						{
 							share = (int)Math.Truncate((a.TotalCurrency / a.Count) * CurrencyThreshold);
-							found += a.TotalCurrency;
+							found += a.TotalCurrency * CurrencyThreshold;
 						}
 
 						foreach (var m in a.m_Mobiles.Where(m => m != null))
