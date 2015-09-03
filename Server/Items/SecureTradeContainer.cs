@@ -58,7 +58,7 @@ namespace Server.Items
 
 		public override void OnItemAdded(Item item)
 		{
-			if (item != Trade.From.VirtualCheck && item != Trade.To.VirtualCheck)
+			if (!(item is VirtualCheck))
 			{
 				ClearChecks();
 			}
@@ -66,7 +66,7 @@ namespace Server.Items
 
 		public override void OnItemRemoved(Item item)
 		{
-			if (item != Trade.From.VirtualCheck && item != Trade.To.VirtualCheck)
+			if (!(item is VirtualCheck))
 			{
 				ClearChecks();
 			}
@@ -74,7 +74,7 @@ namespace Server.Items
 
 		public override void OnSubItemAdded(Item item)
 		{
-			if (item != Trade.From.VirtualCheck && item != Trade.To.VirtualCheck)
+			if (!(item is VirtualCheck))
 			{
 				ClearChecks();
 			}
@@ -82,7 +82,7 @@ namespace Server.Items
 
 		public override void OnSubItemRemoved(Item item)
 		{
-			if (item != Trade.From.VirtualCheck && item != Trade.To.VirtualCheck)
+			if (!(item is VirtualCheck))
 			{
 				ClearChecks();
 			}
@@ -92,8 +92,16 @@ namespace Server.Items
 		{
 			if (m_Trade != null)
 			{
-				m_Trade.From.Accepted = false;
-				m_Trade.To.Accepted = false;
+				if (m_Trade.From != null && !m_Trade.From.IsDisposed)
+				{
+					m_Trade.From.Accepted = false;
+				}
+
+				if (m_Trade.To != null && !m_Trade.To.IsDisposed)
+				{
+					m_Trade.To.Accepted = false;
+				}
+
 				m_Trade.Update();
 			}
 		}

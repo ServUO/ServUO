@@ -307,7 +307,7 @@ namespace Server
 				return;
 			}
 
-			if (m_From.Accepted && m_To.Accepted)
+			if (!m_From.IsDisposed && m_From.Accepted && !m_To.IsDisposed && m_To.Accepted)
 			{
 				var list = m_From.Container.Items;
 
@@ -492,7 +492,7 @@ namespace Server
 
 				Close();
 			}
-			else
+			else if (!m_From.IsDisposed && !m_To.IsDisposed)
 			{
 				m_From.Mobile.Send(new UpdateSecureTrade(m_From.Container, m_From.Accepted, m_To.Accepted));
 				m_To.Mobile.Send(new UpdateSecureTrade(m_To.Container, m_To.Accepted, m_From.Accepted));
@@ -511,6 +511,8 @@ namespace Server
 		public int Plat { get { return VirtualCheck.Plat; } set { VirtualCheck.Plat = value; } }
 
 		public bool Accepted { get; set; }
+
+		public bool IsDisposed { get; private set; }
 
 		public SecureTradeInfo(SecureTrade owner, Mobile m, SecureTradeContainer c)
 		{
@@ -534,6 +536,8 @@ namespace Server
 
 			Mobile = null;
 			Owner = null;
+
+			IsDisposed = true;
 		}
 	}
 }
