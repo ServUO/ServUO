@@ -47,7 +47,11 @@ namespace Server
 				InvalidateProperties();
 			}
 		}
-		
+
+		public VirtualCheck()
+			: this(0, 0)
+		{ }
+
 		public VirtualCheck(int plat, int gold)
 			: base(0x14F0)
 		{
@@ -56,6 +60,10 @@ namespace Server
 
 			Movable = false;
 		}
+
+		public VirtualCheck(Serial serial)
+			: base(serial)
+		{ }
 
 		public override void OnSingleClick(Mobile from)
 		{
