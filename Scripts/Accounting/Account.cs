@@ -112,7 +112,7 @@ namespace Server.Accounting
 							}
 							else
 							{
-								shared = share;
+								shared = share * CurrencyThreshold;
 
 								while (shared > 0)
 								{
