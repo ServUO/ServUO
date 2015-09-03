@@ -63,7 +63,7 @@ namespace Server.Accounting
 					{
 						if (!Core.TOL)
 						{
-							share = (int)Math.Truncate(a.TotalCurrency / a.Count);
+							share = (int)Math.Truncate((a.TotalCurrency / a.Count) * CurrencyThreshold);
 							found += a.TotalCurrency;
 						}
 
@@ -112,7 +112,7 @@ namespace Server.Accounting
 							}
 							else
 							{
-								shared = share * CurrencyThreshold;
+								shared = share;
 
 								while (shared > 0)
 								{
