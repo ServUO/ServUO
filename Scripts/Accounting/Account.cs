@@ -13,6 +13,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 
+using Server.Commands;
+using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Multis;
@@ -31,6 +33,133 @@ namespace Server.Accounting
 		private static MD5CryptoServiceProvider m_MD5HashProvider;
 		private static SHA1CryptoServiceProvider m_SHA1HashProvider;
 		private static byte[] m_HashBuffer;
+
+		public static void Configure()
+		{
+			CommandSystem.Register("ConvertCurrency", AccessLevel.Owner, ConvertCurrency);
+		}
+
+		private static void ConvertCurrency(CommandEventArgs e)
+		{
+			e.Mobile.SendMessage(
+				"Converting All Banked Gold from {0} to {1}.  Please wait...",
+				Core.TOL ? "checks and coins" : "account treasury",
+				Core.TOL ? "account treasury" : "checks and coins");
+
+			NetState.Pause();
+
+			double found = 0.0, converted = 0.0;
+
+			try
+			{
+				BankBox box;
+				List<Gold> gold;
+				List<BankCheck> checks;
+				int share = 0, shared, diff;
+
+				foreach (var a in Accounts.GetAccounts().OfType<Account>().Where(a => a.Count > 0))
+				{
+					try
+					{
+						if (!Core.TOL)
+						{
+							share = (int)Math.Truncate(a.TotalCurrency / a.Count);
+							found += a.TotalCurrency;
+						}
+
+						foreach (var m in a.m_Mobiles.Where(m => m != null))
+						{
+							box = m.FindBankNoCreate();
+
+							if (box == null)
+							{
+								continue;
+							}
+
+							if (Core.TOL)
+							{
+								foreach (var o in checks = box.FindItemsByType<BankCheck>())
+								{
+									found += o.Worth;
+
+									if (!a.DepositGold(o.Worth))
+									{
+										break;
+									}
+
+									converted += o.Worth;
+									o.Delete();
+								}
+
+								checks.Clear();
+								checks.TrimExcess();
+
+								foreach (var o in gold = box.FindItemsByType<Gold>())
+								{
+									found += o.Amount;
+
+									if (!a.DepositGold(o.Amount))
+									{
+										break;
+									}
+
+									converted += o.Amount;
+									o.Delete();
+								}
+
+								gold.Clear();
+								gold.TrimExcess();
+							}
+							else
+							{
+								shared = share;
+
+								while (shared > 0)
+								{
+									if (shared > 60000)
+									{
+										diff = Math.Min(10000000, shared);
+
+										if (a.WithdrawGold(diff))
+										{
+											box.DropItem(new BankCheck(diff));
+										}
+										else
+										{
+											break;
+										}
+									}
+									else
+									{
+										diff = Math.Min(60000, shared);
+
+										if (a.WithdrawGold(diff))
+										{
+											box.DropItem(new Gold(diff));
+										}
+										else
+										{
+											break;
+										}
+									}
+
+									converted += diff;
+									shared -= diff;
+								}
+							}
+						}
+					}
+					catch
+					{ }
+				}
+			}
+			catch
+			{ }
+
+			NetState.Resume();
+
+			e.Mobile.SendMessage("Operation complete: {0:#,0} of {1:#,0} Gold has been converted in total.", converted, found);
+		}
 
 		private readonly DateTime m_Created;
 		private readonly Mobile[] m_Mobiles;
