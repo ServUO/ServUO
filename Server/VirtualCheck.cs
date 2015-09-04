@@ -62,9 +62,21 @@ namespace Server
 			: base(serial)
 		{ }
 
+		public override bool IsAccessibleTo(Mobile check)
+		{
+			var c = GetSecureTradeCont();
+
+			if (check == null || c == null)
+			{
+				return base.IsAccessibleTo(check);
+			}
+
+			return c.RootParent == check && IsChildOf(c);
+		}
+
 		public override void OnDoubleClickSecureTrade(Mobile from)
 		{
-			if (UseEditGump)
+			if (UseEditGump && IsAccessibleTo(from))
 			{
 				new EditGump(from, this).Send();
 			}
