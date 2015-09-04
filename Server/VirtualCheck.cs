@@ -21,10 +21,7 @@ namespace Server
 		[CommandProperty(AccessLevel.Administrator)]
 		public int Plat
 		{
-			get
-			{
-				return _Plat;
-			}
+			get { return _Plat; }
 			set
 			{
 				_Plat = value;
@@ -215,59 +212,108 @@ namespace Server
 					return;
 				}
 
-				var platText = info.GetTextEntry(0).Text;
-				var goldText = info.GetTextEntry(1).Text;
-
-				int plat, gold;
-				bool refresh = false;
-
-				if (Int32.TryParse(platText, out plat))
+				switch ((Buttons)info.ButtonID)
 				{
-					if (plat <= User.Account.TotalPlat)
+					case Buttons.Close:
 					{
-						Check.Plat = plat;
+						Close();
 					}
-					else
+						break;
+					case Buttons.Clear:
+					{
+						Check.Plat = 0;
+						Check.Gold = 0;
+						Refresh(true);
+					}
+						break;
+					case Buttons.Accept:
+					{
+						var platText = info.GetTextEntry(0).Text;
+						var goldText = info.GetTextEntry(1).Text;
+
+						int plat, gold;
+						bool refresh = false;
+
+						if (Int32.TryParse(platText, out plat))
+						{
+							if (plat <= User.Account.TotalPlat)
+							{
+								Check.Plat = plat;
+							}
+							else
+							{
+								Check.Plat = User.Account.TotalPlat;
+								User.SendMessage("You do not have that much platinum.");
+								refresh = true;
+							}
+						}
+						else
+						{
+							User.SendMessage("That is not a valid amount of platinum.");
+							refresh = true;
+						}
+
+						if (Int32.TryParse(goldText, out gold))
+						{
+							if (gold <= User.Account.TotalGold)
+							{
+								Check.Gold = gold;
+							}
+							else
+							{
+								Check.Gold = User.Account.TotalGold;
+								User.SendMessage("You do not have that much gold.");
+								refresh = true;
+							}
+						}
+						else
+						{
+							User.SendMessage("That is not a valid amount of gold.");
+							refresh = true;
+						}
+
+						if (refresh)
+						{
+							Refresh(true);
+						}
+						else
+						{
+							User.SendMessage("Your offer has been updated.");
+							Close();
+						}
+					}
+						break;
+					case Buttons.AllPlat:
 					{
 						Check.Plat = User.Account.TotalPlat;
-						User.SendMessage("You do not have that much platinum.");
-						refresh = true;
+						Refresh(true);
 					}
-				}
-				else
-				{
-					User.SendMessage("That is not a valid amount of platinum.");
-					refresh = true;
-				}
-
-				if (Int32.TryParse(goldText, out gold))
-				{
-					if (gold <= User.Account.TotalGold)
-					{
-						Check.Gold = gold;
-					}
-					else
+						break;
+					case Buttons.AllGold:
 					{
 						Check.Gold = User.Account.TotalGold;
-						User.SendMessage("You do not have that much gold.");
-						refresh = true;
+						Refresh(true);
 					}
-				}
-				else
-				{
-					User.SendMessage("That is not a valid amount of gold.");
-					refresh = true;
+						break;
 				}
 
-				if (refresh)
+				var c = Check.GetSecureTradeCont();
+
+				if (c == null || c.Trade == null)
 				{
-					Refresh(true);
+					return;
 				}
-				else
+
+				if (User == c.Trade.From.Mobile)
 				{
-					User.SendMessage("Your offer has been updated.");
-					Close();
+					c.Trade.UpdateFromCurrency();
 				}
+				else if (User == c.Trade.To.Mobile)
+				{
+					c.Trade.UpdateToCurrency();
+				}
+
+				c.Trade.Update();
 			}
 		}
 	}
