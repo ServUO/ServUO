@@ -187,6 +187,7 @@
     <Compile Include=".\World.cs" />
     <Compile Include="Gumps\Controls\GumpItemProperty.cs" />
     <Compile Include="Random.cs" />
+    <Compile Include="VirtualCheck.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="servuo.ico" />

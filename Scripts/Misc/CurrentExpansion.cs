@@ -21,6 +21,8 @@ namespace Server
 		{
 			Core.Expansion = Expansion;
 
+			VirtualCheck.UseEditGump = Core.TOL;
+
 			ObjectPropertyList.Enabled = Core.AOS;
 
 			Mobile.InsuranceEnabled = Core.AOS;
