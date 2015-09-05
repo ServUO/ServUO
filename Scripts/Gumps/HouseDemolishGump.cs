@@ -5,6 +5,7 @@
 #endregion
 
 #region References
+using Server.Accounting;
 using Server.Guilds;
 using Server.Items;
 using Server.Multis;
@@ -134,7 +135,7 @@ namespace Server.Gumps
 							}
 						}
 
-						if (Core.TOL && toGive is BankCheck)
+						if (Account.GoldAccountEnabled && toGive is BankCheck)
 						{
 							var worth = ((BankCheck)toGive).Worth;
 

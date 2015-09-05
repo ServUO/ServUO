@@ -43,8 +43,8 @@ namespace Server.Accounting
 		{
 			e.Mobile.SendMessage(
 				"Converting All Banked Gold from {0} to {1}.  Please wait...",
-				Core.TOL ? "checks and coins" : "account treasury",
-				Core.TOL ? "account treasury" : "checks and coins");
+				AccountGold.Enabled ? "checks and coins" : "account treasury",
+				AccountGold.Enabled ? "account treasury" : "checks and coins");
 
 			NetState.Pause();
 
@@ -62,7 +62,7 @@ namespace Server.Accounting
 				{
 					try
 					{
-						if (!Core.TOL)
+						if (!AccountGold.Enabled)
 						{
 							share = (int)Math.Truncate((a.TotalCurrency / a.Count) * CurrencyThreshold);
 							found += a.TotalCurrency * CurrencyThreshold;
@@ -77,7 +77,7 @@ namespace Server.Accounting
 								continue;
 							}
 
-							if (Core.TOL)
+							if (AccountGold.Enabled)
 							{
 								foreach (var o in checks = box.FindItemsByType<BankCheck>())
 								{
@@ -304,6 +304,7 @@ namespace Server.Accounting
 		/// <summary>
 		///     Object detailing information about the hardware of the last person to log into this account
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator)]
 		public HardwareInfo HardwareInfo { get; set; }
 
 		/// <summary>
@@ -357,6 +358,7 @@ namespace Server.Accounting
 		/// <summary>
 		///     Gets or sets a flag indiciating if this account is banned.
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator)]
 		public bool Banned
 		{
 			get
@@ -387,6 +389,7 @@ namespace Server.Accounting
 		/// <summary>
 		///     Gets or sets a flag indicating if the characters created on this account will have the young status.
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator)]
 		public bool Young
 		{
 			get { return !GetFlag(1); }
@@ -407,17 +410,20 @@ namespace Server.Accounting
 		/// <summary>
 		///     The date and time of when this account was created.
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator)]
 		public DateTime Created { get { return m_Created; } }
 
 		/// <summary>
 		///     Gets or sets the date and time when this account was last accessed.
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator)]
 		public DateTime LastLogin { get; set; }
 
 		/// <summary>
 		///     An account is considered inactive based upon LastLogin and InactiveDuration.  If the account is empty, it is based
 		///     upon EmptyInactiveDuration
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator)]
 		public bool Inactive
 		{
 			get
@@ -437,6 +443,7 @@ namespace Server.Accounting
 		///     Gets the total game time of this account, also considering the game time of characters
 		///     that have been deleted.
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator)]
 		public TimeSpan TotalGameTime
 		{
 			get
@@ -453,16 +460,25 @@ namespace Server.Accounting
 		/// <summary>
 		///     Account username. Case insensitive validation.
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public string Username { get; set; }
+
+		/// <summary>
+		///     Account email address. Case insensitive validation.
+		/// </summary>
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public string Email { get; set; }
 
 		/// <summary>
 		///     Initial AccessLevel for new characters created on this account.
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator, AccessLevel.Owner)]
 		public AccessLevel AccessLevel { get { return m_AccessLevel; } set { m_AccessLevel = value; } }
 
 		/// <summary>
 		///     Gets the current number of characters on this account.
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator)]
 		public int Count
 		{
 			get
@@ -485,11 +501,13 @@ namespace Server.Accounting
 		///     Gets the maximum amount of characters allowed to be created on this account. Values other than 1, 5, 6, or 7 are
 		///     not supported by the client.
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator)]
 		public int Limit { get { return (Core.SA ? 7 : Core.AOS ? 6 : 5); } }
 
 		/// <summary>
 		///     Gets the maxmimum amount of characters that this account can hold.
 		/// </summary>
+		[CommandProperty(AccessLevel.Administrator)]
 		public int Length { get { return m_Mobiles.Length; } }
 
 		/// <summary>
@@ -1415,7 +1433,11 @@ namespace Server.Accounting
 		///     By default, when 1,000,000,000 Gold is accumulated, it will transform
 		///     into 1 Platinum.
 		/// </summary>
-		public static int CurrencyThreshold = 1000000000;
+		public static int CurrencyThreshold
+		{
+			get { return AccountGold.CurrencyThreshold; }
+			set { AccountGold.CurrencyThreshold = value; }
+		}
 
 		/// <summary>
 		///     This amount represents the total amount of currency owned by the player.

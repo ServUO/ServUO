@@ -1327,7 +1327,7 @@ namespace Server.Mobiles
 
 			if (!bought && totalCost >= 2000)
 			{
-				if (Core.TOL && buyer.Account != null && buyer.Account.WithdrawGold(totalCost))
+				if (AccountGold.Enabled && buyer.Account != null && buyer.Account.WithdrawGold(totalCost))
 				{
 					bought = true;
 					fromBank = true;
@@ -1335,7 +1335,7 @@ namespace Server.Mobiles
 				else
 				{
 					cont = buyer.FindBankNoCreate();
-					
+
 					if (cont != null && cont.ConsumeTotal(typeof(Gold), totalCost))
 					{
 						bought = true;

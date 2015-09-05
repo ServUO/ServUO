@@ -7,6 +7,7 @@
 #region References
 using System;
 
+using Server.Accounting;
 using Server.Items;
 using Server.Network;
 #endregion
@@ -59,7 +60,7 @@ namespace Server
 			from.Send(new DisplaySecureTrade(to, m_From.Container, m_To.Container, to.Name));
 			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
-			if (Core.TOL && from.Account != null && from704565)
+			if (from.Account != null && from704565)
 			{
 				from.Send(new UpdateSecureTrade(m_From.Container, TradeFlag.UpdateLedger, from.Account.TotalGold, from.Account.TotalPlat));
 			}
@@ -90,7 +91,7 @@ namespace Server
 			to.Send(new DisplaySecureTrade(from, m_To.Container, m_From.Container, from.Name));
 			to.Send(new UpdateSecureTrade(m_To.Container, false, false));
 
-			if (Core.TOL && to.Account != null && to704565)
+			if (to.Account != null && to704565)
 			{
 				to.Send(new UpdateSecureTrade(m_To.Container, TradeFlag.UpdateLedger, to.Account.TotalGold, to.Account.TotalPlat));
 			}
@@ -278,7 +279,7 @@ namespace Server
 					}
 				}
 
-				if (Core.TOL)
+				if (AccountGold.Enabled)
 				{
 					if (m_From.Mobile.Account != null)
 					{
@@ -350,7 +351,7 @@ namespace Server
 					return;
 				}
 
-				if (Core.TOL && m_From.Mobile.Account != null && m_To.Mobile.Account != null)
+				if (AccountGold.Enabled && m_From.Mobile.Account != null && m_To.Mobile.Account != null)
 				{
 					if (m_From.Plat > 0 & m_From.Mobile.Account.WithdrawPlat(m_From.Plat))
 					{

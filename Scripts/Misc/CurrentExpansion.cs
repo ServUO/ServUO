@@ -7,6 +7,7 @@
 #region References
 using System;
 
+using Server.Accounting;
 using Server.Network;
 #endregion
 
@@ -21,6 +22,7 @@ namespace Server
 		{
 			Core.Expansion = Expansion;
 
+			AccountGold.Enabled = Core.TOL;
 			VirtualCheck.UseEditGump = Core.TOL;
 
 			ObjectPropertyList.Enabled = Core.AOS;

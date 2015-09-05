@@ -7,6 +7,7 @@
 #region References
 using System;
 
+using Server.Accounting;
 using Server.Network;
 #endregion
 
@@ -155,7 +156,7 @@ namespace Server.Items
 
 		public override int GetTotal(TotalType type)
 		{
-			if (Core.TOL && Owner != null && Owner.Account != null)
+			if (AccountGold.Enabled && Owner != null && Owner.Account != null)
 			{
 				return Owner.Account.TotalGold;
 			}

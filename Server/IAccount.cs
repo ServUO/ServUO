@@ -10,17 +10,20 @@ using System;
 
 namespace Server.Accounting
 {
-	public interface IAccount : IComparable<IAccount>
+	public static class AccountGold
 	{
-		string Username { get; set; }
-		AccessLevel AccessLevel { get; set; }
+		public static bool Enabled = false;
 
-		int Length { get; }
-		int Limit { get; }
-		int Count { get; }
-		Mobile this[int index] { get; set; }
+		/// <summary>
+		///     This amount specifies the value at which point Gold turns to Platinum.
+		///     By default, when 1,000,000,000 Gold is accumulated, it will transform
+		///     into 1 Platinum.
+		/// </summary>
+		public static int CurrencyThreshold = 1000000000;
+	}
 
-		#region Gold Account
+	public interface IGoldAccount
+	{
 		/// <summary>
 		/// This amount represents the total amount of currency owned by the player.
 		/// It is cumulative of both Gold and Platinum, the absolute total amount of
@@ -58,7 +61,7 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="amount">Amount to deposit.</param>
 		/// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
-        bool DepositGold(int amount);
+		bool DepositGold(int amount);
 
 		/// <summary>
 		/// Attempts to deposit the given amount of Platinum into this account.
@@ -72,7 +75,7 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="amount">Amount to withdraw.</param>
 		/// <returns>True if successful, false if balance was too low.</returns>
-        bool WithdrawCurrency(double amount);
+		bool WithdrawCurrency(double amount);
 
 		/// <summary>
 		/// Attempts to withdraw the given amount of Gold from this account.
@@ -81,14 +84,14 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="amount">Amount to withdraw.</param>
 		/// <returns>True if successful, false if balance was too low.</returns>
-        bool WithdrawGold(int amount);
+		bool WithdrawGold(int amount);
 
 		/// <summary>
 		/// Attempts to withdraw the given amount of Platinum from this account.
 		/// </summary>
 		/// <param name="amount">Amount to withdraw.</param>
 		/// <returns>True if successful, false if balance was too low.</returns>
-        bool WithdrawPlat(int amount);
+		bool WithdrawPlat(int amount);
 
 		/// <summary>
 		/// Gets the total balance of Gold for this account.
@@ -111,8 +114,19 @@ namespace Server.Accounting
 		/// <param name="totalGold">Gold value, Platinum inclusive</param>
 		/// <param name="plat">Platinum value, Gold exclusive</param>
 		/// <param name="totalPlat">Platinum value, Gold inclusive</param>
-        void GetBalance(out int gold, out double totalGold, out int plat, out double totalPlat);
-	    #endregion
+		void GetBalance(out int gold, out double totalGold, out int plat, out double totalPlat);
+	}
+
+	public interface IAccount : IGoldAccount, IComparable<IAccount>
+	{
+		string Username { get; set; }
+		string Email { get; set; }
+		AccessLevel AccessLevel { get; set; }
+
+		int Length { get; }
+		int Limit { get; }
+		int Count { get; }
+		Mobile this[int index] { get; set; }
 
 		void Delete();
 		void SetPassword(string password);

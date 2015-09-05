@@ -95,7 +95,7 @@ namespace Server.Items
 		{
 			base.OnAdded(parent);
 
-			if (!Core.TOL)
+			if (!Account.GoldAccountEnabled)
 			{
 				return;
 			}
@@ -166,11 +166,11 @@ namespace Server.Items
 			// This probably isn't OSI accurate, but we can't just make the quests redundant.
 			// Double-clicking the BankCheck in your pack will now credit your account.
 
-			var box = Core.TOL ? from.Backpack : from.FindBankNoCreate();
+			var box = Account.GoldAccountEnabled ? from.Backpack : from.FindBankNoCreate();
 
 			if (box == null || !IsChildOf(box))
 			{
-				from.SendLocalizedMessage(Core.TOL ? 1080058 : 1047026); 
+				from.SendLocalizedMessage(Account.GoldAccountEnabled ? 1080058 : 1047026); 
 				// This must be in your backpack to use it. : That must be in your bank box to use it.
 				return;
 			}
@@ -180,7 +180,7 @@ namespace Server.Items
 			var deposited = 0;
 			var toAdd = m_Worth;
 
-			if (Core.TOL && from.Account != null && from.Account.DepositGold(toAdd))
+			if (Account.GoldAccountEnabled && from.Account != null && from.Account.DepositGold(toAdd))
 			{
 				deposited = toAdd;
 				toAdd = 0;

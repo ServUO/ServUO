@@ -9,9 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Server.Accounting;
 using Server.ContextMenus;
 using Server.Items;
 using Server.Network;
+
+using Acc = Server.Accounting.Account;
 #endregion
 
 namespace Server.Mobiles
@@ -37,7 +40,7 @@ namespace Server.Mobiles
         {
             double balance = 0;
 
-            if (Core.TOL && m.Account != null)
+			if (AccountGold.Enabled && m.Account != null)
             {
                 int goldStub;
                 m.Account.GetGoldBalance(out goldStub, out balance);
@@ -66,7 +69,7 @@ namespace Server.Mobiles
         {
             double balance = 0;
 
-            if (Core.TOL && m.Account != null)
+			if (AccountGold.Enabled && m.Account != null)
             {
                 int goldStub;
                 m.Account.GetGoldBalance(out goldStub, out balance);
@@ -99,7 +102,7 @@ namespace Server.Mobiles
         public static bool Withdraw(Mobile from, int amount)
         {
             // If for whatever reason the TOL checks fail, we should still try old methods for withdrawing currency.
-            if (Core.TOL && from.Account != null && from.Account.WithdrawGold(amount))
+			if (AccountGold.Enabled && from.Account != null && from.Account.WithdrawGold(amount))
             {
                 return true;
             }
@@ -148,7 +151,7 @@ namespace Server.Mobiles
         public static bool Deposit(Mobile from, int amount)
         {
             // If for whatever reason the TOL checks fail, we should still try old methods for depositing currency.
-            if (Core.TOL && from.Account != null && from.Account.DepositGold(amount))
+			if (AccountGold.Enabled && from.Account != null && from.Account.DepositGold(amount))
             {
                 return true;
             }
@@ -203,7 +206,7 @@ namespace Server.Mobiles
         public static int DepositUpTo(Mobile from, int amount)
         {
             // If for whatever reason the TOL checks fail, we should still try old methods for depositing currency.
-            if (Core.TOL && from.Account != null && from.Account.DepositGold(amount))
+			if (AccountGold.Enabled && from.Account != null && from.Account.DepositGold(amount))
             {
                 return amount;
             }
@@ -362,7 +365,7 @@ namespace Server.Mobiles
                                     break;
                                 }
 
-                                if (Core.TOL && e.Mobile.Account != null)
+								if (AccountGold.Enabled && e.Mobile.Account != null)
                                 {
                                     Say(1155855, String.Format("{0:#,0}\t{1:#,0}", e.Mobile.Account.TotalPlat, e.Mobile.Account.TotalGold));
                                     // Thy current bank balance is ~1_AMOUNT~ platinum and ~2_AMOUNT~ gold.
@@ -396,7 +399,7 @@ namespace Server.Mobiles
                                     break;
                                 }
 
-                                if (Core.TOL && e.Mobile.Account != null)
+								if (AccountGold.Enabled && e.Mobile.Account != null)
                                 {
                                     Say("We no longer offer a checking service.");
                                     break;
