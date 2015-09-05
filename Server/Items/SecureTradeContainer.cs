@@ -110,7 +110,7 @@ namespace Server.Items
 		{
 			if (child is VirtualCheck)
 			{
-				return m.NetState == null || !m.NetState.NewSecureTrading;
+				return Core.TOL && (m.NetState == null || !m.NetState.NewSecureTrading);
 			}
 
 			return base.IsChildVisibleTo(m, child);
