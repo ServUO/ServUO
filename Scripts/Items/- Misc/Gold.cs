@@ -56,7 +56,7 @@ namespace Server.Items
 	    {
 		    base.OnAdded(parent);
 
-			if (!Account.GoldAccountEnabled)
+			if (!AccountGold.Enabled)
 		    {
 			    return;
 		    }

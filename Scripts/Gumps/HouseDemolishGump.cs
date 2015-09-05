@@ -135,7 +135,7 @@ namespace Server.Gumps
 							}
 						}
 
-						if (Account.GoldAccountEnabled && toGive is BankCheck)
+						if (AccountGold.Enabled && toGive is BankCheck)
 						{
 							var worth = ((BankCheck)toGive).Worth;
 
