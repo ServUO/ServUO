@@ -1327,7 +1327,7 @@ namespace Server.Mobiles
 
 			if (!bought && totalCost >= 2000)
 			{
-				if (AccountGold.Enabled && buyer.Account != null && buyer.Account.WithdrawGold(totalCost))
+				if (Banker.Withdraw(buyer, totalCost))
 				{
 					bought = true;
 					fromBank = true;
