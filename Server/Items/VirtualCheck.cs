@@ -80,7 +80,7 @@ namespace Server
 		{
 			if (UseEditGump && IsAccessibleTo(from))
 			{
-				if (Editor == null)
+				if (Editor == null || Editor.Check == null || Editor.Check.Deleted)
 				{
 					Editor = new EditGump(from, this);
 					Editor.Send();
@@ -179,14 +179,24 @@ namespace Server
 				_Plat = Check.Plat;
 				_Gold = Check.Gold;
 
-				User.CloseGump(GetType());
-
 				Closable = true;
 				Disposable = true;
 				Dragable = true;
 				Resizable = false;
 
+				User.CloseGump(GetType());
+
 				CompileLayout();
+			}
+
+			public override void OnServerClose(NetState owner)
+			{
+				base.OnServerClose(owner);
+
+				if (Check != null && !Check.Deleted)
+				{
+					Check.UpdateTrade(User);
+				}
 			}
 
 			public void Close()
@@ -205,11 +215,24 @@ namespace Server
 
 			public void Send()
 			{
-				User.SendGump(this);
+				if (Check != null && !Check.Deleted)
+				{
+					User.SendGump(this);
+				}
+				else
+				{
+					Close();
+				}
 			}
 
 			public void Refresh(bool recompile)
 			{
+				if (Check == null || Check.Deleted)
+				{
+					Close();
+					return;
+				}
+
 				if (recompile)
 				{
 					CompileLayout();
@@ -221,6 +244,11 @@ namespace Server
 
 			private void CompileLayout()
 			{
+				if (Check == null || Check.Deleted)
+				{
+					return;
+				}
+
 				Entries.ForEach(e => e.Parent = null);
 				Entries.Clear();
 
@@ -272,13 +300,13 @@ namespace Server
 
 			public override void OnResponse(NetState sender, RelayInfo info)
 			{
-				if (sender.Mobile != User)
+				if (Check == null || Check.Deleted || sender.Mobile != User)
 				{
 					Close();
 					return;
 				}
 
-				bool refresh = false;
+				bool refresh = false, updated = false;
 
 				switch ((Buttons)info.ButtonID)
 				{
@@ -300,6 +328,7 @@ namespace Server
 								if (_Plat <= User.Account.TotalPlat)
 								{
 									Check.Plat = _Plat;
+									updated = true;
 								}
 								else
 								{
@@ -319,6 +348,7 @@ namespace Server
 								if (_Gold <= User.Account.TotalGold)
 								{
 									Check.Gold = _Gold;
+									updated = true;
 								}
 								else
 								{
@@ -348,13 +378,17 @@ namespace Server
 						break;
 				}
 
-				if (refresh)
+				if (updated)
+				{
+					User.SendMessage("Your offer has been updated.");
+				}
+
+				if (refresh && Check != null && !Check.Deleted)
 				{
 					Refresh(true);
 					return;
 				}
 
-				User.SendMessage("Your offer has been updated.");
 				Close();
 			}
 		}
