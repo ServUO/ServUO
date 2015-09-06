@@ -1348,7 +1348,7 @@ namespace Server.Network
 				{
 					int switchCount = pvSrc.ReadInt32();
 
-					if (switchCount < 0 || switchCount > gump._Switches)
+					if (switchCount < 0 || switchCount > gump.m_Switches)
 					{
 						Utility.PushColor(ConsoleColor.DarkRed);
 						state.WriteConsole("Invalid gump response, disconnecting...");
@@ -1366,7 +1366,7 @@ namespace Server.Network
 
 					int textCount = pvSrc.ReadInt32();
 
-					if (textCount < 0 || textCount > gump._TextEntries)
+					if (textCount < 0 || textCount > gump.m_TextEntries)
 					{
 						Utility.PushColor(ConsoleColor.DarkRed);
 						state.WriteConsole("Invalid gump response, disconnecting...");

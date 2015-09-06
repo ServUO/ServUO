@@ -6,8 +6,6 @@ using Server.Spells;
 using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
 
-using CustomsFramework.Systems.FoodEffects;
-
 namespace Server.Misc
 {
     public delegate Int32 RegenBonusHandler(Mobile from);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Server.ContextMenus;
 
 using CustomsFramework;
-using CustomsFramework.Systems.FoodEffects;
 
 namespace Server.Items
 {
@@ -78,20 +77,11 @@ namespace Server.Items
             this.Stackable = true;
             this.Amount = amount;
             this.m_FillFactor = 1;
-
-            FoodEffectsCore.OnFoodEffectSystemUpdate += FoodEffectsCore_OnFoodEffectSystemUpdate;
         }
 
         public Food(Serial serial)
             : base(serial)
         {
-            FoodEffectsCore.OnFoodEffectSystemUpdate += FoodEffectsCore_OnFoodEffectSystemUpdate;
-        }
-
-        private void FoodEffectsCore_OnFoodEffectSystemUpdate(BaseCoreEventArgs e)
-        {
-            if (e.Core == FoodEffectsCore.Core)
-                InvalidateProperties();
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -120,40 +110,7 @@ namespace Server.Items
             else
                 return false;
         }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            FoodEffect effect = FoodEffectsCore.GetEffects(this);
-
-            if (effect != null)
-            {
-                int prop;
-
-                if ((prop = effect.DexBonus) != 0)
-                    list.Add(1060409, prop.ToString()); // dexterity bonus ~1_val~
-
-                if ((prop = effect.IntBonus) != 0)
-                    list.Add(1060432, prop.ToString()); // intelligence bonus ~1_val~
-
-                if ((prop = effect.RegenMana) != 0)
-                    list.Add(1060440, prop.ToString()); // mana regeneration ~1_val~
-
-                if ((prop = effect.RegenStam) != 0)
-                    list.Add(1060443, prop.ToString()); // stamina regeneration ~1_val~
-
-                if ((prop = effect.RegenHits) != 0)
-                    list.Add(1060444, prop.ToString()); // hit point regeneration ~1_val~
-
-                if ((prop = effect.StrBonus) != 0)
-                    list.Add(1060485, prop.ToString()); // strength bonus ~1_val~
-
-                if ((prop = effect.Duration) != 0)
-                    list.Add(1071346, prop.ToString()); // Duration: ~1_val~ minutes
-            }
-        }
-
+		
         public virtual bool Eat(Mobile from)
         {
             // Fill the Mobile with FillFactor
