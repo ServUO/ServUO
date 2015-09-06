@@ -1445,7 +1445,7 @@ namespace Server.Accounting
 		///     Gold owned by the player can be found by multiplying this value by the
 		///     CurrencyThreshold value.
 		/// </summary>
-		[CommandProperty(AccessLevel.Administrator)]
+		[CommandProperty(AccessLevel.Administrator, true)]
 		public double TotalCurrency { get; private set; }
 
 		/// <summary>
@@ -1497,11 +1497,33 @@ namespace Server.Accounting
 		}
 
 		/// <summary>
+		///     Attempts to deposit the given amount of Gold into this account.
+		///     If the given amount is greater than the CurrencyThreshold,
+		///     Platinum will be deposited to offset the difference.
+		/// </summary>
+		/// <param name="amount">Amount to deposit.</param>
+		/// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
+		public bool DepositGold(long amount)
+		{
+			return DepositCurrency(amount / Math.Max(1.0, CurrencyThreshold));
+		}
+
+		/// <summary>
 		///     Attempts to deposit the given amount of Platinum into this account.
 		/// </summary>
 		/// <param name="amount">Amount to deposit.</param>
 		/// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
 		public bool DepositPlat(int amount)
+		{
+			return DepositCurrency(amount);
+		}
+
+		/// <summary>
+		///     Attempts to deposit the given amount of Platinum into this account.
+		/// </summary>
+		/// <param name="amount">Amount to deposit.</param>
+		/// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
+		public bool DepositPlat(long amount)
 		{
 			return DepositCurrency(amount);
 		}
@@ -1540,6 +1562,18 @@ namespace Server.Accounting
 		}
 
 		/// <summary>
+		///     Attempts to withdraw the given amount of Gold from this account.
+		///     If the given amount is greater than the CurrencyThreshold,
+		///     Platinum will be withdrawn to offset the difference.
+		/// </summary>
+		/// <param name="amount">Amount to withdraw.</param>
+		/// <returns>True if successful, false if balance was too low.</returns>
+		public bool WithdrawGold(long amount)
+		{
+			return WithdrawCurrency(amount / Math.Max(1.0, CurrencyThreshold));
+		}
+
+		/// <summary>
 		///     Attempts to withdraw the given amount of Platinum from this account.
 		/// </summary>
 		/// <param name="amount">Amount to withdraw.</param>
@@ -1550,11 +1584,32 @@ namespace Server.Accounting
 		}
 
 		/// <summary>
+		///     Attempts to withdraw the given amount of Platinum from this account.
+		/// </summary>
+		/// <param name="amount">Amount to withdraw.</param>
+		/// <returns>True if successful, false if balance was too low.</returns>
+		public bool WithdrawPlat(long amount)
+		{
+			return WithdrawCurrency(amount);
+		}
+
+		/// <summary>
 		///     Gets the total balance of Gold for this account.
 		/// </summary>
 		/// <param name="gold">Gold value, Platinum exclusive</param>
 		/// <param name="totalGold">Gold value, Platinum inclusive</param>
 		public void GetGoldBalance(out int gold, out double totalGold)
+		{
+			gold = TotalGold;
+			totalGold = TotalCurrency * Math.Max(1.0, CurrencyThreshold);
+		}
+
+		/// <summary>
+		///     Gets the total balance of Gold for this account.
+		/// </summary>
+		/// <param name="gold">Gold value, Platinum exclusive</param>
+		/// <param name="totalGold">Gold value, Platinum inclusive</param>
+		public void GetGoldBalance(out long gold, out double totalGold)
 		{
 			gold = TotalGold;
 			totalGold = TotalCurrency * Math.Max(1.0, CurrencyThreshold);
@@ -1572,6 +1627,17 @@ namespace Server.Accounting
 		}
 
 		/// <summary>
+		///     Gets the total balance of Platinum for this account.
+		/// </summary>
+		/// <param name="plat">Platinum value, Gold exclusive</param>
+		/// <param name="totalPlat">Platinum value, Gold inclusive</param>
+		public void GetPlatBalance(out long plat, out double totalPlat)
+		{
+			plat = TotalPlat;
+			totalPlat = TotalCurrency;
+		}
+
+		/// <summary>
 		///     Gets the total balance of Gold and Platinum for this account.
 		/// </summary>
 		/// <param name="gold">Gold value, Platinum exclusive</param>
@@ -1579,6 +1645,19 @@ namespace Server.Accounting
 		/// <param name="plat">Platinum value, Gold exclusive</param>
 		/// <param name="totalPlat">Platinum value, Gold inclusive</param>
 		public void GetBalance(out int gold, out double totalGold, out int plat, out double totalPlat)
+		{
+			GetGoldBalance(out gold, out totalGold);
+			GetPlatBalance(out plat, out totalPlat);
+		}
+
+		/// <summary>
+		///     Gets the total balance of Gold and Platinum for this account.
+		/// </summary>
+		/// <param name="gold">Gold value, Platinum exclusive</param>
+		/// <param name="totalGold">Gold value, Platinum inclusive</param>
+		/// <param name="plat">Platinum value, Gold exclusive</param>
+		/// <param name="totalPlat">Platinum value, Gold inclusive</param>
+		public void GetBalance(out long gold, out double totalGold, out long plat, out double totalPlat)
 		{
 			GetGoldBalance(out gold, out totalGold);
 			GetPlatBalance(out plat, out totalPlat);

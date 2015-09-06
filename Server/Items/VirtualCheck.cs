@@ -12,9 +12,14 @@ namespace Server
 
 		public override bool IsVirtualItem { get { return true; } }
 
+		public override bool DisplayWeight { get { return false; } }
+		public override bool DisplayLootType { get { return false; } }
+
 		public override double DefaultWeight { get { return 0; } }
 
 		public override string DefaultName { get { return "Offer Of Currency"; } }
+
+		public EditGump Editor { get; private set; }
 
 		private int _Plat;
 
@@ -75,10 +80,24 @@ namespace Server
 		{
 			if (UseEditGump && IsAccessibleTo(from))
 			{
-				new EditGump(from, this).Send();
+				if (Editor == null)
+				{
+					Editor = new EditGump(from, this);
+					Editor.Send();
+				}
+				else
+				{
+					Editor.Refresh(true);
+				}
 			}
 			else
 			{
+				if (Editor != null)
+				{
+					Editor.Close();
+					Editor = null;
+				}
+
 				base.OnDoubleClickSecureTrade(from);
 			}
 		}
@@ -93,6 +112,38 @@ namespace Server
 			base.GetProperties(list);
 
 			list.Add(1060738, String.Format("{0:#,0} platinum, {1:#,0} gold", Plat, Gold)); // value: ~1_val~
+		}
+
+		public void UpdateTrade(Mobile user)
+		{
+			var c = GetSecureTradeCont();
+
+			if (c == null || c.Trade == null)
+			{
+				return;
+			}
+
+			if (user == c.Trade.From.Mobile)
+			{
+				c.Trade.UpdateFromCurrency();
+			}
+			else if (user == c.Trade.To.Mobile)
+			{
+				c.Trade.UpdateToCurrency();
+			}
+
+			c.ClearChecks();
+		}
+
+		public override void OnAfterDelete()
+		{
+			base.OnAfterDelete();
+
+			if (Editor != null)
+			{
+				Editor.Close();
+				Editor = null;
+			}
 		}
 
 		public override void Serialize(GenericWriter writer)
@@ -114,6 +165,8 @@ namespace Server
 				AllGold
 			}
 
+			private int _Plat, _Gold;
+
 			public Mobile User { get; private set; }
 			public VirtualCheck Check { get; private set; }
 
@@ -123,18 +176,31 @@ namespace Server
 				User = user;
 				Check = check;
 
+				_Plat = Check.Plat;
+				_Gold = Check.Gold;
+
+				User.CloseGump(GetType());
+
 				Closable = true;
 				Disposable = true;
 				Dragable = true;
 				Resizable = false;
 
-				Close();
 				CompileLayout();
 			}
 
 			public void Close()
 			{
 				User.CloseGump(GetType());
+
+				if (Check != null && !Check.Deleted)
+				{
+					Check.UpdateTrade(User);
+				}
+				else
+				{
+					Check = null;
+				}
 			}
 
 			public void Send()
@@ -170,7 +236,7 @@ namespace Server
 				string title = String.Format(
 					"<BASEFONT COLOR=#{0:X}><CENTER>TREASURY OF {1}</CENTER>",
 					Color.DarkSlateGray.ToArgb(),
-					User.RawName);
+					User.RawName.ToUpper());
 
 				AddHtml(40, 15, 320, 20, title, false, false);
 
@@ -184,7 +250,7 @@ namespace Server
 
 				AddBackground(210, 60, 175, 20, 9300);
 				AddBackground(215, 45, 165, 30, 9350);
-				AddTextEntry(225, 50, 145, 20, 0, 0, Check.Plat.ToString());
+				AddTextEntry(225, 50, 145, 20, 0, 0, _Plat.ToString(), User.Account.TotalPlat.ToString().Length);
 
 				// Gold Row
 				AddBackground(15, 100, 175, 20, 9300);
@@ -196,7 +262,7 @@ namespace Server
 
 				AddBackground(210, 100, 175, 20, 9300);
 				AddBackground(215, 85, 165, 30, 9350);
-				AddTextEntry(225, 90, 145, 20, 0, 1, Check.Gold.ToString());
+				AddTextEntry(225, 90, 145, 20, 0, 1, _Gold.ToString(), User.Account.TotalGold.ToString().Length);
 
 				// Buttons
 				AddButton(20, 128, 12006, 12007, (int)Buttons.Close, GumpButtonType.Reply, 0);
@@ -212,108 +278,84 @@ namespace Server
 					return;
 				}
 
+				bool refresh = false;
+
 				switch ((Buttons)info.ButtonID)
 				{
 					case Buttons.Close:
-					{
-						Close();
-					}
 						break;
 					case Buttons.Clear:
-					{
-						Check.Plat = 0;
-						Check.Gold = 0;
-						Refresh(true);
-					}
+						{
+							_Plat = _Gold = 0;
+							refresh = true;
+						}
 						break;
 					case Buttons.Accept:
-					{
-						var platText = info.GetTextEntry(0).Text;
-						var goldText = info.GetTextEntry(1).Text;
-
-						int plat, gold;
-						bool refresh = false;
-
-						if (Int32.TryParse(platText, out plat))
 						{
-							if (plat <= User.Account.TotalPlat)
+							var platText = info.GetTextEntry(0).Text;
+							var goldText = info.GetTextEntry(1).Text;
+
+							if (Int32.TryParse(platText, out _Plat))
 							{
-								Check.Plat = plat;
+								if (_Plat <= User.Account.TotalPlat)
+								{
+									Check.Plat = _Plat;
+								}
+								else
+								{
+									_Plat = User.Account.TotalPlat;
+									User.SendMessage("You do not have that much platinum.");
+									refresh = true;
+								}
 							}
 							else
 							{
-								Check.Plat = User.Account.TotalPlat;
-								User.SendMessage("You do not have that much platinum.");
+								User.SendMessage("That is not a valid amount of platinum.");
 								refresh = true;
 							}
-						}
-						else
-						{
-							User.SendMessage("That is not a valid amount of platinum.");
-							refresh = true;
-						}
 
-						if (Int32.TryParse(goldText, out gold))
-						{
-							if (gold <= User.Account.TotalGold)
+							if (Int32.TryParse(goldText, out _Gold))
 							{
-								Check.Gold = gold;
+								if (_Gold <= User.Account.TotalGold)
+								{
+									Check.Gold = _Gold;
+								}
+								else
+								{
+									_Gold = User.Account.TotalGold;
+									User.SendMessage("You do not have that much gold.");
+									refresh = true;
+								}
 							}
 							else
 							{
-								Check.Gold = User.Account.TotalGold;
-								User.SendMessage("You do not have that much gold.");
+								User.SendMessage("That is not a valid amount of gold.");
 								refresh = true;
 							}
 						}
-						else
-						{
-							User.SendMessage("That is not a valid amount of gold.");
-							refresh = true;
-						}
-
-						if (refresh)
-						{
-							Refresh(true);
-						}
-						else
-						{
-							User.SendMessage("Your offer has been updated.");
-							Close();
-						}
-					}
 						break;
 					case Buttons.AllPlat:
-					{
-						Check.Plat = User.Account.TotalPlat;
-						Refresh(true);
-					}
+						{
+							_Plat = User.Account.TotalPlat;
+							refresh = true;
+						}
 						break;
 					case Buttons.AllGold:
-					{
-						Check.Gold = User.Account.TotalGold;
-						Refresh(true);
-					}
+						{
+							_Gold = User.Account.TotalGold;
+							refresh = true;
+						}
 						break;
 				}
 
-				var c = Check.GetSecureTradeCont();
-
-				if (c == null || c.Trade == null)
+				if (refresh)
 				{
+					Refresh(true);
 					return;
 				}
 
-				if (User == c.Trade.From.Mobile)
-				{
-					c.Trade.UpdateFromCurrency();
-				}
-				else if (User == c.Trade.To.Mobile)
-				{
-					c.Trade.UpdateToCurrency();
-				}
-
-				c.Trade.Update();
+				User.SendMessage("Your offer has been updated.");
+				Close();
 			}
 		}
 	}

@@ -1,8 +1,22 @@
-#region Header
-// **********
-// ServUO - SecureTrade.cs
-// **********
-#endregion
+/***************************************************************************
+ *                               SecureTrade.cs
+ *                            -------------------
+ *   begin                : May 1, 2002
+ *   copyright            : (C) The RunUO Software Team
+ *   email                : info@runuo.com
+ *
+ *   $Id$
+ *
+ ***************************************************************************/
+
+/***************************************************************************
+ *
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 2 of the License, or
+ *   (at your option) any later version.
+ *
+ ***************************************************************************/
 
 #region References
 using System;
@@ -33,7 +47,7 @@ namespace Server
 
 			var from704565 = (from.NetState != null && from.NetState.NewSecureTrading);
 			var to704565 = (to.NetState != null && to.NetState.NewSecureTrading);
-			
+
 			from.Send(new MobileStatus(from, to));
 			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
@@ -181,7 +195,7 @@ namespace Server
 			{
 				ns.RemoveTrade(this);
 			}
-			
+
 			Timer.DelayCall(m_From.Dispose);
 			Timer.DelayCall(m_To.Dispose);
 		}
@@ -220,6 +234,11 @@ namespace Server
 				left.Mobile.SendMessage(
 					"The amount of currency held in your account has changed. " +
 					"Your offer has been updated to reflect the difference.");
+			}
+
+			if (left.Mobile.NetState != null && left.Mobile.NetState.NewSecureTrading)
+			{
+				left.Mobile.Send(new UpdateSecureTrade(left.Container, TradeFlag.UpdateLedger, gold, plat));
 			}
 
 			if (right.Mobile.NetState != null && right.Mobile.NetState.NewSecureTrading)
@@ -353,25 +372,7 @@ namespace Server
 
 				if (AccountGold.Enabled && m_From.Mobile.Account != null && m_To.Mobile.Account != null)
 				{
-					if (m_From.Plat > 0 & m_From.Mobile.Account.WithdrawPlat(m_From.Plat))
-					{
-						m_To.Mobile.Account.DepositPlat(m_From.Plat);
-					}
-
-					if (m_From.Gold > 0 & m_From.Mobile.Account.WithdrawGold(m_From.Gold))
-					{
-						m_To.Mobile.Account.DepositGold(m_From.Gold);
-					}
-
-					if (m_To.Plat > 0 & m_To.Mobile.Account.WithdrawPlat(m_To.Plat))
-					{
-						m_From.Mobile.Account.DepositPlat(m_To.Plat);
-					}
-
-					if (m_To.Gold > 0 & m_To.Mobile.Account.WithdrawGold(m_To.Gold))
-					{
-						m_From.Mobile.Account.DepositGold(m_To.Gold);
-					}
+					HandleAccountGoldTrade();
 				}
 
 				list = m_From.Container.Items;
@@ -426,6 +427,90 @@ namespace Server
 				m_To.Mobile.Send(new UpdateSecureTrade(m_To.Container, m_To.Accepted, m_From.Accepted));
 			}
 		}
+
+		private void HandleAccountGoldTrade()
+		{
+			int fromPlatSend = 0, fromGoldSend = 0, fromPlatRecv = 0, fromGoldRecv = 0;
+			int toPlatSend = 0, toGoldSend = 0, toPlatRecv = 0, toGoldRecv = 0;
+
+			if (m_From.Plat > 0 & m_From.Mobile.Account.WithdrawPlat(m_From.Plat))
+			{
+				fromPlatSend = m_From.Plat;
+
+				if (m_To.Mobile.Account.DepositPlat(m_From.Plat))
+				{
+					toPlatRecv = fromPlatSend;
+				}
+			}
+
+			if (m_From.Gold > 0 & m_From.Mobile.Account.WithdrawGold(m_From.Gold))
+			{
+				fromGoldSend = m_From.Gold;
+
+				if (m_To.Mobile.Account.DepositGold(m_From.Gold))
+				{
+					toGoldRecv = fromGoldSend;
+				}
+			}
+
+			if (m_To.Plat > 0 & m_To.Mobile.Account.WithdrawPlat(m_To.Plat))
+			{
+				toPlatSend = m_To.Plat;
+
+				if (m_From.Mobile.Account.DepositPlat(m_To.Plat))
+				{
+					fromPlatRecv = toPlatSend;
+				}
+			}
+
+			if (m_To.Gold > 0 & m_To.Mobile.Account.WithdrawGold(m_To.Gold))
+			{
+				toGoldSend = m_To.Gold;
+
+				if (m_From.Mobile.Account.DepositGold(m_To.Gold))
+				{
+					fromGoldRecv = toGoldSend;
+				}
+			}
+
+			HandleAccountGoldTrade(m_From.Mobile, m_To.Mobile, fromPlatSend, fromGoldSend, fromPlatRecv, fromGoldRecv);
+			HandleAccountGoldTrade(m_To.Mobile, m_From.Mobile, toPlatSend, toGoldSend, toPlatRecv, toGoldRecv);
+		}
+
+		private static void HandleAccountGoldTrade(Mobile left, Mobile right, int platSend, int goldSend, int platRecv, int goldRecv)
+		{
+			if (platSend > 0 || goldSend > 0)
+			{
+				if (platSend > 0 && goldSend > 0)
+				{
+					left.SendMessage("You traded {0:#,0} platinum and {1:#,0} gold to {2}.", platSend, goldSend, right.RawName);
+				}
+				else if (platSend > 0)
+				{
+					left.SendMessage("You traded {0:#,0} platinum to {1}.", platSend, right.RawName);
+				}
+				else if (goldSend > 0)
+				{
+					left.SendMessage("You traded {0:#,0} gold to {1}.", goldSend, right.RawName);
+				}
+			}
+
+			if (platRecv > 0 || goldRecv > 0)
+			{
+				if (platRecv > 0 && goldRecv > 0)
+				{
+					left.SendMessage("You received {0:#,0} platinum and {1:#,0} gold from {2}.", platRecv, goldRecv, right.RawName);
+				}
+				else if (platRecv > 0)
+				{
+					left.SendMessage("You received {0:#,0} platinum from {1}.", platRecv, right.RawName);
+				}
+				else if (goldRecv > 0)
+				{
+					left.SendMessage("You received {0:#,0} gold from {1}.", goldRecv, right.RawName);
+				}
+			}
+		}
 	}
 
 	public class SecureTradeInfo : IDisposable
@@ -447,7 +532,7 @@ namespace Server
 			Owner = owner;
 			Mobile = m;
 			Container = c;
-			
+
 			Mobile.AddItem(Container);
 
 			VirtualCheck = new VirtualCheck(0, 0);

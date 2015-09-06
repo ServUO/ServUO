@@ -1,263 +1,348 @@
-using System;
+#region Header
+// **********
+// ServUO - ComponentVerification.cs
+// **********
+#endregion
+
+#region References
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+#endregion
 
 namespace Server.Multis
 {
-    public class ComponentVerification
-    {
-        private readonly int[] m_ItemTable;
-        private readonly int[] m_MultiTable;
-        public ComponentVerification()
-        {
-            this.m_ItemTable = this.CreateTable(0x10000);
-            this.m_MultiTable = this.CreateTable(0x4000);
+	public class ComponentVerification
+	{
+		private readonly int[] m_ItemTable;
+		private readonly int[] m_MultiTable;
 
-            this.LoadItems("Data/Components/walls.txt", "South1", "South2", "South3", "Corner", "East1", "East2", "East3", "Post", "WindowS", "AltWindowS", "WindowE", "AltWindowE", "SecondAltWindowS", "SecondAltWindowE");
-            this.LoadItems("Data/Components/teleprts.txt", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "F13", "F14", "F15", "F16");
-            this.LoadItems("Data/Components/stairs.txt", "Block", "North", "East", "South", "West", "Squared1", "Squared2", "Rounded1", "Rounded2");
-            this.LoadItems("Data/Components/roof.txt", "North", "East", "South", "West", "NSCrosspiece", "EWCrosspiece", "NDent", "EDent", "SDent", "WDent", "NTPiece", "ETPiece", "STPiece", "WTPiece", "XPiece", "Extra Piece");
-            this.LoadItems("Data/Components/floors.txt", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "F13", "F14", "F15", "F16");
-            this.LoadItems("Data/Components/misc.txt", "Piece1", "Piece2", "Piece3", "Piece4", "Piece5", "Piece6", "Piece7", "Piece8");
-            this.LoadItems("Data/Components/doors.txt", "Piece1", "Piece2", "Piece3", "Piece4", "Piece5", "Piece6", "Piece7", "Piece8");
+		public ComponentVerification()
+		{
+			m_ItemTable = CreateTable(TileData.MaxItemValue);
+			m_MultiTable = CreateTable(0x4000);
 
-            this.LoadMultis("Data/Components/stairs.txt", "MultiNorth", "MultiEast", "MultiSouth", "MultiWest");
-        }
+			LoadItems(
+				"Data/Components/walls.txt",
+				"South1",
+				"South2",
+				"South3",
+				"Corner",
+				"East1",
+				"East2",
+				"East3",
+				"Post",
+				"WindowS",
+				"AltWindowS",
+				"WindowE",
+				"AltWindowE",
+				"SecondAltWindowS",
+				"SecondAltWindowE");
+			LoadItems(
+				"Data/Components/teleprts.txt",
+				"F1",
+				"F2",
+				"F3",
+				"F4",
+				"F5",
+				"F6",
+				"F7",
+				"F8",
+				"F9",
+				"F10",
+				"F11",
+				"F12",
+				"F13",
+				"F14",
+				"F15",
+				"F16");
+			LoadItems(
+				"Data/Components/stairs.txt",
+				"Block",
+				"North",
+				"East",
+				"South",
+				"West",
+				"Squared1",
+				"Squared2",
+				"Rounded1",
+				"Rounded2");
+			LoadItems(
+				"Data/Components/roof.txt",
+				"North",
+				"East",
+				"South",
+				"West",
+				"NSCrosspiece",
+				"EWCrosspiece",
+				"NDent",
+				"EDent",
+				"SDent",
+				"WDent",
+				"NTPiece",
+				"ETPiece",
+				"STPiece",
+				"WTPiece",
+				"XPiece",
+				"Extra Piece");
+			LoadItems(
+				"Data/Components/floors.txt",
+				"F1",
+				"F2",
+				"F3",
+				"F4",
+				"F5",
+				"F6",
+				"F7",
+				"F8",
+				"F9",
+				"F10",
+				"F11",
+				"F12",
+				"F13",
+				"F14",
+				"F15",
+				"F16");
+			LoadItems("Data/Components/misc.txt", "Piece1", "Piece2", "Piece3", "Piece4", "Piece5", "Piece6", "Piece7", "Piece8");
+			LoadItems(
+				"Data/Components/doors.txt",
+				"Piece1",
+				"Piece2",
+				"Piece3",
+				"Piece4",
+				"Piece5",
+				"Piece6",
+				"Piece7",
+				"Piece8");
 
-        public bool IsItemValid(int itemID)
-        {
-            if (itemID <= 0 || itemID >= this.m_ItemTable.Length)
-                return false;
+			LoadMultis("Data/Components/stairs.txt", "MultiNorth", "MultiEast", "MultiSouth", "MultiWest");
+		}
 
-            return this.CheckValidity(this.m_ItemTable[itemID]);
-        }
+		public bool IsItemValid(int itemID)
+		{
+			if (itemID <= 0 || itemID >= m_ItemTable.Length)
+			{
+				return false;
+			}
 
-        public bool IsMultiValid(int multiID)
-        {
-            if (multiID <= 0 || multiID >= this.m_MultiTable.Length)
-                return false;
+			return CheckValidity(m_ItemTable[itemID]);
+		}
 
-            return this.CheckValidity(this.m_MultiTable[multiID]);
-        }
+		public bool IsMultiValid(int multiID)
+		{
+			if (multiID <= 0 || multiID >= m_MultiTable.Length)
+			{
+				return false;
+			}
 
-        public bool CheckValidity(int val)
-        {
-            if (val == -1)
-                return false;
+			return CheckValidity(m_MultiTable[multiID]);
+		}
 
-            return (val == 0 || ((uint)ExpansionInfo.CoreExpansion.CustomHousingFlag & val) != 0);
-        }
+		public bool CheckValidity(int val)
+		{
+			if (val == -1)
+			{
+				return false;
+			}
 
-        private int[] CreateTable(int length)
-        {
-            int[] table = new int[length];
+			return (val == 0 || ((uint)ExpansionInfo.CoreExpansion.CustomHousingFlag & val) != 0);
+		}
 
-            for (int i = 0; i < table.Length; ++i)
-                table[i] = -1;
+		private static int[] CreateTable(int length)
+		{
+			var table = new int[length];
 
-            return table;
-        }
+			for (var i = 0; i < table.Length; ++i)
+			{
+				table[i] = -1;
+			}
 
-        private void LoadItems(string path, params string[] itemColumns)
-        {
-            this.LoadSpreadsheet(this.m_ItemTable, path, itemColumns);
-        }
+			return table;
+		}
 
-        private void LoadMultis(string path, params string[] multiColumns)
-        {
-            this.LoadSpreadsheet(this.m_MultiTable, path, multiColumns);
-        }
+		private void LoadItems(string path, params string[] itemColumns)
+		{
+			LoadSpreadsheet(m_ItemTable, path, itemColumns);
+		}
 
-        private void LoadSpreadsheet(int[] table, string path, params string[] tileColumns)
-        {
-            Spreadsheet ss = new Spreadsheet(path);
+		private void LoadMultis(string path, params string[] multiColumns)
+		{
+			LoadSpreadsheet(m_MultiTable, path, multiColumns);
+		}
 
-            int[] tileCIDs = new int[tileColumns.Length];
+		private static void LoadSpreadsheet(int[] table, string path, params string[] tileColumns)
+		{
+			var ss = new Spreadsheet(path);
 
-            for (int i = 0; i < tileColumns.Length; ++i)
-                tileCIDs[i] = ss.GetColumnID(tileColumns[i]);
+			var tileCIDs = new int[tileColumns.Length];
 
-            int featureCID = ss.GetColumnID("FeatureMask");
+			for (var i = 0; i < tileColumns.Length; ++i)
+			{
+				tileCIDs[i] = ss.GetColumnID(tileColumns[i]);
+			}
 
-            for (int i = 0; i < ss.Records.Length; ++i)
-            {
-                DataRecord record = ss.Records[i];
+			var featureCID = ss.GetColumnID("FeatureMask");
 
-                int fid = record.GetInt32(featureCID);
+			foreach (var record in ss.Records)
+			{
+				var fid = record.GetInt32(featureCID);
 
-                for (int j = 0; j < tileCIDs.Length; ++j)
-                {
-                    int itemID = record.GetInt32(tileCIDs[j]);
+				foreach (var itemID in tileCIDs.Select(v => record.GetInt32(v)).Where(itemID => itemID > 0 && itemID < table.Length))
+				{
+					table[itemID] = fid;
+				}
+			}
+		}
+	}
 
-                    if (itemID <= 0 || itemID >= table.Length)
-                        continue;
+	public class Spreadsheet
+	{
+		private readonly ColumnInfo[] m_Columns;
+		private readonly DataRecord[] m_Records;
 
-                    table[itemID] = fid;
-                }
-            }
-        }
-    }
+		public Spreadsheet(string path)
+		{
+			using (var ip = new StreamReader(path))
+			{
+				var types = ReadLine(ip);
+				var names = ReadLine(ip);
 
-    public class Spreadsheet
-    {
-        private readonly ColumnInfo[] m_Columns;
-        private readonly DataRecord[] m_Records;
-        public Spreadsheet(string path)
-        {
-            using (StreamReader ip = new StreamReader(path))
-            {
-                string[] types = this.ReadLine(ip);
-                string[] names = this.ReadLine(ip);
+				m_Columns = new ColumnInfo[types.Length];
 
-                this.m_Columns = new ColumnInfo[types.Length];
+				for (var i = 0; i < m_Columns.Length; ++i)
+				{
+					m_Columns[i] = new ColumnInfo(i, types[i], names[i]);
+				}
 
-                for (int i = 0; i < this.m_Columns.Length; ++i)
-                    this.m_Columns[i] = new ColumnInfo(i, types[i], names[i]);
+				var records = new List<DataRecord>();
 
-                List<DataRecord> records = new List<DataRecord>();
+				string[] values;
 
-                string[] values;
+				while ((values = ReadLine(ip)) != null)
+				{
+					var data = new object[m_Columns.Length];
 
-                while ((values = this.ReadLine(ip)) != null)
-                {
-                    object[] data = new object[this.m_Columns.Length];
+					for (var i = 0; i < m_Columns.Length; ++i)
+					{
+						var ci = m_Columns[i];
 
-                    for (int i = 0; i < this.m_Columns.Length; ++i)
-                    {
-                        ColumnInfo ci = this.m_Columns[i];
+						switch (ci.m_Type)
+						{
+							case "int":
+								data[i] = Utility.ToInt32(values[ci.m_DataIndex]);
+								break;
+							case "string":
+								data[i] = values[ci.m_DataIndex];
+								break;
+						}
+					}
 
-                        switch ( ci.m_Type )
-                        {
-                            case "int":
-                                {
-                                    data[i] = Utility.ToInt32(values[ci.m_DataIndex]);
-                                    break;
-                                }
-                            case "string":
-                                {
-                                    data[i] = values[ci.m_DataIndex];
-                                    break;
-                                }
-                        }
-                    }
+					records.Add(new DataRecord(this, data));
+				}
 
-                    records.Add(new DataRecord(this, data));
-                }
+				m_Records = records.ToArray();
+			}
+		}
 
-                this.m_Records = records.ToArray();
-            }
-        }
+		public DataRecord[] Records { get { return m_Records; } }
 
-        public DataRecord[] Records
-        {
-            get
-            {
-                return this.m_Records;
-            }
-        }
-        public int GetColumnID(string name)
-        {
-            for (int i = 0; i < this.m_Columns.Length; ++i)
-            {
-                if (this.m_Columns[i].m_Name == name)
-                    return i;
-            }
+		public int GetColumnID(string name)
+		{
+			for (var i = 0; i < m_Columns.Length; ++i)
+			{
+				if (m_Columns[i].m_Name == name)
+				{
+					return i;
+				}
+			}
 
-            return -1;
-        }
+			return -1;
+		}
 
-        private string[] ReadLine(StreamReader ip)
-        {
-            string line;
+		private static string[] ReadLine(StreamReader ip)
+		{
+			string line;
 
-            while ((line = ip.ReadLine()) != null)
-            {
-                if (line.Length == 0)
-                    continue;
+			while ((line = ip.ReadLine()) != null)
+			{
+				if (line.Length == 0)
+				{
+					continue;
+				}
 
-                return line.Split('\t');
-            }
+				return line.Split('\t');
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        private class ColumnInfo
-        {
-            public readonly int m_DataIndex;
-            public readonly string m_Type;
-            public readonly string m_Name;
-            public ColumnInfo(int dataIndex, string type, string name)
-            {
-                this.m_DataIndex = dataIndex;
+		private class ColumnInfo
+		{
+			public readonly int m_DataIndex;
+			public readonly string m_Type;
+			public readonly string m_Name;
 
-                this.m_Type = type;
-                this.m_Name = name;
-            }
-        }
-    }
+			public ColumnInfo(int dataIndex, string type, string name)
+			{
+				m_DataIndex = dataIndex;
 
-    public class DataRecord
-    {
-        private readonly Spreadsheet m_Spreadsheet;
-        private readonly object[] m_Data;
-        public DataRecord(Spreadsheet ss, object[] data)
-        {
-            this.m_Spreadsheet = ss;
-            this.m_Data = data;
-        }
+				m_Type = type;
+				m_Name = name;
+			}
+		}
+	}
 
-        public Spreadsheet Spreadsheet
-        {
-            get
-            {
-                return this.m_Spreadsheet;
-            }
-        }
-        public object[] Data
-        {
-            get
-            {
-                return this.m_Data;
-            }
-        }
-        public object this[string name]
-        {
-            get
-            {
-                return this[this.m_Spreadsheet.GetColumnID(name)];
-            }
-        }
-        public object this[int id]
-        {
-            get
-            {
-                if (id < 0)
-                    return null;
+	public class DataRecord
+	{
+		private readonly Spreadsheet m_Spreadsheet;
+		private readonly object[] m_Data;
 
-                return this.m_Data[id];
-            }
-        }
-        public int GetInt32(string name)
-        {
-            return this.GetInt32(this[name]);
-        }
+		public DataRecord(Spreadsheet ss, object[] data)
+		{
+			m_Spreadsheet = ss;
+			m_Data = data;
+		}
 
-        public int GetInt32(int id)
-        {
-            return this.GetInt32(this[id]);
-        }
+		public Spreadsheet Spreadsheet { get { return m_Spreadsheet; } }
+		public object[] Data { get { return m_Data; } }
+		public object this[string name] { get { return this[m_Spreadsheet.GetColumnID(name)]; } }
 
-        public int GetInt32(object obj)
-        {
-            if (obj is int)
-                return (int)obj;
+		public object this[int id]
+		{
+			get
+			{
+				if (id < 0)
+				{
+					return null;
+				}
 
-            return 0;
-        }
+				return m_Data[id];
+			}
+		}
 
-        public string GetString(string name)
-        {
-            return this[name] as string;
-        }
-    }
+		public int GetInt32(string name)
+		{
+			return GetInt32(this[name]);
+		}
+
+		public int GetInt32(int id)
+		{
+			return GetInt32(this[id]);
+		}
+
+		public int GetInt32(object obj)
+		{
+			if (obj is int)
+			{
+				return (int)obj;
+			}
+
+			return 0;
+		}
+
+		public string GetString(string name)
+		{
+			return this[name] as string;
+		}
+	}
 }

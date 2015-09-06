@@ -103,7 +103,14 @@ namespace Server.Items
 			Mobile owner = null;
 			SecureTradeInfo tradeInfo = null;
 
-			parent = RootParent;
+			Container root = parent as Container;
+
+			while (root != null && root.Parent is Container)
+			{
+				root = (Container)root.Parent;
+			}
+
+			parent = root ?? parent;
 
 			if (parent is SecureTradeContainer)
 			{
@@ -125,22 +132,30 @@ namespace Server.Items
 				owner = ((BankBox)parent).Owner;
 			}
 
-			if (owner == null || owner.Account == null || !owner.Account.DepositGold(m_Worth))
+			if (owner == null || owner.Account == null || !owner.Account.DepositGold(Worth))
 			{
 				return;
 			}
 
 			if (tradeInfo != null)
 			{
-				var total = m_Worth / Math.Max(1.0, Account.CurrencyThreshold);
-				var plat = (int)Math.Truncate(total);
-				var gold = (int)((total - plat) * Account.CurrencyThreshold);
+				if (owner.NetState != null && !owner.NetState.NewSecureTrading)
+				{
+					var total = Worth / Math.Max(1.0, Account.CurrencyThreshold);
+					var plat = (int)Math.Truncate(total);
+					var gold = (int)((total - plat) * Account.CurrencyThreshold);
 
-				tradeInfo.Plat += plat;
-				tradeInfo.Gold += gold;
+					tradeInfo.Plat += plat;
+					tradeInfo.Gold += gold;
+				}
+
+				if (tradeInfo.VirtualCheck != null)
+				{
+					tradeInfo.VirtualCheck.UpdateTrade(tradeInfo.Mobile);
+				}
 			}
 
-			owner.SendLocalizedMessage(1042763, m_Worth.ToString("#,0"));
+			owner.SendLocalizedMessage(1042763, Worth.ToString("#,0"));
 
 			Delete();
 		}

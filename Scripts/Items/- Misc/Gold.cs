@@ -51,60 +51,75 @@ namespace Server.Items
 #if NEWPARENT
 		public override void OnAdded(IEntity parent)
 #else
-	    public override void OnAdded(object parent)
+		public override void OnAdded(object parent)
 #endif
-	    {
-		    base.OnAdded(parent);
+		{
+			base.OnAdded(parent);
 
 			if (!AccountGold.Enabled)
-		    {
-			    return;
-		    }
+			{
+				return;
+			}
 
-		    Mobile owner = null;
+			Mobile owner = null;
 			SecureTradeInfo tradeInfo = null;
 
-		    parent = RootParent;
+			Container root = parent as Container;
 
-		    if (parent is SecureTradeContainer)
-		    {
-			    var trade = (SecureTradeContainer)parent;
+			while (root != null && root.Parent is Container)
+			{
+				root = (Container)root.Parent;
+			}
 
-			    if (trade.Trade.From.Container == trade)
-			    {
-				    tradeInfo = trade.Trade.From;
+			parent = root ?? parent;
+
+			if (parent is SecureTradeContainer)
+			{
+				var trade = (SecureTradeContainer)parent;
+
+				if (trade.Trade.From.Container == trade)
+				{
+					tradeInfo = trade.Trade.From;
 					owner = tradeInfo.Mobile;
-			    }
-			    else if (trade.Trade.To.Container == trade)
+				}
+				else if (trade.Trade.To.Container == trade)
 				{
 					tradeInfo = trade.Trade.To;
 					owner = tradeInfo.Mobile;
-			    }
-		    }
-		    else if (parent is BankBox)
-		    {
-			    owner = ((BankBox)parent).Owner;
-		    }
+				}
+			}
+			else if (parent is BankBox)
+			{
+				owner = ((BankBox)parent).Owner;
+			}
 
-		    if (owner == null || owner.Account == null || !owner.Account.DepositGold(Amount))
-		    {
-			    return;
-		    }
+			if (owner == null || owner.Account == null || !owner.Account.DepositGold(Amount))
+			{
+				return;
+			}
 
 			if (tradeInfo != null)
 			{
-				var total = Amount / Math.Max(1.0, Account.CurrencyThreshold);
-				var plat = (int)Math.Truncate(total);
-				var gold = (int)((total - plat) * Account.CurrencyThreshold);
+				if (owner.NetState != null && !owner.NetState.NewSecureTrading)
+				{
+					var total = Amount / Math.Max(1.0, Account.CurrencyThreshold);
+					var plat = (int)Math.Truncate(total);
+					var gold = (int)((total - plat) * Account.CurrencyThreshold);
 
-				tradeInfo.Plat += plat;
-				tradeInfo.Gold += gold;
+					tradeInfo.Plat += plat;
+					tradeInfo.Gold += gold;
+				}
+
+				if (tradeInfo.VirtualCheck != null)
+				{
+					tradeInfo.VirtualCheck.UpdateTrade(tradeInfo.Mobile);
+				}
 			}
 
-		    owner.SendLocalizedMessage(1042763, Amount.ToString("#,0"));
+			owner.SendLocalizedMessage(1042763, Amount.ToString("#,0"));
 
-		    Delete();
-	    }
+			Delete();
+		}
 
 	    public override int GetTotal(TotalType type)
         {
