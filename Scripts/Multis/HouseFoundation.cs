@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using CustomsFramework.Systems.VIPSystem;
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
@@ -1169,17 +1168,13 @@ namespace Server.Multis
             int newPrice = oldPrice + this.CustomizationCost + ((this.DesignState.Components.List.Length - (this.CurrentState.Components.List.Length + this.CurrentState.Fixtures.Length)) * 500);
             int cost = newPrice - oldPrice;
 
-            VIPModule module = from.GetModule(typeof(VIPModule)) as VIPModule;
 
             if (!this.Deleted)
-            { // Temporary Fix. We should be booting a client out of customization mode in the delete handler.
+            {
+				// Temporary Fix. We should be booting a client out of customization mode in the delete handler.
                 if (from.AccessLevel >= AccessLevel.GameMaster && cost != 0)
                 {
                     from.SendMessage("{0} gold would have been {1} your bank if you were not a GM.", cost.ToString(), ((cost > 0) ? "withdrawn from" : "deposited into"));
-                }
-                else if (module != null && module.Bonuses.FreeHouseDecoration.Enabled && cost != 0)
-                {
-                    from.SendMessage("{0} gold would have been {1} your bank if you were not a VIP player, thanks for donating!", cost, ((cost > 0) ? "withdrawn from" : "deposited into"));
                 }
                 else
                 {

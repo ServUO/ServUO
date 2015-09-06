@@ -128,18 +128,6 @@
     <Compile Include=".\Context Menus\EjectPlayer.cs" />
     <Compile Include=".\Context Menus\OpenBankEntry.cs" />
     <Compile Include=".\Context Menus\TeachEntry.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Commands\Commands.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Core\Bonuses.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Core\VIPCore.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Core\VIPModule.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Gumps\VIPStore.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Items\BaseVIPDeed.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Items\Bonuses\VIPFreeHouseDecoration.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Items\BronzeVIPDeed.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Items\DonatorDeed.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Items\GoldVIPDeed.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Items\SilverVIPDeed.cs" />
-    <Compile Include=".\Custom Systems\VIP System\Mobiles\VIPVendor.cs" />
     <Compile Include=".\Gumps\AddDoorGump.cs" />
     <Compile Include=".\Gumps\AddGump.cs" />
     <Compile Include=".\Gumps\AdminGump.cs" />
@@ -4792,7 +4780,9 @@
     <None Include="Services\XmlSpawner\XMLSpawner Support\Container.cs.2.4" />
     <None Include="Services\XmlSpawner\XMLSpawner Support\Stealing.cs.2.4" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Customs\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
