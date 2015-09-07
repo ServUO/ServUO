@@ -171,7 +171,7 @@ namespace Server
 			public VirtualCheck Check { get; private set; }
 
 			public EditGump(Mobile user, VirtualCheck check)
-				: base(0, 0)
+				: base(50, 50)
 			{
 				User = user;
 				Check = check;
@@ -262,7 +262,7 @@ namespace Server
 				AddImage(360, 8, 113);
 
 				string title = String.Format(
-					"<BASEFONT COLOR=#{0:X}><CENTER>TREASURY OF {1}</CENTER>",
+					"<BASEFONT COLOR=#{0:X}><CENTER>BANK OF {1}</CENTER>",
 					Color.DarkSlateGray.ToArgb(),
 					User.RawName.ToUpper());
 

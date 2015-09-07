@@ -21,7 +21,7 @@ namespace Server.Multis
 		{
 			m_ItemTable = CreateTable(TileData.MaxItemValue);
 			m_MultiTable = CreateTable(0x4000);
-			
+
 			LoadItems(
 				"Data/Components/walls.txt",
 				//
