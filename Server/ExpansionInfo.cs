@@ -41,7 +41,7 @@ namespace Server
 	}
 
 	[Flags]
-	public enum FeatureFlags : uint
+	public enum FeatureFlags
 	{
 		None = 0x00000000,
 		T2A = 0x00000001,
@@ -116,7 +116,7 @@ namespace Server
 	}
 
 	[Flags]
-	public enum HousingFlags : uint
+	public enum HousingFlags
 	{
 		None = 0x0,
 		AOS = 0x10,

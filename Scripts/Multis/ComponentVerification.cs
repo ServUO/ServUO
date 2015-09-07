@@ -21,9 +21,10 @@ namespace Server.Multis
 		{
 			m_ItemTable = CreateTable(TileData.MaxItemValue);
 			m_MultiTable = CreateTable(0x4000);
-
+			
 			LoadItems(
 				"Data/Components/walls.txt",
+				//
 				"South1",
 				"South2",
 				"South3",
@@ -38,8 +39,10 @@ namespace Server.Multis
 				"AltWindowE",
 				"SecondAltWindowS",
 				"SecondAltWindowE");
+
 			LoadItems(
 				"Data/Components/teleprts.txt",
+				//
 				"F1",
 				"F2",
 				"F3",
@@ -56,8 +59,10 @@ namespace Server.Multis
 				"F14",
 				"F15",
 				"F16");
+
 			LoadItems(
 				"Data/Components/stairs.txt",
+				//
 				"Block",
 				"North",
 				"East",
@@ -67,8 +72,10 @@ namespace Server.Multis
 				"Squared2",
 				"Rounded1",
 				"Rounded2");
+
 			LoadItems(
 				"Data/Components/roof.txt",
+				//
 				"North",
 				"East",
 				"South",
@@ -85,8 +92,10 @@ namespace Server.Multis
 				"WTPiece",
 				"XPiece",
 				"Extra Piece");
+
 			LoadItems(
 				"Data/Components/floors.txt",
+				//
 				"F1",
 				"F2",
 				"F3",
@@ -103,9 +112,10 @@ namespace Server.Multis
 				"F14",
 				"F15",
 				"F16");
-			LoadItems("Data/Components/misc.txt", "Piece1", "Piece2", "Piece3", "Piece4", "Piece5", "Piece6", "Piece7", "Piece8");
+
 			LoadItems(
-				"Data/Components/doors.txt",
+				"Data/Components/misc.txt",
+				//
 				"Piece1",
 				"Piece2",
 				"Piece3",
@@ -115,7 +125,25 @@ namespace Server.Multis
 				"Piece7",
 				"Piece8");
 
-			LoadMultis("Data/Components/stairs.txt", "MultiNorth", "MultiEast", "MultiSouth", "MultiWest");
+			LoadItems(
+				"Data/Components/doors.txt",
+				//
+				"Piece1",
+				"Piece2",
+				"Piece3",
+				"Piece4",
+				"Piece5",
+				"Piece6",
+				"Piece7",
+				"Piece8");
+
+			LoadMultis(
+				"Data/Components/stairs.txt",
+				//
+				"MultiNorth",
+				"MultiEast",
+				"MultiSouth",
+				"MultiWest");
 		}
 
 		public bool IsItemValid(int itemID)
@@ -145,7 +173,7 @@ namespace Server.Multis
 				return false;
 			}
 
-			return (val == 0 || ((uint)ExpansionInfo.CoreExpansion.CustomHousingFlag & val) != 0);
+			return (val == 0 || ((int)ExpansionInfo.CoreExpansion.CustomHousingFlag & val) != 0);
 		}
 
 		private static int[] CreateTable(int length)
@@ -187,7 +215,7 @@ namespace Server.Multis
 			{
 				var fid = record.GetInt32(featureCID);
 
-				foreach (var itemID in tileCIDs.Select(v => record.GetInt32(v)).Where(itemID => itemID > 0 && itemID < table.Length))
+				foreach (var itemID in tileCIDs.Select(v => record.GetInt32(v)).Where(id => id > 0 && id < table.Length))
 				{
 					table[itemID] = fid;
 				}
