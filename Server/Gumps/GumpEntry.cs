@@ -12,9 +12,6 @@ namespace Server.Gumps
 {
 	public abstract class GumpEntry
 	{
-		public virtual int X { get; set; }
-		public virtual int Y { get; set; }
-
 		private Gump _Parent;
 
 		public Gump Parent

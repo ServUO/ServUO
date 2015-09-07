@@ -4780,9 +4780,7 @@
     <None Include="Services\XmlSpawner\XMLSpawner Support\Container.cs.2.4" />
     <None Include="Services\XmlSpawner\XMLSpawner Support\Stealing.cs.2.4" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Customs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
