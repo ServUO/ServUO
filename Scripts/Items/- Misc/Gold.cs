@@ -119,6 +119,8 @@ namespace Server.Items
 			owner.SendLocalizedMessage(1042763, Amount.ToString("#,0"));
 
 			Delete();
+
+			((Container)parent).UpdateTotals();
 		}
 
 	    public override int GetTotal(TotalType type)

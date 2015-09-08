@@ -158,6 +158,8 @@ namespace Server.Items
 			owner.SendLocalizedMessage(1042763, Worth.ToString("#,0"));
 
 			Delete();
+
+			((Container)parent).UpdateTotals();
 		}
 
 		public override void OnSingleClick(Mobile from)
