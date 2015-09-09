@@ -148,6 +148,8 @@ namespace Server.Accounting
 									shared -= diff;
 								}
 							}
+
+							box.UpdateTotals();
 						}
 					}
 					catch

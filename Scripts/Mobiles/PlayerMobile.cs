@@ -2260,17 +2260,26 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (msgNum != 0)
+			if (msgNum == 0)
 			{
-				if (message)
-				{
-					SendLocalizedMessage(msgNum);
-				}
+				return true;
+			}
 
+			if (!message)
+			{
 				return false;
 			}
 
-			return true;
+			if (msgNum == 1154111)
+			{
+				SendLocalizedMessage(msgNum, RawName);
+			}
+			else
+			{
+				SendLocalizedMessage(msgNum);
+			}
+
+			return false;
 		}
 
 		private static int CheckContentForTrade(Item item)
