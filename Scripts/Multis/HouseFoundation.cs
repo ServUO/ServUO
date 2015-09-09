@@ -2758,7 +2758,7 @@ namespace Server.Multis
                             }
                         }
 
-                        Timer.DelayCall(TimeSpan.Zero, new TimerStateCallback(SendPacket_Sandbox), new object[] { sqe.m_NetState, p });
+						Timer.DelayCall(sqe.m_NetState.Send, p);
                     }
                     catch (Exception e)
                     {
@@ -2778,18 +2778,8 @@ namespace Server.Multis
                         lock (m_SendQueueSyncRoot)
                             count = m_SendQueue.Count;
                     }
-                    //sqe.m_NetState.Send( new DesignStateDetailed( sqe.m_Serial, sqe.m_Revision, sqe.m_xMin, sqe.m_yMin, sqe.m_xMax, sqe.m_yMax, sqe.m_Tiles ) );
                 }
             }
-        }
-
-        public static void SendPacket_Sandbox(object state)
-        {
-            object[] states = (object[])state;
-            NetState ns = (NetState)states[0];
-            Packet p = (Packet)states[1];
-
-            ns.Send(p);
         }
 
         public static void SendDetails(NetState ns, HouseFoundation house, DesignState state)
