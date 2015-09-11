@@ -1,8 +1,17 @@
+#region Header
+// **********
+// ServUO - VirtualCheck.cs
+// **********
+#endregion
+
+#region References
 using System;
 using System.Drawing;
 
+using Server.Accounting;
 using Server.Gumps;
 using Server.Network;
+#endregion
 
 namespace Server
 {
@@ -261,7 +270,7 @@ namespace Server
 				AddImage(10, 8, 113);
 				AddImage(360, 8, 113);
 
-				string title = String.Format(
+				var title = String.Format(
 					"<BASEFONT COLOR=#{0:X}><CENTER>BANK OF {1}</CENTER>",
 					Color.DarkSlateGray.ToArgb(),
 					User.RawName.ToUpper());
@@ -313,68 +322,58 @@ namespace Server
 					case Buttons.Close:
 						break;
 					case Buttons.Clear:
-						{
-							_Plat = _Gold = 0;
-							refresh = true;
-						}
+					{
+						_Plat = _Gold = 0;
+						refresh = true;
+					}
 						break;
 					case Buttons.Accept:
+					{
+						var platText = info.GetTextEntry(0).Text;
+						var goldText = info.GetTextEntry(1).Text;
+
+						if (!Int32.TryParse(platText, out _Plat))
 						{
-							var platText = info.GetTextEntry(0).Text;
-							var goldText = info.GetTextEntry(1).Text;
+							User.SendMessage("That is not a valid amount of platinum.");
+							refresh = true;
+						}
+						else if (!Int32.TryParse(goldText, out _Gold))
+						{
+							User.SendMessage("That is not a valid amount of gold.");
+							refresh = true;
+						}
+						else
+						{
+							var cur = User.Account.TotalCurrency;
+							var off = _Plat + (_Gold / Math.Max(1.0, AccountGold.CurrencyThreshold));
 
-							if (Int32.TryParse(platText, out _Plat))
+							if (off > cur)
 							{
-								if (_Plat <= User.Account.TotalPlat)
-								{
-									Check.Plat = _Plat;
-									updated = true;
-								}
-								else
-								{
-									_Plat = User.Account.TotalPlat;
-									User.SendMessage("You do not have that much platinum.");
-									refresh = true;
-								}
+								_Plat = User.Account.TotalPlat;
+								_Gold = User.Account.TotalGold;
+								User.SendMessage("You do not have that much currency.");
+								refresh = true;
 							}
 							else
 							{
-								User.SendMessage("That is not a valid amount of platinum.");
-								refresh = true;
-							}
-
-							if (Int32.TryParse(goldText, out _Gold))
-							{
-								if (_Gold <= User.Account.TotalGold)
-								{
-									Check.Gold = _Gold;
-									updated = true;
-								}
-								else
-								{
-									_Gold = User.Account.TotalGold;
-									User.SendMessage("You do not have that much gold.");
-									refresh = true;
-								}
-							}
-							else
-							{
-								User.SendMessage("That is not a valid amount of gold.");
-								refresh = true;
+								Check.Plat = _Plat;
+								Check.Gold = _Gold;
+								updated = true;
 							}
 						}
+					}
 						break;
 					case Buttons.AllPlat:
-						{
-							_Plat = User.Account.TotalPlat;
-							refresh = true;
-						}
+					{
+						_Plat = User.Account.TotalPlat;
+						refresh = true;
+					}
 						break;
 					case Buttons.AllGold:
-						{
-							_Gold = User.Account.TotalGold;
-							refresh = true;
-						}
+					{
+						_Gold = User.Account.TotalGold;
+						refresh = true;
+					}
 						break;
 				}
 

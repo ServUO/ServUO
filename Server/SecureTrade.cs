@@ -1,22 +1,8 @@
-/***************************************************************************
- *                               SecureTrade.cs
- *                            -------------------
- *   begin                : May 1, 2002
- *   copyright            : (C) The RunUO Software Team
- *   email                : info@runuo.com
- *
- *   $Id$
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+#region Header
+// **********
+// ServUO - SecureTrade.cs
+// **********
+#endregion
 
 #region References
 using System;
@@ -76,7 +62,8 @@ namespace Server
 
 			if (from.Account != null && from704565)
 			{
-				from.Send(new UpdateSecureTrade(m_From.Container, TradeFlag.UpdateLedger, from.Account.TotalGold, from.Account.TotalPlat));
+				from.Send(
+					new UpdateSecureTrade(m_From.Container, TradeFlag.UpdateLedger, from.Account.TotalGold, from.Account.TotalPlat));
 			}
 
 			to.Send(new MobileStatus(to, from));
@@ -212,32 +199,11 @@ namespace Server
 
 		private static void UpdateCurrency(SecureTradeInfo left, SecureTradeInfo right)
 		{
-			var plat = left.Mobile.Account.TotalPlat;
-			var gold = left.Mobile.Account.TotalGold;
-
-			var changed = false;
-
-			if (left.Plat > plat)
-			{
-				left.Plat = plat;
-				changed = true;
-			}
-
-			if (left.Gold > gold)
-			{
-				left.Gold = gold;
-				changed = true;
-			}
-
-			if (changed)
-			{
-				left.Mobile.SendMessage(
-					"The amount of currency held in your account has changed. " +
-					"Your offer has been updated to reflect the difference.");
-			}
-
 			if (left.Mobile.NetState != null && left.Mobile.NetState.NewSecureTrading)
 			{
+				var plat = left.Mobile.Account.TotalPlat;
+				var gold = left.Mobile.Account.TotalGold;
+
 				left.Mobile.Send(new UpdateSecureTrade(left.Container, TradeFlag.UpdateLedger, gold, plat));
 			}
 
@@ -302,59 +268,25 @@ namespace Server
 				{
 					if (m_From.Mobile.Account != null)
 					{
-						var gold = m_From.Mobile.Account.TotalGold;
-						var plat = m_From.Mobile.Account.TotalPlat;
+						var cur = m_From.Mobile.Account.TotalCurrency;
+						var off = m_From.Plat + (m_From.Gold / Math.Max(1.0, AccountGold.CurrencyThreshold));
 
-						var changed = false;
-
-						if (gold < m_From.Gold)
-						{
-							m_From.Gold = gold;
-							changed = true;
-						}
-
-						if (plat < m_From.Plat)
-						{
-							m_From.Plat = plat;
-							changed = true;
-						}
-
-						if (changed)
+						if (off > cur)
 						{
 							allowed = false;
-
-							m_From.Mobile.SendMessage(
-								"The amount of currency held in your account has changed. " +
-								"Your offer has been updated to reflect the difference.");
+							m_From.Mobile.SendMessage("You do not have enough currency to complete this trade.");
 						}
 					}
 
 					if (m_To.Mobile.Account != null)
 					{
-						var gold = m_To.Mobile.Account.TotalGold;
-						var plat = m_To.Mobile.Account.TotalPlat;
+						var cur = m_To.Mobile.Account.TotalCurrency;
+						var off = m_To.Plat + (m_To.Gold / Math.Max(1.0, AccountGold.CurrencyThreshold));
 
-						var changed = false;
-
-						if (gold < m_To.Gold)
-						{
-							m_To.Gold = gold;
-							changed = true;
-						}
-
-						if (plat < m_To.Plat)
-						{
-							m_To.Plat = plat;
-							changed = true;
-						}
-
-						if (changed)
+						if (off > cur)
 						{
 							allowed = false;
-
-							m_To.Mobile.SendMessage(
-								"The amount of currency held in your account has changed. " +
-								"Your offer has been updated to reflect the difference.");
+							m_To.Mobile.SendMessage("You do not have enough currency to complete this trade.");
 						}
 					}
 				}
@@ -477,7 +409,13 @@ namespace Server
 			HandleAccountGoldTrade(m_To.Mobile, m_From.Mobile, toPlatSend, toGoldSend, toPlatRecv, toGoldRecv);
 		}
 
-		private static void HandleAccountGoldTrade(Mobile left, Mobile right, int platSend, int goldSend, int platRecv, int goldRecv)
+		private static void HandleAccountGoldTrade(
+			Mobile left,
+			Mobile right,
+			int platSend,
+			int goldSend,
+			int platRecv,
+			int goldRecv)
 		{
 			if (platSend > 0 || goldSend > 0)
 			{

@@ -295,168 +295,181 @@ namespace Server.Mobiles
             return base.HandlesOnSpeech(from);
         }
 
-        public override void OnSpeech(SpeechEventArgs e)
-        {
-            if (!e.Handled && e.Mobile.InRange(Location, 12))
-            {
-                foreach (var keyword in e.Keywords)
-                {
-                    switch (keyword)
-                    {
-                        case 0x0000: // *withdraw*
-                            {
-                                e.Handled = true;
+	    public override void OnSpeech(SpeechEventArgs e)
+	    {
+		    if (!e.Handled && e.Mobile.InRange(Location, 12))
+		    {
+			    foreach (var keyword in e.Keywords)
+			    {
+				    switch (keyword)
+				    {
+					    case 0x0000: // *withdraw*
+					    {
+						    e.Handled = true;
 
-                                if (e.Mobile.Criminal)
-                                {
-                                    Say(500389); // I will not do business with a criminal!
-                                    break;
-                                }
+						    if (e.Mobile.Criminal)
+						    {
+							    // I will not do business with a criminal!
+							    Say(500389);
+							    break;
+						    }
 
-                                var split = e.Speech.Split(' ');
+						    var split = e.Speech.Split(' ');
 
-                                if (split.Length >= 2)
-                                {
-                                    int amount;
+						    if (split.Length >= 2)
+						    {
+							    int amount;
 
-                                    var pack = e.Mobile.Backpack;
+							    var pack = e.Mobile.Backpack;
 
-                                    if (!int.TryParse(split[1], out amount))
-                                    {
-                                        break;
-                                    }
+							    if (!int.TryParse(split[1], out amount))
+							    {
+								    break;
+							    }
 
-                                    if ((!Core.ML && amount > 5000) || (Core.ML && amount > 60000))
-                                    {
-                                        Say(500381); // Thou canst not withdraw so much at one time!
-                                    }
-                                    else if (pack == null || pack.Deleted || !(pack.TotalWeight < pack.MaxWeight) || !(pack.TotalItems < pack.MaxItems))
-                                    {
-                                        Say(1048147); // Your backpack can't hold anything else.
-                                    }
-                                    else if (amount > 0)
-                                    {
-                                        var box = e.Mobile.FindBankNoCreate();
+							    if ((!Core.ML && amount > 5000) || (Core.ML && amount > 60000))
+							    {
+								    // Thou canst not withdraw so much at one time!
+								    Say(500381);
+							    }
+							    else if (pack == null || pack.Deleted || !(pack.TotalWeight < pack.MaxWeight) ||
+										 !(pack.TotalItems < pack.MaxItems))
+							    {
+								    // Your backpack can't hold anything else.
+								    Say(1048147);
+							    }
+							    else if (amount > 0)
+							    {
+								    var box = e.Mobile.FindBankNoCreate();
 
-                                        if (box == null || !Withdraw(e.Mobile, amount))
-                                        {
-                                            Say(500384);
-                                            // Ah, art thou trying to fool me? Thou hast not so much gold!
-                                        }
-                                        else
-                                        {
-                                            //acnt.TotalGold = -amount;
-                                            pack.DropItem(new Gold(amount));
+								    if (box == null || !Withdraw(e.Mobile, amount))
+								    {
+									    // Ah, art thou trying to fool me? Thou hast not so much gold!
+									    Say(500384);
+								    }
+								    else
+								    {
+									    pack.DropItem(new Gold(amount));
 
-                                            Say(1010005); // Thou hast withdrawn gold from thy account.
-                                        }
-                                    }
-                                }
+									    // Thou hast withdrawn gold from thy account.
+									    Say(1010005);
+								    }
+							    }
+						    }
+					    }
+						    break;
+					    case 0x0001: // *balance*
+					    {
+						    e.Handled = true;
 
-                                break;
-                            }
-                        case 0x0001: // *balance*
-                            {
-                                e.Handled = true;
+						    if (e.Mobile.Criminal)
+						    {
+							    // I will not do business with a criminal!
+							    Say(500389);
+							    break;
+						    }
 
-                                if (e.Mobile.Criminal)
-                                {
-                                    Say(500389); // I will not do business with a criminal!
-                                    break;
-                                }
+						    if (AccountGold.Enabled && e.Mobile.Account != null)
+						    {
+							    Say(
+								    "Thy current bank balance is {0:#,0} platinum and {1:#,0} gold.",
+									e.Mobile.Account.TotalPlat,
+									e.Mobile.Account.TotalGold);
+						    }
+						    else
+						    {
+							    // Thy current bank balance is ~1_AMOUNT~ gold.
+							    Say(1042759, GetBalance(e.Mobile).ToString("#,0"));
+						    }
+					    }
+						    break;
+					    case 0x0002: // *bank*
+					    {
+						    e.Handled = true;
 
-								if (AccountGold.Enabled && e.Mobile.Account != null)
-                                {
-                                    Say(1155855, String.Format("{0:#,0}\t{1:#,0}", e.Mobile.Account.TotalPlat, e.Mobile.Account.TotalGold));
-                                    // Thy current bank balance is ~1_AMOUNT~ platinum and ~2_AMOUNT~ gold.
-                                }
-                                else
-                                {
-                                    Say(1042759, GetBalance(e.Mobile).ToString("#,0")); // Thy current bank balance is ~1_AMOUNT~ gold.
-                                }
-                            }
-                            break;
-                        case 0x0002: // *bank*
-                            {
-                                e.Handled = true;
+						    if (e.Mobile.Criminal)
+						    {
+							    // Thou art a criminal and cannot access thy bank box.
+							    Say(500378);
+							    break;
+						    }
 
-                                if (e.Mobile.Criminal)
-                                {
-                                    Say(500378); // Thou art a criminal and cannot access thy bank box.
-                                    break;
-                                }
+						    e.Mobile.BankBox.Open();
+					    }
+						    break;
+					    case 0x0003: // *check*
+					    {
+						    e.Handled = true;
 
-                                e.Mobile.BankBox.Open();
-                            }
-                            break;
-                        case 0x0003: // *check*
-                            {
-                                e.Handled = true;
+						    if (e.Mobile.Criminal)
+						    {
+							    // I will not do business with a criminal!
+							    Say(500389);
+							    break;
+						    }
 
-                                if (e.Mobile.Criminal)
-                                {
-                                    Say(500389); // I will not do business with a criminal!
-                                    break;
-                                }
+						    if (AccountGold.Enabled && e.Mobile.Account != null)
+						    {
+							    Say("We no longer offer a checking service.");
+							    break;
+						    }
 
-								if (AccountGold.Enabled && e.Mobile.Account != null)
-                                {
-                                    Say("We no longer offer a checking service.");
-                                    break;
-                                }
+						    var split = e.Speech.Split(' ');
 
-                                var split = e.Speech.Split(' ');
+						    if (split.Length >= 2)
+						    {
+							    int amount;
 
-                                if (split.Length >= 2)
-                                {
-                                    int amount;
+							    if (!int.TryParse(split[1], out amount))
+							    {
+								    break;
+							    }
 
-                                    if (!int.TryParse(split[1], out amount))
-                                    {
-                                        break;
-                                    }
+							    if (amount < 5000)
+							    {
+								    // We cannot create checks for such a paltry amount of gold!
+								    Say(1010006);
+							    }
+							    else if (amount > 1000000)
+							    {
+								    // Our policies prevent us from creating checks worth that much!
+								    Say(1010007);
+							    }
+							    else
+							    {
+								    var check = new BankCheck(amount);
 
-                                    if (amount < 5000)
-                                    {
-                                        Say(1010006); // We cannot create checks for such a paltry amount of gold!
-                                    }
-                                    else if (amount > 1000000)
-                                    {
-                                        Say(1010007); // Our policies prevent us from creating checks worth that much!
-                                    }
-                                    else
-                                    {
-                                        var check = new BankCheck(amount);
+								    var box = e.Mobile.BankBox;
 
-                                        var box = e.Mobile.BankBox;
+								    if (!box.TryDropItem(e.Mobile, check, false))
+								    {
+									    // There's not enough room in your bankbox for the check!
+									    Say(500386);
+									    check.Delete();
+								    }
+								    else if (!box.ConsumeTotal(typeof(Gold), amount))
+								    {
+									    // Ah, art thou trying to fool me? Thou hast not so much gold!
+									    Say(500384);
+									    check.Delete();
+								    }
+								    else
+								    {
+									    // Into your bank box I have placed a check in the amount of:
+									    Say(1042673, AffixType.Append, amount.ToString("#,0"), "");
+								    }
+							    }
+						    }
+					    }
+						    break;
+				    }
+			    }
+		    }
 
-                                        if (!box.TryDropItem(e.Mobile, check, false))
-                                        {
-                                            Say(500386); // There's not enough room in your bankbox for the check!
-                                            check.Delete();
-                                        }
-                                        else if (!box.ConsumeTotal(typeof(Gold), amount))
-                                        {
-                                            Say(500384); // Ah, art thou trying to fool me? Thou hast not so much gold!
-                                            check.Delete();
-                                        }
-                                        else
-                                        {
-                                            Say(1042673, AffixType.Append, amount.ToString("#,0"), "");
-                                            // Into your bank box I have placed a check in the amount of:
-                                        }
-                                    }
-                                }
-                            }
-                            break;
-                    }
-                }
-            }
+		    base.OnSpeech(e);
+	    }
 
-            base.OnSpeech(e);
-        }
-
-        public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
+	    public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
         {
             if (from.Alive)
             {
