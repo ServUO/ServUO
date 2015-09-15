@@ -656,7 +656,7 @@ namespace Server.Items
             }
         }
 
-        private class PuzzleGump : Gump
+        public class PuzzleGump : Gump
         {
             private readonly Mobile m_From;
             private readonly PuzzleChest m_Chest;
@@ -849,7 +849,7 @@ namespace Server.Items
             }
         }
 
-        private class StatusGump : Gump
+        public class StatusGump : Gump
         {
             public StatusGump(int correctCylinders, int correctColors)
                 : base(50, 50)

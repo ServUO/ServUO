@@ -426,10 +426,12 @@ namespace Server.Items
 
         [Constructable]
         public LuckyCoin(int amount)
-            : base(0x3189)
+            : base(0xF87)
         {
             this.Stackable = true;
             this.Amount = amount;
+
+            Hue = 1174;
         }
 
         public LuckyCoin(Serial serial)
@@ -444,6 +446,40 @@ namespace Server.Items
                 return 1113366;
             }
         }// lucky coin
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsChildOf(from.Backpack) && Amount > 1)
+            {
+                from.SendLocalizedMessage(1113367); // Make a wish then toss me into sacred waters!!
+                from.Target = new InternalTarget(this);
+            }
+        }
+
+        private class InternalTarget : Target
+        {
+            private LuckyCoin m_Coin;
+
+            public InternalTarget(LuckyCoin coin)
+                : base(3, false, TargetFlags.None)
+            {
+                m_Coin = coin;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (targeted is AddonComponent && ((AddonComponent)targeted).Addon is FountainOfFortune)
+                {
+                    AddonComponent c = (AddonComponent)targeted;
+
+                    if (c.Addon is FountainOfFortune)
+                        ((FountainOfFortune)c.Addon).OnTarget(from, m_Coin);
+                }
+                else
+                    from.SendLocalizedMessage(1113369); // That is not sacred waters. Try looking in the Underworld.
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

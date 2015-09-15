@@ -22,13 +22,16 @@ namespace Server.Gumps
         private readonly bool m_FromSacrifice;
         private readonly double m_HitsScalar;
         private readonly ResurrectMessage m_Msg;
+
+        private Action<Mobile> m_Callback;
+
         public ResurrectGump(Mobile owner)
             : this(owner, owner, ResurrectMessage.Generic, false)
         {
         }
 
         public ResurrectGump(Mobile owner, double hitsScalar)
-            : this(owner, owner, ResurrectMessage.Generic, false, hitsScalar)
+            : this(owner, owner, ResurrectMessage.Generic, false, hitsScalar, null)
         {
         }
 
@@ -53,11 +56,11 @@ namespace Server.Gumps
         }
 
         public ResurrectGump(Mobile owner, Mobile healer, ResurrectMessage msg, bool fromSacrifice)
-            : this(owner, healer, msg, fromSacrifice, 0.0)
+            : this(owner, healer, msg, fromSacrifice, 0.0, null)
         {
         }
 
-        public ResurrectGump(Mobile owner, Mobile healer, ResurrectMessage msg, bool fromSacrifice, double hitsScalar)
+        public ResurrectGump(Mobile owner, Mobile healer, ResurrectMessage msg, bool fromSacrifice, double hitsScalar, Action<Mobile> callback)
             : base(100, 0)
         {
             this.m_Healer = healer;
@@ -76,6 +79,8 @@ namespace Server.Gumps
             * CONTINUE - You chose to try to come back to life now.<br>
             * CANCEL - You prefer to remain a ghost for now.
             */
+
+            m_Callback = callback;
 
             this.AddButton(200, 227, 4005, 4007, 0, GumpButtonType.Reply, 0);
             this.AddHtmlLocalized(235, 230, 110, 35, 1011012, false, false); // CANCEL
@@ -269,6 +274,9 @@ namespace Server.Gumps
 
                 if (from.Alive && this.m_HitsScalar > 0)
                     from.Hits = (int)(from.HitsMax * this.m_HitsScalar);
+
+                if (m_Callback != null)
+                    m_Callback(from);
             }
         }
     }
