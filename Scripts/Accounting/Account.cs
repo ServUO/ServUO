@@ -273,7 +273,7 @@ namespace Server.Accounting
 			m_Created = Utility.GetXMLDateTime(Utility.GetText(node["created"], null), DateTime.UtcNow);
 			LastLogin = Utility.GetXMLDateTime(Utility.GetText(node["lastLogin"], null), DateTime.UtcNow);
 
-			TotalCurrency = Utility.GetXMLDouble(Utility.GetText(node["totalCurrency"], "0.0"), 0.0);
+			TotalCurrency = Utility.GetXMLDouble(Utility.GetText(node["totalCurrency"], "0"), 0);
 
 			m_Mobiles = LoadMobiles(node);
 			m_Comments = LoadComments(node);
