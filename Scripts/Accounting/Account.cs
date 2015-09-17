@@ -200,8 +200,6 @@ namespace Server.Accounting
 			var cryptPassword = Utility.GetText(node["cryptPassword"], null);
 			var newCryptPassword = Utility.GetText(node["newCryptPassword"], null);
 
-			TotalCurrency = Double.Parse(Utility.GetText(node["totalCurrency"], "0.0"));
-
 			switch (AccountHandler.ProtectPasswords)
 			{
 				case PasswordProtection.None:
@@ -274,6 +272,8 @@ namespace Server.Accounting
 			Flags = Utility.GetXMLInt32(Utility.GetText(node["flags"], "0"), 0);
 			m_Created = Utility.GetXMLDateTime(Utility.GetText(node["created"], null), DateTime.UtcNow);
 			LastLogin = Utility.GetXMLDateTime(Utility.GetText(node["lastLogin"], null), DateTime.UtcNow);
+
+			TotalCurrency = Utility.GetXMLDouble(Utility.GetText(node["totalCurrency"], "0.0"), 0.0);
 
 			m_Mobiles = LoadMobiles(node);
 			m_Comments = LoadComments(node);
