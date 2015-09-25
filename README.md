@@ -1,4 +1,4 @@
-# ServUO - [ServUO]
+# [ServUO]
 
 Servuo is a community driven Ultima Online server emulator written in c#.
 
