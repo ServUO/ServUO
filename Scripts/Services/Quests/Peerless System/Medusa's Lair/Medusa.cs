@@ -167,25 +167,8 @@ namespace Server.Mobiles
             {
                 if (m != null && m != from && !(m is MedusaClone) && !(m is StoneMonster) && !(Medusa.AffectedMobiles.Contains(m)) && !(m is BaseCreature))
                 {
-                    Item[] items = m.Backpack.FindItemsByType(typeof(GorgonLens));
-
-                    if (items.Length == 0)
-                    {
-                        Medusa.AffectedMobiles.Remove(m);
-                        list.Add(m);
-                    }
-                    else
-                    {
-                        foreach (GorgonLens gorg in items)
-                        {
-                            Medusa.AffectedMobiles.Add(m);
-                            gorg.ConsumeUse(from);
-                            list.Remove(m);
-                            m.SendLocalizedMessage(1112599);  //Your Gorgon Lens deflect Medusa's petrifying gaze!
-
-                            break;
-                        }
-                    }
+                    Medusa.AffectedMobiles.Remove(m);
+                    list.Add(m);
                 }
 
                 if (m != null && m != from && !(m is MedusaClone) && !(m is StoneMonster) && !(Medusa.AffectedMobiles.Contains(m)) && (m is BaseCreature))
@@ -201,6 +184,118 @@ namespace Server.Mobiles
                 return list[0];
 
             return list[Utility.Random(list.Count)];
+        }
+
+        public static bool CheckBlockGaze(Mobile m)
+        {
+            if (m == null)
+                return false;
+
+            Item helm = m.FindItemOnLayer(Layer.Helm);
+            Item neck = m.FindItemOnLayer(Layer.Neck);
+            Item ear = m.FindItemOnLayer(Layer.Earrings);
+            Item shi = m.FindItemOnLayer(Layer.TwoHanded);
+
+            bool deflect = false;
+            int perc = 0;
+
+            if (helm != null)
+            {
+                if (helm is BaseArmor && ((BaseArmor)helm).GorgonLenseCharges > 0)
+                {
+                    perc = GetScaleEffectiveness(((BaseArmor)helm).GorgonLenseType);
+
+                    if (perc > Utility.Random(100))
+                    {
+                        ((BaseArmor)helm).GorgonLenseCharges--;
+                        deflect = true;
+                    }
+                }
+                else if (helm is BaseClothing && ((BaseClothing)helm).GorgonLenseCharges > 0)
+                {
+                    perc = GetScaleEffectiveness(((BaseClothing)helm).GorgonLenseType);
+
+                    if (perc > Utility.Random(100))
+                    {
+                        ((BaseClothing)helm).GorgonLenseCharges--;
+                        deflect = true;
+                    }
+                }
+            }
+
+            if (!deflect && shi != null && shi is BaseShield && ((BaseArmor)shi).GorgonLenseCharges > 0)
+            {
+                perc = GetScaleEffectiveness(((BaseArmor)shi).GorgonLenseType);
+
+                if (perc > Utility.Random(100))
+                {
+                    ((BaseArmor)shi).GorgonLenseCharges--;
+                    deflect = true;
+                }
+            }
+
+            if (!deflect && neck != null)
+            {
+                if (neck is BaseArmor && ((BaseArmor)neck).GorgonLenseCharges > 0)
+                {
+                    perc = GetScaleEffectiveness(((BaseArmor)neck).GorgonLenseType);
+
+                    if (perc > Utility.Random(100))
+                    {
+                        ((BaseArmor)neck).GorgonLenseCharges--;
+                        deflect = true;
+                    }
+                }
+                else if (neck is BaseJewel && ((BaseJewel)neck).GorgonLenseCharges > 0)
+                {
+                    perc = GetScaleEffectiveness(((BaseJewel)neck).GorgonLenseType);
+
+                    if (perc > Utility.Random(100))
+                    {
+                        ((BaseJewel)neck).GorgonLenseCharges--;
+                        deflect = true;
+                    }
+                }
+                else if (neck is BaseClothing && ((BaseClothing)neck).GorgonLenseCharges > 0)
+                {
+                    perc = GetScaleEffectiveness(((BaseClothing)neck).GorgonLenseType);
+
+                    if (perc > Utility.Random(100))
+                    {
+                        ((BaseClothing)neck).GorgonLenseCharges--;
+                        deflect = true;
+                    }
+                }
+            }
+
+            if (!deflect && ear != null)
+            {
+                if (ear is BaseJewel && ((BaseJewel)ear).GorgonLenseCharges > 0)
+                {
+                    perc = GetScaleEffectiveness(((BaseJewel)ear).GorgonLenseType);
+
+                    if (perc > Utility.Random(100))
+                    {
+                        ((BaseJewel)ear).GorgonLenseCharges--;
+                        deflect = true;
+                    }
+                }
+            }
+
+            return deflect;
+        }
+
+        private static int GetScaleEffectiveness(LenseType type)
+        {
+            switch (type)
+            {
+                case LenseType.None: return 0;
+                case LenseType.Enhanced: return 100;
+                case LenseType.Regular: return 50;
+                case LenseType.Limited: return 15;
+            }
+
+            return 0;
         }
 
         public override int GetIdleSound()
@@ -221,6 +316,18 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 1555;
+        }
+
+        public override void OnCarve(Mobile from, Corpse corpse, Item with)
+        {
+            int amount = Utility.Random(5) + 1;
+
+            corpse.DropItem(new MedusaLightScales(amount));
+
+            if (0.20 > Utility.RandomDouble())
+                corpse.DropItem(new MedusaBlood());
+
+            base.OnCarve(from, corpse, with);
         }
 
         public void Carve(Mobile from, Item item)
@@ -260,6 +367,12 @@ namespace Server.Mobiles
 
                 if ((target != null) && !(target is MedusaClone) && !(target is StoneMonster))
                 {
+                    if (CheckBlockGaze(target))
+                    {
+                        target.SendLocalizedMessage(1112599); //Your Gorgon Lens deflect Medusa's petrifying gaze!
+                        return;
+                    }
+
                     BaseCreature clone = new MedusaClone(target);
 
                     bool validLocation = false;

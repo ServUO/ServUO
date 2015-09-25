@@ -14,6 +14,7 @@ namespace Server.Items
 
             this.Attributes.WeaponDamage = 60;
             this.Attributes.DefendChance = 15;
+            BlockRepair = true;
         }
 
         public KatrinasCrook(Serial serial)

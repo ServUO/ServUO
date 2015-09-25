@@ -834,6 +834,11 @@ namespace Server
 
 		public virtual double RacialSkillBonus { get { return 0; } }
 
+        public virtual double GetRacialSkillBonus(SkillName skill)
+        {
+            return RacialSkillBonus;
+        }
+
 		private List<ResistanceMod> m_ResistMods;
 
 		private int[] m_Resistances;
@@ -5556,7 +5561,12 @@ namespace Server
 			Damage(amount, from, true);
 		}
 
-		public virtual void Damage(int amount, Mobile from, bool informMount)
+        public virtual void Damage(int amount, Mobile from, bool informMount)
+        {
+            Damage(amount, from, informMount, true);
+        }
+
+		public virtual void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
 		{
 			if (!CanBeDamaged() || m_Deleted)
 			{
@@ -5573,7 +5583,7 @@ namespace Server
 				int oldHits = Hits;
 				int newHits = oldHits - amount;
 
-				if (m_Spell != null)
+                if (checkDisrupt && m_Spell != null)
 				{
 					m_Spell.OnCasterHurt();
 				}
@@ -12281,7 +12291,29 @@ namespace Server
 			}
 		}
 
-		public Item Talisman { get { return FindItemOnLayer(Layer.Talisman); } }
+        public Item Talisman
+        {
+            get
+            {
+                return FindItemOnLayer(Layer.Talisman) as Item;
+            }
+        }
+
+        public Item Ring
+        {
+            get
+            {
+                return FindItemOnLayer(Layer.Ring) as Item;
+            }
+        }
+
+        public Item Bracelet
+        {
+            get
+            {
+                return FindItemOnLayer(Layer.Bracelet) as Item;
+            }
+        }
 		#endregion
 
 		/// <summary>

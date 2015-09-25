@@ -897,7 +897,7 @@ namespace Server.Mobiles
             return (m is BaseCreature && ((BaseCreature)m).Summoned && this.m_Mobile.CanBeHarmful(m, false) && !((BaseCreature)m).IsAnimatedDead);
         }
 
-        private Spell CheckCastHealingSpell()
+        protected Spell CheckCastHealingSpell()
         {
             // If I'm poisoned, always attempt to cure.
             if (this.m_Mobile.Poisoned)

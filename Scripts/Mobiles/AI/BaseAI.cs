@@ -2830,7 +2830,7 @@ namespace Server.Mobiles
 					}
 
 					if (acqType == FightMode.Aggressor || acqType == FightMode.Evil ||
-						(m is BaseCreature) && ((BaseCreature)m).Summoned)
+						(m is BaseCreature) && ((BaseCreature)m).Summoned || acqType == FightMode.Good)
 					{
 						bool bValid = IsHostile(m);
 
@@ -2851,6 +2851,18 @@ namespace Server.Mobiles
 								bValid = (m.Karma < 0);
 							}
 						}
+
+                        if (acqType == FightMode.Good && !bValid)
+                        {
+                            if (m is BaseCreature && ((BaseCreature)m).Controlled && ((BaseCreature)m).ControlMaster != null)
+                            {
+                                bValid = (((BaseCreature)m).ControlMaster.Karma > 0);
+                            }
+                            else
+                            {
+                                bValid = (m.Karma > 0);
+                            }
+                        }
 
 						if (!bValid)
 						{

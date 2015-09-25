@@ -125,22 +125,29 @@ namespace Server.Items
 				to.SendLocalizedMessage( 1040023 ); // You have been knocked off of your mount!
 				from.SendMessage("You knock them from their mount!");
 			}
-			
-			if ( AnimalForm.UnderTransformation( to ) && context != null )
-			{
-				Server.Spells.Ninjitsu.AnimalForm.RemoveContext( to, context, true );
-				to.SendMessage("{0} knocked you out of animal form!", from.Name);
-				from.SendMessage("You've knocked {0} out of animal form!", to.Name);
-			}
-			
-			if( to.Flying )
-			{
-				to.Flying = false;
-				to.SendMessage("You've been grounded by {0}", from.Name);
-				from.SendMessage("You've grounded {0}", to.Name);
-			}
 
-            BaseMount.SetMountPrevention(to, BlockMountType.Dazed, TimeSpan.FromSeconds(3.0));
+            if (to is PlayerMobile)
+            {
+                if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to))
+                {
+                    to.SendLocalizedMessage(1114066, from.Name); // ~1_NAME~ knocked you out of animal form!
+                }
+                else if (to.Mounted)
+                {
+                    to.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
+                }
+                else if (to.Flying)
+                {
+                    to.SendMessage(1113590, from.Name); // You have been grounded by ~1_NAME~!
+                }
+
+                (to as PlayerMobile).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(Core.ML ? 10 : 3), true);
+            }
+
+            if (Core.AOS && from is PlayerMobile) /* only failsafe, attacker should already be dismounted */
+            {
+                (from as PlayerMobile).SetMountBlock(BlockMountType.BolaRecovery, TimeSpan.FromSeconds(Core.ML ? 10 : 3), true);
+            }
 
             Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(ReleaseBolaLock), from);
         }

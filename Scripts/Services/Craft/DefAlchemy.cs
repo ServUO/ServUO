@@ -228,6 +228,10 @@ namespace Server.Engines.Craft
 
                 index = this.AddCraft(typeof(SoftenedReeds), 1074832, 1112249, 75.0, 100.0, typeof(DryReeds), 1112248, 1, 1112250);
                 this.AddRes(index, typeof(ScouringToxin), 1112292, 2, 1112326);
+
+                index = AddCraft(typeof(CrystalDust), 1044495, 1112328, 75.0, 100.0, typeof(CrystallineFragments), 1153988, 1, 1044253);
+                SetItemHue(index, 2103);
+                SetNeededExpansion(index, Expansion.SA);
             }
             #endregion
         }

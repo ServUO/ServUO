@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
@@ -14,10 +15,11 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(MeagerMuseumBag), 1112993));
         }
 
-        // public override void GiveRewards()
-        // {
-        // if ( Owner is PlayerMobile ) 
-        // ((PlayerMobile)Owner).Exp += 50;
+        public override void GiveRewards()
+        {
+            Server.Engines.QueensLoyalty.LoyaltySystem.HandleQuest(Owner, this);
+            base.GiveRewards();
+        }
 
         /*A Broken Vase */
         public override object Title
@@ -55,10 +57,7 @@ namespace Server.Engines.Quests
                 return 1112920;
             }
         }
-        //// Owner.SendMessage("You have also been awarded 5 Queens Loyalty Points!");
 
-        // base.GiveRewards();
-        // }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -120,13 +119,13 @@ namespace Server.Engines.Quests
                 return 1112924;
             }
         }
-        // public override void GiveRewards()
-        // {
-        // if (Owner is PlayerMobile)
-        // ((PlayerMobile)Owner).Exp += 100;
-        // Owner.SendMessage("You have also been awarded 10 Queens Loyalty Points!");
-        // base.GiveRewards();
-        // }
+
+        public override void GiveRewards()
+        {
+            Server.Engines.QueensLoyalty.LoyaltySystem.HandleQuest(Owner, this);
+            base.GiveRewards();
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -188,14 +187,13 @@ namespace Server.Engines.Quests
                 return 1112928;
             }
         }
-        /// public override void GiveRewards()
 
-        // {
-        // if (Owner is PlayerMobile)
-        // ((PlayerMobile)Owner).Exp += 500;
-        // Owner.SendMessage("You have also been awarded 50 Queens Loyalty Points!");
-        // base.GiveRewards();
-        // }
+        public override void GiveRewards()
+        {
+            Server.Engines.QueensLoyalty.LoyaltySystem.HandleQuest(Owner, this);
+            base.GiveRewards();
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

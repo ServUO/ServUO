@@ -542,72 +542,45 @@ namespace Server
 
 		public LootPackItem[] Items { get { return m_Items; } set { m_Items = value; } }
 
-		private static bool IsInTokuno(Mobile m)
+		public static bool IsInTokuno(IEntity e)
 		{
-			if (m == null)
+			if (e == null)
 			{
 				return false;
 			}
 
-			if (m.Region.IsPartOf("Fan Dancer's Dojo"))
+            Region r = Region.Find(e.Location, e.Map);
+
+			if (r.IsPartOf("Fan Dancer's Dojo"))
 			{
 				return true;
 			}
 
-			if (m.Region.IsPartOf("Yomotsu Mines"))
+			if (r.IsPartOf("Yomotsu Mines"))
 			{
 				return true;
 			}
 
-			return m.Map == Map.Tokuno;
+			return e.Map == Map.Tokuno;
 		}
 
 		#region Mondain's Legacy
-		private static bool IsMondain(Mobile m)
+		public static bool IsMondain(IEntity e)
 		{
-			return MondainsLegacy.IsMLRegion(m.Region);
+            if (e == null)
+                return false;
+
+			return MondainsLegacy.IsMLRegion(Region.Find(e.Location, e.Map));
 		}
 		#endregion
 
 		#region Stygian Abyss
-		private static bool IsStygianAbyss(Mobile m)
+		public static bool IsStygianAbyss(IEntity e)
 		{
-			if (m == null)
-			{
-				return false;
-			}
+            if (e == null)
+                return false;
 
-			if (m.Region.IsPartOf("Ter Mur"))
-			{
-				return true;
-			}
-
-			if (m.Region.IsPartOf("AbyssEntrance"))
-			{
-				return true;
-			}
-
-			if (m.Region.IsPartOf("Abyss"))
-			{
-				return true;
-			}
-
-			if (m.Region.IsPartOf("StygianDragonLair"))
-			{
-				return true;
-			}
-
-			if (m.Region.IsPartOf("MedusasLair"))
-			{
-				return true;
-			}
-
-			if (m.Region.IsPartOf("NPC Encampment"))
-			{
-				return true;
-			}
-
-			return m.Map == Map.TerMur;
+            return e.Map == Map.TerMur;
 		}
 		#endregion
 
@@ -712,6 +685,11 @@ namespace Server
 						{
 							props = m_MaxProps;
 						}
+
+                        if (from is BaseCreature && RandomItemGenerator.GenerateRandomItem(item, ((BaseCreature)from).LastKiller, (BaseCreature)from))
+                        {
+                            return item;
+                        }
 
 						if (item is BaseWeapon)
 						{

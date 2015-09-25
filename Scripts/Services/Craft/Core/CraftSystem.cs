@@ -13,6 +13,8 @@ namespace Server.Engines.Craft
 
     public abstract class CraftSystem
     {
+        public static List<CraftSystem> Systems { get; set; }
+
         private readonly int m_MinCraftEffect;
         private readonly int m_MaxCraftEffect;
         private readonly double m_Delay;
@@ -229,6 +231,15 @@ namespace Server.Engines.Craft
             this.m_CraftSubRes2 = new CraftSubResCol();
 
             this.InitCraftList();
+            AddSystem(this);
+        }
+
+        private void AddSystem(CraftSystem system)
+        {
+            if (Systems == null)
+                Systems = new List<CraftSystem>();
+
+            Systems.Add(system);
         }
 
         public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)

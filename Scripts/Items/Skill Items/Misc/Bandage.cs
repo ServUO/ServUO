@@ -420,6 +420,13 @@ namespace Server.Items
 
 				BleedAttack.EndBleed(m_Patient, false);
 			}
+            else if (SplinteringWeaponContext.IsBleeding(m_Patient))
+            {
+                healerNumber = 1060088; // You bind the wound and stop the bleeding
+                patientNumber = 1060167; // The bleeding wounds have healed, you are no longer bleeding!
+
+                SplinteringWeaponContext.EndBleeding(m_Patient);
+            }
 			else if (MortalStrike.IsWounded(m_Patient))
 			{
 				healerNumber = (m_Healer == m_Patient ? 1005000 : 1010398);
@@ -548,7 +555,7 @@ namespace Server.Items
 			{
 				healer.SendLocalizedMessage(500951); // You cannot heal that.
 			}
-			else if (!patient.Poisoned && patient.Hits == patient.HitsMax && !BleedAttack.IsBleeding(patient) && !isDeadPet)
+			else if (!patient.Poisoned && patient.Hits == patient.HitsMax && !BleedAttack.IsBleeding(patient) && !SplinteringWeaponContext.IsBleeding(patient) && !isDeadPet)
 			{
 				healer.SendLocalizedMessage(500955); // That being is not damaged!
 			}

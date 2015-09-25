@@ -15,6 +15,7 @@ namespace Server.Items
             this.Attributes.SpellChanneling = 1;
             this.Attributes.Luck = 220;
             this.Attributes.DefendChance = 15;
+            BlockRepair = true;
         }
 
         public JaanasStaff(Serial serial)

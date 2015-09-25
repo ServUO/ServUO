@@ -449,7 +449,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (IsChildOf(from.Backpack) && Amount > 1)
+            if (IsChildOf(from.Backpack) && Amount >= 1)
             {
                 from.SendLocalizedMessage(1113367); // Make a wish then toss me into sacred waters!!
                 from.Target = new InternalTarget(this);
@@ -903,6 +903,46 @@ namespace Server.Items
                 return 1112992;
             }
         }// Untranslated Ancient Tome
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class CrystalDust : Item
+    {
+        public override int LabelNumber { get { return 1112328; } } // crystal dust
+
+        [Constructable]
+        public CrystalDust()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public CrystalDust(int amount)
+            : base(16393)
+        {
+            Hue = 2103;
+            Stackable = true;
+
+            Amount = amount;
+        }
+
+        public CrystalDust(Serial serial)
+            : base(serial)
+        {
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

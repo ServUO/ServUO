@@ -70,13 +70,13 @@ namespace Server.Engines.Quests
                 return 1113781;
             }
         }
+
         public override void GiveRewards()
         {
-            if (Owner is PlayerMobile)
-            ((PlayerMobile)Owner).Exp += 350;
-            Owner.SendMessage("You have been awarded 35 Queen's Loyalty Points!");
+            Server.Engines.QueensLoyalty.LoyaltySystem.HandleQuest(Owner, this);
             base.GiveRewards();
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -155,13 +155,13 @@ namespace Server.Engines.Quests
                 return 1113786;
             }
         }
-         public override void GiveRewards()
-         {
-         if (Owner is PlayerMobile)
-         ((PlayerMobile)Owner).Exp += 500;
-         Owner.SendMessage("You have been awarded 50 Queen's Loyalty Points!");
-         base.GiveRewards();
-         }
+
+        public override void GiveRewards()
+        {
+            Server.Engines.QueensLoyalty.LoyaltySystem.HandleQuest(Owner, this);
+            base.GiveRewards();
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

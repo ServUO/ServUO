@@ -35,6 +35,8 @@ namespace Server.Items
         }
 
         private AosAttributes m_Attributes;
+        private AosSkillBonuses m_AosSkillBonuses;
+        private AosElementAttributes m_Resistances;
         private int m_Capacity;
         private int m_LowerAmmoCost;
         private int m_WeightReduction;
@@ -46,6 +48,30 @@ namespace Server.Items
             get
             {
                 return this.m_Attributes;
+            }
+            set
+            {
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public AosSkillBonuses SkillBonuses
+        {
+            get
+            {
+                return this.m_AosSkillBonuses;
+            }
+            set
+            {
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public AosElementAttributes Resistances
+        {
+            get
+            {
+                return this.m_Resistances;
             }
             set
             {
@@ -174,6 +200,8 @@ namespace Server.Items
             this.Layer = Layer.Cloak;
 
             this.m_Attributes = new AosAttributes(this);
+            this.m_AosSkillBonuses = new AosSkillBonuses(this);
+            this.m_Resistances = new AosElementAttributes(this);
             this.m_SetAttributes = new AosAttributes(this);
             this.m_SetSkillBonuses = new AosSkillBonuses(this);
             this.DamageIncrease = 10;
@@ -192,6 +220,8 @@ namespace Server.Items
                 return;
 
             quiver.m_Attributes = new AosAttributes(newItem, this.m_Attributes);
+            quiver.m_AosSkillBonuses = new AosSkillBonuses(newItem, this.m_AosSkillBonuses);
+            quiver.m_Resistances = new AosElementAttributes(newItem, this.m_Resistances);
         }
 
         public override void UpdateTotal(Item sender, TotalType type, int delta)
@@ -290,6 +320,7 @@ namespace Server.Items
                 Mobile mob = (Mobile)parent;
 
                 this.m_Attributes.AddStatBonuses(mob);
+                this.m_AosSkillBonuses.AddTo(mob);
 
                 BaseRanged ranged = mob.Weapon as BaseRanged;
 
@@ -318,6 +349,7 @@ namespace Server.Items
                 Mobile mob = (Mobile)parent;
 
                 this.m_Attributes.RemoveStatBonuses(mob);
+                this.m_AosSkillBonuses.Remove();
 
                 #region Mondain's Legacy Sets
                 if (this.IsSetItem && this.m_SetEquipped)
@@ -350,6 +382,18 @@ namespace Server.Items
             return true;
         }
 
+        public virtual int BasePhysicalResistance { get { return 0; } }
+        public virtual int BaseFireResistance { get { return 0; } }
+        public virtual int BaseColdResistance { get { return 0; } }
+        public virtual int BasePoisonResistance { get { return 0; } }
+        public virtual int BaseEnergyResistance { get { return 0; } }
+
+        public override int PhysicalResistance { get { return this.BasePhysicalResistance + this.m_Resistances.Physical; } }
+        public override int FireResistance { get { return this.BaseFireResistance + this.m_Resistances.Fire; } }
+        public override int ColdResistance { get { return this.BaseColdResistance + this.m_Resistances.Cold; } }
+        public override int PoisonResistance { get { return this.BasePoisonResistance + this.m_Resistances.Poison; } }
+        public override int EnergyResistance { get { return this.BaseEnergyResistance + this.m_Resistances.Energy; } }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -359,6 +403,8 @@ namespace Server.Items
 
             if (this.m_Quality == ClothingQuality.Exceptional)
                 list.Add(1063341); // exceptional
+
+            this.m_AosSkillBonuses.GetProperties(list);
 
             Item ammo = this.Ammo;
 
@@ -484,6 +530,8 @@ namespace Server.Items
             }
             #endregion
 
+            base.AddResistanceProperties(list);
+
             double weight = 0;
 
             if (ammo != null)
@@ -541,9 +589,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(0); // version
+            writer.Write(1); // version
 
             SaveFlag flags = SaveFlag.None;
+
+            // Version 1
+            m_AosSkillBonuses.Serialize(writer);
+            m_Resistances.Serialize(writer);
 
             SetSaveFlag(ref flags, SaveFlag.Attributes, !this.m_Attributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.LowerAmmoCost, this.m_LowerAmmoCost != 0);
@@ -608,51 +660,71 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
+            switch (version)
+            {
+                case 1:
+                    {
+                        m_AosSkillBonuses = new AosSkillBonuses(this, reader);
+                        m_Resistances = new AosElementAttributes(this, reader);
+                        goto case 0;
+                    }
+                case 0:
+                    {
+                        if (version == 0)
+                        {
+                            m_AosSkillBonuses = new AosSkillBonuses(this);
+                            m_Resistances = new AosElementAttributes(this);
+                        }
 
-            if (GetSaveFlag(flags, SaveFlag.Attributes))
-                this.m_Attributes = new AosAttributes(this, reader);
-            else
-                this.m_Attributes = new AosAttributes(this);
+                        SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
 
-            if (GetSaveFlag(flags, SaveFlag.LowerAmmoCost))
-                this.m_LowerAmmoCost = reader.ReadInt();
+                        if (GetSaveFlag(flags, SaveFlag.Attributes))
+                            this.m_Attributes = new AosAttributes(this, reader);
+                        else
+                            this.m_Attributes = new AosAttributes(this);
 
-            if (GetSaveFlag(flags, SaveFlag.WeightReduction))
-                this.m_WeightReduction = reader.ReadInt();
+                        if (GetSaveFlag(flags, SaveFlag.LowerAmmoCost))
+                            this.m_LowerAmmoCost = reader.ReadInt();
 
-            if (GetSaveFlag(flags, SaveFlag.DamageIncrease))
-                this.m_DamageIncrease = reader.ReadInt();
+                        if (GetSaveFlag(flags, SaveFlag.WeightReduction))
+                            this.m_WeightReduction = reader.ReadInt();
 
-            if (GetSaveFlag(flags, SaveFlag.Crafter))
-                this.m_Crafter = reader.ReadMobile();
+                        if (GetSaveFlag(flags, SaveFlag.DamageIncrease))
+                            this.m_DamageIncrease = reader.ReadInt();
 
-            if (GetSaveFlag(flags, SaveFlag.Quality))
-                this.m_Quality = (ClothingQuality)reader.ReadInt();
+                        if (GetSaveFlag(flags, SaveFlag.Crafter))
+                            this.m_Crafter = reader.ReadMobile();
 
-            if (GetSaveFlag(flags, SaveFlag.Capacity))
-                this.m_Capacity = reader.ReadInt();
+                        if (GetSaveFlag(flags, SaveFlag.Quality))
+                            this.m_Quality = (ClothingQuality)reader.ReadInt();
 
-            #region Mondain's Legacy Sets
-            if (GetSaveFlag(flags, SaveFlag.SetAttributes))
-                this.m_SetAttributes = new AosAttributes(this, reader);
-            else
-                this.m_SetAttributes = new AosAttributes(this);
+                        if (GetSaveFlag(flags, SaveFlag.Capacity))
+                            this.m_Capacity = reader.ReadInt();
 
-            if (GetSaveFlag(flags, SaveFlag.SetSkillAttributes))
-                this.m_SetSkillBonuses = new AosSkillBonuses(this, reader);
-            else
-                this.m_SetSkillBonuses = new AosSkillBonuses(this);
+                        #region Mondain's Legacy Sets
+                        if (GetSaveFlag(flags, SaveFlag.SetAttributes))
+                            this.m_SetAttributes = new AosAttributes(this, reader);
+                        else
+                            this.m_SetAttributes = new AosAttributes(this);
 
-            if (GetSaveFlag(flags, SaveFlag.SetHue))
-                this.m_SetHue = reader.ReadInt();
+                        if (GetSaveFlag(flags, SaveFlag.SetSkillAttributes))
+                            this.m_SetSkillBonuses = new AosSkillBonuses(this, reader);
+                        else
+                            this.m_SetSkillBonuses = new AosSkillBonuses(this);
 
-            if (GetSaveFlag(flags, SaveFlag.LastEquipped))
-                this.m_LastEquipped = reader.ReadBool();
+                        if (GetSaveFlag(flags, SaveFlag.SetHue))
+                            this.m_SetHue = reader.ReadInt();
 
-            if (GetSaveFlag(flags, SaveFlag.SetEquipped))
-                this.m_SetEquipped = reader.ReadBool();
-            #endregion
+                        if (GetSaveFlag(flags, SaveFlag.LastEquipped))
+                            this.m_LastEquipped = reader.ReadBool();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetEquipped))
+                            this.m_SetEquipped = reader.ReadBool();
+                        #endregion
+
+                        break;
+                    }
+            }
         }
 
         public virtual void AlterBowDamage(ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct)

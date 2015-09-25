@@ -1134,8 +1134,18 @@ namespace Server.Spells
                 }
                 else if (context.Type == typeof(VampiricEmbraceSpell))
                 {
-                    from.Hits += AOS.Scale(damageGiven, 20);
-                    from.PlaySound(0x44D);
+                    #region High Seas
+                    if (target is BaseCreature && ((BaseCreature)target).TaintedLifeAura)
+                    {
+                        AOS.Damage(from, target, AOS.Scale(damageGiven, 20), false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
+                        from.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
+                    }
+                    #endregion
+                    else
+                    {
+                        from.Hits += AOS.Scale(damageGiven, 20);
+                        from.PlaySound(0x44D);
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 using System;
 using Server.Gumps;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Spells.Mystic
 {
@@ -75,6 +76,42 @@ namespace Server.Spells.Mystic
                     this.Caster.FixedParticles(0x37B9, 1, 14, 9502, 32, 5, (EffectLayer)255);
                 }
             }
+        }
+
+        public static Dictionary<Mobile, List<BaseWeapon>> m_EffectTable;
+
+        public static void AddEffects(Mobile from, BaseWeapon weapon)
+        {
+            if (m_EffectTable == null)
+                m_EffectTable = new Dictionary<Mobile, List<BaseWeapon>>();
+
+            if (!m_EffectTable.ContainsKey(from))
+            {
+                m_EffectTable[from] = new List<BaseWeapon>();
+                m_EffectTable[from].Add(weapon);
+            }
+            else if (!m_EffectTable[from].Contains(weapon))
+                m_EffectTable[from].Add(weapon);
+        }
+
+        public static void RemoveEffects(Mobile from, BaseWeapon weapon)
+        {
+            if (m_EffectTable != null && m_EffectTable.ContainsKey(from))
+            {
+                if (m_EffectTable[from].Contains(weapon))
+                    m_EffectTable[from].Remove(weapon);
+
+                if (m_EffectTable[from].Count == 0)
+                    m_EffectTable.Remove(from);
+            }
+        }
+
+        public static bool IsUnderSpellEffects(Mobile from, BaseWeapon weapon)
+        {
+            if (m_EffectTable == null)
+                return false;
+
+            return m_EffectTable.ContainsKey(from) && m_EffectTable[from].Contains(weapon);
         }
     }
 }

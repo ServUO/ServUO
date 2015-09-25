@@ -19,7 +19,7 @@ namespace Server.Items
         Diamond
     }
 
-    public abstract class BaseJewel : Item, ICraftable, ISetItem
+    public abstract class BaseJewel : Item, ICraftable, ISetItem, IWearableDurability
     {
         private int m_MaxHitPoints;
         private int m_HitPoints;
@@ -30,7 +30,19 @@ namespace Server.Items
         private SAAbsorptionAttributes m_SAAbsorptionAttributes;
         private CraftResource m_Resource;
         private GemType m_GemType;
+
+        #region Stygian Abyss
         private int m_TimesImbued;
+        private int m_GorgonLenseCharges;
+        private LenseType m_GorgonLenseType;
+        #endregion
+
+        #region Runic Reforging
+        private bool m_BlockRepair;
+        private ItemPower m_ItemPower;
+        private ReforgedPrefix m_ReforgedPrefix;
+        private ReforgedSuffix m_ReforgedSuffix;
+        #endregion
 
         private Mobile m_BlessedBy;
 
@@ -198,19 +210,58 @@ namespace Server.Items
             }
         }
 
+        #region SA
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimesImbued
         {
-            get
-            {
-                return this.m_TimesImbued;
-            }
-            set
-            {
-                this.m_TimesImbued = value;
-                this.InvalidateProperties();
-            }
+            get { return this.m_TimesImbued; }
+            set { m_TimesImbued = value; InvalidateProperties(); }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int GorgonLenseCharges
+        {
+            get { return m_GorgonLenseCharges; }
+            set { m_GorgonLenseCharges = value; if (value == 0) m_GorgonLenseType = LenseType.None; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public LenseType GorgonLenseType
+        {
+            get { return m_GorgonLenseType; }
+            set { m_GorgonLenseType = value; InvalidateProperties(); }
+        }
+        #endregion
+
+        #region Runic Reforging
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ReforgedPrefix ReforgedPrefix 
+        {
+            get { return m_ReforgedPrefix; } 
+            set { m_ReforgedPrefix = value; InvalidateProperties(); } 
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ReforgedSuffix ReforgedSuffix 
+        { 
+            get { return m_ReforgedSuffix; } 
+            set { m_ReforgedSuffix = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool BlockRepair
+        {
+            get { return m_BlockRepair; }
+            set { m_BlockRepair = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemPower ItemPower 
+        {
+            get { return m_ItemPower; }
+            set { m_ItemPower = value; InvalidateProperties(); } 
+        }
+        #endregion
 
         public override int PhysicalResistance
         {
@@ -404,6 +455,54 @@ namespace Server.Items
             return base.CanEquip(from);
         }
 
+        public virtual int OnHit(BaseWeapon weap, int damage)
+        {
+            if (m_TimesImbued == 0 && m_MaxHitPoints == 0)
+                return damage;
+
+            int wear = Utility.Random(2);
+
+            if (wear > 0 && m_MaxHitPoints > 0)
+            {
+                if (m_HitPoints >= wear)
+                {
+                    HitPoints -= wear;
+                    wear = 0;
+                }
+                else
+                {
+                    wear -= HitPoints;
+                    HitPoints = 0;
+                }
+
+                if (wear > 0)
+                {
+                    if (m_MaxHitPoints > wear)
+                    {
+                        MaxHitPoints -= wear;
+
+                        if (Parent is Mobile)
+                            ((Mobile)Parent).LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                    }
+                    else
+                    {
+                        Delete();
+                    }
+                }
+            }
+
+            return damage;
+        }
+
+        public virtual void UnscaleDurability()
+        {
+        }
+
+        public virtual void ScaleDurability()
+        {
+        }
+
+        public virtual bool CanFortify { get { return false; } }
         #endregion
 
         public override void OnAdded(object parent)
@@ -487,13 +586,48 @@ namespace Server.Items
         {
         }
 
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (m_ReforgedPrefix != ReforgedPrefix.None || m_ReforgedSuffix != ReforgedSuffix.None)
+            {
+                if (m_ReforgedPrefix != ReforgedPrefix.None)
+                {
+                    int prefix = RunicReforging.GetPrefixName(m_ReforgedPrefix);
+
+                    if (m_ReforgedSuffix == ReforgedSuffix.None)
+                        list.Add(1151757, String.Format("#{0}\t{1}", prefix, GetNameString())); // ~1_PREFIX~ ~2_ITEM~
+                    else
+                        list.Add(1151756, String.Format("#{0}\t{1}\t#{2}", prefix, GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_PREFIX~ ~2_ITEM~ of ~3_SUFFIX~
+                }
+                else if (m_ReforgedSuffix != ReforgedSuffix.None)
+                    list.Add(1151758, String.Format("{0}\t#{1}", GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_ITEM~ of ~2_SUFFIX~
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
+        private string GetNameString()
+        {
+            string name = this.Name;
+
+            if (name == null)
+                name = String.Format("#{0}", LabelNumber);
+
+            return name;
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            #region Imbuing
+            #region Stygian Abyss
             if (this.m_TimesImbued > 0)
                 list.Add(1080418); // (Imbued)
+
+            if (m_GorgonLenseCharges > 0)
+                list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~
             #endregion
 
             #region Mondain's Legacy
@@ -643,6 +777,16 @@ namespace Server.Items
 
             base.AddResistanceProperties(list);
 
+            #region Runic Reforging
+            if (m_ItemPower != ItemPower.None)
+            {
+                if (m_ItemPower <= ItemPower.LegendaryArtifact)
+                    list.Add(1151488 + ((int)m_ItemPower - 1));
+                else
+                    list.Add(1152281 + ((int)m_ItemPower - 9));
+            }
+            #endregion
+
             Server.Engines.XmlSpawner2.XmlAttach.AddAttachmentProperties(this, list);
 
             if (this.m_HitPoints >= 0 && this.m_MaxHitPoints > 0)
@@ -653,11 +797,25 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(4); // version
+            writer.Write(5); // version
+
+            // Version 5
+            #region Region Reforging
+            writer.Write((int)m_ReforgedPrefix);
+            writer.Write((int)m_ReforgedSuffix);
+            writer.Write((int)m_ItemPower);
+            writer.Write(m_BlockRepair);
+            #endregion
+
+            #region Stygian Abyss
+            writer.Write(m_GorgonLenseCharges);
+            writer.Write((int)m_GorgonLenseType);
 
             // Version 4
             writer.WriteEncodedInt((int)this.m_TimesImbued);
             this.m_SAAbsorptionAttributes.Serialize(writer);
+            #endregion
+
             writer.Write((Mobile)this.m_BlessedBy);
             writer.Write((bool)this.m_LastEquipped);
             writer.Write((bool)this.m_SetEquipped);
@@ -689,10 +847,25 @@ namespace Server.Items
 
             switch (version)
             {
+                case 5:
+                    {
+                        #region Runic Reforging
+                        m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
+                        m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
+                        m_ItemPower = (ItemPower)reader.ReadInt();
+                        m_BlockRepair = reader.ReadBool();
+                        #endregion
+
+                        #region Stygian Abyss
+                        m_GorgonLenseCharges = reader.ReadInt();
+                        m_GorgonLenseType = (LenseType)reader.ReadInt();
+                        goto case 4;
+                    }
                 case 4:
                     {
                         this.m_TimesImbued = reader.ReadEncodedInt();
                         this.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this, reader);
+                        #endregion
 
                         this.m_BlessedBy = reader.ReadMobile();
                         this.m_LastEquipped = reader.ReadBool();

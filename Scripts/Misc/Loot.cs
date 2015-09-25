@@ -34,7 +34,7 @@ namespace Server
 			typeof(GargishLeatherChest), typeof(GargishLeatherLegs), typeof(GargishLeatherArms), typeof(GargishLeatherKilt),
 			typeof(GargishLeatherWingArmor), typeof(GargishStoneChest), typeof(GargishStoneLegs), typeof(GargishStoneArms),
 			typeof(GargishStoneKilt), typeof(GargishPlateChest), typeof(GargishPlateLegs), typeof(GargishPlateArms),
-			typeof(GargishPlateKilt)
+			typeof(GargishPlateKilt), typeof(GargishNecklace), typeof( GargishEarrings )
 		};
 
 		public static Type[] SAArmorTypes { get { return m_SAArmorTypes; } }
@@ -171,11 +171,17 @@ namespace Server
 
 		private static readonly Type[] m_JewelryTypes = new[]
 		{
-			typeof(GoldRing), typeof(GoldBracelet), typeof(GargishRing), typeof(SilverRing), typeof(SilverBracelet),
-			typeof(GargishBracelet), typeof(GargishNecklace), typeof(GargishEarrings)
+			typeof(GoldRing), typeof(GoldBracelet), typeof(SilverRing), typeof(SilverBracelet),
 		};
 
 		public static Type[] JewelryTypes { get { return m_JewelryTypes; } }
+
+        private static readonly Type[] m_SAJewelryTypes = new[]
+        {
+            typeof(GargishRing), typeof(GargishBracelet)
+        };
+
+        public static Type[] SAJewelryTypes { get { return m_SAJewelryTypes; } }
 
 		private static readonly Type[] m_RegTypes = new[]
 		{
@@ -490,7 +496,7 @@ namespace Server
 		{
 			#region Stygian Abyss
 			if (Core.SA && isStygian)
-				return Construct(m_SAWeaponTypes, m_AosWeaponTypes, m_WeaponTypes, m_JewelryTypes);
+				return Construct(m_SAWeaponTypes, m_AosWeaponTypes, m_WeaponTypes, m_JewelryTypes, m_SAJewelryTypes);
 			#endregion
 
 			#region Mondain's Legacy
@@ -623,7 +629,7 @@ namespace Server
 		{
 			#region Stygian Abyss
 			if (Core.SA && isStygian)
-				return Construct(m_SAArmorTypes, m_ArmorTypes, m_AosHatTypes, m_HatTypes, m_AosShieldTypes, m_ShieldTypes, m_JewelryTypes);
+                return Construct(m_SAArmorTypes, m_ArmorTypes, m_AosHatTypes, m_HatTypes, m_AosShieldTypes, m_ShieldTypes, m_JewelryTypes, m_SAJewelryTypes);
 			#endregion
 
 			#region Mondain's Legacy
@@ -745,7 +751,8 @@ namespace Server
 					m_HatTypes,
 					m_AosShieldTypes,
 					m_ShieldTypes,
-					m_JewelryTypes);
+					m_JewelryTypes,
+                    m_SAJewelryTypes);
 			}
 			#endregion
 

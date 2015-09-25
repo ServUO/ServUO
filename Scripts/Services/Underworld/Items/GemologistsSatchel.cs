@@ -64,7 +64,7 @@ namespace Server.Items
 			typeof(BouraPelt), 			typeof(SilverSnakeSkin), 		typeof(ArcanicRuneStone),
 			typeof(SlithTongue), 		typeof(VoidOrb), 				typeof(RaptorTeeth),
 			typeof(SpiderCarapace), 	typeof(DaemonClaw), 			typeof(VialOfVitriol),
-			typeof(GoblinBlood), 		typeof(LavaSerpenCrust), 		typeof(UndyingFlesh),
+			typeof(GoblinBlood), 		typeof(LavaSerpentCrust), 		typeof(UndyingFlesh),
 			typeof(CrushedGlass), 		typeof(CrystallineBlackrock), 	typeof(PowderedIron),
 			typeof(ElvenFletchings),    typeof(DelicateScales),
 			

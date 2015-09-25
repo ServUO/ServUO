@@ -107,8 +107,12 @@ namespace Server.Items
             from.PlaySound(0x22);
 
 			m_RewardCooldown[from] = DateTime.UtcNow + TimeSpan.FromHours(24);
-			
-			coin.Delete();
+
+            if (coin.Amount <= 1)
+                coin.Delete();
+            else
+			    coin.Amount--;
+
 			return false;
 		}
 
@@ -226,7 +230,7 @@ namespace Server.Items
             if (m_Fountains.Contains(fountain))
                 m_Fountains.Remove(fountain);
 
-            if (m_Fountains.Count == 0)
+            if (m_Fountains.Count == 0 && m_Timer != null)
             {
                 m_Timer.Stop();
                 m_Timer = null;

@@ -98,20 +98,25 @@ namespace Server.Engines.Craft
             typeof(Candelabra), typeof(Scales),
             typeof(Key), typeof(Globe),
             typeof(Spyglass), typeof(Lantern),
-            typeof(HeatingStand)
+            typeof(HeatingStand),
+            typeof(GorgonLense), typeof(MedusaLightScales), typeof(MedusaDarkScales), typeof(RedScales), 
+            typeof(BlueScales), typeof(BlackScales), typeof(GreenScales), typeof(YellowScales), typeof(WhiteScales),
+            typeof(PlantPigment), typeof(SoftenedReeds), typeof(DryReeds), typeof(PlantClippings)
         };
 
         public override bool RetainsColorFrom(CraftItem item, Type type)
         {
-            if (!type.IsSubclassOf(typeof(BaseIngot)))
+            if (type == typeof(CrystalDust))
                 return false;
 
-            type = item.ItemType;
-
             bool contains = false;
+            type = item.ItemType;
 
             for (int i = 0; !contains && i < m_TinkerColorables.Length; ++i)
                 contains = (m_TinkerColorables[i] == type);
+
+            if (!contains && !type.IsSubclassOf(typeof(BaseIngot)))
+                return false;
 
             return contains;
         }
@@ -303,6 +308,13 @@ namespace Server.Engines.Craft
                 index = this.AddCraft(typeof(FancyWindChimes), 1044050, 1030291, 80.0, 130.0, typeof(IronIngot), 1044036, 15, 1044037);
                 this.SetNeededExpansion(index, Expansion.SE);
             }
+            #endregion
+
+            #region Stygian Abyss
+            index = AddCraft(typeof(GorgonLense), 1044050, 1112625, 90.0, 120.0, typeof(RedScales), 1112626, 2, 1053097);
+            AddRes(index, typeof(CrystalDust), 1112328, 3, 1044253);
+            ForceNonExceptional(index);
+            SetItemHue(index, 1266);
             #endregion
 
             #region Jewelry

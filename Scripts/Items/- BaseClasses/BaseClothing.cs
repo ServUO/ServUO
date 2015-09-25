@@ -48,7 +48,7 @@ namespace Server.Items
         {
             get
             {
-                return true;
+                return m_TimesImbued == 0;
             }
         }
 
@@ -64,9 +64,25 @@ namespace Server.Items
         private AosArmorAttributes m_AosClothingAttributes;
         private AosSkillBonuses m_AosSkillBonuses;
         private AosElementAttributes m_AosResistances;
+        private SAAbsorptionAttributes m_SAAbsorptionAttributes;
 
-        #region Imbuing
+        #region Stygian Abyss
         private int m_TimesImbued;
+        private int m_GorgonLenseCharges;
+        private LenseType m_GorgonLenseType;
+
+        private int m_PhysImbuing;
+        private int m_FireImbuing;
+        private int m_ColdImbuing;
+        private int m_PoisonImbuing;
+        private int m_EnergyImbuing;
+        #endregion
+
+        #region Runic Reforging
+        private bool m_BlockRepair;
+        private ItemPower m_ItemPower;
+        private ReforgedPrefix m_ReforgedPrefix;
+        private ReforgedSuffix m_ReforgedSuffix;
         #endregion
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -160,20 +176,87 @@ namespace Server.Items
                 this.m_PlayerConstructed = value;
             }
         }
-		
-        #region Imbuing
+
+        #region Stygian Abyss
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimesImbued
         {
-            get
-            {
-                return this.m_TimesImbued;
-            }
-            set
-            {
-                this.m_TimesImbued = value;
-                this.InvalidateProperties();
-            }
+            get { return m_TimesImbued; }
+            set { m_TimesImbued = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int GorgonLenseCharges
+        {
+            get { return m_GorgonLenseCharges; }
+            set { m_GorgonLenseCharges = value; if (value == 0) m_GorgonLenseType = LenseType.None; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public LenseType GorgonLenseType
+        {
+            get { return m_GorgonLenseType; }
+            set { m_GorgonLenseType = value; InvalidateProperties(); }
+        }
+
+        public int PhysImbuing
+        {
+            get { return m_PhysImbuing; }
+            set { m_PhysImbuing = value; }
+        }
+
+        public int FireImbuing
+        {
+            get { return m_FireImbuing; }
+            set { m_FireImbuing = value; }
+        }
+
+        public int ColdImbuing
+        {
+            get { return m_ColdImbuing; }
+            set { m_ColdImbuing = value; }
+        }
+
+        public int PoisonImbuing
+        {
+            get { return m_PoisonImbuing; }
+            set { m_PoisonImbuing = value; }
+        }
+
+        public int EnergyImbuing
+        {
+            get { return m_EnergyImbuing; }
+            set { m_EnergyImbuing = value; }
+        }
+        #endregion
+
+        #region Runic Reforging
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ReforgedPrefix ReforgedPrefix
+        {
+            get { return m_ReforgedPrefix; }
+            set { m_ReforgedPrefix = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ReforgedSuffix ReforgedSuffix
+        {
+            get { return m_ReforgedSuffix; }
+            set { m_ReforgedSuffix = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool BlockRepair
+        {
+            get { return m_BlockRepair; }
+            set { m_BlockRepair = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemPower ItemPower
+        {
+            get { return m_ItemPower; }
+            set { m_ItemPower = value; InvalidateProperties(); }
         }
         #endregion
 
@@ -297,6 +380,18 @@ namespace Server.Items
             get
             {
                 return this.m_AosResistances;
+            }
+            set
+            {
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public SAAbsorptionAttributes SAAbsorptionAttributes
+        {
+            get
+            {
+                return this.m_SAAbsorptionAttributes;
             }
             set
             {
@@ -788,6 +883,7 @@ namespace Server.Items
             this.m_AosClothingAttributes = new AosArmorAttributes(this);
             this.m_AosSkillBonuses = new AosSkillBonuses(this);
             this.m_AosResistances = new AosElementAttributes(this);
+            this.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
 
             #region Mondain's Legacy Sets
             this.m_SetAttributes = new AosAttributes(this);
@@ -806,6 +902,7 @@ namespace Server.Items
             clothing.m_AosResistances = new AosElementAttributes(newItem, this.m_AosResistances);
             clothing.m_AosSkillBonuses = new AosSkillBonuses(newItem, this.m_AosSkillBonuses);
             clothing.m_AosClothingAttributes = new AosArmorAttributes(newItem, this.m_AosClothingAttributes);
+            clothing.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, this.m_SAAbsorptionAttributes);
 
             #region Mondain's Legacy
             clothing.m_SetAttributes = new AosAttributes(newItem, this.m_SetAttributes);
@@ -932,7 +1029,21 @@ namespace Server.Items
                     break;
             }
 
-            if (oreType != 0)
+            if (m_ReforgedPrefix != ReforgedPrefix.None || m_ReforgedSuffix != ReforgedSuffix.None)
+            {
+                if (m_ReforgedPrefix != ReforgedPrefix.None)
+                {
+                    int prefix = RunicReforging.GetPrefixName(m_ReforgedPrefix);
+
+                    if (m_ReforgedSuffix == ReforgedSuffix.None)
+                        list.Add(1151757, String.Format("#{0}\t{1}", prefix, GetNameString())); // ~1_PREFIX~ ~2_ITEM~
+                    else
+                        list.Add(1151756, String.Format("#{0}\t{1}\t#{2}", prefix, GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_PREFIX~ ~2_ITEM~ of ~3_SUFFIX~
+                }
+                else if (m_ReforgedSuffix != ReforgedSuffix.None)
+                    list.Add(1151758, String.Format("{0}\t#{1}", GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_ITEM~ of ~2_SUFFIX~
+            }
+            else if (oreType != 0)
                 list.Add(1053099, "#{0}\t{1}", oreType, this.GetNameString()); // ~1_oretype~ ~2_armortype~
             else if (this.Name == null)
                 list.Add(this.LabelNumber);
@@ -944,9 +1055,12 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            #region Imbuing
+            #region Stygian Abyss
             if (this.m_TimesImbued > 0)
                 list.Add(1080418); // (Imbued)
+
+            if (m_GorgonLenseCharges > 0)
+                list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~
             #endregion
 			
             if (this.m_Crafter != null)
@@ -1076,7 +1190,55 @@ namespace Server.Items
             if (Core.ML && (prop = this.m_AosAttributes.IncreasedKarmaLoss) != 0)
                 list.Add(1075210, prop.ToString()); // Increased Karma Loss ~1val~%
 
+            #region SA
+            if ((prop = this.m_SAAbsorptionAttributes.CastingFocus) != 0)
+                list.Add(1113696, prop.ToString()); // Casting Focus ~1_val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterFire) != 0)
+                list.Add(1113593, prop.ToString()); // Fire Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterCold) != 0)
+                list.Add(1113594, prop.ToString()); // Cold Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterPoison) != 0)
+                list.Add(1113595, prop.ToString()); // Poison Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterEnergy) != 0)
+                list.Add(1113596, prop.ToString()); // Energy Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterKinetic) != 0)
+                list.Add(1113597, prop.ToString()); // Kinetic Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterDamage) != 0)
+                list.Add(1113598, prop.ToString()); // Damage Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.ResonanceFire) != 0)
+                list.Add(1113691, prop.ToString()); // Fire Resonance ~1_val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.ResonanceCold) != 0)
+                list.Add(1113692, prop.ToString()); // Cold Resonance ~1_val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.ResonancePoison) != 0)
+                list.Add(1113693, prop.ToString()); // Poison Resonance ~1_val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.ResonanceEnergy) != 0)
+                list.Add(1113694, prop.ToString()); // Energy Resonance ~1_val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.ResonanceKinetic) != 0)
+                list.Add(1113695, prop.ToString()); // Kinetic Resonance ~1_val~%
+            #endregion
+
             base.AddResistanceProperties(list);
+
+            #region Runic Reforging
+            if (m_ItemPower != ItemPower.None)
+            {
+                if (m_ItemPower <= ItemPower.LegendaryArtifact)
+                    list.Add(1151488 + ((int)m_ItemPower - 1));
+                else
+                    list.Add(1152281 + ((int)m_ItemPower - 9));
+            }
+            #endregion
 
             if ((prop = this.m_AosClothingAttributes.DurabilityBonus) > 0)
                 list.Add(1060410, prop.ToString()); // durability ~1_val~%
@@ -1208,10 +1370,32 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(6); // version
+            writer.Write(7); // version
+
+            // Version 7
+            m_SAAbsorptionAttributes.Serialize(writer);
+
+            #region Runic Reforging
+            writer.Write((int)m_ReforgedPrefix);
+            writer.Write((int)m_ReforgedSuffix);
+            writer.Write((int)m_ItemPower);
+            writer.Write(m_BlockRepair);
+            #endregion
+
+            #region Stygian Abyss
+            writer.Write(m_GorgonLenseCharges);
+            writer.Write((int)m_GorgonLenseType);
+
+            writer.Write(m_PhysImbuing);
+            writer.Write(m_FireImbuing);
+            writer.Write(m_ColdImbuing);
+            writer.Write(m_PoisonImbuing);
+            writer.Write(m_EnergyImbuing);
 
             // Version 6
-            writer.Write((int)this.m_TimesImbued); // Imbuing
+            writer.Write((int)this.m_TimesImbued);
+            #endregion
+
             writer.Write(this.m_BlessedBy);
 
             #region Mondain's Legacy Sets
@@ -1324,9 +1508,36 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 7:
+                    {
+                        m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this, reader);
+
+                        #region Runic Reforging
+                        m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
+                        m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
+                        m_ItemPower = (ItemPower)reader.ReadInt();
+                        m_BlockRepair = reader.ReadBool();
+                        #endregion
+
+                        #region Stygian Abyss
+                        m_GorgonLenseCharges = reader.ReadInt();
+                        m_GorgonLenseType = (LenseType)reader.ReadInt();
+
+                        m_PhysImbuing = reader.ReadInt();
+                        m_FireImbuing = reader.ReadInt();
+                        m_ColdImbuing = reader.ReadInt();
+                        m_PoisonImbuing = reader.ReadInt();
+                        m_EnergyImbuing = reader.ReadInt();
+                        goto case 6;
+                    }
                 case 6:
                     {
+                        if(version == 6)
+                            m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
+
                         this.m_TimesImbued = reader.ReadInt();
+                        #endregion
+
                         this.m_BlessedBy = reader.ReadMobile();
 
                         #region Mondain's Legacy Sets
@@ -1585,6 +1796,14 @@ namespace Server.Items
                         break;
                 }
             }
+
+            #region Stygian Abyss
+            m_PhysImbuing = m_AosResistances.Physical;
+            m_FireImbuing = m_AosResistances.Fire;
+            m_ColdImbuing = m_AosResistances.Cold;
+            m_PoisonImbuing = m_AosResistances.Poison;
+            m_EnergyImbuing = m_AosResistances.Energy;
+            #endregion
 
             this.InvalidateProperties();
         }

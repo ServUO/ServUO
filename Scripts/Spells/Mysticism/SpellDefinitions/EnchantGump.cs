@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using Server.Items;
 using Server.Network;
+using System.Collections.Generic;
+using Server.Spells.Mystic;
 
 namespace Server.Gumps
 {
@@ -10,6 +12,7 @@ namespace Server.Gumps
         public BaseWeapon m_Item;
         private static readonly Hashtable m_Table = new Hashtable();
         private string m_Name;
+
         public EnchantGump()
             : base(0, 0)
         {
@@ -19,13 +22,13 @@ namespace Server.Gumps
             this.Resizable = false;
 
             this.AddPage(0);
-            this.AddBackground(130, 90, 280, 180, 9270);   /// Background
-            this.AddAlphaRegion(141, 101, 257, 158);   /// Alpha Region
-            this.AddImageTiled(374, 100, 26, 160, 10460);   /// Celctic Bars on right
-            this.AddItem(133, 98, 6882);   /// Top-Left Skull
-            this.AddItem(340, 98, 6883);   /// Top-Right Skull
-            this.AddItem(350, 250, 6881);   /// Bottom-Right Skull
-            this.AddItem(122, 250, 6880);   /// Bottom-Left Skull
+            this.AddBackground(130, 90, 280, 180, 9270);   // Background
+            this.AddAlphaRegion(141, 101, 257, 158);   // Alpha Region
+            this.AddImageTiled(374, 100, 26, 160, 10460);   // Celctic Bars on right
+            this.AddItem(133, 98, 6882);   // Top-Left Skull
+            this.AddItem(340, 98, 6883);   // Top-Right Skull
+            this.AddItem(350, 250, 6881);   // Bottom-Right Skull
+            this.AddItem(122, 250, 6880);   // Bottom-Left Skull
             this.AddHtml(165, 112, 117, 18, @"<BASEFONT COLOR=AQUA>Select Enchant</BASEFONT>", (bool)false, (bool)false);
             this.AddButton(165, 140, 9702, 9703, 1, GumpButtonType.Reply, 1);
             this.AddLabel(185, 138, 87, @"Hit Dispel");
@@ -67,9 +70,10 @@ namespace Server.Gumps
                         else
                             this.m_Name = weapon.Name;
                         weapon.Name = this.m_Name + " [Enchanted]";
-                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitDispel, duration);
+                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitDispel, m, duration);
                         t.Start();
                         m.CloseGump(typeof(EnchantGump));
+                        EnchantSpell.AddEffects(m, weapon);
                         break;
                     }
                 case 2:
@@ -86,9 +90,10 @@ namespace Server.Gumps
                         else
                             this.m_Name = weapon.Name;
                         weapon.Name = this.m_Name + " [Enchanted]";
-                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitFireball, duration);
+                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitFireball, m, duration);
                         t.Start();
                         m.CloseGump(typeof(EnchantGump));
+                        EnchantSpell.AddEffects(m, weapon);
                         break;
                     }
                 case 3:
@@ -105,9 +110,10 @@ namespace Server.Gumps
                         else
                             this.m_Name = weapon.Name;
                         weapon.Name = this.m_Name + " [Enchanted]";
-                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitHarm, duration);
+                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitHarm, m, duration);
                         t.Start();
                         m.CloseGump(typeof(EnchantGump));
+                        EnchantSpell.AddEffects(m, weapon);
                         break;
                     }
                 case 4:
@@ -124,9 +130,10 @@ namespace Server.Gumps
                         else
                             this.m_Name = weapon.Name;
                         weapon.Name = this.m_Name + " [Enchanted]";
-                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitLightning, duration);
+                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitLightning, m, duration);
                         t.Start();
                         m.CloseGump(typeof(EnchantGump));
+                        EnchantSpell.AddEffects(m, weapon);
                         break;
                     }
                 case 5:
@@ -143,9 +150,10 @@ namespace Server.Gumps
                         else
                             this.m_Name = weapon.Name;
                         weapon.Name = this.m_Name + " [Enchanted]";
-                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitMagicArrow, duration);
+                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitMagicArrow, m, duration);
                         t.Start();
                         m.CloseGump(typeof(EnchantGump));
+                        EnchantSpell.AddEffects(m, weapon);
                         break;
                     }
             }
@@ -156,9 +164,12 @@ namespace Server.Gumps
             private readonly BaseWeapon m_Weapon;
             private readonly AosWeaponAttribute m_Attribute;
             private readonly DateTime m_End;
-            public ExpireTimer(BaseWeapon weapon, AosWeaponAttribute attribute, TimeSpan delay)
+            private Mobile m_From;
+
+            public ExpireTimer(BaseWeapon weapon, AosWeaponAttribute attribute, Mobile from, TimeSpan delay)
                 : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
             {
+                m_From = from;
                 this.m_Weapon = weapon;
                 this.m_Attribute = attribute;
                 this.m_End = DateTime.UtcNow + delay;
@@ -195,7 +206,9 @@ namespace Server.Gumps
                             break;
                     }
                 }
+
                 m_Table.Remove(this.m_Weapon);
+                EnchantSpell.RemoveEffects(m_From, m_Weapon);
             }
 
             protected override void OnTick()

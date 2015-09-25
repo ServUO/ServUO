@@ -788,6 +788,11 @@ namespace Server.Items
                         from.SendLocalizedMessage(1061122); // Castles and keeps cannot be created here.
                         break;
                     }
+                case HousePlacementResult.QueensLoyalty:
+                    {
+                        from.SendLocalizedMessage(1113713); // You must rise to the rank of noble in the eyes of the Gargoyle Queen before her majesty will allow you to build a house in her lands.
+                        break;
+                    }
             }
 
             return false;

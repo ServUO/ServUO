@@ -200,51 +200,69 @@ namespace Server.Spells
 
 		public virtual bool IsCasting { get { return m_State == SpellState.Casting; } }
 
-		public virtual void OnCasterHurt()
-		{
-			//Confirm: Monsters and pets cannot be disturbed.
-			if (!Caster.Player)
-			{
-				return;
-			}
+        public virtual void OnCasterHurt()
+        {
+            CheckCasterDisruption(false, 0, 0, 0, 0, 0);
+        }
 
-			if (IsCasting)
-			{
-				object o = ProtectionSpell.Registry[m_Caster];
-				bool disturb = true;
+        public virtual void CheckCasterDisruption(bool checkElem = false, int phys = 0, int fire = 0, int cold = 0, int pois = 0, int nrgy = 0)
+        {
+            if (!Caster.Player || Caster.AccessLevel > AccessLevel.Player)
+            {
+                return;
+            }
 
-				if (o != null && o is double)
-				{
-					if (((double)o) > Utility.RandomDouble() * 100.0)
-					{
-						disturb = false;
-					}
-				}
+            if (IsCasting)
+            {
+                object o = ProtectionSpell.Registry[m_Caster];
+                bool disturb = true;
 
-				#region Stygian Abyss
-				int focus = SAAbsorptionAttributes.GetValue(Caster, SAAbsorptionAttribute.CastingFocus);
+                if (o != null && o is double)
+                {
+                    if (((double)o) > Utility.RandomDouble() * 100.0)
+                    {
+                        disturb = false;
+                    }
+                }
 
-				if (focus > 0)
-				{
-					if (focus > 30)
-					{
-						focus = 30;
-					}
+                #region Stygian Abyss
+                int focus = SAAbsorptionAttributes.GetValue(Caster, SAAbsorptionAttribute.CastingFocus);
+                if (focus > 12) focus = 12;
+                focus += m_Caster.Skills[SkillName.Inscribe].Value >= 50 ? GetInscribeFixed(m_Caster) / 200 : 0;
 
-					if (focus > Utility.Random(100))
-					{
-						disturb = false;
-						Caster.SendLocalizedMessage(1113690); // You regain your focus and continue casting the spell.
-					}
-				}
-				#endregion
+                if (focus > 0 && focus > Utility.Random(100))
+                {
+                    disturb = false;
+                    Caster.SendLocalizedMessage(1113690); // You regain your focus and continue casting the spell.
+                }
+                else if (checkElem)
+                {
+                    int res = 0;
 
-				if (disturb)
-				{
-					Disturb(DisturbType.Hurt, false, true);
-				}
-			}
-		}
+                    if (phys == 100)
+                        res = Math.Min(40, SAAbsorptionAttributes.GetValue(m_Caster, SAAbsorptionAttribute.ResonanceKinetic));
+
+                    else if (fire == 100)
+                        res = Math.Min(40, SAAbsorptionAttributes.GetValue(m_Caster, SAAbsorptionAttribute.ResonanceFire));
+
+                    else if (cold == 100)
+                        res = Math.Min(40, SAAbsorptionAttributes.GetValue(m_Caster, SAAbsorptionAttribute.ResonanceCold));
+
+                    else if (pois == 100)
+                        res = Math.Min(40, SAAbsorptionAttributes.GetValue(m_Caster, SAAbsorptionAttribute.ResonancePoison));
+
+                    else if (nrgy == 100)
+                        res = Math.Min(40, SAAbsorptionAttributes.GetValue(m_Caster, SAAbsorptionAttribute.ResonanceEnergy));
+
+                    if (res > Utility.Random(100))
+                        disturb = false;
+                }
+                #endregion
+
+                if (disturb)
+                    Disturb(DisturbType.Hurt, false, true);
+            }
+        }
 
 		public virtual void OnCasterKilled()
 		{

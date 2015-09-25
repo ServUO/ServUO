@@ -82,5 +82,27 @@ namespace Server.Spells.Ninjitsu
 
             this.CheckGain(attacker);
         }
+
+        public override void OnUse(Mobile from)
+        {
+            BaseWeapon wep = from.Weapon as BaseWeapon;
+
+            if (wep != null)
+            {
+                wep.FocusWeilder = from;
+                wep.InvalidateProperties();
+            }
+        }
+
+        public override void OnClearMove(Mobile from)
+        {
+            BaseWeapon wep = from.Weapon as BaseWeapon;
+
+            if (wep != null && wep.FocusWeilder != null)
+            {
+                wep.FocusWeilder = null;
+                wep.InvalidateProperties();
+            }
+        }
     }
 }

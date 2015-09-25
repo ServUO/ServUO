@@ -55,12 +55,13 @@ namespace Server.Items
                     damage *= 2;
 
                 m.PlaySound(0x133);
-                m.Damage(damage, from);
-				
-				if (blooddrinker)
-				{
-					from.Heal(damage, from, true); // Check for OSI message accuracy instead of standard heal message
-				}
+                AOS.Damage(m, from, damage, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
+
+                if (blooddrinker && from.Hits < from.HitsMax)
+                {
+                    from.SendLocalizedMessage(1113606); //The blood drinker effect heals you.
+                    from.Heal(damage);
+                }
 
                 Blood blood = new Blood();
 
