@@ -17,6 +17,7 @@
 */
 using System;
 using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
@@ -75,6 +76,13 @@ namespace Server.Engines.Quests
                 return 1113791;
             }
         }
+
+        public override void GiveRewards()
+        {
+            Server.Engines.QueensLoyalty.LoyaltySystem.HandleQuest(Owner, this);
+            base.GiveRewards();
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

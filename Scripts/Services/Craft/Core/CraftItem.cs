@@ -339,7 +339,9 @@ namespace Server.Engines.Craft
 			new[] {typeof(SpinedLeather), typeof(SpinedHides)}, new[] {typeof(HornedLeather), typeof(HornedHides)},
 			new[] {typeof(BarbedLeather), typeof(BarbedHides)}, new[] {typeof(BlankMap), typeof(BlankScroll)},
 			new[] {typeof(Cloth), typeof(UncutCloth), typeof(AbyssalCloth)}, new[] {typeof(CheeseWheel), typeof(CheeseWedge)},
-			new[] {typeof(Pumpkin), typeof(SmallPumpkin)}, new[] {typeof(WoodenBowlOfPeas), typeof(PewterBowlOfPeas)}
+			new[] {typeof(Pumpkin), typeof(SmallPumpkin)}, new[] {typeof(WoodenBowlOfPeas), typeof(PewterBowlOfPeas)},
+            new[] { typeof( CrystallineFragments ), typeof( BrokenCrystals ), typeof( ShatteredCrystals ), typeof( ScatteredCrystals ), typeof( CrushedCrystals ), typeof( JaggedCrystals ), typeof( AncientPotteryFragments ) },
+            new[] { typeof( RedScales ), typeof( BlueScales ), typeof( BlackScales ), typeof( YellowScales ), typeof( GreenScales ), typeof( WhiteScales ), typeof( MedusaDarkScales ), typeof( MedusaLightScales ) }
 		};
 
 		private static readonly Type[] m_ColoredItemTable = new[]
@@ -349,8 +351,12 @@ namespace Server.Engines.Craft
 			#endregion
 
 			typeof(BaseWeapon), typeof(BaseArmor), typeof(BaseClothing), typeof(BaseJewel), typeof(DragonBardingDeed),
-			typeof(BaseAddonDeed), typeof(BaseAddon), typeof(PlantPigment), typeof(SoftenedReeds), typeof(DryReeds),
-			typeof(PlantClippings)
+			typeof(BaseAddonDeed), typeof(BaseAddon),
+
+            #region Stygian Abyss
+            typeof(PlantPigment), typeof(SoftenedReeds), typeof(DryReeds), typeof(PlantClippings),
+            typeof(MedusaLightScales), typeof(MedusaDarkScales)
+            #endregion
 		};
 
 		private static readonly Type[] m_ColoredResourceTable = new[]
@@ -943,7 +949,7 @@ namespace Server.Engines.Craft
 			}
 			#endregion
 
-			if (!RetainsColorFrom(m_System, item.GetType()))
+            if (!RetainsColorFrom(m_System, item.GetType()))
 			{
 				return;
 			}

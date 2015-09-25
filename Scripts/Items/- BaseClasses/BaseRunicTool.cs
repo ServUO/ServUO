@@ -66,6 +66,38 @@ namespace Server.Items
         {
         }
 
+        #region Runic Reforging
+        public override void OnDoubleClick(Mobile from)
+        {
+            bool hasSkill = from.Skills[SkillName.Imbuing].Value >= 65;
+
+            IPooledEnumerable eable = from.Map.GetItemsInRange(from.Location, 2);
+
+            foreach (Item item in eable)
+            {
+                if ((item.ItemID >= 0x4263 && item.ItemID <= 0x4272) || (item.ItemID >= 0x4277 && item.ItemID <= 0x4286) || (item.ItemID >= 17607 && item.ItemID <= 17610))
+                {
+                    if (!hasSkill)
+                    {
+                        from.SendLocalizedMessage(1152333); // You do not have enough Imbuing skill to re-forge items. Using standard Runic Crafting instead.
+                        break;
+                    }
+
+                    from.Target = new RunicReforgingTarget(this);
+                    from.SendLocalizedMessage(1152112); // Target the item to reforge.
+                    eable.Free();
+                    return;
+                }
+            }
+
+            if (hasSkill)
+                from.SendLocalizedMessage(1152334); // You must be near a Soul Forge to re-forge items. Using standard Runic Crafting instead.
+
+            eable.Free();
+            base.OnDoubleClick(from);
+        }
+        #endregion
+
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
         {

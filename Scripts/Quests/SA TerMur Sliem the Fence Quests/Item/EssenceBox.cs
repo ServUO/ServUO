@@ -82,7 +82,7 @@ namespace Server.Items
                     this.DropItem(new KepetchWax());
                     break;
                 case 17:
-                    this.DropItem(new LavaSerpenCrust());
+                    this.DropItem(new LavaSerpentCrust());
                     break;
                 case 18:
                     this.DropItem(new MedusaBlood());

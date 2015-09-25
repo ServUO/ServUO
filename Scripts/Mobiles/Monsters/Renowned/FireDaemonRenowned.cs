@@ -67,7 +67,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(DaemonClaw), typeof(LavaSerpenCrust), typeof(LegacyOfDespair) };
+                return new Type[] { typeof(DaemonClaw), typeof(LavaSerpentCrust), typeof(LegacyOfDespair) };
             }
         }
         public override WeaponAbility GetWeaponAbility()

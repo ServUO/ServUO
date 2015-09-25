@@ -29,9 +29,9 @@ namespace Server.Items
             if (!base.Validate(from))
                 return false;
 
-            if (from.Mounted && !(from.Weapon is Lance))
+            if ( (from.Mounted || from.Flying) && !(from.Weapon is Lance) && !(from.Weapon is GargishLance) )
             {
-                from.SendLocalizedMessage(1061283); // You cannot perform that attack while mounted!
+                from.SendLocalizedMessage(1061283); // You cannot perform that attack while mounted or flying!
                 return false;
             }
 
@@ -46,16 +46,16 @@ namespace Server.Items
             if (defender is ChaosDragoon || defender is ChaosDragoonElite)
                 return;
 
-            if (attacker.Mounted && !(defender.Weapon is Lance)) // TODO: Should there be a message here?
+            if ((attacker.Mounted || attacker.Flying) && (!(attacker.Weapon is Lance) && !(defender.Weapon is Lance) && !(attacker.Weapon is GargishLance) && !(defender.Weapon is GargishLance))) // TODO: Should there be a message here?
                 return;
 
             ClearCurrentAbility(attacker);
 
             IMount mount = defender.Mount;
 
-            if (mount == null)
+            if (mount == null && !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender) && !defender.Flying)
             {
-                attacker.SendLocalizedMessage(1060848); // This attack only works on mounted targets
+                attacker.SendLocalizedMessage(1060848); // This attack only works on mounted or flying targets
                 return;
             }
 
@@ -69,24 +69,52 @@ namespace Server.Items
 
             attacker.SendLocalizedMessage(1060082); // The force of your attack has dislodged them from their mount!
 
-            if (attacker.Mounted)
-                defender.SendLocalizedMessage(1062315); // You fall off your mount!
-            else
-                defender.SendLocalizedMessage(1060083); // You fall off of your mount and take damage!
+            if (defender.Flying)
+                defender.SendLocalizedMessage(1113590, attacker.Name); // You have been grounded by ~1_NAME~!
+			else if ( attacker.Mounted )
+				defender.SendLocalizedMessage( 1062315 ); // You fall off your mount!
+			else
+				defender.SendLocalizedMessage( 1060083 ); // You fall off of your mount and take damage!
 
             defender.PlaySound(0x140);
             defender.FixedParticles(0x3728, 10, 15, 9955, EffectLayer.Waist);
 
-            mount.Rider = null;
+            if (defender is PlayerMobile)
+            {
+                if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
+                {
+                    defender.SendLocalizedMessage(1114066, attacker.Name); // ~1_NAME~ knocked you out of animal form!
+                }
+                else if (defender.Mounted)
+                {
+                    defender.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
+                }
+                else if (defender.Flying)
+                {
+                    defender.SendLocalizedMessage(1113590, attacker.Name); // You have been grounded by ~1_NAME~!
+                }
 
-            BaseMount.SetMountPrevention(defender, BlockMountType.Dazed, DefenderRemountDelay);
-            if (Core.ML && attacker is BaseCreature && ((BaseCreature)attacker).ControlMaster != null)
-            {
-                BaseMount.SetMountPrevention(((BaseCreature)attacker).ControlMaster, BlockMountType.DismountRecovery, AttackerRemountDelay);
+                (defender as PlayerMobile).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(10), true);
             }
-            else
+            else if (mount != null)
             {
-                BaseMount.SetMountPrevention(attacker, BlockMountType.DismountRecovery, AttackerRemountDelay);
+                mount.Rider = null;
+            }
+
+            if (attacker is PlayerMobile)
+            {
+                (attacker as PlayerMobile).SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), false);
+            }
+            else if (Core.ML && attacker is BaseCreature)
+            {
+                BaseCreature bc = attacker as BaseCreature;
+
+                if (bc.ControlMaster is PlayerMobile)
+                {
+                    PlayerMobile pm = bc.ControlMaster as PlayerMobile;
+
+                    pm.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), false);
+                }
             }
 				
             if (!attacker.Mounted)

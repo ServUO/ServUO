@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Server.Regions;
 using Server.Spells;
+using Server.Mobiles;
 
 namespace Server.Multis
 {
@@ -17,7 +18,8 @@ namespace Server.Multis
         BadRegionHidden,
         BadRegionTemp,
         InvalidCastleKeep,
-        BadRegionRaffle
+        BadRegionRaffle,
+        QueensLoyalty
     }
 
     public class HousePlacement
@@ -54,6 +56,14 @@ namespace Server.Multis
 
             if (map == Map.Malas && (multiID == 0x007C || multiID == 0x007E))
                 return HousePlacementResult.InvalidCastleKeep;
+
+            #region SA
+            if (map == Map.TerMur)
+            {
+                if (from is PlayerMobile && ((PlayerMobile)from).Level < PlayerMobile.Noble)
+                    return HousePlacementResult.QueensLoyalty;
+            }
+            #endregion
 
             NoHousingRegion noHousingRegion = (NoHousingRegion)Region.Find(center, map).GetRegion(typeof(NoHousingRegion));
 

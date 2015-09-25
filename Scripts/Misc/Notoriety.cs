@@ -273,7 +273,7 @@ namespace Server.Misc
 
             BaseCreature c = m as BaseCreature;
 
-            if (c != null && c.Controlled && c.ControlMaster != null)
+            if (c != null && c.Controlled && c.ControlMaster != null && !c.ForceNotoriety)
             {
                 c.DisplayGuildTitle = false;
 
@@ -421,7 +421,7 @@ namespace Server.Misc
 
                 master = bc.ControlMaster;
 
-                if (Core.ML && master != null)
+                if (Core.ML && master != null && !bc.ForceNotoriety)
                 {
                     if ((source == master && CheckAggressor(target.Aggressors, source)) || (CheckAggressor(source.Aggressors, bc)))
                         return Notoriety.CanBeAttacked;

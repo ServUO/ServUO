@@ -58,7 +58,25 @@ namespace Server.Items
         private CraftResource m_Resource;
         private bool m_Identified, m_PlayerConstructed;
         private int m_PhysicalBonus, m_FireBonus, m_ColdBonus, m_PoisonBonus, m_EnergyBonus;
+
+        #region Runic Reforging
+        private bool m_BlockRepair;
+        private ItemPower m_ItemPower;
+        private ReforgedPrefix m_ReforgedPrefix;
+        private ReforgedSuffix m_ReforgedSuffix;
+        #endregion
+
+        #region Stygian Abyss
+        private int m_GorgonLenseCharges;
+        private LenseType m_GorgonLenseType;
+
         private int m_TimesImbued;
+        private int m_PhysImbuing;
+        private int m_FireImbuing;
+        private int m_ColdImbuing;
+        private int m_PoisonImbuing;
+        private int m_EnergyImbuing;
+        #endregion
 
         private AosAttributes m_AosAttributes;
         private AosArmorAttributes m_AosArmorAttributes;
@@ -215,7 +233,7 @@ namespace Server.Items
         {
             get
             {
-                return true;
+                return m_TimesImbued == 0;
             }
         }
 
@@ -401,19 +419,93 @@ namespace Server.Items
             }
         }
 
+        #region Stygian Abyss
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int GorgonLenseCharges
+        {
+            get { return m_GorgonLenseCharges; }
+            set { m_GorgonLenseCharges = value; if (value == 0) m_GorgonLenseType = LenseType.None; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public LenseType GorgonLenseType
+        {
+            get { return m_GorgonLenseType; }
+            set { m_GorgonLenseType = value; InvalidateProperties(); }
+        }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimesImbued
         {
-            get
-            {
-                return this.m_TimesImbued;
-            }
-            set
-            {
-                this.m_TimesImbued = value;
-                this.InvalidateProperties();
-            }
+            get { return m_TimesImbued; }
+            set { m_TimesImbued = value; InvalidateProperties(); }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int PhysImbuing
+        {
+            get { return m_PhysImbuing; }
+            set { m_PhysImbuing = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int FireImbuing
+        {
+            get { return m_FireImbuing; }
+            set { m_FireImbuing = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int ColdImbuing
+        {
+            get { return m_ColdImbuing; }
+            set { m_ColdImbuing = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int PoisonImbuing
+        {
+            get { return m_PoisonImbuing; }
+            set { m_PoisonImbuing = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int EnergyImbuing
+        {
+            get { return m_EnergyImbuing; }
+            set { m_EnergyImbuing = value; }
+        }
+        #endregion
+
+        #region Runic Reforging
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ReforgedPrefix ReforgedPrefix 
+        { 
+            get { return m_ReforgedPrefix; } 
+            set { m_ReforgedPrefix = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ReforgedSuffix ReforgedSuffix 
+        { 
+            get { return m_ReforgedSuffix; }
+            set { m_ReforgedSuffix = value; InvalidateProperties(); } 
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool BlockRepair
+        {
+            get { return m_BlockRepair; }
+            set { m_BlockRepair = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemPower ItemPower
+        { 
+            get { return m_ItemPower; } 
+            set { m_ItemPower = value; InvalidateProperties(); } 
+        }
+        #endregion
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int StrBonus
@@ -1320,10 +1412,30 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)8); // version
+            writer.Write((int)9); // version
+
+            // Version 9
+            #region Runic Reforging
+            writer.Write((int)m_ReforgedPrefix);
+            writer.Write((int)m_ReforgedSuffix);
+            writer.Write((int)m_ItemPower);
+            writer.Write(m_BlockRepair);
+            #endregion
+
+            #region Stygian Abyss
+            writer.Write(m_GorgonLenseCharges);
+            writer.Write((int)m_GorgonLenseType);
+
+            writer.Write(m_PhysImbuing);
+            writer.Write(m_FireImbuing);
+            writer.Write(m_ColdImbuing);
+            writer.Write(m_PoisonImbuing);
+            writer.Write(m_EnergyImbuing);
 
             // Version 8
             writer.Write((int)this.m_TimesImbued);
+            #endregion
+
             writer.Write((Mobile)this.m_BlessedBy);
 
             SetFlag sflags = SetFlag.None;
@@ -1489,9 +1601,31 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 9:
+                    {
+                        #region Runic Reforging
+                        m_ReforgedPrefix = (ReforgedPrefix)reader.ReadInt();
+                        m_ReforgedSuffix = (ReforgedSuffix)reader.ReadInt();
+                        m_ItemPower = (ItemPower)reader.ReadInt();
+                        m_BlockRepair = reader.ReadBool();
+                        #endregion
+
+                        #region Stygian Abyss
+                        m_GorgonLenseCharges = reader.ReadInt();
+                        m_GorgonLenseType = (LenseType)reader.ReadInt();
+
+                        m_PhysImbuing = reader.ReadInt();
+                        m_FireImbuing = reader.ReadInt();
+                        m_ColdImbuing = reader.ReadInt();
+                        m_PoisonImbuing = reader.ReadInt();
+                        m_EnergyImbuing = reader.ReadInt();
+                        goto case 8;
+                    }
                 case 8:
                     {
                         this.m_TimesImbued = reader.ReadInt();
+                        #endregion
+
                         this.m_BlessedBy = reader.ReadMobile();
 
                         SetFlag sflags = (SetFlag)reader.ReadEncodedInt();
@@ -2232,7 +2366,21 @@ namespace Server.Items
                     break;
             }
 
-            if (this.m_Quality == ArmorQuality.Exceptional)
+            if (m_ReforgedPrefix != ReforgedPrefix.None || m_ReforgedSuffix != ReforgedSuffix.None)
+            {
+                if (m_ReforgedPrefix != ReforgedPrefix.None)
+                {
+                    int prefix = RunicReforging.GetPrefixName(m_ReforgedPrefix);
+
+                    if (m_ReforgedSuffix == ReforgedSuffix.None)
+                        list.Add(1151757, String.Format("#{0}\t{1}", prefix, GetNameString())); // ~1_PREFIX~ ~2_ITEM~
+                    else
+                        list.Add(1151756, String.Format("#{0}\t{1}\t#{2}", prefix, GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_PREFIX~ ~2_ITEM~ of ~3_SUFFIX~
+                }
+                else if (m_ReforgedSuffix != ReforgedSuffix.None)
+                    list.Add(1151758, String.Format("{0}\t#{1}", GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_ITEM~ of ~2_SUFFIX~
+            }
+            else if (this.m_Quality == ArmorQuality.Exceptional)
             {
                 if (oreType != 0)
                     list.Add(1053100, "#{0}\t{1}", oreType, this.GetNameString()); // exceptional ~1_oretype~ ~2_armortype~
@@ -2280,8 +2428,13 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
+            #region Stygian Abyss
             if (this.m_TimesImbued > 0)
                 list.Add(1080418); // (Imbued)
+
+            if (m_GorgonLenseCharges > 0)
+                list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~
+            #endregion
 
             if (this.m_Crafter != null)
                 list.Add(1050043, this.m_Crafter.Name); // crafted by ~1_NAME~
@@ -2442,6 +2595,14 @@ namespace Server.Items
             if ((prop = this.GetDurabilityBonus()) > 0)
                 list.Add(1060410, prop.ToString()); // durability ~1_val~%
 
+            if (m_ItemPower != ItemPower.None)
+            {
+                if (m_ItemPower <= ItemPower.LegendaryArtifact)
+                    list.Add(1151488 + ((int)m_ItemPower - 1));
+                else
+                    list.Add(1152281 + ((int)m_ItemPower - 9));
+            }
+
             if ((prop = this.ComputeStatReq(StatType.Str)) > 0)
                 list.Add(1061170, prop.ToString()); // strength requirement ~1_val~
 
@@ -2568,6 +2729,14 @@ namespace Server.Items
                                 break;
                         }
                     }
+
+                    #region Stygian Abyss
+                    m_PhysImbuing = m_PhysicalBonus;
+                    m_FireImbuing = m_FireBonus;
+                    m_ColdImbuing = m_ColdBonus;
+                    m_PoisonImbuing = m_PoisonBonus;
+                    m_EnergyImbuing = m_EnergyBonus;
+                    #endregion
 
                     from.CheckSkill(SkillName.ArmsLore, 0, 100);
                 }

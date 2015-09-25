@@ -2,23 +2,24 @@ using System;
 
 namespace Server.Items
 {
-    public class LavaSerpenCrust : Item
+    [TypeAlias("Server.Items.LavaSerpenCrust")]
+    public class LavaSerpentCrust : Item
     {
         [Constructable]
-        public LavaSerpenCrust()
+        public LavaSerpentCrust()
             : this(1)
         {
         }
 
         [Constructable]
-        public LavaSerpenCrust(int amount)
+        public LavaSerpentCrust(int amount)
             : base(0x572D)
         {
             this.Stackable = true;
             this.Amount = amount;
         }
 
-        public LavaSerpenCrust(Serial serial)
+        public LavaSerpentCrust(Serial serial)
             : base(serial)
         {
         }

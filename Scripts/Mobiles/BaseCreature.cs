@@ -45,7 +45,8 @@ namespace Server.Mobiles
 		Strongest, // Attack the strongest
 		Weakest, // Attack the weakest
 		Closest, // Attack the closest
-		Evil // Only attack aggressor -or- negative karma
+		Evil, // Only attack aggressor -or- negative karma
+        Good // Only attack aggressor -or- positive karma
 	}
 
 	public enum OrderType
@@ -561,11 +562,17 @@ namespace Server.Mobiles
 
 		public virtual bool DeathAdderCharmable { get { return false; } }
 
+        public virtual bool GivesFameAndKarmaAward { get { return true; } }
+
 		//TODO: Find the pub 31 tweaks to the DispelDifficulty and apply them of course.
 		public virtual double DispelDifficulty { get { return 0.0; } } // at this skill level we dispel 50% chance
 		public virtual double DispelFocus { get { return 20.0; } }
 		// at difficulty - focus we have 0%, at difficulty + focus we have 100%
 		public virtual bool DisplayWeight { get { return Backpack is StrongBackpack; } }
+
+        #region High Seas
+        public virtual bool TaintedLifeAura { get { return false; } }
+        #endregion
 
 		#region Breath ability, like dragon fire breath
 		private long m_NextBreathTime;
@@ -995,7 +1002,7 @@ namespace Server.Mobiles
 
 			BaseCreature c = (BaseCreature)m;
 
-			if ((FightMode == FightMode.Evil && m.Karma < 0) || (c.FightMode == FightMode.Evil && Karma < 0))
+			if ((FightMode == FightMode.Evil && m.Karma < 0) || (c.FightMode == FightMode.Evil && Karma < 0) || (FightMode == FightMode.Good && m.Karma > 0) || (c.FightMode == FightMode.Good && Karma > 0))
 			{
 				return true;
 			}
@@ -1329,6 +1336,14 @@ namespace Server.Mobiles
 				return x != null && x.Data == "gray";
 			}
 		}
+
+        public virtual bool ForceNotoriety
+        {
+            get
+            {
+                return false;
+            }
+        }
 
 		public virtual bool HoldSmartSpawning { get { return IsParagon; } }
 
@@ -5329,41 +5344,45 @@ namespace Server.Mobiles
 							continue;
 						}
 
-						Party party = Engines.PartySystem.Party.Get(ds.m_Mobile);
+                        if (GivesFameAndKarmaAward)
+                        {
+                            Party party = Engines.PartySystem.Party.Get(ds.m_Mobile);
 
-						if (party != null)
-						{
-							int divedFame = totalFame / party.Members.Count;
-							int divedKarma = totalKarma / party.Members.Count;
+                            if (party != null)
+                            {
+                                int divedFame = totalFame / party.Members.Count;
+                                int divedKarma = totalKarma / party.Members.Count;
 
-							for (int j = 0; j < party.Members.Count; ++j)
-							{
-								PartyMemberInfo info = party.Members[j];
+                                for (int j = 0; j < party.Members.Count; ++j)
+                                {
+                                    PartyMemberInfo info = party.Members[j];
 
-								if (info != null && info.Mobile != null)
-								{
-									int index = titles.IndexOf(info.Mobile);
+                                    if (info != null && info.Mobile != null)
+                                    {
+                                        int index = titles.IndexOf(info.Mobile);
 
-									if (index == -1)
-									{
-										titles.Add(info.Mobile);
-										fame.Add(divedFame);
-										karma.Add(divedKarma);
-									}
-									else
-									{
-										fame[index] += divedFame;
-										karma[index] += divedKarma;
-									}
-								}
-							}
-						}
-						else
-						{
-							titles.Add(ds.m_Mobile);
-							fame.Add(totalFame);
-							karma.Add(totalKarma);
-						}
+                                        if (index == -1)
+                                        {
+                                            titles.Add(info.Mobile);
+                                            fame.Add(divedFame);
+                                            karma.Add(divedKarma);
+                                        }
+                                        else
+                                        {
+                                            fame[index] += divedFame;
+                                            karma[index] += divedKarma;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                titles.Add(ds.m_Mobile);
+                                fame.Add(totalFame);
+                                karma.Add(totalKarma);
+                            }
+
+                        }
 
 						OnKilledBy(ds.m_Mobile);
 
@@ -5383,6 +5402,9 @@ namespace Server.Mobiles
 							givenToTKill = true;
 							TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
 						}
+
+                        if (Map == Map.TerMur)
+                            Server.Engines.QueensLoyalty.LoyaltySystem.HandleKill(this, ds.m_Mobile, i == 0);
 
 						PlayerMobile pm = ds.m_Mobile as PlayerMobile;
 

@@ -392,6 +392,8 @@ namespace Server.Mobiles
 		#region QueensLoyaltySystem
 		private long m_LevelExp; // Experience Needed for next Experience Level
 
+        public static readonly int Noble = 61;
+
 		[CommandProperty(AccessLevel.Owner)]
 		public long LevelExp
 		{
@@ -786,6 +788,13 @@ namespace Server.Mobiles
 
 		protected override void OnRaceChange(Race oldRace)
 		{
+            if (oldRace == Race.Gargoyle && this.Flying)
+            {
+                Flying = false;
+                Send(SpeedControl.Disable);
+                BuffInfo.RemoveBuff(this, BuffIcon.Fly);
+            }
+
 			ValidateEquipment();
 			UpdateResistances();
 		}
@@ -2564,6 +2573,23 @@ namespace Server.Mobiles
 			}
 		}
 
+        public override double GetRacialSkillBonus(SkillName skill)
+        {
+            if (Core.ML && this.Race == Race.Human)
+                return 20.0;
+
+            if (Core.SA && this.Race == Race.Gargoyle)
+            {
+                if (skill == SkillName.Imbuing)
+                    return 30.0;
+
+                if (skill == SkillName.Throwing)
+                    return 20.0;
+            }
+
+            return RacialSkillBonus;
+        }
+
 		public override void OnWarmodeChanged()
 		{
 			if (!Warmode)
@@ -4192,70 +4218,22 @@ namespace Server.Mobiles
 				}
 
 				m_LevelExp = (long)(1000 * (Math.Pow(1.4, m_Level)));
-				if (m_Level == 0)
+				if (m_Level <= 0)
 				{
 					m_ExpTitle = "TerMur-guest";
 				}
-				else if (m_Level >= 1 && m_Level <= 5)
+				else if (m_Level >= 1 && m_Level <= 25)
 				{
 					m_ExpTitle = "Friend of TerMur";
 				}
-				else if (m_Level >= 6 && m_Level <= 10)
-				{
-					m_ExpTitle = "Friend of TerMur";
-				}
-				else if (m_Level >= 11 && m_Level <= 15)
-				{
-					m_ExpTitle = "Friend of TerMur";
-				}
-				else if (m_Level >= 16 && m_Level <= 20)
-				{
-					m_ExpTitle = "Friend of TerMur";
-				}
-				else if (m_Level >= 21 && m_Level <= 25)
-				{
-					m_ExpTitle = "Friend of TerMur";
-				}
-				else if (m_Level >= 26 && m_Level <= 30)
+				else if (m_Level >= 26 && m_Level <= 60)
 				{
 					m_ExpTitle = "A Citizen of TerMur";
 				}
-				else if (m_Level >= 31 && m_Level <= 35)
-				{
-					m_ExpTitle = "A Citizen of TerMur";
-				}
-				else if (m_Level >= 36 && m_Level <= 40)
-				{
-					m_ExpTitle = "A Citizen of TerMur";
-				}
-				else if (m_Level >= 41 && m_Level <= 45)
-				{
-					m_ExpTitle = "A Citizen of TerMur";
-				}
-				else if (m_Level >= 46 && m_Level <= 50)
-				{
-					m_ExpTitle = "A Citizen of TerMur";
-				}
-				else if (m_Level >= 51 && m_Level <= 60)
-				{
-					m_ExpTitle = "A Citizen of TerMur";
-				}
-				else if (m_Level >= 61 && m_Level <= 70)
-				{
-					m_ExpTitle = "A Noble of Termur";
-				}
-				else if (m_Level >= 71 && m_Level <= 80)
-				{
-					m_ExpTitle = "A Noble of Termur";
-				}
-				else if (m_Level >= 80 && m_Level <= 100)
-				{
-					m_ExpTitle = "A Noble of Termur";
-				}
-				else if (m_Level >= 101)
-				{
-					m_ExpTitle = "A Noble of Termur";
-				}
+                else if (m_Level >= 61)
+                {
+                    m_ExpTitle = "A Noble of Termur";
+                }
 
 				// Xml spawner 3.26c QueensLoyaltyTitle
 				XmlData QueenTitle = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "QueenTitle");

@@ -191,6 +191,10 @@ namespace Server.Mobiles
                     dismounted.Animate(61, 10, 1, true, false, 0);
                 }
             }
+            else if (Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted))
+            {
+                Spells.Ninjitsu.AnimalForm.RemoveContext(dismounted, true);
+            }
         }
 
         public static bool OnFlightPath(Mobile m)

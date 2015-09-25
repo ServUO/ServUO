@@ -14,7 +14,7 @@ namespace Server.Items
         public MedusaLightScales(int amount)
             : base(9908)
         {
-            this.Hue = 591;
+            this.Hue = 1266;
             this.Stackable = true;
             this.Amount = amount;
         }

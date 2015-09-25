@@ -100,14 +100,14 @@ namespace Server.Mobiles
                 switch (Utility.Random(2))
                 {
                     case 0: c.DropItem(new EssenceOrder()); break;
-                    case 1: c.DropItem(new LavaSerpenCrust()); break;
+                    case 1: c.DropItem(new LavaSerpentCrust()); break;
                 }
                 if (0.25 > Utility.RandomDouble() && reg.Name == "Lava Caldera")
                 {
                     switch (Utility.Random(2))
                     {
                         case 0: c.DropItem(new EssenceOrder()); break;
-                        case 1: c.DropItem(new LavaSerpenCrust()); break;
+                        case 1: c.DropItem(new LavaSerpentCrust()); break;
                     }
                 }
             }
