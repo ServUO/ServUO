@@ -209,6 +209,23 @@ namespace Server.Spells.Chivalry
                     else
                         from.Send(new MessageLocalized(from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 502357, from.Name, "")); // I can not recall from that object.
                 }
+				#region HS Ships
+                else if (o is Key && ((Key)o).KeyValue != 0 && ((Key)o).Link is BaseShip)
+                {
+                    BaseShip ship = ((Key)o).Link as BaseShip;
+
+                    if (ship != null && !ship.Deleted && ship.CheckKey(((Key)o).KeyValue) && m_Owner != null)
+					{
+                        m_Owner.Effect(ship.GetMarkedLocation(), ship.Map, false);
+						ship.Embark(from);
+					}
+                    else
+					{
+						if (from != null)
+							from.Send(new MessageLocalized(from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 502357, from.Name, "")); // I can not recall from that object.
+					}
+                }
+				#endregion				
                 else if (o is HouseRaffleDeed && ((HouseRaffleDeed)o).ValidLocation())
                 {
                     HouseRaffleDeed deed = (HouseRaffleDeed)o;
