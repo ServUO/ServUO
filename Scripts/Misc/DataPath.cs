@@ -58,7 +58,7 @@ namespace Server.Misc
 
             if (Core.DataDirectories.Count == 0 && !Core.Service)
             {
-                Console.WriteLine("Enter the Ultima Online directory:");
+                Console.WriteLine(@"E:\Behemoth\Ultima Online Classic");
                 Console.Write("> ");
 
                 Core.DataDirectories.Add(Console.ReadLine());
