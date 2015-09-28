@@ -23,7 +23,9 @@ namespace Server
 			Core.Expansion = Expansion;
 
 			AccountGold.Enabled = Core.TOL;
-			VirtualCheck.UseEditGump = Core.TOL;
+			AccountGold.ConvertOnBank = true;
+			AccountGold.ConvertOnTrade = false;
+			VirtualCheck.UseEditGump = true;
 
 			ObjectPropertyList.Enabled = Core.AOS;
 

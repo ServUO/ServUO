@@ -15,11 +15,26 @@ namespace Server.Accounting
 		public static bool Enabled = false;
 
 		/// <summary>
-		///     This amount specifies the value at which point Gold turns to Platinum.
-		///     By default, when 1,000,000,000 Gold is accumulated, it will transform
-		///     into 1 Platinum.
+		/// This amount specifies the value at which point Gold turns to Platinum.
+		/// By default, when 1,000,000,000 Gold is accumulated, it will transform
+		/// into 1 Platinum.
+		/// !!! WARNING !!!
+		/// The client is designed to perceive the currency threashold at 1,000,000,000
+		/// if you change this, it may cause unexpected results when using secure trading.
 		/// </summary>
 		public static int CurrencyThreshold = 1000000000;
+
+		/// <summary>
+		/// Enables or Disables automatic conversion of Gold and Checks to Bank Currency
+		/// when they are added to a bank box container.
+		/// </summary>
+		public static bool ConvertOnBank = true;
+
+		/// <summary>
+		/// Enables or Disables automatic conversion of Gold and Checks to Bank Currency
+		/// when they are added to a secure trade container.
+		/// </summary>
+		public static bool ConvertOnTrade = false;
 	}
 
 	public interface IGoldAccount
