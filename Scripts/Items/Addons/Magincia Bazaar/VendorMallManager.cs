@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Server.Accounting;
 using Server.Items;
 using Server.ContextMenus;
 using Server.Misc;
 using Server.Network;
+using Acc = Server.Accounting.Account;
 
 namespace Server.Mobiles
 {
@@ -19,7 +22,7 @@ namespace Server.Mobiles
 		public VendorMallManager() : base( "The Mall Manager" )
 		{
                                                         
-                                                           CantWalk = true;
+                	CantWalk = true;
 		}
 
 		public override void InitSBInfo()
@@ -27,12 +30,36 @@ namespace Server.Mobiles
 			m_SBInfos.Add( new SBVendorMallManager() );
 		}
 
-		public static int GetBalance( Mobile from )
-		{
-			Item[] gold, checks;
+	public static int GetBalance(Mobile m)
+        {
+            double balance = 0;
 
-			return GetBalance( from, out gold, out checks );
-		}
+			if (AccountGold.Enabled && m.Account != null)
+            {
+                int goldStub;
+                m.Account.GetGoldBalance(out goldStub, out balance);
+
+                if (balance > Int32.MaxValue)
+                {
+                    return Int32.MaxValue;
+                }
+            }
+
+            Container bank = m.FindBankNoCreate();
+
+            if (bank != null)
+            {
+                var gold = bank.FindItemsByType<Gold>();
+                var checks = bank.FindItemsByType<BankCheck>();
+
+                balance += gold.Aggregate(0.0, (c, t) => c + t.Amount);
+                balance += checks.Aggregate(0.0, (c, t) => c + t.Worth);
+            }
+
+            return (int)Math.Max(0, Math.Min(Int32.MaxValue, balance));
+        }
+
+
 
 		public static int GetBalance( Mobile from, out Item[] gold, out Item[] checks )
 		{
