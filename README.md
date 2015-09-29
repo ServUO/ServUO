@@ -1,6 +1,28 @@
-ServUO - http://www.servuo.com
+# [ServUO]
 
-Advanced Ultima Online server emulation software.
+Servuo is a community driven Ultima Online server emulator written in c#.
 
-Visit our website for more information and to meet the community behind this great project!
 
+### Version
+Publish 54
+
+### Installation
+
+Getting started with ServUO is quite easy. Just run Compile.WIN.bat and follow the prompts. This script will compile both the server binary and Ultima SDK binary for you and run the server for you at end. After this you can run the server by executing ServUO.exe.
+
+More in dept advice and guides can be found in our community. 
+### Development
+
+Want to contribute? Great!
+
+You can submit a pull request at any time and we will review it asap!
+
+License
+----
+
+GPL V2
+
+
+
+
+   [ServUO]: <https://servuo.com>

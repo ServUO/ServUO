@@ -7601,13 +7601,14 @@ namespace Server
 			}
 
 			Region newRegion = Region.Find(m_Location, m_Map);
-
-			if (newRegion != m_Region)
+			Region oldRegion = m_Region;
+			
+			if (newRegion != oldRegion)
 			{
-				Region.OnRegionChange(this, m_Region, newRegion);
-
 				m_Region = newRegion;
-				OnRegionChange(m_Region, newRegion);
+				
+				Region.OnRegionChange(this, oldRegion, newRegion);
+				OnRegionChange(oldRegion, newRegion);
 			}
 		}
 
