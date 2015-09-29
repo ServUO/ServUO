@@ -497,9 +497,11 @@
     <Compile Include="Gumps\Properties\SetBodyGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\Properties\SetColorGump.cs" />
     <Compile Include="Gumps\Properties\SetCustomEnumGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\Properties\SetDateTimeGump.cs" />
     <Compile Include="Gumps\Properties\SetGump.cs">
       <SubType>Code</SubType>
     </Compile>
