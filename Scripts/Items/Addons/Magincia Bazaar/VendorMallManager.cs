@@ -31,33 +31,67 @@ namespace Server.Mobiles
 		}
 
 		public static int GetBalance(Mobile m)
-	        {
-	            double balance = 0;
-	
-				if (AccountGold.Enabled && m.Account != null)
-	            {
-	                int goldStub;
-	                m.Account.GetGoldBalance(out goldStub, out balance);
-	
-	                if (balance > Int32.MaxValue)
-	                {
-	                    return Int32.MaxValue;
-	                }
-	            }
-	
-	            Container bank = m.FindBankNoCreate();
-	
-	            if (bank != null)
-	            {
-	                var gold = bank.FindItemsByType<Gold>();
-	                var checks = bank.FindItemsByType<BankCheck>();
-	
-	                balance += gold.Aggregate(0.0, (c, t) => c + t.Amount);
-	                balance += checks.Aggregate(0.0, (c, t) => c + t.Worth);
-	            }
-	
-	            return (int)Math.Max(0, Math.Min(Int32.MaxValue, balance));
-	        }
+		{
+			double balance = 0;
+
+			if (AccountGold.Enabled && m.Account != null)
+			{
+				int goldStub;
+				m.Account.GetGoldBalance(out goldStub, out balance);
+
+				if (balance > Int32.MaxValue)
+				{
+					return Int32.MaxValue;
+				}
+			}
+
+			Container bank = m.FindBankNoCreate();
+
+			if (bank != null)
+			{
+				var gold = bank.FindItemsByType<Gold>();
+				var checks = bank.FindItemsByType<BankCheck>();
+
+				balance += gold.Aggregate(0.0, (c, t) => c + t.Amount);
+				balance += checks.Aggregate(0.0, (c, t) => c + t.Worth);
+			}
+
+			return (int)Math.Max(0, Math.Min(Int32.MaxValue, balance));
+		}
+
+		public static int GetBalance(Mobile m, out Item[] gold, out Item[] checks)
+		{
+			double balance = 0;
+
+			if (AccountGold.Enabled && m.Account != null)
+			{
+				int goldStub;
+				m.Account.GetGoldBalance(out goldStub, out balance);
+
+				if (balance > Int32.MaxValue)
+				{
+					gold = checks = new Item[0];
+					return Int32.MaxValue;
+				}
+			}
+
+			Container bank = m.FindBankNoCreate();
+
+			if (bank != null)
+			{
+				gold = bank.FindItemsByType(typeof(Gold));
+				checks = bank.FindItemsByType(typeof(BankCheck));
+
+				balance += gold.OfType<Gold>().Aggregate(0.0, (c, t) => c + t.Amount);
+				balance += checks.OfType<BankCheck>().Aggregate(0.0, (c, t) => c + t.Worth);
+			}
+			else
+			{
+				gold = checks = new Item[0];
+			}
+
+			return (int)Math.Max(0, Math.Min(Int32.MaxValue, balance));
+		}
 
 		public static bool Withdraw(Mobile from, int amount)
 	        {
