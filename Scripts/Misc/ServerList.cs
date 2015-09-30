@@ -49,7 +49,7 @@ namespace Server.Misc
 		public static readonly string Address = null;
 		public static readonly bool AutoDetect = true;
 
-		public static string ServerName = "ServUO Test";
+		public static string ServerName = "My Shard";
 
 		private static IPAddress _PublicAddress;
 
