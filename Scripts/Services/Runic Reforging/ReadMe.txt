@@ -17,11 +17,11 @@ For example:
 
 GenerateRandomItem(Item item, Mobile killer, BaseCreature victim)
 {
-	if(killer.Map == Map.Felucca && .10 > Utility.RandomDouble())
-		return true;
+   if(victim != null && victim.Map == Map.Felucca && .10 > Utility.RandomDouble())
+     return RunicReforging.GenerateRandomItem(item, killer, victim);
 
-	if(victim.Region != null && victim.Region.IsPartOf(typeof(DespiseRegion)))
-		return true;
+   if(victim.Region != null && victim.Region.IsPartOf(typeof(DespiseRegion)))
+      return RunicReforging.GenerateRandomItem(item, killer, victim);
 }
 
 this will drop the new named items 10% of the time as regular loot in Felucca, and everytime as loot in DespiseRegion.

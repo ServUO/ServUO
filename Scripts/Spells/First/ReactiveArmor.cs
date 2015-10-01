@@ -154,5 +154,12 @@ namespace Server.Spells.First
                 this.FinishSequence();
             }
         }
+
+        #region SA
+        public static bool HasArmor(Mobile m)
+        {
+            return m_Table.ContainsKey(m);
+        }
+        #endregion
     }
 }

@@ -164,6 +164,13 @@ namespace Server.Spells.Second
             }
         }
 
+        #region SA
+        public static bool HasProtection(Mobile m)
+        {
+            return m_Table.ContainsKey(m);
+        }
+        #endregion
+
         private class InternalTimer : Timer
         {
             private readonly Mobile m_Caster;
