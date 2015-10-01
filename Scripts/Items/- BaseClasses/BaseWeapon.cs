@@ -579,6 +579,7 @@ namespace Server.Items
 		}
 
         public Mobile FocusWeilder { get; set; }
+        public Mobile EnchantedWeilder { get; set; }
 
         #region Stygian Abyss
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1048,6 +1049,7 @@ namespace Server.Items
 				}
 
 				ImmolatingWeaponSpell.StopImmolating(this);
+                Spells.Mystic.EnchantSpell.OnWeaponRemoved(this, m);
 
 				m.CheckStatTimers();
 
@@ -2328,13 +2330,13 @@ namespace Server.Items
 				int manaLeech = 0;
 				int wraithLeech = 0;
 
-				if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechHits) * propertyBonus) >
+                if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechHits) * propertyBonus) >
 					Utility.Random(100))
 				{
 					lifeLeech += 30; // HitLeechHits% chance to leech 30% of damage as hit points
 				}
 
-				if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechStam) * propertyBonus) >
+                if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechStam) * propertyBonus) >
 					Utility.Random(100))
 				{
 					stamLeech += 100; // HitLeechStam% chance to leech 100% of damage as stamina
@@ -4811,21 +4813,39 @@ namespace Server.Items
 
 			base.AddResistanceProperties(list);
 
-            double propertyBonus = 1;
+            double focusBonus = 1;
+            int enchantBonus = 0;
+            bool fcMalus = false;
             int damBonus = 0;
             SpecialMove move = null;
+            AosWeaponAttribute bonus = AosWeaponAttribute.HitColdArea;
+
+            #region Focus Attack
             if (FocusWeilder != null)
             {
                 move = SpecialMove.GetCurrentMove(FocusWeilder);
 
                 if (move is FocusAttack)
                 {
-                    propertyBonus = move.GetPropertyBonus(FocusWeilder);
+                    focusBonus = move.GetPropertyBonus(FocusWeilder);
                     damBonus = (int)(move.GetDamageScalar(FocusWeilder, null) * 100) - 100;
                 }
             }
+            #endregion
 
-			int prop;
+            #region Stygian Abyss
+            if (EnchantedWeilder != null)
+            {
+                if (Server.Spells.Mystic.EnchantSpell.IsUnderSpellEffects(EnchantedWeilder, this))
+                {
+                    bonus = Server.Spells.Mystic.EnchantSpell.BonusAttribute(EnchantedWeilder);
+                    enchantBonus = Server.Spells.Mystic.EnchantSpell.BonusValue(EnchantedWeilder);
+                    fcMalus = Server.Spells.Mystic.EnchantSpell.CastingMalus(EnchantedWeilder, this);
+                }
+            }
+            #endregion
+
+            int prop;
             double fprop;
 
 			if (Core.ML && this is BaseRanged && ((BaseRanged)this).Balanced)
@@ -4890,58 +4910,74 @@ namespace Server.Items
 				list.Add(1060415, prop.ToString()); // hit chance increase ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitColdArea * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitColdArea * focusBonus) != 0)
 			{
 				list.Add(1060416, ((int)fprop).ToString()); // hit cold area ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitDispel * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitDispel * focusBonus) != 0)
 			{
 				list.Add(1060417, ((int)fprop).ToString()); // hit dispel ~1_val~%
 			}
+            else if (bonus == AosWeaponAttribute.HitDispel && enchantBonus != 0)
+            {
+                list.Add(1060417, ((int)(enchantBonus * focusBonus)).ToString()); // hit dispel ~1_val~%
+            }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitEnergyArea * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitEnergyArea * focusBonus) != 0)
 			{
 				list.Add(1060418, ((int)fprop).ToString()); // hit energy area ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitFireArea * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitFireArea * focusBonus) != 0)
 			{
 				list.Add(1060419, ((int)fprop).ToString()); // hit fire area ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitFireball * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitFireball * focusBonus) != 0)
 			{
 				list.Add(1060420, ((int)fprop).ToString()); // hit fireball ~1_val~%
 			}
+            else if (bonus == AosWeaponAttribute.HitFireball && enchantBonus != 0)
+            {
+                list.Add(1060420, ((int)((double)enchantBonus * focusBonus)).ToString()); // hit fireball ~1_val~%
+            }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitHarm) != 0 * propertyBonus)
+            if ((fprop = (double)m_AosWeaponAttributes.HitHarm * focusBonus) != 0)
 			{
 				list.Add(1060421, ((int)fprop).ToString()); // hit harm ~1_val~%
 			}
+            else if (bonus == AosWeaponAttribute.HitHarm && enchantBonus != 0)
+            {
+                list.Add(1060421, ((int)(enchantBonus * focusBonus)).ToString()); // hit harm ~1_val~%
+            }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLeechHits * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitLeechHits * focusBonus) != 0)
 			{
 				list.Add(1060422, ((int)fprop).ToString()); // hit life leech ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLightning * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitLightning * focusBonus) != 0)
 			{
 				list.Add(1060423, ((int)fprop).ToString()); // hit lightning ~1_val~%
 			}
+            else if (bonus == AosWeaponAttribute.HitLightning && enchantBonus != 0)
+            {
+                list.Add(1060423, ((int)(enchantBonus * focusBonus)).ToString()); // hit lightning ~1_val~%
+            }
 
 			#region Stygian Abyss
-            if ((fprop = (double)m_AosWeaponAttributes.HitCurse * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitCurse * focusBonus) != 0)
 			{
 				list.Add(1113712, ((int)fprop).ToString()); // Hit Curse ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitFatigue * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitFatigue * focusBonus) != 0)
 			{
 				list.Add(1113700, ((int)fprop).ToString()); // Hit Fatigue ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitManaDrain * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitManaDrain * focusBonus) != 0)
 			{
 				list.Add(1113699, ((int)fprop).ToString()); // Hit Mana Drain ~1_val~%
 			}
@@ -4952,37 +4988,41 @@ namespace Server.Items
             }
 			#endregion
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLowerAttack * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitLowerAttack * focusBonus) != 0)
 			{
 				list.Add(1060424, ((int)fprop).ToString()); // hit lower attack ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLowerDefend * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitLowerDefend * focusBonus) != 0)
 			{
 				list.Add(1060425, ((int)fprop).ToString()); // hit lower defense ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitMagicArrow * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitMagicArrow * focusBonus) != 0)
 			{
 				list.Add(1060426, ((int)fprop).ToString()); // hit magic arrow ~1_val~%
 			}
+            else if (bonus == AosWeaponAttribute.HitMagicArrow && enchantBonus != 0)
+            {
+                list.Add(1060426, ((int)(enchantBonus * focusBonus)).ToString()); // hit magic arrow ~1_val~%
+            }
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLeechMana * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitLeechMana * focusBonus) != 0)
 			{
 				list.Add(1060427, ((int)fprop).ToString()); // hit mana leech ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitPhysicalArea * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitPhysicalArea * focusBonus) != 0)
 			{
 				list.Add(1060428, ((int)fprop).ToString()); // hit physical area ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitPoisonArea * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitPoisonArea * focusBonus) != 0)
 			{
 				list.Add(1060429, ((int)fprop).ToString()); // hit poison area ~1_val~%
 			}
 
-            if ((fprop = (double)m_AosWeaponAttributes.HitLeechStam * propertyBonus) != 0)
+            if ((fprop = (double)m_AosWeaponAttributes.HitLeechStam * focusBonus) != 0)
 			{
 				list.Add(1060430, ((int)fprop).ToString()); // hit stamina leech ~1_val~%
 			}

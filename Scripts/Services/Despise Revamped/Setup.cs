@@ -11,7 +11,8 @@ namespace Server.Engines.Despise
     {
         public static void Initialize()
         {
-            CommandSystem.Register("SetupDespise", AccessLevel.GameMaster, new CommandEventHandler(SetupDespise_OnCommand));
+            if(Core.HS)
+                CommandSystem.Register("SetupDespise", AccessLevel.GameMaster, new CommandEventHandler(SetupDespise_OnCommand));
         }
 
         public static void SetupDespise_OnCommand(CommandEventArgs e)

@@ -1,98 +1,56 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using Server;
+using Server.Spells.Fifth;
+using Server.Spells.Seventh;
 
 namespace Server.Spells.Mystic
 {
-    public abstract class MysticTransformationSpell : MysticSpell, ITransformationSpell
-    {
-        public MysticTransformationSpell(Mobile caster, Item scroll, SpellInfo info)
-            : base(caster, scroll, info)
-        {
-            if (this.Body != caster.BodyValue)
-                caster.Flying = false;
-        }
+	public abstract class MysticTransformationSpell : MysticSpell, ITransformationSpell
+	{
+		public abstract int Body{ get; }
+		public virtual int Hue{ get{ return 0; } }
 
-        public abstract int Body { get; }
-        public virtual int Hue
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int PhysResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int FireResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int ColdResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int PoisResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int NrgyResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override bool BlockedByHorrificBeast
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual double TickRate
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
-        public override bool CheckCast()
-        {
-            if (!TransformationSpellHelper.CheckCast(this.Caster, this))
-                return false;
+		public virtual int PhysResistOffset{ get{ return 0; } }
+		public virtual int FireResistOffset{ get{ return 0; } }
+		public virtual int ColdResistOffset{ get{ return 0; } }
+		public virtual int PoisResistOffset{ get{ return 0; } }
+		public virtual int NrgyResistOffset{ get{ return 0; } }
 
-            return base.CheckCast();
-        }
+		public MysticTransformationSpell( Mobile caster, Item scroll, SpellInfo info ) : base( caster, scroll, info )
+		{
+		}
 
-        public override void OnCast()
-        {
-            TransformationSpellHelper.OnCast(this.Caster, this);
+		public override bool BlockedByHorrificBeast{ get{ return false; } }
 
-            this.FinishSequence();
-        }
+		public override bool CheckCast()
+		{
+			if( !TransformationSpellHelper.CheckCast( Caster, this ) )
+				return false;
 
-        public virtual void OnTick(Mobile m)
-        {
-        }
+			return base.CheckCast();
+		}
 
-        public virtual void DoEffect(Mobile m)
-        {
-        }
+		public override void OnCast()
+		{
+			TransformationSpellHelper.OnCast( Caster, this );
 
-        public virtual void RemoveEffect(Mobile m)
-        {
-        }
-    }
+			FinishSequence();
+		}
+
+		public virtual double TickRate{ get{ return 1.0; } }
+
+		public virtual void OnTick( Mobile m )
+		{
+		}
+
+		public virtual void DoEffect( Mobile m )
+		{
+		}
+
+		public virtual void RemoveEffect( Mobile m )
+		{
+		}
+	}
 }

@@ -10,7 +10,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            if (ExperimentalRoomController.Instance == null)
+            if (ExperimentalRoomController.Instance == null && Core.SA)
                 Generate();
         }
 

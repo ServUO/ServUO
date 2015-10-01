@@ -1,58 +1,68 @@
 using System;
+using Server;
 using Server.Items;
+using Server.Mobiles;
+using Server.Spells;
 using Server.Targeting;
 
 namespace Server.Spells.Mystic
 {
     public abstract class MysticSpell : Spell
     {
-        public abstract int RequiredMana { get; }
-        public abstract double RequiredSkill { get; }
-
         public MysticSpell(Mobile caster, Item scroll, SpellInfo info)
             : base(caster, scroll, info)
         {
         }
 
-        #region BaseSpellOverrides
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.0);
-            }
-        }
-        public override double CastDelayFastScalar
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public abstract SpellCircle Circle { get; }
 
-        public override SkillName CastSkill
-        {
-            get
-            {
-                return SkillName.Mysticism;
-            }
-        }
-        //public override SkillName DamageSkill{ get{ return SkillName.Imbuing; } }
+        private static int[] m_ManaTable = new int[] { 4, 6, 9, 11, 14, 20, 40, 50 };
+
+        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
+        public override double CastDelayFastScalar { get { return 1.0; } }
+
+        private const double ChanceOffset = 20.0, ChanceLength = 100.0 / 7.0;
 
         public override void GetCastSkills(out double min, out double max)
         {
-            min = this.RequiredSkill;
-            max = this.RequiredSkill + 40.0;
+            int circle = (int)Circle;
+
+            if (Scroll != null)
+                circle -= 2;
+
+            double avg = ChanceLength * circle;
+
+            min = avg - ChanceOffset;
+            max = avg + ChanceOffset;
+        }
+
+        public override bool CheckFizzle()
+        {
+            double minSkill, maxSkill;
+            GetCastSkills(out minSkill, out maxSkill);
+            return Caster.CheckSkill(CastSkill, minSkill, maxSkill);
+        }
+
+        public override SkillName CastSkill { get { return SkillName.Mysticism; } }
+
+        public override SkillName DamageSkill
+        {
+            get
+            {
+                if (Caster.Skills[SkillName.Imbuing].Value >= Caster.Skills[SkillName.Focus].Value)
+                    return SkillName.Imbuing;
+                return SkillName.Focus;
+            }
         }
 
         public override int GetMana()
         {
-            return this.RequiredMana;
+            return m_ManaTable[(int)Circle];
         }
 
         public override TimeSpan GetCastRecovery()
         {
-            if (this.Scroll is SpellStone)
+            if (Scroll is SpellStone)
                 return TimeSpan.Zero;
 
             return TimeSpan.FromSeconds(0.75);
@@ -60,10 +70,10 @@ namespace Server.Spells.Mystic
 
         public override TimeSpan GetCastDelay()
         {
-            if (this.Scroll is SpellStone)
+            if (Scroll is SpellStone)
                 return TimeSpan.Zero;
 
-            return TimeSpan.FromSeconds(1.5); // TODO Delays
+            return TimeSpan.FromSeconds(0.5 + (0.25 * (int)Circle));
         }
 
         public override bool CheckCast()
@@ -74,32 +84,53 @@ namespace Server.Spells.Mystic
             return true;
         }
 
-        public override void OnCast()
+        public virtual bool CheckResisted(Mobile target)
         {
-            this.Caster.Target = new MysticSpellTarget(this, TargetFlags.None);
+            double n = GetResistPercent(target);
+
+            n /= 100.0;
+
+            if (n <= 0.0)
+                return false;
+
+            if (n >= 1.0)
+                return true;
+
+            int maxSkill = (1 + (int)Circle) * 10;
+            maxSkill += (1 + ((int)Circle / 6)) * 25;
+
+            if (target.Skills[SkillName.MagicResist].Value < maxSkill)
+                target.CheckSkill(SkillName.MagicResist, 0.0, target.Skills[SkillName.MagicResist].Cap);
+
+            return (n >= Utility.RandomDouble());
         }
 
-        #endregion
+        public virtual double GetResistPercentForCircle(Mobile target, SpellCircle circle)
+        {
+            double firstPercent = target.Skills[SkillName.MagicResist].Value / 5.0;
+            double secondPercent = target.Skills[SkillName.MagicResist].Value - (((Caster.Skills[CastSkill].Value - 20.0) / 5.0) + (1 + (int)circle) * 5.0);
+
+            return (firstPercent > secondPercent ? firstPercent : secondPercent) / 2.0; // Seems should be about half of what stratics says.
+        }
+
+        public virtual double GetResistPercent(Mobile target)
+        {
+            return GetResistPercentForCircle(target, Circle);
+        }
 
         public virtual void OnTarget(Object o)
         {
         }
 
         // Ever wondered why in the hell RunUO coded a new target class for every spell?
-        public class MysticSpellTarget : Target
+        protected class MysticSpellTarget : Target
         {
             private MysticSpell m_Owner;
 
             public MysticSpell Owner
             {
-                get
-                {
-                    return this.m_Owner;
-                }
-                set
-                {
-                    this.m_Owner = value;
-                }
+                get { return m_Owner; }
+                set { m_Owner = value; }
             }
 
             public MysticSpellTarget(MysticSpell owner, TargetFlags flags)
@@ -110,12 +141,12 @@ namespace Server.Spells.Mystic
             public MysticSpellTarget(MysticSpell owner, bool allowland, TargetFlags flags)
                 : base(12, allowland, flags)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o == null) 
+                if (o == null)
                     return;
 
                 if (!from.CanSee(o))
@@ -123,20 +154,14 @@ namespace Server.Spells.Mystic
                 else
                 {
                     SpellHelper.Turn(from, o);
-                    this.m_Owner.OnTarget(o);
+                    m_Owner.OnTarget(o);
                 }
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }
 }
-/*
-
-
-
-
-*/

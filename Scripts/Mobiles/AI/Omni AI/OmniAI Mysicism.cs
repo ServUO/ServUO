@@ -73,7 +73,7 @@ namespace Server.Mobiles
                 case 4:
                 case 5:
                     {
-                        if (SpellPlagueSpell.GetSpellPlague(this.m_Mobile.Combatant) == null && this.m_Mobile.Skills[SkillName.Mysticism].Value > 70.0)
+                        if (!SpellPlagueSpell.HasSpellPlague(this.m_Mobile.Combatant) && this.m_Mobile.Skills[SkillName.Mysticism].Value > 70.0)
                         {
                             this.m_Mobile.DebugSay("Casting Spell Plague");
                             spell = new SpellPlagueSpell(this.m_Mobile, null);

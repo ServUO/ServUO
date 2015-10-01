@@ -1,83 +1,80 @@
 using System;
-using System.Collections.Generic;
+using Server;
+using Server.Items;
+using Server.Mobiles;
+using Server.Spells;
 using Server.Targeting;
+using System.Collections.Generic;
+using Server.Network;
 
 namespace Server.Spells.Mystic
 {
-    public class MassSleepSpell : MysticSpell
-    {
-        private static readonly SpellInfo m_Info = new SpellInfo(
-            "Mass Sleep", "Vas Zu",
-            230,
-            9022,
-            Reagent.MandrakeRoot,
-            Reagent.Nightshade,
-            Reagent.SulfurousAsh,
-            Reagent.Bloodmoss);
-        public MassSleepSpell(Mobile caster, Item scroll)
-            : base(caster, scroll, m_Info)
-        {
-        }
+	public class MassSleepSpell : MysticSpell
+	{
+        public override SpellCircle Circle { get { return SpellCircle.Fifth; } }
 
-        // Hurls a magical boulder at the Target, dealing physical damage. 
-        // This spell also has a chance to knockback and stun a player Target. 
-        public override int RequiredMana
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 45;
-            }
-        }
-        public override void OnCast()
-        {
-            this.Caster.Target = new MysticSpellTarget(this, TargetFlags.Harmful);
-        }
+		private static SpellInfo m_Info = new SpellInfo(
+				"Mass Sleep", "Vas Zu",
+				230,
+				9022,
+				Reagent.MandrakeRoot,
+				Reagent.Nightshade,
+				Reagent.SulfurousAsh,
+				Reagent.Bloodmoss
+			);
 
-        public override void OnTarget(Object o)
-        {
-            Mobile target = o as Mobile;
+		public MassSleepSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
+		{
+		}
 
-            if (target == null)
-            {
-                return;
-            }
-            else if (this.CheckHSequence(target))
-            {
-                Map map = this.Caster.Map;
+		public override void OnCast()
+		{
+			Caster.Target = new MysticSpellTarget( this, TargetFlags.Harmful );
+		}
 
-                if (map != null)
-                {
-                    List<Mobile> targets = new List<Mobile>();
+		public override void OnTarget( Object o )
+		{
+			Mobile target = o as Mobile;
 
-                    foreach (Mobile m in target.GetMobilesInRange(3))
-                        if (this.Caster != m && target.InLOS(m) && SpellHelper.ValidIndirectTarget(this.Caster, m) && this.Caster.CanBeHarmful(m, false))
-                            targets.Add(m);
+			if ( target == null )
+			{
+				return;
+			}
+			else if ( CheckHSequence( target ) )
+			{
 
-                    //Effects.PlaySound( target.Location, map, 0x655 );
-                    //Effects.PlaySound( target.Location, map, 0x655 );
-                    //Effects.SendLocationParticles( EffectItem.Create( target.Location, map, EffectItem.DefaultDuration ), 0x37CC, 1, 40, 97, 3, 9917, 0 );
+				Map map = Caster.Map;
 
-                    for (int i = 0; i < targets.Count; ++i)
+				if ( map != null )
+				{
+					List<Mobile> targets = new List<Mobile>();
+
+                    IPooledEnumerable eable = target.GetMobilesInRange(3);
+                    foreach (Mobile m in eable)
                     {
-                        Mobile m = targets[i];
-
-                        this.Caster.DoHarmful(m);
-
-                        m.Paralyze(TimeSpan.FromSeconds(12));
-                        m.Sleep(TimeSpan.FromSeconds(12));
-                        m.Say("ZZZzzzzz");///////
+                        if (Caster != m && target.InLOS(m) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false) && !SleepSpell.IsUnderSleepEffects(m) && !m.Paralyzed)
+                            targets.Add(m);
                     }
-                }
-            }
+                    eable.Free();
 
-            this.FinishSequence();
-        }
-    }
+					for ( int i = 0; i < targets.Count; ++i )
+					{
+						Mobile m = targets[i];
+
+                        double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 3;
+                        duration -= target.Skills[SkillName.MagicResist].Value / 10;
+
+                        if (duration > 0)
+                        {
+                            Caster.DoHarmful(m);
+
+                            SleepSpell.DoSleep(Caster, m, TimeSpan.FromSeconds(duration));
+                        }
+					}
+				}
+			}
+
+			FinishSequence();
+		}
+	}
 }

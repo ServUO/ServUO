@@ -773,9 +773,14 @@ namespace Server.Mobiles
 
 			int max = base.GetMaxResistance(type);
 
+            #region Stygian Abyss
+            int stoneformOffset = Spells.Mystic.StoneFormSpell.GetMaxResistMod(this);
+            #endregion
+
 			if (type != ResistanceType.Physical && 60 < max && CurseSpell.UnderEffect(this))
 			{
 				max = 60;
+                stoneformOffset = 0;
 			}
 
 			if (Core.ML && Race == Race.Elf && type == ResistanceType.Energy)
@@ -783,7 +788,7 @@ namespace Server.Mobiles
 				max += 5; //Intended to go after the 60 max from curse
 			}
 
-			return Math.Max(MinPlayerResistance, Math.Min(MaxPlayerResistance, max));
+            return Math.Max(MinPlayerResistance + stoneformOffset, Math.Min(MaxPlayerResistance + stoneformOffset, max + stoneformOffset));
 		}
 
 		protected override void OnRaceChange(Race oldRace)
