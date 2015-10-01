@@ -112,7 +112,7 @@ namespace Server.Items
 
 			parent = root ?? parent;
 
-			if (parent is SecureTradeContainer)
+			if (parent is SecureTradeContainer && AccountGold.ConvertOnTrade)
 			{
 				var trade = (SecureTradeContainer)parent;
 
@@ -127,7 +127,7 @@ namespace Server.Items
 					owner = tradeInfo.Mobile;
 				}
 			}
-			else if (parent is BankBox)
+			else if (parent is BankBox && AccountGold.ConvertOnBank)
 			{
 				owner = ((BankBox)parent).Owner;
 			}
