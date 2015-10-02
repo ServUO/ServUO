@@ -73,6 +73,8 @@ namespace Server
 				file.Directory.Create();
 			}
 
+			bool created = false;
+
 			if (!file.Exists)
 			{
 				if (!ensure)
@@ -81,6 +83,7 @@ namespace Server
 				}
 
 				file.Create().Close();
+				created = true;
 			}
 
 			using (var fs = file.OpenRead())
@@ -90,6 +93,13 @@ namespace Server
 				try
 				{
 					deserializer(reader);
+				}
+				catch (EndOfStreamException eos)
+				{
+					if (!created)
+					{
+						Console.WriteLine("[Persistence]: {0}", eos);
+					}
 				}
 				finally
 				{
