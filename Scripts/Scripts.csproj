@@ -4756,7 +4756,7 @@
     <Compile Include="Items\Skill Items\Thief\DisguiseKit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Skill Items\Thief\DisguisePersistance.cs">
+    <Compile Include="Items\Skill Items\Thief\DisguisePersistence.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Skill Items\Thief\LockPick.cs">
