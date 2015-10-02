@@ -48,19 +48,42 @@ namespace Server
 
 		public static void Deserialize(string path, Action<GenericReader> deserializer)
 		{
-			Deserialize(new FileInfo(path), deserializer);
+			Deserialize(path, deserializer, true);
 		}
 
 		public static void Deserialize(FileInfo file, Action<GenericReader> deserializer)
 		{
+			Deserialize(file, deserializer, true);
+		} 
+
+		public static void Deserialize(string path, Action<GenericReader> deserializer, bool ensure)
+		{
+			Deserialize(new FileInfo(path), deserializer, ensure);
+		}
+
+		public static void Deserialize(FileInfo file, Action<GenericReader> deserializer, bool ensure)
+		{
 			if (file.Directory != null && !file.Directory.Exists)
 			{
-				throw new DirectoryNotFoundException();
+				if (!ensure)
+				{
+					throw new DirectoryNotFoundException();
+				}
+
+				file.Directory.Create();
 			}
+
+			bool created = false;
 
 			if (!file.Exists)
 			{
-				throw new FileNotFoundException();
+				if (!ensure)
+				{
+					throw new FileNotFoundException();
+				}
+
+				file.Create().Close();
+				created = true;
 			}
 
 			using (var fs = file.OpenRead())
@@ -70,6 +93,13 @@ namespace Server
 				try
 				{
 					deserializer(reader);
+				}
+				catch (EndOfStreamException eos)
+				{
+					if (!created)
+					{
+						Console.WriteLine("[Persistence]: {0}", eos);
+					}
 				}
 				finally
 				{
