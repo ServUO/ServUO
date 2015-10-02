@@ -2402,7 +2402,7 @@ namespace Server.Items
 			}
 
 			if (m_MaxHits > 0 &&
-				((MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime)) ||
+				((MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime)) || splintering ||
 				 Utility.Random(25) == 0)) // Stratics says 50% chance, seems more like 4%..
 			{
 				if (MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime))
