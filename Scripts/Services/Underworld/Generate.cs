@@ -158,7 +158,46 @@ namespace Server.Items
             map.Movable = false;
 
             FountainOfFortune f = new FountainOfFortune();
-            f.MoveToWorld(new Point3D(1121, 962, -42), Map.TerMur);
+            f.MoveToWorld(new Point3D(1121, 957, -42), Map.TerMur);
+
+            Item tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1121, 965, -41), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1122, 965, -40), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1123, 965, -41), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1124, 965, -41), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1122, 964, -41), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1123, 964, -41), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1123, 963, -40), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1123, 962, -40), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1123, 961, -41), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1122, 961, -41), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1122, 960, -41), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1121, 960, -41), Map.TerMur);
+
+            tile = new InvisibleTile();
+            tile.MoveToWorld(new Point3D(1121, 959, -41), Map.TerMur);
 
             Console.WriteLine("Experimental Room, Puzzle Room and Maze of Death initialized.");
         }
