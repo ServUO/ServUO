@@ -1,126 +1,365 @@
+using Server;
 using System;
-using Server.Network;
-using Server.Prompts;
-using Server.Items;
 using Server.Targeting;
+using Server.Gumps;
 
 namespace Server.Items
 {
-    public class ScrollBinderTarget : Target // Create our targeting class (which we derive from the base target class)
-    {
-        private ScrollBinderDeed m_Deed;
+	public enum BinderType
+	{
+		None,
+		StatScroll,
+		PowerScroll,
+		SOT
+	}
 
-        public ScrollBinderTarget(ScrollBinderDeed deed)
-            : base(1, false, TargetFlags.None)
-        {
-            m_Deed = deed;
-        }
+	public class ScrollBinderDeed : Item
+	{
+		private BinderType m_BinderType;
+		private SkillName m_Skill;
+		private double m_Value;
+		private int m_Needed;
+		private double m_Has;
+		
+		[CommandProperty(AccessLevel.GameMaster)]
+		public BinderType BinderType { get { return m_BinderType; } set { m_BinderType = value; } }
+		
+		[CommandProperty(AccessLevel.GameMaster)]
+		public SkillName Skill { get { return m_Skill; } set { m_Skill = value; } }
+		
+		[CommandProperty(AccessLevel.GameMaster)]
+		public double Value { get { return m_Value; } set { m_Value = value; } }
+		
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int Needed { get { return m_Needed; } set { m_Needed = value; } }
+		
+		[CommandProperty(AccessLevel.GameMaster)]
+		public double Has { get { return m_Has; } set { m_Has = value; } }
+		
+		public override int LabelNumber { get { return 1113135; } } //Scroll Binder
+		
+		[Constructable]
+		public ScrollBinderDeed() : base(0x14F0)
+		{
+			m_BinderType = BinderType.None;
+			m_Skill = SkillName.Alchemy;
+			m_Value = 0;
+			m_Needed = 0;
+			m_Has = 0;
+			
+			LootType = LootType.Cursed;
+            Hue = 1641;
+		}
+		
+		public override void GetProperties(ObjectPropertyList list)
+		{
+			base.GetProperties(list);
 
-        protected override void OnTarget(Mobile from, object target) // Override the protected OnTarget() for our feature
-        {
-            if (this.m_Deed.Deleted || this.m_Deed.RootParent != from)
-                return;
+            int v = (int)m_Value;
 
-            if (target is Item)
+			switch(m_BinderType)
+			{
+				case BinderType.None: break;
+				case BinderType.PowerScroll:
+					list.Add(1113149, String.Format("{0}\t#{1}\t{2}\t{3}", v.ToString(), (1044060 + (int)m_Skill).ToString(), ((int)m_Has).ToString(), m_Needed.ToString())); //~1_bonus~ ~2_type~: ~3_given~/~4_needed~
+					break;
+				case BinderType.StatScroll:
+                    list.Add(1113149, String.Format("+{0}\t#{1}\t{2}\t{3}", v - 225, 1049477, ((int)m_Has).ToString(), m_Needed.ToString()));
+					break;
+				case BinderType.SOT:
+                    string value = String.Format("{0:0.##}", m_Has);
+                    list.Add(1113620, String.Format("#{0}\t{1}", (1044060 + (int)m_Skill).ToString(), value));
+					break;
+			}
+		}
+		
+		public override void OnDoubleClick(Mobile from)
+		{
+			if(IsChildOf(from.Backpack))
+			{
+				from.Target = new InternalTarget(this);
+
+                int cliloc;
+                switch (m_BinderType)
+                {
+                    default:
+                    case BinderType.None:
+                        cliloc = 1113141; break;
+                    case BinderType.PowerScroll:
+                        cliloc = 1113138; break;
+                    case BinderType.StatScroll:
+                        cliloc = 1113140; break;
+                    case BinderType.SOT:
+                        cliloc = 1113139; break;
+                }
+
+                from.SendLocalizedMessage(cliloc); //Target the scroll you wish to bind.
+			}
+		}
+		
+		public void OnTarget(Mobile from, object targeted)
+		{
+            if(targeted is Item && !((Item)targeted).IsChildOf(from.Backpack))
             {
-                Item item = (Item)target;
-
-                if (item.RootParent != from)
-                    from.SendMessage("That must be in your pack");
-
-
-                //Shortcut the targets ... each checks to make sure the values are in scope, 
-                //then passes back to Scrollbinder that called it Via a refference
-
-                else if (target is PowerScroll)
-                {
-                    if (((PowerScroll)target).Value <= 120)
-                        m_Deed.Calculate((PowerScroll)target, from);
-                    else
-                        from.SendMessage("A higher value does not exist");
-                    return;
-                }
-
-                else if (target is ScrollofTranscendence)
-                {
-                    m_Deed.Calculate((ScrollofTranscendence)target, from);
-                    return;
-                }
-
-                else if (target is StatCapScroll)
-                {
-                    if (((StatCapScroll)target).Value <= 250)
-                        m_Deed.Calculate((StatCapScroll)target, from);
-                    else
-                        from.SendMessage("A higher value does not exist");
-                    return;
-                }
-                else
-                {
-                    from.SendMessage("That is not an acceptable type"); // returns fail message to the player
-
-                }
+                from.SendMessage("The scroll must be in your backpack to bind.");
+                return;
             }
-        }
-    }
 
-    public class ScrollBinderDeed : Item // Create the item class which is derived from the base item class
-    {
-        private SkillName m_skillname;   // name of the skill to which this is associated
+			switch(m_BinderType)
+			{
+				case BinderType.None:
+					{
+						if(targeted is PowerScroll)
+						{
+							PowerScroll ps = (PowerScroll)targeted;
+							
+							if(ps.Value >= 120)
+							    from.SendLocalizedMessage(1113144); //This scroll is already the highest of its type and cannot be bound.
+							else
+							{
+								double value = ps.Value;
+                                int needed = 0;
+								if(value == 105) needed = 8;
+								else if(value == 110) needed = 12;
+								else if(value == 115) needed = 10;
+								else
+									return;
+								
+								m_Value = value;
+								m_Needed = needed;
+                                m_Has = 1;
+								m_Skill = ps.Skill;
+								m_BinderType = BinderType.PowerScroll;
+								ps.Delete();
+                                from.SendMessage("Binding Powerscroll.");
+                                from.PlaySound(0x249);
+							}
+						}
+						else if (targeted is StatCapScroll)
+						{
+							StatCapScroll ps = (StatCapScroll)targeted;
+							
+							if(ps.Value >= 250)
+							    from.SendLocalizedMessage(1113144); //This scroll is already the highest of its type and cannot be bound.
+							else
+							{
+								double value = ps.Value;
+								int needed = 0;
+								if(value == 230) needed = 6;
+								else if(value == 235) needed = 8;
+								else if(value == 240) needed = 8;
+								else if(value == 245) needed = 5;
+								else
+									return;
+								
+								m_Value = value;
+								m_Needed = needed;
+                                m_Has = 1;
+								m_BinderType = BinderType.StatScroll;
+								ps.Delete();
+                                from.SendMessage("Binding Stat Scroll.");
+                                from.PlaySound(0x249);
+							}
+						}
+						else if (targeted is ScrollofTranscendence)
+						{
+							ScrollofTranscendence sot = (ScrollofTranscendence)targeted;
+							
+							m_Skill = sot.Skill;
+							m_BinderType = BinderType.SOT;
+							m_Needed = 5;
+                            m_Has = sot.Value;
+							sot.Delete();
+                            from.SendLocalizedMessage(1113146); //Binding Scrolls of Transcendence
+                            from.PlaySound(0x249);
+						}
+						else
+							from.SendLocalizedMessage(1113142); //You may only bind powerscrolls, stats scrolls or scrolls of transcendence.
+							
+						break;
+					}
+				case BinderType.PowerScroll:
+					{
+						if(targeted is PowerScroll)
+						{
+							PowerScroll ps = (PowerScroll)targeted;
+							
+							if(ps.Value == m_Value)
+							{
+								if(ps.Skill ==  m_Skill)
+								{
+									m_Has++;
+									
+									if(m_Has >= m_Needed)
+									{
+										GiveItem(from, new PowerScroll(m_Skill, m_Value + 5));
+										from.SendLocalizedMessage(1113145); //You've completed your binding and received an upgraded version of your scroll!
+										ps.Delete();
+										Delete();
+									}
+									else
+									{
+										ps.Delete();
+                                        from.PlaySound(0x249);
+										from.SendMessage("Binding Powerscroll.");
+									}
+								}
+								else
+                                    from.SendLocalizedMessage(1113143); //This scroll does not match the type currently being bound.
+							}
+							else
+								from.SendLocalizedMessage(1113143); //This scroll does not match the type currently being bound.
+						}
+						else
+							from.SendLocalizedMessage(1113143); //This scroll does not match the type currently being bound.
+						break;
+					}
+				case BinderType.StatScroll:
+					{
+						if(targeted is StatCapScroll)
+						{
+							StatCapScroll stat = (StatCapScroll)targeted;
+							
+							if(stat.Value == m_Value)
+							{
+								m_Has++;
+								
+								if(m_Has >= m_Needed)
+								{
+									GiveItem(from, new StatCapScroll((int)m_Value + 5));
+									from.SendLocalizedMessage(1113145); //You've completed your binding and received an upgraded version of your scroll!
+									stat.Delete();
+									Delete();
+								}
+								else
+								{
+									from.SendMessage("Binding Stat Scroll.");
+                                    from.PlaySound(0x249);
+									stat.Delete();
+								}
+							}
+							else
+								from.SendLocalizedMessage(1113143); //This scroll does not match the type currently being bound.
+						}
+						else
+						    from.SendLocalizedMessage(1113143); //This scroll does not match the type currently being bound.
+                        break;
+					}
+				case BinderType.SOT:
+					{
+						if(targeted is ScrollofTranscendence)
+						{
+							ScrollofTranscendence sot = (ScrollofTranscendence)targeted;
+							
+							if(sot.Skill == m_Skill)
+							{
+								double newValue = sot.Value + m_Has;
+								
+								if(newValue == m_Needed)
+								{
+									GiveItem(from, new ScrollofTranscendence(m_Skill, m_Needed));
+									from.SendLocalizedMessage(1113145); //You've completed your binding and received an upgraded version of your scroll!
+									Delete();
+								}
+								else if (newValue > m_Needed)
+								{
+									from.SendGump(new BinderWarningGump(newValue, this, sot, m_Needed));
+								}
+								else
+								{
+									m_Has += sot.Value;
+									sot.Delete();
+                                    from.PlaySound(0x249);
+                                    from.SendLocalizedMessage(1113146); //Binding Scrolls of Transcendence
+								}
+							}
+							else
+								from.SendLocalizedMessage(1113143); //This scroll does not match the type currently being bound.
+						}
+                        else
+                            from.SendLocalizedMessage(1113143); //This scroll does not match the type currently being bound.
+                        break;
+					}
+			}
 
-        private double m_skillvalue = 0.0;// Value of given skill/ stat
-
-        private double m_maxneeded = 0.0;// total scrolls needed to create a new special scroll
-
-        private double m_count = 0.0;// current count of scrolls added/ points of Trans added
-
-        private Item check;// item refference - decides if the new target is accepable for combination
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public SkillName SName
-        {
-            get { return m_skillname; }
-
-            set { m_skillname = value; InvalidateProperties(); }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public double SkillValue
-        {
-            get { return m_skillvalue; }
-
-            set { m_skillvalue = value; InvalidateProperties(); }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public double Counter
-        {
-            get { return m_count; }
-
-            set { m_count = value; InvalidateProperties(); }
-        }
-
-        [Constructable]
-        public ScrollBinderDeed()
-            : base(0x14F0)
-        {
-
-            this.Name = "a Scroll Binder";
-            Weight = 1.0;
-            Hue = 334;
-            LootType = LootType.Cursed;
-            ItemID = (0x014F0);
             InvalidateProperties();
-        }
+		}
+		
+		public void GiveItem(Mobile from, Item item)
+		{
+			Container pack = from.Backpack;
+			
+			if(pack == null || !pack.TryDropItem(from, item, false))
+				item.MoveToWorld(from.Location, from.Map);
+		}
+		
+		private class InternalTarget : Target
+		{
+			private ScrollBinderDeed m_Binder;
+			
+			public InternalTarget(ScrollBinderDeed binder) : base(-1, false, TargetFlags.None)
+			{
+                m_Binder = binder;
+			}
+			
+			protected override void OnTarget(Mobile from, object targeted)
+			{
+				if(m_Binder != null && !m_Binder.Deleted && m_Binder.IsChildOf(from.Backpack))
+					m_Binder.OnTarget(from, targeted);
+			}
+		}
+		
+		private class BinderWarningGump : BaseConfirmGump
+		{
+			private double m_Value;
+			private int m_Needed;
+			private ScrollofTranscendence m_Scroll;
+			private ScrollBinderDeed m_Binder;
+			
+			//public override int TitleNumber{ get{ return 1075083; } }
+            public override int LabelNumber { get { return 1113147; } }
+			
+			public BinderWarningGump(double value, ScrollBinderDeed binder, ScrollofTranscendence scroll, int needed)
+			{
+				m_Value = value;
+				m_Needed = needed;
+				m_Scroll = scroll;
+				m_Binder = binder;
+			}
+			
+			public override void Confirm( Mobile from )
+			{		
+				if(m_Scroll != null && m_Binder != null)
+				{
+					m_Binder.GiveItem(from, new ScrollofTranscendence(m_Scroll.Skill, m_Needed));
+					m_Scroll.Delete();
+					m_Binder.Delete();
+                    from.PlaySound(0x249);
+                    from.SendLocalizedMessage(1113145); //You've completed your binding and received an upgraded version of your scroll!
+				}
+			}
+		
+			public override void Refuse( Mobile from )
+			{
+			}
+		}
+		
+		public ScrollBinderDeed(Serial serial) : base(serial)
+		{
+		}
+		
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+			writer.Write((int)2);
 
-        public ScrollBinderDeed(Serial serial)
-            : base(serial)
-        {
-        }
+            writer.Write((int)m_BinderType);
+            writer.Write((int)m_Skill);
+            writer.Write(m_Value);
+            writer.Write(m_Needed);
+            writer.Write(m_Has);
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
+            /*            base.Serialize(writer);
 
             writer.Write((int)1); // version
 
@@ -140,12 +379,39 @@ namespace Server.Items
                     writer.Write((int)3);
             }
             else
-                writer.Write((int)0);
-        }
+                writer.Write((int)0);*/
+		}
+		
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+			int v = reader.ReadInt();
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
+            if (v < 2)
+            {
+                m_Skill = (SkillName)reader.ReadInt();
+                m_Value = reader.ReadDouble();
+                m_Needed = (int)reader.ReadDouble();
+                m_Has = reader.ReadDouble();
+
+                switch (reader.ReadInt())
+                {
+                    case 0: m_BinderType = BinderType.None; break;
+                    case 1: m_BinderType = BinderType.PowerScroll; break;
+                    case 2: m_BinderType = BinderType.StatScroll; break;
+                    case 3: m_BinderType = BinderType.SOT; break;
+                }
+            }
+            else
+            {
+                m_BinderType = (BinderType)reader.ReadInt();
+                m_Skill = (SkillName)reader.ReadInt();
+                m_Value = reader.ReadDouble();
+                m_Needed = reader.ReadInt();
+                m_Has = reader.ReadDouble();
+            }
+
+            /*base.Deserialize(reader);
 
             int version = reader.ReadInt();
             switch (version)
@@ -188,192 +454,7 @@ namespace Server.Items
                     { break; }
 
             }
-            InvalidateProperties();
-        }
-
-        public void Calculate(SpecialScroll scroll, Mobile from)// does the calculations for Scroll binder
-        {
-            if (check == null)// triggers if the scroll binder has not been acceptably used before
-            {
-                check = scroll;
-                m_skillname = scroll.Skill;
-                m_skillvalue = scroll.Value;
-                if (scroll is PowerScroll || scroll is StatCapScroll) // PS and Stat scroll both use base SkillNames
-                {
-                    m_count += 1;
-                    Create(m_count, from);
-                }
-                else
-                    Create(m_skillvalue, from); // Scroll of Trans can use the value for the addition
-
-                scroll.Delete();
-                return;
-            }
-            // long if statement to ensure that both the target and the current refferences are the same type
-            if ((check is PowerScroll && scroll is PowerScroll)
-                || (check is StatCapScroll && scroll is StatCapScroll)
-                || (check is ScrollofTranscendence && scroll is ScrollofTranscendence))
-            {
-                if (scroll.Skill == m_skillname) //same SkillName
-                {
-                    if (scroll is PowerScroll && (m_skillvalue == scroll.Value)) // Same Value so we aren't adding in 105s to 110s
-                    {
-                        m_skillname = scroll.Skill;
-                        m_count += 1;
-
-                        Create(m_count, from);
-                        scroll.Delete();
-                        return;
-                    }
-                    else if (scroll is StatCapScroll && (m_skillvalue == scroll.Value))// Same value so we aren't adding +20's and +5's
-                    {
-                        m_skillname = scroll.Skill;
-                        m_count += 1;
-
-                        Create(m_count, from);
-                        scroll.Delete();
-                        return;
-                    }
-                    else if (scroll is ScrollofTranscendence)// no value check herer since its cumlative
-                    {
-                        m_count += scroll.Value;
-
-                        Create(m_count, from);
-                        scroll.Delete();
-                        return;
-
-                    }
-                    else
-                    {
-                        from.SendMessage("That is not the same skill amount");// different value message
-                        return;
-                    }
-                }
-                else
-                {
-                    from.SendMessage(" That does not have the same skill ");//different skillname message
-                    return;
-                }
-            }
-            else
-            {
-                from.SendMessage(" That is not the same type ");// different target and refference message 
-                return;
-            }
-        }
-        public override bool DisplayWeight { get { return false; } }
-
-        private void Create(double amount, Mobile from)
-        {
-            if (check == null)// this should never be null at this point
-                return;
-            if (m_maxneeded != 0)// used as a check to verify value has been initialized
-            {
-                if (amount >= m_maxneeded)// check to see if Item needs to be created
-                {
-                    if (check is PowerScroll)
-                        from.AddToBackpack(new PowerScroll(SName, (Convert.ToInt32(m_skillvalue) + 5)));
-                    if (check is StatCapScroll)
-                        from.AddToBackpack(new StatCapScroll(Convert.ToInt32(m_skillvalue) + 5));
-                    if (check is ScrollofTranscendence)
-                        from.AddToBackpack(new ScrollofTranscendence(m_skillname, m_maxneeded));
-
-                    this.Delete(); // remove ScrollBinder
-                    return;
-                }
-                InvalidateProperties(); // here to update properties from the Calculate Method
-            }
-
-            else  //Initializes the setup for storing the Scroll Binder Data and... sets the amount of each scroll needed
-            {
-                if (check is PowerScroll || check is StatCapScroll)
-                {
-                    int valid = Convert.ToInt32(m_skillvalue);
-                    switch (valid)
-                    {
-                        //PowerScrolls
-                        case 105:
-                            {
-                                m_maxneeded = 8;
-                                break;
-                            }
-                        case 110:
-                            {
-                                m_maxneeded = 12;
-                                break;
-                            }
-                        case 115:
-                            {
-                                m_maxneeded = 10;
-                                break;
-                            }
-                        //StatCapScrolls (formula --> 225 + (stat adjument) = value)
-
-                        case 230://5
-                            {
-                                m_maxneeded = 6;
-                                break;
-                            }
-                        case 235://10
-                            {
-                                m_maxneeded = 8;
-                                break;
-                            }
-                        case 240://15
-                            {
-                                m_maxneeded = 8;
-                                break;
-                            }
-                        case 245://20
-                            {
-                                m_maxneeded = 5;
-                                break;
-                            }
-                    }
-                }
-                if (check is ScrollofTranscendence)
-                {
-                    m_count += amount;
-                    m_maxneeded = 10; // set maximum needed is  10 points of Trans scrolls... its fixed and doesn't change
-                }
-                InvalidateProperties();
-                return;
-            }
-        }
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-            //list.Add(" (Double-Click to target scrolls) ");
-            if (m_count == 0)
-            { // Directions for use appears on item
-                list.Add("Used to combine PS, Stat scrolls, or Scrolls of Transcendence \n ( Double-Click to target Scrolls )");
-            }
-
-
-            else
-            { //displays according to Type stored so Players can see
-                if (check is PowerScroll)
-                    list.Add("{0} {1} :  {2} / {3}", m_skillvalue, m_skillname, m_count, m_maxneeded);
-
-                if (check is StatCapScroll)
-                    list.Add("+{0} Stats : {1} / {2}", (m_skillvalue - 225), m_count, m_maxneeded);
-
-                if (check is ScrollofTranscendence)
-                    list.Add("{0} Transcendence : {1} / {2}", m_skillname, m_count, m_maxneeded);
-            }
-        }
-
-        public override void OnDoubleClick(Mobile from) // Override double click of the deed to call our target
-        {
-            if (!IsChildOf(from.Backpack)) // Make sure its in their pack
-            {
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
-            }
-            else
-            {
-                from.SendMessage("Which scroll would you like to add?");
-                from.Target = new ScrollBinderTarget(this); // Call our target
-            }
-        }
-    }
+            InvalidateProperties();*/
+		}
+	}
 }

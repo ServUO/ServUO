@@ -143,7 +143,7 @@ namespace Server.Engines.Craft
         public static void BeginTarget(Mobile from, CraftSystem system, BaseTool tool)
         {
             from.Target = new AlterItemTarget(system, tool);
-            from.SendMessage("Choose an item to Alter");
+            from.SendLocalizedMessage(1094730); //Target the item to altar
         }
 
         public static bool TryToAlter(Mobile from, Item olditem)

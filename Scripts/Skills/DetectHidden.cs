@@ -112,5 +112,39 @@ namespace Server.SkillHandlers
                 }
             }
         }
+
+        public static void DoPassiveDetect(Mobile src)
+        {
+            double ss = src.Skills[SkillName.DetectHidden].Value;
+
+            if (ss <= 0)
+                return;
+
+            IPooledEnumerable eable = src.Map.GetMobilesInRange(src.Location, 4);
+
+            foreach (Mobile m in eable)
+            {
+                if (m is ShadowKnight)
+                    continue;
+
+                int noto = Notoriety.Compute(src, m);
+
+                if (m != src && noto != Notoriety.Innocent && noto != Notoriety.Ally && noto != Notoriety.Invulnerable)
+                {
+                    double ts = (m.Skills[SkillName.Hiding].Value + m.Skills[SkillName.Stealth].Value) / 2;
+
+                    if (src.Race == Race.Elf)
+                        ss += 20;
+
+                    if (src.AccessLevel >= m.AccessLevel && Utility.Random(1000) < (ss - ts) + 1)
+                    {
+                        m.RevealingAction();
+                        m.SendLocalizedMessage(500814); // You have been revealed!
+                    }
+                }
+            }
+
+            eable.Free();
+        }
     }
 }

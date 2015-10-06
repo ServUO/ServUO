@@ -117,6 +117,14 @@ namespace Server.Engines.Craft
             return false;
         }
 
+        public void AddContext(Mobile m, CraftContext c)
+        {
+            if (c == null || m == null || c.System != this)
+                return;
+
+            m_ContextTable[m] = c;
+        }
+
         public CraftContext GetContext(Mobile m)
         {
             if (m == null)
@@ -132,7 +140,7 @@ namespace Server.Engines.Craft
             this.m_ContextTable.TryGetValue(m, out c);
 
             if (c == null)
-                this.m_ContextTable[m] = c = new CraftContext();
+                this.m_ContextTable[m] = c = new CraftContext(m, this);
 
             return c;
         }

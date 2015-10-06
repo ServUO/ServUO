@@ -18,6 +18,8 @@ namespace Server.Engines.Craft
         private const int LabelColor = 0x7FFF;
         private const int FontColor = 0xFFFFFF;
 
+        public bool Locked { get { return AutoCraftTimer.HasTimer(m_From); } }
+
         private enum CraftPage
         {
             None,
@@ -49,80 +51,112 @@ namespace Server.Engines.Craft
 
             this.AddPage(0);
 
-            this.AddBackground(0, 0, 550, 587, 5054);
-            this.AddImageTiled(10, 10, 530, 22, 2624);		//Section for Gump Heading
-            this.AddImageTiled(10, 375, 132, 45, 2624);	//Section for Notices
-            this.AddImageTiled(146, 375, 395, 45, 2624);	//Section across from Notices
-            this.AddImageTiled(10, 422, 530, 155, 2624);	//Section where Exit is
-            this.AddImageTiled(10, 37, 200, 335, 2624);	//Section for Categories
-            this.AddImageTiled(215, 37, 325, 335, 2624);	//Section for Sublisted Items
-            this.AddAlphaRegion(10, 10, 530, 567);
+            AddBackground(0, 0, 530, 497, 5054);
+            AddImageTiled(10, 10, 510, 22, 2624);
+            AddImageTiled(10, 292, 150, 45, 2624);
+            AddImageTiled(165, 292, 355, 45, 2624);
+            AddImageTiled(10, 342, 510, 145, 2624);
+            AddImageTiled(10, 37, 200, 250, 2624);
+            AddImageTiled(215, 37, 305, 250, 2624);
+            AddAlphaRegion(10, 10, 510, 477);
 
             if (craftSystem.GumpTitleNumber > 0)
                 this.AddHtmlLocalized(10, 12, 510, 20, craftSystem.GumpTitleNumber, LabelColor, false, false);
             else
                 this.AddHtml(10, 12, 510, 20, craftSystem.GumpTitleString, false, false);
 
-            this.AddHtmlLocalized(10, 37, 200, 22, 1044010, LabelColor, false, false); // <CENTER>CATEGORIES</CENTER>
-            this.AddHtmlLocalized(215, 37, 305, 22, 1044011, LabelColor, false, false); // <CENTER>SELECTIONS</CENTER>
-            this.AddHtmlLocalized(10, 385, 150, 25, 1044012, LabelColor, false, false); // <CENTER>NOTICES</CENTER>
+            AddHtmlLocalized(10, 37, 200, 22, 1044010, LabelColor, false, false); // <CENTER>CATEGORIES</CENTER>
+            AddHtmlLocalized(215, 37, 305, 22, 1044011, LabelColor, false, false); // <CENTER>SELECTIONS</CENTER>
+            AddHtmlLocalized(10, 302, 150, 25, 1044012, LabelColor, false, false); // <CENTER>NOTICES</CENTER>
 
-            this.AddButton(15, 542, 4017, 4019, 0, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(50, 545, 150, 18, 1011441, LabelColor, false, false); // EXIT
+            this.AddButton(15, 442, 4017, 4019, 0, GumpButtonType.Reply, 0);
+            this.AddHtmlLocalized(50, 445, 150, 18, 1011441, LabelColor, false, false); // EXIT
 
-            this.AddButton(270, 542, 4005, 4007, GetButtonID(6, 2), GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(305, 545, 150, 18, 1044013, LabelColor, false, false); // MAKE LAST
-
-            this.AddButton(270, 522, 4005, 4007, GetButtonID(6, 10), GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(305, 525, 150, 18, 1112533 + (context == null ? 0 : (int)context.QuestOption), LabelColor, false, false); // QUEST ITEM
-
-            this.AddButton(115, 542, 4017, 4019, GetButtonID(6, 11), GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(150, 545, 150, 18, 1112698, LabelColor, false, false); // CANCEL MAKE
-
-            // Mark option
-            if (craftSystem.MarkOption)
-            {
-                this.AddButton(270, 462, 4005, 4007, GetButtonID(6, 6), GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(305, 465, 150, 18, 1044017 + (context == null ? 0 : (int)context.MarkOption), LabelColor, false, false); // MARK ITEM
-            }
-            // ****************************************
-
-            // Resmelt option
-            if (craftSystem.Resmelt)
-            {
-                this.AddButton(15, 442, 4005, 4007, GetButtonID(6, 1), GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(50, 445, 150, 18, 1044259, LabelColor, false, false); // SMELT ITEM
-            }
-            // ****************************************
+            this.AddButton(115, 442, 4017, 4019, GetButtonID(6, 11), GumpButtonType.Reply, 0);
+            this.AddHtmlLocalized(150, 445, 150, 18, 1112698, LabelColor, false, false); // CANCEL MAKE
 
             // Repair option
-            if (craftSystem.Repair)
+            if (m_CraftSystem.Repair)
             {
-                this.AddButton(270, 442, 4005, 4007, GetButtonID(6, 5), GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(305, 445, 150, 18, 1044260, LabelColor, false, false); // REPAIR ITEM
+                AddButton(270, 342, 4005, 4007, GetButtonID(6, 5), GumpButtonType.Reply, 0);
+                AddHtmlLocalized(305, 345, 150, 18, 1044260, LabelColor, false, false); // REPAIR ITEM
+            }
+            // ****************************************
+
+            // Mark option
+            if (m_CraftSystem.MarkOption)
+            {
+                AddButton(270, 362, 4005, 4007, GetButtonID(6, 6), GumpButtonType.Reply, 0);
+                AddHtmlLocalized(305, 365, 150, 18, 1044017 + (context == null ? 0 : (int)context.MarkOption), LabelColor, false, false); // MARK ITEM
             }
             // ****************************************
 
             // Enhance option
-            if (craftSystem.CanEnhance)
+            if (m_CraftSystem.CanEnhance)
             {
-                this.AddButton(270, 482, 4005, 4007, GetButtonID(6, 8), GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(305, 485, 150, 18, 1061001, LabelColor, false, false); // ENHANCE ITEM
+                AddButton(270, 382, 4005, 4007, GetButtonID(6, 8), GumpButtonType.Reply, 0);
+                AddHtmlLocalized(305, 385, 150, 18, 1061001, LabelColor, false, false); // ENHANCE ITEM
             }
             // ****************************************
-			
-			// Alter option
-            if (craftSystem.CanAlter)
+
+            #region SA
+            // Alter option
+            if (Core.SA && m_CraftSystem.CanAlter)
             {
-				this.AddButton(270, 502, 4005, 4007, GetButtonID(6, 9), GumpButtonType.Reply, 0);
-				this.AddHtmlLocalized(304, 505, 1152, 18, 1094726, LabelColor, false, false); // ALTER ITEM
+                AddButton(270, 402, 4005, 4007, GetButtonID(6, 9), GumpButtonType.Reply, 0);
+                AddHtmlLocalized(304, 405, 250, 18, 1094726, LabelColor, false, false); // ALTER ITEM (Gargoyle)
+            }
+            // ****************************************
+
+            // Quest item
+            if (Core.SA)
+            {
+                AddButton(270, 422, 4005, 4007, GetButtonID(6, 10), GumpButtonType.Reply, 0);
+                AddHtmlLocalized(305, 425, 150, 18, context != null && context.QuestOption == CraftQuestOption.QuestItem ? 1112534 : 1112533, LabelColor, false, false); // QUEST ITEM
+            }
+            // ****************************************
+            #endregion
+
+            AddButton(270, 442, 4005, 4007, GetButtonID(6, 2), GumpButtonType.Reply, 0);
+            AddHtmlLocalized(305, 445, 150, 18, 1044013, LabelColor, false, false); // MAKE LAST
+
+            #region Stygian Abyss
+            int total = 1;
+            int made = 0;
+
+            if (Locked && AutoCraftTimer.AutoCraftTable.ContainsKey(m_From))
+            {
+                AutoCraftTimer timer = AutoCraftTimer.AutoCraftTable[m_From];
+
+                if (timer != null)
+                {
+                    total = timer.Amount;
+                    made = timer.Attempts;
+                }
+                else
+                {
+                    if (context != null)
+                        total = context.MakeTotal;
+                }
+            }
+
+            string args = String.Format("{0}\t{1}", made.ToString(), total.ToString());
+
+            AddHtmlLocalized(270, 468, 150, 18, 1079443, args, LabelColor, false, false); //~1_DONE~/~2_TOTAL~ COMPLETED
+            #endregion
+
+            // Resmelt option
+            if (m_CraftSystem.Resmelt)
+            {
+                AddButton(15, 342, 4005, 4007, GetButtonID(6, 1), GumpButtonType.Reply, 0);
+                AddHtmlLocalized(50, 345, 150, 18, 1044259, LabelColor, false, false); // SMELT ITEM
             }
             // ****************************************
 
             if (notice is int && (int)notice > 0)
-                this.AddHtmlLocalized(170, 377, 350, 40, (int)notice, LabelColor, false, false);
+                this.AddHtmlLocalized(170, 295, 350, 40, (int)notice, LabelColor, false, false);
             else if (notice is string)
-                this.AddHtml(170, 377, 350, 40, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", FontColor, notice), false, false);
+                this.AddHtml(170, 295, 350, 40, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", FontColor, notice), false, false);
 
             // If the system has more than one resource
             if (craftSystem.CraftSubRes.Init)
@@ -133,6 +167,7 @@ namespace Server.Engines.Craft
                 int resIndex = (context == null ? -1 : context.LastResourceIndex);
 
                 Type resourceType = craftSystem.CraftSubRes.ResType;
+                Type resourceType2 = GetAltType(resourceType);
 
                 if (resIndex > -1)
                 {
@@ -151,14 +186,27 @@ namespace Server.Engines.Craft
 
                     for (int i = 0; i < items.Length; ++i)
                         resourceCount += items[i].Amount;
+
+                    if (resourceType2 != null)
+                    {
+                        Item[] items2 = m_From.Backpack.FindItemsByType(resourceType2, true);
+
+                        for (int i = 0; i < items2.Length; ++i)
+                            resourceCount += items2[i].Amount;
+                    }
                 }
 
-                this.AddButton(15, 462, 4005, 4007, GetButtonID(6, 0), GumpButtonType.Reply, 0);
+                this.AddButton(15, 382, 4005, 4007, GetButtonID(6, 0), GumpButtonType.Reply, 0);
 
                 if (nameNumber > 0)
-                    this.AddHtmlLocalized(50, 465, 250, 18, nameNumber, resourceCount.ToString(), LabelColor, false, false);
+                {
+                    if (context.DoNotColor)
+                        AddLabel(50, 385, LabelHue, "*");
+
+                    AddHtmlLocalized(50 + (context.DoNotColor ? 13 : 0), 385, 250, 18, nameNumber, resourceCount.ToString(), LabelColor, false, false);
+                }
                 else
-                    this.AddLabel(50, 465, LabelHue, String.Format("{0} ({1} Available)", nameString, resourceCount));
+                    AddLabel(50, 382, LabelHue, (context.DoNotColor ? "*" : "") + String.Format("{0} ({1} Available)", nameString, resourceCount));
             }
             // ****************************************
 
@@ -191,12 +239,12 @@ namespace Server.Engines.Craft
                         resourceCount += items[i].Amount;
                 }
 
-                this.AddButton(15, 482, 4005, 4007, GetButtonID(6, 7), GumpButtonType.Reply, 0);
+                this.AddButton(15, 402, 4005, 4007, GetButtonID(6, 7), GumpButtonType.Reply, 0);
 
                 if (nameNumber > 0)
-                    this.AddHtmlLocalized(50, 485, 250, 18, nameNumber, resourceCount.ToString(), LabelColor, false, false);
+                    AddHtmlLocalized(50, 405, 250, 18, nameNumber, resourceCount.ToString(), LabelColor, false, false);
                 else
-                    this.AddLabel(50, 485, LabelHue, String.Format("{0} ({1} Available)", nameString, resourceCount));
+                    AddLabel(50, 405, LabelHue, String.Format("{0} ({1} Available)", nameString, resourceCount));
             }
             // ****************************************
 
@@ -209,6 +257,32 @@ namespace Server.Engines.Craft
             else if (context != null && context.LastGroupIndex > -1)
                 this.CreateItemList(context.LastGroupIndex);
         }
+
+        private Type GetAltType(Type original)
+        {
+            for (int i = 0; i < m_TypesTable.Length; i++)
+            {
+                if (original == m_TypesTable[i][0] && m_TypesTable[i].Length > 1)
+                    return m_TypesTable[i][1];
+            }
+
+            return null;
+        }
+
+        private Type[][] m_TypesTable = new Type[][]
+        {
+            new Type[]{ typeof( Log ), typeof( Board ) },
+			new Type[]{ typeof( HeartwoodLog ), typeof( HeartwoodBoard ) },
+			new Type[]{ typeof( BloodwoodLog ), typeof( BloodwoodBoard ) },
+			new Type[]{ typeof( FrostwoodLog ), typeof( FrostwoodBoard ) },
+			new Type[]{ typeof( OakLog ), typeof( OakBoard ) },
+			new Type[]{ typeof( AshLog ), typeof( AshBoard ) },
+			new Type[]{ typeof( YewLog ), typeof( YewBoard ) },
+			new Type[]{ typeof( Leather ), typeof( Hides ) },
+			new Type[]{ typeof( SpinedLeather ), typeof( SpinedHides ) },
+			new Type[]{ typeof( HornedLeather ), typeof( HornedHides ) },
+			new Type[]{ typeof( BarbedLeather ), typeof( BarbedHides ) },
+        };
 
         public void CreateResList(bool opt, Mobile from)
         {
@@ -276,16 +350,16 @@ namespace Server.Engines.Craft
                     {
                         if (i > 0)
                         {
-                            this.AddButton(370, 290, 4005, 4007, 0, GumpButtonType.Page, (i / 10) + 1);
-                            this.AddHtmlLocalized(405, 293, 100, 18, 1044045, LabelColor, false, false); // NEXT PAGE
+                            this.AddButton(370, 260, 4005, 4007, 0, GumpButtonType.Page, (i / 10) + 1);
+                            this.AddHtmlLocalized(405, 263, 100, 18, 1044045, LabelColor, false, false); // NEXT PAGE
                         }
 
                         this.AddPage((i / 10) + 1);
 
                         if (i > 0)
                         {
-                            this.AddButton(220, 290, 4014, 4015, 0, GumpButtonType.Page, i / 10);
-                            this.AddHtmlLocalized(255, 293, 100, 18, 1044044, LabelColor, false, false); // PREV PAGE
+                            this.AddButton(220, 260, 4014, 4015, 0, GumpButtonType.Page, i / 10);
+                            this.AddHtmlLocalized(255, 263, 100, 18, 1044044, LabelColor, false, false); // PREV PAGE
                         }
                     }
 
@@ -328,16 +402,16 @@ namespace Server.Engines.Craft
                 {
                     if (i > 0)
                     {
-                        this.AddButton(370, 280, 4005, 4007, 0, GumpButtonType.Page, (i / 10) + 1);
-                        this.AddHtmlLocalized(405, 283, 100, 18, 1044045, LabelColor, false, false); // NEXT PAGE
+                        this.AddButton(370, 260, 4005, 4007, 0, GumpButtonType.Page, (i / 10) + 1);
+                        this.AddHtmlLocalized(405, 263, 100, 18, 1044045, LabelColor, false, false); // NEXT PAGE
                     }
 
                     this.AddPage((i / 10) + 1);
 
                     if (i > 0)
                     {
-                        this.AddButton(220, 280, 4014, 4015, 0, GumpButtonType.Page, i / 10);
-                        this.AddHtmlLocalized(255, 283, 100, 18, 1044044, LabelColor, false, false); // PREV PAGE
+                        this.AddButton(220, 260, 4014, 4015, 0, GumpButtonType.Page, i / 10);
+                        this.AddHtmlLocalized(255, 263, 100, 18, 1044044, LabelColor, false, false); // PREV PAGE
                     }
                 }
 
@@ -418,6 +492,11 @@ namespace Server.Engines.Craft
             CraftSystem system = this.m_CraftSystem;
             CraftGroupCol groups = system.CraftGroups;
             CraftContext context = system.GetContext(this.m_From);
+
+            #region Stygian Abyss
+            if (Locked)
+                return;
+            #endregion
 
             switch ( type )
             {
@@ -629,10 +708,18 @@ namespace Server.Engines.Craft
 
                                     break;
                                 }
-                                #region SA
+                            #region Stygian Abyss
                             case 9: // Alter Item (Gargoyle)
                                 {
-                                    AlterItem.BeginTarget(this.m_From, system, this.m_Tool);
+                                    if (system.CanAlter)
+                                    {
+                                        if (Server.SkillHandlers.Imbuing.CheckSoulForge(m_From, 1, false))
+                                        {
+                                            AlterItem.BeginTarget(this.m_From, system, this.m_Tool);
+                                        }
+                                        else
+                                            m_From.SendLocalizedMessage(1111867); // You must be near a soulforge to alter an item.
+                                    }
 									break;
                                 }
                             case 10: // Quest Item/Non Quest Item toggle
@@ -655,9 +742,10 @@ namespace Server.Engines.Craft
                                 }
                             case 11: // Cancel Make
                                 {
+                                    AutoCraftTimer.EndTimer(m_From);
                                     break;
                                 }
-                        #endregion
+                            #endregion
                         }
                         break;
                     }
