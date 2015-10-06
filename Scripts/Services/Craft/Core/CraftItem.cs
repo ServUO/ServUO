@@ -41,7 +41,7 @@ namespace Server.Engines.Craft
 	public class CraftItem
 	{
 		#region Mondain's Legacy
-		public static void Initialize()
+		/*public static void Initialize()
 		{
 			CraftSystem sys;
 
@@ -57,7 +57,7 @@ namespace Server.Engines.Craft
 			sys = DefTailoring.CraftSystem;
 			sys = DefTinkering.CraftSystem;
 			sys = DefBasketweaving.CraftSystem;
-		}
+		}*/
 		#endregion
 
 		private readonly CraftResCol m_arCraftRes;
@@ -1145,6 +1145,7 @@ namespace Server.Engines.Craft
 										int iRandom = Utility.Random(iMax);
 										iRandom += iMin + 1;
 										new InternalTimer(from, craftSystem, this, typeRes, tool, iRandom).Start();
+                                        return;
 									}
 									else
 									{
@@ -1174,7 +1175,7 @@ namespace Server.Engines.Craft
 					{
 						from.EndAction(typeof(CraftSystem));
 						from.SendGump(new CraftGump(from, craftSystem, tool, 1044153));
-							// You don't have the required skills to attempt this item.
+						// You don't have the required skills to attempt this item.
 					}
 				}
 				else
@@ -1188,6 +1189,8 @@ namespace Server.Engines.Craft
 			{
 				from.SendLocalizedMessage(500119); // You must wait to perform another action
 			}
+
+            AutoCraftTimer.EndTimer(from);
 		}
 
 		private object RequiredExpansionMessage(Expansion expansion)
@@ -1227,6 +1230,8 @@ namespace Server.Engines.Craft
 					from.SendLocalizedMessage(badCraft);
 				}
 
+                AutoCraftTimer.EndTimer(from);
+
 				return;
 			}
 
@@ -1249,6 +1254,8 @@ namespace Server.Engines.Craft
 					from.SendMessage((string)checkMessage);
 				}
 
+                AutoCraftTimer.EndTimer(from);
+
 				return;
 			}
 			else if (!ConsumeAttributes(from, ref checkMessage, false))
@@ -1265,6 +1272,8 @@ namespace Server.Engines.Craft
 				{
 					from.SendMessage((string)checkMessage);
 				}
+
+                AutoCraftTimer.EndTimer(from);
 
 				return;
 			}
@@ -1300,6 +1309,8 @@ namespace Server.Engines.Craft
 						from.SendMessage((string)message);
 					}
 
+                    AutoCraftTimer.EndTimer(from);
+
 					return;
 				}
 				else if (!ConsumeAttributes(from, ref message, true))
@@ -1316,6 +1327,8 @@ namespace Server.Engines.Craft
 					{
 						from.SendMessage((string)message);
 					}
+
+                    AutoCraftTimer.EndTimer(from);
 
 					return;
 				}
@@ -1497,6 +1510,8 @@ namespace Server.Engines.Craft
 						CommandLogging.WriteLine(
 							from, "Crafting {0} with craft system {1}", CommandLogging.Format(item), craftSystem.GetType().Name);
 					}
+
+                    AutoCraftTimer.OnSuccessfulCraft(from);
 					//from.PlaySound( 0x57 );
 				}
 
@@ -1565,6 +1580,8 @@ namespace Server.Engines.Craft
 				{
 					from.SendLocalizedMessage(1044153); // You don't have the required skills to attempt this item.
 				}
+
+                AutoCraftTimer.EndTimer(from);
 			}
 			else
 			{
@@ -1589,6 +1606,8 @@ namespace Server.Engines.Craft
 					{
 						from.SendMessage((string)message);
 					}
+
+                    AutoCraftTimer.EndTimer(from);
 
 					return;
 				}
@@ -1628,6 +1647,7 @@ namespace Server.Engines.Craft
 			private readonly CraftSystem m_CraftSystem;
 			private readonly Type m_TypeRes;
 			private readonly BaseTool m_Tool;
+            private bool m_AutoCraft;
 
 			public InternalTimer(
 				Mobile from, CraftSystem craftSystem, CraftItem craftItem, Type typeRes, BaseTool tool, int iCountMax)
@@ -1640,6 +1660,7 @@ namespace Server.Engines.Craft
 				m_CraftSystem = craftSystem;
 				m_TypeRes = typeRes;
 				m_Tool = tool;
+                m_AutoCraft = AutoCraftTimer.HasTimer(from);
 			}
 
 			protected override void OnTick()
@@ -1670,6 +1691,8 @@ namespace Server.Engines.Craft
 						}
 
 						return;
+
+                        AutoCraftTimer.EndTimer(m_From);
 					}
 
 					int quality = 1;
@@ -1713,7 +1736,7 @@ namespace Server.Engines.Craft
 						makersMark = m_CraftItem.IsMarkable(m_CraftItem.ItemType);
 					}
 
-					if (makersMark && context.MarkOption == CraftMarkOption.PromptForMark)
+                    if (makersMark && context.MarkOption == CraftMarkOption.PromptForMark && !m_AutoCraft)
 					{
 						m_From.SendGump(new QueryMakersMarkGump(quality, m_From, m_CraftItem, m_CraftSystem, m_TypeRes, m_Tool));
 					}

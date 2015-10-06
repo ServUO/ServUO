@@ -799,6 +799,10 @@ namespace Server.Mobiles
                 Send(SpeedControl.Disable);
                 BuffInfo.RemoveBuff(this, BuffIcon.Fly);
             }
+            else if (oldRace != Race.Gargoyle && Race == Race.Gargoyle && Mounted)
+            {
+                Mount.Rider = null;
+            }
 
 			ValidateEquipment();
 			UpdateResistances();
@@ -1589,6 +1593,8 @@ namespace Server.Mobiles
 		}
 		#endregion
 
+        public long NextPassiveDetectHidden { get; set; }
+
 		public override bool Move(Direction d)
 		{
 			NetState ns = NetState;
@@ -1629,6 +1635,11 @@ namespace Server.Mobiles
 
 			m_NextMovementTime += speed;
 
+            if (Core.TickCount - NextPassiveDetectHidden >= 0)
+            {
+                DetectHidden.DoPassiveDetect(this);
+                NextPassiveDetectHidden = Core.TickCount + (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
+            }
 			return true;
 		}
 

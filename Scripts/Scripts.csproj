@@ -1075,6 +1075,7 @@
     <Compile Include="Items\- Misc\InteriorDecorator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\- Misc\InvisibleTile.cs" />
     <Compile Include="Items\- Misc\KepetchWax.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -11161,6 +11162,7 @@
     <Compile Include="Services\Craft\Core\AlterItem.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\Craft\Core\AutoCraft.cs" />
     <Compile Include="Services\Craft\Core\CraftContext.cs">
       <SubType>Code</SubType>
     </Compile>

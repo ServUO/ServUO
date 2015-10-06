@@ -119,6 +119,7 @@ namespace Server.Mobiles
 			public bool Dosearchmal;
 			public bool Dosearchilsh;
 			public bool Dosearchtok;
+            public bool Dosearchter;
 			public bool Dosearchint;
 			public bool Dosearchnull;
 			public bool Dosearcherr;
@@ -140,7 +141,7 @@ namespace Server.Mobiles
 			public Point3D Currentloc;
 
 			public SearchCriteria(bool dotype, bool doname, bool dorange, bool doregion, bool doentry, bool doentrytype, bool docondition, bool dofel, bool dotram,
-				bool domal, bool doilsh, bool dotok, bool doint, bool donull, bool doerr, bool doage, bool dowithattach, bool doattach, bool dohidevalid,
+				bool domal, bool doilsh, bool dotok, bool doter, bool doint, bool donull, bool doerr, bool doage, bool dowithattach, bool doattach, bool dohidevalid,
 				bool agedirection, double age, int range, string region, string condition, string type, string attachtype, string name, string entry
 				)
 			{
@@ -156,6 +157,7 @@ namespace Server.Mobiles
 				Dosearchmal = domal;
 				Dosearchilsh = doilsh;
 				Dosearchtok = dotok;
+                Dosearchter = doter;
 				Dosearchint = doint;
 				Dosearchnull = donull;
 				Dosearcherr = doerr;
@@ -494,7 +496,8 @@ namespace Server.Mobiles
 
 						// check for map
 						if ((i.Map == Map.Felucca && criteria.Dosearchfel) || (i.Map == Map.Trammel && criteria.Dosearchtram) ||
-							(i.Map == Map.Malas && criteria.Dosearchmal) || (i.Map == Map.Ilshenar && criteria.Dosearchilsh) || (i.Map == Map.Internal && criteria.Dosearchint) ||
+							(i.Map == Map.Malas && criteria.Dosearchmal) || (i.Map == Map.Ilshenar && criteria.Dosearchilsh) || 
+                            (i.Map == Map.TerMur && criteria.Dosearchter) || (i.Map == Map.Internal && criteria.Dosearchint) ||
 							(i.Map == null && criteria.Dosearchnull))
 						{
 							hasmap = true;
@@ -712,7 +715,8 @@ namespace Server.Mobiles
 
 						// check for map
 						if ((i.Map == Map.Felucca && criteria.Dosearchfel) || (i.Map == Map.Trammel && criteria.Dosearchtram) ||
-							(i.Map == Map.Malas && criteria.Dosearchmal) || (i.Map == Map.Ilshenar && criteria.Dosearchilsh) || (i.Map == Map.Internal && criteria.Dosearchint) ||
+							(i.Map == Map.Malas && criteria.Dosearchmal) || (i.Map == Map.Ilshenar && criteria.Dosearchilsh) || 
+                            (i.Map == Map.TerMur && criteria.Dosearchter) || (i.Map == Map.Internal && criteria.Dosearchint) ||
 							(i.Map == null && criteria.Dosearchnull))
 						{
 							hasmap = true;
@@ -911,6 +915,7 @@ namespace Server.Mobiles
 			true, // domal
 			true, // doilsh
 			true, // dotok
+            true, // doter
 			false, // doint
 			false, // donull
 			false, // doerr
@@ -1068,6 +1073,8 @@ namespace Server.Mobiles
 			y += 20;
 			AddCheck(5, y, 0xD2, 0xD3, m_SearchCriteria.Dosearchtok, 318);
 			AddLabel(28, y, 0x384, "Tok");
+            AddCheck(75, y, 0xD2, 0xD3, m_SearchCriteria.Dosearchter, 320);
+            AddLabel(98, y, 0x384, "Ter");
 
 			y += 20;
 			// add the hide valid internal map button
@@ -2187,6 +2194,7 @@ namespace Server.Mobiles
 			m_SearchCriteria.Dosearchmal = info.IsSwitched(310);
 			m_SearchCriteria.Dosearchilsh = info.IsSwitched(311);
 			m_SearchCriteria.Dosearchtok = info.IsSwitched(318);
+            m_SearchCriteria.Dosearchter = info.IsSwitched(320);
 			m_SearchCriteria.Dosearchnull = info.IsSwitched(314);
 
 			m_SearchCriteria.Dohidevalidint = info.IsSwitched(316);

@@ -34,51 +34,52 @@ namespace Server.Engines.Craft
             from.CloseGump(typeof(CraftGump));
             from.CloseGump(typeof(CraftGumpItem));
 
-            this.AddPage(0);
-            this.AddBackground(0, 0, 530, 417, 5054);
-            this.AddImageTiled(10, 10, 510, 22, 2624);
-            this.AddImageTiled(10, 37, 150, 148, 2624);
-            this.AddImageTiled(165, 37, 355, 90, 2624);
-            this.AddImageTiled(10, 190, 155, 22, 2624);
-            #region SA;
-            //AddImageTiled( 10, 217, 150, 53, 2624 );
-            this.AddImageTiled(165, 132, 355, 80, 2624);
-            this.AddImageTiled(10, 237, 155, 60, 2624);
-            //AddImageTiled( 10, 302, 150, 53, 2624 );
-            this.AddImageTiled(165, 217, 355, 80, 2624);
-            this.AddImageTiled(10, 322, 155, 60, 2624);
-            #endregion
-            this.AddImageTiled(165, 302, 355, 80, 2624);
-            this.AddImageTiled(10, 387, 510, 22, 2624);
-            this.AddAlphaRegion(10, 10, 510, 399);
+            AddPage(0);
+            AddBackground(0, 0, 530, 417, 5054);
+            AddImageTiled(10, 10, 510, 22, 2624);
+            AddImageTiled(10, 37, 150, 148, 2624);
+            AddImageTiled(165, 37, 355, 90, 2624);
+            AddImageTiled(10, 190, 155, 22, 2624);
+            AddImageTiled(10, 240, 150, 57, 2624);
+            AddImageTiled(165, 132, 355, 80, 2624);
+            AddImageTiled(10, 325, 150, 57, 2624);
+            AddImageTiled(165, 217, 355, 80, 2624);
+            AddImageTiled(165, 302, 355, 80, 2624);
+            AddImageTiled(10, 387, 510, 22, 2624);
+            AddAlphaRegion(10, 10, 510, 399);
 
-            this.AddHtmlLocalized(170, 40, 150, 20, 1044053, LabelColor, false, false); // ITEM
-            #region SA;
-            //AddHtmlLocalized( 10, 192, 150, 22, 1044054, LabelColor, false, false ); // <CENTER>SKILLS</CENTER>
-            this.AddHtmlLocalized(10, 215, 150, 22, 1044055, LabelColor, false, false); // <CENTER>MATERIALS</CENTER>
-            this.AddHtmlLocalized(10, 300, 150, 22, 1044056, LabelColor, false, false); // <CENTER>OTHER</CENTER>
-            #endregion
+            AddHtmlLocalized(170, 40, 150, 20, 1044053, LabelColor, false, false); // ITEM
+            AddHtmlLocalized(10, 217, 150, 22, 1044055, LabelColor, false, false); // <CENTER>MATERIALS</CENTER>
+            AddHtmlLocalized(10, 302, 150, 22, 1044056, LabelColor, false, false); // <CENTER>OTHER</CENTER>
 
             if (craftSystem.GumpTitleNumber > 0)
                 this.AddHtmlLocalized(10, 12, 510, 20, craftSystem.GumpTitleNumber, LabelColor, false, false);
             else
                 this.AddHtml(10, 12, 510, 20, craftSystem.GumpTitleString, false, false);
 
-            this.AddButton(15, 387, 4014, 4016, 0, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(50, 390, 150, 18, 1044150, LabelColor, false, false); // BACK
-
             bool needsRecipe = (craftItem.Recipe != null && from is PlayerMobile && !((PlayerMobile)from).HasRecipe(craftItem.Recipe));
 
             if (needsRecipe)
             {
-                this.AddButton(135, 387, 4005, 4007, 0, GumpButtonType.Page, 0);
+                this.AddButton(405, 387, 4005, 4007, 0, GumpButtonType.Page, 0);
                 this.AddHtmlLocalized(440, 390, 150, 18, 1044151, GreyLabelColor, false, false); // MAKE NOW
             }
             else
             {
-                this.AddButton(270, 387, 4005, 4007, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(440, 390, 150, 18, 1044151, LabelColor, false, false); // MAKE NOW
+                this.AddButton(405, 387, 4005, 4007, 1, GumpButtonType.Reply, 0);
+                this.AddHtmlLocalized(445, 390, 150, 18, 1044151, LabelColor, false, false); // MAKE NOW
             }
+
+            #region Stygian Abyss
+            AddButton(265, 387, 4005, 4007, 2, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(300, 390, 150, 18, 1112623, LabelColor, false, false); //MAKE NUMBER
+
+            AddButton(135, 387, 4005, 4007, 3, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(170, 390, 150, 18, 1112624, LabelColor, false, false); //MAKE MAX
+            #endregion
+
+            this.AddButton(15, 387, 4014, 4016, 0, GumpButtonType.Reply, 0);
+            this.AddHtmlLocalized(50, 390, 150, 18, 1044150, LabelColor, false, false); // BACK
 
             if (craftItem.NameNumber > 0)
                 this.AddHtmlLocalized(330, 40, 180, 18, craftItem.NameNumber, LabelColor, false, false);
@@ -126,14 +127,15 @@ namespace Server.Engines.Craft
 
         public void DrawItem()
         {
-            Type type = this.m_CraftItem.ItemType;
+            Type type = m_CraftItem.ItemType;
+            int id = CraftItem.ItemIDOf(type);
+            Rectangle2D b = ItemBounds.Table[id];
+            AddItem(90 - b.Width / 2 - b.X, 110 - b.Height / 2 - b.Y, id, m_CraftItem.ItemHue);
 
-            this.AddItem(20, 50, CraftItem.ItemIDOf(type), this.m_CraftItem.ItemHue);
-
-            if (this.m_CraftItem.IsMarkable(type))
+            if (m_CraftItem.IsMarkable(type))
             {
-                this.AddHtmlLocalized(170, 302 + (this.m_OtherCount++ * 20), 310, 18, 1044059, LabelColor, false, false); // This item may hold its maker's mark
-                this.m_ShowExceptionalChance = true;
+                AddHtmlLocalized(170, 302 + (m_OtherCount++ * 20), 310, 18, 1044059, LabelColor, false, false); // This item may hold its maker's mark
+                m_ShowExceptionalChance = true;
             }
         }
 
@@ -256,37 +258,49 @@ namespace Server.Engines.Craft
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            // Back Button
-            if (info.ButtonID == 0)
+            switch (info.ButtonID)
             {
-                CraftGump craftGump = new CraftGump(this.m_From, this.m_CraftSystem, this.m_Tool, null);
-                this.m_From.SendGump(craftGump);
-            }
-            else // Make Button
-            {
-                int num = this.m_CraftSystem.CanCraft(this.m_From, this.m_Tool, this.m_CraftItem.ItemType);
-
-                if (num > 0)
-                {
-                    this.m_From.SendGump(new CraftGump(this.m_From, this.m_CraftSystem, this.m_Tool, num));
-                }
-                else
-                {
-                    Type type = null;
-
-                    CraftContext context = this.m_CraftSystem.GetContext(this.m_From);
-
-                    if (context != null)
+                case 0: // Back Button
                     {
-                        CraftSubResCol res = (this.m_CraftItem.UseSubRes2 ? this.m_CraftSystem.CraftSubRes2 : this.m_CraftSystem.CraftSubRes);
-                        int resIndex = (this.m_CraftItem.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex);
-
-                        if (resIndex > -1)
-                            type = res.GetAt(resIndex).ItemType;
+                        CraftGump craftGump = new CraftGump(this.m_From, this.m_CraftSystem, this.m_Tool, null);
+                        this.m_From.SendGump(craftGump);
+                        break;
                     }
+                case 1: // Make Button
+                    {
+                        int num = this.m_CraftSystem.CanCraft(this.m_From, this.m_Tool, this.m_CraftItem.ItemType);
 
-                    this.m_CraftSystem.CreateItem(this.m_From, this.m_CraftItem.ItemType, type, this.m_Tool, this.m_CraftItem);
-                }
+                        if (num > 0)
+                        {
+                            this.m_From.SendGump(new CraftGump(this.m_From, this.m_CraftSystem, this.m_Tool, num));
+                        }
+                        else
+                        {
+                            Type type = null;
+
+                            CraftContext context = this.m_CraftSystem.GetContext(this.m_From);
+
+                            if (context != null)
+                            {
+                                CraftSubResCol res = (this.m_CraftItem.UseSubRes2 ? this.m_CraftSystem.CraftSubRes2 : this.m_CraftSystem.CraftSubRes);
+                                int resIndex = (this.m_CraftItem.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex);
+
+                                if (resIndex > -1)
+                                    type = res.GetAt(resIndex).ItemType;
+                            }
+
+                            this.m_CraftSystem.CreateItem(this.m_From, this.m_CraftItem.ItemType, type, this.m_Tool, this.m_CraftItem);
+                        }
+                        break;
+                    }
+                case 2: //Make Number
+                    m_From.Prompt = new MakeNumberCraftPrompt(m_From, m_CraftSystem, m_CraftItem, m_Tool);
+                    m_From.SendLocalizedMessage(1112576); //Please type the amount you wish to create(1 - 100): <Escape to cancel>
+                    break;
+                case 3: //Make Max
+                    AutoCraftTimer.EndTimer(m_From);
+                    new AutoCraftTimer(m_From, m_CraftSystem, m_CraftItem, m_Tool, 9999);
+                    break;
             }
         }
     }

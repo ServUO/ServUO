@@ -20,6 +20,9 @@ namespace Server.Engines.Craft
 	
     public class CraftContext
     {
+        public Mobile Owner { get; private set; }
+        public CraftSystem System { get; private set; }
+
         private readonly List<CraftItem> m_Items;
         private int m_LastResourceIndex;
         private int m_LastResourceIndex2;
@@ -27,6 +30,7 @@ namespace Server.Engines.Craft
         private bool m_DoNotColor;
         private CraftMarkOption m_MarkOption;
         private CraftQuestOption m_QuestOption;
+        private int m_MakeTotal;
 
         #region Hue State Vars
         private bool m_CheckedHues;
@@ -142,10 +146,26 @@ namespace Server.Engines.Craft
                 this.m_QuestOption = value;
             }
         }
+
+        public int MakeTotal 
+        { 
+            get
+            {
+                return m_MakeTotal;
+            } 
+            set 
+            {
+                m_MakeTotal = value;
+            } 
+        }
+
         #endregion
 
-        public CraftContext()
+        public CraftContext(Mobile owner, CraftSystem system)
         {
+            Owner = owner;
+            System = system;
+
             this.m_Items = new List<CraftItem>();
             this.m_LastResourceIndex = -1;
             this.m_LastResourceIndex2 = -1;
@@ -154,6 +174,9 @@ namespace Server.Engines.Craft
             this.m_CheckedHues = false;
             this.m_Hues = new List<int>();
             this.m_CompareHueTo = null;
+            this.m_QuestOption = CraftQuestOption.NonQuestItem;
+
+            Contexts.Add(this);
         }
 
         public CraftItem LastMade
@@ -183,5 +206,123 @@ namespace Server.Engines.Craft
             this.m_Hues = new List<int>();
             this.m_CompareHueTo = null;
         }
+
+        public virtual void Serialize(GenericWriter writer)
+        {
+            writer.Write((int)0);
+
+            writer.Write(Owner);
+            writer.Write(GetSystemIndex(System));
+            writer.Write(m_LastResourceIndex);
+            writer.Write(m_LastResourceIndex2);
+            writer.Write(m_LastGroupIndex);
+            writer.Write(m_DoNotColor);
+            writer.Write((int)m_MarkOption);
+            writer.Write((int)m_QuestOption);
+
+            writer.Write(m_MakeTotal);
+        }
+
+        public CraftContext(GenericReader reader)
+        {
+            int version = reader.ReadInt();
+
+            m_Items = new List<CraftItem>();
+
+            Owner = reader.ReadMobile();
+            int sysIndex = reader.ReadInt();
+            m_LastResourceIndex = reader.ReadInt();
+            m_LastResourceIndex2 = reader.ReadInt();
+            m_LastGroupIndex = reader.ReadInt();
+            m_DoNotColor = reader.ReadBool();
+            m_MarkOption = (CraftMarkOption)reader.ReadInt();
+            m_QuestOption = (CraftQuestOption)reader.ReadInt();
+
+            m_MakeTotal = reader.ReadInt();
+
+            System = GetCraftSystem(sysIndex);
+
+            if (System != null && Owner != null)
+            {
+                System.AddContext(Owner, this);
+                Contexts.Add(this);
+            }
+        }
+
+        public int GetSystemIndex(CraftSystem system)
+        {
+            for (int i = 0; i < _Systems.Length; i++)
+            {
+                if (_Systems[i] == system)
+                    return i;
+            }
+
+            return -1;
+        }
+
+        public CraftSystem GetCraftSystem(int i)
+        {
+            if (i >= 0 && i < _Systems.Length)
+                return _Systems[i];
+
+            return null;
+        }
+
+        #region Serialize/Deserialize Persistence
+        public const string FilePath = @"Saves\\CraftContext\\Contexts.bin";
+
+        private static List<CraftContext> Contexts = new List<CraftContext>();
+
+        public static CraftSystem[] Systems { get { return _Systems; } }
+        private static CraftSystem[] _Systems = new CraftSystem[12];
+
+        public static void Configure()
+        {
+            _Systems[0] = DefAlchemy.CraftSystem;
+            _Systems[1] = DefBlacksmithy.CraftSystem;
+            _Systems[2] = DefBowFletching.CraftSystem;
+            _Systems[3] = DefCarpentry.CraftSystem;
+            _Systems[4] = DefCartography.CraftSystem;
+            _Systems[5] = DefCooking.CraftSystem;
+            _Systems[6] = DefGlassblowing.CraftSystem;
+            _Systems[7] = DefInscription.CraftSystem;
+            _Systems[8] = DefMasonry.CraftSystem;
+            _Systems[9] = DefTailoring.CraftSystem;
+            _Systems[10] = DefTinkering.CraftSystem;
+            _Systems[11] = DefBasketweaving.CraftSystem;
+
+            EventSink.WorldSave += OnSave;
+            EventSink.WorldLoad += OnLoad;
+        }
+
+        public static void OnSave(WorldSaveEventArgs e)
+        {
+            Persistence.Serialize(
+                FilePath,
+                writer =>
+                {
+                    writer.Write(0); // version
+
+                    writer.Write(Contexts.Count);
+                    Contexts.ForEach(c => c.Serialize(writer));
+                });
+        }
+
+        public static void OnLoad()
+        {
+            Persistence.Deserialize(
+                FilePath,
+                reader =>
+                {
+                    int version = reader.ReadInt();
+
+                    int count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        new CraftContext(reader);
+                    }
+                });
+        }
+        #endregion
     }
 }
