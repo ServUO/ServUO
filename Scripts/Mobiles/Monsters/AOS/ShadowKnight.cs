@@ -6,6 +6,8 @@ namespace Server.Mobiles
     [CorpseName("a shadow knight corpse")]
     public class ShadowKnight : BaseCreature
     {
+        public override bool CanStealth { get { return true; } }
+
         private Timer m_SoundTimer;
         private bool m_HasTeleportedAway;
         [Constructable]

@@ -63,6 +63,11 @@ namespace Server.Spells.Spellweaving
             m_Table.Remove(m);
         }
 
+        public static bool IsUnderEffects(Mobile m)
+        {
+            return m_Table.ContainsKey(m);
+        }
+
         public override void OnCast()
         {
             if (m_Table.ContainsKey(this.Caster))

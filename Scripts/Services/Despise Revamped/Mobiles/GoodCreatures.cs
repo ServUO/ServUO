@@ -49,22 +49,12 @@ namespace Server.Engines.Despise
 		//public override bool InitialInnocent{ get{ return true; } }		
 		public override int StrStart { get { return Utility.RandomMinMax(65, 75); } } 
 		public override int DexStart { get { return Utility.RandomMinMax(100, 110); } } 
-		public override int IntStart { get { return Utility.RandomMinMax(100, 110); } } 
-		
-		public override void OnThink()
-		{
-			base.OnThink();
+		public override int IntStart { get { return Utility.RandomMinMax(100, 110); } }
 
-            if (m_NextDiscord < DateTime.Now)
-            {
-                Mobile target = GetDiscordanceTarget();
+        public override bool CanDiscord { get { return true; } }
+        public override TimeSpan DiscordInterval { get { return TimeSpan.FromSeconds(45); } }
 
-                if (target != null && DespiseCreature.UseDiscord(this, target))
-                    m_NextDiscord = DateTime.Now + TimeSpan.FromSeconds(45);
-            }
-		}
-
-        private Mobile GetDiscordanceTarget()
+        public override Mobile GetBardTarget(bool creaturesOnly = false)
         {
             IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, RangePerception);
 

@@ -159,6 +159,11 @@ namespace Server.Spells.Spellweaving
             }
         }
 
+        public static bool IsUnderEffects(Mobile m)
+        {
+            return m_Table.ContainsKey(m);
+        }
+
         public static bool StopEffect(Mobile m)
         {
             GiftOfRenewalInfo info;

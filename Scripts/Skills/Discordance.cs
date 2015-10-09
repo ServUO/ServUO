@@ -138,7 +138,7 @@ namespace Server.SkillHandlers
 					{
 						from.SendLocalizedMessage(1049537); // Your target is already in discord.
 					}
-					else if (!targ.Player)
+					else if (!targ.Player || (from is BaseCreature) && ((BaseCreature)from).CanDiscord)
 					{
 						double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
 						double music = from.Skills[SkillName.Musicianship].Value;

@@ -1690,9 +1690,9 @@ namespace Server.Engines.Craft
 							m_From.SendLocalizedMessage(badCraft);
 						}
 
-						return;
-
                         AutoCraftTimer.EndTimer(m_From);
+
+						return;
 					}
 
 					int quality = 1;

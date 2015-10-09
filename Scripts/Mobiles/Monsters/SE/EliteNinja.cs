@@ -1,150 +1,186 @@
 using System;
+using System.Collections;
 using Server.Items;
+using Server.ContextMenus;
+using Server.Misc;
+using Server.Network;
 
 namespace Server.Mobiles
 {
-    public class EliteNinja : BaseCreature
-    {
-        [Constructable]
-        public EliteNinja()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
-        {
-            this.SpeechHue = Utility.RandomDyedHue();
-            this.Hue = Utility.RandomSkinHue();
-            this.Name = "an elite ninja";
+	public class EliteNinja : BaseCreature
+	{
+		public override bool ClickTitle{ get{ return false; } }
+        public override bool CanStealth { get { return true; } }
 
-            this.Body = (this.Female = Utility.RandomBool()) ? 0x191 : 0x190;
+        private DateTime m_NextWeaponChange;
 
-            this.SetHits(251, 350);
+		[Constructable]
+		public EliteNinja() : base( AIType.AI_Ninja, FightMode.Closest, 10, 1, 0.2, 0.4 )
+		{
+			SpeechHue = Utility.RandomDyedHue();
+			Hue = Utility.RandomSkinHue();
+			Name = "an elite ninja";
 
-            this.SetStr(126, 225);
-            this.SetDex(81, 95);
-            this.SetInt(151, 165);
+			Body = ( this.Female = Utility.RandomBool() ) ? 0x191 : 0x190;
 
-            this.SetDamage(12, 20);
+			SetHits( 251, 350 );
 
-            this.SetDamageType(ResistanceType.Physical, 65);
-            this.SetDamageType(ResistanceType.Fire, 15);
-            this.SetDamageType(ResistanceType.Poison, 15);
-            this.SetDamageType(ResistanceType.Energy, 5);
+			SetStr( 126, 225 );
+			SetDex( 81, 95 );
+			SetInt( 151, 165 );
 
-            this.SetResistance(ResistanceType.Physical, 35, 65);
-            this.SetResistance(ResistanceType.Fire, 40, 60);
-            this.SetResistance(ResistanceType.Cold, 25, 45);
-            this.SetResistance(ResistanceType.Poison, 40, 60);
-            this.SetResistance(ResistanceType.Energy, 35, 55);
+			SetDamage( 12, 20 );
 
-            this.SetSkill(SkillName.Anatomy, 105.0, 120.0);
-            this.SetSkill(SkillName.MagicResist, 80.0, 100.0);
-            this.SetSkill(SkillName.Tactics, 115.0, 130.0);
-            this.SetSkill(SkillName.Wrestling, 95.0, 120.0);
-            this.SetSkill(SkillName.Fencing, 95.0, 120.0);
-            this.SetSkill(SkillName.Macing, 95.0, 120.0);
-            this.SetSkill(SkillName.Swords, 95.0, 120.0);
-            this.SetSkill(SkillName.Ninjitsu, 95.0, 120.0);
+			SetDamageType( ResistanceType.Physical, 65 );
+			SetDamageType( ResistanceType.Fire, 15 );
+			SetDamageType( ResistanceType.Poison, 15 );
+			SetDamageType( ResistanceType.Energy, 5 );
 
-            this.Fame = 8500;
-            this.Karma = -8500;
+			SetResistance( ResistanceType.Physical, 35, 65 );
+			SetResistance( ResistanceType.Fire, 40, 60 );
+			SetResistance( ResistanceType.Cold, 25, 45 );
+			SetResistance( ResistanceType.Poison, 40, 60 );
+			SetResistance( ResistanceType.Energy, 35, 55 );
 
-            /* TODO:	
-            Uses Smokebombs
-            Hides
-            Stealths
-            Can use Ninjitsu Abilities
-            Can change weapons during a fight
-            */
-					
-            this.AddItem(new NinjaTabi());
-            this.AddItem(new LeatherNinjaJacket());
-            this.AddItem(new LeatherNinjaHood());
-            this.AddItem(new LeatherNinjaPants());
-            this.AddItem(new LeatherNinjaMitts());
+			SetSkill( SkillName.Anatomy, 105.0, 120.0 );
+			SetSkill( SkillName.MagicResist, 80.0, 100.0 );
+			SetSkill( SkillName.Tactics, 115.0, 130.0 );
+			SetSkill( SkillName.Wrestling, 95.0, 120.0 );
+			SetSkill( SkillName.Fencing, 95.0, 120.0 );
+			SetSkill( SkillName.Macing, 95.0, 120.0 );
+			SetSkill( SkillName.Swords, 95.0, 120.0 );
+
+			SetSkill( SkillName.Ninjitsu, 95.0, 120.0 );
+            SetSkill( SkillName.Hiding, 100.0);
+            SetSkill( SkillName.Stealth, 120.0 );
+
+			Fame = 8500;
+			Karma = -8500;
+
+            LeatherNinjaBelt belt = new LeatherNinjaBelt();
+            belt.UsesRemaining = 20;
+            belt.Poison = Poison.Greater;
+            belt.PoisonCharges = 20;
+            belt.Movable = false;
+            AddItem(belt);
+
+            int amount = Skills[SkillName.Ninjitsu].Value >= 100 ? 2 : 1;
+
+            for (int i = 0; i < amount; i++)
+            {
+                Fukiya f = new Fukiya();
+                f.UsesRemaining = 10;
+                f.Poison = amount == 1 ? Poison.Regular : Poison.Greater;
+                f.PoisonCharges = 10;
+                f.Movable = false;
+                PackItem(f);
+            }
+
+			AddItem( new NinjaTabi() );
+			AddItem( new LeatherNinjaJacket());
+			AddItem( new LeatherNinjaHood());
+			AddItem( new LeatherNinjaPants());
+			AddItem( new LeatherNinjaMitts());
 			
-            if (Utility.RandomDouble() < 0.33)
-                this.AddItem(new SmokeBomb());
+			if( Utility.RandomDouble() < 0.33 )
+				PackItem( new SmokeBomb() );
 
-            switch ( Utility.Random(8))
+            if (Utility.RandomBool())
+                PackItem(new Tessen());
+            else
+                PackItem(new Wakizashi());
+
+            if (Utility.RandomBool())
+                PackItem(new Nunchaku());
+            else
+                PackItem(new Daisho());
+
+            if (Utility.RandomBool())
+                PackItem(new Sai());
+            else
+                PackItem(new Tekagi());
+
+            if (Utility.RandomBool())
+                PackItem(new Kama());
+            else
+                PackItem(new Katana());
+
+			Utility.AssignRandomHair( this );
+            ChangeWeapon();
+		}
+
+		public override void OnDeath( Container c )
+		{
+			base.OnDeath( c );
+			c.DropItem( new BookOfNinjitsu() );
+		}
+
+		public override bool BardImmune{ get{ return true; } }
+
+		public override void GenerateLoot()
+		{
+			AddLoot( LootPack.FilthyRich );
+			AddLoot( LootPack.Rich );
+			AddLoot( LootPack.Gems, 2 );
+		}
+		
+		public override bool AlwaysMurderer{ get{ return true; } }
+
+        private void ChangeWeapon()
+        {
+            if (Backpack == null)
+                return;
+
+            Item item = FindItemOnLayer(Layer.OneHanded);
+
+            if (item == null)
+                item = FindItemOnLayer(Layer.TwoHanded);
+
+            System.Collections.Generic.List<BaseWeapon> weapons = new System.Collections.Generic.List<BaseWeapon>();
+
+            foreach (Item i in Backpack.Items)
             {
-                case 0:
-                    this.AddItem(new Tessen());
-                    break;
-                case 1:
-                    this.AddItem(new Wakizashi());
-                    break;
-                case 2:
-                    this.AddItem(new Nunchaku());
-                    break;
-                case 3:
-                    this.AddItem(new Daisho());
-                    break;
-                case 4:
-                    this.AddItem(new Sai());
-                    break;
-                case 5:
-                    this.AddItem(new Tekagi());
-                    break;
-                case 6:
-                    this.AddItem(new Kama());
-                    break;
-                case 7:
-                    this.AddItem(new Katana());
-                    break;
+                if (i is BaseWeapon && i != item)
+                    weapons.Add((BaseWeapon)i);
             }
 
-            Utility.AssignRandomHair(this);
-        }
-
-        public EliteNinja(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override bool ClickTitle
-        {
-            get
+            if (weapons.Count > 0)
             {
-                return false;
+                if (item != null)
+                    Backpack.DropItem(item);
+
+                AddItem(weapons[Utility.Random(weapons.Count)]);
+
+                m_NextWeaponChange = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
             }
         }
-        public override bool BardImmune
+
+        public override void OnThink()
         {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-            c.DropItem(new BookOfNinjitsu());
+            base.OnThink();
+
+            if (Combatant != null && m_NextWeaponChange < DateTime.UtcNow)
+                ChangeWeapon();
         }
 
-        public override void GenerateLoot()
-        {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Gems, 2);
-        }
+		public EliteNinja( Serial serial ) : base( serial )
+		{
+		}
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
 
-            writer.Write((int)0); // version
-        }
+			writer.Write( (int) 0 ); // version
+		}
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
 
-            int version = reader.ReadInt();
-        }
-    }
+			int version = reader.ReadInt();
+
+            m_NextWeaponChange = DateTime.UtcNow;
+		}
+	}
 }
