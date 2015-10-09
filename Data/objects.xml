@@ -1194,7 +1194,7 @@
 			<category title="Ethereal Mounts">
 				<object type="Server.Mobiles.ChargerOfTheFallen" gfx="11676" />
 				<object type="Server.Mobiles.EtherealBeetle" gfx="9743" />
-				<object type="Server.Items.EtherealCuSidhe" gfx="11670" />
+				<object type="Server.Mobiles.EtherealCuSidhe" gfx="11670" />
 				<object type="Server.Mobiles.EtherealHorse" gfx="8413" />
 				<object type="Server.Mobiles.EtherealKirin" gfx="9632" />
 				<object type="Server.Mobiles.EtherealLlama" gfx="8438" />
@@ -1202,7 +1202,7 @@
 				<object type="Server.Mobiles.EtherealRidgeback" gfx="9749" />
 				<object type="Server.Mobiles.EtherealSwampDragon" gfx="9753" />
 				<object type="Server.Mobiles.EtherealUnicorn" gfx="9678" />
-				<object type="Server.Items.RideablePolarBear" gfx="8417" />
+				<object type="Server.Mobiles.RideablePolarBear" gfx="8417" />
 			</category>
 			<category title="Potions">
 				<category title="Agility">
