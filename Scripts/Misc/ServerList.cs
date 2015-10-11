@@ -59,7 +59,7 @@ namespace Server.Misc
 		{
 			if (ServerName == "My Shard")
 			{
-				ServerName = NameList.RandomName("daemon");
+				//ServerName = NameList.RandomName("daemon");
 			}
 
 			if (Address == null)

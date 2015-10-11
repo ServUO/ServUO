@@ -510,6 +510,7 @@ namespace Server.Items
                 EndBleed(m_Bleeder, true);
                 EndForceWalk(m_Bleeder);
                 RemoveEffects();
+                BuffInfo.RemoveBuff(this.Mobile, BuffIcon.SplinteringEffect);
                 return;
             }
         }

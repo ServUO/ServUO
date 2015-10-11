@@ -40,7 +40,7 @@ namespace Server.SkillHandlers
 			from.NextSkillTime = Core.TickCount + 21600000;
 		}
 
-		private class InternalTarget : Target
+		public class InternalTarget : Target
 		{
 			private readonly BaseInstrument m_Instrument;
 			private bool m_SetSkillTime = true;

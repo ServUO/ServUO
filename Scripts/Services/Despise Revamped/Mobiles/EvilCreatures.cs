@@ -50,21 +50,8 @@ namespace Server.Engines.Despise
 		public override int StrStart { get { return Utility.RandomMinMax(65, 75); } } 
 		public override int DexStart { get { return Utility.RandomMinMax(100, 110); } } 
 		public override int IntStart { get { return Utility.RandomMinMax(100, 110); } } 
-		
-		public override void OnThink()
-		{
-			base.OnThink();
-			
-			if(m_NextDiscord < DateTime.Now)
-			{
-                Mobile target = GetDiscordanceTarget();
 
-                if (target != null && DespiseCreature.UseDiscord(this, target))
-                    m_NextDiscord = DateTime.Now + TimeSpan.FromSeconds(45);
-			}
-		}
-
-        private Mobile GetDiscordanceTarget()
+        public override Mobile GetBardTarget(bool creaturesOnly = false)
         {
             IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, RangePerception);
 

@@ -123,7 +123,7 @@ namespace Server.Spells.Mystic
         }
 
         // Ever wondered why in the hell RunUO coded a new target class for every spell?
-        protected class MysticSpellTarget : Target
+        public class MysticSpellTarget : Target
         {
             private MysticSpell m_Owner;
 

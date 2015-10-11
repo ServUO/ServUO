@@ -7006,9 +7006,11 @@
     <Compile Include="Mobiles\AI\MeleeAI.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\AI\MysticAI.cs" />
     <Compile Include="Mobiles\AI\NecroMageAI.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\AI\NinjaAI.cs" />
     <Compile Include="Mobiles\AI\Omni AI\AITester.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -7051,12 +7053,14 @@
     <Compile Include="Mobiles\AI\PredatorAI.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\AI\SamuraiAI.cs" />
     <Compile Include="Mobiles\AI\SpeedInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\AI\SpellbinderAI.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\AI\SpellWeavingAI.cs" />
     <Compile Include="Mobiles\AI\ThiefAI.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10107,6 +10111,13 @@
     <Compile Include="Quests\SA Doughty Warriors\SashOfMight.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Quests\SA Evidence Quests\GatheringOfEvidence.cs" />
+    <Compile Include="Quests\SA Evidence Quests\Items\ResonantShieldOfVengeance.cs" />
+    <Compile Include="Quests\SA Evidence Quests\Items\Void Crystals.cs" />
+    <Compile Include="Quests\SA Evidence Quests\Items\WindOfCorruption.cs" />
+    <Compile Include="Quests\SA Evidence Quests\Mobiles\GargishOutcast.cs" />
+    <Compile Include="Quests\SA Evidence Quests\Mobiles\GargishRouser.cs" />
+    <Compile Include="Quests\SA Evidence Quests\Mobiles\VoidManesfistation.cs" />
     <Compile Include="Quests\SA Gretchen Quest\BaseExplodingTarPotion.cs">
       <SubType>Code</SubType>
     </Compile>

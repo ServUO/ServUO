@@ -258,6 +258,15 @@ namespace Server
 
 		private static readonly Type[] m_PaladinScrollTypes = new Type[0];
 
+        private static Type[] m_MysticScrollTypes = new Type[]
+        {
+            typeof( NetherBoltScroll ),	    typeof( HealingStoneScroll ),	typeof( PurgeMagicScroll ),	        typeof( EnchantScroll ),
+			typeof( SleepScroll ),	        typeof( EagleStrikeScroll ),   typeof( AnimatedWeaponScroll ),		typeof( StoneFormScroll ),
+			typeof( SpellTriggerScroll ),	typeof( MassSleepScroll ),	    typeof( CleansingWindsScroll ),		typeof( BombardScroll ),
+			typeof( SpellPlagueScroll ),    typeof( HailStormScroll ),      typeof( NetherCycloneScroll ),      typeof( RisingColossusScroll )
+        };
+        public static Type[] MysticScrollTypes { get { return m_MysticScrollTypes; } }
+
 		#region Mondain's Legacy
 		private static readonly Type[] m_ArcanistScrollTypes = new[]
 		{

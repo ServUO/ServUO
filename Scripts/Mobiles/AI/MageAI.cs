@@ -313,6 +313,11 @@ namespace Server.Mobiles
             return new ManaDrainSpell(this.m_Mobile, null);
         }
 
+        public virtual Spell GetRandomBuffSpell()
+        {
+            return new BlessSpell(m_Mobile, null);
+        }
+
         public virtual Spell DoDispel(Mobile toDispel)
         {
             if (!this.SmartAI)
@@ -374,7 +379,7 @@ namespace Server.Mobiles
                         {
                             this.m_Mobile.DebugSay("Blessing myself");
 
-                            spell = new BlessSpell(this.m_Mobile, null);
+                            spell = GetRandomBuffSpell();//new BlessSpell(this.m_Mobile, null);
                             break;
                         }
                     case 3:
@@ -973,7 +978,7 @@ namespace Server.Mobiles
             }
         }
 
-        private bool ProcessTarget()
+        protected virtual bool ProcessTarget()
         {
             Target targ = this.m_Mobile.Target;
 

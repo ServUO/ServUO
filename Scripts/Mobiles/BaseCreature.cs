@@ -29,6 +29,7 @@ using Server.Spells.Necromancy;
 using Server.Spells.Sixth;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
+using System.Linq;
 #endregion
 
 namespace Server.Mobiles
@@ -2633,7 +2634,19 @@ namespace Server.Mobiles
 					break;
 				case AIType.AI_Spellbinder:
 					m_AI = new SpellbinderAI(this);
+                    break;
+                case AIType.AI_Samurai:
+                    m_AI = new SamuraiAI(this);
+                    break;
+                case AIType.AI_Ninja:
+                    m_AI = new NinjaAI(this);
+                    break;
+                case AIType.AI_Spellweaving:
+                    m_AI = new SpellweavingAI(this);
 					break;
+                case AIType.AI_Mystic:
+                    m_AI = new MysticAI(this);
+                    break;
 			}
 		}
 
@@ -3772,6 +3785,37 @@ namespace Server.Mobiles
 			m_NextReacquireTime = Core.TickCount;
 		}
 
+        public virtual bool CanStealth { get { return false; } }
+
+        protected override bool OnMove(Direction d)
+        {
+
+            if (Hidden) //Hidden, let's try stealth
+            {
+                if (!Mounted && Skills.Stealth.Value >= 25.0 && CanStealth)
+                {
+                    bool running = (d & Direction.Running) != 0;
+
+                    if (running)
+                    {
+                        if ((AllowedStealthSteps -= 2) <= 0)
+                            RevealingAction();
+                    }
+                    else if (AllowedStealthSteps-- <= 0)
+                    {
+                        Server.SkillHandlers.Stealth.OnUse(this);
+                    }
+                }
+                else
+                {
+                    RevealingAction();
+                }
+            }
+
+            return true;
+
+        }
+
 		public override void OnMovement(Mobile m, Point3D oldLocation)
 		{
 			if (AcquireOnApproach && (!Controlled && !Summoned) && FightMode != FightMode.Aggressor)
@@ -4189,7 +4233,29 @@ namespace Server.Mobiles
 		}
 		#endregion
 
-		public void PackPotion()
+        #region Stygian Abyss
+        public void PackMysticScroll(double chance)
+        {
+            if (chance <= Utility.RandomDouble())
+                return;
+
+            PackMysticScroll(1);
+            PackItem(Loot.Construct(Loot.MysticScrollTypes));
+        }
+
+        public void PackMysticScroll(int min, int max)
+        {
+            PackMysticScroll(Utility.RandomMinMax(min, max));
+        }
+
+        public void PackMysticScroll(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+                PackItem(Loot.Construct(Loot.MysticScrollTypes));
+        }
+        #endregion
+
+        public void PackPotion()
 		{
 			PackItem(Loot.RandomPotion());
 		}
@@ -6102,7 +6168,190 @@ namespace Server.Mobiles
 		{ }
 		#endregion
 
-		public virtual void OnThink()
+		#region Barding Skills
+		private long m_NextDiscord;
+		private long m_NextPeace;
+		private long m_NextProvoke;
+
+		public virtual bool CanDiscord { get { return false; } }
+		public virtual bool CanPeace { get { return false; } }
+		public virtual bool CanProvoke { get { return false; } }
+
+
+		public virtual TimeSpan DiscordInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(60, 120)); } }
+		public virtual TimeSpan PeaceInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(60, 120)); } }
+		public virtual TimeSpan ProvokeInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(60, 120)); } }
+
+		public virtual bool DoDiscord()
+		{
+			Mobile target = GetBardTarget();
+
+			if (target == null || !target.InLOS(this) || CheckInstrument() == null)
+				return false;
+
+			if (this.Spell != null)
+				this.Spell = null;
+
+			if (!this.UseSkill(SkillName.Discordance))
+				return false;
+
+			if (this.Target is Discordance.DiscordanceTarget)
+			{
+				this.Target.Invoke(this, target);
+				return true;
+			}
+
+			return false;
+		}
+
+		public virtual bool DoPeace()
+		{
+			Mobile target = GetBardTarget();
+			if (target == null || !target.InLOS(this) || CheckInstrument() == null)
+				return false;
+
+			if (this.Spell != null)
+				this.Spell = null;
+
+			if (!this.UseSkill(SkillName.Peacemaking))
+				return false;
+
+			if (this.Target is Peacemaking.InternalTarget)
+			{
+				this.Target.Invoke(this, target);
+				return true;
+			}
+
+			return false;
+		}
+
+		public virtual bool DoProvoke()
+		{
+			Mobile target = GetBardTarget();
+
+			if (target == null || !target.InLOS(this) || CheckInstrument() == null || !(target is BaseCreature))
+				return false;
+
+			if (this.Spell != null)
+				this.Spell = null;
+
+			if (!this.UseSkill(SkillName.Provocation))
+				return false;
+
+			if (this.Target is Provocation.InternalFirstTarget)
+			{
+				this.Target.Invoke(this, target);
+
+				if (this.Target is Provocation.InternalSecondTarget)
+				{
+					Mobile second = GetSecondTarget((BaseCreature)target);
+
+					if (second != null)
+						this.Target.Invoke(this, second);
+
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Auto Checks creature for an instrument. Creates if none in pack, and sets for barding skills.
+		/// </summary>
+		/// <returns></returns>
+		public BaseInstrument CheckInstrument()
+		{
+			BaseInstrument inst = BaseInstrument.GetInstrument(this);
+
+			if (inst == null)
+			{
+				if (this.Backpack == null)
+					return null;
+
+				inst = this.Backpack.FindItemByType(typeof(BaseInstrument)) as BaseInstrument;
+
+				if (inst == null)
+				{
+					inst = new Harp();
+					inst.SuccessSound = 0x58B;
+					inst.FailureSound = 0x58C;
+					inst.Movable = false;
+					PackItem(inst);
+				}
+			}
+
+			BaseInstrument.SetInstrument(this, inst);
+
+			return inst;
+		}
+
+		/// <summary>
+		/// Default Method to get bard target. Simplisticly gets combatant. Override for a more dynamic way to choosing target
+		/// </summary>
+		/// <returns></returns>
+		public virtual Mobile GetBardTarget(bool creaturesOnly = false)
+		{
+			Mobile m = this.Combatant;
+
+			if (m == null && GetMaster() is PlayerMobile)
+				m = GetMaster().Combatant;
+
+			if (m == null || m == this || !CanBeHarmful(m, false) || (creaturesOnly && !(m is BaseCreature)))
+			{
+				List<AggressorInfo> list = new List<AggressorInfo>();
+				list.AddRange(this.Aggressors.Where(info => !creaturesOnly || info.Attacker is PlayerMobile ));
+
+				if (list.Count > 0)
+					m = list[Utility.Random(list.Count)].Attacker;
+				else
+					m = null;
+
+				list.Clear();
+				list.TrimExcess();
+			}
+
+			return m;
+		}
+
+		/// <summary>
+		/// Used for second Provocation target.
+		/// </summary>
+		/// <param name="first"></param>
+		/// <returns></returns>
+		public virtual Mobile GetSecondTarget(BaseCreature first)
+		{
+			if (first == null)
+				return null;
+
+			int range = BaseInstrument.GetBardRange(this, SkillName.Provocation);
+
+			IPooledEnumerable eable = this.Map.GetMobilesInRange(Location, range);
+			List<Mobile> possibles = new List<Mobile>();
+
+			foreach (Mobile m in eable)
+			{
+				if (m != first && m != this && first.InRange(m.Location, range))
+				{
+					if (this.CanBeHarmful(m, false) && first.CanBeHarmful(m, false))
+						possibles.Add(m);
+				}
+			}
+			eable.Free();
+
+			Mobile t = null;
+			
+			if (possibles.Count > 0)
+				t = possibles[Utility.Random(possibles.Count)];
+
+			possibles.Clear();
+			possibles.TrimExcess();
+
+			return t;
+		}
+		#endregion
+
+        public virtual void OnThink()
 		{
 			long tc = Core.TickCount;
 
@@ -6188,6 +6437,30 @@ namespace Server.Mobiles
 				AuraDamage();
 				m_NextAura = tc + (int)AuraInterval.TotalMilliseconds;
 			}
+
+            if (Combatant != null && CanDiscord && tc - m_NextDiscord >= 0 && 0.33 > Utility.RandomDouble())
+            {
+                if(DoDiscord())
+                    m_NextDiscord = tc + (int)DiscordInterval.TotalMilliseconds;
+                else
+                    m_NextDiscord = tc + (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
+            }
+
+            if (Combatant != null && CanPeace && tc - m_NextPeace >= 0 && 0.33 > Utility.RandomDouble())
+            {
+                if (DoPeace())
+                    m_NextPeace = tc + (int)PeaceInterval.TotalMilliseconds;
+                else
+                    m_NextPeace = tc + (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
+            }
+
+            if (Combatant != null && CanProvoke && tc - m_NextProvoke >= 0 && 0.33 > Utility.RandomDouble())
+            {
+                if (DoProvoke())
+                    m_NextProvoke = tc + (int)ProvokeInterval.TotalMilliseconds;
+                else
+                    m_NextProvoke = tc + (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
+            }
 		}
 
 		public virtual bool Rummage()
@@ -6298,6 +6571,11 @@ namespace Server.Mobiles
 					t.Combatant = this;
 					t.BardEndTime = DateTime.UtcNow + TimeSpan.FromSeconds(30.0);
 				}
+                else if (target is PlayerMobile)
+                {
+                    ((PlayerMobile)target).Combatant = this;
+                    Combatant = target;
+                }
 			}
 			else
 			{

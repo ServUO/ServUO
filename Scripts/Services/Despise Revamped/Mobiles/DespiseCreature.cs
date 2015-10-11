@@ -335,51 +335,6 @@ namespace Server.Engines.Despise
             }
         }
 
-        public static bool UseDiscord(BaseCreature from, Mobile target)
-        {
-            if (target == null || !target.InLOS(from) || CheckBarding(from) == null)
-                return false;
-
-            if (from.Spell != null)
-                from.Spell = null;
-
-            if (!from.UseSkill(SkillName.Discordance))
-                return false;
-
-            if (from.Target is Discordance.DiscordanceTarget)
-            {
-                from.Target.Invoke(from, target);
-                return true;
-            }
-            return false;
-        }
-
-        public static BaseInstrument CheckBarding(BaseCreature from)
-        {
-            BaseInstrument inst = BaseInstrument.GetInstrument(from);
-
-            if (inst == null)
-            {
-                if (from.Backpack == null)
-                    return null;
-
-                inst = (BaseInstrument)from.Backpack.FindItemByType(typeof(BaseInstrument));
-
-                if (inst == null)
-                {
-                    inst = new Harp();
-                    inst.SuccessSound = 0x58B;
-                    inst.FailureSound = 0x58C;
-                    inst.Movable = false;
-                    from.PackItem(inst);
-                }
-            }
-
-            BaseInstrument.SetInstrument(from, inst);
-
-            return inst;
-        }
-
         public DespiseCreature(Serial serial)
             : base(serial)
         {

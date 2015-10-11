@@ -58,13 +58,6 @@ namespace Server.Mobiles
         {
         }
 
-        public virtual bool CanDiscord
-        {
-            get
-            {
-                return true;
-            }
-        }
         public virtual int DiscordDuration
         {
             get
@@ -226,7 +219,7 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if (this.CanDiscord && this.m_NextDiscordTime <= DateTime.UtcNow)
+            if (this.m_NextDiscordTime <= DateTime.UtcNow)
             {
                 Mobile target = this.Combatant;
 
