@@ -200,7 +200,7 @@ namespace Server.Misc
 		{
 			var data = String.Empty;
 
-			var request = WebRequest.Create("https://api.ipify.org");
+			var request = WebRequest.Create("http://api.ipify.org");
 
 			using (var response = request.GetResponse())
 			{
