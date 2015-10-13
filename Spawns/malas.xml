@@ -74,7 +74,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -746,7 +746,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2048,7 +2048,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2090,7 +2090,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2132,7 +2132,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2174,7 +2174,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2216,7 +2216,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2258,7 +2258,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2300,7 +2300,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2342,7 +2342,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2384,7 +2384,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2426,7 +2426,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2468,7 +2468,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2510,7 +2510,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2552,7 +2552,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2594,7 +2594,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -2636,7 +2636,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -7479,10 +7479,10 @@
     <Name>Malas 22</Name>
     <UniqueId>fdb02243-faae-40c6-a178-fbf2257e689a</UniqueId>
     <Map>Malas</Map>
-    <X>998</X>
-    <Y>508</Y>
-    <Width>10</Width>
-    <Height>10</Height>
+    <X>1003</X>
+    <Y>513</Y>
+    <Width>0</Width>
+    <Height>0</Height>
     <CentreX>1003</CentreX>
     <CentreY>513</CentreY>
     <CentreZ>-50</CentreZ>
@@ -7508,13 +7508,13 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>tinker:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=carpenter:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=architect:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=stonecrafter:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=bowyer:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
@@ -9734,7 +9734,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -9776,7 +9776,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -9818,7 +9818,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -9860,7 +9860,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -9902,7 +9902,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -9944,7 +9944,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -9986,7 +9986,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -10028,7 +10028,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -10070,7 +10070,7 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
@@ -10322,14 +10322,14 @@
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
+    <SmartSpawning>False</SmartSpawning>
     <TickReset>False</TickReset>
     <Team>0</Team>
     <Amount>1</Amount>
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Gorrow:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Gorrow:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=banker:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Bedlam Quest Cohenn</Name>
