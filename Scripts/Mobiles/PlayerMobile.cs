@@ -2504,11 +2504,11 @@ namespace Server.Mobiles
 			}
 			else if (from != null && from.Player)
 			{
-				disruptThreshold = 18;
+				disruptThreshold = 19;
 			}
 			else
 			{
-				disruptThreshold = 25;
+				disruptThreshold = 26;
 			}
 
 			if (amount > disruptThreshold)
