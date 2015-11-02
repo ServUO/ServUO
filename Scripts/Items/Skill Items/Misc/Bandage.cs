@@ -543,7 +543,7 @@ namespace Server.Items
 			return BeginHeal(healer, patient, false);
 		}
 
-		public static BandageContext BeginHeal(Mobile healer, Mobile patient, bool enhanced)
+		public static BandageContext BeginHeal(Mobile healer, Mobile patient, bool enhanced) // TODO: Implement Pub 71 healing changes
 		{
 			bool isDeadPet = (patient is BaseCreature && ((BaseCreature)patient).IsDeadPet);
 
@@ -578,6 +578,11 @@ namespace Server.Items
 					if (Core.AOS)
 					{
 						seconds = 5.0 + (0.5 * ((double)(120 - dex) / 10)); // TODO: Verify algorithm
+
+						if (seconds > 8.0)
+						{
+							seconds = 8.0;
+						}
 					}
 					else
 					{
