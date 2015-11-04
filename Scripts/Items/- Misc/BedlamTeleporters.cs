@@ -48,11 +48,16 @@ namespace Server.Items
             if (from is PlayerMobile)
             {
                 PlayerMobile player = (PlayerMobile)from;
-				
+
                 if (player.Bedlam)
+                {
+                    BaseCreature.TeleportPets(player, new Point3D(121, 1682, 0), this.Map);
                     player.MoveToWorld(new Point3D(121, 1682, 0), this.Map);
+                }
                 else
-                    player.SendLocalizedMessage(1074276); // You press and push on the iron maiden, but nothing happens.				
+                {
+                    player.SendLocalizedMessage(1074276); // You press and push on the iron maiden, but nothing happens.
+                }
             }
         }
 
