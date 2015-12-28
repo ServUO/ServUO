@@ -151,8 +151,11 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 			
-            if (this.Hue == 0x973)
+            if (this.Hue == 0x973 ||
+                this.Hue == 0)
+            {
                 this.Hue = 0x76c;
+            }
         }
     }
 }
