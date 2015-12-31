@@ -104,7 +104,7 @@ namespace Server.Items
 			//Makers mark not displayed on OSI
 			if (_Crafter != null)
 			{
-				list.Add(1050043, _Crafter.RawName); // crafted by ~1_NAME~
+				list.Add(1050043, _Crafter is PlayerMobile ? ((PlayerMobile)_Crafter).RawNameWithTitle : _Crafter.Name); // crafted by ~1_NAME~
 			}
 
 			if (_Quality == ToolQuality.Exceptional)
@@ -113,6 +113,16 @@ namespace Server.Items
 			}
 
 			list.Add(1060584, _UsesRemaining.ToString(CultureInfo.InvariantCulture)); // uses remaining: ~1_val~
+		}
+
+		public override void OnSingleClick(Mobile from)
+		{
+			base.OnSingleClick(from);
+
+			if (_Crafter != null)
+			{
+				LabelTo(from, 1050043, _Crafter is PlayerMobile ? ((PlayerMobile)_Crafter).RawNameWithTitle : _Crafter.Name); // crafted by ~1_NAME~
+			}
 		}
 
 		public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)

@@ -5,6 +5,7 @@ using Server.Engines.Craft;
 using Server.Engines.XmlSpawner2;
 using Server.Factions;
 using Server.Network;
+using Server.Mobiles;
 using AMA = Server.Items.ArmorMeditationAllowance;
 using AMT = Server.Items.ArmorMaterialType;
 
@@ -2437,7 +2438,7 @@ namespace Server.Items
             #endregion
 
             if (this.m_Crafter != null)
-                list.Add(1050043, this.m_Crafter.Name); // crafted by ~1_NAME~
+				list.Add(1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
 
             #region Factions
             if (this.m_FactionState != null)

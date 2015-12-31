@@ -560,6 +560,20 @@ namespace Server.Mobiles
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime PeacedUntil { get { return m_PeacedUntil; } set { m_PeacedUntil = value; } }
 
+		[CommandProperty(AccessLevel.Decorator)]
+		public string RawNameWithTitle
+		{
+			get
+			{
+				string title = Titles.ComputeFameTitle(this);
+				if (title.Length > 0)
+				{
+					return String.Format("{0} {1}", title, RawName);
+				}
+				return RawName;
+			}
+		}
+
 		#region Scroll of Alacrity
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime AcceleratedStart { get; set; }

@@ -74,9 +74,18 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (this.m_Exceptional && this.m_Crafter != null)
-                list.Add(1050043, this.m_Crafter.Name); // crafted by ~1_NAME~
+				list.Add(1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
         }
+		public override void OnSingleClick(Mobile from)
+		{
+			base.OnSingleClick(from);
 
+			if (m_Crafter != null)
+			{
+				LabelTo(from, 1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
+			}
+		}
+        
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

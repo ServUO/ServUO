@@ -1,5 +1,6 @@
 ﻿using System;
 using Server.Engines.Craft;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -86,7 +87,7 @@ namespace Server.Items
             base.AddWeightProperty(list);
 
             if (this.ShowCraferName && this.m_Crafter != null)
-                list.Add(1050043, this.m_Crafter.Name); // crafted by ~1_NAME~
+				list.Add(1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
 
             if (this.m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
@@ -101,7 +102,16 @@ namespace Server.Items
             if (info != null && info.Number > 0)
                 list.Add(info.Number);
         }
+		public override void OnSingleClick(Mobile from)
+		{
+			base.OnSingleClick(from);
 
+			if (m_Crafter != null)
+			{
+				LabelTo(from, 1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
+			}
+		}
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

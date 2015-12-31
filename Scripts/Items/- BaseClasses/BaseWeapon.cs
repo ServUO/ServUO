@@ -4709,7 +4709,7 @@ namespace Server.Items
 
 			if (m_Crafter != null)
 			{
-				list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
+				list.Add(1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
 			}
 
 			#region Factions

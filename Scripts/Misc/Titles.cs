@@ -150,43 +150,44 @@ namespace Server.Misc
 
         public static string[] HarrowerTitles = new string[] { "Spite", "Opponent", "Hunter", "Venom", "Executioner", "Annihilator", "Champion", "Assailant", "Purifier", "Nullifier" };
 
+        public static string ComputeFameTitle(Mobile beheld)
+        {
+            int fame = beheld.Fame;
+            int karma = beheld.Karma;
+
+            for (int i = 0; i < m_FameEntries.Length; ++i)
+            {
+                FameEntry fe = m_FameEntries[i];
+
+                if (fame <= fe.m_Fame || i == (m_FameEntries.Length - 1))
+                {
+                    KarmaEntry[] karmaEntries = fe.m_Karma;
+
+                    for (int j = 0; j < karmaEntries.Length; ++j)
+                    {
+                        KarmaEntry ke = karmaEntries[j];
+
+                        if (karma <= ke.m_Karma || j == (karmaEntries.Length - 1))
+                        {
+                            return String.Format(ke.m_Title, beheld.Name, beheld.Female ? "Lady" : "Lord");
+                        }
+                    }
+
+                    return String.Empty;
+                }
+            }
+            return String.Empty;
+        }
+
         public static string ComputeTitle(Mobile beholder, Mobile beheld)
         {
             StringBuilder title = new StringBuilder();
 
-            int fame = beheld.Fame;
-            int karma = beheld.Karma;
+            bool showSkillTitle = beheld.ShowFameTitle && ((beholder == beheld) || (beheld.Fame >= 5000));
 
-            bool showSkillTitle = beheld.ShowFameTitle && ((beholder == beheld) || (fame >= 5000));
-
-            /*if ( beheld.Kills >= 5 )
+			if (beheld.ShowFameTitle || (beholder == beheld))
             {
-            title.AppendFormat( beheld.Fame >= 10000 ? "The Murderer {1} {0}" : "The Murderer {0}", beheld.Name, beheld.Female ? "Lady" : "Lord" );
-            }
-            else*/if (beheld.ShowFameTitle || (beholder == beheld))
-            {
-                for (int i = 0; i < m_FameEntries.Length; ++i)
-                {
-                    FameEntry fe = m_FameEntries[i];
-
-                    if (fame <= fe.m_Fame || i == (m_FameEntries.Length - 1))
-                    {
-                        KarmaEntry[] karmaEntries = fe.m_Karma;
-
-                        for (int j = 0; j < karmaEntries.Length; ++j)
-                        {
-                            KarmaEntry ke = karmaEntries[j];
-
-                            if (karma <= ke.m_Karma || j == (karmaEntries.Length - 1))
-                            {
-                                title.AppendFormat(ke.m_Title, beheld.Name, beheld.Female ? "Lady" : "Lord");
-                                break;
-                            }
-                        }
-
-                        break;
-                    }
-                }
+                title.Append(ComputeFameTitle(beheld));
             }
             else
             {
