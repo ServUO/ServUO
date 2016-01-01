@@ -4,7 +4,7 @@ namespace Server.Items
 {
     [Furniture]
     [Flipable(0xB4F, 0xB4E, 0xB50, 0xB51)]
-    public class FancyWoodenChairCushion : Item
+    public class FancyWoodenChairCushion : CraftableFurniture
     {
         [Constructable]
         public FancyWoodenChairCushion()
@@ -38,7 +38,7 @@ namespace Server.Items
 
     [Furniture]
     [Flipable(0xB53, 0xB52, 0xB54, 0xB55)]
-    public class WoodenChairCushion : Item
+    public class WoodenChairCushion : CraftableFurniture
     {
         [Constructable]
         public WoodenChairCushion()
@@ -72,7 +72,7 @@ namespace Server.Items
 
     [Furniture]
     [Flipable(0xB57, 0xB56, 0xB59, 0xB58)]
-    public class WoodenChair : Item
+    public class WoodenChair : CraftableFurniture
     {
         [Constructable]
         public WoodenChair()
@@ -106,7 +106,7 @@ namespace Server.Items
 
     [Furniture]
     [Flipable(0xB5B, 0xB5A, 0xB5C, 0xB5D)]
-    public class BambooChair : Item
+    public class BambooChair : CraftableFurniture
     {
         [Constructable]
         public BambooChair()
@@ -171,7 +171,7 @@ namespace Server.Items
 
     [DynamicFliping]
     [Flipable(0x2DE3, 0x2DE4, 0x2DE5, 0x2DE6)]
-    public class OrnateElvenChair : Item
+    public class OrnateElvenChair : CraftableFurniture
     {
         [Constructable]
         public OrnateElvenChair()
@@ -202,7 +202,7 @@ namespace Server.Items
 
     [DynamicFliping]
     [Flipable(0x2DEB, 0x2DEC, 0x2DED, 0x2DEE)]
-    public class BigElvenChair : Item
+    public class BigElvenChair : CraftableFurniture
     {
         [Constructable]
         public BigElvenChair()
@@ -232,7 +232,7 @@ namespace Server.Items
 
     [DynamicFliping]
     [Flipable(0x2DF5, 0x2DF6)]
-    public class ElvenReadingChair : Item
+    public class ElvenReadingChair : CraftableFurniture
     {
         [Constructable]
         public ElvenReadingChair()

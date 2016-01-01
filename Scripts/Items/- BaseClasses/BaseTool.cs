@@ -1,6 +1,7 @@
 using System;
 using Server.Engines.Craft;
 using Server.Network;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -113,10 +114,6 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-
-            // Makers mark not displayed on OSI
-            //if ( m_Crafter != null )
-            //	list.Add( 1050043, m_Crafter.Name ); // crafted by ~1_NAME~
 
             if (this.m_Quality == ToolQuality.Exceptional)
                 list.Add(1060636); // exceptional

@@ -112,10 +112,6 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            // Makers mark not displayed on OSI
-            //if ( m_Crafter != null )
-            //	list.Add( 1050043, m_Crafter.Name ); // crafted by ~1_NAME~
-
             if (this.m_Quality == ToolQuality.Exceptional)
                 list.Add(1060636); // exceptional
 
@@ -132,6 +128,11 @@ namespace Server.Items
             this.DisplayDurabilityTo(from);
 
             base.OnSingleClick(from);
+
+			if (m_Crafter != null)
+			{
+				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+			}
         }
 
         public override void OnDoubleClick(Mobile from)

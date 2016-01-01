@@ -3,7 +3,7 @@ using System;
 namespace Server.Items
 {
     [Furniture]
-    public class ElegantLowTable : Item
+    public class ElegantLowTable : CraftableFurniture
     {
         [Constructable]
         public ElegantLowTable()
@@ -33,7 +33,7 @@ namespace Server.Items
     }
 
     [Furniture]
-    public class PlainLowTable : Item
+    public class PlainLowTable : CraftableFurniture
     {
         [Constructable]
         public PlainLowTable()
@@ -64,7 +64,7 @@ namespace Server.Items
 
     [Furniture]
     [Flipable(0xB90, 0xB7D)]
-    public class LargeTable : Item
+    public class LargeTable : CraftableFurniture
     {
         [Constructable]
         public LargeTable()
@@ -98,7 +98,7 @@ namespace Server.Items
 
     [Furniture]
     [Flipable(0xB35, 0xB34)]
-    public class Nightstand : Item
+    public class Nightstand : CraftableFurniture
     {
         [Constructable]
         public Nightstand()
@@ -132,7 +132,7 @@ namespace Server.Items
 
     [Furniture]
     [Flipable(0xB8F, 0xB7C)]
-    public class YewWoodTable : Item
+    public class YewWoodTable : CraftableFurniture
     {
         [Constructable]
         public YewWoodTable()

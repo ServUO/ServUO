@@ -4,7 +4,7 @@ namespace Server.Items
 {
     [Furniture]
     [Flipable(0xB4A, 0xB49, 0xB4B, 0xB4C)]
-    public class WritingTable : Item
+    public class WritingTable : CraftableFurniture
     {
         [Constructable]
         public WritingTable()
