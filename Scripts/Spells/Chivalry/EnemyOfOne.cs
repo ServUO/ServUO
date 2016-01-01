@@ -70,26 +70,31 @@ namespace Server.Spells.Chivalry
                 Timer t = (Timer)m_Table[this.Caster];
 
                 if (t != null)
-                    t.Stop();
+				{
+					t.Stop();
+					Expire_Callback(this.Caster);
+				}
+				else
+				{
+					double delay = (double)this.ComputePowerValue(1) / 60;
 
-                double delay = (double)this.ComputePowerValue(1) / 60;
+					// TODO: Should caps be applied?
+					if (delay < 1.5)
+						delay = 1.5;
+					else if (delay > 3.5)
+						delay = 3.5;
 
-                // TODO: Should caps be applied?
-                if (delay < 1.5)
-                    delay = 1.5;
-                else if (delay > 3.5)
-                    delay = 3.5;
+					m_Table[this.Caster] = Timer.DelayCall(TimeSpan.FromMinutes(delay), new TimerStateCallback(Expire_Callback), this.Caster);
 
-                m_Table[this.Caster] = Timer.DelayCall(TimeSpan.FromMinutes(delay), new TimerStateCallback(Expire_Callback), this.Caster);
+					if (this.Caster is PlayerMobile)
+					{
+						((PlayerMobile)this.Caster).EnemyOfOneType = null;
+						((PlayerMobile)this.Caster).WaitingForEnemy = true;
 
-                if (this.Caster is PlayerMobile)
-                {
-                    ((PlayerMobile)this.Caster).EnemyOfOneType = null;
-                    ((PlayerMobile)this.Caster).WaitingForEnemy = true;
-
-                    BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1044111, TimeSpan.FromMinutes(delay), this.Caster));
-                }
-            }
+						BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1044111, TimeSpan.FromMinutes(delay), this.Caster));
+					}
+				}
+			}
 
             this.FinishSequence();
         }
