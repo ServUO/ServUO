@@ -577,12 +577,8 @@ namespace Server.Items
 				{
 					if (Core.AOS)
 					{
-						seconds = 5.0 + (0.5 * ((double)(120 - dex) / 10)); // TODO: Verify algorithm
-
-						if (seconds > 8.0)
-						{
-							seconds = 8.0;
-						}
+						seconds = Math.Ceiling((double)11 - healer.Dex / 20);
+						seconds = Math.Max(seconds, 4);
 					}
 					else
 					{
@@ -597,14 +593,8 @@ namespace Server.Items
 					}
 					else if (Core.AOS)
 					{
-						if (dex < 204)
-						{
-							seconds = 3.2 - (Math.Sin((double)dex / 130) * 2.5) + resDelay;
-						}
-						else
-						{
-							seconds = 0.7 + resDelay;
-						}
+						seconds = Math.Ceiling((double)4 - healer.Dex / 60);
+						seconds = Math.Max(seconds, 2);
 					}
 					else
 					{
