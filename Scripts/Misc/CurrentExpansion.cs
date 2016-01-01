@@ -15,7 +15,7 @@ namespace Server
 {
 	public class CurrentExpansion
 	{
-		public static readonly Expansion Expansion = Expansion.None;
+		public static readonly Expansion Expansion = Expansion.TOL;
 
 		[CallPriority(Int32.MinValue)]
 		public static void Configure()
