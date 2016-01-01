@@ -104,7 +104,7 @@ namespace Server.Items
 			//Makers mark not displayed on OSI
 			if (_Crafter != null)
 			{
-				list.Add(1050043, _Crafter is PlayerMobile ? ((PlayerMobile)_Crafter).RawNameWithTitle : _Crafter.Name); // crafted by ~1_NAME~
+				list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~
 			}
 
 			if (_Quality == ToolQuality.Exceptional)
@@ -121,7 +121,7 @@ namespace Server.Items
 
 			if (_Crafter != null)
 			{
-				LabelTo(from, 1050043, _Crafter is PlayerMobile ? ((PlayerMobile)_Crafter).RawNameWithTitle : _Crafter.Name); // crafted by ~1_NAME~
+				LabelTo(from, 1050043, _Crafter.TitleName); // crafted by ~1_NAME~
 			}
 		}
 

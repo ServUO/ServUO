@@ -636,7 +636,7 @@ namespace Server.Items
                 list.Add(1063341); // exceptional
 
             if (this.m_Crafter != null)
-				list.Add(1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
+				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
             #endregion
 
             #region Mondain's Legacy Sets
@@ -800,7 +800,7 @@ namespace Server.Items
 
 			if (m_Crafter != null)
 			{
-				LabelTo(from, 1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
+				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
 		}
         

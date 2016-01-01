@@ -561,7 +561,7 @@ namespace Server.Mobiles
 		public DateTime PeacedUntil { get { return m_PeacedUntil; } set { m_PeacedUntil = value; } }
 
 		[CommandProperty(AccessLevel.Decorator)]
-		public string RawNameWithTitle
+		public override string TitleName
 		{
 			get
 			{

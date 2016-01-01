@@ -127,7 +127,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (this.m_Crafter != null)
-                list.Add(1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
             //On OSI it says it's exceptional.  Intentional difference.
         }
 
@@ -139,7 +139,7 @@ namespace Server.Items
             this.LabelTo(from, 1061133, String.Format("{0}\t{1}", GetSkillTitle(this.m_SkillLevel).ToString(), RepairSkillInfo.GetInfo(this.m_Skill).Name)); // A repair service contract from ~1_SKILL_TITLE~ ~2_SKILL_NAME~.
 
             if (this.m_Crafter != null)
-				this.LabelTo(from, 1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
+				this.LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
         }
 
         public override void OnDoubleClick(Mobile from)

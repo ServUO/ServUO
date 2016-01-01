@@ -9078,6 +9078,15 @@ namespace Server
 		public string RawName { get { return m_Name; } set { Name = value; } }
 
 		[CommandProperty(AccessLevel.Decorator)]
+		public virtual string TitleName
+		{
+			get
+			{
+				return m_Name;
+			}
+		}
+
+		[CommandProperty(AccessLevel.Decorator)]
 		public string Name
 		{
 			get

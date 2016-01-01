@@ -131,7 +131,7 @@ namespace Server.Items
 
 			if (m_Crafter != null)
 			{
-				LabelTo(from, 1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
+				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
         }
 
