@@ -1471,8 +1471,8 @@ namespace Server.Factions
                                     if (pl != null)
                                     {
                                         pl.Faction.RemoveMember(mob);
-                                        mob.SendMessage("You have been kicked from your faction.");
-                                        this.AddResponse("They have been kicked from their faction.");
+                                        mob.SendMessage("You have been banned from factions.");
+                                        this.AddResponse("They have been banned from factions.");
                                     }
                                 }
                             }
