@@ -566,11 +566,7 @@ namespace Server.Mobiles
 			get
 			{
 				string title = Titles.ComputeFameTitle(this);
-				if (title.Length > 0)
-				{
-					return String.Format("{0} {1}", title, RawName);
-				}
-				return RawName;
+				return title.Length > 0 ? title : RawName;
 			}
 		}
 
