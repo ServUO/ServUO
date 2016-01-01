@@ -116,7 +116,12 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+			/* The jump to verison 1000 was due to needing to insert a class in the
+			   inheritence chain for some items. We need to be certain that the new
+			   version of CraftableFurniture that handles this data will not
+			   conflict with the version numbers of the child classes.
+			 */
+            writer.Write((int)1000); // version
 
             writer.Write((Mobile)this.m_Crafter);
             writer.Write((int)this.m_Resource);
@@ -127,11 +132,37 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+			int version = reader.PeekInt();
 
-            this.m_Crafter = reader.ReadMobile();
-            this.m_Resource = (CraftResource)reader.ReadInt();
-            this.m_Quality = (ItemQuality)reader.ReadInt();
+			switch (version)
+			{
+				case 1000:
+					reader.ReadInt();
+					this.m_Crafter = reader.ReadMobile();
+					this.m_Resource = (CraftResource)reader.ReadInt();
+					this.m_Quality = (ItemQuality)reader.ReadInt();
+					break;
+				case 0:
+					// Only these two items had this base class prior to the version change
+					if(this is ElvenPodium ||
+						this is GiantReplicaAcorn)
+					{
+						reader.ReadInt();
+						this.m_Crafter = reader.ReadMobile();
+						this.m_Resource = (CraftResource)reader.ReadInt();
+						this.m_Quality = (ItemQuality)reader.ReadInt();
+					}
+					// If we peeked a zero here any other way we should not consume data
+					else
+					{
+						this.m_Crafter = null;
+						this.m_Resource = CraftResource.None;
+						this.m_Quality = ItemQuality.Normal;
+					}
+					break;
+				default:
+					throw new ArgumentException("Unhandled version number for CraftableFurniture");
+			}
         }
 
         #region ICraftable

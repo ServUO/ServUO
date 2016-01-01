@@ -151,11 +151,6 @@ namespace Server.Items
             this.DisplayDurabilityTo(from);
 
             base.OnSingleClick(from);
-
-			if (m_Crafter != null)
-			{
-				LabelTo(from, 1050043, m_Crafter is PlayerMobile ? ((PlayerMobile)m_Crafter).RawNameWithTitle : m_Crafter.Name); // crafted by ~1_NAME~
-			}
         }
 
         public override void OnDoubleClick(Mobile from)

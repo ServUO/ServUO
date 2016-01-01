@@ -1,10 +1,11 @@
 using System;
 
+
 namespace Server.Items
 {
     [Furniture]
     [Flipable(0xB2D, 0xB2C)]
-    public class WoodenBench : Item
+    public class WoodenBench : CraftableFurniture
     {
         [Constructable]
         public WoodenBench()
