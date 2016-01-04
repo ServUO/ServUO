@@ -5458,12 +5458,10 @@ namespace Server.Items
 
 			if (Core.AOS)
 			{
-				#region Mondain's Legacy
 				if (!craftItem.ForceNonExceptional)
 				{
 					Resource = CraftResources.GetFromType(typeRes);
 				}
-				#endregion
 
 				CraftContext context = craftSystem.GetContext(from);
 
@@ -5472,7 +5470,6 @@ namespace Server.Items
 					Hue = 0;
 				}
 
-				// Mondain's Legacy Mod
 				if (!craftItem.ForceNonExceptional)
 				{
 					if (tool is BaseRunicTool)
@@ -5483,31 +5480,19 @@ namespace Server.Items
 
 				if (Quality == WeaponQuality.Exceptional)
 				{
-					if (Attributes.WeaponDamage > 35)
-					{
-						Attributes.WeaponDamage -= 20;
-					}
-					else
-					{
-						Attributes.WeaponDamage = 15;
-					}
-
-					if (Core.ML)
-					{
-						Attributes.WeaponDamage += (int)(from.Skills.ArmsLore.Value / 20);
-
-						if (Attributes.WeaponDamage > 50)
-						{
-							Attributes.WeaponDamage = 50;
-						}
-
-						from.CheckSkill(SkillName.ArmsLore, 0, 100);
-					}
+					Attributes.WeaponDamage += 15;
 				}
+
+				if (Core.ML)
+				{
+					Attributes.WeaponDamage += (int)(from.Skills.ArmsLore.Value / 20);
+					from.CheckSkill(SkillName.ArmsLore, 0, 100);
+				}
+
+				Attributes.WeaponDamage = Math.Min(Attributes.WeaponDamage, 50);
 			}
 			else if (tool is BaseRunicTool)
 			{
-				// Mondain's Legacy Mod
 				if (craftItem != null && !craftItem.ForceNonExceptional)
 				{
 					CraftResource thisResource = CraftResources.GetFromType(typeRes);
@@ -5592,7 +5577,6 @@ namespace Server.Items
 				}
 			}
 
-			#region Mondain's Legacy
 			if (craftItem != null && !craftItem.ForceNonExceptional)
 			{
 				CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
@@ -5646,7 +5630,6 @@ namespace Server.Items
 
 			return quality;
 		}
-		#endregion
 
 		#region Mondain's Legacy Sets
 		public override bool OnDragLift(Mobile from)
