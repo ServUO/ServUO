@@ -10,12 +10,13 @@ namespace Server.Items
             this.Name = ("Stone Slith Claw");
 		
             this.Hue = 1150;
-			
+			this.Weight = 6.0;
             this.WeaponAttributes.HitHarm = 40;
             this.Slayer = SlayerName.DaemonDismissal;
-            this.WeaponAttributes.HitLowerDefend = 40;	
+            this.WeaponAttributes.HitLowerDefend = 40;
             this.Attributes.WeaponSpeed = 25;
             this.Attributes.WeaponDamage = 45;
+			this.StrRequirement = 40;
         }
 
         public StoneSlithClaw(Serial serial)
@@ -29,7 +30,24 @@ namespace Server.Items
             {
                 return 4;
             }
-        }// MaxRange 8
+        }
+
+		public override int MaxThrowRange
+		{
+			get
+			{
+				return 9;
+			}
+		}
+
+		public override float MlSpeed
+		{
+			get
+			{
+				return 3.0;
+			}
+		}
+
         public override int InitMinHits
         {
             get

@@ -77,16 +77,12 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            //PackItem(Gold(UtilityRandom(100, 200);
-            //PackItem(SlithTongue);
-            //PackItem(PotteryFragment);
             this.AddLoot(LootPack.Average, 2);
         }
 
         public override WeaponAbility GetWeaponAbility()
         {
             return WeaponAbility.BleedAttack;
-            //return WeaponAbility.LowerPhysicalResist;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -100,5 +96,15 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
         }
+
+		public override void OnDeath(Items.Container c)
+		{
+			base.OnDeath(c);
+
+			if (Utility.RandomDouble() < 0.5)
+			{
+				c.DropItem(new StoneSlithClaw());
+			}
+		}
     }
 }
