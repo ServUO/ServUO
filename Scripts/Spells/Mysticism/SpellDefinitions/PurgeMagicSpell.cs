@@ -102,19 +102,19 @@ namespace Server.Spells.Mystic
                                 break;
                             case BuffType.StrBonus:
                                 arg = "strength bonus";
-                                target.RemoveStatMod("[Magic] Str Offset");
+                                target.RemoveStatMod("[Magic] Str Buff");
                                 BuffInfo.RemoveBuff(target, BuffIcon.Bless);
                                 BuffInfo.RemoveBuff(target, BuffIcon.Strength);
                                 break;
                             case BuffType.DexBonus:
                                 arg = "dexterity bonus";
-                                target.RemoveStatMod("[Magic] Dex Offset");
+								target.RemoveStatMod("[Magic] Dex Buff");
                                 BuffInfo.RemoveBuff(target, BuffIcon.Bless);
                                 BuffInfo.RemoveBuff(target, BuffIcon.Agility);
                                 break;
                             case BuffType.IntBonus:
                                 arg = "intelligence bonus";
-                                target.RemoveStatMod("[Magic] Int Offset");
+								target.RemoveStatMod("[Magic] Int Buff");
                                 BuffInfo.RemoveBuff(target, BuffIcon.Bless);
                                 BuffInfo.RemoveBuff(target, BuffIcon.Cunning);
                                 break;
@@ -165,16 +165,16 @@ namespace Server.Spells.Mystic
             if (context != null && context.Type != typeof(AnimalForm))
                 buffs.Add(BuffType.Transformation);
 
-            StatMod mod = target.GetStatMod("[Magic] Str Offset");
-            if (mod != null && mod.Offset > 0)
+            StatMod mod = target.GetStatMod("[Magic] Str Buff");
+            if (mod != null)
                 buffs.Add(BuffType.StrBonus);
 
-            mod = target.GetStatMod("[Magic] Dex Offset");
-            if (mod != null && mod.Offset > 0)
+			mod = target.GetStatMod("[Magic] Dex Buff");
+            if (mod != null)
                 buffs.Add(BuffType.DexBonus);
 
-            mod = target.GetStatMod("[Magic] Int Offset");
-            if (mod != null && mod.Offset > 0)
+			mod = target.GetStatMod("[Magic] Int Buff");
+            if (mod != null)
                 buffs.Add(BuffType.IntBonus);
 
             if (buffs.Count == 0)

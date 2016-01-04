@@ -237,6 +237,14 @@ namespace Server.Spells
             }
         }
 
+		protected static void RemoveStatOffsetCallback(object state)
+		{
+			if (!(state is Mobile))
+				return;
+			// This call has the side-effect of updating all stats
+			((Mobile)state).CheckStatTimers();
+		}			
+
         public static bool AddStatOffset(Mobile m, StatType type, int offset, TimeSpan duration)
         {
             if (offset > 0)
@@ -255,19 +263,21 @@ namespace Server.Spells
         public static bool AddStatBonus(Mobile caster, Mobile target, StatType type, int bonus, TimeSpan duration)
         {
             int offset = bonus;
-            string name = String.Format("[Magic] {0} Offset", type);
+            string name = String.Format("[Magic] {0} Buff", type);
 
             StatMod mod = target.GetStatMod(name);
 
             if (mod != null && mod.Offset < 0)
             {
                 target.AddStatMod(new StatMod(type, name, mod.Offset + offset, duration));
+				Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
                 return true;
             }
             else if (mod == null || mod.Offset < offset)
             {
                 target.AddStatMod(new StatMod(type, name, offset, duration));
-                return true;
+				Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
+				return true;
             }
 
             return false;
@@ -281,19 +291,21 @@ namespace Server.Spells
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, int curse, TimeSpan duration)
         {
             int offset = -curse;
-            string name = String.Format("[Magic] {0} Offset", type);
+            string name = String.Format("[Magic] {0} Curse", type);
 
             StatMod mod = target.GetStatMod(name);
 
             if (mod != null && mod.Offset > 0)
             {
                 target.AddStatMod(new StatMod(type, name, mod.Offset + offset, duration));
-                return true;
+				Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
+				return true;
             }
             else if (mod == null || mod.Offset > offset)
             {
                 target.AddStatMod(new StatMod(type, name, offset, duration));
-                return true;
+				Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
+				return true;
             }
 
             return false;

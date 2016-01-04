@@ -103,17 +103,9 @@ namespace Server.Spells.Chivalry
 
                     StatMod mod;
 
-                    mod = m.GetStatMod("[Magic] Str Offset");
-                    if (mod != null && mod.Offset < 0)
-                        m.RemoveStatMod("[Magic] Str Offset");
-
-                    mod = m.GetStatMod("[Magic] Dex Offset");
-                    if (mod != null && mod.Offset < 0)
-                        m.RemoveStatMod("[Magic] Dex Offset");
-
-                    mod = m.GetStatMod("[Magic] Int Offset");
-                    if (mod != null && mod.Offset < 0)
-                        m.RemoveStatMod("[Magic] Int Offset");
+                    m.RemoveStatMod("[Magic] Str Curse");
+					m.RemoveStatMod("[Magic] Dex Curse");
+					m.RemoveStatMod("[Magic] Int Curse");
 
                     m.Paralyzed = false;
 

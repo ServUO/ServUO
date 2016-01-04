@@ -261,14 +261,16 @@ namespace Server.Factions
 
 		public int GetStatMod(Mobile mob, StatType type)
 		{
-			StatMod mod = mob.GetStatMod(String.Format("[Magic] {0} Offset", type));
+			int offset = 0;
+			StatMod buff = mob.GetStatMod(String.Format("[Magic] {0} Buff", type));
+			StatMod curse = mob.GetStatMod(String.Format("[Magic] {0} Curse", type));
 
-			if (mod == null)
-			{
-				return 0;
-			}
+			if (buff != null)
+				offset += buff.Offset;
+			if (curse != null)
+				offset += buff.Offset;
 
-			return mod.Offset;
+			return offset;
 		}
 
 		public Spell RandomOffenseSpell()
