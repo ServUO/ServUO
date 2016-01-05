@@ -266,15 +266,13 @@ namespace Server.Spells
             string name = String.Format("[Magic] {0} Buff", type);
 
             StatMod mod = target.GetStatMod(name);
+			if (mod != null)
+				offset = Math.Max(mod.Offset, offset);
 
-			if (mod == null || mod.Offset < offset)
-            {
-                target.AddStatMod(new StatMod(type, name, offset, duration));
-				Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
-				return true;
-            }
+            target.AddStatMod(new StatMod(type, name, offset, duration));
+			Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
 
-            return false;
+            return true;
         }
 
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type)
@@ -284,19 +282,17 @@ namespace Server.Spells
 
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, int curse, TimeSpan duration)
         {
-            int offset = -curse;
+            int offset = curse;
             string name = String.Format("[Magic] {0} Curse", type);
 
             StatMod mod = target.GetStatMod(name);
+			if (mod != null)
+				offset = Math.Max(mod.Offset, offset);
+			offset *= -1;
 
-            if (mod == null || mod.Offset > offset)
-            {
-                target.AddStatMod(new StatMod(type, name, offset, duration));
-				Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
-				return true;
-            }
-
-            return false;
+            target.AddStatMod(new StatMod(type, name, offset, duration));
+			Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
+			return true;
         }
 
         public static TimeSpan GetDuration(Mobile caster, Mobile target)

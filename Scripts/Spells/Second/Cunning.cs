@@ -49,12 +49,9 @@ namespace Server.Spells.Second
             {
                 SpellHelper.Turn(this.Caster, m);
 
-                if(SpellHelper.AddStatBonus(this.Caster, m, StatType.Int))
-				{
-					int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
-					TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
-					BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Cunning, 1075843, length, m, percentage.ToString()));
-				}
+				int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
+				TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Cunning, 1075843, length, m, percentage.ToString()));
 
 				m.FixedParticles(0x375A, 10, 15, 5011, EffectLayer.Head);
                 m.PlaySound(0x1EB);

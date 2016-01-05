@@ -47,19 +47,16 @@ namespace Server.Spells.Fourth
 
 		public static void DoCurse(Mobile caster, Mobile m)
 		{
-			bool didSomething = SpellHelper.AddStatCurse(caster, m, StatType.Str);
+			SpellHelper.AddStatCurse(caster, m, StatType.Str);
 			SpellHelper.DisableSkillCheck = true;
-			didSomething = didSomething || SpellHelper.AddStatCurse(caster, m, StatType.Dex);
-			didSomething = didSomething || SpellHelper.AddStatCurse(caster, m, StatType.Int);
+			SpellHelper.AddStatCurse(caster, m, StatType.Dex);
+			SpellHelper.AddStatCurse(caster, m, StatType.Int);
 			SpellHelper.DisableSkillCheck = false;
 
-			if (didSomething)
-			{
-				int percentage = (int)(SpellHelper.GetOffsetScalar(caster, m, true) * 100);
-				TimeSpan length = SpellHelper.GetDuration(caster, m);
-				string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
-				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, length, m, args.ToString()));
-			}
+			int percentage = (int)(SpellHelper.GetOffsetScalar(caster, m, true) * 100);
+			TimeSpan length = SpellHelper.GetDuration(caster, m);
+			string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
+			BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, length, m, args.ToString()));
 
 			Timer t = (Timer)m_UnderEffect[m];
 
