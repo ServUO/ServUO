@@ -6,7 +6,7 @@ using CustomsFramework;
 
 namespace Server.Items
 {
-    public abstract class Food : Item
+    public abstract class Food : Item, IEngravable
     {
         private Mobile m_Poisoner;
         private Poison m_Poison;
@@ -66,7 +66,23 @@ namespace Server.Items
             }
         }
 
-        public Food(int itemID)
+		private string m_EngravedText = string.Empty;
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public string EngravedText
+		{
+			get { return this.m_EngravedText; }
+			set
+			{
+				if (value != null)
+					this.m_EngravedText = value;
+				else
+					this.m_EngravedText = string.Empty;
+				this.InvalidateProperties();
+			}
+		}
+
+		public Food(int itemID)
             : this(1, itemID)
         {
         }
@@ -110,8 +126,18 @@ namespace Server.Items
             else
                 return false;
         }
-		
-        public virtual bool Eat(Mobile from)
+
+		public override void AddNameProperty(ObjectPropertyList list)
+		{
+			base.AddNameProperty(list);
+
+			if (!String.IsNullOrEmpty(this.EngravedText))
+			{
+				list.Add(1072305, this.EngravedText); // Engraved: ~1_INSCRIPTION~
+			}
+		}
+
+		public virtual bool Eat(Mobile from)
         {
             // Fill the Mobile with FillFactor
             if (this.CheckHunger(from))
@@ -179,7 +205,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)5); // version
+            writer.Write((int)6); // version
+
+			writer.Write(this.m_EngravedText);
 
             writer.Write((bool)m_PlayerConstructed);
             writer.Write(this.m_Poisoner);
@@ -240,6 +268,9 @@ namespace Server.Items
                         this.m_PlayerConstructed = reader.ReadBool();
                         goto case 4;
                     }
+				case 6:
+					this.m_EngravedText = reader.ReadString();
+					goto case 5;
             }
         }
     }
