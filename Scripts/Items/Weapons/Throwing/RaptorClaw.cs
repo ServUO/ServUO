@@ -6,17 +6,52 @@ namespace Server.Items
     {
         [Constructable]
         public RaptorClaw()
-            : base(0x8FF)
         {
             this.Name = ("Raptor Claw");
-		
+
+			this.Weight = 4.0;
             this.Hue = 53;
-            this.Slayer = SlayerName.Exorcism;
+            this.Slayer = SlayerName.Silver;
+			this.Attributes = new AosAttributes(this);
             this.Attributes.AttackChance = 12;			
-            this.Attributes.WeaponSpeed = 25;
-            this.Attributes.WeaponDamage = 45;
+            this.Attributes.WeaponSpeed = 30;
+            this.Attributes.WeaponDamage = 35;
+			this.WeaponAttributes = new AosWeaponAttributes(this);
             this.WeaponAttributes.HitLeechStam = 40;
+			this.StrRequirement = 25;
         }
+
+		public override int AosMinDamage
+		{
+			get
+			{
+				return 8;
+			}
+		}
+
+		public override int AosMaxDamage
+		{
+			get
+			{
+				return 12;
+			}
+		}
+
+		public override int MaxThrowRange
+		{
+			get
+			{
+				return 7;
+			}
+		}
+
+		public override float MlSpeed
+		{
+			get
+			{
+				return 2;
+			}
+		}
 
         public RaptorClaw(Serial serial)
             : base(serial)
