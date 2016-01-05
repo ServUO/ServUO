@@ -5,79 +5,120 @@ using Server.Network;
 namespace Server.Mobiles
 {
     [CorpseName("a boura corpse")]
-    public class RuddyBoura : BaseCreature
+    public class RuddyBoura : BaseCreature, ICarvable
     {
-        private bool m_Stunning;
-        [Constructable]
-        public RuddyBoura()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+        public static Type[] VArtifacts =
         {
-            this.Name = "a ruddy boura";
-            this.Body = 715;
+            typeof (BouraTailShield)
+        };
 
-            this.SetStr(329, 435);
-            this.SetDex(67, 83);
-            this.SetInt(15, 20);
+        private DateTime m_NextWoolTime; //
+        private bool m_Stunning;
 
-            this.SetHits(421, 542);
-            this.SetStam(67, 83);
-            this.SetMana(15, 20);
+        [Constructable]
+        public RuddyBoura() : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+        {
+            Name = "a ruddy boura";
+            Body = 715;
 
-            this.SetDamage(16, 20);
+            SetStr(396, 480);
+            SetDex(68, 82);
+            SetInt(16, 20);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetHits(435, 509);
+            SetStam(68, 82);
+            SetMana(16, 20);
 
-            this.SetResistance(ResistanceType.Physical, 45, 50);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetDamage(16, 20);
 
-            this.SetSkill(SkillName.Anatomy, 81.6, 88.2);
-            this.SetSkill(SkillName.MagicResist, 66.5, 73.9);
-            this.SetSkill(SkillName.Tactics, 81.3, 88.8);
-            this.SetSkill(SkillName.Wrestling, 83.6, 94.5);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.Tamable = true;
-            this.ControlSlots = 2;
-            this.MinTameSkill = 17.1;
+            SetResistance(ResistanceType.Physical, 50, 60);
+            SetResistance(ResistanceType.Fire, 35, 40);
+            SetResistance(ResistanceType.Cold, 10, 20);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 30, 40);
+
+            SetSkill(SkillName.Anatomy, 86.6, 88.8);
+            SetSkill(SkillName.MagicResist, 69.7, 87.7);
+            SetSkill(SkillName.Tactics, 83.3, 88.8);
+            SetSkill(SkillName.Wrestling, 86.6, 87.9);
+
+            PackItem(new DragonBlood(8));
+
+            Tamable = true;
+            ControlSlots = 2;
+            MinTameSkill = 19.1;
+
+            Fame = 5000;
+            Karma = 5000; //Lose Karma for killing
+
+            VirtualArmor = 16;
         }
 
-        public RuddyBoura(Serial serial)
-            : base(serial)
+        public RuddyBoura(Serial serial) : base(serial)
         {
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextWoolTime
+        {
+            get { return m_NextWoolTime; }
+            set
+            {
+                m_NextWoolTime = value;
+                Body = (DateTime.Now >= m_NextWoolTime) ? 0x2CB : 0x2CB;
+            }
         }
 
         public override int Meat
         {
-            get
-            {
-                return 10;
-            }
+            get { return 10; }
         }
+
         public override int Hides
         {
-            get
-            {
-                return 20;
-            }
+            get { return 20; }
         }
-        public override int Fur{ get{ return 30; } }
-        public override int DragonBlood{ get{ return 8; } }
+
+        //public override int DragonBlood{ get{ return 8; } }
         public override HideType HideType
         {
-            get
-            {
-                return HideType.Spined;
-            }
+            get { return HideType.Spined; }
         }
+
         public override FoodType FavoriteFood
         {
-            get
-            {
-                return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
-            }
+            get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; }
         }
+
+        public override int Wool
+        {
+            get { return (Body == 0x2CB ? 3 : 0); }
+        }
+
+        public void Carve(Mobile from, Item item)
+        {
+            if (DateTime.Now < m_NextWoolTime)
+            {
+                // The boura glares at you and will not let you shear its fur.
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1112354, from.NetState);
+                return;
+            }
+
+            from.SendLocalizedMessage(1112353); // You place the gathered boura fur into your backpack.
+            //from.AddToBackpack(new FurR(Map == Map.Felucca ? 2 : 30));
+            from.AddToBackpack(new Fur(Map == Map.Felucca ? 2 : 30));
+
+            NextWoolTime = DateTime.Now + TimeSpan.FromHours(3.0); // TODO: Proper time delay
+        }
+
+        public override void OnThink()
+        {
+            base.OnThink();
+            Body = (DateTime.Now >= m_NextWoolTime) ? 0x2CB : 0x2CB;
+        } //
+
         public override int GetIdleSound()
         {
             return 1507;
@@ -98,19 +139,54 @@ namespace Server.Mobiles
             return 1505;
         }
 
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            c.DropItem(new BouraSkin());
+
+            if (Utility.RandomDouble() < 0.05)
+            {
+                c.DropItem(new BouraPelt());
+            }
+
+            if (c != null && !c.Deleted && c is Corpse)
+            {
+                var corpse = (Corpse) c;
+                if (Utility.RandomDouble() < 0.01 && corpse.Killer != null && !corpse.Killer.Deleted)
+                {
+                    GiveVArtifactTo(corpse.Killer);
+                }
+            }
+        }
+
+        public static void GiveVArtifactTo(Mobile m)
+        {
+            var item = (Item) Activator.CreateInstance(VArtifacts[Utility.Random(VArtifacts.Length)]);
+
+            if (m.AddToBackpack(item))
+                m.SendLocalizedMessage(1062317);
+                    // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+            else
+                m.SendMessage("As your backpack is full, your reward has been placed at your feet.");
+            {
+            }
+        }
+
         public override void OnGaveMeleeAttack(Mobile defender)
         {
             base.OnGaveMeleeAttack(defender);
 
-            if (!this.m_Stunning && 0.3 > Utility.RandomDouble())
+            if (!m_Stunning && 0.3 > Utility.RandomDouble())
             {
-                this.m_Stunning = true;
+                m_Stunning = true;
 
                 defender.Animate(21, 6, 1, true, false, 0);
-                this.PlaySound(0xEE);
-                defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, false, "You have been stunned by a colossal blow!");
+                PlaySound(0xEE);
+                defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, false,
+                    "You have been stunned by a colossal blow!");
 
-                BaseWeapon weapon = this.Weapon as BaseWeapon;
+                var weapon = Weapon as BaseWeapon;
                 if (weapon != null)
                     weapon.OnHit(this, defender);
 
@@ -122,21 +198,9 @@ namespace Server.Mobiles
             }
         }
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.Write((int)0);
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            int version = reader.ReadInt();
-        }
-
         private void Recover_Callback(object state)
         {
-            Mobile defender = state as Mobile;
+            var defender = state as Mobile;
 
             if (defender != null)
             {
@@ -145,7 +209,29 @@ namespace Server.Mobiles
                 defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, false, "You recover your senses.");
             }
 
-            this.m_Stunning = false;
+            m_Stunning = false;
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(1); //0
+            writer.WriteDeltaTime(m_NextWoolTime);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            var version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                {
+                    NextWoolTime = reader.ReadDeltaTime();
+                    break;
+                }
+            }
         }
     }
 }

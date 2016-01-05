@@ -211,6 +211,11 @@ namespace Server.Multis.Deeds
                             from.SendLocalizedMessage(1150493); // You must have a deed for this plot of land in order to build here.
                             break;
                         }
+                    case HousePlacementResult.NoQueenLoyalty:
+                    {
+                        from.SendLocalizedMessage(1113707, "10000"); // You must have at lease ~1_MIN~ loyalty to the Gargoyle Queen to place a house in Ter Mur.
+                        break;
+                    }
                 }
             }
         }

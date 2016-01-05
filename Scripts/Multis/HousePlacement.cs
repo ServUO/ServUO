@@ -19,7 +19,7 @@ namespace Server.Multis
         BadRegionTemp,
         InvalidCastleKeep,
         BadRegionRaffle,
-        QueensLoyalty
+        NoQueenLoyalty
     }
 
     public class HousePlacement
@@ -60,12 +60,13 @@ namespace Server.Multis
             #region SA
             if (map == Map.TerMur)
             {
-                if (from is PlayerMobile && ((PlayerMobile)from).Level < PlayerMobile.Noble)
-                    return HousePlacementResult.QueensLoyalty;
+                var pm = from as PlayerMobile;
+                if (pm != null && pm.Exp <= 9999)
+                    return HousePlacementResult.NoQueenLoyalty;
             }
             #endregion
 
-            NoHousingRegion noHousingRegion = (NoHousingRegion)Region.Find(center, map).GetRegion(typeof(NoHousingRegion));
+            var noHousingRegion = (NoHousingRegion)Region.Find(center, map).GetRegion(typeof(NoHousingRegion));
 
             if (noHousingRegion != null)
                 return HousePlacementResult.BadRegion;

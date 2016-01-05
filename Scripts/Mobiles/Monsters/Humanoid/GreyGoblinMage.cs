@@ -44,6 +44,8 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 28;
 
+            QLPoints = 10;
+
             switch ( Utility.Random(20) )
             {
                 case 0:

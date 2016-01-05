@@ -4970,9 +4970,6 @@
     <Compile Include="Items\Special\Bulk Order Rewards\Blacksmithy\PowderOfTemperament.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Special\Community Collection\JesterHatofChuckles.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Special\Evil Home Decor Collection\AwesomeDisturbingPortrait.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -7544,9 +7541,8 @@
     <Compile Include="Mobiles\Monsters\Ants\BlackSolenWorker.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Monsters\Ants\FireAnt.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Mobiles\Monsters\Ants\Fire Ant\FireAnt.cs" />
+    <Compile Include="Mobiles\Monsters\Ants\Fire Ant\HotGoo.cs" />
     <Compile Include="Mobiles\Monsters\Ants\RedSolenInfiltratorQueen.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -11813,6 +11809,8 @@
     <Compile Include="Services\Khaldun\RaiseSwitch.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\Loyalty System\LoyaltyRating.cs" />
+    <Compile Include="Services\Loyalty System\LoyaltyRatingGump.cs" />
     <Compile Include="Services\MyRunUO\Config.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -11997,13 +11995,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Plants\SetToDecorativeGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Queens Loyalty\ContextMenuEntry.cs" />
-    <Compile Include="Services\Queens Loyalty\LoyaltySystem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Queens Loyalty\PointsEntry.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Quests\Core\BaseQuester.cs">
@@ -12471,6 +12462,7 @@
     <Compile Include="Services\Runic Reforging\RunicReforging.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\SA Content\SARegionDrops.cs" />
     <Compile Include="Services\ShardControl\BaseSettings.cs">
       <SubType>Code</SubType>
     </Compile>
