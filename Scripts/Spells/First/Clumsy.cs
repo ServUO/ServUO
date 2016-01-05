@@ -40,6 +40,7 @@ namespace Server.Spells.First
 
                 SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
 
+				SpellHelper.AddStatCurse(this.Caster, m, StatType.Dex);
 				int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
 				TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
 				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Clumsy, 1075831, length, m, percentage.ToString()));
