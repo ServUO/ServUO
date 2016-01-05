@@ -267,13 +267,7 @@ namespace Server.Spells
 
             StatMod mod = target.GetStatMod(name);
 
-            if (mod != null && mod.Offset < 0)
-            {
-                target.AddStatMod(new StatMod(type, name, mod.Offset + offset, duration));
-				Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
-                return true;
-            }
-            else if (mod == null || mod.Offset < offset)
+			if (mod == null || mod.Offset < offset)
             {
                 target.AddStatMod(new StatMod(type, name, offset, duration));
 				Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
@@ -295,13 +289,7 @@ namespace Server.Spells
 
             StatMod mod = target.GetStatMod(name);
 
-            if (mod != null && mod.Offset > 0)
-            {
-                target.AddStatMod(new StatMod(type, name, mod.Offset + offset, duration));
-				Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
-				return true;
-            }
-            else if (mod == null || mod.Offset > offset)
+            if (mod == null || mod.Offset > offset)
             {
                 target.AddStatMod(new StatMod(type, name, offset, duration));
 				Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
