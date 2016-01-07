@@ -224,7 +224,10 @@ namespace Server.Items
                             break;
                         }
                     case 3:
-                        ApplyAttribute(primary, min, max, AosAttribute.WeaponDamage, 1, 50);
+						int dmgMin = primary.WeaponDamage;
+						int dmgMax = Math.Max(dmgMin, 50);
+						primary.WeaponDamage = 0;
+                        ApplyAttribute(primary, min, max, AosAttribute.WeaponDamage, dmgMin, dmgMax);
                         break;
                     case 4:
                         ApplyAttribute(primary, min, max, AosAttribute.DefendChance, 1, 15);

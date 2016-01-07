@@ -266,9 +266,9 @@ namespace Server.Engines.ConPVP
 
         public static void Debuff(Mobile mob)
         {
-            mob.RemoveStatMod("[Magic] Str Offset");
-            mob.RemoveStatMod("[Magic] Dex Offset");
-            mob.RemoveStatMod("[Magic] Int Offset");
+            mob.RemoveStatMod("[Magic] Str Buff");
+			mob.RemoveStatMod("[Magic] Dex Buff");
+			mob.RemoveStatMod("[Magic] Int Buff");
             mob.RemoveStatMod("Concussion");
 
             OrangePetals.RemoveContext(mob);

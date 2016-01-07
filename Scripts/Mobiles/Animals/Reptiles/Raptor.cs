@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -101,5 +102,15 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
         }
+
+		public override void OnDeath(Items.Container c)
+		{
+			base.OnDeath(c);
+
+			if (Utility.RandomDouble() < 0.5)
+			{
+				c.DropItem(new RaptorClaw());
+			}
+		}
     }
 }

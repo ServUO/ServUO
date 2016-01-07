@@ -40,20 +40,18 @@ namespace Server.Spells.First
 
                 SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
 
-                SpellHelper.AddStatCurse(this.Caster, m, StatType.Dex);
+				SpellHelper.AddStatCurse(this.Caster, m, StatType.Dex);
+				int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
+				TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Clumsy, 1075831, length, m, percentage.ToString()));
 
-                if (m.Spell != null)
+				if (m.Spell != null)
                     m.Spell.OnCasterHurt();
 
                 m.Paralyzed = false;
 
                 m.FixedParticles(0x3779, 10, 15, 5002, EffectLayer.Head);
                 m.PlaySound(0x1DF);
-
-                int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
-                TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
-
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Clumsy, 1075831, length, m, percentage.ToString()));
 
                 this.HarmfulSpell(m);
             }

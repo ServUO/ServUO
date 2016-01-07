@@ -51,19 +51,17 @@ namespace Server.Spells.Third
 
                 SpellHelper.AddStatBonus(this.Caster, m, StatType.Str);
                 SpellHelper.DisableSkillCheck = true;
-                SpellHelper.AddStatBonus(this.Caster, m, StatType.Dex);
-                SpellHelper.AddStatBonus(this.Caster, m, StatType.Int);
+				SpellHelper.AddStatBonus(this.Caster, m, StatType.Dex);
+				SpellHelper.AddStatBonus(this.Caster, m, StatType.Int);
                 SpellHelper.DisableSkillCheck = false;
 
-                m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
+				int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
+				TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+				string args = String.Format("{0}\t{1}\t{2}", percentage, percentage, percentage);
+				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Bless, 1075847, 1075848, length, m, args.ToString()));
+
+				m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
                 m.PlaySound(0x1EA);
-
-                int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
-                TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
-
-                string args = String.Format("{0}\t{1}\t{2}", percentage, percentage, percentage);
-
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Bless, 1075847, 1075848, length, m, args.ToString()));
             }
 
             this.FinishSequence();
