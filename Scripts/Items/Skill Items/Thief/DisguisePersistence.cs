@@ -12,7 +12,7 @@ namespace Server.Items
 {
 	public static class DisguisePersistence
 	{
-		public const string FilePath = @"Saves\\Disguises\\Persistence.bin";
+		public const string FilePath = @"Saves\Disguises\Persistence.bin";
 
 		public static void Configure()
 		{

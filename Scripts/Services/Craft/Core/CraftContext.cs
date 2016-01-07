@@ -269,7 +269,7 @@ namespace Server.Engines.Craft
         }
 
         #region Serialize/Deserialize Persistence
-        public const string FilePath = @"Saves\\CraftContext\\Contexts.bin";
+        public const string FilePath = @"Saves\CraftContext\Contexts.bin";
 
         private static List<CraftContext> Contexts = new List<CraftContext>();
 
