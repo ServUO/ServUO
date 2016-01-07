@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 
 namespace Server.Engines.Craft
@@ -269,7 +270,7 @@ namespace Server.Engines.Craft
         }
 
         #region Serialize/Deserialize Persistence
-        public const string FilePath = @"Saves\\CraftContext\\Contexts.bin";
+        private static string FilePath = Path.Combine("Saves", "CraftContext", "Contexts.bin");
 
         private static List<CraftContext> Contexts = new List<CraftContext>();
 
