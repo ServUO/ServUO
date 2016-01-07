@@ -5486,7 +5486,7 @@ namespace Server.Items
 					}
 				}
 
-				if (Core.ML)
+				if (Core.ML && Quality == WeaponQuality.Exceptional)
 				{
 					Attributes.WeaponDamage += (int)(from.Skills.ArmsLore.Value / 20);
 					from.CheckSkill(SkillName.ArmsLore, 0, 100);
