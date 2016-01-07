@@ -7,7 +7,7 @@ using Server.Network;
 
 namespace Server.Items
 {
-    public abstract class BaseContainer : Container
+    public abstract class BaseContainer : Container, IEngravable
     {
         public BaseContainer(int itemID)
             : base(itemID)
@@ -29,7 +29,24 @@ namespace Server.Items
                 return base.DefaultMaxWeight;
             }
         }
-        public override bool IsAccessibleTo(Mobile m)
+
+		private string m_EngravedText = string.Empty;
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public string EngravedText
+		{
+			get { return this.m_EngravedText; }
+			set
+			{
+				if (value != null)
+					this.m_EngravedText = value;
+				else
+					this.m_EngravedText = string.Empty;
+				this.InvalidateProperties();
+			}
+		}
+
+		public override bool IsAccessibleTo(Mobile m)
         {
             if (!BaseHouse.CheckAccessible(m, this))
                 return false;
@@ -140,20 +157,41 @@ namespace Server.Items
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
         }
 
-        public virtual void Open(Mobile from)
+		public override void AddNameProperty(ObjectPropertyList list)
+		{
+			base.AddNameProperty(list);
+
+			if(!String.IsNullOrEmpty(this.EngravedText))
+			{
+				list.Add(1072305, this.EngravedText); // Engraved: ~1_INSCRIPTION~
+			}
+		}
+
+		public virtual void Open(Mobile from)
         {
             this.DisplayTo(from);
         }
 
-        /* Note: base class insertion; we cannot serialize anything here */
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
+			writer.Write(1000); // Version
+			writer.Write(m_EngravedText);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
+			int version = reader.PeekInt();
+			switch(version)
+			{
+				case 1000:
+					reader.ReadInt();
+					m_EngravedText = reader.ReadString();
+					break;
+			}
         }
     }
 

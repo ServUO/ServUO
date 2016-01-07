@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Targeting;
+using Server.Spells.Fourth;
 
 namespace Server.Spells.Sixth
 {
@@ -68,18 +69,7 @@ namespace Server.Spells.Sixth
                 {
                     Mobile m = targets[i];
 
-                    this.Caster.DoHarmful(m);
-
-                    SpellHelper.AddStatCurse(this.Caster, m, StatType.Str);
-                    SpellHelper.DisableSkillCheck = true;
-                    SpellHelper.AddStatCurse(this.Caster, m, StatType.Dex);
-                    SpellHelper.AddStatCurse(this.Caster, m, StatType.Int);
-                    SpellHelper.DisableSkillCheck = false;
-
-                    m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
-                    m.PlaySound(0x1FB);
-					
-                    this.HarmfulSpell(m);
+					CurseSpell.DoCurse(this.Caster, m);
                 }
             }
 

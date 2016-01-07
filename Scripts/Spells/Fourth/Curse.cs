@@ -45,7 +45,38 @@ namespace Server.Spells.Fourth
             this.Caster.Target = new InternalTarget(this);
         }
 
-        public void Target(Mobile m)
+		public static void DoCurse(Mobile caster, Mobile m)
+		{
+			SpellHelper.AddStatCurse(caster, m, StatType.Str);
+			SpellHelper.DisableSkillCheck = true;
+			SpellHelper.AddStatCurse(caster, m, StatType.Dex);
+			SpellHelper.AddStatCurse(caster, m, StatType.Int);
+			SpellHelper.DisableSkillCheck = false;
+
+			int percentage = (int)(SpellHelper.GetOffsetScalar(caster, m, true) * 100);
+			TimeSpan length = SpellHelper.GetDuration(caster, m);
+			string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
+			BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, length, m, args.ToString()));
+
+			Timer t = (Timer)m_UnderEffect[m];
+
+			if (caster.Player && m.Player /*&& Caster != m */ && t == null)    //On OSI you CAN curse yourself and get this effect.
+			{
+				TimeSpan duration = SpellHelper.GetDuration(caster, m);
+				m_UnderEffect[m] = t = Timer.DelayCall(duration, new TimerStateCallback(RemoveEffect), m);
+				m.UpdateResistances();
+			}
+
+			if (m.Spell != null)
+				m.Spell.OnCasterHurt();
+
+			m.Paralyzed = false;
+
+			m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
+			m.PlaySound(0x1E1);
+		}
+
+		public void Target(Mobile m)
         {
             if (!this.Caster.CanSee(m))
             {
@@ -57,40 +88,12 @@ namespace Server.Spells.Fourth
 
                 SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
 
-                SpellHelper.AddStatCurse(this.Caster, m, StatType.Str);
-                SpellHelper.DisableSkillCheck = true;
-                SpellHelper.AddStatCurse(this.Caster, m, StatType.Dex);
-                SpellHelper.AddStatCurse(this.Caster, m, StatType.Int);
-                SpellHelper.DisableSkillCheck = false;
+				DoCurse(this.Caster, m);
 
-                Timer t = (Timer)m_UnderEffect[m];
+				this.HarmfulSpell(m);
+			}
 
-                if (this.Caster.Player && m.Player /*&& Caster != m */ && t == null)	//On OSI you CAN curse yourself and get this effect.
-                {
-                    TimeSpan duration = SpellHelper.GetDuration(this.Caster, m);
-                    m_UnderEffect[m] = t = Timer.DelayCall(duration, new TimerStateCallback(RemoveEffect), m);
-                    m.UpdateResistances();
-                }
-
-                if (m.Spell != null)
-                    m.Spell.OnCasterHurt();
-
-                m.Paralyzed = false;
-
-                m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
-                m.PlaySound(0x1E1);
-
-                int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
-                TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
-
-                string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
-
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, length, m, args.ToString()));
-
-                this.HarmfulSpell(m);
-            }
-
-            this.FinishSequence();
+			this.FinishSequence();
         }
 
         private class InternalTarget : Target

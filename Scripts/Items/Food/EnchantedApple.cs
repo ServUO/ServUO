@@ -54,17 +54,9 @@ namespace Server.Items
 
                 StatMod mod;
 
-                mod = from.GetStatMod("[Magic] Str Offset");
-                if (mod != null && mod.Offset < 0)
-                    from.RemoveStatMod("[Magic] Str Offset");
-
-                mod = from.GetStatMod("[Magic] Dex Offset");
-                if (mod != null && mod.Offset < 0)
-                    from.RemoveStatMod("[Magic] Dex Offset");
-
-                mod = from.GetStatMod("[Magic] Int Offset");
-                if (mod != null && mod.Offset < 0)
-                    from.RemoveStatMod("[Magic] Int Offset");
+                from.RemoveStatMod("[Magic] Str Curse");
+				from.RemoveStatMod("[Magic] Dex Curse");
+				from.RemoveStatMod("[Magic] Int Curse");
 
                 from.Paralyzed = false;
                 from.Asleep = false;
