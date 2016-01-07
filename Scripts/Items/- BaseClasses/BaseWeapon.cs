@@ -2758,11 +2758,11 @@ namespace Server.Items
 			defender.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
 			defender.PlaySound(0x1EA);
 			defender.AddStatMod(
-				new StatMod(StatType.Str, String.Format("[Magic] {0} Offset", StatType.Str), -10, TimeSpan.FromSeconds(30)));
+				new StatMod(StatType.Str, String.Format("[Magic] {0} Curse", StatType.Str), -10, TimeSpan.FromSeconds(30)));
 			defender.AddStatMod(
-				new StatMod(StatType.Dex, String.Format("[Magic] {0} Offset", StatType.Dex), -10, TimeSpan.FromSeconds(30)));
+				new StatMod(StatType.Dex, String.Format("[Magic] {0} Curse", StatType.Dex), -10, TimeSpan.FromSeconds(30)));
 			defender.AddStatMod(
-				new StatMod(StatType.Int, String.Format("[Magic] {0} Offset", StatType.Int), -10, TimeSpan.FromSeconds(30)));
+				new StatMod(StatType.Int, String.Format("[Magic] {0} Curse", StatType.Int), -10, TimeSpan.FromSeconds(30)));
 
 			int percentage = -10; //(int)(SpellHelper.GetOffsetScalar(Caster, m, true) * 100);
 			string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
