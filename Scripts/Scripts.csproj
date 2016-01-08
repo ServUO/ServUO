@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -4968,9 +4968,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Special\Bulk Order Rewards\Blacksmithy\PowderOfTemperament.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Special\Community Collection\JesterHatofChuckles.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Special\Evil Home Decor Collection\AwesomeDisturbingPortrait.cs">
