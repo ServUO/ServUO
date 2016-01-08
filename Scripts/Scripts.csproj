@@ -12471,25 +12471,6 @@
     <Compile Include="Services\Runic Reforging\RunicReforging.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\ShardControl\BaseSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ShardControl\MainSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ShardControl\Settings\AccountSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ShardControl\Settings\ClientSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ShardControl\Settings\GeneralSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ShardControl\Settings\SaveSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\ShardControl\ShardControlCore.cs" />
     <Compile Include="Services\Spawner\ProximitySpawner.cs">
       <SubType>Code</SubType>
     </Compile>
