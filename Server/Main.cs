@@ -511,7 +511,12 @@ namespace Server
 			Utility.PushColor(ConsoleColor.DarkYellow);
 			Console.WriteLine("RandomImpl: {0} ({1})", RandomImpl.Type.Name, RandomImpl.IsHardwareRNG ? "Hardware" : "Software");
 			Utility.PopColor();
-			
+
+			Utility.PushColor(ConsoleColor.DarkYellow);
+			Console.WriteLine("Core: Loading config...");
+			Config.Load();
+			Utility.PopColor();
+
 			while (!ScriptCompiler.Compile(Debug, _Cache))
 			{
 				Utility.PushColor(ConsoleColor.Red);
