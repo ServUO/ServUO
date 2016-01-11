@@ -8,7 +8,7 @@ namespace Server.Misc
 {
     public class TestCenter
     {
-        private const bool m_Enabled = false;
+        private const bool m_Enabled = Config.GetBool("TestCenter.Enabled", false);
         public static bool Enabled
         {
             get

@@ -110,6 +110,21 @@ namespace Server
 			Set(key, value ? "true" : "false");
 		}
 
+		public static void Set<T>(string key, T value) where T : struct, IConvertible
+		{
+			if (!typeof(T).IsEnum) throw new ArgumentException("T must be an enumerated type");
+
+			foreach (T item in Enum.GetValues(typeof(T)))
+			{
+				if (item.Equals(value))
+				{
+					Set(key, item.ToString().ToLower());
+					return;
+				}
+			}
+			throw new ArgumentException("Enumerated value not found");
+		}
+
 		public static string GetString(string key, string defaultValue)
 		{
 			string value;
@@ -180,6 +195,23 @@ namespace Server
 				value == "false")
 			{
 				return true;
+			}
+			return defaultValue;
+		}
+
+		public static T GetEnum<T>(string key, T defaultValue) where T : struct, IConvertible
+		{
+			if (!typeof(T).IsEnum) throw new ArgumentException("T must be an enumerated type");
+			string value = GetString(key, null);
+			if(value == null)
+			{
+				return defaultValue;
+			}
+
+			value = value.Trim().ToLower();
+			foreach (T item in Enum.GetValues(typeof(T)))
+			{
+				if (item.ToString().ToLower().Equals(value)) return item;
 			}
 			return defaultValue;
 		}

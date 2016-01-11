@@ -17,6 +17,8 @@ namespace Server.Multis
 {
     public abstract class BaseHouse : BaseMulti
     {
+		private static int m_AccountHouseLimit = Config.GetInt("Housing.AccountHouseLimit", 1);
+
         public static bool NewVendorSystem
         {
             get
@@ -3506,11 +3508,12 @@ namespace Server.Multis
             if (a == null)
                 return false;
 
-            for (int i = 0; i < a.Length; ++i)
-                if (a[i] != null && HasHouse(a[i]))
-                    return true;
+			int count = 0;
+			for (int i = 0; i < a.Length; ++i)
+				if (a[i] != null && HasHouse(a[i]))
+					++count;
 
-            return false;
+            return count >= m_AccountHouseLimit;
         }
 
         public bool IsOwner(Mobile m)
