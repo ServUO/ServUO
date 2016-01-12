@@ -575,7 +575,7 @@ namespace Server
 		#endregion
 
 		#region Stygian Abyss
-		public static bool IsStygianAbyss(IEntity e)
+		public static bool IsStygian/*Abyss*/(IEntity e)
 		{
             if (e == null)
                 return false;
@@ -606,7 +606,7 @@ namespace Server
 
 				if (rnd < item.Chance)
 				{
-					return Mutate(from, luckChance, item.Construct(IsInTokuno(from), IsMondain(from)));
+					return Mutate(from, luckChance, item.Construct(IsInTokuno(from), IsMondain(from), IsStygian(from) ) );
 				}
 
 				rnd -= item.Chance;
@@ -986,7 +986,7 @@ namespace Server
 			return Loot.RandomScroll(minCircle * 8, (maxCircle * 8) + 7, SpellbookType.Regular);
 		}
 
-		public Item Construct(bool inTokuno, bool isMondain)
+		public Item Construct(bool inTokuno, bool isMondain, bool isStygian)
 		{
 			try
 			{
@@ -994,15 +994,15 @@ namespace Server
 
 				if (m_Type == typeof(BaseRanged))
 				{
-					item = Loot.RandomRangedWeapon(inTokuno, isMondain);
+					item = Loot.RandomRangedWeapon(inTokuno, isMondain,isStygian );
 				}
 				else if (m_Type == typeof(BaseWeapon))
 				{
-					item = Loot.RandomWeapon(inTokuno, isMondain);
+					item = Loot.RandomWeapon(inTokuno, isMondain, isStygian );
 				}
 				else if (m_Type == typeof(BaseArmor))
 				{
-					item = Loot.RandomArmorOrHat(inTokuno, isMondain);
+					item = Loot.RandomArmorOrHat(inTokuno, isMondain, isStygian);
 				}
 				else if (m_Type == typeof(BaseShield))
 				{
