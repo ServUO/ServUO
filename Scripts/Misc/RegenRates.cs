@@ -181,6 +181,9 @@ namespace Server.Misc
 
                 totalPoints += cappedPoints;
 
+				if (from is PlayerMobile && ((PlayerMobile)from).Race == Race.Gargoyle)
+					totalPoints += 2;
+
                 if (totalPoints < -1)
                     totalPoints = -1;
 
