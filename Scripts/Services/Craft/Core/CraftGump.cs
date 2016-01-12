@@ -494,8 +494,15 @@ namespace Server.Engines.Craft
             CraftContext context = system.GetContext(this.m_From);
 
             #region Stygian Abyss
-            if (Locked)
-                return;
+			if (Locked)
+			{
+				if (type == 6 && index == 11)
+				{
+					// Cancel Make
+					AutoCraftTimer.EndTimer(m_From);
+				}
+				return;
+			}
             #endregion
 
             switch ( type )
