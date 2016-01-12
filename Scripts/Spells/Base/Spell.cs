@@ -163,6 +163,23 @@ namespace Server.Spells
 			sdiBonus += ArcaneEmpowermentSpell.GetSpellBonus(m_Caster, playerVsPlayer);
 			#endregion
 
+			if (m_Caster is PlayerMobile && m_Caster.Race == Race.Gargoyle)
+			{
+				double perc = ((double)m_Caster.Hits / (double)m_Caster.HitsMax) * 100;
+
+				perc = 100 - perc;
+				perc /= 20;
+
+				if (perc > 4)
+					sdiBonus += 12;
+				else if (perc >= 3)
+					sdiBonus += 9;
+				else if (perc >= 2)
+					sdiBonus += 6;
+				else if (perc >= 1)
+					sdiBonus += 3;
+			}
+
 			// PvP spell damage increase cap of 15% from an item’s magic property, 30% if spell school focused.
 			if (playerVsPlayer)
 			{
