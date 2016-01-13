@@ -1,4 +1,4 @@
-using System;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -6,77 +6,105 @@ namespace Server.Mobiles
     public class Slith : BaseCreature
     {
         [Constructable]
-        public Slith()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+        public Slith() : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a slith";
-            this.Body = 734; 
+            Name = "a slith";
+            Body = 734;
 
-            this.SetStr(133, 146);
-            this.SetDex(59, 67);
-            this.SetInt(12, 20);
+            SetStr(129, 136);
+            SetDex(72, 75);
+            SetInt(12, 13);
 
-            this.SetHits(84, 94);
+            SetHits(84, 85);
 
-            this.SetDamage(6, 24);
+            SetDamage(6, 24);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 35, 45);
-            this.SetResistance(ResistanceType.Fire, 30, 45);
-            this.SetResistance(ResistanceType.Poison, 25, 35);
-            this.SetResistance(ResistanceType.Energy, 25, 35);
+            SetResistance(ResistanceType.Physical, 35, 40);
+            SetResistance(ResistanceType.Fire, 35, 45);
+            SetResistance(ResistanceType.Poison, 25, 35);
+            SetResistance(ResistanceType.Energy, 25, 30);
 
-            this.SetSkill(SkillName.MagicResist, 59.2, 67.9);
-            this.SetSkill(SkillName.Tactics, 66.8, 78.4);
-            this.SetSkill(SkillName.Wrestling, 63.1, 77.6);
+            SetSkill(SkillName.MagicResist, 59.1, 63.5);
+            SetSkill(SkillName.Tactics, 74.6, 76.4);
+            SetSkill(SkillName.Wrestling, 62.0, 77.1);
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 80.7;
+            PackItem(new DragonBlood(6));
+
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 80.7;
+
+            QLPoints = 15;
         }
 
-        public Slith(Serial serial)
-            : base(serial)
+        public Slith(Serial serial) : base(serial)
         {
         }
 
         public override bool HasBreath
         {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
+            get { return true; }
+        } // fire breath enabled
+
         public override int Meat
         {
-            get
-            {
-                return 6;
-            }
+            get { return 6; }
         }
+
+        // public override int DragonBlood { get { return 6; } }
         public override int Hides
         {
-            get
-            {
-                return 10;
-            }
+            get { return 10; }
         }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.Average, 2);
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.05)
+            {
+                switch (Utility.Random(2))
+                {
+                    case 0:
+                        c.DropItem(new SlithTongue());
+                        break;
+                    case 1:
+                        c.DropItem(new SlithEye());
+                        break;
+                }
+            }
+
+            if (Utility.RandomDouble() < 0.25)
+            {
+                switch (Utility.Random(2))
+                {
+                    case 0:
+                        c.DropItem(new AncientPotteryFragments());
+                        break;
+                    case 1:
+                        c.DropItem(new TatteredAncientScroll());
+                        break;
+                }
+            }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            var version = reader.ReadInt();
         }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -6,44 +6,72 @@ namespace Server.Mobiles
     public class TrapdoorSpider : BaseCreature
     {
         [Constructable]
-        public TrapdoorSpider()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+        public TrapdoorSpider() : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a trapdoor spider";
-            this.Body = 737; 
+            Name = "a trapdoor spider";
+            Body = 737;
 
-            this.SetStr(100, 104);
-            this.SetDex(162, 165);
-            this.SetInt(29, 50);
+            SetStr(100, 104);
+            SetDex(162, 165);
+            SetInt(29, 50);
 
-            this.SetHits(125, 144);
+            SetHits(125, 144);
 
-            this.SetDamage(15, 18);
+            SetDamage(15, 18);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Poison, 80);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Poison, 80);
 
-            this.SetResistance(ResistanceType.Physical, 0);
-            this.SetResistance(ResistanceType.Fire, 30, 35);
-            this.SetResistance(ResistanceType.Cold, 30, 35);
-            this.SetResistance(ResistanceType.Poison, 40, 45);
-            this.SetResistance(ResistanceType.Energy, 95, 100);
+            SetResistance(ResistanceType.Physical, 0);
+            SetResistance(ResistanceType.Fire, 30, 35);
+            SetResistance(ResistanceType.Cold, 30, 35);
+            SetResistance(ResistanceType.Poison, 40, 45);
+            SetResistance(ResistanceType.Energy, 95, 100);
 
-            this.SetSkill(SkillName.Anatomy, 2.0, 3.8);
-            this.SetSkill(SkillName.MagicResist, 47.5, 57.9);
-            this.SetSkill(SkillName.Poisoning, 70.5, 73.5);
-            this.SetSkill(SkillName.Tactics, 73.3, 78.9);
-            this.SetSkill(SkillName.Wrestling, 92.5, 94.6);
+            SetSkill(SkillName.Anatomy, 2.0, 3.8);
+            SetSkill(SkillName.MagicResist, 47.5, 57.9);
+            SetSkill(SkillName.Poisoning, 70.5, 73.5);
+            SetSkill(SkillName.Tactics, 73.3, 78.9);
+            SetSkill(SkillName.Wrestling, 92.5, 94.6);
+            SetSkill(SkillName.Hiding, 110.3, 119.9);
+            SetSkill(SkillName.Stealth, 110.5, 119.6);
+
+            QLPoints = 5;
         }
 
-        public TrapdoorSpider(Serial serial)
-            : base(serial)
+        public TrapdoorSpider(Serial serial) : base(serial)
         {
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.ShadowStrike;
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Rich);
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.12)
+                c.DropItem(new BottleIchor());
+
+            if (Utility.RandomDouble() < 0.05)
+            {
+                switch (Utility.Random(2))
+                {
+                    case 0:
+                        c.DropItem(new SpiderCarapace());
+                        break;
+                    case 1:
+                        c.DropItem(new TatteredAncientScroll());
+                        break;
+                }
+            }
         }
 
         public override int GetIdleSound()
@@ -69,13 +97,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            var version = reader.ReadInt();
         }
     }
 }

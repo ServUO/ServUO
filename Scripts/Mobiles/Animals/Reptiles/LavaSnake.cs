@@ -1,5 +1,5 @@
-using System;
 using Server.Items;
+using Server.Services;
 
 namespace Server.Mobiles
 {
@@ -11,37 +11,39 @@ namespace Server.Mobiles
         public LavaSnake()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a lava snake";
-            this.Body = 52;
-            this.Hue = Utility.RandomList(0x647, 0x650, 0x659, 0x662, 0x66B, 0x674);
-            this.BaseSoundID = 0xDB;
+            Name = "a lava snake";
+            Body = 52;
+            Hue = Utility.RandomList(0x647, 0x650, 0x659, 0x662, 0x66B, 0x674);
+            BaseSoundID = 0xDB;
 
-            this.SetStr(43, 55);
-            this.SetDex(16, 25);
-            this.SetInt(6, 10);
+            SetStr(43, 55);
+            SetDex(16, 25);
+            SetInt(6, 10);
 
-            this.SetHits(28, 32);
-            this.SetMana(0);
+            SetHits(28, 32);
+            SetMana(0);
 
-            this.SetDamage(1, 8);
+            SetDamage(1, 8);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 20, 25);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetResistance(ResistanceType.Physical, 20, 25);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.MagicResist, 15.1, 20.0);
-            this.SetSkill(SkillName.Tactics, 19.3, 34.0);
-            this.SetSkill(SkillName.Wrestling, 19.3, 34.0);
+            SetSkill(SkillName.MagicResist, 15.1, 20.0);
+            SetSkill(SkillName.Tactics, 19.3, 34.0);
+            SetSkill(SkillName.Wrestling, 19.3, 34.0);
 
-            this.Fame = 600;
-            this.Karma = -600;
+            Fame = 600;
+            Karma = -600;
 
-            this.VirtualArmor = 24;
+            VirtualArmor = 24;
 
-            this.PackItem(new SulfurousAsh());
+            QLPoints = 2;
+
+            PackItem(new SulfurousAsh());
         }
 
         public LavaSnake(Serial serial)
@@ -51,63 +53,43 @@ namespace Server.Mobiles
 
         public override bool DeathAdderCharmable
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
+
         public override bool HasBreath
         {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
+            get { return true; }
+        } // fire breath enabled
+
         public override int Meat
         {
-            get
-            {
-                return 1;
-            }
+            get { return 1; }
         }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Poor);
+            AddLoot(LootPack.Poor);
         }
+
         public override void OnDeath(Container c)
         {
-
             base.OnDeath(c);
-            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
-            if (0.25 > Utility.RandomDouble() && reg.Name == "Crimson Veins")
-            {
-                if (Utility.RandomDouble() < 0.6)
-                    c.DropItem(new EssencePrecision());
-            }
-            
-            if (0.25 > Utility.RandomDouble() && reg.Name == "Fire Temple Ruins")
-            {
-                if (Utility.RandomDouble() < 0.6)
-                    c.DropItem(new EssencePrecision());
-            }
-            if (0.25 > Utility.RandomDouble() && reg.Name == "Lava Caldera")
-            {
-                if (Utility.RandomDouble() < 0.6)
-                    c.DropItem(new EssencePassion());
-            }
+
+            SARegionDrops.GetSADrop(c);
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            var version = reader.ReadInt();
         }
     }
 }

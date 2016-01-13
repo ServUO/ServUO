@@ -71,12 +71,6 @@ namespace Server.Engines.Quests
             }
         }
 
-        public override void GiveRewards()
-        {
-            Server.Engines.QueensLoyalty.LoyaltySystem.HandleQuest(Owner, this);
-            base.GiveRewards();
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -154,12 +148,6 @@ namespace Server.Engines.Quests
             {
                 return 1113786;
             }
-        }
-
-        public override void GiveRewards()
-        {
-            Server.Engines.QueensLoyalty.LoyaltySystem.HandleQuest(Owner, this);
-            base.GiveRewards();
         }
 
         public override void Serialize(GenericWriter writer)

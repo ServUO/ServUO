@@ -688,6 +688,9 @@ namespace Server.Misc
 
                 if (pm.IsPlayer() && ((Account)pm.Account).Young)
                     young = pm.Young = true;
+
+                if (pm.Race == Race.Gargoyle) // Gargoyles start with 2000 loyalty points
+                    pm.Exp = 2000;
             }
 
             SetName(newChar, args.Name);
