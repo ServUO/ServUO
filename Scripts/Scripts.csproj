@@ -4970,9 +4970,6 @@
     <Compile Include="Items\Special\Bulk Order Rewards\Blacksmithy\PowderOfTemperament.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Special\Community Collection\JesterHatofChuckles.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Special\Evil Home Decor Collection\AwesomeDisturbingPortrait.cs">
       <SubType>Code</SubType>
     </Compile>

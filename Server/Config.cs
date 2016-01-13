@@ -194,8 +194,11 @@ namespace Server
 			if (value == "no" ||
 				value == "false")
 			{
-				return true;
+				return false;
 			}
+			Utility.PushColor(ConsoleColor.Yellow);
+			Console.WriteLine(String.Format("Config: Warning, unrecognized boolean value for {0}", key));
+			Utility.PopColor();
 			return defaultValue;
 		}
 

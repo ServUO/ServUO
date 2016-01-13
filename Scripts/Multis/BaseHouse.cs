@@ -3508,12 +3508,21 @@ namespace Server.Multis
             if (a == null)
                 return false;
 
+			if(HasHouse(m))
+			{
+				return true;
+			}
+
 			int count = 0;
 			for (int i = 0; i < a.Length; ++i)
+			{
 				if (a[i] != null && HasHouse(a[i]))
+				{
 					++count;
+				}
+			}
 
-            return count >= m_AccountHouseLimit;
+			return count >= m_AccountHouseLimit;
         }
 
         public bool IsOwner(Mobile m)
