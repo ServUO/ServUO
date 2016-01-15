@@ -131,6 +131,13 @@ namespace Server.Mobiles
                 return false;
             }
         }
+		public override bool AllureImmune
+		{
+			get
+			{
+				return true;
+			}
+		}
         public override bool Unprovokable
         {
             get
