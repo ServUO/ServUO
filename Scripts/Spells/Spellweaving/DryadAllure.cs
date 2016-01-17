@@ -38,7 +38,7 @@ namespace Server.Spells.Spellweaving
         }
         public static bool IsValidTarget(BaseCreature bc)
         {
-            if (bc == null || bc.IsParagon || (bc.Controlled && !bc.Allured) || bc.Summoned)
+            if (bc == null || bc.IsParagon || (bc.Controlled && !bc.Allured) || bc.Summoned || bc.AllureImmune)
                 return false;
 				
             SlayerEntry slayer = SlayerGroup.GetEntryByName(SlayerName.Repond);

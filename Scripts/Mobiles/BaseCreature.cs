@@ -560,6 +560,7 @@ namespace Server.Mobiles
 
 		public virtual bool BleedImmune { get { return false; } }
 		public virtual double BonusPetDamageScalar { get { return 1.0; } }
+		public virtual bool AllureImmune { get { return false; } }
 
 		public virtual bool DeathAdderCharmable { get { return false; } }
 
