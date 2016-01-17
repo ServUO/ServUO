@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -10,36 +9,38 @@ namespace Server.Mobiles
         public Relanord()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a Relanord";
-            this.Body = 0x2F4;
-            this.Hue = 2071;
+            Name = "a Relanord";
+            Body = 0x2F4;
+            Hue = 2071;
 
-            this.SetStr(561, 650);
-            this.SetDex(76, 95);
-            this.SetInt(61, 90);
+            SetStr(561, 650);
+            SetDex(76, 95);
+            SetInt(61, 90);
 
-            this.SetHits(331, 390);
+            SetHits(331, 390);
 
-            this.SetDamage(13, 19);
+            SetDamage(13, 19);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Energy, 50);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Energy, 50);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Fire, 40, 60);
-            this.SetResistance(ResistanceType.Cold, 25, 35);
-            this.SetResistance(ResistanceType.Poison, 25, 35);
-            this.SetResistance(ResistanceType.Energy, 25, 35);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 40, 60);
+            SetResistance(ResistanceType.Cold, 25, 35);
+            SetResistance(ResistanceType.Poison, 25, 35);
+            SetResistance(ResistanceType.Energy, 25, 35);
 
-            this.SetSkill(SkillName.MagicResist, 80.2, 98.0);
-            this.SetSkill(SkillName.Tactics, 80.2, 98.0);
-            this.SetSkill(SkillName.Wrestling, 80.2, 98.0);
+            SetSkill(SkillName.MagicResist, 80.2, 98.0);
+            SetSkill(SkillName.Tactics, 80.2, 98.0);
+            SetSkill(SkillName.Wrestling, 80.2, 98.0);
 
-            this.Fame = 10000;
-            this.Karma = -10000;
-            this.VirtualArmor = 50;
+            Fame = 10000;
+            Karma = -10000;
+            VirtualArmor = 50;
 
-            this.PackItem(new DaemonBone(5));
+            QLPoints = 20;
+
+            PackItem(new DaemonBone(5));
         }
 
         public Relanord(Serial serial)
@@ -49,35 +50,27 @@ namespace Server.Mobiles
 
         public override bool AlwaysMurderer
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
+
         public override bool AutoDispel
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
+
         public override bool BardImmune
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
+
         public override Poison PoisonImmune
         {
-            get
-            {
-                return Poison.Lethal;
-            }
+            get { return Poison.Lethal; }
         }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 1);
+            AddLoot(LootPack.FilthyRich, 1);
         }
 
         public override void OnDeath(Container c)
@@ -116,13 +109,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            var version = reader.ReadInt();
         }
     }
 }

@@ -15,6 +15,7 @@
 \     /
 `---'
 */
+
 using System;
 using Server.Items;
 
@@ -37,43 +38,44 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new[]
                 {
-                    typeof(UnusualGoods)
+                    typeof (UnusualGoods)
                 };
             }
         }
+
         public override void InitBody()
         {
-            this.Race = Race.Gargoyle;
-            this.InitStats(100, 100, 25);
-            this.Female = false;
-            this.Body = 666;
-            this.HairItemID = 16987;
-            this.HairHue = 1801;
+            Race = Race.Gargoyle;
+            InitStats(100, 100, 25);
+            Female = false;
+            Body = 666;
+            HairItemID = 16987;
+            HairHue = 1801;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
+            AddItem(new Backpack());
 
-            this.AddItem(new GargishClothChest(Utility.RandomNeutralHue()));
-            this.AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
-            this.AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
+            AddItem(new GargishClothChest(Utility.RandomNeutralHue()));
+            AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
+            AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            var version = reader.ReadInt();
         }
     }
 }

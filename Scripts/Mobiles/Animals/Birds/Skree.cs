@@ -1,4 +1,4 @@
-using System;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -9,35 +9,37 @@ namespace Server.Mobiles
         public Skree()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a skree";
-            this.Body = 733; 
+            Name = "a skree";
+            Body = 733;
 
-            this.SetStr(297, 330);
-            this.SetDex(96, 124);
-            this.SetInt(188, 260);
+            SetStr(297, 330);
+            SetDex(96, 124);
+            SetInt(188, 260);
 
-            this.SetHits(205, 300);
+            SetHits(205, 300);
 
-            this.SetDamage(5, 7);
+            SetDamage(5, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 45, 55);
-            this.SetResistance(ResistanceType.Cold, 25, 40);
-            this.SetResistance(ResistanceType.Poison, 55, 65);
-            this.SetResistance(ResistanceType.Energy, 25, 40);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 45, 55);
+            SetResistance(ResistanceType.Cold, 25, 40);
+            SetResistance(ResistanceType.Poison, 55, 65);
+            SetResistance(ResistanceType.Energy, 25, 40);
 
-            this.SetSkill(SkillName.EvalInt, 90.6, 100.0);
-            this.SetSkill(SkillName.Magery, 90.2, 114.2);
-            this.SetSkill(SkillName.Meditation, 65.3, 75.0);
-            this.SetSkill(SkillName.MagicResist, 75.1, 90.0);
-            this.SetSkill(SkillName.Tactics, 20.2, 24.7);
-            this.SetSkill(SkillName.Wrestling, 20.2, 34.8);
+            SetSkill(SkillName.EvalInt, 90.6, 100.0);
+            SetSkill(SkillName.Magery, 90.2, 114.2);
+            SetSkill(SkillName.Meditation, 65.3, 75.0);
+            SetSkill(SkillName.MagicResist, 75.1, 90.0);
+            SetSkill(SkillName.Tactics, 20.2, 24.7);
+            SetSkill(SkillName.Wrestling, 20.2, 34.8);
 
-            this.Tamable = true;
-            this.ControlSlots = 4;
-            this.MinTameSkill = 95.1;
+            Tamable = true;
+            ControlSlots = 4;
+            MinTameSkill = 95.1;
+
+            QLPoints = 15;
         }
 
         public Skree(Serial serial)
@@ -47,28 +49,22 @@ namespace Server.Mobiles
 
         public override int Meat
         {
-            get
-            {
-                return 3;
-            }
+            get { return 3; }
         }
+
         public override MeatType MeatType
         {
-            get
-            {
-                return MeatType.Bird;
-            }
+            get { return MeatType.Bird; }
         }
+
         public override int Hides
         {
-            get
-            {
-                return 5;
-            }
+            get { return 5; }
         }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
+            AddLoot(LootPack.Average);
         }
 
         public override int GetIdleSound()
@@ -94,13 +90,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            var version = reader.ReadInt();
         }
     }
 }

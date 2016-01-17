@@ -1,79 +1,129 @@
 using System;
+using Server.Items;
+using Server.Network;
+//
+//
+
+//
 
 namespace Server.Mobiles
 {
     [CorpseName("a kepetch corpse")]
-    public class KepetchAmbusher : BaseCreature
+    public class KepetchAmbusher : BaseCreature, ICarvable
     {
+        private DateTime m_NextWoolTime;
+
         [Constructable]
-        public KepetchAmbusher()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+        public KepetchAmbusher() : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a kepetch ambusher";
-            this.Body = 726;
+            Name = "a kepetch ambusher";
+            Body = 726;
 
-            this.SetStr(451, 455);
-            this.SetDex(258, 267);
-            this.SetInt(43, 47);
+            SetStr(440, 446);
+            SetDex(229, 254);
+            SetInt(46, 46);
 
-            this.SetHits(511, 543);
-			this.SetStam(258, 267);
-			this.SetMana(43, 47);
+            SetHits(533, 544);
 
-            this.SetDamage(7, 17);
+            SetDamage(7, 17);
 
-            this.SetDamageType(ResistanceType.Physical, 80);
-            this.SetDamageType(ResistanceType.Poison, 20);
+            SetDamageType(ResistanceType.Physical, 80);
+            SetDamageType(ResistanceType.Poison, 20);
 
-            this.SetResistance(ResistanceType.Physical, 60, 75);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
-            this.SetResistance(ResistanceType.Cold, 45, 55);
-            this.SetResistance(ResistanceType.Poison, 50, 70);
-            this.SetResistance(ResistanceType.Energy, 55, 75);
+            SetResistance(ResistanceType.Physical, 73, 95);
+            SetResistance(ResistanceType.Fire, 57, 70);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 55, 65);
+            SetResistance(ResistanceType.Energy, 70, 95);
 
-            this.SetSkill(SkillName.Anatomy, 110.2, 112.4);
-            this.SetSkill(SkillName.MagicResist, 95.8, 97.5);
-            this.SetSkill(SkillName.Tactics, 107.9, 112.4);
-            this.SetSkill(SkillName.Wrestling, 103.7, 109.3);
+            SetSkill(SkillName.Anatomy, 104.3, 114.1);
+            SetSkill(SkillName.MagicResist, 94.6, 97.4);
+            SetSkill(SkillName.Tactics, 110.4, 123.5);
+            SetSkill(SkillName.Wrestling, 107.3, 113.9);
+            SetSkill(SkillName.Stealth, 125.0);
+            SetSkill(SkillName.Hiding, 125.0);
+
+            PackItem(new DragonBlood(6));
+
+            Fame = 2500;
+            Karma = -2500;
+
+            QLPoints = 25;
+
+            //	VirtualArmor = 16;
         }
 
-        public KepetchAmbusher(Serial serial)
-            : base(serial)
+        public KepetchAmbusher(Serial serial) : base(serial)
         {
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextWoolTime
+        {
+            get { return m_NextWoolTime; }
+            set
+            {
+                m_NextWoolTime = value;
+                Body = (DateTime.Now >= m_NextWoolTime) ? 0x2D6 : 0x2D7;
+            }
         }
 
         public override int Meat
         {
-            get
-            {
-                return 7;
-            }
+            get { return 7; }
         }
+
         public override int Hides
         {
-            get
-            {
-                return 14;
-            }
+            get { return 14; }
         }
+
+        // public override int DragonBlood { get { return 6; } }
         public override HideType HideType
         {
-            get
-            {
-                return HideType.Horned;
-            }
+            get { return HideType.Horned; }
         }
-        // add fur drop
+
         public override FoodType FavoriteFood
         {
-            get
-            {
-                return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
-            }
+            get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; }
         }
+
+        public override int Wool
+        {
+            get { return (Body == 0x2D6 ? 3 : 0); }
+        }
+
+        public void Carve(Mobile from, Item item)
+        {
+            if (DateTime.Now < m_NextWoolTime)
+            {
+                // The Kepetch nimbly escapes your attempts to shear its mane.
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1112358, from.NetState);
+                return;
+            }
+
+            from.SendLocalizedMessage(1112360); // You place the gathered kepetch fur into your backpack.
+            //from.AddToBackpack( new FurO( Map == Map.Felucca ? 2 : 15 ) );
+            from.AddToBackpack(new Fur(Map == Map.Felucca ? 2 : 15));
+
+            NextWoolTime = DateTime.Now + TimeSpan.FromHours(3.0); // TODO: Proper time delay
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.ShadowStrike;
+        }
+
+        public override void OnThink()
+        {
+            base.OnThink();
+            Body = (DateTime.Now >= m_NextWoolTime) ? 0x2D6 : 0x2D7;
+        }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.Average, 2);
         }
 
         public override int GetIdleSound()
@@ -96,18 +146,37 @@ namespace Server.Mobiles
             return 1543;
         }
 
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.1)
+            {
+                c.DropItem(new KepetchWax());
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(1); //0
+            writer.WriteDeltaTime(m_NextWoolTime);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            var version = reader.ReadInt();
 
-            int version = reader.ReadInt();
+            switch (version)
+            {
+                case 1:
+                {
+                    NextWoolTime = reader.ReadDeltaTime();
+                    break;
+                }
+            }
         }
     }
 }
