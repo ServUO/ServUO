@@ -12699,6 +12699,7 @@
     <Compile Include="Services\Virtues\VirtueStatusGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\XmlSpawner\XmlConfig.cs" />
     <Compile Include="Services\XmlSpawner\XmlSpawner Core\BaseXmlSpawner.cs">
       <SubType>Code</SubType>
     </Compile>
