@@ -99,6 +99,7 @@ namespace Server.Engines.Harvest
                 fish.BonusResources = new BonusHarvestResource[]
                 {
                     new BonusHarvestResource(0, 99.4, null, null), //set to same chance as mining ml gems
+					new BonusHarvestResource(80.0, .6, 1113764, typeof(DelicateScales)),
                     new BonusHarvestResource(80.0, .6, 1072597, typeof(WhitePearl))
                 };
             }

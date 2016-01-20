@@ -13,10 +13,13 @@ namespace Server.Engines.VeteranRewards
 
     public class RewardSystem
     {
-        public static bool Enabled = true;// change to true to enable vet rewards
-        public static bool SkillCapRewards = true;// assuming vet rewards are enabled, should total skill cap bonuses be awarded? (720 skills total at 4th level)
-        public static TimeSpan RewardInterval = TimeSpan.FromDays(30.0);
-        private static RewardCategory[] m_Categories;
+		public static bool Enabled = Config.GetBool("VetRewards.Enabled", true);
+		public static bool SkillCapRewards = Config.GetBool("VetRewards.SkillCapRewards", true);
+		public static int SkillBonusCap = Config.GetInt("VetRewards.SkillBonusCap", 720);
+		public static TimeSpan RewardInterval = TimeSpan.FromDays(Config.GetDouble("VetRewards.DaysPerLevel", 30.0d));
+		public static double DaysPerLevel = Config.GetDouble("VetRewards.DaysPerLevel", 30.0d);
+		public static int StartingLevel = Config.GetInt("VetRewards.StartingLevel", 0);
+		private static RewardCategory[] m_Categories;
         private static RewardList[] m_Lists;
         public static RewardCategory[] Categories
         {
@@ -80,9 +83,10 @@ namespace Server.Engines.VeteranRewards
                 return false;
             }
 
-            TimeSpan totalTime = (DateTime.UtcNow - acct.Created);
+			TimeSpan totalTime = (DateTime.UtcNow - acct.Created) + TimeSpan.FromDays(DaysPerLevel * StartingLevel);
 
-            ts = (list.Age - totalTime);
+
+			ts = (list.Age - totalTime);
 
             if (ts <= TimeSpan.Zero)
                 return true;
@@ -108,6 +112,8 @@ namespace Server.Engines.VeteranRewards
 
             if (level < 0)
                 level = 0;
+
+			level += StartingLevel;
 
             return level;
         }
@@ -494,7 +500,12 @@ namespace Server.Engines.VeteranRewards
                     level = 0;
 
                 if (SkillCapRewards)
-                    e.Mobile.SkillsCap = 7000 + (level * 50);
+				{
+					int newLevel = 7000 + (level * 50);
+					if (newLevel > SkillBonusCap * 10)
+						newLevel = SkillBonusCap * 10;
+					e.Mobile.SkillsCap = newLevel;
+				}
                 else
                     e.Mobile.SkillsCap = 7000;
             }

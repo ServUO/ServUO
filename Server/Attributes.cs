@@ -58,7 +58,16 @@ namespace Server
 				return -1;
 			}
 
-			return GetPriority(x) - GetPriority(y);
+			var xPriority = GetPriority(x);
+			var yPriority = GetPriority(y);
+
+			if (xPriority > yPriority)
+				return 1;
+
+			if (xPriority < yPriority)
+				return -1;
+
+			return 0;
 		}
 
 		private int GetPriority(MethodInfo mi)

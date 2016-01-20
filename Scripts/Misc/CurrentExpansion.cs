@@ -15,7 +15,7 @@ namespace Server
 {
 	public class CurrentExpansion
 	{
-		public static readonly Expansion Expansion = Expansion.TOL;
+		public static readonly Expansion Expansion = Config.GetEnum<Expansion>("Expansion.CurrentExpansion", Expansion.TOL);
 
 		[CallPriority(Int32.MinValue)]
 		public static void Configure()

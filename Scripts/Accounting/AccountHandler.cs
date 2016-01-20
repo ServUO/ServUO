@@ -20,10 +20,10 @@ namespace Server.Misc
     public class AccountHandler
     {
         public static PasswordProtection ProtectPasswords = PasswordProtection.NewCrypt;
-        private static readonly int MaxAccountsPerIP = 1;
-        private static readonly bool AutoAccountCreation = true;
-        private static readonly bool RestrictDeletion = !TestCenter.Enabled;
-        private static readonly TimeSpan DeleteDelay = TimeSpan.FromDays(7.0);
+        private static readonly int MaxAccountsPerIP = Config.GetInt("Accounts.AccountsPerIp", 1);
+        private static readonly bool AutoAccountCreation = Config.GetBool("Accounts.AutoCreateAccounts", true);
+        private static readonly bool RestrictDeletion = Config.GetBool("Accounts.RestrictDeletion", !TestCenter.Enabled);
+        private static readonly TimeSpan DeleteDelay = TimeSpan.FromDays(Config.GetDouble("Accounts.DeleteDelay", 7.0));
         private static readonly CityInfo[] StartingCities = new CityInfo[]
         {
             new CityInfo("New Haven",	"New Haven Bank",	1150168, 3667,	2625,	0),
@@ -52,7 +52,7 @@ namespace Server.Misc
         StartingCities[StartingCities.Length - 1] = haven;
         }
         */
-        private static readonly bool PasswordCommandEnabled = false;
+		private static readonly bool PasswordCommandEnabled = Config.GetBool("Accounts.PasswordCommandEnabled", false);
         private static readonly char[] m_ForbiddenChars = new char[]
         {
             '<', '>', ':', '"', '/', '\\', '|', '?', '*'

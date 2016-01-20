@@ -155,7 +155,7 @@ namespace Server.Spells
                     Register(608, typeof(Spellweaving.ReaperFormSpell));
                     //Register( 609, typeof( Spellweaving.WildfireSpell ) );
                     Register(610, typeof(Spellweaving.EssenceOfWindSpell));
-                    //Register( 611, typeof( Spellweaving.DryadAllureSpell ) );
+                    Register( 611, typeof( Spellweaving.DryadAllureSpell ) );
                     Register(612, typeof(Spellweaving.EtherealVoyageSpell));
                     Register(613, typeof(Spellweaving.WordOfDeathSpell));
                     Register(614, typeof(Spellweaving.GiftOfLifeSpell));
