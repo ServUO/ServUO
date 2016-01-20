@@ -1359,7 +1359,7 @@ namespace Server
 			{
 				value = m_File.ReadInt32();
 			}
-			catch(EndOfStreamException e)
+			catch(EndOfStreamException)
 			{
 				// Ignore this exception, the defalut value 0 will be returned
 			}

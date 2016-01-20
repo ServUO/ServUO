@@ -43,7 +43,6 @@ namespace Server.Spells.Mystic
             {
                 List<Mobile> targets = new List<Mobile>();
                 Party party = Party.Get(Caster);
-                StatMod mod;
 
                 double prim = Caster.Skills[CastSkill].Value;
                 double sec = Caster.Skills[DamageSkill].Value;

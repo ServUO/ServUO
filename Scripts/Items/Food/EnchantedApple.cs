@@ -52,8 +52,6 @@ namespace Server.Items
                 IEntity mto = new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 50), from.Map);
                 Effects.SendMovingParticles(mfrom, mto, 0x2255, 1, 0, false, false, 13, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
 
-                StatMod mod;
-
                 from.RemoveStatMod("[Magic] Str Curse");
 				from.RemoveStatMod("[Magic] Dex Curse");
 				from.RemoveStatMod("[Magic] Int Curse");

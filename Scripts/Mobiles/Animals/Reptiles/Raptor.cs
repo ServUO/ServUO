@@ -11,9 +11,6 @@ namespace Server.Mobiles
             typeof (RaptorClaw)
         };
 
-        private bool firstSummoned = true;
-        private DateTime recoverDelay;
-
         [Constructable]
         public Raptor()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)

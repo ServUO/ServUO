@@ -65,10 +65,6 @@ namespace Server.Gumps
 		private static bool PrevLabel = OldStyle, NextLabel = OldStyle;
 
 		private static readonly int PrevLabelOffsetX = PrevWidth + 1;
-		private static readonly int PrevLabelOffsetY = 0;
-
-		private static readonly int NextLabelOffsetX = -29;
-		private static readonly int NextLabelOffsetY = 0;
 
 		private static readonly int NameWidth = 103;
 		private static readonly int ValueWidth = 82;

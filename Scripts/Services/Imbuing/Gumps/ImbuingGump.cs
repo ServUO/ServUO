@@ -221,8 +221,6 @@ namespace Server.Gumps
 
         private class UnravelTarget : Target
         {
-            public bool m_Success;
-
             public UnravelTarget()
                 : base(-1, false, TargetFlags.None)
             {

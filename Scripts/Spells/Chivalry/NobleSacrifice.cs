@@ -138,8 +138,6 @@ namespace Server.Spells.Chivalry
                             sendEffect = true;
                         }
 
-                        StatMod mod;
-
                         if(m.RemoveStatMod("[Magic] Str Offset"))
 							sendEffect = true;
 
