@@ -604,7 +604,7 @@ namespace Server.Items
         {
             this.SendMessage(1072681); // The master of this realm has been slain! You may only stay here so long.
 			
-            if (this.DelayAfterBossSlain != null)
+            if (this.DelayAfterBossSlain != TimeSpan.Zero)
                 this.SendMessage(1075611, this.DelayAfterBossSlain.TotalSeconds); // Time left: ~1_time~ seconds
 				
             this.StopTimer();
