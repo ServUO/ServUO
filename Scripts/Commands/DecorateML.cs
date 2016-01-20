@@ -341,9 +341,7 @@ namespace Server
             PeerlessAltar altar;
             PeerlessTeleporter tele;				
             PrismOfLightPillar pillar;
-            StygianDragonBrazier brazier;
-            MedusaNest nest;
-			
+
             // Bedlam - Malas
             altar = new BedlamAltar();
 			
