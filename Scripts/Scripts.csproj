@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11692,6 +11692,7 @@
     <Compile Include="Services\Help\HelpGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\Help\HelpPersistence.cs" />
     <Compile Include="Services\Help\PagePrompt.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -14101,6 +14102,7 @@
     <Content Include="SpecialSystems\README.TXT" />
     <Content Include="Spells\Mysticism\Blank.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
