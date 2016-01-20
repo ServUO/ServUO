@@ -1254,7 +1254,7 @@ namespace Server.Items
         #region Random Item Generation
         public static Item GenerateRandomItem(IEntity e)
         {
-            Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(e), LootPackEntry.IsMondain(e), LootPackEntry.IsStygianAbyss(e));
+            Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(e), LootPackEntry.IsMondain(e), LootPackEntry.IsStygian(e));
 
             if (item != null)
                 GenerateRandomItem(item, null, Utility.RandomMinMax(100, 700), 0, ReforgedPrefix.None, ReforgedSuffix.None);
@@ -1264,7 +1264,7 @@ namespace Server.Items
 
         public static Item GenerateRandomItem(Mobile killer, BaseCreature creature)
         {
-            Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygianAbyss(killer));
+			Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
 
             if(item != null)
                 GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
