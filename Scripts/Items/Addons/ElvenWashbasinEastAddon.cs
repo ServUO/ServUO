@@ -1,14 +1,15 @@
 using System;
+using Server;
 
 namespace Server.Items
 {
-    public class ElvenWashBasinEastAddon : BaseAddon
+    public class ElvenWashBasinEastAddon : BaseAddonContainer
     {
         [Constructable]
         public ElvenWashBasinEastAddon()
+			: base(0x30E0)
         {
-            this.AddComponent(new AddonComponent(0x30DF), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x30E0), 0, 1, 0);
+            this.AddComponent(new AddonContainerComponent(0x30DF), 0, -1, 0);
         }
 
         public ElvenWashBasinEastAddon(Serial serial)
@@ -16,13 +17,34 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
+        public override BaseAddonContainerDeed Deed
         {
             get
             {
                 return new ElvenWashBasinEastDeed();
             }
         }
+		public override bool RetainDeedHue
+		{
+			get
+			{
+				return true;
+			}
+		}
+		public override int DefaultGumpID
+		{
+			get
+			{
+				return 0x0104;
+			}
+		}
+		public override int DefaultDropSound
+		{
+			get
+			{
+				return 0x0042;
+			}
+		}
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -38,10 +60,11 @@ namespace Server.Items
         }
     }
 
-    public class ElvenWashBasinEastDeed : BaseAddonDeed
+    public class ElvenWashBasinEastDeed : BaseAddonContainerDeed
     {
         [Constructable]
         public ElvenWashBasinEastDeed()
+			: base()
         {
         }
 
@@ -50,13 +73,14 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new ElvenWashBasinEastAddon();
-            }
-        }
+		public override BaseAddonContainer Addon
+		{
+			get
+			{
+				return new ElvenWashBasinEastAddon();
+			}
+		}
+
         public override int LabelNumber
         {
             get

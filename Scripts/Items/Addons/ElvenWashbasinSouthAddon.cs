@@ -2,13 +2,13 @@ using System;
 
 namespace Server.Items
 {
-    public class ElvenWashBasinSouthAddon : BaseAddon
+    public class ElvenWashBasinSouthAddon : BaseAddonContainer
     {
         [Constructable]
         public ElvenWashBasinSouthAddon()
+			: base(0x30E2)
         {
-            this.AddComponent(new AddonComponent(0x30E1), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x30E2), 1, 0, 0);
+            this.AddComponent(new AddonContainerComponent(0x30E1), -1, 0, 0);
         }
 
         public ElvenWashBasinSouthAddon(Serial serial)
@@ -16,13 +16,34 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
+        public override BaseAddonContainerDeed Deed
         {
             get
             {
                 return new ElvenWashBasinSouthDeed();
             }
         }
+		public override bool RetainDeedHue
+		{
+			get
+			{
+				return true;
+			}
+		}
+		public override int DefaultGumpID
+		{
+			get
+			{
+				return 0x0104;
+			}
+		}
+		public override int DefaultDropSound
+		{
+			get
+			{
+				return 0x0042;
+			}
+		}
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -38,7 +59,7 @@ namespace Server.Items
         }
     }
 
-    public class ElvenWashBasinSouthDeed : BaseAddonDeed
+    public class ElvenWashBasinSouthDeed : BaseAddonContainerDeed
     {
         [Constructable]
         public ElvenWashBasinSouthDeed()
@@ -50,7 +71,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
+        public override BaseAddonContainer Addon
         {
             get
             {
