@@ -5021,7 +5021,7 @@ namespace Server.Mobiles
 			new Point3D(1481, 1612, 20), new Point3D(2708, 2153, 0), new Point3D(2249, 1230, 0), new Point3D(5197, 3994, 37),
 			new Point3D(1412, 3793, 0), new Point3D(3688, 2232, 20), new Point3D(2578, 604, 0), new Point3D(4397, 1089, 0),
 			new Point3D(5741, 3218, -2), new Point3D(2996, 3441, 15), new Point3D(624, 2225, 0), new Point3D(1916, 2814, 0),
-			new Point3D(2929, 854, 0), new Point3D(545, 967, 0), new Point3D(3665, 2587, 0)
+			new Point3D(2929, 854, 0), new Point3D(545, 967, 0), new Point3D(3469, 2559, 36)
 		};
 
 		private static readonly Point3D[] m_IlshenarDeathDestinations = new[]

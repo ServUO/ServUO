@@ -1354,7 +1354,6 @@
 					<rect x="3423" y="2480" width="111" height="143" />
 					<go x="3503" y="2574" z="14" />
 					<music name="InTown01" />
-					<guards disabled="true" />
 					<region name="the New Haven Alchemist">
 						<rect x="3457" y="2564" width="9" height="9" />
 					</region>
