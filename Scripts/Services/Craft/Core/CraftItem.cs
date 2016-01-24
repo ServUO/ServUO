@@ -388,6 +388,21 @@ namespace Server.Engines.Craft
 			typeof(BarrelLid), typeof(Clippers)
 		};
 
+		private static readonly Dictionary<Type, Type> m_ResourceConversionTable = new Dictionary<Type, Type>()
+		{
+			{ typeof(Board), typeof(Log) },
+			{ typeof(HeartwoodBoard), typeof(HeartwoodLog) },
+			{ typeof(BloodwoodBoard), typeof(BloodwoodLog) },
+			{ typeof(FrostwoodBoard), typeof(FrostwoodLog) },
+			{ typeof(OakBoard), typeof(OakLog) },
+			{ typeof(AshBoard), typeof(AshLog) },
+			{ typeof(YewBoard), typeof(YewLog) },
+			{ typeof(Leather), typeof(Hides) },
+			{ typeof(SpinedLeather), typeof(SpinedHides) },
+			{ typeof(HornedLeather), typeof(HornedHides) },
+			{ typeof(BarbedLeather), typeof(BarbedHides) },
+		};
+
 		private static Type[] m_NeverColorTable = new[] {typeof(OrcHelm)};
 		#endregion
 
@@ -695,6 +710,8 @@ namespace Server.Engines.Craft
 			{
 				CraftRes craftRes = m_arCraftRes.GetAt(i);
 				Type baseType = craftRes.ItemType;
+
+				m_ResourceConversionTable.TryGetValue(typeRes, out baseType);
 
 				// Resource Mutation
 				if ((baseType == resCol.ResType) && (typeRes != null))
