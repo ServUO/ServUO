@@ -711,7 +711,8 @@ namespace Server.Engines.Craft
 				CraftRes craftRes = m_arCraftRes.GetAt(i);
 				Type baseType = craftRes.ItemType;
 
-				m_ResourceConversionTable.TryGetValue(typeRes, out baseType);
+				if(typeRes != null)
+					m_ResourceConversionTable.TryGetValue(typeRes, out baseType);
 
 				// Resource Mutation
 				if ((baseType == resCol.ResType) && (typeRes != null))
