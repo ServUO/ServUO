@@ -21,7 +21,7 @@ Just run `Compile.WIN.bat` and follow the prompts. This script will compile both
 `apt-get install mono-complete`  
 `make`
 
-More in dept advice and guides can be found in our community. 
+A quick start guide is available at our forums. Follow this link: [quickstart]
 
 ### Development
 
@@ -38,3 +38,4 @@ GPL V2
 
 
    [ServUO]: <https://servuo.com>
+   [quickstart]: <https://www.servuo.com/tutorials/getting-started-with-servuo.2/>

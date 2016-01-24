@@ -115,6 +115,9 @@ namespace Server.SkillHandlers
 
         public static void DoPassiveDetect(Mobile src)
         {
+			if (src == null || src.Map == null || src.Location == Point3D.Zero)
+				return;
+
             double ss = src.Skills[SkillName.DetectHidden].Value;
 
             if (ss <= 0)
@@ -122,9 +125,12 @@ namespace Server.SkillHandlers
 
             IPooledEnumerable eable = src.Map.GetMobilesInRange(src.Location, 4);
 
+			if (eable == null)
+				return;
+
             foreach (Mobile m in eable)
             {
-                if (m is ShadowKnight)
+                if (m == null || m is ShadowKnight)
                     continue;
 
                 int noto = Notoriety.Compute(src, m);

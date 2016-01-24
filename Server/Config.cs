@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Globalization;
 
 namespace Server
 {
@@ -11,6 +12,7 @@ namespace Server
 		private static string m_Path = "Config";
 		private static char[] m_ValueSeperators = { '=' };
 		private static Dictionary<string, string> values;
+		private static IFormatProvider m_Formater = CultureInfo.InvariantCulture.NumberFormat;
 
 		public static void Load()
 		{
@@ -89,20 +91,20 @@ namespace Server
 
 		public static void Set(string key, int value)
 		{
-			Set(key, value.ToString());
+			Set(key, value.ToString(m_Formater));
 		}
 
 		public static void Set(string key, long value)
 		{
-			Set(key, value.ToString());
+			Set(key, value.ToString(m_Formater));
 		}
 		public static void Set(string key, float value)
 		{
-			Set(key, value.ToString());
+			Set(key, value.ToString(m_Formater));
 		}
 		public static void Set(string key, double value)
 		{
-			Set(key, value.ToString());
+			Set(key, value.ToString(m_Formater));
 		}
 
 		public static void Set(string key, bool value)
@@ -140,42 +142,82 @@ namespace Server
 
 		public static int GetInt(string key, int defaultValue)
 		{
+			int ret = defaultValue;
 			string value = GetString(key, null);
-			if (value == null)
+			if (value != null)
 			{
-				return defaultValue;
+				try
+				{
+					ret = int.Parse(value, m_Formater);
+				}
+				catch (FormatException)
+				{
+					Utility.PushColor(ConsoleColor.Yellow);
+					Console.WriteLine(String.Format("Config: Warning, integer format invalid for {0}", key));
+					Utility.PopColor();
+				}
 			}
-			return int.Parse(value);
+			return ret;
 		}
 
 		public static long GetLong(string key, long defaultValue)
 		{
+			long ret = defaultValue;
 			string value = GetString(key, null);
-			if (value == null)
+			if (value != null)
 			{
-				return defaultValue;
+				try
+				{
+					ret = long.Parse(value, m_Formater);
+				}
+				catch (FormatException)
+				{
+					Utility.PushColor(ConsoleColor.Yellow);
+					Console.WriteLine(String.Format("Config: Warning, long integer format invalid for {0}", key));
+					Utility.PopColor();
+				}
 			}
-			return long.Parse(value);
+			return ret;
 		}
 
 		public static float GetFloat(string key, float defaultValue)
 		{
+			float ret = defaultValue;
 			string value = GetString(key, null);
-			if (value == null)
+			if (value != null)
 			{
-				return defaultValue;
+				try
+				{
+					ret = float.Parse(value, m_Formater);
+				}
+				catch (FormatException)
+				{
+					Utility.PushColor(ConsoleColor.Yellow);
+					Console.WriteLine(String.Format("Config: Warning, single-precision decimal format invalid for {0}", key));
+					Utility.PopColor();
+				}
 			}
-			return float.Parse(value);
+			return ret;
 		}
 
 		public static double GetDouble(string key, double defaultValue)
 		{
+			double ret = defaultValue;
 			string value = GetString(key, null);
-			if (value == null)
+			if (value != null)
 			{
-				return defaultValue;
+				try
+				{
+					ret = double.Parse(value, m_Formater);
+				}
+				catch (FormatException)
+				{
+					Utility.PushColor(ConsoleColor.Yellow);
+					Console.WriteLine(String.Format("Config: Warning, double-precision decimal format invalid for {0}", key));
+					Utility.PopColor();
+				}
 			}
-			return double.Parse(value);
+			return ret;
 		}
 
 		public static bool GetBool(string key, bool defaultValue)
