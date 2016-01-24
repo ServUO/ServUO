@@ -550,7 +550,7 @@ namespace Server.Mobiles
 		public virtual bool SubdueBeforeTame { get { return false; } }
 		public virtual bool StatLossAfterTame { get { return SubdueBeforeTame; } }
 		public virtual bool ReduceSpeedWithDamage { get { return true; } }
-		public virtual bool IsSubdued { get { return SubdueBeforeTame && (Hits < (HitsMax / 10)); } }
+		public virtual bool IsSubdued { get { return SubdueBeforeTame && (Hits < ((double)HitsMax / 10)); } }
 
 		public virtual bool Commandable { get { return true; } }
 
@@ -1199,6 +1199,16 @@ namespace Server.Mobiles
 
 		public override void Damage(int amount, Mobile from)
 		{
+			Damage(amount, from, false, false);
+		}
+
+		public override void Damage(int amount, Mobile from, bool informMount)
+		{
+			Damage(amount, from, informMount, false);
+		}
+
+		public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+		{
 			int oldHits = Hits;
 
 			if (Core.AOS && !Summoned && Controlled && 0.2 > Utility.RandomDouble())
@@ -1219,11 +1229,11 @@ namespace Server.Mobiles
 				from.Damage(amount, from);
 			}
 
-			base.Damage(amount, from);
+			base.Damage(amount, from, informMount, checkDisrupt);
 
 			if (SubdueBeforeTame && !Controlled)
 			{
-				if ((oldHits > (HitsMax / 10)) && (Hits <= (HitsMax / 10)))
+				if ((oldHits > ((double)HitsMax / 10)) && ((double)Hits <= ((double)HitsMax / 10)))
 				{
 					PublicOverheadMessage(MessageType.Regular, 0x3B2, false, "* The creature has been beaten into subjugation! *");
 				}

@@ -68,7 +68,7 @@ namespace Server.SkillHandlers
 			{
 				return false;
 			} //Checks to see if the animal has been tamed before
-			return bc.SubdueBeforeTame && (bc.Hits > (bc.HitsMax / 10));
+			return bc.SubdueBeforeTame && (bc.Hits > ((double)bc.HitsMax / 10));
 		}
 
 		public static void ScaleStats(BaseCreature bc, double scalar)
