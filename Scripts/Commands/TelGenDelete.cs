@@ -41,7 +41,8 @@ namespace Server.Commands
 
                 foreach (Item item in eable)
                 {
-                    if (item is Teleporter && !(item is KeywordTeleporter) && !(item is SkillTeleporter))
+                    if ((item is Teleporter || item is TeleportRope)
+						&& !(item is KeywordTeleporter) && !(item is SkillTeleporter))
                     {
                         int delta = item.Z - p.Z;
 
@@ -88,7 +89,8 @@ namespace Server.Commands
 
                 foreach (Item item in eable)
                 {
-                    if (item is Teleporter && !(item is KeywordTeleporter) && !(item is SkillTeleporter) && item.Z == p.Z)
+                    if ((item is Teleporter || item is TeleportRope)
+						&& !(item is KeywordTeleporter) && !(item is SkillTeleporter) && item.Z == p.Z)
                         m_Queue.Enqueue(item);
                 }
 
@@ -1015,7 +1017,14 @@ namespace Server.Commands
             {
                 // Haven
                 this.CreateTeleporter(3632, 2566, 0, 3632, 2566, 20, map, true);
-            }
+
+				// New Haven
+				this.CreateTeleporter(3508, 2777, 26, 5912, 355, 0, map, true);
+
+				// New Haven Mine
+				FindTeleporter(map, new Point3D(5993, 316, 0));
+				FindTeleporter(map, new Point3D(5951, 317, 0));
+			}
 
             public void CreateTeleportersFelucca(Map map)
             {

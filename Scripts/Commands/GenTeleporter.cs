@@ -1120,11 +1120,25 @@ namespace Server.Commands
 
             public void CreateTeleportersTrammel(Map map)
             {
-                // Haven
-                this.CreateTeleporter(3632, 2566, 0, 3632, 2566, 20, map, true);
-            }
+				// Old Haven
+				//this.CreateTeleporter(3632, 2566, 0, 3632, 2566, 20, map, true);
 
-            public void CreateTeleportersFelucca(Map map)
+				// New Haven
+				this.CreateTeleporter(3508, 2777, 26, 5912, 355, 0, map, true);
+
+				// New Haven Mine
+				TeleportRope rope = new TeleportRope();
+				rope.ToLocation = new Point3D(5952, 317, 0);
+				rope.ToMap = map;
+				rope.MoveToWorld(new Point3D(5993, 316, 0), map);
+
+				rope = new TeleportRope();
+				rope.ToLocation = new Point3D(5992, 316, 0);
+				rope.ToMap = map;
+				rope.MoveToWorld(new Point3D(5951, 317, 0), map);
+			}
+
+			public void CreateTeleportersFelucca(Map map)
             {
                 // Star room
                 this.CreateTeleporter(5140, 1773, 0, 5171, 1586, 0, map, false);
@@ -1136,7 +1150,7 @@ namespace Server.Commands
 
             public int CreateTeleporters()
             {
-                this.CreateTeleportersMap(Map.Felucca);
+				this.CreateTeleportersMap(Map.Felucca);
                 this.CreateTeleportersMap(Map.Trammel);
                 this.CreateTeleportersTrammel(Map.Trammel);
                 this.CreateTeleportersFelucca(Map.Felucca);
