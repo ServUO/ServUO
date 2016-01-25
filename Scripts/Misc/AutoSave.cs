@@ -6,16 +6,15 @@ namespace Server.Misc
 {
     public class AutoSave : Timer
     {
-        private static readonly TimeSpan m_Delay = TimeSpan.FromMinutes(5.0);
-        private static readonly TimeSpan m_Warning = TimeSpan.Zero;
-        //private static TimeSpan m_Warning = TimeSpan.FromSeconds( 15.0 );
-        private static readonly string[] m_Backups = new string[]
+		private static readonly TimeSpan m_Delay = TimeSpan.FromMinutes(Config.GetDouble("AutoSave.Frequency", 5.0d));
+        private static readonly TimeSpan m_Warning = TimeSpan.FromSeconds(Config.GetDouble("AutoSave.WarningTime", 0.0d));
+		private static readonly string[] m_Backups = new string[]
         {
             "Third Backup",
             "Second Backup",
             "Most Recent"
         };
-        private static bool m_SavesEnabled = true;
+		private static bool m_SavesEnabled = Config.GetBool("AutoSave.Enabled", true);
         public AutoSave()
             : base(m_Delay - m_Warning, m_Delay)
         {

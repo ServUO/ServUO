@@ -49,7 +49,7 @@ namespace Server.Misc
 		public static readonly string Address = null;
 		public static readonly bool AutoDetect = true;
 
-		public static string ServerName = "My Shard";
+		public static string ServerName = Config.GetString("Server.Name", "My Shard");
 
 		private static IPAddress _PublicAddress;
 
