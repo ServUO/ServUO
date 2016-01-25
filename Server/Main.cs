@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using CustomsFramework;
 
 using Server.Network;
+using System.Collections;
 #endregion
 
 namespace Server
@@ -313,7 +314,18 @@ namespace Server
 
 			if (restart)
 			{
-				Process.Start(ExePath, Arguments);
+				ProcessStartInfo pinfo = new ProcessStartInfo();
+				pinfo.Arguments = Arguments;
+				IDictionary env = Environment.GetEnvironmentVariables();
+				foreach (string key in env.Keys)
+				{
+					pinfo.EnvironmentVariables.Add(key, (string)env[key]);
+				}
+				pinfo.FileName = ExePath;
+				pinfo.UseShellExecute = true;
+				pinfo.WorkingDirectory = Environment.CurrentDirectory;
+
+				Process.Start(pinfo);
 			}
 
 			Process.Kill();
