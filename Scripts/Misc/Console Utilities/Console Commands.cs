@@ -21,6 +21,13 @@ namespace Server.Misc
 
 		public static void Initialize()
 		{
+			if(Console.Out == null ||
+				Console.In == null ||
+				Console.Error == null)
+			{
+				return;
+			}
+
 			EventSink.ServerStarted += () =>
 			{
 				ThreadPool.QueueUserWorkItem(ConsoleListen);
@@ -58,7 +65,11 @@ namespace Server.Misc
 		{
 			if (!Paging)
 			{
-				Next(Console.ReadLine());
+				try
+				{
+					Next(Console.ReadLine());
+				}
+				catch (Exception) { }
 			}
 		}
 
