@@ -31,9 +31,9 @@ namespace Server.Commands
 		}
 		public static List<CommandEntry> Commands = new List<CommandEntry>(new CommandEntry[] {
 			new CommandEntry("Moongates",       "Moongen",			"MoonGenDelete", 101),
-			new CommandEntry("Doors",           "DoorGen",			"DoorGenDelete", 102), // Improve
-			new CommandEntry("Signs",           "SignGen",			"SignGenDelete", 103), // Improve
-			new CommandEntry("Teleporters",     "TelGen",			"TelGenDelete", 104), // Improve
+			new CommandEntry("Doors",           "DoorGen",			"DoorGenDelete", 102), // Test
+			new CommandEntry("Signs",           "SignGen",			"SignGenDelete", 103), // Test
+			new CommandEntry("Teleporters",     "TelGen",			"TelGenDelete", 104), // Test
 			new CommandEntry("Doom Lamp",       "GenLeverPuzzle",   "LampPuzzleDelete", 105),
 			new CommandEntry("Doom Gauntlet",   "GenGauntlet",      "DeleteGauntlet", 106),
 			new CommandEntry("Champions",       "GenChampions",     "DeleteChampions", 107),
@@ -41,11 +41,11 @@ namespace Server.Commands
 			new CommandEntry("Stealables",      "GenStealArties",   "RemoveStealArties", 109),
 			new CommandEntry("Solen Hives",     "SHTelGen",         "SHTelGenDelete", 110),
 			new CommandEntry("Malas Secrets",   "SecretLocGen",     "SecretLocDelete", 111),
-			new CommandEntry("Factions",        "GenerateFactions",	"", 112), // Implement
-			new CommandEntry("Primeival Lich",  "GenLichPuzzle",	"", 113), // Implement
-			new CommandEntry("Decorations",     "Decorate",         "DecorateDelete", 114), // Improve
-			new CommandEntry("ML Decorations",  "DecorateML",		"", 115), // Implement
-			new CommandEntry("SA Decorations",  "DecorateSA",		"", 116), // Implement
+			new CommandEntry("Factions",        "GenerateFactions",	"DeleteFactions", 112), // Test
+			new CommandEntry("Primeival Lich",  "GenLichPuzzle",	"DeleteLichPuzzle", 113), // Test
+			new CommandEntry("Decorations",     "Decorate",         "DecorateDelete", 114),
+			new CommandEntry("ML Decorations",  "DecorateML",		"DecorateMLDelete", 115), // Test
+			new CommandEntry("SA Decorations",  "DecorateSA",		"DecorateSADelete", 116), // Test
 		});
         public CreateWorld()
         {

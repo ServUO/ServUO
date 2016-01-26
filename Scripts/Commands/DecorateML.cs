@@ -195,8 +195,9 @@ namespace Server
         }
         public static void Initialize()
         {
-            CommandSystem.Register("DecorateML", AccessLevel.Administrator, new CommandEventHandler(DecorateML_OnCommand));
-            CommandSystem.Register("SettingsML", AccessLevel.Administrator, new CommandEventHandler(SettingsML_OnCommand));
+			CommandSystem.Register("DecorateML", AccessLevel.Administrator, new CommandEventHandler(DecorateML_OnCommand));
+			CommandSystem.Register("DecorateMLDelete", AccessLevel.Administrator, new CommandEventHandler(DecorateMLDelete_OnCommand));
+			CommandSystem.Register("SettingsML", AccessLevel.Administrator, new CommandEventHandler(SettingsML_OnCommand));
             CommandSystem.Register("Quests", AccessLevel.GameMaster, new CommandEventHandler(Quests_OnCommand));
 			
             LoadSettings();
@@ -325,18 +326,25 @@ namespace Server
             }
         }
 
+		[Usage("DecorateMLDelete")]
+        [Description("Deletes Mondain's Legacy world decoration.")]
+		private static void DecorateMLDelete_OnCommand(CommandEventArgs e)
+		{
+			WeakEntityCollection.DeleteEntities("ml");
+		}
+
         [Usage("DecorateML")]
         [Description("Generates Mondain's Legacy world decoration.")]
         private static void DecorateML_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendMessage("Generating Mondain's Legacy world decoration, please wait.");
 			
-            Decorate.Generate("Data/Mondain's Legacy/Trammel", Map.Trammel);
-            Decorate.Generate("Data/Mondain's Legacy/Felucca", Map.Felucca);
-            Decorate.Generate("Data/Mondain's Legacy/Ilshenar", Map.Ilshenar);
-            Decorate.Generate("Data/Mondain's Legacy/Malas", Map.Malas);
-            Decorate.Generate("Data/Mondain's Legacy/Tokuno", Map.Tokuno);
-            Decorate.Generate("Data/Mondain's Legacy/TerMur", Map.TerMur);
+            Decorate.Generate("ml", "Data/Mondain's Legacy/Trammel", Map.Trammel);
+			Decorate.Generate("ml", "Data/Mondain's Legacy/Felucca", Map.Felucca);
+			Decorate.Generate("ml", "Data/Mondain's Legacy/Ilshenar", Map.Ilshenar);
+			Decorate.Generate("ml", "Data/Mondain's Legacy/Malas", Map.Malas);
+			Decorate.Generate("ml", "Data/Mondain's Legacy/Tokuno", Map.Tokuno);
+			Decorate.Generate("ml", "Data/Mondain's Legacy/TerMur", Map.TerMur);
 			
             PeerlessAltar altar;
             PeerlessTeleporter tele;				
@@ -347,9 +355,10 @@ namespace Server
 			
             if (!FindItem(86, 1627, 0, Map.Malas, altar))
             {
-                altar = new BedlamAltar();
+				WeakEntityCollection.Add("ml", altar);
                 altar.MoveToWorld(new Point3D(86, 1627, 0), Map.Malas);
                 tele = new PeerlessTeleporter(altar);
+				WeakEntityCollection.Add("ml", tele);
                 tele.PointDest = altar.ExitDest;
                 tele.MoveToWorld(new Point3D(99, 1617, 50), Map.Malas);
             }
@@ -359,9 +368,11 @@ namespace Server
 			
             if (!FindItem(6502, 875, 0, Map.Trammel, altar))
             {
-                altar.MoveToWorld(new Point3D(6502, 875, 0), Map.Trammel);
+				WeakEntityCollection.Add("ml", altar);
+				altar.MoveToWorld(new Point3D(6502, 875, 0), Map.Trammel);
                 tele = new PeerlessTeleporter(altar);
-                tele.PointDest = altar.ExitDest;
+				WeakEntityCollection.Add("ml", tele);
+				tele.PointDest = altar.ExitDest;
                 tele.MoveToWorld(new Point3D(6511, 949, 26), Map.Trammel);
             }
 			
@@ -370,9 +381,11 @@ namespace Server
 			
             if (!FindItem(6502, 875, 0, Map.Felucca, altar))
             {
-                altar.MoveToWorld(new Point3D(6502, 875, 0), Map.Felucca);
+				WeakEntityCollection.Add("ml", altar);
+				altar.MoveToWorld(new Point3D(6502, 875, 0), Map.Felucca);
                 tele = new PeerlessTeleporter(altar);
-                tele.PointDest = altar.ExitDest;
+				WeakEntityCollection.Add("ml", tele);
+				tele.PointDest = altar.ExitDest;
                 tele.MoveToWorld(new Point3D(6511, 949, 26), Map.Felucca);
             }
 			
@@ -381,9 +394,11 @@ namespace Server
 			
             if (!FindItem(6511, 506, -34, Map.Trammel, altar))
             {
-                altar.MoveToWorld(new Point3D(6511, 506, -34), Map.Trammel);
+				WeakEntityCollection.Add("ml", altar);
+				altar.MoveToWorld(new Point3D(6511, 506, -34), Map.Trammel);
                 tele = new PeerlessTeleporter(altar);
-                tele.PointDest = altar.ExitDest;
+				WeakEntityCollection.Add("ml", tele);
+				tele.PointDest = altar.ExitDest;
                 tele.MoveToWorld(new Point3D(6518, 365, 46), Map.Trammel);
             }
 			
@@ -392,9 +407,11 @@ namespace Server
 			
             if (!FindItem(6511, 506, -34, Map.Felucca, altar))
             {
-                altar.MoveToWorld(new Point3D(6511, 506, -34), Map.Felucca);
+				WeakEntityCollection.Add("ml", altar);
+				altar.MoveToWorld(new Point3D(6511, 506, -34), Map.Felucca);
                 tele = new PeerlessTeleporter(altar);
-                tele.PointDest = altar.ExitDest;
+				WeakEntityCollection.Add("ml", tele);
+				tele.PointDest = altar.ExitDest;
                 tele.MoveToWorld(new Point3D(6518, 365, 46), Map.Felucca);
             }
 			
@@ -403,30 +420,38 @@ namespace Server
 			
             if (!FindItem(6509, 167, 6, Map.Trammel, altar))
             {
-                altar.MoveToWorld(new Point3D(6509, 167, 6), Map.Trammel);
+				WeakEntityCollection.Add("ml", altar);
+				altar.MoveToWorld(new Point3D(6509, 167, 6), Map.Trammel);
                 tele = new PeerlessTeleporter(altar);
-                tele.PointDest = altar.ExitDest;
+				WeakEntityCollection.Add("ml", tele);
+				tele.PointDest = altar.ExitDest;
                 tele.Visible = true;
                 tele.ItemID = 0xDDA;
                 tele.MoveToWorld(new Point3D(6501, 137, -20), Map.Trammel);
 					
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x581);
-                pillar.MoveToWorld(new Point3D(6506, 167, 0), Map.Trammel);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6506, 167, 0), Map.Trammel);
 				
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x581);
-                pillar.MoveToWorld(new Point3D(6509, 164, 0), Map.Trammel);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6509, 164, 0), Map.Trammel);
 				
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x581);
-                pillar.MoveToWorld(new Point3D(6506, 164, 0), Map.Trammel);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6506, 164, 0), Map.Trammel);
 				
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x481);
-                pillar.MoveToWorld(new Point3D(6512, 167, 0), Map.Trammel);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6512, 167, 0), Map.Trammel);
 				
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x481);
-                pillar.MoveToWorld(new Point3D(6509, 170, 0), Map.Trammel);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6509, 170, 0), Map.Trammel);
 				
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x481);
-                pillar.MoveToWorld(new Point3D(6512, 170, 0), Map.Trammel);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6512, 170, 0), Map.Trammel);
             }
 			
             // Prism of Light - Felucca
@@ -434,30 +459,38 @@ namespace Server
 			
             if (!FindItem(6509, 167, 6, Map.Felucca, altar))
             {
+				WeakEntityCollection.Add("ml", altar);
                 altar.MoveToWorld(new Point3D(6509, 167, 6), Map.Felucca);
                 tele = new PeerlessTeleporter(altar);
+				WeakEntityCollection.Add("ml", tele);
                 tele.PointDest = altar.ExitDest;
                 tele.Visible = true;
                 tele.ItemID = 0xDDA;
                 tele.MoveToWorld(new Point3D(6501, 137, -20), Map.Felucca);
 					
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x581);
-                pillar.MoveToWorld(new Point3D(6506, 167, 0), Map.Felucca);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6506, 167, 0), Map.Felucca);
 				
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x581);
-                pillar.MoveToWorld(new Point3D(6509, 164, 0), Map.Felucca);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6509, 164, 0), Map.Felucca);
 				
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x581);
-                pillar.MoveToWorld(new Point3D(6506, 164, 0), Map.Felucca);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6506, 164, 0), Map.Felucca);
 				
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x481);
-                pillar.MoveToWorld(new Point3D(6512, 167, 0), Map.Felucca);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6512, 167, 0), Map.Felucca);
 				
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x481);
-                pillar.MoveToWorld(new Point3D(6509, 170, 0), Map.Felucca);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6509, 170, 0), Map.Felucca);
 				
                 pillar = new PrismOfLightPillar((PrismOfLightAltar)altar, 0x481);
-                pillar.MoveToWorld(new Point3D(6512, 170, 0), Map.Felucca);
+				WeakEntityCollection.Add("ml", pillar);
+				pillar.MoveToWorld(new Point3D(6512, 170, 0), Map.Felucca);
             }
 						
             // The Citadel - Malas
@@ -465,8 +498,10 @@ namespace Server
 			
             if (!FindItem(89, 1885, 0, Map.Malas, altar))
             {
+				WeakEntityCollection.Add("ml", altar);
                 altar.MoveToWorld(new Point3D(89, 1885, 0), Map.Malas);
                 tele = new PeerlessTeleporter(altar);
+				WeakEntityCollection.Add("ml", tele);
                 tele.PointDest = altar.ExitDest;
                 tele.MoveToWorld(new Point3D(111, 1955, 0), Map.Malas);
             }
@@ -476,8 +511,10 @@ namespace Server
 			
             if (!FindItem(2170, 1255, -60, Map.Ilshenar, altar))
             {
+				WeakEntityCollection.Add("ml", altar);
                 altar.MoveToWorld(new Point3D(2170, 1255, -60), Map.Ilshenar);
                 tele = new PeerlessTeleporter(altar);
+				WeakEntityCollection.Add("ml", tele);
                 tele.PointDest = altar.ExitDest;
                 tele.MoveToWorld(new Point3D(2139, 1271, -57), Map.Ilshenar);
             }
@@ -487,8 +524,8 @@ namespace Server
 
             if (!FindItem(363, 157, 5, Map.TerMur, sAltar))
             {
+				WeakEntityCollection.Add("ml", sAltar);
                 sAltar.MoveToWorld(new Point3D(363, 157, 0), Map.TerMur);
-                
             }
 
             //Medusa Lair - Abyss
@@ -496,6 +533,7 @@ namespace Server
 
             if (!FindItem(822, 756, 56, Map.TerMur, mAltar))
             {
+				WeakEntityCollection.Add("ml", mAltar);
                 mAltar.MoveToWorld(new Point3D(822, 756, 56), Map.TerMur);
             }
 			

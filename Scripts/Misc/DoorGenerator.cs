@@ -470,6 +470,7 @@ namespace Server
                 return null;
 
             BaseDoor door = new DarkWoodDoor(facing);
+			WeakEntityCollection.Add("door", door);
             door.MoveToWorld(new Point3D(x, y, z), m_Map);
 
             ++m_Count;

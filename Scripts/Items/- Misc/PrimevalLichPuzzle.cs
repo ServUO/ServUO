@@ -197,10 +197,18 @@ namespace Server.Engines.CannedEvil
         }
         public static void Initialize()
         {
-            CommandSystem.Register("GenLichPuzzle", AccessLevel.Administrator, new CommandEventHandler(GenLichPuzzle_OnCommand));
-        }
+			CommandSystem.Register("GenLichPuzzle", AccessLevel.Administrator, new CommandEventHandler(GenLichPuzzle_OnCommand));
+			CommandSystem.Register("DeleteLichPuzzle", AccessLevel.Administrator, new CommandEventHandler(DeleteLichPuzzle_OnCommand));
+		}
 
-        [Usage("GenLichPuzzle")]
+		[Usage("DeleteLichPuzzle")]
+        [Description("Deletes the Primeval Lich lever puzzle.")]
+		public static void DeleteLichPuzzle_OnCommand(CommandEventArgs e)
+		{
+			WeakEntityCollection.DeleteEntities("primevallich");
+		}
+
+		[Usage("GenLichPuzzle")]
         [Description("Generates the Primeval Lich lever puzzle.")]
         public static void GenLichPuzzle_OnCommand(CommandEventArgs e)
         {
@@ -213,9 +221,14 @@ namespace Server.Engines.CannedEvil
             e.Mobile.SendMessage("Generating Primeval Lich lever puzzle...");
             PrimevalLichPuzzle control = new PrimevalLichPuzzle(e.Mobile);
             if (null == control || control.Deleted)
-                e.Mobile.SendMessage(33, "There was a problem generating the puzzle.");
-            else
-                e.Mobile.SendMessage("The puzzle was successfully generated.");
+			{
+				e.Mobile.SendMessage(33, "There was a problem generating the puzzle.");
+			}
+			else
+			{
+				e.Mobile.SendMessage("The puzzle was successfully generated.");
+				WeakEntityCollection.Add("primevallich", control);
+			}
         }
 
         // static hook for the ChampionSpawn code to update the puzzle state
