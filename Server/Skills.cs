@@ -7,6 +7,8 @@
 #region References
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 using Server.Network;
 #endregion
@@ -532,7 +534,7 @@ namespace Server
 	}
 
 	[PropertyObject]
-	public class Skills : IEnumerable
+	public class Skills : IEnumerable<Skill>
 	{
 		private readonly Mobile m_Owner;
 		private readonly Skill[] m_Skills;
@@ -956,9 +958,14 @@ namespace Server
 			}
 		}
 
-		public IEnumerator GetEnumerator()
+		public IEnumerator<Skill> GetEnumerator()
 		{
-			return m_Skills.GetEnumerator();
+			return m_Skills.Where(s => s != null).GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return m_Skills.Where(s => s != null).GetEnumerator();
 		}
 	}
 }
