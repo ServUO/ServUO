@@ -37,7 +37,7 @@ namespace Server.Commands
 			new CommandEntry("Doom Lamp",       "GenLeverPuzzle",   "LampPuzzleDelete", 105),
 			new CommandEntry("Doom Gauntlet",   "GenGauntlet",      "DeleteGauntlet", 106),
 			new CommandEntry("Champions",       "GenChampions",     "DeleteChampions", 107),
-			new CommandEntry("Khaldun",         "GenKhaldun",		"", 108), // Implement
+			new CommandEntry("Khaldun",         "GenKhaldun",       "DeleteKhaldun", 108),
 			new CommandEntry("Stealables",      "GenStealArties",   "RemoveStealArties", 109),
 			new CommandEntry("Solen Hives",     "SHTelGen",         "SHTelGenDelete", 110),
 			new CommandEntry("Malas Secrets",   "SecretLocGen",		"", 111), // Implement
