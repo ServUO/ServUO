@@ -30,22 +30,23 @@ namespace Server.Commands
 			}
 		}
 		public static List<CommandEntry> Commands = new List<CommandEntry>(new CommandEntry[] {
-			new CommandEntry("Moongates",       "Moongen",			"MoonGenDelete", 101),
-			new CommandEntry("Doors",           "DoorGen",			"DoorGenDelete", 102), // Test
-			new CommandEntry("Signs",           "SignGen",			"SignGenDelete", 103), // Test
-			new CommandEntry("Teleporters",     "TelGen",			"TelGenDelete", 104), // Test
-			new CommandEntry("Doom Lamp",       "GenLeverPuzzle",   "LampPuzzleDelete", 105),
-			new CommandEntry("Doom Gauntlet",   "GenGauntlet",      "DeleteGauntlet", 106),
-			new CommandEntry("Champions",       "GenChampions",     "DeleteChampions", 107),
-			new CommandEntry("Khaldun",         "GenKhaldun",       "DeleteKhaldun", 108),
-			new CommandEntry("Stealables",      "GenStealArties",   "RemoveStealArties", 109),
-			new CommandEntry("Solen Hives",     "SHTelGen",         "SHTelGenDelete", 110),
-			new CommandEntry("Malas Secrets",   "SecretLocGen",     "SecretLocDelete", 111),
-			new CommandEntry("Factions",        "GenerateFactions",	"DeleteFactions", 112), // Test
-			new CommandEntry("Primeival Lich",  "GenLichPuzzle",	"DeleteLichPuzzle", 113), // Test
-			new CommandEntry("Decorations",     "Decorate",         "DecorateDelete", 114),
-			new CommandEntry("ML Decorations",  "DecorateML",		"DecorateMLDelete", 115), // Test
-			new CommandEntry("SA Decorations",  "DecorateSA",		"DecorateSADelete", 116), // Test
+			new CommandEntry("Moongates",       "Moongen",			"MoonGenDelete",		101),
+			new CommandEntry("Doors",           "DoorGen",			"DoorGenDelete",		102), // Test
+			new CommandEntry("Signs",           "SignGen",			"SignGenDelete",		103), // Test
+			new CommandEntry("Teleporters",     "TelGen",			"TelGenDelete",			104), // Test
+			new CommandEntry("Doom Lamp",       "GenLeverPuzzle",   "LampPuzzleDelete",		105),
+			new CommandEntry("Doom Gauntlet",   "GenGauntlet",      "DeleteGauntlet",		106),
+			new CommandEntry("Champions",       "GenChampions",     "DeleteChampions",		107),
+			new CommandEntry("Khaldun",         "GenKhaldun",       "DeleteKhaldun",		108),
+			new CommandEntry("Stealables",      "GenStealArties",   "RemoveStealArties",	109),
+			new CommandEntry("Solen Hives",     "SHTelGen",         "SHTelGenDelete",		110),
+			new CommandEntry("Malas Secrets",   "SecretLocGen",     "SecretLocDelete",		111),
+			new CommandEntry("Factions",        "GenerateFactions",	"DeleteFactions",		112), // Test
+			new CommandEntry("Primeival Lich",  "GenLichPuzzle",	"DeleteLichPuzzle",		113), // Test
+			new CommandEntry("Decorations",     "Decorate",         "DecorateDelete",		114),
+			new CommandEntry("ML Decorations",  "DecorateML",		"DecorateMLDelete",		115), // Test
+			new CommandEntry("SA Decorations",  "DecorateSA",		"DecorateSADelete",		116), // Test
+			new CommandEntry("Spawners",		"XmlLoad Spawns",	"XmlSpawnerWipeAll",	117), // Test
 		});
         public CreateWorld()
         {
@@ -58,25 +59,109 @@ namespace Server.Commands
 			CommandSystem.Register("RecreateWorld", AccessLevel.Administrator, new CommandEventHandler(Recreate_OnCommand));
 		}
 
-		[Usage("CreateWorld")]
-		[Description("Generates the world with a menu.")]
+		[Usage("CreateWorld [nogump]")]
+		[Description("Generates the world with a menu. If nogump argument is given, no gump will be displayed, all options will be assumed true, and the action will proceed immediately.")]
 		private static void Create_OnCommand(CommandEventArgs e)
 		{
-			e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Create));
+			if (String.IsNullOrEmpty(e.ArgString))
+			{
+				e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Create));
+			}
+			else if (e.ArgString.ToLower().Equals("nogump"))
+			{
+				DoAllCommands(GumpType.Create, e.Mobile);
+			}
+			else
+			{
+				if (e.Mobile != null)
+					e.Mobile.SendMessage("Usage: CreateWorld [nogump]");
+			}
 		}
 
-		[Usage("DeleteWorld")]
-		[Description("Undoes world generation with a menu.")]
+		[Usage("DeleteWorld [nogump]")]
+		[Description("Undoes world generation with a menu. If nogump argument is given, no gump will be displayed, all options will be assumed true, and the action will proceed immediately.")]
 		private static void Delete_OnCommand(CommandEventArgs e)
 		{
-			e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Delete));
+			if (String.IsNullOrEmpty(e.ArgString))
+			{
+				e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Delete));
+			}
+			else if (e.ArgString.ToLower().Equals("nogump"))
+			{
+				DoAllCommands(GumpType.Delete, e.Mobile);
+			}
+			else
+			{
+				if (e.Mobile != null)
+					e.Mobile.SendMessage("Usage: DeleteWorld [nogump]");
+			}
 		}
 
-		[Usage("RecreateWorld")]
-		[Description("Re-generates the world with a menu.")]
+		[Usage("RecreateWorld [nogump]")]
+		[Description("Re-generates the world with a menu. If nogump argument is given, no gump will be displayed, all options will be assumed true, and the action will proceed immediately.")]
 		private static void Recreate_OnCommand(CommandEventArgs e)
 		{
-			e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Recreate));
+			if (String.IsNullOrEmpty(e.ArgString))
+			{
+				e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Recreate));
+			}
+			else if (e.ArgString.ToLower().Equals("nogump"))
+			{
+				DoAllCommands(GumpType.Recreate, e.Mobile);
+			}
+			else
+			{
+				if (e.Mobile != null)
+					e.Mobile.SendMessage("Usage: RecreateWorld [nogump]");
+			}
+
+		}
+
+		public static void DoAllCommands(GumpType type, Mobile from)
+		{
+			List<int> ids = new List<int>();
+			foreach (CommandEntry entry in Commands)
+			{
+				ids.Add(entry.checkId);
+			}
+			DoCommands(ids.ToArray(), type, from);
+		}
+		public static void DoCommands(int[] selections, GumpType type, Mobile from)
+		{
+			World.Broadcast(0x35, false, "The world is generating. This may take some time...");
+			string prefix = Server.Commands.CommandSystem.Prefix;
+			foreach (int sel in selections)
+			{
+				foreach (CreateWorld.CommandEntry entry in CreateWorld.Commands)
+				{
+					if (entry.checkId == sel)
+					{
+						switch (type)
+						{
+							case CreateWorld.GumpType.Create:
+								from.Say("Generating " + entry.Name);
+								CommandSystem.Handle(from, prefix + entry.CreateCommand);
+								break;
+							case CreateWorld.GumpType.Delete:
+								if (!String.IsNullOrEmpty(entry.DeleteCommand))
+								{
+									from.Say("Recreating " + entry.Name);
+									CommandSystem.Handle(from, prefix + entry.DeleteCommand);
+								}
+								break;
+							case CreateWorld.GumpType.Recreate:
+								if (!String.IsNullOrEmpty(entry.DeleteCommand))
+								{
+									from.Say("Recreating " + entry.Name);
+									CommandSystem.Handle(from, prefix + entry.DeleteCommand);
+									CommandSystem.Handle(from, prefix + entry.CreateCommand);
+								}
+								break;
+						}
+					}
+				}
+			}
+			World.Broadcast(0x35, false, "World generation complete.");
 		}
 	}
 }
@@ -132,41 +217,7 @@ namespace Server.Gumps
 				case 0: // Closed or Cancel
 					return;
 				case 1:
-					World.Broadcast(0x35, false, "The world is generating. This may take some time...");
-					ArrayList selections = new ArrayList(info.Switches);
-					string prefix = Server.Commands.CommandSystem.Prefix;
-					foreach (int sel in selections)
-					{
-						foreach (CreateWorld.CommandEntry entry in CreateWorld.Commands)
-						{
-							if (entry.checkId == sel)
-							{
-								switch (m_Type)
-								{
-									case CreateWorld.GumpType.Create:
-										from.Say("Generating " + entry.Name);
-										CommandSystem.Handle(from, prefix + entry.CreateCommand);
-										break;
-									case CreateWorld.GumpType.Delete:
-										if (!String.IsNullOrEmpty(entry.DeleteCommand))
-										{
-											from.Say("Recreating " + entry.Name);
-											CommandSystem.Handle(from, prefix + entry.DeleteCommand);
-										}
-										break;
-									case CreateWorld.GumpType.Recreate:
-										if(!String.IsNullOrEmpty(entry.DeleteCommand))
-										{
-											from.Say("Recreating " + entry.Name);
-											CommandSystem.Handle(from, prefix + entry.DeleteCommand);
-											CommandSystem.Handle(from, prefix + entry.CreateCommand);
-										}
-										break;
-								}
-							}
-						}
-					}
-					World.Broadcast(0x35, false, "World generation complete.");
+					CreateWorld.DoCommands(info.Switches, m_Type, from);
 					break;
 			}
         }
