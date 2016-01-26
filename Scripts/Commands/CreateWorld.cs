@@ -40,7 +40,7 @@ namespace Server.Commands
 			new CommandEntry("Khaldun",         "GenKhaldun",       "DeleteKhaldun", 108),
 			new CommandEntry("Stealables",      "GenStealArties",   "RemoveStealArties", 109),
 			new CommandEntry("Solen Hives",     "SHTelGen",         "SHTelGenDelete", 110),
-			new CommandEntry("Malas Secrets",   "SecretLocGen",		"", 111), // Implement
+			new CommandEntry("Malas Secrets",   "SecretLocGen",     "SecretLocDelete", 111),
 			new CommandEntry("Factions",        "GenerateFactions",	"", 112), // Implement
 			new CommandEntry("Primeival Lich",  "GenLichPuzzle",	"", 113), // Implement
 			new CommandEntry("Decorations",     "Decorate",         "DecorateDelete", 114), // Improve
