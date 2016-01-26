@@ -35,7 +35,7 @@ namespace Server.Commands
 			new CommandEntry("Signs",           "SignGen",			"SignGenDelete", 103), // Improve
 			new CommandEntry("Teleporters",     "TelGen",			"TelGenDelete", 104), // Improve
 			new CommandEntry("Doom Lamp",       "GenLeverPuzzle",   "LampPuzzleDelete", 105),
-			new CommandEntry("Doom Gauntlet",   "GenGauntlet",		"", 106), // Implement
+			new CommandEntry("Doom Gauntlet",   "GenGauntlet",      "DeleteGauntlet", 106), // Working
 			new CommandEntry("Champions",       "GenChampions",		"", 107), // Implement
 			new CommandEntry("Khaldun",         "GenKhaldun",		"", 108), // Implement
 			new CommandEntry("Stealables",      "GenStealArties",   "RemoveStealArties", 109),
