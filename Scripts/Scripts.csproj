@@ -221,9 +221,6 @@
     <Compile Include="Commands\Logging.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\MoonGenDelete.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\Profiling.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -6940,6 +6937,7 @@
     <Compile Include="Misc\VendorGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Misc\WeakEntityCollection.cs" />
     <Compile Include="Misc\Weather.cs">
       <SubType>Code</SubType>
     </Compile>
