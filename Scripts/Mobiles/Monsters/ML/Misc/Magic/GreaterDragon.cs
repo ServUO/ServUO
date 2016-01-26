@@ -19,8 +19,7 @@ namespace Server.Mobiles
             this.SetInt(475, 675);
 
             this.SetHits(1000, 2000);
-            this.SetStam(120, 135);
-
+            
             this.SetDamage(24, 33);
 
             this.SetDamageType(ResistanceType.Physical, 100);
@@ -160,7 +159,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)2);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -168,14 +167,20 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            this.SetDamage(24, 33);
-
-            if (version == 0)
-            {
-                Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.50);
-                Server.SkillHandlers.AnimalTaming.ScaleSkills(this, 0.80, 0.90); // 90% * 80% = 72% of original skills trainable to 90%
-                this.Skills[SkillName.Magery].Base = this.Skills[SkillName.Magery].Cap; // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
-            }
+			switch(version)
+			{ 
+				case 2:
+					SetStam(0);
+					goto case 1;
+				case 1:
+					this.SetDamage(24, 33);
+					break;
+				case 0:
+					Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.50);
+					Server.SkillHandlers.AnimalTaming.ScaleSkills(this, 0.80, 0.90); // 90% * 80% = 72% of original skills trainable to 90%
+					this.Skills[SkillName.Magery].Base = this.Skills[SkillName.Magery].Cap; // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
+					break;
+			}
         }
     }
 }
