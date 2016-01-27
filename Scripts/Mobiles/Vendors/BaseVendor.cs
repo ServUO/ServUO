@@ -964,7 +964,7 @@ namespace Server.Mobiles
 			{
 				var info = GetSellInfo();
 
-				Hashtable table = new Hashtable();
+				Dictionary<Item, SellItemState> table = new Dictionary<Item, SellItemState>();
 
 				foreach (IShopSellInfo ssi in info)
 				{
@@ -988,7 +988,7 @@ namespace Server.Mobiles
 				{
 					SendPacksTo(from);
 
-					from.Send(new VendorSellList(this, table));
+					from.Send(new VendorSellList(this, table.Values));
 				}
 				else
 				{

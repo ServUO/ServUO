@@ -77,7 +77,13 @@ namespace Server
 				AppendCompilerOption(ref sb, "/d:x64");
 			}
 
-			AppendCompilerOption(ref sb, "/d:Framework_4_0");
+#if NEWTIMERS
+			AppendCompilerOption(ref sb, "/d:NEWTIMERS");
+#endif
+
+#if NEWPARENT
+			AppendCompilerOption(ref sb, "/d:NEWPARENT");
+#endif
 
 			return (sb == null ? null : sb.ToString());
 		}

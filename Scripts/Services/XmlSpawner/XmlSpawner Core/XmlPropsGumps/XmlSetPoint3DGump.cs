@@ -16,7 +16,7 @@ namespace Server.Gumps
 		private Mobile m_Mobile;
 		private object m_Object;
 #if (NEWTIMERS)
-		private Stack<StackEntry> m_Stack;
+		private Stack<PropertiesGump.StackEntry> m_Stack;
 #else
 		private Stack m_Stack;
 #endif
@@ -67,7 +67,7 @@ namespace Server.Gumps
 		private static readonly int BackHeight = BorderSize + TotalHeight + BorderSize;
 
 #if (NEWTIMERS)
-		public XmlSetPoint3DGump( PropertyInfo prop, Mobile mobile, object o, Stack<StackEntry> stack, int page, ArrayList list ) : base( GumpOffsetX, GumpOffsetY )
+		public XmlSetPoint3DGump( PropertyInfo prop, Mobile mobile, object o, Stack<PropertiesGump.StackEntry> stack, int page, ArrayList list ) : base( GumpOffsetX, GumpOffsetY )
 #else
 		public XmlSetPoint3DGump( PropertyInfo prop, Mobile mobile, object o, Stack stack, int page, ArrayList list ) : base( GumpOffsetX, GumpOffsetY )
 #endif
@@ -147,7 +147,7 @@ namespace Server.Gumps
 			private Mobile m_Mobile;
 			private object m_Object;
 #if (NEWTIMERS)
-			private Stack<StackEntry> m_Stack;
+			private Stack<PropertiesGump.StackEntry> m_Stack;
 #else
 			private Stack m_Stack;
 #endif
@@ -155,7 +155,7 @@ namespace Server.Gumps
 			private ArrayList m_List;
 
 #if (NEWTIMERS)
-			public InternalTarget( PropertyInfo prop, Mobile mobile, object o, Stack<StackEntry> stack, int page, ArrayList list ) : base( -1, true, TargetFlags.None )
+			public InternalTarget( PropertyInfo prop, Mobile mobile, object o, Stack<PropertiesGump.StackEntry> stack, int page, ArrayList list ) : base( -1, true, TargetFlags.None )
 #else
 			public InternalTarget( PropertyInfo prop, Mobile mobile, object o, Stack stack, int page, ArrayList list ) : base( -1, true, TargetFlags.None )
 #endif

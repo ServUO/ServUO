@@ -1325,6 +1325,7 @@
     <Compile Include="Items\- Misc\Teleporter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\- Misc\TeleportRope.cs" />
     <Compile Include="Items\- Misc\TenMurdererKillRemoverDeed.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1505,9 +1506,11 @@
     <Compile Include="Items\Addons\ElvenWashbasinEastAddon.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Addons\ElvenWashbasinEastAddonWithDrawer.cs" />
     <Compile Include="Items\Addons\ElvenWashbasinSouthAddon.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Addons\ElvenWashbasinSouthAddonWithDrawer.cs" />
     <Compile Include="Items\Addons\FancyElvenTableEastAddon.cs">
       <SubType>Code</SubType>
     </Compile>
