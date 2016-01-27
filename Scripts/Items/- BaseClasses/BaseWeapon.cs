@@ -4457,10 +4457,8 @@ namespace Server.Items
 			// 15% chance of 2 sockets
 			// 50% chance of 1 socket
 			// the remainder will be 0 socket (31.4% in this case)
-			// uncomment the next line to prevent artifacts from being socketed
-			// if(ArtifactRarity == 0)
-			XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
-			// Xml Spawner XmlSockets - EOF
+			if(XmlSpawner.SocketsEnabled)
+				XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
 		}
 
 		public BaseWeapon(Serial serial)
