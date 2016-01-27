@@ -1325,6 +1325,7 @@
     <Compile Include="Items\- Misc\Teleporter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\- Misc\TeleportRope.cs" />
     <Compile Include="Items\- Misc\TenMurdererKillRemoverDeed.cs">
       <SubType>Code</SubType>
     </Compile>
