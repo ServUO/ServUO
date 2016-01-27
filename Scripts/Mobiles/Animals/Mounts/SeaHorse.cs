@@ -9,6 +9,7 @@ namespace Server.Mobiles
         public SeaHorse()
             : this("a sea horse")
         {
+			this.CanSwim = true;
         }
 
         [Constructable]
@@ -30,7 +31,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -38,6 +39,13 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+			switch (version)
+			{
+				case 0:
+					this.CanSwim = true;
+					break;
+			}
         }
     }
 }
