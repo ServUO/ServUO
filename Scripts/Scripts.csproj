@@ -14,7 +14,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NEWTIMERS;ServUO</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ServUO</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -25,7 +25,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Output\</OutputPath>
-    <DefineConstants>TRACE;NEWTIMERS;ServUO</DefineConstants>
+    <DefineConstants>TRACE;ServUO</DefineConstants>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -1325,7 +1325,6 @@
     <Compile Include="Items\- Misc\Teleporter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\- Misc\TeleportRope.cs" />
     <Compile Include="Items\- Misc\TenMurdererKillRemoverDeed.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1506,9 +1505,11 @@
     <Compile Include="Items\Addons\ElvenWashbasinEastAddon.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Addons\ElvenWashbasinEastAddonWithDrawer.cs" />
     <Compile Include="Items\Addons\ElvenWashbasinSouthAddon.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Addons\ElvenWashbasinSouthAddonWithDrawer.cs" />
     <Compile Include="Items\Addons\FancyElvenTableEastAddon.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -13993,6 +13994,9 @@
   <ItemGroup>
     <Content Include="Quests\SA Sacred Quest\Sacred Quest Questions-Answers.txt" />
     <Content Include="Services\Runic Reforging\ReadMe.txt" />
+    <Content Include="Services\XmlSpawner\Installation for ServUO.txt" />
+    <Content Include="Services\XmlSpawner\Installation SVN or 2.4.txt" />
+    <Content Include="Services\XmlSpawner\Instructions for importing maps.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\SpawnerConfigs\xmlspawner.xml" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\Spawns\attachtest1.xml" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\Spawns\attachtest2.xml" />
