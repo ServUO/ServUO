@@ -13993,9 +13993,6 @@
   <ItemGroup>
     <Content Include="Quests\SA Sacred Quest\Sacred Quest Questions-Answers.txt" />
     <Content Include="Services\Runic Reforging\ReadMe.txt" />
-    <Content Include="Services\XmlSpawner\Installation for ServUO.txt" />
-    <Content Include="Services\XmlSpawner\Installation SVN or 2.4.txt" />
-    <Content Include="Services\XmlSpawner\Instructions for importing maps.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\SpawnerConfigs\xmlspawner.xml" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\Spawns\attachtest1.xml" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\Spawns\attachtest2.xml" />
