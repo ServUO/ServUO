@@ -16,7 +16,7 @@ namespace Server.Gumps
 		private Mobile m_Mobile;
 		private object m_Object;
 #if (NEWTIMERS)
-		private Stack<StackEntry> m_Stack;
+		private Stack<PropertiesGump.StackEntry> m_Stack;
 #else
 		private Stack m_Stack;
 #endif
@@ -66,7 +66,7 @@ namespace Server.Gumps
 		private static readonly int BackHeight = BorderSize + TotalHeight + BorderSize;
 
 #if (NEWTIMERS)
-		public XmlSetGump( PropertyInfo prop, Mobile mobile, object o, Stack<StackEntry> stack, int page, ArrayList list ) : base( GumpOffsetX, GumpOffsetY )
+		public XmlSetGump( PropertyInfo prop, Mobile mobile, object o, Stack<PropertiesGump.StackEntry> stack, int page, ArrayList list ) : base( GumpOffsetX, GumpOffsetY )
 #else
 		public XmlSetGump( PropertyInfo prop, Mobile mobile, object o, Stack stack, int page, ArrayList list ) : base( GumpOffsetX, GumpOffsetY )
 #endif
@@ -175,7 +175,7 @@ namespace Server.Gumps
 			private Mobile m_Mobile;
 			private object m_Object;
 #if (NEWTIMERS)
-			private Stack<StackEntry> m_Stack;
+			private Stack<PropertiesGump.StackEntry> m_Stack;
 #else
 			private Stack m_Stack;
 #endif
@@ -183,7 +183,7 @@ namespace Server.Gumps
 			private ArrayList m_List;
 
 #if (NEWTIMERS)
-			public InternalPicker( PropertyInfo prop, Mobile mobile, object o, Stack<StackEntry> stack, int page, ArrayList list ) : base( ((IHued)o).HuedItemID )
+			public InternalPicker( PropertyInfo prop, Mobile mobile, object o, Stack<PropertiesGump.StackEntry> stack, int page, ArrayList list ) : base( ((IHued)o).HuedItemID )
 #else
 			public InternalPicker( PropertyInfo prop, Mobile mobile, object o, Stack stack, int page, ArrayList list ) : base( ((IHued)o).HuedItemID )
 #endif
@@ -268,7 +268,7 @@ namespace Server.Gumps
 					shouldSet = false;
 					shouldSend = false;
 
-					m_Mobile.SendGump( new SetBodyGump( m_Property, m_Mobile, m_Object, m_Stack, m_Page, m_List ) );
+					m_Mobile.SendGump( new SetBodyGump( m_Property, m_Mobile, m_Object, new Stack(m_Stack), m_Page, m_List ) );
 
 					break;
 				}

@@ -323,11 +323,11 @@ namespace Server.Network
 
 		public int Sequence { get; set; }
 
-		public IEnumerable<Gump> Gumps { get { return m_Gumps; } }
+		public List<Gump> Gumps { get { return m_Gumps; } }
 
-		public IEnumerable<HuePicker> HuePickers { get { return m_HuePickers; } }
+		public List<HuePicker> HuePickers { get { return m_HuePickers; } }
 
-		public IEnumerable<IMenu> Menus { get { return m_Menus; } }
+		public List<IMenu> Menus { get { return m_Menus; } }
 
 		private static int m_GumpCap = 512, m_HuePickerCap = 512, m_MenuCap = 512;
 

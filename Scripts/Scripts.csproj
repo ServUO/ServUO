@@ -14,7 +14,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ServUO</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NEWTIMERS;ServUO</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -25,7 +25,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Output\</OutputPath>
-    <DefineConstants>TRACE;ServUO</DefineConstants>
+    <DefineConstants>TRACE;NEWTIMERS;ServUO</DefineConstants>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -1503,9 +1503,11 @@
     <Compile Include="Items\Addons\ElvenWashbasinEastAddon.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Addons\ElvenWashbasinEastAddonWithDrawer.cs" />
     <Compile Include="Items\Addons\ElvenWashbasinSouthAddon.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Addons\ElvenWashbasinSouthAddonWithDrawer.cs" />
     <Compile Include="Items\Addons\FancyElvenTableEastAddon.cs">
       <SubType>Code</SubType>
     </Compile>

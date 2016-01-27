@@ -15,7 +15,7 @@ namespace Server.Gumps
 		protected Mobile m_Mobile;
 		protected object m_Object;
 #if (NEWTIMERS)
-		protected Stack<StackEntry> m_Stack;
+		protected Stack<PropertiesGump.StackEntry> m_Stack;
 #else
 		protected Stack m_Stack;
 #endif
@@ -74,7 +74,7 @@ namespace Server.Gumps
 		protected object[] m_Values;
 
 #if (NEWTIMERS)
-		public XmlSetListOptionGump( PropertyInfo prop, Mobile mobile, object o, Stack<StackEntry> stack, int propspage, ArrayList list, string[] names, object[] values ) : base( GumpOffsetX, GumpOffsetY )
+		public XmlSetListOptionGump( PropertyInfo prop, Mobile mobile, object o, Stack<PropertiesGump.StackEntry> stack, int propspage, ArrayList list, string[] names, object[] values ) : base( GumpOffsetX, GumpOffsetY )
 #else
 		public XmlSetListOptionGump( PropertyInfo prop, Mobile mobile, object o, Stack stack, int propspage, ArrayList list, string[] names, object[] values ) : base( GumpOffsetX, GumpOffsetY )
 #endif
