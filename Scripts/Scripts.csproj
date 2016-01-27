@@ -101,9 +101,6 @@
     <Compile Include="Commands\DecorateMag.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\DecorateML.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\DecorateSA.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -6865,9 +6862,7 @@
     <Compile Include="Misc\MapDefinitions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\MondainsLegacy.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Misc\MondainsLegacy.cs" />
     <Compile Include="Misc\NameList.cs">
       <SubType>Code</SubType>
     </Compile>
