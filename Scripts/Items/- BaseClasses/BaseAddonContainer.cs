@@ -171,7 +171,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1000); // version
+            writer.Write((int)0); // version
 
             writer.WriteItemList<AddonContainerComponent>(this.m_Components);
             writer.Write((int)this.m_Resource);
@@ -181,28 +181,12 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-			int version = reader.PeekInt();
-			if (version < 1000 &&
-				(
-					this is ElvenWashBasinEastAddon ||
-					this is ElvenWashBasinSouthAddon
-				)
-			)
-				return;
+            int version = reader.ReadInt();
 
-			reader.ReadInt();
+            this.m_Components = reader.ReadStrongItemList<AddonContainerComponent>();
+            this.m_Resource = (CraftResource)reader.ReadInt();
 
-			switch (version)
-			{
-				case 1000:
-					goto case 0;
-				case 0:
-					this.m_Components = reader.ReadStrongItemList<AddonContainerComponent>();
-					this.m_Resource = (CraftResource)reader.ReadInt();
-
-					AddonComponent.ApplyLightTo(this);
-					break;
-			}
+            AddonComponent.ApplyLightTo(this);
         }
 
         public virtual void DropItemsToGround()

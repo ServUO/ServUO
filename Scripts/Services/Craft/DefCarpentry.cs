@@ -377,11 +377,11 @@ namespace Server.Engines.Craft
                 this.ForceNonExceptional(index);
                 this.SetNeededExpansion(index, Expansion.ML);
 
-                index = this.AddCraft(typeof(ElvenWashBasinSouthDeed), 1044292, 1072865, 70.0, 95.0, typeof(Board), 1044041, 40, 1044351);
+                index = this.AddCraft(typeof(ElvenWashBasinSouthWithDrawerDeed), 1044292, 1072865, 70.0, 95.0, typeof(Board), 1044041, 40, 1044351);
                 this.ForceNonExceptional(index);
                 this.SetNeededExpansion(index, Expansion.ML);
 
-                index = this.AddCraft(typeof(ElvenWashBasinEastDeed), 1044292, 1073387, 70.0, 95.0, typeof(Board), 1044041, 40, 1044351);
+                index = this.AddCraft(typeof(ElvenWashBasinEastWithDrawerDeed), 1044292, 1073387, 70.0, 95.0, typeof(Board), 1044041, 40, 1044351);
                 this.ForceNonExceptional(index);
                 this.SetNeededExpansion(index, Expansion.ML);
 

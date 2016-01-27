@@ -141,11 +141,13 @@ namespace Server.Engines.Craft
 				{
 					itemId = 0x2DEA;
 				}
-				else if (type == typeof(ElvenWashBasinSouthDeed))
+				else if (type == typeof(ElvenWashBasinSouthDeed) ||
+					type == typeof(ElvenWashBasinSouthAddonWithDrawer))
 				{
 					itemId = 0x2D0B;
 				}
-				else if (type == typeof(ElvenWashBasinEastDeed))
+				else if (type == typeof(ElvenWashBasinEastDeed) ||
+					type == typeof(ElvenWashBasinEastAddonWithDrawer))
 				{
 					itemId = 0x2D0C;
 				}

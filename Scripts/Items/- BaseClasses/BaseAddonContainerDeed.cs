@@ -49,7 +49,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(1000); // version
+            writer.Write(1); // version
 
             // version 1
             writer.Write((int)this.m_Resource);
@@ -59,21 +59,10 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-			int version = reader.PeekInt();
-			if (version < 1000 &&
-				(
-					this is ElvenWashBasinEastDeed ||
-					this is ElvenWashBasinSouthDeed
-				)
-			)
-				return;
-
-			reader.ReadInt();
+            int version = reader.ReadInt();
 
             switch ( version )
             {
-				case 1000:
-					goto case 1;
                 case 1:
                     this.m_Resource = (CraftResource)reader.ReadInt();
                     break;

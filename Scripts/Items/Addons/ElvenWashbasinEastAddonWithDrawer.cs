@@ -1,28 +1,50 @@
 using System;
+using Server;
 
 namespace Server.Items
 {
-    public class ElvenWashBasinSouthAddon : BaseAddon
+    public class ElvenWashBasinEastAddonWithDrawer : BaseAddonContainer
     {
         [Constructable]
-        public ElvenWashBasinSouthAddon()
+        public ElvenWashBasinEastAddonWithDrawer()
+			: base(0x30E0)
         {
-            this.AddComponent(new AddonComponent(0x30E1), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x30E2), 1, 0, 0);
+            this.AddComponent(new AddonContainerComponent(0x30DF), 0, -1, 0);
         }
 
-        public ElvenWashBasinSouthAddon(Serial serial)
+        public ElvenWashBasinEastAddonWithDrawer(Serial serial)
             : base(serial)
         {
         }
 
-        public override BaseAddonDeed Deed
+        public override BaseAddonContainerDeed Deed
         {
             get
             {
-                return new ElvenWashBasinSouthDeed();
+                return new ElvenWashBasinEastWithDrawerDeed();
             }
         }
+		public override bool RetainDeedHue
+		{
+			get
+			{
+				return true;
+			}
+		}
+		public override int DefaultGumpID
+		{
+			get
+			{
+				return 0x0104;
+			}
+		}
+		public override int DefaultDropSound
+		{
+			get
+			{
+				return 0x0042;
+			}
+		}
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -38,32 +60,34 @@ namespace Server.Items
         }
     }
 
-    public class ElvenWashBasinSouthDeed : BaseAddonDeed
+    public class ElvenWashBasinEastWithDrawerDeed : BaseAddonContainerDeed
     {
         [Constructable]
-        public ElvenWashBasinSouthDeed()
+        public ElvenWashBasinEastWithDrawerDeed()
+			: base()
         {
         }
 
-        public ElvenWashBasinSouthDeed(Serial serial)
+        public ElvenWashBasinEastWithDrawerDeed(Serial serial)
             : base(serial)
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new ElvenWashBasinSouthAddon();
-            }
-        }
+		public override BaseAddonContainer Addon
+		{
+			get
+			{
+				return new ElvenWashBasinEastAddonWithDrawer();
+			}
+		}
+
         public override int LabelNumber
         {
             get
             {
-                return 1072865;
+                return 1073387;
             }
-        }// elven wash basin (south)
+        }// elven wash basin (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

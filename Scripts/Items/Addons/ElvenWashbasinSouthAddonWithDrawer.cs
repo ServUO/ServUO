@@ -2,27 +2,48 @@ using System;
 
 namespace Server.Items
 {
-    public class ElvenWashBasinSouthAddon : BaseAddon
+    public class ElvenWashBasinSouthAddonWithDrawer : BaseAddonContainer
     {
         [Constructable]
-        public ElvenWashBasinSouthAddon()
+        public ElvenWashBasinSouthAddonWithDrawer()
+			: base(0x30E2)
         {
-            this.AddComponent(new AddonComponent(0x30E1), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x30E2), 1, 0, 0);
+            this.AddComponent(new AddonContainerComponent(0x30E1), -1, 0, 0);
         }
 
-        public ElvenWashBasinSouthAddon(Serial serial)
+        public ElvenWashBasinSouthAddonWithDrawer(Serial serial)
             : base(serial)
         {
         }
 
-        public override BaseAddonDeed Deed
+        public override BaseAddonContainerDeed Deed
         {
             get
             {
-                return new ElvenWashBasinSouthDeed();
+                return new ElvenWashBasinSouthWithDrawerDeed();
             }
         }
+		public override bool RetainDeedHue
+		{
+			get
+			{
+				return true;
+			}
+		}
+		public override int DefaultGumpID
+		{
+			get
+			{
+				return 0x0104;
+			}
+		}
+		public override int DefaultDropSound
+		{
+			get
+			{
+				return 0x0042;
+			}
+		}
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -38,23 +59,23 @@ namespace Server.Items
         }
     }
 
-    public class ElvenWashBasinSouthDeed : BaseAddonDeed
+    public class ElvenWashBasinSouthWithDrawerDeed : BaseAddonContainerDeed
     {
         [Constructable]
-        public ElvenWashBasinSouthDeed()
+        public ElvenWashBasinSouthWithDrawerDeed()
         {
         }
 
-        public ElvenWashBasinSouthDeed(Serial serial)
+        public ElvenWashBasinSouthWithDrawerDeed(Serial serial)
             : base(serial)
         {
         }
 
-        public override BaseAddon Addon
+        public override BaseAddonContainer Addon
         {
             get
             {
-                return new ElvenWashBasinSouthAddon();
+                return new ElvenWashBasinSouthAddonWithDrawer();
             }
         }
         public override int LabelNumber
