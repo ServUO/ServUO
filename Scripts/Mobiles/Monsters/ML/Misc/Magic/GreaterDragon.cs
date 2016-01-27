@@ -168,17 +168,18 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 
 			switch(version)
-			{ 
+			{
 				case 2:
-					SetStam(0);
-					goto case 1;
+					break;
 				case 1:
 					this.SetDamage(24, 33);
+					SetStam(0);
 					break;
 				case 0:
 					Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.50);
 					Server.SkillHandlers.AnimalTaming.ScaleSkills(this, 0.80, 0.90); // 90% * 80% = 72% of original skills trainable to 90%
 					this.Skills[SkillName.Magery].Base = this.Skills[SkillName.Magery].Cap; // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
+					SetStam(0);
 					break;
 			}
         }
