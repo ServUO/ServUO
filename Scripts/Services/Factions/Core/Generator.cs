@@ -14,7 +14,7 @@ namespace Server.Factions
 
 		public static void DeleteFactions_OnCommand(CommandEventArgs e)
 		{
-			WeakEntityCollection.DeleteEntities("factions");
+			WeakEntityCollection.Delete("factions");
 		}
 
         public static void GenerateFactions_OnCommand(CommandEventArgs e)

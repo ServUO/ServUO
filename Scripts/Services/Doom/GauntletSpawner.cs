@@ -551,11 +551,13 @@ namespace Server.Engines.Doom
 
 		public static void DeleteGauntlet_OnCommand(CommandEventArgs e)
 		{
-			WeakEntityCollection.DeleteEntities("doom");
+			WeakEntityCollection.Delete("doom");
 		}
 
         public static void GenGauntlet_OnCommand(CommandEventArgs e)
-        {
+		{
+			WeakEntityCollection.Delete("doom");
+
             /* Begin healer room */
             CreatePricedHealer(5000, 387, 400);
             CreateTeleporter(390, 407, 394, 405);

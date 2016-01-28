@@ -146,7 +146,7 @@ namespace Server.Items
 		[Description("Deletes mark containers to Malas secret locations.")]
 		public static void SecretLocDelete_OnCommand(CommandEventArgs e)
 		{
-			WeakEntityCollection.DeleteEntities("malas");
+			WeakEntityCollection.Delete("malas");
 		}
 
 		[Usage("SecretLocGen")]

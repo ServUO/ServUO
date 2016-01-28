@@ -14,7 +14,7 @@ namespace Server
         [Description("Deletes Stygian Abyss world decoration.")]
 		private static void DecorateSADelete_OnCommand(CommandEventArgs e)
 		{
-			WeakEntityCollection.DeleteEntities("sa");
+			WeakEntityCollection.Delete("sa");
 		}
 
         [Usage("DecorateSA")]

@@ -32,7 +32,7 @@ namespace Server.Commands
             Generate("Data/Decoration/Malas", Map.Malas);
             Generate("Data/Decoration/Tokuno", Map.Tokuno);
 
-			WeakEntityCollection.DeleteEntities("deco");
+			WeakEntityCollection.Delete("deco");
 
             m_Mobile.SendMessage("Deleting complete.");
         }

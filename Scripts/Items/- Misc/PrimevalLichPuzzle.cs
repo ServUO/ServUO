@@ -205,7 +205,7 @@ namespace Server.Engines.CannedEvil
         [Description("Deletes the Primeval Lich lever puzzle.")]
 		public static void DeleteLichPuzzle_OnCommand(CommandEventArgs e)
 		{
-			WeakEntityCollection.DeleteEntities("primevallich");
+			WeakEntityCollection.Delete("primevallich");
 		}
 
 		[Usage("GenLichPuzzle")]

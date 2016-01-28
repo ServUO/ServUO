@@ -410,7 +410,7 @@ namespace Server
 		[Description("Deletes Mondain's Legacy world decoration.")]
 		private static void DecorateMLDelete_OnCommand(CommandEventArgs e)
 		{
-			WeakEntityCollection.DeleteEntities("ml");
+			WeakEntityCollection.Delete("ml");
 		}
 
 		[Usage("DecorateML")]

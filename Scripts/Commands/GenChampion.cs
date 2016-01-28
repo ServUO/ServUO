@@ -30,7 +30,7 @@ namespace Server.Commands
 		[Description("Remove ChampionSpawnController")]
 		public static void DeleteChamp_OnCommand(CommandEventArgs e)
 		{
-			WeakEntityCollection.DeleteEntities("champ");
+			WeakEntityCollection.Delete("champ");
 		}
 	}
 }

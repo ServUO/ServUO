@@ -121,7 +121,7 @@ namespace Server.Commands
 
 		public static void DeleteKhaldun_OnCommand(CommandEventArgs e)
 		{
-			WeakEntityCollection.DeleteEntities("khaldun");
+			WeakEntityCollection.Delete("khaldun");
 		}
 
 

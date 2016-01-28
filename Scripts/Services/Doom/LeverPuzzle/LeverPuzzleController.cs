@@ -199,7 +199,7 @@ namespace Server.Engines.Doom
 		[Description("Deletes lamp room and lever puzzle in doom.")]
 		public static void LampPuzzleDelete_OnCommand(CommandEventArgs e)
 		{
-			WeakEntityCollection.DeleteEntities("LeverPuzzleController");
+			WeakEntityCollection.Delete("LeverPuzzleController");
 			e.Mobile.SendMessage("Lamp room puzzle successfully deleted.");
 		}
 
