@@ -495,15 +495,15 @@ namespace Server.Items
 		
         public virtual bool CanEnter(Mobile fighter)
         {
-            return true;
+	        return fighter != null && !Deleted && Map != null && Map != Map.Internal;
         }
-		
-        public virtual bool CanEnter(BaseCreature pet)
-        {
-            return true;
-        }
-		
-        public virtual void FinishSequence()
+
+	    public virtual bool CanEnter(BaseCreature pet)
+	    {
+		    return pet != null && !Deleted && Map != null && Map != Map.Internal;
+	    }
+
+	    public virtual void FinishSequence()
         { 
             this.StopTimer();
 			
@@ -538,20 +538,27 @@ namespace Server.Items
         public virtual void Exit(Mobile fighter)
         {
             // teleport fighter
-            if (fighter.NetState == null)
-                fighter.LogoutLocation = this.m_ExitDest;
-            else
-            { 
-                fighter.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
-                fighter.PlaySound(0x1FE);
+	        if (fighter.NetState == null)
+	        {
+		        fighter.LogoutLocation = this.m_ExitDest;
 				
-                if (this is CitadelAltar)
-                    fighter.MoveToWorld(this.m_ExitDest, Map.Tokuno);
-                else
-                    fighter.MoveToWorld(this.m_ExitDest, this.Map);
-            }
-			
-            // teleport his pets
+				if (this is CitadelAltar)
+					fighter.LogoutMap = Map.Tokuno;
+				else
+					fighter.LogoutMap = this.Map;
+	        }
+	        else
+	        {
+		        fighter.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
+		        fighter.PlaySound(0x1FE);
+
+		        if (this is CitadelAltar)
+			        fighter.MoveToWorld(this.m_ExitDest, Map.Tokuno);
+		        else
+			        fighter.MoveToWorld(this.m_ExitDest, this.Map);
+	        }
+
+	        // teleport his pets
             if (this.m_Pets.ContainsKey(fighter))
             {
                 for (int i = 0; i < this.m_Pets[fighter].Count; i ++)
