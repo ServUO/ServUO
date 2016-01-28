@@ -16,6 +16,8 @@ namespace Server.Engines.Help
 	{
 		private static readonly string _FilePath = Path.Combine("Saves", "Help", "Pages.bin");
 
+
+		[CallPriority(900)]
 		public static void Configure()
 		{
 			EventSink.WorldSave += OnSave;
@@ -53,13 +55,12 @@ namespace Server.Engines.Help
 				reader =>
 				{
 					var version = reader.ReadInt();
+					var count = reader.ReadInt();
 
 					switch (version)
 					{
 						case 0:
 							{
-								var count = reader.ReadInt();
-
 								for (var i = 0; i < count; ++i)
 								{
 									var sender = reader.ReadMobile();
@@ -72,8 +73,9 @@ namespace Server.Engines.Help
 										PageLocation = reader.ReadPoint3D(),
 										PageMap = reader.ReadMap()
 									};
+									pe.Stop();
 
-									PageQueue.List.Add(pe);
+									PageQueue.Enqueue(pe);
 								}
 							}
 							break;
