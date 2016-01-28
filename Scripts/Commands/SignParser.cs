@@ -111,6 +111,7 @@ namespace Server.Commands
                 sign = new Sign(itemID);
                 sign.Name = name;
             }
+			WeakEntityCollection.Add("sign", sign);
 
             if (map == Map.Malas)
             {

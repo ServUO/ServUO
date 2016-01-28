@@ -39,10 +39,11 @@ namespace Server.Items
         }
         public static void Initialize()
         {
-            CommandSystem.Register("MoonGen", AccessLevel.Administrator, new CommandEventHandler(MoonGen_OnCommand));
-        }
+			CommandSystem.Register("MoonGen", AccessLevel.Administrator, new CommandEventHandler(MoonGen_OnCommand));
+			CommandSystem.Register("MoonGenDelete", AccessLevel.Administrator, new CommandEventHandler(MoonGenDelete_OnCommand));
+		}
 
-        [Usage("MoonGen")]
+		[Usage("MoonGen")]
         [Description("Generates public moongates. Removes all old moongates.")]
         public static void MoonGen_OnCommand(CommandEventArgs e)
         {
@@ -60,7 +61,14 @@ namespace Server.Items
             World.Broadcast(0x35, true, "{0} moongates generated.", count);
         }
 
-        public override void OnDoubleClick(Mobile from)
+		[Usage("MoonGenDelete")]
+		[Description("Removes all public moongates.")]
+		public static void MoonGenDelete_OnCommand(CommandEventArgs e)
+		{
+			DeleteAll();
+		}
+
+		public override void OnDoubleClick(Mobile from)
         {
             if (!from.Player)
                 return;

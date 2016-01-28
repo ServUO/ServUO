@@ -101,9 +101,6 @@
     <Compile Include="Commands\DecorateMag.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\DecorateML.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\DecorateSA.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -219,9 +216,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\Logging.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Commands\MoonGenDelete.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\Profiling.cs">
@@ -6868,9 +6862,7 @@
     <Compile Include="Misc\MapDefinitions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\MondainsLegacy.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Misc\MondainsLegacy.cs" />
     <Compile Include="Misc\NameList.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -6943,6 +6935,7 @@
     <Compile Include="Misc\VendorGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Misc\WeakEntityCollection.cs" />
     <Compile Include="Misc\Weather.cs">
       <SubType>Code</SubType>
     </Compile>

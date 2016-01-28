@@ -66,6 +66,7 @@ namespace Server.Commands
                     this.m_Count++;
 				
                     Teleporter tel = new Teleporter(pointDestination, mapDestination);
+					WeakEntityCollection.Add("tel", tel);
 
                     tel.MoveToWorld(pointLocation, mapLocation);
                 }
@@ -75,6 +76,7 @@ namespace Server.Commands
                     this.m_Count++;
 
                     Teleporter telBack = new Teleporter(pointLocation, mapLocation);
+					WeakEntityCollection.Add("tel", telBack);
 
                     telBack.MoveToWorld(pointDestination, mapDestination);
                 }
@@ -1128,11 +1130,13 @@ namespace Server.Commands
 
 				// New Haven Mine
 				TeleportRope rope = new TeleportRope();
+				WeakEntityCollection.Add("tel", rope);
 				rope.ToLocation = new Point3D(5952, 317, 0);
 				rope.ToMap = map;
 				rope.MoveToWorld(new Point3D(5993, 316, 0), map);
 
 				rope = new TeleportRope();
+				WeakEntityCollection.Add("tel", rope);
 				rope.ToLocation = new Point3D(5992, 316, 0);
 				rope.ToMap = map;
 				rope.MoveToWorld(new Point3D(5951, 317, 0), map);
