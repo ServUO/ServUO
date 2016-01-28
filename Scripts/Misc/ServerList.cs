@@ -46,10 +46,11 @@ namespace Server.Misc
         * firewalls) or specific IP adddresses you can do so by modifying the file SocketOptions.cs found in this directory.
         */
 
-		public static readonly string Address = null;
-		public static readonly bool AutoDetect = true;
+		public static readonly string Address = Config.Get("Server.Address", null);
 
-		public static string ServerName = Config.GetString("Server.Name", "My Shard");
+		public static readonly bool AutoDetect = Config.Get("Server.AutoDetect", true);
+
+		public static string ServerName = Config.Get("Server.Name", "My Shard");
 
 		private static IPAddress _PublicAddress;
 
@@ -57,11 +58,6 @@ namespace Server.Misc
 
 		public static void Initialize()
 		{
-			if (ServerName == "My Shard")
-			{
-				//ServerName = NameList.RandomName("daemon");
-			}
-
 			if (Address == null)
 			{
 				if (AutoDetect)

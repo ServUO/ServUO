@@ -17,7 +17,7 @@ namespace Server.Multis
 {
     public abstract class BaseHouse : BaseMulti
     {
-		private static int m_AccountHouseLimit = Config.GetInt("Housing.AccountHouseLimit", 1);
+		private static int m_AccountHouseLimit = Config.Get("Housing.AccountHouseLimit", 1);
 
         public static bool NewVendorSystem
         {
