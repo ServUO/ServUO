@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
+using System.Threading;
 #endregion
 
 namespace Server.Misc
@@ -88,6 +89,7 @@ namespace Server.Misc
 				if (IsPrivateNetwork(localAddress))
 				{
 					ipep = (IPEndPoint)s.RemoteEndPoint;
+
 					if (!IsPrivateNetwork(ipep.Address) && _PublicAddress != null)
 					{
 						localAddress = _PublicAddress;
@@ -102,21 +104,33 @@ namespace Server.Misc
 			}
 		}
 
+		public static string[] IPServices =
+		{
+			"http://services.servuo.com/ip.php", "http://api.ipify.org",
+			"http://checkip.dyndns.org/"
+		};
+
 		private static void AutoDetection()
 		{
 			if (!HasPublicIPAddress())
 			{
-				Console.Write("ServerList: Auto-detecting public IP address...");
-				_PublicAddress = FindPublicAddress();
+				Utility.PushColor(ConsoleColor.Yellow);
+				Console.WriteLine("ServerList: Auto-detecting public IP address...");
+				
+				_PublicAddress = FindPublicAddress(IPServices);
 
 				if (_PublicAddress != null)
 				{
-					Console.WriteLine("done ({0})", _PublicAddress);
+					Console.WriteLine("ServerList: Done: '{0}'", _PublicAddress);
 				}
 				else
 				{
-					Console.WriteLine("failed");
+					_PublicAddress = IPAddress.Any;
+
+					Console.WriteLine("ServerList: Failed: reverting to private IP address...");
 				}
+
+				Utility.PopColor();
 			}
 		}
 
@@ -192,28 +206,64 @@ namespace Server.Misc
 			return false;
 		}
 
-		public static IPAddress FindPublicAddress()
+		public static IPAddress FindPublicAddress(params string[] services)
 		{
-			var data = String.Empty;
-
-			var request = WebRequest.Create("http://api.ipify.org");
-
-			using (var response = request.GetResponse())
+			if (services == null || services.Length == 0)
 			{
-				var r = response.GetResponseStream();
+				services = IPServices;
+			}
 
-				if (r != null)
+			if (services == null || services.Length == 0)
+			{
+				return null;
+			}
+
+			IPAddress ip = null;
+
+			Uri uri;
+			string data;
+			Match match;
+
+			foreach (var service in services.Where(s => !String.IsNullOrWhiteSpace(s)))
+			{
+				try
 				{
-					using (var stream = new StreamReader(r))
+					uri = new Uri(service);
+
+					Console.WriteLine("ServerList: >>> {0}", uri.Host);
+
+					using (var client = new WebClient())
 					{
-						data = stream.ReadToEnd();
+						data = client.DownloadString(uri);
 					}
+
+					Console.WriteLine("ServerList: <<< {0}", data);
+
+					match = _AddressPattern.Match(data);
+
+					if (!match.Success || !IPAddress.TryParse(match.Value, out ip))
+					{
+						ip = null;
+					}
+				}
+				catch (UriFormatException)
+				{
+					Console.WriteLine("ServerList: Invalid IP service Uri '{0}'", service);
+
+					ip = null;
+				}
+				catch
+				{
+					ip = null;
+				}
+
+				if (ip != null)
+				{
+					break;
 				}
 			}
 
-			var m = _AddressPattern.Match(data);
-
-			return m.Success ? IPAddress.Parse(m.Value) : null;
+			return ip;
 		}
 	}
 }
