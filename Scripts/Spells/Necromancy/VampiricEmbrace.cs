@@ -77,6 +77,16 @@ namespace Server.Spells.Necromancy
             Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x373A, 1, 17, 1108, 7, 9914, 0);
             Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x376A, 1, 22, 67, 7, 9502, 0);
             Effects.PlaySound(m.Location, m.Map, 0x4B1);
-        }
+			
+			BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.VampiricEmbrace, 1028812));
+			if (Caster.Skills.Necromancy.Value > 99.0)
+				BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.PoisonImmunity, 1153785));
+		}
+
+		public override void RemoveEffect(Mobile m)
+		{
+			BuffInfo.RemoveBuff(Caster, BuffIcon.PoisonImmunity);
+			BuffInfo.RemoveBuff(Caster, BuffIcon.VampiricEmbrace);
+		}
     }
 }
