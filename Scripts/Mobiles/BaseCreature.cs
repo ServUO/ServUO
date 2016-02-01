@@ -3361,9 +3361,13 @@ namespace Server.Mobiles
 				/* Sanity check */
 				if (baseToSet > theirSkill.CapFixedPoint || (m.Skills.Total - theirSkill.BaseFixedPoint + baseToSet) > m.Skills.Cap)
 				{
+					// Full refund
+					m.Backpack.TryDropItem(m, new Gold(maxPointsToLearn), false);
 					return TeachResult.NotEnoughFreePoints;
 				}
 
+				// Partial refund if needed
+				m.Backpack.TryDropItem(m, new Gold(maxPointsToLearn - pointsToLearn), false);
 				theirSkill.BaseFixedPoint = baseToSet;
 			}
 
