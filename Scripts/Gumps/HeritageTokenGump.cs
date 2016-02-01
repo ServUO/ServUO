@@ -8,10 +8,12 @@ namespace Server.Gumps
     public class HeritageTokenGump : Gump
     {
         private readonly HeritageToken m_Token;
-        public HeritageTokenGump(HeritageToken token)
+		private readonly Mobile m_User;
+        public HeritageTokenGump(HeritageToken token, Mobile from)
             : base(60, 36)
         {
             this.m_Token = token;
+			this.m_User = from;
 
             this.AddPage(0);
 
@@ -273,8 +275,15 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            if (this.m_Token == null || this.m_Token.Deleted || info.ButtonID == 0)
+            if (this.m_Token == null || this.m_Token.Deleted || info.ButtonID == 0 ||
+				this.m_User == null || this.m_User.Deleted)
                 return;
+
+			if (!this.m_Token.IsChildOf(this.m_User.Backpack))
+			{
+				sender.Mobile.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+				return;
+			}
 
             List<Type> types = new List<Type>();
             int cliloc = 0;
@@ -561,7 +570,7 @@ namespace Server.Gumps
             if (types.Count > 0 && cliloc > 0)
             {
                 sender.Mobile.CloseGump(typeof(ConfirmHeritageGump));
-                sender.Mobile.SendGump(new ConfirmHeritageGump(this.m_Token, types.ToArray(), cliloc));
+                sender.Mobile.SendGump(new ConfirmHeritageGump(this.m_Token, types.ToArray(), cliloc, this.m_User));
             }
             else
                 sender.Mobile.SendLocalizedMessage(501311); // This option is currently disabled, while we evaluate it for game balance.
