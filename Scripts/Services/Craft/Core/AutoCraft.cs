@@ -39,7 +39,7 @@ namespace Server.Engines.Craft
             else
             {
                 AutoCraftTimer.EndTimer(from);
-                new AutoCraftTimer(m_From, m_CraftSystem, m_CraftItem, m_Tool, amount);
+                new AutoCraftTimer(m_From, m_CraftSystem, m_CraftItem, m_Tool, amount, TimeSpan.FromSeconds(m_CraftSystem.Delay * m_CraftSystem.MaxCraftEffect + 0.5), TimeSpan.FromSeconds(m_CraftSystem.Delay * m_CraftSystem.MaxCraftEffect + 0.5));
 
                 CraftContext context = m_CraftSystem.GetContext(from);
 
@@ -71,7 +71,8 @@ namespace Server.Engines.Craft
         public int Amount { get { return m_Amount; } }
         public int Attempts { get { return m_Success; } }
 
-        public AutoCraftTimer(Mobile from, CraftSystem system, CraftItem item, BaseTool tool, int amount) : base(TimeSpan.FromSeconds(2.5), TimeSpan.FromSeconds(2.5))
+        public AutoCraftTimer(Mobile from, CraftSystem system, CraftItem item, BaseTool tool, int amount, TimeSpan delay, TimeSpan interval)
+            : base(delay, interval)
         {
             m_From = from;
             m_CraftSystem = system;
@@ -95,6 +96,10 @@ namespace Server.Engines.Craft
             m_AutoCraftTable[from] = this;
 
             this.Start();
+        }
+
+        public AutoCraftTimer(Mobile from, CraftSystem system, CraftItem item, BaseTool tool, int amount) : this(from,system,item,tool,amount,TimeSpan.FromSeconds(2.5), TimeSpan.FromSeconds(2.5))
+        {
         }
 
         protected override void OnTick()

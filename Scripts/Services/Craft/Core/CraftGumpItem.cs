@@ -299,7 +299,7 @@ namespace Server.Engines.Craft
                     break;
                 case 3: //Make Max
                     AutoCraftTimer.EndTimer(m_From);
-                    new AutoCraftTimer(m_From, m_CraftSystem, m_CraftItem, m_Tool, 9999);
+                    new AutoCraftTimer(m_From, m_CraftSystem, m_CraftItem, m_Tool, 9999, TimeSpan.FromSeconds(m_CraftSystem.Delay * m_CraftSystem.MaxCraftEffect + 0.5), TimeSpan.FromSeconds(m_CraftSystem.Delay * m_CraftSystem.MaxCraftEffect + 0.5));
                     break;
             }
         }
