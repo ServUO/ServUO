@@ -8,10 +8,11 @@ namespace Server.Commands
         private static int m_Count;
         public static void Initialize()
         {
-            CommandSystem.Register("GenKhaldun", AccessLevel.Administrator, new CommandEventHandler(GenKhaldun_OnCommand));
-        }
+			CommandSystem.Register("GenKhaldun", AccessLevel.Administrator, new CommandEventHandler(GenKhaldun_OnCommand));
+			CommandSystem.Register("DeleteKhaldun", AccessLevel.Administrator, new CommandEventHandler(DeleteKhaldun_OnCommand));
+		}
 
-        public static bool FindMorphItem(int x, int y, int z, int inactiveItemID, int activeItemID)
+		public static bool FindMorphItem(int x, int y, int z, int inactiveItemID, int activeItemID)
         {
             IPooledEnumerable eable = Map.Felucca.GetItemsInRange(new Point3D(x, y, z), 0);
 
@@ -72,6 +73,7 @@ namespace Server.Commands
                 return;
 			
             MorphItem item = new MorphItem(inactiveItemID, activeItemID, range, 3);
+			WeakEntityCollection.Add("khaldun", item);
 			
             item.MoveToWorld(new Point3D(x, y, z), Map.Felucca);
             m_Count++;
@@ -83,7 +85,8 @@ namespace Server.Commands
                 return;
 			
             MorphItem item = new MorphItem(off, on, 2, 3);
-            item.Light = light;
+			WeakEntityCollection.Add("khaldun", item);
+			item.Light = light;
 			
             item.MoveToWorld(new Point3D(x, y, z), Map.Felucca);
             m_Count++;
@@ -95,7 +98,8 @@ namespace Server.Commands
                 return;
 			
             EffectController item = new EffectController();
-            item.SoundID = sound;
+			WeakEntityCollection.Add("khaldun", item);
+			item.SoundID = sound;
             item.TriggerType = EffectTriggerType.InRange;
             item.TriggerRange = range;
 			
@@ -109,12 +113,19 @@ namespace Server.Commands
                 return;
 			
             MorphItem item = new MorphItem(reverse ? 0x17DC : 0x17EE, reverse ? 0x17EE : 0x17DC, 1, 3);
-			
-            item.MoveToWorld(new Point3D(x, y, 0), Map.Felucca);
+			WeakEntityCollection.Add("khaldun", item);
+
+			item.MoveToWorld(new Point3D(x, y, 0), Map.Felucca);
             m_Count++;
         }
 
-        public static void GenKhaldun_OnCommand(CommandEventArgs e)
+		public static void DeleteKhaldun_OnCommand(CommandEventArgs e)
+		{
+			WeakEntityCollection.Delete("khaldun");
+		}
+
+
+		public static void GenKhaldun_OnCommand(CommandEventArgs e)
         {
             m_Count = 0;
 			
@@ -199,8 +210,13 @@ namespace Server.Commands
 			
             RaisableItem stone = TryCreateItem(5403, 1360, 0, new RaisableItem(0x788, 10, 0x477, 0x475, TimeSpan.FromMinutes(1.5))) as RaisableItem;
             RaisableItem door = TryCreateItem(5524, 1367, 0, new RaisableItem(0x1D0, 20, 0x477, 0x475, TimeSpan.FromMinutes(5.0))) as RaisableItem;
-			
-            sw.RaisableItem = stone;
+
+			WeakEntityCollection.Add("khaldun", sw);
+			WeakEntityCollection.Add("khaldun", lv);
+			WeakEntityCollection.Add("khaldun", stone);
+			WeakEntityCollection.Add("khaldun", door);
+
+			sw.RaisableItem = stone;
             lv.RaisableItem = door;
 			
             e.Mobile.SendMessage(String.Format("{0} dynamic Khaldun item{1} generated.", m_Count, m_Count == 1 ? "" : "s"));

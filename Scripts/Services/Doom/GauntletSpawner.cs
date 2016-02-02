@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Commands;
 using Server.Items;
 using Server.Mobiles;
@@ -20,16 +22,24 @@ namespace Server.Engines.Doom
         public const int InSequenceItemHue = 0x000;
         public const int InProgressItemHue = 0x676;
         public const int CompletedItemHue = 0x455;
+
         private GauntletSpawnerState m_State;
+
         private string m_TypeName;
+
         private BaseDoor m_Door;
         private BaseAddon m_Addon;
+
         private GauntletSpawner m_Sequence;
+
         private List<Mobile> m_Creatures;
-        private Rectangle2D m_RegionBounds;
         private List<BaseTrap> m_Traps;
+
+        private Rectangle2D m_RegionBounds;
+
         private Region m_Region;
         private Timer m_Timer;
+
         [Constructable]
         public GauntletSpawner()
             : this(null)
@@ -65,6 +75,7 @@ namespace Server.Engines.Doom
                 this.m_TypeName = value;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseDoor Door
         {
@@ -77,6 +88,7 @@ namespace Server.Engines.Doom
                 this.m_Door = value;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseAddon Addon
         {
@@ -89,6 +101,7 @@ namespace Server.Engines.Doom
                 this.m_Addon = value;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public GauntletSpawner Sequence
         {
@@ -101,6 +114,7 @@ namespace Server.Engines.Doom
                 this.m_Sequence = value;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HasCompleted
         {
@@ -120,6 +134,7 @@ namespace Server.Engines.Doom
                 return true;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public Rectangle2D RegionBounds
         {
@@ -132,6 +147,7 @@ namespace Server.Engines.Doom
                 this.m_RegionBounds = value;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public GauntletSpawnerState State
         {
@@ -209,6 +225,7 @@ namespace Server.Engines.Doom
                 }
             }
         }
+
         public List<Mobile> Creatures
         {
             get
@@ -220,6 +237,7 @@ namespace Server.Engines.Doom
                 this.m_Creatures = value;
             }
         }
+
         public List<BaseTrap> Traps
         {
             get
@@ -231,6 +249,7 @@ namespace Server.Engines.Doom
                 this.m_Traps = value;
             }
         }
+
         public Region Region
         {
             get
@@ -242,6 +261,7 @@ namespace Server.Engines.Doom
                 this.m_Region = value;
             }
         }
+
         public override string DefaultName
         {
             get
@@ -249,33 +269,109 @@ namespace Server.Engines.Doom
                 return "doom spawner";
             }
         }
+
         public static void Initialize()
         {
             CommandSystem.Register("GenGauntlet", AccessLevel.Administrator, new CommandEventHandler(GenGauntlet_OnCommand));
-        }
+			CommandSystem.Register("DeleteGauntlet", AccessLevel.Administrator, new CommandEventHandler(DeleteGauntlet_OnCommand));
+		}
 
-        public static void CreateTeleporter(int xFrom, int yFrom, int xTo, int yTo)
-        {
-            Static telePad = new Static(0x1822);
-            Teleporter teleItem = new Teleporter(new Point3D(xTo, yTo, -1), Map.Malas, false);
+		private static bool FindObject<T>(Map map, Point3D p, int range, out T value) where T : IEntity
+		{
+			return FindObject(map, p, range, null, out value);
+		}
 
-            telePad.Hue = 0x482;
-            telePad.MoveToWorld(new Point3D(xFrom, yFrom, -1), Map.Malas);
+		private static bool FindObject<T>(Map map, Point3D p, int range, Func<T, bool> predicate, out T value)
+			where T : IEntity
+		{
+			value = default(T);
 
-            teleItem.MoveToWorld(new Point3D(xFrom, yFrom, -1), Map.Malas);
+			var any = false;
 
-            teleItem.SourceEffect = true;
-            teleItem.DestEffect = true;
-            teleItem.SoundID = 0x1FE;
-        }
+			var e = map.GetObjectsInRange(p, range);
 
-        public static BaseDoor CreateDoorSet(int xDoor, int yDoor, bool doorEastToWest, int hue)
-        {
-            BaseDoor hiDoor = new MetalDoor(doorEastToWest ? DoorFacing.NorthCCW : DoorFacing.WestCW);
-            BaseDoor loDoor = new MetalDoor(doorEastToWest ? DoorFacing.SouthCW : DoorFacing.EastCCW);
+			foreach (var o in (predicate != null ? e.OfType<T>().Where(predicate) : e.OfType<T>()).Where(o => o != null))
+			{
+				value = o;
+				any = true;
+				break;
+			}
 
-            hiDoor.MoveToWorld(new Point3D(xDoor, yDoor, -1), Map.Malas);
-            loDoor.MoveToWorld(new Point3D(xDoor + (doorEastToWest ? 0 : 1), yDoor + (doorEastToWest ? 1 : 0), -1), Map.Malas);
+			e.Free();
+
+			return any;
+		}
+
+		private static void DeleteDoor(BaseDoor d)
+		{
+			if (d == null)
+			{
+				return;
+			}
+
+			if (d.Link != null)
+			{
+				DeleteDoor(d.Link);
+			}
+
+			d.Delete();
+		}
+
+	    public static void CreateTeleporter(int xFrom, int yFrom, int xTo, int yTo)
+	    {
+		    var p = new Point3D(xFrom, yFrom, -1);
+
+		    Static telePad;
+
+		    if (FindObject(Map.Malas, p, 0, out telePad))
+		    {
+			    telePad.Delete();
+		    }
+
+		    telePad = new Static(0x1822);
+		    telePad.MoveToWorld(p, Map.Malas);
+		    telePad.Hue = 0x482;
+
+			WeakEntityCollection.Add("doom", telePad);
+
+		    Teleporter teleItem;
+
+		    if (FindObject(Map.Malas, p, 0, out teleItem))
+		    {
+			    teleItem.Delete();
+		    }
+
+			teleItem = new Teleporter(new Point3D(xTo, yTo, -1), Map.Malas, false);
+		    teleItem.MoveToWorld(p, Map.Malas);
+		    teleItem.SourceEffect = true;
+		    teleItem.DestEffect = true;
+		    teleItem.SoundID = 0x1FE;
+
+			WeakEntityCollection.Add("doom", teleItem);
+	    }
+
+	    public static BaseDoor CreateDoorSet(int xDoor, int yDoor, bool doorEastToWest, int hue)
+	    {
+		    var ph = new Point3D(xDoor, yDoor, -1);
+		    var pl = new Point3D(xDoor + (doorEastToWest ? 0 : 1), yDoor + (doorEastToWest ? 1 : 0), -1);
+
+		    BaseDoor hiDoor, loDoor;
+
+		    if (FindObject(Map.Malas, ph, 0, out hiDoor))
+		    {
+			    DeleteDoor(hiDoor);
+		    }
+
+			if (FindObject(Map.Malas, pl, 0, out loDoor))
+			{
+				DeleteDoor(loDoor);
+			}
+
+		    hiDoor = new MetalDoor(doorEastToWest ? DoorFacing.NorthCCW : DoorFacing.WestCW);
+			loDoor = new MetalDoor(doorEastToWest ? DoorFacing.SouthCW : DoorFacing.EastCCW);
+
+            hiDoor.MoveToWorld(ph, Map.Malas);
+            loDoor.MoveToWorld(pl, Map.Malas);
 
             hiDoor.Link = loDoor;
             loDoor.Link = hiDoor;
@@ -283,68 +379,152 @@ namespace Server.Engines.Doom
             hiDoor.Hue = hue;
             loDoor.Hue = hue;
 
+			WeakEntityCollection.Add("doom", hiDoor);
+			WeakEntityCollection.Add("doom", loDoor);
+
             return hiDoor;
-        }
+		}
 
-        public static GauntletSpawner CreateSpawner(string typeName, int xSpawner, int ySpawner, int xDoor, int yDoor, int xPentagram, int yPentagram, bool doorEastToWest, int xStart, int yStart, int xWidth, int yHeight)
-        {
-            GauntletSpawner spawner = new GauntletSpawner(typeName);
+	    public static GauntletSpawner CreateSpawner(
+		    string typeName,
+			    int xSpawner,
+			    int ySpawner,
+			    int xDoor,
+			    int yDoor,
+			    int xPentagram,
+			    int yPentagram,
+			    bool doorEastToWest,
+			    int xStart,
+			    int yStart,
+			    int xWidth,
+			    int yHeight)
+	    {
+		    var sp = new Point3D(xSpawner, ySpawner, -1);
 
-            spawner.MoveToWorld(new Point3D(xSpawner, ySpawner, -1), Map.Malas);
+		    GauntletSpawner spawner;
 
-            if (xDoor > 0 && yDoor > 0)
-                spawner.Door = CreateDoorSet(xDoor, yDoor, doorEastToWest, 0);
+		    if (FindObject(Map.Malas, sp, 0, out spawner))
+		    {
+			    spawner.Delete();
+		    }
 
-            spawner.RegionBounds = new Rectangle2D(xStart, yStart, xWidth, yHeight);
+		    spawner = new GauntletSpawner(typeName);
+			spawner.MoveToWorld(sp, Map.Malas);
 
-            if (xPentagram > 0 && yPentagram > 0)
-            {
-                PentagramAddon pentagram = new PentagramAddon();
+		    if (spawner.Door != null)
+		    {
+			    DeleteDoor(spawner.Door);
+		    }
 
-                pentagram.MoveToWorld(new Point3D(xPentagram, yPentagram, -1), Map.Malas);
+		    if (xDoor > 0 && yDoor > 0)
+		    {
+			    spawner.Door = CreateDoorSet(xDoor, yDoor, doorEastToWest, 0);
+		    }
 
-                spawner.Addon = pentagram;
-            }
+		    spawner.RegionBounds = new Rectangle2D(xStart, yStart, xWidth, yHeight);
 
-            return spawner;
-        }
+		    if (spawner.Addon != null)
+		    {
+			    spawner.Addon.Delete();
+			    spawner.Addon = null;
+		    }
 
-        public static void CreatePricedHealer(int price, int x, int y)
-        {
-            PricedHealer healer = new PricedHealer(price);
+		    if (xPentagram > 0 && yPentagram > 0)
+		    {
+			    var pp = new Point3D(xPentagram, yPentagram, -1);
 
-            healer.MoveToWorld(new Point3D(x, y, -1), Map.Malas);
+			    PentagramAddon pentagram;
 
-            healer.Home = healer.Location;
-            healer.RangeHome = 5;
-        }
+			    if (FindObject(Map.Malas, pp, 0, out pentagram))
+			    {
+				    pentagram.Delete();
+			    }
 
-        public static void CreateMorphItem(int x, int y, int inactiveItemID, int activeItemID, int range, int hue)
-        {
-            MorphItem item = new MorphItem(inactiveItemID, activeItemID, range);
+			    pentagram = new PentagramAddon();
+			    pentagram.MoveToWorld(pp, Map.Malas);
 
-            item.Hue = hue;
-            item.MoveToWorld(new Point3D(x, y, -1), Map.Malas);
+				WeakEntityCollection.Add("doom", pentagram);
+
+			    spawner.Addon = pentagram;
+		    }
+
+			WeakEntityCollection.Add("doom", spawner);
+
+		    return spawner;
+	    }
+
+	    public static void CreatePricedHealer(int price, int x, int y)
+	    {
+		    var p = new Point3D(x, y, -1);
+
+		    PricedHealer healer;
+
+		    if (FindObject(Map.Malas, p, 10, out healer))
+		    {
+			    healer.Delete();
+		    }
+		    
+			healer = new PricedHealer(price);
+		    healer.MoveToWorld(p, Map.Malas);
+		    healer.Home = p;
+		    healer.RangeHome = 5;
+
+			WeakEntityCollection.Add("doom", healer);
+	    }
+
+	    public static void CreateMorphItem(int x, int y, int inactiveItemID, int activeItemID, int range, int hue)
+	    {
+		    var p = new Point3D(x, y, -1);
+
+		    MorphItem item;
+
+		    if (FindObject(Map.Malas, p, 0, out item))
+			{
+				item.Delete();
+		    }
+
+		    item = new MorphItem(inactiveItemID, activeItemID, range);
+			item.MoveToWorld(p, Map.Malas);
+			item.Hue = hue;
+
+			WeakEntityCollection.Add("doom", item);
         }
 
         public static void CreateVarietyDealer(int x, int y)
         {
-            VarietyDealer dealer = new VarietyDealer();
+	        var p = new Point3D(x, y, -1);
 
-            /* Begin outfit */
-            dealer.Name = "Nix";
-            dealer.Title = "the Variety Dealer";
+            VarietyDealer dealer;
 
-            dealer.Body = 400;
-            dealer.Female = false;
-            dealer.Hue = 0x8835;
+	        if (FindObject(Map.Malas, p, 10, out dealer))
+	        {
+		        dealer.Delete();
+	        }
 
-            List<Item> items = new List<Item>(dealer.Items);
+	        dealer = new VarietyDealer
+	        {
+		        Name = "Nix",
+		        Title = "the Variety Dealer",
+		        Body = 400,
+		        Female = false,
+		        Hue = 0x8835
+	        };
 
-            for (int i = 0; i < items.Count; ++i)
-            {
-                Item item = items[i];
+			WeakEntityCollection.Add("doom", dealer);
 
+	        /* Begin outfit */
+
+	        var ic = dealer.Items.Count;
+
+	        while (--ic >= 0)
+	        {
+		        if (ic >= dealer.Items.Count)
+		        {
+					continue;
+		        }
+
+		        var item = dealer.Items[ic];
+				
                 if (item.Layer != Layer.ShopBuy && item.Layer != Layer.ShopResale && item.Layer != Layer.ShopSell)
                     item.Delete();
             }
@@ -363,14 +543,21 @@ namespace Server.Engines.Doom
             dealer.AddItem(new Sandals(0x482));
             /* End outfit */
 
-            dealer.MoveToWorld(new Point3D(x, y, -1), Map.Malas);
+            dealer.MoveToWorld(p, Map.Malas);
 
-            dealer.Home = dealer.Location;
+            dealer.Home = p;
             dealer.RangeHome = 2;
         }
 
+		public static void DeleteGauntlet_OnCommand(CommandEventArgs e)
+		{
+			WeakEntityCollection.Delete("doom");
+		}
+
         public static void GenGauntlet_OnCommand(CommandEventArgs e)
-        {
+		{
+			WeakEntityCollection.Delete("doom");
+
             /* Begin healer room */
             CreatePricedHealer(5000, 387, 400);
             CreateTeleporter(390, 407, 394, 405);
@@ -393,15 +580,24 @@ namespace Server.Engines.Doom
 
             CreateVarietyDealer(492, 369);
 
-            for (int x = 434; x <= 478; ++x)
-            {
-                for (int y = 371; y <= 372; ++y)
-                {
-                    Static item = new Static(0x524);
+	        foreach (var s in Map.Malas.GetItemsInBounds(new Rectangle2D(434, 371, 44, 1)))
+	        {
+		        s.Delete();
+	        }
 
-                    item.Hue = 1;
-                    item.MoveToWorld(new Point3D(x, y, -1), Map.Malas);
-                }
+	        for (int x = 434; x <= 478; ++x)
+            {
+	            for (int y = 371; y <= 372; ++y)
+	            {
+		            var item = new Static(0x524)
+		            {
+			            Hue = 1
+					};
+
+					item.MoveToWorld(new Point3D(x, y, -1), Map.Malas);
+
+					WeakEntityCollection.Add("doom", item);
+	            }
             }
             /* End supply room */
 
@@ -430,25 +626,32 @@ namespace Server.Engines.Doom
             /* End gauntlet cycle */
 
             /* Begin exit gate */
-            ConfirmationMoongate gate = new ConfirmationMoongate();
+	        var p = new Point3D(433, 326, 4);
 
-            gate.Dispellable = false;
+            ConfirmationMoongate gate;
 
-            gate.Target = new Point3D(2350, 1270, -85);
-            gate.TargetMap = Map.Malas;
+	        if (FindObject(Map.Malas, p, 0, out gate))
+	        {
+		        gate.Delete();
+	        }
 
-            gate.GumpWidth = 420;
-            gate.GumpHeight = 280;
+	        gate = new ConfirmationMoongate
+	        {
+		        Dispellable = false,
+		        Target = new Point3D(2350, 1270, -85),
+		        TargetMap = Map.Malas,
+		        GumpWidth = 420,
+		        GumpHeight = 280,
+		        MessageColor = 0x7F00,
+		        MessageNumber = 1062109, // You are about to exit Dungeon Doom.  Do you wish to continue?
+		        TitleColor = 0x7800,
+		        TitleNumber = 1062108, // Please verify...
+		        Hue = 0x44E
+	        };
 
-            gate.MessageColor = 0x7F00;
-            gate.MessageNumber = 1062109; // You are about to exit Dungeon Doom.  Do you wish to continue?
+	        gate.MoveToWorld(p, Map.Malas);
 
-            gate.TitleColor = 0x7800;
-            gate.TitleNumber = 1062108; // Please verify...
-
-            gate.Hue = 0x44E;
-
-            gate.MoveToWorld(new Point3D(433, 326, 4), Map.Malas);
+			WeakEntityCollection.Add("doom", gate);
             /* End exit gate */
         }
 

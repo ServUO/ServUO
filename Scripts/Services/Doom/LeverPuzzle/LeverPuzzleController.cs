@@ -191,10 +191,20 @@ namespace Server.Engines.Doom
         }
         public static void Initialize()
         {
-            CommandSystem.Register("GenLeverPuzzle", AccessLevel.Administrator, new CommandEventHandler(GenLampPuzzle_OnCommand));
-        }
+			CommandSystem.Register("GenLeverPuzzle", AccessLevel.Administrator, new CommandEventHandler(GenLampPuzzle_OnCommand));
+			CommandSystem.Register("LampPuzzleDelete", AccessLevel.Administrator, new CommandEventHandler(LampPuzzleDelete_OnCommand));
+		}
 
-        [Usage("GenLeverPuzzle")]
+		[Usage("LampPuzzleDelete")]
+		[Description("Deletes lamp room and lever puzzle in doom.")]
+		public static void LampPuzzleDelete_OnCommand(CommandEventArgs e)
+		{
+			WeakEntityCollection.Delete("LeverPuzzleController");
+			e.Mobile.SendMessage("Lamp room puzzle successfully deleted.");
+		}
+
+
+		[Usage("GenLeverPuzzle")]
         [Description("Generates lamp room and lever puzzle in doom.")]
         public static void GenLampPuzzle_OnCommand(CommandEventArgs e)
         {
@@ -207,7 +217,9 @@ namespace Server.Engines.Doom
                 }
             }
             e.Mobile.SendMessage("Generating Lamp Room puzzle...");
-            new LeverPuzzleController().MoveToWorld(lp_Center, Map.Malas);
+			LeverPuzzleController controller = new LeverPuzzleController();
+			WeakEntityCollection.Add("LeverPuzzleController", controller);
+			controller.MoveToWorld(lp_Center, Map.Malas);
 
             if (!installed)
                 e.Mobile.SendMessage("There was a problem generating the puzzle.");

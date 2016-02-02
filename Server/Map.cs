@@ -1837,6 +1837,22 @@ namespace Server
 
 			private List<T> _Pool = new List<T>(0x40);
 
+			private IEnumerable<T> InternalPool
+			{
+				get
+				{
+					var i = _Pool.Count;
+
+					while (--i >= 0)
+					{
+						if (i < _Pool.Count)
+						{
+							yield return _Pool[i];
+						}
+					}
+				}
+			}
+
 			public PooledEnumerable(IEnumerable<T> pool)
 			{
 				_Pool.AddRange(pool);
@@ -1844,12 +1860,12 @@ namespace Server
 
 			IEnumerator IEnumerable.GetEnumerator()
 			{
-				return _Pool.GetEnumerator();
+				return InternalPool.GetEnumerator();
 			}
 
 			public IEnumerator<T> GetEnumerator()
 			{
-				return _Pool.GetEnumerator();
+				return InternalPool.GetEnumerator();
 			}
 
 			public void Free()

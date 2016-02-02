@@ -97,6 +97,7 @@ namespace Server.Items
     {
         private StygianDragonAltar m_Altar;
         private int m_ID;
+
         public StygianDragonBrazier(StygianDragonAltar altar, int hue)
             : base(0x207B)
         {
@@ -126,6 +127,7 @@ namespace Server.Items
                 this.m_Altar = value;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int ID
         {
@@ -138,6 +140,7 @@ namespace Server.Items
                 this.m_ID = value;
             }
         }
+
         public override bool OnDragDrop(Mobile from, Item dropped)
         { 
             if (this.m_Altar == null)

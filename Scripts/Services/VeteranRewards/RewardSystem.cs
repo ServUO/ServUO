@@ -13,12 +13,12 @@ namespace Server.Engines.VeteranRewards
 
     public class RewardSystem
     {
-		public static bool Enabled = Config.GetBool("VetRewards.Enabled", true);
-		public static bool SkillCapRewards = Config.GetBool("VetRewards.SkillCapRewards", true);
-		public static int SkillBonusCap = Config.GetInt("VetRewards.SkillBonusCap", 720);
-		public static TimeSpan RewardInterval = TimeSpan.FromDays(Config.GetDouble("VetRewards.DaysPerLevel", 30.0d));
-		public static double DaysPerLevel = Config.GetDouble("VetRewards.DaysPerLevel", 30.0d);
-		public static int StartingLevel = Config.GetInt("VetRewards.StartingLevel", 0);
+		public static bool Enabled = Config.Get("VetRewards.Enabled", true);
+		public static bool SkillCapRewards = Config.Get("VetRewards.SkillCapRewards", true);
+		public static int SkillBonusCap = Config.Get("VetRewards.SkillBonusCap", 720);
+		public static TimeSpan RewardInterval = Config.Get("VetRewards.RewardInterval", TimeSpan.FromDays(30.0d));
+		public static int StartingLevel = Config.Get("VetRewards.StartingLevel", 0);
+
 		private static RewardCategory[] m_Categories;
         private static RewardList[] m_Lists;
         public static RewardCategory[] Categories
@@ -83,8 +83,7 @@ namespace Server.Engines.VeteranRewards
                 return false;
             }
 
-			TimeSpan totalTime = (DateTime.UtcNow - acct.Created) + TimeSpan.FromDays(DaysPerLevel * StartingLevel);
-
+			TimeSpan totalTime = (DateTime.UtcNow - acct.Created) + TimeSpan.FromDays(RewardInterval.TotalDays * StartingLevel);
 
 			ts = (list.Age - totalTime);
 

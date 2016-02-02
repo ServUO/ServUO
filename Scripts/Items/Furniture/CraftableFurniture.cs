@@ -13,7 +13,7 @@ namespace Server.Items
 
     public class CraftableFurniture : Item, ICraftable
     {
-        public virtual bool ShowCraferName
+        public virtual bool ShowCrafterName
         {
             get
             {
@@ -86,7 +86,7 @@ namespace Server.Items
         {
             base.AddWeightProperty(list);
 
-            if (this.ShowCraferName && this.m_Crafter != null)
+            if (this.ShowCrafterName && this.m_Crafter != null)
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
             if (this.m_Quality == ItemQuality.Exceptional)
