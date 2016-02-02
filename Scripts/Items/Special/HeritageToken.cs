@@ -34,7 +34,7 @@ namespace Server.Items
             if (this.IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(HeritageTokenGump));
-                from.SendGump(new HeritageTokenGump(this));
+                from.SendGump(new HeritageTokenGump(this, from));
             }
             else
                 from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
