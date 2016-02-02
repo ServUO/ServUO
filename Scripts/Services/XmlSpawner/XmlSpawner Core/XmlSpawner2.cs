@@ -48,9 +48,9 @@ namespace Server.Mobiles
 		public static bool SocketsEnabled { get { return m_XmlSockets; } }
 		public static void Configure()
 		{
-			m_XmlPoints = Config.GetBool("XmlSpawner2.Points", false);
-			m_XmlFactions = Config.GetBool("XmlSpawner2.Factions", false);
-			m_XmlSockets = Config.GetBool("XmlSpawner2.Sockets", false);
+			m_XmlPoints = Config.Get("XmlSpawner2.Points", false);
+			m_XmlFactions = Config.Get("XmlSpawner2.Factions", false);
+			m_XmlSockets = Config.Get("XmlSpawner2.Sockets", false);
 		}
 		#region Type declarations
 
