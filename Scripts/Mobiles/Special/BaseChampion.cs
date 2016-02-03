@@ -34,10 +34,12 @@ namespace Server.Mobiles
                 return false;
             }
         }
-        public static void GivePowerScrollTo(Mobile m, PowerScroll ps)
+        public static void GivePowerScrollTo(Mobile m)
         {
-            if (ps == null || m == null)	//sanity
+            if (m == null)	//sanity
                 return;
+
+			PowerScroll ps = CreateRandomPowerScroll();
 
             m.SendLocalizedMessage(1049524); // You have received a scroll of power!
 
@@ -79,7 +81,7 @@ namespace Server.Mobiles
 
                     if (chance > Utility.Random(100))
                     {
-                        PowerScroll powerScroll = new PowerScroll(ps.Skill, ps.Value);
+						PowerScroll powerScroll = CreateRandomPowerScroll();
 
                         prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
 
@@ -192,13 +194,11 @@ namespace Server.Mobiles
                 toGive[rand] = hold;
             }
 
-            for (int i = 0; i < 6; ++i)
+            for (int i = 0; i < ChampionSystem.PowerScrollAmount; ++i)
             {
                 Mobile m = toGive[i % toGive.Count];
 
-                PowerScroll ps = this.CreateRandomPowerScroll();
-
-                GivePowerScrollTo(m, ps);
+                GivePowerScrollTo(m);
             }
         }
 
@@ -211,25 +211,37 @@ namespace Server.Mobiles
                 if (this.NoGoodies)
                     return base.OnBeforeDeath();
 
-                Map map = this.Map;
-
-                if (map != null)
-                {
-                    for (int x = -12; x <= 12; ++x)
-                    {
-                        for (int y = -12; y <= 12; ++y)
-                        {
-                            double dist = Math.Sqrt(x * x + y * y);
-
-                            if (dist <= 12)
-                                new GoodiesTimer(map, this.X + x, this.Y + y).Start();
-                        }
-                    }
-                }
+				for(int i = 0; i < ChampionSystem.GoldShowerPiles; ++i)
+				{
+					Point3D p = FindGoldLocation(Map, Location, 12);
+					new GoodiesTimer(Map, p).Start();
+				}
             }
 
             return base.OnBeforeDeath();
         }
+
+		private static Point3D FindGoldLocation(Map map, Point3D center, int range)
+		{
+			int cx = center.X;
+			int cy = center.Y;
+
+			for(int i = 0; i < 20; ++i)
+			{
+				int x = cx + Utility.Random(range * 2) - range;
+				int y = cy + Utility.Random(range * 2) - range;
+				if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range)
+					continue;
+
+				int z = map.GetAverageZ(x, y);
+				for(int j = -3; j <= 3; ++j)
+				{
+					if (map.CanFit(x, y, z + j, 6, false, false))
+						return new Point3D(x, y, z + j);
+				}
+			}
+			return center;
+		}
 
         public override void OnDeath(Container c)
         {
@@ -256,7 +268,7 @@ namespace Server.Mobiles
             base.OnDeath(c);
         }
 
-        private PowerScroll CreateRandomPowerScroll()
+        private static PowerScroll CreateRandomPowerScroll()
         {
             int level;
             double random = Utility.RandomDouble();
@@ -274,35 +286,18 @@ namespace Server.Mobiles
         private class GoodiesTimer : Timer
         {
             private readonly Map m_Map;
-            private readonly int m_X;
-            private readonly int m_Y;
-            public GoodiesTimer(Map map, int x, int y)
+			private readonly Point3D m_Location;
+            public GoodiesTimer(Map map, Point3D p)
                 : base(TimeSpan.FromSeconds(Utility.RandomDouble() * 10.0))
             {
-                this.m_Map = map;
-                this.m_X = x;
-                this.m_Y = y;
+                m_Map = map;
+				m_Location = p;
             }
 
             protected override void OnTick()
             {
-                int z = this.m_Map.GetAverageZ(this.m_X, this.m_Y);
-                bool canFit = this.m_Map.CanFit(this.m_X, this.m_Y, z, 6, false, false);
-
-                for (int i = -3; !canFit && i <= 3; ++i)
-                {
-                    canFit = this.m_Map.CanFit(this.m_X, this.m_Y, z + i, 6, false, false);
-
-                    if (canFit)
-                        z += i;
-                }
-
-                if (!canFit)
-                    return;
-
-                Gold g = new Gold(500, 1000);
-				
-                g.MoveToWorld(new Point3D(this.m_X, this.m_Y, z), this.m_Map);
+                Gold g = new Gold(ChampionSystem.GoldShowerMinAmount, ChampionSystem.GoldShowerMaxAmount);
+                g.MoveToWorld(m_Location, this.m_Map);
 
                 if (0.5 >= Utility.RandomDouble())
                 {
