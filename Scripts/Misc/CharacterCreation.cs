@@ -745,9 +745,10 @@ namespace Server.Misc
 
             new WelcomeTimer(newChar).Start();
 
-			// Uncomment the two lines below if you wish to activate XMLPoints or XMLMobfactions
-            //XmlAttach.AttachTo(newChar, new XmlPoints());
-            //XmlAttach.AttachTo(newChar, new XmlMobFactions());
+			if (XmlSpawner.PointsEnabled)
+				XmlAttach.AttachTo(newChar, new XmlPoints());
+			if(XmlSpawner.FactionsEnabled)
+				XmlAttach.AttachTo(newChar, new XmlMobFactions());
         }
 
         private static CityInfo GetStartLocation(CharacterCreatedEventArgs args, bool isYoung)
