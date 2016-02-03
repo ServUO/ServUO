@@ -236,6 +236,7 @@ namespace Server.Engines.Craft
 		public int Stam { get; set; }
 		public bool UseSubRes2 { get { return m_UseSubRes2; } set { m_UseSubRes2 = value; } }
 		public bool UseAllRes { get; set; }
+		public bool ForceTypeRes { get; set; }
 		public bool NeedHeat { get { return m_NeedHeat; } set { m_NeedHeat = value; } }
 		public bool NeedOven { get { return m_NeedOven; } set { m_NeedOven = value; } }
 		public bool NeedMill { get { return m_NeedMill; } set { m_NeedMill = value; } }
@@ -713,7 +714,7 @@ namespace Server.Engines.Craft
 				CraftRes craftRes = m_arCraftRes.GetAt(i);
 				Type baseType = craftRes.ItemType;
 
-				if (typeRes != null)
+				if (typeRes != null && ForceTypeRes)
 				{
 					Type outType;
 					if (m_ResourceConversionTable.TryGetValue(typeRes, out outType))
