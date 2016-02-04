@@ -129,6 +129,7 @@ namespace Server.Engines.Craft
             {
                 index = this.AddCraft(typeof(Board), 1044294, 1027127, 0.0, 0.0, typeof(Log), 1044466, 1, 1044465);
                 this.SetUseAllRes(index, true);
+				this.SetForceTypeRes(index, true);
             }
 
             this.AddCraft(typeof(BarrelStaves), 1044294, 1027857, 00.0, 25.0, typeof(Board), 1044041, 5, 1044351);
