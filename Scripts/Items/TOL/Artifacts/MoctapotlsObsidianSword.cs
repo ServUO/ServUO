@@ -12,7 +12,7 @@ namespace Server.Items
             Hue = 1910;
             Attributes.WeaponSpeed = 40;
             Attributes.WeaponDamage = 75;
-            AbsorptionAttributes.SplinteringWeapon = 20;
+            WeaponAttributes.SplinteringWeapon = 20;
             WeaponAttributes.HitLeechStam = 100;
             WeaponAttributes.HitPhysicalArea = 50;
             WeaponAttributes.HitHarm = 50;
@@ -55,7 +55,7 @@ namespace Server.Items
         {
             get
             {
-                return 24;
+                return 40;
             }
         }
         public override float MlSpeed

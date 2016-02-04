@@ -9,7 +9,7 @@ namespace Server.Items
         public LereisHuntingSpear()
         {
             WeaponAttributes.HitCurse = 10;
-            WeaponAttributes.HitLeechMana = 50;
+            WeaponAttributes.HitLeechMana = 80;
             Attributes.WeaponSpeed = 30;
             Attributes.AttackChance = 20;
             Attributes.WeaponDamage = 60;

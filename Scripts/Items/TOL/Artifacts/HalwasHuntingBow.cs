@@ -8,10 +8,9 @@ namespace Server.Items
         public HalwasHuntingBow()
             : base(0x10149)
         {
-            WeaponAttributes.Velocity = 60;
+            Velocity = 60;
             Attributes.AttackChance = 20;
             Attributes.WeaponSpeed = 45;
-            Attributes.WeaponDamage = 60;
             WeaponAttributes.HitLeechMana = 20;
             //Slayer = SlayerName.Eodon; New Not Yet Implented
         }
