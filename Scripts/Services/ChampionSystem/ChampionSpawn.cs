@@ -112,18 +112,6 @@ namespace Server.Engines.CannedEvil
                 this.m_Region = new ChampionSpawnRegion(this);
                 this.m_Region.Register();
             }
-            /*
-            if( m_Region == null )
-            {
-            m_Region = new ChampionSpawnRegion( this );
-            }
-            else
-            {
-            m_Region.Unregister();
-            //Why doesn't Region allow me to set it's map/Area meself? ><
-            m_Region = new ChampionSpawnRegion( this );
-            }
-            */
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -708,9 +696,9 @@ namespace Server.Engines.CannedEvil
 
 			int maxSpawn;
 			if (this.m_Type == ChampionSpawnType.Glade || this.m_Type == ChampionSpawnType.Corrupt)
-				maxSpawn = MaxKills / 8;
-			else
 				maxSpawn = MaxKills / 4;
+			else
+				maxSpawn = MaxKills / 2;
 
 			int spawnRadius = 24 - Rank * 6;
 			Rectangle2D spawnBounds = new Rectangle2D(new Point2D(this.X - spawnRadius, this.Y - spawnRadius),
@@ -759,6 +747,11 @@ namespace Server.Engines.CannedEvil
             }
         }
 
+		public Point3D GetSpawnLocation()
+		{
+			return GetSpawnLocation(m_SpawnArea, 24);
+		}
+
         public Point3D GetSpawnLocation(Rectangle2D rect, int range)
         {
             Map map = this.Map;
@@ -772,9 +765,11 @@ namespace Server.Engines.CannedEvil
             // Try 20 times to find a spawnable location.
             for (int i = 0; i < 20; i++)
             {
-                int x = Utility.Random(rect.X, rect.Width);
-                int y = Utility.Random(rect.Y, rect.Height);
-				if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range)
+				int dx = Utility.Random(range * 2);
+				int dy = Utility.Random(range * 2);
+				int x = rect.X + dx;
+				int y = rect.Y + dy;
+				if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range * range)
 					continue;
 
                 int z = this.Map.GetAverageZ(x, y);

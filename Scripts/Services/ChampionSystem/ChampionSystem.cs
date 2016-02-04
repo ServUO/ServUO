@@ -29,7 +29,7 @@ namespace Server.Engines.CannedEvil
 		public static int GoldShowerMaxAmount { get { return m_GoldShowerMaxAmount; } }
 		public static int PowerScrollAmount { get { return m_PowerScrollAmount; } }
 
-		private static void Configure()
+		public static void Configure()
 		{
 			m_Enabled = Config.Get("Champions.Enabled", true);
 			m_RotateDelay = Config.Get("Champions.RotateDelay", TimeSpan.FromDays(1.0d));
@@ -71,7 +71,7 @@ namespace Server.Engines.CannedEvil
 				});
 		}
 
-		private static void Initialize()
+		public static void Initialize()
 		{
 			CommandSystem.Register("ChampionInfo", AccessLevel.GameMaster, new CommandEventHandler(ChampionInfo_OnCommand));
 
@@ -89,6 +89,10 @@ namespace Server.Engines.CannedEvil
 
 			if (m_Initialized)
 				return;
+
+			Utility.PushColor(ConsoleColor.White);
+			Console.WriteLine("Generating Champion Spawns");
+			Utility.PopColor();
 
 			ChampionSpawn spawn;
 

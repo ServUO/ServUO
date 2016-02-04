@@ -213,8 +213,7 @@ namespace Server.Mobiles
 
 				for(int i = 0; i < ChampionSystem.GoldShowerPiles; ++i)
 				{
-					Point3D p = FindGoldLocation(Map, Location, 12);
-					new GoodiesTimer(Map, p).Start();
+					new GoodiesTimer(Map, Location).Start();
 				}
             }
 
@@ -230,11 +229,14 @@ namespace Server.Mobiles
 			{
 				int x = cx + Utility.Random(range * 2) - range;
 				int y = cy + Utility.Random(range * 2) - range;
-				if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range)
+				if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range * range)
 					continue;
 
 				int z = map.GetAverageZ(x, y);
-				for(int j = -3; j <= 3; ++j)
+				if (map.CanFit(x, y, z, 6, false, false))
+					return new Point3D(x, y, z);
+
+				for (int j = -3; j <= 3; ++j)
 				{
 					if (map.CanFit(x, y, z + j, 6, false, false))
 						return new Point3D(x, y, z + j);
@@ -296,8 +298,9 @@ namespace Server.Mobiles
 
             protected override void OnTick()
             {
-                Gold g = new Gold(ChampionSystem.GoldShowerMinAmount, ChampionSystem.GoldShowerMaxAmount);
-                g.MoveToWorld(m_Location, this.m_Map);
+				Point3D p = FindGoldLocation(m_Map, m_Location, 6);
+				Gold g = new Gold(ChampionSystem.GoldShowerMinAmount, ChampionSystem.GoldShowerMaxAmount);
+                g.MoveToWorld(p, this.m_Map);
 
                 if (0.5 >= Utility.RandomDouble())
                 {
