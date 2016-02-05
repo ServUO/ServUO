@@ -44,9 +44,13 @@ namespace Server.SkillHandlers
                             int hp = (int)((weap.HitPoints / (double)weap.MaxHitPoints) * 10);
 
                             if (hp < 0)
+                            {
                                 hp = 0;
+                            }
                             else if (hp > 9)
+                            {
                                 hp = 9;
+                            }
 
                             from.SendLocalizedMessage(1038285 + hp);
                         }
@@ -55,9 +59,13 @@ namespace Server.SkillHandlers
                         int hand = (weap.Layer == Layer.OneHanded ? 0 : 1);
 
                         if (damage < 3)
+                        {
                             damage = 0;
+                        }
                         else
+                        {
                             damage = (int)Math.Ceiling(Math.Min(damage, 30) / 5.0);
+                        }
                         /*
                         else if ( damage < 6 )
                         damage = 1;
@@ -76,18 +84,30 @@ namespace Server.SkillHandlers
                         WeaponType type = weap.Type;
 
                         if (type == WeaponType.Ranged)
+                        {
                             from.SendLocalizedMessage(1038224 + (damage * 9));
+                        }
                         else if (type == WeaponType.Piercing)
+                        {
                             from.SendLocalizedMessage(1038218 + hand + (damage * 9));
+                        }
                         else if (type == WeaponType.Slashing)
+                        {
                             from.SendLocalizedMessage(1038220 + hand + (damage * 9));
+                        }
                         else if (type == WeaponType.Bashing)
+                        {
                             from.SendLocalizedMessage(1038222 + hand + (damage * 9));
+                        }
                         else
+                        {
                             from.SendLocalizedMessage(1038216 + hand + (damage * 9));
+                        }
 
                         if (weap.Poison != null && weap.PoisonCharges > 0)
+                        {
                             from.SendLocalizedMessage(1038284); // It appears to have poison smeared on it.
+                        }
                     }
                     else
                     {
@@ -105,9 +125,13 @@ namespace Server.SkillHandlers
                             int hp = (int)((arm.HitPoints / (double)arm.MaxHitPoints) * 10);
 
                             if (hp < 0)
+                            {
                                 hp = 0;
+                            }
                             else if (hp > 9)
+                            {
                                 hp = 9;
+                            }
 
                             from.SendLocalizedMessage(1038285 + hp);
                         }
@@ -146,9 +170,13 @@ namespace Server.SkillHandlers
                         int perc = (4 * pet.BardingHP) / pet.BardingMaxHP;
 
                         if (perc < 0)
+                        {
                             perc = 0;
+                        }
                         else if (perc > 4)
+                        {
                             perc = 4;
+                        }
 
                         pet.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1053021 - perc, from.NetState);
                     }

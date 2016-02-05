@@ -6,7 +6,6 @@
 
 #region References
 using System;
-using System.Collections;
 
 using Server.Engines.XmlSpawner2;
 using Server.Factions;
@@ -16,13 +15,14 @@ using Server.Spells;
 using Server.Spells.Necromancy;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
+using System.Collections.Generic;
 #endregion
 
 namespace Server.SkillHandlers
 {
 	public class AnimalTaming
 	{
-		private static readonly Hashtable m_BeingTamed = new Hashtable();
+        private static Dictionary<Mobile, Mobile> m_BeingTamed = new Dictionary<Mobile, Mobile>();
 		private static bool m_DisableMessage;
 		public static bool DisableMessage { get { return m_DisableMessage; } set { m_DisableMessage = value; } }
 
@@ -209,11 +209,11 @@ namespace Server.SkillHandlers
 								}
 							}
 
-							if (m_BeingTamed.Contains(targeted))
-							{
-								creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502802, from.NetState);
-									// Someone else is already taming this.
-							}
+                            if (m_BeingTamed.ContainsKey(creature))
+                            {
+                                creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502802, from.NetState);
+                                // Someone else is already taming this.
+                            }
 							else if (creature.CanAngerOnTame && 0.95 >= Utility.RandomDouble())
 							{
 								creature.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502805, from.NetState);
@@ -246,7 +246,7 @@ namespace Server.SkillHandlers
 							}
 							else
 							{
-								m_BeingTamed[targeted] = from;
+                                m_BeingTamed[creature] = from;
 
 								from.LocalOverheadMessage(MessageType.Emote, 0x59, 1010597); // You start to tame the creature.
 								from.NonlocalOverheadMessage(MessageType.Emote, 0x59, 1010598); // *begins taming a creature.*

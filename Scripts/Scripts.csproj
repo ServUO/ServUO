@@ -5865,6 +5865,38 @@
     <Compile Include="Items\Theme pack\Rustic\Topiarys\PosedGoblinTopiary.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltBustier.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltChest.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltCollar.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltHelm.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltLeggings.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltLongSkirt.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltShorts.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltSkirt.cs" />
+    <Compile Include="Items\TOL\Artifacts\BalakaisShamanStaff.cs" />
+    <Compile Include="Items\TOL\Artifacts\GrugorsShields.cs" />
+    <Compile Include="Items\TOL\Artifacts\HalwasHuntingBow.cs" />
+    <Compile Include="Items\TOL\Artifacts\JumusSacredHide.cs" />
+    <Compile Include="Items\TOL\Artifacts\LereisHuntingSpear.cs" />
+    <Compile Include="Items\TOL\Artifacts\MoctapotlsObsidianSword.cs" />
+    <Compile Include="Items\TOL\Artifacts\WamapsBoneEarrings.cs" />
+    <Compile Include="Items\TOL\Clothing\BGRobe.cs" />
+    <Compile Include="Items\TOL\Clothing\CheckeredKilt.cs" />
+    <Compile Include="Items\TOL\Clothing\ChefsToque.cs" />
+    <Compile Include="Items\TOL\Clothing\EveningGown.cs" />
+    <Compile Include="Items\TOL\Clothing\FancyKilt.cs" />
+    <Compile Include="Items\TOL\Clothing\FloweredDress.cs" />
+    <Compile Include="Items\TOL\Clothing\GildedKilt.cs" />
+    <Compile Include="Items\TOL\Clothing\JesterShoes.cs" />
+    <Compile Include="Items\TOL\Dardens Armor\DardensDragonTurtleHideArms.cs" />
+    <Compile Include="Items\TOL\Dardens Armor\DardensDragonTurtleHideBustier.cs" />
+    <Compile Include="Items\TOL\Dardens Armor\DardensDragonTurtleHideChest.cs" />
+    <Compile Include="Items\TOL\Dardens Armor\DardensDragonTurtleHideHelm.cs" />
+    <Compile Include="Items\TOL\Dardens Armor\DardensDragonTurtleHideLeggings.cs" />
+    <Compile Include="Items\TOL\Shields\ShieldVice1.cs" />
+    <Compile Include="Items\TOL\Shields\ShieldVice2.cs" />
+    <Compile Include="Items\TOL\Shields\ShieldVirtue1.cs" />
+    <Compile Include="Items\TOL\Shields\ShieldVirtue2.cs" />
     <Compile Include="Items\Traps\FireColumnTrap.cs">
       <SubType>Code</SubType>
     </Compile>

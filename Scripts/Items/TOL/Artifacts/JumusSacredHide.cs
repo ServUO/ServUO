@@ -9,7 +9,7 @@ namespace Server.Items
         {
             Attributes.SpellDamage = 5;
             Attributes.CastRecovery = 1;
-            AbsorptionAttributes.EaterPoison = 15;
+            SAAbsorptionAttributes.EaterPoison = 15;
             Attributes.WeaponDamage = 20;
         }
 

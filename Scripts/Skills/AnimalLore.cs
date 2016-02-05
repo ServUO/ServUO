@@ -36,28 +36,32 @@ namespace Server.SkillHandlers
                 }
                 else if (targeted is BaseCreature)
                 {
-                    BaseCreature c = (BaseCreature)targeted;
+                    BaseCreature bc = (BaseCreature)targeted;
 
-                    if (!c.IsDeadPet)
+                    if (!bc.IsDeadPet)
                     {
-                        if (c.Body.IsAnimal || c.Body.IsMonster || c.Body.IsSea)
+                        if (bc.Body.IsAnimal || bc.Body.IsMonster || bc.Body.IsSea)
                         {
-                            if (!c.Controlled && from.Skills[SkillName.AnimalLore].Value < 100.0)
+                            if (!bc.Controlled && from.Skills[SkillName.AnimalLore].Value < 100.0)
                             {
                                 from.SendLocalizedMessage(1049674); // At your skill level, you can only lore tamed creatures.
                             }
-                            else if (!c.Controlled && !c.Tamable && from.Skills[SkillName.AnimalLore].Value < 110.0)
+                            else if (!bc.Controlled && !bc.Tamable && from.Skills[SkillName.AnimalLore].Value < 110.0)
                             {
                                 from.SendLocalizedMessage(1049675); // At your skill level, you can only lore tamed or tameable creatures.
                             }
-                            else if (!from.CheckTargetSkill(SkillName.AnimalLore, c, 0.0, 120.0))
+                            else if (!from.CheckTargetSkill(SkillName.AnimalLore, bc, 0.0, 120.0))
+                            {
+                                from.SendLocalizedMessage(500334); // You can't think of anything you know offhand.
+                            }
+                            else if ((bc is LadyMelisande || bc is DreadHorn || bc is Travesty || bc is MonstrousInterredGrizzle || bc is ChiefParoxysmus || bc is ShimmeringEffusion) && 0.01 < Utility.RandomDouble())
                             {
                                 from.SendLocalizedMessage(500334); // You can't think of anything you know offhand.
                             }
                             else
                             {
                                 from.CloseGump(typeof(AnimalLoreGump));
-                                from.SendGump(new AnimalLoreGump(c));
+                                from.SendGump(new AnimalLoreGump(bc));
                             }
                         }
                         else
