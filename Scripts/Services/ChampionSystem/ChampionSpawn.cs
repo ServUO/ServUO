@@ -283,12 +283,11 @@ namespace Server.Engines.CannedEvil
             }
         }
 
-		private static readonly int[] m_MaxKillsTable = { 256, 128, 64, 32 };
         public int MaxKills
         {
             get
             {
-				return m_MaxKillsTable[Rank];
+				return ChampionSystem.MaxKillsForLevel(Level);
             }
         }
 
@@ -568,12 +567,11 @@ namespace Server.Engines.CannedEvil
                             {
                                 if (this.Map == Map.Felucca)
                                 {
-                                    if (Utility.RandomDouble() < 0.001)
+                                    if (Utility.RandomDouble() < ChampionSystem.ScrollChance)
                                     {
                                         PlayerMobile pm = (PlayerMobile)killer;
-                                        double random = Utility.Random(49);
-										
-                                        if (random <= 24)
+
+                                        if (Utility.RandomDouble() < ChampionSystem.TranscendenceChance)
                                         {
                                             ScrollofTranscendence SoTF = this.CreateRandomSoT(true);
                                             GiveScrollTo(pm, (SpecialScroll)SoTF);
@@ -694,13 +692,14 @@ namespace Server.Engines.CannedEvil
             if (!this.m_Active || this.Deleted || this.m_Champion != null)
                 return;
 
-			int maxSpawn;
+			int currentLevel = Level;
+			int maxSpawn = ChampionSystem.MaxSpawnForLevel(currentLevel);
 			if (this.m_Type == ChampionSpawnType.Glade || this.m_Type == ChampionSpawnType.Corrupt)
-				maxSpawn = MaxKills / 4;
-			else
-				maxSpawn = MaxKills / 2;
+				maxSpawn /= 2;
+			if (currentLevel >= 16)
+				maxSpawn = Math.Min(maxSpawn, MaxKills - m_Kills);
 
-			int spawnRadius = 24 - Rank * 6;
+			int spawnRadius = 24 - Rank * 4;
 			Rectangle2D spawnBounds = new Rectangle2D(new Point2D(this.X - spawnRadius, this.Y - spawnRadius),
 				new Point2D(this.X + spawnRadius, this.Y + spawnRadius));
 
@@ -769,8 +768,10 @@ namespace Server.Engines.CannedEvil
 				int dy = Utility.Random(range * 2);
 				int x = rect.X + dx;
 				int y = rect.Y + dy;
-				if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range * range)
-					continue;
+
+				// Make spawn area circular
+				//if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range * range)
+				//	continue;
 
                 int z = this.Map.GetAverageZ(x, y);
 
@@ -785,17 +786,11 @@ namespace Server.Engines.CannedEvil
             return this.Location;
         }
 
-		private static readonly int[] m_RankTable = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3 };
         public int Rank
         {
 			get
 			{
-				int l = Level;
-				if (l < 0)
-					return 0;
-				if (l >= m_RankTable.Length)
-					return 3;
-				return m_RankTable[l];
+				return ChampionSystem.RankForLevel(Level);
 			}
         }
 

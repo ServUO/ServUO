@@ -23,11 +23,34 @@ namespace Server.Engines.CannedEvil
 		private static int m_GoldShowerMinAmount;
 		private static int m_GoldShowerMaxAmount;
 		private static int m_PowerScrollAmount;
+		private static int[] m_Rank = new int[16];
+		private static int[] m_MaxKill = new int[4];
+		private static int[] m_MaxSpawn = new int[4];
+		private static double m_TranscendenceChance;
+		private static double m_ScrollChance;
 
 		public static int GoldShowerPiles { get { return m_GoldShowerPiles; } }
 		public static int GoldShowerMinAmount { get { return m_GoldShowerMinAmount; } }
 		public static int GoldShowerMaxAmount { get { return m_GoldShowerMaxAmount; } }
 		public static int PowerScrollAmount { get { return m_PowerScrollAmount; } }
+		public static int RankForLevel(int l)
+		{
+			if (l < 0)
+				return 0;
+			if (l >= m_Rank.Length)
+				return 3;
+			return m_Rank[l];
+		}
+		public static int MaxKillsForLevel(int l)
+		{
+			return m_MaxKill[RankForLevel(l)];
+		}
+		public static int MaxSpawnForLevel(int l)
+		{
+			return m_MaxSpawn[RankForLevel(l)];
+		}
+		public static double TranscendenceChance { get { return m_TranscendenceChance; } }
+		public static double ScrollChance { get { return m_ScrollChance; } }
 
 		public static void Configure()
 		{
@@ -37,10 +60,33 @@ namespace Server.Engines.CannedEvil
 			m_GoldShowerMinAmount = Config.Get("Champions.GoldMin", 2500);
 			m_GoldShowerMaxAmount = Config.Get("Champions.GoldMax", 7500);
 			m_PowerScrollAmount = Config.Get("Champions.PowerScrolls", 6);
+			m_ScrollChance = Config.Get("Champions.ScrollChance", 0.1d) / 100.0d;
+			m_TranscendenceChance = Config.Get("Champions.TranscendenceChance", 50.0d) / 100.0d;
+			int rank2 = Config.Get("Champions.Rank2RedSkulls", 5);
+			int rank3 = Config.Get("Champions.Rank3RedSkulls", 10);
+			int rank4 = Config.Get("Champions.Rank4RedSkulls", 10);
+			for (int i = 0; i < m_Rank.Length; ++i)
+			{
+				if (i < rank2)
+					m_Rank[i] = 0;
+				else if (i < rank3)
+					m_Rank[i] = 1;
+				else if (i < rank4)
+					m_Rank[i] = 2;
+				else
+					m_Rank[i] = 3;
+			}
+			m_MaxKill[0] = Config.Get("Champions.Rank1MaxKills", 256);
+			m_MaxKill[1] = Config.Get("Champions.Rank2MaxKills", 128);
+			m_MaxKill[2] = Config.Get("Champions.Rank3MaxKills", 64);
+			m_MaxKill[3] = Config.Get("Champions.Rank4MaxKills", 32);
+			m_MaxSpawn[0] = Config.Get("Champions.Rank1MaxSpawn", 128);
+			m_MaxSpawn[1] = Config.Get("Champions.Rank2MaxSpawn", 64);
+			m_MaxSpawn[2] = Config.Get("Champions.Rank3MaxSpawn", 32);
+			m_MaxSpawn[3] = Config.Get("Champions.Rank4MaxSpawn", 16);
 			EventSink.WorldLoad += EventSink_WorldLoad;
 			EventSink.WorldSave += EventSink_WorldSave;
 		}
-
 		private static void EventSink_WorldSave(WorldSaveEventArgs e)
 		{
 			Persistence.Serialize(
