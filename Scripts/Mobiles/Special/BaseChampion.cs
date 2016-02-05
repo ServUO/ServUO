@@ -233,14 +233,15 @@ namespace Server.Mobiles
 					continue;
 
 				int z = map.GetAverageZ(x, y);
-				if (map.CanFit(x, y, z, 6, false, false))
-					return new Point3D(x, y, z);
+				if (!map.CanFit(x, y, z, 6, false, false))
+					continue;
 
-				for (int j = -3; j <= 3; ++j)
+				int topZ = z;
+				foreach(Item item in map.GetItemsInRange(new Point3D(x, y, z), 0))
 				{
-					if (map.CanFit(x, y, z + j, 6, false, false))
-						return new Point3D(x, y, z + j);
+					topZ = Math.Max(topZ, item.Z + item.ItemData.CalcHeight);
 				}
+				return new Point3D(x, y, topZ);
 			}
 			return center;
 		}
