@@ -94,23 +94,23 @@ namespace Server.Items
 				
             Delete();
         }
-		
-		public override void LockPick( Mobile from )
-		{
-			base.LockPick( from );
 
-			Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(Delete));
-			
-			if(m_Key != null)
-				m_Key.Decay();
+        public override int LockPick(Mobile from)
+        {
+            Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(Delete));
+
+            if (m_Key != null)
+                m_Key.Decay();
 
             ExperimentalGem gem = new ExperimentalGem();
             gem.Owner = from;
 
-			from.AddToBackpack(gem);
+            from.AddToBackpack(gem);
 
             from.SendLocalizedMessage(1113382); // You've solved the puzzle!! An item has been placed in your bag.
-		}
+
+            return base.LockPick(from);
+        }
 		
 		protected override void GenerateTreasure()
 		{
