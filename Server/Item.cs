@@ -5105,6 +5105,16 @@ namespace Server
 			}
 		}
 
+        public void SendLocalizedMessageTo(Mobile to, int number, int hue = 0x3B2)
+        {
+            if (Deleted || !to.CanSee(this))
+            {
+                return;
+            }
+
+            to.Send(new MessageLocalized(Serial, ItemID, MessageType.Regular, hue, 3, number, "", ""));
+        }
+
 		public void SendLocalizedMessageTo(Mobile to, int number)
 		{
 			if (Deleted || !to.CanSee(this))

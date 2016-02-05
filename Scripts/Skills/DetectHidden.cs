@@ -3,6 +3,7 @@ using Server.Factions;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Targeting;
+using Server.Items;
 
 namespace Server.SkillHandlers
 {
@@ -32,28 +33,65 @@ namespace Server.SkillHandlers
             {
                 bool foundAnyone = false;
 
+                if (targ is TrapableContainer)
+                {
+                    TrapableContainer cont = targ as TrapableContainer;
+
+                    if (cont.TrapEnabled && cont.TrapType != TrapType.None && cont.TrapPower > 0 && src.CheckSkill(SkillName.DetectHidden, 0.0, 100.0))
+                    {
+                        int hue = 0;
+
+                        switch (cont.TrapType)
+                        {
+                            case TrapType.ExplosionTrap:
+                                hue = 0x78;
+                                break;
+                            case TrapType.DartTrap:
+                                hue = 0x5A;
+                                break;
+                            case TrapType.PoisonTrap:
+                                hue = 0x44;
+                                break;
+                        }
+
+                        cont.SendLocalizedMessageTo(src, 500813, hue); // [trapped]
+                    }
+                }
+
                 Point3D p;
                 if (targ is Mobile)
+                {
                     p = ((Mobile)targ).Location;
+                }
                 else if (targ is Item)
+                {
                     p = ((Item)targ).Location;
+                }
                 else if (targ is IPoint3D)
+                {
                     p = new Point3D((IPoint3D)targ);
-                else 
+                }
+                else
+                {
                     p = src.Location;
+                }
 
                 double srcSkill = src.Skills[SkillName.DetectHidden].Value;
                 int range = (int)(srcSkill / 10.0);
 
                 if (!src.CheckSkill(SkillName.DetectHidden, 0.0, 100.0))
+                {
                     range /= 2;
+                }
 
                 BaseHouse house = BaseHouse.FindHouseAt(p, src.Map, 16);
 
                 bool inHouse = (house != null && house.IsFriend(src));
 
                 if (inHouse)
+                {
                     range = 22;
+                }
 
                 if (range > 0)
                 {

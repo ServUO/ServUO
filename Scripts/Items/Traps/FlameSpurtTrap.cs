@@ -1,94 +1,97 @@
 using System;
+using Server.Mobiles;
 
 namespace Server.Items
 {
     public class FlameSpurtTrap : BaseTrap
     {
+
+        public override int MessageHue { get { return 0x66D; } }
+
         private Item m_Spurt;
         private Timer m_Timer;
+
         [Constructable]
         public FlameSpurtTrap()
             : base(0x1B71)
         {
-            this.Visible = false;
-        }
-
-        public FlameSpurtTrap(Serial serial)
-            : base(serial)
-        {
+            Visible = false;
         }
 
         public virtual void StartTimer()
         {
-            if (this.m_Timer == null)
-                this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(Refresh));
+            if (m_Timer == null)
+                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(Refresh));
         }
 
         public virtual void StopTimer()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
         }
 
         public virtual void CheckTimer()
         {
             Map map = this.Map;
 
-            if (map != null && map.GetSector(this.GetWorldLocation()).Active)
-                this.StartTimer();
+            if (map != null && map.GetSector(GetWorldLocation()).Active)
+                StartTimer();
             else
-                this.StopTimer();
+                StopTimer();
         }
 
         public override void OnLocationChange(Point3D oldLocation)
         {
             base.OnLocationChange(oldLocation);
 
-            this.CheckTimer();
+            CheckTimer();
         }
 
         public override void OnMapChange()
         {
             base.OnMapChange();
 
-            this.CheckTimer();
+            CheckTimer();
         }
 
         public override void OnSectorActivate()
         {
             base.OnSectorActivate();
 
-            this.StartTimer();
+            StartTimer();
         }
 
         public override void OnSectorDeactivate()
         {
             base.OnSectorDeactivate();
 
-            this.StopTimer();
+            StopTimer();
         }
 
         public override void OnDelete()
         {
             base.OnDelete();
 
-            if (this.m_Spurt != null)
-                this.m_Spurt.Delete();
+            if (m_Spurt != null)
+                m_Spurt.Delete();
         }
 
         public virtual void Refresh()
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
             bool foundPlayer = false;
 
-            foreach (Mobile mob in this.GetMobilesInRange(3))
+            foreach (Mobile mob in GetMobilesInRange(3))
             {
-                if (!mob.Player || !mob.Alive || mob.IsStaff())
+                if (!mob.Player || !mob.Alive || mob.AccessLevel > AccessLevel.Player)
                     continue;
+                //if ( !mob.Player || !mob.Alive || mob.AccessLevel > AccessLevel.Player ||
+                //	mob is BaseCreature && !( (BaseCreature)mob ).Controlled )
+                //continue;
 
                 if (((this.Z + 8) >= mob.Z && (mob.Z + 16) > this.Z))
                 {
@@ -99,28 +102,28 @@ namespace Server.Items
 
             if (!foundPlayer)
             {
-                if (this.m_Spurt != null)
-                    this.m_Spurt.Delete();
+                if (m_Spurt != null)
+                    m_Spurt.Delete();
 
-                this.m_Spurt = null;
+                m_Spurt = null;
             }
-            else if (this.m_Spurt == null || this.m_Spurt.Deleted)
+            else if (m_Spurt == null || m_Spurt.Deleted)
             {
-                this.m_Spurt = new Static(0x3709);
-                this.m_Spurt.MoveToWorld(this.Location, this.Map);
+                m_Spurt = new Static(0x3709);
+                m_Spurt.MoveToWorld(this.Location, this.Map);
 
-                Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x309);
+                Effects.PlaySound(GetWorldLocation(), Map, 0x309);
             }
         }
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (m.IsPlayer())
+            if (m.AccessLevel > AccessLevel.Player)
                 return true;
 
             if (m.Player && m.Alive)
             {
-                this.CheckTimer();
+                CheckTimer();
 
                 Spells.SpellHelper.Damage(TimeSpan.FromTicks(1), m, m, Utility.RandomMinMax(1, 30));
                 m.PlaySound(m.Female ? 0x327 : 0x437);
@@ -133,12 +136,12 @@ namespace Server.Items
         {
             base.OnMovement(m, oldLocation);
 
-            if (m.Location == oldLocation || !m.Player || !m.Alive || m.IsStaff())
+            if (m.Location == oldLocation || !m.Player || !m.Alive || m.AccessLevel > AccessLevel.Player)
                 return;
 
-            if (this.CheckRange(m.Location, oldLocation, 1))
+            if (CheckRange(m.Location, oldLocation, 1))
             {
-                this.CheckTimer();
+                CheckTimer();
 
                 Spells.SpellHelper.Damage(TimeSpan.FromTicks(1), m, m, Utility.RandomMinMax(1, 10));
                 m.PlaySound(m.Female ? 0x327 : 0x437);
@@ -148,13 +151,18 @@ namespace Server.Items
             }
         }
 
+        public FlameSpurtTrap(Serial serial)
+            : base(serial)
+        {
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
             writer.Write((int)0); // version
 
-            writer.Write((Item)this.m_Spurt);
+            writer.Write((Item)m_Spurt);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -163,7 +171,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -172,7 +180,7 @@ namespace Server.Items
                         if (item != null)
                             item.Delete();
 
-                        this.CheckTimer();
+                        CheckTimer();
 
                         break;
                     }
