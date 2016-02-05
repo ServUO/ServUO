@@ -1327,21 +1327,27 @@ namespace Server.Engines.CannedEvil
 			private const int gBoarder = 20;
 			private const int gRowHeight = 25;
 			private const int gFontHue = 0;
-			private const int gWidth = 220;
+			private static readonly int[] gWidths = { 20, 160, 160, 20 };
+			private static readonly int[] gTab;
+			private static readonly int gWidth;
+
+			static ChampionSpawnInfoGump()
+			{
+				gWidth = gWidths.Sum();
+				int tab = 0;
+				gTab = new int[gWidths.Length];
+				for (int i = 0; i < gWidths.Length; ++i)
+				{
+					gTab[i] = tab;
+					tab += gWidths[i];
+				}
+			}
 
 			private ChampionSpawn m_Spawn;
 
 			public ChampionSpawnInfoGump(ChampionSpawn spawn)
 				: base(40, 40)
 			{
-				/*
-				 * 20      100      80    20      = 220
-				 * Boarder Property Value Boarder
-				 * Kills MaxKills Level Rank Active AutoRestart
-				 * m_DamageEntries
-				 * Refresh []
-				 */
-
 				m_Spawn = spawn;
 
 				AddBackground(0, 0, gWidth, gBoarder * 2 + gRowHeight * (8 + spawn.m_DamageEntries.Count), 0x13BE);
@@ -1350,28 +1356,28 @@ namespace Server.Engines.CannedEvil
 				AddLabel(gBoarder, top, gFontHue, "Champion Spawn Info Gump");
 				top += gRowHeight;
 
-				AddLabel(gBoarder + 0, top, gFontHue, "Kills");
-				AddLabel(gBoarder + 100, top, gFontHue, spawn.Kills.ToString());
+				AddLabel(gTab[1], top, gFontHue, "Kills");
+				AddLabel(gTab[2], top, gFontHue, spawn.Kills.ToString());
 				top += gRowHeight;
 
-				AddLabel(gBoarder + 0, top, gFontHue, "Max Kills");
-				AddLabel(gBoarder + 100, top, gFontHue, spawn.MaxKills.ToString());
+				AddLabel(gTab[1], top, gFontHue, "Max Kills");
+				AddLabel(gTab[2], top, gFontHue, spawn.MaxKills.ToString());
 				top += gRowHeight;
 
-				AddLabel(gBoarder + 0, top, gFontHue, "Level");
-				AddLabel(gBoarder + 100, top, gFontHue, spawn.Level.ToString());
+				AddLabel(gTab[1], top, gFontHue, "Level");
+				AddLabel(gTab[2], top, gFontHue, spawn.Level.ToString());
 				top += gRowHeight;
 
-				AddLabel(gBoarder + 0, top, gFontHue, "Rank");
-				AddLabel(gBoarder + 100, top, gFontHue, spawn.Rank.ToString());
+				AddLabel(gTab[1], top, gFontHue, "Rank");
+				AddLabel(gTab[2], top, gFontHue, spawn.Rank.ToString());
 				top += gRowHeight;
 
-				AddLabel(gBoarder + 0, top, gFontHue, "Active");
-				AddLabel(gBoarder + 100, top, gFontHue, spawn.Active.ToString());
+				AddLabel(gTab[1], top, gFontHue, "Active");
+				AddLabel(gTab[2], top, gFontHue, spawn.Active.ToString());
 				top += gRowHeight;
 
-				AddLabel(gBoarder + 0, top, gFontHue, "Auto Restart");
-				AddLabel(gBoarder + 100, top, gFontHue, spawn.AutoRestart.ToString());
+				AddLabel(gTab[1], top, gFontHue, "Auto Restart");
+				AddLabel(gTab[2], top, gFontHue, spawn.AutoRestart.ToString());
 				top += gRowHeight;
 
 				List<Damager> damagers = new List<Damager>();
@@ -1383,13 +1389,13 @@ namespace Server.Engines.CannedEvil
 
 				foreach (Damager damager in damagers)
 				{
-					AddLabelCropped(gBoarder + 0, top, 100, gRowHeight, gFontHue, damager.Mobile.RawName);
-					AddLabelCropped(gBoarder + 100, top, 80, gRowHeight, gFontHue, damager.Damage.ToString());
+					AddLabelCropped(gTab[1], top, 100, gRowHeight, gFontHue, damager.Mobile.RawName);
+					AddLabelCropped(gTab[2], top, 80, gRowHeight, gFontHue, damager.Damage.ToString());
 					top += gRowHeight;
 				}
 
 				AddButton(gWidth - (gBoarder + 30), top, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
-				AddLabel(gWidth - (gBoarder + 70), top, gFontHue, "Refresh");
+				AddLabel(gWidth - (gBoarder + 100), top, gFontHue, "Refresh");
 			}
 
 			public override void OnResponse(Network.NetState sender, RelayInfo info)

@@ -383,42 +383,54 @@ namespace Server.Engines.CannedEvil
 			private const int gBoarder = 20;
 			private const int gRowHeight = 25;
 			private const int gFontHue = 0;
+			private static readonly int[] gWidths = { 20, 100, 40, 40, 40, 80, 60, 50, 50, 50, 20 };
+			private static readonly int[] gTab;
+			private static readonly int gWidth;
+
+			static ChampionSystemGump()
+			{
+				gWidth = gWidths.Sum();
+				int tab = 0;
+				gTab = new int[gWidths.Length];
+				for(int i = 0; i < gWidths.Length; ++i)
+				{
+					gTab[i] = tab;
+					tab += gWidths[i];
+				}
+			}
 
 			public ChampionSystemGump()
 				: base(40, 40)
 			{
-				/* 20      60          20  20  20  40     30      30   30 30   20      = 320
-				 * Boarder SpawnName   X   Y   Z   Map    Active  Auto Go Info Boarder
-				 */
-				AddBackground(0, 0, 320, gBoarder * 2 + m_AllSpawns.Count * gRowHeight + gRowHeight * 2, 0x13BE);
+				AddBackground(0, 0, gWidth, gBoarder * 2 + m_AllSpawns.Count * gRowHeight + gRowHeight * 2, 0x13BE);
 
 				int top = gBoarder;
 				AddLabel(gBoarder, top, gFontHue, "Champion Spawn System Gump");
 				top += gRowHeight;
 
-				AddLabel(gBoarder + 0, top, gFontHue, "Spawn");
-				AddLabel(gBoarder + 60, top, gFontHue, "X");
-				AddLabel(gBoarder + 80, top, gFontHue, "Y");
-				AddLabel(gBoarder + 100, top, gFontHue, "Z");
-				AddLabel(gBoarder + 120, top, gFontHue, "Map");
-				AddLabel(gBoarder + 160, top, gFontHue, "Active");
-				AddLabel(gBoarder + 190, top, gFontHue, "Auto");
-				AddLabel(gBoarder + 220, top, gFontHue, "Go");
-				AddLabel(gBoarder + 250, top, gFontHue, "Info");
+				AddLabel(gTab[1], top, gFontHue, "Spawn");
+				AddLabel(gTab[2], top, gFontHue, "X");
+				AddLabel(gTab[3], top, gFontHue, "Y");
+				AddLabel(gTab[4], top, gFontHue, "Z");
+				AddLabel(gTab[5], top, gFontHue, "Map");
+				AddLabel(gTab[6], top, gFontHue, "Active");
+				AddLabel(gTab[7], top, gFontHue, "Auto");
+				AddLabel(gTab[8], top, gFontHue, "Go");
+				AddLabel(gTab[9], top, gFontHue, "Info");
 				top += gRowHeight;
 
 				for (int i = 0; i < m_AllSpawns.Count; ++i)
 				{
 					ChampionSpawn spawn = m_AllSpawns[i];
-					AddLabel(gBoarder + 0, top, gFontHue, spawn.SpawnName);
-					AddLabel(gBoarder + 60, top, gFontHue, spawn.X.ToString());
-					AddLabel(gBoarder + 80, top, gFontHue, spawn.Y.ToString());
-					AddLabel(gBoarder + 100, top, gFontHue, spawn.Z.ToString());
-					AddLabel(gBoarder + 120, top, gFontHue, spawn.Map.ToString());
-					AddLabel(gBoarder + 160, top, gFontHue, spawn.Active ? "Y" : "N");
-					AddLabel(gBoarder + 190, top, gFontHue, spawn.AutoRestart ? "Y" : "N");
-					AddButton(gBoarder + 220, top, 0xFA5, 0xFA7, 1 + i, GumpButtonType.Reply, 0);
-					AddButton(gBoarder + 250, top, 0xFA5, 0xFA7, 1001 + i, GumpButtonType.Reply, 0);
+					AddLabel(gTab[1], top, gFontHue, spawn.SpawnName);
+					AddLabel(gTab[2], top, gFontHue, spawn.X.ToString());
+					AddLabel(gTab[3], top, gFontHue, spawn.Y.ToString());
+					AddLabel(gTab[4], top, gFontHue, spawn.Z.ToString());
+					AddLabel(gTab[5], top, gFontHue, spawn.Map.ToString());
+					AddLabel(gTab[6], top, gFontHue, spawn.Active ? "Y" : "N");
+					AddLabel(gTab[7], top, gFontHue, spawn.AutoRestart ? "Y" : "N");
+					AddButton(gTab[8], top, 0xFA5, 0xFA7, 1 + i, GumpButtonType.Reply, 0);
+					AddButton(gTab[9], top, 0xFA5, 0xFA7, 1001 + i, GumpButtonType.Reply, 0);
 					top += gRowHeight;
 				}
 			}
