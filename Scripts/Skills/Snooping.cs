@@ -79,21 +79,28 @@ namespace Server.SkillHandlers
                 }
 
                 if (from.IsPlayer())
+                {
                     Titles.AwardKarma(from, -4, true);
+                }
 
                 if (from.IsStaff() || from.CheckTargetSkill(SkillName.Snooping, cont, 0.0, 100.0))
                 {
-                    if (cont is TrapableContainer && ((TrapableContainer)cont).ExecuteTrap(from))
+                    if (cont is TrapableContainer && ((TrapableContainer)cont).CheckTrap(from))
+                    {
+                        ((TrapableContainer)cont).ExecuteTrap(from);
                         return;
+                    }
 
                     cont.DisplayTo(from);
                 }
                 else
                 {
                     from.SendLocalizedMessage(500210); // You failed to peek into the container.
-					
+
                     if (from.Skills[SkillName.Hiding].Value / 2 < Utility.Random(100))
+                    {
                         from.RevealingAction();
+                    }
                 }
             }
             else
