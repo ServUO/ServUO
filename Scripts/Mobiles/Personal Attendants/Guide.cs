@@ -16,6 +16,7 @@ namespace Server.Mobiles
         private static readonly List<int> m_ShopDefinitions = new List<int>();
         private static readonly char[] m_Separators = new char[] { '\t', ' ' };
         private static readonly string m_Delimiter = "--------------------------------------------------------------------------";
+        private static readonly string path_Delimiter = Path.DirectorySeparatorChar.ToString();
         public static void LogMessage(string line)
         {
             try
@@ -58,7 +59,7 @@ namespace Server.Mobiles
 
             try
             {
-                using (FileStream stream = File.OpenRead("Data\\Guide\\Definitions.cfg"))
+                using (FileStream stream = File.OpenRead(String.Join(path_Delimiter, "Data", "Guide", "Definitions.cfg")))
                     using (StreamReader reader = new StreamReader(stream))
                     {
                         while (!reader.EndOfStream)
@@ -75,7 +76,7 @@ namespace Server.Mobiles
                         }
                     }
 
-                foreach (string file in Directory.GetFiles("Data\\Guide\\", "*.graph"))
+                foreach (string file in Directory.GetFiles(String.Join(path_Delimiter, "Data", "Guide"), "*.graph"))
                 {
                     using (FileStream stream = File.OpenRead(file))
                         using (StreamReader reader = new StreamReader(stream))
