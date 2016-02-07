@@ -9,7 +9,7 @@ namespace Server.Misc
 {
     public class CharacterCreation
     {
-        private static readonly CityInfo m_NewHavenInfo = new CityInfo("New Haven", "The Bountiful Harvest Inn", 3503, 2574, 14, Map.Trammel);
+        private static readonly CityInfo NewHavenInfo = new CityInfo("New Haven", "The Bountiful Harvest Inn", 3503, 2574, 14, Map.Trammel);
         private static Mobile m_Mobile;
 
         public static void Initialize()
@@ -55,7 +55,7 @@ namespace Server.Misc
             }
 
             PackItem(new RedBook("a book", m.Name, 20, true));
-            PackItem(new Gold(1000)); // Starting gold can be customized here
+            PackItem(new Gold(Config.Get("CharacterCreation.StartingGold", 0)));
             PackItem(new Candle());
 
             if (m.Race != Race.Gargoyle)
@@ -204,7 +204,11 @@ namespace Server.Misc
             //newChar.Hue = Utility.ClipSkinHue( args.Hue & 0x3FFF ) | 0x8000;
             newChar.Hue = newChar.Race.ClipSkinHue(args.Hue & 0x3FFF) | 0x8000;
 
-            newChar.Hunger = 20;
+            newChar.Hunger = Config.Get("CharacterCreation.Hunger", 0);
+            newChar.Thirst = Config.Get("CharacterCreation.Thirst", 0);
+            newChar.SkillsCap = Config.Get("CharacterCreation.SkillCap", 0);
+            newChar.StatCap = Config.Get("CharacterCreation.StatCap", 0);
+            newChar.FollowersMax = Config.Get("CharacterCreation.FollowersMax", 0);
 
             bool young = false;
 
@@ -216,12 +220,12 @@ namespace Server.Misc
 
                 if (pm.IsPlayer() && ((Account)pm.Account).Young)
                 {
-                    young = pm.Young = true;
+                    young = pm.Young = Config.Get("CharacterCreation.YoungEnabled", true);
                 }
 
                 if (pm.Race == Race.Gargoyle) // Gargoyles start with 2000 loyalty points
                 {
-                    pm.Exp = 2000;
+                    pm.Exp = Config.Get("CharacterCreation.GargoyleExp", 0);
                 }
             }
 
@@ -281,10 +285,15 @@ namespace Server.Misc
 
             new WelcomeTimer(newChar).Start();
 
-			if (XmlSpawner.PointsEnabled)
-				XmlAttach.AttachTo(newChar, new XmlPoints());
-			if(XmlSpawner.FactionsEnabled)
-				XmlAttach.AttachTo(newChar, new XmlMobFactions());
+            if (XmlSpawner.PointsEnabled)
+            {
+                XmlAttach.AttachTo(newChar, new XmlPoints());
+            }
+
+            if (XmlSpawner.FactionsEnabled)
+            {
+                XmlAttach.AttachTo(newChar, new XmlMobFactions());
+            }
         }
 
         private static CityInfo GetStartLocation(CharacterCreatedEventArgs args, bool isYoung)
@@ -292,7 +301,7 @@ namespace Server.Misc
             if (Core.ML)
             {
                 //if( args.State != null && args.State.NewHaven )
-                return m_NewHavenInfo;	//We don't get the client Version until AFTER Character creation
+                return NewHavenInfo;	//We don't get the client Version until AFTER Character creation
                 //return args.City;  TODO: Uncomment when the old quest system is actually phased out
             }
 
@@ -327,7 +336,7 @@ namespace Server.Misc
                     }
                 case 5:	//Paladin
                     {
-                        return m_NewHavenInfo;
+                        return NewHavenInfo;
                     }
                 case 6:	//Samurai
                     {
@@ -376,9 +385,13 @@ namespace Server.Misc
             }
 
             if (useHaven)
-                return m_NewHavenInfo;
+            {
+                return NewHavenInfo;
+            }
             else
+            {
                 return args.City;
+            }
         }
 
         private static void FixStats(ref int str, ref int dex, ref int intel, int max)
@@ -390,18 +403,26 @@ namespace Server.Misc
             int vInt = intel - 10;
 
             if (vStr < 0)
+            {
                 vStr = 0;
+            }
 
             if (vDex < 0)
+            {
                 vDex = 0;
+            }
 
             if (vInt < 0)
+            {
                 vInt = 0;
+            }
 
             int total = vStr + vDex + vInt;
 
             if (total == 0 || total == vMax)
+            {
                 return;
+            }
 
             double scalar = vMax / (double)total;
 
@@ -423,9 +444,13 @@ namespace Server.Misc
             stat += diff;
 
             if (stat < 0)
+            {
                 stat = 0;
+            }
             else if (stat > max)
+            {
                 stat = max;
+            }
         }
 
         private static void SetStats(Mobile m, NetState state, int str, int dex, int intel)
@@ -463,7 +488,9 @@ namespace Server.Misc
             for (int i = 0; i < skills.Length; ++i)
             {
                 if (skills[i].Value < 0 || skills[i].Value > 50)
+                {
                     return false;
+                }
 
                 total += skills[i].Value;
 

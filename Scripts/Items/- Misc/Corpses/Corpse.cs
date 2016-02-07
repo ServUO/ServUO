@@ -1329,7 +1329,8 @@ namespace Server.Items
                     from.NetState.Send(new RemoveWaypoint(from.Corpse.Serial));
                 }
             }
-		}
+            #endregion
+        }
 
 		public override bool CheckContentDisplay(Mobile from)
 		{

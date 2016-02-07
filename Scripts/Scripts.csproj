@@ -4188,6 +4188,7 @@
     <Compile Include="Items\Skill Items\Lumberjack\Log.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Skill Items\Magical\BagOfMysticReagents.cs" />
     <Compile Include="Items\Skill Items\Magical\BookOfBushido.cs">
       <SubType>Code</SubType>
     </Compile>
