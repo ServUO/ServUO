@@ -713,6 +713,13 @@ namespace Server.Misc
                 newChar.FacialHairItemID = args.BeardID;
                 newChar.FacialHairHue = race.ClipHairHue(args.BeardHue & 0x3FFF);
             }
+            #region Enhance Client
+            if (race.ValidateFace(newChar, args.FaceID))
+            {
+                newChar.FaceItemID = args.FaceID;
+                newChar.FaceHue = args.FaceHue;
+            }
+            #endregion
 
             if (args.Profession <= 3)
             {
