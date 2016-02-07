@@ -22,17 +22,27 @@ namespace Server.Engines.CannedEvil
 		private static int m_GoldShowerPiles;
 		private static int m_GoldShowerMinAmount;
 		private static int m_GoldShowerMaxAmount;
+		private static int m_HarrowerGoldPiles;
+		private static int m_HarrowerGoldMinAmount;
+		private static int m_HarrowerGoldMaxAmount;
 		private static int m_PowerScrollAmount;
+		private static int m_StatScrollAmount;
 		private static int[] m_Rank = new int[16];
 		private static int[] m_MaxKill = new int[4];
 		private static int[] m_MaxSpawn = new int[4];
 		private static double m_TranscendenceChance;
 		private static double m_ScrollChance;
+		private static int m_ChampionRegionRadius;
+		private static int[] m_SpawnRadius = new int[4];
 
 		public static int GoldShowerPiles { get { return m_GoldShowerPiles; } }
 		public static int GoldShowerMinAmount { get { return m_GoldShowerMinAmount; } }
 		public static int GoldShowerMaxAmount { get { return m_GoldShowerMaxAmount; } }
+		public static int HarrowerGoldShowerPiles { get { return m_HarrowerGoldPiles; } }
+		public static int HarrowerGoldShowerMinAmount { get { return m_HarrowerGoldMinAmount; } }
+		public static int HarrowerGoldShowerMaxAmount { get { return m_HarrowerGoldMaxAmount; } }
 		public static int PowerScrollAmount { get { return m_PowerScrollAmount; } }
+		public static int StatScrollAmount { get { return m_StatScrollAmount; } }
 		public static int RankForLevel(int l)
 		{
 			if (l < 0)
@@ -59,7 +69,11 @@ namespace Server.Engines.CannedEvil
 			m_GoldShowerPiles = Config.Get("Champions.GoldPiles", 50);
 			m_GoldShowerMinAmount = Config.Get("Champions.GoldMin", 2500);
 			m_GoldShowerMaxAmount = Config.Get("Champions.GoldMax", 7500);
+			m_HarrowerGoldPiles = Config.Get("Champions.HarrowerGoldPiles", 75);
+			m_HarrowerGoldMinAmount = Config.Get("Champions.HarrowerGoldMin", 5000);
+			m_HarrowerGoldMaxAmount = Config.Get("Champions.HarrowerGoldMax", 10000);
 			m_PowerScrollAmount = Config.Get("Champions.PowerScrolls", 6);
+			m_StatScrollAmount = Config.Get("Champions.StatScrolls", 16);
 			m_ScrollChance = Config.Get("Champions.ScrollChance", 0.1d) / 100.0d;
 			m_TranscendenceChance = Config.Get("Champions.TranscendenceChance", 50.0d) / 100.0d;
 			int rank2 = Config.Get("Champions.Rank2RedSkulls", 5);
@@ -84,6 +98,11 @@ namespace Server.Engines.CannedEvil
 			m_MaxSpawn[1] = Config.Get("Champions.Rank2MaxSpawn", 64);
 			m_MaxSpawn[2] = Config.Get("Champions.Rank3MaxSpawn", 32);
 			m_MaxSpawn[3] = Config.Get("Champions.Rank4MaxSpawn", 16);
+			m_ChampionRegionRadius = Config.Get("Champions.ChampionRegionRadius", 48);
+			m_SpawnRadius[0] = Config.Get("Champions.Rank1SpawnRadius", 32);
+			m_SpawnRadius[1] = Config.Get("Champions.Rank2SpawnRadius", 26);
+			m_SpawnRadius[2] = Config.Get("Champions.Rank3SpawnRadius", 20);
+			m_SpawnRadius[3] = Config.Get("Champions.Rank4SpawnRadius", 14);
 			EventSink.WorldLoad += EventSink_WorldLoad;
 			EventSink.WorldSave += EventSink_WorldSave;
 		}

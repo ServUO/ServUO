@@ -699,7 +699,7 @@ namespace Server.Engines.CannedEvil
 			if (currentLevel >= 16)
 				maxSpawn = Math.Min(maxSpawn, MaxKills - m_Kills);
 
-			int spawnRadius = 24 - Rank * 4;
+			int spawnRadius = 24 - Rank * 5;
 			Rectangle2D spawnBounds = new Rectangle2D(new Point2D(this.X - spawnRadius, this.Y - spawnRadius),
 				new Point2D(this.X + spawnRadius, this.Y + spawnRadius));
 

@@ -211,40 +211,11 @@ namespace Server.Mobiles
                 if (this.NoGoodies)
                     return base.OnBeforeDeath();
 
-				for(int i = 0; i < ChampionSystem.GoldShowerPiles; ++i)
-				{
-					new GoodiesTimer(Map, Location).Start();
-				}
+				GoldShower.DoForChamp(Location, Map);
             }
 
             return base.OnBeforeDeath();
         }
-
-		private static Point3D FindGoldLocation(Map map, Point3D center, int range)
-		{
-			int cx = center.X;
-			int cy = center.Y;
-
-			for(int i = 0; i < 20; ++i)
-			{
-				int x = cx + Utility.Random(range * 2) - range;
-				int y = cy + Utility.Random(range * 2) - range;
-				if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range * range)
-					continue;
-
-				int z = map.GetAverageZ(x, y);
-				if (!map.CanFit(x, y, z, 6, false, false))
-					continue;
-
-				int topZ = z;
-				foreach(Item item in map.GetItemsInRange(new Point3D(x, y, z), 0))
-				{
-					topZ = Math.Max(topZ, item.Z + item.ItemData.CalcHeight);
-				}
-				return new Point3D(x, y, topZ);
-			}
-			return center;
-		}
 
         public override void OnDeath(Container c)
         {
@@ -286,50 +257,5 @@ namespace Server.Mobiles
             return PowerScroll.CreateRandomNoCraft(level, level);
         }
 
-        private class GoodiesTimer : Timer
-        {
-            private readonly Map m_Map;
-			private readonly Point3D m_Location;
-            public GoodiesTimer(Map map, Point3D p)
-                : base(TimeSpan.FromSeconds(Utility.RandomDouble() * 10.0))
-            {
-                m_Map = map;
-				m_Location = p;
-            }
-
-            protected override void OnTick()
-            {
-				Point3D p = FindGoldLocation(m_Map, m_Location, 6);
-				Gold g = new Gold(ChampionSystem.GoldShowerMinAmount, ChampionSystem.GoldShowerMaxAmount);
-                g.MoveToWorld(p, this.m_Map);
-
-                if (0.5 >= Utility.RandomDouble())
-                {
-                    switch ( Utility.Random(3) )
-                    {
-                        case 0: // Fire column
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
-                                Effects.PlaySound(g, g.Map, 0x208);
-
-                                break;
-                            }
-                        case 1: // Explosion
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x36BD, 20, 10, 5044);
-                                Effects.PlaySound(g, g.Map, 0x307);
-
-                                break;
-                            }
-                        case 2: // Ball of fire
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x36FE, 10, 10, 5052);
-
-                                break;
-                            }
-                    }
-                }
-            }
-        }
     }
 }
