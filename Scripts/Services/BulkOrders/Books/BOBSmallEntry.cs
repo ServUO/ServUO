@@ -19,9 +19,13 @@ namespace Server.Engines.BulkOrders
             this.m_RequireExceptional = bod.RequireExceptional;
 
             if (bod is SmallTailorBOD)
+            {
                 this.m_DeedType = BODType.Tailor;
+            }
             else if (bod is SmallSmithBOD)
+            {
                 this.m_DeedType = BODType.Smith;
+            }
 
             this.m_Material = bod.Material;
             this.m_AmountCur = bod.AmountCur;
@@ -41,7 +45,9 @@ namespace Server.Engines.BulkOrders
                         string type = reader.ReadString();
 
                         if (type != null)
+                        {
                             this.m_ItemType = ScriptCompiler.FindTypeByFullName(type);
+                        }
 
                         this.m_RequireExceptional = reader.ReadBool();
 
@@ -131,9 +137,13 @@ namespace Server.Engines.BulkOrders
             SmallBOD bod = null;
 
             if (this.m_DeedType == BODType.Smith)
+            {
                 bod = new SmallSmithBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material);
+            }
             else if (this.m_DeedType == BODType.Tailor)
+            {
                 bod = new SmallTailorBOD(this.m_AmountCur, this.m_AmountMax, this.m_ItemType, this.m_Number, this.m_Graphic, this.m_RequireExceptional, this.m_Material);
+            }
 
             return bod;
         }

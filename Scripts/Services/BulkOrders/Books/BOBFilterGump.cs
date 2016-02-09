@@ -6,6 +6,13 @@ namespace Server.Engines.BulkOrders
 {
     public class BOBFilterGump : Gump
     {
+        public override int TypeID { get { return 0x29D; } }
+
+        private readonly PlayerMobile m_From;
+        private readonly BulkOrderBook m_Book;
+
+        private const int LabelColor = 0x7FFF;
+
         private static readonly int[,] m_MaterialFilters = new int[,]
         {
             { 1044067, 1 }, // Blacksmithy
@@ -55,15 +62,38 @@ namespace Server.Engines.BulkOrders
             m_MaterialFilters,
             m_AmountFilters
         };
+
         private static readonly int[] m_XOffsets_Type = new int[] { 0, 75, 170 };
         private static readonly int[] m_XOffsets_Quality = new int[] { 0, 75, 170 };
         private static readonly int[] m_XOffsets_Amount = new int[] { 0, 75, 180, 275 };
         private static readonly int[] m_XOffsets_Material = new int[] { 0, 105, 210, 305, 390, 485 };
         private static readonly int[] m_XWidths_Small = new int[] { 50, 50, 70, 50 };
         private static readonly int[] m_XWidths_Large = new int[] { 80, 50, 50, 50, 50, 50 };
-        private const int LabelColor = 0x7FFF;
-        private readonly PlayerMobile m_From;
-        private readonly BulkOrderBook m_Book;
+
+        private void AddFilterList(int x, int y, int[] xOffsets, int yOffset, int[,] filters, int[] xWidths, int filterValue, int filterIndex)
+        {
+            for (int i = 0; i < filters.GetLength(0); ++i)
+            {
+                int number = filters[i, 0];
+
+                if (number == 0)
+                {
+                    continue;
+                }
+
+                bool isSelected = (filters[i, 1] == filterValue);
+
+                if (!isSelected && (i % xOffsets.Length) == 0)
+                {
+                    isSelected = (filterValue == 0);
+                }
+
+                this.AddHtmlLocalized(x + 35 + xOffsets[i % xOffsets.Length], y + ((i / xOffsets.Length) * yOffset), xWidths[i % xOffsets.Length], 32, number, isSelected ? 16927 : LabelColor, false, false);
+                this.AddButton(x + xOffsets[i % xOffsets.Length], y + ((i / xOffsets.Length) * yOffset), 4005, 4007, 4 + filterIndex + (i * 4), GumpButtonType.Reply, 0);
+            }
+        }
+
+
         public BOBFilterGump(PlayerMobile from, BulkOrderBook book)
             : base(12, 24)
         {
@@ -187,25 +217,6 @@ namespace Server.Engines.BulkOrders
 
                         break;
                     }
-            }
-        }
-
-        private void AddFilterList(int x, int y, int[] xOffsets, int yOffset, int[,] filters, int[] xWidths, int filterValue, int filterIndex)
-        {
-            for (int i = 0; i < filters.GetLength(0); ++i)
-            {
-                int number = filters[i, 0];
-
-                if (number == 0)
-                    continue;
-
-                bool isSelected = (filters[i, 1] == filterValue);
-
-                if (!isSelected && (i % xOffsets.Length) == 0)
-                    isSelected = (filterValue == 0);
-
-                this.AddHtmlLocalized(x + 35 + xOffsets[i % xOffsets.Length], y + ((i / xOffsets.Length) * yOffset), xWidths[i % xOffsets.Length], 32, number, isSelected ? 16927 : LabelColor, false, false);
-                this.AddButton(x + xOffsets[i % xOffsets.Length], y + ((i / xOffsets.Length) * yOffset), 4005, 4007, 4 + filterIndex + (i * 4), GumpButtonType.Reply, 0);
             }
         }
     }

@@ -65,9 +65,13 @@ namespace Server.Engines.BulkOrders
             BulkMaterialType material;
 
             if (useMaterials)
+            {
                 material = GetRandomMaterial(BulkMaterialType.DullCopper, m_BlacksmithMaterialChances);
+            }
             else
+            {
                 material = BulkMaterialType.None;
+            }
 
             this.Hue = hue;
             this.AmountMax = amountMax;
@@ -115,7 +119,9 @@ namespace Server.Engines.BulkOrders
                         Item item = rewardGroup.Items[i].Construct();
 
                         if (item != null)
+                        {
                             list.Add(item);
+                        }
                     }
                 }
                 else
@@ -127,7 +133,9 @@ namespace Server.Engines.BulkOrders
                         Item item = rewardItem.Construct();
 
                         if (item != null)
+                        {
                             list.Add(item);
+                        }
                     }
                 }
             }

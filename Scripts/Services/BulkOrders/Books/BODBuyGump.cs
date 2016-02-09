@@ -7,11 +7,13 @@ namespace Server.Engines.BulkOrders
 {
     public class BODBuyGump : Gump
     {
+        public override int TypeID { get { return 0x29E; } }
         private readonly PlayerMobile m_From;
         private readonly BulkOrderBook m_Book;
         private readonly object m_Object;
         private readonly int m_Price;
         private readonly int m_Page;
+
         public BODBuyGump(PlayerMobile from, BulkOrderBook book, object obj, int page, int price)
             : base(100, 200)
         {
@@ -53,9 +55,13 @@ namespace Server.Engines.BulkOrders
                     if (vi != null && !vi.IsForSale)
                     {
                         if (this.m_Object is BOBLargeEntry)
+                        {
                             price = ((BOBLargeEntry)this.m_Object).Price;
+                        }
                         else if (this.m_Object is BOBSmallEntry)
+                        {
                             price = ((BOBSmallEntry)this.m_Object).Price;
+                        }
                     }
 
                     if (price != this.m_Price)
@@ -71,9 +77,13 @@ namespace Server.Engines.BulkOrders
                         Item item = null;
 
                         if (this.m_Object is BOBLargeEntry)
+                        {
                             item = ((BOBLargeEntry)this.m_Object).Reconstruct();
+                        }
                         else if (this.m_Object is BOBSmallEntry)
+                        {
                             item = ((BOBSmallEntry)this.m_Object).Reconstruct();
+                        }
 
                         if (item == null)
                         {
@@ -107,9 +117,13 @@ namespace Server.Engines.BulkOrders
                                     }
 
                                     if (this.m_Book.Entries.Count > 0)
+                                    {
                                         this.m_From.SendGump(new BOBGump(this.m_From, this.m_Book, this.m_Page, null));
+                                    }
                                     else
+                                    {
                                         this.m_From.SendLocalizedMessage(1062381); // The book is empty.
+                                    }
                                 }
                                 else
                                 {
@@ -123,9 +137,13 @@ namespace Server.Engines.BulkOrders
                 else
                 {
                     if (pv == null)
+                    {
                         this.m_From.SendLocalizedMessage(1062382); // The deed selected is not available.
+                    }
                     else
+                    {
                         pv.SayTo(this.m_From, 1062382); // The deed selected is not available.
+                    }
                 }
             }
             else

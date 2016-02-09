@@ -9422,6 +9422,12 @@
     <Compile Include="Multis\DynamicDecay.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Multis\Gumps\ConfirmHouseResize.cs" />
+    <Compile Include="Multis\Gumps\HouseDemolishGump.cs" />
+    <Compile Include="Multis\Gumps\HouseGump.cs" />
+    <Compile Include="Multis\Gumps\HouseGumpAOS.cs" />
+    <Compile Include="Multis\Gumps\HouseTransferGump.cs" />
+    <Compile Include="Multis\Gumps\SetSecureLevelGump.cs" />
     <Compile Include="Multis\HouseFoundation.cs">
       <SubType>Code</SubType>
     </Compile>

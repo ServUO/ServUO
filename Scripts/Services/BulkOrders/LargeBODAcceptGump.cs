@@ -6,78 +6,106 @@ namespace Server.Engines.BulkOrders
 {
     public class LargeBODAcceptGump : Gump
     {
+        public override int TypeID { get { return 0x1C7; } }
         private readonly LargeBOD m_Deed;
         private readonly Mobile m_From;
+
         public LargeBODAcceptGump(Mobile from, LargeBOD deed)
             : base(50, 50)
         {
-            this.m_From = from;
-            this.m_Deed = deed;
+            m_From = from;
+            m_Deed = deed;
 
-            this.m_From.CloseGump(typeof(LargeBODAcceptGump));
-            this.m_From.CloseGump(typeof(SmallBODAcceptGump));
+            m_From.CloseGump(typeof(LargeBODAcceptGump));
+            m_From.CloseGump(typeof(SmallBODAcceptGump));
 
             LargeBulkEntry[] entries = deed.Entries;
 
-            this.AddPage(0);
+            bool enlarge = deed.RequireExceptional || deed.Material != BulkMaterialType.None;
 
-            this.AddBackground(25, 10, 430, 240 + (entries.Length * 24), 5054);
+            AddPage(0);
 
-            this.AddImageTiled(33, 20, 413, 221 + (entries.Length * 24), 2624);
-            this.AddAlphaRegion(33, 20, 413, 221 + (entries.Length * 24));
+            AddBackground(25, 10, 430, (enlarge ? 240 : 168) + (entries.Length * 24), 5054);
 
-            this.AddImage(20, 5, 10460);
-            this.AddImage(430, 5, 10460);
-            this.AddImage(20, 225 + (entries.Length * 24), 10460);
-            this.AddImage(430, 225 + (entries.Length * 24), 10460);
+            AddImageTiled(33, 20, 413, (enlarge ? 221 : 149) + (entries.Length * 24), 2624);
+            AddAlphaRegion(33, 20, 413, (enlarge ? 221 : 149) + (entries.Length * 24));
 
-            this.AddHtmlLocalized(180, 25, 120, 20, 1045134, 0x7FFF, false, false); // A large bulk order
+            AddImage(20, 5, 10460);
+            AddImage(430, 5, 10460);
+            AddImage(20, (enlarge ? 225 : 153) + (entries.Length * 24), 10460);
+            AddImage(430, (enlarge ? 225 : 153) + (entries.Length * 24), 10460);
 
-            this.AddHtmlLocalized(40, 48, 350, 20, 1045135, 0x7FFF, false, false); // Ah!  Thanks for the goods!  Would you help me out?
+            AddHtmlLocalized(40, 48, 350, 20, 1045135, 0xFFFFFF, false, false); // Ah!  Thanks for the goods!  Would you help me out?
+            AddHtmlLocalized(40, 72, 210, 20, 1045138, 0xFFFFFF, false, false); // Amount to make:
+            AddLabel(250, 72, 1152, deed.AmountMax.ToString());
 
-            this.AddHtmlLocalized(40, 72, 210, 20, 1045138, 0x7FFF, false, false); // Amount to make:
-            this.AddLabel(250, 72, 1152, deed.AmountMax.ToString());
+            AddHtmlLocalized(40, (enlarge ? 192 : 120) + (entries.Length * 24), 350, 20, 1045139, 0xFFFFFF, false, false); // Do you want to accept this order?
 
-            this.AddHtmlLocalized(40, 96, 120, 20, 1045137, 0x7FFF, false, false); // Items requested:
+            AddHtmlLocalized(135, (enlarge ? 216 : 144) + (entries.Length * 24), 120, 20, 1006044, 0xFFFFFF, false, false); // OK
+            AddHtmlLocalized(310, (enlarge ? 216 : 144) + (entries.Length * 24), 120, 20, 1011012, 0xFFFFFF, false, false); // CANCEL
 
-            int y = 120;
+            AddButton(100, (enlarge ? 216 : 144) + (entries.Length * 24), 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddButton(275, (enlarge ? 216 : 144) + (entries.Length * 24), 4005, 4007, 0, GumpButtonType.Reply, 0);
 
-            for (int i = 0; i < entries.Length; ++i, y += 24)
-                this.AddHtmlLocalized(40, y, 210, 20, entries[i].Details.Number, 0x7FFF, false, false);
+            AddHtmlLocalized(180, 25, 120, 20, 1045134, 0xFFFFFF, false, false); // A large bulk order
+            AddHtmlLocalized(40, 96, 120, 20, 1045137, 0xFFFFFF, false, false); // Items requested:
 
-            if (deed.RequireExceptional || deed.Material != BulkMaterialType.None)
+            int y = 120 + entries.Length * 24;
+
+            if (enlarge)
             {
-                this.AddHtmlLocalized(40, y, 210, 20, 1045140, 0x7FFF, false, false); // Special requirements to meet:
+                int krobjects = 2;
+
+                AddHtmlLocalized(40, y, 210, 20, 1045140, 0xFFFFFF, false, false); // Special requirements to meet:
                 y += 24;
 
                 if (deed.RequireExceptional)
                 {
-                    this.AddHtmlLocalized(40, y, 350, 20, 1045141, 0x7FFF, false, false); // All items must be exceptional.
+                    AddHtmlLocalized(40, y, 350, 20, 1045141, 0xFFFFFF, false, false); // All items must be exceptional.
                     y += 24;
+                    krobjects--;
                 }
 
                 if (deed.Material != BulkMaterialType.None)
                 {
-                    this.AddHtmlLocalized(40, y, 350, 20, GetMaterialNumberFor(deed.Material), 0x7FFF, false, false); // All items must be made with x material.
+                    AddHtmlLocalized(40, y, 350, 20, GetMaterialNumberFor(deed.Material), 0xFFFFFF, false, false); // All items must be made with x material.
                     y += 24;
+                    krobjects--;
+                }
+
+                while (krobjects > 0)
+                {
+                    AddECHtmlLocalized(0, 0, 0, 0, -1, false, false);
+                    krobjects--;
                 }
             }
+            else
+            {
+                AddECHtmlLocalized(0, 0, 0, 0, -1, false, false);
+                AddECHtmlLocalized(0, 0, 0, 0, -1, false, false);
+                AddECHtmlLocalized(0, 0, 0, 0, -1, false, false);
+            }
 
-            this.AddHtmlLocalized(40, 192 + (entries.Length * 24), 350, 20, 1045139, 0x7FFF, false, false); // Do you want to accept this order?
+            AddECHtmlLocalized(0, 0, 0, 0, -1, false, false);
 
-            this.AddButton(100, 216 + (entries.Length * 24), 4005, 4007, 1, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(135, 216 + (entries.Length * 24), 120, 20, 1006044, 0x7FFF, false, false); // Ok
+            y = 120;
 
-            this.AddButton(275, 216 + (entries.Length * 24), 4005, 4007, 0, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(310, 216 + (entries.Length * 24), 120, 20, 1011012, 0x7FFF, false, false); // CANCEL
+            for (int i = 0; i < entries.Length; ++i, y += 24)
+            {
+                AddHtmlLocalized(40, y, 210, 20, entries[i].Details.Number, 0xFFFFFF, false, false);
+            }
         }
 
         public static int GetMaterialNumberFor(BulkMaterialType material)
         {
             if (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite)
+            {
                 return 1045142 + (int)(material - BulkMaterialType.DullCopper);
+            }
             else if (material >= BulkMaterialType.Spined && material <= BulkMaterialType.Barbed)
+            {
                 return 1049348 + (int)(material - BulkMaterialType.Spined);
+            }
 
             return 0;
         }

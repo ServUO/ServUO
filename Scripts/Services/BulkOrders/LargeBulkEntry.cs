@@ -1,14 +1,16 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Engines.BulkOrders
 {
     public class LargeBulkEntry
     {
-        private static Hashtable m_Cache;
+        private static Dictionary<string, Dictionary<string, SmallBulkEntry[]>> m_Cache; 
         private readonly SmallBulkEntry m_Details;
         private LargeBOD m_Owner;
         private int m_Amount;
+
         public LargeBulkEntry(LargeBOD owner, SmallBulkEntry details)
         {
             this.m_Owner = owner;
@@ -25,7 +27,9 @@ namespace Server.Engines.BulkOrders
             string type = reader.ReadString();
 
             if (type != null)
+            {
                 realType = ScriptCompiler.FindTypeByFullName(type);
+            }
 
             this.m_Details = new SmallBulkEntry(realType, reader.ReadInt(), reader.ReadInt());
         }
@@ -205,7 +209,9 @@ namespace Server.Engines.BulkOrders
             {
                 this.m_Amount = value;
                 if (this.m_Owner != null)
+                {
                     this.m_Owner.InvalidateProperties();
+                }
             }
         }
         public SmallBulkEntry Details
@@ -218,17 +224,23 @@ namespace Server.Engines.BulkOrders
         public static SmallBulkEntry[] GetEntries(string type, string name)
         {
             if (m_Cache == null)
-                m_Cache = new Hashtable();
+            {
+                m_Cache = new Dictionary<string, Dictionary<string, SmallBulkEntry[]>>();
+            }
 
-            Hashtable table = (Hashtable)m_Cache[type];
+            Dictionary<string, SmallBulkEntry[]> table = null;
 
-            if (table == null)
-                m_Cache[type] = table = new Hashtable();
+            if (!m_Cache.TryGetValue(type, out table))
+            {
+                m_Cache[type] = table = new Dictionary<string, SmallBulkEntry[]>();
+            }
 
-            SmallBulkEntry[] entries = (SmallBulkEntry[])table[name];
+            SmallBulkEntry[] entries = null;
 
-            if (entries == null)
+            if (!table.TryGetValue(name, out entries))
+            {
                 table[name] = entries = SmallBulkEntry.LoadEntries(type, name);
+            }
 
             return entries;
         }
@@ -238,7 +250,9 @@ namespace Server.Engines.BulkOrders
             LargeBulkEntry[] large = new LargeBulkEntry[small.Length];
 
             for (int i = 0; i < small.Length; ++i)
+            {
                 large[i] = new LargeBulkEntry(owner, small[i]);
+            }
 
             return large;
         }
