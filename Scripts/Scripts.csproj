@@ -10958,6 +10958,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\ChampionSystem\ChampionSystem.cs" />
+    <Compile Include="Services\ChampionSystem\GoldShower.cs" />
     <Compile Include="Services\ChampionSystem\HarrowerGate.cs">
       <SubType>Code</SubType>
     </Compile>
