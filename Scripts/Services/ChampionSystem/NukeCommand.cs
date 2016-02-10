@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Server.Commands;
 using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Services.ChampionSystem
 {
@@ -19,6 +20,8 @@ namespace Server.Services.ChampionSystem
 		{
 			foreach (Mobile mob in e.Mobile.Map.GetMobilesInRange(e.Mobile.Location, 18))
 			{
+				if (mob is PlayerMobile)
+					continue;
 				Effects.SendLocationParticles(EffectItem.Create(mob.Location, mob.Map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
 				Effects.PlaySound(mob, mob.Map, 0x208);
 				mob.Damage(60000, e.Mobile);

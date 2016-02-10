@@ -41,6 +41,18 @@ namespace Server.Engines.CannedEvil
         private Dictionary<Mobile, int> m_DamageEntries;
 
 		[CommandProperty(AccessLevel.GameMaster)]
+		public string GroupName { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public double SpawnMod { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int SpawnRadius { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public double KillsMod { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public bool AutoRestart { get; set; }
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -99,7 +111,8 @@ namespace Server.Engines.CannedEvil
         public void SetInitialSpawnArea()
         {
             //Previous default used to be 24;
-            this.SpawnArea = new Rectangle2D(new Point2D(this.X - 24, this.Y - 24), new Point2D(this.X + 24, this.Y + 24));
+            this.SpawnArea = new Rectangle2D(new Point2D(this.X - SpawnRadius, this.Y - SpawnRadius),
+				new Point2D(this.X + SpawnRadius, this.Y + SpawnRadius));
         }
 
         public void UpdateRegion()
@@ -287,7 +300,14 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-				return ChampionSystem.MaxKillsForLevel(Level);
+				int l = Level;
+				switch (l)
+				{
+					case 0: return (int)(256 * KillsMod);
+					case 1: return (int)(128 * KillsMod);
+					case 2: return (int)(64 * KillsMod);
+					default: return (int)(32 * KillsMod);
+				}
             }
         }
 
@@ -693,13 +713,11 @@ namespace Server.Engines.CannedEvil
                 return;
 
 			int currentLevel = Level;
-			int maxSpawn = ChampionSystem.MaxSpawnForLevel(currentLevel);
-			if (this.m_Type == ChampionSpawnType.Glade || this.m_Type == ChampionSpawnType.Corrupt)
-				maxSpawn /= 2;
+			int maxSpawn = (int)((double)MaxKills * 0.5d * SpawnMod);
 			if (currentLevel >= 16)
 				maxSpawn = Math.Min(maxSpawn, MaxKills - m_Kills);
 
-			int spawnRadius = 24 - Rank * 5;
+			int spawnRadius = (int)(SpawnRadius * ChampionSystem.SpawnRadiusModForLevel(Level));
 			Rectangle2D spawnBounds = new Rectangle2D(new Point2D(this.X - spawnRadius, this.Y - spawnRadius),
 				new Point2D(this.X + spawnRadius, this.Y + spawnRadius));
 
@@ -1159,6 +1177,8 @@ namespace Server.Engines.CannedEvil
 
 			writer.Write(SpawnName);
 			writer.Write(AutoRestart);
+			writer.Write(SpawnMod);
+			writer.Write(SpawnRadius);
 
             writer.Write(this.m_DamageEntries.Count);
             foreach (KeyValuePair<Mobile, int> kvp in this.m_DamageEntries)
@@ -1208,6 +1228,8 @@ namespace Server.Engines.CannedEvil
 				case 6:
 					SpawnName = reader.ReadString();
 					AutoRestart = reader.ReadBool();
+					SpawnMod = reader.ReadDouble();
+					SpawnRadius = reader.ReadInt();
 					goto case 5;
                 case 5:
                     {
