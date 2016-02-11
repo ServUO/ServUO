@@ -4765,10 +4765,49 @@ namespace Server
 				return false;
 			}
 
+			Point3D dest = FindDropPoint(p, map, from.Z + 16);
+			if (dest == Point3D.Zero)
+				return false;
+
+			if (!from.InLOS(new Point3D(dest.X, dest.Y, dest.Z + 1)))
+			{
+				return false;
+			}
+
+			else if (!from.OnDroppedItemToWorld(this, p))
+			{
+				return false;
+			}
+			else if (!OnDroppedToWorld(from, p))
+			{
+				return false;
+			}
+
+			int soundID = GetDropSound();
+
+			MoveToWorld(p, from.Map);
+
+			from.SendSound(soundID == -1 ? 0x42 : soundID, GetWorldLocation());
+
+			return true;
+		}
+
+		public bool DropToWorld(Point3D p, Map map)
+		{
+			Point3D dest = FindDropPoint(p, map, int.MaxValue);
+			if (dest == Point3D.Zero)
+				return false;
+			MoveToWorld(dest, map);
+			return true;
+		}
+
+		private Point3D FindDropPoint(Point3D p, Map map, int maxZ)
+		{
+			if (map == null)
+				return Point3D.Zero;
+
 			int x = p.m_X, y = p.m_Y;
 			int z = int.MinValue;
-
-			int maxZ = from.Z + 16;
 
 			LandTile landTile = map.Tiles.GetLandTile(x, y);
 			TileFlag landFlags = TileData.LandTable[landTile.ID & TileData.MaxLandValue].Flags;
@@ -4840,12 +4879,12 @@ namespace Server
 
 			if (z == int.MinValue)
 			{
-				return false;
+				return Point3D.Zero;
 			}
 
 			if (z > maxZ)
 			{
-				return false;
+				return Point3D.Zero;
 			}
 
 			m_OpenSlots = (1 << 20) - 1;
@@ -4957,7 +4996,7 @@ namespace Server
 
 			if (!okay)
 			{
-				return false;
+				return Point3D.Zero;
 			}
 
 			height = ItemData.Height;
@@ -4969,11 +5008,11 @@ namespace Server
 
 			if (landAvg > z && (z + height) > landZ)
 			{
-				return false;
+				return Point3D.Zero;
 			}
 			else if ((landFlags & TileFlag.Impassable) != 0 && landAvg > surfaceZ && (z + height) > landZ)
 			{
-				return false;
+				return Point3D.Zero;
 			}
 
 			for (int i = 0; i < tiles.Length; ++i)
@@ -4986,11 +5025,11 @@ namespace Server
 
 				if (checkTop > z && (z + height) > checkZ)
 				{
-					return false;
+					return Point3D.Zero;
 				}
 				else if ((id.Surface || id.Impassable) && checkTop > surfaceZ && (z + height) > checkZ)
 				{
-					return false;
+					return Point3D.Zero;
 				}
 			}
 
@@ -4999,37 +5038,13 @@ namespace Server
 				Item item = items[i];
 				ItemData id = item.ItemData;
 
-				//int checkZ = item.Z;
-				//int checkTop = checkZ + id.CalcHeight;
-
 				if ((item.Z + id.CalcHeight) > z && (z + height) > item.Z)
 				{
-					return false;
+					return Point3D.Zero;
 				}
 			}
 
-			p = new Point3D(x, y, z);
-
-			if (!from.InLOS(new Point3D(x, y, z + 1)))
-			{
-				return false;
-			}
-			else if (!from.OnDroppedItemToWorld(this, p))
-			{
-				return false;
-			}
-			else if (!OnDroppedToWorld(from, p))
-			{
-				return false;
-			}
-
-			int soundID = GetDropSound();
-
-			MoveToWorld(p, from.Map);
-
-			from.SendSound(soundID == -1 ? 0x42 : soundID, GetWorldLocation());
-
-			return true;
+			return new Point3D(x, y, z);
 		}
 
 		public void SendRemovePacket()
