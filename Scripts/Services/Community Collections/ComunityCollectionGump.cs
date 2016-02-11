@@ -318,16 +318,24 @@ namespace Server.Gumps
                 if (item.Points <= points)
                 {
                     if (item is CollectionHuedItem)
-                        this.m_Owner.SendGump(new ComunityCollectionGump(this.m_Owner, this.m_Collection, this.m_Location, Section.Hues, (CollectionHuedItem)item));
-                    else
-                        this.m_Owner.SendGump(new ConfirmRewardGump(this.m_Collection, this.m_Location, item, 0));
-                }
+					{
+						this.m_Owner.SendGump(new ComunityCollectionGump(this.m_Owner, this.m_Collection, this.m_Location, Section.Hues, (CollectionHuedItem)item));
+					}
+					else
+					{
+						this.m_Owner.CloseGump(typeof(ConfirmRewardGump));
+						this.m_Owner.SendGump(new ConfirmRewardGump(this.m_Collection, this.m_Location, item, 0));
+					}
+				}
                 else
                     this.m_Owner.SendLocalizedMessage(1073122); // You don't have enough points for that!
             }
             else if (info.ButtonID >= 100 && this.m_Item != null && info.ButtonID - 200 < this.m_Item.Hues.Length && this.m_Section == Section.Hues)
-                this.m_Owner.SendGump(new ConfirmRewardGump(this.m_Collection, this.m_Location, this.m_Item, this.m_Item.Hues[info.ButtonID - 100]));
-        }
+			{
+				this.m_Owner.CloseGump(typeof(ConfirmRewardGump));
+				this.m_Owner.SendGump(new ConfirmRewardGump(this.m_Collection, this.m_Location, this.m_Item, this.m_Item.Hues[info.ButtonID - 100]));
+			}
+		}
 
         private class InternalPrompt : Prompt
         {

@@ -45,8 +45,18 @@ namespace Server.Gumps
             if (this.m_Collection == null || !from.InRange(this.m_Location, 2))
                 return;
 			
-            if (from is PlayerMobile)	
-                this.m_Collection.Reward((PlayerMobile)from, this.m_Item, this.m_Hue);
-        }
+            if (from is PlayerMobile)
+			{
+				PlayerMobile player = (PlayerMobile)from;
+				if(player.GetCollectionPoints(m_Collection.CollectionID) < m_Item.Points)
+				{
+					player.SendLocalizedMessage(1073122); // You don't have enough points for that!
+				}
+				else
+				{
+					this.m_Collection.Reward(player, this.m_Item, this.m_Hue);
+				}
+			}
+		}
     }
 }

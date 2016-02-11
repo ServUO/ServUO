@@ -11021,6 +11021,7 @@
     <Compile Include="Services\Community Collections\CollectionItem.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\Community Collections\CollectionsSystem.cs" />
     <Compile Include="Services\Community Collections\ComunityCollectionGump.cs">
       <SubType>Code</SubType>
     </Compile>
