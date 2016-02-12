@@ -1173,7 +1173,10 @@ namespace Server.Engines.CannedEvil
         {
             base.Serialize(writer);
 
-            writer.Write((int)6); // version
+            writer.Write((int)7); // version
+
+			writer.Write(KillsMod);
+			writer.Write(GroupName);
 
 			writer.Write(SpawnName);
 			writer.Write(AutoRestart);
@@ -1225,6 +1228,10 @@ namespace Server.Engines.CannedEvil
 
             switch( version )
             {
+				case 7:
+					KillsMod = reader.ReadDouble();
+					GroupName = reader.ReadString();
+					goto case 6;
 				case 6:
 					SpawnName = reader.ReadString();
 					AutoRestart = reader.ReadBool();

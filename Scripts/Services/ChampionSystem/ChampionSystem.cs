@@ -31,6 +31,7 @@ namespace Server.Engines.CannedEvil
 		private static int[] m_MaxKill = new int[4];
 		private static double m_TranscendenceChance;
 		private static double m_ScrollChance;
+		private static bool m_ForceGenerate = false;
 
 		public static int GoldShowerPiles { get { return m_GoldShowerPiles; } }
 		public static int GoldShowerMinAmount { get { return m_GoldShowerMinAmount; } }
@@ -106,7 +107,7 @@ namespace Server.Engines.CannedEvil
 				m_Path,
 				writer =>
 				{
-					writer.Write(0); // Version
+					writer.Write(1); // Version
 					writer.Write(m_Initialized);
 					writer.Write(m_LastRotate);
 					writer.WriteItemList(m_AllSpawns, true);
@@ -120,9 +121,15 @@ namespace Server.Engines.CannedEvil
 				reader =>
 				{
 					int version = reader.ReadInt();
+
 					m_Initialized = reader.ReadBool();
 					m_LastRotate = reader.ReadDateTime();
 					m_AllSpawns.AddRange(reader.ReadItemList().Cast<ChampionSpawn>());
+
+					if(version == 0)
+					{
+						m_ForceGenerate = true;
+					}
 				});
 		}
 
@@ -130,20 +137,24 @@ namespace Server.Engines.CannedEvil
 		{
 			CommandSystem.Register("ChampionInfo", AccessLevel.GameMaster, new CommandEventHandler(ChampionInfo_OnCommand));
 
-			if (!m_Enabled)
+			if (!m_Enabled || m_ForceGenerate)
 			{
 				foreach (ChampionSpawn s in m_AllSpawns)
 				{
 					s.Delete();
 				}
 				m_Initialized = false;
-				return;
 			}
+
+			if (!m_Enabled)
+				return;
 
 			m_Timer = new InternalTimer();
 
 			if (m_Initialized)
 				return;
+
+			m_AllSpawns.Clear();
 
 			Utility.PushColor(ConsoleColor.White);
 			Console.WriteLine("Generating Champion Spawns");
