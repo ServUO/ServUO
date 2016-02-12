@@ -6923,13 +6923,7 @@
     <Compile Include="Misc\TreasureMapProtection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\uoamVendors.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Misc\ValidationQueue.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Misc\VendorGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\WeakEntityCollection.cs" />
