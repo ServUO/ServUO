@@ -331,6 +331,7 @@ namespace Server
 			m_State = state;
 			m_Username = username;
 			m_Password = password;
+			Accepted = true;
 		}
 	}
 

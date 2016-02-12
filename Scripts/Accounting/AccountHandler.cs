@@ -216,6 +216,11 @@ namespace Server.Misc
 
         public static void EventSink_AccountLogin(AccountLoginEventArgs e)
         {
+			// If the login attempt has already been rejected by another event handler
+			// then just return
+			if (e.Accepted == false)
+				return;
+
             if (!IPLimiter.SocketBlock && !IPLimiter.Verify(e.State.Address))
             {
                 e.Accepted = false;
