@@ -113,6 +113,12 @@ namespace Server
 
 	public delegate void OnPropertyChangedEventHandler(OnPropertyChangedEventArgs e);
 
+    public delegate void BODUsedEventHandler(BODUsedEventArgs e);  
+ 
+	public delegate void BODOfferEventHandler(BODOfferEventArgs e);  
+  
+	public delegate void ResourceHarvestAttemptEventHandler(ResourceHarvestAttemptEventArgs e);  
+
     #region Enhance Client
     public delegate void TargetedSkillUseEventHandler(TargetedSkillUseEventArgs e);
     public delegate void TargetedItemUseEventHandler(TargetedItemUseEventArgs e);
@@ -965,6 +971,44 @@ namespace Server
 		}
 	}
 
+    public class BODUsedEventArgs : EventArgs
+    {
+        public Mobile User { get; private set; }
+        public Item BODItem { get; private set; }
+
+        public BODUsedEventArgs(Mobile m, Item i)
+        {
+            User = m;
+            BODItem = i;
+        }
+    } 
+  
+	public class BODOfferEventArgs : EventArgs  
+	{  
+		public Mobile Player { get; private set; }  
+		public Mobile Vendor { get; private set; }  
+  
+		public BODOfferEventArgs(Mobile p, Mobile v)  
+		{  
+			Player = p;  
+			Vendor = v;  
+		}  
+	}
+
+    public class ResourceHarvestAttemptEventArgs : EventArgs
+    {
+        public Mobile Harvester { get; private set; }
+        public Item Tool { get; private set; }
+        public object HarvestSystem { get; private set; }
+
+        public ResourceHarvestAttemptEventArgs(Mobile m, Item i, object o)
+        {
+            Harvester = m;
+            Tool = i;
+            HarvestSystem = o;
+        }
+    }
+
 	public static class EventSink
 	{
 		public static event CharacterCreatedEventHandler CharacterCreated;
@@ -1015,6 +1059,9 @@ namespace Server
 		public static event OnEnterRegionEventHandler OnEnterRegion;
 		public static event OnConsumeEventHandler OnConsume;
 		public static event OnPropertyChangedEventHandler OnPropertyChanged;
+        public static event BODUsedEventHandler BODUsed;  
+		public static event BODOfferEventHandler BODOffered;  
+		public static event ResourceHarvestAttemptEventHandler ResourceHarvestAttempt;
 
 		/* The following is a .NET 2.0 "Generic EventHandler" implementation.
 		 * It is a breaking change; we would have to refactor all event handlers.
@@ -1496,53 +1543,83 @@ namespace Server
 			}
 		}
 
-		public static void Reset()
-		{
-			CharacterCreated = null;
-			OpenDoorMacroUsed = null;
-			Speech = null;
-			Login = null;
-			ServerList = null;
-			Movement = null;
-			HungerChanged = null;
-			Crashed = null;
-			Shutdown = null;
-			HelpRequest = null;
-			DisarmRequest = null;
-			StunRequest = null;
-			OpenSpellbookRequest = null;
-			CastSpellRequest = null;
-			BandageTargetRequest = null;
-			AnimateRequest = null;
-			Logout = null;
-			SocketConnect = null;
-			Connected = null;
-			Disconnected = null;
-			RenameRequest = null;
-			PlayerDeath = null;
-			VirtueGumpRequest = null;
-			VirtueItemRequest = null;
-			VirtueMacroRequest = null;
-			ChatRequest = null;
-			AccountLogin = null;
-			PaperdollRequest = null;
-			ProfileRequest = null;
-			ChangeProfileRequest = null;
-			AggressiveAction = null;
-			Command = null;
-			GameLogin = null;
-			DeleteRequest = null;
-			WorldLoad = null;
-			WorldSave = null;
-			SetAbility = null;
-			GuildGumpRequest = null;
-			QuestGumpRequest = null;
-			OnKilledBy = null;
-			OnItemUse = null;
-			OnEnterRegion = null;
-			OnConsume = null;
-			OnPropertyChanged = null;
+        public static void InvokeBODUsed(BODUsedEventArgs e)  
+		{  
+		if(BODUsed != null)  
+			{  
+				BODUsed(e);  
+			}  
 		}
+
+        public static void InvokeBODOffered(BODOfferEventArgs e)
+        {
+            if (BODOffered != null)
+            {
+                BODOffered(e);
+            }
+        }
+
+        public static void InvokeResourceHarvestAttempt(ResourceHarvestAttemptEventArgs e)
+        {
+            if (ResourceHarvestAttempt != null)
+            {
+                ResourceHarvestAttempt(e);
+            }
+        }
+
+        public static void Reset()
+        {
+            CharacterCreated = null;
+            OpenDoorMacroUsed = null;
+            Speech = null;
+            Login = null;
+            ServerList = null;
+            Movement = null;
+            HungerChanged = null;
+            Crashed = null;
+            Shutdown = null;
+            HelpRequest = null;
+            DisarmRequest = null;
+            StunRequest = null;
+            OpenSpellbookRequest = null;
+            CastSpellRequest = null;
+            BandageTargetRequest = null;
+            AnimateRequest = null;
+            Logout = null;
+            SocketConnect = null;
+            Connected = null;
+            Disconnected = null;
+            RenameRequest = null;
+            PlayerDeath = null;
+            VirtueGumpRequest = null;
+            VirtueItemRequest = null;
+            VirtueMacroRequest = null;
+            ChatRequest = null;
+            AccountLogin = null;
+            PaperdollRequest = null;
+            ProfileRequest = null;
+            ChangeProfileRequest = null;
+            AggressiveAction = null;
+            Command = null;
+            GameLogin = null;
+            DeleteRequest = null;
+            WorldLoad = null;
+            WorldSave = null;
+            SetAbility = null;
+            GuildGumpRequest = null;
+            QuestGumpRequest = null;
+            OnKilledBy = null;
+            OnItemUse = null;
+            OnEnterRegion = null;
+            OnConsume = null;
+            OnPropertyChanged = null;
+            BODUsed = null;
+            BODOffered = null;
+            ResourceHarvestAttempt = null;
+            EquipMacro = null;
+            UnequipMacro = null;
+            TargetByResourceMacro = null;
+        }
 	}
 
     #region Enhance client
