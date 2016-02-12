@@ -1371,6 +1371,32 @@ namespace Server.Network
 		}
 	}
 
+    public sealed class LiftRej : Packet
+    {
+        private static LiftRej[] m_Cache = new LiftRej[6];
+
+        public static LiftRej Instantiate(LRReason reason)
+        {
+            byte idx = (byte)reason;
+            LiftRej p = m_Cache[idx];
+
+            if (p == null)
+            {
+                m_Cache[idx] = p = new LiftRej((byte)reason);
+                p.SetStatic();
+            }
+
+            return p;
+        }
+
+        public LiftRej(byte reason)
+            : base(0x27, 2)
+        {
+            m_Stream.Write(reason);
+        }
+    }
+
+    /*
 	public sealed class LiftRej : Packet
 	{
 		public LiftRej(LRReason reason)
@@ -1379,6 +1405,7 @@ namespace Server.Network
 			m_Stream.Write((byte)reason);
 		}
 	}
+     */
 
 	public sealed class LogoutAck : Packet
 	{
@@ -1632,6 +1659,35 @@ namespace Server.Network
 			m_Stream.Write((short)unknown);
 		}
 	}
+
+    public class GraphicalEffect : Packet
+    {
+        public GraphicalEffect(EffectType type, Serial from, Serial to, int itemID, Point3D fromPoint, Point3D toPoint, int speed, int duration, bool fixedDirection, bool explode)
+            : this(type, from, to, itemID, fromPoint, toPoint, speed, duration, fixedDirection, explode ? 1 : 0)
+        {
+        }
+
+        public GraphicalEffect(EffectType type, Serial from, Serial to, int itemID, Point3D fromPoint, Point3D toPoint, int speed, int duration, bool fixedDirection, int explode)
+            : base(0x70, 28)
+        {
+            m_Stream.Write((byte)type);
+            m_Stream.Write((int)from);
+            m_Stream.Write((int)to);
+            m_Stream.Write((short)itemID);
+            m_Stream.Write((short)fromPoint.X);
+            m_Stream.Write((short)fromPoint.Y);
+            m_Stream.Write((sbyte)fromPoint.Z);
+            m_Stream.Write((short)toPoint.X);
+            m_Stream.Write((short)toPoint.Y);
+            m_Stream.Write((sbyte)toPoint.Z);
+            m_Stream.Write((byte)speed);
+            m_Stream.Write((byte)duration);
+            m_Stream.Write((byte)0);
+            m_Stream.Write((byte)0);
+            m_Stream.Write((bool)fixedDirection);
+            m_Stream.Write((byte)explode);
+        }
+    }
 
 	public class HuedEffect : Packet
 	{
@@ -2687,6 +2743,7 @@ m_Stream.Write( (int) renderMode );
 		public DragEffect(IEntity src, IEntity trg, int itemID, int hue, int amount)
 			: base(0x23, 26)
 		{
+            /*
 			m_Stream.Write((short)itemID);
 			m_Stream.Write((byte)0);
 			m_Stream.Write((short)hue);
@@ -2699,6 +2756,19 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((short)trg.X);
 			m_Stream.Write((short)trg.Y);
 			m_Stream.Write((sbyte)trg.Z);
+             */
+            m_Stream.Write((short)itemID);
+            m_Stream.Write((byte)0);
+            m_Stream.Write((short)hue);
+            m_Stream.Write((short)amount);
+            m_Stream.Write((int)src.Serial);
+            m_Stream.Write((short)src.X);
+            m_Stream.Write((short)src.Y);
+            m_Stream.Write((sbyte)src.Z);
+            m_Stream.Write((int)trg.Serial);
+            m_Stream.Write((short)trg.X);
+            m_Stream.Write((short)trg.Y);
+            m_Stream.Write((sbyte)trg.Z);
 		}
 	}
 

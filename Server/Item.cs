@@ -1324,6 +1324,10 @@ namespace Server
 		public virtual void AddWeightProperty(ObjectPropertyList list)
 		{
 			int weight = PileWeight + TotalWeight;
+            if (weight == 0)
+            {
+                return;
+            }
 
 			if (weight == 1)
 			{
@@ -3427,7 +3431,7 @@ namespace Server
 
 		protected virtual Packet GetWorldPacketFor(NetState state)
 		{
-			if (state.HighSeas)
+            if (state.HighSeas || state.IsKRClient)
 			{
 				return WorldPacketHS;
 			}
@@ -5679,17 +5683,25 @@ namespace Server
 
 		internal int m_TypeRef;
 
+        [Constructable]
+        public Item(int itemID)
+            : this()
+        {
+            m_ItemID = itemID;
+        }
+
 		public Item()
 		{
 			m_Serial = Serial.NewItem;
 
 			//m_Items = new ArrayList( 1 );
-			Visible = true;
-			Movable = true;
-			Amount = 1;
-			m_Map = Map.Internal;
+			//Visible = true;
+			//Movable = true;
+			//Amount = 1;
+			//m_Map = Map.Internal;
 
-			SetLastMoved();
+			//SetLastMoved();
+            DefaultItemInit();
 
 			World.AddItem(this);
 
@@ -5703,12 +5715,18 @@ namespace Server
 			}
 		}
 
-		[Constructable]
-		public Item(int itemID)
-			: this()
-		{
-			m_ItemID = itemID;
-		}
+        /// <summary>
+        /// Initialize some fields when creating a fresh new Item. Otherwise these should be initialized by <see cref="Deserialize"/> method.
+        /// </summary>
+        private void DefaultItemInit()
+        {
+            Visible = true;
+            Movable = true;
+            Amount = 1;
+            m_Map = Map.Internal;
+
+            SetLastMoved();
+        }
 
 		public Item(Serial serial)
 		{

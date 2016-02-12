@@ -6,6 +6,8 @@ namespace Server
 {
     public class VirtueStatusGump : Gump
     {
+        public override int TypeID { get { return 0x2715; } }
+
         private readonly Mobile m_Beholder;
         public VirtueStatusGump(Mobile beholder)
             : base(0, 0)
@@ -13,6 +15,10 @@ namespace Server
             this.m_Beholder = beholder;
 
             this.AddPage(0);
+
+            AddECHtmlLocalized(0, 0, 0, 0, 1011012, false, false); // CANCEL
+
+            AddECHtmlLocalized(0, 0, 0, 0, 1078075, false, false); // Pick a virtue from the list below
 
             this.AddImage(30, 40, 2080);
             this.AddImage(47, 77, 2081);
@@ -46,6 +52,15 @@ namespace Server
             this.AddButton(180, 189, 1210, 1210, 8, GumpButtonType.Reply, 0);
 
             this.AddButton(280, 43, 4014, 4014, 9, GumpButtonType.Reply, 0);
+
+            AddECImage(0, 0, -2402);
+            AddECImage(0, 0, -2402);
+            AddECImage(0, 0, -2402);
+            AddECImage(0, 0, -2402);
+            AddECImage(0, 0, -2402);
+            AddECImage(0, 0, -2402);
+            AddECImage(0, 0, -2402);
+            AddECImage(0, 0, -2402);
         }
 
         public override void OnResponse(NetState state, RelayInfo info)

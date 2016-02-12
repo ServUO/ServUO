@@ -4702,7 +4702,8 @@ namespace Server
 
 			if (rejected && state != null)
 			{
-				state.Send(new LiftRej(reject));
+				//state.Send(new LiftRej(reject));
+                state.Send(LiftRej.Instantiate(reject));
 
 				if (item.Deleted)
 				{
@@ -4764,8 +4765,11 @@ namespace Server
 
 			item.Amount = oldItem.Amount - amount;
 			item.Map = oldItem.Map;
+            #region EC
+            item.GridLocation = oldItem.GridLocation;
+            #endregion
 
-			oldItem.Amount = amount;
+            oldItem.Amount = amount;
 			oldItem.OnAfterDuped(item);
 
 			if (oldItem.Parent is Mobile)
@@ -4794,18 +4798,27 @@ namespace Server
 					var eable = map.GetClientsInRange(m_Location);
 					Packet p = null;
 
-					foreach(NetState ns in eable) {
-						if (ns.StygianAbyss)
-								continue;
+					foreach(NetState ns in eable)
+                    {
+                        if (ns.StygianAbyss)
+                        {
+                            continue;
+                        }
 
-						if( ns.Mobile != this && ns.Mobile.CanSee( this ) && ns.Mobile.InLOS( this ) && ns.Mobile.CanSee( root ) ) {
-							if (p == null) {
+						if( ns.Mobile != this && ns.Mobile.CanSee( this ) && ns.Mobile.InLOS( this ) && ns.Mobile.CanSee( root ) ) 
+                        {
+							if (p == null)
+                            {
 								IEntity trg;
 
-								if (root == null)
-									trg = new Entity(Serial.Zero, item.Location, map);
-								else
-									trg = new Entity(((Item)root).Serial, ((Item)root).Location, map);
+                                if (root == null)
+                                {
+                                    trg = new Entity(Serial.Zero, item.Location, map);
+                                }
+                                else
+                                {
+                                    trg = new Entity(((Item)root).Serial, ((Item)root).Location, map);
+                                }
 
 								p = Packet.Acquire(new DragEffect(this, trg, item.ItemID, item.Hue, item.Amount));
 							}

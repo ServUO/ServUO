@@ -6,6 +6,8 @@ namespace Server
 {
     public class VirtueInfoGump : Gump
     {
+        public override int TypeID { get { return (int)m_Virtue + 0x2716; } }
+
         private readonly Mobile m_Beholder;
         private readonly int m_Desc;
         private readonly string m_Page;
@@ -51,7 +53,9 @@ namespace Server
                 dots = 10;
 
             for (int i = 0; i < 10; ++i)
+            {
                 this.AddImage(95 + (i * 17), 50, i < dots ? 2362 : 2360);
+            }
 
             if (value < 1)
                 valueDesc = 1052044; // You have not started on the path of this Virtue.
@@ -81,6 +85,12 @@ namespace Server
             this.AddButton(280, 43, 4014, 4014, 2, GumpButtonType.Reply, 0);
 
             this.AddHtmlLocalized(83, 275, 400, 40, (webPage == null) ? 1052055 : 1052052, false, false); // This virtue is not yet defined. OR -click to learn more (opens webpage)
+
+            AddECHtmlLocalized(0, 0, 0, 0, 1078056, false, false); // MORE
+            AddECHtmlLocalized(0, 0, 0, 0, 1011447, false, false); // BACK
+            AddECHtmlLocalized(0, 0, 0, 0, 1078055, false, false); // USE
+
+            AddECHtmlLocalized(0, 0, 0, 0, 0, false, false);
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
