@@ -60,8 +60,25 @@ namespace Server.Network
 		private readonly string m_ToString;
 		private ClientVersion m_Version;
 		private bool m_BlockAllPackets;
+        #region Enhance Client
+        private bool m_KRClient;
+        #endregion
 
 		private readonly DateTime m_ConnectedOn;
+
+        #region Enhance Client
+        public bool IsKRClient
+        {
+            get
+            {
+                return m_KRClient;
+            }
+            set
+            {
+                m_KRClient = value;
+            }
+        }
+        #endregion
 
 		public DateTime ConnectedOn { get { return m_ConnectedOn; } }
 

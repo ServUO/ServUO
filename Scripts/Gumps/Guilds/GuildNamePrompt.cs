@@ -6,6 +6,8 @@ namespace Server.Gumps
 {
     public class GuildNamePrompt : Prompt
     {
+        // Enter new guild name (40 characters max):
+        public override int MessageCliloc { get { return 1013060; } }
         private readonly Mobile m_Mobile;
         private readonly Guild m_Guild;
         public GuildNamePrompt(Mobile m, Guild g)

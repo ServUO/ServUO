@@ -11,7 +11,20 @@ namespace Server.Items
         private uint m_KeyValue;
         private Mobile m_Picker;
 		private Mobile m_Crafter;
-        private bool m_TrapOnLockpick;
+        private Mobile m_Locker;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Locker
+        {
+            get
+            {
+                return m_Locker;
+            }
+            set
+            {
+                m_Locker = value;
+            }
+        }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public Mobile Crafter
@@ -107,38 +120,17 @@ namespace Server.Items
             }
         }
 
-        public override bool TrapOnOpen
-        {
-            get
-            {
-                return !this.m_TrapOnLockpick;
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool TrapOnLockpick
-        {
-            get
-            {
-                return this.m_TrapOnLockpick;
-            }
-            set
-            {
-                this.m_TrapOnLockpick = value;
-            }
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
             writer.Write((int)7); // version
 
+            writer.Write(m_Locker);
+
 			writer.Write(this.m_Crafter);
 
             writer.Write(this.m_IsShipwreckedItem);
-
-            writer.Write((bool)this.m_TrapOnLockpick);
 
             writer.Write((int)this.m_RequiredSkill);
 
@@ -157,21 +149,21 @@ namespace Server.Items
 
             switch ( version )
             {
-				case 7:
+                case 7:
+                    {
+                        m_Locker = reader.ReadMobile();
+
+                        goto case 6;
+                    }
+				case 6:
 					{
 						this.m_Crafter = reader.ReadMobile();
 
-						goto case 6;
+						goto case 5;
 					}
-                case 6:
-                    {
-                        this.m_IsShipwreckedItem = reader.ReadBool();
-
-                        goto case 5;
-                    }
                 case 5:
                     {
-                        this.m_TrapOnLockpick = reader.ReadBool();
+                        this.m_IsShipwreckedItem = reader.ReadBool();
 
                         goto case 4;
                     }
@@ -252,7 +244,8 @@ namespace Server.Items
             return base.TryDropItem(from, dropped, sendFullMessage);
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        #region Enhance Client
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
         {
             if (from.AccessLevel < AccessLevel.GameMaster && this.m_Locked)
             {
@@ -260,16 +253,21 @@ namespace Server.Items
                 return false;
             }
 
-            return base.OnDragDropInto(from, item, p);
+            return base.OnDragDropInto(from, item, p, gridloc);
         }
+        #endregion
 
         public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
         {
             if (!base.CheckLift(from, item, ref reject))
+            {
                 return false;
+            }
 
             if (item != this && from.AccessLevel < AccessLevel.GameMaster && this.m_Locked)
+            {
                 return false;
+            }
 
             return true;
         }
@@ -277,7 +275,9 @@ namespace Server.Items
         public override bool CheckItemUse(Mobile from, Item item)
         {
             if (!base.CheckItemUse(from, item))
+            {
                 return false;
+            }
 
             if (item != this && from.AccessLevel < AccessLevel.GameMaster && this.m_Locked)
             {
@@ -288,19 +288,18 @@ namespace Server.Items
             return true;
         }
 
-        public override bool DisplaysContent
+        public override bool DisplaysContent { get { return !m_Locked; } }
+
+        public virtual bool CheckAccess(Mobile from)
         {
-            get
-            {
-                return !this.m_Locked;
-            }
+            return true;
         }
 
         public virtual bool CheckLocked(Mobile from)
         {
             bool inaccessible = false;
 
-            if (this.m_Locked)
+            if (m_Locked)
             {
                 int number;
 
@@ -308,13 +307,17 @@ namespace Server.Items
                 {
                     number = 502502; // That is locked, but you open it with your godly powers.
                 }
+                else if (from == m_Locker)
+                {
+                    number = 1005380; // The chest is locked, but since it's yours, you can open it.
+                }
                 else
                 {
                     number = 501747; // It appears to be locked.
                     inaccessible = true;
                 }
 
-                from.Send(new MessageLocalized(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, number, "", ""));
+                from.Send(new MessageLocalized(Serial, ItemID, MessageType.Regular, 0x3B2, 3, number, "", ""));
             }
 
             return inaccessible;
@@ -356,15 +359,44 @@ namespace Server.Items
             base.OnSnoop(from);
         }
 
-        public virtual void LockPick(Mobile from)
+        public override bool CheckTrap(Mobile from)
         {
-            this.Locked = false;
-            this.Picker = from;
+            if (!base.CheckTrap(from))
+                return false;
 
-            if (this.TrapOnLockpick && this.ExecuteTrap(from))
+            if (from == Locker)
             {
-                this.TrapOnLockpick = false;
+                SendLocalizedMessageTo(from, 1005380); // The chest is locked, but since it's yours, you can open it.
+                return false;
             }
+
+            return true;
+        }
+
+        public virtual int LockPick(Mobile from)
+        {
+            if (this.IsLockedAndTrappedByPlayer())
+            {
+                return 1005516; // You notice that the chest is trapped.
+            }
+            else
+            {
+                Locked = false;
+                Picker = from;
+
+                return 502076; // The lock quickly yields to your skill.
+            }
+        }
+
+        public virtual int FailLockPick(Mobile from)
+        {
+            if (this.IsLockedAndTrappedByPlayer())
+            {
+                ExecuteTrap(from);
+                return 1005517; // You fail to notice the trap.
+            }
+            else
+                return 502075; // You are unable to pick the lock.
         }
 
         public override void AddNameProperties(ObjectPropertyList list)

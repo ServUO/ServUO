@@ -113,12 +113,20 @@ namespace Server
 
 	public delegate void OnPropertyChangedEventHandler(OnPropertyChangedEventArgs e);
 
-	public delegate void BODUsedEventHandler(BODUsedEventArgs e);
+    public delegate void BODUsedEventHandler(BODUsedEventArgs e);  
+ 
+	public delegate void BODOfferEventHandler(BODOfferEventArgs e);  
+  
+	public delegate void ResourceHarvestAttemptEventHandler(ResourceHarvestAttemptEventArgs e);  
 
-	public delegate void BODOfferEventHandler(BODOfferEventArgs e);
-
-	public delegate void ResourceHarvestAttemptEventHandler(ResourceHarvestAttemptEventArgs e);
-
+    #region Enhance Client
+    public delegate void TargetedSkillUseEventHandler(TargetedSkillUseEventArgs e);
+    public delegate void TargetedItemUseEventHandler(TargetedItemUseEventArgs e);
+    public delegate void TargetedSpellEventHandler(TargetedSpellEventArgs e);
+    public delegate void EquipMacroEventHandler(EquipMacroEventArgs e);
+    public delegate void UnequipMacroEventHandler(UnequipMacroEventArgs e);
+    public delegate void TargetByResourceMacroEventHandler(TargetByResourceMacroEventArgs e);
+    #endregion
 
 	public class ClientVersionReceivedArgs : EventArgs
 	{
@@ -695,87 +703,98 @@ namespace Server
 		}
 	}
 
-	public class CharacterCreatedEventArgs : EventArgs
-	{
-		private readonly NetState m_State;
-		private readonly IAccount m_Account;
-		private readonly CityInfo m_City;
-		private readonly SkillNameValue[] m_Skills;
-		private readonly int m_ShirtHue;
-		private readonly int m_PantsHue;
-		private readonly int m_HairID;
-		private readonly int m_HairHue;
-		private readonly int m_BeardID;
-		private readonly int m_BeardHue;
-		private readonly string m_Name;
-		private readonly bool m_Female;
-		private readonly int m_Hue;
-		private readonly int m_Str;
-		private readonly int m_Dex;
-		private readonly int m_Int;
+    #region Enhance Client
+    public class CharacterCreatedEventArgs : EventArgs
+    {
+        private NetState m_State;
+        private IAccount m_Account;
+        private CityInfo m_City;
+        private SkillNameValue[] m_Skills;
+        private int m_ShirtHue, m_PantsHue;
+        private int m_HairID, m_HairHue;
+        private int m_BeardID, m_BeardHue;
+        private string m_Name;
+        private bool m_Female;
+        private int m_Hue;
+        private int m_Str, m_Dex, m_Int;
+        private int m_Profession;
+        private Mobile m_Mobile;
 
-		private readonly Race m_Race;
+        private Race m_Race;
+        private int m_Face;
+        private int m_FaceHue;
 
-		public NetState State { get { return m_State; } }
-		public IAccount Account { get { return m_Account; } }
-		public Mobile Mobile { get; set; }
-		public string Name { get { return m_Name; } }
-		public bool Female { get { return m_Female; } }
-		public int Hue { get { return m_Hue; } }
-		public int Str { get { return m_Str; } }
-		public int Dex { get { return m_Dex; } }
-		public int Int { get { return m_Int; } }
-		public CityInfo City { get { return m_City; } }
-		public SkillNameValue[] Skills { get { return m_Skills; } }
-		public int ShirtHue { get { return m_ShirtHue; } }
-		public int PantsHue { get { return m_PantsHue; } }
-		public int HairID { get { return m_HairID; } }
-		public int HairHue { get { return m_HairHue; } }
-		public int BeardID { get { return m_BeardID; } }
-		public int BeardHue { get { return m_BeardHue; } }
-		public int Profession { get; set; }
-		public Race Race { get { return m_Race; } }
+        public NetState State { get { return m_State; } }
+        public IAccount Account { get { return m_Account; } }
+        public Mobile Mobile { get { return m_Mobile; } set { m_Mobile = value; } }
+        public string Name { get { return m_Name; } }
+        public bool Female { get { return m_Female; } }
+        public int Hue { get { return m_Hue; } }
+        public int Str { get { return m_Str; } }
+        public int Dex { get { return m_Dex; } }
+        public int Int { get { return m_Int; } }
+        public CityInfo City { get { return m_City; } }
+        public SkillNameValue[] Skills { get { return m_Skills; } }
+        public int ShirtHue { get { return m_ShirtHue; } }
+        public int PantsHue { get { return m_PantsHue; } }
+        public int HairID { get { return m_HairID; } }
+        public int HairHue { get { return m_HairHue; } }
+        public int BeardID { get { return m_BeardID; } }
+        public int BeardHue { get { return m_BeardHue; } }
+        public int Profession { get { return m_Profession; } set { m_Profession = value; } }
+        public Race Race { get { return m_Race; } }
 
-		public CharacterCreatedEventArgs(
-			NetState state,
-			IAccount a,
-			string name,
-			bool female,
-			int hue,
-			int str,
-			int dex,
-			int intel,
-			CityInfo city,
-			SkillNameValue[] skills,
-			int shirtHue,
-			int pantsHue,
-			int hairID,
-			int hairHue,
-			int beardID,
-			int beardHue,
-			int profession,
-			Race race)
-		{
-			m_State = state;
-			m_Account = a;
-			m_Name = name;
-			m_Female = female;
-			m_Hue = hue;
-			m_Str = str;
-			m_Dex = dex;
-			m_Int = intel;
-			m_City = city;
-			m_Skills = skills;
-			m_ShirtHue = shirtHue;
-			m_PantsHue = pantsHue;
-			m_HairID = hairID;
-			m_HairHue = hairHue;
-			m_BeardID = beardID;
-			m_BeardHue = beardHue;
-			Profession = profession;
-			m_Race = race;
-		}
-	}
+        public int FaceID { get { return m_Face; } }
+        public int FaceHue { get { return m_FaceHue; } }
+
+        public CharacterCreatedEventArgs(
+            NetState state,
+            IAccount a,
+            string name,
+            bool female,
+            int hue,
+            int str,
+            int dex,
+            int intel,
+            CityInfo city,
+            SkillNameValue[] skills,
+            int shirtHue,
+            int pantsHue,
+            int hairID,
+            int hairHue,
+            int beardID,
+            int beardHue,
+            int profession,
+            Race race)
+            : this(state, a, name, female, hue, str, dex, intel, city, skills, shirtHue, pantsHue, hairID, hairHue, beardID, beardHue, profession, race, 0, 0)
+        {
+        }
+
+        public CharacterCreatedEventArgs(NetState state, IAccount a, string name, bool female, int hue, int str, int dex, int intel, CityInfo city, SkillNameValue[] skills, int shirtHue, int pantsHue, int hairID, int hairHue, int beardID, int beardHue, int profession, Race race, int faceID, int faceHue)
+        {
+            m_State = state;
+            m_Account = a;
+            m_Name = name;
+            m_Female = female;
+            m_Hue = hue;
+            m_Str = str;
+            m_Dex = dex;
+            m_Int = intel;
+            m_City = city;
+            m_Skills = skills;
+            m_ShirtHue = shirtHue;
+            m_PantsHue = pantsHue;
+            m_HairID = hairID;
+            m_HairHue = hairHue;
+            m_BeardID = beardID;
+            m_BeardHue = beardHue;
+            m_Profession = profession;
+            m_Race = race;
+            m_Face = faceID;
+            m_FaceHue = faceHue;
+        }
+    }
+    #endregion
 
 	public class OpenDoorMacroEventArgs : EventArgs
 	{
@@ -952,43 +971,43 @@ namespace Server
 		}
 	}
 
-	public class BODUsedEventArgs : EventArgs
-	{
-		public Mobile User { get; private set; }
-		public Item BODItem { get; private set; }
+    public class BODUsedEventArgs : EventArgs
+    {
+        public Mobile User { get; private set; }
+        public Item BODItem { get; private set; }
 
-		public BODUsedEventArgs(Mobile m, Item i)
-		{
-			User = m;
-			BODItem = i;
-		}
+        public BODUsedEventArgs(Mobile m, Item i)
+        {
+            User = m;
+            BODItem = i;
+        }
+    } 
+  
+	public class BODOfferEventArgs : EventArgs  
+	{  
+		public Mobile Player { get; private set; }  
+		public Mobile Vendor { get; private set; }  
+  
+		public BODOfferEventArgs(Mobile p, Mobile v)  
+		{  
+			Player = p;  
+			Vendor = v;  
+		}  
 	}
 
-	public class BODOfferEventArgs : EventArgs
-	{
-		public Mobile Player { get; private set; }
-		public Mobile Vendor { get; private set; }
+    public class ResourceHarvestAttemptEventArgs : EventArgs
+    {
+        public Mobile Harvester { get; private set; }
+        public Item Tool { get; private set; }
+        public object HarvestSystem { get; private set; }
 
-		public BODOfferEventArgs(Mobile p, Mobile v)
-		{
-			Player = p;
-			Vendor = v;
-		}
-	}
-
-	public class ResourceHarvestAttemptEventArgs : EventArgs
-	{
-		public Mobile Harvester { get; private set; }
-		public Item Tool { get; private set; }
-		public object HarvestSystem { get; private set; }
-
-		public ResourceHarvestAttemptEventArgs(Mobile m, Item i, object o)
-		{
-			Harvester = m;
-			Tool = i;
-			HarvestSystem = o;
-		}
-	}
+        public ResourceHarvestAttemptEventArgs(Mobile m, Item i, object o)
+        {
+            Harvester = m;
+            Tool = i;
+            HarvestSystem = o;
+        }
+    }
 
 	public static class EventSink
 	{
@@ -1040,8 +1059,8 @@ namespace Server
 		public static event OnEnterRegionEventHandler OnEnterRegion;
 		public static event OnConsumeEventHandler OnConsume;
 		public static event OnPropertyChangedEventHandler OnPropertyChanged;
-		public static event BODUsedEventHandler BODUsed;
-		public static event BODOfferEventHandler BODOffered;
+        public static event BODUsedEventHandler BODUsed;  
+		public static event BODOfferEventHandler BODOffered;  
 		public static event ResourceHarvestAttemptEventHandler ResourceHarvestAttempt;
 
 		/* The following is a .NET 2.0 "Generic EventHandler" implementation.
@@ -1095,6 +1114,50 @@ namespace Server
 		public static event EventHandler<QuestGumpRequestArgs> QuestGumpRequest;
 		public static event EventHandler<ClientVersionReceivedArgs> ClientVersionReceived;
 		*/
+        #region Enhance Client
+        public static event EquipMacroEventHandler EquipMacro;
+        public static event UnequipMacroEventHandler UnequipMacro;
+        public static event TargetByResourceMacroEventHandler TargetByResourceMacro;
+        public static event TargetedSpellEventHandler TargetedSpellCast;
+        public static event TargetedSkillUseEventHandler TargetedSkillUse;
+        public static event TargetedItemUseEventHandler TargetedItemUse;
+
+        public static void InvokeTargetByResourceMacro(TargetByResourceMacroEventArgs e)
+        {
+            if (TargetByResourceMacro != null)
+                TargetByResourceMacro(e);
+        }
+
+        public static void InvokeEquipMacro(EquipMacroEventArgs e)
+        {
+            if (EquipMacro != null)
+                EquipMacro(e);
+        }
+
+        public static void InvokeUnequipMacro(UnequipMacroEventArgs e)
+        {
+            if (UnequipMacro != null)
+                UnequipMacro(e);
+        }
+
+        public static void InvokeTargetedSpellCast(TargetedSpellEventArgs e)
+        {
+            if (TargetedSpellCast != null)
+                TargetedSpellCast(e);
+        }
+
+        public static void InvokeTargetedSkillUse(TargetedSkillUseEventArgs e)
+        {
+            if (TargetedSkillUse != null)
+                TargetedSkillUse(e);
+        }
+
+        public static void InvokeTargetedItemUse(TargetedItemUseEventArgs e)
+        {
+            if (TargetedItemUse != null)
+                TargetedItemUse(e);
+        }
+        #endregion
 
 		public static void InvokeClientVersionReceived(ClientVersionReceivedArgs e)
 		{
@@ -1480,79 +1543,234 @@ namespace Server
 			}
 		}
 
-		public static void InvokeBODUsed(BODUsedEventArgs e)
-		{
-			if(BODUsed != null)
-			{
-				BODUsed(e);
-			}
+        public static void InvokeBODUsed(BODUsedEventArgs e)  
+		{  
+		if(BODUsed != null)  
+			{  
+				BODUsed(e);  
+			}  
 		}
 
-		public static void InvokeBODOffered(BODOfferEventArgs e)
-		{
-			if(BODOffered != null)
-			{
-				BODOffered(e);
-			}
-		}
+        public static void InvokeBODOffered(BODOfferEventArgs e)
+        {
+            if (BODOffered != null)
+            {
+                BODOffered(e);
+            }
+        }
 
-		public static void InvokeResourceHarvestAttempt(ResourceHarvestAttemptEventArgs e)
-		{
-			if(ResourceHarvestAttempt != null)
-			{
-				ResourceHarvestAttempt(e);
-			}
-		}
+        public static void InvokeResourceHarvestAttempt(ResourceHarvestAttemptEventArgs e)
+        {
+            if (ResourceHarvestAttempt != null)
+            {
+                ResourceHarvestAttempt(e);
+            }
+        }
 
-		public static void Reset()
-		{
-			CharacterCreated = null;
-			OpenDoorMacroUsed = null;
-			Speech = null;
-			Login = null;
-			ServerList = null;
-			Movement = null;
-			HungerChanged = null;
-			Crashed = null;
-			Shutdown = null;
-			HelpRequest = null;
-			DisarmRequest = null;
-			StunRequest = null;
-			OpenSpellbookRequest = null;
-			CastSpellRequest = null;
-			BandageTargetRequest = null;
-			AnimateRequest = null;
-			Logout = null;
-			SocketConnect = null;
-			Connected = null;
-			Disconnected = null;
-			RenameRequest = null;
-			PlayerDeath = null;
-			VirtueGumpRequest = null;
-			VirtueItemRequest = null;
-			VirtueMacroRequest = null;
-			ChatRequest = null;
-			AccountLogin = null;
-			PaperdollRequest = null;
-			ProfileRequest = null;
-			ChangeProfileRequest = null;
-			AggressiveAction = null;
-			Command = null;
-			GameLogin = null;
-			DeleteRequest = null;
-			WorldLoad = null;
-			WorldSave = null;
-			SetAbility = null;
-			GuildGumpRequest = null;
-			QuestGumpRequest = null;
-			OnKilledBy = null;
-			OnItemUse = null;
-			OnEnterRegion = null;
-			OnConsume = null;
-			OnPropertyChanged = null;
-			BODUsed = null;
-			BODOffered = null;
-			ResourceHarvestAttempt = null;
-		}
+        public static void Reset()
+        {
+            CharacterCreated = null;
+            OpenDoorMacroUsed = null;
+            Speech = null;
+            Login = null;
+            ServerList = null;
+            Movement = null;
+            HungerChanged = null;
+            Crashed = null;
+            Shutdown = null;
+            HelpRequest = null;
+            DisarmRequest = null;
+            StunRequest = null;
+            OpenSpellbookRequest = null;
+            CastSpellRequest = null;
+            BandageTargetRequest = null;
+            AnimateRequest = null;
+            Logout = null;
+            SocketConnect = null;
+            Connected = null;
+            Disconnected = null;
+            RenameRequest = null;
+            PlayerDeath = null;
+            VirtueGumpRequest = null;
+            VirtueItemRequest = null;
+            VirtueMacroRequest = null;
+            ChatRequest = null;
+            AccountLogin = null;
+            PaperdollRequest = null;
+            ProfileRequest = null;
+            ChangeProfileRequest = null;
+            AggressiveAction = null;
+            Command = null;
+            GameLogin = null;
+            DeleteRequest = null;
+            WorldLoad = null;
+            WorldSave = null;
+            SetAbility = null;
+            GuildGumpRequest = null;
+            QuestGumpRequest = null;
+            OnKilledBy = null;
+            OnItemUse = null;
+            OnEnterRegion = null;
+            OnConsume = null;
+            OnPropertyChanged = null;
+            BODUsed = null;
+            BODOffered = null;
+            ResourceHarvestAttempt = null;
+            EquipMacro = null;
+            UnequipMacro = null;
+            TargetByResourceMacro = null;
+        }
 	}
+
+    #region Enhance client
+    public class TargetedSpellEventArgs : EventArgs
+    {
+        private NetState state;
+        private IEntity target;
+        private short spellID;
+
+        public NetState NetState
+        {
+            get { return state; }
+        }
+        public IEntity Target
+        {
+            get { return target; }
+        }
+        public short SpellID
+        {
+            get { return spellID; }
+        }
+
+        public TargetedSpellEventArgs(NetState state, IEntity target, short spellID)
+        {
+            this.state = state;
+            this.target = target;
+            this.spellID = spellID;
+        }
+    }
+
+    public class TargetedSkillUseEventArgs : EventArgs
+    {
+        private NetState state;
+        private IEntity target;
+        private short spellID;
+
+        public NetState NetState
+        {
+            get { return state; }
+        }
+        public IEntity Target
+        {
+            get { return target; }
+        }
+        public short SkillID
+        {
+            get { return spellID; }
+        }
+
+        public TargetedSkillUseEventArgs(NetState state, IEntity target, short skillID)
+        {
+            this.state = state;
+            this.target = target;
+            this.spellID = skillID;
+        }
+    }
+
+    public class TargetedItemUseEventArgs : EventArgs
+    {
+        private NetState state;
+        private IEntity src;
+        private IEntity target;
+
+        public NetState NetState
+        {
+            get { return state; }
+        }
+        public IEntity Source
+        {
+            get { return src; }
+        }
+        public IEntity Target
+        {
+            get { return target; }
+        }
+
+        public TargetedItemUseEventArgs(NetState state, IEntity src, IEntity target)
+        {
+            this.state = state;
+            this.src = src;
+            this.target = target;
+        }
+    }
+
+    public class TargetByResourceMacroEventArgs : EventArgs
+    {
+        private NetState state;
+        private Item m_tool;
+        private int m_resource_type;
+
+        public NetState NetState
+        {
+            get { return state; }
+        }
+        public Item Tool
+        {
+            get { return m_tool; }
+        }
+        public int ResourceType
+        {
+            get { return m_resource_type; }
+        }
+
+        public TargetByResourceMacroEventArgs(NetState state, Item tool, int type)
+        {
+            this.state = state;
+            this.m_tool = tool;
+            this.m_resource_type = type;
+        }
+    }
+
+    public class EquipMacroEventArgs : EventArgs
+    {
+        private NetState state;
+        private List<int> m_list;
+
+        public NetState NetState
+        {
+            get { return state; }
+        }
+        public List<int> List
+        {
+            get { return m_list; }
+        }
+
+        public EquipMacroEventArgs(NetState state, List<int> list)
+        {
+            this.state = state;
+            this.m_list = list;
+        }
+    }
+
+    public class UnequipMacroEventArgs : EventArgs
+    {
+        private NetState state;
+        private List<int> m_list;
+
+        public NetState NetState
+        {
+            get { return state; }
+        }
+        public List<int> List
+        {
+            get { return m_list; }
+        }
+
+        public UnequipMacroEventArgs(NetState state, List<int> list)
+        {
+            this.state = state;
+            this.m_list = list;
+        }
+    }
+    #endregion
 }

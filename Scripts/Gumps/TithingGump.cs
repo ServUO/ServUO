@@ -6,6 +6,8 @@ namespace Server.Gumps
 {
     public class TithingGump : Gump
     {
+        public override int TypeID { get { return 0x293; } }
+
         private readonly Mobile m_From;
         private int m_Offer;
         public TithingGump(Mobile from, int offer)

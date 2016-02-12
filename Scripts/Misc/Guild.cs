@@ -35,8 +35,7 @@ namespace Server.Guilds
 		CanSetGuildTitle = 0x00000080,
 		CanVote = 0x00000100,
 
-		All =
-			Member | CanInvitePlayer | RemovePlayers | CanPromoteDemote | ControlWarStatus | AllianceControl | CanSetGuildTitle,
+		All = Member | CanInvitePlayer | RemovePlayers | CanPromoteDemote | ControlWarStatus | AllianceControl | CanSetGuildTitle,
 		Member = RemoveLowestRank | AccessGuildItems | CanVote
 	}
 
@@ -776,13 +775,17 @@ namespace Server.Guilds
 		}
 		#endregion
 
-		public static bool NewGuildSystem { get { return Core.SE; } }
+        //public static bool NewGuildSystem { get { return Config.GetEnum("Guild.NewGuildSystem", Core.SE); } }
+        //public static bool OrderChaos { get { return Config.GetEnum("Guild.OrderChaos", Core.SE); } }
 
-		public static readonly int RegistrationFee = 25000;
-		public static readonly int AbbrevLimit = 4;
-		public static readonly int NameLimit = 40;
-		public static readonly int MajorityPercentage = 66;
-		public static readonly TimeSpan InactiveTime = TimeSpan.FromDays(30);
+        public static bool NewGuildSystem { get { return Core.SE; } }
+        public static bool OrderChaos { get { return Core.SE; } }
+
+        public static readonly int RegistrationFee = Config.Get("Guild.RegistrationFee", 0);
+        public static readonly int AbbrevLimit = Config.Get("Guild.AbbrevLimit", 0);
+        public static readonly int NameLimit = Config.Get("Guild.NameLimit", 0);
+        public static readonly int MajorityPercentage = Config.Get("Guild.MajorityPercentage", 0);
+        public static readonly TimeSpan InactiveTime = Config.Get("Guild.InactiveTime", TimeSpan.FromDays(30.0));
 
 		#region New Alliances
 		public AllianceInfo Alliance
@@ -1952,6 +1955,7 @@ namespace Server.Guilds
 		[CommandProperty(AccessLevel.GameMaster)]
 		public string Charter { get { return m_Charter; } set { m_Charter = value; } }
 
+        /*
 		[CommandProperty(AccessLevel.GameMaster)]
 		public override GuildType Type
 		{
@@ -1967,6 +1971,26 @@ namespace Server.Guilds
 				}
 			}
 		}
+         */
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public override GuildType Type
+        {
+            get
+            {
+                return OrderChaos ? m_Type : GuildType.Regular;
+            }
+            set
+            {
+                if (m_Type != value)
+                {
+                    m_Type = value;
+                    m_TypeLastChange = DateTime.UtcNow;
+
+                    InvalidateMemberProperties();
+                }
+            }
+        }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime LastFealty { get { return m_LastFealty; } set { m_LastFealty = value; } }

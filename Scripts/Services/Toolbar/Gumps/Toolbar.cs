@@ -1,9 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - Toolbar.cs
-// **********
-#endregion
-
+﻿
 #region References
 using System;
 
@@ -29,7 +24,7 @@ namespace Services.Toolbar.Gumps
 
 		public int InitOptsW, InitOptsH;
 
-		public ToolbarGump(ToolbarInfo info)
+        public ToolbarGump(ToolbarInfo info, Mobile m)
 			: base(0, 28)
 		{
 			_Info = info;
@@ -75,10 +70,18 @@ namespace Services.Toolbar.Gumps
 
 			for (int i = 0; i < _Info.Rows * _Info.Collumns; i++)
 			{
+                NetState ns = m.NetState;
 				x = offset + ((i % _Info.Rows) * 110);
 				y = offset + (int)(Math.Floor((double)(i / _Info.Rows)) * 24) + cy;
 
-				AddButton(x + 1, y, 2445, 2445, temp + 10, GumpButtonType.Reply, 0);
+                if (ns.IsKRClient)
+                {
+                    AddButton(x + 1, y, 2435, 2436, temp + 10, GumpButtonType.Reply, 0);//4005, 4007
+                }
+                else
+                {
+                    AddButton(x + 1, y, 2445, 2445, temp + 10, GumpButtonType.Reply, 0);
+                }
 				AddBackground(x, y, 110, 24, GumpIDs.Misc[(int)GumpIDs.MiscIDs.Buttonground].Content[_Info.Skin, 0]);
 
 				if (_Info.Phantom)
@@ -87,8 +90,17 @@ namespace Services.Toolbar.Gumps
 					AddAlphaRegion(x + 2, y + 2, 106, 20); // Alpha Area 1_2
 				}
 
-				AddHtml(x + 5, y + 3, 100, 20, String.Format("<center>{0}{1}", font, _Info.Entries[temp]), false, false);
-				//AddLabelCropped(x + 5, y + 3, 100, 20, GumpIDs.Misc[(int)GumpIDs.MiscIDs.Color].Content[p_Skin,0], Commands[temp]); 
+                if (ns.IsKRClient)
+                {
+                    AddHtml(x + 30, y + 3, 100, 20, String.Format("<center>{0}{1}", font, _Info.Entries[temp]), false, false);
+                    //AddLabelCropped(x + 5, y + 3, 100, 20, GumpIDs.Misc[(int)GumpIDs.MiscIDs.Color].Content[p_Skin,0], Commands[temp]); 
+                }
+                else
+                {
+                    //AddHtml(x + 5, y + 3, 100, 20
+                    AddHtml(x + 5, y + 3, 100, 20, String.Format("<center>{0}{1}", font, _Info.Entries[temp]), false, false);
+                    //AddLabelCropped(x + 5, y + 3, 100, 20, GumpIDs.Misc[(int)GumpIDs.MiscIDs.Color].Content[p_Skin,0], Commands[temp]); 
+                }
 
 				if (i % _Info.Rows == _Info.Rows - 1)
 				{

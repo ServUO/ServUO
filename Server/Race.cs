@@ -167,11 +167,31 @@ namespace Server
 
 		public abstract int RandomFacialHair(bool female); //For the *ahem* bearded ladies
 
+        #region Enhance Client
+        public virtual bool ValidateFace(Mobile m, int itemID)
+        {
+            return ValidateFace(m.Female, itemID);
+        }
+
+        public abstract bool ValidateFace(bool female, int itemID);
+
+        public virtual int RandomFace(Mobile m)
+        {
+            return RandomFace(m.Female);
+        }
+        public abstract int RandomFace(bool female);
+        #endregion
+
 		public abstract int ClipSkinHue(int hue);
 		public abstract int RandomSkinHue();
 
 		public abstract int ClipHairHue(int hue);
 		public abstract int RandomHairHue();
+
+        #region Enhance Client
+        public abstract int ClipFaceHue(int hue);
+        public abstract int RandomFaceHue();
+        #endregion
 
 		public virtual int Body(Mobile m)
 		{

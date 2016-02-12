@@ -14,17 +14,17 @@ using Server.Network;
 
 namespace Server.Gumps
 {
-	public class Gump
+    public abstract class Gump
 	{
-		private readonly List<GumpEntry> m_Entries;
-		private readonly List<string> m_Strings;
+        private List<GumpEntry> m_Entries;
+        private List<string> m_Strings;
 
 		internal int m_TextEntries, m_Switches;
 
 		private static int m_NextSerial = 1;
 
 		private int m_Serial;
-		private readonly int m_TypeID;
+        private int m_TypeID;
 		private int m_X, m_Y;
 
 		private bool m_Dragable = true;
@@ -32,10 +32,7 @@ namespace Server.Gumps
 		private bool m_Resizable = true;
 		private bool m_Disposable = true;
 
-		public static int GetTypeID(Type type)
-		{
-			return type.FullName.GetHashCode();
-		}
+        public virtual int TypeID { get { return m_TypeID; } }
 
 		public Gump(int x, int y)
 		{
@@ -47,10 +44,11 @@ namespace Server.Gumps
 
 			m_X = x;
 			m_Y = y;
+            #region EC
+            m_TypeID = GetType().FullName.GetHashCode();
+            #endregion
 
-			m_TypeID = GetTypeID(GetType());
-
-			m_Entries = new List<GumpEntry>();
+            m_Entries = new List<GumpEntry>();
 			m_Strings = new List<string>();
 		}
 
@@ -59,8 +57,6 @@ namespace Server.Gumps
 			//if ( m_Strings.Count > 0 )
 			//	m_Strings.Clear();
 		}
-
-		public int TypeID { get { return m_TypeID; } }
 
 		public List<GumpEntry> Entries { get { return m_Entries; } }
 
@@ -170,7 +166,14 @@ namespace Server.Gumps
 			Add(new GumpBackground(x, y, width, height, gumpID));
 		}
 
-		public void AddButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param)
+        #region EC
+        public void AddECButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param)
+        {
+            Add(new ECGumpButton(x, y, normalID, pressedID, buttonID, type, param));
+        }
+        #endregion
+
+        public void AddButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param)
 		{
 			Add(new GumpButton(x, y, normalID, pressedID, buttonID, type, param));
 		}
@@ -185,17 +188,19 @@ namespace Server.Gumps
 			Add(new GumpGroup(group));
 		}
 
-		public void AddTooltip(int number)
-		{
-			Add(new GumpTooltip(number));
-		}
-
 		public void AddHtml(int x, int y, int width, int height, string text, bool background, bool scrollbar)
 		{
 			Add(new GumpHtml(x, y, width, height, text, background, scrollbar));
 		}
 
-		public void AddHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
+        #region EC
+        public void AddHtmlIntern(int x, int y, int width, int height, int textid, bool background, bool scrollbar)
+        {
+            Add(new GumpHtml(x, y, width, height, textid, background, scrollbar));
+        }
+        #endregion
+
+        public void AddHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
 		{
 			Add(new GumpHtmlLocalized(x, y, width, height, number, background, scrollbar));
 		}
@@ -227,7 +232,29 @@ namespace Server.Gumps
 			Add(new GumpHtmlLocalized(x, y, width, height, number, args, color, background, scrollbar));
 		}
 
-		public void AddImage(int x, int y, int gumpID)
+        #region EC
+        public void AddECHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
+        {
+            Add(new ECGumpHtmlLocalized(x, y, width, height, number, background, scrollbar));
+        }
+
+        public void AddECHtmlLocalized(int x, int y, int width, int height, int number, int color, bool background, bool scrollbar)
+        {
+            Add(new ECGumpHtmlLocalized(x, y, width, height, number, color, background, scrollbar));
+        }
+
+        public void AddECLabel(int x, int y, int width, int height, int number, bool background, bool scrollbar)
+        {
+            Add(new ECGumpLabel(x, y, width, height, number, background, scrollbar));
+        }
+
+        public void AddECImage(int x, int y, int gumpID)
+        {
+            Add(new ECGumpImage(x, y, gumpID));
+        }
+        #endregion
+
+        public void AddImage(int x, int y, int gumpID)
 		{
 			Add(new GumpImage(x, y, gumpID));
 		}
@@ -303,7 +330,14 @@ namespace Server.Gumps
 			Add(new GumpLabel(x, y, hue, text));
 		}
 
-		public void AddLabelCropped(int x, int y, int width, int height, int hue, string text)
+        #region EC
+        public void AddLabelIntern(int x, int y, int hue, int textid)
+        {
+            Add(new GumpLabel(x, y, hue, textid));
+        }
+        #endregion
+
+        public void AddLabelCropped(int x, int y, int width, int height, int hue, string text)
 		{
 			Add(new GumpLabelCropped(x, y, width, height, hue, text));
 		}
@@ -323,7 +357,40 @@ namespace Server.Gumps
 			Add(new GumpTextEntryLimited(x, y, width, height, hue, entryID, initialText, size));
 		}
 
-		public void AddItemProperty(int serial)
+        #region EC
+        public void AddTextEntryIntern(int x, int y, int width, int height, int hue, int entryID, int initialTextID)
+        {
+            Add(new GumpTextEntry(x, y, width, height, hue, entryID, initialTextID));
+        }
+
+        public void AddTooltip(int number)
+        {
+            Add(new GumpTooltip(number));
+        }
+
+        public void AddTooltip(int number, string args)
+        {
+            Add(new GumpTooltip(number, args));
+        }
+
+        public void AddButtonTileArt(int x, int y, int normalID, int pressedID, GumpButtonType type, int param, int buttonID, int itemid, int hue, int width, int height)
+        {
+            Add(new GumpButtonTileArt(x, y, normalID, pressedID, type, param, buttonID, itemid, hue, width, height));
+        }
+
+        public void AddButtonTileArt(int x, int y, int normalID, int pressedID, GumpButtonType type, int param, int buttonID, int itemid, int hue, int width, int height, int localizedTooltip)
+        {
+            Add(new GumpButtonTileArt(x, y, normalID, pressedID, type, param, buttonID, itemid, hue, width, height, localizedTooltip));
+        }
+
+        public void AddItemProperty(Item item)
+        {
+            Add(new GumpItemProperty(item.Serial.Value));
+        }
+
+        #endregion
+
+        public void AddItemProperty(int serial)
 		{
 			Add(new GumpItemProperty(serial));
 		}
@@ -353,23 +420,31 @@ namespace Server.Gumps
 			g.Parent = null;
 		}
 
-		public int Intern(string value)
+        public int Intern(string value, bool enforceUnique)
 		{
-			var indexOf = m_Strings.IndexOf(value);
+            if (enforceUnique)
+            {
+                var indexOf = m_Strings.IndexOf(value);
 
-			if (indexOf >= 0)
-			{
-				return indexOf;
-			}
+                if (indexOf >= 0)
+                {
+                    return indexOf;
+                }
+            }
 			Invalidate();
 			m_Strings.Add(value);
 			return m_Strings.Count - 1;
 		}
 
+        public int Intern(string value)
+        {
+            return Intern(value, false);
+        }
+
 		public void SendTo(NetState state)
 		{
 			state.AddGump(this);
-			state.Send(Compile(state));
+            state.Send(Compile());
 		}
 
 		public static byte[] StringToBuffer(string str)
@@ -385,60 +460,44 @@ namespace Server.Gumps
 		private static readonly byte[] m_NoDispose = StringToBuffer("{ nodispose }");
 		private static readonly byte[] m_NoResize = StringToBuffer("{ noresize }");
 
-		private Packet Compile(NetState ns = null)
-		{
-			IGumpWriter disp;
+        protected Packet Compile()
+        {
+            IGumpWriter disp = new DisplayGumpPacked(this);
 
-			if (ns != null && ns.Unpack)
-			{
-				disp = new DisplayGumpPacked(this);
-			}
-			else
-			{
-				disp = new DisplayGumpFast(this);
-			}
+            if (!m_Dragable)
+                disp.AppendLayout(m_NoMove);
 
-			if (!m_Dragable)
-			{
-				disp.AppendLayout(m_NoMove);
-			}
+            if (!m_Closable)
+                disp.AppendLayout(m_NoClose);
 
-			if (!m_Closable)
-			{
-				disp.AppendLayout(m_NoClose);
-			}
+            if (!m_Disposable)
+                disp.AppendLayout(m_NoDispose);
 
-			if (!m_Disposable)
-			{
-				disp.AppendLayout(m_NoDispose);
-			}
+            if (!m_Resizable)
+                disp.AppendLayout(m_NoResize);
 
-			if (!m_Resizable)
-			{
-				disp.AppendLayout(m_NoResize);
-			}
 
-			var count = m_Entries.Count;
-			GumpEntry e;
+            var count = m_Entries.Count;
+            GumpEntry e;
 
-			for (var i = 0; i < count; ++i)
-			{
-				e = m_Entries[i];
+            for (var i = 0; i < count; ++i)
+            {
+                e = m_Entries[i];
 
-				disp.AppendLayout(m_BeginLayout);
-				e.AppendTo(disp);
-				disp.AppendLayout(m_EndLayout);
-			}
+                disp.AppendLayout(m_BeginLayout);
+                e.AppendTo(disp);
+                disp.AppendLayout(m_EndLayout);
+            }
 
-			disp.WriteStrings(m_Strings);
+            disp.WriteStrings(m_Strings);
 
-			disp.Flush();
+            disp.Flush();
 
-			m_TextEntries = disp.TextEntries;
-			m_Switches = disp.Switches;
+            m_TextEntries = disp.TextEntries;
+            m_Switches = disp.Switches;
 
-			return (Packet)disp;
-		}
+            return disp as Packet;
+        }
 
 		public virtual void OnResponse(NetState sender, RelayInfo info)
 		{ }

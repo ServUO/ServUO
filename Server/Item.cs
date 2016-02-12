@@ -109,10 +109,12 @@ namespace Server
 		/// </summary>
 		Bracelet = 0x0E,
 
-		/// <summary>
-		///     Unused.
-		/// </summary>
-		Unused_xF = 0x0F,
+        #region Enhance Client
+        /// <summary>
+        /// Face Selecton EC
+        /// </summary>
+        Face = 0x0F,
+        #endregion
 
 		/// <summary>
 		///     Beards and mustaches.
@@ -849,6 +851,25 @@ namespace Server
 			}
 		}
 
+        #region Enhance Client
+        private byte m_GridLocation = 0xFF;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public byte GridLocation
+        {
+            get { return m_GridLocation; }
+            set { m_GridLocation = value; }
+        }
+
+        public void SetGridLocation(byte pos, Container parent)
+        {
+            if (parent.IsFreePosition(pos))
+                m_GridLocation = pos;
+            else
+                m_GridLocation = parent.GetNewPosition();
+        }
+        #endregion
+
 		[Flags]
 		private enum ImplFlag : byte
 		{
@@ -1303,6 +1324,10 @@ namespace Server
 		public virtual void AddWeightProperty(ObjectPropertyList list)
 		{
 			int weight = PileWeight + TotalWeight;
+            if (weight == 0)
+            {
+                return;
+            }
 
 			if (weight == 1)
 			{
@@ -3406,7 +3431,7 @@ namespace Server
 
 		protected virtual Packet GetWorldPacketFor(NetState state)
 		{
-			if (state.HighSeas)
+            if (state.HighSeas || state.IsKRClient)
 			{
 				return WorldPacketHS;
 			}
@@ -4642,20 +4667,22 @@ namespace Server
 			}
 		}
 
-		public virtual bool OnDroppedInto(Mobile from, Container target, Point3D p)
-		{
-			if (!from.OnDroppedItemInto(this, target, p))
-			{
-				return false;
-			}
-			else if (Nontransferable && from.Player && target != from.Backpack)
-			{
-				HandleInvalidTransfer(from);
-				return false;
-			}
+        #region Enhance Client
+        public virtual bool OnDroppedInto(Mobile from, Container target, Point3D p, byte gridloc)
+        {
+            if (!from.OnDroppedItemInto(this, target, p))
+            {
+                return false;
+            }
+            else if (Nontransferable && from.Player && target != from.Backpack)
+            {
+                HandleInvalidTransfer(from);
+                return false;
+            }
 
-			return target.OnDragDropInto(from, this, p);
-		}
+            return target.OnDragDropInto(from, this, p, gridloc);
+        }
+        #endregion
 
 		public virtual bool OnDroppedOnto(Mobile from, Item target)
 		{
@@ -4690,44 +4717,46 @@ namespace Server
 			}
 		}
 
-		public virtual bool DropToItem(Mobile from, Item target, Point3D p)
-		{
-			if (Deleted || from.Deleted || target.Deleted || from.Map != target.Map || from.Map == null || target.Map == null)
-			{
-				return false;
-			}
+        #region Enhance Client
+        public virtual bool DropToItem(Mobile from, Item target, Point3D p, byte gridloc)
+        {
+            if (Deleted || from.Deleted || target.Deleted || from.Map != target.Map || from.Map == null || target.Map == null)
+            {
+                return false;
+            }
 
-			object root = target.RootParent;
+            var root = target.RootParent;
 
-			if (from.AccessLevel < AccessLevel.GameMaster && !from.InRange(target.GetWorldLocation(), 2))
-			{
-				return false;
-			}
-			else if (!from.CanSee(target) || !from.InLOS(target))
-			{
-				return false;
-			}
-			else if (!target.IsAccessibleTo(from))
-			{
-				return false;
-			}
-			else if (root is Mobile && !((Mobile)root).CheckNonlocalDrop(from, this, target))
-			{
-				return false;
-			}
-			else if (!from.OnDroppedItemToItem(this, target, p))
-			{
-				return false;
-			}
-			else if (target is Container && p.m_X != -1 && p.m_Y != -1)
-			{
-				return OnDroppedInto(from, (Container)target, p);
-			}
-			else
-			{
-				return OnDroppedOnto(from, target);
-			}
-		}
+            if (from.AccessLevel < AccessLevel.GameMaster && !from.InRange(target.GetWorldLocation(), 2))
+            {
+                return false;
+            }
+            else if (!from.CanSee(target) || !from.InLOS(target))
+            {
+                return false;
+            }
+            else if (!target.IsAccessibleTo(from))
+            {
+                return false;
+            }
+            else if (root is Mobile && !((Mobile)root).CheckNonlocalDrop(from, this, target))
+            {
+                return false;
+            }
+            else if (!from.OnDroppedItemToItem(this, target, p))
+            {
+                return false;
+            }
+            else if (target is Container && p.m_X != -1 && p.m_Y != -1)
+            {
+                return OnDroppedInto(from, (Container)target, p, gridloc);
+            }
+            else
+            {
+                return OnDroppedOnto(from, target);
+            }
+        }
+        #endregion
 
 		public virtual bool OnDroppedToWorld(Mobile from, Point3D p)
 		{
@@ -4746,7 +4775,7 @@ namespace Server
 		}
 
 		private static int m_OpenSlots;
-
+        /*
 		public virtual bool DropToWorld(Mobile from, Point3D p)
 		{
 			if (Deleted || from.Deleted || from.Map == null)
@@ -4765,49 +4794,10 @@ namespace Server
 				return false;
 			}
 
-			Point3D dest = FindDropPoint(p, map, from.Z + 16);
-			if (dest == Point3D.Zero)
-				return false;
-
-			if (!from.InLOS(new Point3D(dest.X, dest.Y, dest.Z + 1)))
-			{
-				return false;
-			}
-
-			else if (!from.OnDroppedItemToWorld(this, p))
-			{
-				return false;
-			}
-			else if (!OnDroppedToWorld(from, p))
-			{
-				return false;
-			}
-
-			int soundID = GetDropSound();
-
-			MoveToWorld(p, from.Map);
-
-			from.SendSound(soundID == -1 ? 0x42 : soundID, GetWorldLocation());
-
-			return true;
-		}
-
-		public bool DropToWorld(Point3D p, Map map)
-		{
-			Point3D dest = FindDropPoint(p, map, int.MaxValue);
-			if (dest == Point3D.Zero)
-				return false;
-			MoveToWorld(dest, map);
-			return true;
-		}
-
-		private Point3D FindDropPoint(Point3D p, Map map, int maxZ)
-		{
-			if (map == null)
-				return Point3D.Zero;
-
 			int x = p.m_X, y = p.m_Y;
 			int z = int.MinValue;
+
+			int maxZ = from.Z + 16;
 
 			LandTile landTile = map.Tiles.GetLandTile(x, y);
 			TileFlag landFlags = TileData.LandTable[landTile.ID & TileData.MaxLandValue].Flags;
@@ -4879,12 +4869,12 @@ namespace Server
 
 			if (z == int.MinValue)
 			{
-				return Point3D.Zero;
+				return false;
 			}
 
 			if (z > maxZ)
 			{
-				return Point3D.Zero;
+				return false;
 			}
 
 			m_OpenSlots = (1 << 20) - 1;
@@ -4996,7 +4986,7 @@ namespace Server
 
 			if (!okay)
 			{
-				return Point3D.Zero;
+				return false;
 			}
 
 			height = ItemData.Height;
@@ -5008,11 +4998,11 @@ namespace Server
 
 			if (landAvg > z && (z + height) > landZ)
 			{
-				return Point3D.Zero;
+				return false;
 			}
 			else if ((landFlags & TileFlag.Impassable) != 0 && landAvg > surfaceZ && (z + height) > landZ)
 			{
-				return Point3D.Zero;
+				return false;
 			}
 
 			for (int i = 0; i < tiles.Length; ++i)
@@ -5025,11 +5015,11 @@ namespace Server
 
 				if (checkTop > z && (z + height) > checkZ)
 				{
-					return Point3D.Zero;
+					return false;
 				}
 				else if ((id.Surface || id.Impassable) && checkTop > surfaceZ && (z + height) > checkZ)
 				{
-					return Point3D.Zero;
+					return false;
 				}
 			}
 
@@ -5038,14 +5028,339 @@ namespace Server
 				Item item = items[i];
 				ItemData id = item.ItemData;
 
+				//int checkZ = item.Z;
+				//int checkTop = checkZ + id.CalcHeight;
+
 				if ((item.Z + id.CalcHeight) > z && (z + height) > item.Z)
 				{
-					return Point3D.Zero;
+					return false;
 				}
 			}
 
-			return new Point3D(x, y, z);
+			p = new Point3D(x, y, z);
+
+			if (!from.InLOS(new Point3D(x, y, z + 1)))
+			{
+				return false;
+			}
+			else if (!from.OnDroppedItemToWorld(this, p))
+			{
+				return false;
+			}
+			else if (!OnDroppedToWorld(from, p))
+			{
+				return false;
+			}
+
+			int soundID = GetDropSound();
+
+			MoveToWorld(p, from.Map);
+
+			from.SendSound(soundID == -1 ? 0x42 : soundID, GetWorldLocation());
+
+			return true;
 		}
+         */
+
+        public virtual bool DropToWorld(Mobile from, Point3D p)
+        {
+            if (Deleted || from.Deleted || from.Map == null)
+            {
+                return false;
+            }
+            else if (!from.InRange(p, 2))
+            {
+                return false;
+            }
+
+            Map map = from.Map;
+
+            if (map == null)
+            {
+                return false;
+            }
+
+            Point3D dest = FindDropPoint(p, map, from.Z + 16);
+            if (dest == Point3D.Zero)
+                return false;
+
+            if (!from.InLOS(new Point3D(dest.X, dest.Y, dest.Z + 1)))
+            {
+                return false;
+            }
+
+            else if (!from.OnDroppedItemToWorld(this, p))
+            {
+                return false;
+            }
+            else if (!OnDroppedToWorld(from, p))
+            {
+                return false;
+            }
+
+            int soundID = GetDropSound();
+
+            MoveToWorld(p, from.Map);
+
+            from.SendSound(soundID == -1 ? 0x42 : soundID, GetWorldLocation());
+
+            return true;
+        }
+
+        public bool DropToWorld(Point3D p, Map map)
+        {
+            Point3D dest = FindDropPoint(p, map, int.MaxValue);
+            if (dest == Point3D.Zero)
+                return false;
+            MoveToWorld(dest, map);
+            return true;
+        }
+
+        private Point3D FindDropPoint(Point3D p, Map map, int maxZ)
+        {
+            if (map == null)
+                return Point3D.Zero;
+
+            int x = p.m_X, y = p.m_Y;
+            int z = int.MinValue;
+
+            LandTile landTile = map.Tiles.GetLandTile(x, y);
+            TileFlag landFlags = TileData.LandTable[landTile.ID & TileData.MaxLandValue].Flags;
+
+            int landZ = 0, landAvg = 0, landTop = 0;
+            map.GetAverageZ(x, y, ref landZ, ref landAvg, ref landTop);
+
+            if (!landTile.Ignored && (landFlags & TileFlag.Impassable) == 0)
+            {
+                if (landAvg <= maxZ)
+                {
+                    z = landAvg;
+                }
+            }
+
+            var tiles = map.Tiles.GetStaticTiles(x, y, true);
+
+            for (int i = 0; i < tiles.Length; ++i)
+            {
+                StaticTile tile = tiles[i];
+                ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+
+                if (!id.Surface)
+                {
+                    continue;
+                }
+
+                int top = tile.Z + id.CalcHeight;
+
+                if (top > maxZ || top < z)
+                {
+                    continue;
+                }
+
+                z = top;
+            }
+
+            var items = new List<Item>();
+
+            var eable = map.GetItemsInRange(p, 0);
+
+            foreach (Item item in eable)
+            {
+                if (item is BaseMulti || item.ItemID > TileData.MaxItemValue)
+                {
+                    continue;
+                }
+
+                items.Add(item);
+
+                ItemData id = item.ItemData;
+
+                if (!id.Surface)
+                {
+                    continue;
+                }
+
+                int top = item.Z + id.CalcHeight;
+
+                if (top > maxZ || top < z)
+                {
+                    continue;
+                }
+
+                z = top;
+            }
+
+            eable.Free();
+
+            if (z == int.MinValue)
+            {
+                return Point3D.Zero;
+            }
+
+            if (z > maxZ)
+            {
+                return Point3D.Zero;
+            }
+
+            m_OpenSlots = (1 << 20) - 1;
+
+            int surfaceZ = z;
+
+            for (int i = 0; i < tiles.Length; ++i)
+            {
+                StaticTile tile = tiles[i];
+                ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+
+                int checkZ = tile.Z;
+                int checkTop = checkZ + id.CalcHeight;
+
+                if (checkTop == checkZ && !id.Surface)
+                {
+                    ++checkTop;
+                }
+
+                int zStart = checkZ - z;
+                int zEnd = checkTop - z;
+
+                if (zStart >= 20 || zEnd < 0)
+                {
+                    continue;
+                }
+
+                if (zStart < 0)
+                {
+                    zStart = 0;
+                }
+
+                if (zEnd > 19)
+                {
+                    zEnd = 19;
+                }
+
+                int bitCount = zEnd - zStart;
+
+                m_OpenSlots &= ~(((1 << bitCount) - 1) << zStart);
+            }
+
+            for (int i = 0; i < items.Count; ++i)
+            {
+                Item item = items[i];
+                ItemData id = item.ItemData;
+
+                int checkZ = item.Z;
+                int checkTop = checkZ + id.CalcHeight;
+
+                if (checkTop == checkZ && !id.Surface)
+                {
+                    ++checkTop;
+                }
+
+                int zStart = checkZ - z;
+                int zEnd = checkTop - z;
+
+                if (zStart >= 20 || zEnd < 0)
+                {
+                    continue;
+                }
+
+                if (zStart < 0)
+                {
+                    zStart = 0;
+                }
+
+                if (zEnd > 19)
+                {
+                    zEnd = 19;
+                }
+
+                int bitCount = zEnd - zStart;
+
+                m_OpenSlots &= ~(((1 << bitCount) - 1) << zStart);
+            }
+
+            int height = ItemData.Height;
+
+            if (height == 0)
+            {
+                ++height;
+            }
+
+            if (height > 30)
+            {
+                height = 30;
+            }
+
+            int match = (1 << height) - 1;
+            bool okay = false;
+
+            for (int i = 0; i < 20; ++i)
+            {
+                if ((i + height) > 20)
+                {
+                    match >>= 1;
+                }
+
+                okay = ((m_OpenSlots >> i) & match) == match;
+
+                if (okay)
+                {
+                    z += i;
+                    break;
+                }
+            }
+
+            if (!okay)
+            {
+                return Point3D.Zero;
+            }
+
+            height = ItemData.Height;
+
+            if (height == 0)
+            {
+                ++height;
+            }
+
+            if (landAvg > z && (z + height) > landZ)
+            {
+                return Point3D.Zero;
+            }
+            else if ((landFlags & TileFlag.Impassable) != 0 && landAvg > surfaceZ && (z + height) > landZ)
+            {
+                return Point3D.Zero;
+            }
+
+            for (int i = 0; i < tiles.Length; ++i)
+            {
+                StaticTile tile = tiles[i];
+                ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+
+                int checkZ = tile.Z;
+                int checkTop = checkZ + id.CalcHeight;
+
+                if (checkTop > z && (z + height) > checkZ)
+                {
+                    return Point3D.Zero;
+                }
+                else if ((id.Surface || id.Impassable) && checkTop > surfaceZ && (z + height) > checkZ)
+                {
+                    return Point3D.Zero;
+                }
+            }
+
+            for (int i = 0; i < items.Count; ++i)
+            {
+                Item item = items[i];
+                ItemData id = item.ItemData;
+
+                if ((item.Z + id.CalcHeight) > z && (z + height) > item.Z)
+                {
+                    return Point3D.Zero;
+                }
+            }
+
+            return new Point3D(x, y, z);
+        }
 
 		public void SendRemovePacket()
 		{
@@ -5119,6 +5434,16 @@ namespace Server
 				return ((IEntity)root).Location;
 			}
 		}
+
+        public void SendLocalizedMessageTo(Mobile to, int number, int hue = 0x3B2)
+        {
+            if (Deleted || !to.CanSee(this))
+            {
+                return;
+            }
+
+            to.Send(new MessageLocalized(Serial, ItemID, MessageType.Regular, hue, 3, number, "", ""));
+        }
 
 		public void SendLocalizedMessageTo(Mobile to, int number)
 		{
@@ -5659,17 +5984,25 @@ namespace Server
 
 		internal int m_TypeRef;
 
+        [Constructable]
+        public Item(int itemID)
+            : this()
+        {
+            m_ItemID = itemID;
+        }
+
 		public Item()
 		{
 			m_Serial = Serial.NewItem;
 
 			//m_Items = new ArrayList( 1 );
-			Visible = true;
-			Movable = true;
-			Amount = 1;
-			m_Map = Map.Internal;
+			//Visible = true;
+			//Movable = true;
+			//Amount = 1;
+			//m_Map = Map.Internal;
 
-			SetLastMoved();
+			//SetLastMoved();
+            DefaultItemInit();
 
 			World.AddItem(this);
 
@@ -5683,12 +6016,18 @@ namespace Server
 			}
 		}
 
-		[Constructable]
-		public Item(int itemID)
-			: this()
-		{
-			m_ItemID = itemID;
-		}
+        /// <summary>
+        /// Initialize some fields when creating a fresh new Item. Otherwise these should be initialized by <see cref="Deserialize"/> method.
+        /// </summary>
+        private void DefaultItemInit()
+        {
+            Visible = true;
+            Movable = true;
+            Amount = 1;
+            m_Map = Map.Internal;
+
+            SetLastMoved();
+        }
 
 		public Item(Serial serial)
 		{

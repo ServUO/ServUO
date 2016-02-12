@@ -5,6 +5,7 @@ namespace Server.Gumps
 {
     public class ConfirmReleaseGump : Gump
     {
+        public override int TypeID { get { return 0x259; } }
         private readonly Mobile m_From;
         private readonly BaseCreature m_Pet;
         public ConfirmReleaseGump(Mobile from, BaseCreature pet)

@@ -151,7 +151,8 @@ namespace Server.Items
             return false;
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        #region Enhance Client
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
         {
             if (this.IsAccessibleTo(from) && (item is PlagueBeastInnard || item is PlagueBeastGland))
             {
@@ -179,11 +180,12 @@ namespace Server.Items
                     }
                 }
 
-                return base.OnDragDropInto(from, item, p);
+                return base.OnDragDropInto(from, item, p, gridloc);
             }
 
             return false;
         }
+        #endregion
 
         public void AddInnard(int itemID, int hue, int x, int y)
         {

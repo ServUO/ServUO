@@ -1404,7 +1404,7 @@ namespace Server.Mobiles
                 else
                     name = "#" + item.LabelNumber.ToString();
 
-                from.SendLocalizedMessage(1043303, name); // Type in a price and description for ~1_ITEM~ (ESC=not for sale)
+                //from.SendLocalizedMessage(1043303, name); // Type in a price and description for ~1_ITEM~ (ESC=not for sale)
                 from.Prompt = new VendorPricePrompt(this, vi);
             }
         }
@@ -1508,6 +1508,8 @@ namespace Server.Mobiles
 
         private class VendorPricePrompt : Prompt
         {
+            // Type in a price and description for ~1_ITEM~ (ESC=not for sale)
+            public override int MessageCliloc { get { return 1043303; } }
             private readonly PlayerVendor m_Vendor;
             private readonly VendorItem m_VI;
             public VendorPricePrompt(PlayerVendor vendor, VendorItem vi)

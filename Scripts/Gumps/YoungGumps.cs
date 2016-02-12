@@ -6,6 +6,8 @@ namespace Server.Gumps
 {
     public class YoungDungeonWarning : Gump
     {
+        public override int TypeID { get { return 0x82; } }
+
         public YoungDungeonWarning()
             : base(150, 200)
         {
@@ -20,6 +22,8 @@ namespace Server.Gumps
 
     public class YoungDeathNotice : Gump
     {
+        public override int TypeID { get { return 0x28D; } }
+
         public YoungDeathNotice()
             : base(100, 15)
         {
@@ -51,6 +55,8 @@ namespace Server.Gumps
 
     public class RenounceYoungGump : Gump
     {
+        public override int TypeID { get { return 0x5B9C; } }
+
         public RenounceYoungGump()
             : base(150, 50)
         {

@@ -8,6 +8,8 @@ namespace Server.Engines.Craft
 {
     public class CraftGump : Gump
     {
+        public override int TypeID { get { return 0x1CC; } }
+
         private readonly Mobile m_From;
         private readonly CraftSystem m_CraftSystem;
         private readonly BaseTool m_Tool;
@@ -88,6 +90,11 @@ namespace Server.Engines.Craft
             {
                 AddButton(270, 362, 4005, 4007, GetButtonID(6, 6), GumpButtonType.Reply, 0);
                 AddHtmlLocalized(305, 365, 150, 18, 1044017 + (context == null ? 0 : (int)context.MarkOption), LabelColor, false, false); // MARK ITEM
+
+                if (context != null && context.MarkOption == CraftMarkOption.MarkItem)
+                {
+                    AddECButton(0, 0, 0, 0, 6001, GumpButtonType.Page, 0);
+                }
             }
             // ****************************************
 
@@ -204,6 +211,7 @@ namespace Server.Engines.Craft
                         AddLabel(50, 385, LabelHue, "*");
 
                     AddHtmlLocalized(50 + (context.DoNotColor ? 13 : 0), 385, 250, 18, nameNumber, resourceCount.ToString(), LabelColor, false, false);
+                    AddECHtmlLocalized(50, 365, 170, 18, nameNumber, LabelColor, false, false);
                 }
                 else
                     AddLabel(50, 382, LabelHue, (context.DoNotColor ? "*" : "") + String.Format("{0} ({1} Available)", nameString, resourceCount));

@@ -14,6 +14,7 @@ namespace Server.Engines.BulkOrders
         private int m_Graphic;
         private bool m_RequireExceptional;
         private BulkMaterialType m_Material;
+
         [Constructable]
         public SmallBOD(int hue, int amountMax, Type type, int number, int graphic, bool requireExeptional, BulkMaterialType material)
             : base(Core.AOS ? 0x2258 : 0x14EF)
@@ -153,7 +154,9 @@ namespace Server.Engines.BulkOrders
             for (int i = 0; i < chances.Length; ++i)
             {
                 if (random < chances[i])
+                {
                     return (i == 0 ? BulkMaterialType.None : start + (i - 1));
+                }
 
                 random -= chances[i];
             }
@@ -199,10 +202,14 @@ namespace Server.Engines.BulkOrders
             list.Add(1060654); // small bulk order
 
             if (this.m_RequireExceptional)
+            {
                 list.Add(1045141); // All items must be exceptional.
+            }
 
             if (this.m_Material != BulkMaterialType.None)
+            {
                 list.Add(SmallBODGump.GetMaterialNumberFor(this.m_Material)); // All items must be made with x material.
+            }
 
             list.Add(1060656, this.m_AmountMax.ToString()); // amount to make: ~1_val~
             list.Add(1060658, "#{0}\t{1}", this.m_Number, this.m_AmountCur); // ~1_val~: ~2_val~
@@ -211,15 +218,15 @@ namespace Server.Engines.BulkOrders
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack) || this.InSecureTrade || this.RootParent is PlayerVendor)
-			{
-				EventSink.InvokeBODUsed(new BODUsedEventArgs(from, this));
-				from.SendGump(new SmallBODGump(from, this));
-			}
+            {
+                EventSink.InvokeBODUsed(new BODUsedEventArgs(from, this));
+                from.SendGump(new SmallBODGump(from, this));
+            }
             else
-			{
-				from.SendLocalizedMessage(1045156); // You must have the deed in your backpack to use it.
-			}
-		}
+            {
+                from.SendLocalizedMessage(1045156); // You must have the deed in your backpack to use it.
+            }
+        }
 
         public override void OnDoubleClickNotAccessible(Mobile from)
         {
@@ -234,9 +241,13 @@ namespace Server.Engines.BulkOrders
         public void BeginCombine(Mobile from)
         {
             if (this.m_AmountCur < this.m_AmountMax)
+            {
                 from.Target = new SmallBODTarget(this);
+            }
             else
+            {
                 from.SendLocalizedMessage(1045166); // The maximum amount of requested items have already been combined to this deed.
+            }
         }
 
         public abstract List<Item> ComputeRewards(bool full);
@@ -260,7 +271,9 @@ namespace Server.Engines.BulkOrders
                 for (int i = 0; i < rewards.Count; ++i)
                 {
                     if (rewards[i] != reward)
+                    {
                         rewards[i].Delete();
+                    }
                 }
             }
         }
@@ -284,11 +297,17 @@ namespace Server.Engines.BulkOrders
                     BulkMaterialType material = BulkMaterialType.None;
 
                     if (o is BaseWeapon)
+                    {
                         material = GetMaterial(((BaseWeapon)o).Resource);
+                    }
                     else if (o is BaseArmor)
+                    {
                         material = GetMaterial(((BaseArmor)o).Resource);
+                    }
                     else if (o is BaseClothing)
+                    {
                         material = GetMaterial(((BaseClothing)o).Resource);
+                    }
 
                     if (this.m_Material >= BulkMaterialType.DullCopper && this.m_Material <= BulkMaterialType.Valorite && material != this.m_Material)
                     {
@@ -303,11 +322,17 @@ namespace Server.Engines.BulkOrders
                         bool isExceptional = false;
 
                         if (o is BaseWeapon)
+                        {
                             isExceptional = (((BaseWeapon)o).Quality == WeaponQuality.Exceptional);
+                        }
                         else if (o is BaseArmor)
+                        {
                             isExceptional = (((BaseArmor)o).Quality == ArmorQuality.Exceptional);
+                        }
                         else if (o is BaseClothing)
+                        {
                             isExceptional = (((BaseClothing)o).Quality == ClothingQuality.Exceptional);
+                        }
 
                         if (this.m_RequireExceptional && !isExceptional)
                         {
@@ -323,7 +348,9 @@ namespace Server.Engines.BulkOrders
                             from.SendGump(new SmallBODGump(from, this));
 
                             if (this.m_AmountCur < this.m_AmountMax)
+                            {
                                 this.BeginCombine(from);
+                            }
                         }
                     }
                 }
@@ -365,7 +392,9 @@ namespace Server.Engines.BulkOrders
                         string type = reader.ReadString();
 
                         if (type != null)
+                        {
                             this.m_Type = ScriptCompiler.FindTypeByFullName(type);
+                        }
 
                         this.m_Number = reader.ReadInt();
                         this.m_Graphic = reader.ReadInt();
@@ -377,13 +406,19 @@ namespace Server.Engines.BulkOrders
             }
 
             if (this.Weight == 0.0)
+            {
                 this.Weight = 1.0;
+            }
 
             if (Core.AOS && this.ItemID == 0x14EF)
+            {
                 this.ItemID = 0x2258;
+            }
 
             if (this.Parent == null && this.Map == Map.Internal && this.Location == Point3D.Zero)
+            {
                 this.Delete();
+            }
         }
     }
 }

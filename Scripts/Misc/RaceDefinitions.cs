@@ -103,6 +103,37 @@ namespace Server.Misc
                 return ((rand < 4) ? 0x203E : 0x2047) + rand;
             }
 
+            #region Enhance Client
+            public override bool ValidateFace(bool female, int itemID)
+            {
+                if (itemID.Equals(0))
+                    return false;
+
+                if (itemID >= 0x3B44 && itemID <= 0x3B4D)
+                    return true;
+
+                return false;
+            }
+
+            public override int RandomFace(bool female)
+            {
+                switch (Utility.Random(10))
+                {
+                    case 0: return 0x3B44; // face1
+                    case 1: return 0x3B45; // face2
+                    case 2: return 0x3B46; // face3
+                    case 3: return 0x3B47; // face4
+                    case 4: return 0x3B48; // face5
+                    case 5: return 0x3B49; // face6
+                    case 6: return 0x3B4A; // face7
+                    case 7: return 0x3B4B; // face8
+                    case 8: return 0x3B4C; // face9
+                    case 9: return 0x3B4D; // face10
+                    default: return 0x3B44; // face1
+                }
+            }
+            #endregion
+
             public override int ClipSkinHue(int hue)
             {
                 if (hue < 1002)
@@ -132,6 +163,18 @@ namespace Server.Misc
             {
                 return Utility.Random(1102, 48);
             }
+
+            #region Enhance Client
+            public override int ClipFaceHue(int hue)
+            {
+                return ClipSkinHue(hue);
+            }
+
+            public override int RandomFaceHue()
+            {
+                return RandomSkinHue();
+            }
+            #endregion
         }
 
         private class Elf : Race
@@ -210,6 +253,36 @@ namespace Server.Misc
                 return 0;
             }
 
+            #region Enhance Client
+            public override bool ValidateFace(bool female, int itemID)
+            {
+                if (itemID.Equals(0))
+                    return false;
+
+                if (itemID >= 0x3B44 && itemID <= 0x3B4D)
+                    return true;
+
+                return false;
+            }
+            public override int RandomFace(bool female)
+            {
+                switch (Utility.Random(10))
+                {
+                    case 0: return 0x3B44; // face1
+                    case 1: return 0x3B45; // face2
+                    case 2: return 0x3B46; // face3
+                    case 3: return 0x3B47; // face4
+                    case 4: return 0x3B48; // face5
+                    case 5: return 0x3B49; // face6
+                    case 6: return 0x3B4A; // face7
+                    case 7: return 0x3B4B; // face8
+                    case 8: return 0x3B4C; // face9
+                    case 9: return 0x3B4D; // face10
+                    default: return 0x3B44; // face1
+                }
+            }
+            #endregion
+
             public override int ClipSkinHue(int hue)
             {
                 for (int i = 0; i < m_SkinHues.Length; i++)
@@ -237,6 +310,18 @@ namespace Server.Misc
             {
                 return m_HairHues[Utility.Random(m_HairHues.Length)];
             }
+
+            #region Enhance Client
+            public override int ClipFaceHue(int hue)
+            {
+                return ClipSkinHue(hue);
+            }
+
+            public override int RandomFaceHue()
+            {
+                return RandomSkinHue();
+            }
+            #endregion
         }
 
         #region SA
@@ -319,6 +404,38 @@ namespace Server.Misc
                 // 0x86F3, 0x86DB, 0x86DC, 0x86DD
             };
 
+            #region Enhance Client
+            public override bool ValidateFace(bool female, int itemID)
+            {
+                if (itemID.Equals(0))
+                {
+                    return false;
+                    //Console.WriteLine("HELP2");
+                }
+
+                if (itemID >= 0x5679 && itemID <= 0x567E)
+                {
+                    return true;
+                    //Console.WriteLine("HELP1");
+                }
+
+                return false;
+            }
+            public override int RandomFace(bool female)
+            {
+                switch (Utility.Random(6))
+                {
+                    case 0: return 0x5679; // face1
+                    case 1: return 0x567A; // face2
+                    case 2: return 0x567B; // face3
+                    case 3: return 0x567C; // face4
+                    case 4: return 0x567D; // face5
+                    case 5: return 0x567E; // face6
+                    default: return 0x5679; // face1
+                }
+            }
+            #endregion
+
             public override int ClipSkinHue(int hue)
             {
                 return hue; // for hue infomation gathering
@@ -349,6 +466,18 @@ namespace Server.Misc
             {
                 return m_HornHues[Utility.Random(m_HornHues.Length)];
             }
+
+            #region Enhance Client
+            public override int ClipFaceHue(int hue)
+            {
+                return ClipSkinHue(hue);
+            }
+
+            public override int RandomFaceHue()
+            {
+                return RandomSkinHue();
+            }
+            #endregion
         }
         #endregion
     }

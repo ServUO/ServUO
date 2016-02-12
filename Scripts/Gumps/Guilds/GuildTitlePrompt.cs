@@ -6,6 +6,8 @@ namespace Server.Gumps
 {
     public class GuildTitlePrompt : Prompt
     {
+        // Enter the new title for this guild member or 'none' to remove a title:
+        public override int MessageCliloc { get { return 1011128; } }
         private readonly Mobile m_Leader;
         private readonly Mobile m_Target;
         private readonly Guild m_Guild;

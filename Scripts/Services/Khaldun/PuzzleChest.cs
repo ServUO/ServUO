@@ -411,11 +411,11 @@ namespace Server.Items
             }
         }
 
-        public override void LockPick(Mobile from)
+        public override int LockPick(Mobile from)
         {
-            base.LockPick(from);
+            m_Guesses.Clear();
 
-            this.m_Guesses.Clear();
+            return base.LockPick(from);
         }
 
         public void CleanupGuesses()

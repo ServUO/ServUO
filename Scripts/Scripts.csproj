@@ -119,6 +119,9 @@
     <Compile Include="Commands\GenCategorization.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\GenChampion.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Commands\Generic\Commands\BaseCommand.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -314,9 +317,7 @@
     <Compile Include="Gumps\ConfirmHeritageGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\ConfirmHouseResize.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Gumps\ConfirmReleaseDeadPetGump.cs" />
     <Compile Include="Gumps\ConfirmReleaseGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -455,18 +456,6 @@
     <Compile Include="Gumps\HonorSelf.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gumps\HouseDemolishGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\HouseGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\HouseGumpAOS.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\HouseTransferGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Gumps\NoticeGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -521,12 +510,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gumps\ResurrectGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\RunebookGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Gumps\SetSecureLevelGump.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gumps\SkillsGump.cs">
@@ -4205,6 +4188,7 @@
     <Compile Include="Items\Skill Items\Lumberjack\Log.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Skill Items\Magical\BagOfMysticReagents.cs" />
     <Compile Include="Items\Skill Items\Magical\BookOfBushido.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -4325,9 +4309,8 @@
     <Compile Include="Items\Skill Items\Magical\Potions\Strength Potions\StrengthPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Skill Items\Magical\Runebook.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Items\Skill Items\Magical\Runebook.cs" />
+    <Compile Include="Items\Skill Items\Magical\RunebookGump.cs" />
     <Compile Include="Items\Skill Items\Magical\Scrolls\Eighth Circle\EarthquakeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -5862,6 +5845,38 @@
     <Compile Include="Items\Theme pack\Rustic\Topiarys\PosedGoblinTopiary.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltBustier.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltChest.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltCollar.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltHelm.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltLeggings.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltLongSkirt.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltShorts.cs" />
+    <Compile Include="Items\TOL\Alorons Armor\AloronsTigerPeltSkirt.cs" />
+    <Compile Include="Items\TOL\Artifacts\BalakaisShamanStaff.cs" />
+    <Compile Include="Items\TOL\Artifacts\GrugorsShields.cs" />
+    <Compile Include="Items\TOL\Artifacts\HalwasHuntingBow.cs" />
+    <Compile Include="Items\TOL\Artifacts\JumusSacredHide.cs" />
+    <Compile Include="Items\TOL\Artifacts\LereisHuntingSpear.cs" />
+    <Compile Include="Items\TOL\Artifacts\MoctapotlsObsidianSword.cs" />
+    <Compile Include="Items\TOL\Artifacts\WamapsBoneEarrings.cs" />
+    <Compile Include="Items\TOL\Clothing\BGRobe.cs" />
+    <Compile Include="Items\TOL\Clothing\CheckeredKilt.cs" />
+    <Compile Include="Items\TOL\Clothing\ChefsToque.cs" />
+    <Compile Include="Items\TOL\Clothing\EveningGown.cs" />
+    <Compile Include="Items\TOL\Clothing\FancyKilt.cs" />
+    <Compile Include="Items\TOL\Clothing\FloweredDress.cs" />
+    <Compile Include="Items\TOL\Clothing\GildedKilt.cs" />
+    <Compile Include="Items\TOL\Clothing\JesterShoes.cs" />
+    <Compile Include="Items\TOL\Dardens Armor\DardensDragonTurtleHideArms.cs" />
+    <Compile Include="Items\TOL\Dardens Armor\DardensDragonTurtleHideBustier.cs" />
+    <Compile Include="Items\TOL\Dardens Armor\DardensDragonTurtleHideChest.cs" />
+    <Compile Include="Items\TOL\Dardens Armor\DardensDragonTurtleHideHelm.cs" />
+    <Compile Include="Items\TOL\Dardens Armor\DardensDragonTurtleHideLeggings.cs" />
+    <Compile Include="Items\TOL\Shields\ShieldVice1.cs" />
+    <Compile Include="Items\TOL\Shields\ShieldVice2.cs" />
+    <Compile Include="Items\TOL\Shields\ShieldVirtue1.cs" />
+    <Compile Include="Items\TOL\Shields\ShieldVirtue2.cs" />
     <Compile Include="Items\Traps\FireColumnTrap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9407,6 +9422,12 @@
     <Compile Include="Multis\DynamicDecay.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Multis\Gumps\ConfirmHouseResize.cs" />
+    <Compile Include="Multis\Gumps\HouseDemolishGump.cs" />
+    <Compile Include="Multis\Gumps\HouseGump.cs" />
+    <Compile Include="Multis\Gumps\HouseGumpAOS.cs" />
+    <Compile Include="Multis\Gumps\HouseTransferGump.cs" />
+    <Compile Include="Multis\Gumps\SetSecureLevelGump.cs" />
     <Compile Include="Multis\HouseFoundation.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10954,15 +10975,15 @@
     <Compile Include="Services\ChampionSystem\ChampionSpawnController\ChampionSpawnController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\ChampionSystem\ChampionSpawnController\RandomizeTimer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Services\ChampionSystem\ChampionSpawnType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\ChampionSystem\ChampionSystem.cs" />
-    <Compile Include="Services\ChampionSystem\GoldShower.cs" />
     <Compile Include="Services\ChampionSystem\HarrowerGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\ChampionSystem\NukeCommand.cs" />
     <Compile Include="Services\ChampionSystem\RestartTimer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10972,7 +10993,6 @@
     <Compile Include="Services\ChampionSystem\StarRoomGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\ChampionSystem\TestRadiusCommand.cs" />
     <Compile Include="Services\Chat\Channel.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -11021,7 +11041,6 @@
     <Compile Include="Services\Community Collections\CollectionItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\CollectionsSystem.cs" />
     <Compile Include="Services\Community Collections\ComunityCollectionGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -13987,9 +14006,6 @@
   <ItemGroup>
     <Content Include="Quests\SA Sacred Quest\Sacred Quest Questions-Answers.txt" />
     <Content Include="Services\Runic Reforging\ReadMe.txt" />
-    <Content Include="Services\XmlSpawner\Installation for ServUO.txt" />
-    <Content Include="Services\XmlSpawner\Installation SVN or 2.4.txt" />
-    <Content Include="Services\XmlSpawner\Instructions for importing maps.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\SpawnerConfigs\xmlspawner.xml" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\Spawns\attachtest1.xml" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\Spawns\attachtest2.xml" />

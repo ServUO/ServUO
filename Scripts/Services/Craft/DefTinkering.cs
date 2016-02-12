@@ -644,10 +644,10 @@ namespace Server.Engines.Craft
             {
                 int trapLevel = (int)(this.From.Skills.Tinkering.Value / 10);
 
-                this.Container.TrapType = this.TrapType;
-                this.Container.TrapPower = trapLevel * 9;
-                this.Container.TrapLevel = trapLevel;
-                this.Container.TrapOnLockpick = true;
+                Container.TrapType = this.TrapType;
+                Container.TrapPower = trapLevel * 9;
+                Container.TrapLevel = trapLevel;
+                Container.TrapEnabled = false;
 
                 message = 1005639; // Trap is disabled until you lock the chest.
             }

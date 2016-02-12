@@ -7,6 +7,8 @@ namespace Server.Gumps
 {
     public class GuildDeclareWarPrompt : Prompt
     {
+        // Declare war through search - Enter Guild Name:
+        public override int MessageCliloc { get { return 1018001; } }
         private readonly Mobile m_Mobile;
         private readonly Guild m_Guild;
         public GuildDeclareWarPrompt(Mobile m, Guild g)

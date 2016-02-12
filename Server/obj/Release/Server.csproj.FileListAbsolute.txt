@@ -1,0 +1,5 @@
+C:\Users\unfor_001\Documents\ServuoCloneEC\ServUOEC\EC\Server\obj\Release\Server.csprojResolveAssemblyReference.cache
+C:\Users\unfor_001\Documents\ServuoCloneEC\ServUOEC\EC\Server\obj\Release\ServUO.exe
+C:\Users\unfor_001\Documents\ServuoCloneEC\ServUOEC\EC\Server\obj\Release\ServUO.pdb
+C:\Users\unfor_001\Documents\ServuoCloneEC\ServUOEC\EC\ServUO.exe
+C:\Users\unfor_001\Documents\ServuoCloneEC\ServUOEC\EC\ServUO.pdb

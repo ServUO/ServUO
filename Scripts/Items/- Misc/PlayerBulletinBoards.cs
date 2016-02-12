@@ -306,6 +306,8 @@ namespace Server.Items
 
         public class SetTitlePrompt : Prompt
         {
+            // Enter new title:
+            public override int MessageCliloc { get { return 1062402; } }
             private readonly int m_Page;
             private readonly BaseHouse m_House;
             private readonly BasePlayerBB m_Board;
@@ -557,7 +559,7 @@ namespace Server.Items
                         if (house.IsOwner(from))
                         {
                             from.Prompt = new BasePlayerBB.SetTitlePrompt(page, house, board);
-                            from.SendLocalizedMessage(1062402); // Enter new title:
+                            //from.SendLocalizedMessage(1062402); // Enter new title:
                         }
 
                         break;

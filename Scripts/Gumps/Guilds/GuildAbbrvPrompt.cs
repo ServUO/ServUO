@@ -6,6 +6,8 @@ namespace Server.Gumps
 {
     public class GuildAbbrvPrompt : Prompt
     {
+        // Enter new guild abbreviation (3 characters max):
+        public override int MessageCliloc { get { return 1013061; } }
         private readonly Mobile m_Mobile;
         private readonly Guild m_Guild;
         public GuildAbbrvPrompt(Mobile m, Guild g)

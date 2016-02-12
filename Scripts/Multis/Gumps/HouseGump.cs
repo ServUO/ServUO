@@ -732,18 +732,20 @@ namespace Server.Prompts
 {
     public class RenamePrompt : Prompt
     {
+        // What dost thou wish the sign to say?
+        public override int MessageCliloc { get { return 501302; } }
         private readonly BaseHouse m_House;
         public RenamePrompt(BaseHouse house)
         {
-            this.m_House = house;
+            m_House = house;
         }
 
         public override void OnResponse(Mobile from, string text)
         {
-            if (this.m_House.IsFriend(from))
+            if (m_House.IsFriend(from))
             {
-                if (this.m_House.Sign != null)
-                    this.m_House.Sign.Name = text;
+                if (m_House.Sign != null)
+                    m_House.Sign.Name = text;
 
                 from.SendMessage("Sign changed.");
             }

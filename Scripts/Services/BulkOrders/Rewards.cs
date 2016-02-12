@@ -125,14 +125,20 @@ namespace Server.Engines.BulkOrders
         public RewardItem AcquireItem()
         {
             if (this.m_Items.Length == 0)
+            {
                 return null;
+            }
             else if (this.m_Items.Length == 1)
+            {
                 return this.m_Items[0];
+            }
 
             int totalWeight = 0;
 
             for (int i = 0; i < this.m_Items.Length; ++i)
+            {
                 totalWeight += this.m_Items[i].Weight;
+            }
 
             int randomWeight = Utility.Random(totalWeight);
 
@@ -141,7 +147,9 @@ namespace Server.Engines.BulkOrders
                 RewardItem item = this.m_Items[i];
 
                 if (randomWeight < item.Weight)
+                {
                     return item;
+                }
 
                 randomWeight -= item.Weight;
             }
@@ -211,7 +219,9 @@ namespace Server.Engines.BulkOrders
                 RewardGroup group = this.m_Groups[i];
 
                 if (points >= group.Points)
+                {
                     return group;
+                }
             }
 
             return this.m_Groups[0];
@@ -222,7 +232,9 @@ namespace Server.Engines.BulkOrders
             for (int i = 0; i < types.Length; ++i)
             {
                 if (types[i].Contains(type))
+                {
                     return types[i].Points;
+                }
             }
 
             return 0;
@@ -260,11 +272,17 @@ namespace Server.Engines.BulkOrders
         private static Item CreateMiningGloves(int type)
         {
             if (type == 1)
+            {
                 return new LeatherGlovesOfMining(1);
+            }
             else if (type == 3)
+            {
                 return new StuddedGlovesOfMining(3);
+            }
             else if (type == 5)
+            {
                 return new RingmailGlovesOfMining(5);
+            }
 
             throw new InvalidOperationException();
         }
@@ -287,7 +305,9 @@ namespace Server.Engines.BulkOrders
         private static Item CreateRunicHammer(int type)
         {
             if (type >= 1 && type <= 8)
+            {
                 return new RunicHammer(CraftResource.Iron + type, Core.AOS ? (55 - (type * 5)) : 50);
+            }
 
             throw new InvalidOperationException();
         }
@@ -295,7 +315,9 @@ namespace Server.Engines.BulkOrders
         private static Item CreatePowerScroll(int type)
         {
             if (type == 5 || type == 10 || type == 15 || type == 20)
+            {
                 return new PowerScroll(SkillName.Blacksmith, 100 + type);
+            }
 
             throw new InvalidOperationException();
         }
@@ -310,7 +332,9 @@ namespace Server.Engines.BulkOrders
         private static Item CreateAncientHammer(int type)
         {
             if (type == 10 || type == 15 || type == 30 || type == 60)
+            {
                 return new AncientSmithyHammer(type);
+            }
 
             throw new InvalidOperationException();
         }
@@ -339,20 +363,32 @@ namespace Server.Engines.BulkOrders
             int points = 0;
 
             if (quantity == 10)
+            {
                 points += 10;
+            }
             else if (quantity == 15)
+            {
                 points += 25;
+            }
             else if (quantity == 20)
+            {
                 points += 50;
+            }
 
             if (exceptional)
+            {
                 points += 200;
+            }
 
             if (itemCount > 1)
+            {
                 points += this.LookupTypePoints(this.m_Types, type);
+            }
 
             if (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite)
+            {
                 points += 200 + (50 * (material - BulkMaterialType.DullCopper));
+            }
 
             return points;
         }
@@ -449,7 +485,9 @@ namespace Server.Engines.BulkOrders
         {
             // Item count of 1 means it's a small BOD.
             if (itemCount == 1)
+            {
                 return 0;
+            }
 
             int typeIdx;
 
@@ -457,12 +495,16 @@ namespace Server.Engines.BulkOrders
             for (typeIdx = 0; typeIdx < 7; ++typeIdx)
             {
                 if (this.m_Types[typeIdx].Contains(type))
+                {
                     break;
+                }
             }
 
             // Types 5, 6 and 7 are Large Weapon BODs with the same rewards.
             if (typeIdx > 5)
+            {
                 typeIdx = 5;
+            }
 
             return (typeIdx + 1) * 2;
         }
@@ -476,7 +518,9 @@ namespace Server.Engines.BulkOrders
             int mtrlIndex = (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite) ? 1 + (int)(material - BulkMaterialType.DullCopper) : 0;
 
             if (exceptional)
+            {
                 typeIndex++;
+            }
 
             int gold = goldTable[typeIndex][quanIndex][mtrlIndex];
 
@@ -613,7 +657,9 @@ namespace Server.Engines.BulkOrders
         private static Item CreateRunicKit(int type)
         {
             if (type >= 1 && type <= 3)
+            {
                 return new RunicSewingKit(CraftResource.RegularLeather + type, 60 - (type * 15));
+            }
 
             throw new InvalidOperationException();
         }
@@ -621,7 +667,9 @@ namespace Server.Engines.BulkOrders
         private static Item CreatePowerScroll(int type)
         {
             if (type == 5 || type == 10 || type == 15 || type == 20)
+            {
                 return new PowerScroll(SkillName.Tailoring, 100 + type);
+            }
 
             throw new InvalidOperationException();
         }
@@ -640,28 +688,48 @@ namespace Server.Engines.BulkOrders
             int points = 0;
 
             if (quantity == 10)
+            {
                 points += 10;
+            }
             else if (quantity == 15)
+            {
                 points += 25;
+            }
             else if (quantity == 20)
+            {
                 points += 50;
+            }
 
             if (exceptional)
+            {
                 points += 100;
+            }
 
             if (itemCount == 4)
+            {
                 points += 300;
+            }
             else if (itemCount == 5)
+            {
                 points += 400;
+            }
             else if (itemCount == 6)
+            {
                 points += 500;
+            }
 
             if (material == BulkMaterialType.Spined)
+            {
                 points += 50;
+            }
             else if (material == BulkMaterialType.Horned)
+            {
                 points += 100;
+            }
             else if (material == BulkMaterialType.Barbed)
+            {
                 points += 150;
+            }
 
             return points;
         }

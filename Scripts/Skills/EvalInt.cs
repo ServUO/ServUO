@@ -55,28 +55,42 @@ namespace Server.SkillHandlers
                     int mnMod = mana / 10;
 
                     if (intMod > 10)
+                    {
                         intMod = 10;
+                    }
                     else if (intMod < 0)
+                    {
                         intMod = 0;
+                    }
 
                     if (mnMod > 10)
+                    {
                         mnMod = 10;
+                    }
                     else if (mnMod < 0)
+                    {
                         mnMod = 0;
+                    }
 
                     int body;
 
                     if (targ.Body.IsHuman)
+                    {
                         body = targ.Female ? 11 : 0;
+                    }
                     else
+                    {
                         body = 22;
+                    }
 
                     if (from.CheckTargetSkill(SkillName.EvalInt, targ, 0.0, 120.0))
                     {
                         targ.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1038169 + intMod + body, from.NetState); // He/She/It looks [slighly less intelligent than a rock.]  [Of Average intellect] [etc...]
 
                         if (from.Skills[SkillName.EvalInt].Base >= 76.0)
+                        {
                             targ.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1038202 + mnMod, from.NetState); // That being is at [10,20,...] percent mental strength.
+                        }
                     }
                     else 
                     {

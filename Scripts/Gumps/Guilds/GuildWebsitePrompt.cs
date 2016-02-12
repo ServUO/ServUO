@@ -6,6 +6,8 @@ namespace Server.Gumps
 {
     public class GuildWebsitePrompt : Prompt
     {
+        // Enter the new website for the guild (50 characters max):
+        public override int MessageCliloc { get { return 1013072; } }
         private readonly Mobile m_Mobile;
         private readonly Guild m_Guild;
         public GuildWebsitePrompt(Mobile m, Guild g)

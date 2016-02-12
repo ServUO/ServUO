@@ -191,10 +191,17 @@ namespace Server.Mobiles
 								{
 									goto default;
 								}
-								else
-								{
-									m_From.SendGump(new ConfirmReleaseGump(m_From, m_Mobile));
-								}
+                                else
+                                {
+                                    if (m_Mobile.IsDeadPet)
+                                    {
+                                        m_From.SendGump(new Gumps.ConfirmReleaseDeadPetGump(m_From, m_Mobile));
+                                    }
+                                    else
+                                    {
+                                        m_From.SendGump(new Gumps.ConfirmReleaseGump(m_From, m_Mobile));
+                                    }
+                                }
 
 								break;
 							}

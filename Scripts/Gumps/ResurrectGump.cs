@@ -17,6 +17,7 @@ namespace Server.Gumps
 
     public class ResurrectGump : Gump
     {
+        public override int TypeID { get { return 0x8AF; } }
         private readonly Mobile m_Healer;
         private readonly int m_Price;
         private readonly bool m_FromSacrifice;

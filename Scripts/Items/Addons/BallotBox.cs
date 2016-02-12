@@ -231,8 +231,10 @@ namespace Server.Items
                             {
                                 this.m_Box.ClearTopic();
 
-                                from.SendLocalizedMessage(500370, "", 0x35); // Enter a line of text for your ballot, and hit ENTER. Hit ESC after the last line is entered.
-                                from.Prompt = new TopicPrompt(this.m_Box);
+                                // from.SendLocalizedMessage(500370, "", 0x35); // Enter a line of text for your ballot, and hit ENTER. Hit ESC after the last line is entered.
+                                //from.Prompt = new TopicPrompt(this.m_Box);
+                                // Enter a line of text for your ballot, and hit ENTER. Hit ESC after the last line is entered.
+                                from.Prompt = new TopicPrompt(m_Box, 500370);
                             }
 
                             break;
@@ -292,10 +294,14 @@ namespace Server.Items
 
         private class TopicPrompt : Prompt
         {
+            public override int MessageCliloc { get { return m_Cliloc; } }
+            public override int MessageHue { get { return 0x35; } }
             private readonly BallotBox m_Box;
-            public TopicPrompt(BallotBox box)
+            private int m_Cliloc;
+            public TopicPrompt(BallotBox box, int cliloc)
             {
                 this.m_Box = box;
+                m_Cliloc = cliloc;
             }
 
             public override void OnResponse(Mobile from, string text)
@@ -311,15 +317,15 @@ namespace Server.Items
 
                 this.m_Box.AddLineToTopic(text.TrimEnd());
 
-                if (this.m_Box.Topic.Length < MaxTopicLines)
+                if (m_Box.Topic.Length < MaxTopicLines)
                 {
-                    from.SendLocalizedMessage(500377, "", 0x35); // Next line or ESC to finish:
-                    from.Prompt = new TopicPrompt(this.m_Box);
+                    // Next line or ESC to finish:
+                    from.Prompt = new TopicPrompt(m_Box, 500377);
                 }
                 else
                 {
                     from.SendLocalizedMessage(500376, "", 0x35); // Ballot entry complete.
-                    from.SendGump(new InternalGump(this.m_Box, true));
+                    from.SendGump(new InternalGump(m_Box, true));
                 }
             }
 

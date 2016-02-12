@@ -22,7 +22,9 @@ namespace Server
         Knights,
         Scout,
         Sorcerer,
-		Initiation
+		Initiation,
+        Alorons,
+        Dardens
     }
 
     public interface ISetItem

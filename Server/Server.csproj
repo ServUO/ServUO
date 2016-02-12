@@ -163,6 +163,7 @@
     <Compile Include="Gumps\GumpAlphaRegion.cs" />
     <Compile Include="Gumps\GumpBackground.cs" />
     <Compile Include="Gumps\GumpButton.cs" />
+    <Compile Include="Gumps\GumpButtonTileArt.cs" />
     <Compile Include="Gumps\GumpCheck.cs" />
     <Compile Include="Gumps\GumpEntry.cs" />
     <Compile Include="Gumps\GumpGroup.cs" />
@@ -180,8 +181,13 @@
     <Compile Include="Gumps\GumpTextEntry.cs" />
     <Compile Include="Gumps\GumpTextEntryLimited.cs" />
     <Compile Include="Gumps\GumpTooltip.cs" />
+    <Compile Include="Gumps\ECGumpButton.cs" />
+    <Compile Include="Gumps\ECGumpHtmlLocalized.cs" />
+    <Compile Include="Gumps\ECGumpImage.cs" />
+    <Compile Include="Gumps\ECGumpLabel.cs" />
     <Compile Include="Gumps\RelayInfo.cs" />
     <Compile Include="Persistence\Persistence.cs" />
+    <Compile Include="PromptExtensions.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Items\VirtualCheck.cs" />
   </ItemGroup>

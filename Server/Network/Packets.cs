@@ -660,23 +660,26 @@ namespace Server.Network
 			m_Stream.Write(Environment.TickCount);
 		}
 	}
+    #region enhance
+    public sealed class UnicodePrompt : Packet
+    {
+        public UnicodePrompt(Prompt prompt, Mobile to)
+            : base(0xC2)
+        {
+            this.EnsureCapacity(21);
 
-	public sealed class UnicodePrompt : Packet
-	{
-		public UnicodePrompt(Prompt prompt)
-			: base(0xC2)
-		{
-			EnsureCapacity(21);
+            Serial senderSerial = prompt.Sender != null ? prompt.Sender.Serial : to.Serial;
 
-			m_Stream.Write(prompt.Serial);
-			m_Stream.Write(prompt.Serial);
-			m_Stream.Write(0);
-			m_Stream.Write(0);
-			m_Stream.Write((short)0);
-		}
-	}
+            m_Stream.Write((int)senderSerial);
+            m_Stream.Write((int)prompt.TypeId); //0x2C
+            m_Stream.Write((int)0); // type
+            m_Stream.Write((int)0); // language
+            m_Stream.Write((short)0); // text
+        }
+    }
+    #endregion
 
-	public sealed class ChangeCharacter : Packet
+    public sealed class ChangeCharacter : Packet
 	{
 		public ChangeCharacter(IAccount a)
 			: base(0x81)
@@ -1007,75 +1010,83 @@ namespace Server.Network
 		}
 	}
 
-	public sealed class DisplayContextMenuOld : Packet
-	{
-		public DisplayContextMenuOld(ContextMenu menu)
-			: base(0xBF)
-		{
-			var entries = menu.Entries;
+    public sealed class DisplayContextMenuOld : Packet
+    {
+        public DisplayContextMenuOld(ContextMenu menu)
+            : base(0xBF)
+        {
+            ContextMenuEntry[] entries = menu.Entries;
 
-			int length = (byte)entries.Length;
+            int length = (byte)entries.Length;
 
-			EnsureCapacity(12 + (length * 8));
+            EnsureCapacity(12 + (length * 8));
 
-			m_Stream.Write((short)0x14);
-			m_Stream.Write((short)0x01);
+            m_Stream.Write((short)0x14);
+            #region Enhance Client
+            m_Stream.Write((short)0x02);
+            #endregion
 
-			IEntity target = menu.Target as IEntity;
+            var target = menu.Target as IEntity;
 
-			m_Stream.Write((target == null ? Serial.MinusOne : target.Serial));
+            m_Stream.Write((target == null ? Serial.MinusOne : target.Serial));
 
-			m_Stream.Write((byte)length);
+            m_Stream.Write((byte)length);
 
-			Point3D p;
+            Point3D p;
 
-			if (target is Mobile)
-			{
-				p = target.Location;
-			}
-			else if (target is Item)
-			{
-				p = ((Item)target).GetWorldLocation();
-			}
-			else
-			{
-				p = Point3D.Zero;
-			}
+            if (target is Mobile)
+            {
+                p = target.Location;
+            }
+            else if (target is Item)
+            {
+                p = ((Item)target).GetWorldLocation();
+            }
+            else
+            {
+                p = Point3D.Zero;
+            }
 
-			for (int i = 0; i < length; ++i)
-			{
-				ContextMenuEntry e = entries[i];
+            for (int i = 0; i < length; ++i)
+            {
+                ContextMenuEntry e = entries[i];
 
-				m_Stream.Write((short)i);
-				m_Stream.Write((ushort)(e.Number - 3000000));
+                #region Enhance Client
+                if (e.Number <= 65535)
+                    m_Stream.Write((uint)(e.Number + 3000000));
+                else
+                    m_Stream.Write((uint)e.Number);
 
-				int range = e.Range;
+                m_Stream.Write((short)i);
+                #endregion
 
-				if (range == -1)
-				{
-					range = 18;
-				}
+                int range = e.Range;
 
-				CMEFlags flags = (e.Enabled && menu.From.InRange(p, range)) ? CMEFlags.None : CMEFlags.Disabled;
+                if (range == -1)
+                {
+                    range = Core.GlobalUpdateRange; //18
+                }
 
-				int color = e.Color & 0xFFFF;
+                CMEFlags flags = (e.Enabled && menu.From.InRange(p, range)) ? CMEFlags.None : CMEFlags.Disabled;
 
-				if (color != 0xFFFF)
-				{
-					flags |= CMEFlags.Colored;
-				}
+                int color = e.Color & 0xFFFF;
 
-				flags |= e.Flags;
+                if (color != 0xFFFF)
+                {
+                    flags |= CMEFlags.Colored;
+                }
 
-				m_Stream.Write((short)flags);
+                flags |= e.Flags;
 
-				if ((flags & CMEFlags.Colored) != 0)
-				{
-					m_Stream.Write((short)color);
-				}
-			}
-		}
-	}
+                m_Stream.Write((short)flags);
+
+                if ((flags & CMEFlags.Colored) != 0)
+                {
+                    m_Stream.Write((short)color);
+                }
+            }
+        }
+    }
 
 	public sealed class DisplayProfile : Packet
 	{
@@ -1360,6 +1371,32 @@ namespace Server.Network
 		}
 	}
 
+    public sealed class LiftRej : Packet
+    {
+        private static LiftRej[] m_Cache = new LiftRej[6];
+
+        public static LiftRej Instantiate(LRReason reason)
+        {
+            byte idx = (byte)reason;
+            LiftRej p = m_Cache[idx];
+
+            if (p == null)
+            {
+                m_Cache[idx] = p = new LiftRej((byte)reason);
+                p.SetStatic();
+            }
+
+            return p;
+        }
+
+        public LiftRej(byte reason)
+            : base(0x27, 2)
+        {
+            m_Stream.Write(reason);
+        }
+    }
+
+    /*
 	public sealed class LiftRej : Packet
 	{
 		public LiftRej(LRReason reason)
@@ -1368,6 +1405,7 @@ namespace Server.Network
 			m_Stream.Write((byte)reason);
 		}
 	}
+     */
 
 	public sealed class LogoutAck : Packet
 	{
@@ -1621,6 +1659,35 @@ namespace Server.Network
 			m_Stream.Write((short)unknown);
 		}
 	}
+
+    public class GraphicalEffect : Packet
+    {
+        public GraphicalEffect(EffectType type, Serial from, Serial to, int itemID, Point3D fromPoint, Point3D toPoint, int speed, int duration, bool fixedDirection, bool explode)
+            : this(type, from, to, itemID, fromPoint, toPoint, speed, duration, fixedDirection, explode ? 1 : 0)
+        {
+        }
+
+        public GraphicalEffect(EffectType type, Serial from, Serial to, int itemID, Point3D fromPoint, Point3D toPoint, int speed, int duration, bool fixedDirection, int explode)
+            : base(0x70, 28)
+        {
+            m_Stream.Write((byte)type);
+            m_Stream.Write((int)from);
+            m_Stream.Write((int)to);
+            m_Stream.Write((short)itemID);
+            m_Stream.Write((short)fromPoint.X);
+            m_Stream.Write((short)fromPoint.Y);
+            m_Stream.Write((sbyte)fromPoint.Z);
+            m_Stream.Write((short)toPoint.X);
+            m_Stream.Write((short)toPoint.Y);
+            m_Stream.Write((sbyte)toPoint.Z);
+            m_Stream.Write((byte)speed);
+            m_Stream.Write((byte)duration);
+            m_Stream.Write((byte)0);
+            m_Stream.Write((byte)0);
+            m_Stream.Write((bool)fixedDirection);
+            m_Stream.Write((byte)explode);
+        }
+    }
 
 	public class HuedEffect : Packet
 	{
@@ -2134,147 +2201,171 @@ m_Stream.Write( (int) renderMode );
 		}
 	}
 
-	public sealed class ContainerContentUpdate : Packet
-	{
-		public ContainerContentUpdate(Item item)
-			: base(0x25, 20)
-		{
-			Serial parentSerial;
+    public sealed class ContainerContentUpdate : Packet
+    {
+        public ContainerContentUpdate(Item item)
+            : base(0x25, 20)
+        {
+            Serial parentSerial;
 
-			if (item.Parent is Item)
-			{
-				parentSerial = ((Item)item.Parent).Serial;
-			}
-			else
-			{
-				Console.WriteLine("Warning: ContainerContentUpdate on item with !(parent is Item)");
-				parentSerial = Serial.Zero;
-			}
+            if (item.Parent is Item)
+            {
+                parentSerial = ((Item)item.Parent).Serial;
+            }
+            else
+            {
+                Console.WriteLine("Warning: ContainerContentUpdate on item with !(parent is Item)");
+                parentSerial = Serial.Zero;
+            }
 
-			m_Stream.Write(item.Serial);
-			m_Stream.Write((ushort)item.ItemID);
-			m_Stream.Write((byte)0); // signed, itemID offset
-			m_Stream.Write((ushort)item.Amount);
-			m_Stream.Write((short)item.X);
-			m_Stream.Write((short)item.Y);
-			m_Stream.Write(parentSerial);
-			m_Stream.Write((ushort)(item.QuestItem ? Item.QuestItemHue : item.Hue));
-		}
-	}
+            m_Stream.Write(item.Serial);
+            m_Stream.Write((ushort)item.ItemID);
+            m_Stream.Write((byte)0); // signed, itemID offset
+            m_Stream.Write((ushort)item.Amount);
+            m_Stream.Write((short)item.X);
+            m_Stream.Write((short)item.Y);
+            #region Enhance Client
+            m_Stream.Write((byte)item.GridLocation);
+            #endregion
+            m_Stream.Write(parentSerial);
+            m_Stream.Write((ushort)(item.QuestItem ? Item.QuestItemHue : item.Hue));
+        }
+    }
 
-	public sealed class ContainerContentUpdate6017 : Packet
-	{
-		public ContainerContentUpdate6017(Item item)
-			: base(0x25, 21)
-		{
-			Serial parentSerial;
+    public sealed class ContainerContentUpdate6017 : Packet
+    {
+        public ContainerContentUpdate6017(Item item)
+            : base(0x25, 21)
+        {
+            Serial parentSerial;
 
-			if (item.Parent is Item)
-			{
-				parentSerial = ((Item)item.Parent).Serial;
-			}
-			else
-			{
-				Console.WriteLine("Warning: ContainerContentUpdate on item with !(parent is Item)");
-				parentSerial = Serial.Zero;
-			}
+            if (item.Parent is Item)
+            {
+                parentSerial = ((Item)item.Parent).Serial;
+            }
+            else
+            {
+                Console.WriteLine("Warning: ContainerContentUpdate on item with !(parent is Item)");
+                parentSerial = Serial.Zero;
+            }
 
-			m_Stream.Write(item.Serial);
-			m_Stream.Write((ushort)item.ItemID);
-			m_Stream.Write((byte)0); // signed, itemID offset
-			m_Stream.Write((ushort)item.Amount);
-			m_Stream.Write((short)item.X);
-			m_Stream.Write((short)item.Y);
-			m_Stream.Write((byte)0); // Grid Location?
-			m_Stream.Write(parentSerial);
-			m_Stream.Write((ushort)(item.QuestItem ? Item.QuestItemHue : item.Hue));
-		}
-	}
+            m_Stream.Write(item.Serial);
+            m_Stream.Write((ushort)item.ItemID);
+            m_Stream.Write((byte)0); // signed, itemID offset
+            m_Stream.Write((ushort)item.Amount);
+            m_Stream.Write((short)item.X);
+            m_Stream.Write((short)item.Y);
+            #region Enhance Client
+            m_Stream.Write((byte)item.GridLocation);
+            #endregion
+            m_Stream.Write(parentSerial);
+            m_Stream.Write((ushort)(item.QuestItem ? Item.QuestItemHue : item.Hue));
+        }
+    }
 
-	public sealed class ContainerContent : Packet
-	{
-		public ContainerContent(Mobile beholder, Item beheld)
-			: base(0x3C)
-		{
-			var items = beheld.Items;
-			int count = items.Count;
+    public sealed class ContainerContent : Packet
+    {
+        public ContainerContent(Mobile beholder, Item beheld)
+            : base(0x3C)
+        {
+            List<Item> items = beheld.Items;
+            int count = items.Count;
 
-			EnsureCapacity(5 + (count * 19));
+            EnsureCapacity(5 + (count * 19));
 
-			long pos = m_Stream.Position;
+            long pos = m_Stream.Position;
 
-			int written = 0;
+            int written = 0;
 
-			m_Stream.Write((ushort)0);
+            m_Stream.Write((ushort)0);
 
-			for (int i = 0; i < count; ++i)
-			{
-				Item child = items[i];
+            for (int i = 0; i < count; ++i)
+            {
+                Item child = items[i];
 
-				if (!child.Deleted && beholder.CanSee(child))
-				{
-					Point3D loc = child.Location;
+                if (!child.Deleted && beholder.CanSee(child))
+                {
 
-					m_Stream.Write(child.Serial);
-					m_Stream.Write((ushort)child.ItemID);
-					m_Stream.Write((byte)0); // signed, itemID offset
-					m_Stream.Write((ushort)child.Amount);
-					m_Stream.Write((short)loc.m_X);
-					m_Stream.Write((short)loc.m_Y);
-					m_Stream.Write(beheld.Serial);
-					m_Stream.Write((ushort)(child.QuestItem ? Item.QuestItemHue : child.Hue));
+                    Point3D loc = child.Location;
 
-					++written;
-				}
-			}
+                    #region Enhance Client
+                    if (child.GridLocation == 0xFF)
+                        child.GridLocation = (byte)(count - written);
+                    #endregion
 
-			m_Stream.Seek(pos, SeekOrigin.Begin);
-			m_Stream.Write((ushort)written);
-		}
-	}
+                    m_Stream.Write(child.Serial);
+                    m_Stream.Write((ushort)child.ItemID);
+                    m_Stream.Write((byte)0); // signed, itemID offset
+                    m_Stream.Write((ushort)child.Amount);
+                    m_Stream.Write((short)loc.m_X);
+                    m_Stream.Write((short)loc.m_Y);
+                    #region Enhance Client
+                    m_Stream.Write((byte)child.GridLocation);
+                    #endregion
+                    m_Stream.Write(beheld.Serial);
+                    m_Stream.Write((ushort)(child.QuestItem ? Item.QuestItemHue : child.Hue));
+                    #region Enhance Client
+                    ++written;
+                    #endregion
+                }
+            }
 
-	public sealed class ContainerContent6017 : Packet
-	{
-		public ContainerContent6017(Mobile beholder, Item beheld)
-			: base(0x3C)
-		{
-			var items = beheld.Items;
-			int count = items.Count;
+            m_Stream.Seek(pos, SeekOrigin.Begin);
+            m_Stream.Write((ushort)written);
+        }
+    }
 
-			EnsureCapacity(5 + (count * 20));
+    public sealed class ContainerContent6017 : Packet
+    {
+        public ContainerContent6017(Mobile beholder, Item beheld)
+            : base(0x3C)
+        {
+            List<Item> items = beheld.Items;
+            int count = items.Count;
 
-			long pos = m_Stream.Position;
+            EnsureCapacity(5 + (count * 20));
 
-			int written = 0;
+            long pos = m_Stream.Position;
 
-			m_Stream.Write((ushort)0);
+            int written = 0;
 
-			for (int i = 0; i < count; ++i)
-			{
-				Item child = items[i];
+            m_Stream.Write((ushort)0);
 
-				if (!child.Deleted && beholder.CanSee(child))
-				{
-					Point3D loc = child.Location;
+            for (int i = 0; i < count; ++i)
+            {
+                Item child = items[i];
 
-					m_Stream.Write(child.Serial);
-					m_Stream.Write((ushort)child.ItemID);
-					m_Stream.Write((byte)0); // signed, itemID offset
-					m_Stream.Write((ushort)child.Amount);
-					m_Stream.Write((short)loc.m_X);
-					m_Stream.Write((short)loc.m_Y);
-					m_Stream.Write((byte)0); // Grid Location?
-					m_Stream.Write(beheld.Serial);
-					m_Stream.Write((ushort)(child.QuestItem ? Item.QuestItemHue : child.Hue));
+                if (!child.Deleted && beholder.CanSee(child))
+                {
+                    #region Enhance Client
+                    ++written;
+                    #endregion
 
-					++written;
-				}
-			}
+                    Point3D loc = child.Location;
 
-			m_Stream.Seek(pos, SeekOrigin.Begin);
-			m_Stream.Write((ushort)written);
-		}
-	}
+                    #region Enhance Client
+                    if (child.GridLocation == 0xFF)
+                        child.GridLocation = (byte)(count - written);
+                    #endregion
+
+                    m_Stream.Write(child.Serial);
+                    m_Stream.Write((ushort)child.ItemID);
+                    m_Stream.Write((byte)0); // signed, itemID offset
+                    m_Stream.Write((ushort)child.Amount);
+                    m_Stream.Write((short)loc.m_X);
+                    m_Stream.Write((short)loc.m_Y);
+                    #region Enhance Client
+                    m_Stream.Write((byte)child.GridLocation);
+                    #endregion
+                    m_Stream.Write(beheld.Serial);
+                    m_Stream.Write((ushort)(child.QuestItem ? Item.QuestItemHue : child.Hue));
+                }
+            }
+
+            m_Stream.Seek(pos, SeekOrigin.Begin);
+            m_Stream.Write((ushort)written);
+        }
+    }
 
 	public sealed class SetWarMode : Packet
 	{
@@ -2652,6 +2743,7 @@ m_Stream.Write( (int) renderMode );
 		public DragEffect(IEntity src, IEntity trg, int itemID, int hue, int amount)
 			: base(0x23, 26)
 		{
+            /*
 			m_Stream.Write((short)itemID);
 			m_Stream.Write((byte)0);
 			m_Stream.Write((short)hue);
@@ -2664,6 +2756,19 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((short)trg.X);
 			m_Stream.Write((short)trg.Y);
 			m_Stream.Write((sbyte)trg.Z);
+             */
+            m_Stream.Write((short)itemID);
+            m_Stream.Write((byte)0);
+            m_Stream.Write((short)hue);
+            m_Stream.Write((short)amount);
+            m_Stream.Write((int)src.Serial);
+            m_Stream.Write((short)src.X);
+            m_Stream.Write((short)src.Y);
+            m_Stream.Write((sbyte)src.Z);
+            m_Stream.Write((int)trg.Serial);
+            m_Stream.Write((short)trg.X);
+            m_Stream.Write((short)trg.Y);
+            m_Stream.Write((sbyte)trg.Z);
 		}
 	}
 
@@ -2681,291 +2786,300 @@ m_Stream.Write( (int) renderMode );
 		void Flush();
 	}
 
-	public sealed class DisplayGumpPacked : Packet, IGumpWriter
-	{
-		public int TextEntries { get; set; }
-		public int Switches { get; set; }
+    public sealed class DisplayGumpPacked : Packet, IGumpWriter
+    {
+        public int TextEntries { get; set; }
+        public int Switches { get; set; }
 
-		private readonly Gump m_Gump;
+        private readonly Gump m_Gump;
 
-		private readonly PacketWriter m_Layout;
-		private readonly PacketWriter m_Strings;
+        private readonly PacketWriter m_Layout;
+        private readonly PacketWriter m_Strings;
 
-		private int m_StringCount;
+        private int m_StringCount;
 
-		public DisplayGumpPacked(Gump gump)
-			: base(0xDD)
-		{
-			m_Gump = gump;
+        public DisplayGumpPacked(Gump gump)
+            : base(0xDD)
+        {
+            m_Gump = gump;
 
-			m_Layout = PacketWriter.CreateInstance(8192);
-			m_Strings = PacketWriter.CreateInstance(8192);
-		}
+            m_Layout = PacketWriter.CreateInstance(8192);
+            m_Strings = PacketWriter.CreateInstance(8192);
+        }
 
-		private static readonly byte[] m_True = Gump.StringToBuffer(" 1");
-		private static readonly byte[] m_False = Gump.StringToBuffer(" 0");
+        private static readonly byte[] m_True = Gump.StringToBuffer(" 1");
+        private static readonly byte[] m_False = Gump.StringToBuffer(" 0");
 
-		private static readonly byte[] m_BeginTextSeparator = Gump.StringToBuffer(" @");
-		private static readonly byte[] m_EndTextSeparator = Gump.StringToBuffer("@");
+        private static readonly byte[] m_BeginTextSeparator = Gump.StringToBuffer(" @");
+        private static readonly byte[] m_EndTextSeparator = Gump.StringToBuffer("@");
 
-		private static readonly byte[] m_Buffer = new byte[48];
+        private static readonly byte[] m_Buffer = new byte[48];
 
-		static DisplayGumpPacked()
-		{
-			m_Buffer[0] = (byte)' ';
-		}
+        static DisplayGumpPacked()
+        {
+            m_Buffer[0] = (byte)' ';
+        }
 
-		public void AppendLayout(bool val)
-		{
-			AppendLayout(val ? m_True : m_False);
-		}
+        public void AppendLayout(bool val)
+        {
+            AppendLayout(val ? m_True : m_False);
+        }
 
-		public void AppendLayout(int val)
-		{
-			string toString = val.ToString();
-			int bytes = Encoding.ASCII.GetBytes(toString, 0, toString.Length, m_Buffer, 1) + 1;
+        public void AppendLayout(int val)
+        {
+            string toString = val.ToString();
+            int bytes = Encoding.ASCII.GetBytes(toString, 0, toString.Length, m_Buffer, 1) + 1;
 
-			m_Layout.Write(m_Buffer, 0, bytes);
-		}
+            m_Layout.Write(m_Buffer, 0, bytes);
+        }
 
-		public void AppendLayoutNS(int val)
-		{
-			string toString = val.ToString();
-			int bytes = Encoding.ASCII.GetBytes(toString, 0, toString.Length, m_Buffer, 1);
+        public void AppendLayoutNS(int val)
+        {
+            string toString = val.ToString();
+            int bytes = Encoding.ASCII.GetBytes(toString, 0, toString.Length, m_Buffer, 1);
 
-			m_Layout.Write(m_Buffer, 1, bytes);
-		}
+            m_Layout.Write(m_Buffer, 1, bytes);
+        }
 
-		public void AppendLayout(string text)
-		{
-			AppendLayout(m_BeginTextSeparator);
+        public void AppendLayout(string text)
+        {
+            AppendLayout(m_BeginTextSeparator);
 
-			m_Layout.WriteAsciiFixed(text, text.Length);
+            m_Layout.WriteAsciiFixed(text, text.Length);
 
-			AppendLayout(m_EndTextSeparator);
-		}
+            AppendLayout(m_EndTextSeparator);
+        }
 
-		public void AppendLayout(byte[] buffer)
-		{
-			m_Layout.Write(buffer, 0, buffer.Length);
-		}
+        public void AppendLayout(byte[] buffer)
+        {
+            m_Layout.Write(buffer, 0, buffer.Length);
+        }
 
-		public void WriteStrings(List<string> strings)
-		{
-			m_StringCount = strings.Count;
+        public void WriteStrings(List<string> strings)
+        {
+            m_StringCount = strings.Count;
 
-			for (int i = 0; i < strings.Count; ++i)
-			{
-				string v = strings[i];
+            for (int i = 0; i < strings.Count; ++i)
+            {
+                string v = strings[i];
 
-				if (v == null)
-				{
-					v = String.Empty;
-				}
+                if (v == null)
+                {
+                    v = String.Empty;
+                }
 
-				m_Strings.Write((ushort)v.Length);
-				m_Strings.WriteBigUniFixed(v, v.Length);
-			}
-		}
+                m_Strings.Write((ushort)v.Length);
+                m_Strings.WriteBigUniFixed(v, v.Length);
+            }
+        }
 
-		public void Flush()
-		{
-			EnsureCapacity(28 + (int)m_Layout.Length + (int)m_Strings.Length);
+        public void Flush()
+        {
+            EnsureCapacity(28 + (int)m_Layout.Length + (int)m_Strings.Length);
 
-			m_Stream.Write(m_Gump.Serial);
-			m_Stream.Write(m_Gump.TypeID);
-			m_Stream.Write(m_Gump.X);
-			m_Stream.Write(m_Gump.Y);
+            m_Stream.Write(m_Gump.Serial);
+            m_Stream.Write(m_Gump.TypeID);
+            m_Stream.Write(m_Gump.X);
+            m_Stream.Write(m_Gump.Y);
 
-			// Note: layout MUST be null terminated
-			m_Layout.Write((byte)0);
-			WritePacked(m_Layout);
+            // Note: layout MUST be null terminated
+            m_Layout.Write((byte)0);
+            WritePacked(m_Layout);
 
-			m_Stream.Write(m_StringCount);
+            m_Stream.Write((int)m_StringCount);
 
-			WritePacked(m_Strings);
+            WritePacked(m_Strings);
 
-			PacketWriter.ReleaseInstance(m_Layout);
-			PacketWriter.ReleaseInstance(m_Strings);
-		}
+            PacketWriter.ReleaseInstance(m_Layout);
+            PacketWriter.ReleaseInstance(m_Strings);
 
-		private const int GumpBufferSize = 0x5000;
-		private static readonly BufferPool m_PackBuffers = new BufferPool("Gump", 4, GumpBufferSize);
+            m_Stream.Write(m_StringCount);
 
-		private void WritePacked(PacketWriter src)
-		{
-			var buffer = src.UnderlyingStream.GetBuffer();
-			int length = (int)src.Length;
+            WritePacked(m_Strings);
 
-			if (length == 0)
-			{
-				m_Stream.Write(0);
-				return;
-			}
+            PacketWriter.ReleaseInstance(m_Layout);
+            PacketWriter.ReleaseInstance(m_Strings);
 
-			int wantLength = 1 + ((buffer.Length * 1024) / 1000);
+        }
 
-			wantLength += 4095;
-			wantLength &= ~4095;
+        private const int GumpBufferSize = 0x5000;
+        private static readonly BufferPool m_PackBuffers = new BufferPool("Gump", 4, GumpBufferSize);
 
-			byte[] m_PackBuffer;
-			lock (m_PackBuffers)
-				m_PackBuffer = m_PackBuffers.AcquireBuffer();
+        private void WritePacked(PacketWriter src)
+        {
+            byte[] buffer = src.UnderlyingStream.GetBuffer();
+            var length = (int)src.Length;
 
-			if (m_PackBuffer.Length < wantLength)
-			{
-				Console.WriteLine("Notice: DisplayGumpPacked creating new {0} byte buffer", wantLength);
-				m_PackBuffer = new byte[wantLength];
-			}
+            if (length == 0)
+            {
+                m_Stream.Write(0);
+                return;
+            }
 
-			int packLength = m_PackBuffer.Length;
+            int wantLength = 1 + ((buffer.Length * 1024) / 1000);
 
-			Compression.Pack(m_PackBuffer, ref packLength, buffer, length, ZLibQuality.Default);
+            wantLength += 4095;
+            wantLength &= ~4095;
 
-			m_Stream.Write((4 + packLength));
-			m_Stream.Write(length);
-			m_Stream.Write(m_PackBuffer, 0, packLength);
+            byte[] m_PackBuffer;
 
-			lock (m_PackBuffers)
-				m_PackBuffers.ReleaseBuffer(m_PackBuffer);
-		}
-	}
+            lock (m_PackBuffers)
+                m_PackBuffer = m_PackBuffers.AcquireBuffer();
 
-	public sealed class DisplayGumpFast : Packet, IGumpWriter
-	{
-		private int m_LayoutLength;
-
-		public int TextEntries { get; set; }
-		public int Switches { get; set; }
-
-		public DisplayGumpFast(Gump g)
-			: base(0xB0)
-		{
-			m_Buffer[0] = (byte)' ';
-
-			EnsureCapacity(4096);
-
-			m_Stream.Write(g.Serial);
-			m_Stream.Write(g.TypeID);
-			m_Stream.Write(g.X);
-			m_Stream.Write(g.Y);
-			m_Stream.Write((ushort)0xFFFF);
-		}
-
-		private static readonly byte[] m_True = Gump.StringToBuffer(" 1");
-		private static readonly byte[] m_False = Gump.StringToBuffer(" 0");
-
-		private static readonly byte[] m_BeginTextSeparator = Gump.StringToBuffer(" @");
-		private static readonly byte[] m_EndTextSeparator = Gump.StringToBuffer("@");
-
-		private readonly byte[] m_Buffer = new byte[48];
-
-		public void AppendLayout(bool val)
-		{
-			AppendLayout(val ? m_True : m_False);
-		}
-
-		public void AppendLayout(int val)
-		{
-			string toString = val.ToString();
-			int bytes = Encoding.ASCII.GetBytes(toString, 0, toString.Length, m_Buffer, 1) + 1;
-
-			m_Stream.Write(m_Buffer, 0, bytes);
-			m_LayoutLength += bytes;
-		}
-
-		public void AppendLayoutNS(int val)
-		{
-			string toString = val.ToString();
-			int bytes = Encoding.ASCII.GetBytes(toString, 0, toString.Length, m_Buffer, 1);
-
-			m_Stream.Write(m_Buffer, 1, bytes);
-			m_LayoutLength += bytes;
-		}
-
-		public void AppendLayout(string text)
-		{
-			AppendLayout(m_BeginTextSeparator);
-
-			int length = text.Length;
-			m_Stream.WriteAsciiFixed(text, length);
-			m_LayoutLength += length;
-
-			AppendLayout(m_EndTextSeparator);
-		}
-
-		public void AppendLayout(byte[] buffer)
-		{
-			int length = buffer.Length;
-			m_Stream.Write(buffer, 0, length);
-			m_LayoutLength += length;
-		}
-
-		public void WriteStrings(List<string> text)
-		{
-			m_Stream.Seek(19, SeekOrigin.Begin);
-			m_Stream.Write((ushort)m_LayoutLength);
-			m_Stream.Seek(0, SeekOrigin.End);
-
-			m_Stream.Write((ushort)text.Count);
-
-			for (int i = 0; i < text.Count; ++i)
-			{
-				string v = text[i];
-
-				if (v == null)
-				{
-					v = String.Empty;
-				}
-
-				int length = (ushort)v.Length;
-
-				m_Stream.Write((ushort)length);
-				m_Stream.WriteBigUniFixed(v, length);
-			}
-		}
-
-		public void Flush()
-		{ }
-	}
-
-	public sealed class DisplayGump : Packet
-	{
-		public DisplayGump(Gump g, string layout, string[] text)
-			: base(0xB0)
-		{
-			if (layout == null)
-			{
-				layout = "";
-			}
-
-			EnsureCapacity(256);
-
-			m_Stream.Write(g.Serial);
-			m_Stream.Write(g.TypeID);
-			m_Stream.Write(g.X);
-			m_Stream.Write(g.Y);
-			m_Stream.Write((ushort)(layout.Length + 1));
-			m_Stream.WriteAsciiNull(layout);
-
-			m_Stream.Write((ushort)text.Length);
-
-			for (int i = 0; i < text.Length; ++i)
-			{
-				string v = text[i];
-
-				if (v == null)
-				{
-					v = "";
-				}
-
-				int length = (ushort)v.Length;
-
-				m_Stream.Write((ushort)length);
-				m_Stream.WriteBigUniFixed(v, length);
-			}
-		}
-	}
+            if (m_PackBuffer.Length < wantLength)
+            {
+                Console.WriteLine("Notice: DisplayGumpPacked creating new {0} byte buffer", wantLength);
+                m_PackBuffer = new byte[wantLength];
+            }
+
+            int packLength = m_PackBuffer.Length;
+
+            Compression.Pack(m_PackBuffer, ref packLength, buffer, length, ZLibQuality.Default);
+
+            m_Stream.Write((4 + packLength));
+            m_Stream.Write(length);
+            m_Stream.Write(m_PackBuffer, 0, packLength);
+
+            lock (m_PackBuffers)
+                m_PackBuffers.ReleaseBuffer(m_PackBuffer);
+        }
+    }
+
+    public sealed class DisplayGumpFast : Packet, IGumpWriter
+    {
+        private int m_LayoutLength;
+
+        public int TextEntries { get; set; }
+        public int Switches { get; set; }
+
+        public DisplayGumpFast(Gump g)
+            : base(0xB0)
+        {
+            m_Buffer[0] = (byte)' ';
+
+            EnsureCapacity(4096);
+
+            m_Stream.Write(g.Serial);
+            m_Stream.Write(g.TypeID);
+            m_Stream.Write(g.X);
+            m_Stream.Write(g.Y);
+            m_Stream.Write((ushort)0xFFFF);
+        }
+
+        private static readonly byte[] m_True = Gump.StringToBuffer(" 1");
+        private static readonly byte[] m_False = Gump.StringToBuffer(" 0");
+
+        private static readonly byte[] m_BeginTextSeparator = Gump.StringToBuffer(" @");
+        private static readonly byte[] m_EndTextSeparator = Gump.StringToBuffer("@");
+
+        private readonly byte[] m_Buffer = new byte[48];
+
+        public void AppendLayout(bool val)
+        {
+            AppendLayout(val ? m_True : m_False);
+        }
+
+        public void AppendLayout(int val)
+        {
+            string toString = val.ToString();
+            int bytes = Encoding.ASCII.GetBytes(toString, 0, toString.Length, m_Buffer, 1) + 1;
+
+            m_Stream.Write(m_Buffer, 0, bytes);
+            m_LayoutLength += bytes;
+        }
+
+        public void AppendLayoutNS(int val)
+        {
+            string toString = val.ToString();
+            int bytes = Encoding.ASCII.GetBytes(toString, 0, toString.Length, m_Buffer, 1);
+
+            m_Stream.Write(m_Buffer, 1, bytes);
+            m_LayoutLength += bytes;
+        }
+
+        public void AppendLayout(string text)
+        {
+            AppendLayout(m_BeginTextSeparator);
+
+            int length = text.Length;
+            m_Stream.WriteAsciiFixed(text, length);
+            m_LayoutLength += length;
+
+            AppendLayout(m_EndTextSeparator);
+        }
+
+        public void AppendLayout(byte[] buffer)
+        {
+            int length = buffer.Length;
+            m_Stream.Write(buffer, 0, length);
+            m_LayoutLength += length;
+        }
+
+        public void WriteStrings(List<string> text)
+        {
+            m_Stream.Seek(19, SeekOrigin.Begin);
+            m_Stream.Write((ushort)m_LayoutLength);
+            m_Stream.Seek(0, SeekOrigin.End);
+
+            m_Stream.Write((ushort)text.Count);
+
+            for (int i = 0; i < text.Count; ++i)
+            {
+                string v = text[i];
+
+                if (v == null)
+                {
+                    v = String.Empty;
+                }
+
+                int length = (ushort)v.Length;
+
+                m_Stream.Write((ushort)length);
+                m_Stream.WriteBigUniFixed(v, length);
+            }
+        }
+
+        public void Flush()
+        { }
+    }
+
+    public sealed class DisplayGump : Packet
+    {
+        public DisplayGump(Gump g, string layout, string[] text)
+            : base(0xB0)
+        {
+            if (layout == null)
+            {
+                layout = "";
+            }
+
+            EnsureCapacity(256);
+
+            m_Stream.Write(g.Serial);
+            m_Stream.Write(g.TypeID);
+            m_Stream.Write(g.X);
+            m_Stream.Write(g.Y);
+            m_Stream.Write((ushort)(layout.Length + 1));
+            m_Stream.WriteAsciiNull(layout);
+
+            m_Stream.Write((ushort)text.Length);
+
+            for (int i = 0; i < text.Length; ++i)
+            {
+                string v = text[i];
+
+                if (v == null)
+                {
+                    v = "";
+                }
+
+                int length = (ushort)v.Length;
+
+                m_Stream.Write((ushort)length);
+                m_Stream.WriteBigUniFixed(v, length);
+            }
+        }
+    }
 
 	public sealed class DisplayPaperdoll : Packet
 	{
@@ -3504,131 +3618,196 @@ m_Stream.Write( (int) renderMode );
 		}
 	}
 
-	public sealed class MobileStatus : Packet
-	{
-		public MobileStatus(Mobile beholder, Mobile beheld)
-			: this(beholder, beheld, beheld.NetState)
-		{ }
+    public sealed class MobileStatus : Packet
+    {
+        public MobileStatus(Mobile beholder, Mobile beheld)
+            : this(beholder, beheld, beheld.NetState)
+        { }
 
-		public MobileStatus(Mobile beholder, Mobile beheld, NetState ns)
-			: base(0x11)
-		{
-			string name = beheld.Name;
-			if (name == null)
-			{
-				name = "";
-			}
+        public MobileStatus(Mobile beholder, Mobile beheld, NetState ns)
+            : base(0x11)
+        {
+            string name = beheld.Name;
+            if (name == null)
+            {
+                name = "";
+            }
 
-			int type;
+            int type;
 
-			if (beholder != beheld)
-			{
-				type = 0;
-				EnsureCapacity(43);
-			}
-			else if (Core.HS && ns != null && ns.ExtendedStatus)
-			{
-				type = 6;
-				EnsureCapacity(121);
-			}
-			else if (Core.ML && ns != null && ns.SupportsExpansion(Expansion.ML))
-			{
-				type = 5;
-				EnsureCapacity(91);
-			}
-			else
-			{
-				type = Core.AOS ? 4 : 3;
-				EnsureCapacity(88);
-			}
+            // bool isEnhancedClient = beholder.NetState != null && beholder.NetState.Version.IsEnhanced;
 
-			m_Stream.Write(beheld.Serial);
+            if (beholder != beheld)
+            {
+                type = 0;
+                EnsureCapacity(43);
+            }
+            //else if (isEnhancedClient)
+            //{
+            //type = 7;
+            //EnsureCapacity(149);
+            //}
+            else if (Core.HS && ns != null && ns.ExtendedStatus)
+            {
+                type = 6;
+                EnsureCapacity(121);
+            }
+            else if (Core.ML && ns != null && ns.SupportsExpansion(Expansion.ML))
+            {
+                type = 5;
+                EnsureCapacity(91);
+            }
+            else
+            {
+                type = Core.AOS ? 4 : 3;
+                EnsureCapacity(88);
+            }
 
-			m_Stream.WriteAsciiFixed(name, 30);
+            m_Stream.Write(beheld.Serial);
 
-			if (beholder == beheld)
-			{
-				WriteAttr(beheld.Hits, beheld.HitsMax);
-			}
-			else
-			{
-				WriteAttrNorm(beheld.Hits, beheld.HitsMax);
-			}
+            m_Stream.WriteAsciiFixed(name, 30);
 
-			m_Stream.Write(beheld.CanBeRenamedBy(beholder));
+            if (beholder == beheld)
+            {
+                WriteAttr(beheld.Hits, beheld.HitsMax);
+            }
+            else
+            {
+                WriteAttrNorm(beheld.Hits, beheld.HitsMax);
+            }
 
-			m_Stream.Write((byte)type);
+            m_Stream.Write(beheld.CanBeRenamedBy(beholder));
 
-			if (type > 0)
-			{
-				m_Stream.Write(beheld.Female);
+            m_Stream.Write((byte)type);
 
-				m_Stream.Write((short)beheld.Str);
-				m_Stream.Write((short)beheld.Dex);
-				m_Stream.Write((short)beheld.Int);
+            if (type > 0)
+            {
+                m_Stream.Write(beheld.Female);
 
-				WriteAttr(beheld.Stam, beheld.StamMax);
-				WriteAttr(beheld.Mana, beheld.ManaMax);
+                m_Stream.Write((short)beheld.Str);
+                m_Stream.Write((short)beheld.Dex);
+                m_Stream.Write((short)beheld.Int);
 
-				m_Stream.Write(beheld.TotalGold);
-				m_Stream.Write((short)(Core.AOS ? beheld.PhysicalResistance : (int)(beheld.ArmorRating + 0.5)));
-				m_Stream.Write((short)(Mobile.BodyWeight + beheld.TotalWeight));
+                WriteAttr(beheld.Stam, beheld.StamMax);
+                WriteAttr(beheld.Mana, beheld.ManaMax);
 
-				if (type >= 5)
-				{
-					m_Stream.Write((short)beheld.MaxWeight);
-					m_Stream.Write((byte)(beheld.Race.RaceID + 1)); // Would be 0x00 if it's a non-ML enabled account but...
-				}
+                m_Stream.Write(beheld.TotalGold);
+                m_Stream.Write((short)(Core.AOS ? beheld.PhysicalResistance : (int)(beheld.ArmorRating + 0.5)));
+                m_Stream.Write((short)(Mobile.BodyWeight + beheld.TotalWeight));
 
-				m_Stream.Write((short)beheld.StatCap);
+                if (type >= 5)
+                {
+                    m_Stream.Write((short)beheld.MaxWeight);
+                    m_Stream.Write((byte)(beheld.Race.RaceID + 1)); // Would be 0x00 if it's a non-ML enabled account but...
+                }
 
-				m_Stream.Write((byte)beheld.Followers);
-				m_Stream.Write((byte)beheld.FollowersMax);
+                m_Stream.Write((short)beheld.StatCap);
 
-				if (type >= 4)
-				{
-					m_Stream.Write((short)beheld.FireResistance); // Fire
-					m_Stream.Write((short)beheld.ColdResistance); // Cold
-					m_Stream.Write((short)beheld.PoisonResistance); // Poison
-					m_Stream.Write((short)beheld.EnergyResistance); // Energy
-					m_Stream.Write((short)beheld.Luck); // Luck
+                m_Stream.Write((byte)beheld.Followers);
+                m_Stream.Write((byte)beheld.FollowersMax);
 
-					IWeapon weapon = beheld.Weapon;
+                if (type >= 4)
+                {
+                    m_Stream.Write((short)beheld.FireResistance); // Fire
+                    m_Stream.Write((short)beheld.ColdResistance); // Cold
+                    m_Stream.Write((short)beheld.PoisonResistance); // Poison
+                    m_Stream.Write((short)beheld.EnergyResistance); // Energy
+                    m_Stream.Write((short)beheld.Luck); // Luck
 
-					int min = 0, max = 0;
+                    IWeapon weapon = beheld.Weapon;
 
-					if (weapon != null)
-					{
-						weapon.GetStatusDamage(beheld, out min, out max);
-					}
+                    int min = 0, max = 0;
 
-					m_Stream.Write((short)min); // Damage min
-					m_Stream.Write((short)max); // Damage max
+                    if (weapon != null)
+                    {
+                        weapon.GetStatusDamage(beheld, out min, out max);
+                    }
 
-					m_Stream.Write(beheld.TithingPoints);
-				}
+                    m_Stream.Write((short)min); // Damage min
+                    m_Stream.Write((short)max); // Damage max
 
-				if (type >= 6)
-				{
-					for (int i = 0; i < 15; ++i)
-					{
-						m_Stream.Write((short)beheld.GetAOSStatus(i));
-					}
-				}
-			}
-		}
+                    m_Stream.Write(beheld.TithingPoints);
+                }
 
-		private void WriteAttr(int current, int maximum)
-		{
-			m_Stream.Write((short)current);
-			m_Stream.Write((short)maximum);
-		}
+                if (type >= 6)
+                {
+                    for (int i = 0; i < 15; ++i)
+                    {
+                        m_Stream.Write((short)beheld.GetAOSStatus(i));
+                    }
 
-		private void WriteAttrNorm(int current, int maximum)
-		{
-			AttributeNormalizer.WriteReverse(m_Stream, current, maximum);
-		}
-	}
+                    //if (isEnhancedClient)
+                    //{
+                    /*
+                        m_Stream.Write((short)beheld.AttackChance); // Hit Chance Increase
+                        m_Stream.Write((short)beheld.WeaponSpeed); // Swing Speed Increase
+                        m_Stream.Write((short)beheld.WeaponDamage); // Damage Increase
+                        m_Stream.Write((short)beheld.LowerRegCost); // Lower Reagent Cost
+                        m_Stream.Write((short)beheld.RegenHits); // Hit Points Regeneration
+                        m_Stream.Write((short)beheld.RegenStam); // Stamina Regeneration
+                        m_Stream.Write((short)beheld.RegenMana); // Mana Regeneration
+                        m_Stream.Write((short)beheld.ReflectPhysical); // Reflect Physical Damage
+                        m_Stream.Write((short)beheld.EnhancePotions); // Enhance Potions
+                        m_Stream.Write((short)beheld.DefendChance); // Defense Chance Increase
+                        m_Stream.Write((short)beheld.SpellDamage); // Spell Damage Increase
+                        m_Stream.Write((short)beheld.CastRecovery); // Faster Cast Recovery
+                        m_Stream.Write((short)beheld.CastSpeed); // Faster Casting
+                        m_Stream.Write((short)beheld.LowerManaCost); // Lower Mana Cost
+                        m_Stream.Write((short)beheld.BonusStr); // Strength Increase
+                        m_Stream.Write((short)beheld.BonusDex); // Dexterity Increase
+                        m_Stream.Write((short)beheld.BonusInt); // Intelligence Increase
+                        m_Stream.Write((short)beheld.BonusHits); // Hit Points Increase
+                        m_Stream.Write((short)beheld.BonusStam); // Stamina Increase
+                        m_Stream.Write((short)beheld.BonusMana); // Mana Increase
+                        m_Stream.Write((short)beheld.MaxHitIncrease); // Maximum Hit Points Increase
+                        m_Stream.Write((short)beheld.MaxStamIncrease); // Maximum Stamina Increase
+                        m_Stream.Write((short)beheld.MaxManaIncrease); // Maximum Mana Increase
+                     */
+                    //}
+
+                    #region EC Support
+                    if (beheld.NetState != null && beheld.NetState.IsKRClient)
+                    {
+                        m_Stream.Write((short)beheld.AttackChance); // Hit Chance Increase
+                        m_Stream.Write((short)beheld.WeaponSpeed); // Swing Speed Increase
+                        m_Stream.Write((short)beheld.WeaponDamage); // Damage Increase
+                        m_Stream.Write((short)beheld.LowerRegCost); // Lower Reagent Cost
+                        m_Stream.Write((short)beheld.RegenHits); // Hit Points Regeneration
+                        m_Stream.Write((short)beheld.RegenStam); // Stamina Regeneration
+                        m_Stream.Write((short)beheld.RegenMana); // Mana Regeneration
+                        m_Stream.Write((short)beheld.ReflectPhysical); // Reflect Physical Damage
+                        m_Stream.Write((short)beheld.EnhancePotions); // Enhance Potions
+                        m_Stream.Write((short)beheld.DefendChance); // Defense Chance Increase
+                        m_Stream.Write((short)beheld.SpellDamage); // Spell Damage Increase
+                        m_Stream.Write((short)beheld.CastRecovery); // Faster Cast Recovery
+                        m_Stream.Write((short)beheld.CastSpeed); // Faster Casting
+                        m_Stream.Write((short)beheld.LowerManaCost); // Lower Mana Cost
+                        m_Stream.Write((short)beheld.BonusStr); // Strength Increase
+                        m_Stream.Write((short)beheld.BonusDex); // Dexterity Increase
+                        m_Stream.Write((short)beheld.BonusInt); // Intelligence Increase
+                        m_Stream.Write((short)beheld.BonusHits); // Hit Points Increase
+                        m_Stream.Write((short)beheld.BonusStam); // Stamina Increase
+                        m_Stream.Write((short)beheld.BonusMana); // Mana Increase
+                        m_Stream.Write((short)beheld.MaxHitIncrease); // Maximum Hit Points Increase
+                        m_Stream.Write((short)beheld.MaxStamIncrease); // Maximum Stamina Increase
+                        m_Stream.Write((short)beheld.MaxManaIncrease); // Maximum Mana Increase
+                    }
+                    #endregion
+                }
+            }
+        }
+
+        private void WriteAttr(int current, int maximum)
+        {
+            m_Stream.Write((short)current);
+            m_Stream.Write((short)maximum);
+        }
+
+        private void WriteAttrNorm(int current, int maximum)
+        {
+            AttributeNormalizer.WriteReverse(m_Stream, current, maximum);
+        }
+    }
 
 	public sealed class HealthbarPoison : Packet
 	{
@@ -4887,6 +5066,230 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write(m_AuthID);
 		}
 	}
+
+    #region Enhance Client
+    public sealed class CooldownInfo : Packet
+    {
+        public CooldownInfo(Item item, int seconds)
+            : base(0xBF)
+        {
+            this.EnsureCapacity(15);
+
+            m_Stream.Write((short)0x31); // packet subcommand
+            m_Stream.Write((short)0x1);
+            m_Stream.Write((int)item.ItemID);
+            m_Stream.Write((int)seconds);
+        }
+    }
+
+    // KR Verifier Packet (Still didnt research on it. Just replying)
+    public sealed class KRVerifier : Packet
+    {
+        public static readonly Packet Instance = Packet.SetStatic(new KRVerifier());
+
+        public KRVerifier()
+            : base(0xE3, 77)
+        {
+            // First 2 - Size
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x4D);
+
+            // Next ones... I have no idea from now on
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x03);
+            m_Stream.Write((byte)0x02);
+            m_Stream.Write((byte)0x01);
+            m_Stream.Write((byte)0x03);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x13);
+            m_Stream.Write((byte)0x02);
+            m_Stream.Write((byte)0x11);
+
+            // Next 16
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0xFC);
+            m_Stream.Write((byte)0x2F);
+            m_Stream.Write((byte)0xE3);
+            m_Stream.Write((byte)0x81);
+            m_Stream.Write((byte)0x93);// old book packet
+            m_Stream.Write((byte)0xD4);// new ec book packet?? testing
+            m_Stream.Write((byte)0xCB);
+            m_Stream.Write((byte)0xAF);
+            m_Stream.Write((byte)0x98);
+            m_Stream.Write((byte)0xDD);
+            m_Stream.Write((byte)0x83);
+            m_Stream.Write((byte)0x13);
+            m_Stream.Write((byte)0xD2);
+            m_Stream.Write((byte)0x9E);
+            m_Stream.Write((byte)0xEA);
+            m_Stream.Write((byte)0xE4);
+
+            // Next 16
+            m_Stream.Write((byte)0x13);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x10);
+            m_Stream.Write((byte)0x78);
+            m_Stream.Write((byte)0x13);
+            m_Stream.Write((byte)0xB7);
+            m_Stream.Write((byte)0x7B);
+            m_Stream.Write((byte)0xCE);
+            m_Stream.Write((byte)0xA8);
+            m_Stream.Write((byte)0xD7);
+            m_Stream.Write((byte)0xBC);
+            m_Stream.Write((byte)0x52);
+            m_Stream.Write((byte)0xDE);
+            m_Stream.Write((byte)0x38);
+
+            // Next 16
+            m_Stream.Write((byte)0x30);
+            m_Stream.Write((byte)0xEA);
+            m_Stream.Write((byte)0xE9);
+            m_Stream.Write((byte)0x1E);
+            m_Stream.Write((byte)0xA3);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x20);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x00);
+            m_Stream.Write((byte)0x10);
+            m_Stream.Write((byte)0x5A);
+            m_Stream.Write((byte)0xCE);
+            m_Stream.Write((byte)0x3E);
+
+            // Next 13
+            m_Stream.Write((byte)0xE3);
+            m_Stream.Write((byte)0x97);
+            m_Stream.Write((byte)0x92);
+            m_Stream.Write((byte)0xE4);
+            m_Stream.Write((byte)0x8A);
+            m_Stream.Write((byte)0xF1);
+            m_Stream.Write((byte)0x9A);
+            m_Stream.Write((byte)0xD3);
+            m_Stream.Write((byte)0x04);
+            m_Stream.Write((byte)0x41);
+            m_Stream.Write((byte)0x03);
+            m_Stream.Write((byte)0xCB);
+            m_Stream.Write((byte)0x53);
+            m_Stream.Write((byte)0x31);
+        }
+    }
+
+    public sealed class KRDropConfirm : Packet
+    {
+        public static readonly Packet Instance = Packet.SetStatic(new KRDropConfirm());
+
+        public KRDropConfirm()
+            : base(0x29, 1)
+        {
+        }
+    }
+
+    public enum WaypointType : ushort
+    {
+        Corpse = 0x01,
+        PartyMember = 0x02,
+        RallyPoint = 0x03,
+        QuestGiver = 0x04,
+        QuestDestination = 0x05,
+        Resurrection = 0x06,
+        PointOfInterest = 0x07,
+        Landmark = 0x08,
+        Town = 0x09,
+        Dungeon = 0x0A,
+        Moongate = 0x0B,
+        Shop = 0x0C,
+        Player = 0x0D,
+    }
+
+    public sealed class DisplayWaypoint : Packet
+    {
+        public DisplayWaypoint(Serial serial, int x, int y, int z, int mapID, /*int type*/WaypointType type, string name)
+            : base(0xE5)
+        {
+            this.EnsureCapacity(25);
+
+            m_Stream.Write((int)serial);
+
+            m_Stream.Write((short)x);
+            m_Stream.Write((short)y);
+            m_Stream.Write((sbyte)z);
+            m_Stream.Write((byte)mapID); //map 
+
+            m_Stream.Write((ushort)type);
+            //m_Stream.Write((short)type); //type 
+
+            m_Stream.Write((short)0);
+
+            if (type.Equals(1))
+                m_Stream.Write((int)1046414);
+            else
+                m_Stream.Write((int)1062613);
+
+            m_Stream.WriteLittleUniNull(name);
+
+            m_Stream.Write((short)0); // terminate 
+        }
+    }
+
+    public class KRDisplayWaypoint : Packet
+    {
+        public KRDisplayWaypoint(IEntity e, WaypointType type, int cliLoc)
+            : this(e.Serial, e.Location, e.Map, type, false, cliLoc, String.Empty)
+        {
+        }
+
+        public KRDisplayWaypoint(IEntity e, WaypointType type, bool ignoreSerial, int cliLoc, string args)
+            : this(e.Serial, e.Location, e.Map, type, ignoreSerial, cliLoc, args)
+        {
+        }
+
+        public KRDisplayWaypoint(Serial serial, IPoint3D location, Map map, WaypointType type, bool ignoreSerial, int cliLoc)
+            : this(serial, location, map, type, ignoreSerial, cliLoc, String.Empty)
+        {
+        }
+
+        public KRDisplayWaypoint(Serial serial, IPoint3D location, Map map, WaypointType type, bool ignoreSerial, int cliLoc, string args)
+            : base(0xE5)
+        {
+            if (args == null)
+                args = String.Empty;
+
+            EnsureCapacity(21 + (args.Length * 2));
+
+            m_Stream.Write((int)serial);
+
+            m_Stream.Write((ushort)location.X);
+            m_Stream.Write((ushort)location.Y);
+            m_Stream.Write((byte)location.Z);
+
+            m_Stream.Write((byte)map.MapID);
+
+            m_Stream.Write((ushort)type);
+
+            m_Stream.Write((ushort)(ignoreSerial ? 1 : 0));
+
+            m_Stream.Write(cliLoc);
+            m_Stream.WriteLittleUniNull(args);
+        }
+    }
+
+    public class RemoveWaypoint : Packet
+    {
+        public RemoveWaypoint(Serial serial)
+            : base(0xE6, 5)
+        {
+            m_Stream.Write((int)serial);
+        }
+    }
+    #endregion
 
 	public abstract class Packet
 	{

@@ -6,6 +6,7 @@ namespace Server.Gumps
 {
     public class PetResurrectGump : Gump
     {
+        public override int TypeID { get { return 0x1DD; } }
         private readonly BaseCreature m_Pet;
         private readonly double m_HitsScalar;
         public PetResurrectGump(Mobile from, BaseCreature pet)

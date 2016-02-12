@@ -10,14 +10,19 @@ namespace Server.Engines.BulkOrders
         private readonly int m_AmountMax;
         private readonly BOBLargeSubEntry[] m_Entries;
         private int m_Price;
+
         public BOBLargeEntry(LargeBOD bod)
         {
             this.m_RequireExceptional = bod.RequireExceptional;
 
             if (bod is LargeTailorBOD)
+            {
                 this.m_DeedType = BODType.Tailor;
+            }
             else if (bod is LargeSmithBOD)
+            {
                 this.m_DeedType = BODType.Smith;
+            }
 
             this.m_Material = bod.Material;
             this.m_AmountMax = bod.AmountMax;
@@ -25,7 +30,9 @@ namespace Server.Engines.BulkOrders
             this.m_Entries = new BOBLargeSubEntry[bod.Entries.Length];
 
             for (int i = 0; i < this.m_Entries.Length; ++i)
+            {
                 this.m_Entries[i] = new BOBLargeSubEntry(bod.Entries[i]);
+            }
         }
 
         public BOBLargeEntry(GenericReader reader)
@@ -47,7 +54,9 @@ namespace Server.Engines.BulkOrders
                         this.m_Entries = new BOBLargeSubEntry[reader.ReadEncodedInt()];
 
                         for (int i = 0; i < this.m_Entries.Length; ++i)
+                        {
                             this.m_Entries[i] = new BOBLargeSubEntry(reader);
+                        }
 
                         break;
                     }
@@ -105,12 +114,18 @@ namespace Server.Engines.BulkOrders
             LargeBOD bod = null;
 
             if (this.m_DeedType == BODType.Smith)
+            {
                 bod = new LargeSmithBOD(this.m_AmountMax, this.m_RequireExceptional, this.m_Material, this.ReconstructEntries());
+            }
             else if (this.m_DeedType == BODType.Tailor)
+            {
                 bod = new LargeTailorBOD(this.m_AmountMax, this.m_RequireExceptional, this.m_Material, this.ReconstructEntries());
+            }
 
             for (int i = 0; bod != null && i < bod.Entries.Length; ++i)
+            {
                 bod.Entries[i].Owner = bod;
+            }
 
             return bod;
         }

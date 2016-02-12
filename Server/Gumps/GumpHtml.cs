@@ -28,6 +28,7 @@ namespace Server.Gumps
 		private int m_X, m_Y;
 		private int m_Width, m_Height;
 		private string m_Text;
+        private int m_TextID;
 		private bool m_Background, m_Scrollbar;
 
 		public int X
@@ -125,10 +126,21 @@ namespace Server.Gumps
 			m_Scrollbar = scrollbar;
 		}
 
-		public override string Compile()
-		{
-			return String.Format( "{{ htmlgump {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, Parent.Intern( m_Text ), m_Background ? 1 : 0, m_Scrollbar ? 1 : 0 );
-		}
+        public GumpHtml(int x, int y, int width, int height, int textid, bool background, bool scrollbar)
+        {
+            m_X = x;
+            m_Y = y;
+            m_Width = width;
+            m_Height = height;
+            m_TextID = textid;
+            m_Background = background;
+            m_Scrollbar = scrollbar;
+        }
+
+        public override string Compile()
+        {
+            return String.Format("{{ htmlgump {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, m_Text == null ? m_TextID : Parent.Intern(m_Text), m_Background ? 1 : 0, m_Scrollbar ? 1 : 0);
+        }
 
 		private static byte[] m_LayoutName = Gump.StringToBuffer( "htmlgump" );
 
@@ -139,7 +151,7 @@ namespace Server.Gumps
 			disp.AppendLayout( m_Y );
 			disp.AppendLayout( m_Width );
 			disp.AppendLayout( m_Height );
-			disp.AppendLayout( Parent.Intern( m_Text ) );
+            disp.AppendLayout(m_Text == null ? m_TextID : Parent.Intern(m_Text));
 			disp.AppendLayout( m_Background );
 			disp.AppendLayout( m_Scrollbar );
 		}

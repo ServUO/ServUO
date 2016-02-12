@@ -7,10 +7,11 @@ namespace Server.Engines.BulkOrders
 {
     public class SmallBulkEntry
     {
-        private static Hashtable m_Cache;
+        private static Dictionary<string, Dictionary<string, SmallBulkEntry[]>> m_Cache;
         private readonly Type m_Type;
         private readonly int m_Number;
         private readonly int m_Graphic;
+
         public SmallBulkEntry(Type type, int number, int graphic)
         {
             this.m_Type = type;
@@ -70,17 +71,23 @@ namespace Server.Engines.BulkOrders
         public static SmallBulkEntry[] GetEntries(string type, string name)
         {
             if (m_Cache == null)
-                m_Cache = new Hashtable();
+            {
+                m_Cache = new Dictionary<string, Dictionary<string, SmallBulkEntry[]>>();
+            }
 
-            Hashtable table = (Hashtable)m_Cache[type];
+            Dictionary<string, SmallBulkEntry[]> table = null;
 
-            if (table == null)
-                m_Cache[type] = table = new Hashtable();
+            if (!m_Cache.TryGetValue(type, out table))
+            {
+                m_Cache[type] = table = new Dictionary<string, SmallBulkEntry[]>();
+            }
 
-            SmallBulkEntry[] entries = (SmallBulkEntry[])table[name];
+            SmallBulkEntry[] entries = null;
 
-            if (entries == null)
+            if (!table.TryGetValue(name, out entries))
+            {
                 table[name] = entries = LoadEntries(type, name);
+            }
 
             return entries;
         }
@@ -105,7 +112,9 @@ namespace Server.Engines.BulkOrders
                     while ((line = ip.ReadLine()) != null)
                     {
                         if (line.Length == 0 || line.StartsWith("#"))
+                        {
                             continue;
+                        }
 
                         try
                         {
@@ -117,7 +126,9 @@ namespace Server.Engines.BulkOrders
                                 int graphic = Utility.ToInt32(split[split.Length - 1]);
 
                                 if (type != null && graphic > 0)
+                                {
                                     list.Add(new SmallBulkEntry(type, graphic < 0x4000 ? 1020000 + graphic : 1078872 + graphic, graphic));
+                                }
                             }
                         }
                         catch

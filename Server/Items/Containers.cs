@@ -142,17 +142,19 @@ namespace Server.Items
 			}
 		}
 
-		public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
-		{
-			if ((from == m_Owner && m_Open) || from.AccessLevel >= AccessLevel.GameMaster)
-			{
-				return base.OnDragDropInto(from, item, p);
-			}
-			else
-			{
-				return false;
-			}
-		}
+        #region Enhance Client
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
+        {
+            if ((from == m_Owner && m_Open) || from.AccessLevel >= AccessLevel.GameMaster)
+            {
+                return base.OnDragDropInto(from, item, p, gridloc);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
 
 		public override int GetTotal(TotalType type)
 		{

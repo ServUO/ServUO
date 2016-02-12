@@ -8,6 +8,7 @@ namespace Server.Gumps
 {
     public class ReportMurdererGump : Gump
     {
+        public override int TypeID { get { return 0x3A9A; } }
         private readonly List<Mobile> m_Killers;
         private readonly Mobile m_Victum;
         private int m_Idx;

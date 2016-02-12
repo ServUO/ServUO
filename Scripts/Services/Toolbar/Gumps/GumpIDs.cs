@@ -1,9 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - GumpIDs.cs
-// **********
-#endregion
-
+﻿
 namespace Services.Toolbar.Gumps
 {
 	public class GumpIDs

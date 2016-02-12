@@ -23,6 +23,80 @@ namespace Server.Items
 
 	public class Container : Item
 	{
+
+        #region Enhance Client
+        private List<byte> m_FreePositions = new List<byte>();
+
+        public void FreePosition(byte pos)
+        {
+            int maxpos = -1;
+
+            foreach (Item item in Items)
+            {
+                if (item.GridLocation > maxpos && item.GridLocation != pos)
+                    maxpos = item.GridLocation;
+            }
+
+            maxpos++;
+
+            if (pos > maxpos)
+            {
+                pos = (byte)maxpos;
+
+                for (int i = 0; i < m_FreePositions.Count; i++)
+                {
+                    byte b = m_FreePositions[i];
+
+                    if (b > (pos))
+                    {
+                        m_FreePositions.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+
+            if (!m_FreePositions.Contains(pos))
+                m_FreePositions.Add(pos);
+        }
+
+        public bool IsFreePosition(byte pos)
+        {
+            if (m_FreePositions.Contains(pos))
+            {
+                m_FreePositions.Remove(pos);
+                return true;
+            }
+
+            foreach (Item item in this.Items)
+            {
+                if (item.GridLocation == pos)
+                    return false;
+            }
+
+            return true;
+        }
+
+        public byte GetNewPosition()
+        {
+            if (m_FreePositions.Count > 0)
+            {
+                byte newpos = m_FreePositions[m_FreePositions.Count - 1];
+                m_FreePositions.RemoveAt(m_FreePositions.Count - 1);
+                return newpos;
+            }
+
+            int pos = -1;
+
+            foreach (Item item in Items)
+            {
+                if (item.GridLocation > pos)
+                    pos = item.GridLocation;
+            }
+
+            return (byte)(pos + 1);
+        }
+        #endregion
+
 		private static ContainerSnoopHandler m_SnoopHandler;
 
 		public static ContainerSnoopHandler SnoopHandler { get { return m_SnoopHandler; } set { m_SnoopHandler = value; } }
@@ -247,20 +321,23 @@ namespace Server.Items
 			to.SendLocalizedMessage(500176); // That is not your container, you can't store things here.
 		}
 
-		public virtual bool OnDragDropInto(Mobile from, Item item, Point3D p)
-		{
-			if (!CheckHold(from, item, true, true))
-			{
-				return false;
-			}
+        #region Enhance Client
+        public virtual bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
+        {
+            if (!CheckHold(from, item, true, true))
+            {
+                return false;
+            }
 
-			item.Location = new Point3D(p.m_X, p.m_Y, 0);
-			AddItem(item);
+            item.Location = new Point3D(p.m_X, p.m_Y, 0);
+            item.SetGridLocation(gridloc, this);
+            AddItem(item);
 
-			from.SendSound(GetDroppedSound(item), GetWorldLocation());
+            from.SendSound(GetDroppedSound(item), GetWorldLocation());
 
-			return true;
-		}
+            return true;
+        }
+        #endregion
 
 		private class GroupComparer : IComparer
 		{
@@ -1707,6 +1784,10 @@ namespace Server.Items
 			{
 				return;
 			}
+
+            #region Enhance Client
+            dropped.SetGridLocation(0, this);
+            #endregion
 
 			AddItem(dropped);
 

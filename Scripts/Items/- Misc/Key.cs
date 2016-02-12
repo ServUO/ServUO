@@ -301,14 +301,6 @@ namespace Server.Items
                 {
                     o.Locked = !o.Locked;
 
-                    if (o is LockableContainer)
-                    {
-                        LockableContainer cont = (LockableContainer)o;
-
-                        if (cont.LockLevel == -255)
-                            cont.LockLevel = cont.RequiredSkill - 10;
-                    }
-
                     if (o is Item)
                     {
                         Item item = (Item)o;
@@ -318,12 +310,19 @@ namespace Server.Items
                         else
                             item.SendLocalizedMessageTo(from, 1048001); // You unlock it.
 
-                        if (item is LockableContainer)
+                        if (o is LockableContainer)
                         {
-                            LockableContainer cont = (LockableContainer)item;
+                            LockableContainer cont = (LockableContainer)o;
 
-                            if (cont.TrapType != TrapType.None && cont.TrapOnLockpick)
+                            if (cont.LockLevel == -255)
+                                cont.LockLevel = cont.RequiredSkill - 10;
+
+                            cont.Locker = from;
+
+                            if (cont.TrapType != TrapType.None && cont.TrapEnabled != o.Locked)
                             {
+                                cont.TrapEnabled = o.Locked;
+
                                 if (o.Locked)
                                     item.SendLocalizedMessageTo(from, 501673); // You re-enable the trap.
                                 else
@@ -343,6 +342,8 @@ namespace Server.Items
 
         private class RenamePrompt : Prompt
         {
+            // Enter a description for this key.
+            public override int MessageCliloc { get { return 501665; } }
             private readonly Key m_Key;
             public RenamePrompt(Key key)
             {

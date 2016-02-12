@@ -8,6 +8,7 @@ namespace Server.Gumps
 {
     public class VendorInventoryGump : Gump
     {
+        public override int TypeID { get { return 0x2AA; } }
         private readonly BaseHouse m_House;
         private readonly ArrayList m_Inventories;
         public VendorInventoryGump(BaseHouse house, Mobile from)

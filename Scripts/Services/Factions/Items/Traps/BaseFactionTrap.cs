@@ -84,7 +84,7 @@ namespace Server.Factions
                 return 100;
             }
         }
-        public virtual int MessageHue
+        public override int MessageHue
         {
             get
             {

@@ -426,10 +426,12 @@ namespace Server.Items
 			return false;
 		}
 
-		public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
-		{
-			return false;
-		}
+        #region Enhance Client
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
+        {
+            return false;
+        }
+        #endregion
 
 		public override bool CheckTarget(Mobile from, Server.Targeting.Target targ, object targeted)
 		{

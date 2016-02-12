@@ -158,19 +158,20 @@ namespace Server.Items
 
         }
 
-        public override bool OnDragDropInto( Mobile from, Item item, Point3D p )
+        #region Enhance Client
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
         {
-            bool diddrop = base.OnDragDropInto( from, item, p);
+            bool diddrop = base.OnDragDropInto(from, item, p, gridloc);
 
-            if(from != null && diddrop)
+            if (from != null && diddrop)
             {
-                from.CloseGump( typeof(TransmuteGump) );
-                from.SendGump( new TransmuteGump( from, this, null) );
+                from.CloseGump(typeof(TransmuteGump));
+                from.SendGump(new TransmuteGump(from, this, null));
             }
 
             return diddrop;
         }
-
+        #endregion
 
         public static bool CheckRequirements(Mobile from, Recipe s)
         {

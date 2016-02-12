@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - ToolbarEdit.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +16,7 @@ namespace Services.Toolbar.Gumps
 	{
 		public static string HTML =
 			String.Format(
-				"<center><u>Command Toolbar v{0}</u><br>Made by Joeku AKA Demortris<br>{1}<br>- Customized for ServUO -</center><br>   This toolbar is extremely versatile. You can switch skins and increase or decrease columns or rows. The toolbar operates like a spreadsheet; you can use the navigation menu to scroll through different commands and bind them. Enjoy!<br><p>If you have questions, concerns, or bug reports, please <A HREF=\"mailto:demortris@adelphia.net\">e-mail me</A>.",
+				"<center><u>Command Toolbar v{0}</u><br>Made by Joeku AKA Demortris<br>{1}<br>- Customized for JustUO -</center><br>   This toolbar is extremely versatile. You can switch skins and increase or decrease columns or rows. The toolbar operates like a spreadsheet; you can use the navigation menu to scroll through different commands and bind them. Enjoy!<br><p>If you have questions, concerns, or bug reports, please <A HREF=\"mailto:demortris@adelphia.net\">e-mail me</A>.",
 				ToolbarCore.SystemVersion,
 				ToolbarCore.ReleaseDate);
 
@@ -126,7 +120,7 @@ namespace Services.Toolbar.Gumps
 						}
 
 						m.CloseGump(typeof(ToolbarGump));
-						m.SendGump(new ToolbarGump(module.ToolbarInfo));
+						m.SendGump(new ToolbarGump(module.ToolbarInfo, m));
 
 						break;
 					}

@@ -1,5 +1,8 @@
 using System;
 using Server.Network;
+using Server.Engines.Quests;
+using System.Collections.Generic;
+using Server.Mobiles;
 
 namespace Server.Misc
 {
@@ -25,6 +28,53 @@ namespace Server.Misc
                 userCount, userCount == 1 ? "" : "s",
                 itemCount, itemCount == 1 ? "" : "s",
                 mobileCount, mobileCount == 1 ? "" : "s");
+
+            #region Enhance Client
+            List<MondainQuester> listQuester = new List<MondainQuester>();
+            List<BaseHealer> listHealers = new List<BaseHealer>();
+            foreach (Mobile m_mobile in World.Mobiles.Values)
+            {
+                MondainQuester mQuester = m_mobile as MondainQuester;
+                if (mQuester != null)
+                {
+                    listQuester.Add(mQuester);
+                }
+
+                BaseHealer mHealer = m_mobile as BaseHealer;
+                if (mHealer != null)
+                {
+                    listHealers.Add(mHealer);
+                }
+            }
+
+            foreach (MondainQuester quester in listQuester)
+            {
+                if (args.Mobile.NetState != null)
+                {
+                    string name = string.Empty;
+                    if (quester.Name != null)
+                    {
+                        name += quester.Name;
+                    }
+                    if (quester.Title != null)
+                    {
+                        name += " " + quester.Title;
+                    }
+                    args.Mobile.NetState.Send(new DisplayWaypoint(quester.Serial, quester.X, quester.Y, quester.Z, quester.Map.MapID, WaypointType.QuestGiver, name));
+                }
+            }
+            /* I think on Uo only see healer waypoints if you die. so this is commented out until tested more on Uo TC.
+            foreach (BaseHealer healer in listHealers)
+            {
+                string name = string.Empty;
+                if (healer.Name != null)
+                    name += healer.Name;
+                if (healer.Title != null)
+                    name += " " + healer.Title;
+                args.Mobile.NetState.Send(new DisplayWaypoint(healer.Serial, healer.X, healer.Y, healer.Z, healer.Map.MapID, WaypointType.Resurrection, name));
+            }
+             */
+            #endregion
 
             if (m.IsStaff())
             {

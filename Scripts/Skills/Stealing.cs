@@ -69,6 +69,10 @@ namespace Server.SkillHandlers
 				{
 					m_Thief.SendLocalizedMessage(1005584); // Both hands must be free to steal.
 				}
+                else if (m_Thief.Region.IsPartOf(typeof(Engines.ConPVP.SafeZone)))
+                {
+                    m_Thief.SendMessage("You may not steal in this area.");
+                }
 				else if (root is Mobile && ((Mobile)root).Player && !IsInGuild(m_Thief))
 				{
 					m_Thief.SendLocalizedMessage(1005596); // You must be in the thieves guild to steal from other players.
@@ -418,6 +422,10 @@ namespace Server.SkillHandlers
 			{
 				m.SendLocalizedMessage(1005584); // Both hands must be free to steal.
 			}
+            else if (m.Region.IsPartOf(typeof(Engines.ConPVP.SafeZone)))
+            {
+                m.SendMessage("You may not steal in this area.");
+            }
 			else
 			{
 				m.Target = new StealingTarget(m);

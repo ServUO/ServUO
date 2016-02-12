@@ -136,6 +136,14 @@ namespace Server.Network
 
 		private bool HandleSeed(NetState ns, ByteQueue buffer)
 		{
+            #region Enhance Client
+            if (buffer.GetPacketID() == 0xFF)
+            {
+                // Packet 255 = 0xFF = Client KR.
+                ns.IsKRClient = true;
+                Console.WriteLine("KR-Client detected", ns);
+            }
+            #endregion
 			if (buffer.GetPacketID() == 0xEF)
 			{
 				// new packet in client	6.0.5.0	replaces the traditional seed method with a	seed packet
@@ -172,8 +180,9 @@ namespace Server.Network
 
 		private bool CheckEncrypted(NetState ns, int packetID)
 		{
-			if (!ns.SentFirstPacket && packetID != 0xF0 && packetID != 0xF1 && packetID != 0xCF && packetID != 0x80 &&
-				packetID != 0x91 && packetID != 0xA4 && packetID != 0xEF)
+            #region Enhance Client
+            if (!ns.SentFirstPacket && packetID != 0xF0 && packetID != 0xF1 && packetID != 0xCF && packetID != 0x80 && packetID != 0x91 && packetID != 0xA4 && packetID != 0xEF && packetID != 0xE4 && packetID != 0xFF)
+            #endregion
 			{
 				Console.WriteLine("Client: {0}: Encrypted client detected, disconnecting", ns);
 				ns.Dispose();
@@ -316,6 +325,21 @@ namespace Server.Network
 					}
 				}
 			}
+            #region Enhance Client
+            // Would be nicer to detect the enhanced client in clientversion.cs
+            // It seems that UOKR-EH sends a version number bigger 66.0.0.0, UOSA-EH bigger 67.0.0.0
+            try
+            {
+                if (ns.Version.Major > 8)
+                    ns.IsKRClient = true;
+            }
+            //Standard classic client does not display version this early, so we can rule SA enhanced client out
+            catch
+            {
+                ns.IsKRClient = false;
+            }
+            return;
+            #endregion
 		}
 	}
 }

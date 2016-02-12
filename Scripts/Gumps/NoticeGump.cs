@@ -6,6 +6,7 @@ namespace Server.Gumps
 
     public class NoticeGump : Gump
     {
+        public override int TypeID { get { return 0xF4; } }
         private readonly NoticeGumpCallback m_Callback;
         private readonly object m_State;
         public NoticeGump(int header, int headerColor, object content, int contentColor, int width, int height, NoticeGumpCallback callback, object state)

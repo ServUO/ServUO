@@ -6,6 +6,8 @@ namespace Server.Gumps
 {
     public class GuildCharterPrompt : Prompt
     {
+        // Enter the new guild charter (50 characters max):
+        public override int MessageCliloc { get { return 1013071; } }
         private readonly Mobile m_Mobile;
         private readonly Guild m_Guild;
         public GuildCharterPrompt(Mobile m, Guild g)

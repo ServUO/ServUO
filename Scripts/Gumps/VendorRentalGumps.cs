@@ -10,120 +10,6 @@ namespace Server.Gumps
 {
     public abstract class BaseVendorRentalGump : Gump
     {
-        protected BaseVendorRentalGump(GumpType type, VendorRentalDuration duration, int price, int renewalPrice,
-            Mobile landlord, Mobile renter, bool landlordRenew, bool renterRenew, bool renew)
-            : base(100, 100)
-        {
-            if (type == GumpType.Offer)
-                this.Closable = false;
-
-            this.AddPage(0);
-
-            this.AddImage(0, 0, 0x1F40);
-            this.AddImageTiled(20, 37, 300, 308, 0x1F42);
-            this.AddImage(20, 325, 0x1F43);
-
-            this.AddImage(35, 8, 0x39);
-            this.AddImageTiled(65, 8, 257, 10, 0x3A);
-            this.AddImage(290, 8, 0x3B);
-
-            this.AddImageTiled(70, 55, 230, 2, 0x23C5);
-
-            this.AddImage(32, 33, 0x2635);
-            this.AddHtmlLocalized(70, 35, 270, 20, 1062353, 0x1, false, false); // Vendor Rental Contract
-
-            this.AddPage(1);
-
-            if (type != GumpType.UnlockedContract)
-            {
-                this.AddImage(65, 60, 0x827);
-                this.AddHtmlLocalized(79, 58, 270, 20, 1062370, 0x1, false, false); // Landlord:
-                this.AddLabel(150, 58, 0x64, landlord != null ? landlord.Name : "");
-
-                this.AddImageTiled(70, 80, 230, 2, 0x23C5);
-            }
-
-            if (type == GumpType.UnlockedContract || type == GumpType.LockedContract)
-                this.AddButton(30, 96, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 2);
-            this.AddHtmlLocalized(50, 95, 150, 20, 1062354, 0x1, false, false); // Contract Length
-            this.AddHtmlLocalized(230, 95, 270, 20, duration.Name, 0x1, false, false);
-
-            if (type == GumpType.UnlockedContract || type == GumpType.LockedContract)
-                this.AddButton(30, 116, 0x15E1, 0x15E5, 1, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(50, 115, 150, 20, 1062356, 0x1, false, false); // Price Per Rental
-            this.AddLabel(230, 115, 0x64, price > 0 ? price.ToString() : "FREE");
-
-            this.AddImageTiled(50, 160, 250, 2, 0x23BF);
-
-            if (type == GumpType.Offer)
-            {
-                this.AddButton(67, 180, 0x482, 0x483, 2, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(100, 180, 270, 20, 1049011, 0x28, false, false); // I accept!
-
-                this.AddButton(67, 210, 0x47F, 0x480, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(100, 210, 270, 20, 1049012, 0x28, false, false); // No thanks, I decline.
-            }
-            else
-            {
-                this.AddImage(49, 170, 0x61);
-                this.AddHtmlLocalized(60, 170, 250, 20, 1062355, 0x1, false, false); // Renew On Expiration?
-
-                if (type == GumpType.LockedContract || type == GumpType.UnlockedContract || type == GumpType.VendorLandlord)
-                    this.AddButton(30, 192, 0x15E1, 0x15E5, 3, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(85, 190, 250, 20, 1062359, 0x1, false, false); // Landlord:
-                this.AddHtmlLocalized(230, 190, 270, 20, landlordRenew ? 1049717 : 1049718, 0x1, false, false); // YES / NO
-
-                if (type == GumpType.VendorRenter)
-                    this.AddButton(30, 212, 0x15E1, 0x15E5, 4, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(85, 210, 250, 20, 1062360, 0x1, false, false); // Renter:
-                this.AddHtmlLocalized(230, 210, 270, 20, renterRenew ? 1049717 : 1049718, 0x1, false, false); // YES / NO
-
-                if (renew)
-                {
-                    this.AddImage(49, 233, 0x939);
-                    this.AddHtmlLocalized(70, 230, 250, 20, 1062482, 0x1, false, false); // Contract WILL renew
-                }
-                else
-                {
-                    this.AddImage(49, 233, 0x938);
-                    this.AddHtmlLocalized(70, 230, 250, 20, 1062483, 0x1, false, false); // Contract WILL NOT renew
-                }
-            }
-
-            this.AddImageTiled(30, 283, 257, 30, 0x5D);
-            this.AddImage(285, 283, 0x5E);
-            this.AddImage(20, 288, 0x232C);
-
-            if (type == GumpType.LockedContract)
-            {
-                this.AddButton(67, 295, 0x15E1, 0x15E5, 5, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(85, 294, 270, 20, 1062358, 0x28, false, false); // Offer Contract To Someone
-            }
-            else if (type == GumpType.VendorLandlord || type == GumpType.VendorRenter)
-            {
-                if (type == GumpType.VendorLandlord)
-                    this.AddButton(30, 250, 0x15E1, 0x15E1, 6, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(85, 250, 250, 20, 1062499, 0x1, false, false); // Renewal Price
-                this.AddLabel(230, 250, 0x64, renewalPrice.ToString());
-
-                this.AddHtmlLocalized(60, 294, 270, 20, 1062369, 0x1, false, false); // Renter:
-                this.AddLabel(120, 293, 0x64, renter != null ? renter.Name : "");
-            }
-
-            if (type == GumpType.UnlockedContract || type == GumpType.LockedContract)
-            {
-                this.AddPage(2);
-
-                for (int i = 0; i < VendorRentalDuration.Instances.Length; i++)
-                {
-                    VendorRentalDuration durationItem = VendorRentalDuration.Instances[i];
-
-                    this.AddButton(30, 76 + i * 20, 0x15E1, 0x15E5, 0x10 | i, GumpButtonType.Reply, 1);
-                    this.AddHtmlLocalized(50, 75 + i * 20, 150, 20, durationItem.Name, 0x1, false, false);
-                }
-            }
-        }
-
         protected enum GumpType
         {
             UnlockedContract,
@@ -132,6 +18,179 @@ namespace Server.Gumps
             VendorLandlord,
             VendorRenter
         }
+
+        public override int TypeID { get { return 0x2A9; } }
+
+        protected BaseVendorRentalGump(GumpType type, VendorRentalDuration duration, int price, int renewalPrice,
+            Mobile landlord, Mobile renter, bool landlordRenew, bool renterRenew, bool renew)
+            : base(100, 100)
+        {
+            /*0*/
+            Intern("");
+            /*1*/
+            Intern("0");
+            /*2*/
+            Intern(price > 0 ? price.ToString() : "FREE");
+            /*3*/
+            Intern(landlord != null ? landlord.Name : "");
+            /*4*/
+            Intern(renter != null ? renter.Name : "");
+
+            if (type == GumpType.VendorLandlord || type == GumpType.VendorRenter)
+                /*5*/
+                Intern(renewalPrice.ToString());
+
+            AddPage(0);
+
+            if (type == GumpType.Offer)
+                Closable = false;
+
+            AddImage(0, 0, 0x1F40);
+            AddImageTiled(20, 37, 300, 308, 0x1F42);
+            AddImage(20, 325, 0x1F43);
+
+            AddImage(35, 8, 0x39);
+            AddImageTiled(65, 8, 257, 10, 0x3A);
+            AddImage(290, 8, 0x3B);
+
+            AddImage(32, 33, 0x2635);
+
+            AddImageTiled(70, 55, 230, 2, 0x23C5);
+
+            AddHtmlLocalized(70, 35, 270, 20, 1062353, 0x1, false, false); // Vendor Rental Contract
+
+            AddPage(1);
+
+            AddImageTiled(30, 283, 257, 30, 0x5D);
+            AddImage(285, 283, 0x5E);
+            AddImage(20, 288, 0x232C);
+
+            AddHtmlLocalized(50, 95, 150, 20, 1062354, 0x1, false, false); // Contract Length
+            AddHtmlLocalized(50, 115, 150, 20, 1062356, 0x1, false, false); // Price Per Rental
+            AddHtmlLocalized(230, 95, 270, 20, duration.Name, 0x1, false, false);
+
+            AddLabelIntern(230, 115, 0x64, 2);
+
+            if (type != GumpType.Offer)
+            {
+                AddHtmlLocalized(230, 190, 270, 20, landlordRenew ? 1049717 : 1049718, 0x1, false, false); // YES / NO
+                AddHtmlLocalized(230, 210, 270, 20, renterRenew ? 1049717 : 1049718, 0x1, false, false); // YES / NO
+            }
+            else
+            {
+                AddECHtmlLocalized(0, 0, 0, 0, -1, false, false);
+                AddECHtmlLocalized(0, 0, 0, 0, -1, false, false);
+            }
+
+            if (type != GumpType.UnlockedContract)
+            {
+                AddImage(65, 60, 0x827);
+                AddHtmlLocalized(79, 58, 270, 20, 1062370, 0x1, false, false); // Landlord:
+                AddLabelIntern(150, 58, 0x64, 3);
+
+                AddImageTiled(70, 80, 230, 2, 0x23C5);
+            }
+            else
+            {
+                AddECHtmlLocalized(0, 0, 0, 0, -1, false, false);
+            }
+
+            if (type == GumpType.VendorLandlord || type == GumpType.VendorRenter)
+            {
+                AddHtmlLocalized(60, 294, 270, 20, 1062369, 0x1, false, false); // Renter:
+
+                AddLabelIntern(120, 293, 0x64, 4);
+                AddLabelIntern(230, 250, 0x64, 5);
+            }
+            else
+            {
+                AddECHtmlLocalized(0, 0, 0, 0, -1, false, false);
+            }
+
+            AddImageTiled(50, 160, 250, 2, 0x23BF);
+
+            if (type != GumpType.Offer)
+            {
+                AddImage(49, 170, 0x61);
+
+                AddHtmlLocalized(60, 170, 250, 20, 1062355, 0x1, false, false); // Renew On Expiration?
+                AddHtmlLocalized(85, 190, 250, 20, 1062359, 0x1, false, false); // Landlord:
+                AddHtmlLocalized(85, 210, 250, 20, 1062360, 0x1, false, false); // Renter:
+
+                if (type == GumpType.VendorLandlord || type == GumpType.VendorRenter)
+                    AddHtmlLocalized(85, 250, 250, 20, 1062499, 0x1, false, false); // Renewal Price
+                else
+                    AddECHtmlLocalized(0, 0, 0, 0, -1, false, false);
+
+                if (renew)
+                {
+                    AddImage(49, 233, 0x939);
+                    AddHtmlLocalized(70, 230, 250, 20, 1062482, 0x1, false, false); // Contract WILL renew
+                }
+                else
+                {
+                    AddImage(49, 233, 0x938);
+                    AddHtmlLocalized(70, 230, 250, 20, 1062483, 0x1, false, false); // Contract WILL NOT renew
+                }
+
+                if (type == GumpType.UnlockedContract || type == GumpType.LockedContract)
+                {
+                    AddButton(30, 96, 0x15E1, 0x15E5, 5, GumpButtonType.Page, 2);
+                    AddButton(30, 116, 0x15E1, 0x15E5, 6, GumpButtonType.Reply, 1);
+                }
+                else
+                {
+                    AddECButton(0, 0, 0, 0, -666, GumpButtonType.Page, 0);
+                    AddECButton(0, 0, 0, 0, -666, GumpButtonType.Page, 0);
+                }
+
+                if (type != GumpType.VendorRenter)
+                {
+                    AddButton(30, 192, 0x15E1, 0x15E5, 9, GumpButtonType.Reply, 1);
+                    AddECButton(0, 0, 0, 0, -666, GumpButtonType.Page, 0);
+                }
+                else
+                {
+                    AddECButton(0, 0, 0, 0, -666, GumpButtonType.Page, 0);
+                    AddButton(30, 212, 0x15E1, 0x15E5, 8, GumpButtonType.Reply, 1);
+                }
+
+                if (type == GumpType.VendorLandlord)
+                    AddButton(30, 250, 0x15E1, 0x15E1, 13, GumpButtonType.Reply, 1);
+                else
+                    AddECButton(0, 0, 0, 0, -666, GumpButtonType.Page, 0);
+
+                if (type == GumpType.LockedContract)
+                {
+                    AddHtmlLocalized(85, 294, 270, 20, 1062358, 0x28, false, false); // Offer Contract To Someone
+                    AddButton(67, 295, 0x15E1, 0x15E5, 10, GumpButtonType.Reply, 1);
+                }
+                else
+                {
+                    AddECButton(0, 0, 0, 0, -666, GumpButtonType.Page, 0);
+                    AddECHtmlLocalized(0, 0, 0, 0, -1, false, false);
+                }
+
+                AddPage(2);
+
+                for (int i = 0; i < VendorRentalDuration.Instances.Length; i++)
+                {
+                    VendorRentalDuration durationItem = VendorRentalDuration.Instances[i];
+
+                    AddButton(30, 76 + i * 20, 0x15E1, 0x15E5, i + 1, GumpButtonType.Reply, 1);
+                    AddHtmlLocalized(50, 75 + i * 20, 150, 20, durationItem.Name, 0x1, false, false);
+                }
+            }
+            else
+            {
+                AddHtmlLocalized(100, 180, 270, 20, 1049011, 0x28, false, false); // I accept!
+                AddButton(67, 180, 0x482, 0x483, 11, GumpButtonType.Reply, 0);
+
+                AddHtmlLocalized(100, 210, 270, 20, 1049012, 0x28, false, false); // No thanks, I decline.
+                AddButton(67, 210, 0x47F, 0x480, 12, GumpButtonType.Reply, 0);
+            }
+        }
+
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             Mobile from = sender.Mobile;
@@ -237,7 +296,7 @@ namespace Server.Gumps
 
         protected override void SetPricePerRental(Mobile from)
         {
-            from.SendLocalizedMessage(1062365); // Please enter the amount of gold that should be charged for this contract (ESC to cancel):
+            //from.SendLocalizedMessage(1062365); // Please enter the amount of gold that should be charged for this contract (ESC to cancel):
             from.Prompt = new PricePerRentalPrompt(this.m_Contract);
         }
 
@@ -259,6 +318,8 @@ namespace Server.Gumps
 
         private class PricePerRentalPrompt : Prompt
         {
+            // Please enter the amount of gold that should be charged for this contract (ESC to cancel):
+            public override int MessageCliloc { get { return 1062365; } }
             private readonly VendorRentalContract m_Contract;
             public PricePerRentalPrompt(VendorRentalContract contract)
             {

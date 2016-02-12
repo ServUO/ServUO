@@ -74,7 +74,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    from.SendLocalizedMessage(1013060); // Enter new guild name (40 characters max):
+                    //from.SendLocalizedMessage(1013060); // Enter new guild name (40 characters max):
                     from.Prompt = new InternalPrompt(this);
                 }
             }
@@ -82,6 +82,8 @@ namespace Server.Items
 
         private class InternalPrompt : Prompt
         {
+            // Enter new guild name (40 characters max):
+            public override int MessageCliloc { get { return 1013060; } }
             private readonly GuildDeed m_Deed;
             public InternalPrompt(GuildDeed deed)
             {

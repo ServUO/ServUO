@@ -209,16 +209,18 @@ namespace Server.Items
 		{
 		}
 
-		public override bool OnDroppedInto( Mobile from, Container target, Point3D p )
+        #region Enhance Client
+        public override bool OnDroppedInto(Mobile from, Container target, Point3D p, byte gridloc)
         {
             // allow movement within a players backpack
-            if(from != null && from.Backpack == target)
+            if (from != null && from.Backpack == target)
             {
-                return base.OnDroppedInto(from, target, p);
+                return base.OnDroppedInto(from, target, p, gridloc);
             }
 
             return false;
         }
+        #endregion
         
         public override bool OnDroppedOnto( Mobile from, Item target )
         {

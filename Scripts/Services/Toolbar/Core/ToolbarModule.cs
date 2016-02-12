@@ -1,10 +1,4 @@
-﻿#region Header
-// **********
-// ServUO - ToolbarModule.cs
-// **********
-#endregion
-
-#region References
+﻿#region References
 using System;
 
 using CustomsFramework;

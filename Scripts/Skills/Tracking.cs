@@ -93,6 +93,10 @@ namespace Server.SkillHandlers
             this.AddBackground(10, 10, 420, 75, 2620);
             this.AddBackground(10, 85, 420, 25, 3000);
 
+            AddECHtmlLocalized(0, 0, 0, 0, 1011012, false, false);
+            AddECButton(0, 0, 0, 0, 0, GumpButtonType.Page, 0);
+            AddECHtmlLocalized(0, 0, 0, 0, 1018086, false, false);
+
             this.AddItem(20, 20, 9682);
             this.AddButton(20, 110, 4005, 4007, 1, GumpButtonType.Reply, 0);
             this.AddHtmlLocalized(20, 90, 100, 20, 1018087, false, false); // Animals
@@ -113,7 +117,9 @@ namespace Server.SkillHandlers
         public override void OnResponse(NetState state, RelayInfo info)
         {
             if (info.ButtonID >= 1 && info.ButtonID <= 4)
+            {
                 TrackWhoGump.DisplayTo(this.m_Success, this.m_From, info.ButtonID - 1);
+            }
         }
     }
 
@@ -242,7 +248,9 @@ namespace Server.SkillHandlers
             int detectHidden = from.Skills[SkillName.DetectHidden].Fixed;
 
             if (Core.ML && m.Race == Race.Elf)
+            {
                 tracking /= 2; //The 'Guide' says that it requires twice as Much tracking SKILL to track an elf.  Not the total difficulty to track.
+            }
 
             int hiding = m.Skills[SkillName.Hiding].Fixed;
             int stealth = m.Skills[SkillName.Stealth].Fixed;
@@ -250,11 +258,17 @@ namespace Server.SkillHandlers
 
             // Necromancy forms affect tracking difficulty 
             if (TransformationSpellHelper.UnderTransformation(m, typeof(HorrificBeastSpell)))
+            {
                 divisor -= 200;
+            }
             else if (TransformationSpellHelper.UnderTransformation(m, typeof(VampiricEmbraceSpell)) && divisor < 500)
+            {
                 divisor = 500;
+            }
             else if (TransformationSpellHelper.UnderTransformation(m, typeof(WraithFormSpell)) && divisor <= 2000)
+            {
                 divisor += 200;
+            }
 
             int chance;
             if (divisor > 0)
