@@ -6056,7 +6056,7 @@ namespace Server.Mobiles
 			{ }
 			else if (patient.Poisoned)
 			{
-				int poisonLevel = patient.Poison.Level;
+				int poisonLevel = patient.Poison.RealLevel;
 
 				double healing = Skills.Healing.Value;
 				double anatomy = Skills.Anatomy.Value;

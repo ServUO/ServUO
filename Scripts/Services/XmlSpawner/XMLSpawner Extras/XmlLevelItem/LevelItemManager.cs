@@ -77,7 +77,7 @@ namespace Server.Items
 			if ( p == null )
 				return 0;
 
-			return p.Level + 1;
+			return p.RealLevel + 1;
 		}
 
 		public static int CalcExp( Mobile targ )

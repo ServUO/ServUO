@@ -84,7 +84,7 @@ namespace Server.Spells.Chivalry
                 if (p != null)
                 {
                     // Cleanse by fire is now difficulty based 
-                    int chanceToCure = 10000 + (int)(this.Caster.Skills[SkillName.Chivalry].Value * 75) - ((p.Level + 1) * 2000);
+                    int chanceToCure = 10000 + (int)(this.Caster.Skills[SkillName.Chivalry].Value * 75) - ((p.RealLevel + 1) * 2000);
                     chanceToCure /= 100;
 
                     if (chanceToCure > Utility.Random(100))
