@@ -36,7 +36,6 @@ namespace Server.Commands
 			new CommandEntry("Teleporters",     "TelGen",			"TelGenDelete",			104),
 			new CommandEntry("Doom Lamp",       "GenLeverPuzzle",   "LampPuzzleDelete",		105),
 			new CommandEntry("Doom Gauntlet",   "GenGauntlet",      "DeleteGauntlet",		106),
-			new CommandEntry("Champions",       "GenChampions",     "DeleteChampions",		107),
 			new CommandEntry("Khaldun",         "GenKhaldun",       "DeleteKhaldun",		108),
 			new CommandEntry("Stealables",      "GenStealArties",   "RemoveStealArties",	109),
 			new CommandEntry("Solen Hives",     "SHTelGen",         "SHTelGenDelete",		110),

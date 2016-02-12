@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Server.Items;
+using Server.Engines.CannedEvil;
 
 namespace Server.Mobiles
 {
@@ -318,26 +319,12 @@ namespace Server.Mobiles
                 toGive[rand] = hold;
             }
 
-            for (int i = 0; i < 16; ++i)
+            for (int i = 0; i < ChampionSystem.StatScrollAmount; ++i)
             {
-                int level;
-                double random = Utility.RandomDouble();
-
-                if (0.1 >= random)
-                    level = 25;
-                else if (0.25 >= random)
-                    level = 20;
-                else if (0.45 >= random)
-                    level = 15;
-                else if (0.70 >= random)
-                    level = 10;
-                else
-                    level = 5;
-
                 Mobile m = toGive[i % toGive.Count];
 
                 m.SendLocalizedMessage(1049524); // You have received a scroll of power!
-                m.AddToBackpack(new StatCapScroll(225 + level));
+                m.AddToBackpack(new StatCapScroll(225 + RandomStatScrollLevel()));
 
                 if (m is PlayerMobile)
                 {
@@ -368,14 +355,29 @@ namespace Server.Mobiles
                         if (chance > Utility.Random(100))
                         {
                             prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
-                            prot.AddToBackpack(new StatCapScroll(225 + level));
+                            prot.AddToBackpack(new StatCapScroll(225 + RandomStatScrollLevel()));
                         }
                     }
                 }
             }
         }
 
-        public override bool OnBeforeDeath()
+		private static int RandomStatScrollLevel()
+		{
+			double random = Utility.RandomDouble();
+
+			if (0.1 >= random)
+				return 25;
+			else if (0.25 >= random)
+				return 20;
+			else if (0.45 >= random)
+				return 15;
+			else if (0.70 >= random)
+				return 10;
+			return 5;
+		}
+
+		public override bool OnBeforeDeath()
         {
             if (this.m_TrueForm)
             {
@@ -395,19 +397,7 @@ namespace Server.Mobiles
 
                     Map map = this.Map;
 
-                    if (map != null)
-                    {
-                        for (int x = -16; x <= 16; ++x)
-                        {
-                            for (int y = -16; y <= 16; ++y)
-                            {
-                                double dist = Math.Sqrt(x * x + y * y);
-
-                                if (dist <= 16)
-                                    new GoodiesTimer(map, this.X + x, this.Y + y).Start();
-                            }
-                        }
-                    }
+					GoldShower.DoForHarrower(Location, Map);
 
                     this.m_DamageEntries = new Dictionary<Mobile, int>();
 
@@ -653,70 +643,6 @@ namespace Server.Mobiles
                     m.PlaySound(0x1FE);
 
                     this.m_Owner.Combatant = toTeleport;
-                }
-            }
-        }
-
-        private class GoodiesTimer : Timer
-        {
-            private readonly Map m_Map;
-            private readonly int m_X;
-            private readonly int m_Y;
-            public GoodiesTimer(Map map, int x, int y)
-                : base(TimeSpan.FromSeconds(Utility.RandomDouble() * 10.0))
-            {
-                this.Priority = TimerPriority.TwoFiftyMS;
-
-                this.m_Map = map;
-                this.m_X = x;
-                this.m_Y = y;
-            }
-
-            protected override void OnTick()
-            {
-                int z = this.m_Map.GetAverageZ(this.m_X, this.m_Y);
-                bool canFit = this.m_Map.CanFit(this.m_X, this.m_Y, z, 6, false, false);
-
-                for (int i = -3; !canFit && i <= 3; ++i)
-                {
-                    canFit = this.m_Map.CanFit(this.m_X, this.m_Y, z + i, 6, false, false);
-
-                    if (canFit)
-                        z += i;
-                }
-
-                if (!canFit)
-                    return;
-
-                Gold g = new Gold(750, 1250);
-				
-                g.MoveToWorld(new Point3D(this.m_X, this.m_Y, z), this.m_Map);
-
-                if (0.5 >= Utility.RandomDouble())
-                {
-                    switch ( Utility.Random(3) )
-                    {
-                        case 0: // Fire column
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
-                                Effects.PlaySound(g, g.Map, 0x208);
-
-                                break;
-                            }
-                        case 1: // Explosion
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x36BD, 20, 10, 5044);
-                                Effects.PlaySound(g, g.Map, 0x307);
-
-                                break;
-                            }
-                        case 2: // Ball of fire
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x36FE, 10, 10, 5052);
-
-                                break;
-                            }
-                    }
                 }
             }
         }

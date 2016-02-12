@@ -64,7 +64,7 @@ namespace Server
                         return;
 
                     int needed, consumed;
-                    switch( idol.Spawn.GetSubLevel() )
+                    switch( idol.Spawn.Rank )
                     {
                         case 0:
                             {

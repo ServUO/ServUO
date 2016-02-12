@@ -180,10 +180,15 @@ namespace Server.Engines.BulkOrders
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack) || this.InSecureTrade || this.RootParent is PlayerVendor)
-                from.SendGump(new LargeBODGump(from, this));
-            else
-                from.SendLocalizedMessage(1045156); // You must have the deed in your backpack to use it.
-        }
+			{
+				EventSink.InvokeBODUsed(new BODUsedEventArgs(from, this));
+				from.SendGump(new LargeBODGump(from, this));
+			}
+			else
+			{
+				from.SendLocalizedMessage(1045156); // You must have the deed in your backpack to use it.
+			}
+		}
 
         public void BeginCombine(Mobile from)
         {

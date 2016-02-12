@@ -4,6 +4,7 @@ using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Regions;
+using System.Linq;
 
 namespace Server.Engines.CannedEvil
 {
@@ -39,7 +40,25 @@ namespace Server.Engines.CannedEvil
 
         private Dictionary<Mobile, int> m_DamageEntries;
 
-        [CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty(AccessLevel.GameMaster)]
+		public string GroupName { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public double SpawnMod { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int SpawnRadius { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public double KillsMod { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public bool AutoRestart { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public string SpawnName { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
         public bool ConfinedRoaming
         {
             get
@@ -84,6 +103,7 @@ namespace Server.Engines.CannedEvil
             this.m_RestartDelay = TimeSpan.FromMinutes(10.0);
 
             this.m_DamageEntries = new Dictionary<Mobile, int>();
+			this.m_RandomizeType = false;
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(SetInitialSpawnArea));
         }
@@ -91,7 +111,8 @@ namespace Server.Engines.CannedEvil
         public void SetInitialSpawnArea()
         {
             //Previous default used to be 24;
-            this.SpawnArea = new Rectangle2D(new Point2D(this.X - 24, this.Y - 24), new Point2D(this.X + 24, this.Y + 24));
+            this.SpawnArea = new Rectangle2D(new Point2D(this.X - SpawnRadius, this.Y - SpawnRadius),
+				new Point2D(this.X + SpawnRadius, this.Y + SpawnRadius));
         }
 
         public void UpdateRegion()
@@ -104,18 +125,6 @@ namespace Server.Engines.CannedEvil
                 this.m_Region = new ChampionSpawnRegion(this);
                 this.m_Region.Register();
             }
-            /*
-            if( m_Region == null )
-            {
-            m_Region = new ChampionSpawnRegion( this );
-            }
-            else
-            {
-            m_Region.Unregister();
-            //Why doesn't Region allow me to set it's map/Area meself? ><
-            m_Region = new ChampionSpawnRegion( this );
-            }
-            */
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -291,7 +300,14 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return 250 - (this.Level * 12);
+				int l = Level;
+				switch (l)
+				{
+					case 0: return (int)(256 * KillsMod);
+					case 1: return (int)(128 * KillsMod);
+					case 2: return (int)(64 * KillsMod);
+					default: return (int)(32 * KillsMod);
+				}
             }
         }
 
@@ -399,7 +415,7 @@ namespace Server.Engines.CannedEvil
         {
             if (this.RandomizeType)
             {
-                switch (Utility.Random(11))
+                switch (Utility.Random(5))
                 {
                     case 0:
                         this.Type = ChampionSpawnType.Abyss; break;
@@ -408,22 +424,9 @@ namespace Server.Engines.CannedEvil
                     case 2:
                         this.Type = ChampionSpawnType.ColdBlood; break;
                     case 3:
-                        this.Type = ChampionSpawnType.ForestLord; break;
-                    case 4:
                         this.Type = ChampionSpawnType.VerminHorde; break;
-                    case 5:
+                    case 4:
                         this.Type = ChampionSpawnType.UnholyTerror; break;
-                    case 6:
-                        this.Type = ChampionSpawnType.SleepingDragon; break;
-                    case 7:
-                        this.Type = ChampionSpawnType.Glade; break;
-                    case 8:
-                        this.Type = ChampionSpawnType.Corrupt; break;
-                    case 9:
-                        this.Type = ChampionSpawnType.Terror; break;
-                    case 10:
-                        this.Type = ChampionSpawnType.Infuse; break;
-
                 }
             }
 
@@ -516,6 +519,8 @@ namespace Server.Engines.CannedEvil
             if (!this.m_Active || this.Deleted)
                 return;
 
+			int currentRank = Rank;
+
             if (this.m_Champion != null)
             {
                 if (this.m_Champion.Deleted)
@@ -543,7 +548,8 @@ namespace Server.Engines.CannedEvil
                     this.m_Champion = null;
                     this.Stop();
 
-                    this.BeginRestart(this.m_RestartDelay);
+					if(AutoRestart)
+						this.BeginRestart(this.m_RestartDelay);
                 }
             }
             else
@@ -562,7 +568,10 @@ namespace Server.Engines.CannedEvil
                         }
                         this.m_Creatures.RemoveAt(i);
                         --i;
-                        ++this.m_Kills;
+
+						int rankOfMob = GetRankFor(m);
+						if(rankOfMob == currentRank)
+							++this.m_Kills;
 
                         Mobile killer = m.FindMostRecentDamager(false);
 
@@ -578,12 +587,11 @@ namespace Server.Engines.CannedEvil
                             {
                                 if (this.Map == Map.Felucca)
                                 {
-                                    if (Utility.RandomDouble() < 0.001)
+                                    if (Utility.RandomDouble() < ChampionSystem.ScrollChance)
                                     {
                                         PlayerMobile pm = (PlayerMobile)killer;
-                                        double random = Utility.Random(49);
-										
-                                        if (random <= 24)
+
+                                        if (Utility.RandomDouble() < ChampionSystem.TranscendenceChance)
                                         {
                                             ScrollofTranscendence SoTF = this.CreateRandomSoT(true);
                                             GiveScrollTo(pm, (SpecialScroll)SoTF);
@@ -606,10 +614,9 @@ namespace Server.Engines.CannedEvil
                                     }
                                 }
                             }
-                            #endregion
+							#endregion
 
-                            int mobSubLevel = this.GetSubLevelFor(m) + 1;
-
+							int mobSubLevel = rankOfMob + 1;
                             if (mobSubLevel >= 0)
                             {
                                 bool gainedPath = false;
@@ -704,112 +711,85 @@ namespace Server.Engines.CannedEvil
         {
             if (!this.m_Active || this.Deleted || this.m_Champion != null)
                 return;
-            if (this.m_Type == ChampionSpawnType.Glade || this.m_Type == ChampionSpawnType.Corrupt)
+
+			int currentLevel = Level;
+			int maxSpawn = (int)((double)MaxKills * 0.5d * SpawnMod);
+			if (currentLevel >= 16)
+				maxSpawn = Math.Min(maxSpawn, MaxKills - m_Kills);
+
+			int spawnRadius = (int)(SpawnRadius * ChampionSystem.SpawnRadiusModForLevel(Level));
+			Rectangle2D spawnBounds = new Rectangle2D(new Point2D(this.X - spawnRadius, this.Y - spawnRadius),
+				new Point2D(this.X + spawnRadius, this.Y + spawnRadius));
+
+			while (this.m_Creatures.Count <= maxSpawn)
             {
-                while (this.m_Creatures.Count < (100 - (this.GetSubLevel() * 20)))
+                Mobile m = this.Spawn();
+
+                if (m == null)
+                    return;
+
+                Point3D loc = GetSpawnLocation(spawnBounds, spawnRadius);
+
+                // Allow creatures to turn into Paragons at Ilshenar champions.
+                m.OnBeforeSpawn(loc, this.Map);
+
+                this.m_Creatures.Add(m);
+                m.MoveToWorld(loc, this.Map);
+
+                if (m is BaseCreature)
                 {
-                    Mobile m = this.Spawn();
+                    BaseCreature bc = m as BaseCreature;
+                    bc.Tamable = false;
 
-                    if (m == null)
-                        return;
-
-                    Point3D loc = this.GetSpawnLocation();
-
-                    // Allow creatures to turn into Paragons at Ilshenar champions.
-                    m.OnBeforeSpawn(loc, this.Map);
-
-                    this.m_Creatures.Add(m);
-                    m.MoveToWorld(loc, this.Map);
-
-                    if (m is BaseCreature)
+                    if (!this.m_ConfinedRoaming)
                     {
-                        BaseCreature bc = m as BaseCreature;
-                        bc.Tamable = false;
-
-                        if (!this.m_ConfinedRoaming)
-                        {
-                            bc.Home = this.Location;
-                            bc.RangeHome = (int)(Math.Sqrt(this.m_SpawnArea.Width * this.m_SpawnArea.Width + this.m_SpawnArea.Height * this.m_SpawnArea.Height) / 2);
-                        }
-                        else
-                        {
-                            bc.Home = bc.Location;
-
-                            Point2D xWall1 = new Point2D(this.m_SpawnArea.X, bc.Y);
-                            Point2D xWall2 = new Point2D(this.m_SpawnArea.X + this.m_SpawnArea.Width, bc.Y);
-                            Point2D yWall1 = new Point2D(bc.X, this.m_SpawnArea.Y);
-                            Point2D yWall2 = new Point2D(bc.X, this.m_SpawnArea.Y + this.m_SpawnArea.Height);
-
-                            double minXDist = Math.Min(bc.GetDistanceToSqrt(xWall1), bc.GetDistanceToSqrt(xWall2));
-                            double minYDist = Math.Min(bc.GetDistanceToSqrt(yWall1), bc.GetDistanceToSqrt(yWall2));
-
-                            bc.RangeHome = (int)Math.Min(minXDist, minYDist);
-                        }
+                        bc.Home = this.Location;
+						bc.RangeHome = spawnRadius;
                     }
-                }
-            }
-            else
-            {
-                while (this.m_Creatures.Count < (200 - (this.GetSubLevel() * 40)))
-                {
-                    Mobile m = this.Spawn();
-
-                    if (m == null)
-                        return;
-
-                    Point3D loc = this.GetSpawnLocation();
-
-                    // Allow creatures to turn into Paragons at Ilshenar champions.
-                    m.OnBeforeSpawn(loc, this.Map);
-
-                    this.m_Creatures.Add(m);
-                    m.MoveToWorld(loc, this.Map);
-
-                    if (m is BaseCreature)
+                    else
                     {
-                        BaseCreature bc = m as BaseCreature;
-                        bc.Tamable = false;
+                        bc.Home = bc.Location;
 
-                        if (!this.m_ConfinedRoaming)
-                        {
-                            bc.Home = this.Location;
-                            bc.RangeHome = (int)(Math.Sqrt(this.m_SpawnArea.Width * this.m_SpawnArea.Width + this.m_SpawnArea.Height * this.m_SpawnArea.Height) / 2);
-                        }
-                        else
-                        {
-                            bc.Home = bc.Location;
+                        Point2D xWall1 = new Point2D(spawnBounds.X, bc.Y);
+                        Point2D xWall2 = new Point2D(spawnBounds.X + spawnBounds.Width, bc.Y);
+                        Point2D yWall1 = new Point2D(bc.X, spawnBounds.Y);
+                        Point2D yWall2 = new Point2D(bc.X, spawnBounds.Y + spawnBounds.Height);
 
-                            Point2D xWall1 = new Point2D(this.m_SpawnArea.X, bc.Y);
-                            Point2D xWall2 = new Point2D(this.m_SpawnArea.X + this.m_SpawnArea.Width, bc.Y);
-                            Point2D yWall1 = new Point2D(bc.X, this.m_SpawnArea.Y);
-                            Point2D yWall2 = new Point2D(bc.X, this.m_SpawnArea.Y + this.m_SpawnArea.Height);
+                        double minXDist = Math.Min(bc.GetDistanceToSqrt(xWall1), bc.GetDistanceToSqrt(xWall2));
+                        double minYDist = Math.Min(bc.GetDistanceToSqrt(yWall1), bc.GetDistanceToSqrt(yWall2));
 
-                            double minXDist = Math.Min(bc.GetDistanceToSqrt(xWall1), bc.GetDistanceToSqrt(xWall2));
-                            double minYDist = Math.Min(bc.GetDistanceToSqrt(yWall1), bc.GetDistanceToSqrt(yWall2));
-
-                            bc.RangeHome = (int)Math.Min(minXDist, minYDist);
-                        }
+                        bc.RangeHome = (int)Math.Min(minXDist, minYDist);
                     }
                 }
             }
         }
 
-        public Point3D GetSpawnLocation()
+		public Point3D GetSpawnLocation()
+		{
+			return GetSpawnLocation(m_SpawnArea, 24);
+		}
+
+        public Point3D GetSpawnLocation(Rectangle2D rect, int range)
         {
             Map map = this.Map;
 
             if (map == null)
                 return this.Location;
 
+			int cx = Location.X;
+			int cy = Location.Y;
+
             // Try 20 times to find a spawnable location.
             for (int i = 0; i < 20; i++)
             {
-                /*
-                int x = Location.X + (Utility.Random( (m_SpawnRange * 2) + 1 ) - m_SpawnRange);
-                int y = Location.Y + (Utility.Random( (m_SpawnRange * 2) + 1 ) - m_SpawnRange);
-                */
-                int x = Utility.Random(this.m_SpawnArea.X, this.m_SpawnArea.Width);
-                int y = Utility.Random(this.m_SpawnArea.Y, this.m_SpawnArea.Height);
+				int dx = Utility.Random(range * 2);
+				int dy = Utility.Random(range * 2);
+				int x = rect.X + dx;
+				int y = rect.Y + dy;
+
+				// Make spawn area circular
+				//if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range * range)
+				//	continue;
 
                 int z = this.Map.GetAverageZ(x, y);
 
@@ -824,25 +804,15 @@ namespace Server.Engines.CannedEvil
             return this.Location;
         }
 
-        private const int Level1 = 4;  // First spawn level from 0-4 red skulls
-        private const int Level2 = 8;  // Second spawn level from 5-8 red skulls
-        private const int Level3 = 12; // Third spawn level from 9-12 red skulls
-
-        public int GetSubLevel()
+        public int Rank
         {
-            int level = this.Level;
-
-            if (level <= Level1)
-                return 0;
-            else if (level <= Level2)
-                return 1;
-            else if (level <= Level3)
-                return 2;
-
-            return 3;
+			get
+			{
+				return ChampionSystem.RankForLevel(Level);
+			}
         }
 
-        public int GetSubLevelFor(Mobile m)
+        public int GetRankFor(Mobile m)
         {
             Type[][] types = ChampionSpawnInfo.GetInfo(this.m_Type).SpawnTypes;
             Type t = m.GetType();
@@ -865,7 +835,7 @@ namespace Server.Engines.CannedEvil
         {
             Type[][] types = ChampionSpawnInfo.GetInfo(this.m_Type).SpawnTypes;
 
-            int v = this.GetSubLevel();
+			int v = Rank;
 
             if (v >= 0 && v < types.Length)
                 return this.Spawn(types[v]);
@@ -1203,7 +1173,12 @@ namespace Server.Engines.CannedEvil
         {
             base.Serialize(writer);
 
-            writer.Write((int)5); // version
+            writer.Write((int)6); // version
+
+			writer.Write(SpawnName);
+			writer.Write(AutoRestart);
+			writer.Write(SpawnMod);
+			writer.Write(SpawnRadius);
 
             writer.Write(this.m_DamageEntries.Count);
             foreach (KeyValuePair<Mobile, int> kvp in this.m_DamageEntries)
@@ -1219,7 +1194,7 @@ namespace Server.Engines.CannedEvil
 
             writer.Write(this.m_RandomizeType);
 
-            //			writer.Write( m_SpawnRange );
+            // writer.Write( m_SpawnRange );
             writer.Write(this.m_Kills);
 
             writer.Write((bool)this.m_Active);
@@ -1250,6 +1225,12 @@ namespace Server.Engines.CannedEvil
 
             switch( version )
             {
+				case 6:
+					SpawnName = reader.ReadString();
+					AutoRestart = reader.ReadBool();
+					SpawnMod = reader.ReadDouble();
+					SpawnRadius = reader.ReadInt();
+					goto case 5;
                 case 5:
                     {
                         int entries = reader.ReadInt();
@@ -1341,7 +1322,110 @@ namespace Server.Engines.CannedEvil
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateRegion));
         }
-    }
+
+		public void SendGump(Mobile mob)
+		{
+			mob.SendGump(new ChampionSpawnInfoGump(this));
+		}
+
+		private class ChampionSpawnInfoGump : Gump
+		{
+			private class Damager
+			{
+				public Mobile Mobile;
+				public int Damage;
+				public Damager(Mobile mob, int dmg)
+				{
+					Mobile = mob;
+					Damage = dmg;
+				}
+
+			}
+			private const int gBoarder = 20;
+			private const int gRowHeight = 25;
+			private const int gFontHue = 0;
+			private static readonly int[] gWidths = { 20, 160, 160, 20 };
+			private static readonly int[] gTab;
+			private static readonly int gWidth;
+
+			static ChampionSpawnInfoGump()
+			{
+				gWidth = gWidths.Sum();
+				int tab = 0;
+				gTab = new int[gWidths.Length];
+				for (int i = 0; i < gWidths.Length; ++i)
+				{
+					gTab[i] = tab;
+					tab += gWidths[i];
+				}
+			}
+
+			private ChampionSpawn m_Spawn;
+
+			public ChampionSpawnInfoGump(ChampionSpawn spawn)
+				: base(40, 40)
+			{
+				m_Spawn = spawn;
+
+				AddBackground(0, 0, gWidth, gBoarder * 2 + gRowHeight * (8 + spawn.m_DamageEntries.Count), 0x13BE);
+
+				int top = gBoarder;
+				AddLabel(gBoarder, top, gFontHue, "Champion Spawn Info Gump");
+				top += gRowHeight;
+
+				AddLabel(gTab[1], top, gFontHue, "Kills");
+				AddLabel(gTab[2], top, gFontHue, spawn.Kills.ToString());
+				top += gRowHeight;
+
+				AddLabel(gTab[1], top, gFontHue, "Max Kills");
+				AddLabel(gTab[2], top, gFontHue, spawn.MaxKills.ToString());
+				top += gRowHeight;
+
+				AddLabel(gTab[1], top, gFontHue, "Level");
+				AddLabel(gTab[2], top, gFontHue, spawn.Level.ToString());
+				top += gRowHeight;
+
+				AddLabel(gTab[1], top, gFontHue, "Rank");
+				AddLabel(gTab[2], top, gFontHue, spawn.Rank.ToString());
+				top += gRowHeight;
+
+				AddLabel(gTab[1], top, gFontHue, "Active");
+				AddLabel(gTab[2], top, gFontHue, spawn.Active.ToString());
+				top += gRowHeight;
+
+				AddLabel(gTab[1], top, gFontHue, "Auto Restart");
+				AddLabel(gTab[2], top, gFontHue, spawn.AutoRestart.ToString());
+				top += gRowHeight;
+
+				List<Damager> damagers = new List<Damager>();
+				foreach (Mobile mob in spawn.m_DamageEntries.Keys)
+				{
+					damagers.Add(new Damager(mob, spawn.m_DamageEntries[mob]));
+				}
+				damagers = damagers.OrderByDescending(x => x.Damage).ToList<Damager>();
+
+				foreach (Damager damager in damagers)
+				{
+					AddLabelCropped(gTab[1], top, 100, gRowHeight, gFontHue, damager.Mobile.RawName);
+					AddLabelCropped(gTab[2], top, 80, gRowHeight, gFontHue, damager.Damage.ToString());
+					top += gRowHeight;
+				}
+
+				AddButton(gWidth - (gBoarder + 30), top, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
+				AddLabel(gWidth - (gBoarder + 100), top, gFontHue, "Refresh");
+			}
+
+			public override void OnResponse(Network.NetState sender, RelayInfo info)
+			{
+				switch (info.ButtonID)
+				{
+					case 1:
+						m_Spawn.SendGump(sender.Mobile);
+						break;
+				}
+			}
+		}
+	}
 
     public class ChampionSpawnRegion : BaseRegion
     {

@@ -90,6 +90,7 @@ namespace Server.Engines.Harvest
             if (!this.CheckHarvest(from, tool))
                 return false;
 
+			EventSink.InvokeResourceHarvestAttempt(new ResourceHarvestAttemptEventArgs(from, tool, this));
             from.Target = new HarvestTarget(tool, this);
             return true;
         }

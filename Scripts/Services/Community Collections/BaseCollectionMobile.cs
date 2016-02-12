@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.Engines.Quests;
 using Server.Gumps;
 using Server.Network;
+using Server.Services.Community_Collections;
 
 namespace Server.Mobiles
 {
@@ -206,6 +207,8 @@ namespace Server.Mobiles
             this.CantWalk = true;
 		
             this.Init();
+
+			CollectionsSystem.RegisterMobile(this);
         }
 		
         public BaseCollectionMobile(Serial serial)
@@ -256,58 +259,71 @@ namespace Server.Mobiles
                 list.Add(this.DonationString);
         }
 		
+		public CollectionData GetData()
+		{
+			CollectionData ret = new CollectionData();
+
+			ret.Collection = CollectionID;
+			ret.Points = Points;
+			ret.StartTier = StartTier;
+			ret.NextTier = NextTier;
+			ret.DailyDecay = DailyDecay;
+			ret.Tier = Tier;
+			ret.DonationTitle = m_DonationTitle;
+			ret.Tiers = m_Tiers;
+
+			return ret;
+		}
+
+		public void SetData(CollectionData data)
+		{
+			Points = data.Points;
+			StartTier = data.StartTier;
+			NextTier = data.NextTier;
+			DailyDecay = data.DailyDecay;
+			m_Tier = data.Tier;
+			m_DonationTitle = data.DonationTitle;
+			m_Tiers = data.Tiers;
+		}
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 			
-            writer.Write((int)0); // version
-			
-            writer.Write((long)this.m_Points);
-            writer.Write((long)this.m_StartTier);
-            writer.Write((long)this.m_NextTier);
-            writer.Write((long)this.m_DailyDecay);
-            writer.Write((int)this.m_Tier);
-			
-            QuestWriter.Object(writer, this.m_DonationTitle);
-			
-            writer.Write((int)this.m_Tiers.Count);				
-			
-            for (int i = 0; i < this.m_Tiers.Count; i ++)
-            {
-                writer.Write((int)this.m_Tiers[i].Count);
-				
-                for (int j = 0; j < this.m_Tiers[i].Count; j ++)					
-                    QuestWriter.Object(writer, this.m_Tiers[i][j]);
-            }
+            writer.Write((int)1); // version			
         }
 		
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 			
-            int version = reader.ReadInt();			
-			
-            this.m_Points = reader.ReadLong();
-            this.m_StartTier = reader.ReadLong();
-            this.m_NextTier = reader.ReadLong();
-            this.m_DailyDecay = reader.ReadLong();
-            this.m_Tier = reader.ReadInt();		
-			
-            this.m_DonationTitle = QuestReader.Object(reader);
-			
-            this.Init();
-			
-            for (int i = reader.ReadInt(); i > 0; i --)
-            {
-                List<object> list = new List<object>();
-			
-                for (int j = reader.ReadInt(); j > 0; j --)
-                    list.Add(QuestReader.Object(reader));
-					
-                this.m_Tiers.Add(list);
-            }
-			
-            if (this.CantWalk)
+            int version = reader.ReadInt();
+
+			this.Init();
+
+			if (version == 0)
+			{
+				this.m_Points = reader.ReadLong();
+				this.m_StartTier = reader.ReadLong();
+				this.m_NextTier = reader.ReadLong();
+				this.m_DailyDecay = reader.ReadLong();
+				this.m_Tier = reader.ReadInt();
+
+				this.m_DonationTitle = QuestReader.Object(reader);
+
+				for (int i = reader.ReadInt(); i > 0; i--)
+				{
+					List<object> list = new List<object>();
+
+					for (int j = reader.ReadInt(); j > 0; j--)
+						list.Add(QuestReader.Object(reader));
+
+					this.m_Tiers.Add(list);
+				}
+				CollectionsSystem.RegisterMobile(this);
+			}
+
+			if (this.CantWalk)
                 this.Frozen = true;
         }
 		
@@ -414,5 +430,12 @@ namespace Server.Mobiles
         {
             return true;
         }
-    }
+
+		public override void OnDelete()
+		{
+			base.OnDelete();
+
+			CollectionsSystem.UnregisterMobile(this);
+		}
+	}
 }

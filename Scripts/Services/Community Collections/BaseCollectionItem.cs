@@ -285,8 +285,9 @@ namespace Server.Items
                 item.Delete();
             }
 			
-            reward.OnGiveReward(player, this, hue);	
-			
+            reward.OnGiveReward(player, this, hue);
+
+			player.CloseGump(typeof(ComunityCollectionGump));
             player.SendGump(new ComunityCollectionGump(player, this, this.Location));
         }
 		
