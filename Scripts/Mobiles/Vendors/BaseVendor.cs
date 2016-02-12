@@ -125,6 +125,7 @@ namespace Server.Mobiles
 
 			public override void OnClick()
 			{
+				EventSink.InvokeBODOffered(new BODOfferEventArgs(m_From, m_Vendor));
 				if (m_Vendor.SupportsBulkOrders(m_From))
 				{
 					TimeSpan ts = m_Vendor.GetNextBulkOrder(m_From);

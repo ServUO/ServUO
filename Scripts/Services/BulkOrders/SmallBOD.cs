@@ -211,10 +211,15 @@ namespace Server.Engines.BulkOrders
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack) || this.InSecureTrade || this.RootParent is PlayerVendor)
-                from.SendGump(new SmallBODGump(from, this));
+			{
+				EventSink.InvokeBODUsed(new BODUsedEventArgs(from, this));
+				from.SendGump(new SmallBODGump(from, this));
+			}
             else
-                from.SendLocalizedMessage(1045156); // You must have the deed in your backpack to use it.
-        }
+			{
+				from.SendLocalizedMessage(1045156); // You must have the deed in your backpack to use it.
+			}
+		}
 
         public override void OnDoubleClickNotAccessible(Mobile from)
         {
