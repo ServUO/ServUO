@@ -7370,6 +7370,12 @@ public static void _TraceEnd(int index)
 				ds.Tables[SpawnTablePointName].Columns.Add("Objects2");
 			}
 
+            // Always export sorted by UUID to help diffs
+            savelist.Sort((a, b) =>
+            {
+                return a.UniqueId.CompareTo(b.UniqueId);
+            });
+
 			// Add each spawn point to the new table
 			foreach (XmlSpawner sp in savelist)
 			{
