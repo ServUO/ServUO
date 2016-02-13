@@ -189,17 +189,17 @@ namespace Server.Engines.Craft
             int index = -1;
 
             #region Wooden Items
-            this.AddCraft(typeof(JointingPlane), 1044042, 1024144, 0.0, 50.0, typeof(Log), 1044041, 4, 1044351);
-            this.AddCraft(typeof(MouldingPlane), 1044042, 1024140, 0.0, 50.0, typeof(Log), 1044041, 4, 1044351);
-            this.AddCraft(typeof(SmoothingPlane), 1044042, 1024146, 0.0, 50.0, typeof(Log), 1044041, 4, 1044351);
-            this.AddCraft(typeof(ClockFrame), 1044042, 1024173, 0.0, 50.0, typeof(Log), 1044041, 6, 1044351);
-            this.AddCraft(typeof(Axle), 1044042, 1024187, -25.0, 25.0, typeof(Log), 1044041, 2, 1044351);
-            this.AddCraft(typeof(RollingPin), 1044042, 1024163, 0.0, 50.0, typeof(Log), 1044041, 5, 1044351);
+            this.AddCraft(typeof(JointingPlane), 1044042, 1024144, 0.0, 50.0, typeof(Board), 1044041, 4, 1044351);
+            this.AddCraft(typeof(MouldingPlane), 1044042, 1024140, 0.0, 50.0, typeof(Board), 1044041, 4, 1044351);
+            this.AddCraft(typeof(SmoothingPlane), 1044042, 1024146, 0.0, 50.0, typeof(Board), 1044041, 4, 1044351);
+            this.AddCraft(typeof(ClockFrame), 1044042, 1024173, 0.0, 50.0, typeof(Board), 1044041, 6, 1044351);
+            this.AddCraft(typeof(Axle), 1044042, 1024187, -25.0, 25.0, typeof(Board), 1044041, 2, 1044351);
+            this.AddCraft(typeof(RollingPin), 1044042, 1024163, 0.0, 50.0, typeof(Board), 1044041, 5, 1044351);
 
             if (Core.SE)
             {
                 index = this.AddCraft(typeof(Nunchaku), 1044042, 1030158, 70.0, 120.0, typeof(IronIngot), 1044036, 3, 1044037);
-                this.AddRes(index, typeof(Log), 1044041, 8, 1044351);
+                this.AddRes(index, typeof(Board), 1044041, 8, 1044351);
                 this.SetNeededExpansion(index, Expansion.SE);
             }
             #endregion
@@ -291,15 +291,15 @@ namespace Server.Engines.Craft
             if (Core.SE)
             {
                 index = this.AddCraft(typeof(ShojiLantern), 1044050, 1029404, 65.0, 115.0, typeof(IronIngot), 1044036, 10, 1044037);
-                this.AddRes(index, typeof(Log), 1044041, 5, 1044351);
+                this.AddRes(index, typeof(Board), 1044041, 5, 1044351);
                 this.SetNeededExpansion(index, Expansion.SE);
 
                 index = this.AddCraft(typeof(PaperLantern), 1044050, 1029406, 65.0, 115.0, typeof(IronIngot), 1044036, 10, 1044037);
-                this.AddRes(index, typeof(Log), 1044041, 5, 1044351);
+                this.AddRes(index, typeof(Board), 1044041, 5, 1044351);
                 this.SetNeededExpansion(index, Expansion.SE);
 
                 index = this.AddCraft(typeof(RoundPaperLantern), 1044050, 1029418, 65.0, 115.0, typeof(IronIngot), 1044036, 10, 1044037);
-                this.AddRes(index, typeof(Log), 1044041, 5, 1044351);
+                this.AddRes(index, typeof(Board), 1044041, 5, 1044351);
                 this.SetNeededExpansion(index, Expansion.SE);
 
                 index = this.AddCraft(typeof(WindChimes), 1044050, 1030290, 80.0, 130.0, typeof(IronIngot), 1044036, 15, 1044037);
