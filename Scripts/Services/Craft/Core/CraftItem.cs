@@ -63,6 +63,7 @@ namespace Server.Engines.Craft
 		private readonly CraftResCol m_arCraftRes;
 		private readonly CraftSkillCol m_arCraftSkill;
 		private readonly Type m_Type;
+        public double MinSkillOffset { get; set; }
 
 		private readonly string m_GroupNameString;
 		private readonly int m_GroupNameNumber;
@@ -1078,7 +1079,7 @@ namespace Server.Engines.Craft
 			{
 				CraftSkill craftSkill = m_arCraftSkill.GetAt(i);
 
-				double minSkill = craftSkill.MinSkill;
+				double minSkill = craftSkill.MinSkill - MinSkillOffset;
 				double maxSkill = craftSkill.MaxSkill;
 				double valSkill = from.Skills[craftSkill.SkillToMake].Value;
 

@@ -411,6 +411,12 @@ namespace Server.Engines.Craft
             craftItem.ForceNonExceptional = true;
         }
 
+        public void SetMinSkillOffset(int index, double skillOffset)
+        {
+            CraftItem craftItem = this.m_CraftItems.GetAt(index);
+            craftItem.MinSkillOffset = skillOffset;
+        }
+
         public void SetSubRes(Type type, string name)
         {
             this.m_CraftSubRes.ResType = type;

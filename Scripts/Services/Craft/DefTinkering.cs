@@ -474,6 +474,7 @@ namespace Server.Engines.Craft
                 this.SetNeededExpansion(index, Expansion.ML);
 
                 index = this.AddCraft(typeof(ResilientBracer), 1073107, 1072933, 100.0, 125.0, typeof(IronIngot), 1044036, 2, 1044037);
+                this.SetMinSkillOffset(index, 25.0);
                 this.AddRes(index, typeof(CapturedEssence), 1032686, 1, 1044253);
                 this.AddRes(index, typeof(BlueDiamond), 1032696, 10, 1044253);
                 this.AddRes(index, typeof(Diamond), 1062608, 50, 1044253);
@@ -482,6 +483,7 @@ namespace Server.Engines.Craft
                 this.SetNeededExpansion(index, Expansion.ML);
 
                 index = this.AddCraft(typeof(EssenceOfBattle), 1073107, 1072935, 100.0, 125.0, typeof(IronIngot), 1044036, 2, 1044037);
+                this.SetMinSkillOffset(index, 25.0);
                 this.AddRes(index, typeof(CapturedEssence), 1032686, 1, 1044253);
                 this.AddRes(index, typeof(FireRuby), 1032695, 10, 1044253);
                 this.AddRes(index, typeof(Ruby), 1062603, 50, 1044253);
@@ -490,6 +492,7 @@ namespace Server.Engines.Craft
                 this.SetNeededExpansion(index, Expansion.ML);
 
                 index = this.AddCraft(typeof(PendantOfTheMagi), 1073107, 1072937, 100.0, 125.0, typeof(IronIngot), 1044036, 2, 1044037);
+                this.SetMinSkillOffset(index, 25.0);
                 this.AddRes(index, typeof(EyeOfTheTravesty), 1032685, 1, 1044253);
                 this.AddRes(index, typeof(WhitePearl), 1032694, 10, 1044253);
                 this.AddRes(index, typeof(StarSapphire), 1062600, 50, 1044253);
