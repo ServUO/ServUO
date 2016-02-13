@@ -10975,9 +10975,6 @@
     <Compile Include="Services\ChampionSystem\ChampionSpawnController\ChampionSpawnController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\ChampionSystem\ChampionSpawnController\RandomizeTimer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\ChampionSystem\ChampionSpawnType.cs">
       <SubType>Code</SubType>
     </Compile>
