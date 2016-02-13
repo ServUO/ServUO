@@ -126,6 +126,48 @@
     <Objects2>korpre:MX=6:SB=1:RT=0:TO=0:KL=6:RK=0:CA=0:DN=-1:DX=-1:SP=1:PR=-1:OBJ=anzuanord:MX=1:SB=2:RT=0:TO=0:KL=1:RK=0:CA=0:DN=-1:DX=-1:SP=1:PR=-1:OBJ=relanord:MX=1:SB=3:RT=0:TO=0:KL=1:RK=0:CA=0:DN=-1:DX=-1:SP=1:PR=-1:OBJ=vasanord:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=0:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
+    <Name>Barreraak</Name>
+    <UniqueId>071cc1af-b9ff-45d9-bda0-fa53d78d2140</UniqueId>
+    <Map>TerMur</Map>
+    <X>1190</X>
+    <Y>988</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>1190</CentreX>
+    <CentreY>988</CentreY>
+    <CentreZ>-27</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <AllowNPCTriggering>False</AllowNPCTriggering>
+    <SpawnOnTrigger>False</SpawnOnTrigger>
+    <SmartSpawning>False</SmartSpawning>
+    <TickReset>False</TickReset>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>Barreraak:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+  </Points>
+  <Points>
     <Name>Beninort</Name>
     <UniqueId>07577521-3beb-45e8-b477-a987d45aaac2</UniqueId>
     <Map>TerMur</Map>
@@ -2520,6 +2562,48 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>ShrineMantra:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+  </Points>
+  <Points>
+    <Name>Xenrr</Name>
+    <UniqueId>5526b2d5-64d5-46a7-8ab5-bf921a637585</UniqueId>
+    <Map>TerMur</Map>
+    <X>1016</X>
+    <Y>1001</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>1016</CentreX>
+    <CentreY>1001</CentreY>
+    <CentreZ>-43</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <AllowNPCTriggering>False</AllowNPCTriggering>
+    <SpawnOnTrigger>False</SpawnOnTrigger>
+    <SmartSpawning>False</SmartSpawning>
+    <TickReset>False</TickReset>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>Xenrr:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>coraldesert#5</Name>
@@ -7230,6 +7314,48 @@
     <Objects2>bird:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=rabbit:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=horse:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=rat:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=snake:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=greatermongbat:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
+    <Name>Gretchen</Name>
+    <UniqueId>e8763af4-2caa-4ca1-b238-705fc970c7e0</UniqueId>
+    <Map>TerMur</Map>
+    <X>1090</X>
+    <Y>1129</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>1090</CentreX>
+    <CentreY>1129</CentreY>
+    <CentreZ>-42</CentreZ>
+    <Range>5</Range>
+    <MaxCount>1</MaxCount>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <AllowNPCTriggering>False</AllowNPCTriggering>
+    <SpawnOnTrigger>False</SpawnOnTrigger>
+    <SmartSpawning>False</SmartSpawning>
+    <TickReset>False</TickReset>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>Gretchen:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+  </Points>
+  <Points>
     <Name>Dugan Quest</Name>
     <UniqueId>e8cf2f19-9a13-4c78-8c95-ae10d7d82d19</UniqueId>
     <Map>TerMur</Map>
@@ -7553,7 +7679,7 @@
     <TODMode>0</TODMode>
     <KillReset>1</KillReset>
     <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
+    <SequentialSpawning>0</SequentialSpawning>
     <AllowGhostTriggering>False</AllowGhostTriggering>
     <AllowNPCTriggering>False</AllowNPCTriggering>
     <SpawnOnTrigger>False</SpawnOnTrigger>

@@ -588,48 +588,6 @@
     <Objects2>Golemcontroller:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Gargoyle:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Vendors#1</Name>
-    <UniqueId>0580a5cb-27f9-4c24-b58d-a3204174b916</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>808</X>
-    <Y>697</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>808</CentreX>
-    <CentreY>697</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>armorer:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=weaponsmith:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Outdoors#186</Name>
     <UniqueId>0588925a-c966-4faa-8145-a81c3ebe391e</UniqueId>
     <Map>Ilshenar</Map>
@@ -838,48 +796,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>wanderinghealer:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Vendors#6</Name>
-    <UniqueId>06cdaed5-bbe0-4e8c-bd30-d493d195b218</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>854</X>
-    <Y>680</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>854</CentreX>
-    <CentreY>680</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>banker:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=minter:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#32</Name>
@@ -1596,48 +1512,6 @@
     <Objects2>Bloodelemental:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Vendors#11</Name>
-    <UniqueId>0f9e0e37-6706-41aa-a9b2-7f66c18a30db</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>826</X>
-    <Y>679</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>826</CentreX>
-    <CentreY>679</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>provisioner:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=cobbler:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Wisp#17</Name>
     <UniqueId>0fc903d4-ee03-4446-a18b-711671aa1c99</UniqueId>
     <Map>Ilshenar</Map>
@@ -2350,48 +2224,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Balron:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Vendors#7</Name>
-    <UniqueId>19978698-daf4-49af-9ff0-9f0ce1b13395</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>855</X>
-    <Y>603</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>855</CentreX>
-    <CentreY>603</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>banker:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=minter:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#150</Name>
@@ -3778,48 +3610,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Brigand:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Evilmage:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Vendors#28</Name>
-    <UniqueId>2e30f91c-7d48-42f3-a1a4-ec1c52128a17</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>869</X>
-    <Y>625</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>869</CentreX>
-    <CentreY>625</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>scribe:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#136</Name>
@@ -7770,48 +7560,6 @@
     <Objects2>GolemController:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Golem:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Vendors#27</Name>
-    <UniqueId>61d7011b-cf2e-4457-b2e9-fd3f912b8381</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>868</X>
-    <Y>657</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>868</CentreX>
-    <CentreY>657</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>scribe:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Ankh#7</Name>
     <UniqueId>62b2a0cb-ef52-4e49-82f7-4db6ed65c934</UniqueId>
     <Map>Ilshenar</Map>
@@ -8274,48 +8022,6 @@
     <Objects2>Magecamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Vendors#26</Name>
-    <UniqueId>6827f0cb-35b4-4e83-99c6-f76a641fa391</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>859</X>
-    <Y>698</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>859</CentreX>
-    <CentreY>698</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>jeweler:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Towns#16</Name>
     <UniqueId>683771db-0a88-4a39-9165-e02d7baa87ad</UniqueId>
     <Map>Ilshenar</Map>
@@ -8398,48 +8104,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Toxicelemental:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Fireelemental:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Bloodelemental:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Vendors#37</Name>
-    <UniqueId>6aae1b6c-5214-4a7a-bd96-1acc452b703b</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>896</X>
-    <Y>610</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>896</CentreX>
-    <CentreY>610</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>tailorguildmaster:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#29</Name>
@@ -8694,48 +8358,6 @@
     <Objects2>Tropicalbird:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Boar:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Snake:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Giantserpent:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Forestostard:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Gorilla:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Panther:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Vendors#0</Name>
-    <UniqueId>6c9753c4-1824-487c-8252-38580e774b69</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>791</X>
-    <Y>618</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>791</CentreX>
-    <CentreY>618</CentreY>
-    <CentreZ>0</CentreZ>
-    <Range>5</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>stonecrafter:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Mushroom#1</Name>
     <UniqueId>6cf1a862-f926-4c04-acfd-0cc06ec9d7bf</UniqueId>
     <Map>Ilshenar</Map>
@@ -8985,7 +8607,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Ogre:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ogrelord:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratman:MX=10:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratmanmage:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratmanarcher:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>JukaWarrior:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=JukaMage:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=JukaLord:MX=10:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=ChaosDragoon:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=ChaosDragoonElite:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=GolemController:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Golem:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Spawner</Name>
@@ -9784,48 +9406,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>savageshaman:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Vendors#36</Name>
-    <UniqueId>78d10eae-dc03-42de-9ba1-b603cc9055de</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>896</X>
-    <Y>610</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>896</CentreX>
-    <CentreY>610</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>tailor:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=weaver:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Vendors#34</Name>
@@ -10834,90 +10414,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>GolemController:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Vendors#12</Name>
-    <UniqueId>84116929-8f9e-4a46-b85e-019234f5e2fd</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>824</X>
-    <Y>602</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>824</CentreX>
-    <CentreY>602</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>provisioner:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=cobbler:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Vendors#44</Name>
-    <UniqueId>841f940b-9137-48dd-9c73-9c9aa716a7d7</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>792</X>
-    <Y>665</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>792</CentreX>
-    <CentreY>665</CentreY>
-    <CentreZ>0</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>blacksmith:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=blacksmithguildmaster:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#130</Name>
@@ -15792,48 +15288,6 @@
     <Objects2>SpeckledScorpion:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Vendors#2</Name>
-    <UniqueId>bbb6d10f-e911-4dfa-83c7-03aa85f43307</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>808</X>
-    <Y>586</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>808</CentreX>
-    <CentreY>586</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>armorer:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=weaponsmith:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Outdoors#144</Name>
     <UniqueId>bc51f96d-5019-4b93-a120-233a574e0bf2</UniqueId>
     <Map>Ilshenar</Map>
@@ -16294,48 +15748,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Hellcat:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Vendors#40</Name>
-    <UniqueId>c18b5936-afac-4923-bdc5-7dd5e438cab0</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>840</X>
-    <Y>571</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>840</CentreX>
-    <CentreY>571</CentreY>
-    <CentreZ>0</CentreZ>
-    <Range>5</Range>
-    <MaxCount>3</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>mage:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=glassblower:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=mageguildmaster:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>TwistedWeald#2</Name>
@@ -19614,48 +19026,6 @@
     <Objects2>EnslavedGargoyle:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=GolemController:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Vendors#41</Name>
-    <UniqueId>ec0538ac-7571-4f93-9326-1e4e29ed25b5</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>840</X>
-    <Y>707</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>840</CentreX>
-    <CentreY>707</CentreY>
-    <CentreZ>0</CentreZ>
-    <Range>5</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>innkeeper:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Ankh#16</Name>
     <UniqueId>ec852caf-9f22-4db9-9a2e-aa83adf79601</UniqueId>
     <Map>Ilshenar</Map>
@@ -19948,48 +19318,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>savage:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Vendors#8</Name>
-    <UniqueId>ef2e28fe-96a6-46b8-b773-05550f8d5e89</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>766</X>
-    <Y>641</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>766</CentreX>
-    <CentreY>641</CentreY>
-    <CentreZ>0</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>tinker:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=tinkerguildmaster:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#8</Name>
@@ -21292,48 +20620,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Dragon:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Vendors#23</Name>
-    <UniqueId>fcbf56ce-9573-4a43-a2bb-fea45c092b60</UniqueId>
-    <Map>Ilshenar</Map>
-    <X>872</X>
-    <Y>586</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>872</CentreX>
-    <CentreY>586</CentreY>
-    <CentreZ>-40</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>healer:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=healerguildmaster:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>wispdungeonhealer</Name>
