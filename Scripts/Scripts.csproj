@@ -119,9 +119,6 @@
     <Compile Include="Commands\GenCategorization.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\GenChampion.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\Generic\Commands\BaseCommand.cs">
       <SubType>Code</SubType>
     </Compile>
