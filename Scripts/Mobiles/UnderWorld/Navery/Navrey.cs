@@ -11,7 +11,7 @@ namespace Server.Mobiles
         private static readonly Type[] m_Artifact = new Type[]
         {
             typeof(NightEyes),
-            typeof(Tangle),
+            typeof(Tangle1),
             typeof(BladeOfBattle),
             typeof(DemonBridleRing),
             typeof(GiantSteps),
@@ -20,7 +20,6 @@ namespace Server.Mobiles
             typeof(SummonersKilt),
             typeof(TokenOfHolyFavor),
             typeof(Venom),
-            typeof(BreastplateOfTheBerserker),
         };
 		
         private DateTime m_Delay;
