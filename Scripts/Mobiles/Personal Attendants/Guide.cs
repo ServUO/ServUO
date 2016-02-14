@@ -58,7 +58,7 @@ namespace Server.Mobiles
 
             try
             {
-                using (FileStream stream = File.OpenRead("Data\\Guide\\Definitions.cfg"))
+                using (FileStream stream = File.OpenRead(Path.Combine("Data", "Guide", "Definitions.cfg")))
                     using (StreamReader reader = new StreamReader(stream))
                     {
                         while (!reader.EndOfStream)
@@ -75,7 +75,7 @@ namespace Server.Mobiles
                         }
                     }
 
-                foreach (string file in Directory.GetFiles("Data\\Guide\\", "*.graph"))
+                foreach (string file in Directory.GetFiles(Path.Combine("Data", "Guide"), "*.graph"))
                 {
                     using (FileStream stream = File.OpenRead(file))
                         using (StreamReader reader = new StreamReader(stream))
