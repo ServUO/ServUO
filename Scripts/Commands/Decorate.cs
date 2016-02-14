@@ -946,6 +946,34 @@ namespace Server.Commands
                 if (this.m_ItemID > 0)
                     item.ItemID = this.m_ItemID;
             }
+            else if(item is Moongate)
+            {
+                Moongate gate = (Moongate)item;
+
+                foreach(string param in m_Params)
+                {
+                    int indexOf = param.IndexOf('=');
+
+                    if (param.StartsWith("TargetMap"))
+                        gate.TargetMap = Map.Parse(param.Substring(++indexOf));
+                    else if (param.StartsWith("Target"))
+                        gate.Target = Point3D.Parse(param.Substring(++indexOf));
+                }
+            }
+            else if(item is TeleportRope)
+            {
+                TeleportRope rope = (TeleportRope)item;
+
+                foreach (string param in m_Params)
+                {
+                    int indexOf = param.IndexOf('=');
+
+                    if (param.StartsWith("ToMap"))
+                        rope.ToMap = Map.Parse(param.Substring(++indexOf));
+                    else if (param.StartsWith("ToLocation"))
+                        rope.ToLocation = Point3D.Parse(param.Substring(++indexOf));
+                }
+            }
             else if (this.m_ItemID > 0)
             {
                 item.ItemID = this.m_ItemID;
