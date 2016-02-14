@@ -93,7 +93,7 @@ namespace Server.SkillHandlers
 				{
 					m_Thief.SendLocalizedMessage(1048147); // Your backpack can't hold anything else.
 				}
-					#region Sigils
+				#region Sigils
 				else if (toSteal is Sigil)
 				{
 					PlayerState pl = PlayerState.Find(m_Thief);
@@ -182,7 +182,7 @@ namespace Server.SkillHandlers
 						m_Thief.SendLocalizedMessage(1005588); //	You must join a faction to do that
 					}
 				}
-					#endregion
+				#endregion
 
 				else if (si == null && (toSteal.Parent == null || !toSteal.Movable) && !ItemFlags.GetStealable(toSteal))
 				{
@@ -284,7 +284,17 @@ namespace Server.SkillHandlers
 							}
 						}
 
-						if (stolen != null)
+                        // Non-movable stealable items cannot result in the stealer getting caught
+                        if (stolen.Movable)
+                        {
+                            caught = (m_Thief.Skills[SkillName.Stealing].Value < Utility.Random(150));
+                        }
+                        else
+                        {
+                            caught = false;
+                        }
+
+                        if (stolen != null)
 						{
 							m_Thief.SendLocalizedMessage(502724); // You succesfully steal the item.
 
@@ -302,8 +312,6 @@ namespace Server.SkillHandlers
 						{
 							m_Thief.SendLocalizedMessage(502723); // You fail to steal the item.
 						}
-
-						caught = (m_Thief.Skills[SkillName.Stealing].Value < Utility.Random(150));
 					}
 				}
 
