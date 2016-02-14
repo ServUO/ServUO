@@ -18,6 +18,44 @@ using CashBankCheckObjective = Server.Engines.Quests.Necro.CashBankCheckObjectiv
 
 namespace Server.Items
 {
+    public static class BankCheckExtensions
+    {
+        public static int GetChecksWorth(this Container cont, bool recurse)
+        {
+            int count = 0;
+
+            var items = cont.FindItemsByType(typeof(BankCheck), recurse);
+            foreach (BankCheck check in items)
+            {
+                count += check.Worth;
+            }
+            return count;
+        }
+        public static int TakeFromChecks(this Container cont, int amount, bool recurse)
+        {
+            int left = amount;
+
+            var items = cont.FindItemsByType(typeof(BankCheck), recurse);
+            foreach(BankCheck check in items)
+            {
+                if(check.Worth <= left)
+                {
+                    left -= check.Worth;
+                    check.Delete();
+                }
+                else
+                {
+                    check.Worth -= left;
+                    check.InvalidateProperties();
+                    left = 0;
+                    break;
+                }
+            }
+
+            return amount - left;
+        }
+    }
+
 	public class BankCheck : Item
 	{
 		private int m_Worth;
