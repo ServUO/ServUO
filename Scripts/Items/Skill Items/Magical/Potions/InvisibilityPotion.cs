@@ -33,11 +33,11 @@ namespace Server.Items
             m.Hidden = true;
 		
             BuffInfo.RemoveBuff(m, BuffIcon.HidingAndOrStealth);
-            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Invisibility, 1075825));	//Invisibility/Invisible
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Invisibility, 1075825, TimeSpan.FromSeconds(30.0d), m));	//Invisibility/Invisible
 			
             RemoveTimer(m);
-			
-            Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerStateCallback(EndHide_Callback), m);
+
+            m_Table[m] = Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerStateCallback(EndHide_Callback), m);
         }
 
         public static void EndHide(Mobile m)
@@ -83,7 +83,7 @@ namespace Server.Items
             }
 			
             this.Consume();
-            m_Table[from] = Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerStateCallback(Hide_Callback), from);			
+            Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerStateCallback(Hide_Callback), from);			
             PlayDrinkEffect(from);
         }
 
