@@ -26,7 +26,7 @@ namespace Server.Services.ChampionSystem
 				Effects.PlaySound(mob, mob.Map, 0x208);
 				mob.Damage(60000, e.Mobile);
 			}
-			new InternalTimer(e.Mobile.Location, e.Mobile.Map).Start();
+			//new InternalTimer(e.Mobile.Location, e.Mobile.Map).Start();
 		}
 
 		private class InternalTimer : Timer

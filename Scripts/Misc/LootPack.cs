@@ -47,6 +47,9 @@ namespace Server
 
 		public static int GetLuckChanceForKiller(Mobile dead)
 		{
+            if (dead == null)
+                return 240;
+
 			var list = BaseCreature.GetLootingRights(dead.DamageEntries, dead.HitsMax);
 
 			DamageStore highest = null;
