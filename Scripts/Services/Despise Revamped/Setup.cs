@@ -19,28 +19,6 @@ namespace Server.Engines.Despise
         {
             if (DespiseController.Instance == null)
             {
-                foreach (Region region in Region.Regions)
-                {
-                    if (region.Name == "Despise" && region.Map == Map.Trammel)
-                    {
-                        foreach (Sector sector in region.Sectors)
-                        {
-                            List<Item> list = new List<Item>(sector.Items);
-
-                            foreach (Item item in list)
-                            {
-                                if (item is XmlSpawner)
-                                    ((XmlSpawner)item).DoReset = true;
-                            }
-
-                            list.Clear();
-                        }
-                    }
-                }
-
-                CommandEventArgs args = new CommandEventArgs(e.Mobile, null, null, new string[] { @"Data\Monsters\NewDespise" });
-                XmlSpawner.Load_OnCommand(args);
-
                 DespiseController controller = new DespiseController();
                 controller.MoveToWorld(new Point3D(5571, 626, 30), Map.Trammel);
 
