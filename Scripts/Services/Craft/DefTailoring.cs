@@ -537,9 +537,6 @@ namespace Server.Engines.Craft
 		
             index = this.AddCraft(typeof(BoneChest), 1049149, 1025199, 96.0, 121.0, typeof(Leather), 1044462, 12, 1044463);
             this.AddRes(index, typeof(Bone), 1049064, 10, 1049063);
-
-            index = this.AddCraft(typeof(BoneChest), 1049149, 1025199, 96.0, 121.0, typeof(Leather), 1044462, 12, 1044463);
-            this.AddRes(index, typeof(Bone), 1049064, 10, 1049063);
             #endregion
             #region Cloth Armor
             if (Core.SA)
