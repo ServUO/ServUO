@@ -176,17 +176,17 @@ namespace Server.Engines.CannedEvil
 					else
 						spawn.Type = (ChampionSpawnType)Enum.Parse(typeof(ChampionSpawnType), value);
 					value = GetAttr(node, "spawnMod", "1.0");
-					spawn.SpawnMod = double.Parse(value);
+					spawn.SpawnMod = XmlConvert.ToDouble(value);
 					value = GetAttr(node, "killsMod", "1.0");
-					spawn.KillsMod = double.Parse(value);
+					spawn.KillsMod = XmlConvert.ToDouble(value);
 					foreach(XmlNode child in node.ChildNodes)
 					{
 						if (child.Name.Equals("location"))
 						{
-							int x = int.Parse(GetAttr(child, "x", "0"));
-							int y = int.Parse(GetAttr(child, "y", "0"));
-							int z = int.Parse(GetAttr(child, "z", "0"));
-							int r = int.Parse(GetAttr(child, "radius", "0"));
+							int x = XmlConvert.ToInt32(GetAttr(child, "x", "0"));
+							int y = XmlConvert.ToInt32(GetAttr(child, "y", "0"));
+							int z = XmlConvert.ToInt32(GetAttr(child, "z", "0"));
+							int r = XmlConvert.ToInt32(GetAttr(child, "radius", "0"));
 							string mapName = GetAttr(child, "map", "Felucca");
 							Map map = Map.Parse(mapName);
 
