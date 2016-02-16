@@ -229,14 +229,14 @@ namespace Server.Engines.Craft
             m_Circle = 0;
 			m_Mana = 4;
 
-			AddSpell( typeof( ReactiveArmorScroll ), Reg.Garlic, Reg.SpidersSilk, Reg.SulfurousAsh );
 			AddSpell( typeof( ClumsyScroll ), Reg.Bloodmoss, Reg.Nightshade );
 			AddSpell( typeof( CreateFoodScroll ), Reg.Garlic, Reg.Ginseng, Reg.MandrakeRoot );
 			AddSpell( typeof( FeeblemindScroll ), Reg.Nightshade, Reg.Ginseng );
 			AddSpell( typeof( HealScroll ), Reg.Garlic, Reg.Ginseng, Reg.SpidersSilk );
 			AddSpell( typeof( MagicArrowScroll ), Reg.SulfurousAsh );
 			AddSpell( typeof( NightSightScroll ), Reg.SpidersSilk, Reg.SulfurousAsh );
-			AddSpell( typeof( WeakenScroll ), Reg.Garlic, Reg.Nightshade );
+            AddSpell( typeof( ReactiveArmorScroll ), Reg.Garlic, Reg.SpidersSilk, Reg.SulfurousAsh);
+            AddSpell( typeof( WeakenScroll ), Reg.Garlic, Reg.Nightshade );
 
 			m_Circle = 1;
 			m_Mana = 6;
@@ -400,16 +400,18 @@ namespace Server.Engines.Craft
 
             #region Stygian Abyss
             if (Core.SA)
-            {
+            {                
+                AddCraft(typeof(BlankScroll), 1044294, ("Blank Scroll"), 50.0, 100.0, typeof(WoodPulp), 1113136, 1, 1044378);
+
+                index = AddCraft(typeof(ScrollBinderDeed), 1044294, 1113135, 75.0, 125.0, typeof(WoodPulp), 1113136, 1, 1044253);
+                SetNeededExpansion(index, Expansion.SA);
+                SetItemHue(index, 1641);
+
                 index = this.AddCraft(typeof(GargoyleBook100), 1044294, 1113290, 60.0, 100.0, typeof(BlankScroll), 1044377, 40, 1044378);
                 this.AddRes(index, typeof(Beeswax), 1025154, 2, "You do not have enough beeswax.");
 
                 index = this.AddCraft(typeof(GargoyleBook200), 1044294, 1113291, 72.0, 100.0, typeof(BlankScroll), 1044377, 40, 1044378);
                 this.AddRes(index, typeof(Beeswax), 1025154, 4, "You do not have enough beeswax.");
-
-                index = AddCraft(typeof(ScrollBinderDeed), 1044294, 1113135, 75.0, 125.0, typeof(WoodPulp), 1113136, 1, 1044253);
-                SetNeededExpansion(index, Expansion.SA);
-                SetItemHue(index, 1641);
 
                 AddMysticSpell(1031678, 4, 0.0, typeof(NetherBoltScroll), Reg.SulfurousAsh, Reg.BlackPearl);
                 AddMysticSpell(1031679, 4, 0.0, typeof(HealingStoneScroll), Reg.Bone, Reg.Garlic, Reg.Ginseng, Reg.SpidersSilk);
