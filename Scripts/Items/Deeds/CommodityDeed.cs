@@ -18,6 +18,8 @@ namespace Server.Items
             var deeds = cont.FindItemsByType(typeof(CommodityDeed), recurse);
             foreach(CommodityDeed deed in deeds)
             {
+                if (deed.Commodity == null)
+                    continue;
                 if (deed.Commodity.GetType() == type)
                     amount += deed.Commodity.Amount;
             }
@@ -32,7 +34,9 @@ namespace Server.Items
             var deeds = cont.FindItemsByType(typeof(CommodityDeed), recurse);
             foreach (CommodityDeed deed in deeds)
             {
-                foreach(Type type in types)
+                if (deed.Commodity == null)
+                    continue;
+                foreach (Type type in types)
                 {
                     if (deed.Commodity.GetType() == type)
                     {
@@ -71,6 +75,8 @@ namespace Server.Items
             var deeds = cont.FindItemsByType(typeof(CommodityDeed), recurse);
             foreach(CommodityDeed deed in deeds)
             {
+                if (deed.Commodity == null)
+                    continue;
                 if (deed.Commodity.GetType() != type)
                     continue;
                 if(deed.Commodity.Amount <= left)
