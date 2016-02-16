@@ -35,6 +35,16 @@ namespace Server.Spells.Spellweaving
                 return 50;
             }
         }
+
+        public static double GetDispellBonus(Mobile m)
+        {
+            EmpowermentInfo info = m_Table[m] as EmpowermentInfo;
+
+            if (info != null)
+                return 10.0 * info.Focus;
+            return 0.0;
+        }
+
         public static int GetSpellBonus(Mobile m, bool playerVsPlayer)
         {
             EmpowermentInfo info = m_Table[m] as EmpowermentInfo;

@@ -1160,6 +1160,7 @@ namespace Server.Spells
 
         public static void Heal(int amount, Mobile target, Mobile from)
         {
+            Spellweaving.ArcaneEmpowermentSpell.AddHealBonus(from, ref amount);
             Heal(amount, target, from, true);
         }
 

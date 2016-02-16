@@ -5684,6 +5684,14 @@ namespace Server.Mobiles
 			}
 		}
 
+        public double GetDispelDifficulty()
+        {
+            double dif = DispelDifficulty;
+            if (SummonMaster != null)
+                dif += ArcaneEmpowermentSpell.GetDispellBonus(SummonMaster);
+            return dif;
+        }
+
 		private static bool m_Summoning;
 
 		public static bool Summoning { get { return m_Summoning; } set { m_Summoning = value; } }
