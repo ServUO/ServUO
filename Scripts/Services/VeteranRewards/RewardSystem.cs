@@ -15,8 +15,10 @@ namespace Server.Engines.VeteranRewards
     {
 		public static bool Enabled = Config.Get("VetRewards.Enabled", true);
 		public static bool SkillCapRewards = Config.Get("VetRewards.SkillCapRewards", true);
-		public static int SkillBonusCap = Config.Get("VetRewards.SkillBonusCap", 720);
-		public static TimeSpan RewardInterval = Config.Get("VetRewards.RewardInterval", TimeSpan.FromDays(30.0d));
+        public static int SkillCap = Config.Get("VetRewards.SkillCap", 5);
+        public static int SkillCapBonusIncrement = Config.Get("VetRewards.SkillCapBonusIncrement", 5);
+        public static int SkillCapBonusLevels = Config.Get("VetRewards.SkillCapBonusLevels", 5);
+        public static TimeSpan RewardInterval = Config.Get("VetRewards.RewardInterval", TimeSpan.FromDays(30.0d));
 		public static int StartingLevel = Config.Get("VetRewards.StartingLevel", 0);
 
 		private static RewardCategory[] m_Categories;
@@ -491,22 +493,19 @@ namespace Server.Engines.VeteranRewards
 
             ComputeRewardInfo(e.Mobile, out cur, out max, out level);
 
-            if (e.Mobile.SkillsCap == 7000 || e.Mobile.SkillsCap == 7050 || e.Mobile.SkillsCap == 7100 || e.Mobile.SkillsCap == 7150 || e.Mobile.SkillsCap == 7200)
-            {
-                if (level > 4)
-                    level = 4;
-                else if (level < 0)
-                    level = 0;
+            if (level > SkillCapBonusLevels)
+                level = SkillCapBonusLevels;
+            else if (level < 0)
+                level = 0;
 
-                if (SkillCapRewards)
-				{
-					int newLevel = 7000 + (level * 50);
-					if (newLevel > SkillBonusCap * 10)
-						newLevel = SkillBonusCap * 10;
-					e.Mobile.SkillsCap = newLevel;
-				}
-                else
-                    e.Mobile.SkillsCap = 7000;
+            if (SkillCapRewards)
+			{
+				int newLevel = SkillCap + (level * SkillCapBonusIncrement);
+				e.Mobile.SkillsCap = newLevel * 10;
+			}
+            else
+            {
+                e.Mobile.SkillsCap = SkillCap * 10;
             }
 
             if (Core.ML && e.Mobile is PlayerMobile && !((PlayerMobile)e.Mobile).HasStatReward && HasHalfLevel(e.Mobile))
