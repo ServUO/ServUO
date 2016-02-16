@@ -15,6 +15,7 @@ namespace Server.Misc
         *  private static string CustomPath = @"C:\Program Files\Ultima Online";
         */
         private static readonly string CustomPath = Config.Get("DataPath.CustomPath", null);
+        private static readonly bool IgnoreStandardPaths = Config.Get("DataPath.IgnoreStandardPaths", false);
         /* The following is a list of files which a required for proper execution:
         * 
         * Multi.idx
@@ -32,29 +33,32 @@ namespace Server.Misc
         */
         public static void Configure()
         {
-            string pathUO = GetPath(@"Origin Worlds Online\Ultima Online\1.0", "ExePath");
-            string pathTD = GetPath(@"Origin Worlds Online\Ultima Online Third Dawn\1.0", "ExePath"); //These refer to 2D & 3D, not the Third Dawn expansion
-            string pathKR = GetPath(@"Origin Worlds Online\Ultima Online\KR Legacy Beta", "ExePath"); //After KR, This is the new registry key for the 2D client
-            string pathSA = GetPath(@"Electronic Arts\EA Games\Ultima Online Stygian Abyss Classic", "InstallDir");
-            string pathHS = GetPath(@"Electronic Arts\EA Games\Ultima Online Classic", "InstallDir");
+            if (CustomPath != null)
+                Core.DataDirectories.Add(CustomPath);
 
-            if (CustomPath != null) 
-                Core.DataDirectories.Add(CustomPath); 
+            if (!IgnoreStandardPaths)
+            {
+                string pathUO = GetPath(@"Origin Worlds Online\Ultima Online\1.0", "ExePath");
+                string pathTD = GetPath(@"Origin Worlds Online\Ultima Online Third Dawn\1.0", "ExePath"); //These refer to 2D & 3D, not the Third Dawn expansion
+                string pathKR = GetPath(@"Origin Worlds Online\Ultima Online\KR Legacy Beta", "ExePath"); //After KR, This is the new registry key for the 2D client
+                string pathSA = GetPath(@"Electronic Arts\EA Games\Ultima Online Stygian Abyss Classic", "InstallDir");
+                string pathHS = GetPath(@"Electronic Arts\EA Games\Ultima Online Classic", "InstallDir");
 
-            if (pathUO != null) 
-                Core.DataDirectories.Add(pathUO); 
+                if (pathUO != null)
+                    Core.DataDirectories.Add(pathUO);
 
-            if (pathTD != null) 
-                Core.DataDirectories.Add(pathTD);
+                if (pathTD != null)
+                    Core.DataDirectories.Add(pathTD);
 
-            if (pathKR != null)
-                Core.DataDirectories.Add(pathKR);
+                if (pathKR != null)
+                    Core.DataDirectories.Add(pathKR);
 
-            if (pathSA != null)
-                Core.DataDirectories.Add(pathSA);
+                if (pathSA != null)
+                    Core.DataDirectories.Add(pathSA);
 
-            if (pathHS != null)
-                Core.DataDirectories.Add(pathHS);
+                if (pathHS != null)
+                    Core.DataDirectories.Add(pathHS);
+            }
 
             if (Core.DataDirectories.Count == 0 && !Core.Service)
             {
