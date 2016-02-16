@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Server.Targeting;
+using Server.Multis;
+using Server.Regions;
 
 namespace Server.Spells.Spellweaving
 {
@@ -65,7 +67,7 @@ namespace Server.Spells.Spellweaving
 							
                         Point3D p3d = new Point3D(x, y, this.Caster.Map.GetAverageZ(x, y));
 					
-                        if (this.Caster.Map.CanFit(p3d, 12, true, false))
+                        if (CanFitFire(p3d, Caster))
                             new FireItem(duration).MoveToWorld(p3d, this.Caster.Map);
                     }
                 }
@@ -76,6 +78,23 @@ namespace Server.Spells.Spellweaving
             }
 
             this.FinishSequence();
+        }
+
+        private bool CanFitFire(Point3D p, Mobile caster)
+        {
+            if (!Caster.Map.CanFit(p, 12, true, false))
+                return false;
+            if (BaseHouse.FindHouseAt(p, caster.Map, 20) != null)
+                return false;
+            foreach(RegionRect r in caster.Map.GetSector(p).RegionRects)
+            {
+                if (!r.Contains(p))
+                    continue;
+                if (r.Region.GetType().IsAssignableFrom(typeof(GuardedRegion)) &&
+                    !((GuardedRegion)r.Region).Disabled)
+                    return false;
+            }
+            return true;
         }
 
         public class InternalTarget : Target
