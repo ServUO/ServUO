@@ -1,6 +1,8 @@
 using System;
 using Server.Engines.Craft;
-using Server.Mobiles;
+using System.Linq;
+using Server.ContextMenus;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -42,6 +44,9 @@ namespace Server.Items
         private int m_LowerAmmoCost;
         private int m_WeightReduction;
         private int m_DamageIncrease;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsArrowAmmo { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public AosAttributes Attributes
@@ -206,6 +211,7 @@ namespace Server.Items
             this.m_SetAttributes = new AosAttributes(this);
             this.m_SetSkillBonuses = new AosSkillBonuses(this);
             this.DamageIncrease = 10;
+            IsArrowAmmo = true;
         }
 
         public BaseQuiver(Serial serial)
@@ -279,6 +285,15 @@ namespace Server.Items
                 return false;
             }
 
+            Item ammo = Ammo;
+            if(ammo != null && ammo.Amount > 0)
+            {
+                if (IsArrowAmmo && item is Bolt)
+                    return false;
+                if (!IsArrowAmmo && item is Arrow)
+                    return false;
+            }
+
             if (this.Items.Count < this.DefaultMaxItems)
             {
                 if (item.Amount <= this.m_Capacity)
@@ -289,13 +304,8 @@ namespace Server.Items
             else if (checkItems)
                 return false;
 
-            Item ammo = this.Ammo;
-
             if (ammo == null || ammo.Deleted)
                 return false;
-
-            if (ammo.Amount + item.Amount <= this.m_Capacity)
-                return true;
 
             return false;
         }
@@ -305,6 +315,7 @@ namespace Server.Items
             base.AddItem(dropped);
 
             this.InvalidateWeight();
+            IsArrowAmmo = dropped is Arrow;
         }
 		
         public override void RemoveItem(Item dropped)
@@ -595,13 +606,23 @@ namespace Server.Items
             DamageIncrease = 0x00000080
         }
 
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+            if(from.Items.Contains(this) || (from.Backpack != null && IsChildOf(from.Backpack)))
+                list.Add(new RefillQuiverEntry(this));
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write(1); // version
+            writer.Write(2); // version
 
             SaveFlag flags = SaveFlag.None;
+
+            // Version 2
+            writer.Write(IsArrowAmmo);
 
             // Version 1
             m_AosSkillBonuses.Serialize(writer);
@@ -672,8 +693,15 @@ namespace Server.Items
 
             switch (version)
             {
+                case 2:
+                    IsArrowAmmo = reader.ReadBool();
+                    goto case 1;
                 case 1:
                     {
+                        if(version == 1)
+                        {
+                            IsArrowAmmo = (Ammo == null || Ammo is Arrow);
+                        }
                         m_AosSkillBonuses = new AosSkillBonuses(this, reader);
                         m_Resistances = new AosElementAttributes(this, reader);
                         goto case 0;
@@ -857,5 +885,118 @@ namespace Server.Items
             }
         }
         #endregion
+
+        public class RefillQuiverEntry : ContextMenuEntry
+        {
+            private readonly BaseQuiver m_quiver;
+
+            public RefillQuiverEntry(BaseQuiver bq)
+            : base(6230)
+            {
+                m_quiver = bq;
+            }
+
+            bool Refill<T>(Mobile m, Container c) where T : Item
+            {
+                List<T> list = c.FindItemsByType<T>(true).ToList();
+                if (list.Count > 0)
+                {
+                    int amt = 0;
+                    list = list.OrderByDescending(e => e.Amount).ToList();
+
+                    int famount = m_quiver.Ammo == null ? 0 : m_quiver.Ammo.Amount;
+                    if (m_quiver.Ammo != null)
+                        m_quiver.Ammo.Delete();
+
+                    while ((famount < m_quiver.Capacity) && (list.Count > 0))
+                    {
+                        T data = list[list.Count - 1];
+                        int remaining = m_quiver.Capacity - famount;
+                        if (data.Amount > remaining)
+                        {
+                            famount += remaining;
+                            amt += remaining;
+                            data.Amount -= remaining;
+                        }
+                        else
+                        {
+                            famount += data.Amount;
+                            amt += data.Amount;
+                            data.Delete();
+                            list.RemoveAt(list.Count - 1);
+                        }
+                    }
+
+                    if ((amt > 0) && (m != null))
+                    {
+                        T obj = (T)Activator.CreateInstance(typeof(T));
+                        obj.Amount = famount;
+                        m_quiver.AddItem(obj);
+                        m.SendLocalizedMessage(1072664, amt.ToString());
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            public override void OnClick()
+            {
+                if ((m_quiver == null) || m_quiver.Deleted)
+                    return;
+
+                object owner = m_quiver.Parent;
+                while(owner != null)
+                {
+                    if (owner is Mobile)
+                        break;
+                    if (owner is Item)
+                    {
+                        owner = ((Item)owner).Parent;
+                        continue;
+                    }
+                    owner = null;
+                }
+
+                if (owner == null)
+                    return;
+
+                if (!(owner is Mobile))
+                    return;
+
+                Mobile m = (Mobile)owner;
+
+
+                if (m.Backpack == null)
+                    return;
+
+                if (!(m.Items.Contains(m_quiver) || m_quiver.IsChildOf(m.Backpack)))
+                    return;
+
+                // Try to fill from the bank box
+                if ((m.BankBox != null) && (m.BankBox.Opened))
+                {
+                    if (m_quiver.IsArrowAmmo ? Refill<Arrow>(m, m.BankBox) : Refill<Bolt>(m, m.BankBox))
+                        return;
+                }
+
+                // Otherwise look for secure containers within two tiles
+                var items = m.Map.GetItemsInRange(m.Location, 1);
+                foreach(Item i in items)
+                {
+                    if (!(i is Container))
+                        continue;
+
+                    Container c = (Container)i;
+
+                    if (!c.IsSecure || !c.IsAccessibleTo(m))
+                        continue;
+
+                    if (m_quiver.IsArrowAmmo ? Refill<Arrow>(m, c) : Refill<Bolt>(m, c))
+                        return;
+                }
+                    
+                m.SendLocalizedMessage(1072673); //There are no source containers nearby.
+            }
+        }
     }
 }
