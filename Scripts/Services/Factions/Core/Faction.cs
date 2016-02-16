@@ -12,6 +12,16 @@ using Server.Targeting;
 
 namespace Server.Factions
 {
+    public static class Settings
+    {
+        public static bool NewCoMLocation { get; private set; }
+
+        public static void Configure()
+        {
+            NewCoMLocation = Config.Get("Factions.NewCoMLocation", true);
+        }
+    }
+
     [CustomEnum(new string[] { "Minax", "Council of Mages", "True Britannians", "Shadowlords" })]
     public abstract class Faction : IComparable
     {
