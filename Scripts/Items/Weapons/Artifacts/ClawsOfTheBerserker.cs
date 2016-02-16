@@ -6,7 +6,7 @@ namespace Server.Items
     {
         [Constructable]
         public ClawsOfTheBerserker()
-            : base(0x27AB)
+            : base()
         {
             this.Name = ("Claws Of The Berserker");
 		
