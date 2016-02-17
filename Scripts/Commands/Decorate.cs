@@ -974,6 +974,20 @@ namespace Server.Commands
                         rope.ToLocation = Point3D.Parse(param.Substring(++indexOf));
                 }
             }
+            else if(item is InstanceExitGate)
+            {
+                InstanceExitGate gate = (InstanceExitGate)item;
+
+                foreach (string param in m_Params)
+                {
+                    int indexOf = param.IndexOf('=');
+
+                    if (param.StartsWith("MapDest"))
+                        gate.MapDest = Map.Parse(param.Substring(++indexOf));
+                    else if (param.StartsWith("LocDest"))
+                        gate.LocDest = Point3D.Parse(param.Substring(++indexOf));
+                }
+            }
             else if (this.m_ItemID > 0)
             {
                 item.ItemID = this.m_ItemID;
