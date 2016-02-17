@@ -1300,6 +1300,14 @@ namespace Server.Items
             int luck = 0;
             int budgetBonus = 0;
 
+            // Do not add properties to artifacts
+            if (item is Artifact)
+                return;
+
+            // Do not try to add properties to things that can't have them
+            if (!(item is BaseWeapon || item is BaseArmor || item is BaseClothing || item is BaseHat))
+                return;
+
             if (killer != null)
             {
                 luck = killer.Luck;
