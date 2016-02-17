@@ -7,52 +7,19 @@ namespace Server.Items
         [Constructable]
         public MeagerImbuingBag()
         {
-            this.AddItem(new Gold(2000));
-
-            switch (Utility.Random(9))
-            {
-                case 0:
-                    this.AddItem(new Amber(5));
-                    break;
-                case 1:
-                    this.AddItem(new Amethyst(5));
-                    break;
-                case 2:
-                    this.AddItem(new Citrine(5));
-                    break;
-                case 3:
-                    this.AddItem(new Ruby(5));
-                    break;
-                case 4:
-                    this.AddItem(new Emerald(5));
-                    break;
-                case 5:
-                    this.AddItem(new Diamond(5));
-                    break;
-                case 6:
-                    this.AddItem(new Sapphire(5));
-                    break;
-                case 7:
-                    this.AddItem(new StarSapphire(5));
-                    break;
-                case 8:
-                    this.AddItem(new Tourmaline(5));
-                    break;
-            }
-
             switch (Utility.Random(4))
             {
                 case 0:
-                    this.AddItem(new MagicalResidue(10));
+                    this.AddItem(new SlithTongue());
                     break;
                 case 1:
-                    this.AddItem(new RelicFragment(10));
+                    this.AddItem(new GoblinBlood());
                     break;
                 case 2:
-                    this.AddItem(new DelicateScales(10));
+                    this.AddItem(new ReflectiveWolfEye());
                     break;
                 case 3:
-                    this.AddItem(new ChagaMushroom(10));
+                    this.AddItem(new RaptorTeeth());
                     break;
             }
         }
