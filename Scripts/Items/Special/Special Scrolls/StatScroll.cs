@@ -5,6 +5,7 @@ namespace Server.Items
 {
     public class StatCapScroll : SpecialScroll
     {
+        private int m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
         public StatCapScroll()
             : this(105)
         {
@@ -36,7 +37,7 @@ namespace Server.Items
         {
             get
             {
-                int level = ((int)this.Value - 230) / 5;
+                int level = ((int)this.Value - (m_StatCap+5)) / 5;
 
                 if (level >= 0 && level <= 4 && this.Value % 5 == 0)
                     return 1049458 + level;	/* Wonderous Scroll (+5 Maximum Stats): OR
@@ -52,12 +53,12 @@ namespace Server.Items
         {
             get
             {
-                return String.Format("<basefont color=#FFFFFF>Power Scroll ({0}{1} Maximum Stats):</basefont>", ((int)this.Value - 225) >= 0 ? "+" : "", (int)this.Value - 225);
+                return String.Format("<basefont color=#FFFFFF>Power Scroll ({0}{1} Maximum Stats):</basefont>", ((int)this.Value - m_StatCap) >= 0 ? "+" : "", (int)this.Value - m_StatCap);
             }
         }
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            int level = ((int)this.Value - 230) / 5;
+            int level = ((int)this.Value - (m_StatCap + 5)) / 5;
 			
             if (level >= 0 && level <= 4 && (int)this.Value % 5 == 0)
                 list.Add(1049463 + level, "#1049476");	/* a wonderous scroll of ~1_type~ (+5 Maximum Stats) OR
@@ -66,17 +67,17 @@ namespace Server.Items
             * a legendary scroll of ~1_type~ (+20 Maximum Stats) OR
             * an ultimate scroll of ~1_type~ (+25 Maximum Stats) */
             else
-                list.Add("a scroll of power ({0}{1} Maximum Stats)", (this.Value - 225) >= 0 ? "+" : "", this.Value - 225);
+                list.Add("a scroll of power ({0}{1} Maximum Stats)", (this.Value - m_StatCap) >= 0 ? "+" : "", this.Value - m_StatCap);
         }
 
         public override void OnSingleClick(Mobile from)
         {
-            int level = ((int)this.Value - 230) / 5;
+            int level = ((int)this.Value - (m_StatCap + 5)) / 5;
 			
             if (level >= 0 && level <= 4 && (int)this.Value % 5 == 0)
                 base.LabelTo(from, 1049463 + level, "#1049476");
             else
-                base.LabelTo(from, "a scroll of power ({0}{1} Maximum Stats)", (this.Value - 225) >= 0 ? "+" : "", this.Value - 225);
+                base.LabelTo(from, "a scroll of power ({0}{1} Maximum Stats)", (this.Value - m_StatCap) >= 0 ? "+" : "", this.Value - m_StatCap);
         }
 
         public override bool CanUse(Mobile from)
