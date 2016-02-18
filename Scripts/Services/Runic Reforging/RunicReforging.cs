@@ -1304,10 +1304,6 @@ namespace Server.Items
             if (item is Artifact)
                 return;
 
-            // Do not try to add properties to things that can't have them
-            if (!(item is BaseWeapon || item is BaseArmor || item is BaseClothing || item is BaseHat))
-                return;
-
             if (killer != null)
             {
                 luck = killer.Luck;
@@ -1644,14 +1640,24 @@ namespace Server.Items
 
             int random = 0;
             int start = budget;
+            List<int> usedAttrs = new List<int>();
 
 			while(start == budget && budget > 25 && idx < 25)
 			{
                 if (attrList.Count == 0)
                     return false;
 
-				random = Utility.Random(attrList.Count);
-				object attr = attrList[random];
+                // Make sure we don't apply the same attribute twice
+                while (true)
+                {
+                    random = Utility.Random(attrList.Count);
+                    if (usedAttrs.Contains(random))
+                        continue;
+                    usedAttrs.Add(random);
+                    break;
+                }
+
+                object attr = attrList[random];
 				int[] minmax = new int[] { 1, 1 };
 				int value = 1;
 				
