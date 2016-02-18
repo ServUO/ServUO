@@ -669,7 +669,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>WildLife#111</Name>
@@ -8733,7 +8733,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Vendors#168</Name>
@@ -11674,6 +11674,48 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>MiniatureMushroom:MX=6:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+  </Points>
+  <Points>
+    <Name>Vendors#12</Name>
+    <UniqueId>20762df9-859c-4206-8ecf-998b48d31e75</UniqueId>
+    <Map>Felucca</Map>
+    <X>1547</X>
+    <Y>1768</Y>
+    <Width>0</Width>
+    <Height>0</Height>
+    <CentreX>1547</CentreX>
+    <CentreY>1764</CentreY>
+    <CentreZ>10</CentreZ>
+    <Range>5</Range>
+    <MaxCount>4</MaxCount>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <AllowNPCTriggering>False</AllowNPCTriggering>
+    <SpawnOnTrigger>False</SpawnOnTrigger>
+    <SmartSpawning>False</SmartSpawning>
+    <TickReset>False</TickReset>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>False</IsHomeRangeRelative>
+    <Objects2>tavernkeeper:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=waiter:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=cook:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=barkeeper:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Vendors#79</Name>
@@ -24612,48 +24654,6 @@
     <Objects2>Boar:MX=7:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Cougar:MX=7:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Goat:MX=7:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Horse:MX=7:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Panther:MX=7:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Pig:MX=7:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Sheep:MX=7:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=BlackBear:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=GrizzlyBear:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=BrownBear:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=TimberWolf:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=GreyWolf:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=WanderingHealer:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Bird:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Eagle:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=GreatHart:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Hind:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Bull:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Cow:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Vendors#106</Name>
-    <UniqueId>45531a72-0fcb-497f-9fcd-2018ce54112a</UniqueId>
-    <Map>Felucca</Map>
-    <X>3699</X>
-    <Y>2163</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>3699</CentreX>
-    <CentreY>2163</CentreY>
-    <CentreZ>20</CentreZ>
-    <Range>5</Range>
-    <MaxCount>1</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>innkeeper:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Outdoors#147</Name>
     <UniqueId>4565f67c-e2d3-4afd-b446-a6a4dbe389d4</UniqueId>
     <Map>Felucca</Map>
@@ -27087,7 +27087,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>LostLands#72</Name>
@@ -27312,8 +27312,8 @@
     <CentreZ>0</CentreZ>
     <Range>5</Range>
     <MaxCount>1</MaxCount>
-    <MinDelay>60</MinDelay>
-    <MaxDelay>30</MaxDelay>
+    <MinDelay>30</MinDelay>
+    <MaxDelay>60</MaxDelay>
     <DelayInSec>True</DelayInSec>
     <Duration>0</Duration>
     <DespawnTime>0</DespawnTime>
@@ -31213,8 +31213,8 @@
     <Y>1767</Y>
     <Width>4</Width>
     <Height>4</Height>
-    <CentreX>1547</CentreX>
-    <CentreY>1769</CentreY>
+    <CentreX>1546</CentreX>
+    <CentreY>1764</CentreY>
     <CentreZ>10</CentreZ>
     <Range>5</Range>
     <MaxCount>4</MaxCount>
@@ -34815,7 +34815,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Vendors#269</Name>
@@ -38217,7 +38217,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Covetous#22</Name>
@@ -38857,8 +38857,8 @@
     <Y>2654</Y>
     <Width>0</Width>
     <Height>0</Height>
-    <CentreX>3672</CentreX>
-    <CentreY>2654</CentreY>
+    <CentreX>3666</CentreX>
+    <CentreY>2649</CentreY>
     <CentreZ>0</CentreZ>
     <Range>5</Range>
     <MaxCount>1</MaxCount>
@@ -46207,10 +46207,10 @@
     <Y>1691</Y>
     <Width>0</Width>
     <Height>0</Height>
-    <CentreX>1498</CentreX>
-    <CentreY>1691</CentreY>
+    <CentreX>1489</CentreX>
+    <CentreY>1688</CentreY>
     <CentreZ>20</CentreZ>
-    <Range>5</Range>
+    <Range>10</Range>
     <MaxCount>4</MaxCount>
     <MinDelay>5</MinDelay>
     <MaxDelay>10</MaxDelay>
@@ -47878,48 +47878,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
     <Objects2>Verity:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>fel tavernkeeper/waiter/cook/barkeeper 5</Name>
-    <UniqueId>81ce272d-259c-4fd2-9067-f24a39761a69</UniqueId>
-    <Map>Felucca</Map>
-    <X>2900</X>
-    <Y>904</Y>
-    <Width>6</Width>
-    <Height>6</Height>
-    <CentreX>2903</CentreX>
-    <CentreY>907</CentreY>
-    <CentreZ>0</CentreZ>
-    <Range>5</Range>
-    <MaxCount>4</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>tavernkeeper:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=waiter:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=cook:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=barkeeper:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>LostLands#115</Name>
@@ -53760,48 +53718,6 @@
     <Objects2>carpenter:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=architect:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=realestatebroker:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Vendors#295</Name>
-    <UniqueId>91b8ff57-3aa7-41df-8a5e-57d13548b761</UniqueId>
-    <Map>Felucca</Map>
-    <X>535</X>
-    <Y>867</Y>
-    <Width>0</Width>
-    <Height>0</Height>
-    <CentreX>535</CentreX>
-    <CentreY>867</CentreY>
-    <CentreZ>0</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>False</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>provisioner:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=cobbler:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Fire#13</Name>
     <UniqueId>91b9905e-cf4b-4642-b020-d8b9d33a24ea</UniqueId>
     <Map>Felucca</Map>
@@ -55773,7 +55689,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>TownsPeople#39</Name>
@@ -58041,7 +57957,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#215</Name>
@@ -59763,7 +59679,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>WildLife#22</Name>
@@ -66357,7 +66273,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Vendors#208</Name>
@@ -66368,9 +66284,9 @@
     <Width>0</Width>
     <Height>0</Height>
     <CentreX>554</CentreX>
-    <CentreY>2178</CentreY>
+    <CentreY>2171</CentreY>
     <CentreZ>0</CentreZ>
-    <Range>5</Range>
+    <Range>10</Range>
     <MaxCount>1</MaxCount>
     <MinDelay>5</MinDelay>
     <MaxDelay>10</MaxDelay>
@@ -72405,7 +72321,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Vendors#14</Name>
@@ -76101,7 +76017,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>LostLands#161</Name>
@@ -78621,7 +78537,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>WildLife#170</Name>
@@ -83293,10 +83209,10 @@
     <Y>908</Y>
     <Width>0</Width>
     <Height>0</Height>
-    <CentreX>2901</CentreX>
-    <CentreY>908</CentreY>
+    <CentreX>2895</CentreX>
+    <CentreY>915</CentreY>
     <CentreZ>0</CentreZ>
-    <Range>5</Range>
+    <Range>10</Range>
     <MaxCount>4</MaxCount>
     <MinDelay>5</MinDelay>
     <MaxDelay>10</MaxDelay>
@@ -83661,7 +83577,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Regina Quest</Name>
@@ -89667,7 +89583,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Outdoors#413</Name>
@@ -92313,7 +92229,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Vendors#298</Name>
@@ -93499,10 +93415,10 @@
     <Y>2796</Y>
     <Width>0</Width>
     <Height>0</Height>
-    <CentreX>1935</CentreX>
-    <CentreY>2796</CentreY>
+    <CentreX>1926</CentreX>
+    <CentreY>2795</CentreY>
     <CentreZ>0</CentreZ>
-    <Range>5</Range>
+    <Range>10</Range>
     <MaxCount>4</MaxCount>
     <MinDelay>5</MinDelay>
     <MaxDelay>10</MaxDelay>
@@ -93909,7 +93825,7 @@
     <IsGroup>False</IsGroup>
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>False</IsHomeRangeRelative>
-    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+    <Objects2>Orccamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Ratcamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=LizardmenCamp:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Hythloth#70</Name>
