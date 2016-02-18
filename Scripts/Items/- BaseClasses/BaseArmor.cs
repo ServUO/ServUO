@@ -2595,14 +2595,6 @@ namespace Server.Items
             if ((prop = this.GetDurabilityBonus()) > 0)
                 list.Add(1060410, prop.ToString()); // durability ~1_val~%
 
-            if (m_ItemPower != ItemPower.None)
-            {
-                if (m_ItemPower <= ItemPower.LegendaryArtifact)
-                    list.Add(1151488 + ((int)m_ItemPower - 1));
-                else
-                    list.Add(1152281 + ((int)m_ItemPower - 9));
-            }
-
             if ((prop = this.ComputeStatReq(StatType.Str)) > 0)
                 list.Add(1061170, prop.ToString()); // strength requirement ~1_val~
 
@@ -2615,6 +2607,14 @@ namespace Server.Items
             {
                 list.Add(1072378); // <br>Only when full set is present:				
                 this.GetSetProperties(list);
+            }
+
+            if (m_ItemPower != ItemPower.None)
+            {
+                if (m_ItemPower <= ItemPower.LegendaryArtifact)
+                    list.Add(1151488 + ((int)m_ItemPower - 1));
+                else
+                    list.Add(1152281 + ((int)m_ItemPower - 9));
             }
         }
 

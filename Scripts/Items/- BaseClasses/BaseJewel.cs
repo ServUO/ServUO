@@ -778,7 +778,11 @@ namespace Server.Items
 
             base.AddResistanceProperties(list);
 
-            #region Runic Reforging
+            Server.Engines.XmlSpawner2.XmlAttach.AddAttachmentProperties(this, list);
+
+            if (this.m_HitPoints >= 0 && this.m_MaxHitPoints > 0)
+                list.Add(1060639, "{0}\t{1}", this.m_HitPoints, this.m_MaxHitPoints); // durability ~1_val~ / ~2_val~
+
             if (m_ItemPower != ItemPower.None)
             {
                 if (m_ItemPower <= ItemPower.LegendaryArtifact)
@@ -786,15 +790,9 @@ namespace Server.Items
                 else
                     list.Add(1152281 + ((int)m_ItemPower - 9));
             }
-            #endregion
-
-            Server.Engines.XmlSpawner2.XmlAttach.AddAttachmentProperties(this, list);
-
-            if (this.m_HitPoints >= 0 && this.m_MaxHitPoints > 0)
-                list.Add(1060639, "{0}\t{1}", this.m_HitPoints, this.m_MaxHitPoints); // durability ~1_val~ / ~2_val~
         }
 
-		public override void OnSingleClick(Mobile from)
+        public override void OnSingleClick(Mobile from)
 		{
 			base.OnSingleClick(from);
 

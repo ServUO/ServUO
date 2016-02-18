@@ -1231,16 +1231,6 @@ namespace Server.Items
 
             base.AddResistanceProperties(list);
 
-            #region Runic Reforging
-            if (m_ItemPower != ItemPower.None)
-            {
-                if (m_ItemPower <= ItemPower.LegendaryArtifact)
-                    list.Add(1151488 + ((int)m_ItemPower - 1));
-                else
-                    list.Add(1152281 + ((int)m_ItemPower - 9));
-            }
-            #endregion
-
             if ((prop = this.m_AosClothingAttributes.DurabilityBonus) > 0)
                 list.Add(1060410, prop.ToString()); // durability ~1_val~%
 
@@ -1257,6 +1247,14 @@ namespace Server.Items
                 this.GetSetProperties(list);
             }
             #endregion
+
+            if (m_ItemPower != ItemPower.None)
+            {
+                if (m_ItemPower <= ItemPower.LegendaryArtifact)
+                    list.Add(1151488 + ((int)m_ItemPower - 1));
+                else
+                    list.Add(1152281 + ((int)m_ItemPower - 9));
+            }
         }
 
         public override void OnSingleClick(Mobile from)
