@@ -2113,7 +2113,7 @@ namespace Server.Multis
                 return true;
             else if (itemID >= 0x319C && itemID < 0x31B0)
                 return true;
-			//ML doors begin here.  Note funkyness.
+			// ML doors
             else if (itemID == 0x2D46 || itemID == 0x2D48 || itemID == 0x2FE2 || itemID == 0x2FE4)	
                 return true;
             else if (itemID >= 0x2D63 && itemID < 0x2D70)

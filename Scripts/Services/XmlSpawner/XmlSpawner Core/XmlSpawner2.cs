@@ -39,7 +39,19 @@ namespace Server.Mobiles
 
 	public class XmlSpawner : Item, ISpawner
 	{
+		private static bool m_XmlPoints;
+		private static bool m_XmlFactions;
+		private static bool m_XmlSockets;
 
+		public static bool PointsEnabled { get { return m_XmlPoints; } }
+		public static bool FactionsEnabled { get { return m_XmlFactions; } }
+		public static bool SocketsEnabled { get { return m_XmlSockets; } }
+		public static void Configure()
+		{
+			m_XmlPoints = Config.Get("XmlSpawner2.Points", false);
+			m_XmlFactions = Config.Get("XmlSpawner2.Factions", false);
+			m_XmlSockets = Config.Get("XmlSpawner2.Sockets", false);
+		}
 		#region Type declarations
 
 		public enum TODModeType { Realtime, Gametime }
@@ -6066,7 +6078,7 @@ public static void _TraceEnd(int index)
 
 		public static void XmlLoadFromStream(Stream fs, string filename, string SpawnerPrefix, Mobile from, Point3D fromloc, Map frommap, bool loadrelative, int maxrange, bool loadnew, out int processedmaps, out int processedspawners)
 		{
-			XmlLoadFromStream(fs, filename, SpawnerPrefix, from, fromloc, frommap, loadrelative, maxrange, loadnew, out processedmaps, out processedspawners, true);
+			XmlLoadFromStream(fs, filename, SpawnerPrefix, from, fromloc, frommap, loadrelative, maxrange, loadnew, out processedmaps, out processedspawners, false);
 		}
 
 		public static void XmlLoadFromStream(Stream fs, string filename, string SpawnerPrefix, Mobile from, Point3D fromloc, Map frommap, bool loadrelative, int maxrange, bool loadnew, out int processedmaps, out int processedspawners, bool verbose)
@@ -7358,6 +7370,12 @@ public static void _TraceEnd(int index)
 				ds.Tables[SpawnTablePointName].Columns.Add("Objects2");
 			}
 
+            // Always export sorted by UUID to help diffs
+            savelist.Sort((a, b) =>
+            {
+                return a.UniqueId.CompareTo(b.UniqueId);
+            });
+
 			// Add each spawn point to the new table
 			foreach (XmlSpawner sp in savelist)
 			{
@@ -7581,7 +7599,7 @@ public static void _TraceEnd(int index)
 						if (SpawnerPrefix == null || (SpawnerPrefix.Length == 0) || (i.Name.StartsWith(SpawnerPrefix)))
 						{
 							// Send a message to the client that the spawner is being deleted
-							e.Mobile.SendMessage(33, "Removing '{0}' in {1} at {2}", i.Name, i.Map.Name, i.Location.ToString());
+							//e.Mobile.SendMessage(33, "Removing '{0}' in {1} at {2}", i.Name, i.Map.Name, i.Location.ToString());
 
 							ToDelete.Add(i);
 							Count++;

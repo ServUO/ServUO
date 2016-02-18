@@ -1354,12 +1354,11 @@
 					<rect x="3423" y="2480" width="111" height="143" />
 					<go x="3503" y="2574" z="14" />
 					<music name="InTown01" />
-					<guards disabled="true" />
 					<region name="the New Haven Alchemist">
 						<rect x="3457" y="2564" width="9" height="9" />
 					</region>
 					<region name="the New Haven Warrior">
-						<rect x="2518" y="2510" width="19" height="21" />
+						<rect x="3518" y="2510" width="19" height="21" />
 						<rect x="3521" y="2531" width="22" height="22" />
 						<rect x="3521" y="2553" width="15" height="11" />
 						<region name="the New Haven Bowyer">
@@ -1373,10 +1372,10 @@
 						<rect x="3490" y="2588" width="7" height="7" />
 					</region>
 					<region name="the New Haven Mage">
-						<rect x="2464" y="2488" width="27" height="16" />
+						<rect x="3464" y="2488" width="27" height="16" />
 					</region>
 					<region name="the New Haven Inn">
-						<rect x="2493" y="2513" width="17" height="9" />
+						<rect x="3493" y="2513" width="17" height="9" />
 						<rect x="3503" y="2523" width="7" height="7" />
 					</region>
 					<region name="the New Haven Docks">
@@ -1955,11 +1954,12 @@
 			<rect x="528" y="376" width="96" height="88" />
 			<go x="568" y="430" z="41" />
 		</region>
-		<region type="TownRegion" priority="50" name="Gargoyle City">
+		<region type="MondainRegion" priority="50" name="Exodus City">
 			<rect x="824" y="552" width="32" height="176" />
 			<rect x="752" y="576" width="72" height="128" />
 			<rect x="856" y="576" width="48" height="128" />
 			<rect x="904" y="624" width="24" height="32" />
+			<guards disabled="true" />
 			<go x="840" y="571" z="0" />
 			<region>
 				<rect x="827" y="694" width="26" height="33" />
@@ -2519,7 +2519,8 @@
 			<go x="816" y="3778" z="-42" />
 		</region>
 		<region type="TownRegion" priority="50" name="Royal City">
-			<rect x="662" y="3316" width="300" height="400" />
+			<rect x="635" y="3303" width="300" height="400" />
+			<rect x="961" y="3297" width="44" height="339" />
 			<go x="750" y="3450" z="-20" />
 			<entrance x="841" y="3510" />
 		</region>

@@ -12,7 +12,7 @@ namespace Server.Items
 
         [Constructable]
         public SlithEye(int amount)
-            : base(0x5746)
+			: base(0x5749)
         {
             this.Stackable = true;
             this.Amount = amount;

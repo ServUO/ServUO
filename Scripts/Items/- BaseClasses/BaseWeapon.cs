@@ -2623,6 +2623,23 @@ namespace Server.Items
 				// SDI bonus
 				damageBonus += AosAttributes.GetValue(attacker, AosAttribute.SpellDamage);
 
+				if (attacker.Race == Race.Gargoyle)
+				{
+					double perc = ((double)attacker.Hits / (double)attacker.HitsMax) * 100;
+
+					perc = 100 - perc;
+					perc /= 20;
+
+					if (perc > 4)
+						damageBonus += 12;
+					else if (perc >= 3)
+						damageBonus += 9;
+					else if (perc >= 2)
+						damageBonus += 6;
+					else if (perc >= 1)
+						damageBonus += 3;
+				} 
+				
 				TransformContext context = TransformationSpellHelper.GetContext(attacker);
 
 				if (context != null && context.Spell is ReaperFormSpell)
@@ -2758,11 +2775,11 @@ namespace Server.Items
 			defender.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
 			defender.PlaySound(0x1EA);
 			defender.AddStatMod(
-				new StatMod(StatType.Str, String.Format("[Magic] {0} Offset", StatType.Str), -10, TimeSpan.FromSeconds(30)));
+				new StatMod(StatType.Str, String.Format("[Magic] {0} Curse", StatType.Str), -10, TimeSpan.FromSeconds(30)));
 			defender.AddStatMod(
-				new StatMod(StatType.Dex, String.Format("[Magic] {0} Offset", StatType.Dex), -10, TimeSpan.FromSeconds(30)));
+				new StatMod(StatType.Dex, String.Format("[Magic] {0} Curse", StatType.Dex), -10, TimeSpan.FromSeconds(30)));
 			defender.AddStatMod(
-				new StatMod(StatType.Int, String.Format("[Magic] {0} Offset", StatType.Int), -10, TimeSpan.FromSeconds(30)));
+				new StatMod(StatType.Int, String.Format("[Magic] {0} Curse", StatType.Int), -10, TimeSpan.FromSeconds(30)));
 
 			int percentage = -10; //(int)(SpellHelper.GetOffsetScalar(Caster, m, true) * 100);
 			string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
@@ -3126,33 +3143,36 @@ namespace Server.Items
 
 			int bonus = VirtualDamageBonus;
 
-			switch (m_Quality)
+			if (!Core.AOS)
 			{
-				case WeaponQuality.Low:
-					bonus -= 20;
-					break;
-				case WeaponQuality.Exceptional:
-					bonus += 20;
-					break;
-			}
+				switch (m_Quality)
+				{
+					case WeaponQuality.Low:
+						bonus -= 20;
+						break;
+					case WeaponQuality.Exceptional:
+						bonus += 20;
+						break;
+				}
 
-			switch (m_DamageLevel)
-			{
-				case WeaponDamageLevel.Ruin:
-					bonus += 15;
-					break;
-				case WeaponDamageLevel.Might:
-					bonus += 20;
-					break;
-				case WeaponDamageLevel.Force:
-					bonus += 25;
-					break;
-				case WeaponDamageLevel.Power:
-					bonus += 30;
-					break;
-				case WeaponDamageLevel.Vanq:
-					bonus += 35;
-					break;
+				switch (m_DamageLevel)
+				{
+					case WeaponDamageLevel.Ruin:
+						bonus += 15;
+						break;
+					case WeaponDamageLevel.Might:
+						bonus += 20;
+						break;
+					case WeaponDamageLevel.Force:
+						bonus += 25;
+						break;
+					case WeaponDamageLevel.Power:
+						bonus += 30;
+						break;
+					case WeaponDamageLevel.Vanq:
+						bonus += 35;
+						break;
+				}
 			}
 
 			return bonus;
@@ -4437,10 +4457,8 @@ namespace Server.Items
 			// 15% chance of 2 sockets
 			// 50% chance of 1 socket
 			// the remainder will be 0 socket (31.4% in this case)
-			// uncomment the next line to prevent artifacts from being socketed
-			// if(ArtifactRarity == 0)
-			XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
-			// Xml Spawner XmlSockets - EOF
+			if(XmlSpawner.SocketsEnabled)
+				XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
 		}
 
 		public BaseWeapon(Serial serial)
@@ -4709,7 +4727,7 @@ namespace Server.Items
 
 			if (m_Crafter != null)
 			{
-				list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
+				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
 
 			#region Factions
@@ -5458,12 +5476,10 @@ namespace Server.Items
 
 			if (Core.AOS)
 			{
-				#region Mondain's Legacy
 				if (!craftItem.ForceNonExceptional)
 				{
 					Resource = CraftResources.GetFromType(typeRes);
 				}
-				#endregion
 
 				CraftContext context = craftSystem.GetContext(from);
 
@@ -5472,7 +5488,11 @@ namespace Server.Items
 					Hue = 0;
 				}
 
-				// Mondain's Legacy Mod
+				if (Quality == WeaponQuality.Exceptional)
+				{
+					Attributes.WeaponDamage += 35;
+				}
+
 				if (!craftItem.ForceNonExceptional)
 				{
 					if (tool is BaseRunicTool)
@@ -5481,33 +5501,14 @@ namespace Server.Items
 					}
 				}
 
-				if (Quality == WeaponQuality.Exceptional)
+				if (Core.ML && Quality == WeaponQuality.Exceptional)
 				{
-					if (Attributes.WeaponDamage > 35)
-					{
-						Attributes.WeaponDamage -= 20;
-					}
-					else
-					{
-						Attributes.WeaponDamage = 15;
-					}
-
-					if (Core.ML)
-					{
-						Attributes.WeaponDamage += (int)(from.Skills.ArmsLore.Value / 20);
-
-						if (Attributes.WeaponDamage > 50)
-						{
-							Attributes.WeaponDamage = 50;
-						}
-
-						from.CheckSkill(SkillName.ArmsLore, 0, 100);
-					}
+					Attributes.WeaponDamage += (int)(from.Skills.ArmsLore.Value / 20);
+					from.CheckSkill(SkillName.ArmsLore, 0, 100);
 				}
 			}
 			else if (tool is BaseRunicTool)
 			{
-				// Mondain's Legacy Mod
 				if (craftItem != null && !craftItem.ForceNonExceptional)
 				{
 					CraftResource thisResource = CraftResources.GetFromType(typeRes);
@@ -5592,7 +5593,6 @@ namespace Server.Items
 				}
 			}
 
-			#region Mondain's Legacy
 			if (craftItem != null && !craftItem.ForceNonExceptional)
 			{
 				CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
@@ -5646,7 +5646,6 @@ namespace Server.Items
 
 			return quality;
 		}
-		#endregion
 
 		#region Mondain's Legacy Sets
 		public override bool OnDragLift(Mobile from)

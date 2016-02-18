@@ -100,6 +100,8 @@ namespace Server.SkillHandlers
                 {
                     m.Hidden = true;
                     m.Warmode = false;
+					Server.Spells.Sixth.InvisibilitySpell.RemoveTimer(m);
+                    Server.Items.InvisibilityPotion.RemoveTimer(m);
                     m.LocalOverheadMessage(MessageType.Regular, 0x1F4, 501240); // You have hidden yourself well.
                 }
                 else

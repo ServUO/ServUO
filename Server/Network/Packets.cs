@@ -413,16 +413,16 @@ namespace Server.Network
 
 	public sealed class VendorSellList : Packet
 	{
-		public VendorSellList(Mobile shopkeeper, Hashtable table)
+		public VendorSellList(Mobile shopkeeper, ICollection<SellItemState> sis)
 			: base(0x9E)
 		{
 			EnsureCapacity(256);
 
 			m_Stream.Write(shopkeeper.Serial);
 
-			m_Stream.Write((ushort)table.Count);
+			m_Stream.Write((ushort)sis.Count);
 
-			foreach (SellItemState state in table.Values)
+			foreach (SellItemState state in sis)
 			{
 				m_Stream.Write(state.Item.Serial);
 				m_Stream.Write((ushort)state.Item.ItemID);
@@ -555,7 +555,7 @@ namespace Server.Network
 			var attrs = info.Attributes;
 
 			EnsureCapacity(
-				17 + (info.Crafter == null ? 0 : 6 + info.Crafter.Name == null ? 0 : info.Crafter.Name.Length) +
+				17 + (info.Crafter == null ? 0 : 6 + info.Crafter.TitleName == null ? 0 : info.Crafter.TitleName.Length) +
 				(info.Unidentified ? 4 : 0) + (attrs.Length * 6));
 
 			m_Stream.Write((short)0x10);
@@ -565,7 +565,7 @@ namespace Server.Network
 
 			if (info.Crafter != null)
 			{
-				string name = info.Crafter.Name;
+				string name = info.Crafter.TitleName;
 
 				m_Stream.Write(-3);
 

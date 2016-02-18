@@ -63,6 +63,7 @@ namespace Server.Engines.Craft
 		private readonly CraftResCol m_arCraftRes;
 		private readonly CraftSkillCol m_arCraftSkill;
 		private readonly Type m_Type;
+        public double MinSkillOffset { get; set; }
 
 		private readonly string m_GroupNameString;
 		private readonly int m_GroupNameNumber;
@@ -141,11 +142,13 @@ namespace Server.Engines.Craft
 				{
 					itemId = 0x2DEA;
 				}
-				else if (type == typeof(ElvenWashBasinSouthDeed))
+				else if (type == typeof(ElvenWashBasinSouthDeed) ||
+					type == typeof(ElvenWashBasinSouthAddonWithDrawer))
 				{
 					itemId = 0x2D0B;
 				}
-				else if (type == typeof(ElvenWashBasinEastDeed))
+				else if (type == typeof(ElvenWashBasinEastDeed) ||
+					type == typeof(ElvenWashBasinEastAddonWithDrawer))
 				{
 					itemId = 0x2D0C;
 				}
@@ -234,6 +237,7 @@ namespace Server.Engines.Craft
 		public int Stam { get; set; }
 		public bool UseSubRes2 { get { return m_UseSubRes2; } set { m_UseSubRes2 = value; } }
 		public bool UseAllRes { get; set; }
+		public bool ForceTypeRes { get; set; }
 		public bool NeedHeat { get { return m_NeedHeat; } set { m_NeedHeat = value; } }
 		public bool NeedOven { get { return m_NeedOven; } set { m_NeedOven = value; } }
 		public bool NeedMill { get { return m_NeedMill; } set { m_NeedMill = value; } }
@@ -385,7 +389,22 @@ namespace Server.Engines.Craft
 			typeof(BambooChair), typeof(WoodenChair), typeof(FancyWoodenChairCushion), typeof(WoodenChairCushion),
 			typeof(Nightstand), typeof(LargeTable), typeof(WritingTable), typeof(YewWoodTable), typeof(PlainLowTable),
 			typeof(ElegantLowTable), typeof(Dressform), typeof(BasePlayerBB), typeof(BaseContainer), typeof(BarrelStaves),
-			typeof(BarrelLid)
+			typeof(BarrelLid), typeof(Clippers)
+		};
+
+		private static readonly Dictionary<Type, Type> m_ResourceConversionTable = new Dictionary<Type, Type>()
+		{
+			{ typeof(Board), typeof(Log) },
+			{ typeof(HeartwoodBoard), typeof(HeartwoodLog) },
+			{ typeof(BloodwoodBoard), typeof(BloodwoodLog) },
+			{ typeof(FrostwoodBoard), typeof(FrostwoodLog) },
+			{ typeof(OakBoard), typeof(OakLog) },
+			{ typeof(AshBoard), typeof(AshLog) },
+			{ typeof(YewBoard), typeof(YewLog) },
+			{ typeof(Leather), typeof(Hides) },
+			{ typeof(SpinedLeather), typeof(SpinedHides) },
+			{ typeof(HornedLeather), typeof(HornedHides) },
+			{ typeof(BarbedLeather), typeof(BarbedHides) },
 		};
 
 		private static Type[] m_NeverColorTable = new[] {typeof(OrcHelm)};
@@ -695,6 +714,13 @@ namespace Server.Engines.Craft
 			{
 				CraftRes craftRes = m_arCraftRes.GetAt(i);
 				Type baseType = craftRes.ItemType;
+
+				if (typeRes != null && ForceTypeRes)
+				{
+					Type outType;
+					if (m_ResourceConversionTable.TryGetValue(typeRes, out outType))
+						baseType = outType;
+				}
 
 				// Resource Mutation
 				if ((baseType == resCol.ResType) && (typeRes != null))
@@ -1053,7 +1079,7 @@ namespace Server.Engines.Craft
 			{
 				CraftSkill craftSkill = m_arCraftSkill.GetAt(i);
 
-				double minSkill = craftSkill.MinSkill;
+				double minSkill = craftSkill.MinSkill - MinSkillOffset;
 				double maxSkill = craftSkill.MaxSkill;
 				double valSkill = from.Skills[craftSkill.SkillToMake].Value;
 

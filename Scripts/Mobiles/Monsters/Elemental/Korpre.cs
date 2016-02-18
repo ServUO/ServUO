@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -10,35 +9,37 @@ namespace Server.Mobiles
         public Korpre()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Korpre";
-            this.Body = 51;
-            this.BaseSoundID = 456;
+            Name = "Korpre";
+            Body = 51;
+            BaseSoundID = 456;
 
-            this.Hue = 2071;
+            Hue = 2071;
 
-            this.SetStr(22, 34);
-            this.SetDex(16, 21);
-            this.SetInt(16, 20);
+            SetStr(22, 34);
+            SetDex(16, 21);
+            SetInt(16, 20);
 
-            this.SetHits(15, 19);
+            SetHits(15, 19);
 
-            this.SetDamage(1, 5);
+            SetDamage(1, 5);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 5, 10);
-            this.SetResistance(ResistanceType.Poison, 15, 20);
+            SetResistance(ResistanceType.Physical, 5, 10);
+            SetResistance(ResistanceType.Poison, 15, 20);
 
-            this.SetSkill(SkillName.Poisoning, 36.0, 49.1);
-            this.SetSkill(SkillName.Anatomy, 0);
-            this.SetSkill(SkillName.MagicResist, 15.9, 18.9);
-            this.SetSkill(SkillName.Tactics, 24.6, 26.1);
-            this.SetSkill(SkillName.Wrestling, 24.9, 26.1);
+            SetSkill(SkillName.Poisoning, 36.0, 49.1);
+            SetSkill(SkillName.Anatomy, 0);
+            SetSkill(SkillName.MagicResist, 15.9, 18.9);
+            SetSkill(SkillName.Tactics, 24.6, 26.1);
+            SetSkill(SkillName.Wrestling, 24.9, 26.1);
 
-            this.Fame = 300;
-            this.Karma = -300;
+            Fame = 300;
+            Karma = -300;
 
-            this.VirtualArmor = 8;
+            VirtualArmor = 8;
+
+            QLPoints = 3;
         }
 
         //TODO: Damage weapon via acid
@@ -49,25 +50,19 @@ namespace Server.Mobiles
 
         public override Poison PoisonImmune
         {
-            get
-            {
-                return Poison.Regular;
-            }
+            get { return Poison.Regular; }
         }
+
         public override Poison HitPoison
         {
-            get
-            {
-                return Poison.Regular;
-            }
+            get { return Poison.Regular; }
         }
+
         public override FoodType FavoriteFood
         {
-            get
-            {
-                return FoodType.Fish;
-            }
+            get { return FoodType.Fish; }
         }
+
         /*		public override void OnGotMeleeAttack(Mobile attacker)
         {
         base.OnGotMeleeAttack(attacker);
@@ -101,16 +96,17 @@ namespace Server.Mobiles
         Spawn.Mobile(new Ortanord);
         }
         }*/
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Poor);
-            this.AddLoot(LootPack.Gems);
+            AddLoot(LootPack.Poor);
+            AddLoot(LootPack.Gems);
         }
 
         public override void OnDeath(Container c)
         {
-            base.OnDeath(c);		
-			
+            base.OnDeath(c);
+
             if (Utility.RandomDouble() < 0.05)
             {
                 c.DropItem(new VoidOrb());
@@ -120,13 +116,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            var version = reader.ReadInt();
         }
     }
 }

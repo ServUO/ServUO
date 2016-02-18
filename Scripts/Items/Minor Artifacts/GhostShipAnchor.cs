@@ -9,6 +9,7 @@ namespace Server.Items
             : base(0x14F7)
         {
             this.Hue = 0x47E;
+            this.Weight = 2;
         }
 
         public GhostShipAnchor(Serial serial)
@@ -27,7 +28,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -36,6 +37,13 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
+            switch (version)
+            {
+                case 0:
+                    this.Weight = 2;
+                    break;
+            }
+            
             if (this.ItemID == 0x1F47)
                 this.ItemID = 0x14F7;
         }

@@ -15,7 +15,7 @@ namespace Server.Gumps
 		private Mobile m_Mobile;
 		private object m_Object;
 #if (NEWTIMERS)
-		private Stack<StackEntry> m_Stack;
+		private Stack<PropertiesGump.StackEntry> m_Stack;
 #else
 		private Stack m_Stack;
 #endif
@@ -65,7 +65,7 @@ namespace Server.Gumps
 		private static readonly int BackHeight = BorderSize + TotalHeight + BorderSize;
 
 #if (NEWTIMERS)
-		public XmlSetTimeSpanGump( PropertyInfo prop, Mobile mobile, object o, Stack<StackEntry> stack, int page, ArrayList list ) : base( GumpOffsetX, GumpOffsetY )
+		public XmlSetTimeSpanGump( PropertyInfo prop, Mobile mobile, object o, Stack<PropertiesGump.StackEntry> stack, int page, ArrayList list ) : base( GumpOffsetX, GumpOffsetY )
 #else
 		public XmlSetTimeSpanGump( PropertyInfo prop, Mobile mobile, object o, Stack stack, int page, ArrayList list ) : base( GumpOffsetX, GumpOffsetY )
 #endif

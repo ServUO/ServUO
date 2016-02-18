@@ -1,5 +1,6 @@
 ﻿using System;
 using Server.Engines.Craft;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -12,7 +13,7 @@ namespace Server.Items
 
     public class CraftableFurniture : Item, ICraftable
     {
-        public virtual bool ShowCraferName
+        public virtual bool ShowCrafterName
         {
             get
             {
@@ -85,8 +86,8 @@ namespace Server.Items
         {
             base.AddWeightProperty(list);
 
-            if (this.ShowCraferName && this.m_Crafter != null)
-                list.Add(1050043, this.m_Crafter.Name); // crafted by ~1_NAME~
+            if (this.ShowCrafterName && this.m_Crafter != null)
+				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
             if (this.m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
@@ -101,12 +102,26 @@ namespace Server.Items
             if (info != null && info.Number > 0)
                 list.Add(info.Number);
         }
+		public override void OnSingleClick(Mobile from)
+		{
+			base.OnSingleClick(from);
 
+			if (m_Crafter != null)
+			{
+				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+			}
+		}
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+			/* The jump to verison 1000 was due to needing to insert a class in the
+			   inheritence chain for some items. We need to be certain that the new
+			   version of CraftableFurniture that handles this data will not
+			   conflict with the version numbers of the child classes.
+			 */
+            writer.Write((int)1000); // version
 
             writer.Write((Mobile)this.m_Crafter);
             writer.Write((int)this.m_Resource);
@@ -117,11 +132,37 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+			int version = reader.PeekInt();
 
-            this.m_Crafter = reader.ReadMobile();
-            this.m_Resource = (CraftResource)reader.ReadInt();
-            this.m_Quality = (ItemQuality)reader.ReadInt();
+			switch (version)
+			{
+				case 1000:
+					reader.ReadInt();
+					this.m_Crafter = reader.ReadMobile();
+					this.m_Resource = (CraftResource)reader.ReadInt();
+					this.m_Quality = (ItemQuality)reader.ReadInt();
+					break;
+				case 0:
+					// Only these two items had this base class prior to the version change
+					if(this is ElvenPodium ||
+						this is GiantReplicaAcorn)
+					{
+						reader.ReadInt();
+						this.m_Crafter = reader.ReadMobile();
+						this.m_Resource = (CraftResource)reader.ReadInt();
+						this.m_Quality = (ItemQuality)reader.ReadInt();
+					}
+					// If we peeked a zero here any other way we should not consume data
+					else
+					{
+						this.m_Crafter = null;
+						this.m_Resource = CraftResource.None;
+						this.m_Quality = ItemQuality.Normal;
+					}
+					break;
+				default:
+					throw new ArgumentException("Unhandled version number for CraftableFurniture");
+			}
         }
 
         #region ICraftable

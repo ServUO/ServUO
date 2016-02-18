@@ -92,7 +92,7 @@ namespace Server.Mobiles
 			}
 		}
 
-		public override bool DisplayLootType { get { return false; } }
+		public override bool DisplayLootType { get { return Core.AOS; } }
 		public virtual int FollowerSlots { get { return 1; } }
 
 		[CommandProperty(AccessLevel.GameMaster)]

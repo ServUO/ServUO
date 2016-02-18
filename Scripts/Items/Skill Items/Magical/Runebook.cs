@@ -335,7 +335,7 @@ namespace Server.Items
                 list.Add(1063341); // exceptional
 
             if (this.m_Crafter != null)
-                list.Add(1050043, this.m_Crafter.Name); // crafted by ~1_NAME~
+				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
             if (this.m_Description != null && this.m_Description.Length > 0)
                 list.Add(this.m_Description);
@@ -366,7 +366,7 @@ namespace Server.Items
             base.OnSingleClick(from);
 
             if (this.m_Crafter != null)
-                this.LabelTo(from, 1050043, this.m_Crafter.Name);
+				this.LabelTo(from, 1050043, m_Crafter.TitleName);
         }
 
         public override void OnDoubleClick(Mobile from)

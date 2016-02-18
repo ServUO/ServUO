@@ -1,8 +1,9 @@
+using Server.Engines.Craft;
 using System;
 
 namespace Server.Items
 {
-    public class BlankScroll : Item, ICommodity
+    public class BlankScroll : Item, ICommodity, ICraftable
     {
         [Constructable]
         public BlankScroll()
@@ -50,6 +51,12 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+        }
+
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Amount = 5;
+            return 1;
         }
     }
 }

@@ -12,6 +12,16 @@ using Server.Targeting;
 
 namespace Server.Factions
 {
+    public static class Settings
+    {
+        public static bool NewCoMLocation { get; private set; }
+
+        public static void Configure()
+        {
+            NewCoMLocation = Config.Get("Factions.NewCoMLocation", true);
+        }
+    }
+
     [CustomEnum(new string[] { "Minax", "Council of Mages", "True Britannians", "Shadowlords" })]
     public abstract class Faction : IComparable
     {
@@ -1471,8 +1481,8 @@ namespace Server.Factions
                                     if (pl != null)
                                     {
                                         pl.Faction.RemoveMember(mob);
-                                        mob.SendMessage("You have been kicked from your faction.");
-                                        this.AddResponse("They have been kicked from their faction.");
+                                        mob.SendMessage("You have been banned from factions.");
+                                        this.AddResponse("They have been banned from factions.");
                                     }
                                 }
                             }

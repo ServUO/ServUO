@@ -132,7 +132,7 @@ namespace Server.Gumps
 
                 int height = Math.Max(item.Height, 20);
 				
-                if (this.m_Owner.Backpack != null && this.m_Owner.Backpack.FindItemByType(item.Type, true) != null)
+                if (this.m_Owner.Backpack != null && this.m_Owner.Backpack.GetAmount(item.Type, true, true) > 0)
                 {
                     this.AddButton(35, offset + (int)(height / 2) - 5, 0x837, 0x838, 300 + this.m_Index, GumpButtonType.Reply, 0);
                     this.AddTooltip(item.Tooltip);
@@ -150,9 +150,22 @@ namespace Server.Gumps
                     this.AddLabel(65 + this.m_Max, offset + (int)(height / 2) - 10, 0x64, "1 per " + ((int)Math.Pow(item.Points, -1)).ToString());
                 else 
                     this.AddLabel(65 + this.m_Max, offset + (int)(height / 2) - 10, 0x64, item.Points.ToString());
-					
-                this.AddTooltip(item.Tooltip);
 				
+                this.AddTooltip(item.Tooltip);
+
+                if(m_Owner.Backpack != null)
+                {
+                    int count = 0;
+                    if (item.Type == typeof(BankCheck))
+                        count = m_Owner.Backpack.GetChecksWorth(true);
+                    else
+                        count = m_Owner.Backpack.GetAmount(item.Type, true, true);
+                    if (count > 0)
+                    {
+                        AddLabel(230, offset + (int)(height / 2) - 10, 0x64, count.ToString());
+                    }
+                }
+
                 offset += 5 + height;
                 this.m_Index += 1;
 
@@ -318,16 +331,24 @@ namespace Server.Gumps
                 if (item.Points <= points)
                 {
                     if (item is CollectionHuedItem)
-                        this.m_Owner.SendGump(new ComunityCollectionGump(this.m_Owner, this.m_Collection, this.m_Location, Section.Hues, (CollectionHuedItem)item));
-                    else
-                        this.m_Owner.SendGump(new ConfirmRewardGump(this.m_Collection, this.m_Location, item, 0));
-                }
+					{
+						this.m_Owner.SendGump(new ComunityCollectionGump(this.m_Owner, this.m_Collection, this.m_Location, Section.Hues, (CollectionHuedItem)item));
+					}
+					else
+					{
+						this.m_Owner.CloseGump(typeof(ConfirmRewardGump));
+						this.m_Owner.SendGump(new ConfirmRewardGump(this.m_Collection, this.m_Location, item, 0));
+					}
+				}
                 else
                     this.m_Owner.SendLocalizedMessage(1073122); // You don't have enough points for that!
             }
             else if (info.ButtonID >= 100 && this.m_Item != null && info.ButtonID - 200 < this.m_Item.Hues.Length && this.m_Section == Section.Hues)
-                this.m_Owner.SendGump(new ConfirmRewardGump(this.m_Collection, this.m_Location, this.m_Item, this.m_Item.Hues[info.ButtonID - 100]));
-        }
+			{
+				this.m_Owner.CloseGump(typeof(ConfirmRewardGump));
+				this.m_Owner.SendGump(new ConfirmRewardGump(this.m_Collection, this.m_Location, this.m_Item, this.m_Item.Hues[info.ButtonID - 100]));
+			}
+		}
 
         private class InternalPrompt : Prompt
         {
@@ -345,9 +366,13 @@ namespace Server.Gumps
             {
                 if (!from.InRange(this.m_Location, 2) || !(from is PlayerMobile))
                     return;
-					
+
+                HandleResponse(from, text);
                 from.SendGump(new ComunityCollectionGump((PlayerMobile)from, this.m_Collection, this.m_Location));
-					
+            }
+
+            private void HandleResponse(Mobile from, string text)
+            {
                 int amount = Utility.ToInt32(text);
 				
                 if (amount <= 0)
@@ -355,68 +380,42 @@ namespace Server.Gumps
                     from.SendLocalizedMessage(1073181); // That is not a valid donation quantity.
                     return;
                 }
-				
-                Item[] items = from.Backpack != null ? from.Backpack.FindItemsByType(this.m_Selected.Type, true) : null;
-				
-                if (items != null)
+
+                if (from.Backpack == null)
+                    return;
+
+                // Make sure we have enough
+                if(m_Selected.Type == typeof(BankCheck))
                 {
-                    // count items
-                    int count = 0;
-					
-                    for (int i = 0; i < items.Length; i ++)
-                        if (items[i] is BankCheck && !items[i].Deleted)
-                            count += ((BankCheck)items[i]).Worth;
-                        else if (this.m_Selected.Validate((PlayerMobile)from, items[i]) && !items[i].Deleted)
-                            count += items[i].Amount;
-						
-                    // check
-                    if (amount > count)
+                    int count = from.Backpack.GetChecksWorth(true);
+                    if(count < amount)
                     {
                         from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
                         return;
                     }
-                    else if (amount * this.m_Selected.Points < 1)
-                    {
-                        from.SendLocalizedMessage(1073167); // You do not have enough of that item to make a donation!
-                        return;
-                    }
-					
-                    // donate
-                    int deleted = 0;
-					
-                    for (int i = 0; i < items.Length && deleted < amount; i ++)
-                    {
-                        if (items[i] is BankCheck && !items[i].Deleted)
-                        {
-                            BankCheck check = (BankCheck)items[i];
-							
-                            if (check.Worth + deleted > amount)
-                            {
-                                check.Worth -= amount - deleted;
-                                deleted += amount - deleted;
-                            }
-                            else
-                            {
-                                deleted += check.Worth;
-                                check.Delete();
-                            }
-                        }
-                        else if (this.m_Selected.Validate((PlayerMobile)from, items[i]) && items[i].Stackable && items[i].Amount + deleted > amount && !items[i].Deleted)
-                        {
-                            items[i].Amount -= amount - deleted;
-                            deleted += amount - deleted;
-                        }
-                        else if (this.m_Selected.Validate((PlayerMobile)from, items[i]) && !items[i].Deleted)
-                        {
-                            deleted += items[i].Amount;
-                            items[i].Delete();
-                        }
-                    }
-					
-                    this.m_Collection.Donate((PlayerMobile)from, this.m_Selected, amount);
                 }
                 else
-                    from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
+                {
+                    int count = from.Backpack.GetAmount(m_Selected.Type, true, true);
+                    if(count < amount)
+                    {
+                        if(m_Selected.Type == typeof(Gold))
+                            from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
+                        else
+                            from.SendLocalizedMessage(1073167); // You do not have enough of that item to make a donation!
+                    }
+                }
+
+                // Donate
+                if(m_Selected.Type == typeof(BankCheck))
+                {
+                    from.Backpack.TakeFromChecks(amount, true);
+                }
+                else
+                {
+                    from.Backpack.ConsumeTotal(m_Selected.Type, amount, true, true);
+                }
+                m_Collection.Donate((PlayerMobile)from, m_Selected, amount);
             }
 
             public override void OnCancel(Mobile from)

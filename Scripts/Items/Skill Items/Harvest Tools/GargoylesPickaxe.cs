@@ -18,6 +18,7 @@ namespace Server.Items
             this.Weight = 11.0;
             this.UsesRemaining = uses;
             this.ShowUsesRemaining = true;
+		 this.Hue = 0x76c;
         }
 
         public GargoylesPickaxe(Serial serial)
@@ -150,8 +151,11 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 			
-            if (this.Hue == 0x973)
-                this.Hue = 0x0;
+            if (this.Hue == 0x973 ||
+                this.Hue == 0)
+            {
+                this.Hue = 0x76c;
+            }
         }
     }
 }

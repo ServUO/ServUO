@@ -14,7 +14,6 @@ namespace Server.Engines.XmlSpawner2
 
 		private Item m_AttackTarget = null;    // target of the attack
 		private Point3D m_currentloc;
-		private int m_currentdirection;
 		private Map m_currentmap;
 		private Point3D m_targetloc;
 		private Map m_targetmap;

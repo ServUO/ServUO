@@ -498,10 +498,6 @@ namespace Server.Engines.XmlSpawner2
 			}
 		}
 
-
-		private string guildFilter = null;
-		private string nameFilter = null;
-
 		public class TopQuestPlayersGump : Gump
 		{
 			private XmlQuestPoints m_attachment;

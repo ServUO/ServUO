@@ -15,7 +15,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "an acid elemental";
-            this.Body = 162;
+            this.Body = 158;
             this.BaseSoundID = 263;
 
             this.SetStr(326, 355);
@@ -100,13 +100,20 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 0:
+                    Body = 158;
+                    break;
+            }
         }
     }
 }

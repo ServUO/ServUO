@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-
+using Server.ContextMenus;
 using Server.Network;
 #endregion
 
@@ -1429,7 +1429,12 @@ namespace Server.Items
 			LiftOverride = 0x00000008
 		}
 
-		public override void Serialize(GenericWriter writer)
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+        }
+
+        public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
 

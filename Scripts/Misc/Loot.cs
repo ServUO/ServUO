@@ -967,17 +967,26 @@ namespace Server
 		#region Construction methods
 		public static Item Construct(Type type)
 		{
-			try
-			{
-				return Activator.CreateInstance(type) as Item;
-			}
-			catch
-			{
-				return null;
-			}
-		}
+            Item item;
+            try
+            {
+                item = Activator.CreateInstance(type) as Item;
+            }
+            catch
+            {
+                return null;
+            }
+            if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
+            {
+                if (Core.AOS)
+                {
+                    Server.Mobiles.RandomItemGenerator.GenerateRandomItem(item, null, null);
+                }
+            }
+            return item;
+        }
 
-		public static Item Construct(Type[] types)
+        public static Item Construct(Type[] types)
 		{
 			if (types.Length > 0)
 			{

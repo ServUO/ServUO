@@ -144,7 +144,8 @@ namespace Server.Items
 	        new StealableEntry(Map.TerMur, new Point3D(1094, 990, -23), 576, 864, typeof(NaverysWeb2Artifact)), // [2]
 	        // UnderWorld - Artifact rarity 5
 	        new StealableEntry(Map.TerMur, new Point3D(1049, 1109, -65), 1152, 1728, typeof(BloodySpoonArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1137, 1134, -38), 1152, 1728, typeof(RemnantsOfMeatLoafArtifact)),
+            new StealableEntry(Map.TerMur, new Point3D(1047, 1108, -65), 1152, 1728, typeof(MysticsGuard)),
+            new StealableEntry(Map.TerMur, new Point3D(1137, 1134, -38), 1152, 1728, typeof(RemnantsOfMeatLoafArtifact)),
 	        new StealableEntry(Map.TerMur, new Point3D(1134, 1204, 7), 1152, 1728, typeof(HalfEatenSupperArtifact)),
 	        new StealableEntry(Map.TerMur, new Point3D(1083, 983, -19), 1152, 1728, typeof(NaverysWeb3Artifact)), // [3]
 	        new StealableEntry(Map.TerMur, new Point3D(1081, 992, -21), 1152, 1728, typeof(NaverysWeb4Artifact)), // [4]
@@ -234,6 +235,19 @@ namespace Server.Items
         {
             CommandSystem.Register("GenStealArties", AccessLevel.Administrator, new CommandEventHandler(GenStealArties_OnCommand));
             CommandSystem.Register("RemoveStealArties", AccessLevel.Administrator, new CommandEventHandler(RemoveStealArties_OnCommand));
+            CommandSystem.Register("StealArtiesForceRespawn", AccessLevel.GameMaster, new CommandEventHandler(StealArtiesForceRespawn_OnCommand));
+        }
+
+        private static void StealArtiesForceRespawn_OnCommand(CommandEventArgs e)
+        {
+            if(Instance != null &&
+                Instance.m_Artifacts != null)
+            {
+                foreach (StealableInstance instance in Instance.m_Artifacts)
+                {
+                    instance.ForceRespawn();
+                }
+            }
         }
 
         public static bool Create()
@@ -519,6 +533,16 @@ namespace Server.Items
                     this.Item = null;
 
                 if (this.Item == null && DateTime.UtcNow >= this.NextRespawn)
+                {
+                    this.Item = this.Entry.CreateInstance();
+                }
+            }
+            public void ForceRespawn()
+            {
+                if (this.Item != null && (this.Item.Deleted || this.Item.Movable || this.Item.Parent != null))
+                    this.Item = null;
+
+                if (this.Item == null)
                 {
                     this.Item = this.Entry.CreateInstance();
                 }

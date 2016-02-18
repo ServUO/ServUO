@@ -41,12 +41,12 @@ namespace Server.Engines.Help
 
 		private readonly Mobile m_Sender;
 		private Mobile m_Handler;
-		private readonly DateTime m_Sent;
-		private readonly string m_Message;
-		private readonly PageType m_Type;
-		private readonly Point3D m_PageLocation;
-		private readonly Map m_PageMap;
-		private readonly List<SpeechLogEntry> m_SpeechLog;
+		private  DateTime m_Sent;
+		private  string m_Message;
+		private  PageType m_Type;
+		private  Point3D m_PageLocation;
+		private  Map m_PageMap;
+		private  List<SpeechLogEntry> m_SpeechLog;
 
 		private readonly PageInfo m_PageInfo;
 
@@ -64,15 +64,35 @@ namespace Server.Engines.Help
 			}
 		}
 
-		public DateTime Sent { get { return m_Sent; } }
+		public DateTime Sent
+		{
+			get { return m_Sent; }
+			set { m_Sent = value; }
+		}
 
-		public string Message { get { return m_Message; } }
+		public string Message
+		{
+			get { return m_Message; }
+			set { m_Message = value; }
+		}
 
-		public PageType Type { get { return m_Type; } }
+		public PageType Type
+		{
+			get { return m_Type; }
+			set { m_Type = value; }
+		}
 
-		public Point3D PageLocation { get { return m_PageLocation; } }
+		public Point3D PageLocation
+		{
+			get { return m_PageLocation; }
+			set { m_PageLocation = value; }
+		}
 
-		public Map PageMap { get { return m_PageMap; } }
+		public Map PageMap
+		{
+			get { return m_PageMap; }
+			set { m_PageMap = value; }
+		}
 
 		public List<SpeechLogEntry> SpeechLog { get { return m_SpeechLog; } }
 

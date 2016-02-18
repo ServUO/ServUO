@@ -1254,7 +1254,7 @@ namespace Server.Items
         #region Random Item Generation
         public static Item GenerateRandomItem(IEntity e)
         {
-            Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(e), LootPackEntry.IsMondain(e), LootPackEntry.IsStygianAbyss(e));
+            Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(e), LootPackEntry.IsMondain(e), LootPackEntry.IsStygian(e));
 
             if (item != null)
                 GenerateRandomItem(item, null, Utility.RandomMinMax(100, 700), 0, ReforgedPrefix.None, ReforgedSuffix.None);
@@ -1264,7 +1264,7 @@ namespace Server.Items
 
         public static Item GenerateRandomItem(Mobile killer, BaseCreature creature)
         {
-            Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygianAbyss(killer));
+			Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
 
             if(item != null)
                 GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
@@ -1297,12 +1297,31 @@ namespace Server.Items
 
         public static void GenerateRandomItem(Item item, Mobile killer, int basebudget, int luckchance, ReforgedPrefix forcedprefix, ReforgedSuffix forcedsuffix)
         {
-			if(item != null)
+            int luck = 0;
+            int budgetBonus = 0;
+
+            if (killer != null)
+            {
+                luck = killer.Luck;
+                if (killer.Map == Map.Felucca)
+                {
+                    luck += RandomItemGenerator.FeluccaLuckBonus;
+                    budgetBonus += RandomItemGenerator.FeluccaBudgetBonus;
+                }
+            }
+            else
+            {
+                luck = 240;
+            }
+
+            if (item != null)
 			{
                 int budget = Utility.RandomMinMax(basebudget - (basebudget / 5), basebudget + Utility.RandomMinMax(0, 100));
 
-				if(killer != null && Utility.RandomDouble() < (double)killer.Luck / 2000.0)
+				if(Utility.RandomDouble() < (double)luck / 2000.0)
 					budget += Utility.RandomMinMax(150, Math.Max(160, 550 - basebudget));
+
+                budget += budgetBonus;
 
                 if (budget > 860)
                     budget = 860;
@@ -1405,7 +1424,7 @@ namespace Server.Items
         public static int GetDifficultyFor(BaseCreature bc)
 		{
             if (bc == null)
-                return 0;
+                return 100;
 
 			double val = (bc.HitsMax * 1.6) + bc.StamMax + bc.ManaMax;
 

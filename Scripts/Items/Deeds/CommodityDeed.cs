@@ -9,6 +9,94 @@ namespace Server.Items
         bool IsDeedable { get; }
     }
 
+    public static class CommodityDeedExtensions
+    {
+        public static int GetAmount(this Container cont, Type type, bool recurse, bool includeDeeds)
+        {
+            int amount = cont.GetAmount(type, recurse);
+
+            var deeds = cont.FindItemsByType(typeof(CommodityDeed), recurse);
+            foreach(CommodityDeed deed in deeds)
+            {
+                if (deed.Commodity == null)
+                    continue;
+                if (deed.Commodity.GetType() == type)
+                    amount += deed.Commodity.Amount;
+            }
+
+            return amount;
+        }
+
+        public static int GetAmount(this Container cont, Type[] types, bool recurse, bool includeDeeds)
+        {
+            int amount = cont.GetAmount(types, recurse);
+
+            var deeds = cont.FindItemsByType(typeof(CommodityDeed), recurse);
+            foreach (CommodityDeed deed in deeds)
+            {
+                if (deed.Commodity == null)
+                    continue;
+                foreach (Type type in types)
+                {
+                    if (deed.Commodity.GetType() == type)
+                    {
+                        amount += deed.Commodity.Amount;
+                        break;
+                    }
+                }
+            }
+
+            return amount;
+        }
+
+        public static int ConsumeTotal(this Container cont, Type type, int amount, bool recurse, bool includeDeeds)
+        {
+            int left = amount;
+
+            var items = cont.FindItemsByType(type, recurse);
+            foreach(Item item in items)
+            {
+                if(item.Amount <= left)
+                {
+                    left -= item.Amount;
+                    item.Delete();
+                }
+                else
+                {
+                    item.Amount -= left;
+                    left = 0;
+                    break;
+                }
+            }
+
+            if (!includeDeeds)
+                return amount - left;
+
+            var deeds = cont.FindItemsByType(typeof(CommodityDeed), recurse);
+            foreach(CommodityDeed deed in deeds)
+            {
+                if (deed.Commodity == null)
+                    continue;
+                if (deed.Commodity.GetType() != type)
+                    continue;
+                if(deed.Commodity.Amount <= left)
+                {
+                    left -= deed.Commodity.Amount;
+                    deed.Delete();
+                }
+                else
+                {
+                    deed.Commodity.Amount -= left;
+                    deed.InvalidateProperties();
+                    left = 0;
+                    break;
+                }
+            }
+
+            return amount - left;
+        }
+    }
+
     public class CommodityDeed : Item
     {
         private Item m_Commodity;

@@ -334,7 +334,7 @@ namespace Server
 			m_LoadingType = null;
 
 			Utility.PushColor(ConsoleColor.Yellow);
-			Console.Write("World: Loading...");
+			Console.WriteLine("World: Loading...");
 			Utility.PopColor();
 
 			Stopwatch watch = Stopwatch.StartNew();
@@ -886,7 +886,7 @@ namespace Server
 
 			Utility.PushColor(ConsoleColor.Green);
 			Console.WriteLine(
-				"done ({1} items, {2} mobiles, {3} customs) ({0:F2} seconds)",
+				"...done ({1} items, {2} mobiles, {3} customs) ({0:F2} seconds)",
 				watch.Elapsed.TotalSeconds,
 				m_Items.Count,
 				m_Mobiles.Count,
@@ -1103,7 +1103,7 @@ namespace Server
 			SaveStrategy strategy = SaveStrategy.Acquire();
 			Console.WriteLine("Core: Using {0} save strategy", strategy.Name.ToLowerInvariant());
 
-			Console.Write("World: Saving...");
+			Console.WriteLine("World: Saving...");
 
 			Stopwatch watch = Stopwatch.StartNew();
 

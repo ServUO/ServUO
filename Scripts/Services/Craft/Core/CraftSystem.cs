@@ -339,7 +339,14 @@ namespace Server.Engines.Craft
             craftItem.UseAllRes = useAll;
         }
 
-        public void SetNeedHeat(int index, bool needHeat)
+		public void SetForceTypeRes(int index, bool value)
+		{
+			CraftItem craftItem = this.m_CraftItems.GetAt(index);
+			craftItem.ForceTypeRes = value;
+		}
+
+
+		public void SetNeedHeat(int index, bool needHeat)
         {
             CraftItem craftItem = this.m_CraftItems.GetAt(index);
             craftItem.NeedHeat = needHeat;
@@ -402,6 +409,12 @@ namespace Server.Engines.Craft
         {
             CraftItem craftItem = this.m_CraftItems.GetAt(index);
             craftItem.ForceNonExceptional = true;
+        }
+
+        public void SetMinSkillOffset(int index, double skillOffset)
+        {
+            CraftItem craftItem = this.m_CraftItems.GetAt(index);
+            craftItem.MinSkillOffset = skillOffset;
         }
 
         public void SetSubRes(Type type, string name)

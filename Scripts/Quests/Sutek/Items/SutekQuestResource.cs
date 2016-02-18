@@ -43,7 +43,6 @@ namespace Server.Items
 		WoodenBoards,
 		WoodenLogs,
 		YellowPotion,
-		//        BarrelHoops2,
 	}
 
 	public class SutekQuestResource : Item
@@ -81,7 +80,7 @@ namespace Server.Items
 			new[] {(int)SutekResourceType.SilverIngots, 0, 1027158, 0x1BFA},
 			new[] {(int)SutekResourceType.SilverWire, 0, 1026263, 0x1877},
 			new[] {(int)SutekResourceType.SpiritEssence, 1153, 1055029, 0x2D92},
-			new[] {(int)SutekResourceType.Thorns, 0, 1112813, 0x0F42},
+			new[] {(int)SutekResourceType.Thorns, 66, 1112813, 0x0F42},
 			new[] {(int)SutekResourceType.VoidEssence, 1, 1112327, 0x2D92},
 			new[] {(int)SutekResourceType.WhitePowder, 0, 1112816, 0x241D},
 			new[] {(int)SutekResourceType.WhiteStone, 0, 1112813, 0x177A},
@@ -176,6 +175,11 @@ namespace Server.Items
 		private void Update()
 		{
 			var vals = _Table[(int)_Type];
+
+            if (_Type == SutekResourceType.Thorns)
+                Amount = 2;
+            else
+                Amount = 1;
 
 			Hue = vals[1];
 			_LabelNumber = vals[2];

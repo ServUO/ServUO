@@ -4,6 +4,7 @@ using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Factions;
 using Server.Network;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -1064,7 +1065,7 @@ namespace Server.Items
             #endregion
 			
             if (this.m_Crafter != null)
-                list.Add(1050043, this.m_Crafter.Name); // crafted by ~1_NAME~
+				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
             #region Factions
             if (this.m_FactionState != null)

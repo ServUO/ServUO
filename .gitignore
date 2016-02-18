@@ -1,6 +1,11 @@
 /ServUO.pdb
 /ServUO.exe
+/ServUO.sh
+/ServUO.MONO.exe
+/ServUO.MONO.exe.mdb
 /Ultima.dll
+/Ultima.pdb
+/Ultima.dll.mdb
 /Ultima/bin
 /Ultima/obj
 /Server/bin
@@ -16,3 +21,4 @@
 *.csproj.user
 *.suo
 *.log
+*.bin

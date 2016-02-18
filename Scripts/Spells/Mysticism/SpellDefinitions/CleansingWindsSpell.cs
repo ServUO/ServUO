@@ -43,7 +43,6 @@ namespace Server.Spells.Mystic
             {
                 List<Mobile> targets = new List<Mobile>();
                 Party party = Party.Get(Caster);
-                StatMod mod;
 
                 double prim = Caster.Skills[CastSkill].Value;
                 double sec = Caster.Skills[DamageSkill].Value;
@@ -93,17 +92,9 @@ namespace Server.Spells.Mystic
                     if (toHealMod > 0)
                         m.Heal(toHealMod + Utility.RandomMinMax(1, 6));
 
-                    mod = m.GetStatMod("[Magic] Str Offset");
-                    if (mod != null && mod.Offset < 0)
-                        m.RemoveStatMod("[Magic] Str Offset");
-
-                    mod = m.GetStatMod("[Magic] Dex Offset");
-                    if (mod != null && mod.Offset < 0)
-                        m.RemoveStatMod("[Magic] Dex Offset");
-
-                    mod = m.GetStatMod("[Magic] Int Offset");
-                    if (mod != null && mod.Offset < 0)
-                        m.RemoveStatMod("[Magic] Int Offset");
+                    m.RemoveStatMod("[Magic] Str Curse");
+					m.RemoveStatMod("[Magic] Dex Curse");
+					m.RemoveStatMod("[Magic] Int Curse");
 
                     SleepSpell.EndSleep(m);
                     EvilOmenSpell.TryEndEffect(m);

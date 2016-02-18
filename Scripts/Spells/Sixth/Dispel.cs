@@ -59,7 +59,7 @@ namespace Server.Spells.Sixth
                     {
                         SpellHelper.Turn(from, m);
 
-                        double dispelChance = (50.0 + ((100 * (from.Skills.Magery.Value - bc.DispelDifficulty)) / (bc.DispelFocus * 2))) / 100;
+                        double dispelChance = (50.0 + ((100 * (from.Skills.Magery.Value - bc.GetDispelDifficulty())) / (bc.DispelFocus * 2))) / 100;
 
                         if (dispelChance > Utility.RandomDouble())
                         {

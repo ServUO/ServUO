@@ -8,7 +8,8 @@ namespace Server.Misc
 {
     public class TestCenter
     {
-        private const bool m_Enabled = false;
+        private static readonly bool m_Enabled = Config.Get("TestCenter.Enabled", false);
+
         public static bool Enabled
         {
             get
@@ -16,6 +17,7 @@ namespace Server.Misc
                 return m_Enabled;
             }
         }
+
         public static void Initialize()
         {
             // Register our speech handler

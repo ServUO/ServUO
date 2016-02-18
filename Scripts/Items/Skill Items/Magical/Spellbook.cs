@@ -15,6 +15,7 @@ using Server.Multis;
 using Server.Network;
 using Server.Spells;
 using Server.Targeting;
+using Server.Mobiles;
 #endregion
 
 namespace Server.Items
@@ -37,7 +38,7 @@ namespace Server.Items
 		Exceptional,
 	}
 
-	public class Spellbook : Item, ICraftable, ISlayer
+	public class Spellbook : Item, ICraftable, ISlayer, IEngravable
 	{
 		private static readonly Dictionary<Mobile, List<Spellbook>> m_Table = new Dictionary<Mobile, List<Spellbook>>();
 
@@ -632,7 +633,7 @@ namespace Server.Items
 
 			if (m_Crafter != null)
 			{
-				list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
+				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
 
 			m_AosSkillBonuses.GetProperties(list);
@@ -786,7 +787,7 @@ namespace Server.Items
 
 			if (m_Crafter != null)
 			{
-				LabelTo(from, 1050043, m_Crafter.Name); // crafted by ~1_NAME~
+				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
 
 			LabelTo(from, 1042886, m_Count.ToString());

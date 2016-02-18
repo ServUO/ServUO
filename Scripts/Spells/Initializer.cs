@@ -153,15 +153,14 @@ namespace Server.Spells
                     Register(606, typeof(Spellweaving.SummonFeySpell));
                     Register(607, typeof(Spellweaving.SummonFiendSpell));
                     Register(608, typeof(Spellweaving.ReaperFormSpell));
-                    //Register( 609, typeof( Spellweaving.WildfireSpell ) );
+                    Register( 609, typeof( Spellweaving.WildfireSpell ) );
                     Register(610, typeof(Spellweaving.EssenceOfWindSpell));
-                    //Register( 611, typeof( Spellweaving.DryadAllureSpell ) );
+                    Register( 611, typeof( Spellweaving.DryadAllureSpell ) );
                     Register(612, typeof(Spellweaving.EtherealVoyageSpell));
                     Register(613, typeof(Spellweaving.WordOfDeathSpell));
                     Register(614, typeof(Spellweaving.GiftOfLifeSpell));
-                    //Register( 615, typeof( Spellweaving.ArcaneEmpowermentSpell ) );
+                    Register( 615, typeof( Spellweaving.ArcaneEmpowermentSpell ) );
                 }
-                #region Stygian Abyss
                 if (Core.SA)
                 {
                     Register(677, typeof(Mystic.NetherBoltSpell));
@@ -181,7 +180,6 @@ namespace Server.Spells
                     Register(691, typeof(Mystic.NetherCycloneSpell));
                     Register(692, typeof(Mystic.RisingColossusSpell));
                 }
-                #endregion
             }
         }
 

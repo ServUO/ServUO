@@ -5,6 +5,7 @@
 #endregion
 
 #region References
+using System.IO;
 using System.Linq;
 #endregion
 
@@ -12,7 +13,7 @@ namespace Server.Items
 {
 	public static class DisguisePersistence
 	{
-		public const string FilePath = @"Saves\\Disguises\\Persistence.bin";
+		private static string FilePath = Path.Combine("Saves", "Disguises", "Persistence.bin");
 
 		public static void Configure()
 		{

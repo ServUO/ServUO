@@ -7,7 +7,18 @@ namespace Server.Mobiles
 {
     public class RandomItemGenerator
     {
+        public static bool Enabled { get; private set; }
+        public static int FeluccaLuckBonus { get; private set; }
+        public static int FeluccaBudgetBonus { get; private set; }
+
         private static Dictionary<Type, List<DropEntry>> m_Table = new Dictionary<Type, List<DropEntry>>();
+
+        public static void Configure()
+        {
+            Enabled = Config.Get("Loot.Enabled", true);
+            FeluccaLuckBonus = Config.Get("Loot.FeluccaLuckBonus", 1000);
+            FeluccaBudgetBonus = Config.Get("Loot.FeluccaBudgetBonus", 100);
+        }
 
         public static void Initialize()
         {
@@ -70,8 +81,9 @@ namespace Server.Mobiles
         /// <param name="victim">the victim</param>
         public static bool GenerateRandomItem(Item item, Mobile killer, BaseCreature victim)
         {
+            if(Enabled)
+                return RunicReforging.GenerateRandomItem(item, killer, victim);
             return false;
-            //return RunicReforging.GenerateRandomItem(item, killer, victim);
         }
 
         private class DropEntry

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using Server.Accounting;
 using Server.Commands;
@@ -19,11 +20,15 @@ namespace Server.Misc
 
     public class AccountHandler
     {
-        public static PasswordProtection ProtectPasswords = PasswordProtection.NewCrypt;
-        private static readonly int MaxAccountsPerIP = 1;
-        private static readonly bool AutoAccountCreation = true;
-        private static readonly bool RestrictDeletion = !TestCenter.Enabled;
-        private static readonly TimeSpan DeleteDelay = TimeSpan.FromDays(7.0);
+	    public static PasswordProtection ProtectPasswords = Config.GetEnum(
+		    "Accounts.ProtectPasswords",
+			PasswordProtection.NewCrypt);
+
+        private static readonly int MaxAccountsPerIP = Config.Get("Accounts.AccountsPerIp", 1);
+        private static readonly bool AutoAccountCreation = Config.Get("Accounts.AutoCreateAccounts", true);
+        private static readonly bool RestrictDeletion = Config.Get("Accounts.RestrictDeletion", !TestCenter.Enabled);
+        private static readonly TimeSpan DeleteDelay = Config.Get("Accounts.DeleteDelay", TimeSpan.FromDays(7.0));
+
         private static readonly CityInfo[] StartingCities = new CityInfo[]
         {
             new CityInfo("New Haven",	"New Haven Bank",	1150168, 3667,	2625,	0),
@@ -36,6 +41,7 @@ namespace Server.Misc
             new CityInfo("Skara Brae",	"The Falconer's Inn",	1075079, 618,	2234,	0),
             new CityInfo("Vesper", "The Ironwood Inn",	1075080, 2771,	976,	0)
         };
+
         /* Old Haven/Magincia Locations
         new CityInfo( "Britain", "Sweet Dreams Inn", 1496, 1628, 10 );
         // ..
@@ -52,13 +58,17 @@ namespace Server.Misc
         StartingCities[StartingCities.Length - 1] = haven;
         }
         */
-        private static readonly bool PasswordCommandEnabled = false;
+
+		private static readonly bool PasswordCommandEnabled = Config.Get("Accounts.PasswordCommandEnabled", false);
+
         private static readonly char[] m_ForbiddenChars = new char[]
         {
             '<', '>', ':', '"', '/', '\\', '|', '?', '*'
         };
+
         private static AccessLevel m_LockdownLevel;
         private static Dictionary<IPAddress, Int32> m_IPTable;
+
         public static AccessLevel LockdownLevel
         {
             get
@@ -70,6 +80,7 @@ namespace Server.Misc
                 m_LockdownLevel = value;
             }
         }
+
         public static Dictionary<IPAddress, Int32> IPTable
         {
             get
@@ -78,21 +89,24 @@ namespace Server.Misc
                 {
                     m_IPTable = new Dictionary<IPAddress, Int32>();
 
-                    foreach (Account a in Accounts.GetAccounts())
-                        if (a.LoginIPs.Length > 0)
-                        {
-                            IPAddress ip = a.LoginIPs[0];
+	                foreach (var a in Accounts.GetAccounts().OfType<Account>())
+	                {
+		                if (a.LoginIPs.Length > 0)
+		                {
+			                IPAddress ip = a.LoginIPs[0];
 
-                            if (m_IPTable.ContainsKey(ip))
-                                m_IPTable[ip]++;
-                            else
-                                m_IPTable[ip] = 1;
-                        }
+			                if (m_IPTable.ContainsKey(ip))
+				                m_IPTable[ip]++;
+			                else
+				                m_IPTable[ip] = 1;
+		                }
+	                }
                 }
 
                 return m_IPTable;
             }
         }
+
         public static void Initialize()
         {
             EventSink.DeleteRequest += new DeleteRequestEventHandler(EventSink_DeleteRequest);
@@ -202,6 +216,11 @@ namespace Server.Misc
 
         public static void EventSink_AccountLogin(AccountLoginEventArgs e)
         {
+			// If the login attempt has already been rejected by another event handler
+			// then just return
+			if (e.Accepted == false)
+				return;
+
             if (!IPLimiter.SocketBlock && !IPLimiter.Verify(e.State.Address))
             {
                 e.Accepted = false;

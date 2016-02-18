@@ -52,19 +52,9 @@ namespace Server.Items
                 IEntity mto = new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 50), from.Map);
                 Effects.SendMovingParticles(mfrom, mto, 0x2255, 1, 0, false, false, 13, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
 
-                StatMod mod;
-
-                mod = from.GetStatMod("[Magic] Str Offset");
-                if (mod != null && mod.Offset < 0)
-                    from.RemoveStatMod("[Magic] Str Offset");
-
-                mod = from.GetStatMod("[Magic] Dex Offset");
-                if (mod != null && mod.Offset < 0)
-                    from.RemoveStatMod("[Magic] Dex Offset");
-
-                mod = from.GetStatMod("[Magic] Int Offset");
-                if (mod != null && mod.Offset < 0)
-                    from.RemoveStatMod("[Magic] Int Offset");
+                from.RemoveStatMod("[Magic] Str Curse");
+				from.RemoveStatMod("[Magic] Dex Curse");
+				from.RemoveStatMod("[Magic] Int Curse");
 
                 from.Paralyzed = false;
                 from.Asleep = false;

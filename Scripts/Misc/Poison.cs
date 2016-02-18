@@ -236,21 +236,19 @@ namespace Server
 					if (m_From != null && m_Mobile != m_From && !m_From.InRange(m_Mobile.Location, 1) && m_Poison.m_Level >= 10 &&
 						m_Poison.m_Level <= 13) // darkglow
 					{
-						m_From.SendLocalizedMessage(1072850); // Darkglow poison increases your damage!
-						damage = (int)Math.Floor(damage * 1.1);
+						m_From.SendLocalizedMessage(1072850); // Darkglow poison increases your damage!                    
+
+						Stop();
+
+						new DarkglowTimer(m_Mobile, m_From, m_Poison, m_Index).Start();
 					}
 
 					if (m_From != null && m_Mobile != m_From && m_From.InRange(m_Mobile.Location, 1) && m_Poison.m_Level >= 14 &&
 						m_Poison.m_Level <= 18) // parasitic
 					{
-						int toHeal = Math.Min(m_From.HitsMax - m_From.Hits, damage);
+						Stop();
 
-						if (toHeal > 0)
-						{
-							m_From.SendLocalizedMessage(1060203, toHeal.ToString(CultureInfo.InvariantCulture));
-								// You have had ~1_HEALED_AMOUNT~ hit points of damage healed.
-							m_From.Heal(toHeal, m_Mobile, false);
-						}
+						new ParasiticTimer(m_Mobile, m_From, m_Poison, m_Index).Start();
 					}
 				}
 				#endregion
@@ -258,7 +256,135 @@ namespace Server
 				AOS.Damage(m_Mobile, m_From, damage, 0, 0, 0, 100, 0);
 
 				if (0.60 <= Utility.RandomDouble())
-					// OSI: randomly revealed between first and third damage tick, guessing 60% chance
+				// OSI: randomly revealed between first and third damage tick, guessing 60% chance
+				{
+					m_Mobile.RevealingAction();
+				}
+
+				if ((m_Index % m_Poison.m_MessageInterval) == 0)
+				{
+					m_Mobile.OnPoisoned(m_From, m_Poison, m_Poison);
+				}
+			}
+		}
+
+		public class ParasiticTimer : Timer
+		{
+			public Mobile m_Mobile;
+			public Mobile m_From;
+			private int m_Damage;
+			private readonly int m_MaxCount;
+			private int m_Count;
+			private readonly PoisonImpl m_Poison;
+			private int m_Index;
+
+			public ParasiticTimer(Mobile m, Mobile from, PoisonImpl poison, int Index)
+				: base(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(5.0))
+			{
+				Random rnd = new Random();
+
+				this.m_Mobile = m;
+				this.m_From = from;
+				this.m_Count = 0;
+				this.m_MaxCount = (int)(rnd.Next(70, 75) / 5);
+				this.m_Poison = poison;
+				this.m_Index = Index;
+			}
+
+			protected override void OnTick()
+			{
+				Random dmg = new Random();
+				this.m_Damage = dmg.Next(25, 33);
+				this.m_Count++;
+
+				if (this.m_Count > this.m_MaxCount || this.m_Mobile == null)
+				{
+					m_Mobile.SendLocalizedMessage(502136); // The poison seems to have worn off.
+					m_Mobile.Poison = null;
+					this.Stop();
+					return;
+				}
+
+				m_Mobile.LocalOverheadMessage(
+							MessageType.Emote, 0x3F, true, "* You feel extremely weak and are in severe pain *");
+
+				m_Mobile.NonlocalOverheadMessage(
+					MessageType.Emote, 0x3F, true, String.Format("* {0} is wracked with extreme pain *", m_Mobile.Name));
+
+				int toHeal = Math.Min(m_From.HitsMax - m_From.Hits, m_Damage);
+
+				if (toHeal > 0)
+				{
+					m_From.SendLocalizedMessage(1060203, toHeal.ToString(CultureInfo.InvariantCulture));
+					// You have had ~1_HEALED_AMOUNT~ hit points of damage healed.
+					m_From.Heal(toHeal, m_Mobile, false);
+				}
+
+				if (m_Mobile != null)
+					AOS.Damage(m_Mobile, m_From, m_Damage, 0, 0, 0, 100, 0);
+
+				if (0.60 <= Utility.RandomDouble())
+				// OSI: randomly revealed between first and third damage tick, guessing 60% chance
+				{
+					m_Mobile.RevealingAction();
+				}
+
+				if ((m_Index % m_Poison.m_MessageInterval) == 0)
+				{
+					m_Mobile.OnPoisoned(m_From, m_Poison, m_Poison);
+				}
+
+			}
+		}
+
+		public class DarkglowTimer : Timer
+		{
+			public Mobile m_Mobile;
+			public Mobile m_From;
+			private int m_Damage;
+			private readonly int m_MaxCount;
+			private int m_Count;
+			private readonly PoisonImpl m_Poison;
+			private int m_Index;
+
+			public DarkglowTimer(Mobile m, Mobile from, PoisonImpl poison, int Index)
+				: base(TimeSpan.FromSeconds(4.0), TimeSpan.FromSeconds(4.0))
+			{
+				Random rnd = new Random();
+
+				this.m_Mobile = m;
+				this.m_From = from;
+				this.m_Count = 0;
+				this.m_MaxCount = (int)(rnd.Next(45, 60) / 4);
+				this.m_Poison = poison;
+				this.m_Index = Index;
+			}
+
+			protected override void OnTick()
+			{
+				Random dmg = new Random();
+				this.m_Damage = dmg.Next(14, 21);
+				this.m_Count++;
+
+				if (this.m_Count > this.m_MaxCount || this.m_Mobile == null)
+				{
+					m_Mobile.SendLocalizedMessage(502136); // The poison seems to have worn off.
+					m_Mobile.Poison = null;
+					this.Stop();
+					return;
+				}
+
+				m_Mobile.LocalOverheadMessage(
+							MessageType.Emote, 0x3F, true, "* You begin to feel pain throughout your body *");
+
+				m_Mobile.NonlocalOverheadMessage(
+					MessageType.Emote, 0x3F, true, String.Format("* {0} stumbles around in confusion and pain *", m_Mobile.Name));
+
+				if (m_Mobile != null)
+					AOS.Damage(m_Mobile, m_From, m_Damage, 0, 0, 0, 100, 0);
+
+				if (0.60 <= Utility.RandomDouble())
+				// OSI: randomly revealed between first and third damage tick, guessing 60% chance
 				{
 					m_Mobile.RevealingAction();
 				}

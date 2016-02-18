@@ -255,6 +255,8 @@ namespace Server.Mobiles
 		private string m_CorpseNameOverride;
 
 		private int m_FailedReturnHome; /* return to home failure counter */
+
+	  private int m_QLPoints;
 		#endregion
 
 		public virtual InhumanSpeech SpeechType { get { return null; } }
@@ -290,6 +292,9 @@ namespace Server.Mobiles
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool IsPrisoner { get; set; }
+
+    [CommandProperty(AccessLevel.GameMaster)]
+    public int QLPoints { get { return m_QLPoints; } set { m_QLPoints = value; } }
 
 		protected DateTime SummonEnd { get { return m_SummonEnd; } set { m_SummonEnd = value; } }
 
@@ -545,7 +550,7 @@ namespace Server.Mobiles
 		public virtual bool SubdueBeforeTame { get { return false; } }
 		public virtual bool StatLossAfterTame { get { return SubdueBeforeTame; } }
 		public virtual bool ReduceSpeedWithDamage { get { return true; } }
-		public virtual bool IsSubdued { get { return SubdueBeforeTame && (Hits < (HitsMax / 10)); } }
+		public virtual bool IsSubdued { get { return SubdueBeforeTame && (Hits < ((double)HitsMax / 10)); } }
 
 		public virtual bool Commandable { get { return true; } }
 
@@ -560,6 +565,7 @@ namespace Server.Mobiles
 
 		public virtual bool BleedImmune { get { return false; } }
 		public virtual double BonusPetDamageScalar { get { return 1.0; } }
+		public virtual bool AllureImmune { get { return false; } }
 
 		public virtual bool DeathAdderCharmable { get { return false; } }
 
@@ -1193,6 +1199,16 @@ namespace Server.Mobiles
 
 		public override void Damage(int amount, Mobile from)
 		{
+			Damage(amount, from, false, false);
+		}
+
+		public override void Damage(int amount, Mobile from, bool informMount)
+		{
+			Damage(amount, from, informMount, false);
+		}
+
+		public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+		{
 			int oldHits = Hits;
 
 			if (Core.AOS && !Summoned && Controlled && 0.2 > Utility.RandomDouble())
@@ -1213,11 +1229,11 @@ namespace Server.Mobiles
 				from.Damage(amount, from);
 			}
 
-			base.Damage(amount, from);
+			base.Damage(amount, from, informMount, checkDisrupt);
 
 			if (SubdueBeforeTame && !Controlled)
 			{
-				if ((oldHits > (HitsMax / 10)) && (Hits <= (HitsMax / 10)))
+				if ((oldHits > ((double)HitsMax / 10)) && ((double)Hits <= ((double)HitsMax / 10)))
 				{
 					PublicOverheadMessage(MessageType.Regular, 0x3B2, false, "* The creature has been beaten into subjugation! *");
 				}
@@ -1863,7 +1879,7 @@ namespace Server.Mobiles
 		{
 			base.Serialize(writer);
 
-			writer.Write(19); // version
+			writer.Write(20); // version
 
 			writer.Write((int)m_CurrentAI);
 			writer.Write((int)m_DefaultAI);
@@ -1993,6 +2009,9 @@ namespace Server.Mobiles
 
 			// Mondain's Legacy version 19
 			writer.Write(m_Allured);
+
+      //Version 20 Queens Loyalty
+		  writer.Write(m_QLPoints);
 		}
 
 		private static readonly double[] m_StandardActiveSpeeds = new[] {0.175, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8};
@@ -2263,6 +2282,11 @@ namespace Server.Mobiles
 			{
 				m_Allured = reader.ReadBool();
 			}
+
+		    if (version >= 20)
+		    {
+		        m_QLPoints = reader.ReadInt();
+		    }
 
 			if (version <= 14 && m_Paragon && Hue == 0x31)
 			{
@@ -3337,9 +3361,13 @@ namespace Server.Mobiles
 				/* Sanity check */
 				if (baseToSet > theirSkill.CapFixedPoint || (m.Skills.Total - theirSkill.BaseFixedPoint + baseToSet) > m.Skills.Cap)
 				{
+					// Full refund
+					m.Backpack.TryDropItem(m, new Gold(maxPointsToLearn), false);
 					return TeachResult.NotEnoughFreePoints;
 				}
 
+				// Partial refund if needed
+				m.Backpack.TryDropItem(m, new Gold(maxPointsToLearn - pointsToLearn), false);
 				theirSkill.BaseFixedPoint = baseToSet;
 			}
 
@@ -5303,6 +5331,13 @@ namespace Server.Mobiles
 				GiveSAArtifact(mob);
 			}
 
+		    if (mob is PlayerMobile && mob.Map == Map.TerMur && m_QLPoints > 0)
+		    {
+		        PlayerMobile pm = mob as PlayerMobile;
+                pm.Exp += m_QLPoints;
+		        pm.SendMessage("You have been awarded {0} points for your loyalty to the Queen of TerMur!", m_QLPoints);
+		    }
+
 			EventSink.InvokeOnKilledBy(new OnKilledByEventArgs(this, mob));
 		}
 
@@ -5468,9 +5503,6 @@ namespace Server.Mobiles
 							givenToTKill = true;
 							TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
 						}
-
-                        if (Map == Map.TerMur)
-                            Server.Engines.QueensLoyalty.LoyaltySystem.HandleKill(this, ds.m_Mobile, i == 0);
 
 						PlayerMobile pm = ds.m_Mobile as PlayerMobile;
 
@@ -5651,6 +5683,14 @@ namespace Server.Mobiles
 				}
 			}
 		}
+
+        public double GetDispelDifficulty()
+        {
+            double dif = DispelDifficulty;
+            if (SummonMaster != null)
+                dif += ArcaneEmpowermentSpell.GetDispellBonus(SummonMaster);
+            return dif;
+        }
 
 		private static bool m_Summoning;
 
@@ -6024,7 +6064,7 @@ namespace Server.Mobiles
 			{ }
 			else if (patient.Poisoned)
 			{
-				int poisonLevel = patient.Poison.Level;
+				int poisonLevel = patient.Poison.RealLevel;
 
 				double healing = Skills.Healing.Value;
 				double anatomy = Skills.Anatomy.Value;

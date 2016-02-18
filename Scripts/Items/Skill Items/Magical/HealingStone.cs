@@ -66,7 +66,7 @@ namespace Server.Items
 
                 if (from.Poisoned)
                 {
-                    int toUse = Math.Min(120, from.Poison.Level * 25);
+                    int toUse = Math.Min(120, from.Poison.RealLevel * 25);
 
                     if (m_MaxLifeForce < toUse)
                         from.SendLocalizedMessage(1115265); //Your Mysticism, Focus, or Imbuing Skills are not enough to use the heal stone to cure yourself.
