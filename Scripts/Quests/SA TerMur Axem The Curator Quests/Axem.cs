@@ -46,7 +46,7 @@ namespace Server.Engines.Quests
         {
             if (Owner is PlayerMobile)
             {
-                Owner.Exp += 50;
+                Owner.Exp += 5;
                 Owner.SendMessage("You have been awarded 5 Queens Loyalty Points!");
                 base.GiveRewards();
             }
@@ -106,9 +106,9 @@ namespace Server.Engines.Quests
 
         public override void GiveRewards()
         {
-            if (Owner is PlayerMobile)
+            if (Owner != null)
             {
-                Owner.Exp += 150;
+                Owner.Exp += 15;
                 Owner.SendMessage("You have been awarded 15 Queens Loyalty Points!");
                 base.GiveRewards();
             }
@@ -168,9 +168,9 @@ namespace Server.Engines.Quests
 
         public override void GiveRewards()
         {
-            if (Owner is PlayerMobile)
+            if (Owner != null)
             {
-                Owner.Exp += 500;
+                Owner.Exp += 50;
                 Owner.SendMessage("You have been awarded 50 Queens Loyalty Points!");
                 base.GiveRewards();
             }

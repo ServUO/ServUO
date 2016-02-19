@@ -11,53 +11,55 @@ namespace Server.Mobiles
         public PutridUndeadGargoyle()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a putrid undead gargoyle";
-            this.Body = 722;
-            this.BaseSoundID = 372;
-            this.Hue = 1778;
+            Name = "a putrid undead gargoyle";
+            Body = 722;
+            BaseSoundID = 372;
+            Hue = 1778;
 
-            this.SetStr(525);
-            this.SetDex(120, 125);
-            this.SetInt(1145);
+            SetStr(525);
+            SetDex(120, 125);
+            SetInt(1145);
 
-            this.SetHits(660, 665);
+            SetHits(660, 665);
 
-            this.SetDamage(21, 30);
+            SetDamage(21, 30);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Cold, 40);
-            this.SetDamageType(ResistanceType.Energy, 40);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Cold, 40);
+            SetDamageType(ResistanceType.Energy, 40);
 
-            this.SetResistance(ResistanceType.Physical, 55, 60);
-            this.SetResistance(ResistanceType.Fire, 33);
-            this.SetResistance(ResistanceType.Cold, 50);
-            this.SetResistance(ResistanceType.Poison, 50, 55);
-            this.SetResistance(ResistanceType.Energy, 45, 50);
+            SetResistance(ResistanceType.Physical, 55, 60);
+            SetResistance(ResistanceType.Fire, 33);
+            SetResistance(ResistanceType.Cold, 50);
+            SetResistance(ResistanceType.Poison, 50, 55);
+            SetResistance(ResistanceType.Energy, 45, 50);
 
-            this.SetSkill(SkillName.EvalInt, 125.0);
-            this.SetSkill(SkillName.Magery, 127.0);
-            this.SetSkill(SkillName.Mysticism, 100.0);
-            this.SetSkill(SkillName.Meditation, 105.0, 108.0);
-            this.SetSkill(SkillName.MagicResist, 180.0, 187.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0, 102.0);
+            SetSkill(SkillName.EvalInt, 125.0);
+            SetSkill(SkillName.Magery, 127.0);
+            SetSkill(SkillName.Mysticism, 100.0);
+            SetSkill(SkillName.Meditation, 105.0, 108.0);
+            SetSkill(SkillName.MagicResist, 180.0, 187.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 100.0, 102.0);
 
-            this.Fame = 3500;
-            this.Karma = -3500;
+            Fame = 3500;
+            Karma = -3500;
 
-            this.VirtualArmor = 32;
+            VirtualArmor = 32;
+
+            QLPoints = 15;
 
             if (0.05 > Utility.RandomDouble())
-                this.PackItem(new UndyingFlesh());
+                PackItem(new UndyingFlesh());
 
             if (0.05 > Utility.RandomDouble())
-                this.PackItem(new TatteredAncientScroll());
+                PackItem(new TatteredAncientScroll());
 
             if (0.10 > Utility.RandomDouble())
-                this.PackItem(new InfusedGlassStave());
+                PackItem(new InfusedGlassStave());
 
             if (0.15 > Utility.RandomDouble())
-                this.PackItem(new AncientPotteryFragments());
+                PackItem(new AncientPotteryFragments());
         }
 
         public PutridUndeadGargoyle(Serial serial)
@@ -102,9 +104,9 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.AosFilthyRich, 5);
-            this.AddLoot(LootPack.MedScrolls);
-            this.AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 4));
+            AddLoot(LootPack.AosFilthyRich, 5);
+            AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 4));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -11,35 +11,37 @@ namespace Server.Mobiles
         public ClanRC()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Clan Ribbon Courtier";
-            this.Body = 42;
-            this.Hue = 2207;
-            this.BaseSoundID = 437;
+            Name = "Clan Ribbon Courtier";
+            Body = 42;
+            Hue = 2207;
+            BaseSoundID = 437;
 
-            this.SetStr(231);
-            this.SetDex(252);
-            this.SetInt(125);
+            SetStr(231);
+            SetDex(252);
+            SetInt(125);
 
-            this.SetHits(2054, 2100);
+            SetHits(2054, 2100);
 
-            this.SetDamage(7, 14);
+            SetDamage(7, 14);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40);
-            this.SetResistance(ResistanceType.Fire, 10, 12);
-            this.SetResistance(ResistanceType.Cold, 15, 20);
-            this.SetResistance(ResistanceType.Poison, 10, 12);
-            this.SetResistance(ResistanceType.Energy, 10, 12);
+            SetResistance(ResistanceType.Physical, 40);
+            SetResistance(ResistanceType.Fire, 10, 12);
+            SetResistance(ResistanceType.Cold, 15, 20);
+            SetResistance(ResistanceType.Poison, 10, 12);
+            SetResistance(ResistanceType.Energy, 10, 12);
 
-            this.SetSkill(SkillName.MagicResist, 113.5, 115.0);
-            this.SetSkill(SkillName.Tactics, 65.1, 70.0);
-            this.SetSkill(SkillName.Wrestling, 50.5, 55.0);
+            SetSkill(SkillName.MagicResist, 113.5, 115.0);
+            SetSkill(SkillName.Tactics, 65.1, 70.0);
+            SetSkill(SkillName.Wrestling, 50.5, 55.0);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            Fame = 1500;
+            Karma = -1500;
 
-            this.VirtualArmor = 48;
+            VirtualArmor = 48;
+
+            QLPoints = 5;
         }
 
         public ClanRC(Serial serial)
@@ -70,8 +72,8 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Average);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Average);
         }
 
         public override void OnDeath(Container c)
