@@ -536,8 +536,6 @@ namespace Server.Items
                     list.Add(1074883); // Fully Charged
             }
 
-            list.Add(1075085); // Requirement: Mondain's Legacy
-
             if (this.m_Killer != null && !this.m_Killer.IsEmpty && this.m_Killer.Amount > 0)
                 list.Add(1072388, "{0}\t{1}", this.m_Killer.Name != null ? this.m_Killer.Name.ToString() : "Unknown", this.m_Killer.Amount); // ~1_NAME~ Killer: +~2_val~%
 
