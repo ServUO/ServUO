@@ -1562,6 +1562,9 @@ namespace Server.Items
             int weight = Imbuing.GetTotalWeight(item);
             int totalMods = Imbuing.GetTotalMods(item);
 
+            if (totalMods == 0)
+                return ItemPower.None;
+
             if (weight < 250 && totalMods <= 4)
                 return playermade ? ItemPower.ReforgedMinor : ItemPower.Minor;
 
