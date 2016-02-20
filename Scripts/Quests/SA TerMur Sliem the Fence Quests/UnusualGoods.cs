@@ -17,6 +17,7 @@
 */
 
 using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
@@ -29,6 +30,8 @@ namespace Server.Engines.Quests
             AddObjective(new ObtainObjective(typeof (CrystallineBlackrock), "Crystalline Blackrock", 1, 0x5732));
 
             AddReward(new BaseReward(typeof (EssenceBox), "Essence Box"));
+
+            AddReward(new BaseReward("Loyalty Rating"));
         }
 
         /*Unusual Goods*/
@@ -67,6 +70,16 @@ namespace Server.Engines.Quests
         public override object Complete
         {
             get { return 1113791; }
+        }
+
+        public override void GiveRewards()
+        {
+            if (Owner != null)
+            {
+                Owner.Exp += 75;
+                Owner.SendMessage("You have been awarded 75 Queens Loyalty Points!");
+                base.GiveRewards();
+            }
         }
 
         public override void Serialize(GenericWriter writer)

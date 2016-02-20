@@ -27,41 +27,43 @@ namespace Server.Mobiles
         public Navrey()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Navrey Night-Eyes";
-            this.Body = 735;
-            this.BaseSoundID = 389;
+            Name = "Navrey Night-Eyes";
+            Body = 735;
+            BaseSoundID = 389;
 
-            this.SetStr(1000, 1500);
-            this.SetDex(200, 250);
-            this.SetInt(150, 200);
+            SetStr(1000, 1500);
+            SetDex(200, 250);
+            SetInt(150, 200);
 
-            this.SetHits(30000, 35000);
+            SetHits(30000, 35000);
 
-            this.SetDamage(25, 40);
+            SetDamage(25, 40);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Fire, 25);
-            this.SetDamageType(ResistanceType.Energy, 25);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Fire, 25);
+            SetDamageType(ResistanceType.Energy, 25);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 45, 55);
-            this.SetResistance(ResistanceType.Cold, 50, 70);
-            this.SetResistance(ResistanceType.Poison, 100);
-            this.SetResistance(ResistanceType.Energy, 60, 80);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 45, 55);
+            SetResistance(ResistanceType.Cold, 50, 70);
+            SetResistance(ResistanceType.Poison, 100);
+            SetResistance(ResistanceType.Energy, 60, 80);
 
-            this.SetSkill(SkillName.Anatomy, 50.0, 80.0);
-            this.SetSkill(SkillName.EvalInt, 90.0, 100.0);
-            this.SetSkill(SkillName.Magery, 90.0, 100.0);
-            this.SetSkill(SkillName.MagicResist, 100.0, 130.0);
-            this.SetSkill(SkillName.Meditation, 80.0, 100.0);
-            this.SetSkill(SkillName.Poisoning, 100.0);
-            this.SetSkill(SkillName.Tactics, 90.0, 100.0);
-            this.SetSkill(SkillName.Wrestling, 91.6, 98.2);
+            SetSkill(SkillName.Anatomy, 50.0, 80.0);
+            SetSkill(SkillName.EvalInt, 90.0, 100.0);
+            SetSkill(SkillName.Magery, 90.0, 100.0);
+            SetSkill(SkillName.MagicResist, 100.0, 130.0);
+            SetSkill(SkillName.Meditation, 80.0, 100.0);
+            SetSkill(SkillName.Poisoning, 100.0);
+            SetSkill(SkillName.Tactics, 90.0, 100.0);
+            SetSkill(SkillName.Wrestling, 91.6, 98.2);
 
-            this.Fame = 30000;
-            this.Karma = -30000;
+            Fame = 30000;
+            Karma = -30000;
 
-            this.VirtualArmor = 90;
+            VirtualArmor = 90;
+
+            QLPoints = 75;
         }
 
         public Navrey(Serial serial)
@@ -119,7 +121,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.AosSuperBoss, 9);
+            AddLoot(LootPack.AosSuperBoss, 9);
         }
 
         public override void OnDeath(Container c)
@@ -142,7 +144,7 @@ namespace Server.Mobiles
                 DistributeRandomArtifact(this, m_Artifact);
 
             // distribute quest items for the 'Green with Envy' quest given by Vernix
-            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+            List<DamageStore> rights = GetLootingRights(DamageEntries, HitsMax);
             for (int i = rights.Count - 1; i >= 0; --i)
             {
                 DamageStore ds = rights[i];
@@ -174,11 +176,11 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-			if (DateTime.UtcNow > this.m_Delay)
+			if (DateTime.UtcNow > m_Delay)
             {
-                this.m_Delay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 30));
+                m_Delay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 30));
 				if (Utility.RandomDouble() < 0.50)
-                this.DoSpecialAbility();
+                DoSpecialAbility();
 			}
         }
 
@@ -195,7 +197,7 @@ namespace Server.Mobiles
         {
             // build target list
             List<Mobile> mlist = new List<Mobile>();
-            foreach (Mobile mob in this.Map.GetMobilesInRange(this.Location, this.RangePerception))
+            foreach (Mobile mob in Map.GetMobilesInRange(Location, RangePerception))
             {
                 if (null != mob && !mob.Deleted && !mob.Paralyzed && AccessLevel.Player == mob.AccessLevel)
                     mlist.Add(mob);
@@ -206,11 +208,11 @@ namespace Server.Mobiles
             {
                 int i = Utility.Random(mlist.Count);
                 Mobile m = mlist.ToArray()[i];
-                this.Direction = this.GetDirectionTo(m);
+                Direction = GetDirectionTo(m);
                 Item web = new NavreyParalyzingWeb();
                 if (Utility.RandomDouble() > 0.1)
                     m.Paralyze(TimeSpan.FromSeconds(15));
-                web.MoveToWorld(m.Location, this.Map);
+                web.MoveToWorld(m.Location, Map);
             }
         }
 

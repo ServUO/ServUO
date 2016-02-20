@@ -10,32 +10,34 @@ namespace Server.Mobiles
         public Gremlin()
             : base(AIType.AI_Archer, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a gremlin";
-            this.Body = 724; 
+            Name = "a gremlin";
+            Body = 724; 
 
-            this.SetStr(106);
-            this.SetDex(130);
-            this.SetInt(36);
+            SetStr(106);
+            SetDex(130);
+            SetInt(36);
 
-            this.SetHits(70);
+            SetHits(70);
 
-            this.SetDamage(5, 7);
+            SetDamage(5, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 26);
-            this.SetResistance(ResistanceType.Fire, 36);
-            this.SetResistance(ResistanceType.Cold, 22);
-            this.SetResistance(ResistanceType.Poison, 17);
-            this.SetResistance(ResistanceType.Energy, 30);
+            SetResistance(ResistanceType.Physical, 26);
+            SetResistance(ResistanceType.Fire, 36);
+            SetResistance(ResistanceType.Cold, 22);
+            SetResistance(ResistanceType.Poison, 17);
+            SetResistance(ResistanceType.Energy, 30);
 
-            this.SetSkill(SkillName.Anatomy, 78.5);
-            this.SetSkill(SkillName.MagicResist, 82.5);
-            this.SetSkill(SkillName.Tactics, 65.3);
+            SetSkill(SkillName.Anatomy, 78.5);
+            SetSkill(SkillName.MagicResist, 82.5);
+            SetSkill(SkillName.Tactics, 65.3);
 
-            this.AddItem(new Bow());
-            this.PackItem(new Arrow(Utility.RandomMinMax(60, 80)));
-            this.PackItem(new Apple(5));
+            AddItem(new Bow());
+            PackItem(new Arrow(Utility.RandomMinMax(60, 80)));
+            PackItem(new Apple(5));
+
+            QLPoints = 5;
         }
 
         public Gremlin(Serial serial)
@@ -45,7 +47,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Rich);
         }
 
         public override void Serialize(GenericWriter writer)

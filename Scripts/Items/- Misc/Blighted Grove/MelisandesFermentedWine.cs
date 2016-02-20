@@ -35,7 +35,6 @@ namespace Server.Items
             base.GetProperties(list);
 
             list.Add(1074502); // It looks explosive.
-            list.Add(1075085); // Requirement: Mondain's Legacy
         }
 
         public override void Serialize(GenericWriter writer)
