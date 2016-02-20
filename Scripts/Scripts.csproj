@@ -9386,6 +9386,7 @@
     <Compile Include="Multis\Camps\OrcCamp.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Multis\Camps\PrisonerCamp.cs" />
     <Compile Include="Multis\Camps\RatCamp.cs">
       <SubType>Code</SubType>
     </Compile>
