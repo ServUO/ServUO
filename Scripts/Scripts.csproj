@@ -10954,7 +10954,6 @@
     <Compile Include="Services\ChampionSystem\HarrowerGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\ChampionSystem\NukeCommand.cs" />
     <Compile Include="Services\ChampionSystem\RestartTimer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10964,7 +10963,6 @@
     <Compile Include="Services\ChampionSystem\StarRoomGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\ChampionSystem\TestRadiusCommand.cs" />
     <Compile Include="Services\Chat\Channel.cs">
       <SubType>Code</SubType>
     </Compile>
