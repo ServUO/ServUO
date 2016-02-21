@@ -1915,6 +1915,11 @@ namespace Server.Misc
 
                         break;
                     }
+					case SkillName.Mysticism:
+	            {
+		            PackItem(new MysticBook((ulong) 0xAB));
+		            break;
+	            }
             }
         }
 
