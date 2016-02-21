@@ -1332,7 +1332,10 @@ namespace Server.Items
 
 				bool powerful = budget >= 550;
 
-                if (powerful || 0.01 > Utility.RandomDouble())
+                if (powerful || (
+                    budget > 150 &&
+                    0.01 > Utility.RandomDouble()
+                ))
                 {
                     int amt = budget / 120;
 
