@@ -1,4 +1,5 @@
 using System;
+using Server.Accounting;
 using Server.Factions;
 using Server.Mobiles;
 
@@ -142,10 +143,18 @@ namespace Server.Misc
             if (from is BaseCreature && ((BaseCreature)from).Controlled)
                 gc *= 2;
 
-            if (from.Alive && ((gc >= Utility.RandomDouble() && AllowGain(from, skill, amObj)) || skill.Base < 10.0))
-                Gain(from, skill);
+	        if (from.Alive && ((gc >= Utility.RandomDouble() && AllowGain(from, skill, amObj)) || skill.Base < 10.0))
+	        {
+		        Gain(from, skill);
+		        if (from.SkillsTotal >= 3500 || skill.Value >= 800)
+		        {
+					Account acc = from.Account as Account;
+					if (acc != null)
+						acc.RemoveYoungStatus(1019036);
+		        }
+	        }
 
-            return success;
+	        return success;
         }
 
         public static bool Mobile_SkillCheckTarget(Mobile from, SkillName skillName, object target, double minSkill, double maxSkill)
