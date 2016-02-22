@@ -146,7 +146,7 @@ namespace Server.Misc
 	        if (from.Alive && ((gc >= Utility.RandomDouble() && AllowGain(from, skill, amObj)) || skill.Base < 10.0))
 	        {
 		        Gain(from, skill);
-		        if (from.SkillsTotal >= 3500 || skill.Value >= 800)
+		        if (from.SkillsTotal >= 4500 || skill.Base >= 80.0)
 		        {
 					Account acc = from.Account as Account;
 					if (acc != null)
