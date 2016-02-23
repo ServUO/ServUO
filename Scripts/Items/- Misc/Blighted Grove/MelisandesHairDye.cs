@@ -35,13 +35,6 @@ namespace Server.Items
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
         }
 
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1075085); // Requirement: Mondain's Legacy
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

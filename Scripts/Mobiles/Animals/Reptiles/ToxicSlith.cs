@@ -38,7 +38,7 @@ namespace Server.Mobiles
             ControlSlots = 1;
             MinTameSkill = 80.7;
 
-            QLPoints = 20;
+            QLPoints = 30;
         }
 
         public ToxicSlith(Serial serial) : base(serial)

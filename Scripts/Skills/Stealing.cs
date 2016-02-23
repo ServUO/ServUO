@@ -285,7 +285,7 @@ namespace Server.SkillHandlers
 						}
 
                         // Non-movable stealable items cannot result in the stealer getting caught
-                        if (stolen.Movable)
+                        if (stolen != null && stolen.Movable)
                         {
                             caught = (m_Thief.Skills[SkillName.Stealing].Value < Utility.Random(150));
                         }

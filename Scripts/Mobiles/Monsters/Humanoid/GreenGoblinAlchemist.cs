@@ -11,78 +11,80 @@ namespace Server.Mobiles
         public GreenGoblinAlchemist()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Green Goblin Alchemist";
-            this.Body = 723;
-            this.BaseSoundID = 0x45A;
+            Name = "Green Goblin Alchemist";
+            Body = 723;
+            BaseSoundID = 0x45A;
 
-            this.SetStr(282, 331);
-            this.SetDex(62, 79);
-            this.SetInt(100, 149);
+            SetStr(282, 331);
+            SetDex(62, 79);
+            SetInt(100, 149);
 
-            this.SetHits(163, 197);
-            this.SetStam(62, 79);
-            this.SetMana(100, 149);
+            SetHits(163, 197);
+            SetStam(62, 79);
+            SetMana(100, 149);
 
-            this.SetDamage(5, 7);
+            SetDamage(5, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 45, 55);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 35, 45);
-            this.SetResistance(ResistanceType.Energy, 11, 20);
+            SetResistance(ResistanceType.Physical, 40, 50);
+            SetResistance(ResistanceType.Fire, 45, 55);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 35, 45);
+            SetResistance(ResistanceType.Energy, 11, 20);
 
-            this.SetSkill(SkillName.MagicResist, 120.3, 129.2);
-            this.SetSkill(SkillName.Tactics, 81.9, 87.1);
-            this.SetSkill(SkillName.Anatomy, 0.0, 0.0);
-            this.SetSkill(SkillName.Wrestling, 94.8, 106.9);
+            SetSkill(SkillName.MagicResist, 120.3, 129.2);
+            SetSkill(SkillName.Tactics, 81.9, 87.1);
+            SetSkill(SkillName.Anatomy, 0.0, 0.0);
+            SetSkill(SkillName.Wrestling, 94.8, 106.9);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            Fame = 1500;
+            Karma = -1500;
 
-            this.VirtualArmor = 28;
+            VirtualArmor = 28;
+
+            QLPoints = 10;
 
             // loot 60 gold, magic item, gem, bola ball, liquar,gob blood
             switch ( Utility.Random(20) )
             {
                 case 0:
-                    this.PackItem(new Scimitar());
+                    PackItem(new Scimitar());
                     break;
                 case 1:
-                    this.PackItem(new Katana());
+                    PackItem(new Katana());
                     break;
                 case 2:
-                    this.PackItem(new WarMace());
+                    PackItem(new WarMace());
                     break;
                 case 3:
-                    this.PackItem(new WarHammer());
+                    PackItem(new WarHammer());
                     break;
                 case 4:
-                    this.PackItem(new Kryss());
+                    PackItem(new Kryss());
                     break;
                 case 5:
-                    this.PackItem(new Pitchfork());
+                    PackItem(new Pitchfork());
                     break;
             }
 
-            this.PackItem(new ThighBoots());
+            PackItem(new ThighBoots());
 
             switch ( Utility.Random(3) )
             {
                 case 0:
-                    this.PackItem(new Ribs());
+                    PackItem(new Ribs());
                     break;
                 case 1:
-                    this.PackItem(new Shaft());
+                    PackItem(new Shaft());
                     break;
                 case 2:
-                    this.PackItem(new Candle());
+                    PackItem(new Candle());
                     break;
             }
 
             if (0.2 > Utility.RandomDouble())
-                this.PackItem(new BolaBall());
+                PackItem(new BolaBall());
         }
 
         //Item item = aggressor.FindItemOnLayer( Layer.Helm );
@@ -141,7 +143,7 @@ namespace Server.Mobiles
         //base.AggressiveAction( aggressor, criminal );
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Meager);
         }
 
         public override void Serialize(GenericWriter writer)

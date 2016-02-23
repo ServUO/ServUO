@@ -43,6 +43,8 @@ namespace Server.Mobiles
 
             VirtualArmor = 70;
 
+            QLPoints = 50;
+
             PackItem(new EssenceDiligence());
         }
 

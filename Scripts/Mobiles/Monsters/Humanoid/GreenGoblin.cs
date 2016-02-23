@@ -11,77 +11,79 @@ namespace Server.Mobiles
         public GreenGoblin()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Green Goblin";
-            this.Body = 723;
-            this.BaseSoundID = 0x45A;
+            Name = "Green Goblin";
+            Body = 723;
+            BaseSoundID = 0x45A;
 
-            this.SetStr(252, 343);
-            this.SetDex(60, 74);
-            this.SetInt(117, 148);
+            SetStr(252, 343);
+            SetDex(60, 74);
+            SetInt(117, 148);
 
-            this.SetHits(162, 208);
-            this.SetStam(60, 74);
-            this.SetMana(117, 148);
+            SetHits(162, 208);
+            SetStam(60, 74);
+            SetMana(117, 148);
 
-            this.SetDamage(5, 7);
+            SetDamage(5, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 30, 39);
-            this.SetResistance(ResistanceType.Cold, 27, 35);
-            this.SetResistance(ResistanceType.Poison, 11, 20);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetResistance(ResistanceType.Physical, 40, 50);
+            SetResistance(ResistanceType.Fire, 30, 39);
+            SetResistance(ResistanceType.Cold, 27, 35);
+            SetResistance(ResistanceType.Poison, 11, 20);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.MagicResist, 120.5, 128.8);
-            this.SetSkill(SkillName.Tactics, 80.9, 89.9);
-            this.SetSkill(SkillName.Anatomy, 83.1, 89.6);
-            this.SetSkill(SkillName.Wrestling, 93.0, 108.3);
+            SetSkill(SkillName.MagicResist, 120.5, 128.8);
+            SetSkill(SkillName.Tactics, 80.9, 89.9);
+            SetSkill(SkillName.Anatomy, 83.1, 89.6);
+            SetSkill(SkillName.Wrestling, 93.0, 108.3);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            Fame = 1500;
+            Karma = -1500;
 
-            this.VirtualArmor = 28;
+            VirtualArmor = 28;
+
+            QLPoints = 8;
 
             switch ( Utility.Random(20) )
             {
                 case 0:
-                    this.PackItem(new Scimitar());
+                    PackItem(new Scimitar());
                     break;
                 case 1:
-                    this.PackItem(new Katana());
+                    PackItem(new Katana());
                     break;
                 case 2:
-                    this.PackItem(new WarMace());
+                    PackItem(new WarMace());
                     break;
                 case 3:
-                    this.PackItem(new WarHammer());
+                    PackItem(new WarHammer());
                     break;
                 case 4:
-                    this.PackItem(new Kryss());
+                    PackItem(new Kryss());
                     break;
                 case 5:
-                    this.PackItem(new Pitchfork());
+                    PackItem(new Pitchfork());
                     break;
             }
 
-            this.PackItem(new ThighBoots());
+            PackItem(new ThighBoots());
 
             switch ( Utility.Random(3) )
             {
                 case 0:
-                    this.PackItem(new Ribs());
+                    PackItem(new Ribs());
                     break;
                 case 1:
-                    this.PackItem(new Shaft());
+                    PackItem(new Shaft());
                     break;
                 case 2:
-                    this.PackItem(new Candle());
+                    PackItem(new Candle());
                     break;
             }
 
             if (0.2 > Utility.RandomDouble())
-                this.PackItem(new BolaBall());
+                PackItem(new BolaBall());
         }
 
         //Item item = aggressor.FindItemOnLayer( Layer.Helm );
@@ -140,7 +142,7 @@ namespace Server.Mobiles
         //base.AggressiveAction( aggressor, criminal );
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Meager);
         }
 
         public override void Serialize(GenericWriter writer)

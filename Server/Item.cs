@@ -4774,18 +4774,18 @@ namespace Server
 				return false;
 			}
 
-			else if (!from.OnDroppedItemToWorld(this, p))
+			else if (!from.OnDroppedItemToWorld(this, dest))
 			{
 				return false;
 			}
-			else if (!OnDroppedToWorld(from, p))
+			else if (!OnDroppedToWorld(from, dest))
 			{
 				return false;
 			}
 
 			int soundID = GetDropSound();
 
-			MoveToWorld(p, from.Map);
+			MoveToWorld(dest, from.Map);
 
 			from.SendSound(soundID == -1 ? 0x42 : soundID, GetWorldLocation());
 
