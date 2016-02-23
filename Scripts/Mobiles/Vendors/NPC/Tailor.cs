@@ -32,7 +32,14 @@ namespace Server.Mobiles
 
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBTailor());
+            if(!IsStygianVendor)
+            { 
+                this.m_SBInfos.Add(new SBTailor());
+            }
+            else
+            {
+                this.m_SBInfos.Add(new SBSATailor());
+            }
         }
 
         public override VendorShoeType ShoeType

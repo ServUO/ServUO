@@ -8,6 +8,7 @@ namespace Server.Mobiles
 {
     public class Harrower : BaseCreature
     {
+        private int m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
         private static readonly SpawnEntry[] m_Entries = new SpawnEntry[]
         {
             new SpawnEntry(new Point3D(5242, 945, -40), new Point3D(1176, 2638, 0)), // Destard
@@ -324,7 +325,7 @@ namespace Server.Mobiles
                 Mobile m = toGive[i % toGive.Count];
 
                 m.SendLocalizedMessage(1049524); // You have received a scroll of power!
-                m.AddToBackpack(new StatCapScroll(225 + RandomStatScrollLevel()));
+                m.AddToBackpack(new StatCapScroll(m_StatCap + RandomStatScrollLevel()));
 
                 if (m is PlayerMobile)
                 {
@@ -355,7 +356,7 @@ namespace Server.Mobiles
                         if (chance > Utility.Random(100))
                         {
                             prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
-                            prot.AddToBackpack(new StatCapScroll(225 + RandomStatScrollLevel()));
+                            prot.AddToBackpack(new StatCapScroll(m_StatCap + RandomStatScrollLevel()));
                         }
                     }
                 }
