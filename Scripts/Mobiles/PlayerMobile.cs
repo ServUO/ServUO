@@ -2156,6 +2156,17 @@ namespace Server.Mobiles
 
 			base.DisruptiveAction();
 		}
+        public override bool Meditating
+        {
+            set
+            {
+                base.Meditating = value;
+                if (value == false)
+                {
+                    RemoveBuff(BuffIcon.ActiveMeditation);
+                }
+            }
+        }
 
 		public override void OnDoubleClick(Mobile from)
 		{
