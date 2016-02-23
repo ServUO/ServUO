@@ -7,6 +7,7 @@ namespace Server.Misc
 {
     public class SkillCheck
     {
+        private static int StatCap = Config.Get("PlayerCaps.StatCap", 125);
         private static readonly bool AntiMacroCode = !Core.ML;		//Change this to false to disable anti-macro code
 
         public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
@@ -319,11 +320,11 @@ namespace Server.Misc
             switch ( stat )
             {
                 case Stat.Str:
-                    return (from.StrLock == StatLockType.Up && from.RawStr < 125);
+                    return (from.StrLock == StatLockType.Up && from.RawStr < StatCap);
                 case Stat.Dex:
-                    return (from.DexLock == StatLockType.Up && from.RawDex < 125);
+                    return (from.DexLock == StatLockType.Up && from.RawDex < StatCap);
                 case Stat.Int:
-                    return (from.IntLock == StatLockType.Up && from.RawInt < 125);
+                    return (from.IntLock == StatLockType.Up && from.RawInt < StatCap);
             }
 
             return false;

@@ -27,7 +27,14 @@ namespace Server.Mobiles
         }
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBTanner());
+            if (!this.IsStygianVendor)
+            {
+                this.m_SBInfos.Add(new SBTanner());
+            }
+            else
+            {
+                this.m_SBInfos.Add(new SBSATanner());
+            }
         }
 
         public override void Serialize(GenericWriter writer)
