@@ -251,9 +251,6 @@
     <Compile Include="Commands\UnloadMaps.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\uoamVendorsDelete.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\VisibilityList.cs">
       <SubType>Code</SubType>
     </Compile>
