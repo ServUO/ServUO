@@ -9097,6 +9097,12 @@
     <Compile Include="Mobiles\Vendors\SBInfo\Armors\SBWoodenShields.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBMystic.cs" />
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBSAArmor.cs" />
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBSABlacksmith.cs" />
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBSATailor.cs" />
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBSATanner.cs" />
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBSAWeapons.cs" />
     <Compile Include="Mobiles\Vendors\SBInfo\SBAlchemist.cs">
       <SubType>Code</SubType>
     </Compile>
