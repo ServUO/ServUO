@@ -1867,6 +1867,16 @@ namespace Server.Misc
                         PackItem(new SewingKit());
                         break;
                     }
+				case SkillName.Tinkering:
+					{
+						PackItem(new TinkerTools());
+						PackItem(new IronIngot(50));
+						PackItem(new Axle());
+						PackItem(new AxleGears());
+						PackItem(new Springs());
+						PackItem(new ClockFrame());
+						break;
+					}
                 case SkillName.Tracking:
                     {
                         if (human || elf)
