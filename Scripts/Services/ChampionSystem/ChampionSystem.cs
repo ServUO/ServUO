@@ -49,7 +49,7 @@ namespace Server.Engines.CannedEvil
 				return 3;
 			return m_Rank[l];
 		}
-		public static double KillsModForLevel(int l)
+		public static int MaxKillsForLevel(int l)
 		{
 			return m_MaxKill[RankForLevel(l)];
 		}

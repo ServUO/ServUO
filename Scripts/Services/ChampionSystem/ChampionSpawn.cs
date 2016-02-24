@@ -301,13 +301,7 @@ namespace Server.Engines.CannedEvil
             get
             {
 				int l = Level;
-				switch (l)
-				{
-					case 0: return (int)(256 * KillsMod);
-					case 1: return (int)(128 * KillsMod);
-					case 2: return (int)(64 * KillsMod);
-					default: return (int)(32 * KillsMod);
-				}
+                return ChampionSystem.MaxKillsForLevel(l);
             }
         }
 

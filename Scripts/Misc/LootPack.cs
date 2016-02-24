@@ -131,20 +131,18 @@ namespace Server
 		public static readonly LootPackItem[] Instruments = new[] {new LootPackItem(typeof(BaseInstrument), 1)};
 
 		public static readonly LootPackItem[] LowScrollItems = new[]
-		{new LootPackItem(typeof(ClumsyScroll), 1), new LootPackItem(typeof(NetherBoltScroll), 1)};
+		{
+            new LootPackItem(typeof(ClumsyScroll), 1)
+        };
 
 		public static readonly LootPackItem[] MedScrollItems = new[]
 		{
-			new LootPackItem(typeof(ArchCureScroll), 1), new LootPackItem(typeof(AnimatedWeaponScroll), 1),
-			new LootPackItem(typeof(PurgeMagicScroll), 1), new LootPackItem(typeof(SleepScroll), 1),
-			new LootPackItem(typeof(MassSleepScroll), 1)
+			new LootPackItem(typeof(ArchCureScroll), 1)
 		};
 
 		public static readonly LootPackItem[] HighScrollItems = new[]
 		{
-			new LootPackItem(typeof(SummonAirElementalScroll), 1), new LootPackItem(typeof(SpellPlagueScroll), 1),
-			new LootPackItem(typeof(HailStormScroll), 1), new LootPackItem(typeof(CleansingWindsScroll), 1),
-			new LootPackItem(typeof(BombardScroll), 1)
+			new LootPackItem(typeof(SummonAirElementalScroll), 1)
 		};
 
 		public static readonly LootPackItem[] GemItems = new[] {new LootPackItem(typeof(Amber), 1)};
@@ -949,44 +947,52 @@ namespace Server
 				 {typeof(VengefulSpiritScroll), typeof(VampiricEmbraceScroll)})
 		};
 
-		public static Item RandomScroll(int index, int minCircle, int maxCircle)
+        private static readonly SpellbookType[] m_BookTypes = new[]
+        {
+            SpellbookType.Regular, SpellbookType.Necromancer, SpellbookType.Mystic
+        };
+
+        private static readonly int[][] m_ScrollIndexMin = new[]
+        {
+            new[] {0, 8, 16, 24, 32, 40, 48, 56},
+            new[] {0, 2, 4, 6, 8, 10, 12, 14},
+            new[] {0, 2, 4, 6, 8, 10, 12, 14},
+        };
+
+        private static readonly int[][] m_ScrollIndexMax = new[]
+        {
+            new[] {7, 15, 23, 31, 39, 47, 55, 63},
+            new[] {1, 3, 5, 7, 9, 11, 13, 14},
+            new[] {1, 3, 5, 7, 9, 11, 13, 14},
+        };
+
+        public static Item RandomScroll(int minCircle, int maxCircle)
 		{
 			--minCircle;
 			--maxCircle;
 
-			int scrollCount = ((maxCircle - minCircle) + 1) * 8;
+            int minIndex, maxIndex, rnd, rndMax;
+            SpellbookType spellBookType;
 
-			if (index == 0)
-			{
-				scrollCount += m_BlankTypes.Length;
-			}
+            // Magery scrolls are weighted at 4 because there are four times as many magery
+            // spells as other scolls of magic
+            rndMax = 4;
+            if (Core.ML)
+                rndMax += 2;
+            else if (Core.AOS)
+                rndMax += 1;
+            rnd = Utility.Random(rndMax);
+            rnd -= 3;
+            if (rnd < 0)
+                rnd = 0;
 
-			if (Core.AOS)
-			{
-				scrollCount += m_NecroTypes[index].Length;
-			}
+            minIndex = m_ScrollIndexMin[rnd][minCircle];
+            maxIndex = m_ScrollIndexMax[rnd][maxCircle];
+            if (rnd == 2 && maxCircle == 7)
+                ++maxIndex;
+            spellBookType = m_BookTypes[rnd];
 
-			int rnd = Utility.Random(scrollCount);
-
-			if (index == 0 && rnd < m_BlankTypes.Length)
-			{
-				return Loot.Construct(m_BlankTypes);
-			}
-			else if (index == 0)
-			{
-				rnd -= m_BlankTypes.Length;
-			}
-
-			if (Core.AOS && rnd < m_NecroTypes.Length)
-			{
-				return Loot.Construct(m_NecroTypes[index]);
-			}
-			else if (Core.AOS)
-			{
-				rnd -= m_NecroTypes[index].Length;
-			}
-
-			return Loot.RandomScroll(minCircle * 8, (maxCircle * 8) + 7, SpellbookType.Regular);
+            return Loot.RandomScroll(minIndex, maxIndex, spellBookType);
 		}
 
 		public Item Construct(bool inTokuno, bool isMondain, bool isStygian)
@@ -1025,15 +1031,15 @@ namespace Server
 				}
 				else if (m_Type == typeof(ClumsyScroll)) // low scroll
 				{
-					item = RandomScroll(0, 1, 3);
+					item = RandomScroll(1, 3);
 				}
 				else if (m_Type == typeof(ArchCureScroll)) // med scroll
 				{
-					item = RandomScroll(1, 4, 7);
+					item = RandomScroll(4, 7);
 				}
 				else if (m_Type == typeof(SummonAirElementalScroll)) // high scroll
 				{
-					item = RandomScroll(2, 8, 8);
+					item = RandomScroll(8, 8);
 				}
 				else
 				{
