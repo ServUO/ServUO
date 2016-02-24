@@ -12345,7 +12345,7 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Meditating { get; set; }
+		public virtual bool Meditating { get; set; }
 
 		[CommandProperty(AccessLevel.Decorator)]
 		public bool CanSwim { get { return m_CanSwim; } set { m_CanSwim = value; } }
