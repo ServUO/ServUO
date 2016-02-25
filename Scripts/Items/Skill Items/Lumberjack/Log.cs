@@ -89,7 +89,7 @@ namespace Server.Items
 		{
 			if ( Deleted || !from.CanSee( this ) ) 
 				return false;
-			if ( from.Skills.Carpentry.Value < skill ||
+			if ( from.Skills.Carpentry.Value < skill &&
 				from.Skills.Lumberjacking.Value < skill )
 			{
 				item.Delete();

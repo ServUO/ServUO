@@ -35,7 +35,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 77.2);
             SetSkill(SkillName.Wrestling, 75.4);
 
-            QLPoints = 20;
+            QLPoints = 2;
         }
 
         public FireAnt(Serial serial) : base(serial)

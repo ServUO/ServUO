@@ -1300,6 +1300,10 @@ namespace Server.Items
             int luck = 0;
             int budgetBonus = 0;
 
+            // Do not add properties to artifacts
+            if (item is Artifact)
+                return;
+
             if (killer != null)
             {
                 luck = killer.Luck;
@@ -1328,7 +1332,10 @@ namespace Server.Items
 
 				bool powerful = budget >= 550;
 
-                if (powerful || 0.01 > Utility.RandomDouble())
+                if (powerful || (
+                    budget > 150 &&
+                    0.01 > Utility.RandomDouble()
+                ))
                 {
                     int amt = budget / 120;
 
@@ -1558,6 +1565,9 @@ namespace Server.Items
             int weight = Imbuing.GetTotalWeight(item);
             int totalMods = Imbuing.GetTotalMods(item);
 
+            if (totalMods == 0)
+                return ItemPower.None;
+
             if (weight < 250 && totalMods <= 4)
                 return playermade ? ItemPower.ReforgedMinor : ItemPower.Minor;
 
@@ -1636,14 +1646,24 @@ namespace Server.Items
 
             int random = 0;
             int start = budget;
+            List<int> usedAttrs = new List<int>();
 
 			while(start == budget && budget > 25 && idx < 25)
 			{
                 if (attrList.Count == 0)
                     return false;
 
-				random = Utility.Random(attrList.Count);
-				object attr = attrList[random];
+                // Make sure we don't apply the same attribute twice
+                while (true)
+                {
+                    random = Utility.Random(attrList.Count);
+                    if (usedAttrs.Contains(random))
+                        continue;
+                    usedAttrs.Add(random);
+                    break;
+                }
+
+                object attr = attrList[random];
 				int[] minmax = new int[] { 1, 1 };
 				int value = 1;
 				

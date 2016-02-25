@@ -251,9 +251,6 @@
     <Compile Include="Commands\UnloadMaps.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\uoamVendorsDelete.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\VisibilityList.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9097,6 +9094,12 @@
     <Compile Include="Mobiles\Vendors\SBInfo\Armors\SBWoodenShields.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBMystic.cs" />
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBSAArmor.cs" />
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBSABlacksmith.cs" />
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBSATailor.cs" />
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBSATanner.cs" />
+    <Compile Include="Mobiles\Vendors\SBInfo\SA\SBSAWeapons.cs" />
     <Compile Include="Mobiles\Vendors\SBInfo\SBAlchemist.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9386,6 +9389,7 @@
     <Compile Include="Multis\Camps\OrcCamp.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Multis\Camps\PrisonerCamp.cs" />
     <Compile Include="Multis\Camps\RatCamp.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10953,7 +10957,6 @@
     <Compile Include="Services\ChampionSystem\HarrowerGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\ChampionSystem\NukeCommand.cs" />
     <Compile Include="Services\ChampionSystem\RestartTimer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10963,7 +10966,6 @@
     <Compile Include="Services\ChampionSystem\StarRoomGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\ChampionSystem\TestRadiusCommand.cs" />
     <Compile Include="Services\Chat\Channel.cs">
       <SubType>Code</SubType>
     </Compile>

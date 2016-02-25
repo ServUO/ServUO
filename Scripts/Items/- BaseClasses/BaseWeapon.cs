@@ -5273,16 +5273,6 @@ namespace Server.Items
 				list.Add(1079978, direct.ToString()); // Direct Damage: ~1_PERCENT~%
             }
 
-            #region Runic Reforging
-            if (m_ItemPower != ItemPower.None)
-            {
-                if (m_ItemPower <= ItemPower.LegendaryArtifact)
-                    list.Add(1151488 + ((int)m_ItemPower - 1));
-                else
-                    list.Add(1152281 + ((int)m_ItemPower - 9));
-            }
-            #endregion
-
             list.Add(1061168, "{0}\t{1}", MinDamage.ToString(), MaxDamage.ToString()); // weapon damage ~1_val~ - ~2_val~
 
 			if (Core.ML)
@@ -5341,16 +5331,22 @@ namespace Server.Items
 				list.Add(1060639, "{0}\t{1}", m_Hits, m_MaxHits); // durability ~1_val~ / ~2_val~
 			}
 
-			#region Mondain's Legacy Sets
 			if (IsSetItem && !m_SetEquipped)
 			{
 				list.Add(1072378); // <br>Only when full set is present:				
 				GetSetProperties(list);
 			}
-			#endregion
-		}
 
-		public override void OnSingleClick(Mobile from)
+            if (m_ItemPower != ItemPower.None)
+            {
+                if (m_ItemPower <= ItemPower.LegendaryArtifact)
+                    list.Add(1151488 + ((int)m_ItemPower - 1));
+                else
+                    list.Add(1152281 + ((int)m_ItemPower - 9));
+            }
+        }
+
+        public override void OnSingleClick(Mobile from)
 		{
 			var attrs = new List<EquipInfoAttribute>();
 

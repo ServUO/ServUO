@@ -103,8 +103,6 @@ namespace Server.Items
             base.AppendChildNameProperties(list);
 			
             int prop;
-			
-            list.Add(1075085); // Requirement: Mondain's Legacy	
 
             if ((prop = this.m_AosWeaponAttributes.HitColdArea) != 0)
                 list.Add(1060416, prop.ToString()); // hit cold area ~1_val~%

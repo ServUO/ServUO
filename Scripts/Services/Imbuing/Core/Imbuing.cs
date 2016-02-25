@@ -1362,7 +1362,7 @@ namespace Server.SkillHandlers
 			m_Table[41] = new ImbuingDefinition(AosWeaponAttribute.MageWeapon,		1079759, 100, 	typeof(EnchantEssence), typeof(Emerald), 		typeof(ArcanicRuneStone),   10, 1, 1112001);
 			m_Table[42] = new ImbuingDefinition(AosWeaponAttribute.DurabilityBonus,	1017323, 100, 	typeof(EnchantEssence), typeof(Diamond), 		typeof(PowderedIron),       100, 10, 1112949);
 
-            m_Table[49] = new ImbuingDefinition(AosArmorAttribute.MageArmor,        1079758, 100,   typeof(EnchantEssence), typeof(Diamond),        typeof(AbyssalCloth), 1, 0, 1112000);
+            //m_Table[49] = new ImbuingDefinition(AosArmorAttribute.MageArmor,        1079758, 100,   typeof(EnchantEssence), typeof(Diamond),        typeof(AbyssalCloth), 1, 0, 1112000);
 
             m_Table[51] = new ImbuingDefinition(AosElementAttribute.Physical,       1061158, 100,   typeof(MagicalResidue), typeof(Diamond),        typeof(BouraPelt), 15, 1, 1112010);
             m_Table[52] = new ImbuingDefinition(AosElementAttribute.Fire,           1061159, 100,   typeof(MagicalResidue), typeof(Ruby),           typeof(BouraPelt), 15, 1, 1112009);

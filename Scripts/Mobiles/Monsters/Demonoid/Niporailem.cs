@@ -40,16 +40,18 @@ namespace Server.Mobiles
 			SetSkill( SkillName.MagicResist, 87.7, 93.5 );
 			SetSkill( SkillName.Tactics, 56.1, 65.0 );
 			SetSkill( SkillName.Wrestling, 68.8, 76.2 );
-                        SetSkill( SkillName.EvalInt, 120.0 );
+            SetSkill( SkillName.EvalInt, 120.0 );
 			SetSkill( SkillName.Magery, 120.0 );
 			SetSkill( SkillName.Meditation, 120.0 );
-                        SetSkill( SkillName.Necromancy, 120.0 );
-                        SetSkill( SkillName.SpiritSpeak, 120.0 );     
+            SetSkill( SkillName.Necromancy, 120.0 );
+            SetSkill( SkillName.SpiritSpeak, 120.0 );     
 
 			PackNecroReg( 12, 24 ); /// Stratics didn't specify
 
-            		Fame = 15000;
-            		Karma = -15000;
+            Fame = 15000;
+            Karma = -15000;
+
+            QLPoints = 75;
 		}
 
 		public override void GenerateLoot()

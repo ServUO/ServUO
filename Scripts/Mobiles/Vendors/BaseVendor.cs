@@ -229,6 +229,7 @@ namespace Server.Mobiles
 		public abstract void InitSBInfo();
 
 		public virtual bool IsTokunoVendor { get { return (Map == Map.Tokuno); } }
+        public virtual bool IsStygianVendor { get { return (Map == Map.TerMur); } }
 
 		protected void LoadSBInfo()
 		{

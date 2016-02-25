@@ -10808,7 +10808,7 @@ namespace Server
 
 		public void DefaultMobileInit()
 		{
-			m_StatCap = 225;
+            m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225); ;
 			m_FollowersMax = 5;
 			m_Skills = new Skills(this);
 			m_Items = new List<Item>();
@@ -12345,7 +12345,7 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Meditating { get; set; }
+		public virtual bool Meditating { get; set; }
 
 		[CommandProperty(AccessLevel.Decorator)]
 		public bool CanSwim { get { return m_CanSwim; } set { m_CanSwim = value; } }

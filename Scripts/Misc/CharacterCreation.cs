@@ -683,7 +683,12 @@ namespace Server.Misc
             if (newChar is PlayerMobile)
             {
                 PlayerMobile pm = (PlayerMobile)newChar;
-
+                double skillcap = Config.Get("PlayerCaps.SkillCap", 1000.0d) / 10;
+                if (skillcap != 100.0)
+                {
+                    for (int i = 0; i < Enum.GetNames(typeof(SkillName)).Length; ++i)
+                        pm.Skills[i].Cap = skillcap;
+                }
                 pm.Profession = args.Profession;
 
                 if (pm.IsPlayer() && ((Account)pm.Account).Young)
@@ -1862,6 +1867,16 @@ namespace Server.Misc
                         PackItem(new SewingKit());
                         break;
                     }
+				case SkillName.Tinkering:
+					{
+						PackItem(new TinkerTools());
+						PackItem(new IronIngot(50));
+						PackItem(new Axle());
+						PackItem(new AxleGears());
+						PackItem(new Springs());
+						PackItem(new ClockFrame());
+						break;
+					}
                 case SkillName.Tracking:
                     {
                         if (human || elf)
@@ -1915,6 +1930,11 @@ namespace Server.Misc
 
                         break;
                     }
+					case SkillName.Mysticism:
+	            {
+		            PackItem(new MysticBook((ulong) 0xAB));
+		            break;
+	            }
             }
         }
 
