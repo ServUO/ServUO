@@ -9,6 +9,8 @@ namespace Server.Mobiles
 {
     public class MageGuildmaster : BaseGuildmaster
     {
+        private List<PendingConvert> m_PendingConverts = new List<PendingConvert>();
+
         [Constructable]
         public MageGuildmaster()
             : base("mage")
@@ -20,8 +22,9 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Wrestling, 60.0, 83.0);
             this.SetSkill(SkillName.Meditation, 85.0, 100.0);
             this.SetSkill(SkillName.Macing, 36.0, 68.0);
+            PendingConvert.CreateExpireTimer(m_PendingConverts);
         }
-
+        
         public MageGuildmaster(Serial serial)
             : base(serial)
         {
@@ -53,21 +56,53 @@ namespace Server.Mobiles
 		{
 			base.AddCustomContextEntries(from, list);
 
-			//if(from != null)
-			//	list.Add(new UpgradeMageArmor(from, this));
+			if(from != null)
+				list.Add(new UpgradeMageArmor(from, this));
 		}
 
-		public void PlayerWantsToUpgrade(Mobile from, BaseArmor armor)
+        public static bool CanConvertArmor(BaseArmor armor)
+        {
+            if (armor is Artifact)
+                return false;
+            if (armor.ArmorAttributes.MageArmor == 0 &&
+                Server.SkillHandlers.Imbuing.GetTotalMods(armor) > 4)
+                return false;
+            return true;
+        }
+
+        public void PlayerWantsToUpgrade(Mobile from, BaseArmor armor)
 		{
-			if (Server.SkillHandlers.Imbuing.GetTotalMods(armor) > 4 ||
-				(armor is Artifact))
+            if(!CanConvertArmor(armor))
 			{
 				from.SendLocalizedMessage(1154119); // This action would exceed a stat cap
 				return;
 			}
+
 			from.SendLocalizedMessage(1154117); // Ah yes, I will convert this piece of armor but it's gonna cost you 250,000 gold coin. Payment is due immediately. Just hand me the armor.
-			
+            m_PendingConverts.Add(new PendingConvert(from, armor));
 		}
+
+        public override bool OnDragDrop(Mobile from, Item dropped)
+        {
+            PendingConvert convert = null;
+
+            foreach(PendingConvert c in m_PendingConverts)
+            {
+                if(c.From == from && c.Armor == dropped)
+                {
+                    convert = c;
+                    break;
+                }
+            }
+
+            if(convert == null)
+                return base.OnDragDrop(from, dropped);
+
+            m_PendingConverts.Remove(convert);
+            from.CloseGump(typeof(ConfirmGump));
+            from.SendGump(new ConfirmGump(convert.From, convert.Armor));
+            return false; // Want the item to stay in the player's pack
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -87,7 +122,7 @@ namespace Server.Mobiles
 		{
 			public Mobile From;
 			public BaseArmor Armor;
-			public DateTime Expires;
+			private DateTime Expires;
 
 			public PendingConvert(Mobile from, BaseArmor armor)
 			{
@@ -96,20 +131,93 @@ namespace Server.Mobiles
 				Expires = DateTime.UtcNow + TimeSpan.FromMinutes(2.0d);
 			}
 
-			public bool Expired { get { return Expires > DateTime.UtcNow; } }
+			protected bool Expired { get { return Expires > DateTime.UtcNow; } }
+
+            public static void CreateExpireTimer(List<PendingConvert> list)
+            {
+                new ExpireTimer(list);
+            }
+
+            private class ExpireTimer : Timer
+            {
+                List<PendingConvert> List;
+
+                public ExpireTimer(List<PendingConvert> list)
+                    : base(TimeSpan.FromSeconds(15.0), TimeSpan.FromSeconds(15.0))
+                {
+                    List = list;
+                }
+
+                protected override void OnTick()
+                {
+                    List<PendingConvert> toDelete = new List<PendingConvert>();
+
+                    foreach(PendingConvert convert in List)
+                    {
+                        if (convert.Expired)
+                            toDelete.Add(convert);
+                    }
+
+                    foreach(PendingConvert convert in toDelete)
+                    {
+                        List.Remove(convert);
+                    }
+                }
+            }
 		}
 
 		protected class ConfirmGump : BaseConfirmGump
 		{
 			Mobile From;
-			MageGuildmaster GuildMaster;
 			BaseArmor Armor;
 
-			public ConfirmGump(Mobile from, MageGuildmaster gm, BaseArmor armor)
+			public ConfirmGump(Mobile from, BaseArmor armor)
 			{
-
+                From = from;
+                Armor = armor;
 			}
-		}
+
+            public override int TitleNumber
+            {
+                get
+                {
+                    return 1049004; // Confirm
+                }
+            }
+
+            public override int LabelNumber
+            {
+                get
+                {
+                    return 1154115; // So you would like to add or remove mage armor from your armor at the cost of 250,000 gold?
+                }
+            }
+
+            public override void Confirm(Mobile from)
+            {
+                if (From == null)
+                    return;
+
+                if (!CanConvertArmor(Armor))
+                {
+                    from.SendLocalizedMessage(1154119); // This action would exceed a stat cap
+                    return;
+                }
+                   
+                if (From.Account == null || !From.Account.WithdrawGold(250000))
+                {
+                    From.SendLocalizedMessage(1019022); // You do not have enough gold.
+                    return;
+                }
+                if (Armor.ArmorAttributes.MageArmor > 0)
+                    Armor.ArmorAttributes.MageArmor = 0;
+                else
+                    Armor.ArmorAttributes.MageArmor = 1;
+                Armor.InvalidateProperties();
+
+                From.SendLocalizedMessage(1154118); // Your armor has been converted.
+            }
+        }
 
 		protected class UpgradeMageArmor : ContextMenuEntry
 		{
