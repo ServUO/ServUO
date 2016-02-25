@@ -1327,7 +1327,10 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (!bought && totalCost >= 2000)
+			if (!bought &&
+                (totalCost >= 2000 ||
+                AccountGold.Enabled)
+            )
 			{
 				if (Banker.Withdraw(buyer, totalCost))
 				{
