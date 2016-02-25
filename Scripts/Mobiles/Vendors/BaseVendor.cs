@@ -32,7 +32,7 @@ namespace Server.Mobiles
 
 	public abstract class BaseVendor : BaseCreature, IVendor
 	{
-		private const int MaxSell = 500;
+		private int MaxSell = Config.Get("Vendors.MaxSell", 500);
 
 		protected abstract List<SBInfo> SBInfos { get; }
 
@@ -206,7 +206,7 @@ namespace Server.Mobiles
 
 		public DateTime LastRestock { get { return m_LastRestock; } set { m_LastRestock = value; } }
 
-		public virtual TimeSpan RestockDelay { get { return TimeSpan.FromHours(1); } }
+		public virtual TimeSpan RestockDelay { get { return Config.Get("Vendors.RestockDelay", TimeSpan.FromHours(1)); } }
 
 		public Container BuyPack
 		{
@@ -1327,7 +1327,10 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (!bought && totalCost >= 2000)
+			if (!bought &&
+                (totalCost >= 2000 ||
+                AccountGold.Enabled)
+            )
 			{
 				if (Banker.Withdraw(buyer, totalCost))
 				{
