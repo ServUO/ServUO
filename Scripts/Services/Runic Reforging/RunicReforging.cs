@@ -184,7 +184,7 @@ namespace Server.Items
 
                 if (moddedPercLow < 0) moddedPercLow = 0;
                 if (moddedPercHigh > 100) moddedPercHigh = 100;
-				
+
 				if(prefix != ReforgedPrefix.None && suffix == ReforgedSuffix.None && prefixCol != null)
 				{
                     int specialAdd = GetModsPer(index, prefixID, maxmods, false);
@@ -324,6 +324,16 @@ namespace Server.Items
                 else if (list.Contains(col) && col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.SplinteringWeapon)
                 {
                     if (playermade || item is BaseRanged)
+                        list.Remove(col);
+                }
+                else if (list.Contains(col) && col.Attribute is AosWeaponAttributes && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.ReactiveParalyze)
+                {
+                    if ((item is BaseWeapon && item.Layer != Layer.TwoHanded) || (item is BaseShield && item.Layer != Layer.TwoHanded))
+                        list.Remove(col);
+                }
+                else if (list.Contains(col) && col.Attribute is AosArmorAttribute && (AosArmorAttribute)col.Attribute == AosArmorAttribute.ReactiveParalyze)
+                {
+                    if ((item is BaseWeapon && item.Layer != Layer.TwoHanded) || (item is BaseShield && item.Layer != Layer.TwoHanded))
                         list.Remove(col);
                 }
             }
@@ -513,8 +523,11 @@ namespace Server.Items
 
         public static int Scale(int min, int max, int perclow, int perchigh, int luckchance, bool usesqrt)
         {
-            //int percent = Utility.RandomMinMax(perclow, perchigh);
             int percent = Utility.RandomMinMax(0, perchigh * 100);
+
+            // this takes off the curve of generating better items.  Its the downfall of the old lootsystem, 
+            // so lets just take it out and use a linear system like runic crafting
+            usesqrt = false; 
 
             if (usesqrt)
                 percent = (int)Math.Sqrt(percent);
@@ -1262,6 +1275,27 @@ namespace Server.Items
             return item;
         }
 
+        /// <summary>
+        /// This can be called from lootpack once loot pack conversions are implemented (if need be)
+        /// </summary>
+        /// <param name="item">item to mutate</param>
+        /// <param name="killer">who killed them. Their luck is taken into account</param>
+        /// <param name="minBudget"></param>
+        /// <param name="maxBudget"></param>
+        /// <returns></returns>
+        public static bool GenerateRandomItem(Item item, int luckChance, int minBudget, int maxBudget)
+        {
+            if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
+            {
+                int budget = Utility.RandomMinMax(minBudget, maxBudget);
+                //Utility.WriteLine(ConsoleColor.Magenta, String.Format("Creating Random Item: {0}, BUDGET: {1}", item.GetType().Name, budget));
+                GenerateRandomItem(item, null, budget, luckChance, ReforgedPrefix.None, ReforgedSuffix.None);
+                //Utility.WriteLine(ConsoleColor.Green, String.Format("Total Weight: {0}", Imbuing.GetTotalWeight(item)));
+                return true;
+            }
+            return false;
+        }
+
         public static Item GenerateRandomItem(Mobile killer, BaseCreature creature)
         {
 			Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
@@ -1297,32 +1331,31 @@ namespace Server.Items
 
         public static void GenerateRandomItem(Item item, Mobile killer, int basebudget, int luckchance, ReforgedPrefix forcedprefix, ReforgedSuffix forcedsuffix)
         {
-            int luck = 0;
+            int luckbonus = 0;
             int budgetBonus = 0;
-
             // Do not add properties to artifacts
             if (item is Artifact)
                 return;
 
             if (killer != null)
             {
-                luck = killer.Luck;
+                luckbonus = killer.Luck;
                 if (killer.Map == Map.Felucca)
                 {
-                    luck += RandomItemGenerator.FeluccaLuckBonus;
+                    luckbonus += RandomItemGenerator.FeluccaLuckBonus;
                     budgetBonus += RandomItemGenerator.FeluccaBudgetBonus;
                 }
             }
             else
             {
-                luck = 240;
+                luckbonus = 240;
             }
 
             if (item != null)
 			{
                 int budget = Utility.RandomMinMax(basebudget - (basebudget / 5), basebudget + Utility.RandomMinMax(0, 100));
 
-				if(Utility.RandomDouble() < (double)luck / 2000.0)
+				if(Utility.RandomDouble() < (double)luckbonus / 2000.0)
 					budget += Utility.RandomMinMax(150, Math.Max(160, 550 - basebudget));
 
                 budget += budgetBonus;
@@ -1375,8 +1408,8 @@ namespace Server.Items
                     else
                         mods = Utility.RandomMinMax(2, 4);
 
-                    perchigh = Math.Max(20, (budget / 2) / mods);
-                    perclow = 10;
+                    perchigh = Math.Max(20, Math.Min(500, budget) / mods);
+                    perclow = Math.Max(10, perchigh / 3);
                 }
                 else
                 {
@@ -1385,7 +1418,7 @@ namespace Server.Items
                     mods = Utility.RandomMinMax(minmods, maxmods);
 
                     perchigh = 100;
-                    perclow = 30;
+                    perclow = Math.Max(50, (budget / 2) / mods);
                 }
 
                 if (perchigh > 100)
@@ -1604,38 +1637,38 @@ namespace Server.Items
 			if(item is BaseWeapon)
 			{
                 if (item is BaseRanged)
-                    attrList = m_RangedWeaponList;
+                    attrList = new List<object>(m_RangedWeaponList);
                 else
-                    attrList = m_MeleeWeaponList;
+                    attrList = new List<object>(m_MeleeWeaponList);
 				
 				wepattrs = ((BaseWeapon)item).WeaponAttributes;
 				aosattrs = ((BaseWeapon)item).Attributes;
 			}
 			else if (item is BaseShield)
 			{
-                attrList = m_ShieldList;
+                attrList = new List<object>(m_ShieldList);
 
 				aosattrs = ((BaseShield)item).Attributes;
 				armorattrs = ((BaseShield)item).ArmorAttributes;
 			}
 			else if (item is BaseArmor)
 			{
-                attrList = m_ArmorList;
+                attrList = new List<object>(m_ArmorList);
 
 				aosattrs = ((BaseArmor)item).Attributes;
 				armorattrs = ((BaseArmor)item).ArmorAttributes;
 			}
 			else if (item is BaseClothing)
 			{
-                attrList = m_ArmorList;
+                attrList = new List<object>(m_ArmorList);
 
-				aosattrs = ((BaseHat)item).Attributes;
-				armorattrs = ((BaseHat)item).ClothingAttributes;
-				resistattrs = ((BaseHat)item).Resistances;
+                aosattrs = ((BaseClothing)item).Attributes;
+                armorattrs = ((BaseClothing)item).ClothingAttributes;
+                resistattrs = ((BaseClothing)item).Resistances;
 			}
 			else if (item is BaseJewel)
 			{
-                attrList = m_JewelList;
+                attrList = new List<object>(m_JewelList);
 
 				aosattrs = ((BaseJewel)item).Attributes;
 				skillbonuses = ((BaseJewel)item).SkillBonuses;
@@ -1646,27 +1679,19 @@ namespace Server.Items
 
             int random = 0;
             int start = budget;
-            List<int> usedAttrs = new List<int>();
 
 			while(start == budget && budget > 25 && idx < 25)
 			{
+                idx++;
+
                 if (attrList.Count == 0)
                     return false;
 
-                // Make sure we don't apply the same attribute twice
-                while (true)
-                {
-                    random = Utility.Random(attrList.Count);
-                    if (usedAttrs.Contains(random))
-                        continue;
-                    usedAttrs.Add(random);
-                    break;
-                }
-
+                random = Utility.Random(attrList.Count);
                 object attr = attrList[random];
 				int[] minmax = new int[] { 1, 1 };
 				int value = 1;
-				
+
 				if(wepattrs != null && attr is AosWeaponAttribute[])
 				{
 					int ran = Utility.Random(((AosWeaponAttribute[])attr).Length);
@@ -1736,7 +1761,7 @@ namespace Server.Items
 				}
                 else if (attr is AosElementAttribute && (resistattrs != null || item is BaseArmor))
                 {
-                    minmax = Imbuing.GetPropRange((AosArmorAttribute)attr);
+                    minmax = Imbuing.GetPropRange((AosElementAttribute)attr);
                     value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance);
 
                     if (resistattrs != null && resistattrs[(AosElementAttribute)attr] == 0)
@@ -1779,6 +1804,7 @@ namespace Server.Items
                     {
                         SkillName[] possibleSkills = m_Skills;
                         SkillName sk, check;
+                        int skillIdx = idx - 1;
                         double bonus;
                         bool found;
 
@@ -1795,15 +1821,15 @@ namespace Server.Items
                         } while (found);
 
                         value = CalculateValue(sk, 1, 15, perclow, perchigh, ref budget, luckchance);
-                        skillbonuses.SetValues(idx, sk, value);
+                        skillbonuses.SetValues(skillIdx, sk, value);
                         budget -= Imbuing.GetIntensityForAttribute(sk, -1, value);
                     }
                 }
-	
-                idx++;
 			}
 
-            attrList.Clear();
+            if(attrList != null)
+                attrList.Clear();
+
 			return true;
 		}
 		
