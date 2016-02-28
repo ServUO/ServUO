@@ -42,8 +42,13 @@ namespace Server
 				luck = 1200;
 			}
 
-			return (int)(Math.Pow(luck, 1 / 1.8) * 100);
+			return GetLuckChance(luck);
 		}
+
+        public static int GetLuckChance(int luck)
+        {
+            return (int)(Math.Pow(luck, 1 / 1.8) * 100);
+        }
 
 		public static int GetLuckChanceForKiller(Mobile dead)
 		{

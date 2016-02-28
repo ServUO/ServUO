@@ -11,6 +11,7 @@ namespace Server.Engines.Despise
         public static void Initialize()
         {
             EventSink.Login += new LoginEventHandler(OnLogin);
+            EventSink.OnEnterRegion += new OnEnterRegionEventHandler(OnEnterRegion);
         }
 
         private static DespiseController m_Instance;
@@ -587,6 +588,16 @@ namespace Server.Engines.Despise
                         }
                     }
                 }
+            }
+        }
+
+        public static void OnEnterRegion(OnEnterRegionEventArgs e)
+        {
+            WispOrb orb = GetWispOrb(e.From);
+
+            if (orb != null && !Region.Find(e.From.Location, e.From.Map).IsPartOf(typeof(DespiseRegion)))
+            {
+                Timer.DelayCall(orb.Delete);
             }
         }
 

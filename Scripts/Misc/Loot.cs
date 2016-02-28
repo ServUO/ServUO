@@ -976,13 +976,7 @@ namespace Server
             {
                 return null;
             }
-            if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
-            {
-                if (Core.AOS)
-                {
-                    Server.Mobiles.RandomItemGenerator.GenerateRandomItem(item, null, null);
-                }
-            }
+
             return item;
         }
 

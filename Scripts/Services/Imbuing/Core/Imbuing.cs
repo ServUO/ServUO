@@ -1362,7 +1362,7 @@ namespace Server.SkillHandlers
 			m_Table[41] = new ImbuingDefinition(AosWeaponAttribute.MageWeapon,		1079759, 100, 	typeof(EnchantEssence), typeof(Emerald), 		typeof(ArcanicRuneStone),   10, 1, 1112001);
 			m_Table[42] = new ImbuingDefinition(AosWeaponAttribute.DurabilityBonus,	1017323, 100, 	typeof(EnchantEssence), typeof(Diamond), 		typeof(PowderedIron),       100, 10, 1112949);
 
-            //m_Table[49] = new ImbuingDefinition(AosArmorAttribute.MageArmor,        1079758, 100,   typeof(EnchantEssence), typeof(Diamond),        typeof(AbyssalCloth), 1, 0, 1112000);
+            m_Table[49] = new ImbuingDefinition(AosArmorAttribute.MageArmor,        1079758, 100,   typeof(EnchantEssence), typeof(Diamond),        typeof(AbyssalCloth), 1, 0, 1112000);
 
             m_Table[51] = new ImbuingDefinition(AosElementAttribute.Physical,       1061158, 100,   typeof(MagicalResidue), typeof(Diamond),        typeof(BouraPelt), 15, 1, 1112010);
             m_Table[52] = new ImbuingDefinition(AosElementAttribute.Fire,           1061159, 100,   typeof(MagicalResidue), typeof(Ruby),           typeof(BouraPelt), 15, 1, 1112009);
@@ -1444,6 +1444,12 @@ namespace Server.SkillHandlers
             m_Table[204] = new ImbuingDefinition(AosWeaponAttribute.HitManaDrain,           1154669, 140, null, null, null, 50, 1, 1152436);
             m_Table[205] = new ImbuingDefinition(AosWeaponAttribute.SplinteringWeapon,      1154670, 140, null, null, null, 20, 1, 1152396);
             m_Table[206] = new ImbuingDefinition(AosWeaponAttribute.ReactiveParalyze,       1154660, 140, null, null, null, 1, 1, 1152400);
+
+            m_Table[233] = new ImbuingDefinition(AosWeaponAttribute.ResistPhysicalBonus,    1061158, 100, typeof(MagicalResidue), typeof(Diamond),  typeof(BouraPelt), 15, 1, 1112010);
+            m_Table[234] = new ImbuingDefinition(AosWeaponAttribute.ResistFireBonus,        1061159, 100, typeof(MagicalResidue), typeof(Ruby),     typeof(BouraPelt), 15, 1, 1112009);
+            m_Table[235] = new ImbuingDefinition(AosWeaponAttribute.ResistColdBonus,        1061160, 100, typeof(MagicalResidue), typeof(Sapphire), typeof(BouraPelt), 15, 1, 1112007);
+            m_Table[236] = new ImbuingDefinition(AosWeaponAttribute.ResistPoisonBonus,      1061161, 100, typeof(MagicalResidue), typeof(Emerald),  typeof(BouraPelt), 15, 1, 1112011);
+            m_Table[237] = new ImbuingDefinition(AosWeaponAttribute.ResistEnergyBonus,      1061162, 100, typeof(MagicalResidue), typeof(Amethyst), typeof(BouraPelt), 15, 1, 1112008); 
 
             m_Table[208] = new ImbuingDefinition(SAAbsorptionAttribute.EaterFire,           1154662, 140, null, null, null, 10, 1, 1152390);
             m_Table[209] = new ImbuingDefinition(SAAbsorptionAttribute.EaterCold,           1154663, 140, null, null, null, 10, 1, 1152390);
