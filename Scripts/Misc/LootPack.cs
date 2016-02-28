@@ -692,11 +692,16 @@ namespace Server
 							props = m_MaxProps;
 						}
 
-                        if (from is BaseCreature && RandomItemGenerator.GenerateRandomItem(item, ((BaseCreature)from).LastKiller, (BaseCreature)from))
+                        // Try to generate a new random item
+                        if (from is BaseCreature)
                         {
-                            return item;
+                            if (RandomItemGenerator.GenerateRandomItem(item, ((BaseCreature)from).LastKiller, (BaseCreature)from))
+                                return item;
                         }
+                        else if (RandomItemGenerator.GenerateRandomItem(item, null, null))
+                            return item;
 
+                        // Otherwise use the older style random generation
 						if (item is BaseWeapon)
 						{
 							BaseRunicTool.ApplyAttributesTo((BaseWeapon)item, false, luckChance, props, m_MinIntensity, m_MaxIntensity);

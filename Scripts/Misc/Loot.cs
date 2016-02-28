@@ -977,6 +977,8 @@ namespace Server
                 return null;
             }
 
+            if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
+                Mobiles.RandomItemGenerator.GenerateRandomItem(item, null, null);
             return item;
         }
 
