@@ -1564,7 +1564,14 @@ namespace Server.Mobiles
 				Timer.DelayCall(TimeSpan.FromSeconds(10), ((PlayerMobile)@from).RecoverAmmo);
 			}
 
-			base.OnDamage(amount, from, willKill);
+            #region XmlSpawner
+            if (!Summoned && willKill && from != null)
+            {
+                LevelItemManager.CheckItems(from, this);
+            }
+            #endregion
+
+            base.OnDamage(amount, from, willKill);
 		}
 
 		public virtual void OnDamagedBySpell(Mobile from)
