@@ -102,7 +102,7 @@ namespace Server.Mobiles
         public static void DistributeRandomArtifact(BaseCreature bc, Type[] typelist)
         {
             int random = Utility.Random(typelist.Length);
-            Item item = Loot.Construct(typelist[random]);
+            Item item = Loot.Construct(typelist[random], null);
             DistributeArtifact(DemonKnight.FindRandomPlayer(bc), item);
         }
 

@@ -7223,7 +7223,7 @@ namespace Server.Mobiles
 
 										if (Core.AOS)
 										{
-											Item item = Loot.Construct(Loot.NecromancyScrollTypes, index);
+											Item item = Loot.Construct(Loot.NecromancyScrollTypes, index, null);
 											if (item != null)
 											{
 												pack.DropItem(item);
@@ -7829,7 +7829,7 @@ namespace Server.Mobiles
 			BaseCreature.Cap(ref maxLevel, 0, 5);
 			if (Core.AOS)
 			{
-				Item item = Loot.RandomJewelry();
+				Item item = Loot.RandomJewelry(null);
 
 				if (item == null)
 					return null;
@@ -7844,7 +7844,7 @@ namespace Server.Mobiles
 			}
 			else
 			{
-				Item jewel = Loot.RandomJewelry();
+				Item jewel = Loot.RandomJewelry(null);
 
 				return jewel;
 			}
@@ -7858,12 +7858,12 @@ namespace Server.Mobiles
 			{
 				Item item = null;
 				if (jewel)
-					item = Loot.RandomArmorOrShieldOrJewelry();
+					item = Loot.RandomArmorOrShieldOrJewelry(null);
 				else
 					if (shield)
-						item = Loot.RandomArmorOrShield();
+						item = Loot.RandomArmorOrShield(null);
 					else
-						item = Loot.RandomArmor();
+						item = Loot.RandomArmor(null);
 
 				if (item == null)
 					return null;
@@ -7881,7 +7881,7 @@ namespace Server.Mobiles
 			}
 			else
 			{
-			BaseArmor armor = Loot.RandomArmorOrShield();
+			BaseArmor armor = Loot.RandomArmorOrShield(null);
 
 			if (armor == null)
 				return null;
@@ -7899,7 +7899,7 @@ namespace Server.Mobiles
 			BaseCreature.Cap(ref maxLevel, 0, 5);
 			if (Core.AOS)
 			{
-				Item item = Loot.RandomShield();
+				Item item = Loot.RandomShield(null);
 
 				if (item == null)
 					return null;
@@ -7915,7 +7915,7 @@ namespace Server.Mobiles
 			}
 			else
 			{
-			BaseArmor armor = Loot.RandomShield();
+			BaseArmor armor = Loot.RandomShield(null);
 
 			if (armor == null)
 				return null;
@@ -7935,9 +7935,9 @@ namespace Server.Mobiles
 			{
 				Item item = null;
 				if (jewel)
-					item = Loot.RandomWeaponOrJewelry();
+					item = Loot.RandomWeaponOrJewelry(null);
 				else
-					item = Loot.RandomWeapon();
+					item = Loot.RandomWeapon(null);
 
 				if (item == null)
 					return null;
@@ -7955,7 +7955,7 @@ namespace Server.Mobiles
 			}
 			else
 			{
-			BaseWeapon weapon = Loot.RandomWeapon();
+			BaseWeapon weapon = Loot.RandomWeapon(null);
 
 			if (weapon == null)
 				return null;
@@ -11206,7 +11206,7 @@ namespace Server.Mobiles
 										status_str = "Invalid NECROSCROLL args : " + itemtypestr;
 										return false;
 									}
-									Item item = Loot.Construct(Loot.NecromancyScrollTypes, necroindex);
+									Item item = Loot.Construct(Loot.NecromancyScrollTypes, necroindex, null);
 									if (item != null)
 									{
 										AddSpawnItem(spawner, TheSpawn, item, location, map, triggermob, requiresurface, spawnpositioning, substitutedtypeName, out status_str);

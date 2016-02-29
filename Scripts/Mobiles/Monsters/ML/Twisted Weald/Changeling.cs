@@ -58,12 +58,9 @@ namespace Server.Mobiles
             this.Fame = 15000;
             this.Karma = -15000;
 
-            this.PackScroll(1, 7);
             this.PackItem(new Arrow(35));
             this.PackItem(new Bolt(25));
             this.PackGem(2);
-
-            this.PackArcaneScroll(0, 1);
         }
 
         public Changeling(Serial serial)
@@ -129,6 +126,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.AosRich, 3);
+            AddLoot(LootPack.LowScrolls);
+            AddLoot(LootPack.MedScrolls);
         }
 
         public override int GetAngerSound()

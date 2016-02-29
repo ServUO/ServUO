@@ -62,7 +62,6 @@ namespace Server.Mobiles
                     break;
             }
 
-            this.PackSlayer();
             this.PackItem(new Scimitar());
             this.PackItem(new WoodenShield());
         }

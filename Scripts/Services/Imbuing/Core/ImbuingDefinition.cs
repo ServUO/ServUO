@@ -88,7 +88,7 @@ namespace Server.SkillHandlers
             if (LocBuffer.ContainsKey(type))
                 return LocBuffer[type];
  
-            Item item = Loot.Construct(type);
+            Item item = Loot.Construct(type, null);
 
             if (item != null)
             {

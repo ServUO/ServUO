@@ -78,7 +78,6 @@ namespace Server.Mobiles
             this.Karma = -13000;
 
             this.VirtualArmor = 30;
-            this.PackArmor(1, 5);
             if (Utility.RandomDouble() < 0.80)
                 this.PackItem(new PlagueBeastGland());
 
@@ -93,7 +92,6 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.FilthyRich);
             this.AddLoot(LootPack.Gems, Utility.Random(1, 3));
-            // TODO: dungeon chest, healthy gland
         }
 
         public override void OnGaveMeleeAttack(Mobile defender)

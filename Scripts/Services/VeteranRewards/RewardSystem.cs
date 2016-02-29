@@ -21,6 +21,7 @@ namespace Server.Engines.VeteranRewards
         public static float SkillCapBonusIncrement = SkillCapBonus / SkillCapBonusLevels;
         public static TimeSpan RewardInterval = Config.Get("VetRewards.RewardInterval", TimeSpan.FromDays(30.0d));
 		public static int StartingLevel = Config.Get("VetRewards.StartingLevel", 0);
+        private static bool m_AgeCheckOnUse = Config.Get("VetRewards.AgeCheckOnUse", false);
 
 		private static RewardCategory[] m_Categories;
         private static RewardList[] m_Lists;
@@ -89,6 +90,9 @@ namespace Server.Engines.VeteranRewards
 			TimeSpan totalTime = (DateTime.UtcNow - acct.Created) + TimeSpan.FromDays(RewardInterval.TotalDays * StartingLevel);
 
 			ts = (list.Age - totalTime);
+
+            if (!m_AgeCheckOnUse)
+                return true;
 
             if (ts <= TimeSpan.Zero)
                 return true;

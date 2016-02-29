@@ -45,14 +45,6 @@ namespace Server.Mobiles
             this.AddItem(new Shoes(0x537));
             this.AddItem(new Robe(0x452));
 
-            for (int i = 0; i < 2; ++i)
-            {
-                if (Utility.RandomBool())
-                    this.PackNecroScroll(Utility.RandomMinMax(5, 9));
-                else
-                    this.PackScroll(4, 7);
-            }
-
             this.PackReg(7);
             this.PackReg(7);
             this.PackReg(8);
@@ -93,6 +85,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 3);
+            this.AddLoot(LootPack.MedScrolls, 4);
+            this.AddLoot(LootPack.HighScrolls, 4);
         }
 
         public override WeaponAbility GetWeaponAbility()

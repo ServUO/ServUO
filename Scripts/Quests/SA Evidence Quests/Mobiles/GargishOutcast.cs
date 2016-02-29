@@ -82,8 +82,6 @@ namespace Server.Mobiles
             this.Fame = 12000;
             this.Karma = -12000;
 
-            PackMysticScroll(1, 3);
-
             if (.5 > Utility.RandomDouble())
             {
                 ChangeAIType(AIType.AI_Mage);
@@ -127,6 +125,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich);
+            this.AddLoot(LootPack.MedScrolls, 2);
+            this.AddLoot(LootPack.HighScrolls, 2);
         }
 
         private DateTime m_NextSummon;
