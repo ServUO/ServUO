@@ -117,14 +117,10 @@ namespace Server.Spells.Chivalry
 			Caster.PlaySound(0x1D6);
 		}
 
-		public override void OnDisturb(DisturbType type, bool message)
+		public override bool CheckDisturb(DisturbType type, bool firstCircle, bool resistable)
 		{
-			base.OnDisturb(type, message);
-
-			if (message)
-			{
-				Caster.PlaySound(0x1D6);
-			}
+			// Cannot disturb Chivalry spells
+			return false;
 		}
 
 		public override void OnBeginCast()
