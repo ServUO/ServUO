@@ -42,8 +42,6 @@ namespace Server.Mobiles
 			
             this.Fame = 17000;
             this.Karma = -17000;
-
-            this.PackArcaneScroll(0, 1);
         }
 		
         public CrystalHydra(Serial serial)
@@ -54,6 +52,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 2);
+            this.AddLoot(LootPack.HighScrolls);
             this.AddLoot(LootPack.Parrot);
         }
 		

@@ -536,7 +536,7 @@ namespace Server.Mobiles
 			
             Type type = list[random];
 
-            return Loot.Construct(type);
+            return Loot.Construct(type, this);
         }
 
         private class SpawnEntry

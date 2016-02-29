@@ -1377,6 +1377,7 @@
 					<region name="the New Haven Inn">
 						<rect x="3493" y="2513" width="17" height="9" />
 						<rect x="3503" y="2523" width="7" height="7" />
+						<logoutDelay active="false" />
 					</region>
 					<region name="the New Haven Docks">
 						<rect x="3501" y="2587" width="26" height="30" />

@@ -141,7 +141,7 @@ namespace Server.Mobiles
 
             Type type = list[random];
 
-            Item artifact = Loot.Construct(type);
+            Item artifact = Loot.Construct(type, this);
 
             return artifact;
         }

@@ -50,7 +50,7 @@ namespace Server.Engines.Despise
 
                     if (t != null)
                     {
-                        Item arty = Loot.Construct(t);
+                        Item arty = Loot.Construct(t, this);
 
                         if (arty != null)
                         {

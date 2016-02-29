@@ -40,11 +40,6 @@ namespace Server.Mobiles
             this.Fame = 18000;
             this.Karma = -18000;
 
-            if (Utility.RandomBool())
-                this.PackNecroScroll(Utility.RandomMinMax(5, 9));
-            else
-                this.PackScroll(4, 7);
-
             this.PackReg(3);
             this.PackNecroReg(1, 10);
         }
@@ -75,6 +70,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 2);
+            this.AddLoot(LootPack.MedScrolls, 2);
+            this.AddLoot(LootPack.HighScrolls, 2);
         }
 
         // TODO: Special move?

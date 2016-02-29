@@ -93,23 +93,23 @@ namespace Server.Engines.Despise
 
                     if (m_Pet != null)
                     {
+                        if (m_Anchor != m_Pet.ControlMaster)
+                            m_Anchor = m_Pet.ControlMaster;
+                        m_Pet.ControlTarget = m_Pet.ControlMaster;
+                        m_Pet.Home = Point3D.Zero;
                         switch (m_Aggression)
                         {
                             case Aggression.Following:
-                                m_Pet.Home = Point3D.Zero;
-                                if (m_Anchor != m_Pet.ControlMaster)
-                                    m_Anchor = m_Pet.ControlMaster;
-                                m_Pet.ControlTarget = m_Pet.ControlMaster;
                                 m_Pet.ControlOrder = OrderType.Follow;
+                                m_Pet.AIObject.Action = ActionType.Backoff;
                                 break;
                             case Aggression.Defensive:
+                                m_Pet.ControlOrder = OrderType.Guard;
+                                m_Pet.AIObject.Action = ActionType.Wander;
+                                break;
                             case Aggression.Aggressive:
-                                if (m_Anchor == null || !(m_Anchor is Mobile))
-                                {
-                                    m_Pet.ControlTarget = null;
-                                    m_Pet.ControlOrder = OrderType.None;
-                                    m_Pet.AIObject.Action = ActionType.Wander;
-                                }
+                                m_Pet.ControlOrder = OrderType.Guard;
+                                m_Pet.AIObject.Action = ActionType.Wander;
                                 break;
                         }
                     }

@@ -58,8 +58,6 @@ namespace Server.Mobiles
             this.Fame = 15000;
             this.Karma = -15000;
 
-			PackMysticScroll(2, 5);
-
             m_NextSummon = DateTime.UtcNow;
             m_NextAIChange = DateTime.UtcNow;
 		}
@@ -85,6 +83,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 3);
+            this.AddLoot(LootPack.MedScrolls, 2);
+            this.AddLoot(LootPack.HighScrolls, 3);
         }
 		
 		private DateTime m_NextSummon;

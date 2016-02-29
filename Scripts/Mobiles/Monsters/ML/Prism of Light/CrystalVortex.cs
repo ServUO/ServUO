@@ -40,8 +40,6 @@ namespace Server.Mobiles
 
             this.Fame = 17000;
             this.Karma = -17000;
-
-            this.PackArcaneScroll(0, 2);
         }
 
         public CrystalVortex(Serial serial)
@@ -52,8 +50,9 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.FilthyRich, 2);
-            // TODO: uncomment once added
-            //AddLoot( LootPack.Parrot );
+            AddLoot( LootPack.Parrot );
+            AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.HighScrolls);
         }
 
         public override void OnDeath( Container c )

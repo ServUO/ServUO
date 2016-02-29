@@ -111,16 +111,6 @@ namespace Server.Items
             return goodtogo;
         }
 
-        public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods)
-        {
-            ApplyReforgedProperties(item, prefix, suffix, playermade, budget, perclow, perchigh, maxmods, 0, 0);
-        }
-
-        public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods, int luckchance)
-        {
-            ApplyReforgedProperties(item, prefix, suffix, playermade, budget, perclow, perchigh, maxmods, 0, luckchance);
-        }
-
         public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods, int powermod, int luckchance)
 		{
 			if(prefix == ReforgedPrefix.None && suffix == ReforgedSuffix.None)
@@ -1265,46 +1255,6 @@ namespace Server.Items
         };
 		
         #region Random Item Generation
-        public static Item GenerateRandomItem(IEntity e)
-        {
-            Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(e), LootPackEntry.IsMondain(e), LootPackEntry.IsStygian(e));
-
-            if (item != null)
-                GenerateRandomItem(item, null, Utility.RandomMinMax(100, 700), 0, ReforgedPrefix.None, ReforgedSuffix.None);
-
-            return item;
-        }
-
-        /// <summary>
-        /// This can be called from lootpack once loot pack conversions are implemented (if need be)
-        /// </summary>
-        /// <param name="item">item to mutate</param>
-        /// <param name="killer">who killed them. Their luck is taken into account</param>
-        /// <param name="minBudget"></param>
-        /// <param name="maxBudget"></param>
-        /// <returns></returns>
-        public static bool GenerateRandomItem(Item item, int luckChance, int minBudget, int maxBudget)
-        {
-            if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
-            {
-                int budget = Utility.RandomMinMax(minBudget, maxBudget);
-                //Utility.WriteLine(ConsoleColor.Magenta, String.Format("Creating Random Item: {0}, BUDGET: {1}", item.GetType().Name, budget));
-                GenerateRandomItem(item, null, budget, luckChance, ReforgedPrefix.None, ReforgedSuffix.None);
-                //Utility.WriteLine(ConsoleColor.Green, String.Format("Total Weight: {0}", Imbuing.GetTotalWeight(item)));
-                return true;
-            }
-            return false;
-        }
-
-        public static Item GenerateRandomItem(Mobile killer, BaseCreature creature)
-        {
-			Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
-
-            if(item != null)
-                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
-
-            return item;
-        }
 
         /// <summary>
         /// Called in LootPack.cs
@@ -1314,16 +1264,6 @@ namespace Server.Items
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
                 GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
-                return true;
-            }
-            return false;
-        }
-
-        public static bool GenerateRandomItem(Item item, Mobile killer, BaseCreature creature, ReforgedPrefix prefix, ReforgedSuffix suffix)
-        {
-            if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
-            {
-                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), prefix, suffix);
                 return true;
             }
             return false;
@@ -1430,7 +1370,7 @@ namespace Server.Items
                 if (LootPack.CheckLuck(luckchance) && mods < 5)
                     mods++;
 
-                ApplyReforgedProperties(item, prefix, suffix, false, budget, perclow, perchigh, mods, luckchance);
+                ApplyReforgedProperties(item, prefix, suffix, false, budget, perclow, perchigh, mods, 0, luckchance);
 			}
         }
 
@@ -1491,6 +1431,7 @@ namespace Server.Items
 			if(val > 350) val = 350;
 			val *= 2;
 
+            Console.WriteLine(val);
 			return (int)val;
 		}
 

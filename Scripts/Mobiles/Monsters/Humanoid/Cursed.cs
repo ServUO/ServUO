@@ -20,10 +20,6 @@ namespace Server.Mobiles
             this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
             this.AddItem(new Shirt(Utility.RandomNeutralHue()));
 
-            BaseWeapon weapon = Loot.RandomWeapon();
-            weapon.Movable = false;
-            this.AddItem(weapon);
-
             this.SetStr(91, 100);
             this.SetDex(86, 95);
             this.SetInt(61, 70);
@@ -47,6 +43,10 @@ namespace Server.Mobiles
 
             this.Fame = 1000;
             this.Karma = -2000;
+
+            BaseWeapon weapon = Loot.RandomWeapon(this);
+            weapon.Movable = false;
+            this.AddItem(weapon);
         }
 
         public Cursed(Serial serial)

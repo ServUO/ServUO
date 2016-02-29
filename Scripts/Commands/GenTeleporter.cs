@@ -82,7 +82,6 @@ namespace Server.Commands
 
             TeleportersCreator c = new TeleportersCreator();
 
-            int count = 0;
             StreamReader reader = new StreamReader(m_Path);
 
             string line;
