@@ -678,6 +678,10 @@ namespace Server
 				{
 					if (Core.AOS)
 					{
+                        // If the random item generator is enabled we don't need to do any of this
+                        if (RandomItemGenerator.Enabled)
+                            return item;
+
                         int bonusProps = GetBonusProperties();
 						int min = m_MinIntensity;
 						int max = m_MaxIntensity;
@@ -695,18 +699,7 @@ namespace Server
 							props = m_MaxProps;
 						}
 
-                        if(from is BaseCreature)
-                        {
-                            if (RandomItemGenerator.GenerateRandomItem(item, ((BaseCreature)from).LastKiller, (BaseCreature)from))
-                                return item;
-                        }
-                        else
-                        {
-                            if (RandomItemGenerator.GenerateRandomItem(item, null, null))
-                                return item;
-                        }
-
-                        // Otherwise use the older style random generation
+                        // Use the older style random generation
 						if (item is BaseWeapon)
 						{
 							BaseRunicTool.ApplyAttributesTo((BaseWeapon)item, false, luckChance, props, m_MinIntensity, m_MaxIntensity);
