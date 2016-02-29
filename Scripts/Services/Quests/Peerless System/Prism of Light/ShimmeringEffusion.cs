@@ -45,13 +45,14 @@ namespace Server.Mobiles
 			
             this.PackResources(8);
             this.PackTalismans(5);
-            this.PackArcaneScroll(1, 6);
         }
 		
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.SuperBoss, 8);
             this.AddLoot(LootPack.Parrot, 2);
+            AddLoot(LootPack.HighScrolls, 3);
+            AddLoot(LootPack.MedScrolls, 3);
         }
 		
         public override void OnDeath(Container c)

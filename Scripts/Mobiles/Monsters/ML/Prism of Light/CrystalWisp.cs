@@ -9,13 +9,16 @@ namespace Server.Mobiles
         {
             this.Name = "a crystal wisp";
             this.Hue = 0x482;
-
-            this.PackArcaneScroll(0, 1);
         }
 
         public CrystalWisp(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.MedScrolls);
         }
 
         public override void Serialize(GenericWriter writer)

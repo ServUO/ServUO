@@ -37,8 +37,6 @@ namespace Server.Mobiles
             this.Karma = -2500;
 
             this.VirtualArmor = 28;
-
-            this.PackItem(Loot.RandomWeapon());
         }
 
         public Ghoul(Serial serial)
@@ -70,6 +68,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);
+            this.PackItem(Loot.RandomWeapon(this));
         }
 
         public override void Serialize(GenericWriter writer)

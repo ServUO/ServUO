@@ -42,44 +42,6 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 32;
 
-            this.PackItem(Loot.RandomArmorOrShieldOrWeapon());
-			
-            switch ( Utility.Random(10))
-            {
-                case 0:
-                    this.PackItem(new LeftArm());
-                    break;
-                case 1:
-                    this.PackItem(new RightArm());
-                    break;
-                case 2:
-                    this.PackItem(new Torso());
-                    break;
-                case 3:
-                    this.PackItem(new Bone());
-                    break;
-                case 4:
-                    this.PackItem(new RibCage());
-                    break;
-                case 5:
-                    this.PackItem(new RibCage());
-                    break;
-                case 6:
-                    this.PackItem(new BonePile());
-                    break;
-                case 7:
-                    this.PackItem(new BonePile());
-                    break;
-                case 8:
-                    this.PackItem(new BonePile());
-                    break;
-                case 9:
-                    this.PackItem(new BonePile());
-                    break;
-            }
-			
-            if (0.025 > Utility.RandomDouble())
-                this.PackItem(new GlacialStaff());
         }
 
         public IceSerpent(Serial serial)
@@ -118,6 +80,44 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);
+            this.PackItem(Loot.RandomArmorOrShieldOrWeapon(this));
+
+            switch (Utility.Random(10))
+            {
+                case 0:
+                    this.PackItem(new LeftArm());
+                    break;
+                case 1:
+                    this.PackItem(new RightArm());
+                    break;
+                case 2:
+                    this.PackItem(new Torso());
+                    break;
+                case 3:
+                    this.PackItem(new Bone());
+                    break;
+                case 4:
+                    this.PackItem(new RibCage());
+                    break;
+                case 5:
+                    this.PackItem(new RibCage());
+                    break;
+                case 6:
+                    this.PackItem(new BonePile());
+                    break;
+                case 7:
+                    this.PackItem(new BonePile());
+                    break;
+                case 8:
+                    this.PackItem(new BonePile());
+                    break;
+                case 9:
+                    this.PackItem(new BonePile());
+                    break;
+            }
+
+            if (0.025 > Utility.RandomDouble())
+                this.PackItem(new GlacialStaff());
         }
 
         public override void Serialize(GenericWriter writer)

@@ -612,8 +612,11 @@ namespace Server
 
 				if (rnd < item.Chance)
 				{
-					return Mutate(from, luckChance, item.Construct(IsInTokuno(from), IsMondain(from), IsStygian(from) ) );
-				}
+                    if(from is BaseCreature)
+					    return Mutate(from, luckChance, item.Construct((BaseCreature)from, IsInTokuno(from), IsMondain(from), IsStygian(from) ) );
+                    else
+                        return Mutate(from, luckChance, item.Construct(null, IsInTokuno(from), IsMondain(from), IsStygian(from)));
+                }
 
 				rnd -= item.Chance;
 			}
@@ -675,7 +678,7 @@ namespace Server
 				{
 					if (Core.AOS)
 					{
-						int bonusProps = GetBonusProperties();
+                        int bonusProps = GetBonusProperties();
 						int min = m_MinIntensity;
 						int max = m_MaxIntensity;
 
@@ -692,14 +695,16 @@ namespace Server
 							props = m_MaxProps;
 						}
 
-                        // Try to generate a new random item
-                        if (from is BaseCreature)
+                        if(from is BaseCreature)
                         {
                             if (RandomItemGenerator.GenerateRandomItem(item, ((BaseCreature)from).LastKiller, (BaseCreature)from))
                                 return item;
                         }
-                        else if (RandomItemGenerator.GenerateRandomItem(item, null, null))
-                            return item;
+                        else
+                        {
+                            if (RandomItemGenerator.GenerateRandomItem(item, null, null))
+                                return item;
+                        }
 
                         // Otherwise use the older style random generation
 						if (item is BaseWeapon)
@@ -1005,7 +1010,7 @@ namespace Server
             return Loot.RandomScroll(minIndex, maxIndex, spellBookType);
 		}
 
-		public Item Construct(bool inTokuno, bool isMondain, bool isStygian)
+		public Item Construct(BaseCreature from, bool inTokuno, bool isMondain, bool isStygian)
 		{
 			try
 			{
@@ -1013,23 +1018,23 @@ namespace Server
 
 				if (m_Type == typeof(BaseRanged))
 				{
-					item = Loot.RandomRangedWeapon(inTokuno, isMondain,isStygian );
+					item = Loot.RandomRangedWeapon(from, inTokuno, isMondain, isStygian );
 				}
 				else if (m_Type == typeof(BaseWeapon))
 				{
-					item = Loot.RandomWeapon(inTokuno, isMondain, isStygian );
+					item = Loot.RandomWeapon(from, inTokuno, isMondain, isStygian );
 				}
 				else if (m_Type == typeof(BaseArmor))
 				{
-					item = Loot.RandomArmorOrHat(inTokuno, isMondain, isStygian);
+					item = Loot.RandomArmorOrHat(from, inTokuno, isMondain, isStygian);
 				}
 				else if (m_Type == typeof(BaseShield))
 				{
-					item = Loot.RandomShield();
+					item = Loot.RandomShield(from, isStygian);
 				}
 				else if (m_Type == typeof(BaseJewel))
 				{
-					item = Core.AOS ? Loot.RandomJewelry() : Loot.RandomArmorOrShieldOrWeapon();
+					item = Core.AOS ? Loot.RandomJewelry(from, isStygian) : Loot.RandomArmorOrShieldOrWeapon(from, isStygian);
 				}
 				else if (m_Type == typeof(BaseInstrument))
 				{

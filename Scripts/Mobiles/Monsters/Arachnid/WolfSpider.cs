@@ -45,10 +45,6 @@ namespace Server.Mobiles
             ControlSlots = 2;
             MinTameSkill = 59.1;
 
-            AddItem(new Gold(300));
-            PackItem(new SpidersSilk(8));
-            PackMagicItems(1, 2);
-
             QLPoints = 5;
         }
 
@@ -87,6 +83,8 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
+            PackItem(new SpidersSilk(8));
+            AddLoot(LootPack.Rich);
             AddLoot(LootPack.Gems, 2);
         }
 

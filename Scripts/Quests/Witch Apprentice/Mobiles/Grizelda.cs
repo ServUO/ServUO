@@ -120,7 +120,7 @@ namespace Server.Engines.Quests.Hag
 
                                 if (Utility.RandomBool())
                                 {
-                                    BaseWeapon weapon = Loot.RandomWeapon();
+                                    BaseWeapon weapon = Loot.RandomWeapon(this);
 
                                     if (Core.AOS)
                                     {
@@ -141,7 +141,7 @@ namespace Server.Engines.Quests.Hag
 							
                                     if (Core.AOS)
                                     {
-                                        item = Loot.RandomArmorOrShieldOrJewelry();
+                                        item = Loot.RandomArmorOrShieldOrJewelry(this);
 
                                         if (item is BaseArmor)
                                             BaseRunicTool.ApplyAttributesTo((BaseArmor)item, 2, 20, 30);
@@ -150,7 +150,7 @@ namespace Server.Engines.Quests.Hag
                                     }
                                     else
                                     {
-                                        BaseArmor armor = Loot.RandomArmorOrShield();
+                                        BaseArmor armor = Loot.RandomArmorOrShield(this);
                                         item = armor;
 
                                         armor.ProtectionLevel = (ArmorProtectionLevel)BaseCreature.RandomMinMaxScaled(2, 3);

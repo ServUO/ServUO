@@ -41,7 +41,6 @@ namespace Server.Mobiles
             this.Karma = 0;
 
             this.PackReg(4);
-            this.PackArcaneScroll(0, 1);
 
             Tamable = false; 
         }
@@ -110,6 +109,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.HighScrolls);
         }
 
         // TODO: Put this attack shared with Hiryu and Lesser Hiryu in one place
