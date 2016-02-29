@@ -211,9 +211,9 @@ namespace Server.Mobiles
                 switch (Utility.Random(3))
                 {
                     default:
-                    case 0: item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(false, false, true); break;
-                    case 1: item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(false, true, false); break;
-                    case 2: item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(true, false, false); break;
+                    case 0: item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(this, false, false, true); break;
+                    case 1: item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(this, false, true, false); break;
+                    case 2: item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(this, true, false, false); break;
                 }
 
                 int weight = 0;

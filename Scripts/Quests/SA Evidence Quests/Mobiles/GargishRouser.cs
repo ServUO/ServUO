@@ -95,8 +95,6 @@ namespace Server.Mobiles
             this.Fame = 12000;
             this.Karma = -12000;
 
-			PackMysticScroll(1, 3);
-
             m_NextSummon = DateTime.Now;
             m_NextBard = DateTime.Now;
 		}
@@ -137,6 +135,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich);
+            this.AddLoot(LootPack.MedScrolls, 2);
+            this.AddLoot(LootPack.HighScrolls, 2);
         }
 		
 		private DateTime m_NextSummon;

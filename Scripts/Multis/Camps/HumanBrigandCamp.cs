@@ -82,7 +82,7 @@ namespace Server.Multis
 				
                 if (Utility.RandomDouble() < 0.5)
                 {
-                    Item item = Loot.RandomArmorOrShieldOrWeapon();					
+                    Item item = Loot.RandomArmorOrShieldOrWeapon(null);					
 					
                     if (item is BaseWeapon)
                         BaseRunicTool.ApplyAttributesTo((BaseWeapon)item, false, 0, Utility.RandomMinMax(1, 5), 10, 100);

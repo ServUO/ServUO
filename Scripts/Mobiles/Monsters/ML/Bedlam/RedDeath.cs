@@ -43,11 +43,6 @@ namespace Server.Mobiles
 
             this.Fame = 28000;
             this.Karma = -28000;
-
-            if (Utility.RandomBool())
-                this.PackNecroScroll(Utility.RandomMinMax(5, 9));
-            else
-                this.PackScroll(4, 7);
         }
 
         public RedDeath(Serial serial)
@@ -93,6 +88,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 3);
+            this.AddLoot(LootPack.MedScrolls, 2);
+            this.AddLoot(LootPack.HighScrolls, 2);
         }
 
         public override WeaponAbility GetWeaponAbility()

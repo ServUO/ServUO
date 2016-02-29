@@ -27,10 +27,10 @@ namespace Server.Items
 			TrapPower = 1 * Utility.Random( 1, 25 );
 
 			DropItem( new Gold( 30, 100 ) );
-			DropItem( Loot.RandomWeapon() );
-			DropItem( Loot.RandomArmorOrShield() );
-			DropItem( Loot.RandomClothing() );
-			DropItem( Loot.RandomJewelry() );
+			DropItem( Loot.RandomWeapon(null) );
+			DropItem( Loot.RandomArmorOrShield(null) );
+			DropItem( Loot.RandomClothing(null) );
+			DropItem( Loot.RandomJewelry(null) );
 			DropItem( new Bolt( 10 ) );
 
 			for (int i = Utility.Random(3) + 1; i > 0; i--) // random 1 to 3
@@ -207,12 +207,12 @@ namespace Server.Items
 					DropItem( Loot.RandomGem() );
 
 			for( int i = Utility.Random( 1, 3 ); i > 1; i-- )
-				DropItem( Loot.RandomWand() );
+				DropItem( Loot.RandomWand(null) );
 
 			// Magical ArmorOrWeapon
 			for( int i = Utility.Random( 1, 3 ); i > 1; i-- )
 			{
-				Item item = Loot.RandomArmorOrShieldOrWeapon();
+				Item item = Loot.RandomArmorOrShieldOrWeapon(null);
 
 				if( item is BaseWeapon )
 				{
@@ -234,10 +234,10 @@ namespace Server.Items
 			}
 
 			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-				DropItem( Loot.RandomClothing() );
+				DropItem( Loot.RandomClothing(null) );
 
 			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-				DropItem( Loot.RandomJewelry() );
+				DropItem( Loot.RandomJewelry(null) );
 
 			// Magic clothing (not implemented)
 			
@@ -299,12 +299,12 @@ namespace Server.Items
 					DropItem( Loot.RandomGem() );
 
 			for( int i = Utility.Random( 1, 4 ); i > 1; i-- )
-				DropItem( Loot.RandomWand() );
+				DropItem( Loot.RandomWand(null) );
 
 			// Magical ArmorOrWeapon
 			for( int i = Utility.Random( 1, 4 ); i > 1; i-- )
 			{
-				Item item = Loot.RandomArmorOrShieldOrWeapon();
+				Item item = Loot.RandomArmorOrShieldOrWeapon(null);
 
 				if( item is BaseWeapon )
 				{
@@ -326,10 +326,10 @@ namespace Server.Items
 			}
 
 			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-				DropItem( Loot.RandomClothing() );
+				DropItem( Loot.RandomClothing(null) );
 			
 			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-				DropItem( Loot.RandomJewelry() );
+				DropItem( Loot.RandomJewelry(null) );
 			
 			DropItem( new MagicCrystalBall() );
 

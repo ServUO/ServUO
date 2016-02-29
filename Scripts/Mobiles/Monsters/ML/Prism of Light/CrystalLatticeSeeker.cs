@@ -40,8 +40,6 @@ namespace Server.Mobiles
 
             this.Fame = 17000;
             this.Karma = -17000;
-
-            this.PackArcaneScroll(0, 2);
         }
 
         public CrystalLatticeSeeker(Serial serial)
@@ -77,9 +75,9 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.FilthyRich, 4);
-            // TODO: uncomment once added
-            //AddLoot( LootPack.Parrot );
+            AddLoot( LootPack.Parrot );
             this.AddLoot(LootPack.Gems);
+            this.AddLoot(LootPack.HighScrolls, 2);
         }
 
         public override void OnGaveMeleeAttack(Mobile defender)

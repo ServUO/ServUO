@@ -42,8 +42,6 @@ namespace Server.Mobiles
 
             this.Fame = 15000;
             this.Karma = -15000;
-
-            this.PackArcaneScroll(0, 1);
         }
 
         public override void OnDeath( Container c )
@@ -62,6 +60,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.FilthyRich, 3);
+            this.AddLoot(LootPack.HighScrolls);
         }
 
         public override void Serialize(GenericWriter writer)

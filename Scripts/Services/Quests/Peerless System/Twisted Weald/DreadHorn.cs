@@ -57,7 +57,6 @@ namespace Server.Mobiles
 			
 			PackResources( 8 );
 			PackTalismans( 5 );
-            PackMysticScroll(8);
 			
 			m_Change = DateTime.UtcNow;
 			m_Stomp = DateTime.UtcNow;
@@ -67,6 +66,9 @@ namespace Server.Mobiles
 		public override void GenerateLoot()
 		{
             AddLoot(LootPack.AosSuperBoss, 8);
+            AddLoot(LootPack.LowScrolls, 4);
+            AddLoot(LootPack.MedScrolls, 4);
+            AddLoot(LootPack.HighScrolls, 4);
 		}	
 		
 		public override void OnThink()

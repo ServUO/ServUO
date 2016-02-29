@@ -1254,7 +1254,7 @@ namespace Server.Items
 			
             for (int i = 0; i < 10; ++i)
             {
-                Item item = Loot.ChestOfHeirloomsContains();
+                Item item = Loot.ChestOfHeirloomsContains(null);
 				
                 int attributeCount = Utility.RandomMinMax(1, 5);
                 int min = 20;

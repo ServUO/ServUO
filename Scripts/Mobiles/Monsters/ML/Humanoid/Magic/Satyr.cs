@@ -43,8 +43,6 @@ namespace Server.Mobiles
             this.Karma = 0;
 
             this.VirtualArmor = 28; // Don't know what it should be
-
-            this.PackArcanceScroll(0.05);
         }
 
         public override OppositionGroup OppositionGroup
@@ -58,6 +56,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.MlRich);
+            this.AddLoot(LootPack.MedScrolls);
         }
 
         public override bool CanDiscord { get { return true; } }

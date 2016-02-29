@@ -43,9 +43,6 @@ namespace Server.Mobiles
 
             this.Fame = 24000;
             this.Karma = -24000;
-
-            this.PackScroll(4, 7);
-            this.PackScroll(4, 7);
         }
 
         public Putrefier(Serial serial)
@@ -87,12 +84,11 @@ namespace Server.Mobiles
                 return 5;
             }
         }
-        //TO DO
-        //Poison attack similar to Yamandon, not sure if it is identical or if it doesn't hit area but single targets.
-        //Needs to be double checked
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 3);
+            this.AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)
