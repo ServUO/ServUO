@@ -10,6 +10,7 @@ namespace Server.Items
         {
             this.SkillBonuses.SetValues(0, SkillName.Mining, 10.0);
             this.UsesRemaining = 20;
+			this.LootType = Server.LootType.Blessed;
 
             Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), new TimerCallback(Tick_Callback));
         }
@@ -46,7 +47,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -54,6 +55,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+			if (version == 0)
+				LootType = Server.LootType.Blessed;
 
             Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), new TimerCallback(Tick_Callback));
         }

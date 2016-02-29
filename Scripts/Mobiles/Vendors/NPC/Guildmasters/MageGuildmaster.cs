@@ -62,7 +62,7 @@ namespace Server.Mobiles
 
         public static bool CanConvertArmor(BaseArmor armor)
         {
-            if (armor is Artifact)
+            if (armor.ArtifactRarity != 0)
                 return false;
             if (armor.ArmorAttributes.MageArmor == 0 &&
                 Server.SkillHandlers.Imbuing.GetTotalMods(armor) > 4)
@@ -209,6 +209,10 @@ namespace Server.Mobiles
                     From.SendLocalizedMessage(1019022); // You do not have enough gold.
                     return;
                 }
+
+				if (!Armor.IsChildOf(From.Backpack))
+					return;
+
                 if (Armor.ArmorAttributes.MageArmor > 0)
                     Armor.ArmorAttributes.MageArmor = 0;
                 else
