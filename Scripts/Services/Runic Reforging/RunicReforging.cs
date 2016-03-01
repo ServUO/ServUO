@@ -1431,7 +1431,6 @@ namespace Server.Items
 			if(val > 350) val = 350;
 			val *= 2;
 
-            Console.WriteLine(val);
 			return (int)val;
 		}
 

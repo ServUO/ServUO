@@ -802,6 +802,7 @@
     <Compile Include="Items\- BaseClasses\BaseWeapon.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\- BaseClasses\Extensions.cs" />
     <Compile Include="Items\- BaseClasses\Glasses.cs">
       <SubType>Code</SubType>
     </Compile>
