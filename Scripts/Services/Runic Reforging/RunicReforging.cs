@@ -1627,21 +1627,42 @@ namespace Server.Items
                 if (attrList.Count == 0)
                     return false;
 
-                random = Utility.Random(attrList.Count);
-                object attr = attrList[random];
-				int[] minmax = new int[] { 1, 1 };
+                // Make sure we don't apply the same atttribute more than once.
+                object attr;
+                while (true)
+                {
+                    random = Utility.Random(attrList.Count);
+                    attr = attrList[random];
+
+                    if (wepattrs != null && attr is AosWeaponAttribute && wepattrs[(AosWeaponAttribute)attr] != 0)
+                        continue;
+                    if (aosattrs != null && attr is AosAttribute && aosattrs[(AosAttribute)attr] != 0)
+                        continue;
+                    if (armorattrs != null && attr is AosArmorAttribute && armorattrs[(AosArmorAttribute)attr] != 0)
+                        continue;
+                    if (skillbonuses != null && attr is SkillName)
+                    {
+                        bool cont = false;
+                        for(int i = 0; i < 5; ++i)
+                        {
+                            if (skillbonuses.GetSkill(i) == (SkillName)attr)
+                                cont = true;
+                        }
+                        if (cont)
+                            continue;
+                    }
+                    if (resistattrs != null && attr is AosElementAttribute && resistattrs[(AosElementAttribute)attr] != 0)
+                        continue;
+                    break;
+                }
+                int[] minmax = new int[] { 1, 1 };
 				int value = 1;
 
 				if(wepattrs != null && attr is AosWeaponAttribute[])
 				{
 					int ran = Utility.Random(((AosWeaponAttribute[])attr).Length);
-					
-					while(wepattrs[(AosWeaponAttribute)ran] != 0)
-						ran = Utility.Random(((AosWeaponAttribute[])attr).Length);
 
                     AosWeaponAttribute[] list = attr as AosWeaponAttribute[];
-
-					attr = list[ran];
 
                     if ((item is BaseWeapon && CheckHitSpell((BaseWeapon)item, attr)) || (item is BaseWeapon && CheckHitArea((BaseWeapon)item, attr)))
                     {
