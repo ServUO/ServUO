@@ -16,8 +16,8 @@ namespace Server.Items
             if (item.GetType().IsAssignableFrom(typeof(Factions.FactionItem)))
                 return 800;
             // Set peices are 600
-            if (item.GetType().IsAssignableFrom(typeof(BaseArmor)) &&
-                ((BaseArmor)item).IsSetItem)
+            BaseArmor armor = item as BaseArmor;
+            if (armor != null && armor.IsSetItem)
                 return 600;
             // Magic items cost their imbue weight
             var imbueWeight = SkillHandlers.Imbuing.GetTotalWeight(item);
