@@ -111,12 +111,12 @@ namespace Server.Items
             return goodtogo;
         }
 
-        public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods, int powermod, int luckchance)
+        public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods, int powermod, int luckchance, bool isRandomLoot = false)
 		{
 			if(prefix == ReforgedPrefix.None && suffix == ReforgedSuffix.None)
 			{
                 for(int i = 0; i < maxmods; i++)
-                    ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance);
+                    ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, isRandomLoot);
 
                 ApplyItemPower(item, playermade);
 			}
@@ -194,7 +194,7 @@ namespace Server.Items
 
                             prefixCol.RemoveAt(random);
 						}
-                        else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance))
+                        else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, isRandomLoot))
                             mods++;
 
                         i++;
@@ -222,7 +222,7 @@ namespace Server.Items
 
                             suffixCol.RemoveAt(random);
 						}
-                        else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance))
+                        else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, isRandomLoot))
                             mods++;
 
                         i++;
@@ -264,7 +264,7 @@ namespace Server.Items
 
                             suffixCol.RemoveAt(random);
 						}
-                        else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance))
+                        else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance, isRandomLoot))
                             mods++;
 
                         i++;
@@ -1259,17 +1259,17 @@ namespace Server.Items
         /// <summary>
         /// Called in LootPack.cs
         /// </summary>
-        public static bool GenerateRandomItem(Item item, Mobile killer, BaseCreature creature)
+        public static bool GenerateRandomItem(Item item, Mobile killer, BaseCreature creature, bool isRandomLoot = false)
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
-                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
+                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None, isRandomLoot);
                 return true;
             }
             return false;
         }
 
-        public static void GenerateRandomItem(Item item, Mobile killer, int basebudget, int luckchance, ReforgedPrefix forcedprefix, ReforgedSuffix forcedsuffix)
+        public static void GenerateRandomItem(Item item, Mobile killer, int basebudget, int luckchance, ReforgedPrefix forcedprefix, ReforgedSuffix forcedsuffix, bool isRandomLoot = false)
         {
             int luckbonus = 0;
             int budgetBonus = 0;
@@ -1370,7 +1370,7 @@ namespace Server.Items
                 if (LootPack.CheckLuck(luckchance) && mods < 5)
                     mods++;
 
-                ApplyReforgedProperties(item, prefix, suffix, false, budget, perclow, perchigh, mods, 0, luckchance);
+                ApplyReforgedProperties(item, prefix, suffix, false, budget, perclow, perchigh, mods, 0, luckchance, isRandomLoot);
 			}
         }
 
@@ -1565,7 +1565,7 @@ namespace Server.Items
             return playermade ? ItemPower.ReforgedLegendary : ItemPower.LegendaryArtifact;
         }
 		
-		private static bool ApplyRunicAttributes(Item item, int perclow, int perchigh, ref int budget, int idx, int luckchance)
+		private static bool ApplyRunicAttributes(Item item, int perclow, int perchigh, ref int budget, int idx, int luckchance, bool isRandomLoot = false)
 		{
             List<object> attrList = null;
 			AosWeaponAttributes wepattrs = null;
@@ -1594,6 +1594,8 @@ namespace Server.Items
 			else if (item is BaseArmor)
 			{
                 attrList = new List<object>(m_ArmorList);
+                if (isRandomLoot)
+                    attrList.Add(AosArmorAttribute.MageArmor);
 
 				aosattrs = ((BaseArmor)item).Attributes;
 				armorattrs = ((BaseArmor)item).ArmorAttributes;
@@ -1711,6 +1713,10 @@ namespace Server.Items
 				}
 				else if (armorattrs != null && attr is AosArmorAttribute)
 				{
+                    if((AosArmorAttribute)attr == AosArmorAttribute.MageArmor)
+                    {
+                        Console.WriteLine(".");
+                    }
                     minmax = Imbuing.GetPropRange((AosArmorAttribute)attr);
                     value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance);
 
