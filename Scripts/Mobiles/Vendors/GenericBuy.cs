@@ -6,6 +6,7 @@ namespace Server.Mobiles
 {
     public class GenericBuyInfo : IBuyItemInfo
     {
+        public static Dictionary<Type, int> BuyPrices = new Dictionary<Type, int>();
         private Type m_Type;
         private string m_Name;
         private int m_Price;
@@ -32,6 +33,8 @@ namespace Server.Mobiles
 
         public GenericBuyInfo(string name, Type type, int price, int amount, int itemID, int hue, object[] args)
         {
+            if(type != null)
+                BuyPrices[type] = price;
             this.m_Type = type;
             this.m_Price = price;
             this.m_MaxAmount = this.m_Amount = amount;
