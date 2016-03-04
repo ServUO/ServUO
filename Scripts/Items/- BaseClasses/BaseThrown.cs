@@ -116,7 +116,7 @@ namespace Server.Items
             {
                 //Internalize();
                 this.Visible = false;
-                attacker.MovingEffect(defender, this.EffectID, 18, 1, false, false);
+                attacker.MovingEffect(defender, this.EffectID, 18, 1, false, false, this.Hue, 0);
             }
 
             return true;
@@ -146,7 +146,7 @@ namespace Server.Items
         public virtual void ThrowBack()
         {
             if (this.m_Target != null)
-                this.m_Target.MovingEffect(this.m_Thrower, this.EffectID, 18, 1, false, false);
+                this.m_Target.MovingEffect(this.m_Thrower, this.EffectID, 18, 1, false, false, this.Hue, 0);
             else if (this.m_Thrower != null)
                 Effects.SendMovingParticles(new Entity(Serial.Zero, this.m_KillSave, this.m_Thrower.Map), this.m_Thrower, this.ItemID, 18, 0, false, false, this.Hue, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
 
