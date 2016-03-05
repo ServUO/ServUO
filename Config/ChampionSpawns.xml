@@ -22,7 +22,7 @@
         <location x="5178" y="708" z="20" map="Felucca" radius="60"/>
     </spawn>
     <spawn name="Despise" group="FelDungeons" type="VerminHorde">
-        <location x="5557" y="824" z="65" map="Felucca" radius="70"/>
+        <location x="5557" y="824" z="65" map="Felucca" radius="65"/>
     </spawn>
     <spawn name="Destard" group="FelDungeons" type="ColdBlood">
         <location x="5259" y="837" z="61" map="Felucca" radius="75"/>
