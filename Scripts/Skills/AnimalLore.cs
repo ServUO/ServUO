@@ -23,6 +23,20 @@ namespace Server.SkillHandlers
 
         private class InternalTarget : Target
         {
+			private static void SendGump(Mobile from, BaseCreature c)
+			{
+				from.CloseGump(typeof(AnimalLoreGump));
+				from.SendGump(new AnimalLoreGump(c));
+			}
+
+			private static void Check(Mobile from, BaseCreature c, double min)
+			{
+				if (from.CheckTargetSkill(SkillName.AnimalLore, c, min, 120.0))
+					SendGump(from, c);
+				else
+					from.SendLocalizedMessage(500334); // You can't think of anything you know offhand.
+			}
+
             public InternalTarget()
                 : base(8, false, TargetFlags.None)
             {
@@ -30,8 +44,6 @@ namespace Server.SkillHandlers
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-				bool success = false;
-
                 if (!from.Alive)
                 {
                     from.SendLocalizedMessage(500331); // The spirits of the dead are not the province of animal lore.
@@ -48,25 +60,27 @@ namespace Server.SkillHandlers
 							if(skill < 100.0)
                             {
 								if (c.Controlled)
-									success = true;
+									SendGump(from, c);
 								else
 									from.SendLocalizedMessage(1049674); // At your skill level, you can only lore tamed creatures.
                             }
                             else if (skill < 110.0)
                             {
 								if (c.Controlled)
-									success = true;
-								else if(c.Tamable)
-									success = from.CheckTargetSkill(SkillName.AnimalLore, c, 100.0, 120.0);
+									SendGump(from, c);
+								else if (c.Tamable)
+									Check(from, c, 80.0);
 								else
 									from.SendLocalizedMessage(1049675); // At your skill level, you can only lore tamed or tameable creatures.
                             }
                             else
                             {
-								if (c.Controlled || c.Tamable)
-									success = true;
+								if (c.Controlled)
+									SendGump(from, c);
+								else if (c.Tamable)
+									Check(from, c, 80.0);
 								else
-									success = from.CheckTargetSkill(SkillName.AnimalLore, c, 110.0, 120.0);
+									Check(from, c, 100.0);
                             }
                         }
                         else
@@ -78,11 +92,6 @@ namespace Server.SkillHandlers
                     {
                         from.SendLocalizedMessage(500331); // The spirits of the dead are not the province of animal lore.
                     }
-					if (success)
-					{
-						from.CloseGump(typeof(AnimalLoreGump));
-						from.SendGump(new AnimalLoreGump(c));
-					}
                 }
                 else
                 {
