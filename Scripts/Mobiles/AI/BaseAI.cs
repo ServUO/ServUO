@@ -141,11 +141,10 @@ namespace Server.Mobiles
 
 			public override void OnClick()
 			{
-				if (!m_Mobile.Deleted && m_Mobile.Controlled && m_From.CheckAlive())
+				if (!m_Mobile.Deleted && m_Mobile.Controlled && m_From.CheckAlive() && m_Mobile.Map == m_From.Map && m_Mobile.InRange(m_From, 12))
 				{
 					if (m_Mobile.IsDeadPet &&
-						(m_Order == OrderType.Guard || m_Order == OrderType.Attack || m_Order == OrderType.Transfer ||
-						 m_Order == OrderType.Drop))
+						(m_Order == OrderType.Guard || m_Order == OrderType.Attack || m_Order == OrderType.Transfer || m_Order == OrderType.Drop))
 					{
 						return;
 					}
@@ -157,7 +156,7 @@ namespace Server.Mobiles
 					{
 						return;
 					}
-					else if (isFriend && m_Order != OrderType.Follow && m_Order != OrderType.Stay && m_Order != OrderType.Stop)
+					else if (isFriend && (m_Order != OrderType.Follow && m_Order != OrderType.Stay && m_Order != OrderType.Stop && m_Order != OrderType.Attack))
 					{
 						return;
 					}
@@ -187,17 +186,10 @@ namespace Server.Mobiles
 							}
 						case OrderType.Release:
 							{
-								if (m_Mobile.Summoned)
-								{
-									goto default;
-								}
-								else
-								{
-									m_From.SendGump(new ConfirmReleaseGump(m_From, m_Mobile));
-								}
+                                m_From.SendGump(new ConfirmReleaseGump(m_From, m_Mobile));
 
-								break;
-							}
+                                break;
+                            }
 						default:
 							{
 								if (m_Mobile.CheckControlChance(m_From))
@@ -763,26 +755,17 @@ namespace Server.Mobiles
 								}
 							case 0x16D: // *release
 								{
-									if (!isOwner)
-									{
-										break;
-									}
-
-									if (WasNamed(speech) && m_Mobile.CheckControlChance(e.Mobile))
-									{
-										if (!m_Mobile.Summoned)
-										{
-											e.Mobile.SendGump(new ConfirmReleaseGump(e.Mobile, m_Mobile));
-										}
-										else
-										{
-											m_Mobile.ControlTarget = null;
-											m_Mobile.ControlOrder = OrderType.Release;
-										}
-									}
-
-									return;
-								}
+                                    if (!isOwner)
+                                    {
+                                        break;
+                                    }
+                                    else if (WasNamed(speech))
+                                    {
+                                        m_Mobile.ControlTarget = null;
+                                        m_Mobile.ControlOrder = OrderType.Release;
+                                    }
+                                    return;
+                                }
 							case 0x16E: // *transfer
 								{
 									if (!isOwner)
@@ -1674,34 +1657,35 @@ namespace Server.Mobiles
 
 		public virtual bool DoOrderRelease()
 		{
-			m_Mobile.DebugSay("I have been released");
+            m_Mobile.DebugSay("I have been released");
 
-			m_Mobile.PlaySound(m_Mobile.GetAngerSound());
+            m_Mobile.Say(1043255, m_Mobile.Name);
+            m_Mobile.PlaySound(m_Mobile.GetAngerSound());
 
-			m_Mobile.SetControlMaster(null);
-			m_Mobile.SummonMaster = null;
+            m_Mobile.SetControlMaster(null);
+            m_Mobile.SummonMaster = null;
 
-			m_Mobile.BondingBegin = DateTime.MinValue;
-			m_Mobile.OwnerAbandonTime = DateTime.MinValue;
-			m_Mobile.IsBonded = false;
+            m_Mobile.BondingBegin = DateTime.MinValue;
+            m_Mobile.OwnerAbandonTime = DateTime.MinValue;
+            m_Mobile.IsBonded = false;
 
-			SpawnEntry se = m_Mobile.Spawner as SpawnEntry;
-			if (se != null && se.HomeLocation != Point3D.Zero)
-			{
-				m_Mobile.Home = se.HomeLocation;
-				m_Mobile.RangeHome = se.HomeRange;
-			}
+            SpawnEntry se = m_Mobile.Spawner as SpawnEntry;
+            if (se != null && se.HomeLocation != Point3D.Zero)
+            {
+                m_Mobile.Home = se.HomeLocation;
+                m_Mobile.RangeHome = se.HomeRange;
+            }
 
-			if (m_Mobile.DeleteOnRelease || m_Mobile.IsDeadPet)
-			{
-				m_Mobile.Delete();
-			}
+            if (m_Mobile.DeleteOnRelease || m_Mobile.IsDeadPet)
+            {
+                m_Mobile.Delete();
+            }
 
-			m_Mobile.BeginDeleteTimer();
-			m_Mobile.DropBackpack();
+            m_Mobile.BeginDeleteTimer();
+            m_Mobile.DropBackpack();
 
-			return true;
-		}
+            return true;
+        }
 
 		public virtual bool DoOrderStay()
 		{
