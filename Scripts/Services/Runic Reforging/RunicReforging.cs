@@ -1688,10 +1688,6 @@ namespace Server.Items
 				}
 				else if (armorattrs != null && attr is AosArmorAttribute)
 				{
-                    if((AosArmorAttribute)attr == AosArmorAttribute.MageArmor)
-                    {
-                        Console.WriteLine(".");
-                    }
                     minmax = Imbuing.GetPropRange((AosArmorAttribute)attr);
                     value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance);
 
