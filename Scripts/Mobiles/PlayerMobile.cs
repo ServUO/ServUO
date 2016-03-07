@@ -1766,7 +1766,7 @@ namespace Server.Mobiles
 
 		public override void SetLocation(Point3D loc, bool isTeleport)
 		{
-			if (!isTeleport && IsPlayer())
+			if (!isTeleport && IsPlayer() && !Flying)
 			{
 				// moving, not teleporting
 				int zDrop = (Location.Z - loc.Z);
@@ -1774,6 +1774,7 @@ namespace Server.Mobiles
 				if (zDrop > 20) // we fell more than one story
 				{
 					Hits -= ((zDrop / 20) * 10) - 5; // deal some damage; does not kill, disrupt, etc
+                    SendMessage("Ouch!");
 				}
 			}
 

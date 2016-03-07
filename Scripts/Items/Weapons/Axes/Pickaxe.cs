@@ -118,6 +118,9 @@ namespace Server.Items
                 return 60;
             }
         }
+
+        public override bool CanBeWornByGargoyles { get { return true; } }
+
         public override WeaponAnimation DefAnimation
         {
             get
