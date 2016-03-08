@@ -164,9 +164,8 @@ namespace Server.Items
 			return base.GetTotal(type);
 		}
 
-		/*
-		private static Type _GoldType = ScriptCompiler.GetTypeByFullName("Server.Items.Gold");
-		private static Type _CheckType = ScriptCompiler.GetTypeByFullName("Server.Items.BankCheck");
+		private static Type _GoldType = ScriptCompiler.FindTypeByFullName("Server.Items.Gold");
+		private static Type _CheckType = ScriptCompiler.FindTypeByFullName("Server.Items.BankCheck");
 
 		public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
 		{
@@ -179,6 +178,5 @@ namespace Server.Items
 
 			return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
 		}
-		 */
 	}
 }
