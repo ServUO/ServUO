@@ -55,7 +55,7 @@ namespace Server.Engines.CannedEvil
 		}
 		public static double SpawnRadiusModForLevel(int l)
 		{
-			switch (l)
+			switch (RankForLevel(l))
 			{
 				case 0: return 1.0d;
 				case 1: return 0.75d;

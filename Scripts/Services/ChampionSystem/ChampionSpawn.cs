@@ -707,15 +707,25 @@ namespace Server.Engines.CannedEvil
                 return;
 
 			int currentLevel = Level;
+			int currentRank = Rank;
 			int maxSpawn = (int)((double)MaxKills * 0.5d * SpawnMod);
 			if (currentLevel >= 16)
 				maxSpawn = Math.Min(maxSpawn, MaxKills - m_Kills);
+			if (maxSpawn < 3)
+				maxSpawn = 3;
 
 			int spawnRadius = (int)(SpawnRadius * ChampionSystem.SpawnRadiusModForLevel(Level));
 			Rectangle2D spawnBounds = new Rectangle2D(new Point2D(this.X - spawnRadius, this.Y - spawnRadius),
 				new Point2D(this.X + spawnRadius, this.Y + spawnRadius));
 
-			while (this.m_Creatures.Count <= maxSpawn)
+			int mobCount = 0;
+			foreach(Mobile m in m_Creatures)
+			{
+				if (GetRankFor(m) == currentRank)
+					++mobCount;
+			}
+
+			while (mobCount <= maxSpawn)
             {
                 Mobile m = this.Spawn();
 
@@ -729,6 +739,7 @@ namespace Server.Engines.CannedEvil
 
                 this.m_Creatures.Add(m);
                 m.MoveToWorld(loc, this.Map);
+				++mobCount;
 
                 if (m is BaseCreature)
                 {
