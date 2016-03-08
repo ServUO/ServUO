@@ -108,6 +108,11 @@ namespace Server.Mobiles
 
 	public class PlayerMobile : Mobile, IHonorTarget
 	{
+		public static void Configure()
+		{
+			EventSink.CharacterCreated += EventSink_CharacterCreated;
+		}
+
 		#region Mount Blocking
 		public void SetMountBlock(BlockMountType type, TimeSpan duration, bool dismount)
 		{
@@ -1919,6 +1924,13 @@ namespace Server.Mobiles
 		}
 
 		#region Insurance
+		static void EventSink_CharacterCreated(CharacterCreatedEventArgs e)
+		{
+			if (e.Mobile == null || !(e.Mobile is PlayerMobile))
+				return;
+			((PlayerMobile)e.Mobile).AutoRenewInsurance = true;
+		}
+
 		private void ToggleItemInsurance()
 		{
 			if (!CheckAlive())
@@ -1964,6 +1976,9 @@ namespace Server.Mobiles
 			{
 				return false;
 			}
+
+			if (item.LootType == LootType.Blessed)
+				return false;
 
 			return true;
 		}

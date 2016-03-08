@@ -163,5 +163,22 @@ namespace Server.Items
 
 			return base.GetTotal(type);
 		}
+
+		/*
+		private static Type _GoldType = ScriptCompiler.GetTypeByFullName("Server.Items.Gold");
+		private static Type _CheckType = ScriptCompiler.GetTypeByFullName("Server.Items.BankCheck");
+
+		public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+		{
+			Type type = item.GetType();
+
+			if (AccountGold.Enabled && Owner != null && Owner.Account != null && (type.IsAssignableFrom(_GoldType) || type.IsAssignableFrom(_CheckType)))
+			{
+				return true;
+			}
+
+			return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+		}
+		 */
 	}
 }
