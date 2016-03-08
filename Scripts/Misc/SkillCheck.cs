@@ -7,16 +7,33 @@ namespace Server.Misc
 {
     public class SkillCheck
     {
-        private static int StatCap = Config.Get("PlayerCaps.StatCap", 125);
-		private static readonly bool m_StatGainDelayEnabled = Config.Get("PlayerCaps.EnablePlayerStatTimeDelay", false);
-		private static readonly TimeSpan m_StatGainDelay = Config.Get("PlayerCaps.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
-		private static readonly bool m_PetStatGainDelayEnabled = Config.Get("PlayerCaps.EnablePetStatTimeDelay", false);
-		private static readonly TimeSpan m_PetStatGainDelay = Config.Get("PlayerCaps.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));
-		private static readonly bool AntiMacroCode = Config.Get("PlayerCaps.EnableAntiMacro", !Core.ML);
-		private static readonly double PlayerChanceToGainStats = Config.Get("PlayerCaps.PlayerChanceToGainStats", 5.0);
-		private static readonly double PetChanceToGainStats = Config.Get("PlayerCaps.PetChanceToGainStats", 5.0);
+        private static int StatCap;
+        private static bool m_StatGainDelayEnabled;
+        private static TimeSpan m_StatGainDelay;
+        private static bool m_PetStatGainDelayEnabled;
+        private static TimeSpan m_PetStatGainDelay;
+        private static bool AntiMacroCode;
+        private static double PlayerChanceToGainStats;
+        private static double PetChanceToGainStats;
 
-        public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
+        public static void Configure()
+        {
+            StatCap = Config.Get("PlayerCaps.StatCap", 125);
+            m_StatGainDelayEnabled = Config.Get("PlayerCaps.EnablePlayerStatTimeDelay", false);
+            m_StatGainDelay = Config.Get("PlayerCaps.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
+            m_PetStatGainDelayEnabled = Config.Get("PlayerCaps.EnablePetStatTimeDelay", false);
+            m_PetStatGainDelay = Config.Get("PlayerCaps.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));
+            AntiMacroCode = Config.Get("PlayerCaps.EnableAntiMacro", !Core.ML);
+            PlayerChanceToGainStats = Config.Get("PlayerCaps.PlayerChanceToGainStats", 5.0);
+            PetChanceToGainStats = Config.Get("PlayerCaps.PetChanceToGainStats", 5.0);
+
+            if (!m_StatGainDelayEnabled)
+                m_StatGainDelay = TimeSpan.FromSeconds(0.5);
+            if (!m_PetStatGainDelayEnabled)
+                m_PetStatGainDelay = TimeSpan.FromSeconds(0.5);
+        }
+
+    public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
         public const int Allowance = 3;	//How many times may we use the same location/target for gain
         private const int LocationSize = 5; //The size of eeach location, make this smaller so players dont have to move as far
         private static readonly bool[] UseAntiMacro = new bool[]
@@ -448,12 +465,8 @@ namespace Server.Misc
 
         public static void GainStat(Mobile from, Stat stat)
         {
-			if((from is BaseCreature && ((BaseCreature)from).Controlled && m_PetStatGainDelayEnabled) ||
-				m_StatGainDelayEnabled)
-			{
-				if (!CheckStatTimer(from, stat))
-					return;
-			}
+		    if (!CheckStatTimer(from, stat))
+			    return;
 
             bool atrophy = ((from.RawStatTotal / (double)from.StatCap) >= Utility.RandomDouble());
 
