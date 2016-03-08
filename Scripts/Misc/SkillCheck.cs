@@ -334,7 +334,7 @@ namespace Server.Misc
 				chance = PetChanceToGainStats;
 			else
 				chance = PlayerChanceToGainStats;
-			if (Utility.RandomDouble() * 100.0 < chance)
+			if (Utility.RandomDouble() * 100.0 >= chance)
 			{
 				return;
 			}
