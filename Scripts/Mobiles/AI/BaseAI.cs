@@ -156,7 +156,7 @@ namespace Server.Mobiles
 					{
 						return;
 					}
-					else if (isFriend && (m_Order != OrderType.Follow && m_Order != OrderType.Stay && m_Order != OrderType.Stop && m_Order != OrderType.Attack))
+					else if (isFriend && (m_Order != OrderType.Follow && m_Order != OrderType.Stay && m_Order != OrderType.Stop))
 					{
 						return;
 					}
