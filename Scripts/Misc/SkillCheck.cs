@@ -7,10 +7,33 @@ namespace Server.Misc
 {
     public class SkillCheck
     {
-        private static int StatCap = Config.Get("PlayerCaps.StatCap", 125);
-        private static readonly bool AntiMacroCode = !Core.ML;		//Change this to false to disable anti-macro code
+        private static int StatCap;
+        private static bool m_StatGainDelayEnabled;
+        private static TimeSpan m_StatGainDelay;
+        private static bool m_PetStatGainDelayEnabled;
+        private static TimeSpan m_PetStatGainDelay;
+        private static bool AntiMacroCode;
+        private static double PlayerChanceToGainStats;
+        private static double PetChanceToGainStats;
 
-        public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
+        public static void Configure()
+        {
+            StatCap = Config.Get("PlayerCaps.StatCap", 125);
+            m_StatGainDelayEnabled = Config.Get("PlayerCaps.EnablePlayerStatTimeDelay", false);
+            m_StatGainDelay = Config.Get("PlayerCaps.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
+            m_PetStatGainDelayEnabled = Config.Get("PlayerCaps.EnablePetStatTimeDelay", false);
+            m_PetStatGainDelay = Config.Get("PlayerCaps.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));
+            AntiMacroCode = Config.Get("PlayerCaps.EnableAntiMacro", !Core.ML);
+            PlayerChanceToGainStats = Config.Get("PlayerCaps.PlayerChanceToGainStats", 5.0);
+            PetChanceToGainStats = Config.Get("PlayerCaps.PetChanceToGainStats", 5.0);
+
+            if (!m_StatGainDelayEnabled)
+                m_StatGainDelay = TimeSpan.FromSeconds(0.5);
+            if (!m_PetStatGainDelayEnabled)
+                m_PetStatGainDelay = TimeSpan.FromSeconds(0.5);
+        }
+
+    public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
         public const int Allowance = 3;	//How many times may we use the same location/target for gain
         private const int LocationSize = 5; //The size of eeach location, make this smaller so players dont have to move as far
         private static readonly bool[] UseAntiMacro = new bool[]
@@ -281,18 +304,74 @@ namespace Server.Misc
                 Server.Engines.Quests.QuestHelper.CheckSkill((PlayerMobile)from, skill);
             #endregion
 
+			
             if (skill.Lock == SkillLock.Up)
             {
                 SkillInfo info = skill.Info;
 
-                if (from.StrLock == StatLockType.Up && (info.StrGain / 33.3) > Utility.RandomDouble())
-                    GainStat(from, Stat.Str);
-                else if (from.DexLock == StatLockType.Up && (info.DexGain / 33.3) > Utility.RandomDouble())
-                    GainStat(from, Stat.Dex);
-                else if (from.IntLock == StatLockType.Up && (info.IntGain / 33.3) > Utility.RandomDouble())
-                    GainStat(from, Stat.Int);
+				// Old gain mechanic
+				if (!Core.ML)
+				{
+					if (from.StrLock == StatLockType.Up && (info.StrGain / 33.3) > Utility.RandomDouble())
+						GainStat(from, Stat.Str);
+					else if (from.DexLock == StatLockType.Up && (info.DexGain / 33.3) > Utility.RandomDouble())
+						GainStat(from, Stat.Dex);
+					else if (from.IntLock == StatLockType.Up && (info.IntGain / 33.3) > Utility.RandomDouble())
+						GainStat(from, Stat.Int);
+				}
+				else
+				{
+					TryStatGain(info, from);
+				}
             }
         }
+
+		public static void TryStatGain(SkillInfo info, Mobile from)
+		{
+			// Chance roll
+			double chance = 0.0;
+			if(from is BaseCreature && ((BaseCreature)from).Controlled)
+				chance = PetChanceToGainStats;
+			else
+				chance = PlayerChanceToGainStats;
+			if (Utility.RandomDouble() * 100.0 < chance)
+			{
+				return;
+			}
+
+			// Selection
+			StatLockType primaryLock = StatLockType.Locked;
+			StatLockType secondaryLock = StatLockType.Locked;
+			switch (info.Primary)
+			{
+				case StatCode.Str: primaryLock = from.StrLock; break;
+				case StatCode.Dex: primaryLock = from.DexLock; break;
+				case StatCode.Int: primaryLock = from.IntLock; break;
+			}
+			switch (info.Secondary)
+			{
+				case StatCode.Str: secondaryLock = from.StrLock; break;
+				case StatCode.Dex: secondaryLock = from.DexLock; break;
+				case StatCode.Int: secondaryLock = from.IntLock; break;
+			}
+
+			// Gain
+			// Decision block of both are selected to gain
+			if(primaryLock == StatLockType.Up && secondaryLock == StatLockType.Up)
+			{
+				if (Utility.Random(4) == 0)
+					GainStat(from, (Stat)info.Secondary);
+				else
+					GainStat(from, (Stat)info.Primary);
+			}
+			else // Will not do anything if neither are selected to gain
+			{
+				if(primaryLock == StatLockType.Up)
+					GainStat(from, (Stat)info.Primary);
+				else if(secondaryLock == StatLockType.Up)
+					GainStat(from, (Stat)info.Secondary);
+			}
+		}
 
         public static bool CanLower(Mobile from, Stat stat)
         {
@@ -384,57 +463,61 @@ namespace Server.Misc
             }
         }
 
-        private static readonly TimeSpan m_StatGainDelay = TimeSpan.FromMinutes(15.0);
-        private static readonly TimeSpan m_PetStatGainDelay = TimeSpan.FromMinutes(5.0);
-
         public static void GainStat(Mobile from, Stat stat)
         {
-            switch( stat )
-            {
-                case Stat.Str:
-                    {
-                        if (from is BaseCreature && ((BaseCreature)from).Controlled)
-                        {
-                            if ((from.LastStrGain + m_PetStatGainDelay) >= DateTime.UtcNow)
-                                return;
-                        }
-                        else if ((from.LastStrGain + m_StatGainDelay) >= DateTime.UtcNow)
-                            return;
-
-                        from.LastStrGain = DateTime.UtcNow;
-                        break;
-                    }
-                case Stat.Dex:
-                    {
-                        if (from is BaseCreature && ((BaseCreature)from).Controlled)
-                        {
-                            if ((from.LastDexGain + m_PetStatGainDelay) >= DateTime.UtcNow)
-                                return;
-                        }
-                        else if ((from.LastDexGain + m_StatGainDelay) >= DateTime.UtcNow)
-                            return;
-
-                        from.LastDexGain = DateTime.UtcNow;
-                        break;
-                    }
-                case Stat.Int:
-                    {
-                        if (from is BaseCreature && ((BaseCreature)from).Controlled)
-                        {
-                            if ((from.LastIntGain + m_PetStatGainDelay) >= DateTime.UtcNow)
-                                return;
-                        }
-                        else if ((from.LastIntGain + m_StatGainDelay) >= DateTime.UtcNow)
-                            return;
-
-                        from.LastIntGain = DateTime.UtcNow;
-                        break;
-                    }
-            }
+		    if (!CheckStatTimer(from, stat))
+			    return;
 
             bool atrophy = ((from.RawStatTotal / (double)from.StatCap) >= Utility.RandomDouble());
 
             IncreaseStat(from, stat, atrophy);
         }
+
+		public static bool CheckStatTimer(Mobile from, Stat stat)
+		{
+			switch (stat)
+			{
+				case Stat.Str:
+					{
+						if (from is BaseCreature && ((BaseCreature)from).Controlled)
+						{
+							if ((from.LastStrGain + m_PetStatGainDelay) >= DateTime.UtcNow)
+								return false;
+						}
+						else if ((from.LastStrGain + m_StatGainDelay) >= DateTime.UtcNow)
+							return false;
+
+						from.LastStrGain = DateTime.UtcNow;
+						break;
+					}
+				case Stat.Dex:
+					{
+						if (from is BaseCreature && ((BaseCreature)from).Controlled)
+						{
+							if ((from.LastDexGain + m_PetStatGainDelay) >= DateTime.UtcNow)
+								return false;
+						}
+						else if ((from.LastDexGain + m_StatGainDelay) >= DateTime.UtcNow)
+							return false;
+
+						from.LastDexGain = DateTime.UtcNow;
+						break;
+					}
+				case Stat.Int:
+					{
+						if (from is BaseCreature && ((BaseCreature)from).Controlled)
+						{
+							if ((from.LastIntGain + m_PetStatGainDelay) >= DateTime.UtcNow)
+								return false;
+						}
+						else if ((from.LastIntGain + m_StatGainDelay) >= DateTime.UtcNow)
+							return false;
+
+						from.LastIntGain = DateTime.UtcNow;
+						break;
+					}
+			}
+			return true;
+		}
     }
 }
