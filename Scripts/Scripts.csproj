@@ -4197,6 +4197,9 @@
     <Compile Include="Items\Skill Items\Harvest Tools\SturdyShovel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Skill Items\Imbuing\MiniSoulForge.cs" />
+    <Compile Include="Items\Skill Items\Imbuing\RoyalSoulForge.cs" />
+    <Compile Include="Items\Skill Items\Imbuing\SoulForge.cs" />
     <Compile Include="Items\Skill Items\Lumberjack\Log.cs">
       <SubType>Code</SubType>
     </Compile>
