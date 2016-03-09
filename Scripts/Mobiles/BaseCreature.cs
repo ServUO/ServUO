@@ -3851,9 +3851,10 @@ namespace Server.Mobiles
 
         }
 
+
 		public override void OnMovement(Mobile m, Point3D oldLocation)
 		{
-			if (AcquireOnApproach && (!Controlled && !Summoned) && FightMode != FightMode.Aggressor)
+			if (AcquireOnApproach && (!Controlled && !Summoned) && FightMode == FightMode.Aggressor && FightMode != FightMode.Good)
 			{
 				if (InRange(m.Location, AcquireOnApproachRange) && !InRange(oldLocation, AcquireOnApproachRange))
 				{
