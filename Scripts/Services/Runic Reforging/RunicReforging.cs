@@ -1466,7 +1466,30 @@ namespace Server.Items
                 attrs = ((BaseJewel)item).Attributes;
             else if (item is BaseClothing)
                 attrs = ((BaseClothing)item).Attributes;
-				
+			
+			// Powerful items should always get a negative that results in the item eventually
+			// leaving the world
+			if(budget > 550)
+			{
+				if (Utility.RandomBool())
+				{
+					if (attrs != null)
+					{
+						SetBlockRepair(item);
+						budget += 150;
+					}
+				}
+				else
+				{
+					if (attrs != null)
+					{
+						attrs[AosAttribute.Brittle] = 1;
+						budget += 100;
+					}
+				}
+				return;
+			}
+
 			switch(Utility.Random(12))
 			{	
 				case 0:
