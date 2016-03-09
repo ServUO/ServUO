@@ -1269,50 +1269,47 @@ namespace Server.SkillHandlers
             if (map == null)
                 return false;
 
-            bool isQueenForge = false;
             bool isForge = false;
-            bool isMiniForge = false;
 
             IPooledEnumerable eable = map.GetItemsInRange(from.Location, range);
 
             foreach (Item item in eable)
             {
-                if (!isQueenForge)
-                    isQueenForge = (item.ItemID >= 0x4263 && item.ItemID <= 0x4272); // Queens SoulForge (+5% bonus & easier unravels)
-
-                if (!isForge)
-                    isForge = (item.ItemID >= 0x4277 && item.ItemID <= 0x4286); // Standard SoulForge
-
-                if (!isMiniForge)
-                    isMiniForge = (item.ItemID >= 17607 && item.ItemID <= 17610); // Gargoyle Mini SoulForge
+                if ((item.ItemID >= 0x4277 && item.ItemID <= 0x4286) ||
+						(item.ItemID >= 0x4263 && item.ItemID <= 0x4272) ||
+						(item.ItemID >= 17607 && item.ItemID <= 17610))
+				{
+					isForge = true;
+					break;
+				}
             }
 
             eable.Free();
-            Rectangle2D rec = new Rectangle2D(792, 3472, 9, 9);
 
-            if (isForge && from.Region != null && from.Region.IsPartOf("Royal City") && rec.Contains(from.Location))
-                context.Imbue_SFBonus = 5;
+			if (!isForge)
+			{
+				if (message)
+					from.SendLocalizedMessage(1079787); // You must be near a soulforge to imbue an item.
+				return false;
+			}
 
-            if (from is PlayerMobile && isQueenForge)
-            {
-                int level = ((PlayerMobile)from).Level;
+			if (from.Region != null && from.Region.IsPartOf("Royal Soulforge"))
+			{
+				int level = ((PlayerMobile)from).Level;
 
-                if (level < PlayerMobile.Noble)
-                {
-                    if (message)
-                        from.SendMessage("You must be of Noble loyalty to the Queen in order to use this forge.");
-                    return false;
-                }
-                else
-                    context.Imbue_SFBonus = 10;
-            }
-
-            if (!isQueenForge && !isForge && !isMiniForge)
-            {
-                if (message)
-                    from.SendLocalizedMessage(1079787); // You must be near a soulforge to imbue an item.
-                return false;
-            }
+				if (level < PlayerMobile.Noble)
+				{
+					if (message)
+						from.SendMessage("You must be of Noble loyalty to the Queen in order to use this forge.");
+					return false;
+				}
+				else
+					context.Imbue_SFBonus = 10;
+			}
+			else if (from.Region != null && from.Region.IsPartOf("Royal City"))
+			{
+				context.Imbue_SFBonus = 5;
+			}
 
             return true;
         }
