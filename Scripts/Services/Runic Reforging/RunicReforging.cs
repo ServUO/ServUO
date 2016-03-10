@@ -1263,6 +1263,18 @@ namespace Server.Items
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
+                if (item is BaseWeapon &&
+                    ((BaseWeapon)item).ArtifactRarity > 0)
+                    return false;
+                if (item is BaseArmor &&
+                    ((BaseArmor)item).ArtifactRarity > 0)
+                    return false;
+                if (item is BaseJewel &&
+                    ((BaseJewel)item).ArtifactRarity > 0)
+                    return false;
+                if (item is BaseHat &&
+                    ((BaseHat)item).ArtifactRarity > 0)
+                    return false;
                 GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None, isRandomLoot);
                 return true;
             }
