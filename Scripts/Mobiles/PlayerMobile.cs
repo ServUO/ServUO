@@ -4051,11 +4051,11 @@ namespace Server.Mobiles
 			#endregion
 
 			#region QueensLoyaltySystem
-			writer.Write(0); // Old m_LevelExp
+			writer.Write((long)0); // Old m_LevelExp
             writer.Write(m_Exp);
 			writer.Write(0); // Old m_Level
 
-            writer.Write(0); // Old m_ExpTitle
+            writer.Write(""); // Old m_ExpTitle
             #endregion
 
             writer.Write(m_VASTotalMonsterFame);
