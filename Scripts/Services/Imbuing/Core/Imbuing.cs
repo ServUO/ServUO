@@ -1295,7 +1295,7 @@ namespace Server.SkillHandlers
 
 			if (from.Region != null && from.Region.IsPartOf("Royal Soulforge"))
 			{
-				int level = ((PlayerMobile)from).Level;
+				long level = ((PlayerMobile)from).Exp;
 
 				if (level < PlayerMobile.Noble)
 				{
