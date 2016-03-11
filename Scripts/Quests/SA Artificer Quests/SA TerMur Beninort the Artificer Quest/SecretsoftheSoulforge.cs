@@ -13,13 +13,6 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(ScrollBox3), 1, "Knowledge"));
         }
 
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override object Title
         {
             get

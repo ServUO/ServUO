@@ -13,13 +13,6 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(MeagerImbuingBag), 1, "Meager Imbuing Bag"));
         }
 
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override object Title
         {
             get
