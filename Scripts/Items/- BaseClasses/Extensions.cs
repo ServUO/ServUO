@@ -19,6 +19,9 @@ namespace Server.Items
             BaseArmor armor = item as BaseArmor;
             if (armor != null && armor.IsSetItem)
                 return 600;
+			// Newbie items cost 10
+			if (item.LootType == LootType.Newbied)
+				return 10;
             // Magic items cost their imbue weight
             var imbueWeight = SkillHandlers.Imbuing.GetTotalWeight(item);
             if (imbueWeight > 0)
