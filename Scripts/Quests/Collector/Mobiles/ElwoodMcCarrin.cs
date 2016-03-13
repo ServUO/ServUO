@@ -173,7 +173,7 @@ namespace Server.Engines.Quests.Collector
 
             if (Utility.RandomBool())
             {
-                BaseWeapon weapon = Loot.RandomWeapon(this);
+                BaseWeapon weapon = Loot.RandomWeapon();
 
                 if (Core.AOS)
                 {
@@ -194,7 +194,7 @@ namespace Server.Engines.Quests.Collector
 
                 if (Core.AOS)
                 {
-                    item = Loot.RandomArmorOrShieldOrJewelry(this);
+                    item = Loot.RandomArmorOrShieldOrJewelry();
 
                     if (item is BaseArmor)
                         BaseRunicTool.ApplyAttributesTo((BaseArmor)item, 2, 20, 30);
@@ -203,7 +203,7 @@ namespace Server.Engines.Quests.Collector
                 }
                 else
                 {
-                    BaseArmor armor = Loot.RandomArmorOrShield(this);
+                    BaseArmor armor = Loot.RandomArmorOrShield();
                     item = armor;
 
                     armor.ProtectionLevel = (ArmorProtectionLevel)BaseCreature.RandomMinMaxScaled(2, 3);

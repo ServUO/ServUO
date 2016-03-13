@@ -120,10 +120,8 @@ namespace Server.Items
 		private AosWeaponAttributes m_AosWeaponAttributes;
 		private AosSkillBonuses m_AosSkillBonuses;
 		private AosElementAttributes m_AosElementDamages;
-
-		#region SA
 		private SAAbsorptionAttributes m_SAAbsorptionAttributes;
-		#endregion
+        private NegativeAttributes m_NegativeAttributes;
 
 		// Overridable values. These values are provided to override the defaults which get defined in the individual weapon scripts.
 		private int m_StrReq, m_DexReq, m_IntReq;
@@ -193,7 +191,8 @@ namespace Server.Items
 		public virtual int InitMinHits { get { return 0; } }
 		public virtual int InitMaxHits { get { return 0; } }
 
-		public virtual bool CanFortify { get { return m_TimesImbued == 0; } }
+        public virtual bool CanFortify { get { return m_TimesImbued == 0 && NegativeAttributes.Antique < 3; } }
+        public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
 
 		public override int PhysicalResistance { get { return m_AosWeaponAttributes.ResistPhysicalBonus; } }
 		public override int FireResistance { get { return m_AosWeaponAttributes.ResistFireBonus; } }
@@ -202,6 +201,17 @@ namespace Server.Items
 		public override int EnergyResistance { get { return m_AosWeaponAttributes.ResistEnergyBonus; } }
 
 		public virtual SkillName AccuracySkill { get { return SkillName.Tactics; } }
+
+        public override double DefaultWeight
+        {
+            get
+            {
+                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
+                    return base.DefaultWeight;
+
+                return base.DefaultWeight * 3;
+            }
+        }
 
 		#region Personal Bless Deed
 		private Mobile m_BlessedBy;
@@ -260,10 +270,11 @@ namespace Server.Items
 		[CommandProperty(AccessLevel.GameMaster)]
 		public AosElementAttributes AosElementDamages { get { return m_AosElementDamages; } set { } }
 
-		#region Stygian Abyss
 		[CommandProperty(AccessLevel.GameMaster)]
 		public SAAbsorptionAttributes AbsorptionAttributes { get { return m_SAAbsorptionAttributes; } set { } }
-		#endregion
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public NegativeAttributes NegativeAttributes { get { return m_NegativeAttributes; } set { } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Cursed { get { return m_Cursed; } set { m_Cursed = value; } }
@@ -527,7 +538,7 @@ namespace Server.Items
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int StrRequirement
 		{
-			get { return (m_StrReq == -1 ? Core.AOS ? AosStrengthReq : OldStrengthReq : m_StrReq); }
+            get { return Math.Min(110, (int)((double)(m_StrReq == -1 ? Core.AOS ? AosStrengthReq : OldStrengthReq : m_StrReq) * (m_NegativeAttributes.Massive > 0 ? 1.5 : 1))); }
 			set
 			{
 				m_StrReq = value;
@@ -667,6 +678,7 @@ namespace Server.Items
 			weap.m_AosElementDamages = new AosElementAttributes(newItem, m_AosElementDamages);
 			weap.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
 			weap.m_AosWeaponAttributes = new AosWeaponAttributes(newItem, m_AosWeaponAttributes);
+            weap.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
 
 			#region Mondain's Legacy
 			weap.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
@@ -2097,6 +2109,9 @@ namespace Server.Items
                     percentageBonus -= 47;
             }
 
+            if (RunedSashOfWarding.IsUnderEffects(defender, WardingEffect.WeaponDamage))
+                percentageBonus -= 10;
+
             if (attacker.Race == Race.Gargoyle)
             {
                 double perc = ((double)attacker.Hits / (double)attacker.HitsMax) * 100;
@@ -2419,11 +2434,11 @@ namespace Server.Items
 				{
 					if (m_Hits > 0)
 					{
-						--HitPoints;
+                        HitPoints -= NegativeAttributes.Antique > 0 ? 2 : 1;
 					}
 					else if (m_MaxHits > 1)
 					{
-						--MaxHitPoints;
+                        MaxHitPoints -= NegativeAttributes.Antique > 0 ? 2 : 1;
 
 						if (Parent is Mobile)
 						{
@@ -3518,7 +3533,9 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(12); // version
+			writer.Write(13); // version
+
+            //version 13, converted SaveFlags to long, added negative attributes
 
             //version 12
             #region Runic Reforging
@@ -3625,8 +3642,9 @@ namespace Server.Items
 			SetSaveFlag(ref flags, SaveFlag.ElementalDamages, !m_AosElementDamages.IsEmpty);
 			SetSaveFlag(ref flags, SaveFlag.EngravedText, !String.IsNullOrEmpty(m_EngravedText));
 			SetSaveFlag(ref flags, SaveFlag.xAbsorptionAttributes, !m_SAAbsorptionAttributes.IsEmpty);
+            SetSaveFlag(ref flags, SaveFlag.xNegativeAttributes, !m_NegativeAttributes.IsEmpty);
 
-			writer.Write((int)flags);
+			writer.Write((long)flags);
 
 			if (GetSaveFlag(flags, SaveFlag.DamageLevel))
 			{
@@ -3778,11 +3796,16 @@ namespace Server.Items
 			{
 				m_SAAbsorptionAttributes.Serialize(writer);
 			}
+
+            if (GetSaveFlag(flags, SaveFlag.xNegativeAttributes))
+            {
+                m_NegativeAttributes.Serialize(writer);
+            }
 			#endregion
 		}
 
 		[Flags]
-		private enum SaveFlag : uint
+		private enum SaveFlag : long
 		{
 			None = 0x00000000,
 			DamageLevel = 0x00000001,
@@ -3816,7 +3839,8 @@ namespace Server.Items
 			Slayer2 = 0x10000000,
 			ElementalDamages = 0x20000000,
 			EngravedText = 0x40000000,
-			xAbsorptionAttributes = 0x80000000
+			xAbsorptionAttributes = 0x80000000,
+            xNegativeAttributes = 0x100000000
 		}
 
 		#region Mondain's Legacy Sets
@@ -3855,6 +3879,7 @@ namespace Server.Items
 
 			switch (version)
 			{
+                case 13:
                 case 12:
                     {
                         #region Runic Reforging
@@ -3935,7 +3960,12 @@ namespace Server.Items
 				case 6:
 				case 5:
 					{
-						SaveFlag flags = (SaveFlag)reader.ReadInt();
+						SaveFlag flags;
+                        
+                        if(version < 13)
+                            flags = (SaveFlag)reader.ReadInt();
+                        else
+                            flags = (SaveFlag)reader.ReadLong();
 
 						if (GetSaveFlag(flags, SaveFlag.DamageLevel))
 						{
@@ -4213,6 +4243,15 @@ namespace Server.Items
 						{
 							m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
 						}
+
+                        if (version >= 13 && GetSaveFlag(flags, SaveFlag.xNegativeAttributes))
+                        {
+                            m_NegativeAttributes = new NegativeAttributes(this, reader);
+                        }
+                        else
+                        {
+                            m_NegativeAttributes = new NegativeAttributes(this);
+                        }
 						#endregion
 
 						break;
@@ -4437,6 +4476,7 @@ namespace Server.Items
 			m_AosWeaponAttributes = new AosWeaponAttributes(this);
 			m_AosSkillBonuses = new AosSkillBonuses(this);
 			m_AosElementDamages = new AosElementAttributes(this);
+            m_NegativeAttributes = new NegativeAttributes(this);
 
 			#region Stygian Abyss
 			m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
@@ -4720,11 +4760,6 @@ namespace Server.Items
 				list.Add(1080418); // (Imbued)
 			}
 
-            if (m_AosAttributes.Brittle != 0)
-            {
-                list.Add(1116209); // Brittle
-            }
-
 			if (m_Crafter != null)
 			{
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
@@ -4749,6 +4784,14 @@ namespace Server.Items
 				}
 			}
 			#endregion
+
+            if (m_AosAttributes.Brittle != 0)
+            {
+                list.Add(1116209); // Brittle
+            }
+
+            if (m_NegativeAttributes != null)
+                m_NegativeAttributes.GetProperties(list, this);
 
 			if (m_AosSkillBonuses != null)
 			{

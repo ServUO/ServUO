@@ -174,7 +174,7 @@ namespace Server.Mobiles
                 type = m_ArtifactRarity11[random / 4];
             }
 
-            return Loot.Construct(type, null);
+            return Loot.Construct(type);
         }
 
         public static Mobile FindRandomPlayer(BaseCreature creature)

@@ -3851,10 +3851,9 @@ namespace Server.Mobiles
 
         }
 
-
 		public override void OnMovement(Mobile m, Point3D oldLocation)
 		{
-			if (AcquireOnApproach && (!Controlled && !Summoned) && FightMode == FightMode.Aggressor && FightMode != FightMode.Good)
+			if (AcquireOnApproach && (!Controlled && !Summoned) && FightMode != FightMode.Aggressor)
 			{
 				if (InRange(m.Location, AcquireOnApproachRange) && !InRange(oldLocation, AcquireOnApproachRange))
 				{
@@ -4717,7 +4716,7 @@ namespace Server.Mobiles
 					{
 						XmlParagon.AddChest(this, treasureLevel);
 					}
-					else if ((Map == Map.Felucca || Map == Map.Trammel) && TreasureMap.LootChance >= Utility.RandomDouble())
+					else if (/*(Map == Map.Felucca || Map == Map.Trammel) &&*/TreasureMapChance >= Utility.RandomDouble())
 					{
 						PackItem(new TreasureMap(treasureLevel, Map));
 					}

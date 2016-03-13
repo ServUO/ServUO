@@ -44,7 +44,7 @@ namespace Server.Mobiles
             this.Fame = 1000;
             this.Karma = -2000;
 
-            BaseWeapon weapon = Loot.RandomWeapon(this);
+            BaseWeapon weapon = Loot.RandomWeapon();
             weapon.Movable = false;
             this.AddItem(weapon);
         }

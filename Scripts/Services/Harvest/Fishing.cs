@@ -382,23 +382,12 @@ namespace Server.Engines.Harvest
                         if (sos.IsAncient)
                             chest.Hue = 0x481;
 
-                        TreasureMapChest.Fill(chest, Math.Max(1, Math.Min(4, sos.Level)));
+                        TreasureMapChest.Fill(chest, from.Luck, Math.Max(1, Math.Min(4, sos.Level)), true);
 
                         if (sos.IsAncient)
                             chest.DropItem(new FabledFishingNet());
                         else
                             chest.DropItem(new SpecialFishingNet());
-
-						if (0.02 >= Utility.RandomDouble()) //2% chance
-						{
-						switch (Utility.Random(3))
-						{
-						case 0 : chest.DropItem(new BronzedArmorValkyrie()); break;
-						case 1 : chest.DropItem(new EnchantedKelpWovenLeggings()); break;
-						case 2 : chest.DropItem(new RunedDriftwoodBow()); break;	
-						case 3 : chest.DropItem(new AntiqueWeddingDress()); break;
-						}
-						}
 
                         chest.Movable = true;
                         chest.Locked = false;

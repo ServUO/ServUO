@@ -56,8 +56,6 @@ namespace Server.Spells.Seventh
 
                 Map map = this.Caster.Map;
 
-                bool playerVsPlayer = false;
-
                 if (map != null)
                 {
                     IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), 2);
@@ -73,9 +71,6 @@ namespace Server.Spells.Seventh
                                 continue;
 
                             targets.Add(m);
-
-                            if (m.Player)
-                                playerVsPlayer = true;
                         }
                     }
 
@@ -84,33 +79,32 @@ namespace Server.Spells.Seventh
 
                 double damage;
 
-                if (Core.AOS)
-                    damage = this.GetNewAosDamage(51, 1, 5, playerVsPlayer);
-                else
-                    damage = Utility.Random(27, 22);
-
                 if (targets.Count > 0)
                 {
-                    if (Core.AOS && targets.Count > 2)
-                        damage = (damage * 2) / targets.Count;
-                    else if (!Core.AOS)
-                        damage /= targets.Count;
-
-                    double toDeal;
                     for (int i = 0; i < targets.Count; ++i)
                     {
-                        toDeal = damage;
                         Mobile m = targets[i];
+
+                        if (Core.AOS)
+                            damage = this.GetNewAosDamage(51, 1, 5, m.Player, m);
+                        else
+                            damage = Utility.Random(27, 22);
+
+                        if (Core.AOS && targets.Count > 2)
+                            damage = (damage * 2) / targets.Count;
+                        else if (!Core.AOS)
+                            damage /= targets.Count;
 
                         if (!Core.AOS && this.CheckResisted(m))
                         {
-                            toDeal *= 0.5;
+                            damage *= 0.5;
 
                             m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                         }
-                        toDeal *= this.GetDamageScalar(m);
+
+                        damage *= this.GetDamageScalar(m);
                         this.Caster.DoHarmful(m);
-                        SpellHelper.Damage(this, m, toDeal, 0, 0, 0, 0, 100);
+                        SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
 
                         m.BoltEffect(0);
                     }

@@ -16,6 +16,9 @@ namespace Server.Items
     [FlipableAttribute(0x14fc, 0x14fb)]
     public class Lockpick : Item
     {
+        public virtual bool IsSkeletonKey { get { return false; } }
+        public virtual int SkillBonus { get { return 0; } }
+
         [Constructable]
         public Lockpick()
             : this(1)
@@ -56,6 +59,10 @@ namespace Server.Items
         {
             from.SendLocalizedMessage(502068); // What do you want to pick?
             from.Target = new InternalTarget(this);
+        }
+
+        public virtual void OnUse()
+        {
         }
 
         private class InternalTarget : Target
@@ -120,7 +127,9 @@ namespace Server.Items
                         item.SendLocalizedMessageTo(this.m_From, 502074);
 
                         this.m_From.PlaySound(0x3A4);
-                        this.m_Lockpick.Consume();
+
+                        if (!m_Lockpick.IsSkeletonKey)
+                            this.m_Lockpick.Consume();
                     }
                 }
 
@@ -139,7 +148,7 @@ namespace Server.Items
                         return;
                     }
 
-                    if (this.m_From.Skills[SkillName.Lockpicking].Value < this.m_Item.RequiredSkill)
+                    if (m_From.Skills[SkillName.Lockpicking].Value < m_Item.RequiredSkill - m_Lockpick.SkillBonus)
                     {
                         /*
                         // Do some training to gain skills
@@ -149,7 +158,16 @@ namespace Server.Items
                         return;
                     }
 
-                    if (this.m_From.CheckTargetSkill(SkillName.Lockpicking, this.m_Item, this.m_Item.LockLevel, this.m_Item.MaxLockLevel))
+                    int maxlevel = m_Item.MaxLockLevel;
+                    int minLevel = m_Item.LockLevel;
+
+                    if (m_Item is Skeletonkey)
+                    {
+                        minLevel -= m_Lockpick.SkillBonus;
+                        maxlevel -= m_Lockpick.SkillBonus; //regulars subtract the bonus from the max level
+                    }
+
+                    if (m_Lockpick is MasterSkeletonKey || m_From.CheckTargetSkill(SkillName.Lockpicking, m_Item, minLevel, maxlevel))
                     {
                         // Success! Pick the lock!
                         item.SendLocalizedMessageTo(this.m_From, 502076); // The lock quickly yields to your skill.
@@ -161,6 +179,20 @@ namespace Server.Items
                         // The player failed to pick the lock
                         this.BrokeLockPickTest();
                         item.SendLocalizedMessageTo(this.m_From, 502075); // You are unable to pick the lock.
+
+                        if (item is TreasureMapChest && ((Container)item).Items.Count > 0 && 0.25 > Utility.RandomDouble())
+                        {
+                            Container cont = (Container)item;
+
+                            Item toBreak = cont.Items[Utility.Random(cont.Items.Count)];
+
+                            if (!(toBreak is Container))
+                            {
+                                toBreak.Delete();
+                                Effects.PlaySound(item.Location, item.Map, 0x1DE);
+                                m_From.SendMessage(0x20, "The sound of gas escaping is heard from the chest.");
+                            }
+                        }
                     }
                 }
             }
