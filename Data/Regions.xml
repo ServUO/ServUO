@@ -2524,6 +2524,9 @@
 			<rect x="961" y="3297" width="44" height="339" />
 			<go x="750" y="3450" z="-20" />
 			<entrance x="841" y="3510" />
+            <region name="Royal Soulforge">
+                <rect x="745" y="3371" width="8" height="8" />
+            </region>
 		</region>
 		<region type="StygianAbyssRegion" priority="50" name="Royal Park">
 			<rect x="632" y="3233" width="176" height="35" />

@@ -1263,6 +1263,18 @@ namespace Server.Items
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
+                if (item is BaseWeapon &&
+                    ((BaseWeapon)item).ArtifactRarity > 0)
+                    return false;
+                if (item is BaseArmor &&
+                    ((BaseArmor)item).ArtifactRarity > 0)
+                    return false;
+                if (item is BaseJewel &&
+                    ((BaseJewel)item).ArtifactRarity > 0)
+                    return false;
+                if (item is BaseHat &&
+                    ((BaseHat)item).ArtifactRarity > 0)
+                    return false;
                 GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None, isRandomLoot);
                 return true;
             }
@@ -1466,7 +1478,30 @@ namespace Server.Items
                 attrs = ((BaseJewel)item).Attributes;
             else if (item is BaseClothing)
                 attrs = ((BaseClothing)item).Attributes;
-				
+			
+			// Powerful items should always get a negative that results in the item eventually
+			// leaving the world
+			if(budget > 550)
+			{
+				if (Utility.RandomBool())
+				{
+					if (attrs != null)
+					{
+						SetBlockRepair(item);
+						budget += 150;
+					}
+				}
+				else
+				{
+					if (attrs != null)
+					{
+						attrs[AosAttribute.Brittle] = 1;
+						budget += 100;
+					}
+				}
+				return;
+			}
+
 			switch(Utility.Random(12))
 			{	
 				case 0:
@@ -1629,35 +1664,10 @@ namespace Server.Items
                 if (attrList.Count == 0)
                     return false;
 
-                // Make sure we don't apply the same atttribute more than once.
-                object attr;
-                while (true)
-                {
-                    random = Utility.Random(attrList.Count);
-                    attr = attrList[random];
-
-                    if (wepattrs != null && attr is AosWeaponAttribute && wepattrs[(AosWeaponAttribute)attr] != 0)
-                        continue;
-                    if (aosattrs != null && attr is AosAttribute && aosattrs[(AosAttribute)attr] != 0)
-                        continue;
-                    if (armorattrs != null && attr is AosArmorAttribute && armorattrs[(AosArmorAttribute)attr] != 0)
-                        continue;
-                    if (skillbonuses != null && attr is SkillName)
-                    {
-                        bool cont = false;
-                        for(int i = 0; i < 5; ++i)
-                        {
-                            if (skillbonuses.GetSkill(i) == (SkillName)attr)
-                                cont = true;
-                        }
-                        if (cont)
-                            continue;
-                    }
-                    if (resistattrs != null && attr is AosElementAttribute && resistattrs[(AosElementAttribute)attr] != 0)
-                        continue;
-                    break;
-                }
+                random = Utility.Random(attrList.Count);
+                object attr = attrList[random];
                 int[] minmax = new int[] { 1, 1 };
+
 				int value = 1;
 
 				if(wepattrs != null && attr is AosWeaponAttribute[])
@@ -1713,10 +1723,6 @@ namespace Server.Items
 				}
 				else if (armorattrs != null && attr is AosArmorAttribute)
 				{
-                    if((AosArmorAttribute)attr == AosArmorAttribute.MageArmor)
-                    {
-                        Console.WriteLine(".");
-                    }
                     minmax = Imbuing.GetPropRange((AosArmorAttribute)attr);
                     value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance);
 

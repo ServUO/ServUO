@@ -78,9 +78,18 @@ namespace Server.Mobiles
                 this.Add(typeof(StrengthPotion), 7);
                 this.Add(typeof(RefreshPotion), 7);
                 this.Add(typeof(LesserCurePotion), 7);
+				this.Add(typeof(CurePotion), 11);
+				this.Add(typeof(GreaterCurePotion), 15);
                 this.Add(typeof(LesserHealPotion), 7);
-                this.Add(typeof(LesserPoisonPotion), 7);
-                this.Add(typeof(LesserExplosionPotion), 10);
+				this.Add(typeof(HealPotion), 11);
+				this.Add(typeof(GreaterHealPotion), 15);
+				this.Add(typeof(LesserPoisonPotion), 7);
+				this.Add(typeof(PoisonPotion), 9);
+				this.Add(typeof(GreaterPoisonPotion), 13);
+				this.Add(typeof(DeadlyPoisonPotion), 21);
+				this.Add(typeof(LesserExplosionPotion), 10);
+				this.Add(typeof(ExplosionPotion), 15);
+				this.Add(typeof(GreaterExplosionPotion), 25);
             }
         }
     }

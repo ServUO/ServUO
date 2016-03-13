@@ -362,7 +362,7 @@ namespace Server.Mobiles
                         return new PainSpikeSpell(this.m_Mobile, null);
                 }
 
-                switch (Utility.Random(16))
+                switch (Utility.Random(15))
                 {
                     case 0:
                     case 1:	// Poison them
@@ -405,16 +405,6 @@ namespace Server.Mobiles
                             this.m_Mobile.DebugSay("Attempting to drain mana");
 
                             spell = this.GetRandomManaDrainSpell();
-                            break;
-                        }
-                    case 7: // Invis ourselves
-                        {
-                            if (Utility.RandomBool())
-                                goto default;
-
-                            this.m_Mobile.DebugSay("Attempting to invis myself");
-
-                            spell = new InvisibilitySpell(this.m_Mobile, null);
                             break;
                         }
                     default: // Damage them
