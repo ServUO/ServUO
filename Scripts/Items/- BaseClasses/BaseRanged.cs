@@ -209,7 +209,9 @@ namespace Server.Items
 				BaseQuiver quiver = attacker.FindItemOnLayer(Layer.Cloak) as BaseQuiver;
 				Container pack = attacker.Backpack;
 
-				if (quiver == null || Utility.Random(100) >= quiver.LowerAmmoCost)
+                int lowerAmmo = AosAttributes.GetValue(attacker, AosAttribute.LowerAmmoCost);
+
+                if (quiver == null || Utility.Random(100) >= lowerAmmo)
 				{
 					// consume ammo
 					if (quiver != null && quiver.ConsumeTotal(AmmoType, 1))

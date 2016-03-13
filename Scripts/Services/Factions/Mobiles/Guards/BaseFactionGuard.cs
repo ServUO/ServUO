@@ -332,7 +332,7 @@ namespace Server.Factions
 
         public void PackStrongPotion()
         {
-            this.PackItem(Loot.Construct(m_StrongPotions, this));
+            this.PackItem(Loot.Construct(m_StrongPotions));
         }
 
         public void PackWeakPotions(int min, int max)
@@ -348,7 +348,7 @@ namespace Server.Factions
 
         public void PackWeakPotion()
         {
-            this.PackItem(Loot.Construct(m_WeakPotions, this));
+            this.PackItem(Loot.Construct(m_WeakPotions));
         }
 
         public Item Immovable(Item item)

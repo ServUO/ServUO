@@ -29,6 +29,7 @@ namespace Server.Items
         private AosElementAttributes m_AosResistances;
         private AosSkillBonuses m_AosSkillBonuses;
         private SAAbsorptionAttributes m_SAAbsorptionAttributes;
+        private NegativeAttributes m_NegativeAttributes;
         private CraftResource m_Resource;
         private GemType m_GemType;
 
@@ -180,6 +181,18 @@ namespace Server.Items
             }
             set
             {
+            }
+        }
+
+        [CommandProperty(AccessLevel.Player)]
+        public NegativeAttributes NegativeAttributes
+        {
+            get
+            { 
+                return m_NegativeAttributes;
+            }
+            set 
+            { 
             }
         }
 
@@ -348,6 +361,17 @@ namespace Server.Items
             }
         }
 
+        public override double DefaultWeight
+        {
+            get
+            {
+                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
+                    return base.DefaultWeight;
+
+                return base.DefaultWeight * 3;
+            }
+        }
+
         public override void OnAfterDuped(Item newItem)
         {
             BaseJewel jewel = newItem as BaseJewel;
@@ -358,6 +382,7 @@ namespace Server.Items
             jewel.m_AosAttributes = new AosAttributes(newItem, this.m_AosAttributes);
             jewel.m_AosResistances = new AosElementAttributes(newItem, this.m_AosResistances);
             jewel.m_AosSkillBonuses = new AosSkillBonuses(newItem, this.m_AosSkillBonuses);
+            jewel.m_NegativeAttributes = new NegativeAttributes(newItem, this.m_NegativeAttributes);
 
             #region Mondain's Legacy
             jewel.m_SetAttributes = new AosAttributes(newItem, this.m_SetAttributes);
@@ -422,6 +447,7 @@ namespace Server.Items
             this.m_SetAttributes = new AosAttributes(this);
             this.m_SetSkillBonuses = new AosSkillBonuses(this);
             this.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
+            m_NegativeAttributes = new NegativeAttributes(this);
         }
 
         #region Stygian Abyss
@@ -463,6 +489,9 @@ namespace Server.Items
 
             int wear = Utility.Random(2);
 
+            if (NegativeAttributes.Antique > 0)
+                wear *= 2;
+
             if (wear > 0 && m_MaxHitPoints > 0)
             {
                 if (m_HitPoints >= wear)
@@ -503,7 +532,8 @@ namespace Server.Items
         {
         }
 
-        public virtual bool CanFortify { get { return false; } }
+        public virtual bool CanFortify { get { return m_TimesImbued == 0 && NegativeAttributes.Antique < 3; } }
+        public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
         #endregion
 
         public override void OnAdded(object parent)
@@ -652,6 +682,7 @@ namespace Server.Items
             }
             #endregion
 
+            m_NegativeAttributes.GetProperties(list, this);
             this.m_AosSkillBonuses.GetProperties(list);
 
             int prop;
@@ -806,7 +837,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(5); // version
+            writer.Write(6); // version
+            
+            // Version 6
+            m_NegativeAttributes.Serialize(writer);
 
             // Version 5
             #region Region Reforging
@@ -856,6 +890,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 6:
+                    {
+                        m_NegativeAttributes = new NegativeAttributes(this, reader);
+                        goto case 5;
+                    }
                 case 5:
                     {
                         #region Runic Reforging
@@ -945,6 +984,9 @@ namespace Server.Items
                         break;
                     }
             }
+
+            if (m_NegativeAttributes == null)
+                m_NegativeAttributes = new NegativeAttributes(this);
 
             #region Mondain's Legacy Sets
             if (this.m_SetAttributes == null)

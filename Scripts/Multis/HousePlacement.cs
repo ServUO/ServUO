@@ -25,6 +25,7 @@ namespace Server.Multis
     public class HousePlacement
     {
         // Any land tile which matches one of these ID numbers is considered a road and cannot be placed over.
+        public static int[] RoadIDs { get { return m_RoadIDs; } }
         private static readonly int[] m_RoadIDs = new int[]
         {
             0x0071, 0x0078,

@@ -240,6 +240,9 @@ namespace Server
                 ((Spell)m.Spell).CheckCasterDisruption(true, phys, fire, cold, pois, nrgy);
 
             BattleLust.IncreaseBattleLust(m, totalDamage);
+
+            if (ManaPhasingOrb.IsInManaPhase(m))
+                ManaPhasingOrb.RemoveFromTable(m);
             #endregion
 
             return totalDamage;
@@ -397,6 +400,7 @@ namespace Server
         NightSight = 0x00400000,
         IncreasedKarmaLoss = 0x00800000,
         Brittle = 0x01000000,
+        LowerAmmoCost = 0x02000000
     }
 
     public sealed class AosAttributes : BaseAttributes
@@ -522,10 +526,21 @@ namespace Server
             }
             else if (attribute == AosAttribute.RegenHits)
             {
-                #region High Seas
+                if (SurgeShield.IsUnderEffects(m, SurgeType.Hits))
+                    value += 10;
+
                 if (SearingWeaponContext.HasContext(m))
                     value -= m is PlayerMobile ? 20 : 60;
-                #endregion
+            }
+            else if (attribute == AosAttribute.RegenStam)
+            {
+                if (SurgeShield.IsUnderEffects(m, SurgeType.Stam))
+                    value += 10;
+            }
+            else if (attribute == AosAttribute.RegenMana)
+            {
+                if (SurgeShield.IsUnderEffects(m, SurgeType.Mana))
+                    value += 10;
             }
             #endregion
 
@@ -919,6 +934,19 @@ namespace Server
             set
             {
                 this[AosAttribute.Brittle] = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int LowerAmmoCost
+        {
+            get
+            {
+                return this[AosAttribute.LowerAmmoCost];
+            }
+            set
+            {
+                this[AosAttribute.LowerAmmoCost] = value;
             }
         }
     }
@@ -2448,6 +2476,89 @@ namespace Server
                 this[AosElementAttribute.Direct] = value;
             }
         }
+    }
+
+    [Flags]
+    public enum NegativeAttribute
+    {
+        Brittle = 0x00000001,
+        Prized = 0x00000002,
+        Massive = 0x00000004,
+        Unwieldly = 0x00000008,
+        Antique = 0x00000010,
+        NoRepair = 0x00000020
+    }
+
+    public sealed class NegativeAttributes : BaseAttributes
+    {
+        public NegativeAttributes(Item owner)
+            : base(owner)
+        {
+        }
+
+        public NegativeAttributes(Item owner, NegativeAttributes other)
+            : base(owner, other)
+        {
+        }
+
+        public NegativeAttributes(Item owner, GenericReader reader)
+            : base(owner, reader)
+        {
+        }
+
+        public void GetProperties(ObjectPropertyList list, Item item)
+        {
+            if (Brittle > 0 ||
+                item is BaseWeapon && ((BaseWeapon)item).Attributes.Brittle > 0 ||
+                item is BaseArmor && ((BaseArmor)item).Attributes.Brittle > 0 ||
+                item is BaseJewel && ((BaseJewel)item).Attributes.Brittle > 0 ||
+                item is BaseClothing && ((BaseClothing)item).Attributes.Brittle > 0)
+                list.Add(1116209);
+
+            if (Prized > 0)
+                list.Add(1154910);
+
+            if (Massive > 0)
+                list.Add(1038003);
+
+            if (Unwieldly > 0)
+                list.Add(1154909);
+
+            if (Antique > 0)
+                list.Add(1076187);
+
+            if (NoRepair > 0)
+                list.Add(1151782);
+        }
+
+        public int this[NegativeAttribute attribute]
+        {
+            get { return GetValue((int)attribute); }
+            set { SetValue((int)attribute, value); }
+        }
+
+        public override string ToString()
+        {
+            return "...";
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Brittle { get { return this[NegativeAttribute.Brittle]; } set { this[NegativeAttribute.Brittle] = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Prized { get { return this[NegativeAttribute.Prized]; } set { this[NegativeAttribute.Prized] = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Massive { get { return this[NegativeAttribute.Massive]; } set { this[NegativeAttribute.Massive] = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Unwieldly { get { return this[NegativeAttribute.Unwieldly]; } set { this[NegativeAttribute.Unwieldly] = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Antique { get { return this[NegativeAttribute.Antique]; } set { this[NegativeAttribute.Antique] = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int NoRepair { get { return this[NegativeAttribute.NoRepair]; } set { this[NegativeAttribute.NoRepair] = value; } }
     }
 
     [PropertyObject]
