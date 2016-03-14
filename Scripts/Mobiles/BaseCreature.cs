@@ -3373,8 +3373,11 @@ namespace Server.Mobiles
 					return TeachResult.NotEnoughFreePoints;
 				}
 
-				// Partial refund if needed
-				m.Backpack.TryDropItem(m, new Gold(maxPointsToLearn - pointsToLearn), false);
+                // Partial refund if needed
+                if (maxPointsToLearn > pointsToLearn)
+                {
+                    m.Backpack.TryDropItem(m, new Gold(maxPointsToLearn - pointsToLearn), false);
+                }
 				theirSkill.BaseFixedPoint = baseToSet;
 			}
 
