@@ -10,7 +10,7 @@ namespace Server.Items
             this.Hue = 0x47E;
             //Slayer = SlayerName.DaemonDismissal;
             this.Slayer = SlayerName.Exorcism;
-            this.WeaponAttributes.HitLeechHits = 50;
+            this.WeaponAttributes.HitLeechHits = 87;
             this.WeaponAttributes.UseBestSkill = 1;
             this.Attributes.BonusHits = 10;
             this.Attributes.WeaponDamage = 50;
