@@ -29,14 +29,6 @@ namespace Server.Items
             }
         }
 
-		public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Human;
-            }
-        }
-
 		public override int BasePhysicalResistance
         {
             get

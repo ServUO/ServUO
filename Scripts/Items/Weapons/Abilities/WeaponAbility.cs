@@ -177,7 +177,10 @@ namespace Server.Items
                     AddContext(from, new WeaponAbilityContext(timer));
                 }
 
-                from.Mana -= mana;
+                if (ManaPhasingOrb.IsInManaPhase(from))
+                    ManaPhasingOrb.RemoveFromTable(from);
+                else
+                    from.Mana -= mana;
             }
 
             return true;

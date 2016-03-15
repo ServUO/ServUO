@@ -32,7 +32,7 @@ namespace Server.Mobiles
             this.Karma = -4000;
 
             this.VirtualArmor = 28;
-            this.PackItem(Loot.RandomWeapon(this));
+            this.PackItem(Loot.RandomWeapon());
             this.PackItem(new Bone());
         }
 

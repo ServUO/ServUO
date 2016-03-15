@@ -627,6 +627,9 @@ namespace Server.Items
             if (this.m_MaxCharges > 0)
                 list.Add(1060741, this.m_Charges.ToString()); // charges: ~1_val~
 
+            if (this is ManaPhasingOrb)
+                list.Add(1116158); //Mana Phase
+
             if (this.m_Slayer != TalismanSlayerName.None)
             {
                 if (this.m_Slayer == TalismanSlayerName.Wolf)

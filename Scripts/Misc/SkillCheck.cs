@@ -167,16 +167,19 @@ namespace Server.Misc
             if (from is BaseCreature && ((BaseCreature)from).Controlled)
                 gc *= 2;
 
-	        if (from.Alive && ((gc >= Utility.RandomDouble() && AllowGain(from, skill, amObj)) || skill.Base < 10.0))
-	        {
-		        Gain(from, skill);
-		        if (from.SkillsTotal >= 4500 || skill.Base >= 80.0)
+		if( AllowGain(from, skill, amObj) )
+		{
+		        if (from.Alive && (gc >= Utility.RandomDouble() || skill.Base < 10.0))
 		        {
-					Account acc = from.Account as Account;
-					if (acc != null)
-						acc.RemoveYoungStatus(1019036);
+			        Gain(from, skill);
+			        if (from.SkillsTotal >= 4500 || skill.Base >= 80.0)
+			        {
+						Account acc = from.Account as Account;
+						if (acc != null)
+							acc.RemoveYoungStatus(1019036);
+			        }
 		        }
-	        }
+		}
 
 	        return success;
         }

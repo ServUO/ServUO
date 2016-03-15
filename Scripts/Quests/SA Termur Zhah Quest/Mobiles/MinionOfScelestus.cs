@@ -95,7 +95,7 @@ namespace Server.Mobiles
 
             if (0.50 > Utility.RandomDouble())
             {
-                Item item = Loot.Construct(m_Types, this);
+                Item item = Loot.Construct(m_Types);
 
                 if (item != null)
                     c.DropItem(item);

@@ -223,6 +223,11 @@ namespace Server.Engines.Craft
                 bool toDelete = false;
 
                 // TODO: Make an IRepairable
+                if (!AllowsRepair(targeted as Item, m_CraftSystem))
+                {
+                    from.SendLocalizedMessage(500426); // You can't repair that.
+                    return;
+                }
 
                 if (this.m_CraftSystem.CanCraft(from, this.m_Tool, targeted.GetType()) == 1044267)
                 {
@@ -592,6 +597,18 @@ namespace Server.Engines.Craft
                         this.m_Deed.Delete();
                 }
             }
+        }
+
+        public static bool AllowsRepair(Item item, CraftSystem system)
+        {
+            if (item == null)
+                return false;
+            // Implement IRepairable checks here if need be. Heads up, system could be null so do null checks!
+
+            return ((item is BaseArmor && ((BaseArmor)item).CanRepair) ||
+                    (item is BaseWeapon && ((BaseWeapon)item).CanRepair) ||
+                    (item is BaseClothing && ((BaseClothing)item).CanRepair) ||
+                    (item is BaseJewel && ((BaseJewel)item).CanRepair));
         }
     }
 }

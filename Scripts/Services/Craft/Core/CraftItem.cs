@@ -266,10 +266,20 @@ namespace Server.Engines.Craft
 				consumHits = consume;
 			}
 
-			if (Mana > 0 && from.Mana < Mana)
+			if (Mana > 0)
 			{
-				message = "You lack the required mana to make that.";
-				return false;
+                if (ManaPhasingOrb.IsInManaPhase(from))
+                {
+                    if (consume)
+                        ManaPhasingOrb.RemoveFromTable(from);
+                    return true;
+                }
+
+                if (from.Mana < Mana)
+                {
+                    message = "You lack the required mana to make that.";
+                    return false;
+                }
 			}
 			else
 			{

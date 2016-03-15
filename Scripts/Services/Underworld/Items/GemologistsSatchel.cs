@@ -27,7 +27,7 @@ namespace Server.Items
 
                 if (type != null)
                 {
-                    Item item = Loot.Construct(type, null);
+                    Item item = Loot.Construct(type);
 
                     if (item != null)
                     {

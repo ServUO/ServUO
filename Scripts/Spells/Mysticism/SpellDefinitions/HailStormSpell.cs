@@ -117,7 +117,7 @@ namespace Server.Spells.Mystic
                         if (m.Deleted || !m.Alive)
                             continue;
 
-                        damage = m_Spell.GetNewAosDamage(51, 1, 5, m is PlayerMobile);
+                        damage = m_Spell.GetNewAosDamage(51, 1, 5, m is PlayerMobile, m);
 
                         if (m_ToEffect.Count > 2)
                             damage = (damage * 2) / m_ToEffect.Count;

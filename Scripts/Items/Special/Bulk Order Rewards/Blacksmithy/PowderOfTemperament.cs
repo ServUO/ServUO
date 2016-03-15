@@ -125,79 +125,132 @@ namespace Server.Items
                     return;
                 }
 
-                if (targeted is IDurability && targeted is Item)
+                if (targeted is Item)
                 {
-                    IDurability wearable = (IDurability)targeted;
                     Item item = (Item)targeted;
+                    bool noGo = false;
+                    int antique = 0;
 
-                    if (!wearable.CanFortify)
+                    if (!Server.Engines.Craft.Repair.AllowsRepair(item, null))
                     {
                         from.SendLocalizedMessage(1049083); // You cannot use the powder on that item.
                         return;
                     }
 
-                    if ((item.IsChildOf(from.Backpack) || (Core.ML && item.Parent == from)) && this.m_Powder.IsChildOf(from.Backpack))
+                    #region SA
+                    if (item is BaseWeapon)
                     {
-                        int origMaxHP = wearable.MaxHitPoints;
-                        int origCurHP = wearable.HitPoints;
+                        if (((BaseWeapon)item).Attributes.Brittle > 0 || ((BaseWeapon)item).NegativeAttributes.Brittle > 0)
+                            noGo = true;
+                        antique = ((BaseWeapon)item).NegativeAttributes.Antique;
+                    }
+                    else if (item is BaseArmor)
+                    {
+                        if (((BaseArmor)item).Attributes.Brittle > 0 || ((BaseArmor)item).NegativeAttributes.Brittle > 0)
+                            noGo = true;
+                        antique = ((BaseArmor)item).NegativeAttributes.Antique;
+                    }
+                    else if (item is BaseClothing)
+                    {
+                        if (((BaseClothing)item).Attributes.Brittle > 0 || ((BaseClothing)item).NegativeAttributes.Brittle > 0)
+                            noGo = true;
+                        antique = ((BaseClothing)item).NegativeAttributes.Antique;
+                    }
+                    else if (item is BaseJewel)
+                    {
+                        if (((BaseJewel)item).Attributes.Brittle > 0 || ((BaseJewel)item).NegativeAttributes.Brittle > 0)
+                            noGo = true;
+                        antique = ((BaseJewel)item).NegativeAttributes.Antique;
+                    }
+                    if (noGo)
+                    {
+                        from.SendLocalizedMessage(1149799); //That cannot be used on brittle items.
+                        return;
+                    }
+                    #endregion
 
-                        if (origMaxHP > 0)
+                    if (targeted is IDurability)
+                    {
+                        IDurability wearable = (IDurability)targeted;
+
+                        if (!wearable.CanFortify)
                         {
-                            int initMaxHP = Core.AOS ? 255 : wearable.InitMaxHits;
+                            from.SendLocalizedMessage(1049083); // You cannot use the powder on that item.
+                            return;
+                        }
 
-                            wearable.UnscaleDurability();
+                        if ((item.IsChildOf(from.Backpack) || (Core.ML && item.Parent == from)) && this.m_Powder.IsChildOf(from.Backpack))
+                        {
+                            int origMaxHP = wearable.MaxHitPoints;
+                            int origCurHP = wearable.HitPoints;
 
-                            if (wearable.MaxHitPoints < initMaxHP)
+                            if (origMaxHP > 0)
                             {
-                                int bonus = initMaxHP - wearable.MaxHitPoints;
+                                //int initMaxHP = Core.AOS ? 255 : wearable.InitMaxHits;
+                                int initMaxHP = antique <= 0 ? 255 : antique == 1 ? 200 : 150;
 
-                                if (bonus > 10)
-                                    bonus = 10;
+                                wearable.UnscaleDurability();
 
-                                wearable.MaxHitPoints += bonus;
-                                wearable.HitPoints += bonus;
-
-                                wearable.ScaleDurability();
-
-                                if (wearable.MaxHitPoints > 255)
-                                    wearable.MaxHitPoints = 255;
-                                if (wearable.HitPoints > 255)
-                                    wearable.HitPoints = 255;
-
-                                if (wearable.MaxHitPoints > origMaxHP)
+                                if (wearable.MaxHitPoints < initMaxHP)
                                 {
-                                    from.SendLocalizedMessage(1049084); // You successfully use the powder on the item.
-                                    from.PlaySound(0x247);
-
-                                    --this.m_Powder.UsesRemaining;
-
-                                    if (this.m_Powder.UsesRemaining <= 0)
+                                    if (antique > 0)
                                     {
-                                        from.SendLocalizedMessage(1049086); // You have used up your powder of fortifying.
-                                        this.m_Powder.Delete();
+                                        if (item is BaseWeapon) ((BaseWeapon)item).NegativeAttributes.Antique++;
+                                        if (item is BaseArmor) ((BaseArmor)item).NegativeAttributes.Antique++;
+                                        if (item is BaseJewel) ((BaseJewel)item).NegativeAttributes.Antique++;
+                                        if (item is BaseClothing) ((BaseClothing)item).NegativeAttributes.Antique++;
+                                    }
+
+                                    int bonus = initMaxHP - wearable.MaxHitPoints;
+
+                                    if (bonus > 10)
+                                        bonus = 10;
+
+                                    wearable.MaxHitPoints += bonus;
+                                    wearable.HitPoints += bonus;
+
+                                    wearable.ScaleDurability();
+
+                                    if (wearable.MaxHitPoints > 255)
+                                        wearable.MaxHitPoints = 255;
+                                    if (wearable.HitPoints > 255)
+                                        wearable.HitPoints = 255;
+
+                                    if (wearable.MaxHitPoints > origMaxHP)
+                                    {
+                                        from.SendLocalizedMessage(1049084); // You successfully use the powder on the item.
+                                        from.PlaySound(0x247);
+
+                                        --this.m_Powder.UsesRemaining;
+
+                                        if (this.m_Powder.UsesRemaining <= 0)
+                                        {
+                                            from.SendLocalizedMessage(1049086); // You have used up your powder of fortifying.
+                                            this.m_Powder.Delete();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        wearable.MaxHitPoints = origMaxHP;
+                                        wearable.HitPoints = origCurHP;
+                                        from.SendLocalizedMessage(1049085); // The item cannot be improved any further.
                                     }
                                 }
                                 else
                                 {
-                                    wearable.MaxHitPoints = origMaxHP;
-                                    wearable.HitPoints = origCurHP;
                                     from.SendLocalizedMessage(1049085); // The item cannot be improved any further.
+                                    wearable.ScaleDurability();
                                 }
                             }
                             else
                             {
-                                from.SendLocalizedMessage(1049085); // The item cannot be improved any further.
-                                wearable.ScaleDurability();
+                                from.SendLocalizedMessage(1049083); // You cannot use the powder on that item.
                             }
                         }
                         else
                         {
-                            from.SendLocalizedMessage(1049083); // You cannot use the powder on that item.
+                            from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                         }
-                    }
-                    else
-                    {
-                        from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                     }
                 }
                 else

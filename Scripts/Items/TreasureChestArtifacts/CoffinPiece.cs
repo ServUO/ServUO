@@ -1,20 +1,22 @@
+﻿using Server;
 using System;
 
 namespace Server.Items
 {
-    public class AntiqueWeddingDress : PlainDress
+    public class CoffinPiece : Item
     {
+        public override int LabelNumber { get { return 1116783; } }
+
         [Constructable]
-        public AntiqueWeddingDress()
+        public CoffinPiece() : base(Utility.RandomList(7481, 7480, 7479, 7452, 7451, 7450))
         {
-			this.Hue = 2961; // Hue probably not exact
-			this.Name = ("An Antique Wedding Dress");
         }
 
-        public AntiqueWeddingDress(Serial serial)
+        public CoffinPiece(Serial serial)
             : base(serial)
         {
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -27,4 +29,5 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+
 }

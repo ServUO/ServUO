@@ -81,12 +81,12 @@ namespace Server.Mobiles
             this.FacialHairItemID = this.Race.RandomFacialHair(this.Female);
 
             // weapon, shield
-            Item weapon = Loot.RandomWeapon(this);
+            Item weapon = Loot.RandomWeapon();
 
             this.AddItem(weapon);
 
             if (weapon.Layer == Layer.OneHanded && Utility.RandomBool())
-                this.AddItem(Loot.RandomShield(this));
+                this.AddItem(Loot.RandomShield());
 
             this.PackGold(50, 150);
         }
