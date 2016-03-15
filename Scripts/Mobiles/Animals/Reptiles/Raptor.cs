@@ -40,7 +40,7 @@ namespace Server.Mobiles
 
             Tamable = true;
             ControlSlots = 2;
-            MinTameSkill = 65.1;
+            MinTameSkill = 107.1;
 
             Fame = 7500;
             Karma = -7500;
@@ -179,7 +179,7 @@ namespace Server.Mobiles
 
         public void DoSpecialAbility(Mobile target)
         {
-            if (0.03 >= Utility.RandomDouble())
+            if (0.03 >= Utility.RandomDouble() && !Controlled)
                 SpawnRaptors(target);
         }
 
