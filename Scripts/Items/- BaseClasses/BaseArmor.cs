@@ -83,6 +83,7 @@ namespace Server.Items
         private AosArmorAttributes m_AosArmorAttributes;
         private AosSkillBonuses m_AosSkillBonuses;
         private SAAbsorptionAttributes m_SAAbsorptionAttributes;
+        private NegativeAttributes m_NegativeAttributes;
 
         // Overridable values. These values are provided to override the defaults which get defined in the individual armor scripts.
         private int m_ArmorBase = -1;
@@ -234,7 +235,15 @@ namespace Server.Items
         {
             get
             {
-                return m_TimesImbued == 0;
+                return m_TimesImbued == 0 && NegativeAttributes.Antique < 3;
+            }
+        }
+
+        public virtual bool CanRepair
+        {
+            get
+            {
+                return m_NegativeAttributes.NoRepair == 0;
             }
         }
 
@@ -266,6 +275,7 @@ namespace Server.Items
             armor.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, this.m_SAAbsorptionAttributes);
             armor.m_SetAttributes = new AosAttributes(newItem, this.m_SetAttributes);
             armor.m_SetSkillBonuses = new AosSkillBonuses(newItem, this.m_SetSkillBonuses);
+            armor.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
         }
 
         #region Personal Bless Deed
@@ -555,7 +565,7 @@ namespace Server.Items
         {
             get
             {
-                return (this.m_StrReq == -1 ? Core.AOS ? this.AosStrReq : this.OldStrReq : this.m_StrReq);
+                return Math.Min(110, (int)((double)(m_StrReq == -1 ? (Core.AOS ? AosStrReq : OldStrReq) : m_StrReq) * (m_NegativeAttributes.Massive > 0 ? 1.5 : 1)));
             }
             set
             {
@@ -822,6 +832,29 @@ namespace Server.Items
             }
             set
             {
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public NegativeAttributes NegativeAttributes
+        {
+            get 
+            { 
+                return m_NegativeAttributes;
+            }
+            set 
+            { 
+            }
+        }
+
+        public override double DefaultWeight
+        {
+            get
+            {
+                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
+                    return base.DefaultWeight;
+
+                return base.DefaultWeight * 3;
             }
         }
 
@@ -1375,7 +1408,8 @@ namespace Server.Items
             SkillBonuses = 0x00800000,
             PlayerConstructed = 0x01000000,
             xAbsorptionAttributes = 0x02000000,
-            TimesImbued = 0x04000000
+            //TimesImbued = 0x04000000,
+            NegativeAttributes  = 0x08000000,
         }
 
         #region Mondain's Legacy Sets
@@ -1491,6 +1525,7 @@ namespace Server.Items
             // Version 7
             SaveFlag flags = SaveFlag.None;
 
+            SetSaveFlag(ref flags, SaveFlag.NegativeAttributes, !this.m_NegativeAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Attributes, !this.m_AosAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.ArmorAttributes, !this.m_AosArmorAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.PhysicalBonus, this.m_PhysicalBonus != 0);
@@ -1517,9 +1552,12 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.SkillBonuses, !this.m_AosSkillBonuses.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.PlayerConstructed, this.m_PlayerConstructed != false);
             SetSaveFlag(ref flags, SaveFlag.xAbsorptionAttributes, !this.m_SAAbsorptionAttributes.IsEmpty);
-            SetSaveFlag(ref flags, SaveFlag.TimesImbued, this.m_TimesImbued != 0);
+            //SetSaveFlag(ref flags, SaveFlag.TimesImbued, this.m_TimesImbued != 0);
 
             writer.WriteEncodedInt((int)flags);
+
+            if (GetSaveFlag(flags, SaveFlag.NegativeAttributes))
+                m_NegativeAttributes.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.Attributes))
                 this.m_AosAttributes.Serialize(writer);
@@ -1678,6 +1716,11 @@ namespace Server.Items
                 case 5:
                     {
                         SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.NegativeAttributes))
+                            m_NegativeAttributes = new NegativeAttributes(this, reader);
+                        else
+                            m_NegativeAttributes = new NegativeAttributes(this);
 
                         if (GetSaveFlag(flags, SaveFlag.Attributes))
                             this.m_AosAttributes = new AosAttributes(this, reader);
@@ -2016,6 +2059,7 @@ namespace Server.Items
             this.m_SetSkillBonuses = new AosSkillBonuses(this);
             #endregion
             this.m_AosSkillBonuses = new AosSkillBonuses(this);
+            m_NegativeAttributes = new NegativeAttributes(this);
 
             // Mod to randomly add sockets and socketability features to armor. These settings will yield
             // 2% drop rate of socketed/socketable items
@@ -2227,6 +2271,9 @@ namespace Server.Items
                         wear = Absorbed / 2;
                     else
                         wear = Utility.Random(2);
+
+                    if (NegativeAttributes.Antique > 0)
+                        wear *= 2;
 
                     if (wear > 0 && this.m_MaxHitPoints > 0)
                     {
@@ -2469,6 +2516,10 @@ namespace Server.Items
             else if (this.RequiredRace == Race.Gargoyle)
                 list.Add(1111709); // Gargoyles Only
 
+            if (this is SurgeShield && ((SurgeShield)this).Surge > SurgeType.None)
+                list.Add(1116176 + ((int)((SurgeShield)this).Surge));
+
+            m_NegativeAttributes.GetProperties(list, this);
             this.m_AosSkillBonuses.GetProperties(list);
 
             int prop;
@@ -2589,6 +2640,12 @@ namespace Server.Items
 
             if ((prop = this.m_SAAbsorptionAttributes.ResonanceKinetic) != 0)
                 list.Add(1113695, prop.ToString()); // Kinetic Resonance ~1_val~%
+
+            if ((prop = m_SAAbsorptionAttributes.CastingFocus) != 0)
+                list.Add(1113696, prop.ToString()); // Casting Focus ~1_val~%
+
+            if (this is SurgeShield && ((SurgeShield)this).Surge > SurgeType.None)
+                list.Add(1153098, ((SurgeShield)this).Charges.ToString());
 
             base.AddResistanceProperties(list);
 

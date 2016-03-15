@@ -79,10 +79,23 @@ namespace Server.Items
             }
         }
 
+        public Map Facet
+        {
+            get;
+            set;
+        }
+
         [Constructable]
         public MapItem()
+            : this(Map.Felucca)
+        {
+        }
+
+        [Constructable]
+        public MapItem(Map facet)
             : base(0x14EC)
         {
+            Facet = facet;
             this.Weight = 1.0;
 
             this.m_Width = 200;
@@ -91,6 +104,18 @@ namespace Server.Items
 
         public virtual void CraftInit(Mobile from)
         {
+        }
+
+        public virtual void SetDisplayByFacet()
+        {
+            if (Facet == Map.Tokuno)
+                SetDisplay(0, 0, 1448, 1430, 400, 400);
+            else if (Facet == Map.Malas)
+                SetDisplay(520, 0, 2580, 2050, 400, 400);
+            else if (Facet == Map.Ilshenar)
+                SetDisplay(130, 136, 1927, 1468, 400, 400);
+            else if (Facet == Map.TerMur)
+                SetDisplay(260, 2780, 1280, 4090, 400, 400);
         }
 
         public void SetDisplay(int x1, int y1, int x2, int y2, int w, int h)
@@ -128,7 +153,8 @@ namespace Server.Items
 
         public virtual void DisplayTo(Mobile from)
         {
-            from.Send(new MapDetails(this));
+            //from.Send(new MapDetails(this));
+            from.Send(new NewMapDetails(this));
             from.Send(new MapDisplay(this));
 
             for (int i = 0; i < this.m_Pins.Count; ++i)
@@ -281,7 +307,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
+
+            writer.Write(Facet);
 
             writer.Write(this.m_Bounds);
 
@@ -303,6 +331,11 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 1:
+                    {
+                        Facet = reader.ReadMap();
+                        goto case 0;
+                    }
                 case 0:
                     {
                         this.m_Bounds = reader.ReadRect2D();
@@ -376,6 +409,23 @@ namespace Server.Items
                 this.m_Stream.Write((short)map.Bounds.End.Y);
                 this.m_Stream.Write((short)map.Width);
                 this.m_Stream.Write((short)map.Height);
+            }
+        }
+
+        private sealed class NewMapDetails : Packet
+        {
+            public NewMapDetails(MapItem map)
+                : base(0xF5, 21)
+            {
+                m_Stream.Write((int)map.Serial);
+                m_Stream.Write((short)0x139D);
+                m_Stream.Write((short)map.Bounds.Start.X);
+                m_Stream.Write((short)map.Bounds.Start.Y);
+                m_Stream.Write((short)map.Bounds.End.X);
+                m_Stream.Write((short)map.Bounds.End.Y);
+                m_Stream.Write((short)map.Width);
+                m_Stream.Write((short)map.Height);
+                m_Stream.Write((short)map.Facet.MapID);
             }
         }
 

@@ -263,7 +263,7 @@ namespace Server.Items
             return Point3D.Zero;
         }
 
-        private static bool ValidateDeepWater(Map map, int x, int y)
+        public static bool ValidateDeepWater(Map map, int x, int y)
         {
             int tileID = map.Tiles.GetLandTile(x, y).ID;
             bool water = false;

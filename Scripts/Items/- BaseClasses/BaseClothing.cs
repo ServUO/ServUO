@@ -45,13 +45,8 @@ namespace Server.Items
         }
         #endregion
 
-        public virtual bool CanFortify
-        {
-            get
-            {
-                return m_TimesImbued == 0;
-            }
-        }
+        public virtual bool CanFortify { get { return m_TimesImbued == 0 && NegativeAttributes.Antique < 3; } }
+        public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
 
         private int m_MaxHitPoints;
         private int m_HitPoints;
@@ -66,6 +61,7 @@ namespace Server.Items
         private AosSkillBonuses m_AosSkillBonuses;
         private AosElementAttributes m_AosResistances;
         private SAAbsorptionAttributes m_SAAbsorptionAttributes;
+        private NegativeAttributes m_NegativeAttributes;
 
         #region Stygian Abyss
         private int m_TimesImbued;
@@ -142,7 +138,7 @@ namespace Server.Items
         {
             get
             {
-                return (this.m_StrReq == -1 ? (Core.AOS ? this.AosStrReq : this.OldStrReq) : this.m_StrReq);
+                return (int)((double)(m_StrReq == -1 ? (Core.AOS ? AosStrReq : OldStrReq) : m_StrReq) * (m_NegativeAttributes.Massive > 0 ? 1.5 : 1));
             }
             set
             {
@@ -399,6 +395,18 @@ namespace Server.Items
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public NegativeAttributes NegativeAttributes
+        {
+            get 
+            { 
+                return m_NegativeAttributes;
+            }
+            set 
+            {
+            }
+        }
+
         public virtual int BasePhysicalResistance
         {
             get
@@ -500,6 +508,17 @@ namespace Server.Items
             get
             {
                 return 0;
+            }
+        }
+
+        public override double DefaultWeight
+        {
+            get
+            {
+                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
+                    return base.DefaultWeight;
+
+                return base.DefaultWeight * 3;
             }
         }
 
@@ -830,6 +849,9 @@ namespace Server.Items
                     else
                         wear = Utility.Random(2);
 
+                    if (NegativeAttributes.Antique > 0)
+                        wear *= 2;
+
                     if (wear > 0 && this.m_MaxHitPoints > 0)
                     {
                         if (this.m_HitPoints >= wear)
@@ -885,6 +907,7 @@ namespace Server.Items
             this.m_AosSkillBonuses = new AosSkillBonuses(this);
             this.m_AosResistances = new AosElementAttributes(this);
             this.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
+            m_NegativeAttributes = new NegativeAttributes(this);
 
             #region Mondain's Legacy Sets
             this.m_SetAttributes = new AosAttributes(this);
@@ -904,6 +927,7 @@ namespace Server.Items
             clothing.m_AosSkillBonuses = new AosSkillBonuses(newItem, this.m_AosSkillBonuses);
             clothing.m_AosClothingAttributes = new AosArmorAttributes(newItem, this.m_AosClothingAttributes);
             clothing.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, this.m_SAAbsorptionAttributes);
+            clothing.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
 
             #region Mondain's Legacy
             clothing.m_SetAttributes = new AosAttributes(newItem, this.m_SetAttributes);
@@ -1101,6 +1125,9 @@ namespace Server.Items
             else if (this.RequiredRace == Race.Gargoyle)
                 list.Add(1111709); // Gargoyles Only
             #endregion
+
+            if (m_NegativeAttributes != null)
+                m_NegativeAttributes.GetProperties(list, this);
 
             if (this.m_AosSkillBonuses != null)
                 this.m_AosSkillBonuses.GetProperties(list);
@@ -1329,8 +1356,9 @@ namespace Server.Items
             Crafter = 0x00000100,
             Quality = 0x00000200,
             StrReq = 0x00000400,
+            NegativeAttributes  = 0x00000800,
             #region Imbuing
-            TimesImbued = 0x12000000,
+            //TimesImbued = 0x12000000,
             #endregion
         }
 
@@ -1451,6 +1479,7 @@ namespace Server.Items
             // Version 5
             SaveFlag flags = SaveFlag.None;
 
+            SetSaveFlag(ref flags, SaveFlag.NegativeAttributes, !m_NegativeAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Resource, this.m_Resource != this.DefaultResource);
             SetSaveFlag(ref flags, SaveFlag.Attributes, !this.m_AosAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.ClothingAttributes, !this.m_AosClothingAttributes.IsEmpty);
@@ -1463,10 +1492,13 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.Quality, this.m_Quality != ClothingQuality.Regular);
             SetSaveFlag(ref flags, SaveFlag.StrReq, this.m_StrReq != -1);
             #region Imbuing
-            SetSaveFlag(ref flags, SaveFlag.TimesImbued, this.m_TimesImbued != 0);
+            //SetSaveFlag(ref flags, SaveFlag.TimesImbued, this.m_TimesImbued != 0);
             #endregion
 
             writer.WriteEncodedInt((int)flags);
+
+            if (GetSaveFlag(flags, SaveFlag.NegativeAttributes))
+                m_NegativeAttributes.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.Resource))
                 writer.WriteEncodedInt((int)this.m_Resource);
@@ -1588,6 +1620,11 @@ namespace Server.Items
                 case 5:
                     {
                         SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.NegativeAttributes))
+                            m_NegativeAttributes = new NegativeAttributes(this, reader);
+                        else
+                            m_NegativeAttributes = new NegativeAttributes(this);
 
                         if (GetSaveFlag(flags, SaveFlag.Resource))
                             this.m_Resource = (CraftResource)reader.ReadEncodedInt();
