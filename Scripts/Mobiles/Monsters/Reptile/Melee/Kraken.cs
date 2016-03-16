@@ -54,15 +54,7 @@ namespace Server.Mobiles
                 this.PackItem(rope);
             }
 
-            //Only Krakens pulled up from Special nets should give the MIB / nets.  Wild ones have the rare chance at rope
-            if (Spawner is SpecialFishingNet)
-            {
-                if (Utility.RandomDouble() < .25)
-                    this.PackItem(new MessageInABottle());
-                else
-                    this.PackItem(new SpecialFishingNet()); //Confirm?
-            }
-            
+                       
         }
 
         public Kraken(Serial serial)
