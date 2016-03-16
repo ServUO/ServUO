@@ -6,6 +6,8 @@ namespace Server.Mobiles
     [CorpseName("a krakens corpse")]
     public class Kraken : BaseCreature
     {
+        
+
         [Constructable]
         public Kraken()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -44,14 +46,23 @@ namespace Server.Mobiles
             this.CanSwim = true;
             this.CantWalk = true;
 
-            Rope rope = new Rope();
-            rope.ItemID = 0x14F8;
-            this.PackItem(rope);
-
+            //Rope is supposed to be a rare drop.  ref UO Guide Kraken
             if (Utility.RandomDouble() < .05)
-                this.PackItem(new MessageInABottle());
+            {
+                Rope rope = new Rope();
+                rope.ItemID = 0x14F8;
+                this.PackItem(rope);
+            }
 
-            this.PackItem(new SpecialFishingNet()); //Confirm?
+            //Only Krakens pulled up from Special nets should give the MIB / nets.  Wild ones have the rare chance at rope
+            if (Spawner is SpecialFishingNet)
+            {
+                if (Utility.RandomDouble() < .25)
+                    this.PackItem(new MessageInABottle());
+                else
+                    this.PackItem(new SpecialFishingNet()); //Confirm?
+            }
+            
         }
 
         public Kraken(Serial serial)
