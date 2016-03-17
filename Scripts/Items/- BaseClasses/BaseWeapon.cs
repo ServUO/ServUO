@@ -1758,24 +1758,8 @@ namespace Server.Items
 			{
 				double positionChance = Utility.RandomDouble();
 
-				Item armorItem;
-
-                if (positionChance < 0.035)
-                    armorItem = defender.Ring;
-                else if (positionChance < 0.07)
-                    armorItem = defender.Bracelet;
-                else if (positionChance < 0.14)
-                    armorItem = defender.NeckArmor;
-                else if (positionChance < 0.28)
-                    armorItem = defender.HandArmor;
-                else if (positionChance < 0.43)
-                    armorItem = defender.ArmsArmor;
-                else if (positionChance < 0.65)
-                    armorItem = defender.HeadArmor;
-                else if (positionChance < 0.85)
-                    armorItem = defender.LegsArmor;
-                else
-                    armorItem = defender.ChestArmor;
+                Layer randomLayer = _DamageLayers[Utility.Random(_DamageLayers.Length)];
+                Item armorItem = defender.FindItemOnLayer(randomLayer);
 
 				IWearableDurability armor = armorItem as IWearableDurability;
 
@@ -1788,6 +1772,33 @@ namespace Server.Items
 
 			return damage;
 		}
+
+        private Layer[] _DamageLayers =
+        {
+            Layer.Talisman,
+            Layer.InnerLegs,
+            Layer.InnerTorso,
+            Layer.MiddleTorso,
+            Layer.Waist,
+            Layer.Cloak,
+            Layer.OuterTorso,
+            Layer.Ring,
+            Layer.Bracelet,
+            Layer.Neck,
+            Layer.Neck,
+            Layer.Gloves,
+            Layer.Gloves,
+            Layer.Arms,
+            Layer.Arms,
+            Layer.Helm,
+            Layer.Helm,
+            Layer.Pants,
+            Layer.Pants,
+            Layer.Pants,
+            Layer.Shirt,
+            Layer.Shirt,
+            Layer.Shirt
+        };
 
 		public virtual int AbsorbDamage(Mobile attacker, Mobile defender, int damage)
 		{

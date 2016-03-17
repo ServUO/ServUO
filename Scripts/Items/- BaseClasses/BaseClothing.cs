@@ -827,6 +827,9 @@ namespace Server.Items
 
         public virtual int OnHit(BaseWeapon weapon, int damageTaken)
         {
+            if (m_MaxHitPoints == 0)
+                return damageTaken;
+
             int Absorbed = Utility.RandomMinMax(1, 4);
 
             damageTaken -= Absorbed;

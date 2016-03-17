@@ -27,6 +27,9 @@ namespace Server.Items
 		[CommandProperty(AccessLevel.GameMaster)]
 		public WardingEffect Ward { get { return m_Ward; } set { m_Ward = value; } }
 
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
+
 		[Constructable]
 		public RunedSashOfWarding()
 		{
