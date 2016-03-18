@@ -5260,7 +5260,7 @@ namespace Server.Mobiles
 							givenToTKill = true;
 							TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
 						}
-                        if (Map == Map.Malas || region.IsPartOf("GauntletRegion"))
+                        if (region.IsPartOf("GauntletRegion"))
                         {
                             DemonKnight.HandleKill(this, ds.m_Mobile);
                         }
