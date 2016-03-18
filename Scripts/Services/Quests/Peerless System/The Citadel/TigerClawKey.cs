@@ -24,13 +24,6 @@ namespace Server.Items
                 return 1074342;
             }
         }// tiger claw key
-        public override int Lifespan
-        {
-            get
-            {
-                return 21600;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

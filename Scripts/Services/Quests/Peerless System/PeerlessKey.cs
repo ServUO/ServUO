@@ -28,7 +28,7 @@ namespace Server.Items
         {
             get
             {
-                return 0;
+				return 604800;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]

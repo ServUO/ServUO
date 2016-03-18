@@ -24,13 +24,6 @@ namespace Server.Items
                 return 1074343;
             }
         }// dragon flame key
-        public override int Lifespan
-        {
-            get
-            {
-                return 21600;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
