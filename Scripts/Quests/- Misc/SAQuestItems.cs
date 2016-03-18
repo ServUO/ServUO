@@ -621,16 +621,8 @@ namespace Server.Items
     {
         [Constructable]
         public SearedFireAntGoo()
-            : this(1)
+			: base(0x122E)
         {
-        }
-
-        [Constructable]
-        public SearedFireAntGoo(int amount)
-            : base(0x2F5F)
-        {
-            this.Stackable = true;
-            this.Amount = amount;
         }
 
         public SearedFireAntGoo(Serial serial)
