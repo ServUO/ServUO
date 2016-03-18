@@ -4,18 +4,23 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public class ManaPhasingOrb : BaseTalisman
+    public class ManaPhasingOrb : BaseTalisman, Server.Engines.Craft.IRepairable
     {
         public override int LabelNumber { get { return 1116230; } }
+
+        public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefTinkering.CraftSystem; } }
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         [Constructable]
         public ManaPhasingOrb() : base(4246)
         {
-            Blessed = true;
             MaxChargeTime = 30;
             Charges = 50;
             MaxCharges = Charges;
             Hue = 1165;
+
+            Attributes.Brittle = 1;
 
             switch (Utility.Random(3))
             {
@@ -52,20 +57,25 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (ChargeTime > 0)
+            if (from.Talisman != this)
+                from.SendLocalizedMessage(502641); // You must equip this item to use it.
+            else
             {
-                from.SendLocalizedMessage(1116163); //You must wait a few seconds before attempting to phase mana again.
-                return;
-            }
+                if (ChargeTime > 0)
+                {
+                    from.SendLocalizedMessage(1116163); //You must wait a few seconds before attempting to phase mana again.
+                    return;
+                }
 
-            if (Charges > 0 && !IsInManaPhase(from))
-            {
-                AddToTable(from);
-                OnAfterUse(from);
+                if (Charges > 0 && !IsInManaPhase(from))
+                {
+                    AddToTable(from);
+                    OnAfterUse(from);
 
-                BuffInfo.AddBuff(from, new BuffInfo(BuffIcon.ManaPhase, 1116158, 1153816));
+                    BuffInfo.AddBuff(from, new BuffInfo(BuffIcon.ManaPhase, 1116158, 1153816));
 
-                return;
+                    return;
+                }
             }
 
             base.OnDoubleClick(from);

@@ -162,6 +162,10 @@ namespace Server.Items
                             noGo = true;
                         antique = ((BaseJewel)item).NegativeAttributes.Antique;
                     }
+                    else if (item is BaseTalisman && ((BaseTalisman)item).Attributes.Brittle > 0)
+                    {
+                        noGo = true;
+                    }
                     if (noGo)
                     {
                         from.SendLocalizedMessage(1149799); //That cannot be used on brittle items.
