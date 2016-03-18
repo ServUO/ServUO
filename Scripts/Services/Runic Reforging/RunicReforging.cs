@@ -1706,7 +1706,7 @@ namespace Server.Items
             }
 
             //TODO: Verify this
-            if (item is IDurability && (neg.Antique == 1 || neg.Brittle == 1))
+            if (item is IDurability && (neg.Antique == 1 || neg.Brittle == 1 || item is BaseJewel))
             {
                 ((IDurability)item).MaxHitPoints = 255;
                 ((IDurability)item).HitPoints = 255;

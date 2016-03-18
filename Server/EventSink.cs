@@ -119,6 +119,8 @@ namespace Server
 
 	public delegate void ResourceHarvestAttemptEventHandler(ResourceHarvestAttemptEventArgs e);
 
+	public delegate void ResourceHarvestSuccessEventHandler(ResourceHarvestSuccessEventArgs e);
+
 
 	public class ClientVersionReceivedArgs : EventArgs
 	{
@@ -991,6 +993,22 @@ namespace Server
 		}
 	}
 
+	public class ResourceHarvestSuccessEventArgs : EventArgs
+	{
+		public Mobile Harvester { get; private set; }
+		public Item Tool { get; private set; }
+		public Item Resource { get; private set; }
+		public object HarvestSystem { get; private set; }
+
+		public ResourceHarvestSuccessEventArgs(Mobile m, Item i, Item r, object o)
+		{
+			Harvester = m;
+			Tool = i;
+			Resource = r;
+			HarvestSystem = o;
+		}
+	}
+
 	public static class EventSink
 	{
 		public static event CharacterCreatedEventHandler CharacterCreated;
@@ -1044,6 +1062,7 @@ namespace Server
 		public static event BODUsedEventHandler BODUsed;
 		public static event BODOfferEventHandler BODOffered;
 		public static event ResourceHarvestAttemptEventHandler ResourceHarvestAttempt;
+		public static event ResourceHarvestSuccessEventHandler ResourceHarvestSuccess;
 
 		/* The following is a .NET 2.0 "Generic EventHandler" implementation.
 		 * It is a breaking change; we would have to refactor all event handlers.
@@ -1505,6 +1524,14 @@ namespace Server
 			}
 		}
 
+		public static void InvokeResourceHarvestSuccess(ResourceHarvestSuccessEventArgs e)
+		{
+			if (ResourceHarvestSuccess != null)
+			{
+				ResourceHarvestSuccess(e);
+			}
+		}
+
 		public static void Reset()
 		{
 			CharacterCreated = null;
@@ -1554,6 +1581,7 @@ namespace Server
 			BODUsed = null;
 			BODOffered = null;
 			ResourceHarvestAttempt = null;
+			ResourceHarvestSuccess = null;
 		}
 	}
 }

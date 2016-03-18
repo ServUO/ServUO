@@ -487,36 +487,39 @@ namespace Server.Items
             if (m_TimesImbued == 0 && m_MaxHitPoints == 0)
                 return damage;
 
-            int wear = Utility.Random(2);
-
-            if (NegativeAttributes.Antique > 0)
-                wear *= 2;
-
-            if (wear > 0 && m_MaxHitPoints > 0)
+            if (25 > Utility.Random(100)) // 25% chance to lower durability
             {
-                if (m_HitPoints >= wear)
-                {
-                    HitPoints -= wear;
-                    wear = 0;
-                }
-                else
-                {
-                    wear -= HitPoints;
-                    HitPoints = 0;
-                }
+                int wear = Utility.Random(2);
+
+                if (NegativeAttributes.Antique > 0)
+                    wear *= 2;
 
                 if (wear > 0)
                 {
-                    if (m_MaxHitPoints > wear)
+                    if (m_HitPoints >= wear)
                     {
-                        MaxHitPoints -= wear;
-
-                        if (Parent is Mobile)
-                            ((Mobile)Parent).LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                        HitPoints -= wear;
+                        wear = 0;
                     }
                     else
                     {
-                        Delete();
+                        wear -= HitPoints;
+                        HitPoints = 0;
+                    }
+
+                    if (wear > 0)
+                    {
+                        if (m_MaxHitPoints > wear)
+                        {
+                            MaxHitPoints -= wear;
+
+                            if (Parent is Mobile)
+                                ((Mobile)Parent).LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                        }
+                        else
+                        {
+                            Delete();
+                        }
                     }
                 }
             }
