@@ -7,8 +7,7 @@ namespace Server.Mobiles
     [CorpseName("a demon knight corpse")]
     public class DemonKnight : BaseCreature
     {
-
-        
+              
         private static readonly Type[] m_DoomArtifact = new Type[]
         {
             typeof(LegacyOfTheDreadLord),
@@ -178,9 +177,7 @@ namespace Server.Mobiles
             bool boss = bc is Impaler || bc is DemonKnight || bc is DarknightCreeper || bc is FleshRenderer  || bc is ShadowKnight || bc is AbysmalHorror;
             if (!boss)
                 return;
-
-                    
-
+             
             double gpoints = pm.GauntletPoints;
 
             pm.GauntletPoints += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100))/2;
@@ -195,7 +192,7 @@ namespace Server.Mobiles
             double roll = Utility.RandomDouble();
 
             //testing code
-            pm.SendMessage("chance is " + chance + " Vs a roll of " + roll);
+            //pm.SendMessage("chance is " + chance + " Vs a roll of " + roll);
 
 
             if (chance > roll )
@@ -228,9 +225,6 @@ namespace Server.Mobiles
                     pm.GauntletPoints = 0;
                 }
             }
-
-
-
         }
  
       
@@ -251,56 +245,7 @@ namespace Server.Mobiles
 
             return null;
         }
-        /*
-      public static void DistributeArtifact(BaseCreature creature)
-      {
-          DistributeArtifact(creature, CreateRandomArtifact());
-      }
-
-      public static void DistributeArtifact(BaseCreature creature, Item artifact)
-      {
-          DistributeArtifact(FindRandomPlayer(creature), artifact);
-      }
-
-      public static void DistributeArtifact(Mobile to)
-      {
-          DistributeArtifact(to, CreateRandomArtifact());
-      }
-
-      public static void DistributeArtifact(Mobile to, Item artifact)
-      {
-          if (to == null || artifact == null)
-              return;
-
-          Container pack = to.Backpack;
-
-          if (pack == null || !pack.TryDropItem(to, artifact, false))
-              to.BankBox.DropItem(artifact);
-
-          to.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-      }
-
-      public static int GetArtifactChance(Mobile boss)
-      {
-          if (!Core.AOS)
-              return 0;
-
-          int luck = LootPack.GetLuckChanceForKiller(boss);
-          int chance;
-
-          if (boss is DemonKnight)
-              chance = 1500 + (luck / 5);
-          else
-              chance = 750 + (luck / 10);
-
-          return chance;
-      }
-
-      public static bool CheckArtifactChance(Mobile boss)
-      {
-          return GetArtifactChance(boss) > Utility.Random(100000);
-      }
-      */
+      
         public override WeaponAbility GetWeaponAbility()
         {
             switch ( Utility.Random(3) )
