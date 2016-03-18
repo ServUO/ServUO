@@ -69,8 +69,16 @@ namespace Server.Engines.Harvest
                 this.DestroyFurniture(from, (Item)targeted);
             else if (this.m_System is Mining && targeted is TreasureMap)
                 ((TreasureMap)targeted).OnBeginDig(from);
-            else
-                this.m_System.StartHarvesting(from, this.m_Tool, targeted);
+			else
+			{
+				// If we got here and we're lumberjacking then we didn't target something that cna be done from the pack
+				if (m_System is Lumberjacking && m_Tool.Parent != from)
+				{
+					from.SendLocalizedMessage(500487); // The axe must be equipped for any serious wood chopping.
+					return;
+				}
+				this.m_System.StartHarvesting(from, this.m_Tool, targeted);
+			}
         }
 
         private void DestroyFurniture(Mobile from, Item item)
