@@ -4989,6 +4989,7 @@ namespace Server.Mobiles
 		public static void GiveMinorArtifact(Mobile m)
 		{
 			Item item = Activator.CreateInstance(m_Artifacts[Utility.Random(m_Artifacts.Length)]) as Item;
+			m.PlaySound(0x5B4);
 
 			if (item == null)
 			{
@@ -5026,6 +5027,7 @@ namespace Server.Mobiles
 		public static void GiveSAArtifact(Mobile m)
 		{
 			Item item = Activator.CreateInstance(m_SAArtifacts[Utility.Random(m_SAArtifacts.Length)]) as Item;
+			m.PlaySound(0x5B4);
 
 			if (item == null)
 			{

@@ -356,6 +356,7 @@ namespace Server
 
             if (item == null)
                 return;
+			m.PlaySound(0x5B4);
 
             if (m.AddToBackpack(item))
             {
