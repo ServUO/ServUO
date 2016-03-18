@@ -263,6 +263,8 @@ namespace Server.Mobiles
 
 		public int FollowRange { get; set; }
 
+		public virtual bool CanBeParagon { get { return true; } }
+
 		/* Do not serialize this till the code is finalized */
 
 		private bool m_SeeksHome;
