@@ -113,7 +113,7 @@ namespace Server.Mobiles
             if (to == null || artifact == null)
                 return;
 
-			m.PlaySound(0x5B4);
+			to.PlaySound(0x5B4);
 
             Container pack = to.Backpack;
 
