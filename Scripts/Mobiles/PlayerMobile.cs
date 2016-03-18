@@ -108,11 +108,6 @@ namespace Server.Mobiles
 
 	public class PlayerMobile : Mobile, IHonorTarget
 	{
-		public static void Configure()
-		{
-			EventSink.CharacterCreated += EventSink_CharacterCreated;
-		}
-
 		#region Mount Blocking
 		public void SetMountBlock(BlockMountType type, TimeSpan duration, bool dismount)
 		{
@@ -395,21 +390,8 @@ namespace Server.Mobiles
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool HasStatReward { get { return GetFlag(PlayerFlag.HasStatReward); } set { SetFlag(PlayerFlag.HasStatReward, value); } }
 
-		#region QueensLoyaltySystem
-		private long m_LevelExp; // Experience Needed for next Experience Level
-
-        public static readonly int Noble = 61;
-
-		[CommandProperty(AccessLevel.Owner)]
-		public long LevelExp
-		{
-			get { return m_LevelExp; }
-			set
-			{
-				m_LevelExp = value;
-				InvalidateProperties();
-			}
-		}
+        #region QueensLoyaltySystem
+        public static readonly int Noble = 10000;
 
 		private long m_Exp; // Experience at the current Experience Level
 
@@ -420,32 +402,6 @@ namespace Server.Mobiles
 			set
 			{
 				m_Exp = value;
-				InvalidateProperties();
-			}
-		}
-
-		private int m_Level; // Experience Level
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int Level
-		{
-			get { return m_Level; }
-			set
-			{
-				m_Level = value;
-				InvalidateProperties();
-			}
-		}
-
-		public string m_ExpTitle; // Title based on both levels
-
-		[CommandProperty(AccessLevel.Owner)]
-		public string ExpTitle
-		{
-			get { return m_ExpTitle; }
-			set
-			{
-				m_ExpTitle = value;
 				InvalidateProperties();
 			}
 		}
@@ -1924,13 +1880,6 @@ namespace Server.Mobiles
 		}
 
 		#region Insurance
-		static void EventSink_CharacterCreated(CharacterCreatedEventArgs e)
-		{
-			if (e.Mobile == null || !(e.Mobile is PlayerMobile))
-				return;
-			((PlayerMobile)e.Mobile).AutoRenewInsurance = true;
-		}
-
 		private void ToggleItemInsurance()
 		{
 			if (!CheckAlive())
@@ -3694,12 +3643,12 @@ namespace Server.Mobiles
 						m_SSSeedLocation = reader.ReadPoint3D();
 						m_SSSeedMap = reader.ReadMap();
 
-						m_LevelExp = reader.ReadLong();
-						m_Exp = reader.ReadLong();
-						m_Level = reader.ReadInt();
-						m_ExpTitle = reader.ReadString();
+						reader.ReadLong(); // Old m_LevelExp
+                        m_Exp = reader.ReadLong();
+						reader.ReadInt(); // Old m_Level
+                        reader.ReadString(); // Old m_ExpTitle
 
-						m_VASTotalMonsterFame = reader.ReadInt();
+                        m_VASTotalMonsterFame = reader.ReadInt();
 
 						m_Quests = QuestReader.Quests(reader, this);
 						m_Chains = QuestReader.Chains(reader);
@@ -3973,11 +3922,7 @@ namespace Server.Mobiles
 			#region QueensLoyaltySystem
 			if (version < 29)
 			{
-				m_LevelExp = 2000;
 				m_Exp = 0;
-				m_Level = 0;
-
-				m_ExpTitle = "Friend of TerMur";
 			}
 			#endregion
 
@@ -4106,14 +4051,14 @@ namespace Server.Mobiles
 			#endregion
 
 			#region QueensLoyaltySystem
-			writer.Write(m_LevelExp);
-			writer.Write(m_Exp);
-			writer.Write(m_Level);
+			writer.Write((long)0); // Old m_LevelExp
+            writer.Write(m_Exp);
+			writer.Write(0); // Old m_Level
 
-			writer.Write(m_ExpTitle);
-			#endregion
+            writer.Write(""); // Old m_ExpTitle
+            #endregion
 
-			writer.Write(m_VASTotalMonsterFame);
+            writer.Write(m_VASTotalMonsterFame);
 
 			#region Mondain's Legacy
 			QuestWriter.Quests(writer, m_Quests);

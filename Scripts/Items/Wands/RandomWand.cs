@@ -11,7 +11,7 @@ namespace Server.Items
 
         public static BaseWand CreateRandomWand()
         {
-            return Loot.RandomWand(null);
+            return Loot.RandomWand();
         }
     }
 }

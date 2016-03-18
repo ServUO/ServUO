@@ -102,10 +102,27 @@ namespace Server.Spells.Chivalry
                 double seconds = this.ComputePowerValue(20);
 
                 // TODO: Should caps be applied?
-                if (seconds < 3.0)
-                    seconds = 3.0;
-                else if (seconds > 11.0)
+
+                int pkarma = this.Caster.Karma;
+
+
+
+                if (pkarma > 5000)
                     seconds = 11.0;
+                else if (pkarma >= 4999)
+                    seconds = 10.0;
+                else if (pkarma >= 3999)
+                    seconds = 9.00;
+                else if (pkarma >= 2999)
+                    seconds = 8.0;
+                else if (pkarma >= 1999)
+                    seconds = 7.0;
+                else if (pkarma >= 999)
+                    seconds = 6.0;
+                else
+                    seconds = 5.0;
+                       
+           
 
                 TimeSpan duration = TimeSpan.FromSeconds(seconds);
 
@@ -117,6 +134,7 @@ namespace Server.Spells.Chivalry
                 weapon.Consecrated = true;
 
                 m_Table[weapon] = t = new ExpireTimer(weapon, duration);
+                BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.ConsecrateWeapon, 1028830, 1044111, TimeSpan.FromSeconds(seconds), this.Caster));
 
                 t.Start();
             }

@@ -79,9 +79,9 @@ namespace Server.Items
                 DropItem(new Lantern());
 
             if (0.1 >= Utility.RandomDouble())
-                DropItem(Loot.RandomRangedWeapon(null));
+                DropItem(Loot.RandomRangedWeapon());
             else
-                DropItem(Loot.RandomWeapon(null));
+                DropItem(Loot.RandomWeapon());
 
             DropItem(new TreasureMap(Utility.RandomMinMax(3, 5), Map.Felucca));
         }
@@ -119,7 +119,7 @@ namespace Server.Items
 
             DropItem(new Robe(Utility.RandomNondyedHue()));
             DropItem(new Sandals());
-            DropItem(Loot.RandomJewelry(null));
+            DropItem(Loot.RandomJewelry());
 
             if (Utility.RandomBool())
                 DropItem(new QuarterStaff());

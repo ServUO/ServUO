@@ -71,7 +71,7 @@ namespace Server.Engines.Quests
 
 		public static Item Jewlery()
 		{
-			BaseJewel item = Loot.RandomJewelry(null);
+			BaseJewel item = Loot.RandomJewelry();
 
 			if (item != null)
 			{
@@ -107,7 +107,7 @@ namespace Server.Engines.Quests
 
 		public static Item RangedWeapon()
 		{
-			BaseWeapon item = Loot.RandomRangedWeapon(null, false, true);
+			BaseWeapon item = Loot.RandomRangedWeapon(false, true);
 
 			if (item != null)
 			{
@@ -126,7 +126,7 @@ namespace Server.Engines.Quests
 
 		public static Item Armor()
 		{
-			BaseArmor item = Loot.RandomArmor(null, false, true);
+			BaseArmor item = Loot.RandomArmor(false, true);
 
 			if (item != null)
 			{
@@ -145,7 +145,7 @@ namespace Server.Engines.Quests
 
 		public static Item Weapon()
 		{
-			BaseWeapon item = Loot.RandomWeapon(null, false, true);
+			BaseWeapon item = Loot.RandomWeapon(false, true);
 
 			if (item != null)
 			{

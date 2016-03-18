@@ -80,7 +80,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);
-            this.PackItem(Loot.RandomArmorOrShieldOrWeapon(this));
+            this.PackItem(Loot.RandomArmorOrShieldOrWeapon());
 
             switch (Utility.Random(10))
             {

@@ -9,7 +9,7 @@ namespace Server.Items
         {
             this.Hue = 0x485;
             this.Slayer = SlayerName.ElementalBan;
-            this.WeaponAttributes.HitLeechMana = 50;
+            this.WeaponAttributes.HitLeechMana = 81;
             this.Attributes.AttackChance = 30;
             this.Attributes.WeaponDamage = 50;
         }

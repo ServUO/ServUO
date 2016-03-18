@@ -134,7 +134,7 @@ namespace Server.Mobiles
 			
             Type type = list[random];
 
-            Item artifact = Loot.Construct(type, this);
+            Item artifact = Loot.Construct(type);
 
             if (artifact is MonsterStatuette && this.StatueTypes.Length > 0)
             {

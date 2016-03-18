@@ -192,7 +192,7 @@ namespace Server.Mobiles
         }
         public static void GiveArtifactTo(Mobile m)
         {
-            Item item = Loot.Construct(m_Artifacts, null);
+            Item item = Loot.Construct(m_Artifacts);
 
             if (item == null)
                 return;

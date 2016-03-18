@@ -32,7 +32,7 @@ namespace Server.Mobiles
         public static bool GenerateRandomItem(Item item, Mobile killer, BaseCreature victim)
         {
             if(Enabled)
-                return RunicReforging.GenerateRandomItem(item, killer, victim, true);
+                return RunicReforging.GenerateRandomItem(item, killer, victim);
             return false;
         }
     }

@@ -123,6 +123,12 @@ namespace Server.Spells
         {
             double scalar = 1.0;
 
+            if (ManaPhasingOrb.IsInManaPhase(m))
+            {
+                ManaPhasingOrb.RemoveFromTable(m);
+                return 0;
+            }
+
             if (!Server.Spells.Necromancy.MindRotSpell.GetMindRotScalar(m, ref scalar))
                 scalar = 1.0;
 

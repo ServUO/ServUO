@@ -153,9 +153,9 @@ namespace Server.Items
                 Item item;
 
                 if (Core.AOS)
-                    item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(null);
+                    item = Loot.RandomArmorOrShieldOrWeaponOrJewelry();
                 else
-                    item = Loot.RandomArmorOrShieldOrWeapon(null);
+                    item = Loot.RandomArmorOrShieldOrWeapon();
 
                 if (item is BaseWeapon)
                 {

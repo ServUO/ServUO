@@ -19,7 +19,7 @@ namespace Server.Items
         Wildfire = 2843
     }
 
-    public class BaseTalisman : Item
+    public class BaseTalisman : Item, IWearableDurability
     {
         public static void Initialize()
         {
@@ -53,6 +53,9 @@ namespace Server.Items
                 return false;
             }
         }// used to override default summoner/removal name
+
+        private int m_MaxHitPoints;
+        private int m_HitPoints;
 
         //private readonly int m_KarmaLoss;
         private int m_MaxCharges;
@@ -148,6 +151,62 @@ namespace Server.Items
                 this.InvalidateProperties();
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int MaxHitPoints
+        {
+            get
+            {
+                return this.m_MaxHitPoints;
+            }
+            set
+            {
+                this.m_MaxHitPoints = value;
+                this.InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int HitPoints
+        {
+            get
+            {
+                return this.m_HitPoints;
+            }
+            set
+            {
+                if (value != this.m_HitPoints && this.MaxHitPoints > 0)
+                {
+                    this.m_HitPoints = value;
+
+                    if (this.m_HitPoints < 0)
+                        this.Delete();
+                    else if (this.m_HitPoints > this.MaxHitPoints)
+                        this.m_HitPoints = this.MaxHitPoints;
+
+                    this.InvalidateProperties();
+                }
+            }
+        }
+
+        public virtual int InitMinHits
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        public virtual int InitMaxHits
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        public virtual bool CanRepair { get { return this is Server.Engines.Craft.IRepairable; } }
+        public virtual bool CanFortify { get { return CanRepair; } }
 
         #region Slayer
         private TalismanSlayerName m_Slayer;
@@ -322,6 +381,8 @@ namespace Server.Items
             this.Layer = Layer.Talisman;
             this.Weight = 1.0;
 
+            this.m_HitPoints = this.m_MaxHitPoints = Utility.RandomMinMax(this.InitMinHits, this.InitMaxHits);
+
             this.m_Protection = new TalismanAttribute();
             this.m_Killer = new TalismanAttribute();
             this.m_Summoner = new TalismanAttribute();
@@ -331,6 +392,56 @@ namespace Server.Items
 
         public BaseTalisman(Serial serial)
             : base(serial)
+        {
+        }
+
+        public virtual int OnHit(BaseWeapon weap, int damage)
+        {
+            if (m_MaxHitPoints == 0)
+                return damage;
+
+            if (25 > Utility.Random(100)) // 25% chance to lower durability
+            {
+                int wear = Utility.Random(2);
+
+                if (wear > 0)
+                {
+                    if (m_HitPoints >= wear)
+                    {
+                        HitPoints -= wear;
+                        wear = 0;
+                    }
+                    else
+                    {
+                        wear -= HitPoints;
+                        HitPoints = 0;
+                    }
+
+                    if (wear > 0)
+                    {
+                        if (m_MaxHitPoints > wear)
+                        {
+                            MaxHitPoints -= wear;
+
+                            if (Parent is Mobile)
+                                ((Mobile)Parent).LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                        }
+                        else
+                        {
+                            Delete();
+                        }
+                    }
+                }
+            }
+
+            return damage;
+        }
+
+        public virtual void UnscaleDurability()
+        {
+        }
+
+        public virtual void ScaleDurability()
         {
         }
 
@@ -520,6 +631,9 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
+            if(Attributes.Brittle > 0)
+                list.Add(1116209); // Brittle
+
             if (this.Blessed)
             {
                 if (this.BlessedFor != null)
@@ -627,6 +741,9 @@ namespace Server.Items
             if (this.m_MaxCharges > 0)
                 list.Add(1060741, this.m_Charges.ToString()); // charges: ~1_val~
 
+            if (this is ManaPhasingOrb)
+                list.Add(1116158); //Mana Phase
+
             if (this.m_Slayer != TalismanSlayerName.None)
             {
                 if (this.m_Slayer == TalismanSlayerName.Wolf)
@@ -638,6 +755,9 @@ namespace Server.Items
                 else
                     list.Add(1072503 + (int)this.m_Slayer);
             }
+
+            if (this.m_MaxHitPoints > 0)
+                list.Add(1060639, "{0}\t{1}", this.m_HitPoints, this.m_MaxHitPoints); // durability ~1_val~ / ~2_val~
         }
 
         private static void SetSaveFlag(ref SaveFlag flags, SaveFlag toSet, bool setIf)
@@ -678,7 +798,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+
+            writer.Write(m_MaxHitPoints);
+            writer.Write(m_HitPoints);
 
             SaveFlag flags = SaveFlag.None;
 
@@ -751,6 +874,12 @@ namespace Server.Items
 
             switch (version)
             {
+                case 1:
+                    {
+                        m_MaxHitPoints = reader.ReadInt();
+                        m_HitPoints = reader.ReadInt();
+                    }
+                    goto case 0;
                 case 0:
                     {
                         SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();

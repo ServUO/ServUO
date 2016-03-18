@@ -1952,9 +1952,6 @@
     <Compile Include="Items\Armor\Artifacts\CrownOfArcaneTemperament.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Armor\Artifacts\EnchantedKelpWovenLeggings.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Armor\Artifacts\GauntletsOfNobility.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -2909,9 +2906,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Clothing\Arms.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Clothing\Artifacts\AntiqueWeddingDress.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Clothing\Artifacts\CrimsonCincture.cs">
@@ -5884,6 +5878,20 @@
     <Compile Include="Items\Traps\StoneFaceTrap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\TreasureChestArtifacts\AntiqueWeddingDress.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\CoffinPiece.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\CreepingVine.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\GrapeBunch.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\GrapeVine.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\KelpWovenLeggings.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\LargeFishingNet.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\ManaPhasingOrb.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\MasterSkeletonKey.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\RunedDriftwoodBow.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\RunedSashOfWarding.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\SkeletonKey.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\SurgeShield.cs" />
+    <Compile Include="Items\TreasureChestArtifacts\ValkryieArmor.cs" />
     <Compile Include="Items\Wands\ClumsyWand.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -6089,9 +6097,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Weapons\Artifacts\MischiefMaker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Weapons\Artifacts\RunedDriftwoodBow.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Weapons\Artifacts\ScepterOfTheChief.cs">
@@ -7801,6 +7806,7 @@
     <Compile Include="Mobiles\Monsters\Humanoid\Daemon.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\Monsters\Humanoid\DarkGuardian.cs" />
     <Compile Include="Mobiles\Monsters\Humanoid\Doppleganger.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -7816,6 +7822,7 @@
     <Compile Include="Mobiles\Monsters\Humanoid\ElfBrigand.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\Monsters\Humanoid\EnragedCollosus.cs" />
     <Compile Include="Mobiles\Monsters\Humanoid\EnslavedGargoyle.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -8224,6 +8231,7 @@
     <Compile Include="Mobiles\Monsters\ML\Humanoid\Melee\MinotaurCaptain.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\Monsters\ML\Humanoid\Melee\MinotaurGeneral.cs" />
     <Compile Include="Mobiles\Monsters\ML\Humanoid\Melee\MinotaurScout.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -8326,6 +8334,7 @@
     <Compile Include="Mobiles\Monsters\ML\Twisted Weald\Malefic.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\Monsters\ML\Twisted Weald\RenegadeChangeling.cs" />
     <Compile Include="Mobiles\Monsters\ML\Twisted Weald\Silk.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -8443,6 +8452,7 @@
     <Compile Include="Mobiles\Monsters\Reptile\Magic\FairyDragon1.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\Monsters\Reptile\Magic\FrostDragon.cs" />
     <Compile Include="Mobiles\Monsters\Reptile\Magic\Leviathan.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -8479,6 +8489,7 @@
     <Compile Include="Mobiles\Monsters\Reptile\Magic\WhiteWyrm.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Mobiles\Monsters\Reptile\Melee\ColdDrake.cs" />
     <Compile Include="Mobiles\Monsters\Reptile\Melee\CoralSnake.cs">
       <SubType>Code</SubType>
     </Compile>

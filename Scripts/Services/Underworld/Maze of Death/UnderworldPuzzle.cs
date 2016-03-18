@@ -67,7 +67,7 @@ namespace Server.Items
         {
             if (solution.Matches(m_Solution))
             {
-                Item item = Loot.Construct(m_Rewards[Utility.Random(m_Rewards.Length)], null);
+                Item item = Loot.Construct(m_Rewards[Utility.Random(m_Rewards.Length)]);
 
                 if (item != null)
                 {

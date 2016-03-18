@@ -26,12 +26,13 @@ namespace Server.Items
 			TrapType = TrapType.MagicTrap;
 			TrapPower = 1 * Utility.Random( 1, 25 );
 
-			DropItem( new Gold( 30, 100 ) );
-			DropItem( Loot.RandomWeapon(null) );
-			DropItem( Loot.RandomArmorOrShield(null) );
-			DropItem( Loot.RandomClothing(null) );
-			DropItem( Loot.RandomJewelry(null) );
-			DropItem( new Bolt( 10 ) );
+            DropItem(new Gold(30, 100));
+            DropItem(new Bolt(10));
+            DropItem(Loot.RandomClothing());
+
+            AddLoot(Loot.RandomWeapon());
+            AddLoot(Loot.RandomArmorOrShield());
+            AddLoot(Loot.RandomJewelry());
 
 			for (int i = Utility.Random(3) + 1; i > 0; i--) // random 1 to 3
 				DropItem( Loot.RandomGem() );
@@ -207,37 +208,40 @@ namespace Server.Items
 					DropItem( Loot.RandomGem() );
 
 			for( int i = Utility.Random( 1, 3 ); i > 1; i-- )
-				DropItem( Loot.RandomWand(null) );
+				DropItem( Loot.RandomWand() );
 
 			// Magical ArmorOrWeapon
 			for( int i = Utility.Random( 1, 3 ); i > 1; i-- )
 			{
-				Item item = Loot.RandomArmorOrShieldOrWeapon(null);
+				Item item = Loot.RandomArmorOrShieldOrWeapon();
 
-				if( item is BaseWeapon )
-				{
-					BaseWeapon weapon = (BaseWeapon)item;
-					weapon.DamageLevel = (WeaponDamageLevel)Utility.Random( 3 );
-					weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random( 3 );
-					weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random( 3 );
-					weapon.Quality = WeaponQuality.Regular;
-				}
-				else if( item is BaseArmor )
-				{
-					BaseArmor armor = (BaseArmor)item;
-					armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random( 3 );
-					armor.Durability = (ArmorDurabilityLevel)Utility.Random( 3 );
-					armor.Quality = ArmorQuality.Regular;
-				}
-
-				DropItem( item );
+                if (!Core.AOS)
+                {
+                    if (item is BaseWeapon)
+                    {
+                        BaseWeapon weapon = (BaseWeapon)item;
+                        weapon.DamageLevel = (WeaponDamageLevel)Utility.Random(3);
+                        weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random(3);
+                        weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random(3);
+                        weapon.Quality = WeaponQuality.Regular;
+                    }
+                    else if (item is BaseArmor)
+                    {
+                        BaseArmor armor = (BaseArmor)item;
+                        armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random(3);
+                        armor.Durability = (ArmorDurabilityLevel)Utility.Random(3);
+                        armor.Quality = ArmorQuality.Regular;
+                    }
+                }
+                else
+                    AddLoot(item);
 			}
 
 			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-				DropItem( Loot.RandomClothing(null) );
+				AddLoot( Loot.RandomClothing() );
 
 			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-				DropItem( Loot.RandomJewelry(null) );
+                AddLoot(Loot.RandomJewelry());
 
 			// Magic clothing (not implemented)
 			
@@ -299,37 +303,40 @@ namespace Server.Items
 					DropItem( Loot.RandomGem() );
 
 			for( int i = Utility.Random( 1, 4 ); i > 1; i-- )
-				DropItem( Loot.RandomWand(null) );
+				DropItem( Loot.RandomWand() );
 
 			// Magical ArmorOrWeapon
 			for( int i = Utility.Random( 1, 4 ); i > 1; i-- )
 			{
-				Item item = Loot.RandomArmorOrShieldOrWeapon(null);
+				Item item = Loot.RandomArmorOrShieldOrWeapon();
 
-				if( item is BaseWeapon )
-				{
-					BaseWeapon weapon = (BaseWeapon)item;
-					weapon.DamageLevel = (WeaponDamageLevel)Utility.Random( 4 );
-					weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random( 4 );
-					weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random( 4 );
-					weapon.Quality = WeaponQuality.Regular;
-				}
-				else if( item is BaseArmor )
-				{
-					BaseArmor armor = (BaseArmor)item;
-					armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random( 4 );
-					armor.Durability = (ArmorDurabilityLevel)Utility.Random( 4 );
-					armor.Quality = ArmorQuality.Regular;
-				}
-
-				DropItem( item );
+                if (!Core.AOS)
+                {
+                    if (item is BaseWeapon)
+                    {
+                        BaseWeapon weapon = (BaseWeapon)item;
+                        weapon.DamageLevel = (WeaponDamageLevel)Utility.Random(4);
+                        weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random(4);
+                        weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random(4);
+                        weapon.Quality = WeaponQuality.Regular;
+                    }
+                    else if (item is BaseArmor)
+                    {
+                        BaseArmor armor = (BaseArmor)item;
+                        armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random(4);
+                        armor.Durability = (ArmorDurabilityLevel)Utility.Random(4);
+                        armor.Quality = ArmorQuality.Regular;
+                    }
+                }
+                else
+                    AddLoot(item);
 			}
 
 			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-				DropItem( Loot.RandomClothing(null) );
+				AddLoot( Loot.RandomClothing() );
 			
 			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
-				DropItem( Loot.RandomJewelry(null) );
+				AddLoot( Loot.RandomJewelry() );
 			
 			DropItem( new MagicCrystalBall() );
 
