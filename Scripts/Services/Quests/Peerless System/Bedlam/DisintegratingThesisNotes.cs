@@ -23,13 +23,6 @@ namespace Server.Items
                 return 1074440;
             }
         }// Disintegrating Thesis Notes
-        public override int Lifespan
-        {
-            get
-            {
-                return 7200;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

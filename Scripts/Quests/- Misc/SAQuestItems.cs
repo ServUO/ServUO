@@ -621,17 +621,18 @@ namespace Server.Items
     {
         [Constructable]
         public SearedFireAntGoo()
-            : this(1)
+			: this(1)
         {
         }
 
-        [Constructable]
-        public SearedFireAntGoo(int amount)
-            : base(0x2F5F)
-        {
-            this.Stackable = true;
-            this.Amount = amount;
-        }
+		[Constructable]
+		public SearedFireAntGoo(int amount)
+			: base(0x0976)
+		{
+			this.Stackable = true;
+			this.Amount = amount;
+			this.Hue = 1174; // TODO Get correct hue from OSI
+		}
 
         public SearedFireAntGoo(Serial serial)
             : base(serial)
