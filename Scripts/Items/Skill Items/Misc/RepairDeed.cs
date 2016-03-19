@@ -44,7 +44,7 @@ namespace Server.Items
             this.m_Skill = skill;
             this.m_Crafter = crafter;
             this.Hue = 0x1BC;
-            this.LootType = LootType.Blessed;
+            this.LootType = LootType.Regular;
         }
 
         public RepairDeed(Serial serial)

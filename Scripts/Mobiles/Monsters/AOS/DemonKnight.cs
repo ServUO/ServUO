@@ -191,9 +191,7 @@ namespace Server.Mobiles
 
             double roll = Utility.RandomDouble();
 
-            to.PlaySound(0x5B4);
-
-            Container pack = to.Backpack;
+            killer.PlaySound(0x5B4);
 
             if (chance > roll )
             {
