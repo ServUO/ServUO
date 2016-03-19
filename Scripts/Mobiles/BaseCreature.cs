@@ -5260,6 +5260,10 @@ namespace Server.Mobiles
 							givenToTKill = true;
 							TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
 						}
+                        if (region.IsPartOf("GauntletRegion"))
+                        {
+                            DemonKnight.HandleKill(this, ds.m_Mobile);
+                        }
 
 						PlayerMobile pm = ds.m_Mobile as PlayerMobile;
 

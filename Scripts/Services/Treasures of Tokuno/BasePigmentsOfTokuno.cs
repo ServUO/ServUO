@@ -200,8 +200,7 @@ namespace Server.Items
                 #region Mondain's Legacy
                    IsInTypeList(t, MondainsLegacy.PigmentList) ||
                 #endregion 
-                   IsInTypeList(t, DemonKnight.ArtifactRarity10) ||
-                   IsInTypeList(t, DemonKnight.ArtifactRarity11) ||
+                   IsInTypeList(t, DemonKnight.DoomArtifact) ||
                    IsInTypeList(t, MondainsLegacy.Artifacts) ||
                    IsInTypeList(t, StealableArtifactsSpawner.TypesOfEntires) ||
                    IsInTypeList(t, Paragon.Artifacts) ||
