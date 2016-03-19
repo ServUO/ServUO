@@ -679,7 +679,8 @@ namespace Server.Engines.Craft
             if (item == null)
                 return false;
 
-            return ((item is BaseArmor && ((BaseArmor)item).CanRepair) ||
+            return (item is BlankScroll ||
+					(item is BaseArmor && ((BaseArmor)item).CanRepair) ||
                     (item is BaseWeapon && ((BaseWeapon)item).CanRepair) ||
                     (item is BaseClothing && ((BaseClothing)item).CanRepair) ||
                     (item is BaseJewel && ((BaseJewel)item).CanRepair)) ||
