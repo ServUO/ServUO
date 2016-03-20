@@ -24,13 +24,6 @@ namespace Server.Items
                 return 1112575;
             }
         }// a rare serpent egg
-        public override int Lifespan
-        {
-            get
-            {
-                return 43200;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -68,13 +61,6 @@ namespace Server.Items
                 return 1112575;
             }
         }// a rare serpent egg
-        public override int Lifespan
-        {
-            get
-            {
-                return 43200;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -112,13 +98,6 @@ namespace Server.Items
                 return 1112575;
             }
         }// a rare serpent egg
-        public override int Lifespan
-        {
-            get
-            {
-                return 43200;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -156,13 +135,6 @@ namespace Server.Items
                 return 1112575;
             }
         }// a rare serpent egg
-        public override int Lifespan
-        {
-            get
-            {
-                return 43200;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

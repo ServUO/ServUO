@@ -40,7 +40,8 @@ namespace Server.Mobiles
         public static int DamageBuff = 5;
         public static void Convert(BaseCreature bc)
         {
-            if (bc.IsParagon)
+            if (bc.IsParagon ||
+				!bc.CanBeParagon)
                 return;
 
             bc.Hue = Hue;

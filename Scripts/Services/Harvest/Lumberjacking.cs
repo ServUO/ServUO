@@ -138,11 +138,11 @@ namespace Server.Engines.Harvest
             if (!base.CheckHarvest(from, tool))
                 return false;
 
-            if (tool.Parent != from)
-            {
-                from.SendLocalizedMessage(500487); // The axe must be equipped for any serious wood chopping.
-                return false;
-            }
+			if (tool.Parent != from && from.Backpack != null && ! tool.IsChildOf(from.Backpack))
+			{
+				from.SendLocalizedMessage(1080058); // This must be in your backpack to use it.
+				return false;
+			}
 
             return true;
         }
@@ -152,13 +152,13 @@ namespace Server.Engines.Harvest
             if (!base.CheckHarvest(from, tool, def, toHarvest))
                 return false;
 
-            if (tool.Parent != from)
-            {
-                from.SendLocalizedMessage(500487); // The axe must be equipped for any serious wood chopping.
-                return false;
-            }
+			if (tool.Parent != from && from.Backpack != null && !tool.IsChildOf(from.Backpack))
+			{
+				from.SendLocalizedMessage(1080058); // This must be in your backpack to use it.
+				return false;
+			}
 
-            return true;
+			return true;
         }
 
         public override void OnBadHarvestTarget(Mobile from, Item tool, object toHarvest)

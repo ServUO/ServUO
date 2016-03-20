@@ -191,9 +191,7 @@ namespace Server.Mobiles
 
             double roll = Utility.RandomDouble();
 
-            //testing code
-            //pm.SendMessage("chance is " + chance + " Vs a roll of " + roll);
-
+            killer.PlaySound(0x5B4);
 
             if (chance > roll )
             {

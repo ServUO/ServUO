@@ -38,7 +38,7 @@ namespace Server.Mobiles
             this.Fame = 21000;
             this.Karma = -21000;
         }
-
+		public override bool CanBeParagon { get { return false; } }
         public override void OnDeath( Container c )
         {
             base.OnDeath( c );
