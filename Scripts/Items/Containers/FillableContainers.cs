@@ -717,7 +717,7 @@ namespace Server.Items
         }
         public virtual Item Construct()
         {
-            Item item = Loot.Construct(null, this.m_Types);
+            Item item = Loot.Construct(this.m_Types);
 
             if (item is Key)
                 ((Key)item).ItemID = Utility.RandomList((int)KeyType.Copper, (int)KeyType.Gold, (int)KeyType.Iron, (int)KeyType.Rusty);

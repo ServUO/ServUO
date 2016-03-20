@@ -56,8 +56,6 @@ namespace Server.Spells.Seventh
 
                 Map map = this.Caster.Map;
 
-                bool playerVsPlayer = false;
-
                 if (map != null)
                 {
                     IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), 2);
@@ -70,9 +68,6 @@ namespace Server.Spells.Seventh
                                 continue;
 
                             targets.Add(m);
-
-                            if (m.Player)
-                                playerVsPlayer = true;
                         }
                     }
 
@@ -81,26 +76,23 @@ namespace Server.Spells.Seventh
 
                 double damage;
 
-                if (Core.AOS)
-                    damage = this.GetNewAosDamage(51, 1, 5, playerVsPlayer);
-                else
-                    damage = Utility.Random(27, 22);
-
                 if (targets.Count > 0)
                 {
                     Effects.PlaySound(p, this.Caster.Map, 0x160);
 
-                    if (Core.AOS && targets.Count > 2)
-                        damage = (damage * 2) / targets.Count;
-                    else if (!Core.AOS)
-                        damage /= targets.Count;
-						
-                    double toDeal;
                     for (int i = 0; i < targets.Count; ++i)
                     {
                         Mobile m = targets[i];
 
-                        toDeal = damage;
+                        if (Core.AOS)
+                            damage = this.GetNewAosDamage(51, 1, 5, m.Player, m);
+                        else
+                            damage = Utility.Random(27, 22);
+
+                        if (Core.AOS && targets.Count > 2)
+                            damage = (damage * 2) / targets.Count;
+                        else if (!Core.AOS)
+                            damage /= targets.Count;
 
                         if (!Core.AOS && this.CheckResisted(m))
                         {
@@ -108,9 +100,10 @@ namespace Server.Spells.Seventh
 
                             m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                         }
-                        toDeal *= this.GetDamageScalar(m);
+
+                        damage *= this.GetDamageScalar(m);
                         this.Caster.DoHarmful(m);
-                        SpellHelper.Damage(this, m, toDeal, 0, 100, 0, 0, 0);
+                        SpellHelper.Damage(this, m, damage, 0, 100, 0, 0, 0);
 
                         this.Caster.MovingParticles(m, 0x36D4, 7, 0, false, true, 9501, 1, 0, 0x100);
                     }

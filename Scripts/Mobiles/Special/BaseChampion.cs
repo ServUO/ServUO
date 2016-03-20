@@ -21,7 +21,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-
+		public override bool CanBeParagon { get { return false; } }
         public abstract ChampionSkullType SkullType { get; }
         public abstract Type[] UniqueList { get; }
         public abstract Type[] SharedList { get; }
@@ -134,7 +134,7 @@ namespace Server.Mobiles
 			
             Type type = list[random];
 
-            Item artifact = Loot.Construct(type, this);
+            Item artifact = Loot.Construct(type);
 
             if (artifact is MonsterStatuette && this.StatueTypes.Length > 0)
             {

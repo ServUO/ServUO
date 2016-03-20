@@ -43,7 +43,7 @@ namespace Server.Mobiles
             this.Fame = 3700;  // Guessed
             this.Karma = -3700;  // Guessed
         }
-
+		public override bool CanBeParagon { get { return false; } }
         /*
         public override bool OnBeforeDeath()
         {

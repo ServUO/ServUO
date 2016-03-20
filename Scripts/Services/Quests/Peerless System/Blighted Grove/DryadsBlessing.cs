@@ -17,13 +17,6 @@ namespace Server.Items
         {
         }
 
-        public override int Lifespan
-        {
-            get
-            {
-                return 21600;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -74,6 +74,22 @@ namespace Server.Items
 			StartDeleteTimer();
 		}
 
+        protected void AddLoot(Item item)
+        {
+            if (item == null)
+                return;
+
+            if (Core.SA && Server.Mobiles.RandomItemGenerator.Enabled)
+            {
+                int min, max;
+                TreasureMapChest.GetRandomItemStat(out min, out max);
+
+                RunicReforging.GenerateRandomItem(item, 0, min, max);
+            }
+
+            DropItem(item);
+        }
+
 		private void StartDeleteTimer()
 		{
 			if( m_DeleteTimer == null )

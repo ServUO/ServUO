@@ -108,6 +108,8 @@ namespace Server.Mobiles
             if (to == null || artifact == null)
                 return;
 
+			to.PlaySound(0x5B4);
+
             Container pack = to.Backpack;
 
             if (pack == null || !pack.TryDropItem(to, artifact, false))
@@ -141,7 +143,7 @@ namespace Server.Mobiles
 
             Type type = list[random];
 
-            Item artifact = Loot.Construct(type, this);
+            Item artifact = Loot.Construct(type);
 
             return artifact;
         }

@@ -215,7 +215,7 @@ namespace Server.Items
 
         protected virtual int GetSpawnCount()
         {
-            int count = Utility.RandomMinMax(1, 3);
+            int count = Utility.RandomMinMax(3, 6);
 
             if (this.Hue != 0x8A0)
                 count += Utility.RandomMinMax(1, 2);
@@ -250,8 +250,9 @@ namespace Server.Items
 
             spawn.MoveToWorld(new Point3D(x, y, p.Z), map);
 
-            if (spawn is Kraken && 0.2 > Utility.RandomDouble())
+            if (spawn is Kraken && 0.35 < Utility.RandomDouble())
                 spawn.PackItem(new MessageInABottle(map == Map.Felucca ? Map.Felucca : Map.Trammel));
+            
         }
 
         protected virtual void FinishEffect(Point3D p, Map map, Mobile from)

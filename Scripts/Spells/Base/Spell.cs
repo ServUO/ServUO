@@ -132,20 +132,20 @@ namespace Server.Spells
 		{
 			if (singleTarget != null)
 			{
-				return GetNewAosDamage(bonus, dice, sides, (Caster.Player && singleTarget.Player), GetDamageScalar(singleTarget));
+				return GetNewAosDamage(bonus, dice, sides, (Caster.Player && singleTarget.Player), GetDamageScalar(singleTarget), singleTarget);
 			}
 			else
 			{
-				return GetNewAosDamage(bonus, dice, sides, false);
+				return GetNewAosDamage(bonus, dice, sides, false, null);
 			}
 		}
 
-		public virtual int GetNewAosDamage(int bonus, int dice, int sides, bool playerVsPlayer)
+		public virtual int GetNewAosDamage(int bonus, int dice, int sides, bool playerVsPlayer, Mobile target)
 		{
-			return GetNewAosDamage(bonus, dice, sides, playerVsPlayer, 1.0);
+			return GetNewAosDamage(bonus, dice, sides, playerVsPlayer, 1.0, target);
 		}
 
-		public virtual int GetNewAosDamage(int bonus, int dice, int sides, bool playerVsPlayer, double scalar)
+		public virtual int GetNewAosDamage(int bonus, int dice, int sides, bool playerVsPlayer, double scalar, Mobile target)
 		{
 			int damage = Utility.Dice(dice, sides, bonus) * 100;
 			int damageBonus = 0;
@@ -162,6 +162,9 @@ namespace Server.Spells
 			#region Mondain's Legacy
 			sdiBonus += ArcaneEmpowermentSpell.GetSpellBonus(m_Caster, playerVsPlayer);
 			#endregion
+
+            if (target != null && RunedSashOfWarding.IsUnderEffects(target, WardingEffect.SpellDamage))
+                sdiBonus -= 10;
 
 			if (m_Caster is PlayerMobile && m_Caster.Race == Race.Gargoyle)
 			{
@@ -820,6 +823,12 @@ namespace Server.Spells
 		public virtual int ScaleMana(int mana)
 		{
 			double scalar = 1.0;
+
+            if (ManaPhasingOrb.IsInManaPhase(Caster))
+            {
+                ManaPhasingOrb.RemoveFromTable(Caster);
+                return 0;
+            }
 
 			if (!MindRotSpell.GetMindRotScalar(Caster, ref scalar))
 			{

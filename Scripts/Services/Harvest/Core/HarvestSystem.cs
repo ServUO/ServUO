@@ -189,9 +189,12 @@ namespace Server.Engines.Harvest
                         }
 
                         bank.Consume(item.Amount, from);
+						EventSink.InvokeResourceHarvestSuccess(new ResourceHarvestSuccessEventArgs(from, tool,item, this));
+
 
                         if (this.Give(from, item, def.PlaceAtFeetIfFull))
                         {
+							
                             this.SendSuccessTo(from, item, resource);
                         }
                         else

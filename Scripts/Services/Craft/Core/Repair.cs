@@ -5,6 +5,11 @@ using Server.Targeting;
 
 namespace Server.Engines.Craft
 {
+    public interface IRepairable
+    {
+        CraftSystem RepairSystem { get; }
+    }
+
     public class Repair
     {
         public Repair()
@@ -101,6 +106,9 @@ namespace Server.Engines.Craft
 
             private bool IsSpecialClothing(BaseClothing clothing)
             {
+                if (clothing is IRepairable && ((IRepairable)clothing).RepairSystem == m_CraftSystem)
+                    return true;
+
                 // Clothing repairable but not craftable
                 if (this.m_CraftSystem is DefTailoring)
                 {
@@ -116,6 +124,9 @@ namespace Server.Engines.Craft
 
             private bool IsSpecialWeapon(BaseWeapon weapon)
             {
+                if (weapon is IRepairable && ((IRepairable)weapon).RepairSystem == m_CraftSystem)
+                    return true;
+
                 // Weapons repairable but not craftable
                 if (this.m_CraftSystem is DefTinkering)
                 {
@@ -222,7 +233,11 @@ namespace Server.Engines.Craft
                 bool usingDeed = (this.m_Deed != null);
                 bool toDelete = false;
 
-                // TODO: Make an IRepairable
+                if (!AllowsRepair(targeted as Item, m_CraftSystem))
+                {
+                    from.SendLocalizedMessage(500426); // You can't repair that.
+                    return;
+                }
 
                 if (this.m_CraftSystem.CanCraft(from, this.m_Tool, targeted.GetType()) == 1044267)
                 {
@@ -555,6 +570,71 @@ namespace Server.Engines.Craft
                         toDelete = true;
                     }
                 }
+                else if (targeted is BaseTalisman)
+                {
+                    BaseTalisman talisman = (BaseTalisman)targeted;
+                    SkillName skill = this.m_CraftSystem.MainSkill;
+                    int toWeaken = 0;
+
+                    if (Core.AOS)
+                    {
+                        toWeaken = 1;
+                    }
+                    else if (skill != SkillName.Tailoring)
+                    {
+                        double skillLevel = (usingDeed) ? this.m_Deed.SkillLevel : from.Skills[skill].Base;
+
+                        if (skillLevel >= 90.0)
+                            toWeaken = 1;
+                        else if (skillLevel >= 70.0)
+                            toWeaken = 2;
+                        else
+                            toWeaken = 3;
+                    }
+
+                    if (talisman is IRepairable && ((IRepairable)talisman).RepairSystem != m_CraftSystem)
+                    {
+                        number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
+                    }
+                    else if (!talisman.IsChildOf(from.Backpack) && (!Core.ML || talisman.Parent != from))
+                    {
+                        number = 1044275; // The item must be in your backpack to repair it.
+                    }
+                    else if (talisman.MaxHitPoints <= 0 || talisman.HitPoints == talisman.MaxHitPoints)
+                    {
+                        number = 1044281; // That item is in full repair
+                    }
+                    else if (talisman.MaxHitPoints <= toWeaken)
+                    {
+                        number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
+                    }
+                    else if (!talisman.CanRepair)// quick fix
+                    {
+                        number = 1044277; // That item cannot be repaired.
+                    }
+                    else
+                    {
+                        if (this.CheckWeaken(from, skill, talisman.HitPoints, talisman.MaxHitPoints))
+                        {
+                            talisman.MaxHitPoints -= toWeaken;
+                            talisman.HitPoints = Math.Max(0, talisman.HitPoints - toWeaken);
+                        }
+
+                        if (this.CheckRepairDifficulty(from, skill, talisman.HitPoints, talisman.MaxHitPoints))
+                        {
+                            number = 1044279; // You repair the item.
+                            this.m_CraftSystem.PlayCraftEffect(from);
+                            talisman.HitPoints = talisman.MaxHitPoints;
+                        }
+                        else
+                        {
+                            number = (usingDeed) ? 1061137 : 1044280; // You fail to repair the item. [And the contract is destroyed]
+                            this.m_CraftSystem.PlayCraftEffect(from);
+                        }
+
+                        toDelete = true;
+                    }
+                }
                 else if (!usingDeed && targeted is BlankScroll)
                 {
                     SkillName skill = this.m_CraftSystem.MainSkill;
@@ -592,6 +672,19 @@ namespace Server.Engines.Craft
                         this.m_Deed.Delete();
                 }
             }
+        }
+
+        public static bool AllowsRepair(Item item, CraftSystem system)
+        {
+            if (item == null)
+                return false;
+
+            return (item is BlankScroll ||
+					(item is BaseArmor && ((BaseArmor)item).CanRepair) ||
+                    (item is BaseWeapon && ((BaseWeapon)item).CanRepair) ||
+                    (item is BaseClothing && ((BaseClothing)item).CanRepair) ||
+                    (item is BaseJewel && ((BaseJewel)item).CanRepair)) ||
+                    (item is BaseTalisman && ((BaseTalisman)item).CanRepair);
         }
     }
 }

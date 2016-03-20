@@ -25,13 +25,6 @@ namespace Server.Items
                 return 1074340;
             }
         }// Prism of Light Admission Ticket
-        public override int Lifespan
-        {
-            get
-            {
-                return 437200;
-            }
-        }
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

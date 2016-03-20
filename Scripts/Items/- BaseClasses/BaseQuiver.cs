@@ -41,7 +41,7 @@ namespace Server.Items
         private AosSkillBonuses m_AosSkillBonuses;
         private AosElementAttributes m_Resistances;
         private int m_Capacity;
-        private int m_LowerAmmoCost;
+        //private int m_LowerAmmoCost;
         private int m_WeightReduction;
         private int m_DamageIncrease;
 
@@ -103,12 +103,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_LowerAmmoCost;
+                return m_Attributes.LowerAmmoCost;
             }
             set
             {
-                this.m_LowerAmmoCost = value;
-                this.InvalidateProperties();
+                m_Attributes.LowerAmmoCost = value;
+                InvalidateProperties();
             }
         }
 
@@ -524,7 +524,7 @@ namespace Server.Items
             if ((prop = this.m_Attributes.WeaponSpeed) != 0)
                 list.Add(1060486, prop.ToString()); // swing speed increase ~1_val~%
 
-            if ((prop = this.m_LowerAmmoCost) > 0)
+            if ((prop = this.m_Attributes.LowerAmmoCost) > 0)
                 list.Add(1075208, prop.ToString()); // Lower Ammo Cost ~1_Percentage~%
 
             #region Mondain's Legacy Sets
@@ -615,7 +615,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(2); // version
+            writer.Write(3); // version
+
+            // Version 3 takes out LowerAmmoCost
 
             SaveFlag flags = SaveFlag.None;
 
@@ -627,7 +629,7 @@ namespace Server.Items
             m_Resistances.Serialize(writer);
 
             SetSaveFlag(ref flags, SaveFlag.Attributes, !this.m_Attributes.IsEmpty);
-            SetSaveFlag(ref flags, SaveFlag.LowerAmmoCost, this.m_LowerAmmoCost != 0);
+            //SetSaveFlag(ref flags, SaveFlag.LowerAmmoCost, this.m_LowerAmmoCost != 0);
             SetSaveFlag(ref flags, SaveFlag.WeightReduction, this.m_WeightReduction != 0);
             SetSaveFlag(ref flags, SaveFlag.DamageIncrease, this.m_DamageIncrease != 0);
             SetSaveFlag(ref flags, SaveFlag.Crafter, this.m_Crafter != null);
@@ -647,8 +649,8 @@ namespace Server.Items
             if (GetSaveFlag(flags, SaveFlag.Attributes))
                 this.m_Attributes.Serialize(writer);
 
-            if (GetSaveFlag(flags, SaveFlag.LowerAmmoCost))
-                writer.Write((int)this.m_LowerAmmoCost);
+            //if (GetSaveFlag(flags, SaveFlag.LowerAmmoCost))
+            //    writer.Write((int)this.m_LowerAmmoCost);
 
             if (GetSaveFlag(flags, SaveFlag.WeightReduction))
                 writer.Write((int)this.m_WeightReduction);
@@ -691,6 +693,7 @@ namespace Server.Items
 
             switch (version)
             {
+                case 3:
                 case 2:
                     IsArrowAmmo = reader.ReadBool();
                     goto case 1;
@@ -719,8 +722,8 @@ namespace Server.Items
                         else
                             this.m_Attributes = new AosAttributes(this);
 
-                        if (GetSaveFlag(flags, SaveFlag.LowerAmmoCost))
-                            this.m_LowerAmmoCost = reader.ReadInt();
+                        if (version < 3 && GetSaveFlag(flags, SaveFlag.LowerAmmoCost))
+                            m_Attributes.LowerAmmoCost = reader.ReadInt();
 
                         if (GetSaveFlag(flags, SaveFlag.WeightReduction))
                             this.m_WeightReduction = reader.ReadInt();
