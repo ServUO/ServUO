@@ -5264,7 +5264,7 @@ namespace Server.Mobiles
 							givenToTKill = true;
 							TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
 						}
-                        if (region.IsPartOf("Doom Gauntlet"))
+                        if (region.IsPartOf("Doom Gauntlet") || region.Name == "GauntletRegion")
                         {
                             DemonKnight.HandleKill(this, ds.m_Mobile);
                         }
