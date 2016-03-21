@@ -522,7 +522,7 @@ namespace Server.Items
 
             CraftAttributeInfo dullCopper = DullCopper = new CraftAttributeInfo();
 
-            dullCopper.ArmorPhysicalResist = 6;
+            dullCopper.ArmorPhysicalResist = 10;
             dullCopper.ArmorDurability = 50;
             dullCopper.ArmorLowerRequirements = 20;
             dullCopper.WeaponDurability = 100;
@@ -542,9 +542,9 @@ namespace Server.Items
 
             CraftAttributeInfo shadowIron = ShadowIron = new CraftAttributeInfo();
 
-            shadowIron.ArmorPhysicalResist = 2;
-            shadowIron.ArmorFireResist = 1;
-            shadowIron.ArmorEnergyResist = 5;
+            shadowIron.ArmorPhysicalResist = 3;
+            shadowIron.ArmorFireResist = 2;
+            shadowIron.ArmorEnergyResist = 7;
             shadowIron.ArmorDurability = 100;
             shadowIron.WeaponColdDamage = 20;
             shadowIron.WeaponDurability = 50;
@@ -563,9 +563,9 @@ namespace Server.Items
 
             CraftAttributeInfo copper = Copper = new CraftAttributeInfo();
 
-            copper.ArmorPhysicalResist = 1;
-            copper.ArmorFireResist = 1;
-            copper.ArmorPoisonResist = 5;
+            copper.ArmorPhysicalResist = 2;
+            copper.ArmorFireResist = 2;
+            copper.ArmorPoisonResist = 7;
             copper.ArmorEnergyResist = 2;
             copper.WeaponPoisonDamage = 10;
             copper.WeaponEnergyDamage = 20;
@@ -585,9 +585,9 @@ namespace Server.Items
             CraftAttributeInfo bronze = Bronze = new CraftAttributeInfo();
 
             bronze.ArmorPhysicalResist = 3;
-            bronze.ArmorColdResist = 5;
-            bronze.ArmorPoisonResist = 1;
-            bronze.ArmorEnergyResist = 1;
+            bronze.ArmorColdResist = 7;
+            bronze.ArmorPoisonResist = 2;
+            bronze.ArmorEnergyResist = 2;
             bronze.WeaponFireDamage = 40;
             bronze.RunicMinAttributes = 3;
             bronze.RunicMaxAttributes = 3;
@@ -604,10 +604,10 @@ namespace Server.Items
 
             CraftAttributeInfo golden = Golden = new CraftAttributeInfo();
 
-            golden.ArmorPhysicalResist = 1;
-            golden.ArmorFireResist = 1;
+            golden.ArmorPhysicalResist = 2;
+            golden.ArmorFireResist = 2;
             golden.ArmorColdResist = 2;
-            golden.ArmorEnergyResist = 2;
+            golden.ArmorEnergyResist = 3;
             golden.ArmorLuck = 40;
             golden.ArmorLowerRequirements = 30;
             golden.WeaponLuck = 40;
@@ -628,7 +628,7 @@ namespace Server.Items
             CraftAttributeInfo agapite = Agapite = new CraftAttributeInfo();
 
             agapite.ArmorPhysicalResist = 2;
-            agapite.ArmorFireResist = 3;
+            agapite.ArmorFireResist = 7;
             agapite.ArmorColdResist = 2;
             agapite.ArmorPoisonResist = 2;
             agapite.ArmorEnergyResist = 2;
@@ -649,10 +649,10 @@ namespace Server.Items
 
             CraftAttributeInfo verite = Verite = new CraftAttributeInfo();
 
-            verite.ArmorPhysicalResist = 3;
-            verite.ArmorFireResist = 3;
-            verite.ArmorColdResist = 2;
-            verite.ArmorPoisonResist = 3;
+            verite.ArmorPhysicalResist = 4;
+            verite.ArmorFireResist = 4;
+            verite.ArmorColdResist = 3;
+            verite.ArmorPoisonResist = 4;
             verite.ArmorEnergyResist = 1;
             verite.WeaponPoisonDamage = 40;
             verite.WeaponEnergyDamage = 20;
@@ -671,10 +671,10 @@ namespace Server.Items
 
             CraftAttributeInfo valorite = Valorite = new CraftAttributeInfo();
 
-            valorite.ArmorPhysicalResist = 4;
-            valorite.ArmorColdResist = 3;
-            valorite.ArmorPoisonResist = 3;
-            valorite.ArmorEnergyResist = 3;
+            valorite.ArmorPhysicalResist = 5;
+            valorite.ArmorColdResist = 4;
+            valorite.ArmorPoisonResist = 4;
+            valorite.ArmorEnergyResist = 4;
             valorite.ArmorDurability = 50;
             valorite.WeaponFireDamage = 10;
             valorite.WeaponColdDamage = 20;
@@ -695,7 +695,7 @@ namespace Server.Items
 
             CraftAttributeInfo spined = Spined = new CraftAttributeInfo();
 
-            spined.ArmorPhysicalResist = 5;
+            spined.ArmorPhysicalResist = 9;
             spined.ArmorLuck = 40;
             spined.RunicMinAttributes = 1;
             spined.RunicMaxAttributes = 3;
@@ -713,10 +713,10 @@ namespace Server.Items
             CraftAttributeInfo horned = Horned = new CraftAttributeInfo();
 
             horned.ArmorPhysicalResist = 2;
-            horned.ArmorFireResist = 3;
-            horned.ArmorColdResist = 2;
-            horned.ArmorPoisonResist = 2;
-            horned.ArmorEnergyResist = 2;
+            horned.ArmorFireResist = 4;
+            horned.ArmorColdResist = 3;
+            horned.ArmorPoisonResist = 3;
+            horned.ArmorEnergyResist = 3;
             horned.RunicMinAttributes = 3;
             horned.RunicMaxAttributes = 4;
             if (Core.ML)
@@ -732,11 +732,11 @@ namespace Server.Items
 
             CraftAttributeInfo barbed = Barbed = new CraftAttributeInfo();
 
-            barbed.ArmorPhysicalResist = 2;
-            barbed.ArmorFireResist = 1;
-            barbed.ArmorColdResist = 2;
+            barbed.ArmorPhysicalResist = 3;
+            barbed.ArmorFireResist = 2;
+            barbed.ArmorColdResist = 3;
             barbed.ArmorPoisonResist = 3;
-            barbed.ArmorEnergyResist = 4;
+            barbed.ArmorEnergyResist = 5;
             barbed.RunicMinAttributes = 4;
             barbed.RunicMaxAttributes = 5;
             if (Core.ML)
@@ -751,34 +751,52 @@ namespace Server.Items
             }
 
             CraftAttributeInfo red = RedScales = new CraftAttributeInfo();
-
-            red.ArmorFireResist = 10;
+            red.ArmorPhysicalResist = 1;
+            red.ArmorFireResist = 11;
             red.ArmorColdResist = -3;
+            red.ArmorPoisonResist = 1;
+            red.ArmorEnergyResist = 1;
 
             CraftAttributeInfo yellow = YellowScales = new CraftAttributeInfo();
 
             yellow.ArmorPhysicalResist = -3;
+            yellow.ArmorFireResist = 1;
+            yellow.ArmorColdResist = 1;
+            yellow.ArmorPoisonResist = 1;
+            yellow.ArmorPoisonResist = 1;
             yellow.ArmorLuck = 20;
 
             CraftAttributeInfo black = BlackScales = new CraftAttributeInfo();
 
-            black.ArmorPhysicalResist = 10;
+            black.ArmorPhysicalResist = 11;
             black.ArmorEnergyResist = -3;
+            black.ArmorFireResist = 1;
+            black.ArmorPoisonResist = 1;
+            black.ArmorColdResist = 1;
 
             CraftAttributeInfo green = GreenScales = new CraftAttributeInfo();
 
             green.ArmorFireResist = -3;
-            green.ArmorPoisonResist = 10;
+            green.ArmorPhysicalResist = 1;
+            green.ArmorColdResist = 1;
+            green.ArmorEnergyResist = 1;
+            green.ArmorPoisonResist = 11;
 
             CraftAttributeInfo white = WhiteScales = new CraftAttributeInfo();
 
             white.ArmorPhysicalResist = -3;
-            white.ArmorColdResist = 10;
+            white.ArmorFireResist = 1;
+            white.ArmorEnergyResist = 1;
+            white.ArmorPoisonResist = 1;
+            white.ArmorColdResist = 11;
 
             CraftAttributeInfo blue = BlueScales = new CraftAttributeInfo();
 
+            blue.ArmorPhysicalResist = 1;
+            blue.ArmorFireResist = 1;
+            blue.ArmorColdResist = 1;
             blue.ArmorPoisonResist = -3;
-            blue.ArmorEnergyResist = 10;
+            blue.ArmorEnergyResist = 11;
 
             //public static readonly CraftAttributeInfo OakWood, AshWood, YewWood, Heartwood, Bloodwood, Frostwood;
 
@@ -804,8 +822,7 @@ namespace Server.Items
 
             CraftAttributeInfo ash = AshWood = new CraftAttributeInfo();
 
-            ash.ArmorPhysicalResist = 4;
-            ash.ArmorFireResist = 2;
+            ash.ArmorPhysicalResist = 2;
             ash.ArmorColdResist = 4;
             ash.ArmorPoisonResist = 1;
             ash.ArmorEnergyResist = 6;
@@ -874,7 +891,7 @@ namespace Server.Items
             bloodwood.WeaponHitLifeLeech = 16;
 
             CraftAttributeInfo frostwood = Frostwood = new CraftAttributeInfo();
-
+            // Needs Spellchanneling on shields?
             frostwood.ArmorPhysicalResist = 2;
             frostwood.ArmorFireResist = 1;
             frostwood.ArmorColdResist = 8;
