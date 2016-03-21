@@ -114,13 +114,7 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.UltraRich, 2);
         }
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (!this.Summoned && !this.NoKillAwards && DemonKnight.CheckArtifactChance(this))
-                DemonKnight.DistributeArtifact(this);
-        }
+        
 
         public override void Serialize(GenericWriter writer)
         {

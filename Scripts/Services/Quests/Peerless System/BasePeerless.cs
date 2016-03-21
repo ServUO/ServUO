@@ -20,7 +20,7 @@ namespace Server.Mobiles
                 this.m_Altar = value;
             }
         }
-		
+		public override bool CanBeParagon { get { return false; } }
         public override bool Unprovokable
         {
             get

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Server.Spells.Necromancy
 {
@@ -77,7 +78,6 @@ namespace Server.Spells.Necromancy
             m.PlaySound(0x19C);
             m.FixedParticles(0x3709, 1, 30, 9904, 1108, 6, EffectLayer.RightFoot);
         }
-
         public override void OnTick(Mobile m)
         {
             --m.Hits;
