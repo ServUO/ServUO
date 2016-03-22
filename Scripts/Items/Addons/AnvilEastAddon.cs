@@ -22,6 +22,15 @@ namespace Server.Items
                 return new AnvilEastDeed();
             }
         }
+
+		public override bool RetainDeedHue
+		{
+			get
+			{
+				return true;
+			}
+		}
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
