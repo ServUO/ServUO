@@ -1827,8 +1827,6 @@ namespace Server.Items
 
 			while(start == budget && budget > 0 && idx < 25)
 			{
-                idx++;
-
                 if (attrList.Count == 0)
                     return false;
 
@@ -1836,6 +1834,12 @@ namespace Server.Items
                 object attr = attrList[random];
 				int[] minmax = new int[] { 1, 1 };
 				int value = 1;
+
+                if (CheckAttribute(item, attr))
+                {
+                    attrList.RemoveAt(random);
+                    continue;
+                }
 
 				if(wepattrs != null && attr is AosWeaponAttribute[])
 				{
@@ -1847,19 +1851,7 @@ namespace Server.Items
                     AosWeaponAttribute[] list = attr as AosWeaponAttribute[];
 
 					attr = list[ran];
-
-                    if ((item is BaseWeapon && CheckHitSpell((BaseWeapon)item, attr)) || (item is BaseWeapon && CheckHitArea((BaseWeapon)item, attr)))
-                    {
-                        attrList.RemoveAt(random);
-                        continue;
-                    }
 				}
-
-                if (CheckEater(item, attr))
-                {
-                    attrList.RemoveAt(random);
-                    continue;
-                }
 				
 				if(aosattrs != null && attr is AosAttribute)
 				{
@@ -1970,6 +1962,9 @@ namespace Server.Items
                         budget -= Imbuing.GetIntensityForAttribute(sk, -1, value);
                     }
                 }
+
+                attrList.RemoveAt(random);
+                idx++;
 			}
 
             if(attrList != null)
@@ -1977,6 +1972,20 @@ namespace Server.Items
 
 			return true;
 		}
+
+        public static bool CheckAttribute(Item item, object attr)
+        {
+            if (CheckEater(item, attr))
+                return true;
+
+            if (item is BaseArmor && !(item is BaseShield) && attr is AosArmorAttribute && (AosArmorAttribute)attr == AosArmorAttribute.MageArmor && ((BaseArmor)item).MeditationAllowance == ArmorMeditationAllowance.All)
+                return true;
+
+            if (item is BaseWeapon && attr is AosWeaponAttribute[] && (CheckHitSpell((BaseWeapon)item, attr) || (CheckHitArea((BaseWeapon)item, attr))))
+                return true;
+
+            return false;
+        }
 		
 		private static int ScaleAttribute(object o)
 		{
