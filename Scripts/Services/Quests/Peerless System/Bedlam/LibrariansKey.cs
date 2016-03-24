@@ -23,13 +23,6 @@ namespace Server.Items
                 return 1074347;
             }
         }// librarian's key
-        public override int Lifespan
-        {
-            get
-            {
-                return 3600;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

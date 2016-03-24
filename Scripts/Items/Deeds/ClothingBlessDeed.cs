@@ -84,7 +84,7 @@ namespace Server.Items
         {
             get
             {
-                return false;
+                return Core.ML;
             }
         }
         public override void Serialize(GenericWriter writer)

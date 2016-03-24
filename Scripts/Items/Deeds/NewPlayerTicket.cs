@@ -44,7 +44,7 @@ namespace Server.Items
         {
             get
             {
-                return false;
+                return Core.ML;
             }
         }
         public override void GetProperties(ObjectPropertyList list)

@@ -1365,6 +1365,11 @@ namespace Server.Spells
                 caster.SendLocalizedMessage(1061091); // You cannot cast that spell in this form.
                 return false;
             }
+			else if (caster.Flying)
+			{
+				caster.SendLocalizedMessage(1112567); // You are flying.
+				return false;
+			}
 
             return true;
         }

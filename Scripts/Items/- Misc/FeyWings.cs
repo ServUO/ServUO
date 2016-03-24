@@ -6,8 +6,16 @@ namespace Server.Items
     {
         [Constructable]
         public FeyWings()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public FeyWings(int amount)
             : base(0x5726)
         {
+            this.Stackable = true;
+            this.Amount = amount;
         }
 
         public FeyWings(Serial serial)
