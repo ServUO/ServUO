@@ -24,13 +24,6 @@ namespace Server.Items
                 return 1073133;
             }
         }// Speckled Poison Sac
-        public override int Lifespan
-        {
-            get
-            {
-                return 3600;
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

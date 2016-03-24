@@ -42,7 +42,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-
+		public override bool CanBeParagon { get { return false; } }
         // TODO: Verify area attack specifics
         public override bool HasAura
         {

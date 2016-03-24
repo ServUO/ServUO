@@ -130,6 +130,7 @@ namespace Server.Mobiles
         public static void GiveVArtifactTo(Mobile m)
         {
             var item = (Item) Activator.CreateInstance(VArtifacts[Utility.Random(VArtifacts.Length)]);
+			m.PlaySound(0x5B4);
 
             if (m.AddToBackpack(item))
                 m.SendLocalizedMessage(1062317);

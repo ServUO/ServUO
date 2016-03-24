@@ -7,13 +7,11 @@ namespace Server.Mobiles
     [CorpseName("a demon knight corpse")]
     public class DemonKnight : BaseCreature
     {
-        private static readonly Type[] m_ArtifactRarity10 = new Type[]
+              
+        private static readonly Type[] m_DoomArtifact = new Type[]
         {
             typeof(LegacyOfTheDreadLord),
-            typeof(TheTaskmaster)
-        };
-        private static readonly Type[] m_ArtifactRarity11 = new Type[]
-        {
+            typeof(TheTaskmaster),
             typeof(TheDragonSlayer),
             typeof(ArmorOfFortune),
             typeof(GauntletsOfNobility),
@@ -99,20 +97,15 @@ namespace Server.Mobiles
         {
         }
 
-        public static Type[] ArtifactRarity10
+        public static Type[] DoomArtifact   
         {
             get
             {
-                return m_ArtifactRarity10;
+                return m_DoomArtifact;
             }
         }
-        public static Type[] ArtifactRarity11
-        {
-            get
-            {
-                return m_ArtifactRarity11;
-            }
-        }
+       
+       
         public override bool IgnoreYoungProtection
         {
             get
@@ -152,31 +145,87 @@ namespace Server.Mobiles
         {
             get
             {
-                return 1;
+                return 6;
             }
         }
-        public static Item CreateRandomArtifact()
+        private static bool CheckLocation(Mobile m)
         {
-            if (!Core.AOS)
-                return null;
+            Region r = m.Region;
 
-            int count = (m_ArtifactRarity10.Length * 5) + (m_ArtifactRarity11.Length * 4);
-            int random = Utility.Random(count);
-            Type type;
+            if (r.IsPartOf(typeof(Server.Regions.HouseRegion)) || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
+                return false;
+            //TODO: a CanReach of something check as opposed to above?
 
-            if (random < (m_ArtifactRarity10.Length * 5))
-            {
-                type = m_ArtifactRarity10[random / 5];
-            }
-            else
-            {
-                random -= m_ArtifactRarity10.Length * 5;
-                type = m_ArtifactRarity11[random / 4];
-            }
+            if (r.IsPartOf("GauntletRegion"))
+                return true;
 
-            return Loot.Construct(type);
+            return (m.Map == Map.Malas);
         }
 
+        public static void HandleKill(Mobile victim, Mobile killer)
+        {
+
+            PlayerMobile pm = killer as PlayerMobile;
+            BaseCreature bc = victim as BaseCreature;
+
+            if (!Core.AOS)
+                return;
+            //CHeck if players are in the region with the bosses
+            if ( pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm))
+                return;
+            //Make sure its a boss we killed!!
+            bool boss = bc is Impaler || bc is DemonKnight || bc is DarknightCreeper || bc is FleshRenderer  || bc is ShadowKnight || bc is AbysmalHorror;
+            if (!boss)
+                return;
+             
+            double gpoints = pm.GauntletPoints;
+
+            pm.GauntletPoints += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100))/2;
+
+
+            const double A = 0.000863316841;
+            const double B = 0.00000425531915;
+
+            double chance = A * Math.Pow(10, B * gpoints);
+           
+
+            double roll = Utility.RandomDouble();
+
+            killer.PlaySound(0x5B4);
+
+            if (chance > roll )
+            {
+                Item i = null;
+
+                try
+                {
+                    i = Activator.CreateInstance(m_DoomArtifact[Utility.Random(m_DoomArtifact.Length)]) as Item;
+                }
+                catch
+                {
+                }
+
+                if (i != null)
+                {
+                    pm.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+
+                    if (!pm.PlaceInBackpack(i))
+                    {
+                        if (pm.BankBox != null && pm.BankBox.TryDropItem(killer, i, false))
+                            pm.SendLocalizedMessage(1079730); // The item has been placed into your bank box.
+                        else
+                        {
+                            pm.SendLocalizedMessage(1072523); // You find an artifact, but your backpack and bank are too full to hold it.
+                            i.MoveToWorld(pm.Location, pm.Map);
+                        }
+                    }
+
+                    pm.GauntletPoints = 0;
+                }
+            }
+        }
+ 
+      
         public static Mobile FindRandomPlayer(BaseCreature creature)
         {
             List<DamageStore> rights = BaseCreature.GetLootingRights(creature.DamageEntries, creature.HitsMax);
@@ -194,56 +243,7 @@ namespace Server.Mobiles
 
             return null;
         }
-
-        public static void DistributeArtifact(BaseCreature creature)
-        {
-            DistributeArtifact(creature, CreateRandomArtifact());
-        }
-
-        public static void DistributeArtifact(BaseCreature creature, Item artifact)
-        {
-            DistributeArtifact(FindRandomPlayer(creature), artifact);
-        }
-
-        public static void DistributeArtifact(Mobile to)
-        {
-            DistributeArtifact(to, CreateRandomArtifact());
-        }
-
-        public static void DistributeArtifact(Mobile to, Item artifact)
-        {
-            if (to == null || artifact == null)
-                return;
-
-            Container pack = to.Backpack;
-
-            if (pack == null || !pack.TryDropItem(to, artifact, false))
-                to.BankBox.DropItem(artifact);
-
-            to.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-        }
-
-        public static int GetArtifactChance(Mobile boss)
-        {
-            if (!Core.AOS)
-                return 0;
-
-            int luck = LootPack.GetLuckChanceForKiller(boss);
-            int chance;
-
-            if (boss is DemonKnight)
-                chance = 1500 + (luck / 5);
-            else
-                chance = 750 + (luck / 10);
-
-            return chance;
-        }
-
-        public static bool CheckArtifactChance(Mobile boss)
-        {
-            return GetArtifactChance(boss) > Utility.Random(100000);
-        }
-
+      
         public override WeaponAbility GetWeaponAbility()
         {
             switch ( Utility.Random(3) )
@@ -258,14 +258,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (!this.Summoned && !this.NoKillAwards && DemonKnight.CheckArtifactChance(this))
-                DemonKnight.DistributeArtifact(this);
-        }
-
+        
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.SuperBoss, 2);
