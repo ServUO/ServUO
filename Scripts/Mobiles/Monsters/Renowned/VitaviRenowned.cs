@@ -71,6 +71,13 @@ namespace Server.Mobiles
         {
             get { return InhumanSpeech.Ratman; }
         }
+        public override bool AllureImmune
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         public override bool CanRummageCorpses
         {

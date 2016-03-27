@@ -55,7 +55,13 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-
+        public override bool AllureImmune
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override Type[] UniqueSAList
         {
             get
