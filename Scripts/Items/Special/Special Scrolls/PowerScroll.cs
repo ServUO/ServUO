@@ -48,14 +48,14 @@ namespace Server.Items
         {
             SkillName.Spellweaving
         };
-        /*
+        
         private static SkillName[] m_SASkills = new SkillName[]
         {
         SkillName.Throwing,
         SkillName.Mysticism,
         SkillName.Imbuing
         };
-
+        /*
         private static SkillName[] m_HSSkills = new SkillName[]
         {
         SkillName.Fishing
