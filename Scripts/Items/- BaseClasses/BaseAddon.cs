@@ -103,12 +103,14 @@ namespace Server.Items
 
                 house.Addons.Remove(this);
 
-                BaseAddonDeed deed = this.Deed;
+                BaseAddonDeed deed = this.GetDeed();
 
                 if (deed != null)
                 {
-                    if (this.RetainDeedHue)
-                        deed.Hue = hue;
+					if (this.RetainDeedHue)
+						deed.Hue = hue;
+					else
+						deed.Hue = 0;
 
                     from.AddToBackpack(deed);
                 }
@@ -123,11 +125,21 @@ namespace Server.Items
             }
         }
 
-        Item IAddon.Deed
+		public virtual BaseAddonDeed GetDeed()
+		{
+			BaseAddonDeed deed = Deed;
+			if(deed != null)
+			{
+				deed.Resource = this.Resource;
+			}
+			return deed;
+		}
+
+		Item IAddon.Deed
         {
             get
             {
-                return this.Deed;
+				return GetDeed();
             }
         }
 
