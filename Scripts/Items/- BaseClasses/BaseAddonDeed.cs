@@ -103,10 +103,10 @@ namespace Server.Items
 
             CraftContext context = craftSystem.GetContext(from);
 
-            if (context != null && context.DoNotColor)
-                this.Hue = 0;
-            else
-                this.Hue = resHue;
+			if (context != null && context.DoNotColor)
+				this.Hue = 0;
+			else
+				this.Hue = resHue;
 
             return quality;
         }

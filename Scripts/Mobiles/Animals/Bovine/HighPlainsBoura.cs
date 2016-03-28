@@ -79,10 +79,11 @@ namespace Server.Mobiles
 
         public override int Hides
         {
-            get { return 20; }
+            get { return 22; }
         }
 
-        //public override int DragonBlood { get { return 8; } }
+        public override int DragonBlood { get { return 10; } }
+
         public override HideType HideType
         {
             get { return HideType.Horned; }
@@ -91,11 +92,6 @@ namespace Server.Mobiles
         public override FoodType FavoriteFood
         {
             get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; }
-        }
-
-        public override int Wool
-        {
-            get { return (Body == 0x2CB ? 3 : 0); }
         }
 
         public void Carve(Mobile from, Item item)

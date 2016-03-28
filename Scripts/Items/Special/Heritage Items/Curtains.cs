@@ -111,14 +111,6 @@ namespace Server.Items
                 return new CurtainsDeed();
             }
         }
-        public override bool RetainDeedHue
-        {
-            get
-            {
-                return true;
-            }
-        }
-
         [Constructable]
         public CurtainsAddon(bool east)
             : base()
