@@ -181,23 +181,25 @@ namespace Server.Items
                 switch (level)
                 {
                     case 1:
-                        cont.RequiredSkill = 36;
+                        cont.RequiredSkill = 5;
                         break;
                     case 2:
-                        cont.RequiredSkill = 76;
+                        cont.RequiredSkill = 45;
                         break;
                     case 3:
-                        cont.RequiredSkill = 84;
+                        cont.RequiredSkill = 65;
                         break;
                     case 4:
-                        cont.RequiredSkill = 92;
+                        cont.RequiredSkill = 75;
                         break;
                     case 5:
-                        cont.RequiredSkill = 105;
+                        cont.RequiredSkill = 75;
                         break;
                     case 6:
+                        cont.RequiredSkill = 80;
+                        break;
                     case 7:
-                        cont.RequiredSkill = 110;
+                        cont.RequiredSkill = 80;
                         break;
                 }
 
