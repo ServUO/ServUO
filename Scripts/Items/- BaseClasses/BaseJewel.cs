@@ -482,10 +482,10 @@ namespace Server.Items
             return base.CanEquip(from);
         }
 
-        public virtual int OnHit(BaseWeapon weap, int damage)
+        public virtual int OnHit(BaseWeapon weap , int damageTaken)
         {
             if (m_TimesImbued == 0 && m_MaxHitPoints == 0)
-                return damage;
+                return damageTaken;
 
             if (25 > Utility.Random(100)) // 25% chance to lower durability
             {
@@ -518,13 +518,13 @@ namespace Server.Items
                         }
                         else
                         {
-                            Delete();
+                            this.Delete();
                         }
                     }
                 }
             }
 
-            return damage;
+            return damageTaken;
         }
 
         public virtual void UnscaleDurability()
