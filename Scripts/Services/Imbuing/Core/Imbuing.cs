@@ -516,7 +516,7 @@ namespace Server.SkillHandlers
                     {
                         BaseJewel jewel = i as BaseJewel;
 
-                        if (jewel.MaxHitPoints <= 0 && jewel.TimesImbued == 1)
+                        if (jewel.MaxHitPoints <= 0 && jewel.TimesImbued >= 1)
                         {
                             jewel.MaxHitPoints = 255;
                             jewel.HitPoints = 255;
