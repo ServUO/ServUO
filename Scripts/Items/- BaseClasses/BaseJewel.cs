@@ -487,6 +487,10 @@ namespace Server.Items
             if (m_TimesImbued == 0 && m_MaxHitPoints == 0)
                 return damageTaken;
 
+            //Sanity check incase some one has a bad state Jewel.
+            if (m_TimesImbued >= 1 && m_MaxHitPoints == 0)
+                return damageTaken;
+
             if (25 > Utility.Random(100)) // 25% chance to lower durability
             {
                 int wear = Utility.Random(2);
