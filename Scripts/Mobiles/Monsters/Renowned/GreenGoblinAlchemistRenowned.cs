@@ -110,6 +110,13 @@ namespace Server.Mobiles
                 return InhumanSpeech.Orc;
             }
         }
+        public override bool AllureImmune
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);

@@ -138,6 +138,9 @@ namespace Server.Items
                 case 5:
                     this.RequiredSkill = 100;
                     break;
+                case 6:
+                    this.RequiredSkill = 100;
+                    break;
             }
 
             this.LockLevel = this.RequiredSkill - 10;

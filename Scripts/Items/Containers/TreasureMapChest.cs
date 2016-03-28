@@ -181,23 +181,25 @@ namespace Server.Items
                 switch (level)
                 {
                     case 1:
-                        cont.RequiredSkill = 36;
+                        cont.RequiredSkill = 5;
                         break;
                     case 2:
-                        cont.RequiredSkill = 76;
+                        cont.RequiredSkill = 45;
                         break;
                     case 3:
-                        cont.RequiredSkill = 84;
+                        cont.RequiredSkill = 65;
                         break;
                     case 4:
-                        cont.RequiredSkill = 92;
+                        cont.RequiredSkill = 75;
                         break;
                     case 5:
-                        cont.RequiredSkill = 105;
+                        cont.RequiredSkill = 75;
                         break;
                     case 6:
+                        cont.RequiredSkill = 80;
+                        break;
                     case 7:
-                        cont.RequiredSkill = 110;
+                        cont.RequiredSkill = 80;
                         break;
                 }
 
@@ -444,21 +446,21 @@ namespace Server.Items
 
         public static void GetRandomItemStat(out int min, out int max)
         {
-            int rnd = Utility.Random(15);
+            int rnd = Utility.Random(100);
 
-            if (rnd < 1)
+            if (rnd <= 1)
             {
-                min = 600; max = 800;
+                min = 500; max = 800;
             }
-            else if (rnd < 3)
+            else if (rnd < 5)
             {
-                min = 500; max = 700;
+                min = 400; max = 700;
             }
-            else if (rnd < 6)
+            else if (rnd < 25)
             {
-                min = 450; max = 600;
+                min = 350; max = 600;
             }
-            else if (rnd < 10)
+            else if (rnd < 50)
             {
                 min = 250; max = 500;
             }

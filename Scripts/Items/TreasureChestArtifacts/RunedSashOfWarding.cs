@@ -93,6 +93,8 @@ namespace Server.Items
                     list.Add(1116173);
                     break;
             }
+
+            list.Add(1060639, "{0}\t{1}", this.HitPoints, this.MaxHitPoints); // durability ~1_val~ / ~2_val~
 		}
 
 		public static bool IsUnderEffects(Mobile from, WardingEffect type)

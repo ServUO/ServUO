@@ -106,6 +106,13 @@ namespace Server.Mobiles
                 return new Type[] { typeof(StormCaller), typeof(TorcOfTheGuardians), typeof(GiantSteps), typeof(CavalrysFolly) };
             }
         }
+        public override bool AllureImmune
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override InhumanSpeech SpeechType
         {
             get
