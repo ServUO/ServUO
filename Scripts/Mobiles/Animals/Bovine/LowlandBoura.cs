@@ -42,8 +42,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 83.4, 86.7);
             SetSkill(SkillName.Wrestling, 95.1, 97.3);
 
-            PackItem(new DragonBlood(8));
-
             Tamable = true;
             ControlSlots = 3;
             MinTameSkill = 19.1;
@@ -81,7 +79,7 @@ namespace Server.Mobiles
             get { return 20; }
         }
 
-        // public override int DragonBlood { get { return 8; } }
+        public override int DragonBlood { get { return 8; } }
         public override HideType HideType
         {
             get { return HideType.Horned; }
