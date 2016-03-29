@@ -159,6 +159,10 @@ namespace Server.Items
 
         public static void Fill(LockableContainer cont, int luck, int level, bool isSos)
         {
+			// Apply Felucca luck bonus
+			if (cont.Map == Map.Felucca)
+				luck += Mobiles.RandomItemGenerator.FeluccaLuckBonus;
+
             cont.Movable = false;
             cont.Locked = true;
             int numberItems;
@@ -198,7 +202,7 @@ namespace Server.Items
                     case 6:
                         cont.RequiredSkill = 80;
                         break;
-                    case 7:
+					case 7:
                         cont.RequiredSkill = 80;
                         break;
                 }
@@ -211,21 +215,26 @@ namespace Server.Items
                 for (int i = 0; i < level * 5; ++i)
                     cont.DropItem(Loot.RandomScroll(0, 63, SpellbookType.Regular));
 
+				double propsScale = 1.0;
                 if (Core.SE)
                 {
                     switch (level)
                     {
                         case 1:
                             numberItems = 32;
+							propsScale = 0.25;
                             break;
                         case 2:
                             numberItems = 40;
+							propsScale = 0.45;
                             break;
                         case 3:
                             numberItems = 48;
+							propsScale = 0.65;
                             break;
                         case 4:
                             numberItems = 56;
+							propsScale = 0.85;
                             break;
                         case 5:
                             numberItems = 64;
@@ -256,7 +265,7 @@ namespace Server.Items
                     if (item != null && Core.HS && RandomItemGenerator.Enabled)
                     {
                         int min, max;
-                        GetRandomItemStat(out min, out max);
+                        GetRandomItemStat(out min, out max, propsScale);
 
                         RunicReforging.GenerateRandomItem(item, LootPack.GetLuckChance(luck), min, max);
 
@@ -422,6 +431,9 @@ namespace Server.Items
 
             if (special != null)
                 cont.DropItem(special);
+
+			if(!isSos && level < 7 && Utility.Random(2000) < luck + 250 * (7 - level))
+				cont.DropItem(new TreasureMap(level + 1, cont.Map));
         }
 
         private static Item GetRandomSpecial(int level, Map map)
@@ -444,7 +456,7 @@ namespace Server.Items
             return special;
         }
 
-        public static void GetRandomItemStat(out int min, out int max)
+        public static void GetRandomItemStat(out int min, out int max, double scale = 1.0)
         {
             int rnd = Utility.Random(100);
 
@@ -468,6 +480,8 @@ namespace Server.Items
             {
                 min = 100; max = 400;
             }
+			min = (int)(min * scale);
+			max = (int)(max * scale);
         }
 
         public static Item GetRandomRecipe()
