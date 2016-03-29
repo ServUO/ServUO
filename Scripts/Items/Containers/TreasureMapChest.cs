@@ -431,9 +431,6 @@ namespace Server.Items
 
             if (special != null)
                 cont.DropItem(special);
-
-			if(!isSos && level < 7 && Utility.Random(2000) < luck + 250 * (7 - level))
-				cont.DropItem(new TreasureMap(level + 1, cont.Map));
         }
 
         private static Item GetRandomSpecial(int level, Map map)
