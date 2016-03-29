@@ -127,6 +127,8 @@ namespace Server.Spells.Spellweaving
             private readonly int m_Damage;
             private readonly int m_Range;
             private int m_LifeSpan;
+            private Map m_Map;
+
             public InternalTimer(Mobile owner, Point3D location, int damage, int range, int duration)
                 : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), duration)
             {
@@ -135,11 +137,12 @@ namespace Server.Spells.Spellweaving
                 this.m_Damage = damage;
                 this.m_Range = range;
                 this.m_LifeSpan = duration;
+                this.m_Map = owner.Map;
             }
 
             protected override void OnTick()
             { 
-                if (this.m_Owner == null)
+                if (this.m_Owner == null || m_Map == null || m_Map == Map.Internal)
                     return;
 					
                 this.m_LifeSpan -= 1;
@@ -163,7 +166,7 @@ namespace Server.Spells.Spellweaving
             {
                 List<Mobile> m_Targets = new List<Mobile>();
 			
-                foreach (Mobile m in this.m_Owner.Map.GetMobilesInRange(this.m_Location, this.m_Range))
+                foreach (Mobile m in this.m_Map.GetMobilesInRange(this.m_Location, this.m_Range))
                 {
                     if (m != this.m_Owner && SpellHelper.ValidIndirectTarget(this.m_Owner, m) && this.m_Owner.CanBeHarmful(m, false))
                         m_Targets.Add(m);

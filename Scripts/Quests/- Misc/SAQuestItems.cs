@@ -119,16 +119,9 @@ namespace Server.Items
     {
         [Constructable]
         public AncientPotteryFragments()
-            : this(1)
+			: base(0x2243)
         {
-        }
-
-        [Constructable]
-        public AncientPotteryFragments(int amount)
-            : base(0x2F5F)
-        {
-            this.Stackable = true;
-            this.Amount = amount;
+			this.Hue = 2108;
         }
 
         public AncientPotteryFragments(Serial serial)

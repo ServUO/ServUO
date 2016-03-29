@@ -46,7 +46,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-		public override bool CanBeParagon { get { return false; } }
+        public override bool CanBeParagon { get { return false; } }
         public override bool GivesMLMinorArtifact
         {
             get
@@ -59,6 +59,13 @@ namespace Server.Mobiles
             get
             {
                 return 4;
+            }
+        }
+        public override bool AllureImmune
+        {
+            get
+            {
+                return true;
             }
         }
         public override void GenerateLoot()

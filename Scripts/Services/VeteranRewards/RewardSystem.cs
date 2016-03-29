@@ -21,7 +21,6 @@ namespace Server.Engines.VeteranRewards
         public static float SkillCapBonusIncrement = SkillCapBonus / SkillCapBonusLevels;
         public static TimeSpan RewardInterval = Config.Get("VetRewards.RewardInterval", TimeSpan.FromDays(30.0d));
 		public static int StartingLevel = Config.Get("VetRewards.StartingLevel", 0);
-        private static bool m_AgeCheckOnUse = Config.Get("VetRewards.AgeCheckOnUse", false);
 
 		private static RewardCategory[] m_Categories;
         private static RewardList[] m_Lists;
@@ -91,8 +90,6 @@ namespace Server.Engines.VeteranRewards
 
 			ts = (list.Age - totalTime);
 
-            if (!m_AgeCheckOnUse)
-                return true;
 
             if (ts <= TimeSpan.Zero)
                 return true;
@@ -362,6 +359,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1006035, typeof(MonsterStatuette), MonsterStatuetteType.Ratman),
                     new RewardEntry(monsterStatues, 1006036, typeof(MonsterStatuette), MonsterStatuetteType.Skeleton),
                     new RewardEntry(monsterStatues, 1006037, typeof(MonsterStatuette), MonsterStatuetteType.Troll),
+                    new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
                     new RewardEntry(houseAddOns, 1062692, typeof(ContestMiniHouseDeed), Expansion.AOS, MiniHouseType.MalasMountainPass),
                     new RewardEntry(houseAddOns, 1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),
                     new RewardEntry(miscellaneous, 1076155, typeof(RedSoulstone), Expansion.ML),
@@ -392,8 +390,8 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1006039, typeof(MonsterStatuette), MonsterStatuetteType.Zombie),
                     new RewardEntry(monsterStatues, 1006040, typeof(MonsterStatuette), MonsterStatuetteType.Llama),
                     new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
-                    new RewardEntry(etherealSteeds, 1006050, typeof(EtherealOstard)),
                     new RewardEntry(etherealSteeds, 1006051, typeof(EtherealLlama)),
+                    new RewardEntry(etherealSteeds, 1006050, typeof(EtherealOstard)),
                     new RewardEntry(houseAddOns, 1080407, typeof(PottedCactusDeed), Expansion.ML)
                 }),
                 new RewardList(RewardInterval, 4, new RewardEntry[]
