@@ -365,26 +365,6 @@ namespace Server.Mobiles
 						
                         break;
                     }
-                case 11:
-                case 12: // Animate dead
-                    {
-                        this.m_Mobile.DebugSay("Attempting to animate dead");
-
-                        if ((this.m_Animated == null || !this.m_Animated.Alive) && this.m_Mobile.Skills[SkillName.Necromancy].Value > 40)
-                            spell = new AnimateDeadSpell(this.m_Mobile, null);
-
-                        break;
-                    }
-                case 13:
-                case 14:
-                    {
-                        this.m_Mobile.DebugSay("Attempting to cast vengeful spirit");
-
-                        if (this.m_Mobile.Skills[SkillName.Necromancy].Value > 80 && (this.m_Mobile.Followers + 3) < this.m_Mobile.FollowersMax)
-                            spell = new VengefulSpiritSpell(this.m_Mobile, null);
-
-                        break;
-                    }
                 default: // Damage them.
                     {
                         this.m_Mobile.DebugSay("Just doing damage");

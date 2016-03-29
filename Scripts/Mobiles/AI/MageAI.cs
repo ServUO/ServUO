@@ -221,12 +221,9 @@ namespace Server.Mobiles
                 case 2:
                     this.m_Mobile.DebugSay("Strangle");
                     return new StrangleSpell(this.m_Mobile, null);
-                case 3:
+                default:
                     this.m_Mobile.DebugSay("Wither");
                     return new WitherSpell(this.m_Mobile, null);
-                default:
-                    this.m_Mobile.DebugSay("Vengeful Spirit");
-                    return new VengefulSpiritSpell(this.m_Mobile, null);
             }
         }
 
