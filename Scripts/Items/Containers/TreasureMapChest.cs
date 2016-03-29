@@ -152,11 +152,6 @@ namespace Server.Items
             }
         }
 
-        public static void Fill(LockableContainer cont, int level)
-        {
-            Fill(cont, 0, level, false);
-        }
-
         public static void Fill(LockableContainer cont, int luck, int level, bool isSos)
         {
 			// Apply Felucca luck bonus
@@ -222,19 +217,18 @@ namespace Server.Items
                     {
                         case 1:
                             numberItems = 32;
-							propsScale = 0.25;
+							propsScale = 0.5625;
                             break;
                         case 2:
                             numberItems = 40;
-							propsScale = 0.45;
+							propsScale = 0.6875;
                             break;
                         case 3:
                             numberItems = 48;
-							propsScale = 0.65;
+							propsScale = 0.875;
                             break;
                         case 4:
                             numberItems = 56;
-							propsScale = 0.85;
                             break;
                         case 5:
                             numberItems = 64;
