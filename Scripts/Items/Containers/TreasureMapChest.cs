@@ -39,10 +39,19 @@ namespace Server.Items
         public static Type[] SOSArtifacts { get { return m_SOSArtifacts; } }
         private static Type[] m_SOSArtifacts = new Type[]
         {
-            typeof(AntiqueWeddingDress), typeof(GrapeVine),
-            typeof(KelpWovenLeggings),   typeof(LargeFishingNet),
-            typeof(RunedDriftwoodBow),   typeof(ValkyrieArmor)
+            typeof(AntiqueWeddingDress), 
+            typeof(KelpWovenLeggings),   
+            typeof(RunedDriftwoodBow),
+            typeof(ValkyrieArmor)
         };
+        public static Type[] SOSDecor { get { return m_SOSDecor; } }
+        private static Type[] m_SOSDecor = new Type[]
+        {
+            typeof(GrapeVine),
+            typeof(LargeFishingNet)
+            
+        };
+
 
         private static Type[] m_ImbuingIngreds =
 		{
@@ -371,8 +380,13 @@ namespace Server.Items
 
             if (isSos)
             {
-                if (0.002 * level > Utility.RandomDouble())
+                if (0.004 * level > Utility.RandomDouble())
                     arty = Loot.Construct(m_SOSArtifacts);
+                if (0.006 * level > Utility.RandomDouble())
+                    special = Loot.Construct(m_SOSDecor);
+                else if (0.009 * level > Utility.RandomDouble())
+                    special = new TreasureMap(Utility.RandomMinMax(level, Math.Min(7, level + 1)), cont.Map);
+
             }
             else
             {
