@@ -27,7 +27,9 @@ namespace Server.Mobiles
 		Shoes,
 		Boots,
 		Sandals,
-		ThighBoots
+        ThighBoots,
+        SamuraiTabi,
+        NinjaTabi
 	}
 
 	public abstract class BaseVendor : BaseCreature, IVendor
@@ -1187,6 +1189,7 @@ namespace Server.Mobiles
 				if (m is BaseCreature)
 				{
 					((BaseCreature)m).SetControlMaster(buyer);
+                    ((BaseCreature)m).ControlOrder = OrderType.Stop;
 				}
 
 				for (int i = 1; i < amount; ++i)
@@ -1201,6 +1204,7 @@ namespace Server.Mobiles
 						if (m is BaseCreature)
 						{
 							((BaseCreature)m).SetControlMaster(buyer);
+                            ((BaseCreature)m).ControlOrder = OrderType.Stop;
 						}
 					}
 				}
