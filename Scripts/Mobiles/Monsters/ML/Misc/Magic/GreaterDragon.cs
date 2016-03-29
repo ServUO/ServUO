@@ -96,6 +96,13 @@ namespace Server.Mobiles
                 return 19;
             }
         }
+        public override int DragonBlood
+        {
+            get
+            {
+                return 8;
+            }
+        }
         public override int Hides
         {
             get

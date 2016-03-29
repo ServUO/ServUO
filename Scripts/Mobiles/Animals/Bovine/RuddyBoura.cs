@@ -39,8 +39,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 83.3, 88.8);
             SetSkill(SkillName.Wrestling, 86.6, 87.9);
 
-            PackItem(new DragonBlood(8));
-
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 19.1;
@@ -69,6 +67,14 @@ namespace Server.Mobiles
         public override int Meat
         {
             get { return 10; }
+        }
+
+        public override int DragonBlood
+        {
+            get
+            {
+                return 8;
+            }
         }
 
         public override int Hides

@@ -78,6 +78,13 @@ namespace Server.Mobiles
                 return 4;
             }
         }
+        public override int DragonBlood
+        {
+            get
+            {
+                return 8;
+            }
+        }
         public override int Meat
         {
             get
