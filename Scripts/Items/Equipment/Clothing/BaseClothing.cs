@@ -45,7 +45,7 @@ namespace Server.Items
         }
         #endregion
 
-        public virtual bool CanFortify { get { return m_TimesImbued == 0 && NegativeAttributes.Antique < 3; } }
+        public virtual bool CanFortify { get { return m_IsImbued == false && NegativeAttributes.Antique < 3; } }
         public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
 
         private int m_MaxHitPoints;
@@ -65,6 +65,7 @@ namespace Server.Items
 
         #region Stygian Abyss
         private int m_TimesImbued;
+        private bool m_IsImbued;
         private int m_GorgonLenseCharges;
         private LenseType m_GorgonLenseType;
 
@@ -180,6 +181,24 @@ namespace Server.Items
         {
             get { return m_TimesImbued; }
             set { m_TimesImbued = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsImbued
+        {
+            get
+            {
+                if (this.TimesImbued >= 1)
+                    m_IsImbued = true;
+                return m_IsImbued;
+            }
+            set
+            {
+                if (this.TimesImbued >= 1)
+                    m_IsImbued = true;
+                else
+                    m_IsImbued = value; InvalidateProperties();
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1084,7 +1103,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             #region Stygian Abyss
-            if (this.m_TimesImbued > 0)
+            if (this.m_IsImbued == true)
                 list.Add(1080418); // (Imbued)
 
             if (m_GorgonLenseCharges > 0)
@@ -1400,7 +1419,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(7); // version
+            writer.Write(8); // version
+
+            //Version 8
+            writer.Write((bool)this.m_IsImbued);
 
             // Version 7
             m_SAAbsorptionAttributes.Serialize(writer);
@@ -1424,6 +1446,7 @@ namespace Server.Items
 
             // Version 6
             writer.Write((int)this.m_TimesImbued);
+
             #endregion
 
             writer.Write(this.m_BlessedBy);
@@ -1542,6 +1565,11 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 8:
+                        {
+                            this.m_IsImbued = reader.ReadBool();
+                            goto case 7;
+                        }
                 case 7:
                     {
                         m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this, reader);
@@ -1570,6 +1598,7 @@ namespace Server.Items
                             m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
 
                         this.m_TimesImbued = reader.ReadInt();
+                       
                         #endregion
 
                         this.m_BlessedBy = reader.ReadMobile();

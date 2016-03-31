@@ -135,6 +135,7 @@ namespace Server.Items
 
         #region Stygian Abyss
         private int m_TimesImbued;
+        private bool m_IsImbued;
         private bool m_DImodded;
         #endregion
 
@@ -191,7 +192,7 @@ namespace Server.Items
 		public virtual int InitMinHits { get { return 0; } }
 		public virtual int InitMaxHits { get { return 0; } }
 
-        public virtual bool CanFortify { get { return m_TimesImbued == 0 && NegativeAttributes.Antique < 3; } }
+        public virtual bool CanFortify { get { return m_IsImbued == false && NegativeAttributes.Antique < 3; } }
         public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
 
 		public override int PhysicalResistance { get { return m_AosWeaponAttributes.ResistPhysicalBonus; } }
@@ -598,6 +599,24 @@ namespace Server.Items
         {
             get { return m_TimesImbued; }
             set { m_TimesImbued = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsImbued
+        {
+            get 
+            {
+                if (this.TimesImbued >= 1)
+                    m_IsImbued = true;
+                return m_IsImbued; 
+            }
+            set 
+            {
+                if (this.TimesImbued >= 1)
+                    m_IsImbued = true;
+                else
+                    m_IsImbued = value; InvalidateProperties();
+            }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -3544,7 +3563,10 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(13); // version
+			writer.Write(14); // version
+
+            //Version 14
+            writer.Write(m_IsImbued);
 
             //version 13, converted SaveFlags to long, added negative attributes
 
@@ -3562,6 +3584,7 @@ namespace Server.Items
 
 			// Version 11
 			writer.Write(m_TimesImbued);
+         
             #endregion
 
             // Version 10
@@ -3890,6 +3913,11 @@ namespace Server.Items
 
 			switch (version)
 			{
+                case 14:
+                    {
+                        m_IsImbued = reader.ReadBool();
+                        goto case 13;
+                    }
                 case 13:
                 case 12:
                     {
@@ -3908,6 +3936,7 @@ namespace Server.Items
 				case 11:
 					{
 						m_TimesImbued = reader.ReadInt();
+                     
                         #endregion
 
                         goto case 10;
@@ -4765,8 +4794,9 @@ namespace Server.Items
 					list.Add(1060659, "Experience\t{0}", levitem.Experience);
 				}
 			}
+           
 
-			if (m_TimesImbued > 0)
+			if (m_IsImbued == true)
 			{
 				list.Add(1080418); // (Imbued)
 			}

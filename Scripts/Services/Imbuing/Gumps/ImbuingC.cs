@@ -68,8 +68,8 @@ namespace Server.Gumps
             if (m_Value <= 0)
                 m_Value = 1;
 
-            double currentIntensity = ((double)m_Value / (double)maxInt) * 100.0;
-            currentIntensity = Math.Round(currentIntensity, 1);
+            double currentIntensity = ((double)weight / (double)maxInt * m_Value);
+            currentIntensity = Math.Floor(currentIntensity);
 
 			//Set context
 			context.LastImbued = item;
@@ -86,7 +86,7 @@ namespace Server.Gumps
 				currentIntensity= 100;
 
             double propweight = ((double)weight / (double)maxInt) * m_Value;
-            propweight = Math.Round(propweight);
+            propweight = Math.Floor(propweight);
             m_PropWeight = Convert.ToInt32(propweight);
 
             // - Maximum allowed Property Weight & Item Mod Count
@@ -301,7 +301,7 @@ namespace Server.Gumps
                     }
                 case 10053:// = Minimum Mod Value [<<<]
                     {
-                        context.Imbue_ModInt = 0;
+                        context.Imbue_ModInt = 1;
                         from.CloseGump(typeof(ImbuingGumpC));
                         from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
                         break;

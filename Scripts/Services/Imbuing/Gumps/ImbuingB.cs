@@ -792,7 +792,7 @@ namespace Server.Gumps
                 {
                     context.Imbue_Mod = buttonRNum;
                     from.CloseGump(typeof(ImbuingGumpB));
-                    from.SendGump(new ImbuingGumpC(from, context.LastImbued, buttonRNum, 0));
+                    from.SendGump(new ImbuingGumpC(from, context.LastImbued, buttonRNum, 1));
                     break;
                 }				
 			}
