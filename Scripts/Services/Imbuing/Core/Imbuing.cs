@@ -807,7 +807,6 @@ namespace Server.SkillHandlers
             }
             else
                 return 0;
-            
         }
 
         [Usage("GetTotalMods")]
