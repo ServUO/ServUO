@@ -1390,19 +1390,19 @@
     <Compile Include="Items\Decorative\WindChimes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\- Staff Items\GMEthereal.cs">
+    <Compile Include="Items\Tools\GMEthereal.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\- Staff Items\GMHidingStone.cs">
+    <Compile Include="Items\Tools\GMHidingStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\- Staff Items\StaffOrb.cs">
+    <Compile Include="Items\Tools\StaffOrb.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\- Staff Items\StaffRing.cs">
+    <Compile Include="Items\Equipment\Jewelry\StaffRing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\- Staff Items\StaffRobe.cs">
+    <Compile Include="Items\Equipment\Clothing\StaffRobe.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Addons\AbbatoirAddon.cs">
@@ -2964,2838 +2964,2838 @@
     <Compile Include="Items\Equipment\Clothing\Waist.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\- Misc\BaseSwitch.cs">
+    <Compile Include="Items\Functional\BaseSwitch.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\- Misc\Switches.cs">
+    <Compile Include="Items\Functional\Switches.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Ankhs.cs">
+    <Compile Include="Items\Functional\Ankhs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Chairs\Benchs.cs">
+    <Compile Include="Items\Decorative\Benchs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Chairs\Chairs.cs">
+    <Compile Include="Items\Decorative\Chairs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Chairs\Stools.cs">
+    <Compile Include="Items\Decorative\Stools.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Chairs\Thrones.cs">
+    <Compile Include="Items\Decorative\Thrones.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Decorative\DecorativeShield.cs">
+    <Compile Include="Items\Decorative\DecorativeShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Decorative\DecorativeWeapon.cs">
+    <Compile Include="Items\Decorative\DecorativeWeapon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Decorative\PaintingPortraits.cs">
+    <Compile Include="Items\Decorative\PaintingPortraits.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Decorative\Tapestry.cs">
+    <Compile Include="Items\Decorative\Tapestry.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Doors\Doors.cs">
+    <Compile Include="Items\Functional\Doors.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Doors\HouseDoors.cs">
+    <Compile Include="Items\Functional\HouseDoors.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Doors\Portcullis.cs">
+    <Compile Include="Items\Functional\Portcullis.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Doors\SecretDoors.cs">
+    <Compile Include="Items\Functional\SecretDoors.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Doors\SlidingDoors.cs">
+    <Compile Include="Items\Functional\SlidingDoors.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Floors\Floors.cs">
+    <Compile Include="Items\Decorative\Floors.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Misc\BarrelParts.cs">
+    <Compile Include="Items\Resource\BarrelParts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Misc\Easle.cs">
+    <Compile Include="Items\Decorative\Easle.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Misc\MeltedWax.cs">
+    <Compile Include="Items\Decorative\MeltedWax.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Misc\MusicStand.cs">
+    <Compile Include="Items\Decorative\MusicStand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Misc\Obelisk.cs">
+    <Compile Include="Items\Decorative\Obelisk.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Misc\Screens.cs">
+    <Compile Include="Items\Decorative\Screens.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Misc\Statues.cs">
+    <Compile Include="Items\Decorative\Statues.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Misc\Vase.cs">
+    <Compile Include="Items\Decorative\Vase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Misc\Vines.cs">
+    <Compile Include="Items\Decorative\Vines.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Ruined\RuinedItemSingle.cs">
+    <Compile Include="Items\Decorative\RuinedItemSingle.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Signs\LocalizedSign.cs">
+    <Compile Include="Items\Decorative\LocalizedSign.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Signs\Sign.cs">
+    <Compile Include="Items\Decorative\Sign.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Signs\SubtextSign.cs">
+    <Compile Include="Items\Decorative\SubtextSign.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Tables\Tables.cs">
+    <Compile Include="Items\Decorative\Tables.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Tables\WritingTable.cs">
+    <Compile Include="Items\Decorative\WritingTable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\- Misc\BaseSliding.cs">
+    <Compile Include="Items\Decorative\BaseSliding.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\- Misc\Destroyable Walls\BaseDesItem.cs">
+    <Compile Include="Items\Decorative\BaseDesItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\- Misc\Destroyable Walls\DesCityWall.cs">
+    <Compile Include="Items\Decorative\DesCityWall.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\- Misc\Destroyable Walls\SA ShadowWall 1.cs">
+    <Compile Include="Items\Decorative\SAShadowWall1.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\- Misc\Destroyable Walls\SA StoneWall 1.cs">
+    <Compile Include="Items\Decorative\SAStoneWall1.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\- Misc\Destroyable Walls\SA StoneWall 2.cs">
+    <Compile Include="Items\Decorative\SAStoneWall2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\- Misc\DungeonWallAndVineAddon.cs">
+    <Compile Include="Items\Decorative\DungeonWallAndVineAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\- Misc\SecretSlidingWalls.cs">
+    <Compile Include="Items\Decorative\SecretSlidingWalls.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\- Misc\StoneWallAndVineAddon.cs">
+    <Compile Include="Items\Decorative\StoneWallAndVineAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\DarkWoodWall.cs">
+    <Compile Include="Items\Decorative\DarkWoodWall.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\ThickGrayStoneWall.cs">
+    <Compile Include="Items\Decorative\ThickGrayStoneWall.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\ThinBrickWall.cs">
+    <Compile Include="Items\Decorative\ThinBrickWall.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\ThinStoneWall.cs">
+    <Compile Include="Items\Decorative\ThinStoneWall.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Construction\Walls\WhiteStoneWall.cs">
+    <Compile Include="Items\Decorative\WhiteStoneWall.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\Container.cs">
+    <Compile Include="Items\Containers\Container.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\FillableContainers.cs">
+    <Compile Include="Items\Containers\FillableContainers.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\FurnitureContainer.cs">
+    <Compile Include="Items\Containers\FurnitureContainer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\LockableContainer.cs">
+    <Compile Include="Items\Containers\LockableContainer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\MarkContainer.cs">
+    <Compile Include="Items\Containers\MarkContainer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\ParagonChest.cs">
+    <Compile Include="Items\Containers\ParagonChest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\SalvageBag.cs">
+    <Compile Include="Items\Containers\SalvageBag.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\Strongbox.cs">
+    <Compile Include="Items\Containers\Strongbox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\TrapableContainer.cs">
+    <Compile Include="Items\Containers\TrapableContainer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\TreasureChest.cs">
+    <Compile Include="Items\Containers\TreasureChest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\TreasureMapChest.cs">
+    <Compile Include="Items\Containers\TreasureMapChest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Containers\UnknownSkeletons.cs">
+    <Compile Include="Items\Containers\UnknownSkeletons.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Decoration Artifacts\DoomDecorationArtifacts.cs">
+    <Compile Include="Items\Artifacts\Decorative\DoomDecorationArtifacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Decoration Artifacts\MLDecorationArtifacts.cs">
+    <Compile Include="Items\Artifacts\Decorative\MLDecorationArtifacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Decoration Artifacts\SADecorationArtifacts.cs">
+    <Compile Include="Items\Artifacts\Decorative\SADecorationArtifacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Decoration Artifacts\SEDecorationArtifacts.cs">
+    <Compile Include="Items\Artifacts\Decorative\SEDecorationArtifacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Decoration Artifacts\StealableArtifactsSpawner.cs">
+    <Compile Include="Items\Artifacts\Decorative\StealableArtifactsSpawner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Deeds\BarkeepContract.cs">
+    <Compile Include="Items\Consumables\BarkeepContract.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Deeds\ClothingBlessDeed.cs">
+    <Compile Include="Items\Consumables\ClothingBlessDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Deeds\CommodityDeed.cs">
+    <Compile Include="Items\Consumables\CommodityDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Deeds\DragonBardingDeed.cs">
+    <Compile Include="Items\Consumables\DragonBardingDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Deeds\ForgedPardon.cs">
+    <Compile Include="Items\Consumables\ForgedPardon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Deeds\HairRestylingDeed.cs">
+    <Compile Include="Items\Consumables\HairRestylingDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Deeds\HolidayTreeDeed.cs">
+    <Compile Include="Items\Consumables\HolidayTreeDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Deeds\NameChangeDeed.cs">
+    <Compile Include="Items\Consumables\NameChangeDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Deeds\NewPlayerTicket.cs">
+    <Compile Include="Items\Consumables\NewPlayerTicket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Deeds\VendorRentalContract.cs">
+    <Compile Include="Items\Consumables\VendorRentalContract.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Facial\Beard.cs">
+    <Compile Include="Items\Internal\Beard.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Facial\Hair.cs">
+    <Compile Include="Items\Internal\Hair.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Farming\FarmableCabbage.cs">
+    <Compile Include="Items\Functional\FarmableCabbage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Farming\FarmableCarrot.cs">
+    <Compile Include="Items\Functional\FarmableCarrot.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Farming\FarmableCotton.cs">
+    <Compile Include="Items\Functional\FarmableCotton.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Farming\FarmableCrop.cs">
+    <Compile Include="Items\Functional\FarmableCrop.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Farming\FarmableFlax.cs">
+    <Compile Include="Items\Functional\FarmableFlax.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Farming\FarmableLettuce.cs">
+    <Compile Include="Items\Functional\FarmableLettuce.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Farming\FarmableOnion.cs">
+    <Compile Include="Items\Functional\FarmableOnion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Farming\FarmablePumpkin.cs">
+    <Compile Include="Items\Functional\FarmablePumpkin.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Farming\FarmableTurnip.cs">
+    <Compile Include="Items\Functional\FarmableTurnip.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Farming\FarmableWheat.cs">
+    <Compile Include="Items\Functional\FarmableWheat.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\AdmiralHeartyRum.cs">
+    <Compile Include="Items\Consumables\AdmiralHeartyRum.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\Asian.cs">
+    <Compile Include="Items\Consumables\Asian.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\BaseMagicalFood.cs">
+    <Compile Include="Items\Consumables\BaseMagicalFood.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\Beverage.cs">
+    <Compile Include="Items\Consumables\Beverage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\BeverageEmpty.cs">
+    <Compile Include="Items\Consumables\BeverageEmpty.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\Bowls.cs">
+    <Compile Include="Items\Consumables\Bowls.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\Chocolatiering.cs">
+    <Compile Include="Items\Consumables\Chocolatiering.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\CookableFood.cs">
+    <Compile Include="Items\Consumables\CookableFood.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\Cooking.cs">
+    <Compile Include="Items\Consumables\Cooking.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\EnchantedApple.cs">
+    <Compile Include="Items\Consumables\EnchantedApple.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\EndlessDecanter.cs">
+    <Compile Include="Items\Consumables\EndlessDecanter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\Food.cs">
+    <Compile Include="Items\Consumables\Food.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\FruitBowl.cs">
+    <Compile Include="Items\Consumables\FruitBowl.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\Fruits.cs">
+    <Compile Include="Items\Consumables\Fruits.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\Vegetables.cs">
+    <Compile Include="Items\Consumables\Vegetables.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Food\WrathGrapes.cs">
+    <Compile Include="Items\Consumables\WrathGrapes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Furniture\CraftableFurniture.cs">
+    <Compile Include="Items\Decorative\CraftableFurniture.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Furniture\DecorativeBox.cs">
+    <Compile Include="Items\Containers\DecorativeBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Furniture\ElvenAlchemyTable.cs">
+    <Compile Include="Items\Decorative\ElvenAlchemyTable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Furniture\ElvenPodium.cs">
+    <Compile Include="Items\Decorative\ElvenPodium.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Furniture\FancyElvenArmoire.cs">
+    <Compile Include="Items\Containers\FancyElvenArmoire.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Furniture\GiantReplicaAcorn.cs">
+    <Compile Include="Items\Decorative\GiantReplicaAcorn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Furniture\MountedDreadHorn.cs">
+    <Compile Include="Items\Decorative\MountedDreadHorn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Furniture\RarewoodChest.cs">
+    <Compile Include="Items\Decorative\RarewoodChest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Furniture\SimpleElvenArmoire.cs">
+    <Compile Include="Items\Containers\SimpleElvenArmoire.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Backgammon.cs">
+    <Compile Include="Items\Containers\Backgammon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\CheckerBoard.cs">
+    <Compile Include="Items\Containers\CheckerBoard.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\CheckersPieces.cs">
+    <Compile Include="Items\Tools\CheckersPieces.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Chessboard.cs">
+    <Compile Include="Items\Containers\Chessboard.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\ChessPieces.cs">
+    <Compile Include="Items\Tools\ChessPieces.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Dices.cs">
+    <Compile Include="Items\Tools\Dices.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Mahjong\MahjongDealerIndicator.cs">
+    <Compile Include="Items\Containers\Mahjong\MahjongDealerIndicator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Mahjong\MahjongDices.cs">
+    <Compile Include="Items\Containers\Mahjong\MahjongDices.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Mahjong\MahjongEnums.cs">
+    <Compile Include="Items\Containers\Mahjong\MahjongEnums.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Mahjong\MahjongGame.cs">
+    <Compile Include="Items\Containers\Mahjong\MahjongGame.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Mahjong\MahjongPacketHandlers.cs">
+    <Compile Include="Items\Containers\Mahjong\MahjongPacketHandlers.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Mahjong\MahjongPieceDim.cs">
+    <Compile Include="Items\Containers\Mahjong\MahjongPieceDim.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Mahjong\MahjongPlayers.cs">
+    <Compile Include="Items\Containers\Mahjong\MahjongPlayers.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Mahjong\MahjongTile.cs">
+    <Compile Include="Items\Containers\Mahjong\MahjongTile.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Mahjong\MahjongTileTypeGenerator.cs">
+    <Compile Include="Items\Containers\Mahjong\MahjongTileTypeGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Mahjong\MahjongWallBreakIndicator.cs">
+    <Compile Include="Items\Containers\Mahjong\MahjongWallBreakIndicator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Games\Mahjong\Packets.cs">
+    <Compile Include="Items\Containers\Mahjong\Packets.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Gems\Amber.cs">
+    <Compile Include="Items\Resource\Amber.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Gems\Amethyst.cs">
+    <Compile Include="Items\Resource\Amethyst.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Gems\Citrine.cs">
+    <Compile Include="Items\Resource\Citrine.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Gems\Diamond.cs">
+    <Compile Include="Items\Resource\Diamond.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Gems\Emerald.cs">
+    <Compile Include="Items\Resource\Emerald.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Gems\IGem.cs">
+    <Compile Include="Items\Resource\IGem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Gems\Ruby.cs">
+    <Compile Include="Items\Resource\Ruby.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Gems\Sapphire.cs">
+    <Compile Include="Items\Resource\Sapphire.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Gems\StarSapphire.cs">
+    <Compile Include="Items\Resource\StarSapphire.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Gems\Tourmaline.cs">
+    <Compile Include="Items\Resource\Tourmaline.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Guilds\GuildDeed.cs">
+    <Compile Include="Items\Consumables\GuildDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Guilds\Guildstone.cs">
+    <Compile Include="Items\Addons\Guildstone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Guilds\GuildTeleporter.cs">
+    <Compile Include="Items\Internal\GuildTeleporter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\- Misc\BurningAmber.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\BurningAmber.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\- Misc\GargishBracelet.cs">
+    <Compile Include="Items\Equipment\Jewelry\GargishBracelet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\- Misc\GargishEarrings.cs">
+    <Compile Include="Items\Equipment\Jewelry\GargishEarrings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\- Misc\GargishNecklace.cs">
+    <Compile Include="Items\Equipment\Jewelry\GargishNecklace.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\- Misc\GargishRing.cs">
+    <Compile Include="Items\Equipment\Jewelry\GargishRing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\- Misc\ObsidianEarrings.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\ObsidianEarrings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Artifacts\BraceletOfHealth.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\BraceletOfHealth.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Artifacts\Craftable\EssenceOfBattle.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\EssenceOfBattle.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Artifacts\Craftable\PendantOfTheMagi.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\PendantOfTheMagi.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Artifacts\Craftable\ResillientBracer.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\ResillientBracer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Artifacts\CrystallineRing.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\CrystallineRing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Artifacts\DragonJadeEarrings.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\DragonJadeEarrings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Artifacts\Lavaliere.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\Lavaliere.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Artifacts\OrnamentOfTheMagician.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\OrnamentOfTheMagician.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Artifacts\RingOfTheElements.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\RingOfTheElements.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Artifacts\RingOfTheVile.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\RingOfTheVile.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Artifacts\TorcOfTheGuardians.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\TorcOfTheGuardians.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Beads.cs">
+    <Compile Include="Items\Equipment\Jewelry\Beads.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\BlueDiamondRing.cs">
+    <Compile Include="Items\Equipment\Jewelry\BlueDiamondRing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Bracelet.cs">
+    <Compile Include="Items\Equipment\Jewelry\Bracelet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\BrilliantAmberBracelet.cs">
+    <Compile Include="Items\Equipment\Jewelry\BrilliantAmberBracelet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\DarkSapphireBracelet.cs">
+    <Compile Include="Items\Equipment\Jewelry\DarkSapphireBracelet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Earrings.cs">
+    <Compile Include="Items\Equipment\Jewelry\Earrings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\EcruCitrineRing.cs">
+    <Compile Include="Items\Equipment\Jewelry\EcruCitrineRing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\FireRubyBracelet.cs">
+    <Compile Include="Items\Equipment\Jewelry\FireRubyBracelet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Necklace.cs">
+    <Compile Include="Items\Equipment\Jewelry\Necklace.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\PerfectEmeraldRing.cs">
+    <Compile Include="Items\Equipment\Jewelry\PerfectEmeraldRing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\Ring.cs">
+    <Compile Include="Items\Equipment\Jewelry\Ring.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\TurqouiseRing.cs">
+    <Compile Include="Items\Equipment\Jewelry\TurqouiseRing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Jewels\WhitePearlBracelet.cs">
+    <Compile Include="Items\Equipment\Jewelry\WhitePearlBracelet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\Brazier.cs">
+    <Compile Include="Items\Decorative\Brazier.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\BrazierTall.cs">
+    <Compile Include="Items\Decorative\BrazierTall.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\Candelabra.cs">
+    <Compile Include="Items\Decorative\Candelabra.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\CandelabraStand.cs">
+    <Compile Include="Items\Decorative\CandelabraStand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\Candle.cs">
+    <Compile Include="Items\Equipment\Light\Candle.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\CandleLarge.cs">
+    <Compile Include="Items\Decorative\CandleLarge.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\CandleLong.cs">
+    <Compile Include="Items\Decorative\CandleLong.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\CandleShort.cs">
+    <Compile Include="Items\Decorative\CandleShort.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\CandleSkull.cs">
+    <Compile Include="Items\Decorative\CandleSkull.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\DarkSource.cs">
+    <Compile Include="Items\Decorative\DarkSource.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\HangingLantern.cs">
+    <Compile Include="Items\Decorative\HangingLantern.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\HeatingStand.cs">
+    <Compile Include="Items\Decorative\HeatingStand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\LampPost1.cs">
+    <Compile Include="Items\Decorative\LampPost1.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\LampPost2.cs">
+    <Compile Include="Items\Decorative\LampPost2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\LampPost3.cs">
+    <Compile Include="Items\Decorative\LampPost3.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\Lantern.cs">
+    <Compile Include="Items\Equipment\Light\Lantern.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\LightSource.cs">
+    <Compile Include="Items\Decorative\LightSource.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\PaperLantern.cs">
+    <Compile Include="Items\Decorative\PaperLantern.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\RedHangingLantern.cs">
+    <Compile Include="Items\Decorative\RedHangingLantern.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\RoundPaperLantern.cs">
+    <Compile Include="Items\Decorative\RoundPaperLantern.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\ShojiLantern.cs">
+    <Compile Include="Items\Decorative\ShojiLantern.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\Torch.cs">
+    <Compile Include="Items\Equipment\Light\Torch.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\WallSconce.cs">
+    <Compile Include="Items\Decorative\WallSconce.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\WallTorch.cs">
+    <Compile Include="Items\Decorative\WallTorch.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Lights\WhiteHangingLantern.cs">
+    <Compile Include="Items\Decorative\WhiteHangingLantern.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Maps\BlankMap.cs">
+    <Compile Include="Items\Tools\BlankMap.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Maps\CityMap.cs">
+    <Compile Include="Items\Tools\CityMap.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Maps\IndecipherableMap.cs">
+    <Compile Include="Items\Tools\IndecipherableMap.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Maps\LocalMap.cs">
+    <Compile Include="Items\Tools\LocalMap.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Maps\MapItem.cs">
+    <Compile Include="Items\Tools\MapItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Maps\PresetMap.cs">
+    <Compile Include="Items\Tools\PresetMap.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Maps\SeaChart.cs">
+    <Compile Include="Items\Tools\SeaChart.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Maps\TreasureMap.cs">
+    <Compile Include="Items\Consumables\TreasureMap.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Maps\WorldMap.cs">
+    <Compile Include="Items\Tools\WorldMap.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\AdmiralsHeartyRum.cs">
+    <Compile Include="Items\Artifacts\Consumables\AdmiralsHeartyRum.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\AlchemistsBauble.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\AlchemistsBauble.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ArcticDeathDealer.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\ArcticDeathDealer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\BlazeOfDeath.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\BlazeOfDeath.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\BowOfTheJukaKing.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\BowOfTheJukaKing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\BurglarsBandana.cs">
+    <Compile Include="Items\Artifacts\Equipment\Clothing\BurglarsBandana.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\CandelabraOfSouls.cs">
+    <Compile Include="Items\Artifacts\Decorative\CandelabraOfSouls.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\CaptainQuacklebushsCutlass.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\CaptainQuacklebushsCutlass.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\CavortingClub.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\CavortingClub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ColdBlood.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\ColdBlood.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ConjurersGarb.cs" />
-    <Compile Include="Items_Old\Minor Artifacts\ConjurersGarbHarbringer.cs" />
-    <Compile Include="Items_Old\Minor Artifacts\DreadPirateHat.cs">
+    <Compile Include="Items\Artifacts\Equipment\Clothing\ConjurersGarb.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Clothing\ConjurersGarbHarbringer.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Clothing\DreadPirateHat.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\EnchantedTitanLegBone.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\EnchantedTitanLegBone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\GhostShipAnchor.cs">
+    <Compile Include="Items\Artifacts\Decorative\GhostShipAnchor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\GlovesOfThePugilist.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfThePugilist.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\GoldBricks.cs">
+    <Compile Include="Items\Artifacts\Decorative\GoldBricks.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\GwennosHarp.cs">
+    <Compile Include="Items\Artifacts\Equipment\Instruments\GwennosHarp.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\HeartOfTheLion.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\HeartOfTheLion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\IolosLute.cs">
+    <Compile Include="Items\Artifacts\Equipment\Instruments\IolosLute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\LunaLance.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\LunaLance.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\AegisOfGrace.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\AegisOfGrace.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\BladeDance.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\BladeDance.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\BloodwoodSpirit.cs">
+    <Compile Include="Items\Artifacts\Equipment\Talismans\BloodwoodSpirit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\Bonesmasher.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\Bonesmasher.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\Boomstick.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\Boomstick.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\BrightsightLenses.cs">
+    <Compile Include="Items\Artifacts\Equipment\Glasses\BrightsightLenses.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\FeyLeggings.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\FeyLeggings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\FleshRipper.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\FleshRipper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\HelmOfSwiftness.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\HelmOfSwiftness.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\HumanFeyLeggings.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\HumanFeyLeggings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\MelisandesCorrodedHatchet.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\MelisandesCorrodedHatchet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\PadsOfTheCuSidhe.cs">
+    <Compile Include="Items\Artifacts\Equipment\Clothing\PadsOfTheCuSidhe.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\QuiverOfElements.cs">
+    <Compile Include="Items\Artifacts\Equipment\Quivers\QuiverOfElements.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\QuiverOfRage.cs">
+    <Compile Include="Items\Artifacts\Equipment\Quivers\QuiverOfRage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\RaedsGlory.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\RaedsGlory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\RighteousAnger.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\RighteousAnger.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\RobeOfTheEclipse.cs">
+    <Compile Include="Items\Artifacts\Equipment\Clothing\RobeOfTheEclipse.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\RobeOfTheEquinox.cs">
+    <Compile Include="Items\Artifacts\Equipment\Clothing\RobeOfTheEquinox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\SoulSeeker.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\SoulSeeker.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\TalonBite.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\TalonBite.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\TotemOfVoid.cs">
+    <Compile Include="Items\Artifacts\Equipment\Talismans\TotemOfVoid.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\WildfireBow.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\WildfireBow.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ML\Windsong.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\Windsong.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\NightsKiss.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\NightsKiss.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\NoxRangersHeavyCrossbow.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\NoxRangersHeavyCrossbow.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\OrcishVisage.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\OrcishVisage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\PhillipsWoodenSteed.cs">
+    <Compile Include="Items\Artifacts\Decorative\PhillipsWoodenSteed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\PixieSwatter.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\PixieSwatter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\PolarBearMask.cs">
+    <Compile Include="Items\Artifacts\Equipment\Clothing\PolarBearMask.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\SeahorseStatuette.cs">
+    <Compile Include="Items\Artifacts\Decorative\SeahorseStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ShieldOfInvulnerability.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\ShieldOfInvulnerability.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\ShipModelOfTheHMSCape.cs">
+    <Compile Include="Items\Artifacts\Decorative\ShipModelOfTheHMSCape.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\StaffOfPower.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\StaffOfPower.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\VioletCourage.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\VioletCourage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Minor Artifacts\WrathOfTheDryad.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\WrathOfTheDryad.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\AmeliasToolbox.cs">
+    <Compile Include="Items\Artifacts\Tools\AmeliasToolbox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\ArmsOfArmstrong.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\ArmsOfArmstrong.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\BagOfNecromancerReagents.cs">
+    <Compile Include="Items\Containers\BagOfNecromancerReagents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\BagOfSmokeBombs.cs">
+    <Compile Include="Items\Containers\BagOfSmokeBombs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\BraceletOfResilience.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\BraceletOfResilience.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\BulwarkLeggings.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\BulwarkLeggings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\ChurchillsWarMace.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\ChurchillsWarMace.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\ClaspOfConcentration.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\ClaspOfConcentration.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\EmberStaff.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\EmberStaff.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\EscutcheonDeAriadne.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\EscutcheonDeAriadne.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\GlovesOfSafeguarding.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfSafeguarding.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\HallowedSpellbook.cs">
+    <Compile Include="Items\Artifacts\Equipment\Spellbooks\HallowedSpellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\HealersTouch.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\HealersTouch.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\Heartseeker.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\Heartseeker.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\JocklesQuicksword.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\JocklesQuicksword.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\PhilosophersHat.cs">
+    <Compile Include="Items\Artifacts\Equipment\Clothing\PhilosophersHat.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\RecarosRiposte.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\RecarosRiposte.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\RingOfTheSavant.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\RingOfTheSavant.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\SilverSerpentBlade.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\SilverSerpentBlade.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\TheDragonsTail.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\TheDragonsTail.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\TunicOfGuarding.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\TunicOfGuarding.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\TwilightJacket.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\TwilightJacket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\New Haven Quest Rewards\WalkersLeggings.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\WalkersLeggings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\PlantsFlowers\Potted\EmptyPots.cs">
+    <Compile Include="Items\Decorative\EmptyPots.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\PlantsFlowers\Potted\PottedCactus.cs">
+    <Compile Include="Items\Decorative\PottedCactus.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\PlantsFlowers\Potted\PottedPlants.cs">
+    <Compile Include="Items\Decorative\PottedPlants.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\PlantsFlowers\Potted\PottedTrees.cs">
+    <Compile Include="Items\Decorative\PottedTrees.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Quivers\ElvenQuiver.cs">
+    <Compile Include="Items\Equipment\Quivers\ElvenQuiver.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Quivers\QuiverOfBlight.cs">
+    <Compile Include="Items\Artifacts\Equipment\Quivers\QuiverOfBlight.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Quivers\QuiverOfFire.cs">
+    <Compile Include="Items\Artifacts\Equipment\Quivers\QuiverOfFire.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Quivers\QuiverOfIce.cs">
+    <Compile Include="Items\Artifacts\Equipment\Quivers\QuiverOfIce.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Quivers\QuiverOfLightning.cs">
+    <Compile Include="Items\Artifacts\Equipment\Quivers\QuiverOfLightning.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Arrows\Arrow.cs">
+    <Compile Include="Items\Resource\Arrow.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Arrows\Bolt.cs">
+    <Compile Include="Items\Resource\Bolt.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Arrows\Feather.cs">
+    <Compile Include="Items\Resource\Feather.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Arrows\Shaft.cs">
+    <Compile Include="Items\Resource\Shaft.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Blacksmithing\Ingots.cs">
+    <Compile Include="Items\Resource\Ingots.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Blacksmithing\Ore.cs">
+    <Compile Include="Items\Resource\Ore.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Blacksmithing\Scales.cs">
+    <Compile Include="Items\Resource\Scales.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\DragonBlood.cs">
+    <Compile Include="Items\Resource\DragonBlood.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Fishing\BigFish.cs">
+    <Compile Include="Items\Resource\BigFish.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Fishing\Fish.cs">
+    <Compile Include="Items\Resource\Fish.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Fishing\MagicFish.cs">
+    <Compile Include="Items\Resource\MagicFish.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Masonry\Granite.cs">
+    <Compile Include="Items\Resource\Granite.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\MiscMLResources.cs">
+    <Compile Include="Items\Resource\MiscMLResources.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Misc\PlantClippings.cs">
+    <Compile Include="Items\Resource\PlantClippings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Misc\WoodPulp.cs">
+    <Compile Include="Items\Resource\WoodPulp.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\BagOfAllReagents.cs">
+    <Compile Include="Items\Containers\BagOfAllReagents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\BagOfNecroReagents.cs">
+    <Compile Include="Items\Containers\BagOfNecroReagents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\BagOfReagents.cs">
+    <Compile Include="Items\Containers\BagOfReagents.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\BatWing.cs">
+    <Compile Include="Items\Resource\BatWing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\BlackPearl.cs">
+    <Compile Include="Items\Resource\BlackPearl.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\Bloodmoss.cs">
+    <Compile Include="Items\Resource\Bloodmoss.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\DaemonBlood.cs">
+    <Compile Include="Items\Resource\DaemonBlood.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\DaemonBone.cs">
+    <Compile Include="Items\Resource\DaemonBone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\DeadWood.cs">
+    <Compile Include="Items\Resource\DeadWood.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\Garlic.cs">
+    <Compile Include="Items\Resource\Garlic.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\Ginseng.cs">
+    <Compile Include="Items\Resource\Ginseng.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\GraveDust.cs">
+    <Compile Include="Items\Resource\GraveDust.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\MandrakeRoot.cs">
+    <Compile Include="Items\Resource\MandrakeRoot.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\Nightshade.cs">
+    <Compile Include="Items\Resource\Nightshade.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\NoxCrystal.cs">
+    <Compile Include="Items\Resource\NoxCrystal.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\PigIron.cs">
+    <Compile Include="Items\Resource\PigIron.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\SpidersSilk.cs">
+    <Compile Include="Items\Resource\SpidersSilk.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Reagents\SulfurousAsh.cs">
+    <Compile Include="Items\Resource\SulfurousAsh.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Tailor\BoltOfCloth.cs">
+    <Compile Include="Items\Resource\BoltOfCloth.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Tailor\Bone.cs">
+    <Compile Include="Items\Resource\Bone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Tailor\Cloth.cs">
+    <Compile Include="Items\Resource\Cloth.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Tailor\Cotton.cs">
+    <Compile Include="Items\Resource\Cotton.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Tailor\Flax.cs">
+    <Compile Include="Items\Resource\Flax.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Tailor\Hides.cs">
+    <Compile Include="Items\Resource\Hides.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Tailor\Leathers.cs">
+    <Compile Include="Items\Resource\Leathers.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Tailor\UncutCloth.cs">
+    <Compile Include="Items\Resource\UncutCloth.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Tailor\Wool.cs">
+    <Compile Include="Items\Resource\Wool.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Resources\Tailor\YarnsAndThreads.cs">
+    <Compile Include="Items\Resource\YarnsAndThreads.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\DragonHideShield.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\DragonHideShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\GargishChaosShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\GargishChaosShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\GargishKiteShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\GargishKiteShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\GargishOrderShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\GargishOrderShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\GargishSignOfChaos.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\GargishSignOfChaos.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\GargishSignOfOrder.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\GargishSignOfOrder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\GargishWoodenShield.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\GargishWoodenShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\HumanSignOfChaos.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\HumanSignOfChaos.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\HumanSignOfOrder.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\HumanSignOfOrder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\LargePlateShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\LargePlateShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\LargeStoneShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\LargeStoneShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\LordBlackthornsExemplar.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\LordBlackthornsExemplar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\MediumPlateShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\MediumPlateShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\MysticsGuard.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\MysticsGuard.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\PillarOfStrength.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\PillarOfStrength.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\SentinelsGuard.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\SentinelsGuard.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\SmallPlateShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\SmallPlateShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\- Misc\WallOfHungryMouths.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\WallOfHungryMouths.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\Artifacts\Aegis.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\Aegis.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\Artifacts\ArcaneShield.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\ArcaneShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\Artifacts\BouraTailShield.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\BouraTailShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\Artifacts\DefenderOfTheMagus.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\DefenderOfTheMagus.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\Artifacts\LightsRampart.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\LightsRampart.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\Artifacts\TongueoftheBeast.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\TongueoftheBeast.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\BronzeShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\BronzeShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\Buckler.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\Buckler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\ChaosShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\ChaosShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\HeaterShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\HeaterShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\MetalKiteShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\MetalKiteShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\MetalShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\MetalShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\OrderShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\OrderShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\WoodenKiteShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\WoodenKiteShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Shields\WoodenShield.cs">
+    <Compile Include="Items\Equipment\Armor\Shield\WoodenShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\1\frenchbread.cs">
+    <Compile Include="Items\Consumables\FrenchBread.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\1\waterpitcher.cs">
+    <Compile Include="Items\Consumables\WaterPitcher.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\2\Cheese.cs">
+    <Compile Include="Items\Consumables\Cheese.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\2\Dates.cs">
+    <Compile Include="Items\Consumables\Dates.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\2\Lantern.cs">
+    <Compile Include="Items\Consumables\Lantern.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\2\LiquorPitcher.cs">
+    <Compile Include="Items\Consumables\LiquorPitcher.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\2\Pizza.cs">
+    <Compile Include="Items\Consumables\Pizza.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\2\Shirt.cs">
+    <Compile Include="Items\Consumables\Shirt.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\2\Stew.cs">
+    <Compile Include="Items\Consumables\Stew.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\3\Bedroll.cs">
+    <Compile Include="Items\Consumables\Bedroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\3\Cookies.cs">
+    <Compile Include="Items\Consumables\Cookies.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\3\Fish Steak.cs">
+    <Compile Include="Items\Consumables\Fish Steak.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\3\FishingPole.cs">
+    <Compile Include="Items\Tools\BegFishingPole.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\3\FlowerGarland.cs">
+    <Compile Include="Items\Consumables\FlowerGarland.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\3\Sake.cs">
+    <Compile Include="Items\Consumables\Sake.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\3\Turnip.cs">
+    <Compile Include="Items\Consumables\Turnip.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\3\Wine.cs">
+    <Compile Include="Items\Consumables\Wine.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Begging\3\WinePitcher.cs">
+    <Compile Include="Items\Consumables\WinePitcher.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Blacksmith Items\Misc\AnvilForge.cs">
+    <Compile Include="Items\Functional\AnvilForge.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Blacksmith Items\Misc\LargeForge.cs">
+    <Compile Include="Items\Functional\LargeForge.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Camping\Bedroll.cs">
+    <Compile Include="Items\Tools\Bedroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Camping\Campfire.cs">
+    <Compile Include="Items\Functional\Campfire.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Camping\Kindling.cs">
+    <Compile Include="Items\Consumables\Kindling.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Carpenter Items\Board.cs">
+    <Compile Include="Items\Resource\Board.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Carpenter Items\TaxidermyKit.cs">
+    <Compile Include="Items\Consumables\TaxidermyKit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Fishing\FishingPole.cs">
+    <Compile Include="Items\Tools\FishingPole.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Fishing\Misc\MessageInABottle.cs">
+    <Compile Include="Items\Consumables\MessageInABottle.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Fishing\Misc\Sextant.cs">
+    <Compile Include="Items\Tools\Sextant.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Fishing\Misc\ShipwreckedItem.cs">
+    <Compile Include="Items\Decorative\ShipwreckedItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Fishing\Misc\SOS.cs">
+    <Compile Include="Items\Consumables\SOS.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Fishing\Misc\SpecialFishingNet.cs">
+    <Compile Include="Items\Consumables\SpecialFishingNet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Harvest Tools\GargoylesPickaxe.cs">
+    <Compile Include="Items\Tools\GargoylesPickaxe.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Harvest Tools\JacobsPickaxe.cs">
+    <Compile Include="Items\Artifacts\Tools\JacobsPickaxe.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Harvest Tools\ProspectorsTool.cs">
+    <Compile Include="Items\Tools\ProspectorsTool.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Harvest Tools\Shovel.cs">
+    <Compile Include="Items\Tools\Shovel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Harvest Tools\SturdyPickaxe.cs">
+    <Compile Include="Items\Tools\SturdyPickaxe.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Harvest Tools\SturdyShovel.cs">
+    <Compile Include="Items\Tools\SturdyShovel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Imbuing\MiniSoulForge.cs" />
-    <Compile Include="Items_Old\Skill Items\Imbuing\RoyalSoulForge.cs" />
-    <Compile Include="Items_Old\Skill Items\Imbuing\SoulForge.cs" />
-    <Compile Include="Items_Old\Skill Items\Lumberjack\Log.cs">
+    <Compile Include="Items\Addons\MiniSoulForge.cs" />
+    <Compile Include="Items\Addons\RoyalSoulForge.cs" />
+    <Compile Include="Items\Addons\SoulForge.cs" />
+    <Compile Include="Items\Resource\Log.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\BookOfBushido.cs">
+    <Compile Include="Items\Equipment\Spellbooks\BookOfBushido.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\BookOfChivalry.cs">
+    <Compile Include="Items\Equipment\Spellbooks\BookOfChivalry.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\BookOfNinjitsu.cs">
+    <Compile Include="Items\Equipment\Spellbooks\BookOfNinjitsu.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\ConjurersGrimoire.cs">
+    <Compile Include="Items\Artifacts\Equipment\Spellbooks\ConjurersGrimoire.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\FallenMysticsSpellbook.cs">
+    <Compile Include="Items\Artifacts\Equipment\Spellbooks\FallenMysticsSpellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\HealingStone.cs">
+    <Compile Include="Items\Artifacts\Equipment\Spellbooks\HealingStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Misc\BlankScroll.cs">
+    <Compile Include="Items\Resource\BlankScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Misc\Bottle.cs">
+    <Compile Include="Items\Resource\Bottle.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Misc\Moongate.cs">
+    <Compile Include="Items\Internal\Moongate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Misc\PotionKeg.cs">
+    <Compile Include="Items\Resource\PotionKeg.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Misc\RecallRune.cs">
+    <Compile Include="Items\Resource\RecallRune.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\MysticBook.cs">
+    <Compile Include="Items\Equipment\Spellbooks\MysticBook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\NecromancerSpellbook.cs">
+    <Compile Include="Items\Equipment\Spellbooks\NecromancerSpellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Agility Potions\AgilityPotion.cs">
+    <Compile Include="Items\Consumables\AgilityPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Agility Potions\GreaterAgilityPotion.cs">
+    <Compile Include="Items\Consumables\GreaterAgilityPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Conflagration Potions\ConflagrationPotion.cs">
+    <Compile Include="Items\Consumables\ConflagrationPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Conflagration Potions\GreaterConflagrationPotion.cs">
+    <Compile Include="Items\Consumables\GreaterConflagrationPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Confusion Blast Potions\ConfusionBlastPotion.cs">
+    <Compile Include="Items\Consumables\ConfusionBlastPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Confusion Blast Potions\GreaterConfusionBlastPotion.cs">
+    <Compile Include="Items\Consumables\GreaterConfusionBlastPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Cure Potions\CurePotion.cs">
+    <Compile Include="Items\Consumables\CurePotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Cure Potions\GreaterCurePotion.cs">
+    <Compile Include="Items\Consumables\GreaterCurePotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Cure Potions\LesserCurePotion.cs">
+    <Compile Include="Items\Consumables\LesserCurePotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\DarkglowPotion.cs">
+    <Compile Include="Items\Consumables\DarkglowPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Explosion Potions\ExplosionPotion.cs">
+    <Compile Include="Items\Consumables\ExplosionPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Explosion Potions\GreaterExplosionPotion.cs">
+    <Compile Include="Items\Consumables\GreaterExplosionPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Explosion Potions\LesserExplosionPotion.cs">
+    <Compile Include="Items\Consumables\LesserExplosionPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Heal Potions\GreaterHealPotion.cs">
+    <Compile Include="Items\Consumables\GreaterHealPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Heal Potions\HealPotion.cs">
+    <Compile Include="Items\Consumables\HealPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Heal Potions\LesserHealPotion.cs">
+    <Compile Include="Items\Consumables\LesserHealPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\InvisibilityPotion.cs">
+    <Compile Include="Items\Consumables\InvisibilityPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\NightSight.cs">
+    <Compile Include="Items\Consumables\NightSight.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\ParasiticPotion.cs">
+    <Compile Include="Items\Consumables\ParasiticPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Poison Potions\DeadlyPoisonPotion.cs">
+    <Compile Include="Items\Consumables\DeadlyPoisonPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Poison Potions\GreaterPoisonPotion.cs">
+    <Compile Include="Items\Consumables\GreaterPoisonPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Poison Potions\LesserPoisonPotion.cs">
+    <Compile Include="Items\Consumables\LesserPoisonPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Poison Potions\PoisonPotion.cs">
+    <Compile Include="Items\Consumables\PoisonPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Refresh Potions\RefreshPotion.cs">
+    <Compile Include="Items\Consumables\RefreshPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Refresh Potions\TotalRefreshPotion.cs">
+    <Compile Include="Items\Consumables\TotalRefreshPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Strength Potions\GreaterStrengthPotion.cs">
+    <Compile Include="Items\Consumables\GreaterStrengthPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Potions\Strength Potions\StrengthPotion.cs">
+    <Compile Include="Items\Consumables\StrengthPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Runebook.cs">
+    <Compile Include="Items\Artifacts\Equipment\Spellbooks\Runebook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Eighth Circle\EarthquakeScroll.cs">
+    <Compile Include="Items\Consumables\EarthquakeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Eighth Circle\EnergyVortexScroll.cs">
+    <Compile Include="Items\Consumables\EnergyVortexScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Eighth Circle\ResurrectionScroll.cs">
+    <Compile Include="Items\Consumables\ResurrectionScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Eighth Circle\SummonAirElementalScroll.cs">
+    <Compile Include="Items\Consumables\SummonAirElementalScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Eighth Circle\SummonDaemonScroll.cs">
+    <Compile Include="Items\Consumables\SummonDaemonScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Eighth Circle\SummonEarthElementalScroll.cs">
+    <Compile Include="Items\Consumables\SummonEarthElementalScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Eighth Circle\SummonFireElementalScroll.cs">
+    <Compile Include="Items\Consumables\SummonFireElementalScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Eighth Circle\SummonWaterElementalScroll.cs">
+    <Compile Include="Items\Consumables\SummonWaterElementalScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fifth Circle\BladeSpiritsScroll.cs">
+    <Compile Include="Items\Consumables\BladeSpiritsScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fifth Circle\DispelFieldScroll.cs">
+    <Compile Include="Items\Consumables\DispelFieldScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fifth Circle\IncognitoScroll.cs">
+    <Compile Include="Items\Consumables\IncognitoScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fifth Circle\MagicReflectScroll.cs">
+    <Compile Include="Items\Consumables\MagicReflectScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fifth Circle\MindBlastScroll.cs">
+    <Compile Include="Items\Consumables\MindBlastScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fifth Circle\ParalyzeScroll.cs">
+    <Compile Include="Items\Consumables\ParalyzeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fifth Circle\PoisonFieldScroll.cs">
+    <Compile Include="Items\Consumables\PoisonFieldScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fifth Circle\SummonCreatureScroll.cs">
+    <Compile Include="Items\Consumables\SummonCreatureScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\First Circle\ClumsyScroll.cs">
+    <Compile Include="Items\Consumables\ClumsyScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\First Circle\CreateFoodScroll.cs">
+    <Compile Include="Items\Consumables\CreateFoodScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\First Circle\FeeblemindScroll.cs">
+    <Compile Include="Items\Consumables\FeeblemindScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\First Circle\HealScroll.cs">
+    <Compile Include="Items\Consumables\HealScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\First Circle\MagicArrowScroll.cs">
+    <Compile Include="Items\Consumables\MagicArrowScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\First Circle\NightSightScroll.cs">
+    <Compile Include="Items\Consumables\NightSightScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\First Circle\ReactiveArmorScroll.cs">
+    <Compile Include="Items\Consumables\ReactiveArmorScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\First Circle\WeakenScroll.cs">
+    <Compile Include="Items\Consumables\WeakenScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fourth Circle\ArchcureScroll.cs">
+    <Compile Include="Items\Consumables\ArchcureScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fourth Circle\ArchProtectionScroll.cs">
+    <Compile Include="Items\Consumables\ArchProtectionScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fourth Circle\CurseScroll.cs">
+    <Compile Include="Items\Consumables\CurseScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fourth Circle\FireFieldScroll.cs">
+    <Compile Include="Items\Consumables\FireFieldScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fourth Circle\GreaterHealScroll.cs">
+    <Compile Include="Items\Consumables\GreaterHealScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fourth Circle\LightningScroll.cs">
+    <Compile Include="Items\Consumables\LightningScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fourth Circle\ManaDrainScroll.cs">
+    <Compile Include="Items\Consumables\ManaDrainScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Fourth Circle\RecallScroll.cs">
+    <Compile Include="Items\Consumables\RecallScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\AnimatedWeaponScroll.cs">
+    <Compile Include="Items\Consumables\AnimatedWeaponScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\BombardScroll.cs">
+    <Compile Include="Items\Consumables\BombardScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\CleansingWindsScroll.cs">
+    <Compile Include="Items\Consumables\CleansingWindsScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\EagleStrikeScroll.cs">
+    <Compile Include="Items\Consumables\EagleStrikeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\EnchantScroll.cs">
+    <Compile Include="Items\Consumables\EnchantScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\HailStormScroll.cs">
+    <Compile Include="Items\Consumables\HailStormScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\HealingStoneScroll.cs">
+    <Compile Include="Items\Consumables\HealingStoneScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\MassSleepScroll.cs">
+    <Compile Include="Items\Consumables\MassSleepScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\NetherBoltScroll.cs">
+    <Compile Include="Items\Consumables\NetherBoltScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\NetherCycloneScroll.cs">
+    <Compile Include="Items\Consumables\NetherCycloneScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\PurgeMagicScroll.cs">
+    <Compile Include="Items\Consumables\PurgeMagicScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\RisingColossusScroll.cs">
+    <Compile Include="Items\Consumables\RisingColossusScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\SleepScroll.cs">
+    <Compile Include="Items\Consumables\SleepScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\SpellPlagueScroll.cs">
+    <Compile Include="Items\Consumables\SpellPlagueScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\SpellTriggerScroll.cs">
+    <Compile Include="Items\Consumables\SpellTriggerScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Mysticism\StoneFormScroll.cs">
+    <Compile Include="Items\Consumables\StoneFormScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\AnimateDeadScroll.cs">
+    <Compile Include="Items\Consumables\AnimateDeadScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\BloodOathScroll.cs">
+    <Compile Include="Items\Consumables\BloodOathScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\CorpseSkinScroll.cs">
+    <Compile Include="Items\Consumables\CorpseSkinScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\CurseWeaponScroll.cs">
+    <Compile Include="Items\Consumables\CurseWeaponScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\EvilOmenScroll.cs">
+    <Compile Include="Items\Consumables\EvilOmenScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\ExorcismScroll.cs">
+    <Compile Include="Items\Consumables\ExorcismScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\HorrificBeastScroll.cs">
+    <Compile Include="Items\Consumables\HorrificBeastScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\LichFormScroll.cs">
+    <Compile Include="Items\Consumables\LichFormScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\MindRotScroll.cs">
+    <Compile Include="Items\Consumables\MindRotScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\PainSpikeScroll.cs">
+    <Compile Include="Items\Consumables\PainSpikeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\PoisonStrikeScroll.cs">
+    <Compile Include="Items\Consumables\PoisonStrikeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\StrangleScroll.cs">
+    <Compile Include="Items\Consumables\StrangleScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\SummonFamiliarScroll.cs">
+    <Compile Include="Items\Consumables\SummonFamiliarScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\VampiricEmbraceScroll.cs">
+    <Compile Include="Items\Consumables\VampiricEmbraceScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\VengefulSpiritScroll.cs">
+    <Compile Include="Items\Consumables\VengefulSpiritScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\WitherScroll.cs">
+    <Compile Include="Items\Consumables\WitherScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Necromancy\WraithFormScroll.cs">
+    <Compile Include="Items\Consumables\WraithFormScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Second Circle\AgilityScroll.cs">
+    <Compile Include="Items\Consumables\AgilityScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Second Circle\CunningScroll.cs">
+    <Compile Include="Items\Consumables\CunningScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Second Circle\CureScroll.cs">
+    <Compile Include="Items\Consumables\CureScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Second Circle\HarmScroll.cs">
+    <Compile Include="Items\Consumables\HarmScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Second Circle\MagicTrapScroll.cs">
+    <Compile Include="Items\Consumables\MagicTrapScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Second Circle\MagicUnTrapScroll.cs">
+    <Compile Include="Items\Consumables\MagicUnTrapScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Second Circle\ProtectionScroll.cs">
+    <Compile Include="Items\Consumables\ProtectionScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Second Circle\StrengthScroll.cs">
+    <Compile Include="Items\Consumables\StrengthScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Seventh Circle\ChainLightningScroll.cs">
+    <Compile Include="Items\Consumables\ChainLightningScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Seventh Circle\EnergyFieldScroll.cs">
+    <Compile Include="Items\Consumables\EnergyFieldScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Seventh Circle\FlamestrikeScroll.cs">
+    <Compile Include="Items\Consumables\FlamestrikeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Seventh Circle\GateTravelScroll.cs">
+    <Compile Include="Items\Consumables\GateTravelScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Seventh Circle\ManaVampireScroll.cs">
+    <Compile Include="Items\Consumables\ManaVampireScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Seventh Circle\MassDispelScroll.cs">
+    <Compile Include="Items\Consumables\MassDispelScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Seventh Circle\MeteorStormScroll.cs">
+    <Compile Include="Items\Consumables\MeteorStormScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Seventh Circle\PolymorphScroll.cs">
+    <Compile Include="Items\Consumables\PolymorphScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Sixth Circle\DispelScroll.cs">
+    <Compile Include="Items\Consumables\DispelScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Sixth Circle\EnergyBoltScroll.cs">
+    <Compile Include="Items\Consumables\EnergyBoltScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Sixth Circle\ExplosionScroll.cs">
+    <Compile Include="Items\Consumables\ExplosionScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Sixth Circle\InvisibilityScroll.cs">
+    <Compile Include="Items\Consumables\InvisibilityScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Sixth Circle\MarkScroll.cs">
+    <Compile Include="Items\Consumables\MarkScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Sixth Circle\MassCurseScroll.cs">
+    <Compile Include="Items\Consumables\MassCurseScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Sixth Circle\ParalyzeFieldSpell.cs">
+    <Compile Include="Items\Consumables\ParalyzeFieldSpell.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Sixth Circle\RevealScroll.cs">
+    <Compile Include="Items\Consumables\RevealScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\SpellScroll.cs">
+    <Compile Include="Items\Consumables\SpellScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\SpellweavingScrolls.cs">
+    <Compile Include="Items\Consumables\SpellweavingScrolls.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Third Circle\BlessScroll.cs">
+    <Compile Include="Items\Consumables\BlessScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Third Circle\FireballScroll.cs">
+    <Compile Include="Items\Consumables\FireballScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Third Circle\MagicLockScroll.cs">
+    <Compile Include="Items\Consumables\MagicLockScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Third Circle\PoisonScroll.cs">
+    <Compile Include="Items\Consumables\PoisonScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Third Circle\TelekinisisScroll.cs">
+    <Compile Include="Items\Consumables\TelekinisisScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Third Circle\TeleportScroll.cs">
+    <Compile Include="Items\Consumables\TeleportScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Third Circle\UnlockScroll.cs">
+    <Compile Include="Items\Consumables\UnlockScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Scrolls\Third Circle\WallOfStoneScroll.cs">
+    <Compile Include="Items\Consumables\WallOfStoneScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\Spellbook.cs">
+    <Compile Include="Items\Equipment\Spellbooks\Spellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\SpellStone.cs">
+    <Compile Include="Items\Artifacts\Equipment\Spellbooks\SpellStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Magical\SpellweavingBook.cs">
+    <Compile Include="Items\Equipment\Spellbooks\SpellweavingBook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Misc\Bandage.cs">
+    <Compile Include="Items\Resource\Bandage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Misc\FireHorn.cs">
+    <Compile Include="Items\Equipment\Instruments\FireHorn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Misc\RecipeScroll.cs">
+    <Compile Include="Items\Consumables\RecipeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Misc\RepairDeed.cs">
+    <Compile Include="Items\Consumables\RepairDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Misc\ScrollBinderDeed.cs">
+    <Compile Include="Items\Consumables\ScrollBinderDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Musical Instruments\BambooFlute.cs">
+    <Compile Include="Items\Equipment\Instruments\BambooFlute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Musical Instruments\Drums.cs">
+    <Compile Include="Items\Equipment\Instruments\Drums.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Musical Instruments\Harp.cs">
+    <Compile Include="Items\Equipment\Instruments\Harp.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Musical Instruments\LapHarp.cs">
+    <Compile Include="Items\Equipment\Instruments\LapHarp.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Musical Instruments\Lute.cs">
+    <Compile Include="Items\Equipment\Instruments\Lute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Musical Instruments\Tambourine.cs">
+    <Compile Include="Items\Equipment\Instruments\Tambourine.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Musical Instruments\TambourineTassel.cs">
+    <Compile Include="Items\Equipment\Instruments\TambourineTassel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Ninjitsu\EggBomb.cs">
+    <Compile Include="Items\Consumables\EggBomb.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Ninjitsu\Fukiya.cs">
+    <Compile Include="Items\Equipment\Weapons\Fukiya.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Ninjitsu\FukiyaDarts.cs">
+    <Compile Include="Items\Consumables\FukiyaDarts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Ninjitsu\LeatherNinjaBelt.cs">
+    <Compile Include="Items\Equipment\Clothing\LeatherNinjaBelt.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Ninjitsu\NinjaWeapons.cs">
+    <Compile Include="Items\Equipment\Weapons\NinjaWeapons.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Ninjitsu\Shuriken.cs">
+    <Compile Include="Items\Consumables\Shuriken.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Ninjitsu\SmokeBomb.cs">
+    <Compile Include="Items\Consumables\SmokeBomb.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Specialized\GemMiningBook.cs">
+    <Compile Include="Items\Consumables\GemMiningBook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Specialized\GlassblowingBook.cs">
+    <Compile Include="Items\Consumables\GlassblowingBook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Specialized\MasonryBook.cs">
+    <Compile Include="Items\Consumables\MasonryBook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Specialized\Sand.cs">
+    <Compile Include="Items\Resource\Sand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Specialized\SandMiningBook.cs">
+    <Compile Include="Items\Consumables\SandMiningBook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Specialized\StoneMiningBook.cs">
+    <Compile Include="Items\Consumables\StoneMiningBook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Dyetubs\BlackDyeTub.cs">
+    <Compile Include="Items\Tools\BlackDyeTub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Dyetubs\BlazeDyeTub.cs">
+    <Compile Include="Items\Tools\BlazeDyeTub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Dyetubs\CustomHuePicker.cs">
+    <Compile Include="Items\Internal\CustomHuePicker.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Dyetubs\DyeTub.cs">
+    <Compile Include="Items\Tools\DyeTub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Dyetubs\FurnitureDyeTub.cs">
+    <Compile Include="Items\Tools\FurnitureDyeTub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Dyetubs\LeatherDyeTub.cs">
+    <Compile Include="Items\Tools\LeatherDyeTub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Dyetubs\RewardBlackDyeTub.cs">
+    <Compile Include="Items\Tools\RewardBlackDyeTub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Dyetubs\RunebookDyeTub.cs">
+    <Compile Include="Items\Tools\RunebookDyeTub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Dyetubs\SpecialDyeTub.cs">
+    <Compile Include="Items\Tools\SpecialDyeTub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Dyetubs\StatuetteDyeTub.cs">
+    <Compile Include="Items\Tools\StatuetteDyeTub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Misc\Dressform.cs">
+    <Compile Include="Items\Addons\Dressform.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Misc\Dyes.cs">
+    <Compile Include="Items\Tools\Dyes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tailor Items\Misc\Scissors.cs">
+    <Compile Include="Items\Tools\Scissors.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Thief\DisguiseKit.cs">
+    <Compile Include="Items\Tools\DisguiseKit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Thief\DisguisePersistence.cs">
+    <Compile Include="Services\DisguisePersistence.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Thief\LockPick.cs">
+    <Compile Include="Items\Consumables\LockPick.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\Axle.cs">
+    <Compile Include="Items\Resource\Axle.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\AxleGears.cs">
+    <Compile Include="Items\Resource\AxleGears.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\ClockFrame.cs">
+    <Compile Include="Items\Resource\ClockFrame.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\ClockParts.cs">
+    <Compile Include="Items\Resource\ClockParts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\Clocks.cs">
+    <Compile Include="Items\Tools\Clocks.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\Gears.cs">
+    <Compile Include="Items\Resource\Gears.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\Globe.cs">
+    <Compile Include="Items\Decorative\Globe.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\Hinge.cs">
+    <Compile Include="Items\Resource\Hinge.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\SextantParts.cs">
+    <Compile Include="Items\Resource\SextantParts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\Springs.cs">
+    <Compile Include="Items\Resource\Springs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\Spyglass.cs">
+    <Compile Include="Items\Tools\Spyglass.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tinkering\Utensils.cs">
+    <Compile Include="Items\Decorative\Utensils.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\Blowpipe.cs">
+    <Compile Include="Items\Tools\Blowpipe.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\DovetailSaw.cs">
+    <Compile Include="Items\Tools\DovetailSaw.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\DrawKnife.cs">
+    <Compile Include="Items\Tools\DrawKnife.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\FletcherTools.cs">
+    <Compile Include="Items\Tools\FletcherTools.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\FlourSifter.cs">
+    <Compile Include="Items\Tools\FlourSifter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\Froe.cs">
+    <Compile Include="Items\Tools\Froe.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\Hammer.cs">
+    <Compile Include="Items\Tools\Hammer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\Inshave.cs">
+    <Compile Include="Items\Tools\Inshave.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\JointingPlane.cs">
+    <Compile Include="Items\Tools\JointingPlane.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\MalletAndChisel.cs">
+    <Compile Include="Items\Tools\MalletAndChisel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\MapmakersPen.cs">
+    <Compile Include="Items\Tools\MapmakersPen.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\MortarPestle.cs">
+    <Compile Include="Items\Tools\MortarPestle.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\MouldingPlane.cs">
+    <Compile Include="Items\Tools\MouldingPlane.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\Nails.cs">
+    <Compile Include="Items\Tools\Nails.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\RollingPin.cs">
+    <Compile Include="Items\Tools\RollingPin.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\RunicDovetailSaw.cs">
+    <Compile Include="Items\Tools\RunicDovetailSaw.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\RunicFletcherTool.cs">
+    <Compile Include="Items\Tools\RunicFletcherTool.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\RunicHammer.cs">
+    <Compile Include="Items\Tools\RunicHammer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\RunicSewingKit.cs">
+    <Compile Include="Items\Tools\RunicSewingKit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\Saw.cs">
+    <Compile Include="Items\Tools\Saw.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\Scorp.cs">
+    <Compile Include="Items\Tools\Scorp.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\ScribesPen.cs">
+    <Compile Include="Items\Tools\ScribesPen.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\SewingKit.cs">
+    <Compile Include="Items\Tools\SewingKit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\Skillet.cs">
+    <Compile Include="Items\Tools\Skillet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\SledgeHammer.cs">
+    <Compile Include="Items\Tools\SledgeHammer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\SmithHammer.cs">
+    <Compile Include="Items\Tools\SmithHammer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\SmoothingPlane.cs">
+    <Compile Include="Items\Tools\SmoothingPlane.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\TinkerTools.cs">
+    <Compile Include="Items\Tools\TinkerTools.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Skill Items\Tools\Tongs.cs">
+    <Compile Include="Items\Tools\Tongs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\11th Year promo\EarringsOfProtection.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\EarringsOfProtection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\15th Anniversary\AnniversaryRobe.cs">
+    <Compile Include="Items\Artifacts\Equipment\Clothing\AnniversaryRobe.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\8th Anniversary Items\Dawn%27s Music Box\DawnsMusicBox.cs">
+    <Compile Include="Items\Addons\DawnsMusicBox\DawnsMusicBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\8th Anniversary Items\Dawn%27s Music Box\DawnsMusicGear.cs">
+    <Compile Include="Items\Addons\DawnsMusicBox\DawnsMusicGear.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\8th Anniversary Items\Dawn%27s Music Box\DawnsMusicInfo.cs">
+    <Compile Include="Items\Addons\DawnsMusicBox\DawnsMusicInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\8th Anniversary Items\Dawn%27s Music Box\RewardVersion\DawnsMusicBox.cs">
+    <Compile Include="Items\Addons\DawnsMusicBox\RewardVersion\DawnsMusicBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\8th Anniversary Items\Dawn%27s Music Box\RewardVersion\MusicBoxGears.cs">
+    <Compile Include="Items\Addons\DawnsMusicBox\RewardVersion\MusicBoxGears.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\8th Anniversary Items\Dawn%27s Music Box\RewardVersion\TrackInfo.cs">
+    <Compile Include="Items\Addons\DawnsMusicBox\RewardVersion\TrackInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\8th Anniversary Items\DupresShield.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\DupresShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\8th Anniversary Items\FountainOfLife.cs">
+    <Compile Include="Items\Addons\FountainOfLife.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\8th Anniversary Items\OssianGrimoire.cs">
+    <Compile Include="Items\Artifacts\Equipment\Spellbooks\OssianGrimoire.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\8th Anniversary Items\QuiverOfInfinity.cs">
+    <Compile Include="Items\Artifacts\Equipment\Quivers\QuiverOfInfinity.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\8th Anniversary Items\Talismans.cs">
+    <Compile Include="Items\Artifacts\Equipment\Talismans\Talismans.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\AoS Promotional\HoodedShroudOfShadows.cs">
+    <Compile Include="Items\Artifacts\Equipment\Clothing\HoodedShroudOfShadows.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\AoS Promotional\LuckyNecklace.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\LuckyNecklace.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Broken Furniture Collection\BrokenArmoire.cs">
+    <Compile Include="Items\Addons\BrokenArmoire.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Broken Furniture Collection\BrokenBed.cs">
+    <Compile Include="Items\Addons\BrokenBed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Broken Furniture Collection\BrokenBookcase.cs">
+    <Compile Include="Items\Addons\BrokenBookcase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Broken Furniture Collection\BrokenChestOfDrawers.cs">
+    <Compile Include="Items\Addons\BrokenChestOfDrawers.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Broken Furniture Collection\BrokenCoveredChair.cs">
+    <Compile Include="Items\Addons\BrokenCoveredChair.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Broken Furniture Collection\BrokenFallenChair.cs">
+    <Compile Include="Items\Addons\BrokenFallenChair.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Broken Furniture Collection\BrokenVanity.cs">
+    <Compile Include="Items\Addons\BrokenVanity.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Broken Furniture Collection\StandingBrokenChair.cs">
+    <Compile Include="Items\Addons\StandingBrokenChair.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Bulk Order Rewards\Blacksmithy\AncientSmithyHammer.cs">
+    <Compile Include="Items\Tools\AncientSmithyHammer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Bulk Order Rewards\Blacksmithy\ColoredAnvil.cs">
+    <Compile Include="Items\Addons\ColoredAnvil.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Bulk Order Rewards\Blacksmithy\GlovesOfMining.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfMining.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Bulk Order Rewards\Blacksmithy\HammerOfHephaestus.cs">
+    <Compile Include="Items\Tools\HammerOfHephaestus.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Bulk Order Rewards\Blacksmithy\PowderOfTemperament.cs">
+    <Compile Include="Items\Consumables\PowderOfTemperament.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\AwesomeDisturbingPortrait.cs">
+    <Compile Include="Items\Addons\AwesomeDisturbingPortrait.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\BedOfNails.cs">
+    <Compile Include="Items\Addons\BedOfNails.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\BoneCouch.cs">
+    <Compile Include="Items\Addons\BoneCouch.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\BoneTable.cs">
+    <Compile Include="Items\Addons\BoneTable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\BoneThrone.cs">
+    <Compile Include="Items\Addons\BoneThrone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\CreepyPortrait.cs">
+    <Compile Include="Items\Addons\CreepyPortrait.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\DisturbingPortrait.cs">
+    <Compile Include="Items\Addons\DisturbingPortrait.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\HauntedMirror.cs">
+    <Compile Include="Items\Addons\HauntedMirror.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\MountedPixieBlue.cs">
+    <Compile Include="Items\Addons\MountedPixieBlue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\MountedPixieGreen.cs">
+    <Compile Include="Items\Addons\MountedPixieGreen.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\MountedPixieLime.cs">
+    <Compile Include="Items\Addons\MountedPixieLime.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\MountedPixieOrange.cs">
+    <Compile Include="Items\Addons\MountedPixieOrange.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\MountedPixieWhite.cs">
+    <Compile Include="Items\Addons\MountedPixieWhite.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\SacrificialAltar.cs">
+    <Compile Include="Items\Addons\SacrificialAltar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Evil Home Decor Collection\UnsettlingPortrait.cs">
+    <Compile Include="Items\Addons\UnsettlingPortrait.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Gifts\HearthOfHomeFire.cs">
+    <Compile Include="Items\Addons\HearthOfHomeFire.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Gifts\HolySword.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\HolySword.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Gifts\LeggingsOfEmbers.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\LeggingsOfEmbers.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Gifts\RoseOfTrinsic.cs">
+    <Compile Include="Items\Tools\RoseOfTrinsic.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Gifts\SamuraiHelm.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\SamuraiHelm.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Gifts\ShaminoCrossbow.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\ShaminoCrossbow.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Gifts\TapestryOfSosaria.cs">
+    <Compile Include="Items\Addons\TapestryOfSosaria.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\AppleTrunk.cs">
+    <Compile Include="Items\Addons\AppleTrunk.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\BlueDecorativeRug.cs">
+    <Compile Include="Items\Addons\BlueDecorativeRug.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\BlueFancyRug.cs">
+    <Compile Include="Items\Addons\BlueFancyRug.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\BluePlainRug.cs">
+    <Compile Include="Items\Addons\BluePlainRug.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\BoilingCauldron.cs">
+    <Compile Include="Items\Containers\BoilingCauldron.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\CherryBlossomTree.cs">
+    <Compile Include="Items\Addons\CherryBlossomTree.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\CherryBlossomTrunk.cs">
+    <Compile Include="Items\Addons\CherryBlossomTrunk.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\CinnamonFancyRug.cs">
+    <Compile Include="Items\Addons\CinnamonFancyRug.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\Curtains.cs">
+    <Compile Include="Items\Addons\Curtains.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\Fountain.cs">
+    <Compile Include="Items\Addons\Fountain.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\FruitTrees.cs">
+    <Compile Include="Items\Addons\FruitTrees.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\GoldenDecorativeRug.cs">
+    <Compile Include="Items\Addons\GoldenDecorativeRug.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\Guillotine.cs">
+    <Compile Include="Items\Addons\GuillotineComponent.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\HangingAxes.cs">
+    <Compile Include="Items\Addons\HangingAxes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\HangingSwords.cs">
+    <Compile Include="Items\Addons\HangingSwords.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\HouseLadder.cs">
+    <Compile Include="Items\Addons\HouseLadder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\IronMaiden.cs">
+    <Compile Include="Items\Addons\IronMaiden.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\LargeFishingNet.cs">
+    <Compile Include="Items\Addons\LargeFishingNet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\PeachTrunk.cs">
+    <Compile Include="Items\Addons\PeachTrunk.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\PinkFancyRug.cs">
+    <Compile Include="Items\Addons\PinkFancyRug.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\RedPlainRug.cs">
+    <Compile Include="Items\Addons\RedPlainRug.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\Scarecrow.cs">
+    <Compile Include="Items\Addons\Scarecrow.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\SmallFishingNet.cs">
+    <Compile Include="Items\Addons\SmallFishingNet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\Statue.cs">
+    <Compile Include="Items\Addons\Statue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\SuitOfGoldArmor.cs">
+    <Compile Include="Items\Addons\SuitOfGoldArmor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\SuitOfSilverArmor.cs">
+    <Compile Include="Items\Addons\SuitOfSilverArmor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\TableWithBlueCloth.cs">
+    <Compile Include="Items\Addons\TableWithBlueCloth.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\TableWithOrangeCloth.cs">
+    <Compile Include="Items\Addons\TableWithOrangeCloth.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\TableWithPurpleCloth.cs">
+    <Compile Include="Items\Addons\TableWithPurpleCloth.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\TableWithRedCloth.cs">
+    <Compile Include="Items\Addons\TableWithRedCloth.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\UnmadeBed.cs">
+    <Compile Include="Items\Addons\UnmadeBed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\Vanity.cs">
+    <Compile Include="Items\Containers\Vanity.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\WallTorch.cs">
+    <Compile Include="Items\Addons\WallTorch.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Heritage Items\WoodenCoffin.cs">
+    <Compile Include="Items\Addons\WoodenCoffin.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\HeritageToken.cs">
+    <Compile Include="Items\Consumables\HeritageToken.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\AngelDecoration.cs">
+    <Compile Include="Items\Decorative\AngelDecoration.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\Christmas\HolidayTree.cs">
+    <Compile Include="Items\Addons\HolidayTree.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\GiftBox.cs">
+    <Compile Include="Items\Containers\GiftBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\GingerBreadHouseDeed.cs">
+    <Compile Include="Items\Addons\GingerBreadHouseDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\HolidayBell.cs">
+    <Compile Include="Items\Decorative\HolidayBell.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\HolidayFoods.cs">
+    <Compile Include="Items\Consumables\HolidayFoods.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\HolidayGiftBoxes.cs">
+    <Compile Include="Items\Containers\HolidayGiftBoxes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\HolidayPottedPlant.cs">
+    <Compile Include="Items\Addons\HolidayPottedPlant.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\HolidayTimepiece.cs">
+    <Compile Include="Items\Tools\HolidayTimepiece.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\Icecicles.cs">
+    <Compile Include="Items\Decorative\Icecicles.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\IcyPatch.cs">
+    <Compile Include="Items\Decorative\IcyPatch.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\PKHolidayStuff.cs">
+    <Compile Include="Items\Decorative\PKHolidayStuff.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\Poinsettias.cs">
+    <Compile Include="Items\Decorative\Poinsettias.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\RockingHorse.cs">
+    <Compile Include="Items\Decorative\RockingHorse.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\Snowflakes.cs">
+    <Compile Include="Items\Decorative\Snowflakes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\SnowGlobes.cs">
+    <Compile Include="Items\Decorative\SnowGlobes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\Snowman.cs">
+    <Compile Include="Items\Decorative\Snowman.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\SnowPiles.cs">
+    <Compile Include="Items\Decorative\SnowPiles.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\SnowStatue.cs">
+    <Compile Include="Items\Decorative\SnowStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\Stockings.cs">
+    <Compile Include="Items\Containers\Stockings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\WinterGiftPackage2003.cs">
+    <Compile Include="Items\Containers\WinterGiftPackage2003.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\Wreath.cs">
+    <Compile Include="Items\Addons\Wreath.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Holiday\WristWatch.cs">
+    <Compile Include="Items\Tools\WristWatch.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\House Raffle\HouseRaffleDeed.cs">
+    <Compile Include="Items\Consumables\HouseRaffleDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\House Raffle\HouseRaffleManagementGump.cs">
+    <Compile Include="Gumps\HouseRaffleManagementGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\House Raffle\HouseRaffleRegion.cs">
+    <Compile Include="Regions\HouseRaffleRegion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\House Raffle\HouseRaffleStone.cs">
+    <Compile Include="Items\Functional\HouseRaffleStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\MiniHouses.cs">
+    <Compile Include="Items\Addons\MiniHouses.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\ML\GrizzledMareStatuette.cs">
+    <Compile Include="Items\Consumables\GrizzledMareStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\ML\MinotaurHedge.cs">
+    <Compile Include="Items\Decorative\MinotaurHedge.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\ML\TormentedChains.cs">
+    <Compile Include="Items\Decorative\TormentedChains.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\MonsterStatuette.cs">
+    <Compile Include="Items\Decorative\MonsterStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Mutation Core\PlagueBeastBackpack.cs">
+    <Compile Include="Items\Containers\PlagueBeastBackpack.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Mutation Core\PlagueBeastBlood.cs">
+    <Compile Include="Items\Quest\PlagueBeastBlood.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Mutation Core\PlagueBeastGland.cs">
+    <Compile Include="Items\Quest\PlagueBeastGland.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Mutation Core\PlagueBeastHeart.cs">
+    <Compile Include="Items\Quest\PlagueBeastHeart.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Mutation Core\PlagueBeastInnard.cs">
+    <Compile Include="Items\Quest\PlagueBeastInnard.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Mutation Core\PlagueBeastMutationCore.cs">
+    <Compile Include="Items\Quest\PlagueBeastMutationCore.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Mutation Core\PlagueBeastOrgans.cs">
+    <Compile Include="Items\Quest\PlagueBeastOrgans.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Mutation Core\PlagueBeastVein.cs">
+    <Compile Include="Items\Quest\PlagueBeastVein.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Containers\Bucket.cs">
+    <Compile Include="Items\Consumables\Bucket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Containers\ClosedBarrel.cs">
+    <Compile Include="Items\Containers\ClosedBarrel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Containers\UnfinishedBarrel.cs">
+    <Compile Include="Items\Decorative\UnfinishedBarrel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Containers\WaterBarrel.cs">
+    <Compile Include="Items\Consumables\WaterBarrel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Containers\WaterTub.cs">
+    <Compile Include="Items\Consumables\WaterTub.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Daily\DecoRock.cs">
+    <Compile Include="Items\Decorative\DecoRock.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Daily\DecoRock2.cs">
+    <Compile Include="Items\Decorative\DecoRock2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Daily\DecoRocks.cs">
+    <Compile Include="Items\Decorative\DecoRocks.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Daily\DecoRocks2.cs">
+    <Compile Include="Items\Decorative\DecoRocks2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Flowers\DecoFlower.cs">
+    <Compile Include="Items\Decorative\DecoFlower.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Flowers\DecoFlower2.cs">
+    <Compile Include="Items\Decorative\DecoFlower2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Flowers\DecoRoseOfTrinsic.cs">
+    <Compile Include="Items\Decorative\DecoRoseOfTrinsic.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Flowers\DecoRoseOfTrinsic2.cs">
+    <Compile Include="Items\Decorative\DecoRoseOfTrinsic2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Flowers\DecoRoseOfTrinsic3.cs">
+    <Compile Include="Items\Decorative\DecoRoseOfTrinsic3.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Food\BottlesOfLiquor.cs">
+    <Compile Include="Items\Decorative\BottlesOfLiquor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Food\Tray2.cs">
+    <Compile Include="Items\Decorative\Tray2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Food\Trays.cs">
+    <Compile Include="Items\Decorative\Trays.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Furniture\BrokenChair.cs">
+    <Compile Include="Items\Decorative\BrokenChair.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\GamePieces\Checkers.cs">
+    <Compile Include="Items\Decorative\Checkers.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\GamePieces\Checkers2.cs">
+    <Compile Include="Items\Decorative\Checkers2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\GamePieces\Chessmen.cs">
+    <Compile Include="Items\Decorative\Chessmen.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\GamePieces\Chessmen2.cs">
+    <Compile Include="Items\Decorative\Chessmen2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\GamePieces\Chessmen3.cs">
+    <Compile Include="Items\Decorative\Chessmen3.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoGoldIngot.cs">
+    <Compile Include="Items\Decorative\DecoGoldIngot.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoGoldIngot2.cs">
+    <Compile Include="Items\Decorative\DecoGoldIngot2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoGoldIngots.cs">
+    <Compile Include="Items\Decorative\DecoGoldIngots.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoGoldIngots2.cs">
+    <Compile Include="Items\Decorative\DecoGoldIngots2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoGoldIngots3.cs">
+    <Compile Include="Items\Decorative\DecoGoldIngots3.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoGoldIngots4.cs">
+    <Compile Include="Items\Decorative\DecoGoldIngots4.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoIronIngot.cs">
+    <Compile Include="Items\Decorative\DecoIronIngot.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoIronIngot2.cs">
+    <Compile Include="Items\Decorative\DecoIronIngot2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoIronIngots.cs">
+    <Compile Include="Items\Decorative\DecoIronIngots.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoIronIngots2.cs">
+    <Compile Include="Items\Decorative\DecoIronIngots2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoIronIngots3.cs">
+    <Compile Include="Items\Decorative\DecoIronIngots3.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoIronIngots4.cs">
+    <Compile Include="Items\Decorative\DecoIronIngots4.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoIronIngots5.cs">
+    <Compile Include="Items\Decorative\DecoIronIngots5.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoIronIngots6.cs">
+    <Compile Include="Items\Decorative\DecoIronIngots6.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoSilverIngot.cs">
+    <Compile Include="Items\Decorative\DecoSilverIngot.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoSilverIngot2.cs">
+    <Compile Include="Items\Decorative\DecoSilverIngot2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoSilverIngots.cs">
+    <Compile Include="Items\Decorative\DecoSilverIngots.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoSilverIngots2.cs">
+    <Compile Include="Items\Decorative\DecoSilverIngots2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoSilverIngots3.cs">
+    <Compile Include="Items\Decorative\DecoSilverIngots3.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoSilverIngots4.cs">
+    <Compile Include="Items\Decorative\DecoSilverIngots4.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Ingots\DecoSilverIngots5.cs">
+    <Compile Include="Items\Decorative\DecoSilverIngots5.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Jars\EmptyJars.cs">
+    <Compile Include="Items\Decorative\EmptyJars.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Jars\FullJars.cs">
+    <Compile Include="Items\Decorative\FullJars.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Jars\HalfEmptyJars.cs">
+    <Compile Include="Items\Decorative\HalfEmptyJars.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Magic\DecoCrystalBall.cs">
+    <Compile Include="Items\Decorative\DecoCrystalBall.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Magic\DecoMagicalCrystal.cs">
+    <Compile Include="Items\Decorative\DecoMagicalCrystal.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Misc\DecoSpittoon.cs">
+    <Compile Include="Items\Decorative\DecoSpittoon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoBlackmoor.cs">
+    <Compile Include="Items\Decorative\DecoBlackmoor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoBloodspawn.cs">
+    <Compile Include="Items\Decorative\DecoBloodspawn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoBrimstone.cs">
+    <Compile Include="Items\Decorative\DecoBrimstone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoDragonsBlood.cs">
+    <Compile Include="Items\Decorative\DecoDragonsBlood.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoDragonsBlood2.cs">
+    <Compile Include="Items\Decorative\DecoDragonsBlood2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoEyeOfNewt.cs">
+    <Compile Include="Items\Decorative\DecoEyeOfNewt.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoGarlic.cs">
+    <Compile Include="Items\Decorative\DecoGarlic.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoGarlic2.cs">
+    <Compile Include="Items\Decorative\DecoGarlic2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoGarlicBulb.cs">
+    <Compile Include="Items\Decorative\DecoGarlicBulb.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoGarlicBulb2.cs">
+    <Compile Include="Items\Decorative\DecoGarlicBulb2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoGinseng.cs">
+    <Compile Include="Items\Decorative\DecoGinseng.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoGinseng2.cs">
+    <Compile Include="Items\Decorative\DecoGinseng2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoGinsengRoot.cs">
+    <Compile Include="Items\Decorative\DecoGinsengRoot.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoGinsengRoot2.cs">
+    <Compile Include="Items\Decorative\DecoGinsengRoot2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoMandrake.cs">
+    <Compile Include="Items\Decorative\DecoMandrake.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoMandrake2.cs">
+    <Compile Include="Items\Decorative\DecoMandrake2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoMandrake3.cs">
+    <Compile Include="Items\Decorative\DecoMandrake3.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoMandrakeRoot.cs">
+    <Compile Include="Items\Decorative\DecoMandrakeRoot.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoMandrakeRoot2.cs">
+    <Compile Include="Items\Decorative\DecoMandrakeRoot2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoNightshade.cs">
+    <Compile Include="Items\Decorative\DecoNightshade.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoNightshade2.cs">
+    <Compile Include="Items\Decorative\DecoNightshade2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoNightshade3.cs">
+    <Compile Include="Items\Decorative\DecoNightshade3.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoObsidian.cs">
+    <Compile Include="Items\Decorative\DecoObsidian.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoPumice.cs">
+    <Compile Include="Items\Decorative\DecoPumice.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PaganReagents\DecoWyrmsHeart.cs">
+    <Compile Include="Items\Decorative\DecoWyrmsHeart.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PlayingCards\Cards.cs">
+    <Compile Include="Items\Decorative\Cards.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PlayingCards\Cards2.cs">
+    <Compile Include="Items\Decorative\Cards2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PlayingCards\Cards3.cs">
+    <Compile Include="Items\Decorative\Cards3.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PlayingCards\Cards4.cs">
+    <Compile Include="Items\Decorative\Cards4.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PlayingCards\Cards5.cs">
+    <Compile Include="Items\Decorative\Cards5.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PlayingCards\PlayingCards.cs">
+    <Compile Include="Items\Decorative\PlayingCards.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\PlayingCards\PlayingCards2.cs">
+    <Compile Include="Items\Decorative\PlayingCards2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Stables\Bridle.cs">
+    <Compile Include="Items\Decorative\Bridle.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Stables\Bridle2.cs">
+    <Compile Include="Items\Decorative\Bridle2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Stables\DecoHay.cs">
+    <Compile Include="Items\Decorative\DecoHay.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Stables\DecoHay2.cs">
+    <Compile Include="Items\Decorative\DecoHay2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Stables\DecoHorseDung.cs">
+    <Compile Include="Items\Decorative\DecoHorseDung.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\TarotCards\DecoDeckOfTarot.cs">
+    <Compile Include="Items\Decorative\DecoDeckOfTarot.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\TarotCards\DecoDeckOfTarot2.cs">
+    <Compile Include="Items\Decorative\DecoDeckOfTarot2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\TarotCards\DecoTarot.cs">
+    <Compile Include="Items\Decorative\DecoTarot.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\TarotCards\DecoTarot2.cs">
+    <Compile Include="Items\Decorative\DecoTarot2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\TarotCards\DecoTarot3.cs">
+    <Compile Include="Items\Decorative\DecoTarot3.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\TarotCards\DecoTarot4.cs">
+    <Compile Include="Items\Decorative\DecoTarot4.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\TarotCards\DecoTarot5.cs">
+    <Compile Include="Items\Decorative\DecoTarot5.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\TarotCards\DecoTarot6.cs">
+    <Compile Include="Items\Decorative\DecoTarot6.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\TarotCards\DecoTarot7.cs">
+    <Compile Include="Items\Decorative\DecoTarot7.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Tinker\ArrowShafts.cs">
+    <Compile Include="Items\Decorative\ArrowShafts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Tinker\CrossbowBolts.cs">
+    <Compile Include="Items\Decorative\CrossbowBolts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Tinker\EmptyToolKit.cs">
+    <Compile Include="Items\Decorative\EmptyToolKit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Tinker\EmptyToolKit2.cs">
+    <Compile Include="Items\Decorative\EmptyToolKit2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Tinker\Lockpicks.cs">
+    <Compile Include="Items\Decorative\Lockpicks.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Rares\Tinker\ToolKit.cs">
+    <Compile Include="Items\Decorative\ToolKit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\RewardCake.cs">
+    <Compile Include="Items\Consumables\RewardCake.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Solen Items\BagOfSending.cs">
+    <Compile Include="Items\Tools\BagOfSending.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Solen Items\BallOfSummoning.cs">
+    <Compile Include="Items\Tools\BallOfSummoning.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Solen Items\BraceletOfBinding.cs">
+    <Compile Include="Items\Tools\BraceletOfBinding.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Solen Items\MessageHelper.cs">
+    <Compile Include="Misc\MessageHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Solen Items\PowderOfTranslocation.cs">
+    <Compile Include="Items\Consumables\PowderOfTranslocation.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Solen Items\ZoogiFungus.cs">
+    <Compile Include="Items\Resource\ZoogiFungus.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\SoulStone.cs">
+    <Compile Include="Items\Consumables\SoulStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Special Scrolls\ItemBlessDeed.cs">
+    <Compile Include="Items\Consumables\ItemBlessDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Special Scrolls\PersonalBlessDeed.cs">
+    <Compile Include="Items\Consumables\PersonalBlessDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Special Scrolls\PowerScroll.cs">
+    <Compile Include="Items\Consumables\PowerScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Special Scrolls\ScrollofAlacrity.cs">
+    <Compile Include="Items\Consumables\ScrollofAlacrity.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Special Scrolls\ScrollofTranscendence.cs">
+    <Compile Include="Items\Consumables\ScrollofTranscendence.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Special Scrolls\SpecialScroll.cs">
+    <Compile Include="Items\Consumables\SpecialScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Special Scrolls\StatScroll.cs">
+    <Compile Include="Items\Consumables\StatScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Valentines\2007\RedVelvetGiftBox.cs">
+    <Compile Include="Items\Containers\RedVelvetGiftBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Valentines\2007\RoseInAVase.cs">
+    <Compile Include="Items\Decorative\RoseInAVase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Valentines\2007\ValentinesCard.cs">
+    <Compile Include="Items\Decorative\ValentinesCard.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\AnkhOfSacrifice.cs">
+    <Compile Include="Items\Addons\AnkhOfSacrifice.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\Banner.cs">
+    <Compile Include="Items\Addons\Banner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\BloodyPentagram.cs">
+    <Compile Include="Items\Addons\BloodyPentagram.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\Brazier.cs">
+    <Compile Include="Items\Addons\Brazier.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\Cannon.cs">
+    <Compile Include="Items\Addons\Cannon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\CommodityDeedBox.cs">
+    <Compile Include="Items\Containers\CommodityDeedBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\ContestMiniHouse.cs">
+    <Compile Include="Items\Addons\ContestMiniHouse.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\DecorativeShield.cs">
+    <Compile Include="Items\Addons\DecorativeShield.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\FlamingHead.cs">
+    <Compile Include="Items\Addons\FlamingHead.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\HangingSkeleton.cs">
+    <Compile Include="Items\Addons\HangingSkeleton.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\MiningCart.cs">
+    <Compile Include="Items\Addons\MiningCart.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\MinotaurStatue.cs">
+    <Compile Include="Items\Addons\MinotaurStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\PottedCactus.cs">
+    <Compile Include="Items\Addons\PottedCactus.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\StoneAnkh.cs">
+    <Compile Include="Items\Addons\StoneAnkh.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\TreeStump.cs">
+    <Compile Include="Items\Addons\TreeStump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\WallBanner.cs">
+    <Compile Include="Items\Addons\WallBanner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Special\Veteran Rewards\WeaponEngravingTool.cs">
+    <Compile Include="Items\Tools\WeaponEngravingTool.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\CorporealBrumeStatuette.cs">
+    <Compile Include="Items\Addons\CorporealBrumeStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\DreadHornStatuette.cs">
+    <Compile Include="Items\Addons\DreadHornStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\DreadSpiderStatuette.cs">
+    <Compile Include="Items\Addons\DreadSpiderStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\FetidEssenceStatuette.cs">
+    <Compile Include="Items\Addons\FetidEssenceStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\MantraEffervescenceStatuette.cs">
+    <Compile Include="Items\Addons\MantraEffervescenceStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\MinotaurStatuette.cs">
+    <Compile Include="Items\Addons\MinotaurStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\OphidianArchMageStatuette.cs">
+    <Compile Include="Items\Addons\OphidianArchMageStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\OphidianKnightStatuette.cs">
+    <Compile Include="Items\Addons\OphidianKnightStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\OphidianMageStatuette.cs">
+    <Compile Include="Items\Addons\OphidianMageStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\OphidianWarriorStatuette.cs">
+    <Compile Include="Items\Addons\OphidianWarriorStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\ParoxysmusSwampDragonStatuette.cs">
+    <Compile Include="Items\Addons\ParoxysmusSwampDragonStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\PlagueBeastStatuette.cs">
+    <Compile Include="Items\Addons\PlagueBeastStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\RedDeathStatuette.cs">
+    <Compile Include="Items\Addons\RedDeathStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\ShimmeringEffusionStatuette.cs">
+    <Compile Include="Items\Addons\ShimmeringEffusionStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\SlimeStatuette.cs">
+    <Compile Include="Items\Addons\SlimeStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Statuettes\TormentedMinotaurStatuette.cs">
+    <Compile Include="Items\Addons\TormentedMinotaurStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\BaseCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\BaseCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\BloodwormCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\BloodwormCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\CentaurCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\CentaurCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\CyclopsCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\CyclopsCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\DrakeCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\DrakeCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\DreamWraithCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\DreamWraithCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\EtherealWarriorCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\EtherealWarriorCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\ExodusMinionCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\ExodusMinionCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\FireElementalCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\FireElementalCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\GazerCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\GazerCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\GiantPixieCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\GiantPixieCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\GiantToadCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\GiantToadCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\GoreFiendCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\GoreFiendCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\LadyOfTheSnowCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\LadyOfTheSnowCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\MaddeningHorrorCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\MaddeningHorrorCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\MinotaurCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\MinotaurCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\MongbatCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\MongbatCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\OniCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\OniCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\OphidianMatriarchCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\OphidianMatriarchCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\OphidianWarriorCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\OphidianWarriorCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\PixieCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\PixieCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\SatyrCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\SatyrCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\ShadowWyrmCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\ShadowWyrmCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\SkeletonCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\SkeletonCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\SkitteringHopperCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\SkitteringHopperCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\SolenWarriorCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\SolenWarriorCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\TerathanWarriorCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\TerathanWarriorCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\TitanCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\TitanCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\VoidWandererCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\VoidWandererCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\WispCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\WispCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\WolfSpiderCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\WolfSpiderCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\Costumes\ZombieCostume.cs">
+    <Compile Include="Items\Equipment\Costumes\ZombieCostume.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\DeathShroud.cs">
+    <Compile Include="Items\Equipment\Costumes\DeathShroud.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\DupreSuit.cs">
+    <Compile Include="Items\Equipment\Costumes\DupreSuit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\LordBlackthorneSuit.cs">
+    <Compile Include="Items\Equipment\Costumes\LordBlackthorneSuit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items_Old\Suits\LordBritishSuit.cs">
+    <Compile Include="Items\Equipment\Costumes\LordBritishSuit.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items_Old\Talismans\ConjurersTrinket.cs" />
