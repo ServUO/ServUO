@@ -98,10 +98,11 @@ namespace Server.Items
                             if (Core.ML)
                             {
                                 _Skills.AddRange(m_MLSkills);
-                                /*
                                 if (Core.SA)
                                 {
-                                _Skills.AddRange( m_SASkills );
+                                    _Skills.AddRange( m_SASkills );
+                                }
+                                /*
                                 if (Core.HS)
                                 _Skills.AddRange( m_HSSkills );
                                 }
@@ -164,7 +165,7 @@ namespace Server.Items
             {
                 skillName = Skills[Utility.Random(Skills.Count)];
             }
-            while (skillName == SkillName.Blacksmith || skillName == SkillName.Tailoring);
+            while (skillName == SkillName.Blacksmith || skillName == SkillName.Tailoring  || skillName == SkillName.Imbuing);
 
             return new PowerScroll(skillName, 100 + (Utility.RandomMinMax(min, max) * 5));
         }
