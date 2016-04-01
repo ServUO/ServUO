@@ -579,8 +579,9 @@ namespace Server.Mobiles
 
 									if (m_Mobile.CheckControlChance(e.Mobile))
 									{
-										m_Mobile.ControlTarget = null;
+										
 										m_Mobile.ControlOrder = OrderType.Guard;
+                                        m_Mobile.ControlTarget = null;
 									}
 									return;
 								}
@@ -705,8 +706,9 @@ namespace Server.Mobiles
 
 									if (!m_Mobile.IsDeadPet && WasNamed(speech) && m_Mobile.CheckControlChance(e.Mobile))
 									{
-										m_Mobile.ControlTarget = null;
-										m_Mobile.ControlOrder = OrderType.Guard;
+                                        m_Mobile.ControlOrder = OrderType.Guard;
+                                        m_Mobile.ControlTarget = null;
+										
 									}
 
 									return;
@@ -1171,6 +1173,7 @@ namespace Server.Mobiles
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = true;
 					m_Mobile.Combatant = null;
+                    m_Mobile.ControlTarget = null;
 					string petname = String.Format("{0}", m_Mobile.Name);
 					m_Mobile.ControlMaster.SendLocalizedMessage(1049671, petname); //~1_PETNAME~ is now guarding you.
 					break;

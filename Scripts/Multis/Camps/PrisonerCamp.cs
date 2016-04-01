@@ -24,16 +24,8 @@ namespace Server.Multis
              gate.Locked = true;
 
              AddItem( gate, -2, 1, 0 );
+			 AddCampChests();
 
-             MetalChest chest = new MetalChest();
-
-             chest.ItemID = 0xE7C;
-             chest.LiftOverride = true;
-             chest.DropItem( new Key( KeyType.Iron, gate.KeyValue ) );
-
-             TreasureMapChest.Fill(chest, 3);  //<---------Loot
-
-             AddItem( chest, 4, 4, 1 ); //<------z +1 to hover over static
              switch (Utility.Random(4))
              {
                  case 0: 

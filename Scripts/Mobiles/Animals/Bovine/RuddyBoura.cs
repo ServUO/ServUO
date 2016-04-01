@@ -7,11 +7,6 @@ namespace Server.Mobiles
     [CorpseName("a boura corpse")]
     public class RuddyBoura : BaseCreature, ICarvable
     {
-        public static Type[] VArtifacts =
-        {
-            typeof (BouraTailShield)
-        };
-
         private DateTime m_NextWoolTime; //
         private bool m_Stunning;
 
@@ -43,8 +38,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 69.7, 87.7);
             SetSkill(SkillName.Tactics, 83.3, 88.8);
             SetSkill(SkillName.Wrestling, 86.6, 87.9);
-
-            PackItem(new DragonBlood(8));
 
             Tamable = true;
             ControlSlots = 2;
@@ -81,7 +74,7 @@ namespace Server.Mobiles
             get { return 20; }
         }
 
-        //public override int DragonBlood{ get{ return 8; } }
+        public override int DragonBlood{ get{ return 8; } }
         public override HideType HideType
         {
             get { return HideType.Spined; }
@@ -148,29 +141,6 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < 0.05)
             {
                 c.DropItem(new BouraPelt());
-            }
-
-            if (c != null && !c.Deleted && c is Corpse)
-            {
-                var corpse = (Corpse) c;
-                if (Utility.RandomDouble() < 0.01 && corpse.Killer != null && !corpse.Killer.Deleted)
-                {
-                    GiveVArtifactTo(corpse.Killer);
-                }
-            }
-        }
-
-        public static void GiveVArtifactTo(Mobile m)
-        {
-            var item = (Item) Activator.CreateInstance(VArtifacts[Utility.Random(VArtifacts.Length)]);
-			m.PlaySound(0x5B4);
-
-            if (m.AddToBackpack(item))
-                m.SendLocalizedMessage(1062317);
-                    // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
-            else
-                m.SendMessage("As your backpack is full, your reward has been placed at your feet.");
-            {
             }
         }
 
