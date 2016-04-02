@@ -72,6 +72,7 @@ namespace Server.Items
         private LenseType m_GorgonLenseType;
 
         private int m_TimesImbued;
+        private bool m_IsImbued;
         private int m_PhysImbuing;
         private int m_FireImbuing;
         private int m_ColdImbuing;
@@ -235,7 +236,7 @@ namespace Server.Items
         {
             get
             {
-                return m_TimesImbued == 0 && NegativeAttributes.Antique < 3;
+                return m_IsImbued == false && NegativeAttributes.Antique < 3;
             }
         }
 
@@ -452,6 +453,23 @@ namespace Server.Items
             set { m_TimesImbued = value; InvalidateProperties(); }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsImbued
+        {
+            get
+            {
+                if (this.TimesImbued >= 1)
+                    m_IsImbued = true;
+                return m_IsImbued;
+            }
+            set
+            {
+                if (this.TimesImbued >= 1)
+                    m_IsImbued = true;
+                else
+                    m_IsImbued = value; InvalidateProperties();
+            }
+        }
         [CommandProperty(AccessLevel.GameMaster)]
         public int PhysImbuing
         {
@@ -1447,7 +1465,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)9); // version
+            writer.Write((int)10); // version
+
+            //Version 10
+            writer.Write((bool)this.m_IsImbued);
 
             // Version 9
             #region Runic Reforging
@@ -1469,6 +1490,7 @@ namespace Server.Items
 
             // Version 8
             writer.Write((int)this.m_TimesImbued);
+           
             #endregion
 
             writer.Write((Mobile)this.m_BlessedBy);
@@ -1640,6 +1662,11 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 10:
+                    {
+                        this.m_IsImbued = reader.ReadBool();
+                        goto case 9;
+                    }
                 case 9:
                     {
                         #region Runic Reforging
@@ -1663,6 +1690,7 @@ namespace Server.Items
                 case 8:
                     {
                         this.m_TimesImbued = reader.ReadInt();
+                        
                         #endregion
 
                         this.m_BlessedBy = reader.ReadMobile();
@@ -2476,7 +2504,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             #region Stygian Abyss
-            if (this.m_TimesImbued > 0)
+            if (this.m_IsImbued == true)
                 list.Add(1080418); // (Imbued)
 
             if (m_GorgonLenseCharges > 0)
