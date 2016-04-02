@@ -6991,6 +6991,7 @@ namespace Server
 				Hidden = false;
 			}
 
+            BuffInfo.RemoveBuff(m, BuffIcon.HidingAndOrStealth);
             m_IsStealthing = false;
 
 			DisruptiveAction(); // Anything that unhides you will also distrupt meditation

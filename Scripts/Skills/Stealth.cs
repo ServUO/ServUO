@@ -108,6 +108,7 @@ namespace Server.SkillHandlers
 
                     m.SendLocalizedMessage(502730); // You begin to move quietly.
 
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.HidingAndOrStealth, 1044107, 1075655));
                     return TimeSpan.FromSeconds(10.0);
                 }
                 else
