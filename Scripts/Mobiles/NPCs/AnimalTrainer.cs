@@ -96,7 +96,15 @@ namespace Server.Mobiles
 			}
 			
 			// bonus SA stable slots
- +			max += 2;
+			if (Core.SA) 
+ 			{ 
+ 				max += 2;
+ 			}
+ 			//bonus ToL stable slots
+ 			if (Core.TOL) 
+ 			{ 
+ 				max += 2;
+ 			}
  
 			if (taming >= 100.0)
 			{
