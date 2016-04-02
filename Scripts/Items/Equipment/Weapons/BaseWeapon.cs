@@ -665,6 +665,10 @@ namespace Server.Items
             set { m_ReforgedSuffix = value; InvalidateProperties(); }
         }
         #endregion
+
+
+        public double ConsecrateProcChance { get; set; }
+        public double ConsecrateDamageBonus { get; set; }
         #endregion
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -1989,6 +1993,12 @@ namespace Server.Items
 			OnHit(attacker, defender, 1.0);
 		}
 
+        /// <summary>
+        /// 020416 Crome696 : Adding concecrate Weapon Bonus
+        /// </summary>
+        /// <param name="attacker"></param>
+        /// <param name="defender"></param>
+        /// <param name="damageBonus"></param>
 		public virtual void OnHit(Mobile attacker, Mobile defender, double damageBonus)
 		{
 			if (MirrorImage.HasClone(defender) && (defender.Skills.Ninjitsu.Value / 150.0) > Utility.RandomDouble())
@@ -2044,7 +2054,16 @@ namespace Server.Items
 				percentageBonus += (int)(move.GetDamageScalar(attacker, defender) * 100) - 100;
 			}
 
-			percentageBonus += (int)(damageBonus * 100) - 100;
+            if (m_Consecrated)
+            {
+                if (Utility.RandomDouble() <= ConsecrateProcChance / 100)
+                {
+                    if (ConsecrateDamageBonus > 0)
+                        damageBonus *= 1 + ConsecrateDamageBonus / 100;
+                }
+            }
+
+            percentageBonus += (int)(damageBonus * 100) - 100;
 
 			CheckSlayerResult cs = CheckSlayers(attacker, defender);
 
