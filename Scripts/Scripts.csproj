@@ -1010,7 +1010,7 @@
     <Compile Include="Items\Consumables\Firebomb.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Depricated\FiveOvercapStatScroll.cs">
+    <Compile Include="Depricated\FiveOvercapStatScroll.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Internal\FlipableAddonAttribute.cs">
@@ -1305,14 +1305,14 @@
     <Compile Include="Items\Addons\TerMurDresserSouthAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Depricated\SwarmOfFlies.cs">
+    <Compile Include="Depricated\SwarmOfFlies.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Internal\Teleporter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Internal\TeleportRope.cs" />
-    <Compile Include="Items\Depricated\TenMurdererKillRemoverDeed.cs">
+    <Compile Include="Depricated\TenMurdererKillRemoverDeed.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Quest\DragonFlameSectBadge.cs">
@@ -1562,85 +1562,85 @@
     <Compile Include="Items\Addons\Aquarium\Rewards\Shell.cs" />
     <Compile Include="Items\Addons\Aquarium\Rewards\ToyBoat.cs" />
     <Compile Include="Items\Addons\Aquarium\Rewards\WaterloggedBoots.cs" />
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\Alchemist2BazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\Alchemist2BazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\ArmorBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\ArmorBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\ArtistBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\ArtistBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\CarpenterBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\CarpenterBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\CarpetedStairBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\CarpetedStairBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\CrystalBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\CrystalBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\DistilleryBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\DistilleryBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\EvilBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\EvilBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\FishermanBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\FishermanBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\GenericBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\GenericBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\JewelerBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\JewelerBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\LeatherArmourBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\LeatherArmourBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\MarbleStairBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\MarbleStairBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\MetalArmourBazzarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\MetalArmourBazzarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\PillowBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\PillowBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\Provisioner2BazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\Provisioner2BazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\ProvisionerBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\ProvisionerBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\ScribeBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\ScribeBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\SmithBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\SmithBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\StableBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\StableBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\Tailor2BazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\Tailor2BazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\TailorBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\TailorBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\Bazaar AddOns\WoodBenchBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\WoodBenchBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\SBVendorMallManager.cs">
+    <Compile Include="Services\MaginciaBazaar\SBVendorMallManager.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Addons\VendorMallAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\VendorMallManager.cs">
+    <Compile Include="Services\MaginciaBazaar\VendorMallManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Magincia Bazaar\VendorTile.cs">
+    <Compile Include="Services\MaginciaBazaar\VendorTile.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Addons\MailboxEastAddon.cs">
@@ -6750,10 +6750,10 @@
     <Compile Include="Misc\ClientVerification.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\Console Utilities\Console Commands.cs">
+    <Compile Include="Misc\ConsoleCommands.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\Console Utilities\Timestamp.cs">
+    <Compile Include="Misc\Timestamp.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\CrashGuard.cs">
@@ -6771,7 +6771,7 @@
     <Compile Include="Misc\DispellableFieldAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\DoorGenerator.cs">
+    <Compile Include="Commands\DoorGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\Email.cs">
@@ -6789,28 +6789,28 @@
     <Compile Include="Misc\Geometry.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\Gifts\Winter2004\DecorativeTopiary.cs">
+    <Compile Include="Items\Decorative\DecorativeTopiary.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\Gifts\Winter2004\FestiveCactus.cs">
+    <Compile Include="Items\Decorative\FestiveCactus.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\Gifts\Winter2004\LightOfTheWinterSolstice.cs">
+    <Compile Include="Items\Decorative\LightOfTheWinterSolstice.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\Gifts\Winter2004\Mistletoe.cs">
+    <Compile Include="Items\Decorative\Mistletoe.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\Gifts\Winter2004\PileOfGlacialSnow.cs">
+    <Compile Include="Items\Decorative\PileOfGlacialSnow.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\Gifts\Winter2004\SnowPile.cs">
+    <Compile Include="Items\Decorative\SnowPile.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\Gifts\Winter2004\SnowyTree.cs">
+    <Compile Include="Items\Decorative\SnowyTree.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\Gifts\Winter2004\Winter2004.cs">
+    <Compile Include="Services\GiftGiving\Winter2004.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\Guild.cs">
@@ -6926,28 +6926,28 @@
     <Compile Include="Misc\WelcomeTimer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Abilities\Abilities.cs">
+    <Compile Include="Abilities\Abilities.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Abilities\Ability TheSix.cs">
+    <Compile Include="Abilities\AbilityTheSix.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Abilities\AuraCreature.cs">
+    <Compile Include="Abilities\AuraCreature.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Abilities\BaseSummoned.cs">
+    <Compile Include="Abilities\BaseSummoned.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Abilities\Enhancement.cs">
+    <Compile Include="Abilities\Enhancement.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Abilities\EnhancementTimer.cs">
+    <Compile Include="Abilities\EnhancementTimer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Abilities\SelfDeletingItem.cs">
+    <Compile Include="Abilities\SelfDeletingItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Abilities\TimedResistanceMod.cs">
+    <Compile Include="Abilities\TimedResistanceMod.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\Abyss\SAPixie.cs">
@@ -10846,7 +10846,7 @@
     <Compile Include="Regions\TwistedWealdDesert.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\AssistantNegotiator\Assistants.cs">
+    <Compile Include="Services\Assistants.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\BulkOrders\Books\BOBFilter.cs">
@@ -10989,101 +10989,101 @@
     <Compile Include="Services\Chat\Packets.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\BaseCollectionItem.cs">
+    <Compile Include="Services\CommunityCollections\BaseCollectionItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\BaseCollectionMobile.cs">
+    <Compile Include="Services\CommunityCollections\BaseCollectionMobile.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Britain Library\Rewards\Glasses.cs">
+    <Compile Include="Services\CommunityCollections\Britain Library\Rewards\Glasses.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Britain Library\Rewards\Misc.cs">
+    <Compile Include="Services\CommunityCollections\Britain Library\Rewards\Misc.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Britain Library\Rewards\Quotes.cs">
+    <Compile Include="Services\CommunityCollections\Britain Library\Rewards\Quotes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Britain Library\Rewards\Talismans.cs">
+    <Compile Include="Services\CommunityCollections\Britain Library\Rewards\Talismans.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\CollectionDecayTimer.cs">
+    <Compile Include="Services\CommunityCollections\CollectionDecayTimer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\CollectionItem.cs">
+    <Compile Include="Services\CommunityCollections\CollectionItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\CollectionsSystem.cs" />
-    <Compile Include="Services\Community Collections\ComunityCollectionGump.cs">
+    <Compile Include="Services\CommunityCollections\CollectionsSystem.cs" />
+    <Compile Include="Services\CommunityCollections\ComunityCollectionGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\ConfirmRewardGump.cs">
+    <Compile Include="Services\CommunityCollections\ConfirmRewardGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\ConfirmTransferPetGump.cs">
+    <Compile Include="Services\CommunityCollections\ConfirmTransferPetGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\ICollection.cs">
+    <Compile Include="Services\CommunityCollections\ICollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\DonationBox.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\DonationBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\Rewards\BakeKitsuneStatue.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\BakeKitsuneStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\Rewards\ChangelingStatue.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\ChangelingStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\Rewards\CollectionStatuettes.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\CollectionStatuettes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\Rewards\LeatherArmor.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\LeatherArmor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\Rewards\PlateArmor.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\PlateArmor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\Rewards\PolarBearStatue.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\PolarBearStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\Rewards\QuagmireStatue.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\QuagmireStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\Rewards\ReptalonStatue.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\ReptalonStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\Rewards\SnakeStatue.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\SnakeStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\Rewards\StuddedArmor.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\StuddedArmor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Moonglow Zoo\Rewards\WolfStatue.cs">
+    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\WolfStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\SelectTitleGump.cs">
+    <Compile Include="Services\CommunityCollections\SelectTitleGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Vesper Museum\DonationBox.cs">
+    <Compile Include="Services\CommunityCollections\Vesper Museum\DonationBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Vesper Museum\Rewards\Armor.cs">
+    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\Armor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Vesper Museum\Rewards\ClaininsSpellbook.cs">
+    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\ClaininsSpellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Vesper Museum\Rewards\Jewlery.cs">
+    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\Jewlery.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Vesper Museum\Rewards\LordBritishThroneAddon.cs">
+    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\LordBritishThroneAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Vesper Museum\Rewards\Statues.cs">
+    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\Statues.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Community Collections\Vesper Museum\Rewards\Weapons.cs">
+    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\Weapons.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\ConPVP\AcceptDuelGump.cs">
@@ -11253,46 +11253,46 @@
     <Compile Include="Services\Craft\DefTinkering.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\AI.cs">
+    <Compile Include="Services\DespiseRevamped\AI.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\DespiseController.cs">
+    <Compile Include="Services\DespiseRevamped\DespiseController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Items\Ankh.cs">
+    <Compile Include="Services\DespiseRevamped\Items\Ankh.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Items\Artifacts.cs">
+    <Compile Include="Services\DespiseRevamped\Items\Artifacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Items\Orb.cs">
+    <Compile Include="Services\DespiseRevamped\Items\Orb.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Items\PutridHeart.cs">
+    <Compile Include="Services\DespiseRevamped\Items\PutridHeart.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Items\Teleporters.cs">
+    <Compile Include="Services\DespiseRevamped\Items\Teleporters.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Mobiles\DespiseBosses.cs">
+    <Compile Include="Services\DespiseRevamped\Mobiles\DespiseBosses.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Mobiles\DespiseCreature.cs">
+    <Compile Include="Services\DespiseRevamped\Mobiles\DespiseCreature.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Mobiles\EvilCreatures.cs">
+    <Compile Include="Services\DespiseRevamped\Mobiles\EvilCreatures.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Mobiles\GoodCreatures.cs">
+    <Compile Include="Services\DespiseRevamped\Mobiles\GoodCreatures.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Mobiles\MysteriousWisp.cs">
+    <Compile Include="Services\DespiseRevamped\Mobiles\MysteriousWisp.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Region.cs">
+    <Compile Include="Services\DespiseRevamped\Region.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Despise Revamped\Setup.cs">
+    <Compile Include="Services\DespiseRevamped\Setup.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Doom\GauntletSpawner.cs">
@@ -11722,43 +11722,43 @@
     <Compile Include="Services\Imbuing\Gumps\ImbuingGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\ConfirmExitInstanceGump.cs">
+    <Compile Include="Services\InstancedPeerless\ConfirmExitInstanceGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\ConfirmJoinInstanceGump.cs">
+    <Compile Include="Services\InstancedPeerless\ConfirmJoinInstanceGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\InstanceEnterGate.cs">
+    <Compile Include="Services\InstancedPeerless\InstanceEnterGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\InstanceExitGate.cs">
+    <Compile Include="Services\InstancedPeerless\InstanceExitGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\InstanceRegion.cs">
+    <Compile Include="Services\InstancedPeerless\InstanceRegion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\Medusa\MedusaPlatform.cs">
+    <Compile Include="Services\InstancedPeerless\Medusa\MedusaPlatform.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\Medusa\RareSerpentEgg.cs">
+    <Compile Include="Services\InstancedPeerless\Medusa\RareSerpentEgg.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\PeerlessInstance.cs">
+    <Compile Include="Services\InstancedPeerless\PeerlessInstance.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\PeerlessKeyBrazier.cs">
+    <Compile Include="Services\InstancedPeerless\PeerlessKeyBrazier.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\PeerlessPlatform.cs">
+    <Compile Include="Services\InstancedPeerless\PeerlessPlatform.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\RejoinInstanceGump.cs">
+    <Compile Include="Services\InstancedPeerless\RejoinInstanceGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\Stygian Dragon\DraconicOrb.cs">
+    <Compile Include="Services\InstancedPeerless\Stygian Dragon\DraconicOrb.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Instanced Peerless\Stygian Dragon\StygianDragonPlatform.cs">
+    <Compile Include="Services\InstancedPeerless\Stygian Dragon\StygianDragonPlatform.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Khaldun\Books\GrimmochJournal.cs">
@@ -11797,8 +11797,8 @@
     <Compile Include="Services\Khaldun\RaiseSwitch.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Loyalty System\LoyaltyRating.cs" />
-    <Compile Include="Services\Loyalty System\LoyaltyRatingGump.cs" />
+    <Compile Include="Services\LoyaltySystem\LoyaltyRating.cs" />
+    <Compile Include="Services\LoyaltySystem\LoyaltyRatingGump.cs" />
     <Compile Include="Services\MyRunUO\Config.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -12441,16 +12441,16 @@
     <Compile Include="Services\Reports\Reports.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Runic Reforging\Gumps.cs">
+    <Compile Include="Services\RunicReforging\Gumps.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Runic Reforging\RandomItemGenerator.cs">
+    <Compile Include="Services\RunicReforging\RandomItemGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Runic Reforging\RunicReforging.cs">
+    <Compile Include="Services\RunicReforging\RunicReforging.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\SA Content\SARegionDrops.cs" />
+    <Compile Include="Services\SARegionDrops.cs" />
     <Compile Include="Services\Spawner\ProximitySpawner.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -12463,37 +12463,37 @@
     <Compile Include="Services\Spawner\SpawnerType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Staff Runebook\Gump.cs">
+    <Compile Include="Services\StaffRunebook\Gump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Staff Runebook\Load.cs">
+    <Compile Include="Services\StaffRunebook\Load.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Staff Runebook\Main.cs">
+    <Compile Include="Services\StaffRunebook\Main.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Staff Runebook\NewRunePrompt.cs">
+    <Compile Include="Services\StaffRunebook\NewRunePrompt.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Staff Runebook\NewRuneTarget.cs">
+    <Compile Include="Services\StaffRunebook\NewRuneTarget.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Staff Runebook\Persistence.cs">
+    <Compile Include="Services\StaffRunebook\Persistence.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Staff Runebook\Rune.cs">
+    <Compile Include="Services\StaffRunebook\Rune.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Staff Runebook\RuneAccount.cs">
+    <Compile Include="Services\StaffRunebook\RuneAccount.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Staff Runebook\RuneGate.cs">
+    <Compile Include="Services\StaffRunebook\RuneGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Staff Runebook\Save.cs">
+    <Compile Include="Services\StaffRunebook\Save.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Staff Runebook\Utilities.cs">
+    <Compile Include="Services\StaffRunebook\Utilities.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Toolbar\Core\ToolbarCore.cs">
@@ -12514,19 +12514,19 @@
     <Compile Include="Services\Toolbar\Gumps\ToolbarEdit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Treasures of Tokuno\BasePigmentsOfTokuno.cs">
+    <Compile Include="Services\TreasuresOfTokuno\BasePigmentsOfTokuno.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Treasures of Tokuno\GreaterArtifacts.cs">
+    <Compile Include="Services\TreasuresOfTokuno\GreaterArtifacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Treasures of Tokuno\LesserArtifacts.cs">
+    <Compile Include="Services\TreasuresOfTokuno\LesserArtifacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Treasures of Tokuno\TreasuresOfTokuno.cs">
+    <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokuno.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Treasures of Tokuno\TreasuresOfTokunoPersistance.cs">
+    <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokunoPersistance.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Underworld\ExperimentalRoom\ExperimentalBook.cs">
@@ -13372,56 +13372,56 @@
     <Compile Include="Skills\Tracking.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Engines\GiftGiving.cs">
+    <Compile Include="Services\GiftGiving\GiftGiving.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Engines\ItemFixes.cs">
+    <Compile Include="Services\ItemFixes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Engines\PreventInaccess.cs">
+    <Compile Include="Services\PreventInaccess.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Engines\TestCenter.cs">
+    <Compile Include="Services\TestCenter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\Ressurection\ResGate.cs">
+    <Compile Include="Items\Internal\ResGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\Stones\AlchemyStone.cs">
+    <Compile Include="Depricated\AlchemyStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\Stones\GamblingStone.cs">
+    <Compile Include="Depricated\GamblingStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\Stones\GMStone.cs" />
-    <Compile Include="SpecialSystems\Items\Stones\IngotStone.cs">
+    <Compile Include="Depricated\GMStone.cs" />
+    <Compile Include="Depricated\IngotStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\Stones\RegStone.cs">
+    <Compile Include="Depricated\RegStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\Stones\ScribeStone.cs">
+    <Compile Include="Depricated\ScribeStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\Stones\SmithStone.cs">
+    <Compile Include="Depricated\SmithStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\Stones\TailorStone.cs">
+    <Compile Include="Depricated\TailorStone.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\SupplyBags\AlchemyBag.cs">
+    <Compile Include="Items\Containers\AlchemyBag.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\SupplyBags\BagOfIngots.cs">
+    <Compile Include="Items\Containers\BagOfIngots.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\SupplyBags\ScribeBag.cs">
+    <Compile Include="Items\Containers\ScribeBag.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\SupplyBags\SmithBag.cs">
+    <Compile Include="Items\Containers\SmithBag.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpecialSystems\Items\SupplyBags\TailorBag.cs">
+    <Compile Include="Items\Containers\TailorBag.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Spells\Base\DisturbType.cs">
@@ -13978,10 +13978,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Quests\SA Sacred Quest\Sacred Quest Questions-Answers.txt" />
-    <Content Include="Services\Runic Reforging\ReadMe.txt" />
-    <Content Include="Services\XmlSpawner\Installation for ServUO.txt" />
-    <Content Include="Services\XmlSpawner\Installation SVN or 2.4.txt" />
-    <Content Include="Services\XmlSpawner\Instructions for importing maps.txt" />
+    <Content Include="Services\RunicReforging\ReadMe.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\SpawnerConfigs\xmlspawner.xml" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\Spawns\attachtest1.xml" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\Spawns\attachtest2.xml" />
@@ -14086,7 +14083,6 @@
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\XmlSockets\XmlSockets log.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Support\xmlspawner2.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Support\xmlspawner2doc.txt" />
-    <Content Include="SpecialSystems\README.TXT" />
     <Content Include="Spells\Mysticism\Blank.txt" />
   </ItemGroup>
   <ItemGroup />
