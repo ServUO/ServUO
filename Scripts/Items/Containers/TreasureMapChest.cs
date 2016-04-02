@@ -39,10 +39,19 @@ namespace Server.Items
         public static Type[] SOSArtifacts { get { return m_SOSArtifacts; } }
         private static Type[] m_SOSArtifacts = new Type[]
         {
-            typeof(AntiqueWeddingDress), typeof(GrapeVine),
-            typeof(KelpWovenLeggings),   typeof(LargeFishingNet),
-            typeof(RunedDriftwoodBow),   typeof(ValkyrieArmor)
+            typeof(AntiqueWeddingDress), 
+            typeof(KelpWovenLeggings),   
+            typeof(RunedDriftwoodBow),
+            typeof(ValkyrieArmor)
         };
+        public static Type[] SOSDecor { get { return m_SOSDecor; } }
+        private static Type[] m_SOSDecor = new Type[]
+        {
+            typeof(GrapeVine),
+            typeof(LargeFishingNet)
+            
+        };
+
 
         private static Type[] m_ImbuingIngreds =
 		{
@@ -152,13 +161,12 @@ namespace Server.Items
             }
         }
 
-        public static void Fill(LockableContainer cont, int level)
-        {
-            Fill(cont, 0, level, false);
-        }
-
         public static void Fill(LockableContainer cont, int luck, int level, bool isSos)
         {
+			// Apply Felucca luck bonus
+			if (cont.Map == Map.Felucca)
+				luck += Mobiles.RandomItemGenerator.FeluccaLuckBonus;
+
             cont.Movable = false;
             cont.Locked = true;
             int numberItems;
@@ -181,23 +189,25 @@ namespace Server.Items
                 switch (level)
                 {
                     case 1:
-                        cont.RequiredSkill = 36;
+                        cont.RequiredSkill = 5;
                         break;
                     case 2:
-                        cont.RequiredSkill = 76;
+                        cont.RequiredSkill = 45;
                         break;
                     case 3:
-                        cont.RequiredSkill = 84;
+                        cont.RequiredSkill = 65;
                         break;
                     case 4:
-                        cont.RequiredSkill = 92;
+                        cont.RequiredSkill = 75;
                         break;
                     case 5:
-                        cont.RequiredSkill = 105;
+                        cont.RequiredSkill = 75;
                         break;
                     case 6:
-                    case 7:
-                        cont.RequiredSkill = 110;
+                        cont.RequiredSkill = 80;
+                        break;
+					case 7:
+                        cont.RequiredSkill = 80;
                         break;
                 }
 
@@ -209,18 +219,22 @@ namespace Server.Items
                 for (int i = 0; i < level * 5; ++i)
                     cont.DropItem(Loot.RandomScroll(0, 63, SpellbookType.Regular));
 
+				double propsScale = 1.0;
                 if (Core.SE)
                 {
                     switch (level)
                     {
                         case 1:
                             numberItems = 32;
+							propsScale = 0.5625;
                             break;
                         case 2:
                             numberItems = 40;
+							propsScale = 0.6875;
                             break;
                         case 3:
                             numberItems = 48;
+							propsScale = 0.875;
                             break;
                         case 4:
                             numberItems = 56;
@@ -254,7 +268,7 @@ namespace Server.Items
                     if (item != null && Core.HS && RandomItemGenerator.Enabled)
                     {
                         int min, max;
-                        GetRandomItemStat(out min, out max);
+                        GetRandomItemStat(out min, out max, propsScale);
 
                         RunicReforging.GenerateRandomItem(item, LootPack.GetLuckChance(luck), min, max);
 
@@ -371,8 +385,13 @@ namespace Server.Items
 
             if (isSos)
             {
-                if (0.002 * level > Utility.RandomDouble())
+                if (0.004 * level > Utility.RandomDouble())
                     arty = Loot.Construct(m_SOSArtifacts);
+                if (0.006 * level > Utility.RandomDouble())
+                    special = Loot.Construct(m_SOSDecor);
+                else if (0.009 * level > Utility.RandomDouble())
+                    special = new TreasureMap(Utility.RandomMinMax(level, Math.Min(7, level + 1)), cont.Map);
+
             }
             else
             {
@@ -442,7 +461,7 @@ namespace Server.Items
             return special;
         }
 
-        public static void GetRandomItemStat(out int min, out int max)
+        public static void GetRandomItemStat(out int min, out int max, double scale = 1.0)
         {
             int rnd = Utility.Random(100);
 
@@ -466,6 +485,8 @@ namespace Server.Items
             {
                 min = 100; max = 400;
             }
+			min = (int)(min * scale);
+			max = (int)(max * scale);
         }
 
         public static Item GetRandomRecipe()

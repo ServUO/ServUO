@@ -150,7 +150,17 @@ namespace Server.Multis
             this.m_Mobiles.Clear();
         }
 
-        public override void Serialize(GenericWriter writer)
+		protected virtual void AddCampChests()
+		{
+			TreasureLevel1 crate = new TreasureLevel1();
+			crate.Locked = false;
+			AddItem(crate, 2, 2, 0);
+
+			TreasureLevel3 chest = new TreasureLevel3();
+			AddItem(chest, -2, -2, 0);
+		}
+
+		public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
@@ -180,38 +190,6 @@ namespace Server.Multis
                         break;
                     }
             }
-        }
-    }
-
-    public class LockableBarrel : LockableContainer
-    {
-        [Constructable]
-        public LockableBarrel()
-            : base(0xE77)
-        {
-            this.Weight = 1.0;
-        }
-
-        public LockableBarrel(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-
-            if (this.Weight == 8.0)
-                this.Weight = 1.0;
         }
     }
 }
