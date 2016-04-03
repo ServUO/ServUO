@@ -60,14 +60,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(DemonHuntersStandard) };
+                return new Type[] { typeof(DemonHuntersStandard), typeof(DragonJadeEarrings) };
             }
         }
         public override Type[] SharedSAList
         {
             get
             {
-                return new Type[] { typeof(SwordOfShatteredHopes), typeof(FairyDragonWing), typeof(FeyWings), typeof(PillarOfStrength) };
+                return new Type[] { typeof(SwordOfShatteredHopes), typeof(PillarOfStrength) };
             }
         }
         public override bool InitialInnocent

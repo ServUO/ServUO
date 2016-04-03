@@ -70,7 +70,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(TokenOfHolyFavor), typeof(LavaSerpentCrust), typeof(SwordOfShatteredHopes) };
+                return new Type[] { typeof(TokenOfHolyFavor), typeof(SwordOfShatteredHopes) };
             }
         }
         public override double DispelDifficulty

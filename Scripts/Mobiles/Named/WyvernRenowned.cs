@@ -60,7 +60,7 @@ namespace Server.Mobiles
 
         public override Type[] SharedSAList
         {
-            get { return new[] {typeof (AnimatedLegsoftheInsaneTinker), typeof (PillarOfStrength)}; }
+            get { return new[] {typeof (AnimatedLegsoftheInsaneTinker), typeof (PillarOfStrength), typeof(StormCaller) }; }
         }
 
         public override bool ReacquireOnMovement

@@ -62,14 +62,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(BasiliskHideBreastplate), typeof(CrystallineBlackrock) };
+                return new Type[] { typeof(BasiliskHideBreastplate) };
             }
         }
         public override Type[] SharedSAList
         {
             get
             {
-                return new Type[] { typeof(LegacyOfDespair), typeof(CrystalShards), typeof(MysticsGarb) };
+                return new Type[] { typeof(LegacyOfDespair), typeof(MysticsGarb) };
             }
         }
         public override InhumanSpeech SpeechType

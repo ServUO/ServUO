@@ -59,7 +59,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(CoagulatedLegs),
+                return new Type[] { typeof(BreastplateOfTheBerserker),
                 typeof(SkeletonCostume), typeof(GazerCostume), typeof(BloodwormCostume),
                 typeof(ShadowWyrmCostume), typeof(DreamWraithCostume), typeof(CentaurCostume),
                 typeof(CyclopsCostume), typeof(DrakeCostume), typeof(EtherealWarriorCostume),
@@ -77,7 +77,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(MysticsGarb), typeof(CoagulatedLegs), typeof(BreastplateOfTheBerserker) };
+                return new Type[] { typeof(MysticsGarb) };
             }
         }
         public override bool BleedImmune

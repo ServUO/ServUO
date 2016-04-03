@@ -66,14 +66,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(TatteredAncientScroll) };
+                return new Type[] { };
             }
         }
         public override Type[] SharedSAList
         {
             get
             {
-                return new Type[] { typeof(CavalrysFolly), typeof(ArcanicRuneStone), typeof(CrushedGlass), typeof(AbyssalCloth), typeof(TorcOfTheGuardians) };
+                return new Type[] { typeof(CavalrysFolly), typeof(TorcOfTheGuardians) };
             }
         }
         public override InhumanSpeech SpeechType
