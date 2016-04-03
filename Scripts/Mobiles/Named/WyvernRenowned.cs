@@ -110,8 +110,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich, 3);
-            AddLoot(LootPack.Gems, 5);
+            AddLoot(LootPack.UltraRich);
         }
 
         public override int GetAttackSound()

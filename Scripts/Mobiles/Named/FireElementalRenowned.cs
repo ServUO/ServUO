@@ -103,9 +103,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
-            this.AddLoot(LootPack.Meager);
-            this.AddLoot(LootPack.Gems);
+            this.AddLoot(LootPack.UltraRich);
         }
 
         public override void Serialize(GenericWriter writer)
