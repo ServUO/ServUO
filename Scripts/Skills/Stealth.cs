@@ -77,11 +77,13 @@ namespace Server.SkillHandlers
             {
                 m.SendLocalizedMessage(502726); // You are not hidden well enough.  Become better at hiding.
                 m.RevealingAction();
+                BuffInfo.RemoveBuff(m, BuffIcon.HidingAndOrStealth);
             }
             else if (!m.CanBeginAction(typeof(Stealth)))
             {
                 m.SendLocalizedMessage(1063086); // You cannot use this skill right now.
                 m.RevealingAction();
+                BuffInfo.RemoveBuff(m, BuffIcon.HidingAndOrStealth);
             }
             else
             {
@@ -91,6 +93,7 @@ namespace Server.SkillHandlers
                 {
                     m.SendLocalizedMessage(502727); // You could not hope to move quietly wearing this much armor.
                     m.RevealingAction();
+                    BuffInfo.RemoveBuff(m, BuffIcon.HidingAndOrStealth);
                 }
                 else if (m.CheckSkill(SkillName.Stealth, -20.0 + (armorRating * 2), (Core.AOS ? 60.0 : 80.0) + (armorRating * 2)))
                 {
@@ -115,6 +118,7 @@ namespace Server.SkillHandlers
                 {
                     m.SendLocalizedMessage(502731); // You fail in your attempt to move unnoticed.
                     m.RevealingAction();
+                    BuffInfo.RemoveBuff(m, BuffIcon.HidingAndOrStealth);
                 }
             }
 
