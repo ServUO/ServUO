@@ -1933,7 +1933,7 @@
     <Compile Include="Mobiles\Normal\PlagueBeastLord.cs" />
     <Compile Include="Mobiles\Normal\PlagueRat.cs" />
     <Compile Include="Mobiles\Normal\PlagueSpawn.cs" />
-    <Compile Include="Mobiles\Normal\PlayerMobile.cs" />
+    <Compile Include="Mobiles\PlayerMobile.cs" />
     <Compile Include="Mobiles\Normal\PoisonElemental.cs" />
     <Compile Include="Mobiles\Normal\PolarBear.cs" />
     <Compile Include="Mobiles\Normal\PredatorHellCat.cs" />
@@ -2635,6 +2635,7 @@
     <Compile Include="Quests_Working\Witch Apprentice\Mobiles\Zeefzorpul.cs" />
     <Compile Include="Quests_Working\Witch Apprentice\Objectives.cs" />
     <Compile Include="Quests_Working\Witch Apprentice\WitchApprenticeQuest.cs" />
+    <Compile Include="Services\HolidaySettings.cs" />
     <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\Alchemist2BazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9423,6 +9424,8 @@
     <Compile Include="Services\Plants\SetToDecorativeGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\PlayerZombies.cs" />
+    <Compile Include="Services\PumpkinPatch.cs" />
     <Compile Include="Services\Quests\Core\BaseQuester.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9967,6 +9970,7 @@
     <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokunoPersistance.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\TrickOrTreat.cs" />
     <Compile Include="Services\Underworld\ExperimentalRoom\ExperimentalBook.cs">
       <SubType>Code</SubType>
     </Compile>
