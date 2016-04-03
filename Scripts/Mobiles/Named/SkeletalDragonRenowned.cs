@@ -57,14 +57,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(UndyingFlesh) };
+                return new Type[] { };
             }
         }
         public override Type[] SharedSAList
         {
             get
             {
-                return new Type[] { typeof(AxeOfAbandon), typeof(DemonBridleRing), typeof(DemonBridleRing), typeof(MagicalResidue), typeof(DelicateScales), typeof(VoidInfusedKilt) };
+                return new Type[] { typeof(AxeOfAbandon), typeof(DemonBridleRing), typeof(VoidInfusedKilt) };
             }
         }
         public override bool ReacquireOnMovement
