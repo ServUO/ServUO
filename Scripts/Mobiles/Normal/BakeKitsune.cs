@@ -66,14 +66,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return 10;
+                return 30;
             }
         }
         public override HideType HideType
         {
             get
             {
-                return HideType.Barbed;
+                return HideType.Regular;
             }
         }
         public override FoodType FavoriteFood
