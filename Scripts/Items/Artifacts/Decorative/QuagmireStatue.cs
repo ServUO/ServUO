@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class QuagmireStatue : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public QuagmireStatue()
             : base(0x2614)

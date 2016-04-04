@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class AdmiralsHeartyRum : BeverageBottle
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public AdmiralsHeartyRum()
             : base(BeverageType.Ale)

@@ -6,6 +6,7 @@ namespace Server.Items
 {
     public abstract class BasePigmentsOfTokuno : Item, IUsesRemaining
     {
+		public override bool IsArtifact { get { return true; } }
         private static readonly Type[] m_Glasses = new Type[]
         {
             typeof(MaritimeGlasses),

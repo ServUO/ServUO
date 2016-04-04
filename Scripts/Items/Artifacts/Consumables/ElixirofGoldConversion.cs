@@ -21,6 +21,7 @@ namespace Server.Items
 {
     public class ElixirofGoldConversion : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ElixirofGoldConversion()
             : base(0x99B)

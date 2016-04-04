@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public abstract class BaseDecorationArtifact : Item
     {
+		public override bool IsArtifact { get { return true; } }
         public BaseDecorationArtifact(int itemID)
             : base(itemID)
         {

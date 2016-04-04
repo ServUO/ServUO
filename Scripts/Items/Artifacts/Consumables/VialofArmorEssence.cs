@@ -6,6 +6,7 @@ namespace Server.Items
 {
     public class VialofArmorEssence : Item
     {
+		public override bool IsArtifact { get { return true; } }
         private bool m_Used;
         [Constructable]
         public VialofArmorEssence()

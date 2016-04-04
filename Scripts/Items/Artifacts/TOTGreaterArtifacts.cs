@@ -28,6 +28,7 @@ namespace Server.Items
 
     public class DarkenedSky : Kama
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DarkenedSky()
             : base()
@@ -86,6 +87,7 @@ namespace Server.Items
 
     public class KasaOfTheRajin : Kasa
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public KasaOfTheRajin()
             : base()
@@ -180,6 +182,7 @@ namespace Server.Items
 
     public class RuneBeetleCarapace : PlateDo
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RuneBeetleCarapace()
             : base()
@@ -248,6 +251,7 @@ namespace Server.Items
 
     public class Stormgrip : LeatherNinjaMitts
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Stormgrip()
             : base()
@@ -321,6 +325,7 @@ namespace Server.Items
 
     public class SwordOfTheStampede : NoDachi
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SwordOfTheStampede()
             : base()
@@ -379,6 +384,7 @@ namespace Server.Items
 
     public class SwordsOfProsperity : Daisho
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SwordsOfProsperity()
             : base()
@@ -438,6 +444,7 @@ namespace Server.Items
 
     public class TheHorselord : Yumi
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public TheHorselord()
             : base()
@@ -494,6 +501,7 @@ namespace Server.Items
 
     public class TomeOfLostKnowledge : Spellbook
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public TomeOfLostKnowledge()
             : base()
@@ -536,6 +544,7 @@ namespace Server.Items
 
     public class WindsEdge : Tessen
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public WindsEdge()
             : base()
@@ -596,6 +605,7 @@ namespace Server.Items
 
     public class PigmentsOfTokuno : BasePigmentsOfTokuno
     {
+		public override bool IsArtifact { get { return true; } }
         private static readonly int[][] m_Table = new int[][]
         {
             // Hue, Label

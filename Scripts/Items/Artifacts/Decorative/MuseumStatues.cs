@@ -4,7 +4,8 @@ using Server.Network;
 namespace Server.Items
 {
     public class VesperCollectionStatuette : BaseStatuette
-    { 
+    {
+		public override bool IsArtifact { get { return true; } }
         public VesperCollectionStatuette(int itemID)
             : base(itemID)
         {

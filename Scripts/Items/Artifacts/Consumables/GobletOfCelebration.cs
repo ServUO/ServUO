@@ -6,6 +6,7 @@ namespace Server.Items
 
 	public class GobletOfCelebration : BaseBeverage
 	{
+		public override bool IsArtifact { get { return true; } }
 		public override int MaxQuantity{ get{ return 5; } }
 		public override int LabelNumber{ get{ return 1075430; } } // Goblet of Celebration
         //1075272 = You drink from the goblet of celebration

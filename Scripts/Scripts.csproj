@@ -1988,7 +1988,7 @@
     <Compile Include="Mobiles\Normal\ShadowDweller.cs" />
     <Compile Include="Mobiles\Normal\ShadowFiend.cs" />
     <Compile Include="Mobiles\Normal\ShadowIronElemental.cs" />
-    <Compile Include="Mobiles\Normal\ShadowKnight.cs" />
+    <Compile Include="Mobiles\Named\ShadowKnight.cs" />
     <Compile Include="Mobiles\Normal\ShadowWisp.cs" />
     <Compile Include="Mobiles\Normal\ShadowWyrm.cs" />
     <Compile Include="Mobiles\Normal\Sheep.cs" />

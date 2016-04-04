@@ -555,18 +555,6 @@ namespace Server
 		Cursed = 3
 	}
 
-	public enum RarityType : byte
-	{
-		/// <summary>
-		///		Every day items, can be imbued, reforged, blessed, etc.
-		/// </summary>
-		Common = 0,
-		/// <summary>
-		///		Artifacts (and everything else), cannot be imbued, reforged, blessed, etc.
-		/// </summary>
-		Artifact = 1
-	}
-
 	public class BounceInfo
 	{
 		public Map m_Map;
@@ -1871,10 +1859,13 @@ namespace Server
 			}
 		}
 
+		/// <summary>
+		///		If true the item should be considered an artifact
+		/// </summary>
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual RarityType RarityType
+		public virtual bool IsArtifact
 		{
-			get { return RarityType.Common; }
+			get { return false; }
 		}
 
 		private static TimeSpan m_DDT = TimeSpan.FromHours(1.0);
