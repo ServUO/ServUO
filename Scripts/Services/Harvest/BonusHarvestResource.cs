@@ -7,14 +7,20 @@ namespace Server.Engines.Harvest
         private readonly TextDefinition m_SuccessMessage;
         private Type m_Type;
         private double m_ReqSkill, m_Chance;
-        public BonusHarvestResource(double reqSkill, double chance, TextDefinition message, Type type)
+		public BonusHarvestResource(double reqSkill, double chance, TextDefinition message, Type type)
+			: this(reqSkill, chance, message, type, null)
+		{ }
+        public BonusHarvestResource(double reqSkill, double chance, TextDefinition message, Type type, Map requiredMap)
         {
             this.m_ReqSkill = reqSkill;
 
             this.m_Chance = chance;
             this.m_Type = type;
             this.m_SuccessMessage = message;
+			RequiredMap = requiredMap;
         }
+
+		public Map RequiredMap { get; private set; }
 
         public Type Type
         {

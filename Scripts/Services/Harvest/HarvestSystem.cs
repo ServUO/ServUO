@@ -207,16 +207,19 @@ namespace Server.Engines.Harvest
 
                         if (bonus != null && bonus.Type != null && skillBase >= bonus.ReqSkill)
                         {
-                            Item bonusItem = this.Construct(bonus.Type, from);
+							if (bonus.RequiredMap == null || bonus.RequiredMap == from.Map)
+							{
+								Item bonusItem = this.Construct(bonus.Type, from);
 
-                            if (this.Give(from, bonusItem, true))	//Bonuses always allow placing at feet, even if pack is full irregrdless of def
-                            {
-                                bonus.SendSuccessTo(from);
-                            }
-                            else
-                            {
-                                item.Delete();
-                            }
+								if (this.Give(from, bonusItem, true))	//Bonuses always allow placing at feet, even if pack is full irregrdless of def
+								{
+									bonus.SendSuccessTo(from);
+								}
+								else
+								{
+									item.Delete();
+								}
+							}
                         }
 
                         if (tool is IUsesRemaining)
