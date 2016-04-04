@@ -165,7 +165,7 @@ namespace Server.Engines.Craft
 
             int index = AddCraft(type, cliloc, 1044381 + m_Index++, minSkill, maxSkill, m_RegTypes[(int)regs[0]], 1044353 + (int)regs[0], 1, 1044361 + (int)regs[0]);
 
-            for (int i = 1; i < regs.Length; ++i)
+            for (int i = 0; i < regs.Length; ++i)
                 AddRes(index, m_RegTypes[(int)regs[i]], 1044353 + (int)regs[i], 1, 1044361 + (int)regs[i]);
 
             AddRes(index, typeof(BlankScroll), 1044377, 1, 1044378);
