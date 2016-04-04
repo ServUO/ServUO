@@ -1,11 +1,6 @@
 using System;
 using Server.Mobiles;
 
-/*
-** Allows staff to quickly switch between player and their assigned staff levels by equipping or removing the cloak
-** Also allows instant teleportation to a specified destination when double-clicked by the staff member.
-*/
-
 namespace Server.Items
 {
     public class BarreraakRing : GoldRing

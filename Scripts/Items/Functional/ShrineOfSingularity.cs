@@ -2,6 +2,33 @@ using System;
 using Server.Gumps;
 using Server.Mobiles;
 
+/*
+Questions:
+
+Here are the answers to the questions you might get asked: 
+
+"Amongst all else, of how many virtues does the circle consist?" 
+Eight
+ 
+"Are each of the virtues considered to be equal?" 
+All are equal.
+ 
+"From diligence springs which virtue?" 
+Persistence
+ 
+"From passion springs which virtue?" 
+Feeling 
+
+"From what principle does direction spring?" 
+Control
+ 
+"Is any virtue more important than another?" 
+No
+ 
+"Which of these is a principle?" 
+Control 
+*/
+
 namespace Server.Items
 {
     public class ShrineOfSingularity : Item
