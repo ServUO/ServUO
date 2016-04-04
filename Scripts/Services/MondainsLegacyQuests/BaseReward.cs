@@ -69,16 +69,33 @@ namespace Server.Engines.Quests
 			return Utility.RandomMinMax(0x898, 0x8B0);
 		}
 
+		private static void ApplyMods(Item item)
+		{
+			if (item != null)
+			{
+				if (Mobiles.RandomItemGenerator.Enabled)
+				{
+					RunicReforging.GenerateRandomItem(item, 0, 0, 550);
+				}
+				else
+				{
+					int attributeCount = Utility.RandomMinMax(1, 5);
+					if(item is BaseJewel)
+						BaseRunicTool.ApplyAttributesTo((BaseJewel)item, false, 0, attributeCount, 10, 100);
+					else if (item is BaseWeapon)
+						BaseRunicTool.ApplyAttributesTo((BaseWeapon)item, false, 0, attributeCount, 10, 100);
+					else if (item is BaseRanged)
+						BaseRunicTool.ApplyAttributesTo((BaseRanged)item, false, 0, attributeCount, 10, 100);
+					else if (item is BaseArmor)
+						BaseRunicTool.ApplyAttributesTo((BaseArmor)item, false, 0, attributeCount, 10, 100);
+				}
+			}
+		}
+
 		public static Item Jewlery()
 		{
 			BaseJewel item = Loot.RandomJewelry();
-
-			if (item != null)
-			{
-				int attributeCount = Utility.RandomMinMax(1, 5);
-
-				BaseRunicTool.ApplyAttributesTo(item, false, 0, attributeCount, 10, 100); // ?
-			}
+			ApplyMods(item);
 
 			return item;
 		}
@@ -108,13 +125,7 @@ namespace Server.Engines.Quests
 		public static Item RangedWeapon()
 		{
 			BaseWeapon item = Loot.RandomRangedWeapon(false, true);
-
-			if (item != null)
-			{
-				int attributeCount = Utility.RandomMinMax(1, 5);
-
-				BaseRunicTool.ApplyAttributesTo(item, false, 0, attributeCount, 10, 100); // ?
-			}
+			ApplyMods(item);
 
 			return item;
 		}
@@ -127,13 +138,7 @@ namespace Server.Engines.Quests
 		public static Item Armor()
 		{
 			BaseArmor item = Loot.RandomArmor(false, true);
-
-			if (item != null)
-			{
-				int attributeCount = Utility.RandomMinMax(1, 5);
-
-				BaseRunicTool.ApplyAttributesTo(item, false, 0, attributeCount, 10, 100); // ?
-			}
+			ApplyMods(item);
 
 			return item;
 		}
@@ -146,13 +151,7 @@ namespace Server.Engines.Quests
 		public static Item Weapon()
 		{
 			BaseWeapon item = Loot.RandomWeapon(false, true);
-
-			if (item != null)
-			{
-				int attributeCount = Utility.RandomMinMax(1, 5);
-
-				BaseRunicTool.ApplyAttributesTo(item, false, 0, attributeCount, 10, 100); // ?
-			}
+			ApplyMods(item);
 
 			return item;
 		}
