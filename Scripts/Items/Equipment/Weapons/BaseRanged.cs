@@ -204,6 +204,14 @@ namespace Server.Items
 
 		public virtual bool OnFired(Mobile attacker, Mobile defender)
 		{
+			WeaponAbility ability = WeaponAbility.GetCurrentAbility(attacker);
+			
+			// Respect special moves that use no ammo
+			if (ability != null && ability.ConsumeAmmo == false)
+			{
+				return true;
+			}
+
 			if (attacker.Player)
 			{
 				BaseQuiver quiver = attacker.FindItemOnLayer(Layer.Cloak) as BaseQuiver;
