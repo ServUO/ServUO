@@ -2629,73 +2629,73 @@
     <Compile Include="Quests\WitchApprentice\Objectives.cs" />
     <Compile Include="Quests\WitchApprentice\WitchApprenticeQuest.cs" />
     <Compile Include="Services\HolidaySettings.cs" />
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\Alchemist2BazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\Alchemist2BazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\ArmorBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\ArmorBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\ArtistBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\ArtistBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\CarpenterBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\CarpenterBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\CarpetedStairBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\CarpetedStairBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\CrystalBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\CrystalBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\DistilleryBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\DistilleryBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\EvilBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\EvilBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\FishermanBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\FishermanBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\GenericBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\GenericBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\JewelerBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\JewelerBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\LeatherArmourBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\LeatherArmourBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\MarbleStairBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\MarbleStairBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\MetalArmourBazzarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\MetalArmourBazzarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\PillowBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\PillowBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\Provisioner2BazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\Provisioner2BazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\ProvisionerBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\ProvisionerBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\ScribeBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\ScribeBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\SmithBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\SmithBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\StableBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\StableBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\Tailor2BazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\Tailor2BazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\TailorBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\TailorBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\MaginciaBazaar\Bazaar AddOns\WoodBenchBazaarAddon.cs">
+    <Compile Include="Services\MaginciaBazaar\BazaarAddOns\WoodBenchBazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\MaginciaBazaar\SBVendorMallManager.cs">
@@ -8426,16 +8426,16 @@
     <Compile Include="Services\CommunityCollections\BaseCollectionMobile.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Britain Library\Rewards\Glasses.cs">
+    <Compile Include="Items\Artifacts\Equipment\Glasses\CollectionsBritLibraryGlasses.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Britain Library\Rewards\Misc.cs">
+    <Compile Include="Items\Artifacts\Decorative\CollectionsBritLibraryMisc.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Britain Library\Rewards\Quotes.cs">
+    <Compile Include="Items\Artifacts\Decorative\CollectionsBritLibraryQuotes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Britain Library\Rewards\Talismans.cs">
+    <Compile Include="Items\Equipment\Talismans\CollectionsBritLibraryTalismans.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\CommunityCollections\CollectionDecayTimer.cs">
@@ -8457,64 +8457,64 @@
     <Compile Include="Services\CommunityCollections\ICollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\DonationBox.cs">
+    <Compile Include="Services\CommunityCollections\RoyalZooDonationBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\BakeKitsuneStatue.cs">
+    <Compile Include="Items\Artifacts\Decorative\BakeKitsuneStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\ChangelingStatue.cs">
+    <Compile Include="Items\Artifacts\Decorative\ChangelingStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\CollectionStatuettes.cs">
+    <Compile Include="Items\Artifacts\Decorative\CollectionStatuettes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\LeatherArmor.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\RoyalZooLeatherArmor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\PlateArmor.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\RoyalZooPlateArmor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\PolarBearStatue.cs">
+    <Compile Include="Items\Artifacts\Decorative\PolarBearStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\QuagmireStatue.cs">
+    <Compile Include="Items\Artifacts\Decorative\QuagmireStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\ReptalonStatue.cs">
+    <Compile Include="Items\Artifacts\Decorative\ReptalonStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\SnakeStatue.cs">
+    <Compile Include="Items\Artifacts\Decorative\SnakeStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\StuddedArmor.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\RoyalZooStuddedArmor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Moonglow Zoo\Rewards\WolfStatue.cs">
+    <Compile Include="Items\Artifacts\Decorative\WolfStatue.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\CommunityCollections\SelectTitleGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Vesper Museum\DonationBox.cs">
+    <Compile Include="Services\CommunityCollections\MuseumDonationBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\Armor.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\MuseumArmor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\ClaininsSpellbook.cs">
+    <Compile Include="Items\Artifacts\Equipment\Spellbooks\ClaininsSpellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\Jewlery.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\MuseumJewlery.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\LordBritishThroneAddon.cs">
+    <Compile Include="Items\Artifacts\Decorative\LordBritishThroneAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\Statues.cs">
+    <Compile Include="Items\Artifacts\Decorative\MuseumStatues.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\CommunityCollections\Vesper Museum\Rewards\Weapons.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\MuseumWeapons.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\ConPVP\AcceptDuelGump.cs">
@@ -8690,34 +8690,34 @@
     <Compile Include="Services\DespiseRevamped\DespiseController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\DespiseRevamped\Items\Ankh.cs">
+    <Compile Include="Items\Functional\DespiseAnkh.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\DespiseRevamped\Items\Artifacts.cs">
+    <Compile Include="Items\Artifacts\DespiseArtifacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\DespiseRevamped\Items\Orb.cs">
+    <Compile Include="Items\Quest\WispOrb.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\DespiseRevamped\Items\PutridHeart.cs">
+    <Compile Include="Items\Quest\PutridHeart.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\DespiseRevamped\Items\Teleporters.cs">
+    <Compile Include="Items\Internal\DespiseTeleporter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\DespiseRevamped\Mobiles\DespiseBosses.cs">
+    <Compile Include="Mobiles\Bosses\DespiseBosses.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\DespiseRevamped\Mobiles\DespiseCreature.cs">
+    <Compile Include="Mobiles\Normal\DespiseCreature.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\DespiseRevamped\Mobiles\EvilCreatures.cs">
+    <Compile Include="Mobiles\Normal\DespiseEvilCreatures.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\DespiseRevamped\Mobiles\GoodCreatures.cs">
+    <Compile Include="Mobiles\Normal\DespiseGoodCreatures.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\DespiseRevamped\Mobiles\MysteriousWisp.cs">
+    <Compile Include="Mobiles\NPCs\MysteriousWisp.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\DespiseRevamped\Region.cs">
@@ -8729,13 +8729,13 @@
     <Compile Include="Services\Doom\GauntletSpawner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Doom\LeverPuzzle\LeverPuzzleController.cs">
+    <Compile Include="Services\Doom\LeverPuzzleController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Doom\LeverPuzzle\LeverPuzzleItems.cs">
+    <Compile Include="Services\Doom\LeverPuzzleItems.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Doom\LeverPuzzle\LeverPuzzleRegions.cs">
+    <Compile Include="Services\Doom\LeverPuzzleRegions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Ethics\Core\Ethic.cs">
@@ -9071,40 +9071,40 @@
     <Compile Include="Services\Factions\Mobiles\Vendors\FactionReagentVendor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Core\BonusHarvestResource.cs">
+    <Compile Include="Services\Harvest\BonusHarvestResource.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Core\HarvestBank.cs">
+    <Compile Include="Services\Harvest\HarvestBank.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Core\HarvestDefinition.cs">
+    <Compile Include="Services\Harvest\HarvestDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Core\HarvestResource.cs">
+    <Compile Include="Services\Harvest\HarvestResource.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Core\HarvestSoundTimer.cs">
+    <Compile Include="Services\Harvest\HarvestSoundTimer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Core\HarvestSystem.cs">
+    <Compile Include="Services\Harvest\HarvestSystem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Core\HarvestTarget.cs">
+    <Compile Include="Services\Harvest\HarvestTarget.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Core\HarvestTimer.cs">
+    <Compile Include="Services\Harvest\HarvestTimer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Core\HarvestVein.cs">
+    <Compile Include="Services\Harvest\HarvestVein.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Fishing.cs">
+    <Compile Include="Skills\Fishing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Lumberjacking.cs">
+    <Compile Include="Skills\Lumberjacking.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Harvest\Mining.cs">
+    <Compile Include="Skills\Mining.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Help\HelpGump.cs">
@@ -9135,22 +9135,22 @@
     <Compile Include="Services\Help\StuckMenu.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Imbuing\Core\Imbuing.cs">
+    <Compile Include="Skills\Imbuing\Core\Imbuing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Imbuing\Core\ImbuingContext.cs">
+    <Compile Include="Skills\Imbuing\Core\ImbuingContext.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Imbuing\Core\ImbuingDefinition.cs">
+    <Compile Include="Skills\Imbuing\Core\ImbuingDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Imbuing\Gumps\ImbuingB.cs">
+    <Compile Include="Skills\Imbuing\Gumps\ImbuingB.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Imbuing\Gumps\ImbuingC.cs">
+    <Compile Include="Skills\Imbuing\Gumps\ImbuingC.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Imbuing\Gumps\ImbuingGump.cs">
+    <Compile Include="Skills\Imbuing\Gumps\ImbuingGump.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\InstancedPeerless\ConfirmExitInstanceGump.cs">
@@ -9186,19 +9186,19 @@
     <Compile Include="Services\InstancedPeerless\RejoinInstanceGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\InstancedPeerless\Stygian Dragon\DraconicOrb.cs">
+    <Compile Include="Services\InstancedPeerless\StygianDragon\DraconicOrb.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\InstancedPeerless\Stygian Dragon\StygianDragonPlatform.cs">
+    <Compile Include="Services\InstancedPeerless\StygianDragon\StygianDragonPlatform.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Khaldun\Books\GrimmochJournal.cs">
+    <Compile Include="Items\Books\GrimmochJournal.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Khaldun\Books\LysanderNotebook.cs">
+    <Compile Include="Items\Books\LysanderNotebook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Khaldun\Books\TavarasJournal.cs">
+    <Compile Include="Items\Books\TavarasJournal.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Khaldun\KhaldunGen.cs">
@@ -9207,16 +9207,16 @@
     <Compile Include="Services\Khaldun\KhaldunPitTeleporter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Khaldun\Mobiles\GrimmochDrummel.cs">
+    <Compile Include="Mobiles\Named\GrimmochDrummel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Khaldun\Mobiles\LysanderGathenwale.cs">
+    <Compile Include="Mobiles\Named\LysanderGathenwale.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Khaldun\Mobiles\MorgBergen.cs">
+    <Compile Include="Mobiles\Named\MorgBergen.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Khaldun\Mobiles\TavaraSewel.cs">
+    <Compile Include="Mobiles\Named\TavaraSewel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Khaldun\PuzzleChest.cs">
@@ -9294,73 +9294,73 @@
     <Compile Include="Services\Pathing\SlowAStarAlgorithm.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Baskets\PicnicBasket2.cs">
+    <Compile Include="Services\BasketWeaving\Baskets\PicnicBasket2.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Baskets\RoundBasket.cs">
+    <Compile Include="Services\BasketWeaving\Baskets\RoundBasket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Baskets\RoundBasketHandles.cs">
+    <Compile Include="Services\BasketWeaving\Baskets\RoundBasketHandles.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Baskets\SmallBushel.cs">
+    <Compile Include="Services\BasketWeaving\Baskets\SmallBushel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Baskets\SmallRoundBasket.cs">
+    <Compile Include="Services\BasketWeaving\Baskets\SmallRoundBasket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Baskets\SmallSquareBasket.cs">
+    <Compile Include="Services\BasketWeaving\Baskets\SmallSquareBasket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Baskets\SquareBasket.cs">
+    <Compile Include="Services\BasketWeaving\Baskets\SquareBasket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Baskets\TallBasket.cs">
+    <Compile Include="Services\BasketWeaving\Baskets\TallBasket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Baskets\TallRoundBasket.cs">
+    <Compile Include="Services\BasketWeaving\Baskets\TallRoundBasket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Baskets\WinnowingBasket.cs">
+    <Compile Include="Services\BasketWeaving\Baskets\WinnowingBasket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\BasketWeavingBook.cs">
+    <Compile Include="Services\BasketWeaving\BasketWeavingBook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Basketweavingpliers.cs">
+    <Compile Include="Services\BasketWeaving\Basketweavingpliers.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\Clippers.cs">
+    <Compile Include="Services\BasketWeaving\Clippers.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\ColorFixative.cs">
+    <Compile Include="Services\BasketWeaving\ColorFixative.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\DefBasketweaving.cs">
+    <Compile Include="Services\BasketWeaving\DefBasketweaving.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\DryReed.cs">
+    <Compile Include="Services\BasketWeaving\DryReed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\MiscSAResources.cs">
+    <Compile Include="Services\BasketWeaving\MiscSAResources.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\NaturalDye.cs">
+    <Compile Include="Services\BasketWeaving\NaturalDye.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\PlantPigment.cs">
+    <Compile Include="Services\BasketWeaving\PlantPigment.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\PlantPigmentHue.cs">
+    <Compile Include="Services\BasketWeaving\PlantPigmentHue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\SATinker.cs">
+    <Compile Include="Services\BasketWeaving\SATinker.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\SBSATinker.cs">
+    <Compile Include="Services\BasketWeaving\SBSATinker.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\PlantSystem\SilverSapling.cs">
+    <Compile Include="Services\BasketWeaving\SilverSapling.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Plants\EmptyTheBowlGump.cs">
@@ -9369,19 +9369,19 @@
     <Compile Include="Services\Plants\MainPlantGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Plants\MiscItems\FertileDirt.cs">
+    <Compile Include="Items\Resource\FertileDirt.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Plants\MiscItems\GreenThorns.cs">
+    <Compile Include="Items\Consumables\GreenThorns.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Plants\MiscItems\OrangePetals.cs">
+    <Compile Include="Items\Consumables\OrangePetals.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Plants\MiscItems\RedLeaves.cs">
+    <Compile Include="Items\Consumables\RedLeaves.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Plants\Network\DisplayHelpTopic.cs">
+    <Compile Include="Services\Plants\DisplayHelpTopic.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Plants\PlantBowl.cs">
@@ -9411,7 +9411,7 @@
     <Compile Include="Services\Plants\ReproductionGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Plants\Seed.cs">
+    <Compile Include="Items\Resource\Seed.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Plants\SetToDecorativeGump.cs">
@@ -9419,346 +9419,346 @@
     </Compile>
     <Compile Include="Services\PlayerZombies.cs" />
     <Compile Include="Services\PumpkinPatch.cs" />
-    <Compile Include="Services\Quests\Core\BaseQuester.cs">
+    <Compile Include="Services\Quests\BaseQuester.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\Items\DynamicTeleporter.cs">
+    <Compile Include="Services\Quests\Items\DynamicTeleporter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\Items\EnchantedSextant.cs">
+    <Compile Include="Services\Quests\Items\EnchantedSextant.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\Items\HornOfRetreat.cs">
+    <Compile Include="Services\Quests\Items\HornOfRetreat.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\Items\QuestItem.cs">
+    <Compile Include="Services\Quests\Items\QuestItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\QuestCallbackEntry.cs">
+    <Compile Include="Services\Quests\QuestCallbackEntry.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\QuestConversation.cs">
+    <Compile Include="Services\Quests\QuestConversation.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\QuestItemInfo.cs">
+    <Compile Include="Services\Quests\QuestItemInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\QuestObjective.cs">
+    <Compile Include="Services\Quests\QuestObjective.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\QuestRestartInfo.cs">
+    <Compile Include="Services\Quests\QuestRestartInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\QuestSerializer.cs">
+    <Compile Include="Services\Quests\QuestSerializer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\QuestSystem.cs">
+    <Compile Include="Services\Quests\QuestSystem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\Regions\CancelQuestRegion.cs">
+    <Compile Include="Services\Quests\Regions\CancelQuestRegion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\Regions\QuestCompleteObjectiveRegion.cs">
+    <Compile Include="Services\Quests\Regions\QuestCompleteObjectiveRegion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\Regions\QuestNoEntryRegion.cs">
+    <Compile Include="Services\Quests\Regions\QuestNoEntryRegion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Core\Regions\QuestOfferRegion.cs">
+    <Compile Include="Services\Quests\Regions\QuestOfferRegion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\BaseEscort.cs">
+    <Compile Include="Services\MondainsLegacyQuests\BaseEscort.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\BaseQuest.cs">
+    <Compile Include="Quests\BaseQuest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\BaseQuestItem.cs">
+    <Compile Include="Services\MondainsLegacyQuests\BaseQuestItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\BaseReward.cs">
+    <Compile Include="Services\MondainsLegacyQuests\BaseReward.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\Gumps\ConfirmHeritageGump.cs">
+    <Compile Include="Services\MondainsLegacyQuests\Gumps\ConfirmHeritageGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\Gumps\MondainQuestGump.cs">
+    <Compile Include="Services\MondainsLegacyQuests\Gumps\MondainQuestGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\Gumps\MondainResignGump.cs">
+    <Compile Include="Services\MondainsLegacyQuests\Gumps\MondainResignGump.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\Helpers\PacketOverrides.cs">
+    <Compile Include="Services\MondainsLegacyQuests\Helpers\PacketOverrides.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\Helpers\QuestHelper.cs">
+    <Compile Include="Services\MondainsLegacyQuests\Helpers\QuestHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\Helpers\QuestReader.cs">
+    <Compile Include="Services\MondainsLegacyQuests\Helpers\QuestReader.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\Helpers\QuestWriter.cs">
+    <Compile Include="Services\MondainsLegacyQuests\Helpers\QuestWriter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\HeritageQuester.cs">
+    <Compile Include="Services\MondainsLegacyQuests\HeritageQuester.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\Items\CraftsmanSatchel.cs">
+    <Compile Include="Items\Containers\CraftsmanSatchel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\Items\RewardBag.cs">
+    <Compile Include="Items\Containers\RewardBag.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\Items\RewardBox.cs">
+    <Compile Include="Items\Containers\RewardBox.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\MondainQuester.cs">
+    <Compile Include="Services\MondainsLegacyQuests\MondainQuester.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\QuestChains.cs">
+    <Compile Include="Services\MondainsLegacyQuests\QuestChains.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\QuestObjectives.cs">
+    <Compile Include="Services\MondainsLegacyQuests\QuestObjectives.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Mondain%27s Legacy\Regions\ApprenticeRegion.cs">
+    <Compile Include="Services\MondainsLegacyQuests\ApprenticeRegion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\BasePeerless.cs">
+    <Compile Include="Services\Peerless\BasePeerless.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Bedlam\AlbinoSquirrelImprisonedInCrystal.cs">
+    <Compile Include="Items\Quest\AlbinoSquirrelImprisonedInCrystal.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Bedlam\Altar.cs">
+    <Compile Include="Items\Functional\BedlamAltar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Bedlam\DisintegratingThesisNotes.cs">
+    <Compile Include="Items\Quest\DisintegratingThesisNotes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Bedlam\LadyMelisande.cs">
+    <Compile Include="Mobiles\Bosses\LadyMelisande.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Bedlam\LibrariansKey.cs">
+    <Compile Include="Items\Quest\LibrariansKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Bedlam\MasterKey.cs">
+    <Compile Include="Items\Quest\BedlamKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Bedlam\MonstrousInterredGrizzle.cs">
+    <Compile Include="Mobiles\Bosses\MonstrousInterredGrizzle.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Blighted Grove\Altar.cs">
+    <Compile Include="Items\Functional\BlightedGroveAltar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Blighted Grove\DryadsBlessing.cs">
+    <Compile Include="Items\Quest\DryadsBlessing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Blighted Grove\MasterKey.cs">
+    <Compile Include="Items\Quest\BlightedGroveKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\ConfirmGumps.cs">
+    <Compile Include="Services\Peerless\ConfirmGumps.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\MasterKey.cs">
+    <Compile Include="Services\Peerless\MasterKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\DemonBridleRing.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\DemonBridleRing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\GorgonLens.cs">
+    <Compile Include="Items\Consumables\GorgonLens.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\IFreezable.cs">
+    <Compile Include="Mobiles\IFreezable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\IronwoodCompositeBow.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\IronwoodCompositeBow.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\Medusa.cs">
+    <Compile Include="Mobiles\Bosses\Medusa.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\MedusaBlood.cs">
+    <Compile Include="Items\Resource\MedusaBlood.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\MedusaDarkScales.cs">
+    <Compile Include="Items\Resource\MedusaDarkScales.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\MedusaLairAltar.cs">
+    <Compile Include="Items\Functional\MedusaLairAltar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\MedusaLairMasterKey.cs">
+    <Compile Include="Items\Quest\MedusaLairMasterKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\MedusaLightScales.cs">
+    <Compile Include="Items\Resource\MedusaLightScales.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\MedusaNest.cs">
+    <Compile Include="Items\Addons\MedusaNest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\MedusaStatue.cs">
+    <Compile Include="Items\Artifacts\Decorative\MedusaStatue.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\PetrifiedSnake.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\PetrifiedSnake.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\RareSerpentEgg.cs">
+    <Compile Include="Items\Quest\RareSerpentEgg.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\Slither.cs">
+    <Compile Include="Items\Equipment\Talismans\Slither.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\StoneDragonsTooth.cs">
+    <Compile Include="Items\Artifacts\Equipment\Weapons\StoneDragonsTooth.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\StoneMonster.cs">
+    <Compile Include="Mobiles\Normal\StoneMonster.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\SummonersKilt.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\SummonersKilt.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Medusa%27s Lair\Venom.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\Venom.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Palace of Paroxysmus\Altar.cs">
+    <Compile Include="Items\Functional\ParoxysmusAltar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Palace of Paroxysmus\ChiefParoxysmus.cs">
+    <Compile Include="Mobiles\Bosses\ChiefParoxysmus.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Palace of Paroxysmus\CoagulatedLegs.cs">
+    <Compile Include="Items\Quest\CoagulatedLegs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Palace of Paroxysmus\GelatanousSkull.cs">
+    <Compile Include="Items\Quest\GelatanousSkull.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Palace of Paroxysmus\MasterKey.cs">
+    <Compile Include="Items\Quest\ParoxysmusKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Palace of Paroxysmus\PartiallyDigestedTorso.cs">
+    <Compile Include="Items\Quest\PartiallyDigestedTorso.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Palace of Paroxysmus\SpleenOfThePutrefier.cs">
+    <Compile Include="Items\Quest\SpleenOfThePutrefier.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\PeerlessAltar.cs">
+    <Compile Include="Services\Peerless\PeerlessAltar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\PeerlessKey.cs">
+    <Compile Include="Services\Peerless\PeerlessKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\PeerlessTeleporter.cs">
+    <Compile Include="Services\Peerless\PeerlessTeleporter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Prism of Light\Altar.cs">
+    <Compile Include="Items\Functional\PrismOfLightAltar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Prism of Light\BrokenCrystals.cs">
+    <Compile Include="Items\Quest\BrokenCrystals.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Prism of Light\CrushedCrystals.cs">
+    <Compile Include="Items\Quest\CrushedCrystals.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Prism of Light\FerretImprisonedInCrystal.cs">
+    <Compile Include="Items\Artifacts\Decorative\FerretImprisonedInCrystal.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Prism of Light\JaggedCrystals.cs">
+    <Compile Include="Items\Quest\JaggedCrystals.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Prism of Light\MasterKey.cs">
+    <Compile Include="Items\Quest\PrismOfLightKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Prism of Light\PiecesOfCrystal.cs">
+    <Compile Include="Items\Quest\PiecesOfCrystal.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Prism of Light\ScatteredCrystals.cs">
+    <Compile Include="Items\Quest\ScatteredCrystals.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Prism of Light\ShatteredCrystals.cs">
+    <Compile Include="Items\Quest\ShatteredCrystals.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Prism of Light\ShimmeringEffusion.cs">
+    <Compile Include="Mobiles\Bosses\ShimmeringEffusion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\SlasherOfVeils.cs">
+    <Compile Include="Mobiles\Bosses\SlasherOfVeils.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Stygian Dragon Lair\CrimsonDragon.cs">
+    <Compile Include="Mobiles\Bosses\CrimsonDragon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Stygian Dragon Lair\DraconicOrbKey.cs">
+    <Compile Include="Items\Quest\DraconicOrbKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Stygian Dragon Lair\StygianDragon.cs">
+    <Compile Include="Mobiles\Bosses\StygianDragon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Stygian Dragon Lair\StygianDragonAltar.cs">
+    <Compile Include="Items\Functional\StygianDragonAltar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Stygian Dragon Lair\StygianDragonMasterKey.cs">
+    <Compile Include="Items\Quest\StygianDragonMasterKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\The Citadel\Altar.cs">
+    <Compile Include="Items\Functional\CitadelAltar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\The Citadel\DragonFlameKey.cs">
+    <Compile Include="Items\Quest\DragonFlameKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\The Citadel\DragonsFlameMage.cs">
+    <Compile Include="Mobiles\Normal\DragonsFlameMage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\The Citadel\ImprisonedDog.cs">
+    <Compile Include="Items\Artifacts\Decorative\ImprisonedDog.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\The Citadel\MasterKey.cs">
+    <Compile Include="Items\Quest\CitadelKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\The Citadel\SerpentFangKey.cs">
+    <Compile Include="Items\Quest\SerpentFangKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\The Citadel\SerpentsFangAssassin.cs">
+    <Compile Include="Mobiles\Normal\SerpentsFangAssassin.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\The Citadel\TigerClawKey.cs">
+    <Compile Include="Items\Quest\TigerClawKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\The Citadel\TigersClawThief.cs">
+    <Compile Include="Mobiles\Normal\TigersClawThief.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\The Citadel\TragicRemainsOfTravesty.cs">
+    <Compile Include="Items\Artifacts\Decorative\TragicRemainsOfTravesty.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\The Citadel\Travesty.cs">
+    <Compile Include="Mobiles\Bosses\Travesty.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Twisted Weald\Altar.cs">
+    <Compile Include="Items\Functional\TwistedWealdAltar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Twisted Weald\BlightedCotton.cs">
+    <Compile Include="Items\Quest\BlightedCotton.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Twisted Weald\DreadFlute.cs">
+    <Compile Include="Items\Artifacts\Equipment\Instruments\DreadFlute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Twisted Weald\DreadHorn.cs">
+    <Compile Include="Mobiles\Bosses\DreadHorn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Twisted Weald\GnawsFang.cs">
+    <Compile Include="Items\Quest\GnawsFang.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Twisted Weald\IrksBrain.cs">
+    <Compile Include="Items\Quest\IrksBrain.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Twisted Weald\LissithsSilk.cs">
+    <Compile Include="Items\Quest\LissithsSilk.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Twisted Weald\MasterKey.cs">
+    <Compile Include="Items\Quest\TwistedWealdKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Twisted Weald\SabrixsEye.cs">
+    <Compile Include="Items\Quest\SabrixsEye.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Peerless System\Twisted Weald\ThornyBriar.cs">
+    <Compile Include="Items\Quest\ThornyBriar.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\RemoteAdmin\Network.cs">
@@ -9948,13 +9948,13 @@
     <Compile Include="Services\Toolbar\Gumps\ToolbarEdit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\TreasuresOfTokuno\BasePigmentsOfTokuno.cs">
+    <Compile Include="Items\Artifacts\Consumables\BasePigmentsOfTokuno.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\TreasuresOfTokuno\GreaterArtifacts.cs">
+    <Compile Include="Items\Artifacts\TOTGreaterArtifacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\TreasuresOfTokuno\LesserArtifacts.cs">
+    <Compile Include="Items\Artifacts\TOTLesserArtifacts.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokuno.cs">
@@ -9988,13 +9988,13 @@
     <Compile Include="Services\Underworld\Generate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Underworld\Items\FountainOfFortune.cs">
+    <Compile Include="Items\Addons\FountainOfFortune.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Underworld\Items\GemologistsSatchel.cs">
+    <Compile Include="Items\Containers\GemologistsSatchel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Underworld\Items\SolesOfProvidence.cs">
+    <Compile Include="Items\Artifacts\Equipment\Clothing\SolesOfProvidence.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Underworld\Maze of Death\CompassDirectionGump.cs">
