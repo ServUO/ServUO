@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class RoyalZooStuddedLegs : StuddedLegs
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooStuddedLegs()
             : base()
@@ -93,7 +94,8 @@ namespace Server.Items
     }
 
     public class RoyalZooStuddedGloves : StuddedGloves
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooStuddedGloves()
             : base()
@@ -183,7 +185,8 @@ namespace Server.Items
     }
 
     public class RoyalZooStuddedGorget : StuddedGorget
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooStuddedGorget()
             : base()
@@ -273,7 +276,8 @@ namespace Server.Items
     }
 
     public class RoyalZooStuddedArms : StuddedArms
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooStuddedArms()
             : base()
@@ -363,7 +367,8 @@ namespace Server.Items
     }
 
     public class RoyalZooStuddedChest : StuddedChest
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooStuddedChest()
             : base()
@@ -453,7 +458,8 @@ namespace Server.Items
     }
 
     public class RoyalZooStuddedFemaleChest : FemaleStuddedChest
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooStuddedFemaleChest()
             : base()

@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class AnimatedLegsoftheInsaneTinker : PlateLegs
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public AnimatedLegsoftheInsaneTinker()
             : base()

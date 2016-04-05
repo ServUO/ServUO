@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class VoidInfusedKilt : GargishPlateKilt
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public VoidInfusedKilt()
             : base()

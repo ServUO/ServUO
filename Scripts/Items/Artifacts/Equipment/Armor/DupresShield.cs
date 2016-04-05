@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class DupresShield : BaseShield, ITokunoDyable
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DupresShield()
             : base(0x2B01)

@@ -4,7 +4,8 @@ namespace Server.Items
 {
     [FlipableAttribute(0x13c6, 0x13ce)]
     public class LeatherGlovesOfMining : BaseGlovesOfMining
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LeatherGlovesOfMining(int bonus)
             : base(bonus, 0x13C6)

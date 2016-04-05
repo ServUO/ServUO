@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class MinaxsArmor : FemaleStuddedChest
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public MinaxsArmor()
             : base()
@@ -91,7 +92,8 @@ namespace Server.Items
     }
 
     public class KeeoneansChainMail : ChainChest
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public KeeoneansChainMail()
             : base()
@@ -180,7 +182,8 @@ namespace Server.Items
     }
 
     public class VesperOrderShield : OrderShield
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public VesperOrderShield()
             : base()
@@ -243,7 +246,8 @@ namespace Server.Items
     }
 
     public class VesperChaosShield : ChaosShield
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public VesperChaosShield()
             : base()

@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class HelmOfSwiftness : WingedHelm
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HelmOfSwiftness()
             : base()

@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class MysticsGuard : GargishWoodenShield
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public MysticsGuard()
             : base()
