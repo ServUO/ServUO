@@ -685,6 +685,7 @@
     <Compile Include="Items\Quest\ScrollOfAbraxus.cs" />
     <Compile Include="Items\Quest\SealedNotesForJamal.cs" />
     <Compile Include="Items\Quest\SignedTuitionReimbursementForm.cs" />
+    <Compile Include="Items\Quest\StoutWhip.cs" />
     <Compile Include="Items\Quest\TaintedTreeSample.cs" />
     <Compile Include="Items\Quest\TreatForDrithen.cs" />
     <Compile Include="Items\Quest\TripartiteKey.cs" />
@@ -1933,6 +1934,10 @@
     <Compile Include="Mobiles\Normal\PlagueBeastLord.cs" />
     <Compile Include="Mobiles\Normal\PlagueRat.cs" />
     <Compile Include="Mobiles\Normal\PlagueSpawn.cs" />
+    <Compile Include="Mobiles\NPCs\Emilio.cs" />
+    <Compile Include="Mobiles\NPCs\Evan.cs" />
+    <Compile Include="Mobiles\NPCs\Regina.cs" />
+    <Compile Include="Mobiles\NPCs\Thalia.cs" />
     <Compile Include="Mobiles\PlayerMobile.cs" />
     <Compile Include="Mobiles\Normal\PoisonElemental.cs" />
     <Compile Include="Mobiles\Normal\PolarBear.cs" />
