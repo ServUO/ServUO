@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class RaptorClaw : Boomerang
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RaptorClaw()
         {

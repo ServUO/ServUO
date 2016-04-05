@@ -3,8 +3,9 @@ using System;
 namespace Server.Items
 {
     [FlipableAttribute(0x26BF, 0x26C9)]
-    public class StandardOfChaos : DoubleBladedStaff 
-    {
+    public class StandardOfChaos : DoubleBladedStaff
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public StandardOfChaos()
         {

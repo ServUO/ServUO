@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class NoxRangersHeavyCrossbow : HeavyCrossbow
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public NoxRangersHeavyCrossbow()
         {

@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class AbyssReaver : BaseThrown
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public AbyssReaver()
             : base(0x901)

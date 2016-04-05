@@ -4,7 +4,8 @@ using Server.Engines.Harvest;
 namespace Server.Items
 {
     public class JadeWarAxe : WarAxe
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public JadeWarAxe()
         {

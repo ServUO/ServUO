@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class Mangler : Broadsword
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Mangler()
             : base()

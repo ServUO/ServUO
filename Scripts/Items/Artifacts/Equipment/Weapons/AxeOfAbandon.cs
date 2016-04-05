@@ -4,7 +4,8 @@ namespace Server.Items
 {
     [FlipableAttribute(0xF47, 0xF48)]
     public class AxeOfAbandon : BattleAxe
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public AxeOfAbandon() 
         {

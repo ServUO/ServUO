@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class SwordOfShatteredHopes : GlassSword
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SwordOfShatteredHopes()
             : base()

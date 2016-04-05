@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class PetrifiedSnake : SerpentStoneStaff
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public PetrifiedSnake()
             : base()

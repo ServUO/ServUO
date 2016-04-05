@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class StoneSlithClaw : Cyclone
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public StoneSlithClaw()
         {

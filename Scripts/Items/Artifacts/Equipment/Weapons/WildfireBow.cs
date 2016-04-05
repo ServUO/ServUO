@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class WildfireBow : ElvenCompositeLongbow
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public WildfireBow()
             : base()

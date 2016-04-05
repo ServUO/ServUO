@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class FaerieFire : ElvenCompositeLongbow, ITokunoDyable
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber
         {
             get

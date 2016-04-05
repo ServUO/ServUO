@@ -4,7 +4,8 @@ namespace Server.Items
 {
     [FlipableAttribute(0x143D, 0x143C)]
     public class TheImpalersPick : HammerPick
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public TheImpalersPick()
         {
