@@ -1322,6 +1322,9 @@ namespace Server.Items
         /// </summary>
         public static bool GenerateRandomItem(Item item, Mobile killer, BaseCreature creature)
         {
+			if (item.IsArtifact)
+				return false;
+
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
                 GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
