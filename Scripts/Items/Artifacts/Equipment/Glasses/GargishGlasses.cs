@@ -4,7 +4,8 @@ namespace Server.Items
 {
     [Flipable(0x4644, 0x4645)]     
     public class GargishGlasses : BaseArmor
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         private AosWeaponAttributes m_AosWeaponAttributes;
         [Constructable]
         public GargishGlasses()

@@ -13,6 +13,7 @@ namespace Server.Items
 	
 	public class RunedSashOfWarding : BodySash
 	{
+		public override bool IsArtifact { get { return true; } }
 		public static Dictionary<Mobile, WardingEffect> Table { get { return m_Table; } }
 		private static Dictionary<Mobile, WardingEffect> m_Table = new Dictionary<Mobile, WardingEffect>();
 

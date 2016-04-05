@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 { 
     public class VesperCollectionRing : GoldRing
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         public VesperCollectionRing()
             : base()
         { 
@@ -37,7 +38,8 @@ namespace Server.Items
     }
 
     public class VesperCollectionNecklace : GoldNecklace
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         public VesperCollectionNecklace()
             : base()
         { 
@@ -71,7 +73,8 @@ namespace Server.Items
     }
 
     public class VesperCollectionBracelet : GoldBracelet
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         public VesperCollectionBracelet()
             : base()
         { 
@@ -105,7 +108,8 @@ namespace Server.Items
     }
 
     public class VesperCollectionEarrings : GoldEarrings
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         public VesperCollectionEarrings()
             : base()
         { 

@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class DragonJadeEarrings : GoldEarrings
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DragonJadeEarrings()
             : base()//TODO: GargishEarrings ItemID

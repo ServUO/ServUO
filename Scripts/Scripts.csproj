@@ -5268,7 +5268,7 @@
     <Compile Include="Items\Artifacts\Equipment\Spellbooks\FallenMysticsSpellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Artifacts\Equipment\Spellbooks\HealingStone.cs">
+    <Compile Include="Items\Consumables\HealingStone.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Resource\BlankScroll.cs">
@@ -5676,7 +5676,7 @@
     <Compile Include="Items\Equipment\Spellbooks\Spellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Artifacts\Equipment\Spellbooks\SpellStone.cs">
+    <Compile Include="Items\Consumables\SpellStone.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Spellbooks\SpellweavingBook.cs">

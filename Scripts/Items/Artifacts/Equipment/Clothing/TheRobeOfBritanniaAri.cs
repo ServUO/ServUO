@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class TheRobeOfBritanniaAri : BaseOuterTorso
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public TheRobeOfBritanniaAri()
             : base(0x2684)

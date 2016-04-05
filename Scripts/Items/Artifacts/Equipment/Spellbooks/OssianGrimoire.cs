@@ -3,7 +3,8 @@
 namespace Server.Items
 {
     public class OssianGrimoire : NecromancerSpellbook, ITokunoDyable
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public OssianGrimoire()
         {

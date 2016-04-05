@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class Tangle1 : HalfApron
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Tangle1()
             : base()

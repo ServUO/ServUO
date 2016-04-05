@@ -7,6 +7,7 @@ namespace Server.Items
 	public class SashOfMight : BodySash 
 	{
 
+		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1075412; } } // Sash of Might
         //private SkillMod m_SkillMod0;
        // private SkillMod m_SkillMod1;

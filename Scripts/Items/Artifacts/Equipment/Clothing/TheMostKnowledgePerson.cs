@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class TheMostKnowledgePerson : BaseOuterTorso
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public TheMostKnowledgePerson()
             : base(0x2684)

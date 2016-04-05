@@ -2,8 +2,9 @@ using System;
 
 namespace Server.Items
 {
-    public class TorcOfTheGuardians : GoldNecklace 
-    {
+    public class TorcOfTheGuardians : GoldNecklace
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public TorcOfTheGuardians()
         {

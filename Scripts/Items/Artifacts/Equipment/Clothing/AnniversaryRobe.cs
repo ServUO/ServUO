@@ -4,7 +4,8 @@ namespace Server.Items
 {
     [Flipable(0x4B9D, 0x4B9E)]
     public class AnniversaryRobe : BaseOuterTorso
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public AnniversaryRobe() : this(0x455)
         {

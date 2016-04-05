@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class FallenMysticsSpellbook : Spellbook
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public FallenMysticsSpellbook()
             : this((ulong)0)

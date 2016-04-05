@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class ObsidianEarrings : GoldEarrings
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ObsidianEarrings()
             : base()

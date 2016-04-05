@@ -4,7 +4,8 @@ namespace Server.Items
 {
     [Flipable(0x315C, 0x315D)]
     public class DreadFlute : BaseInstrument
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DreadFlute()
             : base(0x315C, 0x58B, 0x58C)// TODO check sounds
