@@ -6,6 +6,7 @@ namespace Server.Items
     [FlipableAttribute(0x2B71, 0x3169)]
     public class DarkwoodCrown : RavenHelm
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DarkwoodCrown()
             : base()

@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class HunterLegs : LeafLegs
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HunterLegs()
             : base()

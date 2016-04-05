@@ -4222,7 +4222,7 @@
     <Compile Include="Items\Artifacts\Decorative\SEDecorationArtifacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Artifacts\Decorative\StealableArtifactsSpawner.cs">
+    <Compile Include="Items\Functional\StealableArtifactsSpawner.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\BarkeepContract.cs">

@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class GrizzleVambraces : BoneArms
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public GrizzleVambraces()
             : base()

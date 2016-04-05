@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class TragicRemainsOfTravesty : BaseStatuette
     {
+		public override bool IsArtifact { get { return true; } }
         private static readonly int[] m_Sounds = new int[]
         {
             0x314, 0x315, 0x316, 0x317  // TODO check

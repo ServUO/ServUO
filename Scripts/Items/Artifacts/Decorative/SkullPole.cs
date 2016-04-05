@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class SkullPole : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SkullPole()
             : base(0x2204)

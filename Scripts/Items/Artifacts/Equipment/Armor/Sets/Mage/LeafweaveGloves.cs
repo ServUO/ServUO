@@ -5,6 +5,7 @@ namespace Server.Items
     [FlipableAttribute(0x2B75, 0x316C)]
     public class LeafweaveGloves : HideGloves
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LeafweaveGloves()
             : base()

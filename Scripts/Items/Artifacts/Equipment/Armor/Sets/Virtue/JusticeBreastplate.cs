@@ -5,6 +5,7 @@ namespace Server.Items
     [FlipableAttribute(0x2B08, 0x2B09)]
     public class JusticeBreastplate : BaseArmor
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public JusticeBreastplate()
             : base(0x2B08)

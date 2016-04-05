@@ -6,6 +6,7 @@ namespace Server.Items
 {
 	public class InitiationSuitBag : Bag
 	{
+		public override bool IsArtifact { get { return true; } }
 		public override string DefaultName
 		{
 			get { return "Initiation Suit Bag"; }

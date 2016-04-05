@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class AssassinChest : LeatherChest
-    { 
+    {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public AssassinChest()
             : base()
