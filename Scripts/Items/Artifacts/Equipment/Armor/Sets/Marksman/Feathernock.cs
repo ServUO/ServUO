@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class Feathernock : BaseQuiver
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Feathernock()
             : base()

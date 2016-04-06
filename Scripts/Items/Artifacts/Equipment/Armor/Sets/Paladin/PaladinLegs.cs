@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class PaladinLegs : PlateLegs
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public PaladinLegs()
             : base()

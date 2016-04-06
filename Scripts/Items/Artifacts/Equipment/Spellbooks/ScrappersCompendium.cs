@@ -4,7 +4,8 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     public class ScrappersCompendium : Spellbook
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ScrappersCompendium()
             : base()

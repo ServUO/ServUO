@@ -6,6 +6,7 @@ namespace Server.Items
     [FlipableAttribute(0x2B69, 0x3160)]
     public class DarkwoodGorget : WoodlandGorget
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DarkwoodGorget()
             : base()

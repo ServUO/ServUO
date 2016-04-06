@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class ElixirofVeriteConversion : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ElixirofVeriteConversion()
             : base(0x99B)

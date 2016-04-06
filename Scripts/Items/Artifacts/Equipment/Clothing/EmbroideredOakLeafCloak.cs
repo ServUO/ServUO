@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class EmbroideredOakLeafCloak : BaseOuterTorso
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public EmbroideredOakLeafCloak()
             : base(0x2684)

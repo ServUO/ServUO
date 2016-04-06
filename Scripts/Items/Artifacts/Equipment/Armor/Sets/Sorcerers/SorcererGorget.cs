@@ -5,6 +5,7 @@ namespace Server.Items
 {
 	public class SorcererGorget : LeatherGorget
 	{
+		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber{ get{ return 1080466; } } // Thank You Paradyme
 		
 		public override SetItem SetID{ get{ return SetItem.Sorcerer; } }

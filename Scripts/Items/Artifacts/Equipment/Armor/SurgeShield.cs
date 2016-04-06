@@ -15,6 +15,7 @@ namespace Server.Items
 
 	public class SurgeShield : BronzeShield
 	{
+		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1116232; } }
 
         private int m_Charges;

@@ -152,6 +152,9 @@ namespace Server.SkillHandlers
             if (item == null)
                 return true;
 
+			if (item.IsArtifact)
+				return true;
+
             if (item is BaseWeapon && ((BaseWeapon)item).ArtifactRarity > 0)
                 return true;
 
@@ -164,6 +167,9 @@ namespace Server.SkillHandlers
             if (item is BaseClothing && ((BaseClothing)item).ArtifactRarity > 0)
                 return true;
 
+			if (item.GetType() == typeof(SilverRing) || item.GetType() == typeof(SilverBracelet))
+				return false;
+
             foreach (CraftSystem system in CraftSystem.Systems)
             {
                 CraftItem crItem = null;
@@ -171,7 +177,7 @@ namespace Server.SkillHandlers
                 if(system != null && system.CraftItems != null)
                     crItem = system.CraftItems.SearchFor(item.GetType());
 
-                if (crItem != null || item.GetType() == typeof(SilverRing) || item.GetType() == typeof(SilverBracelet))
+                if (crItem != null)
                     return false;
             }
 

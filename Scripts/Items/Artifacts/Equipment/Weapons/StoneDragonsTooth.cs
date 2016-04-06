@@ -5,7 +5,8 @@ namespace Server.Items
     // Based off a Dagger
     [FlipableAttribute(0x902, 0x406A)]
     public class StoneDragonsTooth : GargishDagger
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public StoneDragonsTooth()
             : base()

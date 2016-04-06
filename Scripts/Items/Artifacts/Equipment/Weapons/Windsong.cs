@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class Windsong : MagicalShortbow
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Windsong()
             : base()

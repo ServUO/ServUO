@@ -259,7 +259,7 @@ namespace Server.Items
                     }
 
                     if (from == null || !this.TryDropItem(from, enhanced, false)) // try stacking first
-                        this.DropItem(enhanced);
+                        this.TryDropItem(from, enhanced, false);
                 }
             }
 

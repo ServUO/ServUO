@@ -4,7 +4,8 @@ using Server;
 namespace Server.Items
 {
     public class ResonantShieldOfVengeance : GargishWoodenShield
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1150357; } } // Resonant Shield of Vengeance
 
         public override int InitMinHits { get { return 255; } }

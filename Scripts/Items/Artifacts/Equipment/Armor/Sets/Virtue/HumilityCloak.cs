@@ -5,6 +5,7 @@ namespace Server.Items
     [FlipableAttribute(0x2B04, 0x2B05)]
     public class HumilityCloak : BaseClothing
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HumilityCloak()
             : base(0x2B04, Layer.Cloak)

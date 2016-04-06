@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class LyricalGlasses : ElvenGlasses
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LyricalGlasses()
         {

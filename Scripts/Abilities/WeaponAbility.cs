@@ -38,6 +38,17 @@ namespace Server.Items
             }
         }
 
+		/// <summary>
+		///		Return false to make this special ability consume no ammo from ranged weapons
+		/// </summary>
+		public virtual bool ConsumeAmmo
+		{
+			get
+			{
+				return true;
+			}
+		}
+
         public virtual void OnHit(Mobile attacker, Mobile defender, int damage)
         {
         }

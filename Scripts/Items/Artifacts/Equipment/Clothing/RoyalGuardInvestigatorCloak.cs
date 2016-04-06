@@ -3,7 +3,8 @@
 namespace Server.Items
 {
     public class RoyalGuardInvestigatorsCloak : Cloak
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalGuardInvestigatorsCloak()
             : base()

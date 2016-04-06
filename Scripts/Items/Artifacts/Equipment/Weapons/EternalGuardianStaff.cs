@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class EternalGuardianStaff : GnarledStaff
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public EternalGuardianStaff()
         {

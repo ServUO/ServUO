@@ -22,6 +22,7 @@ namespace Server.Items
 {
     public class CandlewoodTorch : BaseShield
     {
+		public override bool IsArtifact { get { return true; } }
         public bool Burning { get { return ItemID == 0xA12; } }
 
         [Constructable]

@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class LifeSyphon : BloodBlade
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LifeSyphon()
             : base()

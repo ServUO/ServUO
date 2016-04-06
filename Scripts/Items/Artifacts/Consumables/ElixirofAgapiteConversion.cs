@@ -21,6 +21,7 @@ namespace Server.Items
 {
     public class ElixirofAgapiteConversion : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ElixirofAgapiteConversion()
             : base(0x99B)

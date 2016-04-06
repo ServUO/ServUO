@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class MischiefMaker : MagicalShortbow, ITokunoDyable
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber
         {
             get

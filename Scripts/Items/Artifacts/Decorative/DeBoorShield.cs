@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class DeBoorShield : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DeBoorShield()
             : base(0x1B74)

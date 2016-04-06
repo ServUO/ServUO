@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class ChangelingStatue : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public ChangelingStatue()
             : base(0x2D8A)

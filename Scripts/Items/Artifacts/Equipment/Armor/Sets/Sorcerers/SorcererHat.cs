@@ -5,6 +5,7 @@ namespace Server.Items
 {
 	public class SorcererHat : WizardsHat
 	{
+		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber{ get{ return 1080465; } } // Thank You Paradyme
 		
 		public override SetItem SetID{ get{ return SetItem.Sorcerer; } }

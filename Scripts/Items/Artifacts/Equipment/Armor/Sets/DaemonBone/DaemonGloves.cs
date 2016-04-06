@@ -5,6 +5,7 @@ namespace Server.Items
     [FlipableAttribute(0x1450, 0x1455)]
     public class DaemonGloves : BaseArmor
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DaemonGloves()
             : base(0x1450)

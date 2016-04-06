@@ -1993,7 +1993,7 @@
     <Compile Include="Mobiles\Normal\ShadowDweller.cs" />
     <Compile Include="Mobiles\Normal\ShadowFiend.cs" />
     <Compile Include="Mobiles\Normal\ShadowIronElemental.cs" />
-    <Compile Include="Mobiles\Normal\ShadowKnight.cs" />
+    <Compile Include="Mobiles\Named\ShadowKnight.cs" />
     <Compile Include="Mobiles\Normal\ShadowWisp.cs" />
     <Compile Include="Mobiles\Normal\ShadowWyrm.cs" />
     <Compile Include="Mobiles\Normal\Sheep.cs" />
@@ -4222,7 +4222,7 @@
     <Compile Include="Items\Artifacts\Decorative\SEDecorationArtifacts.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Artifacts\Decorative\StealableArtifactsSpawner.cs">
+    <Compile Include="Items\Functional\StealableArtifactsSpawner.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\BarkeepContract.cs">
@@ -5268,7 +5268,7 @@
     <Compile Include="Items\Artifacts\Equipment\Spellbooks\FallenMysticsSpellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Artifacts\Equipment\Spellbooks\HealingStone.cs">
+    <Compile Include="Items\Consumables\HealingStone.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Resource\BlankScroll.cs">
@@ -5676,7 +5676,7 @@
     <Compile Include="Items\Equipment\Spellbooks\Spellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Artifacts\Equipment\Spellbooks\SpellStone.cs">
+    <Compile Include="Items\Consumables\SpellStone.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Spellbooks\SpellweavingBook.cs">
@@ -7197,7 +7197,7 @@
     <Compile Include="Items\Artifacts\Equipment\Weapons\TitansHammer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Artifacts\Equipment\Weapons\TokenofHolyFavor.cs">
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\TokenofHolyFavor.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Weapons\ValkyriesGlaive.cs">

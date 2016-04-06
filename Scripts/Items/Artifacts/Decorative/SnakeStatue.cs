@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class SnakeStatue : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SnakeStatue()
             : base(0x25C2)

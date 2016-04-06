@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class BouraTailShield : WoodenKiteShield
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public BouraTailShield()
         {

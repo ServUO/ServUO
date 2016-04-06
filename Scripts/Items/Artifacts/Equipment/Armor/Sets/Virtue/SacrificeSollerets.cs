@@ -5,6 +5,7 @@ namespace Server.Items
     [FlipableAttribute(0x2B12, 0x2B13)]
     public class SacrificeSollerets : BaseClothing
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SacrificeSollerets()
             : base(0x2B13, Layer.Shoes)

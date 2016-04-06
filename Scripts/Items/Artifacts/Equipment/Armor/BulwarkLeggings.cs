@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class BulwarkLeggings : RingmailLegs
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public BulwarkLeggings()
         {

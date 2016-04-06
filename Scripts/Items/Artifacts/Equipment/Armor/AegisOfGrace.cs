@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class AegisOfGrace : DragonHelm
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public AegisOfGrace()
         {

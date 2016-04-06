@@ -4,7 +4,8 @@ using Server.Targeting;
 namespace Server.Items
 {
     public class AmuletOfRighteousness : SilverNecklace, IUsesRemaining
-    { 
+	{
+		public override bool IsArtifact { get { return true; } }
         private int m_UsesRemaining;
         [Constructable]
         public AmuletOfRighteousness()

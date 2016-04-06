@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class IolosLute : Lute
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public IolosLute()
         {

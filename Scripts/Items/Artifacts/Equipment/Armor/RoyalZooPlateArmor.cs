@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class RoyalZooPlateLegs : PlateLegs
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooPlateLegs()
             : base()
@@ -92,7 +93,8 @@ namespace Server.Items
     }
 
     public class RoyalZooPlateGloves : PlateGloves
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooPlateGloves()
             : base()
@@ -181,7 +183,8 @@ namespace Server.Items
     }
 
     public class RoyalZooPlateGorget : PlateGorget
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooPlateGorget()
             : base()
@@ -270,7 +273,8 @@ namespace Server.Items
     }
 
     public class RoyalZooPlateArms : PlateArms
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooPlateArms()
             : base()
@@ -359,7 +363,8 @@ namespace Server.Items
     }
 
     public class RoyalZooPlateChest : PlateChest
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooPlateChest()
             : base()
@@ -448,7 +453,8 @@ namespace Server.Items
     }
 
     public class RoyalZooPlateFemaleChest : FemalePlateChest
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooPlateFemaleChest()
             : base()
@@ -537,7 +543,8 @@ namespace Server.Items
     }
 
     public class RoyalZooPlateHelm : PlateHelm
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooPlateHelm()
             : base()

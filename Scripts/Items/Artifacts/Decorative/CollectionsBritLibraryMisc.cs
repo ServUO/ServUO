@@ -4,6 +4,7 @@ namespace Server.Items
 { 
     public class LibraryFriendLantern : Lantern
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LibraryFriendLantern()
             : base()
@@ -39,6 +40,7 @@ namespace Server.Items
 
     public class LibraryFriendReadingChair : BigElvenChair
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LibraryFriendReadingChair()
             : base()

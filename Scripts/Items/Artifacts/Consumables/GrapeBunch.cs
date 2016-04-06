@@ -5,6 +5,7 @@ namespace Server.Items
 {
     public class GrapeBunch : Food
     {
+		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1022513; } }
 
         [Constructable]

@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class DarkglowScimitar : RadiantScimitar
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DarkglowScimitar()
         {

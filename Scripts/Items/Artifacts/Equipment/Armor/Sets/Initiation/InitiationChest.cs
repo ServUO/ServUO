@@ -5,6 +5,7 @@ namespace Server.Items
 {
 	public class InitiationChest : LeatherChest
 	{
+		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber{ get{ return 1116255; } } // Armor of Initiation
 		
 		public override SetItem SetID{ get{ return SetItem.Initiation; } }

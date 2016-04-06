@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class GreymistChest : LeatherChest
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public GreymistChest()
             : base()

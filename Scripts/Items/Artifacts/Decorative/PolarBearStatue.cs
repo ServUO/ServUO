@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class PolarBearStatue : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public PolarBearStatue()
             : base(0x20E1)

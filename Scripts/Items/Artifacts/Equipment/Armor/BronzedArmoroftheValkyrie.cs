@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class BronzedArmorValkyrie : FemaleLeatherChest
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public BronzedArmorValkyrie()
         {

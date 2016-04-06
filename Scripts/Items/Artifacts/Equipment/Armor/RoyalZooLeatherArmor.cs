@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class RoyalZooLeatherLegs : LeatherLegs
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooLeatherLegs()
             : base()
@@ -93,7 +94,8 @@ namespace Server.Items
     }
 
     public class RoyalZooLeatherGloves : LeatherGloves
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooLeatherGloves()
             : base()
@@ -183,7 +185,8 @@ namespace Server.Items
     }
 
     public class RoyalZooLeatherGorget : LeatherGorget
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooLeatherGorget()
             : base()
@@ -273,7 +276,8 @@ namespace Server.Items
     }
 
     public class RoyalZooLeatherArms : LeatherArms
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooLeatherArms()
             : base()
@@ -363,7 +367,8 @@ namespace Server.Items
     }
 
     public class RoyalZooLeatherChest : LeatherChest
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooLeatherChest()
             : base()
@@ -453,7 +458,8 @@ namespace Server.Items
     }
 
     public class RoyalZooLeatherFemaleChest : FemaleLeatherChest
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RoyalZooLeatherFemaleChest()
             : base()

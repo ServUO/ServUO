@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class Bleach : PigmentsOfTokuno
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Bleach()
             : base(PigmentType.None)

@@ -5,7 +5,8 @@ namespace Server.Items
     // Based off a BlackStaff
     [FlipableAttribute(0x905, 0x4070)]
     public class InfusedGlassStave : BaseStaff
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public InfusedGlassStave()
             : base(0x905)

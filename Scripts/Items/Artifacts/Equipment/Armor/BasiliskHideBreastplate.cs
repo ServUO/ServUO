@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class BasiliskHideBreastplate : DragonChest
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public BasiliskHideBreastplate() 
         {
