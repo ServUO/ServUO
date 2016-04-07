@@ -361,6 +361,9 @@ namespace Server.Items
 		{
             int start = budget;
 
+            if (CheckConflictingNegative(item, attribute))
+                return false;
+
 			if(attribute is string)
 			{
 				string str = attribute as string;
@@ -406,12 +409,7 @@ namespace Server.Items
                 //    max = 180;
 
                 int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
-				AosAttributes attrs = null;
-
-                if (item is BaseWeapon) attrs = ((BaseWeapon)item).Attributes;
-                else if (item is BaseArmor) attrs = ((BaseArmor)item).Attributes;
-                else if (item is BaseJewel) attrs = ((BaseJewel)item).Attributes;
-                else if (item is BaseClothing) attrs = ((BaseClothing)item).Attributes;
+                AosAttributes attrs = GetAosAttributes(item);
 
 				if(attrs != null && value > 0 && attrs[(AosAttribute)attribute] == 0)
 				{
@@ -426,16 +424,7 @@ namespace Server.Items
 			{
                 AosWeaponAttribute wepattr = (AosWeaponAttribute)attribute;
                 int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
-				AosWeaponAttributes attrs = null;
-
-                if (item is BaseWeapon)
-                {
-                    attrs = ((BaseWeapon)item).WeaponAttributes;
-                }
-                else if (item is Glasses)
-                {
-                    attrs = ((Glasses)item).WeaponAttributes;
-                }
+                AosWeaponAttributes attrs = GetAosWeaponAttributes(item);
 				
 				if(attrs != null && value > 0 && attrs[wepattr] == 0)
 				{
@@ -446,7 +435,7 @@ namespace Server.Items
             else if (attribute is AosArmorAttribute)
             {
                 int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
-                AosArmorAttributes attrs = null;
+                AosArmorAttributes attrs = GetAosArmorAttributes(item);
 
                 if (item is BaseArmor) attrs = ((BaseArmor)item).ArmorAttributes;
                 else if (item is BaseClothing) attrs = ((BaseClothing)item).ClothingAttributes;
@@ -460,11 +449,7 @@ namespace Server.Items
             else if (attribute is SAAbsorptionAttribute)
             {
                 int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
-                SAAbsorptionAttributes attrs = null;
-
-                if (item is BaseArmor) attrs = ((BaseArmor)item).AbsorptionAttributes;
-                else if (item is BaseJewel) attrs = ((BaseJewel)item).AbsorptionAttributes;
-                else if (item is BaseWeapon) attrs = ((BaseWeapon)item).AbsorptionAttributes;
+                SAAbsorptionAttributes attrs = GetSAAbsorptionAttributes(item);
 
                 if (attrs != null && value > 0 && attrs[(SAAbsorptionAttribute)attribute] == 0)
                 {
@@ -1142,19 +1127,7 @@ namespace Server.Items
 
         private static bool HasEater(Item item)
         {
-            SAAbsorptionAttributes attr = null;
-
-            if (item is BaseJewel)
-                attr = ((BaseJewel)item).AbsorptionAttributes;
-
-            if (item is BaseArmor)
-                attr = ((BaseArmor)item).AbsorptionAttributes;
-
-            if (item is BaseWeapon)
-                attr = ((BaseWeapon)item).AbsorptionAttributes;
-
-            //else if (item is BaseClothing)
-            //    attr = ((BaseClothing)item).AbsorptionAttributes;
+            SAAbsorptionAttributes attr = GetSAAbsorptionAttributes(item);
 
             return attr != null && (attr.EaterKinetic > 0 || attr.EaterFire > 0 || attr.EaterCold > 0 || attr.EaterPoison > 0 || attr.EaterEnergy > 0 || attr.EaterDamage > 0);
         }
@@ -1322,9 +1295,6 @@ namespace Server.Items
         /// </summary>
         public static bool GenerateRandomItem(Item item, Mobile killer, BaseCreature creature)
         {
-			if (item.IsArtifact)
-				return false;
-
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
                 GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
@@ -1776,11 +1746,11 @@ namespace Server.Items
 		private static bool ApplyRunicAttributes(Item item, int perclow, int perchigh, ref int budget, int idx, int luckchance)
 		{
             List<object> attrList = null;
-			AosWeaponAttributes wepattrs = null;
-			AosAttributes aosattrs = null;
-			AosArmorAttributes armorattrs = null;
-			AosSkillBonuses skillbonuses = null;
-            AosElementAttributes resistattrs = null;
+            AosWeaponAttributes wepattrs = GetAosWeaponAttributes(item);
+            AosAttributes aosattrs = GetAosAttributes(item);
+            AosArmorAttributes armorattrs = GetAosArmorAttributes(item);
+            AosSkillBonuses skillbonuses = GetAosSkillBonuses(item);
+            AosElementAttributes resistattrs = GetElementalAttributes(item);
 
 			if(item is BaseWeapon)
 			{
@@ -1788,39 +1758,22 @@ namespace Server.Items
                     attrList = new List<object>(m_RangedWeaponList);
                 else
                     attrList = new List<object>(m_MeleeWeaponList);
-				
-				wepattrs = ((BaseWeapon)item).WeaponAttributes;
-				aosattrs = ((BaseWeapon)item).Attributes;
 			}
 			else if (item is BaseShield)
 			{
                 attrList = new List<object>(m_ShieldList);
-
-				aosattrs = ((BaseShield)item).Attributes;
-				armorattrs = ((BaseShield)item).ArmorAttributes;
 			}
 			else if (item is BaseArmor)
 			{
                 attrList = new List<object>(m_ArmorList);
-
-				aosattrs = ((BaseArmor)item).Attributes;
-				armorattrs = ((BaseArmor)item).ArmorAttributes;
 			}
 			else if (item is BaseClothing)
 			{
                 attrList = new List<object>(m_ArmorList);
-
-                aosattrs = ((BaseClothing)item).Attributes;
-                armorattrs = ((BaseClothing)item).ClothingAttributes;
-                resistattrs = ((BaseClothing)item).Resistances;
 			}
 			else if (item is BaseJewel)
 			{
                 attrList = new List<object>(m_JewelList);
-
-				aosattrs = ((BaseJewel)item).Attributes;
-				skillbonuses = ((BaseJewel)item).SkillBonuses;
-				resistattrs = ((BaseJewel)item).Resistances;
 			}
 			else 
 				return false;
@@ -1984,10 +1937,137 @@ namespace Server.Items
             if (item is BaseArmor && !(item is BaseShield) && attr is AosArmorAttribute && (AosArmorAttribute)attr == AosArmorAttribute.MageArmor && ((BaseArmor)item).MeditationAllowance == ArmorMeditationAllowance.All)
                 return true;
 
+            if (item is BaseClothing && attr is AosArmorAttribute && (AosArmorAttribute)attr == AosArmorAttribute.MageArmor)
+                return true;
+
             if (item is BaseWeapon && attr is AosWeaponAttribute[] && (CheckHitSpell((BaseWeapon)item, attr) || (CheckHitArea((BaseWeapon)item, attr))))
                 return true;
 
+            if (CheckConflictingNegative(item, attr))
+                return true;
+
             return false;
+        }
+
+        public static bool CheckConflictingNegative(Item item, object attr)
+        {
+            NegativeAttributes neg = GetNegativeAttributes(item);
+            AosAttributes aosattr = GetAosAttributes(item);
+
+            if (neg == null)
+                return false;
+
+            if (neg.Brittle > 0 || neg.Antique > 0 || neg.NoRepair > 0 || (aosattr != null && aosattr.Brittle > 0))
+            {
+                if (attr is AosWeaponAttribute && (AosWeaponAttribute)attr == AosWeaponAttribute.SelfRepair)
+                    return true;
+
+                if (attr is AosArmorAttribute && (AosArmorAttribute)attr == AosArmorAttribute.SelfRepair)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static AosAttributes GetAosAttributes(Item item)
+        {
+            if (item is BaseWeapon)
+                return ((BaseWeapon)item).Attributes;
+
+            if (item is BaseArmor)
+                return ((BaseArmor)item).Attributes;
+
+            if (item is BaseClothing)
+                return ((BaseClothing)item).Attributes;
+
+            if (item is BaseJewel)
+                return ((BaseJewel)item).Attributes;
+
+            if (item is BaseTalisman)
+                return ((BaseTalisman)item).Attributes;
+
+            if (item is BaseQuiver)
+                return ((BaseQuiver)item).Attributes;
+
+            return null;
+        }
+
+        public static AosArmorAttributes GetAosArmorAttributes(Item item)
+        {
+            if (item is BaseArmor)
+                return ((BaseArmor)item).ArmorAttributes;
+
+            if (item is BaseClothing)
+                return ((BaseClothing)item).ClothingAttributes;
+
+            //if (item is BaseTalisman)
+            //    return ((BaseTalisman)item).ArmorAttributes;
+
+            //if (item is BaseJewel)
+            //    return ((BaseJewel)item).ArmorAttributes;
+
+            return null;
+        }
+
+        public static AosWeaponAttributes GetAosWeaponAttributes(Item item)
+        {
+            if (item is BaseWeapon)
+                return ((BaseWeapon)item).WeaponAttributes;
+
+            if (item is Glasses)
+                return ((Glasses)item).WeaponAttributes;
+
+            return null;
+        }
+
+        public static AosElementAttributes GetElementalAttributes(Item item)
+        {
+            if (item is BaseClothing)
+                return ((BaseClothing)item).Resistances;
+
+            if (item is BaseJewel)
+                return ((BaseJewel)item).Resistances;
+
+            return null;
+        }
+
+        public static SAAbsorptionAttributes GetSAAbsorptionAttributes(Item item)
+        {
+            if (item is BaseArmor) 
+                return ((BaseArmor)item).AbsorptionAttributes;
+
+            else if (item is BaseJewel) 
+                return ((BaseJewel)item).AbsorptionAttributes;
+
+            else if (item is BaseWeapon) 
+                return ((BaseWeapon)item).AbsorptionAttributes;
+
+            return null;
+        }
+
+        public static AosSkillBonuses GetAosSkillBonuses(Item item)
+        {
+            if (item is BaseJewel)
+                return ((BaseJewel)item).SkillBonuses;
+
+            return null;
+        }
+
+        public static NegativeAttributes GetNegativeAttributes(Item item)
+        {
+            if (item is BaseWeapon)
+                return ((BaseWeapon)item).NegativeAttributes;
+
+            if (item is BaseArmor)
+                return ((BaseArmor)item).NegativeAttributes;
+
+            if (item is BaseClothing)
+                return ((BaseClothing)item).NegativeAttributes;
+
+            if (item is BaseJewel)
+                return ((BaseJewel)item).NegativeAttributes;
+
+            return null;
         }
 		
 		private static int ScaleAttribute(object o)
