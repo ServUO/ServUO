@@ -6,6 +6,7 @@ namespace Server.Items
 {
     public class GrapeVine : Item
 	{
+		public override bool IsArtifact { get { return true; } }
 		private DateTime m_NextHarvest;
 		private readonly double HarvestWait = 4;
 

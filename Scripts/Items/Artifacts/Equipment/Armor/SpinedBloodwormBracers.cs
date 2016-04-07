@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class SpinedBloodwormBracers : GargishClothArms
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public SpinedBloodwormBracers()
         {

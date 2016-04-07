@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class HelmOfInsight : PlateHelm
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HelmOfInsight()
         {

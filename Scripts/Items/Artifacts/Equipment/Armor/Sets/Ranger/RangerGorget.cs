@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class RangerGorget : BaseArmor
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RangerGorget()
             : base(0x13D6)

@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class JacobsPickaxe : Pickaxe
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public JacobsPickaxe()
             : base()

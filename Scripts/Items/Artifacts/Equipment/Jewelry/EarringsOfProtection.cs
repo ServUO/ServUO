@@ -3,7 +3,8 @@
 namespace Server.Items
 {
     public class EarringBoxSet : RedVelvetGiftBox
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public EarringBoxSet()
             : base()

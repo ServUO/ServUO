@@ -5,6 +5,7 @@ namespace Server.Items
     [FlipableAttribute(0x144e, 0x1453)]
     public class BoneArms : BaseArmor
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public BoneArms()
             : base(0x144E)

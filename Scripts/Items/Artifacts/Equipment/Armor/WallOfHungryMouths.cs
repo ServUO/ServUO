@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class WallofHungryMouths : BaseShield
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public WallofHungryMouths()
             : base(0x1B76)

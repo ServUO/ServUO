@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class Evocaricus : VikingSword
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Evocaricus()
             : base()

@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class OverseerSunderedBlade : RadiantScimitar
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public OverseerSunderedBlade()
         {

@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class QuiverOfFire : ElvenQuiver
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public QuiverOfFire()
             : base()

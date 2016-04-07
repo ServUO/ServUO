@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class EvilIdolSkull : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public EvilIdolSkull()
             : base(0x1F18)

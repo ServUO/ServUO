@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class MarkOfTravesty : SavageMask, ITokunoDyable
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public MarkOfTravesty()
             : base()

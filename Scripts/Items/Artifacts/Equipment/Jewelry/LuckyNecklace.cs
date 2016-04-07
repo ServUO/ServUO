@@ -3,7 +3,8 @@
 namespace Server.Items
 {
     public class LuckyNecklace : BaseJewel
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LuckyNecklace()
             : base(0x1088, Layer.Neck)

@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class WaterTile : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public WaterTile()
             : base(0x346E)

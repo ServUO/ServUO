@@ -99,7 +99,7 @@ namespace Server.Items
         {
             get
             {
-                return TimeSpan.FromDays(1);
+                return TimeSpan.FromSeconds(15);
             }
         }
         public override int LabelNumber
@@ -234,6 +234,17 @@ namespace Server.Items
 
         public void Enhance(Mobile from)
         {
+			EnhancedBandage existing = null;
+
+			foreach(Item item in Items)
+			{
+				if(item is EnhancedBandage)
+				{
+					existing = item as EnhancedBandage;
+					break;
+				}
+			}
+
             for (int i = this.Items.Count - 1; i >= 0 && this.m_Charges > 0; --i)
             {
                 if (this.Items[i] is EnhancedBandage)
@@ -258,8 +269,14 @@ namespace Server.Items
                         bandage.Delete();
                     }
 
-                    if (from == null || !this.TryDropItem(from, enhanced, false)) // try stacking first
-                        this.DropItem(enhanced);
+					// try stacking first
+					if (from == null || !this.TryDropItem(from, enhanced, false))
+					{
+						if (existing != null)
+							existing.StackWith(from, enhanced);
+						else
+							this.DropItem(enhanced);
+					}
                 }
             }
 

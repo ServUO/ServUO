@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class Glasses : BaseArmor
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         private AosWeaponAttributes m_AosWeaponAttributes;
         [Constructable]
         public Glasses()

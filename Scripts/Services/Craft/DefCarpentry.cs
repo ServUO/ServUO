@@ -616,7 +616,7 @@ namespace Server.Engines.Craft
                 this.ForceNonExceptional(index);
                 this.SetNeededExpansion(index, Expansion.ML);
 
-                index = this.AddCraft(typeof(TallElvenBedSouthDeed), 1044290, 1072858, 94.7, 119.7, typeof(Board), 1044041, 200, 1044351);
+				index = this.AddCraft(typeof(TallElvenBedSouthDeed), 1044290, 1072858, 94.7, 119.7, typeof(Board), 1044041, 200, 1044351);
                 this.AddSkill(index, SkillName.Tailoring, 75.0, 80.0);
                 this.AddRes(index, typeof(Cloth), 1044286, 100, 1044287);
                 this.AddRecipe(index, (int)CarpRecipes.TallElvenBedSouth);

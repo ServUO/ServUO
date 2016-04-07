@@ -3,7 +3,8 @@
 namespace Server.Items
 {
     public class HumanSignOfChaos : ChaosShield
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HumanSignOfChaos()
             : base()

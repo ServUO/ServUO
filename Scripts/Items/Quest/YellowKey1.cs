@@ -10,7 +10,6 @@ namespace Server.Items
         {
             this.Hue = 0x489;
             this.Weight = 1.0;
-            this.Movable = false;
         }
 
         public YellowKey1(Serial serial)

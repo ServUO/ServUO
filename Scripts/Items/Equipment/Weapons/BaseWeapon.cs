@@ -2394,22 +2394,47 @@ namespace Server.Items
 				int manaLeech = 0;
 				int wraithLeech = 0;
 
-                if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechHits) * propertyBonus) >
-					Utility.Random(100))
-				{
-					lifeLeech += 30; // HitLeechHits% chance to leech 30% of damage as hit points
-				}
-
-                if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechStam) * propertyBonus) >
+				if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechStam) * propertyBonus) >
 					Utility.Random(100))
 				{
 					stamLeech += 100; // HitLeechStam% chance to leech 100% of damage as stamina
 				}
 
-				if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechMana) * propertyBonus) >
-					Utility.Random(100))
+				if (Core.SA) // New formulas
 				{
-					manaLeech += 40; // HitLeechMana% chance to leech 40% of damage as mana
+					int maxLeech = ((int)(MlSpeed * 2500)) / (100 + Attributes.GetValue((int)AosAttribute.WeaponSpeed));
+					if(this is BaseRanged)
+					{
+						maxLeech /= 2;
+					}
+
+					int weaponLeech = WeaponAttributes.GetValue((int)AosWeaponAttribute.HitLeechHits);
+					if(weaponLeech > maxLeech)
+					{
+						weaponLeech = maxLeech;
+					}
+					lifeLeech += weaponLeech;
+
+					weaponLeech = WeaponAttributes.GetValue((int)AosWeaponAttribute.HitLeechMana);
+					if (weaponLeech > maxLeech)
+					{
+						weaponLeech = maxLeech;
+					}
+					manaLeech += weaponLeech;
+				}
+				else // Old leech formulas
+				{
+					if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechHits) * propertyBonus) >
+						Utility.Random(100))
+					{
+						lifeLeech += 30; // HitLeechHits% chance to leech 30% of damage as hit points
+					}
+
+					if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechMana) * propertyBonus) >
+						Utility.Random(100))
+					{
+						manaLeech += 40; // HitLeechMana% chance to leech 40% of damage as mana
+					}
 				}
 
 				if (m_Cursed)
@@ -2428,25 +2453,7 @@ namespace Server.Items
 				{
 					wraithLeech = (5 + (int)((15 * attacker.Skills.SpiritSpeak.Value) / 100));
 						// Wraith form gives an additional 5-20% mana leech
-
-					// Mana leeched by the Wraith Form spell is actually stolen, not just leeched.
-					defender.Mana -= AOS.Scale(damageGiven, wraithLeech);
-
 					manaLeech += wraithLeech;
-				}
-
-				if (lifeLeech != 0)
-				{
-                    int toHeal = AOS.Scale(damageGiven, lifeLeech);
-                    #region High Seas
-                    if (defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura)
-                    {
-                        AOS.Damage(attacker, defender, toHeal, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
-                        attacker.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
-                    }
-                    else
-                        attacker.Hits += toHeal;
-                    #endregion
 				}
 
 				if (stamLeech != 0)
@@ -2454,9 +2461,40 @@ namespace Server.Items
 					attacker.Stam += AOS.Scale(damageGiven, stamLeech);
 				}
 
-				if (manaLeech != 0)
+				if (Core.SA) // New formulas
 				{
-					attacker.Mana += AOS.Scale(damageGiven, manaLeech);
+					if (lifeLeech != 0)
+					{
+						int toHeal = (int)(AOS.Scale(damageGiven, lifeLeech) * 0.3);
+						#region High Seas
+						if (defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura)
+						{
+							AOS.Damage(attacker, defender, toHeal, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
+							attacker.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
+						}
+						else
+							attacker.Hits += toHeal;
+						#endregion
+					}
+
+					if (manaLeech != 0)
+					{
+						attacker.Mana += (int)(AOS.Scale(damageGiven, manaLeech) * 0.4);
+						defender.Mana -= (int)(AOS.Scale(damageGiven, wraithLeech) * 0.4);
+					}
+				}
+				else // Old formulas
+				{
+					if (lifeLeech != 0)
+					{
+						attacker.Hits += AOS.Scale(damageGiven, lifeLeech);
+					}
+
+					if (manaLeech != 0)
+					{
+						attacker.Mana += AOS.Scale(damageGiven, manaLeech);
+						defender.Mana -= AOS.Scale(damageGiven, wraithLeech);
+					}
 				}
 
 				if (lifeLeech != 0 || stamLeech != 0 || manaLeech != 0)
@@ -2467,7 +2505,7 @@ namespace Server.Items
 
 			if (m_MaxHits > 0 &&
 				((MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime)) || splintering ||
-				 Utility.Random(25) == 0)) // Stratics says 50% chance, seems more like 4%..
+				 Utility.Random(250) == 0)) // Stratics says 50% chance, seems more like 4%..
 			{
 				if (MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime))
 				{

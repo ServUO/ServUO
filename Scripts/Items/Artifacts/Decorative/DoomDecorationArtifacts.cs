@@ -5,6 +5,7 @@ namespace Server.Items
     #region BackpackArtifact
     public class BackpackArtifact : BaseDecorationContainerArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -43,6 +44,7 @@ namespace Server.Items
     #region BloodyWaterArtifact
     public class BloodyWaterArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -81,6 +83,7 @@ namespace Server.Items
     #region BooksWestArtifact
     public class BooksWestArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -119,6 +122,7 @@ namespace Server.Items
     #region BooksNorthArtifact
     public class BooksNorthArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -157,6 +161,7 @@ namespace Server.Items
     #region BooksFaceDownArtifact
     public class BooksFaceDownArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -195,6 +200,7 @@ namespace Server.Items
     #region BottleArtifact
     public class BottleArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -233,6 +239,7 @@ namespace Server.Items
     #region BrazierArtifact
     public class BrazierArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -272,6 +279,7 @@ namespace Server.Items
     #region CocoonArtifact
     public class CocoonArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -310,6 +318,7 @@ namespace Server.Items
     #region DamagedBooksArtifact
     public class DamagedBooksArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -348,6 +357,7 @@ namespace Server.Items
     #region EggCaseArtifact
     public class EggCaseArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -386,6 +396,7 @@ namespace Server.Items
     #region GruesomeStandardArtifact
     public class GruesomeStandardArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -424,6 +435,7 @@ namespace Server.Items
     #region LampPostArtifact
     public class LampPostArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -463,6 +475,7 @@ namespace Server.Items
     #region LeatherTunicArtifact
     public class LeatherTunicArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -501,6 +514,7 @@ namespace Server.Items
     #region RockArtifact
     public class RockArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -539,6 +553,7 @@ namespace Server.Items
     #region RuinedPaintingArtifact
     public class RuinedPaintingArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -577,6 +592,7 @@ namespace Server.Items
     #region SaddleArtifact
     public class SaddleArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -615,6 +631,7 @@ namespace Server.Items
     #region SkinnedDeerArtifact
     public class SkinnedDeerArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -653,6 +670,7 @@ namespace Server.Items
     #region SkinnedGoatArtifact
     public class SkinnedGoatArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -691,6 +709,7 @@ namespace Server.Items
     #region SkullCandleArtifact
     public class SkullCandleArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -730,6 +749,7 @@ namespace Server.Items
     #region StretchedHideArtifact
     public class StretchedHideArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -768,6 +788,7 @@ namespace Server.Items
     #region StuddedLeggingsArtifact
     public class StuddedLeggingsArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -806,6 +827,7 @@ namespace Server.Items
     #region StuddedTunicArtifact
     public class StuddedTunicArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get
@@ -844,6 +866,7 @@ namespace Server.Items
     #region TarotCardsArtifact
     public class TarotCardsArtifact : BaseDecorationArtifact
     {
+		public override bool IsArtifact { get { return true; } }
         public override int ArtifactRarity
         {
             get

@@ -280,11 +280,12 @@ namespace Server.Engines.Craft
                     message = "You lack the required mana to make that.";
                     return false;
                 }
+				else
+				{
+					consumMana = consume;
+				}
 			}
-			else
-			{
-				consumMana = consume;
-			}
+
 
 			if (Stam > 0 && from.Stam < Stam)
 			{

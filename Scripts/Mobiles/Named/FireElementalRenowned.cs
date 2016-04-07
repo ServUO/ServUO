@@ -70,7 +70,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(TokenOfHolyFavor), typeof(LavaSerpentCrust), typeof(SwordOfShatteredHopes) };
+                return new Type[] { typeof(TokenOfHolyFavor), typeof(SwordOfShatteredHopes) };
             }
         }
         public override double DispelDifficulty
@@ -103,9 +103,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
-            this.AddLoot(LootPack.Meager);
-            this.AddLoot(LootPack.Gems);
+            this.AddLoot(LootPack.UltraRich);
         }
 
         public override void Serialize(GenericWriter writer)

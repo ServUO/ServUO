@@ -5,6 +5,7 @@ namespace Server.Items
 {
 	public class KnightsPlateGorget : PlateGorget
 	{
+		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber{ get{ return 1080160; } } // Thank you Paradyme
 		
 		public override SetItem SetID{ get{ return SetItem.Knights; } }

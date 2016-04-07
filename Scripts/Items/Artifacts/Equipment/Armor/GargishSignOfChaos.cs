@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class GargishSignOfChaos : GargishChaosShield
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public GargishSignOfChaos()
             : base()

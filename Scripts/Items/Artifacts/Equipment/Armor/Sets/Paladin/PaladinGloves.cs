@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class PaladinGloves : PlateGloves
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public PaladinGloves()
             : base()

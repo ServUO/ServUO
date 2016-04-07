@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class Aegis : HeaterShield
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public Aegis()
         {

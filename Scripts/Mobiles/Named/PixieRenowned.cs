@@ -60,14 +60,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(DemonHuntersStandard) };
+                return new Type[] { typeof(DemonHuntersStandard), typeof(DragonJadeEarrings) };
             }
         }
         public override Type[] SharedSAList
         {
             get
             {
-                return new Type[] { typeof(SwordOfShatteredHopes), typeof(FairyDragonWing), typeof(FeyWings), typeof(PillarOfStrength) };
+                return new Type[] { typeof(SwordOfShatteredHopes), typeof(PillarOfStrength) };
             }
         }
         public override bool InitialInnocent
@@ -107,8 +107,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.LowScrolls);
-            this.AddLoot(LootPack.Gems, 2);
+			AddLoot(LootPack.UltraRich, 2);
         }
 
         public override void Serialize(GenericWriter writer)

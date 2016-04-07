@@ -6,6 +6,7 @@ namespace Server.Items
     [FlipableAttribute(0x2B67, 0x315E)]
     public class DarkwoodChest : WoodlandChest
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DarkwoodChest()
             : base()

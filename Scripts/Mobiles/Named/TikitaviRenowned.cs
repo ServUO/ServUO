@@ -62,14 +62,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(BasiliskHideBreastplate), typeof(CrystallineBlackrock) };
+                return new Type[] { typeof(BasiliskHideBreastplate) };
             }
         }
         public override Type[] SharedSAList
         {
             get
             {
-                return new Type[] { typeof(LegacyOfDespair), typeof(CrystalShards), typeof(MysticsGarb) };
+                return new Type[] { typeof(LegacyOfDespair), typeof(MysticsGarb) };
             }
         }
         public override InhumanSpeech SpeechType
@@ -102,8 +102,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
-            // TODO: weapon, misc
+            this.AddLoot(LootPack.FilthyRich, 3);
         }
 
         public override void Serialize(GenericWriter writer)

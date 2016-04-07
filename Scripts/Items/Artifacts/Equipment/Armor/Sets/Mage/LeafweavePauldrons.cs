@@ -5,6 +5,7 @@ namespace Server.Items
     [FlipableAttribute(0x2B77, 0x316E)]
     public class LeafweavePauldrons : HidePauldrons
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LeafweavePauldrons()
             : base()

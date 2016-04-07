@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class MyrmidonChest : StuddedChest
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public MyrmidonChest()
             : base()

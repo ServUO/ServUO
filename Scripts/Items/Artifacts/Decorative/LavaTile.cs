@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class LavaTile : Item
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public LavaTile()
             : base(0x12EE)

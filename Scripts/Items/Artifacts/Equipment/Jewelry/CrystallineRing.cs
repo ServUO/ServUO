@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class CrystallineRing : GoldRing, ITokunoDyable
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public CrystallineRing()
         {

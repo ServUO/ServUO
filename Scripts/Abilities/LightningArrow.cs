@@ -20,6 +20,14 @@ namespace Server.Items
                 return 20;
             }
         }
+
+		public override bool ConsumeAmmo
+		{
+			get
+			{
+				return false;
+			}
+		}
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
             if (!this.Validate(attacker))

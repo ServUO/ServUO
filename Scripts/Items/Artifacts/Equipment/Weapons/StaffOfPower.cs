@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class StaffOfPower : BlackStaff
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public StaffOfPower()
         {

@@ -4,6 +4,7 @@ namespace Server.Items
 {
     public class DeathBoneHelm : BoneHelm
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DeathBoneHelm()
             : base()

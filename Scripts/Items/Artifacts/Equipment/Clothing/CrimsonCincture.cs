@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class CrimsonCincture : HalfApron, ITokunoDyable
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public CrimsonCincture()
             : base()

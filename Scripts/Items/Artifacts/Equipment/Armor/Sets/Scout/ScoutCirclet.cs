@@ -5,6 +5,7 @@ namespace Server.Items
 {
 	public class ScoutCirclet : Circlet
 	{
+		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber{ get{ return 1080472; } } //Thank you Paradyme
 		
 		public override SetItem SetID{ get{ return SetItem.Scout; } }

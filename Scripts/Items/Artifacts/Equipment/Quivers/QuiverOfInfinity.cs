@@ -3,7 +3,8 @@
 namespace Server.Items
 {
     public class QuiverOfInfinity : BaseQuiver, ITokunoDyable
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public QuiverOfInfinity()
             : base(0x2B02)

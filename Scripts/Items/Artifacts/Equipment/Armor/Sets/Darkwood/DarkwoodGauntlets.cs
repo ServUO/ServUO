@@ -5,6 +5,7 @@ namespace Server.Items
 {
     public class DarkwoodGloves : WoodlandGloves
     {
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DarkwoodGloves()
             : base()

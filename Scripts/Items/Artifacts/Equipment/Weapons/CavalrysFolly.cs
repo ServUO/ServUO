@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class CavalrysFolly : BladedStaff
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public CavalrysFolly()
             : base()

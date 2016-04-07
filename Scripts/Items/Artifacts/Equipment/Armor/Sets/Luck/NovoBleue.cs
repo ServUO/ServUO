@@ -5,6 +5,7 @@ namespace Server.Items
 {
 	public class NovoBleue : GoldBracelet
 	{
+		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber{ get{ return 1080239; } } // Thank you Paradyme
 		public override SetItem SetID{ get{ return SetItem.Luck; } }
 		public override int Pieces{ get{ return 2; } }

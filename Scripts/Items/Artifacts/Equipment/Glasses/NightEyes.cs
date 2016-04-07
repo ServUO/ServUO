@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class NightEyes : Glasses, ITokunoDyable
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public NightEyes()
             : base()

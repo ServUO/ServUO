@@ -3,7 +3,8 @@ using System;
 namespace Server.Items
 {
     public class DreadsRevenge : Kryss, ITokunoDyable
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber
         {
             get

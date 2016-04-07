@@ -10,7 +10,8 @@ using Server.Network;
 namespace Server.Items
 {
     public class Runebook : Item, ISecurable, ICraftable
-    {
+	{
+		public override bool IsArtifact { get { return true; } }
         public static readonly TimeSpan UseDelay = TimeSpan.FromSeconds(7.0);
 
         private BookQuality m_Quality;

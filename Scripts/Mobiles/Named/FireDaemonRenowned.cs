@@ -67,7 +67,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(DaemonClaw), typeof(LavaSerpentCrust), typeof(LegacyOfDespair) };
+                return new Type[] { typeof(LegacyOfDespair) };
             }
         }
         public override WeaponAbility GetWeaponAbility()
@@ -77,7 +77,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average, 2);
+            this.AddLoot(LootPack.FilthyRich, 2);
         }
 
         public override void Serialize(GenericWriter writer)
