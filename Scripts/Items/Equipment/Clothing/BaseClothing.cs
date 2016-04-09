@@ -45,7 +45,7 @@ namespace Server.Items
         }
         #endregion
 
-        public virtual bool CanFortify { get { return m_IsImbued == false && NegativeAttributes.Antique < 3; } }
+        public virtual bool CanFortify { get { return !IsImbued && NegativeAttributes.Antique < 3; } }
         public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
 
         private int m_MaxHitPoints;
@@ -188,8 +188,9 @@ namespace Server.Items
         {
             get
             {
-                if (this.TimesImbued >= 1)
+                if (this.TimesImbued >= 1 && !m_IsImbued)
                     m_IsImbued = true;
+
                 return m_IsImbued;
             }
             set
@@ -1103,7 +1104,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             #region Stygian Abyss
-            if (this.m_IsImbued == true)
+            if (IsImbued == true)
                 list.Add(1080418); // (Imbued)
 
             if (m_GorgonLenseCharges > 0)

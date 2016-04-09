@@ -192,7 +192,7 @@ namespace Server.Items
 		public virtual int InitMinHits { get { return 0; } }
 		public virtual int InitMaxHits { get { return 0; } }
 
-        public virtual bool CanFortify { get { return m_IsImbued == false && NegativeAttributes.Antique < 3; } }
+        public virtual bool CanFortify { get { return !IsImbued && NegativeAttributes.Antique < 3; } }
         public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
 
 		public override int PhysicalResistance { get { return m_AosWeaponAttributes.ResistPhysicalBonus; } }
@@ -606,8 +606,9 @@ namespace Server.Items
         {
             get 
             {
-                if (this.TimesImbued >= 1)
+                if (this.TimesImbued >= 1 && !m_IsImbued)
                     m_IsImbued = true;
+
                 return m_IsImbued; 
             }
             set 
@@ -4853,7 +4854,7 @@ namespace Server.Items
 			}
            
 
-			if (m_IsImbued == true)
+			if (IsImbued)
 			{
 				list.Add(1080418); // (Imbued)
 			}
