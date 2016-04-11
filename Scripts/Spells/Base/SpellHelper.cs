@@ -663,10 +663,19 @@ namespace Server.Spells
                 return false;
             }
 
-            if (caster != null && caster.IsPlayer() && caster.Region.IsPartOf(typeof(Regions.Jail)))
+            if (caster != null && caster.IsPlayer())
             {
-                caster.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
-                return false;
+				// Jail region
+				if (caster.Region.IsPartOf(typeof(Regions.Jail)))
+				{
+					caster.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
+					return false;
+				}
+				else if(caster.Region is Regions.GreenAcres)
+				{
+					caster.SendLocalizedMessage(502360); // You cannot teleport into that area.
+					return false;
+				}
             }
 
             // Always allow monsters to teleport

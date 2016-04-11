@@ -119,6 +119,7 @@
     <Compile Include="Commands\GenCategorization.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\GenerateGameDocs.cs" />
     <Compile Include="Commands\Generic\Commands\BaseCommand.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -245,6 +246,7 @@
     <Compile Include="Commands\Statics.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\Test.cs" />
     <Compile Include="Commands\TimeStamp.cs">
       <SubType>Code</SubType>
     </Compile>
