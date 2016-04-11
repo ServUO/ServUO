@@ -620,9 +620,9 @@ namespace Server.Engines.CannedEvil
                                 if (VirtueHelper.Award(killer, VirtueName.Valor, pointsToGain, ref gainedPath))
                                 {
                                     if (gainedPath)
-                                        m.SendLocalizedMessage(1054032); // You have gained a path in Valor!
+                                        killer.SendLocalizedMessage(1054032); // You have gained a path in Valor!
                                     else
-                                        m.SendLocalizedMessage(1054030); // You have gained in Valor!
+                                        killer.SendLocalizedMessage(1054030); // You have gained in Valor!
                                     //No delay on Valor gains
                                 }
 
