@@ -3060,6 +3060,17 @@ namespace Server.Mobiles
 
 		public override void OnDeath(Container c)
 		{
+			PlayerMobile killer = null;
+			Mobile m = FindMostRecentDamager(false);
+			killer = m as PlayerMobile;
+			if(killer == null)
+			{
+				if(m is BaseCreature)
+				{
+					killer = ((BaseCreature)m).ControlMaster as PlayerMobile;
+				}
+			}
+			
 			if (m_NonAutoreinsuredItems > 0)
 			{
 				SendLocalizedMessage(1061115);
@@ -3109,41 +3120,31 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (Kills >= 5 && DateTime.UtcNow >= m_NextJustAward)
+			if(killer != null &&
+				Kills >= 5 &&
+				DateTime.UtcNow >= killer.m_NextJustAward)
 			{
-				Mobile m = FindMostRecentDamager(false);
+				// This scales 700.0 skill points to 1000 valor points
+				int pointsToGain = (int)(SkillsTotal / 7);
+				// This scales 700.0 skill points to 7 minutes wait
+				int minutesToWait = Math.Max(1, (int)(SkillsTotal / 1000));
 
-				if (m is BaseCreature)
+				bool gainedPath = false;
+				if (VirtueHelper.Award(m, VirtueName.Justice, pointsToGain, ref gainedPath))
 				{
-					m = ((BaseCreature)m).GetMaster();
-				}
-
-				if (m != null && m is PlayerMobile && m != this)
-				{
-					bool gainedPath = false;
-
-					int pointsToGain = 0;
-
-					pointsToGain += (int)Math.Sqrt(GameTime.TotalSeconds * 4);
-					pointsToGain *= 5;
-					pointsToGain += (int)Math.Pow(Skills.Total / 250, 2);
-
-					if (VirtueHelper.Award(m, VirtueName.Justice, pointsToGain, ref gainedPath))
+					if (gainedPath)
 					{
-						if (gainedPath)
-						{
-							m.SendLocalizedMessage(1049367); // You have gained a path in Justice!
-						}
-						else
-						{
-							m.SendLocalizedMessage(1049363); // You have gained in Justice.
-						}
-
-						m.FixedParticles(0x375A, 9, 20, 5027, EffectLayer.Waist);
-						m.PlaySound(0x1F7);
-
-						m_NextJustAward = DateTime.UtcNow + TimeSpan.FromMinutes(pointsToGain / 3);
+						m.SendLocalizedMessage(1049367); // You have gained a path in Justice!
 					}
+					else
+					{
+						m.SendLocalizedMessage(1049363); // You have gained in Justice.
+					}
+
+					m.FixedParticles(0x375A, 9, 20, 5027, EffectLayer.Waist);
+					m.PlaySound(0x1F7);
+
+					killer.m_NextJustAward = DateTime.UtcNow + TimeSpan.FromMinutes(minutesToWait);
 				}
 			}
 
@@ -3155,19 +3156,6 @@ namespace Server.Mobiles
 				{
 					pm.SendLocalizedMessage(1060397, pm.m_InsuranceBonus.ToString());
 					// ~1_AMOUNT~ gold has been deposited into your bank box.
-				}
-			}
-
-			Mobile killer = FindMostRecentDamager(true);
-
-			if (killer is BaseCreature)
-			{
-				BaseCreature bc = (BaseCreature)killer;
-
-				Mobile master = bc.GetMaster();
-				if (master != null)
-				{
-					killer = master;
 				}
 			}
 
