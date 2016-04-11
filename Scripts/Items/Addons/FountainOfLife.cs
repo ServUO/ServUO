@@ -99,7 +99,7 @@ namespace Server.Items
         {
             get
             {
-                return TimeSpan.FromSeconds(15);
+                return TimeSpan.FromDays(1);
             }
         }
         public override int LabelNumber
