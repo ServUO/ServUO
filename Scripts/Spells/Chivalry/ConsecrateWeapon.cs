@@ -4,6 +4,9 @@ using Server.Items;
 
 namespace Server.Spells.Chivalry
 {
+    /// <summary>
+    /// * 020416 Crome696 - Proc Damage based on http://www.uoguide.com/Consecrate_Weapon
+    /// </summary>
     public class ConsecrateWeaponSpell : PaladinSpell
     {
         private static readonly SpellInfo m_Info = new SpellInfo(
@@ -102,21 +105,59 @@ namespace Server.Spells.Chivalry
                 double seconds = this.ComputePowerValue(20);
 
                 // TODO: Should caps be applied?
-                if (seconds < 3.0)
-                    seconds = 3.0;
-                else if (seconds > 11.0)
+
+                int pkarma = this.Caster.Karma;
+
+
+
+                if (pkarma > 5000)
                     seconds = 11.0;
+                else if (pkarma >= 4999)
+                    seconds = 10.0;
+                else if (pkarma >= 3999)
+                    seconds = 9.00;
+                else if (pkarma >= 2999)
+                    seconds = 8.0;
+                else if (pkarma >= 1999)
+                    seconds = 7.0;
+                else if (pkarma >= 999)
+                    seconds = 6.0;
+                else
+                    seconds = 5.0;
+                       
+           
 
                 TimeSpan duration = TimeSpan.FromSeconds(seconds);
 
                 Timer t = (Timer)m_Table[weapon];
 
                 if (t != null)
+                {
+                    BuffInfo.RemoveBuff(Caster, BuffIcon.ConsecrateWeapon);
                     t.Stop();
+                }
+
+
+                weapon.ConsecrateDamageBonus = 0;
+                weapon.ConsecrateProcChance = 0;
+
+                if (Caster.Skills.Chivalry.Value >= 90)
+                {
+                    double calc = Caster.Skills.Chivalry.Value - 90;
+                    weapon.ConsecrateDamageBonus = ((int)Math.Truncate(calc / 2));
+                }
+
+                if (Caster.Skills.Chivalry.Value >= 80)
+                    weapon.ConsecrateProcChance = 100;
+                else
+                    weapon.ConsecrateProcChance = Caster.Skills.Chivalry.Value;
 
                 weapon.Consecrated = true;
 
                 m_Table[weapon] = t = new ExpireTimer(weapon, duration);
+                
+                
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ConsecrateWeapon, 1151385, 1151386, duration, Caster, String.Format("{0}\t{1}", weapon.ConsecrateProcChance, weapon.ConsecrateDamageBonus)));
 
                 t.Start();
             }

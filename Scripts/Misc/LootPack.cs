@@ -42,8 +42,13 @@ namespace Server
 				luck = 1200;
 			}
 
-			return (int)(Math.Pow(luck, 1 / 1.8) * 100);
+			return GetLuckChance(luck);
 		}
+
+        public static int GetLuckChance(int luck)
+        {
+            return (int)(Math.Pow(luck, 1 / 1.8) * 100);
+        }
 
 		public static int GetLuckChanceForKiller(Mobile dead)
 		{
@@ -605,10 +610,10 @@ namespace Server
 			{
 				LootPackItem item = m_Items[i];
 
-				if (rnd < item.Chance)
-				{
-					return Mutate(from, luckChance, item.Construct(IsInTokuno(from), IsMondain(from), IsStygian(from) ) );
-				}
+                if (rnd < item.Chance)
+                {
+                    return Mutate(from, luckChance, item.Construct(IsInTokuno(from), IsMondain(from), IsStygian(from)));
+                }
 
 				rnd -= item.Chance;
 			}
@@ -670,7 +675,14 @@ namespace Server
 				{
 					if (Core.AOS)
 					{
-						int bonusProps = GetBonusProperties();
+                        // Try to generate a new random item based on the creature killed
+                        if (from is BaseCreature)
+                        {
+                            if (RandomItemGenerator.GenerateRandomItem(item, ((BaseCreature)from).LastKiller, (BaseCreature)from))
+                                return item;
+                        }
+
+                        int bonusProps = GetBonusProperties();
 						int min = m_MinIntensity;
 						int max = m_MaxIntensity;
 
@@ -687,11 +699,7 @@ namespace Server
 							props = m_MaxProps;
 						}
 
-                        if (from is BaseCreature && RandomItemGenerator.GenerateRandomItem(item, ((BaseCreature)from).LastKiller, (BaseCreature)from))
-                        {
-                            return item;
-                        }
-
+                        // Use the older style random generation
 						if (item is BaseWeapon)
 						{
 							BaseRunicTool.ApplyAttributesTo((BaseWeapon)item, false, luckChance, props, m_MinIntensity, m_MaxIntensity);
@@ -1003,7 +1011,7 @@ namespace Server
 
 				if (m_Type == typeof(BaseRanged))
 				{
-					item = Loot.RandomRangedWeapon(inTokuno, isMondain,isStygian );
+					item = Loot.RandomRangedWeapon(inTokuno, isMondain, isStygian );
 				}
 				else if (m_Type == typeof(BaseWeapon))
 				{
@@ -1015,11 +1023,11 @@ namespace Server
 				}
 				else if (m_Type == typeof(BaseShield))
 				{
-					item = Loot.RandomShield();
+					item = Loot.RandomShield(isStygian);
 				}
 				else if (m_Type == typeof(BaseJewel))
 				{
-					item = Core.AOS ? Loot.RandomJewelry() : Loot.RandomArmorOrShieldOrWeapon();
+					item = Core.AOS ? Loot.RandomJewelry(isStygian) : Loot.RandomArmorOrShieldOrWeapon(isStygian);
 				}
 				else if (m_Type == typeof(BaseInstrument))
 				{

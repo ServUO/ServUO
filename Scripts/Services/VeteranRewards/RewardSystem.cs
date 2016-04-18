@@ -90,6 +90,7 @@ namespace Server.Engines.VeteranRewards
 
 			ts = (list.Age - totalTime);
 
+
             if (ts <= TimeSpan.Zero)
                 return true;
 
@@ -358,6 +359,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1006035, typeof(MonsterStatuette), MonsterStatuetteType.Ratman),
                     new RewardEntry(monsterStatues, 1006036, typeof(MonsterStatuette), MonsterStatuetteType.Skeleton),
                     new RewardEntry(monsterStatues, 1006037, typeof(MonsterStatuette), MonsterStatuetteType.Troll),
+                    new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
                     new RewardEntry(houseAddOns, 1062692, typeof(ContestMiniHouseDeed), Expansion.AOS, MiniHouseType.MalasMountainPass),
                     new RewardEntry(houseAddOns, 1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),
                     new RewardEntry(miscellaneous, 1076155, typeof(RedSoulstone), Expansion.ML),
@@ -388,8 +390,8 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1006039, typeof(MonsterStatuette), MonsterStatuetteType.Zombie),
                     new RewardEntry(monsterStatues, 1006040, typeof(MonsterStatuette), MonsterStatuetteType.Llama),
                     new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
-                    new RewardEntry(etherealSteeds, 1006050, typeof(EtherealOstard)),
                     new RewardEntry(etherealSteeds, 1006051, typeof(EtherealLlama)),
+                    new RewardEntry(etherealSteeds, 1006050, typeof(EtherealOstard)),
                     new RewardEntry(houseAddOns, 1080407, typeof(PottedCactusDeed), Expansion.ML)
                 }),
                 new RewardList(RewardInterval, 4, new RewardEntry[]

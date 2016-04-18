@@ -229,13 +229,13 @@ namespace Server.Engines.Craft
             m_Circle = 0;
 			m_Mana = 4;
 
-			AddSpell( typeof( ClumsyScroll ), Reg.Bloodmoss, Reg.Nightshade );
+			AddSpell(typeof(ReactiveArmorScroll), Reg.Garlic, Reg.SpidersSilk, Reg.SulfurousAsh);
+			AddSpell(typeof(ClumsyScroll), Reg.Bloodmoss, Reg.Nightshade);
 			AddSpell( typeof( CreateFoodScroll ), Reg.Garlic, Reg.Ginseng, Reg.MandrakeRoot );
 			AddSpell( typeof( FeeblemindScroll ), Reg.Nightshade, Reg.Ginseng );
 			AddSpell( typeof( HealScroll ), Reg.Garlic, Reg.Ginseng, Reg.SpidersSilk );
 			AddSpell( typeof( MagicArrowScroll ), Reg.SulfurousAsh );
 			AddSpell( typeof( NightSightScroll ), Reg.SpidersSilk, Reg.SulfurousAsh );
-            AddSpell( typeof( ReactiveArmorScroll ), Reg.Garlic, Reg.SpidersSilk, Reg.SulfurousAsh);
             AddSpell( typeof( WeakenScroll ), Reg.Garlic, Reg.Nightshade );
 
 			m_Circle = 1;
@@ -339,7 +339,7 @@ namespace Server.Engines.Craft
 				AddNecroSpell( 12, 23, 98.6, typeof( VampiricEmbraceScroll ), Reg.BatWing, Reg.NoxCrystal, Reg.PigIron );
 				AddNecroSpell( 13, 41, 79.6, typeof( VengefulSpiritScroll ), Reg.BatWing, Reg.GraveDust, Reg.PigIron );
 				AddNecroSpell( 14, 23, 59.6, typeof( WitherScroll ), Reg.GraveDust, Reg.NoxCrystal, Reg.PigIron );
-				AddNecroSpell( 15, 17, 79.6, typeof( WraithFormScroll ), Reg.NoxCrystal, Reg.PigIron );
+				AddNecroSpell( 15, 17, 19.6, typeof( WraithFormScroll ), Reg.NoxCrystal, Reg.PigIron );
 				AddNecroSpell( 16, 40, 79.6, typeof( ExorcismScroll ), Reg.NoxCrystal, Reg.GraveDust );
 			}
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Server.Network;
 using Server.Items;
 using Server.Targeting;
@@ -9,6 +10,12 @@ namespace Server.Spells.Mystic
 {
 	public class StoneFormSpell : MysticTransformationSpell
 	{
+		private static HashSet<Mobile> m_Effected = new HashSet<Mobile>();
+		public static bool IsEffected(Mobile m)
+		{
+			return m_Effected.Contains(m);
+		}
+
 		private static SpellInfo m_Info = new SpellInfo(
 				"Stone Form", "In Rel Ylem",
 				230,
@@ -38,6 +45,11 @@ namespace Server.Spells.Mystic
         public override bool CheckCast()
         {
             bool doCast = base.CheckCast();
+			if (doCast && Caster.Flying)
+			{
+				Caster.SendLocalizedMessage(1112567); // You are flying.
+				doCast = false;
+			}
 
             if(doCast)
                 m_ResisMod = (int)(Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 24;
@@ -51,6 +63,7 @@ namespace Server.Spells.Mystic
 			m.FixedParticles( 0x3728, 1, 13, 9918, 92, 3, EffectLayer.Head );
 
             Timer.DelayCall(new TimerCallback(MobileDelta_Callback));
+			m_Effected.Add(m);
 
             string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}", "-10", "-2", m_ResisMod.ToString(), m_ResisMod.ToString(), "-10");
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.StoneForm, 1080145, 1080146, args));
@@ -64,7 +77,7 @@ namespace Server.Spells.Mystic
 		public override void RemoveEffect( Mobile m )
 		{
 			m.Delta( MobileDelta.WeaponDamage );
-
+			m_Effected.Remove(m);
             BuffInfo.RemoveBuff(m, BuffIcon.StoneForm);
 		}
 

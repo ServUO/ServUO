@@ -620,9 +620,9 @@ namespace Server.Engines.CannedEvil
                                 if (VirtueHelper.Award(killer, VirtueName.Valor, pointsToGain, ref gainedPath))
                                 {
                                     if (gainedPath)
-                                        m.SendLocalizedMessage(1054032); // You have gained a path in Valor!
+                                        killer.SendLocalizedMessage(1054032); // You have gained a path in Valor!
                                     else
-                                        m.SendLocalizedMessage(1054030); // You have gained in Valor!
+                                        killer.SendLocalizedMessage(1054030); // You have gained in Valor!
                                     //No delay on Valor gains
                                 }
 
@@ -707,15 +707,25 @@ namespace Server.Engines.CannedEvil
                 return;
 
 			int currentLevel = Level;
+			int currentRank = Rank;
 			int maxSpawn = (int)((double)MaxKills * 0.5d * SpawnMod);
 			if (currentLevel >= 16)
 				maxSpawn = Math.Min(maxSpawn, MaxKills - m_Kills);
+			if (maxSpawn < 3)
+				maxSpawn = 3;
 
 			int spawnRadius = (int)(SpawnRadius * ChampionSystem.SpawnRadiusModForLevel(Level));
 			Rectangle2D spawnBounds = new Rectangle2D(new Point2D(this.X - spawnRadius, this.Y - spawnRadius),
 				new Point2D(this.X + spawnRadius, this.Y + spawnRadius));
 
-			while (this.m_Creatures.Count <= maxSpawn)
+			int mobCount = 0;
+			foreach(Mobile m in m_Creatures)
+			{
+				if (GetRankFor(m) == currentRank)
+					++mobCount;
+			}
+
+			while (mobCount <= maxSpawn)
             {
                 Mobile m = this.Spawn();
 
@@ -729,6 +739,7 @@ namespace Server.Engines.CannedEvil
 
                 this.m_Creatures.Add(m);
                 m.MoveToWorld(loc, this.Map);
+				++mobCount;
 
                 if (m is BaseCreature)
                 {
@@ -1149,6 +1160,8 @@ namespace Server.Engines.CannedEvil
         {
             if (to == null || artifact == null)
                 return;
+
+			to.PlaySound(0x5B4);
 
             Container pack = to.Backpack;
 

@@ -1859,6 +1859,15 @@ namespace Server
 			}
 		}
 
+		/// <summary>
+		///		If true the item should be considered an artifact
+		/// </summary>
+		[CommandProperty(AccessLevel.GameMaster)]
+		public virtual bool IsArtifact
+		{
+			get { return false; }
+		}
+
 		private static TimeSpan m_DDT = TimeSpan.FromHours(1.0);
 
 		public static TimeSpan DefaultDecayTime { get { return m_DDT; } set { m_DDT = value; } }
