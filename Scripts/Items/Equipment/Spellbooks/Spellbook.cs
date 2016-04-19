@@ -930,7 +930,7 @@ namespace Server.Items
 			Mobile from,
 			CraftSystem craftSystem,
 			Type typeRes,
-			BaseTool tool,
+			IUsesRemaining tool,
 			CraftItem craftItem,
 			int resHue)
 		{

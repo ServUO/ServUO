@@ -564,6 +564,22 @@
     <Compile Include="Items\Addons\BaseAddonDeed.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Addons\Veteran Rewards\FletchingStationComponent.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\FletchingStationEastAddon.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\FletchingStationSouthAddon.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SewingMachineComponent.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SewingmachineEastAddon.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SewingmachineSouthAddon.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SmithingPressComponent.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SmithingPressEastAddon.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SmithingPressSouthAddon.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SpecialVeteranAddonComponent.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SpecialVeteranAddonComponentBox.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SpecialVeteranAddonContextMenuEntrys.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SpecialVeteranCraftAddon.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SpinningLatheComponent.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SpinningLatheEastAddon.cs" />
+    <Compile Include="Items\Addons\Veteran Rewards\SpinningLatheSouthAddon.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\FNPitchfork.cs" />
     <Compile Include="Items\Consumables\BaseAgilityPotion.cs">

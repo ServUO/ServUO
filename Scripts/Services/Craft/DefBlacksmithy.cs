@@ -175,32 +175,45 @@ namespace Server.Engines.Craft
             }
         }
 
-        public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
+        public override int CanCraft(Mobile from, IUsesRemaining tool, Type itemType)
         {
-            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
+            if (tool == null || ((Item)tool).Deleted)
             {
                 return 1044038; // You have worn out your tool!
             }
-
-            if (!BaseTool.CheckTool(tool, from))
-            {
-                return 1048146; // If you have a tool equipped, you must use that tool.
+            if(tool is BaseAddon)
+            { 
+                if(tool.UsesRemaining <= 0)
+                {
+                    return 502412; // There are no charges left on that item.
+                }
             }
-
-            if (!BaseTool.CheckAccessible(tool, from))
+            else
             {
-                return 1044263; // The tool must be on your person to use.
+                if (tool.UsesRemaining < 0)
+                {
+                    return 1044038; // You have worn out your tool!
+                }
+
+                if (!BaseTool.CheckTool((BaseTool)tool, from))
+                {
+                    return 1048146; // If you have a tool equipped, you must use that tool.
+                }
+
+                if (!BaseTool.CheckAccessible((BaseTool)tool, from))
+                {
+                    return 1044263; // The tool must be on your person to use.
+                }
+
+                bool anvil, forge;
+                CheckAnvilAndForge(from, 2, out anvil, out forge);
+
+                if (!(anvil && forge))
+                {
+                    return 1044267; // You must be near an anvil and a forge to smith items.
+                }
             }
-
-            bool anvil, forge;
-            CheckAnvilAndForge(from, 2, out anvil, out forge);
-
-            if (anvil && forge)
-            {
-                return 0;
-            }
-
-            return 1044267; // You must be near an anvil and a forge to smith items.
+            return 0;
         }
 
         public override void PlayCraftEffect(Mobile from)

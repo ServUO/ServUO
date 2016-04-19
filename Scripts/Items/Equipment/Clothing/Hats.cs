@@ -505,7 +505,7 @@ namespace Server.Items
                 list.Add(1041645); // recovered from a shipwreck
         }
 
-        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, IUsesRemaining tool, CraftItem craftItem, int resHue)
         {
             this.Quality = (ClothingQuality)quality;
 

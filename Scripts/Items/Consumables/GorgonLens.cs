@@ -130,7 +130,7 @@ namespace Server.Items
             }
         }
 
-        public int OnCraft(int quality, bool markersMark, Mobile from, CraftSystem system, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public int OnCraft(int quality, bool markersMark, Mobile from, CraftSystem system, Type typeRes, IUsesRemaining tool, CraftItem craftItem, int resHue)
         {
             Console.WriteLine("Hue: {0}", resHue.ToString());
             switch (resHue)

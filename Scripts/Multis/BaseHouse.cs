@@ -4244,7 +4244,7 @@ namespace Server.Multis
                 if (!isOwned)
                     isOwned = house.IsLockedDown(item);
 
-                if (isOwned)
+                if (isOwned || item is BaseAddon)
                     sec = (ISecurable)item;
             }
             else

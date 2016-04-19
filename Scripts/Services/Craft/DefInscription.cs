@@ -45,26 +45,34 @@ namespace Server.Engines.Craft
         {
         }
 
-        public override int CanCraft(Mobile from, BaseTool tool, Type typeItem)
+        public override int CanCraft(Mobile from, IUsesRemaining tool, Type typeItem)
         {
-            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
+            if (tool == null || ((Item)tool).Deleted)
                 return 1044038; // You have worn out your tool!
-            else if (!BaseTool.CheckAccessible(tool, from))
-                return 1044263; // The tool must be on your person to use.
-
+            if (tool is BaseAddon)
+            {
+                if (tool.UsesRemaining <= 0)
+                {
+                    return 502412; // There are no charges left on that item.
+                }
+            }
+            else
+            {
+                if (tool.UsesRemaining < 0)
+                    return 1044038; // You have worn out your tool!
+                else if (!BaseTool.CheckAccessible((BaseTool)tool, from))
+                    return 1044263; // The tool must be on your person to use.
+            }
+            
             if (typeItem != null)
             {
                 object o = Activator.CreateInstance(typeItem);
-
                 if (o is SpellScroll)
                 {
                     SpellScroll scroll = (SpellScroll)o;
                     Spellbook book = Spellbook.Find(from, scroll.SpellID);
-
                     bool hasSpell = (book != null && book.HasSpell(scroll.SpellID));
-
                     scroll.Delete();
-
                     return (hasSpell ? 0 : 1042404); // null : You don't have that spell!
                 }
                 else if (o is Item)
@@ -72,7 +80,6 @@ namespace Server.Engines.Craft
                     ((Item)o).Delete();
                 }
             }
-
             return 0;
         }
 

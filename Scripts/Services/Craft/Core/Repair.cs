@@ -16,7 +16,7 @@ namespace Server.Engines.Craft
         {
         }
 
-        public static void Do(Mobile from, CraftSystem craftSystem, BaseTool tool)
+        public static void Do(Mobile from, CraftSystem craftSystem, IUsesRemaining tool)
         {
             from.Target = new InternalTarget(craftSystem, tool);
             from.SendLocalizedMessage(1044276); // Target an item to repair.
@@ -31,10 +31,10 @@ namespace Server.Engines.Craft
         private class InternalTarget : Target
         {
             private readonly CraftSystem m_CraftSystem;
-            private readonly BaseTool m_Tool;
+            private readonly IUsesRemaining m_Tool;
             private readonly RepairDeed m_Deed;
 
-            public InternalTarget(CraftSystem craftSystem, BaseTool tool)
+            public InternalTarget(CraftSystem craftSystem, IUsesRemaining tool)
                 : base(2, false, TargetFlags.None)
             {
                 this.m_CraftSystem = craftSystem;
