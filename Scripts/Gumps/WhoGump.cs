@@ -66,7 +66,7 @@ namespace Server.Gumps
 
         public static void Initialize()
         {
-            CommandSystem.Register("Who", AccessLevel.Counselor, new CommandEventHandler(WhoList_OnCommand));
+            //CommandSystem.Register("Who", AccessLevel.Counselor, new CommandEventHandler(WhoList_OnCommand));
             CommandSystem.Register("WhoList", AccessLevel.Counselor, new CommandEventHandler(WhoList_OnCommand));
         }
 

@@ -50,8 +50,8 @@ namespace Server.Commands.Generic
             Register(new DismountCommand());
             Register(new AddCommand());
             Register(new AddToPackCommand());
-            Register(new TellCommand(true));
-            Register(new TellCommand(false));
+            //Register(new TellCommand(true));
+            //Register(new TellCommand(false));
             Register(new PrivSoundCommand());
             Register(new IncreaseCommand());
             Register(new OpenBrowserCommand());
@@ -352,7 +352,7 @@ namespace Server.Commands.Generic
         }
     }
 
-    public class TellCommand : BaseCommand
+    /*public class TellCommand : BaseCommand
     {
         private readonly bool m_InGump;
         public TellCommand(bool inGump)
@@ -389,7 +389,7 @@ namespace Server.Commands.Generic
             else
                 mob.SendMessage(e.ArgString);
         }
-    }
+    }*/
 
     public class AddToPackCommand : BaseCommand
     {

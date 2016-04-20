@@ -37,6 +37,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="SharkBiteIrc">
+      <HintPath>E:\UO\Grimmwold\SharkBiteIrc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -277,6 +280,39 @@
     <Compile Include="Context Menus\TeachEntry.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Custom\Commands\Look.cs" />
+    <Compile Include="Custom\IrcBot.cs" />
+    <Compile Include="Custom\Commands\Message.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\Error Reporting\Errors.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\Error Reporting\ErrorsGump.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\Error Reporting\ErrorsNotifyGump.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\Gumps Plus Light\BackgroundPlus.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\Gumps Plus Light\ButtonPlus.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\Gumps Plus Light\GumpPlusLight.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\Gumps Plus Light\HTML.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\Gumps Plus Light\HtmlPlus.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\Gumps Plus Light\InfoGump.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\TownHouse Gumps\ContractConfirmGump.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\TownHouse Gumps\ContractSetupGump.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\TownHouse Gumps\TownHouseConfirmGump.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\TownHouse Gumps\TownHouseSetupGump.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Gumps\TownHouse Gumps\TownHousesGump.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Items\RentalContract.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Items\RentalContractCopy.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Items\RentalLicense.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Items\SignHammer.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Items\TownHouse.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Items\TownHouseSign.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Misc\CommandInfo.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Misc\DecoreItemInfo.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Misc\General.cs" />
+    <Compile Include="Custom\Town Houses v2.01\Misc\GumpResponse.cs" />
+    <Compile Include="Custom\Town Houses v2.01\RUOVersion.cs" />
+    <Compile Include="Custom\Util\Gumps\GumpUtil.cs" />
+    <Compile Include="Custom\Util\Gumps\PlayerSelect.cs" />
+    <Compile Include="Custom\Util\Gumps\TextEntry.cs" />
+    <Compile Include="Custom\Util\Gumps\YesNo.cs" />
+    <Compile Include="Custom\Util\Util.cs" />
     <Compile Include="Gumps\AddDoorGump.cs">
       <SubType>Code</SubType>
     </Compile>
