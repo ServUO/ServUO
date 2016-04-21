@@ -1224,43 +1224,18 @@ namespace Server.Multis
 
         public virtual bool IsInside(Point3D p, int height)
         {
-            if (this.Deleted)
-                return false;
+            Sector sector = Map.GetSector(p);
 
-            MultiComponentList mcl = this.Components;
-
-            int x = p.X - (this.X + mcl.Min.X);
-            int y = p.Y - (this.Y + mcl.Min.Y);
-
-            if (x < 0 || x >= mcl.Width || y < 0 || y >= mcl.Height)
-                return false;
-
-            if (this is HouseFoundation && y < (mcl.Height - 1) && p.Z >= this.Z)
-                return true;
-
-            StaticTile[] tiles = mcl.Tiles[x][y];
-
-            for (int j = 0; j < tiles.Length; ++j)
+            foreach (BaseMulti m in sector.Multis)
             {
-                StaticTile tile = tiles[j];
-                int id = tile.ID & TileData.MaxItemValue;
-                ItemData data = TileData.ItemTable[id];
-
-                // Slanted roofs do not count; they overhang blocking south and east sides of the multi
-                if ((data.Flags & TileFlag.Roof) != 0)
-                    continue;
-
-                // Signs and signposts are not considered part of the multi
-                if ((id >= 0xB95 && id <= 0xC0E) || (id >= 0xC43 && id <= 0xC44))
-                    continue;
-
-                int tileZ = tile.Z + this.Z;
-
-                if (p.Z == tileZ || (p.Z + height) > tileZ)
-                    return true;
+                if (m != this
+                && m is Knives.TownHouses.TownHouse
+                && ((Knives.TownHouses.TownHouse)m).ForSaleSign is Knives.TownHouses.RentalContract
+                && ((Knives.TownHouses.TownHouse)m).IsInside(p, height))
+                    return false;
             }
 
-            return false;
+            return Region.Contains(p);
         }
 
         public SecureAccessResult CheckSecureAccess(Mobile m, Item item)
