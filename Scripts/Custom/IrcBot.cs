@@ -330,7 +330,7 @@ namespace Sharkbite.Irc.Examples
                 //if you want.
                 Identd.Stop();
 
-                connection.Sender.PrivateMessage( "nickserv", String.Format( "identify bluebird" ) );
+                connection.Sender.PrivateMessage( "nickserv", String.Format( "identify <password_goes_here>" ) );
 
                 //The connection is ready so lets join a channel.
                 //We can join any number of channels simultaneously but
