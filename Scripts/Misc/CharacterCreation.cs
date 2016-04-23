@@ -265,7 +265,7 @@ namespace Server.Misc
 
         private static CityInfo GetStartLocation(CharacterCreatedEventArgs args, bool isYoung)
         {
-            if (Core.ML)
+            if (Core.LBR)
             {
                 //if( args.State != null && args.State.NewHaven )
                 return m_NewHavenInfo;	//We don't get the client Version until AFTER Character creation

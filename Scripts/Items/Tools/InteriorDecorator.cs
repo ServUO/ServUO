@@ -314,27 +314,27 @@ namespace Server.Items
                     from.SendLocalizedMessage(1042275); // You cannot lower it down any further.
             }
 
-            private static int GetFloorZ( Item item )
-			{
-				Map map = item.Map;
+            private static int GetFloorZ(Item item)
+            {
+                Map map = item.Map;
 
-				if ( map == null )
-					return int.MinValue;
+                if (map == null)
+                    return int.MinValue;
 
-				StaticTile[] tiles = map.Tiles.GetStaticTiles( item.X, item.Y, true );
+                StaticTile[] tiles = map.Tiles.GetStaticTiles(item.X, item.Y, true);
 
-				int z = int.MinValue;
+                int z = int.MinValue;
 
-				for ( int i = 0; i < tiles.Length; ++i )
-				{
-					StaticTile tile = tiles[i];
-					ItemData id = TileData.ItemTable[tile.ID & 0x3FFF];
+                for (int i = 0; i < tiles.Length; ++i)
+                {
+                    StaticTile tile = tiles[i];
+                    ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
 
-					int top = tile.Z; // Confirmed : no height checks here
+                    int top = tile.Z; // Confirmed : no height checks here
 
-					if ( id.Surface && !id.Impassable && top > z && top <= item.Z )
-						z = top;
-				}
+                    if (id.Surface && !id.Impassable && top > z && top <= item.Z)
+                        z = top;
+                }
 
 				if ( z == int.MinValue )
 					z = map.Tiles.GetLandTile( item.X, item.Y ).Z;
