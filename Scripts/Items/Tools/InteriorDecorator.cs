@@ -336,8 +336,11 @@ namespace Server.Items
                         z = top;
                 }
 
-                return z;
-            }
+				if ( z == int.MinValue )
+					z = map.Tiles.GetLandTile( item.X, item.Y ).Z;
+
+				return z;
+			}
         }
     }
 }
