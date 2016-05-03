@@ -42,6 +42,11 @@ namespace Server.Mobiles
 
             this.Fame = 25000;
             this.Karma = -25000;
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 2); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public override void OnDeath( Container c )
