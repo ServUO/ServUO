@@ -60,6 +60,9 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < 0.12)
                 c.DropItem(new BottleIchor());
 
+            if (Utility.RandomDouble() < 0.01)
+                c.DropItem(new LuckyCoin());
+
             if (Utility.RandomDouble() < 0.05)
             {
                 switch (Utility.Random(2))
