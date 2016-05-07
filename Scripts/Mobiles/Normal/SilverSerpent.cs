@@ -99,11 +99,9 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            base.OnDeath(c);
+            base.OnDeath(c);            
 
-            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
-
-            if (reg.Name == "Abyss")
+            if (this.Map == Map.TerMur && this.Hue == 1150) //Tomb of Kings only
             {
                 if (Utility.RandomDouble() < 0.05)
                     c.DropItem(new SilverSnakeSkin());
