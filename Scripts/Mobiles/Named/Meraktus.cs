@@ -27,7 +27,12 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { };
+                return new Type[]
+                {
+                    typeof(RoyalGuardSurvivalKnife),
+                    typeof(TheMostKnowledgePerson),
+                    typeof(OblivionsNeedle)
+                };
             }
         }
         public override Type[] DecorativeList
@@ -98,6 +103,8 @@ namespace Server.Mobiles
             this.Karma = -70000;
 
             this.VirtualArmor = 28; // Don't know what it should be
+
+            this.NoKillAwards = true;
 
             if (Core.ML)
             {
