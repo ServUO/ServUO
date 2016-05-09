@@ -1224,7 +1224,7 @@ namespace Server.Misc
                     }
                 case SkillName.Magery:
                     {
-                        BagOfAllReagents regs = new BagOfAllReagents(30);
+                        BagOfReagents regs = new BagOfReagents(50);
 
                         if (!Core.AOS)
                         {
