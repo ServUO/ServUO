@@ -1,4 +1,6 @@
 using System;
+using Server.Targeting;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -1297,6 +1299,81 @@ namespace Server.Items
         { 
             base.Deserialize(reader); 
 
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class EmptyVenomVial : Item
+    {
+        public override int LabelNumber { get { return 1112215; } } // empty venom vial
+        [Constructable]
+        public EmptyVenomVial()
+            : base(0x0E24)
+        {
+            Weight = 1.0;
+            Name = "Empty Venom Vial";
+            Hue = 0;
+        }
+        public EmptyVenomVial(Serial serial)
+            : base(serial)
+        {
+        }
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (!IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            }
+            else
+            {
+                from.Target = new VenomTarget(this);
+                from.SendLocalizedMessage(1112222); // Which creature do you wish to extract resources from?
+            }
+        }
+        public class VenomTarget : Target
+        {
+            private EmptyVenomVial m_EmptyVenomVial;
+            public VenomTarget(Mobile from)
+                : base(2, false, TargetFlags.None)
+            {
+            }
+            public VenomTarget(EmptyVenomVial Vial)
+                : base(2, false, TargetFlags.None)
+            {
+                m_EmptyVenomVial = Vial;
+            }
+            protected override void OnTarget(Mobile from, object target)
+            {
+                if (target is SilverSerpent)
+                {
+                    SilverSerpent serp = target as SilverSerpent;
+                    if (serp.Hue == 1150)
+                    {
+                        if (0.3 > Utility.RandomDouble())
+                        {
+                            from.SendLocalizedMessage(1112219); // You skillfully extract additional resources from the creature.
+                            from.AddToBackpack(new SilverSerpentVenom());
+                            m_EmptyVenomVial.Delete();
+                            serp.Hue = 0;
+                        }
+                        else
+                            from.SendLocalizedMessage(1112218); // You handle the creature but fail to harvest any resources from it.
+                    }
+                    else
+                        from.SendLocalizedMessage(1112223);// This serpent has already been drained of all its venom.
+                }
+                else
+                    from.SendLocalizedMessage(1112221); // You may only use this on a silver serpent.
+            }
+        }
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
             int version = reader.ReadInt();
         }
     }
