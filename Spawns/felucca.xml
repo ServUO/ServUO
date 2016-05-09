@@ -11436,8 +11436,8 @@
     <CentreZ>-4</CentreZ>
     <Range>3</Range>
     <MaxCount>1</MaxCount>
-    <MinDelay>0</MinDelay>
-    <MaxDelay>0</MaxDelay>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
     <DelayInSec>False</DelayInSec>
     <Duration>0</Duration>
     <DespawnTime>0</DespawnTime>
@@ -37770,8 +37770,8 @@
     <CentreZ>37</CentreZ>
     <Range>5</Range>
     <MaxCount>2</MaxCount>
-    <MinDelay>0</MinDelay>
-    <MaxDelay>0</MaxDelay>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
     <DelayInSec>False</DelayInSec>
     <Duration>0</Duration>
     <DespawnTime>0</DespawnTime>
@@ -71748,8 +71748,8 @@
     <CentreZ>9</CentreZ>
     <Range>5</Range>
     <MaxCount>3</MaxCount>
-    <MinDelay>0</MinDelay>
-    <MaxDelay>0</MaxDelay>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
     <DelayInSec>False</DelayInSec>
     <Duration>0</Duration>
     <DespawnTime>0</DespawnTime>
@@ -79812,8 +79812,8 @@
     <CentreZ>37</CentreZ>
     <Range>5</Range>
     <MaxCount>3</MaxCount>
-    <MinDelay>0</MinDelay>
-    <MaxDelay>0</MaxDelay>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
     <DelayInSec>False</DelayInSec>
     <Duration>0</Duration>
     <DespawnTime>0</DespawnTime>
@@ -83424,8 +83424,8 @@
     <CentreZ>0</CentreZ>
     <Range>2</Range>
     <MaxCount>1</MaxCount>
-    <MinDelay>0</MinDelay>
-    <MaxDelay>0</MaxDelay>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
     <DelayInSec>False</DelayInSec>
     <Duration>0</Duration>
     <DespawnTime>0</DespawnTime>
@@ -85482,8 +85482,8 @@
     <CentreZ>37</CentreZ>
     <Range>5</Range>
     <MaxCount>3</MaxCount>
-    <MinDelay>0</MinDelay>
-    <MaxDelay>0</MaxDelay>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
     <DelayInSec>False</DelayInSec>
     <Duration>0</Duration>
     <DespawnTime>0</DespawnTime>
