@@ -47,7 +47,7 @@
 				<rect x="6506" y="83" width="7" height="7" />
 				<zrange min="-4" />
 				<spawning>
-					<object id="1001" type="CrystalFieldTele" minSpawnTime="PT0S" maxSpawnTime="PT0S" amount="1" />
+					<object id="1001" type="CrystalFieldTele" minSpawnTime="PT10S" maxSpawnTime="PT30S" amount="1" />
 				</spawning>
 			</region>
 			<region type="IcyRiver">
@@ -971,7 +971,7 @@
 				<rect x="6506" y="83" width="7" height="7" />
 				<zrange min="-4" />
 				<spawning>
-					<object id="1000" type="CrystalFieldTele" minSpawnTime="PT0S" maxSpawnTime="PT0S" amount="1" />
+					<object id="1000" type="CrystalFieldTele" minSpawnTime="PT10S" maxSpawnTime="PT30S" amount="1" />
 				</spawning>
 			</region>
 			<region type="IcyRiver">
