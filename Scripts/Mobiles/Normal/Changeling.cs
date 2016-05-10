@@ -61,6 +61,11 @@ namespace Server.Mobiles
             this.PackItem(new Arrow(35));
             this.PackItem(new Bolt(25));
             this.PackGem(2);
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public Changeling(Serial serial)

@@ -79,6 +79,17 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.Meager);
         }
 
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.05)
+                c.DropItem(new GoblinBlood());
+
+            if (Utility.RandomDouble() < 0.01)
+                c.DropItem(new LuckyCoin());
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

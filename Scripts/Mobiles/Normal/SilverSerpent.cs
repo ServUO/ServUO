@@ -1,5 +1,6 @@
 using System;
 using Server.Factions;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -94,6 +95,22 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.Average);
             this.AddLoot(LootPack.Gems, 2);
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
+
+            if (reg.Name == "Tomb of Kings")
+            {
+                if (Utility.RandomDouble() < 0.05)
+                    c.DropItem(new SilverSnakeSkin());
+
+                if (Utility.RandomDouble() < 0.1)
+                    c.DropItem(new SilverSerpentVenom());
+            }
         }
 
         public override void Serialize(GenericWriter writer)
