@@ -78,8 +78,9 @@ namespace Server.Mobiles
 		ToggleClippings = 0x00800000,
 		ToggleCutClippings = 0x01000000,
 		ToggleCutReeds = 0x02000000,
-		MechanicalLife = 0x04000000
-	}
+		MechanicalLife = 0x04000000,
+        HumilityHunt = 0x08000000
+    }
 
 	public enum NpcGuild
 	{
@@ -434,12 +435,53 @@ namespace Server.Mobiles
 		private Map m_SSSeedMap;
 
 		public Map SSSeedMap { get { return m_SSSeedMap; } set { m_SSSeedMap = value; } }
-		#endregion
+        #endregion
 
-		#endregion
+        #endregion
 
-		#region Auto Arrow Recovery
-		private readonly Dictionary<Type, int> m_RecoverableAmmo = new Dictionary<Type, int>();
+        #region Humility
+        public bool HumilityHunt
+        {
+            get { return GetFlag(PlayerFlag.HumilityHunt); }
+            set
+            {
+                SetFlag(PlayerFlag.HumilityHunt, value);
+                if (value)
+                {
+                    foreach (ResistanceMod rm in HumilityMods)
+                    {
+                        AddResistanceMod(rm);
+                    }
+                    BuffInfo info = new BuffInfo(BuffIcon.Humility, 1155807, 1155806, "-70");
+                    BuffInfo.AddBuff(this, info);
+
+                }
+                else
+                {
+                    foreach (ResistanceMod rm in HumilityMods)
+                    {
+                        RemoveResistanceMod(rm);
+                    }
+                    BuffInfo.RemoveBuff(this, BuffIcon.Humility);
+                }
+            }
+        }
+
+        public DateTime HumilityHuntLastEnded;
+
+        public List<ResistanceMod> HumilityMods = new List<ResistanceMod>()
+        {
+            new ResistanceMod(ResistanceType.Physical, -70),
+            new ResistanceMod(ResistanceType.Fire, -70),
+            new ResistanceMod(ResistanceType.Energy, -70),
+            new ResistanceMod(ResistanceType.Cold, -70),
+            new ResistanceMod(ResistanceType.Poison, -70)
+        };
+
+        #endregion
+
+        #region Auto Arrow Recovery
+        private readonly Dictionary<Type, int> m_RecoverableAmmo = new Dictionary<Type, int>();
 
 		public Dictionary<Type, int> RecoverableAmmo { get { return m_RecoverableAmmo; } }
 
@@ -4020,8 +4062,8 @@ namespace Server.Mobiles
 			}
 
 			CheckKillDecay();
-
-			CheckAtrophies(this);
+            HumilityHunt = false;
+            CheckAtrophies(this);
 
 			base.Serialize(writer);
 

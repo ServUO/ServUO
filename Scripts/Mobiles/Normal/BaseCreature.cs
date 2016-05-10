@@ -303,6 +303,8 @@ namespace Server.Mobiles
         public virtual Faction FactionAllegiance { get { return null; } }
         public virtual int FactionSilverWorth { get { return 30; } }
 
+        public int HumilityBuff = 0;
+
         #region Bonding
         public const bool BondingEnabled = true;
 
@@ -4725,6 +4727,20 @@ namespace Server.Mobiles
                     else if (/*(Map == Map.Felucca || Map == Map.Trammel) &&*/TreasureMapChance >= Utility.RandomDouble())
                     {
                         PackItem(new TreasureMap(treasureLevel, Map));
+                    }
+                }
+
+                if (Karma < 0 && LastKiller is PlayerMobile)
+                {
+                    if (((PlayerMobile)LastKiller).HumilityHunt)
+                    {
+                        bool gainedPath = false;
+                        VirtueHelper.Award(LastKiller, VirtueName.Humility, 300, ref gainedPath);
+
+                        if (gainedPath)
+                            LastKiller.SendLocalizedMessage(1155811); // You have gained a path in Humility!
+                        else
+                            LastKiller.SendLocalizedMessage(1052070); // You have gained in Humility!
                     }
                 }
 
