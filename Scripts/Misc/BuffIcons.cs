@@ -349,7 +349,8 @@ namespace Server
         SplinteringEffect,
         SwingSpeedDebuff,
         WraithForm,
-        CityTradeDeal = 0x466
+        CityTradeDeal = 0x466,
+        Humility = 0x467
     }
 
     public sealed class AddBuffPacket : Packet

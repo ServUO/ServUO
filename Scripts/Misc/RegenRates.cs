@@ -85,7 +85,7 @@ namespace Server.Misc
 
             if (Core.ML && from.Race == Race.Human)	//Is this affected by the cap?
                 points += 2;
-
+           
             if (points < 0)
                 points = 0;
 
@@ -94,6 +94,22 @@ namespace Server.Misc
 
             if (CheckTransform(from, typeof(HorrificBeastSpell)))
                 points += 20;
+
+            if (from is BaseCreature && ((BaseCreature)from).HumilityBuff > 0)
+            {
+                switch (((BaseCreature)@from).HumilityBuff)
+                {
+                    case 1:
+                        points += 10;
+                        break;
+                    case 2:
+                        points += 20;
+                        break;
+                    case 3:
+                        points += 30;
+                        break;
+                }
+            }
 
             if (CheckAnimal(from, typeof(Dog)) || CheckAnimal(from, typeof(Cat)))
                 points += from.Skills[SkillName.Ninjitsu].Fixed / 30;
