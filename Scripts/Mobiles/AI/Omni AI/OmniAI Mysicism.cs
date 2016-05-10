@@ -125,7 +125,7 @@ namespace Server.Mobiles
                     pm = bc.SummonMaster as PlayerMobile;
             }
 
-            if (pm != null || !pm.Asleep)
+            if (pm != null && !pm.Asleep)
                 return true;
             else
                 return false;
