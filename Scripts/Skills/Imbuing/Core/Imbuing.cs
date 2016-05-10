@@ -851,7 +851,7 @@ namespace Server.SkillHandlers
 
                     AosAttribute attr = (AosAttribute)i;
 
-                    if (wep.Attributes[attr] > 0)
+                    if (wep.Attributes[attr] > 0 && (attr != AosAttribute.WeaponDamage || (attr == AosAttribute.WeaponDamage && wep.Attributes[attr] > 50)))
                     {
                         if (!(prop is AosAttribute) || ((AosAttribute)prop) != attr)
                             total += 1;
