@@ -1703,7 +1703,7 @@ namespace Server.Mobiles
                 {
                     Item holding = from.Weapon as Item;
 
-                    if (Core.AOS && (holding is SkinningKnife /* TODO: || holding is ButcherWarCleaver || with is ButcherWarCleaver */))
+                    if (Core.AOS && (holding is SkinningKnife || with is ButchersWarCleaver))
                     {
                         Item leather = null;
 
