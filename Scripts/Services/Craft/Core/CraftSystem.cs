@@ -255,7 +255,7 @@ namespace Server.Engines.Craft
             return true;
         }
 
-        public void CreateItem(Mobile from, Type type, Type typeRes, BaseTool tool, CraftItem realCraftItem)
+        public void CreateItem(Mobile from, Type type, Type typeRes, IUsesRemaining tool, CraftItem realCraftItem)
         { 
             // Verify if the type is in the list of the craftable item
             CraftItem craftItem = this.m_CraftItems.SearchFor(type);
@@ -487,6 +487,6 @@ namespace Server.Engines.Craft
 
         public abstract int PlayEndingEffect(Mobile from, bool failed, bool lostMaterial, bool toolBroken, int quality, bool makersMark, CraftItem item);
 
-        public abstract int CanCraft(Mobile from, BaseTool tool, Type itemType);
+        public abstract int CanCraft(Mobile from, IUsesRemaining tool, Type itemType);
     }
 }

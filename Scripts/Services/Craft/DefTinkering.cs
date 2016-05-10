@@ -73,17 +73,28 @@ namespace Server.Engines.Craft
             return 0.0; // 0%
         }
 
-        public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
+        public override int CanCraft(Mobile from, IUsesRemaining tool, Type itemType)
         {
-            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
+            if (tool == null || ((Item)tool).Deleted)
                 return 1044038; // You have worn out your tool!
-            else if (!BaseTool.CheckAccessible(tool, from))
-                return 1044263; // The tool must be on your person to use.
-            else if (itemType != null && (itemType.IsSubclassOf(typeof(BaseFactionTrapDeed)) || itemType == typeof(FactionTrapRemovalKit)) && Faction.Find(from) == null)
+            if (tool is BaseAddon)
+            {
+                if (tool.UsesRemaining <= 0)
+                {
+                    return 502412; // There are no charges left on that item.
+                }
+            }
+            else
+            {
+                if (tool.UsesRemaining < 0)
+                    return 1044038; // You have worn out your tool!
+                else if (!BaseTool.CheckAccessible((BaseTool)tool, from))
+                    return 1044263; // The tool must be on your person to use.
+            }
+            if (itemType != null && (itemType.IsSubclassOf(typeof(BaseFactionTrapDeed)) || itemType == typeof(FactionTrapRemovalKit)) && Faction.Find(from) == null)
                 return 1044573; // You have to be in a faction to do that.
             else if (itemType == typeof(ModifiedClockworkAssembly) && !(from is PlayerMobile && ((PlayerMobile)from).MechanicalLife))
                 return 1113034; // You haven't read the Mechanical Life Manual. Talking to Sutek might help!
-
             return 0;
         }
 
@@ -555,7 +566,7 @@ namespace Server.Engines.Craft
 
         public abstract TrapType TrapType { get; }
 
-        public TrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, BaseTool tool, int quality)
+        public TrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, IUsesRemaining tool, int quality)
             : base(from, craftItem, craftSystem, typeRes, tool, quality)
         {
         }
@@ -630,9 +641,9 @@ namespace Server.Engines.Craft
             private void Failure(int message)
             {
                 Mobile from = this.m_TrapCraft.From;
-                BaseTool tool = this.m_TrapCraft.Tool;
+                IUsesRemaining tool = this.m_TrapCraft.Tool;
 
-                if (tool != null && !tool.Deleted && tool.UsesRemaining > 0)
+                if (tool != null && !((Item)tool).Deleted && tool.UsesRemaining > 0)
                     from.SendGump(new CraftGump(from, this.m_TrapCraft.CraftSystem, tool, message));
                 else if (message > 0)
                     from.SendLocalizedMessage(message);
@@ -670,7 +681,7 @@ namespace Server.Engines.Craft
             }
         }
 
-        public DartTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, BaseTool tool, int quality)
+        public DartTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, IUsesRemaining tool, int quality)
             : base(from, craftItem, craftSystem, typeRes, tool, quality)
         {
         }
@@ -687,7 +698,7 @@ namespace Server.Engines.Craft
             }
         }
 
-        public PoisonTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, BaseTool tool, int quality)
+        public PoisonTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, IUsesRemaining tool, int quality)
             : base(from, craftItem, craftSystem, typeRes, tool, quality)
         {
         }
@@ -704,7 +715,7 @@ namespace Server.Engines.Craft
             }
         }
 
-        public ExplosionTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, BaseTool tool, int quality)
+        public ExplosionTrapCraft(Mobile from, CraftItem craftItem, CraftSystem craftSystem, Type typeRes, IUsesRemaining tool, int quality)
             : base(from, craftItem, craftSystem, typeRes, tool, quality)
         {
         }

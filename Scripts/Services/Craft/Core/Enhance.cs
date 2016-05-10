@@ -20,7 +20,7 @@ namespace Server.Engines.Craft
 
     public class Enhance
     {
-        public static EnhanceResult Invoke(Mobile from, CraftSystem craftSystem, BaseTool tool, Item item, CraftResource resource, Type resType, ref object resMessage)
+        public static EnhanceResult Invoke(Mobile from, CraftSystem craftSystem, IUsesRemaining tool, Item item, CraftResource resource, Type resType, ref object resMessage)
         {
             if (item == null)
                 return EnhanceResult.BadItem;
@@ -370,7 +370,7 @@ namespace Server.Engines.Craft
                 res = EnhanceResult.Broken;
         }
 
-        public static void BeginTarget(Mobile from, CraftSystem craftSystem, BaseTool tool)
+        public static void BeginTarget(Mobile from, CraftSystem craftSystem, IUsesRemaining tool)
         {
             CraftContext context = craftSystem.GetContext(from);
 
@@ -412,11 +412,11 @@ namespace Server.Engines.Craft
         private class InternalTarget : Target
         {
             private readonly CraftSystem m_CraftSystem;
-            private readonly BaseTool m_Tool;
+            private readonly IUsesRemaining m_Tool;
             private readonly Type m_ResourceType;
             private readonly CraftResource m_Resource;
 
-            public InternalTarget(CraftSystem craftSystem, BaseTool tool, Type resourceType, CraftResource resource)
+            public InternalTarget(CraftSystem craftSystem, IUsesRemaining tool, Type resourceType, CraftResource resource)
                 : base(2, false, TargetFlags.None)
             {
                 this.m_CraftSystem = craftSystem;

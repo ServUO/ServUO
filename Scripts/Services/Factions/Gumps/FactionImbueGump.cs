@@ -12,11 +12,11 @@ namespace Server.Factions
         private readonly Mobile m_Mobile;
         private readonly Faction m_Faction;
         private readonly CraftSystem m_CraftSystem;
-        private readonly BaseTool m_Tool;
+        private readonly IUsesRemaining m_Tool;
         private readonly object m_Notice;
         private readonly int m_Quality;
         private readonly FactionItemDefinition m_Definition;
-        public FactionImbueGump(int quality, Item item, Mobile from, CraftSystem craftSystem, BaseTool tool, object notice, int availableSilver, Faction faction, FactionItemDefinition def)
+        public FactionImbueGump(int quality, Item item, Mobile from, CraftSystem craftSystem, IUsesRemaining tool, object notice, int availableSilver, Faction faction, FactionItemDefinition def)
             : base(100, 200)
         { 
             this.m_Item = item;
@@ -87,7 +87,7 @@ namespace Server.Factions
                 }
             }
 
-            if (this.m_Tool != null && !this.m_Tool.Deleted && this.m_Tool.UsesRemaining > 0)
+            if (this.m_Tool != null && !((Item)m_Tool).Deleted && this.m_Tool.UsesRemaining > 0)
                 this.m_Mobile.SendGump(new CraftGump(this.m_Mobile, this.m_CraftSystem, this.m_Tool, this.m_Notice));
             else if (this.m_Notice is string)
                 this.m_Mobile.SendMessage((string)this.m_Notice);

@@ -114,7 +114,6 @@ namespace Server.Items
         public WallOfHungryMouths()
         {
             this.Name = ("Wall Of Hungry Mouths");
-
             this.Hue = 1866;
 
             this.AbsorptionAttributes.EaterEnergy = 10;
