@@ -67,6 +67,8 @@ namespace Server.Misc
                 {
                     ((PlayerMobile)from).HumilityHunt = true;
                     from.SendLocalizedMessage(1155802, "-70"); //You have begun your journey on the Path of Humility.  Your resists have been debuffed by ~1_DEBUFF~.
+                    from.SendGump(new HumilityGump());
+
                 }
                 else
                 {

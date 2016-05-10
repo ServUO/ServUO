@@ -1,5 +1,7 @@
 ﻿using System;
+using Server.Gumps;
 using Server.Mobiles;
+using Server.Network;
 using Server.Targeting;
 
 namespace Server
@@ -81,5 +83,44 @@ namespace Server
         }
     }
 
+    public class HumilityGump : Gump
+    {
+        Mobile caller;
+
+        public HumilityGump(Mobile from) : this()
+        {
+            caller = from;
+        }
+
+        public HumilityGump() : base(0, 0)
+        {
+            this.Closable = true;
+            this.Disposable = true;
+            this.Dragable = true;
+            this.Resizable = false;
+
+            AddPage(0);
+            AddBackground(147, 63, 548, 276, 9380);
+            AddHtmlLocalized(187, 102, 477, 109, 1155858, false, false);
+            AddImage(379, 215, 108);
+        }
+
+
+
+        public override void OnResponse(NetState sender, RelayInfo info)
+        {
+            Mobile from = sender.Mobile;
+
+            switch (info.ButtonID)
+            {
+                case 0:
+                    {
+
+                        break;
+                    }
+
+            }
+        }
+    }
 
 }

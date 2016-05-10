@@ -448,7 +448,7 @@ namespace Server.Mobiles
                 SetFlag(PlayerFlag.HumilityHunt, value);
                 if (value)
                 {
-                    foreach (ResistanceMod rm in HumilityMods)
+                    foreach (ResistanceMod rm in _HumilityMods)
                     {
                         AddResistanceMod(rm);
                     }
@@ -458,7 +458,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    foreach (ResistanceMod rm in HumilityMods)
+                    foreach (ResistanceMod rm in _HumilityMods)
                     {
                         RemoveResistanceMod(rm);
                     }
@@ -469,7 +469,7 @@ namespace Server.Mobiles
 
         public DateTime HumilityHuntLastEnded;
 
-        public List<ResistanceMod> HumilityMods = new List<ResistanceMod>()
+	    private readonly List<ResistanceMod> _HumilityMods = new List<ResistanceMod>()
         {
             new ResistanceMod(ResistanceType.Physical, -70),
             new ResistanceMod(ResistanceType.Fire, -70),
