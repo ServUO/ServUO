@@ -29,6 +29,16 @@ namespace Server
             VirtueLevel vl = VirtueHelper.GetLevel(from, VirtueName.Humility);
             if (bc != null && bc.ControlMaster == @from && vl >= VirtueLevel.Seeker)
             {
+                int usedPoints;
+                if (from.Virtues.Humility < 4399)
+                    usedPoints = 400;
+                else if (from.Virtues.Humility < 10599)
+                    usedPoints = 600;
+                else
+                    usedPoints = 1000;
+
+                VirtueHelper.Atrophy(from, VirtueName.Humility, usedPoints);
+
                 switch (vl)
                 {
                     case VirtueLevel.Seeker:

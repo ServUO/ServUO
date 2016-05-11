@@ -4735,7 +4735,7 @@ namespace Server.Mobiles
                     if (((PlayerMobile)LastKiller).HumilityHunt)
                     {
                         bool gainedPath = false;
-                        VirtueHelper.Award(LastKiller, VirtueName.Humility, 300, ref gainedPath);
+                        VirtueHelper.Award(LastKiller, VirtueName.Humility, 30, ref gainedPath);
 
                         if (gainedPath)
                             LastKiller.SendLocalizedMessage(1155811); // You have gained a path in Humility!
