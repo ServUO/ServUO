@@ -16,7 +16,7 @@ namespace Server
         public static void OnVirtueUsed(Mobile from)
         {
             if (!@from.Alive) return;
-            @from.SendMessage("Target the pet you wish to embrace with your Humility...");
+            @from.SendMessage("Target the pet you wish to embrace with your Humility..."); // Get cliloc
             @from.Target = new InternalTarget();
         }
 
@@ -46,6 +46,8 @@ namespace Server
                 mTimer.Start();
                 from.SendLocalizedMessage(1155819);
             }
+            else
+                from.SendMessage("You can only embrace your Humility on a pet.");//get cliloc
         }
 
         private class InternalTarget : Target
