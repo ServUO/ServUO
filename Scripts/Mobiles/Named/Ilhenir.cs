@@ -54,6 +54,11 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 44;
 
+            for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
+
             if (Core.ML)
             {
                 this.PackResources(8);

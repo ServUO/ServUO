@@ -10,7 +10,6 @@ namespace Server.Mobiles
         [Constructable]
         public SirPatrick()
         {
-
             this.Name = "Sir Patrick";
             this.Hue = 0x47E;
 
@@ -38,6 +37,11 @@ namespace Server.Mobiles
 
             this.Fame = 18000;
             this.Karma = -18000;
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public SirPatrick(Serial serial)

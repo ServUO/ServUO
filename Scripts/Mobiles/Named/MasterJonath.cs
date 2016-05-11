@@ -9,7 +9,6 @@ namespace Server.Mobiles
         [Constructable]
         public MasterJonath()
         {
-
             this.Name = "Master Jonath";
             this.Hue = 0x455;
 
@@ -43,6 +42,11 @@ namespace Server.Mobiles
             this.PackReg(7);
             this.PackReg(7);
             this.PackReg(8);
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public MasterJonath(Serial serial)

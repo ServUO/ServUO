@@ -43,6 +43,11 @@ namespace Server.Mobiles
 
             this.PackItem(new Bandage(5));  // How many?
             this.PackItem(new Ribs());
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public Troglodyte(Serial serial)

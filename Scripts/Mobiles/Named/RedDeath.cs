@@ -10,8 +10,6 @@ namespace Server.Mobiles
         public RedDeath()
             : base("Red Death")
         {
-
-
             this.Hue = 0x21;
             this.BaseSoundID = 0x1C3;
 
@@ -43,6 +41,11 @@ namespace Server.Mobiles
 
             this.Fame = 28000;
             this.Karma = -28000;
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public RedDeath(Serial serial)

@@ -32,6 +32,11 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Wrestling, 106.4, 128.8);
             this.SetSkill(SkillName.Tactics, 129.9, 141.0);
             this.SetSkill(SkillName.MagicResist, 84.3, 90.1);
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public Saliva(Serial serial)

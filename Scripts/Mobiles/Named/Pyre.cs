@@ -9,7 +9,6 @@ namespace Server.Mobiles
         [Constructable]
         public Pyre()
         {
-
             this.Name = "Pyre";
             this.Hue = 0x489;
 
@@ -41,6 +40,11 @@ namespace Server.Mobiles
 
             this.Fame = 21000;
             this.Karma = -21000;
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public Pyre(Serial serial)
