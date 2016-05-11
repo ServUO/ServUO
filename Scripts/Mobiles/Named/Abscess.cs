@@ -39,6 +39,11 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Tactics, 121.0, 130.5);
             this.SetSkill(SkillName.MagicResist, 102.9, 119.0);
             this.SetSkill(SkillName.Anatomy, 91.8, 94.3);
+
+            for (int i = 0; i < Utility.RandomMinMax(1, 2); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public Abscess(Serial serial)

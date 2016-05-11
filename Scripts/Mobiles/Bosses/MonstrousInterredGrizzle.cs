@@ -63,6 +63,11 @@ namespace Server.Mobiles
             this.VirtualArmor = 80;
             this.PackResources(8);
             this.PackTalismans(5);
+
+            for (int i = 0; i < Utility.RandomMinMax(1, 6); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public MonstrousInterredGrizzle(Serial serial)
