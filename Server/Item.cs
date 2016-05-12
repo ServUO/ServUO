@@ -753,6 +753,7 @@ namespace Server
 		private LootType m_LootType;
 		private DateTime m_LastMovedTime;
 		private Direction m_Direction;
+		private bool m_HonorItem;
 		#endregion
 
 		private ItemDelta m_DeltaFlags;
@@ -1336,6 +1337,11 @@ namespace Server
 				AddLockedDownProperty(list);
 			}
 
+			if (HonorItem)
+			{
+				AddHonorProperty(list);
+			}
+
 			Mobile blessedFor = BlessedFor;
 
 			if (blessedFor != null && !blessedFor.Deleted)
@@ -1391,6 +1397,14 @@ namespace Server
 		public virtual void AddBlessedForProperty(ObjectPropertyList list, Mobile m)
 		{
 			list.Add(1062203, "{0}", m.Name); // Blessed for ~1_NAME~
+		}
+
+		public virtual void AddHonorProperty(ObjectPropertyList list)
+		{
+			if (HonorItem)
+			{
+				list.Add("Lost Item (Return To Gain Honesty)."); //TODO get cliloc
+			}
 		}
 
 		/// <summary>
@@ -1833,6 +1847,32 @@ namespace Server
 			{
 				Map = map;
 				Location = location;
+			}
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public bool HonorItem
+		{
+			get
+			{
+				return m_HonorItem;
+			}
+			set
+			{
+				m_HonorItem = value;
+				if (m_HonorItem)
+				{
+					Map OwnerMap = Utility.RandomBool() ? Map.Felucca : Map.Trammel;
+					string OwnerRegion;
+
+
+					List<string> regions = new List<string>() { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
+					OwnerRegion = regions[Utility.Random(regions.Count)];
+
+					List<Mobile> mobiles = World.Mobiles.Values.Where(m => m.Region.Name == OwnerRegion && m.Map == OwnerMap).ToList();
+					Mobile owner = mobiles[Utility.Random(mobiles.Count)];
+				}
+				InvalidateProperties();
 			}
 		}
 
