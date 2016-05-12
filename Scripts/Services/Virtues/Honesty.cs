@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Server.Items;
 
 namespace Server.Services.Virtues
@@ -13,7 +14,7 @@ namespace Server.Services.Virtues
 		public static void Initialize()
 		{
 			VirtueGump.Register(106, OnVirtueUsed);
-            EventSink.WorldSave += EventSinkOnWorldSave;
+            EventSink.AfterWorldSave += EventSinkAfterWorldSave;
         }
 
 	    public static void OnVirtueUsed(Mobile from)
@@ -21,8 +22,16 @@ namespace Server.Services.Virtues
 			from.SendLocalizedMessage(1053001); // This virtue is not activated through the virtue menu.
 		}
 
-        private static void EventSinkOnWorldSave(WorldSaveEventArgs worldSaveEventArgs)
+        private static void EventSinkAfterWorldSave(AfterWorldSaveEventArgs worldSaveEventArgs)
         {
+
+            //Heavy operation, let's use a seperate thread.
+            Task.Factory.StartNew(GenerateHonestyItems);
+            
+        }
+
+	    private static void GenerateHonestyItems()
+	    {
             for (int i = 0; i < 50; i++)
             {
                 var toSpawn = Loot.RandomArmorOrShieldOrWeapon();
@@ -32,7 +41,6 @@ namespace Server.Services.Virtues
 
                 PlaceItemOnWorld(toSpawn);
             }
-            
         }
 
 	    private static void PlaceItemOnWorld(Item item)
@@ -55,13 +63,10 @@ namespace Server.Services.Virtues
                 placeCoords.Y = y;
                 placeCoords.Z = map.GetAverageZ(x, y);
 
-                //Verify if this is needed first
-                //if (!map.CanFit(x, y, placeCoords.Z, 6, false, false)) continue;
-
                 break;
             }
 
-            item.MoveToWorld(placeCoords);
+            item.MoveToWorld(placeCoords, map);
         }
 
     }
