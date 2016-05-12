@@ -753,7 +753,7 @@ namespace Server
 		private LootType m_LootType;
 		private DateTime m_LastMovedTime;
 		private Direction m_Direction;
-		private bool m_HonorItem;
+		private bool m_HonestyItem;
 		#endregion
 
 		private ItemDelta m_DeltaFlags;
@@ -1337,9 +1337,9 @@ namespace Server
 				AddLockedDownProperty(list);
 			}
 
-			if (HonorItem)
+			if (HonestyItem)
 			{
-				AddHonorProperty(list);
+				AddHonestyProperty(list);
 			}
 
 			Mobile blessedFor = BlessedFor;
@@ -1399,9 +1399,9 @@ namespace Server
 			list.Add(1062203, "{0}", m.Name); // Blessed for ~1_NAME~
 		}
 
-		public virtual void AddHonorProperty(ObjectPropertyList list)
+		public virtual void AddHonestyProperty(ObjectPropertyList list)
 		{
-			if (HonorItem)
+			if (HonestyItem)
 			{
 				list.Add("Lost Item (Return To Gain Honesty)."); //TODO get cliloc
 			}
@@ -1851,16 +1851,16 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public bool HonorItem
+		public bool HonestyItem
 		{
 			get
 			{
-				return m_HonorItem;
+				return m_HonestyItem;
 			}
 			set
 			{
-				m_HonorItem = value;
-				if (m_HonorItem)
+				m_HonestyItem = value;
+				if (m_HonestyItem)
 				{
 					Map OwnerMap = Utility.RandomBool() ? Map.Felucca : Map.Trammel;
 					string OwnerRegion;
@@ -2435,8 +2435,12 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(9); // version
+			writer.Write(10); // version
 
+			//version 10
+			writer.Write(m_HonestyItem);
+
+			//version 9
 			SaveFlag flags = SaveFlag.None;
 
 			int x = m_Location.m_X, y = m_Location.m_Y, z = m_Location.m_Z;
@@ -2892,6 +2896,11 @@ namespace Server
 
 			switch (version)
 			{
+				case 10:
+					{
+						m_HonestyItem = reader.ReadBool();
+						goto case 9;
+					}
 				case 9:
 				case 8:
 				case 7:
