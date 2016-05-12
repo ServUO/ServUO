@@ -1869,8 +1869,11 @@ namespace Server
 					List<string> regions = new List<string>() { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
 					OwnerRegion = regions[Utility.Random(regions.Count)];
 
-					List<Mobile> mobiles = World.Mobiles.Values.Where(m => m.Region.Name == OwnerRegion && m.Map == OwnerMap).ToList();
-					Mobile owner = mobiles[Utility.Random(mobiles.Count)];
+					List<Mobile> mobiles = World.Mobiles.Values.Where(m => m.Region.Name == OwnerRegion && m.Map == OwnerMap && (m.BodyValue == 400 || m.BodyValue == 401)  && !m.IsPlayer()).ToList();
+                    if (mobiles.Count > 0)
+                    {
+                        Mobile owner = mobiles[Utility.Random(mobiles.Count)];
+                    }
 				}
 				InvalidateProperties();
 			}
