@@ -100,6 +100,11 @@ namespace Server.Engines.Plants
 
         public static Seed RandomPeculiarSeed(int group)
         {
+            // about 7-8% chance of getting fragrant seed instead of peculiar seed
+            var frag = Utility.Random(100);
+            if (frag > 92)
+                return new Seed(PlantType.CocoaTree, PlantHue.Plain, false);
+
             switch ( group )
             {
                 case 1:
@@ -197,6 +202,8 @@ namespace Server.Engines.Plants
             int title = PlantTypeInfo.GetBonsaiTitle(this.m_PlantType);
             if (title == 0) // Not a bonsai
                 title = hueInfo.Name;
+            if (this.m_PlantType == PlantType.CocoaTree)
+                title = 1080529;
 
             int label;
 
