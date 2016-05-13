@@ -38,11 +38,7 @@ namespace Server.Services.Virtues
                         m =>
                             m.HonestyItem).ToList();
             
-
-            foreach (Item i in list)
-                {
-                    _HonestyItems.Add(i);
-                }
+                _HonestyItems.AddRange(list);
             }
 
             foreach (Item i in _HonestyItems)
@@ -53,7 +49,7 @@ namespace Server.Services.Virtues
                 }
             }
 
-            while (_HonestyItems.Count < 500)
+            while (_HonestyItems.Count < 1000)
             {
                 var toSpawn = Loot.RandomArmorOrShieldOrWeapon();
                 ItemFlags.SetTaken(toSpawn, false);

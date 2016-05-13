@@ -1863,15 +1863,14 @@ namespace Server
 				m_HonestyItem = value;
 				if (m_HonestyItem)
 				{
-					Map OwnerMap = Utility.RandomBool() ? Map.Felucca : Map.Trammel;
 
 					List<string> regions = new List<string>() { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
-                    HonestyRegion = regions[Utility.Random(regions.Count)];
+                    HonestyRegion = regions[Utility.Random(regions.Count-1)];
 
-					List<Mobile> mobiles = World.Mobiles.Values.Where(m => m.Region.Name == HonestyRegion && m.Map == OwnerMap && (m.BodyValue == 400 || m.BodyValue == 401)  && !m.IsPlayer()).ToList();
+					List<Mobile> mobiles = World.Mobiles.Values.Where(m => m.Region.Name == HonestyRegion && (m.BodyValue == 400 || m.BodyValue == 401) && m.NetState == null).ToList();
                     if (mobiles.Count > 0)
                     {
-                        HonestyOwner = mobiles[Utility.Random(mobiles.Count)];
+                        HonestyOwner = mobiles[Utility.Random(mobiles.Count-1)];
                     }
 				}
 				InvalidateProperties();
