@@ -259,6 +259,8 @@ namespace Server.Engines.Plants
                 int title = PlantTypeInfo.GetBonsaiTitle(this.m_PlantType);
                 if (title == 0) // Not a bonsai
                     title = hueInfo.Name;
+                if (this.m_PlantType == PlantType.CocoaTree)
+                    title = 1080529;
 
                 if (this.m_PlantStatus < PlantStatus.DecorativePlant)
                 {
@@ -266,6 +268,11 @@ namespace Server.Engines.Plants
                     {
                         string args = string.Format("#{0}", this.m_PlantSystem.GetLocalizedHealth());
                         list.Add(1094702, args); // ~1_HEALTH~ Sugar Canes
+                    }
+                    else if (this.m_PlantType == PlantType.CocoaTree)
+                    {
+                        string args = string.Format("#{0}", this.m_PlantSystem.GetLocalizedHealth());
+                        list.Add(1080534, args); // a ~1_HEALTH~ cocoa tree
                     }
                     else
                     {
@@ -287,6 +294,8 @@ namespace Server.Engines.Plants
                 {
                     if (this.m_PlantType == PlantType.SugarCanes)
                         list.Add(1094703); // Decorative Sugar Canes
+                    else if (this.m_PlantType == PlantType.CocoaTree)
+                        list.Add(1080531); // a decorative cocoa tree
                     else if (title == 1080528)
                     // a decorative ~2_TYPE~
                         list.Add(1080539, string.Format("#{0}\t#{1}", title, typeInfo.Name));
@@ -302,6 +311,8 @@ namespace Server.Engines.Plants
                 int title = PlantTypeInfo.GetBonsaiTitle(this.m_PlantType);
                 if (title == 0) // Not a bonsai
                     title = hueInfo.Name;
+                if (this.m_PlantType == PlantType.CocoaTree)
+                    title = 1080532; // cocoa tree
 
                 string args = string.Format("#{0}\t#{1}\t#{2}", this.m_PlantSystem.GetLocalizedDirtStatus(), this.m_PlantSystem.GetLocalizedHealth(), title);
 
@@ -317,6 +328,19 @@ namespace Server.Engines.Plants
                     {
                         // a ~1_val~ of ~2_val~ dirt with a ~3_val~ [bright] ~4_val~ ~5_val~
                         list.Add(hueInfo.IsBright() ? 1060832 : 1060831, args);
+                    }
+                    else if (this.m_PlantType == PlantType.CocoaTree)
+                    {
+                        if (this.m_PlantStatus == PlantStatus.Seed)
+                        {
+                            // a ~1_val~ of ~2_val~ dirt with a ~3_val~ cocoa tree seed
+                            list.Add(1080536, args);
+                        }
+                        else
+                        {
+                            // a ~1_val~ of ~2_val~ dirt with a ~3_val~ ~4_val~ ~5_val~
+                            list.Add(1080535, args + "\t#" + this.GetLocalizedPlantStatus().ToString());
+                        }
                     }
                     else
                     {
