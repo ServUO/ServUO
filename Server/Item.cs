@@ -754,6 +754,7 @@ namespace Server
 		private DateTime m_LastMovedTime;
 		private Direction m_Direction;
 		private bool m_HonestyItem;
+	    private string m_HonestyRegion;
 		#endregion
 
 		private ItemDelta m_DeltaFlags;
@@ -1863,26 +1864,27 @@ namespace Server
 				if (m_HonestyItem)
 				{
 					Map OwnerMap = Utility.RandomBool() ? Map.Felucca : Map.Trammel;
-					string OwnerRegion;
-
 
 					List<string> regions = new List<string>() { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
-					OwnerRegion = regions[Utility.Random(regions.Count)];
+                    HonestyRegion = regions[Utility.Random(regions.Count)];
 
-					List<Mobile> mobiles = World.Mobiles.Values.Where(m => m.Region.Name == OwnerRegion && m.Map == OwnerMap && (m.BodyValue == 400 || m.BodyValue == 401)  && !m.IsPlayer()).ToList();
+					List<Mobile> mobiles = World.Mobiles.Values.Where(m => m.Region.Name == HonestyRegion && m.Map == OwnerMap && (m.BodyValue == 400 || m.BodyValue == 401)  && !m.IsPlayer()).ToList();
                     if (mobiles.Count > 0)
                     {
-                        Mobile owner = mobiles[Utility.Random(mobiles.Count)];
+                        HonestyOwner = mobiles[Utility.Random(mobiles.Count)];
                     }
 				}
 				InvalidateProperties();
 			}
 		}
 
-		/// <summary>
-		///     Has the item been deleted?
-		/// </summary>
-		public bool Deleted { get { return GetFlag(ImplFlag.Deleted); } }
+	    public Mobile HonestyOwner { get; set; }
+        public string HonestyRegion { get; set; }
+
+        /// <summary>
+        ///     Has the item been deleted?
+        /// </summary>
+        public bool Deleted { get { return GetFlag(ImplFlag.Deleted); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public LootType LootType
