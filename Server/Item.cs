@@ -1864,10 +1864,10 @@ namespace Server
 				if (m_HonestyItem)
 				{
 
-					List<string> regions = new List<string>() { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
-                    HonestyRegion = regions[Utility.Random(regions.Count-1)];
+					string[] regions = { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
+                    HonestyRegion = regions[Utility.Random(regions.Length-1)];
 
-					List<Mobile> mobiles = World.Mobiles.Values.Where(m => m.Region.Name == HonestyRegion && (m.BodyValue == 400 || m.BodyValue == 401) && m.NetState == null).ToList();
+					List<Mobile> mobiles = World.Mobiles.Values.Where(m => m.Region.Name == HonestyRegion && (m.BodyValue == 400 || m.BodyValue == 401) && !m.Player).ToList();
                     if (mobiles.Count > 0)
                     {
                         HonestyOwner = mobiles[Utility.Random(mobiles.Count-1)];

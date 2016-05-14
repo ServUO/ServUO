@@ -37,7 +37,7 @@ namespace Server.Services.Virtues
                     World.Items.Values.Where(
                         m =>
                             m.HonestyItem).ToList();
-            
+
                 _HonestyItems.AddRange(list);
             }
 
@@ -51,12 +51,16 @@ namespace Server.Services.Virtues
 
             while (_HonestyItems.Count < 1000)
             {
-                var toSpawn = Loot.RandomArmorOrShieldOrWeapon();
+                Item toSpawn = Loot.RandomArmorOrShieldOrWeapon();
                 ItemFlags.SetTaken(toSpawn, false);
-                toSpawn.HonestyItem = true;
-                _HonestyItems.Add(toSpawn);
-
                 PlaceItemOnWorld(toSpawn);
+                _HonestyItems.Add(toSpawn);
+            }
+
+            //Does not work in above loop, throws collection changed exception. Investigate later. 
+            foreach (Item i in _HonestyItems)
+            {
+                i.HonestyItem = true;
             }
         }
 
