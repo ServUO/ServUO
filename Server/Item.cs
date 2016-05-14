@@ -4815,6 +4815,7 @@ namespace Server
 			if (map == null)
 				return Point3D.Zero;
 
+            int myTop = 0;
 			int x = p.m_X, y = p.m_Y;
 			int z = int.MinValue;
 
@@ -4845,6 +4846,7 @@ namespace Server
 				}
 
 				int top = tile.Z + id.CalcHeight;
+                if (top > p.Z) myTop = top;
 
 				if (top > maxZ || top < z)
 				{
@@ -4875,8 +4877,9 @@ namespace Server
 				}
 
 				int top = item.Z + id.CalcHeight;
+                if (top > p.Z) myTop = top;
 
-				if (top > maxZ || top < z)
+                if (top > maxZ || top < z)
 				{
 					continue;
 				}
@@ -4984,29 +4987,31 @@ namespace Server
 				height = 30;
 			}
 
-			int match = (1 << height) - 1;
-			bool okay = false;
+            if (myTop != 0 && myTop < maxZ)
+            {
+                int match = (1 << height) - 1;
+                bool okay = false;
 
-			for (int i = 0; i < 20; ++i)
-			{
-				if ((i + height) > 20)
-				{
-					match >>= 1;
-				}
+                for (int i = 0; i < 20; ++i)
+                {
+                    if ((i + height) > 20)
+                    {
+                        match >>= 1;
+                    }
 
-				okay = ((m_OpenSlots >> i) & match) == match;
+                    okay = ((m_OpenSlots >> i) & match) == match;
 
-				if (okay)
-				{
-					z += i;
-					break;
-				}
-			}
-
-			if (!okay)
-			{
-				return Point3D.Zero;
-			}
+                    if (okay)
+                    {
+                        z += i;
+                        break;
+                    }
+                }
+			    if (!okay)
+			    {
+				    return Point3D.Zero;
+			    }
+            }
 
 			height = ItemData.Height;
 
