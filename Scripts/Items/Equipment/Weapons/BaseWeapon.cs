@@ -2985,7 +2985,7 @@ namespace Server.Items
 
             List<SlayerName> super = new List<SlayerName>() {SlayerName.Repond, SlayerName.Silver, SlayerName.Fey, SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom, SlayerName.ReptilianDeath};
 
-		    if ((atkSlayer != null && atkSlayer.Slays(defender) && super.Contains(atkSlayer.Name)) || (atkSlayer != null && atkSlayer2.Slays(defender) && super.Contains(atkSlayer2.Name)))
+		    if ((atkSlayer != null && atkSlayer.Slays(defender) && super.Contains(atkSlayer.Name)) || (atkSlayer2 != null && atkSlayer2.Slays(defender) && super.Contains(atkSlayer2.Name)))
 		    {
 		        return CheckSlayerResult.SuperSlayer;
 		    }
