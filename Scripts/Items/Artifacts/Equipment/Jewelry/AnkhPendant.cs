@@ -89,7 +89,7 @@ namespace Server.Items
 			if ( VirtueEffect == chant )
 				from.SendLocalizedMessage( 1079544, String.Format( "{0}" ,m_ShrineWords[chant]) ); // You already feel ~1_VIRTUE~ from your earlier contemplation of the virtues.
 
-			TimeSpan delay = m_LastUse - DateTime.Now;
+			TimeSpan delay = m_LastUse - DateTime.UtcNow;
 
 			if ( delay < TimeSpan.Zero )
 				delay = TimeSpan.Zero;
@@ -184,7 +184,7 @@ namespace Server.Items
 				Attributes.RegenMana *= 3;
 			}
 
-			m_LastUse = DateTime.Now + TimeSpan.FromMinutes( 61 );
+			m_LastUse = DateTime.UtcNow + TimeSpan.FromMinutes( 61 );
 			VirtueEffect = chant;
 
 			Timer timer = new InternalTimer( this );
@@ -242,7 +242,6 @@ namespace Server.Items
 			"valorous",
 			"virtuous"
 		};
-
 
 		public AnkhPendant( Serial serial ) : base( serial )
 		{
