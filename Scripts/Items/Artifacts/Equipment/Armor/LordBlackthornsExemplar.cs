@@ -10,7 +10,7 @@ namespace Server.Items
             : base()
         {
             this.Hue = 0x501;
-            BlockRepair = true;
+            this.BlockRepair = true;
         }
 
         public LordBlackthornsExemplar(Serial serial)
