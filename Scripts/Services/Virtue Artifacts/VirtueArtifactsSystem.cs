@@ -45,23 +45,15 @@ namespace Server.Misc
 
             if (bc.Controlled || bc.Owners.Count > 0 || bc.Fame <= 0)
                 return;
-
-            //25000 for 1/100 chance, 10 hyrus
-            //1500, 1/1000 chance, 20 lizard men for that chance.
+            
+            double vapoints = pm.VASTotalMonsterFame;
 
             pm.VASTotalMonsterFame += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100));
 
-            //This is the Exponentional regression with only 2 datapoints.
-            //A log. func would also work, but it didn't make as much sense.
-            //This function isn't OSI exact beign that I don't know OSI's func they used ;p
-            int x = pm.VASTotalMonsterFame;
-
-            //const double A = 8.63316841 * Math.Pow( 10, -4 );
             const double A = 0.000863316841;
-            //const double B = 4.25531915 * Math.Pow( 10, -6 );
             const double B = 0.00000425531915;
 
-            double chance = A * Math.Pow(10, B * x);
+            double chance = A * Math.Pow(10, B * vapoints);
 
             double roll = Utility.RandomDouble();
 
