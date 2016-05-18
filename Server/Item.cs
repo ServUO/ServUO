@@ -5052,7 +5052,9 @@ namespace Server
 				Item item = items[i];
 				ItemData id = item.ItemData;
 
-				if ((item.Z + id.CalcHeight) > z && (z + height) > item.Z)
+                z += id.CalcHeight;
+
+                if ((item.Z + id.CalcHeight) > maxZ && (z + height) > item.Z)
 				{
 					return Point3D.Zero;
 				}
