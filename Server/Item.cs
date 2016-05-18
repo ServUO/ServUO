@@ -560,14 +560,16 @@ namespace Server
 		public Map m_Map;
 		public Point3D m_Location, m_WorldLoc;
 		public object m_Parent;
+        public IEntity m_ParentStack;
 
-		public BounceInfo(Item item)
+        public BounceInfo(Item item)
 		{
 			m_Map = item.Map;
 			m_Location = item.Location;
 			m_WorldLoc = item.GetWorldLocation();
 			m_Parent = item.Parent;
-		}
+            m_ParentStack = null;
+        }
 
 		private BounceInfo(Map map, Point3D loc, Point3D worldLoc, object parent)
 		{
@@ -575,7 +577,8 @@ namespace Server
 			m_Location = loc;
 			m_WorldLoc = worldLoc;
 			m_Parent = parent;
-		}
+            m_ParentStack = null;
+        }
 
 		public static BounceInfo Deserialize(GenericReader reader)
 		{
@@ -1086,14 +1089,15 @@ namespace Server
 			return null;
 		}
 
-		public void RecordBounce()
-		{
-			CompactInfo info = AcquireCompactInfo();
+        public void RecordBounce(Item parentstack = null)
+        {
+            CompactInfo info = AcquireCompactInfo();
 
-			info.m_Bounce = new BounceInfo(this);
-		}
+            info.m_Bounce = new BounceInfo(this);
+            info.m_Bounce.m_ParentStack = parentstack;
+        }
 
-		public void ClearBounce()
+        public void ClearBounce()
 		{
 			CompactInfo info = LookupCompactInfo();
 
@@ -1474,7 +1478,22 @@ namespace Server
 
 			if (bounce != null)
 			{
-				object parent = bounce.m_Parent;
+                IEntity stack = bounce.m_ParentStack;
+
+                if (stack != null)
+                {
+                    var s = (Item)stack;
+
+                    if (s != null && !(s).Deleted)
+                    {
+                        if (s.IsAccessibleTo(from))
+                        {
+                            s.StackWith(from, this);
+                        }
+                    }
+                }
+
+                object parent = bounce.m_Parent;
 
 				if (parent is Item && !((Item)parent).Deleted)
 				{
