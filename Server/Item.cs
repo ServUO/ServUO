@@ -4834,7 +4834,7 @@ namespace Server
 			if (map == null)
 				return Point3D.Zero;
 
-            int myTop = 0;
+            int myTop = -255;
 			int x = p.m_X, y = p.m_Y;
 			int z = int.MinValue;
 
@@ -5006,7 +5006,8 @@ namespace Server
 				height = 30;
 			}
 
-            if (myTop != 0 && myTop < maxZ)
+            /*
+            if (myTop != -255)
             {
                 int match = (1 << height) - 1;
                 bool okay = false;
@@ -5019,18 +5020,19 @@ namespace Server
                     }
 
                     okay = ((m_OpenSlots >> i) & match) == match;
-
+                  
                     if (okay)
                     {
                         z += i;
                         break;
-                    }
+                    }                   
                 }
 			    if (!okay)
 			    {
 				    return Point3D.Zero;
 			    }
             }
+            */
 
 			height = ItemData.Height;
 
@@ -5073,8 +5075,8 @@ namespace Server
 
                 z += id.CalcHeight;
 
-                if ((item.Z + id.CalcHeight) > maxZ && (z + height) > item.Z)
-				{
+                if (((item.Z + id.CalcHeight) >= maxZ) || (myTop != -255 && (item.Z + id.CalcHeight) > myTop)) /*&& (z + height) > item.Z)*/
+                {
 					return Point3D.Zero;
 				}
 			}
