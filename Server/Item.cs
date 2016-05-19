@@ -5073,8 +5073,6 @@ namespace Server
 				Item item = items[i];
 				ItemData id = item.ItemData;
 
-                if (item.Z > p.Z + maxZ || item.Z < p.Z) continue;
-
                 z += id.CalcHeight;
 
                 if (((item.Z + id.CalcHeight) >= maxZ) || (myTop != -255 && (item.Z + id.CalcHeight) > myTop)) /*&& (z + height) > item.Z)*/
