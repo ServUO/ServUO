@@ -1331,6 +1331,32 @@ namespace Server.Mobiles
                 (totalCost >= 2000 ||
                 AccountGold.Enabled)
             )
+
+				if (Core.SA)
+				{
+					double discountPc = 0;
+					switch (VirtueHelper.GetLevel(buyer, VirtueName.Honesty))
+					{
+						case VirtueLevel.Seeker:
+							discountPc = .1;
+							break;
+						case VirtueLevel.Follower:
+							discountPc = .2;
+							break;
+						case VirtueLevel.Knight:
+							discountPc = .3; break;
+						default:
+							discountPc = 0;
+							break;
+					}
+					int discount = totalCost - (int)(totalCost*(1 - discountPc));
+					totalCost -= discount;
+
+					if (discount > 0)
+					{
+						SayTo(buyer, 1151517,discount.ToString());
+					}
+				}
 			{
 				if (Banker.Withdraw(buyer, totalCost))
 				{

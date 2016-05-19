@@ -371,6 +371,14 @@ namespace Server.Items
         {
             int z = map.GetAverageZ(x, y);
 
+            LandTile lt = map.Tiles.GetLandTile(x, y);
+            LandData landID = TileData.LandTable[lt.ID];
+            TileFlag landFlags = landID.Flags;
+
+            //Checks for impassable flag..cant walk, cant have a chest
+            if ((landFlags & TileFlag.Impassable) > 0)
+                return false;
+
             Region reg = Region.Find(new Point3D(x, y, z), map);
 
             //no-go in towns, houses, dungeons and champspawns
@@ -387,9 +395,7 @@ namespace Server.Items
                 }
             }
 
-            LandTile lt = map.Tiles.GetLandTile(x, y);
-            LandData landID = TileData.LandTable[lt.ID];
-            TileFlag landFlags = landID.Flags;
+
 
             //Checks for roads
             for (int i = 0; i < Server.Multis.HousePlacement.RoadIDs.Length; i += 2)
@@ -397,10 +403,6 @@ namespace Server.Items
                 if (lt.ID >= Server.Multis.HousePlacement.RoadIDs[i] && lt.ID <= Server.Multis.HousePlacement.RoadIDs[i + 1])
                     return false;
             }
-
-            //Checks for impassable flag..cant walk, cant have a chest
-            if ((landFlags & TileFlag.Impassable) > 0)
-                return false;
 
             string n = landID.Name == null ? "" : landID.Name.ToLower();
             if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")

@@ -89,7 +89,11 @@ namespace Server
 
 	public delegate void WorldSaveEventHandler(WorldSaveEventArgs e);
 
-	public delegate void SetAbilityEventHandler(SetAbilityEventArgs e);
+    public delegate void BeforeWorldSaveEventHandler(BeforeWorldSaveEventArgs e);
+
+    public delegate void AfterWorldSaveEventHandler(AfterWorldSaveEventArgs e);
+
+    public delegate void SetAbilityEventHandler(SetAbilityEventArgs e);
 
 	public delegate void FastWalkEventHandler(FastWalkEventArgs e);
 
@@ -854,7 +858,23 @@ namespace Server
 		}
 	}
 
-	public class FastWalkEventArgs : EventArgs
+    public class BeforeWorldSaveEventArgs : EventArgs
+    {
+        public BeforeWorldSaveEventArgs()
+        {
+        }
+    }
+
+
+    public class AfterWorldSaveEventArgs : EventArgs
+    {
+        public AfterWorldSaveEventArgs()
+        {
+        }
+    }
+
+
+    public class FastWalkEventArgs : EventArgs
 	{
 		private readonly NetState m_State;
 
@@ -1047,7 +1067,9 @@ namespace Server
 		public static event DeleteRequestEventHandler DeleteRequest;
 		public static event WorldLoadEventHandler WorldLoad;
 		public static event WorldSaveEventHandler WorldSave;
-		public static event SetAbilityEventHandler SetAbility;
+        public static event BeforeWorldSaveEventHandler BeforeWorldSave;
+        public static event AfterWorldSaveEventHandler AfterWorldSave;
+        public static event SetAbilityEventHandler SetAbility;
 		public static event FastWalkEventHandler FastWalk;
 		public static event CreateGuildHandler CreateGuild;
 		public static event ServerStartedEventHandler ServerStarted;
@@ -1460,7 +1482,23 @@ namespace Server
 			}
 		}
 
-		public static void InvokeOnKilledBy(OnKilledByEventArgs e)
+        public static void InvokeBeforeWorldSave(BeforeWorldSaveEventArgs e)
+        {
+            if (BeforeWorldSave != null)
+            {
+                BeforeWorldSave(e);
+            }
+        }
+
+        public static void InvokeAfterWorldSave(AfterWorldSaveEventArgs e)
+        {
+            if (AfterWorldSave != null)
+            {
+                AfterWorldSave(e);
+            }
+        }
+
+        public static void InvokeOnKilledBy(OnKilledByEventArgs e)
 		{
 			if (OnKilledBy != null)
 			{
