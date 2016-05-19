@@ -2070,12 +2070,14 @@ namespace Server.Items
 			if (cs != CheckSlayerResult.None)
 			{
 				if (cs == CheckSlayerResult.Slayer)
-				{
 					defender.FixedEffect(0x37B9, 10, 5);
-				}
 
-				percentageBonus += 100;
-			}
+                if (Core.SA && cs == CheckSlayerResult.Slayer  && cs != CheckSlayerResult.Opposition)
+				    percentageBonus += 200;
+                else
+                    percentageBonus += 100;
+
+            }
 
 			if (!attacker.Player)
 			{
@@ -2980,6 +2982,13 @@ namespace Server.Items
 			BaseWeapon atkWeapon = attacker.Weapon as BaseWeapon;
 			SlayerEntry atkSlayer = SlayerGroup.GetEntryByName(atkWeapon.Slayer);
 			SlayerEntry atkSlayer2 = SlayerGroup.GetEntryByName(atkWeapon.Slayer2);
+
+            List<SlayerName> super = new List<SlayerName>() {SlayerName.Repond, SlayerName.Silver, SlayerName.Fey, SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom, SlayerName.ReptilianDeath};
+
+		    if ((atkSlayer != null && atkSlayer.Slays(defender) && super.Contains(atkSlayer.Name)) || (atkSlayer2 != null && atkSlayer2.Slays(defender) && super.Contains(atkSlayer2.Name)))
+		    {
+		        return CheckSlayerResult.SuperSlayer;
+		    }
 
             if (atkSlayer != null && atkSlayer.Slays(defender) || atkSlayer2 != null && atkSlayer2.Slays(defender))
 			{
@@ -5861,6 +5870,7 @@ namespace Server.Items
 	{
 		None,
 		Slayer,
+        	SuperSlayer,
 		Opposition
 	}
 }

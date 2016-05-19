@@ -81,6 +81,7 @@ namespace Server.Mobiles
         }
         public override void OnDeath(Container c)
         {
+            base.OnDeath(c);
             if (Utility.Random(10) == 0)
             {
                 Item item;
@@ -93,7 +94,6 @@ namespace Server.Mobiles
                     case 2: item = new PartiallyDigestedTorso(); break;
                 }
 
-                base.OnDeath(c);
                 Region reg = Region.Find(c.GetWorldLocation(), c.Map);
                 if (0.25 > Utility.RandomDouble() && reg.Name == "Passage of Tears")
                 {

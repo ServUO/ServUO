@@ -5212,6 +5212,7 @@ namespace Server.Mobiles
                     bool givenQuestKill = false;
                     bool givenFactionKill = false;
                     bool givenToTKill = false;
+                    bool givenVASKill = false;
 
                     for (int i = 0; i < list.Count; ++i)
                     {
@@ -5279,6 +5280,13 @@ namespace Server.Mobiles
                         {
                             givenToTKill = true;
                             TreasuresOfTokuno.HandleKill(this, ds.m_Mobile);
+                        }
+                        if (!givenVASKill &&
+                            (Map == Map.Felucca || region.IsPartOf("Covetous") || region.IsPartOf("Deceit") || region.IsPartOf("Despise")
+                            || region.IsPartOf("Destard") || region.IsPartOf("Hythloth") || region.IsPartOf("Shame") || region.IsPartOf("Wrong")))
+                        {
+                            givenVASKill = true;
+                            VirtueArtifactsSystem.HandleKill(this, ds.m_Mobile);
                         }
                         if (region.IsPartOf("Doom Gauntlet") || region.Name == "GauntletRegion")
                         {

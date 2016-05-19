@@ -560,14 +560,16 @@ namespace Server
 		public Map m_Map;
 		public Point3D m_Location, m_WorldLoc;
 		public object m_Parent;
+        public IEntity m_ParentStack;
 
-		public BounceInfo(Item item)
+        public BounceInfo(Item item)
 		{
 			m_Map = item.Map;
 			m_Location = item.Location;
 			m_WorldLoc = item.GetWorldLocation();
 			m_Parent = item.Parent;
-		}
+            m_ParentStack = null;
+        }
 
 		private BounceInfo(Map map, Point3D loc, Point3D worldLoc, object parent)
 		{
@@ -575,7 +577,8 @@ namespace Server
 			m_Location = loc;
 			m_WorldLoc = worldLoc;
 			m_Parent = parent;
-		}
+            m_ParentStack = null;
+        }
 
 		public static BounceInfo Deserialize(GenericReader reader)
 		{
@@ -1088,14 +1091,15 @@ namespace Server
 			return null;
 		}
 
-		public void RecordBounce()
-		{
-			CompactInfo info = AcquireCompactInfo();
+        public void RecordBounce(Item parentstack = null)
+        {
+            CompactInfo info = AcquireCompactInfo();
 
-			info.m_Bounce = new BounceInfo(this);
-		}
+            info.m_Bounce = new BounceInfo(this);
+            info.m_Bounce.m_ParentStack = parentstack;
+        }
 
-		public void ClearBounce()
+        public void ClearBounce()
 		{
 			CompactInfo info = LookupCompactInfo();
 
@@ -1489,7 +1493,22 @@ namespace Server
 
 			if (bounce != null)
 			{
-				object parent = bounce.m_Parent;
+                IEntity stack = bounce.m_ParentStack;
+
+                if (stack != null)
+                {
+                    var s = (Item)stack;
+
+                    if (s != null && !(s).Deleted)
+                    {
+                        if (s.IsAccessibleTo(from))
+                        {
+                            s.StackWith(from, this);
+                        }
+                    }
+                }
+
+                object parent = bounce.m_Parent;
 
 				if (parent is Item && !((Item)parent).Deleted)
 				{
@@ -4868,6 +4887,7 @@ namespace Server
 			if (map == null)
 				return Point3D.Zero;
 
+            int myTop = -255;
 			int x = p.m_X, y = p.m_Y;
 			int z = int.MinValue;
 
@@ -4898,6 +4918,7 @@ namespace Server
 				}
 
 				int top = tile.Z + id.CalcHeight;
+                if (top > p.Z) myTop = top;
 
 				if (top > maxZ || top < z)
 				{
@@ -4928,8 +4949,9 @@ namespace Server
 				}
 
 				int top = item.Z + id.CalcHeight;
+                if (top > p.Z) myTop = top;
 
-				if (top > maxZ || top < z)
+                if (top > maxZ || top < z)
 				{
 					continue;
 				}
@@ -5037,29 +5059,33 @@ namespace Server
 				height = 30;
 			}
 
-			int match = (1 << height) - 1;
-			bool okay = false;
+            /*
+            if (myTop != -255)
+            {
+                int match = (1 << height) - 1;
+                bool okay = false;
 
-			for (int i = 0; i < 20; ++i)
-			{
-				if ((i + height) > 20)
-				{
-					match >>= 1;
-				}
+                for (int i = 0; i < 20; ++i)
+                {
+                    if ((i + height) > 20)
+                    {
+                        match >>= 1;
+                    }
 
-				okay = ((m_OpenSlots >> i) & match) == match;
-
-				if (okay)
-				{
-					z += i;
-					break;
-				}
-			}
-
-			if (!okay)
-			{
-				return Point3D.Zero;
-			}
+                    okay = ((m_OpenSlots >> i) & match) == match;
+                  
+                    if (okay)
+                    {
+                        z += i;
+                        break;
+                    }                   
+                }
+			    if (!okay)
+			    {
+				    return Point3D.Zero;
+			    }
+            }
+            */
 
 			height = ItemData.Height;
 
@@ -5100,8 +5126,10 @@ namespace Server
 				Item item = items[i];
 				ItemData id = item.ItemData;
 
-				if ((item.Z + id.CalcHeight) > z && (z + height) > item.Z)
-				{
+                z += id.CalcHeight;
+
+                if (((item.Z + id.CalcHeight) >= maxZ) || (myTop != -255 && (item.Z + id.CalcHeight) > myTop)) /*&& (z + height) > item.Z)*/
+                {
 					return Point3D.Zero;
 				}
 			}

@@ -4603,13 +4603,13 @@ namespace Server
 							}
 
 							int oldAmount = item.Amount;
-							//item.Amount = amount; //Set in LiftItemDupe
 
-							if (amount < oldAmount)
-							{
-								LiftItemDupe(item, amount);
-							}
-							//item.Dupe( oldAmount - amount );
+                            Item oldStack = null;
+
+                            if (amount < oldAmount)
+                            {
+                                oldStack = LiftItemDupe(item, amount);
+                            }
 
 							Map map = from.Map;
 
@@ -4651,7 +4651,7 @@ namespace Server
 							Map fixMap = item.Map;
 							bool shouldFix = (item.Parent == null);
 
-							item.RecordBounce();
+							item.RecordBounce(oldStack);
 							item.OnItemLifted(from, item);
 							item.Internalize();
 
