@@ -120,7 +120,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\GenerateGameDocs.cs" />
-    <Compile Include="Commands\GenerateValidTiles.cs" />
     <Compile Include="Commands\Generic\Commands\BaseCommand.cs">
       <SubType>Code</SubType>
     </Compile>
