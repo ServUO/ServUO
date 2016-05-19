@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Server.Items;
 
 namespace Server.Services.Virtues
@@ -14,6 +13,7 @@ namespace Server.Services.Virtues
         {
             VirtueGump.Register(106, OnVirtueUsed);
             EventSink.AfterWorldSave += EventSinkAfterWorldSave;
+            EventSink.WorldLoad += EventSinkOnWorldLoad;
         }
 
 
@@ -27,6 +27,11 @@ namespace Server.Services.Virtues
 
             GenerateHonestyItems();
 
+        }
+
+        private static void EventSinkOnWorldLoad()
+        {
+            GenerateHonestyItems();
         }
 
         private static void GenerateHonestyItems()
@@ -81,5 +86,99 @@ namespace Server.Services.Virtues
             item.MoveToWorld(placeCoords, map);
         }
 
+    }
+
+    public class HonestyChest : Container
+    {
+        [Constructable]
+        public HonestyChest() : base(0x9A9)
+        {
+            Name = "Lost and Found box";
+        }
+
+        public HonestyChest(Serial serial) : base(serial)
+        {
+
+        }
+        
+        public override bool OnDragDrop(Mobile from, Item dropped)
+        {
+            if (!dropped.HonestyItem)
+            {
+                from.SendLocalizedMessage(1151530);
+                return false;
+            }
+            Region reg = Region.Find(Location, Map);
+
+            bool gainedPath = false;
+            if (dropped.HonestyRegion == reg.Name)
+            {
+                VirtueHelper.Award(from, VirtueName.Honesty, 60, ref gainedPath);
+            }
+            else
+            {
+                VirtueHelper.Award(from, VirtueName.Honesty, 30, ref gainedPath);
+            }
+
+            from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
+
+            dropped.Delete();
+            return true;
+        }
+
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        {
+            if (!item.HonestyItem) return false;
+            Region reg = Region.Find(Location, Map);
+
+            bool gainedPath = false;
+            if (item.HonestyRegion == reg.Name)
+            {
+                VirtueHelper.Award(from, VirtueName.Honesty, 60, ref gainedPath);
+            }
+            else
+            {
+                VirtueHelper.Award(from, VirtueName.Honesty, 30, ref gainedPath);
+            }
+
+            from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
+
+            item.Delete();
+            return true;
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+
+    }
+
+    public class HonestyTimer : Timer
+    {
+        private Item i;
+
+        HonestyTimer(Item i) : base(TimeSpan.FromMinutes(180))
+        {
+            this.i = i;
+        }
+
+        protected override void OnTick()
+        {
+            if (i != null)
+            {
+                i.HonestyItem = false;
+            }
+            Stop();
+        }
     }
 }

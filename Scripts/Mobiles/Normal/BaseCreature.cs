@@ -2606,8 +2606,23 @@ namespace Server.Mobiles
             {
                 return true;
             }
-            else if (CheckGold(from, dropped))
+            if (CheckGold(from, dropped))
             {
+                return true;
+            }
+            if (from.InRange(Location, 2))
+            {
+
+                bool gainedPath = false;
+
+                if (dropped.HonestyOwner == this)
+                    VirtueHelper.Award(@from, VirtueName.Honesty, 120, ref gainedPath);
+                else
+                    return false;
+
+                @from.SendMessage(gainedPath ? "You have gained a path in Honesty!" : "You have gained in Honesty.");
+                SayTo(from, 1074582); //Ah!  You found my property.  Thank you for your honesty in returning it to me.
+                dropped.Delete();
                 return true;
             }
 

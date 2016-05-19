@@ -95,7 +95,7 @@ namespace Server.SkillHandlers
                 {
                     Item item = (Item)target;
 
-                    if (item.HonestyItem)
+                    if (item.HonestyItem && item.HonestyOwner != null)
                     {
                         //Mobile owner = World.Mobiles.Values.FirstOrDefault(m => m.Serial.ToString() == item.HonestyOwner);
                         //Get correct messages in game
