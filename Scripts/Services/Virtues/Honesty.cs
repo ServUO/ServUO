@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Server.Items;
@@ -8,7 +10,8 @@ namespace Server.Services.Virtues
     class Honesty
     {
         private static List<Item> _HonestyItems = new List<Item>();
-
+        static List<Point2D> felPoints = new List<Point2D>();
+        List<Point2D> tramPoints = new List<Point2D>();
         public static void Initialize()
         {
             VirtueGump.Register(106, OnVirtueUsed);
@@ -25,12 +28,21 @@ namespace Server.Services.Virtues
         {
 
             //Heavy operation, let's use a seperate thread.
-            Task.Factory.StartNew(GenerateHonestyItems);
+            GenerateHonestyItems();
 
         }
 
         private static void GenerateHonestyItems()
         {
+            
+            foreach (string line in File.ReadLines(Path.Combine("Data", "Felucca.MapPoints")))
+            {
+                var coords = line.Split(',');
+
+                Point2D p2d = new Point2D(Int32.Parse(coords[0]), Int32.Parse(coords[1]));
+                felPoints.Add(p2d);
+            }
+
             if (_HonestyItems.Count == 0)
             {
                 var list =
@@ -57,11 +69,14 @@ namespace Server.Services.Virtues
                 _HonestyItems.Add(toSpawn);
             }
 
-            //Does not work in above loop, throws collection changed exception. Investigate later. 
+            //Required because of the world mobiles collection changing outside of the thread. 
             foreach (Item i in _HonestyItems)
             {
                 i.HonestyItem = true;
             }
+
+            felPoints.Clear();
+            felPoints.TrimExcess();
         }
 
         private static void PlaceItemOnWorld(Item item)
@@ -74,13 +89,13 @@ namespace Server.Services.Virtues
 
             while (true)
             {
-                var x = Utility.Random(rect.X, rect.Width);
-                var y = Utility.Random(rect.Y, rect.Height);
+                
+                var point = felPoints[Utility.Random(felPoints.Count - 1)];
 
-                if (!TreasureMap.ValidateLocation(x, y, map)) continue;
-                placeCoords.X = x;
-                placeCoords.Y = y;
-                placeCoords.Z = map.GetAverageZ(x, y);
+                if (!TreasureMap.ValidateLocation(point.X, point.Y, Map.Felucca)) continue;
+                placeCoords.X = point.X;
+                placeCoords.Y = point.Y;
+                placeCoords.Z = map.GetAverageZ(point.X, point.Y);
 
                 break;
             }
