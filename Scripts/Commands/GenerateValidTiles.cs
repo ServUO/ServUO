@@ -45,7 +45,7 @@ namespace Server.Commands
                     }
                 }
             }
-            
+
 
             try
             {
@@ -60,13 +60,6 @@ namespace Server.Commands
                 }
 
                 Compress(Path.Combine("Data", "Felucca.MapPoints"));
-                //var b = File.ReadAllBytes(Path.Combine("Data", "Felucca.MapPoints"));
-
-                //using (FileStream f = new FileStream(Path.Combine("Data", "Felucca.MapPoints"), FileMode.Create))
-                //using (GZipStream gz = new GZipStream(f, CompressionMode.Compress, false))
-                //{
-                //    gz.Write(b, 0, b.Length);
-                //}
 
                 using (BinaryWriter bw = new BinaryWriter(File.Open(Path.Combine("Data", "Trammel.MapPoints"), FileMode.Create)))
                 {
@@ -79,13 +72,6 @@ namespace Server.Commands
                 }
 
                 Compress(Path.Combine("Data", "Trammel.MapPoints"));
-                //b = File.ReadAllBytes(Path.Combine("Data", "Trammel.MapPoints"));
-
-                //using (FileStream f = new FileStream(Path.Combine("Data", "Trammel.MapPoints"), FileMode.Create))
-                //using (GZipStream gz = new GZipStream(f, CompressionMode.Compress, false))
-                //{
-                //    gz.Write(b, 0, b.Length);
-                //}
             }
             catch
             {
