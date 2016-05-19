@@ -46,15 +46,19 @@ namespace Server.Services.Virtues
                     _HonestyItems.Remove(i);
                 }
             }
+	        if (_HonestyItems.Count < 1000)
+	        {
+		        int spawnamount = _HonestyItems.Count + 50 > 1000 ? _HonestyItems.Count % 50 : 50;
 
-            while (_HonestyItems.Count < 1000)
-            {
-                Item toSpawn = Loot.RandomArmorOrShieldOrWeapon();
-                ItemFlags.SetTaken(toSpawn, false);
-                toSpawn.HonestyItem = true;
-                PlaceItemOnWorld(toSpawn);
-                _HonestyItems.Add(toSpawn);
-            }
+				for (int i = 0; i < spawnamount; i++)
+		        {
+					Item toSpawn = Loot.RandomArmorOrShieldOrWeapon();
+					ItemFlags.SetTaken(toSpawn, false);
+					toSpawn.HonestyItem = true;
+					PlaceItemOnWorld(toSpawn);
+					_HonestyItems.Add(toSpawn);
+				}
+	        }
 
 
         }
