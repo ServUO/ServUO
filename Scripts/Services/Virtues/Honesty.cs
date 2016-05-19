@@ -11,9 +11,11 @@ namespace Server.Services.Virtues
 
         public static void Initialize()
         {
-            VirtueGump.Register(106, OnVirtueUsed);
-            EventSink.AfterWorldSave += EventSinkAfterWorldSave;
-            EventSink.WorldLoad += EventSinkOnWorldLoad;
+	        if (Core.SA)
+	        {
+		        VirtueGump.Register(106, OnVirtueUsed);
+		        EventSink.AfterWorldSave += EventSinkAfterWorldSave;
+	        }
         }
 
 
@@ -27,11 +29,6 @@ namespace Server.Services.Virtues
 
             GenerateHonestyItems();
 
-        }
-
-        private static void EventSinkOnWorldLoad()
-        {
-            GenerateHonestyItems();
         }
 
         private static void GenerateHonestyItems()
@@ -161,24 +158,5 @@ namespace Server.Services.Virtues
             int version = reader.ReadInt();
         }
 
-    }
-
-    public class HonestyTimer : Timer
-    {
-        private Item i;
-
-        HonestyTimer(Item i) : base(TimeSpan.FromMinutes(180))
-        {
-            this.i = i;
-        }
-
-        protected override void OnTick()
-        {
-            if (i != null)
-            {
-                i.HonestyItem = false;
-            }
-            Stop();
-        }
     }
 }
