@@ -5230,6 +5230,11 @@ namespace Server.Items
 				list.Add(1060434, prop.ToString()); // lower reagent cost ~1_val~%
 			}
 
+			if ((prop = m_AosAttributes.LowerAmmoCost) != 0)
+			{
+				list.Add(1075208, prop.ToString()); // Lower Ammo Cost ~1_Percentage~%
+			}
+
 			if ((prop = GetLowerStatReq()) != 0)
 			{
 				list.Add(1060435, prop.ToString()); // lower requirements ~1_val~%
