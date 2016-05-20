@@ -57,8 +57,6 @@ namespace Server.Misc
 
             double roll = Utility.RandomDouble();
 
-            killer.PlaySound(0x5B4);
-
             if (chance > roll)
             {
                 Item i = null;
@@ -72,6 +70,7 @@ namespace Server.Misc
 
                 if (i != null)
                 {
+                    killer.PlaySound(0x5B4);
                     pm.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
 
                     if (!pm.PlaceInBackpack(i))
