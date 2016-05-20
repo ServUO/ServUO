@@ -1433,7 +1433,8 @@ namespace Server.SkillHandlers
 			m_Table[124] = new ImbuingDefinition(SlayerName.Exorcism,		    1060460, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(DaemonClaw), 	    1, 0, 1111984);
 			m_Table[125] = new ImbuingDefinition(SlayerName.ArachnidDoom,	    1060458, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(SpiderCarapace),     1, 0, 1111983);
 			m_Table[126] = new ImbuingDefinition(SlayerName.ElementalBan,	    1060464, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(VialOfVitriol), 	    1, 0, 1111985);
-			
+			m_Table[127] = new ImbuingDefinition(SlayerName.Fey,				1060464, 130,	typeof(RelicFragment),		typeof(Ruby),			typeof(FeyWings),			1,0, 1154652);
+
 			m_Table[151] = new ImbuingDefinition(SkillName.Fencing,		 	    1044102, 140, 	typeof(EnchantEssence), 	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112012);
 			m_Table[152] = new ImbuingDefinition(SkillName.Macing, 	            1044101, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112013);
 			m_Table[153] = new ImbuingDefinition(SkillName.Swords,	            1044100, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112016);
