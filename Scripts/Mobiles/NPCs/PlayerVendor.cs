@@ -350,7 +350,7 @@ namespace Server.Mobiles
             if (!Core.AOS)
                 this.NameHue = 0x35;
 
-            this.InitStats(75, 75, 75);
+            this.InitStats(100, 100, 100);
             this.InitBody();
             this.InitOutfit();
 
