@@ -187,6 +187,7 @@ namespace Server.Engines.Craft
         public override void InitCraftList()
         {
             int index = -1;
+            int index = -1;
 
             #region Wooden Items
             this.AddCraft(typeof(JointingPlane), 1044042, 1024144, 0.0, 50.0, typeof(Board), 1044041, 4, 1044351);
@@ -260,6 +261,15 @@ namespace Server.Engines.Craft
                 this.AddRes(index, typeof(Ruby), 1044234, 1, 1044253);
                 this.SetNeededExpansion(index, Expansion.ML);
             }
+
+	        if (Core.SA)
+	        {
+				index = this.AddCraft(typeof(VoidOrb), 1044051, 1113354, 90.0, 104.3, typeof(DarkSapphire), 1032690, 1, 1044253);
+				this.AddSkill(index, SkillName.Magery, 80.0, 100.0);
+				this.AddRes(index, typeof(BlackPearl), 1015001, 50, 1044253);
+				this.SetNeededExpansion(index, Expansion.SA);
+				this.ForceNonExceptional(index);
+			}
             
             #endregion
 
