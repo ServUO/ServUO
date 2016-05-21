@@ -406,7 +406,7 @@ namespace Server.Gumps
                 BaseWeapon i = item as BaseWeapon;
 
                 // Slayers replace Slayers
-                if (mod >= 101 && mod <= 126)
+                if (mod >= 101 && mod <= 127)
                 {
                     if (i.Slayer != SlayerName.None)
                         return GetNameForAttribute(i.Slayer);
