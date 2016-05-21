@@ -1861,6 +1861,8 @@ namespace Server.Mobiles
 
             m_bTamable = false;
 
+            m_ChampMonster = false;
+
             m_Owners = new List<Mobile>();
 
             m_NextReacquireTime = Core.TickCount + (int)ReacquireDelay.TotalMilliseconds;
@@ -1895,7 +1897,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(20); // version
+            writer.Write(21); // version
 
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
