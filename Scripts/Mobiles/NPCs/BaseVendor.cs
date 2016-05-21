@@ -50,6 +50,7 @@ namespace Server.Mobiles
 		public virtual bool IsActiveVendor { get { return true; } }
 		public virtual bool IsActiveBuyer { get { return IsActiveVendor; } } // response to vendor SELL
 		public virtual bool IsActiveSeller { get { return IsActiveVendor; } } // repsonse to vendor BUY
+		public virtual bool HasHonestyDiscount { get { return true; } }
 
 		public virtual NpcGuild NpcGuild { get { return NpcGuild.None; } }
 
@@ -1316,52 +1317,54 @@ namespace Server.Mobiles
 			}
 
 			bought = buyer.AccessLevel >= AccessLevel.GameMaster;
-
+			int discount = 0;
 			cont = buyer.Backpack;
-			
+
+			if (Core.SA && HasHonestyDiscount)
+			{
+				double discountPc = 0;
+				switch (VirtueHelper.GetLevel(buyer, VirtueName.Honesty))
+				{
+					case VirtueLevel.Seeker:
+						discountPc = .1;
+						break;
+					case VirtueLevel.Follower:
+						discountPc = .2;
+						break;
+					case VirtueLevel.Knight:
+						discountPc = .3; break;
+					default:
+						discountPc = 0;
+						break;
+				}
+				discount = totalCost - (int)(totalCost * (1 - discountPc));
+				totalCost -= discount;
+			}
+
 			if (!bought && cont != null)
 			{
 				if (cont.ConsumeTotal(typeof(Gold), totalCost))
 				{
 					bought = true;
-				}
-			}
-
-			if (!bought &&
-                (totalCost >= 2000 ||
-                AccountGold.Enabled)
-            )
-
-				if (Core.SA)
-				{
-					double discountPc = 0;
-					switch (VirtueHelper.GetLevel(buyer, VirtueName.Honesty))
-					{
-						case VirtueLevel.Seeker:
-							discountPc = .1;
-							break;
-						case VirtueLevel.Follower:
-							discountPc = .2;
-							break;
-						case VirtueLevel.Knight:
-							discountPc = .3; break;
-						default:
-							discountPc = 0;
-							break;
-					}
-					int discount = totalCost - (int)(totalCost*(1 - discountPc));
-					totalCost -= discount;
 
 					if (discount > 0)
 					{
-						SayTo(buyer, 1151517,discount.ToString());
+						SayTo(buyer, 1151517, discount.ToString());
 					}
 				}
+			}
+
+			if (!bought &&(totalCost >= 2000 ||AccountGold.Enabled))
 			{
 				if (Banker.Withdraw(buyer, totalCost))
 				{
 					bought = true;
 					fromBank = true;
+
+					if (discount > 0)
+					{
+						SayTo(buyer, 1151517, discount.ToString());
+					}
 				}
 				else
 				{
@@ -1371,6 +1374,11 @@ namespace Server.Mobiles
 					{
 						bought = true;
 						fromBank = true;
+
+						if (discount > 0)
+						{
+							SayTo(buyer, 1151517, discount.ToString());
+						}
 					}
 				}
 			}
