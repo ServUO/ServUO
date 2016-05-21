@@ -6,6 +6,7 @@ using Server.Network;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Server.Engines.CannedEvil;
 
 namespace Server.Misc
 {
@@ -28,7 +29,11 @@ namespace Server.Misc
         {
             Region r = m.Region;
 
-            if (r.IsPartOf(typeof(Server.Regions.HouseRegion)) || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
+	        if (r is ChampionSpawnRegion)
+		        return false;
+	        
+
+	        if (r.IsPartOf(typeof(Server.Regions.HouseRegion)) || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
                 return false;
 
             return (r.IsPartOf("Covetous") || r.IsPartOf("Deceit") || r.IsPartOf("Despise") || r.IsPartOf("Destard") ||
