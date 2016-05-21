@@ -6,6 +6,7 @@ using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
+using Server.Engines.CannedEvil;
 
 namespace Server.Misc
 {
@@ -135,6 +136,9 @@ namespace Server.Misc
         {
             Region r = m.Region;
 
+            if (r is ChampionSpawnRegion)
+                return false;
+
             if (r.IsPartOf(typeof(Server.Regions.HouseRegion)) || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
                 return false;
             //TODO: a CanReach of something check as opposed to above?
@@ -159,7 +163,8 @@ namespace Server.Misc
             //25000 for 1/100 chance, 10 hyrus
             //1500, 1/1000 chance, 20 lizard men for that chance.
 
-            pm.ToTTotalMonsterFame += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100));
+            if (!(bc is BaseChampion) && !bc.ChampionSpawnMonster)
+                pm.ToTTotalMonsterFame += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100));
 
             //This is the Exponentional regression with only 2 datapoints.
             //A log. func would also work, but it didn't make as much sense.

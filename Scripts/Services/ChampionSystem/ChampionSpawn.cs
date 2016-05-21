@@ -745,6 +745,7 @@ namespace Server.Engines.CannedEvil
                 {
                     BaseCreature bc = m as BaseCreature;
                     bc.Tamable = false;
+                    bc.ChampionSpawnMonster = true;
 
                     if (!this.m_ConfinedRoaming)
                     {

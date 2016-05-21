@@ -30,8 +30,7 @@ namespace Server.Misc
             Region r = m.Region;
 
 	        if (r is ChampionSpawnRegion)
-		        return false;
-	        
+		        return false;	        
 
 	        if (r.IsPartOf(typeof(Server.Regions.HouseRegion)) || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
                 return false;
@@ -53,7 +52,8 @@ namespace Server.Misc
             
             double vapoints = pm.VASTotalMonsterFame;
 
-            pm.VASTotalMonsterFame += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100));
+            if(!(bc is BaseChampion) && !bc.ChampionSpawnMonster)
+                pm.VASTotalMonsterFame += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100)) / 2;
 
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
