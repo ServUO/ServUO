@@ -327,6 +327,11 @@ namespace Server
 			return (DateTime.UtcNow - m_Added) >= m_Duration;
 		}
 
+		public TimeSpan TimeLeft()
+		{
+			return m_Duration - (DateTime.UtcNow - m_Added);
+		}
+
 		public StatMod(StatType type, string name, int offset, TimeSpan duration)
 		{
 			m_Type = type;

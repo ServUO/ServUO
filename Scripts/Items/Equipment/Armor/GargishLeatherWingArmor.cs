@@ -11,6 +11,7 @@ namespace Server.Items
         {
             this.Weight = 2.0;
             this.Layer = Layer.Cloak;
+
         }
 
         public GargishLeatherWingArmor(Serial serial)
@@ -18,38 +19,24 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance { get { return 0; } }
-        public override int BaseFireResistance { get { return 0; } }
-        public override int BaseColdResistance { get { return 0; } }
-        public override int BasePoisonResistance { get { return 0; } }
-        public override int BaseEnergyResistance { get { return 0; } }
+        public override int PhysicalResistance { get { return 0; } }
+        public override int FireResistance { get { return 0; } }
+        public override int ColdResistance { get { return 0; } }
+        public override int PoisonResistance { get { return 0; } }
+        public override int EnergyResistance { get { return 0; } }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 30;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 40;
-            }
-        }
         public override int AosStrReq
         {
             get
             {
-                return 25;
+                return 10;
             }
         }
         public override int OldStrReq
         {
             get
             {
-                return 15;
+                return 10;
             }
         }
         public override int ArmorBase
