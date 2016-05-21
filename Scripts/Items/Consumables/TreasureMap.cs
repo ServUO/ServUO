@@ -91,6 +91,11 @@ namespace Server.Items
         #endregion
 
         #region Spawn Locations
+        private static Rectangle2D[] m_FelTramWrap = new Rectangle2D[]
+        {
+            new Rectangle2D(0, 0, 5119, 4095)
+        };
+
         private static Rectangle2D[] m_TokunoWrap = new Rectangle2D[]
         {
             new Rectangle2D(155, 207, 30, 40),
@@ -346,7 +351,9 @@ namespace Server.Items
             int x = 0;
             int y = 0;
 
-            if (map == Map.Tokuno)
+            if (map == Map.Trammel || map == Map.Felucca)
+                recs = m_FelTramWrap;
+            else if (map == Map.Tokuno)
                 recs = m_TokunoWrap;
             else if (map == Map.Malas)
                 recs = m_MalasWrap;

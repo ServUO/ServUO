@@ -236,7 +236,7 @@ namespace Server.Items
         {
             get
             {
-                return m_IsImbued == false && NegativeAttributes.Antique < 3;
+                return !IsImbued && NegativeAttributes.Antique < 3;
             }
         }
 
@@ -458,8 +458,9 @@ namespace Server.Items
         {
             get
             {
-                if (this.TimesImbued >= 1)
+                if (this.TimesImbued >= 1 && !m_IsImbued)
                     m_IsImbued = true;
+
                 return m_IsImbued;
             }
             set
@@ -2504,7 +2505,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             #region Stygian Abyss
-            if (this.m_IsImbued == true)
+            if (this.IsImbued)
                 list.Add(1080418); // (Imbued)
 
             if (m_GorgonLenseCharges > 0)
