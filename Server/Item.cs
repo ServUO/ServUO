@@ -4896,7 +4896,7 @@ namespace Server
 				return false;
 			}
 
-			Point3D dest = FindDropPoint(p, map, from.Z + 16);
+			Point3D dest = FindDropPoint(p, map, from.Z + 17);
 			if (dest == Point3D.Zero)
 				return false;
 
@@ -5176,7 +5176,7 @@ namespace Server
 				Item item = items[i];
 				ItemData id = item.ItemData;
 
-                if (item.Z > p.Z + maxZ || item.Z < p.Z) continue;
+                if (item.Z > p.Z + 17 || item.Z < p.Z) continue;
 
                 z += id.CalcHeight;
 
