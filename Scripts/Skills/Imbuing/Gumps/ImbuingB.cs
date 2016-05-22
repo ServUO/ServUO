@@ -544,6 +544,9 @@ namespace Server.Gumps
                 AddButton(258, 85 + (yOffset * 25), 4005, 4007, 10226, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(299, 87 + (yOffset * 25), 150, 18, 1060464, LabelColor, false, false);           //Elemental Ban
                 yOffset += 1;
+                AddButton(258, 85 + (yOffset * 25), 4005, 4007, 10227, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(299, 87 + (yOffset * 25), 150, 18, 1070855, LabelColor, false, false);           //Fey
+                yOffset += 1;
             }
             else if (menuCat == 10)  // == SKILL GROUP 1 ==
             {
