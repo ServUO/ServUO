@@ -125,6 +125,9 @@ namespace Server
 
 	public delegate void ResourceHarvestSuccessEventHandler(ResourceHarvestSuccessEventArgs e);
 
+	public delegate void CraftSuccessEventHandler(CraftSuccessEventArgs e);
+
+
 
 	public class ClientVersionReceivedArgs : EventArgs
 	{
@@ -1029,6 +1032,20 @@ namespace Server
 		}
 	}
 
+	public class CraftSuccessEventArgs : EventArgs
+	{
+		public Mobile Crafter { get; private set; }
+		public Item Tool { get; private set; }
+		public Item CraftedItem { get; private set; }
+
+		public CraftSuccessEventArgs(Mobile m, Item i, Item t)
+		{
+			Crafter = m;
+			Tool = t;
+			CraftedItem = i;
+		}
+	}
+
 	public static class EventSink
 	{
 		public static event CharacterCreatedEventHandler CharacterCreated;
@@ -1085,6 +1102,7 @@ namespace Server
 		public static event BODOfferEventHandler BODOffered;
 		public static event ResourceHarvestAttemptEventHandler ResourceHarvestAttempt;
 		public static event ResourceHarvestSuccessEventHandler ResourceHarvestSuccess;
+		public static event CraftSuccessEventHandler CraftSuccess;
 
 		/* The following is a .NET 2.0 "Generic EventHandler" implementation.
 		 * It is a breaking change; we would have to refactor all event handlers.
@@ -1567,6 +1585,14 @@ namespace Server
 			if (ResourceHarvestSuccess != null)
 			{
 				ResourceHarvestSuccess(e);
+			}
+		}
+
+		public static void InvokeCraftSuccess(CraftSuccessEventArgs e)
+		{
+			if (CraftSuccess != null)
+			{
+				CraftSuccess(e);
 			}
 		}
 

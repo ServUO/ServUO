@@ -1542,6 +1542,8 @@ namespace Server.Engines.Craft
 
 					from.AddToBackpack(item);
 
+					EventSink.InvokeCraftSuccess(new CraftSuccessEventArgs(from, item, tool));
+
 					if (from.IsStaff())
 					{
 						CommandLogging.WriteLine(
