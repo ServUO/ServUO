@@ -19,6 +19,7 @@ namespace Server.Services.Virtues
             {
                 VirtueGump.Register(106, OnVirtueUsed);
 
+
                 EventSink.WorldSave += (eventArgs) =>
                 {
                     _Items = World.Items.Values.Where(i => i.HonestyItem).ToList();
@@ -45,51 +46,63 @@ namespace Server.Services.Virtues
         {
             _GenRunning = true;
 
-            _HonestyItems.Clear();
-            _HonestyItems.AddRange(items);
-
-            string[] regions = { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
-
-            var index = _HonestyItems.Count;
-
-            while (--index >= 0)
+            try
             {
-                if (index >= _HonestyItems.Count)
-                    continue;
+                _HonestyItems.Clear();
+                _HonestyItems.AddRange(items);
 
-                if (ItemFlags.GetTaken(_HonestyItems[index]))
-                    _HonestyItems.RemoveAt(index);
-            }
-
-            if (_HonestyItems.Count < 1000 && World.Saving == false)
-            {
-                int spawnamount = _HonestyItems.Count + 50 > 1000 ? _HonestyItems.Count % 50 : 50;
-
-                for (int i = 0; i < spawnamount; i++)
+                string[] regions =
                 {
-                    Item toSpawn = Loot.RandomArmorOrShieldOrWeapon();
-                    ItemFlags.SetTaken(toSpawn, false);
-                    PlaceItemOnWorld(toSpawn);
-                    _HonestyItems.Add(toSpawn);
-                }
-            }
+                    "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew"
+                };
 
-            for (int i = 0; i < _HonestyItems.Count; i++)
-            {
-                _HonestyItems[i].HonestyItem = true;
-                _HonestyItems[i].HonestyRegion = regions[Utility.Random(regions.Length - 1)];
-                while (true)
+                var index = _HonestyItems.Count;
+
+                while (--index >= 0)
                 {
-                    var m = mobiles[Utility.Random(mobiles.Count - 1)];
-                    if (m == null || m.Region.Name != _HonestyItems[i].HonestyRegion)
+                    if (index >= _HonestyItems.Count)
                         continue;
-                    _HonestyItems[i].HonestyOwner = m;
-                    break;
+
+                    if (ItemFlags.GetTaken(_HonestyItems[index]))
+                        _HonestyItems.RemoveAt(index);
                 }
+
+                if (_HonestyItems.Count < 1000 && World.Saving == false)
+                {
+                    int spawnamount = _HonestyItems.Count + 50 > 1000 ? _HonestyItems.Count%50 : 50;
+
+                    for (int i = 0; i < spawnamount; i++)
+                    {
+                        Item toSpawn = Loot.RandomArmorOrShieldOrWeapon();
+                        ItemFlags.SetTaken(toSpawn, false);
+                        PlaceItemOnWorld(toSpawn);
+                        _HonestyItems.Add(toSpawn);
+                    }
+                }
+
+                for (int i = 0; i < _HonestyItems.Count; i++)
+                {
+                    _HonestyItems[i].HonestyItem = true;
+                    _HonestyItems[i].HonestyRegion = regions[Utility.Random(regions.Length - 1)];
+                    while (true)
+                    {
+                        var m = mobiles[Utility.Random(mobiles.Count - 1)];
+                        if (m == null || m.Region.Name != _HonestyItems[i].HonestyRegion)
+                            continue;
+                        _HonestyItems[i].HonestyOwner = m;
+                        break;
+                    }
+                }
+
+
+                _GenRunning = false;
             }
+            catch (Exception e)
+            {
+                //Shouldn't happen but it requires a bit more real world testing
 
-
-            _GenRunning = false;
+                _GenRunning = false;
+            }
         }
 
         private static void PlaceItemOnWorld(Item item)
