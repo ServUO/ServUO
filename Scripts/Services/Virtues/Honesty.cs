@@ -17,22 +17,22 @@ namespace Server.Services.Virtues
         {
             if (Core.SA)
             {
-                VirtueGump.Register(106, OnVirtueUsed);
+               // VirtueGump.Register(106, OnVirtueUsed);
 
 
-                EventSink.WorldSave += (eventArgs) =>
-                {
-                    _Items = World.Items.Values.Where(i => i.HonestyItem).ToList();
-                    _Mobiles = World.Mobiles.Values.Where(m => (m.BodyValue == 400 || m.BodyValue == 401) && !m.Player).ToList();
-                };
+            //    EventSink.WorldSave += (eventArgs) =>
+            //    {
+            //        _Items = World.Items.Values.Where(i => i.HonestyItem).ToList();
+            //        _Mobiles = World.Mobiles.Values.Where(m => (m.BodyValue == 400 || m.BodyValue == 401) && !m.Player).ToList();
+            //    };
 
 
-                EventSink.AfterWorldSave += (eventArgs) =>
-            {
+            //    EventSink.AfterWorldSave += (eventArgs) =>
+            //{
 
-                if (!_GenRunning && World.Saving == false)
-                    Task.Factory.StartNew(() => GenerateHonestyItems(_Mobiles, _Items));
-            };
+            //    if (!_GenRunning && World.Saving == false)
+            //        Task.Factory.StartNew(() => GenerateHonestyItems(_Mobiles, _Items));
+            //};
             }
         }
 
