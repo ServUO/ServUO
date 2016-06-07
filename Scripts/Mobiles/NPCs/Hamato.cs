@@ -133,9 +133,16 @@ namespace Server.Engines.Quests
             }
         }
 
+		public override bool IsActiveVendor
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void InitSBInfo()
         {
-            // TODO m_SBInfos.Add( new SBBushido() );
+            m_SBInfos.Add(new SBKeeperOfBushido());
         }
 		
         [Constructable]
