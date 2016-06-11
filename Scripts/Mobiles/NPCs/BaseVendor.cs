@@ -32,6 +32,13 @@ namespace Server.Mobiles
 
 	public abstract class BaseVendor : BaseCreature, IVendor
 	{
+		public static List<BaseVendor> AllVendors { get; private set; }
+
+		static BaseVendor()
+		{
+			AllVendors = new List<BaseVendor>(0x4000);
+		}
+
 		private const int MaxSell = 500;
 
 		protected abstract List<SBInfo> SBInfos { get; }
@@ -177,6 +184,8 @@ namespace Server.Mobiles
 		public BaseVendor(string title)
 			: base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 2)
 		{
+			AllVendors.Add(this);
+
 			LoadSBInfo();
 
 			Title = title;
@@ -203,7 +212,23 @@ namespace Server.Mobiles
 
 		public BaseVendor(Serial serial)
 			: base(serial)
-		{ }
+		{
+			AllVendors.Add(this);
+		}
+
+		public override void OnDelete()
+		{
+			base.OnDelete();
+
+			AllVendors.Remove(this);
+		}
+
+		public override void OnAfterDelete()
+		{
+			base.OnAfterDelete();
+			
+			AllVendors.Remove(this);
+		}
 
 		public DateTime LastRestock { get { return m_LastRestock; } set { m_LastRestock = value; } }
 

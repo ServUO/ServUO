@@ -4353,6 +4353,8 @@ namespace Server
 			{
 				module.Delete();
 			}
+
+			Timer.DelayCall(EventSink.InvokeItemDeleted, new ItemDeletedEventArgs(this));
 		}
 
 		public virtual void RemoveItem(Item item)
@@ -5810,6 +5812,8 @@ namespace Server
 				World.m_ItemTypes.Add(ourType);
 				m_TypeRef = World.m_ItemTypes.Count - 1;
 			}
+
+			Timer.DelayCall(EventSink.InvokeItemCreated, new ItemCreatedEventArgs(this));
 		}
 
 		[Constructable]
@@ -5831,6 +5835,8 @@ namespace Server
 				World.m_ItemTypes.Add(ourType);
 				m_TypeRef = World.m_ItemTypes.Count - 1;
 			}
+
+			Timer.DelayCall(EventSink.InvokeItemCreated, new ItemCreatedEventArgs(this));
 		}
 
 		public virtual void OnSectorActivate()
