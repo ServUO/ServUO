@@ -3983,6 +3983,8 @@ namespace Server
 					module.Delete();
 				}
 			}
+
+			Timer.DelayCall(EventSink.InvokeMobileDeleted, new MobileDeletedEventArgs(this));
 		}
 
 		public virtual bool AllowSkillUse(SkillName name)
