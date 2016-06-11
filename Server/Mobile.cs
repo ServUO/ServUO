@@ -8780,7 +8780,14 @@ namespace Server
 			{
 				if (m_NetState != null && m_NetState.Socket == null)
 				{
-					NetState = null;
+					if (m_NetState.IsDisposing)
+					{
+						m_NetState = null;
+					}
+					else
+					{
+						NetState = null;
+					}
 				}
 
 				return m_NetState;
