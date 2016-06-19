@@ -47,7 +47,7 @@
 				<rect x="6506" y="83" width="7" height="7" />
 				<zrange min="-4" />
 				<spawning>
-					<object id="1001" type="CrystalFieldTele" minSpawnTime="PT0S" maxSpawnTime="PT0S" amount="1" />
+					<object id="1001" type="CrystalFieldTele" minSpawnTime="PT10S" maxSpawnTime="PT30S" amount="1" />
 				</spawning>
 			</region>
 			<region type="IcyRiver">
@@ -971,7 +971,7 @@
 				<rect x="6506" y="83" width="7" height="7" />
 				<zrange min="-4" />
 				<spawning>
-					<object id="1000" type="CrystalFieldTele" minSpawnTime="PT0S" maxSpawnTime="PT0S" amount="1" />
+					<object id="1000" type="CrystalFieldTele" minSpawnTime="PT10S" maxSpawnTime="PT30S" amount="1" />
 				</spawning>
 			</region>
 			<region type="IcyRiver">
@@ -2660,6 +2660,11 @@
     <region type="StygianAbyssRegion" priority="50" name="Sutek the Mage">
       <rect x="901" y="574" width="53" height="40" />
       <go x="924" y="595" z="-14" />
+    </region>
+    <region type="StygianAbyssRegion" priority="50" name="Tomb of Kings">
+      <rect x="1" y="111" width="69" height="137" />
+   	<rect x="10" y="12" width="49" height="108" />
+      <go x="35" y="226" z="-14" />
     </region>
   </Facet>
 </ServerRegions>

@@ -119,6 +119,7 @@
     <Compile Include="Commands\GenCategorization.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\GenerateGameDocs.cs" />
     <Compile Include="Commands\Generic\Commands\BaseCommand.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -245,6 +246,7 @@
     <Compile Include="Commands\Statics.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\Test.cs" />
     <Compile Include="Commands\TimeStamp.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -562,6 +564,9 @@
     <Compile Include="Items\Addons\BaseAddonDeed.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Artifacts\Decorative\MapOfTheKnownWorld.cs" />
+    <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\FNPitchfork.cs" />
     <Compile Include="Items\Consumables\BaseAgilityPotion.cs">
@@ -9103,6 +9108,9 @@
     <Compile Include="Services\Harvest\HarvestVein.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\Virtues\Honesty.cs" />
+    <Compile Include="Services\Virtues\Humility.cs" />
+    <Compile Include="Services\Virtue Artifacts\VirtueArtifactsSystem.cs" />
     <Compile Include="Skills\Fishing.cs">
       <SubType>Code</SubType>
     </Compile>

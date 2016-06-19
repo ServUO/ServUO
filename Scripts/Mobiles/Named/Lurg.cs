@@ -9,8 +9,6 @@ namespace Server.Mobiles
         [Constructable]
         public Lurg()
         {
-
-
             this.Name = "Lurg";
             this.Hue = 0x455;
 
@@ -40,6 +38,11 @@ namespace Server.Mobiles
 
             this.Fame = 10000;
             this.Karma = -10000;
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public Lurg(Serial serial)

@@ -61,7 +61,12 @@ namespace Server.Mobiles
 			m_Change = DateTime.UtcNow;
 			m_Stomp = DateTime.UtcNow;
             m_Teleport = DateTime.UtcNow;
-		}
+
+            for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
+            {
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
+        }
 		
 		public override void GenerateLoot()
 		{

@@ -327,6 +327,11 @@ namespace Server
 			return (DateTime.UtcNow - m_Added) >= m_Duration;
 		}
 
+		public TimeSpan TimeLeft()
+		{
+			return m_Duration - (DateTime.UtcNow - m_Added);
+		}
+
 		public StatMod(StatType type, string name, int offset, TimeSpan duration)
 		{
 			m_Type = type;
@@ -3978,6 +3983,8 @@ namespace Server
 					module.Delete();
 				}
 			}
+
+			Timer.DelayCall(EventSink.InvokeMobileDeleted, new MobileDeletedEventArgs(this));
 		}
 
 		public virtual bool AllowSkillUse(SkillName name)
@@ -4603,13 +4610,13 @@ namespace Server
 							}
 
 							int oldAmount = item.Amount;
-							//item.Amount = amount; //Set in LiftItemDupe
 
-							if (amount < oldAmount)
-							{
-								LiftItemDupe(item, amount);
-							}
-							//item.Dupe( oldAmount - amount );
+                            Item oldStack = null;
+
+                            if (amount < oldAmount)
+                            {
+                                oldStack = LiftItemDupe(item, amount);
+                            }
 
 							Map map = from.Map;
 
@@ -4651,7 +4658,7 @@ namespace Server
 							Map fixMap = item.Map;
 							bool shouldFix = (item.Parent == null);
 
-							item.RecordBounce();
+							item.RecordBounce(oldStack);
 							item.OnItemLifted(from, item);
 							item.Internalize();
 
@@ -8773,7 +8780,14 @@ namespace Server
 			{
 				if (m_NetState != null && m_NetState.Socket == null)
 				{
-					NetState = null;
+					if (m_NetState.IsDisposing)
+					{
+						m_NetState = null;
+					}
+					else
+					{
+						NetState = null;
+					}
 				}
 
 				return m_NetState;
@@ -10785,6 +10799,8 @@ namespace Server
 				World.m_MobileTypes.Add(ourType);
 				m_TypeRef = World.m_MobileTypes.Count - 1;
 			}
+
+			Timer.DelayCall(EventSink.InvokeMobileCreated, new MobileCreatedEventArgs(this));
 		}
 
 		public Mobile()
@@ -10804,6 +10820,8 @@ namespace Server
 				World.m_MobileTypes.Add(ourType);
 				m_TypeRef = World.m_MobileTypes.Count - 1;
 			}
+
+			Timer.DelayCall(EventSink.InvokeMobileCreated, new MobileCreatedEventArgs(this));
 		}
 
 		public void DefaultMobileInit()

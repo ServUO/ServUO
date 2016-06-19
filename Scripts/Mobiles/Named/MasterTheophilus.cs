@@ -9,7 +9,6 @@ namespace Server.Mobiles
         [Constructable]
         public MasterTheophilus()
         {
-
             this.Name = "Master Theophilus";
             this.Title = "the necromancer";
             this.Hue = 0;
@@ -48,6 +47,11 @@ namespace Server.Mobiles
             this.PackReg(7);
             this.PackReg(7);
             this.PackReg(8);
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public MasterTheophilus(Serial serial)

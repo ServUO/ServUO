@@ -1,6 +1,8 @@
 using System;
 using Server.Gumps;
 using Server.Network;
+using System.Linq;
+using Server.Mobiles;
 
 namespace Server.Menus.Questions
 {
@@ -127,8 +129,8 @@ namespace Server.Menus.Questions
             this.m_Mobile = beheld;
             this.m_MarkUse = markUse;
 
-            this.Closable = false; 
-            this.Dragable = false; 
+            this.Closable = false;
+            this.Dragable = false;
             this.Disposable = false;
 
             this.AddBackground(0, 0, 270, 320, 2600);
@@ -206,7 +208,7 @@ namespace Server.Menus.Questions
 
         private void Teleport(StuckMenuEntry entry)
         {
-            if (this.m_MarkUse) 
+            if (this.m_MarkUse)
             {
                 this.m_Mobile.SendLocalizedMessage(1010589); // You will be teleported within the next two minutes.
 
@@ -262,6 +264,17 @@ namespace Server.Menus.Questions
                 this.m_End = DateTime.UtcNow + delay;
             }
 
+            private void MovePetsOfLoggedCharacter(Point3D dest, Map destMap)
+            {
+                Map fromMap = m_Mobile.LogoutMap;
+                Point3D fromLoc = m_Mobile.LogoutLocation;
+                fromMap.GetMobilesInRange(fromLoc, 3);
+                var move = fromMap.GetMobilesInRange(fromLoc, 3).Where(m => m is BaseCreature).Cast<BaseCreature>()
+                    .Where(pet => pet.Controlled && pet.ControlMaster == m_Mobile && pet.ControlOrder == OrderType.Guard || pet.ControlOrder == OrderType.Follow || pet.ControlOrder == OrderType.Come).ToList();
+
+                move.ForEach(x => x.MoveToWorld(dest, destMap));
+            }
+
             protected override void OnTick()
             {
                 if (DateTime.UtcNow < this.m_End)
@@ -287,11 +300,24 @@ namespace Server.Menus.Questions
                         destMap = Map.Trammel;
                     else if (this.m_Mobile.Map == Map.Felucca)
                         destMap = Map.Felucca;
+                    else if (m_Mobile.Map == Map.Internal)
+                        destMap = m_Mobile.LogoutMap == Map.Felucca ? Map.Felucca : Map.Trammel;
                     else
                         destMap = this.m_Mobile.Kills >= 5 ? Map.Felucca : Map.Trammel;
 
-                    Mobiles.BaseCreature.TeleportPets(this.m_Mobile, dest, destMap);
-                    this.m_Mobile.MoveToWorld(dest, destMap);
+                    if (m_Mobile.Map != Map.Internal)
+                    {
+                        Mobiles.BaseCreature.TeleportPets(this.m_Mobile, dest, destMap);
+                        m_Mobile.MoveToWorld(dest, destMap);
+                    }
+                    else
+                    {
+                        // for shards without auto stabling
+                        MovePetsOfLoggedCharacter(dest, destMap);
+
+                        m_Mobile.LogoutLocation = dest;
+                        m_Mobile.LogoutMap = destMap;
+                    }
                 }
             }
         }

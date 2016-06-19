@@ -81,19 +81,20 @@ namespace Server.Mobiles
         }
         public override void OnDeath(Container c)
         {
+            base.OnDeath(c);
             if (Utility.Random(10) == 0)
             {
-                Item item;
+                Item item = null;
 
                 switch (Utility.Random(3))
                 {
-                    default:
                     case 0: item = new GelatanousSkull(); break;
                     case 1: item = new CoagulatedLegs(); break;
                     case 2: item = new PartiallyDigestedTorso(); break;
                 }
+				if (item != null)
+					c.DropItem(item);
 
-                base.OnDeath(c);
                 Region reg = Region.Find(c.GetWorldLocation(), c.Map);
                 if (0.25 > Utility.RandomDouble() && reg.Name == "Passage of Tears")
                 {

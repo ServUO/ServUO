@@ -414,6 +414,7 @@ namespace Server.Engines.Craft
             #endregion
 
             // Staves and Shields
+            this.AddCraft(typeof (BlackStaff), 1044295, 1023568, 81.5, 141.8, typeof (Board), 1044041, 9, 1044351);
             this.AddCraft(typeof(ShepherdsCrook), 1044566, 1023713, 78.9, 103.9, typeof(Board), 1044041, 7, 1044351);
             this.AddCraft(typeof(QuarterStaff), 1044566, 1023721, 73.6, 98.6, typeof(Board), 1044041, 6, 1044351);
             this.AddCraft(typeof(GnarledStaff), 1044566, 1025112, 78.9, 103.9, typeof(Board), 1044041, 7, 1044351);

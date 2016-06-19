@@ -430,7 +430,7 @@ namespace Server.Items
 
 		public override bool OnDragDrop(Mobile from, Item dropped)
 		{
-			if (dropped is SpellScroll && dropped.Amount == 1)
+			if (dropped is SpellScroll)
 			{
 				SpellScroll scroll = (SpellScroll)dropped;
 
@@ -451,24 +451,27 @@ namespace Server.Items
 
 					if (val >= 0 && val < BookCount)
 					{
+						from.Send(new PlaySound(0x249, GetWorldLocation()));
+
 						m_Content |= (ulong)1 << val;
 						++m_Count;
 
-						InvalidateProperties();
-
-						scroll.Delete();
-
-						from.Send(new PlaySound(0x249, GetWorldLocation()));
-						return true;
-					}
-
+                        if (dropped.Amount > 1)
+                        {
+                            dropped.Amount--;
+                            return base.OnDragDrop(from, dropped);
+                        }
+                        else
+                        {
+                            InvalidateProperties();
+                            scroll.Delete();
+                            return true;
+                        }
+                    }
 					return false;
 				}
 			}
-			else
-			{
-				return false;
-			}
+  		    return false;
 		}
 
 		public override void OnAfterDuped(Item newItem)

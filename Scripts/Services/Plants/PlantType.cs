@@ -45,7 +45,8 @@ namespace Server.Engines.Plants
         CypressStraight,
         HedgeTall,
         HopsSouth,
-        SugarCanes
+        SugarCanes,
+        CocoaTree
     }
 
     public class PlantTypeInfo
@@ -93,7 +94,8 @@ namespace Server.Engines.Plants
             new PlantTypeInfo(0x0CFB, -45, -30,	PlantType.CypressStraight, false, false, false),
             new PlantTypeInfo(0x0DB8, 0, -20, PlantType.HedgeTall, false, false, false),
             new PlantTypeInfo(0x1AA1, 10, -25,	PlantType.HopsSouth, false, false, false),
-            new PlantTypeInfo(0x246C, -25, -20,	PlantType.SugarCanes, false, false, false)
+            new PlantTypeInfo(0x246C, -25, -20,	PlantType.SugarCanes, false, false, false),
+            new PlantTypeInfo(0x0C9E, -20, 0,   PlantType.CocoaTree, true, false, true)
         };
         private readonly int m_ItemID;
         private readonly int m_OffsetX;

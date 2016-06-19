@@ -38,6 +38,11 @@ namespace Server.Mobiles
             this.Karma = -16000;
 
             this.VirtualArmor = 54;
+
+            for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public Tangle(Serial serial)

@@ -41,6 +41,11 @@ namespace Server.Mobiles
             this.VirtualArmor = 54;
 
             this.Tamable = false;
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public Grim(Serial serial)

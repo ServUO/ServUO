@@ -9,7 +9,6 @@ namespace Server.Mobiles
         [Constructable]
         public LadyMarai()
         {
-
             this.Name = "Lady Marai";
             this.Hue = 0x21;
 
@@ -37,6 +36,11 @@ namespace Server.Mobiles
 
             this.Fame = 18000;
             this.Karma = -18000;
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public LadyMarai(Serial serial)

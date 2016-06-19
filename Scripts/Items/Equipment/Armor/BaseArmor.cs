@@ -1170,7 +1170,7 @@ namespace Server.Items
         {
             int bonus = 0;
 
-            if (this.m_Quality == ArmorQuality.Exceptional)
+            if (this.m_Quality == ArmorQuality.Exceptional &&!(this is GargishLeatherWingArmor))
                 bonus += 20;
 
             switch ( this.m_Durability )
@@ -2790,7 +2790,7 @@ namespace Server.Items
                 if (!(Core.ML && this is BaseShield))		// Guessed Core.ML removed exceptional resist bonuses from crafted shields
                     this.DistributeBonuses((tool is BaseRunicTool ? 6 : Core.SE ? 15 : 14)); // Not sure since when, but right now 15 points are added, not 14.
 
-                if (Core.ML && !(this is BaseShield))
+                if (Core.ML && !(this is BaseShield) && !(this is GargishLeatherWingArmor))
                 {
                     int bonus = (int)(from.Skills.ArmsLore.Value / 20);
 

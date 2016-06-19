@@ -140,7 +140,10 @@ namespace Server.Mobiles
             if (Utility.RandomBool())
                 c.AddItem(new SpiderCarapace());
 
-            if (Utility.RandomDouble() < 0.01)
+            if (Utility.RandomDouble() < 0.10)
+                c.DropItem(new LuckyCoin());
+
+            if (Utility.RandomDouble() < 0.025)
                 DistributeRandomArtifact(this, m_Artifact);
 
             // distribute quest items for the 'Green with Envy' quest given by Vernix

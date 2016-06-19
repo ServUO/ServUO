@@ -851,7 +851,7 @@ namespace Server.SkillHandlers
 
                     AosAttribute attr = (AosAttribute)i;
 
-                    if (wep.Attributes[attr] > 0)
+                    if (wep.Attributes[attr] > 0 && (attr != AosAttribute.WeaponDamage || (attr == AosAttribute.WeaponDamage && wep.Attributes[attr] > 50)))
                     {
                         if (!(prop is AosAttribute) || ((AosAttribute)prop) != attr)
                             total += 1;
@@ -1433,8 +1433,9 @@ namespace Server.SkillHandlers
 			m_Table[124] = new ImbuingDefinition(SlayerName.Exorcism,		    1060460, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(DaemonClaw), 	    1, 0, 1111984);
 			m_Table[125] = new ImbuingDefinition(SlayerName.ArachnidDoom,	    1060458, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(SpiderCarapace),     1, 0, 1111983);
 			m_Table[126] = new ImbuingDefinition(SlayerName.ElementalBan,	    1060464, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(VialOfVitriol), 	    1, 0, 1111985);
-			
-			m_Table[151] = new ImbuingDefinition(SkillName.Fencing,		 	    1044102, 140, 	typeof(EnchantEssence), 	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112012);
+            m_Table[127] = new ImbuingDefinition(SlayerName.Fey,                1070855, 130,   typeof(RelicFragment),      typeof(Ruby),           typeof(FeyWings),           1, 0, 1154652);
+
+            m_Table[151] = new ImbuingDefinition(SkillName.Fencing,		 	    1044102, 140, 	typeof(EnchantEssence), 	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112012);
 			m_Table[152] = new ImbuingDefinition(SkillName.Macing, 	            1044101, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112013);
 			m_Table[153] = new ImbuingDefinition(SkillName.Swords,	            1044100, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112016);
 			m_Table[154] = new ImbuingDefinition(SkillName.Musicianship,	    1044089, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112015);

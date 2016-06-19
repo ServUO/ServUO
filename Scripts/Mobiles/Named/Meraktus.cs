@@ -27,7 +27,12 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { };
+                return new Type[]
+                {
+                    typeof(RoyalGuardSurvivalKnife),
+                    typeof(TheMostKnowledgePerson),
+                    typeof(OblivionsNeedle)
+                };
             }
         }
         public override Type[] DecorativeList
@@ -98,6 +103,13 @@ namespace Server.Mobiles
             this.Karma = -70000;
 
             this.VirtualArmor = 28; // Don't know what it should be
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
+
+            this.NoKillAwards = true;
 
             if (Core.ML)
             {

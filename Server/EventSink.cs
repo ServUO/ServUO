@@ -89,7 +89,11 @@ namespace Server
 
 	public delegate void WorldSaveEventHandler(WorldSaveEventArgs e);
 
-	public delegate void SetAbilityEventHandler(SetAbilityEventArgs e);
+    public delegate void BeforeWorldSaveEventHandler(BeforeWorldSaveEventArgs e);
+
+    public delegate void AfterWorldSaveEventHandler(AfterWorldSaveEventArgs e);
+
+    public delegate void SetAbilityEventHandler(SetAbilityEventArgs e);
 
 	public delegate void FastWalkEventHandler(FastWalkEventArgs e);
 
@@ -121,6 +125,15 @@ namespace Server
 
 	public delegate void ResourceHarvestSuccessEventHandler(ResourceHarvestSuccessEventArgs e);
 
+	public delegate void CraftSuccessEventHandler(CraftSuccessEventArgs e);
+
+	public delegate void ItemCreatedEventHandler(ItemCreatedEventArgs e);
+
+	public delegate void ItemDeletedEventHandler(ItemDeletedEventArgs e);
+
+	public delegate void MobileCreatedEventHandler(MobileCreatedEventArgs e);
+
+	public delegate void MobileDeletedEventHandler(MobileDeletedEventArgs e);
 
 	public class ClientVersionReceivedArgs : EventArgs
 	{
@@ -854,7 +867,23 @@ namespace Server
 		}
 	}
 
-	public class FastWalkEventArgs : EventArgs
+    public class BeforeWorldSaveEventArgs : EventArgs
+    {
+        public BeforeWorldSaveEventArgs()
+        {
+        }
+    }
+
+
+    public class AfterWorldSaveEventArgs : EventArgs
+    {
+        public AfterWorldSaveEventArgs()
+        {
+        }
+    }
+
+
+    public class FastWalkEventArgs : EventArgs
 	{
 		private readonly NetState m_State;
 
@@ -1009,6 +1038,60 @@ namespace Server
 		}
 	}
 
+	public class CraftSuccessEventArgs : EventArgs
+	{
+		public Mobile Crafter { get; private set; }
+		public Item Tool { get; private set; }
+		public Item CraftedItem { get; private set; }
+
+		public CraftSuccessEventArgs(Mobile m, Item i, Item t)
+		{
+			Crafter = m;
+			Tool = t;
+			CraftedItem = i;
+		}
+	}
+
+	public class ItemCreatedEventArgs : EventArgs
+	{
+		public Item Item { get; set; }
+
+		public ItemCreatedEventArgs(Item item)
+		{
+			Item = item;
+		}
+	}
+
+	public class ItemDeletedEventArgs : EventArgs
+	{
+		public Item Item { get; set; }
+
+		public ItemDeletedEventArgs(Item item)
+		{
+			Item = item;
+		}
+	}
+
+	public class MobileCreatedEventArgs : EventArgs
+	{
+		public Mobile Mobile { get; set; }
+
+		public MobileCreatedEventArgs(Mobile mobile)
+		{
+			Mobile = mobile;
+		}
+	}
+
+	public class MobileDeletedEventArgs : EventArgs
+	{
+		public Mobile Mobile { get; set; }
+
+		public MobileDeletedEventArgs(Mobile mobile)
+		{
+			Mobile = mobile;
+		}
+	}
+
 	public static class EventSink
 	{
 		public static event CharacterCreatedEventHandler CharacterCreated;
@@ -1047,7 +1130,9 @@ namespace Server
 		public static event DeleteRequestEventHandler DeleteRequest;
 		public static event WorldLoadEventHandler WorldLoad;
 		public static event WorldSaveEventHandler WorldSave;
-		public static event SetAbilityEventHandler SetAbility;
+        public static event BeforeWorldSaveEventHandler BeforeWorldSave;
+        public static event AfterWorldSaveEventHandler AfterWorldSave;
+        public static event SetAbilityEventHandler SetAbility;
 		public static event FastWalkEventHandler FastWalk;
 		public static event CreateGuildHandler CreateGuild;
 		public static event ServerStartedEventHandler ServerStarted;
@@ -1063,58 +1148,12 @@ namespace Server
 		public static event BODOfferEventHandler BODOffered;
 		public static event ResourceHarvestAttemptEventHandler ResourceHarvestAttempt;
 		public static event ResourceHarvestSuccessEventHandler ResourceHarvestSuccess;
+		public static event CraftSuccessEventHandler CraftSuccess;
 
-		/* The following is a .NET 2.0 "Generic EventHandler" implementation.
-		 * It is a breaking change; we would have to refactor all event handlers.
-		 * This style does not appear to be in widespread use.
-		 * We could also look into .NET 4.0 Action<T>/Func<T> implementations.
-		 */
-
-		/*
-		public static event EventHandler<CharacterCreatedEventArgs> CharacterCreated;
-		public static event EventHandler<OpenDoorMacroEventArgs> OpenDoorMacroUsed;
-		public static event EventHandler<SpeechEventArgs> Speech;
-		public static event EventHandler<LoginEventArgs> Login;
-		public static event EventHandler<ServerListEventArgs> ServerList;
-		public static event EventHandler<MovementEventArgs> Movement;
-		public static event EventHandler<HungerChangedEventArgs> HungerChanged;
-		public static event EventHandler<CrashedEventArgs> Crashed;
-		public static event EventHandler<ShutdownEventArgs> Shutdown;
-		public static event EventHandler<HelpRequestEventArgs> HelpRequest;
-		public static event EventHandler<DisarmRequestEventArgs> DisarmRequest;
-		public static event EventHandler<StunRequestEventArgs> StunRequest;
-		public static event EventHandler<OpenSpellbookRequestEventArgs> OpenSpellbookRequest;
-		public static event EventHandler<CastSpellRequestEventArgs> CastSpellRequest;
-		public static event EventHandler<BandageTargetRequestEventArgs> BandageTargetRequest;
-		public static event EventHandler<AnimateRequestEventArgs> AnimateRequest;
-		public static event EventHandler<LogoutEventArgs> Logout;
-		public static event EventHandler<SocketConnectEventArgs> SocketConnect;
-		public static event EventHandler<ConnectedEventArgs> Connected;
-		public static event EventHandler<DisconnectedEventArgs> Disconnected;
-		public static event EventHandler<RenameRequestEventArgs> RenameRequest;
-		public static event EventHandler<PlayerDeathEventArgs> PlayerDeath;
-		public static event EventHandler<VirtueGumpRequestEventArgs> VirtueGumpRequest;
-		public static event EventHandler<VirtueItemRequestEventArgs> VirtueItemRequest;
-		public static event EventHandler<VirtueMacroRequestEventArgs> VirtueMacroRequest;
-		public static event EventHandler<ChatRequestEventArgs> ChatRequest;
-		public static event EventHandler<AccountLoginEventArgs> AccountLogin;
-		public static event EventHandler<PaperdollRequestEventArgs> PaperdollRequest;
-		public static event EventHandler<ProfileRequestEventArgs> ProfileRequest;
-		public static event EventHandler<ChangeProfileRequestEventArgs> ChangeProfileRequest;
-		public static event EventHandler<AggressiveActionEventArgs> AggressiveAction;
-		public static event EventHandler<CommandEventArgs> Command;
-		public static event EventHandler<GameLoginEventArgs> GameLogin;
-		public static event EventHandler<DeleteRequestEventArgs> DeleteRequest;
-		public static event EventHandler<EventArgs> WorldLoad;
-		public static event EventHandler<WorldSaveEventArgs> WorldSave;
-		public static event EventHandler<SetAbilityEventArgs> SetAbility;
-		public static event EventHandler<FastWalkEventArgs> FastWalk;
-		public static event EventHandler<CreateGuildEventArgs> CreateGuild;
-		public static event EventHandler<EventArgs> ServerStarted;
-		public static event EventHandler<GuildGumpRequestArgs> GuildGumpRequest;
-		public static event EventHandler<QuestGumpRequestArgs> QuestGumpRequest;
-		public static event EventHandler<ClientVersionReceivedArgs> ClientVersionReceived;
-		*/
+		public static event ItemCreatedEventHandler ItemCreated;
+		public static event ItemDeletedEventHandler ItemDeleted;
+		public static event MobileCreatedEventHandler MobileCreated;
+		public static event MobileDeletedEventHandler MobileDeleted;
 
 		public static void InvokeClientVersionReceived(ClientVersionReceivedArgs e)
 		{
@@ -1460,7 +1499,23 @@ namespace Server
 			}
 		}
 
-		public static void InvokeOnKilledBy(OnKilledByEventArgs e)
+        public static void InvokeBeforeWorldSave(BeforeWorldSaveEventArgs e)
+        {
+            if (BeforeWorldSave != null)
+            {
+                BeforeWorldSave(e);
+            }
+        }
+
+        public static void InvokeAfterWorldSave(AfterWorldSaveEventArgs e)
+        {
+            if (AfterWorldSave != null)
+            {
+                AfterWorldSave(e);
+            }
+        }
+
+        public static void InvokeOnKilledBy(OnKilledByEventArgs e)
 		{
 			if (OnKilledBy != null)
 			{
@@ -1532,6 +1587,46 @@ namespace Server
 			}
 		}
 
+		public static void InvokeCraftSuccess(CraftSuccessEventArgs e)
+		{
+			if (CraftSuccess != null)
+			{
+				CraftSuccess(e);
+			}
+		}
+
+		public static void InvokeItemCreated(ItemCreatedEventArgs e)
+		{
+			if (ItemCreated != null)
+			{
+				ItemCreated(e);
+			}
+		}
+
+		public static void InvokeItemDeleted(ItemDeletedEventArgs e)
+		{
+			if (ItemDeleted != null)
+			{
+				ItemDeleted(e);
+			}
+		}
+
+		public static void InvokeMobileCreated(MobileCreatedEventArgs e)
+		{
+			if (MobileCreated != null)
+			{
+				MobileCreated(e);
+			}
+		}
+
+		public static void InvokeMobileDeleted(MobileDeletedEventArgs e)
+		{
+			if (MobileDeleted != null)
+			{
+				MobileDeleted(e);
+			}
+		}
+
 		public static void Reset()
 		{
 			CharacterCreated = null;
@@ -1582,6 +1677,12 @@ namespace Server
 			BODOffered = null;
 			ResourceHarvestAttempt = null;
 			ResourceHarvestSuccess = null;
+			CraftSuccess = null;
+			
+			ItemCreated = null;
+			ItemDeleted = null;
+			MobileCreated = null;
+			MobileDeleted = null;
 		}
 	}
 }

@@ -218,146 +218,163 @@ namespace Server.Engines.Quests
                 if (objective is SlayObjective)
                 {
                     SlayObjective slay = (SlayObjective)objective;
-					
-                    this.AddHtmlLocalized(98, offset, 30, 16, 1072204, 0x15F90, false, false); // Slay	
-                    this.AddLabel(133, offset, 0x481, slay.MaxProgress + " " + slay.Name); // %count% + %name%
-					
-                    offset += 16;	
-					
-                    if (this.m_Offer)
+
+                    if (slay != null)
                     {
+                        this.AddHtmlLocalized(98, offset, 30, 16, 1072204, 0x15F90, false, false); // Slay	
+                        this.AddLabel(133, offset, 0x481, slay.MaxProgress + " " + slay.Name); // %count% + %name%
+
+                        offset += 16;
+
+                        if (this.m_Offer)
+                        {
+                            if (slay.Timed)
+                            {
+                                this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                                this.AddLabel(223, offset, 0x481, this.FormatSeconds(slay.Seconds)); // %est. time remaining%
+
+                                offset += 16;
+                            }
+                            continue;
+                        }
+
+                        if (slay.Region != null)
+                        {
+                            this.AddHtmlLocalized(103, offset, 312, 20, 1018327, 0x15F90, false, false); // Location
+                            this.AddHtmlObject(223, offset, 312, 20, slay.Region.Name, White, false, false); // %location%
+
+                            offset += 16;
+                        }
+
+                        this.AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
+                        this.AddLabel(223, offset, 0x481, slay.CurProgress.ToString());  // %current progress%
+
+                        offset += 16;
+
+                        if (this.ReturnTo() != null)
+                        {
+                            this.AddHtmlLocalized(103, offset, 120, 16, 1074782, 0x15F90, false, false); // Return to	
+                            this.AddLabel(223, offset, 0x481, this.ReturnTo());  // %return to%		
+
+                            offset += 16;
+                        }
+
                         if (slay.Timed)
                         {
                             this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
                             this.AddLabel(223, offset, 0x481, this.FormatSeconds(slay.Seconds)); // %est. time remaining%
-					
+
                             offset += 16;
                         }
-                        continue;
-                    }
-					
-                    if (slay.Region != null)	
-                    {
-                        this.AddHtmlLocalized(103, offset, 312, 20, 1018327, 0x15F90, false, false); // Location
-                        this.AddHtmlObject(223, offset, 312, 20, slay.Region.Name, White, false, false); // %location%
-							
-                        offset += 16;
-                    }
-					
-                    this.AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
-                    this.AddLabel(223, offset, 0x481, slay.CurProgress.ToString());	 // %current progress%
-					
-                    offset += 16;
-					
-                    if (this.ReturnTo() != null)
-                    {
-                        this.AddHtmlLocalized(103, offset, 120, 16, 1074782, 0x15F90, false, false); // Return to	
-                        this.AddLabel(223, offset, 0x481, this.ReturnTo());	 // %return to%		
-						
-                        offset += 16;
-                    }
-					
-                    if (slay.Timed)
-                    {
-                        this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                        this.AddLabel(223, offset, 0x481, this.FormatSeconds(slay.Seconds)); // %est. time remaining%
-					
-                        offset += 16;	
                     }
                 }
                 else if (objective is ObtainObjective)
                 {
                     ObtainObjective obtain = (ObtainObjective)objective;
-					
-                    this.AddHtmlLocalized(98, offset, 40, 16, 1072205, 0x15F90, false, false); // Obtain						
-                    this.AddLabel(143, offset, 0x481, obtain.MaxProgress + " " + obtain.Name); // %count% + %name%
-					
-                    if (obtain.Image > 0)
-                        this.AddItem(350, offset, obtain.Image); // Image
-										
-                    offset += 16;	
-					
-                    if (this.m_Offer)
+
+                    if (obtain != null)
                     {
+                        this.AddHtmlLocalized(98, offset, 40, 16, 1072205, 0x15F90, false, false); // Obtain						
+                        this.AddLabel(143, offset, 0x481, obtain.MaxProgress + " " + obtain.Name); // %count% + %name%
+
+                        if (obtain.Image > 0)
+                            this.AddItem(350, offset, obtain.Image); // Image
+
+                        offset += 16;
+
+                        if (this.m_Offer)
+                        {
+                            if (obtain.Timed)
+                            {
+                                this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                                this.AddLabel(223, offset, 0x481, this.FormatSeconds(obtain.Seconds)); // %est. time remaining%
+
+                                offset += 16;
+                            }
+                            else if (obtain.Image > 0)
+                                offset += 16;
+
+                            continue;
+                        }
+                        this.AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
+                        this.AddLabel(223, offset, 0x481, obtain.CurProgress.ToString());    // %current progress%
+
+                        offset += 16;
+
+                        if (this.ReturnTo() != null)
+                        {
+                            this.AddHtmlLocalized(103, offset, 120, 16, 1074782, 0x15F90, false, false); // Return to	
+                            this.AddLabel(223, offset, 0x481, this.ReturnTo());  // %return to%
+
+                            offset += 16;
+                        }
+
                         if (obtain.Timed)
                         {
                             this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
                             this.AddLabel(223, offset, 0x481, this.FormatSeconds(obtain.Seconds)); // %est. time remaining%
-					
+
                             offset += 16;
                         }
-                        else if (obtain.Image > 0)
-                            offset += 16;
-						
-                        continue;
-                    }
-                    this.AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
-                    this.AddLabel(223, offset, 0x481, obtain.CurProgress.ToString());	 // %current progress%
-					
-                    offset += 16;
-					
-                    if (this.ReturnTo() != null)
-                    {
-                        this.AddHtmlLocalized(103, offset, 120, 16, 1074782, 0x15F90, false, false); // Return to	
-                        this.AddLabel(223, offset, 0x481, this.ReturnTo());	 // %return to%
-						
-                        offset += 16;
-                    }
-					
-                    if (obtain.Timed)
-                    {
-                        this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                        this.AddLabel(223, offset, 0x481, this.FormatSeconds(obtain.Seconds)); // %est. time remaining%
-					
-                        offset += 16;
                     }
                 }
                 else if (objective is DeliverObjective)
                 {
                     DeliverObjective deliver = (DeliverObjective)objective;
-					
-                    this.AddHtmlLocalized(98, offset, 40, 16, 1072207, 0x15F90, false, false); // Deliver						
-                    this.AddLabel(143, offset, 0x481, deliver.MaxProgress + " " + deliver.DeliveryName);	 // %name%
-					
-                    offset += 16;
-					
-                    this.AddHtmlLocalized(103, offset, 120, 16, 1072379, 0x15F90, false, false); // Deliver to						
-                    this.AddLabel(223, offset, 0x481, deliver.DestName); // %deliver to%
-						
-                    offset += 16;
-					
-                    if (deliver.Timed)
+
+                    if (deliver != null)
                     {
-                        this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                        this.AddLabel(223, offset, 0x481, this.FormatSeconds(deliver.Seconds)); // %est. time remaining%
-											
+                        this.AddHtmlLocalized(98, offset, 40, 16, 1072207, 0x15F90, false, false); // Deliver						
+                        this.AddLabel(143, offset, 0x481, deliver.MaxProgress + " " + deliver.DeliveryName);     // %name%
+
                         offset += 16;
+
+                        this.AddHtmlLocalized(103, offset, 120, 16, 1072379, 0x15F90, false, false); // Deliver to						
+                        this.AddLabel(223, offset, 0x481, deliver.DestName); // %deliver to%
+
+                        offset += 16;
+
+                        if (deliver.Timed)
+                        {
+                            this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                            this.AddLabel(223, offset, 0x481, this.FormatSeconds(deliver.Seconds)); // %est. time remaining%
+
+                            offset += 16;
+                        }
                     }
                 }
                 else if (objective is EscortObjective)
                 {
                     EscortObjective escort = (EscortObjective)objective;
-					
-                    this.AddHtmlLocalized(98, offset, 50, 16, 1072206, 0x15F90, false, false); // Escort to
-                    this.AddHtmlObject(153, offset, 200, 16, escort.Region.Name, White, false, false);
-					
-                    offset += 16;
-					
-                    if (escort.Timed)
+
+                    if (escort != null)
                     {
-                        this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                        this.AddLabel(223, offset, 0x481, this.FormatSeconds(escort.Seconds)); // %est. time remaining%
-											
+
+                        this.AddHtmlLocalized(98, offset, 50, 16, 1072206, 0x15F90, false, false); // Escort to
+                        this.AddHtmlObject(153, offset, 200, 16, escort.Region.Name, White, false, false);
+
                         offset += 16;
+
+                        if (escort.Timed)
+                        {
+                            this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                            this.AddLabel(223, offset, 0x481, this.FormatSeconds(escort.Seconds)); // %est. time remaining%
+
+                            offset += 16;
+                        }
                     }
                 }
                 else if (objective is ApprenticeObjective)
                 {
                     ApprenticeObjective apprentice = (ApprenticeObjective)objective;
-					
-                    this.AddHtmlLocalized(98, offset, 200, 16, 1077485, "#" + (1044060 + (int)apprentice.Skill) + "\t" + apprentice.MaxProgress, 0x15F90, false, false); // Increase ~1_SKILL~ to ~2_VALUE~
-														
-                    offset += 16;
+
+                    if (apprentice != null)
+                    {
+
+                        this.AddHtmlLocalized(98, offset, 200, 16, 1077485, "#" + (1044060 + (int)apprentice.Skill) + "\t" + apprentice.MaxProgress, 0x15F90, false, false); // Increase ~1_SKILL~ to ~2_VALUE~
+
+                        offset += 16;
+                    }
                 }
             }
 			
@@ -394,11 +411,14 @@ namespace Server.Engines.Quests
             for (int i = 0; i < this.m_Quest.Rewards.Count; i++)
             {
                 BaseReward reward = this.m_Quest.Rewards[i];
-				
-                this.AddImage(105, offset, 0x4B9);
-                this.AddHtmlObject(133, offset, 280, 16, reward.Name, LightGreen, false, false);
-				
-                offset += 16;
+
+                if (reward != null)
+                {
+                    this.AddImage(105, offset, 0x4B9);
+                    this.AddHtmlObject(133, offset, 280, 16, reward.Name, LightGreen, false, false);
+
+                    offset += 16;
+                }
             }
 			
             if (this.m_Completed)

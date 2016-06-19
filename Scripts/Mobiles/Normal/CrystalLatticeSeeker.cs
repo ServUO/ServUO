@@ -40,6 +40,11 @@ namespace Server.Mobiles
 
             this.Fame = 17000;
             this.Karma = -17000;
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 2); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public CrystalLatticeSeeker(Serial serial)

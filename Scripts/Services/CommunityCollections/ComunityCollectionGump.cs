@@ -403,6 +403,7 @@ namespace Server.Gumps
                             from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
                         else
                             from.SendLocalizedMessage(1073167); // You do not have enough of that item to make a donation!
+                        return;
                     }
                 }
 

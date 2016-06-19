@@ -32,6 +32,13 @@ namespace Server.Mobiles
 
 	public abstract class BaseVendor : BaseCreature, IVendor
 	{
+		public static List<BaseVendor> AllVendors { get; private set; }
+
+		static BaseVendor()
+		{
+			AllVendors = new List<BaseVendor>(0x4000);
+		}
+
 		private const int MaxSell = 500;
 
 		protected abstract List<SBInfo> SBInfos { get; }
@@ -50,6 +57,7 @@ namespace Server.Mobiles
 		public virtual bool IsActiveVendor { get { return true; } }
 		public virtual bool IsActiveBuyer { get { return IsActiveVendor; } } // response to vendor SELL
 		public virtual bool IsActiveSeller { get { return IsActiveVendor; } } // repsonse to vendor BUY
+		public virtual bool HasHonestyDiscount { get { return true; } }
 
 		public virtual NpcGuild NpcGuild { get { return NpcGuild.None; } }
 
@@ -176,6 +184,8 @@ namespace Server.Mobiles
 		public BaseVendor(string title)
 			: base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 2)
 		{
+			AllVendors.Add(this);
+
 			LoadSBInfo();
 
 			Title = title;
@@ -202,7 +212,23 @@ namespace Server.Mobiles
 
 		public BaseVendor(Serial serial)
 			: base(serial)
-		{ }
+		{
+			AllVendors.Add(this);
+		}
+
+		public override void OnDelete()
+		{
+			base.OnDelete();
+
+			AllVendors.Remove(this);
+		}
+
+		public override void OnAfterDelete()
+		{
+			base.OnAfterDelete();
+			
+			AllVendors.Remove(this);
+		}
 
 		public DateTime LastRestock { get { return m_LastRestock; } set { m_LastRestock = value; } }
 
@@ -1316,26 +1342,54 @@ namespace Server.Mobiles
 			}
 
 			bought = buyer.AccessLevel >= AccessLevel.GameMaster;
-
+			int discount = 0;
 			cont = buyer.Backpack;
-			
+
+			if (Core.SA && HasHonestyDiscount)
+			{
+				double discountPc = 0;
+				switch (VirtueHelper.GetLevel(buyer, VirtueName.Honesty))
+				{
+					case VirtueLevel.Seeker:
+						discountPc = .1;
+						break;
+					case VirtueLevel.Follower:
+						discountPc = .2;
+						break;
+					case VirtueLevel.Knight:
+						discountPc = .3; break;
+					default:
+						discountPc = 0;
+						break;
+				}
+				discount = totalCost - (int)(totalCost * (1 - discountPc));
+				totalCost -= discount;
+			}
+
 			if (!bought && cont != null)
 			{
 				if (cont.ConsumeTotal(typeof(Gold), totalCost))
 				{
 					bought = true;
+
+					if (discount > 0)
+					{
+						SayTo(buyer, 1151517, discount.ToString());
+					}
 				}
 			}
 
-			if (!bought &&
-                (totalCost >= 2000 ||
-                AccountGold.Enabled)
-            )
+			if (!bought &&(totalCost >= 2000 ||AccountGold.Enabled))
 			{
 				if (Banker.Withdraw(buyer, totalCost))
 				{
 					bought = true;
 					fromBank = true;
+
+					if (discount > 0)
+					{
+						SayTo(buyer, 1151517, discount.ToString());
+					}
 				}
 				else
 				{
@@ -1345,6 +1399,11 @@ namespace Server.Mobiles
 					{
 						bought = true;
 						fromBank = true;
+
+						if (discount > 0)
+						{
+							SayTo(buyer, 1151517, discount.ToString());
+						}
 					}
 				}
 			}

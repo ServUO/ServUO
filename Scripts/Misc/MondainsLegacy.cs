@@ -399,7 +399,7 @@ namespace Server
             return region.IsPartOf("Twisted Weald") ||
                    region.IsPartOf("Sanctuary") ||
                    region.IsPartOf("Prism of Light") ||
-                   region.IsPartOf("Citadel") ||
+                   region.IsPartOf("TheCitadel") ||
                    region.IsPartOf("Bedlam") ||
                    region.IsPartOf("Blighted Grove") ||
                    region.IsPartOf("Painted Caves") ||

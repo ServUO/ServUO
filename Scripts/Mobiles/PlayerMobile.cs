@@ -78,8 +78,9 @@ namespace Server.Mobiles
 		ToggleClippings = 0x00800000,
 		ToggleCutClippings = 0x01000000,
 		ToggleCutReeds = 0x02000000,
-		MechanicalLife = 0x04000000
-	}
+		MechanicalLife = 0x04000000,
+        HumilityHunt = 0x08000000
+    }
 
 	public enum NpcGuild
 	{
@@ -434,12 +435,53 @@ namespace Server.Mobiles
 		private Map m_SSSeedMap;
 
 		public Map SSSeedMap { get { return m_SSSeedMap; } set { m_SSSeedMap = value; } }
-		#endregion
+        #endregion
 
-		#endregion
+        #endregion
 
-		#region Auto Arrow Recovery
-		private readonly Dictionary<Type, int> m_RecoverableAmmo = new Dictionary<Type, int>();
+        #region Humility
+        public bool HumilityHunt
+        {
+            get { return GetFlag(PlayerFlag.HumilityHunt); }
+            set
+            {
+                SetFlag(PlayerFlag.HumilityHunt, value);
+                if (value)
+                {
+                    foreach (ResistanceMod rm in _HumilityMods)
+                    {
+                        AddResistanceMod(rm);
+                    }
+                    BuffInfo info = new BuffInfo(BuffIcon.Humility, 1155807, 1155806, "-70");
+                    BuffInfo.AddBuff(this, info);
+
+                }
+                else
+                {
+                    foreach (ResistanceMod rm in _HumilityMods)
+                    {
+                        RemoveResistanceMod(rm);
+                    }
+                    BuffInfo.RemoveBuff(this, BuffIcon.Humility);
+                }
+            }
+        }
+
+        public DateTime HumilityHuntLastEnded;
+
+	    private readonly List<ResistanceMod> _HumilityMods = new List<ResistanceMod>()
+        {
+            new ResistanceMod(ResistanceType.Physical, -70),
+            new ResistanceMod(ResistanceType.Fire, -70),
+            new ResistanceMod(ResistanceType.Energy, -70),
+            new ResistanceMod(ResistanceType.Cold, -70),
+            new ResistanceMod(ResistanceType.Poison, -70)
+        };
+
+        #endregion
+
+        #region Auto Arrow Recovery
+        private readonly Dictionary<Type, int> m_RecoverableAmmo = new Dictionary<Type, int>();
 
 		public Dictionary<Type, int> RecoverableAmmo { get { return m_RecoverableAmmo; } }
 
@@ -735,33 +777,32 @@ namespace Server.Mobiles
 				UpdateResistances();
 			}
 		}
-
-		public override int GetMaxResistance(ResistanceType type)
-		{
-			if (IsStaff())
-			{
-				return 100;
-			}
-
-			int max = base.GetMaxResistance(type);
-
+        public override int GetMaxResistance(ResistanceType type)
+        {
+            if (IsStaff())
+            {
+                return 100;
+            }
+ 
+            int max = base.GetMaxResistance(type);
+ 
             #region Stygian Abyss
             int stoneformOffset = Spells.Mystic.StoneFormSpell.GetMaxResistMod(this);
             #endregion
-
-			if (type != ResistanceType.Physical && 60 < max && CurseSpell.UnderEffect(this))
-			{
-				max = 60;
+ 
+            if (type != ResistanceType.Physical && 60 < max && CurseSpell.UnderEffect(this))
+            {
+                max = 60;
                 stoneformOffset = 0;
-			}
-
-			if (Core.ML && Race == Race.Elf && type == ResistanceType.Energy)
-			{
-				max += 5; //Intended to go after the 60 max from curse
-			}
-
-            return Math.Max(MinPlayerResistance + stoneformOffset, Math.Min(MaxPlayerResistance + stoneformOffset, max + stoneformOffset));
-		}
+            }
+ 
+            if (Core.ML && Race == Race.Elf && type == ResistanceType.Energy)
+            {
+                max += 5; //Intended to go after the 60 max from curse
+            }
+ 
+            return Math.Max(MinPlayerResistance + stoneformOffset, Math.Max(MaxPlayerResistance + stoneformOffset, max + stoneformOffset));
+        }
 
 		protected override void OnRaceChange(Race oldRace)
 		{
@@ -1900,7 +1941,7 @@ namespace Server.Mobiles
 			}
 			#endregion
 
-			if (((item is Container) && !(item is BaseQuiver)) || item is BagOfSending || item is KeyRing)
+			if (((item is Container) && !(item is BaseQuiver)) || item is BagOfSending || item is KeyRing || item is MountItem)
 			{
 				return false;
 			}
@@ -3060,6 +3101,17 @@ namespace Server.Mobiles
 
 		public override void OnDeath(Container c)
 		{
+			PlayerMobile killer = null;
+			Mobile m = FindMostRecentDamager(false);
+			killer = m as PlayerMobile;
+			if(killer == null)
+			{
+				if(m is BaseCreature)
+				{
+					killer = ((BaseCreature)m).ControlMaster as PlayerMobile;
+				}
+			}
+			
 			if (m_NonAutoreinsuredItems > 0)
 			{
 				SendLocalizedMessage(1061115);
@@ -3109,41 +3161,31 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (Kills >= 5 && DateTime.UtcNow >= m_NextJustAward)
+			if(killer != null &&
+				Kills >= 5 &&
+				DateTime.UtcNow >= killer.m_NextJustAward)
 			{
-				Mobile m = FindMostRecentDamager(false);
+				// This scales 700.0 skill points to 1000 valor points
+				int pointsToGain = (int)(SkillsTotal / 7);
+				// This scales 700.0 skill points to 7 minutes wait
+				int minutesToWait = Math.Max(1, (int)(SkillsTotal / 1000));
 
-				if (m is BaseCreature)
+				bool gainedPath = false;
+				if (VirtueHelper.Award(m, VirtueName.Justice, pointsToGain, ref gainedPath))
 				{
-					m = ((BaseCreature)m).GetMaster();
-				}
-
-				if (m != null && m is PlayerMobile && m != this)
-				{
-					bool gainedPath = false;
-
-					int pointsToGain = 0;
-
-					pointsToGain += (int)Math.Sqrt(GameTime.TotalSeconds * 4);
-					pointsToGain *= 5;
-					pointsToGain += (int)Math.Pow(Skills.Total / 250, 2);
-
-					if (VirtueHelper.Award(m, VirtueName.Justice, pointsToGain, ref gainedPath))
+					if (gainedPath)
 					{
-						if (gainedPath)
-						{
-							m.SendLocalizedMessage(1049367); // You have gained a path in Justice!
-						}
-						else
-						{
-							m.SendLocalizedMessage(1049363); // You have gained in Justice.
-						}
-
-						m.FixedParticles(0x375A, 9, 20, 5027, EffectLayer.Waist);
-						m.PlaySound(0x1F7);
-
-						m_NextJustAward = DateTime.UtcNow + TimeSpan.FromMinutes(pointsToGain / 3);
+						m.SendLocalizedMessage(1049367); // You have gained a path in Justice!
 					}
+					else
+					{
+						m.SendLocalizedMessage(1049363); // You have gained in Justice.
+					}
+
+					m.FixedParticles(0x375A, 9, 20, 5027, EffectLayer.Waist);
+					m.PlaySound(0x1F7);
+
+					killer.m_NextJustAward = DateTime.UtcNow + TimeSpan.FromMinutes(minutesToWait);
 				}
 			}
 
@@ -3155,19 +3197,6 @@ namespace Server.Mobiles
 				{
 					pm.SendLocalizedMessage(1060397, pm.m_InsuranceBonus.ToString());
 					// ~1_AMOUNT~ gold has been deposited into your bank box.
-				}
-			}
-
-			Mobile killer = FindMostRecentDamager(true);
-
-			if (killer is BaseCreature)
-			{
-				BaseCreature bc = (BaseCreature)killer;
-
-				Mobile master = bc.GetMaster();
-				if (master != null)
-				{
-					killer = master;
 				}
 			}
 
@@ -4032,8 +4061,8 @@ namespace Server.Mobiles
 			}
 
 			CheckKillDecay();
-
-			CheckAtrophies(this);
+            HumilityHunt = false;
+            CheckAtrophies(this);
 
 			base.Serialize(writer);
 

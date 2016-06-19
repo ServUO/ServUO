@@ -135,7 +135,13 @@ namespace Services.Toolbar.Gumps
 					{
 						mob.SendGump(this);
 
-						if (_Info.Entries[info.ButtonID - 10].StartsWith(CommandSystem.Prefix))
+                        if (_Info.Entries.Count <= 0)
+                            return;
+
+                        if (info.ButtonID - 10 <= 0)
+                            return;
+
+                        if (_Info.Entries[info.ButtonID - 10].StartsWith(CommandSystem.Prefix))
 						{
 							mob.SendMessage(_Info.Entries[info.ButtonID - 10]);
 							CommandSystem.Handle(mob, _Info.Entries[info.ButtonID - 10]);

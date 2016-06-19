@@ -1,5 +1,6 @@
 //Iron Beetle Beta Release 
 using System;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -67,6 +68,14 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager, 2);
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.03)
+                c.DropItem(new LuckyCoin());
         }
 
         public override void Serialize(GenericWriter writer)

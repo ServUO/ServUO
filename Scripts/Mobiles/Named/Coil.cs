@@ -45,7 +45,12 @@ namespace Server.Mobiles
             this.Karma = -17500;
 
             this.PackGem(2);
-            this.PackItem(new Bone());	
+            this.PackItem(new Bone());
+
+            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
+            {
+                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+            }
         }
 
         public Coil(Serial serial)
