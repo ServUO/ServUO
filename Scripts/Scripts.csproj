@@ -573,6 +573,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\CreepyCake.cs" />
+    <Compile Include="Items\Consumables\ElixirOfRebirth.cs" />
     <Compile Include="Items\Consumables\HarvestWine.cs" />
     <Compile Include="Items\Consumables\Jellybeans.cs" />
     <Compile Include="Items\Consumables\Lollipops.cs" />

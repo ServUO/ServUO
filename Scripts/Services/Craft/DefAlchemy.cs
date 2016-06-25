@@ -219,12 +219,10 @@ namespace Server.Engines.Craft
             if (Core.SA)
             {
                 // Healing and Curative
-                /* TODO Add Elixir of Rebirth script
-                index = AddCraft(typeof (ElixirOfRebirth), 1116348, 1112762, 65.0, 100.0, typeof (Bottle), 1044529, 1, 1044253);
-                AddRes(index, typeof(SpidersSilk), 1044360, 1, 1044368);
-                AddRes(index, typeof(MedusaBlood), 1031702, 1, 1044253);
-                SetNeededExpansion(index, Expansion.SA);
-                 */
+                index = AddCraft(typeof(ElixirOfRebirth), 1116348, 1112762, 65.0, 130.0, typeof(MedusaBlood), 1031702, 1, 1044253);
+                AddRes(index, typeof(SpidersSilk), 1044360, 7, 1044368);
+                AddRes(index, typeof(Bottle), 1044529, 1, 500315);
+                this.SetNeededExpansion(index, Expansion.SA);
 
                 // Toxic
                 index = AddCraft(typeof(ScouringToxin), 1116350, 1112292, 75.0, 100.0, typeof(ToxicVenomSac), 1112291, 1, 1044253);
