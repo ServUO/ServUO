@@ -411,7 +411,11 @@ namespace Server.Items
         {
             this.m_WellSound = wellSound;
             this.m_BadlySound = badlySound;
-            this.UsesRemaining = Utility.RandomMinMax(this.InitMinUses, this.InitMaxUses);
+
+            if (this is SnakeCharmerFlute)
+                this.UsesRemaining = Utility.RandomMinMax(25, 100);
+            else
+                this.UsesRemaining = Utility.RandomMinMax(this.InitMinUses, this.InitMaxUses);
         }
 
         public override void GetProperties(ObjectPropertyList list)
