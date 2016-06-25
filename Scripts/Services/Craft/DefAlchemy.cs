@@ -238,7 +238,8 @@ namespace Server.Engines.Craft
                 SetNeededExpansion(index, Expansion.SA);
 
                 index = AddCraft(typeof(ColorFixative), 1044495, 1112135, 75.0, 100.0, typeof(SilverSerpentVenom), 1112173, 1, 1044253);
-                AddRes(index, typeof(BaseBeverage), 1044476, 1, 1044253);//TODO correct Consumption of BaseBeverage...
+                AddRes(index, typeof(BaseBeverage), 1022503, 1, 1044253);
+                SetBeverageType(index, BeverageType.Wine);
                 SetNeededExpansion(index, Expansion.SA);
 
                 index = AddCraft(typeof(SoftenedReeds), 1044495, 1112249, 75.0, 100.0, typeof(DryReeds), 1112248, 1, 1112250);
