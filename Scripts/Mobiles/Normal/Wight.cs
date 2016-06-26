@@ -43,6 +43,7 @@ namespace Server.Mobiles
             this.Karma = -1500;
 
             this.VirtualArmor = 19;
+            this.QLPoints = 3;
         }
 
         public Wight(Serial serial)

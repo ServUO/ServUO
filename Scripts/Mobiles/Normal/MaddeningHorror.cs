@@ -36,6 +36,11 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 185.5);
             this.SetSkill(SkillName.Tactics, 94.0);
             this.SetSkill(SkillName.Wrestling, 87.4);
+
+            this.Fame = 23000;
+            this.Karma = -23000;
+
+            this.QLPoints = 25;
         }
 
         public MaddeningHorror(Serial serial)

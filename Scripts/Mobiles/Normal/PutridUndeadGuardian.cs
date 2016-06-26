@@ -32,6 +32,11 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Tactics, 45.4);
             this.SetSkill(SkillName.Wrestling, 50.7);
 
+            this.Fame = 3000; 
+            this.Karma = -3000;
+
+            this.QLPoints = 15;
+
             this.PackNecroReg(10, 15); /// Stratics didn't specify
         }
 

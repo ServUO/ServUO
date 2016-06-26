@@ -1834,9 +1834,9 @@
     <Compile Include="Mobiles\Normal\GreenGoblinScout.cs" />
     <Compile Include="Mobiles\Normal\Gregorio.cs" />
     <Compile Include="Mobiles\Normal\Gremlin.cs" />
-    <Compile Include="Mobiles\Normal\GreyGoblin.cs" />
-    <Compile Include="Mobiles\Normal\GreyGoblinKeeper.cs" />
-    <Compile Include="Mobiles\Normal\GreyGoblinMage.cs" />
+    <Compile Include="Mobiles\Normal\GrayGoblin.cs" />
+    <Compile Include="Mobiles\Normal\GrayGoblinKeeper.cs" />
+    <Compile Include="Mobiles\Normal\GrayGoblinMage.cs" />
     <Compile Include="Mobiles\Normal\GreyWolf.cs" />
     <Compile Include="Mobiles\Normal\GrizzlyBear.cs" />
     <Compile Include="Mobiles\Normal\Guardian.cs" />

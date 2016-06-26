@@ -53,6 +53,7 @@ namespace Server.Mobiles
             this.Karma = -22000;
 
             this.VirtualArmor = 60;
+            this.QLPoints = 150;
 
             this.PackItem(new Arrow(Utility.RandomMinMax(600, 700)));
 

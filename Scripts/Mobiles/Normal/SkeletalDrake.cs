@@ -41,6 +41,7 @@ namespace Server.Mobiles
             this.Karma = -22500;
 
             this.VirtualArmor = 80;
+            this.QLPoints = 5;
         }
 
         public SkeletalDrake(Serial serial)
