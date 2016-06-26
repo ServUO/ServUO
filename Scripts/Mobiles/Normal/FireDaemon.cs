@@ -13,7 +13,7 @@ namespace Server.Mobiles
             this.Name = "an fire daemon";
             this.Body = 9;
             this.BaseSoundID = 0x47D;
-            this.Hue = 0x846;
+            this.Hue = 0x664;
 
             this.SetStr(549, 1199);
             this.SetDex(136, 206);
