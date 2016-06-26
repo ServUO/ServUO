@@ -173,13 +173,13 @@ namespace Server.Mobiles
 
             foreach (Mobile m in from.GetMobilesInRange(12))
             {
-                if (m != null && m != from && !(m is MedusaClone) && !(m is StoneMonster) && !(Medusa.AffectedMobiles.Contains(m)) && !(m is BaseCreature))
+                if (m != null && m != from && m.Alive && m.AccessLevel == AccessLevel.Player && !(m is MedusaClone) && !(m is StoneMonster) && !(Medusa.AffectedMobiles.Contains(m)) && !(m is BaseCreature))
                 {
                     Medusa.AffectedMobiles.Remove(m);
                     list.Add(m);
                 }
 
-                if (m != null && m != from && !(m is MedusaClone) && !(m is StoneMonster) && !(Medusa.AffectedMobiles.Contains(m)) && (m is BaseCreature))
+                if (m != null && m != from && m.Alive && !(m is MedusaClone) && !(m is StoneMonster) && !(Medusa.AffectedMobiles.Contains(m)) && (m is BaseCreature))
                 {
                     Medusa.AffectedMobiles.Remove(m);
                     list.Add(m);
@@ -703,7 +703,11 @@ namespace Server.Mobiles
             this.Hue = m.Hue;
             this.Female = m.Female;
 
-            this.Name = m.Name;
+            if (m is PlayerMobile)
+                this.Name = String.Format("{0} the Evil Twin", m.Name);
+            else
+                this.Name = String.Format("{0} (evil)", m.Name);
+
             this.NameHue = m.NameHue;
 
             this.Title = m.Title;
