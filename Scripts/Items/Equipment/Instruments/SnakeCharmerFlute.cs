@@ -1,185 +1,157 @@
 ﻿using System;
 using Server;
-using Server.Items;
+using Server.Network;
 using Server.Mobiles;
 using Server.Targeting;
 
 namespace Server.Items
 {
-	public class SnakeCharmerFlute : BaseInstrument
-	{
-        public override int LabelNumber { get { return 1112174; } } // Snake Charmer Flute
-		
-		[Constructable]
-		public SnakeCharmerFlute() : base( 0x2805, 0, 0 )
-		{
-			this.LootType = LootType.Regular;
-			this.Weight = 2.0;
-			this.Hue = 0x187;
-        }
+    public class SnakeCharmerFlute : BambooFlute
+    {
+        public override int LabelNumber { get { return 1112174; } } // snake charmer flute
 
-        public override void OnDoubleClick ( Mobile from )
+        [Constructable]
+        public SnakeCharmerFlute()
         {
-			if ( IsChildOf( from.Backpack ) )
+            this.Hue = 0x187;
+        }
+
+        public SnakeCharmerFlute(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (!from.CanBeginAction(typeof(SnakeCharmerFlute)))
             {
-				from.Target = new InternalTargetSnake( this );
-                from.SendLocalizedMessage( 1112175 ); // Target the serpent you wish to entice.
-			}
+                from.SendLocalizedMessage(1072306); // You must wait a moment for it to recharge.
+            }
             else
-				from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
+            {
+                from.SendLocalizedMessage(1112175); // Target the serpent you wish to entice.
+                from.Target = new CharmTarget(this);
+            }
         }
 
-        private class InternalTargetSnake : Target
-		{
-			private SnakeCharmerFlute m_Flute;
+        private class CharmTarget : Target
+        {
+            private SnakeCharmerFlute m_Flute;
 
-			public InternalTargetSnake( SnakeCharmerFlute flute ) : base( 2, false, TargetFlags.None )
-			{
-				m_Flute = flute;
-			}
+            public CharmTarget(SnakeCharmerFlute flute)
+                : base(12, false, TargetFlags.None)
+            {
+                m_Flute = flute;
+            }
 
-			protected override void OnTarget( Mobile from, object targeted )
-			{
-                if ( targeted is Snake || targeted is CoralSnake || targeted is SilverSerpent || targeted is GiantSerpent || targeted is LavaSnake )
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                BaseCreature bc = targeted as BaseCreature;
+
+                if (bc != null && IsSnake(bc))
                 {
-                    from.Target = new InternalTargetNest( m_Flute, targeted );
-                    from.SendLocalizedMessage( 502475 ); // Click where you wish the animal to go.
+                    if (bc.CharmMaster != null)
+                    {
+                        bc.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 502802, from.NetState); // Someone else is already taming this.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(502475); // Click where you wish the animal to go.
+                        from.Target = new InternalTarget(bc, m_Flute);
+                    }
                 }
                 else
-                    from.SendLocalizedMessage( 1112176 ); // That is not a snake or serpent.
-            }
-        }
-        	        
-        private class InternalTargetNest : Target
-		{
-			private SnakeCharmerFlute m_Flute;
-
-            private object m_Snake;
-
-			public InternalTargetNest( SnakeCharmerFlute flute, object snake ) : base( 2, false, TargetFlags.None )
-			{
-				m_Flute = flute;
-                m_Snake = snake;
-			}
-
-			protected override void OnTarget( Mobile from, object targeted )
-			{
-                if ( targeted is SerpentNest )
-                {				
-					SerpentNest nest = (SerpentNest)targeted;
-                    BaseCreature snake = (BaseCreature)m_Snake;
-
-                    from.SendLocalizedMessage( 502479 ); //The animal walks where it was instructed to.
-                    snake.ActiveSpeed = 0.1;
-                    snake.PassiveSpeed = 0.2;
-                    snake.ControlOrder = OrderType.Follow;
-                    snake.CurrentSpeed = 0.1;
-                    snake.MoveToWorld( new Point3D( ((SerpentNest)targeted).X,((SerpentNest)targeted).Y,((SerpentNest)targeted).Z), ((SerpentNest)targeted).Map );
-                    snake.Frozen = true;
-                    snake.Say( 1112588 ); // The snake begins searching for rare eggs.
-                    m_Flute.ConsumeUse(from);
-
-                    if (Utility.RandomDouble() < 0.25)  //% may be off, just a rough guess
-                    {
-                        switch (Utility.Random(4))
-                        {
-                            case 0:
-                                {
-                                    RareSerpentEgg4 RSEB = new RareSerpentEgg4();
-                                    RSEB.MoveToWorld(new Point3D(((SerpentNest)targeted).X, ((SerpentNest)targeted).Y, ((SerpentNest)targeted).Z), ((SerpentNest)targeted).Map);
-                                    snake.Say(1112586); // The snake finds a rare egg and drags it out of the nest!		
-                                    nest.Delete();
-                                }
-                                break;
-                            case 1:
-                                {
-                                    RareSerpentEgg3 RSEW = new RareSerpentEgg3();
-                                    RSEW.MoveToWorld(new Point3D(((SerpentNest)targeted).X, ((SerpentNest)targeted).Y, ((SerpentNest)targeted).Z), ((SerpentNest)targeted).Map);
-                                    snake.Say(1112586); // The snake finds a rare egg and drags it out of the nest!	
-                                    nest.Delete();
-                                }
-                                break;
-                            case 2:
-                                {
-                                    RareSerpentEgg2 RSER = new RareSerpentEgg2();
-                                    RSER.MoveToWorld(new Point3D(((SerpentNest)targeted).X, ((SerpentNest)targeted).Y, ((SerpentNest)targeted).Z), ((SerpentNest)targeted).Map);
-                                    snake.Say(1112586); // The snake finds a rare egg and drags it out of the nest!	
-                                    nest.Delete();
-                                }
-                                break;
-                            case 3:
-                                {
-                                    RareSerpentEgg1 RSEY = new RareSerpentEgg1();
-                                    RSEY.MoveToWorld(new Point3D(((SerpentNest)targeted).X, ((SerpentNest)targeted).Y, ((SerpentNest)targeted).Z), ((SerpentNest)targeted).Map);
-                                    snake.Say(1112586); // The snake finds a rare egg and drags it out of the nest!		
-                                    nest.Delete();
-                                }
-                                break;
-                        }
-                    }
-                    else if (Utility.RandomDouble() >= 0.25)
-                    {
-                        switch (Utility.Random(4))
-                        {
-                            case 0:
-                                {
-                                    snake.Say(1112584); // The snake searches the nest and finds nothing.	
-                                }
-                                break;
-                            case 1:
-                                {
-                                    CoralSnake S1 = new CoralSnake();  //Not sure of what type or how many snakes it spawns
-                                    CoralSnake S3 = new CoralSnake();  //Not sure of what type or how many snakes it spawns
-                                    S1.MoveToWorld(new Point3D(((SerpentNest)targeted).X, ((SerpentNest)targeted).Y, ((SerpentNest)targeted).Z), ((SerpentNest)targeted).Map);
-                                    S3.MoveToWorld(new Point3D(((SerpentNest)targeted).X, ((SerpentNest)targeted).Y, ((SerpentNest)targeted).Z), ((SerpentNest)targeted).Map);
-                                    snake.Say(1112585); // Beware! The snake has hatched some of the eggs!!							
-                                }
-                                break;
-                            case 2:
-                                {
-                                    LavaSnake S2 = new LavaSnake();  //Not sure of what type or how many snakes it spawns
-                                    LavaSnake S4 = new LavaSnake();  //Not sure of what type or how many snakes it spawns
-                                    S2.MoveToWorld(new Point3D(((SerpentNest)targeted).X, ((SerpentNest)targeted).Y, ((SerpentNest)targeted).Z), ((SerpentNest)targeted).Map);
-                                    S4.MoveToWorld(new Point3D(((SerpentNest)targeted).X, ((SerpentNest)targeted).Y, ((SerpentNest)targeted).Z), ((SerpentNest)targeted).Map);
-                                    snake.Say(1112585); // Beware! The snake has hatched some of the eggs!!									
-                                }
-                                break;
-                            case 3:
-                                {
-                                    snake.Say(1112583); // The nest collapses.		
-                                    nest.Delete();
-                                }
-                                break;
-                        }
-                    }
-
-                    snake.Frozen = false;
-                    snake.Say( 1112181 ); // The charm seems to wear off.
-
+                {
+                    from.SendLocalizedMessage(1112176); // That is not a snake or serpent.
                 }
-                else
-                    return;
-                    //from.SendLocalizedMessage( 1112176 ); // That is not a snake or serpent.
+            }
+
+            private class InternalTarget : Target
+            {
+                private BaseCreature m_Snake;
+                private SnakeCharmerFlute m_Flute;
+
+                public InternalTarget(BaseCreature snake, SnakeCharmerFlute flute)
+                    : base(10, true, TargetFlags.None)
+                {
+                    m_Snake = snake;
+                    m_Flute = flute;
+                }
+
+                protected override void OnTarget(Mobile from, object targ)
+                {
+                    if (targ is IPoint2D)
+                    {
+                        Point2D p = new Point2D((IPoint2D)targ);
+
+                        if (!from.CheckSkill(SkillName.Musicianship, 0.0, 120.0))
+                        {
+                            from.SendLocalizedMessage(502472); // You don't seem to be able to persuade that to move.
+
+                            m_Flute.PlayInstrumentBadly(from);
+                        }
+                        else if (!m_Snake.InRange(p, 10))
+                        {
+                            from.SendLocalizedMessage(500643); // Target is too far away.
+                        }
+                        else
+                        {
+                            m_Snake.BeginCharm(from, p);
+
+                            from.SendLocalizedMessage(502479); // The animal walks where it was instructed to.
+
+                            from.BeginAction(typeof(SnakeCharmerFlute));
+                            Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerCallback(
+                                delegate { from.EndAction(typeof(SnakeCharmerFlute)); }));
+
+                            m_Flute.PlayInstrumentWell(from);
+                            m_Flute.UsesRemaining--;
+
+                            if (m_Flute.UsesRemaining == 0)
+                            {
+                                from.SendLocalizedMessage(1112177); // You broke your snake charmer flute.
+
+                                m_Flute.Delete();
+                            }
+                        }
+                    }
+                }
             }
         }
-		
-		public SnakeCharmerFlute( Serial serial ) : base( serial )
-		{
-		}
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			
-			writer.Write( (int) 0 ); // version
-		}
+        private static bool IsSnake(BaseCreature bc)
+        {
+            Type type = bc.GetType();
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			
-			int version = reader.ReadInt();
-		
-		}
-	}
+            for (int i = 0; i < m_SnakeTypes.Length; i++)
+            {
+                if (type == m_SnakeTypes[i])
+                    return true;
+            }
+
+            return false;
+        }
+
+        private static Type[] m_SnakeTypes = new Type[]
+            {
+                typeof( LavaSnake ),    typeof( Snake ),
+                typeof( CoralSnake ),   typeof( GiantSerpent ),
+                typeof( SilverSerpent )
+            };
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            /*int version = */
+            reader.ReadInt();
+        }
+    }
 }
