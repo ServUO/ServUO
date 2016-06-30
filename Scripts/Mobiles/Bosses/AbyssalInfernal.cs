@@ -44,6 +44,7 @@ namespace Server.Mobiles
             this.Karma = -22500;
 
             this.VirtualArmor = 40;
+            this.QLPoints = 150;
         }
 
         public AbyssalInfernal(Serial serial)

@@ -602,6 +602,14 @@ namespace Server.Engines.Craft
                 this.SetNeededExpansion(index, Expansion.SE);
             }
 
+            if (Core.SA)
+            {
+                index = this.AddCraft(typeof(SnakeCharmerFlute), 1044293, 1112174, 80.0, 105.0, typeof(Board), 1044041, 15, 1044351);
+                this.AddSkill(index, SkillName.Musicianship, 45.0, 50.0);
+                this.AddRes(index, typeof(LuminescentFungi), 1073475, 3, 1044253);
+                this.SetNeededExpansion(index, Expansion.SA);
+            }
+
             // Misc
             #region Mondain's Legacy
             if (Core.ML)

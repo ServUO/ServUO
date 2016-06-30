@@ -44,6 +44,7 @@ namespace Server.Mobiles
             this.Karma = -15000;
 
             this.VirtualArmor = 60;
+            this.QLPoints = 150;
 
             this.Tamable = false;
         }

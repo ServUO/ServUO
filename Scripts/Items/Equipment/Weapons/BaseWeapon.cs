@@ -2440,17 +2440,21 @@ namespace Server.Items
 					}
 				}
 
-				if (m_Cursed)
+                int toHealCursedWeaponSpell = 0;
+
+                if (m_Cursed)
 				{
-					lifeLeech += 50; // Additional 50% life leech for cursed weapons (necro spell)
-				}
+                    toHealCursedWeaponSpell += (int)(AOS.Scale(damageGiven, 50)); // Additional 50% life leech for cursed weapons (necro spell)
+                }
 
 				context = TransformationSpellHelper.GetContext(attacker);
 
-				if (context != null && context.Type == typeof(VampiricEmbraceSpell))
+                int toHealVampiricEmbraceSpell = 0;
+
+                if (context != null && context.Type == typeof(VampiricEmbraceSpell))
 				{
-					lifeLeech += 20; // Vampiric embrace gives an additional 20% life leech
-				}
+                    toHealVampiricEmbraceSpell += (int)(AOS.Scale(damageGiven, 20)); // Vampiric embrace gives an additional 20% life leech
+                }
 
 				if (context != null && context.Type == typeof(WraithFormSpell))
 				{
@@ -2480,7 +2484,13 @@ namespace Server.Items
 						#endregion
 					}
 
-					if (manaLeech != 0)
+                    if (toHealCursedWeaponSpell != 0 && !(defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura))
+                        attacker.Hits += toHealCursedWeaponSpell;
+
+                    if (toHealVampiricEmbraceSpell != 0 && !(defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura))
+                        attacker.Hits += toHealVampiricEmbraceSpell;
+
+                    if (manaLeech != 0)
 					{
 						attacker.Mana += (int)(AOS.Scale(damageGiven, manaLeech) * 0.4);
 						defender.Mana -= (int)(AOS.Scale(damageGiven, wraithLeech) * 0.4);
