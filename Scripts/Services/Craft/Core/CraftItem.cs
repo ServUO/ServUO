@@ -1540,7 +1540,13 @@ namespace Server.Engines.Craft
                     }
 					#endregion
 
+					if (tool.Parent is Container) {
+					Container cntnr = (Container) tool.Parent;
+                                        cntnr.TryDropItem(from, item, false);
+					}
+					else {
 					from.AddToBackpack(item);
+					}
 
 					EventSink.InvokeCraftSuccess(new CraftSuccessEventArgs(from, item, tool));
 
