@@ -1297,6 +1297,11 @@ namespace Server.Items
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
+		if (item is BaseWeapon && Utility.Random(6) == 1)
+		{
+			BaseWeapon weapon = (BaseWeapon) item;
+			BaseRunicTool.GetElementalDamages(weapon);
+		}
                 GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
                 return true;
             }
