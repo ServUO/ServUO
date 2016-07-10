@@ -133,6 +133,7 @@ namespace Services.Toolbar.Core
 
 						break;
 					}
+				case AccessLevel.Seer:
 				case AccessLevel.GameMaster:
 					{
 						entries.Add(CommandSystem.Prefix + "GMBody");
@@ -156,11 +157,10 @@ namespace Services.Toolbar.Core
 
 						break;
 					}
-				case AccessLevel.Seer:
-					{
-						goto case AccessLevel.GameMaster;
-					}
 				case AccessLevel.Administrator:
+                case AccessLevel.Developer:
+                case AccessLevel.CoOwner:
+                case AccessLevel.Owner:
 					{
 						entries.Add(CommandSystem.Prefix + "Admin");
 						entries.Add(CommandSystem.Prefix + "StaffRunebook");
@@ -183,18 +183,6 @@ namespace Services.Toolbar.Core
 
 						break;
 					}
-				case AccessLevel.Developer:
-					{
-						goto case AccessLevel.Administrator;
-					}
-				case AccessLevel.CoOwner:
-					{
-						goto case AccessLevel.Administrator;
-					}
-				case AccessLevel.Owner:
-					{
-						goto case AccessLevel.Administrator;
-					}
 			}
 			return entries;
 		}
@@ -206,14 +194,11 @@ namespace Services.Toolbar.Core
 			switch (level)
 			{
 				case AccessLevel.Player:
+				case AccessLevel.VIP:
 					{
 						dimensions.X = 0;
 						dimensions.Y = 0;
 						break;
-					}
-				case AccessLevel.VIP:
-					{
-						goto case AccessLevel.Player;
 					}
 				case AccessLevel.Counselor:
 					{
@@ -222,39 +207,19 @@ namespace Services.Toolbar.Core
 						break;
 					}
 				case AccessLevel.Decorator:
+                case AccessLevel.Spawner:
+                case AccessLevel.GameMaster:
+                case AccessLevel.Seer:
+                case AccessLevel.Administrator:
+                case AccessLevel.Developer:
+                case AccessLevel.CoOwner:
+                case AccessLevel.Owner:
 					{
 						dimensions.X = 6;
 						dimensions.Y = 2;
 						break;
 					}
-				case AccessLevel.Spawner:
-					{
-						goto case AccessLevel.Decorator;
-					}
-				case AccessLevel.GameMaster:
-					{
-						goto case AccessLevel.Decorator;
-					}
-				case AccessLevel.Seer:
-					{
-						goto case AccessLevel.Decorator;
-					}
-				case AccessLevel.Administrator:
-					{
-						goto case AccessLevel.Decorator;
-					}
-				case AccessLevel.Developer:
-					{
-						goto case AccessLevel.Decorator;
-					}
-				case AccessLevel.CoOwner:
-					{
-						goto case AccessLevel.Decorator;
-					}
-				case AccessLevel.Owner:
-					{
-						goto case AccessLevel.Decorator;
-					}
+
 			}
 			return dimensions;
 		}

@@ -125,20 +125,21 @@ namespace Services.Toolbar.Gumps
 					{
 						mob.SendGump(this);
 
-                        if (_Info.Entries.Count <= 0)
+						int buttonPressedIndex = info.ButtonID - 10;
+
+                        if (buttonPressedIndex >= _Info.Entries.Count)
                             return;
 
-                        if (info.ButtonID - 10 < 0)
-                            return;
+                        String buttonText = _Info.Entries[buttonPressedIndex];
 
-                        if (_Info.Entries[info.ButtonID - 10].StartsWith(CommandSystem.Prefix))
+                        if (buttonText.StartsWith(CommandSystem.Prefix))
 						{
-							mob.SendMessage(_Info.Entries[info.ButtonID - 10]);
-							CommandSystem.Handle(mob, _Info.Entries[info.ButtonID - 10]);
+							mob.SendMessage(buttonText);
+							CommandSystem.Handle(mob, buttonText);
 						}
 						else
 						{
-							mob.DoSpeech(_Info.Entries[info.ButtonID - 10], new int[0], MessageType.Regular, mob.SpeechHue);
+							mob.DoSpeech(buttonText, new int[0], MessageType.Regular, mob.SpeechHue);
 						}
 					}
 					break;
