@@ -88,7 +88,6 @@ namespace Services.Toolbar.Gumps
 				}
 
 				AddHtml(x + 5, y + 3, 100, 20, String.Format("<center>{0}{1}", font, _Info.Entries[temp]), false, false);
-				//AddLabelCropped(x + 5, y + 3, 100, 20, GumpIDs.Misc[(int)GumpIDs.MiscIDs.Color].Content[p_Skin,0], Commands[temp]); 
 
 				if (i % _Info.Rows == _Info.Rows - 1)
 				{
@@ -97,15 +96,6 @@ namespace Services.Toolbar.Gumps
 
 				++temp;
 			}
-
-			/*TEST---
-            0%5 == 0
-            1%5 == 1
-            2%5 == 2
-            3%5 == 3
-            4%5 == 4
-            5%5 == 0
-            END TEST---*/
 
 			if (_Info.Stealth)
 			{
@@ -138,7 +128,7 @@ namespace Services.Toolbar.Gumps
                         if (_Info.Entries.Count <= 0)
                             return;
 
-                        if (info.ButtonID - 10 <= 0)
+                        if (info.ButtonID - 10 < 0)
                             return;
 
                         if (_Info.Entries[info.ButtonID - 10].StartsWith(CommandSystem.Prefix))
@@ -148,9 +138,7 @@ namespace Services.Toolbar.Gumps
 						}
 						else
 						{
-							//SpeechEventArgs args = new SpeechEventArgs( mob, Commands[info.ButtonID - 10], MessageType.Regular, mob.SpeechHue, null );
 							mob.DoSpeech(_Info.Entries[info.ButtonID - 10], new int[0], MessageType.Regular, mob.SpeechHue);
-							//mob.Say(Commands[info.ButtonID - 10]);
 						}
 					}
 					break;
