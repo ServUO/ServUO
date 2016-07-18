@@ -8778,16 +8778,9 @@ namespace Server
 		{
 			get
 			{
-				if (m_NetState != null && m_NetState.Socket == null)
+				if (m_NetState != null && m_NetState.Socket == null && !m_NetState.IsDisposing)
 				{
-					if (m_NetState.IsDisposing)
-					{
-						m_NetState = null;
-					}
-					else
-					{
-						NetState = null;
-					}
+					NetState = null;
 				}
 
 				return m_NetState;
