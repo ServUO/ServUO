@@ -573,6 +573,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\CreepyCake.cs" />
+    <Compile Include="Items\Consumables\ElixirOfRebirth.cs" />
     <Compile Include="Items\Consumables\HarvestWine.cs" />
     <Compile Include="Items\Consumables\Jellybeans.cs" />
     <Compile Include="Items\Consumables\Lollipops.cs" />
@@ -606,6 +607,7 @@
     <Compile Include="Items\Equipment\Armor\BaseArmor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Instruments\SnakeCharmerFlute.cs" />
     <Compile Include="Items\Equipment\Light\TwilightLantern.cs" />
     <Compile Include="Items\Equipment\Weapons\BaseAxe.cs">
       <SubType>Code</SubType>
@@ -1832,9 +1834,9 @@
     <Compile Include="Mobiles\Normal\GreenGoblinScout.cs" />
     <Compile Include="Mobiles\Normal\Gregorio.cs" />
     <Compile Include="Mobiles\Normal\Gremlin.cs" />
-    <Compile Include="Mobiles\Normal\GreyGoblin.cs" />
-    <Compile Include="Mobiles\Normal\GreyGoblinKeeper.cs" />
-    <Compile Include="Mobiles\Normal\GreyGoblinMage.cs" />
+    <Compile Include="Mobiles\Normal\GrayGoblin.cs" />
+    <Compile Include="Mobiles\Normal\GrayGoblinKeeper.cs" />
+    <Compile Include="Mobiles\Normal\GrayGoblinMage.cs" />
     <Compile Include="Mobiles\Normal\GreyWolf.cs" />
     <Compile Include="Mobiles\Normal\GrizzlyBear.cs" />
     <Compile Include="Mobiles\Normal\Guardian.cs" />

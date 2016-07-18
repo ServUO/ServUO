@@ -42,6 +42,7 @@ namespace Server.Mobiles
             this.Karma = -1500;
 
             this.VirtualArmor = 28;
+            this.QLPoints = 8;
 
             // loot 30-40 gold, magic item, gem, essence control,gob blood
             switch ( Utility.Random(20) )

@@ -11,45 +11,44 @@ namespace Server.Mobiles
         public VitaviRenowned()
             : base(AIType.AI_Mage)
         {
-            Name = "Vitavi";
-            Title = "[Renowned]";
-            Body = 0x8F;
-            BaseSoundID = 437;
+            this.Name = "Vitavi";
+            this.Title = "[Renowned]";
+            this.Body = 0x8F;
+            this.BaseSoundID = 437;
 
-            SetStr(300, 350);
-            SetDex(250, 300);
-            SetInt(300, 350);
+            this.SetStr(300, 350);
+            this.SetDex(250, 300);
+            this.SetInt(300, 350);
 
-            SetHits(45000, 50000);
+            this.SetHits(45000, 50000);
 
-            SetDamage(7, 14);
+            this.SetDamage(7, 14);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 50, 60);
-            SetResistance(ResistanceType.Fire, 30, 50);
-            SetResistance(ResistanceType.Cold, 60, 80);
-            SetResistance(ResistanceType.Poison, 20, 30);
-            SetResistance(ResistanceType.Energy, 30, 40);
+            this.SetResistance(ResistanceType.Physical, 50, 60);
+            this.SetResistance(ResistanceType.Fire, 30, 50);
+            this.SetResistance(ResistanceType.Cold, 60, 80);
+            this.SetResistance(ResistanceType.Poison, 20, 30);
+            this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            SetSkill(SkillName.EvalInt, 70.1, 80.0);
-            SetSkill(SkillName.Magery, 70.1, 80.0);
-            SetSkill(SkillName.MagicResist, 75.1, 100.0);
-            SetSkill(SkillName.Tactics, 70.1, 75.0);
-            SetSkill(SkillName.Wrestling, 50.1, 75.0);
+            this.SetSkill(SkillName.EvalInt, 70.1, 80.0);
+            this.SetSkill(SkillName.Magery, 70.1, 80.0);
+            this.SetSkill(SkillName.MagicResist, 75.1, 100.0);
+            this.SetSkill(SkillName.Tactics, 70.1, 75.0);
+            this.SetSkill(SkillName.Wrestling, 50.1, 75.0);
 
-            Fame = 7500;
-            Karma = -7500;
+            this.Fame = 7500;
+            this.Karma = -7500;
 
-            VirtualArmor = 44;
+            this.VirtualArmor = 44;
+            this.QLPoints = 50;
 
-            QLPoints = 50;
-
-            PackItem(new EssenceBalance());
-            PackReg(6);
+            this.PackItem(new EssenceBalance());
+            this.PackReg(6);
 
             if (0.02 > Utility.RandomDouble())
-                PackStatue();
+                this.PackStatue();
         }
 
         public VitaviRenowned(Serial serial)

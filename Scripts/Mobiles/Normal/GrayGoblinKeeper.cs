@@ -3,46 +3,45 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a goblin corpse")]
-    public class GrayGoblin : BaseCreature
+    [CorpseName("a goblin keeper corpse")]
+    public class GrayGoblinKeeper : BaseCreature
     {
         [Constructable]
-        public GrayGoblin()
+        public GrayGoblinKeeper()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Gray Goblin";
+            this.Name = "a Gray goblin keeper";
             this.Body = 334;
             this.BaseSoundID = 0x45A;
 
-            this.SetStr(258, 327);
-            this.SetDex(62, 80);
-            this.SetInt(103, 150);
+            this.SetStr(326);
+            this.SetDex(79);
+            this.SetInt(114);
 
-            this.SetHits(159, 194);
-            this.SetStam(62, 80);
-            this.SetMana(103, 150);
+            this.SetHits(186);
+            this.SetStam(79);
+            this.SetMana(114);
 
             this.SetDamage(5, 7);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Cold, 25, 32);
-            this.SetResistance(ResistanceType.Poison, 10, 19);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            this.SetResistance(ResistanceType.Physical, 45);
+            this.SetResistance(ResistanceType.Fire, 33);
+            this.SetResistance(ResistanceType.Cold, 25);
+            this.SetResistance(ResistanceType.Poison, 20);
+            this.SetResistance(ResistanceType.Energy, 10);
 
-            this.SetSkill(SkillName.MagicResist, 120.9, 129.1);
-            this.SetSkill(SkillName.Tactics, 80.6, 89.4);
-            this.SetSkill(SkillName.Anatomy, 80.3, 89.4);
-            this.SetSkill(SkillName.Wrestling, 96.1, 105.5);
+            this.SetSkill(SkillName.MagicResist, 129.9);
+            this.SetSkill(SkillName.Tactics, 86.7);
+            this.SetSkill(SkillName.Anatomy, 86.6);
+            this.SetSkill(SkillName.Wrestling, 103.6);
 
             this.Fame = 1500;
             this.Karma = -1500;
 
             this.VirtualArmor = 28;
-
-            QLPoints = 8;
+            this.QLPoints = 10;
 
             switch ( Utility.Random(20) )
             {
@@ -85,7 +84,7 @@ namespace Server.Mobiles
                 this.PackItem(new BolaBall());
         }
 
-        public GrayGoblin(Serial serial)
+        public GrayGoblinKeeper(Serial serial)
             : base(serial)
         {
         }

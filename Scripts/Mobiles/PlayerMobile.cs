@@ -76,10 +76,11 @@ namespace Server.Mobiles
 		BasketWeaving = 0x00200000,
 		AbyssEntry = 0x00400000,
 		ToggleClippings = 0x00800000,
-		ToggleCutClippings = 0x01000000,
+        ToggleCutClippings = 0x01000000,
 		ToggleCutReeds = 0x02000000,
 		MechanicalLife = 0x04000000,
-        HumilityHunt = 0x08000000
+        HumilityHunt = 0x08000000,
+        ToggleCutTopiaries = 0x10000000
     }
 
 	public enum NpcGuild
@@ -418,7 +419,10 @@ namespace Server.Mobiles
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool ToggleCutClippings { get { return GetFlag(PlayerFlag.ToggleCutClippings); } set { SetFlag(PlayerFlag.ToggleCutClippings, value); } }
 
-		private DateTime m_SSNextSeed;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ToggleCutTopiaries { get { return GetFlag(PlayerFlag.ToggleCutTopiaries); } set { SetFlag(PlayerFlag.ToggleCutTopiaries, value); } }
+
+        private DateTime m_SSNextSeed;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime SSNextSeed { get { return m_SSNextSeed; } set { m_SSNextSeed = value; } }

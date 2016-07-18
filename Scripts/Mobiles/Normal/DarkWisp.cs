@@ -42,6 +42,7 @@ namespace Server.Mobiles
             this.Karma = -4000;
 
             this.VirtualArmor = 40;
+            this.QLPoints = 8;
 
             this.AddItem(new LightSource());
         }
