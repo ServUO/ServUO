@@ -257,6 +257,8 @@ namespace Server.Mobiles
         private int m_FailedReturnHome; /* return to home failure counter */
 
         private int m_QLPoints;
+
+        private bool m_ChampMonster;
         #endregion
 
         public virtual InhumanSpeech SpeechType { get { return null; } }
@@ -297,6 +299,9 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int QLPoints { get { return m_QLPoints; } set { m_QLPoints = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ChampionSpawnMonster { get { return m_ChampMonster; } set { m_ChampMonster = value; } }
 
         protected DateTime SummonEnd { get { return m_SummonEnd; } set { m_SummonEnd = value; } }
 
@@ -1856,6 +1861,8 @@ namespace Server.Mobiles
 
             m_bTamable = false;
 
+            m_ChampMonster = false;
+
             m_Owners = new List<Mobile>();
 
             m_NextReacquireTime = Core.TickCount + (int)ReacquireDelay.TotalMilliseconds;
@@ -1890,7 +1897,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(20); // version
+            writer.Write(21); // version
 
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
@@ -2023,6 +2030,9 @@ namespace Server.Mobiles
 
             //Version 20 Queens Loyalty
             writer.Write(m_QLPoints);
+
+            //Version 21 Is Champion Monster
+            writer.Write(m_ChampMonster);
         }
 
         private static readonly double[] m_StandardActiveSpeeds = new[] { 0.175, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8 };
@@ -2297,6 +2307,11 @@ namespace Server.Mobiles
             if (version >= 20)
             {
                 m_QLPoints = reader.ReadInt();
+            }
+
+            if (version >= 21)
+            {
+                m_ChampMonster = reader.ReadBool();
             }
 
             if (version <= 14 && m_Paragon && Hue == 0x31)
