@@ -147,7 +147,7 @@ namespace Server.Mobiles
                 DistributeRandomArtifact(this, m_Artifact);
 
             // distribute quest items for the 'Green with Envy' quest given by Vernix
-            List<DamageStore> rights = GetLootingRights(DamageEntries, HitsMax);
+            List<DamageStore> rights = GetLootingRights();
             for (int i = rights.Count - 1; i >= 0; --i)
             {
                 DamageStore ds = rights[i];

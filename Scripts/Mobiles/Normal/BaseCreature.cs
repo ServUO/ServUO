@@ -4778,6 +4778,7 @@ namespace Server.Mobiles
         public override bool OnBeforeDeath()
         {
             int treasureLevel = TreasureMapLevel;
+            GetLootingRights();
 
             if (treasureLevel == 1 && Map == Map.Trammel && TreasureMap.IsInHavenIsland(this))
             {
@@ -4935,9 +4936,38 @@ namespace Server.Mobiles
             }
         }
 
-        public static List<DamageStore> GetLootingRights(List<DamageEntry> damageEntries, int hitsMax)
+        public List<DamageStore> LootingRights { get; set; }
+
+        public bool HasLootingRights(Mobile m)
         {
-            var rights = new List<DamageStore>();
+            if (LootingRights == null)
+                return false;
+
+            return LootingRights.FirstOrDefault(ds => ds.m_Mobile == m && ds.m_HasRight) != null;
+        }
+
+        public Mobile GetHighestDamager()
+        {
+            if (LootingRights == null || LootingRights.Count == 0)
+                return null;
+
+            return LootingRights[0].m_Mobile;
+        }
+
+        public bool IsHighestDamager(Mobile m)
+        {
+            return LootingRights != null && LootingRights.Count > 0 && LootingRights[0].m_Mobile == m;
+        }
+
+        public List<DamageStore> GetLootingRights()
+        {
+            if (LootingRights != null)
+                return LootingRights;
+
+            List<DamageEntry> damageEntries = this.DamageEntries;
+            int hitsMax = HitsMax;
+
+            List<DamageStore> rights = new List<DamageStore>();
 
             for (int i = damageEntries.Count - 1; i >= 0; --i)
             {
@@ -5061,6 +5091,7 @@ namespace Server.Mobiles
                 }
             }
 
+            LootingRights = rights;
             return rights;
         }
 
@@ -5282,7 +5313,7 @@ namespace Server.Mobiles
                         totalKarma += ((totalKarma / 10) * 3);
                     }
 
-                    var list = GetLootingRights(DamageEntries, HitsMax);
+                    var list = GetLootingRights();
                     var titles = new List<Mobile>();
                     var fame = new List<int>();
                     var karma = new List<int>();

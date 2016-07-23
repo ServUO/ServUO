@@ -520,13 +520,14 @@ namespace Server.Engines.Craft
             index = this.AddCraft(typeof(BoneChest), 1049149, 1025199, 96.0, 121.0, typeof(Leather), 1044462, 12, 1044463);
             this.AddRes(index, typeof(Bone), 1049064, 10, 1049063);
             #endregion
+
             #region Cloth Armor
             if (Core.SA)
             {
-                this.AddCraft(typeof(GargishClothArms), 1111748, 1021027, 53.9, 78.9, typeof(Cloth), 1044462, 8, 1044463);
-                this.AddCraft(typeof(GargishClothChest), 1111748, 1021029, 6.2, 31.2, typeof(Cloth), 1044462, 8, 1044463);
-                this.AddCraft(typeof(GargishClothKilt), 1111748, 1021031, 51.8, 76.8, typeof(Cloth), 1044462, 6, 1044463);
-                this.AddCraft(typeof(GargishClothLegs), 1111748, 1021033, 53.9, 78.9, typeof(Cloth), 1044462, 10, 1044463);
+                this.AddCraft(typeof(GargishClothArmsArmor), 1111748, 1021027, 53.9, 78.9, typeof(Cloth), 1044462, 8, 1044463);
+                this.AddCraft(typeof(GargishClothChestArmor), 1111748, 1021029, 6.2, 31.2, typeof(Cloth), 1044462, 8, 1044463);
+                this.AddCraft(typeof(GargishClothKiltArmor), 1111748, 1021031, 51.8, 76.8, typeof(Cloth), 1044462, 6, 1044463);
+                this.AddCraft(typeof(GargishClothLegsArmor), 1111748, 1021033, 53.9, 78.9, typeof(Cloth), 1044462, 10, 1044463);
                 this.AddCraft(typeof(GargishClothWingArmor), 1111748, 1115393, 66.3, 91.3, typeof(Cloth), 1044462, 12, 1044463);
             }
             #endregion
