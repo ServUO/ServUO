@@ -11,38 +11,38 @@ namespace Server.Mobiles
         public LavaSerpent()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a lava serpent";
-            this.Body = 90;
-            this.BaseSoundID = 219;
+            Name = "a lava serpent";
+            Body = 90;
+            BaseSoundID = 219;
 
-            this.SetStr(386, 415);
-            this.SetDex(56, 80);
-            this.SetInt(66, 85);
+            SetStr(386, 415);
+            SetDex(56, 80);
+            SetInt(66, 85);
 
-            this.SetHits(232, 249);
-            this.SetMana(0);
+            SetHits(232, 249);
+            SetMana(0);
 
-            this.SetDamage(10, 22);
+            SetDamage(10, 22);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Fire, 80);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Fire, 80);
 
-            this.SetResistance(ResistanceType.Physical, 35, 45);
-            this.SetResistance(ResistanceType.Fire, 70, 80);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetResistance(ResistanceType.Physical, 35, 45);
+            SetResistance(ResistanceType.Fire, 70, 80);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.MagicResist, 25.3, 70.0);
-            this.SetSkill(SkillName.Tactics, 65.1, 70.0);
-            this.SetSkill(SkillName.Wrestling, 60.1, 80.0);
+            SetSkill(SkillName.MagicResist, 25.3, 70.0);
+            SetSkill(SkillName.Tactics, 65.1, 70.0);
+            SetSkill(SkillName.Wrestling, 60.1, 80.0);
 
-            this.Fame = 4500;
-            this.Karma = -4500;
+            Fame = 4500;
+            Karma = -4500;
 
-            this.VirtualArmor = 40;
+            VirtualArmor = 40;
 
-            this.PackItem(new SulfurousAsh(3));
-            this.PackItem(new Bone());
+            PackItem(new SulfurousAsh(3));
+            PackItem(new Bone());
             // TODO: body parts, armour
         }
 
@@ -88,7 +88,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
+            AddLoot(LootPack.Average);
         }
         public override void OnDeath(Container c)
         {
@@ -125,8 +125,8 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (this.BaseSoundID == -1)
-                this.BaseSoundID = 219;
+            if (BaseSoundID == -1)
+                BaseSoundID = 219;
         }
     }
 }

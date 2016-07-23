@@ -2803,6 +2803,74 @@ namespace Server.Mobiles
             }
         }
 
+        #region Snake Charming
+        private Mobile m_CharmMaster;
+        private Point2D m_CharmTarget;
+        private Timer m_CharmTimer;
+
+        public void BeginCharm(Mobile master, Point2D target)
+        {
+            m_CharmMaster = master;
+            m_CharmTarget = target;
+
+            m_CharmTimer = new CharmTimer(this);
+            m_CharmTimer.Start();
+        }
+
+        public void EndCharm()
+        {
+            if (!Deleted && m_CharmMaster != null)
+            {
+                // The charm seems to wear off.
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1112181, m_CharmMaster.NetState);
+
+                Frozen = false;
+
+                m_CharmMaster = null;
+                m_CharmTarget = Point2D.Zero;
+
+                if (m_CharmTimer != null)
+                {
+                    m_CharmTimer.Stop();
+                    m_CharmTimer = null;
+                }
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile CharmMaster { get { return m_CharmMaster; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Point2D CharmTarget { get { return m_CharmTarget; } }
+
+        private class CharmTimer : Timer
+        {
+            private BaseCreature m_Owner;
+            private int m_Count;
+
+            public CharmTimer(BaseCreature owner)
+                : base(TimeSpan.Zero, TimeSpan.FromSeconds(2.0))
+            {
+                m_Owner = owner;
+                m_Count = 10;
+            }
+
+            protected override void OnTick()
+            {
+                if (m_Count == 0 || m_Owner.CharmMaster == null || !m_Owner.CharmMaster.InRange(m_Owner.Location, 10))
+                {
+                    Stop();
+                    m_Owner.EndCharm();
+                }
+                else
+                {
+                    m_Owner.FixedParticles(0x376A, 9, 32, 5030, EffectLayer.Waist);
+                    m_Count--;
+                }
+            }
+        }
+        #endregion
+
         public override void RevealingAction()
         {
             InvisibilitySpell.RemoveTimer(this);
@@ -6641,6 +6709,12 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int RemoveStep { get { return m_RemoveStep; } set { m_RemoveStep = value; } }
+
+        // used for deleting untamed creatures [on save]
+        private bool m_RemoveOnSave;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool RemoveOnSave { get { return m_RemoveOnSave; } set { m_RemoveOnSave = value; } }    
     }
 
     public class LoyaltyTimer : Timer
@@ -6766,6 +6840,7 @@ namespace Server.Mobiles
                 c.AIObject.DoOrderRelease();
                 // this will prevent no release of creatures left alone with AI disabled (and consequent bug of Followers)
                 c.DropBackpack();
+                c.RemoveOnSave = true;
             }
 
             // added code to handle removing of wild creatures in house regions

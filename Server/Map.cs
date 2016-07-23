@@ -998,9 +998,26 @@ namespace Server
 
 			return CanFit(x, y, z, 16);
 		}
-		#endregion
+        #endregion
 
-		private class ZComparer : IComparer<Item>
+        public Point3D GetSpawnPosition(Point3D center, int range)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                int x = center.X + (Utility.Random((range * 2) + 1) - range);
+                int y = center.Y + (Utility.Random((range * 2) + 1) - range);
+                int z = GetAverageZ(x, y);
+
+                if (CanSpawnMobile(new Point2D(x, y), center.Z))
+                    return new Point3D(x, y, center.Z);
+                else if (CanSpawnMobile(new Point2D(x, y), z))
+                    return new Point3D(x, y, z);
+            }
+
+            return center;
+        }
+
+        private class ZComparer : IComparer<Item>
 		{
 			public static readonly ZComparer Default = new ZComparer();
 

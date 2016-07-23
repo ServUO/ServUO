@@ -10,8 +10,9 @@ namespace Server.Items
         public EnchantedApple()
             : base(0x2FD8)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x488;
+            Weight = 1.0;
+            Hue = 0x488;
+	        Stackable = true;
         }
 
         public EnchantedApple(Serial serial)
@@ -30,7 +31,7 @@ namespace Server.Items
         {
             get
             {
-                return TimeSpan.FromMinutes(2);
+                return TimeSpan.FromSeconds(30);
             }
         }
         public override int EatMessage

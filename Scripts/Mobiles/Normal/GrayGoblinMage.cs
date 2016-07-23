@@ -43,8 +43,7 @@ namespace Server.Mobiles
             this.Karma = -1500;
 
             this.VirtualArmor = 28;
-
-            QLPoints = 10;
+            this.QLPoints = 10;
 
             switch ( Utility.Random(20) )
             {
