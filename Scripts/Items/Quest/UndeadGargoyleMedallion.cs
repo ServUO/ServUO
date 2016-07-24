@@ -2,17 +2,17 @@ using System;
 
 namespace Server.Items
 {
-    public class PileOfInspectedBronzeIngots : PileOfInspectedIngots
+    public class UndeadGargoyleMedallion : GoldNecklace
     {
-        public override int LabelNumber { get { return 1113024; } } // Pile of Inspected Bronze Ingots
+        public override int LabelNumber { get { return 1112907; } } // Undead Gargoyle Medallion
 
         [Constructable]
-        public PileOfInspectedBronzeIngots()
-            : base(0x972)
+        public UndeadGargoyleMedallion()
         {
+            this.Hue = 2207;
         }
 
-        public PileOfInspectedBronzeIngots(Serial serial)
+        public UndeadGargoyleMedallion(Serial serial)
             : base(serial)
         {
         }

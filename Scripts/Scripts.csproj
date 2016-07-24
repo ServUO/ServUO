@@ -604,6 +604,7 @@
     <Compile Include="Items\Decorative\PumpkinScarecrow.cs" />
     <Compile Include="Items\Decorative\RuinedTapestry.cs" />
     <Compile Include="Items\Decorative\SkullsOnPike.cs" />
+    <Compile Include="Items\Decorative\StygianDragonHead.cs" />
     <Compile Include="Items\Equipment\Armor\BaseArmor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -653,9 +654,13 @@
     <Compile Include="Items\Internal\UnderworldTele.cs" />
     <Compile Include="Items\Internal\WhiteNinjaQuestTeleporter.cs" />
     <Compile Include="Items\Quest\AbyssKey.cs" />
+    <Compile Include="Items\Quest\AcidSac.cs" />
+    <Compile Include="Items\Quest\AncientPotteryFragments.cs" />
     <Compile Include="Items\Quest\BlueKey1.cs" />
     <Compile Include="Items\Quest\Bluekeyfragment.cs" />
+    <Compile Include="Items\Quest\ClawOfSlasherOfVeils.cs" />
     <Compile Include="Items\Quest\CompletedTuitionReimbursementForm.cs" />
+    <Compile Include="Items\Quest\CongealedSlugAcid.cs" />
     <Compile Include="Items\Quest\CreepyWeeds.cs" />
     <Compile Include="Items\Quest\CrystalCaveBarrier.cs" />
     <Compile Include="Items\Quest\DarkTidesHorn.cs" />
@@ -674,9 +679,12 @@
     <Compile Include="Items\Quest\HaochisTreasureChest.cs" />
     <Compile Include="Items\Quest\HonorCandle.cs" />
     <Compile Include="Items\Quest\ImageType.cs" />
+    <Compile Include="Items\Quest\InspectedKegOfGreaterPoisonPotions.cs" />
+    <Compile Include="Items\Quest\InspectedKegOfTotalRefreshmentPotions.cs" />
     <Compile Include="Items\Quest\KirinBrains.cs" />
     <Compile Include="Items\Quest\KronusScroll.cs" />
     <Compile Include="Items\Quest\KronusScrollBox.cs" />
+    <Compile Include="Items\Quest\LuckyCoin.cs" />
     <Compile Include="Items\Quest\MaabusCoffin.cs" />
     <Compile Include="Items\Quest\MapFragment.cs" />
     <Compile Include="Items\Quest\MiniatureMushroom.cs" />
@@ -684,28 +692,49 @@
     <Compile Include="Items\Quest\NoteForZoel.cs" />
     <Compile Include="Items\Quest\Obsidian.cs" />
     <Compile Include="Items\Quest\PaintedImage.cs" />
+    <Compile Include="Items\Quest\PileOfInspectedAgapiteIngots.cs" />
+    <Compile Include="Items\Quest\PileOfInspectedBronzeIngots.cs" />
+    <Compile Include="Items\Quest\PileOfInspectedCopperIngots.cs" />
+    <Compile Include="Items\Quest\PileOfInspectedDullCopperIngots.cs" />
+    <Compile Include="Items\Quest\PileOfInspectedGoldIngots.cs" />
+    <Compile Include="Items\Quest\PileOfInspectedIngots.cs" />
+    <Compile Include="Items\Quest\PileOfInspectedShadowIronIngots.cs" />
+    <Compile Include="Items\Quest\PileOfInspectedValoriteIngots.cs" />
+    <Compile Include="Items\Quest\PileOfInspectedVeriteIngots.cs" />
     <Compile Include="Items\Quest\PixieLeg.cs" />
     <Compile Include="Items\Quest\PrismOfLightAdmissionTicket.cs" />
     <Compile Include="Items\Quest\RedKey1.cs" />
     <Compile Include="Items\Quest\Redkeyfragment.cs" />
-    <Compile Include="Items\Quest\SAQuestItems.cs" />
     <Compile Include="Items\Quest\ScrollOfAbraxus.cs" />
     <Compile Include="Items\Quest\SealedNotesForJamal.cs" />
     <Compile Include="Items\Quest\SignedTuitionReimbursementForm.cs" />
     <Compile Include="Items\Quest\StoutWhip.cs" />
     <Compile Include="Items\Quest\TaintedTreeSample.cs" />
+    <Compile Include="Items\Quest\TatteredAncientScroll.cs" />
     <Compile Include="Items\Quest\TreatForDrithen.cs" />
     <Compile Include="Items\Quest\TripartiteKey.cs" />
     <Compile Include="Items\Quest\TuitionReimbursementForm.cs" />
     <Compile Include="Items\Quest\TyballsKey.cs" />
     <Compile Include="Items\Quest\TyballsShadow.cs" />
+    <Compile Include="Items\Quest\UndamagedIronBeetleScale.cs" />
+    <Compile Include="Items\Quest\UndamagedUndeadGargoyleHorns.cs" />
+    <Compile Include="Items\Quest\UndeadGargoyleMedallion.cs" />
     <Compile Include="Items\Quest\UnicornRibs.cs" />
+    <Compile Include="Items\Quest\UntranslatedAncientTome.cs" />
     <Compile Include="Items\Quest\VaultOfSecretsBarrier.cs" />
     <Compile Include="Items\Quest\YellowKey1.cs" />
     <Compile Include="Items\Resource\BaseFish.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Resource\BouraPelt.cs" />
+    <Compile Include="Items\Resource\CrystalDust.cs" />
+    <Compile Include="Items\Resource\EnchantedEssence.cs" />
+    <Compile Include="Items\Resource\FairyDragonWing.cs" />
     <Compile Include="Items\Resource\HotGoo.cs" />
+    <Compile Include="Items\Resource\LeatherWolfSkin.cs" />
+    <Compile Include="Items\Resource\MagicalResidue.cs" />
+    <Compile Include="Items\Resource\RelicFragment.cs" />
+    <Compile Include="Items\Resource\SearedFireAntGoo.cs" />
     <Compile Include="Items\Tools\BaseHarvestTool.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -2469,12 +2498,6 @@
     <Compile Include="Items\Artifacts\Consumables\ElixirofAgapiteConversion.cs" />
     <Compile Include="Items\Artifacts\Consumables\ElixirofGoldConversion.cs" />
     <Compile Include="Items\Artifacts\Consumables\ElixirofMetalConversion.cs" />
-    <Compile Include="Items\Quest\PileofInspectedAgapiteIngots.cs" />
-    <Compile Include="Items\Quest\PileofInspectedBronzeIngots.cs" />
-    <Compile Include="Items\Quest\PileofInspectedCopperIngots.cs" />
-    <Compile Include="Items\Quest\PileofInspectedDullCopperIngots.cs" />
-    <Compile Include="Items\Quest\PileofInspectedGoldIngots.cs" />
-    <Compile Include="Items\Quest\PileofInspectedShadowIronIngots.cs" />
     <Compile Include="Items\Artifacts\Consumables\TastyTreat.cs" />
     <Compile Include="Quests\MetalHead.cs" />
     <Compile Include="Quests\PinkistheNewBlack.cs" />
@@ -2491,8 +2514,6 @@
     <Compile Include="Items\Artifacts\Consumables\ElixirofVeriteConversion.cs" />
     <Compile Include="Items\Artifacts\Consumables\InfusedAlchemistsGem.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\InfusedGlassStave.cs" />
-    <Compile Include="Items\Quest\InspectedKegofGreaterPoison.cs" />
-    <Compile Include="Items\Quest\InspectedKegofTotalRefreshment.cs" />
     <Compile Include="Quests\IrresistiblyTastyTreat.cs" />
     <Compile Include="Quests\PileofInspectedValoriteIngots.cs" />
     <Compile Include="Quests\PileofInspectedVeriteIngots.cs" />

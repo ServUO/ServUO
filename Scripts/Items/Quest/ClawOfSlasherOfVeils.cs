@@ -2,17 +2,19 @@ using System;
 
 namespace Server.Items
 {
-    public class PileOfInspectedBronzeIngots : PileOfInspectedIngots
+    public class ClawOfSlasherOfVeils : Item
     {
-        public override int LabelNumber { get { return 1113024; } } // Pile of Inspected Bronze Ingots
+        public override int LabelNumber { get { return 1031704; } } // Claw of Slasher of Veils
 
         [Constructable]
-        public PileOfInspectedBronzeIngots()
-            : base(0x972)
+        public ClawOfSlasherOfVeils()
+            : base(0x2DB8)
         {
+            this.Weight = 10.0;
+            this.Stackable = false;
         }
 
-        public PileOfInspectedBronzeIngots(Serial serial)
+        public ClawOfSlasherOfVeils(Serial serial)
             : base(serial)
         {
         }

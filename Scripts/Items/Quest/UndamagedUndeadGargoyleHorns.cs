@@ -2,17 +2,19 @@ using System;
 
 namespace Server.Items
 {
-    public class PileOfInspectedBronzeIngots : PileOfInspectedIngots
+    public class UndamagedUndeadGargoyleHorns : Item
     {
-        public override int LabelNumber { get { return 1113024; } } // Pile of Inspected Bronze Ingots
+        public override int LabelNumber { get { return 1112903; } } // Undamaged Undead Gargoyle Horns
 
         [Constructable]
-        public PileOfInspectedBronzeIngots()
-            : base(0x972)
+        public UndamagedUndeadGargoyleHorns()
+            : base(0x315C)
         {
+            this.Weight = 1.0;
+            this.Hue = 61;
         }
 
-        public PileOfInspectedBronzeIngots(Serial serial)
+        public UndamagedUndeadGargoyleHorns(Serial serial)
             : base(serial)
         {
         }

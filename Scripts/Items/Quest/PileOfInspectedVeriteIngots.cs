@@ -2,17 +2,17 @@ using System;
 
 namespace Server.Items
 {
-    public class PileOfInspectedBronzeIngots : PileOfInspectedIngots
+    public class PileOfInspectedVeriteIngots : PileOfInspectedIngots
     {
-        public override int LabelNumber { get { return 1113024; } } // Pile of Inspected Bronze Ingots
+        public override int LabelNumber { get { return 1113029; } } // Pile of Inspected Verite Ingots
 
         [Constructable]
-        public PileOfInspectedBronzeIngots()
-            : base(0x972)
+        public PileOfInspectedVeriteIngots()
+            : base(0x89F)
         {
         }
 
-        public PileOfInspectedBronzeIngots(Serial serial)
+        public PileOfInspectedVeriteIngots(Serial serial)
             : base(serial)
         {
         }

@@ -8,8 +8,8 @@ namespace Server.Engines.Quests
         public AllThatGlitters()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(CongealedSlugAcid), "Congealed Slug Acid", 5, 0x5742));
-            this.AddObjective(new ObtainObjective(typeof(PileofInspectedGoldIngots), "Pile of Inspected Gold Ingots", 1, 0x1BEA));
+            this.AddObjective(new ObtainObjective(typeof(CongealedSlugAcid), "Congealed Slug Acid", 5, 0x122A));
+            this.AddObjective(new ObtainObjective(typeof(PileOfInspectedGoldIngots), "Pile of Inspected Gold Ingots", 1, 0x1BEA));
 
             this.AddReward(new BaseReward(typeof(ElixirofGoldConversion), "Elixir of Gold Conversion"));
         }

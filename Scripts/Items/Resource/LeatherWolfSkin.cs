@@ -2,36 +2,31 @@ using System;
 
 namespace Server.Items
 {
-    public class VoidEssence : Item
+    public class LeatherWolfSkin : Item
     {
+        public override int LabelNumber { get { return 1112906; } } // leather wolf skin
+
         [Constructable]
-        public VoidEssence()
+        public LeatherWolfSkin()
             : this(1)
         {
         }
 
         [Constructable]
-        public VoidEssence(int amount)
-            : base(0x4007)
+        public LeatherWolfSkin(int amount)
+            : base(0xDF8)
         {
+            this.Weight = 1.0;
+            this.Hue = 0x30;
             this.Stackable = true;
             this.Amount = amount;
-            this.Weight = 0.1;
-            this.Hue = 2101;
         }
 
-        public VoidEssence(Serial serial)
+        public LeatherWolfSkin(Serial serial)
             : base(serial)
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112327;
-            }
-        }// void essence
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

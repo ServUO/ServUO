@@ -2,17 +2,19 @@ using System;
 
 namespace Server.Items
 {
-    public class PileOfInspectedBronzeIngots : PileOfInspectedIngots
+    public class CongealedSlugAcid : Item
     {
-        public override int LabelNumber { get { return 1113024; } } // Pile of Inspected Bronze Ingots
+        public override int LabelNumber { get { return 1112901; } } // Congealed Slug Acid
 
         [Constructable]
-        public PileOfInspectedBronzeIngots()
-            : base(0x972)
+        public CongealedSlugAcid()
+            : base(0x122A)
         {
+            this.Weight = 1.0;
+            this.Hue = 0x51;
         }
 
-        public PileOfInspectedBronzeIngots(Serial serial)
+        public CongealedSlugAcid(Serial serial)
             : base(serial)
         {
         }

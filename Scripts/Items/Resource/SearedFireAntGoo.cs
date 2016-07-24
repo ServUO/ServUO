@@ -2,36 +2,31 @@ using System;
 
 namespace Server.Items
 {
-    public class VoidEssence : Item
+    public class SearedFireAntGoo : Item
     {
+        public override int LabelNumber { get { return 1112902; } } // Seared Fire Ant Goo
+
         [Constructable]
-        public VoidEssence()
+        public SearedFireAntGoo()
             : this(1)
         {
         }
 
         [Constructable]
-        public VoidEssence(int amount)
-            : base(0x4007)
+        public SearedFireAntGoo(int amount)
+            : base(0x122E)
         {
             this.Stackable = true;
             this.Amount = amount;
-            this.Weight = 0.1;
-            this.Hue = 2101;
+            this.Hue = 0x30;
+            this.Weight = 1.0;
         }
 
-        public VoidEssence(Serial serial)
+        public SearedFireAntGoo(Serial serial)
             : base(serial)
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112327;
-            }
-        }// void essence
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

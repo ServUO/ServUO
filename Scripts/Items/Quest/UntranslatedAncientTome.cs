@@ -2,17 +2,19 @@ using System;
 
 namespace Server.Items
 {
-    public class PileOfInspectedBronzeIngots : PileOfInspectedIngots
+    public class UntransTome : Item
     {
-        public override int LabelNumber { get { return 1113024; } } // Pile of Inspected Bronze Ingots
+        public override int LabelNumber { get { return 1112992; } }// Untranslated Ancient Tome
 
         [Constructable]
-        public PileOfInspectedBronzeIngots()
-            : base(0x972)
+        public UntransTome()
+            : base(0xFF2)
         {
+            this.Weight = 1.0;
+            this.Hue = 1109;
         }
 
-        public PileOfInspectedBronzeIngots(Serial serial)
+        public UntransTome(Serial serial)
             : base(serial)
         {
         }

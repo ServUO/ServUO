@@ -2,18 +2,17 @@ using System;
 
 namespace Server.Items
 {
-    public class InspectedKegofTotalRefreshment : Item
+    public class PileOfInspectedValoriteIngots : PileOfInspectedIngots
     {
-        [Constructable]
-        public InspectedKegofTotalRefreshment()
-            : base(0x1940)
-        {
-            this.Name = "Inspected Keg of Total Refreshment";
+        public override int LabelNumber { get { return 1113030; } } // Pile of Inspected Valorite Ingots
 
-            this.Hue = 2418;
+        [Constructable]
+        public PileOfInspectedValoriteIngots()
+            : base(0x8AB)
+        {
         }
 
-        public InspectedKegofTotalRefreshment(Serial serial)
+        public PileOfInspectedValoriteIngots(Serial serial)
             : base(serial)
         {
         }
@@ -22,7 +21,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)

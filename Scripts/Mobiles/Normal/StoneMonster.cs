@@ -92,8 +92,8 @@ namespace Server.Mobiles
                 if (0.025 > Utility.RandomDouble())
                     this.PackItem(new GargoylesPickaxe());
 
-                if (0.2 > Utility.RandomDouble())
-                    this.PackItem(new UndeadGargHorn()); 
+                //if (0.2 > Utility.RandomDouble())
+                    //this.PackItem(new UndeadGargHorn()); 
                 //if ( 0.2 > Utility.RandomDouble() )
                 //PackItem( new UndeadGargoyleMedallions() );
             }

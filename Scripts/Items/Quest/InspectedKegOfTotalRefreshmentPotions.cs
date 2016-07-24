@@ -2,17 +2,18 @@ using System;
 
 namespace Server.Items
 {
-    public class PileOfInspectedBronzeIngots : PileOfInspectedIngots
+    public class InspectedKegOfTotalRefreshmentPotions : Item
     {
-        public override int LabelNumber { get { return 1113024; } } // Pile of Inspected Bronze Ingots
+        public override int LabelNumber { get { return 1113025; } } // Inspected Keg of Total Refreshment Potions
 
         [Constructable]
-        public PileOfInspectedBronzeIngots()
-            : base(0x972)
+        public InspectedKegOfTotalRefreshmentPotions()
+            : base(0x1940)
         {
+            Weight = 100.0;
         }
 
-        public PileOfInspectedBronzeIngots(Serial serial)
+        public InspectedKegOfTotalRefreshmentPotions(Serial serial)
             : base(serial)
         {
         }

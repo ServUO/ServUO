@@ -2,17 +2,17 @@ using System;
 using Server.Items;
 
 namespace Server.Engines.Quests
-{ 
+{
     public class TheBrainyAlchemist : BaseQuest
-    { 
+    {
         public TheBrainyAlchemist()
             : base()
-        { 
+        {
             this.AddObjective(new ObtainObjective(typeof(ArcaneGem), "Arcane Gem", 1, 0x1ea7));
-            this.AddObjective(new ObtainObjective(typeof(UndeadGargHorn), "Undamaged Undead Gargoyle Horns", 10, 0x2F5F));
-            this.AddObjective(new ObtainObjective(typeof(InspectedKegofTotalRefreshment), "Inspected Keg of Total Refreshment", 1, 0x1940));
-            this.AddObjective(new ObtainObjective(typeof(InspectedKegofGreaterPoison), "Inspected Keg of Greater Poison", 1, 0x1940));
-									
+            this.AddObjective(new ObtainObjective(typeof(UndamagedUndeadGargoyleHorns), "Undamaged Undead Gargoyle Horns", 10, 0x315C));
+            this.AddObjective(new ObtainObjective(typeof(InspectedKegOfTotalRefreshmentPotions), "Inspected Keg of Total Refreshment", 1, 0x1940));
+            this.AddObjective(new ObtainObjective(typeof(InspectedKegOfGreaterPoisonPotions), "Inspected Keg of Greater Poison", 1, 0x1940));
+
             this.AddReward(new BaseReward(typeof(InfusedAlchemistsGem), "Infused Alchemist's Gem"));
         }
 

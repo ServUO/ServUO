@@ -2,36 +2,30 @@ using System;
 
 namespace Server.Items
 {
-    public class VoidEssence : Item
+    public class BouraPelt : Item
     {
+        public override int LabelNumber { get { return 1113355; } } // boura pelt
+
         [Constructable]
-        public VoidEssence()
+        public BouraPelt()
             : this(1)
         {
         }
 
         [Constructable]
-        public VoidEssence(int amount)
-            : base(0x4007)
+        public BouraPelt(int amount)
+            : base(0x5742)
         {
             this.Stackable = true;
             this.Amount = amount;
             this.Weight = 0.1;
-            this.Hue = 2101;
         }
 
-        public VoidEssence(Serial serial)
+        public BouraPelt(Serial serial)
             : base(serial)
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112327;
-            }
-        }// void essence
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -2,36 +2,30 @@ using System;
 
 namespace Server.Items
 {
-    public class VoidEssence : Item
+    public class RelicFragment : Item
     {
+        public override int LabelNumber { get { return 1031699; } } // Relic Fragment
+
         [Constructable]
-        public VoidEssence()
+        public RelicFragment()
             : this(1)
         {
         }
 
         [Constructable]
-        public VoidEssence(int amount)
-            : base(0x4007)
+        public RelicFragment(int amount)
+            : base(0x2DB3)
         {
             this.Stackable = true;
             this.Amount = amount;
-            this.Weight = 0.1;
-            this.Hue = 2101;
+            this.Weight = 1.0;
         }
 
-        public VoidEssence(Serial serial)
+        public RelicFragment(Serial serial)
             : base(serial)
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112327;
-            }
-        }// void essence
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

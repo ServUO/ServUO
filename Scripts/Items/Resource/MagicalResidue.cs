@@ -2,36 +2,30 @@ using System;
 
 namespace Server.Items
 {
-    public class VoidEssence : Item
+    public class MagicalResidue : Item
     {
+        public override int LabelNumber { get { return 1031697; } } // Magical Residue
+
         [Constructable]
-        public VoidEssence()
+        public MagicalResidue()
             : this(1)
         {
         }
 
         [Constructable]
-        public VoidEssence(int amount)
-            : base(0x4007)
+        public MagicalResidue(int amount)
+            : base(0x2DB1)
         {
             this.Stackable = true;
             this.Amount = amount;
-            this.Weight = 0.1;
-            this.Hue = 2101;
+            this.Weight = 1.0;
         }
 
-        public VoidEssence(Serial serial)
+        public MagicalResidue(Serial serial)
             : base(serial)
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112327;
-            }
-        }// void essence
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
