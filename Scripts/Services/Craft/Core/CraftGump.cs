@@ -306,8 +306,8 @@ namespace Server.Engines.Craft
 
                     CraftContext context = this.m_CraftSystem.GetContext(this.m_From);
 
-                    this.AddButton(220, 290, 4005, 4007, GetButtonID(6, 4), GumpButtonType.Reply, 0);
-                    this.AddHtmlLocalized(255, 293, 200, 18, (context == null || !context.DoNotColor) ? 1061591 : 1061590, LabelColor, false, false);
+                    this.AddButton(220, 260, 4005, 4007, GetButtonID(6, 4), GumpButtonType.Reply, 0);
+                    this.AddHtmlLocalized(263, 253, 200, 18, (context == null || !context.DoNotColor) ? 1061591 : 1061590, LabelColor, false, false);
                 }
 
                 int resourceCount = 0;

@@ -298,7 +298,7 @@ namespace Server.Mobiles
         public void GivePowerScrolls()
         {
             List<Mobile> toGive = new List<Mobile>();
-            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+            List<DamageStore> rights = GetLootingRights();
 
             for (int i = rights.Count - 1; i >= 0; --i)
             {
@@ -382,7 +382,7 @@ namespace Server.Mobiles
         {
             if (this.m_TrueForm)
             {
-                List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+                List<DamageStore> rights = GetLootingRights();
 
                 for (int i = rights.Count - 1; i >= 0; --i)
                 {

@@ -228,7 +228,7 @@ namespace Server.Mobiles
       
         public static Mobile FindRandomPlayer(BaseCreature creature)
         {
-            List<DamageStore> rights = BaseCreature.GetLootingRights(creature.DamageEntries, creature.HitsMax);
+            List<DamageStore> rights = creature.GetLootingRights();
 
             for (int i = rights.Count - 1; i >= 0; --i)
             {

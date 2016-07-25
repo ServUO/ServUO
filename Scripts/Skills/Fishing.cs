@@ -382,7 +382,7 @@ namespace Server.Engines.Harvest
                         if (sos.IsAncient)
                             chest.Hue = 0x481;
 
-                        TreasureMapChest.Fill(chest, from.Luck, Math.Max(1, Math.Min(4, sos.Level)), true);
+                        TreasureMapChest.Fill(chest, from.Luck, Math.Max(1, Math.Min(4, sos.Level)), true, from.Map);
 
                         if (sos.IsAncient)
                             chest.DropItem(new FabledFishingNet());

@@ -42,7 +42,7 @@ namespace Server
 
         private static readonly Type[] m_SAClothingTypes = new[]
 		{
-			typeof(GargishClothChest), typeof(GargishClothArms), typeof(GargishClothKilt), typeof(GargishClothLegs),
+			typeof(GargishClothChestArmor), typeof(GargishClothArmsArmor), typeof(GargishClothKiltArmor), typeof(GargishClothLegsArmor),
 			typeof(GargishClothWingArmor)
 		};
 
