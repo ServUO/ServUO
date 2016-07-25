@@ -2983,9 +2983,14 @@ namespace Server.Mobiles
 				{
 					Backpack.AddItem(ilist[i]);
 				}
-			}
 
-			m_EquipSnapshot = new List<Item>(Items);
+                GemOfSalvation gem = Backpack.FindItemByType<GemOfSalvation>();
+
+                if (gem != null)
+                    Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback<PlayerMobile>(gem.Use), this);
+            }
+
+            m_EquipSnapshot = new List<Item>(Items);
 
 			m_NonAutoreinsuredItems = 0;
 			m_InsuranceCost = 0;
