@@ -16,6 +16,8 @@ namespace Server.Items
         {
             this.Stackable = true;
             this.Amount = amount;
+            this.Weight = 0.1;
+            this.Hue = 2101;
         }
 
         public VoidEssence(Serial serial)

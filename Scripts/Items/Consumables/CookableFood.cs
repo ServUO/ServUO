@@ -48,7 +48,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {
@@ -59,7 +59,7 @@ namespace Server.Items
             }
         }
 
-        #if false
+#if false
 		public override void OnDoubleClick( Mobile from )
 		{
 			if ( !Movable )
@@ -67,7 +67,7 @@ namespace Server.Items
 
 			from.Target = new InternalTarget( this );
 		}
-        #endif
+#endif
 
         public static bool IsHeatSource(object targeted)
         {
@@ -137,7 +137,7 @@ namespace Server.Items
                 private readonly IPoint3D m_Point;
                 private readonly Map m_Map;
                 private readonly CookableFood m_CookableFood;
-			
+
                 public InternalTimer(Mobile from, IPoint3D p, Map map, CookableFood cookableFood)
                     : base(TimeSpan.FromSeconds(5.0))
                 {
@@ -648,7 +648,7 @@ namespace Server.Items
         }
     }
 
-    #if false
+#if false
 	// ********** UncookedPizza **********
 	public class UncookedPizza : CookableFood
 	{
@@ -687,7 +687,7 @@ namespace Server.Items
 			return new Pizza();
 		}
 	}
-    #endif
+#endif
 
     // ********** UnbakedQuiche **********
     public class UnbakedQuiche : CookableFood
@@ -981,6 +981,48 @@ namespace Server.Items
         public override Food Cook()
         {
             return new FishSteak();
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class RawRotwormMeat : CookableFood
+    {
+        [Constructable]
+        public RawRotwormMeat()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public RawRotwormMeat(int amount)
+            : base(0x2DB9, 10)
+        {
+            Stackable = true;
+            Weight = 0.1;
+            Amount = amount;
+        }
+
+        public RawRotwormMeat(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override Food Cook()
+        {
+            return null;
         }
 
         public override void Serialize(GenericWriter writer)

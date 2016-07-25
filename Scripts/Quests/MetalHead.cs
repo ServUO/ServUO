@@ -8,11 +8,11 @@ namespace Server.Engines.Quests
         public MetalHead()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(UndamagedIronBeetleScale), "Undamaged IronBeetle Scale", 10, 0x5742));
-            this.AddObjective(new ObtainObjective(typeof(PileofInspectedDullCopperIngots), "Pile of Inspected DullCopper Ingots", 1, 0x1BEA));
-            this.AddObjective(new ObtainObjective(typeof(PileofInspectedShadowIronIngots), "Pile of Inspected ShadowIron Ingots", 1, 0x1BEA));
-            this.AddObjective(new ObtainObjective(typeof(PileofInspectedCopperIngots), "Pile of Inspected Copper Ingots", 1, 0x1BEA));
-            this.AddObjective(new ObtainObjective(typeof(PileofInspectedBronzeIngots), "Pile of Inspected Bronze Ingots", 1, 0x1BEA));
+            this.AddObjective(new ObtainObjective(typeof(UndamagedIronBeetleScale), "Undamaged IronBeetle Scale", 10, 0x26B3));
+            this.AddObjective(new ObtainObjective(typeof(PileOfInspectedDullCopperIngots), "Pile of Inspected DullCopper Ingots", 1, 0x1BEA));
+            this.AddObjective(new ObtainObjective(typeof(PileOfInspectedShadowIronIngots), "Pile of Inspected ShadowIron Ingots", 1, 0x1BEA));
+            this.AddObjective(new ObtainObjective(typeof(PileOfInspectedCopperIngots), "Pile of Inspected Copper Ingots", 1, 0x1BEA));
+            this.AddObjective(new ObtainObjective(typeof(PileOfInspectedBronzeIngots), "Pile of Inspected Bronze Ingots", 1, 0x1BEA));
 
             this.AddReward(new BaseReward(typeof(ElixirofMetalConversion), "Elixir of Metal Conversion"));
         }

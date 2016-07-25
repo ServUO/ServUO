@@ -1,50 +1,27 @@
-/*                                                             .---.
-/  .  \
-|\_/|   |
-|   |  /|
-.----------------------------------------------------------------' |
-/  .-.                                                              |
-|  /   \         Contribute To The Orbsydia SA Project               |
-| |\_.  |                                                            |
-|\|  | /|                        By Lotar84                          |
-| `---' |                                                            |
-|       |       (Orbanised by Orb SA Core Development Team)          | 
-|       |                                                           /
-|       |----------------------------------------------------------'
-\       |
-\     /
-`---'
-*/
 using System;
 
 namespace Server.Items
 {
-    public class PileofInspectedBronzeIngots : Item
+    public class PileOfInspectedBronzeIngots : PileOfInspectedIngots
     {
+        public override int LabelNumber { get { return 1113024; } } // Pile of Inspected Bronze Ingots
+
         [Constructable]
-        public PileofInspectedBronzeIngots()
-            : base(0x1BEA)
+        public PileOfInspectedBronzeIngots()
+            : base(0x972)
         {
-            this.Hue = 2418;
         }
 
-        public PileofInspectedBronzeIngots(Serial serial)
+        public PileOfInspectedBronzeIngots(Serial serial)
             : base(serial)
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113024;
-            }
-        }//Pile of Inspected Bronze Ingots
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)

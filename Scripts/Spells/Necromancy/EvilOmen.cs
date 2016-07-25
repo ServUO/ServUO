@@ -60,6 +60,11 @@ namespace Server.Spells.Necromancy
             return true;
         }
 
+        public static bool UnderEffect(Mobile m)
+        {
+            return m_Table.ContainsKey(m);
+        }
+
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

@@ -3,6 +3,7 @@ using Server.Factions;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Targeting;
+using Server.Items;
 
 namespace Server.SkillHandlers
 {
@@ -39,7 +40,7 @@ namespace Server.SkillHandlers
                     p = ((Item)targ).Location;
                 else if (targ is IPoint3D)
                     p = new Point3D((IPoint3D)targ);
-                else 
+                else
                     p = src.Location;
 
                 double srcSkill = src.Skills[SkillName.DetectHidden].Value;
@@ -104,6 +105,39 @@ namespace Server.SkillHandlers
 
                         itemsInRange.Free();
                     }
+
+                    foreach (Item item in src.Map.GetItemsInRange(p, range))
+                    {
+                        if (item is GoblinTrap)
+                        {
+                            GoblinTrap trap = (GoblinTrap)item;
+
+                            if (src.CheckTargetSkill(SkillName.DetectHidden, trap, 0.0, 100.0))
+                            {
+                                trap.Visible = true;
+                                trap.BeginConceal();
+
+                                trap.SendLocalizedMessageTo(src, 500813); // [trapped]
+
+                                foundAnyone = true;
+                            }
+                        }
+
+                        if (item is FloorTrap)
+                        {
+                            FloorTrap trap = (FloorTrap)item;
+
+                            if (src.CheckTargetSkill(SkillName.DetectHidden, trap, (trap.HidingLevel + trap.TinkerLevel) / 2.0, 110.0))
+                            {
+                                trap.Visible = true;
+                                trap.BeginConceal();
+
+                                trap.SendLocalizedMessageTo(src, 500813); // [trapped]
+
+                                foundAnyone = true;
+                            }
+                        }
+                    }
                 }
 
                 if (!foundAnyone)
@@ -115,8 +149,8 @@ namespace Server.SkillHandlers
 
         public static void DoPassiveDetect(Mobile src)
         {
-			if (src == null || src.Map == null || src.Location == Point3D.Zero)
-				return;
+            if (src == null || src.Map == null || src.Location == Point3D.Zero)
+                return;
 
             double ss = src.Skills[SkillName.DetectHidden].Value;
 
@@ -125,8 +159,8 @@ namespace Server.SkillHandlers
 
             IPooledEnumerable eable = src.Map.GetMobilesInRange(src.Location, 4);
 
-			if (eable == null)
-				return;
+            if (eable == null)
+                return;
 
             foreach (Mobile m in eable)
             {

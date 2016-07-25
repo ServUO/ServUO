@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -91,9 +92,15 @@ namespace Server.Mobiles
                 m.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
                 m.PlaySound(0x231);
 
-                //m.SendMessage( "You feel the life drain out of you!" );
+                m.SendMessage("You feel the life drain out of you!");
 
                 int toDrain = Utility.RandomMinMax(10, 40);
+
+                if (LifeShieldLotion.UnderEffect(m))
+                {
+                    double scale = Utility.RandomMinMax(50, 100) / 100.0;
+                    toDrain = (int)(toDrain + scale);
+                }
 
                 this.Hits += toDrain;
                 m.Damage(toDrain, this);

@@ -4,11 +4,16 @@ namespace Server.Items
 {
     public class HydraScale : Item
     {
+        public override int LabelNumber { get { return 1074760; } } // A hydra scale.
+
         [Constructable]
         public HydraScale()
-            : base(0x26B4)
+            : base(0x26B6)
         {
-            this.Hue = 0xC2; // TODO check
+            this.Hue = 700;
+            this.LootType = LootType.Blessed;
+            this.Weight = 1.0;
+            this.Stackable = true;
         }
 
         public HydraScale(Serial serial)
@@ -16,13 +21,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074760;
-            }
-        }// A hydra scale.
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

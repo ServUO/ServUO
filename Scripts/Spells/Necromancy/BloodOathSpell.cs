@@ -64,6 +64,11 @@ namespace Server.Spells.Necromancy
             return oath;
         }
 
+        public static bool UnderEffect(Mobile m)
+        {
+            return GetBloodOath(m) != null;
+        }
+
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

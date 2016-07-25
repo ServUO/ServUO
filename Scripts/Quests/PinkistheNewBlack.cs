@@ -25,9 +25,9 @@ namespace Server.Engines.Quests
         public PinkistheNewBlack()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SearedFireAntGoo), "Seared Fire Ant Goo", 5, 0x2f5f));
-            this.AddObjective(new ObtainObjective(typeof(PileofInspectedAgapiteIngots), "Pile of Inspected Agapite Ingots", 1, 0x1BEA));
-            
+            this.AddObjective(new ObtainObjective(typeof(SearedFireAntGoo), "Seared Fire Ant Goo", 5, 0x122E));
+            this.AddObjective(new ObtainObjective(typeof(PileOfInspectedAgapiteIngots), "Pile of Inspected Agapite Ingots", 1, 0x1BEA));
+
             this.AddReward(new BaseReward(typeof(ElixirofAgapiteConversion), "Elixir of Agapite Conversion"));
         }
 

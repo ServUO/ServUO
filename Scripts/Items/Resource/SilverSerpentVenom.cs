@@ -4,6 +4,8 @@ namespace Server.Items
 {
     public class SilverSerpentVenom : Item
     {
+        public override int LabelNumber { get { return 1112173; } } // silver serpent venom
+
         [Constructable]
         public SilverSerpentVenom()
             : this(1)
@@ -12,10 +14,12 @@ namespace Server.Items
 
         [Constructable]
         public SilverSerpentVenom(int amount)
-            : base(0x2F5F)
+            : base(0xE24)
         {
             this.Stackable = true;
             this.Amount = amount;
+            this.Weight = 1.0;
+            this.Hue = 0x483;
         }
 
         public SilverSerpentVenom(Serial serial)
@@ -23,13 +27,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112173;
-            }
-        }// silver serpent venom
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -114,7 +114,8 @@ namespace Server.Mobiles
     {
         Ribs,
         Bird,
-        LambLeg
+        LambLeg,
+        Rotworm
     }
 
     public enum HideType
@@ -251,6 +252,8 @@ namespace Server.Mobiles
         private bool m_HasGeneratedLoot; // have we generated our loot yet?
 
         private bool m_Paragon;
+
+        private bool m_StolenFrom;
 
         private string m_CorpseNameOverride;
 
@@ -541,6 +544,9 @@ namespace Server.Mobiles
                 InvalidateProperties();
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool StolenFrom { get { return m_StolenFrom; } set { m_StolenFrom = value; } }
 
         public virtual bool HasManaOveride { get { return false; } }
 
@@ -1697,6 +1703,10 @@ namespace Server.Mobiles
                     {
                         corpse.AddCarvedItem(new RawLambLeg(meat), from);
                     }
+                    else if (MeatType == MeatType.Rotworm)
+                    {
+                        corpse.AddCarvedItem(new RawRotwormMeat(meat), from);
+                    }
 
                     from.SendLocalizedMessage(500467); // You carve some meat, which remains on the corpse.
                 }
@@ -2023,6 +2033,9 @@ namespace Server.Mobiles
 
             //Version 20 Queens Loyalty
             writer.Write(m_QLPoints);
+
+            //Version 21
+            writer.Write((bool)m_StolenFrom);
         }
 
         private static readonly double[] m_StandardActiveSpeeds = new[] { 0.175, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8 };
@@ -2297,6 +2310,11 @@ namespace Server.Mobiles
             if (version >= 20)
             {
                 m_QLPoints = reader.ReadInt();
+            }
+
+            if (version >= 21)
+            {
+                m_StolenFrom = reader.ReadBool();
             }
 
             if (version <= 14 && m_Paragon && Hue == 0x31)

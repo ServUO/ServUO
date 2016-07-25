@@ -2,18 +2,18 @@ using System;
 
 namespace Server.Items
 {
-    public class InspectedKegofGreaterPoison : Item
+    public class InspectedKegOfGreaterPoisonPotions : Item
     {
+        public override int LabelNumber { get { return 1113026; } } // Inspected Keg of Greater Poison Potion
+
         [Constructable]
-        public InspectedKegofGreaterPoison()
+        public InspectedKegOfGreaterPoisonPotions()
             : base(0x1940)
         {
-            this.Name = "Inspected Keg of Greater Poison";
-
-            this.Hue = 2425;
+            Weight = 100.0;
         }
 
-        public InspectedKegofGreaterPoison(Serial serial)
+        public InspectedKegOfGreaterPoisonPotions(Serial serial)
             : base(serial)
         {
         }
@@ -22,7 +22,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)

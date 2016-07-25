@@ -9,6 +9,7 @@ namespace Server.Mobiles
     {
         private Mobile m_Harrower;
         private DrainTimer m_Timer;
+
         [Constructable]
         public HarrowerTentacles()
             : this(null)
@@ -60,10 +61,10 @@ namespace Server.Mobiles
             this.PackReg(50);
             this.PackNecroReg(15, 75);
 
-			switch (Utility.Random(3))
+            switch (Utility.Random(3))
             {
                 case 0: PackItem(new VampiricEmbraceScroll()); break;
-			}
+            }
 
         }
 
@@ -164,7 +165,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 0:
                     {
@@ -233,6 +234,12 @@ namespace Server.Mobiles
                     m.PlaySound(0x1F1);
 
                     int drain = Utility.RandomMinMax(14, 30);
+
+                    if (LifeShieldLotion.UnderEffect(m))
+                    {
+                        double scale = Utility.RandomMinMax(50, 100) / 100.0;
+                        drain = (int)(drain * scale);
+                    }
 
                     this.m_Owner.Hits += drain;
 

@@ -16,6 +16,8 @@ namespace Server.Items
         {
         }
 
+        public virtual bool RevealOnTrigger { get { return true; } }
+
         public virtual bool PassivelyTriggered
         {
             get
@@ -87,11 +89,17 @@ namespace Server.Items
             {
                 this.m_NextActiveTrigger = this.m_NextPassiveTrigger = DateTime.UtcNow + this.ResetDelay;
 
+                if (RevealOnTrigger)
+                    this.Visible = true;
+
                 this.OnTrigger(m);
             }
             else if (this.PassivelyTriggered && this.CheckRange(m.Location, oldLocation, this.PassiveTriggerRange) && DateTime.UtcNow >= this.m_NextPassiveTrigger)
             {
                 this.m_NextPassiveTrigger = DateTime.UtcNow + this.PassiveTriggerDelay;
+
+                if (RevealOnTrigger)
+                    this.Visible = true;
 
                 this.OnTrigger(m);
             }

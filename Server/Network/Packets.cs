@@ -1622,7 +1622,36 @@ namespace Server.Network
 		}
 	}
 
-	public class HuedEffect : Packet
+    public class GraphicalEffect : Packet
+    {
+        public GraphicalEffect(EffectType type, Serial from, Serial to, int itemID, Point3D fromPoint, Point3D toPoint, int speed, int duration, bool fixedDirection, bool explode)
+            : this(type, from, to, itemID, fromPoint, toPoint, speed, duration, fixedDirection, explode ? 1 : 0)
+        {
+        }
+
+        public GraphicalEffect(EffectType type, Serial from, Serial to, int itemID, Point3D fromPoint, Point3D toPoint, int speed, int duration, bool fixedDirection, int explode)
+            : base(0x70, 28)
+        {
+            m_Stream.Write((byte)type);
+            m_Stream.Write((int)from);
+            m_Stream.Write((int)to);
+            m_Stream.Write((short)itemID);
+            m_Stream.Write((short)fromPoint.X);
+            m_Stream.Write((short)fromPoint.Y);
+            m_Stream.Write((sbyte)fromPoint.Z);
+            m_Stream.Write((short)toPoint.X);
+            m_Stream.Write((short)toPoint.Y);
+            m_Stream.Write((sbyte)toPoint.Z);
+            m_Stream.Write((byte)speed);
+            m_Stream.Write((byte)duration);
+            m_Stream.Write((byte)0);
+            m_Stream.Write((byte)0);
+            m_Stream.Write((bool)fixedDirection);
+            m_Stream.Write((byte)explode);
+        }
+    }
+
+    public class HuedEffect : Packet
 	{
 		public HuedEffect(
 			EffectType type,

@@ -8,44 +8,44 @@ namespace Server.Mobiles
     {
         [Constructable]
         public WolfSpider()
-            : base(AIType.AI_Melee, FightMode.Evil, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a Wolf spider";
-            Body = 737;
-            Hue = 1141;
+            this.Name = "a wolf spider";
+            this.Body = 736;
 
-            SetStr(225, 268);
-            SetDex(145, 165);
-            SetInt(285, 310);
+            this.SetStr(225, 268);
+            this.SetDex(145, 165);
+            this.SetInt(285, 310);
 
-            SetHits(150, 160);
-			SetMana(285, 310);
-			SetStam(145, 165);
+            this.SetHits(150, 160);
+            this.SetMana(285, 310);
+            this.SetStam(145, 165);
 
-            SetDamage(15, 18);
+            this.SetDamage(15, 18);
 
-            SetDamageType(ResistanceType.Physical, 70);
-            SetDamageType(ResistanceType.Poison, 30);
+            this.SetDamageType(ResistanceType.Physical, 70);
+            this.SetDamageType(ResistanceType.Poison, 30);
 
-            SetResistance(ResistanceType.Physical, 30, 35);
-            SetResistance(ResistanceType.Fire, 20, 30);
-            SetResistance(ResistanceType.Cold, 25, 35);
-            SetResistance(ResistanceType.Poison, 100);
-            SetResistance(ResistanceType.Energy, 25, 35);
+            this.SetResistance(ResistanceType.Physical, 30, 35);
+            this.SetResistance(ResistanceType.Fire, 20, 30);
+            this.SetResistance(ResistanceType.Cold, 25, 35);
+            this.SetResistance(ResistanceType.Poison, 100);
+            this.SetResistance(ResistanceType.Energy, 25, 35);
 
-            SetSkill(SkillName.Anatomy, 80.0, 90.0);
-            SetSkill(SkillName.MagicResist, 60.0, 75.0);
-            SetSkill(SkillName.Poisoning, 62.3, 77.2);
-            SetSkill(SkillName.Tactics, 84.1, 95.9);
-            SetSkill(SkillName.Wrestling, 80.2, 90.0);
-            SetSkill(SkillName.Hiding, 105.0, 110.0);
-            SetSkill(SkillName.Stealth, 105.0, 110.0);
+            this.SetSkill(SkillName.Anatomy, 80.0, 90.0);
+            this.SetSkill(SkillName.MagicResist, 60.0, 75.0);
+            this.SetSkill(SkillName.Poisoning, 62.3, 77.2);
+            this.SetSkill(SkillName.Tactics, 84.1, 95.9);
+            this.SetSkill(SkillName.Wrestling, 80.2, 90.0);
 
-            Tamable = true;
-            ControlSlots = 2;
-            MinTameSkill = 59.1;
+            this.Tamable = true;
+            this.ControlSlots = 2;
+            this.MinTameSkill = 59.1;
 
-            QLPoints = 5;
+            this.Fame = 5000;
+            this.Karma = -5000;
+
+            this.QLPoints = 5;
         }
 
         public WolfSpider(Serial serial)
@@ -53,34 +53,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
-        public override PackInstinct PackInstinct
-        {
-            get
-            {
-                return PackInstinct.Arachnid;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
+        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override PackInstinct PackInstinct { get { return PackInstinct.Arachnid; } }
+        public override Poison PoisonImmune { get { return Poison.Deadly; } }
+        public override Poison HitPoison { get { return (0.8 >= Utility.RandomDouble() ? Poison.Greater : Poison.Deadly); } }
+
         public override void GenerateLoot()
         {
             PackItem(new SpidersSilk(8));

@@ -12,6 +12,7 @@ namespace Server.Gumps
         VirtueShrine = 1,
         Healer = 2,
         Generic = 3,
+        GemOfSalvation = 84106,
         SilverSapling = 102034,
     }
 
