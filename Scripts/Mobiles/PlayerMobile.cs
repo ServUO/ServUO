@@ -549,8 +549,26 @@ namespace Server.Mobiles
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime AnkhNextUse { get { return m_AnkhNextUse; } set { m_AnkhNextUse = value; } }
 
-		#region Mondain's Legacy
-		[CommandProperty(AccessLevel.GameMaster)]
+        private DateTime m_NextGemOfSalvationUse;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextGemOfSalvationUse
+        {
+            get { return m_NextGemOfSalvationUse; }
+            set { m_NextGemOfSalvationUse = value; }
+        }
+
+        // Floor Traps
+        private int m_FloorTrapsPlaced;
+
+        public int FloorTrapsPlaced
+        {
+            get { return m_FloorTrapsPlaced; }
+            set { m_FloorTrapsPlaced = value; }
+        }
+
+        #region Mondain's Legacy
+        [CommandProperty(AccessLevel.GameMaster)]
 		public bool Bedlam { get { return GetFlag(PlayerFlag.Bedlam); } set { SetFlag(PlayerFlag.Bedlam, value); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -3578,9 +3596,20 @@ namespace Server.Mobiles
 
 		public List<Mobile> PermaFlags { get { return m_PermaFlags; } }
 
-		public override int Luck { get { return AosAttributes.GetValue(this, AosAttribute.Luck); } }
+        public override int Luck
+        {
+            get
+            {
+                int luck = AosAttributes.GetValue(this, AosAttribute.Luck);
 
-		public override bool IsHarmfulCriminal(Mobile target)
+                if (FountainOfFortune.HasBlessing(this, FountainOfFortune.BlessingType.Luck))
+                    luck += 400;
+
+                return luck;
+            }
+        }
+
+        public override bool IsHarmfulCriminal(Mobile target)
 		{
 			if (Stealing.ClassicMode && target is PlayerMobile && ((PlayerMobile)target).m_PermaFlags.Count > 0)
 			{
@@ -3667,6 +3696,12 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 30:
+                    {
+                        m_NextGemOfSalvationUse = reader.ReadDateTime();
+                        m_FloorTrapsPlaced = reader.ReadInt();
+                        goto case 29;
+                    }
 				case 29:
 					{
 						m_GauntletPoints = reader.ReadDouble();
@@ -4070,11 +4105,14 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(29); // version
+			writer.Write(30); // version
 
+            // Version 30
+            writer.Write((DateTime)m_NextGemOfSalvationUse);
+            writer.Write((int)m_FloorTrapsPlaced);
 
-			// Version 29
-			writer.Write(m_GauntletPoints);
+            // Version 29
+            writer.Write(m_GauntletPoints);
 
 			#region Plant System
 			writer.Write(m_SSNextSeed);

@@ -24,8 +24,6 @@ namespace Server
 
 			int luck = killer.Luck;
 
-            luck += FountainOfFortune.GetLuckBonus(killer);
-
             luck += TenthAnniversarySculpture.GetLuckBonus(killer);
 
             PlayerMobile pmKiller = killer as PlayerMobile;

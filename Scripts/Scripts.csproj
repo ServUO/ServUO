@@ -569,20 +569,30 @@
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\FNPitchfork.cs" />
+    <Compile Include="Items\Consumables\BalmOfProtection.cs" />
+    <Compile Include="Items\Consumables\BalmOfStrength.cs" />
+    <Compile Include="Items\Consumables\BalmOfSwiftness.cs" />
+    <Compile Include="Items\Consumables\BalmOfWisdom.cs" />
+    <Compile Include="Items\Consumables\BalmOrLotion.cs" />
     <Compile Include="Items\Consumables\BaseAgilityPotion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\CreepyCake.cs" />
     <Compile Include="Items\Consumables\ElixirOfRebirth.cs" />
+    <Compile Include="Items\Consumables\GemOfSalvation.cs" />
     <Compile Include="Items\Consumables\HarvestWine.cs" />
     <Compile Include="Items\Consumables\Jellybeans.cs" />
+    <Compile Include="Items\Consumables\LifeShieldLotion.cs" />
     <Compile Include="Items\Consumables\Lollipops.cs" />
+    <Compile Include="Items\Consumables\ManaDraught.cs" />
     <Compile Include="Items\Consumables\MrPlainsCookies.cs" />
     <Compile Include="Items\Consumables\MurkyMilk.cs" />
     <Compile Include="Items\Consumables\NougatSwirl.cs" />
     <Compile Include="Items\Consumables\PersonalAttendantDeed.cs" />
     <Compile Include="Items\Consumables\PersonalAttendantToken.cs" />
     <Compile Include="Items\Consumables\PumpkinPizza.cs" />
+    <Compile Include="Items\Consumables\SeedOfLife.cs" />
+    <Compile Include="Items\Consumables\StoneSkinLotion.cs" />
     <Compile Include="Items\Consumables\Taffy.cs" />
     <Compile Include="Items\Consumables\WrappedCandy.cs" />
     <Compile Include="Items\Containers\MeagerImbuingBag.cs" />
@@ -647,6 +657,8 @@
     <Compile Include="Items\Consumables\BaseExplosionPotion.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Functional\GoblinTrap.cs" />
+    <Compile Include="Items\Functional\GoblinTrapGenerator.cs" />
     <Compile Include="Items\Internal\BlightedGroveTeleporters.cs" />
     <Compile Include="Items\Internal\BlueNinjaQuestTeleporter.cs" />
     <Compile Include="Items\Internal\GreenNinjaQuestTeleporter.cs" />
@@ -668,6 +680,9 @@
     <Compile Include="Items\Quest\EminosKatana.cs" />
     <Compile Include="Items\Quest\EminosKatanaChest.cs" />
     <Compile Include="Items\Quest\EnchantedPaints.cs" />
+    <Compile Include="Items\Quest\FloorTrap.cs" />
+    <Compile Include="Items\Quest\FloorTrapComponents.cs" />
+    <Compile Include="Items\Quest\FloorTrapKit.cs" />
     <Compile Include="Items\Quest\FoolishGold.cs" />
     <Compile Include="Items\Quest\GamanHorn.cs" />
     <Compile Include="Items\Quest\GaramonsBook.cs" />
@@ -2415,6 +2430,7 @@
     <Compile Include="Quests\EminosUndertaking\Conversations.cs" />
     <Compile Include="Quests\EminosUndertaking\EminosUndertakingQuest.cs" />
     <Compile Include="Quests\EminosUndertaking\Objectives.cs" />
+    <Compile Include="Quests\FiddlingTobin.cs" />
     <Compile Include="Quests\HaochisTrials\Conversations.cs" />
     <Compile Include="Quests\HaochisTrials\HaochisTrialsQuest.cs" />
     <Compile Include="Quests\HaochisTrials\Objectives.cs" />

@@ -480,6 +480,39 @@ namespace Server.Items
         }
     }
 
+    public class BowlOfRotwormStew : Food
+    {
+        public override int LabelNumber { get { return 1031706; } } // bowl of rotworm stew
+
+        [Constructable]
+        public BowlOfRotwormStew()
+            : base(0x2DBA)
+        {
+            this.Stackable = false;
+            this.Weight = 2.0;
+            this.FillFactor = 1;
+        }
+
+        public BowlOfRotwormStew(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
     public class WoodenBowlOfStew : Food
     {
         [Constructable]

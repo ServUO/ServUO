@@ -59,7 +59,7 @@ namespace Server.SkillHandlers
                     }
 
                     from.PlaySound(0x241);
-					
+
                     if (from.CheckTargetSkill(SkillName.RemoveTrap, targ, targ.TrapPower, targ.TrapPower + 30))
                     {
                         targ.TrapPower = 0;
@@ -116,6 +116,59 @@ namespace Server.SkillHandlers
 
                         if (!isOwner && kit != null)
                             kit.ConsumeCharge(from);
+                    }
+                }
+                else if (targeted is GoblinTrap)
+                {
+                    GoblinTrap targ = (GoblinTrap)targeted;
+
+                    from.Direction = from.GetDirectionTo(targ);
+                    from.PlaySound(0x241);
+
+                    if (from.CheckTargetSkill(SkillName.RemoveTrap, targ, 0.0, 100.0))
+                    {
+                        from.LocalOverheadMessage(Network.MessageType.Regular, 0x53, 502377); // You successfully render the trap harmless
+                        GoblinTrapGenerator.DisableTrap(from, targ);
+                    }
+                    else
+                    {
+                        if (Utility.RandomDouble() <= 0.2)
+                        {
+                            from.SendLocalizedMessage(502370); // Oops.
+                            targ.ExecuteTrap(from);
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(502371); // You breathe a sigh of relief, as you fail to disarm the trap, but don't set it off.
+                        }
+                    }
+                }
+                else if (targeted is FloorTrap)
+                {
+                    FloorTrap targ = (FloorTrap)targeted;
+
+                    from.Direction = from.GetDirectionTo(targ);
+                    from.PlaySound(0x241);
+
+                    if (from.CheckTargetSkill(SkillName.RemoveTrap, targ, targ.TinkerLevel, 110.0))
+                    {
+                        new FloorTrapKit().MoveToWorld(targ.Location, targ.Map);
+
+                        from.LocalOverheadMessage(Network.MessageType.Regular, 0x53, 502377); // You successfully render the trap harmless
+                        targ.Expire();
+                    }
+                    else
+                    {
+                        if (Utility.RandomDouble() <= 0.2)
+                        {
+                            from.SendLocalizedMessage(502370); // Oops.
+                            targ.ExecuteTrap(from);
+                        }
+                        else
+                        {
+                            targ.FailedRemoveTrapAttempt();
+                            from.SendLocalizedMessage(502371); // You breathe a sigh of relief, as you fail to disarm the trap, but don't set it off.
+                        }
                     }
                 }
                 else

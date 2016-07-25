@@ -94,7 +94,7 @@ namespace Server.Engines.Craft
                     return 1044156; // You create an exceptional quality item and affix your maker's mark.
                 else if (quality == 2)
                     return 1044155; // You create an exceptional quality item.
-                else 
+                else
                     return 1044154; // You create the item.
             }
         }
@@ -289,6 +289,13 @@ namespace Server.Engines.Craft
             index = this.AddCraft(typeof(Ribs), 1044498, 1022546, 0.0, 100.0, typeof(RawRibs), 1044485, 1, 1044253);
             this.SetNeedHeat(index, true);
             this.SetUseAllRes(index, true);
+
+            index = this.AddCraft(typeof(BowlOfRotwormStew), 1044498, 1031706, 0.0, 100.0, typeof(RawRotwormMeat), 1031705, 1, 1044253);
+            this.SetNeedHeat(index, true);
+            this.SetUseAllRes(index, true);
+            this.AddRecipe(index, (int)CookRecipes.RotWormStew);
+            this.SetNeededExpansion(index, Expansion.SA);
+
             /* End Barbecue */
 
             /* Begin Chocolatiering */
