@@ -314,6 +314,13 @@ namespace Server.Items
                 {
                     double difficulty;
 
+                    #region Void Pool Rewards
+                    bool talisman = false;
+                    SmeltersTalisman t = from.FindItemOnLayer(Layer.Talisman) as SmeltersTalisman;
+                    if (t != null && t.Resource == m_Ore.Resource)
+                        talisman = true;
+                    #endregion
+
                     switch ( this.m_Ore.Resource )
                     {
                         default:

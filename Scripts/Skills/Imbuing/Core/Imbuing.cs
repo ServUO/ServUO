@@ -1325,9 +1325,9 @@ namespace Server.SkillHandlers
 
 			if (from.Region != null && from.Region.IsPartOf("Royal Soulforge"))
 			{
-				long level = ((PlayerMobile)from).Exp;
+				//long level = ((PlayerMobile)from).Exp;
 
-				if (level < PlayerMobile.Noble)
+                if (!Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
 				{
 					if (message)
 						from.SendMessage("You must be of Noble loyalty to the Queen in order to use this forge.");
@@ -1509,7 +1509,7 @@ namespace Server.SkillHandlers
             //243 already used above
         }
 
-        private static bool IsInNonImbueList(Type itemType)
+        public static bool IsInNonImbueList(Type itemType)
         {
             foreach (Type type in m_CannotImbue)
             {

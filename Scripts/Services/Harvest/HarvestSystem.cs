@@ -186,6 +186,9 @@ namespace Server.Engines.Harvest
                                 item.Amount = racialAmount;
                             else
                                 item.Amount = amount;
+
+                            // Void Pool Rewards
+                            item.Amount += WoodsmansTalisman.CheckHarvest(from, type, this);
                         }
 
                         bank.Consume(item.Amount, from);

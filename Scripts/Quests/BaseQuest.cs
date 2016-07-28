@@ -432,6 +432,8 @@ namespace Server.Engines.Quests
                 if (quest != null && quest.ChainID == this.ChainID)
                     this.m_Owner.SendGump(new MondainQuestGump(quest));
             }
+
+            Server.Engines.Points.PointsSystem.HandleQuest(Owner, this);
         }
 		
         public virtual void AddObjective(BaseObjective objective)

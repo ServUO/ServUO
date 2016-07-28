@@ -1,21 +1,3 @@
-/*                                                             .---.
-/  .  \
-|\_/|   |
-|   |  /|
-.----------------------------------------------------------------' |
-/  .-.                                                              |
-|  /   \         Contribute To The Orbsydia SA Project               |
-| |\_.  |                                                            |
-|\|  | /|                        By Lotar84                          |
-| `---' |                                                            |
-|       |       (Orbanised by Orb SA Core Development Team)          | 
-|       |                                                           /
-|       |----------------------------------------------------------'
-\       |
-\     /
-`---'
-*/
-
 using Server.Items;
 using Server.Mobiles;
 
@@ -70,16 +52,6 @@ namespace Server.Engines.Quests
         public override object Complete
         {
             get { return 1113791; }
-        }
-
-        public override void GiveRewards()
-        {
-            if (Owner != null)
-            {
-                Owner.Exp += 75;
-                Owner.SendMessage("You have been awarded 75 Queens Loyalty Points!");
-                base.GiveRewards();
-            }
         }
 
         public override void Serialize(GenericWriter writer)

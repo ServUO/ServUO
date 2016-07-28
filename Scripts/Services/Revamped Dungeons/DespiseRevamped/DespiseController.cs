@@ -638,8 +638,8 @@ namespace Server.Engines.Despise
 
         #endregion
 
-        #region Despise Points
-        private Dictionary<Mobile, int> m_PointsTable = new Dictionary<Mobile, int>();
+        #region Despise Points - Removed to PointsSystem
+        /*private Dictionary<Mobile, int> m_PointsTable = new Dictionary<Mobile, int>();
         public Dictionary<Mobile, int> PointsTable { get { return m_PointsTable; } }
 
         public void AddDespisePoints(Mobile from, PutridHeart heart)
@@ -666,7 +666,7 @@ namespace Server.Engines.Despise
         {
             if (m_PointsTable.ContainsKey(from))
                 m_PointsTable[from] -= points;
-        }
+        }*/
         #endregion
 
         public DespiseController(Serial serial)
@@ -677,7 +677,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
 
             writer.Write(m_Enabled);
             writer.Write(m_NextBossEncounter);
@@ -693,12 +693,14 @@ namespace Server.Engines.Despise
             foreach (XmlSpawner spawner in m_EvilSpawners)
                 writer.Write(spawner);
 
+            // Moved to PointsSystem
+            /*
             writer.Write(m_PointsTable.Count);
             foreach (KeyValuePair<Mobile, int> kvp in m_PointsTable)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
-            }
+            }*/
         }
 
         public override void Deserialize(GenericReader reader)
@@ -732,14 +734,19 @@ namespace Server.Engines.Despise
                     m_EvilSpawners.Add(spawner);
             }
 
-            count = reader.ReadInt();
-            for (int i = 0; i < count; i++)
+            //Conversion to new Point System
+            if (version == 0)
             {
-                Mobile m = reader.ReadMobile();
-                int points = reader.ReadInt();
+                count = reader.ReadInt();
+                for (int i = 0; i < count; i++)
+                {
+                    Mobile m = reader.ReadMobile();
+                    int points = reader.ReadInt();
 
-                if (m != null && points > 0)
-                    m_PointsTable[m] = points;
+                    if (m != null && points > 0)
+                        Server.Engines.Points.PointsSystem.DespiseCrystals.ConvertFromOldSystem((PlayerMobile)m, points);
+                        //m_PointsTable[m] = points;
+                }
             }
 
 			if(!m_Enabled)

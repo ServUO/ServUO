@@ -693,6 +693,15 @@ namespace Server.Spells
             int v = (int)type;
             bool isValid = true;
 
+            BaseRegion destination = Region.Find(loc, map) as BaseRegion;
+            BaseRegion current = Region.Find(caster.Location, map) as BaseRegion;
+
+            if (destination != null && !destination.CheckTravel(caster, loc, type))
+                isValid = false;
+
+            if (isValid && current != null && !current.CheckTravel(caster, loc, type))
+                isValid = false;
+
             #region Mondain's Legacy
             if (m_TravelCaster != null && m_TravelCaster.Region != null)
             {

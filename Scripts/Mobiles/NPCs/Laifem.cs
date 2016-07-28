@@ -45,14 +45,6 @@ namespace Server.Engines.Quests
 
             AddReward(new BaseReward( 1113256 ));/*A step closer to having access to Laifem's inventory of decorative carpets. */
 		}
-
-       // public override void GiveRewards()
-       // {
-          // if ( Owner is PlayerMobile ) 
-          // ((PlayerMobile)Owner).Exp += 50;
-          //// Owner.SendMessage("You have also been awarded 5 Queens Loyalty Points!");
-          // base.GiveRewards();
-       // }
 		
 		public override void Serialize( GenericWriter writer )
 		{
@@ -98,14 +90,6 @@ namespace Server.Engines.Quests
 
             AddReward(new BaseReward(1113256)); // A step closer to having access to Laifem's inventory of decorative carpets.
 		}
-
-       // public override void GiveRewards()
-       // {
-           // if (Owner is PlayerMobile)
-           // ((PlayerMobile)Owner).Exp += 100;
-           // Owner.SendMessage("You have also been awarded 10 Queens Loyalty Points!");
-           // base.GiveRewards();
-       // }
 		
 		public override void Serialize( GenericWriter writer )
 		{

@@ -202,6 +202,21 @@ namespace Server.Engines.Harvest
         {
             if (def == this.m_OreAndStone)
             {
+                #region Void Pool Items
+                HarvestMap hmap = HarvestMap.CheckMapOnHarvest(from, loc, def);
+
+                if (hmap != null && hmap.Resource >= CraftResource.Iron && hmap.Resource <= CraftResource.Valorite)
+                {
+                    hmap.UsesRemaining--;
+                    hmap.InvalidateProperties();
+
+                    CraftResourceInfo info = CraftResources.GetInfo(hmap.Resource);
+
+                    if (info != null)
+                        return info.ResourceTypes[1];
+                }
+                #endregion
+
                 PlayerMobile pm = from as PlayerMobile;
 
                 if (pm != null && pm.GemMining && pm.ToggleMiningGem && from.Skills[SkillName.Mining].Base >= 100.0 && 0.1 > Utility.RandomDouble())
@@ -214,6 +229,14 @@ namespace Server.Engines.Harvest
             }
 
             return base.GetResourceType(from, tool, def, map, loc, resource);
+        }
+
+        public override bool CheckResources(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)
+        {
+            if (HarvestMap.CheckMapOnHarvest(from, loc, def) == null)
+                return base.CheckResources(from, tool, def, map, loc, timed);
+
+            return true;
         }
 
         public override bool CheckHarvest(Mobile from, Item tool)
@@ -296,7 +319,7 @@ namespace Server.Engines.Harvest
 
         public override void OnHarvestFinished(Mobile from, Item tool, HarvestDefinition def, HarvestVein vein, HarvestBank bank, HarvestResource resource, object harvested)
         {
-            if (tool is GargoylesPickaxe && def == this.m_OreAndStone && 0.1 > Utility.RandomDouble())
+            if (tool is GargoylesPickaxe && def == this.m_OreAndStone && 0.1 > Utility.RandomDouble() && HarvestMap.CheckMapOnHarvest(from, harvested, def) == null)
             {
                 HarvestResource res = vein.PrimaryResource;
 
