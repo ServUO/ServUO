@@ -74,7 +74,32 @@ namespace Server.Engines.VoidPool
                     }
                 }
 
+                XmlSpawner spawner = new XmlSpawner("corathesorceress");
+                spawner.MoveToWorld(new Point3D(5457, 1808, 0), Map.Trammel);
+                spawner.SpawnRange = 5;
+                spawner.MinDelay = TimeSpan.FromHours(1);
+                spawner.MaxDelay = TimeSpan.FromHours(1.5);
+                spawner.DoRespawn = true;
+
+                spawner = new XmlSpawner("corathesorceress");
+                spawner.MoveToWorld(new Point3D(5457, 1808, 0), Map.Felucca);
+                spawner.SpawnRange = 5;
+                spawner.MinDelay = TimeSpan.FromHours(1);
+                spawner.MaxDelay = TimeSpan.FromHours(1.5);
+                spawner.DoRespawn = true;
+
+                spawner = new XmlSpawner("velathesorceress");
+                spawner.MoveToWorld(new Point3D(2254, 1207, 0), Map.Trammel);
+                spawner.SpawnRange = 0;
+                spawner.DoRespawn = true;
+
+                spawner = new XmlSpawner("velathesorceress");
+                spawner.MoveToWorld(new Point3D(2254, 1207, 0), Map.Felucca);
+                spawner.SpawnRange = 0;
+                spawner.DoRespawn = true;
+
                 AddWaypoints();
+                ConvertSpawners();
             }
         }
 
@@ -319,6 +344,45 @@ namespace Server.Engines.VoidPool
 
             two.WaypointACount = two.WaypointsA.Count;
             two.WaypointBCount = two.WaypointsB.Count;
+        }
+
+        private static Rectangle2D _SpawnerBounds = new Rectangle2D(5383, 1845, 125, 115);
+
+        public static void ConvertSpawners()
+        {
+            Region tram = Region.Regions.FirstOrDefault(r => r.Map == Map.Trammel && r.Name == "Covetous");
+            Region fel = Region.Regions.FirstOrDefault(r => r.Map == Map.Felucca && r.Name == "Covetous");
+
+            ConvertRegionSpawners(tram);
+            ConvertRegionSpawners(fel);
+        }
+
+        public static void ConvertRegionSpawners(Region r)
+        {
+            foreach (Sector s in r.Sectors)
+            {
+                foreach (Item i in s.Items.Where(i => i is XmlSpawner && _SpawnerBounds.Contains(i)))
+                {
+                    XmlSpawner spawner = i as XmlSpawner;
+
+                    foreach (XmlSpawner.SpawnObject obj in spawner.SpawnObjects)
+                    {
+                        if (obj.TypeName != null)
+                        {
+                            string name = obj.TypeName.ToLower();
+
+                            if (name == "gazer" || name == "gazerlarva")
+                                obj.TypeName = "StrangeGazer";
+                            else if (name == "headlessone")
+                                obj.TypeName = "HeadlessMiner";
+                            else if (name == "harpy")
+                                obj.TypeName = "DazzledHarpy";
+                            else if (name == "stoneharpy")
+                                obj.TypeName = "VampireMongbat";
+                        }
+                    }
+                }
+            }
         }
 	}
 }

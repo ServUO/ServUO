@@ -17,9 +17,9 @@ namespace Server.Engines.VoidPool
             Name = "Vela";
             Title = "the sorceress";
 
-            SetHits(100);
-            SetStam(100);
-            SetMana(100);
+            SetStr(110);
+            SetDex(100);
+            SetInt(1000);
 
             Hue = Utility.RandomSkinHue();
             Body = 0x191;

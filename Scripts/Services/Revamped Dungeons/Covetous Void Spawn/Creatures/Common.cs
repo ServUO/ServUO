@@ -51,6 +51,9 @@ namespace Server.Mobiles
 		{
 			Name = "a vampire mongbat";
             FightMode = FightMode.Aggressor;
+            Hue = 1461;
+
+            SetHits(76, 171);
 
             SetStr(60, 100);
             SetDex(60, 80);
