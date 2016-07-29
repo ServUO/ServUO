@@ -157,6 +157,11 @@ namespace Server.Engines.Points
             Entries[typeof(VoidManifestation)]    	= new Tuple<double, double>(50, 5);
 			Entries[typeof(Navrey)] 				= new Tuple<double, double>(75, 7.5);
 			Entries[typeof(Niporailem)] 			= new Tuple<double, double>(75, 7.5);
+            Entries[typeof(Navrey)]                 = new Tuple<double, double>(75, 7.5);
+            Entries[typeof(StygianDragon)]          = new Tuple<double, double>(150, 15.0);
+            Entries[typeof(PrimevalLich)]           = new Tuple<double, double>(150, 15.0);
+            Entries[typeof(Medusa)]                 = new Tuple<double, double>(150, 15.0);
+            Entries[typeof(AbyssalInfernal)]        = new Tuple<double, double>(150, 15.0);
 			
             //Quests
 			Entries[typeof(ABrokenVaseQuest)]     				= new Tuple<double, double>(5, 0.5);
