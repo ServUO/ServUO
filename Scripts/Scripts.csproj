@@ -2645,6 +2645,8 @@
     <Compile Include="Services\FireCasino\DiceGames.cs" />
     <Compile Include="Services\FireCasino\FortuesFireGrog.cs" />
     <Compile Include="Services\FireCasino\Mobiles.cs" />
+    <Compile Include="Services\FireCasino\TentBrownAddon.cs" />
+    <Compile Include="Services\FireCasino\TentWhiteAddon.cs" />
     <Compile Include="Services\HolidaySettings.cs" />
     <Compile Include="Services\MaginciaBazaar\BazaarAddOns\Alchemist2BazaarAddon.cs">
       <SubType>Code</SubType>
