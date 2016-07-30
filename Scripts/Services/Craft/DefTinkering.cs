@@ -260,15 +260,6 @@ namespace Server.Engines.Craft
                 this.AddRes(index, typeof(Ruby), 1044234, 1, 1044253);
                 this.SetNeededExpansion(index, Expansion.ML);
             }
-
-	        if (Core.SA)
-	        {
-				index = this.AddCraft(typeof(VoidOrb), 1044051, 1113354, 90.0, 104.3, typeof(DarkSapphire), 1032690, 1, 1044253);
-				this.AddSkill(index, SkillName.Magery, 80.0, 100.0);
-				this.AddRes(index, typeof(BlackPearl), 1015001, 50, 1044253);
-				this.SetNeededExpansion(index, Expansion.SA);
-				this.ForceNonExceptional(index);
-			}
             
             #endregion
 
@@ -398,6 +389,37 @@ namespace Server.Engines.Craft
                 this.AddRes(index, typeof(PhillipsWoodenSteed), 1063488, 1, 1044253);
             }
             #endregion
+
+            if (Core.SA)
+            {
+                index = this.AddCraft(typeof(VoidOrb), 1044051, 1113354, 90.0, 104.3, typeof(DarkSapphire), 1032690, 1, 1044253);
+                this.AddSkill(index, SkillName.Magery, 80.0, 100.0);
+                this.AddRes(index, typeof(BlackPearl), 1015001, 50, 1044253);
+                this.SetNeededExpansion(index, Expansion.SA);
+                this.ForceNonExceptional(index);
+            }
+
+            index = AddCraft(typeof(AdvancedTrainingDummyEastDeed), 1044051, 1150596, 90.0, 120.0, typeof(TrainingDummyEastDeed), 1044335, 1, 1044253);
+            AddRes(index, typeof(PlateChest), 1025141, 1, 1044253);
+            AddRes(index, typeof(CloseHelm), 1025128, 1, 1044253);
+            AddRes(index, typeof(Broadsword), 1015055, 1, 1044253);
+            ForceNonExceptional(index);
+
+            index = AddCraft(typeof(AdvancedTrainingDummySouthDeed), 1044051, 1150595, 90.0, 120.0, typeof(TrainingDummySouthDeed), 1044336, 1, 1044253);
+            AddRes(index, typeof(PlateChest), 1025141, 1, 1044253);
+            AddRes(index, typeof(CloseHelm), 1025128, 1, 1044253);
+            AddRes(index, typeof(Broadsword), 1015055, 1, 1044253);
+            ForceNonExceptional(index);
+
+            index = AddCraft(typeof(DistilleryEastAddonDeed), 1044051, 1150664, 90.0, 120.0, typeof(MetalKeg), 1150675, 2, 1044253);
+            AddRes(index, typeof(HeatingStand), 1011224, 4, 1044253);
+            AddRes(index, typeof(CopperWire), 1026265, 1, 1044253);
+            ForceNonExceptional(index);
+
+            index = AddCraft(typeof(DistillerySouthAddonDeed), 1044051, 1150663, 90.0, 120.0, typeof(MetalKeg), 1150675, 2, 1044253);
+            AddRes(index, typeof(HeatingStand), 1011224, 4, 1044253);
+            AddRes(index, typeof(CopperWire), 1026265, 1, 1044253);
+            ForceNonExceptional(index);
 
             #endregion
 

@@ -237,6 +237,9 @@ namespace Server.Mobiles
                     toGive[Utility.Random(toGive.Count)].AddToBackpack(new ChampionSkull(this.SkullType));
                 else
                     c.DropItem(new ChampionSkull(this.SkullType));
+
+                if(Core.SA)
+                    RefinementComponent.Roll(c, 3, 0.10);
             }
 
             base.OnDeath(c);

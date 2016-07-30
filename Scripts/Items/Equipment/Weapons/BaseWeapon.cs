@@ -1302,10 +1302,12 @@ namespace Server.Items
 					bonus -= discordanceEffect;
 				}
 
+                int max = Core.SA ? 45 + BaseArmor.GetRefinedDefenseChance(defender) : 45;
+
 				// Defense Chance Increase = 45%
-				if (bonus > 45)
+				if (bonus > max)
 				{
-					bonus = 45;
+					bonus = max;
 				}
 
 				theirValue = (defValue + 20.0) * (100 + bonus);

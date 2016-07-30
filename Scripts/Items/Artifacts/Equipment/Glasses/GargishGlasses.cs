@@ -11,7 +11,7 @@ namespace Server.Items
         public GargishGlasses()
             : base(0x4644)
         {
-            this.Layer = Layer.Helm;       
+            this.Layer = Layer.Earrings;       
             this.Weight = 2;
             this.m_AosWeaponAttributes = new AosWeaponAttributes(this);
         }

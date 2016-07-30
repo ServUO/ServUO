@@ -31,10 +31,19 @@ namespace Server.Gumps
             this.AddImage(333, 2, 0x2716); 
             this.AddImage(315, 248, 0x2716); 
             this.AddImage(2, 248, 0x2716); 
-            this.AddImage(2, 2, 0x2716); 			
-            this.AddHtmlLocalized(25, 25, 200, 20, this.TitleNumber, 0x7D00, false, false);
-            this.AddImage(25, 40, 0xBBF); 
-            this.AddHtmlLocalized(25, 55, 300, 120, this.LabelNumber, 0xFFFFFF, false, false);
+            this.AddImage(2, 2, 0x2716);
+
+            if (TitleString == null)
+                AddHtmlLocalized(25, 25, 200, 20, TitleNumber, 0x7D00, false, false);
+            else
+                AddHtml(25, 25, 200, 20, "<BASEFONT COLOR=#FF0000>" + TitleString + "</BASEFONT>", false, false);
+
+            this.AddImage(25, 40, 0xBBF);
+
+            if (LabelString == null)
+                AddHtmlLocalized(25, 55, 300, 120, LabelNumber, 0xFFFFFF, false, false);
+            else
+                AddHtml(25, 55, 300, 120, "<BASEFONT COLOR=#FFFFFF>" + LabelString + "</BASEFONT>", false, false);
 			
             this.AddRadio(25, 175, 0x25F8, 0x25FB, true, (int)Buttons.Break);
             this.AddRadio(25, 210, 0x25F8, 0x25FB, false, (int)Buttons.Close);
@@ -65,6 +74,10 @@ namespace Server.Gumps
                 return 1074975;
             }
         }// Are you sure you wish to select this?
+
+        public virtual string TitleString { get { return null; } }
+        public virtual string LabelString { get { return null; } }
+
         public override void OnResponse(Server.Network.NetState state, RelayInfo info)
         { 
             if (info.ButtonID == (int)Buttons.Confirm)

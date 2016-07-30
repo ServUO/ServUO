@@ -298,6 +298,7 @@
     <Compile Include="Gumps\BaseImageTileButtonsGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\BasicInfoGump.cs" />
     <Compile Include="Gumps\CategorizedAddGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -552,6 +553,7 @@
     <Compile Include="Gumps\YoungGumps.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Addons\AdvancedTrainingDummy.cs" />
     <Compile Include="Items\Addons\BaseAddon.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -564,6 +566,10 @@
     <Compile Include="Items\Addons\BaseAddonDeed.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Addons\Distillery.cs" />
+    <Compile Include="Items\Addons\DolphinRug.cs" />
+    <Compile Include="Items\Addons\RoseRug.cs" />
+    <Compile Include="Items\Addons\SkullRug.cs" />
     <Compile Include="Items\Artifacts\Decorative\MapOfTheKnownWorld.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
@@ -572,6 +578,7 @@
     <Compile Include="Items\Consumables\BaseAgilityPotion.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Consumables\BaseRewardTitleDeed.cs" />
     <Compile Include="Items\Consumables\CreepyCake.cs" />
     <Compile Include="Items\Consumables\ElixirOfRebirth.cs" />
     <Compile Include="Items\Consumables\HarvestWine.cs" />
@@ -584,6 +591,7 @@
     <Compile Include="Items\Consumables\PersonalAttendantToken.cs" />
     <Compile Include="Items\Consumables\PumpkinPizza.cs" />
     <Compile Include="Items\Consumables\Taffy.cs" />
+    <Compile Include="Items\Consumables\ThanksGivingFood.cs" />
     <Compile Include="Items\Consumables\WrappedCandy.cs" />
     <Compile Include="Items\Containers\MeagerImbuingBag.cs" />
     <Compile Include="Items\Containers\ScrollBox2.cs" />
@@ -1569,6 +1577,7 @@
     <Compile Include="Items\Addons\Aquarium\Rewards\Shell.cs" />
     <Compile Include="Items\Addons\Aquarium\Rewards\ToyBoat.cs" />
     <Compile Include="Items\Addons\Aquarium\Rewards\WaterloggedBoots.cs" />
+    <Compile Include="Misc\WorldLocationInfo.cs" />
     <Compile Include="Mobiles\Bosses\AbyssalInfernal.cs" />
     <Compile Include="Mobiles\Bosses\Barracoon.cs" />
     <Compile Include="Mobiles\Bosses\BaseChampion.cs" />
@@ -1942,6 +1951,7 @@
     <Compile Include="Mobiles\Normal\PlagueBeastLord.cs" />
     <Compile Include="Mobiles\Normal\PlagueRat.cs" />
     <Compile Include="Mobiles\Normal\PlagueSpawn.cs" />
+    <Compile Include="Mobiles\Normal\Turkey.cs" />
     <Compile Include="Mobiles\NPCs\Emilio.cs" />
     <Compile Include="Mobiles\NPCs\Evan.cs" />
     <Compile Include="Mobiles\NPCs\Regina.cs" />
@@ -2648,6 +2658,16 @@
     <Compile Include="Services\FireCasino\TentBrownAddon.cs" />
     <Compile Include="Services\FireCasino\TentWhiteAddon.cs" />
     <Compile Include="Services\HolidaySettings.cs" />
+    <Compile Include="Services\HuntmasterChallenge\BestKillBoard.cs" />
+    <Compile Include="Services\HuntmasterChallenge\ComplexHuntTrophy.cs" />
+    <Compile Include="Services\HuntmasterChallenge\DisplayTrophy.cs" />
+    <Compile Include="Services\HuntmasterChallenge\HuntingPermit.cs" />
+    <Compile Include="Services\HuntmasterChallenge\HuntingSystem.cs" />
+    <Compile Include="Services\HuntmasterChallenge\HuntingTrophyInfo.cs" />
+    <Compile Include="Services\HuntmasterChallenge\HuntMaster.cs" />
+    <Compile Include="Services\HuntmasterChallenge\HuntTrophy.cs" />
+    <Compile Include="Services\HuntmasterChallenge\KillEntry.cs" />
+    <Compile Include="Services\HuntmasterChallenge\RewardItems.cs" />
     <Compile Include="Services\MaginciaBazaar\BazaarAddOns\Alchemist2BazaarAddon.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9117,6 +9137,45 @@
     <Compile Include="Services\Harvest\HarvestVein.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\New Magincia\Command.cs" />
+    <Compile Include="Services\New Magincia\Distillation\CraftDefinition.cs" />
+    <Compile Include="Services\New Magincia\Distillation\DistillationContext.cs" />
+    <Compile Include="Services\New Magincia\Distillation\DistillationGump.cs" />
+    <Compile Include="Services\New Magincia\Distillation\DistillationSystem.cs" />
+    <Compile Include="Services\New Magincia\Distillation\Items\BottleOfLiquor.cs" />
+    <Compile Include="Services\New Magincia\Distillation\Items\LiquorBarrel.cs" />
+    <Compile Include="Services\New Magincia\Distillation\Items\MetalKeg.cs" />
+    <Compile Include="Services\New Magincia\Distillation\Items\WheatWort.cs" />
+    <Compile Include="Services\New Magincia\Distillation\Items\Yeast.cs" />
+    <Compile Include="Services\New Magincia\Housing Lotto\Core\MaginciaHousingPlot.cs" />
+    <Compile Include="Services\New Magincia\Housing Lotto\Core\MaginciaLottoSystem.cs" />
+    <Compile Include="Services\New Magincia\Housing Lotto\Core\NewMaginciaMessage.cs" />
+    <Compile Include="Services\New Magincia\Housing Lotto\Core\Region.cs" />
+    <Compile Include="Services\New Magincia\Housing Lotto\Gumps\LottoTrackingGump.cs" />
+    <Compile Include="Services\New Magincia\Housing Lotto\Gumps\MaginciaLottoGump.cs" />
+    <Compile Include="Services\New Magincia\Housing Lotto\Gumps\NewMaginciaMessageGump.cs" />
+    <Compile Include="Services\New Magincia\Housing Lotto\Gumps\PlotWinnerGump.cs" />
+    <Compile Include="Services\New Magincia\Housing Lotto\Items\MaginciaPlotStone.cs" />
+    <Compile Include="Services\New Magincia\Housing Lotto\Items\WritOfLease.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Core\BrokerEntries.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Core\MaginciaBizaar.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Core\MaginciaBizaarPlot.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Core\MaginciaPlotAuction.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Core\StorageEntry.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Gumps\BaseBazaarGump.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Gumps\BizaarSignGump.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Gumps\CommodityBrokerGump.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Gumps\PetBrokerGumps.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Items\Containers.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Items\PlotSign.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Items\StallMultis.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Mobiles\BaseBizaarBroker.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Mobiles\CommodityBroker.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Mobiles\PetBroker.cs" />
+    <Compile Include="Services\New Magincia\Magincia Bazaar\Mobiles\WarehouseSuperintendent.cs" />
+    <Compile Include="Services\New Magincia\MaginciaPlants\Hoe.cs" />
+    <Compile Include="Services\New Magincia\MaginciaPlants\MaginciaPlantItem.cs" />
+    <Compile Include="Services\New Magincia\MaginciaPlants\MaginciaPlantSystem.cs" />
     <Compile Include="Services\PointsSystems\CasinoData.cs" />
     <Compile Include="Services\PointsSystems\DespiseCrystals.cs" />
     <Compile Include="Services\PointsSystems\PointsSystem.cs" />
@@ -11567,6 +11626,7 @@
     <None Include="Services\XmlSpawner\XMLSpawner Support\Stealing.cs.2.4" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Services\New Magincia\ReadMe.txt" />
     <Content Include="Services\RunicReforging\ReadMe.txt" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\SpawnerConfigs\xmlspawner.xml" />
     <Content Include="Services\XmlSpawner\XMLSpawner Extras\Spawns\attachtest1.xml" />

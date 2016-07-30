@@ -104,7 +104,7 @@ namespace Server.Spells
 			}
 			else if (Ninjitsu.AnimalForm.UnderTransformation(Caster) ||
 				Mystic.StoneFormSpell.IsEffected(Caster) ||
-				TransformationSpellHelper.UnderTransformation(Caster))
+				(TransformationSpellHelper.UnderTransformation(Caster) && !TransformationSpellHelper.UnderTransformation(Caster, typeof(Spells.Necromancy.VampiricEmbraceSpell))))
 			{
 				Caster.SendLocalizedMessage(1061091); // You cannot cast that spell in this form.
 				return;

@@ -68,6 +68,9 @@ namespace Server.Mobiles
 
             if (Core.AOS)
                 this.PackItem(Loot.RandomNecromancyReagent());
+
+            if (0.5 > Utility.RandomDouble())
+                PackItem(new Yeast());
         }
 
         public OrcCaptain(Serial serial)

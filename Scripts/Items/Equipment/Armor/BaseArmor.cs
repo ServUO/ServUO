@@ -431,6 +431,115 @@ namespace Server.Items
             }
         }
 
+        #region Publish 81 Armor Refinement
+        private int m_RefinedPhysical;
+        private int m_RefinedFire;
+        private int m_RefinedCold;
+        private int m_RefinedPoison;
+        private int m_RefinedEnergy;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int RefinedPhysical { get { return m_RefinedPhysical; } set { m_RefinedPhysical = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int RefinedFire { get { return m_RefinedFire; } set { m_RefinedFire = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int RefinedCold { get { return m_RefinedCold; } set { m_RefinedCold = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int RefinedPoison { get { return m_RefinedPoison; } set { m_RefinedPoison = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int RefinedEnergy { get { return m_RefinedEnergy; } set { m_RefinedEnergy = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int RefinedDefenseChance { get { return -(m_RefinedPhysical + m_RefinedFire + m_RefinedCold + m_RefinedPoison + m_RefinedEnergy); } }
+
+        public static int GetRefinedResist(Mobile from, ResistanceType attr)
+        {
+            int value = 0;
+
+            foreach (Item item in from.Items)
+            {
+                if (item is BaseArmor)
+                {
+                    BaseArmor armor = item as BaseArmor;
+
+                    switch (attr)
+                    {
+                        case ResistanceType.Physical: value += armor.m_RefinedPhysical; break;
+                        case ResistanceType.Fire: value += armor.m_RefinedFire; break;
+                        case ResistanceType.Cold: value += armor.m_RefinedCold; break;
+                        case ResistanceType.Poison: value += armor.m_RefinedPoison; break;
+                        case ResistanceType.Energy: value += armor.m_RefinedEnergy; break;
+                    }
+                }
+            }
+
+            return value;
+        }
+
+        public static int GetRefinedDefenseChance(Mobile from)
+        {
+            int value = 0;
+
+            foreach (Item item in from.Items)
+            {
+                if (item is BaseArmor)
+                    value += ((BaseArmor)item).RefinedDefenseChance;
+            }
+
+            return value;
+        }
+
+        public override void AddResistanceProperties(ObjectPropertyList list)
+        {
+            if (PhysicalResistance != 0 || m_RefinedPhysical != 0)
+            {
+                if (m_RefinedPhysical != 0)
+                    list.Add(1153735, String.Format("{0}\t{1}\t{2}", PhysicalResistance.ToString(), "", m_RefinedPhysical.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
+                else
+                    list.Add(1060448, PhysicalResistance.ToString()); // physical resist ~1_val~%
+            }
+
+            if (FireResistance != 0 || m_RefinedFire != 0)
+            {
+                if (m_RefinedFire != 0)
+                    list.Add(1153737, String.Format("{0}\t{1}\t{2}", FireResistance.ToString(), "", m_RefinedFire.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
+                else
+                    list.Add(1060447, FireResistance.ToString()); // physical resist ~1_val~%
+            }
+
+            if (ColdResistance != 0 || m_RefinedCold != 0)
+            {
+                if (m_RefinedCold != 0)
+                    list.Add(1153739, String.Format("{0}\t{1}\t{2}", ColdResistance.ToString(), "", m_RefinedCold.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
+                else
+                    list.Add(1060445, ColdResistance.ToString()); // physical resist ~1_val~%
+            }
+
+            if (PoisonResistance != 0 || m_RefinedPoison != 0)
+            {
+                if (m_RefinedPoison != 0)
+                    list.Add(1153736, String.Format("{0}\t{1}\t{2}", PoisonResistance.ToString(), "", m_RefinedPoison.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
+                else
+                    list.Add(1060449, PoisonResistance.ToString()); // physical resist ~1_val~%
+            }
+
+            if (EnergyResistance != 0 || m_RefinedEnergy != 0)
+            {
+                if (m_RefinedEnergy != 0)
+                    list.Add(1153738, String.Format("{0}\t{1}\t{2}", EnergyResistance.ToString(), "", m_RefinedEnergy.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
+                else
+                    list.Add(1060446, EnergyResistance.ToString()); // physical resist ~1_val~%
+            }
+
+            if (RefinedDefenseChance != 0)
+                list.Add(1153733, String.Format("{0}\t{1}", "", RefinedDefenseChance.ToString()));
+        }
+        #endregion
+
         #region Stygian Abyss
         [CommandProperty(AccessLevel.GameMaster)]
         public int GorgonLenseCharges
@@ -1466,7 +1575,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)10); // version
+            writer.Write((int)11); // version
+
+            //Version 11
+            writer.Write(m_RefinedPhysical);
+            writer.Write(m_RefinedFire);
+            writer.Write(m_RefinedCold);
+            writer.Write(m_RefinedPoison);
+            writer.Write(m_RefinedEnergy);
 
             //Version 10
             writer.Write((bool)this.m_IsImbued);
@@ -1663,6 +1779,15 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 11:
+                    {
+                        m_RefinedPhysical = reader.ReadInt();
+                        m_RefinedFire = reader.ReadInt();
+                        m_RefinedCold = reader.ReadInt();
+                        m_RefinedPoison = reader.ReadInt();
+                        m_RefinedEnergy = reader.ReadInt();
+                        goto case 10;
+                    }
                 case 10:
                     {
                         this.m_IsImbued = reader.ReadBool();

@@ -275,6 +275,11 @@ namespace Server.Items
         }
 
         [Constructable]
+        public TreasureMap()
+        {
+        }
+
+        [Constructable]
         public TreasureMap(int level, Map map)
         {
             m_Level = level;
