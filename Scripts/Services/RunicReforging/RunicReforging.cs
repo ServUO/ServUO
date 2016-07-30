@@ -108,6 +108,8 @@ namespace Server.Items
                 goodtogo = false;
             else if (!allowableSpecial && item is BaseClothing && !(item is BaseHat))
                 goodtogo = false;
+            else if (Imbuing.IsInNonImbueList(item.GetType()))
+                goodtogo = false;
 
             if (!goodtogo)
                 from.SendLocalizedMessage(1152113); // You cannot reforge that item.
@@ -1452,7 +1454,7 @@ namespace Server.Items
 
             if (highest != null)
             {
-                return highest.Luck + /*AnniversarySculpture.GetLuckBonus(highest) +*/ FountainOfFortune.GetLuckBonus(highest);
+                return highest.Luck + TenthAnniversarySculpture.GetLuckBonus(highest) + FountainOfFortune.GetLuckBonus(highest);
             }
 
             return 0;
@@ -2422,17 +2424,39 @@ namespace Server.Items
         {
             if (targeted is Item && m_Tool != null)
             {
-                if (((Item)targeted).IsChildOf(from.Backpack))
-                {
-                    Item item = targeted as Item;
+                Item item = targeted as Item;
 
-                    if (RunicReforging.CanReforge(from, item, m_Tool.CraftSystem))
+                if (item is BaseRunicTool)
+                {
+                    if (item.IsChildOf(from.Backpack))
                     {
-                        from.SendGump(new RunicReforgingGump(from, item, m_Tool));
+                        if (item.GetType() != m_Tool.GetType())
+                            from.SendLocalizedMessage(1152274); // You may only combine runic tools of the same type.
+                        else if (((BaseRunicTool)item).Resource != m_Tool.Resource)
+                            from.SendLocalizedMessage(1152275); // You may only combine runic tools of the same material.
+                        else if (m_Tool.UsesRemaining + ((BaseRunicTool)item).UsesRemaining > 100)
+                            from.SendLocalizedMessage(1152276); // The combined charges of the two tools cannot exceed 100.
+                        else
+                        {
+                            m_Tool.UsesRemaining += ((BaseRunicTool)item).UsesRemaining;
+                            item.Delete();
+
+                            from.SendLocalizedMessage(1152278); // You combine the runic tools, consolidating their Uses Remaining.
+                        }
                     }
+                    else
+                        from.SendLocalizedMessage(1152277); // Both tools must be in your backpack in order to combine them.
                 }
                 else
-                    from.SendLocalizedMessage(1152271); // That must be in your backpack for you to use it.
+                {
+                    if (item.IsChildOf(from.Backpack))
+                    {
+                        if (RunicReforging.CanReforge(from, item, m_Tool.CraftSystem))
+                            from.SendGump(new RunicReforgingGump(from, item, m_Tool));
+                    }
+                    else
+                        from.SendLocalizedMessage(1152271); // The item must be in your backpack to re-forge it.
+                }
             }
         }
     }

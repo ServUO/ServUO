@@ -593,5 +593,10 @@ namespace Server.Regions
                 this.m_TotalWeight += weight;
             }
         }
+
+        public virtual bool CheckTravel(Mobile traveller, Point3D p, Server.Spells.TravelCheckType type)
+        {
+            return true;
+        }
     }
 }

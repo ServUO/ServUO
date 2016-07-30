@@ -162,6 +162,34 @@ namespace Server.Engines.Harvest
 			return true;
         }
 
+        public override Type GetResourceType(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, HarvestResource resource)
+        {
+            #region Void Pool Items
+            HarvestMap hmap = HarvestMap.CheckMapOnHarvest(from, loc, def);
+
+            if (hmap != null && hmap.Resource >= CraftResource.RegularWood && hmap.Resource <= CraftResource.Frostwood)
+            {
+                hmap.UsesRemaining--;
+                hmap.InvalidateProperties();
+
+                CraftResourceInfo info = CraftResources.GetInfo(hmap.Resource);
+
+                if (info != null)
+                    return info.ResourceTypes[0];
+            }
+            #endregion
+
+            return base.GetResourceType(from, tool, def, map, loc, resource);
+        }
+
+        public override bool CheckResources(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)
+        {
+            if (HarvestMap.CheckMapOnHarvest(from, loc, def) == null)
+                return base.CheckResources(from, tool, def, map, loc, timed);
+
+            return true;
+        }
+
         public override void OnBadHarvestTarget(Mobile from, Item tool, object toHarvest)
         {
             if (toHarvest is Mobile)

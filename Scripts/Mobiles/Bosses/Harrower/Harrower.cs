@@ -43,7 +43,7 @@ namespace Server.Mobiles
         private bool m_TrueForm;
         private Item m_GateItem;
         private List<HarrowerTentacles> m_Tentacles;
-        private Timer m_Timer;
+
         Dictionary<Mobile, int> m_DamageEntries;
         [Constructable]
         public Harrower()
@@ -80,9 +80,6 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Meditation, 120.0);
 
             this.m_Tentacles = new List<HarrowerTentacles>();
-
-            this.m_Timer = new TeleportTimer(this);
-            this.m_Timer.Start();
         }
 
         public Harrower(Serial serial)
@@ -170,6 +167,9 @@ namespace Server.Mobiles
                 return this.m_TrueForm;
             }
         }
+
+        public override bool TeleportsTo { get { return true; } }
+
         public static Harrower Spawn(Point3D platLoc, Map platMap)
         {
             if (m_Instances.Count > 0)
@@ -286,9 +286,6 @@ namespace Server.Mobiles
                         this.m_TrueForm = reader.ReadBool();
                         this.m_GateItem = reader.ReadItem();
                         this.m_Tentacles = reader.ReadStrongMobileList<HarrowerTentacles>();
-
-                        this.m_Timer = new TeleportTimer(this);
-                        this.m_Timer.Start();
 
                         break;
                     }
@@ -549,104 +546,6 @@ namespace Server.Mobiles
             {
                 this.m_Location = loc;
                 this.m_Entrance = ent;
-            }
-        }
-
-        private class TeleportTimer : Timer
-        {
-            private static readonly int[] m_Offsets = new int[]
-            {
-                -1, -1,
-                -1, 0,
-                -1, 1,
-                0, -1,
-                0, 1,
-                1, -1,
-                1, 0,
-                1, 1
-            };
-            private readonly Mobile m_Owner;
-            public TeleportTimer(Mobile owner)
-                : base(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(5.0))
-            {
-                this.Priority = TimerPriority.TwoFiftyMS;
-
-                this.m_Owner = owner;
-            }
-
-            protected override void OnTick()
-            {
-                if (this.m_Owner.Deleted)
-                {
-                    this.Stop();
-                    return;
-                }
-
-                Map map = this.m_Owner.Map;
-
-                if (map == null)
-                    return;
-
-                if (0.25 < Utility.RandomDouble())
-                    return;
-
-                Mobile toTeleport = null;
-
-                foreach (Mobile m in this.m_Owner.GetMobilesInRange(16))
-                {
-                    if (m != this.m_Owner && m.Player && this.m_Owner.CanBeHarmful(m) && this.m_Owner.CanSee(m))
-                    {
-                        toTeleport = m;
-                        break;
-                    }
-                }
-
-                if (toTeleport != null)
-                {
-                    int offset = Utility.Random(8) * 2;
-
-                    Point3D to = this.m_Owner.Location;
-
-                    for (int i = 0; i < m_Offsets.Length; i += 2)
-                    {
-                        int x = this.m_Owner.X + m_Offsets[(offset + i) % m_Offsets.Length];
-                        int y = this.m_Owner.Y + m_Offsets[(offset + i + 1) % m_Offsets.Length];
-
-                        if (map.CanSpawnMobile(x, y, this.m_Owner.Z))
-                        {
-                            to = new Point3D(x, y, this.m_Owner.Z);
-                            break;
-                        }
-                        else
-                        {
-                            int z = map.GetAverageZ(x, y);
-
-                            if (map.CanSpawnMobile(x, y, z))
-                            {
-                                to = new Point3D(x, y, z);
-                                break;
-                            }
-                        }
-                    }
-
-                    Mobile m = toTeleport;
-
-                    Point3D from = m.Location;
-
-                    m.Location = to;
-
-                    Server.Spells.SpellHelper.Turn(this.m_Owner, toTeleport);
-                    Server.Spells.SpellHelper.Turn(toTeleport, this.m_Owner);
-
-                    m.ProcessDelta();
-
-                    Effects.SendLocationParticles(EffectItem.Create(from, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
-                    Effects.SendLocationParticles(EffectItem.Create(to, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
-
-                    m.PlaySound(0x1FE);
-
-                    this.m_Owner.Combatant = toTeleport;
-                }
             }
         }
     }

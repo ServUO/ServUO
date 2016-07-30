@@ -276,15 +276,13 @@ namespace Server.Mobiles
                 return;
             }
 
-            int points = 0;
+            int points = (int)Server.Engines.Points.PointsSystem.DespiseCrystals.GetPoints(from);
             int cost = m_ItemTable[item];
-
-            if (DespiseController.Instance != null)
-                points = DespiseController.Instance.GetDespisePoints(from);
 
             if (points >= cost)
             {
-                DespiseController.Instance.DeductDespisePoints(from, cost);
+                //DespiseController.Instance.DeductDespisePoints(from, cost);
+                Server.Engines.Points.PointsSystem.DespiseCrystals.DeductPoints(from, cost);
                 item.Movable = true;
 
                 if (from.Backpack == null || !from.Backpack.TryDropItem(from, item, false))

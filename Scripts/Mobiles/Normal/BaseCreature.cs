@@ -256,7 +256,7 @@ namespace Server.Mobiles
 
         private int m_FailedReturnHome; /* return to home failure counter */
 
-        private int m_QLPoints;
+        //private int m_QLPoints;
         #endregion
 
         public virtual InhumanSpeech SpeechType { get { return null; } }
@@ -296,7 +296,7 @@ namespace Server.Mobiles
         public bool IsPrisoner { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int QLPoints { get { return m_QLPoints; } set { m_QLPoints = value; } }
+        public int QLPoints { get; set; }
 
         protected DateTime SummonEnd { get { return m_SummonEnd; } set { m_SummonEnd = value; } }
 
@@ -1890,7 +1890,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(20); // version
+            writer.Write(21); // version
 
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
@@ -2022,7 +2022,7 @@ namespace Server.Mobiles
             writer.Write(m_Allured);
 
             //Version 20 Queens Loyalty
-            writer.Write(m_QLPoints);
+            //writer.Write(m_QLPoints);
         }
 
         private static readonly double[] m_StandardActiveSpeeds = new[] { 0.175, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8 };
@@ -2294,9 +2294,9 @@ namespace Server.Mobiles
                 m_Allured = reader.ReadBool();
             }
 
-            if (version >= 20)
+            if (version <= 20)
             {
-                m_QLPoints = reader.ReadInt();
+                reader.ReadInt();
             }
 
             if (version <= 14 && m_Paragon && Hue == 0x31)
@@ -3093,6 +3093,11 @@ namespace Server.Mobiles
                 AutoDispelChance > Utility.RandomDouble())
             {
                 Dispel(attacker);
+            }
+
+            if (!m_InRage && CanDoRage)
+            {
+                DoRage(attacker);
             }
         }
 
@@ -4644,6 +4649,17 @@ namespace Server.Mobiles
             }
         }
 
+        public virtual void SetWearable(Item item, int hue = -1, double dropChance = 0.0)
+        {
+            if (!EquipItem(item))
+                PackItem(item);
+
+            if (hue > -1)
+                item.Hue = hue;
+
+            item.Movable = dropChance > Utility.RandomDouble();
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.AccessLevel >= AccessLevel.GameMaster && !Body.IsHuman)
@@ -5217,12 +5233,12 @@ namespace Server.Mobiles
                 GiveSAArtifact(mob);
             }
 
-            if (mob is PlayerMobile && mob.Map == Map.TerMur && m_QLPoints > 0)
+            /*if (mob is PlayerMobile && mob.Map == Map.TerMur && m_QLPoints > 0)
             {
                 PlayerMobile pm = mob as PlayerMobile;
                 pm.Exp += m_QLPoints;
                 pm.SendMessage("You have been awarded {0} points for your loyalty to the Queen of TerMur!", m_QLPoints);
-            }
+            }*/
 
             EventSink.InvokeOnKilledBy(new OnKilledByEventArgs(this, mob));
         }
@@ -5401,6 +5417,8 @@ namespace Server.Mobiles
                         {
                             DemonKnight.HandleKill(this, ds.m_Mobile);
                         }
+
+                        Server.Engines.Points.PointsSystem.HandleKill(this, ds.m_Mobile, i);
 
                         PlayerMobile pm = ds.m_Mobile as PlayerMobile;
 
@@ -6106,6 +6124,49 @@ namespace Server.Mobiles
         { }
         #endregion
 
+        #region Rage
+        public virtual bool CanDoRage { get { return false; } }
+        public virtual TimeSpan RageDuration { get { return TimeSpan.FromSeconds(5); } }
+        public virtual double RageProbability { get { return 0.20; } }
+        public virtual int RageHue { get { return 1157; } }
+
+        private bool m_InRage;
+
+        public virtual void DoRage(Mobile attacker)
+        {
+            m_InRage = true;
+
+            HueMod = RageHue;
+            Stam = StamMax;
+
+            Timer.DelayCall(TimeSpan.FromSeconds(.25), DoRageMessage);
+        }
+
+        public virtual void DoRageHit(Mobile attacker)
+        {
+            if (attacker != null && attacker.Alive)
+            {
+                attacker.Animate(21, 6, 1, true, false, 0);
+                PlaySound(0xEE);
+                attacker.LocalOverheadMessage(MessageType.Regular, 0x20, 1070696); // You have been stunned by a colossal blow!
+
+                attacker.Frozen = true;
+                Timer.DelayCall(RageDuration, () =>
+                {
+                    attacker.Frozen = false;
+                    attacker.Combatant = null;
+                    attacker.LocalOverheadMessage(MessageType.Regular, 0x20, 1070695); // You recover your senses.
+                    HueMod = -1;
+                });
+            }
+        }
+
+        public virtual void DoRageMessage()
+        {
+            PublicOverheadMessage(MessageType.Regular, 0x20, 1113587); // The creature goes into a frenzied rage!
+        }
+        #endregion
+
         #region Barding Skills
         private long m_NextDiscord;
         private long m_NextPeace;
@@ -6289,6 +6350,108 @@ namespace Server.Mobiles
         }
         #endregion
 
+        #region TeleportTo
+        private long _NextTeleport;
+
+        public virtual bool TeleportsTo { get { return false; } }
+        public virtual TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(5); } }
+        public virtual int TeleportRange { get { return 16; } }
+        public virtual double TeleportProb { get { return 0.25; } }
+        public virtual bool TeleportsPets { get { return false; } }
+
+        private static int[] _Offsets = new int[]
+			{
+				-1, -1,
+				-1,  0,
+				-1,  1,
+				0, -1,
+				0,  1,
+				1, -1,
+				1,  0,
+				1,  1
+			};
+
+        public void TryTeleport()
+        {
+            if (this.Deleted)
+                return;
+
+            if (TeleportProb > Utility.RandomDouble())
+            {
+                Mobile toTeleport = GetTeleportTarget();
+
+                if (toTeleport != null)
+                {
+                    int offset = Utility.Random(8) * 2;
+
+                    Point3D to = this.Location;
+
+                    for (int i = 0; i < _Offsets.Length; i += 2)
+                    {
+                        int x = this.X + _Offsets[(offset + i) % _Offsets.Length];
+                        int y = this.Y + _Offsets[(offset + i + 1) % _Offsets.Length];
+
+                        if (this.Map.CanSpawnMobile(x, y, this.Z))
+                        {
+                            to = new Point3D(x, y, this.Z);
+                            break;
+                        }
+                        else
+                        {
+                            int z = this.Map.GetAverageZ(x, y);
+
+                            if (this.Map.CanSpawnMobile(x, y, z))
+                            {
+                                to = new Point3D(x, y, z);
+                                break;
+                            }
+                        }
+                    }
+
+                    Point3D from = toTeleport.Location;
+                    toTeleport.MoveToWorld(to, this.Map);
+
+                    Server.Spells.SpellHelper.Turn(this, toTeleport);
+                    Server.Spells.SpellHelper.Turn(toTeleport, this);
+
+                    toTeleport.ProcessDelta();
+
+                    Effects.SendLocationParticles(EffectItem.Create(from, this.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+                    Effects.SendLocationParticles(EffectItem.Create(to, this.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
+
+                    toTeleport.PlaySound(0x1FE);
+
+                    this.Combatant = toTeleport;
+                }
+            }
+        }
+
+        public virtual Mobile GetTeleportTarget()
+        {
+            IPooledEnumerable eable = this.GetMobilesInRange(TeleportRange);
+            List<Mobile> list = new List<Mobile>();
+
+            foreach (Mobile m in eable)
+            {
+                bool isPet = m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile;
+
+                if (m != this && (m.Player || (TeleportsPets && isPet)) && CanBeHarmful(m) && CanSee(m))
+                {
+                    list.Add(m);
+                }
+            }
+
+            eable.Free();
+            Mobile mob = null;
+
+            if (list.Count > 0)
+                mob = list[Utility.Random(list.Count)];
+
+            list.Clear();
+            return mob;
+        }
+        #endregion
+
         public virtual void OnThink()
         {
             long tc = Core.TickCount;
@@ -6398,6 +6561,12 @@ namespace Server.Mobiles
                     m_NextProvoke = tc + (int)ProvokeInterval.TotalMilliseconds;
                 else
                     m_NextProvoke = tc + (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
+            }
+
+            if (Combatant != null && TeleportsTo && tc - _NextTeleport >= 0)
+            {
+                TryTeleport();
+                _NextTeleport = tc + (int)TeleportDuration.TotalMilliseconds;
             }
         }
 

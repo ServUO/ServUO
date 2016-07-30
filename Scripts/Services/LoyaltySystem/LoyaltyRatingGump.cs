@@ -1,39 +1,49 @@
 ﻿using System;
 using Server.Gumps;
 using Server.Mobiles;
+using System.Linq;
 
-namespace Server.Services.Loyalty_System
+namespace Server.Engines.Points
 {
     public class LoyaltyRatingGump : Gump
     {
-        private readonly PlayerMobile m_From;
-
-        public LoyaltyRatingGump(PlayerMobile from)
-            : base(0, 0)
+        public LoyaltyRatingGump(PlayerMobile pm)
+            : base(120, 120)
         {
-            m_From = from;
+            AddImage(0, 0, 8000);
+            AddImage(20, 37, 8001);
+            AddImage(20, 107, 8002);
+            AddImage(20, 177, 8001);
+            AddImage(20, 247, 8002);
+            AddImage(20, 317, 8001);
+            AddImage(20, 387, 8003);
 
-            Closable = true;
-            Dragable = true;
-            AddPage(0);
-            AddBackground(10, 200, 300, 400, 9380);
-            AddLabel(40, 230, 0, "Queen's Loyalty");
-            AddLabel(60, 250, 33, GetQueenTitle(from));
-            AddLabel(180, 250, 33, String.Format("[ {0} ]", from.Exp));
-            AddLabel(40, 300, 0, String.Format("Fame: {0}", from.Fame));
-            AddLabel(40, 320, 0, String.Format("Karma: {0}", from.Karma));
-        }
+            AddHtmlLocalized(0, 8, 345, 20, 1152187, false, false); // <center>Loyalty Ratings</center>
 
-        private static string GetQueenTitle(PlayerMobile from)
-        {
-            if (from.Exp >= 10000)
-                return "Noble of TerMur";
-            if (from.Exp >= 2000)
-                return "Citizen of TerMur";
-            if (from.Exp > 0)
-                return "Friend of TerMur";
-            
-            return "Enemy of TerMur";
+            int y = 40;
+
+            foreach (var sys in PointsSystem.Systems.Where(sys => sys.ShowOnLoyaltyGump))
+            {
+                if (sys.Name.Number > 0)
+                    AddHtmlLocalized(50, y, 150, 20, sys.Name.Number, false, false);
+                else if (sys.Name.String != null)
+                    AddHtml(50, y, 150, 20, sys.Name.String, false, false);
+
+                TextDefinition title = sys.GetTitle(pm);
+
+                if (title.Number > 0)
+                    AddHtmlLocalized(68, y + 20, 100, 20, title.Number, false, false);
+                else if (title.String != null)
+                    AddHtml(68, y + 20, 100, 20, title.String, false, false);
+
+                AddHtmlLocalized(175, y + 20, 100, 20, 1095171, ((int)sys.GetPoints(pm)).ToString(), 0, false, false); // (~1_AMT~ points)
+
+                y += 45;
+            }
+
+            AddHtmlLocalized(50, 285, 150, 20, 1115129, pm.Fame.ToString(), 0, false, false); // Fame: ~1_AMT~
+            AddHtmlLocalized(50, 305, 150, 20, 1115130, pm.Karma.ToString(), 0, false, false); // Karma: ~1_AMT~}
+
         }
     }
 }

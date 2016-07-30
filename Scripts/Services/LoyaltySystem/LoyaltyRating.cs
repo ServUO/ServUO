@@ -1,7 +1,7 @@
 ﻿using Server.ContextMenus;
 using Server.Mobiles;
 
-namespace Server.Services.Loyalty_System
+namespace Server.Engines.Points
 {
     public class LoyaltyRating : ContextMenuEntry
     {

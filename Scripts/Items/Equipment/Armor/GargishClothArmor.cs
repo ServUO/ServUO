@@ -6,9 +6,15 @@ namespace Server.Items
     public class GargishClothArmsArmor : BaseArmor
     {
         [Constructable]
-        public GargishClothArmsArmor()
+        public GargishClothArmsArmor() : this(0)
+        {
+        }
+
+        [Constructable]
+        public GargishClothArmsArmor(int hue)
             : base(0x0404)
         {
+            Hue = hue;
             this.Weight = 2.0;
         }
 
@@ -158,8 +164,15 @@ namespace Server.Items
     {
         [Constructable]
         public GargishClothChestArmor()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public GargishClothChestArmor(int hue)
             : base(0x0406)
         {
+            Hue = hue;
             this.Weight = 2.0;
         }
 
@@ -309,8 +322,15 @@ namespace Server.Items
     {
         [Constructable]
         public GargishClothLegsArmor()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public GargishClothLegsArmor(int hue)
             : base(0x040A)
         {
+            Hue = hue;
             this.Weight = 2.0;
         }
 
@@ -460,8 +480,16 @@ namespace Server.Items
     {
         [Constructable]
         public GargishClothKiltArmor()
+            : this(0)
+        {
+            this.Weight = 2.0;
+        }
+
+        [Constructable]
+        public GargishClothKiltArmor(int hue)
             : base(0x040A)
         {
+            Hue = hue;
             this.Weight = 2.0;
         }
 

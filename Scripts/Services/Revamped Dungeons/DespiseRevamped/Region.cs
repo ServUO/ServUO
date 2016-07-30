@@ -191,7 +191,7 @@ namespace Server.Engines.Despise
 		
 		#endregion
 
-        public bool CheckTravel(Mobile from, TravelCheckType type)
+        public override bool CheckTravel(Mobile from, Point3D p, TravelCheckType type)
         {
             if (from.AccessLevel > AccessLevel.Player)
                 return true;

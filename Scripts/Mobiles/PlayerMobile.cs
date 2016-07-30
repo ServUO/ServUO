@@ -30,7 +30,6 @@ using Server.Movement;
 using Server.Multis;
 using Server.Network;
 using Server.Regions;
-using Server.Services.Loyalty_System;
 using Server.SkillHandlers;
 using Server.Spells;
 using Server.Spells.Bushido;
@@ -392,7 +391,7 @@ namespace Server.Mobiles
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool HasStatReward { get { return GetFlag(PlayerFlag.HasStatReward); } set { SetFlag(PlayerFlag.HasStatReward, value); } }
 
-        #region QueensLoyaltySystem
+        /*#region QueensLoyaltySystem
         public static readonly int Noble = 10000;
 
 		private long m_Exp; // Experience at the current Experience Level
@@ -407,7 +406,7 @@ namespace Server.Mobiles
 				InvalidateProperties();
 			}
 		}
-		#endregion
+		#endregion*/
 
 		#region Plant system
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -1803,13 +1802,9 @@ namespace Server.Mobiles
 					m_Quest.GetContextMenuEntries(list);
 				}
 
-			    if (Alive && IsPlayer() && Core.SA)
+			    if (Alive && Core.SA)
 			    {
-			        PlayerMobile pm = from as PlayerMobile;
-			        if (pm != null)
-			        {
-			            list.Add(new LoyaltyRating(pm));
-			        }
+                    list.Add(new Server.Engines.Points.LoyaltyRating(this));
 			    }
 
 				if (Alive && InsuranceEnabled)
@@ -1848,6 +1843,10 @@ namespace Server.Mobiles
 				{
 					list.Add(new CallbackEntry(6157, CancelProtection));
 				}
+
+                Region r = Region.Find(this.Location, this.Map);
+                if (r is Server.Engines.VoidPool.VoidPoolRegion && ((Server.Engines.VoidPool.VoidPoolRegion)r).Controller != null)
+                    list.Add(new Server.Engines.Points.VoidPoolInfo(this));
 
 				if (Alive)
 				{
@@ -3667,6 +3666,8 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 30:
+                    goto case 29;
 				case 29:
 					{
 						m_GauntletPoints = reader.ReadDouble();
@@ -3676,10 +3677,18 @@ namespace Server.Mobiles
 						m_SSSeedLocation = reader.ReadPoint3D();
 						m_SSSeedMap = reader.ReadMap();
 
-						reader.ReadLong(); // Old m_LevelExp
-                        m_Exp = reader.ReadLong();
-						reader.ReadInt(); // Old m_Level
-                        reader.ReadString(); // Old m_ExpTitle
+                        if (version < 30)
+                        {
+                            reader.ReadLong(); // Old m_LevelExp
+                            int points = (int)reader.ReadLong();
+                            if (points > 0)
+                            {
+                                Server.Engines.Points.PointsSystem.QueensLoyalty.ConvertFromOldSystem(this, points);
+                            }
+
+                            reader.ReadInt(); // Old m_Level
+                            reader.ReadString(); // Old m_ExpTitle
+                        }
 
                         m_VASTotalMonsterFame = reader.ReadInt();
 
@@ -3952,12 +3961,12 @@ namespace Server.Mobiles
 				m_RecentlyReported = new List<Mobile>();
 			}
 
-			#region QueensLoyaltySystem
+			/*#region QueensLoyaltySystem
 			if (version < 29)
 			{
 				m_Exp = 0;
 			}
-			#endregion
+			#endregion*/
 
 			#region Mondain's Legacy
 			if (m_Quests == null)
@@ -4070,8 +4079,9 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(29); // version
+			writer.Write(30); // version
 
+            // Version 30 open to take out old Queens Loyalty Info
 
 			// Version 29
 			writer.Write(m_GauntletPoints);
@@ -4083,13 +4093,13 @@ namespace Server.Mobiles
 			writer.Write(m_SSSeedMap);
 			#endregion
 
-			#region QueensLoyaltySystem
+			/*#region QueensLoyaltySystem
 			writer.Write((long)0); // Old m_LevelExp
             writer.Write(m_Exp);
 			writer.Write(0); // Old m_Level
 
             writer.Write(""); // Old m_ExpTitle
-            #endregion
+            #endregion*/
 
             writer.Write(m_VASTotalMonsterFame);
 
