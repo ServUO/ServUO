@@ -1903,6 +1903,10 @@
 				<object id="412" type="FarmableCotton" minSpawnTime="PT10S" maxSpawnTime="PT30S" amount="6" />
 			</spawning>
 		</region>
+		<region type="NoHousingRegion" priority="50" name="FireIsleCasino">
+			<rect x="4041" y="3364" width="60" height="64" />
+			<go x="4047" y="3371" z="0" />
+		</region>
 	</Facet>
 	<Facet name="Ilshenar">
 		<region type="MondainRegion" priority="50" name="Twisted Weald">

@@ -65,6 +65,9 @@ namespace Server.Mobiles
 
             if (0.2 > Utility.RandomDouble())
                 this.PackItem(new BolaBall());
+
+            if (0.5 > Utility.RandomDouble())
+                PackItem(new Yeast());
         }
 
         public OrcishLord(Serial serial)

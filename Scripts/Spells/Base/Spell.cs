@@ -199,14 +199,10 @@ namespace Server.Spells
 
 			damageBonus += sdiBonus;
 
-			TransformContext context = TransformationSpellHelper.GetContext(Caster);
-
-			if (context != null && context.Spell is ReaperFormSpell)
-			{
-				damageBonus += ((ReaperFormSpell)context.Spell).SpellDamageBonus;
-			}
-
 			damage = AOS.Scale(damage, 100 + damageBonus);
+
+            if (target != null && Feint.Registry.ContainsKey(target) && Feint.Registry[target].Enemy == Caster)
+                damage -= (int)((double)damage * ((double)Feint.Registry[target].DamageReduction / 100));
 
 			int evalSkill = GetDamageFixed(m_Caster);
 			int evalScale = 30 + ((9 * evalSkill) / 100);
@@ -878,8 +874,6 @@ namespace Server.Spells
 
 			int fcr = AosAttributes.GetValue(m_Caster, AosAttribute.CastRecovery);
 
-			fcr -= ThunderstormSpell.GetCastRecoveryMalus(m_Caster);
-
 			int fcrDelay = -(CastRecoveryFastScalar * fcr);
 
 			int delay = CastRecoveryBase + fcrDelay;
@@ -927,16 +921,6 @@ namespace Server.Spells
 			if (fc > fcMax)
 			{
 				fc = fcMax;
-			}
-
-			if (ProtectionSpell.Registry.Contains(m_Caster))
-			{
-				fc -= 2;
-			}
-
-			if (EssenceOfWindSpell.IsDebuffed(m_Caster))
-			{
-				fc -= EssenceOfWindSpell.GetFCMalus(m_Caster);
 			}
 
 			TimeSpan baseDelay = CastDelayBase;

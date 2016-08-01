@@ -53,6 +53,7 @@ namespace Server.Mobiles
                 this.Add(new GenericBuyInfo(typeof(Grapes), 3, 20, 0x9D1, 0));
                 this.Add(new GenericBuyInfo(typeof(Apple), 3, 20, 0x9D0, 0));
                 this.Add(new GenericBuyInfo(typeof(SheafOfHay), 2, 20, 0xF36, 0));
+                this.Add(new GenericBuyInfo(typeof(Hoe), 5, 20, 3897, 0));
             }
         }
 

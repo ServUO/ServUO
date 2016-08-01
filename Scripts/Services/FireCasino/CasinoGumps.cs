@@ -126,26 +126,37 @@ namespace Server.Engines.ResortAndCasino
                     Refresh();
                     break;
                 case 3:
-                    string text = info.TextEntries[0].Text;
-                    int num = Utility.ToInt32(text);
+                    TextRelay tr = info.GetTextEntry(0);
 
-                    if (num > 0)
+                    if (tr != null)
                     {
-                        if (Banker.Withdraw(User, num * CasinoData.ChipCost))
+                        string text = tr.Text;
+                        int num = Utility.ToInt32(text);
+
+                        if (num > 0)
                         {
-                            User.SendLocalizedMessage(1155856, (num * CasinoData.ChipCost).ToString(CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold has been removed from your bank box.
+                            if (Banker.Withdraw(User, num * CasinoData.ChipCost))
+                            {
+                                User.SendLocalizedMessage(1155856, (num * CasinoData.ChipCost).ToString(CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold has been removed from your bank box.
 
-                            PointsSystem.CasinoData.AwardPoints(User, num);
-                            Bought = num;
+                                PointsSystem.CasinoData.AwardPoints(User, num);
+                                Bought = num;
 
-                            Section = Section.None;
+                                Section = Section.None;
 
-                            Refresh();
+                                Refresh();
+                            }
+                            else
+                            {
+                                this.Section = Section.Error;
+                                Message = 1153178; // Your bank does not have sufficient gold
+                                Refresh();
+                            }
                         }
                         else
                         {
                             this.Section = Section.Error;
-                            Message = 1153178; // Your bank does not have sufficient gold
+                            Message = 1153187; // You entered an invalid value
                             Refresh();
                         }
                     }
@@ -157,32 +168,42 @@ namespace Server.Engines.ResortAndCasino
                     }
                     break;
                 case 4:
-                    string text2 = info.TextEntries[1].Text;
-                    int num2 = Utility.ToInt32(text2);
-
-                    if (num2 > 0)
+                    TextRelay tr2 = info.GetTextEntry(1);
+                    if (tr2 != null)
                     {
-                        if (num2 <= (int)PointsSystem.CasinoData.GetPoints(User))
+                        string text2 = tr2.Text;
+                        int num2 = Utility.ToInt32(text2);
+
+                        if (num2 > 0)
                         {
-                            Banker.Deposit(User, num2 * CasinoData.ChipCost);
-                            PointsSystem.CasinoData.DeductPoints(User, num2, false);
-                            User.SendLocalizedMessage(1060397, (num2 * CasinoData.ChipCost).ToString(CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold has been deposited into your bank box.
+                            if (num2 <= (int)PointsSystem.CasinoData.GetPoints(User))
+                            {
+                                Banker.Deposit(User, num2 * CasinoData.ChipCost);
+                                PointsSystem.CasinoData.DeductPoints(User, num2, false);
+                                User.SendLocalizedMessage(1060397, (num2 * CasinoData.ChipCost).ToString(CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold has been deposited into your bank box.
 
-                            Section = Section.None;
+                                Section = Section.None;
 
-                            CashedOut = num2;
-                            Refresh();
+                                CashedOut = num2;
+                                Refresh();
+                            }
+                            else
+                            {
+                                this.Section = Section.Error;
+                                Message = 1153180; // You do not have enough casino chips
+                                Refresh();
+                            }
                         }
                         else
                         {
-                            this.Section = Section.Error;
-                            Message = 1153180; // You do not have enough casino chips
+                            this.Section = Section.None;
                             Refresh();
                         }
                     }
                     else
                     {
-                        this.Section = Section.None;
+                        this.Section = Section.Error;
+                        Message = 1153187; // You entered an invalid value
                         Refresh();
                     }
                     break;
@@ -466,24 +487,30 @@ namespace Server.Engines.ResortAndCasino
                 case 4:
                 case 5:
                 case 6:
-                    string text = info.TextEntries[0].Text;
-                    int bet = Utility.ToInt32(text);
-                    int chips = (int)PointsSystem.CasinoData.GetPoints(User);
+                    TextRelay tr = info.GetTextEntry(0);
 
-                    if (bet > 0 && bet <= chips)
+                    if (tr != null)
                     {
-                        PointsSystem.CasinoData.DeductPoints(User, bet, false);
+                        string text = tr.Text;
+                        int bet = Utility.ToInt32(text);
+                        int chips = (int)PointsSystem.CasinoData.GetPoints(User);
 
-                        Game.CurrentBet = bet;
-                        Game.BettingOn = info.ButtonID;
+                        if (bet > 0 && bet <= chips)
+                        {
+                            PointsSystem.CasinoData.DeductPoints(User, bet, false);
 
-                        Game.BeginRollDice();
+                            Game.CurrentBet = bet;
+                            Game.BettingOn = info.ButtonID;
+
+                            Game.BeginRollDice();
+                        }
+                        else
+                        {
+                            Game.Stage = GameStage.Error;
+                            Refresh();
+                        }
                     }
-                    else
-                    {
-                        Game.Stage = GameStage.Error;
-                        Refresh();
-                    }
+                    
                     break;
                 case 7:
                     Game.Reset();
@@ -610,23 +637,28 @@ namespace Server.Engines.ResortAndCasino
                 case 2:
                 case 3:
                 case 4:
-                    string text = info.TextEntries[0].Text;
-                    int bet = Utility.ToInt32(text);
-                    int chips = (int)PointsSystem.CasinoData.GetPoints(User);
+                    TextRelay tr = info.GetTextEntry(0);
 
-                    if (bet > 0 && bet <= chips)
+                    if (tr != null)
                     {
-                        PointsSystem.CasinoData.DeductPoints(User, bet, false);
+                        string text = tr.Text;
+                        int bet = Utility.ToInt32(text);
+                        int chips = (int)PointsSystem.CasinoData.GetPoints(User);
 
-                        Game.CurrentBet = bet;
-                        Game.BettingOn = info.ButtonID;
+                        if (bet > 0 && bet <= chips)
+                        {
+                            PointsSystem.CasinoData.DeductPoints(User, bet, false);
 
-                        Game.BeginRollDice();
-                    }
-                    else
-                    {
-                        Game.Stage = GameStage.Error;
-                        Refresh();
+                            Game.CurrentBet = bet;
+                            Game.BettingOn = info.ButtonID;
+
+                            Game.BeginRollDice();
+                        }
+                        else
+                        {
+                            Game.Stage = GameStage.Error;
+                            Refresh();
+                        }
                     }
                     break;
                 case 5:
@@ -714,35 +746,7 @@ namespace Server.Engines.ResortAndCasino
 
             AddHtmlLocalized(170, Height - 35, 150, 16, 1153371, Yellow, false, false); // Amount to bet:
             AddBackground(270, Height - 35, 200, 20, 9350);
-            AddTextEntry(272, Height - 35, 198, 20, 0, 0, "");/*, (e, text) =>
-                {
-                    if (ButtonPushed == 1)
-                    {
-                        int bet = Utility.ToInt32(text) * 3;
-
-                        if (bet > 0 && bet <= (int)PointsSystem.CasinoData.GetPoints(User))
-                        {
-                            PointsSystem.CasinoData.DeductPoints(User, bet, false);
-
-                            Game.CurrentBet = bet;
-                            Game.Bet1 = bet / 3;
-                            Game.Bet2 = bet / 3;
-                            Game.Bet3 = bet / 3;
-
-                            Game.BeginRollDice();
-                        }
-                        else
-                        {
-                            Game.Stage = GameStage.Error;
-                            Refresh();
-                        }
-                    }
-                    else
-                    {
-                        Game.Stage = GameStage.Error;
-                        Refresh();
-                    }
-                });*/
+            AddTextEntry(272, Height - 35, 198, 20, 0, 0, "");
 
             AddButton(485, Height - 35, 4005, 4007, 1, GumpButtonType.Reply, 0);
 
@@ -841,24 +845,29 @@ namespace Server.Engines.ResortAndCasino
             {
                 case 0: break;
                 case 1:
-                    string text = info.TextEntries[0].Text;
-                    int bet = Utility.ToInt32(text) * 3;
+                    TextRelay tr = info.GetTextEntry(0);
 
-                    if (bet > 0 && bet <= (int)PointsSystem.CasinoData.GetPoints(User))
+                    if (tr != null)
                     {
-                        PointsSystem.CasinoData.DeductPoints(User, bet, false);
+                        string text = tr.Text;
+                        int bet = Utility.ToInt32(text) * 3;
 
-                        Game.CurrentBet = bet;
-                        Game.Bet1 = bet / 3;
-                        Game.Bet2 = bet / 3;
-                        Game.Bet3 = bet / 3;
+                        if (bet > 0 && bet <= (int)PointsSystem.CasinoData.GetPoints(User))
+                        {
+                            PointsSystem.CasinoData.DeductPoints(User, bet, false);
 
-                        Game.BeginRollDice();
-                    }
-                    else
-                    {
-                        Game.Stage = GameStage.Error;
-                        Refresh();
+                            Game.CurrentBet = bet;
+                            Game.Bet1 = bet / 3;
+                            Game.Bet2 = bet / 3;
+                            Game.Bet3 = bet / 3;
+
+                            Game.BeginRollDice();
+                        }
+                        else
+                        {
+                            Game.Stage = GameStage.Error;
+                            Refresh();
+                        }
                     }
                     break;
                 case 2:

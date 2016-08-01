@@ -132,6 +132,11 @@ namespace Server.Engines.Craft
                 this.SetNeededExpansion(index, Expansion.ML);
                 this.SetNeedOven(index, true);
             }
+
+            index = AddCraft(typeof(WheatWort), 1044495, 1150275, 30.0, 100.0, typeof(Bottle), 1023854, 1, 1044253);
+            AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+            AddRes(index, typeof(SackFlour), 1044468, 1, 1044253);
+            SetItemHue(index, 1281);
             /* End Ingredients */
 
             /* Begin Preparations */

@@ -54,7 +54,7 @@ namespace Server.Mobiles
 
                 if (good)
                     base.Damage(amount, from, informMount, checkfizzle);
-                else
+                else if (from != null)
                     from.SendLocalizedMessage(1151633); // You did not summon this champion, so you may not attack it at this time.
             }
         }

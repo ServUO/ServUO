@@ -573,7 +573,7 @@ namespace Server.Multis
             {
                 foreach (Item item in this.Addons)
                 {
-                    if (item is BaseAddonContainer)
+                    if (item is BaseAddonContainer || item is RaisedGardenSmallAddon || item is RaisedGardenLargeAddon || item is RaisedGardenEastAddon || item is RaisedGardenSouthAddon)
                         return true;
                 }
 

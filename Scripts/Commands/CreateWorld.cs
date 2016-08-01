@@ -49,6 +49,7 @@ namespace Server.Commands
             new CommandEntry("Despise",         "SetupDespise",     "DeleteDespise",        117),
             new CommandEntry("Covetous",        "SetupNewCovetous", "DeleteCovetous",       118),
             new CommandEntry("Shame",           "GenerateNewShame", "DeleteShame",          119),
+            new CommandEntry("New Magincia",    "GenNewMagincia",   "DeleteNewMagincia",    120),
 		});
         public CreateWorld()
         {
