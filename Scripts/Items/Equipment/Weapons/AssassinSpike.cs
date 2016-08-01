@@ -1,7 +1,9 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefBlacksmithy), typeof(Shortblade))]
     [FlipableAttribute(0x2D21, 0x2D2D)]
     public class AssassinSpike : BaseKnife
     {

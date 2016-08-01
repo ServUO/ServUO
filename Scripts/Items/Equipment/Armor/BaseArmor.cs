@@ -71,6 +71,8 @@ namespace Server.Items
         private int m_GorgonLenseCharges;
         private LenseType m_GorgonLenseType;
 
+        private bool m_Altered;
+
         private int m_TimesImbued;
         private bool m_IsImbued;
         private int m_PhysImbuing;
@@ -1561,6 +1563,7 @@ namespace Server.Items
             xAbsorptionAttributes = 0x02000000,
             //TimesImbued = 0x04000000,
             NegativeAttributes  = 0x08000000,
+            Altered = 0x10000000
         }
 
         #region Mondain's Legacy Sets
@@ -1715,6 +1718,7 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.PlayerConstructed, this.m_PlayerConstructed != false);
             SetSaveFlag(ref flags, SaveFlag.xAbsorptionAttributes, !this.m_SAAbsorptionAttributes.IsEmpty);
             //SetSaveFlag(ref flags, SaveFlag.TimesImbued, this.m_TimesImbued != 0);
+            SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
             writer.WriteEncodedInt((int)flags);
 
@@ -2018,6 +2022,9 @@ namespace Server.Items
                             this.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this, reader);
                         else
                             this.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
+
+                        if (GetSaveFlag(flags, SaveFlag.Altered))
+                            m_Altered = true;
 
                         break;
                     }
@@ -2663,6 +2670,9 @@ namespace Server.Items
             if (this.m_Crafter != null)
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
+            if (m_Altered)
+                list.Add(1111880); // Altered
+
             #region Factions
             if (this.m_FactionState != null)
                 list.Add(1041350); // faction item
@@ -3254,5 +3264,16 @@ namespace Server.Items
                 list.Add(1060450, prop.ToString()); // self repair ~1_val~
         }
         #endregion
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Altered
+        {
+            get { return m_Altered; }
+            set
+            {
+                m_Altered = value;
+                InvalidateProperties();
+            }
+        }
     }
 }

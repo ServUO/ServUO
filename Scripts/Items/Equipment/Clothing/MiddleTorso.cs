@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -34,6 +35,7 @@ namespace Server.Items
         }
     }
 
+    [Alterable(typeof(DefTailoring), typeof(GargishSash), true)]
     [Flipable(0x1541, 0x1542)]
     public class BodySash : BaseMiddleTorso
     {

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefTailoring), typeof(GargishLeatherWingArmor), true)]
     public class BaseQuiver : Container, ICraftable, ISetItem
     {
         public override int DefaultGumpID

@@ -575,6 +575,7 @@
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\FNPitchfork.cs" />
+    <Compile Include="Items\Consumables\AlterContract.cs" />
     <Compile Include="Items\Consumables\BaseAgilityPotion.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -817,6 +818,7 @@
     <Compile Include="Items\Equipment\Weapons\BaseWeapon.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Tools\ChestOfSending.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Items\Artifacts\Equipment\Glasses\Glasses.cs">
       <SubType>Code</SubType>
@@ -2651,6 +2653,9 @@
     <Compile Include="Mobiles\NPCs\Zeefzorpul.cs" />
     <Compile Include="Quests\WitchApprentice\Objectives.cs" />
     <Compile Include="Quests\WitchApprentice\WitchApprenticeQuest.cs" />
+    <Compile Include="Services\Armor Refinement\ArmorRefiner.cs" />
+    <Compile Include="Services\Armor Refinement\Gumps.cs" />
+    <Compile Include="Services\Armor Refinement\Items.cs" />
     <Compile Include="Services\FireCasino\CasinoGumps.cs" />
     <Compile Include="Services\FireCasino\DiceGames.cs" />
     <Compile Include="Services\FireCasino\FortuesFireGrog.cs" />
@@ -8723,12 +8728,6 @@
     <Compile Include="Services\Craft\DefTinkering.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\DespiseRevamped\AI.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\DespiseRevamped\DespiseController.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Functional\DespiseAnkh.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -8757,12 +8756,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\NPCs\MysteriousWisp.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\DespiseRevamped\Region.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\DespiseRevamped\Setup.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Doom\GauntletSpawner.cs">
@@ -9176,6 +9169,9 @@
     <Compile Include="Services\New Magincia\MaginciaPlants\Hoe.cs" />
     <Compile Include="Services\New Magincia\MaginciaPlants\MaginciaPlantItem.cs" />
     <Compile Include="Services\New Magincia\MaginciaPlants\MaginciaPlantSystem.cs" />
+    <Compile Include="Services\Plants\FertileDirtGump.cs" />
+    <Compile Include="Services\Plants\Raised Garden Beds\RaisedGarden.cs" />
+    <Compile Include="Services\Plants\Raised Garden Beds\RaisedGardenPlantItem.cs" />
     <Compile Include="Services\PointsSystems\CasinoData.cs" />
     <Compile Include="Services\PointsSystems\DespiseCrystals.cs" />
     <Compile Include="Services\PointsSystems\PointsSystem.cs" />
@@ -9220,6 +9216,7 @@
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameCrystal.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameTeleporter.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameWall.cs" />
+    <Compile Include="Services\VeteranRewards\DaviesLocker.cs" />
     <Compile Include="Services\Virtues\Honesty.cs" />
     <Compile Include="Services\Virtues\Humility.cs" />
     <Compile Include="Services\Virtue Artifacts\VirtueArtifactsSystem.cs" />

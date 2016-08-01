@@ -1,7 +1,9 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefTinkering), typeof(GargishGlasses), true)]
     public class ElvenGlasses : BaseArmor
     {
         private AosWeaponAttributes m_AosWeaponAttributes;
