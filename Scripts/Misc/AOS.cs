@@ -4,9 +4,14 @@ using Server.Engines.XmlSpawner2;
 using Server.Items;
 using Server.Mobiles;
 using Server.Spells;
+using Server.Spells.Second;
 using Server.Spells.Fifth;
+using Server.Spells.Bushido;
 using Server.Spells.Ninjitsu;
 using Server.Spells.Seventh;
+using Server.Spells.Chivalry;
+using Server.Spells.Necromancy;
+using Server.Spells.Spellweaving;
 
 namespace Server
 {
@@ -507,22 +512,170 @@ namespace Server
             if (attribute == AosAttribute.WeaponDamage)
             {
                 if (BaseMagicalFood.IsUnderInfluence(m, MagicalFood.WrathGrapes))
-                    value += 10; // TODO check
+                    value += 35;
+
+                // attacker gets 10% bonus when they're under divine fury
+                if (DivineFurySpell.UnderEffect(m))
+                    value += 10;
+
+                // Horrific Beast transformation gives a +25% bonus to damage.
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(HorrificBeastSpell)))
+                    value += 25;
+
+                int defenseMasteryMalus = 0;
+                int discordanceEffect = 0;
+
+                // Defense Mastery gives a -50%/-80% malus to damage.
+                if (Server.Items.DefenseMastery.GetMalus(m, ref defenseMasteryMalus))
+                    value -= defenseMasteryMalus;
+
+                // Discordance gives a -2%/-48% malus to damage.
+                if (SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
+                    value -= discordanceEffect * 2;
+
+                #region SA
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
+                    value -= 10;
+                #endregion
             }
             else if (attribute == AosAttribute.SpellDamage)
             {
                 if (BaseMagicalFood.IsUnderInfluence(m, MagicalFood.WrathGrapes))
-                    value += 5; // TODO check
+                    value += 15;
+
+                if (PsychicAttack.Registry.ContainsKey(m))
+                    value -= PsychicAttack.Registry[m].SpellDamageMalus;
+
+                TransformContext context = TransformationSpellHelper.GetContext(m);
+
+                if (context != null && context.Spell is ReaperFormSpell)
+                    value += ((ReaperFormSpell)context.Spell).SpellDamageBonus;
             }
             else if (attribute == AosAttribute.CastSpeed)
             {
                 if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || LadyMelisande.UnderPutridNausea(m))
-                    value -= 3; // TODO check
+                    value -= 5;
+
+                if (ProtectionSpell.Registry.ContainsKey(m) /*|| EodonianPotion.IsUnderEffects(m, PotionEffect.Urali)*/)
+                    value -= 2;
+
+                if (EssenceOfWindSpell.IsDebuffed(m))
+                    value -= EssenceOfWindSpell.GetFCMalus(m);
+
+                #region SA
+                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                    value -= 2;
+
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
+                    value -= 2;
+                #endregion
             }
-            else if (attribute == AosAttribute.WeaponSpeed || LadyMelisande.UnderPutridNausea(m))
+            else if (attribute == AosAttribute.CastRecovery)
             {
                 if (MonstrousInterredGrizzle.UnderCacophonicAttack(m))
-                    value -= 3; // TODO check
+                    value -= 5;
+
+                value -= ThunderstormSpell.GetCastRecoveryMalus(m);
+
+                #region SA
+                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                    value -= 3;
+                #endregion
+            }
+            else if (attribute == AosAttribute.WeaponSpeed)
+            {
+                if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || LadyMelisande.UnderPutridNausea(m))
+                    value -= 60;
+
+                if (Spells.Chivalry.DivineFurySpell.UnderEffect(m))
+                    value += 10;
+
+                value += HonorableExecution.GetSwingBonus(m);
+
+                if (DualWield.Registry.Contains(m))
+                    value += ((DualWield.DualWieldTimer)DualWield.Registry[m]).BonusSwingSpeed;
+
+                TransformContext context = TransformationSpellHelper.GetContext(m);
+
+                if (context != null && context.Spell is ReaperFormSpell)
+                    value += ((ReaperFormSpell)context.Spell).SwingSpeedBonus;
+
+                int discordanceEffect = 0;
+
+                // Discordance gives a malus of -0/-28% to swing speed.
+                if (SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
+                    value -= discordanceEffect;
+
+                if (EssenceOfWindSpell.IsDebuffed(m))
+                    value -= EssenceOfWindSpell.GetSSIMalus(m);
+
+                #region SA
+                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                    value -= 45;
+
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
+                    value -= 10;
+
+                if (MudPie.IsUnderEffects(m))
+                    value -= 30;
+                #endregion
+            }
+            else if (attribute == AosAttribute.AttackChance)
+            {
+                if (LadyMelisande.UnderPutridNausea(m))
+                    value -= 60;
+
+                if (Spells.Chivalry.DivineFurySpell.UnderEffect(m))
+                    value += 10; // attacker gets 10% bonus when they're under divine fury
+
+                if (BaseWeapon.CheckAnimal(m, typeof(GreyWolf)) || BaseWeapon.CheckAnimal(m, typeof(BakeKitsune)))
+                    value += 20; // attacker gets 20% bonus when under Wolf or Bake Kitsune form
+
+                if (HitLower.IsUnderAttackEffect(m))
+                    value -= 25; // Under Hit Lower Attack effect -> 25% malus
+
+                WeaponAbility ability = WeaponAbility.GetCurrentAbility(m);
+
+                if (ability != null)
+                    value += ability.AccuracyBonus;
+
+                SpecialMove move = SpecialMove.GetCurrentMove(m);
+
+                if (move != null)
+                    value += move.GetAccuracyBonus(m);
+
+                #region SA
+                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                    value -= 45;
+
+                if (m.Race == Race.Gargoyle)
+                    value += 5;  //Gargoyles get a +5 HCI
+                #endregion
+            }
+            else if (attribute == AosAttribute.DefendChance)
+            {
+                if (LadyMelisande.UnderPutridNausea(m))
+                    value -= 60;
+
+                if (Spells.Chivalry.DivineFurySpell.UnderEffect(m))
+                    value -= 20; // defender loses 20% bonus when they're under divine fury
+
+                if (HitLower.IsUnderDefenseEffect(m))
+                    value -= 25; // Under Hit Lower Defense effect -> 25% malus
+
+                int blockBonus = 0;
+                int discordanceEffect = 0;
+                int surpriseMalus = 0;
+
+                if (Block.GetBonus(m, ref blockBonus))
+                    value += blockBonus;
+
+                if (SurpriseAttack.GetMalus(m, ref surpriseMalus))
+                    value -= surpriseMalus;
+
+                // Defender loses -0/-28% if under the effect of Discordance.
+                if (SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
+                    value -= discordanceEffect;
             }
             else if (attribute == AosAttribute.RegenHits)
             {
@@ -541,6 +694,10 @@ namespace Server
             {
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Mana))
                     value += 10;
+            }
+            else if (attribute == AosAttribute.LowerManaCost)
+            {
+                value += BaseArmor.GetInherentLowerManaCost(m);
             }
             #endregion
 

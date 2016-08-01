@@ -1165,7 +1165,7 @@ namespace Server.Items
 			return defender.Skills[GetUsedSkill(defender, true)].Value;
 		}
 
-		private static bool CheckAnimal(Mobile m, Type type)
+		public static bool CheckAnimal(Mobile m, Type type)
 		{
 			return AnimalForm.UnderTransformation(m, type);
 		}
@@ -1187,6 +1187,7 @@ namespace Server.Items
 
 			#region Stygian Abyss
             int hciMod = 0;
+            int dciMod = 0;
 
 			if (atkWeapon is BaseThrown)
 			{
@@ -1213,106 +1214,60 @@ namespace Server.Items
 
 			if (Core.AOS)
 			{
-				if (atkValue <= -20.0)
-				{
-					atkValue = -19.9;
-				}
+                if (atkValue <= -20.0)
+                    atkValue = -19.9;
 
-				if (defValue <= -20.0)
-				{
-					defValue = -19.9;
-				}
+                if (defValue <= -20.0)
+                    defValue = -19.9;
 
-				bonus += AosAttributes.GetValue(attacker, AosAttribute.AttackChance);
-
-				if (DivineFurySpell.UnderEffect(attacker))
-				{
-					bonus += 10; // attacker gets 10% bonus when they're under divine fury
-				}
-
-				if (CheckAnimal(attacker, typeof(GreyWolf)) || CheckAnimal(attacker, typeof(BakeKitsune)))
-				{
-					bonus += 20; // attacker gets 20% bonus when under Wolf or Bake Kitsune form
-				}
-
-				if (HitLower.IsUnderAttackEffect(attacker))
-				{
-					bonus -= 25; // Under Hit Lower Attack effect -> 25% malus
-				}
-
-				WeaponAbility ability = WeaponAbility.GetCurrentAbility(attacker);
-
-				if (ability != null)
-				{
-					bonus += ability.AccuracyBonus;
-				}
-
-				SpecialMove move = SpecialMove.GetCurrentMove(attacker);
-
-				if (move != null)
-				{
-					bonus += move.GetAccuracyBonus(attacker);
-				}
+                bonus += AosAttributes.GetValue(attacker, AosAttribute.AttackChance);
 
                 #region SA
-                //Gargoyles get a +5 HCI
-                if (attacker.Race == Race.Gargoyle)
-                    bonus += 5;
-
+                // this value will not be shown on the status bar
                 if (hciMod > 0)
                     bonus -= (int)(((double)bonus * ((double)hciMod / 100)));
-
-                //Gargoyle Cap of 50
-                bonus = Math.Min(attacker.Race == Race.Gargoyle ? 50 : 45, bonus);
                 #endregion
 
-				ourValue = (atkValue + 20.0) * (100 + bonus);
+                //SA Gargoyle cap is 50, else 45
+                bonus = Math.Min(attacker.Race == Race.Gargoyle ? 50 : 45, bonus);
 
-				bonus = AosAttributes.GetValue(defender, AosAttribute.DefendChance);
+                ourValue = (atkValue + 20.0) * (100 + bonus);
 
-				if (DivineFurySpell.UnderEffect(defender))
-				{
-					bonus -= 20; // defender loses 20% bonus when they're under divine fury
-				}
+                bonus = AosAttributes.GetValue(defender, AosAttribute.DefendChance);
 
-				if (HitLower.IsUnderDefenseEffect(defender))
-				{
-					bonus -= 25; // Under Hit Lower Defense effect -> 25% malus
-				}
+                ForceArrow.ForceArrowInfo info = ForceArrow.GetInfo(attacker, defender);
 
-				int blockBonus = 0;
+                if (info != null && info.Defender == defender)
+                    bonus -= info.DefenseChanceMalus;
 
-				if (Block.GetBonus(defender, ref blockBonus))
-				{
-					bonus += blockBonus;
-				}
+                #region SA
+                // Like HitChance, this value is not shown in the status window
+                if (defWeapon is BaseThrown)
+                {
+                    BaseShield shield = defender.FindItemOnLayer(Layer.TwoHanded) as BaseShield;
 
-				int surpriseMalus = 0;
+                    if (shield != null)
+                    {
+                        double skill = Math.Max(1.0, defender.Skills[SkillName.Parry].Value);
 
-				if (SurpriseAttack.GetMalus(defender, ref surpriseMalus))
-				{
-					bonus -= surpriseMalus;
-				}
+                        dciMod = (int)Math.Min(50, 1200 / skill);
+                    }
+                }
 
-				int discordanceEffect = 0;
+                if (dciMod > 0)
+                    bonus -= (int)(((double)bonus * ((double)dciMod / 100)));
 
-				// Defender loses -0/-28% if under the effect of Discordance.
-				if (Discordance.GetEffect(attacker, ref discordanceEffect))
-				{
-					bonus -= discordanceEffect;
-				}
+                #endregion
 
-                int max = Core.SA ? 45 + BaseArmor.GetRefinedDefenseChance(defender) : 45;
+                int max = 45 + BaseArmor.GetRefinedDefenseChance(defender);
 
-				// Defense Chance Increase = 45%
-				if (bonus > max)
-				{
-					bonus = max;
-				}
+                // Defense Chance Increase = 45%
+                if (bonus > max)
+                    bonus = max;
 
-				theirValue = (defValue + 20.0) * (100 + bonus);
+                theirValue = (defValue + 20.0) * (100 + bonus);
 
-				bonus = 0;
+                bonus = 0;
 			}
 			else
 			{
@@ -1363,44 +1318,6 @@ namespace Server.Items
                 */
 				int bonus = AosAttributes.GetValue(m, AosAttribute.WeaponSpeed);
 
-				if (DivineFurySpell.UnderEffect(m))
-				{
-					bonus += 10;
-				}
-
-				// Bonus granted by successful use of Honorable Execution.
-				bonus += HonorableExecution.GetSwingBonus(m);
-
-				if (DualWield.Registry.Contains(m))
-				{
-					bonus += ((DualWield.DualWieldTimer)DualWield.Registry[m]).BonusSwingSpeed;
-				}
-
-				if (Feint.Registry.Contains(m))
-				{
-					bonus -= ((Feint.FeintTimer)Feint.Registry[m]).SwingSpeedReduction;
-				}
-
-				TransformContext context = TransformationSpellHelper.GetContext(m);
-
-				if (context != null && context.Spell is ReaperFormSpell)
-				{
-					bonus += ((ReaperFormSpell)context.Spell).SwingSpeedBonus;
-				}
-
-				int discordanceEffect = 0;
-
-				// Discordance gives a malus of -0/-28% to swing speed.
-				if (Discordance.GetEffect(m, ref discordanceEffect))
-				{
-					bonus -= discordanceEffect;
-				}
-
-				if (EssenceOfWindSpell.IsDebuffed(m))
-				{
-					bonus -= EssenceOfWindSpell.GetSSIMalus(m);
-				}
-
 				if (bonus > 60)
 				{
 					bonus = 60;
@@ -1440,19 +1357,6 @@ namespace Server.Items
 				int v = (m.Stam + 100) * (int)speed;
 
 				int bonus = AosAttributes.GetValue(m, AosAttribute.WeaponSpeed);
-
-				if (DivineFurySpell.UnderEffect(m))
-				{
-					bonus += 10;
-				}
-
-				int discordanceEffect = 0;
-
-				// Discordance gives a malus of -0/-28% to swing speed.
-				if (Discordance.GetEffect(m, ref discordanceEffect))
-				{
-					bonus -= discordanceEffect;
-				}
 
 				v += AOS.Scale(v, bonus);
 
@@ -2369,6 +2273,9 @@ namespace Server.Items
 			}
 
 			bool ignoreArmor = (a is ArmorIgnore || (move != null && move.IgnoreArmor(attacker)));
+
+            if (Feint.Registry.ContainsKey(defender) && Feint.Registry[defender].Enemy == attacker)
+                damage -= (int)((double)damage * ((double)Feint.Registry[defender].DamageReduction / 100));
 
 			damageGiven = AOS.Damage(
 				defender,
@@ -3357,34 +3264,6 @@ namespace Server.Items
             * Capped at 100% total.
             */
 			int damageBonus = AosAttributes.GetValue(attacker, AosAttribute.WeaponDamage);
-
-			// Horrific Beast transformation gives a +25% bonus to damage.
-			if (TransformationSpellHelper.UnderTransformation(attacker, typeof(HorrificBeastSpell)))
-			{
-				damageBonus += 25;
-			}
-
-			// Divine Fury gives a +10% bonus to damage.
-			if (DivineFurySpell.UnderEffect(attacker))
-			{
-				damageBonus += 10;
-			}
-
-			int defenseMasteryMalus = 0;
-
-			// Defense Mastery gives a -50%/-80% malus to damage.
-			if (DefenseMastery.GetMalus(attacker, ref defenseMasteryMalus))
-			{
-				damageBonus -= defenseMasteryMalus;
-			}
-
-			int discordanceEffect = 0;
-
-			// Discordance gives a -2%/-48% malus to damage.
-			if (Discordance.GetEffect(attacker, ref discordanceEffect))
-			{
-				damageBonus -= discordanceEffect * 2;
-			}
 
 			if (damageBonus > 100)
 			{

@@ -538,6 +538,29 @@ namespace Server.Items
             if (RefinedDefenseChance != 0)
                 list.Add(1153733, String.Format("{0}\t{1}", "", RefinedDefenseChance.ToString()));
         }
+
+        public static int GetInherentLowerManaCost(Mobile from)
+        {
+            int toReduce = 0;
+
+            foreach (Item item in from.Items)
+            {
+                if (item is BaseArmor)
+                {
+                    if (item is WoodlandArms || item is WoodlandChest || item is WoodlandGloves || item is WoodlandLegs || item is WoodlandGorget)
+                        continue;
+
+                    BaseArmor armor = item as BaseArmor;
+
+                    if (armor.MaterialType == ArmorMaterialType.Studded)
+                        toReduce += 3;
+                    else if (armor.MaterialType >= ArmorMaterialType.Ringmail)
+                        toReduce += 1;
+                }
+            }
+
+            return toReduce;
+        }
         #endregion
 
         #region Stygian Abyss

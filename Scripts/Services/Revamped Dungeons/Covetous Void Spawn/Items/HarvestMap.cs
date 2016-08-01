@@ -174,8 +174,6 @@ namespace Server.Items
                 table[map] = LoadLocsFor(map, this);
             else if (table[map] == null)
                 table[map] = LoadLocsFor(map, this);
-            else
-                Console.WriteLine("Data already exists in buffer.");
 
             Target = table[map][Utility.Random(table[map].Count)];
         }
@@ -220,7 +218,7 @@ namespace Server.Items
 
             if (!File.Exists(path))
             {
-                Console.WriteLine("Warning! {0} does not exist...", path);
+                Console.WriteLine("Warning! {0} does not exist for harvest maps...", path);
                 return null;
             }
 
@@ -245,7 +243,7 @@ namespace Server.Items
                     }
                 }
             }
-            Console.WriteLine("Loaded {0} locations for {1}.", list.Count.ToString(), map.ToString());
+
             return list;
         }
 

@@ -478,7 +478,7 @@ namespace Server.Engines.Quests
 				
                 if (this.ChainID != QuestChain.None)
                     type = QuestHelper.FindFirstChainQuest(this);
-					
+
                 QuestHelper.Delay(this.Owner, type, this.RestartDelay);
             }
 			

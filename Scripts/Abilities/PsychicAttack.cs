@@ -1,74 +1,88 @@
-//----------------------------------------------------------------------------------//
-// Created by Vano. Email: vano2006uo@mail.ru      //
-//---------------------------------------------------------------------------------//
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
     public class PsychicAttack : WeaponAbility
     {
-        private readonly Hashtable m_Table = new Hashtable();
         public PsychicAttack()
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 30;
-            }
-        }
+        public override int BaseMana { get { return 30; } }
+
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker) || !this.CheckMana(attacker, true))
+            if (!Validate(attacker) || !CheckMana(attacker, true))
                 return;
 
             ClearCurrentAbility(attacker);
 
-            attacker.SendMessage("You attack by psychic energy"); 
-            defender.SendMessage("You attacking by psychic energy");
-
-            //defender.Mana -= Utility.Random( (int)attacker.Skills[SkillName.Anatomy].Value/10, (int)attacker.Skills[SkillName.Anatomy].Value/5 );
-							
-            int toDrain = defender.Mana;
-
-            if (toDrain < 0)
-                toDrain = 0;
-            else if (toDrain > defender.Mana)
-                toDrain = defender.Mana;
-
-            if (this.m_Table.Contains(defender))
-                toDrain = 0;
+            attacker.SendLocalizedMessage(1074383); // Your shot sends forth a wave of psychic energy.
+            defender.SendLocalizedMessage(1074384); // Your mind is attacked by psychic force!
 
             defender.FixedParticles(0x3789, 10, 25, 5032, EffectLayer.Head);
             defender.PlaySound(0x1F8);
 
-            if (toDrain > 0)
+            if (m_Registry.ContainsKey(defender))
             {
-                defender.Mana -= toDrain;
-
-                this.m_Table[defender] = Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerStateCallback(AosDelay_Callback), new object[] { defender, toDrain });
+                if (!m_Registry[defender].DoneIncrease)
+                {
+                    m_Registry[defender].SpellDamageMalus *= 2;
+                    m_Registry[defender].ManaCostMalus *= 2;
+                }
             }
+            else
+                m_Registry[defender] = new PsychicAttackTimer(defender);
+
+            BuffInfo.RemoveBuff(defender, BuffIcon.PsychicAttack);
+
+            string args = String.Format("{0}\t{1}", m_Registry[defender].SpellDamageMalus, m_Registry[defender].ManaCostMalus);
+            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.PsychicAttack, 1151296, 1151297, args));
         }
 
-        private void AosDelay_Callback(object state)
+        private static Dictionary<Mobile, PsychicAttackTimer> m_Registry = new Dictionary<Mobile, PsychicAttackTimer>();
+        public static Dictionary<Mobile, PsychicAttackTimer> Registry { get { return m_Registry; } }
+
+        public static void RemoveEffects(Mobile defender)
         {
-            object[] states = (object[])state;
+            if (defender == null)
+                return;
 
-            Mobile m = (Mobile)states[0];
-            int mana = (int)states[1];
+            BuffInfo.RemoveBuff(defender, BuffIcon.PsychicAttack);
 
-            if (m.Alive && !m.IsDeadBondedPet)
+            if (m_Registry.ContainsKey(defender))
+                m_Registry.Remove(defender);
+
+            defender.SendLocalizedMessage(1150292); // You recover from the effects of the psychic attack.
+        }
+
+        public class PsychicAttackTimer : Timer
+        {
+            private Mobile m_Defender;
+            private int m_SpellDamageMalus;
+            private int m_ManaCostMalus;
+            private bool m_DoneIncrease;
+
+            public int SpellDamageMalus { get { return m_SpellDamageMalus; } set { m_SpellDamageMalus = value; m_DoneIncrease = true; } }
+            public int ManaCostMalus { get { return m_ManaCostMalus; } set { m_ManaCostMalus = value; m_DoneIncrease = true; } }
+            public bool DoneIncrease { get { return m_DoneIncrease; } }
+
+            public PsychicAttackTimer(Mobile defender)
+                : base(TimeSpan.FromSeconds(10))
             {
-                m.Mana += mana;
-
-                m.FixedEffect(0x3779, 10, 25);
-                m.PlaySound(0x28E);
+                m_Defender = defender;
+                m_SpellDamageMalus = 15;
+                m_ManaCostMalus = 15;
+                m_DoneIncrease = false;
+                Start();
             }
 
-            this.m_Table.Remove(m);
+            protected override void OnTick()
+            {
+                RemoveEffects(m_Defender);
+                Stop();
+            }
         }
     }
 }
