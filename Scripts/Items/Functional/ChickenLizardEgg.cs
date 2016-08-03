@@ -56,7 +56,7 @@ namespace Server.Items
 			set
 			{
 				m_TotalIncubationTime = value;
-				m_IncubationStart = DateTime.Now;
+				m_IncubationStart = DateTime.UtcNow;
 				InvalidateProperties();
 			}
 		}
@@ -69,8 +69,8 @@ namespace Server.Items
             {
                 if (m_Incubating && !value)
                 {
-                    if (m_IncubationStart < DateTime.Now)
-                        TotalIncubationTime += DateTime.Now - m_IncubationStart;
+                    if (m_IncubationStart < DateTime.UtcNow)
+                        TotalIncubationTime += DateTime.UtcNow - m_IncubationStart;
                 }
 
                 m_Incubating = value;
@@ -181,8 +181,8 @@ namespace Server.Items
             if (m_Stage == EggStage.Burnt)
                 return;
 
-            if(m_Incubating && m_IncubationStart < DateTime.Now)
-			    TotalIncubationTime += DateTime.Now - m_IncubationStart;
+            if(m_Incubating && m_IncubationStart < DateTime.UtcNow)
+			    TotalIncubationTime += DateTime.UtcNow - m_IncubationStart;
 				
 			if(m_TotalIncubationTime > TimeSpan.FromHours(24) && m_Stage == EggStage.New)           //from new to stage 1
 			{

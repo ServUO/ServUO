@@ -45,7 +45,27 @@ namespace Server.Items
                     egg.BurnEgg();
                 else
                 {
-                    egg.IncubationStart = DateTime.Now;
+                    egg.IncubationStart = DateTime.UtcNow;
+                    egg.Incubating = true;
+                }
+            }
+
+            return canDrop;
+        }
+
+        public override bool OnDragDrop(Mobile from, Item item)
+        {
+            bool canDrop = base.OnDragDrop(from, item);
+
+            if (canDrop && item is ChickenLizardEgg)
+            {
+                ChickenLizardEgg egg = (ChickenLizardEgg)item;
+
+                if (egg.TotalIncubationTime > TimeSpan.FromHours(120))
+                    egg.BurnEgg();
+                else
+                {
+                    egg.IncubationStart = DateTime.UtcNow;
                     egg.Incubating = true;
                 }
             }

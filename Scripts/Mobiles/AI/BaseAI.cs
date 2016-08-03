@@ -46,7 +46,8 @@ namespace Server.Mobiles
         AI_Samurai,
         AI_Ninja,
         AI_Spellweaving,
-        AI_Mystic
+        AI_Mystic,
+        AI_Paladin,
 	}
 
 	public enum ActionType

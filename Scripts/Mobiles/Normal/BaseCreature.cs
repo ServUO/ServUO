@@ -2692,6 +2692,9 @@ namespace Server.Mobiles
                 case AIType.AI_Mystic:
                     m_AI = new MysticAI(this);
                     break;
+                case AIType.AI_Paladin:
+                    m_AI = new PaladinAI(this);
+                    break;
             }
         }
 
@@ -5582,6 +5585,10 @@ namespace Server.Mobiles
             InvalidateProperties();
 
             return true;
+        }
+
+        public virtual void OnAfterTame(Mobile tamer)
+        {
         }
 
         public override void OnRegionChange(Region Old, Region New)

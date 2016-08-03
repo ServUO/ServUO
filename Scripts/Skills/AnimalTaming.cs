@@ -458,6 +458,8 @@ namespace Server.SkillHandlers
 
 							m_Creature.SetControlMaster(m_Tamer);
 							m_Creature.IsBonded = false;
+
+                            m_Creature.OnAfterTame(m_Tamer);
 						}
 						else
 						{
