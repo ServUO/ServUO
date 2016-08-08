@@ -71,7 +71,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
             CheckTimer();
 
-            Setup();
+            Timer.DelayCall(TimeSpan.FromSeconds(1), Setup);
 
             Movable = false;
             Visible = false;

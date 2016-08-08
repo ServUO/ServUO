@@ -1237,6 +1237,10 @@ namespace Server.Items
             {
                 ((PlantItem)targ).Pour(from, this);
             }
+            else if (targ is ChickenLizardEgg)
+            {
+                ((ChickenLizardEgg)targ).Pour(from, this);
+            }
             else if (targ is AddonComponent &&
                      (((AddonComponent)targ).Addon is WaterVatEast || ((AddonComponent)targ).Addon is WaterVatSouth) &&
                      this.Content == BeverageType.Water)
