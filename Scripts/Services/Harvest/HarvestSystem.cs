@@ -111,7 +111,7 @@ namespace Server.Engines.Harvest
                 this.OnBadHarvestTarget(from, tool, toHarvest);
                 return;
             }
-            else if (!def.Validate(tileID))
+            else if (!def.Validate(tileID) && !def.ValidateSpecial(tileID))
             {
                 this.OnBadHarvestTarget(from, tool, toHarvest);
                 return;
@@ -158,7 +158,7 @@ namespace Server.Engines.Harvest
 
                 if (type != null)
                 {
-                    Item item = this.Construct(type, from);
+                    Item item = this.Construct(type, from, tool);
 
                     if (item == null)
                     {
@@ -212,7 +212,7 @@ namespace Server.Engines.Harvest
                         {
 							if (bonus.RequiredMap == null || bonus.RequiredMap == from.Map)
 							{
-								Item bonusItem = this.Construct(bonus.Type, from);
+								Item bonusItem = this.Construct(bonus.Type, from, tool);
 
 								if (this.Give(from, bonusItem, true))	//Bonuses always allow placing at feet, even if pack is full irregrdless of def
 								{
@@ -241,6 +241,10 @@ namespace Server.Engines.Harvest
                             }
                         }
                     }
+
+                    #region High Seas
+                    OnToolUsed(from, tool, item != null);
+                    #endregion
                 }
             }
 
@@ -248,6 +252,10 @@ namespace Server.Engines.Harvest
                 def.SendMessageTo(from, def.FailMessage);
 
             this.OnHarvestFinished(from, tool, def, vein, bank, resource, toHarvest);
+        }
+
+        public virtual void OnToolUsed(Mobile from, Item tool, bool caughtSomething)
+        {
         }
 
         public virtual void OnHarvestFinished(Mobile from, Item tool, HarvestDefinition def, HarvestVein vein, HarvestBank bank, HarvestResource resource, object harvested)
@@ -259,7 +267,7 @@ namespace Server.Engines.Harvest
             return false;
         }
 
-        public virtual Item Construct(Type type, Mobile from)
+        public virtual Item Construct(Type type, Mobile from, Item tool)
         {
             try
             {
@@ -362,7 +370,7 @@ namespace Server.Engines.Harvest
                 this.OnBadHarvestTarget(from, tool, toHarvest);
                 return false;
             }
-            else if (!def.Validate(tileID))
+            else if (!def.Validate(tileID) && !def.ValidateSpecial(tileID))
             {
                 from.EndAction(locked);
                 this.OnBadHarvestTarget(from, tool, toHarvest);
@@ -407,6 +415,11 @@ namespace Server.Engines.Harvest
 
         public virtual HarvestDefinition GetDefinition(int tileID)
         {
+            return GetDefinition(tileID, null);
+        }
+
+        public virtual HarvestDefinition GetDefinition(int tileID, Item tool)
+        {
             HarvestDefinition def = null;
 
             for (int i = 0; def == null && i < this.m_Definitions.Count; ++i)
@@ -419,6 +432,23 @@ namespace Server.Engines.Harvest
 
             return def;
         }
+
+        #region High Seas
+        public virtual HarvestDefinition GetDefinitionFromSpecialTile(int tileID)
+        {
+            HarvestDefinition def = null;
+
+            for (int i = 0; def == null && i < m_Definitions.Count; ++i)
+            {
+                HarvestDefinition check = m_Definitions[i];
+
+                if (check.ValidateSpecial(tileID))
+                    def = check;
+            }
+
+            return def;
+        }
+        #endregion
 
         public virtual void StartHarvesting(Mobile from, Item tool, object toHarvest)
         {
@@ -435,7 +465,7 @@ namespace Server.Engines.Harvest
                 return;
             }
 
-            HarvestDefinition def = this.GetDefinition(tileID);
+            HarvestDefinition def = this.GetDefinition(tileID, tool);
 
             if (def == null)
             {

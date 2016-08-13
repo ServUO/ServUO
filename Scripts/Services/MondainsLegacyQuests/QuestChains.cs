@@ -24,7 +24,8 @@ namespace Server.Engines.Quests
         KingVernixQuests,
         DoughtyWarriors,
         HonorOfDeBoors,
-        LaifemTheWeaver
+        LaifemTheWeaver,
+        CloakOfHumility
     }
 
     public class BaseChain

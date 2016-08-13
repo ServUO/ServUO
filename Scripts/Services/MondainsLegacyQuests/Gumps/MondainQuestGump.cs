@@ -6,7 +6,7 @@ namespace Server.Engines.Quests
 {
     public class MondainQuestGump : BaseQuestGump
     {
-        private const int ButtonOffset = 10;
+        private const int ButtonOffset = 11;
         private readonly object m_Quester;
         private readonly PlayerMobile m_From;
         private readonly BaseQuest m_Quest;
@@ -58,21 +58,21 @@ namespace Server.Engines.Quests
             this.Resizable = false;
 			
             this.AddPage(0);
-			
-            this.AddImageTiled(50, 20, 400, 400, 0x1404);
-            this.AddImageTiled(50, 29, 30, 390, 0x28DC);
-            this.AddImageTiled(34, 140, 17, 279, 0x242F);			
-            this.AddImage(48, 135, 0x28AB);
-            this.AddImage(-16, 285, 0x28A2);
-            this.AddImage(0, 10, 0x28B5);
-            this.AddImage(25, 0, 0x28B4);
-            this.AddImageTiled(83, 15, 350, 15, 0x280A);
-            this.AddImage(34, 419, 0x2842);
-            this.AddImage(442, 419, 0x2840);
-            this.AddImageTiled(51, 419, 392, 17, 0x2775);
-            this.AddImageTiled(415, 29, 44, 390, 0xA2D);
-            this.AddImageTiled(415, 29, 30, 390, 0x28DC);
-            this.AddImage(370, 50, 0x589);
+
+            AddImageTiled(50, 20, 400, 460, 0x1404);
+            AddImageTiled(50, 29, 30, 450, 0x28DC);
+            AddImageTiled(34, 140, 17, 339, 0x242F);
+            AddImage(48, 135, 0x28AB);
+            AddImage(-16, 285, 0x28A2);
+            AddImage(0, 10, 0x28B5);
+            AddImage(25, 0, 0x28B4);
+            AddImageTiled(83, 15, 350, 15, 0x280A);
+            AddImage(34, 479, 0x2842);
+            AddImage(442, 479, 0x2840);
+            AddImageTiled(51, 479, 392, 17, 0x2775);
+            AddImageTiled(415, 29, 44, 450, 0xA2D);
+            AddImageTiled(415, 29, 30, 450, 0x28DC);
+            AddImage(370, 50, 0x589);
 			
             if ((int)this.m_From.AccessLevel > (int)AccessLevel.Counselor && quest != null)
                 this.AddButton(379, 60, 0x15A9, 0x15A9, (int)Buttons.CompleteQuest, GumpButtonType.Reply, 0);
@@ -106,6 +106,9 @@ namespace Server.Engines.Quests
                 case Section.InProgress:
                     this.SecInProgress();
                     break;
+                case Section.Failed:
+                    SecFailed();
+                    break;
             }
         }
 
@@ -118,6 +121,7 @@ namespace Server.Engines.Quests
             Refuse,
             Complete,
             InProgress,
+            Failed
         }
 
         private enum Buttons
@@ -132,6 +136,7 @@ namespace Server.Engines.Quests
             NextPage,
             Complete,
             CompleteQuest,
+            RefuseReward
         }
         public virtual void SecMain()
         {
@@ -152,82 +157,119 @@ namespace Server.Engines.Quests
                 offset += 21;			
             }
 				
-            this.AddButton(313, 395, 0x2EEC, 0x2EEE, (int)Buttons.Close, GumpButtonType.Reply, 0);
+            this.AddButton(313, 455, 0x2EEC, 0x2EEE, (int)Buttons.Close, GumpButtonType.Reply, 0);
         }
 
         public virtual void SecDescription()
         {
             if (this.m_Quest == null)
-                return;				
-			
-            if (this.m_Offer)
-                this.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
-            else
-                this.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
-				
-            if (this.m_Quest.Failed)
-                this.AddHtmlLocalized(160, 80, 250, 16, 500039, 0x3C00, false, false); // Failed!
-			
-            this.AddHtmlObject(160, 108, 250, 16, this.m_Quest.Title, DarkGreen, false, false);
-				
-            if (this.m_Quest.ChainID != QuestChain.None)
-                this.AddHtmlLocalized(98, 140, 312, 16, 1075024, 0x2710, false, false); // Description (quest chain)
-            else
-                this.AddHtmlLocalized(98, 140, 312, 16, 1072202, 0x2710, false, false); // Description
-			
-            this.AddHtmlObject(98, 156, 312, 180, this.m_Quest.Description, LightGreen, false, true);
-				
+                return;
+
+            if (!m_Quest.RenderDescription(this, m_Offer))
+            {
+                if (this.m_Offer)
+                    this.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
+                else
+                    this.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
+
+                if (this.m_Quest.Failed)
+                    this.AddHtmlLocalized(160, 80, 200, 32, 500039, 0x3C00, false, false); // Failed!
+
+                this.AddHtmlObject(160, 70, 200, 40, this.m_Quest.Title, DarkGreen, false, false);
+
+                if (this.m_Quest.ChainID != QuestChain.None)
+                    this.AddHtmlLocalized(98, 140, 312, 16, 1075024, 0x2710, false, false); // Description (quest chain)
+                else
+                    this.AddHtmlLocalized(98, 140, 312, 16, 1072202, 0x2710, false, false); // Description
+
+                this.AddHtmlObject(98, 156, 312, 180, this.m_Quest.Description, LightGreen, false, true);
+            }
+
             if (this.m_Offer)
             {
-                this.AddButton(95, 395, 0x2EE0, 0x2EE2, (int)Buttons.AcceptQuest, GumpButtonType.Reply, 0);
-                this.AddButton(313, 395, 0x2EF2, 0x2EF4, (int)Buttons.RefuseQuest, GumpButtonType.Reply, 0);
+                this.AddButton(95, 455, 0x2EE0, 0x2EE2, (int)Buttons.AcceptQuest, GumpButtonType.Reply, 0);
+                this.AddButton(313, 455, 0x2EF2, 0x2EF4, (int)Buttons.RefuseQuest, GumpButtonType.Reply, 0);
             }
             else
             {
-                this.AddButton(95, 395, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
-                this.AddButton(313, 395, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
+                this.AddButton(95, 455, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
+                this.AddButton(313, 455, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
             }
 			
-            this.AddButton(275, 370, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
+            if(m_Quest.ShowDescription)
+                this.AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
         }
 
         public virtual void SecObjectives()
         {
             if (this.m_Quest == null)
-                return;	
-				
-            if (this.m_Offer)
-                this.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
-            else
-                this.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
-			
-            this.AddHtmlObject(160, 108, 250, 16, this.m_Quest.Title, DarkGreen, false, false);
-            this.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
-			
-            if (this.m_Quest.AllObjectives)
-                this.AddHtmlLocalized(98, 156, 312, 16, 1072208, 0x2710, false, false); // All of the following	
-            else
-                this.AddHtmlLocalized(98, 156, 312, 16, 1072209, 0x2710, false, false); // Only one of the following
-			
-            int offset = 172;
-				
-            for (int i = 0; i < this.m_Quest.Objectives.Count; i ++)
+                return;
+
+            if (!m_Quest.RenderObjective(this, m_Offer))
             {
-                BaseObjective objective = this.m_Quest.Objectives[i];
-				
-                if (objective is SlayObjective)
+                if (this.m_Offer)
+                    this.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer
+                else
+                    this.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log
+
+                this.AddHtmlObject(160, 70, 200, 40, this.m_Quest.Title, DarkGreen, false, false);
+                this.AddHtmlLocalized(98, 140, 312, 16, 1049073, 0x2710, false, false); // Objective:
+
+                if (this.m_Quest.AllObjectives)
+                    this.AddHtmlLocalized(98, 156, 312, 16, 1072208, 0x2710, false, false); // All of the following	
+                else
+                    this.AddHtmlLocalized(98, 156, 312, 16, 1072209, 0x2710, false, false); // Only one of the following
+
+                int offset = 172;
+
+                for (int i = 0; i < this.m_Quest.Objectives.Count; i++)
                 {
-                    SlayObjective slay = (SlayObjective)objective;
+                    BaseObjective objective = this.m_Quest.Objectives[i];
 
-                    if (slay != null)
+                    if (objective is SlayObjective)
                     {
-                        this.AddHtmlLocalized(98, offset, 30, 16, 1072204, 0x15F90, false, false); // Slay	
-                        this.AddLabel(133, offset, 0x481, slay.MaxProgress + " " + slay.Name); // %count% + %name%
+                        SlayObjective slay = (SlayObjective)objective;
 
-                        offset += 16;
-
-                        if (this.m_Offer)
+                        if (slay != null)
                         {
+                            this.AddHtmlLocalized(98, offset, 30, 16, 1072204, 0x15F90, false, false); // Slay	
+                            this.AddLabel(133, offset, 0x481, slay.MaxProgress + " " + slay.Name); // %count% + %name%
+
+                            offset += 16;
+
+                            if (this.m_Offer)
+                            {
+                                if (slay.Timed)
+                                {
+                                    this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                                    this.AddLabel(223, offset, 0x481, this.FormatSeconds(slay.Seconds)); // %est. time remaining%
+
+                                    offset += 16;
+                                }
+                                continue;
+                            }
+
+                            if (slay.Region != null)
+                            {
+                                this.AddHtmlLocalized(103, offset, 312, 20, 1018327, 0x15F90, false, false); // Location
+                                this.AddHtmlObject(223, offset, 312, 20, slay.Region.Name, White, false, false); // %location%
+
+                                offset += 16;
+                            }
+
+                            this.AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
+                            this.AddLabel(223, offset, 0x481, slay.CurProgress.ToString());  // %current progress%
+
+                            offset += 16;
+
+                            if (this.ReturnTo() != null)
+                            {
+                                this.AddHtmlLocalized(103, offset, 120, 16, 1074782, 0x15F90, false, false); // Return to	
+                                this.AddLabel(223, offset, 0x481, this.ReturnTo());  // %return to%		
+
+                                offset += 16;
+                            }
+
                             if (slay.Timed)
                             {
                                 this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
@@ -235,55 +277,49 @@ namespace Server.Engines.Quests
 
                                 offset += 16;
                             }
-                            continue;
-                        }
-
-                        if (slay.Region != null)
-                        {
-                            this.AddHtmlLocalized(103, offset, 312, 20, 1018327, 0x15F90, false, false); // Location
-                            this.AddHtmlObject(223, offset, 312, 20, slay.Region.Name, White, false, false); // %location%
-
-                            offset += 16;
-                        }
-
-                        this.AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
-                        this.AddLabel(223, offset, 0x481, slay.CurProgress.ToString());  // %current progress%
-
-                        offset += 16;
-
-                        if (this.ReturnTo() != null)
-                        {
-                            this.AddHtmlLocalized(103, offset, 120, 16, 1074782, 0x15F90, false, false); // Return to	
-                            this.AddLabel(223, offset, 0x481, this.ReturnTo());  // %return to%		
-
-                            offset += 16;
-                        }
-
-                        if (slay.Timed)
-                        {
-                            this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                            this.AddLabel(223, offset, 0x481, this.FormatSeconds(slay.Seconds)); // %est. time remaining%
-
-                            offset += 16;
                         }
                     }
-                }
-                else if (objective is ObtainObjective)
-                {
-                    ObtainObjective obtain = (ObtainObjective)objective;
-
-                    if (obtain != null)
+                    else if (objective is ObtainObjective)
                     {
-                        this.AddHtmlLocalized(98, offset, 40, 16, 1072205, 0x15F90, false, false); // Obtain						
-                        this.AddLabel(143, offset, 0x481, obtain.MaxProgress + " " + obtain.Name); // %count% + %name%
+                        ObtainObjective obtain = (ObtainObjective)objective;
 
-                        if (obtain.Image > 0)
-                            this.AddItem(350, offset, obtain.Image); // Image
-
-                        offset += 16;
-
-                        if (this.m_Offer)
+                        if (obtain != null)
                         {
+                            this.AddHtmlLocalized(98, offset, 40, 16, 1072205, 0x15F90, false, false); // Obtain						
+                            this.AddLabel(143, offset, 0x481, obtain.MaxProgress + " " + obtain.Name); // %count% + %name%
+
+                            if (obtain.Image > 0)
+                                this.AddItem(350, offset, obtain.Image); // Image
+
+                            offset += 16;
+
+                            if (this.m_Offer)
+                            {
+                                if (obtain.Timed)
+                                {
+                                    this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                                    this.AddLabel(223, offset, 0x481, this.FormatSeconds(obtain.Seconds)); // %est. time remaining%
+
+                                    offset += 16;
+                                }
+                                else if (obtain.Image > 0)
+                                    offset += 16;
+
+                                continue;
+                            }
+                            this.AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
+                            this.AddLabel(223, offset, 0x481, obtain.CurProgress.ToString());    // %current progress%
+
+                            offset += 16;
+
+                            if (this.ReturnTo() != null)
+                            {
+                                this.AddHtmlLocalized(103, offset, 120, 16, 1074782, 0x15F90, false, false); // Return to	
+                                this.AddLabel(223, offset, 0x481, this.ReturnTo());  // %return to%
+
+                                offset += 16;
+                            }
+
                             if (obtain.Timed)
                             {
                                 this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
@@ -291,106 +327,83 @@ namespace Server.Engines.Quests
 
                                 offset += 16;
                             }
-                            else if (obtain.Image > 0)
+                        }
+                    }
+                    else if (objective is DeliverObjective)
+                    {
+                        DeliverObjective deliver = (DeliverObjective)objective;
+
+                        if (deliver != null)
+                        {
+                            this.AddHtmlLocalized(98, offset, 40, 16, 1072207, 0x15F90, false, false); // Deliver						
+                            this.AddLabel(143, offset, 0x481, deliver.MaxProgress + " " + deliver.DeliveryName);     // %name%
+
+                            offset += 16;
+
+                            this.AddHtmlLocalized(103, offset, 120, 16, 1072379, 0x15F90, false, false); // Deliver to						
+                            this.AddLabel(223, offset, 0x481, deliver.DestName); // %deliver to%
+
+                            offset += 16;
+
+                            if (deliver.Timed)
+                            {
+                                this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                                this.AddLabel(223, offset, 0x481, this.FormatSeconds(deliver.Seconds)); // %est. time remaining%
+
                                 offset += 16;
-
-                            continue;
-                        }
-                        this.AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
-                        this.AddLabel(223, offset, 0x481, obtain.CurProgress.ToString());    // %current progress%
-
-                        offset += 16;
-
-                        if (this.ReturnTo() != null)
-                        {
-                            this.AddHtmlLocalized(103, offset, 120, 16, 1074782, 0x15F90, false, false); // Return to	
-                            this.AddLabel(223, offset, 0x481, this.ReturnTo());  // %return to%
-
-                            offset += 16;
-                        }
-
-                        if (obtain.Timed)
-                        {
-                            this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                            this.AddLabel(223, offset, 0x481, this.FormatSeconds(obtain.Seconds)); // %est. time remaining%
-
-                            offset += 16;
+                            }
                         }
                     }
-                }
-                else if (objective is DeliverObjective)
-                {
-                    DeliverObjective deliver = (DeliverObjective)objective;
-
-                    if (deliver != null)
+                    else if (objective is EscortObjective)
                     {
-                        this.AddHtmlLocalized(98, offset, 40, 16, 1072207, 0x15F90, false, false); // Deliver						
-                        this.AddLabel(143, offset, 0x481, deliver.MaxProgress + " " + deliver.DeliveryName);     // %name%
+                        EscortObjective escort = (EscortObjective)objective;
 
-                        offset += 16;
-
-                        this.AddHtmlLocalized(103, offset, 120, 16, 1072379, 0x15F90, false, false); // Deliver to						
-                        this.AddLabel(223, offset, 0x481, deliver.DestName); // %deliver to%
-
-                        offset += 16;
-
-                        if (deliver.Timed)
+                        if (escort != null)
                         {
-                            this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                            this.AddLabel(223, offset, 0x481, this.FormatSeconds(deliver.Seconds)); // %est. time remaining%
+
+                            this.AddHtmlLocalized(98, offset, 50, 16, 1072206, 0x15F90, false, false); // Escort to
+                            this.AddHtmlObject(153, offset, 200, 16, escort.Region.Name, White, false, false);
+
+                            offset += 16;
+
+                            if (escort.Timed)
+                            {
+                                this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                                this.AddLabel(223, offset, 0x481, this.FormatSeconds(escort.Seconds)); // %est. time remaining%
+
+                                offset += 16;
+                            }
+                        }
+                    }
+                    else if (objective is ApprenticeObjective)
+                    {
+                        ApprenticeObjective apprentice = (ApprenticeObjective)objective;
+
+                        if (apprentice != null)
+                        {
+
+                            this.AddHtmlLocalized(98, offset, 200, 16, 1077485, "#" + (1044060 + (int)apprentice.Skill) + "\t" + apprentice.MaxProgress, 0x15F90, false, false); // Increase ~1_SKILL~ to ~2_VALUE~
 
                             offset += 16;
                         }
-                    }
-                }
-                else if (objective is EscortObjective)
-                {
-                    EscortObjective escort = (EscortObjective)objective;
-
-                    if (escort != null)
-                    {
-
-                        this.AddHtmlLocalized(98, offset, 50, 16, 1072206, 0x15F90, false, false); // Escort to
-                        this.AddHtmlObject(153, offset, 200, 16, escort.Region.Name, White, false, false);
-
-                        offset += 16;
-
-                        if (escort.Timed)
-                        {
-                            this.AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                            this.AddLabel(223, offset, 0x481, this.FormatSeconds(escort.Seconds)); // %est. time remaining%
-
-                            offset += 16;
-                        }
-                    }
-                }
-                else if (objective is ApprenticeObjective)
-                {
-                    ApprenticeObjective apprentice = (ApprenticeObjective)objective;
-
-                    if (apprentice != null)
-                    {
-
-                        this.AddHtmlLocalized(98, offset, 200, 16, 1077485, "#" + (1044060 + (int)apprentice.Skill) + "\t" + apprentice.MaxProgress, 0x15F90, false, false); // Increase ~1_SKILL~ to ~2_VALUE~
-
-                        offset += 16;
                     }
                 }
             }
-			
+
             if (this.m_Offer)
             {
-                this.AddButton(95, 395, 0x2EE0, 0x2EE2, (int)Buttons.AcceptQuest, GumpButtonType.Reply, 0);
-                this.AddButton(313, 395, 0x2EF2, 0x2EF4, (int)Buttons.RefuseQuest, GumpButtonType.Reply, 0);
+                this.AddButton(95, 455, 0x2EE0, 0x2EE2, (int)Buttons.AcceptQuest, GumpButtonType.Reply, 0);
+                this.AddButton(313, 455, 0x2EF2, 0x2EF4, (int)Buttons.RefuseQuest, GumpButtonType.Reply, 0);
             }
             else
             {
-                this.AddButton(95, 395, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
-                this.AddButton(313, 395, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
+                this.AddButton(95, 455, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
+                this.AddButton(313, 455, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
             }
-			
-            this.AddButton(130, 370, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
-            this.AddButton(275, 370, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
+
+
+            this.AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
+            this.AddButton(275, 430, 0x2EE9, 0x2EEB, (int)Buttons.NextPage, GumpButtonType.Reply, 0);
         }
 
         public virtual void SecRewards()
@@ -403,7 +416,7 @@ namespace Server.Engines.Quests
             else
                 this.AddHtmlLocalized(130, 45, 270, 16, 1046026, 0xFFFFFF, false, false); // Quest Log	
 			
-            this.AddHtmlObject(160, 108, 250, 16, this.m_Quest.Title, DarkGreen, false, false);
+            this.AddHtmlObject(160, 70, 200, 40, this.m_Quest.Title, DarkGreen, false, false);
             this.AddHtmlLocalized(98, 140, 312, 16, 1072201, 0x2710, false, false); // Reward	
 			
             int offset = 163;
@@ -415,7 +428,7 @@ namespace Server.Engines.Quests
                 if (reward != null)
                 {
                     this.AddImage(105, offset, 0x4B9);
-                    this.AddHtmlObject(133, offset, 280, 16, reward.Name, LightGreen, false, false);
+                    this.AddHtmlObject(133, offset, 280, 32, reward.Name, LightGreen, false, false);
 
                     offset += 16;
                 }
@@ -423,19 +436,24 @@ namespace Server.Engines.Quests
 			
             if (this.m_Completed)
             {
-                this.AddButton(95, 395, 0x2EE0, 0x2EE2, (int)Buttons.AcceptReward, GumpButtonType.Reply, 0);
+                this.AddButton(95, 455, 0x2EE0, 0x2EE2, (int)Buttons.AcceptReward, GumpButtonType.Reply, 0);
+
+                if (m_Quest.CanRefuseReward)
+                    AddButton(313, 430, 0x2EF2, 0x2EF4, (int)Buttons.RefuseReward, GumpButtonType.Reply, 0);
+                else
+                    AddButton(313, 455, 0x2EE6, 0x2EE8, (int)Buttons.Close, GumpButtonType.Reply, 0);
             }
             else if (this.m_Offer)
             {
-                this.AddButton(95, 395, 0x2EE0, 0x2EE2, (int)Buttons.AcceptQuest, GumpButtonType.Reply, 0);
-                this.AddButton(313, 395, 0x2EF2, 0x2EF4, (int)Buttons.RefuseQuest, GumpButtonType.Reply, 0);
-                this.AddButton(130, 370, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
+                this.AddButton(95, 455, 0x2EE0, 0x2EE2, (int)Buttons.AcceptQuest, GumpButtonType.Reply, 0);
+                this.AddButton(313, 455, 0x2EF2, 0x2EF4, (int)Buttons.RefuseQuest, GumpButtonType.Reply, 0);
+                this.AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
             }
             else
             {
-                this.AddButton(95, 395, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
-                this.AddButton(313, 395, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
-                this.AddButton(130, 370, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
+                this.AddButton(95, 455, 0x2EF5, 0x2EF7, (int)Buttons.ResignQuest, GumpButtonType.Reply, 0);
+                this.AddButton(313, 455, 0x2EEC, 0x2EEE, (int)Buttons.CloseQuest, GumpButtonType.Reply, 0);
+                this.AddButton(130, 430, 0x2EEF, 0x2EF1, (int)Buttons.PreviousPage, GumpButtonType.Reply, 0);
             }
         }
 
@@ -448,10 +466,10 @@ namespace Server.Engines.Quests
             {
                 this.AddHtmlLocalized(130, 45, 270, 16, 3006156, 0xFFFFFF, false, false); // Quest Conversation
                 this.AddImage(140, 110, 0x4B9);
-                this.AddHtmlObject(160, 108, 250, 16, this.m_Quest.Title, DarkGreen, false, false);
+                this.AddHtmlObject(160, 70, 200, 40, this.m_Quest.Title, DarkGreen, false, false);
                 this.AddHtmlObject(98, 140, 312, 180, this.m_Quest.Refuse, LightGreen, false, true);
 				
-                this.AddButton(313, 395, 0x2EE6, 0x2EE8, (int)Buttons.Close, GumpButtonType.Reply, 0);
+                this.AddButton(313, 455, 0x2EE6, 0x2EE8, (int)Buttons.Close, GumpButtonType.Reply, 0);
             }
         }
 
@@ -462,10 +480,10 @@ namespace Server.Engines.Quests
 				
             this.AddHtmlLocalized(130, 45, 270, 16, 3006156, 0xFFFFFF, false, false); // Quest Conversation				
             this.AddImage(140, 110, 0x4B9);
-            this.AddHtmlObject(160, 108, 250, 16, this.m_Quest.Title, DarkGreen, false, false);	
+            this.AddHtmlObject(160, 70, 200, 40, this.m_Quest.Title, DarkGreen, false, false);	
             this.AddHtmlObject(98, 140, 312, 180, this.m_Quest.Uncomplete, LightGreen, false, true);
 							
-            this.AddButton(313, 395, 0x2EE6, 0x2EE8, (int)Buttons.Close, GumpButtonType.Reply, 0);
+            this.AddButton(313, 455, 0x2EE6, 0x2EE8, (int)Buttons.Close, GumpButtonType.Reply, 0);
         }
 
         public virtual void SecComplete()
@@ -491,11 +509,29 @@ namespace Server.Engines.Quests
 				
             this.AddHtmlLocalized(130, 45, 270, 16, 3006156, 0xFFFFFF, false, false); // Quest Conversation
             this.AddImage(140, 110, 0x4B9);
-            this.AddHtmlObject(160, 108, 250, 16, this.m_Quest.Title, DarkGreen, false, false);	
+            this.AddHtmlObject(160, 70, 200, 40, this.m_Quest.Title, DarkGreen, false, false);	
             this.AddHtmlObject(98, 140, 312, 180, this.m_Quest.Complete, LightGreen, false, true);
 				
-            this.AddButton(313, 395, 0x2EE6, 0x2EE8, (int)Buttons.Close, GumpButtonType.Reply, 0);
-            this.AddButton(95, 395, 0x2EE9, 0x2EEB, (int)Buttons.Complete, GumpButtonType.Reply, 0);
+            this.AddButton(313, 455, 0x2EE6, 0x2EE8, (int)Buttons.Close, GumpButtonType.Reply, 0);
+            this.AddButton(95, 455, 0x2EE9, 0x2EEB, (int)Buttons.Complete, GumpButtonType.Reply, 0);
+        }
+
+        public virtual void SecFailed()
+        {
+            if (m_Quest == null)
+                return;
+
+            object fail = m_Quest.FailedMsg;
+
+            if (fail == null)
+                fail = "You have failed to meet the conditions of the quest.";
+
+            AddHtmlLocalized(130, 45, 270, 16, 3006156, 0xFFFFFF, false, false); // Quest Conversation				
+            AddImage(140, 110, 0x4B9);
+            AddHtmlObject(160, 70, 200, 40, m_Quest.Title, DarkGreen, false, false);
+            AddHtmlObject(98, 140, 312, 240, fail, LightGreen, false, true);
+
+            AddButton(313, 455, 0x2EE6, 0x2EE8, (int)Buttons.Close, GumpButtonType.Reply, 0);
         }
 
         public virtual string FormatSeconds(int seconds)
@@ -572,6 +608,11 @@ namespace Server.Engines.Quests
                 case (int)Buttons.AcceptReward:
                     if (!this.m_Offer && this.m_Section == Section.Rewards && this.m_Completed)
                         this.m_Quest.GiveRewards();
+                    break;
+                    // refuse reward
+                case (int)Buttons.RefuseReward:
+                    if (!m_Offer && m_Section == Section.Rewards && m_Completed)
+                        m_Quest.RefuseRewards();
                     break;
                     // previous page
                 case (int)Buttons.PreviousPage:

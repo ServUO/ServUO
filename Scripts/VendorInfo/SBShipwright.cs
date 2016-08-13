@@ -37,6 +37,10 @@ namespace Server.Mobiles
                 this.Add(new GenericBuyInfo("1041208", typeof(MediumDragonBoatDeed), 11552, 20, 0x14F2, 0));
                 this.Add(new GenericBuyInfo("1041209", typeof(LargeBoatDeed), 12927, 20, 0x14F2, 0));
                 this.Add(new GenericBuyInfo("1041210", typeof(LargeDragonBoatDeed), 12927, 20, 0x14F2, 0));
+
+                Add(new GenericBuyInfo("1116740", typeof(TokunoGalleonDeed), 150002, 20, 0x14F2, 0));
+                Add(new GenericBuyInfo("1116739", typeof(GargishGalleonDeed), 200002, 20, 0x14F2, 0));
+                Add(new GenericBuyInfo("1116491", typeof(RowBoatDeed), 6252, 20, 0x14F2, 0));
             }
         }
 

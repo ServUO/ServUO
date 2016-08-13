@@ -9,9 +9,13 @@ namespace Server.Items
 
     public class ShipwreckedItem : Item, IDyable, IShipwreckedItem
     {
-        public ShipwreckedItem(int itemID)
+        private bool m_IsBarnacleItem;
+
+        public ShipwreckedItem(int itemID, bool barnacle)
             : base(itemID)
         {
+            m_IsBarnacleItem = barnacle;
+
             int weight = this.ItemData.Weight;
 
             if (weight >= 255)
@@ -27,8 +31,20 @@ namespace Server.Items
 
         public override void AddNameProperties(ObjectPropertyList list)
         {
-            base.AddNameProperties(list);
-            list.Add(1041645); // recovered from a shipwreck
+            if (m_IsBarnacleItem)
+            {
+                if (LabelNumber > 0)
+                    list.Add(1151075, String.Format("#{0}", LabelNumber)); //barnacle covered ~1_token~
+                else
+                    list.Add(1151075, this.ItemData.Name); //barnacle covered ~1_token~
+
+                list.Add(1041645); // recovered from a shipwreck
+            }
+            else
+            {
+                base.AddNameProperties(list);
+                list.Add(1041645); // recovered from a shipwreck
+            }
         }
 
         public ShipwreckedItem(Serial serial)
@@ -40,7 +56,8 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+            writer.Write(m_IsBarnacleItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -48,6 +65,15 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    m_IsBarnacleItem = reader.ReadBool();
+                    goto case 0;
+                case 0:
+                    break;
+            }
         }
 
         public bool Dye(Mobile from, DyeTub sender)

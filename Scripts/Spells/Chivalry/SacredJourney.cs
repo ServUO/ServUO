@@ -106,7 +106,7 @@ namespace Server.Spells.Chivalry
             return SpellHelper.CheckTravel(this.Caster, TravelCheckType.RecallFrom);
         }
 
-        public void Effect(Point3D loc, Map map, bool checkMulti)
+        public void Effect(Point3D loc, Map map, bool checkMulti, bool isboatkey = false)
         {
             if (Factions.Sigil.ExistsOn(this.Caster))
             {
@@ -142,11 +142,11 @@ namespace Server.Spells.Chivalry
             {
                 this.Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
             }
-            else if (!map.CanSpawnMobile(loc.X, loc.Y, loc.Z))
+            else if (!map.CanSpawnMobile(loc.X, loc.Y, loc.Z) && !isboatkey)
             {
                 this.Caster.SendLocalizedMessage(501942); // That location is blocked.
             }
-            else if ((checkMulti && SpellHelper.CheckMulti(loc, map)))
+            else if ((checkMulti && SpellHelper.CheckMulti(loc, map)) && !isboatkey)
             {
                 this.Caster.SendLocalizedMessage(501942); // That location is blocked.
             }
@@ -215,6 +215,31 @@ namespace Server.Spells.Chivalry
 
                     this.m_Owner.Effect(deed.PlotLocation, deed.PlotFacet, true);
                 }
+
+                #region High Seas
+                else if (o is ShipRune && ((ShipRune)o).Galleon != null)
+                {
+                    BaseGalleon galleon = ((ShipRune)o).Galleon;
+
+                    if (!galleon.Deleted && galleon.Map != null && galleon.HasAccess(from))
+                        m_Owner.Effect(galleon.GetMarkedLocation(), galleon.Map, false, true);
+                    else
+                        from.Send(new MessageLocalized(from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 502357, from.Name, "")); // I can not recall from that object.
+                }
+                #endregion
+
+                #region New Magincia
+                else if (o is Server.Engines.NewMagincia.WritOfLease)
+                {
+                    Server.Engines.NewMagincia.WritOfLease lease = (Server.Engines.NewMagincia.WritOfLease)o;
+
+                    if (lease.RecallLoc != Point3D.Zero && lease.Facet != null && lease.Facet != Map.Internal)
+                        m_Owner.Effect(lease.RecallLoc, lease.Facet, false);
+                    else
+                        from.Send(new MessageLocalized(from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 502357, from.Name, "")); // I can not recall from that object.
+                }
+                #endregion
+
                 else
                 {
                     from.Send(new MessageLocalized(from.Serial, from.Body, MessageType.Regular, 0x3B2, 3, 502357, from.Name, "")); // I can not recall from that object.

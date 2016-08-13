@@ -120,6 +120,7 @@ namespace Server
             {
                 // Armor Ignore on OSI ignores all defenses, not just physical.
                 int resPhys = m.PhysicalResistance;
+
                 #region SA
                 int physDamage = damage * phys * (100 - m.PhysicalResistance);
                 int fireDamage = damage * fire * (100 - m.FireResistance);
@@ -128,25 +129,11 @@ namespace Server
                 int energyDamage = damage * nrgy * (100 - m.EnergyResistance);
 
                 int[] amounts = new int[] { physDamage, fireDamage, coldDamage, poisonDamage, energyDamage };
-                //DamageEater(m, amounts);
-                //SoulCharge(m, amounts);
 
                 totalDamage = physDamage + fireDamage + coldDamage + poisonDamage + energyDamage;
                 totalDamage /= 10000;
 
-                /*int soulcharge = AosArmorAttributes.GetValue(m, AosArmorAttribute.SoulCharge);
-
-                if (soulcharge > 0)
-                {
-                    soulcharge = Scale(totalDamage, 100 - soulcharge);
-
-                    if (m.Mana >= soulcharge)
-                    {
-                        m.SendLocalizedMessage(1113599); // The soul shield effect has reduced some of the damage done to you at the cost of using your mana.
-                        m.Mana -= soulcharge;
-                        totalDamage -= soulcharge;
-                    }
-                }*/
+                
                 #endregion
 
                 if (Core.ML)
@@ -156,6 +143,8 @@ namespace Server
                     if (quiver != null)
                         totalDamage += totalDamage * quiver.DamageIncrease / 100;
                 }
+
+                BaseFishPie.ScaleDamage(m, ref totalDamage, phys, fire, cold, pois, nrgy, direct);
 
                 if (totalDamage < 1)
                     totalDamage = 1;
@@ -537,6 +526,11 @@ namespace Server
                 if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
                     value -= 10;
                 #endregion
+
+                #region High Seas
+                if (BaseFishPie.IsUnderEffects(m, FishPieEffect.WeaponDam))
+                    value += 5;
+                #endregion
             }
             else if (attribute == AosAttribute.SpellDamage)
             {
@@ -550,6 +544,11 @@ namespace Server
 
                 if (context != null && context.Spell is ReaperFormSpell)
                     value += ((ReaperFormSpell)context.Spell).SpellDamageBonus;
+
+                #region High Seas
+                if (BaseFishPie.IsUnderEffects(m, FishPieEffect.SpellDamage))
+                    value += 5;
+                #endregion
             }
             else if (attribute == AosAttribute.CastSpeed)
             {
@@ -651,6 +650,11 @@ namespace Server
                 if (m.Race == Race.Gargoyle)
                     value += 5;  //Gargoyles get a +5 HCI
                 #endregion
+
+                #region High Seas
+                if (BaseFishPie.IsUnderEffects(m, FishPieEffect.HitChance))
+                    value += 8;
+                #endregion
             }
             else if (attribute == AosAttribute.DefendChance)
             {
@@ -676,24 +680,44 @@ namespace Server
                 // Defender loses -0/-28% if under the effect of Discordance.
                 if (SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
                     value -= discordanceEffect;
+
+                #region High Seas
+                if (BaseFishPie.IsUnderEffects(m, FishPieEffect.DefChance))
+                    value += 8;
+                #endregion
             }
             else if (attribute == AosAttribute.RegenHits)
             {
+                #region High Seas
+                if (m is PlayerMobile && BaseFishPie.IsUnderEffects(m, FishPieEffect.HitsRegen))
+                    value += 3;
+
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Hits))
                     value += 10;
+                #endregion
 
                 if (SearingWeaponContext.HasContext(m))
                     value -= m is PlayerMobile ? 20 : 60;
             }
             else if (attribute == AosAttribute.RegenStam)
             {
+                #region High Seas
+                if (m is PlayerMobile && BaseFishPie.IsUnderEffects(m, FishPieEffect.StamRegen))
+                    value += 3;
+
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Stam))
                     value += 10;
+                #endregion
             }
             else if (attribute == AosAttribute.RegenMana)
             {
+                #region High Seas
+                if (m is PlayerMobile && BaseFishPie.IsUnderEffects(m, FishPieEffect.ManaRegen))
+                    value += 3;
+
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Mana))
                     value += 10;
+                #endregion
             }
             else if (attribute == AosAttribute.LowerManaCost)
             {
@@ -2182,6 +2206,10 @@ namespace Server
         ResonancePoison = 0x00000100,
         ResonanceEnergy = 0x00000200,
         ResonanceKinetic = 0x00000400,
+        /*Soul Charge is wrong. 
+         * Do not use these types. 
+         * Use AosArmorAttribute type only.
+         * Fill these in with any new attributes.*/
         SoulChargeFire = 0x00000800,
         SoulChargeCold = 0x00001000,
         SoulChargePoison = 0x00002000,
@@ -2403,7 +2431,7 @@ namespace Server
             }
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
+        //[CommandProperty(AccessLevel.GameMaster)]
         public int SoulChargeFire
         {
             get
@@ -2412,11 +2440,11 @@ namespace Server
             }
             set
             {
-                this[SAAbsorptionAttribute.SoulChargeFire] = value;
+                //this[SAAbsorptionAttribute.SoulChargeFire] = value;
             }
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
+        //[CommandProperty(AccessLevel.GameMaster)]
         public int SoulChargeCold
         {
             get
@@ -2425,11 +2453,11 @@ namespace Server
             }
             set
             {
-                this[SAAbsorptionAttribute.SoulChargeCold] = value;
+                //this[SAAbsorptionAttribute.SoulChargeCold] = value;
             }
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
+        //[CommandProperty(AccessLevel.GameMaster)]
         public int SoulChargePoison
         {
             get
@@ -2438,11 +2466,11 @@ namespace Server
             }
             set
             {
-                this[SAAbsorptionAttribute.SoulChargePoison] = value;
+                //this[SAAbsorptionAttribute.SoulChargePoison] = value;
             }
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
+        //[CommandProperty(AccessLevel.GameMaster)]
         public int SoulChargeEnergy
         {
             get
@@ -2451,11 +2479,11 @@ namespace Server
             }
             set
             {
-                this[SAAbsorptionAttribute.SoulChargeEnergy] = value;
+                //this[SAAbsorptionAttribute.SoulChargeEnergy] = value;
             }
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
+        //[CommandProperty(AccessLevel.GameMaster)]
         public int SoulChargeKinetic
         {
             get
@@ -2464,7 +2492,7 @@ namespace Server
             }
             set
             {
-                this[SAAbsorptionAttribute.SoulChargeKinetic] = value;
+                //this[SAAbsorptionAttribute.SoulChargeKinetic] = value;
             }
         }
 

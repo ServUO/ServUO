@@ -196,26 +196,71 @@ namespace Server.Mobiles
             return base.CanSee(o);
         }
 
+        private static Dictionary<Mobile, NavreyParalyzingWeb> m_Table = new Dictionary<Mobile, NavreyParalyzingWeb>();
+        public static Dictionary<Mobile, NavreyParalyzingWeb> Table { get { return m_Table; } }
+
         public void DoSpecialAbility()
         {
             // build target list
             List<Mobile> mlist = new List<Mobile>();
-            foreach (Mobile mob in Map.GetMobilesInRange(Location, RangePerception))
+
+            IPooledEnumerable eable = this.GetMobilesInRange(12);
+            foreach (Mobile mob in eable)
             {
-                if (null != mob && !mob.Deleted && !mob.Paralyzed && AccessLevel.Player == mob.AccessLevel)
+                if (mob == null || mob == this || !mob.Alive || mob.Hidden || !CanSee(mob)|| !CanBeHarmful(mob) || mob.AccessLevel > AccessLevel.Player)
+                    continue;
+
+                if (m_Table.ContainsKey(mob))
+                    continue;
+
+                if (mob.Player)
+                    mlist.Add(mob);
+
+                else if (mob is BaseCreature && (((BaseCreature)mob).Summoned || ((BaseCreature)mob).Controlled))
                     mlist.Add(mob);
             }
+            eable.Free();
 
             // pick a random target and sling the web
-            if (0 != mlist.Count)
+            if (mlist.Count > 0)
             {
-                int i = Utility.Random(mlist.Count);
-                Mobile m = mlist.ToArray()[i];
+                Mobile m = mlist[Utility.Random(mlist.Count)];
+
                 Direction = GetDirectionTo(m);
-                Item web = new NavreyParalyzingWeb();
-                if (Utility.RandomDouble() > 0.1)
-                    m.Paralyze(TimeSpan.FromSeconds(15));
-                web.MoveToWorld(m.Location, Map);
+                TimeSpan duration = TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10));
+
+                Item web = new NavreyParalyzingWeb(duration, m);
+
+                Effects.SendMovingParticles(this, m, web.ItemID, 12, 0, false, false, 0, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+
+                Timer.DelayCall(TimeSpan.FromSeconds(0.5), new TimerStateCallback(ThrowWeb_Callback), new object[] { web, m, duration });
+
+                Combatant = m;
+                m_Table[m] = web as NavreyParalyzingWeb;
+            }
+        }
+
+        public static void RemoveFromTable(Mobile from)
+        {
+            if (m_Table.ContainsKey(from))
+                m_Table.Remove(from);
+
+            BuffInfo.RemoveBuff(from, BuffIcon.Webbing);
+        }
+
+        public void ThrowWeb_Callback(object o)
+        {
+            object[] os = (object[])o;
+
+            Item web = os[0] as Item;
+            Mobile m = os[1] as Mobile;
+            TimeSpan ts = (TimeSpan)os[2];
+
+            if (m != null && web != null)
+            {
+                web.MoveToWorld(m.Location, this.Map);
+                m.Freeze(ts);
+                m.SendMessage("You've been caught in Navrey's Web!");
             }
         }
 

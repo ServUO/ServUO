@@ -1,8 +1,19 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Engines.Plants
 {
+    public interface IPlantHue
+    {
+        PlantHue PlantHue { get; set; }
+        void InvalidatePlantHue();
+    }
+
+    public interface IPigmentHue
+    {
+        PlantPigmentHue PigmentHue { get; set; }
+    }
+
     [Flags]
     public enum PlantPigmentHue
     {
@@ -61,57 +72,66 @@ namespace Server.Engines.Plants
 
     public class PlantPigmentHueInfo
     {
-        private static Hashtable m_Table;
+        private static Dictionary<PlantPigmentHue, PlantPigmentHueInfo> m_Table;
+        private readonly PlantHue m_PlantHue;
         private readonly int m_Hue;
         private readonly int m_Name;
         private readonly PlantPigmentHue m_PlantPigmentHue;
         static PlantPigmentHueInfo()
         {
-            m_Table = new Hashtable();
+            m_Table = new Dictionary<PlantPigmentHue, PlantPigmentHueInfo>();
 
-            m_Table[PlantPigmentHue.Plain] = new PlantPigmentHueInfo(2101,	1060813, PlantPigmentHue.Plain);
-            m_Table[PlantPigmentHue.Red] = new PlantPigmentHueInfo(1652,	1060814, PlantPigmentHue.Red);
-            m_Table[PlantPigmentHue.Blue] = new PlantPigmentHueInfo(2122,	1060815, PlantPigmentHue.Blue);
-            m_Table[PlantPigmentHue.Yellow] = new PlantPigmentHueInfo(2125,	1060818, PlantPigmentHue.Yellow);
-            m_Table[PlantPigmentHue.BrightRed] = new PlantPigmentHueInfo(1646,	1060814, PlantPigmentHue.BrightRed);
-            m_Table[PlantPigmentHue.BrightBlue] = new PlantPigmentHueInfo(1310, 1060815, PlantPigmentHue.BrightBlue);
-            m_Table[PlantPigmentHue.BrightYellow] = new PlantPigmentHueInfo(253, 1060818, PlantPigmentHue.BrightYellow);
-            m_Table[PlantPigmentHue.DarkRed] = new PlantPigmentHueInfo(1141,	1112162, PlantPigmentHue.DarkRed);
-            m_Table[PlantPigmentHue.DarkBlue] = new PlantPigmentHueInfo(1317, 1112164, PlantPigmentHue.DarkBlue);
-            m_Table[PlantPigmentHue.DarkYellow] = new PlantPigmentHueInfo(2217,	1112165, PlantPigmentHue.DarkYellow);
-            m_Table[PlantPigmentHue.IceRed] = new PlantPigmentHueInfo(335, 1112169, PlantPigmentHue.IceRed);
-            m_Table[PlantPigmentHue.IceBlue] = new PlantPigmentHueInfo(1154, 1112168, PlantPigmentHue.IceBlue);
-            m_Table[PlantPigmentHue.IceYellow] = new PlantPigmentHueInfo(56, 1112171, PlantPigmentHue.IceYellow);
-            m_Table[PlantPigmentHue.Purple] = new PlantPigmentHueInfo(15, 1060816, PlantPigmentHue.Purple);
-            m_Table[PlantPigmentHue.Green] = new PlantPigmentHueInfo(2128,	1060819, PlantPigmentHue.Green);
-            m_Table[PlantPigmentHue.Orange] = new PlantPigmentHueInfo(1128,	1060817, PlantPigmentHue.Orange);
-            m_Table[PlantPigmentHue.BrightPurple] = new PlantPigmentHueInfo(316, 1060816, PlantPigmentHue.BrightPurple);
-            m_Table[PlantPigmentHue.BrightGreen] = new PlantPigmentHueInfo(671, 1060819, PlantPigmentHue.BrightGreen);
-            m_Table[PlantPigmentHue.BrightOrange] = new PlantPigmentHueInfo(1501,	1060817, PlantPigmentHue.BrightOrange);
-            m_Table[PlantPigmentHue.DarkPurple] = new PlantPigmentHueInfo(1254,	1113166, PlantPigmentHue.DarkPurple);
-            m_Table[PlantPigmentHue.DarkGreen] = new PlantPigmentHueInfo(1425,	1112163, PlantPigmentHue.DarkGreen);
-            m_Table[PlantPigmentHue.DarkOrange] = new PlantPigmentHueInfo(1509,	1112161, PlantPigmentHue.DarkOrange);
-            m_Table[PlantPigmentHue.IcePurple] = new PlantPigmentHueInfo(511, 1112172, PlantPigmentHue.IcePurple);
-            m_Table[PlantPigmentHue.IceGreen] = new PlantPigmentHueInfo(261, 1112167, PlantPigmentHue.IceGreen);
-            m_Table[PlantPigmentHue.IceOrange] = new PlantPigmentHueInfo(346, 1112170, PlantPigmentHue.IceOrange);
-            m_Table[PlantPigmentHue.Black] = new PlantPigmentHueInfo(1175,	1060820, PlantPigmentHue.Black);
-            m_Table[PlantPigmentHue.White] = new PlantPigmentHueInfo(1150,	1060821, PlantPigmentHue.White);
-            m_Table[PlantPigmentHue.IceBlack] = new PlantPigmentHueInfo(2422,	1112988, PlantPigmentHue.IceBlack);
-            m_Table[PlantPigmentHue.OffWhite] = new PlantPigmentHueInfo(746, 1112224, PlantPigmentHue.OffWhite);
-            m_Table[PlantPigmentHue.Metal] = new PlantPigmentHueInfo(1105,	1015046, PlantPigmentHue.Metal);
-            m_Table[PlantPigmentHue.Pink] = new PlantPigmentHueInfo(341, 1061854, PlantPigmentHue.Pink);
-            m_Table[PlantPigmentHue.Magenta] = new PlantPigmentHueInfo(1163,	1061852, PlantPigmentHue.Magenta);
-            m_Table[PlantPigmentHue.Aqua] = new PlantPigmentHueInfo(391, 1061853, PlantPigmentHue.Aqua);
-            m_Table[PlantPigmentHue.FireRed] = new PlantPigmentHueInfo(1358,	1061855, PlantPigmentHue.FireRed);
+            m_Table[PlantPigmentHue.Plain] = new PlantPigmentHueInfo(PlantHue.Plain, 2101, 1060813, PlantPigmentHue.Plain);
+            m_Table[PlantPigmentHue.Red] = new PlantPigmentHueInfo(PlantHue.Red, 1652, 1060814, PlantPigmentHue.Red);
+            m_Table[PlantPigmentHue.Blue] = new PlantPigmentHueInfo(PlantHue.Blue, 2122, 1060815, PlantPigmentHue.Blue);
+            m_Table[PlantPigmentHue.Yellow] = new PlantPigmentHueInfo(PlantHue.Yellow, 2125, 1060818, PlantPigmentHue.Yellow);
+            m_Table[PlantPigmentHue.BrightRed] = new PlantPigmentHueInfo(PlantHue.BrightRed, 1646, 1060814, PlantPigmentHue.BrightRed);
+            m_Table[PlantPigmentHue.BrightBlue] = new PlantPigmentHueInfo(PlantHue.BrightBlue, 1310, 1060815, PlantPigmentHue.BrightBlue);
+            m_Table[PlantPigmentHue.BrightYellow] = new PlantPigmentHueInfo(PlantHue.BrightYellow, 253, 1060818, PlantPigmentHue.BrightYellow);
+            m_Table[PlantPigmentHue.DarkRed] = new PlantPigmentHueInfo(PlantHue.Plain, 1141, 1112162, PlantPigmentHue.DarkRed);
+            m_Table[PlantPigmentHue.DarkBlue] = new PlantPigmentHueInfo(PlantHue.Plain, 1317, 1112164, PlantPigmentHue.DarkBlue);
+            m_Table[PlantPigmentHue.DarkYellow] = new PlantPigmentHueInfo(PlantHue.Plain, 2217, 1112165, PlantPigmentHue.DarkYellow);
+            m_Table[PlantPigmentHue.IceRed] = new PlantPigmentHueInfo(PlantHue.Plain, 335, 1112169, PlantPigmentHue.IceRed);
+            m_Table[PlantPigmentHue.IceBlue] = new PlantPigmentHueInfo(PlantHue.Plain, 1154, 1112168, PlantPigmentHue.IceBlue);
+            m_Table[PlantPigmentHue.IceYellow] = new PlantPigmentHueInfo(PlantHue.Plain, 56, 1112171, PlantPigmentHue.IceYellow);
+            m_Table[PlantPigmentHue.Purple] = new PlantPigmentHueInfo(PlantHue.Purple, 15, 1060816, PlantPigmentHue.Purple);
+            m_Table[PlantPigmentHue.Green] = new PlantPigmentHueInfo(PlantHue.Green, 2128, 1060819, PlantPigmentHue.Green);
+            m_Table[PlantPigmentHue.Orange] = new PlantPigmentHueInfo(PlantHue.Orange, 1128, 1060817, PlantPigmentHue.Orange);
+            m_Table[PlantPigmentHue.BrightPurple] = new PlantPigmentHueInfo(PlantHue.BrightPurple, 316, 1060816, PlantPigmentHue.BrightPurple);
+            m_Table[PlantPigmentHue.BrightGreen] = new PlantPigmentHueInfo(PlantHue.BrightGreen, 671, 1060819, PlantPigmentHue.BrightGreen);
+            m_Table[PlantPigmentHue.BrightOrange] = new PlantPigmentHueInfo(PlantHue.BrightOrange, 1501, 1060817, PlantPigmentHue.BrightOrange);
+            m_Table[PlantPigmentHue.DarkPurple] = new PlantPigmentHueInfo(PlantHue.Plain, 1254, 1113166, PlantPigmentHue.DarkPurple);
+            m_Table[PlantPigmentHue.DarkGreen] = new PlantPigmentHueInfo(PlantHue.Plain, 1425, 1112163, PlantPigmentHue.DarkGreen);
+            m_Table[PlantPigmentHue.DarkOrange] = new PlantPigmentHueInfo(PlantHue.Plain, 1509, 1112161, PlantPigmentHue.DarkOrange);
+            m_Table[PlantPigmentHue.IcePurple] = new PlantPigmentHueInfo(PlantHue.Plain, 511, 1112172, PlantPigmentHue.IcePurple);
+            m_Table[PlantPigmentHue.IceGreen] = new PlantPigmentHueInfo(PlantHue.Plain, 261, 1112167, PlantPigmentHue.IceGreen);
+            m_Table[PlantPigmentHue.IceOrange] = new PlantPigmentHueInfo(PlantHue.Plain, 346, 1112170, PlantPigmentHue.IceOrange);
+            m_Table[PlantPigmentHue.Black] = new PlantPigmentHueInfo(PlantHue.Black, 1175, 1060820, PlantPigmentHue.Black);
+            m_Table[PlantPigmentHue.White] = new PlantPigmentHueInfo(PlantHue.White, 1150, 1060821, PlantPigmentHue.White);
+            m_Table[PlantPigmentHue.IceBlack] = new PlantPigmentHueInfo(PlantHue.Plain, 2422, 1112988, PlantPigmentHue.IceBlack);
+            m_Table[PlantPigmentHue.OffWhite] = new PlantPigmentHueInfo(PlantHue.Plain, 746, 1112224, PlantPigmentHue.OffWhite);
+            m_Table[PlantPigmentHue.Metal] = new PlantPigmentHueInfo(PlantHue.Plain, 1105, 1015046, PlantPigmentHue.Metal);
+            m_Table[PlantPigmentHue.Pink] = new PlantPigmentHueInfo(PlantHue.Pink, 341, 1061854, PlantPigmentHue.Pink);
+            m_Table[PlantPigmentHue.Magenta] = new PlantPigmentHueInfo(PlantHue.Magenta, 1163, 1061852, PlantPigmentHue.Magenta);
+            m_Table[PlantPigmentHue.Aqua] = new PlantPigmentHueInfo(PlantHue.Aqua, 391, 1061853, PlantPigmentHue.Aqua);
+            m_Table[PlantPigmentHue.FireRed] = new PlantPigmentHueInfo(PlantHue.FireRed, 1358, 1061855, PlantPigmentHue.FireRed);
         }
 
-        private PlantPigmentHueInfo(int hue, int name, PlantPigmentHue pigmentHue)
+        private PlantPigmentHueInfo(PlantHue planthue, int hue, int name, PlantPigmentHue pigmentHue)
         {
+            this.m_PlantHue = planthue;
             this.m_Hue = hue;
             this.m_Name = name;
             this.m_PlantPigmentHue = pigmentHue;
         }
 
+        public PlantHue PlantHue
+        {
+            get
+            {
+                return this.m_PlantHue;
+            }
+        }
         public int Hue
         {
             get
@@ -135,17 +155,24 @@ namespace Server.Engines.Plants
         }
         public static PlantPigmentHue HueFromPlantHue(PlantHue hue) 
         {
-            return (PlantPigmentHue)(hue & ~PlantHue.Crossable);
+            if (hue == PlantHue.None || hue == PlantHue.Plain)
+                return PlantPigmentHue.Plain;
+
+            foreach (KeyValuePair<PlantPigmentHue, PlantPigmentHueInfo> kvp in m_Table)
+            {
+                if (kvp.Value.PlantHue == hue)
+                    return kvp.Key;
+            }
+
+            return PlantPigmentHue.Plain;
         }
 
-        public static PlantPigmentHueInfo GetInfo(PlantPigmentHue PlantPigmentHue)
+        public static PlantPigmentHueInfo GetInfo(PlantPigmentHue hue)
         {
-            PlantPigmentHueInfo info = m_Table[PlantPigmentHue] as PlantPigmentHueInfo;
+            if (!m_Table.ContainsKey(hue))
+                return m_Table[PlantPigmentHue.Plain];
 
-            if (info != null)
-                return info;
-            else
-                return (PlantPigmentHueInfo)m_Table[PlantPigmentHue.Plain];
+            return m_Table[hue];
         }
 
         public static bool IsMixable(PlantPigmentHue hue)

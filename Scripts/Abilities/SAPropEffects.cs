@@ -279,8 +279,7 @@ namespace Server.Items
         {
             if (m_Active && IsEquipped() && this.Mobile != null)
             {
-                //double mod = BaseFishPie.IsUnderEffects(this.Mobile, FishPieEffect.SoulCharge) ? .50 : .30;
-                double mod = .30;
+                double mod = BaseFishPie.IsUnderEffects(this.Mobile, FishPieEffect.SoulCharge) ? .50 : .30;
                 this.Mobile.Mana += (int)Math.Min(this.Mobile.ManaMax, damage * mod);
                 m_Active = false;
                 this.Mobile.SendLocalizedMessage(1113636); //The soul charge effect converts some of the damage you received into mana.

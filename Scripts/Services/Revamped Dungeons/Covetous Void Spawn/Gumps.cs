@@ -108,7 +108,10 @@ namespace Server.Engines.VoidPool
         {
             Mobile from = e.Mobile;
 
-            e.Mobile.SendGump(new VoidPoolGump(from.Map == Map.Trammel ? VoidPoolController.InstanceTram : VoidPoolController.InstanceFel, from as PlayerMobile));
+            if (VoidPoolController.InstanceTram != null || VoidPoolController.InstanceFel != null)
+            {
+                e.Mobile.SendGump(new VoidPoolGump(from.Map == Map.Trammel ? VoidPoolController.InstanceTram : VoidPoolController.InstanceFel, from as PlayerMobile));
+            }
         }
 	}
 

@@ -141,7 +141,7 @@ namespace Server.Items
 				if ( m_Kit.Deleted )
 					return;
 
-				if ( !(targeted is Corpse) && !(targeted is BigFish) /*&& !(targeted is BaseFish)*/ && !(targeted is HuntingPermit))
+				if ( !(targeted is Corpse) && !(targeted is BigFish) && !(targeted is BaseHighseasFish) && !(targeted is HuntingPermit))
 				{
 					from.SendLocalizedMessage( 1042600 ); // That is not a corpse!
 				}
@@ -223,7 +223,7 @@ namespace Server.Items
                                         fish.Consume();
                                     }
                                     #region High Seas
-                                    /*else if (targeted is RareFish)
+                                    else if (targeted is RareFish)
                                     {
                                         RareFish fish = targeted as RareFish;
 
@@ -251,7 +251,7 @@ namespace Server.Items
                                         fish.Delete();
                                         m_Kit.Delete();
                                         return;
-                                    }*/
+                                    }
                                     #endregion
 
                                     from.AddToBackpack( new TrophyDeed( m_Table[i], hunter, weight ) );

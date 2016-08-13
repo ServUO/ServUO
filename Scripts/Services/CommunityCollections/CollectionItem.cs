@@ -15,13 +15,16 @@ namespace Server
         private readonly int m_Tooltip;
         private readonly int m_Hue;
         private readonly double m_Points;
-        public CollectionItem(Type type, int itemID, int tooltip, int hue, double points)
+        private readonly bool m_QuestItem;
+
+        public CollectionItem(Type type, int itemID, int tooltip, int hue, double points, bool questitem = false)
         {
             this.m_Type = type;
             this.m_ItemID = itemID;
             this.m_Tooltip = tooltip;
             this.m_Hue = hue;
             this.m_Points = points;
+            this.m_QuestItem = questitem;
 			
             int mx, my;			
             mx = my = 0;
@@ -96,6 +99,9 @@ namespace Server
                 return this.m_Points;
             }
         }
+
+        public bool QuestItem { get { return m_QuestItem; } }
+
         public virtual bool Validate(PlayerMobile from, Item item)
         {
             return true;

@@ -207,6 +207,40 @@ namespace Server.Engines.Craft
                 this.SetNeededExpansion(index, Expansion.ML);
             }
             #endregion
+
+            #region SA
+            if (Core.SA)
+            {
+                index = AddCraft(typeof(PlantPigment), 1044496, 1112132, 75.0, 100.0, typeof(PlantClippings), 1112131, 1, 1044253);
+                AddRes(index, typeof(Bottle), 1023854, 1, 1044253);
+                SetRequireResTarget(index);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(NaturalDye), 1044496, 1112136, 65.0, 115.0, typeof(PlantPigment), 1112132, 1, 1044253);
+                AddRes(index, typeof(ColorFixative), 1112135, 1, 1044253);
+                SetRequireResTarget(index);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(ColorFixative), 1044496, 1112135, 75.0, 100.0, typeof(BaseBeverage), 1022503, 1, 1044253);
+                AddRes(index, typeof(SilverSerpentVenom), 1112173, 1, 1044253);
+                SetBeverageType(index, BeverageType.Wine);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(WoodPulp), 1044496, 1113136, 60.0, 100.0, typeof(BarkFragment), 1032687, 1, 1044253);
+                AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+                SetNeededExpansion(index, Expansion.SA);
+            }
+            #endregion
+
+            #region High Seas
+            if (Core.HS)
+            {
+                index = AddCraft(typeof(Charcoal), 1044496, 1116303, 0.0, 50.0, typeof(Log), 1044041, 1, 1044351);
+                SetUseAllRes(index, true);
+                SetNeedHeat(index, true);
+                SetNeededExpansion(index, Expansion.HS);
+            }
+            #endregion
             /* End Preparations */
 
             /* Begin Baking */
@@ -348,22 +382,103 @@ namespace Server.Engines.Craft
             /* End Enchanted */
             #endregion
 
-            #region Stygian Abyss
-            /* Plant Pigments*/
-
+            #region Fish Pies
             if (Core.SA)
             {
-                index = this.AddCraft(typeof(PlantPigment), "Plant Pigments", 1112132, 33.0, 83.0, typeof(PlantClippings), 1112131, 1, 1044253);
-                this.AddRes(index, typeof(Bottle), 1023854, 1, 1044253);
-                this.SetNeededExpansion(index, Expansion.SA);
+                index = AddCraft(typeof(GreatBarracudaPie), 1116340, 1116214, 61.0, 110.0, typeof(GreatBarracudaSteak), 1116298, 1, 1044253);
+                AddRes(index, typeof(MentoSeasoning), 1116299, 1, 1044253);
+                AddRes(index, typeof(ZoogiFungus), 1029911, 1, 1044253);
+                SetNeedOven(index, true);
 
-                index = this.AddCraft(typeof(NaturalDye), "Plant Pigments", 1112136, 75.0, 100.0, typeof(PlantPigment), 1112132, 1, 1044253);
-                this.AddRes(index, typeof(ColorFixative), 1112135, 1, 1044253);
-                this.SetNeededExpansion(index, Expansion.SA);
+                index = AddCraft(typeof(GiantKoiPie), 1116340, 1116216, 61.0, 110.0, typeof(GiantKoiSteak), 1044253, 1, 1044253);
+                AddRes(index, typeof(MentoSeasoning), 1116299, 1, 1044253);
+                AddRes(index, typeof(WoodenBowlOfPeas), 1025628, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                SetNeedOven(index, true);
 
-                index = this.AddCraft(typeof(ColorFixative), "Plant Pigments", 1112135, 75.0, 100.0, typeof(SilverSerpentVenom), 1112173, 1, 1044253);
-                this.AddRes(index, typeof(BaseBeverage), 1044476, 1, 1044253);//TODO correct Consumption of BaseBeverage...
-                this.SetNeededExpansion(index, Expansion.SA);
+                index = AddCraft(typeof(FireFishPie), 1116340, 1116217, 55.0, 105.0, typeof(FireFishSteak), 1116307, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(Carrot), 1023191, 1, 1044253);
+                AddRes(index, typeof(SamuelsSecretSauce), 1116338, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(StoneCrabPie), 1116340, 1116227, 55.0, 105.0, typeof(StoneCrabMeat), 1116317, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(Cabbage), 1023195, 1, 1044253);
+                AddRes(index, typeof(SamuelsSecretSauce), 1116338, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(BlueLobsterPie), 1116340, 1116228, 55.0, 105.0, typeof(BlueLobsterMeat), 1116318, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(TribalBerry), 1040001, 1, 1044253);
+                AddRes(index, typeof(SamuelsSecretSauce), 1116338, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(ReaperFishPie), 1116340, 1116218, 55.0, 105.0, typeof(ReaperFishSteak), 1116308, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(Pumpkin), 1023178, 1, 1044253);
+                AddRes(index, typeof(SamuelsSecretSauce), 1116338, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(CrystalFishPie), 1116340, 1116219, 55.0, 105.0, typeof(CrystalFishSteak), 1116309, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(Apple), 1022512, 1, 1044253);
+                AddRes(index, typeof(SamuelsSecretSauce), 1116338, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(BullFishPie), 1116340, 1116220, 55.0, 105.0, typeof(BullFishSteak), 1116310, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(Squash), 1023186, 1, 1044253);
+                AddRes(index, typeof(MentoSeasoning), 1116299, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(SummerDragonfishPie), 1116340, 1116221, 55.0, 105.0, typeof(SummerDragonfishSteak), 1116311, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(Onion), 1023182, 1, 1044253);
+                AddRes(index, typeof(MentoSeasoning), 1116299, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(FairySalmonPie), 1116340, 1116222, 55.0, 105.0, typeof(FairySalmonSteak), 1116312, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(EarOfCorn), 1023199, 1, 1044253);
+                AddRes(index, typeof(DarkTruffle), 1116300, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(LavaFishPie), 1116340, 1116223, 55.0, 105.0, typeof(LavaFishSteak), 1116313, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(CheeseWheel), 1044486, 1, 1044253);
+                AddRes(index, typeof(DarkTruffle), 1116300, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(AutumnDragonfishPie), 1116340, 1116224, 55.0, 105.0, typeof(AutumnDragonfishSteak), 1116314, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(Pear), 1022452, 1, 1044253);
+                AddRes(index, typeof(MentoSeasoning), 1116299, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(SpiderCrabPie), 1116340, 1116229, 55.0, 105.0, typeof(SpiderCrabMeat), 1116320, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(Lettuce), 1023184, 1, 1044253);
+                AddRes(index, typeof(MentoSeasoning), 1116299, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(YellowtailBarracudaPie), 1116340, 1116098, 55.0, 105.0, typeof(YellowtailBarracudaSteak), 1116301, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(BaseBeverage), 1022503, 1, 1044253);
+                AddRes(index, typeof(MentoSeasoning), 1116299, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(HolyMackerelPie), 1116340, 1116225, 55.0, 105.0, typeof(HolyMackerelSteak), 1116315, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(JarHoney), 1022540, 1, 1044253);
+                AddRes(index, typeof(MentoSeasoning), 1116299, 1, 1044253);
+                SetNeedOven(index, true);
+
+                index = AddCraft(typeof(UnicornFishPie), 1116340, 1116226, 55.0, 105.0, typeof(UnicornFishSteak), 1116316, 1, 1044253);
+                AddRes(index, typeof(Dough), 1024157, 1, 1044253);
+                AddRes(index, typeof(FreshGinger), 1031235, 1, 1044253);
+                AddRes(index, typeof(MentoSeasoning), 1116299, 1, 1044253);
+                SetNeedOven(index, true);
             }
             #endregion
         }

@@ -359,6 +359,8 @@ namespace Server.Engines.VoidPool
 
         public static void ConvertRegionSpawners(Region r)
         {
+            List<XmlSpawner> list = new List<XmlSpawner>();
+
             foreach (Sector s in r.Sectors)
             {
                 foreach (Item i in s.Items.Where(i => i is XmlSpawner && _SpawnerBounds.Contains(i)))
@@ -381,8 +383,15 @@ namespace Server.Engines.VoidPool
                                 obj.TypeName = "VampireMongbat";
                         }
                     }
+
+                    list.Add(spawner);
                 }
             }
+
+            list.ForEach(spawner => spawner.DoRespawn = true);
+
+            list.Clear();
+            list.TrimExcess();
         }
 	}
 }

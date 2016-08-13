@@ -2250,7 +2250,7 @@ namespace Server
 			}
 		}
 
-		public Packet WorldPacketHS
+		public virtual Packet WorldPacketHS
 		{
 			get
 			{
@@ -2278,7 +2278,7 @@ namespace Server
 			}
 		}
 
-		public void ReleaseWorldPackets()
+		public virtual void ReleaseWorldPackets()
 		{
 			Packet.Release(ref m_WorldPacket);
 			Packet.Release(ref m_WorldPacketSA);

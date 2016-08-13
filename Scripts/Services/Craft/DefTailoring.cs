@@ -132,6 +132,19 @@ namespace Server.Engines.Craft
         {
             int index = -1;
 
+            if (Core.HS)
+            {
+                #region High Seas
+                index = AddCraft(typeof(LightPowderCharge), 1044457, 1116159, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
+                AddRes(index, typeof(BlackPowder), 1095826, 1, 1044253);
+                SetNeededExpansion(index, Expansion.HS);
+
+                index = AddCraft(typeof(HeavyPowderCharge), 1044457, 1116160, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
+                AddRes(index, typeof(BlackPowder), 1095826, 4, 1044253);
+                SetNeededExpansion(index, Expansion.HS);
+            }
+            #endregion
+
             #region Hats
             this.AddCraft(typeof(SkullCap), 1011375, 1025444, 0.0, 25.0, typeof(Cloth), 1044286, 2, 1044287);
             this.AddCraft(typeof(Bandana), 1011375, 1025440, 0.0, 25.0, typeof(Cloth), 1044286, 2, 1044287);

@@ -272,7 +272,7 @@ namespace Server.Engines.Despise
 
         private void CreateSpawners()
         {
-            Console.Write("Creating Despise Revamp Spawners...");
+            Console.Write("Locating Despise Revamp Spawners...");
 
             m_GoodSpawners = new List<XmlSpawner>();
             m_EvilSpawners = new List<XmlSpawner>();
@@ -292,7 +292,7 @@ namespace Server.Engines.Despise
             }
             
             Console.Write("Done.");
-            Console.WriteLine("Added {0} Evil spawners, and {1} Good Spawners", m_EvilSpawners.Count, m_GoodSpawners.Count);
+            Console.WriteLine("Located {0} Evil spawners, and {1} Good Spawners", m_EvilSpawners.Count, m_GoodSpawners.Count);
         }
 
         private void ResetSpawners(bool reset)
@@ -769,6 +769,9 @@ namespace Server.Engines.Despise
 			}
 			
 			EndSequence();
+
+            if (m_GoodSpawners.Count == 0 && m_EvilSpawners.Count == 0)
+                CreateSpawners();
 		}
     }
 }

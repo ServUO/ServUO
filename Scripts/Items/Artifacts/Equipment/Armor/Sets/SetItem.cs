@@ -22,7 +22,8 @@ namespace Server
         Knights,
         Scout,
         Sorcerer,
-		Initiation
+		Initiation,
+        Fisherman
     }
 
     public interface ISetItem

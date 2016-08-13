@@ -1,0 +1,5 @@
+=============Setup for pre-existing shard===============
+You must setup the spawners first, then the new despise system itself.  Use these commands:
+
+[XmlLoad spawns/despiserevamped.xml
+[SetupDespise

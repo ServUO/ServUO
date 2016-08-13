@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Prompts;
+using Server.Engines.Quests;
+using Server.Accounting;
 
 namespace Server.Gumps
 {
@@ -129,10 +131,22 @@ namespace Server.Gumps
             while (offset + next < 330 && this.m_Index < this.m_Collection.Donations.Count)
             {
                 CollectionItem item = this.m_Collection.Donations[this.m_Index];
+                Account acct = m_Owner.Account as Account;
 
                 int height = Math.Max(item.Height, 20);
-				
-                if (this.m_Owner.Backpack != null && this.m_Owner.Backpack.GetAmount(item.Type, true, true) > 0)
+
+                int amount = 0;
+
+                if (item.Type == typeof(Gold) && acct != null)
+                    amount = acct.TotalGold + m_Owner.Backpack.GetAmount(item.Type);
+                else if (item.Type == typeof(Fish))
+                    amount = GetFishyItems(m_Owner.Backpack);
+                else if (item.Type == typeof(Crab) || item.Type == typeof(Lobster))
+                    amount = GetCrabsAndLobsters(m_Owner.Backpack);
+                else if (m_Owner.Backpack != null)
+                    amount = m_Owner.Backpack.GetAmount(item.Type);
+                
+                if (amount > 0)
                 {
                     this.AddButton(35, offset + (int)(height / 2) - 5, 0x837, 0x838, 300 + this.m_Index, GumpButtonType.Reply, 0);
                     this.AddTooltip(item.Tooltip);
@@ -153,18 +167,8 @@ namespace Server.Gumps
 				
                 this.AddTooltip(item.Tooltip);
 
-                if(m_Owner.Backpack != null)
-                {
-                    int count = 0;
-                    if (item.Type == typeof(BankCheck))
-                        count = m_Owner.Backpack.GetChecksWorth(true);
-                    else
-                        count = m_Owner.Backpack.GetAmount(item.Type, true, true);
-                    if (count > 0)
-                    {
-                        AddLabel(230, offset + (int)(height / 2) - 10, 0x64, count.ToString());
-                    }
-                }
+                if (amount > 0)
+                    AddLabel(235, offset + (int)(height / 2) - 5, 0xB1, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
 
                 offset += 5 + height;
                 this.m_Index += 1;
@@ -213,6 +217,12 @@ namespace Server.Gumps
             while (offset + next < 300 && this.m_Index < this.m_Collection.Rewards.Count)
             {
                 CollectionItem item = this.m_Collection.Rewards[this.m_Index];
+
+                if (item.QuestItem && SkipQuestReward(m_Owner, item))
+                {
+                    m_Index++;
+                    continue;
+                }
 
                 int height = Math.Max(item.Height, 20);
 				
@@ -430,5 +440,96 @@ namespace Server.Gumps
                     from.SendGump(new ComunityCollectionGump((PlayerMobile)from, this.m_Collection, this.m_Location));
             }
         }
+
+        private bool SkipQuestReward(PlayerMobile pm, CollectionItem item)
+        {
+            if (pm.Quests != null)
+            {
+                foreach (BaseQuest q in pm.Quests)
+                {
+                    if (!q.Completed)
+                    {
+                        foreach (BaseObjective obj in q.Objectives)
+                        {
+                            if (obj is CollectionsObtainObjective && item.Type == ((CollectionsObtainObjective)obj).Obtain)
+                                return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        #region High Seas
+        public static int GetFishyItems(Container c)
+        {
+            if (c == null)
+                return 0;
+
+            int count = 0;
+
+            foreach (Item item in c.Items)
+            {
+                if (item is Fish || (item is BaseHighseasFish && !(item is BaseCrabAndLobster)))
+                    count += item.Amount;
+            }
+
+            return count;
+        }
+
+        public static Item[] FindFishyItems(Container c)
+        {
+            if (c == null)
+                return null;
+
+            List<Item> list = new List<Item>(c.Items);
+            List<Item> fishies = new List<Item>();
+
+            foreach (Item item in list)
+            {
+                if (item is Fish || (item is BaseHighseasFish && !(item is BaseCrabAndLobster)))
+                    fishies.Add(item);
+            }
+
+            if (fishies.Count > 0)
+                return fishies.ToArray();
+            return null;
+        }
+
+        public static int GetCrabsAndLobsters(Container c)
+        {
+            if (c == null)
+                return 0;
+
+            int count = 0;
+            foreach (Item item in c.Items)
+            {
+                if (item is BaseCrabAndLobster)
+                    count += item.Amount;
+            }
+
+            return count;
+        }
+
+        public static Item[] FindCrabsAndLobsters(Container c)
+        {
+            if (c == null)
+                return null;
+
+            List<Item> list = new List<Item>(c.Items);
+            List<Item> fishies = new List<Item>();
+
+            foreach (Item item in list)
+            {
+                if (item is BaseCrabAndLobster)
+                    fishies.Add(item);
+            }
+
+            if (fishies.Count > 0)
+                return fishies.ToArray();
+            return null;
+        }
+        #endregion
     }
 }

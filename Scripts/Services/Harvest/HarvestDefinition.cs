@@ -8,6 +8,7 @@ namespace Server.Engines.Harvest
         private int m_BankWidth, m_BankHeight;
         private int m_MinTotal, m_MaxTotal;
         private int[] m_Tiles;
+        private int[] m_SpecialTiles;
         private bool m_RangedTiles;
         private TimeSpan m_MinRespawn, m_MaxRespawn;
         private int m_MaxRange;
@@ -84,6 +85,17 @@ namespace Server.Engines.Harvest
             set
             {
                 this.m_Tiles = value;
+            }
+        }
+        public int[] SpecialTiles 
+        {
+            get
+            { 
+                return m_SpecialTiles;
+            } 
+            set
+            { 
+                m_SpecialTiles = value;
             }
         }
         public bool RangedTiles
@@ -481,5 +493,22 @@ namespace Server.Engines.Harvest
                 return (dist == 0);
             }
         }
+
+        #region High Seas
+        public bool ValidateSpecial(int tileID)
+        {
+            //No Special tiles were initiated so always true
+            if (m_SpecialTiles == null || m_SpecialTiles.Length == 0)
+                return true;
+
+            for (int i = 0; i < m_SpecialTiles.Length; i++)
+            {
+                if (tileID == m_SpecialTiles[i])
+                    return true;
+            }
+
+            return false;
+        }
+        #endregion
     }
 }

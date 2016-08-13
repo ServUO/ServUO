@@ -851,7 +851,7 @@ namespace Server.SkillHandlers
 
                     AosAttribute attr = (AosAttribute)i;
 
-                    if (wep.Attributes[attr] > 0 && (attr != AosAttribute.WeaponDamage || (attr == AosAttribute.WeaponDamage && wep.Attributes[attr] > 50)))
+                    if (wep.Attributes[attr] > 0)
                     {
                         if (!(prop is AosAttribute) || ((AosAttribute)prop) != attr)
                             total += 1;
@@ -1119,6 +1119,9 @@ namespace Server.SkillHandlers
 
                 if (((BaseWeapon)item).Slayer2 != SlayerName.None)
                     weight += GetIntensityForAttribute(((BaseWeapon)item).Slayer2, mod, 1);
+
+                if(((BaseWeapon)item).SearingWeapon)
+                    weight += GetIntensityForAttribute("SearingWeapon", mod, 1);
 
                 if (item is BaseRanged)
                 {
@@ -1395,7 +1398,7 @@ namespace Server.SkillHandlers
 			m_Table[41] = new ImbuingDefinition(AosWeaponAttribute.MageWeapon,		1079759, 100, 	typeof(EnchantEssence), typeof(Emerald), 		typeof(ArcanicRuneStone),   10, 1, 1112001);
 			m_Table[42] = new ImbuingDefinition(AosWeaponAttribute.DurabilityBonus,	1017323, 100, 	typeof(EnchantEssence), typeof(Diamond), 		typeof(PowderedIron),       100, 10, 1112949);
 
-            m_Table[49] = new ImbuingDefinition(AosArmorAttribute.MageArmor,        1079758, 0,   typeof(EnchantEssence), typeof(Diamond),        typeof(AbyssalCloth), 1, 0, 1112000);
+            m_Table[49] = new ImbuingDefinition(AosArmorAttribute.MageArmor,        1079758, 0,     typeof(EnchantEssence), typeof(Diamond),        typeof(AbyssalCloth), 1, 0, 1112000);
 
             m_Table[51] = new ImbuingDefinition(AosElementAttribute.Physical,       1061158, 100,   typeof(MagicalResidue), typeof(Diamond),        typeof(BouraPelt), 15, 1, 1112010);
             m_Table[52] = new ImbuingDefinition(AosElementAttribute.Fire,           1061159, 100,   typeof(MagicalResidue), typeof(Ruby),           typeof(BouraPelt), 15, 1, 1112009);
@@ -1405,6 +1408,7 @@ namespace Server.SkillHandlers
             
             m_Table[60] = new ImbuingDefinition("WeaponVelocity",                   1080416, 130, 	typeof(RelicFragment),  typeof(Tourmaline), 	typeof(EssenceDirection),   50, 2, 1112048);
 			m_Table[61] = new ImbuingDefinition("BalancedWeapon",	                1072792, 150, 	typeof(RelicFragment),  typeof(Amber), 		    typeof(EssenceBalance),     1, 0, 1112047);
+            m_Table[62] = new ImbuingDefinition("SearingWeapon",	                1151183, 150, 	null,                   null, 		            null,                       1, 0, -1);
 
 			m_Table[101] = new ImbuingDefinition(SlayerName.OrcSlaying,			1060470, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111977);
 			m_Table[102] = new ImbuingDefinition(SlayerName.TrollSlaughter,  	1060480, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111990);
@@ -1506,7 +1510,33 @@ namespace Server.SkillHandlers
 
             m_Table[219] = new ImbuingDefinition(AosArmorAttribute.ReactiveParalyze,        1154660, 140, null, null, null, 1, 1,  1152400);
             m_Table[220] = new ImbuingDefinition(AosArmorAttribute.SoulCharge,              1116536, 140, null, null, null, 20, 1, 1152391);
+
+            m_Table[500] = new ImbuingDefinition("ArtifactRarity",                          1154693, 0,   null, null, null, 1, 1, 1154693);
             //243 already used above
+        }
+
+        public static int GetAttributeName(object o)
+        {
+            int mod = GetMod(o);
+
+            if (Imbuing.Table.ContainsKey(mod))
+            {
+                return m_Table[mod].AttributeName;
+            }
+
+            return 0;
+        }
+
+        public static int GetMaxValue(object o)
+        {
+            int mod = GetMod(o);
+
+            if (Imbuing.Table.ContainsKey(mod))
+            {
+                return m_Table[mod].MaxIntensity;
+            }
+
+            return 0;
         }
 
         public static bool IsInNonImbueList(Type itemType)
@@ -1655,6 +1685,16 @@ namespace Server.SkillHandlers
             if (value <= 0)
                 return 0;
 
+            int mod = GetMod(attr);
+
+            if (mod != checkMod && m_Table.ContainsKey(mod))
+                return (int)(((double)m_Table[mod].Weight / (double)m_Table[mod].MaxIntensity) * (double)value);
+
+            return 0;
+        }
+
+        public static int GetMod(object attr)
+        {
             int mod = -1;
 
             if (attr is AosAttribute)
@@ -1681,10 +1721,7 @@ namespace Server.SkillHandlers
             else if (attr is string)
                 mod = GetModForAttribute((string)attr);
 
-            if (mod != checkMod && m_Table.ContainsKey(mod))
-                return (int)(((double)m_Table[mod].Weight / (double)m_Table[mod].MaxIntensity) * (double)value);
-
-            return 0;
+            return mod;
         }
 
         public static int GetModForAttribute(AosAttribute attr)
@@ -1798,6 +1835,9 @@ namespace Server.SkillHandlers
 
             if (str == "WeaponVelocity")
                 return 60;
+
+            if (str == "SearingWeapon")
+                return 62;
 
             return -1;
         }

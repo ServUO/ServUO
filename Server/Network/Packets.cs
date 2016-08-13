@@ -1358,6 +1358,76 @@ namespace Server.Network
 
 			m_Stream.Write((short)0x00); // ??
 		}
+
+        public WorldItemHS(Item item, PacketWriter stream)
+            : base(0xF3, 26, stream)
+        {
+            stream.Write((short)0x1);
+
+            int itemID = item.ItemID;
+
+            if (item is BaseMulti)
+            {
+                stream.Write((byte)0x02);
+                stream.Write((int)item.Serial);
+                itemID &= 0x3FFF;
+                stream.Write((ushort)itemID);
+                stream.Write((byte)0);
+            }
+            else
+            {
+                stream.Write((byte)0x00);
+                stream.Write((int)item.Serial);
+                itemID &= 0xFFFF;
+                stream.Write((ushort)itemID);
+                stream.Write((byte)0);
+            }
+
+            int amount = item.Amount;
+            stream.Write((short)amount);
+            stream.Write((short)amount);
+
+            Point3D loc = item.Location;
+            int x = loc.m_X & 0x7FFF;
+            int y = loc.m_Y & 0x3FFF;
+            stream.Write((short)x);
+            stream.Write((short)y);
+            stream.Write((sbyte)loc.m_Z);
+
+            stream.Write((byte)item.Light);
+            stream.Write((short)item.Hue);
+            stream.Write((byte)item.GetPacketFlags());
+
+            stream.Write((short)0x00); // ??
+        }
+
+        public WorldItemHS(Mobile mob, PacketWriter stream)
+            : base(0xF3, 26, stream)
+        {
+            stream.Write((short)0x1);
+
+            stream.Write((byte)0x01);
+            stream.Write((int)mob.Serial);
+            stream.Write((ushort)mob.BodyValue);
+            stream.Write((byte)0);
+
+            int amount = 1;
+            stream.Write((short)amount);
+            stream.Write((short)amount);
+
+            Point3D loc = mob.Location;
+            int x = loc.m_X & 0x7FFF;
+            int y = loc.m_Y & 0x3FFF;
+            stream.Write((short)x);
+            stream.Write((short)y);
+            stream.Write((sbyte)loc.m_Z);
+
+            stream.Write((byte)mob.LightLevel);
+            stream.Write((short)mob.Hue);
+            stream.Write((byte)mob.GetPacketFlags());
+
+            stream.Write((short)0x00); // ??
+        }
 	}
 
 	public sealed class LiftRej : Packet
@@ -4908,38 +4978,42 @@ m_Stream.Write( (int) renderMode );
 
 		public int PacketID { get { return m_PacketID; } }
 
-		protected Packet(int packetID)
-		{
-			m_PacketID = packetID;
+        protected Packet(int packetID)
+        {
+            m_PacketID = packetID;
 
-			if (Core.Profiling)
-			{
-				PacketSendProfile prof = PacketSendProfile.Acquire(GetType());
-				prof.Increment();
-			}
-		}
+            if (Core.Profiling)
+            {
+                PacketSendProfile prof = PacketSendProfile.Acquire(GetType());
+                prof.Increment();
+            }
+        }
 
-		public void EnsureCapacity(int length)
-		{
-			m_Stream = PacketWriter.CreateInstance(length); // new PacketWriter( length );
-			m_Stream.Write((byte)m_PacketID);
-			m_Stream.Write((short)0);
-		}
+        protected Packet(int packetID, int length)
+            : this(packetID, length, PacketWriter.CreateInstance(length))
+        { }
 
-		protected Packet(int packetID, int length)
-		{
-			m_PacketID = packetID;
-			m_Length = length;
+        protected Packet(int packetID, int length, PacketWriter stream)
+        {
+            m_PacketID = packetID;
+            m_Length = length;
 
-			m_Stream = PacketWriter.CreateInstance(length); // new PacketWriter( length );
-			m_Stream.Write((byte)packetID);
+            m_Stream = stream;
+            m_Stream.Write((byte)packetID);
 
-			if (Core.Profiling)
-			{
-				PacketSendProfile prof = PacketSendProfile.Acquire(GetType());
-				prof.Increment();
-			}
-		}
+            if (Core.Profiling)
+            {
+                PacketSendProfile prof = PacketSendProfile.Acquire(GetType());
+                prof.Increment();
+            }
+        }
+
+        public void EnsureCapacity(int length)
+        {
+            m_Stream = PacketWriter.CreateInstance(length);// new PacketWriter( length );
+            m_Stream.Write((byte)m_PacketID);
+            m_Stream.Write((short)0);
+        }
 
 		public PacketWriter UnderlyingStream { get { return m_Stream; } }
 

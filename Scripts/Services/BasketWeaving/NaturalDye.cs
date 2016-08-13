@@ -4,8 +4,8 @@ using Server.Multis;
 using Server.Targeting;
 
 namespace Server.Items
-{ 
-    public class NaturalDye : Item
+{
+    public class NaturalDye : Item, IPigmentHue
     {
         private PlantPigmentHue m_Hue;
         private int m_UsesRemaining;
@@ -92,9 +92,9 @@ namespace Server.Items
             PlantPigmentHueInfo hueInfo = PlantPigmentHueInfo.GetInfo(this.m_Hue);
             
             if (this.Amount > 1)
-                list.Add(1113276, "{0}\t{1}", this.Amount, "#" + hueInfo.Name);  // ~1_COLOR~ Softened Reeds
-            else 
-                list.Add(1112137, "#" + hueInfo.Name);  // ~1_COLOR~ natural dye
+                list.Add(PlantPigmentHueInfo.IsBright(m_Hue) ? 1113277 : 1113276, "{0}\t{1}", this.Amount, "#" + hueInfo.Name);  // ~1_COLOR~ Softened Reeds
+            else
+                list.Add(hueInfo.IsBright() ? 1112138 : 1112137, "#" + hueInfo.Name);  // ~1_COLOR~ natural dye
         }
 
         public override void Serialize(GenericWriter writer)

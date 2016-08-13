@@ -376,6 +376,26 @@ namespace Server.Engines.Craft
             craftItem.RequiredExpansion = expansion;
         }
 
+        #region SA
+        public void SetRequiresBasketWeaving(int index)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.RequiresBasketWeaving = true;
+        }
+
+        public void SetRequireResTarget(int index)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.RequiresResTarget = true;
+        }
+
+        public void SetRequiresMechanicalLife(int index)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.RequiresMechanicalLife = true;
+        }
+        #endregion
+
         public void AddRes(int index, Type type, TextDefinition name, int amount)
         {
             this.AddRes(index, type, name, amount, "");
