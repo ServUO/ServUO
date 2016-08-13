@@ -177,21 +177,15 @@ namespace Server.Engines.ShameRevamped
             RemoveItem(new Point3D(5538, 170, 5), Map.Felucca, typeof(Teleporter));
 
             Region r = Region.Find(new Point3D(5538, 170, 5), Map.Trammel);
-            foreach (Sector s in r.Sectors)
+            foreach (Item item in r.GetEnumeratedItems().Where(i => i is XmlSpawner && i.Name.ToLower() != "shame_revamped" && i.Name.ToLower() != "shame_chest"))
             {
-                foreach (Item i in s.Items.Where(i => i is XmlSpawner && i.Name.ToLower() != "shame_revamped" && i.Name.ToLower() != "shame_chest"))
-                {
-                    ((XmlSpawner)i).DoReset = true;
-                }
+                ((XmlSpawner)item).DoReset = true;
             }
 
             r = Region.Find(new Point3D(5538, 170, 5), Map.Felucca);
-            foreach (Sector s in r.Sectors)
+            foreach (Item item in r.GetEnumeratedItems().Where(i => i is XmlSpawner && i.Name.ToLower() != "shame_revamped" && i.Name.ToLower() != "shame_chest"))
             {
-                foreach (Item i in s.Items.Where(i => i is XmlSpawner && i.Name.ToLower() != "shame_revamped" && i.Name.ToLower() != "shame_chest"))
-                {
-                    ((XmlSpawner)i).DoReset = true;
-                }
+                ((XmlSpawner)item).DoReset = true;
             }
         }
 

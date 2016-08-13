@@ -1,32 +1,25 @@
 using System;
+using Server.Engines.Quests;
+using Server.Mobiles;
+using System.Collections.Generic;
+using Server.Gumps;
 
 namespace Server.Items
 {
-    public class DryReed : Item//, ICraftable
+    public class SpecialPrintingOfVirtue : Item
     {
+        public override int LabelNumber { get { return 1075793; } } // Special Printing of 'Virtue' by Lord British
+
         [Constructable]
-        public DryReed()
-            : this(1)
+        public SpecialPrintingOfVirtue() : base(4082)
         {
         }
 
-        [Constructable]
-        public DryReed(int amount)
-            : base(0xF42)
-        {
-            this.Weight = 1.0;
-
-            this.Hue = 0;  
-            this.Name = "Dry Reed";			
-            this.Stackable = true;
-            this.Amount = amount; 
-        }
-
-        public DryReed(Serial serial)
+        public SpecialPrintingOfVirtue(Serial serial)
             : base(serial)
         {
         }
-
+ 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

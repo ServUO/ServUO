@@ -889,21 +889,49 @@ namespace Server.Engines.Craft
             #endregion
             #endregion
 
+            #region High Seas Cannons
+            if (Core.HS)
+            {
+                index = AddCraft(typeof(LightCannonball), 1116354, 1116266, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(HeavyCannonball), 1116354, 1116267, 10.0, 60.0, typeof(IronIngot), 1044036, 12, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(LightGrapeshot), 1116354, 1116030, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
+                AddRes(index, typeof(Cloth), 1044286, 1, 1044287);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(HeavyGrapeshot), 1116354, 1116166, 15.0, 70.0, typeof(IronIngot), 1044036, 12, 1044037);
+                AddRes(index, typeof(Cloth), 1044286, 2, 1044287);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(LightShipCannonDeed), 1116354, 1095790, 65.0, 120.0, typeof(IronIngot), 1044036, 900, 1044037);
+                AddRes(index, typeof(Board), 1044041, 50, 1044351);
+                AddSkill(index, SkillName.Carpentry, 65.0, 100.0);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(HeavyShipCannonDeed), 1116354, 1095794, 70.0, 120.0, typeof(IronIngot), 1044036, 1800, 1044037);
+                AddRes(index, typeof(Board), 1044041, 75, 1044351);
+                AddSkill(index, SkillName.Carpentry, 70.0, 100.0);
+                SetNeededExpansion(index, Expansion.SA);
+            }
+            #endregion
+
             #region Dragon Scale Armor
-            //TODO: Change category to 1011173 (Misc) once HS cannon content is put in
-            index = AddCraft(typeof(DragonGloves), 1053114, 1029795, 68.9, 118.9, typeof(RedScales), 1060883, 16, 1060884);
+            index = AddCraft(typeof(DragonGloves), 1011173, 1029795, 68.9, 118.9, typeof(RedScales), 1060883, 16, 1060884);
             SetUseSubRes2(index, true);
 
-            index = AddCraft(typeof(DragonHelm), 1053114, 1029797, 72.6, 122.6, typeof(RedScales), 1060883, 20, 1060884);
+            index = AddCraft(typeof(DragonHelm), 1011173, 1029797, 72.6, 122.6, typeof(RedScales), 1060883, 20, 1060884);
             SetUseSubRes2(index, true);
 
-            index = AddCraft(typeof(DragonLegs), 1053114, 1029799, 78.8, 128.8, typeof(RedScales), 1060883, 28, 1060884);
+            index = AddCraft(typeof(DragonLegs), 1011173, 1029799, 78.8, 128.8, typeof(RedScales), 1060883, 28, 1060884);
             SetUseSubRes2(index, true);
 
-            index = AddCraft(typeof(DragonArms), 1053114, 1029815, 76.3, 126.3, typeof(RedScales), 1060883, 24, 1060884);
+            index = AddCraft(typeof(DragonArms), 1011173, 1029815, 76.3, 126.3, typeof(RedScales), 1060883, 24, 1060884);
             SetUseSubRes2(index, true);
 
-            index = AddCraft(typeof(DragonChest), 1053114, 1029793, 85.0, 135.0, typeof(RedScales), 1060883, 36, 1060884);
+            index = AddCraft(typeof(DragonChest), 1011173, 1029793, 85.0, 135.0, typeof(RedScales), 1060883, 36, 1060884);
             SetUseSubRes2(index, true);
             #endregion
 

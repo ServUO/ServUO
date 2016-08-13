@@ -40,26 +40,6 @@ namespace Server.Engines.Craft
 
 	public class CraftItem
 	{
-		#region Mondain's Legacy
-		/*public static void Initialize()
-		{
-			CraftSystem sys;
-
-			sys = DefAlchemy.CraftSystem;
-			sys = DefBlacksmithy.CraftSystem;
-			sys = DefBowFletching.CraftSystem;
-			sys = DefCarpentry.CraftSystem;
-			sys = DefCartography.CraftSystem;
-			sys = DefCooking.CraftSystem;
-			sys = DefGlassblowing.CraftSystem;
-			sys = DefInscription.CraftSystem;
-			sys = DefMasonry.CraftSystem;
-			sys = DefTailoring.CraftSystem;
-			sys = DefTinkering.CraftSystem;
-			sys = DefBasketweaving.CraftSystem;
-		}*/
-		#endregion
-
 		private readonly CraftResCol m_arCraftRes;
 		private readonly CraftSkillCol m_arCraftSkill;
 		private readonly Type m_Type;
@@ -85,7 +65,13 @@ namespace Server.Engines.Craft
 
 		public Expansion RequiredExpansion { get; set; }
 
-		private Recipe m_Recipe;
+        #region SA
+        public bool RequiresBasketWeaving { get; set; }
+        public bool RequiresResTarget { get; set; }
+        public bool RequiresMechanicalLife { get; set; }
+        #endregion
+
+        private Recipe m_Recipe;
 
 		public Recipe Recipe { get { return m_Recipe; } }
 
@@ -550,6 +536,97 @@ namespace Server.Engines.Craft
 			return false;
 		}
 
+        #region SA
+        public bool IsPlantHueType(Type[][] types)
+        {
+            for (int i = 0; i < types.Length; ++i)
+            {
+                Type[] check = types[i];
+
+                for (int j = 0; j < check.Length; ++j)
+                {
+                    if (typeof(IPlantHue).IsAssignableFrom(check[j]))
+                        return true;
+                    else if (typeof(IPigmentHue).IsAssignableFrom(check[j]))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public int ConsumeQuantityByPlantHue(Mobile from, CraftSystem craftSystem, Container cont, Type[][] types, int[] amounts)
+        {
+            if (types.Length != amounts.Length)
+                throw new ArgumentException();
+
+            CraftContext context = craftSystem.GetContext(from);
+
+            if (context == null)
+                return 0;
+
+            Item[][] items = new Item[types.Length][];
+            int[] totals = new int[types.Length];
+
+            for (int i = 0; i < types.Length; ++i)
+            {
+                items[i] = cont.FindItemsByType(types[i], true);
+
+                for (int j = 0; j < items[i].Length; ++j)
+                {
+                    IPlantHue plantHue = items[i][j] as IPlantHue;
+                    IPigmentHue pigmentHue = items[i][j] as IPigmentHue;
+
+                    if (plantHue != null && plantHue.PlantHue != context.RequiredPlantHue)
+                        continue;
+                    else if (pigmentHue != null && pigmentHue.PigmentHue != context.RequiredPigmentHue)
+                        continue;
+
+                    totals[i] += items[i][j].Amount;
+                }
+
+                if (totals[i] < amounts[i])
+                    return i;
+            }
+
+            for (int i = 0; i < types.Length; ++i)
+            {
+                int need = amounts[i];
+
+                for (int j = 0; j < items[i].Length; ++j)
+                {
+                    Item item = items[i][j];
+                    IPlantHue ph = item as IPlantHue;
+                    IPigmentHue pigh = item as IPigmentHue;
+
+                    int theirAmount = item.Amount;
+
+                    if (ph != null && ph.PlantHue != context.RequiredPlantHue)
+                        continue;
+                    else if (pigh != null && pigh.PigmentHue != context.RequiredPigmentHue)
+                        continue;
+
+                    if (theirAmount < need)
+                    {
+                        OnResourceConsumed(item, theirAmount);
+
+                        item.Delete();
+                        need -= theirAmount;
+                    }
+                    else
+                    {
+                        OnResourceConsumed(item, need);
+
+                        item.Consume(need);
+                        break;
+                    }
+                }
+            }
+
+            return -1;
+        }
+        #endregion
+
 		public int ConsumeQuantity(Container cont, Type[][] types, int[] amounts)
 		{
 			if (types.Length != amounts.Length)
@@ -666,6 +743,31 @@ namespace Server.Engines.Craft
 
 			return amount;
 		}
+
+        #region SA
+        public int GetPlantHueAmount(Mobile from, CraftSystem craftSystem, Container cont, Type[] types)
+        {
+            Item[] items = cont.FindItemsByType(types, true);
+            CraftContext context = craftSystem.GetContext(from);
+
+            int amount = 0;
+
+            for (int i = 0; i < items.Length; ++i)
+            {
+                IPlantHue ph = items[i] as IPlantHue;
+                IPigmentHue pigh = items[i] as IPigmentHue;
+
+                if (context == null || (ph != null && ph.PlantHue != context.RequiredPlantHue))
+                    continue;
+                else if (context == null || (pigh != null && pigh.PigmentHue != context.RequiredPigmentHue))
+                    continue;
+
+                amount += items[i].Amount;
+            }
+
+            return amount;
+        }
+        #endregion
 
 		public bool ConsumeRes(
 			Mobile from,
@@ -852,10 +954,14 @@ namespace Server.Engines.Craft
 				{
 					index = ConsumeQuantity(ourPack, types, amounts);
 				}
-				else
-				{
-					index = ourPack.ConsumeTotalGrouped(types, amounts, true, OnResourceConsumed, CheckHueGrouping);
-				}
+                else if (IsPlantHueType(types))
+                {
+                    index = ConsumeQuantityByPlantHue(from, craftSystem, ourPack, types, amounts);
+                }
+                else
+                {
+                    index = ourPack.ConsumeTotalGrouped(types, amounts, true, OnResourceConsumed, CheckHueGrouping);
+                }
 
 				resHue = m_ResHue;
 			}
@@ -880,10 +986,14 @@ namespace Server.Engines.Craft
 				{
 					index = ConsumeQuantity(ourPack, types, amounts);
 				}
-				else
-				{
-					index = ourPack.ConsumeTotalGrouped(types, amounts, true, OnResourceConsumed, CheckHueGrouping);
-				}
+                else if (IsPlantHueType(types))
+                {
+                    index = ConsumeQuantityByPlantHue(from, craftSystem, ourPack, types, amounts);
+                }
+                else
+                {
+                    index = ourPack.ConsumeTotalGrouped(types, amounts, true, OnResourceConsumed, CheckHueGrouping);
+                }
 
 				resHue = m_ResHue;
 			}
@@ -903,6 +1013,19 @@ namespace Server.Engines.Craft
 						}
 					}
 				}
+                else if (IsPlantHueType(types))
+                {
+                    CraftContext c = craftSystem.GetContext(from);
+
+                    for (int i = 0; i < types.Length; i++)
+                    {
+                        if (GetPlantHueAmount(from, craftSystem, ourPack, types[i]) < amounts[i])
+                        {
+                            index = i;
+                            break;
+                        }
+                    }
+                }
 				else
 				{
 					for (int i = 0; i < types.Length; i++)
@@ -961,29 +1084,14 @@ namespace Server.Engines.Craft
 		private void OnResourceConsumed(Item item, int amount)
 		{
 			#region Plant Pigments
-			if (item is PlantClippings)
-			{
-				m_PlantHue = ((PlantClippings)item).PlantHue;
-				m_ResHue = item.Hue;
-			}
-
-			if (item is PlantPigment)
-			{
-				m_PlantPigmentHue = ((PlantPigment)item).PigmentHue;
-				m_ResHue = item.Hue;
-			}
-
-			if (item is DryReeds)
-			{
-				m_PlantHue = ((DryReeds)item).PlantHue;
-				m_ResHue = item.Hue;
-			}
-
-			if (item is SoftenedReeds)
-			{
-				m_PlantHue = ((SoftenedReeds)item).PlantHue;
-				m_ResHue = item.Hue;
-			}
+            if (item is IPlantHue)
+            {
+                m_PlantHue = ((IPlantHue)item).PlantHue;
+            }
+            else if (item is IPigmentHue)
+            {
+                m_PlantPigmentHue = ((IPigmentHue)item).PigmentHue;
+            }
 			#endregion
 
             if (!RetainsColorFrom(m_System, item.GetType()))
@@ -991,7 +1099,7 @@ namespace Server.Engines.Craft
 				return;
 			}
 
-			if (amount >= m_ResAmount)
+            if (amount >= m_ResAmount)
 			{
 				m_ResHue = item.Hue;
 				m_ResAmount = amount;
@@ -1154,59 +1262,82 @@ namespace Server.Engines.Craft
 
 					if (allRequiredSkills && chance >= 0.0)
 					{
-						if (Recipe == null || !(from is PlayerMobile) || ((PlayerMobile)from).HasRecipe(Recipe))
-						{
-							int badCraft = craftSystem.CanCraft(from, tool, m_Type);
+                        if (Recipe == null || !(from is PlayerMobile) || ((PlayerMobile)from).HasRecipe(Recipe))
+                        {
+                            if (!RequiresBasketWeaving || (from is PlayerMobile && ((PlayerMobile)from).BasketWeaving))
+                            {
+                                if (!RequiresMechanicalLife || (from is PlayerMobile && ((PlayerMobile)from).MechanicalLife))
+                                {
+                                    int badCraft = craftSystem.CanCraft(from, tool, m_Type);
 
-							if (badCraft <= 0)
-							{
-								int resHue = 0;
-								int maxAmount = 0;
-								object message = null;
+                                    if (badCraft <= 0)
+                                    {
+                                        if (RequiresResTarget && NeedsResTarget(from, craftSystem))
+                                        {
+                                            from.Target = new ChooseResTarget(from, this, craftSystem, typeRes, tool);
+                                            from.SendMessage("Choose the resource you would like to use.");
+                                            return;
+                                        }
 
-								if (ConsumeRes(from, typeRes, craftSystem, ref resHue, ref maxAmount, ConsumeType.None, ref message))
-								{
-									message = null;
+                                        int resHue = 0;
+                                        int maxAmount = 0;
+                                        object message = null;
 
-									if (ConsumeAttributes(from, ref message, false))
-									{
-										CraftContext context = craftSystem.GetContext(from);
+                                        if (ConsumeRes(from, typeRes, craftSystem, ref resHue, ref maxAmount, ConsumeType.None, ref message))
+                                        {
+                                            message = null;
 
-										if (context != null)
-										{
-											context.OnMade(this);
-										}
+                                            if (ConsumeAttributes(from, ref message, false))
+                                            {
+                                                CraftContext context = craftSystem.GetContext(from);
 
-										int iMin = craftSystem.MinCraftEffect;
-										int iMax = (craftSystem.MaxCraftEffect - iMin) + 1;
-										int iRandom = Utility.Random(iMax);
-										iRandom += iMin + 1;
-										new InternalTimer(from, craftSystem, this, typeRes, tool, iRandom).Start();
-                                        return;
-									}
-									else
-									{
-										from.EndAction(typeof(CraftSystem));
-										from.SendGump(new CraftGump(from, craftSystem, tool, message));
-									}
-								}
-								else
-								{
-									from.EndAction(typeof(CraftSystem));
-									from.SendGump(new CraftGump(from, craftSystem, tool, message));
-								}
-							}
-							else
-							{
-								from.EndAction(typeof(CraftSystem));
-								from.SendGump(new CraftGump(from, craftSystem, tool, badCraft));
-							}
-						}
-						else
-						{
-							from.EndAction(typeof(CraftSystem));
-							from.SendGump(new CraftGump(from, craftSystem, tool, 1072847)); // You must learn that recipe from a scroll.
-						}
+                                                if (context != null)
+                                                {
+                                                    context.OnMade(this);
+                                                }
+
+                                                int iMin = craftSystem.MinCraftEffect;
+                                                int iMax = (craftSystem.MaxCraftEffect - iMin) + 1;
+                                                int iRandom = Utility.Random(iMax);
+                                                iRandom += iMin + 1;
+                                                new InternalTimer(from, craftSystem, this, typeRes, tool, iRandom).Start();
+                                                return;
+                                            }
+                                            else
+                                            {
+                                                from.EndAction(typeof(CraftSystem));
+                                                from.SendGump(new CraftGump(from, craftSystem, tool, message));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            from.EndAction(typeof(CraftSystem));
+                                            from.SendGump(new CraftGump(from, craftSystem, tool, message));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        from.EndAction(typeof(CraftSystem));
+                                        from.SendGump(new CraftGump(from, craftSystem, tool, badCraft));
+                                    }
+                                }
+                                else
+                                {
+                                    from.EndAction(typeof(CraftSystem));
+                                    from.SendGump(new CraftGump(from, craftSystem, tool, 1113034)); // You haven't read the Mechanical Life Manual. Talking to Sutek might help!
+                                }
+                            }
+                            else
+                            {
+                                from.EndAction(typeof(CraftSystem));
+                                from.SendGump(new CraftGump(from, craftSystem, tool, 1112253)); // You haven't learned basket weaving. Perhaps studying a book would help!
+                            }
+                        }
+                        else
+                        {
+                            from.EndAction(typeof(CraftSystem));
+                            from.SendGump(new CraftGump(from, craftSystem, tool, 1072847)); // You must learn that recipe from a scroll.
+                        }
 					}
 					else
 					{
@@ -1432,7 +1563,7 @@ namespace Server.Engines.Craft
 				{
 					item = customCraft.CompleteCraft(out num);
 				}
-				else if (typeof(MapItem).IsAssignableFrom(ItemType) && from.Map != Map.Trammel && from.Map != Map.Felucca)
+				else if (!Core.SA && typeof(MapItem).IsAssignableFrom(ItemType) && from.Map != Map.Trammel && from.Map != Map.Felucca)
 				{
 					item = new IndecipherableMap();
 					from.SendLocalizedMessage(1070800); // The map you create becomes mysteriously indecipherable.
@@ -1483,6 +1614,11 @@ namespace Server.Engines.Craft
 					}
 					#endregion
 
+                    #region High Seas
+                    if (Core.HS && item is MapItem)
+                        ((MapItem)item).Facet = from.Map;
+                    #endregion
+
 					if (item is ICraftable)
 					{
 						endquality = ((ICraftable)item).OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, this, resHue);
@@ -1509,25 +1645,15 @@ namespace Server.Engines.Craft
 					}
 
 					#region Plant Pigments
-					if (item is PlantPigment && (craftSystem is DefAlchemy || craftSystem is DefCooking))
-					{
-						((PlantPigment)item).PigmentHue = PlantPigmentHueInfo.HueFromPlantHue(m_PlantHue);
-					}
-
-					if (item is NaturalDye && (craftSystem is DefAlchemy || craftSystem is DefCooking))
-					{
-						((NaturalDye)item).PigmentHue = PlantPigmentHueInfo.GetInfo(m_PlantPigmentHue).PlantPigmentHue;
-					}
-
-					if (item is SoftenedReeds && (craftSystem is DefAlchemy || craftSystem is DefCooking))
-					{
-						((SoftenedReeds)item).PlantHue = PlantHueInfo.GetInfo(m_PlantHue).PlantHue;
-					}
-
-					if (item is BaseContainer && (craftSystem is DefBasketweaving))
-					{
-						(item).Hue = PlantHueInfo.GetInfo(m_PlantHue).Hue;
-					}
+                    if (m_PlantHue != PlantHue.None)
+                    {
+                        if (item is IPlantHue)
+                            ((IPlantHue)item).PlantHue = m_PlantHue;
+                        else if (item is IPigmentHue)
+                            ((IPigmentHue)item).PigmentHue = PlantPigmentHueInfo.HueFromPlantHue(m_PlantHue);
+                    }
+                    else if (m_PlantPigmentHue != PlantPigmentHue.None && item is IPigmentHue)
+                        ((IPigmentHue)item).PigmentHue = m_PlantPigmentHue;
 
                     CraftContext context = craftSystem.GetContext(from);
 
@@ -1538,6 +1664,12 @@ namespace Server.Engines.Craft
                         if (!QuestHelper.CheckItem(px, item))
                             from.SendLocalizedMessage(1072355, null, 0x23); // That item does not match any of your quest criteria	
                     }
+
+                    context.RequiredPigmentHue = PlantPigmentHue.None;
+                    context.RequiredPlantHue = PlantHue.None;
+
+                    m_PlantHue = PlantHue.None;
+                    m_PlantPigmentHue = PlantPigmentHue.None;
 					#endregion
 
 					if (tool.Parent is Container) {
@@ -1797,5 +1929,114 @@ namespace Server.Engines.Craft
 				}
 			}
 		}
+
+        #region SA
+        public static void RemoveResTarget(Mobile from)
+        {
+            if (m_HasTarget.Contains(from))
+                m_HasTarget.Remove(from);
+        }
+
+        public static void AddResTarget(Mobile from)
+        {
+            if (!m_HasTarget.Contains(from))
+                m_HasTarget.Add(from);
+        }
+
+        public static bool HasResTarget(Mobile from)
+        {
+            return m_HasTarget.Contains(from);
+        }
+
+        private static List<Mobile> m_HasTarget = new List<Mobile>();
+
+        public bool NeedsResTarget(Mobile from, CraftSystem craftSystem)
+        {
+            CraftContext context = craftSystem.GetContext(from);
+
+            if (context == null || HasResTarget(from))
+                return false;
+
+            Type[][] types = new Type[m_arCraftRes.Count][];
+            Container pack = from.Backpack;
+            PlantHue hue = PlantHue.None;
+            PlantPigmentHue phue = PlantPigmentHue.None;
+
+            for (int i = 0; i < types.Length; ++i)
+            {
+                CraftRes craftRes = m_arCraftRes.GetAt(i);
+                Type type = craftRes.ItemType;
+
+                if (pack != null)
+                {
+                    Item[] items = pack.FindItemsByType(type);
+
+                    if (items != null && items.Length > 0 && items[0] is IPlantHue)
+                        hue = ((IPlantHue)items[0]).PlantHue;
+                    else if (items != null && items.Length > 0 && items[0] is IPigmentHue)
+                        phue = ((IPigmentHue)items[0]).PigmentHue;
+
+                    foreach (Item item in items)
+                    {
+                        if (item is IPlantHue && ((IPlantHue)item).PlantHue != hue)
+                            return true;
+                        else if (item is IPigmentHue && ((IPigmentHue)item).PigmentHue != phue)
+                            return true;
+                    }
+
+                    if (hue != PlantHue.None)
+                        context.RequiredPlantHue = hue;
+                    else if (phue != PlantPigmentHue.None)
+                        context.RequiredPigmentHue = phue;
+                    
+                }
+            }
+
+            return false;
+        }
+
+        public class ChooseResTarget : Server.Targeting.Target
+        {
+            private CraftItem m_CraftItem;
+            private CraftSystem m_CraftSystem;
+            private Type m_TypeRes;
+            private BaseTool m_Tool;
+
+            public ChooseResTarget(Mobile from, CraftItem craftitem, CraftSystem craftSystem, Type typeRes, BaseTool tool)
+                : base(-1, false, Server.Targeting.TargetFlags.None)
+            {
+                m_CraftItem = craftitem;
+                m_CraftSystem = craftSystem;
+                m_TypeRes = typeRes;
+                m_Tool = tool;
+
+                CraftItem.AddResTarget(from);
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                CraftContext context = m_CraftSystem.GetContext(from);
+
+                if (context != null && targeted is IPlantHue)
+                    context.RequiredPlantHue = ((IPlantHue)targeted).PlantHue;
+                else if (context != null && targeted is IPigmentHue)
+                    context.RequiredPigmentHue = ((IPigmentHue)targeted).PigmentHue;
+
+                from.EndAction(typeof(CraftSystem));
+                m_CraftItem.Craft(from, m_CraftSystem, m_TypeRes, m_Tool);
+            }
+
+            protected override void OnTargetCancel(Mobile from, Server.Targeting.TargetCancelType cancelType)
+            {
+                from.EndAction(typeof(CraftSystem));
+                from.SendGump(new CraftGump(from, m_CraftSystem, m_Tool, null));
+            }
+
+            protected override void OnTargetFinish(Mobile from)
+            {
+                CraftItem.RemoveResTarget(from);
+            }
+        }
+        #endregion
 	}
 }

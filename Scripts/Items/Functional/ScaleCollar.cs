@@ -56,6 +56,8 @@ namespace Server.Items
         {
             if (lizard != null && lizard.Controlled)
             {
+                lizard.Frozen = false;
+
                 m_Timer.Stop();
                 m_Timer = null;
             }

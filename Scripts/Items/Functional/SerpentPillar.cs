@@ -91,7 +91,7 @@ namespace Server.Items
                 if (!this.Active)
                 {
                     if (boat.TillerMan != null)
-                        boat.TillerMan.Say(502507); // Ar, Legend has it that these pillars are inactive! No man knows how it might be undone!
+                        boat.TillerManSay(502507); // Ar, Legend has it that these pillars are inactive! No man knows how it might be undone!
 
                     return;
                 }
@@ -119,7 +119,7 @@ namespace Server.Items
                 }
 
                 if (boat.TillerMan != null)
-                    boat.TillerMan.Say(502508); // Ar, I refuse to take that matey through here!
+                    boat.TillerManSay(502508); // Ar, I refuse to take that matey through here!
             }
         }
 

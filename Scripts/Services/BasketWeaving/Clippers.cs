@@ -152,7 +152,7 @@ namespace Server.Items
         {
             get
             {
-                throw new NotImplementedException();
+                return DefTinkering.CraftSystem;
             }
         }
 

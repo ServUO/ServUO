@@ -116,6 +116,11 @@ namespace Server.Engines.Quests
                 return null;
             }
         }
+
+        public virtual object FailedMsg { get { return null; } }
+
+        public virtual bool ShowDescription { get { return true; } }
+        public virtual bool CanRefuseReward { get { return false; } }
 		
         private List<BaseObjective> m_Objectives;		
         private List<BaseReward> m_Rewards;
@@ -435,6 +440,24 @@ namespace Server.Engines.Quests
 
             Server.Engines.Points.PointsSystem.HandleQuest(Owner, this);
         }
+
+        public virtual void RefuseRewards()
+        {
+            // remove quest
+            if (NextQuest == null)
+                RemoveQuest(true);
+            else
+                RemoveQuest();
+
+            // offer next quest if present
+            if (NextQuest != null)
+            {
+                BaseQuest quest = QuestHelper.RandomQuest(m_Owner, new Type[] { NextQuest }, StartingMobile);
+
+                if (quest != null && quest.ChainID == ChainID)
+                    m_Owner.SendGump(new MondainQuestGump(quest));
+            }
+        }
 		
         public virtual void AddObjective(BaseObjective objective)
         {
@@ -493,6 +516,16 @@ namespace Server.Engines.Quests
                     break;
                 }
             }
+        }
+
+        public virtual bool RenderDescription(MondainQuestGump g, bool offer)
+        {
+            return false;
+        }
+
+        public virtual bool RenderObjective(MondainQuestGump g, bool offer)
+        {
+            return false;
         }
 		
         public virtual void Serialize(GenericWriter writer)

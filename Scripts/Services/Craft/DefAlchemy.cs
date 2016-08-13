@@ -130,6 +130,14 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(GreaterCurePotion), 1116348, 1044554, 65.0, 115.0, typeof(Garlic), 1044355, 6, 1044363);
             AddRes(index, typeof(Bottle), 1044529, 1, 500315);
 
+            if (Core.SA)
+            {
+                index = AddCraft(typeof(ElixirOfRebirth), 1116348, 1112762, 65.0, 130.0, typeof(MedusaBlood), 1031702, 1, 1044253);
+                AddRes(index, typeof(SpidersSilk), 1044360, 7, 1044368);
+                AddRes(index, typeof(Bottle), 1044529, 1, 500315);
+                this.SetNeededExpansion(index, Expansion.SA);
+            }
+
             // Enhancement
             index = AddCraft(typeof(AgilityPotion), 1116349, 1044540, 15.0, 65.0, typeof(Bloodmoss), 1044354, 1, 1044362);
             AddRes(index, typeof(Bottle), 1044529, 1, 500315);
@@ -197,6 +205,9 @@ namespace Server.Engines.Craft
                 AddRecipe(index, (int)TinkerRecipes.DarkglowPotion);
                 SetNeededExpansion(index, Expansion.ML);
 
+                index = AddCraft(typeof(ScouringToxin), 1116350, 1112292, 75.0, 100.0, typeof(ToxicVenomSac), 1112291, 1, 1044253);
+                AddRes(index, typeof(Bottle), 1044529, 1, 500315);
+
                 // Explosive
                 index = AddCraft(typeof(ConflagrationPotion), 1116351, 1072096, 55.0, 105.0, typeof(Bottle), 1044529, 1, 500315);
                 AddRes(index, typeof(GraveDust), 1023983, 5, 1044253);
@@ -210,6 +221,28 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(GreaterConfusionBlastPotion), 1116351, 1072109, 70.0, 120.0, typeof(Bottle), 1044529, 1, 500315);
                 AddRes(index, typeof(PigIron), 1023978, 10, 1044253);
 
+                #region High Seas
+                if (Core.SA)
+                {
+                    index = AddCraft(typeof(BlackPowder), 1116351, 1095826, 65.0, 115.0, typeof(SulfurousAsh), 1023980, 1, 1044253);
+                    AddRes(index, typeof(Saltpeter), 1116302, 6, 1044253);
+                    AddRes(index, typeof(Charcoal), 1116303, 1, 1044253);
+                    SetNeededExpansion(index, Expansion.HS);
+
+                    index = AddCraft(typeof(Matchcord), 1116351, 1095184, 25.0, 80.0, typeof(DarkYarn), 1023615, 1, 1044253);
+                    AddRes(index, typeof(BaseBeverage), 1024088, 1, 1044253);
+                    AddRes(index, typeof(Saltpeter), 1116302, 1, 1044253);
+                    AddRes(index, typeof(Potash), 1116319, 1, 1044253);
+                    SetNeededExpansion(index, Expansion.HS);
+
+                    index = AddCraft(typeof(Fusecord), 1116351, 1116305, 55.0, 105.0, typeof(DarkYarn), 1023615, 1, 1044253);
+                    AddRes(index, typeof(BaseBeverage), 1024088, 1, 1044253);
+                    AddRes(index, typeof(BlackPowder), 1095826, 1, 1044253);
+                    AddRes(index, typeof(Potash), 1116319, 1, 1044253);
+                    SetNeededExpansion(index, Expansion.HS);
+                }
+                #endregion
+
                 // Strange Brew
                 index = AddCraft(typeof(HoveringWisp), 1116353, 1072881, 65.0, 115.0, typeof(CapturedEssence), 1032686, 4, 1044253);
                 AddRecipe(index, (int)TinkerRecipes.HoveringWisp);
@@ -218,23 +251,11 @@ namespace Server.Engines.Craft
 
             if (Core.SA)
             {
-                // Healing and Curative
-                index = AddCraft(typeof(ElixirOfRebirth), 1116348, 1112762, 65.0, 130.0, typeof(MedusaBlood), 1031702, 1, 1044253);
-                AddRes(index, typeof(SpidersSilk), 1044360, 7, 1044368);
-                AddRes(index, typeof(Bottle), 1044529, 1, 500315);
-                this.SetNeededExpansion(index, Expansion.SA);
-
-                // Toxic
-                index = AddCraft(typeof(ScouringToxin), 1116350, 1112292, 75.0, 100.0, typeof(ToxicVenomSac), 1112291, 1, 1044253);
-                AddRes(index, typeof(Bottle), 1044529, 1, 500315);
-
                 // Ingrediants
                 index = AddCraft(typeof(PlantPigment), 1044495, 1112132, 33.0, 83.0, typeof(PlantClippings), 1112131, 1, 1044253);
                 AddRes(index, typeof(Bottle), 1023854, 1, 1044253);
-                SetNeededExpansion(index, Expansion.SA);
-
-                index = AddCraft(typeof(NaturalDye), 1044495, 1112136, 75.0, 100.0, typeof(PlantPigment), 1112132, 1, 1044253);
-                AddRes(index, typeof(ColorFixative), 1112135, 1, 1044253);
+                SetItemHue(index, 2101);
+                SetRequireResTarget(index);
                 SetNeededExpansion(index, Expansion.SA);
 
                 index = AddCraft(typeof(ColorFixative), 1044495, 1112135, 75.0, 100.0, typeof(SilverSerpentVenom), 1112173, 1, 1044253);
@@ -242,11 +263,20 @@ namespace Server.Engines.Craft
                 SetBeverageType(index, BeverageType.Wine);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(SoftenedReeds), 1044495, 1112249, 75.0, 100.0, typeof(DryReeds), 1112248, 1, 1112250);
-                AddRes(index, typeof(ScouringToxin), 1112292, 2, 1112326);
+                index = AddCraft(typeof(NaturalDye), 1044495, 1112136, 75.0, 100.0, typeof(PlantPigment), 1112132, 1, 1044253);
+                AddRes(index, typeof(ColorFixative), 1112135, 1, 1044253);
+                SetItemHue(index, 2101);
+                SetRequireResTarget(index);
+                SetNeededExpansion(index, Expansion.SA);
 
                 index = AddCraft(typeof(CrystalDust), 1044495, 1112328, 75.0, 100.0, typeof(CrystallineFragments), 1153988, 1, 1044253);
                 SetItemHue(index, 2103);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(SoftenedReeds), 1044495, 1112249, 75.0, 100.0, typeof(DryReeds), 1112248, 1, 1112250);
+                AddRes(index, typeof(ScouringToxin), 1112292, 2, 1112326);
+                SetRequireResTarget(index);
+                SetRequiresBasketWeaving(index);
                 SetNeededExpansion(index, Expansion.SA);
 
                 index = AddCraft(typeof(VialOfVitriol), 1044495, 1113331, 90.0, 100.0, typeof(ParasiticPotion), 1072848, 1, 1113754);
@@ -259,6 +289,15 @@ namespace Server.Engines.Craft
                 AddSkill(index, SkillName.Magery, 75.0, 100.0);
                 SetNeededExpansion(index, Expansion.SA);
             }
+
+            #region High Seas
+            if (Core.HS)
+            {
+                index = AddCraft(typeof(Potash), 1044495, 1116319, 0.0, 50.0, typeof(Log), 1044041, 1, 1044253);
+                AddRes(index, typeof(BaseBeverage), 1024088, 1, 1044253);
+                SetNeededExpansion(index, Expansion.HS);
+            }
+            #endregion
 
             //TODO add black powder, match cord, fuse cord, natural dye, nexus core, potash, gold dust - ALL ARE HS
         }

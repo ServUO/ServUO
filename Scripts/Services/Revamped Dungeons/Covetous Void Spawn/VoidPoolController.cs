@@ -5,6 +5,8 @@ using Server.Mobiles;
 using Server.Items;
 using System.Linq;
 using Server.Engines.Points;
+using Server.Regions;
+using System.Text.RegularExpressions;
 
 namespace Server.Engines.VoidPool
 {
@@ -456,12 +458,9 @@ namespace Server.Engines.VoidPool
             if (Region == null)
                 return;
 
-            foreach (Sector s in Region.Sectors)
+            foreach (Item item in Region.GetEnumeratedItems().Where(i => i is XmlSpawner))
             {
-                foreach (Item item in s.Items.Where(i => i is XmlSpawner))
-                {
-                    ((XmlSpawner)item).DoReset = true;
-                }
+                ((XmlSpawner)item).DoReset = true;
             }
         }
 

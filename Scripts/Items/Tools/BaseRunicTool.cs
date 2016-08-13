@@ -132,6 +132,65 @@ namespace Server.Items
             return v;
         }
 
+        #region High Seas
+        public void ApplyAttributesTo(FishingPole pole)
+        {
+            CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
+
+            if (resInfo == null)
+                return;
+
+            CraftAttributeInfo attrs = resInfo.AttributeInfo;
+
+            int attributeCount = Utility.RandomMinMax(attrs.RunicMinAttributes, attrs.RunicMaxAttributes);
+            int min = attrs.RunicMinIntensity;
+            int max = attrs.RunicMaxIntensity;
+
+            ApplyAttributesTo(pole, true, 0, attributeCount, min, max);
+        }
+
+        public static void ApplyAttributesTo(FishingPole pole, bool isRunicTool, int luckChance, int attributeCount, int min, int max)
+        {
+            m_IsRunicTool = isRunicTool;
+            m_LuckChance = luckChance;
+
+            AosAttributes primary = pole.Attributes;
+            AosSkillBonuses skills = pole.SkillBonuses;
+
+            m_Props.SetAll(false);
+
+            for (int i = 0; i < attributeCount; ++i)
+            {
+                int random = GetUniqueRandom(21);
+
+                switch (random)
+                {
+                    case 0: ApplyAttribute(primary, min, max, AosAttribute.DefendChance, 1, 15); break;
+                    case 1: ApplyAttribute(primary, min, max, AosAttribute.CastSpeed, 1, 1); break;
+                    case 2: ApplyAttribute(primary, min, max, AosAttribute.CastRecovery, 1, 1); break;
+                    case 3: ApplyAttribute(primary, min, max, AosAttribute.AttackChance, 1, 15); break;
+                    case 4: ApplyAttribute(primary, min, max, AosAttribute.Luck, 1, 100); break;
+                    case 5: ApplyAttribute(primary, min, max, AosAttribute.SpellChanneling, 1, 1); break;
+                    case 6: ApplyAttribute(primary, min, max, AosAttribute.RegenHits, 1, 2); break;
+                    case 7: ApplyAttribute(primary, min, max, AosAttribute.RegenMana, 1, 2); break;
+                    case 8: ApplyAttribute(primary, min, max, AosAttribute.RegenStam, 1, 3); break;
+                    case 9: ApplyAttribute(primary, min, max, AosAttribute.BonusHits, 1, 8); break;
+                    case 10: ApplyAttribute(primary, min, max, AosAttribute.BonusMana, 1, 8); break;
+                    case 11: ApplyAttribute(primary, min, max, AosAttribute.BonusStam, 1, 8); break;
+                    case 12: ApplyAttribute(primary, min, max, AosAttribute.BonusStr, 1, 8); break;
+                    case 13: ApplyAttribute(primary, min, max, AosAttribute.BonusDex, 1, 8); break;
+                    case 14: ApplyAttribute(primary, min, max, AosAttribute.BonusInt, 1, 8); break;
+                    case 15: ApplyAttribute(primary, min, max, AosAttribute.SpellDamage, 1, 12); break;
+                    case 16: ApplySkillBonus(skills, min, max, 0, 1, 15); break;
+                    case 17: ApplySkillBonus(skills, min, max, 1, 1, 15); break;
+                    case 18: ApplySkillBonus(skills, min, max, 2, 1, 15); break;
+                    case 19: ApplySkillBonus(skills, min, max, 3, 1, 15); break;
+                    case 20: ApplySkillBonus(skills, min, max, 4, 1, 15); break;
+                }
+            }
+        }
+        #endregion
+
         public static void ApplyAttributesTo(BaseWeapon weapon, int attributeCount, int min, int max)
         {
             ApplyAttributesTo(weapon, false, 0, attributeCount, min, max);

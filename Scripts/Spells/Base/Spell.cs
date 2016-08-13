@@ -243,7 +243,13 @@ namespace Server.Spells
 
                 #region Stygian Abyss
                 int focus = SAAbsorptionAttributes.GetValue(Caster, SAAbsorptionAttribute.CastingFocus);
-                if (focus > 12) focus = 12;
+
+                if (BaseFishPie.IsUnderEffects(m_Caster, FishPieEffect.CastFocus))
+                    focus += 2;
+
+                if (focus > 12) 
+                    focus = 12;
+
                 focus += m_Caster.Skills[SkillName.Inscribe].Value >= 50 ? GetInscribeFixed(m_Caster) / 200 : 0;
 
                 if (focus > 0 && focus > Utility.Random(100))

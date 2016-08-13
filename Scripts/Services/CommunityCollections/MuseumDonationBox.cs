@@ -61,7 +61,8 @@ namespace Server.Items
             this.Donations.Add(new CollectionItem(typeof(MouldingPlane), 0x102C, 1075060, 0x0, 4));
             this.Donations.Add(new CollectionItem(typeof(SmoothingPlane), 0x1032, 1075061, 0x0, 4));
 			
-            int[] hues = new int[] { 0x581, 0x278, 0x318, 0x2FF };			
+            int[] hues = new int[] { 0x581, 0x278, 0x318, 0x2FF };
+            Rewards.Add(new CollectionItem(typeof(ShepherdsCrookOfHumility), 0xE81, 1075791, 0x0, 5000.0, true));
             this.Rewards.Add(new CollectionHuedItem(typeof(OdricsRobe), 0x1F03, 1073250, 0x581, 100000.0, hues));
 			
             hues = new int[] { 0x229, 0x18E, 0x215, 0xF5 };			

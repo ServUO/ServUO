@@ -465,7 +465,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)2); // version
 
             writer.Write((int)m_Level);
             writer.Write(m_Stored.Count);
@@ -490,6 +490,9 @@ namespace Server.Items
 
             m_Level = (SecureLevel)reader.ReadInt();
 
+            if (version == 1)
+                return;
+
             int c = reader.ReadInt();
 
             for (int i = 0; i < c; i++)
@@ -498,7 +501,7 @@ namespace Server.Items
                 int count = reader.ReadInt();
                 List<BaseCreature> list = new List<BaseCreature>();
 
-                for (int j = 0; j < count; i++)
+                for (int j = 0; j < count; j++)
                 {
                     Mobile chicken = reader.ReadMobile();
 

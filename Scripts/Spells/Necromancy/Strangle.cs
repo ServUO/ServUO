@@ -49,6 +49,8 @@ namespace Server.Spells.Necromancy
             t.Stop();
             m.SendLocalizedMessage(1061687); // You can breath normally again.
 
+            BuffInfo.RemoveBuff(m, BuffIcon.Strangle);
+
             m_Table.Remove(m);
             return true;
         }

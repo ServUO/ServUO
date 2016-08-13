@@ -207,6 +207,40 @@ namespace Server.Engines.Craft
                 this.SetNeededExpansion(index, Expansion.ML);
             }
             #endregion
+
+            #region SA
+            if (Core.SA)
+            {
+                index = AddCraft(typeof(PlantPigment), 1044496, 1112132, 75.0, 100.0, typeof(PlantClippings), 1112131, 1, 1044253);
+                AddRes(index, typeof(Bottle), 1023854, 1, 1044253);
+                SetRequireResTarget(index);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(NaturalDye), 1044496, 1112136, 65.0, 115.0, typeof(PlantPigment), 1112132, 1, 1044253);
+                AddRes(index, typeof(ColorFixative), 1112135, 1, 1044253);
+                SetRequireResTarget(index);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(ColorFixative), 1044496, 1112135, 75.0, 100.0, typeof(BaseBeverage), 1022503, 1, 1044253);
+                AddRes(index, typeof(SilverSerpentVenom), 1112173, 1, 1044253);
+                SetBeverageType(index, BeverageType.Wine);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(WoodPulp), 1044496, 1113136, 60.0, 100.0, typeof(BarkFragment), 1032687, 1, 1044253);
+                AddRes(index, typeof(BaseBeverage), 1046458, 1, 1044253);
+                SetNeededExpansion(index, Expansion.SA);
+            }
+            #endregion
+
+            #region High Seas
+            if (Core.HS)
+            {
+                index = AddCraft(typeof(Charcoal), 1044496, 1116303, 0.0, 50.0, typeof(Log), 1044041, 1, 1044351);
+                SetUseAllRes(index, true);
+                SetNeedHeat(index, true);
+                SetNeededExpansion(index, Expansion.HS);
+            }
+            #endregion
             /* End Preparations */
 
             /* Begin Baking */
@@ -351,7 +385,7 @@ namespace Server.Engines.Craft
             #region Stygian Abyss
             /* Plant Pigments*/
 
-            if (Core.SA)
+            /*if (Core.SA)
             {
                 index = this.AddCraft(typeof(PlantPigment), "Plant Pigments", 1112132, 33.0, 83.0, typeof(PlantClippings), 1112131, 1, 1044253);
                 this.AddRes(index, typeof(Bottle), 1023854, 1, 1044253);
@@ -359,12 +393,14 @@ namespace Server.Engines.Craft
 
                 index = this.AddCraft(typeof(NaturalDye), "Plant Pigments", 1112136, 75.0, 100.0, typeof(PlantPigment), 1112132, 1, 1044253);
                 this.AddRes(index, typeof(ColorFixative), 1112135, 1, 1044253);
+                SetItemHue(index, 2101);
+                SetRequireResTarget(index);
                 this.SetNeededExpansion(index, Expansion.SA);
 
                 index = this.AddCraft(typeof(ColorFixative), "Plant Pigments", 1112135, 75.0, 100.0, typeof(SilverSerpentVenom), 1112173, 1, 1044253);
                 this.AddRes(index, typeof(BaseBeverage), 1044476, 1, 1044253);//TODO correct Consumption of BaseBeverage...
                 this.SetNeededExpansion(index, Expansion.SA);
-            }
+            }*/
             #endregion
         }
     }

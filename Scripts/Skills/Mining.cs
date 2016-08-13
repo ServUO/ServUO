@@ -376,6 +376,86 @@ namespace Server.Engines.Harvest
             }
         }
 
+        #region High Seas
+        public override bool SpecialHarvest(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc)
+        {
+            HarvestBank bank = def.GetBank(map, loc.X, loc.Y);
+
+            if (bank == null)
+                return false;
+
+            bool boat = Server.Multis.BaseBoat.FindBoatAt(from, from.Map) != null;
+            bool dungeon = IsDungeonRegion(from);
+
+            if (!boat && !dungeon)
+                return false;
+
+            if (boat || !NiterDeposit.HasBeenChecked(bank))
+            {
+                double bonus = (from.Skills[SkillName.Mining].Value / 9999) + ((double)from.Luck / 150000);
+
+                if (boat)
+                    bonus -= (bonus * .33);
+
+                if (dungeon)
+                    NiterDeposit.AddBank(bank);
+
+                if (Utility.RandomDouble() < bonus)
+                {
+                    int size = Utility.RandomMinMax(1, 5);
+
+                    if (from.Luck / 2500 > Utility.RandomDouble())
+                        size++;
+
+                    NiterDeposit niter = new NiterDeposit(size);
+
+                    if (!dungeon)
+                    {
+                        niter.MoveToWorld(new Point3D(loc.X, loc.Y, from.Z + 3), from.Map);
+                        from.SendLocalizedMessage(1149918, niter.Size.ToString()); //You have uncovered a ~1_SIZE~ deposit of niter! Mine it to obtain saltpeter.
+                        NiterDeposit.AddBank(bank);
+                        return true;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 50; i++)
+                        {
+                            int x = Utility.RandomMinMax(loc.X - 2, loc.X + 2);
+                            int y = Utility.RandomMinMax(loc.Y - 2, loc.Y + 2);
+                            int z = from.Z;
+
+                            if (from.Map.CanSpawnMobile(x, y, z))
+                            {
+                                niter.MoveToWorld(new Point3D(x, y, z), from.Map);
+                                from.SendLocalizedMessage(1149918, niter.Size.ToString()); //You have uncovered a ~1_SIZE~ deposit of niter! Mine it to obtain saltpeter.
+                                return true;
+                            }
+                        }
+                    }
+
+                    niter.Delete();
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsDungeonRegion(Mobile from)
+        {
+            if (from == null)
+                return false;
+
+            Map map = from.Map;
+            Region reg = from.Region;
+            Rectangle2D bounds = new Rectangle2D(0, 0, 5114, 4100);
+
+            if ((map == Map.Felucca || map == Map.Trammel) && bounds.Contains(new Point2D(from.X, from.Y)))
+                return false;
+
+            return reg != null && (reg.IsPartOf(typeof(Server.Regions.DungeonRegion)) || map == Map.Ilshenar);
+        }
+        #endregion
+
         public override bool BeginHarvesting(Mobile from, Item tool)
         {
             if (!base.BeginHarvesting(from, tool))

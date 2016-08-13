@@ -2139,12 +2139,6 @@ namespace Server.Items
             if (item is BaseClothing)
                 return ((BaseClothing)item).ClothingAttributes;
 
-            //if (item is BaseTalisman)
-            //    return ((BaseTalisman)item).ArmorAttributes;
-
-            //if (item is BaseJewel)
-            //    return ((BaseJewel)item).ArmorAttributes;
-
             return null;
         }
 
@@ -2164,8 +2158,14 @@ namespace Server.Items
             if (item is BaseClothing)
                 return ((BaseClothing)item).Resistances;
 
-            if (item is BaseJewel)
+            else if (item is BaseJewel)
                 return ((BaseJewel)item).Resistances;
+
+            else if (item is BaseWeapon)
+                return ((BaseWeapon)item).AosElementDamages;
+
+            else if (item is BaseQuiver)
+                return ((BaseQuiver)item).Resistances;
 
             return null;
         }
@@ -2181,6 +2181,9 @@ namespace Server.Items
             else if (item is BaseWeapon) 
                 return ((BaseWeapon)item).AbsorptionAttributes;
 
+            else if (item is BaseClothing)
+                return ((BaseClothing)item).SAAbsorptionAttributes;
+
             return null;
         }
 
@@ -2188,6 +2191,24 @@ namespace Server.Items
         {
             if (item is BaseJewel)
                 return ((BaseJewel)item).SkillBonuses;
+
+            else if (item is BaseWeapon)
+                return ((BaseWeapon)item).SkillBonuses;
+
+            else if (item is BaseArmor)
+                return ((BaseArmor)item).SkillBonuses;
+
+            else if (item is BaseTalisman)
+                return ((BaseTalisman)item).SkillBonuses;
+
+            else if (item is Spellbook)
+                return ((Spellbook)item).SkillBonuses;
+
+            else if (item is BaseQuiver)
+                return ((BaseQuiver)item).SkillBonuses;
+
+            else if (item is BaseClothing)
+                return ((BaseClothing)item).SkillBonuses;
 
             return null;
         }
@@ -2430,7 +2451,9 @@ namespace Server.Items
                 {
                     if (item.IsChildOf(from.Backpack))
                     {
-                        if (item.GetType() != m_Tool.GetType())
+                        if (item == m_Tool)
+                            from.SendLocalizedMessage(1010087); // You cannot use that!
+                        else if (item.GetType() != m_Tool.GetType())
                             from.SendLocalizedMessage(1152274); // You may only combine runic tools of the same type.
                         else if (((BaseRunicTool)item).Resource != m_Tool.Resource)
                             from.SendLocalizedMessage(1152275); // You may only combine runic tools of the same material.

@@ -113,7 +113,7 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
 
-        public Item GetArtifact()
+        public virtual Item GetArtifact()
         {
             double random = Utility.RandomDouble();
             if (0.05 >= random)
@@ -145,7 +145,7 @@ namespace Server.Mobiles
             return artifact;
         }
 
-        public void GivePowerScrolls()
+        public virtual void GivePowerScrolls()
         {
             if (this.Map != Map.Felucca)
                 return;

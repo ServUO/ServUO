@@ -90,7 +90,7 @@ namespace Server.Engines.VeteranRewards
             if (!CanUse(from) || item == null)
                 return;
 
-            if (!from.InRange(this.Location, 2))
+            if (!CheckRange(from))
                 from.SendLocalizedMessage(3000268); // that is too far away.
             else if (!(item is TreasureMap || item is SOS || item is MessageInABottle))
                 from.SendLocalizedMessage(1153564); // That is not a treasure map or message in a bottle.
@@ -120,6 +120,20 @@ namespace Server.Engines.VeteranRewards
                     InvalidateProperties();
                 }
             }
+        }
+
+        private bool CheckRange(Mobile m)
+        {
+            if (Components == null || m.Map != this.Map)
+                return false;
+
+            foreach (AddonComponent c in Components)
+            {
+                if (m.InRange(c.Location, 2))
+                    return true;
+            }
+
+            return false;
         }
 
         public DaviesLockerAddon(Serial serial)
