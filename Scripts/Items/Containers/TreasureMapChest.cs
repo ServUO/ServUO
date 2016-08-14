@@ -172,10 +172,6 @@ namespace Server.Items
 
         public static void Fill(LockableContainer cont, int luck, int level, bool isSos, Map map)
         {
-			// Apply Felucca luck bonus
-			if (cont.Map == Map.Felucca)
-				luck += Mobiles.RandomItemGenerator.FeluccaLuckBonus;
-
             cont.Movable = false;
             cont.Locked = true;
             int numberItems;
