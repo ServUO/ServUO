@@ -26,18 +26,24 @@ namespace Server
             this.m_Points = points;
             this.m_QuestItem = questitem;
 
-            Rectangle2D rec = ItemBounds.Table[m_ItemID];
-            m_X = rec.X;
-            m_Y = rec.Y;
-            m_Width = rec.Width;
-            m_Height = rec.Height;
-            /*int mx, my;			
-            mx = my = 0;
-			
-            Item.Measure(Item.GetBitmap(this.m_ItemID), out this.m_X, out this.m_Y, out mx, out my);
-			
-            this.m_Width = mx - this.m_X;
-            this.m_Height = my - this.m_Y;*/
+            try
+            {
+                Rectangle2D rec = ItemBounds.Table[m_ItemID];
+                m_X = rec.X;
+                m_Y = rec.Y;
+                m_Width = rec.Width;
+                m_Height = rec.Height;
+            }
+            catch
+            {
+                int mx, my;
+                mx = my = 0;
+
+                Item.Measure(Item.GetBitmap(this.m_ItemID), out this.m_X, out this.m_Y, out mx, out my);
+
+                this.m_Width = mx - this.m_X;
+                this.m_Height = my - this.m_Y;
+            }
         }
 
         public Type Type
