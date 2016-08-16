@@ -634,7 +634,7 @@ namespace Server.Items
                 case 2:
                     {
                         this.m_Galleon = reader.ReadItem() as BaseGalleon;
-                        goto case 1;
+                        goto case 0;
                     }
                 case 1:
                     {
