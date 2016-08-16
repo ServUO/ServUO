@@ -39,11 +39,6 @@ namespace Server.Items
             VesperAle,
             WaxingDarkBrew,
             WhiteRoseZinfandel,
-            //Customs
-            AlexandriasPaleAle,
-            CEOsTurboCider,
-            DextersFunkyStout,
-            NicholasEggnog,
         }
 
         [Constructable]
@@ -84,10 +79,6 @@ namespace Server.Items
                 case SmugglersLiquorType.VesperAle: return BeverageType.Ale;                   
                 case SmugglersLiquorType.WaxingDarkBrew: return BeverageType.Ale;                    
                 case SmugglersLiquorType.WhiteRoseZinfandel: return BeverageType.Wine;                   
-                case SmugglersLiquorType.AlexandriasPaleAle: return BeverageType.Ale;                   
-                case SmugglersLiquorType.CEOsTurboCider: return BeverageType.Cider;                   
-                case SmugglersLiquorType.DextersFunkyStout: return BeverageType.Cider;                    
-                case SmugglersLiquorType.NicholasEggnog: return BeverageType.Cider;   
             }
         }
 
@@ -211,37 +202,13 @@ namespace Server.Items
                     Hue = 516; //Confirmed
                     m_Label = 1150021;
                     break;
-                case SmugglersLiquorType.AlexandriasPaleAle:
-                    id = 2459;
-                    Hue = 1501;
-                    m_Label = 0;
-                    Name = "Alexandria's Pale Ale";
-                    break;
-                case SmugglersLiquorType.CEOsTurboCider:
-                    id = 2504;
-                    Hue = 1929;
-                    m_Label = 0;
-                    Name = "CEO's Turbo Cider";
-                    break;
-                case SmugglersLiquorType.DextersFunkyStout:
-                    id = 2459;
-                    Hue = 2956;
-                    m_Label = 0;
-                    Name = "Dexter's Funky Stout";
-                    break;
-                case SmugglersLiquorType.NicholasEggnog:
-                    id = 2504;
-                    Hue = 1922;
-                    m_Label = 0;
-                    Name = "Nicholas' Nocturnal Eggnog";
-                    break;
             }
             return id;
         }
 
         public static Item GetRandom()
         {
-            int pick = Utility.Random(26);
+            int pick = Utility.Random(22);
 
             return new SmugglersLiquor((SmugglersLiquorType)pick) as Item;
         }
@@ -254,7 +221,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
             writer.Write((int)m_Type);
         }
 
@@ -262,7 +229,21 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            m_Type = (SmugglersLiquorType)reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    m_Type = (SmugglersLiquorType)reader.ReadInt();
+                    break;
+                case 0:
+                    int type = reader.ReadInt();
+
+                    if (type > (int)SmugglersLiquorType.WhiteRoseZinfandel)
+                        m_Type = SmugglersLiquorType.WhiteRoseZinfandel;
+                    else
+                        m_Type = (SmugglersLiquorType)type;
+                    break;
+            }
         }
     }
 }

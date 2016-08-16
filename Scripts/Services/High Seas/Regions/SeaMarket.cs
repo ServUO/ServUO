@@ -112,7 +112,7 @@ namespace Server.Regions
 
         public static void TryPirateBlab(Mobile from, Mobile npc)
         {
-            if (m_PirateBlabTable.ContainsKey(from) && m_PirateBlabTable[from] > DateTime.Now || BountyQuestSpawner.Bounties.Count <= 0)
+            if (m_PirateBlabTable.ContainsKey(from) && m_PirateBlabTable[from] > DateTime.UtcNow || BountyQuestSpawner.Bounties.Count <= 0)
                 return;
 
             //Make of list of bounties on their map
@@ -157,7 +157,7 @@ namespace Server.Regions
                 int cliloc = Utility.RandomMinMax(1149856, 1149865);
                 npc.SayTo(from, cliloc, combine);
 
-                m_PirateBlabTable[from] = DateTime.Now + BlabDuration;
+                m_PirateBlabTable[from] = DateTime.UtcNow + BlabDuration;
             }
         }
 
@@ -296,13 +296,13 @@ namespace Server.Regions
 
                 if (boat == null || !boats.Contains(boat) || boat.Deleted)
                     toRemove.Add(boat);
-                else if (DateTime.Now >= moveBy && KickBoat(boat))
+                else if (DateTime.UtcNow >= moveBy && KickBoat(boat))
                     toRemove.Add(boat);
                 else
                 {
                     if (boat.Owner != null && boat.Owner.NetState != null)
                     {
-                        TimeSpan ts = moveBy - DateTime.Now;
+                        TimeSpan ts = moveBy - DateTime.UtcNow;
 
                         if ((int)ts.TotalMinutes < 6)
                         {
@@ -328,7 +328,7 @@ namespace Server.Regions
             if (m_BoatTable.ContainsKey(boat))
                 return;
 
-            m_BoatTable.Add(boat, DateTime.Now + KickDuration);
+            m_BoatTable.Add(boat, DateTime.UtcNow + KickDuration);
 
             if (boat.Owner != null && boat.Owner.NetState != null)
                 boat.Owner.SendMessage("You can only dock your boat here for {0} minutes.", (int)KickDuration.TotalMinutes);

@@ -160,7 +160,7 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (!IsCaught || m_NextTalk > DateTime.Now)
+            if (!IsCaught || m_NextTalk > DateTime.UtcNow)
                 return;
 
             IPooledEnumerable eable = this.GetMobilesInRange(7);
@@ -178,7 +178,7 @@ namespace Server.Mobiles
         public void OnTalk()
         {
             Say(Utility.RandomMinMax(1149701, 1149720));
-            m_NextTalk = DateTime.Now + TimeSpan.FromMinutes(1);
+            m_NextTalk = DateTime.UtcNow + TimeSpan.FromMinutes(1);
         }
 
         #region Quest Stuff
@@ -325,7 +325,7 @@ namespace Server.Mobiles
             if (IsCaught)
                 Frozen = true;
 
-            m_NextTalk = DateTime.Now;
+            m_NextTalk = DateTime.UtcNow;
         }
     }
 }

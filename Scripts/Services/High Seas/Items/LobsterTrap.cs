@@ -275,7 +275,7 @@ namespace Server.Items
                     RareCrabAndLobster fish = (RareCrabAndLobster)item;
 
                     fish.Fisher = m_Owner;
-                    fish.DateCaught = DateTime.Now;
+                    fish.DateCaught = DateTime.UtcNow;
                     fish.Weight = Utility.RandomMinMax(10, 200);
                     fish.Stackable = false;
                 }

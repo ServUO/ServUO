@@ -47,7 +47,7 @@ namespace Server.Mobiles
         public BaseSeaChampion(Mobile fisher, AIType ai, FightMode fm)
             : base(ai, fm)
         {
-            m_NextBoatDamage = DateTime.Now;
+            m_NextBoatDamage = DateTime.UtcNow;
             m_InDamageMode = false;
             m_Fisher = fisher;
 
@@ -61,7 +61,7 @@ namespace Server.Mobiles
             if (m_InDamageMode)
                 TryDamageBoat();
 
-            else if (CanDamageBoats && DateTime.Now >= NextBoatDamage)
+            else if (CanDamageBoats && DateTime.UtcNow >= NextBoatDamage)
                 m_InDamageMode = true;
         }
 
@@ -181,7 +181,7 @@ namespace Server.Mobiles
                         if (BaseBoat.FindBoatAt(new Point2D(x, y), this.Map) == boat)
                         {
                             DoDamageBoat(boat as BaseGalleon);
-                            m_NextBoatDamage = DateTime.Now + BoatDamageCooldown;
+                            m_NextBoatDamage = DateTime.UtcNow + BoatDamageCooldown;
                             m_InDamageMode = false;
                             return;
                         }
@@ -275,7 +275,7 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            m_NextBoatDamage = DateTime.Now;
+            m_NextBoatDamage = DateTime.UtcNow;
             m_DamageEntries = new Dictionary<Mobile, int>();
         }
     }

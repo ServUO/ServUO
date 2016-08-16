@@ -46,8 +46,8 @@ namespace Server.Mobiles
             Body = 1244;
             BaseSoundID = 353;
 
-            m_NextSpawn = DateTime.Now + SpawnRate;
-            m_NextTeleport = DateTime.Now + TeleportRate;
+            m_NextSpawn = DateTime.UtcNow + SpawnRate;
+            m_NextTeleport = DateTime.UtcNow + TeleportRate;
 
             CanSwim = true;
             CantWalk = true;
@@ -97,10 +97,10 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (m_NextSpawn < DateTime.Now && m_Tentacles.Count < SpawnMax)
+            if (m_NextSpawn < DateTime.UtcNow && m_Tentacles.Count < SpawnMax)
                 SpawnTentacle();
 
-            if (m_NextTeleport < DateTime.Now)
+            if (m_NextTeleport < DateTime.UtcNow)
                 DoTeleport();
         }
 
@@ -111,7 +111,7 @@ namespace Server.Mobiles
         {
             if (this.Combatant == null)
             {
-                m_NextTeleport = DateTime.Now + TeleportRate;
+                m_NextTeleport = DateTime.UtcNow + TeleportRate;
                 return;
             }
 
@@ -125,7 +125,7 @@ namespace Server.Mobiles
             DoAreaLightningAttack(Combatant);
 
             Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerStateCallback(FinishTeleport), new object[]{Combatant.Location,Combatant});
-            m_NextTeleport = DateTime.Now + TeleportRate;
+            m_NextTeleport = DateTime.UtcNow + TeleportRate;
         }
 
         public void FinishTeleport(object o)
@@ -460,7 +460,7 @@ namespace Server.Mobiles
         {
             if (this.Combatant == null)
             {
-                m_NextSpawn = DateTime.Now + SpawnRate;
+                m_NextSpawn = DateTime.UtcNow + SpawnRate;
                 return;
             }
 
@@ -523,7 +523,7 @@ namespace Server.Mobiles
                 }
             }
 
-            m_NextSpawn = DateTime.Now + SpawnRate;
+            m_NextSpawn = DateTime.UtcNow + SpawnRate;
         }
 
         public bool IsSeaTile(LandTile t)
@@ -673,7 +673,7 @@ namespace Server.Mobiles
                     m_Tentacles.Add(tent);
             }
 
-            m_NextSpawn = DateTime.Now;
+            m_NextSpawn = DateTime.UtcNow;
         }
     }
 

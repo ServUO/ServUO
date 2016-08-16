@@ -1041,8 +1041,8 @@ namespace Server.Multis
 
         public TimeSpan GetEndEmergencyRepairs()
         {
-            if (m_EmergencyRepairTimer != null && m_EmergencyRepairTimer.EndRepairs > DateTime.Now)
-                return m_EmergencyRepairTimer.EndRepairs - DateTime.Now;
+            if (m_EmergencyRepairTimer != null && m_EmergencyRepairTimer.EndRepairs > DateTime.UtcNow)
+                return m_EmergencyRepairTimer.EndRepairs - DateTime.UtcNow;
 
             return TimeSpan.Zero;
         }
@@ -1329,7 +1329,7 @@ namespace Server.Multis
                 : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
             {
                 m_Galleon = galleon;
-                m_EndRepairs = DateTime.Now + duration;
+                m_EndRepairs = DateTime.UtcNow + duration;
                 this.Start();
             }
 
@@ -1341,7 +1341,7 @@ namespace Server.Multis
                     return;
                 }
 
-                if (m_EndRepairs < DateTime.Now)
+                if (m_EndRepairs < DateTime.UtcNow)
                 {
                     m_Galleon.EndEmergencyRepairEffects();
                     this.Stop();

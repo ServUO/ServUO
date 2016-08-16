@@ -257,10 +257,10 @@ namespace Server.Mobiles
             {
                 if (!m_OnCourse)
                     ResumeCourse();
-                else if (m_OnCourse && !m_Galleon.IsMoving && m_ActionTime < DateTime.Now)
+                else if (m_OnCourse && !m_Galleon.IsMoving && m_ActionTime < DateTime.UtcNow)
                 {
                     ResumeCourseTimed(ResumeTime, true);
-                    m_ActionTime = DateTime.Now + ResumeTime;
+                    m_ActionTime = DateTime.UtcNow + ResumeTime;
                 }
                 return;
             }
@@ -275,7 +275,7 @@ namespace Server.Mobiles
             if (focusMob == null && m_TargetBoat == null)
                 return;
 
-            if (m_NextMoveCheck < DateTime.Now && !m_Galleon.Scuttled && !m_Blockade)
+            if (m_NextMoveCheck < DateTime.UtcNow && !m_Galleon.Scuttled && !m_Blockade)
             {
                 Point3D pnt = m_TargetBoat != null ? m_TargetBoat.Location : focusMob.Location;
 
@@ -354,13 +354,13 @@ namespace Server.Mobiles
             if (dir == Direction.West || dir == Direction.Left || dir == Direction.South)
             {
                 m_Galleon.Turn(-2 * flee, true);
-                m_NextMoveCheck = DateTime.Now + TimeSpan.FromSeconds(m_Galleon.TurnDelay);
+                m_NextMoveCheck = DateTime.UtcNow + TimeSpan.FromSeconds(m_Galleon.TurnDelay);
                 return;
             }
             else if (dir == Direction.East || dir == Direction.Down)
             {
                 m_Galleon.Turn(2 * flee, true);
-                m_NextMoveCheck = DateTime.Now + TimeSpan.FromSeconds(m_Galleon.TurnDelay);
+                m_NextMoveCheck = DateTime.UtcNow + TimeSpan.FromSeconds(m_Galleon.TurnDelay);
                 return;
             }
 
@@ -379,7 +379,7 @@ namespace Server.Mobiles
                 {
                     BaseCannon cannon = item as BaseCannon;
 
-                    if (m_ShootTable.ContainsKey(cannon) && m_ShootTable[cannon] > DateTime.Now)
+                    if (m_ShootTable.ContainsKey(cannon) && m_ShootTable[cannon] > DateTime.UtcNow)
                         continue;
 
                     Direction facing = cannon.GetFacing();
@@ -398,7 +398,7 @@ namespace Server.Mobiles
                         continue;
 
                     cannon.Shoot(this);
-                    m_ShootTable[cannon] = DateTime.Now + ShootFrequency + TimeSpan.FromSeconds(Utility.RandomMinMax(0, 3));
+                    m_ShootTable[cannon] = DateTime.UtcNow + ShootFrequency + TimeSpan.FromSeconds(Utility.RandomMinMax(0, 3));
                 }
             }
         }
@@ -568,8 +568,8 @@ namespace Server.Mobiles
             if (!m_Blockade)
                 ResumeCourseTimed(TimeSpan.FromSeconds(15), true);
 
-            m_NextMoveCheck = DateTime.Now;
-            m_NextCannonShot = DateTime.Now;
+            m_NextMoveCheck = DateTime.UtcNow;
+            m_NextCannonShot = DateTime.UtcNow;
         }
     }
 }

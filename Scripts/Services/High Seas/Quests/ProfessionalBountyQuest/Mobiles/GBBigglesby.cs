@@ -39,7 +39,7 @@ namespace Server.Mobiles
             AddItem(new LongPants());
             AddItem(new Boots());
 
-            m_NextSay = DateTime.Now;
+            m_NextSay = DateTime.UtcNow;
         }
 
         private int m_LastSay;
@@ -71,7 +71,7 @@ namespace Server.Mobiles
                 {
                     SayTo(pm, 1116751); //The ship you are captaining could not take on a pirate ship.  Bring a warship if you want this quest.
                 }
-                else if(m_NextSay < DateTime.Now)
+                else if(m_NextSay < DateTime.UtcNow)
                 {
                     if (m_LastSay == 0)
                     {
@@ -87,7 +87,7 @@ namespace Server.Mobiles
                         m_LastSay = 0;
                     }
 
-                    m_NextSay = DateTime.Now + TimeSpan.FromSeconds(5);
+                    m_NextSay = DateTime.UtcNow + TimeSpan.FromSeconds(5);
                 }
             }
         }
@@ -146,7 +146,7 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            m_NextSay = DateTime.Now;
+            m_NextSay = DateTime.UtcNow;
         }
     }
 }
