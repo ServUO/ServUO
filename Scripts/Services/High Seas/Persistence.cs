@@ -5,12 +5,13 @@ using Server.Mobiles;
 using Server.Regions;
 using Server.Commands;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Server.Items
 {
     public class HighSeasPersistance
     {
-        public const string FilePath = @"Saves\Highseas.bin";
+        public static string FilePath = Path.Combine("Saves", "Highseas.bin"); //@"Saves\\Highseas.bin";
         public static bool DefaultRestrictBoats = true;
 
         public static void Initialize()
@@ -49,6 +50,8 @@ namespace Server.Items
         private static HighSeasPersistance m_Instance;
         public static HighSeasPersistance Instance { get { return m_Instance; } }
 
+        public bool HighSeasActive { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public CharydbisSpawner CharydbisSpawner { get { return CharydbisSpawner.SpawnInstance; } set { } }
 
@@ -71,7 +74,14 @@ namespace Server.Items
                     foreach (PlayerFishingEntry entry in PlayerFishingEntry.FishingEntries.Values)
                         entry.Serialize(writer);
 
-                    CharydbisSpawner.SpawnInstance.Serialize(writer);
+                    if (CharydbisSpawner.SpawnInstance != null)
+                    {
+                        writer.Write(0);
+                        CharydbisSpawner.SpawnInstance.Serialize(writer);
+                    }
+                    else
+                        writer.Write(1);
+
                     ForgedPardon.Save(writer);
                 });
         }
@@ -89,8 +99,12 @@ namespace Server.Items
                     for (int i = 0; i < count; i++)
                         new PlayerFishingEntry(reader);
 
-                    CharydbisSpawner.SpawnInstance = new CharydbisSpawner();
-                    CharydbisSpawner.SpawnInstance.Deserialize(reader);
+                    if (reader.ReadInt() == 0)
+                    {
+                        CharydbisSpawner.SpawnInstance = new CharydbisSpawner();
+                        CharydbisSpawner.SpawnInstance.Deserialize(reader);
+                    }
+
                     ForgedPardon.Load(reader);
                 });
         }

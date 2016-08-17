@@ -324,12 +324,12 @@ namespace Server.Gumps
                 case CraftResource.Copper:
                 case CraftResource.SpinedLeather:
                 case CraftResource.AshWood:
-                    budget = 400; break;
+                    budget = 470; break;
                 case CraftResource.Bronze:
                 case CraftResource.Gold:
                 case CraftResource.HornedLeather:
                 case CraftResource.YewWood:
-                    budget = 550; break;
+                    budget = 600; break;
                 case CraftResource.Agapite:
                 case CraftResource.Verite: 
                     budget = 700; break;

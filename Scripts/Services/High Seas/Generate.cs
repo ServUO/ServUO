@@ -12,18 +12,31 @@ namespace Server.Items
         {
             if (Core.HS)
             {
-                if (CharydbisSpawner.SpawnInstance == null)
-                {
-                    CharydbisSpawner.GenerateCharydbisSpawner();
-                    BountyQuestSpawner.GenerateShipSpawner();
+                CommandSystem.Register("DecorateHS", AccessLevel.Administrator, GenerateDeco);
+                CommandSystem.Register("DeleteHS", AccessLevel.Administrator, DeleteHS);
 
-                    GenerateDeco();
-                }
+                CommandSystem.Register("CharydbisSpawner", AccessLevel.Administrator, Spawner);
             }
         }
 
-        public static void GenerateDeco()
+        public static void Spawner(CommandEventArgs e)
         {
+            if (CharydbisSpawner.SpawnInstance == null)
+                e.Mobile.SendMessage("Charydbis spawner does not exist.");
+            else
+                e.Mobile.SendGump(new Server.Gumps.PropertiesGump(e.Mobile, CharydbisSpawner.SpawnInstance));
+        }
+
+        public static void DeleteHS(CommandEventArgs e)
+        {
+            e.Mobile.SendMessage("You cant!");
+        }
+
+        public static void GenerateDeco(CommandEventArgs e)
+        {
+            CharydbisSpawner.GenerateCharydbisSpawner();
+            BountyQuestSpawner.GenerateShipSpawner();
+
             CorgulAltar altar;
 
             altar = new CorgulAltar();
@@ -56,8 +69,6 @@ namespace Server.Items
 
             sign = new LocalizedSign(3023, 1149820); //General Store
             sign.MoveToWorld(new Point3D(4543, 2317, -3), Map.Felucca);
-
-            Server.Regions.SeaMarketRegion.OnGenerate();
 
             XmlSpawner sp;
             string toSpawn = "FishMonger";
@@ -371,6 +382,29 @@ namespace Server.Items
             sp.HomeRange = 5;
             sp.MoveToWorld(new Point3D(4544, 2302, -1), Map.Felucca);
             sp.Respawn();
+
+            SeaMarketBuoy bouy1 = new SeaMarketBuoy();
+            SeaMarketBuoy bouy2 = new SeaMarketBuoy();
+            SeaMarketBuoy bouy3 = new SeaMarketBuoy();
+            SeaMarketBuoy bouy4 = new SeaMarketBuoy();
+            SeaMarketBuoy bouy5 = new SeaMarketBuoy();
+            SeaMarketBuoy bouy6 = new SeaMarketBuoy();
+            SeaMarketBuoy bouy7 = new SeaMarketBuoy();
+            SeaMarketBuoy bouy8 = new SeaMarketBuoy();
+
+            Rectangle2D bound = Server.Regions.SeaMarketRegion.Bounds[0];
+
+            bouy1.MoveToWorld(new Point3D(bound.X, bound.Y, -5), Map.Felucca);
+            bouy2.MoveToWorld(new Point3D(bound.X, bound.Y, -5), Map.Trammel);
+
+            bouy3.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y, -5), Map.Felucca);
+            bouy4.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y, -5), Map.Trammel);
+
+            bouy5.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y + bound.Height, -5), Map.Felucca);
+            bouy6.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y + bound.Height, -5), Map.Trammel);
+
+            bouy7.MoveToWorld(new Point3D(bound.X, bound.Y + bound.Height, -5), Map.Felucca);
+            bouy8.MoveToWorld(new Point3D(bound.X, bound.Y + bound.Height, -5), Map.Trammel);
 
             Console.WriteLine("High Seas Content generated.");
         }

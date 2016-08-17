@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Server.Commands;
 using Server.Engines.Quests;
 using Server.Spells;
+using System.Linq;
 
 namespace Server.Regions
 {
@@ -57,36 +58,11 @@ namespace Server.Regions
             }
         }
 
+        public static Rectangle2D[] Bounds { get { return m_Bounds; } }
         private static Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
             new Rectangle2D(4472, 2250, 200, 200),
         };
-
-        public static void OnGenerate()
-        {
-            SeaMarketBuoy bouy1 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy2 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy3 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy4 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy5 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy6 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy7 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy8 = new SeaMarketBuoy();
-
-            Rectangle2D bound = m_Bounds[0];
-
-            bouy1.MoveToWorld(new Point3D(bound.X, bound.Y, -5), Map.Felucca);
-            bouy2.MoveToWorld(new Point3D(bound.X, bound.Y, -5), Map.Trammel);
-
-            bouy3.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y, -5), Map.Felucca);
-            bouy4.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y, -5), Map.Trammel);
-
-            bouy5.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y + bound.Height, -5), Map.Felucca);
-            bouy6.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y + bound.Height, -5), Map.Trammel);
-
-            bouy7.MoveToWorld(new Point3D(bound.X, bound.Y + bound.Height, -5), Map.Felucca);
-            bouy8.MoveToWorld(new Point3D(bound.X, bound.Y + bound.Height, -5), Map.Trammel);
-        }
 
         public SeaMarketRegion(Map map)
             : base("Sea Market", map, Region.DefaultPriority, m_Bounds)
@@ -266,14 +242,8 @@ namespace Server.Regions
         {
             List<BaseBoat> list = new List<BaseBoat>();
 
-            foreach (Sector s in this.Sectors)
-            {
-                foreach (BaseMulti bm in s.Multis)
-                {
-                    if (bm is BaseBoat && !list.Contains(bm as BaseBoat) && bm.Map == this.Map)
-                        list.Add(bm as BaseBoat);
-                }
-            }
+            foreach (BaseBoat boat in this.GetEnumeratedMultis().OfType<BaseBoat>())
+                list.Add(boat);
 
             return list;
         }
@@ -321,6 +291,12 @@ namespace Server.Regions
 
             foreach (BaseBoat b in toRemove)
                 m_BoatTable.Remove(b);
+
+            toRemove.Clear();
+            toRemove.TrimExcess();
+
+            boats.Clear();
+            boats.TrimExcess();
         }
 
         public void AddToTable(BaseBoat boat)
@@ -377,7 +353,6 @@ namespace Server.Regions
                 : base(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1))
             {
                 m_Region = reg;
-                Priority = TimerPriority.OneMinute;
             }
 
             protected override void OnTick()

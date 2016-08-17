@@ -35,7 +35,7 @@ namespace Server.Items
             if (m_UsesRemaining <= 0 || !IsChildOf(from.Backpack))
                 base.OnDoubleClick(from);
 
-            if (CharydbisSpawner.SpawnInstance.TrySpawnCharybdis(from))
+            if (CharydbisSpawner.SpawnInstance != null && CharydbisSpawner.SpawnInstance.TrySpawnCharybdis(from))
                 UsesRemaining--;
         }
 
