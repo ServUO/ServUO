@@ -210,7 +210,7 @@ namespace Server.Engines.Harvest
                 }
 
                 #region High Seas Charydbis
-                if (tool is FishingPole && CharydbisSpawner.SpawnInstance != null && CharydbisSpawner.SpawnInstance.IsSummoned)
+                if (Core.HS && tool is FishingPole && CharydbisSpawner.SpawnInstance != null && CharydbisSpawner.SpawnInstance.IsSummoned)
                 {
                     if (pack == null)
                         return false;
@@ -350,7 +350,7 @@ namespace Server.Engines.Harvest
                         Item preLoot = null;
                         bool dredge = HasTypeHook(tool, HookType.Dredging);
 
-                        switch (Utility.Random(Core.ML ? 15 : 14))
+                        switch (Utility.Random(Core.HS ? 15 : 14))
                         {
                             case 0: // Body parts
                             case 1:

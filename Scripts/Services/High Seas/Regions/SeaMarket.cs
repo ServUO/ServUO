@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Server.Commands;
 using Server.Engines.Quests;
 using Server.Spells;
+using System.Linq;
 
 namespace Server.Regions
 {
@@ -57,36 +58,11 @@ namespace Server.Regions
             }
         }
 
+        public static Rectangle2D[] Bounds { get { return m_Bounds; } }
         private static Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
             new Rectangle2D(4472, 2250, 200, 200),
         };
-
-        public static void OnGenerate()
-        {
-            SeaMarketBuoy bouy1 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy2 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy3 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy4 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy5 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy6 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy7 = new SeaMarketBuoy();
-            SeaMarketBuoy bouy8 = new SeaMarketBuoy();
-
-            Rectangle2D bound = m_Bounds[0];
-
-            bouy1.MoveToWorld(new Point3D(bound.X, bound.Y, -5), Map.Felucca);
-            bouy2.MoveToWorld(new Point3D(bound.X, bound.Y, -5), Map.Trammel);
-
-            bouy3.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y, -5), Map.Felucca);
-            bouy4.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y, -5), Map.Trammel);
-
-            bouy5.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y + bound.Height, -5), Map.Felucca);
-            bouy6.MoveToWorld(new Point3D(bound.X + bound.Width, bound.Y + bound.Height, -5), Map.Trammel);
-
-            bouy7.MoveToWorld(new Point3D(bound.X, bound.Y + bound.Height, -5), Map.Felucca);
-            bouy8.MoveToWorld(new Point3D(bound.X, bound.Y + bound.Height, -5), Map.Trammel);
-        }
 
         public SeaMarketRegion(Map map)
             : base("Sea Market", map, Region.DefaultPriority, m_Bounds)
@@ -112,7 +88,7 @@ namespace Server.Regions
 
         public static void TryPirateBlab(Mobile from, Mobile npc)
         {
-            if (m_PirateBlabTable.ContainsKey(from) && m_PirateBlabTable[from] > DateTime.Now || BountyQuestSpawner.Bounties.Count <= 0)
+            if (m_PirateBlabTable.ContainsKey(from) && m_PirateBlabTable[from] > DateTime.UtcNow || BountyQuestSpawner.Bounties.Count <= 0)
                 return;
 
             //Make of list of bounties on their map
@@ -157,7 +133,7 @@ namespace Server.Regions
                 int cliloc = Utility.RandomMinMax(1149856, 1149865);
                 npc.SayTo(from, cliloc, combine);
 
-                m_PirateBlabTable[from] = DateTime.Now + BlabDuration;
+                m_PirateBlabTable[from] = DateTime.UtcNow + BlabDuration;
             }
         }
 
@@ -266,14 +242,8 @@ namespace Server.Regions
         {
             List<BaseBoat> list = new List<BaseBoat>();
 
-            foreach (Sector s in this.Sectors)
-            {
-                foreach (BaseMulti bm in s.Multis)
-                {
-                    if (bm is BaseBoat && !list.Contains(bm as BaseBoat) && bm.Map == this.Map)
-                        list.Add(bm as BaseBoat);
-                }
-            }
+            foreach (BaseBoat boat in this.GetEnumeratedMultis().OfType<BaseBoat>())
+                list.Add(boat);
 
             return list;
         }
@@ -296,13 +266,13 @@ namespace Server.Regions
 
                 if (boat == null || !boats.Contains(boat) || boat.Deleted)
                     toRemove.Add(boat);
-                else if (DateTime.Now >= moveBy && KickBoat(boat))
+                else if (DateTime.UtcNow >= moveBy && KickBoat(boat))
                     toRemove.Add(boat);
                 else
                 {
                     if (boat.Owner != null && boat.Owner.NetState != null)
                     {
-                        TimeSpan ts = moveBy - DateTime.Now;
+                        TimeSpan ts = moveBy - DateTime.UtcNow;
 
                         if ((int)ts.TotalMinutes < 6)
                         {
@@ -321,6 +291,12 @@ namespace Server.Regions
 
             foreach (BaseBoat b in toRemove)
                 m_BoatTable.Remove(b);
+
+            toRemove.Clear();
+            toRemove.TrimExcess();
+
+            boats.Clear();
+            boats.TrimExcess();
         }
 
         public void AddToTable(BaseBoat boat)
@@ -328,7 +304,7 @@ namespace Server.Regions
             if (m_BoatTable.ContainsKey(boat))
                 return;
 
-            m_BoatTable.Add(boat, DateTime.Now + KickDuration);
+            m_BoatTable.Add(boat, DateTime.UtcNow + KickDuration);
 
             if (boat.Owner != null && boat.Owner.NetState != null)
                 boat.Owner.SendMessage("You can only dock your boat here for {0} minutes.", (int)KickDuration.TotalMinutes);
@@ -377,7 +353,6 @@ namespace Server.Regions
                 : base(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1))
             {
                 m_Region = reg;
-                Priority = TimerPriority.OneMinute;
             }
 
             protected override void OnTick()

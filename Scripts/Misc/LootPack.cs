@@ -680,7 +680,7 @@ namespace Server
 					if (Core.AOS)
 					{
                         // Try to generate a new random item based on the creature killed
-                        if (from is BaseCreature)
+                        if (Core.HS && RandomItemGenerator.Enabled && from is BaseCreature)
                         {
                             if (RandomItemGenerator.GenerateRandomItem(item, ((BaseCreature)from).LastKiller, (BaseCreature)from))
                                 return item;

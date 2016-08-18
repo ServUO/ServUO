@@ -696,7 +696,6 @@ namespace Server.Engines.Quests
                         hold.DropItem(PermanentBoatPaint.DropRandom());
                 }
 
-                //[Borno] Pub 81 Armor Reinement Drops
                 RefinementComponent.Roll(hold, 3, 0.25);
             }
         }

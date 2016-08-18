@@ -39,13 +39,15 @@ namespace Server.Items
             BaseBoat boat = BaseBoat.FindBoatAt(from, from.Map);
             Item mount = from.FindItemOnLayer(Layer.Mount);
 
-            if (!from.InRange(this.Location, 3))
+            if (boat != null && Pilot == from)
+                boat.RemovePilot(from);
+            else if (!from.InRange(this.Location, 3))
                 from.SendLocalizedMessage(500295); //You are too far away to do that.
             else if (boat == null && boat != m_Galleon)
                 from.SendLocalizedMessage(1116724); //You cannot pilot a ship unless you are aboard it!
             else if (m_Galleon.GetSecurityLevel(from) < SecurityLevel.Crewman)
                 from.SendLocalizedMessage(1116726); //This is not your ship!
-            else if (Pilot != null && Pilot != from && m_Galleon.GetSecurityLevel(from) < SecurityLevel.Officer)
+            else if (Pilot != null && Pilot != from)
                 from.SendMessage("Someone is already piloting this vessle!");
             else if (from.Flying)
                 from.SendLocalizedMessage(1116615); // You cannot pilot a ship while flying!
@@ -53,8 +55,6 @@ namespace Server.Items
                 from.SendLocalizedMessage(1010097); //You cannot use this while mounted or flying. 
             else if (Pilot == null && m_Galleon.Scuttled)
                 from.SendLocalizedMessage(1116725); //This ship is too damaged to sail!
-            else if (Pilot != null)
-                boat.RemovePilot(from);
             else
                 boat.LockPilot(from);
         }

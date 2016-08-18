@@ -160,7 +160,7 @@ namespace Server.Items
 
         public static bool HasBeenChecked(HarvestBank bank)
         {
-            if (m_BankTable.ContainsKey(bank) && m_BankTable[bank] < DateTime.Now)
+            if (m_BankTable.ContainsKey(bank) && m_BankTable[bank] < DateTime.UtcNow)
                 m_BankTable.Remove(bank);
 
             return m_BankTable.ContainsKey(bank);
@@ -173,7 +173,7 @@ namespace Server.Items
             if (bank == null)
                 return;
 
-            m_BankTable[bank] = DateTime.Now + TimeSpan.FromMinutes(5);
+            m_BankTable[bank] = DateTime.UtcNow + TimeSpan.FromMinutes(5);
         }
 
         public void DefragBanks()
@@ -181,7 +181,7 @@ namespace Server.Items
             List<HarvestBank> toRemove = new List<HarvestBank>();
 
             foreach (KeyValuePair<HarvestBank, DateTime> kvp in m_BankTable)
-                if (kvp.Value < DateTime.Now)
+                if (kvp.Value < DateTime.UtcNow)
                     toRemove.Add(kvp.Key);
 
             foreach (HarvestBank bank in toRemove)

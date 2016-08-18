@@ -49,8 +49,8 @@ namespace Server.Mobiles
             Body = 0x4C;
             Hue = 2076;
 
-            m_NextDismount = DateTime.Now;
-            m_NextArea = DateTime.Now;
+            m_NextDismount = DateTime.UtcNow;
+            m_NextArea = DateTime.UtcNow;
             m_HasDone2ndSpawn = false;
 
             SetStr(800, 900);
@@ -245,10 +245,10 @@ namespace Server.Mobiles
             if (Combatant == null)
                 return;
 
-            if (DateTime.Now > m_NextDismount)
+            if (DateTime.UtcNow > m_NextDismount)
                 DoDismount();
 
-            if (DateTime.Now > m_NextArea)
+            if (DateTime.UtcNow > m_NextArea)
                 DoAreaAttack();
 
             if (!m_HasDone2ndSpawn && Hits < HitsMax / 2)
@@ -301,7 +301,7 @@ namespace Server.Mobiles
             }
 
 
-            m_NextDismount = DateTime.Now + TimeSpan.FromMinutes(2);
+            m_NextDismount = DateTime.UtcNow + TimeSpan.FromMinutes(2);
         }
 
         public void DoAreaAttack()
@@ -318,7 +318,7 @@ namespace Server.Mobiles
             }
             eable.Free();
 
-            m_NextArea = DateTime.Now + TimeSpan.FromSeconds(Utility.RandomMinMax(60, 180));
+            m_NextArea = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(60, 180));
         }
 
         public void DoDamage_Callback(object o)
@@ -434,8 +434,8 @@ namespace Server.Mobiles
                     break;
             }
 
-            m_NextDismount = DateTime.Now;
-            m_NextArea = DateTime.Now;
+            m_NextDismount = DateTime.UtcNow;
+            m_NextArea = DateTime.UtcNow;
         }
     }
 }
