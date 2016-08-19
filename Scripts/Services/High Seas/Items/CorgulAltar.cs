@@ -105,9 +105,8 @@ namespace Server.Items
 
         public override void Delete()
         {
-            //base.Delete(); Cannot delete, set inactive only
-
             Active = false;
+            Reset();
 
             if (m_BossRegion != null)
             {
@@ -115,7 +114,13 @@ namespace Server.Items
                 m_BossRegion = null;
             }
 
-            Reset();
+            if (m_WarpRegion != null)
+            {
+                m_WarpRegion.Unregister();
+                m_WarpRegion = null;
+            }
+
+            base.Delete();
         }
 
         public override void OnMapChange()
