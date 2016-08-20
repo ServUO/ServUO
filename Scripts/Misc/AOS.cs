@@ -360,11 +360,12 @@ namespace Server
                 case 11: return AosAttributes.GetValue(from, AosAttribute.SpellDamage);
                 case 12: return Math.Min(6, AosAttributes.GetValue(from, AosAttribute.CastRecovery));
                 case 13:
+                    int max = from.Skills[SkillName.Chivalry].Value < 70.0 ? 4 : 2;
                     if (ProtectionSpell.Registry.ContainsKey(from) /*|| EodonianPotion.IsUnderEffects(m, PotionEffect.Urali)*/)
                     {
-                        return Math.Min(0, AosAttributes.GetValue(from, AosAttribute.CastSpeed) - 2);
+                        return Math.Min(max - 2, AosAttributes.GetValue(from, AosAttribute.CastSpeed) - 2);
                     }
-                    return Math.Min(from.Skills[SkillName.Chivalry].Value < 70.0 ? 4 : 2, AosAttributes.GetValue(from, AosAttribute.CastSpeed));
+                    return Math.Min(max, AosAttributes.GetValue(from, AosAttribute.CastSpeed));
                 case 14: return Math.Min(40, AosAttributes.GetValue(from, AosAttribute.LowerManaCost));
 				default: return 0;
 			}

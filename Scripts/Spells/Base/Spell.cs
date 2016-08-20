@@ -939,7 +939,7 @@ namespace Server.Spells
 
             if (ProtectionSpell.Registry.ContainsKey(m_Caster) /*|| EodonianPotion.IsUnderEffects(m, PotionEffect.Urali)*/)
             {
-                fc = Math.Min(0, fc - 2);
+                fc = Math.Min(fcMax - 2, fc - 2);
             }
 
 			TimeSpan baseDelay = CastDelayBase;
