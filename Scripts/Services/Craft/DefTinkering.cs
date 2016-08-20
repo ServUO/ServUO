@@ -222,7 +222,7 @@ namespace Server.Engines.Craft
                 SetNeededExpansion(index, Expansion.HS);
 
                 index = AddCraft(typeof(Swab), 1044042, 1095840, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
-                AddRes(index, typeof(Log), 1044041, 4, 1044253);
+                AddRes(index, typeof(Board), 1044041, 4, 1044253);
                 SetNeededExpansion(index, Expansion.HS);
             }
             #endregion

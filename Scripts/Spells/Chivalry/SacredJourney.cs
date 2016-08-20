@@ -74,7 +74,7 @@ namespace Server.Spells.Chivalry
             if (this.m_Entry == null)
                 this.Caster.Target = new InternalTarget(this);
             else
-                this.Effect(this.m_Entry.Location, this.m_Entry.Map, true);
+                this.Effect(this.m_Entry.Location, this.m_Entry.Map, true, m_Entry.Galleon != null);
         }
 
         public override bool CheckCast()

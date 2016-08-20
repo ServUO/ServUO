@@ -379,6 +379,9 @@ namespace Server.Engines.Harvest
         #region High Seas
         public override bool SpecialHarvest(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc)
         {
+            if (!Core.HS)
+                return base.SpecialHarvest(from, tool, def, map, loc);
+
             HarvestBank bank = def.GetBank(map, loc.X, loc.Y);
 
             if (bank == null)

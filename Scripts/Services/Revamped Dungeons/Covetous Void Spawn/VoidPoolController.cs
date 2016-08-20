@@ -525,7 +525,7 @@ namespace Server.Engines.VoidPool
 		{
 			if(OnGoing)
 				EndInvasion();
-				
+
 			if(Region != null)
 			{
 				Region.Unregister();
@@ -538,13 +538,13 @@ namespace Server.Engines.VoidPool
 				Timer = null;
 			}
 
-            ClearSpawn();
-
             foreach (var wp in WaypointsA.Where(w => w != null && !w.Deleted))
                 wp.Delete();
 
             foreach (var wp in WaypointsB.Where(w => w != null && !w.Deleted))
                 wp.Delete();
+
+            base.Delete();
 		}
 
 		public VoidPoolController(Serial serial) : base(serial)

@@ -536,6 +536,23 @@ namespace Server.Engines.Harvest
             if (item is BigFish || item is WoodenChest || item is MetalGoldenChest)
                 placeAtFeet = true;
 
+            #region High Seas
+            if (item is RareFish)
+            {
+                RareFish fish = (RareFish)item;
+
+                if (FishInfo.IsRareFish(fish.GetType()))
+                {
+                    fish.Fisher = m;
+                    fish.DateCaught = DateTime.Now;
+                    //fish.Weight = Utility.RandomMinMax(10, 200);
+                    fish.Stackable = false;
+
+                    fish.Weight = Math.Max(1, 200 - (int)Math.Sqrt(Utility.RandomMinMax(0, 40000)));
+                }
+            }
+            #endregion
+
             return base.Give(m, item, placeAtFeet);
         }
 

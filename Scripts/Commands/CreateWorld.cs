@@ -149,7 +149,7 @@ namespace Server.Commands
 							case CreateWorld.GumpType.Delete:
 								if (!String.IsNullOrEmpty(entry.DeleteCommand))
 								{
-									from.Say("Recreating " + entry.Name);
+									from.Say("Deleting " + entry.Name);
 									CommandSystem.Handle(from, prefix + entry.DeleteCommand);
 								}
 								break;

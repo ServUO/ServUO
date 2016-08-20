@@ -27,7 +27,7 @@ namespace Server.Mobiles
             this.SetDex(128, 139);
             this.SetInt(537, 664);
 
-            this.SetHits(170000);
+            this.SetHits(50000);
 
             this.SetDamage(21, 28);
 
