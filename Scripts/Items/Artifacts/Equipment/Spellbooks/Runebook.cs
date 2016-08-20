@@ -583,7 +583,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Location;
+                if (m_Galleon != null && !m_Galleon.Deleted)
+                {
+                    return m_Galleon.GetMarkedLocation();
+                }
+
+                return m_Location;
             }
         }
 
@@ -591,7 +596,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Map;
+                if (m_Galleon != null && !m_Galleon.Deleted && m_Galleon.Map != Map.Internal && m_Galleon.Map != null)
+                {
+                    return m_Galleon.Map;
+                }
+
+                return m_Map;
             }
         }
 

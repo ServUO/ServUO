@@ -867,22 +867,18 @@ namespace Server.Multis
                 from.SendLocalizedMessage(502493); // You appear to be dead.
             else if (result == DryDockResult.NoKey)
                 from.SendLocalizedMessage(502494); // You must have a key to the ship to dock the boat.
-            //else if (result == DryDockResult.NotAnchored)
-            //    from.SendLocalizedMessage(1010570); // You must lower the anchor to dock the boat.
             else if (result == DryDockResult.Mobiles)
                 from.SendLocalizedMessage(502495); // You cannot dock the ship with beings on board!
-            else if (result == DryDockResult.Items)
+            else if (result == DryDockResult.Items || result == DryDockResult.Addons)
                 from.SendLocalizedMessage(502496); // You cannot dock the ship with a cluttered deck.
             else if (result == DryDockResult.Hold)
                 from.SendLocalizedMessage(502497); // Make sure your hold is empty, and try again!
             else if (result == DryDockResult.NotEnoughGold)
                 from.SendLocalizedMessage(1116506, DockMaster.DryDockAmount.ToString()); //The price is ~1_price~ and I will accept nothing less!
             else if (result == DryDockResult.Damaged)
-                from.SendMessage("You must repair your ship before you can dry dock it!");
-            else if (result == DryDockResult.Addons)
-                from.SendMessage("You must re-deed any addons before you can dock your ship!");
+                from.SendLocalizedMessage(1116324); // The ship must be fully repaired before it can be docked!
             else if (result == DryDockResult.Cannon)
-                from.SendLocalizedMessage(1116322);  //The ship cannon must be fully repaired before it can be dismantled.
+                from.SendLocalizedMessage(1116323);  //You cannot dock the ship with loaded weapons on deck!
             else if (result == DryDockResult.Valid)
                 from.SendGump(new ConfirmDryDockGump(from, this, dockmaster));
         }
@@ -902,16 +898,16 @@ namespace Server.Multis
             //	from.SendLocalizedMessage( 1010570 ); // You must lower the anchor to dock the boat.
             else if (result == DryDockResult.Mobiles)
                 from.SendLocalizedMessage(502495); // You cannot dock the ship with beings on board!
-            else if (result == DryDockResult.Items)
+            else if (result == DryDockResult.Items || result == DryDockResult.Addons)
                 from.SendLocalizedMessage(502496); // You cannot dock the ship with a cluttered deck.
             else if (result == DryDockResult.Hold)
                 from.SendLocalizedMessage(502497); // Make sure your hold is empty, and try again!
             else if (result == DryDockResult.NotEnoughGold)
                 from.SendLocalizedMessage(1116506, DockMaster.DryDockAmount.ToString()); //The price is ~1_price~ and I will accept nothing less!
             else if (result == DryDockResult.Damaged)
-                from.SendMessage("You must repair your ship before you can dry dock it!");
-            else if (result == DryDockResult.Addons)
-                from.SendMessage("You must re-deed any addons before you can dock your ship!");
+                from.SendLocalizedMessage(1116324); // The ship must be fully repaired before it can be docked!
+            else if (result == DryDockResult.Cannon)
+                from.SendLocalizedMessage(1116323);  //You cannot dock the ship with loaded weapons on deck!
             else if (result == DryDockResult.Cannon)
                 from.SendLocalizedMessage(1116322);  //The ship cannon must be fully repaired before it can be dismantled.
 
@@ -932,8 +928,15 @@ namespace Server.Multis
                 RemoveKeys(from);
 
             from.AddToBackpack(boat);
+
+            OnDryDock();
+
             this.Refresh();
             this.Internalize();
+        }
+
+        protected virtual void OnDryDock()
+        {
         }
 
         public void SetName(SpeechEventArgs e)

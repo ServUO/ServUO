@@ -65,7 +65,7 @@ namespace Server.Items
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)0);
+                    writer.Write((int)1);
 
                     Server.Regions.SeaMarketRegion.Save(writer);
 
@@ -99,7 +99,7 @@ namespace Server.Items
                     for (int i = 0; i < count; i++)
                         new PlayerFishingEntry(reader);
 
-                    if (reader.ReadInt() == 0)
+                    if (version == 0 || reader.ReadInt() == 0)
                     {
                         CharydbisSpawner.SpawnInstance = new CharydbisSpawner();
                         CharydbisSpawner.SpawnInstance.Deserialize(reader);

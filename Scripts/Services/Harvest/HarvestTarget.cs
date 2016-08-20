@@ -69,6 +69,14 @@ namespace Server.Engines.Harvest
                 this.DestroyFurniture(from, (Item)targeted);
             else if (this.m_System is Mining && targeted is TreasureMap)
                 ((TreasureMap)targeted).OnBeginDig(from);
+            #region High Seas
+            else if (m_System is Mining && targeted is NiterDeposit)
+                ((NiterDeposit)targeted).OnMine(from, m_Tool);
+            else if (m_System is Lumberjacking && targeted is CrackedLavaRockEast)
+                ((CrackedLavaRockEast)targeted).OnCrack(from);
+            else if (m_System is Lumberjacking && targeted is CrackedLavaRockSouth)
+                ((CrackedLavaRockSouth)targeted).OnCrack(from);
+            #endregion
 			else
 			{
 				// If we got here and we're lumberjacking then we didn't target something that cna be done from the pack

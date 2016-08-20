@@ -61,6 +61,8 @@ namespace Server.Multis
         private List<Item> m_Addons = new List<Item>();
         private List<Item> m_AddonTiles = new List<Item>();
 
+        private Dictionary<Item, Item> _InternalCannon;
+
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile GalleonPilot { get { return m_GalleonPilot; } }
 
@@ -243,6 +245,21 @@ namespace Server.Multis
                 case Direction.West:
                     m_GalleonPilot.Location = new Point3D(X + TillerManDistance, Y, Z + ZSurface);
                     break;
+            }
+
+            if (_InternalCannon != null)
+            {
+                foreach (KeyValuePair<Item, Item> kvp in _InternalCannon)
+                {
+                    Point3D p = new Point3D(kvp.Value.X, kvp.Value.Y, kvp.Value.Z + TileData.ItemTable[kvp.Value.ItemID & TileData.MaxItemValue].CalcHeight);
+
+                    kvp.Key.MoveToWorld(p, kvp.Value.Map);
+                }
+
+                UpdateCannonIDs();
+
+                _InternalCannon.Clear();
+                _InternalCannon = null;
             }
         }
 
@@ -596,7 +613,9 @@ namespace Server.Multis
             {
                 if (cannon.X == pnt.X && cannon.Y == pnt.Y)
                 {
-                    from.SendLocalizedMessage(1116075); //There is already a weapon deployed here.
+                    if(from != null)
+                        from.SendLocalizedMessage(1116075); //There is already a weapon deployed here.
+
                     return false;
                 }
             }
@@ -614,7 +633,9 @@ namespace Server.Multis
                     {
                         if (!mob.Hidden && mob.AccessLevel == AccessLevel.Player)
                         {
-                            from.SendMessage("The weapon pad must be clear of obstructions to place a cannon.");
+                            if (from != null)
+                                from.SendMessage("The weapon pad must be clear of obstructions to place a cannon.");
+
                             eable.Free();
                             return false;
                         }
@@ -625,7 +646,9 @@ namespace Server.Multis
                 }
             }
 
-            from.SendLocalizedMessage(1116626); //You must use this on a ship weapon pad.
+            if (from != null)
+                from.SendLocalizedMessage(1116626); //You must use this on a ship weapon pad.
+
             return false;
         }
 
@@ -808,12 +831,26 @@ namespace Server.Multis
                     if (cannon == null)
                         continue;
 
-                    if (cannon.DamageState != DamageLevel.Pristine)
+                    if (cannon.AmmoType != AmmoType.Empty)
                         return DryDockResult.Cannon;
                 }
             }
 
             return base.CheckDryDock(from, dockmaster);
+        }
+
+        protected override void OnDryDock()
+        {
+            if (_InternalCannon == null)
+                _InternalCannon = new Dictionary<Item, Item>();
+
+            m_Cannons.ForEach(c =>
+                {
+                    Item pad = m_CannonTiles.FirstOrDefault(p => p.X == c.X && p.Y == c.Y);
+
+                    if (pad != null)
+                        _InternalCannon[c] = pad;
+                });
         }
 
         public override void SetFacingComponents(Direction newDirection, Direction oldDirection, bool ignoreLastDirection)
