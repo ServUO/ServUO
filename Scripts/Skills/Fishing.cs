@@ -85,7 +85,7 @@ namespace Server.Engines.Harvest
 
             res = new HarvestResource[]
             {
-                new HarvestResource(00.0, 00.0, 100.0, 1043297, typeof(Fish))
+                new HarvestResource(00.0, 00.0, 120.0, 1043297, typeof(Fish))
             };
 
             veins = new HarvestVein[]
@@ -100,8 +100,8 @@ namespace Server.Engines.Harvest
             {
                 fish.BonusResources = new BonusHarvestResource[]
                 {
-                    	new BonusHarvestResource(0, 99.4, null, null), //set to same chance as mining ml gems
-			new BonusHarvestResource(80.0, .3, 1113764, typeof(DelicateScales)),
+                    new BonusHarvestResource(0, 99.4, null, null), //set to same chance as mining ml gems
+			        new BonusHarvestResource(80.0, .3, 1113764, typeof(DelicateScales)),
                 	new BonusHarvestResource(80.0, .3, 1072597, typeof(WhitePearl))
                 };
             }
@@ -334,6 +334,10 @@ namespace Server.Engines.Harvest
             {
                 return new MessageInABottle(from.Map == Map.Felucca ? Map.Felucca : Map.Trammel);
             }
+            else if (type == typeof(WhitePearl))
+            {
+                return new WhitePearl();
+            }
 
             Container pack = from.Backpack;
 
@@ -545,7 +549,6 @@ namespace Server.Engines.Harvest
                 {
                     fish.Fisher = m;
                     fish.DateCaught = DateTime.Now;
-                    //fish.Weight = Utility.RandomMinMax(10, 200);
                     fish.Stackable = false;
 
                     fish.Weight = Math.Max(1, 200 - (int)Math.Sqrt(Utility.RandomMinMax(0, 40000)));
@@ -613,21 +616,20 @@ namespace Server.Engines.Harvest
                 {
                     if (FishInfo.IsRareFish(item.GetType()))
                     {
-                        from.SendMessage("You pull out a rare fish!");
+                        from.SendLocalizedMessage(1043297, "a rare fish");
+                    }
+                    else if (item.LabelNumber < 1)
+                    {
+                        from.SendLocalizedMessage(1043297, "a fish");
                     }
                     else
-                    {
-                        number = 1043297;      //You pull out an item : ~1_val~
-                        int label = item.LabelNumber;
+                        from.SendLocalizedMessage(1043297, String.Format("#{0}", item.LabelNumber));
 
-                        if (label < 1)
-                        {
-                            from.SendLocalizedMessage(number, "a fish");
-                        }
-                        else
-                            from.SendLocalizedMessage(number, String.Format("#{0}\t", (int)label));
-                    }
-
+                    return;
+                }
+                else if (item.LabelNumber > 0)
+                {
+                    from.SendLocalizedMessage(1043297, String.Format("#{0}", item.LabelNumber));
                     return;
                 }
                 else

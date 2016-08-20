@@ -359,7 +359,12 @@ namespace Server
                 case 10: return Math.Min(100, AosAttributes.GetValue(from, AosAttribute.LowerRegCost));
                 case 11: return AosAttributes.GetValue(from, AosAttribute.SpellDamage);
                 case 12: return Math.Min(6, AosAttributes.GetValue(from, AosAttribute.CastRecovery));
-                case 13: return Math.Min(4, AosAttributes.GetValue(from, AosAttribute.CastSpeed));
+                case 13:
+                    if (ProtectionSpell.Registry.ContainsKey(from) /*|| EodonianPotion.IsUnderEffects(m, PotionEffect.Urali)*/)
+                    {
+                        return Math.Min(0, AosAttributes.GetValue(from, AosAttribute.CastSpeed) - 2);
+                    }
+                    return Math.Min(from.Skills[SkillName.Chivalry].Value < 70.0 ? 4 : 2, AosAttributes.GetValue(from, AosAttribute.CastSpeed));
                 case 14: return Math.Min(40, AosAttributes.GetValue(from, AosAttribute.LowerManaCost));
 				default: return 0;
 			}
@@ -554,9 +559,6 @@ namespace Server
             {
                 if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || LadyMelisande.UnderPutridNausea(m))
                     value -= 5;
-
-                if (ProtectionSpell.Registry.ContainsKey(m) /*|| EodonianPotion.IsUnderEffects(m, PotionEffect.Urali)*/)
-                    value -= 2;
 
                 if (EssenceOfWindSpell.IsDebuffed(m))
                     value -= EssenceOfWindSpell.GetFCMalus(m);

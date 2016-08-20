@@ -937,6 +937,11 @@ namespace Server.Spells
 				fc = fcMax;
 			}
 
+            if (ProtectionSpell.Registry.ContainsKey(m_Caster) /*|| EodonianPotion.IsUnderEffects(m, PotionEffect.Urali)*/)
+            {
+                fc = Math.Min(0, fc - 2);
+            }
+
 			TimeSpan baseDelay = CastDelayBase;
 
 			TimeSpan fcDelay = TimeSpan.FromSeconds(-(CastDelayFastScalar * fc * CastDelaySecondsPerTick));
