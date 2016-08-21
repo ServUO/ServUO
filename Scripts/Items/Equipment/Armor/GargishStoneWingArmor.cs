@@ -87,6 +87,10 @@ namespace Server.Items
                 return true;
             }
         }
+        public override int GetLuckBonus()
+        {
+            return 0;
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

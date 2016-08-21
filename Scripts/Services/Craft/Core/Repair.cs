@@ -348,7 +348,7 @@ namespace Server.Engines.Craft
                     {
                         number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                     }
-                    else if (weapon.BlockRepair)
+                    else if (weapon.BlockRepair || weapon.NegativeAttributes.NoRepair > 0)
                     {
                         number = 1044277; // That item cannot be repaired.
                     }
@@ -413,7 +413,7 @@ namespace Server.Engines.Craft
                     {
                         number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                     }
-                    else if (armor.BlockRepair)
+                    else if (armor.BlockRepair || armor.NegativeAttributes.NoRepair > 0)
                     {
                         number = 1044277; // That item cannot be repaired.
                     }
@@ -478,7 +478,7 @@ namespace Server.Engines.Craft
                     {
                         number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                     }
-                    else if (jewel.BlockRepair)
+                    else if (jewel.BlockRepair || jewel.NegativeAttributes.NoRepair > 0)
                     {
                         number = 1044277; // That item cannot be repaired.
                     }
@@ -543,7 +543,7 @@ namespace Server.Engines.Craft
                     {
                         number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                     }
-                    else if (clothing.BlockRepair)// quick fix
+                    else if (clothing.BlockRepair || clothing.NegativeAttributes.NoRepair > 0)// quick fix
                     {
                         number = 1044277; // That item cannot be repaired.
                     }

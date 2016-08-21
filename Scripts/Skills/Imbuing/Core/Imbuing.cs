@@ -19,9 +19,9 @@ namespace Server.SkillHandlers
     {
         public static void Initialize()
         {
-            SkillInfo.Table[(int)SkillName.Imbuing].Callback = new SkillUseCallback(OnUse);
+            LoadImbuingDefinitions();
 
-            LoadImbuingDefinition();
+            SkillInfo.Table[(int)SkillName.Imbuing].Callback = new SkillUseCallback(OnUse);
 
             CommandSystem.Register("GetTotalWeight", AccessLevel.GameMaster, new CommandEventHandler(GetTotalWeight_OnCommand));
             CommandSystem.Register("GetTotalMods", AccessLevel.GameMaster, new CommandEventHandler(GetTotalMods_OnCommand));
@@ -1350,7 +1350,7 @@ namespace Server.SkillHandlers
         private static Dictionary<int, ImbuingDefinition> m_Table;
         public static Dictionary<int, ImbuingDefinition> Table { get { return m_Table; } }
 
-        public static void LoadImbuingDefinition()
+        public static void LoadImbuingDefinitions()
         {
             m_Table = new Dictionary<int, ImbuingDefinition>();
 			
@@ -1431,6 +1431,7 @@ namespace Server.SkillHandlers
 			m_Table[119] = new ImbuingDefinition(SlayerName.BloodDrinking,		1060459, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111969);
 			m_Table[120] = new ImbuingDefinition(SlayerName.SummerWind,			1060476, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111981);
 		
+            //Super Slayers
 			m_Table[121] = new ImbuingDefinition(SlayerName.Silver,			    1060479, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(UndyingFlesh), 	    1, 0, 1111988);
 			m_Table[122] = new ImbuingDefinition(SlayerName.Repond,			    1060472, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(GoblinBlood), 	    1, 0, 1111986);
             m_Table[123] = new ImbuingDefinition(SlayerName.ReptilianDeath,     1060473, 130,   typeof(RelicFragment),      typeof(Ruby),           typeof(LavaSerpentCrust),   1, 0, 1111987);
@@ -1439,34 +1440,48 @@ namespace Server.SkillHandlers
 			m_Table[126] = new ImbuingDefinition(SlayerName.ElementalBan,	    1060464, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(VialOfVitriol), 	    1, 0, 1111985);
             m_Table[127] = new ImbuingDefinition(SlayerName.Fey,                1070855, 130,   typeof(RelicFragment),      typeof(Ruby),           typeof(FeyWings),           1, 0, 1154652);
 
-            m_Table[151] = new ImbuingDefinition(SkillName.Fencing,		 	    1044102, 140, 	typeof(EnchantEssence), 	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112012);
+            // Talisman Slayers
+            m_Table[135] = new ImbuingDefinition(TalismanSlayerName.Bear,       1072504, 130, null, null, null, 1, 0, 0);
+            m_Table[136] = new ImbuingDefinition(TalismanSlayerName.Vermin,     1072505, 130, null, null, null, 1, 0, 0);
+            m_Table[137] = new ImbuingDefinition(TalismanSlayerName.Bat,        1072506, 130, null, null, null, 1, 0, 0);
+            m_Table[138] = new ImbuingDefinition(TalismanSlayerName.Mage,       1072507, 130, null, null, null, 1, 0, 0);
+            m_Table[139] = new ImbuingDefinition(TalismanSlayerName.Beetle,     1072508, 130, null, null, null, 1, 0, 0);
+            m_Table[140] = new ImbuingDefinition(TalismanSlayerName.Bird,       1072509, 130, null, null, null, 1, 0, 0);
+            m_Table[141] = new ImbuingDefinition(TalismanSlayerName.Ice,        1072510, 130, null, null, null, 1, 0, 0);
+            m_Table[142] = new ImbuingDefinition(TalismanSlayerName.Flame,      1072511, 130, null, null, null, 1, 0, 0);
+            m_Table[143] = new ImbuingDefinition(TalismanSlayerName.Bovine,     1072512, 130, null, null, null, 1, 0, 0);
+            m_Table[144] = new ImbuingDefinition(TalismanSlayerName.Wolf,       1075462, 130, null, null, null, 1, 0, 0);
+            m_Table[145] = new ImbuingDefinition(TalismanSlayerName.Undead,     1079752, 130, null, null, null, 1, 0, 0);
+            m_Table[146] = new ImbuingDefinition(TalismanSlayerName.Goblin,     1095010, 130, null, null, null, 1, 0, 0);
+
+            m_Table[151] = new ImbuingDefinition(SkillName.Fencing,		 	    1044102, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112012);
 			m_Table[152] = new ImbuingDefinition(SkillName.Macing, 	            1044101, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112013);
 			m_Table[153] = new ImbuingDefinition(SkillName.Swords,	            1044100, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112016);
 			m_Table[154] = new ImbuingDefinition(SkillName.Musicianship,	    1044089, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112015);
 			m_Table[155] = new ImbuingDefinition(SkillName.Magery,			    1044085, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112014);
 			
-			m_Table[156] = new ImbuingDefinition(SkillName.Wrestling,		    1044103, 140, 	typeof(EnchantEssence), 	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112021);
+			m_Table[156] = new ImbuingDefinition(SkillName.Wrestling,		    1044103, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112021);
 			m_Table[157] = new ImbuingDefinition(SkillName.AnimalTaming, 	    1044095, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112017);
 			m_Table[158] = new ImbuingDefinition(SkillName.SpiritSpeak,		    1044092, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112019);
 			m_Table[159] = new ImbuingDefinition(SkillName.Tactics,			    1044087, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112020);
 			m_Table[160] = new ImbuingDefinition(SkillName.Provocation,		    1044082, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112018);
 			
-			m_Table[161] = new ImbuingDefinition(SkillName.Focus,			    1044110, 140, 	typeof(EnchantEssence),	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112024);
+			m_Table[161] = new ImbuingDefinition(SkillName.Focus,			    1044110, 140, 	typeof(EnchantEssence),	  typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112024);
 			m_Table[162] = new ImbuingDefinition(SkillName.Parry, 		        1044065, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112026);
 			m_Table[163] = new ImbuingDefinition(SkillName.Stealth,			    1044107, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112027);
 			m_Table[164] = new ImbuingDefinition(SkillName.Meditation,		    1044106, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112025);
 			m_Table[165] = new ImbuingDefinition(SkillName.AnimalLore,		    1044062, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112022);
 			m_Table[166] = new ImbuingDefinition(SkillName.Discordance,		    1044075, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112023);
 			
-            m_Table[167] = new ImbuingDefinition(SkillName.Mysticism,			1044115, 140, 	typeof(EnchantEssence),	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1115213);
-			m_Table[168] = new ImbuingDefinition(SkillName.Bushido,			    1044112, 140, 	typeof(EnchantEssence),	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112029);
+            m_Table[167] = new ImbuingDefinition(SkillName.Mysticism,			1044115, 140, 	typeof(EnchantEssence),	  typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1115213);
+			m_Table[168] = new ImbuingDefinition(SkillName.Bushido,			    1044112, 140, 	typeof(EnchantEssence),	  typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112029);
 			m_Table[169] = new ImbuingDefinition(SkillName.Necromancy, 		    1044109, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112031);
 			m_Table[170] = new ImbuingDefinition(SkillName.Veterinary,		    1044099, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112033);
 			m_Table[171] = new ImbuingDefinition(SkillName.Stealing,		    1044093, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112032);
 			m_Table[172] = new ImbuingDefinition(SkillName.EvalInt, 		    1044076, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112030);
 			m_Table[173] = new ImbuingDefinition(SkillName.Anatomy,			    1044061, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112028);
 			
-			m_Table[174] = new ImbuingDefinition(SkillName.Peacemaking,		    1044069, 140, 	typeof(EnchantEssence), 	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112038);
+			m_Table[174] = new ImbuingDefinition(SkillName.Peacemaking,		    1044069, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112038);
 			m_Table[175] = new ImbuingDefinition(SkillName.Ninjitsu, 		    1044113, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112037);
 			m_Table[176] = new ImbuingDefinition(SkillName.Chivalry,		    1044111, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112035);
 			m_Table[177] = new ImbuingDefinition(SkillName.Archery,			    1044091, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112034);
@@ -1474,6 +1489,10 @@ namespace Server.SkillHandlers
 			m_Table[179] = new ImbuingDefinition(SkillName.Healing,			    1044077, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112036);
             m_Table[180] = new ImbuingDefinition(SkillName.Throwing,			1044117, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1115212); 
             
+            m_Table[181] = new ImbuingDefinition(SkillName.Lumberjacking,	    1002100, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1002101);
+			m_Table[182] = new ImbuingDefinition(SkillName.Snooping,			1002138, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1002139);
+            m_Table[183] = new ImbuingDefinition(SkillName.Mining,			    1002111, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1002112);
+
             // Non-Imbuables for getting item intensity only
             m_Table[200] = new ImbuingDefinition(AosWeaponAttribute.BloodDrinker,           1017407, 140, null, null, null, 1, 1, 1152387);
             m_Table[201] = new ImbuingDefinition(AosWeaponAttribute.BattleLust,             1113710, 140, null, null, null, 1, 1, 1152385);
@@ -1501,17 +1520,13 @@ namespace Server.SkillHandlers
             m_Table[217] = new ImbuingDefinition(SAAbsorptionAttribute.ResonanceEnergy,     1154658, 140, null, null, null, 20, 1, 1152391);
             m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.ResonanceKinetic,    1154659, 140, null, null, null, 20, 1, 1152391);
 
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.SoulChargeFire,      1154659, 140, null, null, null, 20, 1, 1152391);
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.SoulChargeCold,      1154659, 140, null, null, null, 20, 1, 1152391);
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.SoulChargePoison,    1154659, 140, null, null, null, 20, 1, 1152391);
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.SoulChargeEnergy,    1154659, 140, null, null, null, 20, 1, 1152391);
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.SoulChargeKinetic,   1154659, 140, null, null, null, 20, 1, 1152391);
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.CastingFocus,        1154659, 140, null, null, null, 20, 1, 1116535);
+            m_Table[219] = new ImbuingDefinition(SAAbsorptionAttribute.CastingFocus,        1154659, 140, null, null, null, 20, 1, 1116535);
 
-            m_Table[219] = new ImbuingDefinition(AosArmorAttribute.ReactiveParalyze,        1154660, 140, null, null, null, 1, 1,  1152400);
-            m_Table[220] = new ImbuingDefinition(AosArmorAttribute.SoulCharge,              1116536, 140, null, null, null, 20, 1, 1152391);
+            m_Table[220] = new ImbuingDefinition(AosArmorAttribute.ReactiveParalyze,        1154660, 140, null, null, null, 1, 1,  1152400);
+            m_Table[221] = new ImbuingDefinition(AosArmorAttribute.SoulCharge,              1116536, 140, null, null, null, 20, 1, 1152391);
 
-            m_Table[500] = new ImbuingDefinition("ArtifactRarity",                          1154693, 0,   null, null, null, 1, 1, 1154693);
+            m_Table[500] = new ImbuingDefinition(AosArmorAttribute.SelfRepair,              1079709, 100, null, null, null, 5, 1,  1079709);
+            m_Table[501] = new ImbuingDefinition(AosWeaponAttribute.SelfRepair,             1079709, 100, null, null, null, 5, 1,  1079709);
             //243 already used above
         }
 
@@ -1718,6 +1733,9 @@ namespace Server.SkillHandlers
             else if (attr is AosElementAttribute)
                 mod = GetModForAttribute((AosElementAttribute)attr);
 
+            else if (attr is TalismanSlayerName)
+                mod = GetModForAttribute((TalismanSlayerName)attr);
+
             else if (attr is string)
                 mod = GetModForAttribute((string)attr);
 
@@ -1808,6 +1826,20 @@ namespace Server.SkillHandlers
                 ImbuingDefinition def = kvp.Value;
 
                 if (def.Attribute is SlayerName && (SlayerName)def.Attribute == attr)
+                    return mod;
+            }
+
+            return -1;
+        }
+
+        public static int GetModForAttribute(TalismanSlayerName attr)
+        {
+            foreach (KeyValuePair<int, ImbuingDefinition> kvp in m_Table)
+            {
+                int mod = kvp.Key;
+                ImbuingDefinition def = kvp.Value;
+
+                if (def.Attribute is TalismanSlayerName && (TalismanSlayerName)def.Attribute == attr)
                     return mod;
             }
 
