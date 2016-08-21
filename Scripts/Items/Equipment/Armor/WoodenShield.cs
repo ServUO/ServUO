@@ -1,7 +1,9 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefBlacksmithy), typeof(GargishWoodenShield))]
     public class WoodenShield : BaseShield
     {
         [Constructable]

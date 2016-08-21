@@ -56,6 +56,8 @@ namespace Server.Items
         protected CraftResource m_Resource;
         private int m_StrReq = -1;
 
+        private bool m_Altered;
+
         private AosAttributes m_AosAttributes;
         private AosArmorAttributes m_AosClothingAttributes;
         private AosSkillBonuses m_AosSkillBonuses;
@@ -1114,6 +1116,9 @@ namespace Server.Items
             if (this.m_Crafter != null)
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
+            if (m_Altered)
+                list.Add(1111880); // Altered
+
             #region Factions
             if (this.m_FactionState != null)
                 list.Add(1041350); // faction item
@@ -1383,6 +1388,7 @@ namespace Server.Items
             #region Imbuing
             //TimesImbued = 0x12000000,
             #endregion
+            Altered = 0x00001000
         }
 
         #region Mondain's Legacy Sets
@@ -1521,6 +1527,7 @@ namespace Server.Items
             #region Imbuing
             //SetSaveFlag(ref flags, SaveFlag.TimesImbued, this.m_TimesImbued != 0);
             #endregion
+            SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
             writer.WriteEncodedInt((int)flags);
 
@@ -1705,6 +1712,9 @@ namespace Server.Items
 
                         if (GetSaveFlag(flags, SaveFlag.PlayerConstructed))
                             this.m_PlayerConstructed = true;
+
+                        if (GetSaveFlag(flags, SaveFlag.Altered))
+                            m_Altered = true;
 
                         break;
                     }
@@ -2143,5 +2153,16 @@ namespace Server.Items
             SetHelper.GetSetProperties(list, this);
         }
         #endregion
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Altered
+        {
+            get { return m_Altered; }
+            set
+            {
+                m_Altered = value;
+                InvalidateProperties();
+            }
+        }
     }
 }

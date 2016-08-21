@@ -658,6 +658,7 @@ namespace Server.Engines.Craft
             this.MarkOption = true;
             this.Repair = true;
             this.CanEnhance = Core.AOS;
+            this.CanAlter = Core.SA;
         }
     }
 

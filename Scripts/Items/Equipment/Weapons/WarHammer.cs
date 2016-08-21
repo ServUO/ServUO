@@ -1,7 +1,9 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefBlacksmithy), typeof(GargishWarHammer))]
     [FlipableAttribute(0x1439, 0x1438)]
     public class WarHammer : BaseBashing
     {
