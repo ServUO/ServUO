@@ -41,6 +41,14 @@ namespace Server.Items
             return false;
         }
 
+        public override void OnAfterDuped(Item newItem)
+        {
+            if (newItem is GorgonLense)
+                ((GorgonLense)newItem).LenseType = this.LenseType;
+
+            base.OnAfterDuped(newItem);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack) && m_LenseType > LenseType.None)
@@ -132,7 +140,6 @@ namespace Server.Items
 
         public int OnCraft(int quality, bool markersMark, Mobile from, CraftSystem system, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            Console.WriteLine("Hue: {0}", resHue.ToString());
             switch (resHue)
             {
                 default:

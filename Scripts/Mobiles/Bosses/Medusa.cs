@@ -10,58 +10,60 @@ namespace Server.Mobiles
     [CorpseName("a medusa corpse")]
     public class Medusa : BaseSABosses, ICarvable
     {
-        public static List<Mobile> AffectedMobiles = new List<Mobile>();
-        //private readonly DateTime m_Delay;
+        private List<Mobile> m_TurnedToStone = new List<Mobile>();
+        public List<Mobile> AffectedMobiles { get { return m_TurnedToStone; } }
+
+        public List<Mobile> m_Helpers = new List<Mobile>();
+
         private int m_Scales;
         private DateTime m_GazeDelay;
-        private DateTime m_DelayOne;
-        private DateTime m_DelayTwo;
+        private DateTime m_StoneDelay;
+
         [Constructable]
         public Medusa()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.1, 0.2)
         {
-            this.Name = "Medusa";
-            this.Body = 728;
+            Name = "Medusa";
+            Body = 728;
 
-            this.SetStr(1235, 1391);
-            this.SetDex(128, 139);
-            this.SetInt(537, 664);
+            SetStr(1235, 1391);
+            SetDex(128, 139);
+            SetInt(537, 664);
 
-            this.SetHits(50000);
+            SetHits(60000);
 
-            this.SetDamage(21, 28);
+            SetDamage(21, 28);
 
-            this.SetDamageType(ResistanceType.Physical, 60);
-            this.SetDamageType(ResistanceType.Fire, 20);
-            this.SetDamageType(ResistanceType.Energy, 20);
+            SetDamageType(ResistanceType.Physical, 60);
+            SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetResistance(ResistanceType.Physical, 55, 65);
-            this.SetResistance(ResistanceType.Fire, 55, 65);
-            this.SetResistance(ResistanceType.Cold, 55, 65);
-            this.SetResistance(ResistanceType.Poison, 80, 90);
-            this.SetResistance(ResistanceType.Energy, 60, 75);
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 55, 65);
+            SetResistance(ResistanceType.Cold, 55, 65);
+            SetResistance(ResistanceType.Poison, 80, 90);
+            SetResistance(ResistanceType.Energy, 60, 75);
 
-            this.SetSkill(SkillName.Anatomy, 110.6, 116.1);
-            this.SetSkill(SkillName.EvalInt, 100.0, 114.4);
-            this.SetSkill(SkillName.Magery, 100.0);
-            this.SetSkill(SkillName.Meditation, 118.2, 127.8);
-            this.SetSkill(SkillName.MagicResist, 120.0);
-            this.SetSkill(SkillName.Tactics, 111.9, 134.5);
-            this.SetSkill(SkillName.Wrestling, 119.7, 128.9);
+            SetSkill(SkillName.Anatomy, 110.6, 116.1);
+            SetSkill(SkillName.EvalInt, 100.0, 114.4);
+            SetSkill(SkillName.Magery, 100.0);
+            SetSkill(SkillName.Meditation, 118.2, 127.8);
+            SetSkill(SkillName.MagicResist, 120.0);
+            SetSkill(SkillName.Tactics, 111.9, 134.5);
+            SetSkill(SkillName.Wrestling, 119.7, 128.9);
 
-            this.Fame = 22000;
-            this.Karma = -22000;
+            Fame = 22000;
+            Karma = -22000;
 
-            this.VirtualArmor = 60;
-            this.QLPoints = 150;
+            VirtualArmor = 60;
 
-            this.PackItem(new Arrow(Utility.RandomMinMax(600, 700)));
+            PackItem(new Arrow(Utility.RandomMinMax(100, 200)));
 
             IronwoodCompositeBow Bow = new IronwoodCompositeBow();
             Bow.Movable = false;
-            this.AddItem(Bow);
+            AddItem(Bow);
 
-            this.m_Scales = Utility.Random(5) + 1;
+            m_Scales = Utility.Random(5) + 1;
         }
 
         public Medusa(Serial serial)
@@ -69,122 +71,85 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
+        public override Type[] UniqueSAList { get { return new Type[] { typeof(Slither), typeof(IronwoodCompositeBow) }; } }
+        public override Type[] SharedSAList { get { return new Type[] { typeof(DemonBridleRing), 
+                                                    typeof(PetrifiedSnake), typeof(StoneDragonsTooth), 
+                                                    typeof(SummonersKilt), typeof(Venom), typeof(StormCaller) }; } }
+
+        public override bool IgnoreYoungProtection { get { return true; } }
+        public override bool AutoDispel { get { return true; } }
+        public override double AutoDispelChance { get { return 1.0; } }
+        public override bool BardImmune { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override Poison HitPoison { get { return (0.8 >= Utility.RandomDouble() ? Poison.Deadly : Poison.Lethal); } }
+
+        public override int GetIdleSound() { return 1557; }
+        public override int GetAngerSound() { return 1554; }
+        public override int GetHurtSound() { return 1556; }
+        public override int GetDeathSound() { return 1555; }
+
+        public override void OnCarve(Mobile from, Corpse corpse, Item with)
         {
-            get
-            {
-                return new Type[] { typeof(Slither), typeof(IronwoodCompositeBow) };
-            }
+            int amount = Utility.Random(5) + 1;
+
+            corpse.DropItem(new MedusaLightScales(amount));
+
+            if(0.20 > Utility.RandomDouble())
+                corpse.DropItem(new MedusaBlood());
+
+            base.OnCarve(from, corpse, with);
+
+            corpse.Carved = true;
         }
-        public override Type[] SharedSAList
+
+        public override void OnGotMeleeAttack(Mobile m)
         {
-            get
-            {
-                return new Type[] { typeof(DemonBridleRing), typeof(PetrifiedSnake), typeof(StoneDragonsTooth), typeof(SummonersKilt), typeof(Venom) };
-            }
+            base.OnGotMeleeAttack(m);
+
+            if (0.05 > Utility.RandomDouble())
+                ReleaseStoneMonster();
         }
-        public override bool IgnoreYoungProtection
+
+        public override void OnDamagedBySpell(Mobile m)
         {
-            get
-            {
-                return true;
-            }
+            base.OnDamagedBySpell(m);
+
+            if (0.05 > Utility.RandomDouble())
+                ReleaseStoneMonster();
         }
-        public override int Scales
+
+        public override void OnHarmfulSpell(Mobile from)
         {
-            get
-            {
-                return (Utility.Random(5) + 1);
-            }
+            base.OnHarmfulSpell(from);
+
+            if (0.05 > Utility.RandomDouble())
+                ReleaseStoneMonster();
         }
-        public override ScaleType ScaleType
+
+        public void RemoveAffectedMobiles(Mobile toRemove)
         {
-            get
-            {
-                return ScaleType.MedusaLight;
-            }
+            if (m_TurnedToStone.Contains(toRemove))
+                m_TurnedToStone.Remove(toRemove);
         }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool GivesSAArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return false;
-            }
-        }
-		public override bool AllureImmune
-		{
-			get
-			{
-				return true;
-			}
-		}
-        public override bool Unprovokable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool AreaPeaceImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return (0.8 >= Utility.RandomDouble() ? Poison.Deadly : Poison.Lethal);
-            }
-        }
-        public static Mobile FindRandomMedusaTarget(Mobile from)
+
+        public Mobile FindRandomMedusaTarget()
         {
             List<Mobile> list = new List<Mobile>();
 
-            foreach (Mobile m in from.GetMobilesInRange(12))
+            IPooledEnumerable eable = this.GetMobilesInRange(12);
+            foreach (Mobile m in eable)
             {
-                if (m != null && m != from && m.Alive && m.AccessLevel == AccessLevel.Player && !(m is MedusaClone) && !(m is StoneMonster) && !(Medusa.AffectedMobiles.Contains(m)) && !(m is BaseCreature))
-                {
-                    Medusa.AffectedMobiles.Remove(m);
-                    list.Add(m);
-                }
+                if ( m == null || m == this || m_TurnedToStone.Contains(m) || !CanBeHarmful(m) || !InLOS(m))
+                    continue;
 
-                if (m != null && m != from && m.Alive && !(m is MedusaClone) && !(m is StoneMonster) && !(Medusa.AffectedMobiles.Contains(m)) && (m is BaseCreature))
-                {
-                    Medusa.AffectedMobiles.Remove(m);
+                //Pets
+                if (m is BaseCreature && (((BaseCreature)m).GetMaster() is PlayerMobile))
                     list.Add(m);
-                }
+                //players
+                else if (m is PlayerMobile)
+                    list.Add(m);
             }
+            eable.Free();
 
             if (list.Count == 0)
                 return null;
@@ -306,47 +271,15 @@ namespace Server.Mobiles
             return 0;
         }
 
-        public override int GetIdleSound()
-        {
-            return 1557;
-        }
-
-        public override int GetAngerSound()
-        {
-            return 1554;
-        }
-
-        public override int GetHurtSound()
-        {
-            return 1556;
-        }
-
-        public override int GetDeathSound()
-        {
-            return 1555;
-        }
-
-        public override void OnCarve(Mobile from, Corpse corpse, Item with)
-        {
-            int amount = Utility.Random(5) + 1;
-
-            corpse.DropItem(new MedusaLightScales(amount));
-
-            if (0.20 > Utility.RandomDouble())
-                corpse.DropItem(new MedusaBlood());
-
-            base.OnCarve(from, corpse, with);
-        }
-
         public void Carve(Mobile from, Item item)
         {
-            if (this.m_Scales > 0 && from.Backpack != null)
+            if (m_Scales > 0 && from.Backpack != null)
             {
-                new Blood(0x122D).MoveToWorld(this.Location, this.Map);
+                new Blood(0x122D).MoveToWorld(Location, Map);
                 from.AddToBackpack(new MedusaDarkScales(Utility.Random(3) + 1));
                 from.SendLocalizedMessage(1114098); // You cut away some scales and put them in your backpack.
-                this.Combatant = from;
-                --this.m_Scales;
+                Combatant = from;
+                --m_Scales;
             }
         }
 
@@ -354,46 +287,43 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (DateTime.UtcNow > this.m_DelayOne)
+            if (Combatant == null)
+                return;
+
+            if (m_StoneDelay < DateTime.Now)
+                SpawnStone();
+
+            if (m_GazeDelay < DateTime.Now)
+                DoGaze();
+        }
+
+        public void DoGaze()
+        {
+            Mobile target = FindRandomMedusaTarget();
+            Map map = Map;
+
+            if (map == null || target == null)
+                return;
+
+            if ((target is BaseCreature && ((BaseCreature)target).SummonMaster != this) || CanBeHarmful(target))
             {
-                Medusa.AffectedMobiles.Clear();
-
-                this.m_DelayOne = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 180));
-            }
-
-            if (DateTime.UtcNow > this.m_GazeDelay)
-            {
-                Mobile target = FindRandomMedusaTarget(this);
-                //  Mobile target = Ability.FindRandomMedusaTarget(this);
-
-                Map map = this.Map;
-
-                if (map == null)
-                    return;
-
-                this.DoSpecialAbility(this);
-
-                if ((target != null) && !(target is MedusaClone) && !(target is StoneMonster))
+                if (CheckBlockGaze(target))
+                    target.SendLocalizedMessage(1112599); //Your Gorgon Lens deflect Medusa's petrifying gaze!
+                else
                 {
-                    if (CheckBlockGaze(target))
-                    {
-                        target.SendLocalizedMessage(1112599); //Your Gorgon Lens deflect Medusa's petrifying gaze!
-                        return;
-                    }
-
                     BaseCreature clone = new MedusaClone(target);
 
                     bool validLocation = false;
-                    Point3D loc = this.Location;
+                    Point3D loc = Location;
 
                     for (int j = 0; !validLocation && j < 10; ++j)
                     {
-                        int x = this.X + Utility.Random(10) - 1;
-                        int y = this.Y + Utility.Random(10) - 1;
+                        int x = X + Utility.Random(10) - 1;
+                        int y = Y + Utility.Random(10) - 1;
                         int z = map.GetAverageZ(x, y);
 
-                        if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
-                            loc = new Point3D(x, y, this.Z);
+                        if (validLocation = map.CanFit(x, y, Z, 16, false, false))
+                            loc = new Point3D(x, y, Z);
                         else if (validLocation = map.CanFit(x, y, z, 16, false, false))
                             loc = new Point3D(x, y, z);
                     }
@@ -401,113 +331,170 @@ namespace Server.Mobiles
                     Effects.SendLocationEffect(loc, target.Map, 0x37B9, 10, 5);
                     clone.Frozen = clone.Blessed = true;
                     clone.SolidHueOverride = 761;
-                    target.Frozen = true;
+
+                    target.Frozen = target.Blessed = true;
                     target.SolidHueOverride = 761;
-                    clone.MoveToWorld(loc, target.Map);
-                    target.SendLocalizedMessage(1112768); // You have been turned to stone!!!
 
-                    new GazeTimer(target, clone).Start();
-                    this.m_GazeDelay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
+                    //clone.MoveToWorld(loc, target.Map);
+                    BaseCreature.Summon(clone, false, this, loc, 0, TimeSpan.FromMinutes(90));
 
-                    AffectedMobiles.Add(target);
+                    if (target is BaseCreature && !((BaseCreature)target).Summoned && ((BaseCreature)target).GetMaster() != null)
+                        ((BaseCreature)target).GetMaster().SendLocalizedMessage(1113281, null, 43); // Your pet has been petrified!
+                    else
+                        target.SendLocalizedMessage(1112768); // You have been turned to stone!!!
+
+                    new GazeTimer(target, clone, this).Start();
+                    m_GazeDelay = DateTime.Now + TimeSpan.FromSeconds(Utility.RandomMinMax(45, 75));
+
+                    m_Helpers.Add(clone);
+                    m_TurnedToStone.Add(target);
+
+                    BuffInfo.AddBuff(target, new BuffInfo(BuffIcon.MedusaStone, 1153790, 1153825));
+                    return;
                 }
             }
+
+            m_GazeDelay = DateTime.Now + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 65));
         }
 
-        public void DoSpecialAbility(Mobile target)
+        public void SpawnStone()
         {
-            if (0.8 >= Utility.RandomDouble())
-                this.SpawnStone(target);
+            DefragHelpers();
 
-            if (0.05 >= Utility.RandomDouble())
-                this.FreeStone(target);
-        }
-
-        public void SpawnStone(Mobile target)
-        {
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null)
                 return;
 
-            if (DateTime.UtcNow > this.m_DelayTwo)
+            int stones = 0;
+
+            foreach (Mobile m in m_Helpers)
             {
-                int stones = 0;
+                if (!(m is MedusaClone))
+                    ++stones;
+            }
 
-                foreach (Mobile m in this.GetMobilesInRange(40))
+            if (stones >= 5)
+                return;
+            else
+            {
+                BaseCreature stone = GetRandomStoneMonster();
+
+                bool validLocation = false;
+                Point3D loc = Location;
+
+                for (int j = 0; !validLocation && j < 10; ++j)
                 {
-                    if (m is StoneMonster)
-                        ++stones;
+                    int x = X + Utility.Random(10) - 1;
+                    int y = Y + Utility.Random(10) - 1;
+                    int z = map.GetAverageZ(x, y);
+
+                    if (validLocation = map.CanFit(x, y, Z, 16, false, false))
+                        loc = new Point3D(x, y, Z);
+                    else if (validLocation = map.CanFit(x, y, z, 16, false, false))
+                        loc = new Point3D(x, y, z);
                 }
 
-                if (stones >= 3)
-                {
-                    return;
-                }
-                else
-                {
-                    BaseCreature stone = new StoneMonster();
+                BaseCreature.Summon(stone, false, this, loc, 0, TimeSpan.FromMinutes(90));
+                //stone.MoveToWorld(loc, map);
+                stone.Frozen = stone.Blessed = true;
+                stone.SolidHueOverride = 761;
+                stone.Combatant = null;
 
-                    bool validLocation = false;
-                    Point3D loc = this.Location;
+                m_Helpers.Add(stone);
+            }
 
-                    for (int j = 0; !validLocation && j < 10; ++j)
-                    {
-                        int x = this.X + Utility.Random(10) - 1;
-                        int y = this.Y + Utility.Random(10) - 1;
-                        int z = map.GetAverageZ(x, y);
+            m_StoneDelay = DateTime.Now + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 150));
+        }
 
-                        if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
-                            loc = new Point3D(x, y, this.Z);
-                        else if (validLocation = map.CanFit(x, y, z, 16, false, false))
-                            loc = new Point3D(x, y, z);
-                    }
+        private void DefragHelpers()
+        {
+            List<Mobile> toDelete = new List<Mobile>();
 
-                    stone.MoveToWorld(loc, target.Map);
-                    stone.Frozen = stone.Blessed = true;
-                    stone.SolidHueOverride = 761;
-                    stone.Combatant = null;
-                }
+            foreach (Mobile m in m_Helpers)
+            {
+                if(m == null)
+                    continue;
 
-                this.m_DelayTwo = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 150));
+                if (!m.Alive || m.Deleted)
+                    toDelete.Add(m);
+            }
+
+            foreach (Mobile m in toDelete)
+            {
+                if (m_Helpers.Contains(m))
+                    m_Helpers.Remove(m);
             }
         }
 
-        public void FreeStone(Mobile target)
+        private BaseCreature GetRandomStoneMonster()
         {
-            Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60)), delegate()
+            switch (Utility.Random(6))
             {
-                List<Mobile> list = new List<Mobile>();
+                default:
+                case 0: return new OphidianWarrior();
+                case 1: return new OphidianArchmage();
+                case 2: return new WailingBanshee();
+                case 3: return new OgreLord();
+                case 4: return new Dragon();
+                case 5: return new UndeadGargoyle();
+            }
+        }
 
-                foreach (Mobile mob in this.GetMobilesInRange(40))
+        public void ReleaseStoneMonster()
+        {
+            List<Mobile> stones = new List<Mobile>();
+
+            foreach (Mobile mob in m_Helpers)
+            {
+                if (!(mob is MedusaClone) && mob.Alive)
+                    stones.Add(mob);
+            }
+
+            if(stones.Count == 0)
+                return;
+
+            Mobile m = stones[Utility.Random(stones.Count)];
+
+            if (m != null)
+            {
+                m.Frozen = m.Blessed = false;
+                m.SolidHueOverride = -1;
+                Mobile closest = null;
+                int dist = 12;
+
+                m_Helpers.Remove(m);
+
+                IPooledEnumerable eable = m.GetMobilesInRange(12);
+                foreach (Mobile targ in eable)
                 {
-                    if (mob is StoneMonster)
-                        list.Add(mob);
-                }
-
-                if (0 != list.Count)
-                {
-                    int j = Utility.Random(list.Count);
-                    Mobile stone1 = list.ToArray()[j];
-
-                    stone1.Frozen = stone1.Blessed = false;
-                    stone1.SolidHueOverride = -1;
-
-                    foreach (Mobile targ in stone1.GetMobilesInRange(40))
+                    if (targ != null && targ.Player)
                     {
-                        if (targ != null && targ.Player)
+                        targ.SendLocalizedMessage(1112767, null, 43); // Medusa releases one of the petrified creatures!!
+                        targ.Combatant = targ;
+                    }
+
+                    if (targ is PlayerMobile || (targ is BaseCreature && ((BaseCreature)targ).GetMaster() is PlayerMobile))
+                    {
+                        int d = (int)m.GetDistanceToSqrt(targ.Location);
+
+                        if (d < dist)
                         {
-                            targ.SendLocalizedMessage(1112767); // Medusa releases one of the petrified creatures!!
-                            stone1.Combatant = targ;
+                            dist = d;
+                            closest = targ;
                         }
                     }
                 }
-            });
+                eable.Free();
+
+                if (closest != null)
+                    m.Combatant = closest;
+            }
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 5);
+            AddLoot(LootPack.SuperBoss, 8);
         }
 
         public override void OnDeath(Container c)
@@ -515,17 +502,7 @@ namespace Server.Mobiles
             base.OnDeath(c);
 
             if (Utility.RandomDouble() < 0.025)
-            {
-                switch (Utility.Random(2))
-                {
-                    case 0:
-                        c.DropItem(new MedusaBlood());
-                        break;
-                    case 1:
-                        c.DropItem(new MedusaStatue());
-                        break;
-                }
-            }
+                c.DropItem(new MedusaStatue());
         }
 
         public override WeaponAbility GetWeaponAbility()
@@ -535,116 +512,113 @@ namespace Server.Mobiles
 
         public override void OnAfterDelete()
         {
-            this.DeleteMedusaClone(this);
-
-            for (int i = 0; i < AffectedMobiles.Count; i++)
-                if (AffectedMobiles[i] != null)
-                    AffectedMobiles.Clear();
+            foreach (Mobile m in m_Helpers)
+            {
+                if (m != null && !m.Deleted)
+                    m.Delete();
+            }
 
             base.OnAfterDelete();
-        }
-
-        public override bool OnBeforeDeath()
-        {
-            this.DeleteMedusaClone(this);
-
-            for (int i = 0; i < AffectedMobiles.Count; i++)
-                if (AffectedMobiles[i] != null)
-                    AffectedMobiles.Clear();
-
-            return base.OnBeforeDeath();
-        }
-
-        public override void OnDelete()
-        {
-            this.DeleteMedusaClone(this);
-
-            for (int i = 0; i < AffectedMobiles.Count; i++)
-                if (AffectedMobiles[i] != null)
-                    AffectedMobiles.Clear();
-
-            base.OnDelete();
-        }
-
-        public void DeleteMedusaClone(Mobile target)
-        {
-            ArrayList list = new ArrayList();
-
-            foreach (Mobile clone in this.GetMobilesInRange(40))
-            {
-                if (clone is MedusaClone || clone is StoneMonster)
-                    list.Add(clone);
-            }
-
-            foreach (Mobile clone in list)
-            {
-                clone.Delete();
-            }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);
-            writer.Write((int)this.m_Scales);
-            writer.Write(AffectedMobiles);
+
+            writer.Write((int)m_Scales);
+
+            writer.Write(m_Helpers.Count);
+
+            foreach (Mobile helper in m_Helpers)
+                writer.Write(helper);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            reader.ReadInt();
-            AffectedMobiles = reader.ReadStrongMobileList();
 
-            for (int i = 0; i < AffectedMobiles.Count; i++)
-                if (AffectedMobiles[i] != null)
-                    AffectedMobiles.Clear();
+            m_Scales = reader.ReadInt();
+
+            int count = reader.ReadInt();
+
+            for (int i = 0; i < count; i++)
+            {
+                Mobile m = reader.ReadMobile();
+
+                if (m != null && m.Alive)
+                    m_Helpers.Add(m);
+            }
         }
 
         public class GazeTimer : Timer
         {
-            private readonly Mobile target;
-            private readonly Mobile clone;
+            private Mobile target;
+            private Mobile clone;
+            private Medusa m_Medusa;
             private int m_Count;
-            public GazeTimer(Mobile m, Mobile mc)
+
+            public GazeTimer(Mobile m, Mobile mc, Medusa medusa)
                 : base(TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(20))
             {
-                this.target = m;
-                this.clone = mc;
-                this.m_Count = 0;
+                target = m;
+                clone = mc;
+                m_Medusa = medusa;
+                m_Count = 0;
             }
 
             protected override void OnTick()
             {
-                ++this.m_Count;
+                ++m_Count;
 
-                if (this.m_Count == 1 && this.target != null)
+                if (m_Count == 1 && target != null)
                 {
-                    this.target.Frozen = false;
-                    this.target.SolidHueOverride = -1;
+                    target.Frozen = false;
+                    target.SolidHueOverride = -1;
+                    target.Blessed = false;
+                    m_Medusa.RemoveAffectedMobiles(target);
 
-                    if (Medusa.AffectedMobiles.Contains(this.target))
-                        Medusa.AffectedMobiles.Remove(this.target);
+                    if (target is BaseCreature && !((BaseCreature)target).Summoned && ((BaseCreature)target).GetMaster() != null)
+                        ((BaseCreature)target).GetMaster().SendLocalizedMessage(1113285, null, 43); // Beware! A statue of your pet has been created!
+
+                    BuffInfo.RemoveBuff(target, BuffIcon.MedusaStone);
                 }
-                else if (this.m_Count == 2 && this.clone != null)
+                else if (m_Count == 2 && clone != null)
                 {
-                    this.clone.SolidHueOverride = -1;
-                    this.clone.Frozen = this.clone.Blessed = false;
+                    clone.SolidHueOverride = -1;
+                    clone.Frozen = clone.Blessed = false;
+                    int dist = 12;
+                    Mobile closest = null;
 
-                    foreach (Mobile m in this.clone.GetMobilesInRange(12))
+                    IPooledEnumerable eable = clone.GetMobilesInRange(12);
+                    foreach (Mobile m in eable)
                     {
-                        if ((m != null) && (m.Player) && !(m is MedusaClone) && !(m is StoneMonster))
+                        int d = (int)clone.GetDistanceToSqrt(m.Location);
+
+                        if (m != null && m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile))
                         {
-                            m.SendLocalizedMessage(1112767); // Medusa releases one of the petrified creatures!!
-                            m.Send(new RemoveMobile(this.clone));
-                            m.Send(new MobileIncoming(m, this.clone));
-                            this.clone.Combatant = m;
+                            if (m.NetState != null)
+                            {
+                                m.Send(new RemoveMobile(clone));
+                                m.NetState.Send(MobileIncoming.Create(m.NetState, m, clone));
+                                m.SendLocalizedMessage(1112767); // Medusa releases one of the petrified creatures!!
+                            }
+
+                            if (d < dist)
+                            {
+                                dist = d;
+                                closest = m;
+                            }
                         }
                     }
+                    eable.Free();
+
+                    if (closest != null)
+                        clone.Combatant = closest;
                 }
                 else
-                    this.Stop();
+                    Stop();
             }
         }
     }
@@ -654,8 +628,8 @@ namespace Server.Mobiles
         public MedusaClone(Mobile m)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.SolidHueOverride = 33;
-            this.Clone(m);
+            SolidHueOverride = 33;
+            Clone(m);
         }
 
         public MedusaClone(Serial serial)
@@ -681,56 +655,52 @@ namespace Server.Mobiles
         {
             get
             {
-                return !this.Frozen;
+                return !Frozen;
             }
         }
         public void Clone(Mobile m)
         {
             if (m == null)
             {
-                this.Delete();
+                Delete();
                 return;
             }
 
-            this.Body = m.Body;
+            Body = m.Body;
 
-            this.Str = m.Str;
-            this.Dex = m.Dex;
-            this.Int = m.Int;
+            Str = m.Str;
+            Dex = m.Dex;
+            Int = m.Int;
 
-            this.Hits = m.HitsMax;
+            Hits = m.HitsMax;
 
-            this.Hue = m.Hue;
-            this.Female = m.Female;
+            Hue = m.Hue;
+            Female = m.Female;
 
-            if (m is PlayerMobile)
-                this.Name = String.Format("{0} the Evil Twin", m.Name);
-            else
-                this.Name = String.Format("{0} (evil)", m.Name);
+            Name = m.Name;
+            NameHue = m.NameHue;
 
-            this.NameHue = m.NameHue;
+            Title = m.Title;
+            Kills = m.Kills;
 
-            this.Title = m.Title;
-            this.Kills = m.Kills;
+            HairItemID = m.HairItemID;
+            HairHue = m.HairHue;
 
-            this.HairItemID = m.HairItemID;
-            this.HairHue = m.HairHue;
+            FacialHairItemID = m.FacialHairItemID;
+            FacialHairHue = m.FacialHairHue;
 
-            this.FacialHairItemID = m.FacialHairItemID;
-            this.FacialHairHue = m.FacialHairHue;
-
-            this.BaseSoundID = m.BaseSoundID;
+            BaseSoundID = m.BaseSoundID;
 
             for (int i = 0; i < m.Skills.Length; ++i)
             {
-                this.Skills[i].Base = m.Skills[i].Base;
-                this.Skills[i].Cap = m.Skills[i].Cap;
+                Skills[i].Base = m.Skills[i].Base;
+                Skills[i].Cap = m.Skills[i].Cap;
             }
 
             for (int i = 0; i < m.Items.Count; i++)
             {
                 if (m.Items[i].Layer != Layer.Backpack && m.Items[i].Layer != Layer.Mount && m.Items[i].Layer != Layer.Bank)
-                    this.AddItem(this.CloneItem(m.Items[i]));
+                    AddItem(CloneItem(m.Items[i]));
             }
         }
 
@@ -748,15 +718,15 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.Frozen)
-                this.DisplayPaperdollTo(from);
+            if (Frozen)
+                DisplayPaperdollTo(from);
             else
                 base.OnDoubleClick(from);
         }
 
         public void OnRequestedAnimation(Mobile from)
         {
-            if (this.Frozen)
+            if (Frozen)
             {
                 //if (Core.SA)
                 //from.Send(new UpdateStatueAnimationSA(this, 31, 5));
@@ -767,7 +737,7 @@ namespace Server.Mobiles
 
         public override void OnDelete()
         {
-            Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 10, 15, 5042);
+            Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 10, 15, 5042);
 
             base.OnDelete();
         }
@@ -782,7 +752,7 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            this.Delete();
+            Delete();
         }
     }
 }
