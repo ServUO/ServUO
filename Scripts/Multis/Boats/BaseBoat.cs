@@ -908,8 +908,6 @@ namespace Server.Multis
                 from.SendLocalizedMessage(1116324); // The ship must be fully repaired before it can be docked!
             else if (result == DryDockResult.Cannon)
                 from.SendLocalizedMessage(1116323);  //You cannot dock the ship with loaded weapons on deck!
-            else if (result == DryDockResult.Cannon)
-                from.SendLocalizedMessage(1116322);  //The ship cannon must be fully repaired before it can be dismantled.
 
             if (result != DryDockResult.Valid)
                 return;

@@ -97,15 +97,15 @@ namespace Server.SkillHandlers
 
                     if (item.HonestyItem && item.HonestyOwner != null)
                     {
-                        //Mobile owner = World.Mobiles.Values.FirstOrDefault(m => m.Serial.ToString() == item.HonestyOwner);
-                        //Get correct messages in game
+                        string region = item.HonestyRegion == null ? "an unknown place" : item.HonestyRegion;
+
                         if (from.Skills.Forensics.Value >= 65)
                         {
-                            from.SendMessage(string.Format("This item belongs to {0} in {1}, {2}", item.HonestyOwner.Name, item.HonestyRegion, item.HonestyOwner.Map.Name));
+                            from.SendLocalizedMessage(1151521, String.Format("{0}\t{1}", item.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
                         }
                         else if (from.Skills.Forensics.Value >= 40)
                         {
-                            from.SendMessage(string.Format("This item belongs to someone in {0}, {1}", item.HonestyRegion, item.HonestyOwner.Map.Name));
+                            from.SendLocalizedMessage(1151522, region); // You find seeds from a familiar plant stuck to the item which suggests that this item is from ~1_val~.
                         }
 
                     }
