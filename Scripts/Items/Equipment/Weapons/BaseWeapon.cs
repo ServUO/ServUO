@@ -2033,8 +2033,9 @@ namespace Server.Items
 
 			TransformContext context = TransformationSpellHelper.GetContext(defender);
 
-			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver) && context != null &&
-				context.Spell is NecromancerSpell && context.Type != typeof(HorrificBeastSpell))
+			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver) 
+                && ((context != null && context.Spell is NecromancerSpell && context.Type != typeof(HorrificBeastSpell))
+                || (defender is BaseCreature && (defender.Body == 747 || defender.Body == 748 || defender.Body == 749 || defender.Hue == 0x847E))))
 			{
 				// Every necromancer transformation other than horrific beast takes an additional 25% damage
 				percentageBonus += 25;

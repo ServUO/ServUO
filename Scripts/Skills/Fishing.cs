@@ -754,7 +754,7 @@ namespace Server.Engines.Harvest
             0x1F4, 0x1F5,
             0x1F6, 0x1F7,
 
-            4846, 4847, 4849, 4850, 
+            4846, 4847, 4848, 4849, 4850, 
             4852, 4853, 4854, 4855, 4856, 4857, 4858, 4859, 4560, 4561, 4562,
             4864, 4865, 4866, 4867, 4868,
             4870, 4871, 4872, 4873, 4874,
@@ -996,13 +996,11 @@ namespace Server.Engines.Harvest
             {
                 MutateEntry entry = m_LavaMutateTable[i];
 
-                //if (!deepWater && entry.m_DeepWater)
-                //    continue;
-
                 if (skillBase >= entry.m_ReqSkill)
                 {
                     double chance = (skillValue - entry.m_MinSkill) / (entry.m_MaxSkill - entry.m_MinSkill);
-                    if (map != null && map.Rules == MapRules.FeluccaRules) //Lets honor RK's bump below!
+
+                    if (map != null && map.Rules == MapRules.FeluccaRules)
                         chance *= 1.5;
 
                     if (chance > Utility.RandomDouble())
@@ -1019,7 +1017,6 @@ namespace Server.Engines.Harvest
                                 wep.Attributes.Brittle = 1;
                                 wep.MaxHitPoints = 200;
                                 wep.HitPoints = 200;
-                                //wep.Hue = 1360;
 
                                 BaseRunicTool.ApplyAttributesTo(wep, Utility.Random(1, 4), 45, 100);
                                 from.AddToBackpack(wep);
