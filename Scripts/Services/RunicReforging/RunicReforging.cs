@@ -1660,9 +1660,9 @@ namespace Server.Items
 
                 budget += 100;
             }
-            else if (budget < 250) // lesser magic
+            else if (budget < 300) // lesser magic
             {
-                if (.85 > chance)
+                if (.90 > chance)
                     return;
 
                 switch (Utility.Random(8))
@@ -1679,9 +1679,9 @@ namespace Server.Items
 
                 budget += 100;
             }
-            else if (budget < 350) // greater magic
+            else if (budget < 400) // greater magic
             {
-                if (.66 > chance)
+                if (.75 > chance)
                     return;
 
                 if (.80 > chance)
@@ -1718,9 +1718,9 @@ namespace Server.Items
                 }
 
             }
-            else if (budget < max) // major magic
+            else if (budget < 550) // major magic
             {
-                if (.33 > chance)
+                if (.50 > chance)
                     return;
 
                 if (.40 > chance)
@@ -1756,7 +1756,7 @@ namespace Server.Items
                     budget += 150;
                 }
             }
-            else if (budget < max + 101) // lesser arty
+            else if (budget < 650) // lesser arty
             {
                 if (0.01 > chance)
                     return;
@@ -1777,7 +1777,7 @@ namespace Server.Items
                     budget += 150;
                 }
             }
-            else if (budget < 701) // greater arty
+            else if (budget < 750) // greater arty
             {
                 if (0.85 > chance)
                 {

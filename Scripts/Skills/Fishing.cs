@@ -354,7 +354,7 @@ namespace Server.Engines.Harvest
                         Item preLoot = null;
                         bool dredge = HasTypeHook(tool, HookType.Dredging);
 
-                        switch (Utility.Random(Core.HS ? 15 : 14))
+                        switch (Utility.Random(Core.HS ? 17 : 16))
                         {
                             case 0: // Body parts
                             case 1:
@@ -367,7 +367,7 @@ namespace Server.Engines.Harvest
                                         0x1CE2, 0x1CEC // leg
                                     };
 
-                                    preLoot = new ShipwreckedItem(Utility.RandomList(list));
+                                    preLoot = new ShipwreckedItem(Utility.RandomList(list), dredge);
                                     break;
                                 }
                             case 2: // Bone parts
@@ -380,25 +380,25 @@ namespace Server.Engines.Harvest
                                         0x1B15, 0x1B16 // pelvis bones
                                     };
 
-                                    preLoot = new ShipwreckedItem(Utility.RandomList(list));
+                                    preLoot = new ShipwreckedItem(Utility.RandomList(list), dredge);
                                     break;
                                 }
                             case 4: // Paintings and portraits
                             case 5:
                                 {
-                                    preLoot = new ShipwreckedItem(Utility.Random(0xE9F, 10));
+                                    preLoot = new ShipwreckedItem(Utility.Random(0xE9F, 10), dredge);
                                     break;
                                 }
                             case 6: // Pillows
                             case 7:
                                 {
-                                    preLoot = new ShipwreckedItem(Utility.Random(0x13A4, 11));
+                                    preLoot = new ShipwreckedItem(Utility.Random(0x13A4, 11), dredge);
                                     break;
                                 }
                             case 8: // Shells
                             case 9:
                                 {
-                                    preLoot = new ShipwreckedItem(Utility.Random(0xFC4, 9));
+                                    preLoot = new ShipwreckedItem(Utility.Random(0xFC4, 9), dredge);
                                     break;
                                 }
                             case 10: //Hats
@@ -426,7 +426,7 @@ namespace Server.Engines.Harvest
                                     if (Utility.Random(list.Length + 1) == 0)
                                         preLoot = new Candelabra();
                                     else
-                                        preLoot = new ShipwreckedItem(Utility.RandomList(list));
+                                        preLoot = new ShipwreckedItem(Utility.RandomList(list), dredge);
 
                                     break;
                                 }
@@ -567,12 +567,14 @@ namespace Server.Engines.Harvest
 
                 ((BigFish)item).Fisher = from;
             }
+
             #region Stygian Abyss
             else if (item is RedHerring)
                 from.SendLocalizedMessage(1095047, null, 0x23); // You take the Red Herring and put it into your pack.  The only thing more surprising than the fact that there is a fish called the Red Herring is the fact that you fished for it!
             else if (item is MudPuppy)
                 from.SendLocalizedMessage(1095064, null, 0x23); // You take the Mud Puppy and put it into your pack.  Not surprisingly, it is very muddy.
             #endregion
+
             else if (item is WoodenChest || item is MetalGoldenChest)
             {
                 from.SendLocalizedMessage(503175); // You pull up a heavy chest from the depths of the ocean!
