@@ -19,7 +19,7 @@ namespace Server.Engines.VendorSearhing
 
         public static List<VendorItem> DoSearch(Mobile m, SearchCriteria criteria)
         {
-            if (criteria == null)
+            if (criteria == null || PlayerVendor.PlayerVendors == null || PlayerVendor.PlayerVendors.Count == 0)
                 return null;
 
             List<VendorItem> list = new List<VendorItem>();
@@ -918,6 +918,11 @@ namespace Server.Engines.VendorSearhing
             {
                 d.Value = value;
             }
+        }
+
+        public bool IsEmpty
+        {
+            get { return Details.Count == 0 && MinPrice == 0 && MaxPrice == 175000000 && String.IsNullOrEmpty(SearchName) && SearchType == Layer.Invalid; }
         }
     }
 

@@ -839,7 +839,7 @@ namespace Server.Multis
             return base.CheckDryDock(from, dockmaster);
         }
 
-        protected override void OnDryDock()
+        public override void OnDryDock()
         {
             if (_InternalCannon == null)
                 _InternalCannon = new Dictionary<Item, Item>();
@@ -851,6 +851,8 @@ namespace Server.Multis
                     if (pad != null)
                         _InternalCannon[c] = pad;
                 });
+
+            base.OnDryDock();
         }
 
         public override void SetFacingComponents(Direction newDirection, Direction oldDirection, bool ignoreLastDirection)

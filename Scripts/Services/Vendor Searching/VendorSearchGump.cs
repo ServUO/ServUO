@@ -35,7 +35,7 @@ namespace Server.Engines.VendorSearhing
             AddGumpLayout();
         }
 
-        public void AddGumpLayout(bool nofind = false)
+        public void AddGumpLayout(bool nofind = false, bool nocrit = false)
         {
             AddBackground(0, 0, 780, 570, 30546);
             AddBackground(10, 45, 250, 22, 9350);
@@ -143,7 +143,9 @@ namespace Server.Engines.VendorSearhing
             AddButton(10, 540, 30533, 30535, 0, GumpButtonType.Reply, 0);
 
             if (nofind)
-                AddHtmlLocalized(125, 540, 200, 16, 1154587, C32216(0xFF0000), false, false);
+                AddHtmlLocalized(125, 540, 400, 16, 1154587, C32216(0xFF0000), false, false); // No items matched your search.
+            else if (nocrit)
+                AddHtmlLocalized(125, 540, 400, 16, 1154586, C32216(0xFF0000), false, false); // Please select some criteria to search for.
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
@@ -209,14 +211,22 @@ namespace Server.Engines.VendorSearhing
                     break;
                 case 6: // Search
                     User.CloseGump(typeof(SearchResultsGump));
-                    List<VendorItem> list = VendorSearch.DoSearch(User, Criteria);
 
-                    if (list == null || list.Count == 0)
-                        Refresh(true);
+                    if (Criteria.IsEmpty)
+                    {
+                        Refresh(false, true);
+                    }
                     else
                     {
-                        Refresh();
-                        User.SendGump(new SearchResultsGump(User, list));
+                        List<VendorItem> list = VendorSearch.DoSearch(User, Criteria);
+
+                        if (list == null || list.Count == 0)
+                            Refresh(true);
+                        else
+                        {
+                            Refresh();
+                            User.SendGump(new SearchResultsGump(User, list));
+                        }
                     }
                     break;
                 case 7: // remove item name
@@ -275,11 +285,11 @@ namespace Server.Engines.VendorSearhing
             return String.Format("{0}%", value.ToString());
         }
 
-        public void Refresh(bool nofind = false)
+        public void Refresh(bool nofind = false, bool nocrit = false)
         {
             Entries.Clear();
             Entries.TrimExcess();
-            AddGumpLayout(nofind);
+            AddGumpLayout(nofind, nocrit);
             User.CloseGump(this.GetType());
             User.SendGump(this, false);
         }
