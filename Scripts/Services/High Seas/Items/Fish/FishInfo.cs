@@ -77,8 +77,8 @@ namespace Server.Items
         public double BaseChance { get { return m_BaseChance; } }
         public double MinSkill { get { return m_MinSkill; } }
 
-        public static readonly double RareChance = 0.01;
-        public static readonly double LegendaryChance = 0.005;
+        public static readonly double RareChance = 0.0075;
+        public static readonly double LegendaryChance = 0.001;
 
         public static bool m_InvalidatedLocations;
 
@@ -303,17 +303,17 @@ namespace Server.Items
                     if (loc.ToLower() == "cannotfishup")
                         continue;
 
-                    if (loc.ToLower() == "t2a" && Server.Spells.SpellHelper.IsAnyT2A(map, fromLoc) && info.Roll(baitStr, bump))
+                    if (loc.ToLower() == "t2a" && Server.Spells.SpellHelper.IsAnyT2A(map, fromLoc) && info.Roll(from, baitStr, bump))
                         item = info.Type;
 
-                    if (loc.ToLower() == "trammelandfelucca" && (map == Map.Trammel || map == Map.Felucca) && !Server.Spells.SpellHelper.IsAnyT2A(map, fromLoc) && info.Roll(baitStr, bump))
+                    if (loc.ToLower() == "trammelandfelucca" && (map == Map.Trammel || map == Map.Felucca) && !Server.Spells.SpellHelper.IsAnyT2A(map, fromLoc) && info.Roll(from, baitStr, bump))
                         item = info.Type;
 
                     if (loc.ToLower() == "fire island" && (map == Map.Felucca || map == Map.Trammel) && (from.X > 4559 && from.X < 4636 && from.Y > 3548 && from.Y < 3627
-                        || from.X > 4465 && from.X < 4493 && from.Y > 4479 && from.Y < 3746) && info.Roll(baitStr, bump))
+                        || from.X > 4465 && from.X < 4493 && from.Y > 4479 && from.Y < 3746) && info.Roll(from, baitStr, bump))
                         item = info.Type;
 
-                    if (from.Region != null && from.Region.IsPartOf(loc) && info.Roll(baitStr, bump))
+                    if (from.Region != null && from.Region.IsPartOf(loc) && info.Roll(from, baitStr, bump))
                         item = info.Type;
 
                 }
@@ -321,7 +321,7 @@ namespace Server.Items
                 {
                     Map locMap = (Map)info.Location;
 
-                    if (map == locMap && info.Roll(baitStr, bump))
+                    if (map == locMap && info.Roll(from, baitStr, bump))
                         item = info.Type;
                 }
             }
@@ -382,9 +382,11 @@ namespace Server.Items
             return str;
         }
 
-        public bool Roll(double baitStr, double bump)
+        public bool Roll(Mobile from, double baitStr, double bump)
         {
-            return (BaseChance + bump) * baitStr > Utility.RandomDouble();
+            double baseChance = MagicalFishFinder.HasSchool(from) ? BaseChance * 10 : BaseChance;
+
+            return (baseChance + bump) * baitStr > Utility.RandomDouble();
         }
 
         public static bool IsDeepWater(Point3D pnt, Map map, Region region)

@@ -213,6 +213,7 @@ namespace Server.Items
         private static readonly Rectangle2D[] m_BritRegions = new Rectangle2D[] { new Rectangle2D(0, 0, 5120, 4096) };
         private static readonly Rectangle2D[] m_IlshRegions = new Rectangle2D[] { new Rectangle2D(1472, 272, 304, 240), new Rectangle2D(1240, 1000, 312, 160) };
         private static readonly Rectangle2D[] m_MalasRegions = new Rectangle2D[] { new Rectangle2D(1376, 1520, 464, 280) };
+        private static readonly Rectangle2D[] m_TokunoRegions = new Rectangle2D[] { new Rectangle2D(10, 10, 1440, 1440) };
 
         public static Point3D FindLocation(Map map)
         {
@@ -227,6 +228,8 @@ namespace Server.Items
                 regions = m_IlshRegions;
             else if (map == Map.Malas)
                 regions = m_MalasRegions;
+            else if (map == Map.Tokuno)
+                regions = m_TokunoRegions;
             else
                 regions = new Rectangle2D[] { new Rectangle2D(0, 0, map.Width, map.Height) };
 

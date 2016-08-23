@@ -116,14 +116,14 @@ namespace Server.Engines.VendorSearhing
 
             for (int i = 0; i < Criteria.Details.Count; i++)
             {
-                AddButton(520, 45 + (i * 22), 4017, 4019, 300 + i, GumpButtonType.Reply, 0);
+                AddButton(520, y + (i * 22), 4017, 4019, 300 + i, GumpButtonType.Reply, 0);
                 AddTooltip(1154694); // Remove Selected Search Criteria
 
-                AddHtmlLocalized(560, 45 + (i * 22), 215, 20, Criteria.Details[i].Label, C32216(CriteriaColor), false, false);
+                AddHtmlLocalized(560, y + (i * 22), 215, 20, Criteria.Details[i].Label, C32216(CriteriaColor), false, false);
 
                 if (Criteria.Details[i].Value > 0)
                 {
-                    AddHtml(720, 45 + (i * 22), 60, 20, String.Format("<basefont color=#F5DEB3>{0}", FormatValue(Criteria.Details[i].Attribute, Criteria.Details[i].Value)), false, false);
+                    AddHtml(720, y + (i * 22), 60, 20, String.Format("<basefont color=#F5DEB3>{0}", FormatValue(Criteria.Details[i].Attribute, Criteria.Details[i].Value)), false, false);
                 }
             }
 

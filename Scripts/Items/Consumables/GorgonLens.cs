@@ -71,7 +71,7 @@ namespace Server.Items
                             from.SendGump(new GorgonLenseWarningGump(this, armor));
                         else
                         {
-                            armor.GorgonLenseCharges = Amount;
+                            armor.GorgonLenseCharges += Amount;
                             armor.GorgonLenseType = LenseType;
                             from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                             Delete();
@@ -89,7 +89,7 @@ namespace Server.Items
                             from.SendGump(new GorgonLenseWarningGump(this, j));
                         else
                         {
-                            j.GorgonLenseCharges = Amount;
+                            j.GorgonLenseCharges += Amount;
                             j.GorgonLenseType = LenseType;
                             from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                             Delete();
@@ -107,7 +107,7 @@ namespace Server.Items
                             from.SendGump(new GorgonLenseWarningGump(this, c));
                         else
                         {
-                            c.GorgonLenseCharges = Amount;
+                            c.GorgonLenseCharges += Amount;
                             c.GorgonLenseType = LenseType;
                             from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                             Delete();

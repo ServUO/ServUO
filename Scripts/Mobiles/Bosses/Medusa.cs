@@ -18,6 +18,7 @@ namespace Server.Mobiles
         private int m_Scales;
         private DateTime m_GazeDelay;
         private DateTime m_StoneDelay;
+        private DateTime m_NextCarve;
 
         [Constructable]
         public Medusa()
@@ -63,7 +64,7 @@ namespace Server.Mobiles
             Bow.Movable = false;
             AddItem(Bow);
 
-            m_Scales = Utility.Random(5) + 1;
+            m_Scales = Utility.RandomMinMax(1, 2) + 7;
         }
 
         public Medusa(Serial serial)
@@ -92,7 +93,7 @@ namespace Server.Mobiles
         {
             int amount = Utility.Random(5) + 1;
 
-            corpse.DropItem(new MedusaLightScales(amount));
+            corpse.DropItem(new MedusaDarkScales(amount));
 
             if(0.20 > Utility.RandomDouble())
                 corpse.DropItem(new MedusaBlood());
@@ -273,14 +274,37 @@ namespace Server.Mobiles
 
         public void Carve(Mobile from, Item item)
         {
-            if (m_Scales > 0 && from.Backpack != null)
+            if (m_Scales > 0)
             {
-                new Blood(0x122D).MoveToWorld(Location, Map);
-                from.AddToBackpack(new MedusaDarkScales(Utility.Random(3) + 1));
-                from.SendLocalizedMessage(1114098); // You cut away some scales and put them in your backpack.
-                Combatant = from;
-                --m_Scales;
+                if (DateTime.UtcNow < m_NextCarve)
+                {
+                    from.SendLocalizedMessage(1112677); // The creature is still recovering from the previous harvest. Try again in a few seconds.
+                }
+                else
+                {
+                    int amount = Math.Min(m_Scales, Utility.RandomMinMax(2, 3));
+
+                    m_Scales -= amount;
+
+                    Item scales = new MedusaLightScales(amount);
+
+                    if (from.PlaceInBackpack(scales))
+                    {
+                        // You harvest magical resources from the creature and place it in your bag.
+                        from.SendLocalizedMessage(1112676);
+                    }
+                    else
+                    {
+                        scales.MoveToWorld(from.Location, from.Map);
+                    }
+
+                    new Blood(0x122D).MoveToWorld(Location, Map);
+
+                    m_NextCarve = DateTime.UtcNow + TimeSpan.FromMinutes(1.0);
+                }
             }
+            else
+                from.SendLocalizedMessage(1112674); // There's nothing left to harvest from this creature.
         }
 
         public override void OnThink()

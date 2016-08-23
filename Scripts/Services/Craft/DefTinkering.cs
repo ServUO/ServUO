@@ -414,7 +414,7 @@ namespace Server.Engines.Craft
             if (Core.HS)
             {
                 index = AddCraft(typeof(Matches), 1044050, 1096648, 15.0, 70.0, typeof(Matchcord), 1095184, 10, 1044367);
-                AddRes(index, typeof(Log), 1044041, 4, 1044351);
+                AddRes(index, typeof(Board), 1044041, 4, 1044351);
                 SetNeededExpansion(index, Expansion.HS);
             }
             #endregion

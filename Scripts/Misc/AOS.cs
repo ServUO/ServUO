@@ -242,94 +242,6 @@ namespace Server
             return totalDamage;
         }
 
-        /*public static void DamageEater(Mobile m, int[] damage)
-        {
-            int alleater = SAAbsorptionAttributes.GetValue(m, SAAbsorptionAttribute.EaterDamage);
-            int toheal = 0, eater = 0;
-
-            if (alleater > 18)
-                alleater = 18;
-
-            for (int i = 0; i < damage.Length; i++)
-            {
-                eater = alleater;
-
-                switch (i)
-                {
-                    case 0:
-                        eater += SAAbsorptionAttributes.GetValue(m, SAAbsorptionAttribute.EaterFire);
-                        break;
-                    case 1:
-                        eater += SAAbsorptionAttributes.GetValue(m, SAAbsorptionAttribute.EaterCold);
-                        break;
-                    case 2:
-                        eater += SAAbsorptionAttributes.GetValue(m, SAAbsorptionAttribute.EaterPoison);
-                        break;
-                    case 3:
-                        eater += SAAbsorptionAttributes.GetValue(m, SAAbsorptionAttribute.EaterEnergy);
-                        break;
-                    case 4:
-                        eater += SAAbsorptionAttributes.GetValue(m, SAAbsorptionAttribute.EaterKinetic);
-                        break;
-                }
-
-                if (eater > 30)
-                    eater = 30;
-
-                if (eater == 0)
-                    continue;
-
-                toheal += (Scale(damage[i], (100 + eater)));
-            }
-
-            if (toheal != 0)
-            {
-                m.SendLocalizedMessage(1113617); // Some of the damage you received has been converted to heal you.
-                m.Heal(toheal);
-            }
-        }*/
-
-        /*public static void SoulCharge(Mobile m, int[] damage)
-        {
-            int charge = 0, mana = 0;
-
-            for (int i = 0; i < damage.Length; i++)
-            {
-                switch (i)
-                {
-                    case 0:
-                        charge = SAAbsorptionAttributes.GetValue(m, SAAbsorptionAttribute.SoulChargeFire);
-                        break;
-                    case 1:
-                        charge = SAAbsorptionAttributes.GetValue(m, SAAbsorptionAttribute.SoulChargeCold);
-                        break;
-                    case 2:
-                        charge = SAAbsorptionAttributes.GetValue(m, SAAbsorptionAttribute.SoulChargePoison);
-                        break;
-                    case 3:
-                        charge = SAAbsorptionAttributes.GetValue(m, SAAbsorptionAttribute.SoulChargeEnergy);
-                        break;
-                    case 4:
-                        charge = SAAbsorptionAttributes.GetValue(m, SAAbsorptionAttribute.SoulChargeKinetic);
-                        break;
-                }
-
-                if (charge > 30)
-                    charge = 30;
-
-                if (charge == 0)
-                    continue;
-
-                mana += (Scale(damage[i], (100 + charge)));
-            }
-
-            if (mana > 0)
-            {
-                m.SendLocalizedMessage(1113636); // The soul charge effect converts some of the damage you received into mana.
-                m.Mana += charge;
-            }
-        }*/
-
         public static void Fix(ref int val)
         {
             if (val < 0)
@@ -1252,6 +1164,29 @@ namespace Server
             }
 
             return (value);
+        }
+
+        public void ScaleLeech(BaseWeapon wep, int weaponSpeed)
+        {
+            if (HitLeechHits > 0)
+            {
+                int hits = HitLeechHits;
+
+                hits = ((int)wep.MlSpeed * 2500) / (100 + weaponSpeed);
+
+                if(HitLeechHits > hits)
+                    HitLeechHits = hits;
+            }
+
+            if (this[AosWeaponAttribute.HitLeechMana] > 0)
+            {
+                int mana = HitLeechMana;
+
+                mana = ((int)wep.MlSpeed * 2500) / (100 + weaponSpeed);
+
+                if(HitLeechMana > mana)
+                    HitLeechMana = mana;
+            }
         }
 
         public override string ToString()
@@ -2860,6 +2795,10 @@ namespace Server
                     ((BaseArmor)this.m_Owner).UnscaleDurability();
                 else if (this.m_Owner is BaseClothing)
                     ((BaseClothing)this.m_Owner).UnscaleDurability();
+            }
+            else if (Core.SA && bitmask == (int)AosAttribute.WeaponSpeed && m_Owner is BaseWeapon)
+            {
+                ((BaseWeapon)m_Owner).WeaponAttributes.ScaleLeech((BaseWeapon)m_Owner, value);
             }
 
             uint mask = (uint)bitmask;

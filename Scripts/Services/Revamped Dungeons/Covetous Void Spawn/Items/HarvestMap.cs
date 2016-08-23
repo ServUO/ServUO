@@ -13,6 +13,7 @@ namespace Server.Items
 
         private CraftResource _Resource;
         private int _UsesRemaining;
+        private Timer m_Timer;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
@@ -70,13 +71,13 @@ namespace Server.Items
             ShowUsesRemaining = true;
 
             Expires = DateTime.UtcNow + TimeSpan.FromHours(DecayPeriod);
-            Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), CheckDecay);
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), CheckDecay);
         }
 
         public void CheckDecay()
         {
             if (Expires < DateTime.UtcNow)
-                Delete();
+                Decay();
             else
                 InvalidateProperties();
         }
@@ -102,6 +103,17 @@ namespace Server.Items
             }
 
             Delete();
+        }
+
+        public override void Delete()
+        {
+            base.Delete();
+
+            if (m_Timer != null)
+            {
+                m_Timer.Stop();
+                m_Timer = null;
+            }
         }
 
         public override void AddNameProperty(ObjectPropertyList list)
@@ -279,6 +291,8 @@ namespace Server.Items
 
             if (Expires < DateTime.UtcNow)
                 Decay();
+            else
+                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), CheckDecay);
         }
     }
 }

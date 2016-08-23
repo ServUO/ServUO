@@ -1164,7 +1164,7 @@ namespace Server.SkillHandlers
 
             if (wepAttrs != null)
                 foreach (long i in Enum.GetValues(typeof(AosWeaponAttribute)))
-                    weight += GetIntensityForAttribute((AosWeaponAttribute)i, mod, wepAttrs[(AosWeaponAttribute)i]);
+                    weight += GetIntensityForAttribute((AosWeaponAttribute)i, mod, wepAttrs[(AosWeaponAttribute)i], item as BaseWeapon);
 
             if (saAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
@@ -1695,7 +1695,7 @@ namespace Server.SkillHandlers
             return 0;
         }
 
-        public static int GetIntensityForAttribute(object attr, int checkMod, int value)
+        public static int GetIntensityForAttribute(object attr, int checkMod, int value, BaseWeapon wep = null)
         {
             if (value <= 0)
                 return 0;
@@ -1703,7 +1703,20 @@ namespace Server.SkillHandlers
             int mod = GetMod(attr);
 
             if (mod != checkMod && m_Table.ContainsKey(mod))
-                return (int)(((double)m_Table[mod].Weight / (double)m_Table[mod].MaxIntensity) * (double)value);
+            {
+                double max;
+
+                if (wep != null && attr is AosWeaponAttribute && (mod == 25 || mod == 27))
+                {
+                    max = GetPropRange(wep, (AosWeaponAttribute)attr)[1];
+                }
+                else
+                {
+                    max = (double)m_Table[mod].MaxIntensity;
+                }
+
+                return (int)(((double)m_Table[mod].Weight / max) * (double)value);
+            }
 
             return 0;
         }
@@ -1907,8 +1920,19 @@ namespace Server.SkillHandlers
             }
         }
 
-        public static int[] GetPropRange(AosWeaponAttribute attr)
+        public static int[] GetPropRange(Item item, AosWeaponAttribute attr)
         {
+            if (Core.SA && item is BaseWeapon && (attr == AosWeaponAttribute.HitLeechHits || attr == AosWeaponAttribute.HitLeechMana))
+            {
+                BaseWeapon wep = item as BaseWeapon;
+
+                int max = ((int)wep.MlSpeed * 2500) / (100 + wep.Attributes.WeaponSpeed);
+
+                double mod = wep is BaseRanged ? 2 : 1;
+
+                return new int[] { 2, (int)(max / mod) };
+            }
+
             switch (attr)
             {
                 case AosWeaponAttribute.DurabilityBonus:

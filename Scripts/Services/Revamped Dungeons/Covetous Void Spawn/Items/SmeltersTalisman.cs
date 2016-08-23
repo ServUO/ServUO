@@ -65,7 +65,7 @@ namespace Server.Items
         public void CheckDecay()
         {
             if (Expires < DateTime.UtcNow)
-                Delete();
+                Decay();
             else
                 InvalidateProperties();
         }

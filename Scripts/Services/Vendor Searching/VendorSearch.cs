@@ -10,6 +10,7 @@ using System.Text;
 using Server.Commands;
 using Server.Targeting;
 using System.Text.RegularExpressions;
+using Server.Regions;
 
 namespace Server.Engines.VendorSearhing
 {
@@ -462,7 +463,11 @@ namespace Server.Engines.VendorSearhing
 
         public static void Initialize()
         {
-            StringList = new Ultima.StringList("enu");
+            try
+            {
+                StringList = new Ultima.StringList("enu");
+            }
+            catch { }
 
             CommandSystem.Register("GetOPLString", AccessLevel.Administrator, e =>
                 {
@@ -590,7 +595,7 @@ namespace Server.Engines.VendorSearhing
 
         public static string GetItemName(Item item)
         {
-            if (item.Name != null)
+            if (StringList == null || item.Name != null)
                 return item.Name;
 
             ObjectPropertyList opl = new ObjectPropertyList(item);
@@ -740,6 +745,16 @@ namespace Server.Engines.VendorSearhing
                 return true;
 
             return Imbuing.GetMaxValue(o) > 1;
+        }
+
+        public static bool CanSearch(Mobile m)
+        {
+            Region r = m.Region;
+
+            if (r.GetLogoutDelay(m) == TimeSpan.Zero)
+                return true;
+
+            return r is GuardedRegion && !((GuardedRegion)r).Disabled;
         }
 	}
 
@@ -951,12 +966,12 @@ namespace Server.Engines.VendorSearhing
         {
             Player = pm;
 
-            Enabled = pm.Region.GetLogoutDelay(pm) == TimeSpan.Zero;
+            Enabled = VendorSearch.CanSearch(pm);
         }
 
         public override void OnClick()
         {
-            if (Player.Region.GetLogoutDelay(Player) == TimeSpan.Zero)
+            if (VendorSearch.CanSearch(Player))
             {
                 Player.SendGump(new VendorSearchGump(Player));
             }
