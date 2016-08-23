@@ -9362,6 +9362,7 @@
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\CauldronOfTransmutation.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\HarvestMap.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\Hephaestus.cs" />
+    <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\MagicFishFinder.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\PrismaticLenses.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\SmeltersTalisman.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Items\TemporaryForge.cs" />
