@@ -85,7 +85,7 @@ namespace Server.Engines.Harvest
 
             res = new HarvestResource[]
             {
-                new HarvestResource(00.0, 00.0, 100.0, 1043297, typeof(Fish))
+                new HarvestResource(00.0, 00.0, 120.0, 1043297, typeof(Fish))
             };
 
             veins = new HarvestVein[]
@@ -100,8 +100,8 @@ namespace Server.Engines.Harvest
             {
                 fish.BonusResources = new BonusHarvestResource[]
                 {
-                    	new BonusHarvestResource(0, 99.4, null, null), //set to same chance as mining ml gems
-			new BonusHarvestResource(80.0, .3, 1113764, typeof(DelicateScales)),
+                    new BonusHarvestResource(0, 99.4, null, null), //set to same chance as mining ml gems
+			        new BonusHarvestResource(80.0, .3, 1113764, typeof(DelicateScales)),
                 	new BonusHarvestResource(80.0, .3, 1072597, typeof(WhitePearl))
                 };
             }
@@ -334,6 +334,10 @@ namespace Server.Engines.Harvest
             {
                 return new MessageInABottle(from.Map == Map.Felucca ? Map.Felucca : Map.Trammel);
             }
+            else if (type == typeof(WhitePearl))
+            {
+                return new WhitePearl();
+            }
 
             Container pack = from.Backpack;
 
@@ -350,7 +354,7 @@ namespace Server.Engines.Harvest
                         Item preLoot = null;
                         bool dredge = HasTypeHook(tool, HookType.Dredging);
 
-                        switch (Utility.Random(Core.HS ? 15 : 14))
+                        switch (Utility.Random(Core.HS ? 17 : 16))
                         {
                             case 0: // Body parts
                             case 1:
@@ -363,7 +367,7 @@ namespace Server.Engines.Harvest
                                         0x1CE2, 0x1CEC // leg
                                     };
 
-                                    preLoot = new ShipwreckedItem(Utility.RandomList(list));
+                                    preLoot = new ShipwreckedItem(Utility.RandomList(list), dredge);
                                     break;
                                 }
                             case 2: // Bone parts
@@ -376,25 +380,25 @@ namespace Server.Engines.Harvest
                                         0x1B15, 0x1B16 // pelvis bones
                                     };
 
-                                    preLoot = new ShipwreckedItem(Utility.RandomList(list));
+                                    preLoot = new ShipwreckedItem(Utility.RandomList(list), dredge);
                                     break;
                                 }
                             case 4: // Paintings and portraits
                             case 5:
                                 {
-                                    preLoot = new ShipwreckedItem(Utility.Random(0xE9F, 10));
+                                    preLoot = new ShipwreckedItem(Utility.Random(0xE9F, 10), dredge);
                                     break;
                                 }
                             case 6: // Pillows
                             case 7:
                                 {
-                                    preLoot = new ShipwreckedItem(Utility.Random(0x13A4, 11));
+                                    preLoot = new ShipwreckedItem(Utility.Random(0x13A4, 11), dredge);
                                     break;
                                 }
                             case 8: // Shells
                             case 9:
                                 {
-                                    preLoot = new ShipwreckedItem(Utility.Random(0xFC4, 9));
+                                    preLoot = new ShipwreckedItem(Utility.Random(0xFC4, 9), dredge);
                                     break;
                                 }
                             case 10: //Hats
@@ -422,7 +426,7 @@ namespace Server.Engines.Harvest
                                     if (Utility.Random(list.Length + 1) == 0)
                                         preLoot = new Candelabra();
                                     else
-                                        preLoot = new ShipwreckedItem(Utility.RandomList(list));
+                                        preLoot = new ShipwreckedItem(Utility.RandomList(list), dredge);
 
                                     break;
                                 }
@@ -545,7 +549,6 @@ namespace Server.Engines.Harvest
                 {
                     fish.Fisher = m;
                     fish.DateCaught = DateTime.Now;
-                    //fish.Weight = Utility.RandomMinMax(10, 200);
                     fish.Stackable = false;
 
                     fish.Weight = Math.Max(1, 200 - (int)Math.Sqrt(Utility.RandomMinMax(0, 40000)));
@@ -564,12 +567,14 @@ namespace Server.Engines.Harvest
 
                 ((BigFish)item).Fisher = from;
             }
+
             #region Stygian Abyss
             else if (item is RedHerring)
                 from.SendLocalizedMessage(1095047, null, 0x23); // You take the Red Herring and put it into your pack.  The only thing more surprising than the fact that there is a fish called the Red Herring is the fact that you fished for it!
             else if (item is MudPuppy)
                 from.SendLocalizedMessage(1095064, null, 0x23); // You take the Mud Puppy and put it into your pack.  Not surprisingly, it is very muddy.
             #endregion
+
             else if (item is WoodenChest || item is MetalGoldenChest)
             {
                 from.SendLocalizedMessage(503175); // You pull up a heavy chest from the depths of the ocean!
@@ -613,21 +618,20 @@ namespace Server.Engines.Harvest
                 {
                     if (FishInfo.IsRareFish(item.GetType()))
                     {
-                        from.SendMessage("You pull out a rare fish!");
+                        from.SendLocalizedMessage(1043297, "a rare fish");
+                    }
+                    else if (item.LabelNumber < 1)
+                    {
+                        from.SendLocalizedMessage(1043297, "a fish");
                     }
                     else
-                    {
-                        number = 1043297;      //You pull out an item : ~1_val~
-                        int label = item.LabelNumber;
+                        from.SendLocalizedMessage(1043297, String.Format("#{0}", item.LabelNumber));
 
-                        if (label < 1)
-                        {
-                            from.SendLocalizedMessage(number, "a fish");
-                        }
-                        else
-                            from.SendLocalizedMessage(number, String.Format("#{0}\t", (int)label));
-                    }
-
+                    return;
+                }
+                else if (item.LabelNumber > 0)
+                {
+                    from.SendLocalizedMessage(1043297, String.Format("#{0}", item.LabelNumber));
                     return;
                 }
                 else
@@ -750,7 +754,7 @@ namespace Server.Engines.Harvest
             0x1F4, 0x1F5,
             0x1F6, 0x1F7,
 
-            4846, 4847, 4849, 4850, 
+            4846, 4847, 4848, 4849, 4850, 
             4852, 4853, 4854, 4855, 4856, 4857, 4858, 4859, 4560, 4561, 4562,
             4864, 4865, 4866, 4867, 4868,
             4870, 4871, 4872, 4873, 4874,
@@ -992,13 +996,11 @@ namespace Server.Engines.Harvest
             {
                 MutateEntry entry = m_LavaMutateTable[i];
 
-                //if (!deepWater && entry.m_DeepWater)
-                //    continue;
-
                 if (skillBase >= entry.m_ReqSkill)
                 {
                     double chance = (skillValue - entry.m_MinSkill) / (entry.m_MaxSkill - entry.m_MinSkill);
-                    if (map != null && map.Rules == MapRules.FeluccaRules) //Lets honor RK's bump below!
+
+                    if (map != null && map.Rules == MapRules.FeluccaRules)
                         chance *= 1.5;
 
                     if (chance > Utility.RandomDouble())
@@ -1015,7 +1017,6 @@ namespace Server.Engines.Harvest
                                 wep.Attributes.Brittle = 1;
                                 wep.MaxHitPoints = 200;
                                 wep.HitPoints = 200;
-                                //wep.Hue = 1360;
 
                                 BaseRunicTool.ApplyAttributesTo(wep, Utility.Random(1, 4), 45, 100);
                                 from.AddToBackpack(wep);

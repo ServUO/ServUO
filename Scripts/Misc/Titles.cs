@@ -9,7 +9,7 @@ namespace Server.Misc
     public class Titles
     {
         public const int MinFame = 0;
-        public const int MaxFame = 15000;
+        public const int MaxFame = 32000;
 
         public static void AwardFame(Mobile m, int offset, bool message)
         {
@@ -62,8 +62,8 @@ namespace Server.Misc
             }
         }
 
-        public const int MinKarma = -15000;
-        public const int MaxKarma = 15000;
+        public const int MinKarma = -32000;
+        public const int MaxKarma = 32000;
 
         public static void AwardKarma(Mobile m, int offset, bool message)
         {

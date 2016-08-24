@@ -59,6 +59,14 @@ namespace Server.Multis
             m_BoatItem = boat;
 		}
 
+        public override void OnAfterDelete()
+        {
+            base.OnAfterDelete();
+
+            if (m_BoatItem != null && !m_BoatItem.Deleted)
+                m_BoatItem.Delete();
+        }
+
 		public BaseDockedBoat( Serial serial ) : base( serial )
 		{
 		}
@@ -233,6 +241,16 @@ namespace Server.Multis
 					boat.MoveToWorld( p, map );
                     boat.OnPlacement();
                     boat.Refresh();
+
+                    var addon = LighthouseAddon.GetLighthouse(from);
+
+                    if (addon != null)
+                    {
+                        if (boat.CanLinkToLighthouse)
+                            from.SendLocalizedMessage(1154592); // You have linked your boat lighthouse.
+                        else
+                            from.SendLocalizedMessage(1154597); // Failed to link to lighthouse.
+                    }
 
                     if (boat.IsClassicBoat)
                     {

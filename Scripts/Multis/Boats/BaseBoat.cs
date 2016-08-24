@@ -209,6 +209,7 @@ namespace Server.Multis
         public virtual double TurnDelay { get { return 0.5; } }
         public virtual bool Scuttled { get { return false; } }
         public virtual TimeSpan BoatDecayDelay { get { return TimeSpan.FromDays(9); } }
+        public virtual bool CanLinkToLighthouse { get { return true; } }
 
         #region IMount Members
         public Mobile Rider { get { return m_Pilot; } set { m_Pilot = value; } }
@@ -529,6 +530,9 @@ namespace Server.Multis
 
             if (m_SecureContainer != null)
                 m_SecureContainer.Delete();
+
+            if (m_DockedBoat != null && !m_DockedBoat.Deleted)
+                m_DockedBoat.Delete();
 
             m_Instances.Remove(this);
 
@@ -908,8 +912,6 @@ namespace Server.Multis
                 from.SendLocalizedMessage(1116324); // The ship must be fully repaired before it can be docked!
             else if (result == DryDockResult.Cannon)
                 from.SendLocalizedMessage(1116323);  //You cannot dock the ship with loaded weapons on deck!
-            else if (result == DryDockResult.Cannon)
-                from.SendLocalizedMessage(1116322);  //The ship cannon must be fully repaired before it can be dismantled.
 
             if (result != DryDockResult.Valid)
                 return;
@@ -935,8 +937,14 @@ namespace Server.Multis
             this.Internalize();
         }
 
-        protected virtual void OnDryDock()
+        public virtual void OnDryDock()
         {
+            var addon = LighthouseAddon.GetLighthouse(Owner);
+
+            if (addon != null && Owner != null && Owner.NetState != null)
+            {
+                Owner.SendLocalizedMessage(1154594); // You have unlinked your ship from your lighthouse.
+            }
         }
 
         public void SetName(SpeechEventArgs e)
@@ -2332,7 +2340,7 @@ namespace Server.Multis
             {
                 if (m_Count == 5)
                 {
-                    m_Boat.Delete();
+                    m_Boat.OnSink();
                     Stop();
                 }
                 else
@@ -2381,6 +2389,29 @@ namespace Server.Multis
             }
 
             return false;
+        }
+
+        public virtual void OnSink()
+        {
+            m_Decaying = false;
+
+            if (CanLinkToLighthouse)
+            {
+                var addon = LighthouseAddon.GetLighthouse(Owner);
+
+                if (addon != null)
+                {
+                    BaseHouse house = BaseHouse.FindHouseAt(addon);
+
+                    if (house != null)
+                    {
+                        addon.DockBoat(this, house);
+                        return;
+                    }
+                }
+            }
+
+            Delete();
         }
 
         /*

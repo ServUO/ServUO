@@ -137,8 +137,9 @@ namespace Server.Items
                     Server.Spells.SpellHelper.GetSurfaceTop(ref p);
 
                     BaseHouse house = null;
+                    BaseGalleon boat = null;
 
-                    AddonFitResult res = addon.CouldFit(p, map, from, ref house);
+                    AddonFitResult res = addon.CouldFit(p, map, from, ref house, ref boat);
 
                     if (res == AddonFitResult.Valid)
                         addon.MoveToWorld(new Point3D(p), map);
@@ -163,7 +164,10 @@ namespace Server.Items
 
                         this.m_Deed.DeleteDeed();
 
-                        house.Addons.Add(addon);
+                        if (house != null)
+                            house.Addons.Add(addon);
+                        else if (boat != null)
+                            boat.AddAddon(addon);
                     }
                     else
                     {

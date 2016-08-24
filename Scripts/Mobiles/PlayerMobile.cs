@@ -786,30 +786,22 @@ namespace Server.Mobiles
             {
                 return 100;
             }
- 
-            int max = base.GetMaxResistance(type);
-            
-            #region Stygian Abyss
-            int stoneformOffset = 0;
-            if (Core.SA)
-            {
-                stoneformOffset = Spells.Mystic.StoneFormSpell.GetMaxResistMod(this);
-                max += BaseArmor.GetRefinedResist(this, type);
-            }
 
-            if (type != ResistanceType.Physical && 60 < max && CurseSpell.UnderEffect(this))
-            {
-                max = 60;
-                stoneformOffset = 0;
-            }
+            int max = base.GetMaxResistance(type);
+
+            #region SA
+            max += Spells.Mystic.StoneFormSpell.GetMaxResistMod(this);
             #endregion
 
-            if (Core.ML && Race == Race.Elf && type == ResistanceType.Energy)
-            {
+            max += BaseArmor.GetRefinedResist(this, type);
+
+            if (type != ResistanceType.Physical && 60 < max && Spells.Fourth.CurseSpell.UnderEffect(this))
+                max = 60;
+
+            if (Core.ML && this.Race == Race.Elf && type == ResistanceType.Energy)
                 max += 5; //Intended to go after the 60 max from curse
-            }
- 
-            return Math.Max(MinPlayerResistance + stoneformOffset, Math.Max(MaxPlayerResistance + stoneformOffset, max + stoneformOffset));
+
+            return max;
         }
 
 		protected override void OnRaceChange(Race oldRace)
@@ -1806,6 +1798,11 @@ namespace Server.Mobiles
 				{
 					m_Quest.GetContextMenuEntries(list);
 				}
+
+                if (Core.HS)
+                {
+                    list.Add(new Server.Engines.VendorSearhing.SearchVendors(this));
+                }
 
 			    if (Alive && Core.SA)
 			    {
@@ -4097,14 +4094,6 @@ namespace Server.Mobiles
 			writer.Write(m_SSSeedLocation);
 			writer.Write(m_SSSeedMap);
 			#endregion
-
-			/*#region QueensLoyaltySystem
-			writer.Write((long)0); // Old m_LevelExp
-            writer.Write(m_Exp);
-			writer.Write(0); // Old m_Level
-
-            writer.Write(""); // Old m_ExpTitle
-            #endregion*/
 
             writer.Write(m_VASTotalMonsterFame);
 

@@ -10,7 +10,6 @@ namespace Server.Items
     public class CauldronOfTransmutation : BaseAddon
     {
         public const int DecayPeriod = 4;
-        private Timer m_Timer;
         private int _Charges;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -31,6 +30,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime Expires { get; set; }
 
+        public Timer DecayTimer { get; private set; }
+
         public override bool RetainDeedHue { get { return true; } }
 
         public CauldronOfTransmutation()
@@ -40,7 +41,24 @@ namespace Server.Items
             AddComponent(new InternalComponent(2421), 0, 0, 0);
 
             Expires = DateTime.UtcNow + TimeSpan.FromHours(DecayPeriod);
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), CheckDecay);
+            BeginTimer();
+        }
+
+        public void BeginTimer()
+        {
+            EndTimer();
+
+            DecayTimer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), CheckDecay);
+            DecayTimer.Start();
+        }
+
+        public void EndTimer()
+        {
+            if (DecayTimer != null)
+            {
+                DecayTimer.Stop();
+                DecayTimer = null;
+            }
         }
 
         public void CheckDecay()
@@ -78,11 +96,7 @@ namespace Server.Items
         {
             base.Delete();
 
-            if (m_Timer != null)
-            {
-                m_Timer.Stop();
-                m_Timer = null;
-            }
+            EndTimer();
         }
 
         public override void OnComponentUsed(AddonComponent c, Mobile from)
@@ -261,13 +275,13 @@ namespace Server.Items
             if (Expires < DateTime.UtcNow)
                 Decay();
             else
-                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), CheckDecay);
+                BeginTimer();
         }
     }
 
     public class CauldronOfTransmutationDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new CauldronOfTransmutation(/*Resource*/); } }
+        public override BaseAddon Addon { get { return new CauldronOfTransmutation(); } }
 
         public const int DecayPeriod = 24;
 

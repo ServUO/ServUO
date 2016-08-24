@@ -200,6 +200,9 @@ namespace Server.Engines.VeteranRewards
 
         public static bool CheckIsUsableBy(Mobile from, Item item, object[] args)
         {
+            if (from.AccessLevel > AccessLevel.GameMaster)
+                return true;
+
             if (m_Lists == null)
                 SetupRewardTables();
 
@@ -432,8 +435,9 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1049770, typeof(MonsterStatuette), MonsterStatuetteType.Wolf),
                     new RewardEntry(etherealSteeds, 1049749, typeof(EtherealSwampDragon)),
                     new RewardEntry(etherealSteeds, 1049748, typeof(EtherealBeetle)),
-                    new RewardEntry(houseAddOns, 1049739, typeof(StoneAnkhDeed)),
-                    new RewardEntry(houseAddOns, 1080384, typeof(BloodyPentagramDeed), Expansion.ML)
+                    new RewardEntry(houseAddOns,    1049739, typeof(StoneAnkhDeed)),
+                    new RewardEntry(houseAddOns,    1080384, typeof(BloodyPentagramDeed), Expansion.ML),
+                    new RewardEntry(houseAddOns,    1154582, typeof(LighthouseAddonDeed), Expansion.HS),
                 }),
                 new RewardList(RewardInterval, 6, new RewardEntry[]
                 {
@@ -469,9 +473,9 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(cloaksAndRobes,	1080381, typeof(RewardRobe), Expansion.ML, Crimson, 1080381),
                     new RewardEntry(cloaksAndRobes,	1080379, typeof(RewardDress), Expansion.ML, Crimson, 1080379),
                     new RewardEntry(etherealSteeds,	1080386, typeof(EtherealCuSidhe), Expansion.ML),
-                    new RewardEntry(houseAddOns, 1080548, typeof(MiningCartDeed), Expansion.ML),
-                    new RewardEntry(houseAddOns, 1080397, typeof(AnkhOfSacrificeDeed), Expansion.ML),
-                    new RewardEntry(houseAddOns,   1150621, typeof( RaisedGardenSmallAddonDeed), Expansion.SA ),
+                    new RewardEntry(houseAddOns,    1080548, typeof(MiningCartDeed), Expansion.ML),
+                    new RewardEntry(houseAddOns,    1080397, typeof(AnkhOfSacrificeDeed), Expansion.ML),
+                    new RewardEntry(houseAddOns,    1150621, typeof( RaisedGardenSmallAddonDeed), Expansion.SA ),
 
                     new RewardEntry( houseAddOns,       1150090, typeof( SkullRugEastAddonDeed ), Expansion.SA ),
                     new RewardEntry( houseAddOns,       1150089, typeof( SkullRugSouthAddonDeed ), Expansion.SA ),
@@ -490,7 +494,7 @@ namespace Server.Engines.VeteranRewards
                 {
                     new RewardEntry( houseAddOns,   1150382, typeof( RaisedGardenEastAddonDeed), Expansion.SA ),
                     new RewardEntry( houseAddOns,   1150381, typeof( RaisedGardenSouthAddonDeed), Expansion.SA ),
-                    new RewardEntry(etherealSteeds,	1113813, typeof(EtherealHiryu), Expansion.ML),
+                    new RewardEntry( etherealSteeds,1113813, typeof(EtherealHiryu), Expansion.ML),
                 }),
             };
         }

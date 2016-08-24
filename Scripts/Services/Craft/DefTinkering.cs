@@ -409,6 +409,15 @@ namespace Server.Engines.Craft
                 index = this.AddCraft(typeof(FancyWindChimes), 1044050, 1030291, 80.0, 130.0, typeof(IronIngot), 1044036, 15, 1044037);
                 this.SetNeededExpansion(index, Expansion.SE);
             }
+
+            #region High Seas
+            if (Core.HS)
+            {
+                index = AddCraft(typeof(Matches), 1044050, 1096648, 15.0, 70.0, typeof(Matchcord), 1095184, 10, 1044367);
+                AddRes(index, typeof(Board), 1044041, 4, 1044351);
+                SetNeededExpansion(index, Expansion.HS);
+            }
+            #endregion
             #endregion
 
             #region Stygian Abyss

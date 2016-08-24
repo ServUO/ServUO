@@ -5,6 +5,7 @@ using Server.Targeting;
 using Server.Engines.CannedEvil;
 using Server.Network;
 using Server.Gumps;
+using Server.Items;
 
 namespace Server.Multis
 {
@@ -162,6 +163,16 @@ namespace Server.Multis
                     }
 
 					boat.MoveToWorld( p, map );
+
+                    var addon = LighthouseAddon.GetLighthouse(from);
+
+                    if (addon != null)
+                    {
+                        if (boat.CanLinkToLighthouse)
+                            from.SendLocalizedMessage(1154592); // You have linked your boat lighthouse.
+                        else
+                            from.SendLocalizedMessage(1154597); // Failed to link to lighthouse.
+                    }
 				}
 				else
 				{

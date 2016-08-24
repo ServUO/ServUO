@@ -203,7 +203,9 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (m_Galleon != null && m_Galleon.Contains(from))
+            if (m_Galleon == null || !m_Galleon.IsOwner(from))
+                base.OnDoubleClick(from);
+            else if (m_Galleon != null && m_Galleon.Contains(from))
                 m_Galleon.BeginRename(from);
             else if (m_Galleon != null)
                 m_Galleon.BeginDryDock(from);
@@ -458,11 +460,13 @@ namespace Server.Mobiles
             {
                 m_From = from;
                 m_Galleon = galleon;
+
+                Enabled = m_Galleon != null && m_Galleon.IsOwner(from);
             }
 
             public override void OnClick()
             {
-                if(m_Galleon != null && !m_Galleon.Contains(m_From))
+                if (m_Galleon != null && !m_Galleon.Contains(m_From) && m_Galleon.IsOwner(m_From))
                     m_Galleon.BeginDryDock(m_From);
             }
         }

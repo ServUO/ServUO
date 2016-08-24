@@ -1245,7 +1245,40 @@ namespace Server.Items
             new int[] { 1151702, 1151703 },
             new int[] { 1151704, 1151705 },
         };
-		
+
+        private static readonly SkillName[] m_Skills = new SkillName[]
+        {
+            SkillName.Swords,
+            SkillName.Fencing,
+            SkillName.Macing,
+            SkillName.Archery,
+            SkillName.Wrestling,
+            SkillName.Parry,
+            SkillName.Tactics,
+            SkillName.Anatomy,
+            SkillName.Healing,
+            SkillName.Magery,
+            SkillName.Meditation,
+            SkillName.EvalInt,
+            SkillName.MagicResist,
+            SkillName.AnimalTaming,
+            SkillName.AnimalLore,
+            SkillName.Veterinary,
+            SkillName.Musicianship,
+            SkillName.Provocation,
+            SkillName.Discordance,
+            SkillName.Peacemaking,
+            SkillName.Chivalry,
+            SkillName.Focus,
+            SkillName.Necromancy,
+            SkillName.Stealing,
+            SkillName.Stealth,
+            SkillName.SpiritSpeak,
+            SkillName.Bushido,
+            SkillName.Ninjitsu
+        };
+
+
         #region Random Item Generation
         public static Item GenerateRandomItem(IEntity e)
         {
@@ -1278,9 +1311,9 @@ namespace Server.Items
 
         public static Item GenerateRandomItem(Mobile killer, BaseCreature creature)
         {
-			Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
+            Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
 
-            if(item != null)
+            if (item != null)
                 GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), GetLuckForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
 
             return item;
@@ -1346,7 +1379,7 @@ namespace Server.Items
                 map = killer.Map;
 
             if (item != null)
-			{
+            {
                 int budgetBonus = 0;
 
                 if (killer != null || luck > 0)
@@ -1431,7 +1464,7 @@ namespace Server.Items
                     mods++;
 
                 ApplyReforgedProperties(item, prefix, suffix, false, budget, perclow, perchigh, mods, luckchance);
-			}
+            }
         }
 
         private static int GetDivisor(int basebudget)
@@ -1462,30 +1495,30 @@ namespace Server.Items
 
         private static int[] m_Standard = new int[] { 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12 };
         private static int[] m_Weapon = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-		
-		public static ReforgedPrefix ChooseRandomPrefix(Item item)
-		{
+
+        public static ReforgedPrefix ChooseRandomPrefix(Item item)
+        {
             if (item is BaseWeapon)
                 return (ReforgedPrefix)m_Weapon[Utility.Random(m_Weapon.Length)];
 
             return (ReforgedPrefix)m_Standard[Utility.Random(m_Standard.Length)];
-		}
+        }
 
         public static ReforgedSuffix ChooseRandomSuffix(Item item)
         {
             return ChooseRandomSuffix(item, ReforgedPrefix.None);
         }
 
-		public static ReforgedSuffix ChooseRandomSuffix(Item item, ReforgedPrefix prefix)
-		{
+        public static ReforgedSuffix ChooseRandomSuffix(Item item, ReforgedPrefix prefix)
+        {
             int random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
 
-            while((int)prefix != 0 && random == (int)prefix)
+            while ((int)prefix != 0 && random == (int)prefix)
                 random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
 
             return (ReforgedSuffix)random;
 
-		}
+        }
 
         public static int GetDifficultyFor(BaseCreature bc)
         {
@@ -1660,9 +1693,9 @@ namespace Server.Items
 
                 budget += 100;
             }
-            else if (budget < 250) // lesser magic
+            else if (budget < 300) // lesser magic
             {
-                if (.85 > chance)
+                if (.90 > chance)
                     return;
 
                 switch (Utility.Random(8))
@@ -1679,9 +1712,9 @@ namespace Server.Items
 
                 budget += 100;
             }
-            else if (budget < 350) // greater magic
+            else if (budget < 400) // greater magic
             {
-                if (.66 > chance)
+                if (.75 > chance)
                     return;
 
                 if (.80 > chance)
@@ -1718,9 +1751,9 @@ namespace Server.Items
                 }
 
             }
-            else if (budget < max) // major magic
+            else if (budget < 550) // major magic
             {
-                if (.33 > chance)
+                if (.50 > chance)
                     return;
 
                 if (.40 > chance)
@@ -1756,7 +1789,7 @@ namespace Server.Items
                     budget += 150;
                 }
             }
-            else if (budget < max + 101) // lesser arty
+            else if (budget < 650) // lesser arty
             {
                 if (0.01 > chance)
                     return;
@@ -1777,7 +1810,7 @@ namespace Server.Items
                     budget += 150;
                 }
             }
-            else if (budget < 701) // greater arty
+            else if (budget < 750) // greater arty
             {
                 if (0.85 > chance)
                 {
@@ -1874,9 +1907,9 @@ namespace Server.Items
 
             return playermade ? ItemPower.ReforgedLegendary : ItemPower.LegendaryArtifact;
         }
-		
-		private static bool ApplyRunicAttributes(Item item, int perclow, int perchigh, ref int budget, int idx, int luckchance)
-		{
+
+        private static bool ApplyRunicAttributes(Item item, int perclow, int perchigh, ref int budget, int idx, int luckchance)
+        {
             List<object> attrList = null;
             AosWeaponAttributes wepattrs = GetAosWeaponAttributes(item);
             AosAttributes aosattrs = GetAosAttributes(item);
@@ -1884,44 +1917,44 @@ namespace Server.Items
             AosSkillBonuses skillbonuses = GetAosSkillBonuses(item);
             AosElementAttributes resistattrs = GetElementalAttributes(item);
 
-			if(item is BaseWeapon)
-			{
+            if (item is BaseWeapon)
+            {
                 if (item is BaseRanged)
                     attrList = new List<object>(m_RangedWeaponList);
                 else
                     attrList = new List<object>(m_MeleeWeaponList);
-			}
-			else if (item is BaseShield)
-			{
+            }
+            else if (item is BaseShield)
+            {
                 attrList = new List<object>(m_ShieldList);
-			}
-			else if (item is BaseArmor)
-			{
+            }
+            else if (item is BaseArmor)
+            {
                 attrList = new List<object>(m_ArmorList);
-			}
-			else if (item is BaseClothing)
-			{
+            }
+            else if (item is BaseClothing)
+            {
                 attrList = new List<object>(m_ArmorList);
-			}
-			else if (item is BaseJewel)
-			{
+            }
+            else if (item is BaseJewel)
+            {
                 attrList = new List<object>(m_JewelList);
-			}
-			else 
-				return false;
+            }
+            else
+                return false;
 
             int random = 0;
             int start = budget;
 
-			while(start == budget && budget > 0 && idx < 25)
-			{
+            while (start == budget && budget > 0 && idx < 25)
+            {
                 if (attrList.Count == 0)
                     return false;
 
                 random = Utility.Random(attrList.Count);
                 object attr = attrList[random];
-				int[] minmax = new int[] { 1, 1 };
-				int value = 1;
+                int[] minmax = new int[] { 1, 1 };
+                int value = 1;
 
                 if (CheckAttribute(item, attr))
                 {
@@ -1929,21 +1962,21 @@ namespace Server.Items
                     continue;
                 }
 
-				if(wepattrs != null && attr is AosWeaponAttribute[])
-				{
-					int ran = Utility.Random(((AosWeaponAttribute[])attr).Length);
-					
-					while(wepattrs[(AosWeaponAttribute)ran] != 0)
-						ran = Utility.Random(((AosWeaponAttribute[])attr).Length);
+                if (wepattrs != null && attr is AosWeaponAttribute[])
+                {
+                    int ran = Utility.Random(((AosWeaponAttribute[])attr).Length);
+
+                    while (wepattrs[(AosWeaponAttribute)ran] != 0)
+                        ran = Utility.Random(((AosWeaponAttribute[])attr).Length);
 
                     AosWeaponAttribute[] list = attr as AosWeaponAttribute[];
 
-					attr = list[ran];
-				}
-				
-				if(aosattrs != null && attr is AosAttribute)
-				{
-					minmax = Imbuing.GetPropRange((AosAttribute)attr);
+                    attr = list[ran];
+                }
+
+                if (aosattrs != null && attr is AosAttribute)
+                {
+                    minmax = Imbuing.GetPropRange((AosAttribute)attr);
 
                     int min = minmax[0];
                     int max = minmax[1];
@@ -1961,10 +1994,10 @@ namespace Server.Items
                         if ((AosAttribute)attr == AosAttribute.SpellChanneling && aosattrs[AosAttribute.CastSpeed] > -1)
                             aosattrs[AosAttribute.CastSpeed]--;
                     }
-				}
-				else if (wepattrs != null && attr is AosWeaponAttribute)
-				{
-                    minmax = Imbuing.GetPropRange((AosWeaponAttribute)attr);
+                }
+                else if (wepattrs != null && attr is AosWeaponAttribute)
+                {
+                    minmax = Imbuing.GetPropRange(item, (AosWeaponAttribute)attr);
                     value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance);
 
                     if (wepattrs[(AosWeaponAttribute)attr] == 0)
@@ -1972,9 +2005,9 @@ namespace Server.Items
                         wepattrs[(AosWeaponAttribute)attr] = value;
                         budget -= Imbuing.GetIntensityForAttribute((AosWeaponAttribute)attr, -1, value);
                     }
-				}
-				else if (armorattrs != null && attr is AosArmorAttribute)
-				{
+                }
+                else if (armorattrs != null && attr is AosArmorAttribute)
+                {
                     minmax = Imbuing.GetPropRange((AosArmorAttribute)attr);
                     value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance);
 
@@ -1983,7 +2016,7 @@ namespace Server.Items
                         armorattrs[(AosArmorAttribute)attr] = value;
                         budget -= Imbuing.GetIntensityForAttribute((AosArmorAttribute)attr, -1, value);
                     }
-				}
+                }
                 else if (attr is AosElementAttribute && (resistattrs != null || item is BaseArmor))
                 {
                     minmax = Imbuing.GetPropRange((AosElementAttribute)attr);
@@ -2027,7 +2060,7 @@ namespace Server.Items
                                 budget -= weight;
                             }
                         }
-                        else if (str == "ElementalDamage") 
+                        else if (str == "ElementalDamage")
                         {
                             BaseRunicTool.GetElementalDamages((BaseWeapon)item);
                         }
@@ -2060,13 +2093,13 @@ namespace Server.Items
 
                 attrList.RemoveAt(random);
                 idx++;
-			}
+            }
 
-            if(attrList != null)
+            if (attrList != null)
                 attrList.Clear();
 
-			return true;
-		}
+            return true;
+        }
 
         public static bool CheckAttribute(Item item, object attr)
         {
@@ -2172,13 +2205,13 @@ namespace Server.Items
 
         public static SAAbsorptionAttributes GetSAAbsorptionAttributes(Item item)
         {
-            if (item is BaseArmor) 
+            if (item is BaseArmor)
                 return ((BaseArmor)item).AbsorptionAttributes;
 
-            else if (item is BaseJewel) 
+            else if (item is BaseJewel)
                 return ((BaseJewel)item).AbsorptionAttributes;
 
-            else if (item is BaseWeapon) 
+            else if (item is BaseWeapon)
                 return ((BaseWeapon)item).AbsorptionAttributes;
 
             else if (item is BaseClothing)
@@ -2229,19 +2262,19 @@ namespace Server.Items
 
             return null;
         }
-		
-		private static int ScaleAttribute(object o)
-		{
-			if(o is AosAttribute)
-			{
-				AosAttribute attr = (AosAttribute)o;
-				
-				if(attr == AosAttribute.Luck)
-					return 10;
-					
-				if(attr == AosAttribute.WeaponSpeed)
-					return 5;
-			}
+
+        private static int ScaleAttribute(object o)
+        {
+            if (o is AosAttribute)
+            {
+                AosAttribute attr = (AosAttribute)o;
+
+                if (attr == AosAttribute.Luck)
+                    return 10;
+
+                if (attr == AosAttribute.WeaponSpeed)
+                    return 5;
+            }
             else if (o is AosArmorAttribute)
             {
                 AosArmorAttribute attr = (AosArmorAttribute)o;
@@ -2267,17 +2300,17 @@ namespace Server.Items
             }
             else if (o is SkillName)
                 return 5;
-			
-			return 1;
-		}
+
+            return 1;
+        }
 
         public static List<object> m_MeleeWeaponList;
         public static List<object> m_RangedWeaponList;
         public static List<object> m_ArmorList;
         public static List<object> m_JewelList;
         public static List<object> m_ShieldList;
-		
-		private static object[] m_WeaponBasic = new object[]
+
+        private static object[] m_WeaponBasic = new object[]
 		{
 			new AosWeaponAttribute[] { AosWeaponAttribute.HitMagicArrow, AosWeaponAttribute.HitHarm, AosWeaponAttribute.HitFireball, AosWeaponAttribute.HitLightning },// Hit spell
 			new AosWeaponAttribute[] { AosWeaponAttribute.HitPhysicalArea, AosWeaponAttribute.HitFireArea, AosWeaponAttribute.HitColdArea, AosWeaponAttribute.HitPoisonArea, AosWeaponAttribute.HitEnergyArea, },// hit area
@@ -2316,8 +2349,8 @@ namespace Server.Items
             AosWeaponAttribute.UseBestSkill,
             AosWeaponAttribute.MageWeapon
         };
-		
-		private static object[] m_ArmorStandard = new object[]
+
+        private static object[] m_ArmorStandard = new object[]
 		{
 			AosAttribute.RegenHits,
 			AosAttribute.RegenStam,
@@ -2357,8 +2390,8 @@ namespace Server.Items
 			AosElementAttribute.Poison,
 			AosElementAttribute.Energy
 		};
-		
-		private static object[] m_ShieldStandard = new object[]
+
+        private static object[] m_ShieldStandard = new object[]
 		{
 			AosAttribute.SpellChanneling,
 			AosAttribute.DefendChance,
@@ -2367,8 +2400,8 @@ namespace Server.Items
 			AosAttribute.ReflectPhysical,
 			AosArmorAttribute.LowerStatReq,
 		};
-		
-		private static object[] m_JewelStandard = new object[]
+
+        private static object[] m_JewelStandard = new object[]
 		{
 			AosElementAttribute.Physical,
 			AosElementAttribute.Fire,
@@ -2397,38 +2430,6 @@ namespace Server.Items
 		};
 
         #endregion
-
-        private static readonly SkillName[] m_Skills = new SkillName[]
-        {
-            SkillName.Swords,
-            SkillName.Fencing,
-            SkillName.Macing,
-            SkillName.Archery,
-            SkillName.Wrestling,
-            SkillName.Parry,
-            SkillName.Tactics,
-            SkillName.Anatomy,
-            SkillName.Healing,
-            SkillName.Magery,
-            SkillName.Meditation,
-            SkillName.EvalInt,
-            SkillName.MagicResist,
-            SkillName.AnimalTaming,
-            SkillName.AnimalLore,
-            SkillName.Veterinary,
-            SkillName.Musicianship,
-            SkillName.Provocation,
-            SkillName.Discordance,
-            SkillName.Peacemaking,
-            SkillName.Chivalry,
-            SkillName.Focus,
-            SkillName.Necromancy,
-            SkillName.Stealing,
-            SkillName.Stealth,
-            SkillName.SpiritSpeak,
-            SkillName.Bushido,
-            SkillName.Ninjitsu
-        };
     }
 
     public class RunicReforgingTarget : Target

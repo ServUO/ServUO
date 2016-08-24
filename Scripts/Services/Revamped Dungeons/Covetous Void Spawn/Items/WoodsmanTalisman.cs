@@ -66,7 +66,7 @@ namespace Server.Items
         public void CheckDecay()
         {
             if (Expires < DateTime.UtcNow)
-                Delete();
+                Decay();
             else
                 InvalidateProperties();
         }
@@ -166,6 +166,8 @@ namespace Server.Items
 
             if (Expires < DateTime.UtcNow)
                 Decay();
+            else
+                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), CheckDecay);
         }
     }
 }

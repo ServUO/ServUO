@@ -19,11 +19,9 @@ namespace Server.Services.Virtues
 {
 	public static class Honesty
 	{
-		public static bool Enabled = false;
-
-		public static int MaxGeneration = 1000;
-
-		public static bool TrammelGeneration = true;
+        public static bool Enabled = Config.Get("Honesty.Enabled", true);
+        public static int MaxGeneration = Config.Get("Honesty.MaxGeneration", 1000);
+        public static bool TrammelGeneration = Config.Get("Honesty.TrammelGeneration", true);
 
 		private static readonly string[] _Regions =
 		{
@@ -55,6 +53,20 @@ namespace Server.Services.Virtues
 			EventSink.AfterWorldSave += OnAfterSave;
 
 			VirtueGump.Register(106, OnVirtueUsed);
+
+            if (Enabled)
+            {
+                foreach (var i in World.Items.Values.Where(item => item.HonestyItem))
+                {
+                    lock (_ItemsLock)
+                    {
+                        if (!_Items.Contains(i))
+                        {
+                            _Items.Add(i);
+                        }
+                    }
+                }
+            }
 		}
 
 		private static void OnItemCreated(ItemCreatedEventArgs e)
@@ -119,7 +131,6 @@ namespace Server.Services.Virtues
 			try
 			{
 				var count = MaxGeneration - _Items.Count;
-
 				var spawned = new Item[count];
 
 				for (var i = 0; i < spawned.Length; i++)
@@ -168,7 +179,7 @@ namespace Server.Services.Virtues
 					var map = kv.Key;
 					var points = kv.Value;
 
-					for (var i = 0; i < spawned.Length;)
+					for (var i = 0; i < spawned.Length; i++)
 					{
 						var loc = points[i];
 
@@ -268,7 +279,7 @@ namespace Server.Services.Virtues
 				}
 			}
 			while (!valid && --attempts >= 0);
-			
+
 			if (valid)
 			{
 				return new Point3D(x, y, map.GetAverageZ(x, y));
@@ -280,11 +291,12 @@ namespace Server.Services.Virtues
 
 	public class HonestyChest : Container
 	{
+        public override int LabelNumber { get { return 1151529; } } // lost and found box
+
 		[Constructable]
 		public HonestyChest()
 			: base(0x9A9)
 		{
-			Name = "Lost And Found Box";
 		}
 
 		public HonestyChest(Serial serial)
@@ -305,6 +317,7 @@ namespace Server.Services.Virtues
 		{
 			if (from == null || from.Deleted || item == null || !item.HonestyItem)
 			{
+                from.SendLocalizedMessage(1151530); // This is not a lost item.
 				return false;
 			}
 

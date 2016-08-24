@@ -1160,7 +1160,7 @@ namespace Server
 			}
 
 			NetState.Resume();
-            //EventSink.InvokeAfterWorldSave(new AfterWorldSaveEventArgs());
+            EventSink.InvokeAfterWorldSave(new AfterWorldSaveEventArgs());
         }
 
 		internal static List<Type> m_ItemTypes = new List<Type>();

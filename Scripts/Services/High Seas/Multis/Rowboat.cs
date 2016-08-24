@@ -20,6 +20,7 @@ namespace Server.Multis
         public override BaseDockedBoat DockedBoat { get { return new DockedRowBoat(this); } }
 
         public override bool IsClassicBoat { get { return false; } }
+        public override bool CanLinkToLighthouse { get { return false; } }
 
         private Rudder m_Rudder;
         private MooringLine m_Line;

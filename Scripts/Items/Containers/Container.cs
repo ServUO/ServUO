@@ -109,8 +109,13 @@ namespace Server.Items
 
             ItemFlags.SetTaken(dropped, true);
 
-            if (HonestyItem)
-                StartHonestyTimer();
+            if (dropped.HonestyItem && dropped.HonestyPickup == DateTime.MinValue)
+            {
+                dropped.HonestyPickup = DateTime.UtcNow;
+                dropped.StartHonestyTimer();
+
+                from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
+            }
 
             return true;
         }
@@ -141,10 +146,12 @@ namespace Server.Items
 
             ItemFlags.SetTaken(item, true);
 
-            if (item.HonestyItem)
+            if (item.HonestyItem && item.HonestyPickup == DateTime.MinValue)
             {
                 item.HonestyPickup = DateTime.UtcNow;
                 item.StartHonestyTimer();
+
+                from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
             }
             return true;
         }

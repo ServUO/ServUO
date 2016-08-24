@@ -41,6 +41,14 @@ namespace Server.Items
             return false;
         }
 
+        public override void OnAfterDuped(Item newItem)
+        {
+            if (newItem is GorgonLense)
+                ((GorgonLense)newItem).LenseType = this.LenseType;
+
+            base.OnAfterDuped(newItem);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack) && m_LenseType > LenseType.None)
@@ -57,13 +65,13 @@ namespace Server.Items
                 if (targeted is BaseArmor)
                 {
                     BaseArmor armor = (BaseArmor)targeted;
-                    if (armor.Layer == Layer.Neck || armor.Layer == Layer.Helm || armor is BaseShield)
+                    if (armor.Layer == Layer.Neck || armor.Layer == Layer.Helm || armor is BaseShield || (armor.RequiredRace == Race.Gargoyle && armor.Layer== Layer.Earrings))
                     {
                         if (armor.GorgonLenseCharges > 0 && armor.GorgonLenseType != LenseType)
                             from.SendGump(new GorgonLenseWarningGump(this, armor));
                         else
                         {
-                            armor.GorgonLenseCharges = Amount;
+                            armor.GorgonLenseCharges += Amount;
                             armor.GorgonLenseType = LenseType;
                             from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                             Delete();
@@ -81,7 +89,7 @@ namespace Server.Items
                             from.SendGump(new GorgonLenseWarningGump(this, j));
                         else
                         {
-                            j.GorgonLenseCharges = Amount;
+                            j.GorgonLenseCharges += Amount;
                             j.GorgonLenseType = LenseType;
                             from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                             Delete();
@@ -99,7 +107,7 @@ namespace Server.Items
                             from.SendGump(new GorgonLenseWarningGump(this, c));
                         else
                         {
-                            c.GorgonLenseCharges = Amount;
+                            c.GorgonLenseCharges += Amount;
                             c.GorgonLenseType = LenseType;
                             from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                             Delete();
@@ -132,7 +140,6 @@ namespace Server.Items
 
         public int OnCraft(int quality, bool markersMark, Mobile from, CraftSystem system, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            Console.WriteLine("Hue: {0}", resHue.ToString());
             switch (resHue)
             {
                 default:

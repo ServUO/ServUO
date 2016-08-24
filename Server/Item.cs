@@ -1410,9 +1410,9 @@ namespace Server
 
 		public virtual void AddHonestyProperty(ObjectPropertyList list)
 		{
-			if (HonestyItem)
+            if (HonestyItem && HonestyPickup == DateTime.MinValue)
 			{
-				list.Add("Lost Item (Return To Gain Honesty)."); //TODO get cliloc
+                list.Add(1151520); // lost item (Return to gain Honesty)
 			}
 		}
 
@@ -1896,25 +1896,33 @@ namespace Server
 
 		public void CheckHonestyExpiry()
 		{
-			if ((m_HonestyPickup + TimeSpan.FromHours(15)) < DateTime.UtcNow)
+			if ((m_HonestyPickup + TimeSpan.FromHours(3)) < DateTime.UtcNow)
 			{
 				HonestyItem = false;
 				m_HonestyTimer.Stop();
+
+                if (RootParentEntity is Mobile && ((Mobile)RootParentEntity).NetState != null)
+                {
+                    ((Mobile)RootParentEntity).SendLocalizedMessage(1151519); // You claim the item as your own.  Finders keepers, losers weepers!
+                }
 			}
 		}
 
+        [CommandProperty(AccessLevel.GameMaster)]
 		public DateTime HonestyPickup
 		{
 			get { return m_HonestyPickup; }
-			set { m_HonestyPickup = value; }
+            set { m_HonestyPickup = value; InvalidateProperties(); }
 		}
 
+        [CommandProperty(AccessLevel.GameMaster)]
 		public Mobile HonestyOwner
 		{
 			get { return m_HonestyOwner; }
 			set { m_HonestyOwner = value; }
 		}
 
+        [CommandProperty(AccessLevel.GameMaster)]
 		public string HonestyRegion
 		{
 			get { return m_HonestyRegion; }
@@ -5835,8 +5843,6 @@ namespace Server
 				World.m_ItemTypes.Add(ourType);
 				m_TypeRef = World.m_ItemTypes.Count - 1;
 			}
-
-			Timer.DelayCall(EventSink.InvokeItemCreated, new ItemCreatedEventArgs(this));
 		}
 
 		public virtual void OnSectorActivate()

@@ -1900,12 +1900,6 @@ namespace Server.Items
 			OnHit(attacker, defender, 1.0);
 		}
 
-        /// <summary>
-        /// 020416 Crome696 : Adding concecrate Weapon Bonus
-        /// </summary>
-        /// <param name="attacker"></param>
-        /// <param name="defender"></param>
-        /// <param name="damageBonus"></param>
 		public virtual void OnHit(Mobile attacker, Mobile defender, double damageBonus)
 		{
 			if (MirrorImage.HasClone(defender) && (defender.Skills.Ninjitsu.Value / 150.0) > Utility.RandomDouble())
@@ -2033,8 +2027,9 @@ namespace Server.Items
 
 			TransformContext context = TransformationSpellHelper.GetContext(defender);
 
-			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver) && context != null &&
-				context.Spell is NecromancerSpell && context.Type != typeof(HorrificBeastSpell))
+			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver) 
+                && ((context != null && context.Spell is NecromancerSpell && context.Type != typeof(HorrificBeastSpell))
+                || (defender is BaseCreature && (defender.Body == 747 || defender.Body == 748 || defender.Body == 749 || defender.Hue == 0x847E))))
 			{
 				// Every necromancer transformation other than horrific beast takes an additional 25% damage
 				percentageBonus += 25;
@@ -2314,25 +2309,8 @@ namespace Server.Items
 
 				if (Core.SA) // New formulas
 				{
-					int maxLeech = ((int)(MlSpeed * 2500)) / (100 + Attributes.GetValue((int)AosAttribute.WeaponSpeed));
-					if(this is BaseRanged)
-					{
-						maxLeech /= 2;
-					}
-
-					int weaponLeech = WeaponAttributes.GetValue((int)AosWeaponAttribute.HitLeechHits);
-					if(weaponLeech > maxLeech)
-					{
-						weaponLeech = maxLeech;
-					}
-					lifeLeech += weaponLeech;
-
-					weaponLeech = WeaponAttributes.GetValue((int)AosWeaponAttribute.HitLeechMana);
-					if (weaponLeech > maxLeech)
-					{
-						weaponLeech = maxLeech;
-					}
-					manaLeech += weaponLeech;
+                    lifeLeech = (int)(WeaponAttributes.HitLeechHits * propertyBonus);
+                    manaLeech = (int)(WeaponAttributes.HitLeechMana * propertyBonus);
 				}
 				else // Old leech formulas
 				{
@@ -2381,7 +2359,8 @@ namespace Server.Items
 				{
 					if (lifeLeech != 0)
 					{
-						int toHeal = (int)(AOS.Scale(damageGiven, lifeLeech) * 0.3);
+						int toHeal = Utility.RandomMinMax(0, (int)(AOS.Scale(damageGiven, lifeLeech) * 0.3));
+
 						#region High Seas
 						if (defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura)
 						{
@@ -2401,8 +2380,7 @@ namespace Server.Items
 
                     if (manaLeech != 0)
 					{
-						attacker.Mana += (int)(AOS.Scale(damageGiven, manaLeech) * 0.4);
-						defender.Mana -= (int)(AOS.Scale(damageGiven, wraithLeech) * 0.4);
+                        attacker.Mana += Utility.RandomMinMax(0, (int)(AOS.Scale(damageGiven, manaLeech) * 0.4));
 					}
 				}
 				else // Old formulas
@@ -3521,7 +3499,9 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(14); // version
+			writer.Write(15); // version
+
+            // Version 15 converts old leech to new leech
 
             //Version 14
             writer.Write(m_IsImbued);
@@ -3871,6 +3851,7 @@ namespace Server.Items
 
 			switch (version)
 			{
+                case 15:
                 case 14:
                     {
                         m_IsImbued = reader.ReadBool();
@@ -4386,6 +4367,14 @@ namespace Server.Items
 						break;
 					}
 			}
+
+            if (version < 15)
+            {
+                if (WeaponAttributes.HitLeechHits > 0 || WeaponAttributes.HitLeechMana > 0)
+                {
+                    WeaponAttributes.ScaleLeech(this, Attributes.WeaponSpeed);
+                }
+            }
 
 			#region Mondain's Legacy Sets
 			if (m_SetAttributes == null)

@@ -81,6 +81,15 @@ namespace Server.Items
         {
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
+            #region High Seas
+            BaseBoat boat = BaseBoat.FindBoatAt(from, from.Map);
+            if (boat != null && boat is BaseGalleon)
+            {
+                ((BaseGalleon)boat).OnChop(this, from);
+                return;
+            }
+            #endregion
+
             if (house != null && house.IsOwner(from) && house.Addons.Contains(this))
             {
                 Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x3B3);
@@ -164,6 +173,12 @@ namespace Server.Items
 
         public virtual AddonFitResult CouldFit(IPoint3D p, Map map, Mobile from, ref BaseHouse house)
         {
+            BaseGalleon boat = null;
+            return CouldFit(p, map, from, ref house, ref boat);
+        }
+
+        public virtual AddonFitResult CouldFit(IPoint3D p, Map map, Mobile from, ref BaseHouse house, ref BaseGalleon boat)
+        {
             if (this.Deleted)
                 return AddonFitResult.Blocked;
 
@@ -173,7 +188,7 @@ namespace Server.Items
 
                 if (!map.CanFit(p3D.X, p3D.Y, p3D.Z, c.ItemData.Height, false, true, (c.Z == 0)))
                     return AddonFitResult.Blocked;
-                else if (!CheckHouse(from, p3D, map, c.ItemData.Height, ref house))
+                else if (!CheckHouse(from, p3D, map, c.ItemData.Height, ref house) && !CheckBoat(from, p3D, map, ref boat))
                     return AddonFitResult.NotInHouse;
 
                 if (c.NeedsWall)
@@ -185,22 +200,25 @@ namespace Server.Items
                 }
             }
 
-            ArrayList doors = house.Doors;
-
-            for (int i = 0; i < doors.Count; ++i)
+            if (house != null)
             {
-                BaseDoor door = doors[i] as BaseDoor;
+                ArrayList doors = house.Doors;
 
-                Point3D doorLoc = door.GetWorldLocation();
-                int doorHeight = door.ItemData.CalcHeight;
-
-                foreach (AddonComponent c in this.m_Components)
+                for (int i = 0; i < doors.Count; ++i)
                 {
-                    Point3D addonLoc = new Point3D(p.X + c.Offset.X, p.Y + c.Offset.Y, p.Z + c.Offset.Z);
-                    int addonHeight = c.ItemData.CalcHeight;
-						
-                    if (Utility.InRange(doorLoc, addonLoc, 1) && (addonLoc.Z == doorLoc.Z || ((addonLoc.Z + addonHeight) > doorLoc.Z && (doorLoc.Z + doorHeight) > addonLoc.Z)))
-                        return AddonFitResult.DoorTooClose;
+                    BaseDoor door = doors[i] as BaseDoor;
+
+                    Point3D doorLoc = door.GetWorldLocation();
+                    int doorHeight = door.ItemData.CalcHeight;
+
+                    foreach (AddonComponent c in this.m_Components)
+                    {
+                        Point3D addonLoc = new Point3D(p.X + c.Offset.X, p.Y + c.Offset.Y, p.Z + c.Offset.Z);
+                        int addonHeight = c.ItemData.CalcHeight;
+
+                        if (Utility.InRange(doorLoc, addonLoc, 1) && (addonLoc.Z == doorLoc.Z || ((addonLoc.Z + addonHeight) > doorLoc.Z && (doorLoc.Z + doorHeight) > addonLoc.Z)))
+                            return AddonFitResult.DoorTooClose;
+                    }
                 }
             }
 
@@ -216,6 +234,46 @@ namespace Server.Items
 
             return true;
         }
+
+        #region High Seas
+
+        private static int[] m_ShipAddonTiles = new int[]
+        {
+            23664, 23665, 23718, 23719, 23610, 23611,
+            23556, 23557, 23664, 23665, 23718, 23719,
+            23610, 23611, 23556, 23557
+        };
+
+        public static bool CheckBoat(Mobile from, Point3D p, Map map, ref BaseGalleon boat)
+        {
+            BaseBoat b = BaseBoat.FindBoatAt(p, map);
+            if (b is BaseGalleon)
+                boat = b as BaseGalleon;
+
+            if (boat != null)
+            {
+                if (boat.Addons.Count >= boat.MaxAddons)
+                    return false;
+
+                IPooledEnumerable eable = boat.Map.GetItemsInRange(p, 0);
+
+                foreach (Item item in eable)
+                {
+                    foreach (int id in m_ShipAddonTiles)
+                    {
+                        if (id == item.ItemID)
+                        {
+                            eable.Free();
+                            return true;
+                        }
+                    }
+                }
+
+                eable.Free();
+            }
+            return false;
+        }
+        #endregion
 
         public static bool IsWall(int x, int y, int z, Map map)
         {
