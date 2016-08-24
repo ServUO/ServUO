@@ -139,7 +139,7 @@ namespace Server.Engines.CannedEvil
 
 			if (!m_Enabled || m_ForceGenerate)
 			{
-				foreach (ChampionSpawn s in m_AllSpawns)
+				foreach (ChampionSpawn s in m_AllSpawns.Where(sp => sp != null && !sp.Deleted))
 				{
 					s.Delete();
 				}
@@ -234,7 +234,7 @@ namespace Server.Engines.CannedEvil
 			Dictionary<String, List<ChampionSpawn>> groups = new Dictionary<string, List<ChampionSpawn>>();
 			m_LastRotate = DateTime.UtcNow;
 
-			foreach(ChampionSpawn spawn in m_AllSpawns)
+            foreach (ChampionSpawn spawn in m_AllSpawns.Where(spawn => spawn != null && !spawn.Deleted))
 			{
 				List<ChampionSpawn> group;
 				if (spawn.GroupName == null)
@@ -295,6 +295,8 @@ namespace Server.Engines.CannedEvil
 			private static readonly int[] gTab;
 			private static readonly int gWidth;
 
+            public List<ChampionSpawn> Spawners { get; set; }
+
 			static ChampionSystemGump()
 			{
 				gWidth = gWidths.Sum();
@@ -310,7 +312,9 @@ namespace Server.Engines.CannedEvil
 			public ChampionSystemGump()
 				: base(40, 40)
 			{
-				AddBackground(0, 0, gWidth, gBoarder * 2 + m_AllSpawns.Count * gRowHeight + gRowHeight * 2, 0x13BE);
+                Spawners = m_AllSpawns.Where(spawn => spawn != null && !spawn.Deleted).ToList();
+
+				AddBackground(0, 0, gWidth, gBoarder * 2 + Spawners.Count * gRowHeight + gRowHeight * 2, 0x13BE);
 
 				int top = gBoarder;
 				AddLabel(gBoarder, top, gFontHue, "Champion Spawn System Gump");
@@ -328,15 +332,15 @@ namespace Server.Engines.CannedEvil
 				AddLabel(gTab[10], top, gFontHue, "Info");
 				top += gRowHeight;
 
-				for (int i = 0; i < m_AllSpawns.Count; ++i)
+                for(int i = 0; i < Spawners.Count; i++)
 				{
-					ChampionSpawn spawn = m_AllSpawns[i];
+                    ChampionSpawn spawn = Spawners[i];
 					AddLabel(gTab[1], top, gFontHue, spawn.SpawnName);
 					AddLabel(gTab[2], top, gFontHue, spawn.GroupName != null ? spawn.GroupName : "None");
 					AddLabel(gTab[3], top, gFontHue, spawn.X.ToString());
 					AddLabel(gTab[4], top, gFontHue, spawn.Y.ToString());
 					AddLabel(gTab[5], top, gFontHue, spawn.Z.ToString());
-					AddLabel(gTab[6], top, gFontHue, spawn.Map.ToString());
+					AddLabel(gTab[6], top, gFontHue, spawn.Map == null ? "null" : spawn.Map.ToString());
 					AddLabel(gTab[7], top, gFontHue, spawn.Active ? "Y" : "N");
 					AddLabel(gTab[8], top, gFontHue, spawn.AutoRestart ? "Y" : "N");
 					AddButton(gTab[9], top, 0xFA5, 0xFA7, 1 + i, GumpButtonType.Reply, 0);
@@ -353,18 +357,18 @@ namespace Server.Engines.CannedEvil
 				if (info.ButtonID > 0 && info.ButtonID <= 1000)
 				{
 					idx = info.ButtonID - 1;
-					if (idx < 0 || idx >= m_AllSpawns.Count)
+					if (idx < 0 || idx >= Spawners.Count)
 						return;
-					spawn = m_AllSpawns[idx];
+                    spawn = Spawners[idx];
 					sender.Mobile.MoveToWorld(spawn.Location, spawn.Map);
 					sender.Mobile.SendGump(this);
 				}
 				else if (info.ButtonID > 1000)
 				{
 					idx = info.ButtonID - 1001;
-					if (idx < 0 || idx > m_AllSpawns.Count)
+					if (idx < 0 || idx > Spawners.Count)
 						return;
-					spawn = m_AllSpawns[idx];
+                    spawn = Spawners[idx];
 					spawn.SendGump(sender.Mobile);
 				}
 			}
