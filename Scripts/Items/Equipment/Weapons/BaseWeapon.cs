@@ -2386,10 +2386,7 @@ namespace Server.Items
 
                     if (manaLeech != 0)
 					{
-                        int mana = Utility.RandomMinMax(0, (int)(AOS.Scale(damageGiven, manaLeech) * 0.4));
-
-						attacker.Mana += mana;
-						defender.Mana -= mana;
+                        attacker.Mana += Utility.RandomMinMax(0, (int)(AOS.Scale(damageGiven, manaLeech) * 0.4));
 					}
 				}
 				else // Old formulas
