@@ -195,15 +195,20 @@ namespace Server.Items
                 for (int i = 0; i < amount; i++)
                 {
                     Point3D p;
+                    int failsafe = 0;
 
                     do
                     {
                         p = SOS.FindLocation(kvp.Key);
+                        failsafe++;
                     }
-                    while (p == Point3D.Zero);
+                    while (p == Point3D.Zero && failsafe < 10);
 
                     kvp.Value.Add(new SchoolEntry(kvp.Key, new Point2D(p.X, p.Y)));
                 }
+
+                if(kvp.Value.Count == 0)
+                    Console.WriteLine("Warning: {0} has 0 School entries!", kvp.Key);
             }
 
             CommandSystem.Register("MoveToSchool", AccessLevel.GameMaster, e =>
@@ -233,12 +238,14 @@ namespace Server.Items
                 Schools[map].Remove(entry);
 
                 Point3D p;
+                int failsafe = 0;
 
                 do
                 {
                     p = SOS.FindLocation(map);
+                    failsafe++;
                 }
-                while (p == Point3D.Zero);
+                while (p == Point3D.Zero && failsafe < 10);
 
                 Schools[map].Add(new SchoolEntry(map, new Point2D(p.X, p.Y)));
             }

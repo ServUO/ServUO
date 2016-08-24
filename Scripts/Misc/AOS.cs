@@ -1175,7 +1175,7 @@ namespace Server
             {
                 int hits = HitLeechHits;
 
-                hits = ((int)wep.MlSpeed * 2500) / (100 + weaponSpeed);
+                hits = (int)(wep.MlSpeed * 2500 / (100 + weaponSpeed));
 
                 if (wep is BaseRanged)
                     hits /= 2;
@@ -1188,7 +1188,7 @@ namespace Server
             {
                 int mana = HitLeechMana;
 
-                mana = ((int)wep.MlSpeed * 2500) / (100 + weaponSpeed);
+                mana = (int)(wep.MlSpeed * 2500 / (100 + weaponSpeed));
 
                 if (wep is BaseRanged)
                     mana /= 2;

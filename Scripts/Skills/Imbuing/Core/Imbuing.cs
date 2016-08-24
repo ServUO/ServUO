@@ -9,7 +9,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Commands;
-//using Server.Engines.QueensLoyalty;
 using Server.Factions;
 using Server.Engines.Craft;
 
@@ -1926,11 +1925,11 @@ namespace Server.SkillHandlers
             {
                 BaseWeapon wep = item as BaseWeapon;
 
-                int max = ((int)wep.MlSpeed * 2500) / (100 + wep.Attributes.WeaponSpeed);
+                int max = (int)(wep.MlSpeed * 2500 / (100 + wep.Attributes.WeaponSpeed));
 
-                double mod = wep is BaseRanged ? 2 : 1;
+                if (wep is BaseRanged) max /= 2;
 
-                return new int[] { 2, (int)(max / mod) };
+                return new int[] { 2, max };
             }
 
             switch (attr)
