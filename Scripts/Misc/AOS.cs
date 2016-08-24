@@ -1168,11 +1168,17 @@ namespace Server
 
         public void ScaleLeech(BaseWeapon wep, int weaponSpeed)
         {
+            if (wep.IsArtifact)
+                return;
+
             if (HitLeechHits > 0)
             {
                 int hits = HitLeechHits;
 
                 hits = ((int)wep.MlSpeed * 2500) / (100 + weaponSpeed);
+
+                if (wep is BaseRanged)
+                    hits /= 2;
 
                 if(HitLeechHits > hits)
                     HitLeechHits = hits;
@@ -1183,6 +1189,9 @@ namespace Server
                 int mana = HitLeechMana;
 
                 mana = ((int)wep.MlSpeed * 2500) / (100 + weaponSpeed);
+
+                if (wep is BaseRanged)
+                    mana /= 2;
 
                 if(HitLeechMana > mana)
                     HitLeechMana = mana;

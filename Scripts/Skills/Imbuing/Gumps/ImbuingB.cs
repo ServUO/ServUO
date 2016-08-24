@@ -691,98 +691,98 @@ namespace Server.Gumps
 				case 10001:
 				{
                     context.ImbMenu_Cat = 1;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));  	   
 					break;
 				}
 				case 10002:
 				{
                     context.ImbMenu_Cat = 2;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));  	   
 					break;
 				}
 				case 10003:
 				{
                     context.ImbMenu_Cat = 3;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));  	   
 					break;
 				}
 				case 10004:
 				{
                     context.ImbMenu_Cat = 4;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));    	   
 					break;
 				}
 				case 10005:
 				{
                     context.ImbMenu_Cat = 5;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));  	   
 					break;
 				}
 				case 10006:
 				{
                     context.ImbMenu_Cat = 6;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));    	   
 					break;
 				}
 				case 10007:
 				{
                     context.ImbMenu_Cat = 7;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));     
 					break;
 				}
 				case 10008:
 				{
                     context.ImbMenu_Cat = 8;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));   	   
 					break;
 				}
 				case 10009:
 				{
                     context.ImbMenu_Cat = 9;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));    	   
 					break;
 				}
 				case 10010:
 				{
                     context.ImbMenu_Cat = 10;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));  	   
 					break;
 				}
 				case 10011:
 				{
                     context.ImbMenu_Cat = 11;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));  	   
 					break;
 				}
 				case 10012:
 				{
                     context.ImbMenu_Cat = 12;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));    	   
 					break;
 				}
 				case 10013:
 				{
                     context.ImbMenu_Cat = 13;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));   	   
 					break;
 				}
 				case 10014:
 				{
                     context.ImbMenu_Cat = 14;
-                    from.CloseGump(typeof(ImbuingGumpB));
+                    
                     from.SendGump(new ImbuingGumpB(from, context.LastImbued));   	   
 					break;
 				}
@@ -794,8 +794,8 @@ namespace Server.Gumps
                 case 10101:  // = Proceed to Attribute Intensity Menu [ImbuingC.cs]
                 {
                     context.Imbue_Mod = buttonRNum;
-                    from.CloseGump(typeof(ImbuingGumpB));
-                    from.SendGump(new ImbuingGumpC(from, context.LastImbued, buttonRNum, 1));
+                    
+                    from.SendGump(new ImbuingGumpC(from, context.LastImbued, buttonRNum, -1));
                     break;
                 }				
 			}
