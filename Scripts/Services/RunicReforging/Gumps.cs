@@ -142,9 +142,42 @@ namespace Server.Gumps
                 case ReforgingOption.GrandArtifice: return true;
                 case ReforgingOption.InspiredArtifice: return (m_Options & ReforgingOption.GrandArtifice) != 0;
                 case ReforgingOption.ExaltedArtifice: return (m_Options & ReforgingOption.GrandArtifice) != 0;
-                case ReforgingOption.SublimeArtifice: return (m_Options & ReforgingOption.ExaltedArtifice) != 0;
+                case ReforgingOption.SublimeArtifice: return (m_Options & ReforgingOption.ExaltedArtifice) != 0 && (m_Options & ReforgingOption.GrandArtifice) != 0;
             }
             return true;
+        }
+
+        private void InvalidatePrerequisite(ReforgingOption option)
+        {
+            switch (option)
+            {
+                case ReforgingOption.None:
+                case ReforgingOption.Powerful: break;
+                case ReforgingOption.Structural:
+                    if ((m_Options & ReforgingOption.Fortified) != 0)
+                        m_Options ^= ReforgingOption.Fortified;
+                    break;
+                case ReforgingOption.Fortified: break;
+                case ReforgingOption.Fundamental:
+                    if ((m_Options & ReforgingOption.Integral) != 0)
+                        m_Options ^= ReforgingOption.Integral;
+                    break;
+                case ReforgingOption.Integral: break;
+                case ReforgingOption.GrandArtifice:
+                    if ((m_Options & ReforgingOption.InspiredArtifice) != 0)
+                        m_Options ^= ReforgingOption.InspiredArtifice;
+                    if ((m_Options & ReforgingOption.ExaltedArtifice) != 0)
+                        m_Options ^= ReforgingOption.ExaltedArtifice;
+                    if ((m_Options & ReforgingOption.SublimeArtifice) != 0)
+                        m_Options ^= ReforgingOption.SublimeArtifice;
+                    break;
+                case ReforgingOption.InspiredArtifice: break;
+                case ReforgingOption.ExaltedArtifice:
+                    if ((m_Options & ReforgingOption.SublimeArtifice) != 0)
+                        m_Options ^= ReforgingOption.SublimeArtifice;
+                    break;
+                case ReforgingOption.SublimeArtifice: break;
+            }
         }
 
         private bool CanReforge(Mobile from, ReforgingOption option)
@@ -224,7 +257,6 @@ namespace Server.Gumps
 
                             CraftAttributeInfo attrs = resInfo.AttributeInfo;
                             int budget = GetBudget();
-                            int powerMod = GetPowerMod();
 
                             int min = 10;
                             int max = 40;
@@ -258,8 +290,8 @@ namespace Server.Gumps
 
                             if (maxprops == 5 && 0.10 > Utility.RandomDouble())
                                 maxprops = 6;
-                            
-							RunicReforging.ApplyReforgedProperties(m_ToReforge, m_Prefix, m_Suffix, true, budget, min, max, maxprops, powerMod, 0);
+
+                            RunicReforging.ApplyReforgedProperties(m_ToReforge, m_Prefix, m_Suffix, true, budget, min, max, maxprops, GetPowerMod(), 0);
 
                             OnAfterReforged(m_ToReforge);
                             from.SendLocalizedMessage(1152286); // You re-forge the item!
@@ -293,7 +325,10 @@ namespace Server.Gumps
                                 if ((m_Options & option) == 0)
                                     m_Options |= option;
                                 else
+                                {
                                     m_Options ^= option;
+                                    InvalidatePrerequisite(option);
+                                }
                             }
                         }
 
@@ -306,15 +341,15 @@ namespace Server.Gumps
         private int GetPowerMod()
         {
             if ((m_Options & ReforgingOption.Fundamental) != 0)
-                return 0;
-
-            if ((m_Options & ReforgingOption.Structural) != 0)
-                return 10;
-
-            if ((m_Options & ReforgingOption.Powerful) != 0)
                 return 20;
 
-            return 30;
+            if ((m_Options & ReforgingOption.Structural) != 0)
+                return Utility.RandomMinMax(10, 14);
+
+            if ((m_Options & ReforgingOption.Powerful) != 0)
+                return Utility.RandomMinMax(5, 9);
+
+            return 0;
         }
 
         private int GetBudget()

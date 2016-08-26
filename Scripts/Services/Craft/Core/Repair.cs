@@ -440,7 +440,7 @@ namespace Server.Engines.Craft
                         toDelete = true;
                     }
                 }
-                else if (targeted is BaseJewel && ((BaseJewel)targeted).TimesImbued > 0)
+                else if (targeted is BaseJewel)
                 {
                     BaseJewel jewel = (BaseJewel)targeted;
                     SkillName skill = m_CraftSystem.MainSkill;

@@ -12,6 +12,7 @@ using Server.Spells.Seventh;
 using Server.Spells.Chivalry;
 using Server.Spells.Necromancy;
 using Server.Spells.Spellweaving;
+using Server.SkillHandlers;
 
 namespace Server
 {
@@ -1168,33 +1169,32 @@ namespace Server
 
         public void ScaleLeech(BaseWeapon wep, int weaponSpeed)
         {
-            if (wep.IsArtifact)
-                return;
-
             if (HitLeechHits > 0)
             {
-                int hits = HitLeechHits;
+                double postcap = (double)HitLeechHits / (double)Imbuing.GetPropRange(wep, AosWeaponAttribute.HitLeechHits)[1];
+                if (postcap < 1.0) postcap = 1.0;
 
-                hits = (int)(wep.MlSpeed * 2500 / (100 + weaponSpeed));
+                int newhits = (int)((wep.MlSpeed * 2500 / (100 + weaponSpeed)) * postcap);
 
                 if (wep is BaseRanged)
-                    hits /= 2;
+                    newhits /= 2;
 
-                if(HitLeechHits > hits)
-                    HitLeechHits = hits;
+                if(HitLeechHits > newhits)
+                    HitLeechHits = newhits;
             }
 
-            if (this[AosWeaponAttribute.HitLeechMana] > 0)
+            if (HitLeechMana > 0)
             {
-                int mana = HitLeechMana;
+                double postcap = (double)HitLeechMana / (double)Imbuing.GetPropRange(wep, AosWeaponAttribute.HitLeechMana)[1];
+                if (postcap < 1.0) postcap = 1.0;
 
-                mana = (int)(wep.MlSpeed * 2500 / (100 + weaponSpeed));
+                int newmana = (int)((wep.MlSpeed * 2500 / (100 + weaponSpeed)) * postcap);
 
                 if (wep is BaseRanged)
-                    mana /= 2;
+                    newmana /= 2;
 
-                if(HitLeechMana > mana)
-                    HitLeechMana = mana;
+                if(HitLeechMana > newmana)
+                    HitLeechMana = newmana;
             }
         }
 

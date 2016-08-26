@@ -753,6 +753,7 @@ namespace Server
 		private bool m_CanSwim, m_CantWalk;
 		private int m_TithingPoints;
 		private bool m_DisplayGuildTitle;
+        private string m_OverheadSkillTitle;
 		private Mobile m_GuildFealty;
 		private DateTime[] m_StuckMenuUses;
 		private Timer m_ExpireCombatant;
@@ -1134,17 +1135,20 @@ namespace Server
 
 			BaseGuild guild = m_Guild;
 
-			if (guild != null && (m_Player || m_DisplayGuildTitle))
-			{
-				if (suffix.Length > 0)
-				{
-					suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
-				}
-				else
-				{
-					suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
-				}
-			}
+            if (m_OverheadSkillTitle != null)
+            {
+                if (suffix.Length > 0)
+                    suffix = String.Format("{0} {1}", suffix, m_OverheadSkillTitle);
+                else
+                    suffix = String.Format("{0}", m_OverheadSkillTitle);
+            }
+            else if (guild != null && m_Player && m_DisplayGuildTitle)
+            {
+                if (suffix.Length > 0)
+                    suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
+                else
+                    suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
+            }
 
 			suffix = ApplyNameSuffix(suffix);
 
@@ -6580,11 +6584,6 @@ namespace Server
 			{
 				list.Add(new PaperdollEntry(this));
 			}
-
-			if (from == this && Backpack != null && CanSee(Backpack) && CheckAlive(false))
-			{
-				list.Add(new OpenBackpackEntry(this));
-			}
 		}
 
 		public void Internalize()
@@ -9047,6 +9046,20 @@ namespace Server
 				InvalidateProperties();
 			}
 		}
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string OverheadSkillTitle
+        {
+            get
+            {
+                return m_OverheadSkillTitle;
+            }
+            set
+            {
+                m_OverheadSkillTitle = value;
+                InvalidateProperties();
+            }
+        }
 
 		[CommandProperty(AccessLevel.Decorator)]
 		public Mobile GuildFealty { get { return m_GuildFealty; } set { m_GuildFealty = value; } }

@@ -92,7 +92,7 @@ namespace Server.Items
 
             bool goodtogo = true;
             int mods = GetTotalMods(item);
-            int maxmods = item is JukaBow ? 1 : 0;
+            int maxmods = item is JukaBow ||item is BaseWeapon && !((BaseWeapon)item).DImodded ? 1 : 0;
 
             if(m_AllowableTable.ContainsKey(item.GetType()) && m_AllowableTable[item.GetType()] != crsystem)
                 goodtogo = false;
@@ -184,11 +184,8 @@ namespace Server.Items
                 bool addedprefix = false;
                 bool addedsuffix = false;
 
-                int moddedPercLow = perclow - (int)((double)powermod / 2.0);
-                int moddedPercHigh = perchigh - powermod;
-
-                if (moddedPercLow < 0) moddedPercLow = 0;
-                if (moddedPercHigh > 100) moddedPercHigh = 100;
+                int moddedPercLow = perclow + powermod;
+                int moddedPercHigh = perchigh + powermod;
 
                 if (prefix != ReforgedPrefix.None && suffix == ReforgedSuffix.None && prefixCol != null)
                 {
@@ -200,7 +197,7 @@ namespace Server.Items
                         {
                             int random = Utility.Random(prefixCol.Count);
 
-                            if (ApplyAttribute(item, prefixCol[random].Attribute, moddedPercLow, moddedPercHigh, prefixCol[random].Min, prefixCol[random].Max, ref budget, luckchance))
+                            if (ApplyAttribute(item, prefixCol[random], moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
                                 addedprefix = true;
                                 specialAdd--;
@@ -228,7 +225,7 @@ namespace Server.Items
                         {
                             int random = Utility.Random(suffixCol.Count);
 
-                            if (ApplyAttribute(item, suffixCol[random].Attribute, moddedPercLow, moddedPercHigh, suffixCol[random].Min, suffixCol[random].Max, ref budget, luckchance))
+                            if (ApplyAttribute(item, suffixCol[random], moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
                                 addedsuffix = true;
                                 specialAdd--;
@@ -257,7 +254,7 @@ namespace Server.Items
                         {
                             int random = Utility.Random(prefixCol.Count);
 
-                            if (ApplyAttribute(item, prefixCol[random].Attribute, moddedPercLow, moddedPercHigh, prefixCol[random].Min, prefixCol[random].Max, ref budget, luckchance))
+                            if (ApplyAttribute(item, prefixCol[random], moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
                                 addedprefix = true;
                                 specialAddPrefix--;
@@ -270,7 +267,7 @@ namespace Server.Items
                         {
                             int random = Utility.Random(suffixCol.Count);
 
-                            if (ApplyAttribute(item, suffixCol[random].Attribute, moddedPercLow, moddedPercHigh, suffixCol[random].Min, suffixCol[random].Max, ref budget, luckchance))
+                            if (ApplyAttribute(item, suffixCol[random], moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
                                 addedsuffix = true;
                                 specialAddSuffix--;
@@ -353,9 +350,14 @@ namespace Server.Items
                 case 1: return 1;
             }
         }
-
-        private static bool ApplyAttribute(Item item, object attribute, int perclow, int perchigh, int min, int max, ref int budget, int luckchance)
+        //NamedInfoCol
+        //private static bool ApplyAttribute(Item item, object attribute, int perclow, int perchigh, int min, int max, ref int budget, int luckchance)
+        private static bool ApplyAttribute(Item item, NamedInfoCol info, int perclow, int perchigh, ref int budget, int luckchance)
 		{
+            object attribute = info.Attribute;
+            int min = info.Min;
+            int max = info.Max;
+
             int start = budget;
 
             if (CheckConflictingNegative(item, attribute))
@@ -420,6 +422,12 @@ namespace Server.Items
 			else if (attribute is AosWeaponAttribute)
 			{
                 AosWeaponAttribute wepattr = (AosWeaponAttribute)attribute;
+
+                if (item is BaseWeapon && (wepattr == AosWeaponAttribute.HitLeechHits || wepattr == AosWeaponAttribute.HitLeechMana))
+                {
+                    max = (int)((double)Imbuing.GetPropRange((BaseWeapon)item, wepattr)[1] * 1.4);
+                }
+
                 int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
                 AosWeaponAttributes attrs = GetAosWeaponAttributes(item);
 				
@@ -542,7 +550,10 @@ namespace Server.Items
             int scale = ScaleAttribute(attribute);
             int value = Scale(min / scale, max / scale, perclow, perchigh, luckchance, usesqrt) * scale;
             int totalweight = GetTotalWeight(attribute, value);
-				
+
+            if (value > max) value = max;
+            if (value < min) value = min;
+
 			while(budget <= totalweight)
 			{
 				value -= scale;
