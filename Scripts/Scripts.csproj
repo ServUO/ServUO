@@ -289,6 +289,7 @@
     <Compile Include="Gumps\BanDurationGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\BankerGump.cs" />
     <Compile Include="Gumps\BaseConfirmGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -660,6 +661,7 @@
     <Compile Include="Items\Functional\ChickenLizardEgg.cs" />
     <Compile Include="Items\Functional\Incubator.cs" />
     <Compile Include="Items\Functional\ScaleCollar.cs" />
+    <Compile Include="Items\Functional\WallSafe.cs" />
     <Compile Include="Items\Internal\BlightedGroveTeleporters.cs" />
     <Compile Include="Items\Internal\BlueNinjaQuestTeleporter.cs" />
     <Compile Include="Items\Internal\GreenNinjaQuestTeleporter.cs" />

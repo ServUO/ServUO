@@ -22,6 +22,7 @@ namespace Server.Gumps
 
         public override void OnClick()
         {
+            _From.CloseGump(typeof(TitlesGump));
             _From.SendGump(new TitlesGump(_From));
         }
     }
@@ -54,6 +55,7 @@ namespace Server.Gumps
         public bool TitleCleared { get; set; }
         public bool TitleClearing { get; set; }
         public int TitleSelected { get; set; }
+
         public PlayerMobile User { get; set; }
 
         public Dictionary<GumpButton, Action<GumpButton>> ButtonCallbacks { get; set; }
@@ -265,6 +267,9 @@ namespace Server.Gumps
                     AddHtmlLocalized(480, 275, 80, 16, 1011046, 0xFFFF, false, false); // APPLY
                     AddCallbackButton(445, 275, 4005, 4007, 101, GumpButtonType.Reply, 0, b =>
                         {
+                            if (TitleSelected >= 0 && TitleSelected < fameKarma.Count)
+                                title = fameKarma[TitleSelected];
+
                             if (title != null)
                                 User.FameKarmaTitle = title;
                             else
@@ -341,6 +346,7 @@ namespace Server.Gumps
                     AddCallbackButton(445, 275, 4005, 4007, 2500, GumpButtonType.Reply, 0, b =>
                     {
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
+                        str = Titles.GetSkillTitle(User, User.Skills[(SkillName)TitleSelected]);
                         Refresh(false);
 
                         User.PaperdollSkillTitle = str;
@@ -402,39 +408,8 @@ namespace Server.Gumps
                 }
                 else
                 {
-                    int v;
-                    string str = null;
-
-                    if (TitleSelected == 295)
-                    {
-                        v = info.Harrower;
-
-                        if (v > 0)
-                            str = String.Format(": {0} of Evil", Titles.HarrowerTitles[Math.Min(Titles.HarrowerTitles.Length, info.Harrower) - 1]);
-                        else
-                            return;
-                    }
-                    else
-                    {
-                        v = info.GetValue(TitleSelected);
-
-                        ChampionSpawnInfo champInfo = ChampionSpawnInfo.GetInfo((ChampionSpawnType)TitleSelected);
-
-                        int offset = 0;
-                        if (v > 800)
-                            offset = 3;
-                        else if (v > 300)
-                            offset = (int)(v / 300);
-
-                        if (offset > 0)
-                        {
-                            str = String.Format(": {0} of the {1}", champInfo.LevelNames[Math.Min(offset, champInfo.LevelNames.Length) - 1], champInfo.Name);
-                        }
-                        else
-                            return;
-                    }
-
-                    object description = GetChampInfo(TitleSelected);
+                    string str = GetChampionTitle();
+                    object description = GetChampInfo();
 
                     if (description is int)
                         AddHtmlLocalized(225, 70, 270, 140, (int)description, 0xFFFF, false, false);
@@ -450,10 +425,11 @@ namespace Server.Gumps
                     AddCallbackButton(445, 275, 4005, 4007, 299, GumpButtonType.Reply, 0, b =>
                     {
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
-                        Refresh(false);
-
+                        str = GetChampionTitle();
                         User.DisplayChampionTitle = true;
                         User.CurrentChampTitle = str;
+
+                        Refresh(false);
                     });
                 }
             }
@@ -553,9 +529,10 @@ namespace Server.Gumps
                     AddCallbackButton(445, 275, 4005, 4007, 401, GumpButtonType.Reply, 0, b =>
                     {
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
-                        Refresh(false);
-
+                        title = "the " + User.Skills[(SkillName)TitleSelected].Info.Title;
                         User.OverheadSkillTitle = title;
+
+                        Refresh(false);
                     });
                 }
             }
@@ -675,9 +652,10 @@ namespace Server.Gumps
                     AddCallbackButton(445, 275, 4005, 4007, 102, GumpButtonType.Reply, 0, b =>
                     {
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
-                        Refresh(false);
-
+                        title = Titles.GetSkillTitle(User, User.Skills[(SkillName)TitleSelected]);
                         User.SubtitleSkillTitle = title;
+
+                        Refresh(false);
                     });
                 }
             }
@@ -777,9 +755,10 @@ namespace Server.Gumps
                     AddCallbackButton(445, 275, 4005, 4007, 650, GumpButtonType.Reply, 0, b =>
                     {
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
-                        Refresh(false);
-
+                        title = vetTitles[TitleSelected];
                         User.CurrentVeteranTitle = title.Title;
+
+                        Refresh(false);
                     });
                 }
             }
@@ -846,8 +825,45 @@ namespace Server.Gumps
             return true;
         }
 
-        private object GetChampInfo(int index)
+        private string GetChampionTitle()
         {
+            PlayerMobile.ChampionTitleInfo info = User.ChampionTitles;
+
+            int v;
+            string str = null;
+
+            if (TitleSelected == 295)
+            {
+                v = info.Harrower;
+
+                if (v > 0)
+                    str = String.Format(": {0} of Evil", Titles.HarrowerTitles[Math.Min(Titles.HarrowerTitles.Length, info.Harrower) - 1]);
+            }
+            else
+            {
+                v = info.GetValue(TitleSelected);
+
+                ChampionSpawnInfo champInfo = ChampionSpawnInfo.GetInfo((ChampionSpawnType)TitleSelected);
+
+                int offset = 0;
+                if (v > 800)
+                    offset = 3;
+                else if (v > 300)
+                    offset = (int)(v / 300);
+
+                if (offset > 0)
+                {
+                    str = String.Format(": {0} of the {1}", champInfo.LevelNames[Math.Min(offset, champInfo.LevelNames.Length) - 1], champInfo.Name);
+                }
+            }
+
+            return str;
+        }
+
+        private object GetChampInfo()
+        {
+            int index = TitleSelected;
+
             switch (index)
             {
                 default: return "Unknown Champion";

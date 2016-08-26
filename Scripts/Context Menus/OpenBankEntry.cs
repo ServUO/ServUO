@@ -23,6 +23,9 @@ namespace Server.ContextMenus
             else
             {
                 this.Owner.From.BankBox.Open();
+
+                if (Core.TOL && Owner.From is Server.Mobiles.PlayerMobile)
+                    Owner.From.SendGump(new Server.Gumps.BankerGump((Server.Mobiles.PlayerMobile)Owner.From));
             }
         }
     }

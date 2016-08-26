@@ -135,10 +135,8 @@ namespace Server.Engines.ResortAndCasino
 
                         if (num > 0)
                         {
-                            if (Banker.Withdraw(User, num * CasinoData.ChipCost))
+                            if (Banker.Withdraw(User, num * CasinoData.ChipCost, true))
                             {
-                                User.SendLocalizedMessage(1155856, (num * CasinoData.ChipCost).ToString(CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold has been removed from your bank box.
-
                                 PointsSystem.CasinoData.AwardPoints(User, num);
                                 Bought = num;
 

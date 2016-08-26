@@ -427,6 +427,13 @@ namespace Server.Engines.Craft
             SetItemHue(index, 1266);
             #endregion
 
+            if (Core.TOL)
+            {
+                index = AddCraft(typeof(WallSafeDeed), 1044050, 1155860, 0.0, 0.0, typeof(IronIngot), 1044036, 20, 1044253);
+                ForceNonExceptional(index);
+                SetNeededExpansion(index, Expansion.TOL);
+            }
+
             #region Multi-Component Items
             index = this.AddCraft(typeof(AxleGears), 1044051, 1024177, 0.0, 0.0, typeof(Axle), 1044169, 1, 1044253);
             this.AddRes(index, typeof(Gears), 1044254, 1, 1044253);
