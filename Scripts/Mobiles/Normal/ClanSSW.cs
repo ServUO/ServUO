@@ -1,7 +1,3 @@
-//Yrenwick Dragon Ultima IX pack, MiniQuest System & IceHound.cs created by Yrenwick Dragon (G. Younk)
-//From the Ultima: Britannia shard  http://www.mac512.com/ultima/britannia/
-//This script was created on 6/02/04
-
 using System;
 using Server.Items;
 
@@ -90,19 +86,7 @@ namespace Server.Mobiles
             Region reg = Region.Find(c.GetWorldLocation(), c.Map);
             if (0.25 > Utility.RandomDouble() && reg.Name == "Cavern of the Discarded")
             {
-                switch (Utility.Random(10))
-                {
-                    case 0: c.DropItem(new AbyssalCloth()); break;
-                    case 1: c.DropItem(new PowderedIron()); break;
-                    case 2: c.DropItem(new CrystallineBlackrock()); break;
-                    case 3: c.DropItem(new EssenceBalance()); break;
-                    case 4: c.DropItem(new CrystalShards()); break;
-                    case 5: c.DropItem(new ArcanicRuneStone()); break;
-                    case 6: c.DropItem(new DelicateScales()); break;
-                    case 7: c.DropItem(new SeedRenewal()); break;
-                    case 8: c.DropItem(new CrushedGlass()); break;
-                    case 9: c.DropItem(new ElvenFletchings()); break;
-                }
+                c.DropItem(new ReflectiveWolfEye());
             }
         }
         public override void Serialize(GenericWriter writer)

@@ -532,6 +532,7 @@
     <Compile Include="Gumps\TithingGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\TitlesMenu.cs" />
     <Compile Include="Gumps\ToTAdminGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9370,6 +9371,10 @@
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\Region.cs" />
     <Compile Include="Services\Revamped Dungeons\DespiseRevamped\Setup.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Generate.cs" />
+    <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\CorrosiveAsh.cs" />
+    <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\CursedOilstone.cs" />
+    <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\QuartzGrit.cs" />
+    <Compile Include="Services\Revamped Dungeons\Shame Revamped\Items\WhetstoneOfEnervation.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Mobiles\Bosses.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Mobiles\Creatures.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameAltar.cs" />

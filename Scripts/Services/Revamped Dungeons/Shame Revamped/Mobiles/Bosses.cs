@@ -120,8 +120,15 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.NewRandom(600, 1000, 5, 500, 750));
             this.AddLoot(LootPack.UltraRich, 1);
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (0.5 > Utility.RandomDouble())
+                c.DropItem(new QuartzGrit());
         }
 
         public QuartzElemental(Serial serial)
@@ -187,8 +194,15 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            //AddLoot(LootPack.NewRandom(295, 500, 5, 400, 700));
             this.AddLoot(LootPack.UltraRich, 1);
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (0.5 > Utility.RandomDouble())
+                c.DropItem(new CorrosiveAsh());
         }
 
         public FlameElemental(Serial serial)
@@ -253,6 +267,14 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.UltraRich, 1);
             this.AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(3, 5));
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (0.5 > Utility.RandomDouble())
+                c.DropItem(new CursedOilstone());
         }
 
         public WindElemental(Serial serial)
