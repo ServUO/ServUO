@@ -516,20 +516,19 @@ namespace Server.Engines.VendorSearhing
                         DoRecall(VendorMap.SetLocation, VendorMap.SetMap);
                         User.PublicOverheadMessage(MessageType.Spell, User.SpeechHue, true, "Kal Ort Por", false);
                     }
-                    else if (Banker.Withdraw(User, Cost))
+                    else if (!VendorMap.CheckVendor())
                     {
-                        if (VendorMap.CheckVendor())
-                        {
-                            User.Frozen = true;
+                        User.SendLocalizedMessage(1154643); // That item is no longer for sale.
+                    }
+                    else if (Banker.Withdraw(User, Cost, true))
+                    {
+                        User.Frozen = true;
 
-                            VendorMap.SetLocation = User.Location;
-                            VendorMap.SetMap = User.Map;
+                        VendorMap.SetLocation = User.Location;
+                        VendorMap.SetMap = User.Map;
 
-                            User.PublicOverheadMessage(MessageType.Spell, User.SpeechHue, true, "Kal Ort Por", false);
-                            DoRecall(VendorMap.GetVendorLocation(), VendorMap.GetVendorMap());
-                        }
-                        else
-                            User.SendLocalizedMessage(1154643); // That item is no longer for sale.
+                        User.PublicOverheadMessage(MessageType.Spell, User.SpeechHue, true, "Kal Ort Por", false);
+                        DoRecall(VendorMap.GetVendorLocation(), VendorMap.GetVendorMap());
                     }
                     else
                         User.SendLocalizedMessage(1019022); // You do not have enough gold.

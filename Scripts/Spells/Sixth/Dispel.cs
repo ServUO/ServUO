@@ -55,7 +55,7 @@ namespace Server.Spells.Sixth
                     {
                         from.SendLocalizedMessage(1005049); // That cannot be dispelled.
                     }
-                    else if (this.m_Owner.CheckHSequence(m))
+                    else if (bc.SummonMaster == from || m_Owner.CheckHSequence(m))
                     {
                         SpellHelper.Turn(from, m);
 

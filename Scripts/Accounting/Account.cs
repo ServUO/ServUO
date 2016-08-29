@@ -300,8 +300,46 @@ namespace Server.Accounting
 				CheckYoung();
 			}
 
+            LoadSecureAccounts(node);
+
 			Accounts.Add(this);
 		}
+
+        /// <summary>
+        /// Deserializes a list of secure account balances, and converts it to a dictionary containing the account characters
+        /// </summary>
+        /// <param name="node"></param>
+        public void LoadSecureAccounts(XmlElement node)
+        {
+            int[] list = new int[7];
+            XmlElement chars = node["SecureAccounts"];
+
+            if (chars != null)
+            {
+                foreach (XmlElement ele in chars.GetElementsByTagName("char"))
+                {
+                    try
+                    {
+                        int index = Utility.GetXMLInt32(Utility.GetAttribute(ele, "index", "0"), 0);
+                        int balance = Utility.GetXMLInt32(Utility.GetText(ele, "0"), 0);
+
+                        if (balance > 0 && index >= 0 && index < list.Length && index < m_Mobiles.Length)
+                        {
+                            if (SecureAccounts == null)
+                                SecureAccounts = new Dictionary<Mobile, int>();
+
+                            SecureAccounts[m_Mobiles[index]] = balance;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.PushColor(ConsoleColor.Red);
+                        Console.WriteLine("Writing Secure Account Exception: {0}", ex);
+                        Utility.PopColor();
+                    }
+                }
+            }
+        }
 
 		/// <summary>
 		///     Object detailing information about the hardware of the last person to log into this account
@@ -1332,6 +1370,27 @@ namespace Server.Accounting
 			xml.WriteString(XmlConvert.ToString(TotalCurrency));
 			xml.WriteEndElement();
 
+            if (SecureAccounts != null)
+            {
+                xml.WriteStartElement("SecureAccounts");
+
+                for (int i = 0; i < m_Mobiles.Length; ++i)
+                {
+                    Mobile m = m_Mobiles[i];
+                    int balance = GetSecureAccountAmount(m);
+
+                    if (m != null && !m.Deleted && balance > 0)
+                    {
+                        xml.WriteStartElement("char");
+                        xml.WriteAttributeString("index", i.ToString());
+                        xml.WriteString(balance.ToString());
+                        xml.WriteEndElement();
+                    }
+                }
+
+                xml.WriteEndElement();
+            }
+
 			xml.WriteEndElement();
 		}
 
@@ -1664,6 +1723,80 @@ namespace Server.Accounting
 			GetGoldBalance(out gold, out totalGold);
 			GetPlatBalance(out plat, out totalPlat);
 		}
+
+        #region Secure Account
+        public Dictionary<Mobile, int> SecureAccounts;
+
+        public static readonly int MaxSecureAmount = 100000000;
+
+        public int GetSecureAccountAmount(Mobile m)
+        {
+            for(int i = 0; i < this.Length; i++)
+            {
+                Mobile mob = m_Mobiles[i];
+
+                if (mob == null)
+                    continue;
+
+                if (mob == m)
+                {
+                    if (SecureAccounts != null && SecureAccounts.ContainsKey(m))
+                        return SecureAccounts[m];
+                }
+            }
+
+            return 0;
+        }
+
+        public bool DepositToSecure(Mobile m, int amount)
+        {
+            for (int i = 0; i < this.Length; i++)
+            {
+                Mobile mob = m_Mobiles[i];
+
+                if (mob == null)
+                    continue;
+
+                if (mob == m)
+                {
+                    if (SecureAccounts == null)
+                        SecureAccounts = new Dictionary<Mobile, int>();
+
+                    if (!SecureAccounts.ContainsKey(m))
+                        SecureAccounts[m] = Math.Min(MaxSecureAmount, amount);
+                    else
+                        SecureAccounts[m] = Math.Min(MaxSecureAmount, SecureAccounts[m] + amount);
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool WithdrawFromSecure(Mobile m, int amount)
+        {
+            for (int i = 0; i < this.Length; i++)
+            {
+                Mobile mob = m_Mobiles[i];
+
+                if (mob == null)
+                    continue;
+
+                if (m == mob)
+                {
+                    if (SecureAccounts == null || !SecureAccounts.ContainsKey(m) || SecureAccounts[m] < amount)
+                        return false;
+
+                    SecureAccounts[m] -= amount;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        #endregion
 		#endregion
 	}
 }
