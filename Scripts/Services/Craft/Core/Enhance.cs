@@ -317,7 +317,7 @@ namespace Server.Engines.Craft
                                 armor.Attributes.WeaponDamage += attributes.ArmorDamage;
                                 armor.Attributes.AttackChance += attributes.ArmorHitChance;
                                 armor.Attributes.RegenHits += attributes.ArmorRegenHits;				
-                                armor.ArmorAttributes.MageArmor += attributes.ArmorMage;
+                                //armor.ArmorAttributes.MageArmor += attributes.ArmorMage;
                             }
                             else
                             {

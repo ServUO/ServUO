@@ -68,9 +68,9 @@ namespace Server.Guilds
             if (isLeader)
                 this.AddButton(40, 313, 0x4B9, 0x4BA, 5, GumpButtonType.Reply, 0);	//Website Edit button
 
-            this.AddCheck(65, 370, 0xD2, 0xD3, this.player.DisplayGuildTitle, 0);
+            /*this.AddCheck(65, 370, 0xD2, 0xD3, this.player.DisplayGuildTitle, 0);
             this.AddHtmlLocalized(95, 370, 150, 26, 1063085, 0x0, false, false); // Show Guild Title
-            this.AddBackground(450, 370, 100, 26, 0x2486);
+            this.AddBackground(450, 370, 100, 26, 0x2486);*/
 
             this.AddButton(455, 375, 0x845, 0x846, 7, GumpButtonType.Reply, 0);
             this.AddHtmlLocalized(480, 373, 60, 26, 3006115, (this.m_IsResigning) ? 0x5000 : 0, false, false); // Resign

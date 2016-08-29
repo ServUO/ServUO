@@ -183,33 +183,13 @@ namespace Server.Engines.NewMagincia
         {
             int amount = entry.Funds;
 
-            if (amount > 0)
+            if (Banker.Deposit(from, amount, true))
             {
-                while (amount > 60000)
-                {
-                    BankCheck check = new BankCheck(60000);
-
-                    if (from.Backpack == null || !from.Backpack.TryDropItem(from, check, false))
-                    {
-                        check.Delete();
-                        return false;
-                    }
-                    else
-                        amount -= 60000;
-                }
-
-                BankCheck check2 = new BankCheck(amount);
-
-                if (from.Backpack == null || !from.Backpack.TryDropItem(from, check2, false))
-                {
-                    check2.Delete();
-                    return false;
-                }
-                else
-                    entry.Funds -= amount;
+                entry.Funds = 0;
+                return true;
             }
 
-            return true;
+            return false;
         }
 		
 		public void TryPayBackfee(Mobile from, string text, StorageEntry entry)

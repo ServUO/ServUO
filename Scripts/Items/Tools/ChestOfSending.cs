@@ -12,11 +12,12 @@ using Server.Network;
 namespace Server.Items
 {
     [Flipable(0x4910, 0x4911)]
-    public class ChestOfSending : Item, ISecurable, TranslocationItem
+    public class ChestOfSending : Item, ISecurable
     {
+        public static readonly int MaxCharges = 50;
+
         private SecureLevel m_Level;
         private int m_Charges;
-        private int m_Recharges;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
@@ -31,8 +32,8 @@ namespace Server.Items
             get { return m_Charges; }
             set
             {
-                if (value > this.MaxCharges)
-                    m_Charges = this.MaxCharges;
+                if (value > MaxCharges)
+                    m_Charges = MaxCharges;
                 else if (value < 0)
                     m_Charges = 0;
                 else
@@ -43,29 +44,8 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Recharges
-        {
-            get { return m_Recharges; }
-            set
-            {
-                if (value > this.MaxRecharges)
-                    m_Recharges = this.MaxRecharges;
-                else if (value < 0)
-                    m_Recharges = 0;
-                else
-                    m_Recharges = value;
+        public DateTime NextRecharge { get; set; }
 
-                InvalidateProperties();
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxCharges { get { return 50; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxRecharges { get { return 500; } }
-
-        public string TranslocationItemName { get { return "chest of sending"; } }
         public override int LabelNumber { get { return 1150418; } } // a chest of sending
 
         [Constructable]
@@ -95,6 +75,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             list.Add(1060741, m_Charges.ToString()); // charges: ~1_val~
+            list.Add(1150598); // auto recharge
         }
 
         public bool CheckAccessible(Mobile from, Item item)
@@ -223,12 +204,16 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
-
-            writer.Write(m_Recharges);
+            writer.Write((int)2); // version
 
             writer.Write((int)m_Level);
             writer.Write(m_Charges);
+
+            if (NextRecharge < DateTime.UtcNow)
+            {
+                Charges++;
+                NextRecharge = DateTime.UtcNow + TimeSpan.FromHours(Utility.RandomMinMax(11, 13));
+            }
         }
 
         public override void Deserialize(GenericReader reader)
@@ -239,8 +224,10 @@ namespace Server.Items
 
             switch (version)
             {
+                case 2:
                 case 1:
-                    m_Recharges = reader.ReadInt();
+                    if(version == 1)
+                        reader.ReadInt();
                     goto case 0;
                 case 0:
                     m_Level = (SecureLevel)reader.ReadInt();

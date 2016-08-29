@@ -202,7 +202,7 @@ namespace Server.Engines.NewMagincia
 				
 				if(m != winner)
 				{
-					if(!Banker.Deposit(m, kvp.Value.Amount) && m.Backpack != null)
+					if(!Banker.Deposit(m, kvp.Value.Amount, true) && m.Backpack != null)
 					{
 						int total = kvp.Value.Amount;
 						

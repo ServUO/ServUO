@@ -3674,11 +3674,13 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 32:
                 case 31:
                     {
+                        m_ShowGuildAbbreviation = version > 31 ? reader.ReadBool() : false;
                         m_FameKarmaTitle = reader.ReadString();
                         m_PaperdollSkillTitle = reader.ReadString();
-                        OverheadSkillTitle = reader.ReadString();
+                        m_OverheadSkillTitle = reader.ReadString();
                         m_SubtitleSkillTitle = reader.ReadString();
 
                         m_CurrentChampTitle = reader.ReadString();
@@ -4097,12 +4099,13 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(31); // version
+			writer.Write(32); // version
 
-            // Version 31 Titles
+            // Version 31/32 Titles
+            writer.Write(m_ShowGuildAbbreviation);
             writer.Write(m_FameKarmaTitle);
             writer.Write(m_PaperdollSkillTitle);
-            writer.Write(OverheadSkillTitle);
+            writer.Write(m_OverheadSkillTitle);
             writer.Write(m_SubtitleSkillTitle);
             writer.Write(m_CurrentChampTitle);
             writer.Write(m_CurrentVeteranTitle);
@@ -4391,24 +4394,6 @@ namespace Server.Mobiles
 		public delegate void PlayerPropertiesEventHandler(PlayerPropertiesEventArgs e);
 
 		public static event PlayerPropertiesEventHandler PlayerProperties;
-
-		public override void AddNameProperties(ObjectPropertyList list)
-		{
-			base.AddNameProperties(list);
-
-			XmlPoints a = (XmlPoints)XmlAttach.FindAttachment(this, typeof(XmlPoints));
-
-			XmlData XmlPointsTitle = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "XmlPointsTitle");
-
-			if ((XmlPointsTitle != null && XmlPointsTitle.Data == "True") || a == null)
-			{
-				return;
-			}
-			else if (IsPlayer())
-			{
-				list.Add(1070722, "Kills {0} / Deaths {1} : Rank={2}", a.Kills, a.Deaths, a.Rank);
-			}
-		}
 
 		public class PlayerPropertiesEventArgs : EventArgs
 		{
@@ -4896,7 +4881,9 @@ namespace Server.Mobiles
         private string m_PaperdollSkillTitle;
         private string m_SubtitleSkillTitle;
         private string m_CurrentChampTitle;
+        private string m_OverheadSkillTitle;
         private int m_CurrentVeteranTitle;
+        private bool m_ShowGuildAbbreviation;
 
         public string FameKarmaTitle
         {
@@ -4922,10 +4909,106 @@ namespace Server.Mobiles
             set { m_CurrentChampTitle = value; InvalidateProperties(); }
         }
 
+        public string OverheadSkillTitle
+        {
+            get { return m_OverheadSkillTitle; }
+            set { m_OverheadSkillTitle = value; InvalidateProperties(); }
+        }
+
         public int CurrentVeteranTitle
         {
             get { return m_CurrentVeteranTitle; }
             set { m_CurrentVeteranTitle = value; InvalidateProperties(); }
+        }
+
+        public bool ShowGuildAbbreviation
+        {
+            get { return m_ShowGuildAbbreviation; }
+            set { m_ShowGuildAbbreviation = value; InvalidateProperties(); }
+        }
+
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            if (!Core.SA)
+            {
+                base.AddNameProperties(list);
+
+                XmlPoints a = (XmlPoints)XmlAttach.FindAttachment(this, typeof(XmlPoints));
+
+                XmlData XmlPointsTitle = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "XmlPointsTitle");
+
+                if ((XmlPointsTitle != null && XmlPointsTitle.Data == "True") || a == null)
+                {
+                    return;
+                }
+                else if (IsPlayer())
+                {
+                    list.Add(1070722, "Kills {0} / Deaths {1} : Rank={2}", a.Kills, a.Deaths, a.Rank);
+                }
+
+                return;
+            }
+
+            string name = Name;
+
+            if (name == null)
+            {
+                name = String.Empty;
+            }
+
+            string prefix = "";
+
+            if (ShowFameTitle && Fame >= 10000)
+            {
+                prefix = Female ? "Lady" : "Lord";
+            }
+
+            string suffix = "";
+
+            if (PropertyTitle && Title != null && Title.Length > 0)
+            {
+                suffix = Title;
+            }
+
+            BaseGuild guild = Guild;
+
+            if (m_OverheadSkillTitle != null)
+            {
+                if (suffix.Length > 0)
+                    suffix = String.Format("{0} {1}", suffix, m_OverheadSkillTitle);
+                else
+                    suffix = String.Format("{0}", m_OverheadSkillTitle);
+            }
+            else if (guild != null && m_ShowGuildAbbreviation)
+            {
+                if (suffix.Length > 0)
+                    suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
+                else
+                    suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
+            }
+
+            suffix = ApplyNameSuffix(suffix);
+
+            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
+
+            if (guild != null && DisplayGuildTitle)
+            {
+                string title = GuildTitle;
+
+                if (title == null)
+                {
+                    title = "";
+                }
+                else
+                {
+                    title = title.Trim();
+                }
+
+                if (title.Length > 0)
+                {
+                    list.Add("{0}, {1}", Utility.FixHtml(title), Utility.FixHtml(guild.Name));
+                }
+            }
         }
         #endregion
 

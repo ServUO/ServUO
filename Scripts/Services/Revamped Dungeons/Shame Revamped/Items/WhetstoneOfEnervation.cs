@@ -15,7 +15,7 @@ namespace Server.Items
         }
 
         [Constructable]
-        public WhetstoneOfEnervation(int amount) : base(0x423A)
+        public WhetstoneOfEnervation(int amount) : base(0x1368)
         {
             this.Hue = 1458;
             this.Weight = 1;
@@ -39,7 +39,7 @@ namespace Server.Items
                             if(!wep.IsChildOf(m.Backpack))
                                 m.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                             else if (wep.TimesImbued > 0)
-                                m.SendLocalizedMessage(1149667); // Invalid target.
+                                m.SendLocalizedMessage(1046439); // Invalid target.
                             else if (wep.Attributes.WeaponDamage > 0)
                             {
                                 wep.Attributes.WeaponDamage = 0;
@@ -48,10 +48,10 @@ namespace Server.Items
                                 this.Consume();
                             }
                             else
-                                m.SendLocalizedMessage(1149667); // Invalid target.
+                                m.SendLocalizedMessage(1046439); // Invalid target.
                         }
                         else
-                            m.SendLocalizedMessage(1149667); // Invalid target.
+                            m.SendLocalizedMessage(1046439); // Invalid target.
                     });
             }
             else
@@ -75,6 +75,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (ItemID != 0x1368)
+                ItemID = 0x1368;
         }
     }
 }
