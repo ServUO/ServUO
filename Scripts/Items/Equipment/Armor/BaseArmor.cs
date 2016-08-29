@@ -2997,7 +2997,7 @@ namespace Server.Items
                     this.m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
                     this.m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;
                     this.m_AosAttributes.RegenHits += attrInfo.ArmorRegenHits;
-                    this.m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
+                    //this.m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
                 }
                 else
                 {

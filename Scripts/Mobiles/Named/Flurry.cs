@@ -11,7 +11,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "Flurry";
-            this.Body = 0x4F2;
+            this.Body = 13;
             this.Hue = 3;
             this.BaseSoundID = 655;
 

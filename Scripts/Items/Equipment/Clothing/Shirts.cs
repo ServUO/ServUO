@@ -266,6 +266,8 @@ namespace Server.Items
         }
         public override void OnAdded(object parent)
         {
+            base.OnAdded(parent);
+
             if (parent is Mobile)
             {
                 if (((Mobile)parent).Female)
