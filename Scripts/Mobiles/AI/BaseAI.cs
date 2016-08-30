@@ -2185,7 +2185,7 @@ namespace Server.Mobiles
 				speedfactor = a.Value / 100.0;
 			}
 
-			if (m_Mobile.ReduceSpeedWithDamage || m_Mobile.IsSubdued)
+            if (!m_Mobile.IsDeadPet && (m_Mobile.ReduceSpeedWithDamage || m_Mobile.IsSubdued))
 			{
 				double offset = (double)m_Mobile.Hits / m_Mobile.HitsMax;
 

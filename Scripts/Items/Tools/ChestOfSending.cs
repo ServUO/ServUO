@@ -52,7 +52,7 @@ namespace Server.Items
         public ChestOfSending() : base(0x4910)
         {
             m_Level = SecureLevel.CoOwners;
-            m_Charges = Utility.RandomMinMax(30, 40);
+            m_Charges = 50;
             LootType = LootType.Blessed;
         }
 
