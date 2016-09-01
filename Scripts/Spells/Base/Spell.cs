@@ -847,10 +847,13 @@ namespace Server.Spells
 
 			// Lower Mana Cost = 40%
 			int lmc = AosAttributes.GetValue(m_Caster, AosAttribute.LowerManaCost);
+
 			if (lmc > 40)
 			{
 				lmc = 40;
 			}
+
+            lmc += BaseArmor.GetInherentLowerManaCost(m_Caster);
 
 			scalar -= (double)lmc / 100;
 

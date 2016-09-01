@@ -20,7 +20,7 @@ namespace Server.Engines.Points
     {
         public const string FilePath = @"Saves\\PointsSystem\\Persistence.bin";
 
-        public Dictionary<PlayerMobile, double> PlayerTable { get; set; }
+        public List<PointsEntry> PlayerTable { get; set; }
 
         public abstract TextDefinition Name { get; }
         public abstract PointsType Loyalty { get; }
@@ -31,7 +31,7 @@ namespace Server.Engines.Points
 
         public PointsSystem()
         {
-            PlayerTable = new Dictionary<PlayerMobile, double>();
+            PlayerTable = new List<PointsEntry>();
 
             Systems.Add(this);
         }
@@ -46,16 +46,19 @@ namespace Server.Engines.Points
 
         public virtual void ConvertFromOldSystem(PlayerMobile from, double points)
         {
-            if (!PlayerTable.ContainsKey(from))
+            PointsEntry entry = GetEntry(from, false);
+
+            if (entry == null)
             {
                 if (points > MaxPoints)
                     points = MaxPoints;
 
+                AddEntry(from);
+                GetEntry(from).Points = points;
+
                 Utility.PushColor(ConsoleColor.Green);
                 Console.WriteLine("Converted {0} points for {1} to {2}!", (int)points, from.Name, this.GetType().Name);
                 Utility.PopColor();
-
-                PlayerTable[from] = points;
             }
         }
 
@@ -64,27 +67,23 @@ namespace Server.Engines.Points
             if (!(from is PlayerMobile) || points <= 0)
                 return;
 
-            PlayerMobile pm = from as PlayerMobile;
+            PointsEntry entry = GetEntry(from);
 
-            if (!PlayerTable.ContainsKey(pm))
+            if (entry != null)
             {
-                if (!AutoAdd)
-                    return;
+                double old = entry.Points;
+                SendMessage((PlayerMobile)from, old, points, quest);
 
-                PlayerTable[pm] = 0;
-                OnPlayerAdded(pm);
+                SetPoints((PlayerMobile)from, Math.Min(MaxPoints, entry.Points + points));
             }
-
-            double old = PlayerTable[pm];
-            SendMessage(pm, old, points, quest);
-
-            SetPoints(pm, Math.Min(MaxPoints, PlayerTable[pm] + points));
         }
 
         public void SetPoints(PlayerMobile pm, double points)
         {
-            if(PlayerTable.ContainsKey(pm))
-                PlayerTable[pm] = points;
+            PointsEntry entry = GetEntry(pm);
+
+            if(entry != null)
+                entry.Points = points;
         }
 
         public virtual void SendMessage(PlayerMobile from, double old, double points, bool quest)
@@ -97,13 +96,15 @@ namespace Server.Engines.Points
 
         public virtual bool DeductPoints(Mobile from, double points, bool message = false)
         {
-            if (!(from is PlayerMobile) || !PlayerTable.ContainsKey((PlayerMobile)from) || PlayerTable[(PlayerMobile)from] < points)
+            PointsEntry entry = GetEntry(from);
+
+            if (entry == null || entry.Points < points)
             {
                 return false;
             }
             else
             {
-                PlayerTable[(PlayerMobile)from] -= points;
+                entry.Points -= points;
 
                 if (message)
                     from.SendLocalizedMessage(1115921, String.Format("{0}\t{1}", Name.ToString(), ((int)points).ToString()));  // Your loyalty to ~1_GROUP~ has decreased by ~2_AMOUNT~;Original
@@ -116,10 +117,25 @@ namespace Server.Engines.Points
         {
         }
 
+        public virtual PointsEntry AddEntry(PlayerMobile pm)
+        {
+            PointsEntry entry = GetSystemEntry(pm);
+
+            if (!PlayerTable.Contains(entry))
+            {
+                PlayerTable.Add(entry);
+                OnPlayerAdded(pm);
+            }
+
+            return entry;
+        }
+
         public double GetPoints(Mobile from)
         {
-            if (from is PlayerMobile && PlayerTable.ContainsKey(from as PlayerMobile))
-                return PlayerTable[(PlayerMobile)from];
+            PointsEntry entry = GetEntry(from);
+
+            if (entry != null)
+                return entry.Points;
 
             return 0.0;
         }
@@ -129,24 +145,86 @@ namespace Server.Engines.Points
             return null;
         }
 
+        public PointsEntry GetEntry(Mobile from, bool create = false)
+		{
+            PointsEntry entry = PlayerTable.FirstOrDefault(e => e.Player == from);
+
+            if (entry == null && AutoAdd && from is PlayerMobile)
+                entry = AddEntry((PlayerMobile)from);
+				
+			return entry;
+		}
+
+        public TEntry GetPlayerEntry<TEntry>(PlayerMobile pm) where TEntry : PointsEntry
+        {
+            if (pm == null)
+                return null;
+
+            return PlayerTable.FirstOrDefault(p => p.Player == pm) as TEntry;
+        }
+
+        /// <summary>
+        /// Override this if you are going to derive Points Entry into a bigger and badder class!
+        /// </summary>
+        /// <param name="pm"></param>
+        /// <returns></returns>
+        public virtual PointsEntry GetSystemEntry(PlayerMobile pm)
+        {
+            return new PointsEntry(pm);
+        }
+
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write((int)1);
 
             writer.Write(PlayerTable.Count);
+
+            PlayerTable.ForEach(entry =>
+                {
+                    writer.Write(entry.Player);
+                    entry.Serialize(writer);
+                });
+            // Old version 0, now is stored in PointsEntry for more flexibility in newer systems
+            /*writer.Write(PlayerTable.Count);
 
             foreach (KeyValuePair<PlayerMobile, double> kvp in PlayerTable)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
-            }
+            }*/
         }
 
         public virtual void Deserialize(GenericReader reader)
         {
             int version = reader.ReadInt();
 
-            PlayerTable = new Dictionary<PlayerMobile, double>();
+            switch (version)
+            {
+                case 0:
+                case 1:
+                    int count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        PlayerMobile player = reader.ReadMobile() as PlayerMobile;
+ 
+                        PointsEntry entry = GetSystemEntry(player);
+
+                        if (version > 0)
+                            entry.Deserialize(reader);
+                        else
+                        {
+                            entry.Points = reader.ReadDouble();
+                            Console.WriteLine("{0}: {1}", player.Name, entry.Points);
+                        }
+
+                        if (player != null)
+                            PlayerTable.Add(entry);
+                    }
+                    break;
+            }
+
+            //Old player data, not uses the above
+            /*PlayerTable = new Dictionary<PlayerMobile, double>();
 
             int count = reader.ReadInt();
 
@@ -157,7 +235,7 @@ namespace Server.Engines.Points
 
                 if (pm != null)
                     PlayerTable.Add(pm, points);
-            }
+            }*/
         }
 
         #region Static Methods and Accessors
@@ -234,4 +312,35 @@ namespace Server.Engines.Points
         }
         #endregion
     }
+
+    public class PointsEntry
+	{
+		public PlayerMobile Player { get; set; }
+		public double Points { get; set ; }
+
+        public PointsEntry(PlayerMobile pm)
+        {
+            Player = pm;
+        }
+
+		public PointsEntry(PlayerMobile pm, double points)
+		{
+			Player = pm;
+			Points = points;
+		}
+		
+		public virtual void Serialize(GenericWriter writer)
+		{
+			writer.Write(0);
+			writer.Write(Player);
+			writer.Write(Points);
+		}
+		
+		public virtual void Deserialize(GenericReader reader)
+		{
+			int version = reader.ReadInt();
+			Player = reader.ReadMobile() as PlayerMobile;
+			Points = reader.ReadDouble();
+		}
+	}
 }
