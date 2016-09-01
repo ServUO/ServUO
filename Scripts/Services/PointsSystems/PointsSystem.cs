@@ -212,10 +212,7 @@ namespace Server.Engines.Points
                         if (version > 0)
                             entry.Deserialize(reader);
                         else
-                        {
                             entry.Points = reader.ReadDouble();
-                            Console.WriteLine("{0}: {1}", player.Name, entry.Points);
-                        }
 
                         if (player != null)
                             PlayerTable.Add(entry);
