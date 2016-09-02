@@ -127,7 +127,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.5 > Utility.RandomDouble())
+            if ((c.Map != null && c.Map.Rules == MapRules.FeluccaRules) || 0.5 > Utility.RandomDouble())
                 c.DropItem(new QuartzGrit());
         }
 
@@ -201,7 +201,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.5 > Utility.RandomDouble())
+            if ((c.Map != null && c.Map.Rules == MapRules.FeluccaRules) || 0.5 > Utility.RandomDouble())
                 c.DropItem(new CorrosiveAsh());
         }
 
@@ -273,7 +273,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.5 > Utility.RandomDouble())
+            if ((c.Map != null && c.Map.Rules == MapRules.FeluccaRules) || 0.5 > Utility.RandomDouble())
                 c.DropItem(new CursedOilstone());
         }
 

@@ -2997,11 +2997,10 @@ namespace Server.Items
                     this.m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
                     this.m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;
                     this.m_AosAttributes.RegenHits += attrInfo.ArmorRegenHits;
-                    //this.m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
                 }
                 else
                 {
-                    switch (Utility.Random(5))
+                    switch (Utility.Random(4))
                     {
                         case 0:
                             this.m_AosAttributes.WeaponDamage += attrInfo.ArmorDamage;
@@ -3010,12 +3009,9 @@ namespace Server.Items
                             this.m_AosAttributes.AttackChance += attrInfo.ArmorHitChance;
                             break;
                         case 2:
-                            this.m_AosArmorAttributes.MageArmor += attrInfo.ArmorMage;
-                            break;
-                        case 3:
                             this.m_AosAttributes.Luck += attrInfo.ArmorLuck;
                             break;
-                        case 4:
+                        case 3:
                             this.m_AosArmorAttributes.LowerStatReq += attrInfo.ArmorLowerRequirements;
                             break;
                     }

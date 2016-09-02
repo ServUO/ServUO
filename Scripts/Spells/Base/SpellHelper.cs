@@ -1155,12 +1155,14 @@ namespace Server.Spells
             {
                 if (context.Type == typeof(WraithFormSpell))
                 {
-                    int wraithLeech = (5 + (int)((15 * from.Skills.SpiritSpeak.Value) / 100)); // Wraith form gives 5-20% mana leech
+                    int wraithLeech = Math.Min(target.Mana, (5 + (int)((15 * from.Skills.SpiritSpeak.Value) / 100))); // Wraith form gives 5-20% mana leech
                     int manaLeech = AOS.Scale(damageGiven, wraithLeech);
                     if (manaLeech != 0)
                     {
                         from.Mana += manaLeech;
                         from.PlaySound(0x44D);
+
+                        target.Mana -= manaLeech;
                     }
                 }
                 else if (context.Type == typeof(VampiricEmbraceSpell))

@@ -1410,7 +1410,7 @@ namespace Server
 
 		public virtual void AddHonestyProperty(ObjectPropertyList list)
 		{
-            if (HonestyItem && HonestyPickup == DateTime.MinValue)
+            if (HonestyItem)
 			{
                 list.Add(1151520); // lost item (Return to gain Honesty)
 			}
