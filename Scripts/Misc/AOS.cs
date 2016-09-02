@@ -279,7 +279,7 @@ namespace Server
                         return Math.Min(max - 2, AosAttributes.GetValue(from, AosAttribute.CastSpeed) - 2);
                     }
                     return Math.Min(max, AosAttributes.GetValue(from, AosAttribute.CastSpeed));
-                case 14: return Math.Min(40, AosAttributes.GetValue(from, AosAttribute.LowerManaCost));
+                case 14: return Math.Min(40, AosAttributes.GetValue(from, AosAttribute.LowerManaCost)) + BaseArmor.GetInherentLowerManaCost(from);
 				default: return 0;
 			}
 		}
@@ -634,10 +634,6 @@ namespace Server
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Mana))
                     value += 10;
                 #endregion
-            }
-            else if (attribute == AosAttribute.LowerManaCost)
-            {
-                value += BaseArmor.GetInherentLowerManaCost(m);
             }
             #endregion
 

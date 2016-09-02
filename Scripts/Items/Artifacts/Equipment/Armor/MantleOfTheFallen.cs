@@ -16,8 +16,8 @@ namespace Server.Items
             this.Attributes.LowerRegCost = 25;
             this.Attributes.BonusInt = 8;
             this.Attributes.BonusMana = 8;
-            this.Attributes.RegenMana = 1;	
-            //AbsorptionAttributes.CastingFocus = 3;
+            this.Attributes.RegenMana = 1;
+            this.SAAbsorptionAttributes.CastingFocus = 3;
             this.Attributes.SpellDamage = 5;
 			this.StrRequirement = 25;
         }

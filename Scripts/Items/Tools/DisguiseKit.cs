@@ -355,7 +355,7 @@ namespace Server.Items
 		{
 			var t = (Timer)m_Timers[m];
 
-			if (t != null)
+			if (t != null && t.Next > DateTime.UtcNow)
 			{
 				return t.Next - DateTime.UtcNow;
 			}

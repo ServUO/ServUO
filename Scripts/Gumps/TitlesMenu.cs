@@ -541,10 +541,10 @@ namespace Server.Gumps
                 if (!ShowingDescription || TitleSelected == -1)
                 {
                     AddHtml(260, 70, 160, 16, Color("#FFFFFF", String.Format("[{0}]", g.Abbreviation)), false, false);
-                    AddCallbackButton(225, 70, 4005, 4007, 351, GumpButtonType.Reply, 0, b =>
+                    AddCallbackButton(225, 70, 4005, 4007, 397, GumpButtonType.Reply, 0, b =>
                         {
                             ShowingDescription = true;
-                            TitleSelected = 1;
+                            TitleSelected = 351;
                             Refresh();
                         });
                 }
@@ -557,7 +557,7 @@ namespace Server.Gumps
                     AddHtmlLocalized(225, 275, 200, 16, 1115035, 0xFFFF, false, false); // Do you wish to apply this title?
 
                     AddHtmlLocalized(480, 275, 80, 16, 1011046, 0xFFFF, false, false); // APPLY
-                    AddCallbackButton(445, 275, 4005, 4007, 399, GumpButtonType.Reply, 0, b =>
+                    AddCallbackButton(445, 275, 4005, 4007, 398, GumpButtonType.Reply, 0, b =>
                         {
                             AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
                             Refresh(false);
