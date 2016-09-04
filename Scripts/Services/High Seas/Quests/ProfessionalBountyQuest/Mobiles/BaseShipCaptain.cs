@@ -4,6 +4,7 @@ using Server.Items;
 using Server.Multis;
 using System.Collections.Generic;
 using Server.Engines.Quests;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -371,14 +372,12 @@ namespace Server.Mobiles
 
         public void ShootCannons(Mobile focus, bool shootAtBoat)
         {
-            List<Item> cannons = new List<Item>(m_Galleon.Cannons);
+            List<Item> cannons = new List<Item>(m_Galleon.Cannons.Where(i => !i.Deleted));
 
-            foreach (Item item in cannons)
+            foreach (BaseCannon cannon in cannons.OfType<BaseCannon>())
             {
-                if (item != null && item is BaseCannon && !item.Deleted)
+                if (cannon != null)
                 {
-                    BaseCannon cannon = item as BaseCannon;
-
                     if (m_ShootTable.ContainsKey(cannon) && m_ShootTable[cannon] > DateTime.UtcNow)
                         continue;
 

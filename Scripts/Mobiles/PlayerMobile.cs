@@ -4862,7 +4862,7 @@ namespace Server.Mobiles
 			if (title != null && !m_CollectionTitles.Contains(title))
 			{
 				m_CollectionTitles.Add(title);
-				m_SelectedTitle = m_CollectionTitles.Count - 1;
+				//m_SelectedTitle = m_CollectionTitles.Count - 1;
 				InvalidateProperties();
 				return true;
 			}
