@@ -147,6 +147,9 @@ namespace Server.Engines.Points
 
         public PointsEntry GetEntry(Mobile from, bool create = false)
 		{
+            if (from == null)
+                return null;
+
             PointsEntry entry = PlayerTable.FirstOrDefault(e => e.Player == from);
 
             if (entry == null && AutoAdd && from is PlayerMobile)

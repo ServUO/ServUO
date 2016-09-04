@@ -262,6 +262,11 @@ namespace Server.Items
 
         public virtual void Shoot(object cannoneer)
         {
+            AmmoInfo ammo = AmmoInfo.GetAmmoInfo(m_LoadedAmmo);
+
+            if (ammo == null)
+                return;
+
             Mobile shooter = null;
             
             if(cannoneer is Mobile)
@@ -278,8 +283,6 @@ namespace Server.Items
             Point3D pnt = this.Location;
             Map map = this.Map;
             Direction d = GetFacing();
-
-            AmmoInfo ammo = AmmoInfo.GetAmmoInfo(m_LoadedAmmo);
 
             switch (d)
             {

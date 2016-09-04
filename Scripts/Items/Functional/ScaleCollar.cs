@@ -38,7 +38,7 @@ namespace Server.Items
             {
                 BattleChickenLizard bcl = (BattleChickenLizard)targeted;
 
-                int chance = 50 / (int)from.GetDistanceToSqrt(bcl.Location);
+                int chance = 50 / (int)Math.Max(1, from.GetDistanceToSqrt(bcl.Location));
 
                 if (chance > Utility.Random(100))
                 {
