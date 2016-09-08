@@ -48,6 +48,8 @@ namespace Server.Mobiles
                 this.Add(new GenericBuyInfo(typeof(Tambourine), 21, 20, 0xE9D, 0));
                 this.Add(new GenericBuyInfo(typeof(LapHarp), 21, 20, 0xEB2, 0));
                 this.Add(new GenericBuyInfo(typeof(Lute), 21, 20, 0xEB3, 0));
+
+                Add(new GenericBuyInfo("1154004", typeof(SolventFlask), 50, 500, 7192, 2969));
             }
         }
 
