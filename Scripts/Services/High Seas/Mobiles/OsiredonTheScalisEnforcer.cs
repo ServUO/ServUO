@@ -107,62 +107,59 @@ namespace Server.Mobiles
             base.DoDamageBoat(galleon);
         }
 
+        public override void OnDamagedBySpell(Mobile from)
+        {
+            base.OnDamagedBySpell(from);
+
+            if (m_NextSpawn < DateTime.UtcNow && m_Eels.Count < SpawnMax && 0.25 > Utility.RandomDouble())
+                SpawnEel(from);
+        }
+
+        public override void OnGotMeleeAttack(Mobile attacker)
+        {
+            base.OnGotMeleeAttack(attacker);
+
+            if (attacker.Weapon is BaseRanged && m_NextSpawn < DateTime.UtcNow && m_Eels.Count < SpawnMax && 0.25 > Utility.RandomDouble())
+                SpawnEel(attacker);
+        }
+
         public override void OnThink()
         {
             base.OnThink();
-
-            if (m_NextSpawn < DateTime.UtcNow && m_Eels.Count < SpawnMax)
-                SpawnEel();
 
             if (m_NextSpecial < DateTime.UtcNow)
                 DoAreaExplosion();
         }
 
-        public void SpawnEel()
+        public void SpawnEel(Mobile m)
         {
             Map map = this.Map;
 
-            List<Mobile> list = new List<Mobile>();
+            int x = m.X; int y = m.Y; int z = m.Z;
 
-            IPooledEnumerable eable = this.GetMobilesInRange(12);
-            foreach (Mobile mob in eable)
+            Point3D loc = m.Location;
+
+            for (int j = 0; j < 3; j++)
             {
-                if (!CanBeHarmful(mob, false) || mob == this || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() == this))
-                    continue;
-                if (mob.Player)
-                    list.Add(mob);
-                if (mob is BaseCreature && (((BaseCreature)mob).Controlled || ((BaseCreature)mob).Summoned || ((BaseCreature)mob).Team != this.Team))
-                    list.Add(mob);
-            }
-            eable.Free();
-
-            if (list.Count == 0)
-                return;
-
-            Mobile spawn = list[Utility.Random(list.Count)];
-
-            int x = spawn.X; int y = spawn.Y; int z = spawn.Z;
-
-            Point3D loc = spawn.Location;
-
-            for (int i = 0; i < 25; i++)
-            {
-                x = Utility.RandomMinMax(loc.X - 1, loc.X + 1);
-                y = Utility.RandomMinMax(loc.Y - 1, loc.Y + 1);
-
-                if (Spells.SpellHelper.CheckMulti(new Point3D(x, y, spawn.Z), map) || map.CanSpawnMobile(x, y, z))
+                for (int i = 0; i < 25; i++)
                 {
-                    ParasiticEel eel = new ParasiticEel(this);
-                    eel.MoveToWorld(new Point3D(x, y, loc.Z), map);
-                    
-                    if(spawn is PlayerMobile)
-                        eel.Combatant = spawn;
+                    x = Utility.RandomMinMax(loc.X - 1, loc.X + 1);
+                    y = Utility.RandomMinMax(loc.Y - 1, loc.Y + 1);
 
-                    m_NextSpawn = DateTime.UtcNow + SpawnRate;
-                    return;
+                    if (Spells.SpellHelper.CheckMulti(new Point3D(x, y, m.Z), map) || map.CanSpawnMobile(x, y, z))
+                    {
+                        ParasiticEel eel = new ParasiticEel(this);
+                        eel.MoveToWorld(new Point3D(x, y, loc.Z), map);
+
+                        if (m is PlayerMobile)
+                            eel.Combatant = m;
+
+                        break;
+                    }
                 }
             }
 
+            m_NextSpawn = DateTime.UtcNow + SpawnRate;
         }
 
         public void DoAreaExplosion()

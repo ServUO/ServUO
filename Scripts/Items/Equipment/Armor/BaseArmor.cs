@@ -8,6 +8,7 @@ using Server.Network;
 using Server.Mobiles;
 using AMA = Server.Items.ArmorMeditationAllowance;
 using AMT = Server.Items.ArmorMaterialType;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -543,23 +544,18 @@ namespace Server.Items
         {
             int toReduce = 0;
 
-            foreach (Item item in from.Items)
+            foreach (BaseArmor armor in from.Items.OfType<BaseArmor>())
             {
-                if (item is BaseArmor)
-                {
-                    if (item is WoodlandArms || item is WoodlandChest || item is WoodlandGloves || item is WoodlandLegs || item is WoodlandGorget)
-                        continue;
+                if (armor.ArmorAttributes.MageArmor > 1 || armor is WoodlandArms || armor is WoodlandChest || armor is WoodlandGloves || armor is WoodlandLegs || armor is WoodlandGorget || armor is BaseShield)
+                    continue;
 
-                    BaseArmor armor = item as BaseArmor;
-
-                    if (armor.MaterialType == ArmorMaterialType.Studded)
-                        toReduce += 3;
-                    else if (armor.MaterialType >= ArmorMaterialType.Ringmail)
-                        toReduce += 1;
-                }
+                if (armor.MaterialType == ArmorMaterialType.Studded || armor.MaterialType == ArmorMaterialType.Bone)
+                    toReduce += 3;
+                else if (armor.MaterialType >= ArmorMaterialType.Ringmail)
+                    toReduce += 1;
             }
 
-            return toReduce;
+            return Math.Min(15, toReduce);
         }
         #endregion
 

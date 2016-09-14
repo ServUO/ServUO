@@ -178,7 +178,8 @@ namespace Server.Mobiles
 
         public override void Delete()
         {
-            BountyQuestSpawner.Instance.HandleDeath(this);
+            if(BountyQuestSpawner.Instance != null)
+                BountyQuestSpawner.Instance.HandleDeath(this);
 
             if (m_Galleon != null && !m_Galleon.Deleted)
                 Timer.DelayCall(DeleteAfterDeath, new TimerStateCallback(TryDecayGalleon), m_Galleon);

@@ -1,20 +1,3 @@
-/*                                                             .---.
-/  .  \
-|\_/|   |
-|   |  /|
-.----------------------------------------------------------------' |
-/  .-.                                                              |
-|  /   \         Contribute To The Orbsydia SA Project               |
-| |\_.  |                                                            |
-|\|  | /|                        By Lotar84                          |
-| `---' |                                                            |
-|       |       (Orbanised by Orb SA Core Development Team)          | 
-|       |                                                           /
-|       |----------------------------------------------------------'
-\       |
-\     /
-`---'
-*/
 using System;
 using Reward = Server.Engines.Quests.BaseReward;
 
@@ -29,7 +12,7 @@ namespace Server.Items
             this.Movable = true;
             this.Hue = 1266;
 
-            this.DropItem(Reward.CookRecipe());
+            this.DropItem(new RecipeScroll(500));
         }
 
         public JaacarBox(Serial serial)

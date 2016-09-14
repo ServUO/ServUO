@@ -165,8 +165,15 @@ namespace Server.Engines.Quests
             }
         }
 
+        [Constructable]
         public BountyQuestSpawner() : base(0xED4)
         {
+            if (m_Instance != null && !m_Instance.Deleted)
+            {
+                Active = false;
+                Delete();
+            }
+
             Name = "Pirate/Merchant Spawner";
             Visible = false;
             Movable = false;
