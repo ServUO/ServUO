@@ -31,7 +31,7 @@ namespace Server.Mobiles
         public override int TreasureMapLevel { get { return 7; } }
 
         public override Type[] UniqueList { get { return new Type[] { typeof(EnchantedCoralBracelet), typeof(WandOfThunderingGlory), typeof(LeviathanHideBracers), typeof(SmilingMoonBlade) } ; } }
-        public override Type[] SharedList { get { return new Type[] { typeof(SmallForgeDeed) }; } }
+        public override Type[] SharedList { get { return new Type[] { typeof(MiniSoulForgeDeed) }; } }
         public override Type[] DecorativeList { get { return new Type[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) }; } }
 
         public override bool NoGoodies { get { return true; } }
