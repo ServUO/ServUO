@@ -413,7 +413,7 @@ namespace Server.Engines.Craft
             }
             #endregion
 
-            AddCraft(typeof(LiquorBarrel), 1044292, 1150816, 60.0, 90.0, typeof(Log), 1044041, 50, 1044351);
+            AddCraft(typeof(LiquorBarrel), 1044292, 1150816, 60.0, 90.0, typeof(Board), 1044041, 50, 1044351);
 
             // Weapons
             this.AddCraft(typeof(ShepherdsCrook), 1044566, 1023713, 78.9, 103.9, typeof(Board), 1044041, 7, 1044351);

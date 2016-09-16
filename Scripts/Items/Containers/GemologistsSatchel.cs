@@ -23,7 +23,7 @@ namespace Server.Items
 
             for (int i = 0; i < 5; i++)
             {
-                Type type = m_Types[Utility.Random(m_Types.Length)];
+                Type type = Server.SkillHandlers.Imbuing.IngredTypes[Utility.Random(Server.SkillHandlers.Imbuing.IngredTypes.Length)];
 
                 if (type != null)
                 {
@@ -54,28 +54,5 @@ namespace Server.Items
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
 		}
-
-        private static Type[] m_Types = new Type[]
-		{
-			typeof(MagicalResidue), 	typeof(EnchantEssence), 		typeof(RelicFragment),
-			
-			typeof(SeedRenewal), 		typeof(ChagaMushroom), 			typeof(CrystalShards),
-			typeof(BottleIchor), 		typeof(ReflectiveWolfEye), 		typeof(FaeryDust),
-			typeof(BouraPelt), 			typeof(SilverSnakeSkin), 		typeof(ArcanicRuneStone),
-			typeof(SlithTongue), 		typeof(VoidOrb), 				typeof(RaptorTeeth),
-			typeof(SpiderCarapace), 	typeof(DaemonClaw), 			typeof(VialOfVitriol),
-			typeof(GoblinBlood), 		typeof(LavaSerpentCrust), 		typeof(UndyingFlesh),
-			typeof(CrushedGlass), 		typeof(CrystallineBlackrock), 	typeof(PowderedIron),
-			typeof(ElvenFletchings),    typeof(DelicateScales),
-			
-			typeof(EssenceSingularity), typeof(EssenceBalance), 		typeof(EssencePassion),
-			typeof(EssenceDirection), 	typeof(EssencePrecision), 		typeof(EssenceControl),
-			typeof(EssenceDiligence), 	typeof(EssenceAchievement), 	typeof(EssenceFeeling), 
-			typeof(EssenceOrder),
-			
-			typeof(ParasiticPlant), 	typeof(LuminescentFungi), 		typeof(BrilliantAmber), 
-			typeof(FireRuby), 			typeof(WhitePearl), 			typeof(BlueDiamond), 
-			typeof(Turquoise)
-		};
 	}
 }

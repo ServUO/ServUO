@@ -106,6 +106,8 @@ namespace Server.Items
             // Lower Mana Cost = 40%
             int lmc = Math.Min(AosAttributes.GetValue(from, AosAttribute.LowerManaCost), 40);
 
+            lmc += BaseArmor.GetInherentLowerManaCost(from);
+
             scalar -= (double)lmc / 100;
             mana = (int)(mana * scalar);
 

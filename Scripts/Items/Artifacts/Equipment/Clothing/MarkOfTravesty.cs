@@ -12,7 +12,7 @@ namespace Server.Items
             this.Hue = 0x495;
 			
             this.Attributes.BonusMana = 8;
-            //Attributes.RegenHits = 3;
+            Attributes.RegenHits = 3;
 			
             this.ClothingAttributes.SelfRepair = 3;
 			

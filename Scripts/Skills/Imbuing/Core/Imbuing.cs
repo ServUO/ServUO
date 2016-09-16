@@ -1529,6 +1529,30 @@ namespace Server.SkillHandlers
             //243 already used above
         }
 
+        public static Type[] IngredTypes { get { return m_IngredTypes; } }
+        private static Type[] m_IngredTypes = new Type[]
+		{
+			typeof(MagicalResidue), 	typeof(EnchantEssence), 		typeof(RelicFragment),
+			
+			typeof(SeedRenewal), 		typeof(ChagaMushroom), 			typeof(CrystalShards),
+			typeof(BottleIchor), 		typeof(ReflectiveWolfEye), 		typeof(FaeryDust),
+			typeof(BouraPelt), 			typeof(SilverSnakeSkin), 		typeof(ArcanicRuneStone),
+			typeof(SlithTongue), 		typeof(VoidOrb), 				typeof(RaptorTeeth),
+			typeof(SpiderCarapace), 	typeof(DaemonClaw), 			typeof(VialOfVitriol),
+			typeof(GoblinBlood), 		typeof(LavaSerpentCrust), 		typeof(UndyingFlesh),
+			typeof(CrushedGlass), 		typeof(CrystallineBlackrock), 	typeof(PowderedIron),
+			typeof(ElvenFletchings),    typeof(DelicateScales),
+			
+			typeof(EssenceSingularity), typeof(EssenceBalance), 		typeof(EssencePassion),
+			typeof(EssenceDirection), 	typeof(EssencePrecision), 		typeof(EssenceControl),
+			typeof(EssenceDiligence), 	typeof(EssenceAchievement), 	typeof(EssenceFeeling), 
+			typeof(EssenceOrder),
+			
+			typeof(ParasiticPlant), 	typeof(LuminescentFungi), 		typeof(BrilliantAmber), 
+			typeof(FireRuby), 			typeof(WhitePearl), 			typeof(BlueDiamond), 
+			typeof(Turquoise)
+		};
+
         public static int GetAttributeName(object o)
         {
             int mod = GetMod(o);

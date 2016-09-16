@@ -132,7 +132,8 @@ namespace Server.Items
 			{
                 from.Backpack.DropItem(new RefinementItem(m_RefinementType, m_CraftType, m_SubCraftType, m_ModType));
 				from.PrivateOverheadMessage(MessageType.Regular, 0, 1153979, from.NetState); // *You carefully and skillfully craft an Armor Refinement* TODO Hue???
-				Delete();
+				
+                Consume();
 			}
 		}
 
