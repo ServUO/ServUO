@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Server;
 using Server.Items;
 using Server.Mobiles;
@@ -18,7 +19,7 @@ namespace Server.Engines.Points
 
     public abstract class PointsSystem
     {
-        public const string FilePath = @"Saves\\PointsSystem\\Persistence.bin";
+        public static string FilePath = Path.Combine("Saves/PointsSystem", "Persistence.bin");
 
         public List<PointsEntry> PlayerTable { get; set; }
 
