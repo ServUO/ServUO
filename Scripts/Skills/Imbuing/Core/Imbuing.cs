@@ -368,6 +368,10 @@ namespace Server.SkillHandlers
                                 if (wep.Attributes.CastSpeed >= 0) 
                                     wep.Attributes.CastSpeed -= 1;
                             }
+                            else if (attr == AosAttribute.CastSpeed)
+                            {
+                                wep.Attributes.CastSpeed += value;
+                            }
                             else if (attr == AosAttribute.WeaponDamage)
                             {
                                 wep.Attributes.WeaponDamage = value;
@@ -486,6 +490,10 @@ namespace Server.SkillHandlers
 
                                 if (shield.Attributes.CastSpeed >= 0)
                                     shield.Attributes.CastSpeed -= 1;
+                            }
+                            else if (attr == AosAttribute.CastSpeed)
+                            {
+                                shield.Attributes.CastSpeed += value;
                             }
                             else
                                 shield.Attributes[attr] = value;
