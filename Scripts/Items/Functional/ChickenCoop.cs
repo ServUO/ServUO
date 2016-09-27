@@ -426,7 +426,9 @@ namespace Server.Items
 
         public bool CheckAccess(Mobile m)
         {
-            return BaseHouse.CheckAccessible(m, this);
+            BaseHouse h = BaseHouse.FindHouseAt(this);
+
+            return h != null && h.HasSecureAccess(m, m_Level);
         }
 
         public bool CanUse()
