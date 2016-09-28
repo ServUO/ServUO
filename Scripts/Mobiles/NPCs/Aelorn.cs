@@ -126,6 +126,13 @@ namespace Server.Engines.Quests
             }
         }
 
+		public override bool IsActiveVendor
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override void InitSBInfo()
         {
             this.SBInfos.Add(new SBKeeperOfChivalry());
