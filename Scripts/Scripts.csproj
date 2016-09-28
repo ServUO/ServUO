@@ -11699,7 +11699,9 @@
     <Compile Include="VendorInfo\SBInfo.cs" />
     <Compile Include="VendorInfo\SBInnKeeper.cs" />
     <Compile Include="VendorInfo\SBJewel.cs" />
+    <Compile Include="VendorInfo\SBKeeperOfBushido.cs" />
     <Compile Include="VendorInfo\SBKeeperOfChivalry.cs" />
+    <Compile Include="VendorInfo\SBKeeperOfNinjitsu.cs" />
     <Compile Include="VendorInfo\SBKnifeWeapon.cs" />
     <Compile Include="VendorInfo\SBLeatherArmor.cs" />
     <Compile Include="VendorInfo\SBLeatherWorker.cs" />
