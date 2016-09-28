@@ -1,7 +1,9 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefBlacksmithy), typeof(GargishTalwar))]
     [FlipableAttribute(0x143E, 0x143F)]
     public class Halberd : BasePoleArm
     {

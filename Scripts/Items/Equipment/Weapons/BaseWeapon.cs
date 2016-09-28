@@ -114,9 +114,11 @@ namespace Server.Items
 
 		#region Mondain's Legacy
 		private bool m_Immolating; // Is this weapon blessed via Immolating Weapon arcanists spell? Temporary; not serialized.
-		#endregion
+        #endregion
 
-		private AosAttributes m_AosAttributes;
+        private bool m_Altered;
+
+        private AosAttributes m_AosAttributes;
 		private AosWeaponAttributes m_AosWeaponAttributes;
 		private AosSkillBonuses m_AosSkillBonuses;
 		private AosElementAttributes m_AosElementDamages;
@@ -3623,8 +3625,9 @@ namespace Server.Items
 			SetSaveFlag(ref flags, SaveFlag.EngravedText, !String.IsNullOrEmpty(m_EngravedText));
 			SetSaveFlag(ref flags, SaveFlag.xAbsorptionAttributes, !m_SAAbsorptionAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.xNegativeAttributes, !m_NegativeAttributes.IsEmpty);
+            SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
-			writer.Write((long)flags);
+            writer.Write((long)flags);
 
 			if (GetSaveFlag(flags, SaveFlag.DamageLevel))
 			{
@@ -3820,8 +3823,9 @@ namespace Server.Items
 			ElementalDamages = 0x20000000,
 			EngravedText = 0x40000000,
 			xAbsorptionAttributes = 0x80000000,
-            xNegativeAttributes = 0x100000000
-		}
+            xNegativeAttributes = 0x100000000,
+            Altered = 0x200000000
+        }
 
 		#region Mondain's Legacy Sets
 		private static void SetSaveFlag(ref SetFlag flags, SetFlag toSet, bool setIf)
@@ -4239,9 +4243,12 @@ namespace Server.Items
                         {
                             m_NegativeAttributes = new NegativeAttributes(this);
                         }
-						#endregion
+                        #endregion
 
-						break;
+                        if (GetSaveFlag(flags, SaveFlag.Altered))
+                            m_Altered = true;
+
+                        break;
 					}
 				case 4:
 					{
@@ -4761,8 +4768,11 @@ namespace Server.Items
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
 
-			#region Factions
-			if (m_FactionState != null)
+            if (m_Altered)
+                list.Add(1111880); // Altered  
+
+            #region Factions
+            if (m_FactionState != null)
 			{
 				list.Add(1041350); // faction item
 			}
@@ -5757,8 +5767,19 @@ namespace Server.Items
 
 			SetHelper.GetSetProperties(list, this);
 		}
-		#endregion
-	}
+        #endregion
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Altered
+        {
+            get { return m_Altered; }
+            set
+            {
+                m_Altered = value;
+                InvalidateProperties();
+            }
+        }
+    }
 
 	public enum CheckSlayerResult
 	{

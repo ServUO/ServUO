@@ -1,7 +1,9 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefBlacksmithy), typeof(GargishLance))]
     [FlipableAttribute(0x26C0, 0x26CA)]
     public class Lance : BaseSword
     {
