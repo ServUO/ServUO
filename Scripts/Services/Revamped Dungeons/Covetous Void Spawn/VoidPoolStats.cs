@@ -1,3 +1,4 @@
+using System.IO;
 using Server;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Server.Engines.VoidPool
 {
 	public static class VoidPoolStats
 	{
-		public const string FilePath = @"Saves\\VoidPoolStats\\VoidPoolStats.bin";
+		public static string FilePath = Path.Combine("Saves/VoidPoolStats", "VoidPoolStats.bin");
 		
 		public static Dictionary<Mobile, long> BestSingle { get; set; }
 		public static Dictionary<Mobile, long> OverallTotal { get; set; }
