@@ -1012,14 +1012,16 @@ namespace Server.Mobiles
             }
 
             BaseCreature c = (BaseCreature)m;
+            BaseCreature t = this;
 
-            if ((FightMode == FightMode.Evil && m.Karma < 0) || (c.FightMode == FightMode.Evil && Karma < 0) || (FightMode == FightMode.Good && m.Karma > 0) || (c.FightMode == FightMode.Good && Karma > 0))
-            {
-                return true;
-            }
+            // Summons should have same rules as their master
+            if (c.Summoned && c.SummonMaster != null && c.SummonMaster is BaseCreature)
+                c = c.SummonMaster as BaseCreature;
 
-            return (m_iTeam != c.m_iTeam || ((m_bSummoned || m_bControlled) != (c.m_bSummoned || c.m_bControlled))
-                   /* || c.Combatant == this*/);
+            if (t.Summoned && t.SummonMaster != null && t.SummonMaster is BaseCreature)
+                t = t.SummonMaster as BaseCreature;
+
+            return (t.m_iTeam != c.m_iTeam || ((t.m_bSummoned || t.m_bControlled) != (c.m_bSummoned || c.m_bControlled))/* || c.Combatant == this*/ );
         }
 
         public override string ApplyNameSuffix(string suffix)

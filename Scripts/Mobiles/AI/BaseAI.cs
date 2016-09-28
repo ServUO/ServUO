@@ -2809,31 +2809,20 @@ namespace Server.Mobiles
 					//if (!Server.Engines.XmlSpawner2.XmlMobFactions.CheckAcquire(this.m_Mobile, m))
 					//continue;
 
-					if (Core.AOS && m is BaseCreature && (m as BaseCreature).Summoned && !(m as BaseCreature).Controlled)
-					{
-						continue;
-					}
+                    if (m_Mobile.Summoned && m_Mobile.SummonMaster != null)
+                    {
+                        // If this is a summon, it can't target its controller.
+                        if (m == m_Mobile.SummonMaster)
+                            continue;
 
-					if (m_Mobile.Summoned && m_Mobile.SummonMaster != null)
-					{
-						// If this is a summon, it can't target its controller.
-						if (m == m_Mobile.SummonMaster)
-						{
-							continue;
-						}
+                        // It also must abide by harmful spell rules if the master is a player.
+                        if (m_Mobile.SummonMaster is PlayerMobile && !Server.Spells.SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
+                            continue;
 
-						// It also must abide by harmful spell rules.
-						if (!SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
-						{
-							continue;
-						}
-
-						// Animated creatures cannot attack players directly.
-						if (m is PlayerMobile && m_Mobile.IsAnimatedDead)
-						{
-							continue;
-						}
-					}
+                        // Players animated creatures cannot attack other players directly.
+                        if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
+                            continue;
+                    }
 
 					// If we only want faction friends, make sure it's one.
 					if (bFacFriend && !m_Mobile.IsFriend(m))

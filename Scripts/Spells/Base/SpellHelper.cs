@@ -462,6 +462,26 @@ namespace Server.Spells
                 }
             }
 
+            // Non-enemy monsters will no longer flag area spells on each other
+            if (from is BaseCreature && to is BaseCreature)
+            {
+                BaseCreature fromBC = (BaseCreature)from;
+                BaseCreature toBC = (BaseCreature)to;
+
+                if (fromBC.GetMaster() is BaseCreature)
+                    fromBC = fromBC.GetMaster() as BaseCreature;
+
+                if (toBC.GetMaster() is BaseCreature)
+                    toBC = toBC.GetMaster() as BaseCreature;
+
+                if (toBC.IsEnemy(fromBC))   //Natural Enemies
+                    return true;
+
+                // All involved are monsters- no damage. If falls through this statement, normal noto rules apply
+                if (!toBC.Controlled && !toBC.Summoned && !fromBC.Controlled && !fromBC.Summoned) //All involved are monsters- no damage
+                    return false;
+            }
+
             if (to is BaseCreature && !((BaseCreature)to).Controlled && ((BaseCreature)to).InitialInnocent)
                 return true;
 
