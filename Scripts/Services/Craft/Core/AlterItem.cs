@@ -241,6 +241,9 @@ namespace Server.Engines.Craft
                     return;
                 }
 
+                newitem.Name = origItem.Name;
+                newitem.Hue = origItem.Hue;
+
                 origItem.Delete();
                 origItem.OnAfterDuped(newitem);
                 newitem.Parent = null;

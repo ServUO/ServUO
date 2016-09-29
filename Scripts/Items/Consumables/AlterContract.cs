@@ -94,6 +94,11 @@ namespace Server.Items
             list.Add(1060636); // exceptional
         }
 
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            list.Add(1094795, GetTitle());
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (!IsChildOf(from.Backpack))
