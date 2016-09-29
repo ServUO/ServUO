@@ -194,16 +194,6 @@ namespace Server.Engines.Craft
                     newarmor.AbsorptionAttributes = new SAAbsorptionAttributes(oldarmor, newarmor.AbsorptionAttributes);
                     newarmor.Altered = true;
                 }
-                else if (origItem is BaseShield && newitem is BaseShield)
-                {
-                    BaseShield oldshield = (BaseShield)origItem;
-                    BaseShield newshield = (BaseShield)newitem;
-
-                    newshield.Attributes = new AosAttributes(oldshield, newshield.Attributes);
-                    newshield.SkillBonuses = new AosSkillBonuses(oldshield, newshield.SkillBonuses);
-                    newshield.AbsorptionAttributes = new SAAbsorptionAttributes(oldshield, newshield.AbsorptionAttributes);
-                    newshield.Altered = true;
-                }
                 else if (origItem is BaseClothing && newitem is BaseClothing)
                 {
                     BaseClothing oldcloth = (BaseClothing)origItem;
@@ -273,7 +263,7 @@ namespace Server.Engines.Craft
             {
                 BaseWeapon weapon = (BaseWeapon)item;
 
-                if (weapon.SetID != SetItem.None)
+                if (weapon.SetID != SetItem.None || !weapon.CanAlter)
                     return false;
 
                 if ((weapon.RequiredRace != null && weapon.RequiredRace == Race.Gargoyle && !weapon.IsArtifact))
@@ -284,7 +274,7 @@ namespace Server.Engines.Craft
             {
                 BaseArmor armor = (BaseArmor)item;
 
-                if (armor.SetID != SetItem.None)
+                if (armor.SetID != SetItem.None || !armor.CanAlter)
                     return false;
 
                 if ((armor.RequiredRace != null && armor.RequiredRace == Race.Gargoyle && !armor.IsArtifact))
@@ -295,12 +285,20 @@ namespace Server.Engines.Craft
             {
                 BaseClothing cloth = (BaseClothing)item;
 
-                if (cloth.SetID != SetItem.None)
+                if (cloth.SetID != SetItem.None || !cloth.CanAlter)
                     return false;
 
                 if ((cloth.RequiredRace != null && cloth.RequiredRace == Race.Gargoyle && !cloth.IsArtifact))
                     return false;
             }
+
+	        if (item is BaseQuiver)
+	        {
+		        BaseQuiver quiver = (BaseQuiver) item;
+
+		        if (quiver.SetID != SetItem.None || !quiver.CanAlter)
+			        return false;
+	        }
 
             if (item is IRewardItem)
                 return false;

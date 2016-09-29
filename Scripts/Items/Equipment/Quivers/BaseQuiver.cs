@@ -46,6 +46,8 @@ namespace Server.Items
         private int m_WeightReduction;
         private int m_DamageIncrease;
 
+		public virtual bool CanAlter { get { return true; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsArrowAmmo { get; set; }
 

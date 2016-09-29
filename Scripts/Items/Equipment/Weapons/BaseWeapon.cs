@@ -196,6 +196,7 @@ namespace Server.Items
 
         public virtual bool CanFortify { get { return !IsImbued && NegativeAttributes.Antique < 3; } }
         public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
+		public virtual bool CanAlter { get { return true; } }
 
 		public override int PhysicalResistance { get { return m_AosWeaponAttributes.ResistPhysicalBonus; } }
 		public override int FireResistance { get { return m_AosWeaponAttributes.ResistFireBonus; } }

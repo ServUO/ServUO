@@ -251,6 +251,8 @@ namespace Server.Items
             }
         }
 
+		public virtual bool CanAlter { get { return true; } }
+
         public virtual bool UseIntOrDexProperty
         {
             get
