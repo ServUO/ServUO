@@ -2829,6 +2829,9 @@ namespace Server.Items
             if ((prop = m_SAAbsorptionAttributes.CastingFocus) != 0)
                 list.Add(1113696, prop.ToString()); // Casting Focus ~1_val~%
 
+			if ((prop = this.m_AosArmorAttributes.SoulCharge) != 0)
+				list.Add(1113630, prop.ToString()); // Soul Charge ~1_val~%
+
             if (this is SurgeShield && ((SurgeShield)this).Surge > SurgeType.None)
                 list.Add(1153098, ((SurgeShield)this).Charges.ToString());
 

@@ -15,7 +15,7 @@ namespace Server.Items
             this.Attributes.BonusMana = 5;
             this.Attributes.RegenMana = 2;
             this.Attributes.SpellDamage = 5;
-            //AbsorptionAttributes.CastingFocus = 2;
+            SAAbsorptionAttributes.CastingFocus = 2;
             this.Attributes.LowerManaCost = 8;
             this.Attributes.LowerRegCost = 10;
 			this.StrRequirement = 20;

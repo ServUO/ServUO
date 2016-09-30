@@ -7,13 +7,13 @@ namespace Server.Items
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DragonJadeEarrings()
-            : base()//TODO: GargishEarrings ItemID
+            : base(0x4213)
 	
         {
             this.Name = ("Dragon Jade Earrings");
 		
             this.Hue = 2129;
-			
+
             this.Attributes.BonusDex = 5;
             this.Attributes.BonusStr = 5;
             this.Attributes.RegenHits = 2;
@@ -24,7 +24,7 @@ namespace Server.Items
             this.Resistances.Cold = 5;
             this.Resistances.Poison = 13;
             this.Resistances.Energy = 3;
-            //AbsorptionAttribute.EaterFire = 10;
+	        AbsorptionAttributes.EaterFire = 10;
         }
 
         public DragonJadeEarrings(Serial serial)
