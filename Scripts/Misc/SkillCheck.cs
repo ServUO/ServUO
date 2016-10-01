@@ -263,6 +263,26 @@ namespace Server.Misc
 
                 Skills skills = from.Skills;
 
+                #region Mondain's Legacy
+                if (from is PlayerMobile)
+                    if (Server.Engines.Quests.QuestHelper.EnhancedSkill((PlayerMobile)from, skill))
+                        toGain *= Utility.RandomMinMax(2, 4);
+                #endregion
+
+                #region Scroll of Alacrity
+
+                if (from is PlayerMobile)
+                {
+                    PlayerMobile pm = from as PlayerMobile;
+                    
+                    if (pm != null && skill.SkillName == pm.AcceleratedSkill && pm.AcceleratedStart > DateTime.UtcNow)
+                    {
+                        pm.SendLocalizedMessage(1077956); // You are infused with intense energy. You are under the effects of an accelerated skillgain scroll.
+                        toGain = Utility.RandomMinMax(2, 5);
+                    }
+                }
+                #endregion
+
                 if (from.Player && (skills.Total / skills.Cap) >= Utility.RandomDouble())//( skills.Total >= skills.Cap )
                 {
                     for (int i = 0; i < skills.Length; ++i)
@@ -276,25 +296,6 @@ namespace Server.Misc
                         }
                     }
                 }
-
-                #region Mondain's Legacy
-                if (from is PlayerMobile)
-                    if (Server.Engines.Quests.QuestHelper.EnhancedSkill((PlayerMobile)from, skill))
-                        toGain *= Utility.RandomMinMax(2, 4);
-                #endregion
-
-                #region Scroll of Alacrity
-                PlayerMobile pm = from as PlayerMobile;
-
-                if (from is PlayerMobile)
-                {
-                    if (pm != null && skill.SkillName == pm.AcceleratedSkill && pm.AcceleratedStart > DateTime.UtcNow)
-                    {
-                        pm.SendLocalizedMessage(1077956); // You are infused with intense energy. You are under the effects of an accelerated skillgain scroll.
-                        toGain = Utility.RandomMinMax(2, 5);
-                    }
-                }
-                #endregion
 
                 if (!from.Player || (skills.Total + toGain) <= skills.Cap)
                 {
