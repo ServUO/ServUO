@@ -424,7 +424,7 @@ namespace Server
 
                 // attacker gets 10% bonus when they're under divine fury
                 if (DivineFurySpell.UnderEffect(m))
-                    value += 10;
+                    value += m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 20 : 10;
 
                 // Horrific Beast transformation gives a +25% bonus to damage.
                 if (TransformationSpellHelper.UnderTransformation(m, typeof(HorrificBeastSpell)))
@@ -502,8 +502,8 @@ namespace Server
                 if (MonstrousInterredGrizzle.UnderCacophonicAttack(m) || LadyMelisande.UnderPutridNausea(m))
                     value -= 60;
 
-                if (Spells.Chivalry.DivineFurySpell.UnderEffect(m))
-                    value += 10;
+                if (DivineFurySpell.UnderEffect(m))
+                    value += m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 15 : 10;
 
                 value += HonorableExecution.GetSwingBonus(m);
 
@@ -540,8 +540,8 @@ namespace Server
                 if (LadyMelisande.UnderPutridNausea(m))
                     value -= 60;
 
-                if (Spells.Chivalry.DivineFurySpell.UnderEffect(m))
-                    value += 10; // attacker gets 10% bonus when they're under divine fury
+                if (DivineFurySpell.UnderEffect(m))
+                    value += m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 15 : 10;                    
 
                 if (BaseWeapon.CheckAnimal(m, typeof(GreyWolf)) || BaseWeapon.CheckAnimal(m, typeof(BakeKitsune)))
                     value += 20; // attacker gets 20% bonus when under Wolf or Bake Kitsune form
@@ -577,8 +577,8 @@ namespace Server
                 if (LadyMelisande.UnderPutridNausea(m))
                     value -= 60;
 
-                if (Spells.Chivalry.DivineFurySpell.UnderEffect(m))
-                    value -= 20; // defender loses 20% bonus when they're under divine fury
+                if (DivineFurySpell.UnderEffect(m))
+                    value -= m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 10 : 20;
 
                 if (HitLower.IsUnderDefenseEffect(m))
                     value -= 25; // Under Hit Lower Defense effect -> 25% malus
