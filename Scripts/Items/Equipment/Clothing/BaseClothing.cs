@@ -47,6 +47,7 @@ namespace Server.Items
 
         public virtual bool CanFortify { get { return !IsImbued && NegativeAttributes.Antique < 3; } }
         public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
+		public virtual bool CanAlter { get { return true; } }
 
         private int m_MaxHitPoints;
         private int m_HitPoints;
@@ -55,6 +56,8 @@ namespace Server.Items
         private bool m_PlayerConstructed;
         protected CraftResource m_Resource;
         private int m_StrReq = -1;
+
+        private bool m_Altered;
 
         private AosAttributes m_AosAttributes;
         private AosArmorAttributes m_AosClothingAttributes;
@@ -1114,6 +1117,9 @@ namespace Server.Items
             if (this.m_Crafter != null)
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
+            if (m_Altered)
+                list.Add(1111880); // Altered
+
             #region Factions
             if (this.m_FactionState != null)
                 list.Add(1041350); // faction item
@@ -1383,6 +1389,7 @@ namespace Server.Items
             #region Imbuing
             //TimesImbued = 0x12000000,
             #endregion
+            Altered = 0x00001000
         }
 
         #region Mondain's Legacy Sets
@@ -1521,6 +1528,7 @@ namespace Server.Items
             #region Imbuing
             //SetSaveFlag(ref flags, SaveFlag.TimesImbued, this.m_TimesImbued != 0);
             #endregion
+            SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
             writer.WriteEncodedInt((int)flags);
 
@@ -1705,6 +1713,9 @@ namespace Server.Items
 
                         if (GetSaveFlag(flags, SaveFlag.PlayerConstructed))
                             this.m_PlayerConstructed = true;
+
+                        if (GetSaveFlag(flags, SaveFlag.Altered))
+                            m_Altered = true;
 
                         break;
                     }
@@ -2143,5 +2154,16 @@ namespace Server.Items
             SetHelper.GetSetProperties(list, this);
         }
         #endregion
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Altered
+        {
+            get { return m_Altered; }
+            set
+            {
+                m_Altered = value;
+                InvalidateProperties();
+            }
+        }
     }
 }

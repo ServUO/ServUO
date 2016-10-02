@@ -1,7 +1,9 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefBlacksmithy), typeof(GargishDaisho))]
     [FlipableAttribute(0x27A9, 0x27F4)]
     public class Daisho : BaseSword
     {

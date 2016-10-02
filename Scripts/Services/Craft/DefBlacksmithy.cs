@@ -935,7 +935,17 @@ namespace Server.Engines.Craft
             SetUseSubRes2(index, true);
             #endregion
 
-            // Set the overridable material
+			#region SA Craftables
+			index = AddCraft(typeof(CrushedGlass), 1011173, 1113351, 110.0, 135.0, typeof(BlueDiamond), 1032696, 1, 1044253);
+			AddRes(index, typeof(GlassSword), 1095371, 5, 1044253);
+			SetNeededExpansion(index, Expansion.SA);
+
+			index = AddCraft(typeof(PowderedIron), 1011173, 1113353, 110.0, 135.0, typeof(WhitePearl), 1026253, 1, 1044253);
+			AddRes(index, typeof(IronIngot), 1044036, 20, 1044037);
+			SetNeededExpansion(index, Expansion.SA);
+			#endregion
+
+			// Set the overridable material
             SetSubRes(typeof(IronIngot), 1044022);
 
             // Add every material you want the player to be able to choose from

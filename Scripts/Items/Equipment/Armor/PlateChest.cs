@@ -1,7 +1,9 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefBlacksmithy), typeof(GargishPlateChest))]
     [FlipableAttribute(0x1415, 0x1416)]
     public class PlateChest : BaseArmor
     {

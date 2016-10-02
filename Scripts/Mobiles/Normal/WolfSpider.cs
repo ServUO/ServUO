@@ -92,6 +92,9 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
+			if (Controlled)
+				return;
+
             if (Utility.RandomDouble() < 0.15)
                 c.DropItem(new BottleIchor());
 

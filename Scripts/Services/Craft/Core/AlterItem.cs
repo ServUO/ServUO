@@ -3,218 +3,37 @@ using System.Collections.Generic;
 using Server.Engines.Craft;
 using Server.Items;
 using Server.Targeting;
+using Server.Engines.VeteranRewards;
 
 namespace Server.Engines.Craft
 {
+    [AttributeUsage(AttributeTargets.Class)]
+    public class AlterableAttribute : Attribute
+    {
+        public Type CraftSystem { get; private set; }
+        public Type AlteredType { get; private set; }
+        public bool Inherit { get; private set; }
+
+        public AlterableAttribute(Type craftSystem, Type alteredType, bool inherit = false)
+        {
+            CraftSystem = craftSystem;
+            AlteredType = alteredType;
+            Inherit = inherit;
+        }
+    }
+
     public class AlterItem
     {
-        public static Dictionary<Type, Type> TypeList = new Dictionary<Type, Type>();
-        public static void Configure()
-        {
-            //****BlackSmithy****//
-            // Shields
-            TypeList.Add(typeof(Buckler), typeof(SmallPlateShield));
-            TypeList.Add(typeof(BronzeShield), typeof(SmallPlateShield));
-            TypeList.Add(typeof(HeaterShield), typeof(LargePlateShield));
-            TypeList.Add(typeof(MetalShield), typeof(MediumPlateShield));
-            TypeList.Add(typeof(MetalKiteShield), typeof(GargishKiteShield));
-            TypeList.Add(typeof(WoodenShield), typeof(GargishWoodenShield));
-            TypeList.Add(typeof(ChaosShield), typeof(GargishChaosShield));
-            TypeList.Add(typeof(OrderShield), typeof(GargishOrderShield));
-
-            //Platemail
-            TypeList.Add(typeof(FemalePlateChest), typeof(FemaleGargishPlateChest));
-            TypeList.Add(typeof(PlateChest), typeof(GargishPlateChest));
-            TypeList.Add(typeof(PlateArms), typeof(GargishPlateArms));
-            TypeList.Add(typeof(PlateLegs), typeof(GargishPlateLegs));
-            TypeList.Add(typeof(PlateDo), typeof(GargishPlateChest));
-            TypeList.Add(typeof(PlateHaidate), typeof(GargishPlateLegs));
-            TypeList.Add(typeof(PlateHiroSode), typeof(GargishPlateArms));
-            TypeList.Add(typeof(PlateSuneate), typeof(GargishPlateLegs));
-            
-            // Weapons
-            TypeList.Add(typeof(BattleAxe), typeof(GargishBattleAxe));
-            TypeList.Add(typeof(BoneHarvester), typeof(GargishBoneHarvester));
-            TypeList.Add(typeof(Katana), typeof(GargishKatana));
-            TypeList.Add(typeof(Tekagi), typeof(GargishTekagi));
-            TypeList.Add(typeof(Lance), typeof(GargishLance));
-            TypeList.Add(typeof(Pike), typeof(GargishPike));
-            TypeList.Add(typeof(Bardiche), typeof(GargishBardiche));
-            TypeList.Add(typeof(Daisho), typeof(GargishDaisho));
-            TypeList.Add(typeof(Scythe), typeof(GargishScythe));
-            TypeList.Add(typeof(WarFork), typeof(GargishWarFork));
-            TypeList.Add(typeof(Kryss), typeof(GargishKryss));
-            TypeList.Add(typeof(WarHammer), typeof(GargishWarHammer));
-            TypeList.Add(typeof(Maul), typeof(GargishMaul));
-            TypeList.Add(typeof(Tessen), typeof(GargishTessen));
-            TypeList.Add(typeof(Axe), typeof(GargishAxe));
-            TypeList.Add(typeof(Dagger), typeof(GargishDagger));
-            TypeList.Add(typeof(Broadsword), typeof(DreadSword));
-            TypeList.Add(typeof(Longsword), typeof(DreadSword));
-            TypeList.Add(typeof(CrescentBlade), typeof(GargishTalwar));
-            TypeList.Add(typeof(NoDachi), typeof(GargishTalwar));
-            TypeList.Add(typeof(RuneBlade), typeof(GargishTalwar));
-            TypeList.Add(typeof(Halberd), typeof(GargishTalwar));
-            TypeList.Add(typeof(VikingSword), typeof(StoneWarSword));
-            TypeList.Add(typeof(Lajatang), typeof(DualPointedSpear));
-            TypeList.Add(typeof(Kama), typeof(DualPointedSpear));
-            TypeList.Add(typeof(Sai), typeof(DualPointedSpear));
-            TypeList.Add(typeof(ElvenSpellblade), typeof(DualPointedSpear));
-            TypeList.Add(typeof(BladedStaff), typeof(DualPointedSpear));
-            TypeList.Add(typeof(DoubleBladedStaff), typeof(DualPointedSpear));
-            TypeList.Add(typeof(Spear), typeof(DualPointedSpear));
-            TypeList.Add(typeof(ShortSpear), typeof(DualPointedSpear));
-            TypeList.Add(typeof(WarCleaver), typeof(Shortblade));
-            TypeList.Add(typeof(AssassinSpike), typeof(Shortblade));
-            TypeList.Add(typeof(Leafblade), typeof(BloodBlade));
-            TypeList.Add(typeof(DoubleAxe), typeof(DualShortAxes));
-            TypeList.Add(typeof(ExecutionersAxe), typeof(DualShortAxes));
-            TypeList.Add(typeof(LargeBattleAxe), typeof(DualShortAxes));
-            TypeList.Add(typeof(TwoHandedAxe), typeof(DualShortAxes));
-            TypeList.Add(typeof(OrnateAxe), typeof(DualShortAxes));
-            TypeList.Add(typeof(WarAxe), typeof(DiscMace));
-            TypeList.Add(typeof(HammerPick), typeof(DiscMace));
-            TypeList.Add(typeof(Mace), typeof(DiscMace));
-            TypeList.Add(typeof(Scepter), typeof(DiscMace));
-            TypeList.Add(typeof(WarMace), typeof(DiscMace));
-            TypeList.Add(typeof(DiamondMace), typeof(DiscMace));
-
-            //****Carpentry****//
-            TypeList.Add(typeof(GnarledStaff), typeof(GargishGnarledStaff));
-            #region Need Implementation
-            //****Tailoring****//
-            //Misc
-            /*  TypeList.Add(typeof(BodySash), typeof(GargishSash));
-                TypeList.Add(typeof(HalfApron), typeof(GargoyleHalfApron));
-                TypeList.Add(typeof(Kilt), typeof(GargishClothKilt));
-
-                //Footwear
-                TypeList.Add(typeof(FurBoots), typeof(LeatherTalons));
-                TypeList.Add(typeof(Boots), typeof(LeatherTalons));
-                TypeList.Add(typeof(ThighBoots), typeof(LeatherTalons));
-                TypeList.Add(typeof(Shoes), typeof(LeatherTalons));
-                TypeList.Add(typeof(Sandals), typeof(LeatherTalons));
-                TypeList.Add(typeof(NinjaTabi), typeof(LeatherTalons));
-                TypeList.Add(typeof(SamuraiTabi), typeof(LeatherTalons));
-                TypeList.Add(typeof(Waraji), typeof(LeatherTalons));
-                TypeList.Add(typeof(ElvenBoots), typeof(LeatherTalons));
-
-                //Quivers & Cloaks
-                TypeList.Add(typeof(ElvenQuiver), typeof(GargishClothWingArmor));
-                TypeList.Add(typeof(QuiverOfBlight), typeof(GargishClothWingArmor));
-                TypeList.Add(typeof(QuiverOfFire), typeof(GargishClothWingArmor));
-                TypeList.Add(typeof(QuiverOfIce), typeof(GargishClothWingArmor));
-                TypeList.Add(typeof(QuiverOfLightning), typeof(GargishClothWingArmor));
-                TypeList.Add(typeof(QuiverOfElements), typeof(GargishClothWingArmor));
-                TypeList.Add(typeof(QuiverOfRage), typeof(GargishClothWingArmor));
-                TypeList.Add(typeof(QuiverOfInfinity), typeof(GargishClothWingArmor));
-                TypeList.Add(typeof(Cloak), typeof(GargishClothWingArmor));
-                TypeList.Add(typeof(RewardCloak), typeof(GargishClothWingArmor));
-                TypeList.Add(typeof(FurCape), typeof(GargishClothWingArmor)); */
-            #endregion
-
-            //Leather Armor
-            TypeList.Add(typeof(LeatherBustierArms), typeof(FemaleGargishLeatherChest));
-            TypeList.Add(typeof(FemaleLeatherChest), typeof(FemaleGargishLeatherChest));
-            TypeList.Add(typeof(LeatherShorts), typeof(GargishLeatherLegs));
-            TypeList.Add(typeof(LeatherSkirt), typeof(GargishLeatherLegs));
-            TypeList.Add(typeof(LeatherChest), typeof(GargishLeatherChest));
-            TypeList.Add(typeof(LeatherLegs), typeof(GargishLeatherLegs));
-            TypeList.Add(typeof(LeatherArms), typeof(GargishLeatherArms));
-            TypeList.Add(typeof(FemaleLeafChest), typeof(FemaleGargishLeatherChest));
-            TypeList.Add(typeof(LeafArms), typeof(GargishLeatherArms));
-            TypeList.Add(typeof(LeafChest), typeof(GargishLeatherChest));
-            TypeList.Add(typeof(LeafLegs), typeof(GargishLeatherLegs));
-            TypeList.Add(typeof(LeafTonlet), typeof(GargishLeatherLegs));
-            TypeList.Add(typeof(LeatherDo), typeof(GargishLeatherChest));
-            TypeList.Add(typeof(LeatherHaidate), typeof(GargishLeatherLegs));
-            TypeList.Add(typeof(LeatherHiroSode), typeof(GargishLeatherArms));
-            TypeList.Add(typeof(LeatherSuneate), typeof(GargishLeatherLegs));
-            TypeList.Add(typeof(LeatherNinjaJacket), typeof(GargishLeatherChest));
-            TypeList.Add(typeof(LeatherNinjaPants), typeof(GargishLeatherLegs));
-
-            //****Tinker****//
-            TypeList.Add(typeof(Hatchet), typeof(DualShortAxes));
-            TypeList.Add(typeof(ButcherKnife), typeof(GargishButcherKnife));
-            TypeList.Add(typeof(Cleaver), typeof(GargishCleaver));
-                      
-        }
-
         public static void BeginTarget(Mobile from, CraftSystem system, BaseTool tool)
         {
             from.Target = new AlterItemTarget(system, tool);
             from.SendLocalizedMessage(1094730); //Target the item to altar
         }
 
-        public static bool TryToAlter(Mobile from, Item olditem)
+        public static void BeginTarget(Mobile from, CraftSystem system, Item contract)
         {
-            if (!TypeList.ContainsKey(olditem.GetType()))
-                return false;
-
-            Item newitem = CreateItem(TypeList[olditem.GetType()]);
-
-            if (newitem == null)
-                return false;
-
-            if (olditem is BaseWeapon && newitem is BaseWeapon)
-            {
-                BaseWeapon oldweapon = (BaseWeapon)olditem;
-                BaseWeapon newweapon = (BaseWeapon)newitem;
-
-                newweapon.Attributes = new AosAttributes(oldweapon, newweapon.Attributes);
-                //newweapon.ElementDamages = new AosElementAttributes( oldweapon, newweapon.ElementDamages ); To Do
-                newweapon.SkillBonuses = new AosSkillBonuses(oldweapon, newweapon.SkillBonuses);
-                newweapon.WeaponAttributes = new AosWeaponAttributes(oldweapon, newweapon.WeaponAttributes);
-                newweapon.AbsorptionAttributes = new SAAbsorptionAttributes(oldweapon, newweapon.AbsorptionAttributes);
-            }
-            else if (olditem is BaseArmor && newitem is BaseArmor)
-            {
-                BaseArmor oldarmor = (BaseArmor)olditem;
-                BaseArmor newarmor = (BaseArmor)newitem;
-
-                newarmor.Attributes = new AosAttributes(oldarmor, newarmor.Attributes);
-                newarmor.ArmorAttributes = new AosArmorAttributes(oldarmor, newarmor.ArmorAttributes);
-                newarmor.SkillBonuses = new AosSkillBonuses(oldarmor, newarmor.SkillBonuses);
-                newarmor.AbsorptionAttributes = new SAAbsorptionAttributes(oldarmor, newarmor.AbsorptionAttributes);
-            }
-            else if (olditem is BaseShield && newitem is BaseShield)
-            {
-                BaseShield oldshield = (BaseShield)olditem;
-                BaseShield newshield = (BaseShield)newitem;
-
-                newshield.Attributes = new AosAttributes(oldshield, newshield.Attributes);
-                newshield.SkillBonuses = new AosSkillBonuses(oldshield, newshield.SkillBonuses);
-                newshield.AbsorptionAttributes = new SAAbsorptionAttributes(oldshield, newshield.AbsorptionAttributes);
-            }
-            else
-            {
-                return false;
-            }
-
-            olditem.Delete();
-			olditem.OnAfterDuped(newitem);
-			newitem.Parent = null;
-
-            if (from.Backpack == null)
-                newitem.MoveToWorld(from.Location, from.Map);
-            else
-                from.Backpack.DropItem(newitem);
-				
-			newitem.InvalidateProperties();
-
-            return true;
-        }
-
-        public static Item CreateItem(Type t)
-        {
-            try
-            {
-                return (Item)Activator.CreateInstance(t);
-            }
-            catch
-            {
-                return null;
-            }
+            from.Target = new AlterItemTarget(system, contract);
+            from.SendLocalizedMessage(1094730); //Target the item to altar
         }
     }
 
@@ -222,134 +41,269 @@ namespace Server.Engines.Craft
     {
         private readonly CraftSystem m_System;
         private readonly BaseTool m_Tool;
-        /// mod
+        private Item m_Contract;
+
+        public AlterItemTarget(CraftSystem system, Item contract)
+                : base(2, false, TargetFlags.None)
+        {
+            m_System = system;
+            m_Contract = contract;
+        }
+
         public AlterItemTarget(CraftSystem system, BaseTool tool)
             : base(1, false, TargetFlags.None)
         {
             this.m_System = system;
-            this.m_Tool = tool;// mod
+            this.m_Tool = tool;
+        }
+
+        private static AlterableAttribute GetAlterableAttribute(object o, bool inherit = false)
+        {
+            object[] attrs = o.GetType().GetCustomAttributes(typeof(AlterableAttribute), inherit);
+
+            if (attrs != null && attrs.Length > 0)
+            {
+                AlterableAttribute attr = attrs[0] as AlterableAttribute;
+
+                if (attr != null && (!inherit || attr.Inherit))
+                    return attr;
+            }
+
+            return null;
         }
 
         protected override void OnTarget(Mobile from, object o)
         {
-            if (!(o is Item))
+            int number = -1;
+
+            Item origItem = o as Item;
+            SkillName skill = m_System.MainSkill;
+            double value = from.Skills[skill].Value;
+
+            var alterInfo = GetAlterableAttribute(o, false);
+
+            if (alterInfo == null)
+                alterInfo = GetAlterableAttribute(o, true);
+
+            if (origItem == null || !origItem.IsChildOf(from.Backpack))
             {
-                from.SendMessage("You cannot convert people into gargoyles using this.");
+                number = 1094729; // The item must be in your backpack for you to alter it.
             }
-            else if (o is BaseWeapon)
+            else if (origItem is BlankScroll)
             {
-                BaseWeapon bw = (BaseWeapon)o;
-
-                this.CheckResource(from, bw, bw.Resource);
-            }
-            else if (o is BaseArmor)
-            {
-                BaseArmor ba = (BaseArmor)o;
-
-                this.CheckResource(from, ba, ba.Resource);
-            }
-            else if (o is BaseShield)
-            {
-                BaseShield bs = (BaseShield)o;
-
-                this.CheckResource(from, bs, bs.Resource);
-            }
-        }
-
-        private void CheckResource(Mobile from, Item item, CraftResource res)
-        {
-            bool completed = false;
-
-            if (this.m_System is DefTailoring)//
-            {
-                switch (res)
+                if (m_Contract == null)
                 {
-                    case CraftResource.RegularLeather:
-                    case CraftResource.SpinedLeather:
-                    case CraftResource.HornedLeather:
-                    case CraftResource.BarbedLeather:
+                    if (value >= 100.0)
+                    {
+                        Item contract = null;
 
-                        //default:
-                        completed = AlterItem.TryToAlter(from, item);
-                        break;
+                        if (skill == SkillName.Blacksmith)
+                            contract = new AlterContract(RepairDeed.RepairSkillType.Smithing, from);
+                        else if (skill == SkillName.Carpentry)
+                            contract = new AlterContract(RepairDeed.RepairSkillType.Carpentry, from);
+                        else if (skill == SkillName.Tailoring)
+                            contract = new AlterContract(RepairDeed.RepairSkillType.Tailoring, from);
+                        else if (skill == SkillName.Tinkering)
+                            contract = new AlterContract(RepairDeed.RepairSkillType.Tinkering, from);
+
+                        if (contract != null)
+                        {
+                            from.AddToBackpack(contract);
+
+                            number = 1044154; // You create the item.
+
+                            // Consume a blank scroll
+                            origItem.Consume();
+                        }
+                    }
+                    else
+                    {
+                        number = 1111869; // You must be at least grandmaster level to create an alter service contract.
+                    }
                 }
-            }
-            else if (this.m_System is DefBlacksmithy)
-            {
-                switch (res)
-                {
-                    // default: // Not listing ores, it's the only logical remainder.
-                    case CraftResource.Iron:
-                    case CraftResource.DullCopper:
-                    case CraftResource.ShadowIron:
-                    case CraftResource.Copper:
-                    case CraftResource.Bronze:
-                    case CraftResource.Gold:
-                    case CraftResource.Agapite:
-                    case CraftResource.Verite:
-                    case CraftResource.Valorite:
-
-                        //if (m_Tool is SmithHammer)
-                        completed = AlterItem.TryToAlter(from, item);
-                        break;
-                }
-            }
-            else if (this.m_System is DefCarpentry)
-            {
-                switch (res)
-                {
-                    case CraftResource.RegularWood:
-                    case CraftResource.OakWood:
-                    case CraftResource.AshWood:
-                    case CraftResource.YewWood:
-                    case CraftResource.Heartwood:
-                    case CraftResource.Bloodwood:
-                    case CraftResource.Frostwood:
-
-                        //if (m_Tool is Hammer)
-                        completed = AlterItem.TryToAlter(from, item);
-                        break;
-                }
-            }
-            else
-            {
-                from.SendMessage("You cannot use this to alter that");
-            }
-
-            if (completed)
-                from.SendMessage("The item has been turned into a gargish item.");
-            else
-                from.SendMessage("You cannot use this to alter that");
-        }
-    }
-}
-
-namespace Server.Commands
-{
-    public class AlterItemCommand
-    {
-        public static void Initialize()
-        {
-            CommandSystem.Register("AlterItem", AccessLevel.GameMaster, new CommandEventHandler(AlterItem_OnCommand));
-        }
-
-        [Description("Converts a human/elf item into a a gargoyle item.")]
-        public static void AlterItem_OnCommand(CommandEventArgs e)
-        {
-            e.Mobile.BeginTarget(10, false, TargetFlags.None, new TargetCallback(AlterItem_CallBack));
-        }
-
-        public static void AlterItem_CallBack(Mobile from, object targeted)
-        {
-            if (targeted is Item)
-            {
-                if (AlterItem.TryToAlter(from, (Item)targeted))
-                    from.SendMessage("The item has been turned into a gargish item.");
                 else
-                    from.SendMessage("That could not be altered.");
+                {
+                    number = 1094728; // You may not alter that item.
+                }
+            }
+            else if (alterInfo == null)
+            {
+                // You may not alter that item.
+                number = 1094728;
+            }
+            else if (!IsAlterable(origItem))
+            {
+                number = 1094728; // You may not alter that item.
+            }
+            else if (alterInfo.CraftSystem != m_System.GetType())
+            {
+                if (m_Tool != null)
+                {
+                    // You may not alter that item.
+                    number = 1094728;
+                }
+                else
+                {
+                    // You cannot alter that item with this type of alter contract.
+                    number = 1094793;
+                }
+            }
+            else if (!Server.SkillHandlers.Imbuing.CheckSoulForge(from, 2, false))
+            {
+                number = 1111867; // You must be near a soulforge to alter an item.
+            }
+            else if (!Server.SkillHandlers.Imbuing.CheckQueen(from))
+            {
+                number = 1113736; // You must rise to the rank of noble in the eyes of the Gargoyle Queen before her majesty will allow you to use this soulforge.
+            }
+            else if (m_Contract == null && value < 100.0)
+            {
+                number = 1111870; // You must be at least grandmaster level to alter an item.
+            }
+            else if (origItem is BaseWeapon && ((BaseWeapon)origItem).EnchantedWeilder != null)
+            {
+                number = 1111849; // You cannot alter an item that is currently enchanted.
             }
             else
-                from.SendMessage("That is not an item.");
+            {
+                Item newitem = Activator.CreateInstance(alterInfo.AlteredType) as Item;
+
+                if (newitem == null)
+                    return;
+
+                if (origItem is BaseWeapon && newitem is BaseWeapon)
+                {
+                    BaseWeapon oldweapon = (BaseWeapon)origItem;
+                    BaseWeapon newweapon = (BaseWeapon)newitem;
+
+                    newweapon.Attributes = new AosAttributes(oldweapon, newweapon.Attributes);
+                    //newweapon.ElementDamages = new AosElementAttributes( oldweapon, newweapon.ElementDamages ); To Do
+                    newweapon.SkillBonuses = new AosSkillBonuses(oldweapon, newweapon.SkillBonuses);
+                    newweapon.WeaponAttributes = new AosWeaponAttributes(oldweapon, newweapon.WeaponAttributes);
+                    newweapon.AbsorptionAttributes = new SAAbsorptionAttributes(oldweapon, newweapon.AbsorptionAttributes);
+                    newweapon.Altered = true;
+                }
+                else if (origItem is BaseArmor && newitem is BaseArmor)
+                {
+                    BaseArmor oldarmor = (BaseArmor)origItem;
+                    BaseArmor newarmor = (BaseArmor)newitem;
+
+                    newarmor.Attributes = new AosAttributes(oldarmor, newarmor.Attributes);
+                    newarmor.ArmorAttributes = new AosArmorAttributes(oldarmor, newarmor.ArmorAttributes);
+                    newarmor.SkillBonuses = new AosSkillBonuses(oldarmor, newarmor.SkillBonuses);
+                    newarmor.AbsorptionAttributes = new SAAbsorptionAttributes(oldarmor, newarmor.AbsorptionAttributes);
+                    newarmor.Altered = true;
+                }
+                else if (origItem is BaseClothing && newitem is BaseClothing)
+                {
+                    BaseClothing oldcloth = (BaseClothing)origItem;
+                    BaseClothing newcloth = (BaseClothing)newitem;
+
+                    newcloth.Attributes = new AosAttributes(oldcloth, newcloth.Attributes);
+                    newcloth.SkillBonuses = new AosSkillBonuses(oldcloth, newcloth.SkillBonuses);
+                    newcloth.SAAbsorptionAttributes = new SAAbsorptionAttributes(oldcloth, newcloth.SAAbsorptionAttributes);
+                    newcloth.Altered = true;
+                }
+                else if (origItem is BaseClothing && newitem is BaseArmor)
+                {
+                    BaseClothing oldcloth = (BaseClothing)origItem;
+                    BaseArmor newarmor = (BaseArmor)newitem;
+
+                    newarmor.Attributes = new AosAttributes(oldcloth, newarmor.Attributes);
+                    newarmor.ArmorAttributes = new AosArmorAttributes(oldcloth, newarmor.ArmorAttributes);
+                    newarmor.SkillBonuses = new AosSkillBonuses(oldcloth, newarmor.SkillBonuses);
+                    newarmor.AbsorptionAttributes = new SAAbsorptionAttributes(oldcloth, newarmor.AbsorptionAttributes);
+                    newarmor.Altered = true;
+                }
+                else if (origItem is BaseQuiver && newitem is BaseArmor)
+                {
+                    BaseQuiver oldquiver = (BaseQuiver)origItem;
+                    BaseArmor newarmor = (BaseArmor)newitem;
+
+                    newarmor.Attributes = new AosAttributes(oldquiver, newarmor.Attributes);
+                    newarmor.ArmorAttributes = new AosArmorAttributes(oldquiver, newarmor.ArmorAttributes);
+                    newarmor.SkillBonuses = new AosSkillBonuses(oldquiver, newarmor.SkillBonuses);
+                    newarmor.AbsorptionAttributes = new SAAbsorptionAttributes(oldquiver, newarmor.AbsorptionAttributes);
+                    newarmor.Altered = true;
+                }
+                else
+                {
+                    return;
+                }
+
+                newitem.Name = origItem.Name;
+                newitem.Hue = origItem.Hue;
+
+                origItem.Delete();
+                origItem.OnAfterDuped(newitem);
+                newitem.Parent = null;
+
+                if (from.Backpack == null)
+                    newitem.MoveToWorld(from.Location, from.Map);
+                else
+                    from.Backpack.DropItem(newitem);
+
+                newitem.InvalidateProperties();
+
+                if (m_Contract != null)
+                    m_Contract.Delete();
+
+                number = 1094727; // You have altered the item.
+            }
+
+            if (m_Tool != null)
+                from.SendGump(new CraftGump(from, m_System, m_Tool, number));
+            else
+                from.SendLocalizedMessage(number);
+        }
+
+        private static bool IsAlterable(Item item)
+        {
+            if (item is BaseWeapon)
+            {
+                BaseWeapon weapon = (BaseWeapon)item;
+
+                if (weapon.SetID != SetItem.None || !weapon.CanAlter)
+                    return false;
+
+                if ((weapon.RequiredRace != null && weapon.RequiredRace == Race.Gargoyle && !weapon.IsArtifact))
+                    return false;
+            }
+
+            if (item is BaseArmor)
+            {
+                BaseArmor armor = (BaseArmor)item;
+
+                if (armor.SetID != SetItem.None || !armor.CanAlter)
+                    return false;
+
+                if ((armor.RequiredRace != null && armor.RequiredRace == Race.Gargoyle && !armor.IsArtifact))
+                    return false;
+            }
+
+            if (item is BaseClothing)
+            {
+                BaseClothing cloth = (BaseClothing)item;
+
+                if (cloth.SetID != SetItem.None || !cloth.CanAlter)
+                    return false;
+
+                if ((cloth.RequiredRace != null && cloth.RequiredRace == Race.Gargoyle && !cloth.IsArtifact))
+                    return false;
+            }
+
+	        if (item is BaseQuiver)
+	        {
+		        BaseQuiver quiver = (BaseQuiver) item;
+
+		        if (quiver.SetID != SetItem.None || !quiver.CanAlter)
+			        return false;
+	        }
+
+            if (item is IRewardItem)
+                return false;
+
+            return true;
         }
     }
 }

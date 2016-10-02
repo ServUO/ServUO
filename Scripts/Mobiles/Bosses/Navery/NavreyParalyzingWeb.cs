@@ -88,10 +88,10 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (m is Mobiles.Navrey)
+            if (m is Navrey)
                 return true;
 
-            if (AccessLevel.Player == AccessLevel.Player && m.Alive)
+            if (m.AccessLevel == AccessLevel.Player && m.Alive)
             {
                 m.Paralyze(m_Duration);
 

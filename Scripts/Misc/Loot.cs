@@ -155,8 +155,7 @@ namespace Server
         private static readonly Type[] m_ShieldTypes = new[]
 		{
 			typeof(BronzeShield), typeof(Buckler), typeof(HeaterShield), typeof(MetalShield), typeof(MetalKiteShield),
-			typeof(WoodenKiteShield), typeof(WoodenShield), typeof(GargishWoodenShield), typeof(GargishKiteShield),
-			typeof(LargeStoneShield), typeof(LargePlateShield)
+			typeof(WoodenKiteShield), typeof(WoodenShield)
 		};
 
         public static Type[] ShieldTypes { get { return m_ShieldTypes; } }

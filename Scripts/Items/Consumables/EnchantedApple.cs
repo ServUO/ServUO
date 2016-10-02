@@ -57,18 +57,24 @@ namespace Server.Items
 				from.RemoveStatMod("[Magic] Dex Curse");
 				from.RemoveStatMod("[Magic] Int Curse");
 
-                from.Paralyzed = false;
                 from.Asleep = false;
 
                 EvilOmenSpell.TryEndEffect(from);
                 StrangleSpell.RemoveCurse(from);
                 CorpseSkinSpell.RemoveCurse(from);
                 CurseSpell.RemoveEffect(from);
+				MortalStrike.EndWound(from);
+	            BloodOathSpell.RemoveCurse(from);
+				MindRotSpell.ClearMindRotScalar(from);
 
                 BuffInfo.RemoveBuff(from, BuffIcon.Clumsy);
                 BuffInfo.RemoveBuff(from, BuffIcon.FeebleMind);
                 BuffInfo.RemoveBuff(from, BuffIcon.Weaken);
-                BuffInfo.RemoveBuff(from, BuffIcon.MassCurse);	
+                BuffInfo.RemoveBuff(from, BuffIcon.MassCurse);
+				BuffInfo.RemoveBuff(from, BuffIcon.Curse);
+				BuffInfo.RemoveBuff(from, BuffIcon.MortalStrike);
+				BuffInfo.RemoveBuff(from, BuffIcon.Mindrot);
+				BuffInfo.RemoveBuff(from, BuffIcon.CorpseSkin);
 				
                 return true;
             }

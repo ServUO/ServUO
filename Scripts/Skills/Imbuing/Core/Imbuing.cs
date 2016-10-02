@@ -1298,6 +1298,16 @@ namespace Server.SkillHandlers
             return CheckSoulForge(from, range, true);
         }
 
+        public static bool CheckQueen(Mobile from)
+        {
+            PlayerMobile pm = from as PlayerMobile;
+
+            if (pm != null && pm.Region.IsPartOf("Queen's Palace"))
+                return Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from);
+
+            return true;
+        }
+
         public static bool CheckSoulForge(Mobile from, int range, bool message)
         {
             PlayerMobile m = from as PlayerMobile;

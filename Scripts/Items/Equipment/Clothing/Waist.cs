@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -34,6 +35,7 @@ namespace Server.Items
         }
     }
 
+    [Alterable(typeof(DefTailoring), typeof(GargoyleHalfApron), true)]
     [FlipableAttribute(0x153b, 0x153c)]
     public class HalfApron : BaseWaist
     {

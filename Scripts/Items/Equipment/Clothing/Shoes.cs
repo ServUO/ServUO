@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -53,6 +54,7 @@ namespace Server.Items
 
     #endregion
 
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons), true)]
     public abstract class BaseShoes : BaseClothing
     {
         public BaseShoes(int itemID)

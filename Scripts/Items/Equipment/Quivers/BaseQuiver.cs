@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefTailoring), typeof(GargishLeatherWingArmor), true)]
     public class BaseQuiver : Container, ICraftable, ISetItem
     {
         public override int DefaultGumpID
@@ -44,6 +45,8 @@ namespace Server.Items
         //private int m_LowerAmmoCost;
         private int m_WeightReduction;
         private int m_DamageIncrease;
+
+		public virtual bool CanAlter { get { return true; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsArrowAmmo { get; set; }
