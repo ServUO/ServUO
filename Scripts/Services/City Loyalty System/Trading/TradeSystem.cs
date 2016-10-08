@@ -157,7 +157,7 @@ namespace Server.Engines.CityLoyalty
             return false;
 		}
 
-        public bool TryTurnIn(Mobile from, TradeOrderCrate order, SlimTheFence slim)
+        public bool TryTurnInToSlim(Mobile from, TradeOrderCrate order, SlimTheFence slim)
         {
             if (order == null || from == null || slim == null || order.Entry == null)
                 return false;
@@ -175,7 +175,7 @@ namespace Server.Engines.CityLoyalty
                 {
                     pentry.Points++;
                     pentry.DistanceTraveled += entry.Distance;
-                    pentry.Completed++;
+                    pentry.CompletedSlim++;
                     CheckTitle(pentry);
                 }
 
