@@ -106,6 +106,12 @@ namespace Server.Items
             if (!this.m_Active || this.m_TeleDest == null || this.m_TeleDest.Deleted || this.m_TeleDest.Map == Map.Internal)
                 return;
 
+            if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(m))
+            {
+                m.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
+                return;
+            }
+
             if (m.InRange(this, 3))
             {
                 Map map = this.m_TeleDest.Map;

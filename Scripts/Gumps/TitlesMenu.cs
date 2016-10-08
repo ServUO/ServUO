@@ -7,6 +7,7 @@ using Server.Engines.CannedEvil;
 using System.Linq;
 using Server.Guilds;
 using Server.ContextMenus;
+using Server.Engines.CityLoyalty;
 
 namespace Server.Gumps
 {
@@ -437,8 +438,9 @@ namespace Server.Gumps
 
         private void BuildOverheadName()
         {
-            AddHtmlLocalized(55, 190, 160, 16, 1115030, 0xFFFF, false, false); // Skills
-            AddCallbackButton(20, 190, 4005, 4007, 300, GumpButtonType.Reply, 0, b =>
+            int y = 190;
+            AddHtmlLocalized(55, y, 160, 16, 1115030, 0xFFFF, false, false); // Skills
+            AddCallbackButton(20, y, 4005, 4007, 300, GumpButtonType.Reply, 0, b =>
             {
                 Category = TitleCategory.Skills;
                 ShowingDescription = false;
@@ -446,12 +448,30 @@ namespace Server.Gumps
                 Refresh();
             });
 
+            y += 22;
+
+            List<int> rewards = GetCityTitles();
+
+            if (rewards != null && rewards.Count > 0)
+            {
+                AddHtmlLocalized(55, y, 160, 16, 1115034, 0xFFFF, false, false); // Rewards
+                AddCallbackButton(20, y, 4005, 4007, 5435, GumpButtonType.Reply, 0, b =>
+                {
+                    Category = TitleCategory.RewardTitles;
+                    ShowingDescription = false;
+                    TitleClearing = false;
+                    Refresh();
+                });
+
+                y += 22;
+            }
+
             Guild g = User.Guild as Guild;
 
             if (g != null)
             {
-                AddHtmlLocalized(55, 212, 160, 16, 1115033, 0xFFFF, false, false); // GUILD
-                AddCallbackButton(20, 212, 4005, 4007, 301, GumpButtonType.Reply, 0, b =>
+                AddHtmlLocalized(55, y, 160, 16, 1115033, 0xFFFF, false, false); // GUILD
+                AddCallbackButton(20, y, 4005, 4007, 301, GumpButtonType.Reply, 0, b =>
                 {
                     Category = TitleCategory.Guild;
                     ShowingDescription = false;
@@ -530,7 +550,7 @@ namespace Server.Gumps
                     {
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
                         title = "the " + User.Skills[(SkillName)TitleSelected].Info.Title;
-                        User.OverheadSkillTitle = title;
+                        User.OverheadTitle = title;
 
                         Refresh(false);
                     });
@@ -562,9 +582,71 @@ namespace Server.Gumps
                             AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
                             Refresh(false);
 
-                            User.OverheadSkillTitle = null;
+                            User.OverheadTitle = null;
                             User.ShowGuildAbbreviation = true;
                         });
+                }
+            }
+            else if (Category == TitleCategory.RewardTitles && rewards != null && rewards.Count > 0)
+            {
+                if (!ShowingDescription || TitleSelected == -1)
+                {
+                    int index = 0;
+                    int page = 1;
+
+                    AddPage(page);
+
+                    for (int i = 0; i < rewards.Count; i++)
+                    {
+
+                        int title = rewards[i];
+
+                        if (title == 1154017)
+                            continue;
+
+                        AddHtmlLocalized(260, 70 + (index * 22), 245, 16, (int)title, 0xFFFF, false, false);
+
+                        AddCallbackButton(225, 70 + (index * 22), 4005, 4007, i + 2550, GumpButtonType.Reply, 0, b =>
+                        {
+                            TitleSelected = b.ButtonID - 2550;
+                            ShowingDescription = true;
+                            Refresh();
+                        });
+
+                        index++;
+                        CheckPage(ref index, ref page);
+                    }
+                }
+                else if (TitleSelected >= 0 && TitleSelected < rewards.Count)
+                {
+                    int title = rewards[TitleSelected];
+                    object description = GetRewardTitleInfo(title);
+
+                    if (description is int)
+                        AddHtmlLocalized(225, 70, 270, 140, (int)description, 0xFFFF, false, false);
+                    else if (description is string)
+                        AddHtml(225, 70, 270, 140, Color("#FFFFFF", (string)description), false, false);
+
+                    AddHtmlLocalized(225, 220, 160, 16, 1115029, 0xFFFF, false, false); // Subtitle
+
+                    string cust = null;
+                    if (title == 1154017 && CityLoyaltySystem.HasCustomTitle(User, out cust))
+                    {
+                        AddHtmlLocalized(275, 240, 245, 16, 1154017, cust, 0xFFFF, false, false);
+                    }
+                    else
+                        AddHtmlLocalized(275, 240, 160, 32, (int)title, 0xFFFF, false, false);
+
+                    AddHtmlLocalized(225, 275, 200, 16, 1115035, 0xFFFF, false, false); // Do you wish to apply this title?
+
+                    AddHtmlLocalized(480, 275, 80, 16, 1011046, 0xFFFF, false, false); // APPLY
+                    AddCallbackButton(445, 275, 4005, 4007, 5789, GumpButtonType.Reply, 0, b =>
+                    {
+                        AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
+                        Refresh(false);
+                        title = rewards[TitleSelected];
+                        User.OverheadTitle = title.ToString();
+                    });
                 }
             }
         }
@@ -727,7 +809,16 @@ namespace Server.Gumps
                         object title = User.CollectionTitles[i];
 
                         if (title is int)
-                            AddHtmlLocalized(260, 70 + (index * 22), 245, 16, (int)title, 0xFFFF, false, false);
+                        {
+                            string cust = null;
+
+                            if ((int)title == 1154017 && CityLoyaltySystem.HasCustomTitle(User, out cust))
+                            {
+                                AddHtmlLocalized(260, 70 + (index * 22), 245, 16, 1154017, cust, 0xFFFF, false, false);
+                            }
+                            else
+                                AddHtmlLocalized(260, 70 + (index * 22), 245, 16, (int)title, 0xFFFF, false, false);
+                        }
                         else if (title is string)
                             AddHtml(260, 70 + (index * 22), 245, 16, Color("#FFFFFF", (string)title), false, false);
 
@@ -755,7 +846,16 @@ namespace Server.Gumps
                     AddHtmlLocalized(225, 220, 160, 16, 1115029, 0xFFFF, false, false); // Subtitle
 
                     if (title is int)
-                        AddHtmlLocalized(275, 240, 160, 32, (int)title, 0xFFFF, false, false);
+                    {
+                        string cust = null;
+
+                        if ((int)title == 1154017 && CityLoyaltySystem.HasCustomTitle(User, out cust))
+                        {
+                            AddHtmlLocalized(275, 240, 245, 16, 1154017, cust, 0xFFFF, false, false);
+                        } 
+                        else
+                            AddHtmlLocalized(275, 240, 160, 32, (int)title, 0xFFFF, false, false);
+                    }
                     else
                         AddHtml(275, 240, 245, 16, Color("#FFFFFF", (string)title), false, false);
 
@@ -854,7 +954,7 @@ namespace Server.Gumps
                 case TitleType.PaperdollSuffix:
                     return User.PaperdollSkillTitle != null || User.CurrentChampTitle != null;
                 case TitleType.OverheadName:
-                    return User.OverheadSkillTitle != null || User.ShowGuildAbbreviation;
+                    return User.OverheadTitle != null || User.ShowGuildAbbreviation;
                 case TitleType.SubTitles:
                     return User.SubtitleSkillTitle != null || User.SelectedTitle > -1 || User.CurrentVeteranTitle > 0 || User.DisplayGuildTitle;
             }
@@ -871,7 +971,7 @@ namespace Server.Gumps
                     User.CurrentChampTitle = null;
                     break;
                 case TitleType.OverheadName:
-                    User.OverheadSkillTitle = null;
+                    User.OverheadTitle = null;
                     User.DisplayGuildTitle = false;
                     User.ShowGuildAbbreviation = false;
                     break;
@@ -954,31 +1054,58 @@ namespace Server.Gumps
                 return null;
             }
 
-            switch ((int)title)
+            if (title is int)
             {
-                default: return "This reward title has no desciption.";
-                case 1073235:
-                case 1073236:
-                case 1073237:
-                case 1073238:
-                case 1073239: return 1115115; // This is a reward title given for contributing to the Vesper Museum.
-                case 1073201:
-                case 1073202:
-                case 1073203:
-                case 1073204:
-                case 1073205:
-                case 1073206: return 1115116; // This is a reward title given for contributing to the Britannia Royal Zoo.
-                case 1073341:
-                case 1073342:
-                case 1073343:
-                case 1073344:
-                case 1073345: return 1115117; // This is a reward title given for contributing to the Britain Public Library.
-                case 1156477: return 1156476; // This title is obtained by completing the Valley of One Quest in the Valley of Eodon.
-                case 1155727: return 1155728; // This title is obtained from the Huntmaster's Challenge at the Ranger's Guild in Skara Brae.
-                case 1156318: return 1156319; // This is a reward title given for completing Shadowguard.
+                int id = (int)title;
+
+                if ((id >= 1152739 && id <= 1152893) || id == 1154017)
+                    return 1152893; // This title is gained through city loyalty.
+
+                if ((id >= 1151739 && id <= 1151747) || id == 1155481)
+                    return id + 1;
+
+                switch (id)
+                {
+                    default: return "This reward title has no desciption.";
+                    case 1073235:
+                    case 1073236:
+                    case 1073237:
+                    case 1073238:
+                    case 1073239: return 1115115; // This is a reward title given for contributing to the Vesper Museum.
+                    case 1073201:
+                    case 1073202:
+                    case 1073203:
+                    case 1073204:
+                    case 1073205:
+                    case 1073206: return 1115116; // This is a reward title given for contributing to the Britannia Royal Zoo.
+                    case 1073341:
+                    case 1073342:
+                    case 1073343:
+                    case 1073344:
+                    case 1073345: return 1115117; // This is a reward title given for contributing to the Britain Public Library.
+                    case 1156477: return 1156476; // This title is obtained by completing the Valley of One Quest in the Valley of Eodon.
+                    case 1155727: return 1155728; // This title is obtained from the Huntmaster's Challenge at the Ranger's Guild in Skara Brae.
+                    case 1156318: return 1156319; // This is a reward title given for completing Shadowguard.
+                }
             }
 
             //Future: 1156717 This title is obtained by completing the Myrmidex Threat quest in the Valley of Eodon.
+            return "This reward title has no desciption.";
+        }
+
+        private bool IsCityTitle(int id)
+        {
+            return (id >= 1152739 && id <= 1152893) || (id >= 1151739 && id <= 1151747) || id == 1155481 || id == 1154017;
+        }
+
+        public List<int> GetCityTitles()
+        {
+            IEnumerable<int> list = User.CollectionTitles.OfType<int>().Where(i => IsCityTitle(i));
+
+            if (list != null)
+                return list.ToList();
+
+            return null;
         }
 
         public void Refresh(bool recompile = true)

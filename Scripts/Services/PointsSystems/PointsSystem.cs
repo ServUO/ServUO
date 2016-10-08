@@ -5,16 +5,31 @@ using Server.Items;
 using Server.Mobiles;
 using System.Linq;
 using System.Collections.Generic;
+using Server.Engines.CityLoyalty;
 
 namespace Server.Engines.Points
 {
     public enum PointsType
     {
+        None = -1,
+
         QueensLoyalty,
         VoidPool,
         DespiseCrystals,
         ShameCrystals,
-        CasinoData
+        CasinoData,
+
+        CityTrading,
+
+        Moonglow,
+        Britain,
+        Jhelom,
+        Yew, 
+        Minoc,
+        Trinsic,
+        SkaraBrae,
+        NewMagincia,
+        Vesper,
     }
 
     public abstract class PointsSystem
@@ -34,7 +49,15 @@ namespace Server.Engines.Points
         {
             PlayerTable = new List<PointsEntry>();
 
-            Systems.Add(this);
+            AddSystem(this);
+        }
+
+        private static void AddSystem(PointsSystem system)
+        {
+            if(Systems.FirstOrDefault(s => s.Loyalty == system.Loyalty) != null)
+                return;
+
+            Systems.Add(system);
         }
 
         public virtual void ProcessKill(BaseCreature victim, Mobile damager, int index)
@@ -54,7 +77,7 @@ namespace Server.Engines.Points
                 if (points > MaxPoints)
                     points = MaxPoints;
 
-                AddEntry(from);
+                AddEntry(from, true);
                 GetEntry(from).Points = points;
 
                 Utility.PushColor(ConsoleColor.Green);
@@ -118,14 +141,16 @@ namespace Server.Engines.Points
         {
         }
 
-        public virtual PointsEntry AddEntry(PlayerMobile pm)
+        public virtual PointsEntry AddEntry(PlayerMobile pm, bool existed = false)
         {
             PointsEntry entry = GetSystemEntry(pm);
 
             if (!PlayerTable.Contains(entry))
             {
                 PlayerTable.Add(entry);
-                OnPlayerAdded(pm);
+
+                if(!existed)
+                    OnPlayerAdded(pm);
             }
 
             return entry;
@@ -148,23 +173,32 @@ namespace Server.Engines.Points
 
         public PointsEntry GetEntry(Mobile from, bool create = false)
 		{
-            if (from == null)
+            PlayerMobile pm = from as PlayerMobile;
+
+            if (pm == null)
                 return null;
 
-            PointsEntry entry = PlayerTable.FirstOrDefault(e => e.Player == from);
+            PointsEntry entry = PlayerTable.FirstOrDefault(e => e.Player == pm);
 
-            if (entry == null && AutoAdd && from is PlayerMobile)
-                entry = AddEntry((PlayerMobile)from);
+            if (entry == null && (create || AutoAdd))
+                entry = AddEntry(pm);
 				
 			return entry;
 		}
 
-        public TEntry GetPlayerEntry<TEntry>(PlayerMobile pm) where TEntry : PointsEntry
+        public TEntry GetPlayerEntry<TEntry>(Mobile mobile, bool create = false) where TEntry : PointsEntry
         {
+            PlayerMobile pm = mobile as PlayerMobile;
+
             if (pm == null)
                 return null;
 
-            return PlayerTable.FirstOrDefault(p => p.Player == pm) as TEntry;
+            TEntry e = PlayerTable.FirstOrDefault(p => p.Player == pm) as TEntry;
+
+            if (e == null && (AutoAdd || create))
+                e = AddEntry(pm) as TEntry;
+
+            return e;
         }
 
         /// <summary>
@@ -188,14 +222,6 @@ namespace Server.Engines.Points
                     writer.Write(entry.Player);
                     entry.Serialize(writer);
                 });
-            // Old version 0, now is stored in PointsEntry for more flexibility in newer systems
-            /*writer.Write(PlayerTable.Count);
-
-            foreach (KeyValuePair<PlayerMobile, double> kvp in PlayerTable)
-            {
-                writer.Write(kvp.Key);
-                writer.Write(kvp.Value);
-            }*/
         }
 
         public virtual void Deserialize(GenericReader reader)
@@ -210,33 +236,23 @@ namespace Server.Engines.Points
                     for (int i = 0; i < count; i++)
                     {
                         PlayerMobile player = reader.ReadMobile() as PlayerMobile;
- 
                         PointsEntry entry = GetSystemEntry(player);
-
+                        
                         if (version > 0)
                             entry.Deserialize(reader);
                         else
                             entry.Points = reader.ReadDouble();
 
                         if (player != null)
-                            PlayerTable.Add(entry);
+                        {
+                            if (!PlayerTable.Contains(entry))
+                            {
+                                PlayerTable.Add(entry);
+                            }
+                        }
                     }
                     break;
             }
-
-            //Old player data, not uses the above
-            /*PlayerTable = new Dictionary<PlayerMobile, double>();
-
-            int count = reader.ReadInt();
-
-            for (int i = 0; i < count; i++)
-            {
-                PlayerMobile pm = reader.ReadMobile() as PlayerMobile;
-                double points = reader.ReadDouble();
-
-                if (pm != null)
-                    PlayerTable.Add(pm, points);
-            }*/
         }
 
         #region Static Methods and Accessors
@@ -275,6 +291,7 @@ namespace Server.Engines.Points
 					{
 						PointsType type = (PointsType)reader.ReadInt();
 						PointsSystem s = GetSystemInstance(type);
+
 						s.Deserialize(reader);
 					}	
 				});
@@ -300,6 +317,8 @@ namespace Server.Engines.Points
             DespiseCrystals = new DespiseCrystals();
             ShameCrystals = new ShameCrystals();
             CasinoData = new CasinoData();
+
+            CityLoyaltySystem.ConstructSystems();
         }
 
         public static void HandleKill(BaseCreature victim, Mobile damager, int index)
@@ -329,6 +348,24 @@ namespace Server.Engines.Points
 			Player = pm;
 			Points = points;
 		}
+
+        public override bool Equals(object o)
+        {
+            if (o == null || !(o is PointsEntry))
+            {
+                return false;
+            }
+
+            return ((PointsEntry)o).Player == Player;
+        }
+
+        public override int GetHashCode()
+        {
+            if (Player != null)
+                return Player.GetHashCode();
+
+            return base.GetHashCode();
+        }
 		
 		public virtual void Serialize(GenericWriter writer)
 		{

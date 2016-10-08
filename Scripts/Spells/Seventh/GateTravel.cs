@@ -109,6 +109,10 @@ namespace Server.Spells.Seventh
             {
                 this.Caster.SendLocalizedMessage(1071242); // There is already a gate there.
             }
+            else if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(Caster))
+            {
+                Caster.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
+            }
             else if (this.CheckSequence())
             {
                 this.Caster.SendLocalizedMessage(501024); // You open a magical gate to another location

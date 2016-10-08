@@ -470,6 +470,8 @@ namespace Server.Items
                 this.m_Mobile.MoveToWorld(entry.Location, list.Map);
 
                 Effects.PlaySound(entry.Location, list.Map, 0x1FE);
+
+                Server.Engines.CityLoyalty.CityTradeSystem.OnPublicMoongateUsed(m_Mobile);
             }
         }
 

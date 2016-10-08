@@ -5022,7 +5022,7 @@ namespace Server.Items
 
             if ((fprop = (double)m_AosWeaponAttributes.HitLeechHits * focusBonus) != 0)
 			{
-				list.Add(1060422, ((int)fprop).ToString()); // hit life leech ~1_val~%
+                list.Add(1060422, Math.Min(100, (int)fprop).ToString()); // hit life leech ~1_val~%
 			}
 
             if ((fprop = (double)m_AosWeaponAttributes.HitLightning * focusBonus) != 0)
@@ -5077,7 +5077,7 @@ namespace Server.Items
 
             if ((fprop = (double)m_AosWeaponAttributes.HitLeechMana * focusBonus) != 0)
 			{
-				list.Add(1060427, ((int)fprop).ToString()); // hit mana leech ~1_val~%
+				list.Add(1060427, Math.Min(100, (int)fprop).ToString()); // hit mana leech ~1_val~%
 			}
 
             if ((fprop = (double)m_AosWeaponAttributes.HitPhysicalArea * focusBonus) != 0)
@@ -5092,7 +5092,7 @@ namespace Server.Items
 
             if ((fprop = (double)m_AosWeaponAttributes.HitLeechStam * focusBonus) != 0)
 			{
-				list.Add(1060430, ((int)fprop).ToString()); // hit stamina leech ~1_val~%
+                list.Add(1060430, Math.Min(100, (int)fprop).ToString()); // hit stamina leech ~1_val~%
 			}
 
 			if (ImmolatingWeaponSpell.IsImmolating(this))

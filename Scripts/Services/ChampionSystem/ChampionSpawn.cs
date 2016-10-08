@@ -629,6 +629,8 @@ namespace Server.Engines.CannedEvil
                                 PlayerMobile.ChampionTitleInfo info = ((PlayerMobile)killer).ChampionTitles;
 
                                 info.Award(this.m_Type, mobSubLevel);
+
+                                Server.Engines.CityLoyalty.CityLoyaltySystem.OnSpawnCreatureKilled(m as BaseCreature, mobSubLevel);
                             }
                         }
                     }
@@ -745,6 +747,7 @@ namespace Server.Engines.CannedEvil
                 {
                     BaseCreature bc = m as BaseCreature;
                     bc.Tamable = false;
+                    bc.IsChampionSpawn = true;
 
                     if (!this.m_ConfinedRoaming)
                     {
@@ -1332,6 +1335,11 @@ namespace Server.Engines.CannedEvil
 
                         break;
                     }
+            }
+
+            foreach (BaseCreature bc in m_Creatures.OfType<BaseCreature>())
+            {
+                bc.IsChampionSpawn = true;
             }
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateRegion));

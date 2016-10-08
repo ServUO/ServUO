@@ -274,6 +274,7 @@
     <Compile Include="Context Menus\OpenBankEntry.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Context Menus\SimpleContextMenuEntry.cs" />
     <Compile Include="Context Menus\TeachEntry.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -309,6 +310,7 @@
     <Compile Include="Gumps\ConfirmBreakCrystalGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\ConfirmCallbackGump.cs" />
     <Compile Include="Gumps\ConfirmHeritageGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -2685,6 +2687,34 @@
     <Compile Include="Services\Armor Refinement\Gumps.cs" />
     <Compile Include="Services\Armor Refinement\Items.cs" />
     <Compile Include="Services\BasketWeaving\Baskets\BasketCraftable.cs" />
+    <Compile Include="Services\City Loyalty System\CityDefinition.cs" />
+    <Compile Include="Services\City Loyalty System\CityLoyaltyEntry.cs" />
+    <Compile Include="Services\City Loyalty System\CityLoyaltySystem.cs" />
+    <Compile Include="Services\City Loyalty System\Election.cs" />
+    <Compile Include="Services\City Loyalty System\Gumps.cs" />
+    <Compile Include="Services\City Loyalty System\Items\Addons.cs" />
+    <Compile Include="Services\City Loyalty System\Items\Banners.cs" />
+    <Compile Include="Services\City Loyalty System\Items\BoxOfRopes.cs" />
+    <Compile Include="Services\City Loyalty System\Items\CityMessageBoard.cs" />
+    <Compile Include="Services\City Loyalty System\Items\CityStone.cs" />
+    <Compile Include="Services\City Loyalty System\Items\GuardsmansRope.cs" />
+    <Compile Include="Services\City Loyalty System\Mobiles\CityHerald.cs" />
+    <Compile Include="Services\City Loyalty System\Mobiles\GuardCaptain.cs" />
+    <Compile Include="Services\City Loyalty System\Mobiles\Raider.cs" />
+    <Compile Include="Services\City Loyalty System\Setup.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\DonationCrate.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\Items\CityBooks.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\Items\ExpiredVoucher.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\Items\ForgedArtwork.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\Items\LittleBlackBook.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\Items\MysteriousNote.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\Items\RewardSign.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\Items\SlimsShadowVeil.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\Mobiles\Slim.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\Mobiles\TradeMinister.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\TradeCrate.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\TradeEntry.cs" />
+    <Compile Include="Services\City Loyalty System\Trading\TradeSystem.cs" />
     <Compile Include="Services\FireCasino\CasinoGumps.cs" />
     <Compile Include="Services\FireCasino\DiceGames.cs" />
     <Compile Include="Services\FireCasino\FortuesFireGrog.cs" />

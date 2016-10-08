@@ -484,11 +484,16 @@ namespace Server.Items
 						toHeal -= m_Slips * 4;
 					}
 
-					if (toHeal < 1)
-					{
-						toHeal = 1;
-						healerNumber = 500968; // You apply the bandages, but they barely help.
-					}
+                    #region City Loyalty
+                    if (Server.Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(m_Healer, Server.Engines.CityLoyalty.TradeDeal.GuildOfHealers))
+                        toHeal += (int)Math.Ceiling(toHeal * 0.05);
+                    #endregion
+
+                    if (toHeal < 1)
+                    {
+                        toHeal = 1;
+                        healerNumber = 500968; // You apply the bandages, but they barely help.
+                    }
 
 					m_Patient.Heal((int)toHeal, m_Healer, false);
 				}

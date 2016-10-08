@@ -13,6 +13,7 @@ using Server.Spells.Chivalry;
 using Server.Spells.Necromancy;
 using Server.Spells.Spellweaving;
 using Server.SkillHandlers;
+using Server.Engines.CityLoyalty;
 
 namespace Server
 {
@@ -458,6 +459,11 @@ namespace Server
                 if (context != null && context.Spell is ReaperFormSpell)
                     value += ((ReaperFormSpell)context.Spell).SpellDamageBonus;
 
+                #region City Loyalty
+                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.GuildOfArcaneArts))
+                    value += 5;
+                #endregion
+
                 #region High Seas
                 if (BaseFishPie.IsUnderEffects(m, FishPieEffect.SpellDamage))
                     value += 5;
@@ -470,6 +476,11 @@ namespace Server
 
                 if (EssenceOfWindSpell.IsDebuffed(m))
                     value -= EssenceOfWindSpell.GetFCMalus(m);
+
+                #region City Loyalty
+                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.BardicCollegium))
+                    value += 1;
+                #endregion
 
                 #region SA
                 if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
@@ -518,6 +529,11 @@ namespace Server
                 if (EssenceOfWindSpell.IsDebuffed(m))
                     value -= EssenceOfWindSpell.GetSSIMalus(m);
 
+                #region City Loyalty
+                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.GuildOfAssassins))
+                    value += 1;
+                #endregion
+
                 #region SA
                 if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
                     value -= 45;
@@ -552,6 +568,11 @@ namespace Server
 
                 if (move != null)
                     value += move.GetAccuracyBonus(m);
+
+                #region City Loyalty
+                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.WarriorsGuild))
+                    value += 5;
+                #endregion
 
                 #region SA
                 if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
@@ -598,6 +619,11 @@ namespace Server
             }
             else if (attribute == AosAttribute.RegenHits)
             {
+                #region City Loyalty
+                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.MaritimeGuild))
+                    value += 2;
+                #endregion
+
                 #region High Seas
                 if (m is PlayerMobile && BaseFishPie.IsUnderEffects(m, FishPieEffect.HitsRegen))
                     value += 3;
@@ -621,12 +647,31 @@ namespace Server
             }
             else if (attribute == AosAttribute.RegenMana)
             {
+                #region City Loyalty
+                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.MerchantsAssociation))
+                    value += 1;
+                #endregion
+
                 #region High Seas
                 if (m is PlayerMobile && BaseFishPie.IsUnderEffects(m, FishPieEffect.ManaRegen))
                     value += 3;
 
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Mana))
                     value += 10;
+                #endregion
+            }
+            else if (attribute == AosAttribute.BonusDex)
+            {
+                #region City Loyalty
+                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.OrderOfEngineers))
+                    value += 3;
+                #endregion
+            }
+            else if (attribute == AosAttribute.BonusStr)
+            {
+                #region City Loyalty
+                if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.MiningCooperative))
+                    value += 3;
                 #endregion
             }
             #endregion

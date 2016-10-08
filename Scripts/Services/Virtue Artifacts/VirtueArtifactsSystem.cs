@@ -29,10 +29,9 @@ namespace Server.Misc
         {
             Region r = m.Region;
 
-	        if (r is ChampionSpawnRegion)
+	        if (m is BaseCreature && ((BaseCreature)m).IsChampionSpawn)
 		        return false;
 	        
-
 	        if (r.IsPartOf(typeof(Server.Regions.HouseRegion)) || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
                 return false;
 

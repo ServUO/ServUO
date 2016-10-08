@@ -895,7 +895,22 @@ namespace Server.Mobiles
 			return Math.Max(MinPlayerResistance, Math.Min(MaxPlayerResistance, min));
 		}
 
-		public override void OnManaChange(int oldValue)
+        #region City Loyalty
+        public override int GetResistance(ResistanceType type)
+        {
+            int resistance = base.GetResistance(type);
+
+            if (Server.Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(this, Server.Engines.CityLoyalty.TradeDeal.SocietyOfClothiers))
+            {
+                resistance++;
+                 return Math.Min(resistance, GetMaxResistance(type));
+            }
+
+            return resistance;
+        }
+        #endregion
+
+        public override void OnManaChange(int oldValue)
 		{
 			base.OnManaChange(oldValue);
 			if (m_ExecutesLightningStrike > 0)
@@ -3680,7 +3695,7 @@ namespace Server.Mobiles
                         m_ShowGuildAbbreviation = version > 31 ? reader.ReadBool() : false;
                         m_FameKarmaTitle = reader.ReadString();
                         m_PaperdollSkillTitle = reader.ReadString();
-                        m_OverheadSkillTitle = reader.ReadString();
+                        m_OverheadTitle = reader.ReadString();
                         m_SubtitleSkillTitle = reader.ReadString();
 
                         m_CurrentChampTitle = reader.ReadString();
@@ -4105,7 +4120,7 @@ namespace Server.Mobiles
             writer.Write(m_ShowGuildAbbreviation);
             writer.Write(m_FameKarmaTitle);
             writer.Write(m_PaperdollSkillTitle);
-            writer.Write(m_OverheadSkillTitle);
+            writer.Write(m_OverheadTitle);
             writer.Write(m_SubtitleSkillTitle);
             writer.Write(m_CurrentChampTitle);
             writer.Write(m_CurrentVeteranTitle);
@@ -4427,7 +4442,13 @@ namespace Server.Mobiles
 				{
 					if (m_CollectionTitles[m_SelectedTitle] is int)
 					{
-						list.Add((int)m_CollectionTitles[m_SelectedTitle]);
+                        string cust = null;
+                        if ((int)m_CollectionTitles[m_SelectedTitle] == 1154017 && Server.Engines.CityLoyalty.CityLoyaltySystem.HasCustomTitle(this, out cust))
+                        {
+                            list.Add(1154017, cust); // ~1_TITLE~ of ~2_CITY~
+                        }
+						else
+                            list.Add((int)m_CollectionTitles[m_SelectedTitle]);
 					}
 					else if (m_CollectionTitles[m_SelectedTitle] is string)
 					{
@@ -4881,7 +4902,7 @@ namespace Server.Mobiles
         private string m_PaperdollSkillTitle;
         private string m_SubtitleSkillTitle;
         private string m_CurrentChampTitle;
-        private string m_OverheadSkillTitle;
+        private string m_OverheadTitle;
         private int m_CurrentVeteranTitle;
         private bool m_ShowGuildAbbreviation;
 
@@ -4909,10 +4930,10 @@ namespace Server.Mobiles
             set { m_CurrentChampTitle = value; InvalidateProperties(); }
         }
 
-        public string OverheadSkillTitle
+        public string OverheadTitle
         {
-            get { return m_OverheadSkillTitle; }
-            set { m_OverheadSkillTitle = value; InvalidateProperties(); }
+            get { return m_OverheadTitle; }
+            set { m_OverheadTitle = value; InvalidateProperties(); }
         }
 
         public int CurrentVeteranTitle
@@ -4972,12 +4993,19 @@ namespace Server.Mobiles
 
             BaseGuild guild = Guild;
 
-            if (m_OverheadSkillTitle != null)
+            if (m_OverheadTitle != null)
             {
-                if (suffix.Length > 0)
-                    suffix = String.Format("{0} {1}", suffix, m_OverheadSkillTitle);
+                int loc = Utility.ToInt32(m_OverheadTitle);
+
+                if (loc > 0)
+                {
+                    if(Server.Engines.CityLoyalty.CityLoyaltySystem.ApplyCityTitle(this, list, prefix, loc))
+                        return;
+                }
+                else if (suffix.Length > 0)
+                    suffix = String.Format("{0} {1}", suffix, m_OverheadTitle);
                 else
-                    suffix = String.Format("{0}", m_OverheadSkillTitle);
+                    suffix = String.Format("{0}", m_OverheadTitle);
             }
             else if (guild != null && m_ShowGuildAbbreviation)
             {
