@@ -440,6 +440,9 @@ namespace Server.SkillHandlers
                         BaseArmor arm = i as BaseArmor;
                         arm.ArmorAttributes.SelfRepair = 0;
 
+                        if (prop is AosWeaponAttribute && (AosWeaponAttribute)prop == AosWeaponAttribute.DurabilityBonus)
+                            prop = AosArmorAttribute.DurabilityBonus;
+
                         if (prop is AosAttribute)
                         {
                             AosAttribute attr = (AosAttribute)prop;
@@ -479,6 +482,9 @@ namespace Server.SkillHandlers
                     {
                         BaseShield shield = i as BaseShield;
                         shield.ArmorAttributes.SelfRepair = 0;
+
+                        if (prop is AosWeaponAttribute && (AosWeaponAttribute)prop == AosWeaponAttribute.DurabilityBonus)
+                            prop = AosArmorAttribute.DurabilityBonus;
 
                         if (prop is AosAttribute)
                         {
