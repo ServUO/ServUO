@@ -209,7 +209,7 @@ namespace Server.Engines.CityLoyalty
             return true;
         }
 
-		public CityStone(Serial serial)
+		public CityStone(Serial serial) : base(serial)
 		{
 		}
 		

@@ -91,7 +91,7 @@ namespace Server.Engines.CityLoyalty
 					
 					if(order != null)
 					{
-                        if (CityLoyaltySystem.CityTrading.TryTurnIn(from, order, Slim))
+                        if (CityLoyaltySystem.CityTrading.TryTurnInToSlim(from, order, Slim))
                         {
                             from.AddToBackpack(Slim.GiveAward());
                             from.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.

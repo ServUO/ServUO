@@ -982,6 +982,12 @@ namespace Server.Engines.CityLoyalty
             AddLabel(150, 40, 0, "View");
             AddLabel(200, 40, 0, "Remove");
 
+            City.Stone.Boxes.ForEach(b =>
+                {
+                    if (b.Deleted)
+                        City.Stone.Boxes.Remove(b);
+                });
+
             for (int i = 0; i < City.Stone.Boxes.Count; i++)
             {
                 BallotBox box = City.Stone.Boxes[i];

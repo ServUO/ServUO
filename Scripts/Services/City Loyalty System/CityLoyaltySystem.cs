@@ -235,6 +235,9 @@ namespace Server.Engines.CityLoyalty
 		
 		public bool IsCitizen(Mobile from)
 		{
+            if (from.AccessLevel > AccessLevel.Player)
+                return true;
+
             CityLoyaltyEntry entry = GetPlayerEntry<CityLoyaltyEntry>(from);
 			
 			return entry != null && entry.IsCitizen;
