@@ -208,7 +208,6 @@ namespace Server.Engines.Quests
 
     public class Neil : MondainQuester
     { 
-        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Neil()
             : base("Neil", "the iron worker")

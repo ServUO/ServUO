@@ -256,7 +256,7 @@ namespace Server.Mobiles
 
         private int m_FailedReturnHome; /* return to home failure counter */
 
-        //private int m_QLPoints;
+        private bool m_IsChampionSpawn;
         #endregion
 
         public virtual InhumanSpeech SpeechType { get { return null; } }
@@ -541,6 +541,21 @@ namespace Server.Mobiles
                 InvalidateProperties();
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsChampionSpawn
+        {
+            get { return m_IsChampionSpawn; }
+            set
+            {
+                if (!m_IsChampionSpawn && value)
+                    SetToChampionSpawn();
+
+                m_IsChampionSpawn = value;
+            }
+        }
+
+        public bool IsAmbusher { get; set; }
 
         public virtual bool HasManaOveride { get { return false; } }
 
@@ -4654,6 +4669,10 @@ namespace Server.Mobiles
             }
         }
 
+        public virtual void SetToChampionSpawn()
+        {
+        }
+
         public virtual void SetWearable(Item item, int hue = -1, double dropChance = 0.0)
         {
             if (!EquipItem(item))
@@ -4764,6 +4783,9 @@ namespace Server.Mobiles
                     list.Add(502006); // (tame)
                 }
             }
+
+            if (IsAmbusher)
+                list.Add(1155480); // Ambusher
         }
 
         public override void OnSingleClick(Mobile from)

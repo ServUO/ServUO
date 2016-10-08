@@ -154,6 +154,10 @@ namespace Server.Spells.Chivalry
             {
                 this.Caster.SendLocalizedMessage(502412); // There are no charges left on that item.
             }
+            else if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(Caster))
+            {
+                Caster.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
+            }
             else if (this.CheckSequence())
             {
                 BaseCreature.TeleportPets(this.Caster, loc, map, true);

@@ -123,6 +123,8 @@ namespace Server.Items
 
     public class AddonComponent : Item, IChopable
     {
+        public override bool ForceShowProperties { get { return Addon != null && Addon.ForceShowProperties; } }
+
         private static readonly LightEntry[] m_Entries = new LightEntry[]
         {
             new LightEntry(LightType.WestSmall, 1122, 1123, 1124, 1141, 1142, 1143, 1144, 1145, 1146, 2347, 2359, 2360, 2361, 2362, 2363, 2364, 2387, 2388, 2389, 2390, 2391, 2392),

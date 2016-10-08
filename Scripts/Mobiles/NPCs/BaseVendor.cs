@@ -1082,6 +1082,7 @@ namespace Server.Mobiles
 				Titles.AwardFame(from, fame, true);
 
 				OnSuccessfulBulkOrderReceive(from);
+                Server.Engines.CityLoyalty.CityLoyaltySystem.OnBODTurnIn(from, gold);
 
 				if (Core.ML && pm != null)
 				{

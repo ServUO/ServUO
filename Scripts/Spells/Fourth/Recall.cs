@@ -134,6 +134,10 @@ namespace Server.Spells.Fourth
             {
                 this.Caster.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
             }
+            else if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(Caster))
+            {
+                Caster.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
+            }
             else if (this.CheckSequence())
             {
                 BaseCreature.TeleportPets(this.Caster, loc, map, true);
