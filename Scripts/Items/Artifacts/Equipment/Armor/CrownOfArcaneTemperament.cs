@@ -5,6 +5,10 @@ namespace Server.Items
     public class CrownOfArcaneTemperament : Circlet
 	{
 		public override bool IsArtifact { get { return true; } }
+
+        public override Race RequiredRace { get { return null; } }
+        public override int LabelNumber { get { return 1113762; } } // Crown of Arcane Temperament
+
         [Constructable]
         public CrownOfArcaneTemperament()
         {
@@ -14,7 +18,6 @@ namespace Server.Items
 			this.Attributes.LowerManaCost = 6;
 			this.Hue = 149; //Hue not exact
 			AbsorptionAttributes.CastingFocus = 2;
-			this.Name = ("Crown of Arcane Temperament");
         }
 
         public CrownOfArcaneTemperament(Serial serial)
