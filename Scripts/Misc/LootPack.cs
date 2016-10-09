@@ -590,7 +590,7 @@ namespace Server
             if (e == null)
                 return false;
 
-            return e.Map == Map.TerMur;
+            return e.Map == Map.TerMur || (!IsInTokuno(e) && !IsMondain(e) && Utility.RandomBool());
 		}
 		#endregion
 

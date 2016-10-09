@@ -6,7 +6,12 @@ namespace Server.Items
     public class GargishGlasses : BaseArmor
 	{
 		public override bool IsArtifact { get { return true; } }
+
+        public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
+
         private AosWeaponAttributes m_AosWeaponAttributes;
+
         [Constructable]
         public GargishGlasses()
             : base(0x4644)

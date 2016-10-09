@@ -58,7 +58,7 @@ namespace Server.Engines.NewMagincia
 
             list.Add(m_Facet == Map.Trammel ? 1150549 : 1150548); // Facet: Felucca
 
-            list.Add(1150546, "Alexandria"); // Shard: ~1_SHARDNAME~
+            list.Add(1150546, Server.Misc.ServerList.ServerName); // Shard: ~1_SHARDNAME~
 
             if (m_Expired)
                 list.Add(1150487); // [Expired]

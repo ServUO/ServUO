@@ -43,13 +43,12 @@ namespace Server.Mobiles
             SetSkill(SkillName.Stealth, 125.0);
             SetSkill(SkillName.Hiding, 125.0);
 
-            PackItem(new DragonBlood(6));
-
             Fame = 2500;
             Karma = -2500;
 
             QLPoints = 25;
 
+            PackItem(new RawRibs(5));
             //	VirtualArmor = 16;
         }
 
@@ -75,10 +74,9 @@ namespace Server.Mobiles
 
         public override int Hides
         {
-            get { return 14; }
+            get { return 12; }
         }
 
-        // public override int DragonBlood { get { return 6; } }
         public override HideType HideType
         {
             get { return HideType.Horned; }
@@ -104,7 +102,6 @@ namespace Server.Mobiles
             }
 
             from.SendLocalizedMessage(1112360); // You place the gathered kepetch fur into your backpack.
-            //from.AddToBackpack( new FurO( Map == Map.Felucca ? 2 : 15 ) );
             from.AddToBackpack(new Fur(Map == Map.Felucca ? 2 : 15));
 
             NextWoolTime = DateTime.Now + TimeSpan.FromHours(3.0); // TODO: Proper time delay
@@ -149,6 +146,8 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
+
+            c.DropItem(new DragonBlood(6));
 
             if (Utility.RandomDouble() < 0.1)
             {

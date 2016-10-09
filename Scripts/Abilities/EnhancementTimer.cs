@@ -10,13 +10,14 @@ namespace Server
         private readonly Mobile m_Mobile;
         private readonly string m_Title;
         private int m_Duration;
+
         public EnhancementTimer(Mobile m, int duration, string title, params object[] args)
             : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
         {
             if (args.Length < 1 || (args.Length % 2) != 0)
                 throw new Exception("EnhancementTimer: args.length must be an even number greater than 0");
 
-            Enhancement.AddMobile(m, title);
+            Enhancement.AddMobile(m);
             this.m_Mobile = m;
             this.m_Title = title;
             this.m_Duration = duration;
