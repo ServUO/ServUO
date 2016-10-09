@@ -1,6 +1,9 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using Server;
 using Server.Spells;
+using Server.Engines.PartySystem;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -9,28 +12,13 @@ namespace Server.Items
     /// </summary>
     public class FrenziedWhirlwind : WeaponAbility
     {
-        private static readonly Hashtable m_Registry = new Hashtable();
         public FrenziedWhirlwind()
         {
         }
 
-        public static Hashtable Registry
-        {
-            get
-            {
-                return m_Registry;
-            }
-        }
-        public override int BaseMana
-        {
-            get
-            {
-                return 20;
-            }
-        }
         public override bool CheckSkills(Mobile from)
         {
-            if (this.GetSkill(from, SkillName.Ninjitsu) < 50.0 && this.GetSkill(from, SkillName.Bushido) < 50.0)
+            if (GetSkill(from, SkillName.Ninjitsu) < 50.0 && GetSkill(from, SkillName.Bushido) < 50.0)
             {
                 from.SendLocalizedMessage(1063347, "50"); // You need ~1_SKILL_REQUIREMENT~ Bushido or Ninjitsu skill to perform that attack!
                 return false;
@@ -39,9 +27,14 @@ namespace Server.Items
             return base.CheckSkills(from);
         }
 
+        public override int BaseMana { get { return 30; } }
+
+        private static Dictionary<Mobile, Timer> m_Registry = new Dictionary<Mobile, Timer>();
+        public static Dictionary<Mobile, Timer> Registry { get { return m_Registry; } }
+
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker))	//Mana check after check that there are targets
+            if (!Validate(attacker))	//Mana check after check that there are targets
                 return;
 
             ClearCurrentAbility(attacker);
@@ -56,18 +49,12 @@ namespace Server.Items
             if (weapon == null)
                 return;
 
-            ArrayList list = new ArrayList();
+            List<Mobile> targets = new List<Mobile>();
 
-            foreach (Mobile m in attacker.GetMobilesInRange(1))
-                list.Add(m);
-
-            ArrayList targets = new ArrayList();
-
-            for (int i = 0; i < list.Count; ++i)
+            IPooledEnumerable eable = attacker.GetMobilesInRange(2);
+            foreach (Mobile m in eable)
             {
-                Mobile m = (Mobile)list[i];
-
-                if (m != defender && m != attacker && SpellHelper.ValidIndirectTarget(attacker, m))
+                if (m != attacker && SpellHelper.ValidIndirectTarget(attacker, m))
                 {
                     if (m == null || m.Deleted || m.Map != attacker.Map || !m.Alive || !attacker.CanSee(m) || !attacker.CanBeHarmful(m))
                         continue;
@@ -79,94 +66,78 @@ namespace Server.Items
                         targets.Add(m);
                 }
             }
+            eable.Free();
 
             if (targets.Count > 0)
             {
-                if (!this.CheckMana(attacker, true))
+                if (!CheckMana(attacker, true))
                     return;
 
                 attacker.FixedEffect(0x3728, 10, 15);
                 attacker.PlaySound(0x2A1);
 
-                // 5-15 damage
-                int amount = (int)(10.0 * ((Math.Max(attacker.Skills[SkillName.Bushido].Value, attacker.Skills[SkillName.Ninjitsu].Value) - 50.0) / 70.0 + 5));
-
                 for (int i = 0; i < targets.Count; ++i)
                 {
-                    Mobile m = (Mobile)targets[i];
+                    Mobile m = targets[i];
                     attacker.DoHarmful(m, true);
 
-                    Timer t = Registry[m] as Timer;
+                    if (m_Registry.ContainsKey(m) && m_Registry[m] != null)
+                        m_Registry[m].Stop();
 
-                    if (t != null)
-                    {
-                        t.Stop();
-                        Registry.Remove(m);
-                    }
-
-                    t = new InternalTimer(attacker, m, amount);
+                    Timer t = new InternalTimer(attacker, m);
                     t.Start();
-                    Registry.Add(m, t);
-                }
+                    m_Registry[m] = t;
 
-                Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(RepeatEffect), attacker);
+                    m.Send(SpeedControl.WalkSpeed);
+                }
             }
         }
 
-        private void RepeatEffect(object state)
+        public static void RemoveFromRegistry(Mobile from)
         {
-            Mobile attacker = (Mobile)state;
+            if (m_Registry.ContainsKey(from))
+                m_Registry.Remove(from);
 
-            attacker.FixedEffect(0x3728, 10, 15);
-            attacker.PlaySound(0x2A1);
+            Timer.DelayCall(TimeSpan.FromSeconds(2), () => from.Send(SpeedControl.Disable));
         }
 
         private class InternalTimer : Timer
         {
-            private readonly Mobile m_Attacker;
-            private readonly Mobile m_Defender;
-            private readonly double DamagePerTick;
-            private double m_DamageRemaining;
-            private double m_DamageToDo;
-            public InternalTimer(Mobile attacker, Mobile defender, int totalDamage)
-                : base(TimeSpan.Zero, TimeSpan.FromSeconds(0.25), 12)// 3 seconds at .25 seconds apart = 12.  Confirm delay inbetween of .25 each.
+            private Mobile m_Attacker;
+            private Mobile m_Defender;
+
+            public InternalTimer(Mobile attacker, Mobile defender)
+                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
             {
-                this.m_Attacker = attacker;
-                this.m_Defender = defender;
+                m_Attacker = attacker;
+                m_Defender = defender;
 
-                this.m_DamageRemaining = (double)totalDamage;
-                this.DamagePerTick = (double)totalDamage / 12 + 0.01;
-
-                this.Priority = TimerPriority.TwentyFiveMS;
+                DoHit();
+                Priority = TimerPriority.TwentyFiveMS;
             }
 
             protected override void OnTick()
             {
-                if (!this.m_Defender.Alive || this.m_DamageRemaining <= 0)
+                if (m_Defender.Alive && m_Attacker.Alive)
+                    DoHit();
+
+                Server.Items.FrenziedWhirlwind.RemoveFromRegistry(m_Defender);
+                Stop();
+            }
+
+            private void DoHit()
+            {
+                if (m_Attacker.InRange(m_Defender.Location, 2))
                 {
-                    this.Stop();
-                    Server.Items.FrenziedWhirlwind.Registry.Remove(this.m_Defender);
-                    return;
-                }
+                    m_Attacker.FixedEffect(0x3728, 10, 15);
+                    m_Attacker.PlaySound(0x2A1);
 
-                this.m_DamageRemaining -= this.DamagePerTick;
-                this.m_DamageToDo += this.DamagePerTick;
+                    int amount = (int)(10.0 * ((Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value) - 50.0) / 70.0 + 5));
 
-                if (this.m_DamageRemaining <= 0 && this.m_DamageToDo < 1)
-                    this.m_DamageToDo = 1.0; //Confirm this 'round up' at the end
+                    AOS.Damage(m_Defender, m_Attacker, amount, 100, 0, 0, 0, 0);
 
-                int damage = (int)this.m_DamageToDo;
-
-                if (damage > 0)
-                {
-                    this.m_Defender.Damage(damage, this.m_Attacker);
-                    this.m_DamageToDo -= damage;
-                }
-
-                if (!this.m_Defender.Alive || this.m_DamageRemaining <= 0)
-                {
-                    this.Stop();
-                    Server.Items.FrenziedWhirlwind.Registry.Remove(this.m_Defender);
+                    m_Attacker.SendLocalizedMessage(1060161); // The whirling attack strikes a target!
+                    m_Defender.SendLocalizedMessage(1060162); // You are struck by the whirling attack and take damage!
                 }
             }
         }

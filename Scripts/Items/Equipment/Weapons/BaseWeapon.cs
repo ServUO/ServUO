@@ -4711,7 +4711,7 @@ namespace Server.Items
 				return true;
 			}
 
-			return (m_AosAttributes.SpellChanneling != 0);
+            return AosAttributes.GetValue(from, AosAttribute.SpellChanneling) > 0;
 		}
 
 		public virtual int ArtifactRarity { get { return 0; } }
@@ -4968,7 +4968,7 @@ namespace Server.Items
 				list.Add(1060412, prop.ToString()); // faster cast recovery ~1_val~
 			}
 
-			if ((prop = m_AosAttributes.CastSpeed) != 0)
+            if ((prop = fcMalus ? m_AosAttributes.CastSpeed - 1 : m_AosAttributes.CastSpeed) != 0)
 			{
 				list.Add(1060413, prop.ToString()); // faster casting ~1_val~
 			}
@@ -5185,7 +5185,7 @@ namespace Server.Items
 				list.Add(1060450, prop.ToString()); // self repair ~1_val~
 			}
 
-			if ((prop = m_AosAttributes.SpellChanneling) != 0)
+            if ((prop = fcMalus ? 1 : m_AosAttributes.SpellChanneling) != 0)
 			{
 				list.Add(1060482); // spell channeling
 			}
