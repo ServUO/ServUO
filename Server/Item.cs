@@ -1974,7 +1974,7 @@ namespace Server
 			get
 			{
 				// TODO: Make item decay an option on the spawner
-                return (Movable && Visible && m_HonestyPickup == DateTime.MinValue/* && Spawner == null*/);
+                return (Movable && Visible && m_HonestyPickup != DateTime.MinValue/* && Spawner == null*/);
 			}
 		}
 
