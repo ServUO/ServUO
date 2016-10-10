@@ -234,6 +234,8 @@ namespace Server.Engines.Craft
                 newitem.Name = origItem.Name;
                 newitem.Hue = origItem.Hue;
 
+                newitem.LootType = origItem.LootType;
+
                 origItem.Delete();
                 origItem.OnAfterDuped(newitem);
                 newitem.Parent = null;
