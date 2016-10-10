@@ -12,7 +12,7 @@ namespace Server.Mobiles
             typeof (BouraTailShield)
         };
 
-        private DateTime m_NextWoolTime; //
+        private bool GatheredFur { get; set; }
         private bool m_Stunning;
 
         [Constructable]
@@ -59,17 +59,6 @@ namespace Server.Mobiles
         {
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextWoolTime
-        {
-            get { return m_NextWoolTime; }
-            set
-            {
-                m_NextWoolTime = value;
-                Body = (DateTime.Now >= m_NextWoolTime) ? 0x2CB : 0x2CB;
-            }
-        }
-
         public override int Meat
         {
             get { return 10; }
@@ -94,25 +83,36 @@ namespace Server.Mobiles
 
         public void Carve(Mobile from, Item item)
         {
-            if (DateTime.Now < m_NextWoolTime)
+            if (!GatheredFur)
             {
-                // The boura glares at you and will not let you shear its fur.
-                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1112354, from.NetState);
-                return;
+                var fur = new BouraFur(30);
+
+                if (from.Backpack == null || !from.Backpack.TryDropItem(from, fur, false))
+                {
+                    from.SendLocalizedMessage(1112352); // You would not be able to place the gathered boura fur in your backpack!
+                    fur.Delete();
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1112353); // You place the gathered boura fur into your backpack.
+                    GatheredFur = true;
+                }
             }
-
-            from.SendLocalizedMessage(1112353); // You place the gathered boura fur into your backpack.
-            //from.AddToBackpack( new FurY( Map == Map.Felucca ? 2 : 30 ) );
-            from.AddToBackpack(new Fur(Map == Map.Felucca ? 2 : 30));
-
-            NextWoolTime = DateTime.Now + TimeSpan.FromHours(3.0); // TODO: Proper time delay
+            else
+                from.SendLocalizedMessage(1112354); // The boura glares at you and will not let you shear its fur.
         }
 
-        public override void OnThink()
+        public override void OnCarve(Mobile from, Corpse corpse, Item with)
         {
-            base.OnThink();
-            Body = (DateTime.Now >= m_NextWoolTime) ? 0x2CB : 0x2CB;
-        } //
+            base.OnCarve(from, corpse, with);
+
+            if (!GatheredFur)
+            {
+                from.SendLocalizedMessage(1112765); // You shear it, and the fur is now on the corpse.
+                corpse.AddCarvedItem(new BouraFur(15), from);
+                GatheredFur = true;
+            }
+        }
 
         public override int GetIdleSound()
         {
@@ -207,8 +207,8 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1); //0
-            writer.WriteDeltaTime(m_NextWoolTime);
+            writer.Write(2);
+            writer.Write(GatheredFur);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -216,13 +216,11 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             var version = reader.ReadInt();
 
-            switch (version)
+            if (version == 1)
+                reader.ReadDeltaTime();
+            else
             {
-                case 1:
-                {
-                    NextWoolTime = reader.ReadDeltaTime();
-                    break;
-                }
+                GatheredFur = reader.ReadBool();
             }
         }
     }

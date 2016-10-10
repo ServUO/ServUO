@@ -7,7 +7,8 @@ namespace Server.Mobiles
     [CorpseName("a kepetch corpse")]
     public class Kepetch : BaseCreature, ICarvable
     {
-        private DateTime m_NextWoolTime;
+        public bool GatheredFur { get; set; }
+
         [Constructable]
         public Kepetch()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
@@ -43,20 +44,6 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextWoolTime
-        {
-            get
-            {
-                return this.m_NextWoolTime;
-            }
-            set
-            {
-                this.m_NextWoolTime = value;
-                this.Body = (DateTime.UtcNow >= this.m_NextWoolTime) ? 0xCF : 0xDF;
-            }
-        }
         public override int Meat
         {
             get
@@ -85,32 +72,38 @@ namespace Server.Mobiles
                 return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
             }
         }
-        public override int Wool
-        {
-            get
-            {
-                return (this.Body == 726 ? 3 : 0);
-            }
-        }
+
         public void Carve(Mobile from, Item item)
         {
-            if (DateTime.UtcNow < this.m_NextWoolTime)
+            if (!GatheredFur)
             {
-                // This sheep is not yet ready to be shorn.
-                this.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500449, from.NetState);
-                return;
+                var fur = new KepetchFur(30);
+
+                if (from.Backpack == null || !from.Backpack.TryDropItem(from, fur, false))
+                {
+                    from.SendLocalizedMessage(1112359); // You would not be able to place the gathered kepetch fur in your backpack!
+                    fur.Delete();
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1112360); // You place the gathered kepetch fur into your backpack.
+                    GatheredFur = true;
+                }
             }
-
-            from.SendLocalizedMessage(500452); // You place the gathered wool into your backpack.
-            from.AddToBackpack(new Wool(this.Map == Map.Felucca ? 2 : 1));
-
-            this.NextWoolTime = DateTime.UtcNow + TimeSpan.FromHours(3.0); // TODO: Proper time delay
+            else
+                from.SendLocalizedMessage(1112358); // The Kepetch nimbly escapes your attempts to shear its mane.
         }
 
-        public override void OnThink()
+        public override void OnCarve(Mobile from, Corpse corpse, Item with)
         {
-            base.OnThink();
-            this.Body = (DateTime.UtcNow >= this.m_NextWoolTime) ? 726 : 727;
+            base.OnCarve(from, corpse, with);
+
+            if (!GatheredFur)
+            {
+                from.SendLocalizedMessage(1112765); // You shear it, and the fur is now on the corpse.
+                corpse.AddCarvedItem(new KepetchFur(15), from);
+                GatheredFur = true;
+            }
         }
 
         public override void GenerateLoot()
@@ -142,25 +135,19 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
-
-            writer.WriteDeltaTime(this.m_NextWoolTime);
+            writer.Write(2);
+            writer.Write(GatheredFur);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            var version = reader.ReadInt();
 
-            int version = reader.ReadInt();
-
-            switch ( version )
-            {
-                case 1:
-                    {
-                        this.NextWoolTime = reader.ReadDeltaTime();
-                        break;
-                    }
-            }
+            if (version == 1)
+                reader.ReadDeltaTime();
+            else
+                GatheredFur = reader.ReadBool();
         }
     }
 }
