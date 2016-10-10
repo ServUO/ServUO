@@ -305,10 +305,10 @@ namespace Server.Engines.CityLoyalty
             entry.Hate += (int)hate;
             from.SendLocalizedMessage(1152321, Definition.Name); // Your deeds in the city of ~1_name~ are worthy of censure.
 
-            if (from == Governor && GetLoyaltyRating(from) < LoyaltyRating.Unknown)
+            if (from == Governor && entry.LoyaltyRating < LoyaltyRating.Unknown)
                 Governor = null;
 
-            if (from == GovernorElect && GetLoyaltyRating(from) < LoyaltyRating.Unknown)
+            if (from == GovernorElect && entry.LoyaltyRating < LoyaltyRating.Unknown)
                 GovernorElect = null;
 		}
 		
@@ -343,30 +343,33 @@ namespace Server.Engines.CityLoyalty
 		
 		public virtual LoyaltyRating GetLoyaltyRating(Mobile from)
 		{
-			CityLoyaltyEntry entry = GetPlayerEntry<CityLoyaltyEntry>(from as PlayerMobile);
-			
-			if(entry != null)
-			{
-				int love = entry.Love;
-				int hate = entry.Hate;
-				int neut = entry.Neutrality;
-				
-				if(hate > 0 && hate > love && hate > neut)
-				{
-					return GetHateRating(hate);
-				}
-                else if (neut > 0 && neut > love && neut > hate)
-				{
-                    return GetNeutralRating(neut);
-				}
-				else if(love > 0)
-				{
-					return GetLoveRating(love);
-				}
-			}
-			
-			return LoyaltyRating.Unknown;
+            return GetLoyaltyRating(from, GetPlayerEntry<CityLoyaltyEntry>(from as PlayerMobile));
 		}
+
+        public virtual LoyaltyRating GetLoyaltyRating(Mobile from, CityLoyaltyEntry entry)
+        {
+            if (entry != null)
+            {
+                int love = entry.Love;
+                int hate = entry.Hate;
+                int neut = entry.Neutrality;
+
+                if (hate > 0 && hate > love && hate > neut)
+                {
+                    return GetHateRating(hate);
+                }
+                else if (neut > 0 && neut > love && neut > hate)
+                {
+                    return GetNeutralRating(neut);
+                }
+                else if (love > 0)
+                {
+                    return GetLoveRating(love);
+                }
+            }
+
+            return LoyaltyRating.Unknown;
+        }
 		
 		public virtual LoyaltyRating GetHateRating(int points)
 		{
@@ -385,16 +388,18 @@ namespace Server.Engines.CityLoyalty
 		
 		private LoyaltyRating GetRating(int points, int[][] table, LoyaltyRating[][] loyaltytable)
 		{
+            LoyaltyRating rating = LoyaltyRating.Unknown;
+
 			for(int i = 0; i < table.Length; i++)
 			{
 				for(int j = 0; j < table[i].Length; j++)
 				{
-					if(points < table[i][j])
-						return loyaltytable[i][j];
+					if(points >= table[i][j])
+						rating = loyaltytable[i][j];
 				}
 			}
 			
-			return LoyaltyRating.Unknown;
+			return rating;
 		}
 
         public void AddToTreasury(Mobile m, int amount, bool givelove = false)
@@ -453,7 +458,7 @@ namespace Server.Engines.CityLoyalty
 			if(entry == null)
 				return false;
 				
-			return GetLoyaltyRating(from) >= GetMinimumRating(title);
+			return entry.LoyaltyRating >= GetMinimumRating(title);
 		}
 		
 		public LoyaltyRating GetMinimumRating(CityTitle title)
@@ -522,7 +527,7 @@ namespace Server.Engines.CityLoyalty
                 {
                     HeraldMessage(m, 1154063); // Thou hath already claimed the benefit of the Trade Deal today!
                 }
-                else if (GetLoyaltyRating(m) < LoyaltyRating.Respected)
+                else if (entry.LoyaltyRating < LoyaltyRating.Respected)
                 {
                     HeraldMessage(m, 1154062); // Begging thy pardon, but thou must be at least Respected within the City to claim the benefits of a Trade Deal!
                 }
@@ -881,11 +886,6 @@ namespace Server.Engines.CityLoyalty
 		public static int CityLocalization(City city)
 		{
 			return GetCityInstance(city).Definition.LocalizedName;
-		}
-		
-		public static int LoyaltyLocalization(Mobile from, City city)
-		{
-			return (int)GetCityInstance(city).GetLoyaltyRating(from);
 		}
 
         public static int RatingLocalization(LoyaltyRating rating)

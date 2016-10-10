@@ -51,37 +51,66 @@ namespace Server.Engines.CityLoyalty
             if (!CityLoyaltySystem.IsSetup())
                 return false;
 
-            bool handled = false;
-
 			if(!Animals && Table != null && Table.Count > 0)
 			{
-				Type dropType = dropped.GetType();
-				
-                foreach (KeyValuePair<Type, int> kvp in Table)
+                int love = 0;
+
+                if (dropped is Container)
                 {
-                    Type checkType = kvp.Key;
+                    List<Item> items = new List<Item>(dropped.Items);
 
-                    if (!handled && (checkType == dropType || dropType.IsSubclassOf(checkType)))
+                    foreach (Item item in items)
                     {
-                        CityLoyaltySystem sys = CityLoyaltySystem.GetCityInstance(City);
-
-                        if (sys != null)
-                        {
-                            dropped.Delete();
-                            sys.AwardLove(from, Table[checkType]);
-
-                            SendMessageTo(from, 1152926); // The City thanks you for your generosity!
-                            handled = true;
-                        }
+                        love += CheckTurnin(item);
                     }
+
+                    items.Clear();
+                    items.TrimExcess();
+                }
+                else
+                    love = CheckTurnin(dropped);
+
+                if (love > 0)
+                {
+                    CityLoyaltySystem.GetCityInstance(City).AwardLove(from, love);
+                    SendMessageTo(from, 1152926); // The City thanks you for your generosity!
+                    return !(dropped is Container);
+                }
+                else
+                {
+                    SendMessageTo(from, 1152927); // Your generosity is appreciated but the City does not require this item.
+                    return false;
                 }
 			}
-			
-			if(!handled)
-				SendMessageTo(from, 1152927); // Your generosity is appreciated but the City does not require this item.
-			
-			return handled;
+
+            return false;
 		}
+
+        private int CheckTurnin(Item item)
+        {
+            Type dropType = item.GetType();
+            int love = 0;
+
+            foreach (KeyValuePair<Type, int> kvp in Table)
+            {
+                Type checkType = kvp.Key;
+
+                if (checkType == dropType || dropType.IsSubclassOf(checkType))
+                {
+                    CityLoyaltySystem sys = CityLoyaltySystem.GetCityInstance(City);
+
+                    if (sys != null)
+                    {
+                        item.Delete();
+                        love = Table[checkType] * item.Amount;
+
+                        break;
+                    }
+                }
+            }
+
+            return love;
+        }
 		
 		private class InternalTarget : Target
 		{

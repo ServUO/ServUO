@@ -32,6 +32,15 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public string CustomTitle { get; set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public LoyaltyRating LoyaltyRating
+        {
+            get
+            {
+                return CityLoyaltySystem.GetCityInstance(City).GetLoyaltyRating(Player, this);
+            }
+        }
+
         private bool _Utilizing;
 
         [CommandProperty(AccessLevel.GameMaster)]
