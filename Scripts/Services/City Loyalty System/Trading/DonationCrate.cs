@@ -201,7 +201,7 @@ namespace Server.Engines.CityLoyalty
 		{
 			ItemTable = new Dictionary<Type, int>();
 			
-			ItemTable.Add(typeof(BaseBoard), 			10);
+			ItemTable.Add(typeof(BaseWoodBoard), 	    10);
 			ItemTable.Add(typeof(BaseIngot), 			10);
 			ItemTable.Add(typeof(BaseHides), 			10);
 			ItemTable.Add(typeof(BaseLeather), 			10);
