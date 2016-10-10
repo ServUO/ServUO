@@ -724,6 +724,7 @@
     <Compile Include="Items\Resource\BaseFish.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Resource\Fur.cs" />
     <Compile Include="Items\Resource\HotGoo.cs" />
     <Compile Include="Items\Tools\BaseHarvestTool.cs">
       <SubType>Code</SubType>
