@@ -127,7 +127,7 @@ namespace Server.Items
                     from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                     return;
                 }
-                else if (item.LootType == LootType.Blessed)
+                /*else if (item.LootType == LootType.Blessed)
                 {
                     from.SendMessage("You can only use this on exceptionally crafted robes, thigh boots, cloaks, or leather gloves.");
                     return;
@@ -136,7 +136,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1049690); // Arcane gems can not be used on that type of leather.
                     return;
-                }
+                }*/
 
                 int charges = this.GetChargesFor(from);
 
@@ -196,6 +196,9 @@ namespace Server.Items
                         eq.CurArcaneCharges = eq.MaxArcaneCharges = charges;
 
                         item.Hue = DefaultArcaneHue;
+
+                        if (item.LootType == LootType.Blessed)
+                            item.LootType = LootType.Regular;
 
                         from.SendMessage("You enhance the item with your gem.");
                         if (this.Amount <= 1)
