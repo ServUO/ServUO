@@ -11,21 +11,23 @@ using Server.Engines.Points;
 
 namespace Server.Engines.Blackthorn
 {
-    public class AgentOfTheCrown : BaseCreature
+    public class AgentOfTheCrown : BaseVendor
     {
+        public override bool IsActiveVendor { get { return false; } }
         public override bool IsInvulnerable { get { return true; } }
+        public override bool DisallowAllMoves { get { return true; } }
+        public override bool ClickTitle { get { return true; } }
+        public override bool CanTeach { get { return false; } }
+
+        protected List<SBInfo> m_SBInfos = new List<SBInfo>();
+        protected override List<SBInfo> SBInfos { get { return this.m_SBInfos; } }
+        public override void InitSBInfo() { }
 
         [Constructable]
         public AgentOfTheCrown()
-            : base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 2)
+            : base("the Agent Of The Crown")
         {
-            Name = "Gus";
-            Title = "the Agent Of The Crown";
-
-            SetStr(110);
-            SetDex(100);
-            SetInt(1000);
-
+            Name = NameList.RandomName("male");
             Hue = Utility.RandomSkinHue();
             Body = 0x190;
             HairItemID = 0x2047;
@@ -752,13 +754,13 @@ namespace Server.Engines.Blackthorn
         readonly Mobile m_Collector;
 
         public ToTTurnInGump(Mobile collector, ArrayList buttons)
-            : base(1071012, buttons)// Click a minor artifact to give it to Ihara Soko.
+            : base(1154520, buttons)// Click a minor artifact to turn in for reward points.
         {
             this.m_Collector = collector;
         }
 
         public ToTTurnInGump(Mobile collector, ItemTileButtonInfo[] buttons)
-            : base(1071012, buttons)// Click a minor artifact to give it to Ihara Soko.
+            : base(1154520, buttons)// Click a minor artifact to turn in for reward points.
         {
             this.m_Collector = collector;
         }
@@ -786,10 +788,7 @@ namespace Server.Engines.Blackthorn
 
         public override void HandleCancel(NetState sender)
         {
-            PlayerMobile pm = sender.Mobile as PlayerMobile;
-
-            if (pm == null || !pm.InRange(this.m_Collector.Location, 7))
-                return;            
+            m_Collector.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1154519);	// Bring me items bearing the crest of Minax and I will reward you with valuable items.     
         }
     }
 
