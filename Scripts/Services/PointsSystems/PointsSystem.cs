@@ -18,6 +18,7 @@ namespace Server.Engines.Points
         DespiseCrystals,
         ShameCrystals,
         CasinoData,
+        Blackthorn,
 
         CityTrading,
 
@@ -304,6 +305,7 @@ namespace Server.Engines.Points
         public static DespiseCrystals DespiseCrystals { get; set; }
         public static ShameCrystals ShameCrystals { get; set; }
         public static CasinoData CasinoData { get; set; }
+        public static BlackthornData Blackthorn { get; set; }
 
         public static void Configure()
         {
@@ -317,6 +319,7 @@ namespace Server.Engines.Points
             DespiseCrystals = new DespiseCrystals();
             ShameCrystals = new ShameCrystals();
             CasinoData = new CasinoData();
+            Blackthorn = new BlackthornData();
 
             CityLoyaltySystem.ConstructSystems();
         }
