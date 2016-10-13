@@ -18,10 +18,11 @@ namespace Server.Engines.Points
         DespiseCrystals,
         ShameCrystals,
         CasinoData,
-        Blackthorn,
 
+        //City Trading
         CityTrading,
 
+        // City Loyalty System
         Moonglow,
         Britain,
         Jhelom,
@@ -31,6 +32,8 @@ namespace Server.Engines.Points
         SkaraBrae,
         NewMagincia,
         Vesper,
+
+        Blackthorn
     }
 
     public abstract class PointsSystem
