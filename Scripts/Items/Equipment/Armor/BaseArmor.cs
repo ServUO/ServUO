@@ -497,45 +497,7 @@ namespace Server.Items
 
             return value;
         }
-        /*public override int PhysicalResistance
-        {
-            get
-            {
-                return this.BasePhysicalResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorPhysicalResist + this.m_PhysicalBonus + SetResistBonus(ResistanceType.Physical);
-            }
-        }
-
-        public override int FireResistance
-        {
-            get
-            {
-                return this.BaseFireResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorFireResist + this.m_FireBonus + SetResistBonus(ResistanceType.Fire);
-            }
-        }
-
-        public override int ColdResistance
-        {
-            get
-            {
-                return this.BaseColdResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorColdResist + this.m_ColdBonus + SetResistBonus(ResistanceType.Cold);
-            }
-        }
-
-        public override int PoisonResistance
-        {
-            get
-            {
-                return this.BasePoisonResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorPoisonResist + this.m_PoisonBonus + SetResistBonus(ResistanceType.Poison);
-            }
-        }
-
-        public override int EnergyResistance
-        {
-            get
-            {
-                return this.BaseEnergyResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorEnergyResist + this.m_EnergyBonus + SetResistBonus(ResistanceType.Energy);
-            }
-        }*/
+        
         public override void AddResistanceProperties(ObjectPropertyList list)
         {
             if (PhysicalResistance != 0 || m_RefinedPhysical != 0)
