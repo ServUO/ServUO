@@ -682,8 +682,18 @@ namespace Server
                         // Try to generate a new random item based on the creature killed
                         if (Core.HS && RandomItemGenerator.Enabled && from is BaseCreature)
                         {
-                            if (RandomItemGenerator.GenerateRandomItem(item, ((BaseCreature)from).LastKiller, (BaseCreature)from))
-                                return item;
+                            Region r = from.Region;
+
+                            if (r.IsPartOf("BlackthornDungeon"))
+                            {
+                                if (RandomItemGenerator.GenerateRandomItemBlackthornDungeon(item, ((BaseCreature)from).LastKiller, (BaseCreature)from))
+                                    return item;
+                            }
+                            else
+                            {
+                                if (RandomItemGenerator.GenerateRandomItem(item, ((BaseCreature)from).LastKiller, (BaseCreature)from))
+                                    return item;
+                            }
                         }
 
                         int bonusProps = GetBonusProperties();

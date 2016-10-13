@@ -654,6 +654,12 @@
 			<music name="Dungeon9" />
 			<entrance x="2499" y="916" />
 		</region>
+		<region type="DungeonRegion" priority="50" name="BlackthornDungeon">
+			<rect x="6151" y="2301" width="413" height="539" />
+			<go x="6430" y="2678" z="0" />
+			<entrance x="6430" y="2678" />
+			<music name="Dungeon9" />
+		</region>
 		<region type="DungeonRegion" priority="50" name="Deceit">
 			<rect x="5122" y="518" width="248" height="252" />
 			<go x="5187" y="635" z="0" />

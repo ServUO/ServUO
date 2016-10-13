@@ -41,7 +41,9 @@ namespace Server.Items
         Fortune, 
         Alchemy,
         Slaughter,
-        Aegis
+        Aegis,
+        Blackthorn,
+        Minax
     }
 
     public enum ItemPower
@@ -1450,6 +1452,17 @@ namespace Server.Items
             return false;
         }
 
+        public static bool GenerateRandomItemBlackthorn(Item item, Mobile killer, BaseCreature creature)
+        {
+            if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
+            {
+                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), GetLuckForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.Minax);
+                return true;
+            }
+
+            return false;
+        }
+
         public static bool GenerateRandomItem(Item item, Mobile killer, BaseCreature creature, ReforgedPrefix prefix, ReforgedSuffix suffix)
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
@@ -1546,11 +1559,14 @@ namespace Server.Items
                 if (!(item is BaseWeapon) && suffix == ReforgedSuffix.Vampire)
                     suffix = ReforgedSuffix.None;
 
-                if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700))
+                if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix != ReforgedSuffix.Minax)
                     prefix = ChooseRandomPrefix(item);
 
                 if (forcedsuffix == ReforgedSuffix.None && budget >= Utility.Random(2700))
                     suffix = ChooseRandomSuffix(item, prefix);
+
+                if (suffix == ReforgedSuffix.Minax)
+                    item.Hue = 1170;
 
                 int mods;
                 int perclow;
@@ -1632,6 +1648,9 @@ namespace Server.Items
 
             while ((int)prefix != 0 && random == (int)prefix)
                 random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+
+            if (random == 13 || random == 14)
+                random = 50;
 
             return (ReforgedSuffix)random;
 
