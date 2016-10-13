@@ -2386,10 +2386,10 @@ namespace Server.Multis
             {
                 from.SendLocalizedMessage(501362); // That can't be a co-owner of the house.
             }
-            else if (HasAccountHouse(targ))
+            /*else if (HasAccountHouse(targ))
             {
                 from.SendLocalizedMessage(501364); // That person is already a house owner.
-            }
+            }*/
             else if (this.IsBanned(targ))
             {
                 from.SendLocalizedMessage(501367); // This person is banned!  Unban them first.
@@ -2404,11 +2404,41 @@ namespace Server.Multis
             }
             else
             {
-                this.m_CoOwners.Add(targ);
+                AddCoOwner(targ);
 
                 targ.Delta(MobileDelta.Noto);
                 targ.SendLocalizedMessage(501343); // You have been made a co-owner of this house.
             }
+        }
+
+        public void AddCoOwner(Mobile targ)
+        {
+            m_CoOwners.Add(targ);
+
+            List<Mobile> remove = new List<Mobile>();
+            
+            foreach(Mobile m in m_CoOwners)
+            {
+                if (AccountHandler.CheckAccount(m, targ) && m != targ)
+                    remove.Add(m);
+            }
+
+            foreach (Mobile m in remove)
+                m_CoOwners.Remove(m);
+
+            remove.Clear();
+
+            foreach (Mobile m in m_Friends)
+            {
+                if (AccountHandler.CheckAccount(m, targ))
+                    remove.Add(m);
+            }
+
+            foreach (Mobile m in remove)
+                m_Friends.Remove(m);
+
+            remove.Clear();
+            remove.TrimExcess();
         }
 
         public void RemoveCoOwner(Mobile from, Mobile targ)
@@ -3543,6 +3573,12 @@ namespace Server.Multis
 
             if (this.IsOwner(m) || this.m_CoOwners.Contains(m))
                 return true;
+
+            foreach (Mobile mob in m_CoOwners)
+            {
+                if (AccountHandler.CheckAccount(mob, m))
+                    return true;
+            }
 
             return !this.IsAosRules && AccountHandler.CheckAccount(m, this.m_Owner);
         }

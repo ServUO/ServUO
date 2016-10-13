@@ -497,7 +497,7 @@ namespace Server.Items
 
             return value;
         }
-
+        
         public override void AddResistanceProperties(ObjectPropertyList list)
         {
             if (PhysicalResistance != 0 || m_RefinedPhysical != 0)
@@ -1143,7 +1143,7 @@ namespace Server.Items
         {
             get
             {
-                return this.BasePhysicalResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorPhysicalResist + this.m_PhysicalBonus + (this.m_SetEquipped && this.m_LastEquipped ? this.m_SetPhysicalBonus : 0);
+                return this.BasePhysicalResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorPhysicalResist + this.m_PhysicalBonus;
             }
         }
 
@@ -1151,7 +1151,7 @@ namespace Server.Items
         {
             get
             {
-                return this.BaseFireResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorFireResist + this.m_FireBonus + (this.m_SetEquipped && this.m_LastEquipped ? this.m_SetFireBonus : 0);
+                return this.BaseFireResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorFireResist + this.m_FireBonus;
             }
         }
 
@@ -1159,7 +1159,7 @@ namespace Server.Items
         {
             get
             {
-                return this.BaseColdResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorColdResist + this.m_ColdBonus + (this.m_SetEquipped && this.m_LastEquipped ? this.m_SetColdBonus : 0);
+                return this.BaseColdResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorColdResist + this.m_ColdBonus;
             }
         }
 
@@ -1167,7 +1167,7 @@ namespace Server.Items
         {
             get
             {
-                return this.BasePoisonResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorPoisonResist + this.m_PoisonBonus + (this.m_SetEquipped && this.m_LastEquipped ? this.m_SetPoisonBonus : 0);
+                return this.BasePoisonResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorPoisonResist + this.m_PoisonBonus;
             }
         }
 
@@ -1175,7 +1175,7 @@ namespace Server.Items
         {
             get
             {
-                return this.BaseEnergyResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorEnergyResist + this.m_EnergyBonus + (this.m_SetEquipped && this.m_LastEquipped ? this.m_SetEnergyBonus : 0);
+                return this.BaseEnergyResistance + this.GetProtOffset() + this.GetResourceAttrs().ArmorEnergyResist + this.m_EnergyBonus;
             }
         }
 
@@ -2835,7 +2835,7 @@ namespace Server.Items
             if (this is SurgeShield && ((SurgeShield)this).Surge > SurgeType.None)
                 list.Add(1153098, ((SurgeShield)this).Charges.ToString());
 
-            base.AddResistanceProperties(list);
+            AddResistanceProperties(list);
 
             if ((prop = this.GetDurabilityBonus()) > 0)
                 list.Add(1060410, prop.ToString()); // durability ~1_val~%
@@ -3235,30 +3235,61 @@ namespace Server.Items
 
         public virtual void GetSetProperties(ObjectPropertyList list)
         {
+            SetHelper.GetSetProperties(list, this);
+
             if (!this.m_SetEquipped)
             {
                 if (this.m_SetPhysicalBonus != 0)
-                    list.Add(1072382, this.m_SetPhysicalBonus.ToString()); // physical resist +~1_val~%
+                    list.Add(1072382, m_SetPhysicalBonus.ToString()); // physical resist +~1_val~%
 
                 if (this.m_SetFireBonus != 0)
-                    list.Add(1072383, this.m_SetFireBonus.ToString()); // fire resist +~1_val~%
+                    list.Add(1072383, m_SetFireBonus.ToString()); // fire resist +~1_val~%
 
                 if (this.m_SetColdBonus != 0)
-                    list.Add(1072384, this.m_SetColdBonus.ToString()); // cold resist +~1_val~%
+                    list.Add(1072384, m_SetColdBonus.ToString()); // cold resist +~1_val~%
 
                 if (this.m_SetPoisonBonus != 0)
-                    list.Add(1072385, this.m_SetPoisonBonus.ToString()); // poison resist +~1_val~%
+                    list.Add(1072385, m_SetPoisonBonus.ToString()); // poison resist +~1_val~%
 
                 if (this.m_SetEnergyBonus != 0)
-                    list.Add(1072386, this.m_SetEnergyBonus.ToString()); // energy resist +~1_val~%		
+                    list.Add(1072386, m_SetEnergyBonus.ToString()); // energy resist +~1_val~%		
             }
+            else
+            {
+                if (this.m_SetPhysicalBonus != 0)
+                    list.Add(1080361, ((BasePhysicalResistance * Pieces) + m_SetPhysicalBonus).ToString()); // physical resist ~1_val~% (total)
 
-            SetHelper.GetSetProperties(list, this);
+                if (this.m_SetFireBonus != 0)
+                    list.Add(1080362, ((BaseFireResistance * Pieces) + m_SetFireBonus).ToString()); // fire resist ~1_val~% (total)
+
+                if (this.m_SetColdBonus != 0)
+                    list.Add(1080363, ((BaseColdResistance * Pieces) + m_SetColdBonus).ToString()); // cold resist ~1_val~% (total)
+
+                if (this.m_SetPoisonBonus != 0)
+                    list.Add(1080364, ((BasePoisonResistance * Pieces) + m_SetPoisonBonus).ToString()); // poison resist ~1_val~% (total)
+
+                if (this.m_SetEnergyBonus != 0)
+                    list.Add(1080365, ((BaseEnergyResistance * Pieces) + m_SetEnergyBonus).ToString()); // energy resist ~1_val~% (total)
+            }
 
             int prop;
 
             if ((prop = this.m_SetSelfRepair) != 0 && this.m_AosArmorAttributes.SelfRepair == 0)
                 list.Add(1060450, prop.ToString()); // self repair ~1_val~
+        }
+
+        public int SetResistBonus(ResistanceType resist)
+        {
+            switch (resist)
+            {
+                case ResistanceType.Physical: return m_SetEquipped ? LastEquipped ? (PhysicalResistance * Pieces) + m_SetPhysicalBonus : 0 : PhysicalResistance;
+                case ResistanceType.Fire: return m_SetEquipped ? LastEquipped ? (FireResistance * Pieces) + m_SetFireBonus : 0 : FireResistance;
+                case ResistanceType.Cold: return m_SetEquipped ? LastEquipped ? (ColdResistance * Pieces) + m_SetColdBonus : 0 : ColdResistance;
+                case ResistanceType.Poison: return m_SetEquipped ? LastEquipped ? (PoisonResistance * Pieces) + m_SetPoisonBonus : 0 : PoisonResistance;
+                case ResistanceType.Energy: return m_SetEquipped ? LastEquipped ? (EnergyResistance * Pieces) + m_SetEnergyBonus : 0 : EnergyResistance;
+            }
+
+            return 0;
         }
         #endregion
 

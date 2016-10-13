@@ -36,76 +36,93 @@ namespace Server
         bool LastEquipped { get; set; }
         AosAttributes SetAttributes { get; }
         AosSkillBonuses SetSkillBonuses { get; }
+        int SetResistBonus(ResistanceType type);
     }
 
     public static class SetHelper
     { 
         public static void GetSetProperties(ObjectPropertyList list, ISetItem setItem)
         {
+            AosAttributes attrs;
+
+            if (setItem is BaseWeapon)
+                attrs = ((BaseWeapon)setItem).Attributes;
+            else if (setItem is BaseArmor)
+                attrs = ((BaseArmor)setItem).Attributes;
+            else if (setItem is BaseClothing)
+                attrs = ((BaseClothing)setItem).Attributes;
+            else if (setItem is BaseQuiver)
+                attrs = ((BaseQuiver)setItem).Attributes;
+            else
+                attrs = new AosAttributes(setItem as Item);
+
+            bool full = setItem.SetEquipped;
+            int pieces = setItem.Pieces;
+
             int prop;
 	            		
             if ((prop = setItem.SetAttributes.RegenHits) != 0)
-                list.Add(1080244, prop.ToString()); // hit point regeneration ~1_val~ (total)
+                list.Add(full ? 1080244 : 1154369, (full ? prop + (attrs.RegenHits * pieces) : prop).ToString()); // hit point regeneration ~1_val~ (total)
 
             /*if ( (prop = setItem.SetAttributes.RegenStam) != 0 )
-            list.Add( , prop.ToString() ); // stamina regeneration ~1_val~ (total)*/
+            list.Add(full ? 1154365 : 1154370, (full ? prop + (attrs.ReganStam * pieces) : prop).ToString()); // stamina regeneration ~1_val~ (total)*/
 
             if ((prop = setItem.SetAttributes.RegenMana) != 0)
-                list.Add(1080245, prop.ToString()); // mana regeneration ~1_val~ (total)
+                list.Add(full ? 1080245 : 1080250, (full ? prop + (attrs.RegenMana * pieces) : prop).ToString()); // mana regeneration ~1_val~ (total)
 
             if ((prop = setItem.SetAttributes.DefendChance) != 0)
-                list.Add(1073493, prop.ToString()); // defense chance increase ~1_val~% (total)
+                list.Add(full ? 1073493 : 1060408, (full ? prop + (attrs.DefendChance * pieces) : prop).ToString()); // defense chance increase ~1_val~% (total)
 			
             if ((prop = setItem.SetAttributes.AttackChance) != 0)
-                list.Add(1073490, prop.ToString()); // hit chance increase ~1_val~% (total)
+                list.Add(full ? 1073490 : 1154366, (full ? prop + (attrs.AttackChance * pieces) : prop).ToString()); // hit chance increase ~1_val~% (total)
 			
             if ((prop = setItem.SetAttributes.BonusStr) != 0)
-                list.Add(1072514, prop.ToString()); // strength bonus ~1_val~ (total)
+                list.Add(full ? 1072514 : 1060485, (full ? prop + (attrs.BonusStr * pieces) : prop).ToString()); // strength bonus ~1_val~ (total)
 			
             if ((prop = setItem.SetAttributes.BonusDex) != 0)
-                list.Add(1072503, prop.ToString()); // dexterity bonus ~1_val~ (total)
+                list.Add(full ? 1072503 : 1080447, (full ? prop + (attrs.BonusDex * pieces) : prop).ToString());// dexterity bonus ~1_val~ (total)
 			
             if ((prop = setItem.SetAttributes.BonusInt) != 0)
-                list.Add(1072381, prop.ToString()); // intelligence bonus ~1_val~ (total)
+                list.Add(full ? 1072381 : 1080439, (full ? prop + (attrs.BonusInt * pieces) : prop).ToString());// intelligence bonus ~1_val~ (total)
 						
             if ((prop = setItem.SetAttributes.BonusHits) != 0)
-                list.Add(1080360, prop.ToString()); // hit point increase ~1_val~ (total)
-			
-            /*if ( (prop = setItem.SetAttributes.BonusStam) != 0 )
-            list.Add( , prop.ToString() ); // stamina increase ~1_val~ (total)
+                list.Add(full ? 1080360 : 1080358, (full ? prop + (attrs.BonusHits * pieces) : prop).ToString());// hit point increase ~1_val~ (total)
+
+            if ( (prop = setItem.SetAttributes.BonusStam) != 0 )
+                list.Add(full ? 1060484 : 1060484 , (full ? prop + (attrs.BonusStam * pieces) : prop).ToString()); // stamina increase ~1_val~ (total)
 			
             if ( (prop = setItem.SetAttributes.BonusMana) != 0 )
-            list.Add( , prop.ToString() ); // mana increase ~1_val~ (total)
+                list.Add(full ? 1060439 : 1060439, (full ? prop + (attrs.BonusMana * pieces) : prop).ToString()); // mana increase ~1_val~ (total)
 			
             if ( (prop = setItem.SetAttributes.WeaponDamage ) != 0 )
-            list.Add( , prop.ToString() ); // damage increase ~1_val~% (total)*/
-			
+                list.Add(full ? 1151216 : 1154367, (full ? prop + (attrs.WeaponDamage * pieces) : prop).ToString()); // damage increase ~1_val~% (total)
+
             if ((prop = setItem.SetAttributes.WeaponSpeed) != 0)
-                list.Add(1074323, prop.ToString()); // swing speed increase ~1_val~% (total)	
+                list.Add(full ? 1074323 : 1154368, (full ? prop + (attrs.WeaponSpeed * pieces) : prop).ToString()); // swing speed increase ~1_val~% (total)	
 			
             if ((prop = setItem.SetAttributes.SpellDamage) != 0)
-                list.Add(1072380, prop.ToString()); // spell damage increase ~1_val~% (total)
+                list.Add(full ? 1072380 : 1060483, (full ? prop + (attrs.SpellDamage * pieces) : prop).ToString()); // spell damage increase ~1_val~% (total)
 									
             if ((prop = setItem.SetAttributes.CastRecovery) != 0)
-                list.Add(1080242, prop.ToString()); // faster cast recovery ~1_val~ (total)
+                list.Add(full ? 1080242 : 1080248, (full ? prop + (attrs.CastRecovery * pieces) : prop).ToString()); // faster cast recovery ~1_val~ (total)
 									
             if ((prop = setItem.SetAttributes.CastSpeed) != 0)
-                list.Add(1080243, prop.ToString()); // faster casting ~1_val~ (total)
+                list.Add(full ? 1080243 : 1080247, (full ? prop + (attrs.CastSpeed * pieces) : prop).ToString()); // faster casting ~1_val~ (total)
 			
             if ((prop = setItem.SetAttributes.LowerManaCost) != 0)
-                list.Add(1073488, prop.ToString()); // lower mana cost ~1_val~% (total)
+                list.Add(full ? 1073488 : 1060433, (full ? prop + (attrs.LowerManaCost * pieces) : prop).ToString());// lower mana cost ~1_val~% (total)
 			
             if ((prop = setItem.SetAttributes.LowerRegCost) != 0)
-                list.Add(1080441, prop.ToString()); // lower reagent cost ~1_val~% (total)
+                list.Add(full ? 1080441 : 1080440, (full ? prop + (attrs.LowerRegCost * pieces) : prop).ToString()); // lower reagent cost ~1_val~% (total)
 			
             if ((prop = setItem.SetAttributes.ReflectPhysical) != 0)
-                list.Add(1072513, prop.ToString()); // reflect physical damage ~1_val~% (total)
-			
+                list.Add(full ? 1072513 : 1060442, (prop + attrs.ReflectPhysical).ToString()); // reflect physical damage ~1_val~% (total)
+
             /*if ( (prop = setItem.SetAttributes.EnhancePotions) != 0 )
-            list.Add( , prop.ToString() ); enhance potions ~1_val~% (total)*/
-			
+            list.Add( , (full ? prop + (attrs.EnhancePotions * pieces) : prop).ToString()); enhance potions ~1_val~% (total)*/
+
             if ((prop = setItem.SetAttributes.Luck) != 0)
-                list.Add(1073489, prop.ToString()); // luck ~1_val~% (total)
+                list.Add(full ? 1073489 : 1080246, (full ? prop + (attrs.Luck * pieces) : prop).ToString()); // luck ~1_val~% (total)
 
             if (!setItem.SetEquipped && setItem.SetAttributes.NightSight != 0)
                 list.Add(1060441); // night sight
