@@ -5498,6 +5498,8 @@ namespace Server.Items
 			from.Send(new DisplayEquipmentInfo(this, eqInfo));
 		}
 
+
+
 		public static BaseWeapon Fists { get; set; }
 
 		#region ICraftable Members
@@ -5768,6 +5770,11 @@ namespace Server.Items
 
 			SetHelper.GetSetProperties(list, this);
 		}
+
+        public int SetResistBonus(ResistanceType resist)
+        {
+            return 0;
+        }
         #endregion
 
         [CommandProperty(AccessLevel.GameMaster)]

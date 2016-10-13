@@ -859,6 +859,11 @@ namespace Server.Items
 				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
 		}
+
+        public int SetResistBonus(ResistanceType resist)
+        {
+            return 0;
+        }
         
         public override void Serialize(GenericWriter writer)
         {

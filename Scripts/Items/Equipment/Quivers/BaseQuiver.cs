@@ -563,6 +563,7 @@ namespace Server.Items
             }
             #endregion
         }
+
 		public override void OnSingleClick(Mobile from)
 		{
 			base.OnSingleClick(from);
@@ -572,6 +573,11 @@ namespace Server.Items
 				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
 		}
+
+        public int SetResistBonus(ResistanceType resist)
+        {
+            return 0;
+        }
         
         private static void SetSaveFlag(ref SaveFlag flags, SaveFlag toSet, bool setIf)
         {
