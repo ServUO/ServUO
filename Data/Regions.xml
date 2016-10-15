@@ -249,9 +249,11 @@
 			<go x="2275" y="1210" z="0" />
 			<music name="Cove" />
 		</region>
+		<region type="BlackthornCastle" priority="50" name="Blackthorn Castle">
+			<rect x="1500" y="1408" width="46" height="90" />				
+		</region>
 		<region type="TownRegion" priority="50" name="Britain">
 			<rect x="1416" y="1498" width="324" height="279" zmin="-10" />
-			<rect x="1500" y="1408" width="46" height="90" />
 			<rect x="1385" y="1538" width="31" height="239" zmin="-10" />
 			<rect x="1416" y="1777" width="324" height="60" />
 			<rect x="1385" y="1777" width="31" height="130" />
@@ -654,7 +656,7 @@
 			<music name="Dungeon9" />
 			<entrance x="2499" y="916" />
 		</region>
-		<region type="DungeonRegion" priority="50" name="BlackthornDungeon">
+		<region type="BlackthornDungeonRegion" priority="50" name="Blackthorn Dungeon">
 			<rect x="6151" y="2301" width="413" height="539" />
 			<go x="6430" y="2678" z="0" />
 			<entrance x="6430" y="2678" />
