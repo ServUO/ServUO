@@ -126,7 +126,7 @@ namespace Server.Regions
 
             StopTimer(m);
 
-            if (0.1 > Utility.RandomDouble() && m.IsPlayer() && m.Alive && m.AccessLevel == AccessLevel.Player)
+            if (0.01 > Utility.RandomDouble() && m.IsPlayer() && m.Alive && m.AccessLevel == AccessLevel.Player)
                 StartTimer(m);
         }
 
