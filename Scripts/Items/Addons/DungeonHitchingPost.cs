@@ -148,7 +148,7 @@ namespace Server.Items
 
             if ((from.Backpack == null || from.Backpack.GetAmount(typeof(Gold)) < 30) && Banker.GetBalance(from) < 30)
             {
-                from.SendLocalizedMessage(1042565); // You have too many pets in the stables!
+                from.SendLocalizedMessage(502677); // But thou hast not the funds in thy bank account!
             }
             else
             {
@@ -243,47 +243,45 @@ namespace Server.Items
             bool claimed = false;
             int stabled = 0;
 
-            for (int i = 0; i < from.Stabled.Count; ++i)
+            from.Stabled.ForEach(m =>
             {
-                BaseCreature pet = from.Stabled[i] as BaseCreature;
+                BaseCreature pet = m as BaseCreature;
 
                 if (pet == null || pet.Deleted)
                 {
                     pet.IsStabled = false;
-                    from.Stabled.RemoveAt(i);
-                    --i;
-                    continue;
-                }
-
-                ++stabled;
-
-                if ((from.Followers + pet.ControlSlots) <= from.FollowersMax)
-                {
-                    pet.SetControlMaster(from);
-
-                    if (pet.Summoned)
-                        pet.SummonMaster = from;
-
-                    pet.ControlTarget = from;
-                    pet.ControlOrder = OrderType.Follow;
-
-                    pet.MoveToWorld(from.Location, from.Map);
-
-                    pet.IsStabled = false;
-
-                    if (Core.SE)
-                        pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully Happy
-
-                    from.Stabled.RemoveAt(i);
-                    --i;
-
-                    claimed = true;
+                    from.Stabled.Remove(pet);
                 }
                 else
                 {
-                    from.SendLocalizedMessage(1049612, pet.Name); // ~1_NAME~ remained in the stables because you have too many followers.
+                    ++stabled;
+
+                    if ((from.Followers + pet.ControlSlots) <= from.FollowersMax)
+                    {
+                        pet.SetControlMaster(from);
+
+                        if (pet.Summoned)
+                            pet.SummonMaster = from;
+
+                        pet.ControlTarget = from;
+                        pet.ControlOrder = OrderType.Follow;
+
+                        pet.MoveToWorld(from.Location, from.Map);
+
+                        pet.IsStabled = false;
+
+                        if (Core.SE)
+                            pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully Happy
+
+                        from.Stabled.Remove(pet);
+                        claimed = true;
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1049612, pet.Name); // ~1_NAME~ remained in the stables because you have too many followers.
+                    }
                 }
-            }
+            });
 
             if (claimed)
             {
