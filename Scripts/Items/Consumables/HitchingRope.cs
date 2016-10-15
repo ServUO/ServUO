@@ -72,9 +72,9 @@ namespace Server.Items
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
                 }
-                else if (targeted is HitchingPostReplica)
+                else if (targeted is HitchingPost)
                 {
-                    HitchingPostReplica postItem = (HitchingPostReplica)targeted;
+                    HitchingPost postItem = (HitchingPost)targeted;
 
                     if (postItem.UsesRemaining >= 1)
                     {

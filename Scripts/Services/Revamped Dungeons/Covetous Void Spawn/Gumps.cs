@@ -216,6 +216,8 @@ namespace Server.Engines.VoidPool
 	
 		public VoidPoolRewardGump(Mobile owner, PlayerMobile user) : base(50, 50)
 		{
+            user.CloseGump(typeof(VoidPoolRewardGump));
+
 			Owner = owner;
             User = user;
 		

@@ -19,6 +19,8 @@ namespace Server.Engines.Blackthorn
 	
 		public BlackthornRewardGump(Mobile owner, PlayerMobile user) : base(50, 50)
 		{
+            user.CloseGump(typeof(BlackthornRewardGump));
+
 			Owner = owner;
             User = user;
 		
