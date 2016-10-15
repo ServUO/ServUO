@@ -778,8 +778,6 @@ namespace Server.Engines.Blackthorn
 
             PointsSystem.Blackthorn.AwardPoints(pm, 1);
 
-            pm.SendLocalizedMessage(1154518, "1"); // You have turned in ~1_COUNT~ artifacts bearing the crest of Minax.
-
             ArrayList buttons = FindRedeemableItems(pm);
 
             if (buttons.Count > 0)

@@ -572,6 +572,7 @@
     </Compile>
     <Compile Include="Items\Addons\Distillery.cs" />
     <Compile Include="Items\Addons\DolphinRug.cs" />
+    <Compile Include="Items\Addons\HitchingPost.cs" />
     <Compile Include="Items\Addons\LighthouseAddon.cs" />
     <Compile Include="Items\Addons\RoseRug.cs" />
     <Compile Include="Items\Addons\SkullRug.cs" />
@@ -1070,7 +1071,7 @@
     <Compile Include="Items\Consumables\HairDye.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Addons\HitchingPost.cs">
+    <Compile Include="Items\Addons\HitchingPostReplica.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\HitchingRope.cs">

@@ -488,7 +488,7 @@ namespace Server.Engines.Craft
                 this.AddSkill(index, SkillName.AnimalLore, 15.0, 100.0);
                 this.AddRes(index, typeof(ResolvesBridle), 1074761, 1, 1044253);
 
-                index = this.AddCraft(typeof(HitchingPost), 1044051, 1071127, 90.0, 160.0, typeof(IronIngot), 1044036, 50, 1044253);
+                index = this.AddCraft(typeof(HitchingPostReplica), 1044051, 1071127, 90.0, 160.0, typeof(IronIngot), 1044036, 50, 1044253);
                 this.AddRes(index, typeof(AnimalPheromone), 1071200, 1, 1044253);
                 this.AddRes(index, typeof(HitchingRope), 1071124, 2, 1044253);
                 this.AddRes(index, typeof(PhillipsWoodenSteed), 1063488, 1, 1044253);
