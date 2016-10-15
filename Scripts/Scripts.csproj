@@ -9374,6 +9374,7 @@
     <Compile Include="Services\PointsSystems\QueensLoyalty.cs" />
     <Compile Include="Services\PointsSystems\ShameCrystals.cs" />
     <Compile Include="Services\PointsSystems\VoidPool.cs" />
+    <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\BlackthornRegion.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\BlackthornRewards.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Creatures\AgentoftheCrown.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Gumps.cs" />
