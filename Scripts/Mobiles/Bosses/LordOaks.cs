@@ -90,7 +90,6 @@ namespace Server.Mobiles
                     typeof(WaterTile),
                     typeof(WindSpirit),
                     typeof(Pier),
-                    typeof(DirtPatch)
                 };
             }
         }

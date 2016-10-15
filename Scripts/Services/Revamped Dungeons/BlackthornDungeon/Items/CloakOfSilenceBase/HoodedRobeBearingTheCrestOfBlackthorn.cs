@@ -11,7 +11,7 @@ namespace Server.Items
         
         [Constructable]
         public HoodedRobeBearingTheCrestOfBlackthorn3()
-            : base(0x455)
+            : base(0x2683)
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
             Attributes.BonusHits = 3;

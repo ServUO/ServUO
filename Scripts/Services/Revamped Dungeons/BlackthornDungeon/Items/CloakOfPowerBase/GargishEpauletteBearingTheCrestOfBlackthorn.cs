@@ -9,6 +9,8 @@ namespace Server.Items
         public override Race RequiredRace { get { return Race.Gargoyle; } }
         public override bool CanBeWornByGargoyles { get { return true; } }
 
+        public override int LabelNumber { get { return 1123326; } } // Gargish Epaulette
+
         [Constructable]
         public GargishEpauletteBearingTheCrestOfBlackthorn4()
         {

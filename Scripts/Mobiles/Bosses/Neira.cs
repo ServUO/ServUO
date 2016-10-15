@@ -91,7 +91,8 @@ namespace Server.Mobiles
                 return new Type[]
                 {
                     typeof(ANecromancerShroud),
-                    typeof(CaptainJohnsHat)
+                    typeof(CaptainJohnsHat),
+                    typeof(DetectiveBoots)
                 };
             }
         }

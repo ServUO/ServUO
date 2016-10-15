@@ -126,10 +126,14 @@ namespace Server.Items
 
         public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods, int luckchance, BaseRunicTool tool = null, ReforgingOption option = ReforgingOption.None)
         {
-            if (prefix == ReforgedPrefix.None && suffix == ReforgedSuffix.None)
+            if (prefix == ReforgedPrefix.None && (suffix == ReforgedSuffix.None || suffix > ReforgedSuffix.Aegis))
             {
                 for (int i = 0; i < maxmods; i++)
                     ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance);
+
+                if (suffix != ReforgedSuffix.None)
+                    ApplySuffixName(item, suffix);
+
                 ApplyItemPower(item, playermade);
             }
             else
@@ -187,8 +191,6 @@ namespace Server.Items
 
                 int i = 0;
                 int mods = 0;
-                bool addedprefix = false;
-                bool addedsuffix = false;
 
                 int moddedPercLow = CalculateMinIntensity(perclow, perchigh, option);
                 int moddedPercHigh = perchigh;
@@ -204,7 +206,6 @@ namespace Server.Items
                             int random = Utility.Random(prefixCol.Count);
                             if (ApplyAttribute(item, prefixCol[random].Attribute, prefixCol[random].Min(resIndex, preIndex, item), prefixCol[random].Max(resIndex, preIndex, item), moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
-                                addedprefix = true;
                                 specialAdd--;
                                 mods++;
                             }
@@ -217,7 +218,7 @@ namespace Server.Items
                         i++;
                     }
 
-                    if (addedprefix)
+                    if (prefix != ReforgedPrefix.None)
                         ApplyPrefixName(item, prefix);
                 }
                 else if (prefix == ReforgedPrefix.None && suffix != ReforgedSuffix.None && suffixCol != null)
@@ -231,7 +232,6 @@ namespace Server.Items
                             int random = Utility.Random(suffixCol.Count);
                             if (ApplyAttribute(item, suffixCol[random].Attribute, suffixCol[random].Min(resIndex, preIndex, item), suffixCol[random].Max(resIndex, preIndex, item), moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
-                                addedsuffix = true;
                                 specialAdd--;
                                 mods++;
                             }
@@ -244,7 +244,7 @@ namespace Server.Items
                         i++;
                     }
 
-                    if (addedsuffix)
+                    if (suffix != ReforgedSuffix.None)
                         ApplySuffixName(item, suffix);
                 }
                 else if (prefix != ReforgedPrefix.None && suffix != ReforgedSuffix.None && prefixCol != null && suffixCol != null)
@@ -259,7 +259,6 @@ namespace Server.Items
                             int random = Utility.Random(prefixCol.Count);
                             if (ApplyAttribute(item, prefixCol[random].Attribute, prefixCol[random].Min(resIndex, preIndex, item), prefixCol[random].Max(resIndex, preIndex, item), moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
-                                addedprefix = true;
                                 specialAddPrefix--;
                                 mods++;
                             }
@@ -271,7 +270,6 @@ namespace Server.Items
                             int random = Utility.Random(suffixCol.Count);
                             if (ApplyAttribute(item, suffixCol[random].Attribute, suffixCol[random].Min(resIndex, preIndex, item), suffixCol[random].Max(resIndex, preIndex, item), moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
-                                addedsuffix = true;
                                 specialAddSuffix--;
                                 mods++;
                             }
@@ -284,10 +282,10 @@ namespace Server.Items
                         i++;
                     }
 
-                    if (addedprefix)
+                    if (prefix != ReforgedPrefix.None)
                         ApplyPrefixName(item, prefix);
 
-                    if (addedsuffix)
+                    if (suffix != ReforgedSuffix.None)
                         ApplySuffixName(item, suffix);
                 }
 

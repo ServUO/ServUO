@@ -105,21 +105,21 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(BansheesCall), typeof(CastOffZombieSkin), typeof(ProtectoroftheBattleMage), typeof(ChannelersDefender) };
+                return new Type[] { typeof(LightsRampart) };
             }
         }
         public override Type[] SharedList
         {
             get
             {
-                return new Type[] { typeof(TokenOfHolyFavor) };
+                return new Type[] { typeof(TheMostKnowledgePerson), typeof(ChannelersDefender), typeof(LieutenantOfTheBritannianRoyalGuard) };
             }
         }
         public override Type[] DecorativeList
         {
             get
             {
-                return new Type[] { };
+                return new Type[] { typeof(MummifiedCorpse) };
             }
         }
         public override MonsterStatuetteType[] StatueTypes
