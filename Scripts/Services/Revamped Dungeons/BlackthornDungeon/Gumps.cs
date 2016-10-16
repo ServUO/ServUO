@@ -175,14 +175,7 @@ namespace Server.Engines.Blackthorn
 		{
 			if(from.InRange(Owner.Location, 5) && Item != null)
 			{
-				Item item;
-				
-				if(Index >= 0 && Index < 23)
-				{
-					item = Activator.CreateInstance(Item.Type, (CraftResource)Item.Hue) as Item;
-				}
-				else
-					item = Activator.CreateInstance(Item.Type) as Item;
+                Item item = Activator.CreateInstance(Item.Type) as Item;
 				
 				if(item != null)
 				{

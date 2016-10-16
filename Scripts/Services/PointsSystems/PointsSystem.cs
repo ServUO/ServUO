@@ -271,7 +271,9 @@ namespace Server.Engines.Points
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)0);
+                    writer.Write((int)1);
+
+                    writer.Write(BlackthornHasSaved);
 
                     writer.Write(Systems.Count);
                     Systems.ForEach(s =>
@@ -289,17 +291,20 @@ namespace Server.Engines.Points
 				reader =>
 				{
 					int version = reader.ReadInt();
-				
+
+                    BlackthornHasSaved = version == 0 ? false : reader.ReadBool();
+
 					int count = reader.ReadInt();
 					for(int i = 0; i < count; i++)
 					{
 						PointsType type = (PointsType)reader.ReadInt();
 						PointsSystem s = GetSystemInstance(type);
-
 						s.Deserialize(reader);
 					}	
 				});
 		}
+
+        public static bool BlackthornHasSaved { get; set; }
 
         public static List<PointsSystem> Systems { get; set; }
 

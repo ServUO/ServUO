@@ -1450,17 +1450,6 @@ namespace Server.Items
             return false;
         }
 
-        public static bool GenerateRandomItemBlackthorn(Item item, Mobile killer, BaseCreature creature)
-        {
-            if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
-            {
-                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), GetLuckForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.Minax);
-                return true;
-            }
-
-            return false;
-        }
-
         public static bool GenerateRandomItem(Item item, Mobile killer, BaseCreature creature, ReforgedPrefix prefix, ReforgedSuffix suffix)
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
@@ -1564,7 +1553,7 @@ namespace Server.Items
                     suffix = ChooseRandomSuffix(item, prefix);
 
                 if (suffix == ReforgedSuffix.Minax)
-                    item.Hue = 1170;
+                    item.Hue = 1157;
 
                 int mods;
                 int perclow;

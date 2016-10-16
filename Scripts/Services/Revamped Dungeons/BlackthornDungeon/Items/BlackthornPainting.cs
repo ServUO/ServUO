@@ -12,7 +12,6 @@ namespace Server.Items
         public BlackthornPainting1()
             : base(0x4C62)
         {
-            this.Movable = false;
         }
 
         public BlackthornPainting1(Serial serial)
@@ -45,7 +44,6 @@ namespace Server.Items
         public BlackthornPainting2()
             : base(0x4C64)
         {
-            this.Movable = false;
         }
 
         public BlackthornPainting2(Serial serial)

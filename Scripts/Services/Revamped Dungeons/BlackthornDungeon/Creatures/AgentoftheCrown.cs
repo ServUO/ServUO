@@ -26,6 +26,12 @@ namespace Server.Engines.Blackthorn
         [Constructable]
         public AgentOfTheCrown()
         {
+        }
+
+        public override void InitBody()
+        {
+            base.InitBody();
+
             Name = NameList.RandomName("male");
             Title = "the Agent Of The Crown";
 
@@ -33,32 +39,19 @@ namespace Server.Engines.Blackthorn
             Body = 0x190;
             HairItemID = 0x2047;
             HairHue = 0x46D;
+        }
 
-            Item item = new ChainChest();
-            item.Hue = 2106;
-            AddItem(item);
-
-            item = new ThighBoots();
-            item.Hue = 2106;
-            AddItem(item);
-
-            item = new Obi();
-            item.Hue = 1775;
-            AddItem(item);
-
-            item = new BodySash();
-            item.Hue = 1775;
-            AddItem(item);
-
-            item = new GoldRing();
-            AddItem(item);
-
-            item = new Epaulette();
-            AddItem(item);
+        public override void InitOutfit()
+        {
+            SetWearable(new ChainChest(), 2106);
+            SetWearable(new ThighBoots(), 2106);
+            SetWearable(new Obi(), 1775);
+            SetWearable(new BodySash(), 1775);
+            SetWearable(new GoldRing());
+            SetWearable(new Epaulette());
 
             // QuiverOfInfinityBase
-
-            item = new CloakBearingTheCrestOfBlackthorn();
+            Item item = new CloakBearingTheCrestOfBlackthorn();
             item.Movable = false;
             PackItem(item);
 

@@ -577,7 +577,10 @@
     <Compile Include="Items\Addons\RoseRug.cs" />
     <Compile Include="Items\Addons\SkullRug.cs" />
     <Compile Include="Items\Artifacts\Decorative\MapOfTheKnownWorld.cs" />
+    <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Clothing\JadeArmband.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Clothing\MagicalDoor.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\FNPitchfork.cs" />
@@ -9376,6 +9379,7 @@
     <Compile Include="Services\PointsSystems\VoidPool.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\BlackthornRewards.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Creatures\AgentoftheCrown.cs" />
+    <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Generate.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Gumps.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\BlackthornPainting.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\CloakOfDeathBase\EpauletteBearingTheCrestOfBlackthorn.cs" />
@@ -9516,6 +9520,7 @@
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\TangleBase\LeatherNinjaBeltBearingTheCrestOfBlackthorn.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\TangleBase\ObiBearingTheCrestOfBlackthorn.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\TangleBase\WoodlandBeltBearingTheCrestOfBlackthorn.cs" />
+    <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Region.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Creatures\Abyss.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Creatures\Common.cs" />
     <Compile Include="Services\Revamped Dungeons\Covetous Void Spawn\Creatures\Cora.cs" />

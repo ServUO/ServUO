@@ -26,15 +26,18 @@ namespace Server
             this.m_Points = points;
             this.m_QuestItem = questitem;
 
+            Rectangle2D rec;
+
             try
             {
-                Rectangle2D rec = ItemBounds.Table[m_ItemID];
-                m_X = rec.X;
-                m_Y = rec.Y;
-                m_Width = rec.Width;
-                m_Height = rec.Height;
+                rec = ItemBounds.Table[m_ItemID];
             }
             catch
+            {
+                rec = new Rectangle2D(0, 0, 0, 0);
+            }
+
+            if (rec.X == 0 && rec.Y == 0 && rec.Width == 0 && rec.Height == 0)
             {
                 int mx, my;
                 mx = my = 0;
@@ -43,6 +46,13 @@ namespace Server
 
                 this.m_Width = mx - this.m_X;
                 this.m_Height = my - this.m_Y;
+            }
+            else
+            {
+                m_X = rec.X;
+                m_Y = rec.Y;
+                m_Width = rec.Width;
+                m_Height = rec.Height;
             }
         }
 
