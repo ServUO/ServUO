@@ -9379,6 +9379,7 @@
     <Compile Include="Services\PointsSystems\VoidPool.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\BlackthornRewards.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Creatures\AgentoftheCrown.cs" />
+    <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Generate.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Gumps.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\BlackthornPainting.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\CloakOfDeathBase\EpauletteBearingTheCrestOfBlackthorn.cs" />
