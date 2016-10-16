@@ -51,7 +51,8 @@ namespace Server.Commands
             new CommandEntry("Shame",           "GenerateNewShame", "DeleteShame",          119),
             new CommandEntry("New Magincia",    "GenNewMagincia",   "DeleteNewMagincia",    120),
             new CommandEntry("High Seas",       "DecorateHS",       "DeleteHS",             121),
-            new CommandEntry("City Loyalty",    "SetupCityLoyaltySystem",       "DeleteCityLoyaltySystem",             122),
+            new CommandEntry("City Loyalty",    "SetupCityLoyaltySystem",   "DeleteCityLoyaltySystem",             122),
+            new CommandEntry("Castle Blackthorn",    "GenBlackthorn",       null,                                  123),
 		});
         public CreateWorld()
         {

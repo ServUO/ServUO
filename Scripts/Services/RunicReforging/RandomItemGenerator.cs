@@ -35,12 +35,5 @@ namespace Server.Mobiles
                 return RunicReforging.GenerateRandomItem(item, killer, victim);
             return false;
         }
-
-        public static bool GenerateRandomItemBlackthornDungeon(Item item, Mobile killer, BaseCreature victim)
-        {
-            if (Enabled)
-                return RunicReforging.GenerateRandomItemBlackthorn(item, killer, victim);
-            return false;
-        }
     }
 }
