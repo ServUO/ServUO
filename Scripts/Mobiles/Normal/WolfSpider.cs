@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public WolfSpider()
-            : base(AIType.AI_Melee, FightMode.Evil, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a Wolf spider";
             Body = 737;
