@@ -9441,7 +9441,6 @@
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\CrimsonCinctureBase\LeatherNinjaBeltBearingTheCrestOfBlackthorn.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\CrimsonCinctureBase\ObiBearingTheCrestOfBlackthorn.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\CrimsonCinctureBase\WoodlandBeltBearingTheCrestOfBlackthorn.cs" />
-    <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\DecorativeShardShieldDeed.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\DecorativeShardShields.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\FoldedSteelBase\BandanaBearingTheCrestOfBlackthorn.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\FoldedSteelBase\BascinetBearingTheCrestOfBlackthorn.cs" />

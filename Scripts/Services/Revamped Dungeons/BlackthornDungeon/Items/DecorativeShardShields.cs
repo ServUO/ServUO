@@ -1,868 +1,342 @@
 ﻿using System;
+using Server.Gumps;
+using Server.Multis;
+using Server.Network;
+using Server.Targeting;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x6380, 0x639B)]
-    public class AOLLegendsShield : Item
+    public class DecorativeShardShield : Item, IAddon
     {
         public override bool IsArtifact { get { return true; } }
 
         [Constructable]
-        public AOLLegendsShield()
-            : base(0x6380)
+        public DecorativeShardShield()
+            : this(0x6380)
+        {
+        }
+
+        [Constructable]
+        public DecorativeShardShield(int itemID)
+            : base(itemID)
         {
             this.Movable = false;
         }
 
-        public AOLLegendsShield(Serial serial)
+        public DecorativeShardShield(Serial serial)
             : base(serial)
         {
+        }
+
+        public override bool ForceShowProperties
+        {
+            get
+            {
+                return ObjectPropertyList.Enabled;
+            }
+        }
+        public Item Deed
+        {
+            get
+            {
+                DecorativeShardShieldDeed deed = new DecorativeShardShieldDeed();
+
+                return deed;
+            }
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (from.InRange(this.Location, 2))
+            {
+                BaseHouse house = BaseHouse.FindHouseAt(this);
+
+                if (house != null && house.IsOwner(from))
+                {
+                    from.CloseGump(typeof(RewardDemolitionGump));
+                    from.SendGump(new RewardDemolitionGump(this, 1049783)); // Do you wish to re-deed this decoration?
+                }
+                else
+                    from.SendLocalizedMessage(1049784); // You can only re-deed this decoration if you are the house owner or originally placed the decoration.
+            }
+            else
+                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            int version = reader.ReadEncodedInt();
+        }
+
+        public bool CouldFit(IPoint3D p, Map map)
+        {
+            if (map == null || !map.CanFit(p.X, p.Y, p.Z, this.ItemData.Height))
+                return false;
+
+            return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // west wall
         }
     }
 
-    [FlipableAttribute(0x6381, 0x639C)]
-    public class ArirangShield : Item
+    public class DecorativeShardShieldDeed : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber { get { return 1153729; } } // Deed for a Decorative Shard Shield
 
         [Constructable]
-        public ArirangShield()
-            : base(0x6381)
+        public DecorativeShardShieldDeed()
+            : base(0x14F0)
         {
-            this.Movable = false;
+            this.LootType = LootType.Blessed;
+            this.Weight = 1.0;
         }
 
-        public ArirangShield(Serial serial)
+        public DecorativeShardShieldDeed(Serial serial)
             : base(serial)
         {
+        }
+
+        public static int GetSouthItemID(int east)
+        {
+            return east + 27;
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (this.IsChildOf(from.Backpack))
+            {
+                from.CloseGump(typeof(InternalGump));
+                from.SendGump(new InternalGump(this));
+            }
+            else
+                from.SendLocalizedMessage(1042038); // You must have the object in your backpack to use it.          	
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6382, 0x639D)]
-    public class AsukaShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public AsukaShield()
-            : base(0x6382)
-        {
-            this.Movable = false;
-        }
-
-        public AsukaShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6383, 0x639E)]
-    public class AlanticShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public AlanticShield()
-            : base(0x6383)
-        {
-            this.Movable = false;
-        }
-
-        public AlanticShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6384, 0x639F)]
-    public class BajaShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public BajaShield()
-            : base(0x6384)
-        {
-            this.Movable = false;
-        }
-
-        public BajaShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6385, 0x63A0)]
-    public class BalhaeShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public BalhaeShield()
-            : base(0x6385)
-        {
-            this.Movable = false;
-        }
-
-        public BalhaeShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6386, 0x63A1)]
-    public class CatskillsShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public CatskillsShield()
-            : base(0x6386)
-        {
-            this.Movable = false;
-        }
-
-        public CatskillsShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6387, 0x63A2)]
-    public class ChesapeakeShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public ChesapeakeShield()
-            : base(0x6387)
-        {
-            this.Movable = false;
-        }
-
-        public ChesapeakeShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6388, 0x63A3)]
-    public class DrachenfelsShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public DrachenfelsShield()
-            : base(0x6388)
-        {
-            this.Movable = false;
-        }
-
-        public DrachenfelsShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6389, 0x63A4)]
-    public class EuropaShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public EuropaShield()
-            : base(0x6389)
-        {
-            this.Movable = false;
-        }
-
-        public EuropaShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x638A, 0x63A5)]
-    public class FormosaShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public FormosaShield()
-            : base(0x638A)
-        {
-            this.Movable = false;
-        }
-
-        public FormosaShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x638B, 0x63A6)]
-    public class GreatLakesShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public GreatLakesShield()
-            : base(0x638B)
-        {
-            this.Movable = false;
-        }
-
-        public GreatLakesShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x638C, 0x63A7)]
-    public class HokutoShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public HokutoShield()
-            : base(0x638C)
-        {
-            this.Movable = false;
-        }
-
-        public HokutoShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x638D, 0x63A8)]
-    public class IzumoShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public IzumoShield()
-            : base(0x638D)
-        {
-            this.Movable = false;
-        }
-
-        public IzumoShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x638E, 0x63A9)]
-    public class LakeAustinShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public LakeAustinShield()
-            : base(0x638E)
-        {
-            this.Movable = false;
-        }
-
-        public LakeAustinShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x638F, 0x63AA)]
-    public class LakeSuperiorShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public LakeSuperiorShield()
-            : base(0x638F)
-        {
-            this.Movable = false;
-        }
-
-        public LakeSuperiorShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6390, 0x63AB)]
-    public class MizuhoShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public MizuhoShield()
-            : base(0x6390)
-        {
-            this.Movable = false;
-        }
-
-        public MizuhoShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6391, 0x63AC)]
-    public class MugenShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public MugenShield()
-            : base(0x6391)
-        {
-            this.Movable = false;
-        }
-
-        public MugenShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6392, 0x63AD)]
-    public class NapaValleyShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public NapaValleyShield()
-            : base(0x6392)
-        {
-            this.Movable = false;
-        }
-
-        public NapaValleyShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6393, 0x63AE)]
-    public class OceaniaShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public OceaniaShield()
-            : base(0x6393)
-        {
-            this.Movable = false;
-        }
-
-        public OceaniaShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6394, 0x63AF)]
-    public class OrginShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public OrginShield()
-            : base(0x6394)
-        {
-            this.Movable = false;
-        }
-
-        public OrginShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6395, 0x63B0)]
-    public class PacificShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public PacificShield()
-            : base(0x6395)
-        {
-            this.Movable = false;
-        }
-
-        public PacificShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6396, 0x63B1)]
-    public class SakuraShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public SakuraShield()
-            : base(0x6396)
-        {
-            this.Movable = false;
-        }
-
-        public SakuraShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6397, 0x63B2)]
-    public class SiegePerilousShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public SiegePerilousShield()
-            : base(0x6397)
-        {
-            this.Movable = false;
-        }
-
-        public SiegePerilousShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6398, 0x63B3)]
-    public class SonomaShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public SonomaShield()
-            : base(0x6398)
-        {
-            this.Movable = false;
-        }
-
-        public SonomaShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x6399, 0x63B4)]
-    public class WakokuShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public WakokuShield()
-            : base(0x6399)
-        {
-            this.Movable = false;
-        }
-
-        public WakokuShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    [FlipableAttribute(0x639A, 0x63B5)]
-    public class YamatoShield : Item
-    {
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public YamatoShield()
-            : base(0x639A)
-        {
-            this.Movable = false;
-        }
-
-        public YamatoShield(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            int version = reader.ReadEncodedInt();
+        }
+
+        private class InternalGump : Gump
+        {
+            public const int Start = 25472;
+            public const int End = 25498;
+            private readonly DecorativeShardShieldDeed m_Shield;
+            private readonly int m_Page;
+            public InternalGump(DecorativeShardShieldDeed shield)
+                : this(shield, 1)
+            {
+            }
+
+            public InternalGump(DecorativeShardShieldDeed shield, int page)
+                : base(150, 50)
+            {
+                this.m_Shield = shield;
+                this.m_Page = page;
+
+                this.Closable = true;
+                this.Disposable = true;
+                this.Dragable = true;
+                this.Resizable = false;
+
+                this.AddPage(0);
+
+                this.AddBackground(50, 89, 647, 505, 2600);
+                this.AddLabel(103, 114, 0, @"Choose from the following:");
+
+                int itemID = Start;
+
+
+                for (int i = 0; i < 27; i++)
+                {
+                    if (8 >= i)
+                    {
+                        this.AddItem(82 + i * 65, 180, itemID);
+                        this.AddButton(92 + i * 65, 155, 0x845, 0x846, itemID, GumpButtonType.Reply, 0);
+                    }
+                    else if (i > 8 && i < 18)
+                    {
+
+                        this.AddItem(82 + ((i - 9) * 65), 330, itemID);
+                        this.AddButton(92 + ((i - 9) * 65), 305, 0x845, 0x846, itemID, GumpButtonType.Reply, 0);
+                    }
+                    else if (i >= 18 && 26 >= i)
+                    {
+                        this.AddItem(82 + ((i - 18) * 65), 480, itemID);
+                        this.AddButton(92 + ((i - 18) * 65), 455, 0x845, 0x846, itemID, GumpButtonType.Reply, 0);
+                    }
+
+                    itemID++;
+                }
+            }
+
+            public override void OnResponse(NetState sender, RelayInfo info)
+            {
+                if (this.m_Shield == null | this.m_Shield.Deleted)
+                    return;
+
+                Mobile m = sender.Mobile;
+
+                if (info.ButtonID >= Start && info.ButtonID <= End)
+                {
+                    if ((info.ButtonID & 0x1) == 0 && info.ButtonID < 0x6380 || info.ButtonID >= 0x6380 && info.ButtonID <= 0x639A)
+                    {
+                        m.SendLocalizedMessage(1049780); // Where would you like to place this decoration?
+                        m.Target = new InternalTarget(this.m_Shield, info.ButtonID);
+                    }
+                }
+            }
+        }
+
+        private class InternalTarget : Target
+        {
+            private readonly DecorativeShardShieldDeed m_Shield;
+            private readonly int m_ItemID;
+            public InternalTarget(DecorativeShardShieldDeed shield, int itemID)
+                : base(-1, true, TargetFlags.None)
+            {
+                this.m_Shield = shield;
+                this.m_ItemID = itemID;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (this.m_Shield == null || this.m_Shield.Deleted)
+                    return;
+
+                if (this.m_Shield.IsChildOf(from.Backpack))
+                {
+                    BaseHouse house = BaseHouse.FindHouseAt(from);
+
+                    if (house != null && house.IsOwner(from))
+                    {
+                        IPoint3D p = targeted as IPoint3D;
+                        Map map = from.Map;
+
+                        if (p == null || map == null)
+                            return;
+
+                        Point3D p3d = new Point3D(p);
+                        ItemData id = TileData.ItemTable[this.m_ItemID & TileData.MaxItemValue];
+
+                        if (map.CanFit(p3d, id.Height))
+                        {
+                            house = BaseHouse.FindHouseAt(p3d, map, id.Height);
+
+                            if (house != null && house.IsOwner(from))
+                            {
+                                bool north = BaseAddon.IsWall(p3d.X, p3d.Y - 1, p3d.Z, map);
+                                bool west = BaseAddon.IsWall(p3d.X - 1, p3d.Y, p3d.Z, map);
+
+                                if (north && west)
+                                {
+                                    from.CloseGump(typeof(FacingGump));
+                                    from.SendGump(new FacingGump(this.m_Shield, this.m_ItemID, p3d, house));
+                                }
+                                else if (north || west)
+                                {
+                                    DecorativeShardShield shield = null;
+
+                                    if (north)
+                                        shield = new DecorativeShardShield(this.m_ItemID);
+                                    else if (west)
+                                        shield = new DecorativeShardShield(GetSouthItemID(this.m_ItemID));
+
+                                    house.Addons.Add(shield);
+
+                                    shield.MoveToWorld(p3d, map);
+
+                                    this.m_Shield.Delete();
+                                }
+                                else
+                                    from.SendLocalizedMessage(1049781); // This decoration must be placed next to a wall.		
+                            }
+                            else
+                                from.SendLocalizedMessage(1042036); // That location is not in your house.
+                        }
+                        else
+                            from.SendLocalizedMessage(500269); // You cannot build that there.		
+                    }
+                    else
+                        from.SendLocalizedMessage(502092); // You must be in your house to do this.
+                }
+                else
+                    from.SendLocalizedMessage(1042038); // You must have the object in your backpack to use it.    
+            }
+
+            private class FacingGump : Gump
+            {
+                private readonly DecorativeShardShieldDeed m_Shield;
+                private readonly int m_ItemID;
+                private readonly Point3D m_Location;
+                private readonly BaseHouse m_House;
+                public FacingGump(DecorativeShardShieldDeed shield, int itemID, Point3D location, BaseHouse house)
+                    : base(150, 50)
+                {
+                    this.m_Shield = shield;
+                    this.m_ItemID = itemID;
+                    this.m_Location = location;
+                    this.m_House = house;
+
+                    this.Closable = true;
+                    this.Disposable = true;
+                    this.Dragable = true;
+                    this.Resizable = false;
+
+                    this.AddPage(0);
+                    this.AddBackground(0, 0, 300, 150, 0xA28);
+
+                    this.AddItem(90, 30, GetSouthItemID(itemID));
+                    this.AddItem(180, 30, itemID);
+
+                    this.AddButton(50, 35, 0x867, 0x869, (int)Buttons.East, GumpButtonType.Reply, 0);
+                    this.AddButton(145, 35, 0x867, 0x869, (int)Buttons.South, GumpButtonType.Reply, 0);
+                }
+
+                private enum Buttons
+                {
+                    Cancel,
+                    South,
+                    East
+                }
+                public override void OnResponse(NetState sender, RelayInfo info)
+                {
+                    if (this.m_Shield == null || this.m_Shield.Deleted || this.m_House == null)
+                        return;
+
+                    DecorativeShardShield shield = null;
+
+                    if (info.ButtonID == (int)Buttons.East)
+                        shield = new DecorativeShardShield(GetSouthItemID(this.m_ItemID));
+                    if (info.ButtonID == (int)Buttons.South)
+                        shield = new DecorativeShardShield(this.m_ItemID);
+
+                    if (shield != null)
+                    {
+                        this.m_House.Addons.Add(shield);
+
+                        shield.MoveToWorld(this.m_Location, sender.Mobile.Map);
+
+                        this.m_Shield.Delete();
+                    }
+                }
+            }
         }
     }
 }
