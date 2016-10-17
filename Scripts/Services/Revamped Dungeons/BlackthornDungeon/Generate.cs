@@ -43,17 +43,42 @@ namespace Server.Engines.Blackthorn
             door = new MetalDoor(DoorFacing.EastCCW);
             door.MoveToWorld(new Point3D(6410, 2664, 0), map);
 
-            door = new MetalDoor(DoorFacing.NorthCW);
-            door.MoveToWorld(new Point3D(6425, 2679, 0), map);
-
-            door = new MetalDoor(DoorFacing.SouthCCW);
-            door.MoveToWorld(new Point3D(6425, 2680, 0), map);
-
             door = new MetalDoor(DoorFacing.SouthCW);
             door.MoveToWorld(new Point3D(6394, 2680, 0), map);
 
             door = new MetalDoor(DoorFacing.NorthCCW);
             door.MoveToWorld(new Point3D(6394, 2679, 0), map);
+
+            // Tram ones already exist on create world teleporter section
+            if (map == Map.Felucca)
+            {
+                Teleporter tele = new Teleporter(new Point3D(1517, 1417, 9), map);
+                tele.MoveToWorld(new Point3D(6440, 2677, 20), map);
+
+                tele = new Teleporter(new Point3D(1517, 1418, 9), map);
+                tele.MoveToWorld(new Point3D(6440, 2678, 20), map);
+
+                tele = new Teleporter(new Point3D(1517, 1419, 9), map);
+                tele.MoveToWorld(new Point3D(6440, 2679, 20), map);
+
+                tele = new Teleporter(new Point3D(1517, 1420, 9), map);
+                tele.MoveToWorld(new Point3D(6440, 2680, 20), map);
+
+                tele = new Teleporter(new Point3D(1517, 1420, 9), map);
+                tele.MoveToWorld(new Point3D(6440, 2681, 20), map);
+
+                tele = new Teleporter(new Point3D(6440, 2677, 20), map);
+                tele.MoveToWorld(new Point3D(1517, 1417, 9), map);
+
+                tele = new Teleporter(new Point3D(6440, 2678, 20), map);
+                tele.MoveToWorld(new Point3D(1517, 1418, 9), map);
+
+                tele = new Teleporter(new Point3D(6440, 2679, 20), map);
+                tele.MoveToWorld(new Point3D(1517, 1419, 9), map);
+
+                tele = new Teleporter(new Point3D(6440, 2680, 20), map);
+                tele.MoveToWorld(new Point3D(1517, 1420, 12), map);
+            }
         }
     }
 }
