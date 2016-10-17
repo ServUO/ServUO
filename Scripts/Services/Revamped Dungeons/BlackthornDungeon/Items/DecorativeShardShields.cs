@@ -44,6 +44,13 @@ namespace Server.Items
                 return deed;
             }
         }
+        public bool FacingEast
+        {
+            get
+            {
+                return this.ItemID <= 0x639A;
+            }
+        }
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -82,7 +89,10 @@ namespace Server.Items
             if (map == null || !map.CanFit(p.X, p.Y, p.Z, this.ItemData.Height))
                 return false;
 
-            return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // west wall
+            if (this.FacingEast)
+                return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // west wall                
+            else
+                return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // north wall
         }
     }
 
@@ -103,9 +113,9 @@ namespace Server.Items
         {
         }
 
-        public static int GetSouthItemID(int east)
+        public static int GetSouthItemID(int south)
         {
-            return east + 27;
+            return south + 27;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -254,9 +264,9 @@ namespace Server.Items
                                     DecorativeShardShield shield = null;
 
                                     if (north)
-                                        shield = new DecorativeShardShield(this.m_ItemID);
-                                    else if (west)
                                         shield = new DecorativeShardShield(GetSouthItemID(this.m_ItemID));
+                                    else if (west)
+                                        shield = new DecorativeShardShield(this.m_ItemID);
 
                                     house.Addons.Add(shield);
 
@@ -302,8 +312,8 @@ namespace Server.Items
                     this.AddPage(0);
                     this.AddBackground(0, 0, 300, 150, 0xA28);
 
-                    this.AddItem(90, 30, GetSouthItemID(itemID));
-                    this.AddItem(180, 30, itemID);
+                    this.AddItem(90, 30, itemID);
+                    this.AddItem(180, 30, GetSouthItemID(itemID));
 
                     this.AddButton(50, 35, 0x867, 0x869, (int)Buttons.East, GumpButtonType.Reply, 0);
                     this.AddButton(145, 35, 0x867, 0x869, (int)Buttons.South, GumpButtonType.Reply, 0);
@@ -323,9 +333,10 @@ namespace Server.Items
                     DecorativeShardShield shield = null;
 
                     if (info.ButtonID == (int)Buttons.East)
-                        shield = new DecorativeShardShield(GetSouthItemID(this.m_ItemID));
-                    if (info.ButtonID == (int)Buttons.South)
                         shield = new DecorativeShardShield(this.m_ItemID);
+
+                    if (info.ButtonID == (int)Buttons.South)
+                        shield = new DecorativeShardShield(GetSouthItemID(this.m_ItemID));
 
                     if (shield != null)
                     {
