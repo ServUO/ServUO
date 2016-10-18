@@ -106,9 +106,9 @@ namespace Server.Multis
                 m_Line.Map = this.Map;
         }
 
-        public override void OnPlacement()
+        public override void OnPlacement(Mobile from)
         {
-            base.OnPlacement();
+            base.OnPlacement(from);
 
             if (m_Line == null)
                 return;

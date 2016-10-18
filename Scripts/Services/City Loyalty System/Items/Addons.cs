@@ -206,8 +206,6 @@ namespace Server.Items
 			
 			Rectangle2D b = ItemBounds.Table[Deed.EastID];
 			AddItem(70 - b.Width / 2 - b.X, 75 - b.Height / 2 - b.Y, Deed.EastID);
-
-            AddButton(50, 50, 0x1234, 0x1234, 1, GumpButtonType.Reply, 0);
 			
 			b = ItemBounds.Table[Deed.SouthID];
 			AddItem(180 - b.Width / 2 - b.X, 75 - b.Height / 2 - b.Y, Deed.SouthID);

@@ -531,7 +531,7 @@ namespace Server.Multis
             if (m_SecureContainer != null)
                 m_SecureContainer.Delete();
 
-            if (m_DockedBoat != null && !m_DockedBoat.Deleted)
+            if (m_DockedBoat != null && !m_DockedBoat.Deleted && m_DockedBoat.Map == Map.Internal)
                 m_DockedBoat.Delete();
 
             m_Instances.Remove(this);
@@ -931,13 +931,13 @@ namespace Server.Multis
 
             from.AddToBackpack(boat);
 
-            OnDryDock();
-
             this.Refresh();
             this.Internalize();
+
+            OnDryDock(from);
         }
 
-        public virtual void OnDryDock()
+        public virtual void OnDryDock(Mobile from)
         {
             var addon = LighthouseAddon.GetLighthouse(Owner);
 
@@ -1494,7 +1494,7 @@ namespace Server.Multis
             return false;
         }
 
-        public virtual void OnPlacement()
+        public virtual void OnPlacement(Mobile from)
         {
         }
 
@@ -2363,7 +2363,7 @@ namespace Server.Multis
 
             List<Mobile> list = GetMobilesOnBoard();
 
-            foreach (Mobile m in GetMobilesOnBoard())
+            foreach (Mobile m in list)
             {
                 if (m is PlayerMobile)
                 {

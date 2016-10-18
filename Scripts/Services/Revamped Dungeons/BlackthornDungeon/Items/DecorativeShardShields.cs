@@ -178,18 +178,24 @@ namespace Server.Items
                     if (8 >= i)
                     {
                         this.AddItem(82 + i * 65, 180, itemID);
+                        this.AddTooltip(1104344 + i);
                         this.AddButton(92 + i * 65, 155, 0x845, 0x846, itemID, GumpButtonType.Reply, 0);
+                        this.AddTooltip(1104344 + i);
                     }
                     else if (i > 8 && i < 18)
                     {
 
                         this.AddItem(82 + ((i - 9) * 65), 330, itemID);
+                        this.AddTooltip(1104344 + i);
                         this.AddButton(92 + ((i - 9) * 65), 305, 0x845, 0x846, itemID, GumpButtonType.Reply, 0);
+                        this.AddTooltip(1104344 + i);
                     }
                     else if (i >= 18 && 26 >= i)
                     {
                         this.AddItem(82 + ((i - 18) * 65), 480, itemID);
+                        this.AddTooltip(1104344 + i);
                         this.AddButton(92 + ((i - 18) * 65), 455, 0x845, 0x846, itemID, GumpButtonType.Reply, 0);
+                        this.AddTooltip(1104344 + i);
                     }
 
                     itemID++;
@@ -304,12 +310,6 @@ namespace Server.Items
                     this.m_Location = location;
                     this.m_House = house;
 
-                    this.Closable = true;
-                    this.Disposable = true;
-                    this.Dragable = true;
-                    this.Resizable = false;
-
-                    this.AddPage(0);
                     this.AddBackground(0, 0, 300, 150, 0xA28);
 
                     this.AddItem(90, 30, itemID);

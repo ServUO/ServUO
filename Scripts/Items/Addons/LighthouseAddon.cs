@@ -139,7 +139,7 @@ namespace Server.Items
 
             house.DropToMovingCrate(model);
 
-            boat.OnDryDock();
+            boat.OnDryDock(null);
 
             boat.Refresh();
             boat.Internalize();
