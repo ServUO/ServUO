@@ -644,6 +644,13 @@ namespace Server.Engines.Blackthorn
             return true;
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1154517); // Minax Artifact Turn in Officer
+        }
+
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
