@@ -239,7 +239,7 @@ namespace Server.Multis
 				{
                     boat.SetFacing(d);
 					boat.MoveToWorld( p, map );
-                    boat.OnPlacement();
+                    boat.OnPlacement(from);
                     boat.Refresh();
 
                     var addon = LighthouseAddon.GetLighthouse(from);

@@ -223,9 +223,9 @@ namespace Server.Multis
             }
         }
 
-        public override void OnPlacement()
+        public override void OnPlacement(Mobile from)
         {
-            base.OnPlacement();
+            base.OnPlacement(from);
 
             if (m_GalleonPilot == null)
                 return;
@@ -260,6 +260,14 @@ namespace Server.Multis
 
                 _InternalCannon.Clear();
                 _InternalCannon = null;
+            }
+
+            if (from != null && from.Backpack != null)
+            {
+                List<ShipRune> list = from.Backpack.FindItemsByType<ShipRune>();
+
+                foreach (ShipRune item in list)
+                    item.InvalidateProperties();
             }
         }
 
@@ -839,7 +847,7 @@ namespace Server.Multis
             return base.CheckDryDock(from, dockmaster);
         }
 
-        public override void OnDryDock()
+        public override void OnDryDock(Mobile from)
         {
             if (_InternalCannon == null)
                 _InternalCannon = new Dictionary<Item, Item>();
@@ -852,7 +860,15 @@ namespace Server.Multis
                         _InternalCannon[c] = pad;
                 });
 
-            base.OnDryDock();
+            if (from != null && from.Backpack != null)
+            {
+                List<ShipRune> list = from.Backpack.FindItemsByType<ShipRune>();
+
+                foreach (ShipRune item in list)
+                    item.InvalidateProperties();
+            }
+
+            base.OnDryDock(from);
         }
 
         public override void SetFacingComponents(Direction newDirection, Direction oldDirection, bool ignoreLastDirection)

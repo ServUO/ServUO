@@ -29,9 +29,13 @@ namespace Server.Items
         }// acid sac
         public override void OnDoubleClick(Mobile from)
         {
-            from.SendLocalizedMessage(1111656); // What do you wish to use the acid on?
-
-            from.Target = new InternalTarget(this);
+            if (IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1111656); // What do you wish to use the acid on?
+                from.Target = new InternalTarget(this);
+            }
+            else
+                from.SendLocalizedMessage(1080063); // This must be in your backpack to use it.
         }
 
         public override void Serialize(GenericWriter writer)
