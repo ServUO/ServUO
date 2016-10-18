@@ -251,6 +251,16 @@ namespace Server.Engines.Craft
             }
             #endregion
 
+            if (Core.SA)
+            {
+                index = AddCraft(typeof(RobeofRite), 1111747, 1153510, 101.5, 120.0, typeof(Leather), 1044462, 6, 1044253);
+                AddRes(index, typeof(FireRuby), 1032695, 1, 1044253);
+                AddRes(index, typeof(GoldDust), 1098337, 5, 1044253);
+                AddRes(index, typeof(AbyssalCloth), 1113350, 6, 1044253);
+                this.ForceNonExceptional(index);
+                SetNeededExpansion(index, Expansion.SA);
+            }
+
             #endregion
 
             #region Misc

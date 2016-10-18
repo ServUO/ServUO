@@ -136,6 +136,17 @@ namespace Server.Engines.Craft
                 AddRes(index, typeof(SpidersSilk), 1044360, 7, 1044368);
                 AddRes(index, typeof(Bottle), 1044529, 1, 500315);
                 this.SetNeededExpansion(index, Expansion.SA);
+
+                index = this.AddCraft(typeof(GoldDust), 1116353, 1153504, 90.0, 120.0, typeof(Gold), 3000083, 1000, 1150747);
+                this.ForceNonExceptional(index);
+                this.SetNeededExpansion(index, Expansion.SA);
+
+                index = this.AddCraft(typeof(NexusCore), 1116353, 1153501, 90.0, 120.0, typeof(MandrakeRoot), 1015013, 10, 1044253);
+                AddRes(index, typeof(SpidersSilk), 1015007, 10, 1044253);
+                AddRes(index, typeof(DarkSapphire), 1032690, 5, 1044253);
+                AddRes(index, typeof(CrushedGlass), 1113351, 5, 1044253);
+                this.ForceNonExceptional(index);
+                this.SetNeededExpansion(index, Expansion.SA);
             }
 
             // Enhancement
