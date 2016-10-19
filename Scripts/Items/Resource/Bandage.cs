@@ -449,9 +449,17 @@ namespace Server.Items
 
 				#region Heritage Items
 				healing += EnhancedBandage.HealingBonus;
-				#endregion
+                #endregion
 
-				if (chance > Utility.RandomDouble())
+                #region Bandage Healing Bonus Items
+                Asclepius asclepius = m_Healer.FindItemOnLayer(Layer.TwoHanded) as Asclepius;
+                GargishAsclepius gargishasclepius = m_Healer.FindItemOnLayer(Layer.TwoHanded) as GargishAsclepius;
+
+                if (asclepius != null || gargishasclepius != null)
+                    healing += 15;
+                #endregion
+
+                if (chance > Utility.RandomDouble())
 				{
 					healerNumber = 500969; // You finish applying the bandages.
 
