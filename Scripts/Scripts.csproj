@@ -2513,6 +2513,7 @@
     <Compile Include="Mobiles\NPCs\Sliem.cs" />
     <Compile Include="Quests\TheExodusEncounter\ExodusPeerless\BaseExodusPeerless.cs" />
     <Compile Include="Quests\TheExodusEncounter\ExodusPeerless\ExodusPeerlessAltar.cs" />
+    <Compile Include="Quests\TheExodusEncounter\Generate.cs" />
     <Compile Include="Quests\TheExodusEncounter\Items\ExodusAlterAddon.cs" />
     <Compile Include="Quests\TheExodusEncounter\Items\ExodusChest.cs" />
     <Compile Include="Quests\TheExodusEncounter\Items\ExodusSacrificalDagger.cs" />
