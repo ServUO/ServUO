@@ -811,11 +811,17 @@
 			<music name="Dungeon9" />
 			<entrance x="1996" y="80" />
 		</region>
-		<region type="BlackthornRegion" priority="50" name="BlackthornDungeon">
+		<region type="BlackthornDungeon" priority="50" name="BlackthornDungeon">
 			<rect x="6151" y="2301" width="413" height="539" />
 			<go x="6430" y="2678" z="0" />
 			<entrance x="6430" y="2678" />
 			<music name="Dungeon9" />
+		</region>
+		<region type="BlackthornCastle" priority="50" name="Blackthorn Castle">
+			<rect x="1494" y="1399" width="55" height="105" />
+			<go x="1523" y="1443" z="15" />
+			<entrance x="1523" y="1504" />
+			<music name="LBCastle" />
 		</region>
 		<region type="TownRegion" priority="50" name="Delucia">
 			<rect x="5123" y="3942" width="192" height="122" />
@@ -1798,11 +1804,19 @@
 			<entrance x="1996" y="80" />
 			<music name="Dungeon9" />
 		</region>
-		<region type="BlackthornRegion" priority="50" name="BlackthornDungeon">
+		<region type="BlackthornDungeon" priority="50" name="BlackthornDungeon">
 			<rect x="6151" y="2301" width="413" height="539" />
 			<go x="6430" y="2678" z="0" />
 			<entrance x="6430" y="2678" />
 			<music name="Dungeon9" />
+		</region>
+		<region type="BlackthornCastle" priority="51" name="Blackthorn Castle">
+			<rect x="1503" y="1377" width="79" height="120" />
+			<rect x="1520" y="1482" width="6" height="23" />
+			<rect x="1466" y="1407" width="40" height="88" />
+			<go x="1529" y="1477" z="0" />
+			<entrance x="1522" y="1504" />
+			<music name="LBCastle" />
 		</region>
 		<region type="TownRegion" priority="50" name="Delucia">
 			<rect x="5123" y="3942" width="192" height="122" />

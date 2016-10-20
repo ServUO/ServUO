@@ -242,8 +242,9 @@ namespace Server.Items
 
             bool claimed = false;
             int stabled = 0;
+            List<Mobile> list = new List<Mobile>(from.Stabled);
 
-            from.Stabled.ForEach(m =>
+            foreach (Mobile m in list)
             {
                 BaseCreature pet = m as BaseCreature;
 
@@ -281,7 +282,10 @@ namespace Server.Items
                         from.SendLocalizedMessage(1049612, pet.Name); // ~1_NAME~ remained in the stables because you have too many followers.
                     }
                 }
-            });
+            }
+
+            list.Clear();
+            list.TrimExcess();
 
             if (claimed)
             {
@@ -289,6 +293,62 @@ namespace Server.Items
             }
             else if (stabled == 0)
                 from.SendLocalizedMessage(502671); // But I have no animals stabled with me at the moment!            
+        }
+
+        public void BeginClaimList(Mobile from)
+        {
+            if (this.Deleted || !from.CheckAlive())
+                return;
+
+            List<BaseCreature> list = new List<BaseCreature>();
+
+            for (int i = 0; i < from.Stabled.Count; ++i)
+            {
+                BaseCreature pet = from.Stabled[i] as BaseCreature;
+
+                if (pet == null || pet.Deleted)
+                {
+                    pet.IsStabled = false;
+                    from.Stabled.RemoveAt(i);
+                    --i;
+                    continue;
+                }
+
+                list.Add(pet);
+            }
+
+            if (list.Count > 0)
+                from.SendGump(new ClaimListGump(this, from, list));
+            else
+                from.SendLocalizedMessage(502671); // But I have no animals stabled with me at the moment!
+        }
+
+        public void EndClaimList(Mobile from, BaseCreature pet)
+        {
+            if (pet == null || pet.Deleted || from.Map != this.Map || !from.InRange(this, 14) || !from.Stabled.Contains(pet) || !from.CheckAlive())
+                return;
+
+            if ((from.Followers + pet.ControlSlots) <= from.FollowersMax)
+            {
+                pet.SetControlMaster(from);
+
+                if (pet.Summoned)
+                    pet.SummonMaster = from;
+
+                pet.ControlTarget = from;
+                pet.ControlOrder = OrderType.Follow;
+
+                pet.MoveToWorld(from.Location, from.Map);
+
+                pet.IsStabled = false;
+                from.Stabled.Remove(pet);
+
+                from.SendLocalizedMessage(1042559); // Here you go... and good day to you!
+            }
+            else
+            {
+                from.SendLocalizedMessage(1049612, pet.Name); // ~1_NAME~ remained in the stables because you have too many followers.
+            }
         }
 
         public override bool HandlesOnSpeech
@@ -311,11 +371,58 @@ namespace Server.Items
                 e.Handled = true;
 
                 if (!Insensitive.Equals(e.Speech, "claim"))
+                    this.BeginClaimList(e.Mobile);
+                else
                     this.Claim(e.Mobile);
             }
             else
             {
                 base.OnSpeech(e);
+            }
+        }
+
+        private class ClaimListGump : Gump
+        {
+            private readonly DungeonHitchingPost m_Post;
+            private readonly Mobile m_From;
+            private readonly List<BaseCreature> m_List;
+
+            public ClaimListGump(DungeonHitchingPost post, Mobile from, List<BaseCreature> list)
+                : base(50, 50)
+            {
+                this.m_Post = post;
+                this.m_From = from;
+                this.m_List = list;
+
+                from.CloseGump(typeof(ClaimListGump));
+
+                this.AddPage(0);
+
+                this.AddBackground(0, 0, 325, 50 + (list.Count * 20), 9250);
+                this.AddAlphaRegion(5, 5, 315, 40 + (list.Count * 20));
+
+                this.AddHtml(15, 15, 275, 20, "<BASEFONT COLOR=#FFFFFF>Select a pet to retrieve from the stables:</BASEFONT>", false, false);
+
+                for (int i = 0; i < list.Count; ++i)
+                {
+                    BaseCreature pet = list[i];
+
+                    if (pet == null || pet.Deleted)
+                        continue;
+
+                    this.AddButton(15, 39 + (i * 20), 10006, 10006, i + 1, GumpButtonType.Reply, 0);
+                    this.AddHtml(32, 35 + (i * 20), 275, 18, String.Format("<BASEFONT COLOR=#C0C0EE>{0}</BASEFONT>", pet.Name), false, false);
+                }
+            }
+
+            public override void OnResponse(NetState sender, RelayInfo info)
+            {
+                int index = info.ButtonID - 1;
+
+                if (index >= 0 && index < this.m_List.Count)
+                {
+                    this.m_Post.EndClaimList(this.m_From, this.m_List[index]);
+                }
             }
         }
 
