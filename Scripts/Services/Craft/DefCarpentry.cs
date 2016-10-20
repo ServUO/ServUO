@@ -228,6 +228,12 @@ namespace Server.Engines.Craft
                 this.AddSkill(index, SkillName.Tailoring, 75.0, 105.0);
                 this.AddRes(index, typeof(Cloth), 1044286, 50, 1044287);
                 this.SetNeededExpansion(index, Expansion.SA);
+
+                index = this.AddCraft(typeof(ExodusSummoningAlter), 1044294, 1153502, 95.0, 120.0, typeof(Log), 1044041, 100, 1044351);
+                this.AddSkill(index, SkillName.Magery, 75.0, 120.0);
+                this.AddRes(index, typeof(Granite), 1044607, 10, 1044253);
+                this.AddRes(index, typeof(SmallPieceofBlackrock), 1150016, 10, 1044253);
+                this.AddRes(index, typeof(NexusCore), 1153501, 1, 1044253);
             }         
             #endregion
 

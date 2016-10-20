@@ -943,9 +943,16 @@ namespace Server.Engines.Craft
 			index = AddCraft(typeof(PowderedIron), 1011173, 1113353, 110.0, 135.0, typeof(WhitePearl), 1026253, 1, 1044253);
 			AddRes(index, typeof(IronIngot), 1044036, 20, 1044037);
 			SetNeededExpansion(index, Expansion.SA);
-			#endregion
 
-			// Set the overridable material
+            index = this.AddCraft(typeof(ExodusSacrificalDagger), 1011173, 1153500, 95.0, 120.0, typeof(IronIngot), 1044036, 12, 1044253);
+            AddRes(index, typeof(BlueDiamond), 1032696, 2, 1044253);
+            AddRes(index, typeof(FireRuby), 1032695, 2, 1044253);
+            AddRes(index, typeof(SmallPieceofBlackrock), 1150016, 10, 1044253);
+            this.ForceNonExceptional(index);
+            this.SetNeededExpansion(index, Expansion.SA);
+            #endregion
+
+            // Set the overridable material
             SetSubRes(typeof(IronIngot), 1044022);
 
             // Add every material you want the player to be able to choose from
