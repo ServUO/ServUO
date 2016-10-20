@@ -49,6 +49,12 @@ namespace Server.Engines.Blackthorn
             door = new MetalDoor(DoorFacing.NorthCCW);
             door.MoveToWorld(new Point3D(6394, 2679, 0), map);
 
+            door = new MetalDoor(DoorFacing.NorthCW);
+            door.MoveToWorld(new Point3D(6425, 2679, 0), map);
+
+            door = new MetalDoor(DoorFacing.SouthCCW);
+            door.MoveToWorld(new Point3D(6425, 2680, 0), map);
+
             // Tram ones already exist on create world teleporter section
             if (map == Map.Felucca)
             {
