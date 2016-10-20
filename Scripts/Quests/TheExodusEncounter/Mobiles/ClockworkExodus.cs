@@ -100,7 +100,7 @@ namespace Server.Mobiles
             if (pack == null || !pack.TryDropItem(to, artifact, false))
                 to.BankBox.DropItem(artifact);
 
-			CommandLogging.WriteLineNoLuckArtifact(to, artifact, String.Format("Peerless Artifact"));
+			//CommandLogging.WriteLineNoLuckArtifact(to, artifact, String.Format("Peerless Artifact"));
 
             to.SendLocalizedMessage(502088); // A special gift has been placed in your backpack.
 		}
