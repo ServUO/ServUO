@@ -935,6 +935,43 @@
 				<object id="312" type="FarmableCotton" minSpawnTime="PT10S" maxSpawnTime="PT30S" amount="6" />
 			</spawning>
 		</region>
+		<region priority="50" name="Shrine of Compassion">
+		  <rect x="1851" y="867" width="14" height="14" />
+		  <go x="1856" y="872" z="-1" />
+		</region>
+		<region priority="50" name="Chaos Shrine">
+		  <rect x="1456" y="840" width="4" height="7" />
+		  <go x="1456" y="854" z="0" />
+		</region>
+		<region priority="37" name="Shrine of Honesty">
+		  <rect x="4209" y="560" width="7" height="8" />
+		  <go x="4217" y="564" z="36" />
+		</region>
+		<region priority="50" name="Shrine of Honor">
+		  <rect x="1721" y="3525" width="8" height="6" />
+		  <go x="1730" y="3528" z="3" />
+		</region>
+		<region priority="50" name="Shrine of Humility">
+		  <rect x="4270" y="3694" width="9" height="9" />
+		  <go x="4276" y="3699" z="0" />
+		</region>
+		<region priority="50" name="Shrine of Justice">
+		  <rect x="1297" y="629" width="9" height="9" />
+		  <go x="1301" y="639" z="16" />
+		</region>
+		<region priority="50" name="Shrine of Sacrifice">
+		  <rect x="3352" y="286" width="6" height="7" />
+		  <go x="3355" y="299" z="9" />
+		</region>
+		<region priority="50" name="Shrine of Spirituality">
+		  <rect x="1590" y="2485" width="10" height="11" />
+		  <rect x="1599" y="2488" width="10" height="5" />
+		  <go x="1589" y="2485" z="5" />
+		</region>
+		<region priority="37" name="Shrine of Valor">
+		  <rect x="2488" y="3928" width="9" height="11" />
+		  <go x="2496" y="3932" z="0" />
+		</region>
 	</Facet>
 	<Facet name="Trammel">
 		<region type="GuardedRegion" priority="50" name="Moongates">
@@ -1985,17 +2022,12 @@
 			<rect x="528" y="376" width="96" height="88" />
 			<go x="568" y="430" z="41" />
 		</region>
-		<region type="MondainRegion" priority="50" name="Exodus City">
+		<region priority="50" name="Ver Lor Reg">
 			<rect x="824" y="552" width="32" height="176" />
 			<rect x="752" y="576" width="72" height="128" />
 			<rect x="856" y="576" width="48" height="128" />
 			<rect x="904" y="624" width="24" height="32" />
-			<guards disabled="true" />
-			<go x="840" y="571" z="0" />
-			<region>
-				<rect x="827" y="694" width="26" height="33" />
-				<logoutDelay active="false" />
-			</region>
+			<go x="840" y="571" z="0" />			
 		</region>
 		<region priority="50" name="Pormir Harm">
 			<rect x="736" y="480" width="32" height="24" />
