@@ -864,11 +864,6 @@ namespace Server.Items
 				LabelTo(from, 1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
 		}
-
-        public int SetResistBonus(ResistanceType resist)
-        {
-            return 0;
-        }
         
         public override void Serialize(GenericWriter writer)
         {
@@ -1212,6 +1207,20 @@ namespace Server.Items
             set
             {
             }
+        }
+
+        public int SetResistBonus(ResistanceType resist)
+        {
+            switch (resist)
+            {
+                case ResistanceType.Physical: return PhysicalResistance;
+                case ResistanceType.Fire: return FireResistance;
+                case ResistanceType.Cold: return ColdResistance;
+                case ResistanceType.Poison: return PoisonResistance;
+                case ResistanceType.Energy: return EnergyResistance;
+            }
+
+            return 0;
         }
         #endregion
     }
