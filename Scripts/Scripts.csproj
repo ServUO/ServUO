@@ -1593,6 +1593,7 @@
     <Compile Include="Items\Addons\Aquarium\Rewards\Shell.cs" />
     <Compile Include="Items\Addons\Aquarium\Rewards\ToyBoat.cs" />
     <Compile Include="Items\Addons\Aquarium\Rewards\WaterloggedBoots.cs" />
+    <Compile Include="Misc\UntamedPetsCleaning.cs" />
     <Compile Include="Misc\WorldLocationInfo.cs" />
     <Compile Include="Mobiles\AI\PaladinAI.cs" />
     <Compile Include="Mobiles\Bosses\AbyssalInfernal.cs" />
