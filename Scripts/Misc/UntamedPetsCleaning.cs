@@ -6,16 +6,11 @@ namespace Server.Mobiles
     public class UntamedPetsCleaning
     {
         #region Untamed pets cleaning
+
         public static void Initialize()
         {
-            EventSink.AfterWorldSave += OnAfterSave;
-        }
-
-        private static void OnAfterSave(AfterWorldSaveEventArgs e)
-        {
-            World.WaitForWriteCompletion();
-
             CleanUntamedPets();
+            Timer.DelayCall(TimeSpan.FromHours(12.0), TimeSpan.FromHours(12.0), new TimerCallback(CleanUntamedPets));
         }
 
         private static void CleanUntamedPets()
