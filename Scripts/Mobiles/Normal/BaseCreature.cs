@@ -3826,7 +3826,7 @@ namespace Server.Mobiles
 
             m_IdleReleaseTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(15, 25));
 
-            if (Body.IsHuman)
+            if (Body.IsHuman && this.Mounted == false)
             {
                 switch (Utility.Random(2))
                 {

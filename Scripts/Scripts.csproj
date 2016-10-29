@@ -572,6 +572,7 @@
     </Compile>
     <Compile Include="Items\Addons\Distillery.cs" />
     <Compile Include="Items\Addons\DolphinRug.cs" />
+    <Compile Include="Items\Addons\DungeonHitchingPost.cs" />
     <Compile Include="Items\Addons\HitchingPost.cs" />
     <Compile Include="Items\Addons\LighthouseAddon.cs" />
     <Compile Include="Items\Addons\RoseRug.cs" />
@@ -1593,6 +1594,7 @@
     <Compile Include="Items\Addons\Aquarium\Rewards\Shell.cs" />
     <Compile Include="Items\Addons\Aquarium\Rewards\ToyBoat.cs" />
     <Compile Include="Items\Addons\Aquarium\Rewards\WaterloggedBoots.cs" />
+    <Compile Include="Misc\UntamedPetsCleaning.cs" />
     <Compile Include="Misc\WorldLocationInfo.cs" />
     <Compile Include="Mobiles\AI\PaladinAI.cs" />
     <Compile Include="Mobiles\Bosses\AbyssalInfernal.cs" />
@@ -2513,6 +2515,7 @@
     <Compile Include="Mobiles\NPCs\Sliem.cs" />
     <Compile Include="Quests\TheExodusEncounter\ExodusPeerless\BaseExodusPeerless.cs" />
     <Compile Include="Quests\TheExodusEncounter\ExodusPeerless\ExodusPeerlessAltar.cs" />
+    <Compile Include="Quests\TheExodusEncounter\Generate.cs" />
     <Compile Include="Quests\TheExodusEncounter\Items\ExodusAlterAddon.cs" />
     <Compile Include="Quests\TheExodusEncounter\Items\ExodusChest.cs" />
     <Compile Include="Quests\TheExodusEncounter\Items\ExodusSacrificalDagger.cs" />
