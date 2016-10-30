@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public AncientLichRenowned()
-            : base(AIType.AI_Mage)
+            : base(AIType.AI_NecroMage)
         {
             this.Name = "Ancient Lich";
             this.Title = "[Renowned]";

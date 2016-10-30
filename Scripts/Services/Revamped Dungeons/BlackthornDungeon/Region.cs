@@ -42,7 +42,7 @@ namespace Server.Engines.Blackthorn
                 if (m.Hidden)
                     m.RevealingAction();
 
-                if (m.LastMoveTime + 120000 < Core.TickCount)
+                if (m.Y > 2575 && m.LastMoveTime + 120000 < Core.TickCount)
                     MoveLocation(m);
             }
         }
@@ -90,9 +90,18 @@ namespace Server.Engines.Blackthorn
 
             return type > TravelCheckType.Mark;
         }
+
+        public override void OnDeath(Mobile m)
+        {
+            if (m is BaseCreature && this.Map == Map.Trammel && InvasionController.TramInstance != null)
+                InvasionController.TramInstance.OnDeath(m as BaseCreature);
+
+            if(m is BaseCreature && this.Map == Map.Felucca && InvasionController.FelInstance != null)
+                InvasionController.FelInstance.OnDeath(m as BaseCreature);
+        }
 	}
 
-    public class BlackthornCastle : BaseRegion
+    public class BlackthornCastle : GuardedRegion
     {
         public static readonly Point3D[] StableLocs = new Point3D[] { new Point3D(1510, 1543, 25), 
             new Point3D(1516, 1542, 25), new Point3D(1520, 1542, 25), new Point3D(1525, 1542, 25) };

@@ -169,6 +169,41 @@ namespace Server
                     totalDamage += totalDamage * quiver.DamageIncrease / 100;
             }
 
+            #region Evil Omen and Blood Oath
+            if (EvilOmenSpell.TryEndEffect(m))
+            {
+                totalDamage = (int)(totalDamage * 1.25);
+            }
+
+            if (from != null)
+            {
+                Mobile oath = BloodOathSpell.GetBloodOath(from);
+
+                /* Per EA's UO Herald Pub48 (ML):
+                * ((resist spellsx10)/20 + 10=percentage of damage resisted)
+                */
+
+                if (oath == m)
+                {
+                    totalDamage = (int)(totalDamage * 1.1);
+
+                    if (totalDamage > 35 && from is PlayerMobile) /* capped @ 35, seems no expansion */
+                    {
+                        totalDamage = 35;
+                    }
+
+                    if (Core.ML)
+                    {
+                        from.Damage((int)(totalDamage * (1 - (((from.Skills.MagicResist.Value * .5) + 10) / 100))), m);
+                    }
+                    else
+                    {
+                        from.Damage(totalDamage, m);
+                    }
+                }
+            }
+            #endregion
+
             #region Dragon Barding
             if ((from == null || !from.Player) && m.Player && m.Mount is SwampDragon)
             {

@@ -5,6 +5,8 @@ namespace Server.Spells.Seventh
 {
     public class ManaVampireSpell : MagerySpell
     {
+        public override bool CanDamageItems { get { return false; } }
+
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Mana Vampire", "Ort Sanct",
             221,

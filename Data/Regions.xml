@@ -2022,12 +2022,12 @@
 			<rect x="528" y="376" width="96" height="88" />
 			<go x="568" y="430" z="41" />
 		</region>
-		<region priority="50" name="Ver Lor Reg">
+		<region type="DungeonRegion" priority="50" name="Ver Lor Reg">
 			<rect x="824" y="552" width="32" height="176" />
 			<rect x="752" y="576" width="72" height="128" />
 			<rect x="856" y="576" width="48" height="128" />
 			<rect x="904" y="624" width="24" height="32" />
-			<go x="840" y="571" z="0" />			
+			<go x="840" y="571" z="0" />
 		</region>
 		<region priority="50" name="Pormir Harm">
 			<rect x="736" y="480" width="32" height="24" />

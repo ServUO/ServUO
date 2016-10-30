@@ -6,6 +6,8 @@ namespace Server.Spells.Fourth
 {
     public class ManaDrainSpell : MagerySpell
     {
+        public override bool CanDamageItems { get { return false; } }
+
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Mana Drain", "Ort Rel",
             215,

@@ -61,7 +61,7 @@ namespace Server.Engines.Quests
     {
         public PuttingThePiecesTogetherQuest()
         {
-            AddObjective(new ObtainObjective(typeof (TatteredAncientScroll), "Tattered Ancient Scrolls", 5, 0x2F5F));
+            AddObjective(new ObtainObjective(typeof(TatteredAncientScroll), "Tattered Ancient Scrolls", 5, 0x1437));
 
             AddReward(new BaseReward(typeof (DustyMuseumBag), 1112994));
             AddReward(new BaseReward("Loyalty Rating"));
@@ -113,7 +113,7 @@ namespace Server.Engines.Quests
     {
         public YeOldeGargishQuest()
         {
-            AddObjective(new ObtainObjective(typeof (UntransTome), "Untranslated Ancient Tome", 1, 0xEFA));
+            AddObjective(new ObtainObjective(typeof(UntranslatedAncientTome), "Untranslated Ancient Tome", 1, 0xEFA));
 
             AddReward(new BaseReward(typeof (BulgingMuseumBag), 1112995));
             AddReward(new BaseReward("Loyalty Rating"));

@@ -90,7 +90,7 @@ namespace Server.Spells.Seventh
             this.FinishSequence();
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             private readonly MassDispelSpell m_Owner;
             public InternalTarget(MassDispelSpell owner)

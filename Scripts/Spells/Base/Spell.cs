@@ -58,6 +58,8 @@ namespace Server.Spells
 		//the possibility of stacking 'em.  Note that a MA & an Explosion will stack, but
 		//of course, two MA's won't.
 
+        public virtual bool CanDamageItems { get { return true; } }
+
 		private static readonly Dictionary<Type, DelayedDamageContextWrapper> m_ContextTable =
 			new Dictionary<Type, DelayedDamageContextWrapper>();
 
@@ -1116,7 +1118,7 @@ namespace Server.Spells
 
 		public bool CheckHSequence(Mobile target)
 		{
-			if (!target.Alive)
+			if (!target.Alive || (!CanDamageItems && target is DamagePlaceholder))
 			{
 				m_Caster.SendLocalizedMessage(501857); // This spell won't work on that!
 				return false;

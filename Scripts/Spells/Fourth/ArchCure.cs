@@ -170,7 +170,7 @@ namespace Server.Spells.Fourth
             return false;
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             private readonly ArchCureSpell m_Owner;
             public InternalTarget(ArchCureSpell owner)

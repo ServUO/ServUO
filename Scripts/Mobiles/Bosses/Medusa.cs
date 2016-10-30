@@ -332,7 +332,12 @@ namespace Server.Mobiles
             if ((target is BaseCreature && ((BaseCreature)target).SummonMaster != this) || CanBeHarmful(target))
             {
                 if (CheckBlockGaze(target))
-                    target.SendLocalizedMessage(1112599); //Your Gorgon Lens deflect Medusa's petrifying gaze!
+                {
+                    if (GorgonLense.TotalCharges(target) == 0)
+                        target.SendLocalizedMessage(1112600); // Your lenses crumble. You are no longer protected from Medusa's gaze!
+                    else
+                        target.SendLocalizedMessage(1112599); //Your Gorgon Lens deflect Medusa's petrifying gaze!
+                }
                 else
                 {
                     BaseCreature clone = new MedusaClone(target);
@@ -367,7 +372,7 @@ namespace Server.Mobiles
                     else
                         target.SendLocalizedMessage(1112768); // You have been turned to stone!!!
 
-                    new GazeTimer(target, clone, this).Start();
+                    new GazeTimer(target, clone, this, Utility.RandomMinMax(5, 10)).Start();
                     m_GazeDelay = DateTime.Now + TimeSpan.FromSeconds(Utility.RandomMinMax(45, 75));
 
                     m_Helpers.Add(clone);
@@ -583,8 +588,8 @@ namespace Server.Mobiles
             private Medusa m_Medusa;
             private int m_Count;
 
-            public GazeTimer(Mobile m, Mobile mc, Medusa medusa)
-                : base(TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(20))
+            public GazeTimer(Mobile m, Mobile mc, Medusa medusa, int duration)
+                : base(TimeSpan.FromSeconds(duration), TimeSpan.FromSeconds(duration))
             {
                 target = m;
                 clone = mc;
@@ -752,9 +757,6 @@ namespace Server.Mobiles
         {
             if (Frozen)
             {
-                //if (Core.SA)
-                //from.Send(new UpdateStatueAnimationSA(this, 31, 5));
-                //else
                 from.Send(new UpdateStatueAnimation(this, 1, 31, 5));
             }
         }

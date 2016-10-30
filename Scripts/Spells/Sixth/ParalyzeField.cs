@@ -91,6 +91,9 @@ namespace Server.Spells.Sixth
             private Timer m_Timer;
             private Mobile m_Caster;
             private DateTime m_End;
+
+            public Mobile Caster { get { return m_Caster; } }
+
             public InternalItem(Mobile caster, int itemID, Point3D loc, Map map, TimeSpan duration)
                 : base(itemID)
             {
@@ -222,7 +225,7 @@ namespace Server.Spells.Sixth
             }
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             private readonly ParalyzeFieldSpell m_Owner;
             public InternalTarget(ParalyzeFieldSpell owner)
