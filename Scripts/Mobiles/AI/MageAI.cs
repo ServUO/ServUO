@@ -68,7 +68,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return (this.m_Mobile is BaseVendor || this.m_Mobile is BaseEscortable || this.m_Mobile is Changeling);
+                return m_Mobile.UseSmartAI;
             }
         }
 

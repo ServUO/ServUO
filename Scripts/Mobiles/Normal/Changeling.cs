@@ -87,6 +87,9 @@ namespace Server.Mobiles
                 return 0;
             }
         }
+
+        public override bool UseSmartAI { get { return true; } }
+
         public override bool ShowFameTitle
         {
             get

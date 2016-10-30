@@ -1369,6 +1369,7 @@ namespace Server.Mobiles
         }
 
         public virtual bool HoldSmartSpawning { get { return IsParagon; } }
+        public virtual bool UseSmartAI { get { return false; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual int DamageMin { get { return m_DamageMin; } set { m_DamageMin = value; } }

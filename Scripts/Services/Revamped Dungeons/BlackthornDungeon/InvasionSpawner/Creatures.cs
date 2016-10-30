@@ -53,6 +53,8 @@ namespace Server.Engines.Blackthorn
             return null;
         }
 
+        public override bool UseSmartAI { get { return true; } }
+
         public override bool HasAura { get { return true; } }
         public override TimeSpan AuraInterval { get { return TimeSpan.FromSeconds(2); } }
         public override int AuraRange { get { return 3; } }
