@@ -135,7 +135,7 @@ namespace Server.Mobiles
                 c.AddItem(new TatteredAncientScroll());
 
             if (Utility.RandomBool())
-                c.AddItem(new UntransTome());
+                c.AddItem(new UntranslatedAncientTome());
 
             if (Utility.RandomBool())
                 c.AddItem(new SpiderCarapace());

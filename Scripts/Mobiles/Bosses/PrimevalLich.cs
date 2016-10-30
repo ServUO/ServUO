@@ -11,7 +11,7 @@ namespace Server.Mobiles
         private DateTime m_NextDiscordTime;
         [Constructable]
         public PrimevalLich()
-            : base(AIType.AI_Mage)
+            : base(AIType.AI_NecroMage)
         {
             this.Name = "The Primeval Lich";
             this.Body = 830;

@@ -8,6 +8,8 @@ namespace Server.Items
 {
     public class ExodusTomeAltar : PeerlessExodusAltar
     {
+        public static ExodusTomeAltar Altar { get; set; }
+
         private Item m_ExodusAlterAddon;
 
         [Constructable]
@@ -38,6 +40,9 @@ namespace Server.Items
 
             if (this.m_ExodusAlterAddon != null)
                 this.m_ExodusAlterAddon.Delete();
+
+            if (Altar != null)
+                Altar = null;
         }
 
         public override void OnMapChange()

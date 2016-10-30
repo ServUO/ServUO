@@ -60,7 +60,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.05 > Utility.RandomDouble())
+            if (0.05 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
 
@@ -178,7 +178,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.15 > Utility.RandomDouble())
+            if (0.15 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
 
@@ -271,7 +271,7 @@ namespace Server.Mobiles
             if (Wall != null)
                 Wall.OnTrollKilled();
 
-            if (0.10 > Utility.RandomDouble())
+            if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
 
@@ -338,7 +338,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.2 > Utility.RandomDouble())
+            if (0.2 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
 
@@ -397,7 +397,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.08 > Utility.RandomDouble())
+            if (0.08 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
 
@@ -464,7 +464,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.08 > Utility.RandomDouble())
+            if (0.08 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
 
@@ -527,7 +527,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.10 > Utility.RandomDouble())
+            if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
 
@@ -589,7 +589,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.10 > Utility.RandomDouble())
+            if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
 
@@ -674,7 +674,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 			
-            if(0.33 > Utility.RandomDouble())
+            if(0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }*/
 
@@ -755,7 +755,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.33 > Utility.RandomDouble())
+            if (0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(4));
         }
 
@@ -970,7 +970,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.33 > Utility.RandomDouble())
+            if (0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(5));
         }
 
@@ -1107,7 +1107,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.33 > Utility.RandomDouble())
+            if (0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(3));
         }
 
@@ -1170,7 +1170,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.33 > Utility.RandomDouble())
+            if (0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(3));
         }
 
@@ -1317,7 +1317,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.33 > Utility.RandomDouble())
+            if (0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(5));
         }
 
@@ -1457,7 +1457,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.33 > Utility.RandomDouble())
+            if (0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(5));
         }
 
@@ -1544,7 +1544,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.33 > Utility.RandomDouble())
+            if (0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(5));
         }
 
@@ -1616,7 +1616,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.10 > Utility.RandomDouble())
+            if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
 
@@ -1679,7 +1679,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.10 > Utility.RandomDouble())
+            if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(5));
         }
 
@@ -1743,7 +1743,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.10 > Utility.RandomDouble())
+            if (0.10 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(5));
         }
 
@@ -1793,7 +1793,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.08 > Utility.RandomDouble())
+            if (0.08 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal());
         }
 

@@ -1313,6 +1313,9 @@ namespace Server.Network
 						else if (serial.IsItem)
 						{
 							toTarget = World.FindItem(serial);
+
+                            if (toTarget is IDamageableItem && ((IDamageableItem)toTarget).Link != null && (t.Flags & TargetFlags.Harmful) != 0)
+                                toTarget = ((IDamageableItem)toTarget).Link;
 						}
 						else
 						{

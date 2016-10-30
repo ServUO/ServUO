@@ -80,7 +80,8 @@ namespace Server.Mobiles
 		ToggleCutReeds = 0x02000000,
 		MechanicalLife = 0x04000000,
         HumilityHunt = 0x08000000,
-        ToggleCutTopiaries = 0x10000000
+        ToggleCutTopiaries = 0x10000000,
+        HasValiantStatReward = 0x20000000
     }
 
 	public enum NpcGuild
@@ -392,22 +393,8 @@ namespace Server.Mobiles
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool HasStatReward { get { return GetFlag(PlayerFlag.HasStatReward); } set { SetFlag(PlayerFlag.HasStatReward, value); } }
 
-        /*#region QueensLoyaltySystem
-        public static readonly int Noble = 10000;
-
-		private long m_Exp; // Experience at the current Experience Level
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public long Exp
-		{
-			get { return m_Exp; }
-			set
-			{
-				m_Exp = value;
-				InvalidateProperties();
-			}
-		}
-		#endregion*/
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool HasValiantStatReward { get { return GetFlag(PlayerFlag.HasValiantStatReward); } set { SetFlag(PlayerFlag.HasValiantStatReward, value); } }
 
 		#region Plant system
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -3557,38 +3544,18 @@ namespace Server.Mobiles
 			SendToStaffMessage(from, String.Format(format, args));
 		}
 
-		public override void Damage(int amount, Mobile from)
+        public override void Damage(int amount, Mobile from)
+        {
+            Damage(amount, from, false, false);
+        }
+
+        public override void Damage(int amount, Mobile from, bool informMount)
+        {
+            Damage(amount, from, informMount, false);
+        }
+
+        public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
 		{
-			if (EvilOmenSpell.TryEndEffect(this))
-			{
-				amount = (int)(amount * 1.25);
-			}
-
-			Mobile oath = BloodOathSpell.GetBloodOath(from);
-
-			/* Per EA's UO Herald Pub48 (ML):
-			* ((resist spellsx10)/20 + 10=percentage of damage resisted)
-			*/
-
-			if (oath == this)
-			{
-				amount = (int)(amount * 1.1);
-
-				if (amount > 35 && from is PlayerMobile) /* capped @ 35, seems no expansion */
-				{
-					amount = 35;
-				}
-
-				if (Core.ML)
-				{
-					from.Damage((int)(amount * (1 - (((from.Skills.MagicResist.Value * .5) + 10) / 100))), this);
-				}
-				else
-				{
-					from.Damage(amount, this);
-				}
-			}
-
 			if (from != null && Talisman is BaseTalisman)
 			{
 				BaseTalisman talisman = (BaseTalisman)Talisman;
@@ -3604,7 +3571,7 @@ namespace Server.Mobiles
 				}
 			}
 
-			base.Damage(amount, from);
+			base.Damage(amount, from, informMount, checkDisrupt);
 		}
 
 		#region Poison

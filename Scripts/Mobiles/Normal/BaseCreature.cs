@@ -1232,23 +1232,8 @@ namespace Server.Mobiles
         {
             int oldHits = Hits;
 
-            if (Core.AOS && !Summoned && Controlled && 0.2 > Utility.RandomDouble())
-            {
-                amount = (int)(amount * BonusPetDamageScalar);
-            }
-
-            if (EvilOmenSpell.TryEndEffect(this))
-            {
-                amount = (int)(amount * 1.25);
-            }
-
-            Mobile oath = BloodOathSpell.GetBloodOath(from);
-
-            if (oath == this)
-            {
-                amount = (int)(amount * 1.1);
-                from.Damage(amount, from);
-            }
+            if (Core.AOS && this.Controlled && from is BaseCreature && !((BaseCreature)from).Controlled && !((BaseCreature)from).Summoned)
+                amount = (int)(amount * ((BaseCreature)from).BonusPetDamageScalar);
 
             base.Damage(amount, from, informMount, checkDisrupt);
 
@@ -3826,7 +3811,7 @@ namespace Server.Mobiles
 
             m_IdleReleaseTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(15, 25));
 
-            if (Body.IsHuman && this.Mounted == false)
+            if (Body.IsHuman)
             {
                 switch (Utility.Random(2))
                 {
@@ -6572,22 +6557,23 @@ namespace Server.Mobiles
 
             if (Combatant != null && CanDiscord && tc - m_NextDiscord >= 0 && 0.33 > Utility.RandomDouble())
             {
+                Console.WriteLine("Checking Discord");
                 if (DoDiscord())
                     m_NextDiscord = tc + (int)DiscordInterval.TotalMilliseconds;
                 else
                     m_NextDiscord = tc + (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
             }
-
-            if (Combatant != null && CanPeace && tc - m_NextPeace >= 0 && 0.33 > Utility.RandomDouble())
+            else if (Combatant != null && CanPeace && tc - m_NextPeace >= 0 && 0.33 > Utility.RandomDouble())
             {
+                Console.WriteLine("Checking peace");
                 if (DoPeace())
                     m_NextPeace = tc + (int)PeaceInterval.TotalMilliseconds;
                 else
                     m_NextPeace = tc + (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
             }
-
-            if (Combatant != null && CanProvoke && tc - m_NextProvoke >= 0 && 0.33 > Utility.RandomDouble())
+            else if (Combatant != null && CanProvoke && tc - m_NextProvoke >= 0 && 0.33 > Utility.RandomDouble())
             {
+                Console.WriteLine("Checking provok");
                 if (DoProvoke())
                     m_NextProvoke = tc + (int)ProvokeInterval.TotalMilliseconds;
                 else

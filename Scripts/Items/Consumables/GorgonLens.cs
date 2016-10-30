@@ -71,7 +71,7 @@ namespace Server.Items
                             from.SendGump(new GorgonLenseWarningGump(this, armor));
                         else
                         {
-                            armor.GorgonLenseCharges += Amount;
+                            armor.GorgonLenseCharges += Utility.RandomMinMax(28, 40);
                             armor.GorgonLenseType = LenseType;
                             from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                             Delete();
@@ -89,7 +89,7 @@ namespace Server.Items
                             from.SendGump(new GorgonLenseWarningGump(this, j));
                         else
                         {
-                            j.GorgonLenseCharges += Amount;
+                            j.GorgonLenseCharges += Utility.RandomMinMax(28, 40);
                             j.GorgonLenseType = LenseType;
                             from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                             Delete();
@@ -107,7 +107,7 @@ namespace Server.Items
                             from.SendGump(new GorgonLenseWarningGump(this, c));
                         else
                         {
-                            c.GorgonLenseCharges += Amount;
+                            c.GorgonLenseCharges += Utility.RandomMinMax(28, 40);
                             c.GorgonLenseType = LenseType;
                             from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                             Delete();
@@ -152,6 +152,22 @@ namespace Server.Items
 
             Hue = resHue;
             return quality;
+        }
+
+        public static int TotalCharges(Mobile m)
+        {
+            int charges = 0;
+            m.Items.ForEach(i =>
+            {
+                if (i is BaseArmor)
+                    charges += ((BaseArmor)i).GorgonLenseCharges;
+                else if (i is BaseJewel)
+                    charges += ((BaseJewel)i).GorgonLenseCharges;
+                else if (i is BaseClothing)
+                    charges += ((BaseClothing)i).GorgonLenseCharges;
+            });
+
+            return charges;
         }
 
         public GorgonLense(Serial serial)

@@ -1,20 +1,3 @@
-/*                                                             .---.
-/  .  \
-|\_/|   |
-|   |  /|
-.----------------------------------------------------------------' |
-/  .-.                                                              |
-|  /   \         Contribute To The Orbsydia SA Project               |
-| |\_.  |                                                            |
-|\|  | /|                        By Lotar84                          |
-| `---' |                                                            |
-|       |       (Orbanised by Orb SA Core Development Team)          | 
-|       |                                                           /
-|       |----------------------------------------------------------'
-\       |
-\     /
-`---'
-*/
 using System;
 using Server.Items;
 
@@ -25,7 +8,7 @@ namespace Server.Engines.Quests
         public PinkistheNewBlack()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SearedFireAntGoo), "Seared Fire Ant Goo", 5, 0x2f5f));
+            this.AddObjective(new ObtainObjective(typeof(SearedFireAntGoo), "Seared Fire Ant Goo", 5, 0x0976));
             this.AddObjective(new ObtainObjective(typeof(PileofInspectedAgapiteIngots), "Pile of Inspected Agapite Ingots", 1, 0x1BEA));
             
             this.AddReward(new BaseReward(typeof(ElixirofAgapiteConversion), "Elixir of Agapite Conversion"));

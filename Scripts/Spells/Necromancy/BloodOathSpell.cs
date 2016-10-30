@@ -7,6 +7,8 @@ namespace Server.Spells.Necromancy
 {
     public class BloodOathSpell : NecromancerSpell
     {
+        public override bool CanDamageItems { get { return false; } }
+
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Blood Oath", "In Jux Mani Xen",
             203,
