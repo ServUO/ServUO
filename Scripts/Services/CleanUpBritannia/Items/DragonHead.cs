@@ -156,18 +156,19 @@ namespace Server.Items
 
                 this.AddBackground(12, 13, 271, 318, 9200);
                 this.AddImageTiled(22, 53, 250, 12, 5055);
-                this.AddImageTiled(22, 282, 250, 12, 5055);
-                this.AddAlphaRegion(20, 23, 252, 295);
+                this.AddImageTiled(22, 292, 250, 12, 5055);
+                this.AddImageTiled(20, 23, 252, 300, 2624);
+                this.AddAlphaRegion(20, 23, 252, 300);
 
                 this.AddButton(22, 294, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
                 this.AddHtmlLocalized(58, 296, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
 
                 this.AddHtmlLocalized(23, 31, 273, 20, 1080392, 0x7FFF, false, false); // Select your choice from the menu below.
 
-                AddButton(30, 77, 2117, 2118, 0x2235, GumpButtonType.Reply, 0);
-                AddLabel(56, 74, 0, @"Dragon Head (East)");
-                AddButton(30, 106, 2117, 2118, 0x2234, GumpButtonType.Reply, 0);
-                AddLabel(56, 103, 0, @"Dragon Head (Southt)");
+                this.AddButton(30, 77, 2117, 2118, 0x2235, GumpButtonType.Reply, 0);
+                this.AddHtmlLocalized(56, 74, 150, 20, 1080207, 0x7FFF, false, false); // Dragon Head (East)
+                this.AddButton(30, 106, 2117, 2118, 0x2234, GumpButtonType.Reply, 0);
+                this.AddHtmlLocalized(56, 103, 150, 20, 1080208, 0x7FFF, false, false); // Dragon Head (South)
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
@@ -177,7 +178,7 @@ namespace Server.Items
 
                 Mobile m = sender.Mobile;
 
-                if (info.ButtonID == 1 || info.ButtonID == 2)
+                if (info.ButtonID == 0x2235 || info.ButtonID == 0x2234)
                     m.Target = new InternalTarget(this.m_Head, info.ButtonID);
             }
         }
@@ -230,16 +231,16 @@ namespace Server.Items
                                 }
                                 else if (north || west)
                                 {
-                                    DragonHead shield = null;
+                                    DragonHead head = null;
 
                                     if (north)
-                                        shield = new DragonHead(0x2234);
+                                        head = new DragonHead(0x2234);
                                     else if (west)
-                                        shield = new DragonHead(this.m_ItemID);
+                                        head = new DragonHead(this.m_ItemID);
 
-                                    house.Addons.Add(shield);
+                                    house.Addons.Add(head);
 
-                                    shield.MoveToWorld(p3d, map);
+                                    head.MoveToWorld(p3d, map);
 
                                     this.m_Head.Delete();
                                 }
@@ -293,19 +294,19 @@ namespace Server.Items
                     if (this.m_Head == null || this.m_Head.Deleted || this.m_House == null)
                         return;
 
-                    DragonHead shield = null;
+                    DragonHead head = null;
 
                     if (info.ButtonID == (int)Buttons.East)
-                        shield = new DragonHead(this.m_ItemID);
+                        head = new DragonHead(this.m_ItemID);
 
                     if (info.ButtonID == (int)Buttons.South)
-                        shield = new DragonHead(0x2234);
+                        head = new DragonHead(0x2234);
 
-                    if (shield != null)
+                    if (head != null)
                     {
-                        this.m_House.Addons.Add(shield);
+                        this.m_House.Addons.Add(head);
 
-                        shield.MoveToWorld(this.m_Location, sender.Mobile.Map);
+                        head.MoveToWorld(this.m_Location, sender.Mobile.Map);
 
                         this.m_Head.Delete();
                     }
