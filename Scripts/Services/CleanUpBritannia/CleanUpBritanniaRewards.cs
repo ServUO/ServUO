@@ -97,6 +97,11 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(FishermansKilt), 0x0408, 1023744, 0, 50000));
             Rewards.Add(new CollectionItem(typeof(FishermansArms), 0x0302, 1023744, 0, 50000));
             Rewards.Add(new CollectionItem(typeof(FishermansEarrings), 0x4213, 1023744, 0, 50000));
+
+            Rewards.Add(new CollectionItem(typeof(FirePitDeed), 0x29FD, 1023744, 0, 75000));
+            Rewards.Add(new CollectionItem(typeof(PresentationStone), 0x32F2, 1023744, 0, 75000));
+            Rewards.Add(new CollectionItem(typeof(Beehive), 0x091A, 1023744, 0, 80000));
+            Rewards.Add(new CollectionItem(typeof(ArcheryButteAddon), 0x100B, 1023744, 0, 80000));
         }
     }
 }
