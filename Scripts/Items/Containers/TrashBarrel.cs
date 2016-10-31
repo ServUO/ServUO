@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Server.Multis;
+using Server.ContextMenus;
+using Server.Mobiles;
+using Server.Engines.Points;
 
 namespace Server.Items
 {
@@ -61,10 +64,38 @@ namespace Server.Items
             }
         }
 
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            if (from is PlayerMobile)
+            {
+                list.Add(new AppraiseforCleanup(from));
+            }
+        }
+
+        private class AppraiseforCleanup : ContextMenuEntry
+        {
+            private readonly Mobile m_Mobile;
+            public AppraiseforCleanup(Mobile mobile)
+                : base(1151298, 2) //Appraise for Cleanup
+            {
+                this.m_Mobile = mobile;
+            }
+
+            public override void OnClick()
+            {
+                m_Mobile.Target = new AppraiseforCleanupTarget(m_Mobile);
+                m_Mobile.SendLocalizedMessage(1151299); //Target items to see how many Clean Up Britannia points you will receive for throwing them away. Continue targeting items until done, then press the ESC key to cancel the targeting cursor.
+            }
+        }
+
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
             if (!base.OnDragDrop(from, dropped))
                 return false;
+
+            dropped.CleanupOwner = from;
 
             if (this.TotalItems >= 50)
             {
@@ -89,6 +120,8 @@ namespace Server.Items
         {
             if (!base.OnDragDropInto(from, item, p))
                 return false;
+
+            item.CleanupOwner = from;
 
             if (this.TotalItems >= 50)
             {
@@ -134,6 +167,7 @@ namespace Server.Items
                     if (i >= items.Count)
                         continue;
 
+                    PointsSystem.CleanUpBritannia.AwardPoints(items[i].CleanupOwner, CleanUpBritanniaData.GetPoints(items[i]));
                     items[i].Delete();
                 }
             }

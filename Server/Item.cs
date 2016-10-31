@@ -762,9 +762,10 @@ namespace Server
 		private Timer m_HonestyTimer;
 		private DateTime m_HonestyPickup;
 		private Boolean m_HonestyTimerTicking;
-		#endregion
+        private Mobile m_CleanupOwner;
+        #endregion
 
-		private ItemDelta m_DeltaFlags;
+        private ItemDelta m_DeltaFlags;
 		private ImplFlag m_Flags;
 
 		#region Packet caches
@@ -1923,6 +1924,13 @@ namespace Server
 		}
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile CleanupOwner
+        {
+            get { return m_CleanupOwner; }
+            set { m_CleanupOwner = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
 		public string HonestyRegion
 		{
 			get { return m_HonestyRegion; }
@@ -2488,10 +2496,13 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(10); // version
+			writer.Write(11); // version
 
-			//version 10
-			writer.Write(m_HonestyPickup);
+            //version 11
+            writer.Write(m_CleanupOwner);
+
+            //version 10
+            writer.Write(m_HonestyPickup);
 			writer.Write(m_HonestyTimerTicking);
 			writer.Write(m_HonestyOwner);
 			writer.Write(m_HonestyRegion);
@@ -2870,10 +2881,16 @@ namespace Server
 			{
 				SetTempFlag(m_LockedDownFlag, value);
 				InvalidateProperties();
-			}
+
+                OnLockDownChange();
+            }
 		}
 
-		public bool IsSecure
+        public virtual void OnLockDownChange()
+        {
+        }
+
+        public bool IsSecure
 		{
 			get { return GetTempFlag(m_SecureFlag); }
 			set
@@ -2953,6 +2970,11 @@ namespace Server
 
 			switch (version)
 			{
+                case 11:
+                    {
+                        m_CleanupOwner = reader.ReadMobile();
+                        goto case 10;
+                    }
 				case 10:
 					{
 						m_HonestyPickup = reader.ReadDateTime();

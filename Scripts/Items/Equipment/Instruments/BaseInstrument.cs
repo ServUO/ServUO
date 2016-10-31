@@ -179,6 +179,34 @@ namespace Server.Items
             }
         }
 
+        public void RandomInstrument()
+        {
+            switch (Utility.Random(3))
+            {
+                case 0:
+                    {
+                        this.ItemID = 0xEB2;
+                        this.SuccessSound = 0x45;
+                        this.FailureSound = 0x46;
+                        break;
+                    }
+                case 1:
+                    {
+                        this.ItemID = 0xEB3;
+                        this.SuccessSound = 0x4C;
+                        this.FailureSound = 0x4D;
+                        break;
+                    }
+                default:
+                    {
+                        this.ItemID = 0xE9C;
+                        this.SuccessSound = 0x38;
+                        this.FailureSound = 0x39;
+                        break;
+                    }
+            }
+        }
+
         public void CheckReplenishUses()
         {
             this.CheckReplenishUses(true);
