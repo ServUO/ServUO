@@ -11,6 +11,7 @@ namespace Server.Spells.Mystic
 {
 	public class SleepSpell : MysticSpell
 	{
+        public override bool CanDamageItems { get { return false; } }
         public override SpellCircle Circle { get { return SpellCircle.Third; } }
 
 		private static SpellInfo m_Info = new SpellInfo(

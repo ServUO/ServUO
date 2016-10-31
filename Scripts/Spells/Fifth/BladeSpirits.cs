@@ -78,7 +78,7 @@ namespace Server.Spells.Fifth
             this.FinishSequence();
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             private BladeSpiritsSpell m_Owner;
             public InternalTarget(BladeSpiritsSpell owner)

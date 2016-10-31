@@ -2938,7 +2938,7 @@ namespace Server.Items
 
 		public virtual void AddBlood(Mobile attacker, Mobile defender, int damage)
 		{
-			if (damage > 0)
+			if (damage > 0 && !(defender is DamagePlaceholder))
 			{
 				new Blood().MoveToWorld(defender.Location, defender.Map);
 

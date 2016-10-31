@@ -130,7 +130,7 @@ namespace Server.Engines.CannedEvil
                 new Type[] { typeof(Pixie), typeof(ShadowWisp) },
                 new Type[] { typeof(Centaur), typeof(MLDryad) },
                 new Type[] { typeof(Satyr), typeof(CuSidhe) },
-                new Type[] { typeof(FerelTreefellow), typeof(RagingGrizzlyBear) }
+                new Type[] { typeof(FeralTreefellow), typeof(RagingGrizzlyBear) }
             }),
             new ChampionSpawnInfo("Corrupt", typeof(Ilhenir), new string[] { "Cleanser", "Expunger", "Depurator" }, new Type[][]
             { // Corrupt

@@ -8,7 +8,7 @@ using Server.ContextMenus;
 
 namespace Server.Items
 {
-    public abstract class PeerlessExodusAltar : Item
+    public abstract class PeerlessExodusAltar : BaseDecayingItem
     {
         public virtual TimeSpan DelayExit { get { return TimeSpan.FromMinutes(10); } }	
         public abstract BaseExodusPeerless Boss { get; }
@@ -16,11 +16,10 @@ namespace Server.Items
         private BaseExodusPeerless m_Peerless;
         private Point3D m_BossLocation;
         private Point3D m_TeleportDest;
-        private int m_Lifespan;
-        private Timer m_Timer;
 
-        public virtual int Lifespan { get { return 840; } }
-
+        public override int Lifespan { get { return 840; } }
+        public override bool UseSeconds { get { return false; } }
+		
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseExodusPeerless Peerless
         {
@@ -77,98 +76,11 @@ namespace Server.Items
             this.m_Fighters = new List<Mobile>();
             this.m_Pets = new Dictionary<Mobile, List<Mobile>>();            
             m_Rituals = new List<RitualArray>();
-
-            if (this.Lifespan > 0)
-            {
-                this.m_Lifespan = this.Lifespan;
-                this.StartTimer();
-            }
         }
 
         public PeerlessExodusAltar(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            if (this.Lifespan > 0)
-            {
-                TimeSpan t = TimeSpan.FromSeconds(this.m_Lifespan);
-                int minutes = t.Minutes;
-
-                if (minutes > 0)
-                    list.Add(string.Format("Lifespan: {0} {1}", minutes, minutes == 1 ? "minute" : "minutes"));
-                else
-                    list.Add(1072517, this.m_Lifespan.ToString()); // Lifespan: ~1_val~ seconds
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int TimeLeft
-        {
-            get
-            {
-                return this.m_Lifespan;
-            }
-            set
-            {
-                this.m_Lifespan = value;
-                this.InvalidateProperties();
-            }
-        }
-
-        public virtual void StartTimer()
-        {
-            if (this.m_Timer != null)
-                return;
-
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), new TimerCallback(Slice));
-            this.m_Timer.Priority = TimerPriority.OneSecond;
-        }
-
-        public virtual void StopTimerAltar()
-        {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
-
-            this.m_Timer = null;
-        }
-
-        public virtual void Slice()
-        {
-            this.m_Lifespan -= 10;
-
-            this.InvalidateProperties();
-
-            if (this.m_Lifespan <= 0)
-                this.Decay();
-        }
-
-        public virtual void Decay()
-        {
-            if (this.RootParent is Mobile)
-            {
-                Mobile parent = (Mobile)this.RootParent;
-
-                if (this.Name == null)
-                    parent.SendLocalizedMessage(1072515, "#" + this.LabelNumber); // The ~1_name~ expired...
-                else
-                    parent.SendLocalizedMessage(1072515, this.Name); // The ~1_name~ expired...
-
-                Effects.SendLocationParticles(EffectItem.Create(parent.Location, parent.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
-                Effects.PlaySound(parent.Location, parent.Map, 0x201);
-            }
-            else
-            {
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
-                Effects.PlaySound(this.Location, this.Map, 0x201);
-            }            
-
-            this.StopTimerAltar();
-            this.Delete();
         }
 
         private class BeginTheRitual : ContextMenuEntry

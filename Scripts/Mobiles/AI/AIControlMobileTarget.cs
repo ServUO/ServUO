@@ -12,7 +12,7 @@ namespace Server.Targets
         private readonly List<BaseAI> m_List;
         private readonly OrderType m_Order;
         private readonly BaseCreature m_Mobile;
-        
+
         public AIControlMobileTarget(BaseAI ai, OrderType order)
             : base(-1, false, (order == OrderType.Attack ? TargetFlags.Harmful : TargetFlags.None))
         {
@@ -38,6 +38,9 @@ namespace Server.Targets
 
         protected override void OnTarget(Mobile from, object o)
         {
+            if (o is DamageableItem)
+                o = ((DamageableItem)o).Link;
+
             if (o is Mobile)
             {
                 Mobile m = (Mobile)o;

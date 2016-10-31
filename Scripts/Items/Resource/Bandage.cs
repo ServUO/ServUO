@@ -451,11 +451,10 @@ namespace Server.Items
 				healing += EnhancedBandage.HealingBonus;
                 #endregion
 
-                #region Bandage Healing Bonus Items
-                Asclepius asclepius = m_Healer.FindItemOnLayer(Layer.TwoHanded) as Asclepius;
-                GargishAsclepius gargishasclepius = m_Healer.FindItemOnLayer(Layer.TwoHanded) as GargishAsclepius;
+                #region Exodus Items
+                Item item = m_Healer.FindItemOnLayer(Layer.TwoHanded);
 
-                if (asclepius != null || gargishasclepius != null)
+                if (item is Asclepius || item is GargishAsclepius)
                     healing += 15;
                 #endregion
 

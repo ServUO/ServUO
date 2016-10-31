@@ -6,6 +6,8 @@ namespace Server.Spells.Fourth
 {
     public class CurseSpell : MagerySpell
     {
+        public override bool CanDamageItems { get { return false; } }
+
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Curse", "Des Sanct",
             227,

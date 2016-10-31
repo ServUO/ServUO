@@ -102,4 +102,9 @@ namespace Server
 
 		ISpawner Spawner { get; set; }
 	}
+
+    public interface IDamageableItem : IEntity
+    {
+        Mobile Link { get; }
+    }
 }

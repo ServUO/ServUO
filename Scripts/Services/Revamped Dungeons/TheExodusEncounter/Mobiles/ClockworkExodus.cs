@@ -12,6 +12,8 @@ namespace Server.Mobiles
     [CorpseName("a clockwork exodus corpse")]
     public class ClockworkExodus : BaseExodusPeerless
     {
+        public static List<ClockworkExodus> Instances { get; set; }
+
         private static readonly Type[] m_Artifact = new Type[]
         {
             typeof(ScrollofValiantCommendation),
@@ -76,6 +78,11 @@ namespace Server.Mobiles
             this.VirtualArmor = 20;
 
             PackGold(10000, 60000);
+
+            if (Instances == null)
+                Instances = new List<ClockworkExodus>();
+
+            Instances.Add(this);
         }
 
         public override bool AlwaysMurderer { get { return true; } }
@@ -125,6 +132,10 @@ namespace Server.Mobiles
                     }
                 }
             }
+
+            if (Instances != null && Instances.Contains(this))
+                Instances.Remove(this);
+
             return true;
         }
 
@@ -237,6 +248,11 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (Instances == null)
+                Instances = new List<ClockworkExodus>();
+
+            Instances.Add(this);
         }
 
         private class GoldTimer : Timer

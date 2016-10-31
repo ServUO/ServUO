@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Mobiles
 {
     public class UntamedPetsCleaning
     {
-        #region Untamed pets cleaning
-
         public static void Initialize()
         {
             CleanUntamedPets();
@@ -17,22 +16,18 @@ namespace Server.Mobiles
         {
             List<Mobile> list = new List<Mobile>();
 
-            foreach (Mobile m in World.Mobiles.Values)
+            foreach (BaseCreature b in World.Mobiles.Values.OfType<BaseCreature>().Where(bc => bc.RemoveOnSave && !bc.Controlled && bc.ControlMaster == null))
             {
-                if (m is BaseCreature)
-                {
-                    BaseCreature bc = m as BaseCreature;
-
-                    if (bc.RemoveOnSave && !bc.Controlled && bc.ControlMaster == null)
-                        list.Add(bc);
-                }
+                list.Add(b);
             }
 
             for (int i = 0; i < list.Count; i++)
             {
                 list[i].Delete();
             }
+
+            list.Clear();
+            list.TrimExcess();
         }
-        #endregion
     }
 }

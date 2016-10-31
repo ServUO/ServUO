@@ -6,6 +6,8 @@ namespace Server.Spells.Necromancy
 {
     public class PainSpikeSpell : NecromancerSpell
     {
+        public override bool CanDamageItems { get { return false; } }
+
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Pain Spike", "In Sar",
             203,

@@ -9,6 +9,7 @@ namespace Server.Items
         private Timer m_Timer;
 
 		public virtual int Lifespan { get { return 0; } }
+        public virtual bool UseSeconds { get { return true; } }
 		
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft 
@@ -35,9 +36,32 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-			
+
             if (Lifespan > 0)
-                list.Add(1072517, m_Lifespan.ToString()); // Lifespan: ~1_val~ seconds
+            {
+                if (UseSeconds)
+                    list.Add(1072517, m_Lifespan.ToString()); // Lifespan: ~1_val~ seconds
+                else
+                {
+                    TimeSpan t = TimeSpan.FromSeconds(TimeLeft);
+
+                    int weeks = (int)t.Days / 7;
+                    int days = t.Days;
+                    int hours = t.Hours;
+                    int minutes = t.Minutes;
+
+                    if (weeks > 1)
+                        list.Add(1153092, (t.Days / 7).ToString()); // Lifespan: ~1_val~ weeks
+                    else if (days > 1)
+                        list.Add(1153091, t.Days.ToString()); // Lifespan: ~1_val~ days
+                    else if (hours > 1)
+                        list.Add(1153090, t.Hours.ToString()); // Lifespan: ~1_val~ hours
+                    else if (minutes > 1)
+                        list.Add(1153089, t.Minutes.ToString()); // Lifespan: ~1_val~ minutes
+                    else
+                        list.Add(1072517, t.Seconds.ToString()); // Lifespan: ~1_val~ seconds
+                }
+            }
         }
 		
         public virtual void StartTimer()
