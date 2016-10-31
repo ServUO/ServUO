@@ -344,6 +344,21 @@ namespace Server.Engines.CleanUpBritannia
             item.Movable = false;
             PackItem(item);
 
+            item = new FirePitDeed();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new PresentationStone();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new Beehive();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new ArcheryButteAddon();
+            item.Movable = false;
+            PackItem(item);
         }        
 
         public override void GetProperties(ObjectPropertyList list)
