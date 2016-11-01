@@ -84,6 +84,22 @@ namespace Server.Engines.CleanUpBritannia
             item.Movable = false;
             PackItem(item);
 
+            item = new Mushrooms1();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new Mushrooms2();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new Mushrooms3();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new Mushrooms4();
+            item.Movable = false;
+            PackItem(item);
+
             item = new NocturneEarrings();
             item.Movable = false;
             PackItem(item);
