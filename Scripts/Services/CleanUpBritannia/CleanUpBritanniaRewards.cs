@@ -111,7 +111,8 @@ namespace Server.Engines.CleanUpBritannia
 
             Rewards.Add(new CollectionItem(typeof(NovoBleue), 0x1086, 1023744, 1165, 150000));
             Rewards.Add(new CollectionItem(typeof(EtoileBleue), 0x108A, 1023744, 1165, 150000));
-
+            Rewards.Add(new CollectionItem(typeof(SoleilRouge), 0x1086, 1023744, 1166, 150000));
+            Rewards.Add(new CollectionItem(typeof(LuneRouge), 0x108A, 1023744, 1166, 150000));
 
             Rewards.Add(new CollectionItem(typeof(IntenseTealPigment), 0xEFF, 1023744, 2691, 250000));
             Rewards.Add(new CollectionItem(typeof(TyrianPurplePigment), 0xEFF, 1023744, 2716, 250000));

@@ -23,7 +23,8 @@ namespace Server
         Scout,
         Sorcerer,
 		Initiation,
-        Fisherman
+        Fisherman,
+        Luck2
     }
 
     public interface ISetItem

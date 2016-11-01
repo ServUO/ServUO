@@ -384,6 +384,14 @@ namespace Server.Engines.CleanUpBritannia
             item.Movable = false;
             PackItem(item);
 
+            item = new SoleilRouge();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new LuneRouge();
+            item.Movable = false;
+            PackItem(item);
+
             item = new IntenseTealPigment();
             item.Movable = false;
             PackItem(item);
