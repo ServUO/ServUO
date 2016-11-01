@@ -4,6 +4,7 @@ using Server.Multis;
 using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Engines.Points;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -153,13 +154,22 @@ namespace Server.Items
                 this.Destroy();
             }
         }
-
-        public void Empty(int message)
+        
+        public class CountArray
         {
+            public Mobile m { get; set; }
+
+            public double points { get; set; }
+        }
+        
+        public void Empty(int message)
+        {            
             List<Item> items = this.Items;
 
             if (items.Count > 0)
             {
+                List<CountArray> _list = new List<CountArray>();
+
                 this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, message, "");
 
                 for (int i = items.Count - 1; i >= 0; --i)
@@ -167,8 +177,22 @@ namespace Server.Items
                     if (i >= items.Count)
                         continue;
 
-                    PointsSystem.CleanUpBritannia.AwardPoints(items[i].CleanupOwner, CleanUpBritanniaData.GetPoints(items[i]));
+                    double checkpoint = CleanUpBritanniaData.GetPoints(items[i]);
+
+                    if (checkpoint != 0)
+                        _list.Add(new CountArray { m = items[i].CleanupOwner, points = checkpoint });
+
                     items[i].Delete();
+                }
+
+                if (_list.Any(x => x.m != null))
+                {
+                    foreach (var item in _list.Select(x => x.m).Distinct())
+                    {
+                        double point = _list.Where(x => x.m == item).Sum(x => x.points);
+                        item.SendLocalizedMessage(1151280, String.Format("{0}\t{1}", point.ToString(), _list.Count(r => r.m == item))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
+                        PointsSystem.CleanUpBritannia.AwardPoints(item, point);
+                    }
                 }
             }
 
