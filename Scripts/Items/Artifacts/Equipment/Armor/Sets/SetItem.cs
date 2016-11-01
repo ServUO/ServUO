@@ -53,6 +53,8 @@ namespace Server
                 attrs = ((BaseClothing)setItem).Attributes;
             else if (setItem is BaseQuiver)
                 attrs = ((BaseQuiver)setItem).Attributes;
+            else if (setItem is BaseJewel)
+                attrs = ((BaseJewel)setItem).Attributes;
             else
                 attrs = new AosAttributes(setItem as Item);
 

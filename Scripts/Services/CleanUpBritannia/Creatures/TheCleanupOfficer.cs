@@ -376,6 +376,14 @@ namespace Server.Engines.CleanUpBritannia
             item.Movable = false;
             PackItem(item);
 
+            item = new NovoBleue();
+            item.Movable = false;
+            PackItem(EtoileBleue);
+
+            item = new ArcheryButteAddon();
+            item.Movable = false;
+            PackItem(item);
+
             item = new IntenseTealPigment();
             item.Movable = false;
             PackItem(item);

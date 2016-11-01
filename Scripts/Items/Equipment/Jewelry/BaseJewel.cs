@@ -846,6 +846,12 @@ namespace Server.Items
             if (this.m_HitPoints >= 0 && this.m_MaxHitPoints > 0)
                 list.Add(1060639, "{0}\t{1}", this.m_HitPoints, this.m_MaxHitPoints); // durability ~1_val~ / ~2_val~
 
+            if (this.IsSetItem && !this.m_SetEquipped)
+            {
+                list.Add(1072378); // <br>Only when full set is present:				
+                SetHelper.GetSetProperties(list, this);
+            }
+
             if (m_ItemPower != ItemPower.None)
             {
                 if (m_ItemPower <= ItemPower.LegendaryArtifact)

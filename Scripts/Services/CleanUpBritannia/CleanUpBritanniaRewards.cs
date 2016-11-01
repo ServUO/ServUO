@@ -109,6 +109,10 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(Beehive), 0x091A, 1023744, 0, 80000));
             Rewards.Add(new CollectionItem(typeof(ArcheryButteAddon), 0x100B, 1023744, 0, 80000));
 
+            Rewards.Add(new CollectionItem(typeof(NovoBleue), 0x1086, 1023744, 1165, 150000));
+            Rewards.Add(new CollectionItem(typeof(EtoileBleue), 0x108A, 1023744, 1165, 150000));
+
+
             Rewards.Add(new CollectionItem(typeof(IntenseTealPigment), 0xEFF, 1023744, 2691, 250000));
             Rewards.Add(new CollectionItem(typeof(TyrianPurplePigment), 0xEFF, 1023744, 2716, 250000));
             Rewards.Add(new CollectionItem(typeof(MottledSunsetBluePigment), 0xEFF, 1023744, 2714, 250000));
