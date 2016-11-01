@@ -378,9 +378,9 @@ namespace Server.Engines.CleanUpBritannia
 
             item = new NovoBleue();
             item.Movable = false;
-            PackItem(EtoileBleue);
+            PackItem(item);
 
-            item = new ArcheryButteAddon();
+            item = new EtoileBleue();
             item.Movable = false;
             PackItem(item);
 
