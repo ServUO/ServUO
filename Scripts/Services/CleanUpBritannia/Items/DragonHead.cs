@@ -154,10 +154,10 @@ namespace Server.Items
 
                 this.AddPage(0);
 
-                this.AddBackground(12, 13, 271, 318, 9200);
+                this.AddBackground(12, 13, 271, 318, 9200);                
+                this.AddImageTiled(20, 23, 252, 300, 2624);
                 this.AddImageTiled(22, 53, 250, 12, 5055);
                 this.AddImageTiled(22, 292, 250, 12, 5055);
-                this.AddImageTiled(20, 23, 252, 300, 2624);
                 this.AddAlphaRegion(20, 23, 252, 300);
 
                 this.AddButton(22, 294, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);

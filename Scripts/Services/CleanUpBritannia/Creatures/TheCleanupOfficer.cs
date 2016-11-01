@@ -359,6 +359,102 @@ namespace Server.Engines.CleanUpBritannia
             item = new ArcheryButteAddon();
             item.Movable = false;
             PackItem(item);
+
+            item = new IntenseTealPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new TyrianPurplePigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new MottledSunsetBluePigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new MossyGreenPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new VibrantOcherPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new OliveGreenPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new PolishedBronzePigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new GlossyBluePigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new BlackAndGreenPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new DeepVioletPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new AuraOfAmberPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new MurkySeagreenPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new ShadowyBluePigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new GleamingFuchsiaPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new GlossyFuchsiaPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new DeepBluePigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new VibranSeagreenPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new MurkyAmberPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new VibrantCrimsonPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new ReflectiveShadowPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new StarBluePigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new MotherOfPearlPigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new LiquidSunshinePigment();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new DarkVoidPigment();
+            item.Movable = false;
+            PackItem(item);
         }        
 
         public override void GetProperties(ObjectPropertyList list)

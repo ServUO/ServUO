@@ -2766,6 +2766,8 @@
     <Compile Include="Services\CleanUpBritannia\Items\BootsOfTheThrasher.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\ChaosTile.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\DragonHead.cs" />
+    <Compile Include="Services\CleanUpBritannia\Items\Pigments\CleanupPigments.cs" />
+    <Compile Include="Services\CleanUpBritannia\Items\Pigments\CompassionPigment.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\PresentationStone.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\FootedChestOfDrawers.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\CompassionVirtueTile.cs" />

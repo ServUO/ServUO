@@ -102,6 +102,31 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(PresentationStone), 0x32F2, 1023744, 0, 75000));
             Rewards.Add(new CollectionItem(typeof(Beehive), 0x091A, 1023744, 0, 80000));
             Rewards.Add(new CollectionItem(typeof(ArcheryButteAddon), 0x100B, 1023744, 0, 80000));
+
+            Rewards.Add(new CollectionItem(typeof(IntenseTealPigment), 0xEFF, 1023744, 2691, 250000));
+            Rewards.Add(new CollectionItem(typeof(TyrianPurplePigment), 0xEFF, 1023744, 2716, 250000));
+            Rewards.Add(new CollectionItem(typeof(MottledSunsetBluePigment), 0xEFF, 1023744, 2714, 250000));
+            Rewards.Add(new CollectionItem(typeof(MossyGreenPigment), 0xEFF, 1023744, 2684, 250000));
+            Rewards.Add(new CollectionItem(typeof(VibrantOcherPigment), 0xEFF, 1023744, 2725, 250000));
+            Rewards.Add(new CollectionItem(typeof(OliveGreenPigment), 0xEFF, 1023744, 2709, 250000));
+            Rewards.Add(new CollectionItem(typeof(PolishedBronzePigment), 0xEFF, 1023744, 1944, 250000));
+            Rewards.Add(new CollectionItem(typeof(GlossyBluePigment), 0xEFF, 1023744, 1916, 250000));
+            Rewards.Add(new CollectionItem(typeof(BlackAndGreenPigment), 0xEFF, 1023744, 1979, 250000));
+            Rewards.Add(new CollectionItem(typeof(DeepVioletPigment), 0xEFF, 1023744, 1929, 250000));
+            Rewards.Add(new CollectionItem(typeof(AuraOfAmberPigment), 0xEFF, 1023744, 1967, 250000));
+            Rewards.Add(new CollectionItem(typeof(MurkySeagreenPigment), 0xEFF, 1023744, 1992, 250000));
+            Rewards.Add(new CollectionItem(typeof(ShadowyBluePigment), 0xEFF, 1023744, 1960, 250000));
+            Rewards.Add(new CollectionItem(typeof(GleamingFuchsiaPigment), 0xEFF, 1023744, 1930, 250000));
+            Rewards.Add(new CollectionItem(typeof(GlossyFuchsiaPigment), 0xEFF, 1023744, 1919, 250000));
+            Rewards.Add(new CollectionItem(typeof(DeepBluePigment), 0xEFF, 1023744, 1939, 250000));
+            Rewards.Add(new CollectionItem(typeof(VibranSeagreenPigment), 0xEFF, 1023744, 1970, 250000));
+            Rewards.Add(new CollectionItem(typeof(MurkyAmberPigment), 0xEFF, 1023744, 1989, 250000));
+            Rewards.Add(new CollectionItem(typeof(VibrantCrimsonPigment), 0xEFF, 1023744, 1964, 250000));
+            Rewards.Add(new CollectionItem(typeof(ReflectiveShadowPigment), 0xEFF, 1023744, 1910, 250000));
+            Rewards.Add(new CollectionItem(typeof(StarBluePigment), 0xEFF, 1023744, 2723, 250000));
+            Rewards.Add(new CollectionItem(typeof(MotherOfPearlPigment), 0xEFF, 1023744, 2720, 250000));
+            Rewards.Add(new CollectionItem(typeof(LiquidSunshinePigment), 0xEFF, 1023744, 1923, 250000));
+            Rewards.Add(new CollectionItem(typeof(DarkVoidPigment), 0xEFF, 1023744, 2068, 250000));
         }
     }
 }
