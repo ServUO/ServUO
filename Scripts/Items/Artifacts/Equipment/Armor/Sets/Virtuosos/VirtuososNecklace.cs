@@ -10,6 +10,7 @@ namespace Server.Items
         #region ISetItem Members
         public override SetItem SetID { get { return SetItem.Virtuoso; } }
         public override int Pieces { get { return 4; } }
+        public override bool BardMasteryBonus { get { return true; } }
         #endregion
 
         public override int BasePhysicalResistance { get { return 3; } }

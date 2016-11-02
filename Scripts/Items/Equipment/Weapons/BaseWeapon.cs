@@ -4789,7 +4789,10 @@ namespace Server.Items
 			{
 				list.Add(1073491, Pieces.ToString()); // Part of a Weapon/Armor Set (~1_val~ pieces)
 
-				if (m_SetEquipped)
+                if (this.BardMasteryBonus)
+                    list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
+
+                if (m_SetEquipped)
 				{
 					list.Add(1073492); // Full Weapon/Armor Set Present			
 					GetSetProperties(list);
@@ -5722,7 +5725,17 @@ namespace Server.Items
 		public virtual SetItem SetID { get { return SetItem.None; } }
 		public virtual int Pieces { get { return 0; } }
 
-		public bool IsSetItem { get { return SetID != SetItem.None; } }
+        public virtual int Berserk { get { return 0; } }
+
+        public virtual bool BardMasteryBonus
+        {
+            get
+            {
+                return (this.SetID != SetItem.Virtuoso);
+            }
+        }
+
+        public bool IsSetItem { get { return SetID != SetItem.None; } }
 
 		private int m_SetHue;
 		private bool m_SetEquipped;

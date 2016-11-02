@@ -33,6 +33,8 @@ namespace Server
     {
         SetItem SetID { get; }
         int Pieces { get; }
+        int Berserk { get; }
+        bool BardMasteryBonus { get; }
         int SetHue { get; set; }
         bool IsSetItem { get; }
         bool SetEquipped { get; set; }
@@ -63,9 +65,17 @@ namespace Server
 
             bool full = setItem.SetEquipped;
             int pieces = setItem.Pieces;
+            int berserk = setItem.Berserk;
+            bool bardmasterybonus = setItem.BardMasteryBonus;
 
             int prop;
-	            		
+	        
+            if ((prop = setItem.Berserk) != 0)
+                list.Add(full ? 1151541 : 1151542, (full ? (berserk+1) : prop).ToString()); // Berserk ~1_VAL~ (total)
+
+            if (setItem.BardMasteryBonus)
+                list.Add(1151571); //Mastery Bonus Cooldown: 15 min.
+
             if ((prop = setItem.SetAttributes.RegenHits) != 0)
                 list.Add(full ? 1080244 : 1154369, (full ? prop + (attrs.RegenHits * pieces) : prop).ToString()); // hit point regeneration ~1_val~ (total)
 

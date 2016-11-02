@@ -10,6 +10,7 @@ namespace Server.Items
         #region ISetItem Members
         public override SetItem SetID { get { return SetItem.Bestial; } }
         public override int Pieces { get { return 4; } }
+        public override int Berserk { get { return 1; } }
         #endregion
 
         public override int BasePhysicalResistance { get { return 7; } }

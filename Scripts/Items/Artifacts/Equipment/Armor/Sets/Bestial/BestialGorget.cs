@@ -10,8 +10,9 @@ namespace Server.Items
 
         public override SetItem SetID{ get{ return SetItem.Bestial; } }
 		public override int Pieces{ get{ return 4; } }
-	
-		public override int BasePhysicalResistance{ get{ return 6; } }
+        public override int Berserk { get { return 1; } }
+
+        public override int BasePhysicalResistance{ get{ return 6; } }
 		public override int BaseFireResistance{ get{ return 20; } }
 		public override int BaseColdResistance{ get{ return 7; } }
 		public override int BasePoisonResistance{ get{ return 7; } }

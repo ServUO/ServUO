@@ -10,8 +10,9 @@ namespace Server.Items
 
         public override SetItem SetID{ get{ return SetItem.Virtuoso; } }
 		public override int Pieces{ get{ return 4; } }
-	
-		public override int BasePhysicalResistance{ get{ return 24; } }
+        public override bool BardMasteryBonus { get { return true; } }
+
+        public override int BasePhysicalResistance{ get{ return 24; } }
 		public override int BaseFireResistance{ get{ return 10; } }
 		public override int BaseColdResistance{ get{ return 9; } }
 		public override int BasePoisonResistance{ get{ return 10; } }

@@ -535,6 +535,9 @@ namespace Server.Items
             {
                 list.Add(1073491, this.Pieces.ToString()); // Part of a Weapon/Armor Set (~1_val~ pieces)
 
+                if (this.BardMasteryBonus)
+                    list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
+
                 if (this.m_SetEquipped)
                 {
                     list.Add(1073492); // Full Weapon/Armor Set Present					
@@ -815,6 +818,16 @@ namespace Server.Items
             get
             {
                 return 0;
+            }
+        }
+
+        public virtual int Berserk { get { return 0; } }
+
+        public virtual bool BardMasteryBonus
+        {
+            get
+            {
+                return (this.SetID != SetItem.Virtuoso);
             }
         }
 

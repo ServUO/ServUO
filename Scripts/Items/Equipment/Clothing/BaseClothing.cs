@@ -1139,6 +1139,9 @@ namespace Server.Items
                     list.Add(1073491, this.Pieces.ToString()); // Part of a Weapon/Armor Set (~1_val~ pieces)
                 else
                     list.Add(1072376, this.Pieces.ToString()); // Part of an Armor Set (~1_val~ pieces)
+                
+                if (this.BardMasteryBonus)
+                    list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
 
                 if (this.m_SetEquipped)
                 {
@@ -1961,6 +1964,22 @@ namespace Server.Items
                 return 0;
             }
         }
+        public virtual int Berserk
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        public virtual bool BardMasteryBonus
+        {
+            get
+            {
+                return (this.SetID != SetItem.Virtuoso);
+            }
+        }
+
         public virtual bool MixedSet
         {
             get
@@ -2139,6 +2158,9 @@ namespace Server.Items
 
             if (!this.m_SetEquipped)
             {
+                if (this.SetID == SetItem.Virtuoso)
+                    list.Add(1151571); // Mastery Bonus Cooldown: 15 min.
+
                 if (this.m_SetPhysicalBonus != 0)
                     list.Add(1072382, this.m_SetPhysicalBonus.ToString()); // physical resist +~1_val~%
 
