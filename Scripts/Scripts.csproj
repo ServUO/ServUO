@@ -580,6 +580,14 @@
     <Compile Include="Items\Artifacts\Decorative\MapOfTheKnownWorld.cs" />
     <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialNecklace.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialKilt.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialArms.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialGloves.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialGorget.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialHelm.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialEarrings.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialLegs.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Luck\LuneRouge.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Luck\SoleilRouge.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\JadeArmband.cs" />

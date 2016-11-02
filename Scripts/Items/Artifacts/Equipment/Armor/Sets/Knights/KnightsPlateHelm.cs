@@ -6,9 +6,9 @@ namespace Server.Items
 	public class KnightsPlateHelm : PlateHelm
 	{
 		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber{ get{ return 1080158; } } // Thank you Paradyme
-		
-		public override SetItem SetID{ get{ return SetItem.Knights; } }
+		public override int LabelNumber{ get{ return 1080158; } } // Knight's Plate Helm
+
+        public override SetItem SetID{ get{ return SetItem.Knights; } }
 		public override int Pieces{ get{ return 6; } }
 		
 		public override int BasePhysicalResistance{ get{ return 7; } }
@@ -22,23 +22,23 @@ namespace Server.Items
 		[Constructable]
 		public KnightsPlateHelm() : base()
 		{
-		
-			SetHue = 0x47E;	
-            Weight = 5;			
-			
-			Attributes.BonusHits = 1;
-			
-			SetAttributes.BonusHits = 6;
-			SetAttributes.RegenHits = 2;
-			SetAttributes.RegenMana = 2;			
-			SetAttributes.AttackChance = 10;
-			SetAttributes.DefendChance = 10;
-			
-			SetPhysicalBonus = 28;
-			SetFireBonus = 28;
-			SetColdBonus = 28;
-			SetPoisonBonus = 28;
-			SetEnergyBonus = 28;
+            this.Hue = 1150;
+            this.Weight = 5;
+
+            this.Attributes.BonusHits = 1;
+
+            this.SetAttributes.BonusHits = 6;
+            this.SetAttributes.RegenHits = 2;
+            this.SetAttributes.RegenMana = 2;
+            this.SetAttributes.AttackChance = 10;
+            this.SetAttributes.DefendChance = 10;
+
+            this.SetHue = 1150;
+            this.SetPhysicalBonus = 28;
+            this.SetFireBonus = 28;
+            this.SetColdBonus = 28;
+            this.SetPoisonBonus = 28;
+            this.SetEnergyBonus = 28;
 		}
 
 		public KnightsPlateHelm( Serial serial ) : base( serial )
