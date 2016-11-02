@@ -1976,7 +1976,7 @@ namespace Server.Items
         {
             get
             {
-                return (this.SetID != SetItem.Virtuoso);
+                return (this.SetID == SetItem.Virtuoso);
             }
         }
 
