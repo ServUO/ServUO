@@ -2768,162 +2768,169 @@ namespace Server.Mobiles
 
 				var eable = map.GetMobilesInRange(m_Mobile.Location, iRange);
 
-                foreach (Mobile m in eable)
-                {
-                    if (m.Deleted || m.Blessed)
-                    {
-                        continue;
-                    }
+				foreach (Mobile m in eable)
+				{
+					if (m.Deleted || m.Blessed)
+					{
+						continue;
+					}
 
-                    // Let's not target ourselves...
-                    if (m == m_Mobile || m is BaseFamiliar)
-                    {
-                        continue;
-                    }
+					// Let's not target ourselves...
+					if (m == m_Mobile || m is BaseFamiliar)
+					{
+						continue;
+					}
 
-                    // Dead targets are invalid.
-                    if (!m.Alive || m.IsDeadBondedPet)
-                    {
-                        continue;
-                    }
+					// Dead targets are invalid.
+					if (!m.Alive || m.IsDeadBondedPet)
+					{
+						continue;
+					}
 
-                    // Staff members cannot be targeted.
-                    if (m.IsStaff())
-                    {
-                        continue;
-                    }
+					// Staff members cannot be targeted.
+					if (m.IsStaff())
+					{
+						continue;
+					}
 
-                    // Does it have to be a player?
-                    if (bPlayerOnly && !m.Player)
-                    {
-                        continue;
-                    }
+					// Does it have to be a player?
+					if (bPlayerOnly && !m.Player)
+					{
+						continue;
+					}
 
-                    // Can't acquire a target we can't see.
-                    if (!m_Mobile.CanSee(m))
-                    {
-                        continue;
-                    }
+					// Can't acquire a target we can't see.
+					if (!m_Mobile.CanSee(m))
+					{
+						continue;
+					}
 
-                    if (m_Mobile.Summoned && m_Mobile.SummonMaster != null)
-                    {
-                        // If this is a summon, it can't target its controller.
-                        if (m == m_Mobile.SummonMaster)
-                            continue;
+					if (m_Mobile.Summoned && m_Mobile.SummonMaster != null)
+					{
+						// If this is a summon, it can't target its controller.
+						if (m == m_Mobile.SummonMaster)
+							continue;
 
-                        // It also must abide by harmful spell rules if the master is a player.
-                        if (m_Mobile.SummonMaster is PlayerMobile && !Server.Spells.SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
-                            continue;
+						// It also must abide by harmful spell rules if the master is a player.
+						if (m_Mobile.SummonMaster is PlayerMobile && !Server.Spells.SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
+							continue;
 
-                        // Players animated creatures cannot attack other players directly.
-                        if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
-                            continue;
-                    }
+						// Players animated creatures cannot attack other players directly.
+						if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
+							continue;
+					}
 
-                    // If we only want faction friends, make sure it's one.
-                    if (bFacFriend && !m_Mobile.IsFriend(m))
-                    {
-                        continue;
-                    }
-                    // I want an enemy.
-                    else
-                    {
-                        // If it's an enemy, make sure we can be harmful to it.
-                        if (!m_Mobile.CanBeHarmful(m, false))
-                        {
-                            continue;
-                        }
+					// If we only want faction friends
+					if (bFacFriend && !bFacFoe)
+					{
+						// Ignore anyone who's not a friend
+						if (!m_Mobile.IsFriend(m))
+						{
+							continue;
+						}
+					}
+					// Don't ignore friends we want to and can help
+					else if (!bFacFriend || !m_Mobile.IsFriend(m))
+					{
+						// Ignore anyone we can't hurt
+						if (!m_Mobile.CanBeHarmful(m, false))
+						{
+							continue;
+						}
 
-                        // If it's hostile, fight it.
-                        if (!IsHostile(m))
-                        {
-                            // Ignore anyone if I'm not looking for new enemies
-                            if (!bFacFoe)
-                            {
-                                continue;
-                            }
+						// Don't ignore hostile mobiles
+						if (!IsHostile(m))
+						{
+							// Ignore anyone if we don't want enemies
+							if (!bFacFoe)
+							{
+								continue;
+							}
 
-                            //Ignore anyone under EtherealVoyage
-                            if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
-                            {
-                                continue;
-                            }
+							//Ignore anyone under EtherealVoyage
+							if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
+							{
+								continue;
+							}
 
-                            // Ignore players with activated honor
-                            if (m is PlayerMobile && ((PlayerMobile)m).HonorActive && !(m_Mobile.Combatant == m))
-                            {
-                                continue;
-                            }
+							// Ignore players with activated honor
+							if (m is PlayerMobile && ((PlayerMobile)m).HonorActive && !(m_Mobile.Combatant == m))
+							{
+								continue;
+							}
 
-                            // Xmlspawner faction check
-                            // This check causes Players with higher mob faction ranking to have an increasing of being passed over.
-                            //if (!Server.Engines.XmlSpawner2.XmlMobFactions.CheckAcquire(this.m_Mobile, m))
-                            //continue;
+							// Xmlspawner faction check
+							// Ignore mob faction ranked players, more highly more often
+							//if (!Server.Engines.XmlSpawner2.XmlMobFactions.CheckAcquire(this.m_Mobile, m))
+							//continue;
 
-                            // If it's an enemy faction/ethic, fight it.
-                            bool bValid = (m_Mobile.GetFactionAllegiance(m) == BaseCreature.Allegiance.Enemy ||
-                                   m_Mobile.GetEthicAllegiance(m) == BaseCreature.Allegiance.Enemy);
+							// We want a faction/ethic enemy
+							bool bValid = (m_Mobile.GetFactionAllegiance(m) == BaseCreature.Allegiance.Enemy ||
+										  m_Mobile.GetEthicAllegiance(m) == BaseCreature.Allegiance.Enemy);
 
-                            // If it's a karma enemy, fight it.
-                            if (acqType == FightMode.Evil && !bValid)
-                            {
-                                if (m is BaseCreature && ((BaseCreature)m).Controlled && ((BaseCreature)m).ControlMaster != null)
-                                {
-                                    bValid = (((BaseCreature)m).ControlMaster.Karma < 0);
-                                }
-                                else
-                                {
-                                    bValid = (m.Karma < 0);
-                                }
-                            }
+							BaseCreature c = m as BaseCreature;
 
-                            // If it's a karma enemy, fight it.
-                            if (acqType == FightMode.Good && !bValid)
-                            {
-                                if (m is BaseCreature && ((BaseCreature)m).Controlled && ((BaseCreature)m).ControlMaster != null)
-                                {
-                                    bValid = (((BaseCreature)m).ControlMaster.Karma > 0);
-                                }
-                                else
-                                {
-                                    bValid = (m.Karma > 0);
-                                }
-                            }
+							// We want a karma enemy
+							if (acqType == FightMode.Evil && !bValid)
+							{
+								if (c != null && c.Controlled && c.ControlMaster != null)
+								{
+									bValid = (c.ControlMaster.Karma < 0);
+								}
+								else
+								{
+									bValid = (m.Karma < 0);
+								}
+							}
 
-                            if (!bValid)
-                            {
-                                // Passive FightMode, don't fight it.
-                                if (acqType == FightMode.Good || acqType == FightMode.Evil || acqType == FightMode.Aggressor)
-                                {
-                                    continue;
-                                }
-                                // Uncontrolled Summon, don't fight it.
-                                else if ((m is BaseCreature) && ((BaseCreature)m).Summoned)
-                                {
-                                    continue;
-                                }
-                                // Aggressive FightMode, fight Enemy.
-                                else if (m_Mobile.IsEnemy(m))
-                                {
-                                    bValid = true;
-                                }
-                                // No Valid Target, don't fight it.
-                                else
-                                {
-                                    continue;
-                                }
-                            }
-                        }
-                    }
+							// We want a karma enemy
+							if (acqType == FightMode.Good && !bValid)
+							{
+								if (c != null && c.Controlled && c.ControlMaster != null)
+								{
+									bValid = (c.ControlMaster.Karma > 0);
+								}
+								else
+								{
+									bValid = (m.Karma > 0);
+								}
+							}
 
-                    theirVal = m_Mobile.GetFightModeRanking(m, acqType, bPlayerOnly);
+							// Don't ignore valid targets
+							if (!bValid)
+							{
+								// Ignore anyone if we are a Passive FightMode
+								if (acqType == FightMode.Good || acqType == FightMode.Evil || acqType == FightMode.Aggressor)
+								{
+									continue;
+								}
+								// Ignore anyone if we are an Uncontrolled Summon
+								else if (c != null && (c.Summoned))
+								{
+									continue;
+								}
+								// We want an enemy (We are an Aggressive FightMode)
+								else if (m_Mobile.IsEnemy(m))
+								{
+									bValid = true;
+								}
+ 								// Ignore anyone else
+								else
+								{
+									continue;
+								}
+							}
+						}
+					}
 
-                    if (theirVal > val && m_Mobile.InLOS(m))
-                    {
-                        newFocusMob = m;
-                        val = theirVal;
-                    }
-                }
+					theirVal = m_Mobile.GetFightModeRanking(m, acqType, bPlayerOnly);
+
+					if (theirVal > val && m_Mobile.InLOS(m))
+					{
+						newFocusMob = m;
+						val = theirVal;
+					}
+				}
 
 				eable.Free();
 
