@@ -166,6 +166,8 @@ namespace Server.Items
         {            
             List<Item> items = this.Items;
 
+            List<Item> bags;
+
             if (items.Count > 0)
             {
                 List<CountArray> _list = new List<CountArray>();
@@ -176,6 +178,25 @@ namespace Server.Items
                 {
                     if (i >= items.Count)
                         continue;
+
+                    if (items[i] is BaseContainer)
+                    {
+                        bags = items[i].Items;
+
+                        if (bags.Count > 0)
+                        {
+                            for (int b = bags.Count - 1; b >= 0; --b)
+                            {
+                                if (b >= bags.Count)
+                                    continue;
+
+                                double checkbagpoint = CleanUpBritanniaData.GetPoints(bags[b]);
+
+                                if (checkbagpoint != 0)
+                                    _list.Add(new CountArray { m = items[i].CleanupOwner, points = checkbagpoint });
+                            }
+                        }
+                    }
 
                     double checkpoint = CleanUpBritanniaData.GetPoints(items[i]);
 

@@ -97,7 +97,7 @@ namespace Server.Engines.Points
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
-            from.SendLocalizedMessage(1151281, ((int)points).ToString()); // Your Clean Up Britannia point total is now ~1_VALUE~!
+            from.SendLocalizedMessage(1151281, CleanUpBritannia.GetPoints(from).ToString()); // Your Clean Up Britannia point total is now ~1_VALUE~!
         }
 
         public static Dictionary<Type, double> Entries;
