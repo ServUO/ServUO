@@ -3,12 +3,12 @@ using Server.Items;
 
 namespace Server.Items
 {
-    public class BestialNecklace : GargishNecklace, ISetItem
+    public class VirtuososNecklace : GargishNecklace, ISetItem
     {
-        public override int LabelNumber { get { return 1151544; } } // Bestial Necklace
+        public override int LabelNumber { get { return 1151556; } } // Virtuoso's Necklace
 
         #region ISetItem Members
-        public override SetItem SetID { get { return SetItem.Bestial; } }
+        public override SetItem SetID { get { return SetItem.Virtuoso; } }
         public override int Pieces { get { return 4; } }
         #endregion
 
@@ -21,14 +21,14 @@ namespace Server.Items
         public override int InitMaxHits { get { return 125; } }
 
         [Constructable]
-        public BestialNecklace()
+        public VirtuososNecklace()
         {
-            Hue = 2010;
+            this.Hue = 1374;
             this.Weight = 1;
-            SetHue = 2010;
+            this.SetHue = 1374;
         }
 
-        public BestialNecklace(Serial serial)
+        public VirtuososNecklace(Serial serial)
             : base(serial)
         {
         }

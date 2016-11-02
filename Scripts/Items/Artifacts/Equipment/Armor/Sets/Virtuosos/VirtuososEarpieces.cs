@@ -3,14 +3,14 @@ using Server.Items;
 
 namespace Server.Items
 {
-    public class BestialNecklace : GargishNecklace, ISetItem
+    public class VirtuososEarpieces : GargishEarrings, ISetItem
     {
-        public override int LabelNumber { get { return 1151544; } } // Bestial Necklace
+        public override int LabelNumber { get { return 1151557; } } // Virtuoso's Earpieces
 
         #region ISetItem Members
-        public override SetItem SetID { get { return SetItem.Bestial; } }
+        public override SetItem SetID { get { return SetItem.Virtuoso; } }
         public override int Pieces { get { return 4; } }
-        #endregion
+        #endregion        
 
         public override int BasePhysicalResistance { get { return 3; } }
         public override int BaseFireResistance { get { return 4; } }
@@ -21,14 +21,14 @@ namespace Server.Items
         public override int InitMaxHits { get { return 125; } }
 
         [Constructable]
-        public BestialNecklace()
+        public VirtuososEarpieces()
         {
-            Hue = 2010;
+            this.Hue = 1374;
             this.Weight = 1;
-            SetHue = 2010;
+            this.SetHue = 1374;
         }
 
-        public BestialNecklace(Serial serial)
+        public VirtuososEarpieces(Serial serial)
             : base(serial)
         {
         }

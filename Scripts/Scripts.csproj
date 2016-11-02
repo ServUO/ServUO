@@ -580,6 +580,14 @@
     <Compile Include="Items\Artifacts\Decorative\MapOfTheKnownWorld.cs" />
     <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososTunic.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososEarpieces.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososKidGloves.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososCollar.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososCap.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososKilt.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososArmbands.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososNecklace.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialNecklace.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialKilt.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialArms.cs" />
