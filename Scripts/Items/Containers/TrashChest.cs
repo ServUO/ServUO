@@ -3,6 +3,7 @@ using Server.Engines.Points;
 using Server.Mobiles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -81,9 +82,7 @@ namespace Server.Items
                 return false;
 
             this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
-
-            PointsSystem.CleanUpBritannia.AwardPoints(dropped.CleanupOwner, CleanUpBritanniaData.GetPoints(dropped));
-            dropped.Delete();
+            Empty();
 
             return true;
         }
@@ -94,9 +93,70 @@ namespace Server.Items
                 return false;
 
             this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
-            item.Delete();
+            Empty();
 
             return true;
+        }
+
+        public class CountArray
+        {
+            public Mobile m { get; set; }
+
+            public double points { get; set; }
+        }
+
+        public void Empty()
+        {
+            List<Item> items = this.Items;
+
+            List<Item> bags;
+
+            if (items.Count > 0)
+            {
+                List<CountArray> _list = new List<CountArray>();
+                
+                for (int i = items.Count - 1; i >= 0; --i)
+                {
+                    if (i >= items.Count)
+                        continue;
+
+                    if (items[i] is BaseContainer)
+                    {
+                        bags = items[i].Items;
+
+                        if (bags.Count > 0)
+                        {
+                            for (int b = bags.Count - 1; b >= 0; --b)
+                            {
+                                if (b >= bags.Count)
+                                    continue;
+
+                                double checkbagpoint = CleanUpBritanniaData.GetPoints(bags[b]);
+
+                                if (checkbagpoint != 0)
+                                    _list.Add(new CountArray { m = items[i].CleanupOwner, points = checkbagpoint });
+                            }
+                        }
+                    }
+
+                    double checkpoint = CleanUpBritanniaData.GetPoints(items[i]);
+
+                    if (checkpoint != 0)
+                        _list.Add(new CountArray { m = items[i].CleanupOwner, points = checkpoint });
+
+                    items[i].Delete();
+                }
+
+                if (_list.Any(x => x.m != null))
+                {
+                    foreach (var item in _list.Select(x => x.m).Distinct())
+                    {
+                        double point = _list.Where(x => x.m == item).Sum(x => x.points);
+                        item.SendLocalizedMessage(1151280, String.Format("{0}\t{1}", point.ToString(), _list.Count(r => r.m == item))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
+                        PointsSystem.CleanUpBritannia.AwardPoints(item, point);
+                    }
+                }
+            }
         }
     }
 }
