@@ -2870,29 +2870,32 @@ namespace Server.Mobiles
 
 							BaseCreature c = m as BaseCreature;
 
-							// We want a karma enemy
-							if (acqType == FightMode.Evil && !bValid)
+							// We want a special FightMode enemy
+							if (!bValid)
 							{
-								if (c != null && c.Controlled && c.ControlMaster != null)
+								// We want a karma enemy
+								if (acqType == FightMode.Evil)
 								{
-									bValid = (c.ControlMaster.Karma < 0);
+									if (c != null && c.Controlled && c.ControlMaster != null)
+									{
+										bValid = (c.ControlMaster.Karma < 0);
+									}
+									else
+									{
+										bValid = (m.Karma < 0);
+									}
 								}
-								else
+								// We want a karma enemy
+								else if (acqType == FightMode.Good)
 								{
-									bValid = (m.Karma < 0);
-								}
-							}
-
-							// We want a karma enemy
-							if (acqType == FightMode.Good && !bValid)
-							{
-								if (c != null && c.Controlled && c.ControlMaster != null)
-								{
-									bValid = (c.ControlMaster.Karma > 0);
-								}
-								else
-								{
-									bValid = (m.Karma > 0);
+									if (c != null && c.Controlled && c.ControlMaster != null)
+									{
+										bValid = (c.ControlMaster.Karma > 0);
+									}
+									else
+									{
+										bValid = (m.Karma > 0);
+									}
 								}
 							}
 
