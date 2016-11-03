@@ -82,6 +82,7 @@ namespace Server.Items
                 return false;
 
             this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
+            SetCleanupOwner(from, dropped);
             Empty();
 
             return true;
@@ -93,9 +94,27 @@ namespace Server.Items
                 return false;
 
             this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
+            SetCleanupOwner(from, item);
             Empty();
 
             return true;
+        }
+
+        public static void SetCleanupOwner(Mobile from, Item item)
+        {
+            if (item is BaseContainer)
+            {
+                Container c = (Container)item;
+
+                List<Item> list = c.FindItemsByType<Item>();
+
+                for (int i = list.Count - 1; i >= 0; --i)
+                {
+                    list[i].CleanupOwner = from;
+                }
+            }
+            else
+                item.CleanupOwner = from;
         }
 
         public class CountArray
@@ -109,40 +128,26 @@ namespace Server.Items
         {
             List<Item> items = this.Items;
 
-            List<Item> bags;
-
             if (items.Count > 0)
             {
                 List<CountArray> _list = new List<CountArray>();
+
+                List<Item> list = this.FindItemsByType<Item>();
+
+                for (int i = list.Count - 1; i >= 0; --i)
+                {
+                    Item item = list[i];
+
+                    double checkbagpoint = CleanUpBritanniaData.GetPoints(item);
+
+                    if (checkbagpoint != 0)
+                        _list.Add(new CountArray { m = item.CleanupOwner, points = checkbagpoint });
+                }
                 
                 for (int i = items.Count - 1; i >= 0; --i)
                 {
                     if (i >= items.Count)
                         continue;
-
-                    if (items[i] is BaseContainer)
-                    {
-                        bags = items[i].Items;
-
-                        if (bags.Count > 0)
-                        {
-                            for (int b = bags.Count - 1; b >= 0; --b)
-                            {
-                                if (b >= bags.Count)
-                                    continue;
-
-                                double checkbagpoint = CleanUpBritanniaData.GetPoints(bags[b]);
-
-                                if (checkbagpoint != 0)
-                                    _list.Add(new CountArray { m = items[i].CleanupOwner, points = checkbagpoint });
-                            }
-                        }
-                    }
-
-                    double checkpoint = CleanUpBritanniaData.GetPoints(items[i]);
-
-                    if (checkpoint != 0)
-                        _list.Add(new CountArray { m = items[i].CleanupOwner, points = checkpoint });
 
                     items[i].Delete();
                 }
