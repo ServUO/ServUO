@@ -44,7 +44,7 @@ namespace Server.Mobiles
             this.AddItem(new TribalSpear());
             this.AddItem(new BoneArms());
             this.AddItem(new BoneLegs());
-            // TODO: BEAR MASK
+            this.AddItem(new BearMask());
 
             new SavageRidgeback().Rider = this;
         }
