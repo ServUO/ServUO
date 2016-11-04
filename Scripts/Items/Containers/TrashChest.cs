@@ -8,13 +8,14 @@ using System.Linq;
 namespace Server.Items
 {
     [FlipableAttribute(0xE41, 0xE40)]
-    public class TrashChest : Container
+    public class TrashChest : BaseTrash
     {
         [Constructable]
         public TrashChest()
             : base(0xE41)
         {
             this.Movable = false;
+            this.m_Cleanup = new List<CleanupArray>();
         }
 
         public TrashChest(Serial serial)
@@ -48,6 +49,8 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            this.m_Cleanup = new List<CleanupArray>();
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -81,8 +84,9 @@ namespace Server.Items
             if (!base.OnDragDrop(from, dropped))
                 return false;
 
+            AddCleanupItem(from, dropped);
+
             this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
-            SetCleanupOwner(from, dropped);
             Empty();
 
             return true;
@@ -93,35 +97,12 @@ namespace Server.Items
             if (!base.OnDragDropInto(from, item, p))
                 return false;
 
+            AddCleanupItem(from, item);
+
             this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
-            SetCleanupOwner(from, item);
             Empty();
 
             return true;
-        }
-
-        public static void SetCleanupOwner(Mobile from, Item item)
-        {
-            if (item is BaseContainer)
-            {
-                Container c = (Container)item;
-
-                List<Item> list = c.FindItemsByType<Item>();
-
-                for (int i = list.Count - 1; i >= 0; --i)
-                {
-                    list[i].CleanupOwner = from;
-                }
-            }
-            else
-                item.CleanupOwner = from;
-        }
-
-        public class CountArray
-        {
-            public Mobile m { get; set; }
-
-            public double points { get; set; }
         }
 
         public void Empty()
@@ -130,35 +111,25 @@ namespace Server.Items
 
             if (items.Count > 0)
             {
-                List<CountArray> _list = new List<CountArray>();
-
-                List<Item> list = this.FindItemsByType<Item>();
-
-                for (int i = list.Count - 1; i >= 0; --i)
-                {
-                    Item item = list[i];
-
-                    double checkbagpoint = CleanUpBritanniaData.GetPoints(item);
-
-                    if (checkbagpoint != 0)
-                        _list.Add(new CountArray { m = item.CleanupOwner, points = checkbagpoint });
-                }
-                
                 for (int i = items.Count - 1; i >= 0; --i)
                 {
                     if (i >= items.Count)
                         continue;
 
+                    ConfirmCleanupItem(items[i]);
                     items[i].Delete();
                 }
 
-                if (_list.Any(x => x.m != null))
+                if (this.m_Cleanup.Any(x => x.mobiles != null))
                 {
-                    foreach (var item in _list.Select(x => x.m).Distinct())
+                    foreach (var m in this.m_Cleanup.Select(x => x.mobiles).Distinct())
                     {
-                        double point = _list.Where(x => x.m == item).Sum(x => x.points);
-                        item.SendLocalizedMessage(1151280, String.Format("{0}\t{1}", point.ToString(), _list.Count(r => r.m == item))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
-                        PointsSystem.CleanUpBritannia.AwardPoints(item, point);
+                        if (this.m_Cleanup.Find(x => x.mobiles == m && x.confirm) != null)
+                        {
+                            double point = this.m_Cleanup.Where(x => x.mobiles == m && x.confirm).Sum(x => x.points);
+                            m.SendLocalizedMessage(1151280, String.Format("{0}\t{1}", point.ToString(), this.m_Cleanup.Count(r => r.mobiles == m))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
+                            PointsSystem.CleanUpBritannia.AwardPoints(m, point);
+                        }
                     }
                 }
             }

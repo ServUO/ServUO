@@ -8,15 +8,17 @@ using System.Linq;
 
 namespace Server.Items
 {
-    public class TrashBarrel : Container, IChopable
+    public class TrashBarrel : BaseTrash, IChopable
     {
         private Timer m_Timer;
+
         [Constructable]
         public TrashBarrel()
             : base(0xE77)
         {
             this.Hue = 0x3B2;
             this.Movable = false;
+            this.m_Cleanup = new List<CleanupArray>();
         }
 
         public TrashBarrel(Serial serial)
@@ -63,6 +65,8 @@ namespace Server.Items
                 this.m_Timer = new EmptyTimer(this);
                 this.m_Timer.Start();
             }
+
+            this.m_Cleanup = new List<CleanupArray>();
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -96,7 +100,7 @@ namespace Server.Items
             if (!base.OnDragDrop(from, dropped))
                 return false;
 
-            TrashChest.SetCleanupOwner(from, dropped);
+            AddCleanupItem(from, dropped);
 
             if (this.TotalItems >= 50)
             {
@@ -122,7 +126,7 @@ namespace Server.Items
             if (!base.OnDragDropInto(from, item, p))
                 return false;
 
-            TrashChest.SetCleanupOwner(from, item);
+            AddCleanupItem(from, item);
 
             if (this.TotalItems >= 50)
             {
@@ -154,55 +158,42 @@ namespace Server.Items
                 this.Destroy();
             }
         }
-        
-        public class CountArray
-        {
-            public Mobile m { get; set; }
 
-            public double points { get; set; }
-        }
-        
         public void Empty(int message)
-        {            
+        {
             List<Item> items = this.Items;
 
             if (items.Count > 0)
             {
-                List<CountArray> _list = new List<CountArray>();
-
-                List<Item> list = this.FindItemsByType<Item>();
-
-                for (int i = list.Count - 1; i >= 0; --i)
-                {
-                    Item item = list[i];
-
-                    double checkbagpoint = CleanUpBritanniaData.GetPoints(item);
-
-                    if (checkbagpoint != 0)
-                        _list.Add(new CountArray { m = item.CleanupOwner, points = checkbagpoint });
-                }
+                this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, message, "");
 
                 for (int i = items.Count - 1; i >= 0; --i)
                 {
                     if (i >= items.Count)
                         continue;
 
+                    ConfirmCleanupItem(items[i]);
                     items[i].Delete();
                 }
 
-                if (_list.Any(x => x.m != null))
+                if (this.m_Cleanup.Any(x => x.mobiles != null))
                 {
-                    foreach (var item in _list.Select(x => x.m).Distinct())
+                    foreach (var m in this.m_Cleanup.Select(x => x.mobiles).Distinct())
                     {
-                        double point = _list.Where(x => x.m == item).Sum(x => x.points);
-                        item.SendLocalizedMessage(1151280, String.Format("{0}\t{1}", point.ToString(), _list.Count(r => r.m == item))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
-                        PointsSystem.CleanUpBritannia.AwardPoints(item, point);
+                        if (this.m_Cleanup.Find(x => x.mobiles == m && x.confirm) != null)
+                        {
+                            double point = this.m_Cleanup.Where(x => x.mobiles == m && x.confirm).Sum(x => x.points);
+                            m.SendLocalizedMessage(1151280, String.Format("{0}\t{1}", point.ToString(), this.m_Cleanup.Count(r => r.mobiles == m))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
+                            PointsSystem.CleanUpBritannia.AwardPoints(m, point);
+                        }
                     }
                 }
             }
 
             if (this.m_Timer != null)
                 this.m_Timer.Stop();
+
+            m_Cleanup.Clear();
 
             this.m_Timer = null;
         }
@@ -211,7 +202,7 @@ namespace Server.Items
         {
             private readonly TrashBarrel m_Barrel;
             public EmptyTimer(TrashBarrel barrel)
-                : base(TimeSpan.FromMinutes(3.0))
+                : base(TimeSpan.FromSeconds(3.0))
             {
                 this.m_Barrel = barrel;
                 this.Priority = TimerPriority.FiveSeconds;

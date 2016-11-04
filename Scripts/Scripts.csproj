@@ -622,6 +622,7 @@
     <Compile Include="Items\Consumables\Taffy.cs" />
     <Compile Include="Items\Consumables\ThanksGivingFood.cs" />
     <Compile Include="Items\Consumables\WrappedCandy.cs" />
+    <Compile Include="Items\Containers\BaseTrash.cs" />
     <Compile Include="Items\Containers\MeagerImbuingBag.cs" />
     <Compile Include="Items\Containers\ScrollBox2.cs" />
     <Compile Include="Items\Decorative\AcidWall.cs" />
