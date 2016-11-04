@@ -187,13 +187,12 @@ namespace Server.Items
                             PointsSystem.CleanUpBritannia.AwardPoints(m, point);
                         }
                     }
+                    m_Cleanup.Clear();
                 }
             }
 
             if (this.m_Timer != null)
-                this.m_Timer.Stop();
-
-            m_Cleanup.Clear();
+                this.m_Timer.Stop();            
 
             this.m_Timer = null;
         }
