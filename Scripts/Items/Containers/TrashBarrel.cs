@@ -201,7 +201,7 @@ namespace Server.Items
         {
             private readonly TrashBarrel m_Barrel;
             public EmptyTimer(TrashBarrel barrel)
-                : base(TimeSpan.FromSeconds(3.0))
+                : base(TimeSpan.FromMinutes(3.0))
             {
                 this.m_Barrel = barrel;
                 this.Priority = TimerPriority.FiveSeconds;
