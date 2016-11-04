@@ -187,7 +187,7 @@ namespace Server.Items
                             PointsSystem.CleanUpBritannia.AwardPoints(m, point);
                         }
                     }
-                    m_Cleanup.Clear();
+                    this.m_Cleanup.Clear();
                 }
             }
 
