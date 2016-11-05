@@ -189,7 +189,7 @@ namespace Server.Engines.CleanUpBritannia
 						PointsSystem.CleanUpBritannia.DeductPoints(from as PlayerMobile, Item.Points);
 					
 						from.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
-						from.PlaySound(0x5A7);
+						from.PlaySound(0x5A8);
 					}
 				}
 			}
