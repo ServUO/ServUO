@@ -138,6 +138,13 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(MotherOfPearlPigment), 0xEFF, 1154120, 2720, 250000));
             Rewards.Add(new CollectionItem(typeof(LiquidSunshinePigment), 0xEFF, 1154213, 1923, 250000));
             Rewards.Add(new CollectionItem(typeof(DarkVoidPigment), 0xEFF, 1154214, 2068, 250000));
+
+            Rewards.Add(new CollectionItem(typeof(LuckyCharm), 0xEFF, 0, 1923, 300000));
+            Rewards.Add(new CollectionItem(typeof(SoldiersMedal), 0xEFF, 0, 1902, 300000));
+            Rewards.Add(new CollectionItem(typeof(DuelistsEdge), 0xEFF, 0, 1902, 300000));
+            Rewards.Add(new CollectionItem(typeof(NecromancersPhylactery), 0xEFF, 0, 1912, 300000));
+            Rewards.Add(new CollectionItem(typeof(WizardsCurio), 0xEFF, 0, 1912, 300000));
+            Rewards.Add(new CollectionItem(typeof(MysticsMemento), 0xEFF, 0, 1912, 300000));
         }
     }
 }

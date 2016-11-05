@@ -487,6 +487,30 @@ namespace Server.Engines.CleanUpBritannia
             item = new DarkVoidPigment();
             item.Movable = false;
             PackItem(item);
+
+            item = new LuckyCharm();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new SoldiersMedal();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new DuelistsEdge();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new NecromancersPhylactery();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new WizardsCurio();
+            item.Movable = false;
+            PackItem(item);
+
+            item = new MysticsMemento();
+            item.Movable = false;
+            PackItem(item);
         }        
 
         public override void GetProperties(ObjectPropertyList list)

@@ -2750,6 +2750,12 @@
     <Compile Include="Services\CleanUpBritannia\Items\BootsOfTheLavaLizard.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\BootsOfTheThrasher.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\ChaosTile.cs" />
+    <Compile Include="Services\CleanUpBritannia\Items\NecromancersPhylactery.cs" />
+    <Compile Include="Services\CleanUpBritannia\Items\WizardsCurio.cs" />
+    <Compile Include="Services\CleanUpBritannia\Items\DuelistsEdge.cs" />
+    <Compile Include="Services\CleanUpBritannia\Items\MysticsMemento.cs" />
+    <Compile Include="Services\CleanUpBritannia\Items\SoldiersMedal.cs" />
+    <Compile Include="Services\CleanUpBritannia\Items\LuckyCharm.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\DragonHead.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\Mushrooms.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\Pigments\CleanupPigments.cs" />
