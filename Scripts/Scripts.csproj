@@ -613,6 +613,7 @@
     <Compile Include="Items\Decorative\ClownMask.cs" />
     <Compile Include="Items\Decorative\ColoredSmallWebs.cs" />
     <Compile Include="Items\Decorative\DaemonMask.cs" />
+    <Compile Include="Items\Decorative\DamageableItem.cs" />
     <Compile Include="Items\Decorative\EvilJesterMask.cs" />
     <Compile Include="Items\Decorative\ExcellentIronMaiden.cs" />
     <Compile Include="Items\Decorative\GrimWarning.cs" />
@@ -657,6 +658,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\AcidVine.cs" />
+    <Compile Include="Items\Functional\BaseDecayingItem.cs" />
     <Compile Include="Items\Functional\BaseDoor.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1073,9 +1075,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\HairDye.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Addons\HitchingPostReplica.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\HitchingRope.cs">
@@ -2513,40 +2512,7 @@
     <Compile Include="Quests\Percolem.cs" />
     <Compile Include="Items\Containers\EssenceBox.cs" />
     <Compile Include="Mobiles\NPCs\Sliem.cs" />
-    <Compile Include="Quests\TheExodusEncounter\ExodusPeerless\BaseExodusPeerless.cs" />
-    <Compile Include="Quests\TheExodusEncounter\ExodusPeerless\ExodusPeerlessAltar.cs" />
     <Compile Include="Quests\TheExodusEncounter\Generate.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Items\ExodusAlterAddon.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Items\ExodusChest.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Items\ExodusSacrificalDagger.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Items\ExodusSummoningAlter.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Items\ExodusSummoningRite.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Items\ExodusTomeAltar.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Items\RobeofRite.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Loot\Asclepius.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Loot\BracersofAlchemicalDevastation.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Loot\ClockworkLeggings.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Loot\DupresSword.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Loot\GargishAsclepius.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Loot\GargishBracersofAlchemicalDevastation.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Loot\GargishClockworkLeggings.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Loot\GargishDupresSword.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Loot\HygieiasAmulet.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Loot\ScrollofValiantCommendation.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Mobiles\ClockworkExodus.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Mobiles\DeathVortex.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Mobiles\DupresChampion.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Mobiles\DupresKnight.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Mobiles\DupresSquire.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Mobiles\ExodusArchZealot.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Mobiles\ExodusDrone.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Mobiles\ExodusJuggernaut.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Mobiles\ExodusMinionLord.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Mobiles\ExodusSentinel.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Mobiles\ExodusZealot.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Resources\GoldDust.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Resources\NexusCore.cs" />
-    <Compile Include="Quests\TheExodusEncounter\Resources\SmallPieceofBlackrock.cs" />
     <Compile Include="Quests\UnusualGoods.cs" />
     <Compile Include="Quests\AllThatGlitters.cs" />
     <Compile Include="Items\Quest\BouraSkin.cs" />
@@ -4404,9 +4370,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Decorative\BaseSliding.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Decorative\BaseDesItem.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Decorative\DesCityWall.cs">
@@ -9417,6 +9380,10 @@
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Creatures\AgentoftheCrown.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Generate.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Gumps.cs" />
+    <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\InvasionSpawner\Beacon.cs" />
+    <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\InvasionSpawner\Creatures.cs" />
+    <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\InvasionSpawner\InvasionController.cs" />
+    <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\InvasionSpawner\InvasionDefinition.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\BlackthornPainting.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\CloakOfDeathBase\EpauletteBearingTheCrestOfBlackthorn.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Items\CloakOfDeathBase\FancyDressBearingTheCrestOfBlackthorn.cs" />
@@ -9599,6 +9566,39 @@
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameCrystal.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameTeleporter.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameWall.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\ExodusPeerless\BaseExodusPeerless.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\ExodusPeerless\ExodusPeerlessAltar.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusAlterAddon.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusChest.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusSacrificalDagger.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusSummoningAltar.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusSummoningRite.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusTomeAltar.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\RobeofRite.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Loot\Asclepius.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Loot\BracersofAlchemicalDevastation.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Loot\ClockworkLeggings.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Loot\DupresSword.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Loot\GargishAsclepius.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Loot\GargishBracersofAlchemicalDevastation.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Loot\GargishClockworkLeggings.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Loot\GargishDupresSword.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Loot\HygieiasAmulet.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Loot\ScrollofValiantCommendation.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Mobiles\ClockworkExodus.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Mobiles\DeathVortex.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Mobiles\DupresChampion.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Mobiles\DupresKnight.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Mobiles\DupresSquire.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Mobiles\ExodusArchZealot.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Mobiles\ExodusDrone.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Mobiles\ExodusJuggernaut.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Mobiles\ExodusMinionLord.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Mobiles\ExodusSentinel.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Mobiles\ExodusZealot.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\GoldDust.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\NexusCore.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\SmallPieceofBlackrock.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearch.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchGump.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchMap.cs" />
@@ -10521,9 +10521,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Underworld\Maze of Death\UnderworldPuzzleBox.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Underworld\PuzzleRoom\BaseDecayingItem.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Underworld\PuzzleRoom\CopperPuzzleKey.cs">
