@@ -164,7 +164,7 @@ namespace Server.Mobiles
             Mobile focusMob = m_Fisher;
 
             if (focusMob == null || !focusMob.Alive)
-                focusMob = Combatant;
+                focusMob = Combatant as Mobile;
 
             if (focusMob == null || focusMob.AccessLevel > AccessLevel.Player || !InRange(focusMob.Location, DamageRange) || BaseBoat.FindBoatAt(focusMob, focusMob.Map) == null)
                 return;

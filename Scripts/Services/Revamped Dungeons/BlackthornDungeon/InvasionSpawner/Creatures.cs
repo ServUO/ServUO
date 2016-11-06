@@ -29,6 +29,7 @@ namespace Server.Engines.Blackthorn
             SkillName.Bushido,
             SkillName.Bushido,
             SkillName.Ninjitsu,
+            SkillName.Chivalry,
             SkillName.Necromancy,
             SkillName.Poisoning
         };
@@ -37,10 +38,12 @@ namespace Server.Engines.Blackthorn
         private SkillName _Specialty;
 
         private bool _Sampire;
+        private DateTime _NextSpecial;
 
         public override bool AlwaysMurderer { get { return true; } }
         public override bool CanHeal { get { return AI == AIType.AI_Melee || AI == AIType.AI_Paladin; } }
         public override double WeaponAbilityChance { get { return AI == AIType.AI_Melee || AI == AIType.AI_Paladin ? 0.4 : 0.1; } }
+
         public override WeaponAbility GetWeaponAbility()
         {
             BaseWeapon wep = Weapon as BaseWeapon;
@@ -61,6 +64,8 @@ namespace Server.Engines.Blackthorn
 
         public override int AuraBaseDamage { get { return 25; } }
         public override int AuraEnergyDamage { get { return 100; } }
+
+        public virtual bool CanDoSpecial { get { return SpellCaster; } }
 
         public override void AuraEffect(Mobile m)
         {
@@ -127,7 +132,7 @@ namespace Server.Engines.Blackthorn
             SetDex(SpellCaster ? 75 : 150);
             SetInt(SpellCaster ? 1800 : 500);
 
-            SetHits(500, 750);
+            SetHits(800, 1250);
 
             if (AI == AIType.AI_Melee)
                 SetDamage(15, 28);
@@ -143,11 +148,16 @@ namespace Server.Engines.Blackthorn
             SetSkills();
             EquipSpecialty();
 
-            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
-                {
-                    VampiricEmbraceSpell spell = new VampiricEmbraceSpell(this, null);
-                    spell.Cast();
-                });
+            _NextSpecial = DateTime.UtcNow;
+
+            if (_Sampire)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                    {
+                        VampiricEmbraceSpell spell = new VampiricEmbraceSpell(this, null);
+                        spell.Cast();
+                    });
+            }
         }
 
         public virtual void SetBody()
@@ -224,7 +234,7 @@ namespace Server.Engines.Blackthorn
             {
                 case SkillName.Chivalry:
                     SetWearable(RandomSwordWeapon());
-                    StandardMeleeEquip();
+                    PaladinEquip();
                     break;
                 case SkillName.Swords:
                     SetWearable(RandomSwordWeapon());
@@ -270,6 +280,8 @@ namespace Server.Engines.Blackthorn
 
                     if (_Sampire)
                         w.WeaponAttributes.HitLeechHits = 100;
+
+                    SetSkill(SkillName.Parry, 120);
                     break;
                 case SkillName.Ninjitsu:
                     SetWearable(RandomNinjaWeapon());
@@ -307,9 +319,22 @@ namespace Server.Engines.Blackthorn
                     SetWearable(new LeatherLegs());
                     SetWearable(new LeatherGloves());
                     SetWearable(new LeatherGorget());
-
                     break;
             }
+        }
+
+        private void PaladinEquip()
+        {
+            SetWearable(Loot.Construct(new Type[] { typeof(Bascinet), typeof(Helmet), typeof(PlateHelm) }), 1153);
+
+            SetWearable(new PlateChest());
+            SetWearable(new PlateLegs());
+            SetWearable(new PlateGloves());
+            SetWearable(new PlateGorget());
+            SetWearable(new PlateArms());
+            SetWearable(new MetalKiteShield());
+
+            SetSkill(SkillName.Parry, 120);
         }
 
         private void StandardMeleeEquip()
@@ -409,7 +434,13 @@ namespace Server.Engines.Blackthorn
             if (Combatant == null)
                 return;
 
-            if (_Sampire)
+            if (CanDoSpecial && InRange(Combatant, 4) && 0.1 > Utility.RandomDouble() && _NextSpecial < DateTime.UtcNow)
+            {
+                DoSpecial();
+
+                _NextSpecial = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
+            }
+            else if (_Sampire)
             {
                 if (0.1 > Utility.RandomDouble() && Weapon is BaseWeapon && !(Weapon is Fists) && !((BaseWeapon)Weapon).Cursed)
                 {
@@ -422,6 +453,46 @@ namespace Server.Engines.Blackthorn
                     spell.Cast();
                 }
             }
+        }
+
+        private void DoSpecial()
+        {
+            if (this.Map == null || this.Map == Map.Internal)
+                return;
+
+            for (int i = 0; i < 4; i++)
+            {
+                Timer.DelayCall(TimeSpan.FromMilliseconds(i * 50), o =>
+                {
+                    Server.Misc.Geometry.Circle2D(this.Location, this.Map, (int)o, (pnt, map) =>
+                    {
+                        Effects.SendLocationEffect(pnt, map, Utility.RandomBool() ? 14000 : 14013, 14, 20, 2018, 0);
+                    });
+                }, i);
+            }
+
+            Timer.DelayCall(TimeSpan.FromMilliseconds(200), () =>
+                {
+                    List<Mobile> list = new List<Mobile>();
+                    IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 4);
+
+                    foreach (Mobile m in eable)
+                    {
+                        if (m.AccessLevel > AccessLevel.Player)
+                            continue;
+
+                        if (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile) && CanBeHarmful(m))
+                            list.Add(m);
+                    }
+
+                    list.ForEach(m =>
+                        {
+                            AOS.Damage(m, this, Utility.RandomMinMax(80, 90), 0, 0, 0, 0, 0, 100, 0);
+                        });
+
+                    list.Clear();
+                    list.TrimExcess();
+                });
         }
 
         public override void GenerateLoot()
@@ -452,6 +523,8 @@ namespace Server.Engines.Blackthorn
             _Specialty = (SkillName)reader.ReadInt();
             _InvasionType = (InvasionType)reader.ReadInt();
             _Sampire = reader.ReadBool();
+
+            _NextSpecial = DateTime.UtcNow;
         }
     }
 
@@ -469,7 +542,7 @@ namespace Server.Engines.Blackthorn
             SetDex(SpellCaster ? 150 : 200);
             SetInt(SpellCaster ? 1000 : 5000);
 
-            SetHits(6000, 8000);
+            SetHits(8000, 12000);
 
             if (AI == AIType.AI_Melee)
                 SetDamage(22, 30);

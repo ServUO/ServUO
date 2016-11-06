@@ -27,7 +27,7 @@ namespace Server.Mobiles
                 case 0:
                 case 1:
                     {
-                        if (this.CheckForSleep(this.m_Mobile.Combatant))
+                        if (m_Mobile.Combatant is Mobile && this.CheckForSleep((Mobile)this.m_Mobile.Combatant))
                         {
                             this.m_Mobile.DebugSay("Casting Sleep");
                             spell = new SleepSpell(this.m_Mobile, null);
@@ -73,7 +73,7 @@ namespace Server.Mobiles
                 case 4:
                 case 5:
                     {
-                        if (!SpellPlagueSpell.HasSpellPlague(this.m_Mobile.Combatant) && this.m_Mobile.Skills[SkillName.Mysticism].Value > 70.0)
+                        if (m_Mobile.Combatant is Mobile && !SpellPlagueSpell.HasSpellPlague((Mobile)m_Mobile.Combatant) && this.m_Mobile.Skills[SkillName.Mysticism].Value > 70.0)
                         {
                             this.m_Mobile.DebugSay("Casting Spell Plague");
                             spell = new SpellPlagueSpell(this.m_Mobile, null);

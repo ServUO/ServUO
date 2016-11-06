@@ -63,10 +63,8 @@ namespace Server.Items
 			: base(serial)
 		{ }
 
-		public override TimeSpan OnSwing(Mobile attacker, Mobile defender)
+		public override TimeSpan OnSwing(Mobile attacker, IDamageable damageable)
 		{
-			//WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
-
 			// Make sure we've been standing still for .25/.5/1 second depending on Era
 			if (Core.TickCount - attacker.LastMoveTime >= (Core.SE ? 250 : Core.AOS ? 500 : 1000) ||
 				(Core.AOS && WeaponAbility.GetCurrentAbility(attacker) is MovingShot))
@@ -97,20 +95,20 @@ namespace Server.Items
 				}
 				#endregion
 
-				if (canSwing && attacker.HarmfulCheck(defender))
+				if (canSwing && attacker.HarmfulCheck(damageable))
 				{
 					attacker.DisruptiveAction();
-					attacker.Send(new Swing(0, attacker, defender));
+					attacker.Send(new Swing(0, attacker, damageable));
 
-					if (OnFired(attacker, defender))
+					if (OnFired(attacker, damageable))
 					{
-						if (CheckHit(attacker, defender))
+                        if (CheckHit(attacker, damageable))
 						{
-							OnHit(attacker, defender);
+                            OnHit(attacker, damageable);
 						}
 						else
 						{
-							OnMiss(attacker, defender);
+                            OnMiss(attacker, damageable);
 						}
 					}
 				}
@@ -125,38 +123,38 @@ namespace Server.Items
 			return TimeSpan.FromSeconds(0.25);
 		}
 
-		public override void OnHit(Mobile attacker, Mobile defender, double damageBonus)
+		public override void OnHit(Mobile attacker, IDamageable damageable, double damageBonus)
 		{
-			if (AmmoType != null && attacker.Player && !defender.Player && (defender.Body.IsAnimal || defender.Body.IsMonster) &&
+            if (AmmoType != null && attacker.Player && damageable is Mobile && !((Mobile)damageable).Player && (((Mobile)damageable).Body.IsAnimal || ((Mobile)damageable).Body.IsMonster) &&
 				0.4 >= Utility.RandomDouble())
 			{
-				defender.AddToBackpack(Ammo);
+				((Mobile)damageable).AddToBackpack(Ammo);
 			}
 
 			if (Core.ML && m_Velocity > 0)
 			{
-				int bonus = (int)attacker.GetDistanceToSqrt(defender);
+                int bonus = (int)attacker.GetDistanceToSqrt(damageable);
 
 				if (bonus > 0 && m_Velocity > Utility.Random(100))
 				{
-					AOS.Damage(defender, attacker, bonus * 3, 100, 0, 0, 0, 0);
+                    AOS.Damage(damageable, attacker, bonus * 3, 100, 0, 0, 0, 0);
 
 					if (attacker.Player)
 					{
 						attacker.SendLocalizedMessage(1072794); // Your arrow hits its mark with velocity!
 					}
 
-					if (defender.Player)
+                    if (damageable is Mobile && ((Mobile)damageable).Player)
 					{
-						defender.SendLocalizedMessage(1072795); // You have been hit by an arrow with velocity!
+						((Mobile)damageable).SendLocalizedMessage(1072795); // You have been hit by an arrow with velocity!
 					}
 				}
 			}
 
-			base.OnHit(attacker, defender, damageBonus);
+			base.OnHit(attacker, damageable, damageBonus);
 		}
 
-		public override void OnMiss(Mobile attacker, Mobile defender)
+        public override void OnMiss(Mobile attacker, IDamageable damageable)
 		{
 			if (attacker.Player && 0.4 >= Utility.RandomDouble())
 			{
@@ -193,16 +191,18 @@ namespace Server.Items
 				}
 				else
 				{
+                    Point3D loc = damageable.Location;
+
 					Ammo.MoveToWorld(
-						new Point3D(defender.X + Utility.RandomMinMax(-1, 1), defender.Y + Utility.RandomMinMax(-1, 1), defender.Z),
-						defender.Map);
+                        new Point3D(loc.X + Utility.RandomMinMax(-1, 1), loc.Y + Utility.RandomMinMax(-1, 1), loc.Z),
+						damageable.Map);
 				}
 			}
 
-			base.OnMiss(attacker, defender);
+			base.OnMiss(attacker, damageable);
 		}
 
-		public virtual bool OnFired(Mobile attacker, Mobile defender)
+        public virtual bool OnFired(Mobile attacker, IDamageable damageable)
 		{
 			WeaponAbility ability = WeaponAbility.GetCurrentAbility(attacker);
 			
@@ -238,7 +238,7 @@ namespace Server.Items
 				}
 			}
 
-			attacker.MovingEffect(defender, EffectID, 18, 1, false, false);
+            attacker.MovingEffect(damageable, EffectID, 18, 1, false, false);
 
 			return true;
 		}

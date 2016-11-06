@@ -626,16 +626,16 @@ namespace Server.Network
 			int type = pvSrc.ReadByte();
 		}
 
-		public static void AttackReq(NetState state, PacketReader pvSrc)
-		{
-			Mobile from = state.Mobile;
-			Mobile m = World.FindMobile(pvSrc.ReadInt32());
+        public static void AttackReq(NetState state, PacketReader pvSrc)
+        {
+            Mobile from = state.Mobile;
+            Mobile m = World.FindMobile(pvSrc.ReadInt32());
 
-			if (m != null)
-			{
-				from.Attack(m);
-			}
-		}
+            if (m != null)
+            {
+                from.Attack(m);
+            }
+        }
 
 		public static void HuePickerResponse(NetState state, PacketReader pvSrc)
 		{
@@ -1313,9 +1313,6 @@ namespace Server.Network
 						else if (serial.IsItem)
 						{
 							toTarget = World.FindItem(serial);
-
-                            if (toTarget is IDamageableItem && ((IDamageableItem)toTarget).Link != null && (t.Flags & TargetFlags.Harmful) != 0)
-                                toTarget = ((IDamageableItem)toTarget).Link;
 						}
 						else
 						{
@@ -2227,38 +2224,78 @@ namespace Server.Network
 
 			pvSrc.ReadInt32(); // 0xEDEDEDED
 			int type = pvSrc.ReadByte();
-			Mobile m = World.FindMobile(pvSrc.ReadInt32());
 
-			if (m != null)
-			{
-				switch (type)
-				{
-					case 0x00: // Unknown, sent by godclient
-						{
-							if (VerifyGC(state))
-							{
-								Console.WriteLine("God Client: {0}: Query 0x{1:X2} on {2} '{3}'", state, type, m.Serial, m.Name);
-							}
+            Serial serial = pvSrc.ReadInt32();
 
-							break;
-						}
-					case 0x04: // Stats
-						{
-							m.OnStatsQuery(from);
-							break;
-						}
-					case 0x05:
-						{
-							m.OnSkillsQuery(from);
-							break;
-						}
-					default:
-						{
-							pvSrc.Trace(state);
-							break;
-						}
-				}
-			}
+            if (serial.IsMobile)
+            {
+                Mobile m = World.FindMobile(serial);
+
+                if (m != null)
+                {
+                    switch (type)
+                    {
+                        case 0x00: // Unknown, sent by godclient
+                            {
+                                if (VerifyGC(state))
+                                {
+                                    Console.WriteLine("God Client: {0}: Query 0x{1:X2} on {2} '{3}'", state, type, serial, m.Name);
+                                }
+
+                                break;
+                            }
+                        case 0x04: // Stats
+                            {
+                                m.OnStatsQuery(from);
+                                break;
+                            }
+                        case 0x05:
+                            {
+                                m.OnSkillsQuery(from);
+                                break;
+                            }
+                        default:
+                            {
+                                pvSrc.Trace(state);
+                                break;
+                            }
+                    }
+                }
+            }
+            else if (serial.IsItem)
+            {
+                IDamageable item = World.FindItem(serial) as IDamageable;
+
+                if (item != null)
+                {
+                    switch (type)
+                    {
+                        case 0x00:
+                            {
+                                if (VerifyGC(state))
+                                {
+                                    Console.WriteLine("God Client: {0}: Query 0x{1:X2} on {2} '{3}'", state, type, serial, item.Name);
+                                }
+
+                                break;
+                            }
+                        case 0x04: // Stats
+                            {
+                                item.OnStatsQuery(from);
+                                break;
+                            }
+                        case 0x05:
+                            {
+                                break;
+                            }
+                        default:
+                            {
+                                pvSrc.Trace(state);
+                                break;
+                            }
+                    }
+                }
+            }
 		}
 
 		public delegate void PlayCharCallback(NetState state, bool val);

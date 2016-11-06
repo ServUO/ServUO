@@ -175,8 +175,8 @@ namespace Server.Mobiles
                     this.m_NextFireRing = DateTime.UtcNow + TimeSpan.FromMinutes(2);
                 }
 
-                if (this.Combatant.Player && this.m_MorphedInto != this.Combatant && Utility.RandomDouble() < 0.05)
-                    this.MorphedInto = this.Combatant;
+                if (this.Combatant is PlayerMobile && this.m_MorphedInto != this.Combatant && Utility.RandomDouble() < 0.05)
+                    this.MorphedInto = this.Combatant as Mobile;
             }
         }
 

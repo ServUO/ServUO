@@ -160,7 +160,7 @@ namespace Server.Mobiles
 
         public override void OnActionCombat()
         {
-            Mobile combatant = this.Combatant;
+            Mobile combatant = this.Combatant as Mobile;
 
             if (DateTime.UtcNow < this.m_NextAbilityTime || combatant == null || combatant.Deleted || combatant.Map != this.Map || !this.InRange(combatant, 3) || !this.CanBeHarmful(combatant) || !this.InLOS(combatant))
                 return;

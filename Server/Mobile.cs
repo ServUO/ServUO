@@ -495,7 +495,7 @@ namespace Server
 
 	public delegate bool AllowBeneficialHandler(Mobile from, Mobile target);
 
-	public delegate bool AllowHarmfulHandler(Mobile from, Mobile target);
+	public delegate bool AllowHarmfulHandler(Mobile from, IDamageable target);
 
 	public delegate Container CreateCorpseHandler(
 		Mobile from, HairInfo hair, FacialHairInfo facialhair, List<Item> initialContent, List<Item> equipedItems);
@@ -507,7 +507,7 @@ namespace Server
 	///     Base class representing players, npcs, and creatures.
 	/// </summary>
     [System.Runtime.InteropServices.ComVisible(true)]
-	public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable
+	public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable, IDamageable
 	{
 		#region CompareTo(...)
 		public int CompareTo(IEntity other)
@@ -746,7 +746,7 @@ namespace Server
 		private Prompt m_Prompt;
 		private ContextMenu m_ContextMenu;
 		private List<AggressorInfo> m_Aggressors, m_Aggressed;
-		private Mobile m_Combatant;
+		private IDamageable m_Combatant;
 		private List<Mobile> m_Stabled;
 		private bool m_AutoPageNotify;
 		private bool m_CanHearGhosts;
@@ -2078,11 +2078,11 @@ namespace Server
 			{
 				if (Core.TickCount - m_Mobile.m_NextCombatTime >= 0)
 				{
-					Mobile combatant = m_Mobile.Combatant;
+					IDamageable combatant = m_Mobile.Combatant;
 
 					// If no combatant, wrong map, one of us is a ghost, or cannot see, or deleted, then stop combat
-					if (combatant == null || combatant.m_Deleted || m_Mobile.m_Deleted || combatant.m_Map != m_Mobile.m_Map ||
-						!combatant.Alive || !m_Mobile.Alive || !m_Mobile.CanSee(combatant) || combatant.IsDeadBondedPet ||
+					if (combatant == null || combatant.Deleted || m_Mobile.m_Deleted || combatant.Map != m_Mobile.m_Map ||
+						!combatant.Alive || !m_Mobile.Alive || !m_Mobile.CanSee(combatant) || (combatant is Mobile && ((Mobile)combatant).IsDeadBondedPet) ||
 						m_Mobile.IsDeadBondedPet)
 					{
 						m_Mobile.Combatant = null;
@@ -2096,12 +2096,12 @@ namespace Server
 						return;
 					}
 
-					if (m_Mobile.InLOS(combatant))
-					{
-						weapon.OnBeforeSwing(m_Mobile, combatant); //OnBeforeSwing for checking in regards to being hidden and whatnot
-						m_Mobile.RevealingAction();
-						m_Mobile.m_NextCombatTime = Core.TickCount + (int)weapon.OnSwing(m_Mobile, combatant).TotalMilliseconds;
-					}
+                    if (m_Mobile.InLOS(combatant))
+                    {
+                        weapon.OnBeforeSwing(m_Mobile, combatant); //OnBeforeSwing for checking in regards to being hidden and whatnot
+                        m_Mobile.RevealingAction();
+                        m_Mobile.m_NextCombatTime = Core.TickCount + (int)weapon.OnSwing(m_Mobile, combatant).TotalMilliseconds;
+                    }
 				}
 			}
 		}
@@ -2181,17 +2181,17 @@ namespace Server
 
 		public bool ChangingCombatant { get { return (m_ChangingCombatant > 0); } }
 
-		public virtual void Attack(Mobile m)
+		public virtual void Attack(IDamageable e)
 		{
-			if (CheckAttack(m))
+			if (CheckAttack(e))
 			{
-				Combatant = m;
+				Combatant = e;
 			}
 		}
 
-		public virtual bool CheckAttack(Mobile m)
+        public virtual bool CheckAttack(IDamageable e)
 		{
-			return (Utility.InUpdateRange(this, m) && CanSee(m) && InLOS(m));
+			return (Utility.InUpdateRange(this, e.Location) && CanSee(e) && InLOS(e));
 		}
 
 		/// <summary>
@@ -2199,7 +2199,7 @@ namespace Server
 		///     <seealso cref="OnCombatantChange" />
 		/// </summary>
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual Mobile Combatant
+		public virtual IDamageable Combatant
 		{
 			get { return m_Combatant; }
 			set
@@ -2211,7 +2211,7 @@ namespace Server
 
 				if (m_Combatant != value && value != this)
 				{
-					Mobile old = m_Combatant;
+					IDamageable old = m_Combatant;
 
 					++m_ChangingCombatant;
 					m_Combatant = value;
@@ -2264,9 +2264,9 @@ namespace Server
 					{
 						DoHarmful(m_Combatant);
 
-						if (m_Combatant != null)
+						if (m_Combatant is Mobile)
 						{
-							m_Combatant.PlaySound(m_Combatant.GetAngerSound());
+                            ((Mobile)m_Combatant).PlaySound(((Mobile)m_Combatant).GetAngerSound());
 						}
 					}
 
@@ -7716,33 +7716,45 @@ namespace Server
 		#endregion
 
 		#region Harmful Checks/Actions
-		public virtual bool CanBeHarmful(Mobile target)
+        public virtual bool CanBeHarmful(IDamageable target)
 		{
 			return CanBeHarmful(target, true);
 		}
 
-		public virtual bool CanBeHarmful(Mobile target, bool message)
+        public virtual bool CanBeHarmful(IDamageable target, bool message)
 		{
 			return CanBeHarmful(target, message, false);
 		}
 
-		public virtual bool CanBeHarmful(Mobile target, bool message, bool ignoreOurBlessedness)
+		public virtual bool CanBeHarmful(IDamageable target, bool message, bool ignoreOurBlessedness)
 		{
-			if (target == null)
+            if (target == null)
 			{
 				return false;
 			}
 
-			if (m_Deleted || (!ignoreOurBlessedness && m_Blessed) || target.m_Deleted || target.m_Blessed || !Alive ||
-				IsDeadBondedPet || !target.Alive || target.IsDeadBondedPet)
-			{
-				if (message)
-				{
-					SendLocalizedMessage(1001018); // You can not perform negative acts on your target.
-				}
+            if (m_Deleted || (!ignoreOurBlessedness && m_Blessed) || !Alive || IsDeadBondedPet || target.Deleted)
+            {
+                if (message)
+                {
+                    SendLocalizedMessage(1001018); // You can not perform negative acts on your target.
+                }
 
-				return false;
-			}
+                return false;
+            }
+
+            if (target is Mobile)
+            {
+                if (((Mobile)target).m_Blessed || !((Mobile)target).Alive || ((Mobile)target).IsDeadBondedPet)
+                {
+                    if (message)
+                    {
+                        SendLocalizedMessage(1001018); // You can not perform negative acts on your target.
+                    }
+
+                    return false;
+                }
+            }
 
 			if (target == this)
 			{
@@ -7764,7 +7776,7 @@ namespace Server
 			return true;
 		}
 
-		public virtual bool IsHarmfulCriminal(Mobile target)
+		public virtual bool IsHarmfulCriminal(IDamageable target)
 		{
 			if (this == target)
 			{
@@ -7777,7 +7789,7 @@ namespace Server
 		/// <summary>
 		///     Overridable. Event invoked when the Mobile <see cref="DoHarmful">does a harmful action</see>.
 		/// </summary>
-		public virtual void OnHarmfulAction(Mobile target, bool isCriminal)
+		public virtual void OnHarmfulAction(IDamageable target, bool isCriminal)
 		{
 			if (isCriminal)
 			{
@@ -7785,12 +7797,12 @@ namespace Server
 			}
 		}
 
-		public virtual void DoHarmful(Mobile target)
+		public virtual void DoHarmful(IDamageable target)
 		{
-			DoHarmful(target, false);
+            DoHarmful(target, false);
 		}
 
-		public virtual void DoHarmful(Mobile target, bool indirect)
+        public virtual void DoHarmful(IDamageable target, bool indirect)
 		{
 			if (target == null || m_Deleted)
 			{
@@ -7800,10 +7812,16 @@ namespace Server
 			bool isCriminal = IsHarmfulCriminal(target);
 
 			OnHarmfulAction(target, isCriminal);
-			target.AggressiveAction(this, isCriminal);
+
+            if(target is Mobile)
+			    ((Mobile)target).AggressiveAction(this, isCriminal);
 
 			Region.OnDidHarmful(this, target);
-			target.Region.OnGotHarmful(this, target);
+
+            if(target is Mobile)
+			    ((Mobile)target).Region.OnGotHarmful(this, target);
+            else if (target is Item)
+                Region.Find(target.Location, target.Map).OnGotHarmful(this, target);
 
 			if (!indirect)
 			{
@@ -7822,7 +7840,7 @@ namespace Server
 			m_ExpireCombatant.Start();
 		}
 
-		public virtual bool HarmfulCheck(Mobile target)
+		public virtual bool HarmfulCheck(IDamageable target)
 		{
 			if (CanBeHarmful(target))
 			{

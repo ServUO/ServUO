@@ -69,9 +69,9 @@ namespace Server.Engines.Quests.Necro
             new SummonTimer(player).Start();
         }
 
-        public override bool IsHarmfulCriminal(Mobile target)
+        public override bool IsHarmfulCriminal(IDamageable target)
         {
-            if (target == this.m_Necromancer)
+            if (target is Mobile && (Mobile)target == this.m_Necromancer)
                 return false;
 
             return base.IsHarmfulCriminal(target);

@@ -87,10 +87,10 @@ namespace Server.Network
 
 	public sealed class DamagePacket : Packet
 	{
-		public DamagePacket(Mobile m, int amount)
+		public DamagePacket(IDamageable damageable, int amount)
 			: base(0x0B, 7)
 		{
-			m_Stream.Write(m.Serial);
+            m_Stream.Write(damageable.Serial);
 
 			if (amount > 0xFFFF)
 			{
@@ -623,7 +623,7 @@ namespace Server.Network
 
 	public sealed class ChangeCombatant : Packet
 	{
-		public ChangeCombatant(Mobile combatant)
+		public ChangeCombatant(IEntity combatant)
 			: base(0xAA, 5)
 		{
 			m_Stream.Write(combatant != null ? combatant.Serial : Serial.Zero);
@@ -1311,10 +1311,15 @@ namespace Server.Network
 
 			int itemID = item.ItemID;
 
+            if(item is BaseMulti)
+                m_Stream.Write((byte)0x02);
+            else if (item is IDamageable)
+                m_Stream.Write((byte)0x03);
+            else
+                m_Stream.Write((byte)0x00);
+
 			if (item is BaseMulti)
 			{
-				m_Stream.Write((byte)0x02);
-
 				m_Stream.Write(item.Serial);
 
 				itemID &= 0x3FFF;
@@ -1322,16 +1327,9 @@ namespace Server.Network
 				m_Stream.Write((ushort)itemID);
 
 				m_Stream.Write((byte)0);
-				/*} else if (  ) {
-			m_Stream.Write( (byte) 0x01 );
-			m_Stream.Write( (int) item.Serial );
-			m_Stream.Write( (ushort) itemID ); 
-			m_Stream.Write( (byte) item.Direction );*/
 			}
 			else
 			{
-				m_Stream.Write((byte)0x00);
-
 				m_Stream.Write(item.Serial);
 
 				itemID &= 0xFFFF;
@@ -1367,8 +1365,14 @@ namespace Server.Network
             int itemID = item.ItemID;
 
             if (item is BaseMulti)
+                m_Stream.Write((byte)0x02);
+            else if (item is IDamageable)
+                m_Stream.Write((byte)0x03);
+            else
+                m_Stream.Write((byte)0x00);
+
+            if (item is BaseMulti)
             {
-                stream.Write((byte)0x02);
                 stream.Write((int)item.Serial);
                 itemID &= 0x3FFF;
                 stream.Write((ushort)itemID);
@@ -1376,7 +1380,6 @@ namespace Server.Network
             }
             else
             {
-                stream.Write((byte)0x00);
                 stream.Write((int)item.Serial);
                 itemID &= 0xFFFF;
                 stream.Write((ushort)itemID);
@@ -2369,7 +2372,7 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class Swing : Packet
 	{
-		public Swing(int flag, Mobile attacker, Mobile defender)
+		public Swing(int flag, Mobile attacker, IDamageable defender)
 			: base(0x2F, 10)
 		{
 			m_Stream.Write((byte)flag);
@@ -3308,11 +3311,11 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class MobileHitsN : Packet
 	{
-		public MobileHitsN(Mobile m)
+		public MobileHitsN(IDamageable d)
 			: base(0xA1, 9)
 		{
-			m_Stream.Write(m.Serial);
-			AttributeNormalizer.Write(m_Stream, m.Hits, m.HitsMax);
+			m_Stream.Write(d.Serial);
+			AttributeNormalizer.Write(m_Stream, d.Hits, d.HitsMax);
 		}
 	}
 
@@ -3449,21 +3452,17 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class MobileStatusCompact : Packet
 	{
-		public MobileStatusCompact(bool canBeRenamed, Mobile m)
+		public MobileStatusCompact(bool canBeRenamed, IDamageable d)
 			: base(0x11)
 		{
-			string name = m.Name;
-			if (name == null)
-			{
-				name = "";
-			}
+            string name = d.Name == null ? "" : d.Name;
 
 			EnsureCapacity(43);
 
-			m_Stream.Write(m.Serial);
+			m_Stream.Write(d.Serial);
 			m_Stream.WriteAsciiFixed(name, 30);
 
-			AttributeNormalizer.WriteReverse(m_Stream, m.Hits, m.HitsMax);
+			AttributeNormalizer.WriteReverse(m_Stream, d.Hits, d.HitsMax);
 
 			m_Stream.Write(canBeRenamed);
 
@@ -3574,131 +3573,131 @@ m_Stream.Write( (int) renderMode );
 		}
 	}
 
-	public sealed class MobileStatus : Packet
-	{
-		public MobileStatus(Mobile beholder, Mobile beheld)
-			: this(beholder, beheld, beheld.NetState)
-		{ }
+    public sealed class MobileStatus : Packet
+    {
+        public MobileStatus(Mobile beholder, Mobile beheld)
+            : this(beholder, beheld, beheld.NetState)
+        { }
 
-		public MobileStatus(Mobile beholder, Mobile beheld, NetState ns)
-			: base(0x11)
-		{
-			string name = beheld.Name;
-			if (name == null)
-			{
-				name = "";
-			}
+        public MobileStatus(Mobile beholder, Mobile beheld, NetState ns)
+            : base(0x11)
+        {
+            string name = beheld.Name;
+            if (name == null)
+            {
+                name = "";
+            }
 
-			int type;
+            int type;
 
-			if (beholder != beheld)
-			{
-				type = 0;
-				EnsureCapacity(43);
-			}
-			else if (Core.HS && ns != null && ns.ExtendedStatus)
-			{
-				type = 6;
-				EnsureCapacity(121);
-			}
-			else if (Core.ML && ns != null && ns.SupportsExpansion(Expansion.ML))
-			{
-				type = 5;
-				EnsureCapacity(91);
-			}
-			else
-			{
-				type = Core.AOS ? 4 : 3;
-				EnsureCapacity(88);
-			}
+            if (beholder != beheld)
+            {
+                type = 0;
+                EnsureCapacity(43);
+            }
+            else if (Core.HS && ns != null && ns.ExtendedStatus)
+            {
+                type = 6;
+                EnsureCapacity(121);
+            }
+            else if (Core.ML && ns != null && ns.SupportsExpansion(Expansion.ML))
+            {
+                type = 5;
+                EnsureCapacity(91);
+            }
+            else
+            {
+                type = Core.AOS ? 4 : 3;
+                EnsureCapacity(88);
+            }
 
-			m_Stream.Write(beheld.Serial);
+            m_Stream.Write(beheld.Serial);
 
-			m_Stream.WriteAsciiFixed(name, 30);
+            m_Stream.WriteAsciiFixed(name, 30);
 
-			if (beholder == beheld)
-			{
-				WriteAttr(beheld.Hits, beheld.HitsMax);
-			}
-			else
-			{
-				WriteAttrNorm(beheld.Hits, beheld.HitsMax);
-			}
+            if (beholder == beheld)
+            {
+                WriteAttr(beheld.Hits, beheld.HitsMax);
+            }
+            else
+            {
+                WriteAttrNorm(beheld.Hits, beheld.HitsMax);
+            }
 
-			m_Stream.Write(beheld.CanBeRenamedBy(beholder));
+            m_Stream.Write(beheld.CanBeRenamedBy(beholder));
 
-			m_Stream.Write((byte)type);
+            m_Stream.Write((byte)type);
 
-			if (type > 0)
-			{
-				m_Stream.Write(beheld.Female);
+            if (type > 0)
+            {
+                m_Stream.Write(beheld.Female);
 
-				m_Stream.Write((short)beheld.Str);
-				m_Stream.Write((short)beheld.Dex);
-				m_Stream.Write((short)beheld.Int);
+                m_Stream.Write((short)beheld.Str);
+                m_Stream.Write((short)beheld.Dex);
+                m_Stream.Write((short)beheld.Int);
 
-				WriteAttr(beheld.Stam, beheld.StamMax);
-				WriteAttr(beheld.Mana, beheld.ManaMax);
+                WriteAttr(beheld.Stam, beheld.StamMax);
+                WriteAttr(beheld.Mana, beheld.ManaMax);
 
-				m_Stream.Write(beheld.TotalGold);
-				m_Stream.Write((short)(Core.AOS ? beheld.PhysicalResistance : (int)(beheld.ArmorRating + 0.5)));
-				m_Stream.Write((short)(Mobile.BodyWeight + beheld.TotalWeight));
+                m_Stream.Write(beheld.TotalGold);
+                m_Stream.Write((short)(Core.AOS ? beheld.PhysicalResistance : (int)(beheld.ArmorRating + 0.5)));
+                m_Stream.Write((short)(Mobile.BodyWeight + beheld.TotalWeight));
 
-				if (type >= 5)
-				{
-					m_Stream.Write((short)beheld.MaxWeight);
-					m_Stream.Write((byte)(beheld.Race.RaceID + 1)); // Would be 0x00 if it's a non-ML enabled account but...
-				}
+                if (type >= 5)
+                {
+                    m_Stream.Write((short)beheld.MaxWeight);
+                    m_Stream.Write((byte)(beheld.Race.RaceID + 1)); // Would be 0x00 if it's a non-ML enabled account but...
+                }
 
-				m_Stream.Write((short)beheld.StatCap);
+                m_Stream.Write((short)beheld.StatCap);
 
-				m_Stream.Write((byte)beheld.Followers);
-				m_Stream.Write((byte)beheld.FollowersMax);
+                m_Stream.Write((byte)beheld.Followers);
+                m_Stream.Write((byte)beheld.FollowersMax);
 
-				if (type >= 4)
-				{
-					m_Stream.Write((short)beheld.FireResistance); // Fire
-					m_Stream.Write((short)beheld.ColdResistance); // Cold
-					m_Stream.Write((short)beheld.PoisonResistance); // Poison
-					m_Stream.Write((short)beheld.EnergyResistance); // Energy
-					m_Stream.Write((short)beheld.Luck); // Luck
+                if (type >= 4)
+                {
+                    m_Stream.Write((short)beheld.FireResistance); // Fire
+                    m_Stream.Write((short)beheld.ColdResistance); // Cold
+                    m_Stream.Write((short)beheld.PoisonResistance); // Poison
+                    m_Stream.Write((short)beheld.EnergyResistance); // Energy
+                    m_Stream.Write((short)beheld.Luck); // Luck
 
-					IWeapon weapon = beheld.Weapon;
+                    IWeapon weapon = beheld.Weapon;
 
-					int min = 0, max = 0;
+                    int min = 0, max = 0;
 
-					if (weapon != null)
-					{
-						weapon.GetStatusDamage(beheld, out min, out max);
-					}
+                    if (weapon != null)
+                    {
+                        weapon.GetStatusDamage(beheld, out min, out max);
+                    }
 
-					m_Stream.Write((short)min); // Damage min
-					m_Stream.Write((short)max); // Damage max
+                    m_Stream.Write((short)min); // Damage min
+                    m_Stream.Write((short)max); // Damage max
 
-					m_Stream.Write(beheld.TithingPoints);
-				}
+                    m_Stream.Write(beheld.TithingPoints);
+                }
 
-				if (type >= 6)
-				{
-					for (int i = 0; i < 15; ++i)
-					{
-						m_Stream.Write((short)beheld.GetAOSStatus(i));
-					}
-				}
-			}
-		}
+                if (type >= 6)
+                {
+                    for (int i = 0; i < 15; ++i)
+                    {
+                        m_Stream.Write((short)beheld.GetAOSStatus(i));
+                    }
+                }
+            }
+        }
 
-		private void WriteAttr(int current, int maximum)
-		{
-			m_Stream.Write((short)current);
-			m_Stream.Write((short)maximum);
-		}
+        private void WriteAttr(int current, int maximum)
+        {
+            m_Stream.Write((short)current);
+            m_Stream.Write((short)maximum);
+        }
 
-		private void WriteAttrNorm(int current, int maximum)
-		{
-			AttributeNormalizer.WriteReverse(m_Stream, current, maximum);
-		}
-	}
+        private void WriteAttrNorm(int current, int maximum)
+        {
+            AttributeNormalizer.WriteReverse(m_Stream, current, maximum);
+        }
+    }
 
 	public sealed class HealthbarPoison : Packet
 	{

@@ -304,7 +304,7 @@ namespace Server.Mobiles
 
         public Mobile GetFocusMob()
         {
-            Mobile focus = Combatant;
+            Mobile focus = Combatant as Mobile;
 
             if (focus == null || focus.Deleted || !focus.Alive)
             {
@@ -312,11 +312,11 @@ namespace Server.Mobiles
 
                 foreach (Mobile mob in m_Crew)
                 {
-                    if (mob.Alive && mob.Combatant != null)
+                    if (mob.Alive && mob.Combatant is Mobile)
                     {
                         if (focus == null || (int)focus.GetDistanceToSqrt(mob) < closest)
                         {
-                            focus = mob.Combatant;
+                            focus = mob.Combatant as Mobile;
                             closest = (int)focus.GetDistanceToSqrt(mob);
                         }
                     }

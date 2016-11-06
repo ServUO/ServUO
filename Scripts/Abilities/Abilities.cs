@@ -241,8 +241,11 @@ namespace Server
                 return;
 
             if (from.Combatant is BaseCreature)
+            {
+                BaseCreature bc = (BaseCreature)from.Combatant;
+
                 if (from.Target != null)
-                    from.Target.Invoke(from, from.Combatant);
+                    from.Target.Invoke(from, bc);
                 else
                 {
                     double effect = -(from.Skills[SkillName.Discordance].Value / 5.0);
@@ -257,11 +260,12 @@ namespace Server
                         new ResistanceMod(ResistanceType.Energy, (int)(effect * 0.01))
                     };
 
-                    TimedResistanceMod.AddMod(from.Combatant, "Discordance", mods, duration);
-                    from.Combatant.AddStatMod(new StatMod(StatType.Str, "DiscordanceStr", (int)(from.Combatant.RawStr * effect), duration));
-                    from.Combatant.AddStatMod(new StatMod(StatType.Int, "DiscordanceInt", (int)(from.Combatant.RawInt * effect), duration));
-                    from.Combatant.AddStatMod(new StatMod(StatType.Dex, "DiscordanceDex", (int)(from.Combatant.RawDex * effect), duration));
+                    TimedResistanceMod.AddMod(bc, "Discordance", mods, duration);
+                    bc.AddStatMod(new StatMod(StatType.Str, "DiscordanceStr", (int)(bc.RawStr * effect), duration));
+                    bc.AddStatMod(new StatMod(StatType.Int, "DiscordanceInt", (int)(bc.RawInt * effect), duration));
+                    bc.AddStatMod(new StatMod(StatType.Dex, "DiscordanceDex", (int)(bc.RawDex * effect), duration));
                 }
+            }
         }
 
         public class DiscordEffectTimer : Timer
@@ -292,7 +296,7 @@ namespace Server
 
         public static void UsePeace(BaseCreature from)
         {
-            if (from.Combatant == null || !CanUse(from) || !CheckBarding(from))
+            if (from.Combatant == null || !(from.Combatant is Mobile) || !CanUse(from) || !CheckBarding(from))
                 return;
 
             if (!from.UseSkill(SkillName.Peacemaking))
@@ -315,7 +319,7 @@ namespace Server
 
         public static void UseProvo(BaseCreature from, bool randomly)
         {
-            if (from.Combatant == null && randomly || !CheckBarding(from))
+            if (((from.Combatant == null || !(from.Combatant is Mobile)) && randomly) || !CheckBarding(from))
                 return;
 
             if (!CanUse(from))
@@ -332,7 +336,7 @@ namespace Server
             if (from.Target != null)
                 from.Target.Invoke(from, targetone);
 
-            Mobile targettwo = randomly ? FindRandomTarget(from, randomly) : from.Combatant;
+            Mobile targettwo = randomly ? FindRandomTarget(from, randomly) : from.Combatant as Mobile;
 
             if (targettwo == null)
                 return;
@@ -346,13 +350,13 @@ namespace Server
         #region MimicThem
         public static void MimicThem(BaseCreature from)
         {
-            Mobile targ = from.Combatant;
+            Mobile targ = from.Combatant as Mobile;
             MimicThem(from, false, false);
         }
 
         public static void MimicThem(BaseCreature from, bool allowskillchanges, bool allowAIchanges)
         {
-            Mobile targ = from.Combatant;
+            Mobile targ = from.Combatant as Mobile;
             MimicThem(from, targ, allowskillchanges, allowAIchanges);
         }
 
@@ -482,7 +486,7 @@ namespace Server
 
         public static void BullRush(Mobile from, string text, int duration)
         {
-            Mobile target = from.Combatant;
+            Mobile target = from.Combatant as Mobile;
 
             if (target == null || CanUse(from, target))
                 return;
@@ -698,7 +702,7 @@ namespace Server
             if (from == null)
                 return;
 
-            Mobile target = from.Combatant;
+            Mobile target = from.Combatant as Mobile;
 
             if (target == null)
                 return;
@@ -1192,7 +1196,7 @@ namespace Server
             if (from.Frozen || from.Paralyzed)
                 return;
 
-            Mobile target = from.Combatant;
+            Mobile target = from.Combatant as Mobile;
 
             if (target == null)
                 return;

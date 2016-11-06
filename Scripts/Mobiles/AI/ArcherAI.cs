@@ -40,8 +40,8 @@ namespace Server.Mobiles
 
 		public override bool DoActionCombat()
 		{
-			if (m_Mobile.Combatant == null || m_Mobile.Combatant.Deleted || !m_Mobile.Combatant.Alive ||
-				m_Mobile.Combatant.IsDeadBondedPet)
+			if (m_Mobile.Combatant == null || m_Mobile.Combatant.Deleted || 
+                !m_Mobile.Combatant.Alive || (m_Mobile.Combatant is Mobile && ((Mobile)m_Mobile.Combatant).IsDeadBondedPet))
 			{
 				m_Mobile.DebugSay("My combatant is deleted");
 				Action = ActionType.Guard;

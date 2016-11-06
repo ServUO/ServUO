@@ -1607,7 +1607,7 @@ namespace Server.Items
 
             if (highest != null)
             {
-                return highest.Luck + TenthAnniversarySculpture.GetLuckBonus(highest) + FountainOfFortune.GetLuckBonus(highest);
+                return highest is PlayerMobile ? ((PlayerMobile)highest).RealLuck : highest.Luck;
             }
 
             return 0;

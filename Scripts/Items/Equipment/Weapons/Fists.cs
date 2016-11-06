@@ -259,10 +259,10 @@ namespace Server.Items
             }
         }
 
-        public override TimeSpan OnSwing(Mobile attacker, Mobile defender)
+        public override TimeSpan OnSwing(Mobile attacker, IDamageable defender)
         {
-            if (!Core.AOS)
-                this.CheckPreAOSMoves(attacker, defender);
+            if (!Core.AOS && defender is Mobile)
+                this.CheckPreAOSMoves(attacker, (Mobile)defender);
 
             return base.OnSwing(attacker, defender);
         }

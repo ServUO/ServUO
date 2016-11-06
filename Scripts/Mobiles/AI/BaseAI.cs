@@ -299,7 +299,7 @@ namespace Server.Mobiles
 
 		public virtual void OnAggressiveAction(Mobile aggressor)
 		{
-			Mobile currentCombat = m_Mobile.Combatant;
+            Mobile currentCombat = m_Mobile.Combatant as Mobile;
 
 			if (currentCombat != null && !aggressor.Hidden && currentCombat != aggressor &&
 				m_Mobile.GetDistanceToSqrt(currentCombat) > m_Mobile.GetDistanceToSqrt(aggressor))
@@ -308,7 +308,7 @@ namespace Server.Mobiles
 			}
 		}
 
-		public virtual void EndPickTarget(Mobile from, Mobile target, OrderType order)
+		public virtual void EndPickTarget(Mobile from, IDamageable target, OrderType order)
 		{
 			if (m_Mobile.Deleted || !m_Mobile.Controlled || !from.InRange(m_Mobile, 14) || from.Map != m_Mobile.Map ||
 				!from.CheckAlive())
@@ -996,8 +996,8 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (m_Mobile.Combatant != null && !m_Mobile.Combatant.Deleted && m_Mobile.Combatant.Alive &&
-				!m_Mobile.Combatant.IsDeadBondedPet)
+			if (m_Mobile.Combatant != null && !m_Mobile.Combatant.Deleted &&
+                m_Mobile.Combatant.Alive && (!(m_Mobile.Combatant is Mobile) || !((Mobile)m_Mobile.Combatant).IsDeadBondedPet))
 			{
 				m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
 			}
@@ -1013,9 +1013,9 @@ namespace Server.Mobiles
 			}
 			else
 			{
-				Mobile c = m_Mobile.Combatant;
+				IDamageable c = m_Mobile.Combatant;
 
-				if (c == null || c.Deleted || c.Map != m_Mobile.Map || !c.Alive || c.IsDeadBondedPet)
+				if (c == null || c.Deleted || c.Map != m_Mobile.Map || !c.Alive || (c is Mobile && ((Mobile)c).IsDeadBondedPet))
 				{
 					Action = ActionType.Wander;
 				}
@@ -1050,7 +1050,7 @@ namespace Server.Mobiles
 
 		public virtual bool DoActionFlee()
 		{
-			Mobile from = m_Mobile.FocusMob;
+			Mobile from = m_Mobile.FocusMob as Mobile;
 
 			if (from == null || from.Deleted || from.Map != m_Mobile.Map)
 			{
@@ -1243,8 +1243,8 @@ namespace Server.Mobiles
 
 			WalkRandomInHome(3, 2, 1);
 
-			if (m_Mobile.Combatant != null && !m_Mobile.Combatant.Deleted && m_Mobile.Combatant.Alive &&
-				!m_Mobile.Combatant.IsDeadBondedPet)
+			if (m_Mobile.Combatant is Mobile && !m_Mobile.Combatant.Deleted &&
+                m_Mobile.Combatant.Alive && (!(m_Mobile.Combatant is Mobile) || !((Mobile)m_Mobile.Combatant).IsDeadBondedPet))
 			{
 				m_Mobile.Warmode = true;
 				m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
@@ -1278,8 +1278,8 @@ namespace Server.Mobiles
 
 					if (WalkMobileRange(m_Mobile.ControlMaster, 1, bRun, 0, 1))
 					{
-						if (m_Mobile.Combatant != null && !m_Mobile.Combatant.Deleted && m_Mobile.Combatant.Alive &&
-							!m_Mobile.Combatant.IsDeadBondedPet)
+						if (m_Mobile.Combatant is Mobile && !m_Mobile.Combatant.Deleted && 
+                            m_Mobile.Combatant.Alive && (!(m_Mobile.Combatant is Mobile) || !((Mobile)m_Mobile.Combatant).IsDeadBondedPet))
 						{
 							m_Mobile.Warmode = true;
 							m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
@@ -1395,8 +1395,8 @@ namespace Server.Mobiles
 				{
 					m_Mobile.DebugSay("I have lost the one to follow. I stay here");
 
-					if (m_Mobile.Combatant != null && !m_Mobile.Combatant.Deleted && m_Mobile.Combatant.Alive &&
-						!m_Mobile.Combatant.IsDeadBondedPet)
+					if (m_Mobile.Combatant is Mobile && !m_Mobile.Combatant.Deleted &&
+                        m_Mobile.Combatant.Alive && (!(m_Mobile.Combatant is Mobile) || !((Mobile)m_Mobile.Combatant).IsDeadBondedPet))
 					{
 						m_Mobile.Warmode = true;
 						m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
@@ -1415,8 +1415,8 @@ namespace Server.Mobiles
 
 					if (WalkMobileRange(m_Mobile.ControlTarget, 1, bRun, 0, 1))
 					{
-						if (m_Mobile.Combatant != null && !m_Mobile.Combatant.Deleted && m_Mobile.Combatant.Alive &&
-							!m_Mobile.Combatant.IsDeadBondedPet)
+						if (m_Mobile.Combatant != null && !m_Mobile.Combatant.Deleted &&
+                            m_Mobile.Combatant.Alive && (!(m_Mobile.Combatant is Mobile) || !((Mobile)m_Mobile.Combatant).IsDeadBondedPet))
 						{
 							m_Mobile.Warmode = true;
 							m_Mobile.Direction = m_Mobile.GetDirectionTo(m_Mobile.Combatant);
@@ -1445,7 +1445,7 @@ namespace Server.Mobiles
 		public virtual bool DoOrderFriend()
 		{
 			Mobile from = m_Mobile.ControlMaster;
-			Mobile to = m_Mobile.ControlTarget;
+			Mobile to = m_Mobile.ControlTarget as Mobile;
 
 			if (from == null || to == null || from == to || from.Deleted || to.Deleted || !to.Player)
 			{
@@ -1516,7 +1516,7 @@ namespace Server.Mobiles
 		public virtual bool DoOrderUnfriend()
 		{
 			Mobile from = m_Mobile.ControlMaster;
-			Mobile to = m_Mobile.ControlTarget;
+			Mobile to = m_Mobile.ControlTarget as Mobile;
 
 			if (from == null || to == null || from == to || from.Deleted || to.Deleted || !to.Player)
 			{
@@ -1559,7 +1559,7 @@ namespace Server.Mobiles
 				return true;
 			}
 
-			Mobile combatant = m_Mobile.Combatant;
+			Mobile combatant = m_Mobile.Combatant as Mobile;
 
 			var aggressors = controlMaster.Aggressors;
 
@@ -1586,7 +1586,7 @@ namespace Server.Mobiles
 			}
 
 			if (combatant != null && combatant != m_Mobile && combatant != m_Mobile.ControlMaster && !combatant.Deleted &&
-				combatant.Alive && !combatant.IsDeadBondedPet && m_Mobile.CanSee(combatant) &&
+				combatant.Alive && (!(combatant is Mobile) || !((Mobile)combatant).IsDeadBondedPet) &&
 				m_Mobile.CanBeHarmful(combatant, false) && combatant.Map == m_Mobile.Map)
 			{
 				m_Mobile.DebugSay("Guarding from target...");
@@ -1625,7 +1625,7 @@ namespace Server.Mobiles
 			}
 
 			if (m_Mobile.ControlTarget == null || m_Mobile.ControlTarget.Deleted || m_Mobile.ControlTarget.Map != m_Mobile.Map ||
-				!m_Mobile.ControlTarget.Alive || m_Mobile.ControlTarget.IsDeadBondedPet)
+				!m_Mobile.ControlTarget.Alive || (m_Mobile.ControlTarget is Mobile && ((Mobile)m_Mobile.ControlTarget).IsDeadBondedPet))
 			{
 				m_Mobile.DebugSay(
 					"I think he might be dead. He's not anywhere around here at least. That's cool. I'm glad he's dead.");
@@ -1950,7 +1950,7 @@ namespace Server.Mobiles
 			}
 
 			Mobile from = m_Mobile.ControlMaster;
-			Mobile to = m_Mobile.ControlTarget;
+			Mobile to = m_Mobile.ControlTarget as Mobile;
 
 			if (from != to && from != null && !from.Deleted && to != null && !to.Deleted && to.Player)
 			{
@@ -2252,7 +2252,7 @@ namespace Server.Mobiles
 
 		public virtual MoveResult DoMoveImpl(Direction d)
 		{
-			if (m_Mobile.Deleted || m_Mobile.Frozen || m_Mobile.Paralyzed || (m_Mobile.Spell != null && m_Mobile.Spell.IsCasting) ||
+            if (m_Mobile.Deleted || m_Mobile.Frozen || m_Mobile.Paralyzed || (m_Mobile.Spell != null && m_Mobile.Spell.IsCasting && m_Mobile.FreezeOnCast) ||
 				m_Mobile.DisallowAllMoves)
 			{
 				return MoveResult.BadState;
@@ -2509,7 +2509,7 @@ namespace Server.Mobiles
 		{
 			if (m_Mobile.CheckFlee())
 			{
-				Mobile combatant = m_Mobile.Combatant;
+				Mobile combatant = m_Mobile.Combatant as Mobile;
 
 				if (combatant == null)
 				{
@@ -2542,20 +2542,20 @@ namespace Server.Mobiles
 			}
 		}
 
-		public virtual bool MoveTo(Mobile m, bool run, int range)
+		public virtual bool MoveTo(IPoint3D p, bool run, int range)
 		{
-			if (m_Mobile.Deleted || m_Mobile.DisallowAllMoves || m == null || m.Deleted)
+			if (m_Mobile.Deleted || m_Mobile.DisallowAllMoves || p == null || (p is IDamageable && ((IDamageable)p).Deleted))
 			{
 				return false;
 			}
 
-			if (m_Mobile.InRange(m, range))
+			if (m_Mobile.InRange(p, range))
 			{
 				m_Path = null;
 				return true;
 			}
 
-			if (m_Path != null && m_Path.Goal == m)
+			if (m_Path != null && m_Path.Goal == p)
 			{
 				if (m_Path.Follow(run, 1))
 				{
@@ -2563,9 +2563,9 @@ namespace Server.Mobiles
 					return true;
 				}
 			}
-			else if (!DoMove(m_Mobile.GetDirectionTo(m), true))
+			else if (!DoMove(m_Mobile.GetDirectionTo(p), true))
 			{
-				m_Path = new PathFollower(m_Mobile, m);
+				m_Path = new PathFollower(m_Mobile, p);
 				m_Path.Mover = DoMoveImpl;
 
 				if (m_Path.Follow(run, 1))
@@ -2593,26 +2593,26 @@ namespace Server.Mobiles
         * 
         */
 
-		public virtual bool WalkMobileRange(Mobile m, int iSteps, bool bRun, int iWantDistMin, int iWantDistMax)
+		public virtual bool WalkMobileRange(IPoint3D p, int iSteps, bool bRun, int iWantDistMin, int iWantDistMax)
 		{
 			if (m_Mobile.Deleted || m_Mobile.DisallowAllMoves)
 			{
 				return false;
 			}
 
-			if (m != null)
+			if (p != null)
 			{
 				for (int i = 0; i < iSteps; i++)
 				{
 					// Get the curent distance
-					int iCurrDist = (int)m_Mobile.GetDistanceToSqrt(m);
+					int iCurrDist = (int)m_Mobile.GetDistanceToSqrt(p);
 
 					if (iCurrDist < iWantDistMin || iCurrDist > iWantDistMax)
 					{
 						bool needCloser = (iCurrDist > iWantDistMax);
 						bool needFurther = !needCloser;
 
-						if (needCloser && m_Path != null && m_Path.Goal == m)
+						if (needCloser && m_Path != null && m_Path.Goal == p)
 						{
 							if (m_Path.Follow(bRun, 1))
 							{
@@ -2625,11 +2625,11 @@ namespace Server.Mobiles
 
 							if (iCurrDist > iWantDistMax)
 							{
-								dirTo = m_Mobile.GetDirectionTo(m);
+								dirTo = m_Mobile.GetDirectionTo(p);
 							}
 							else
 							{
-								dirTo = m.GetDirectionTo(m_Mobile);
+								dirTo = Utility.GetDirection(p, m_Mobile);
 							}
 
 							// Add the run flag
@@ -2640,7 +2640,7 @@ namespace Server.Mobiles
 
 							if (!DoMove(dirTo, true) && needCloser)
 							{
-								m_Path = new PathFollower(m_Mobile, m);
+								m_Path = new PathFollower(m_Mobile, p);
 								m_Path.Mover = DoMoveImpl;
 
 								if (m_Path.Follow(bRun, 1))
@@ -2661,7 +2661,7 @@ namespace Server.Mobiles
 				}
 
 				// Get the curent distance
-				int iNewDist = (int)m_Mobile.GetDistanceToSqrt(m);
+				int iNewDist = (int)m_Mobile.GetDistanceToSqrt(p);
 
 				if (iNewDist >= iWantDistMin && iNewDist <= iWantDistMax)
 				{
@@ -2709,8 +2709,8 @@ namespace Server.Mobiles
 			}
 			else if (m_Mobile.Controlled)
 			{
-				if (m_Mobile.ControlTarget == null || m_Mobile.ControlTarget.Deleted || m_Mobile.ControlTarget.Hidden ||
-					!m_Mobile.ControlTarget.Alive || m_Mobile.ControlTarget.IsDeadBondedPet ||
+				if (m_Mobile.ControlTarget == null || m_Mobile.ControlTarget.Deleted || (m_Mobile.ControlTarget is Mobile && ((Mobile)m_Mobile.ControlTarget).Hidden) ||
+					!m_Mobile.ControlTarget.Alive || (m_Mobile.ControlTarget is Mobile && ((Mobile)m_Mobile.ControlTarget).IsDeadBondedPet) ||
 					!m_Mobile.InRange(m_Mobile.ControlTarget, m_Mobile.RangePerception * 2))
 				{
 					if (m_Mobile.ControlTarget != null && m_Mobile.ControlTarget != m_Mobile.ControlMaster)

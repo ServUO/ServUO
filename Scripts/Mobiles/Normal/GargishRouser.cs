@@ -152,7 +152,8 @@ namespace Server.Mobiles
 			{
                 if (!m_Manifested && m_ManifestChance > Utility.RandomDouble())
                 {
-                    Mobile m = this.Combatant;
+                    IDamageable m = this.Combatant;
+
                     if (m is BaseCreature && (((BaseCreature)m).Summoned || ((BaseCreature)m).Controlled))
                         m = ((BaseCreature)m).GetMaster();
 

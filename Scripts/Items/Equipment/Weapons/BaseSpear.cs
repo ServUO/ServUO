@@ -63,25 +63,25 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        public override void OnHit(Mobile attacker, Mobile defender, double damageBonus)
+        public override void OnHit(Mobile attacker, IDamageable defender, double damageBonus)
         {
             base.OnHit(attacker, defender, damageBonus);
 
-            if (!Core.AOS && this.Layer == Layer.TwoHanded && (attacker.Skills[SkillName.Anatomy].Value / 400.0) >= Utility.RandomDouble() && Engines.ConPVP.DuelContext.AllowSpecialAbility(attacker, "Paralyzing Blow", false))
+            if (!Core.AOS && defender is Mobile && this.Layer == Layer.TwoHanded && (attacker.Skills[SkillName.Anatomy].Value / 400.0) >= Utility.RandomDouble() && Engines.ConPVP.DuelContext.AllowSpecialAbility(attacker, "Paralyzing Blow", false))
             {
-                defender.SendMessage("You receive a paralyzing blow!"); // Is this not localized?
-                defender.Freeze(TimeSpan.FromSeconds(2.0));
+                ((Mobile)defender).SendMessage("You receive a paralyzing blow!"); // Is this not localized?
+                ((Mobile)defender).Freeze(TimeSpan.FromSeconds(2.0));
 
                 attacker.SendMessage("You deliver a paralyzing blow!"); // Is this not localized?
                 attacker.PlaySound(0x11C);
             }
 
-            if (!Core.AOS && this.Poison != null && this.PoisonCharges > 0)
+            if (!Core.AOS && defender is Mobile && this.Poison != null && this.PoisonCharges > 0)
             {
                 --this.PoisonCharges;
 
                 if (Utility.RandomDouble() >= 0.5) // 50% chance to poison
-                    defender.ApplyPoison(attacker, this.Poison);
+                    ((Mobile)defender).ApplyPoison(attacker, this.Poison);
             }
         }
     }

@@ -32,52 +32,56 @@ namespace Server
             }
         }
 
-        public static int Damage(Mobile m, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy)
+        public static int Damage(IDamageable m, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy)
         {
             return Damage(m, null, damage, ignoreArmor, phys, fire, cold, pois, nrgy);
         }
 
-        public static int Damage(Mobile m, int damage, int phys, int fire, int cold, int pois, int nrgy)
+        public static int Damage(IDamageable m, int damage, int phys, int fire, int cold, int pois, int nrgy)
         {
             return Damage(m, null, damage, phys, fire, cold, pois, nrgy);
         }
 
-        public static int Damage(Mobile m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy)
+        public static int Damage(IDamageable m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy)
         {
             return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, false, false, false);
         }
 
-        public static int Damage(Mobile m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos)
+        public static int Damage(IDamageable m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos)
         {
             return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, chaos, 0, false, false, false);
         }
 
-        public static int Damage(Mobile m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct)
+        public static int Damage(IDamageable m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct)
         {
             return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, chaos, direct, false, false, false);
         }
 
-        public static int Damage(Mobile m, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy)
+        public static int Damage(IDamageable m, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy)
         {
             return Damage(m, from, damage, ignoreArmor, phys, fire, cold, pois, nrgy, 0, 0, false, false, false);
         }
 
-        public static int Damage(Mobile m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, bool keepAlive)
+        public static int Damage(IDamageable m, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, bool keepAlive)
         {
             return Damage(m, from, damage, false, phys, fire, cold, pois, nrgy, 0, 0, keepAlive, false, false);
         }
 
-        public static int Damage(Mobile m, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, bool keepAlive, bool archer, bool deathStrike)
+        public static int Damage(IDamageable damageable, Mobile from, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, bool keepAlive, bool archer, bool deathStrike)
         {
-            if (m == null || m.Deleted || !m.Alive || damage <= 0)
+            Mobile m = damageable as Mobile;
+
+            if (damageable == null || damageable.Deleted || !damageable.Alive || damage <= 0)
                 return 0;
 
-            if (phys == 0 && fire == 100 && cold == 0 && pois == 0 && nrgy == 0)
+            if (m != null && phys == 0 && fire == 100 && cold == 0 && pois == 0 && nrgy == 0)
                 Mobiles.MeerMage.StopEffect(m, true);
 
             if (!Core.AOS)
             {
-                m.Damage(damage, from);
+                if(m != null)
+                    m.Damage(damage, from);
+
                 return damage;
             }
 
@@ -120,23 +124,14 @@ namespace Server
 
             if (!ignoreArmor)
             {
-                // Armor Ignore on OSI ignores all defenses, not just physical.
-                int resPhys = m.PhysicalResistance;
-
-                #region SA
-                int physDamage = damage * phys * (100 - m.PhysicalResistance);
-                int fireDamage = damage * fire * (100 - m.FireResistance);
-                int coldDamage = damage * cold * (100 - m.ColdResistance);
-                int poisonDamage = damage * pois * (100 - m.PoisonResistance);
-                int energyDamage = damage * nrgy * (100 - m.EnergyResistance);
-
-                int[] amounts = new int[] { physDamage, fireDamage, coldDamage, poisonDamage, energyDamage };
+                int physDamage = damage * phys * (100 - damageable.PhysicalResistance);
+                int fireDamage = damage * fire * (100 - damageable.FireResistance);
+                int coldDamage = damage * cold * (100 - damageable.ColdResistance);
+                int poisonDamage = damage * pois * (100 - damageable.PoisonResistance);
+                int energyDamage = damage * nrgy * (100 - damageable.EnergyResistance);
 
                 totalDamage = physDamage + fireDamage + coldDamage + poisonDamage + energyDamage;
                 totalDamage /= 10000;
-
-                
-                #endregion
 
                 if (Core.ML)
                 {
@@ -146,7 +141,8 @@ namespace Server
                         totalDamage += totalDamage * quiver.DamageIncrease / 100;
                 }
 
-                BaseFishPie.ScaleDamage(m, ref totalDamage, phys, fire, cold, pois, nrgy, direct);
+                if (m != null)
+                    BaseFishPie.ScaleDamage(m, ref totalDamage, phys, fire, cold, pois, nrgy, direct);
 
                 if (totalDamage < 1)
                     totalDamage = 1;
@@ -167,6 +163,13 @@ namespace Server
 
                 if (Core.ML && quiver != null)
                     totalDamage += totalDamage * quiver.DamageIncrease / 100;
+            }
+
+            // object being damaged is not a mobile, so we will end here
+            if (m == null)
+            {
+                damageable.Damage(totalDamage, from);
+                return totalDamage;
             }
 
             #region Evil Omen and Blood Oath

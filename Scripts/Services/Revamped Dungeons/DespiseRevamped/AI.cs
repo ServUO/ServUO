@@ -26,7 +26,7 @@ namespace Server.Engines.Despise
             if (m_Creature.Orb == null)
                 return base.DoOrderAttack();
 
-            if (m_Creature.ControlTarget == null || m_Creature.ControlTarget.Deleted || m_Creature.ControlTarget.Map != m_Creature.Map || !m_Creature.ControlTarget.Alive || m_Creature.ControlTarget.IsDeadBondedPet)
+            if (m_Creature.ControlTarget == null || m_Creature.ControlTarget.Deleted || m_Creature.ControlTarget.Map != m_Creature.Map || !m_Creature.ControlTarget.Alive || (m_Creature.ControlTarget is Mobile && ((Mobile)m_Creature.ControlTarget).IsDeadBondedPet))
             {
                 m_Creature.DebugSay("I think he might be dead. He's not anywhere around here at least. That's cool. I'm glad he's dead.");
 
@@ -82,7 +82,7 @@ namespace Server.Engines.Despise
                         if (p == null)
                             p = m_Creature;
 
-                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant : m_Creature.ControlMaster.Combatant != null ? m_Creature.ControlMaster.Combatant : null;
+                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant as Mobile : m_Creature.ControlMaster.Combatant != null ? m_Creature.ControlMaster.Combatant as Mobile : null;
 
                         if (combatant != null && combatant.GetDistanceToSqrt(p) <= length)
                         {
@@ -143,7 +143,7 @@ namespace Server.Engines.Despise
                         if (p == null)
                             p = m_Creature;
 
-                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant : m_Creature.ControlMaster != null ? m_Creature.ControlMaster.Combatant : null;
+                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant as Mobile : m_Creature.ControlMaster != null ? m_Creature.ControlMaster.Combatant as Mobile : null;
 
                         if (combatant != null && combatant.GetDistanceToSqrt(p) <= length)
                         {
@@ -198,7 +198,7 @@ namespace Server.Engines.Despise
                         if (p == null)
                             p = m_Creature;
 
-                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant : m_Creature.ControlMaster.Combatant != null ? m_Creature.ControlMaster.Combatant : null;
+                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant as Mobile : m_Creature.ControlMaster.Combatant != null ? m_Creature.ControlMaster.Combatant as Mobile : null;
 
                         if (combatant != null && combatant.GetDistanceToSqrt(p) <= length)
                         {
@@ -254,10 +254,10 @@ namespace Server.Engines.Despise
                         break;
                     case Aggression.Defensive:
                         {
-                            Mobile focus = m_Creature.Combatant;
+                            Mobile focus = m_Creature.Combatant as Mobile;
 
                             if (focus == null)
-                                focus = m_Creature.ControlMaster.Combatant;
+                                focus = m_Creature.ControlMaster.Combatant as Mobile;
 
                             if (focus != null)
                             {
@@ -345,7 +345,7 @@ namespace Server.Engines.Despise
             if (m_Creature.Orb == null)
                 return base.DoOrderAttack();
 
-            if (m_Creature.ControlTarget == null || m_Creature.ControlTarget.Deleted || m_Creature.ControlTarget.Map != m_Creature.Map || !m_Creature.ControlTarget.Alive || m_Creature.ControlTarget.IsDeadBondedPet)
+            if (m_Creature.ControlTarget == null || m_Creature.ControlTarget.Deleted || m_Creature.ControlTarget.Map != m_Creature.Map || !m_Creature.ControlTarget.Alive || (m_Creature.ControlTarget is Mobile && ((Mobile)m_Creature.ControlTarget).IsDeadBondedPet))
             {
                 m_Creature.DebugSay("I think he might be dead. He's not anywhere around here at least. That's cool. I'm glad he's dead.");
 
@@ -401,7 +401,7 @@ namespace Server.Engines.Despise
                         if (p == null)
                             p = m_Creature.ControlMaster;
 
-                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant : m_Creature.ControlMaster.Combatant != null ? m_Creature.ControlMaster.Combatant : null;
+                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant as Mobile : m_Creature.ControlMaster.Combatant != null ? m_Creature.ControlMaster.Combatant as Mobile : null;
 
                         if (combatant != null && combatant.GetDistanceToSqrt(p) <= length)
                         {
@@ -462,7 +462,7 @@ namespace Server.Engines.Despise
                         if (p == null)
                             p = m_Creature.ControlMaster;
 
-                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant : m_Creature.ControlMaster != null ? m_Creature.ControlMaster.Combatant : null;
+                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant as Mobile : m_Creature.ControlMaster != null ? m_Creature.ControlMaster.Combatant as Mobile : null;
 
                         if (combatant != null && combatant.GetDistanceToSqrt(p) <= length)
                         {
@@ -518,7 +518,7 @@ namespace Server.Engines.Despise
                         if (p == null)
                             p = m_Creature.ControlMaster;
 
-                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant : m_Creature.ControlMaster.Combatant != null ? m_Creature.ControlMaster.Combatant : null;
+                        Mobile combatant = m_Creature.Combatant != null ? m_Creature.Combatant as Mobile : m_Creature.ControlMaster.Combatant != null ? m_Creature.ControlMaster.Combatant as Mobile : null;
 
                         if (combatant != null && combatant.GetDistanceToSqrt(p) <= length)
                         {
@@ -599,10 +599,10 @@ namespace Server.Engines.Despise
                         break;
                     case Aggression.Defensive:
                         {
-                            Mobile focus = m_Creature.Combatant;
+                            Mobile focus = m_Creature.Combatant as Mobile;
 
                             if (focus == null)
-                                focus = m_Creature.ControlMaster.Combatant;
+                                focus = m_Creature.ControlMaster.Combatant as Mobile;
 
                             if (focus != null)
                             {

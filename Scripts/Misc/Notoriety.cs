@@ -163,8 +163,10 @@ namespace Server.Misc
             return CheckBeneficialStatus(GetGuildStatus(from), GetGuildStatus(target));
         }
 
-        public static bool Mobile_AllowHarmful(Mobile from, Mobile target)
+        public static bool Mobile_AllowHarmful(Mobile from, IDamageable damageable)
         {
+            Mobile target = damageable as Mobile;
+
             if (from == null || target == null || from.IsStaff() || target.IsStaff())
                 return true;
 
@@ -398,8 +400,13 @@ namespace Server.Misc
             }
         }
 
-        public static int MobileNotoriety(Mobile source, Mobile target)
+        public static int MobileNotoriety(Mobile source, IDamageable damagable)
         {
+            Mobile target = damagable as Mobile;
+
+            if (target == null)
+                return Notoriety.CanBeAttacked;
+
             if (Core.AOS && (target.Blessed || (target is BaseVendor && ((BaseVendor)target).IsInvulnerable) || target is PlayerVendor || target is TownCrier))
                 return Notoriety.Invulnerable;
 

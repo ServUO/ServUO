@@ -130,14 +130,17 @@ namespace Server.Mobiles
                 return new AnimateDeadSpell(m_Mobile, null);
         }
 
-        public override Spell ChooseSpell(Mobile c)
+        public override Spell ChooseSpell(IDamageable c)
         {
+            if (!(c is Mobile))
+                return base.ChooseSpell(c);
+
             Spell spell = CheckCastHealingSpell();
 
             if (spell != null)
                 return spell;
 
-            double damage = ((m_Mobile.Skills[SkillName.SpiritSpeak].Value - c.Skills[SkillName.MagicResist].Value) / 10) + (c.Player ? 18 : 30);
+            double damage = ((m_Mobile.Skills[SkillName.SpiritSpeak].Value - ((Mobile)c).Skills[SkillName.MagicResist].Value) / 10) + (c is PlayerMobile ? 18 : 30);
 
             if (damage > c.Hits)
                 return new PainSpikeSpell(m_Mobile, null);

@@ -84,9 +84,9 @@ namespace Server.Mobiles
 
 					spell = new DispelEvilSpell( m_Mobile, null );					
 				}
-				else
+				else if(m_Mobile.Combatant != null)
 				{
-					spell = ChooseSpell( m_Mobile.Combatant );
+					spell = ChooseSpell();
 				}
 				
 				if ( spell != null )
@@ -160,7 +160,7 @@ namespace Server.Mobiles
 			Mobile active = null;
 			double activePrio = 0.0;
 
-			Mobile comb = m_Mobile.Combatant;
+			Mobile comb = m_Mobile.Combatant as Mobile;
 
 			if ( comb != null && !comb.Deleted && comb.Alive && !comb.IsDeadBondedPet && m_Mobile.InRange( comb, 12 ) && CanDispel( comb ) )
 			{
@@ -219,7 +219,7 @@ namespace Server.Mobiles
 			return ( m is BaseCreature && ((BaseCreature)m).Summoned && m_Mobile.CanBeHarmful( m, false ) && !((BaseCreature)m).IsAnimatedDead );
 		}
 		
-		public virtual Spell ChooseSpell( Mobile c )
+		public virtual Spell ChooseSpell()
 		{			
 			Spell spell = CheckCastHealingSpell();
 			

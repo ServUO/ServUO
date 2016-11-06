@@ -3,9 +3,19 @@ using System.Collections;
 using Server.Mobiles;
 using Server.Targeting;
 using Server.Targets;
+using Server.Network;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
+    public interface IDamageableItem : IDamageable
+    {
+        bool CanDamage { get; }
+        bool CheckHit(Mobile attacker);
+        void OnHarmfulSpell(Mobile attacker);
+    }
+
 	public class DamageableItem : Item, IDamageableItem
 	{
 		public enum ItemLevel
@@ -25,36 +35,22 @@ namespace Server.Items
 		private int m_DestroyedID;
 		private int m_HalfHitsID;
 		private ItemLevel m_ItemLevel;
-		private DamagePlaceholder m_Child;
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public Mobile Link
-		{
-			get
-			{
-				return this.m_Child;
-			}
-            set 
-            { }
-		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public ItemLevel Level
 		{
 			get
 			{
-				return this.m_ItemLevel;
+				return m_ItemLevel;
 			}
 			set
 			{
-				this.m_ItemLevel = value;
+				m_ItemLevel = value;
 
-				double bonus = (double)(((int)this.m_ItemLevel * 100.0) * ((int)this.m_ItemLevel * 5));
+				double bonus = (double)(((int)m_ItemLevel * 100.0) * ((int)m_ItemLevel * 5));
 
-				this.HitsMax = ((int)(100 + bonus));
-				this.Hits = ((int)(100 + bonus));
-
-				this.InvalidateProperties();
+				HitsMax = ((int)(100 + bonus));
+				Hits = ((int)(100 + bonus));
 			}
 		}
 
@@ -63,24 +59,22 @@ namespace Server.Items
 		{
 			get
 			{
-				return this.m_StartID;
+				return m_StartID;
 			}
 			set
 			{
 				if (value < 0)
-					this.m_StartID = 0;
+					m_StartID = 0;
 				else if (value > int.MaxValue)
-					this.m_StartID = int.MaxValue;
+					m_StartID = int.MaxValue;
 				else
-					this.m_StartID = value;
+					m_StartID = value;
 
-				if (this.m_Hits >= (this.m_HitsMax * IDChange))
+				if (m_Hits >= (m_HitsMax * IDChange))
 				{
-					if (this.ItemID != this.m_StartID)
-						this.ItemID = this.m_StartID;
+					if (ItemID != m_StartID)
+						ItemID = m_StartID;
 				}
-
-				this.InvalidateProperties();
 			}
 		}
 
@@ -89,24 +83,22 @@ namespace Server.Items
 		{
 			get
 			{
-				return this.m_HalfHitsID;
+				return m_HalfHitsID;
 			}
 			set
 			{
 				if (value < 0)
-					this.m_HalfHitsID = 0;
+					m_HalfHitsID = 0;
 				else if (value > int.MaxValue)
-					this.m_HalfHitsID = int.MaxValue;
+					m_HalfHitsID = int.MaxValue;
 				else
-					this.m_HalfHitsID = value;
+					m_HalfHitsID = value;
 
-				if (this.m_Hits < (this.m_HitsMax * IDChange))
+				if (m_Hits < (m_HitsMax * IDChange))
 				{
-					if (this.ItemID != this.m_HalfHitsID)
-						this.ItemID = this.m_HalfHitsID;
+					if (ItemID != m_HalfHitsID)
+						ItemID = m_HalfHitsID;
 				}
-
-				this.InvalidateProperties();
 			}
 		}
 
@@ -131,20 +123,22 @@ namespace Server.Items
 		{
 			get
 			{
-                if (m_Child != null && m_Hits != m_Child.Hits)
-                    m_Hits = m_Child.Hits;
-
-				return this.m_Hits;
+				return m_Hits;
 			}
 			set
 			{
-				if (value > this.m_HitsMax)
-					this.m_Hits = this.m_HitsMax;
-				else
-					this.m_Hits = value;
+                if (value > HitsMax)
+                {
+                    value = HitsMax;
+                }
 
-				if (this.m_Child != null && this.m_Hits != this.m_Child.Hits)
-					this.UpdateHitsToEntity();
+                if (m_Hits != value)
+                {
+                    int oldValue = m_Hits;
+                    m_Hits = value;
+                    UpdateDelta();
+                    OnHitsChange(oldValue);
+                }
 
                 int id = ItemID;
 
@@ -155,16 +149,15 @@ namespace Server.Items
                 }
                 else if (m_Hits <= (m_HitsMax * IDChange) && id == m_StartID)
                 {
-                    this.ItemID = m_HalfHitsID;
+                    ItemID = m_HalfHitsID;
                     OnIDChange(id);
                 }
-                else if (m_Hits <= 0)
+                
+                if (m_Hits < 0)
                 {
-                    this.Destroy();
+                    Destroy();
                     return;
                 }
-
-				this.InvalidateProperties();
 			}
 		}
 
@@ -173,64 +166,116 @@ namespace Server.Items
 		{
 			get
 			{
-				return this.m_HitsMax;
+				return m_HitsMax;
 			}
 			set
 			{
 				if (value > int.MaxValue)
-					this.m_HitsMax = int.MaxValue;
+					m_HitsMax = int.MaxValue;
 				else
-					this.m_HitsMax = value;
+					m_HitsMax = value;
 
-				if (this.Hits > this.m_HitsMax)
-					this.Hits = this.m_HitsMax;
-
-				if (this.m_Child != null && this.m_HitsMax != this.m_Child.HitsMax)
-					this.UpdateMaxHitsToEntity();
-
-				this.InvalidateProperties();
+				if (Hits > m_HitsMax)
+					Hits = m_HitsMax;
 			}
 		}
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string PlaceholderName { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
         public bool Destroyed { get; set; }
 
-        public virtual int HitEffect { get { return 14265; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int ResistBasePhys { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int ResistBaseFire { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int ResistBaseCold { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int ResistBasePoison { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int ResistBaseEnergy { get; set; }
+
+        public Dictionary<Mobile, int> DamageStore { get; set; }
+
+        public virtual int HitEffect { get { return -1; } }
         public virtual int DestroySound { get { return 0x3B3; } }
         public virtual double IDChange { get { return 0.5; } }
         public virtual bool DeleteOnDestroy { get { return true; } }
+        public virtual bool Alive { get { return !Destroyed; } }
+        public virtual bool CanDamage { get { return true; } }
 
-        public virtual DamagePlaceholder Placeholder { get { return new DamagePlaceholder(this); } }
+        public override int PhysicalResistance { get { return ResistBasePhys; } }
+        public override int FireResistance { get { return ResistBaseFire; } }
+        public override int ColdResistance { get { return ResistBaseCold; } }
+        public override int PoisonResistance { get { return ResistBasePoison; } }
+        public override int EnergyResistance { get { return ResistBaseEnergy; } }
 
-        public override int PhysicalResistance { get { return 50; } }
-        public override int FireResistance { get { return 99; } }
-        public override int ColdResistance { get { return 99; } }
-        public override int PoisonResistance { get { return 99; } }
-        public override int EnergyResistance { get { return 99; } }
-
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties { get { return false; } }
 
 		[Constructable]
 		public DamageableItem(int StartID, int HalfID, int destroyID = -1)
 			: base(StartID)
 		{
-			this.Hue = 0;
-			this.Movable = false;
+			Hue = 0;
+			Movable = false;
 
-			this.Level = ItemLevel.NotSet;
+			Level = ItemLevel.NotSet;
 
-			this.IDStart = StartID;
-			this.IDHalfHits = HalfID;
-            this.IDDestroyed = destroyID;
+			IDStart = StartID;
+			IDHalfHits = HalfID;
+            IDDestroyed = destroyID;
 		}
 
-		public virtual void OnDamage(int amount, Mobile from, bool willKill)
-		{
-			return;
-		}
+        public override void OnDoubleClick(Mobile m)
+        {
+            if (m.Warmode)
+                m.Attack(this);
+        }
+
+        public virtual bool CheckHit(Mobile attacker)
+        {
+            return true; // Always hits
+        }
+
+        public virtual void OnHarmfulSpell(Mobile attacker)
+        {
+        }
+
+        public virtual void OnStatsQuery(Mobile from)
+        {
+            if (from.Map == Map && Utility.InUpdateRange(this, from) && from.CanSee(this))
+            {
+                from.Send(new MobileStatusCompact(false, this));
+            }
+        }
+
+        public virtual void UpdateDelta()
+        {
+            var eable = Map.GetClientsInRange(Location);
+            Mobile beholder = null;
+
+            Packet status = Packet.Acquire(new MobileHitsN(this));
+
+            foreach (NetState ns in eable)
+            {
+                beholder = ns.Mobile;
+
+                if (beholder != null && beholder.CanSee(this))
+                {
+                    ns.Send(status);
+                }
+            }
+
+            Packet.Release(status);
+            eable.Free();
+        }
+
+        public virtual void OnHitsChange(int oldhits)
+        {       
+        }
 
 		public virtual bool OnBeforeDestroyed()
 		{
@@ -242,47 +287,83 @@ namespace Server.Items
 			return;
 		}
 
-		public void UpdateMaxHitsToEntity()
+		public virtual void Damage(int amount, Mobile from)
 		{
-			this.m_Child.SetHits(this.HitsMax);
-		}
+            if (!CanDamage && from.Combatant == this)
+            {
+                from.Combatant = null;
+                return;
+            }
 
-		public void UpdateHitsToEntity()
-		{
-			this.m_Child.Hits = this.Hits;
-		}
+			Hits -= amount;
 
-		public virtual void Damage(int amount, Mobile from, bool willKill)
-		{
-			if (willKill)
-			{
-				this.Destroy();
-				return;
-			}
-
-			this.Hits -= amount;
+            if (amount > 0)
+                RegisterDamage(from, amount);
 
             if (HitEffect > 0)
-                Effects.SendLocationEffect(this.Location, this.Map, HitEffect, 10, 5);
+                Effects.SendLocationEffect(Location, Map, HitEffect, 10, 5);
 
-			this.OnDamage(amount, from, willKill);
+            NetState theirState = (from == null ? null : from.NetState);
+
+            if (theirState == null && from != null)
+            {
+                Mobile master = from.GetDamageMaster(null);
+
+                if (master != null)
+                {
+                    theirState = master.NetState;
+                }
+            }
+
+            if (amount > 0 && theirState != null)
+            {
+                theirState.Send(Packet.Acquire(new DamagePacket(this, amount)));
+            }
+
+			OnDamage(amount, from, Hits < 0);
 		}
+
+        public void RegisterDamage(Mobile m, int damage)
+        {
+            if(m == null)
+                return;
+
+            if (DamageStore == null)
+                DamageStore = new Dictionary<Mobile, int>();
+
+            if (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)
+                m = ((BaseCreature)m).GetMaster();
+
+            if (!DamageStore.ContainsKey(m))
+                DamageStore[m] = 0;
+
+            DamageStore[m] += damage;
+        }
+
+        public List<Mobile> GetLootingRights()
+        {
+            if (DamageStore == null)
+                return null;
+
+            return DamageStore.Keys.Where(m => DamageStore[m] > 0 && DamageStore[m] >= HitsMax / 16).ToList();
+        }
+
+        public virtual void OnDamage(int amount, Mobile from, bool willkill)
+        {
+        }
 
 		public bool Destroy()
 		{
-			if (this == null || this.Deleted || Destroyed)
+			if (this == null || Deleted || Destroyed)
 				return false;
 
-            Effects.PlaySound(this.Location, this.Map, DestroySound);
+            Effects.PlaySound(Location, Map, DestroySound);
 
-            if (this.OnBeforeDestroyed())
+            if (OnBeforeDestroyed())
             {
-                if (this.m_Child != null && !this.m_Child.Deleted && !this.m_Child.Alive)
-                    this.m_Child.Delete();
-
                 if (DeleteOnDestroy)
                 {
-                    this.Delete();
+                    Delete();
                 }
                 else if (m_DestroyedID >= 0)
                 {
@@ -296,99 +377,17 @@ namespace Server.Items
 			return false;
 		}
 
+        public override void OnAfterDelete()
+        {
+            base.OnAfterDelete();
+
+            if (DamageStore != null)
+                DamageStore.Clear();
+        }
+
         public virtual void OnIDChange(int oldID)
         {
         }
-
-        public virtual void OnPlaceholderCreated(BaseCreature bc)
-        {
-        }
-
-        public void CheckEntity()
-        {
-            if (m_Child != null && !m_Child.Deleted)
-            {
-                m_Child.Update();
-            }
-            else if (!Destroyed)
-            {
-                this.ProvideEntity();
-
-                if (m_Child != null && !m_Child.Deleted)
-                {
-                    this.m_Child.Update();
-                }
-            }
-        }
-
-		protected void ProvideEntity()
-		{
-            if (Destroyed)
-                return;
-
-			if (this.m_Child != null)
-			{
-				this.m_Child.Delete();
-			}
-
-            DamagePlaceholder Idam = Placeholder;
-
-			if (Idam != null && !Idam.Deleted && this.Map != null)
-			{
-				this.m_Child = Idam;
-				this.m_Child.Update();
-			}
-		}
-
-		public override void OnLocationChange(Point3D oldLocation)
-		{
-			if (this.Location != oldLocation)
-			{
-				if (this.m_Child != null && !this.m_Child.Deleted)
-				{
-					if (this.m_Child.Location == oldLocation)
-						this.m_Child.Update();
-				}
-			}
-
-			base.OnLocationChange(oldLocation);
-		}
-
-        public override void OnMapChange()
-        {
-            base.OnMapChange();
-
-            if(m_Child != null)
-                m_Child.Update();
-        }
-
-		public override void OnDoubleClick(Mobile from)
-		{
-            CheckEntity();
-
-            if (from.InRange(Location, 12) && from.InLOS(this) && from.CanBeHarmful(m_Child, true, false))
-            {
-                from.Combatant = m_Child;
-            }
-            else
-			    base.OnDoubleClick(from);
-		}
-
-		public override bool OnDragLift(Mobile from)
-		{
-			return (from.IsStaff());
-		}
-
-		public override void Delete()
-		{
-			base.Delete();
-
-			if (this.m_Child != null && !this.m_Child.Deleted)
-			{
-				this.m_Child.Delete();
-				return;
-			}
-		}
 
 		public DamageableItem(Serial serial)
 			: base(serial)
@@ -401,15 +400,19 @@ namespace Server.Items
 
 			writer.Write((int)0); // version
 
-			writer.Write((Mobile)this.m_Child);
-			writer.Write((int)this.m_StartID);
-			writer.Write((int)this.m_HalfHitsID);
-			writer.Write((int)this.m_DestroyedID);
-			writer.Write((int)this.m_ItemLevel);
-			writer.Write((int)this.m_Hits);
-			writer.Write((int)this.m_HitsMax);
-			writer.Write((bool)this.Movable);
+			writer.Write((int)m_StartID);
+			writer.Write((int)m_HalfHitsID);
+			writer.Write((int)m_DestroyedID);
+			writer.Write((int)m_ItemLevel);
+			writer.Write((int)m_Hits);
+			writer.Write((int)m_HitsMax);
             writer.Write(Destroyed);
+
+            writer.Write(ResistBasePhys);
+            writer.Write(ResistBaseFire);
+            writer.Write(ResistBaseCold);
+            writer.Write(ResistBasePoison);
+            writer.Write(ResistBaseEnergy);
 		}
 
 		public override void Deserialize(GenericReader reader)
@@ -418,137 +421,32 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 
-			this.m_Child = (DamagePlaceholder)reader.ReadMobile();
-			this.m_StartID = (int)reader.ReadInt();
-			this.m_HalfHitsID = (int)reader.ReadInt();
-			this.m_DestroyedID = (int)reader.ReadInt();
-			this.m_ItemLevel = (ItemLevel)reader.ReadInt();
-			this.m_Hits = (int)reader.ReadInt();
-			this.m_HitsMax = (int)reader.ReadInt();
-			this.Movable = (bool)reader.ReadBool();
+			m_StartID = (int)reader.ReadInt();
+			m_HalfHitsID = (int)reader.ReadInt();
+			m_DestroyedID = (int)reader.ReadInt();
+			m_ItemLevel = (ItemLevel)reader.ReadInt();
+			m_Hits = (int)reader.ReadInt();
+			m_HitsMax = (int)reader.ReadInt();
             Destroyed = reader.ReadBool();
+
+            ResistBasePhys = reader.ReadInt();
+            ResistBaseFire = reader.ReadInt();
+            ResistBaseCold = reader.ReadInt();
+            ResistBasePoison = reader.ReadInt();
+            ResistBaseEnergy = reader.ReadInt();
 		}
 	}
 
-	public class DamagePlaceholder : BaseCreature
-	{
-		private DamageableItem m_Parent;
+    public class TestDamageableItem : DamageableItem
+    {
+        [Constructable]
+        public TestDamageableItem(int itemid)
+            : base(itemid, itemid)
+        {
+            Name = "Test Damageable Item";
+        }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public DamageableItem Link
-		{
-			get
-			{
-				return this.m_Parent;
-			}
-            set
-            {
-            }
-		}
-
-        public override bool CanRegenHits { get { return false; } }
-        public override bool DeleteCorpseOnDeath { get { return true; } }
-        public override bool BleedImmune { get { return true; } }
-        public override bool BardImmune { get { return false; } }
-
-		public DamagePlaceholder(DamageableItem parent)
-			: base(AIType.AI_Melee, FightMode.None, 1, 1, 0.2, 0.4)
-		{
-			if (parent != null && !parent.Deleted)
-				this.m_Parent = parent;
-
-            if (!String.IsNullOrEmpty(parent.PlaceholderName))
-                Name = parent.PlaceholderName;
-            else
-			    Name = parent.Name;
-
-			this.Body = 803; //Mustache is barely visible!
-			this.BodyValue = 803; //Mustache is barely visible!
-			this.Hue = 0;
-			this.BaseSoundID = 0; //QUIET!!!
-			this.Fame = 0;
-			this.Karma = 0;
-			this.ControlSlots = 0;
-			this.Tamable = false;
-
-			this.Frozen = true;
-			this.Paralyzed = true;
-			this.CantWalk = true;
-
-			this.DamageMin = 0;
-			this.DamageMax = 0;
-
-			this.SetStr(this.m_Parent.HitsMax);
-			this.SetHits(this.m_Parent.HitsMax);
-			this.Hits = this.m_Parent.Hits;
-
-            this.SetResistance(ResistanceType.Physical, parent.PhysicalResistance);
-            this.SetResistance(ResistanceType.Fire, parent.FireResistance);
-            this.SetResistance(ResistanceType.Cold, parent.ColdResistance);
-            this.SetResistance(ResistanceType.Poison, parent.PoisonResistance);
-            this.SetResistance(ResistanceType.Energy, parent.EnergyResistance);
-
-			for (int skill = 0; skill < this.Skills.Length; skill++)
-			{
-				this.Skills[(SkillName)skill].Cap = 1.0 + ((int)this.m_Parent.Level * 0.05);
-				this.Skills[(SkillName)skill].Base = 1.0 + ((int)this.m_Parent.Level * 0.05);
-			}
-
-            parent.OnPlaceholderCreated(this);
-
-			this.Update();
-		}
-
-		public override Poison PoisonImmune
-		{
-			get
-			{
-				return Poison.Lethal;
-			}
-		}
-
-		public void Update()
-		{
-			if (this == null || this.Deleted)
-				return;
-
-			if (this.m_Parent != null && !this.m_Parent.Deleted)
-			{
-				this.Home = this.m_Parent.Location;
-				this.Location = this.m_Parent.Location;
-				this.Map = this.m_Parent.Map;
-
-				return;
-			}
-
-			if (this.m_Parent == null || this.m_Parent.Deleted)
-			{
-				this.Delete();
-				return;
-			}
-		}
-
-		public override void OnDamage(int amount, Mobile from, bool willKill)
-		{
-			base.OnDamage(amount, from, willKill);
-
-			if (this.m_Parent != null && !this.m_Parent.Deleted)
-			{
-				this.m_Parent.Damage(amount, from, willKill);
-			}
-		}
-
-		public override void OnDeath(Container c)
-		{
-			base.OnDeath(c);
-
-            if (this.m_Parent != null && !this.m_Parent.Deleted)
-            {
-                this.m_Parent.Destroy();
-            }
-		}
-
-		public DamagePlaceholder(Serial serial)
+        public TestDamageableItem(Serial serial)
 			: base(serial)
 		{
 		}
@@ -556,21 +454,13 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write((int)0);
-
-			writer.Write((Item)this.m_Parent);
+			writer.Write((int)0); // version
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
-
-			this.m_Parent = (DamageableItem)reader.ReadItem();
-
-            Frozen = true;
-            Paralyzed = true;
-            CantWalk = true;
 		}
-	}
+    }
 }

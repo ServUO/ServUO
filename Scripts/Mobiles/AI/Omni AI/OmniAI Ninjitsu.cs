@@ -86,7 +86,7 @@ namespace Server.Mobiles
 
         public virtual void ShurikenDamage()
         {
-            Mobile target = this.m_Mobile.Combatant;
+            Mobile target = this.m_Mobile.Combatant as Mobile;
 
             if (target != null)
             {

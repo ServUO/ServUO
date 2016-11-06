@@ -1173,8 +1173,18 @@ namespace Server.Items
 			return AnimalForm.UnderTransformation(m, type);
 		}
 
-		public virtual bool CheckHit(Mobile attacker, Mobile defender)
+		public virtual bool CheckHit(Mobile attacker, IDamageable damageable)
 		{
+            Mobile defender = damageable as Mobile;
+
+            if (defender == null)
+            {
+                if (damageable is IDamageableItem)
+                    return ((IDamageableItem)damageable).CheckHit(attacker);
+
+                return true;
+            }
+
 			BaseWeapon atkWeapon = attacker.Weapon as BaseWeapon;
 			BaseWeapon defWeapon = defender.Weapon as BaseWeapon;
 
@@ -1392,8 +1402,10 @@ namespace Server.Items
 			return TimeSpan.FromSeconds(delayInSeconds);
 		}
 
-		public virtual void OnBeforeSwing(Mobile attacker, Mobile defender)
+		public virtual void OnBeforeSwing(Mobile attacker, IDamageable damageable)
 		{
+            Mobile defender = damageable as Mobile;
+
 			WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
 
 			if (a != null && !a.OnBeforeSwing(attacker, defender))
@@ -1409,12 +1421,12 @@ namespace Server.Items
 			}
 		}
 
-		public virtual TimeSpan OnSwing(Mobile attacker, Mobile defender)
+        public virtual TimeSpan OnSwing(Mobile attacker, IDamageable damageable)
 		{
-			return OnSwing(attacker, defender, 1.0);
+            return OnSwing(attacker, damageable, 1.0);
 		}
 
-		public virtual TimeSpan OnSwing(Mobile attacker, Mobile defender, double damageBonus)
+        public virtual TimeSpan OnSwing(Mobile attacker, IDamageable damageable, double damageBonus)
 		{
 			bool canSwing = true;
 
@@ -1449,13 +1461,13 @@ namespace Server.Items
 			}
 			#endregion
 
-			if (canSwing && attacker.HarmfulCheck(defender))
+            if (canSwing && attacker.HarmfulCheck(damageable))
 			{
 				attacker.DisruptiveAction();
 
 				if (attacker.NetState != null)
 				{
-					attacker.Send(new Swing(0, attacker, defender));
+                    attacker.Send(new Swing(0, attacker, damageable));
 				}
 
 				if (attacker is BaseCreature)
@@ -1476,13 +1488,13 @@ namespace Server.Items
 					}
 				}
 
-				if (CheckHit(attacker, defender))
+                if (CheckHit(attacker, damageable))
 				{
-					OnHit(attacker, defender, damageBonus);
+                    OnHit(attacker, damageable, damageBonus);
 				}
 				else
 				{
-					OnMiss(attacker, defender);
+                    OnMiss(attacker, damageable);
 				}
 			}
 
@@ -1898,14 +1910,16 @@ namespace Server.Items
 
 		public static bool InDoubleStrike { get { return m_InDoubleStrike; } set { m_InDoubleStrike = value; } }
 
-		public void OnHit(Mobile attacker, Mobile defender)
+		public void OnHit(Mobile attacker, IDamageable damageable)
 		{
-			OnHit(attacker, defender, 1.0);
+            OnHit(attacker, damageable, 1.0);
 		}
 
-		public virtual void OnHit(Mobile attacker, Mobile defender, double damageBonus)
+        public virtual void OnHit(Mobile attacker, IDamageable damageable, double damageBonus)
 		{
-			if (MirrorImage.HasClone(defender) && (defender.Skills.Ninjitsu.Value / 150.0) > Utility.RandomDouble())
+            Mobile defender = damageable as Mobile;
+
+			if (defender != null && MirrorImage.HasClone(defender) && (defender.Skills.Ninjitsu.Value / 150.0) > Utility.RandomDouble())
 			{
 				Clone bc;
 
@@ -1931,12 +1945,143 @@ namespace Server.Items
 			}
 
 			PlaySwingAnimation(attacker);
-			PlayHurtAnimation(defender);
+
+            if(defender != null)
+			    PlayHurtAnimation(defender);
 
 			attacker.PlaySound(GetHitAttackSound(attacker, defender));
-			defender.PlaySound(GetHitDefendSound(attacker, defender));
+
+            if(defender != null)
+			    defender.PlaySound(GetHitDefendSound(attacker, defender));
 
 			int damage = ComputeDamage(attacker, defender);
+
+            int phys, fire, cold, pois, nrgy, chaos, direct;
+
+            GetDamageTypes(attacker, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
+
+            if (m_Consecrated)
+            {
+                phys = damageable.PhysicalResistance;
+                fire = damageable.FireResistance;
+                cold = damageable.ColdResistance;
+                pois = damageable.PoisonResistance;
+                nrgy = damageable.EnergyResistance;
+
+                int low = phys, type = 0;
+
+                if (fire < low)
+                {
+                    low = fire;
+                    type = 1;
+                }
+                if (cold < low)
+                {
+                    low = cold;
+                    type = 2;
+                }
+                if (pois < low)
+                {
+                    low = pois;
+                    type = 3;
+                }
+                if (nrgy < low)
+                {
+                    low = nrgy;
+                    type = 4;
+                }
+
+                phys = fire = cold = pois = nrgy = chaos = direct = 0;
+
+                if (type == 0)
+                {
+                    phys = 100;
+                }
+                else if (type == 1)
+                {
+                    fire = 100;
+                }
+                else if (type == 2)
+                {
+                    cold = 100;
+                }
+                else if (type == 3)
+                {
+                    pois = 100;
+                }
+                else if (type == 4)
+                {
+                    nrgy = 100;
+                }
+            }
+
+            bool splintering = false;
+            if (m_AosWeaponAttributes.SplinteringWeapon > 0 && m_AosWeaponAttributes.SplinteringWeapon > Utility.Random(100))
+            {
+                if (SplinteringWeaponContext.CheckHit(attacker, defender, this))
+                    splintering = true;
+            }
+
+            if (m_MaxHits > 0 &&
+                ((MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime)) || (defender != null && splintering) ||
+                 Utility.Random(250) == 0)) // Stratics says 50% chance, seems more like 4%..
+            {
+                if (MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime))
+                {
+                    attacker.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500263); // *Acid blood scars your weapon!*
+                }
+
+                if (Core.AOS &&
+                    m_AosWeaponAttributes.SelfRepair + (IsSetItem && m_SetEquipped ? m_SetSelfRepair : 0) > Utility.Random(10))
+                {
+                    HitPoints += 2;
+                }
+                else
+                {
+                    if (m_Hits > 0)
+                    {
+                        HitPoints -= NegativeAttributes.Antique > 0 ? 2 : 1;
+                    }
+                    else if (m_MaxHits > 1)
+                    {
+                        MaxHitPoints -= NegativeAttributes.Antique > 0 ? 2 : 1;
+
+                        if (Parent is Mobile)
+                        {
+                            ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121);
+                            // Your equipment is severely damaged.
+                        }
+                    }
+                    else
+                    {
+                        Delete();
+                    }
+                }
+            }
+
+            WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
+            SpecialMove move = SpecialMove.GetCurrentMove(attacker);
+
+            bool ignoreArmor = (a is ArmorIgnore || (move != null && move.IgnoreArmor(attacker)));
+
+            // object is not a mobile, so we end here
+            if (defender == null)
+            {
+                AOS.Damage(damageable, attacker, damage, ignoreArmor, phys, fire, cold, pois, nrgy, chaos, direct, false, this is BaseRanged, false);
+
+                // TODO: WeaponAbility/SpecialMove OnHit(...) convert target to IDamageable
+                // Figure out which specials work on items. For now AI only.
+                if (ignoreArmor)
+                {
+                    Effects.PlaySound(damageable.Location, damageable.Map, 0x56);
+                    Effects.SendTargetParticles(damageable, 0x3728, 200, 25, 0, 0, 9942, EffectLayer.Waist, 0);
+                }
+
+                WeaponAbility.ClearCurrentAbility(attacker);
+                SpecialMove.ClearCurrentMove(attacker);
+
+                return;
+            }
 
 			#region Damage Multipliers
 			/*
@@ -1944,9 +2089,6 @@ namespace Server.Items
             * Capped at x3 (300%).
             */
 			int percentageBonus = 0;
-
-			WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
-			SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
 			if (a != null)
 			{
@@ -2176,20 +2318,9 @@ namespace Server.Items
                     attacker.Mana--;
                 }
             }
-
-            bool splintering = false;
-            if (m_AosWeaponAttributes.SplinteringWeapon > 0 && m_AosWeaponAttributes.SplinteringWeapon > Utility.Random(100))
-            {
-                if (SplinteringWeaponContext.CheckHit(attacker, defender, this))
-                    splintering = true;
-            }
             #endregion
 
 			AddBlood(attacker, defender, damage);
-
-			int phys, fire, cold, pois, nrgy, chaos, direct;
-
-			GetDamageTypes(attacker, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
 
 			if (Core.ML && this is BaseRanged)
 			{
@@ -2198,61 +2329,6 @@ namespace Server.Items
 				if (quiver != null)
 				{
 					quiver.AlterBowDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
-				}
-			}
-
-			if (m_Consecrated)
-			{
-				phys = defender.PhysicalResistance;
-				fire = defender.FireResistance;
-				cold = defender.ColdResistance;
-				pois = defender.PoisonResistance;
-				nrgy = defender.EnergyResistance;
-
-				int low = phys, type = 0;
-
-				if (fire < low)
-				{
-					low = fire;
-					type = 1;
-				}
-				if (cold < low)
-				{
-					low = cold;
-					type = 2;
-				}
-				if (pois < low)
-				{
-					low = pois;
-					type = 3;
-				}
-				if (nrgy < low)
-				{
-					low = nrgy;
-					type = 4;
-				}
-
-				phys = fire = cold = pois = nrgy = chaos = direct = 0;
-
-				if (type == 0)
-				{
-					phys = 100;
-				}
-				else if (type == 1)
-				{
-					fire = 100;
-				}
-				else if (type == 2)
-				{
-					cold = 100;
-				}
-				else if (type == 3)
-				{
-					pois = 100;
-				}
-				else if (type == 4)
-				{
-					nrgy = 100;
 				}
 			}
 
@@ -2275,8 +2351,6 @@ namespace Server.Items
 				SpecialMove.ClearCurrentMove(attacker);
 				move = null;
 			}
-
-			bool ignoreArmor = (a is ArmorIgnore || (move != null && move.IgnoreArmor(attacker)));
 
             if (Feint.Registry.ContainsKey(defender) && Feint.Registry[defender].Enemy == attacker)
                 damage -= (int)((double)damage * ((double)Feint.Registry[defender].DamageReduction / 100));
@@ -2409,43 +2483,6 @@ namespace Server.Items
 				if (lifeLeech != 0 || stamLeech != 0 || manaLeech != 0)
 				{
 					attacker.PlaySound(0x44D);
-				}
-			}
-
-			if (m_MaxHits > 0 &&
-				((MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime)) || splintering ||
-				 Utility.Random(250) == 0)) // Stratics says 50% chance, seems more like 4%..
-			{
-				if (MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime))
-				{
-					attacker.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500263); // *Acid blood scars your weapon!*
-				}
-
-				if (Core.AOS &&
-					m_AosWeaponAttributes.SelfRepair + (IsSetItem && m_SetEquipped ? m_SetSelfRepair : 0) > Utility.Random(10))
-				{
-					HitPoints += 2;
-				}
-				else
-				{
-					if (m_Hits > 0)
-					{
-                        HitPoints -= NegativeAttributes.Antique > 0 ? 2 : 1;
-					}
-					else if (m_MaxHits > 1)
-					{
-                        MaxHitPoints -= NegativeAttributes.Antique > 0 ? 2 : 1;
-
-						if (Parent is Mobile)
-						{
-							((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121);
-								// Your equipment is severely damaged.
-						}
-					}
-					else
-					{
-						Delete();
-					}
 				}
 			}
 
@@ -2938,7 +2975,7 @@ namespace Server.Items
 
 		public virtual void AddBlood(Mobile attacker, Mobile defender, int damage)
 		{
-			if (damage > 0 && !(defender is DamagePlaceholder))
+			if (damage > 0)
 			{
 				new Blood().MoveToWorld(defender.Location, defender.Map);
 
@@ -3031,11 +3068,15 @@ namespace Server.Items
 			return totalRemaining - appliedDamage;
 		}
 
-		public virtual void OnMiss(Mobile attacker, Mobile defender)
+		public virtual void OnMiss(Mobile attacker, IDamageable damageable)
 		{
+            Mobile defender = damageable as Mobile;
+
 			PlaySwingAnimation(attacker);
 			attacker.PlaySound(GetMissAttackSound(attacker, defender));
-			defender.PlaySound(GetMissDefendSound(attacker, defender));
+
+            if(defender != null)
+			    defender.PlaySound(GetMissDefendSound(attacker, defender));
 
 			WeaponAbility ability = WeaponAbility.GetCurrentAbility(attacker);
 

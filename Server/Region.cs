@@ -647,7 +647,7 @@ namespace Server
 			}
 		}
 
-		public virtual void OnDidHarmful(Mobile harmer, Mobile harmed)
+		public virtual void OnDidHarmful(Mobile harmer, IDamageable harmed)
 		{
 			if (m_Parent != null)
 			{
@@ -655,7 +655,7 @@ namespace Server
 			}
 		}
 
-		public virtual void OnGotHarmful(Mobile harmer, Mobile harmed)
+		public virtual void OnGotHarmful(Mobile harmer, IDamageable harmed)
 		{
 			if (m_Parent != null)
 			{
@@ -681,7 +681,7 @@ namespace Server
 			return true;
 		}
 
-		public virtual bool OnCombatantChange(Mobile m, Mobile Old, Mobile New)
+        public virtual bool OnCombatantChange(Mobile m, IDamageable Old, IDamageable New)
 		{
 			if (m_Parent != null)
 			{
@@ -731,7 +731,7 @@ namespace Server
 			return true;
 		}
 
-		public virtual bool AllowHarmful(Mobile from, Mobile target)
+		public virtual bool AllowHarmful(Mobile from, IDamageable target)
 		{
 			if (m_Parent != null)
 			{
