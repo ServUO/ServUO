@@ -13,9 +13,8 @@ namespace Server.Items
         public EpauletteBearingTheCrestOfBlackthorn3()
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
-            ItemID = 0x9985;            
-            Attributes.BonusHits = 3;
-            Attributes.BonusInt = 5;
+            ItemID = 0x9985;
+            SkillBonuses.SetValues(0, SkillName.Stealth, 10.0);
             Hue = 2130;            
         }
 

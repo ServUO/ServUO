@@ -14,8 +14,9 @@ namespace Server.Items
             : base(0x2683)
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
-            Attributes.BonusHits = 3;
-            Attributes.BonusInt = 5;
+            Attributes.BonusStr = 2;
+            Attributes.BonusDex = 2;
+            Attributes.BonusInt = 2;
             Hue = 2107;
         }
 
