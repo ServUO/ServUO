@@ -153,11 +153,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(1070930); // Can't dye artifacts or enhanced magic items that are being worn.
             else if (i.IsLockedDown)
                 from.SendLocalizedMessage(1070932); // You may not dye artifacts and enhanced magic items which are locked down.
-            else if (i is MetalPigmentsOfTokuno)
-                from.SendLocalizedMessage(1042417); // You cannot dye that.
-            else if (i is LesserPigmentsOfTokuno)
-                from.SendLocalizedMessage(1042417); // You cannot dye that.
-            else if (i is PigmentsOfTokuno)
+            else if (i is MetalPigmentsOfTokuno || i is LesserPigmentsOfTokuno || i is PigmentsOfTokuno || i is CompassionPigment)
                 from.SendLocalizedMessage(1042417); // You cannot dye that.
             else if (!IsValidItem(i))
                 from.SendLocalizedMessage(1070931); // You can only dye artifacts and enhanced magic items with this tub.	//Yes, it says tub on OSI.  Don't ask me why ;p

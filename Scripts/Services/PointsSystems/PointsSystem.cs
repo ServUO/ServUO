@@ -33,7 +33,8 @@ namespace Server.Engines.Points
         NewMagincia,
         Vesper,
 
-        Blackthorn
+        Blackthorn,
+        CleanUpBritannia
     }
 
     public abstract class PointsSystem
@@ -99,10 +100,11 @@ namespace Server.Engines.Points
 
             if (entry != null)
             {
-                double old = entry.Points;
-                SendMessage((PlayerMobile)from, old, points, quest);
-
                 SetPoints((PlayerMobile)from, Math.Min(MaxPoints, entry.Points + points));
+
+                double old = entry.Points;
+
+                SendMessage((PlayerMobile)from, old, points, quest);
             }
         }
 
@@ -314,6 +316,7 @@ namespace Server.Engines.Points
         public static ShameCrystals ShameCrystals { get; set; }
         public static CasinoData CasinoData { get; set; }
         public static BlackthornData Blackthorn { get; set; }
+        public static CleanUpBritanniaData CleanUpBritannia { get; set; }
 
         public static void Configure()
         {
@@ -328,6 +331,7 @@ namespace Server.Engines.Points
             ShameCrystals = new ShameCrystals();
             CasinoData = new CasinoData();
             Blackthorn = new BlackthornData();
+            CleanUpBritannia = new CleanUpBritanniaData();
 
             CityLoyaltySystem.ConstructSystems();
         }

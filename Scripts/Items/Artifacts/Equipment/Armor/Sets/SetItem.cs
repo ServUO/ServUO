@@ -23,13 +23,18 @@ namespace Server
         Scout,
         Sorcerer,
 		Initiation,
-        Fisherman
+        Fisherman,
+        Luck2,
+        Bestial,
+        Virtuoso
     }
 
     public interface ISetItem
     {
         SetItem SetID { get; }
         int Pieces { get; }
+        int Berserk { get; }
+        bool BardMasteryBonus { get; }
         int SetHue { get; set; }
         bool IsSetItem { get; }
         bool SetEquipped { get; set; }
@@ -53,14 +58,24 @@ namespace Server
                 attrs = ((BaseClothing)setItem).Attributes;
             else if (setItem is BaseQuiver)
                 attrs = ((BaseQuiver)setItem).Attributes;
+            else if (setItem is BaseJewel)
+                attrs = ((BaseJewel)setItem).Attributes;
             else
                 attrs = new AosAttributes(setItem as Item);
 
             bool full = setItem.SetEquipped;
             int pieces = setItem.Pieces;
+            int berserk = setItem.Berserk;
+            bool bardmasterybonus = setItem.BardMasteryBonus;
 
             int prop;
-	            		
+	        
+            if ((prop = setItem.Berserk) != 0)
+                list.Add(full ? 1151541 : 1151542, (full ? (berserk+1) : prop).ToString()); // Berserk ~1_VAL~ (total)
+
+            if (setItem.BardMasteryBonus)
+                list.Add(1151571); //Mastery Bonus Cooldown: 15 min.
+
             if ((prop = setItem.SetAttributes.RegenHits) != 0)
                 list.Add(full ? 1080244 : 1154369, (full ? prop + (attrs.RegenHits * pieces) : prop).ToString()); // hit point regeneration ~1_val~ (total)
 
