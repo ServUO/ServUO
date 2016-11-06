@@ -9,7 +9,6 @@ namespace Server.Spells.Mystic
 {
     public class SpellPlagueSpell : MysticSpell
     {
-        public override bool CanDamageItems { get { return false; } }
         private static SpellInfo m_Info = new SpellInfo(
                 "Spell Plague", "Vas Rel Jux Ort",
                 230,

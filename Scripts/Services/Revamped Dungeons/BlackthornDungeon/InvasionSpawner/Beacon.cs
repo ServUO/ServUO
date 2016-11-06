@@ -14,9 +14,6 @@ namespace Server.Engines.Blackthorn
         public InvasionController Controller { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool CanBeDamaged { get { return Controller.BeaconVulnerable; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
         public BeaconItem Component { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -35,16 +32,9 @@ namespace Server.Engines.Blackthorn
 
         public List<Item> Rubble { get; set; }
 
-        public override int PhysicalResistance { get { return 50; } }
-        public override int FireResistance { get { return 85; } }
-        public override int ColdResistance { get { return 99; } }
-        public override int PoisonResistance { get { return 99; } }
-        public override int EnergyResistance { get { return 70; } }
-
-        public override DamagePlaceholder Placeholder { get { return new BeaconPlaceholder(this); } }
-
         public override bool DeleteOnDestroy { get { return false; } }
         public override double IDChange { get { return 0.50; } }
+        public override bool CanDamage { get { return Controller == null || Controller.BeaconVulnerable; } }
 
         public InvasionBeacon(InvasionController controller)
             : base(18212, 39299, 1)
@@ -53,11 +43,14 @@ namespace Server.Engines.Blackthorn
             Component = new BeaconItem(this);
 
             Name = "lighthouse";
-            PlaceholderName = "lighthouse";
+
+            ResistBasePhys = 50;
+            ResistBaseFire = 85;
+            ResistBaseCold = 99;
+            ResistBasePoison = 99;
+            ResistBaseEnergy = 70;
 
             Level = ItemLevel.Easy; // Hard
-
-            ProvideEntity();
         }
 
         public override void OnLocationChange(Point3D oldlocation)
@@ -105,7 +98,12 @@ namespace Server.Engines.Blackthorn
             DoEffects();
 
             if (Component != null)
+            {
                 Component.ItemID = 1;
+                Component.Visible = false;
+            }
+
+            Visible = false;
 
             delete.Clear();
             delete.TrimExcess();
@@ -167,7 +165,7 @@ namespace Server.Engines.Blackthorn
 
         public override void OnIDChange(int oldID)
         {
-            if (ItemID == IDHalfHits && oldID == IDStart && Link != null)
+            if (ItemID == IDHalfHits && oldID == IDStart)
             {
                 AddRubble(new Static(6571), new Point3D(this.X, this.Y + 1, this.Z + 42));
                 AddRubble(new Static(3118), new Point3D(this.X - 1, this.Y + 1, this.Z));
@@ -175,9 +173,9 @@ namespace Server.Engines.Blackthorn
             }
         }
 
-        public override void OnDamage(int amount, Mobile from, bool willKill)
+        public override void OnDamage(int amount, Mobile from, bool willkill)
         {
-            base.OnDamage(amount, from, willKill);
+            base.OnDamage(amount, from, willkill);
 
             if (this.ItemID == IDHalfHits && this.Hits <= (HitsMax * .25))
             {
@@ -203,6 +201,11 @@ namespace Server.Engines.Blackthorn
 
                 this.ItemID = 39300;
             }
+
+            if (0.02 > Utility.RandomDouble())
+            {
+                DoAreaAttack();
+            }
         }
 
         private void AddRubble(Item i, Point3D p)
@@ -220,7 +223,42 @@ namespace Server.Engines.Blackthorn
             base.Delete();
 
             if (Rubble != null)
-                Rubble.ForEach(i => i.Delete());
+            {
+                List<Item> rubble = new List<Item>(Rubble);
+
+                rubble.ForEach(i => i.Delete());
+                rubble.ForEach(i => Rubble.Remove(i));
+
+                rubble.Clear();
+                rubble.TrimExcess();
+            }
+        }
+
+        private void DoAreaAttack()
+        {
+            List<Mobile> list = new List<Mobile>();
+            IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 8);
+
+            foreach (Mobile m in eable)
+            {
+                if (m.AccessLevel > AccessLevel.Player)
+                    continue;
+
+                if (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile))
+                    list.Add(m);
+            }
+
+            list.ForEach(m =>
+            {
+                m.BoltEffect(0);
+                AOS.Damage(m, null, Utility.RandomMinMax(80, 90), 0, 0, 0, 0, 100);
+
+                if(m.NetState != null)
+                    m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1154552, m.NetState); // *The beacon blasts a surge of energy at you!"
+            });
+
+            list.Clear();
+            list.TrimExcess();
         }
 
         public InvasionBeacon(Serial serial)
@@ -234,7 +272,9 @@ namespace Server.Engines.Blackthorn
 			writer.Write(0);
 
             writer.Write(Component);
+
             writer.Write(Rubble == null ? 0 : Rubble.Count);
+
             if (Rubble != null)
                 Rubble.ForEach(i => writer.Write(i));
 		}
@@ -250,6 +290,7 @@ namespace Server.Engines.Blackthorn
                 Component.Beacon = this;
 
             int count = reader.ReadInt();
+
             for (int i = 0; i < count; i++)
             {
                 Item item = reader.ReadItem();
@@ -293,46 +334,6 @@ namespace Server.Engines.Blackthorn
         {
             base.Serialize(writer);
             writer.Write(0);
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            int version = reader.ReadInt();
-        }
-    }
-
-    public class BeaconPlaceholder : DamagePlaceholder
-    {
-        public override bool IsInvulnerable { get { return Link is InvasionBeacon && !((InvasionBeacon)Link).CanBeDamaged; } }
-
-        public BeaconPlaceholder(DamageableItem parent) : base(parent)
-        {
-        }
-
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lesser;
-            }
-        }
-
-        /*public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
-        {
-            if(Link is InvasionBeacon && ((InvasionBeacon)Link).CanBeDamaged)
-                base.Damage(amount, from, informMount, checkDisrupt);
-        }*/
-
-        public BeaconPlaceholder(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)

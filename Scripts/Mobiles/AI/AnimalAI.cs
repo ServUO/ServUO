@@ -64,7 +64,7 @@ namespace Server.Mobiles
 
         public override bool DoActionCombat()
         {
-            Mobile combatant = this.m_Mobile.Combatant;
+            IDamageable combatant = this.m_Mobile.Combatant;
 
             if (combatant == null || combatant.Deleted || combatant.Map != this.m_Mobile.Map)
             {
@@ -144,7 +144,7 @@ namespace Server.Mobiles
             this.AcquireFocusMob(this.m_Mobile.RangePerception * 2, this.m_Mobile.FightMode, true, false, true);
 
             if (this.m_Mobile.FocusMob == null)
-                this.m_Mobile.FocusMob = this.m_Mobile.Combatant;
+                this.m_Mobile.FocusMob = this.m_Mobile.Combatant as Mobile;
 
             return base.DoActionFlee();
         }

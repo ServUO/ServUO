@@ -29,7 +29,6 @@ namespace Server.Spells.Mystic
 	public class PurgeMagicSpell : MysticSpell
 	{
         public override SpellCircle Circle { get { return SpellCircle.Second; } }
-        public override bool CanDamageItems { get { return false; } }
 
 		private static SpellInfo m_Info = new SpellInfo(
 				"Purge", "An Ort Sanct ",

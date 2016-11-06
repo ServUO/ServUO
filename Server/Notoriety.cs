@@ -6,7 +6,7 @@
 
 namespace Server
 {
-	public delegate int NotorietyHandler(Mobile source, Mobile target);
+	public delegate int NotorietyHandler(Mobile source, IDamageable target);
 
 	public static class Notoriety
 	{
@@ -36,7 +36,7 @@ namespace Server
 			return m_Hues[noto];
 		}
 
-		public static int Compute(Mobile source, Mobile target)
+        public static int Compute(Mobile source, IDamageable target)
 		{
 			return m_Handler == null ? CanBeAttacked : m_Handler(source, target);
 		}

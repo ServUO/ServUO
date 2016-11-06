@@ -65,7 +65,7 @@ namespace Server.Mobiles
         #region discord
         public void UseDiscord()
         {
-            Mobile target = this.m_Mobile.Combatant;
+            Mobile target = this.m_Mobile.Combatant as Mobile;
 
             if (target == null)
                 return;
@@ -134,7 +134,7 @@ namespace Server.Mobiles
             else if (this.m_Mobile.Target != null)
                 this.m_Mobile.Target.Cancel(this.m_Mobile, TargetCancelType.Canceled);
 
-            Mobile target = this.m_Mobile.Combatant;
+            Mobile target = this.m_Mobile.Combatant as Mobile;
 
             if (this.m_Mobile.Combatant is BaseCreature)
             {

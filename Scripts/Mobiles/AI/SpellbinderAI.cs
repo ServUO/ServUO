@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using Server.Spells;
 using Server.Spells.Fifth;
@@ -150,7 +150,7 @@ namespace Server.Mobiles
             }
         }
 
-        public void RunFrom(Mobile m)
+        public void RunFrom(IDamageable m)
         {
             this.Run((Direction)((int)this.m_Mobile.GetDirectionTo(m) - 4) & Direction.Mask);
         }
@@ -251,13 +251,18 @@ namespace Server.Mobiles
             return this.ChooseSpell(toDispel);
         }
 
-        public virtual Spell ChooseSpell(Mobile c)
+        public virtual Spell ChooseSpell(IDamageable c)
         {
             Spell spell = this.CheckCastHealingSpell();
 
             if (spell != null)
                 return spell;
-				
+
+            if(!(c is Mobile)
+            {
+                return null;
+            }
+
             double damage = ((this.m_Mobile.Skills[SkillName.SpiritSpeak].Value - c.Skills[SkillName.MagicResist].Value) / 10) + (c.Player ? 18 : 30);
 			
             if (damage > c.Hits)
@@ -324,10 +329,10 @@ namespace Server.Mobiles
 
         public override bool DoActionCombat()
         {
-            Mobile c = this.m_Mobile.Combatant;
+            IDamageable c = this.m_Mobile.Combatant;
             this.m_Mobile.Warmode = true;
 
-            if (c == null || c.Deleted || !c.Alive || c.IsDeadBondedPet || !this.m_Mobile.CanSee(c) || !this.m_Mobile.CanBeHarmful(c, false) || c.Map != this.m_Mobile.Map)
+            if (c == null || c.Deleted || !c.Alive || (c is Mobile && ((Mobile)c).IsDeadBondedPet) || !this.m_Mobile.CanSee(c) || !this.m_Mobile.CanBeHarmful(c, false) || c.Map != this.m_Mobile.Map)
             {
                 // Our combatant is deleted, dead, hidden, or we cannot hurt them
                 // Try to find another combatant
@@ -431,7 +436,7 @@ namespace Server.Mobiles
 
                     spell = this.DoDispel(toDispel);
                 }
-                else if ((c.Spell is HealSpell || c.Spell is GreaterHealSpell) && !c.Poisoned) // They have a heal spell out
+                else if (c is Mobile && (((Mobile)c).Spell is HealSpell || ((Mobile)c).Spell is GreaterHealSpell) && !((Mobile)c).Poisoned) // They have a heal spell out
                 {
                     spell = new BloodOathSpell(this.m_Mobile, null);
                 }
@@ -518,7 +523,7 @@ namespace Server.Mobiles
 
         public override bool DoActionFlee()
         {
-            Mobile c = this.m_Mobile.Combatant;
+            Mobile c = this.m_Mobile.Combatant as Mobile;
 
             if ((this.m_Mobile.Mana > 20 || this.m_Mobile.Mana == this.m_Mobile.ManaMax) && this.m_Mobile.Hits > (this.m_Mobile.HitsMax / 2))
             {
@@ -560,7 +565,7 @@ namespace Server.Mobiles
                 Mobile active = null;
                 double activePrio = 0.0;
 
-                Mobile comb = this.m_Mobile.Combatant;
+                Mobile comb = this.m_Mobile.Combatant as Mobile;
 
                 if (comb != null && !comb.Deleted && comb.Alive && !comb.IsDeadBondedPet && this.m_Mobile.InRange(comb, 12) && this.CanDispel(comb))
                 {
@@ -622,7 +627,7 @@ namespace Server.Mobiles
                     Mobile active = null, inactive = null;
                     double actPrio = 0.0, inactPrio = 0.0;
 
-                    Mobile comb = this.m_Mobile.Combatant;
+                    Mobile comb = this.m_Mobile.Combatant as Mobile;
 
                     if (comb != null && !comb.Deleted && comb.Alive && !comb.IsDeadBondedPet && this.CanDispel(comb))
                     {
@@ -738,7 +743,7 @@ namespace Server.Mobiles
 
                 if (toTarget == null)
                 {
-                    toTarget = this.m_Mobile.Combatant;
+                    toTarget = this.m_Mobile.Combatant as Mobile;
 
                     if (toTarget != null)
                         this.RunTo(toTarget);
@@ -755,7 +760,7 @@ namespace Server.Mobiles
             }
             else
             {
-                toTarget = this.m_Mobile.Combatant;
+                toTarget = this.m_Mobile.Combatant as Mobile;
 
                 if (toTarget != null)
                     this.RunTo(toTarget);
@@ -845,4 +850,4 @@ namespace Server.Mobiles
             }
         }
     }
-}
+}*/

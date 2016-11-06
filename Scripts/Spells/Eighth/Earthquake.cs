@@ -37,44 +37,66 @@ namespace Server.Spells.Eighth
         {
             if (SpellHelper.CheckTown(this.Caster, this.Caster) && this.CheckSequence())
             {
-                List<Mobile> targets = new List<Mobile>();
+                List<IDamageable> targets = new List<IDamageable>();
 
                 Map map = this.Caster.Map;
 
                 if (map != null)
-                    foreach (Mobile m in this.Caster.GetMobilesInRange(1 + (int)(this.Caster.Skills[SkillName.Magery].Value / 15.0)))
-                        if (this.Caster != m && SpellHelper.ValidIndirectTarget(this.Caster, m) && this.Caster.CanBeHarmful(m, false) && (!Core.AOS || this.Caster.InLOS(m)))
-                            targets.Add(m);
+                {
+                    IPooledEnumerable eable = this.Caster.GetObjectsInRange(1 + (int)(this.Caster.Skills[SkillName.Magery].Value / 15.0));
+
+                    foreach (object o in eable)
+                    {
+                        IDamageable id = o as IDamageable;
+
+                        if (id == null || id is Mobile && (Mobile)id == this.Caster)
+                            continue;
+
+                        if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(this.Caster, id as Mobile)) && this.Caster.CanBeHarmful(id, false))
+                        {
+                            if (Core.AOS && !this.Caster.InLOS(id))
+                                continue;
+
+                            targets.Add(id);
+                        }
+                    }
+
+                    eable.Free();
+                }
 
                 this.Caster.PlaySound(0x220);
 
                 for (int i = 0; i < targets.Count; ++i)
                 {
-                    Mobile m = targets[i];
+                    IDamageable id = targets[i];
+                    Mobile m = id as Mobile;
 
                     int damage;
 
                     if (Core.AOS)
                     {
-                        damage = m.Hits / 2;
+                        damage = id.Hits / 2;
 
-                        if (!m.Player)
+                        if (m == null || !m.Player)
                             damage = Math.Max(Math.Min(damage, 100), 15);
                         damage += Utility.RandomMinMax(0, 15);
                     }
                     else
                     {
-                        damage = (m.Hits * 6) / 10;
+                        damage = (id.Hits * 6) / 10;
 
-                        if (!m.Player && damage < 10)
+                        if ((m == null || !m.Player) && damage < 10)
                             damage = 10;
                         else if (damage > 75)
                             damage = 75;
                     }
 
-                    this.Caster.DoHarmful(m);
-                    SpellHelper.Damage(TimeSpan.Zero, m, this.Caster, damage, 100, 0, 0, 0, 0);
+                    this.Caster.DoHarmful(id);
+                    SpellHelper.Damage(TimeSpan.Zero, id, this.Caster, damage, 100, 0, 0, 0, 0);
                 }
+
+                targets.Clear();
+                targets.TrimExcess();
             }
 
             this.FinishSequence();

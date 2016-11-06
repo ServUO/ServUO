@@ -6,8 +6,6 @@ namespace Server.Spells.Necromancy
 {
     public class CorpseSkinSpell : NecromancerSpell
     {
-        public override bool CanDamageItems { get { return false; } }
-
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Corpse Skin", "In Agle Corp Ylem",
             203,

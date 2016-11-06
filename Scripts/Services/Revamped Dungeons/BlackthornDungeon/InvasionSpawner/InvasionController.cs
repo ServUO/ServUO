@@ -138,6 +138,8 @@ namespace Server.Engines.Blackthorn
             if (!Enabled)
                 return;
 
+            RemoveSpawn();
+
 			CurrentWave = 1;
 			InvasionType newType;
             City newCity;
@@ -263,7 +265,17 @@ namespace Server.Engines.Blackthorn
             {
                 Spawn.Remove(bc);
 
-                if (Spawn.Count == 0)
+                bool wavecomplete = true;
+                foreach (KeyValuePair<BaseCreature, List<BaseCreature>> kvp in Spawn)
+                {
+                    if (kvp.Key != null && kvp.Key.Alive)
+                    {
+                        wavecomplete = false;
+                        break;
+                    }
+                }
+
+                if (wavecomplete)
                     CompleteWave();
             }
             else
@@ -285,6 +297,9 @@ namespace Server.Engines.Blackthorn
 
         public void CleanupSpawn()
         {
+            if (Spawn == null)
+                return;
+
             List<BaseCreature> list = null;
 
             foreach (KeyValuePair<BaseCreature, List<BaseCreature>> kvp in Spawn)
@@ -310,7 +325,6 @@ namespace Server.Engines.Blackthorn
 			if(CurrentWave == MaxWaves)
 			{
                 DoMessage();
-                OnEndInvasion();
 			}
 			else
 			{
@@ -334,6 +348,8 @@ namespace Server.Engines.Blackthorn
 
         public void OnBeaconDestroyed()
         {
+            OnEndInvasion();
+
             Timer.DelayCall(TimeSpan.FromMinutes(2), () =>
                 {
                     Cleanup();
@@ -343,30 +359,32 @@ namespace Server.Engines.Blackthorn
 
         public void OnEndInvasion()
         {
-            if (Beacon != null && Beacon.Link is BaseCreature)
+            if (Beacon != null)
             {
-                BaseCreature victim = Beacon.Link as BaseCreature;
+                List<Mobile> rights = Beacon.GetLootingRights();
 
-                foreach (DamageStore ds in ((BaseCreature)Beacon.Link).GetLootingRights().Where(d => d.m_HasRight && d.m_Mobile.InRange(Beacon.Location, 10)))
+                if (rights != null)
                 {
-                    Mobile damager = ds.m_Mobile;
-                    Item i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(victim), LootPackEntry.IsMondain(victim), LootPackEntry.IsStygian(victim));
-
-                    if (i != null)
+                    foreach (Mobile damager in rights.Where(mob => mob.InRange(Beacon.Location, 12)))
                     {
-                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(victim)), RunicReforging.GetLuckForKiller(victim), ReforgedPrefix.None, ReforgedSuffix.Minax);
+                        Item i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(damager), LootPackEntry.IsMondain(damager), LootPackEntry.IsStygian(damager));
 
-                        damager.PlaySound(0x5B4);
-                        damager.SendLocalizedMessage(1154554); // You recover an artifact bearing the crest of Minax from the rubble.
-
-                        if (!damager.PlaceInBackpack(i))
+                        if (i != null)
                         {
-                            if (damager.BankBox != null && damager.BankBox.TryDropItem(damager, i, false))
-                                damager.SendLocalizedMessage(1079730); // The item has been placed into your bank box.
-                            else
+                            RunicReforging.GenerateRandomItem(i, damager, Utility.RandomMinMax(700, 800), damager is PlayerMobile ? ((PlayerMobile)damager).RealLuck : damager.Luck, ReforgedPrefix.None, ReforgedSuffix.Minax);
+
+                            damager.PlaySound(0x5B4);
+                            damager.SendLocalizedMessage(1154554); // You recover an artifact bearing the crest of Minax from the rubble.
+
+                            if (!damager.PlaceInBackpack(i))
                             {
-                                damager.SendLocalizedMessage(1072523); // You find an artifact, but your backpack and bank are too full to hold it.
-                                i.MoveToWorld(damager.Location, damager.Map);
+                                if (damager.BankBox != null && damager.BankBox.TryDropItem(damager, i, false))
+                                    damager.SendLocalizedMessage(1079730); // The item has been placed into your bank box.
+                                else
+                                {
+                                    damager.SendLocalizedMessage(1072523); // You find an artifact, but your backpack and bank are too full to hold it.
+                                    i.MoveToWorld(damager.Location, damager.Map);
+                                }
                             }
                         }
                     }
@@ -382,6 +400,9 @@ namespace Server.Engines.Blackthorn
 
         public void RemoveSpawn()
         {
+            if (Spawn == null)
+                return;
+
             Dictionary<BaseCreature, List<BaseCreature>> copy = Spawn;
             Spawn = new Dictionary<BaseCreature, List<BaseCreature>>();
 
@@ -482,11 +503,17 @@ namespace Server.Engines.Blackthorn
 				}
 			}
 
-            if (Beacon != null && Beacon.Destroyed)
+            Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
             {
-                Cleanup();
-                BeginInvasion();
-            }
+                if (Beacon != null && Beacon.Destroyed)
+                {
+                    Timer.DelayCall(TimeSpan.FromMinutes(2), () =>
+                    {
+                        Cleanup();
+                        BeginInvasion();
+                    });
+                }
+            });
 		}
 
         public static void Initialize()

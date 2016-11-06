@@ -5,8 +5,6 @@ namespace Server.Spells.First
 {
     public class FeeblemindSpell : MagerySpell
     {
-        public override bool CanDamageItems { get { return false; } }
-
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Feeblemind", "Rel Wis",
             212,

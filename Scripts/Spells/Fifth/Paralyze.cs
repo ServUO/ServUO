@@ -7,8 +7,6 @@ namespace Server.Spells.Fifth
 {
     public class ParalyzeSpell : MagerySpell
     {
-        public override bool CanDamageItems { get { return false; } }
-
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Paralyze", "An Ex Por",
             218,

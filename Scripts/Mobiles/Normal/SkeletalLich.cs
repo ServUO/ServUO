@@ -14,7 +14,7 @@ namespace Server.Mobiles
 		}
 
 		[Constructable]
-		public SkeletalLich() : base( AIType.AI_Spellbinder, FightMode.Closest, 10, 1, 0.2, 0.4 )
+		public SkeletalLich() : base( AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4 )
 		{
 			Name = "a skeletal lich";
 			Body = 309;

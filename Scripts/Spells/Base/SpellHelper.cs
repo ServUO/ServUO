@@ -1089,54 +1089,55 @@ namespace Server.Spells
             }
         }
 
-        public static void Damage(Spell spell, Mobile target, double damage, int phys, int fire, int cold, int pois, int nrgy)
+        public static void Damage(Spell spell, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy)
         {
             TimeSpan ts = GetDamageDelayForSpell(spell);
 
-            Damage(spell, ts, target, spell.Caster, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard);
+            Damage(spell, ts, damageable, spell.Caster, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard);
         }
 
-        public static void Damage(Spell spell, Mobile target, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa)
+        public static void Damage(Spell spell, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa)
         {
             TimeSpan ts = GetDamageDelayForSpell(spell);
 
-            Damage(spell, ts, target, spell.Caster, damage, phys, fire, cold, pois, nrgy, dfa);
+            Damage(spell, ts, damageable, spell.Caster, damage, phys, fire, cold, pois, nrgy, dfa);
         }
 
-        public static void Damage(Spell spell, Mobile target, double damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct)
+        public static void Damage(Spell spell, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct)
         {
             TimeSpan ts = GetDamageDelayForSpell(spell);
 
-            Damage(spell, ts, target, spell.Caster, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard, chaos, direct);
+            Damage(spell, ts, damageable, spell.Caster, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard, chaos, direct);
         }
 
-        public static void Damage(TimeSpan delay, Mobile target, double damage, int phys, int fire, int cold, int pois, int nrgy)
+        public static void Damage(TimeSpan delay, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy)
         {
-            Damage(delay, target, null, damage, phys, fire, cold, pois, nrgy);
+            Damage(delay, damageable, null, damage, phys, fire, cold, pois, nrgy);
         }
 
-        public static void Damage(TimeSpan delay, Mobile target, double damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct)
+        public static void Damage(TimeSpan delay, IDamageable damageable, double damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct)
         {
-            Damage(null, delay, target, null, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard, chaos, direct);
+            Damage(null, delay, damageable, null, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard, chaos, direct);
         }
 
-        public static void Damage(TimeSpan delay, Mobile target, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy)
+        public static void Damage(TimeSpan delay, IDamageable damageable, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy)
         {
-            Damage(delay, target, from, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard);
+            Damage(delay, damageable, from, damage, phys, fire, cold, pois, nrgy, DFAlgorithm.Standard);
         }
 
-        public static void Damage(TimeSpan delay, Mobile target, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa)
+        public static void Damage(TimeSpan delay, IDamageable damageable, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa)
         {
-            Damage(null, delay, target, from, damage, phys, fire, cold, pois, nrgy, dfa);
+            Damage(null, delay, damageable, from, damage, phys, fire, cold, pois, nrgy, dfa);
         }
 
-        public static void Damage(Spell spell, TimeSpan delay, Mobile target, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa, int chaos = 0, int direct = 0)
+        public static void Damage(Spell spell, TimeSpan delay, IDamageable damageable, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa, int chaos = 0, int direct = 0)
         {
+            Mobile target = damageable as Mobile;
             int iDamage = (int)damage;
 
             if (delay == TimeSpan.Zero)
             {
-                if (from is BaseCreature)
+                if (from is BaseCreature && target != null)
                     ((BaseCreature)from).AlterSpellDamageTo(target, ref iDamage);
 
                 if (target is BaseCreature)
@@ -1144,9 +1145,9 @@ namespace Server.Spells
 
                 WeightOverloading.DFA = dfa;
 
-                int damageGiven = AOS.Damage(target, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct);
+                int damageGiven = AOS.Damage(damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct);
 
-                if (from != null) // sanity check
+                if (from != null && target != null) // sanity check
                 {
                     DoLeech(damageGiven, from, target);
                 }
@@ -1155,7 +1156,7 @@ namespace Server.Spells
             }
             else
             {
-                new SpellDamageTimerAOS(spell, target, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, delay, dfa).Start();
+                new SpellDamageTimerAOS(spell, damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, delay, dfa).Start();
             }
 
             if (target is BaseCreature && from != null && delay == TimeSpan.Zero)
@@ -1254,7 +1255,7 @@ namespace Server.Spells
 
         private class SpellDamageTimerAOS : Timer
         {
-            private readonly Mobile m_Target;
+            private readonly IDamageable m_Target;
 
             private readonly Mobile m_From;
 
@@ -1276,7 +1277,7 @@ namespace Server.Spells
             private readonly DFAlgorithm m_DFA;
             private readonly Spell m_Spell;
 
-            public SpellDamageTimerAOS(Spell s, Mobile target, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, TimeSpan delay, DFAlgorithm dfa)
+            public SpellDamageTimerAOS(Spell s, IDamageable target, Mobile from, int damage, int phys, int fire, int cold, int pois, int nrgy, int chaos, int direct, TimeSpan delay, DFAlgorithm dfa)
                 : base(delay)
             {
                 this.m_Target = target;
@@ -1299,8 +1300,10 @@ namespace Server.Spells
 
             protected override void OnTick()
             {
-                if (this.m_From is BaseCreature && this.m_Target != null)
-                    ((BaseCreature)this.m_From).AlterSpellDamageTo(this.m_Target, ref this.m_Damage);
+                Mobile target = m_Target as Mobile;
+
+                if (this.m_From is BaseCreature && target != null)
+                    ((BaseCreature)this.m_From).AlterSpellDamageTo(target, ref this.m_Damage);
 
                 if (this.m_Target is BaseCreature && this.m_From != null)
                     ((BaseCreature)this.m_Target).AlterSpellDamageFrom(this.m_From, ref this.m_Damage);
@@ -1309,9 +1312,9 @@ namespace Server.Spells
 
                 int damageGiven = AOS.Damage(this.m_Target, this.m_From, this.m_Damage, this.m_Phys, this.m_Fire, this.m_Cold, this.m_Pois, this.m_Nrgy, this.m_Chaos, this.m_Direct);
 
-                if (this.m_From != null) // sanity check
+                if (this.m_From != null && target != null) // sanity check
                 {
-                    DoLeech(damageGiven, this.m_From, this.m_Target);
+                    DoLeech(damageGiven, this.m_From, target);
                 }
 
                 WeightOverloading.DFA = DFAlgorithm.Standard;

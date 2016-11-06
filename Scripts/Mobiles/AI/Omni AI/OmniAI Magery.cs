@@ -65,7 +65,7 @@ namespace Server.Mobiles
             }
 
             // 25% chance to cast poison if needed
-            if (this.m_Mobile.Combatant != null && !this.m_Mobile.Combatant.Poisoned && Utility.RandomDouble() > 0.75)
+            if (this.m_Mobile.Combatant is Mobile && !((Mobile)m_Mobile.Combatant).Poisoned && Utility.RandomDouble() > 0.75)
             {
                 if (this.m_Mobile.Debug)
                     this.m_Mobile.Say(1156, "Casting Poison");
@@ -132,7 +132,7 @@ namespace Server.Mobiles
 
         public Spell CheckCurse()
         {
-            Mobile foe = this.m_Mobile.Combatant;
+            Mobile foe = this.m_Mobile.Combatant as Mobile;
 
             if (foe == null)
                 return null;
@@ -172,7 +172,7 @@ namespace Server.Mobiles
 
         public double CheckManaDrain()
         {
-            Mobile foe = this.m_Mobile.Combatant;
+            Mobile foe = this.m_Mobile.Combatant as Mobile;
 
             if (foe == null || foe.Mana < 10)
                 return 0.0;

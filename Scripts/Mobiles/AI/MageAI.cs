@@ -129,40 +129,40 @@ namespace Server.Mobiles
             return true;
         }
 
-        public void RunTo(Mobile m)
+        public void RunTo(IDamageable d)
         {
             if (!this.SmartAI)
             {
-                if (!this.MoveTo(m, true, this.m_Mobile.RangeFight))
+                if (!this.MoveTo(d, true, this.m_Mobile.RangeFight))
                     this.OnFailedMove();
 
                 return;
             }
 
-            if (m.Paralyzed || m.Frozen)
+            if (d is Mobile && (((Mobile)d).Paralyzed || ((Mobile)d).Frozen))
             {
-                if (this.m_Mobile.InRange(m, 1))
-                    this.RunFrom(m);
-                else if (!this.m_Mobile.InRange(m, this.m_Mobile.RangeFight > 2 ? this.m_Mobile.RangeFight : 2) && !this.MoveTo(m, true, 1))
+                if (this.m_Mobile.InRange(d, 1))
+                    this.RunFrom(d);
+                else if (!this.m_Mobile.InRange(d, this.m_Mobile.RangeFight > 2 ? this.m_Mobile.RangeFight : 2) && !this.MoveTo(d, true, 1))
                     this.OnFailedMove();
             }
             else
             {
-                if (!this.m_Mobile.InRange(m, this.m_Mobile.RangeFight))
+                if (!this.m_Mobile.InRange(d, this.m_Mobile.RangeFight))
                 {
-                    if (!this.MoveTo(m, true, 1))
+                    if (!this.MoveTo(d, true, 1))
                         this.OnFailedMove();
                 }
-                else if (this.m_Mobile.InRange(m, this.m_Mobile.RangeFight - 1))
+                else if (this.m_Mobile.InRange(d, this.m_Mobile.RangeFight - 1))
                 {
-                    this.RunFrom(m);
+                    this.RunFrom(d);
                 }
             }
         }
 
-        public void RunFrom(Mobile m)
+        public void RunFrom(IDamageable d)
         {
-            this.Run((Direction)((int)this.m_Mobile.GetDirectionTo(m) - 4) & Direction.Mask);
+            this.Run((Direction)((int)this.m_Mobile.GetDirectionTo(d) - 4) & Direction.Mask);
         }
 
         public void OnFailedMove()
@@ -311,8 +311,15 @@ namespace Server.Mobiles
             return spell;
         }
 
-        public virtual Spell ChooseSpell(Mobile c)
+        public virtual Spell ChooseSpell(IDamageable d)
         {
+            if (!(d is Mobile))
+            {
+                m_Mobile.DebugSay("Just doing damage");
+                return GetRandomDamageSpell();
+            }
+
+            Mobile c = d as Mobile;
             Spell spell = null;
 
             if (!this.SmartAI)
@@ -403,9 +410,6 @@ namespace Server.Mobiles
 
             else if (spell == null && 0.05 >= Utility.RandomDouble())
                 spell = GetRandomManaDrainSpell();
-
-            if (spell != null)
-                return spell;
 
             if (spell != null)
                 return spell;
@@ -586,13 +590,13 @@ namespace Server.Mobiles
 
         public override bool DoActionCombat()
         {
-            Mobile c = this.m_Mobile.Combatant;
-            this.m_Mobile.Warmode = true;
+            IDamageable c = this.m_Mobile.Combatant;
+            m_Mobile.Warmode = true;
 
             if (m_Mobile.Target != null)
                 ProcessTarget();
 
-            if (c == null || c.Deleted || !c.Alive || c.IsDeadBondedPet || !this.m_Mobile.CanSee(c) || !this.m_Mobile.CanBeHarmful(c, false) || c.Map != this.m_Mobile.Map)
+            if (c == null || c.Deleted || !c.Alive || (c is Mobile && ((Mobile)c).IsDeadBondedPet) || !this.m_Mobile.CanSee(c) || !this.m_Mobile.CanBeHarmful(c, false) || c.Map != this.m_Mobile.Map)
             {
                 // Our combatant is deleted, dead, hidden, or we cannot hurt them
                 // Try to find another combatant
@@ -639,7 +643,7 @@ namespace Server.Mobiles
                     this.m_Mobile.Combatant = null;
                 }
 
-                c = this.m_Mobile.Combatant;
+                c = this.m_Mobile.Combatant as Mobile;
 
                 if (c == null)
                 {
@@ -697,11 +701,11 @@ namespace Server.Mobiles
 
                     spell = this.DoDispel(toDispel);
                 }
-                else if (this.SmartAI && this.m_Combo != -1) // We are doing a spell combo
+                else if (c is Mobile && this.SmartAI && this.m_Combo != -1) // We are doing a spell combo
                 {
-                    spell = this.DoCombo(c);
+                    spell = this.DoCombo((Mobile)c);
                 }
-                else if (this.SmartAI && (c.Spell is HealSpell || c.Spell is GreaterHealSpell) && !c.Poisoned) // They have a heal spell out
+                else if (c is Mobile && this.SmartAI && (((Mobile)c).Spell is HealSpell || ((Mobile)c).Spell is GreaterHealSpell) && !((Mobile)c).Poisoned) // They have a heal spell out
                 {
                     spell = new PoisonSpell(this.m_Mobile, null);
                 }
@@ -716,17 +720,19 @@ namespace Server.Mobiles
                 TimeSpan ts = !SmartAI && !(spell is DispelSpell) ? TimeSpan.FromSeconds(1.5) : m_Combo > -1 ? TimeSpan.FromSeconds(.5) : TimeSpan.FromSeconds(1.5);
                 TimeSpan delay = spell == null ? TimeSpan.FromSeconds(m_Mobile.ActiveSpeed) : spell.GetCastDelay() + spell.GetCastRecovery() + ts;
 
+                RunTo(c);
+
                 if (spell != null)
                     spell.Cast();
 
                 this.m_NextCastTime = DateTime.UtcNow + delay;
             }
-            else if (this.m_Mobile.Spell == null || !this.m_Mobile.Spell.IsCasting)
+            else/* if (this.m_Mobile.Spell == null || !this.m_Mobile.Spell.IsCasting)*/
             {
                 this.RunTo(c);
             }
 
-            this.m_LastTarget = c;
+            this.m_LastTarget = c as Mobile;
             this.m_LastTargetLoc = c.Location;
 
             return true;
@@ -783,7 +789,7 @@ namespace Server.Mobiles
 
         public override bool DoActionFlee()
         {
-            Mobile c = this.m_Mobile.Combatant;
+            Mobile c = this.m_Mobile.Combatant as Mobile;
 
             if ((this.m_Mobile.Mana > 20 || this.m_Mobile.Mana == this.m_Mobile.ManaMax) && this.m_Mobile.Hits > (this.m_Mobile.HitsMax / 2))
             {
@@ -824,7 +830,7 @@ namespace Server.Mobiles
                 Mobile active = null;
                 double activePrio = 0.0;
 
-                Mobile comb = this.m_Mobile.Combatant;
+                Mobile comb = this.m_Mobile.Combatant as Mobile;
 
                 if (comb != null && !comb.Deleted && comb.Alive && !comb.IsDeadBondedPet && this.m_Mobile.InRange(comb, Core.ML ? 10 : 12) && this.CanDispel(comb))
                 {
@@ -886,7 +892,7 @@ namespace Server.Mobiles
                     Mobile active = null, inactive = null;
                     double actPrio = 0.0, inactPrio = 0.0;
 
-                    Mobile comb = this.m_Mobile.Combatant;
+                    Mobile comb = this.m_Mobile.Combatant as Mobile;
 
                     if (comb != null && !comb.Deleted && comb.Alive && !comb.IsDeadBondedPet && this.CanDispel(comb))
                     {
@@ -1079,7 +1085,7 @@ namespace Server.Mobiles
             if (isTeleport && m_Mobile.CanSwim)
                 targ.Cancel(m_Mobile, TargetCancelType.Canceled);
 
-            Mobile toTarget = null;
+            IDamageable toTarget = null;
 
             if (isDispel)
             {
@@ -1103,7 +1109,7 @@ namespace Server.Mobiles
 
                 if (toTarget == null)
                 {
-                    toTarget = m_Mobile.Combatant;
+                    toTarget = m_Mobile.Combatant as Mobile;
 
                     if (toTarget != null)
                         RunTo(toTarget);

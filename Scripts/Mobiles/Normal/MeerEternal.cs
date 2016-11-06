@@ -126,7 +126,7 @@ namespace Server.Mobiles
         {
             if (DateTime.UtcNow >= this.m_NextAbilityTime)
             {
-                Mobile combatant = this.Combatant;
+                Mobile combatant = this.Combatant as Mobile;
 
                 if (combatant != null && combatant.Map == this.Map && combatant.InRange(this, 12))
                 {

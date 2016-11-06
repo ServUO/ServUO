@@ -5,8 +5,6 @@ namespace Server.Spells.Third
 {
     public class PoisonSpell : MagerySpell
     {
-        public override bool CanDamageItems { get { return false; } }
-
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Poison", "In Nox",
             203,

@@ -41,27 +41,30 @@ namespace Server.Spells.First
             this.Caster.Target = new InternalTarget(this);
         }
 
-        public void Target(Mobile m)
+        public void Target(IDamageable d)
         {
-            if (!this.Caster.CanSee(m))
+            Mobile m = d as Mobile;
+
+            if (!this.Caster.CanSee(d))
             {
                 this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (this.CheckHSequence(m))
+            else if (this.CheckHSequence(d))
             {
                 Mobile source = this.Caster;
 
-                SpellHelper.Turn(source, m);
+                SpellHelper.Turn(source, d);
 
-                SpellHelper.CheckReflect((int)this.Circle, ref source, ref m);
+                if(m != null)
+                    SpellHelper.CheckReflect((int)this.Circle, ref source, ref m);
 
-                double damage;
+                double damage = 0;
 				
                 if (Core.AOS)
                 {
-                    damage = this.GetNewAosDamage(10, 1, 4, m);
+                    damage = this.GetNewAosDamage(10, 1, 4, d);
                 }
-                else
+                else if (m != null)
                 {
                     damage = Utility.Random(4, 4);
 
@@ -75,10 +78,13 @@ namespace Server.Spells.First
                     damage *= this.GetDamageScalar(m);
                 }
 
-                source.MovingParticles(m, 0x36E4, 5, 0, false, false, 3006, 0, 0);
-                source.PlaySound(0x1E5);
+                if (damage > 0)
+                {
+                    source.MovingParticles(d, 0x36E4, 5, 0, false, false, 3006, 0, 0);
+                    source.PlaySound(0x1E5);
 
-                SpellHelper.Damage(this, m, damage, 0, 100, 0, 0, 0);
+                    SpellHelper.Damage(this, d, damage, 0, 100, 0, 0, 0);
+                }
             }
 
             this.FinishSequence();
@@ -95,9 +101,9 @@ namespace Server.Spells.First
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is Mobile)
+                if (o is IDamageable)
                 {
-                    this.m_Owner.Target((Mobile)o);
+                    this.m_Owner.Target((IDamageable)o);
                 }
             }
 

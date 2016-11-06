@@ -35,8 +35,10 @@ namespace Server.Spells.Fourth
             this.Caster.Target = new InternalTarget(this);
         }
 
-        public void Target(Mobile m)
+        public void Target(IDamageable m)
         {
+            Mobile mob = m as Mobile;
+
             if (!this.Caster.CanSee(m))
             {
                 this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
@@ -45,31 +47,35 @@ namespace Server.Spells.Fourth
             {
                 SpellHelper.Turn(this.Caster, m);
 
-                SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
+                if(mob != null)
+                    SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref mob);
 
-                double damage;
+                double damage = 0;
 
                 if (Core.AOS)
                 {
                     damage = this.GetNewAosDamage(23, 1, 4, m);
                 }
-                else
+                else if (mob != null)
                 {
                     damage = Utility.Random(12, 9);
 
-                    if (this.CheckResisted(m))
+                    if (this.CheckResisted(mob))
                     {
                         damage *= 0.75;
 
-                        m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
+                        mob.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                     }
 
-                    damage *= this.GetDamageScalar(m);
+                    damage *= this.GetDamageScalar(mob);
                 }
 
-                m.BoltEffect(0);
+                Effects.SendBoltEffect(m, true, 0);
 
-                SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
+                if (damage > 0)
+                {
+                    SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
+                }
             }
 
             this.FinishSequence();
@@ -86,8 +92,8 @@ namespace Server.Spells.Fourth
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is Mobile)
-                    this.m_Owner.Target((Mobile)o);
+                if (o is IDamageable)
+                    this.m_Owner.Target((IDamageable)o);
             }
 
             protected override void OnTargetFinish(Mobile from)

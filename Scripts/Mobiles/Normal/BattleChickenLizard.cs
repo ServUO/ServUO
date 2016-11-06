@@ -43,7 +43,7 @@ namespace Server.Mobiles
         public override int GetHurtSound() { return 1510; }
         public override int GetDeathSound() { return 1509; }
 
-        public override Mobile Combatant
+        public override IDamageable Combatant
         {
             get { return base.Combatant; }
             set

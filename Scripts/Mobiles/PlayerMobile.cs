@@ -1458,8 +1458,10 @@ namespace Server.Mobiles
 			}
 		}
 
-		public override bool CanBeHarmful(Mobile target, bool message, bool ignoreOurBlessedness)
+		public override bool CanBeHarmful(IDamageable damageable, bool message, bool ignoreOurBlessedness)
 		{
+            Mobile target = damageable as Mobile;
+
 			if (m_DesignContext != null || (target is PlayerMobile && ((PlayerMobile)target).m_DesignContext != null))
 			{
 				return false;
@@ -1490,7 +1492,15 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			return base.CanBeHarmful(target, message, ignoreOurBlessedness);
+            if (damageable is IDamageableItem && !((IDamageableItem)damageable).CanDamage)
+            {
+                if (message)
+                    SendMessage("That cannot be harmed.");
+
+                return false;
+            }
+
+			return base.CanBeHarmful(damageable, message, ignoreOurBlessedness);
 		}
 
 		public override bool CanBeBeneficial(Mobile target, bool message, bool allowDead)
@@ -2512,6 +2522,7 @@ namespace Server.Mobiles
 
 			base.DisruptiveAction();
 		}
+
         public override bool Meditating
         {
             set
@@ -3635,8 +3646,12 @@ namespace Server.Mobiles
 
 		public override int Luck { get { return AosAttributes.GetValue(this, AosAttribute.Luck); } }
 
-		public override bool IsHarmfulCriminal(Mobile target)
+        public int RealLuck { get { return Luck + TenthAnniversarySculpture.GetLuckBonus(this) + FountainOfFortune.GetLuckBonus(this); } }
+
+		public override bool IsHarmfulCriminal(IDamageable damageable)
 		{
+            Mobile target = damageable as Mobile;
+
 			if (Stealing.ClassicMode && target is PlayerMobile && ((PlayerMobile)target).m_PermaFlags.Count > 0)
 			{
 				int noto = Notoriety.Compute(this, target);
@@ -3660,7 +3675,7 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			return base.IsHarmfulCriminal(target);
+			return base.IsHarmfulCriminal(damageable);
 		}
 
 		public bool AntiMacroCheck(Skill skill, object obj)

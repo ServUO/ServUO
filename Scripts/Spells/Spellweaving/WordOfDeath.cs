@@ -6,8 +6,6 @@ namespace Server.Spells.Spellweaving
 {
     public class WordOfDeathSpell : ArcanistSpell
     {
-        public override bool CanDamageItems { get { return false; } }
-
         private static readonly SpellInfo m_Info = new SpellInfo("Word of Death", "Nyraxle", -1);
         public WordOfDeathSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

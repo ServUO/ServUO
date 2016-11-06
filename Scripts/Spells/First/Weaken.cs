@@ -5,8 +5,6 @@ namespace Server.Spells.First
 {
     public class WeakenSpell : MagerySpell
     {
-        public override bool CanDamageItems { get { return false; } }
-
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Weaken", "Des Mani",
             212,

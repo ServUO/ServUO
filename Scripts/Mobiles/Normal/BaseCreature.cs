@@ -209,7 +209,7 @@ namespace Server.Mobiles
 
         private bool m_bControlled; // Is controlled
         private Mobile m_ControlMaster; // My master
-        private Mobile m_ControlTarget; // My target mobile
+        private IDamageable m_ControlTarget; // My target mobile
         private Point3D m_ControlDest; // My target destination (patrol)
         private OrderType m_ControlOrder; // My order
 
@@ -596,6 +596,9 @@ namespace Server.Mobiles
         // at difficulty - focus we have 0%, at difficulty + focus we have 100%
         public virtual bool DisplayWeight { get { return Backpack is StrongBackpack; } }
 
+        public virtual bool ShowSpellMantra { get { return false; } }
+        public virtual bool FreezeOnCast { get { return ShowSpellMantra; } }
+
         #region High Seas
         public virtual bool TaintedLifeAura { get { return false; } }
         #endregion
@@ -650,7 +653,7 @@ namespace Server.Mobiles
         public virtual int BreathAngerSound { get { return GetAngerSound(); } }
         public virtual int BreathAngerAnimation { get { return 12; } }
 
-        public virtual void BreathStart(Mobile target)
+        public virtual void BreathStart(IDamageable target)
         {
             BreathStallMovement();
             BreathPlayAngerSound();
@@ -681,7 +684,7 @@ namespace Server.Mobiles
 
         public virtual void BreathEffect_Callback(object state)
         {
-            Mobile target = (Mobile)state;
+            IDamageable target = (IDamageable)state;
 
             if (!target.Alive || !CanBeHarmful(target))
             {
@@ -699,7 +702,7 @@ namespace Server.Mobiles
             PlaySound(BreathEffectSound);
         }
 
-        public virtual void BreathPlayEffect(Mobile target)
+        public virtual void BreathPlayEffect(IDamageable target)
         {
             Effects.SendMovingEffect(
                 this,
@@ -715,7 +718,7 @@ namespace Server.Mobiles
 
         public virtual void BreathDamage_Callback(object state)
         {
-            Mobile target = (Mobile)state;
+            IDamageable target = (IDamageable)state;
 
             if (target is BaseCreature && ((BaseCreature)target).BreathImmune)
             {
@@ -729,9 +732,9 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual void BreathDealDamage(Mobile target)
+        public virtual void BreathDealDamage(IDamageable target)
         {
-            if (!Evasion.CheckSpellEvasion(target))
+            if (!(target is Mobile) || !Evasion.CheckSpellEvasion((Mobile)target))
             {
                 int physDamage = BreathPhysicalDamage;
                 int fireDamage = BreathFireDamage;
@@ -1933,7 +1936,7 @@ namespace Server.Mobiles
 
             writer.Write(m_bControlled);
             writer.Write(m_ControlMaster);
-            writer.Write(m_ControlTarget);
+            writer.Write(m_ControlTarget is Mobile ? (Mobile)m_ControlTarget : null);
             writer.Write(m_ControlDest);
             writer.Write((int)m_ControlOrder);
             writer.Write(m_dMinTameSkill);
@@ -2680,9 +2683,6 @@ namespace Server.Mobiles
                 case AIType.AI_OrcScout:
                     m_AI = new OrcScoutAI(this);
                     break;
-                case AIType.AI_Spellbinder:
-                    m_AI = new SpellbinderAI(this);
-                    break;
                 case AIType.AI_Samurai:
                     m_AI = new SamuraiAI(this);
                     break;
@@ -2742,7 +2742,7 @@ namespace Server.Mobiles
         { }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile FocusMob { get; set; }
+        public IDamageable FocusMob { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public FightMode FightMode { get { return m_FightMode; } set { m_FightMode = value; } }
@@ -2981,7 +2981,7 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile ControlTarget { get { return m_ControlTarget; } set { m_ControlTarget = value; } }
+        public IDamageable ControlTarget { get { return m_ControlTarget; } set { m_ControlTarget = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D ControlDest { get { return m_ControlDest; } set { m_ControlDest = value; } }
@@ -3692,8 +3692,10 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool IsHarmfulCriminal(Mobile target)
+        public override bool IsHarmfulCriminal(IDamageable damageable)
         {
+            Mobile target = damageable as Mobile;
+
             if ((Controlled && target == m_ControlMaster) || (Summoned && target == m_SummonMaster))
             {
                 return false;
@@ -3709,7 +3711,7 @@ namespace Server.Mobiles
                 return false;
             }
 
-            return base.IsHarmfulCriminal(target);
+            return base.IsHarmfulCriminal(damageable);
         }
 
         public override void CriminalAction(bool message)
@@ -3729,9 +3731,14 @@ namespace Server.Mobiles
             }
         }
 
-        public override void DoHarmful(Mobile target, bool indirect)
+        public override void DoHarmful(IDamageable damageable, bool indirect)
         {
-            base.DoHarmful(target, indirect);
+            base.DoHarmful(damageable, indirect);
+
+            Mobile target = damageable as Mobile;
+
+            if (target == null)
+                return;
 
             if (target == this || target == m_ControlMaster || target == m_SummonMaster || (!Controlled && !Summoned))
             {
@@ -5507,8 +5514,10 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool CanBeHarmful(Mobile target, bool message, bool ignoreOurBlessedness)
+        public override bool CanBeHarmful(IDamageable damageable, bool message, bool ignoreOurBlessedness)
         {
+            Mobile target = damageable as Mobile;
+
             if (target is BaseFactionGuard)
             {
                 return false;
@@ -5516,22 +5525,15 @@ namespace Server.Mobiles
 
             if ((target is BaseVendor && ((BaseVendor)target).IsInvulnerable) || target is PlayerVendor || target is TownCrier)
             {
-                if (message)
-                {
-                    if (target.Title == null)
-                    {
-                        SendMessage("{0} the vendor cannot be harmed.", target.Name);
-                    }
-                    else
-                    {
-                        SendMessage("{0} {1} cannot be harmed.", target.Name, target.Title);
-                    }
-                }
-
                 return false;
             }
 
-            return base.CanBeHarmful(target, message, ignoreOurBlessedness);
+            if (damageable is IDamageableItem && !((IDamageableItem)damageable).CanDamage)
+            {
+                return false;
+            }
+
+            return base.CanBeHarmful(damageable, message, ignoreOurBlessedness);
         }
 
         public override bool CanBeRenamedBy(Mobile from)
@@ -6308,10 +6310,10 @@ namespace Server.Mobiles
         /// <returns></returns>
         public virtual Mobile GetBardTarget(bool creaturesOnly = false)
         {
-            Mobile m = this.Combatant;
+            Mobile m = this.Combatant as Mobile;
 
             if (m == null && GetMaster() is PlayerMobile)
-                m = GetMaster().Combatant;
+                m = GetMaster().Combatant as Mobile;
 
             if (m == null || m == this || !CanBeHarmful(m, false) || (creaturesOnly && !(m is BaseCreature)))
             {
@@ -6495,10 +6497,10 @@ namespace Server.Mobiles
             if (CanBreath && tc - m_NextBreathTime >= 0)
             // tested: controlled dragons do breath fire, what about summoned skeletal dragons?
             {
-                Mobile target = Combatant;
+                IDamageable target = Combatant;
 
-                if (target != null && target.Alive && !target.IsDeadBondedPet && CanBeHarmful(target) && target.Map == Map &&
-                    !IsDeadBondedPet && target.InRange(this, BreathRange) && InLOS(target) && !BardPacified)
+                if (target != null && target.Alive && (!(target is Mobile) || !((Mobile)target).IsDeadBondedPet) && CanBeHarmful(target) && target.Map == Map &&
+                    !IsDeadBondedPet && InRange(target, BreathRange) && InLOS(target) && !BardPacified)
                 {
                     if ((Core.TickCount - m_NextBreathTime) < 30000 && Utility.RandomBool())
                     {

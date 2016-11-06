@@ -126,7 +126,7 @@ using Server.Items;
 
         protected virtual bool CheckCanTeleport()
         {
-            if (CurrentWayPoint == null || Frozen || Paralyzed || (Combatant != null && Combatant.InLOS(this)))
+            if (CurrentWayPoint == null || Frozen || Paralyzed || (Combatant is Mobile && ((Mobile)Combatant).InLOS(this)))
                 return false;
 
             bool canTeleport = true;

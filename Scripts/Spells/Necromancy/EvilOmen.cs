@@ -7,8 +7,6 @@ namespace Server.Spells.Necromancy
 {
     public class EvilOmenSpell : NecromancerSpell
     {
-        public override bool CanDamageItems { get { return false; } }
-
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Evil Omen", "Pas Tym An Sanct",
             203,

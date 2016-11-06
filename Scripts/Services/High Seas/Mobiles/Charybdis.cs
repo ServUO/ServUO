@@ -109,7 +109,7 @@ namespace Server.Mobiles
 
         public void DoTeleport()
         {
-            if (this.Combatant == null)
+            if (this.Combatant == null || !(Combatant is Mobile))
             {
                 m_NextTeleport = DateTime.UtcNow + TeleportRate;
                 return;
@@ -122,7 +122,7 @@ namespace Server.Mobiles
             this.Hidden = true;
             this.Internalize();
 
-            DoAreaLightningAttack(Combatant);
+            DoAreaLightningAttack((Mobile)Combatant);
 
             Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerStateCallback(FinishTeleport), new object[]{Combatant.Location,Combatant});
             m_NextTeleport = DateTime.UtcNow + TeleportRate;
