@@ -706,6 +706,9 @@ namespace Server.Items
             {
                 list.Add(1080240, this.Pieces.ToString()); // Part of a Jewelry Set (~1_val~ pieces)
 
+                if (this.BardMasteryBonus)
+                    list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
+
                 if (this.m_SetEquipped)
                 {
                     list.Add(1080241); // Full Jewelry Set Present					
@@ -845,6 +848,12 @@ namespace Server.Items
 
             if (this.m_HitPoints >= 0 && this.m_MaxHitPoints > 0)
                 list.Add(1060639, "{0}\t{1}", this.m_HitPoints, this.m_MaxHitPoints); // durability ~1_val~ / ~2_val~
+
+            if (this.IsSetItem && !this.m_SetEquipped)
+            {
+                list.Add(1072378); // <br>Only when full set is present:				
+                SetHelper.GetSetProperties(list, this);
+            }
 
             if (m_ItemPower != ItemPower.None)
             {
@@ -1124,6 +1133,17 @@ namespace Server.Items
                 return 0;
             }
         }
+
+        public virtual int Berserk { get { return 0; } }
+
+        public virtual bool BardMasteryBonus
+        {
+            get
+            {
+                return (this.SetID == SetItem.Virtuoso);
+            }
+        }
+
         public virtual bool MixedSet
         {
             get
