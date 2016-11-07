@@ -96,7 +96,7 @@ namespace Server.Items
 
             if (dropped.LootType == LootType.Blessed)
             {
-                this.Empty(1075256); // That is blessed; you cannot throw it away.
+                this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1075256); // That is blessed; you cannot throw it away.
                 return false;
             }                
 
@@ -128,7 +128,7 @@ namespace Server.Items
 
             if (item.LootType == LootType.Blessed)
             {
-                this.Empty(1075256); // That is blessed; you cannot throw it away.
+                this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1075256); // That is blessed; you cannot throw it away.
                 return false;
             }
 
