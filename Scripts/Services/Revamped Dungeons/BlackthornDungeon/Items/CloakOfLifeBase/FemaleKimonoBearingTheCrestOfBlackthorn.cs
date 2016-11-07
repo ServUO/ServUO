@@ -13,7 +13,7 @@ namespace Server.Items
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
             Attributes.BonusHits = 3;
-            Attributes.BonusInt = 5;
+            Attributes.RegenHits = 1;
             Hue = 132;
         }
 

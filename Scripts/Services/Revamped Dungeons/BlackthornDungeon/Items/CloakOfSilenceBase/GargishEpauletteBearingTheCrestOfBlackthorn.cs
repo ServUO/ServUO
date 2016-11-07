@@ -16,8 +16,7 @@ namespace Server.Items
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
             ItemID = 0x9986;
-            Attributes.BonusHits = 3;
-            Attributes.BonusInt = 5;
+            SkillBonuses.SetValues(0, SkillName.Stealth, 10.0);
             Hue = 2130;
         }
 
