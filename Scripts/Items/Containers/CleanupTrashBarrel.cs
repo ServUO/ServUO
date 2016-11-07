@@ -18,7 +18,7 @@ namespace Server.Items
         {
             this.Hue = 2500;
             this.Movable = false;
-            this.Name = "Tash - Keep Britannia Clean";
+            this.Name = "Trash - Keep Britannia Clean";
             this.m_Cleanup = new List<CleanupArray>();
         }
 
