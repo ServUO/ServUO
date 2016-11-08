@@ -290,6 +290,7 @@ namespace Server.Engines.Blackthorn
                     if (count == 0 && kvp.Key.Alive)
                     {
                         kvp.Key.Blessed = false;
+                        kvp.Key.Delta(MobileDelta.Noto);
                     }
                 }
             }
