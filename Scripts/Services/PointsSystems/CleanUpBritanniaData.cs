@@ -24,6 +24,9 @@ namespace Server.Engines.Points
 
         public static double GetPoints(Item item)
         {
+            if (item.LootType == LootType.Blessed)
+                return 0;
+
             Type type = item.GetType();
 
             if (Entries.ContainsKey(type))
