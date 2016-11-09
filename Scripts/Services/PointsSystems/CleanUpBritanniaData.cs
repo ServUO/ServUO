@@ -92,7 +92,7 @@ namespace Server.Engines.Points
                 {
                     SpecialScroll sot = (SpecialScroll)item;
 
-                    points = 0.1 * sot.Value;
+                    points = sot.Value / 0.1 * 2;
                 }
                 else if (item is Bait)
                 {
