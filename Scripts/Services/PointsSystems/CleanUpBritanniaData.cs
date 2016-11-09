@@ -28,12 +28,21 @@ namespace Server.Engines.Points
             if (item.LootType == LootType.Blessed)
                 return 0;
 
+            double points = 0;
+
             Type type = item.GetType();
 
             if (Entries.ContainsKey(type))
             {
-                double points = 0;
+                points = Entries[type];
 
+                if (item.Stackable)
+                    points = points * item.Amount;                
+
+                return points;
+            }
+            else
+            {
                 if (item is RunicHammer)
                 {
                     RunicHammer hammer = (RunicHammer)item;
@@ -124,18 +133,9 @@ namespace Server.Engines.Points
                     BasePigmentsOfTokuno pigments = (BasePigmentsOfTokuno)item;
                     points = 500 * pigments.UsesRemaining;
                 }
-                else
-                {
-                    points = Entries[type];
-
-                    if (item.Stackable)
-                        points = points * item.Amount;
-                }
 
                 return points;
             }
-
-            return 0.0;
         }
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
@@ -709,7 +709,7 @@ namespace Server.Engines.Points
                     
                 if(points == 0)
                     m_Mobile.SendLocalizedMessage(1151271); // This item has no turn-in value for Clean Up Britannia.
-                if (points < 1)
+                else if (points < 1)
                     m_Mobile.SendLocalizedMessage(1151272, points.ToString()); // This item is worth less than one point for Clean Up Britannia.
                 else if(points == 1)
                     m_Mobile.SendLocalizedMessage(1151273, points.ToString()); // This item is worth approximately one point for Clean Up Britannia.
