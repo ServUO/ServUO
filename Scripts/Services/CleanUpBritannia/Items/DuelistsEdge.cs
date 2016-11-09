@@ -12,7 +12,7 @@ namespace Server.Items
             this.Hue = 1902;
             this.SkillBonuses.SetValues(0, SkillName.Anatomy, 10.0);
             this.Attributes.RegenStam = 2;
-            this.Attributes.BonusHits = 5;
+            this.Attributes.AttackChance = 5;
             this.Attributes.WeaponDamage = 20;
         }
 
