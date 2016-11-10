@@ -149,11 +149,6 @@ namespace Server.Engines.Points
         {
             Entries = new Dictionary<Type, double>();
 
-            Entries[typeof(RunicHammer)] = 0.0;
-            Entries[typeof(RunicSewingKit)] = 0.0;
-            Entries[typeof(PowerScroll)] = 0.0;
-            Entries[typeof(Bait)] = 0.0;
-
             Entries[typeof(DecorativeTopiary)] = 2.0;
 
             //Fishing
