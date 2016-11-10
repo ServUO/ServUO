@@ -17,7 +17,7 @@ namespace Server.Items
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
             ItemID = 0x9986;
             Attributes.BonusHits = 3;
-            Attributes.BonusInt = 5;
+            Attributes.RegenHits = 1;
             Hue = 132;
         }
 

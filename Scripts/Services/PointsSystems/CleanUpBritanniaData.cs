@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using Server.Engines.Quests.Doom;
 
 namespace Server.Engines.Points
 {
@@ -24,12 +25,24 @@ namespace Server.Engines.Points
 
         public static double GetPoints(Item item)
         {
+            if (item.LootType == LootType.Blessed)
+                return 0;
+
+            double points = 0;
+
             Type type = item.GetType();
 
             if (Entries.ContainsKey(type))
             {
-                double points = 0;
+                points = Entries[type];
 
+                if (item.Stackable)
+                    points = points * item.Amount;                
+
+                return points;
+            }
+            else
+            {
                 if (item is RunicHammer)
                 {
                     RunicHammer hammer = (RunicHammer)item;
@@ -60,7 +73,7 @@ namespace Server.Engines.Points
                     else if (sewing.Resource == CraftResource.HornedLeather)
                         points = 100 * sewing.UsesRemaining;
                     else if (sewing.Resource == CraftResource.BarbedLeather)
-                        points = 400 * sewing.UsesRemaining;                    
+                        points = 400 * sewing.UsesRemaining;
                 }
                 else if (item is PowerScroll)
                 {
@@ -75,24 +88,54 @@ namespace Server.Engines.Points
                     else if (ps.Value == 120)
                         points = 2500;
                 }
+                else if (item is ScrollofTranscendence)
+                {
+                    SpecialScroll sot = (SpecialScroll)item;
+
+                    points = sot.Value / 0.1 * 2;
+                }
                 else if (item is Bait)
                 {
                     Bait bait = (Bait)item;
 
                     points = 10 * bait.UsesRemaining;
                 }
-                else
+                else if (item is TreasureMap)
                 {
-                    points = Entries[type];
+                    TreasureMap tmap = (TreasureMap)item;
 
-                    if (item.Stackable)
-                        points = points * item.Amount;
+                    if (tmap.Level == 1)
+                        points = 50;
+                    else if (tmap.Level == 2)
+                        points = 100;
+                    else if (tmap.Level == 3)
+                        points = 250;
+                    else if (tmap.Level == 4)
+                        points = 500;
+                    else if (tmap.Level == 5)
+                        points = 750;
+                    else if (tmap.Level == 6)
+                        points = 1000;
+                }
+                else if (item is MidnightBracers && item.LootType == LootType.Cursed)
+                {
+                    points = 5000;
+                }
+                else if (item is MonsterStatuette)
+                {
+                    MonsterStatuette ms = (MonsterStatuette)item;
+
+                    if (ms.Type == MonsterStatuetteType.Slime)
+                        points = 5000;
+                }
+                else if (item is PigmentsOfTokuno || item is LesserPigmentsOfTokuno)
+                {
+                    BasePigmentsOfTokuno pigments = (BasePigmentsOfTokuno)item;
+                    points = 500 * pigments.UsesRemaining;
                 }
 
                 return points;
             }
-
-            return 0.0;
         }
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
@@ -178,6 +221,9 @@ namespace Server.Engines.Points
 
             //BOD Rewards
             Entries[typeof(Sandals)] = 2.0;
+            Entries[typeof(LeatherGlovesOfMining)] = 50.0;
+            Entries[typeof(StuddedGlovesOfMining)] = 100.0;
+            Entries[typeof(RingmailGlovesOfMining)] = 500.0;
 
             //ArtifactRarity 1 Stealable Artifacts
             Entries[typeof(RockArtifact)] = 5.0;
@@ -367,7 +413,7 @@ namespace Server.Engines.Points
             Entries[typeof(ColdBlood)] = 100.0;
             Entries[typeof(CreepingVine)] = 100.0;
             Entries[typeof(ForgedPardon)] = 100.0;
-            Entries[typeof(ManaPhasingOrb)] = 100.0;
+            Entries[typeof(ManaPhasingOrb)] = 500.0;
             Entries[typeof(RunedSashOfWarding)] = 100.0;
             Entries[typeof(SurgeShield)] = 100.0;
             Entries[typeof(HeartOfTheLion)] = 100.0;
@@ -427,7 +473,6 @@ namespace Server.Engines.Points
             Entries[typeof(LegsOfStability)] = 100.0;
             Entries[typeof(LeurociansMempoOfFortune)] = 100.0;
             Entries[typeof(PeasantsBokuto)] = 100.0;
-            Entries[typeof(LesserPigmentsOfTokuno)] = 100.0;
             Entries[typeof(PilferedDancerFans)] = 100.0;
             Entries[typeof(TomeOfEnlightenment)] = 100.0;
 
@@ -471,7 +516,7 @@ namespace Server.Engines.Points
             Entries[typeof(ProtectoroftheBattleMage)] = 5000.0;
             Entries[typeof(RaptorClaw)] = 5000.0;
             Entries[typeof(ResonantStaffofEnlightenment)] = 5000.0;
-            Entries[typeof(ShroudOfTheCondemned)] = 5000.0;
+            Entries[typeof(ShroudOfTheCondemned)] = 500.0;
             Entries[typeof(GargishSignOfOrder)] = 5000.0;
             Entries[typeof(HumanSignOfOrder)] = 5000.0;
             Entries[typeof(GargishSignOfChaos)] = 5000.0;
@@ -498,7 +543,6 @@ namespace Server.Engines.Points
             //Tokuno Major Artifacts
             Entries[typeof(DarkenedSky)] = 2500.0;
             Entries[typeof(KasaOfTheRajin)] = 2500.0;
-            Entries[typeof(PigmentsOfTokuno)] = 2500.0;
             Entries[typeof(RuneBeetleCarapace)] = 2500.0;
             Entries[typeof(Stormgrip)] = 2500.0;
             Entries[typeof(SwordOfTheStampede)] = 2500.0;
@@ -520,8 +564,7 @@ namespace Server.Engines.Points
             Entries[typeof(BraceletOfHealth)] = 5500.0;
             Entries[typeof(Aegis)] = 5500.0;
             Entries[typeof(AxeOfTheHeavens)] = 5500.0;
-            Entries[typeof(HelmOfInsight)] = 5500.0;
-            Entries[typeof(MidnightBracers)] = 5500.0;
+            Entries[typeof(HelmOfInsight)] = 5500.0;            
             Entries[typeof(Frostbringer)] = 5500.0;
             Entries[typeof(StaffOfTheMagi)] = 5500.0;
             Entries[typeof(TheDragonSlayer)] = 5500.0;
@@ -534,6 +577,9 @@ namespace Server.Engines.Points
             Entries[typeof(HatOfTheMagi)] = 5500.0;
             Entries[typeof(BladeOfInsanity)] = 5500.0;
             Entries[typeof(JackalsCollar)] = 5500.0;
+
+            //Artifacts
+            Entries[typeof(PendantOfTheMagi)] = 35;
 
             //Replicas
             Entries[typeof(TatteredAncientMummyWrapping)] = 5000.0;
@@ -576,10 +622,9 @@ namespace Server.Engines.Points
 
             //Easter
             Entries[typeof(EasterEggs)] = 2.0;
-            Entries[typeof(JellyBeans)] = 2.0;
+            Entries[typeof(JellyBeans)] = 1.0;
 
-            //Miscellaneous
-            Entries[typeof(ScrollofTranscendence)] = 2.0;
+            //Miscellaneous            
             Entries[typeof(ParrotItem)] = 25.0;
             Entries[typeof(Gold)] = 0.01;
             Entries[typeof(RedScales)] = 0.10;
@@ -618,7 +663,6 @@ namespace Server.Engines.Points
             Entries[typeof(MedusaBlood)] = 1000.0;
             Entries[typeof(MedusaDarkScales)] = 200.0;
             Entries[typeof(MedusaLightScales)] = 200.0;
-            Entries[typeof(MidnightBracers)] = 5000.0;
             Entries[typeof(MiniHouseDeed)] = 6500.0;
             Entries[typeof(Moonstone)] = 5000.0;
             Entries[typeof(MysticsGuard)] = 2500.0;
@@ -637,6 +681,12 @@ namespace Server.Engines.Points
             Entries[typeof(UntranslatedAncientTome)] = 200.0;
             Entries[typeof(WallBlood)] = 5000.0;
             Entries[typeof(Whip)] = 200.0;
+            //Entries[typeof(BalmOfSwiftness)] = 100.0;
+            Entries[typeof(TaintedMushroom)] = 1000.0;
+            Entries[typeof(GoldenSkull)] = 1000.0;
+
+            //Treasure Hunting
+            Entries[typeof(Lockpick)] = 0.10;
         }
     }
 
@@ -659,7 +709,7 @@ namespace Server.Engines.Points
                     
                 if(points == 0)
                     m_Mobile.SendLocalizedMessage(1151271); // This item has no turn-in value for Clean Up Britannia.
-                if (points < 1)
+                else if (points < 1)
                     m_Mobile.SendLocalizedMessage(1151272, points.ToString()); // This item is worth less than one point for Clean Up Britannia.
                 else if(points == 1)
                     m_Mobile.SendLocalizedMessage(1151273, points.ToString()); // This item is worth approximately one point for Clean Up Britannia.

@@ -14,8 +14,9 @@ namespace Server.Items
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
             ItemID = 0x9985;            
-            Attributes.BonusHits = 3;
-            Attributes.BonusInt = 5;
+            Attributes.AttackChance = 3;
+            Attributes.DefendChance = 3;
+            Attributes.SpellDamage = 3;
             Hue = 2019;            
         }
 

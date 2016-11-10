@@ -69,7 +69,7 @@ namespace Server.Spells.Necromancy
                     {
                         IDamageable id = o as IDamageable;
 
-                        if (id is Mobile && (Mobile)id == Caster)
+                        if (id == null || id is Mobile && (Mobile)id == this.Caster)
                             continue;
 
                         if (this.Caster.InLOS(id) && (!(id is Mobile) || isMonster || SpellHelper.ValidIndirectTarget(this.Caster, (Mobile)id)) && this.Caster.CanBeHarmful(id, false))
@@ -138,7 +138,7 @@ namespace Server.Spells.Necromancy
 							else if (perc >= 1)
 								sdiBonus += 3;
 						}
-                        // PvP spell damage increase cap of 15% from an item’s magic property in Publish 33(SE)
+                        // PvP spell damage increase cap of 15% from an itemâ€™s magic property in Publish 33(SE)
                         if (Core.SE && id is PlayerMobile && this.Caster.Player && sdiBonus > 15)
                             sdiBonus = 15;
 
