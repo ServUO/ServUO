@@ -10,8 +10,6 @@ namespace Server.Items
 {
     public class CleanupTrashBarrel : BaseTrash
     {
-        private Timer m_Timer;
-
         [Constructable]
         public CleanupTrashBarrel()
             : base(0xFAE)
@@ -53,12 +51,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (this.Items.Count > 0)
-            {
-                this.m_Timer = new EmptyTimer(this);
-                this.m_Timer.Start();
-            }
 
             this.m_Cleanup = new List<CleanupArray>();
         }
@@ -102,21 +94,8 @@ namespace Server.Items
 
             AddCleanupItem(from, dropped);
 
-            if (this.TotalItems >= 50)
-            {
-                this.Empty(501478); // The trash is full!  Emptying!
-            }
-            else
-            {
-                this.SendLocalizedMessageTo(from, 1010442); // The item will be deleted in three minutes
-
-                if (this.m_Timer != null)
-                    this.m_Timer.Stop();
-                else
-                    this.m_Timer = new EmptyTimer(this);
-
-                this.m_Timer.Start();
-            }
+            this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
+            Empty();
 
             return true;
         }
@@ -134,33 +113,18 @@ namespace Server.Items
 
             AddCleanupItem(from, item);
 
-            if (this.TotalItems >= 50)
-            {
-                this.Empty(501478); // The trash is full!  Emptying!
-            }
-            else
-            {
-                this.SendLocalizedMessageTo(from, 1010442); // The item will be deleted in three minutes
-
-                if (this.m_Timer != null)
-                    this.m_Timer.Stop();
-                else
-                    this.m_Timer = new EmptyTimer(this);
-
-                this.m_Timer.Start();
-            }
+            this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
+            Empty();
 
             return true;
         }
 
-        public void Empty(int message)
+        public void Empty()
         {
             List<Item> items = this.Items;
 
             if (items.Count > 0)
             {
-                this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, message, "");
-
                 for (int i = items.Count - 1; i >= 0; --i)
                 {
                     if (i >= items.Count)
@@ -183,27 +147,6 @@ namespace Server.Items
                     }
                     this.m_Cleanup.Clear();
                 }
-            }
-
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();            
-
-            this.m_Timer = null;
-        }
-
-        private class EmptyTimer : Timer
-        {
-            private readonly CleanupTrashBarrel m_Barrel;
-            public EmptyTimer(CleanupTrashBarrel barrel)
-                : base(TimeSpan.FromMinutes(3.0))
-            {
-                this.m_Barrel = barrel;
-                this.Priority = TimerPriority.FiveSeconds;
-            }
-
-            protected override void OnTick()
-            {
-                this.m_Barrel.Empty(501479); // Emptying the trashcan!
             }
         }
     }
