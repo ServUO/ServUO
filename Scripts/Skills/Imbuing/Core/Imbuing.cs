@@ -98,7 +98,6 @@ namespace Server.SkillHandlers
 
         public static bool OnBeforeImbue(Mobile from, Item item, int mod, int value, int totalprops, int maxprops, int totalitemweight, int maxweight)
         {
-         
             if (totalprops >= maxprops || totalitemweight > maxweight)
             {
                 from.SendLocalizedMessage(1079772); // You cannot imbue this item with any more item properties.
@@ -305,8 +304,9 @@ namespace Server.SkillHandlers
 
                 int totalItemWeight = GetTotalWeight(i, mod);
                 int totalItemMods = GetTotalMods(i, mod);
+                int maxint = GetMaxIntensity(i, def);
 
-                double propWeight = ((double)def.Weight / (double)def.MaxIntensity) * value;
+                double propWeight = ((double)def.Weight / (double)maxint) * value;
                 propWeight = Math.Round(propWeight);
                 int propweight = Convert.ToInt32(propWeight);
 
@@ -695,6 +695,19 @@ namespace Server.SkillHandlers
                 from.SendLocalizedMessage(1080437); // You cannot magically unravel this item. It appears to possess little or no magic.
 
             return success;
+        }
+
+        public static int GetMaxIntensity(Item item, ImbuingDefinition def)
+        {
+            if (item is BaseWeapon && def.Attribute is AosWeaponAttribute)
+            {
+                AosWeaponAttribute attr = (AosWeaponAttribute)def.Attribute;
+
+                if (attr == AosWeaponAttribute.HitLeechMana || attr == AosWeaponAttribute.HitLeechHits)
+                    return GetPropRange(item, attr)[1];
+            }
+
+            return def.MaxIntensity;
         }
 
         public static int GetMaxWeight(object itw)

@@ -57,7 +57,7 @@ namespace Server.Gumps
             m_Mod = mod;
             m_Value = value;
 
-            int maxInt = GetMaxIntensity(item, m_Definition);
+            int maxInt = Imbuing.GetMaxIntensity(item, m_Definition);
             int inc = m_Definition.IncAmount;
             int weight = m_Definition.Weight;
 
@@ -303,7 +303,7 @@ namespace Server.Gumps
                     }
                 case 10054: // = Increase Mod Value [>]
                     {
-                        int max = GetMaxIntensity(m_Item, m_Definition);
+                        int max = Imbuing.GetMaxIntensity(m_Item, m_Definition);
 
                         if(m_Mod == 12 && context.LastImbued is BaseJewel)
                             max /= 2;
@@ -316,7 +316,7 @@ namespace Server.Gumps
                     }
                 case 10055: // = Increase Mod Value [>>]
                     {
-                        int max = GetMaxIntensity(m_Item, m_Definition);
+                        int max = Imbuing.GetMaxIntensity(m_Item, m_Definition);
 
                         if (m_Mod == 12 && context.LastImbued is BaseJewel)
                             max /= 2;
@@ -338,14 +338,14 @@ namespace Server.Gumps
                         else if (context.Imbue_ModInt + 5 <= max)
                             context.Imbue_ModInt += 5;
                         else
-                            context.Imbue_ModInt = GetMaxIntensity(m_Item, m_Definition);
+                            context.Imbue_ModInt = Imbuing.GetMaxIntensity(m_Item, m_Definition);
 
                         from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
                         break;
                     }
                 case 10056: // = Maximum Mod Value [>>>]
                     {
-                        int max = GetMaxIntensity(m_Item, m_Definition);
+                        int max = Imbuing.GetMaxIntensity(m_Item, m_Definition);
 
                         if (m_Mod == 12 && context.LastImbued is BaseJewel)
                             max /= 2;
@@ -386,19 +386,6 @@ namespace Server.Gumps
 
             if (from != null)
                 from.SendGump(new ImbuingGump(from));
-        }
-
-        public int GetMaxIntensity(Item item, ImbuingDefinition def)
-        {
-            if (item is BaseWeapon && def.Attribute is AosWeaponAttribute)
-            {
-                AosWeaponAttribute attr = (AosWeaponAttribute)def.Attribute;
-
-                if (attr == AosWeaponAttribute.HitLeechMana || attr == AosWeaponAttribute.HitLeechHits)
-                    return Imbuing.GetPropRange(item, attr)[1];
-            }
-
-            return def.MaxIntensity;
         }
 
         // =========== Check if Choosen Attribute Replaces Another =================

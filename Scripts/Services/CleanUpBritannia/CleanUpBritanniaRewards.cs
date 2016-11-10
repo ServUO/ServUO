@@ -95,14 +95,14 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(DragonHeadDeed), 0x2234, 1028756, 0, 50000));
             Rewards.Add(new CollectionItem(typeof(NestWithEggs), 0x1AD4, 1026868, 2415, 50000));
 
-            Rewards.Add(new CollectionItem(typeof(FishermansHat), 0x1716, 0, 0, 50000));
-            Rewards.Add(new CollectionItem(typeof(FishermansTrousers), 0x13DA, 0, 0, 50000));
-            Rewards.Add(new CollectionItem(typeof(FishermansVest), 0x13CC, 0, 0, 50000));
-            Rewards.Add(new CollectionItem(typeof(FishermansEelskinGloves), 0x13C6, 0, 0, 50000));
-            Rewards.Add(new CollectionItem(typeof(FishermansChestguard), 0x4052, 0, 0, 50000));
-            Rewards.Add(new CollectionItem(typeof(FishermansKilt), 0x0408, 0, 0, 50000));
-            Rewards.Add(new CollectionItem(typeof(FishermansArms), 0x0302, 0, 0, 50000));
-            Rewards.Add(new CollectionItem(typeof(FishermansEarrings), 0x4213, 0, 0, 50000));
+            Rewards.Add(new CollectionItem(typeof(FishermansHat), 0x1716, 1151238, 2578, 50000));
+            Rewards.Add(new CollectionItem(typeof(FishermansTrousers), 0x13DA, 1151239, 2578, 50000));
+            Rewards.Add(new CollectionItem(typeof(FishermansVest), 0x13CC, 1151240, 2578, 50000));
+            Rewards.Add(new CollectionItem(typeof(FishermansEelskinGloves), 0x13C6, 1151237, 2578, 50000));
+            Rewards.Add(new CollectionItem(typeof(FishermansChestguard), 0x4052, 1151578, 2578, 50000));
+            Rewards.Add(new CollectionItem(typeof(FishermansKilt), 0x0408, 1151579, 2578, 50000));
+            Rewards.Add(new CollectionItem(typeof(FishermansArms), 0x0302, 1151580, 2578, 50000));
+            Rewards.Add(new CollectionItem(typeof(FishermansEarrings), 0x4213, 1151581, 2578, 50000));
 
             Rewards.Add(new CollectionItem(typeof(FirePitDeed), 0x29FD, 1080206, 0, 75000));
             Rewards.Add(new CollectionItem(typeof(PresentationStone), 0x32F2, 1154745, 0, 75000));
@@ -139,12 +139,12 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(LiquidSunshinePigment), 0xEFF, 1154213, 1923, 250000));
             Rewards.Add(new CollectionItem(typeof(DarkVoidPigment), 0xEFF, 1154214, 2068, 250000));
 
-            Rewards.Add(new CollectionItem(typeof(LuckyCharm), 0x2F5B, 0, 1923, 300000));
-            Rewards.Add(new CollectionItem(typeof(SoldiersMedal), 0x2F5B, 0, 1902, 300000));
-            Rewards.Add(new CollectionItem(typeof(DuelistsEdge), 0x2F58, 0, 1902, 300000));
-            Rewards.Add(new CollectionItem(typeof(NecromancersPhylactery), 0x2F5A, 0, 1912, 300000));
-            Rewards.Add(new CollectionItem(typeof(WizardsCurio), 0x2F58, 0, 1912, 300000));
-            Rewards.Add(new CollectionItem(typeof(MysticsMemento), 0x2F5B, 0, 1912, 300000));
+            Rewards.Add(new CollectionItem(typeof(LuckyCharm), 0x2F5B, 1154739, 1923, 300000));
+            Rewards.Add(new CollectionItem(typeof(SoldiersMedal), 0x2F5E, 1154740, 1902, 300000));
+            Rewards.Add(new CollectionItem(typeof(DuelistsEdge), 0x2F58, 1154741, 1902, 300000));
+            Rewards.Add(new CollectionItem(typeof(NecromancersPhylactery), 0x2F5A, 1154742, 1912, 300000));
+            Rewards.Add(new CollectionItem(typeof(WizardsCurio), 0x2F58, 1154743, 1912, 300000));
+            Rewards.Add(new CollectionItem(typeof(MysticsMemento), 0x2F5B, 1154744, 1912, 300000));
         }
     }
 }

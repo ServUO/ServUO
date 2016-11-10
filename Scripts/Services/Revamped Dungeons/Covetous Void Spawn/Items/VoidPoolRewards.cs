@@ -52,11 +52,11 @@ namespace Server.Engines.VoidPool
             Rewards.Add(new CollectionItem(typeof(MagicalFishFinder),  0x14F6, 1152683, 2500, 250));
 
             //TODO: Hues for below
-            Rewards.Add(new CollectionItem(typeof(BraceletOfProtection), 0x1086, 1152730, 0, 1840));
-            Rewards.Add(new CollectionItem(typeof(Hephaestus), 0x1B76, 1152909, 0, 2000));
-            Rewards.Add(new CollectionItem(typeof(GargishHephaestus), 0x4204, 1152909, 0, 2000));
-            Rewards.Add(new CollectionItem(typeof(BlightOfTheTundra), 0x26C2, 1152910, 0, 2515));
-            Rewards.Add(new CollectionItem(typeof(GargishBlightOfTheTundra), 0x090A, 1152910, 0, 2515));
+            Rewards.Add(new CollectionItem(typeof(BraceletOfProtection), 0x1086, 1152730, 1157, 1840));
+            Rewards.Add(new CollectionItem(typeof(Hephaestus), 0x1B76, 1152909, 1910, 2000));
+            Rewards.Add(new CollectionItem(typeof(GargishHephaestus), 0x4204, 1152909, 1910, 2000));
+            Rewards.Add(new CollectionItem(typeof(BlightOfTheTundra), 0x26C2, 1152910, 1165, 2515));
+            Rewards.Add(new CollectionItem(typeof(GargishBlightOfTheTundra), 0x090A, 1152910, 1165, 2515));
         }
 
         public static Item DropRandomArtifact()

@@ -51,8 +51,15 @@ namespace Server.Engines.CleanUpBritannia
             SetWearable(new Doublet(), 50);
             SetWearable(new FancyShirt(), 1644);
             SetWearable(new Necklace());
-           
-            Item item = new Mailbox();
+
+            if (Backpack == null)
+            {
+                Item backpack = new Backpack();
+                backpack.Movable = false;
+                AddItem(backpack);
+            }    
+
+            /*Item item = new Mailbox();
             item.Movable = false;
             PackItem(item);
 
@@ -510,7 +517,7 @@ namespace Server.Engines.CleanUpBritannia
 
             item = new MysticsMemento();
             item.Movable = false;
-            PackItem(item);
+            PackItem(item);*/
         }        
 
         public override void GetProperties(ObjectPropertyList list)
