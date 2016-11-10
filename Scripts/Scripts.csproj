@@ -9395,6 +9395,11 @@
     <Compile Include="Services\Harvest\HarvestVein.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\MiniChampionSystem\MCRestartTimer.cs" />
+    <Compile Include="Services\MiniChampionSystem\MCSliceTimer.cs" />
+    <Compile Include="Services\MiniChampionSystem\MiniChampionAltar.cs" />
+    <Compile Include="Services\MiniChampionSystem\MiniChampionSpawn.cs" />
+    <Compile Include="Services\MiniChampionSystem\MiniChampType.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Gumps\QAndAGump.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Q&amp;AEntry.cs" />
     <Compile Include="Services\New Magincia\Command.cs" />
