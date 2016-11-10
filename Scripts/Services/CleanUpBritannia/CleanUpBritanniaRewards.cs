@@ -140,7 +140,7 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(DarkVoidPigment), 0xEFF, 1154214, 2068, 250000));
 
             Rewards.Add(new CollectionItem(typeof(LuckyCharm), 0x2F5B, 1154739, 1923, 300000));
-            Rewards.Add(new CollectionItem(typeof(SoldiersMedal), 0x2F5E, 1154740, 1902, 300000));
+            Rewards.Add(new CollectionItem(typeof(SoldiersMedal), 0x2F5B, 1154740, 1902, 300000));
             Rewards.Add(new CollectionItem(typeof(DuelistsEdge), 0x2F58, 1154741, 1902, 300000));
             Rewards.Add(new CollectionItem(typeof(NecromancersPhylactery), 0x2F5A, 1154742, 1912, 300000));
             Rewards.Add(new CollectionItem(typeof(WizardsCurio), 0x2F58, 1154743, 1912, 300000));
