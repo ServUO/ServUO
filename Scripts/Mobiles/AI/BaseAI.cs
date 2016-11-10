@@ -2907,8 +2907,8 @@ namespace Server.Mobiles
 								{
 									continue;
 								}
-								// Ignore anyone if we are an Uncontrolled Summon
-								else if (c != null && (c.Summoned))
+								// Ignore anyone if they are an Uncontrolled Summon
+								else if (c != null && c.Summoned)
 								{
 									continue;
 								}
