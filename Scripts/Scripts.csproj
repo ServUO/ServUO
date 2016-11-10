@@ -300,6 +300,7 @@
     <Compile Include="Gumps\BaseImageTileButtonsGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\BaseRewardGump.cs" />
     <Compile Include="Gumps\BasicInfoGump.cs" />
     <Compile Include="Gumps\CategorizedAddGump.cs">
       <SubType>Code</SubType>
@@ -9448,6 +9449,7 @@
     <Compile Include="Services\PointsSystems\BlackthornData.cs" />
     <Compile Include="Services\PointsSystems\CasinoData.cs" />
     <Compile Include="Services\PointsSystems\DespiseCrystals.cs" />
+    <Compile Include="Services\PointsSystems\PlayerMobileProps.cs" />
     <Compile Include="Services\PointsSystems\PointsSystem.cs" />
     <Compile Include="Services\PointsSystems\QueensLoyalty.cs" />
     <Compile Include="Services\PointsSystems\ShameCrystals.cs" />
