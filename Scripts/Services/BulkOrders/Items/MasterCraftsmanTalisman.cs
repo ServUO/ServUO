@@ -5,29 +5,13 @@ namespace Server.Items
 { 
 	public class MasterCraftsmanTalisman : BaseTalisman
     {
-		private int m_Charges;
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int Charges
-        {
-            get 
-			{ 
-				return m_Charges; 
-			}
-            set 
-			{ 
-				m_Charges = value; 
-				InvalidateProperties(); 
-			}
-		}
-		
         [Constructable]
         public MasterCraftsmanTalisman(int charges)
             : base(0x2F58)
         { 
             this.SuccessBonus = GetRandomSuccessful();
             this.Blessed = GetRandomBlessed();	
-			m_Charges = charges;
+			Charges = charges;
 		}
 		
 		public override void GetProperties(ObjectPropertyList list)
@@ -62,8 +46,6 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.Write((int)0); // version
-			
-			writer.Write( m_Charges );
         }
 
         public override void Deserialize(GenericReader reader)
@@ -71,8 +53,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-			
-			m_Charges = reader.ReadInt();
         }
     }
 }
