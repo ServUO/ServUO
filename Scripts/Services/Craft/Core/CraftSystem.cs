@@ -252,6 +252,18 @@ namespace Server.Engines.Craft
 
         public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
+		Item item = from.FindItemOnLayer(Layer.Talisman);
+
+			if (item is MasterCraftsmanTalisman)
+			{
+				MasterCraftsmanTalisman mct = (MasterCraftsmanTalisman)item;
+				
+				if( mct.Charges > 0 )
+				{
+					mct.Charges--;
+					return false;
+				}
+			}
             return true;
         }
 

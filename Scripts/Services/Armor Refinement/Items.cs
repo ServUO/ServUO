@@ -641,7 +641,7 @@ namespace Server.Items
 
         [Constructable]
         public MalleableAlloy(int amount)
-            : base(7139)
+            : base(0x1BE9)
         {
             Stackable = true;
             Amount = amount;
