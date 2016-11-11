@@ -100,7 +100,10 @@ namespace Server.Engines.Quests
                 if (Completed)
                     Quest.OnCompleted();
                 else
+                {
+                    Quest.Owner.SendLocalizedMessage(1115749, true, (this.MaxProgress - this.CurProgress).ToString()); // Creatures remaining to be discorded: 
                     Quest.Owner.PlaySound(Quest.UpdateSound);
+                }
 
                 return true;
             }
@@ -161,10 +164,11 @@ namespace Server.Engines.Quests
             Female = false;
             Body = 0x190;
 
-            SetWearable(new Tunic(GetRandomHue()));
-            SetWearable(new Sandals(GetShoeHue()));
-            SetWearable(new ShortPants(GetRandomHue()));
+            SetWearable(new ChainChest(), 0x2BF);
+            SetWearable(new Shoes());
+            SetWearable(new ShortPants());
             SetWearable(new Halberd());
+            SetWearable(new BodySash(0x355));
         }
 
         public override void Serialize(GenericWriter writer)
