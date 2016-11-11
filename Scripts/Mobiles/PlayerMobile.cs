@@ -42,6 +42,7 @@ using Server.Spells.Sixth;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
 using System.Linq;
+using Server.Spells.SkillMasteries;
 
 using RankDefinition = Server.Guilds.RankDefinition;
 #endregion
@@ -3611,6 +3612,12 @@ namespace Server.Mobiles
 			{
 				return ApplyPoisonResult.Immune;
 			}
+
+            //Skill Masteries
+            if (SkillMasterySpell.GetSpellForParty(this, typeof(Spells.SkillMasteries.ResilienceSpell)) != null && 0.25 > Utility.RandomDouble())
+            {
+                return ApplyPoisonResult.Immune;
+            }
 
 			if (EvilOmenSpell.TryEndEffect(this))
 			{

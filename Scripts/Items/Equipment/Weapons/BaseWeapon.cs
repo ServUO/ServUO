@@ -2022,7 +2022,7 @@ namespace Server.Items
                     splintering = true;
             }
 
-            if (m_MaxHits > 0 &&
+            if (m_MaxHits > 0 && m_AosAttributes.SpellChanneling == 0 && 
                 ((MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime)) || (defender != null && splintering) ||
                  Utility.Random(250) == 0)) // Stratics says 50% chance, seems more like 4%..
             {

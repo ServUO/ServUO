@@ -65,6 +65,11 @@ namespace Server.Spells.Chivalry
             this.Caster.Target = new InternalTarget(this);
         }
 
+        public override bool CheckDisturb(DisturbType type, bool firstCircle, bool resistable)
+        {
+            return true;
+        }
+
         public void Target(Mobile m)
         {
             if (!m.Poisoned)

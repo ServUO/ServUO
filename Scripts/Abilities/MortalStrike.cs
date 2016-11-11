@@ -75,7 +75,12 @@ namespace Server.Items
 
             // Do not reset timer if one is already in place.
             if (!IsWounded(defender))
-                BeginWound(defender, defender.Player ? PlayerDuration : NPCDuration);
+            {
+                if (Spells.SkillMasteries.BardSpell.GetSpellForParty(defender, typeof(Spells.SkillMasteries.ResilienceSpell)) != null)//Halves time
+                    BeginWound(defender, defender.Player ? TimeSpan.FromSeconds(3.0) : TimeSpan.FromSeconds(6));
+                else
+                    BeginWound(defender, defender.Player ? PlayerDuration : NPCDuration);
+            }
         }
 
         private class InternalTimer : Timer

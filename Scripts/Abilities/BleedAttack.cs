@@ -145,6 +145,7 @@ namespace Server.Items
             private readonly Mobile m_From;
             private readonly Mobile m_Mobile;
             private int m_Count;
+            private int m_MaxCount;
 			private readonly bool m_blooddrinker;
             public InternalTimer(Mobile from, Mobile m, bool blooddrinker)
                 : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
@@ -153,13 +154,15 @@ namespace Server.Items
                 m_Mobile = m;
                 Priority = TimerPriority.TwoFiftyMS;
 				m_blooddrinker = blooddrinker;
+
+                m_MaxCount = Spells.SkillMasteries.BardSpell.GetSpellForParty(m, typeof(Spells.SkillMasteries.ResilienceSpell)) != null ? 3 : 5;
 			}
 
             protected override void OnTick()
             {
                 DoBleed(m_Mobile, m_From, 5 - m_Count, m_blooddrinker);
 
-                if (++m_Count == 5)
+                if (++m_Count == m_MaxCount)
                     EndBleed(m_Mobile, true);
             }
         }

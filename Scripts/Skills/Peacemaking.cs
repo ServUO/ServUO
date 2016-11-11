@@ -12,6 +12,7 @@ using Server.Engines.XmlSpawner2;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using Server.Engines.Quests;
 #endregion
 
 namespace Server.SkillHandlers
@@ -82,7 +83,11 @@ namespace Server.SkillHandlers
 				else
 				{
 					m_SetSkillTime = false;
-					from.NextSkillTime = Core.TickCount + 10000;
+
+                    int masteryBonus = 0;
+
+                    if (from is PlayerMobile)
+                        masteryBonus = Spells.SkillMasteries.BardSpell.GetMasteryBonus((PlayerMobile)from, SkillName.Peacemaking);
 
 					if (targeted == from)
 					{
@@ -92,12 +97,16 @@ namespace Server.SkillHandlers
 							from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
 							m_Instrument.PlayInstrumentBadly(from);
 							m_Instrument.ConsumeUse(from);
+
+                            from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
 						}
 						else if (!from.CheckSkill(SkillName.Peacemaking, 0.0, 120.0))
 						{
 							from.SendLocalizedMessage(500613); // You attempt to calm everyone, but fail.
 							m_Instrument.PlayInstrumentBadly(from);
 							m_Instrument.ConsumeUse(from);
+
+                            from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
 						}
 						else
 						{
@@ -183,18 +192,24 @@ namespace Server.SkillHandlers
 								diff -= (music - 100.0) * 0.5;
 							}
 
+                            if (masteryBonus > 0)
+                                diff -= (diff * ((double)masteryBonus / 100));
+
 							if (!from.CheckTargetSkill(SkillName.Peacemaking, targ, diff - 25.0, diff + 25.0))
 							{
 								from.SendLocalizedMessage(1049531); // You attempt to calm your target, but fail.
 								m_Instrument.PlayInstrumentBadly(from);
 								m_Instrument.ConsumeUse(from);
+
+                                from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
 							}
 							else
 							{
 								m_Instrument.PlayInstrumentWell(from);
 								m_Instrument.ConsumeUse(from);
 
-								from.NextSkillTime = Core.TickCount + 5000;
+                                from.NextSkillTime = Core.TickCount + (5000 - ((masteryBonus / 5) * 1000));
+
 								if (targ is BaseCreature)
 								{
 									BaseCreature bc = (BaseCreature)targ;
@@ -216,6 +231,19 @@ namespace Server.SkillHandlers
 									}
 
 									bc.Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(seconds));
+
+                                    #region Bard Mastery Quest
+                                    if (from is PlayerMobile)
+                                    {
+                                        BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(TheBeaconOfHarmonyQuest));
+
+                                        if (quest != null)
+                                        {
+                                            foreach (BaseObjective objective in quest.Objectives)
+                                                objective.Update(bc);
+                                        }
+                                    }
+                                    #endregion
 								}
 								else
 								{

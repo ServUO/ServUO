@@ -97,6 +97,11 @@ namespace Server.Spells
         {
         }
 
+        public virtual void SendAbilityMessage(Mobile m)
+        {
+            TextDefinition.SendMessageTo(m, AbilityMessage);
+        }
+
         public virtual bool IgnoreArmor(Mobile attacker)
         {
             return false;
@@ -317,7 +322,7 @@ namespace Server.Spells
                 if (moveID > 0)
                     m.Send(new ToggleSpecialAbility(moveID + 1, true));
 
-                TextDefinition.SendMessageTo(m, move.AbilityMessage);
+                move.SendAbilityMessage(m);
             }
 
             return true;

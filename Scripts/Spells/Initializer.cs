@@ -161,6 +161,7 @@ namespace Server.Spells
                     Register(614, typeof(Spellweaving.GiftOfLifeSpell));
                     Register( 615, typeof( Spellweaving.ArcaneEmpowermentSpell ) );
                 }
+
                 if (Core.SA)
                 {
                     Register(677, typeof(Mystic.NetherBoltSpell));
@@ -179,6 +180,55 @@ namespace Server.Spells
                     Register(690, typeof(Mystic.HailStormSpell));
                     Register(691, typeof(Mystic.NetherCycloneSpell));
                     Register(692, typeof(Mystic.RisingColossusSpell));
+
+                    Register(700, typeof(SkillMasteries.InspireSpell));
+                    Register(701, typeof(SkillMasteries.InvigorateSpell));
+                    Register(702, typeof(SkillMasteries.ResilienceSpell));
+                    Register(703, typeof(SkillMasteries.PerseveranceSpell));
+                    Register(704, typeof(SkillMasteries.TribulationSpell));
+                    Register(705, typeof(SkillMasteries.DespairSpell));
+                }
+
+                if (Core.TOL)
+                {
+                    /*Register(706, typeof(SkillMasteries.DeathRaySpell));
+                    Register(707, typeof(SkillMasteries.EtherealBurstSpell));
+                    Register(708, typeof(SkillMasteries.NetherBlastSpell));
+                    Register(709, typeof(SkillMasteries.MysticWeaponSpell));
+                    Register(710, typeof(SkillMasteries.CommandUndeadSpell));
+                    Register(711, typeof(SkillMasteries.ConduitSpell));
+                    Register(712, typeof(SkillMasteries.ManaShieldSpell));
+                    Register(713, typeof(SkillMasteries.SummonReaperSpell));
+                    Register(714, typeof(SkillMasteries.PassiveMasterySpell));
+                    Register(715, typeof(SkillMasteries.PassiveMasterySpell));
+                    Register(716, typeof(SkillMasteries.WarcrySpell));
+                    Register(717, typeof(SkillMasteries.PassiveMasterySpell));
+                    Register(718, typeof(SkillMasteries.RejuvinateSpell));
+                    Register(719, typeof(SkillMasteries.HolyFistSpell));
+                    Register(720, typeof(SkillMasteries.ShadowSpell));
+                    Register(721, typeof(SkillMasteries.WhiteTigerFormSpell));
+                    Register(722, typeof(SkillMasteries.FlamingShotSpell));
+                    Register(723, typeof(SkillMasteries.PlayingTheOddsSpell));
+                    Register(724, typeof(SkillMasteries.ThrustSpell));
+                    Register(725, typeof(SkillMasteries.PierceSpell));
+                    Register(726, typeof(SkillMasteries.StaggerSpell));
+                    Register(727, typeof(SkillMasteries.ToughnessSpell));
+                    Register(728, typeof(SkillMasteries.OnslaughtSpell));
+                    Register(729, typeof(SkillMasteries.FocusedEyeSpell));
+                    Register(730, typeof(SkillMasteries.ElementalFurySpell));
+                    Register(731, typeof(SkillMasteries.CalledShotSpell));
+                    Register(732, typeof(SkillMasteries.PassiveMasterySpell));
+                    Register(733, typeof(SkillMasteries.ShieldBashSpell));
+                    Register(734, typeof(SkillMasteries.BodyGuardSpell));
+                    Register(735, typeof(SkillMasteries.HeightenedSensesSpell));
+                    Register(736, typeof(SkillMasteries.ToleranceSpell));
+                    Register(737, typeof(SkillMasteries.InjectedStrikeSpell));
+                    Register(738, typeof(SkillMasteries.PassiveMasterySpell));
+                    Register(739, typeof(SkillMasteries.RampageSpell));
+                    Register(740, typeof(SkillMasteries.FistsOfFurySpell));
+                    Register(741, typeof(SkillMasteries.PassiveMasterySpell));
+                    Register(742, typeof(SkillMasteries.WhisperingSpell));
+                    Register(743, typeof(SkillMasteries.CombatTrainingSpell));*/
                 }
             }
         }

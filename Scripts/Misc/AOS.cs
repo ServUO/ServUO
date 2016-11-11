@@ -14,6 +14,7 @@ using Server.Spells.Necromancy;
 using Server.Spells.Spellweaving;
 using Server.SkillHandlers;
 using Server.Engines.CityLoyalty;
+using Server.Spells.SkillMasteries;
 
 namespace Server
 {
@@ -243,7 +244,7 @@ namespace Server
 
             if(totalDamage > 0)
                 Spells.Mystic.SpellPlagueSpell.OnMobileDamaged(m);
-            #endregion 
+            #endregion
 
             if (keepAlive && totalDamage > m.Hits)
                 totalDamage = m.Hits;
@@ -450,6 +451,11 @@ namespace Server
             }
 
             #region Malus/Buff Handler
+
+            #region Skill Mastery
+            value += SkillMasterySpell.GetAttributeBonus(m, attribute);
+            #endregion
+
             if (attribute == AosAttribute.WeaponDamage)
             {
                 if (BaseMagicalFood.IsUnderInfluence(m, MagicalFood.WrathGrapes))
@@ -2287,6 +2293,8 @@ namespace Server
                             value += attrs[attribute];
                     }
             }
+
+            value += SkillMasterySpell.GetAttributeBonus(m, attribute);
 
             return value;
         }
