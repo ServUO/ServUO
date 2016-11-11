@@ -6,38 +6,36 @@ using System.Collections.Generic;
 
 namespace Server.Engines.Quests
 { 
-    public class IndoctrinationOfABattleRouserQuest : BaseQuest
+    public class WieldingTheSonicBladeQuest : BaseQuest
     {
-        public IndoctrinationOfABattleRouserQuest() : base()
+        public WieldingTheSonicBladeQuest() : base()
         { 
-            AddObjective(new ProvocationObjective());
+            AddObjective(new DiscordObjective());
 
-            AddReward(new BaseReward(1115659)); // Recognition for mastery of battle rousing.
+            AddReward(new BaseReward(1115699)); // Recognition for mastery of song wielding.
             AddReward(new BaseReward(typeof(BookOfMasteries), 1028794));
         }
 
-        public override object Title { get { return 1115657; } }       //Indoctrination of a Battle Rouser
+        public override object Title { get { return 1115696; } }       //Wielding the Sonic Blade
 
-        public override object Description { get { return 1115656; } } /*This quest is the single quest required for a player to unlock the provocation
-                                                                        * mastery abilities for bards. This quest can be completed multiple times to reinstate
-                                                                        * the provocation mastery. To prove yourself worthy, you must be able to incite even 
-                                                                        * the most peaceful to frenzied battle lust.*/
+        public override object Description { get { return 1115697; } } /*This quest is the single quest required for a player to unlock the discordance mastery 
+                                                                        * abilities for bards. This quest can be completed multiple times to reinstate the discordance 
+                                                                        * mastery. To prove yourself worthy, you must first be a master of discordance and musicianship. 
+                                                                        * You must be willing to distort your notes to bring pain to even the most indifferent ears.*/
 
-        public override object Refuse { get { return 1115660; } }       //To inspire you must persevere. 
+        public override object Refuse { get { return 1115700; } }       //You must strive to spread discord.
 
-        public override object Uncomplete { get { return 1115660; } }   //To inspire you must persevere. 
+        public override object Uncomplete { get { return 1115700; } }   //You must strive to spread discord.
 
-        public override object Complete { get { return 1115661; } }     /* You have proven yourself worthy of driving armies. Go forth, and have the blessing
-                                                                         * and curse of the War Heralds always in your heart and mind. May peace always dwell 
-                                                                         * before you, may destruction mark your wake, and may fury be your constant companion. 
-                                                                         * Sow the seeds of battle and glory in the music of war.*/
+        public override object Complete { get { return 1115701; } }     /* You have proven yourself worthy of wielding your music as a weapon. Rend the ears of your 
+                                                                         * foes with your wails of discord. Let your song be feared as much as any sword.*/
 
         public override bool CanOffer()
         {
             if (Owner == null)
                 return false;
 
-            if (Owner.Skills[SkillName.Musicianship].Base < 90 || Owner.Skills[SkillName.Provocation].Base < 90)
+            if (Owner.Skills[SkillName.Musicianship].Base < 90 || Owner.Skills[SkillName.Discordance].Base < 90)
             {
                 Owner.SendLocalizedMessage(1115703); // Your skills in this focus area are less than the required master level. (90 minimum)
                 return false;
@@ -45,7 +43,7 @@ namespace Server.Engines.Quests
 
             foreach (BaseQuest q in Owner.Quests)
             {
-                if (q is TheBeaconOfHarmonyQuest || q is WieldingTheSonicBladeQuest)
+                if (q is TheBeaconOfHarmonyQuest || q is IndoctrinationOfABattleRouserQuest)
                 {
                     Owner.SendLocalizedMessage(1115702); //You must quit your other mastery quests before engaging on a new one.
                     return false;
@@ -59,10 +57,10 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            MasteryInfo.LearnMastery(Owner, SkillName.Provocation, Volume.Two);
-            MasteryInfo.LearnMastery(Owner, SkillName.Provocation, Volume.Three);
+            MasteryInfo.LearnMastery(Owner, SkillName.Discordance, Volume.Two);
+            MasteryInfo.LearnMastery(Owner, SkillName.Discordance, Volume.Three);
 
-            SkillMasterySpell.SetActiveMastery(Owner, SkillName.Provocation);
+            SkillMasterySpell.SetActiveMastery(Owner, SkillName.Discordance);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -80,27 +78,32 @@ namespace Server.Engines.Quests
         }
     }
 
-    public class ProvocationObjective : SimpleObjective
+    public class DiscordObjective : SimpleObjective
     {
+        private static readonly Type m_Type = typeof(Goat);
+
         private List<string> m_Descr = new List<string>();
         public override List<string> Descriptions { get { return m_Descr; } }
 
-        public ProvocationObjective()
+        public DiscordObjective()
             : base(5, -1)
         {
-            m_Descr.Add("Incite rabbits into battle with 5 wandering healers.");
+            m_Descr.Add("Discord five goats.");
         }
 
         public override bool Update(object obj)
         {
-            if (obj is Mobile && (((Mobile)obj).GetType() == typeof(WanderingHealer) || ((Mobile)obj).GetType() == typeof(EvilWanderingHealer)))
+            if (obj is Mobile && ((Mobile)obj).GetType() == m_Type)
             {
                 CurProgress++;
 
                 if (Completed)
                     Quest.OnCompleted();
                 else
+                {
                     Quest.Owner.PlaySound(Quest.UpdateSound);
+                    Quest.Owner.SendLocalizedMessage(1115749, true, (this.MaxProgress - this.CurProgress).ToString()); // Creatures remaining to be discorded: ~1_val~.
+                }
 
                 return true;
             }
@@ -141,30 +144,44 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] 
+                return new Type[]
                 {
-                    typeof(IndoctrinationOfABattleRouserQuest),
+                    typeof(WieldingTheSonicBladeQuest),
                 };
             }
         }
 
         public override void InitBody()
         {
-            InitStats(125, 100, 25);
+            this.InitStats(125, 100, 25);
 
-            SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            this.SpeechHue = Utility.RandomDyedHue();
+            this.Hue = Utility.RandomSkinHue();
 
             if (IsInvulnerable && !Core.AOS)
-                NameHue = 0x35;
+                this.NameHue = 0x35;
 
-            Female = false;
-            Body = 0x190;
+            this.Female = false;
+            this.Body = 0x190;
 
-            SetWearable(new Tunic(GetRandomHue()));
-            SetWearable(new Sandals(GetShoeHue()));
-            SetWearable(new ShortPants(GetRandomHue()));
-            SetWearable(new Halberd());
+            this.HairItemID = 0x2045;
+            this.HairHue = 0x466;
+        }
+
+        public override void InitOutfit()
+        {
+            this.AddItem(new Backpack());
+            this.AddItem(new Shoes(0x74A));
+            this.AddItem(ApplyHue(new ChainChest(), 0x30A));
+            this.AddItem(new Halberd());
+            this.AddItem(new BodySash(0x355));
+            this.AddItem(new LongPants());
+        }
+
+        public Item ApplyHue(Item item, int hue)
+        {
+            item.Hue = hue;
+            return item;
         }
 
         public override void Serialize(GenericWriter writer)

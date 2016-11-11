@@ -102,7 +102,10 @@ namespace Server.Engines.Quests
                 if (Completed)
                     Quest.OnCompleted();
                 else
+                {
                     Quest.Owner.PlaySound(Quest.UpdateSound);
+                    Quest.Owner.SendLocalizedMessage(1115747, true, (this.MaxProgress - this.CurProgress).ToString()); // Creatures remaining to be calmed:   ~1_val~.
+                }
 
                 return true;
             }
@@ -152,21 +155,36 @@ namespace Server.Engines.Quests
 
         public override void InitBody()
         {
-            InitStats(125, 100, 25);
+            this.InitStats(125, 100, 25);
 
-            SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            this.SpeechHue = Utility.RandomDyedHue();
+            this.Hue = Utility.RandomSkinHue();
 
             if (IsInvulnerable && !Core.AOS)
-                NameHue = 0x35;
+                this.NameHue = 0x35;
 
-            Female = false;
-            Body = 0x190;
+            this.Female = false;
+            this.Body = 0x190;
 
-            SetWearable(new Tunic(GetRandomHue()));
-            SetWearable(new Sandals(GetShoeHue()));
-            SetWearable(new ShortPants(GetRandomHue()));
-            SetWearable(new Halberd());
+            this.HairItemID = 0x2045;
+            this.HairHue = 0x466;
+        }
+
+        public override void InitOutfit()
+        {
+            this.AddItem(new Backpack());
+            this.AddItem(new Shoes(0x74A));
+            this.AddItem(ApplyHue(new ChainChest(), 0x35));
+            this.AddItem(new Halberd());
+            this.AddItem(new BodySash(0x498));
+            this.AddItem(new LongPants());
+        }
+
+        public Item ApplyHue(Item item, int hue)
+        {
+            item.Hue = hue;
+
+            return item;
         }
 
         public override void Serialize(GenericWriter writer)
