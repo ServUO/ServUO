@@ -102,7 +102,10 @@ namespace Server.Engines.Quests
                 if (Completed)
                     Quest.OnCompleted();
                 else
+                {
+                    Quest.Owner.SendLocalizedMessage(1115747, true, (MaxProgress - CurProgress).ToString()); // Creatures remaining to be calmed:   ~1_val~.
                     Quest.Owner.PlaySound(Quest.UpdateSound);
+                }
 
                 return true;
             }
@@ -163,10 +166,11 @@ namespace Server.Engines.Quests
             Female = false;
             Body = 0x190;
 
-            SetWearable(new Tunic(GetRandomHue()));
-            SetWearable(new Sandals(GetShoeHue()));
-            SetWearable(new ShortPants(GetRandomHue()));
+            SetWearable(new ChainChest(), 0x35);
+            SetWearable(new Shoes(GetShoeHue()));
+            SetWearable(new LongPants());
             SetWearable(new Halberd());
+            SetWearable(new BodySash(0x498));
         }
 
         public override void Serialize(GenericWriter writer)
