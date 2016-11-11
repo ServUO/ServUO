@@ -29,7 +29,8 @@ namespace Server.Items
 		Ninja,
 		Samurai,
 		Arcanist,
-		Mystic
+		Mystic,
+        SkillMasteries
 	}
 
 	public enum BookQuality
@@ -249,6 +250,10 @@ namespace Server.Items
 			{
 				return SpellbookType.Mystic;
 			}
+            else if (spellID >= 700 && spellID < 746)
+            {
+                return SpellbookType.SkillMasteries;
+            }
 
 			return SpellbookType.Invalid;
 		}
@@ -781,8 +786,14 @@ namespace Server.Items
 				list.Add(1075210, prop.ToString()); // Increased Karma Loss ~1val~%
 			}
 
+            AddProperty(list);
+
 			list.Add(1042886, m_Count.ToString()); // ~1_NUMBERS_OF_SPELLS~ Spells
 		}
+
+        public virtual void AddProperty(ObjectPropertyList list)
+        {
+        }
 
 		public override void OnSingleClick(Mobile from)
 		{
@@ -1104,10 +1115,10 @@ namespace Server.Items
 					{
 						spell.Cast();
 					}
-					else
-					{
-						from.SendLocalizedMessage(502345); // This spell has been temporarily disabled.
-					}
+                    else if ( !Server.Spells.SkillMasteries.MasteryInfo.IsPassiveMastery( spellID ) )
+                    {
+						from.SendLocalizedMessage( 502345 ); // This spell has been temporarily disabled.
+                    }
 				}
 			}
 			else

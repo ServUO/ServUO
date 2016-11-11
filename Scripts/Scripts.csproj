@@ -651,6 +651,7 @@
     <Compile Include="Items\Equipment\Armor\GargishClothArmor.cs" />
     <Compile Include="Items\Equipment\Instruments\SnakeCharmerFlute.cs" />
     <Compile Include="Items\Equipment\Light\TwilightLantern.cs" />
+    <Compile Include="Items\Equipment\Spellbooks\BookOfMasteries.cs" />
     <Compile Include="Items\Equipment\Weapons\BaseAxe.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -2427,6 +2428,9 @@
     <Compile Include="Quests\AmbitiousSolenQueen\AmbitiousQueenQuest.cs" />
     <Compile Include="Quests\AmbitiousSolenQueen\Conversations.cs" />
     <Compile Include="Quests\AmbitiousSolenQueen\Objectives.cs" />
+    <Compile Include="Quests\Bard Mastery Quests\SirBerran.cs" />
+    <Compile Include="Quests\Bard Mastery Quests\SirFelean.cs" />
+    <Compile Include="Quests\Bard Mastery Quests\SirHareus.cs" />
     <Compile Include="Quests\Bedlam.cs" />
     <Compile Include="Quests\BlightedGrove.cs" />
     <Compile Include="Quests\CloakOfHumility\CloakOfHumilityQuest.cs" />
@@ -2464,6 +2468,7 @@
     <Compile Include="Quests\Sacred Quest\ShrineOfSingularity.cs" />
     <Compile Include="Quests\Spellweaving.cs" />
     <Compile Include="Quests\SummonFey.cs" />
+    <Compile Include="Quests\SummonFiend.cs" />
     <Compile Include="Quests\TheAncientWorld.cs" />
     <Compile Include="Mobiles\NPCs\Aurvidlem.cs" />
     <Compile Include="Items\Containers\ScrollBox.cs" />
@@ -9403,6 +9408,7 @@
     <Compile Include="Services\MiniChampionSystem\MiniChampType.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Gumps\QAndAGump.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Q&amp;AEntry.cs" />
+    <Compile Include="Services\MondainsLegacyQuests\SimpleObjective.cs" />
     <Compile Include="Services\New Magincia\Command.cs" />
     <Compile Include="Services\New Magincia\Distillation\CraftDefinition.cs" />
     <Compile Include="Services\New Magincia\Distillation\DistillationContext.cs" />
@@ -11847,6 +11853,18 @@
     <Compile Include="Spells\Sixth\Reveal.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Spells\Skill Masteries\BardSpells\BardSpell.cs" />
+    <Compile Include="Spells\Skill Masteries\BardSpells\Despair.cs" />
+    <Compile Include="Spells\Skill Masteries\BardSpells\inspire.cs" />
+    <Compile Include="Spells\Skill Masteries\BardSpells\invigorate.cs" />
+    <Compile Include="Spells\Skill Masteries\BardSpells\Perseverance.cs" />
+    <Compile Include="Spells\Skill Masteries\BardSpells\Resilience.cs" />
+    <Compile Include="Spells\Skill Masteries\BardSpells\Tribulation.cs" />
+    <Compile Include="Spells\Skill Masteries\Core\MasteryInfo.cs" />
+    <Compile Include="Spells\Skill Masteries\Core\SelectMasteryGump.cs" />
+    <Compile Include="Spells\Skill Masteries\Core\SkillMasteryMove.cs" />
+    <Compile Include="Spells\Skill Masteries\Core\SkillMasteryPrimer.cs" />
+    <Compile Include="Spells\Skill Masteries\Core\SkillMasterySpell.cs" />
     <Compile Include="Spells\Spellweaving\ArcaneCircle.cs">
       <SubType>Code</SubType>
     </Compile>

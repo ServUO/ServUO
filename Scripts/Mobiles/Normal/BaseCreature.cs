@@ -30,6 +30,7 @@ using Server.Spells.Sixth;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
 using System.Linq;
+using Server.Spells.SkillMasteries;
 #endregion
 
 namespace Server.Mobiles
@@ -1579,6 +1580,13 @@ namespace Server.Mobiles
             {
                 LevelItemManager.CheckItems(from, this);
             }
+            #endregion
+
+            #region Skill Mastery
+            SkillMasterySpell spell = SkillMasterySpell.GetHarmfulSpell(this, typeof(TribulationSpell));
+
+            if (spell != null)
+                spell.DoDamage(this, amount);
             #endregion
 
             base.OnDamage(amount, from, willKill);

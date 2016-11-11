@@ -11,7 +11,9 @@ using Server.Spells.Fifth;
 using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
 using Server.Spells.Seventh;
+using Server.Spells.Fourth;
 using Server.Targeting;
+using Server.Spells.SkillMasteries;
 
 namespace Server
 {
@@ -298,7 +300,14 @@ namespace Server.Spells
         public static TimeSpan GetDuration(Mobile caster, Mobile target)
         {
             if (Core.AOS)
-                return TimeSpan.FromSeconds(((6 * caster.Skills.EvalInt.Fixed) / 50) + 1);
+            {
+                int span = (((6 * caster.Skills.EvalInt.Fixed) / 50) + 1);
+
+                if (caster.Spell is CurseSpell && SkillMasterySpell.GetSpellForParty(target, typeof(ResilienceSpell)) != null)
+                    span /= 2;
+
+                return TimeSpan.FromSeconds(span);
+            }
 
             return TimeSpan.FromSeconds(caster.Skills[SkillName.Magery].Value * 1.2);
         }

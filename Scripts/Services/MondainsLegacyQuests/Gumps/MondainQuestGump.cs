@@ -387,6 +387,23 @@ namespace Server.Engines.Quests
                             offset += 16;
                         }
                     }
+                    else if (objective is SimpleObjective && ((SimpleObjective)objective).Descriptions != null)
+                    {
+                        SimpleObjective obj = (SimpleObjective)objective;
+
+                        for (int j = 0; j < obj.Descriptions.Count; j++)
+                        {
+                            offset += 16;
+                            AddLabel(98, offset, 0x481, obj.Descriptions[j]);
+                        }
+
+                        if (obj.Timed)
+                        {
+                            offset += 16;
+                            AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                            AddLabel(223, offset, 0x481, FormatSeconds(obj.Seconds)); // %est. time remaining%
+                        }
+                    }
                 }
             }
 

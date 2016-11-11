@@ -8,6 +8,7 @@ using Server.Network;
 using Server.Regions;
 using System.Collections.Generic;
 using Server.Commands;
+using System.Linq;
 
 namespace Server.Engines.CannedEvil
 {
@@ -17,6 +18,14 @@ namespace Server.Engines.CannedEvil
         {
             CommandSystem.Register("GenMiniChamp", AccessLevel.Administrator, new CommandEventHandler(GenStoneRuins_OnCommand));
             CommandSystem.Register("GenMiniChampDelete", AccessLevel.Administrator, new CommandEventHandler(GenMiniChampDelete_OnCommand));
+            CommandSystem.Register("ClearSpawners", AccessLevel.Administrator, new CommandEventHandler(ClearSpawners_OnCommand));
+        }
+
+        [Usage("ClearSpawners")]
+        [Description("Resets all previous mini champ spawners.")]
+        public static void ClearSpawners_OnCommand(CommandEventArgs e)
+        {
+            ClearSpawners(e.Mobile);
         }
 
         [Usage("GenMiniChampDelete")]
@@ -118,24 +127,52 @@ namespace Server.Engines.CannedEvil
             MeraktusTheTormented.SpawnArea = new Rectangle2D(new Point2D(371, 1889), new Point2D(410, 1940));
             MeraktusTheTormented.Active = true;
 
-            e.Mobile.SendMessage("Create Mini Champion Spawns.");
+            ClearSpawners(e.Mobile);
+
+            e.Mobile.SendMessage("Created Mini Champion Spawns.");
         }
 
         private static void DeleteAllMiniChamp(Mobile from)
         {
             List<Item> list = new List<Item>();
 
-            foreach (Item item in World.Items.Values)
+            foreach (Item item in World.Items.Values.Where(i => i is MiniChamp))
             {
-                if (item is MiniChamp)
-                    list.Add(item);
+                list.Add(item);
             }
 
             foreach (Item item in list)
                 item.Delete();
 
             if (list.Count > 0)
-                from.SendMessage("{0} minichamp removed.", list.Count);
+                from.SendMessage("{0} minichamps removed.", list.Count);
+
+            list.Clear();
+            list.TrimExcess();
+        }
+
+        private static void ClearSpawners(Mobile from)
+        {
+            int reset = 0;
+
+            _Spawners.ForEach(sp =>
+            {
+                if (sp.Map != null)
+                {
+                    IPooledEnumerable eable = sp.Map.GetItemsInRange(sp.Location, 30);
+
+                    foreach (Item item in eable)
+                    {
+                        if (item is XmlSpawner && ((XmlSpawner)item).SequentialSpawn > -1)
+                        {
+                            reset++;
+                            ((XmlSpawner)item).DoReset = true;
+                        }
+                    }
+                }
+            });
+
+            from.SendMessage("{0} mini-champ spawners reset.", reset);
         }
 
         private bool m_Active;
@@ -183,6 +220,9 @@ namespace Server.Engines.CannedEvil
             set { this.m_HasBeenAdvanced = value; }
         }
 
+        private static List<MiniChamp> _Spawners = new List<MiniChamp>();
+        public static List<MiniChamp> Spawners { get { return _Spawners; } }
+
         [Constructable]
         public MiniChamp()
             : base(0x1AED)
@@ -197,6 +237,8 @@ namespace Server.Engines.CannedEvil
             this.m_ExpireDelay = TimeSpan.FromMinutes(10.0);
             this.m_RestartDelay = TimeSpan.FromMinutes(10.0);
             this.m_DamageEntries = new Dictionary<Mobile, int>();
+
+            _Spawners.Add(this);
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(SetInitialSpawnArea));
         }
@@ -1133,6 +1175,8 @@ namespace Server.Engines.CannedEvil
             if (this.m_Champion2 != null && !this.m_Champion2.Player)
                 this.m_Champion2.Delete();
 
+            _Spawners.Remove(this);
+
             Stop();
 
             UpdateRegion();
@@ -1348,6 +1392,8 @@ namespace Server.Engines.CannedEvil
                         break;
                     }
             }
+
+            _Spawners.Add(this);
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateRegion));
         }

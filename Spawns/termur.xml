@@ -336,48 +336,6 @@
     <Objects2>Ansikart/Name/Ansikart:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Abyss Enslaved Goblin (mini champ)</Name>
-    <UniqueId>0bbda65f-534e-49e5-8425-edb263bee28e</UniqueId>
-    <Map>TerMur</Map>
-    <X>552</X>
-    <Y>785</Y>
-    <Width>40</Width>
-    <Height>40</Height>
-    <CentreX>572</CentreX>
-    <CentreY>805</CentreY>
-    <CentreZ>-38</CentreZ>
-    <Range>5</Range>
-    <MaxCount>132</MaxCount>
-    <MinDelay>119</MinDelay>
-    <MaxDelay>120</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>graygoblin:MX=40:SB=1:RT=0:TO=0:KL=40:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=greengoblin:MX=40:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=enslavedgoblinscout:MX=15:SB=2:RT=0:TO=0:KL=30:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=enslavedgoblinkeeper:MX=15:SB=2:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=enslavedgoblinmage:MX=10:SB=3:RT=0:TO=0:KL=20:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=enslavedgreengoblinalchemist:MX=10:SB=3:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=greengoblinalchemistrenowned:MX=1:SB=4:RT=0:TO=0:KL=2:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=graygoblinmagerenowned:MX=1:SB=4:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Spawner</Name>
     <UniqueId>0cb7eb19-feb3-4816-8c2f-8c831f33b29a</UniqueId>
     <Map>TerMur</Map>
@@ -2354,48 +2312,6 @@
     <Objects2>fireelemental:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=lavasnake:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Abyss Clan Ribbon ( mini champ</Name>
-    <UniqueId>4cc29dd3-b959-4c76-a0a7-033d2c47daf9</UniqueId>
-    <Map>TerMur</Map>
-    <X>901</X>
-    <Y>485</Y>
-    <Width>30</Width>
-    <Height>30</Height>
-    <CentreX>916</CentreX>
-    <CentreY>500</CentreY>
-    <CentreZ>-12</CentreZ>
-    <Range>5</Range>
-    <MaxCount>61</MaxCount>
-    <MinDelay>119</MinDelay>
-    <MaxDelay>120</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>plaguerat:MX=30:SB=1:RT=0:TO=0:KL=30:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=clanRS:MX=20:SB=2:RT=0:TO=0:KL=20:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=clanrc:MX=10:SB=3:RT=0:TO=0:KL=10:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=vitavirenowned:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>TerMur Mastercook/Juicer/Brewer</Name>
     <UniqueId>4e0e1cf8-11cb-4a5a-9f11-2bf5e81c6d8a</UniqueId>
     <Map>TerMur</Map>
@@ -2730,48 +2646,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>firedaemon:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Fire Temple Ruins (mini champ)</Name>
-    <UniqueId>5a8682e7-14d7-43bb-808e-0c191b738e32</UniqueId>
-    <Map>TerMur</Map>
-    <X>533</X>
-    <Y>746</Y>
-    <Width>30</Width>
-    <Height>30</Height>
-    <CentreX>548</CentreX>
-    <CentreY>761</CentreY>
-    <CentreZ>-92</CentreZ>
-    <Range>5</Range>
-    <MaxCount>81</MaxCount>
-    <MinDelay>3</MinDelay>
-    <MaxDelay>3</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>lavalizard:MX=10:SB=1:RT=0:TO=0:KL=30:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=fireant:MX=10:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=lavasnake:MX=10:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=hellcat:MX=10:SB=2:RT=0:TO=0:KL=30:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=lavaserpent:MX=10:SB=2:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=hellhound:MX=10:SB=2:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=lavaelemental:MX=10:SB=3:RT=0:TO=0:KL=20:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=firedaemon:MX=10:SB=3:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=firedaemonrenowned:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Raptor Island 3</Name>
@@ -4414,48 +4288,6 @@
     <Objects2>Neville:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Abyss Passage of tears (mini champ)</Name>
-    <UniqueId>85421b18-6974-4b38-86ca-b29b6b0a2738</UniqueId>
-    <Map>TerMur</Map>
-    <X>665</X>
-    <Y>558</Y>
-    <Width>50</Width>
-    <Height>50</Height>
-    <CentreX>690</CentreX>
-    <CentreY>583</CentreY>
-    <CentreZ>-15</CentreZ>
-    <Range>5</Range>
-    <MaxCount>61</MaxCount>
-    <MinDelay>29</MinDelay>
-    <MaxDelay>30</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>corrosiveslime:MX=10:SB=1:RT=0:TO=0:KL=30:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=acidslug:MX=10:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=slime:MX=10:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=toxicelemental:MX=20:SB=2:RT=0:TO=0:KL=20:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=interredgrizzle:MX=10:SB=3:RT=0:TO=0:KL=10:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=acidelementaLrenowned:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Grey goblin (Underworld) 1</Name>
     <UniqueId>865e0c82-1d9d-4bf3-860c-662d59f216b7</UniqueId>
     <Map>TerMur</Map>
@@ -4580,90 +4412,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>sliem:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Abyss Abyssal Lair (mini champ)</Name>
-    <UniqueId>8a6ffe15-a853-4bf3-9d45-f1f1c816425c</UniqueId>
-    <Map>TerMur</Map>
-    <X>955</X>
-    <Y>294</Y>
-    <Width>70</Width>
-    <Height>70</Height>
-    <CentreX>990</CentreX>
-    <CentreY>329</CentreY>
-    <CentreZ>10</CentreZ>
-    <Range>5</Range>
-    <MaxCount>61</MaxCount>
-    <MinDelay>2</MinDelay>
-    <MaxDelay>2</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>greatermongbat:MX=20:SB=1:RT=0:TO=0:KL=40:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=imp:MX=20:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=Daemon:MX=20:SB=2:RT=0:TO=0:KL=20:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=pitfiend:MX=10:SB=3:RT=0:TO=0:KL=10:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=devourerrenowned:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Abyss Clan Chitter (mini champ)</Name>
-    <UniqueId>8ad07475-36b1-494c-ab1d-8afec23c9f94</UniqueId>
-    <Map>TerMur</Map>
-    <X>959</X>
-    <Y>473</Y>
-    <Width>40</Width>
-    <Height>40</Height>
-    <CentreX>979</CentreX>
-    <CentreY>493</CentreY>
-    <CentreZ>-12</CentreZ>
-    <Range>5</Range>
-    <MaxCount>61</MaxCount>
-    <MinDelay>2</MinDelay>
-    <MaxDelay>2</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>clockworkscorpion:MX=30:SB=1:RT=0:TO=0:KL=30:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=clanca:MX=20:SB=2:RT=0:TO=0:KL=20:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=clanct:MX=10:SB=3:RT=0:TO=0:KL=10:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=rakktavirenowned:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Undead 1</Name>
@@ -5002,48 +4750,6 @@
     <Objects2>hydra:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=silverserpent:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Abyss Land of the Lich( mini champ)</Name>
-    <UniqueId>977147f5-912e-4b65-aa14-dec1994a5e39</UniqueId>
-    <Map>TerMur</Map>
-    <X>480</X>
-    <Y>563</Y>
-    <Width>70</Width>
-    <Height>70</Height>
-    <CentreX>515</CentreX>
-    <CentreY>598</CentreY>
-    <CentreZ>10</CentreZ>
-    <Range>5</Range>
-    <MaxCount>71</MaxCount>
-    <MinDelay>59</MinDelay>
-    <MaxDelay>120</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>skeleton:MX=20:SB=1:RT=0:TO=0:KL=30:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=wraith:MX=20:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=skeletalmage:MX=10:SB=2:RT=0:TO=0:KL=20:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=wailingbanshee:MX=10:SB=2:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=skeletallich:MX=5:SB=3:RT=0:TO=0:KL=10:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=rottingcorpse:MX=5:SB=3:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=ancientlichrenowned:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>ter firedaemon/efreet</Name>
     <UniqueId>98ad16f6-e4ec-45de-a2ad-021fc924ca6f</UniqueId>
     <Map>TerMur</Map>
@@ -5168,48 +4874,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>Egwexem/Name/Egwexem/:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Abyss Secret Garden (mini champ)</Name>
-    <UniqueId>9b44f303-8241-439f-899e-0c801c5834a3</UniqueId>
-    <Map>TerMur</Map>
-    <X>410</X>
-    <Y>676</Y>
-    <Width>50</Width>
-    <Height>50</Height>
-    <CentreX>435</CentreX>
-    <CentreY>701</CentreY>
-    <CentreZ>28</CentreZ>
-    <Range>5</Range>
-    <MaxCount>61</MaxCount>
-    <MinDelay>2</MinDelay>
-    <MaxDelay>2</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>sapixie:MX=30:SB=1:RT=0:TO=0:KL=30:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=wisp:MX=20:SB=2:RT=0:TO=0:KL=20:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=darkwisp:MX=10:SB=3:RT=0:TO=0:KL=10:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=pixierenowned:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Axem the curator</Name>
@@ -5799,48 +5463,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>chickenlizard:MX=10:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=silverserpent/hue/1150:MX=7:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=horse:MX=10:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=bird:MX=15:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=ortanord/hue/2071:MX=0:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=anlorvaglem/hue/2071:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=korpre/hue/2071:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Abyss Crimson Veins( mini champ )</Name>
-    <UniqueId>b6f3f3d7-b77f-4ed3-923c-3f8487aee7e3</UniqueId>
-    <Map>TerMur</Map>
-    <X>955</X>
-    <Y>141</Y>
-    <Width>40</Width>
-    <Height>40</Height>
-    <CentreX>975</CentreX>
-    <CentreY>161</CentreY>
-    <CentreZ>-11</CentreZ>
-    <Range>5</Range>
-    <MaxCount>61</MaxCount>
-    <MinDelay>29</MinDelay>
-    <MaxDelay>30</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>fireant:MX=10:SB=1:RT=0:TO=0:KL=30:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=lavasnake:MX=10:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=lavalizard:MX=10:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=efreet:MX=10:SB=2:RT=0:TO=0:KL=20:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=firegargoyle:MX=10:SB=2:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=lavaelemental:MX=5:SB=3:RT=0:TO=0:KL=10:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=firedaemon:MX=5:SB=3:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=FireElementalrenowned:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Wildlife 3</Name>
@@ -6472,48 +6094,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>SlasherOfVeils:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Abyss Clan Scratch (mini champ)</Name>
-    <UniqueId>cdc78e14-e19f-4ebf-a244-6ba6f150e46b</UniqueId>
-    <Map>TerMur</Map>
-    <X>920</X>
-    <Y>523</Y>
-    <Width>60</Width>
-    <Height>60</Height>
-    <CentreX>950</CentreX>
-    <CentreY>553</CentreY>
-    <CentreZ>-14</CentreZ>
-    <Range>5</Range>
-    <MaxCount>61</MaxCount>
-    <MinDelay>3</MinDelay>
-    <MaxDelay>3</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>clanssw:MX=30:SB=1:RT=0:TO=0:KL=30:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=clanss:MX=20:SB=2:RT=0:TO=0:KL=20:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=clansh:MX=10:SB=3:RT=0:TO=0:KL=10:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=tikitavirenowned:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Navery Nighteyes</Name>
@@ -7608,48 +7188,6 @@
     <Objects2>SentinelSpider:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>StygianDragon(mini)</Name>
-    <UniqueId>e9e7d02d-07d0-4d4a-a23a-183c1bdb8619</UniqueId>
-    <Map>TerMur</Map>
-    <X>862</X>
-    <Y>249</Y>
-    <Width>50</Width>
-    <Height>50</Height>
-    <CentreX>887</CentreX>
-    <CentreY>274</CentreY>
-    <CentreZ>2</CentreZ>
-    <Range>5</Range>
-    <MaxCount>61</MaxCount>
-    <MinDelay>50</MinDelay>
-    <MaxDelay>60</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>fairydragon:MX=20:SB=1:RT=0:TO=0:KL=20:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=wyvern:MX=25:SB=2:RT=0:TO=0:KL=25:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=ForgottenServant:MX=15:SB=3:RT=0:TO=0:KL=15:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=wyvernrenowned:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Switch1</Name>
     <UniqueId>eb9b9635-b3fb-48a8-8b65-e07dda4ab0e8</UniqueId>
     <Map>TerMur</Map>
@@ -8069,48 +7607,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>lavaelemental:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=lavalizard:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=lavasnake:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Abyss Undead 2 (mini champ)</Name>
-    <UniqueId>f559e140-debf-4ddc-99b0-a192872d73ed</UniqueId>
-    <Map>TerMur</Map>
-    <X>526</X>
-    <Y>658</Y>
-    <Width>70</Width>
-    <Height>70</Height>
-    <CentreX>561</CentreX>
-    <CentreY>693</CentreY>
-    <CentreZ>12</CentreZ>
-    <Range>5</Range>
-    <MaxCount>0</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>10</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>shade:MX=0:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=skeleton:MX=0:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=zombie:MX=0:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=spectre:MX=0:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=wraith:MX=0:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Bar2</Name>

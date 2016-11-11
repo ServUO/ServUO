@@ -11,6 +11,7 @@ using Server.Engines.XmlSpawner2;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using Server.Engines.Quests;
 #endregion
 
 namespace Server.SkillHandlers
@@ -129,9 +130,16 @@ namespace Server.SkillHandlers
 
 						double diff = ((m_Instrument.GetDifficultyFor(m_Creature) + m_Instrument.GetDifficultyFor(target)) * 0.5) - 5.0;
 						double music = from.Skills[SkillName.Musicianship].Value;
+                        int masteryBonus = 0;
 
-						diff += (XmlMobFactions.GetScaledFaction(from, m_Creature, -25, 25, -0.001) +
-								 XmlMobFactions.GetScaledFaction(from, target, -25, 25, -0.001)) * 0.5;
+                        if (from is PlayerMobile)
+                            masteryBonus = Spells.SkillMasteries.BardSpell.GetMasteryBonus((PlayerMobile)from, SkillName.Provocation);
+
+                        if (masteryBonus > 0)
+                            diff -= (diff * ((double)masteryBonus / 100));
+
+                        diff += (XmlMobFactions.GetScaledFaction(from, m_Creature, -25, 25, -0.001) +
+                            XmlMobFactions.GetScaledFaction(from, target, -25, 25, -0.001)) * 0.5;
 
 						if (music > 100.0)
 						{
@@ -142,7 +150,7 @@ namespace Server.SkillHandlers
 						{
 							if (!BaseInstrument.CheckMusicianship(from))
 							{
-								from.NextSkillTime = Core.TickCount + 5000;
+                                from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
 								from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
 								m_Instrument.PlayInstrumentBadly(from);
 								m_Instrument.ConsumeUse(from);
@@ -153,7 +161,7 @@ namespace Server.SkillHandlers
 								//from.DoHarmful( creature );
 								if (!from.CheckTargetSkill(SkillName.Provocation, target, diff - 25.0, diff + 25.0))
 								{
-									from.NextSkillTime = Core.TickCount + 5000;
+                                    from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
 									from.SendLocalizedMessage(501599); // Your music fails to incite enough anger.
 									m_Instrument.PlayInstrumentBadly(from);
 									m_Instrument.ConsumeUse(from);
@@ -164,6 +172,19 @@ namespace Server.SkillHandlers
 									m_Instrument.PlayInstrumentWell(from);
 									m_Instrument.ConsumeUse(from);
 									m_Creature.Provoke(from, target, true);
+
+                                    #region Bard Mastery Quest
+                                    if (creature != null && m_Creature.GetType() == typeof(Rabbit) && from is PlayerMobile)
+                                    {
+                                        BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(IndoctrinationOfABattleRouserQuest));
+
+                                        if (quest != null)
+                                        {
+                                            foreach (BaseObjective objective in quest.Objectives)
+                                                objective.Update(creature);
+                                        }
+                                    }
+                                    #endregion
 								}
 							}
 						}
