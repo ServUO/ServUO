@@ -136,7 +136,7 @@ namespace Server.Engines.CannedEvil
         {
             List<Item> list = new List<Item>();
 
-            foreach (Item item in World.Items.Values.Where(i => i is MiniChamp))
+            foreach (MiniChamp item in _Spawners)
             {
                 list.Add(item);
             }
@@ -1445,7 +1445,18 @@ namespace Server.Engines.CannedEvil
 
         public override string DefaultName
         {
-            get { return this.m_Spawn.Type.ToString(); }
+            get 
+            {
+                if (Spawn != null)
+                {
+                    MiniChampInfo info = MiniChampInfo.GetInfo(Spawn.Type);
+
+                    if (info != null)
+                        return info.Name;
+                }
+
+                return "Idol of the Champion";
+            }
         }
 
         public IdolOfTheMiniChamp(MiniChamp spawn) : base(0x1F18)
