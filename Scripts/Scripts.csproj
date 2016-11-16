@@ -2720,6 +2720,7 @@
     <Compile Include="Services\Armor Refinement\Gumps.cs" />
     <Compile Include="Services\Armor Refinement\Items.cs" />
     <Compile Include="Services\BasketWeaving\Baskets\BasketCraftable.cs" />
+    <Compile Include="Services\BulkOrders\Items\MasterCraftsmanTalisman.cs" />
     <Compile Include="Services\City Loyalty System\CityDefinition.cs" />
     <Compile Include="Services\City Loyalty System\CityLoyaltyEntry.cs" />
     <Compile Include="Services\City Loyalty System\CityLoyaltySystem.cs" />
