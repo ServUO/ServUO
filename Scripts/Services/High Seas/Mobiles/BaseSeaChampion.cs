@@ -14,21 +14,12 @@ namespace Server.Mobiles
         public override Type[] DecorativeList { get { return new Type[] { }; } }
         public override MonsterStatuetteType[] StatueTypes { get { return new MonsterStatuetteType[] { }; } }
 
-        public override ChampionSkullType SkullType 
+        public override ChampionSkullType SkullType
         {
-            get 
+            get
             {
-                switch (Utility.Random(6))
-                {
-                    default:
-                    case 0: return ChampionSkullType.Power;
-                    case 1: return ChampionSkullType.Enlightenment;
-                    case 2: return ChampionSkullType.Venom;
-                    case 3: return ChampionSkullType.Pain;
-                    case 4: return ChampionSkullType.Greed;
-                    case 5: return ChampionSkullType.Death;
-                }
-            } 
+                return ChampionSkullType.None;
+            }
         }
 
         private DateTime m_NextBoatDamage;
