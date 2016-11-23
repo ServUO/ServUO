@@ -424,6 +424,13 @@ namespace Server
                     if (attrs != null)
                         value += attrs[attribute];
                 }
+                else if (obj is FishingPole)
+                {
+                    AosAttributes attrs = ((FishingPole)obj).Attributes;
+
+                    if (attrs != null)
+                        value += attrs[attribute];
+                }
                 else if (obj is BaseQuiver)
                 {
                     AosAttributes attrs = ((BaseQuiver)obj).Attributes;
