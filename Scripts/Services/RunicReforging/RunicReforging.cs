@@ -1146,7 +1146,7 @@ namespace Server.Items
                         return (int)(((BaseWeapon)item).MlSpeed * (weight * 100) / (100 + ((BaseWeapon)item).Attributes.WeaponSpeed));
                     }
 
-                    if (Info != null)
+                    if (info != null && resIndex >= 0 && resIndex < info.Length && preIndex >= 0 && preIndex < info[resIndex].Length)
                     {
                         return info[resIndex][preIndex];
                     }
