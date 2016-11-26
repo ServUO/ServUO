@@ -42,7 +42,7 @@ namespace Server.Mobiles
 
         public CorgulTheSoulBinder(CorgulAltar altar) : base(null, AIType.AI_Mage, FightMode.Closest)
         {
-            //NoGoodies = true;
+            NoKillAwards = true;
             m_Altar = altar;
             Name = "Corgul the Soulbinder";
             BaseSoundID = 609;
@@ -100,70 +100,6 @@ namespace Server.Mobiles
                 return CreateArtifact(DecorativeList);
             return null;
         }
-
-        /*public override void GivePowerScrolls()
-        {
-            if (Map == null || (Map.Rules & MapRules.FeluccaRules) == 0)
-                return;
-
-            List<Mobile> toGive = new List<Mobile>();
-            List<DamageStore> rights = GetLootingRights();
-
-            for (int i = rights.Count - 1; i >= 0; --i)
-            {
-                DamageStore ds = rights[i];
-
-                if (ds.m_HasRight)
-                    toGive.Add(ds.m_Mobile);
-            }
-
-            if (toGive.Count == 0)
-                return;
-
-            for (int i = 0; i < toGive.Count; i++)
-            {
-                Mobile m = toGive[i];
-
-                if (!(m is PlayerMobile))
-                    continue;
-
-                bool gainedPath = false;
-
-                int pointsToGain = 800;
-
-                if (VirtueHelper.Award(m, VirtueName.Valor, pointsToGain, ref gainedPath))
-                {
-                    if (gainedPath)
-                        m.SendLocalizedMessage(1054032); // You have gained a path in Valor!
-                    else
-                        m.SendLocalizedMessage(1054030); // You have gained in Valor!
-                }
-            }
-
-            // Randomize
-            for (int i = 0; i < toGive.Count; ++i)
-            {
-                int rand = Utility.Random(toGive.Count);
-                Mobile hold = toGive[i];
-                toGive[i] = toGive[rand];
-                toGive[rand] = hold;
-            }
-
-            for (int i = 0; i < 3; ++i)
-            {
-                Mobile m = toGive[i % toGive.Count];
-
-                if (!m.Alive) 
-                    continue;
-
-                PowerScroll ps = CreateRandomPowerScroll();
-
-                if (1 >= Utility.Random(30))
-                    ps.Skill = SkillName.Fishing;
-
-                GivePowerScrollTo(m, ps);
-            }
-        }*/
 
         public void SpawnHelpers()
         {

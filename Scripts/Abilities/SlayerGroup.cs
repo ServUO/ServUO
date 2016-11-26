@@ -71,7 +71,7 @@ namespace Server.Items
                     typeof(GreenGoblinAlchemist), typeof(GreenGoblin),
                     typeof(GrayGoblinMage), typeof(GrayGoblinKeeper),
                     typeof(GrayGoblin), typeof(GreenGoblinAlchemistRenowned),
-                    typeof(GrayGoblinMageRenowned)
+                    typeof(GrayGoblinMageRenowned), typeof(CorgulTheSoulBinder)
                 );
 
             humanoid.Entries = new SlayerEntry[]
