@@ -627,6 +627,7 @@
     <Compile Include="Items\Containers\MeagerImbuingBag.cs" />
     <Compile Include="Items\Containers\ScrollBox2.cs" />
     <Compile Include="Items\Containers\CleanupTrashBarrel.cs" />
+    <Compile Include="Items\Containers\TownTrashBarrel.cs" />
     <Compile Include="Items\Decorative\AcidWall.cs" />
     <Compile Include="Items\Decorative\AcidWall1.cs" />
     <Compile Include="Items\Decorative\BasePaintedMask.cs" />
@@ -755,6 +756,13 @@
     </Compile>
     <Compile Include="Items\Resource\Fur.cs" />
     <Compile Include="Items\Resource\HotGoo.cs" />
+    <Compile Include="Items\Artifacts\Talismans\FrostguardTalisman.cs" />
+    <Compile Include="Items\Artifacts\Talismans\JadeSnakeHead.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\PetrifiedMatriarchsTongue.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Clothing\RangersCloakOfAugmentation.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Clothing\ShadowCloakOfRejuvenation.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\WardedDemonboneBracers.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Clothing\WardensArmorOfAugmentation.cs" />
     <Compile Include="Items\Tools\BaseHarvestTool.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -2720,6 +2728,7 @@
     <Compile Include="Services\Armor Refinement\Gumps.cs" />
     <Compile Include="Services\Armor Refinement\Items.cs" />
     <Compile Include="Services\BasketWeaving\Baskets\BasketCraftable.cs" />
+    <Compile Include="Services\BulkOrders\Items\MasterCraftsmanTalisman.cs" />
     <Compile Include="Services\City Loyalty System\CityDefinition.cs" />
     <Compile Include="Services\City Loyalty System\CityLoyaltyEntry.cs" />
     <Compile Include="Services\City Loyalty System\CityLoyaltySystem.cs" />
@@ -7181,7 +7190,7 @@
     <Compile Include="Items\Equipment\Suits\LordBritishSuit.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Equipment\Talismans\ConjurersTrinket.cs" />
+    <Compile Include="Items\Artifacts\Talismans\ConjurersTrinket.cs" />
     <Compile Include="Items\Resource\EnchantedSwitch.cs">
       <SubType>Code</SubType>
     </Compile>
