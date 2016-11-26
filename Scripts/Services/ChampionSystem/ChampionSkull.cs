@@ -62,7 +62,7 @@ namespace Server.Items
         {
             get
             {
-                return 1049479 + (int)this.m_Type;
+                return 1049478 + (int)this.m_Type;
             }
         }
         public override void Serialize(GenericWriter writer)
