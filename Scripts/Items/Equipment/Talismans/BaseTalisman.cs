@@ -370,6 +370,20 @@ namespace Server.Items
         }
         #endregion
 
+        private SAAbsorptionAttributes m_SAAbsorptionAttributes;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public SAAbsorptionAttributes SAAbsorptionAttributes
+        {
+            get
+            {
+                return this.m_SAAbsorptionAttributes;
+            }
+            set
+            {
+            }
+        }
+
         public BaseTalisman()
             : this(GetRandomItemID())
         {
@@ -388,6 +402,7 @@ namespace Server.Items
             this.m_Summoner = new TalismanAttribute();
             this.m_AosAttributes = new AosAttributes(this);
             this.m_AosSkillBonuses = new AosSkillBonuses(this);
+            this.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
         }
 
         public BaseTalisman(Serial serial)
@@ -457,6 +472,7 @@ namespace Server.Items
             talisman.m_Killer = new TalismanAttribute(this.m_Killer);
             talisman.m_AosAttributes = new AosAttributes(newItem, this.m_AosAttributes);
             talisman.m_AosSkillBonuses = new AosSkillBonuses(newItem, this.m_AosSkillBonuses);
+            talisman.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, this.m_SAAbsorptionAttributes);
         }
 
         public override bool CanEquip(Mobile from)
@@ -741,6 +757,46 @@ namespace Server.Items
             if (this.m_MaxCharges > 0)
                 list.Add(1060741, this.m_Charges.ToString()); // charges: ~1_val~
 
+            #region SA
+            if ((prop = this.m_SAAbsorptionAttributes.CastingFocus) != 0)
+                list.Add(1113696, prop.ToString()); // Casting Focus ~1_val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterFire) != 0)
+                list.Add(1113593, prop.ToString()); // Fire Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterCold) != 0)
+                list.Add(1113594, prop.ToString()); // Cold Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterPoison) != 0)
+                list.Add(1113595, prop.ToString()); // Poison Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterEnergy) != 0)
+                list.Add(1113596, prop.ToString()); // Energy Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterKinetic) != 0)
+                list.Add(1113597, prop.ToString()); // Kinetic Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.EaterDamage) != 0)
+                list.Add(1113598, prop.ToString()); // Damage Eater ~1_Val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.ResonanceFire) != 0)
+                list.Add(1113691, prop.ToString()); // Fire Resonance ~1_val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.ResonanceCold) != 0)
+                list.Add(1113692, prop.ToString()); // Cold Resonance ~1_val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.ResonancePoison) != 0)
+                list.Add(1113693, prop.ToString()); // Poison Resonance ~1_val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.ResonanceEnergy) != 0)
+                list.Add(1113694, prop.ToString()); // Energy Resonance ~1_val~%
+
+            if ((prop = this.m_SAAbsorptionAttributes.ResonanceKinetic) != 0)
+                list.Add(1113695, prop.ToString()); // Kinetic Resonance ~1_val~%
+            #endregion
+
+            base.AddResistanceProperties(list);
+
             if (this is ManaPhasingOrb)
                 list.Add(1116158); //Mana Phase
 
@@ -792,6 +848,7 @@ namespace Server.Items
             ChargeTime = 0x00004000,
             Blessed = 0x00008000,
             Slayer = 0x00010000,
+            SAAbsorptionAttributes = 0x00020000,
         }
 
         public override void Serialize(GenericWriter writer)
@@ -820,6 +877,7 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.ChargeTime, this.m_ChargeTime != 0);
             SetSaveFlag(ref flags, SaveFlag.Blessed, this.m_Blessed);
             SetSaveFlag(ref flags, SaveFlag.Slayer, this.m_Slayer != TalismanSlayerName.None);
+            SetSaveFlag(ref flags, SaveFlag.SAAbsorptionAttributes, !this.m_SAAbsorptionAttributes.IsEmpty);
 
             writer.WriteEncodedInt((int)flags);
 
@@ -864,6 +922,9 @@ namespace Server.Items
 
             if (GetSaveFlag(flags, SaveFlag.Slayer))
                 writer.WriteEncodedInt((int)this.m_Slayer);
+
+            if (GetSaveFlag(flags, SaveFlag.SAAbsorptionAttributes))
+                this.m_SAAbsorptionAttributes.Serialize(writer);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -944,6 +1005,11 @@ namespace Server.Items
                             this.m_Slayer = (TalismanSlayerName)reader.ReadEncodedInt();
 
                         this.m_Blessed = GetSaveFlag(flags, SaveFlag.Blessed);
+
+                        if (GetSaveFlag(flags, SaveFlag.SAAbsorptionAttributes))
+                            this.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this, reader);
+                        else
+                            this.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
 
                         break;
                     }

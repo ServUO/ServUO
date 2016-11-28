@@ -27,7 +27,7 @@ namespace Server.Items
             PhysicalBonus = 15;
             ArmorAttributes.SelfRepair = 5;
 
-            SkillBonuses.SetValues(0, SkillName.Parry, 15.0);
+            SkillBonuses.SetValues(0, SkillName.Parry, 10.0);
 
             if (antique)
             {
@@ -80,7 +80,7 @@ namespace Server.Items
             PhysicalBonus = 15;
             ArmorAttributes.SelfRepair = 5;
 
-            SkillBonuses.SetValues(0, SkillName.Parry, 15.0);
+            SkillBonuses.SetValues(0, SkillName.Parry, 10.0);
 
             if (antique)
             {

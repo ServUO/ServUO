@@ -64,7 +64,7 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return 1049489 + (int)this.m_Type;
+                return 1049488 + (int)this.m_Type;
             }
         }
         public override void OnDoubleClick(Mobile from)
