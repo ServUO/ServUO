@@ -18,6 +18,55 @@ namespace Server.Items
             this.Weight = 2.0;
         }
 
+        public override bool Scissor(Mobile from, Scissors scissors)
+        {
+            if (!this.IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(502437); // Items you wish to cut must be in your backpack.
+                return false;
+            }
+
+            if (Ethics.Ethic.IsImbued(this))
+            {
+                from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
+                return false;
+            }
+
+            CraftSystem system = DefTailoring.CraftSystem;
+
+            CraftItem item = system.CraftItems.SearchFor(this.GetType());
+
+            if (item != null && item.Resources.Count == 1 && item.Resources.GetAt(0).Amount >= 2)
+            {
+                try
+                {
+                    Type resourceType = null;
+
+                    CraftResourceInfo info = CraftResources.GetInfo(this.Resource);
+
+                    if (info != null && info.ResourceTypes.Length > 0)
+                        resourceType = info.ResourceTypes[0];
+
+                    if (resourceType == null)
+                        resourceType = item.Resources.GetAt(0).ItemType;
+
+                    Item res = (Item)Activator.CreateInstance(resourceType);
+
+                    this.ScissorHelper(from, res, this.PlayerConstructed ? (item.Resources.GetAt(0).Amount / 2) : 1);
+
+                    res.LootType = LootType.Regular;
+
+                    return true;
+                }
+                catch
+                {
+                }
+            }
+
+            from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
+            return false;
+        }
+
         public override Race RequiredRace
         {
             get
@@ -176,6 +225,55 @@ namespace Server.Items
         {
             Hue = hue;
             this.Weight = 2.0;
+        }
+
+        public override bool Scissor(Mobile from, Scissors scissors)
+        {
+            if (!this.IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(502437); // Items you wish to cut must be in your backpack.
+                return false;
+            }
+
+            if (Ethics.Ethic.IsImbued(this))
+            {
+                from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
+                return false;
+            }
+
+            CraftSystem system = DefTailoring.CraftSystem;
+
+            CraftItem item = system.CraftItems.SearchFor(this.GetType());
+
+            if (item != null && item.Resources.Count == 1 && item.Resources.GetAt(0).Amount >= 2)
+            {
+                try
+                {
+                    Type resourceType = null;
+
+                    CraftResourceInfo info = CraftResources.GetInfo(this.Resource);
+
+                    if (info != null && info.ResourceTypes.Length > 0)
+                        resourceType = info.ResourceTypes[0];
+
+                    if (resourceType == null)
+                        resourceType = item.Resources.GetAt(0).ItemType;
+
+                    Item res = (Item)Activator.CreateInstance(resourceType);
+
+                    this.ScissorHelper(from, res, this.PlayerConstructed ? (item.Resources.GetAt(0).Amount / 2) : 1);
+
+                    res.LootType = LootType.Regular;
+
+                    return true;
+                }
+                catch
+                {
+                }
+            }
+
+            from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
+            return false;
         }
 
         public override Race RequiredRace
@@ -338,6 +436,55 @@ namespace Server.Items
             this.Weight = 2.0;
         }
 
+        public override bool Scissor(Mobile from, Scissors scissors)
+        {
+            if (!this.IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(502437); // Items you wish to cut must be in your backpack.
+                return false;
+            }
+
+            if (Ethics.Ethic.IsImbued(this))
+            {
+                from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
+                return false;
+            }
+
+            CraftSystem system = DefTailoring.CraftSystem;
+
+            CraftItem item = system.CraftItems.SearchFor(this.GetType());
+
+            if (item != null && item.Resources.Count == 1 && item.Resources.GetAt(0).Amount >= 2)
+            {
+                try
+                {
+                    Type resourceType = null;
+
+                    CraftResourceInfo info = CraftResources.GetInfo(this.Resource);
+
+                    if (info != null && info.ResourceTypes.Length > 0)
+                        resourceType = info.ResourceTypes[0];
+
+                    if (resourceType == null)
+                        resourceType = item.Resources.GetAt(0).ItemType;
+
+                    Item res = (Item)Activator.CreateInstance(resourceType);
+
+                    this.ScissorHelper(from, res, this.PlayerConstructed ? (item.Resources.GetAt(0).Amount / 2) : 1);
+
+                    res.LootType = LootType.Regular;
+
+                    return true;
+                }
+                catch
+                {
+                }
+            }
+
+            from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
+            return false;
+        }
+
         public override Race RequiredRace
         {
             get
@@ -493,10 +640,59 @@ namespace Server.Items
 
         [Constructable]
         public GargishClothKiltArmor(int hue)
-            : base(0x040A)
+            : base(0x0408)
         {
             Hue = hue;
             this.Weight = 2.0;
+        }
+
+        public override bool Scissor(Mobile from, Scissors scissors)
+        {
+            if (!this.IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(502437); // Items you wish to cut must be in your backpack.
+                return false;
+            }
+
+            if (Ethics.Ethic.IsImbued(this))
+            {
+                from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
+                return false;
+            }
+
+            CraftSystem system = DefTailoring.CraftSystem;
+
+            CraftItem item = system.CraftItems.SearchFor(this.GetType());
+
+            if (item != null && item.Resources.Count == 1 && item.Resources.GetAt(0).Amount >= 2)
+            {
+                try
+                {
+                    Type resourceType = null;
+
+                    CraftResourceInfo info = CraftResources.GetInfo(this.Resource);
+
+                    if (info != null && info.ResourceTypes.Length > 0)
+                        resourceType = info.ResourceTypes[0];
+
+                    if (resourceType == null)
+                        resourceType = item.Resources.GetAt(0).ItemType;
+
+                    Item res = (Item)Activator.CreateInstance(resourceType);
+
+                    this.ScissorHelper(from, res, this.PlayerConstructed ? (item.Resources.GetAt(0).Amount / 2) : 1);
+
+                    res.LootType = LootType.Regular;
+
+                    return true;
+                }
+                catch
+                {
+                }
+            }
+
+            from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
+            return false;
         }
 
         public override Race RequiredRace

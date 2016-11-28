@@ -1344,7 +1344,7 @@ namespace Server.Items
             return bonus;
         }
 
-        public bool Scissor(Mobile from, Scissors scissors)
+        public virtual bool Scissor(Mobile from, Scissors scissors)
         {
             if (!this.IsChildOf(from.Backpack))
             {

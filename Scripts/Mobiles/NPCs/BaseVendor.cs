@@ -127,7 +127,7 @@ namespace Server.Mobiles
 			private readonly BaseVendor m_Vendor;
 
 			public BulkOrderInfoEntry(Mobile from, BaseVendor vendor)
-				: base(6152)
+				: base(6152, 3)
 			{
 				m_From = from;
 				m_Vendor = vendor;
@@ -135,6 +135,9 @@ namespace Server.Mobiles
 
 			public override void OnClick()
 			{
+                if (!m_From.InRange(m_Vendor.Location, 3))
+                    return;
+
 				EventSink.InvokeBODOffered(new BODOfferEventArgs(m_From, m_Vendor));
 				if (m_Vendor.SupportsBulkOrders(m_From))
 				{
