@@ -704,20 +704,28 @@ namespace Server.Engines.Points
             if (targeted is Item)
             {
                 Item item = (Item)targeted;
-                
+
+                if (!item.IsChildOf(m_Mobile))
+                    return;
+
                 double points = CleanUpBritanniaData.GetPoints(item);
-                    
-                if(points == 0)
+
+                if (points == 0)
                     m_Mobile.SendLocalizedMessage(1151271); // This item has no turn-in value for Clean Up Britannia.
                 else if (points < 1)
                     m_Mobile.SendLocalizedMessage(1151272, points.ToString()); // This item is worth less than one point for Clean Up Britannia.
-                else if(points == 1)
+                else if (points == 1)
                     m_Mobile.SendLocalizedMessage(1151273, points.ToString()); // This item is worth approximately one point for Clean Up Britannia.
                 else
-                    m_Mobile.SendLocalizedMessage(1151274, points.ToString()); //This item is worth approximately ~1_VALUE~ points for Clean Up Britannia.                
+                    m_Mobile.SendLocalizedMessage(1151274, points.ToString()); //This item is worth approximately ~1_VALUE~ points for Clean Up Britannia.
+
+                m_Mobile.Target = new AppraiseforCleanupTarget(m_Mobile);
             }
             else
+            {
                 m_Mobile.SendLocalizedMessage(1151271); // This item has no turn-in value for Clean Up Britannia.
+                m_Mobile.Target = new AppraiseforCleanupTarget(m_Mobile);
+            }
         }
     }
 }
