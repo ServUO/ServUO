@@ -9,7 +9,7 @@ using Server;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a clockwork exodus corpse")]
+    [CorpseName("a Vile corpse")]
     public class ClockworkExodus : BaseExodusPeerless
     {
         public static List<ClockworkExodus> Instances { get; set; }
@@ -32,7 +32,7 @@ namespace Server.Mobiles
         private static Point3D m_Location;        
 
         [Constructable]
-        public ClockworkExodus() : base(AIType.AI_Mystic/*AI_Melee*/, FightMode.Closest, 10, 1, 0.2, 0.4)
+        public ClockworkExodus() : base(AIType.AI_Mystic, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "Clockwork Exodus";
             this.Body = 1248;
@@ -77,18 +77,11 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 20;
 
-            PackGold(10000, 60000);
-
             if (Instances == null)
                 Instances = new List<ClockworkExodus>();
 
             Instances.Add(this);
-        }
-
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool Unprovokable { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Greater; } }
-        public override int TreasureMapLevel { get { return 5; } }
+        }        
 
         public static void DistributeRandomArtifact(BaseCreature bc, Type[] typelist)
         {
@@ -107,15 +100,13 @@ namespace Server.Mobiles
             if (pack == null || !pack.TryDropItem(to, artifact, false))
                 to.BankBox.DropItem(artifact);
 
-			//CommandLogging.WriteLineNoLuckArtifact(to, artifact, String.Format("Peerless Artifact"));
-
             to.SendLocalizedMessage(502088); // A special gift has been placed in your backpack.
 		}
 
         public override bool OnBeforeDeath()
         {
             if (Utility.RandomDouble() < 0.2)
-                DistributeRandomArtifact(this, m_Artifact);            
+                DistributeRandomArtifact(this, m_Artifact);
 
             Map map = this.Map;
 
@@ -136,12 +127,12 @@ namespace Server.Mobiles
             if (Instances != null && Instances.Contains(this))
                 Instances.Remove(this);
 
-            return true;
+            return base.OnBeforeDeath();
         }
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosSuperBoss, 8);
+            AddLoot(LootPack.AosSuperBoss, 2);
         }
 
         public void SpawnVortices(Mobile target)
@@ -160,54 +151,28 @@ namespace Server.Mobiles
             m_LastTarget = target.Location;
         }
 
+        public override bool HasAura { get { return true; } }
+        public override TimeSpan AuraInterval { get { return TimeSpan.FromSeconds(3); } }
+        public override int AuraRange { get { return 3; } }
+        public override int AuraBaseDamage { get { return 25; } }
+        public override int AuraEnergyDamage { get { return 100; } }
+
+        public override void AuraEffect(Mobile m)
+        {
+            if (m.NetState != null)
+                m.SendLocalizedMessage(1151112, String.Format("{0}\t#1072073", this.Name)); // : The creature's aura of energy is damaging you!
+        }
+
         public void DoSpecialAbility(Mobile target)
         {
             if (target != null)
             {
                 if (m_LastTarget != target.Location)
                 {
-                    target.SendMessage("Clockwork Exodus casts a deadly vortex at you!");
+                    target.SendLocalizedMessage(1152692, this.Name); // ~1_CREATURE~ casts a deadly vortex at you! 
                     SpawnVortices(target);
-                }
-
-                if (0.5 >= Utility.RandomDouble() && this != null)
-                    Aura(this, this.Map, target, 25, 5, "Clockwork Exodus : The creature's aura of energy is damaging you!");
+                }                
             }
-        }
-
-        public static void Aura(Mobile dv, Map map, Mobile from, int damage, int range, string text)
-        {
-            if (from == null)
-                return;
-
-            if (dv != null)
-                m_Location = dv.Location;
-            else
-                return;
-
-            List<Mobile> targets = new List<Mobile>();
-
-            foreach (Mobile m in Map.AllMaps[map.MapID].GetMobilesInRange(m_Location, range))
-            {
-                if (m.Alive && !m.IsStaff() && m != dv)
-                    targets.Add(m);
-            }
-
-            for (int i = 0; i < targets.Count; i++)
-            {
-                Mobile m = (Mobile)targets[i];
-                m.RevealingAction();
-
-                int auradamage = damage;
-
-                from.DoHarmful(m);
-                AOS.Damage(m, (from == null) ? m : from, auradamage, false, 0, 0, 0, 0, 100, 0, 0, false, false, false);
-
-                if (text != "")
-                    m.SendMessage(text);
-            }
-
-            targets.Clear();
         }
 
         public override void OnDamagedBySpell(Mobile attacker)
@@ -285,33 +250,13 @@ namespace Server.Mobiles
 
                 Gold g = new Gold(500, 1000);
 
-                g.MoveToWorld(new Point3D(m_X, m_Y, z), m_Map);
-
                 if (0.5 >= Utility.RandomDouble())
-                {
-                    switch (Utility.Random(3))
-                    {
-                        case 0: // Fire column
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
-                                Effects.PlaySound(g, g.Map, 0x208);
+                    g.MoveToWorld(new Point3D(m_X, m_Y, z), m_Map);
 
-                                break;
-                            }
-                        case 1: // Explosion
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x36BD, 20, 10, 5044);
-                                Effects.PlaySound(g, g.Map, 0x307);
-
-                                break;
-                            }
-                        case 2: // Ball of fire
-                            {
-                                Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x36FE, 10, 10, 5052);
-
-                                break;
-                            }
-                    }
+                if (0.3 >= Utility.RandomDouble())
+                {                    
+                    Effects.SendLocationParticles(EffectItem.Create(g.Location, g.Map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
+                    Effects.PlaySound(g, g.Map, 0x208);
                 }
             }
         }
