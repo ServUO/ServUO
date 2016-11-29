@@ -306,9 +306,7 @@ namespace Server.SkillHandlers
                 int totalItemMods = GetTotalMods(i, mod);
                 int maxint = GetMaxIntensity(i, def);
 
-                double propWeight = ((double)def.Weight / (double)maxint) * value;
-                propWeight = Math.Round(propWeight);
-                int propweight = Convert.ToInt32(propWeight);
+                int propweight = (int)(((double)def.Weight / (double)maxint) * value);
 
                 if ((totalItemWeight + propweight) > maxWeight)
                 {

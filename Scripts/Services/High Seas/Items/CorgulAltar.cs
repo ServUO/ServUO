@@ -238,6 +238,8 @@ namespace Server.Items
 
             if (m_KeyStage >= 0 && m_KeyStage < m_Keys.Length && type == m_Keys[m_KeyStage])
                 return true;
+            else if (m_KeyStage == 1 && item is PresetMap && item.LabelNumber == 1041204)
+                return true;
             else if (m_KeyStage == 1 && item is TreasureMap)
                 from.SendLocalizedMessage(1116360); // The island's location cannot be marked on a treasure map.
             else if (m_KeyStage == 1 && item is MapItem)
