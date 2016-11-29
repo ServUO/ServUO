@@ -19,33 +19,17 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public PeerlessExodusAltar Altar
         {
-            get
-            {
-                return this.m_Altar;
-            }
-            set
-            {
-                this.m_Altar = value;
-            }
+            get { return this.m_Altar; }
+            set { this.m_Altar = value; }
         }
 
         public override bool CanBeParagon { get { return false; } }
+        public override bool Unprovokable { get { return true; } }
+        public virtual double ChangeCombatant { get { return 0.3; } }
+        public override bool AlwaysMurderer { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Greater; } }
+        public override int TreasureMapLevel { get { return 5; } }
 
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public virtual double ChangeCombatant
-        {
-            get
-            {
-                return 0.3;
-            }
-        }
-		
         public BaseExodusPeerless(Serial serial)
             : base(serial)
         {
@@ -107,82 +91,6 @@ namespace Server.Mobiles
 			
             this.m_Altar = reader.ReadItem() as PeerlessExodusAltar;
             this.m_RespawnTime = reader.ReadTimeSpan();
-        }        
-		
-        public virtual void PackResources(int amount)
-        {
-            for (int i = 0; i < amount; i ++)
-                switch ( Utility.Random(6) )
-                {
-                    case 0:
-                        this.PackItem(new Blight());
-                        break;
-                    case 1:
-                        this.PackItem(new Scourge());
-                        break;
-                    case 2:
-                        this.PackItem(new Taint());
-                        break;
-                    case 3:
-                        this.PackItem(new Putrefication());
-                        break;
-                    case 4:
-                        this.PackItem(new Corruption());
-                        break;
-                    case 5:
-                        this.PackItem(new Muculent());
-                        break;
-                }
-        }
-		
-        public virtual void PackItems(Item item, int amount)
-        {
-            for (int i = 0; i < amount; i ++)
-                this.PackItem(item);
-        }
-		
-        public virtual void PackTalismans(int amount)
-        { 
-            int count = Utility.Random(amount);
-			
-            for (int i = 0; i < count; i ++)
-                this.PackItem(Loot.RandomTalisman());
-        }
-		
-        public virtual Point3D GetSpawnPosition(int range)
-        {
-            return GetSpawnPosition(this.Location, this.Map, range);
-        }
-		
-        public static Point3D GetSpawnPosition(Point3D from, Map map, int range)
-        {
-            if (map == null)
-                return from;
-				
-            for (int i = 0; i < 10; i ++)
-            {
-                int x = from.X + Utility.Random(range);
-                int y = from.Y + Utility.Random(range);
-                int z = map.GetAverageZ(x, y);
-				
-                if (Utility.RandomBool())
-                    x *= -1;
-					
-                if (Utility.RandomBool())
-                    y *= -1;
-					
-                Point3D p = new Point3D(x, y, from.Z);
-				
-                if (map.CanSpawnMobile(p) && map.LineOfSight(from, p))
-                    return p;
-				
-                p = new Point3D(x, y, z);
-					
-                if (map.CanSpawnMobile(p) && map.LineOfSight(from, p))
-                    return p;
-            }
-			
-            return from;
-        }       
+        }	
     }
 }

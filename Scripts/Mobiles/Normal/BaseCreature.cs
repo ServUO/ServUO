@@ -6125,7 +6125,7 @@ namespace Server.Mobiles
                         list.Add(m);
                     }
                 }
-                else if (m.Player)
+                else if (m.Player && m.AccessLevel == AccessLevel.Player)
                 {
                     list.Add(m);
                 }
