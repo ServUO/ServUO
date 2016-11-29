@@ -69,9 +69,6 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Anatomy, 120.0);
             this.SetSkill(SkillName.Healing, 120.0);
 
-            this.RespawnTime = TimeSpan.FromMinutes(10.0);
-            new InternalTimer(this).Start();
-
             this.Fame = 24000;
             this.Karma = -24000;
 

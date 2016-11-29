@@ -7,14 +7,6 @@ namespace Server.Mobiles
     public class BaseExodusPeerless : BaseCreature
     {
         private PeerlessExodusAltar m_Altar;
-        private TimeSpan m_RespawnTime;
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan RespawnTime
-        {
-            get { return m_RespawnTime; }
-            set { m_RespawnTime = value; }
-        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public PeerlessExodusAltar Altar
@@ -47,24 +39,6 @@ namespace Server.Mobiles
         {       
         }
 
-        public class InternalTimer : Timer
-        {
-            private BaseExodusPeerless m_bep;
-            public InternalTimer(BaseExodusPeerless bep) : base(bep.RespawnTime)
-            {
-                m_bep = bep;
-            }
-            protected override void OnTick()
-            {
-                if (m_bep != null && !m_bep.Deleted)
-                {
-                    m_bep.Delete();
-                    m_bep.DoSpawn();
-                    new InternalTimer(m_bep).Start();
-                }
-            }
-        }
-
         public void DoSpawn()
         {
             ClockworkExodus m = new ClockworkExodus();
@@ -80,7 +54,6 @@ namespace Server.Mobiles
             writer.Write((int)0); // version
 			
             writer.Write((Item)this.m_Altar);
-            writer.Write((TimeSpan)m_RespawnTime);
         }
 		
         public override void Deserialize(GenericReader reader)
@@ -90,7 +63,6 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 			
             this.m_Altar = reader.ReadItem() as PeerlessExodusAltar;
-            this.m_RespawnTime = reader.ReadTimeSpan();
         }	
     }
 }
