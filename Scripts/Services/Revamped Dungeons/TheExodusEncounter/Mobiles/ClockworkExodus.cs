@@ -146,7 +146,7 @@ namespace Server.Mobiles
 
             this.MovingParticles(target, 0x1AF6, 5, 0, false, false, 0x816, 0, 3006, 0, 0, 0);
 
-            dv.MoveToWorld(target.Location, map);
+            dv.MoveToWorld(new Point3D(target.X + 1, target.Y + 1, this.Z), map);
 
             m_LastTarget = target.Location;
         }
