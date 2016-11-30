@@ -301,7 +301,6 @@ namespace Server.Items
             this.Delete();
         }
 
-
         public virtual bool CanEnter(Mobile fighter)
         {
 	        return fighter != null && !Deleted && Map != null && Map != Map.Internal;
@@ -310,90 +309,6 @@ namespace Server.Items
 	    public virtual bool CanEnter(BaseCreature pet)
 	    {
 		    return pet != null && !Deleted && Map != null && Map != Map.Internal;
-	    }   		
-
-        public class ExitTimer : Timer
-        {
-            private static TimeSpan m_Delay = TimeSpan.FromMinutes(2);
-            private static TimeSpan m_Warning = TimeSpan.FromMinutes(8);
-
-            public ExitTimer() : base(m_Warning)
-            {
-            }
-            protected override void OnTick()
-            {
-                SendMessage(1010589);
-
-                Timer.DelayCall(m_Delay, new TimerCallback(VerLorRegExit));                               
-            }
-        }
-
-        public static void VerLorRegExit()
-        {
-            foreach (Mobile m in World.Mobiles.Values)
-            {
-                Region r = m.Region;
-
-                if (r.IsPartOf("Ver Lor Reg") && m.IsPlayer() && !CanBossCheck())
-                {
-                    switch (Utility.Random(8))
-                    {
-                        case 0:
-                            {
-                                m.MoveToWorld(new Point3D(1217, 469, -13), m.Map); // Compassion
-                                break;
-                            }
-                        case 1:
-                            {
-                                m.MoveToWorld(new Point3D(720, 1356, -60), m.Map); // Honesty
-                                break;
-                            }
-                        case 2:
-                            {
-                                m.MoveToWorld(new Point3D(748, 728, -29), m.Map); // Honor
-                                break;
-                            }
-                        case 3:
-                            {
-                                m.MoveToWorld(new Point3D(287, 1016, 0), m.Map); // Humility
-                                break;
-                            }
-                        case 4:
-                            {
-                                m.MoveToWorld(new Point3D(987, 1007, -35), m.Map); // Justice
-                                break;
-                            }
-                        case 5:
-                            {
-                                m.MoveToWorld(new Point3D(1175, 1287, -30), m.Map); // Sacrifice
-                                break;
-                            }
-                        case 6:
-                            {
-                                m.MoveToWorld(new Point3D(1532, 1341, -3), m.Map); // Spirituality
-                                break;
-                            }
-                        case 7:
-                            {
-                                m.MoveToWorld(new Point3D(527, 218, -44), m.Map); // Valor
-                                break;
-                            }
-                    }
-                }
-            }
-        }
-
-        public static void SendMessage(int message)
-        {
-            foreach (Mobile m in World.Mobiles.Values)
-            {
-                Region r = m.Region;
-
-                if (r.IsPartOf("Ver Lor Reg") && m.IsPlayer() && !CanBossCheck())
-                {
-                    m.SendLocalizedMessage(message);
-                }
-            }
-        }
+	    }        
     }
 }

@@ -9662,6 +9662,8 @@
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameWall.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\ExodusPeerless\BaseExodusPeerless.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\ExodusPeerless\ExodusPeerlessAltar.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Region.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\VerLorRegController.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusAlterAddon.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusChest.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusSacrificalDagger.cs" />

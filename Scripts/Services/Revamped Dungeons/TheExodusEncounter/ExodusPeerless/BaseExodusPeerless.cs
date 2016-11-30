@@ -1,6 +1,5 @@
 using System;
 using Server.Items;
-using Server.Spells;
 
 namespace Server.Mobiles
 {
@@ -30,8 +29,6 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-
-            new PeerlessExodusAltar.ExitTimer().Start();                        
         }        
 
         public BaseExodusPeerless(AIType aiType, FightMode fightMode, int rangePerception, int rangeFight, double activeSpeed, double passiveSpeed)
@@ -39,18 +36,9 @@ namespace Server.Mobiles
         {       
         }
 
-        public void DoSpawn()
-        {
-            ClockworkExodus m = new ClockworkExodus();
-            m.Home = new Point3D(854, 642, -40); 
-            m.RangeHome = 4;
-            m.MoveToWorld(new Point3D(854, 642, -40), Map.Ilshenar);            
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
 			
             writer.Write((Item)this.m_Altar);
@@ -59,7 +47,6 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 			
             this.m_Altar = reader.ReadItem() as PeerlessExodusAltar;
