@@ -866,6 +866,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Tools\ChestOfSending.cs" />
+    <Compile Include="Items\Tools\ForgedMetalOfArtifacts.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Items\Artifacts\Equipment\Glasses\Glasses.cs">
       <SubType>Code</SubType>

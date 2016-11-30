@@ -233,8 +233,12 @@ namespace Server.Mobiles
 
 		private DateTime m_LastOnline;
 		private RankDefinition m_GuildRank;
+        private bool m_NextEnhanceSuccess;
 
-		private int m_GuildMessageHue, m_AllianceMessageHue;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool NextEnhanceSuccess { get { return m_NextEnhanceSuccess; } set { m_NextEnhanceSuccess = value; } }
+
+        private int m_GuildMessageHue, m_AllianceMessageHue;
 
 		private List<Mobile> m_AutoStabled;
 		private List<Mobile> m_AllFollowers;
