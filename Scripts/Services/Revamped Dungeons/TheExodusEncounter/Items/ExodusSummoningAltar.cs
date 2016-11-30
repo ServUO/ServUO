@@ -72,9 +72,9 @@ namespace Server.Items
         }
 
 
-        public static bool CheckExodus()
+        public static bool CheckExodus() // Before ritual check
         {
-            return ClockworkExodus.Instances.FirstOrDefault(m => m.Region.IsPartOf("Ver Lor Reg") &&  m.HitsMax * 0.75 < m.Hits) != null;
+            return ClockworkExodus.Instances.FirstOrDefault(m => m.Region.IsPartOf("Ver Lor Reg") && ((m.Hits >= m.HitsMax * 0.60 && m.MinHits >= m.HitsMax * 0.60) || (m.Hits >= m.HitsMax * 0.75))) != null;
         }
 
         public void GetExodusAlter(Mobile from)

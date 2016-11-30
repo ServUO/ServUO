@@ -12,6 +12,15 @@ namespace Server.Mobiles
     [CorpseName("a Vile corpse")]
     public class ClockworkExodus : BaseCreature
     {
+        public static int m_MinHits;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int MinHits
+        {
+            get { return m_MinHits; }
+            set { m_MinHits = value; }
+        }
+
         public static List<ClockworkExodus> Instances { get; set; }
 
         private static readonly Type[] m_Artifact = new Type[]
@@ -72,6 +81,8 @@ namespace Server.Mobiles
             this.Karma = -24000;
 
             this.VirtualArmor = 20;
+
+            m_MinHits = this.Hits;
 
             if (Instances == null)
                 Instances = new List<ClockworkExodus>();
@@ -199,6 +210,17 @@ namespace Server.Mobiles
             DoSpecialAbility(attacker);
         }
 
+        public override void OnDamage(int amount, Mobile from, bool willKill)
+        {
+            base.OnDamage(amount, from, willKill);
+
+            if (this.Hits < m_MinHits && this.Hits < this.HitsMax * 0.60)
+                m_MinHits = this.Hits;
+
+            if (this.Hits >= this.HitsMax * 0.75)
+                m_MinHits = this.HitsMax;            
+        }
+
         public ClockworkExodus(Serial serial)
             : base(serial)
         {
@@ -209,13 +231,15 @@ namespace Server.Mobiles
             base.Serialize(writer);
 
             writer.Write((int)0);
+            writer.Write((int)m_MinHits);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
+
+            m_MinHits = reader.ReadInt();
 
             if (Instances == null)
                 Instances = new List<ClockworkExodus>();
