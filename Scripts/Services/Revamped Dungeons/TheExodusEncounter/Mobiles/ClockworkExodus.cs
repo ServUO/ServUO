@@ -10,7 +10,7 @@ using Server;
 namespace Server.Mobiles
 {
     [CorpseName("a Vile corpse")]
-    public class ClockworkExodus : BaseExodusPeerless
+    public class ClockworkExodus : BaseCreature
     {
         public static List<ClockworkExodus> Instances { get; set; }
 
@@ -29,7 +29,6 @@ namespace Server.Mobiles
         };
 
         private Point3D m_LastTarget;
-        private static Point3D m_Location;        
 
         [Constructable]
         public ClockworkExodus() : base(AIType.AI_Mystic, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -126,6 +125,13 @@ namespace Server.Mobiles
 
             return base.OnBeforeDeath();
         }
+
+        public override bool CanBeParagon { get { return false; } }
+        public override bool Unprovokable { get { return true; } }
+        public virtual double ChangeCombatant { get { return 0.3; } }
+        public override bool AlwaysMurderer { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Greater; } }
+        public override int TreasureMapLevel { get { return 5; } }
 
         public override void GenerateLoot()
         {

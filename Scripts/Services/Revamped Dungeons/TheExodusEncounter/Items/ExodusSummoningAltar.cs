@@ -72,7 +72,7 @@ namespace Server.Items
         }
 
 
-        protected virtual bool CheckExodus()
+        public static bool CheckExodus()
         {
             return ClockworkExodus.Instances.FirstOrDefault(m => m.Region.IsPartOf("Ver Lor Reg") &&  m.HitsMax * 0.75 < m.Hits) != null;
         }

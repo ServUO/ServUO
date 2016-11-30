@@ -5,46 +5,17 @@ using Server.Mobiles;
 using Server.Network;
 using System.Linq;
 using Server.ContextMenus;
+using Server.Engines.Exodus;
 
 namespace Server.Items
 {
     public abstract class PeerlessExodusAltar : BaseDecayingItem
     {
         public virtual TimeSpan DelayExit { get { return TimeSpan.FromMinutes(10); } }	
-        public abstract BaseExodusPeerless Boss { get; }
-				
-        private BaseExodusPeerless m_Peerless;
-        private Point3D m_BossLocation;
+       
         private Point3D m_TeleportDest;
-
         public override int Lifespan { get { return 840; } }
-        public override bool UseSeconds { get { return false; } }
-		
-        [CommandProperty(AccessLevel.GameMaster)]
-        public BaseExodusPeerless Peerless
-        {
-            get
-            {
-                return this.m_Peerless;
-            }
-            set
-            {
-                this.m_Peerless = value;
-            }
-        }
-		
-        [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D BossLocation
-        {
-            get
-            {
-                return this.m_BossLocation;
-            }
-            set
-            {
-                this.m_BossLocation = value;
-            }
-        }
+        public override bool UseSeconds { get { return false; } }        
 		
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D TeleportDest
@@ -211,54 +182,26 @@ namespace Server.Items
             }
         }
 
-        public static bool CanBossCheck()
-        {
-            foreach (Mobile m in World.Mobiles.Values)
-            {
-                Region r = m.Region;
-
-                if (r.IsPartOf("Ver Lor Reg"))
-                    if (m is ClockworkExodus)
-                        return true;
-            }
-
-            return false;
-        }
-
         public virtual void BeginSequence(Mobile from)
-        { 
-            if (this.m_Peerless == null)
+        {
+            if (VerLorRegController.Active && VerLorRegController.Mobile != null && ExodusSummoningAlter.CheckExodus())
             {
-                if (!CanBossCheck())
+                // teleport figters
+                for (int i = 0; i < this.m_Fighters.Count; i++)
                 {
-                    // spawn boss
-                    this.m_Peerless = this.Boss;
+                    Mobile fighter = this.m_Fighters[i];
+                    int counter = 1;
 
-                    if (this.m_Peerless != null)
+                    if (from.InRange(fighter.Location, 5) && this.CanEnter(fighter))
                     {
-                        this.m_Peerless.Home = this.m_BossLocation;
-                        this.m_Peerless.RangeHome = 4;
-                        this.m_Peerless.MoveToWorld(this.m_BossLocation, Map.Ilshenar);
-                        this.m_Peerless.Altar = this;
+                        Timer.DelayCall(TimeSpan.FromSeconds(counter), new TimerStateCallback(Enter_Callback), fighter);
+
+                        counter += 1;
                     }
-                    else
-                        return;
                 }
             }
-				
-            // teleport figters
-            for (int i = 0; i < this.m_Fighters.Count; i ++)
-            {
-                Mobile fighter = this.m_Fighters[i];
-                int counter = 1;
-				
-                if (from.InRange(fighter.Location, 5) && this.CanEnter(fighter))
-                {
-                    Timer.DelayCall(TimeSpan.FromSeconds(counter), new TimerStateCallback(Enter_Callback), fighter);
-											
-                    counter += 1;
-                }
-            }
+            else
+                from.SendLocalizedMessage(1075213); // The master of this realm has already been summoned and is engaged in combat.  Your opportunity will come after he has squashed the current batch of intruders!
         }
 		
         private void Enter_Callback(object state)

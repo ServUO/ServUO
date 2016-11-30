@@ -16,7 +16,6 @@ namespace Server.Items
         public ExodusTomeAltar(Mobile from) : base(0x2259)
         {
             this.Hue = 1932;
-            this.BossLocation = new Point3D(854, 642, -40);     //Exodus city boss loc
             this.TeleportDest = new Point3D(764, 640, 0);       //Exodus city stairs
 
             this.m_ExodusAlterAddon = new ExodusAlterAddon();
@@ -61,15 +60,7 @@ namespace Server.Items
 
             if (this.m_ExodusAlterAddon != null)
                 this.m_ExodusAlterAddon.Location = new Point3D(this.X - 1, this.Y - 1, this.Z - 18);
-        }        
-        
-        public override BaseExodusPeerless Boss
-        {
-            get
-            {
-                return new ClockworkExodus();
-            }
-        }
+        } 
 
         public override void Serialize(GenericWriter writer)
         {
