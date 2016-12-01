@@ -10,8 +10,17 @@ using Server;
 namespace Server.Mobiles
 {
     [CorpseName("a Vile corpse")]
-    public class ClockworkExodus : BaseExodusPeerless
+    public class ClockworkExodus : BaseCreature
     {
+        public static int m_MinHits;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int MinHits
+        {
+            get { return m_MinHits; }
+            set { m_MinHits = value; }
+        }
+
         public static List<ClockworkExodus> Instances { get; set; }
 
         private static readonly Type[] m_Artifact = new Type[]
@@ -29,7 +38,6 @@ namespace Server.Mobiles
         };
 
         private Point3D m_LastTarget;
-        private static Point3D m_Location;        
 
         [Constructable]
         public ClockworkExodus() : base(AIType.AI_Mystic, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -69,13 +77,12 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Anatomy, 120.0);
             this.SetSkill(SkillName.Healing, 120.0);
 
-            this.RespawnTime = TimeSpan.FromMinutes(10.0);
-            new InternalTimer(this).Start();
-
             this.Fame = 24000;
             this.Karma = -24000;
 
             this.VirtualArmor = 20;
+
+            m_MinHits = this.Hits;
 
             if (Instances == null)
                 Instances = new List<ClockworkExodus>();
@@ -130,6 +137,13 @@ namespace Server.Mobiles
             return base.OnBeforeDeath();
         }
 
+        public override bool CanBeParagon { get { return false; } }
+        public override bool Unprovokable { get { return true; } }
+        public virtual double ChangeCombatant { get { return 0.3; } }
+        public override bool AlwaysMurderer { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Greater; } }
+        public override int TreasureMapLevel { get { return 5; } }
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.AosSuperBoss, 2);
@@ -146,7 +160,7 @@ namespace Server.Mobiles
 
             this.MovingParticles(target, 0x1AF6, 5, 0, false, false, 0x816, 0, 3006, 0, 0, 0);
 
-            dv.MoveToWorld(target.Location, map);
+            dv.MoveToWorld(new Point3D(target.X + 1, target.Y + 1, this.Z), map);
 
             m_LastTarget = target.Location;
         }
@@ -196,6 +210,17 @@ namespace Server.Mobiles
             DoSpecialAbility(attacker);
         }
 
+        public override void OnDamage(int amount, Mobile from, bool willKill)
+        {
+            base.OnDamage(amount, from, willKill);
+
+            if (this.Hits < m_MinHits && this.Hits < this.HitsMax * 0.60)
+                m_MinHits = this.Hits;
+
+            if (this.Hits >= this.HitsMax * 0.75)
+                m_MinHits = this.HitsMax;            
+        }
+
         public ClockworkExodus(Serial serial)
             : base(serial)
         {
@@ -206,13 +231,15 @@ namespace Server.Mobiles
             base.Serialize(writer);
 
             writer.Write((int)0);
+            writer.Write((int)m_MinHits);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
+
+            m_MinHits = reader.ReadInt();
 
             if (Instances == null)
                 Instances = new List<ClockworkExodus>();
