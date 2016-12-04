@@ -299,7 +299,7 @@ namespace Server.Items
                         typeof(Anzuanord), typeof(Ballem),
                         typeof(Betballem), typeof(SkeletalLich),
                         typeof(UsagralemBallem), typeof(EffetePutridGargoyle),
-                        typeof(EffeteUndeadGargoyle), typeof(PitFiend)
+                        typeof(EffeteUndeadGargoyle), typeof(PitFiend),
                         typeof(ArchDaemon), typeof(AbyssalAbomination)
                     );
 
