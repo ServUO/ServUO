@@ -619,60 +619,86 @@ namespace Server.SkillHandlers
 		    ImbuingContext context = GetContext(from);
 
 		    int bonus = context.Imbue_SFBonus;
+			
+		    Type resType = null;
+		    var resAmount = Math.Max(1, weight / 100);
 
-		    double minSkill;
-		    double maxSkill;
-
-		    Type resType;
-		    int resAmount = Math.Max(1, weight / 100);
+			var success = false;
 
 		    if (weight >= 480 - bonus)
-		    {
-			    minSkill = 95.0;
-			    maxSkill = 120.0;
+			{
+				if (from.Skills[SkillName.Imbuing].Value < 95.0)
+				{
+					if (message)
+					{
+						// Your Imbuing skill is not high enough to magically unravel this item.
+						from.SendLocalizedMessage(1080434);
+					}
 
-			    resType = typeof(RelicFragment);
-			    resAmount = Math.Max(1, resAmount - Utility.Random(3));
-		    }
+					return false;
+				}
+				
+				if (from.CheckSkill(SkillName.Imbuing, 95.0, 120.0))
+				{
+					success = true;
+					resType = typeof(RelicFragment);
+					resAmount = Math.Max(1, resAmount - Utility.Random(3));
+				}
+				else if (from.CheckSkill(SkillName.Imbuing, 45.0, 95.0))
+				{
+					success = true;
+					resType = typeof(EnchantEssence);
+					resAmount = Math.Max(1, resAmount - Utility.Random(3));
+				}
+			}
 		    else if (weight > 200 - bonus && weight < 480 - bonus)
+			{
+				if (from.Skills[SkillName.Imbuing].Value < 45.0)
+				{
+					if (message)
+					{
+						// Your Imbuing skill is not high enough to magically unravel this item.
+						from.SendLocalizedMessage(1080434);
+					}
+
+					return false;
+				}
+				
+				if (from.CheckSkill(SkillName.Imbuing, 45.0, 95.0))
+				{
+					success = true;
+					resType = typeof(EnchantEssence);
+					resAmount = Math.Max(1, resAmount);
+				}
+				else if (from.CheckSkill(SkillName.Imbuing, 0.0, 45.0))
+				{
+					success = true;
+					resType = typeof(MagicalResidue);
+					resAmount = Math.Max(1, resAmount + Utility.Random(2));
+				}
+			}
+			else if (weight <= 200 - bonus)
+			{
+				if (from.CheckSkill(SkillName.Imbuing, 0.0, 45.0))
+				{
+					success = true;
+					resType = typeof(MagicalResidue);
+					resAmount = Math.Max(1, resAmount + Utility.Random(2));
+				}
+			}
+			else
+			{
+				if (message)
+				{
+					// You cannot magically unravel this item. It appears to possess little or no magic.
+					from.SendLocalizedMessage(1080437);
+				}
+
+				return false;
+			}
+
+		    if (!success)
 		    {
-			    minSkill = 45.0;
-			    maxSkill = 95.0;
-
-			    resType = typeof(EnchantEssence);
-			    resAmount = Math.Max(1, resAmount - Utility.Random(3));
-
-		    }
-		    else
-		    {
-			    minSkill = 0.0;
-			    maxSkill = 45.0;
-
-			    resType = typeof(MagicalResidue);
-			    resAmount = Math.Max(1, resAmount + Utility.Random(2));
-		    }
-
-		    if (from.Skills[SkillName.Imbuing].Value < minSkill)
-		    {
-			    if (message)
-			    {
-				    // Your Imbuing skill is not high enough to magically unravel this item.
-				    from.SendLocalizedMessage(1080434);
-			    }
-
-			    return false;
-		    }
-
-		    if (!from.CheckSkill(SkillName.Imbuing, minSkill, maxSkill))
-		    {
-			    Effects.PlaySound(from.Location, from.Map, 0x3BF);
-
-			    if (message)
-			    {
-				    // You attempt to magically unravel the item, but fail.
-				    from.SendLocalizedMessage(1080428);
-			    }
-
 			    return false;
 		    }
 
@@ -694,7 +720,7 @@ namespace Server.SkillHandlers
 
 			    resAmount -= res.Amount;
 
-			    from.AddToBackpack(res);
+			    @from.AddToBackpack(res);
 		    }
 
 		    item.Delete();
