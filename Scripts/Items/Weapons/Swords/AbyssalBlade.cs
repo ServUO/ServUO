@@ -12,11 +12,12 @@ namespace Server.Items
             this.Hue = 2404;
             this.WeaponAttributes.HitManaDrain = 50;
             this.WeaponAttributes.HitFatigue = 50;
-            this.WeaponAttributes.HitLeechHits = 60;
+            this.WeaponAttributes.HitLeechMana = 60;
             this.WeaponAttributes.HitLeechStam = 60;
             this.Attributes.WeaponSpeed = 20;
             this.Attributes.WeaponDamage = 60;
             this.AosElementDamages.Chaos = 100;
+            this.Weight = 6;
         }
 
         public AbyssalBlade(Serial serial)
