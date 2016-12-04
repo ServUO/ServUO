@@ -1050,7 +1050,7 @@ namespace Server
 			{
 				var expansion = Expansion.None;
 
-				if (ReadEnum(xmlReg, "expansion", ref expansion) && expansion > Core.Expansion)
+				if (ReadEnum(xmlReg, "expansion", ref expansion, false) && expansion > Core.Expansion)
 				{
 					continue;
 				}
@@ -1122,7 +1122,7 @@ namespace Server
 			{
 				var expansion = Expansion.None;
 
-				if (ReadEnum(xmlRect, "expansion", ref expansion) && expansion > Core.Expansion)
+				if (ReadEnum(xmlRect, "expansion", ref expansion, false) && expansion > Core.Expansion)
 				{
 					continue;
 				}
