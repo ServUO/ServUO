@@ -35,7 +35,7 @@ namespace Server.Items
         public BestialArms(Serial serial)
             : base(serial)
         {
-        }        
+        }
 
         public override void OnAdded(object parent)
         {
@@ -45,7 +45,8 @@ namespace Server.Items
             {
                 PlayerMobile pm = parent as PlayerMobile;
 
-                this.Hue = pm.AddBestialHueParent();
+                if (pm.BestialBerserk)
+                    this.Hue = pm.AddBestialHueParent();
             }
         }
 
@@ -57,8 +58,11 @@ namespace Server.Items
             {
                 PlayerMobile pm = parent as PlayerMobile;
 
-                this.Hue = 2010;
-                pm.DropBestialHueParent();
+                if (pm.BestialBerserk)
+                {
+                    this.Hue = 2010;
+                    pm.DropBestialHueParent();
+                }
             }
         }
 

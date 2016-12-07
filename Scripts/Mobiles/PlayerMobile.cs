@@ -3100,6 +3100,8 @@ namespace Server.Mobiles
         {
             int color = Items.FirstOrDefault(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i).Hue;
 
+            CheckEquipBestial();
+
             if (m_EquipBestialAmount == 4)
             {
                 temp = HueMod;
