@@ -82,7 +82,8 @@ namespace Server.Mobiles
 		MechanicalLife = 0x04000000,
         HumilityHunt = 0x08000000,
         ToggleCutTopiaries = 0x10000000,
-        HasValiantStatReward = 0x20000000
+        HasValiantStatReward = 0x20000000,
+        BestialBodyHue = 0x40000000
     }
 
 	public enum NpcGuild
@@ -3060,11 +3061,22 @@ namespace Server.Mobiles
         public List<Item> m_EquipBestial;
         public int m_EquipBestialAmount;
         private int m_BestialBodyHue;
-        private bool bodyhue;
-        private int temp;
+        private int TempBodyColor;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int BestialBody
+        public bool IsBodyHue
+        {
+            get { return GetFlag(PlayerFlag.BestialBodyHue); }
+            set
+            {
+                SetFlag(PlayerFlag.BestialBodyHue, value);
+
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int BestialBodyHue
         {
             get { return this.m_BestialBodyHue; }
             set { this.m_BestialBodyHue = value; this.InvalidateProperties(); }
@@ -3104,10 +3116,10 @@ namespace Server.Mobiles
 
             if (m_EquipBestialAmount == 4)
             {
-                temp = HueMod;
+                TempBodyColor = HueMod;
                 HueMod = color;
-                BestialBody = temp;
-                bodyhue = true;
+                BestialBodyHue = TempBodyColor;
+                IsBodyHue = true;
             }
 
             return color;
@@ -3115,10 +3127,10 @@ namespace Server.Mobiles
 
         public void DropBestialHueParent()
         {
-            if (bodyhue)
+            if (IsBodyHue)
             {
-                HueMod = BestialBody;
-                bodyhue = false;
+                HueMod = BestialBodyHue;
+                IsBodyHue = false;
             }
         }
 
@@ -3148,10 +3160,10 @@ namespace Server.Mobiles
 
                     if (m_Owner.m_EquipBestialAmount == 4)
                     {
-                        m_Owner.temp = m_Owner.HueMod;
+                        m_Owner.TempBodyColor = m_Owner.HueMod;
                         m_Owner.HueMod = 1255;
-                        m_Owner.BestialBody = m_Owner.temp;
-                        m_Owner.bodyhue = true;
+                        m_Owner.BestialBodyHue = m_Owner.TempBodyColor;
+                        m_Owner.IsBodyHue = true;
                     }
                 }
                 else
@@ -3222,14 +3234,14 @@ namespace Server.Mobiles
                 {
                     item.Hue = 2010;
                 }
-
+               
                 m_Owner.BestialBerserk = false;
-                m_Owner.SendLocalizedMessage(1151535); //Your berserk rage has subsided.
+                m_Owner.SendLocalizedMessage(1151535); //Your berserk rage has subsided.               
 
-                if (m_Owner.bodyhue)
+                if (m_Owner.IsBodyHue)
                 {
-                    m_Owner.HueMod = m_Owner.BestialBody;
-                    m_Owner.bodyhue = false;
+                    m_Owner.HueMod = m_Owner.BestialBodyHue;
+                    m_Owner.IsBodyHue = false;
                 }
             }
         }
@@ -3328,8 +3340,8 @@ namespace Server.Mobiles
 
             if (m_BerserkTimer != null)
                 m_BerserkTimer.RemoveEffect();
-
-            if (m_BestialBerserkTimer != null)
+            
+            if(m_BestialBerserkTimer != null)
                 m_BestialBerserkTimer.RemoveEffect();
 
             DropHolding();
@@ -4034,7 +4046,12 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
-                case 32:
+                case 33:
+                    {
+                        m_BestialBodyHue = reader.ReadEncodedInt();
+                        goto case 32;
+                    }
+                case 32: goto case 31;
                 case 31:
                     {
                         m_ShowGuildAbbreviation = version > 31 ? reader.ReadBool() : false;
@@ -4431,6 +4448,12 @@ namespace Server.Mobiles
 			{
 				AddBuff(new BuffInfo(BuffIcon.HidingAndOrStealth, 1075655));
 			}
+
+            if (IsBodyHue)
+            {
+                HueMod = BestialBodyHue;
+                BestialBodyHue = 0;
+            }
 		}
 
 		public override void Serialize(GenericWriter writer)
@@ -4459,7 +4482,10 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(32); // version
+			writer.Write(33); // version
+
+            // Version 33
+            writer.WriteEncodedInt(m_BestialBodyHue);
 
             // Version 31/32 Titles
             writer.Write(m_ShowGuildAbbreviation);
