@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using System.Linq;
 
 namespace Server
 { 
@@ -45,7 +46,12 @@ namespace Server
     }
 
     public static class SetHelper
-    { 
+    {
+        public static int CheckBestialHueParent(Mobile m)
+        {
+            return m.Items.FirstOrDefault(i => i != null && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i && (i is BestialGloves || i is BestialArms || i is BestialHelm || i is BestialGorget || i is BestialNecklace || i is BestialLegs || i is BestialKilt || i is BestialEarrings)).Hue;
+        }
+
         public static void GetSetProperties(ObjectPropertyList list, ISetItem setItem)
         {
             AosAttributes attrs;
