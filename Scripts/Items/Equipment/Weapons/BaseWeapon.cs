@@ -2220,7 +2220,7 @@ namespace Server.Items
                 percentageBonus += Math.Min(60, 15 * (int)(((float)(attacker.HitsMax - attacker.Hits) / attacker.HitsMax) * 5.0));
 
             if (attacker is PlayerMobile && ((PlayerMobile)attacker).BestialBerserk)
-                percentageBonus += Math.Min(60, 15 * (int)(((float)(attacker.HitsMax - attacker.Hits) / attacker.HitsMax) * ((PlayerMobile)attacker).BestialBerserk));
+                percentageBonus += Math.Min(60, 15 * (int)(((float)(attacker.HitsMax - attacker.Hits) / attacker.HitsMax) * ((PlayerMobile)attacker).BestialEquipAmount));
             #endregion
 
             #region Mondain's Legacy
