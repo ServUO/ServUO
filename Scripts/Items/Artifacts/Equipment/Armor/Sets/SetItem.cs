@@ -49,7 +49,7 @@ namespace Server
     {
         public static int CheckBestialHueParent(Mobile m)
         {
-            return m.Items.Where(i => i != null && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i && (i is BestialGloves || i is BestialArms || i is BestialHelm || i is BestialGorget || i is BestialNecklace || i is BestialLegs || i is BestialKilt || i is BestialEarrings)).Max(r => r.Hue);
+            return m.Items.FirstOrDefault(i => i != null && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i && (i is BestialGloves || i is BestialArms || i is BestialHelm || i is BestialGorget || i is BestialNecklace || i is BestialLegs || i is BestialKilt || i is BestialEarrings)).Hue;
         }
 
         public static void GetSetProperties(ObjectPropertyList list, ISetItem setItem)
@@ -183,10 +183,13 @@ namespace Server
 						
                         setItem.SetSkillBonuses.Remove();					
                     }
-										
-                    int temp = item.Hue;
-                    item.Hue = setItem.SetHue;
-                    setItem.SetHue = temp;
+
+                    if (setItem.SetHue != 0)
+                    {
+                        int temp = item.Hue;
+                        item.Hue = setItem.SetHue;
+                        setItem.SetHue = temp;
+                    }
 					
                     setItem.SetEquipped = false;
                     setItem.LastEquipped = false;		
@@ -213,10 +216,13 @@ namespace Server
 							
                             setItem.SetSkillBonuses.AddTo(to);	
                         }
-						
-                        temp = to.Items[i].Hue;
-                        to.Items[i].Hue = setItem.SetHue;
-                        setItem.SetHue = temp;
+
+                        if (setItem.SetHue != 0)
+                        {
+                            temp = to.Items[i].Hue;
+                            to.Items[i].Hue = setItem.SetHue;
+                            setItem.SetHue = temp;
+                        }
 						
                         setItem.SetEquipped = true;
                         to.Items[i].InvalidateProperties();

@@ -26,9 +26,8 @@ namespace Server.Items
         [Constructable]
         public BestialEarrings()
         {
-            Hue = 2010;
+            this.Hue = 2010;
             this.Weight = 1;
-            SetHue = 2010;
         }
 
         public BestialEarrings(Serial serial)

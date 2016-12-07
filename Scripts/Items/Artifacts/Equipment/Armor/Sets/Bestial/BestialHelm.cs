@@ -29,7 +29,6 @@ namespace Server.Items
             this.Hue = 2010;
             this.Weight = 5;
             this.StrRequirement = 10;
-            this.SetHue = 2010;
         }
 
 		public BestialHelm( Serial serial ) : base( serial )

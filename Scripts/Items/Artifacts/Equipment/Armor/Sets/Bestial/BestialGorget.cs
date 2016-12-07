@@ -29,7 +29,6 @@ namespace Server.Items
             this.Hue = 2010;
             this.Weight = 1;
             this.StrRequirement = 25;
-            this.SetHue = 2010;
         }
 
 		public BestialGorget( Serial serial ) : base( serial )

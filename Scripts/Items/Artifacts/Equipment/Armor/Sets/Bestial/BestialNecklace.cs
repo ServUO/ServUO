@@ -26,9 +26,8 @@ namespace Server.Items
         [Constructable]
         public BestialNecklace()
         {
-            Hue = 2010;
+            this.Hue = 2010;
             this.Weight = 1;
-            SetHue = 2010;
         }
 
         public BestialNecklace(Serial serial)

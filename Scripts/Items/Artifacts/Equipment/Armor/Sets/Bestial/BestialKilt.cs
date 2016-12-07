@@ -26,9 +26,8 @@ namespace Server.Items
         [Constructable]
         public BestialKilt()
         {
-            Hue = 2010;
+            this.Hue = 2010;
             this.Weight = 5;
-            SetHue = 2010;
         }
 
         public BestialKilt(Serial serial)

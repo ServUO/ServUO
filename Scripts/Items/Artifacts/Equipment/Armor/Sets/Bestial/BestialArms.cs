@@ -26,11 +26,10 @@ namespace Server.Items
         [Constructable]
         public BestialArms()
         {
-            ItemID = 0x4052;
+            this.ItemID = 0x4052;
             this.Hue = 2010;
             this.Weight = 4;
             this.StrRequirement = 25;
-            this.SetHue = 2010;
         }
 
         public BestialArms(Serial serial)
