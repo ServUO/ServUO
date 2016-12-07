@@ -1,6 +1,7 @@
 using System;
 using Server;
 using Server.Mobiles;
+using Server.Berserk;
 
 namespace Server.Items
 {
@@ -46,7 +47,7 @@ namespace Server.Items
                 PlayerMobile pm = parent as PlayerMobile;
 
                 if (pm.BestialBerserk)
-                    this.Hue = pm.AddBestialHueParent();
+                    this.Hue = BeastialSetHelper.AddBestialHueParent(pm);
             }
         }
 
@@ -61,7 +62,7 @@ namespace Server.Items
                 if (pm.BestialBerserk)
                 {
                     this.Hue = 2010;
-                    pm.DropBestialHueParent();
+                    BeastialSetHelper.DropBestialHueParent(pm);
                 }
             }
         }

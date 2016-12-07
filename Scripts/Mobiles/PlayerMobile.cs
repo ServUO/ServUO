@@ -43,6 +43,7 @@ using Server.Spells.Spellweaving;
 using Server.Targeting;
 using System.Linq;
 using Server.Spells.SkillMasteries;
+using Server.Berserk;
 
 using RankDefinition = Server.Guilds.RankDefinition;
 #endregion
@@ -2963,7 +2964,7 @@ namespace Server.Mobiles
             {               
                 if (((float)(Hits - amount) / HitsMax) < 0.5 && Hits > amount)
                 {
-                    if (CheckBestialArmor(this))
+                    if (BeastialSetHelper.CheckBestialArmor(this))
                     {
                         if (m_BestialBerserkTimer != null)
                             m_BestialBerserkTimer.Stop();
@@ -3014,54 +3015,16 @@ namespace Server.Mobiles
         {
             get { return m_Berserk; }
             set { m_Berserk = value; }
-        }
-
-        public class BerserkTimer : Timer
-        {
-            private PlayerMobile m_Owner;
-
-            public BerserkTimer(PlayerMobile owner)
-                : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
-            {
-                m_Owner = owner;
-
-                m_Owner.PlaySound(0x20F);
-                m_Owner.PlaySound(m_Owner.Body.IsFemale ? 0x338 : 0x44A);
-                m_Owner.FixedParticles(0x376A, 1, 31, 9961, 1160, 0, EffectLayer.Waist);
-                m_Owner.FixedParticles(0x37C4, 1, 31, 9502, 43, 2, EffectLayer.Waist);
-
-                BuffInfo.AddBuff(m_Owner, new BuffInfo(BuffIcon.Berserk, 1080449, 1115021, "15\t3", false));
-
-                m_Owner.Berserk = true;
-            }
-
-            protected override void OnTick()
-            {
-                float percentage = (float)m_Owner.Hits / m_Owner.HitsMax;
-
-                if (percentage >= 0.8)
-                    RemoveEffect();
-            }
-
-            public void RemoveEffect()
-            {
-                m_Owner.PlaySound(0xF8);
-                BuffInfo.RemoveBuff(m_Owner, BuffIcon.Berserk);
-
-                m_Owner.Berserk = false;
-
-                Stop();
-            }
-        }
+        }        
         #endregion
 
         #region Bestial Berserk
         private BestialBerserkTimer m_BestialBerserkTimer;
         private bool m_BestialBerserk;
-        public List<Item> m_EquipBestial;
+        public List<Item> EquipBestial;
         public int m_EquipBestialAmount;
         private int m_BestialBodyHue;
-        private int TempBodyColor;
+        private int m_TempBodyColor;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsBodyHue
@@ -3073,6 +3036,13 @@ namespace Server.Mobiles
 
                 InvalidateProperties();
             }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int TempBodyColor
+        {
+            get { return this.m_TempBodyColor; }
+            set { this.m_TempBodyColor = value;}
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -3092,159 +3062,7 @@ namespace Server.Mobiles
         {
             get { return m_EquipBestialAmount; }
             set { m_EquipBestialAmount = value; }
-        }
-
-        public bool CheckBestialArmor(PlayerMobile m)
-        {
-            return m.Items.Where(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i) != null;
-        }
-
-        public void CheckEquipBestial()
-        {
-            if (m_EquipBestial != null)
-                m_EquipBestial.Clear();
-
-            m_EquipBestial = Items.Where(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i).ToList();
-            m_EquipBestialAmount = m_EquipBestial.Count();
-        }
-
-        public int AddBestialHueParent()
-        {
-            int color = Items.FirstOrDefault(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i).Hue;
-
-            CheckEquipBestial();
-
-            if (m_EquipBestialAmount == 4)
-            {
-                TempBodyColor = HueMod;
-                HueMod = color;
-                BestialBodyHue = TempBodyColor;
-                IsBodyHue = true;
-            }
-
-            return color;
-        }
-
-        public void DropBestialHueParent()
-        {
-            if (IsBodyHue)
-            {
-                HueMod = BestialBodyHue;
-                IsBodyHue = false;
-            }
-        }
-
-        public class BestialBerserkTimer : Timer
-        {            
-            private PlayerMobile m_Owner;
-            private int m_Count = 0;
-            private bool msg;
-            private const int MaxCount = 10;            
-
-            public BestialBerserkTimer(PlayerMobile owner)
-                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
-            {
-                m_Owner = owner;
-
-                m_Owner.CheckEquipBestial();
-
-                if (!m_Owner.BestialBerserk)
-                {
-                    m_Owner.SendLocalizedMessage(1151532); //You enter a berserk rage!
-                    m_Owner.BestialBerserk = true;                    
-
-                    foreach (var item in m_Owner.m_EquipBestial)
-                    {
-                        item.Hue = 1255;
-                    }
-
-                    if (m_Owner.m_EquipBestialAmount == 4)
-                    {
-                        m_Owner.TempBodyColor = m_Owner.HueMod;
-                        m_Owner.HueMod = 1255;
-                        m_Owner.BestialBodyHue = m_Owner.TempBodyColor;
-                        m_Owner.IsBodyHue = true;
-                    }
-                }
-                else
-                {
-                    msg = false;                    
-
-                    foreach (var item in m_Owner.m_EquipBestial.Where(i => i.Hue < 1260))
-                    {
-                        item.Hue++;
-
-                        if (!msg)
-                        {
-                            m_Owner.SendLocalizedMessage(1151533, "", item.Hue); //Your rage grows!
-
-                            if (m_Owner.m_EquipBestialAmount == 4)
-                                m_Owner.HueMod++;
-
-                            msg = true;
-                        }
-                    }
-                }
-            }
-
-            protected override void OnTick()
-            {
-                if (!m_Owner.Alive)
-                    RemoveEffect();
-
-                m_Count++;
-
-                m_Owner.CheckEquipBestial();
-
-                if (m_Count >= MaxCount)
-                {
-                    RemoveEffect();
-                }
-                else
-                {
-                    if (m_Count % 3 == 0)
-                    {
-                        msg = false;                            
-
-                        foreach (var item in m_Owner.m_EquipBestial.Where(i => i.Hue > 1255))
-                        {
-                            item.Hue--;
-
-                            if (!msg)
-                            {
-                                m_Owner.SendLocalizedMessage(1151534, "", item.Hue); //Your rage recedes.
-
-                                if (m_Owner.m_EquipBestialAmount == 4)
-                                    m_Owner.HueMod--;
-
-                                msg = true;
-                            }
-                        }
-                    }                    
-                }                
-            }
-
-            public void RemoveEffect()
-            {
-                Stop();
-
-                m_Owner.CheckEquipBestial();
-
-                foreach (var item in m_Owner.m_EquipBestial)
-                {
-                    item.Hue = 2010;
-                }
-               
-                m_Owner.BestialBerserk = false;
-                m_Owner.SendLocalizedMessage(1151535); //Your berserk rage has subsided.               
-
-                if (m_Owner.IsBodyHue)
-                {
-                    m_Owner.HueMod = m_Owner.BestialBodyHue;
-                    m_Owner.IsBodyHue = false;
-                }
-            }
-        }
+        }        
         #endregion
 
         public override void Resurrect()
