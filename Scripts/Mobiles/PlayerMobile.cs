@@ -4269,8 +4269,8 @@ namespace Server.Mobiles
 
             if (IsBodyHue)
             {
-                HueMod = BestialBodyHue;
-                BestialBodyHue = 0;
+                Hue = BestialBodyHue;
+                IsBodyHue = false;
             }
 		}
 

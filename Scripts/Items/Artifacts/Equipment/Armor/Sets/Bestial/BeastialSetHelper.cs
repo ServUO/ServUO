@@ -31,8 +31,8 @@ namespace Server.Berserk
 
             if (pm.m_EquipBestialAmount == 4)
             {
-                pm.TempBodyColor = pm.HueMod;
-                pm.HueMod = color;
+                pm.TempBodyColor = pm.Hue;
+                pm.Hue = color;
                 pm.BestialBodyHue = pm.TempBodyColor;
                 pm.IsBodyHue = true;
             }
@@ -44,7 +44,7 @@ namespace Server.Berserk
         {
             if (pm.IsBodyHue)
             {
-                pm.HueMod = pm.BestialBodyHue;
+                pm.Hue = pm.BestialBodyHue;
                 pm.IsBodyHue = false;
             }
         }        
@@ -76,8 +76,8 @@ namespace Server.Berserk
 
                 if (m_Owner.m_EquipBestialAmount == 4)
                 {
-                    m_Owner.TempBodyColor = m_Owner.HueMod;
-                    m_Owner.HueMod = 1255;
+                    m_Owner.TempBodyColor = m_Owner.Hue;
+                    m_Owner.Hue = 1255;
                     m_Owner.BestialBodyHue = m_Owner.TempBodyColor;
                     m_Owner.IsBodyHue = true;
                 }
@@ -95,7 +95,7 @@ namespace Server.Berserk
                         m_Owner.SendLocalizedMessage(1151533, "", item.Hue); //Your rage grows!
 
                         if (m_Owner.m_EquipBestialAmount == 4)
-                            m_Owner.HueMod++;
+                            m_Owner.Hue++;
 
                         msg = true;
                     }
@@ -131,7 +131,7 @@ namespace Server.Berserk
                             m_Owner.SendLocalizedMessage(1151534, "", item.Hue); //Your rage recedes.
 
                             if (m_Owner.m_EquipBestialAmount == 4)
-                                m_Owner.HueMod--;
+                                m_Owner.Hue--;
 
                             msg = true;
                         }
@@ -156,7 +156,7 @@ namespace Server.Berserk
 
             if (m_Owner.IsBodyHue)
             {
-                m_Owner.HueMod = m_Owner.BestialBodyHue;
+                m_Owner.Hue = m_Owner.BestialBodyHue;
                 m_Owner.IsBodyHue = false;
             }
         }
