@@ -1,6 +1,7 @@
 using System;
 using Server.Items;
 using System.Linq;
+using Server.Mobiles;
 
 namespace Server
 { 
@@ -47,11 +48,6 @@ namespace Server
 
     public static class SetHelper
     {
-        public static int CheckBestialHueParent(Mobile m)
-        {
-            return m.Items.FirstOrDefault(i => i != null && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i && (i is BestialGloves || i is BestialArms || i is BestialHelm || i is BestialGorget || i is BestialNecklace || i is BestialLegs || i is BestialKilt || i is BestialEarrings)).Hue;
-        }
-
         public static void GetSetProperties(ObjectPropertyList list, ISetItem setItem)
         {
             AosAttributes attrs;
@@ -184,7 +180,7 @@ namespace Server
                         setItem.SetSkillBonuses.Remove();					
                     }
 
-                    if (setItem.SetHue != 0)
+                    if (setID != SetItem.Bestial)
                     {
                         int temp = item.Hue;
                         item.Hue = setItem.SetHue;
@@ -217,7 +213,7 @@ namespace Server
                             setItem.SetSkillBonuses.AddTo(to);	
                         }
 
-                        if (setItem.SetHue != 0)
+                        if (setID != SetItem.Bestial)
                         {
                             temp = to.Items[i].Hue;
                             to.Items[i].Hue = setItem.SetHue;

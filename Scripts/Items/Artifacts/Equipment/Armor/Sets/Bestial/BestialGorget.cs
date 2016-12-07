@@ -43,7 +43,7 @@ namespace Server.Items
             {
                 PlayerMobile pm = parent as PlayerMobile;
 
-                this.Hue = SetHelper.CheckBestialHueParent(pm);
+                this.Hue = pm.AddBestialHueParent();
             }
         }
 
@@ -51,9 +51,12 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile && !Deleted)
+            if (parent is PlayerMobile && !Deleted)
             {
+                PlayerMobile pm = parent as PlayerMobile;
+
                 this.Hue = 2010;
+                pm.DropBestialHueParent();
             }
         }
 

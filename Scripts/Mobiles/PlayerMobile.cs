@@ -3059,6 +3059,16 @@ namespace Server.Mobiles
         private bool m_BestialBerserk;
         public List<Item> m_EquipBestial;
         public int m_EquipBestialAmount;
+        private int m_BestialBodyHue;
+        private bool bodyhue;
+        private int temp;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int BestialBody
+        {
+            get { return this.m_BestialBodyHue; }
+            set { this.m_BestialBodyHue = value; this.InvalidateProperties(); }
+        }
 
         public bool BestialBerserk
         {
@@ -3074,16 +3084,40 @@ namespace Server.Mobiles
 
         public bool CheckBestialArmor(PlayerMobile m)
         {
-            return m.Items.Where(i => i != null && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i && (i is BestialGloves || i is BestialArms || i is BestialHelm || i is BestialGorget || i is BestialNecklace || i is BestialLegs || i is BestialKilt || i is BestialEarrings)) != null;
+            return m.Items.Where(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i) != null;
         }
 
         public void CheckEquipBestial()
         {
             if (m_EquipBestial != null)
-                m_EquipBestial.Clear();            
+                m_EquipBestial.Clear();
 
-            m_EquipBestial = Items.Where(i => i != null && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i && (i is BestialGloves || i is BestialArms || i is BestialHelm || i is BestialGorget || i is BestialNecklace || i is BestialLegs || i is BestialKilt || i is BestialEarrings)).ToList();
+            m_EquipBestial = Items.Where(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i).ToList();
             m_EquipBestialAmount = m_EquipBestial.Count();
+        }
+
+        public int AddBestialHueParent()
+        {
+            int color = Items.FirstOrDefault(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i).Hue;
+
+            if (m_EquipBestialAmount == 4)
+            {
+                temp = HueMod;
+                HueMod = color;
+                BestialBody = temp;
+                bodyhue = true;
+            }
+
+            return color;
+        }
+
+        public void DropBestialHueParent()
+        {
+            if (bodyhue)
+            {
+                HueMod = BestialBody;
+                bodyhue = false;
+            }
         }
 
         public class BestialBerserkTimer : Timer
@@ -3091,7 +3125,7 @@ namespace Server.Mobiles
             private PlayerMobile m_Owner;
             private int m_Count = 0;
             private bool msg;
-            private const int MaxCount = 10;
+            private const int MaxCount = 10;            
 
             public BestialBerserkTimer(PlayerMobile owner)
                 : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
@@ -3103,16 +3137,24 @@ namespace Server.Mobiles
                 if (!m_Owner.BestialBerserk)
                 {
                     m_Owner.SendLocalizedMessage(1151532); //You enter a berserk rage!
-                    m_Owner.BestialBerserk = true;
+                    m_Owner.BestialBerserk = true;                    
 
                     foreach (var item in m_Owner.m_EquipBestial)
                     {
                         item.Hue = 1255;
                     }
+
+                    if (m_Owner.m_EquipBestialAmount == 4)
+                    {
+                        m_Owner.temp = m_Owner.HueMod;
+                        m_Owner.HueMod = 1255;
+                        m_Owner.BestialBody = m_Owner.temp;
+                        m_Owner.bodyhue = true;
+                    }
                 }
                 else
                 {
-                    msg = false;
+                    msg = false;                    
 
                     foreach (var item in m_Owner.m_EquipBestial.Where(i => i.Hue < 1260))
                     {
@@ -3121,6 +3163,10 @@ namespace Server.Mobiles
                         if (!msg)
                         {
                             m_Owner.SendLocalizedMessage(1151533, "", item.Hue); //Your rage grows!
+
+                            if (m_Owner.m_EquipBestialAmount == 4)
+                                m_Owner.HueMod++;
+
                             msg = true;
                         }
                     }
@@ -3153,6 +3199,10 @@ namespace Server.Mobiles
                             if (!msg)
                             {
                                 m_Owner.SendLocalizedMessage(1151534, "", item.Hue); //Your rage recedes.
+
+                                if (m_Owner.m_EquipBestialAmount == 4)
+                                    m_Owner.HueMod--;
+
                                 msg = true;
                             }
                         }
@@ -3173,6 +3223,12 @@ namespace Server.Mobiles
 
                 m_Owner.BestialBerserk = false;
                 m_Owner.SendLocalizedMessage(1151535); //Your berserk rage has subsided.
+
+                if (m_Owner.bodyhue)
+                {
+                    m_Owner.HueMod = m_Owner.BestialBody;
+                    m_Owner.bodyhue = false;
+                }
             }
         }
         #endregion
