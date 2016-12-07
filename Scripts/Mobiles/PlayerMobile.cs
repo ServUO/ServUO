@@ -3164,6 +3164,13 @@ namespace Server.Mobiles
             {
                 Stop();
 
+                m_Owner.CheckEquipBestial();
+
+                foreach (var item in m_Owner.m_EquipBestial)
+                {
+                    item.Hue = 2010;
+                }
+
                 m_Owner.BestialBerserk = false;
                 m_Owner.SendLocalizedMessage(1151535); //Your berserk rage has subsided.
             }
