@@ -4269,10 +4269,10 @@ namespace Server.Mobiles
 
             if (IsBodyHue)
             {
-                Hue = BestialBodyHue;
+                HueMod = -1;
                 IsBodyHue = false;
             }
-		}
+        }
 
 		public override void Serialize(GenericWriter writer)
 		{

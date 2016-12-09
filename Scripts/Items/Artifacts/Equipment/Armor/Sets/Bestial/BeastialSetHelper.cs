@@ -2,6 +2,9 @@
 using Server.Mobiles;
 using System.Collections.Generic;
 using System.Linq;
+using Server.Spells;
+using Server.Spells.Necromancy;
+using Server.Spells.Spellweaving;
 
 namespace Server.Berserk
 {
@@ -31,8 +34,8 @@ namespace Server.Berserk
 
             if (pm.m_EquipBestialAmount == 4)
             {
-                pm.TempBodyColor = pm.Hue;
-                pm.Hue = color;
+                pm.TempBodyColor = pm.HueMod;
+                pm.HueMod = color;
                 pm.BestialBodyHue = pm.TempBodyColor;
                 pm.IsBodyHue = true;
             }
@@ -44,7 +47,7 @@ namespace Server.Berserk
         {
             if (pm.IsBodyHue)
             {
-                pm.Hue = pm.BestialBodyHue;
+                pm.HueMod = pm.BestialBodyHue;
                 pm.IsBodyHue = false;
             }
         }        
@@ -76,8 +79,8 @@ namespace Server.Berserk
 
                 if (m_Owner.m_EquipBestialAmount == 4)
                 {
-                    m_Owner.TempBodyColor = m_Owner.Hue;
-                    m_Owner.Hue = 1255;
+                    m_Owner.TempBodyColor = m_Owner.HueMod;
+                    m_Owner.HueMod = 1255;
                     m_Owner.BestialBodyHue = m_Owner.TempBodyColor;
                     m_Owner.IsBodyHue = true;
                 }
@@ -95,7 +98,7 @@ namespace Server.Berserk
                         m_Owner.SendLocalizedMessage(1151533, "", item.Hue); //Your rage grows!
 
                         if (m_Owner.m_EquipBestialAmount == 4)
-                            m_Owner.Hue++;
+                            m_Owner.HueMod++;
 
                         msg = true;
                     }
@@ -131,7 +134,7 @@ namespace Server.Berserk
                             m_Owner.SendLocalizedMessage(1151534, "", item.Hue); //Your rage recedes.
 
                             if (m_Owner.m_EquipBestialAmount == 4)
-                                m_Owner.Hue--;
+                                m_Owner.HueMod--;
 
                             msg = true;
                         }
@@ -156,7 +159,25 @@ namespace Server.Berserk
 
             if (m_Owner.IsBodyHue)
             {
-                m_Owner.Hue = m_Owner.BestialBodyHue;
+                TransformContext context = TransformationSpellHelper.GetContext(m_Owner);
+
+                if (context != null && context.Type == typeof(WraithFormSpell))
+                {
+                    m_Owner.HueMod = m_Owner.Female ? 0 : 0x4001;
+                }
+                else if (context != null && context.Type == typeof(VampiricEmbraceSpell))
+                {
+                    m_Owner.HueMod = 0x847E;
+                }
+                else if (context != null && context.Type == typeof(EtherealVoyageSpell))
+                {
+                    m_Owner.HueMod = 0x48F;
+                }
+                else
+                {
+                    m_Owner.HueMod = -1;
+                }
+
                 m_Owner.IsBodyHue = false;
             }
         }
