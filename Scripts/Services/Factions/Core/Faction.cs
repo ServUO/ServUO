@@ -15,10 +15,18 @@ namespace Server.Factions
     public static class Settings
     {
         public static bool NewCoMLocation { get; private set; }
+        public static bool Enabled { get; private set; }
 
         public static void Configure()
         {
             NewCoMLocation = Config.Get("Factions.NewCoMLocation", true);
+            Enabled = Config.Get("Factions.Enabled", false);
+
+            /*  Disabling Factions:
+             *  PlayerStates are not loaded, ie faction players lose their faction status 
+             *  Factions/Towns are still serialized, so if factions were ever re-enabled, the town, tithe rate, etc would be the same
+             *  stronghold regions are not registered for free movement for non-factions
+             */
         }
     }
 
@@ -52,7 +60,9 @@ namespace Server.Factions
             set
             {
                 this.m_Definition = value;
-                this.m_StrongholdRegion = new StrongholdRegion(this);
+
+                if(Settings.Enabled)
+                    this.m_StrongholdRegion = new StrongholdRegion(this);
             }
         }
 

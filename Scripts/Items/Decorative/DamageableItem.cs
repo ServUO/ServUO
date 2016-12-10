@@ -282,9 +282,8 @@ namespace Server.Items
 			return true;
 		}
 
-		public virtual void OnDestroyed(WoodenBox lootbox)
+		public virtual void OnAfterDestroyed()
 		{
-			return;
 		}
 
 		public virtual void Damage(int amount, Mobile from)
@@ -371,6 +370,8 @@ namespace Server.Items
                 }
 
                 Destroyed = true;
+                OnAfterDestroyed();
+
                 return true;
             }
 

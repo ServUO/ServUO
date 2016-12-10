@@ -1020,14 +1020,14 @@ namespace Server.Mobiles
                 return false;
             }
 
-            if (!(m is BaseCreature) || m is MilitiaFighter)
-            {
-                return true;
-            }
-
             if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
             {
                 return false;
+            }
+
+            if (!(m is BaseCreature) || m is MilitiaFighter)
+            {
+                return true;
             }
 
             BaseCreature c = (BaseCreature)m;
@@ -1173,6 +1173,16 @@ namespace Server.Mobiles
             chance += (int)XmlMobFactions.GetScaledFaction(m, this, -250, 250, 0.001);
 
             return ((double)chance / 1000);
+        }
+
+        public virtual bool CanTransfer(Mobile m)
+        {
+            return true;
+        }
+
+        public virtual bool CanFriend(Mobile m)
+        {
+            return true;
         }
 
         private static readonly Type[] m_AnimateDeadTypes = new[]

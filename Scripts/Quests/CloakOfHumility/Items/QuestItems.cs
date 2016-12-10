@@ -38,11 +38,6 @@ namespace Server.Engines.Quests
     {
         public override int LabelNumber { get { return 1075789; } } // A Plain Grey Cloak
 
-        private Mobile m_Owner;
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } set { m_Owner = value; } }
-
         [Constructable]
         public GreyCloak()
         {
@@ -57,9 +52,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
-
-            writer.Write(m_Owner);
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -68,7 +61,8 @@ namespace Server.Engines.Quests
 
             int version = reader.ReadInt();
 
-            m_Owner = reader.ReadMobile();
+            if(version == 0)
+                reader.ReadMobile();
         }
     }
 

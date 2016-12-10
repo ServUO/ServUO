@@ -112,5 +112,18 @@ namespace Server.Mobiles
                 PointsSystem.DespiseCrystals.SetPoints(Player, value);
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double ViceVsVirtue
+        {
+            get
+            {
+                return (int)PointsSystem.ViceVsVirtue.GetPoints(Player);
+            }
+            set
+            {
+                PointsSystem.ViceVsVirtue.SetPoints(Player, value);
+            }
+        }
     }
 }

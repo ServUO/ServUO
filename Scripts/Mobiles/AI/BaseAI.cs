@@ -1486,7 +1486,7 @@ namespace Server.Mobiles
 						{
 							from.SendLocalizedMessage(1005482); // Your pet does not seem to be interested in making new friends right now.
 						}
-						else
+						else if(m_Mobile.CanFriend(to))
 						{
 							// ~1_NAME~ will now accept movement commands from ~2_NAME~.
 							from.SendLocalizedMessage(1049676, String.Format("{0}\t{1}", m_Mobile.Name, to.Name));
@@ -1990,7 +1990,7 @@ namespace Server.Mobiles
 					from.SendMessage("You may not transfer a pet that has recently been in combat.");
 					to.SendMessage("The pet may not be transfered to you because it has recently been in combat.");
 				}
-				else
+				else if(m_Mobile.CanTransfer(from))
 				{
 					NetState fromState = from.NetState, toState = to.NetState;
 
