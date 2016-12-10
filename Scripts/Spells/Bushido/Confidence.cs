@@ -49,11 +49,19 @@ namespace Server.Spells.Bushido
             if (t != null)
                 t.Stop();
 
-            t = new InternalTimer(m);
+            TimeSpan length = TimeSpan.FromSeconds(15.0);
+
+            t = new InternalTimer(m, length);
 
             m_Table[m] = t;
 
             t.Start();
+
+            double bushido = m.Skills.Bushido.Value;
+
+            string args = String.Format("12\t5\t{0}", (int)(15 + (bushido * bushido / 576)) * 2.5);
+
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Confidence, 1060596, 1153809, length, m, args));
         }
 
         public static void EndConfidence(Mobile m)
@@ -64,6 +72,7 @@ namespace Server.Spells.Bushido
                 t.Stop();
 
             m_Table.Remove(m);
+            BuffInfo.RemoveBuff(m, BuffIcon.Confidence);
 
             OnEffectEnd(m, typeof(Confidence));
         }
@@ -116,7 +125,7 @@ namespace Server.Spells.Bushido
                 this.OnCastSuccessful(this.Caster);
 
                 BeginConfidence(this.Caster);
-                BeginRegenerating(this.Caster);
+                BeginRegenerating(this.Caster);              
             }
 
             this.FinishSequence();
@@ -125,8 +134,8 @@ namespace Server.Spells.Bushido
         private class InternalTimer : Timer
         {
             private readonly Mobile m_Mobile;
-            public InternalTimer(Mobile m)
-                : base(TimeSpan.FromSeconds(15.0))
+            public InternalTimer(Mobile m, TimeSpan length)
+                : base(length)
             {
                 this.m_Mobile = m;
                 this.Priority = TimerPriority.TwoFiftyMS;

@@ -49,11 +49,15 @@ namespace Server.Spells.Bushido
             if (t != null)
                 t.Stop();
 
-            t = new InternalTimer(m);
+            TimeSpan length = TimeSpan.FromSeconds(30.0);
+
+            t = new InternalTimer(m, length);
 
             m_Table[m] = t;
 
             t.Start();
+
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.CounterAttack, 1060598, 1063266, length, m));
         }
 
         public static void StopCountering(Mobile m)
@@ -64,6 +68,7 @@ namespace Server.Spells.Bushido
                 t.Stop();
 
             m_Table.Remove(m);
+            BuffInfo.RemoveBuff(m, BuffIcon.CounterAttack);
 
             OnEffectEnd(m, typeof(CounterAttack));
         }
@@ -110,8 +115,8 @@ namespace Server.Spells.Bushido
         private class InternalTimer : Timer
         {
             private readonly Mobile m_Mobile;
-            public InternalTimer(Mobile m)
-                : base(TimeSpan.FromSeconds(30.0))
+            public InternalTimer(Mobile m, TimeSpan length)
+                : base(length)
             {
                 this.m_Mobile = m;
                 this.Priority = TimerPriority.TwoFiftyMS;

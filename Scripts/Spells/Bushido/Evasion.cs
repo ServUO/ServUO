@@ -175,11 +175,15 @@ namespace Server.Spells.Bushido
             if (t != null)
                 t.Stop();
 
-            t = new InternalTimer(m, GetEvadeDuration(m));
+            TimeSpan length = GetEvadeDuration(m);
+
+            t = new InternalTimer(m, length);
 
             m_Table[m] = t;
 
             t.Start();
+
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Evasion, 1060597, 1153810, length, m));
         }
 
         public static void EndEvasion(Mobile m)
@@ -190,6 +194,7 @@ namespace Server.Spells.Bushido
                 t.Stop();
 
             m_Table.Remove(m);
+            BuffInfo.RemoveBuff(m, BuffIcon.Evasion);
 
             OnEffectEnd(m, typeof(Evasion));
         }
