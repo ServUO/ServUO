@@ -1,5 +1,7 @@
 using System;
 using Server.Items;
+using System.Linq;
+using Server.Mobiles;
 
 namespace Server
 { 
@@ -45,7 +47,7 @@ namespace Server
     }
 
     public static class SetHelper
-    { 
+    {
         public static void GetSetProperties(ObjectPropertyList list, ISetItem setItem)
         {
             AosAttributes attrs;
@@ -177,10 +179,13 @@ namespace Server
 						
                         setItem.SetSkillBonuses.Remove();					
                     }
-										
-                    int temp = item.Hue;
-                    item.Hue = setItem.SetHue;
-                    setItem.SetHue = temp;
+
+                    if (setID != SetItem.Bestial)
+                    {
+                        int temp = item.Hue;
+                        item.Hue = setItem.SetHue;
+                        setItem.SetHue = temp;
+                    }
 					
                     setItem.SetEquipped = false;
                     setItem.LastEquipped = false;		
@@ -207,10 +212,13 @@ namespace Server
 							
                             setItem.SetSkillBonuses.AddTo(to);	
                         }
-						
-                        temp = to.Items[i].Hue;
-                        to.Items[i].Hue = setItem.SetHue;
-                        setItem.SetHue = temp;
+
+                        if (setID != SetItem.Bestial)
+                        {
+                            temp = to.Items[i].Hue;
+                            to.Items[i].Hue = setItem.SetHue;
+                            setItem.SetHue = temp;
+                        }
 						
                         setItem.SetEquipped = true;
                         to.Items[i].InvalidateProperties();

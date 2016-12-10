@@ -43,6 +43,7 @@ using Server.Spells.Spellweaving;
 using Server.Targeting;
 using System.Linq;
 using Server.Spells.SkillMasteries;
+using Server.Berserk;
 
 using RankDefinition = Server.Guilds.RankDefinition;
 #endregion
@@ -82,7 +83,8 @@ namespace Server.Mobiles
 		MechanicalLife = 0x04000000,
         HumilityHunt = 0x08000000,
         ToggleCutTopiaries = 0x10000000,
-        HasValiantStatReward = 0x20000000
+        HasValiantStatReward = 0x20000000,
+        BestialBodyHue = 0x40000000
     }
 
 	public enum NpcGuild
@@ -2922,11 +2924,11 @@ namespace Server.Mobiles
 			}
 
 			base.OnBeneficialAction(target, isCriminal);
-		}
+		}        
 
-		public override void OnDamage(int amount, Mobile from, bool willKill)
+        public override void OnDamage(int amount, Mobile from, bool willKill)
 		{
-			int disruptThreshold;
+            int disruptThreshold;
 
 			if (!Core.AOS)
 			{
@@ -2951,7 +2953,38 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (Confidence.IsRegenerating(this))
+            #region Gargoyle Berserk
+            if (Race == Race.Gargoyle && !willKill && !Berserk)
+            {
+                if (((float)(Hits - amount) / HitsMax) < 0.8)
+                {
+                    if (m_BerserkTimer != null)
+                        m_BerserkTimer.Stop();
+
+                    m_BerserkTimer = new BerserkTimer(this);
+                    m_BerserkTimer.Start();
+                }
+            }
+            #endregion
+
+            #region Bestial Berserk
+            if (!willKill)
+            {               
+                if (((float)(Hits - amount) / HitsMax) < 0.5 && Hits > amount)
+                {
+                    if (BeastialSetHelper.CheckBestialArmor(this))
+                    {
+                        if (m_BestialBerserkTimer != null)
+                            m_BestialBerserkTimer.Stop();
+
+                        m_BestialBerserkTimer = new BestialBerserkTimer(this);
+                        m_BestialBerserkTimer.Start();
+                    }              
+                }
+            }
+            #endregion
+
+            if (Confidence.IsRegenerating(this))
 			{
 				Confidence.StopRegenerating(this);
 			}
@@ -2980,9 +3013,67 @@ namespace Server.Mobiles
 			#endregion
 
 			base.OnDamage(amount, from, willKill);
-		}
+		}        
 
-		public override void Resurrect()
+        #region Gargoyle Berserk
+        private bool m_Berserk;
+        private BerserkTimer m_BerserkTimer;
+
+        public bool Berserk
+        {
+            get { return m_Berserk; }
+            set { m_Berserk = value; }
+        }        
+        #endregion
+
+        #region Bestial Berserk
+        private BestialBerserkTimer m_BestialBerserkTimer;
+        private bool m_BestialBerserk;
+        public List<Item> EquipBestial;
+        public int m_EquipBestialAmount;
+        private int m_BestialBodyHue;
+        private int m_TempBodyColor;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsBodyHue
+        {
+            get { return GetFlag(PlayerFlag.BestialBodyHue); }
+            set
+            {
+                SetFlag(PlayerFlag.BestialBodyHue, value);
+
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int TempBodyColor
+        {
+            get { return this.m_TempBodyColor; }
+            set { this.m_TempBodyColor = value;}
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int BestialBodyHue
+        {
+            get { return this.m_BestialBodyHue; }
+            set { this.m_BestialBodyHue = value; this.InvalidateProperties(); }
+        }
+
+        public bool BestialBerserk
+        {
+            get { return m_BestialBerserk; }
+            set { m_BestialBerserk = value; }
+        }
+
+        public int BestialEquipAmount
+        {
+            get { return m_EquipBestialAmount; }
+            set { m_EquipBestialAmount = value; }
+        }        
+        #endregion
+
+        public override void Resurrect()
 		{
 			bool wasAlive = Alive;
 
@@ -3066,14 +3157,20 @@ namespace Server.Mobiles
 
 		public override bool OnBeforeDeath()
 		{
-			NetState state = NetState;
+            NetState state = NetState;
 
 			if (state != null)
 			{
 				state.CancelAllTrades();
 			}
 
-			DropHolding();
+            if (m_BerserkTimer != null)
+                m_BerserkTimer.RemoveEffect();
+            
+            if(m_BestialBerserkTimer != null)
+                m_BestialBerserkTimer.RemoveEffect();
+
+            DropHolding();
 
 			if (Core.AOS && Backpack != null && !Backpack.Deleted)
 			{
@@ -3085,7 +3182,7 @@ namespace Server.Mobiles
 				}
 			}
 
-			m_EquipSnapshot = new List<Item>(Items);
+            m_EquipSnapshot = new List<Item>(Items);
 
 			m_NonAutoreinsuredItems = 0;
 			m_InsuranceCost = 0;
@@ -3239,7 +3336,7 @@ namespace Server.Mobiles
 				SendLocalizedMessage(1061115);
 			}
 
-			base.OnDeath(c);
+            base.OnDeath(c);
 
 			m_EquipSnapshot = null;
 
@@ -3256,10 +3353,10 @@ namespace Server.Mobiles
 			EndAction(typeof(PolymorphSpell));
 			EndAction(typeof(IncognitoSpell));
 
-			MeerMage.StopEffect(this, false);
+			MeerMage.StopEffect(this, false);            
 
-			#region Stygian Abyss
-			if (Flying)
+            #region Stygian Abyss
+            if (Flying)
 			{
 				Flying = false;
 				BuffInfo.RemoveBuff(this, BuffIcon.Fly);
@@ -3775,7 +3872,12 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
-                case 32:
+                case 33:
+                    {
+                        m_BestialBodyHue = reader.ReadEncodedInt();
+                        goto case 32;
+                    }
+                case 32: goto case 31;
                 case 31:
                     {
                         m_ShowGuildAbbreviation = version > 31 ? reader.ReadBool() : false;
@@ -4172,7 +4274,13 @@ namespace Server.Mobiles
 			{
 				AddBuff(new BuffInfo(BuffIcon.HidingAndOrStealth, 1075655));
 			}
-		}
+
+            if (IsBodyHue)
+            {
+                HueMod = -1;
+                IsBodyHue = false;
+            }
+        }
 
 		public override void Serialize(GenericWriter writer)
 		{
@@ -4200,7 +4308,10 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(32); // version
+			writer.Write(33); // version
+
+            // Version 33
+            writer.WriteEncodedInt(m_BestialBodyHue);
 
             // Version 31/32 Titles
             writer.Write(m_ShowGuildAbbreviation);

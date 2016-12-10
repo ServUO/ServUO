@@ -279,6 +279,7 @@ namespace Server
         Sleep,
         StoneForm,
         SpellPlague,
+        Berserk,
         SpellTrigger,
         NetherBolt,
         Fly,

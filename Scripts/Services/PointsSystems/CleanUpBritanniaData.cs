@@ -25,9 +25,6 @@ namespace Server.Engines.Points
 
         public static double GetPoints(Item item)
         {
-            if (item.LootType == LootType.Blessed)
-                return 0;
-
             double points = 0;
 
             Type type = item.GetType();
@@ -132,6 +129,10 @@ namespace Server.Engines.Points
                 {
                     BasePigmentsOfTokuno pigments = (BasePigmentsOfTokuno)item;
                     points = 500 * pigments.UsesRemaining;
+                }
+                else if (item.LootType == LootType.Blessed)
+                {
+                    return 0;
                 }
 
                 return points;

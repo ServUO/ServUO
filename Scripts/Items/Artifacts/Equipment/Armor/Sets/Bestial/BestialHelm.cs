@@ -1,16 +1,20 @@
 using System;
-using Server.Items;
+using Server;
+using Server.Mobiles;
+using Server.Berserk;
 
 namespace Server.Items
 {
 	public class BestialHelm : BearMask
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber{ get{ return 1151197; } } // Bestial Helm
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber{ get{ return 1151197; } } // Bestial Helm
 
+        #region ISetItem Members
         public override SetItem SetID{ get{ return SetItem.Bestial; } }
 		public override int Pieces{ get{ return 4; } }
         public override int Berserk { get { return 1; } }
+        #endregion
 
         public override int BasePhysicalResistance{ get{ return 8; } }
 		public override int BaseFireResistance{ get{ return 6; } }
@@ -26,14 +30,42 @@ namespace Server.Items
             this.Hue = 2010;
             this.Weight = 5;
             this.StrRequirement = 10;
-            this.SetHue = 2010;
         }
 
 		public BestialHelm( Serial serial ) : base( serial )
 		{
 		}
-		
-		public override void Serialize( GenericWriter writer )
+
+        public override void OnAdded(object parent)
+        {
+            base.OnAdded(parent);
+
+            if (parent is PlayerMobile)
+            {
+                PlayerMobile pm = parent as PlayerMobile;
+
+                if (pm.BestialBerserk)
+                    this.Hue = BeastialSetHelper.AddBestialHueParent(pm);
+            }
+        }
+
+        public override void OnRemoved(object parent)
+        {
+            base.OnRemoved(parent);
+
+            if (parent is PlayerMobile && !Deleted)
+            {
+                PlayerMobile pm = parent as PlayerMobile;
+
+                if (pm.BestialBerserk)
+                {
+                    this.Hue = 2010;
+                    BeastialSetHelper.DropBestialHueParent(pm);
+                }
+            }
+        }
+
+        public override void Serialize( GenericWriter writer )
 		{
 			base.Serialize( writer );			
 			writer.Write( (int) 0 ); // version
@@ -43,6 +75,8 @@ namespace Server.Items
 		{
 			base.Deserialize( reader );			
 			int version = reader.ReadInt();
-		}
+
+            this.Hue = 2010;
+        }
 	}
 }

@@ -322,6 +322,21 @@ namespace Server.Spells
                 if (moveID > 0)
                     m.Send(new ToggleSpecialAbility(moveID + 1, true));
 
+                if (move is MomentumStrike)
+                {
+                    int damageBonus = (int)(m.Skills[SkillName.Bushido].Value * 1.5);
+
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.MomentumStrike, 1060600, 1153812, damageBonus.ToString()));
+                }
+
+                if (move is LightningStrike)
+                {
+                    double bushido = m.Skills[SkillName.Bushido].Value;
+                    int criticalChance = (int)((bushido * bushido) / 720.0);
+
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.LightningStrike, 1060599, 1153811, String.Format("50\t{0}", criticalChance)));
+                }
+
                 move.SendAbilityMessage(m);
             }
 
@@ -344,6 +359,16 @@ namespace Server.Spells
             }
 
             m_Table.Remove(m);
+
+            if (move is MomentumStrike)
+            {
+                BuffInfo.RemoveBuff(m, BuffIcon.MomentumStrike);
+            }
+
+            if (move is LightningStrike)
+            {
+                BuffInfo.RemoveBuff(m, BuffIcon.LightningStrike);
+            }
         }
 
         public SpecialMove()
