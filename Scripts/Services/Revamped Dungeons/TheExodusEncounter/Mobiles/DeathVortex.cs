@@ -5,18 +5,14 @@ namespace Server.Items
 {
     public class DeathVortexTrap : BaseTrap
     {
-        private Item m_DeathVortex;
         private Timer m_Timer;
 
         [Constructable]
         public DeathVortexTrap()
-            : base(0x1B71)
+            : base(0x3789)
         {
-            this.Visible = false;
-
-            this.m_DeathVortex = new DeathVortex(this);
-            this.m_DeathVortex.Hue = 0x816;
-            this.m_DeathVortex.Movable = false;            
+            this.Hue = 0x816;
+            this.Movable = false;
 
             m_Timer = new InternalTimer(this);
             m_Timer.Start();
@@ -27,30 +23,9 @@ namespace Server.Items
         {
         }
 
-        public override void OnMapChange()
-        {
-            if (this.Deleted)
-                return;
-
-            if (this.m_DeathVortex != null)
-                this.m_DeathVortex.Map = this.Map;
-        }
-
-        public override void OnLocationChange(Point3D oldLoc)
-        {
-            if (this.Deleted)
-                return;
-
-            if (this.m_DeathVortex != null)
-                this.m_DeathVortex.Location = new Point3D(this.X + 1, this.Y + 1, this.Z);
-        }
-
         public override void OnDelete()
         {
             m_Timer.Stop();
-
-            if (m_DeathVortex != null)
-                m_DeathVortex.Delete();
 
             base.OnDelete();
         }
@@ -117,7 +92,7 @@ namespace Server.Items
                     }
             }
 
-            defender.SendMessage(0x22, "Your life force is drained by the death vortex!");
+            defender.SendLocalizedMessage(1152694, "", 0x22); // Your life force is drained by the death vortex! 
         }
         
 
@@ -157,33 +132,5 @@ namespace Server.Items
             m_Timer = new InternalTimer(this);
             m_Timer.Start();
         }
-    }
-
-    public class DeathVortex : BaseAddon
-    {
-        [Constructable]
-        public DeathVortex(DeathVortexTrap dv)
-        {
-            this.AddComponent(new AddonComponent(0x3789), 0, 0, 0);
-        }
-
-        public DeathVortex(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }        
     }
 }

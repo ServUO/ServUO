@@ -1048,6 +1048,13 @@ namespace Server
 		{
 			foreach (XmlElement xmlReg in xml.SelectNodes("region"))
 			{
+				var expansion = Expansion.None;
+
+				if (ReadEnum(xmlReg, "expansion", ref expansion, false) && expansion > Core.Expansion)
+				{
+					continue;
+				}
+
 				Type type = DefaultRegionType;
 
 				ReadType(xmlReg, "type", ref type, false);
@@ -1113,6 +1120,13 @@ namespace Server
 			var area = new List<Rectangle3D>();
 			foreach (XmlElement xmlRect in xml.SelectNodes("rect"))
 			{
+				var expansion = Expansion.None;
+
+				if (ReadEnum(xmlRect, "expansion", ref expansion, false) && expansion > Core.Expansion)
+				{
+					continue;
+				}
+
 				Rectangle3D rect = new Rectangle3D();
 				if (ReadRectangle3D(xmlRect, minZ, maxZ, ref rect))
 				{

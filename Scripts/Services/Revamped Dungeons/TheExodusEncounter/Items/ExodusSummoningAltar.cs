@@ -4,6 +4,7 @@ using Server.Multis;
 using Server.Mobiles;
 using Server.Engines.PartySystem;
 using System.Linq;
+using Server.Engines.Exodus;
 
 namespace Server.Items
 {
@@ -71,64 +72,61 @@ namespace Server.Items
         }
 
 
-        protected virtual bool CheckExodus()
+        public static bool CheckExodus() // Before ritual check
         {
-            return ClockworkExodus.Instances.FirstOrDefault(m => m.Region.IsPartOf("Ver Lor Reg") && m.Hits < m.HitsMax * 0.75) != null;
+            return ClockworkExodus.Instances.FirstOrDefault(m => m.Region.IsPartOf("Ver Lor Reg") && ((m.Hits >= m.HitsMax * 0.60 && m.MinHits >= m.HitsMax * 0.60) || (m.Hits >= m.HitsMax * 0.75))) != null;
         }
 
         public void GetExodusAlter(Mobile from)
         {
-            if (ExodusTomeAltar.Altar == null)
+            if (ExodusTomeAltar.Altar == null && VerLorRegController.Active && VerLorRegController.Mobile != null && CheckExodus())
             {
                 if (CheckParty(from))
                 {
                     if (from.Region != null && (from.Map == Map.Trammel || from.Map == Map.Felucca))
                     {
-                        if (CheckExodus())
+                        Point3D p = Point3D.Zero;
+
+                        if (from.Region.IsPartOf("Shrine of Compassion"))
                         {
-                            Point3D p = Point3D.Zero;
-
-                            if (from.Region.IsPartOf("Shrine of Compassion"))
-                            {
-                                p = new Point3D(1858, 875, 12);
-                            }
-                            else if (from.Region.IsPartOf("Shrine of Honesty"))
-                            {
-                                p = new Point3D(4209, 564, 60);
-                            }
-                            else if (from.Region.IsPartOf("Shrine of Honor"))
-                            {
-                                p = new Point3D(1727, 3528, 15);
-                            }
-                            else if (from.Region.IsPartOf("Shrine of Humility"))
-                            {
-                                p = new Point3D(4274, 3697, 12);
-                            }
-                            else if (from.Region.IsPartOf("Shrine of Justice"))
-                            {
-                                p = new Point3D(1301, 634, 28);
-                            }
-                            else if (from.Region.IsPartOf("Shrine of Sacrifice"))
-                            {
-                                p = new Point3D(3355, 290, 16);
-                            }
-                            else if (from.Region.IsPartOf("Shrine of Spirituality"))
-                            {
-                                p = new Point3D(1606, 2490, 20);
-                            }
-                            else if (from.Region.IsPartOf("Shrine of Valor"))
-                            {
-                                p = new Point3D(2492, 3931, 17);
-                            }
-
-                            if (p != Point3D.Zero)
-                            {
-                                ExodusTomeAltar.Altar = new ExodusTomeAltar(from);
-                                ExodusTomeAltar.Altar.MoveToWorld(p, from.Map);
-                                PeerlessExodusAltar.m_Rituals.Add(new RitualArray { RitualMobile = from, Ritual1 = false, Ritual2 = false });
-                                this.Delete();
-                            }
+                            p = new Point3D(1858, 875, 12);
                         }
+                        else if (from.Region.IsPartOf("Shrine of Honesty"))
+                        {
+                            p = new Point3D(4209, 564, 60);
+                        }
+                        else if (from.Region.IsPartOf("Shrine of Honor"))
+                        {
+                            p = new Point3D(1727, 3528, 15);
+                        }
+                        else if (from.Region.IsPartOf("Shrine of Humility"))
+                        {
+                            p = new Point3D(4274, 3697, 12);
+                        }
+                        else if (from.Region.IsPartOf("Shrine of Justice"))
+                        {
+                            p = new Point3D(1301, 634, 28);
+                        }
+                        else if (from.Region.IsPartOf("Shrine of Sacrifice"))
+                        {
+                            p = new Point3D(3355, 290, 16);
+                        }
+                        else if (from.Region.IsPartOf("Shrine of Spirituality"))
+                        {
+                            p = new Point3D(1606, 2490, 20);
+                        }
+                        else if (from.Region.IsPartOf("Shrine of Valor"))
+                        {
+                            p = new Point3D(2492, 3931, 17);
+                        }
+
+                        if (p != Point3D.Zero)
+                        {
+                            ExodusTomeAltar.Altar = new ExodusTomeAltar(from);
+                            ExodusTomeAltar.Altar.MoveToWorld(p, from.Map);
+                            PeerlessExodusAltar.m_Rituals.Add(new RitualArray { RitualMobile = from, Ritual1 = false, Ritual2 = false });
+                            this.Delete();
+                        }                        
                     }
                     else
                         from.SendMessage("That is not the right place to perform thy ritual.");

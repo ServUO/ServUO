@@ -194,7 +194,9 @@ namespace Server.Items
                     typeof(ValoriteElemental), typeof(VeriteElemental),
                     typeof(WaterElemental), typeof(SummonedWaterElemental),
                     typeof(Flurry), typeof(Mistral),
-                    typeof(Tempest)
+                    typeof(Tempest), typeof(UnboundEnergyVortex),
+                    typeof(ChaosVortex), typeof(WindElemental),
+                    typeof(FlameElemental), typeof(QuartzElemental)
                 );
 
             elemental.Entries = new SlayerEntry[]
@@ -214,7 +216,8 @@ namespace Server.Items
                             typeof(CopperElemental),    typeof(DullCopperElemental),
                             typeof(EarthElemental),     typeof(SummonedEarthElemental),
                             typeof(GoldenElemental),    typeof(ShadowIronElemental),
-                            typeof(ValoriteElemental),  typeof(VeriteElemental)
+                            typeof(ValoriteElemental),  typeof(VeriteElemental),
+                            typeof(QuartzElemental)
                         ),
 
                     new SlayerEntry
@@ -229,7 +232,7 @@ namespace Server.Items
                             SlayerName.FlameDousing,
 
                             typeof(FireElemental),  typeof(FireElementalRenowned),
-                            typeof(SummonedFireElemental)
+                            typeof(SummonedFireElemental), typeof(FlameElemental)
                         ),
 
                     new SlayerEntry
@@ -245,7 +248,8 @@ namespace Server.Items
 
                             typeof(AirElemental),   typeof(SummonedAirElemental),
                             typeof(Flurry),         typeof(Mistral),
-                            typeof(Tempest)
+                            typeof(Tempest),        typeof(UnboundEnergyVortex),
+                            typeof(ChaosVortex),    typeof(WindElemental)
                         ),
 
                     new SlayerEntry
@@ -295,7 +299,8 @@ namespace Server.Items
                         typeof(Anzuanord), typeof(Ballem),
                         typeof(Betballem), typeof(SkeletalLich),
                         typeof(UsagralemBallem), typeof(EffetePutridGargoyle),
-                        typeof(EffeteUndeadGargoyle), typeof(PitFiend)
+                        typeof(EffeteUndeadGargoyle), typeof(PitFiend),
+                        typeof(ArchDaemon), typeof(AbyssalAbomination)
                     );
 
                 abyss.Entries = new SlayerEntry[]
