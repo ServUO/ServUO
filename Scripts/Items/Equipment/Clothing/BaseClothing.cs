@@ -22,7 +22,7 @@ namespace Server.Items
         int MaxArcaneCharges { get; set; }
     }
 
-    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, ISetItem
+    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, ISetItem, IVvVItem, IOwnerRestricted
     {
         #region Factions
         private FactionItem m_FactionState;
@@ -44,6 +44,30 @@ namespace Server.Items
             }
         }
         #endregion
+
+        private bool _VvVItem;
+        private Mobile _Owner;
+        private string _OwnerName;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsVvVItem
+        {
+            get { return _VvVItem; }
+            set { _VvVItem = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Owner
+        {
+            get { return _Owner; }
+            set { _Owner = value; if (_Owner != null) _OwnerName = _Owner.Name; InvalidateProperties(); }
+        }
+
+        public virtual string OwnerName
+        {
+            get { return _OwnerName; }
+            set { _OwnerName = value; InvalidateProperties(); }
+        }
 
         public virtual bool CanFortify { get { return !IsImbued && NegativeAttributes.Antique < 3; } }
         public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
@@ -512,6 +536,17 @@ namespace Server.Items
             }
         }
 
+        public override bool DisplayWeight
+        {
+            get
+            {
+                if (IsVvVItem)
+                    return true;
+
+                return base.DisplayWeight;
+            }
+        }
+
         public virtual int BaseStrBonus
         {
             get
@@ -578,6 +613,29 @@ namespace Server.Items
 
             if (from.IsPlayer())
             {
+                if (_Owner != null && _Owner != from)
+                {
+                    from.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                    return false;
+                }
+
+                if (this is IAccountRestricted && ((IAccountRestricted)this).Account != null)
+                {
+                    Accounting.Account acct = from.Account as Accounting.Account;
+
+                    if (acct == null || acct.Username != ((IAccountRestricted)this).Account)
+                    {
+                        from.SendLocalizedMessage(1071296); // This item is Account Bound and your character is not bound to it. You cannot use this item.
+                        return false;
+                    }
+                }
+
+                if (IsVvVItem && !Engines.VvV.ViceVsVirtueSystem.IsVvV(from))
+                {
+                    from.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
+                    return false;
+                }
+
                 #region Stygian Abyss
                 if (from.Race == Race.Gargoyle && !this.CanBeWornByGargoyles)
                 {
@@ -1109,9 +1167,22 @@ namespace Server.Items
                 list.Add(this.Name);
         }
 
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            if (IsVvVItem)
+                list.Add(1154937); // VvV Item
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
+
+            if (OwnerName != null)
+            {
+                list.Add(1153213, OwnerName);
+            }
 
             #region Stygian Abyss
             if (IsImbued == true)
@@ -1437,7 +1508,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(8); // version
+            writer.Write(9); // version
+
+            writer.Write(_VvVItem);
+            writer.Write(_Owner);
+            writer.Write(_OwnerName);
 
             //Version 8
             writer.Write((bool)this.m_IsImbued);
@@ -1584,6 +1659,13 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 9:
+                    {
+                        _VvVItem = reader.ReadBool();
+                        _Owner = reader.ReadMobile();
+                        _OwnerName = reader.ReadString();
+                        goto case 8;
+                    }
                 case 8:
                         {
                             this.m_IsImbued = reader.ReadBool();

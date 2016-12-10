@@ -1757,7 +1757,15 @@ namespace Server.Mobiles
 
 			if (context == null)
 			{
-				return base.CheckMovement(d, out newZ);
+                bool check = base.CheckMovement(d, out newZ);
+
+                if (check && Sigil.ExistsOn(this, true) && !Server.Engines.VvV.VvVSigil.CheckMovement(this, d))
+                {
+                    SendLocalizedMessage(1155414); // You may not remove the sigil from the battle region!
+                    return false;
+                }
+
+                return check;
 			}
 
 			HouseFoundation foundation = context.Foundation;
@@ -5070,8 +5078,9 @@ namespace Server.Mobiles
             }
 
             BaseGuild guild = Guild;
+            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && this.Map == Faction.Facet;
 
-            if (m_OverheadTitle != null)
+            if (!vvv && m_OverheadTitle != null)
             {
                 int loc = Utility.ToInt32(m_OverheadTitle);
 
@@ -5085,9 +5094,16 @@ namespace Server.Mobiles
                 else
                     suffix = String.Format("{0}", m_OverheadTitle);
             }
-            else if (guild != null && m_ShowGuildAbbreviation)
+            else if (vvv || (guild != null && m_ShowGuildAbbreviation))
             {
-                if (suffix.Length > 0)
+                if (vvv)
+                {
+                    if (guild != null && m_ShowGuildAbbreviation)
+                        suffix = String.Format("[{0}][VvV]", Utility.FixHtml(guild.Abbreviation));
+                    else
+                        suffix = "[VvV]";
+                }
+                else if (suffix.Length > 0)
                     suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
                 else
                     suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));

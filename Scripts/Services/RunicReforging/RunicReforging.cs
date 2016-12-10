@@ -1957,7 +1957,7 @@ namespace Server.Items
                     neg.Antique = 1;
                     budget += 100;
                 }
-                else
+                else if(0.001 < chance)
                 {
                     neg.Brittle = 1;
                     budget += 150;
@@ -2752,12 +2752,12 @@ namespace Server.Items
 
         public static int[][] WeaponWeaponDamage = new int[][]
         {
-            new int[] { 30, 50, 50, 60, 70, 70, 70, 70 },
-            new int[] { 50, 60, 70, 70, 70, 70, 70, 70 },
-            new int[] { 70, 70, 70, 70, 70, 70, 70, 70 },
+            new int[] { 30, 50, 50, 60, 70, 70, 70 },
+            new int[] { 50, 60, 70, 70, 70, 70, 70 },
+            new int[] { 70, 70, 70, 70, 70, 70, 70 },
             new int[] {  },
-            new int[] { 50, 60, 70, 70, 70, 70, 70, 70 },
-            new int[] { 70, 70, 70, 70, 70, 70, 70, 70 },
+            new int[] { 50, 60, 70, 70, 70, 70, 70 },
+            new int[] { 70, 70, 70, 70, 70, 70, 70 },
         };
 
         public static int[][] WeaponEnhancePots = new int[][]

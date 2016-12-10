@@ -3,6 +3,8 @@ using Server.Factions;
 using Server.Items;
 using Server.Network;
 using Server.Targeting;
+using Server.Engines.VvV;
+using Server.Guilds;
 
 namespace Server.SkillHandlers
 {
@@ -52,7 +54,7 @@ namespace Server.SkillHandlers
 
                     from.Direction = from.GetDirectionTo(targ);
 
-                    if (targ.TrapType == TrapType.None)
+                    if (targ.TrapType == Server.Items.TrapType.None)
                     {
                         from.SendLocalizedMessage(502373); // That doesn't appear to be trapped
                         return;
@@ -64,7 +66,7 @@ namespace Server.SkillHandlers
                     {
                         targ.TrapPower = 0;
                         targ.TrapLevel = 0;
-                        targ.TrapType = TrapType.None;
+                        targ.TrapType = Server.Items.TrapType.None;
                         from.SendLocalizedMessage(502377); // You successfully render the trap harmless
                     }
                     else
@@ -116,6 +118,44 @@ namespace Server.SkillHandlers
 
                         if (!isOwner && kit != null)
                             kit.ConsumeCharge(from);
+                    }
+                }
+                else if (targeted is VvVTrap)
+                {
+                    VvVTrap trap = targeted as VvVTrap;
+
+                    if (!ViceVsVirtueSystem.IsVvV(from))
+                    {
+                        from.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
+                    }
+                    else
+                    {
+                        if (from == trap.Owner || ((from.Skills[SkillName.RemoveTrap].Value - 80.0) / 20.0) > Utility.RandomDouble())
+                        {
+                            VvVTrapKit kit = new VvVTrapKit(trap.TrapType);
+                            trap.Delete();
+
+                            if (!from.AddToBackpack(kit))
+                                kit.MoveToWorld(from.Location, from.Map);
+
+                            if (trap.Owner != null && from != trap.Owner)
+                            {
+                                Guild fromG = from.Guild as Guild;
+                                Guild ownerG = trap.Owner.Guild as Guild;
+
+                                if (fromG != null && fromG != ownerG && !fromG.IsAlly(ownerG) && ViceVsVirtueSystem.Instance != null 
+                                    && ViceVsVirtueSystem.Instance.Battle != null && ViceVsVirtueSystem.Instance.Battle.OnGoing)
+                                {
+                                    ViceVsVirtueSystem.Instance.Battle.Update(from, UpdateType.Disarm);
+                                }
+                            }
+
+                            from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1155413, from.NetState);
+                        }
+                        else if (.1 > Utility.RandomDouble())
+                        {
+                            trap.Detonate(from);
+                        }
                     }
                 }
                 else
