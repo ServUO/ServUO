@@ -1605,15 +1605,30 @@ namespace Server.Spells
 
         protected override void OnTick()
         {
-            if (this.m_Mobile.Deleted || !this.m_Mobile.Alive || this.m_Mobile.Body != this.m_Spell.Body || (this.m_Mobile.Hue != this.m_Spell.Hue && ((PlayerMobile)m_Mobile).Berserk))
+            if (m_Mobile is PlayerMobile)
             {
-                TransformationSpellHelper.RemoveContext(this.m_Mobile, true);
-                this.Stop();
+                if (this.m_Mobile.Deleted || !this.m_Mobile.Alive || this.m_Mobile.Body != this.m_Spell.Body || (this.m_Mobile.Hue != this.m_Spell.Hue && ((PlayerMobile)m_Mobile).Berserk))
+                {
+                    TransformationSpellHelper.RemoveContext(this.m_Mobile, true);
+                    this.Stop();
+                }
+                else
+                {
+                    this.m_Spell.OnTick(this.m_Mobile);
+                }
             }
             else
             {
-                this.m_Spell.OnTick(this.m_Mobile);
-            }
+                if (this.m_Mobile.Deleted || !this.m_Mobile.Alive || this.m_Mobile.Body != this.m_Spell.Body || this.m_Mobile.Hue != this.m_Spell.Hue)
+                {
+                    TransformationSpellHelper.RemoveContext(this.m_Mobile, true);
+                    this.Stop();
+                }
+                else
+                {
+                    this.m_Spell.OnTick(this.m_Mobile);
+                }
+            }            
         }
     }
 }
