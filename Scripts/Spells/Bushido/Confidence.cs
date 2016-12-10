@@ -59,7 +59,7 @@ namespace Server.Spells.Bushido
 
             double bushido = m.Skills.Bushido.Value;
 
-            string args = String.Format("12\t5\t{0}", (int)(15 + (bushido * bushido / 576)) * 2.5);
+            string args = String.Format("{0}\t{1}\t{2}", (int)(bushido / 12), (int)(bushido / 5), (int)(15 + (bushido * bushido / 576)) * 2.5);
 
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Confidence, 1060596, 1153809, length, m, args));
         }
