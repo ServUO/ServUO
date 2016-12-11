@@ -2716,6 +2716,9 @@ namespace Server.Mobiles
                 case AIType.AI_Paladin:
                     m_AI = new PaladinAI(this);
                     break;
+                case AIType.AI_Spellbinder:
+                    m_AI = new SpellbinderAI(this);
+                    break;
             }
         }
 

@@ -7,7 +7,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public Spellbinder()
-            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Spellbinder, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             this.Name = "a Spectral Spellbinder";
             this.Body = 153;

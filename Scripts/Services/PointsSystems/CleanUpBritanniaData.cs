@@ -25,9 +25,6 @@ namespace Server.Engines.Points
 
         public static double GetPoints(Item item)
         {
-            if (item.LootType == LootType.Blessed)
-                return 0;
-
             double points = 0;
 
             Type type = item.GetType();
@@ -713,9 +710,9 @@ namespace Server.Engines.Points
                 if (points == 0)
                     m_Mobile.SendLocalizedMessage(1151271); // This item has no turn-in value for Clean Up Britannia.
                 else if (points < 1)
-                    m_Mobile.SendLocalizedMessage(1151272, points.ToString()); // This item is worth less than one point for Clean Up Britannia.
+                    m_Mobile.SendLocalizedMessage(1151272); // This item is worth less than one point for Clean Up Britannia.
                 else if (points == 1)
-                    m_Mobile.SendLocalizedMessage(1151273, points.ToString()); // This item is worth approximately one point for Clean Up Britannia.
+                    m_Mobile.SendLocalizedMessage(1151273); // This item is worth approximately one point for Clean Up Britannia.
                 else
                     m_Mobile.SendLocalizedMessage(1151274, points.ToString()); //This item is worth approximately ~1_VALUE~ points for Clean Up Britannia.
 

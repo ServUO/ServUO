@@ -53,6 +53,10 @@ namespace Server.Spells.Bushido
 
             m_Table[m] = t;
 
+            double bushido = m.Skills.Bushido.Value;
+            string args = String.Format("12\t5\t{0}", (int)(15 + (bushido * bushido / 576)) * 2.5);
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Confidence, 1060596, 1153809, TimeSpan.FromSeconds(15), m, args));
+
             t.Start();
         }
 
@@ -64,6 +68,7 @@ namespace Server.Spells.Bushido
                 t.Stop();
 
             m_Table.Remove(m);
+            BuffInfo.RemoveBuff(m, BuffIcon.Confidence);
 
             OnEffectEnd(m, typeof(Confidence));
         }
