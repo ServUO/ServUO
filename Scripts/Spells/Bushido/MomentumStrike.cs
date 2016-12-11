@@ -82,6 +82,20 @@ namespace Server.Spells.Bushido
             }
         }
 
+        public override void OnUse(Mobile m)
+        {
+            base.OnUse(m);
+
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.MomentumStrike, 1060600, 1063268));
+        }
+
+        public override void OnClearMove(Mobile from)
+        {
+            base.OnClearMove(from);
+
+            BuffInfo.RemoveBuff(from, BuffIcon.MomentumStrike);
+        }
+
         public override void CheckGain(Mobile m)
         {
             m.CheckSkill(this.MoveSkill, this.RequiredSkill, 120.0);

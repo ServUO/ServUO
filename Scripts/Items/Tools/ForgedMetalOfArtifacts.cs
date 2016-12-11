@@ -75,8 +75,7 @@ namespace Server.Items
             {
                 if (pm.NextEnhanceSuccess)
                 {
-                    from.SendGump(new CancelGump(pm));
-                    pm.NextEnhanceSuccess = false;
+                    from.SendGump(new CancelGump(pm, this));
                 }
                 else
                 {
@@ -166,11 +165,13 @@ namespace Server.Items
         public class CancelGump : Gump
         {
             private PlayerMobile m_Mobile;
+            private ForgedMetalOfArtifacts m_Tool;
 
-            public CancelGump(PlayerMobile from)
+            public CancelGump(PlayerMobile from, ForgedMetalOfArtifacts tool)
                 : base(50, 50)
             {
                 m_Mobile = from;
+                m_Tool = tool;
 
                 AddPage(0);
 
@@ -196,8 +197,22 @@ namespace Server.Items
             {
                 if (info.ButtonID == 1)
                 {
-                    m_Mobile.NextEnhanceSuccess = false;
-                    m_Mobile.SendLocalizedMessage(1149969); // The magical aura that surrounded you disipates and you feel that your item enhancement chances have returned to normal.
+                    if (m_Tool == null || m_Tool.Deleted)
+                    {
+                        m_Mobile.SendLocalizedMessage(1155766); // A charge could not be refunded to the last Forged Metal of Artifacts tool you used, you must use this charge.
+                    }
+                    else if (!m_Tool.IsChildOf(m_Mobile.Backpack))
+                    {
+                        m_Mobile.SendLocalizedMessage(1155767); // A charge could not be refunded to the last Forged Metal of Artifacts tool you used because the item is not in your backpack.
+                    }
+                    else
+                    {
+                        m_Mobile.NextEnhanceSuccess = false;
+                        m_Mobile.SendLocalizedMessage(1149969); // The magical aura that surrounded you disipates and you feel that your item enhancement chances have returned to normal.
+
+                        m_Tool.UsesRemaining += 1;
+                        m_Mobile.SendLocalizedMessage(1155768); // A charged has been refunded to your Forged Metal of Artifacts tool.
+                    }
                 }
             }
         }

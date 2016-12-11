@@ -5917,6 +5917,15 @@ namespace Server.Items
 
         public int SetResistBonus(ResistanceType resist)
         {
+            switch (resist)
+            {
+                case ResistanceType.Physical: return PhysicalResistance;
+                case ResistanceType.Fire: return FireResistance;
+                case ResistanceType.Cold: return ColdResistance;
+                case ResistanceType.Poison: return PoisonResistance;
+                case ResistanceType.Energy: return EnergyResistance;
+            }
+
             return 0;
         }
         #endregion

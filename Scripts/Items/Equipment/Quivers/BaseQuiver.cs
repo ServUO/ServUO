@@ -1002,11 +1002,14 @@ namespace Server.Items
             : base(6230)
             {
                 m_quiver = bq;
+
+                Enabled = m_quiver.Ammo == null || m_quiver.Ammo.Amount < m_quiver.Capacity;
             }
 
             bool Refill<T>(Mobile m, Container c) where T : Item
             {
                 List<T> list = c.FindItemsByType<T>(true).ToList();
+
                 if (list.Count > 0)
                 {
                     int amt = 0;
@@ -1039,7 +1042,7 @@ namespace Server.Items
                     {
                         T obj = (T)Activator.CreateInstance(typeof(T));
                         obj.Amount = famount;
-                        m_quiver.AddItem(obj);
+                        m_quiver.DropItem(obj);
                         m.SendLocalizedMessage(1072664, amt.ToString());
                         return true;
                     }
@@ -1049,7 +1052,7 @@ namespace Server.Items
 
             public override void OnClick()
             {
-                if ((m_quiver == null) || m_quiver.Deleted)
+                if ((m_quiver == null) || m_quiver.Deleted || (m_quiver.Ammo != null && m_quiver.Ammo.Amount >= m_quiver.Capacity))
                     return;
 
                 object owner = m_quiver.Parent;
