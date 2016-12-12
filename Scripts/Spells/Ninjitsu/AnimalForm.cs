@@ -321,6 +321,8 @@ namespace Server.Spells.Ninjitsu
 			m.FixedParticles(0x3728, 10, 13, 2023, EffectLayer.Waist);
 
 			context.Timer.Stop();
+			
+			BuffInfo.RemoveBuff(m, BuffIcon.AnimalForm);
 		}
 
 		public static AnimalFormContext GetContext(Mobile m)
@@ -348,7 +350,7 @@ namespace Server.Spells.Ninjitsu
 		public class AnimalFormEntry
 		{
 			private readonly Type m_Type;
-			private readonly TextDefinition m_Name;
+			private readonly string m_Name;
 			private readonly int m_ItemID;
 			private readonly int m_Hue;
 			private readonly int m_Tooltip;
@@ -361,7 +363,7 @@ namespace Server.Spells.Ninjitsu
 			private readonly bool m_StealingBonus;
 
 			public Type Type { get { return m_Type; } }
-			public TextDefinition Name { get { return m_Name; } }
+			public string Name { get { return m_Name; } }
 			public int ItemID { get { return m_ItemID; } }
 			public int Hue { get { return m_Hue; } }
 			public int Tooltip { get { return m_Tooltip; } }
@@ -379,7 +381,7 @@ namespace Server.Spells.Ninjitsu
 
 			public AnimalFormEntry(
 				Type type,
-				TextDefinition name,
+				string name,
 				int itemID,
 				int hue,
 				int tooltip,
@@ -408,23 +410,22 @@ namespace Server.Spells.Ninjitsu
 
 		private static readonly AnimalFormEntry[] m_Entries = new[]
 		{
-			new AnimalFormEntry(typeof(Kirin), 1029632, 9632, 0, 1070811, 100.0, 0x84, 0, 0, false, true, false),
-			new AnimalFormEntry(typeof(Unicorn), 1018214, 9678, 0, 1070812, 100.0, 0x7A, 0, 0, false, true, false),
-			new AnimalFormEntry(typeof(BakeKitsune), 1030083, 10083, 0, 1070810, 82.5, 0xF6, 0, 0, false, true, false),
-			new AnimalFormEntry(typeof(GreyWolf), 1028482, 9681, 2309, 1070810, 82.5, 0x19, 0x8FD, 0x90E, false, true, false),
-			new AnimalFormEntry(typeof(Llama), 1028438, 8438, 0, 1070809, 70.0, 0xDC, 0, 0, false, true, false),
-			new AnimalFormEntry(typeof(ForestOstard), 1018273, 8503, 2212, 1070809, 70.0, 0xDB, 0x899, 0x8B0, false, true, false)
-			, new AnimalFormEntry(typeof(BullFrog), 1028496, 8496, 2003, 1070807, 50.0, 0x51, 0x7D1, 0x7D6, false, false, false),
-			new AnimalFormEntry(
-				typeof(GiantSerpent), 1018114, 9663, 2009, 1070808, 50.0, 0x15, 0x7D1, 0x7E2, false, false, false),
-			new AnimalFormEntry(typeof(Dog), 1018280, 8476, 2309, 1070806, 40.0, 0xD9, 0x8FD, 0x90E, false, false, false),
-			new AnimalFormEntry(typeof(Cat), 1018264, 8475, 2309, 1070806, 40.0, 0xC9, 0x8FD, 0x90E, false, false, false),
-			new AnimalFormEntry(typeof(Rat), 1018294, 8483, 2309, 1070805, 20.0, 0xEE, 0x8FD, 0x90E, true, false, false),
-			new AnimalFormEntry(typeof(Rabbit), 1028485, 8485, 2309, 1070805, 20.0, 0xCD, 0x8FD, 0x90E, true, false, false),
-			new AnimalFormEntry(typeof(Squirrel), 1031671, 11671, 0, 0, 20.0, 0x116, 0, 0, false, false, false),
-			new AnimalFormEntry(typeof(Ferret), 1031672, 11672, 0, 1075220, 40.0, 0x117, 0, 0, false, false, true),
-			new AnimalFormEntry(typeof(CuSidhe), 1031670, 11670, 0, 1075221, 60.0, 0x115, 0, 0, false, false, false),
-			new AnimalFormEntry(typeof(Reptalon), 1075202, 11669, 0, 1075222, 90.0, 0x114, 0, 0, false, false, false),
+			new AnimalFormEntry(typeof(Kirin), "kirin", 9632, 0, 1070811, 100.0, 0x84, 0, 0, false, true, false),
+			new AnimalFormEntry(typeof(Unicorn), "unicorn", 9678, 0, 1070812, 100.0, 0x7A, 0, 0, false, true, false),
+			new AnimalFormEntry(typeof(BakeKitsune), "bake-kitsune", 10083, 0, 1070810, 82.5, 0xF6, 0, 0, false, true, false),
+			new AnimalFormEntry(typeof(GreyWolf), "wolf", 9681, 2309, 1070810, 82.5, 0x19, 0x8FD, 0x90E, false, true, false),
+			new AnimalFormEntry(typeof(Llama), "llama", 8438, 0, 1070809, 70.0, 0xDC, 0, 0, false, true, false),
+			new AnimalFormEntry(typeof(ForestOstard), "ostard", 8503, 2212, 1070809, 70.0, 0xDB, 0x899, 0x8B0, false, true, false),
+			new AnimalFormEntry(typeof(BullFrog), "bullfrog", 8496, 2003, 1070807, 50.0, 0x51, 0x7D1, 0x7D6, false, false, false),
+			new AnimalFormEntry(typeof(GiantSerpent), "giant serpent", 9663, 2009, 1070808, 50.0, 0x15, 0x7D1, 0x7E2, false, false, false),
+			new AnimalFormEntry(typeof(Dog), "dog", 8476, 2309, 1070806, 40.0, 0xD9, 0x8FD, 0x90E, false, false, false),
+			new AnimalFormEntry(typeof(Cat), "cat", 8475, 2309, 1070806, 40.0, 0xC9, 0x8FD, 0x90E, false, false, false),
+			new AnimalFormEntry(typeof(Rat), "rat", 8483, 2309, 1070805, 20.0, 0xEE, 0x8FD, 0x90E, true, false, false),
+			new AnimalFormEntry(typeof(Rabbit), "rabbit", 8485, 2309, 1070805, 20.0, 0xCD, 0x8FD, 0x90E, true, false, false),
+			new AnimalFormEntry(typeof(Squirrel), "squirrel", 11671, 0, 0, 20.0, 0x116, 0, 0, false, false, false),
+			new AnimalFormEntry(typeof(Ferret), "ferret", 11672, 0, 1075220, 40.0, 0x117, 0, 0, false, false, true),
+			new AnimalFormEntry(typeof(CuSidhe), "cu sidhe", 11670, 0, 1075221, 60.0, 0x115, 0, 0, false, false, false),
+			new AnimalFormEntry(typeof(Reptalon), "reptalon", 11669, 0, 1075222, 90.0, 0x114, 0, 0, false, false, false),
 		};
 
 		public static AnimalFormEntry[] Entries { get { return m_Entries; } }
@@ -504,12 +505,17 @@ namespace Server.Spells.Ninjitsu
 							40 - b.Width / 2 - b.X,
 							30 - b.Height / 2 - b.Y,
 							entries[i].Tooltip);
-						AddHtmlLocalized(x + 84, y, 250, 60, entries[i].Name, 0x7FFF, false, false);
+						AddHtml(x + 84, y, 250, 60, Color(String.Format(entries[i].Name), 0xFFFFFF), false, false);
 
 						current++;
 					}
 				}
 			}
+			
+			private string Color(string str, int color)
+		    	{
+				return String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, str);
+		    	}
 
 			public override void OnResponse(NetState sender, RelayInfo info)
 			{
@@ -546,6 +552,10 @@ namespace Server.Spells.Ninjitsu
 					{
 						m_Caster.FixedParticles(0x3728, 10, 13, 2023, EffectLayer.Waist);
 						m_Caster.Mana -= mana;
+						
+						string typename = entry.Name;
+
+                        			BuffInfo.AddBuff(m_Caster, new BuffInfo(BuffIcon.AnimalForm, 1060612, 1075823, String.Format("{0}\t{1}", "aeiouy".IndexOf(typename.ToLower()[0]) >= 0 ? "an" : "a", typename)));
 					}
 				}
 			}
