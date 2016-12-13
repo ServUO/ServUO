@@ -94,12 +94,18 @@ namespace Server.Spells.Necromancy
 			
             m.PlaySound(0x17F);
             m.FixedParticles(0x374A, 1, 15, 9902, 1108, 4, EffectLayer.Waist);
+	    
+	    int manadrain = (int)(5 + ((15 * m.Skills.SpiritSpeak.Value) / 100));
+
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.WraithForm, 1060524, 1153829, String.Format("15\t5\t5\t{0}",manadrain)));
         }
 
         public override void RemoveEffect(Mobile m)
         {
             if (m is PlayerMobile && m.IsPlayer())
                 ((PlayerMobile)m).IgnoreMobiles = false;
+		
+	    BuffInfo.RemoveBuff(m, BuffIcon.WraithForm);
         }
     }
 }
