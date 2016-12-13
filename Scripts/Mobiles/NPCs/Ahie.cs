@@ -142,8 +142,8 @@ namespace Server.Engines.Quests
     { 
         public FromTheGaultierCollectionQuest()
             : base()
-        { 
-            this.AddObjective(new ObtainObjective(typeof(FemaleStuddedChest), "studded bustiers", 10, 0x1C03));
+        {
+            this.AddObjective(new ObtainObjective(typeof(StuddedBustierArms), "studded bustiers", 10, 0x1C0C));
 			
             this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }

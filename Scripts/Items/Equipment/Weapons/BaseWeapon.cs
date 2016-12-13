@@ -4551,6 +4551,12 @@ namespace Server.Items
 			{
 				m_PlayerConstructed = true; // we don't know, so, assume it's crafted
 			}
+
+            if (m_Slayer == SlayerName.DaemonDismissal || m_Slayer == SlayerName.BalronDamnation)
+                m_Slayer = SlayerName.Exorcism;
+
+            if (m_Slayer2 == SlayerName.DaemonDismissal || m_Slayer2 == SlayerName.BalronDamnation)
+                m_Slayer2 = SlayerName.Exorcism;
 		}
 		#endregion
 
