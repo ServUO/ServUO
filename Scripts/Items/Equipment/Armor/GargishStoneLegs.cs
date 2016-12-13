@@ -118,11 +118,13 @@ namespace Server.Items
         {
             if (parent is Mobile)
             {
-                if (((Mobile)parent).Female)
+                if (((Mobile)parent).Female && this.ItemID != 0x0289)
                     this.ItemID = 0x0289;
-                else
+                else if (this.ItemID != 0x028A)
                     this.ItemID = 0x028A;
             }
+
+            base.OnAdded(parent);
         }
 
         public override void Serialize(GenericWriter writer)

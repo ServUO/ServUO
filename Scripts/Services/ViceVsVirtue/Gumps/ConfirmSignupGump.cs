@@ -42,8 +42,8 @@ namespace Server.Engines.VvV
             switch (info.ButtonID)
             {
                 case 0: break;
-                case 1: 
-                    User.LaunchBrowser("http://uo.com/");
+                case 1:
+                    User.LaunchBrowser("http://uo.com/wiki/ultima-online-wiki/publish-notes/publish-86/");
                     User.SendGump(new ConfirmSignupGump(User));
                     break;
                 case 2:

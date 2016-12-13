@@ -26,7 +26,7 @@ namespace Server
         Fisherman,
         Luck2,
         Bestial,
-        Virtuoso
+        Virtuoso,
     }
 
     public interface ISetItem

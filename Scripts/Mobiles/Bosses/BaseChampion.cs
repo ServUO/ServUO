@@ -34,6 +34,9 @@ namespace Server.Mobiles
                 return false;
             }
         }
+
+        public virtual bool CanGivePowerscrolls { get { return true; } }
+
         public static void GivePowerScrollTo(Mobile m)
         {
             if (m == null)	//sanity
@@ -204,7 +207,7 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
-            if (!this.NoKillAwards)
+            if (CanGivePowerscrolls && !NoKillAwards)
             {
                 this.GivePowerScrolls();
 

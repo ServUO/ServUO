@@ -123,6 +123,14 @@ namespace Server.Items
             if (!this.Movable)
                 return;
 
+            if (!from.BeginAction(this.GetType()))
+            {
+                from.SendLocalizedMessage(500119); // You must wait to perform another action.
+                return;
+            }
+
+            Timer.DelayCall(TimeSpan.FromMilliseconds(500), () => from.EndAction(this.GetType()));
+
             if (from.InRange(this.GetWorldLocation(), 1))
             {
                 if (!this.RequireFreeHand || HasFreeHand(from))
