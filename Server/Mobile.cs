@@ -794,9 +794,11 @@ namespace Server
 		private DateTime m_LastIntGain;
 		private DateTime m_LastDexGain;
 		private Race m_Race;
-		#endregion
+        private Berserk m_Berserk;
+        private Timer m_BerserkTimer;
+        #endregion
 
-		private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds((Core.SE ? 1.0 : 0.5));
+        private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds((Core.SE ? 1.0 : 0.5));
 		private static readonly TimeSpan WarmodeSpamDelay = TimeSpan.FromSeconds((Core.SE ? 4.0 : 2.0));
 
 		private const int WarmodeCatchCount = 4;
@@ -9227,27 +9229,55 @@ namespace Server
 			}
 		}
 
-		/// <summary>
-		///     Overridable. Event invoked when a call to <see cref="ApplyPoison" /> failed because <see cref="CheckPoisonImmunity" /> returned false: the Mobile was resistant to the poison. By default, this broadcasts an overhead message: * The poison seems to have no effect. *
-		///     <seealso cref="CheckPoisonImmunity" />
-		///     <seealso cref="ApplyPoison" />
-		///     <seealso cref="Poison" />
-		/// </summary>
-		public virtual void OnPoisonImmunity(Mobile from, Poison poison)
+        public Timer BerserkTimer { get { return m_BerserkTimer; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Berserk Berserk
+        {
+            get { return m_Berserk; }
+            set
+            {
+                m_Berserk = value;
+
+                if (m_BerserkTimer != null)
+                {
+                    m_BerserkTimer.Stop();
+                    m_BerserkTimer = null;
+                }
+
+                if (m_Berserk != null)
+                {
+                    m_BerserkTimer = m_Berserk.ConstructTimer(this);
+
+                    if (m_BerserkTimer != null)
+                    {
+                        m_BerserkTimer.Start();
+                    }
+                }
+            }
+        }        
+
+        /// <summary>
+        ///     Overridable. Event invoked when a call to <see cref="ApplyPoison" /> failed because <see cref="CheckPoisonImmunity" /> returned false: the Mobile was resistant to the poison. By default, this broadcasts an overhead message: * The poison seems to have no effect. *
+        ///     <seealso cref="CheckPoisonImmunity" />
+        ///     <seealso cref="ApplyPoison" />
+        ///     <seealso cref="Poison" />
+        /// </summary>
+        public virtual void OnPoisonImmunity(Mobile from, Poison poison)
 		{
 			PublicOverheadMessage(MessageType.Emote, 0x3B2, 1005534); // * The poison seems to have no effect. *
 		}
 
-		/// <summary>
-		///     Overridable. Virtual event invoked when a call to <see cref="ApplyPoison" /> failed because
-		///     <see
-		///         cref="CheckHigherPoison" />
-		///     returned false: the Mobile was already poisoned by an equal or greater strength poison.
-		///     <seealso cref="CheckHigherPoison" />
-		///     <seealso cref="ApplyPoison" />
-		///     <seealso cref="Poison" />
-		/// </summary>
-		public virtual void OnHigherPoison(Mobile from, Poison poison)
+        /// <summary>
+        ///     Overridable. Virtual event invoked when a call to <see cref="ApplyPoison" /> failed because
+        ///     <see
+        ///         cref="CheckHigherPoison" />
+        ///     returned false: the Mobile was already poisoned by an equal or greater strength poison.
+        ///     <seealso cref="CheckHigherPoison" />
+        ///     <seealso cref="ApplyPoison" />
+        ///     <seealso cref="Poison" />
+        /// </summary>
+        public virtual void OnHigherPoison(Mobile from, Poison poison)
 		{ }
 
 		/// <summary>

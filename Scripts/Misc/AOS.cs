@@ -270,6 +270,16 @@ namespace Server
 
             m.Damage(totalDamage, from, true, false);
 
+            #region Berserk
+            if (((float)(m.Hits - totalDamage) / m.HitsMax) < 0.5 && m.Hits > totalDamage)
+            {
+                if (BerserkImpl.CheckBestialArmor(m))
+                {
+                    m.Berserk = Berserk.SetBerserk;
+                }
+            }
+            #endregion
+
             #region Stygian Abyss
             if (m.Spell != null)
                 ((Spell)m.Spell).CheckCasterDisruption(true, phys, fire, cold, pois, nrgy);

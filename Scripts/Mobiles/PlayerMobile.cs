@@ -3073,7 +3073,10 @@ namespace Server.Mobiles
 				state.CancelAllTrades();
 			}
 
-			DropHolding();
+            if (BerserkTimer != null)
+                Berserk.OnRemoveEffect(BerserkTimer);
+
+            DropHolding();
 
 			if (Core.AOS && Backpack != null && !Backpack.Deleted)
 			{
