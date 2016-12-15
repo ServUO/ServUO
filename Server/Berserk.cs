@@ -11,7 +11,7 @@ namespace Server
         public abstract bool Active { get; set; }
         public abstract bool IsTempBody { get; set; }
         public abstract int TempBodyColor { get; set; }
-        public abstract int EquipBestialAmount { get; set; }
+        public abstract bool FullBestialEquip { get; }
         public abstract List<Item> EquipBestial { get; set; }
         public abstract Timer ConstructTimer(Mobile m);
         public abstract void OnRemoveEffect(Timer t);

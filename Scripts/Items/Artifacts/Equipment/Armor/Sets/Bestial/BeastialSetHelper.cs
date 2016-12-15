@@ -17,9 +17,7 @@ namespace Server
         private int m_TempBodyHue;
         private readonly string m_Name;
         private readonly int m_Level;
-
         private List<Item> m_EquipBestial;
-        public int m_EquipBestialAmount;
 
         public override bool Active { get { return m_Active; } set { m_Active = value; } }
         public override bool IsTempBody { get { return m_IsTempBody; } set { m_IsTempBody = value; } }
@@ -27,7 +25,7 @@ namespace Server
         public override string Name { get { return m_Name; } }
         public override int Level { get { return m_Level; } }
         public override List<Item> EquipBestial { get { return m_EquipBestial; } set { m_EquipBestial = value; } }
-        public override int EquipBestialAmount { get { return m_EquipBestialAmount; } set { m_EquipBestialAmount = value; } }
+        public override bool FullBestialEquip { get { return m_EquipBestial.Count() == 4; } }
 
         public BerserkImpl(string name, int level)
         {
@@ -55,19 +53,16 @@ namespace Server
             if (m.Berserk.EquipBestial != null)
                 m.Berserk.EquipBestial.Clear();
 
-            List<Item> equipment = m.Items.Where(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i).ToList();
-
-            m.Berserk.EquipBestial = equipment;
-            m.Berserk.EquipBestialAmount = equipment.Count();
+            m.Berserk.EquipBestial = m.Items.Where(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i).ToList();
         }
 
         public static int AddBestialHueParent(Mobile m)
         {
-            int color = m.Items.FirstOrDefault(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i).Hue;
+            int color = m.Berserk.EquipBestial.FirstOrDefault().Hue;
 
-            CheckEquipBestial(m);
-
-            if (m.Berserk.EquipBestialAmount == 4)
+            CheckEquipBestial(m);           
+            
+            if (m.Berserk.FullBestialEquip)
             {
                 if (m.HueMod != -1)
                 {
@@ -91,6 +86,10 @@ namespace Server
                 m.HueMod = m.Berserk.TempBodyColor;
                 m.Berserk.IsTempBody = false;
             }
+            else
+            {
+                m.HueMod = -1;
+            }
         }
 
         public class BerserkTimer : Timer
@@ -113,11 +112,8 @@ namespace Server
                 {
                     m_Mobile.SendLocalizedMessage(1151532); //You enter a berserk rage!
                     m_Berserk.Active = true;
-
-                    foreach (var item in m_Berserk.EquipBestial)
-                    {
-                        item.Hue = 1255;
-                    }
+                    
+                    m_Berserk.EquipBestial.ForEach(k => k.Hue = 1255);
 
                     if (m_Mobile.HueMod != -1)
                     {
@@ -125,7 +121,7 @@ namespace Server
                         m_Berserk.IsTempBody = true;
                     }
 
-                    if (m_Berserk.EquipBestialAmount == 4)
+                    if (m_Berserk.FullBestialEquip)
                         m_Mobile.HueMod = 1255; 
                 }
                 else
@@ -140,7 +136,7 @@ namespace Server
                         {
                             m_Mobile.SendLocalizedMessage(1151533, "", item.Hue); //Your rage grows!
 
-                            if (m_Berserk.EquipBestialAmount == 4)
+                            if (m_Berserk.FullBestialEquip)
                                 m_Mobile.HueMod++;
 
                             msg = true;
@@ -176,7 +172,7 @@ namespace Server
                             {
                                 m_Mobile.SendLocalizedMessage(1151534, "", item.Hue); //Your rage recedes.
 
-                                if (m_Berserk.EquipBestialAmount == 4)
+                                if (m_Berserk.FullBestialEquip)
                                     m_Mobile.HueMod--;
 
                                 msg = true;
@@ -191,11 +187,8 @@ namespace Server
                 Stop();
 
                 CheckEquipBestial(m_Mobile);
-
-                foreach (var item in m_Berserk.EquipBestial)
-                {
-                    item.Hue = 2010;
-                }
+                
+                m_Berserk.EquipBestial.ForEach(k => k.Hue = 2010);
 
                 m_Berserk.Active = false;
                 m_Mobile.SendLocalizedMessage(1151535); //Your berserk rage has subsided.               
@@ -203,7 +196,6 @@ namespace Server
                 if (m_Berserk.IsTempBody)
                 {
                     m_Mobile.HueMod = m_Berserk.TempBodyColor;
-
                     m_Berserk.IsTempBody = false;
                 }
                 else
