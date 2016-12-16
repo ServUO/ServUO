@@ -531,6 +531,11 @@ namespace Server.Items
 				m_Healer.CheckSkill(secondarySkill, 0.0, 120.0);
 				m_Healer.CheckSkill(primarySkill, 0.0, 120.0);
 			}
+			
+			if (m_Patient is PlayerMobile)
+                		BuffInfo.RemoveBuff(m_Healer, BuffIcon.Healing);
+            		else
+                		BuffInfo.RemoveBuff(m_Healer, BuffIcon.Veterinary);
 		}
 
 		private class InternalTimer : Timer
@@ -631,6 +636,12 @@ namespace Server.Items
 				{
 					context.StopHeal();
 				}
+				
+				if (patient is PlayerMobile)
+                    			BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Healing, 1002082, 1151400, TimeSpan.FromSeconds(seconds), healer, String.Format("{0}", patient.Name)));
+                		else
+                    			BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Veterinary, 1002167, 1151400, TimeSpan.FromSeconds(seconds), healer, String.Format("{0}", patient.Name)));
+		    
 				seconds *= 1000;
 
 				context = new BandageContext(healer, patient, TimeSpan.FromMilliseconds(seconds), enhanced);
