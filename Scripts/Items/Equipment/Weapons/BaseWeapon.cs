@@ -2266,22 +2266,11 @@ namespace Server.Items
             if (RunedSashOfWarding.IsUnderEffects(defender, WardingEffect.WeaponDamage))
                 percentageBonus -= 10;
 
-            if (attacker.Race == Race.Gargoyle)
-            {
-                double perc = ((double)attacker.Hits / (double)attacker.HitsMax) * 100;
+            if (attacker.GargoyleBerserk)
+                percentageBonus += Math.Min(60, 15 * (int)(((float)(attacker.HitsMax - attacker.Hits) / attacker.HitsMax) * 5.0));
 
-                perc = 100 - perc;
-                perc /= 20;
-
-                if (perc > 4)
-                    percentageBonus += 60;
-                else if (perc >= 3)
-                    percentageBonus += 45;
-                else if (perc >= 2)
-                    percentageBonus += 30;
-                else if (perc >= 1)
-                    percentageBonus += 15;
-            }
+            if (attacker.Berserk != null)
+                percentageBonus += Math.Min(60, 15 * (int)(((float)(attacker.HitsMax - attacker.Hits) / attacker.HitsMax) * attacker.Berserk.EquipBestial.Count));            
 			#endregion
 
 			#region Mondain's Legacy

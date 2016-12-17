@@ -9229,6 +9229,15 @@ namespace Server
 			}
 		}
 
+        private bool m_GargoyleBerserk;
+        public Timer GargoyleBerserkTimer;
+
+        public bool GargoyleBerserk
+        {
+            get { return m_GargoyleBerserk; }
+            set { m_GargoyleBerserk = value; }
+        }
+
         public Timer BerserkTimer { get { return m_BerserkTimer; } }
 
         [CommandProperty(AccessLevel.GameMaster)]

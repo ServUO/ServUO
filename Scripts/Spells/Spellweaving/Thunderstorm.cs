@@ -65,22 +65,7 @@ namespace Server.Spells.Spellweaving
                 int damage = Math.Max(11, 10 + (int)(skill / 24)) + this.FocusLevel;
 
                 int sdiBonus = AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage);
-				if (Caster is PlayerMobile && Caster.Race == Race.Gargoyle)
-				{
-					double perc = ((double)Caster.Hits / (double)Caster.HitsMax) * 100;
-
-					perc = 100 - perc;
-					perc /= 20;
-
-					if (perc > 4)
-						sdiBonus += 12;
-					else if (perc >= 3)
-						sdiBonus += 9;
-					else if (perc >= 2)
-						sdiBonus += 6;
-					else if (perc >= 1)
-						sdiBonus += 3;
-				}						
+						
                 int pvmDamage = damage * (100 + sdiBonus);
                 pvmDamage /= 100;
 

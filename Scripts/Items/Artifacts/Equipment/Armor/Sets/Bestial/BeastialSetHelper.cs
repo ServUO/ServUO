@@ -42,7 +42,7 @@ namespace Server
         {
             ((BerserkTimer)t).RemoveEffect();
         }
-              
+
         public static bool CheckBestialArmor(Mobile m)
         {
             return m.Items.Where(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i) != null;
@@ -205,6 +205,44 @@ namespace Server
 
                 m_Mobile.Berserk = null;               
             }            
+        }
+
+        public class GargoyleBerserkTimer : Timer
+        {
+            private Mobile m_Mobile;
+
+            public GargoyleBerserkTimer(Mobile m)
+                : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
+            {
+                m_Mobile = m;
+
+                m_Mobile.PlaySound(0x20F);
+                m_Mobile.PlaySound(m_Mobile.Body.IsFemale ? 0x338 : 0x44A);
+                m_Mobile.FixedParticles(0x376A, 1, 31, 9961, 1160, 0, EffectLayer.Waist);
+                m_Mobile.FixedParticles(0x37C4, 1, 31, 9502, 43, 2, EffectLayer.Waist);
+
+                BuffInfo.AddBuff(m_Mobile, new BuffInfo(BuffIcon.Berserk, 1080449, 1115021, "15\t3", false));
+
+                m_Mobile.GargoyleBerserk = true;
+            }
+
+            protected override void OnTick()
+            {
+                float percentage = (float)m_Mobile.Hits / m_Mobile.HitsMax;
+
+                if (percentage >= 0.8 || !m_Mobile.Alive)
+                    RemoveEffect();
+            }
+
+            public void RemoveEffect()
+            {
+                m_Mobile.PlaySound(0xF8);
+                BuffInfo.RemoveBuff(m_Mobile, BuffIcon.Berserk);
+
+                m_Mobile.GargoyleBerserk = false;
+
+                Stop();
+            }
         }
     }
 }
