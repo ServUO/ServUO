@@ -126,7 +126,7 @@ namespace Server.SkillHandlers
 
         public static void DoPassiveDetect(Mobile src)
         {
-			if (src == null || src.Map == null || src.Location == Point3D.Zero)
+			if (src == null || src.Map == null || src.Location == Point3D.Zero || src.IsStaff())
 				return;
 
             double ss = src.Skills[SkillName.DetectHidden].Value;

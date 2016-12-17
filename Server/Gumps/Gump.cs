@@ -32,9 +32,9 @@ namespace Server.Gumps
 		private bool m_Resizable = true;
 		private bool m_Disposable = true;
 
-		public static int GetTypeID(Type type)
+		public virtual int GetTypeID()
 		{
-			return type.FullName.GetHashCode();
+			return this.GetType().FullName.GetHashCode();
 		}
 
 		public Gump(int x, int y)
@@ -48,7 +48,7 @@ namespace Server.Gumps
 			m_X = x;
 			m_Y = y;
 
-			m_TypeID = GetTypeID(GetType());
+			m_TypeID = GetTypeID();
 
 			m_Entries = new List<GumpEntry>();
 			m_Strings = new List<string>();

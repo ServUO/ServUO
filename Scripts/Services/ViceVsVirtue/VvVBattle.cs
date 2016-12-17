@@ -827,7 +827,7 @@ namespace Server.Engines.VvV
             }
         }
 
-        public void UpdateAllGumps(bool update = true)
+        public void UpdateAllGumps(bool recompile = true)
         {
             if (Region == null)
                 return;
@@ -843,9 +843,9 @@ namespace Server.Engines.VvV
                 {
                     m.SendGump(new VvVBattleStatusGump(m, this));
                 }
-                else if (update)
+                else
                 {
-                    g.Refresh();
+                    g.Refresh(recompile);
                 }
             }
         }
