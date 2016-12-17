@@ -443,6 +443,14 @@ namespace Server.SkillHandlers
 								{
 									ScaleStats(m_Creature, 0.50);
 								}
+
+                                foreach (Skill sk in m_Creature.Skills)
+                                {
+                                    if (sk.Base > 100)
+                                        sk.Cap = sk.Base;
+                                    else
+                                        sk.Cap = 100;
+                                }
 							}
 
 							if (alreadyOwned)

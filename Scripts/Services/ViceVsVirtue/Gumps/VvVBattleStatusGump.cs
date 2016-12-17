@@ -14,6 +14,13 @@ namespace Server.Engines.VvV
         public PlayerMobile User { get; set; }
         public VvVBattle Battle { get; set; }
 
+        public GumpHtml Countdown { get; set; }
+
+        public override int GetTypeID()
+        {
+            return 0xF3ECC;
+        }
+
         public VvVBattleStatusGump(PlayerMobile pm, VvVBattle battle) : base(50, 50)
         {
             User = pm;
@@ -24,6 +31,7 @@ namespace Server.Engines.VvV
 
         public void AddGumpLayout()
         {
+            AddPage(0);
             AddImage(0, 0, 30566);
 
             if (DateTime.UtcNow >= Battle.NextSigilSpawn && Battle.Sigil != null && !Battle.Sigil.Deleted)
@@ -45,22 +53,22 @@ namespace Server.Engines.VvV
             {
                 VvVGuildBattleStats stats = guilds[i];
 
-                AddHtml(87, 118 + (30 * i), 50, 20, String.Format("<basefont color=#FFFFFF>{0}", stats.Guild.Abbreviation), false, false);
-                AddImageTiled(145, 120 + (30 * i), (int)Math.Min(216, (stats.Points * offset)), 12, 30584);
+                AddHtml(87, 115 + (31 * i), 50, 20, String.Format("<basefont color=#FFFFFF>{0}", stats.Guild.Abbreviation), false, false);
+                AddBackground(145, 120 + (31 * i), (int)Math.Min(216, (stats.Points * offset)), 12, 30584);
 
                 if (i == 2)  // stupid gump only allows 3 to be shown
                     break;
             }
 
             int count = Battle.Messages.Count - 1;
-            int y = 205;
+            int y = 206;
 
             for (int i = count; i >= 0; i--)
             {
                 if (i <= count - 3)
                     break;
 
-                AddHtml(100, y, 250, 16, String.Format("<basefont color=#00CED1>{0}", Battle.Messages[i]), false, false);
+                AddHtml(98, y, 250, 16, String.Format("<basefont color=#80BFFF>{0}", Battle.Messages[i]), false, false);
 
                 y += 16;
             }
@@ -72,19 +80,34 @@ namespace Server.Engines.VvV
                 VvVGuildBattleStats stats = Battle.GetGuildStats(gu);
 
                 AddHtml(87, 268, 50, 20, String.Format("<basefont color=#FFFFFF>{0}", gu.Abbreviation), false, false);
-                AddImageTiled(145, 270, (int)Math.Min(216, (stats.Points * offset)), 12, 30584);
+                AddBackground(145, 271, (int)Math.Min(216, (stats.Points * offset)), 12, 30584);
             }
 
-            TimeSpan left = (Battle.StartTime + TimeSpan.FromMinutes(VvVBattle.Duration)) - DateTime.UtcNow;
-            AddHtml(207, 21, 60, 20, "<basefont color=red>" + String.Format("{0:mm\\:ss}", left), false, false);
+            AddCountdown();
         }
 
-        public void Refresh()
+        public void AddCountdown()
         {
-            Entries.Clear();
-            Entries.TrimExcess();
-            AddGumpLayout();
-            User.CloseGump(this.GetType());
+            TimeSpan left = (Battle.StartTime + TimeSpan.FromMinutes(VvVBattle.Duration)) - DateTime.UtcNow;
+            Countdown = new GumpHtml(210, 21, 233, 347, "<basefont color=#FF0000>" + String.Format("{0:mm\\:ss}", left), false, false);
+
+            Add(Countdown);
+        }
+
+        public void Refresh(bool recompile = true)
+        {
+            if (recompile)
+            {
+                Entries.Clear();
+                Entries.TrimExcess();
+                AddGumpLayout();
+            }
+            else if (Entries.Contains(Countdown))
+            {
+                Entries.Remove(Countdown);
+                AddCountdown();
+            }
+
             User.SendGump(this, false);
         }
     }

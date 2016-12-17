@@ -181,7 +181,7 @@ namespace Server.Engines.Quests
         public TheSecretIngredientQuest()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(SpeckledPoisonSac), "speckled poison sacs", 5, 3600));		
+            this.AddObjective(new ObtainObjective(typeof(SpeckledPoisonSac), "speckled poison sacs", 5, 0x23A, 3600));		
 							
             this.AddReward(new BaseReward(1074871)); // A step closer to having sealing wax.
         }

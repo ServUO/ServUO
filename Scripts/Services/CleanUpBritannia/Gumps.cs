@@ -8,6 +8,17 @@ namespace Server.Engines.CleanUpBritannia
 {
     public class CleanUpBritanniaRewardGump : BaseRewardGump
     {
+        public override int YDist
+        {
+            get
+            {
+                if (Index > 80)
+                    return 20;
+
+                return base.YDist;
+            }
+        }
+
         public CleanUpBritanniaRewardGump(Mobile owner, PlayerMobile user)
             : base(owner, user, CleanUpBritanniaRewards.Rewards, 1151316)
         {

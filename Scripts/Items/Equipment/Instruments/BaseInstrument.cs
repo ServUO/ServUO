@@ -440,10 +440,7 @@ namespace Server.Items
             this.m_WellSound = wellSound;
             this.m_BadlySound = badlySound;
 
-            if (this is SnakeCharmerFlute)
-                this.UsesRemaining = Utility.RandomMinMax(50, 80);
-            else
-                this.UsesRemaining = Utility.RandomMinMax(this.InitMinUses, this.InitMaxUses);
+            UsesRemaining = Utility.RandomMinMax(this.InitMinUses, this.InitMaxUses);
         }
 
         public override void GetProperties(ObjectPropertyList list)

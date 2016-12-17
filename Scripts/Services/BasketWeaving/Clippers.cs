@@ -173,9 +173,11 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            from.SendLocalizedMessage(1112118); // What plant do you wish to use these clippers on?
-
-            from.Target = new InternalTarget(this);
+            if (IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1112118); // What plant do you wish to use these clippers on?
+                from.Target = new InternalTarget(this);
+            }
         }
 
         private class InternalTarget : Target

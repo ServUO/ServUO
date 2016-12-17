@@ -25,6 +25,8 @@ namespace Server.SkillHandlers
         {
 			private static void SendGump(Mobile from, BaseCreature c)
 			{
+                from.CheckTargetSkill(SkillName.AnimalLore, c, 0.0, 120.0);
+
 				from.CloseGump(typeof(AnimalLoreGump));
 				from.SendGump(new AnimalLoreGump(c));
 			}

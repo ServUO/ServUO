@@ -71,7 +71,7 @@ namespace Server.Spells.Necromancy
 
         public void Target(Mobile m)
         {
-            if (this.Caster == m || !(m is PlayerMobile || m is BaseCreature)) // only PlayerMobile and BaseCreature implement blood oath checking
+            if (this.Caster == m)
             {
                 this.Caster.SendLocalizedMessage(1060508); // You can't curse that.
             }
