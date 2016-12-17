@@ -582,7 +582,7 @@ namespace Server
 
                 #region City Loyalty
                 if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.GuildOfAssassins))
-                    value += 1;
+                    value += 5;
                 #endregion
 
                 #region SA

@@ -654,7 +654,6 @@ namespace Server.Engines.Points
             Entries[typeof(GrobusFur)] = 20.0;
             Entries[typeof(HorseShoes)] = 200.0;
 
-            Entries[typeof(JackalsCollar)] = 5500.0;
             Entries[typeof(JocklesQuicksword)] = 2.0;
             Entries[typeof(MangledHeadOfDreadhorn)] = 1000.0;
             Entries[typeof(MedusaBlood)] = 1000.0;
