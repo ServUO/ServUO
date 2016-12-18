@@ -45,7 +45,7 @@ namespace Server.Spells.Fourth
             this.Caster.Target = new InternalTarget(this);
         }
 
-		public static void DoCurse(Mobile caster, Mobile m)
+		public static void DoCurse(Mobile caster, Mobile m, bool masscurse)
 		{
 			SpellHelper.AddStatCurse(caster, m, StatType.Str);
 			SpellHelper.DisableSkillCheck = true;
@@ -55,8 +55,18 @@ namespace Server.Spells.Fourth
 
 			int percentage = (int)(SpellHelper.GetOffsetScalar(caster, m, true) * 100);
 			TimeSpan length = SpellHelper.GetDuration(caster, m);
-			string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
-			BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, length, m, args.ToString()));
+			string args;
+
+		    	if (masscurse)
+		    	{
+				args = String.Format("{0}\t{0}\t{0}", percentage);
+				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.MassCurse, 1075839, length, m, args));
+		    	}
+		    	else
+		    	{
+				args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
+				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, length, m, args.ToString()));
+		    	}
 
 			Timer t = (Timer)m_UnderEffect[m];
 
@@ -88,7 +98,7 @@ namespace Server.Spells.Fourth
 
                 SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
 
-				DoCurse(this.Caster, m);
+				DoCurse(this.Caster, m, false);
 
 				this.HarmfulSpell(m);
 			}
