@@ -1,10 +1,12 @@
 using System;
-using Server.Items;
+using Server;
+using Server.Mobiles;
 
 namespace Server.Items
 {
     public class BestialKilt : GargishClothKilt, ISetItem
     {
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1151546; } } // Bestial Kilt
 
         #region ISetItem Members
@@ -34,6 +36,28 @@ namespace Server.Items
         {
         }
 
+        public override void OnAdded(object parent)
+        {
+            base.OnAdded(parent);
+
+            if (parent is PlayerMobile)
+            {
+                PlayerMobile pm = parent as PlayerMobile;
+
+                this.Hue = SetHelper.CheckBestialHueParent(pm);
+            }
+        }
+
+        public override void OnRemoved(object parent)
+        {
+            base.OnRemoved(parent);
+
+            if (parent is Mobile && !Deleted)
+            {
+                this.Hue = 2010;
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -44,6 +68,8 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            this.Hue = 2010;
         }
     }
 }

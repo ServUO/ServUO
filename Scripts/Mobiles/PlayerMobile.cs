@@ -2922,11 +2922,11 @@ namespace Server.Mobiles
 			}
 
 			base.OnBeneficialAction(target, isCriminal);
-		}
+		}        
 
-		public override void OnDamage(int amount, Mobile from, bool willKill)
+        public override void OnDamage(int amount, Mobile from, bool willKill)
 		{
-			int disruptThreshold;
+            int disruptThreshold;
 
 			if (!Core.AOS)
 			{
@@ -2951,7 +2951,38 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (Confidence.IsRegenerating(this))
+            #region Gargoyle Berserk
+            if (Race == Race.Gargoyle && !willKill && !Berserk)
+            {
+                if (((float)(Hits - amount) / HitsMax) < 0.8)
+                {
+                    if (m_BerserkTimer != null)
+                        m_BerserkTimer.Stop();
+
+                    m_BerserkTimer = new BerserkTimer(this);
+                    m_BerserkTimer.Start();
+                }
+            }
+            #endregion
+
+            #region Bestial Berserk
+            if (!willKill)
+            {               
+                if (((float)(Hits - amount) / HitsMax) < 0.5 && Hits > amount)
+                {
+                    if (CheckBestialArmor(this))
+                    {
+                        if (m_BestialBerserkTimer != null)
+                            m_BestialBerserkTimer.Stop();
+
+                        m_BestialBerserkTimer = new BestialBerserkTimer(this);
+                        m_BestialBerserkTimer.Start();
+                    }              
+                }
+            }
+            #endregion
+
+            if (Confidence.IsRegenerating(this))
 			{
 				Confidence.StopRegenerating(this);
 			}
@@ -2980,9 +3011,174 @@ namespace Server.Mobiles
 			#endregion
 
 			base.OnDamage(amount, from, willKill);
-		}
+		}        
 
-		public override void Resurrect()
+        #region Gargoyle Berserk
+        private bool m_Berserk;
+        private BerserkTimer m_BerserkTimer;
+
+        public bool Berserk
+        {
+            get { return m_Berserk; }
+            set { m_Berserk = value; }
+        }
+
+        public class BerserkTimer : Timer
+        {
+            private PlayerMobile m_Owner;
+
+            public BerserkTimer(PlayerMobile owner)
+                : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
+            {
+                m_Owner = owner;
+
+                m_Owner.PlaySound(0x20F);
+                m_Owner.PlaySound(m_Owner.Body.IsFemale ? 0x338 : 0x44A);
+                m_Owner.FixedParticles(0x376A, 1, 31, 9961, 1160, 0, EffectLayer.Waist);
+                m_Owner.FixedParticles(0x37C4, 1, 31, 9502, 43, 2, EffectLayer.Waist);
+
+                BuffInfo.AddBuff(m_Owner, new BuffInfo(BuffIcon.Berserk, 1080449, 1115021, "15\t3", false));
+
+                m_Owner.Berserk = true;
+            }
+
+            protected override void OnTick()
+            {
+                float percentage = (float)m_Owner.Hits / m_Owner.HitsMax;
+
+                if (percentage >= 0.8)
+                    RemoveEffect();
+            }
+
+            public void RemoveEffect()
+            {
+                m_Owner.PlaySound(0xF8);
+                BuffInfo.RemoveBuff(m_Owner, BuffIcon.Berserk);
+
+                m_Owner.Berserk = false;
+
+                Stop();
+            }
+        }
+        #endregion
+
+        #region Bestial Berserk
+        private BestialBerserkTimer m_BestialBerserkTimer;
+        private bool m_BestialBerserk;
+        public List<Item> m_EquipBestial;
+        public int m_EquipBestialAmount;
+
+        public bool BestialBerserk
+        {
+            get { return m_BestialBerserk; }
+            set { m_BestialBerserk = value; }
+        }
+
+        public int BestialEquipAmount
+        {
+            get { return m_EquipBestialAmount; }
+            set { m_EquipBestialAmount = value; }
+        }
+
+        public bool CheckBestialArmor(PlayerMobile m)
+        {
+            return m.Items.Where(i => i != null && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i && (i is BestialGloves || i is BestialArms || i is BestialHelm || i is BestialGorget || i is BestialNecklace || i is BestialLegs || i is BestialKilt || i is BestialEarrings)) != null;
+        }
+
+        public void CheckEquipBestial()
+        {
+            if (m_EquipBestial != null)
+                m_EquipBestial.Clear();            
+
+            m_EquipBestial = Items.Where(i => i != null && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i && (i is BestialGloves || i is BestialArms || i is BestialHelm || i is BestialGorget || i is BestialNecklace || i is BestialLegs || i is BestialKilt || i is BestialEarrings)).ToList();
+            m_EquipBestialAmount = m_EquipBestial.Count();
+        }
+
+        public class BestialBerserkTimer : Timer
+        {            
+            private PlayerMobile m_Owner;
+            private int m_Count = 0;
+            private bool msg;
+            private const int MaxCount = 10;
+
+            public BestialBerserkTimer(PlayerMobile owner)
+                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+            {
+                m_Owner = owner;
+
+                m_Owner.CheckEquipBestial();
+
+                if (!m_Owner.BestialBerserk)
+                {
+                    m_Owner.SendLocalizedMessage(1151532); //You enter a berserk rage!
+                    m_Owner.BestialBerserk = true;
+
+                    foreach (var item in m_Owner.m_EquipBestial)
+                    {
+                        item.Hue = 1255;
+                    }
+                }
+                else
+                {
+                    msg = false;
+
+                    foreach (var item in m_Owner.m_EquipBestial.Where(i => i.Hue < 1260))
+                    {
+                        item.Hue++;
+
+                        if (!msg)
+                        {
+                            m_Owner.SendLocalizedMessage(1151533, "", item.Hue); //Your rage grows!
+                            msg = true;
+                        }
+                    }
+                }
+            }
+
+            protected override void OnTick()
+            {
+                if (!m_Owner.Alive)
+                    RemoveEffect();
+
+                m_Count++;
+
+                m_Owner.CheckEquipBestial();
+
+                if (m_Count >= MaxCount)
+                {
+                    RemoveEffect();
+                }
+                else
+                {
+                    if (m_Count % 3 == 0)
+                    {
+                        msg = false;                            
+
+                        foreach (var item in m_Owner.m_EquipBestial.Where(i => i.Hue > 1255))
+                        {
+                            item.Hue--;
+
+                            if (!msg)
+                            {
+                                m_Owner.SendLocalizedMessage(1151534, "", item.Hue); //Your rage recedes.
+                                msg = true;
+                            }
+                        }
+                    }                    
+                }                
+            }
+
+            public void RemoveEffect()
+            {
+                Stop();
+
+                m_Owner.BestialBerserk = false;
+                m_Owner.SendLocalizedMessage(1151535); //Your berserk rage has subsided.
+            }
+        }
+        #endregion
+
+        public override void Resurrect()
 		{
 			bool wasAlive = Alive;
 
@@ -3066,14 +3262,20 @@ namespace Server.Mobiles
 
 		public override bool OnBeforeDeath()
 		{
-			NetState state = NetState;
+            NetState state = NetState;
 
 			if (state != null)
 			{
 				state.CancelAllTrades();
 			}
 
-			DropHolding();
+            if (m_BerserkTimer != null)
+                m_BerserkTimer.RemoveEffect();
+
+            if (m_BestialBerserkTimer != null)
+                m_BestialBerserkTimer.RemoveEffect();
+
+            DropHolding();
 
 			if (Core.AOS && Backpack != null && !Backpack.Deleted)
 			{
@@ -3085,7 +3287,7 @@ namespace Server.Mobiles
 				}
 			}
 
-			m_EquipSnapshot = new List<Item>(Items);
+            m_EquipSnapshot = new List<Item>(Items);
 
 			m_NonAutoreinsuredItems = 0;
 			m_InsuranceCost = 0;
@@ -3239,7 +3441,7 @@ namespace Server.Mobiles
 				SendLocalizedMessage(1061115);
 			}
 
-			base.OnDeath(c);
+            base.OnDeath(c);
 
 			m_EquipSnapshot = null;
 
@@ -3256,10 +3458,10 @@ namespace Server.Mobiles
 			EndAction(typeof(PolymorphSpell));
 			EndAction(typeof(IncognitoSpell));
 
-			MeerMage.StopEffect(this, false);
+			MeerMage.StopEffect(this, false);            
 
-			#region Stygian Abyss
-			if (Flying)
+            #region Stygian Abyss
+            if (Flying)
 			{
 				Flying = false;
 				BuffInfo.RemoveBuff(this, BuffIcon.Fly);
