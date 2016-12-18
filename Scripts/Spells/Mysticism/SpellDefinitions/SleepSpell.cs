@@ -17,10 +17,9 @@ namespace Server.Spells.Mystic
 				"Sleep", "In Zu",
 				230,
 				9022,
-				Reagent.Bloodmoss,
-				Reagent.Garlic,
-				Reagent.SulfurousAsh,
-				Reagent.DragonBlood
+				Reagent.Nightshade,
+				Reagent.SpidersSilk,
+				Reagent.BlackPearl
 			);
 
 		public SleepSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
