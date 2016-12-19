@@ -212,6 +212,7 @@ namespace Server.Items
         public LighthouseAddonDeed(string account)
         {
             Account = account;
+            this.LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)
