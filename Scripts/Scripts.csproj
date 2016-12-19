@@ -581,6 +581,7 @@
     <Compile Include="Items\Artifacts\Decorative\MapOfTheKnownWorld.cs" />
     <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BeastialSetHelper.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososTunic.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososEarpieces.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososKidGloves.cs" />

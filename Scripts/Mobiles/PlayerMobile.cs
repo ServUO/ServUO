@@ -3092,7 +3092,10 @@ namespace Server.Mobiles
 			if (Criminal)
                 		BuffInfo.RemoveBuff(this, BuffIcon.CriminalStatus);
 
-			DropHolding();
+            if (BerserkTimer != null)
+                Berserk.OnRemoveEffect(BerserkTimer);
+
+            DropHolding();
 
 			if (Core.AOS && Backpack != null && !Backpack.Deleted)
 			{

@@ -67,7 +67,17 @@ namespace Server.Gumps
 			Poison.Lethal, Poison.DarkGlow, Poison.Parasitic
 		};
 
-		private static readonly bool PrevLabel = OldStyle;
+        public static string[] m_BerserkNames =
+        {
+            "None", "SetBerserk"
+        };
+
+        public static object[] m_BerserkValues =
+        {
+            null, Berserk.SetBerserk
+        };
+
+        private static readonly bool PrevLabel = OldStyle;
 		private static readonly bool NextLabel = OldStyle;
 		private static readonly bool TypeLabel = !OldStyle;
 
@@ -104,7 +114,8 @@ namespace Server.Gumps
 		private static readonly Type _TypeOfString = typeof(String);
 		private static readonly Type _TypeOfText = typeof(TextDefinition);
 		private static readonly Type _TypeOfPoison = typeof(Poison);
-		private static readonly Type _TypeOfMap = typeof(Map);
+        private static readonly Type _TypeOfBerserk = typeof(Berserk);
+        private static readonly Type _TypeOfMap = typeof(Map);
 		private static readonly Type _TypeOfSkills = typeof(Skills);
 		private static readonly Type _TypeOfPropertyObject = typeof(PropertyObjectAttribute);
 		private static readonly Type _TypeOfNoSort = typeof(NoSortAttribute);
@@ -511,6 +522,11 @@ namespace Server.Gumps
 						{
 							from.SendGump(
 								new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, m_PoisonNames, m_PoisonValues));
+						}
+                        else if (IsType(type, _TypeOfBerserk))
+						{
+							from.SendGump(
+								new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, m_BerserkNames, m_BerserkValues));
 						}
 						else if (IsType(type, _TypeofDateTime))
 						{
