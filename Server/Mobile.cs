@@ -11488,7 +11488,7 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
-		public bool Criminal
+		public virtual bool Criminal
 		{
 			get { return m_Criminal; }
 			set
