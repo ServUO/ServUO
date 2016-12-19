@@ -3063,6 +3063,22 @@ namespace Server.Mobiles
 			}
 			return false;
 		}
+		
+		public override bool Criminal
+        	{
+            		get
+            		{
+                		if (this.Alive)
+                		{
+                    			if (base.Criminal)
+                        			BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.CriminalStatus, 1153802, 1153828));
+                    			else
+                        			BuffInfo.RemoveBuff(this, BuffIcon.CriminalStatus);
+                		}
+
+                		return base.Criminal;
+            		}
+        	}
 
 		public override bool OnBeforeDeath()
 		{
@@ -3072,6 +3088,9 @@ namespace Server.Mobiles
 			{
 				state.CancelAllTrades();
 			}
+			
+			if (Criminal)
+                		BuffInfo.RemoveBuff(this, BuffIcon.CriminalStatus);
 
 			DropHolding();
 
