@@ -211,11 +211,12 @@ namespace Server
             }
 
             DeleteFiles("Scripts.CS*.dll");
-
+#if !MONO
             using (CodeDomProvider provider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider())
+#else
+            using (CSharpCodeProvider provider = new CSharpCodeProvider())
+#endif
             {
-
-
                 string path = GetUnusedPath("Scripts.CS");
 
                 CompilerParameters parms = new CompilerParameters(GetReferenceAssemblies(), path, debug);

@@ -431,9 +431,9 @@ namespace Server
 
 			String publishNumber = "";
 
-			if (File.Exists("publish.txt"))
+			if (File.Exists("Publish.txt"))
 			{
-				publishNumber = File.ReadAllText("publish.txt");
+				publishNumber = File.ReadAllText("Publish.txt");
 			}
 
 			// Added to help future code support on forums, as a 'check' people can ask for to it see if they recompiled core or not
