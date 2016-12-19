@@ -587,7 +587,7 @@ namespace Server.Engines.Blackthorn
                 new Rectangle2D[] 
                 {
                     new Rectangle2D(6356, 2371, 10, 10),
-                    new Rectangle2D(5354, 2344, 5, 10),
+                    new Rectangle2D(6354, 2344, 5, 10),
                     new Rectangle2D(6366, 2344, 5, 7),
                     new Rectangle2D(6386, 2355, 8, 8),
                 }, 
