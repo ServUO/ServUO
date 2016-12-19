@@ -33,15 +33,15 @@ namespace Server.Spells.Second
                 return SpellCircle.Second;
             }
         }
-        public static void Toggle(Mobile caster, Mobile target)
+        public static void Toggle(Mobile caster, Mobile target, bool archprotection)
         {
             /* Players under the protection spell effect can no longer have their spells "disrupted" when hit.
             * Players under the protection spell have decreased physical resistance stat value (-15 + (Inscription/20),
             * a decreased "resisting spells" skill value by -35 + (Inscription/20),
             * and a slower casting speed modifier (technically, a negative "faster cast speed") of 2 points.
             * The protection spell has an indefinite duration, becoming active when cast, and deactivated when re-cast.
-            * Reactive Armor, Protection, and Magic Reflection will stay onóeven after logging out,
-            * even after dyingóuntil you ìturn them offî by casting them again.
+            * Reactive Armor, Protection, and Magic Reflection will stay on‚Äîeven after logging out,
+            * even after dying‚Äîuntil you ‚Äúturn them off‚Äù by casting them again.
             */
             object[] mods = (object[])m_Table[target];
 
@@ -65,7 +65,7 @@ namespace Server.Spells.Second
                 int physloss = -15 + (int)(caster.Skills[SkillName.Inscribe].Value / 20);
                 int resistloss = -35 + (int)(caster.Skills[SkillName.Inscribe].Value / 20);
                 string args = String.Format("{0}\t{1}", physloss, resistloss);
-                BuffInfo.AddBuff(target, new BuffInfo(BuffIcon.Protection, 1075814, 1075815, args.ToString()));
+                BuffInfo.AddBuff(target, new BuffInfo(archprotection ? BuffIcon.ArchProtection : BuffIcon.Protection, archprotection ? 1075816 : 1075814, 1075815, args.ToString()));
             }
             else
             {
@@ -79,6 +79,7 @@ namespace Server.Spells.Second
                 target.RemoveSkillMod((SkillMod)mods[1]);
 
                 BuffInfo.RemoveBuff(target, BuffIcon.Protection);
+                BuffInfo.RemoveBuff(target, BuffIcon.ArchProtection);
             }
         }
 
@@ -95,6 +96,7 @@ namespace Server.Spells.Second
                 m.RemoveSkillMod((SkillMod)mods[1]);
 
                 BuffInfo.RemoveBuff(m, BuffIcon.Protection);
+                BuffInfo.RemoveBuff(m, BuffIcon.ArchProtection);
             }
         }
 
@@ -122,7 +124,7 @@ namespace Server.Spells.Second
             if (Core.AOS)
             {
                 if (this.CheckSequence())
-                    Toggle(this.Caster, this.Caster);
+                    Toggle(this.Caster, this.Caster, false);
 
                 this.FinishSequence();
             }
