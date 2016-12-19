@@ -7,6 +7,7 @@ using Server.Guilds;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
+using Server.Engines.VvV;
 
 namespace Server.Misc
 {
@@ -120,12 +121,21 @@ namespace Server.Misc
 
             Map map = from.Map;
 
-            #region Factions
-            Faction targetFaction = Faction.Find(target, true);
-
-            if ((!Core.ML || map == Faction.Facet) && targetFaction != null)
+            #region Factions/VvV
+            if (Factions.Settings.Enabled)
             {
-                if (Faction.Find(from, true) != targetFaction)
+                Faction targetFaction = Faction.Find(target, true);
+
+                if ((!Core.ML || map == Faction.Facet) && targetFaction != null)
+                {
+                    if (Faction.Find(from, true) != targetFaction)
+                        return false;
+                }
+            }
+
+            if (ViceVsVirtueSystem.Enabled)
+            {
+                if (ViceVsVirtueSystem.IsEnemy(from, target))
                     return false;
             }
             #endregion
@@ -317,10 +327,16 @@ namespace Server.Misc
                         return Notoriety.Enemy;
                 }
 
-                Faction srcFaction = Faction.Find(source, true, true);
-                Faction trgFaction = Faction.Find(target.Owner, true, true);
+                if (Factions.Settings.Enabled)
+                {
+                    Faction srcFaction = Faction.Find(source, true, true);
+                    Faction trgFaction = Faction.Find(target.Owner, true, true);
 
-                if (srcFaction != null && trgFaction != null && srcFaction != trgFaction && source.Map == Faction.Facet)
+                    if (srcFaction != null && trgFaction != null && srcFaction != trgFaction && source.Map == Faction.Facet)
+                        return Notoriety.Enemy;
+                }
+
+                if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, target.Owner) && source.Map == Faction.Facet)
                     return Notoriety.Enemy;
 
                 if (CheckHouseFlag(source, target.Owner, target.Location, target.Map))
@@ -400,9 +416,9 @@ namespace Server.Misc
             }
         }
 
-        public static int MobileNotoriety(Mobile source, IDamageable damagable)
+        public static int MobileNotoriety(Mobile source, IDamageable damageable)
         {
-            Mobile target = damagable as Mobile;
+            Mobile target = damageable as Mobile;
 
             if (target == null)
                 return Notoriety.CanBeAttacked;
@@ -483,10 +499,16 @@ namespace Server.Misc
                     return Notoriety.Enemy;
             }
 
-            Faction srcFaction = Faction.Find(source, true, true);
-            Faction trgFaction = Faction.Find(target, true, true);
+            if (Factions.Settings.Enabled)
+            {
+                Faction srcFaction = Faction.Find(source, true, true);
+                Faction trgFaction = Faction.Find(target, true, true);
 
-            if (srcFaction != null && trgFaction != null && srcFaction != trgFaction && source.Map == Faction.Facet)
+                if (srcFaction != null && trgFaction != null && srcFaction != trgFaction && source.Map == Faction.Facet)
+                    return Notoriety.Enemy;
+            }
+
+            if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, damageable) && source.Map == Faction.Facet)
                 return Notoriety.Enemy;
 
             if (SkillHandlers.Stealing.ClassicMode && target is PlayerMobile && ((PlayerMobile)target).PermaFlags.Contains(source))

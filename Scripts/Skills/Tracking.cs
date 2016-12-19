@@ -316,7 +316,7 @@ namespace Server.SkillHandlers
     {
         private readonly Timer m_Timer;
         private Mobile m_From;
-        public TrackArrow(Mobile from, Mobile target, int range)
+        public TrackArrow(Mobile from, IEntity target, int range)
             : base(from, target)
         {
             this.m_From = from;
@@ -352,11 +352,11 @@ namespace Server.SkillHandlers
     public class TrackTimer : Timer
     {
         private readonly Mobile m_From;
-        private readonly Mobile m_Target;
+        private readonly IEntity m_Target;
         private readonly int m_Range;
         private readonly QuestArrow m_Arrow;
         private int m_LastX, m_LastY;
-        public TrackTimer(Mobile from, Mobile target, int range, QuestArrow arrow)
+        public TrackTimer(Mobile from, IEntity target, int range, QuestArrow arrow)
             : base(TimeSpan.FromSeconds(0.25), TimeSpan.FromSeconds(2.5))
         {
             this.m_From = from;
@@ -373,17 +373,17 @@ namespace Server.SkillHandlers
                 this.Stop();
                 return;
             }
-            else if (this.m_From.NetState == null || this.m_From.Deleted || this.m_Target.Deleted || this.m_From.Map != this.m_Target.Map || !this.m_From.InRange(this.m_Target, this.m_Range) || (this.m_Target.Hidden && this.m_Target.AccessLevel > this.m_From.AccessLevel))
+            else if (this.m_From.NetState == null || this.m_From.Deleted || this.m_Target.Deleted || this.m_From.Map != this.m_Target.Map || !this.m_From.InRange(this.m_Target, this.m_Range) || this.m_Target is Mobile && (((Mobile)this.m_Target).Hidden && ((Mobile)this.m_Target).AccessLevel > this.m_From.AccessLevel))
             {
                 this.m_Arrow.Stop();
                 this.Stop();
                 return;
             }
 
-            if (this.m_LastX != this.m_Target.X || this.m_LastY != this.m_Target.Y)
+            if (this.m_LastX != this.m_Target.Location.X || this.m_LastY != this.m_Target.Location.Y)
             {
-                this.m_LastX = this.m_Target.X;
-                this.m_LastY = this.m_Target.Y;
+                this.m_LastX = this.m_Target.Location.X;
+                this.m_LastY = this.m_Target.Location.Y;
 
                 this.m_Arrow.Update();
             }

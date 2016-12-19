@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Server.ContextMenus;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -24,6 +26,32 @@ namespace Server.Items
         {
         }
 
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            if (from is PlayerMobile)
+            {
+                list.Add(new AppraiseforCleanup(from));
+            }
+        }
+
+        private class AppraiseforCleanup : ContextMenuEntry
+        {
+            private readonly Mobile m_Mobile;
+            public AppraiseforCleanup(Mobile mobile)
+                : base(1151298, 2) //Appraise for Cleanup
+            {
+                this.m_Mobile = mobile;
+            }
+
+            public override void OnClick()
+            {
+                m_Mobile.Target = new AppraiseforCleanupTarget(m_Mobile);
+                m_Mobile.SendLocalizedMessage(1151299); //Target items to see how many Clean Up Britannia points you will receive for throwing them away. Continue targeting items until done, then press the ESC key to cancel the targeting cursor.
+            }
+        }
+
         public BaseTrash(Serial serial) : base(serial)
         {
         }
@@ -42,9 +70,10 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        public void AddCleanupItem(Mobile from, Item item)
+        public virtual bool AddCleanupItem(Mobile from, Item item)
         {
             double checkbagpoint;
+            bool added = false;
 
             if (item is BaseContainer)
             {
@@ -57,7 +86,12 @@ namespace Server.Items
                     checkbagpoint = CleanUpBritanniaData.GetPoints(list[i]);
 
                     if (checkbagpoint > 0 && m_Cleanup.Find(x => x.serials == list[i].Serial) == null)
+                    {
                         m_Cleanup.Add(new CleanupArray { mobiles = from, items = list[i], points = checkbagpoint, serials = list[i].Serial });
+
+                        if(!added)
+                            added = true;
+                    }
                 }
             }
             else
@@ -65,8 +99,13 @@ namespace Server.Items
                 checkbagpoint = CleanUpBritanniaData.GetPoints(item);
 
                 if (checkbagpoint > 0 && m_Cleanup.Find(x => x.serials == item.Serial) == null)
+                {
                     m_Cleanup.Add(new CleanupArray { mobiles = from, items = item, points = checkbagpoint, serials = item.Serial });
+                    added = true;
+                }
             }
+
+            return added;
         }
 
         public void ConfirmCleanupItem(Item item)

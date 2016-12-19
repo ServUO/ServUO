@@ -91,6 +91,16 @@ namespace Server.Spells.Bushido
             }
         }
 
+        public override void OnUse(Mobile m)
+        {
+            base.OnUse(m);
+
+            double bushido = m.Skills[SkillName.Bushido].Value;
+            int criticalChance = (int)((bushido * bushido) / 720.0);
+
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.LightningStrike, 1060599, 1153811, String.Format("50\t{0}", criticalChance)));
+        }
+
         public override void OnClearMove(Mobile attacker)
         {
             var ThePlayer = attacker as PlayerMobile; // this can be deletet if the PlayerMobile parts are moved to Server.Mobile 
@@ -98,6 +108,8 @@ namespace Server.Spells.Bushido
             {
                 ThePlayer.ExecutesLightningStrike = 0;
             }
+
+            BuffInfo.RemoveBuff(attacker, BuffIcon.LightningStrike);
         }
     }
 }

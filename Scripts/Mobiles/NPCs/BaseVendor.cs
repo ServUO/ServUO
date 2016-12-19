@@ -1416,8 +1416,8 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (totalCost >= 2000)
-			{
+			//if (totalCost >= 2000)
+			//{
 				if (!bought)
 				{
 					if (totalCost <= Int32.MaxValue)
@@ -1486,7 +1486,7 @@ namespace Server.Mobiles
 						}
 					}
 				}
-			}
+			//}
 
 			if (!bought)
 			{

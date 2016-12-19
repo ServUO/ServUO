@@ -42,12 +42,12 @@ namespace Server.PathAlgorithms.FastAStar
             return (x * x) + (y * y) + (z * z);
         }
 
-        public override bool CheckCondition(Mobile m, Map map, Point3D start, Point3D goal)
+        public override bool CheckCondition(IPoint3D p, Map map, Point3D start, Point3D goal)
         {
             return Utility.InRange(start, goal, AreaSize);
         }
 
-        public override Direction[] Find(Mobile m, Map map, Point3D start, Point3D goal)
+        public override Direction[] Find(IPoint3D p, Map map, Point3D start, Point3D goal)
         {
             if (!Utility.InRange(start, goal, AreaSize))
                 return null;
@@ -74,7 +74,7 @@ namespace Server.PathAlgorithms.FastAStar
             m_OnOpen[m_OpenList] = true;
             m_Touched[m_OpenList] = true;
 
-            BaseCreature bc = m as BaseCreature;
+            BaseCreature bc = p as BaseCreature;
 
             int pathCount, parent;
             int backtrack = 0, depth = 0;
@@ -97,7 +97,7 @@ namespace Server.PathAlgorithms.FastAStar
                 MoveImpl.Goal = goal;
 
                 int[] vals = m_Successors;
-                int count = this.GetSuccessors(bestNode, m, map);
+                int count = this.GetSuccessors(bestNode, p, map);
 
                 MoveImpl.AlwaysIgnoreDoors = false;
                 MoveImpl.IgnoreMovableImpassables = false;
@@ -158,7 +158,7 @@ namespace Server.PathAlgorithms.FastAStar
             return null;
         }
 
-        public int GetSuccessors(int p, Mobile m, Map map)
+        public int GetSuccessors(int p, IPoint3D pnt, Map map)
         {
             int px = p % AreaSize;
             int py = (p / AreaSize) % AreaSize;
@@ -215,7 +215,7 @@ namespace Server.PathAlgorithms.FastAStar
                 if (x < 0 || x >= AreaSize || y < 0 || y >= AreaSize)
                     continue;
 
-                if (CalcMoves.CheckMovement(m, map, p3D, (Direction)i, out z))
+                if (CalcMoves.CheckMovement(pnt, map, p3D, (Direction)i, out z))
                 {
                     int idx = this.GetIndex(x + m_xOffset, y + m_yOffset, z);
 

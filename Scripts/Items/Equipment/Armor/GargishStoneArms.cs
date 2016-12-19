@@ -114,13 +114,6 @@ namespace Server.Items
                 return true;
             }
         }
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile)
-            {
-                this.ItemID = 0x284;
-            }
-        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -132,6 +125,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.ItemID != 0x284)
+                this.ItemID = 0x284;
         }
     }
 }

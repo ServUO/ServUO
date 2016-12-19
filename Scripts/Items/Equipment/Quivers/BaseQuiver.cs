@@ -7,8 +7,32 @@ using System.Collections.Generic;
 namespace Server.Items
 {
     [Alterable(typeof(DefTailoring), typeof(GargishLeatherWingArmor), true)]
-    public class BaseQuiver : Container, ICraftable, ISetItem
+    public class BaseQuiver : Container, ICraftable, ISetItem, IVvVItem, IOwnerRestricted
     {
+        private bool _VvVItem;
+        private Mobile _Owner;
+        private string _OwnerName;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsVvVItem
+        {
+            get { return _VvVItem; }
+            set { _VvVItem = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Owner
+        {
+            get { return _Owner; }
+            set { _Owner = value; if (_Owner != null) _OwnerName = _Owner.Name; InvalidateProperties(); }
+        }
+
+        public virtual string OwnerName
+        {
+            get { return _OwnerName; }
+            set { _OwnerName = value; InvalidateProperties(); }
+        }
+
         public override int DefaultGumpID
         {
             get
@@ -35,6 +59,17 @@ namespace Server.Items
             get
             {
                 return 2.0;
+            }
+        }
+
+        public override bool DisplayWeight
+        {
+            get
+            {
+                if (IsVvVItem)
+                    return true;
+
+                return base.DisplayWeight;
             }
         }
 
@@ -388,6 +423,32 @@ namespace Server.Items
 
         public override bool CanEquip(Mobile m)
         {
+            if (m.IsPlayer())
+            {
+                if (_Owner != null && m != _Owner)
+                {
+                    m.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                    return false;
+                }
+
+                if (this is IAccountRestricted && ((IAccountRestricted)this).Account != null)
+                {
+                    Accounting.Account acct = m.Account as Accounting.Account;
+
+                    if (acct == null || acct.Username != ((IAccountRestricted)this).Account)
+                    {
+                        m.SendLocalizedMessage(1071296); // This item is Account Bound and your character is not bound to it. You cannot use this item.
+                        return false;
+                    }
+                }
+
+                if (IsVvVItem && !Engines.VvV.ViceVsVirtueSystem.IsVvV(m))
+                {
+                    m.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
+                    return false;
+                }
+            }
+
             if (m.NetState != null && !m.NetState.SupportsExpansion(Expansion.ML))
             {
                 m.SendLocalizedMessage(1072791); // You must upgrade to Mondain's Legacy in order to use that item.				
@@ -409,10 +470,23 @@ namespace Server.Items
         public override int PoisonResistance { get { return this.BasePoisonResistance + this.m_Resistances.Poison; } }
         public override int EnergyResistance { get { return this.BaseEnergyResistance + this.m_Resistances.Energy; } }
 
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            if (IsVvVItem)
+                list.Add(1154937); // VvV Item
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-				
+
+            if (OwnerName != null)
+            {
+                list.Add(1153213, OwnerName);
+            }
+
             if (this.m_Crafter != null)
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
@@ -627,7 +701,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(3); // version
+            writer.Write(4); // version
+
+            writer.Write(_VvVItem);
+            writer.Write(_Owner);
+            writer.Write(_OwnerName);
 
             // Version 3 takes out LowerAmmoCost
 
@@ -705,6 +783,13 @@ namespace Server.Items
 
             switch (version)
             {
+                case 4:
+                    {
+                        _VvVItem = reader.ReadBool();
+                        _Owner = reader.ReadMobile();
+                        _OwnerName = reader.ReadString();
+                        goto case 3;
+                    }
                 case 3:
                 case 2:
                     IsArrowAmmo = reader.ReadBool();
@@ -917,11 +1002,14 @@ namespace Server.Items
             : base(6230)
             {
                 m_quiver = bq;
+
+                Enabled = m_quiver.Ammo == null || m_quiver.Ammo.Amount < m_quiver.Capacity;
             }
 
             bool Refill<T>(Mobile m, Container c) where T : Item
             {
                 List<T> list = c.FindItemsByType<T>(true).ToList();
+
                 if (list.Count > 0)
                 {
                     int amt = 0;
@@ -954,7 +1042,7 @@ namespace Server.Items
                     {
                         T obj = (T)Activator.CreateInstance(typeof(T));
                         obj.Amount = famount;
-                        m_quiver.AddItem(obj);
+                        m_quiver.DropItem(obj);
                         m.SendLocalizedMessage(1072664, amt.ToString());
                         return true;
                     }
@@ -964,7 +1052,7 @@ namespace Server.Items
 
             public override void OnClick()
             {
-                if ((m_quiver == null) || m_quiver.Deleted)
+                if ((m_quiver == null) || m_quiver.Deleted || (m_quiver.Ammo != null && m_quiver.Ammo.Amount >= m_quiver.Capacity))
                     return;
 
                 object owner = m_quiver.Parent;

@@ -31,6 +31,11 @@ namespace Server.SkillHandlers
                 return TimeSpan.FromSeconds(1.0);
             }
 
+            if (Server.Engines.VvV.ManaSpike.UnderEffects(m))
+            {
+                return TimeSpan.FromSeconds(1.0);
+            }
+
             if (Core.ML && m.Target != null)
             {
                 Targeting.Target.Cancel(m);

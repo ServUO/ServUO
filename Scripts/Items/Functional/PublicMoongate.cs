@@ -10,12 +10,17 @@ namespace Server.Items
 {
     public class PublicMoongate : Item
     {
+        private static List<PublicMoongate> _Moongates = new List<PublicMoongate>();
+        public static List<PublicMoongate> Moongates { get { return _Moongates; } }
+
         [Constructable]
         public PublicMoongate()
             : base(0xF6C)
         {
             this.Movable = false;
             this.Light = LightType.Circle300;
+
+            _Moongates.Add(this);
         }
 
         public PublicMoongate(Serial serial)
@@ -143,20 +148,29 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            _Moongates.Add(this);
+        }
+
+        public override void Delete()
+        {
+            base.Delete();
+
+            if (_Moongates.Contains(this))
+                _Moongates.Remove(this);
         }
 
         private static void DeleteAll()
         {
-            List<Item> list = new List<Item>();
+            List<PublicMoongate> list = new List<PublicMoongate>();
 
-            foreach (Item item in World.Items.Values)
+            foreach (PublicMoongate item in _Moongates)
             {
-                if (item is PublicMoongate)
-                    list.Add(item);
+                list.Add(item);
             }
 
-            foreach (Item item in list)
-                item.Delete();
+            foreach (PublicMoongate gate in list)
+                gate.Delete();
 
             if (list.Count > 0)
                 World.Broadcast(0x35, true, "{0} moongates removed.", list.Count);

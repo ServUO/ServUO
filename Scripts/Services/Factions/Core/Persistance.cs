@@ -47,7 +47,8 @@ namespace Server.Factions
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            // Version 0 removes faction items, ie monoliths, stones, etc
+            writer.Write((int)1); // version
 
             List<Faction> factions = Faction.Factions;
 
@@ -76,6 +77,7 @@ namespace Server.Factions
 
             switch ( version )
             {
+                case 1:
                 case 0:
                     {
                         PersistedType type;
@@ -96,6 +98,9 @@ namespace Server.Factions
                         break;
                     }
             }
+
+            if (!Settings.Enabled && version == 0)
+                Timer.DelayCall(TimeSpan.FromSeconds(10), () => Generator.RemoveFactions());
         }
 
         public override void Delete()

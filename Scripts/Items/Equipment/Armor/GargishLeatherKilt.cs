@@ -114,18 +114,12 @@ namespace Server.Items
                 return Race.Gargoyle;
             }
         }
+
         public override bool CanBeWornByGargoyles
         {
             get
             {
                 return true;
-            }
-        }
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile)
-            {
-                this.ItemID = 0x0311;
             }
         }
 
@@ -139,6 +133,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if(this.ItemID != 0x0311)
+                this.ItemID = 0x0311;
         }
     }
 }

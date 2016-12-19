@@ -3125,7 +3125,7 @@ namespace Server
 
 		public virtual bool CheckMovement(Direction d, out int newZ)
 		{
-			return Movement.Movement.CheckMovement(this, d, out newZ);
+			return Movement.Movement.CheckMovement(this, this.Map, this.Location, d, out newZ);
 		}
 
 		public virtual bool Move(Direction d)

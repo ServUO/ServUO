@@ -148,7 +148,7 @@ namespace Server.SkillHandlers
                             diff -= (music - 100.0) * 0.5;
                         }
 
-                        if (questTargets || from.CanBeHarmful(m_Creature, true) && from.CanBeHarmful(target, true))
+                        if (questTargets || (from.CanBeHarmful(m_Creature, true) && from.CanBeHarmful(target, true)))
                         {
                             if (!BaseInstrument.CheckMusicianship(from))
                             {
@@ -204,6 +204,9 @@ namespace Server.SkillHandlers
 
             public bool QuestTargets(BaseCreature creature, Mobile from)
             {
+                if (creature.GetMaster() is PlayerMobile)
+                    return false;
+
                 if (creature != null && from is PlayerMobile && (m_Creature.GetType() == typeof(Rabbit) || m_Creature.GetType() == typeof(JackRabbit)) && ((creature is WanderingHealer) || (creature is EvilWanderingHealer)))
                     return true;
 
