@@ -164,6 +164,8 @@ namespace Server.Spells.Seventh
                             Timer t = new InternalTimer(this.Caster);
 
                             m_Timers[this.Caster] = t;
+                            
+                            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Polymorph, 1075824, 1075823, t.Delay, Caster, String.Format("{0}\t{1}", GetArticleCliloc(m_NewBody), GetFormCliloc(m_NewBody))));
 
                             t.Start();
                         }
@@ -177,6 +179,38 @@ namespace Server.Spells.Seventh
 
             this.FinishSequence();
         }
+        
+        private static TextDefinition GetArticleCliloc(int body)
+        {
+            if (body == 0x11 || body == 0x01)
+                return "an";
+
+            return "a";
+        }
+
+        private static TextDefinition GetFormCliloc(int body)
+        {
+            switch (body)
+            {
+                case 0xD9: return 1028476; // dog
+                case 0xE1: return 1028482; // wolf
+                case 0xD6: return 1028450; // panther
+                case 0x1D: return 1028437; // gorilla
+                case 0xD3: return 1028472; // black bear
+                case 0xD4: return 1028478; // grizzly bear
+                case 0xD5: return 1018276; // polar bear
+                case 0x190: return 1028454; // human male
+                case 0x191: return 1028455; // human female
+                case 0x11: return 1018110; // orc
+                case 0x21: return 1018128; // lizardman
+                case 0x04: return 1018097; // gargoyle
+                case 0x01: return 1018094; // ogre
+                case 0x36: return 1018147; // troll
+                case 0x02: return 1018111; // ettin
+                case 0x09: return 1018103; // daemon
+                default: return -1;
+            }
+        }
 
         private static void EndPolymorph(Mobile m)
         {
@@ -188,6 +222,8 @@ namespace Server.Spells.Seventh
 
                 BaseArmor.ValidateMobile(m);
                 BaseClothing.ValidateMobile(m);
+                
+                BuffInfo.RemoveBuff(m, BuffIcon.Polymorph);
             }
         }
 

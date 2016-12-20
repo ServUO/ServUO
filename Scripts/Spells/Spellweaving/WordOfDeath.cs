@@ -68,22 +68,7 @@ namespace Server.Spells.Spellweaving
                     int maxDamage = (int)this.Caster.Skills.Spellweaving.Value / 3;
                     damage = Utility.RandomMinMax(minDamage, maxDamage);
                     int damageBonus = AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage);
-					if (Caster is PlayerMobile && Caster.Race == Race.Gargoyle)
-					{
-						double perc = ((double)Caster.Hits / (double)Caster.HitsMax) * 100;
-
-						perc = 100 - perc;
-						perc /= 20;
-
-						if (perc > 4)
-							damageBonus += 12;
-						else if (perc >= 3)
-							damageBonus += 9;
-						else if (perc >= 2)
-							damageBonus += 6;
-						else if (perc >= 1)
-							damageBonus += 3;
-					}
+					
                     if (m.Player && damageBonus > 15)
                         damageBonus = 15;
                     damage *= damageBonus + 100;
