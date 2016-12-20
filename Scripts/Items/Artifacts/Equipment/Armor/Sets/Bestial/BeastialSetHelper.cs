@@ -45,7 +45,7 @@ namespace Server
 
         public static bool CheckBestialArmor(Mobile m)
         {
-            return m.Items.Where(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i) != null;
+            return m.Items.Where(i => i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i).FirstOrDefault() != null;
         }
 
         public static void CheckEquipBestial(Mobile m)

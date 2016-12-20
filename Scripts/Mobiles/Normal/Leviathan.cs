@@ -34,7 +34,10 @@ namespace Server.Mobiles
             typeof(PolarBearMask),
             typeof(VioletCourage)
         };
+
         private Mobile m_Fisher;
+        private DateTime m_NextWaterBall;
+
         [Constructable]
         public Leviathan()
             : this(null)
@@ -46,8 +49,8 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.m_Fisher = fisher;
+            this.m_NextWaterBall = DateTime.UtcNow;
 
-            // May not be OSI accurate; mostly copied from krakens
             this.Name = "a leviathan";
             this.Body = 77;
             this.BaseSoundID = 353;
@@ -55,12 +58,12 @@ namespace Server.Mobiles
             this.Hue = 0x481;
 
             this.SetStr(1000);
-            this.SetDex(501, 520);
-            this.SetInt(501, 515);
+            this.SetDex(500, 520);
+            this.SetInt(500, 520);
 
             this.SetHits(1500);
 
-            this.SetDamage(25, 33);
+            this.SetDamage(19, 33);
 
             this.SetDamageType(ResistanceType.Physical, 70);
             this.SetDamageType(ResistanceType.Cold, 30);
@@ -102,94 +105,23 @@ namespace Server.Mobiles
         {
         }
 
-        public static Type[] Artifacts
-        {
-            get
-            {
-                return m_Artifacts;
-            }
-        }
+        public static Type[] Artifacts { get { return m_Artifacts; } }
         public Mobile Fisher
         {
-            get
-            {
-                return this.m_Fisher;
-            }
-            set
-            {
-                this.m_Fisher = value;
-            }
+            get { return this.m_Fisher; }
+            set { this.m_Fisher = value; }
         }
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int BreathPhysicalDamage
-        {
-            get
-            {
-                return 70;
-            }
-        }// TODO: Verify damage type
-        public override int BreathColdDamage
-        {
-            get
-            {
-                return 30;
-            }
-        }
-        public override int BreathFireDamage
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BreathEffectHue
-        {
-            get
-            {
-                return 0x1ED;
-            }
-        }
-        public override double BreathDamageScalar
-        {
-            get
-            {
-                return 0.05;
-            }
-        }
-        public override double BreathMinDelay
-        {
-            get
-            {
-                return 5.0;
-            }
-        }
-        public override double BreathMaxDelay
-        {
-            get
-            {
-                return 7.5;
-            }
-        }
-        public override double TreasureMapChance
-        {
-            get
-            {
-                return 0.25;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool HasBreath { get { return true; } }
+        public override int BreathPhysicalDamage { get { return 70; } }
+        public override int BreathColdDamage { get { return 30; } }
+        public override int BreathFireDamage { get { return 0; } }
+        public override int BreathEffectHue { get { return 0x1ED; } }
+        public override double BreathDamageScalar { get { return 0.05; } }
+        public override double BreathMinDelay { get { return 5.0; } }
+        public override double BreathMaxDelay { get { return 7.5; } }
+        public override double TreasureMapChance { get { return 0.25; } }
+        public override int TreasureMapLevel { get { return 5; } }
+
         public static void GiveArtifactTo(Mobile m)
         {
             Item item = Loot.Construct(m_Artifacts);
@@ -203,6 +135,38 @@ namespace Server.Mobiles
             else
                 m.SendMessage("As your backpack is full, your reward for destroying the legendary leviathan has been placed at your feet.");
         }
+        
+        public override void OnThink()
+        {
+            base.OnThink();
+
+            if (DateTime.UtcNow > m_NextWaterBall)
+                WaterBallAbility();
+        }
+
+        public void WaterBallAbility()
+        {
+            Mobile combatant = this.Combatant as Mobile;
+
+            if (combatant == null || combatant.Deleted || combatant.Map != this.Map || !this.InRange(combatant, 12) || !this.CanBeHarmful(combatant) || !this.InLOS(combatant))
+                return;
+
+            if (combatant is PlayerMobile && this.InRange(combatant, 15))
+            {
+                double damage = combatant.Hits * 0.3;
+
+                if (damage < 10.0)
+                    damage = 10.0;
+                else if (damage > 40.0)
+                    damage = 40.0;
+
+                this.DoHarmful(combatant);
+                this.MovingParticles(combatant, 0x36D4, 5, 0, false, false, 195, 0, 9502, 3006, 0, 0, 0);
+                AOS.Damage(combatant, this, (int)damage, 100, 0, 0, 0, 0);
+
+                m_NextWaterBall = DateTime.UtcNow + TimeSpan.FromMinutes(1);
+            }
+        }
 
         public override void GenerateLoot()
         {
@@ -212,14 +176,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
 

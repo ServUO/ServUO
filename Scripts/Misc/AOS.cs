@@ -271,23 +271,26 @@ namespace Server
             m.Damage(totalDamage, from, true, false);
 
             #region Berserk
-            if (((float)(m.Hits - totalDamage) / m.HitsMax) < 0.5 && m.Hits > totalDamage)
+            if (m is PlayerMobile)
             {
-                if (BerserkImpl.CheckBestialArmor(m))
+                if (((float)(m.Hits - totalDamage) / m.HitsMax) < 0.5 && m.Hits > totalDamage)
                 {
-                    m.Berserk = Berserk.SetBerserk;
+                    if (BerserkImpl.CheckBestialArmor(m))
+                    {
+                        m.Berserk = Berserk.SetBerserk;
+                    }
                 }
-            }
 
-            if (m is PlayerMobile && m.Race == Race.Gargoyle && !m.GargoyleBerserk)
-            {
-                if (((float)(m.Hits - totalDamage) / m.HitsMax) < 0.8)
+                if (m.Race == Race.Gargoyle && !m.GargoyleBerserk)
                 {
-                    if (m.GargoyleBerserkTimer != null)
-                        m.GargoyleBerserkTimer.Stop();
+                    if (((float)(m.Hits - totalDamage) / m.HitsMax) < 0.8)
+                    {
+                        if (m.GargoyleBerserkTimer != null)
+                            m.GargoyleBerserkTimer.Stop();
 
-                    m.GargoyleBerserkTimer = new BerserkImpl.GargoyleBerserkTimer(m);
-                    m.GargoyleBerserkTimer.Start();
+                        m.GargoyleBerserkTimer = new BerserkImpl.GargoyleBerserkTimer(m);
+                        m.GargoyleBerserkTimer.Start();
+                    }
                 }
             }
             #endregion

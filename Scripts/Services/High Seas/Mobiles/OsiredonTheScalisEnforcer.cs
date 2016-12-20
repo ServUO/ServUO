@@ -14,6 +14,7 @@ namespace Server.Mobiles
         private List<Mobile> m_Eels = new List<Mobile>();
         private DateTime m_NextSpawn;
         private DateTime m_NextSpecial;
+        private DateTime m_NextWaterBall;
 
         public override bool CanDamageBoats { get { return true; } }
         public override bool TaintedLifeAura { get { return true; } }
@@ -53,6 +54,7 @@ namespace Server.Mobiles
 
             m_NextSpawn = DateTime.UtcNow + SpawnRate;
             m_NextSpecial = DateTime.UtcNow;
+            m_NextWaterBall = DateTime.UtcNow;
 
             CanSwim = true;
             CantWalk = true;
@@ -129,6 +131,33 @@ namespace Server.Mobiles
 
             if (m_NextSpecial < DateTime.UtcNow)
                 DoAreaExplosion();
+
+            if (DateTime.UtcNow > m_NextWaterBall)
+                WaterBallAbility();
+        }
+
+        public void WaterBallAbility()
+        {
+            Mobile combatant = this.Combatant as Mobile;
+
+            if (combatant == null || combatant.Deleted || combatant.Map != this.Map || !this.InRange(combatant, 12) || !this.CanBeHarmful(combatant) || !this.InLOS(combatant))
+                return;
+
+            if (combatant is PlayerMobile && this.InRange(combatant, 15))
+            {
+                double damage = combatant.Hits * 0.3;
+
+                if (damage < 10.0)
+                    damage = 10.0;
+                else if (damage > 40.0)
+                    damage = 40.0;
+
+                this.DoHarmful(combatant);
+                this.MovingParticles(combatant, 0x36D4, 5, 0, false, false, 195, 0, 9502, 3006, 0, 0, 0);
+                AOS.Damage(combatant, this, (int)damage, 100, 0, 0, 0, 0);
+
+                m_NextWaterBall = DateTime.UtcNow + TimeSpan.FromMinutes(1);
+            }
         }
 
         public void SpawnEel(Mobile m)
