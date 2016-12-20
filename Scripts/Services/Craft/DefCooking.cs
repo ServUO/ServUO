@@ -7,7 +7,8 @@ namespace Server.Engines.Craft
     public enum CookRecipes
     {
         // magical
-        RotWormStew = 500
+        RotWormStew = 500,
+        GingerbreadCookie = 599
     }
     #endregion
 
@@ -302,6 +303,11 @@ namespace Server.Engines.Craft
                 this.SetNeededExpansion(index, Expansion.SE);
                 this.SetNeedOven(index, true);
             }
+
+            index = this.AddCraft(typeof(GingerBreadCookie), 1044497, 1031233, 35.0, 85.0, typeof(CookieMix), 1044474, 1, 1044253);
+            this.AddRes(index, typeof(FreshGinger), 1031235, 1, 1044253);
+            this.AddRecipe(index, (int)CookRecipes.GingerbreadCookie);
+            this.SetNeedOven(index, true);
             /* End Baking */
 
             /* Begin Barbecue */

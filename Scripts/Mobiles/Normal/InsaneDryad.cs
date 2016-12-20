@@ -25,7 +25,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public MLDryad()
-            : base(AIType.AI_Mage, FightMode.Evil, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "a dryad";
             this.Body = 266;

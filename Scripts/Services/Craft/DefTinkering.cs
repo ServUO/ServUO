@@ -189,6 +189,21 @@ namespace Server.Engines.Craft
             int index = -1;
 
             #region Jewelry
+            this.AddCraft(typeof(GoldRing), 1044049, 1024234, 65.0, 115.0, typeof(IronIngot), 1044036, 3, 1044037);
+            this.AddCraft(typeof(GoldBracelet), 1044049, 1024230, 55.0, 105.0, typeof(IronIngot), 1044036, 3, 1044037);
+
+            index = this.AddCraft(typeof(GargishNecklace), 1044049, 1095784, 60.0, 110.0, typeof(IronIngot), 1044036, 3, 1044037);
+            SetNeededExpansion(index, Expansion.SA);
+
+            index = this.AddCraft(typeof(GargishBracelet), 1044049, 1095785, 55.0, 105.0, typeof(IronIngot), 1044036, 3, 1044037);
+            SetNeededExpansion(index, Expansion.SA);
+
+            index = this.AddCraft(typeof(GargishRing), 1044049, 1095786, 65.0, 115.0, typeof(IronIngot), 1044036, 3, 1044037);
+            SetNeededExpansion(index, Expansion.SA);
+
+            index = this.AddCraft(typeof(GargishEarrings), 1044049, 1095787, 55.0, 105.0, typeof(IronIngot), 1044036, 3, 1044037);
+            SetNeededExpansion(index, Expansion.SA);
+
             this.AddJewelrySet(GemType.StarSapphire, typeof(StarSapphire));
             this.AddJewelrySet(GemType.Emerald, typeof(Emerald));
             this.AddJewelrySet(GemType.Sapphire, typeof(Sapphire));

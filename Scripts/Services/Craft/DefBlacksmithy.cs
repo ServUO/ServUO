@@ -383,7 +383,7 @@ namespace Server.Engines.Craft
                     typeof(StandardPlateKabuto), 1011079, 1030196, 90.0, 140.0, typeof(IronIngot), 1044036, 25, 1044037);
                 SetNeededExpansion(index, Expansion.SE);
 
-                /*if (Core.ML)
+                if (Core.ML)
                 {
                     index = AddCraft(typeof(Circlet), 1011079, 1032645, 62.1, 112.1, typeof(IronIngot), 1044036, 6, 1044037);
                     SetNeededExpansion(index, Expansion.ML);
@@ -396,7 +396,7 @@ namespace Server.Engines.Craft
                     AddRes(index, typeof(Amethyst), 1044236, 1, 1044240);
                     AddRes(index, typeof(BlueDiamond), 1032696, 1, 1044240);
                     SetNeededExpansion(index, Expansion.ML);
-                }*/
+                }
             }
             #endregion
 

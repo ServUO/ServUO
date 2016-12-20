@@ -19,6 +19,16 @@ namespace Server.Items
             this.m_ID = 0;
         }
 
+        public override Rectangle2D[] BossBounds
+        {
+            get { return m_Bounds; }
+        }
+
+        private Rectangle2D[] m_Bounds = new Rectangle2D[]
+        {
+            new Rectangle2D(0, 0, 0, 0),
+        };
+
         public StygianDragonAltar(Serial serial)
             : base(serial)
         {
@@ -45,7 +55,7 @@ namespace Server.Items
                 return new Type[]
                 {
                     typeof(DraconicOrbKey), typeof(DraconicOrbKeyBlue), typeof(DraconicOrbKeyRed),
-                    typeof(DraconicOrbKeyOrange)//, typeof( ScatteredCrystals ), typeof( ShatteredCrystals )
+                    typeof(DraconicOrbKeyOrange)
                 };
             }
         }
