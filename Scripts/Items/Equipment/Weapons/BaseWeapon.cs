@@ -2709,23 +2709,6 @@ namespace Server.Items
 
 				// SDI bonus
 				damageBonus += AosAttributes.GetValue(attacker, AosAttribute.SpellDamage);
-
-				if (attacker.Race == Race.Gargoyle)
-				{
-					double perc = ((double)attacker.Hits / (double)attacker.HitsMax) * 100;
-
-					perc = 100 - perc;
-					perc /= 20;
-
-					if (perc > 4)
-						damageBonus += 12;
-					else if (perc >= 3)
-						damageBonus += 9;
-					else if (perc >= 2)
-						damageBonus += 6;
-					else if (perc >= 1)
-						damageBonus += 3;
-				} 
 				
 				TransformContext context = TransformationSpellHelper.GetContext(attacker);
 
