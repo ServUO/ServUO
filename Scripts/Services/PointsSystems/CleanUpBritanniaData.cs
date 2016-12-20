@@ -636,7 +636,7 @@ namespace Server.Engines.Points
             Entries[typeof(BagOfSending)] = 250.0;
             Entries[typeof(Cauldron)] = 200.0;
             Entries[typeof(ChampionSkull)] = 1000.0;
-            Entries[typeof(ChaosShield)] = 2500.0;
+            //Entries[typeof(ChaosShield)] = 2500.0;
             Entries[typeof(ClockworkAssembly)] = 50.0;
             Entries[typeof(ConjurersTrinket)] = 10000.0;
 
