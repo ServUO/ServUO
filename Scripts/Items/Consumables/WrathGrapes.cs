@@ -10,6 +10,7 @@ namespace Server.Items
         {
             this.Weight = 1.0;
             this.Hue = 0x482;
+            this.Stackable = true;
         }
 
         public WrathGrapes(Serial serial)
@@ -45,6 +46,18 @@ namespace Server.Items
                 return 1074847;
             }
         }// The grapes of wrath invigorate you for a short time, allowing you to deal extra damage.
+
+        public override bool Eat(Mobile from)
+        {
+            if (base.Eat(from))
+            {
+                BuffInfo.AddBuff(from, new BuffInfo(BuffIcon.GrapesOfWrath, 1032247, 1153762, this.Duration, from, "15\t35"));
+                return true;
+            }
+
+            return false;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

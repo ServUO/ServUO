@@ -50,7 +50,10 @@ namespace Server.Mobiles
                 this.PackItem(new BlackPearl(4));
 
             this.PackItem(new RawFishSteak());
-            //PackItem( new SpecialFishingNet() );
+            this.PackItem(new SpecialFishingNet());
+
+            if (Utility.RandomDouble() < .05)
+                this.PackItem(new MessageInABottle());
         }
 
         public SeaSerpent(Serial serial)
@@ -58,48 +61,13 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Horned;
-            }
-        }
-        public override int Scales
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override ScaleType ScaleType
-        {
-            get
-            {
-                return ScaleType.Blue;
-            }
-        }
+        public override bool HasBreath { get { return true; } }
+        public override int TreasureMapLevel { get { return Utility.RandomList(1, 2); } }
+        public override int Hides { get { return 10; } }
+        public override HideType HideType { get { return HideType.Horned; } }
+        public override int Scales { get { return 8; } }
+        public override ScaleType ScaleType { get { return ScaleType.Blue; } }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);

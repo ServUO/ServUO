@@ -34,7 +34,10 @@ namespace Server.Mobiles
             typeof(PolarBearMask),
             typeof(VioletCourage)
         };
+
         private Mobile m_Fisher;
+        private DateTime m_NextWaterBall;
+
         [Constructable]
         public Leviathan()
             : this(null)
@@ -46,6 +49,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.m_Fisher = fisher;
+            this.m_NextWaterBall = DateTime.UtcNow;
 
             // May not be OSI accurate; mostly copied from krakens
             this.Name = "a leviathan";
@@ -78,8 +82,8 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Tactics, 97.6, 107.5);
             this.SetSkill(SkillName.Wrestling, 97.6, 107.5);
 
-            this.Fame = 24000;
-            this.Karma = -24000;
+            this.Fame = 22500;
+            this.Karma = -22500;
 
             this.VirtualArmor = 50;
 
@@ -102,94 +106,49 @@ namespace Server.Mobiles
         {
         }
 
-        public static Type[] Artifacts
-        {
-            get
-            {
-                return m_Artifacts;
-            }
-        }
+        public static Type[] Artifacts { get { return m_Artifacts; } }
+
         public Mobile Fisher
         {
-            get
+            get { return this.m_Fisher; }
+            set { this.m_Fisher = value; }
+        }
+
+        public override bool HasBreath { get { return true; } }
+        public override int BreathPhysicalDamage { get { return 70; } }
+        public override int BreathColdDamage { get { return 30; } }
+        public override int BreathFireDamage { get { return 0; } }
+        public override int BreathEffectHue { get { return 0x1ED; } }
+        public override double BreathDamageScalar { get { return 0.05; } }
+        public override double BreathMinDelay { get { return 5.0; } }
+        public override double BreathMaxDelay { get { return 7.5; } }
+        public override double TreasureMapChance { get { return 0.25; } }
+        public override int TreasureMapLevel { get { return 5; } }
+
+        public override void OnActionCombat()
+        {
+            Mobile combatant = this.Combatant as Mobile;
+
+            if (combatant == null || combatant.Deleted || combatant.Map != this.Map || !this.InRange(combatant, 12) || !this.CanBeHarmful(combatant) || !this.InLOS(combatant))
+                return;
+
+            if (DateTime.UtcNow >= this.m_NextWaterBall)
             {
-                return this.m_Fisher;
-            }
-            set
-            {
-                this.m_Fisher = value;
+                double damage = combatant.Hits * 0.3;
+
+                if (damage < 10.0)
+                    damage = 10.0;
+                else if (damage > 40.0)
+                    damage = 40.0;
+
+                this.DoHarmful(combatant);
+                this.MovingParticles(combatant, 0x36D4, 5, 0, false, false, 195, 0, 9502, 3006, 0, 0, 0);
+                AOS.Damage(combatant, this, (int)damage, 100, 0, 0, 0, 0);
+
+                m_NextWaterBall = DateTime.UtcNow + TimeSpan.FromMinutes(1);
             }
         }
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int BreathPhysicalDamage
-        {
-            get
-            {
-                return 70;
-            }
-        }// TODO: Verify damage type
-        public override int BreathColdDamage
-        {
-            get
-            {
-                return 30;
-            }
-        }
-        public override int BreathFireDamage
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BreathEffectHue
-        {
-            get
-            {
-                return 0x1ED;
-            }
-        }
-        public override double BreathDamageScalar
-        {
-            get
-            {
-                return 0.05;
-            }
-        }
-        public override double BreathMinDelay
-        {
-            get
-            {
-                return 5.0;
-            }
-        }
-        public override double BreathMaxDelay
-        {
-            get
-            {
-                return 7.5;
-            }
-        }
-        public override double TreasureMapChance
-        {
-            get
-            {
-                return 0.25;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+
         public static void GiveArtifactTo(Mobile m)
         {
             Item item = Loot.Construct(m_Artifacts);
@@ -212,15 +171,15 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
+
+            m_NextWaterBall = DateTime.UtcNow;
         }
 
         public override void OnKilledBy(Mobile mob)
