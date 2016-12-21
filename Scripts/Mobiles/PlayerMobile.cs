@@ -1783,6 +1783,59 @@ namespace Server.Mobiles
 			return (newX >= startX && newY >= startY && newX < endX && newY < endY && Map == foundation.Map);
 		}
 
+        public override void OnHitsChange(int oldValue)
+        {
+            if (Race == Race.Gargoyle)
+            {
+                if (Hits <= HitsMax / 2)
+                {
+                    BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.Berserk, 1080449, 1115021, String.Format("{0}\t{1}", GetRacialBerserkBuff(false), GetRacialBerserkBuff(true)), false));
+                    Delta(MobileDelta.WeaponDamage);
+                }
+                else if (oldValue < Hits && Hits > HitsMax / 2)
+                {
+                    BuffInfo.RemoveBuff(this, BuffIcon.Berserk);
+                    Delta(MobileDelta.WeaponDamage);
+                }
+            }
+
+            base.OnHitsChange(oldValue);
+        }
+
+        /// <summary>
+        /// Returns Racial Berserk value, for spell or melee
+        /// </summary>
+        /// <param name="spell">true for spell damage, false for damage increase (melee)</param>
+        /// <returns></returns>
+        public virtual int GetRacialBerserkBuff(bool spell)
+        {
+            if (Race != Race.Gargoyle || Hits > HitsMax / 2)
+                return 0;
+
+            double perc = ((double)Hits / (double)HitsMax) * 100;
+            int value = 0;
+
+            perc = (100 - perc) / 20;
+
+            if (perc > 4)
+                value += spell ? 12 : 60;
+            else if (perc >= 3)
+                value += spell ? 9 : 45;
+            else if (perc >= 2)
+                value += spell ? 6 : 30;
+            else if (perc >= 1)
+                value += spell ? 3 : 15;
+
+            return value;
+        }
+
+        public override void OnHeal(ref int amount, Mobile from)
+        {
+            BestialSetHelper.OnHeal(this, from, ref amount);
+
+            base.OnHeal(ref amount, from);
+        }
+
 		public override bool AllowItemUse(Item item)
 		{
 			#region Dueling

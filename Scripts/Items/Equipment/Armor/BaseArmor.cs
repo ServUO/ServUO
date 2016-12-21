@@ -2774,7 +2774,7 @@ namespace Server.Items
                     list.Add(1072376, this.Pieces.ToString()); // Part of an Armor Set (~1_val~ pieces)
 
                 if (SetID == SetItem.Bestial)
-                    list.Add(1151541, BestialSetHelper.GetTotalBeserk(this).ToString()); // Berserk ~1_VAL~
+                    list.Add(1151541, BestialSetHelper.GetTotalBerserk(this).ToString()); // Berserk ~1_VAL~
 
                 if (this.BardMasteryBonus)
                     list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)

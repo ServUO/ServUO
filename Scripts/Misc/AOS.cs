@@ -494,6 +494,11 @@ namespace Server
                 #region SA
                 if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
                     value -= 10;
+
+                if (m is PlayerMobile && m.Race == Race.Gargoyle)
+                {
+                    value += ((PlayerMobile)m).GetRacialBerserkBuff(false);
+                }
                 #endregion
 
                 #region High Seas
@@ -513,6 +518,13 @@ namespace Server
 
                 if (context != null && context.Spell is ReaperFormSpell)
                     value += ((ReaperFormSpell)context.Spell).SpellDamageBonus;
+
+                #region SA
+                if (m is PlayerMobile && m.Race == Race.Gargoyle)
+                {
+                    value += ((PlayerMobile)m).GetRacialBerserkBuff(true);
+                }
+                #endregion
 
                 #region City Loyalty
                 if (CityLoyaltySystem.HasTradeDeal(m, TradeDeal.GuildOfArcaneArts))

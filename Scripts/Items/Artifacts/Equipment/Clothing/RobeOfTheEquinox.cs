@@ -13,13 +13,19 @@ namespace Server.Items
             this.Weight = 3.0;
 
             this.Attributes.Luck = 95;
-            // TODO: Supports arcane?
-            // TODO: Elves Only
         }
 
         public RobeOfTheEquinox(Serial serial)
             : base(serial)
         {
+        }
+
+        public override Race RequiredRace
+        {
+            get
+            {
+                return Race.Elf;
+            }
         }
 
         public override int LabelNumber
