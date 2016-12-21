@@ -140,7 +140,7 @@ namespace Server.Mobiles
             IPooledEnumerable eable = this.GetMobilesInRange(12);
             foreach (Mobile m in eable)
             {
-                if ( m == null || m == this || m_TurnedToStone.Contains(m) || !CanBeHarmful(m) || !InLOS(m))
+                if ( m == null || m == this || m_TurnedToStone.Contains(m) || !CanBeHarmful(m) || !InLOS(m) || m.AccessLevel > AccessLevel.Player)
                     continue;
 
                 //Pets

@@ -77,9 +77,9 @@ namespace Server.Items
         {
             BaseWeapon weapon = from.Weapon as BaseWeapon;
 
-            if (weapon != null && weapon.PrimaryAbility == this)
+            if (weapon != null && weapon.PrimaryAbility == this || weapon.PrimaryAbility == Bladeweave)
                 return 70.0;
-            else if (weapon != null && weapon.SecondaryAbility == this)
+            else if (weapon != null && weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave)
                 return 90.0;
 
             return 200.0;

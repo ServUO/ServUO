@@ -485,6 +485,8 @@ namespace Server.Engines.Harvest
                         chest.TrapPower = 0;
                         chest.TrapLevel = 0;
 
+                        chest.IsShipwreckedItem = true;
+
                         sos.Delete();
 
                         return chest;

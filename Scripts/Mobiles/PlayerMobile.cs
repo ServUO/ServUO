@@ -5396,6 +5396,13 @@ namespace Server.Mobiles
 
 				m_EnemyOfOneType = value;
 
+                //TODO: Figure an efficient way to naming the creature, pluralized!!!
+                /*if (m_EnemyOfOneType != null)
+                {
+                    BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075654, TimeSpan.FromMinutes(delay), this.Caster, 
+                        String.Format("{0}\t{1}\t{2}\t{3}", "50", )));
+                }*/
+
 				DeltaEnemies(oldType, newType);
 			}
 		}
