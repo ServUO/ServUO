@@ -2264,13 +2264,7 @@ namespace Server.Items
             }
 
             if (RunedSashOfWarding.IsUnderEffects(defender, WardingEffect.WeaponDamage))
-                percentageBonus -= 10;
-
-            if (attacker.GargoyleBerserk)
-                percentageBonus += Math.Min(60, 15 * (int)(((float)(attacker.HitsMax - attacker.Hits) / attacker.HitsMax) * 5.0));
-
-            if (attacker.Berserk != null)
-                percentageBonus += Math.Min(60, 15 * (int)(((float)(attacker.HitsMax - attacker.Hits) / attacker.HitsMax) * attacker.Berserk.EquipBestial.Count));            
+                percentageBonus -= 10;           
 			#endregion
 
 			#region Mondain's Legacy
@@ -2694,8 +2688,6 @@ namespace Server.Items
 
 			// Inscription bonus
 			int inscribeSkill = attacker.Skills[SkillName.Inscribe].Fixed;
-
-
 
 			if (inscribeSkill >= 1000)
 			{
@@ -4910,6 +4902,9 @@ namespace Server.Items
 			{
 				list.Add(1073491, Pieces.ToString()); // Part of a Weapon/Armor Set (~1_val~ pieces)
 
+                if (SetID == SetItem.Bestial)
+                    list.Add(1151541, BestialSetHelper.GetTotalBeserk(this).ToString()); // Berserk ~1_VAL~
+
                 if (this.BardMasteryBonus)
                     list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
 
@@ -5845,8 +5840,6 @@ namespace Server.Items
 
 		public virtual SetItem SetID { get { return SetItem.None; } }
 		public virtual int Pieces { get { return 0; } }
-
-        public virtual int Berserk { get { return 0; } }
 
         public virtual bool BardMasteryBonus
         {

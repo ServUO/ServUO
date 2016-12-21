@@ -11,7 +11,6 @@ namespace Server.Items
         #region ISetItem Members
         public override SetItem SetID { get { return SetItem.Bestial; } }
         public override int Pieces { get { return 4; } }
-        public override int Berserk { get { return 1; } }
         #endregion
 
         public override int BasePhysicalResistance { get { return 7; } }
@@ -40,12 +39,9 @@ namespace Server.Items
         {
             base.OnAdded(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile && !Deleted)
             {
-                Mobile m = parent as Mobile;
-
-                if (m.Berserk != null)
-                    this.Hue = BerserkImpl.AddBestialHueParent(m);
+                BestialSetHelper.OnAdded((Mobile)parent, this);
             }
         }
 
@@ -55,13 +51,7 @@ namespace Server.Items
 
             if (parent is Mobile && !Deleted)
             {
-                Mobile m = parent as Mobile;
-
-                if (m.Berserk != null)
-                {
-                    this.Hue = 2010;
-                    BerserkImpl.DropBestialHueParent(m);
-                }
+                BestialSetHelper.OnRemoved((Mobile)parent, this);
             }
         }
 
@@ -76,7 +66,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            this.Hue = 2010;
+            if(this.Hue != 2010)
+                this.Hue = 2010;
         }
     }
 }
