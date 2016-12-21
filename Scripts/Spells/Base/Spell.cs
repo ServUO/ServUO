@@ -190,7 +190,7 @@ namespace Server.Spells
                     sdiBonus += 3;
             }
 
-			// PvP spell damage increase cap of 15% from an item’s magic property, 30% if spell school focused.
+			// PvP spell damage increase cap of 15% from an itemâ€™s magic property, 30% if spell school focused.
 			if (playerVsPlayer)
 			{
 			    if (SpellHelper.HasSpellMastery(m_Caster) && sdiBonus > 30)
@@ -941,7 +941,7 @@ namespace Server.Spells
 			int fcMax = 4;
 
 			if (CastSkill == SkillName.Magery || CastSkill == SkillName.Necromancy ||
-				(CastSkill == SkillName.Chivalry && m_Caster.Skills[SkillName.Magery].Value >= 70.0 || m_Caster.Skills[SkillName.Mysticism].Value >= 70.0))
+				(CastSkill == SkillName.Chivalry && (m_Caster.Skills[SkillName.Magery].Value >= 70.0 || m_Caster.Skills[SkillName.Mysticism].Value >= 70.0)))
 			{
 				fcMax = 2;
 			}
