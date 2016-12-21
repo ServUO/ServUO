@@ -91,7 +91,7 @@ namespace Server.Spells.Chivalry
 					((PlayerMobile)this.Caster).EnemyOfOneType = null;
 					((PlayerMobile)this.Caster).WaitingForEnemy = true;
 
-					BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1044111, TimeSpan.FromMinutes(delay), this.Caster));
+                    BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075902, TimeSpan.FromMinutes(delay), this.Caster, "50\t100"));
 				}
 
 			}

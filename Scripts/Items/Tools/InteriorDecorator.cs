@@ -234,10 +234,10 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(1062491); // You cannot use the house decorator on that object.
                     }
-                    else if (item.TotalWeight + item.PileWeight > 100)
+                    /*else if (item.TotalWeight + item.PileWeight > 100)
                     {
                         from.SendLocalizedMessage(1042272); // That is too heavy.
-                    }
+                    }*/
                     else
                     {
                         switch ( this.m_Decorator.Command )

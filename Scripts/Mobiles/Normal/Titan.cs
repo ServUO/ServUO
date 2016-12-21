@@ -42,6 +42,9 @@ namespace Server.Mobiles
 
             if (Core.ML && Utility.RandomDouble() < .33)
                 this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(1));
+
+            if (0.1 > Utility.RandomDouble())
+                this.PackItem(new Server.Items.RoastPig());
         }
 
         public Titan(Serial serial)
