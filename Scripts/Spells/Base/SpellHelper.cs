@@ -1605,7 +1605,7 @@ namespace Server.Spells
 
         protected override void OnTick()
         {
-            if (this.m_Mobile.Deleted || !this.m_Mobile.Alive || this.m_Mobile.Body != this.m_Spell.Body || (this.m_Mobile.Hue != this.m_Spell.Hue && BestialSetHelper.IsBeserk(m_Mobile)))
+            if (this.m_Mobile.Deleted || !this.m_Mobile.Alive || this.m_Mobile.Body != this.m_Spell.Body || (this.m_Mobile.Hue != this.m_Spell.Hue && BestialSetHelper.IsBerserk(m_Mobile)))
             {
                 TransformationSpellHelper.RemoveContext(this.m_Mobile, true);
                 this.Stop();

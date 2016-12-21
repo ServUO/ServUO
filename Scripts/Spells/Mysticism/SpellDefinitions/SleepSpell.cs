@@ -81,7 +81,7 @@ namespace Server.Spells.Mystic
 
             m_Table[target] = new SleepTimer(target, duration);
 	    
-	    BuffInfo.AddBuff(target, new BuffInfo(BuffIcon.Sleep, 1080139, 1080140, duration, target));
+	        BuffInfo.AddBuff(target, new BuffInfo(BuffIcon.Sleep, 1080139, 1080140, duration, target));
 
             target.Delta(MobileDelta.WeaponDamage);
         }

@@ -2265,23 +2265,6 @@ namespace Server.Items
 
             if (RunedSashOfWarding.IsUnderEffects(defender, WardingEffect.WeaponDamage))
                 percentageBonus -= 10;
-
-            if (attacker.Race == Race.Gargoyle)
-            {
-                double perc = ((double)attacker.Hits / (double)attacker.HitsMax) * 100;
-
-                perc = 100 - perc;
-                perc /= 20;
-
-                if (perc > 4)
-                    percentageBonus += 60;
-                else if (perc >= 3)
-                    percentageBonus += 45;
-                else if (perc >= 2)
-                    percentageBonus += 30;
-                else if (perc >= 1)
-                    percentageBonus += 15;
-            }
 			#endregion
 
 			#region Mondain's Legacy
@@ -4920,7 +4903,7 @@ namespace Server.Items
 				list.Add(1073491, Pieces.ToString()); // Part of a Weapon/Armor Set (~1_val~ pieces)
 
                 if (SetID == SetItem.Bestial)
-                    list.Add(1151541, BestialSetHelper.GetTotalBeserk(this).ToString()); // Berserk ~1_VAL~
+                    list.Add(1151541, BestialSetHelper.GetTotalBerserk(this).ToString()); // Berserk ~1_VAL~
 
                 if (this.BardMasteryBonus)
                     list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)

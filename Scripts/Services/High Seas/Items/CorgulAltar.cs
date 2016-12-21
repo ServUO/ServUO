@@ -74,7 +74,7 @@ namespace Server.Items
 
         //private List<Type> m_Dropped = new List<Type>();
 
-        private Point3D m_SpawnLoc = new Point3D(6431, 1236, 10);
+        public static Point3D SpawnLoc = new Point3D(6431, 1236, 10);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime DeadLine { get { return m_DeadLine; } }
@@ -341,7 +341,7 @@ namespace Server.Items
         {
             //Spawn boss
             CorgulTheSoulBinder boss = new CorgulTheSoulBinder(this);
-            boss.MoveToWorld(m_SpawnLoc, this.Map);
+            boss.MoveToWorld(SpawnLoc, this.Map);
             boss.SpawnHelpers();
             m_Boss = boss;
 

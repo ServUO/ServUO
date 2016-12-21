@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Misc;
+using Server.Regions;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -10,6 +12,7 @@ namespace Server.Mobiles
     {
         private DateTime m_NextDismount;
         private DateTime m_NextArea;
+        private DateTime m_NextReturn;
         private bool m_HasDone2ndSpawn;
         private CorgulAltar m_Altar;
         private List<BaseCreature> m_Helpers = new List<BaseCreature>();
@@ -40,7 +43,7 @@ namespace Server.Mobiles
         {
         }
 
-        public CorgulTheSoulBinder(CorgulAltar altar) : base(null, AIType.AI_Mage, FightMode.Closest)
+        public CorgulTheSoulBinder(CorgulAltar altar) : base(null, AIType.AI_NecroMage, FightMode.Closest)
         {
             m_Altar = altar;
             Name = "Corgul the Soulbinder";
@@ -78,9 +81,13 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 110.9, 120.0);
             SetSkill(SkillName.EvalInt, 110.9, 120.0);
             SetSkill(SkillName.Meditation, 110.9, 120.0);
+            SetSkill(SkillName.Necromancy, 110.9, 120.0);
+            SetSkill(SkillName.SpiritSpeak, 110.9, 120.0);
 
             Fame = 25000;
             Karma = -25000;
+
+            m_NextReturn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(120, 180));
         }
 
         public double SharedChance { get { return this.Map != null && this.Map.Rules == MapRules.FeluccaRules ? .12 : .08; } }
@@ -198,19 +205,41 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
+            if (m_NextReturn < DateTime.UtcNow)
+            {
+                Point3D p = CorgulAltar.SpawnLoc;
+
+                if (this.Region.IsPartOf(typeof(CorgulRegion)) && !Utility.InRange(this.Location, p, 15))
+                {
+                    PlaySound(0x1FE);
+                    FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
+
+                    Location = p;
+                    ProcessDelta();
+
+                    PlaySound(0x1FE);
+                    FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
+
+                    m_NextReturn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(120, 180));
+                }
+            }
+
             if (Combatant == null)
                 return;
 
-            if (DateTime.UtcNow > m_NextDismount)
+            if (DateTime.UtcNow > m_NextDismount && 0.1 > Utility.RandomDouble())
                 DoDismount();
 
-            if (DateTime.UtcNow > m_NextArea)
+            else if (DateTime.UtcNow > m_NextArea && 0.1 > Utility.RandomDouble())
                 DoAreaAttack();
 
-            if (!m_HasDone2ndSpawn && Hits < HitsMax / 2)
+            if (!m_HasDone2ndSpawn)
             {
-                SpawnHelpers();
-                m_HasDone2ndSpawn = true;
+                if (m_Helpers.Where(bc => bc.Alive && !bc.Deleted).Count() == 0)
+                {
+                    SpawnHelpers();
+                    m_HasDone2ndSpawn = true;
+                }
             }
         }
 
