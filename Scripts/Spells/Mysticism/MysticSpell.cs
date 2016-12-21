@@ -18,7 +18,7 @@ namespace Server.Spells.Mystic
 
         private static int[] m_ManaTable = new int[] { 4, 6, 9, 11, 14, 20, 40, 50 };
 
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
+        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(0.5 + 0.25 * (int)Circle); } }
         public override double CastDelayFastScalar { get { return 1.0; } }
 
         private const double ChanceOffset = 20.0, ChanceLength = 100.0 / 7.0;
@@ -65,7 +65,7 @@ namespace Server.Spells.Mystic
             if (Scroll is SpellStone)
                 return TimeSpan.Zero;
 
-            return TimeSpan.FromSeconds(0.75);
+            return base.GetCastRecovery();
         }
 
         public override TimeSpan GetCastDelay()
@@ -73,7 +73,7 @@ namespace Server.Spells.Mystic
             if (Scroll is SpellStone)
                 return TimeSpan.Zero;
 
-            return TimeSpan.FromSeconds(0.5 + (0.25 * (int)Circle));
+            return base.GetCastDelay();
         }
 
         public override bool CheckCast()
