@@ -4,242 +4,195 @@ using System.Linq;
 
 namespace Server
 {
-    public class BerserkImpl : Berserk
+    public class BestialSetHelper
     {
-        [CallPriority(10)]
-        public static void Configure()
-        {   
-            Register(new BerserkImpl("SetBerserk", 0));
-        }
+        public static readonly int BeserkHue = 1255;
 
-        private bool m_Active;
-        private bool m_IsTempBody;
-        private int m_TempBodyHue;
-        private readonly string m_Name;
-        private readonly int m_Level;
-        private List<Item> m_EquipBestial;
+        public static Dictionary<Mobile, BeserkTimer> _Table;
 
-        public override bool Active { get { return m_Active; } set { m_Active = value; } }
-        public override bool IsTempBody { get { return m_IsTempBody; } set { m_IsTempBody = value; } }
-        public override int TempBodyColor { get { return m_TempBodyHue; } set { m_TempBodyHue = value; } }
-        public override string Name { get { return m_Name; } }
-        public override int Level { get { return m_Level; } }
-        public override List<Item> EquipBestial { get { return m_EquipBestial; } set { m_EquipBestial = value; } }
-        public override bool FullBestialEquip { get { return m_EquipBestial.Count() == 4; } }
-
-        public BerserkImpl(string name, int level)
+        public static void OnDamage(Mobile victim, Mobile attacker, ref int damage)
         {
-            m_Name = name;
-            m_Level = level;
-        }
+            int equipped = TotalPieces(victim);
 
-        public override Timer ConstructTimer(Mobile m)
-        {
-            return new BerserkTimer(m, this);
-        }
-
-        public override void OnRemoveEffect(Timer t)
-        {
-            ((BerserkTimer)t).RemoveEffect();
-        }
-
-        public static bool CheckBestialArmor(Mobile m)
-        {
-            return m.Items.Where(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i) != null;
-        }
-
-        public static void CheckEquipBestial(Mobile m)
-        {
-            if (m.Berserk.EquipBestial != null)
-                m.Berserk.EquipBestial.Clear();
-
-            m.Berserk.EquipBestial = m.Items.Where(i => i != null && i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i).ToList();
-        }
-
-        public static int AddBestialHueParent(Mobile m)
-        {
-            int color = m.Berserk.EquipBestial.FirstOrDefault().Hue;
-
-            CheckEquipBestial(m);           
-            
-            if (m.Berserk.FullBestialEquip)
+            if (/*victim != attacker && */equipped > 0 && victim.Hits - damage < (victim.HitsMax / 2))
             {
-                if (m.HueMod != -1)
+                if (_Table == null || !_Table.ContainsKey(victim))
                 {
-                    if (!m.Berserk.IsTempBody)
-                    {
-                        m.Berserk.TempBodyColor = m.HueMod;
-                        m.Berserk.IsTempBody = true;
-                    }
+                    AddBeserk(victim);
+                    return;
+                }
+                else if (!_Table[victim].Running)
+                {
+                    return;
                 }
 
-                m.HueMod = color;                
-            }
+                int absorb = equipped * _Table[victim].Level + 2;
 
-            return color;
-        }
+                damage = Math.Max(1, damage - absorb);
 
-        public static void DropBestialHueParent(Mobile m)
-        {
-            if (m.Berserk.IsTempBody)
-            {
-                m.HueMod = m.Berserk.TempBodyColor;
-                m.Berserk.IsTempBody = false;
-            }
-            else
-            {
-                m.HueMod = -1;
+                _Table[victim].DamageTaken += damage;
+
+                victim.SendLocalizedMessage(1151539, absorb.ToString()); // In your rage, you shrug off ~1_VALUE~ points of damage.
             }
         }
 
-        public class BerserkTimer : Timer
+        public static int GetTotalBeserk(Item item)
         {
-            private readonly BerserkImpl m_Berserk;
-            private readonly Mobile m_Mobile;
-            private int m_Count = 0;
-            private bool msg;
-            private const int MaxCount = 9;
-            
-            public BerserkTimer(Mobile m, BerserkImpl p)
-                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+            if (item == null)
+                return 0;
+
+            Mobile m = item.RootParent as Mobile;
+
+            if (m != null && _Table != null && _Table.ContainsKey(m))
+                return _Table[m].Level;
+
+            return 1;
+        }
+
+        public static void OnAdded(Mobile m, Item item)
+        {
+            if (_Table != null && _Table.ContainsKey(m) && _Table[m].Running && item is ISetItem && ((ISetItem)item).SetID == SetItem.Bestial)
             {
-                m_Mobile = m;
-                m_Berserk = p;
+                item.Hue = BestialSetHelper.BeserkHue + _Table[m].Level;
+            }
+        }
 
-                CheckEquipBestial(m_Mobile);
+        public static void OnRemoved(Mobile m, Item item)
+        {
+            if (TotalPieces(m) == 0)
+            {
+                if (_Table != null && _Table.ContainsKey(m))
+                    _Table[m].EndBeserk();
+            }
 
-                if (!m_Berserk.Active)
+            if (item is ISetItem && ((ISetItem)item).SetID == SetItem.Bestial)
+                item.Hue = 2010;
+        }
+
+        public static void DoHue(Mobile m, int hue)
+        {
+            foreach (Item i in m.Items.Where(item => item is ISetItem && ((ISetItem)item).SetID == SetItem.Bestial && item.Hue != hue))
+            {
+                i.Hue = hue;
+            }
+
+            m.HueMod = hue;
+        }
+
+        public static int TotalPieces(Mobile m)
+        {
+            return m.Items.Where(i => i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial).Count();
+        }
+
+        public static void AddBeserk(Mobile m)
+        {
+            if (_Table == null)
+                _Table = new Dictionary<Mobile, BeserkTimer>();
+
+            _Table[m] = new BeserkTimer(m);
+        }
+
+        public static void RemoveBeserk(Mobile m)
+        {
+            if (_Table != null && _Table.ContainsKey(m))
+            {
+                _Table.Remove(m);
+
+                if (_Table.Count == 0)
+                    _Table = null;
+            }
+        }
+
+        public static bool IsBeserk(Mobile m)
+        {
+            return _Table != null && _Table.ContainsKey(m);
+        }
+
+        public class BeserkTimer : Timer
+        {
+            private int _DamageTaken;
+
+            public Mobile Mobile { get; set; }
+            public int DamageTaken
+            {
+                get { return _DamageTaken; }
+                set
                 {
-                    m_Mobile.SendLocalizedMessage(1151532); //You enter a berserk rage!
-                    m_Berserk.Active = true;
-                    
-                    m_Berserk.EquipBestial.ForEach(k => k.Hue = 1255);
+                    int level = Level;
+                    int old = _DamageTaken;
 
-                    if (m_Mobile.HueMod != -1)
+                    _DamageTaken = value;
+
+                    if (old < _DamageTaken)
+                        LastDamage = DateTime.UtcNow;
+
+                    if (level < Level)
                     {
-                        m_Berserk.TempBodyColor = m_Mobile.HueMod;
-                        m_Berserk.IsTempBody = true;
+                        int hue = BestialSetHelper.BeserkHue + Level;
+
+                        BestialSetHelper.DoHue(this.Mobile, hue);
+
+                        if(level < 5)
+                            Mobile.SendLocalizedMessage(1151533, "", hue); //Your rage grows!
                     }
-
-                    if (m_Berserk.FullBestialEquip)
-                        m_Mobile.HueMod = 1255; 
-                }
-                else
-                {
-                    msg = false;
-
-                    foreach (var item in m_Berserk.EquipBestial.Where(i => i.Hue <= 1260))
+                    else if (level > Level && level > 0)
                     {
-                        item.Hue++;
+                        int hue = BestialSetHelper.BeserkHue + Level;
 
-                        if (!msg)
-                        {
-                            m_Mobile.SendLocalizedMessage(1151533, "", item.Hue); //Your rage grows!
+                        BestialSetHelper.DoHue(this.Mobile, hue);
 
-                            if (m_Berserk.FullBestialEquip)
-                                m_Mobile.HueMod++;
-
-                            msg = true;
-                        }
+                        if (level > 1)
+                            Mobile.SendLocalizedMessage(1151534, "", hue); //Your rage recedes.
                     }
                 }
+            }
+
+            public int StartHue { get; set; }
+            public DateTime LastDamage { get; set; }
+
+            public int Level { get { return Math.Min(5, Math.Max(1, _DamageTaken / 50)); } }
+
+            public BeserkTimer(Mobile m) : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+            {
+                Mobile = m;
+                StartHue = m.HueMod;
+
+                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                    {
+                        LastDamage = DateTime.UtcNow;
+                        Start();
+                    });
             }
 
             protected override void OnTick()
             {
-                if (!m_Mobile.Alive)
-                    RemoveEffect();
-
-                m_Count++;
-
-                CheckEquipBestial(m_Mobile);
-
-                if (m_Count >= MaxCount)
+                if (LastDamage + TimeSpan.FromSeconds(10) < DateTime.UtcNow || !Mobile.Alive)
                 {
-                    RemoveEffect();
+                    EndBeserk();
                 }
-                else
+                else if (LastDamage + TimeSpan.FromSeconds(3) < DateTime.UtcNow && Level > 1)
                 {
-                    if (m_Count % 3 == 0)
-                    {
-                        msg = false;
+                    DamageTaken -= 50;
+                }
+                else if (Mobile.HueMod == StartHue || Mobile.HueMod == -1)
+                {
+                    BestialSetHelper.DoHue(this.Mobile, BestialSetHelper.BeserkHue);
 
-                        foreach (var item in m_Berserk.EquipBestial.Where(i => i.Hue > 1255))
-                        {
-                            item.Hue--;
-
-                            if (!msg)
-                            {
-                                m_Mobile.SendLocalizedMessage(1151534, "", item.Hue); //Your rage recedes.
-
-                                if (m_Berserk.FullBestialEquip)
-                                    m_Mobile.HueMod--;
-
-                                msg = true;
-                            }
-                        }
-                    }
+                    Mobile.SendLocalizedMessage(1151532); //You enter a berserk rage!
                 }
             }
 
-            public void RemoveEffect()
+            public void EndBeserk()
             {
-                Stop();
+                BestialSetHelper.RemoveBeserk(this.Mobile);
 
-                CheckEquipBestial(m_Mobile);
-                
-                m_Berserk.EquipBestial.ForEach(k => k.Hue = 2010);
+                Mobile.HueMod = StartHue;
+                Mobile.SendLocalizedMessage(1151535); //Your berserk rage has subsided. 
 
-                m_Berserk.Active = false;
-                m_Mobile.SendLocalizedMessage(1151535); //Your berserk rage has subsided.               
-
-                if (m_Berserk.IsTempBody)
+                foreach (Item item in Mobile.Items.Where(i => i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial))
                 {
-                    m_Mobile.HueMod = m_Berserk.TempBodyColor;
-                    m_Berserk.IsTempBody = false;
+                    item.Hue = 2010;
                 }
-                else
-                {
-                    m_Mobile.HueMod = -1;
-                }
-
-                m_Mobile.Berserk = null;               
-            }            
-        }
-
-        public class GargoyleBerserkTimer : Timer
-        {
-            private Mobile m_Mobile;
-
-            public GargoyleBerserkTimer(Mobile m)
-                : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
-            {
-                m_Mobile = m;
-
-                m_Mobile.PlaySound(0x20F);
-                m_Mobile.PlaySound(m_Mobile.Body.IsFemale ? 0x338 : 0x44A);
-                m_Mobile.FixedParticles(0x376A, 1, 31, 9961, 1160, 0, EffectLayer.Waist);
-                m_Mobile.FixedParticles(0x37C4, 1, 31, 9502, 43, 2, EffectLayer.Waist);
-
-                BuffInfo.AddBuff(m_Mobile, new BuffInfo(BuffIcon.Berserk, 1080449, 1115021, "15\t3", false));
-
-                m_Mobile.GargoyleBerserk = true;
-            }
-
-            protected override void OnTick()
-            {
-                float percentage = (float)m_Mobile.Hits / m_Mobile.HitsMax;
-
-                if (percentage >= 0.8 || !m_Mobile.Alive)
-                    RemoveEffect();
-            }
-
-            public void RemoveEffect()
-            {
-                m_Mobile.PlaySound(0xF8);
-                BuffInfo.RemoveBuff(m_Mobile, BuffIcon.Berserk);
-
-                m_Mobile.GargoyleBerserk = false;
 
                 Stop();
             }

@@ -311,7 +311,6 @@ namespace Server.Engines.Quests
                 PirateCaptain pirate = new PirateCaptain(gal);
                 pirate.Zone = zone;
                 gal.Owner = pirate;
-                FillHold(gal);
                 Point3D p = Point3D.Zero;
                 bool spawned = false;
                 for(int i = 0; i < 25; i++)
@@ -357,24 +356,8 @@ namespace Server.Engines.Quests
 
                 gal.NextNavPoint = 0;
                 gal.StartCourse(false, false);
-                /*MapItem mapItem = new MapItem(map);
 
-                if (map == Map.Tokuno)
-                    mapItem.SetDisplay(5, 5, 1448 - 32, 1448 - 10, 400, 400);
-                else
-                    mapItem.SetDisplay(5, 5, 5120 - 32, 4096 - 10, 400, 400);
-
-                for (int i = 0; i < course.Length; i++)
-                    mapItem.AddWorldPin(course[i].X, course[i].Y);
-
-                pirate.Backpack.DropItem(mapItem);
-
-                gal.MapItem = mapItem;*/
-
-                //mapItem.Name = "Pirate Map";
-
-                //if (0.90 > Utility.RandomDouble())
-                //    mapItem.Movable = false;
+                FillHold(gal);
 
                 m_Bounties.Add(pirate, gold);
                 m_ActiveZones[zone].Add(pirate);
@@ -421,7 +404,6 @@ namespace Server.Engines.Quests
                 }
 
                 gal.Owner = captain;
-                FillHold(gal);
                 captain.Zone = zone;
                 gal.MoveToWorld(p, map);
                 gal.AutoAddCannons(captain);
@@ -441,6 +423,8 @@ namespace Server.Engines.Quests
 
                 gal.NextNavPoint = 0;
                 gal.StartCourse(false, false);
+
+                FillHold(gal);
 
                 m_ActiveZones[zone].Add(captain);
             }
@@ -465,9 +449,9 @@ namespace Server.Engines.Quests
 
                 for (int i = 0; i < cnt; i++)
                 {
-                    Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry();
+                    Item item = RunicReforging.GenerateRandomItem(galleon);
 
-                    if (item is BaseWeapon)
+                    /*if (item is BaseWeapon)
                         BaseRunicTool.ApplyAttributesTo((BaseWeapon)item, false, 0, Utility.RandomMinMax(1, 6), 10, 100);
                     else if (item is BaseArmor)
                         BaseRunicTool.ApplyAttributesTo((BaseArmor)item, false, 0, Utility.RandomMinMax(1, 6), 10, 100);
@@ -476,9 +460,10 @@ namespace Server.Engines.Quests
                     else if (item is BaseJewel)
                         BaseRunicTool.ApplyAttributesTo((BaseJewel)item, false, 0, Utility.RandomMinMax(1, 6), 10, 100);
                     else
-                        item.Delete();
+                        item.Delete();*/
 
-                    hold.DropItem(item);
+                    if (item != null)
+                        hold.DropItem(item);
                 }
 
                 hold.DropItem(new Swab());
