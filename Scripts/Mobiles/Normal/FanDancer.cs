@@ -138,6 +138,9 @@ namespace Server.Mobiles
 		
                 ExpireTimer timer = new ExpireTimer(defender, mod, TimeSpan.FromSeconds(10.0));
                 timer.Start();
+
+                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.FanDancerFanFire, 1153787, 1153817, TimeSpan.FromSeconds(10.0), defender, effect));
+
                 m_Table[defender] = timer;
             }
         }
