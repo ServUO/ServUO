@@ -1,5 +1,5 @@
 @SET CURPATH=%~dp0
-@SET CSCPATH=%windir%\Microsoft.NET\Framework\v4.0.30319\
+@SET CSCPATH=%CURPATH%bin\roslyn\
 
 @SET SDKPATH=%CURPATH%Ultima\
 @SET SRVPATH=%CURPATH%Server\
