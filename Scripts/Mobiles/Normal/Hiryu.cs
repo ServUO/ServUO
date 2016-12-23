@@ -164,6 +164,9 @@ namespace Server.Mobiles
 
                 timer = new ExpireTimer(defender, mod, TimeSpan.FromSeconds(5.0));
                 timer.Start();
+
+                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.HiryuPhysicalResistance, 1153795, 1153822, TimeSpan.FromSeconds(5.0), defender, effect));
+
                 m_Table[defender] = timer;
             }
         }

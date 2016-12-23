@@ -220,6 +220,9 @@ namespace Server.Mobiles
 
                 timer = new ExpireTimer(defender, mods, TimeSpan.FromSeconds(5.0));
                 timer.Start();
+
+                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.RuneBeetleCorruption, 1153796, 1153823, TimeSpan.FromSeconds(5.0), defender, String.Format("{0}\t{1}\t{2}\t{3}\t{4}", mods[0], mods[1], mods[2], mods[3], mods[4] )));
+
                 m_Table[defender] = timer;
             }
         }
