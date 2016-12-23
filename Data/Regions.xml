@@ -2361,6 +2361,9 @@
 			<go x="2366" y="1268" z="-85" />
 			<entrance x="2357" y="1268" />
 			<music name="Dungeon9" />
+			<region type="DoomGuardianRegion" priority="50" name="Doom Guardian Room">
+				<rect x="355" y="5" width="20" height="20" />
+			</region>
 		</region>
 		<region type="DungeonRegion" priority="50" name="Doom Gauntlet">
 			<rect x="256" y="304" width="256" height="256" />
