@@ -250,8 +250,8 @@ namespace Server
         NightSight = 0x3ED,	//*
         DeathStrike,
         EvilOmen,
-        UnknownStandingSwirl,	//Which is healing throttle & Stamina throttle?
-        UnknownKneelingSword,
+        HonoredDebuff,
+        AchievePerfection,
         DivineFury,			//*
         EnemyOfOne,			//*
         HidingAndOrStealth,	//*
