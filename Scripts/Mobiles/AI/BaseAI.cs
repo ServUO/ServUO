@@ -2123,7 +2123,7 @@ namespace Server.Mobiles
 			}
 		}
 
-		public double TransformMoveDelay(double delay)
+		public virtual double TransformMoveDelay(double delay)
 		{
 			bool isPassive = (delay == m_Mobile.PassiveSpeed);
 			bool isControlled = (m_Mobile.Controlled || m_Mobile.Summoned);
@@ -2266,7 +2266,7 @@ namespace Server.Mobiles
 			m_Mobile.Direction = d;
 
 			int delay = (int)(TransformMoveDelay(m_Mobile.CurrentSpeed) * 1000);
-
+            
 			m_NextMove += delay;
 
 			if (Core.TickCount - m_NextMove > 0)

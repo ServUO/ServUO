@@ -4,6 +4,8 @@ using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
+using Server.Accounting;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -153,7 +155,20 @@ namespace Server.Items
 
                 from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
             }
+
             return true;
+        }
+
+        public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
+        {
+            bool canDrop = base.OnDroppedInto(from, target, p);
+
+            if (canDrop && target is BankBox)
+            {
+                CheckBank((BankBox)target, from);
+            }
+
+            return canDrop;
         }
 
         public override void UpdateTotal(Item sender, TotalType type, int delta)
@@ -185,6 +200,32 @@ namespace Server.Items
 		public virtual void Open(Mobile from)
         {
             this.DisplayTo(from);
+        }
+
+        public void CheckBank(BankBox bank, Mobile from)
+        {
+            if (AccountGold.Enabled && bank.Owner == from && from.Account != null)
+            {
+                List<BankCheck> checks = new List<BankCheck>(this.Items.OfType<BankCheck>());
+
+                foreach (BankCheck check in checks)
+                {
+                    if (from.Account.DepositGold(check.Worth))
+                    {
+                        from.SendLocalizedMessage(1042672, true, check.Worth.ToString("#,0"));
+                        check.Delete();
+                    }
+                    else
+                    {
+                        from.AddToBackpack(check);
+                    }
+                }
+
+                checks.Clear();
+                checks.TrimExcess();
+
+                UpdateTotals();
+            }
         }
 
         public override void Serialize(GenericWriter writer)

@@ -6581,7 +6581,6 @@ namespace Server.Mobiles
 
             if (Combatant != null && CanDiscord && tc - m_NextDiscord >= 0 && 0.33 > Utility.RandomDouble())
             {
-                Console.WriteLine("Checking Discord");
                 if (DoDiscord())
                     m_NextDiscord = tc + (int)DiscordInterval.TotalMilliseconds;
                 else
@@ -6589,7 +6588,6 @@ namespace Server.Mobiles
             }
             else if (Combatant != null && CanPeace && tc - m_NextPeace >= 0 && 0.33 > Utility.RandomDouble())
             {
-                Console.WriteLine("Checking peace");
                 if (DoPeace())
                     m_NextPeace = tc + (int)PeaceInterval.TotalMilliseconds;
                 else
@@ -6597,7 +6595,6 @@ namespace Server.Mobiles
             }
             else if (Combatant != null && CanProvoke && tc - m_NextProvoke >= 0 && 0.33 > Utility.RandomDouble())
             {
-                Console.WriteLine("Checking provok");
                 if (DoProvoke())
                     m_NextProvoke = tc + (int)ProvokeInterval.TotalMilliseconds;
                 else
