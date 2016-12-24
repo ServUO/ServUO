@@ -1008,6 +1008,9 @@ namespace Server.Mobiles
 
         public Item GetHarmfulFieldItem()
         {
+            if (m_Mobile.Map == null)
+                return null;
+
             IPooledEnumerable eable = m_Mobile.Map.GetItemsInRange(m_Mobile.Location, 0);
 
             foreach (Item item in eable)
