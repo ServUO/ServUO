@@ -95,25 +95,26 @@ namespace Server.Spells
 			if (Factions.Sigil.ExistsOn(Caster))
 			{
 				Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
-				return;
 			}
 			else if (!Caster.CanBeginAction(typeof(Seventh.PolymorphSpell)))
 			{
 				Caster.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
-				return;
 			}
 			else if (Ninjitsu.AnimalForm.UnderTransformation(Caster) ||
 				Mystic.StoneFormSpell.IsEffected(Caster) ||
-				(TransformationSpellHelper.UnderTransformation(Caster) && !TransformationSpellHelper.UnderTransformation(Caster, typeof(Spells.Necromancy.VampiricEmbraceSpell))))
+				(TransformationSpellHelper.UnderTransformation(Caster) && !TransformationSpellHelper.UnderTransformation(Caster, typeof(Spells.Necromancy.VampiricEmbraceSpell))) ||
+                (Caster.IsBodyMod && !Caster.Body.IsHuman))
 			{
 				Caster.SendLocalizedMessage(1061091); // You cannot cast that spell in this form.
-				return;
 			}
+            else if (Server.Mobiles.BaseMount.CheckMountAllowed(Caster, true, true))
+            {
+                this.Caster.Animate(60, 10, 1, true, false, 0);
+                this.Caster.SendLocalizedMessage(1112567); // You are flying.
+                this.Caster.Flying = true;
+                BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.Fly, 1112567));
+            }
 
-            this.Caster.Animate(60, 10, 1, true, false, 0);
-            this.Caster.SendLocalizedMessage(1112567); // You are flying.
-            this.Caster.Flying = true;
-            BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.Fly, 1112567));
             this.FinishSequence();
         }
     }
