@@ -34,7 +34,7 @@ namespace Server.Misc
                 m_PetStatGainDelay = TimeSpan.FromSeconds(0.5);
         }
 
-    public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
+        public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
         public const int Allowance = 3;	//How many times may we use the same location/target for gain
         private const int LocationSize = 5; //The size of eeach location, make this smaller so players dont have to move as far
         private static readonly bool[] UseAntiMacro = new bool[]
@@ -283,7 +283,7 @@ namespace Server.Misc
                 if (from is PlayerMobile)
                 {
                     PlayerMobile pm = from as PlayerMobile;
-                    
+
                     if (pm != null && skill.SkillName == pm.AcceleratedSkill && pm.AcceleratedStart > DateTime.UtcNow)
                     {
                         pm.SendLocalizedMessage(1077956); // You are infused with intense energy. You are under the effects of an accelerated skillgain scroll.
@@ -317,78 +317,78 @@ namespace Server.Misc
                 Server.Engines.Quests.QuestHelper.CheckSkill((PlayerMobile)from, skill);
             #endregion
 
-			
+
             if (skill.Lock == SkillLock.Up)
             {
                 SkillInfo info = skill.Info;
 
-				// Old gain mechanic
-				if (!Core.ML)
-				{
-					if (from.StrLock == StatLockType.Up && (info.StrGain / 33.3) > Utility.RandomDouble())
-						GainStat(from, Stat.Str);
-					else if (from.DexLock == StatLockType.Up && (info.DexGain / 33.3) > Utility.RandomDouble())
-						GainStat(from, Stat.Dex);
-					else if (from.IntLock == StatLockType.Up && (info.IntGain / 33.3) > Utility.RandomDouble())
-						GainStat(from, Stat.Int);
-				}
-				else
-				{
-					TryStatGain(info, from);
-				}
+                // Old gain mechanic
+                if (!Core.ML)
+                {
+                    if (from.StrLock == StatLockType.Up && (info.StrGain / 33.3) > Utility.RandomDouble())
+                        GainStat(from, Stat.Str);
+                    else if (from.DexLock == StatLockType.Up && (info.DexGain / 33.3) > Utility.RandomDouble())
+                        GainStat(from, Stat.Dex);
+                    else if (from.IntLock == StatLockType.Up && (info.IntGain / 33.3) > Utility.RandomDouble())
+                        GainStat(from, Stat.Int);
+                }
+                else
+                {
+                    TryStatGain(info, from);
+                }
             }
         }
 
-		public static void TryStatGain(SkillInfo info, Mobile from)
-		{
-			// Chance roll
-			double chance = 0.0;
-			if(from is BaseCreature && ((BaseCreature)from).Controlled)
-				chance = PetChanceToGainStats;
-			else
-				chance = PlayerChanceToGainStats;
-			if (Utility.RandomDouble() * 100.0 >= chance)
-			{
-				return;
-			}
+        public static void TryStatGain(SkillInfo info, Mobile from)
+        {
+            // Chance roll
+            double chance = 0.0;
+            if (from is BaseCreature && ((BaseCreature)from).Controlled)
+                chance = PetChanceToGainStats;
+            else
+                chance = PlayerChanceToGainStats;
+            if (Utility.RandomDouble() * 100.0 >= chance)
+            {
+                return;
+            }
 
-			// Selection
-			StatLockType primaryLock = StatLockType.Locked;
-			StatLockType secondaryLock = StatLockType.Locked;
-			switch (info.Primary)
-			{
-				case StatCode.Str: primaryLock = from.StrLock; break;
-				case StatCode.Dex: primaryLock = from.DexLock; break;
-				case StatCode.Int: primaryLock = from.IntLock; break;
-			}
-			switch (info.Secondary)
-			{
-				case StatCode.Str: secondaryLock = from.StrLock; break;
-				case StatCode.Dex: secondaryLock = from.DexLock; break;
-				case StatCode.Int: secondaryLock = from.IntLock; break;
-			}
+            // Selection
+            StatLockType primaryLock = StatLockType.Locked;
+            StatLockType secondaryLock = StatLockType.Locked;
+            switch (info.Primary)
+            {
+                case StatCode.Str: primaryLock = from.StrLock; break;
+                case StatCode.Dex: primaryLock = from.DexLock; break;
+                case StatCode.Int: primaryLock = from.IntLock; break;
+            }
+            switch (info.Secondary)
+            {
+                case StatCode.Str: secondaryLock = from.StrLock; break;
+                case StatCode.Dex: secondaryLock = from.DexLock; break;
+                case StatCode.Int: secondaryLock = from.IntLock; break;
+            }
 
-			// Gain
-			// Decision block of both are selected to gain
-			if(primaryLock == StatLockType.Up && secondaryLock == StatLockType.Up)
-			{
-				if (Utility.Random(4) == 0)
-					GainStat(from, (Stat)info.Secondary);
-				else
-					GainStat(from, (Stat)info.Primary);
-			}
-			else // Will not do anything if neither are selected to gain
-			{
-				if(primaryLock == StatLockType.Up)
-					GainStat(from, (Stat)info.Primary);
-				else if(secondaryLock == StatLockType.Up)
-					GainStat(from, (Stat)info.Secondary);
-			}
-		}
+            // Gain
+            // Decision block of both are selected to gain
+            if (primaryLock == StatLockType.Up && secondaryLock == StatLockType.Up)
+            {
+                if (Utility.Random(4) == 0)
+                    GainStat(from, (Stat)info.Secondary);
+                else
+                    GainStat(from, (Stat)info.Primary);
+            }
+            else // Will not do anything if neither are selected to gain
+            {
+                if (primaryLock == StatLockType.Up)
+                    GainStat(from, (Stat)info.Primary);
+                else if (secondaryLock == StatLockType.Up)
+                    GainStat(from, (Stat)info.Secondary);
+            }
+        }
 
         public static bool CanLower(Mobile from, Stat stat)
         {
-            switch ( stat )
+            switch (stat)
             {
                 case Stat.Str:
                     return (from.StrLock == StatLockType.Down && from.RawStr > 10);
@@ -409,7 +409,7 @@ namespace Server.Misc
                     return false;
             }
 
-            switch ( stat )
+            switch (stat)
             {
                 case Stat.Str:
                     return (from.StrLock == StatLockType.Up && from.RawStr < StatCap);
@@ -426,7 +426,7 @@ namespace Server.Misc
         {
             atrophy = atrophy || (from.RawStatTotal >= from.StatCap);
 
-            switch ( stat )
+            switch (stat)
             {
                 case Stat.Str:
                     {
@@ -478,59 +478,59 @@ namespace Server.Misc
 
         public static void GainStat(Mobile from, Stat stat)
         {
-		    if (!CheckStatTimer(from, stat))
-			    return;
+            if (!CheckStatTimer(from, stat))
+                return;
 
             bool atrophy = ((from.RawStatTotal / (double)from.StatCap) >= Utility.RandomDouble());
 
             IncreaseStat(from, stat, atrophy);
         }
 
-		public static bool CheckStatTimer(Mobile from, Stat stat)
-		{
-			switch (stat)
-			{
-				case Stat.Str:
-					{
-						if (from is BaseCreature && ((BaseCreature)from).Controlled)
-						{
-							if ((from.LastStrGain + m_PetStatGainDelay) >= DateTime.UtcNow)
-								return false;
-						}
-						else if ((from.LastStrGain + m_StatGainDelay) >= DateTime.UtcNow)
-							return false;
+        public static bool CheckStatTimer(Mobile from, Stat stat)
+        {
+            switch (stat)
+            {
+                case Stat.Str:
+                    {
+                        if (from is BaseCreature && ((BaseCreature)from).Controlled)
+                        {
+                            if ((from.LastStrGain + m_PetStatGainDelay) >= DateTime.UtcNow)
+                                return false;
+                        }
+                        else if ((from.LastStrGain + m_StatGainDelay) >= DateTime.UtcNow)
+                            return false;
 
-						from.LastStrGain = DateTime.UtcNow;
-						break;
-					}
-				case Stat.Dex:
-					{
-						if (from is BaseCreature && ((BaseCreature)from).Controlled)
-						{
-							if ((from.LastDexGain + m_PetStatGainDelay) >= DateTime.UtcNow)
-								return false;
-						}
-						else if ((from.LastDexGain + m_StatGainDelay) >= DateTime.UtcNow)
-							return false;
+                        from.LastStrGain = DateTime.UtcNow;
+                        break;
+                    }
+                case Stat.Dex:
+                    {
+                        if (from is BaseCreature && ((BaseCreature)from).Controlled)
+                        {
+                            if ((from.LastDexGain + m_PetStatGainDelay) >= DateTime.UtcNow)
+                                return false;
+                        }
+                        else if ((from.LastDexGain + m_StatGainDelay) >= DateTime.UtcNow)
+                            return false;
 
-						from.LastDexGain = DateTime.UtcNow;
-						break;
-					}
-				case Stat.Int:
-					{
-						if (from is BaseCreature && ((BaseCreature)from).Controlled)
-						{
-							if ((from.LastIntGain + m_PetStatGainDelay) >= DateTime.UtcNow)
-								return false;
-						}
-						else if ((from.LastIntGain + m_StatGainDelay) >= DateTime.UtcNow)
-							return false;
+                        from.LastDexGain = DateTime.UtcNow;
+                        break;
+                    }
+                case Stat.Int:
+                    {
+                        if (from is BaseCreature && ((BaseCreature)from).Controlled)
+                        {
+                            if ((from.LastIntGain + m_PetStatGainDelay) >= DateTime.UtcNow)
+                                return false;
+                        }
+                        else if ((from.LastIntGain + m_StatGainDelay) >= DateTime.UtcNow)
+                            return false;
 
-						from.LastIntGain = DateTime.UtcNow;
-						break;
-					}
-			}
-			return true;
-		}
+                        from.LastIntGain = DateTime.UtcNow;
+                        break;
+                    }
+            }
+            return true;
+        }
     }
 }
