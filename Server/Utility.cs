@@ -907,13 +907,51 @@ namespace Server
 		{
 			return RandomImpl.NextDouble();
 		}
-		#endregion
+        #endregion
 
-		#region Random Hues
-		/// <summary>
-		///     Random pink, blue, green, orange, red or yellow hue
-		/// </summary>
-		public static int RandomNondyedHue()
+        #region FixValues
+        public static void FixMin(ref int value, int min)
+        {
+            if (value < min)
+                value = min;
+        }
+
+        public static void FixMin(ref double value, double min)
+        {
+            if (value < min)
+                value = min;
+        }
+
+        public static void FixMax(ref int value, int max)
+        {
+            if (value > max)
+                value = max;
+        }
+
+        public static void FixMax(ref double value, double max)
+        {
+            if (value > max)
+                value = max;
+        }
+
+        public static void FixMinMax(ref int value, int min, int max)
+        {
+            FixMin(ref value, min);
+            FixMax(ref value, max);
+        }
+
+        public static void FixMinMax(ref double value, double min, double max)
+        {
+            FixMin(ref value, min);
+            FixMax(ref value, max);
+        }
+        #endregion
+
+        #region Random Hues
+        /// <summary>
+        ///     Random pink, blue, green, orange, red or yellow hue
+        /// </summary>
+        public static int RandomNondyedHue()
 		{
 			switch (Random(6))
 			{
