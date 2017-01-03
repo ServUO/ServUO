@@ -19,6 +19,7 @@ using Server.Spells.Ninjitsu;
 using Server.Spells.Second;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
+using Server.Spells.SkillMasteries;
 #endregion
 
 namespace Server.Spells
@@ -176,12 +177,12 @@ namespace Server.Spells
 			// PvP spell damage increase cap of 15% from an item’s magic property, 30% if spell school focused.
 			if (playerVsPlayer)
 			{
-			    if (SpellHelper.HasSpellMastery(m_Caster) && sdiBonus > 30)
+			    if (SpellHelper.HasSpellFocus(m_Caster, CastSkill) && sdiBonus > 30)
                 {
                     sdiBonus = 30;
                 }
 
-                if (!SpellHelper.HasSpellMastery(m_Caster) && sdiBonus > 15)
+                if (!SpellHelper.HasSpellFocus(m_Caster, CastSkill) && sdiBonus > 15)
                 {
                     sdiBonus = 15;
                 }
@@ -200,6 +201,13 @@ namespace Server.Spells
 			damage = AOS.Scale(damage, evalScale);
 
 			damage = AOS.Scale(damage, (int)(scalar * 100));
+
+            #region Skill Mastery
+            SkillMasterySpell spell = SkillMasterySpell.GetHarmfulSpell(Caster, typeof(TribulationSpell));
+
+            if (spell != null)
+                spell.AbsorbDamage(ref damage);
+            #endregion
 
 			return damage / 100;
 		}
@@ -636,7 +644,18 @@ namespace Server.Spells
 			}
 		}
 
-		public virtual bool BlockedByHorrificBeast { get { return true; } }
+		public virtual bool BlockedByHorrificBeast 
+        { 
+            get 
+            {
+                if (TransformationSpellHelper.UnderTransformation(Caster, typeof(HorrificBeastSpell)) &&
+                    SpellHelper.HasSpellFocus(Caster, CastSkill))
+                    return false;
+
+                return true;
+            } 
+        }
+
 		public virtual bool BlockedByAnimalForm { get { return true; } }
 		public virtual bool BlocksMovement { get { return true; } }
 

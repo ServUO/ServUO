@@ -237,6 +237,18 @@ namespace Server.Engines.Craft
             }         
             #endregion
 
+            #region TOL
+            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044294, 1155850, 42.1, 77.7, typeof(Log), 1044041, 5, 1044351);
+            SetData(index, CraftableAddonType.LightWoodenSignHanger);
+            SetDisplayID(index, 2969);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044294, 1155849, 42.1, 77.7, typeof(Log), 1044041, 5, 1044351);
+            SetData(index, CraftableAddonType.DarkWoodenSignHanger);
+            SetDisplayID(index, 2967);
+            SetNeededExpansion(index, Expansion.TOL);
+            #endregion
+
             // Furniture
             this.AddCraft(typeof(FootStool), 1044291, 1022910, 11.0, 36.0, typeof(Board), 1044041, 9, 1044351);
             this.AddCraft(typeof(Stool), 1044291, 1022602, 11.0, 36.0, typeof(Board), 1044041, 9, 1044351);

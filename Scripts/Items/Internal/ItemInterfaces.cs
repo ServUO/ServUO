@@ -17,4 +17,11 @@ namespace Server.Items
         Mobile Owner { get; set; }
         string OwnerName { get; set; }
     }
+
+    public interface IFlippable
+    {
+        int WestID { get; }
+        int NorthID { get; }
+        void OnFlip();
+    }
 }

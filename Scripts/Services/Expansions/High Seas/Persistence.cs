@@ -11,7 +11,7 @@ namespace Server.Items
 {
     public class HighSeasPersistance
     {
-        public static string FilePath = Path.Combine("Saves", "Highseas.bin"); //@"Saves\\Highseas.bin";
+        public static string FilePath = Path.Combine("Saves", "Highseas.bin");
         public static bool DefaultRestrictBoats = true;
 
         public static void Initialize()
@@ -30,7 +30,6 @@ namespace Server.Items
                 SeaMarketRegion.SetRegions(reg1, reg2);
 
                 CommandSystem.Register("RestrictBoats", AccessLevel.GameMaster, new CommandEventHandler(SeaMarketRegion.SetRestriction_OnCommand));
-                //CommandSystem.Register("GetBoatInfo", AccessLevel.GameMaster, new CommandEventHandler(SeaMarketRegion.GetBoatInfo_OnCommand));
             }
         }
 

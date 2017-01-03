@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Spells.Necromancy
 {
@@ -58,74 +59,81 @@ namespace Server.Spells.Necromancy
                 Mobile mob = m as Mobile;
                 SpellHelper.Turn(this.Caster, m);
 
-                /* Creates a blast of poisonous energy centered on the target.
+                ApplyEffects(m);
+                ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
+            }
+
+            this.FinishSequence();
+        }
+
+        public void ApplyEffects(IDamageable m, double strength = 1.0)
+        {
+            /* Creates a blast of poisonous energy centered on the target.
                 * The main target is inflicted with a large amount of Poison damage, and all valid targets in a radius of 2 tiles around the main target are inflicted with a lesser effect.
                 * One tile from main target receives 50% damage, two tiles from target receives 33% damage.
                 */
 
-                Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
-                Effects.PlaySound(m.Location, m.Map, 0x229);
+            Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
+            Effects.PlaySound(m.Location, m.Map, 0x229);
 
-                double damage = Utility.RandomMinMax((Core.ML ? 32 : 36), 40) * ((300 + (this.GetDamageSkill(this.Caster) * 9)) / 1000);
-				
-                double sdiBonus = (double)AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage) / 100;
-				
-                double pvmDamage = damage * (1 + sdiBonus);
-				
-                if (Core.ML && sdiBonus > 0.15)
-                    sdiBonus = 0.15;
-                double pvpDamage = damage * (1 + sdiBonus);
+            double damage = Utility.RandomMinMax((Core.ML ? 32 : 36), 40) * ((300 + (this.GetDamageSkill(this.Caster) * 9)) / 1000);
+            damage *= strength;
 
-                Map map = m.Map;
+            double sdiBonus = (double)AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage) / 100;
 
-                if (map != null)
+            double pvmDamage = (damage * (1 + sdiBonus)) * strength;
+
+            if (Core.ML && sdiBonus > 0.15)
+                sdiBonus = 0.15;
+            double pvpDamage = damage * (1 + sdiBonus);
+
+            Map map = m.Map;
+
+            if (map != null)
+            {
+                List<IDamageable> targets = new List<IDamageable>();
+
+                if (this.Caster.CanBeHarmful(m, false))
+                    targets.Add(m);
+
+                IPooledEnumerable eable = m.Map.GetObjectsInRange(m.Location, 2);
+
+                foreach (object o in eable)
                 {
-                    List<IDamageable> targets = new List<IDamageable>();
-			
-                    if (this.Caster.CanBeHarmful(m, false))
-                        targets.Add(m);
+                    IDamageable id = o as IDamageable;
 
-                    IPooledEnumerable eable = m.Map.GetObjectsInRange(m.Location, 2);
-
-                    foreach (object o in eable)
+                    if (!(this.Caster is BaseCreature && id is BaseCreature))
                     {
-                        IDamageable id = o as IDamageable;
+                        if ((id is Mobile && (Mobile)id == Caster) || id == m)
+                            continue;
 
-                        if (!(this.Caster is BaseCreature && id is BaseCreature))
-                        {
-                            if ((id is Mobile && (Mobile)id == Caster) || id == m)
-                                continue;
-
-                            if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(this.Caster, (Mobile)id)) && this.Caster.CanBeHarmful(id, false))
-                                targets.Add(id);
-                        }
+                        if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(this.Caster, (Mobile)id)) && this.Caster.CanBeHarmful(id, false))
+                            targets.Add(id);
                     }
-
-                    eable.Free();
-
-                    for (int i = 0; i < targets.Count; ++i)
-                    {
-                        IDamageable id = targets[i];
-
-                        int num;
-
-                        if (Utility.InRange(id.Location, m.Location, 0))
-                            num = 1;
-                        else if (Utility.InRange(id.Location, m.Location, 1))
-                            num = 2;
-                        else
-                            num = 3;
-
-                        this.Caster.DoHarmful(id);
-                        SpellHelper.Damage(this, id, ((id is PlayerMobile && this.Caster.Player) ? pvpDamage : pvmDamage) / num, 0, 0, 0, 100, 0);
-                    }
-
-                    targets.Clear();
-                    targets.TrimExcess();
                 }
-            }
 
-            this.FinishSequence();
+                eable.Free();
+
+                for (int i = 0; i < targets.Count; ++i)
+                {
+                    IDamageable id = targets[i];
+
+                    int num;
+
+                    if (Utility.InRange(id.Location, m.Location, 0))
+                        num = 1;
+                    else if (Utility.InRange(id.Location, m.Location, 1))
+                        num = 2;
+                    else
+                        num = 3;
+
+                    this.Caster.DoHarmful(id);
+                    SpellHelper.Damage(this, id, ((id is PlayerMobile && this.Caster.Player) ? pvpDamage : pvmDamage) / num, 0, 0, 0, 100, 0);
+                }
+
+                targets.Clear();
+                targets.TrimExcess();
+            }
         }
 
         private class InternalTarget : Target

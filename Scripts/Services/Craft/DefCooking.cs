@@ -8,7 +8,11 @@ namespace Server.Engines.Craft
     {
         // magical
         RotWormStew = 500,
-        GingerbreadCookie = 599
+        GingerbreadCookie = 599,
+
+        DarkChocolateNutcracker = 600,
+        MilkChocolateNutcracker = 601,
+        WhiteChocolateNutcracker = 602
     }
     #endregion
 
@@ -360,6 +364,26 @@ namespace Server.Engines.Craft
                 this.SetBeverageType(index, BeverageType.Milk);
                 this.SetItemHue(index, 0x47E);
                 this.SetNeededExpansion(index, Expansion.ML);
+
+                #region TOL
+                index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156390, 15.0, 100.0, typeof(GoldFoil), 1124032, 1, 1156402);
+                AddRes(index, typeof(DarkChocolate), 1079994, 1, 1044253);
+                AddRecipe(index, (int)CookRecipes.DarkChocolateNutcracker);
+                SetData(index, ChocolateNutcracker.ChocolateType.Dark);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156391, 32.5, 107.5, typeof(GoldFoil), 1124032, 1, 1156402);
+                AddRes(index, typeof(MilkChocolate), 1079995, 1, 1044253);
+                AddRecipe(index, (int)CookRecipes.MilkChocolateNutcracker);
+                SetData(index, ChocolateNutcracker.ChocolateType.Milk);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156392, 52.5, 127.5, typeof(GoldFoil), 1124032, 1, 1156402);
+                AddRes(index, typeof(WhiteChocolate), 1079996, 1, 1044253);
+                AddRecipe(index, (int)CookRecipes.WhiteChocolateNutcracker);
+                SetData(index, ChocolateNutcracker.ChocolateType.White);
+                SetNeededExpansion(index, Expansion.TOL);
+                #endregion
             }
             /* End Chocolatiering */
 

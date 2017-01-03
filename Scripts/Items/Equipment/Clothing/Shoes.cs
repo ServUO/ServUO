@@ -600,4 +600,38 @@ namespace Server.Items
             int version = reader.ReadEncodedInt();
         }
     }
+
+    public class JesterShoes : BaseShoes
+    {
+        public override int LabelNumber { get { return 1109617; } } // Jester Shoes
+
+        [Constructable]
+        public JesterShoes()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public JesterShoes(int hue)
+            : base(0x7819, hue)
+        {
+        }
+
+        public JesterShoes(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }

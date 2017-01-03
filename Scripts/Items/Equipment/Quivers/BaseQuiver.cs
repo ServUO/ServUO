@@ -423,6 +423,14 @@ namespace Server.Items
 
         public override bool CanEquip(Mobile m)
         {
+            #region Stygian Abyss
+            if (m.Race == Race.Gargoyle)
+            {
+                m.SendLocalizedMessage(1111708); // Gargoyles can't wear this.
+                return false;
+            }
+            #endregion
+
             if (m.IsPlayer())
             {
                 if (_Owner != null && m != _Owner)

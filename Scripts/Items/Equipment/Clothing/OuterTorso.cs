@@ -1546,4 +1546,72 @@ namespace Server.Items
             int version = reader.ReadEncodedInt();
         }
     }
+
+    public class FloweredDress : BaseOuterTorso
+    {
+        public override int LabelNumber { get { return 1109622; } } // Flowered Dress
+
+        [Constructable]
+        public FloweredDress()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public FloweredDress(int hue)
+            : base(0x781E, hue)
+        {
+        }
+
+        public FloweredDress(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class EveningGown : BaseOuterTorso
+    {
+        public override int LabelNumber { get { return 1109625; } } // Evening Gown
+
+        [Constructable]
+        public EveningGown()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public EveningGown(int hue)
+            : base(0x7821, hue)
+        {
+        }
+
+        public EveningGown(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }

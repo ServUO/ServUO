@@ -2739,5 +2739,21 @@
    	<rect x="10" y="12" width="49" height="108" />
       <go x="35" y="226" z="-14" />
     </region>
+	<region type="StygianAbyssRegion" priority="100" name="GreatApeLair">
+	  <rect x="832" y="1363" width="106" height="111" zmin="-25" />
+	  <go x="926" y="1464" z="0" />
+	</region>
+	<region type="StygianAbyssRegion" priority="100" name="ZipactriotlLair">
+	  <rect x="831" y="2239" width="128" height="128" zmin="-25" />
+	  <go x="896" y="2304" z="-19" />
+	</region>
+	<region type="StygianAbyssRegion" priority="100" name="MyrmidexQueenLair">
+	  <rect x="704" y="2248" width="124" height="115" zmin="-25" />
+	  <go x="766" y="2306" z="0" />
+	</region>
+	<region type="BattleRegion" priority="100" name="MyrmidexBattleground">
+	  <rect x="828" y="1762" width="195" height="158" zmin="-25" />
+	  <go x="853" y="1784" z="0" />
+	</region>
   </Facet>
 </ServerRegions>

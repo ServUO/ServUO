@@ -840,10 +840,11 @@ namespace Server.Spells.SkillMasteries
 
         public static bool IsInCooldown(Mobile m, Type type, bool message = true)
         {
+            CheckCooldown();
+
             if (_Cooldown == null)
                 return false;
 
-            CheckCooldown();
             bool iscooling = false;
 
             foreach (KeyValuePair<SkillMasterySpell, DateTime> kvp in _Cooldown)
@@ -875,6 +876,9 @@ namespace Server.Spells.SkillMasteries
 
         public static void RemoveFromCooldown(Type type, Mobile m)
         {
+            if (_Cooldown == null)
+                return;
+
             SkillMasterySpell spell = null;
 
             foreach (KeyValuePair<SkillMasterySpell, DateTime> kvp in _Cooldown)
@@ -891,6 +895,9 @@ namespace Server.Spells.SkillMasteries
 
         public static void CheckCooldown()
         {
+            if (_Cooldown == null)
+                return;
+
             List<SkillMasterySpell> spells = new List<SkillMasterySpell>();
 
             foreach (KeyValuePair<SkillMasterySpell, DateTime> kvp in _Cooldown)
@@ -921,10 +928,10 @@ namespace Server.Spells.SkillMasteries
                     if (spell != null)
                         value += spell.PropertyBonus();
 
-                    //value += FocusedEyeSpell.HitChanceBonus(m);
-                    //value += PlayingTheOddsSpell.HitChanceBonus(m);
-                    //value += CalledShotSpell.GetHitChanceBonus(m);
-                    //value += CombatTrainingSpell.GetHitChanceBonus(m);
+                    value += FocusedEyeSpell.HitChanceBonus(m);
+                    value += PlayingTheOddsSpell.HitChanceBonus(m);
+                    value += CalledShotSpell.GetHitChanceBonus(m);
+                    value += CombatTrainingSpell.GetHitChanceBonus(m);
                     break;
                 case AosAttribute.DefendChance:
                     spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
@@ -932,8 +939,8 @@ namespace Server.Spells.SkillMasteries
                     if (spell != null)
                         value += spell.PropertyBonus();
 
-                    //if (Server.Spells.SkillMasteries.WhiteTigerFormSpell.IsActive(m))
-                    //   value += 20;
+                    if (Server.Spells.SkillMasteries.WhiteTigerFormSpell.IsActive(m))
+                       value += 20;
                     break;
                 case AosAttribute.RegenHits:
                     spell = SkillMasterySpell.GetSpellForParty(m, typeof(ResilienceSpell));
@@ -972,9 +979,9 @@ namespace Server.Spells.SkillMasteries
                         value += spell.PropertyBonus();
                     break;
                 case AosAttribute.WeaponSpeed:
-                    //value += RampageSpell.GetBonus(m, RampageSpell.BonusType.SwingSpeed); // Put in before cap
-                    //value += PlayingTheOddsSpell.SwingSpeedBonus(m);
-                    //value -= StaggerSpell.GetStagger(m);
+                    value += RampageSpell.GetBonus(m, RampageSpell.BonusType.SwingSpeed);
+                    value += PlayingTheOddsSpell.SwingSpeedBonus(m);
+                    value -= StaggerSpell.GetStagger(m);
                     break;
             }
 

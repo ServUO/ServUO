@@ -266,6 +266,12 @@ namespace Server.Items
 
             private static void Turn(Item item, Mobile from)
             {
+                if (item is IFlippable)
+                {
+                    ((IFlippable)item).OnFlip();
+                    return;
+                }
+
                 if (item is AddonComponent || item is AddonContainerComponent || item is BaseAddonContainer)
                 {
                     object addon = null;

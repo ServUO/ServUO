@@ -1273,6 +1273,16 @@ namespace Server.Mobiles
 							moved = true;
 						}
 					}
+                    else if (item is BaseQuiver)
+                    {
+                        if (Race == Race.Gargoyle)
+                        {
+                            from.AddToBackpack(item);
+
+                            from.SendLocalizedMessage(1062002, "quiver"); // You can no longer wear your ~1_ARMOR~
+                            moved = true;
+                        }
+                    }
 
 					FactionItem factionItem = FactionItem.Find(item);
 
@@ -1633,6 +1643,10 @@ namespace Server.Mobiles
 					{
 						strOffs += 20;
 					}
+
+                    // Skill Masteries
+                    if(Core.TOL)
+                        strOffs += ToughnessSpell.GetHPBonus(this);
 				}
 				else
 				{
@@ -1650,7 +1664,9 @@ namespace Server.Mobiles
 		public override int ManaMax { get
 		{
 			return base.ManaMax + AosAttributes.GetValue(this, AosAttribute.BonusMana) +
-				   ((Core.ML && Race == Race.Elf) ? 20 : 0);
+				   ((Core.ML && Race == Race.Elf) ? 20 : 0) +
+                   MasteryInfo.IntuitionBonus(this) +
+                   UraliTranceTonic.GetManaBuff(this);
 		} }
 		#endregion
 
@@ -2028,10 +2044,18 @@ namespace Server.Mobiles
 				}
 
                 Region r = Region.Find(this.Location, this.Map);
+
+                #region Void Pool
                 if (r is Server.Engines.VoidPool.VoidPoolRegion && ((Server.Engines.VoidPool.VoidPoolRegion)r).Controller != null)
                     list.Add(new Server.Engines.Points.VoidPoolInfo(this));
+                #endregion
 
-				if (!Core.SA && Alive)
+                #region TOL Shadowguard
+                if (Server.Engines.Shadowguard.ShadowguardController.GetInstance(this.Location, this.Map) != null)
+                    list.Add(new Server.Engines.Shadowguard.ExitEntry(this));
+                #endregion
+
+                if (!Core.SA && Alive)
 				{
 					list.Add(new CallbackEntry(6210, ToggleChampionTitleDisplay));
 				}
@@ -3668,26 +3692,6 @@ namespace Server.Mobiles
         {
             Damage(amount, from, informMount, false);
         }
-
-        public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
-		{
-			if (from != null && Talisman is BaseTalisman)
-			{
-				BaseTalisman talisman = (BaseTalisman)Talisman;
-
-				if (talisman.Protection != null && talisman.Protection.Type != null)
-				{
-					Type type = talisman.Protection.Type;
-
-					if (type.IsAssignableFrom(from.GetType()))
-					{
-						amount = (int)(amount * (1 - (double)talisman.Protection.Amount / 100));
-					}
-				}
-			}
-
-			base.Damage(amount, from, informMount, checkDisrupt);
-		}
 
 		#region Poison
 		public override ApplyPoisonResult ApplyPoison(Mobile from, Poison poison)

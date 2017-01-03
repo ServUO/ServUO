@@ -277,6 +277,8 @@ namespace Server.Spells.Ninjitsu
 			{
 				m.CheckStatTimers();
 			}
+
+            m.Delta(MobileDelta.WeaponDamage);
 		}
 
 		public static void RemoveContext(Mobile m, bool resetGraphics)
@@ -287,6 +289,8 @@ namespace Server.Spells.Ninjitsu
 			{
 				RemoveContext(m, context, resetGraphics);
 			}
+
+            m.Delta(MobileDelta.WeaponDamage);
 		}
 
 		public static void RemoveContext(Mobile m, AnimalFormContext context, bool resetGraphics)

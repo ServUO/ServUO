@@ -252,7 +252,7 @@ namespace Server.Engines.Craft
 
         public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-		Item item = from.FindItemOnLayer(Layer.Talisman);
+		    Item item = from.FindItemOnLayer(Layer.Talisman);
 
 			if (item is MasterCraftsmanTalisman)
 			{
@@ -405,6 +405,20 @@ namespace Server.Engines.Craft
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.RequiresMechanicalLife = true;
+        }
+        #endregion
+
+        #region TOL
+        public void SetData(int index, object data)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.Data = data;
+        }
+
+        public void SetDisplayID(int index, int id)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.DisplayID = id;
         }
         #endregion
 

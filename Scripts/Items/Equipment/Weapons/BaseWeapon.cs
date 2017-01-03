@@ -23,6 +23,7 @@ using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
 using Server.Spells.Sixth;
 using Server.Spells.Spellweaving;
+using Server.Spells.SkillMasteries;
 #endregion
 
 namespace Server.Items
@@ -127,7 +128,7 @@ namespace Server.Items
 		private TalismanSlayerName m_Slayer3;
 		#endregion
 
-		private SkillMod m_SkillMod, m_MageMod;
+		private SkillMod m_SkillMod, m_MageMod, m_MysticMod;
 		private CraftResource m_Resource;
 		private bool m_PlayerConstructed;
 
@@ -1066,6 +1067,11 @@ namespace Server.Items
 				from.AddSkillMod(m_MageMod);
 			}
 
+            if (Core.TOL && m_AosWeaponAttributes.MysticWeapon != 0 && m_AosWeaponAttributes.MysticWeapon != 30)
+            {
+                AddMysticMod(from);
+            }
+
 			XmlAttach.CheckOnEquip(this, from);
 
 			return true;
@@ -1149,6 +1155,10 @@ namespace Server.Items
                 if (FocusWeilder != null)
                     FocusWeilder = null;
 
+                //Skill Masteries
+                SkillMasterySpell.OnWeaponRemoved(m, this);
+                RemoveMysticMod();
+
 				#region Mondain's Legacy Sets
 				if (IsSetItem && m_SetEquipped)
 				{
@@ -1157,6 +1167,24 @@ namespace Server.Items
 				#endregion
 			}
 		}
+
+        public void AddMysticMod(Mobile from)
+        {
+            if (m_MysticMod != null)
+                m_MysticMod.Remove();
+
+            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_AosWeaponAttributes.MysticWeapon);
+            from.AddSkillMod(m_MysticMod);
+        }
+
+        public void RemoveMysticMod()
+        {
+            if (m_MysticMod != null)
+            {
+                m_MysticMod.Remove();
+                m_MysticMod = null;
+            }
+        }
 
 		public virtual SkillName GetUsedSkill(Mobile m, bool checkSkillAttrs)
 		{
@@ -1458,17 +1486,17 @@ namespace Server.Items
 
 			WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
 
-			if (a != null && !a.OnBeforeSwing(attacker, defender))
-			{
-				WeaponAbility.ClearCurrentAbility(attacker);
-			}
+            if (a != null && (!a.OnBeforeSwing(attacker, defender) || SkillMasterySpell.CancelWeaponAbility(attacker)))
+            {
+                WeaponAbility.ClearCurrentAbility(attacker);
+            }
 
 			SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
-			if (move != null && !move.OnBeforeSwing(attacker, defender))
-			{
-				SpecialMove.ClearCurrentMove(attacker);
-			}
+            if (move != null && (!move.OnBeforeSwing(attacker, defender) || SkillMasterySpell.CancelSpecialMove(attacker)))
+            {
+                SpecialMove.ClearCurrentMove(attacker);
+            }
 		}
 
         public virtual TimeSpan OnSwing(Mobile attacker, IDamageable damageable)
@@ -1734,8 +1762,10 @@ namespace Server.Items
                             attacker.FixedEffect(0x376A, 6, 1);
                         }
                         #endregion
+
                         XmlAttach.OnArmorHit(attacker, defender, shield, this, originalDamage);
                     }
+
                     #region Stygian Abyss
                     else if (weapon != null && weapon.Layer == Layer.TwoHanded && weapon.WeaponAttributes.ReactiveParalyze > 0 && 30 > Utility.Random(100))
                     {
@@ -1746,6 +1776,9 @@ namespace Server.Items
                         attacker.FixedEffect(0x376A, 6, 1);
                     }
                     #endregion
+
+                    //Skill Masteries
+                    SkillMasterySpell.OnParried(attacker, defender);
                 }
 			}
 
@@ -2072,9 +2105,11 @@ namespace Server.Items
                     splintering = true;
             }
 
+            double chance = NegativeAttributes.Antique > 0 ? 10 : 4;
+
             if (m_MaxHits > 0 && m_AosAttributes.SpellChanneling == 0 && 
                 ((MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime)) || (defender != null && splintering) ||
-                 Utility.Random(250) == 0)) // Stratics says 50% chance, seems more like 4%..
+                 Utility.Random(100) >= chance)) // Stratics says 50% chance, seems more like 4%..
             {
                 if (MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime))
                 {
@@ -2090,11 +2125,11 @@ namespace Server.Items
                 {
                     if (m_Hits > 0)
                     {
-                        HitPoints -= NegativeAttributes.Antique > 0 ? 2 : 1;
+                        HitPoints -= NegativeAttributes.Antique > 0 ? 3 : 1;
                     }
                     else if (m_MaxHits > 1)
                     {
-                        MaxHitPoints -= NegativeAttributes.Antique > 0 ? 2 : 1;
+                        MaxHitPoints -= NegativeAttributes.Antique > 0 ? 3 : 1;
 
                         if (Parent is Mobile)
                         {
@@ -2389,6 +2424,13 @@ namespace Server.Items
 
             if (Feint.Registry.ContainsKey(defender) && Feint.Registry[defender].Enemy == attacker)
                 damage -= (int)((double)damage * ((double)Feint.Registry[defender].DamageReduction / 100));
+
+            // Skill Masteries
+            if (this is Fists)
+                damage += (int)((double)damage * ((double)MasteryInfo.GetKnockoutModifier(attacker, defender is PlayerMobile) / 100.0));
+
+            SkillMasterySpell.OnHit(attacker, defender, ref damage);
+            BodyGuardSpell.CheckBodyGuard(attacker, defender, ref damage, phys, fire, cold, pois, nrgy);
 
 			damageGiven = AOS.Damage(
 				defender,
@@ -2964,6 +3006,10 @@ namespace Server.Items
                 {
                     return CheckSlayerResult.Slayer;
                 }
+                else if (Slayer3 != TalismanSlayerName.None && TalismanSlayer.Slays(Slayer3, defender))
+                {
+                    return CheckSlayerResult.Slayer;
+                }
             }
             else
             {
@@ -3129,6 +3175,8 @@ namespace Server.Items
 			{
 				((IHonorTarget)defender).ReceivedHonorContext.OnTargetMissed(attacker);
 			}
+
+            SkillMasterySpell.OnMiss(attacker, defender);
 		}
 
 		public virtual void GetBaseDamageRange(Mobile attacker, out int min, out int max)
@@ -3152,8 +3200,16 @@ namespace Server.Items
 				}
 			}
 
-			min = MinDamage;
-			max = MaxDamage;
+            if (this is Fists && TransformationSpellHelper.UnderTransformation(attacker, typeof(HorrificBeastSpell)))
+            {
+                min = 5;
+                max = 15;
+            }
+            else
+            {
+                min = MinDamage;
+                max = MaxDamage;
+            }
 		}
 
 		public virtual double GetBaseDamage(Mobile attacker)
@@ -4278,6 +4334,12 @@ namespace Server.Items
 							((Mobile)Parent).AddSkillMod(m_MageMod);
 						}
 
+                        if (Core.TOL && m_AosWeaponAttributes.MysticWeapon != 0 && m_AosWeaponAttributes.MysticWeapon != 30 && Parent is Mobile)
+                        {
+                            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_AosWeaponAttributes.MysticWeapon);
+                            ((Mobile)Parent).AddSkillMod(m_MysticMod);
+                        }
+
 						if (GetSaveFlag(flags, SaveFlag.PlayerConstructed))
 						{
 							m_PlayerConstructed = true;
@@ -4958,7 +5020,7 @@ namespace Server.Items
 				list.Add(1060584, ((IUsesRemaining)this).UsesRemaining.ToString()); // uses remaining: ~1_val~
 			}
 
-			if (m_Poison != null && m_PoisonCharges > 0)
+            if (m_Poison != null && m_PoisonCharges > 0 && CanShowPoisonCharges())
 			{
 				#region Mondain's Legacy mod
 				list.Add(m_Poison.LabelNumber, m_PoisonCharges.ToString());
@@ -5276,6 +5338,15 @@ namespace Server.Items
 				list.Add(1060438, (30 - prop).ToString()); // mage weapon -~1_val~ skill
 			}
 
+            if ((prop = m_AosWeaponAttributes.MysticWeapon) != 0)
+            {
+                list.Add(1155881, (30 - prop).ToString());   // mystic weapon -~1_val~ skill
+            }
+            else if ((prop = Parent is Mobile ? Enhancement.GetValue((Mobile)Parent, AosWeaponAttribute.MysticWeapon) : 0) != 0)
+            {
+                list.Add(1155881, (30 - prop).ToString());   // mystic weapon -~1_val~ skill
+            }
+
 			if ((prop = m_AosAttributes.BonusMana) != 0)
 			{
 				list.Add(1060439, prop.ToString()); // mana increase ~1_val~
@@ -5525,6 +5596,14 @@ namespace Server.Items
                 else
                     list.Add(1152281 + ((int)m_ItemPower - 9));
             }
+        }
+
+        public bool CanShowPoisonCharges()
+        {
+            if (PrimaryAbility == WeaponAbility.InfectiousStrike || SecondaryAbility == WeaponAbility.InfectiousStrike)
+                return true;
+
+            return RootParent is Mobile && SkillMasterySpell.HasSpell((Mobile)RootParent, typeof(InjectedStrikeSpell));
         }
 
         public override void OnSingleClick(Mobile from)
