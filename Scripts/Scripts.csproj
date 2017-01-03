@@ -604,6 +604,17 @@
     <Compile Include="Items\Artifacts\Equipment\Clothing\MagicalDoor.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
+    <Compile Include="Items\Equipment\Weapons\Craven.cs" />
+    <Compile Include="Items\Equipment\Weapons\GargishCaptainJohnesBlade.cs" />
+    <Compile Include="Items\Equipment\Weapons\CaptainJohnesBlade.cs" />
+    <Compile Include="Items\Equipment\Weapons\Abhorrence.cs" />
+    <Compile Include="Items\Equipment\Weapons\GargishPincer.cs" />
+    <Compile Include="Items\Decorative\FigureheadOfBmvArarat.cs" />
+    <Compile Include="Items\Decorative\ShipsBellOfBmvArarat.cs" />
+    <Compile Include="Items\Decorative\SternAnchorOfBmvArarat.cs" />
+    <Compile Include="Items\Equipment\Weapons\Pincer.cs" />
+    <Compile Include="Items\Equipment\Weapons\GargishEquivocation.cs" />
+    <Compile Include="Items\Equipment\Weapons\Equivocation.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\FNPitchfork.cs" />
     <Compile Include="Items\Consumables\AlterContract.cs" />
     <Compile Include="Items\Consumables\BaseAgilityPotion.cs">

@@ -11,7 +11,7 @@ namespace Server.Items
             this.LootType = LootType.Blessed;
 
             this.WeaponAttributes.HitFireball = 15;
-            this.WeaponAttributes.MageWeapon = 10;
+            this.WeaponAttributes.MageWeapon = 20;
             this.Attributes.SpellChanneling = 1;
             this.Attributes.CastSpeed = -1;
             this.WeaponAttributes.LowerStatReq = 50;
