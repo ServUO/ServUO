@@ -745,6 +745,7 @@
     <Compile Include="Items\Quest\Bluekeyfragment.cs" />
     <Compile Include="Items\Quest\CompletedTuitionReimbursementForm.cs" />
     <Compile Include="Items\Quest\CreepyWeeds.cs" />
+    <Compile Include="Items\Quest\CrystalBallOfKnowledge.cs" />
     <Compile Include="Items\Quest\CrystalCaveBarrier.cs" />
     <Compile Include="Items\Quest\DarkTidesHorn.cs" />
     <Compile Include="Items\Quest\DarkTidesTeleporter.cs" />
@@ -2537,6 +2538,7 @@
     <Compile Include="Quests\HaochisTrials\Objectives.cs" />
     <Compile Include="Quests\HumanHeritage.cs" />
     <Compile Include="Quests\MasteringtheSoulforge.cs" />
+    <Compile Include="Quests\Ortlem.cs" />
     <Compile Include="Quests\Sacred Quest\QuestOfSingularity.cs" />
     <Compile Include="Quests\Sacred Quest\ShrineOfSingularity.cs" />
     <Compile Include="Quests\Spellweaving.cs" />
