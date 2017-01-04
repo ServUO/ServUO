@@ -29,10 +29,10 @@ namespace Server.Engines.Shadowguard
 
     public class ShadowguardController : Item
     {
-        //public static readonly TimeSpan EncounterDuration = TimeSpan.FromMinutes(30);
-        public static readonly TimeSpan ReadyDuration = TimeSpan.FromSeconds(30);
+        public static readonly TimeSpan ReadyDuration = TimeSpan.FromSeconds(Config.Get("Shadowguard.ReadyDuration", 30));
+        public static bool RandomInstances = Config.Get("Shadowguard.RandomizeInstances", false);
+
         public static ShadowguardController Instance { get; set; }
-        public static bool RandomInstances = true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D KickLocation { get; set; }
