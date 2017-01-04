@@ -473,6 +473,7 @@ namespace Server.Engines.Harvest
                             chest.Hue = 0x481;
 
                         TreasureMapChest.Fill(chest, from.Luck, Math.Max(1, Math.Min(4, sos.Level)), true, from.Map);
+                        sos.OnSOSComplete(chest);
 
                         if (sos.IsAncient)
                             chest.DropItem(new FabledFishingNet());
@@ -658,6 +659,17 @@ namespace Server.Engines.Harvest
                 else
                     from.SendLocalizedMessage(number, true, name);
             }
+        }
+
+        public override void StartHarvesting(Mobile from, Item tool, object toHarvest)
+        {
+            if (tool != null && tool.IsChildOf(from.Backpack))
+            {
+                from.ClearHands();
+                from.EquipItem(tool);
+            }
+
+            base.StartHarvesting(from, tool, toHarvest);
         }
 
         public override void OnHarvestStarted(Mobile from, Item tool, HarvestDefinition def, object toHarvest)

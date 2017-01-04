@@ -127,7 +127,9 @@ namespace Server.Engines.VvV
 		
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime NextReadinessAtrophy { get; set; }
-		
+
+        public override bool DeleteOnRelease { get { return true; } }
+
 		public VvVMount(string name, int id, int itemid, int hue) 
 			: base(name, id, itemid, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.4, .2)
 		{

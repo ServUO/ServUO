@@ -125,11 +125,11 @@ namespace Server.SkillHandlers
                 if (message)
                     from.SendLocalizedMessage(1080427);  // You cannot magically unravel an item that is currently enchanted.
             }
-            //else if (item is BaseWeapon && ((BaseWeapon)item).FocusWeilder != null)
-            //{
-            //    if (message)
-            //        from.SendLocalizedMessage(1080445); //You cannot magically unravel an item that is under the effects of the ninjitsu focus attack ability.
-            //}
+            else if (item is BaseWeapon && ((BaseWeapon)item).FocusWeilder != null)
+            {
+                if (message)
+                    from.SendLocalizedMessage(1080445); //You cannot magically unravel an item that is under the effects of the ninjitsu focus attack ability.
+            }
             else if (item is IFactionItem && ((IFactionItem)item).FactionItemState != null)
             {
                 if (message)
@@ -642,7 +642,7 @@ namespace Server.SkillHandlers
 				{
 					success = true;
 					resType = typeof(RelicFragment);
-					resAmount = Math.Max(1, resAmount - Utility.Random(3));
+					resAmount = 1;
 				}
 				else if (from.CheckSkill(SkillName.Imbuing, 45.0, 95.0))
 				{

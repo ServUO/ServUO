@@ -918,7 +918,9 @@ namespace Server.Items
             if (damageTaken < 0) 
                 damageTaken = 0;
 
-            if (25 > Utility.Random(100)) // 25% chance to lower durability
+            double chance = NegativeAttributes.Antique > 0 ? 90 : 25;
+
+            if (chance > Utility.Random(100)) // 25% chance to lower durability
             {
                 if (Core.AOS && this.m_AosClothingAttributes.SelfRepair + (this.IsSetItem && this.m_SetEquipped ? this.m_SetSelfRepair : 0) > Utility.Random(10))
                 {
@@ -932,9 +934,6 @@ namespace Server.Items
                         wear = Absorbed / 2;
                     else
                         wear = Utility.Random(2);
-
-                    if (NegativeAttributes.Antique > 0)
-                        wear *= 2;
 
                     if (wear > 0 && this.m_MaxHitPoints > 0)
                     {

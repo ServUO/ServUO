@@ -60,36 +60,31 @@ namespace Server.Spells
 
     public class SpellHelper
     {
-
-        #region Spell Mastery Focus
-        public static bool HasSpellMastery(Mobile m)
+        #region Spell Focus
+        private static SkillName[] _Schools =
         {
-            //Publish 71 PVP Spell damage increase cap changes. If you have GM of one school of magic and no others, you are "focused" in that school of magic and have 30% sdi cap instead of 15%.
-            List<SkillName> schools = new List<SkillName>()
-            {
-                SkillName.Magery,
-                SkillName.AnimalTaming,
-                SkillName.Musicianship,
-                SkillName.Mysticism,
-                SkillName.Spellweaving,
-                SkillName.Chivalry,
-                SkillName.Necromancy,
-                SkillName.Bushido,
-                SkillName.Ninjitsu
-            };
+            SkillName.Magery,
+            SkillName.AnimalTaming,
+            SkillName.Musicianship,
+            SkillName.Mysticism,
+            SkillName.Spellweaving,
+            SkillName.Chivalry,
+            SkillName.Necromancy,
+            SkillName.Bushido,
+            SkillName.Ninjitsu
+        };
 
-            bool spellMastery = false;
-
-            foreach (SkillName skill in schools)
+        public static bool HasSpellFocus(Mobile m, SkillName focus)
+        {
+            foreach (SkillName skill in _Schools)
             {
-                if (m.Skills[skill].Base >= 30.0 && spellMastery)
+                if (skill != focus && m.Skills[skill].Value >= 30.0)
                     return false;
-                if (m.Skills[skill].Base >= 100.0)
-                    spellMastery = true;
             }
-            return spellMastery;
+
+            return true;
         }
-#endregion 
+        #endregion 
 
         private static readonly TimeSpan AosDamageDelay = TimeSpan.FromSeconds(1.0);
         private static readonly TimeSpan OldDamageDelay = TimeSpan.FromSeconds(0.5);
@@ -644,19 +639,20 @@ namespace Server.Spells
             new TravelValidator(IsLampRoom),
             new TravelValidator(IsGuardianRoom),
             new TravelValidator(IsHeartwood),
-            new TravelValidator(IsMLDungeon)
+            new TravelValidator(IsMLDungeon),
+            new TravelValidator(IsEodon)
         };
 
         private static readonly bool[,] m_Rules = new bool[,]
         {
 					/*T2A(Fel),	Khaldun,	Ilshenar,	Wind(Tram),	Wind(Fel),	Dungeons(Fel),	Solen(Tram),	Solen(Fel),	CrystalCave(Malas),	Gauntlet(Malas),	Gauntlet(Ferry),	SafeZone,	Stronghold,	ChampionSpawn,	Dungeons(Tokuno[Malas]),	LampRoom(Doom),	GuardianRoom(Doom),	Heartwood,	MLDungeons */
-/* Recall From */	{ false,	false,		true,		true,		false,		false,			true,			false,		false,				false,				false,				true,		true,		false,			true,						false,			false,				false,		false },
-/* Recall To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false },
-/* Gate From */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false },
-/* Gate To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false },
-/* Mark In */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false },
-/* Tele From */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				true,				true,		false,		true,			true,						true,			true,				false,		true },
-/* Tele To */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				false,				false,		false, 		true,			true,						true,			true,				false,		false },
+/* Recall From */	{ false,	false,		true,		true,		false,		false,			true,			false,		false,				false,				false,				true,		true,		false,			true,						false,			false,				false,		false,      true },
+/* Recall To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false },
+/* Gate From */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false },
+/* Gate To */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false },
+/* Mark In */		{ false,	false,		false,		false,		false,		false,			false,			false,		false,				false,				false,				false,		false,		false,			false,						false,			false,				false,		false,      false },
+/* Tele From */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				true,				true,		false,		true,			true,						true,			true,				false,		true,       true },
+/* Tele To */		{ true,		true,		true,		true,		true,		true,			true,			true,		false,				true,				false,				false,		false, 		true,			true,						true,			true,				false,		false,      true },
         };
 
         public static void SendInvalidMessage(Mobile caster, TravelCheckType type)
@@ -936,6 +932,14 @@ namespace Server.Spells
         public static bool IsMLDungeon(Map map, Point3D loc)
         {
             return MondainsLegacy.IsMLRegion(Region.Find(loc, map));
+        }
+
+        public static bool IsEodon(Map map, Point3D loc)
+        {
+            if (map == Map.Felucca && loc.X >= 6975 && loc.X <= 7042 && loc.Y >= 2048 && loc.Y <= 2115)
+                return true;
+
+            return map == Map.TerMur && loc.X > 64 && loc.X < 1015 && loc.Y > 1344 && loc.Y < 2239;
         }
 
         public static bool IsInvalid(Map map, Point3D loc)

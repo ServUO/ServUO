@@ -53,7 +53,13 @@ namespace Server.Items
             if (!this.CheckMana(attacker, true))
                 return;
 
-            --weapon.PoisonCharges;
+            // Skill Masteries
+            int noChargeChance = Server.Spells.SkillMasteries.MasteryInfo.NonPoisonConsumeChance(attacker);
+
+            if (noChargeChance > 0 && noChargeChance < Utility.Random(100))
+                --weapon.PoisonCharges;
+            else
+                attacker.SendLocalizedMessage(1156095); // Your mastery of poisoning allows you to use your poison charge without consuming it.
 
             // Infectious strike special move now uses poisoning skill to help determine potency 
             int maxLevel = 0;

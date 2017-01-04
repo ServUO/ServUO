@@ -12,7 +12,8 @@ namespace Server.Items
         NotInHouse,
         DoorTooClose,
         NoWall,
-        DoorsNotClosed
+        DoorsNotClosed,
+        BadHouse
     }
 
     public interface IAddon
@@ -76,6 +77,8 @@ namespace Server.Items
                 return false;
             }
         }
+
+        public virtual bool RestrictToClassicHouses { get { return false; } }
 
         public virtual void OnChop(Mobile from)
         {
@@ -202,6 +205,9 @@ namespace Server.Items
 
             if (house != null)
             {
+                if (RestrictToClassicHouses && house is HouseFoundation)
+                    return AddonFitResult.BadHouse;
+
                 ArrayList doors = house.Doors;
 
                 for (int i = 0; i < doors.Count; ++i)

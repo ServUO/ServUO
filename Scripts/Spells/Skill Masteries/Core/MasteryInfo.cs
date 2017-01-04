@@ -48,7 +48,7 @@ namespace Server.Spells.SkillMasteries
             Infos.Add(new MasteryInfo(typeof(SkillMasteries.TribulationSpell),      704, SkillName.Discordance, Volume.Two));
             Infos.Add(new MasteryInfo(typeof(SkillMasteries.DespairSpell),          705, SkillName.Discordance, Volume.Three));
 
-            /*Infos.Add(new MasteryInfo(typeof(SkillMasteries.DeathRaySpell),         706, SkillName.Magery,      Volume.Two));
+            Infos.Add(new MasteryInfo(typeof(SkillMasteries.DeathRaySpell),         706, SkillName.Magery,      Volume.Two));
             Infos.Add(new MasteryInfo(typeof(SkillMasteries.EtherealBurstSpell),    707, SkillName.Magery,      Volume.Three));
 
             Infos.Add(new MasteryInfo(typeof(SkillMasteries.NetherBlastSpell),      708, SkillName.Mysticism,   Volume.Two));
@@ -116,7 +116,7 @@ namespace Server.Spells.SkillMasteries
 
             Infos.Add(new MasteryInfo(null, 738, SkillName.Poisoning,       Volume.One, PassiveSpell.Potency));         // Potency
             Infos.Add(new MasteryInfo(null, 741, SkillName.Wrestling,       Volume.One, PassiveSpell.Knockout));         // Knockout
-            Infos.Add(new MasteryInfo(null, 744, SkillName.AnimalTaming,    Volume.One, PassiveSpell.Boarding));      // Boarding*/
+            Infos.Add(new MasteryInfo(null, 744, SkillName.AnimalTaming,    Volume.One, PassiveSpell.Boarding));      // Boarding
         }
 
         public static List<MasteryInfo> Infos { get; set; }
@@ -262,7 +262,7 @@ namespace Server.Spells.SkillMasteries
                 list.TrimExcess();
             }
 
-            /*RemovePassiveBuffs(m);
+            RemovePassiveBuffs(m);
 
             foreach (MasteryInfo info in Infos.Where(i => i.Passive))
             {
@@ -322,7 +322,7 @@ namespace Server.Spells.SkillMasteries
 
                 if (book != null)
                     book.InvalidateProperties();
-            }*/
+            }
         }
 
         public static bool IsActivePassive(Mobile m, PassiveSpell spell)
@@ -358,10 +358,10 @@ namespace Server.Spells.SkillMasteries
 
         public static void OnLogin(LoginEventArgs e)
         {
-            /*Mobile m = e.Mobile;
+            Mobile m = e.Mobile;
 
             if ((int)m.Skills.CurrentMastery > 0)
-                OnMasteryChanged(m, m.Skills.CurrentMastery);*/
+                OnMasteryChanged(m, m.Skills.CurrentMastery);
         }
 
         public static int GetSpellID(PassiveSpell spell)
@@ -418,7 +418,7 @@ namespace Server.Spells.SkillMasteries
         }
 
         #region Passive Bonuses/Maluses
-        /*public static int EnchantedSummoningBonus(BaseCreature bc)
+        public static int EnchantedSummoningBonus(BaseCreature bc)
         {
             if (bc.Summoned)
                 return EnchantedSummoningBonus(bc.SummonMaster);
@@ -512,7 +512,7 @@ namespace Server.Spells.SkillMasteries
             }
 
             return 0;
-        }*/
+        }
         #endregion
 
         #region Mastery Skills

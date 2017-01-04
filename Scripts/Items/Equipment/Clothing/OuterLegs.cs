@@ -334,4 +334,106 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+
+    public class GuildedKilt : BaseOuterLegs
+    {
+        public override int LabelNumber { get { return 1109619; } } // Guilded Kilt
+
+        [Constructable]
+        public GuildedKilt()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public GuildedKilt(int hue)
+            : base(0x781B, hue)
+        {
+        }
+
+        public GuildedKilt(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class CheckeredKilt : BaseOuterLegs
+    {
+        public override int LabelNumber { get { return 1109620; } } // Checkered Kilt
+
+        [Constructable]
+        public CheckeredKilt()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public CheckeredKilt(int hue)
+            : base(0x781C, hue)
+        {
+        }
+
+        public CheckeredKilt(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class FancyKilt : BaseOuterLegs
+    {
+        public override int LabelNumber { get { return 1109621; } } // Fancy Kilt
+
+        [Constructable]
+        public FancyKilt()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public FancyKilt(int hue)
+            : base(0x781D, hue)
+        {
+        }
+
+        public FancyKilt(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }

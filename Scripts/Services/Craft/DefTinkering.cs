@@ -17,6 +17,8 @@ namespace Server.Engines.Craft
         ResilientBracer = 452,
         ScrappersCompendium = 453,
         HoveringWisp = 454,
+
+        KotlPowerCoil = 455
     }
 
     public class DefTinkering : CraftSystem
@@ -433,21 +435,104 @@ namespace Server.Engines.Craft
                 SetNeededExpansion(index, Expansion.HS);
             }
             #endregion
-            #endregion
 
             #region Stygian Abyss
             index = AddCraft(typeof(GorgonLense), 1044050, 1112625, 90.0, 120.0, typeof(RedScales), 1112626, 2, 1053097);
             AddRes(index, typeof(CrystalDust), 1112328, 3, 1044253);
             ForceNonExceptional(index);
             SetItemHue(index, 1266);
+
+            index = AddCraft(typeof(ScaleCollar), 1044050, 1112625, 50.0, 100.0, typeof(RedScales), 1112626, 4, 1053097);
+            AddRes(index, typeof(Scourge), 1032677, 1, 1044253);
+            SetNeededExpansion(index, Expansion.SA);
+
+            index = AddCraft(typeof(CraftableDragonLamp), 1044050, 1098404, 75.0, 125.0, typeof(IronIngot), 1044036, 8, 1044253);
+            AddRes(index, typeof(Candelabra), 1011213, 1, 1154172);
+            AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
+
+            index = AddCraft(typeof(StainedGlassLamp), 1044050, 1098408, 75.0, 125.0, typeof(IronIngot), 1044036, 8, 1044253);
+            AddRes(index, typeof(Candelabra), 1011213, 1, 1154172);
+            AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
+
+            index = AddCraft(typeof(TallDoubleLamp), 1044050, 1098414, 75.0, 125.0, typeof(IronIngot), 1044036, 8, 1044253);
+            AddRes(index, typeof(Candelabra), 1011213, 1, 1154172);
+            AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
             #endregion
 
-            if (Core.TOL)
-            {
-                index = AddCraft(typeof(WallSafeDeed), 1044050, 1155860, 0.0, 0.0, typeof(IronIngot), 1044036, 20, 1044253);
-                ForceNonExceptional(index);
-                SetNeededExpansion(index, Expansion.TOL);
-            }
+            #region TOL
+            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155851, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableAddonType.CurledMetalSignHanger);
+            SetDisplayID(index, 2971);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155852, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableAddonType.FlourishedMetalSignHanger);
+            SetDisplayID(index, 2973);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155853, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableAddonType.InwardCurledMetalSignHanger);
+            SetDisplayID(index, 2975);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155854, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableAddonType.EndCurledMetalSignHanger);
+            SetDisplayID(index, 2977);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156080, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.LeftMetalDoor_S_In);
+            SetDisplayID(index, 1653);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156081, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.RightMetalDoor_S_In);
+            SetDisplayID(index, 1659);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156082, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.LeftMetalDoor_E_Out);
+            SetDisplayID(index, 1660);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156083, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.RightMetalDoor_E_Out);
+            SetDisplayID(index, 1663);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(WallSafeDeed), 1044050, 1155860, 0.0, 0.0, typeof(IronIngot), 1044036, 20, 1044253);
+            ForceNonExceptional(index);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156352, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.LeftMetalDoor_E_In);
+            SetDisplayID(index, 1660);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156353, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.RightMetalDoor_E_In);
+            SetDisplayID(index, 1663);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156350, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.LeftMetalDoor_S_Out);
+            SetDisplayID(index, 1653);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156351, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            SetData(index, DoorType.RightMetalDoor_S_Out);
+            SetDisplayID(index, 1659);
+            SetNeededExpansion(index, Expansion.TOL);
+
+            index = AddCraft(typeof(KotlPowerCoil), 1044050, 1124171, 85.0, 135.0, typeof(WorkableGlass), 1154170, 5, 1154171);
+            AddRes(index, typeof(CopperWire), 1026265, 5, 1150700);
+            AddRes(index, typeof(IronIngot), 1044036, 100, 1044253);
+            AddRes(index, typeof(MoonstoneCrystalShard), 1026265, 5, 1156701);
+            AddRecipe(index, (int)TinkerRecipes.KotlPowerCoil);
+            SetNeededExpansion(index, Expansion.TOL);
+            #endregion
+
+            #endregion
 
             #region Multi-Component Items
             index = this.AddCraft(typeof(AxleGears), 1044051, 1024177, 0.0, 0.0, typeof(Axle), 1044169, 1, 1044253);
@@ -667,8 +752,8 @@ namespace Server.Engines.Craft
      
                 index = this.AddCraft(typeof(GargishEarrings), 1044049, 1095787, 65.0, 115.0, typeof(IronIngot), 1044036, 4, 1044037);
                 this.AddRes(index, typeof(BlueDiamond), 1032696, 1, 1044253);
-                this.SetNeededExpansion(index, Expansion.SA);  
-            }               
+                this.SetNeededExpansion(index, Expansion.SA);
+            }
             #endregion
 
             // Set the overridable material

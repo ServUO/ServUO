@@ -51,6 +51,7 @@ namespace Server.Spells.Spellweaving
                 m_Table.Remove(m);
 
                 BuffInfo.RemoveBuff(m, BuffIcon.Thunderstorm);
+                m.Delta(MobileDelta.WeaponDamage);
             }
         }
 
@@ -103,6 +104,7 @@ namespace Server.Spells.Spellweaving
                             m_Table[m] = Timer.DelayCall<Mobile>(duration, DoExpire, m);
 
                             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Thunderstorm, 1075800, duration, m, GetCastRecoveryMalus(m)));
+                            m.Delta(MobileDelta.WeaponDamage);
                         }
                     }
                 }

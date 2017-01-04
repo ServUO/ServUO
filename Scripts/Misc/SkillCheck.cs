@@ -2,6 +2,7 @@ using System;
 using Server.Accounting;
 using Server.Factions;
 using Server.Mobiles;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Misc
 {
@@ -33,7 +34,7 @@ namespace Server.Misc
                 m_PetStatGainDelay = TimeSpan.FromSeconds(0.5);
         }
 
-    public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
+        public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
         public const int Allowance = 3;	//How many times may we use the same location/target for gain
         private const int LocationSize = 5; //The size of eeach location, make this smaller so players dont have to move as far
         private static readonly bool[] UseAntiMacro = new bool[]
@@ -118,6 +119,10 @@ namespace Server.Misc
                 return false;
 
             double value = skill.Value;
+
+            //TODO: Is there any other place this can go?
+            if (skillName == SkillName.Fishing && Server.Multis.BaseGalleon.FindGalleonAt(from, from.Map) is Server.Multis.TokunoGalleon)
+                value += 1;
 
             if (value < minSkill)
                 return false; // Too difficult
@@ -296,6 +301,23 @@ namespace Server.Misc
                         }
                     }
                 }
+
+                #region Skill Masteries
+                else if (from is BaseCreature && (((BaseCreature)from).Controlled || ((BaseCreature)from).Summoned))
+                {
+                    Mobile master = ((BaseCreature)from).GetMaster();
+
+                    if (master != null)
+                    {
+                        WhisperingSpell spell = SkillMasterySpell.GetSpell(master, typeof(WhisperingSpell)) as WhisperingSpell;
+
+                        if (spell != null && master.InRange(from.Location, spell.PartyRange) && master.Map == from.Map && spell.EnhancedGainChance >= Utility.Random(100))
+                        {
+                            toGain = Utility.RandomMinMax(2, 5);
+                        }
+                    }
+                }
+                #endregion
 
                 if (!from.Player || (skills.Total + toGain) <= skills.Cap)
                 {

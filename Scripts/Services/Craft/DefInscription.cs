@@ -4,6 +4,11 @@ using Server.Spells;
 
 namespace Server.Engines.Craft
 {
+    public enum InscriptionRecipes
+    {
+        RunicAtlas = 800
+    }
+
     public class DefInscription : CraftSystem
     {
         public override SkillName MainSkill
@@ -366,6 +371,17 @@ namespace Server.Engines.Craft
             index = this.AddCraft(typeof(Runebook), 1044294, 1041267, 45.0, 95.0, typeof(BlankScroll), 1044377, 8, 1044378);
             this.AddRes(index, typeof(RecallScroll), 1044445, 1, 1044253);
             this.AddRes(index, typeof(GateTravelScroll), 1044446, 1, 1044253);
+
+            #region TOL
+            if (Core.TOL)
+            {
+                index = AddCraft(typeof(RunicAtlas), 1044294, 1156443, 45.0, 95.0, typeof(BlankScroll), 1044377, 24, 1044378);
+                AddRes(index, typeof(RecallRune), 1044447, 3, 1044253);
+                AddRes(index, typeof(RecallScroll), 1044445, 3, 1044253);
+                AddRes(index, typeof(GateTravelScroll), 1044446, 3, 1044253);
+                AddRecipe(index, (int)InscriptionRecipes.RunicAtlas);
+            }
+            #endregion
 
             if (Core.AOS)
             {

@@ -129,12 +129,16 @@ namespace Server.Spells.Bushido
                 m_Table[attacker] = info;
             }
 
+            attacker.Delta(MobileDelta.WeaponDamage);
             this.CheckGain(attacker);
         }
 
         public void EndEffect(object state)
         {
             HonorableExecutionInfo info = (HonorableExecutionInfo)state;
+
+            if(info.m_Mobile != null)
+                info.m_Mobile.Delta(MobileDelta.WeaponDamage);
 
             RemovePenalty(info.m_Mobile);
         }

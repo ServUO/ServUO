@@ -18,7 +18,13 @@ namespace Server.Items
         Bovine,
         Wolf,
         Undead,
-        Goblin
+        Goblin,
+        Repond,
+        Elemental,
+        Demon,
+        Arachnid,
+        Reptile,
+        Fey,
     }
 
     public static class TalismanSlayer
@@ -26,32 +32,6 @@ namespace Server.Items
         private static readonly Dictionary<TalismanSlayerName, Type[]> m_Table = new Dictionary<TalismanSlayerName, Type[]>();
         public static void Initialize()
         {
-            m_Table[TalismanSlayerName.Undead] = new Type[]
-                {
-                    typeof(AncientLich),            typeof(AncientLichRenowned),
-                    typeof(Bogle),                  typeof(BoneKnight),
-                    typeof(BoneMagi),               typeof(DarkGuardian),
-                    typeof(DarknightCreeper),       typeof(FleshGolem),
-                    typeof(Ghoul),                  typeof(GoreFiend),
-                    typeof(HellSteed),              typeof(LadyOfTheSnow),
-                    typeof(Lich),                   typeof(LichLord),
-                    typeof(Mummy),                  typeof(PestilentBandage),
-                    typeof(Revenant),               typeof(RevenantLion),
-                    typeof(RottingCorpse),          typeof(Shade),
-                    typeof(ShadowKnight),           typeof(SkeletalKnight),
-                    typeof(SkeletalMage),           typeof(SkeletalMount),
-                    typeof(Skeleton),               typeof(Spectre),
-                    typeof(Wraith),                 typeof(Zombie),
-                    typeof(UnfrozenMummy),          typeof(RedDeath),
-                    typeof(SirPatrick),             typeof(LadyJennifyr),
-                    typeof(MasterMikael),           typeof(MasterJonath),
-                    typeof(LadyMarai),              typeof(PrimevalLich),
-                    typeof(Niporailem),             typeof(DreamWraith),
-                    typeof(EffeteUndeadGargoyle),   typeof(UndeadGargoyle),
-                    typeof(UndeadGuardian),         typeof(PutridUndeadGargoyle),
-                    typeof(PutridUndeadGuardian)
-                };
-
             m_Table[TalismanSlayerName.Bear] = new Type[]
                 {
                     typeof(GrizzlyBear),        typeof(BlackBear),
@@ -163,6 +143,14 @@ namespace Server.Items
                     typeof(GrayGoblin),             typeof(GreenGoblinAlchemistRenowned),
                     typeof(GrayGoblinMageRenowned)
                 };
+
+            m_Table[TalismanSlayerName.Repond] = SlayerGroup.Groups[0].Super.Types;
+            m_Table[TalismanSlayerName.Undead] = SlayerGroup.Groups[1].Super.Types;
+            m_Table[TalismanSlayerName.Elemental] = SlayerGroup.Groups[2].Super.Types;
+            m_Table[TalismanSlayerName.Demon] = SlayerGroup.Groups[3].Super.Types;
+            m_Table[TalismanSlayerName.Arachnid] = SlayerGroup.Groups[4].Super.Types;
+            m_Table[TalismanSlayerName.Reptile] = SlayerGroup.Groups[5].Super.Types;
+            m_Table[TalismanSlayerName.Fey] = SlayerGroup.Groups[6].Super.Types;
         }
 
         public static bool Slays(TalismanSlayerName name, Mobile m)

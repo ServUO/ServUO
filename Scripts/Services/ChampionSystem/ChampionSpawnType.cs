@@ -16,7 +16,10 @@ namespace Server.Engines.CannedEvil
         Corrupt,
         #region Stygian Abyss
         Terror,
-        Infuse
+        Infuse,
+        #endregion
+        #region TOL
+        DragonTurtle
         #endregion
     }
 
@@ -139,6 +142,7 @@ namespace Server.Engines.CannedEvil
                 new Type[] { typeof(PlagueBeastLord), typeof(InterredGrizzle) },
                 new Type[] { typeof(FetidEssence), typeof(PestilentBandage) }
             }),
+
             #region SA
             new ChampionSpawnInfo("Terror", typeof(AbyssalInfernal), new string[] { "Banisher", "Enforcer", "Eradicator" }, new Type[][]
             { // Terror
@@ -153,8 +157,18 @@ namespace Server.Engines.CannedEvil
                 new Type[] { typeof(FleshGolem), typeof(DarkWisp) }, // Level 2
                 new Type[] { typeof(UndeadGargoyle), typeof(Wight) }, // Level 3
                 new Type[] { typeof(SkeletalDrake), typeof(DreamWraith) }// Level 4
-            })
+            }),
             #endregion
+
+            #region TOL
+            new ChampionSpawnInfo( "Valley", typeof( DragonTurtle ), new string[]{ "Huntsman", "Msafiri", "Msafiri" } , new Type[][]
+		    {																											// DragonTurtle
+				new Type[]{ typeof( MyrmidexDrone ), typeof( MyrmidexLarvae ) },										// Level 1
+				new Type[]{ typeof( SilverbackGorilla ), typeof( WildTiger ) },											// Level 2
+				new Type[]{ typeof( GreaterPhoenix  ), typeof( Infernus ) },										    // Level 3
+				new Type[]{ typeof( Dimetrosaur ), typeof( Allosaurus ) }											    // Level 4
+			} ),
+                #endregion
         };
 
         public static ChampionSpawnInfo GetInfo(ChampionSpawnType type)

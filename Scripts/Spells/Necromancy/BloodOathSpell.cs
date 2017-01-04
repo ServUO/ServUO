@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Server.Mobiles;
 using Server.Targeting;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Spells.Necromancy
 {
@@ -90,7 +91,16 @@ namespace Server.Spells.Necromancy
             {
                 SpellHelper.Turn(this.Caster, m);
 
-                /* Temporarily creates a dark pact between the caster and the target.
+                ApplyEffects(m);
+                ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
+            }
+
+            this.FinishSequence();
+        }
+
+        public void ApplyEffects(Mobile m, double strength = 1.0)
+        {
+            /* Temporarily creates a dark pact between the caster and the target.
                 * Any damage dealt by the target to the caster is increased, but the target receives the same amount of damage.
                 * The effect lasts for ((Spirit Speak skill level - target's Resist Magic skill level) / 80 ) + 8 seconds.
                 * 
@@ -98,38 +108,35 @@ namespace Server.Spells.Necromancy
                 * ((ss-rm)/8)+8
                 */
 
-                ExpireTimer timer = (ExpireTimer)m_Table[m];
-                if (timer != null)
-                    timer.DoExpire();
+            ExpireTimer timer = (ExpireTimer)m_Table[m];
+            if (timer != null)
+                timer.DoExpire();
 
-                m_OathTable[this.Caster] = this.Caster;
-                m_OathTable[m] = this.Caster;
+            m_OathTable[this.Caster] = this.Caster;
+            m_OathTable[m] = this.Caster;
 
-                if (m.Spell != null)
-                    m.Spell.OnCasterHurt();
-				
-                this.Caster.PlaySound(0x175);
+            if (m.Spell != null)
+                m.Spell.OnCasterHurt();
 
-                this.Caster.FixedParticles(0x375A, 1, 17, 9919, 33, 7, EffectLayer.Waist);
-                this.Caster.FixedParticles(0x3728, 1, 13, 9502, 33, 7, (EffectLayer)255);
+            this.Caster.PlaySound(0x175);
 
-                m.FixedParticles(0x375A, 1, 17, 9919, 33, 7, EffectLayer.Waist);
-                m.FixedParticles(0x3728, 1, 13, 9502, 33, 7, (EffectLayer)255);
+            this.Caster.FixedParticles(0x375A, 1, 17, 9919, 33, 7, EffectLayer.Waist);
+            this.Caster.FixedParticles(0x3728, 1, 13, 9502, 33, 7, (EffectLayer)255);
 
-                TimeSpan duration = TimeSpan.FromSeconds(((this.GetDamageSkill(this.Caster) - this.GetResistSkill(m)) / 8) + 8);
-                m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
+            m.FixedParticles(0x375A, 1, 17, 9919, 33, 7, EffectLayer.Waist);
+            m.FixedParticles(0x3728, 1, 13, 9502, 33, 7, (EffectLayer)255);
 
-                timer = new ExpireTimer(this.Caster, m, duration);
-                timer.Start();
+            TimeSpan duration = TimeSpan.FromSeconds((((GetDamageSkill(Caster) - GetResistSkill(m)) / 8) + 8) * strength);
+            m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
 
-                BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.BloodOathCaster, 1075659, duration, this.Caster, m.Name.ToString()));
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.BloodOathCurse, 1075661, duration, m, this.Caster.Name.ToString()));
+            timer = new ExpireTimer(this.Caster, m, duration);
+            timer.Start();
 
-                m_Table[m] = timer;
-                this.HarmfulSpell(m);
-            }
+            BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.BloodOathCaster, 1075659, duration, this.Caster, m.Name.ToString()));
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.BloodOathCurse, 1075661, duration, m, this.Caster.Name.ToString()));
 
-            this.FinishSequence();
+            m_Table[m] = timer;
+            this.HarmfulSpell(m);
         }
 
         private class ExpireTimer : Timer

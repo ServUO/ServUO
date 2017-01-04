@@ -191,7 +191,7 @@ namespace Server.Spells
 
                 if (Core.TOL)
                 {
-                    /*Register(706, typeof(SkillMasteries.DeathRaySpell));
+                    Register(706, typeof(SkillMasteries.DeathRaySpell));
                     Register(707, typeof(SkillMasteries.EtherealBurstSpell));
                     Register(708, typeof(SkillMasteries.NetherBlastSpell));
                     Register(709, typeof(SkillMasteries.MysticWeaponSpell));
@@ -228,7 +228,7 @@ namespace Server.Spells
                     Register(740, typeof(SkillMasteries.FistsOfFurySpell));
                     Register(741, typeof(SkillMasteries.PassiveMasterySpell));
                     Register(742, typeof(SkillMasteries.WhisperingSpell));
-                    Register(743, typeof(SkillMasteries.CombatTrainingSpell));*/
+                    Register(743, typeof(SkillMasteries.CombatTrainingSpell));
                 }
             }
         }

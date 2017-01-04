@@ -30,7 +30,11 @@ namespace Server.Items
         EarthShatter,
         BloodDrinking,
         SummerWind,
-        ElementalBan, // Bane?
-        Fey
+        ElementalBan,
+        Fey,
+        Dinosaur,
+        Myrmidex,
+        Eodon,
+        EodonTribe
     }
 }

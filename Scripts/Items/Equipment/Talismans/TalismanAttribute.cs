@@ -2,6 +2,18 @@ using System;
 
 namespace Server.Items
 {
+    public interface ITalismanProtection
+    {
+        TalismanAttribute Protection { get; set; }
+        void SetProtection(Type type, TextDefinition name, int amount);
+    }
+
+    public interface ITalismanKiller
+    {
+        TalismanAttribute Killer { get; set; }
+        void SetKiller(Type type, TextDefinition name, int amount);
+    }
+
     [PropertyObject]
     public class TalismanAttribute
     {
@@ -147,6 +159,14 @@ namespace Server.Items
                 return this.m_Amount;
 
             return 0;
+        }
+
+        public int ScaleDamage(Mobile from, int damage)
+        {
+            if (from != null && (from.GetType() == m_Type || (m_Type != null && from.GetType().IsSubclassOf(m_Type))))
+                return (int)(damage * (1 - m_Amount / 100.0));
+
+            return damage;
         }
 
         private static void SetSaveFlag(ref SaveFlag flags, SaveFlag toSet, bool setIf)

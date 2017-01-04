@@ -1,6 +1,7 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Server.Targeting;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Spells.Necromancy
 {
@@ -12,7 +13,9 @@ namespace Server.Spells.Necromancy
             9031,
             Reagent.GraveDust,
             Reagent.PigIron);
-        private static readonly Hashtable m_Table = new Hashtable();
+
+        private static readonly Dictionary<Mobile, Timer> m_Table = new Dictionary<Mobile, Timer>();
+
         public PainSpikeSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -57,54 +60,59 @@ namespace Server.Spells.Necromancy
             {
                 SpellHelper.Turn(this.Caster, m);
 
-                //SpellHelper.CheckReflect( (int)this.Circle, Caster, ref m ); //Irrelevent asfter AoS
-
-                /* Temporarily causes intense physical pain to the target, dealing direct damage.
-                * After 10 seconds the spell wears off, and if the target is still alive, 
-                * some of the Hit Points lost through Pain Spike are restored.
-                */
-
-                m.FixedParticles(0x37C4, 1, 8, 9916, 39, 3, EffectLayer.Head);
-                m.FixedParticles(0x37C4, 1, 8, 9502, 39, 4, EffectLayer.Head);
-                m.PlaySound(0x210);
-
-                double damage = ((this.GetDamageSkill(this.Caster) - this.GetResistSkill(m)) / 10) + (m.Player ? 18 : 30);
-                m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
-
-                if (damage < 1)
-                    damage = 1;
-
-                TimeSpan buffTime = TimeSpan.FromSeconds(10.0);
-
-                if (m_Table.Contains(m))
-                {
-                    damage = Utility.RandomMinMax(3, 7);
-                    Timer t = m_Table[m] as Timer;
-
-                    if (t != null)
-                    {
-                        t.Delay += TimeSpan.FromSeconds(2.0);
-
-                        buffTime = t.Next - DateTime.UtcNow;
-                    }
-                }
-                else
-                {
-                    new InternalTimer(m, damage).Start();
-                }
-
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PainSpike, 1075667, buffTime, m, Convert.ToString((int)damage)));
-
-                Misc.WeightOverloading.DFA = Misc.DFAlgorithm.PainSpike;
-                m.Damage((int)damage, this.Caster);
-                SpellHelper.DoLeech((int)damage, this.Caster, m);
-                Misc.WeightOverloading.DFA = Misc.DFAlgorithm.Standard;
-
-                //SpellHelper.Damage( this, m, damage, 100, 0, 0, 0, 0, Misc.DFAlgorithm.PainSpike );
-                this.HarmfulSpell(m);
+                ApplyEffects(m);
+                ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
             }
 
-            this.FinishSequence();
+            FinishSequence();
+        }
+
+        public void ApplyEffects(Mobile m, double strength = 1.0)
+        {
+            //SpellHelper.CheckReflect( (int)this.Circle, Caster, ref m ); //Irrelevent asfter AoS
+
+            /* Temporarily causes intense physical pain to the target, dealing direct damage.
+             * After 10 seconds the spell wears off, and if the target is still alive, 
+             * some of the Hit Points lost through Pain Spike are restored.
+             */
+
+            m.FixedParticles(0x37C4, 1, 8, 9916, 39, 3, EffectLayer.Head);
+            m.FixedParticles(0x37C4, 1, 8, 9502, 39, 4, EffectLayer.Head);
+            m.PlaySound(0x210);
+
+            double damage = (((GetDamageSkill(Caster) - GetResistSkill(m)) / 10) + (m.Player ? 18 : 30)) * strength;
+            m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
+
+            if (damage < 1)
+                damage = 1;
+
+            TimeSpan buffTime = TimeSpan.FromSeconds(10.0 * strength);
+
+            if (m_Table.ContainsKey(m))
+            {
+                damage = Utility.RandomMinMax(3, 7);
+                Timer t = m_Table[m];
+
+                if (t != null)
+                {
+                    t.Delay += TimeSpan.FromSeconds(2.0);
+
+                    buffTime = t.Next - DateTime.UtcNow;
+                }
+            }
+            else
+            {
+                new InternalTimer(m, damage).Start();
+            }
+
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PainSpike, 1075667, buffTime, m, Convert.ToString((int)damage)));
+
+            Misc.WeightOverloading.DFA = Misc.DFAlgorithm.PainSpike;
+            AOS.Damage(m, Caster, (int)damage, 0, 0, 0, 0, 0, 0, 100);
+            SpellHelper.DoLeech((int)damage, Caster, m);
+            Misc.WeightOverloading.DFA = Misc.DFAlgorithm.Standard;
+
+            HarmfulSpell(m);
         }
 
         private class InternalTimer : Timer
@@ -124,7 +132,8 @@ namespace Server.Spells.Necromancy
 
             protected override void OnTick()
             {
-                m_Table.Remove(this.m_Mobile);
+                if (m_Table.ContainsKey(m_Mobile))
+                    m_Table.Remove(this.m_Mobile);
 
                 if (this.m_Mobile.Alive && !this.m_Mobile.IsDeadBondedPet)
                     this.m_Mobile.Hits += this.m_ToRestore;

@@ -19,7 +19,7 @@ namespace Server.Items
         Wildfire = 2843
     }
 
-    public class BaseTalisman : Item, IWearableDurability, IVvVItem, IOwnerRestricted
+    public class BaseTalisman : Item, IWearableDurability, IVvVItem, IOwnerRestricted, ITalismanProtection, ITalismanKiller
     {
         private bool _VvVItem;
         private Mobile _Owner;
@@ -1483,6 +1483,9 @@ namespace Server.Items
                             MagicReflectSpell.EndReflect(target);
                             ReactiveArmorSpell.EndArmor(target);
                             ProtectionSpell.EndProtection(target);
+
+                            EodonianPotion.RemoveEffects(target, PotionEffect.Barrab);
+                            EodonianPotion.RemoveEffects(target, PotionEffect.Urali);
 
                             target.SendLocalizedMessage(1072402); // Your wards have been removed!
 

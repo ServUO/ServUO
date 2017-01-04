@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class SolesOfProvidence : Sandals
+    public class SolesOfProvidence : Sandals, ITokunoDyable
 	{
 		public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1113376; } } // Soles of Providence

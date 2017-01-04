@@ -229,7 +229,8 @@ namespace Server.Mobiles
             c.DropItem(new SpecialFishingNet());
 
             #region TOL
-            //SkillMasteryPrimer.CheckPrimerDrop(this);
+            if(Core.TOL)
+                SkillMasteryPrimer.CheckPrimerDrop(this);
             #endregion
         }
 

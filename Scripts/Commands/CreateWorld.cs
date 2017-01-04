@@ -53,6 +53,7 @@ namespace Server.Commands
             new CommandEntry("High Seas",       "DecorateHS",       "DeleteHS",             121),
             new CommandEntry("City Loyalty",    "SetupCityLoyaltySystem",   "DeleteCityLoyaltySystem",             122),
             new CommandEntry("Castle Blackthorn",    "GenBlackthorn",       null,                                  123),
+            new CommandEntry("Time of Legends",      "DecorateTOL",         null,                                  124),
 		});
         public CreateWorld()
         {

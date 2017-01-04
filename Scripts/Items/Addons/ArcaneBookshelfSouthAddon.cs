@@ -185,10 +185,10 @@ namespace Server.Items
                 deed.IsSecure = IsSecure;
                 deed.Movable = Movable;
 
-                if (house != null && house.LockDowns.Contains(this))
+                if (house != null && house.LockDowns.ContainsKey(this))
                 {
                     house.LockDowns.Remove(this);
-                    house.LockDowns.Add(deed);
+                    house.LockDowns.Add(deed, house.Owner);
                 }
                 else if (house != null && house.Secures.Contains(this))
                 {
