@@ -141,9 +141,11 @@ namespace Server.Items
             }
         }// runebook
 
+        public virtual int MaxEntries { get { return 16; } }
+
         [Constructable]
-        public Runebook(int maxCharges)
-            : base(Core.AOS ? 0x22C5 : 0xEFA)
+        public Runebook(int maxCharges, int id = 0x22C5)
+            : base(Core.AOS ? id : 0xEFA)
         {
             this.Weight = (Core.SE ? 1.0 : 3.0);
             this.LootType = LootType.Blessed;
@@ -172,6 +174,12 @@ namespace Server.Items
             {
                 return this.m_Entries;
             }
+        }
+
+        public int DefaultIndex
+        {
+            get { return m_DefaultIndex; }
+            set { m_DefaultIndex = value; }
         }
 
         public RunebookEntry Default
@@ -457,7 +465,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1005571); // You cannot place objects in the book while viewing the contents.
                 }
-                else if (this.m_Entries.Count < 16)
+                else if (this.m_Entries.Count < MaxEntries)
                 {
                     if (dropped is RecallRune)
                     {
@@ -552,7 +560,7 @@ namespace Server.Items
 
         #region ICraftable Members
 
-        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
             int charges = 5 + quality + (int)(from.Skills[SkillName.Inscribe].Value / 30);
 

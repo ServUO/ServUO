@@ -128,7 +128,8 @@ namespace Server.Engines.Craft
         public void DrawItem()
         {
             Type type = m_CraftItem.ItemType;
-            int id = CraftItem.ItemIDOf(type);
+            int id = m_CraftItem.DisplayID;
+            if (id == 0) id = CraftItem.ItemIDOf(type);
             Rectangle2D b = ItemBounds.Table[id];
             AddItem(90 - b.Width / 2 - b.X, 110 - b.Height / 2 - b.Y, id, m_CraftItem.ItemHue);
 

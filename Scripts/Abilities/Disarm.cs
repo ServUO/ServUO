@@ -1,4 +1,5 @@
 using System;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -20,25 +21,7 @@ namespace Server.Items
                 return 20;
             }
         }
-        // No longer active in pub21:
 
-        /*public override bool CheckSkills( Mobile from )
-        {
-        if ( !base.CheckSkills( from ) )
-        return false;
-
-        if ( !(from.Weapon is Fists) )
-        return true;
-
-        Skill skill = from.Skills[SkillName.ArmsLore];
-
-        if ( skill != null && skill.Base >= 80.0 )
-        return true;
-
-        from.SendLocalizedMessage( 1061812 ); // You lack the required skill in armslore to perform that attack!
-
-        return false;
-        }*/
         public override bool RequiresTactics(Mobile from)
         {
             BaseWeapon weapon = from.Weapon as BaseWeapon;
@@ -73,6 +56,16 @@ namespace Server.Items
             }
             else if (this.CheckMana(attacker, true))
             {
+                // Skill Masteries
+                int saveChance = Server.Spells.SkillMasteries.MasteryInfo.SavingThrowChance(defender);
+
+                if (saveChance > 0 && saveChance >= Utility.Random(100))
+                {
+                    attacker.SendLocalizedMessage(1156033); // Your disarm attempt was blocked!
+                    defender.SendLocalizedMessage(1156034); // You blocked a disarm attempt!
+                    return;
+                }
+
                 attacker.SendLocalizedMessage(1060092); // You disarm their weapon!
                 defender.SendLocalizedMessage(1060093); // Your weapon has been disarmed!
 
@@ -84,6 +77,15 @@ namespace Server.Items
                 BuffInfo.AddBuff(defender, new BuffInfo( BuffIcon.NoRearm, 1075637, BlockEquipDuration, defender));
 
                 BaseWeapon.BlockEquip(defender, BlockEquipDuration);
+
+                if (defender is BaseCreature && ((BaseCreature)defender).AutoRearms)
+                {
+                    Timer.DelayCall(BlockEquipDuration + TimeSpan.FromSeconds(Utility.RandomMinMax(3, 10)), () =>
+                    {
+                        if (toDisarm != null && !toDisarm.Deleted && toDisarm.IsChildOf(defender.Backpack))
+                            defender.EquipItem(toDisarm);
+                    });
+                }
             }
         }
     }

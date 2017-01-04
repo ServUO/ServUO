@@ -21,6 +21,7 @@ using Server.Regions;
 using Server.Spells;
 using Server.Spells.Spellweaving;
 using Server.Targets;
+using System.Linq;
 
 using MoveImpl = Server.Movement.MovementImpl;
 #endregion
@@ -912,6 +913,7 @@ namespace Server.Mobiles
 					m_Mobile.Combatant = null;
 					m_Mobile.FocusMob = null;
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
+                    CheckNavPoint();
 					break;
 				case ActionType.Combat:
 					m_Mobile.Warmode = true;
@@ -942,6 +944,22 @@ namespace Server.Mobiles
 			}
 		}
 
+        public virtual void CheckNavPoint()
+        {
+            Map map = m_Mobile.Map;
+
+            if (m_Mobile.NavPoints != null && m_Mobile.NavPoints.ContainsKey(map))
+            {
+                if (m_Mobile.CurrentNavPoint >= 0 && m_Mobile.CurrentNavPoint < m_Mobile.NavPoints[map].Count - 1)
+                {
+                    Point2D next = m_Mobile.NavPoints[map][m_Mobile.CurrentNavPoint + 1];
+
+                    if (m_Mobile.InRange(next, 15))
+                        m_Mobile.CurrentNavPoint++;
+                }
+            }
+        }
+
 		public virtual bool OnAtWayPoint()
 		{
 			return true;
@@ -950,15 +968,44 @@ namespace Server.Mobiles
 		public virtual bool DoActionWander()
 		{
 			int followRange = m_Mobile.FollowRange;
+            Map map = m_Mobile.Map;
 
 			if (CheckHerding())
 			{
 				m_Mobile.DebugSay("Praise the shepherd!");
 			}
+            else if (m_Mobile.NavPoints != null && m_Mobile.NavPoints.ContainsKey(map))
+            {
+                if (m_Mobile.CurrentNavPoint >= 0 && m_Mobile.CurrentNavPoint < m_Mobile.NavPoints[map].Count)
+                {
+                    Point2D point = m_Mobile.NavPoints[map][m_Mobile.CurrentNavPoint];
+                    if (point.X != m_Mobile.X || point.Y != m_Mobile.Y)
+                    {
+                        m_Mobile.DebugSay(String.Format("I will move towards my navpoint: {0}", point.ToString()));
+                        //DoMove(m_Mobile.GetDirectionTo(point));
+                        MoveResult res = DoMoveImpl(m_Mobile.GetDirectionTo(point));
+
+                        if (res == MoveResult.Blocked)
+                        {
+                            CheckNavPoint();
+                        }
+                    }
+                    else if (OnAtWayPoint())
+                    {
+                        if (m_Mobile.CurrentNavPoint + 1 >= m_Mobile.NavPoints[map].Count)
+                            m_Mobile.CurrentNavPoint = -1;
+                        else
+                        {
+                            m_Mobile.CurrentNavPoint++;
+                            m_Mobile.DebugSay(String.Format("I will go to the next navpoint: {0}", m_Mobile.NavPoints[map][m_Mobile.CurrentNavPoint].ToString()));
+                        }
+                    }
+                }
+            }
 			else if (m_Mobile.CurrentWayPoint != null)
 			{
 				WayPoint point = m_Mobile.CurrentWayPoint;
-				if ((point.X != m_Mobile.Location.X || point.Y != m_Mobile.Location.Y) && point.Map == m_Mobile.Map &&
+                if ((point.X != m_Mobile.Location.X || point.Y != m_Mobile.Location.Y) && point.Map == map &&
 					point.Parent == null && !point.Deleted)
 				{
 					m_Mobile.DebugSay("I will move towards my waypoint.");
@@ -2896,7 +2943,16 @@ namespace Server.Mobiles
 									{
 										bValid = (m.Karma > 0);
 									}
-								}
+                                }
+                                else if (acqType == FightMode.Enemy)
+                                {
+                                    if (!m_Mobile.IsEnemy(m))
+                                        continue;
+                                }
+                                else if (acqType == FightMode.Aggressor)
+                                {
+                                    bValid = m_Mobile.Aggressors.FirstOrDefault(agg => agg.Attacker == m) != null;
+                                }
 							}
 
 							// Don't ignore valid targets

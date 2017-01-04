@@ -160,7 +160,12 @@ namespace Server.Items
 
             protected override void OnTick()
             {
-                DoBleed(m_Mobile, m_From, 5 - m_Count, m_blooddrinker);
+                int damage;
+
+                if (!Server.Spells.SkillMasteries.WhiteTigerFormSpell.HasBleedMod(m_From, out damage))
+                    damage = 5 - m_Count;
+
+                DoBleed(m_Mobile, m_From, damage, m_blooddrinker);
 
                 if (++m_Count == m_MaxCount)
                     EndBleed(m_Mobile, true);

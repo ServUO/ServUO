@@ -24,7 +24,7 @@ namespace Server.Mobiles
             new SpawnEntry(new Point3D(5475, 187, 0), new Point3D(514, 1561, 0)), // Shame
             new SpawnEntry(new Point3D(6085, 179, 0), new Point3D(4721, 3822, 0)), // Hythloth
             new SpawnEntry(new Point3D(6084, 66, 0), new Point3D(4721, 3822, 0)), // Hythloth
-            new SpawnEntry(new Point3D(5499, 2003, 0), new Point3D(2499, 919, 0)), // Covetous
+            /*new SpawnEntry(new Point3D(5499, 2003, 0), new Point3D(2499, 919, 0)), // Covetous*/
             new SpawnEntry(new Point3D(5579, 1858, 0), new Point3D(2499, 919, 0))// Covetous
         };
         private static readonly ArrayList m_Instances = new ArrayList();

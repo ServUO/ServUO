@@ -105,6 +105,8 @@ namespace Server.Spells.Spellweaving
                         m_Table[m] = new EssenceOfWindInfo(m, fcMalus, ssiMalus, duration);
 
                         BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.EssenceOfWind, 1075802, duration, m, String.Format("{0}\t{1}", fcMalus.ToString(), ssiMalus.ToString())));
+
+                        m.Delta(MobileDelta.WeaponDamage);
                     }
                 }
             }
@@ -170,14 +172,11 @@ namespace Server.Spells.Spellweaving
             public void DoExpire(bool message)
             {
                 this.Stop();
-                /*
-                if( message )
-                {
-                }
-                */
+
                 m_Table.Remove(this.m_Mobile);
 
                 BuffInfo.RemoveBuff(this.m_Mobile, BuffIcon.EssenceOfWind);
+                m_Mobile.Delta(MobileDelta.WeaponDamage);
             }
 
             protected override void OnTick()

@@ -246,6 +246,11 @@ namespace Server.Mobiles
 
                 if(Core.SA)
                     RefinementComponent.Roll(c, 3, 0.10);
+
+                #region TOL
+                if(Core.TOL)
+                    SkillMasteryPrimer.CheckPrimerDrop(this);
+                #endregion
             }
 
             base.OnDeath(c);

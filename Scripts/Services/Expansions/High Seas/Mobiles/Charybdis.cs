@@ -581,7 +581,8 @@ namespace Server.Mobiles
             c.DropItem(pole);
 
             #region TOL
-            //SkillMasteryPrimer.CheckPrimerDrop(this);
+            if(Core.TOL)
+                SkillMasteryPrimer.CheckPrimerDrop(this);
             #endregion
         }
 

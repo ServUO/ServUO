@@ -122,9 +122,6 @@ namespace Server.Engines.ShameRevamped
         {
             Guardian = null;
 
-            if (Teleporter != null)
-                Teleporter.AddToAccessList(Summoner);
-
             EndDeadLineTimer();
             NextSummon = DateTime.UtcNow + TimeSpan.FromMinutes(CoolDown);
             Summoner = null;
@@ -180,7 +177,7 @@ namespace Server.Engines.ShameRevamped
             }
             eable.Free();
 
-            Teleporter = new ShameTeleporter(this, TeleporterDestination, this.Map);
+            Teleporter = new ShameTeleporter(TeleporterDestination, this.Map);
             Teleporter.MoveToWorld(TeleporterLocation, this.Map);
         }
 
@@ -239,9 +236,6 @@ namespace Server.Engines.ShameRevamped
 
                 NextSummon = DateTime.UtcNow;
             }
-
-            if (Teleporter != null)
-                Teleporter.Altar = this;
         }
     }
 }

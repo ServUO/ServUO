@@ -540,11 +540,12 @@ namespace Server.Engines.VvV
                 {
                     if (m is SilverTrader)
                     {
-                        eable.Free();
                         found = true;
                         break;
                     }
                 }
+
+                eable.Free();
 
                 if (!found)
                 {

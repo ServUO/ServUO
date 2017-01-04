@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Server.Mobiles;
 using Server.Targeting;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Spells.Necromancy
 {
@@ -75,7 +76,16 @@ namespace Server.Spells.Necromancy
             {
                 SpellHelper.Turn(this.Caster, m);
 
-                /* Curses the target so that the next harmful event that affects them is magnified.
+                ApplyEffects(m);
+                ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
+            }
+
+            this.FinishSequence();
+        }
+
+        public void ApplyEffects(Mobile m, double strength = 1.0)
+        {
+            /* Curses the target so that the next harmful event that affects them is magnified.
                 * Damage to the target's hit points is increased 25%,
                 * the poison level of the attack will be 1 higher
                 * and the Resist Magic skill of the target will be fixed on 50.
@@ -83,33 +93,30 @@ namespace Server.Spells.Necromancy
                 * The effect lasts for one harmful event only.
                 */
 
-                if (m.Spell != null)
-                    m.Spell.OnCasterHurt();
+            if (m.Spell != null)
+                m.Spell.OnCasterHurt();
 
-                m.PlaySound(0xFC);
-                m.FixedParticles(0x3728, 1, 13, 9912, 1150, 7, EffectLayer.Head);
-                m.FixedParticles(0x3779, 1, 15, 9502, 67, 7, EffectLayer.Head);
+            m.PlaySound(0xFC);
+            m.FixedParticles(0x3728, 1, 13, 9912, 1150, 7, EffectLayer.Head);
+            m.FixedParticles(0x3779, 1, 15, 9502, 67, 7, EffectLayer.Head);
 
-                if (!m_Table.Contains(m))
-                {
-                    SkillMod mod = new DefaultSkillMod(SkillName.MagicResist, false, 50.0);
+            if (!m_Table.Contains(m))
+            {
+                SkillMod mod = new DefaultSkillMod(SkillName.MagicResist, false, 50.0);
 
-                    if (m.Skills[SkillName.MagicResist].Base > 50.0)
-                        m.AddSkillMod(mod);
+                if (m.Skills[SkillName.MagicResist].Base > 50.0)
+                    m.AddSkillMod(mod);
 
-                    m_Table[m] = mod;
-                }
-
-                TimeSpan duration = TimeSpan.FromSeconds((this.Caster.Skills[SkillName.SpiritSpeak].Value / 12) + 1.0);
-
-                Timer.DelayCall(duration, new TimerStateCallback(EffectExpire_Callback), m);
-
-                this.HarmfulSpell(m);
-
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.EvilOmen, 1075647, 1075648, duration, m));
+                m_Table[m] = mod;
             }
 
-            this.FinishSequence();
+            TimeSpan duration = TimeSpan.FromSeconds(((Caster.Skills[SkillName.SpiritSpeak].Value / 12) + 1.0) * strength);
+
+            Timer.DelayCall(duration, new TimerStateCallback(EffectExpire_Callback), m);
+
+            this.HarmfulSpell(m);
+
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.EvilOmen, 1075647, 1075648, duration, m));
         }
 
         private static void EffectExpire_Callback(object state)

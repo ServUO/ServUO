@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Server.Targeting;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Spells.Necromancy
 {
@@ -62,7 +63,16 @@ namespace Server.Spells.Necromancy
             {
                 SpellHelper.Turn(this.Caster, m);
 
-                /* Transmogrifies the flesh of the target creature or player to resemble rotted corpse flesh,
+                ApplyEffects(m);
+                ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
+            }
+
+            this.FinishSequence();
+        }
+
+        public void ApplyEffects(Mobile m, double strength = 1.0)
+        {
+            /* Transmogrifies the flesh of the target creature or player to resemble rotted corpse flesh,
                 * making them more vulnerable to Fire and Poison damage,
                 * but increasing their resistance to Physical and Cold damage.
                 * 
@@ -74,47 +84,44 @@ namespace Server.Spells.Necromancy
                 * NOTE: Resistance is not checked if targeting yourself
                 */
 
-                ExpireTimer timer = (ExpireTimer)m_Table[m];
+            ExpireTimer timer = (ExpireTimer)m_Table[m];
 
-                if (timer != null)
-                    timer.DoExpire();
-                else
-                    m.SendLocalizedMessage(1061689); // Your skin turns dry and corpselike.
+            if (timer != null)
+                timer.DoExpire();
+            else
+                m.SendLocalizedMessage(1061689); // Your skin turns dry and corpselike.
 
-                if (m.Spell != null)
-                    m.Spell.OnCasterHurt();
-				
-                m.FixedParticles(0x373A, 1, 15, 9913, 67, 7, EffectLayer.Head);
-                m.PlaySound(0x1BB);
+            if (m.Spell != null)
+                m.Spell.OnCasterHurt();
 
-                double ss = this.GetDamageSkill(this.Caster);
-                double mr = (this.Caster == m ? 0.0 : this.GetResistSkill(m));
-                m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
+            m.FixedParticles(0x373A, 1, 15, 9913, 67, 7, EffectLayer.Head);
+            m.PlaySound(0x1BB);
 
-                TimeSpan duration = TimeSpan.FromSeconds(((ss - mr) / 2.5) + 40.0);
+            double ss = this.GetDamageSkill(this.Caster);
+            double mr = (this.Caster == m ? 0.0 : this.GetResistSkill(m));
+            m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
 
-                ResistanceMod[] mods = new ResistanceMod[4]
-                {
-                    new ResistanceMod(ResistanceType.Fire, -15),
-                    new ResistanceMod(ResistanceType.Poison, -15),
-                    new ResistanceMod(ResistanceType.Cold, +10),
-                    new ResistanceMod(ResistanceType.Physical, +10)
-                };
+            TimeSpan duration = TimeSpan.FromSeconds((((ss - mr) / 2.5) + 40.0) * strength);
 
-                timer = new ExpireTimer(m, mods, duration);
-                timer.Start();
+            ResistanceMod[] mods = new ResistanceMod[4]
+					{
+						new ResistanceMod( ResistanceType.Fire, (int)(-15.0 * strength) ),
+						new ResistanceMod( ResistanceType.Poison, (int)(-15.0 * strength) ),
+						new ResistanceMod( ResistanceType.Cold, (int)(+10.0 * strength) ),
+						new ResistanceMod( ResistanceType.Physical, (int)(+10.0 * strength) )
+					};
 
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.CorpseSkin, 1075663, duration, m));
+            timer = new ExpireTimer(m, mods, duration);
+            timer.Start();
 
-                m_Table[m] = timer;
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.CorpseSkin, 1075663, duration, m));
 
-                for (int i = 0; i < mods.Length; ++i)
-                    m.AddResistanceMod(mods[i]);
+            m_Table[m] = timer;
 
-                this.HarmfulSpell(m);
-            }
+            for (int i = 0; i < mods.Length; ++i)
+                m.AddResistanceMod(mods[i]);
 
-            this.FinishSequence();
+            this.HarmfulSpell(m);
         }
 
         private class ExpireTimer : Timer

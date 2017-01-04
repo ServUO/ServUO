@@ -20,7 +20,7 @@ namespace Server.Items
         Diamond
     }
 
-    public abstract class BaseJewel : Item, ICraftable, ISetItem, IWearableDurability, IVvVItem, IOwnerRestricted
+    public abstract class BaseJewel : Item, ICraftable, ISetItem, IWearableDurability, IVvVItem, IOwnerRestricted, ITalismanProtection
     {
         private int m_MaxHitPoints;
         private int m_HitPoints;
@@ -47,9 +47,18 @@ namespace Server.Items
         private ReforgedSuffix m_ReforgedSuffix;
         #endregion
 
+        private TalismanAttribute m_TalismanProtection;
+
         private bool _VvVItem;
         private Mobile _Owner;
         private string _OwnerName;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public TalismanAttribute Protection
+        {
+            get { return m_TalismanProtection; }
+            set { m_TalismanProtection = value; InvalidateProperties(); }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsVvVItem
@@ -427,6 +436,7 @@ namespace Server.Items
             jewel.m_AosResistances = new AosElementAttributes(newItem, this.m_AosResistances);
             jewel.m_AosSkillBonuses = new AosSkillBonuses(newItem, this.m_AosSkillBonuses);
             jewel.m_NegativeAttributes = new NegativeAttributes(newItem, this.m_NegativeAttributes);
+            jewel.m_TalismanProtection = new TalismanAttribute(m_TalismanProtection);
 
             #region Mondain's Legacy
             jewel.m_SetAttributes = new AosAttributes(newItem, this.m_SetAttributes);
@@ -503,6 +513,7 @@ namespace Server.Items
             this.m_SetSkillBonuses = new AosSkillBonuses(this);
             this.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
             m_NegativeAttributes = new NegativeAttributes(this);
+            m_TalismanProtection = new TalismanAttribute();
         }
 
         #region Stygian Abyss
@@ -572,12 +583,11 @@ namespace Server.Items
             if (m_TimesImbued >= 1 && m_MaxHitPoints == 0)
                 return damageTaken;
 
-            if (25 > Utility.Random(100)) // 25% chance to lower durability
+            double chance = NegativeAttributes.Antique > 0 ? 90 : 25;
+
+            if (chance > Utility.Random(100)) // 25% chance to lower durability
             {
                 int wear = Utility.Random(2);
-
-                if (NegativeAttributes.Antique > 0)
-                    wear *= 2;
 
                 if (wear > 0)
                 {
@@ -700,6 +710,11 @@ namespace Server.Items
             Server.Engines.XmlSpawner2.XmlAttach.CheckOnRemoved(this, parent);
         }
 
+        public virtual void SetProtection(Type type, TextDefinition name, int amount)
+        {
+            m_TalismanProtection = new TalismanAttribute(type, name, amount);
+        }
+
         public BaseJewel(Serial serial)
             : base(serial)
         {
@@ -808,6 +823,9 @@ namespace Server.Items
 
             if ((prop = this.ArtifactRarity) > 0)
                 list.Add(1061078, prop.ToString()); // artifact rarity ~1_val~
+
+            if (m_TalismanProtection != null && !m_TalismanProtection.IsEmpty && m_TalismanProtection.Amount > 0)
+                list.Add(1072387, "{0}\t{1}", m_TalismanProtection.Name != null ? m_TalismanProtection.Name.ToString() : "Unknown", m_TalismanProtection.Amount); // ~1_NAME~ Protection: +~2_val~%
 
             if ((prop = this.m_AosAttributes.WeaponDamage) != 0)
                 list.Add(1060401, prop.ToString()); // damage increase ~1_val~%
@@ -955,7 +973,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(8); // version
+            writer.Write(9); // version
+
+            m_TalismanProtection.Serialize(writer);
 
             writer.Write(_VvVItem);
             writer.Write(_Owner);
@@ -1016,6 +1036,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 9:
+                    {
+                        m_TalismanProtection = new TalismanAttribute(reader);
+                        goto case 8;
+                    }
                 case 8:
                     {
                         _VvVItem = reader.ReadBool();
@@ -1126,6 +1151,9 @@ namespace Server.Items
 
             if (m_NegativeAttributes == null)
                 m_NegativeAttributes = new NegativeAttributes(this);
+
+            if (m_TalismanProtection == null)
+                m_TalismanProtection = new TalismanAttribute();
 
             #region Mondain's Legacy Sets
             if (this.m_SetAttributes == null)

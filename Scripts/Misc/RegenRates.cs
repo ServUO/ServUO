@@ -5,6 +5,7 @@ using Server.Mobiles;
 using Server.Spells;
 using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Misc
 {
@@ -130,8 +131,14 @@ namespace Server.Misc
 
             int points = (int)(from.Skills[SkillName.Focus].Value * 0.1);
 
-            if ((from is BaseCreature && ((BaseCreature)from).IsParagon) || from is Leviathan)
-                points += 40;
+            if (from is BaseCreature)
+            {
+                if (((BaseCreature)from).IsParagon || from is Leviathan)
+                    points += 40;
+
+                // Skill Masteries
+                points += MasteryInfo.EnchantedSummoningBonus((BaseCreature)from);
+            }
 
             int cappedPoints = AosAttributes.GetValue(from, AosAttribute.RegenStam);
 
@@ -145,6 +152,9 @@ namespace Server.Misc
                 cappedPoints = Math.Min(cappedPoints, 24);
 
             points += cappedPoints;
+
+            // Skill Masteries
+            points += RampageSpell.GetBonus(from, RampageSpell.BonusType.StamRegen); // After the cap???
 
             if (points < -1)
                 points = -1;

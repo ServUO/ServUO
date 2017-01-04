@@ -98,7 +98,6 @@ namespace Server.Spells.Mystic
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Enchant, 1080126, 1080129, TimeSpan.FromSeconds(duration), Caster, value));
 
                 Weapon.EnchantedWeilder = Caster;
-
                 Weapon.InvalidateProperties();
             }
 

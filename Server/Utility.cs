@@ -546,6 +546,18 @@ namespace Server
 
 			return i;
 		}
+
+        public static long ToInt64(string value)
+        {
+            long i;
+
+            if (value.StartsWith("0x"))
+                long.TryParse(value.Substring(2), NumberStyles.HexNumber, null, out i);
+            else
+                long.TryParse(value, out i);
+
+            return i;
+        }
 		#endregion
 
 		#region Get[Something]

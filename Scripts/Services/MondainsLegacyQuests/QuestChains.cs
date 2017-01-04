@@ -25,7 +25,10 @@ namespace Server.Engines.Quests
         DoughtyWarriors,
         HonorOfDeBoors,
         LaifemTheWeaver,
-        CloakOfHumility
+        CloakOfHumility,
+        ValleyOfOne,
+        MyrmidexAlliance,
+        EodonianAlliance
     }
 
     public class BaseChain

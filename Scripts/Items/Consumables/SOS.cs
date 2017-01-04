@@ -204,6 +204,10 @@ namespace Server.Items
             }
         }
 
+        public virtual void OnSOSComplete(Container chest)
+        {
+        }
+
         private static readonly int[] m_WaterTiles = new int[]
         {
             0x00A8, 0x00AB,

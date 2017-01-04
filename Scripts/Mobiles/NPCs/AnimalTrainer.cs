@@ -121,7 +121,7 @@ namespace Server.Mobiles
 				max += (int)((vetern - 90.0) / 10);
 			}
 
-			return max;
+            return max + Server.Spells.SkillMasteries.MasteryInfo.BoardingSlotIncrease(from);
 		}
 
 		private void CloseClaimList(Mobile from)

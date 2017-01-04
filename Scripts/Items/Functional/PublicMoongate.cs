@@ -278,7 +278,8 @@ namespace Server.Items
             new PMList(1113602, 1113602, Map.TerMur, new PMEntry[]
 			{
 				new PMEntry(new Point3D(852, 3526, -43), 1113603), // Royal City
-				new PMEntry(new Point3D(926, 3989, -36), 1112572), // Holy City
+                Core.TOL ? new PMEntry(new Point3D(719, 1863, 40), 1156262) : new PMEntry(new Point3D(926, 3989, -36), 1112572), // Valley of Eodon
+				// Holy City
 			});
         public static readonly PMList[] UORLists = new PMList[] { Trammel, Felucca };
         public static readonly PMList[] UORListsYoung = new PMList[] { Trammel };

@@ -56,6 +56,9 @@ namespace Server.Items
         ArchDemon,
         FireAnt,
         Navrey,
+        DragonTurtle,
+        TigerCub,
+        SakkhranBirdOfPrey
     }
 
     public class MonsterStatuetteInfo
@@ -109,6 +112,9 @@ namespace Server.Items
             /* ArchDemon */         new MonsterStatuetteInfo( 1112411, 0x20D3, 357 ), 
             /* FireAnt */           new MonsterStatuetteInfo( 1113801, 0x42A7, 849 ),
             /* Navrey Night-Eyes */ new MonsterStatuetteInfo( 1153593, 0x4C07, 0x61A ),
+            /* Dragon Turtle */     new MonsterStatuetteInfo( 1156367, 0x9848, 362 ),
+            /* Tiger Cub     */     new MonsterStatuetteInfo( 1156517, 0x9CA7, 0x69 ),
+            /* SakkhranBirdOfPrey */new MonsterStatuetteInfo( 1156699, 0x276A, 0x4FE ),
         };
         private readonly int m_LabelNumber;
         private readonly int m_ItemID;
@@ -186,6 +192,18 @@ namespace Server.Items
                 this.Hue = 0xF4;
             else if (m_Type == MonsterStatuetteType.ArchDemon)
                 Hue = 2021;
+            else if (m_Type == MonsterStatuetteType.SakkhranBirdOfPrey)
+            {
+                double ran = Utility.RandomDouble();
+                if (0.01 > ran)
+                    Hue = 1907;
+                else if (0.1 > ran)
+                    Hue = 2562;
+                else if (0.25 > ran)
+                    Hue = 2525;
+                else
+                    Hue = 2309;
+            }
         }
 
         public MonsterStatuette(Serial serial)
@@ -227,6 +245,8 @@ namespace Server.Items
             }
             set
             {
+                MonsterStatuetteType old = m_Type;
+
                 this.m_Type = value;
                 this.ItemID = MonsterStatuetteInfo.GetInfo(this.m_Type).ItemID;
 
@@ -236,6 +256,18 @@ namespace Server.Items
                     this.Hue = 0x21;
                 else if (this.m_Type == MonsterStatuetteType.HalloweenGhoul)
                     this.Hue = 0xF4;
+                else if (m_Type != old && m_Type == MonsterStatuetteType.SakkhranBirdOfPrey)
+                {
+                    double ran = Utility.RandomDouble();
+                    if (0.01 > ran)
+                        Hue = 1907;
+                    else if (0.1 > ran)
+                        Hue = 2562;
+                    else if (0.25 > ran)
+                        Hue = 2525;
+                    else
+                        Hue = 2309;
+                }
                 else
                     this.Hue = 0;
 
