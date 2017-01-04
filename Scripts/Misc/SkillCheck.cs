@@ -2,6 +2,7 @@ using System;
 using Server.Accounting;
 using Server.Factions;
 using Server.Mobiles;
+using Server.Items;
 using Server.Spells.SkillMasteries;
 
 namespace Server.Misc
@@ -131,6 +132,8 @@ namespace Server.Misc
 
             double chance = (value - minSkill) / (maxSkill - minSkill);
 
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
+
             Point2D loc = new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize);
             return CheckSkill(from, skill, loc, chance);
         }
@@ -141,6 +144,8 @@ namespace Server.Misc
 
             if (skill == null)
                 return false;
+
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
 
             if (chance < 0.0)
                 return false; // Too difficult
@@ -205,6 +210,8 @@ namespace Server.Misc
 
             double chance = (value - minSkill) / (maxSkill - minSkill);
 
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
+
             return CheckSkill(from, skill, target, chance);
         }
 
@@ -214,6 +221,8 @@ namespace Server.Misc
 
             if (skill == null)
                 return false;
+
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
 
             if (chance < 0.0)
                 return false; // Too difficult
