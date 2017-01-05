@@ -663,10 +663,21 @@ namespace Server.Engines.Harvest
 
         public override void StartHarvesting(Mobile from, Item tool, object toHarvest)
         {
-            if (tool != null && tool.IsChildOf(from.Backpack))
+            if (from != null && tool != null && tool.IsChildOf(from.Backpack))
             {
-                from.ClearHands();
-                from.EquipItem(tool);
+                Item item = from.FindItemOnLayer(Layer.OneHanded);
+                Item item2 = from.FindItemOnLayer(Layer.TwoHanded);
+
+                if (item != null)
+                    from.AddToBackpack(item);
+
+                if (item2 != null)
+                    from.AddToBackpack(item2);
+
+                Timer.DelayCall(TimeSpan.FromMilliseconds(250), () =>
+                {
+                    from.EquipItem(tool);
+                });
             }
 
             base.StartHarvesting(from, tool, toHarvest);

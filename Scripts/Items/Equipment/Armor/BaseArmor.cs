@@ -2529,9 +2529,9 @@ namespace Server.Items
             if (Absorbed < 2)
                 Absorbed = 2;
 
-            double chance = NegativeAttributes.Antique > 0 ? 90 : 25;
+            double chance = NegativeAttributes.Antique > 0 ? 80 : 25;
 
-            if (chance > Utility.Random(100)) // 25% chance to lower durability
+            if (chance >= Utility.Random(100)) // 25% chance to lower durability
             {
                 if (Core.AOS && this.m_AosArmorAttributes.SelfRepair + (this.IsSetItem && this.m_SetEquipped ? this.m_SetSelfRepair : 0) > Utility.Random(10))
                 {

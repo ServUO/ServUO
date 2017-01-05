@@ -918,9 +918,9 @@ namespace Server.Items
             if (damageTaken < 0) 
                 damageTaken = 0;
 
-            double chance = NegativeAttributes.Antique > 0 ? 90 : 25;
+            double chance = NegativeAttributes.Antique > 0 ? 80 : 25;
 
-            if (chance > Utility.Random(100)) // 25% chance to lower durability
+            if (chance >= Utility.Random(100)) // 25% chance to lower durability
             {
                 if (Core.AOS && this.m_AosClothingAttributes.SelfRepair + (this.IsSetItem && this.m_SetEquipped ? this.m_SetSelfRepair : 0) > Utility.Random(10))
                 {

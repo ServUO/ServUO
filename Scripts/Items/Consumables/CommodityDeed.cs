@@ -290,7 +290,7 @@ namespace Server.Items
             {
                 number = 1080525; // The commodity deed box must be secured before you can use it.
             }
-            else if ((box == null || !this.IsChildOf(box)) && cox == null)
+            else if ((box == null || !this.IsChildOf(box)) && cox == null && hold == null)
             {
                 if (Core.ML)
                 {
@@ -335,10 +335,12 @@ namespace Server.Items
                 {
                     BankBox box = from.FindBankNoCreate();
                     CommodityDeedBox cox = CommodityDeedBox.Find(this.m_Deed);
+                    GalleonHold hold = ((Item)targeted).RootParent as GalleonHold;
 
                     // Veteran Rewards mods
                     if (box != null && this.m_Deed.IsChildOf(box) && ((Item)targeted).IsChildOf(box) ||
-                        cox != null && cox.IsSecure && ((Item)targeted).IsChildOf(cox))
+                        (cox != null && cox.IsSecure && ((Item)targeted).IsChildOf(cox)) ||
+                        hold != null)
                     {
                         if (this.m_Deed.SetCommodity((Item)targeted))
                         {

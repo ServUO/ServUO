@@ -191,6 +191,7 @@ namespace Server.Engines.Auction
         [Constructable]
         public AuctionSafeDeed()
         {
+            LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -220,6 +221,9 @@ namespace Server.Engines.Auction
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if(LootType != LootType.Blessed)
+                LootType = LootType.Blessed;
         }
     }
 }
