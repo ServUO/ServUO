@@ -184,7 +184,7 @@ namespace Server.Items
 			Attributes.WeaponSpeed = 5;
 			Attributes.WeaponDamage = 20;
 
-            Slayer = (TalismanSlayerName)Utility.RandomMinMax(12, 18);
+            Slayer = (TalismanSlayerName)Utility.RandomList(11, 13, 14, 15, 16, 17, 18);
 		}
 		
 		public EnchantressCameo(Serial serial) : base(serial)
