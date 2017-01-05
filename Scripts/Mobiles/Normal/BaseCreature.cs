@@ -1979,7 +1979,7 @@ namespace Server.Mobiles
                 NameHue = 0x35;
             }
 
-            GenerateLoot(true);
+            Timer.DelayCall(() =>GenerateLoot(true));
         }
 
         public BaseCreature(Serial serial)
@@ -4479,6 +4479,9 @@ namespace Server.Mobiles
 
         public virtual void GenerateLoot(bool spawning)
         {
+            if (m_NoLootOnDeath)
+                return;
+
             m_Spawning = spawning;
 
             if (!spawning)
@@ -4933,7 +4936,7 @@ namespace Server.Mobiles
                 }
             }
 
-            if (!Summoned && !NoKillAwards && !IsBonded)
+            if (!Summoned && !NoKillAwards && !IsBonded && !NoLootOnDeath)
             {
                 if (treasureLevel >= 0)
                 {
@@ -4981,7 +4984,7 @@ namespace Server.Mobiles
                 }
             }
 
-            if (!Summoned && !NoKillAwards && !m_HasGeneratedLoot)
+            if (!Summoned && !NoKillAwards && !m_HasGeneratedLoot && !m_NoLootOnDeath)
             {
                 m_HasGeneratedLoot = true;
                 GenerateLoot(false);
@@ -5018,8 +5021,10 @@ namespace Server.Mobiles
         }
 
         private bool m_NoKillAwards;
+        private bool m_NoLootOnDeath;
 
         public bool NoKillAwards { get { return m_NoKillAwards; } set { m_NoKillAwards = value; } }
+        public bool NoLootOnDeath { get { return m_NoLootOnDeath; } set { m_NoLootOnDeath = value; } }
 
         public int ComputeBonusDamage(List<DamageEntry> list, Mobile m)
         {

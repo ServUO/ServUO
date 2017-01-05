@@ -583,9 +583,9 @@ namespace Server.Items
             if (m_TimesImbued >= 1 && m_MaxHitPoints == 0)
                 return damageTaken;
 
-            double chance = NegativeAttributes.Antique > 0 ? 90 : 25;
+            double chance = NegativeAttributes.Antique > 0 ? 80 : 25;
 
-            if (chance > Utility.Random(100)) // 25% chance to lower durability
+            if (chance >= Utility.Random(100)) // 25% chance to lower durability
             {
                 int wear = Utility.Random(2);
 

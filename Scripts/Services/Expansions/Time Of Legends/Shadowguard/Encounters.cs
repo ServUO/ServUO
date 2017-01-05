@@ -49,12 +49,13 @@ namespace Server.Engines.Shadowguard
 		{
 			if(Wave >= 4 || Bottles == null)
 				return;
-				
-			Bottles.Where(b => b == null || b.Deleted).ForEach(b => 
+
+            int liquorCount = Bottles.Where(b => b != null && !b.Deleted).Count();
+
+			if(liquorCount < LiquorCount)
 			{
-				Bottles.Remove(b);
 				SpawnRandomLiquor();
-			});
+			}
 		}
 
         private void SpawnRandomLiquor()
@@ -134,8 +135,12 @@ namespace Server.Engines.Shadowguard
 		{
             if (Bottles != null)
             {
-                foreach (var bottle in Bottles.Where(b => b != null && !b.Deleted))
+                List<ShadowguardBottleOfLiquor> list = new List<ShadowguardBottleOfLiquor>(Bottles.Where(b => b != null && !b.Deleted));
+
+                foreach (var bottle in list)
                     bottle.Delete();
+
+                list.Free();
 
                 Bottles.Free();
                 Bottles = null;
@@ -278,12 +283,6 @@ namespace Server.Engines.Shadowguard
 				CompleteEncounter();
 		}
 		
-		public override void OnCreatureKilled(BaseCreature bc)
-		{
-            if (Spawn != null && Spawn.Contains(bc))
-				Spawn.Remove(bc);
-		}
-		
 		public void AddSpawn(BaseCreature bc)
 		{
             if(Spawn != null)
@@ -294,8 +293,12 @@ namespace Server.Engines.Shadowguard
 		{
             if (Spawn != null)
             {
-                foreach (var spawn in Spawn.Where(e => e != null && e.Alive))
+                List<BaseCreature> list = new List<BaseCreature>(Spawn.Where(e => e != null && e.Alive));
+
+                foreach (var spawn in list)
                     spawn.Delete();
+
+                list.Free();
 
                 Spawn.Free();
                 Spawn = null;
@@ -303,8 +306,12 @@ namespace Server.Engines.Shadowguard
 
             if (Trees != null)
             {
-                foreach (var tree in Trees.Where(t => t != null && !t.Deleted))
+                List<ShadowguardCypress> list = new List<ShadowguardCypress>(Trees.Where(t => t != null && !t.Deleted));
+
+                foreach (var tree in list)
                     tree.Delete();
+
+                list.Free();
 
                 Trees.Free();
                 Trees = null;
@@ -470,8 +477,12 @@ namespace Server.Engines.Shadowguard
 		{
             if (Armor != null)
             {
-                foreach (Item armor in Armor.Where(i => i != null && !i.Deleted))
+                List<Item> list = new List<Item>(Armor.Where(i => i != null && !i.Deleted));
+
+                foreach (Item armor in list)
                     armor.Delete();
+
+                list.Free();
 
                 Armor.Free();
                 Armor = null;
@@ -479,8 +490,12 @@ namespace Server.Engines.Shadowguard
 
             if (DestroyedArmor != null)
             {
-                foreach (Item dest in DestroyedArmor.Where(i => i != null && !i.Deleted))
+                List<Item> list = new List<Item>(DestroyedArmor.Where(i => i != null && !i.Deleted));
+
+                foreach (Item dest in list)
                     dest.Delete();
+
+                list.Free();
 
                 DestroyedArmor.Free();
                 DestroyedArmor = null;
@@ -488,8 +503,12 @@ namespace Server.Engines.Shadowguard
 
             if (Spawn != null)
             {
-                foreach (BaseCreature spawn in Spawn.Where(s => s != null && !s.Deleted))
+                List<BaseCreature> list = new List<BaseCreature>(Spawn.Where(s => s != null && !s.Deleted));
+
+                foreach (BaseCreature spawn in list)
                     spawn.Delete();
+
+                list.Free();
 
                 Spawn.Free();
                 Spawn = null;
@@ -497,8 +516,12 @@ namespace Server.Engines.Shadowguard
 
             if (Items != null)
             {
-                foreach (Item item in Items.Where(i => i != null && !i.Deleted))
+                List<Item> list = new List<Item>(Items.Where(i => i != null && !i.Deleted));
+
+                foreach (Item item in list)
                     item.Delete();
+
+                list.Free();
 
                 Items.Free();
                 Items = null;
@@ -723,8 +746,12 @@ namespace Server.Engines.Shadowguard
 		{
             if (ShadowguardCanals != null)
             {
-                foreach (var canal in ShadowguardCanals.Where(i => i != null && !i.Deleted))
+                List<Item> list = new List<Item>(ShadowguardCanals.Where(i => i != null && !i.Deleted));
+
+                foreach (var canal in list)
                     canal.Delete();
+
+                list.Free();
 
                 ShadowguardCanals.Free();
                 ShadowguardCanals = null;
@@ -732,8 +759,12 @@ namespace Server.Engines.Shadowguard
 
             if (Elementals != null)
             {
-                foreach (var elemental in Elementals.Where(t => t != null && !t.Deleted))
+                List<BaseCreature> list = new List<BaseCreature>(Elementals.Where(t => t != null && !t.Deleted));
+
+                foreach (var elemental in list)
                     elemental.Delete();
+
+                list.Free();
 
                 Elementals.Free();
                 Elementals = null;
@@ -1215,8 +1246,12 @@ namespace Server.Engines.Shadowguard
 		{
             if (Drakes != null)
             {
-                foreach (var drake in Drakes.Where(d => d != null && !d.Deleted))
+                List<BaseCreature> list = new List<BaseCreature>(Drakes.Where(d => d != null && !d.Deleted));
+
+                foreach (var drake in list)
                     drake.Delete();
+
+                list.Free();
 
                 Drakes.Free();
                 Drakes = null;

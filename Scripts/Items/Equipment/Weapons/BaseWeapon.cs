@@ -2105,11 +2105,11 @@ namespace Server.Items
                     splintering = true;
             }
 
-            double chance = NegativeAttributes.Antique > 0 ? 10 : 4;
+            double chance = NegativeAttributes.Antique > 0 ? 15 : 2;
 
             if (m_MaxHits > 0 && m_AosAttributes.SpellChanneling == 0 && 
                 ((MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime)) || (defender != null && splintering) ||
-                 Utility.Random(100) >= chance)) // Stratics says 50% chance, seems more like 4%..
+                 Utility.Random(100) <= chance)) // Stratics says 50% chance, seems more like 4%..
             {
                 if (MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime))
                 {
@@ -2125,11 +2125,11 @@ namespace Server.Items
                 {
                     if (m_Hits > 0)
                     {
-                        HitPoints -= NegativeAttributes.Antique > 0 ? 3 : 1;
+                        HitPoints--;
                     }
                     else if (m_MaxHits > 1)
                     {
-                        MaxHitPoints -= NegativeAttributes.Antique > 0 ? 3 : 1;
+                        MaxHitPoints--;
 
                         if (Parent is Mobile)
                         {

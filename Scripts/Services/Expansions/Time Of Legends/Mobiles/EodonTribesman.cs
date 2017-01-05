@@ -138,6 +138,9 @@ namespace Server.Mobiles
         {
             base.AggressiveAction(aggressor, criminal);
 
+            if (this.Map == null)
+                return;
+
             IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, this.RangePerception);
 
             foreach (Mobile m in eable)

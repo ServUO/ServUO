@@ -457,7 +457,6 @@ namespace Server.Mobiles
 
                         if (newPoint.X == focus.X && newPoint.Y == focus.Y)
                         {
-                            Console.WriteLine("Shooting: {0} at {1} / {2}", focus.Name, newPoint.X, newPoint.Y);
                             return true;
                         }
                     }

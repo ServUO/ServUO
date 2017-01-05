@@ -264,6 +264,7 @@ namespace Server.Engines.VoidPool
 				
 				if(bc != null)
 				{
+                    bc.NoLootOnDeath = true;
 					Timer.DelayCall(TimeSpan.FromSeconds((double)i * .75), () =>
 					{
                         if (OnGoing)
