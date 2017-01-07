@@ -140,15 +140,15 @@ namespace Server.Engines.Shadowguard
                 foreach (var bottle in list)
                     bottle.Delete();
 
-                list.Free();
+                ColUtility.Free(list);
 
-                Bottles.Free();
+                ColUtility.Free(Bottles);
                 Bottles = null;
             }
 
             if (Pirates != null)
             {
-                Pirates.Free();
+                ColUtility.Free(Pirates);
                 Pirates = null;
             }
 		}
@@ -262,8 +262,8 @@ namespace Server.Engines.Shadowguard
             ConvertOffset(ref pnt);
             bones.MoveToWorld(pnt, Map.TerMur);
             Bones = bones;
-				
-			points.Free();
+
+            ColUtility.Free(points);
 		}
 		
 		public override void CheckEncounter()
@@ -298,9 +298,9 @@ namespace Server.Engines.Shadowguard
                 foreach (var spawn in list)
                     spawn.Delete();
 
-                list.Free();
+                ColUtility.Free(list);
 
-                Spawn.Free();
+                ColUtility.Free(Spawn);
                 Spawn = null;
             }
 
@@ -311,9 +311,9 @@ namespace Server.Engines.Shadowguard
                 foreach (var tree in list)
                     tree.Delete();
 
-                list.Free();
+                ColUtility.Free(list);
 
-                Trees.Free();
+                ColUtility.Free(Trees);
                 Trees = null;
             }
 
@@ -398,7 +398,7 @@ namespace Server.Engines.Shadowguard
 
             int toSpawn = 1 + (PartySize() * 2);
 
-			SpawnPoints.For((i, p) =>
+            ColUtility.For(SpawnPoints, (i, p) =>
 			{
                 ConvertOffset(ref p);
 
@@ -482,9 +482,9 @@ namespace Server.Engines.Shadowguard
                 foreach (Item armor in list)
                     armor.Delete();
 
-                list.Free();
+                ColUtility.Free(list);
 
-                Armor.Free();
+                ColUtility.Free(Armor);
                 Armor = null;
             }
 
@@ -495,9 +495,9 @@ namespace Server.Engines.Shadowguard
                 foreach (Item dest in list)
                     dest.Delete();
 
-                list.Free();
+                ColUtility.Free(list);
 
-                DestroyedArmor.Free();
+                ColUtility.Free(DestroyedArmor);
                 DestroyedArmor = null;
             }
 
@@ -508,9 +508,9 @@ namespace Server.Engines.Shadowguard
                 foreach (BaseCreature spawn in list)
                     spawn.Delete();
 
-                list.Free();
+                ColUtility.Free(list);
 
-                Spawn.Free();
+                ColUtility.Free(Spawn);
                 Spawn = null;
             }
 
@@ -521,9 +521,9 @@ namespace Server.Engines.Shadowguard
                 foreach (Item item in list)
                     item.Delete();
 
-                list.Free();
+                ColUtility.Free(list);
 
-                Items.Free();
+                ColUtility.Free(Items);
                 Items = null;
             }
 		}
@@ -751,9 +751,9 @@ namespace Server.Engines.Shadowguard
                 foreach (var canal in list)
                     canal.Delete();
 
-                list.Free();
+                ColUtility.Free(list);
 
-                ShadowguardCanals.Free();
+                ColUtility.Free(ShadowguardCanals);
                 ShadowguardCanals = null;
             }
 
@@ -764,15 +764,15 @@ namespace Server.Engines.Shadowguard
                 foreach (var elemental in list)
                     elemental.Delete();
 
-                list.Free();
+                ColUtility.Free(list);
 
-                Elementals.Free();
+                ColUtility.Free(Elementals);
                 Elementals = null;
             }
 
             if (FlowCheckers != null)
             {
-                FlowCheckers.Where(f => f != null).ForEach(f => f.EndEncounter());
+                ColUtility.ForEach(FlowCheckers.Where(f => f != null), f => f.EndEncounter());
             }
 		}
 		
@@ -869,7 +869,7 @@ namespace Server.Engines.Shadowguard
 					
 				if(_Checked != null)
 				{
-					_Checked.Free();
+                    ColUtility.Free(_Checked);
 					_Checked = null;
 				}
 				
@@ -1011,7 +1011,7 @@ namespace Server.Engines.Shadowguard
                     _Spigot.ItemID = 17278;
 
 				_Checked.ForEach(i => i.Movable = false);
-				_Checked.For((i, item) =>
+                ColUtility.For(_Checked, (i, item) =>
 				{
                     Timer.DelayCall(TimeSpan.FromMilliseconds(time), Fill, item);
                     time += 200;
@@ -1251,9 +1251,9 @@ namespace Server.Engines.Shadowguard
                 foreach (var drake in list)
                     drake.Delete();
 
-                list.Free();
+                ColUtility.Free(list);
 
-                Drakes.Free();
+                ColUtility.Free(Drakes);
                 Drakes = null;
             }
 
@@ -1398,7 +1398,7 @@ namespace Server.Engines.Shadowguard
 
             if (Bosses != null)
             {
-                Bosses.Free();
+                ColUtility.Free(Bosses);
                 Bosses = null;
             }
 

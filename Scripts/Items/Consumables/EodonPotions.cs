@@ -245,7 +245,7 @@ namespace Server.Items
                 EndTimer();
             else
             {
-                Contexts.ForEach((key, value) =>
+                ColUtility.ForEach(Contexts, (key, value) =>
                 {
                     if (value != null)
                     {

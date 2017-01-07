@@ -6,12 +6,12 @@ namespace Server.Items
     {
         [Constructable]
         public ArachnidDoom()
-            : base(0x0EB3)
         {
-            RandomInstrument();
             this.Hue = 1944;
             this.Weight = 4;
             this.Slayer = SlayerName.ArachnidDoom;
+
+            UsesRemaining = 450;
         }       
 
         public ArachnidDoom(Serial serial)

@@ -270,7 +270,7 @@ namespace Server.Engines.Shadowguard
 
             if (SummonedHelpers != null)
             {
-                SummonedHelpers.Free();
+                ColUtility.Free(SummonedHelpers);
             }
         }
 

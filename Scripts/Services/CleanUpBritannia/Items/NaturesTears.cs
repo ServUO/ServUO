@@ -6,12 +6,12 @@ namespace Server.Items
     {
         [Constructable]
         public NaturesTears()
-            : base(0x0EB3)
         {
-            RandomInstrument();
             this.Hue = 2075;
             this.Weight = 5;
             this.Slayer = SlayerName.Fey;
+
+            UsesRemaining = 450;
         }
 
         public NaturesTears(Serial serial)

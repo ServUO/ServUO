@@ -152,7 +152,12 @@ namespace Server.Engines.Shadowguard
 				
 				if(p != null)
 				{
-                    p.Members.Where(info => info.Mobile.Alive && Controller.Lobby.Contains(new Point2D(info.Mobile.X, info.Mobile.Y)) && info.Mobile.NetState != null).ForEach(info => AddPlayer(info.Mobile));
+                    ColUtility.ForEach(
+                        p.Members.Where(
+                        info => info.Mobile.Alive && 
+                            Controller.Lobby.Contains(new Point2D(info.Mobile.X, info.Mobile.Y)) && 
+                            info.Mobile.NetState != null), 
+                        info => AddPlayer(info.Mobile));
 				}
 				
 				AddPlayer(m);
@@ -182,7 +187,7 @@ namespace Server.Engines.Shadowguard
 		
 		public void DoWarning()
 		{
-            this.Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile).ForEach(m =>
+            ColUtility.ForEach(this.Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
 			{
 				m.SendLocalizedMessage(1156252); // You have 5 minutes remaining in the encounter!
 			});
@@ -194,7 +199,7 @@ namespace Server.Engines.Shadowguard
 		{
 			if(message) 
 			{
-                this.Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile).ForEach(m =>
+                ColUtility.ForEach(this.Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
 				{
 					m.SendLocalizedMessage(1156253, "", 0x32); // The encounter timer has expired!
 				});
@@ -243,10 +248,14 @@ namespace Server.Engines.Shadowguard
 		
 		private void RemovePlayers()
 		{
-            Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)).ForEach(m =>
-			{
-				MovePlayer(m, Controller.KickLocation, false);
-			});
+            ColUtility.ForEach(Region.GetEnumeratedMobiles().Where(
+                m => m is PlayerMobile || 
+                    (m is BaseCreature && 
+                    ((BaseCreature)m).GetMaster() is PlayerMobile)),
+                m =>
+			    {
+				    MovePlayer(m, Controller.KickLocation, false);
+			    });
 		}
 
         public static void MovePlayer(Mobile m, Point3D p, bool pets = true)

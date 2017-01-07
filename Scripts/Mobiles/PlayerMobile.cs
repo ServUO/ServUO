@@ -82,7 +82,8 @@ namespace Server.Mobiles
 		MechanicalLife = 0x04000000,
         HumilityHunt = 0x08000000,
         ToggleCutTopiaries = 0x10000000,
-        HasValiantStatReward = 0x20000000
+        HasValiantStatReward = 0x20000000,
+        RefuseTrades = 0x40000000,
     }
 
 	public enum NpcGuild
@@ -419,6 +420,13 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HasValiantStatReward { get { return GetFlag(PlayerFlag.HasValiantStatReward); } set { SetFlag(PlayerFlag.HasValiantStatReward, value); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool RefuseTrades
+        {
+            get { return GetFlag(PlayerFlag.RefuseTrades); }
+            set { SetFlag(PlayerFlag.RefuseTrades, value); }
+        }
 
 		#region Plant system
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -2012,16 +2020,21 @@ namespace Server.Mobiles
 
                     if (Core.SA)
                         list.Add(new CallbackEntry(1114299, new ContextCallback(OpenItemInsuranceMenu)));
-
-                    if (AutoRenewInsurance)
-					{
-						list.Add(new CallbackEntry(6202, CancelRenewInventoryInsurance));
-					}
-					else
-					{
-						list.Add(new CallbackEntry(6200, AutoRenewInventoryInsurance));
-					}
+                    else
+                    {
+                        if (AutoRenewInsurance)
+                        {
+                            list.Add(new CallbackEntry(6202, CancelRenewInventoryInsurance));
+                        }
+                        else
+                        {
+                            list.Add(new CallbackEntry(6200, AutoRenewInventoryInsurance));
+                        }
+                    }
 				}
+
+                if (Core.HS)
+                    list.Add(new CallbackEntry(RefuseTrades ? 1154112 : 1154113, new ContextCallback(ToggleTrades))); // Allow Trades / Refuse Trades
 
 				BaseHouse house = BaseHouse.FindHouseAt(this);
 
@@ -2576,6 +2589,11 @@ namespace Server.Mobiles
 
         #endregion
 
+        private void ToggleTrades()
+        {
+            RefuseTrades = !RefuseTrades;
+        }
+
         private void GetVendor()
 		{
 			BaseHouse house = BaseHouse.FindHouseAt(this);
@@ -2768,6 +2786,10 @@ namespace Server.Mobiles
 				{
 					msgNum = 1062779; // That person is already involved in a trade
 				}
+                else if (to is PlayerMobile && ((PlayerMobile)to).RefuseTrades)
+                {
+                    msgNum = 1154111; // ~1_NAME~ is refusing all trades.
+                }
 			}
 
 			if (msgNum == 0 && item != null)

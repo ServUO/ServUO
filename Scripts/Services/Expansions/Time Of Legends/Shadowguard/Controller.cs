@@ -264,7 +264,7 @@ namespace Server.Engines.Shadowguard
                 if (instances.Count > 0)
                     inst = instances[Utility.Random(instances.Count)];
 
-                instances.Free();
+                ColUtility.Free(instances);
                 return inst;
             }
             else
@@ -377,7 +377,7 @@ namespace Server.Engines.Shadowguard
 
             if (message && Queue.Count > 0)
             {
-                Queue.Keys.For((i, mob) =>
+                ColUtility.For(Queue.Keys, (i, mob) =>
                 {
                     Party p = Party.Get(mob);
 
@@ -460,7 +460,7 @@ namespace Server.Engines.Shadowguard
                         e.Instance.Region.Unregister();
                 });
 
-            Encounters.Free();
+            ColUtility.Free(Encounters);
             Encounters = null;
 
             if (Queue != null)
@@ -500,7 +500,7 @@ namespace Server.Engines.Shadowguard
 
             if(Table != null)
             {
-                Table.ForEach((m, encounter) =>
+                ColUtility.ForEach(Table, (m, encounter) =>
                 {
                     writer.Write(m);
                     writer.Write((int)encounter);

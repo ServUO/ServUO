@@ -431,7 +431,7 @@ namespace Server.Mobiles
                             Effects.SendLocationParticles(EffectItem.Create(p2, this.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
                         }
 
-                        mobiles.Free();
+                        ColUtility.Free(mobiles);
                         break;
                 }
             }
@@ -467,7 +467,7 @@ namespace Server.Mobiles
                         });
                     }
 
-                    mobiles.Free();
+                    ColUtility.Free(mobiles);
                 }
             }
         }
@@ -520,7 +520,7 @@ namespace Server.Mobiles
             else
                 itemid = -1;
 
-            items.Free();
+            ColUtility.Free(items);
             return itemid;
         }
 

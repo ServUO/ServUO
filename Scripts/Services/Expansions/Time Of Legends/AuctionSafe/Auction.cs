@@ -432,13 +432,13 @@ namespace Server.Engines.Auction
             try
             {
                 if (Bids != null)
-                    Bids.Free();
+                    ColUtility.Free(Bids);
 
                 if (BidHistory != null)
-                    BidHistory.Free();
+                    ColUtility.Free(BidHistory);
 
                 if (Viewers != null)
-                    Viewers.Free();
+                    ColUtility.Free(Viewers);
 
                 Bids = null;
                 BidHistory = null;
@@ -452,7 +452,7 @@ namespace Server.Engines.Auction
             if (Viewers == null)
                 return;
 
-            Viewers.Where(pm => pm != player).ForEach(pm =>
+            ColUtility.ForEach(Viewers.Where(pm => pm != player), pm =>
                 {
                     AuctionBidGump g = pm.FindGump(typeof(AuctionBidGump)) as AuctionBidGump;
 
@@ -482,7 +482,7 @@ namespace Server.Engines.Auction
 
             if (Viewers.Count == 0)
             {
-                Viewers.Free();
+                ColUtility.Free(Viewers);
                 Viewers = null;
             }
         }

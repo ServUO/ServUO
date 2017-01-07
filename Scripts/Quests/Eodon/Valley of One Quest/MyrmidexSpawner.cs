@@ -54,7 +54,7 @@ namespace Server.Items
             if (Spawn == null)
                 return;
 
-            Spawn.Where(bc => bc == null || !bc.Alive || bc.Deleted).ForEach(bc => Spawn.Remove(bc));
+            ColUtility.ForEach(Spawn.Where(bc => bc == null || !bc.Alive || bc.Deleted), bc => Spawn.Remove(bc));
 
             if (map != null && map != Map.Internal && !this.Deleted)
             {
@@ -103,7 +103,7 @@ namespace Server.Items
             else
             {
                 int count = 0;
-                Spawn.Where(bc => bc != null && bc.Alive).ForEach(bc => count++);
+                ColUtility.ForEach(Spawn.Where(bc => bc != null && bc.Alive), bc => count++);
 
                 if (count == 0)
                     Delete();
@@ -117,7 +117,7 @@ namespace Server.Items
 
             if (Spawn != null)
             {
-                Spawn.Free();
+                ColUtility.Free(Spawn);
                 Spawn = null;
             }
         }

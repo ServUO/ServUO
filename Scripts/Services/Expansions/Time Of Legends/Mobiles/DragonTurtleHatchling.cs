@@ -67,7 +67,7 @@ namespace Server.Mobiles
 
         public override void OnCarve(Mobile from, Corpse corpse, Item with)
         {
-            if (corpse != null && !corpse.Carved)
+            if (!Controlled && corpse != null && !corpse.Carved)
             {
                 from.SendLocalizedMessage(1156198); // You cut away some pelts, but they remain on the corpse.
                 corpse.DropItem(new DragonTurtleScute(4));

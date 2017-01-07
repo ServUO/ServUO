@@ -21,6 +21,9 @@ namespace Server.Mobiles
         public WildTiger(string name)
             : base(name, Utility.RandomBool() ? 1254 : 1255, 16071, AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
+            if (Body == 1255)
+                ItemID = 16072;
+
             SetStr(496, 554);
             SetDex(88, 124);
             SetInt(94, 163);
@@ -76,7 +79,7 @@ namespace Server.Mobiles
 
         public override void OnCarve(Mobile from, Corpse corpse, Item with)
         {
-            if (corpse != null && !corpse.Carved)
+            if (!Controlled && corpse != null && !corpse.Carved)
             {
                 from.SendLocalizedMessage(1156197); // You cut away some pelts, but they remain on the corpse.
                 corpse.DropItem(GetPelt);

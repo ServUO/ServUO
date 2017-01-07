@@ -6,12 +6,12 @@ namespace Server.Items
     {
         [Constructable]
         public PrimordialDecay()
-            : base(0x0EB3)
         {
-            RandomInstrument();
             this.Hue = 1927;
             this.Weight = 4;
             this.Slayer = SlayerName.ElementalBan;
+
+            UsesRemaining = 450;
         }
 
         public PrimordialDecay(Serial serial)

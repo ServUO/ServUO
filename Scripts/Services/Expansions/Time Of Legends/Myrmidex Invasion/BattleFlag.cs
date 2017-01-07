@@ -33,7 +33,7 @@ namespace Server.Engines.MyrmidexInvasion
         public static void DisplayWaveInfo(BattleSpawner spawner, Mobile m)
         {
             int delay = 0;
-            spawner.MyrmidexTeam.ForEach(kvp =>
+            ColUtility.ForEach(spawner.MyrmidexTeam, kvp =>
                 {
                     if (kvp.Value.Count > 0)
                     {
@@ -50,7 +50,7 @@ namespace Server.Engines.MyrmidexInvasion
                 });
 
             delay = 0;
-            spawner.TribeTeam.ForEach(kvp =>
+            ColUtility.ForEach(spawner.TribeTeam, kvp =>
                 {
                     if (kvp.Value.Count > 0)
                     {

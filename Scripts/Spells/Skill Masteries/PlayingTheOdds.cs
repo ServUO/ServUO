@@ -95,7 +95,8 @@ namespace Server.Spells.SkillMasteries
                         BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PlayingTheOdds, 1155913, 1155998, duration, m, args));
                         //~1_NAME~ grants you the following:<br>+~2_VAl~% Hit Chance Increase.<br>+~3_VAL~% Swing Speed Increase.
                 }
-                list.Free();
+
+                ColUtility.Free(list);
 
                 Caster.SendLocalizedMessage(1156091); // Your bow range has been reduced as you play the odds.
 

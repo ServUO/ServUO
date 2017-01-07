@@ -102,8 +102,8 @@ namespace Server.Spells.SkillMasteries
 
         public override void EndEffects()
         {
-            Skulls.Where(i => i != null && !i.Deleted).ForEach(i => i.Delete());
-            Skulls.Free();
+            ColUtility.ForEach(Skulls.Where(i => i != null && !i.Deleted), i => i.Delete());
+            ColUtility.Free(Skulls);
 
             BuffInfo.RemoveBuff(Caster, BuffIcon.Conduit);
         }
@@ -138,7 +138,7 @@ namespace Server.Spells.SkillMasteries
                     if (toAffect != null && callback != null)
                     {
                         toAffect.ForEach(m => callback(m, (double)conduit.Strength / 100.0));
-                        toAffect.Free();
+                        ColUtility.Free(toAffect);
                         return true;
                     }
                 }

@@ -36,7 +36,7 @@ namespace Server.Mobiles
         }
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBTinker());
+            this.m_SBInfos.Add(new SBTinker(this));
         }
 
         public override void Serialize(GenericWriter writer)

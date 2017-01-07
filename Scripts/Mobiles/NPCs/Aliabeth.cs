@@ -170,7 +170,7 @@ namespace Server.Engines.Quests
 
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBTinker());
+            this.SBInfos.Add(new SBTinker(this));
         }
 
         [Constructable]

@@ -114,7 +114,7 @@ namespace Server.Mobiles
                 }
             }
 
-            copy.Free();
+            ColUtility.Free(copy);
 		}
 			
 		private long _NextBubbleWander;
