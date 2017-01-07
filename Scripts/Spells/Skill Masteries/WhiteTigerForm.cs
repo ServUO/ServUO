@@ -213,7 +213,7 @@ namespace Server.Spells.SkillMasteries
             if (_Table == null)
                 return;
 
-            _Table.ForEach((mob, expires) =>
+            ColUtility.ForEach(_Table, (mob, expires) =>
                 {
                     if (expires < DateTime.UtcNow)
                         _Table.Remove(mob);

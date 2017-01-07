@@ -236,7 +236,7 @@ namespace Server.Mobiles
                 Timer.DelayCall(TimeSpan.FromSeconds(5), () => target.Send(SpeedControl.Disable));
             }
 
-            random.Free();
+            ColUtility.Free(random);
         }
 
         public void RaiseRocks()
@@ -377,8 +377,8 @@ namespace Server.Mobiles
 
             Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
             {
-                _Spawn.Where(sp => sp != null && sp.Alive).ForEach(sp => sp.Kill());
-                _Spawn.Free();
+                ColUtility.ForEach(_Spawn.Where(sp => sp != null && sp.Alive), sp => sp.Kill());
+                ColUtility.Free(_Spawn);
             });
         }
 
@@ -489,7 +489,7 @@ namespace Server.Mobiles
             if (list.Count > 0)
                 mob = list[Utility.Random(list.Count)];
 
-            list.Free();
+            ColUtility.Free(list);
             return mob;
         }
 

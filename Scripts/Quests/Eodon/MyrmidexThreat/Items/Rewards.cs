@@ -135,8 +135,8 @@ namespace Server.Items
 				AddBackground( 0, 0, 400, 400, 9270 );
 				
 				AddHtmlLocalized( 0, 15, 400, 16, 1154645, "#1156704", 0xFFFF, false, false ); // Select your destination:
-				
-				MoonstoneCrystal.Locations.For<int, Point3D>((i, key, value) =>
+
+                ColUtility.For<int, Point3D>(MoonstoneCrystal.Locations, (i, key, value) =>
 				{
 					AddHtmlLocalized(60, 45 + (i * 25), 250, 16, key, 0xFFFF, false, false);
 					AddButton(20, 50 + (i * 25), 2117, 2118, key, GumpButtonType.Reply, 0);

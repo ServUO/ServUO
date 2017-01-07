@@ -434,6 +434,13 @@ namespace Server.Items
             m_Instruments[from] = item;
         }
 
+        public BaseInstrument()
+        {
+            RandomInstrument();
+
+            UsesRemaining = Utility.RandomMinMax(this.InitMinUses, this.InitMaxUses);
+        }
+
         public BaseInstrument(int itemID, int wellSound, int badlySound)
             : base(itemID)
         {

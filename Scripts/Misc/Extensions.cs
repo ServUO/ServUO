@@ -237,9 +237,9 @@ namespace Server
         }
     }
 
-    public static class SystemExtensions
+    public static class ColUtility
     {
-        public static void Free<T>(this List<T> l)
+        public static void Free<T>(List<T> l)
         {
             if (l == null)
                 return;
@@ -248,7 +248,7 @@ namespace Server
             l.TrimExcess();
         }
 
-        public static void ForEach<T>(this IEnumerable<T> list, Action<T> action)
+        public static void ForEach<T>(IEnumerable<T> list, Action<T> action)
         {
             if (list == null || action == null)
                 return;
@@ -262,7 +262,7 @@ namespace Server
         }
 
         public static void ForEach<TKey, TValue>(
-            this IDictionary<TKey, TValue> dictionary, Action<KeyValuePair<TKey, TValue>> action)
+            IDictionary<TKey, TValue> dictionary, Action<KeyValuePair<TKey, TValue>> action)
         {
             if (dictionary == null || dictionary.Count == 0 || action == null)
                 return;
@@ -275,7 +275,7 @@ namespace Server
             Free(l);
         }
 
-        public static void ForEach<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, Action<TKey, TValue> action)
+        public static void ForEach<TKey, TValue>(IDictionary<TKey, TValue> dictionary, Action<TKey, TValue> action)
         {
             if (dictionary == null || dictionary.Count == 0 || action == null)
                 return;
@@ -288,7 +288,7 @@ namespace Server
             Free(l);
         }
 
-        public static void For<T>(this IEnumerable<T> list, Action<int, T> action)
+        public static void For<T>(IEnumerable<T> list, Action<int, T> action)
         {
             if (list == null || action == null)
                 return;
@@ -301,7 +301,7 @@ namespace Server
             Free(l);
         }
 
-        public static void For<TKey, TValue>(this IDictionary<TKey, TValue> list, Action<int, TKey, TValue> action)
+        public static void For<TKey, TValue>(IDictionary<TKey, TValue> list, Action<int, TKey, TValue> action)
         {
             if (list == null || action == null)
                 return;

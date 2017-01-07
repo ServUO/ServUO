@@ -136,7 +136,7 @@ namespace Server.Items
 					if(!IsHatching)
 					{
 						IsHatching = true;
-						Poachers.Free();
+                        ColUtility.Free(Poachers);
 						
 						Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(15, 30)), () =>
 						{
@@ -171,8 +171,8 @@ namespace Server.Items
 						
 						Hatchling = null;
 						Focus = null;
-						
-						Poachers.Free();
+
+                        ColUtility.Free(Poachers);
 						Poachers = null;
 					}
 				}
@@ -222,7 +222,7 @@ namespace Server.Items
             }
 
             if (Poachers != null)
-                Poachers.Free();
+                ColUtility.Free(Poachers);
         }
 
         public NestWithEgg(Serial serial)

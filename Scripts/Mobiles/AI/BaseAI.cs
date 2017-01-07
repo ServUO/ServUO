@@ -2051,11 +2051,15 @@ namespace Server.Mobiles
 						{
 							to.SendLocalizedMessage(1010507); // You cannot transfer a pet with a trade pending
 						}
-						else
-						{
-							Container c = fromState.AddTrade(toState);
-							c.DropItem(new TransferItem(m_Mobile));
-						}
+                        else if (to is PlayerMobile && ((PlayerMobile)to).RefuseTrades)
+                        {
+                            from.SendLocalizedMessage(1154111, to.Name); // ~1_NAME~ is refusing all trades.
+                        }
+                        else
+                        {
+                            Container c = fromState.AddTrade(toState);
+                            c.DropItem(new TransferItem(m_Mobile));
+                        }
 					}
 				}
 			}
@@ -2964,7 +2968,7 @@ namespace Server.Mobiles
 									continue;
 								}
 								// Ignore anyone if they are an Uncontrolled Summon
-								else if (c != null && c.Summoned)
+								else if (c != null && c.Summoned && !(c.GetMaster() is PlayerMobile))
 								{
 									continue;
 								}

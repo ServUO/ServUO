@@ -57,7 +57,7 @@ namespace Server.Items
             {
                 List<Mobile> players = _Region.GetPlayers();
                 players.ForEach(m => m.PrivateOverheadMessage(MessageType.Regular, 0x21, 1156506, m.NetState)); // *The Volcano is becoming unstable!*
-                players.Free();
+                ColUtility.Free(players);
 
                 _CurrentLava = LavaStart;
                 _NextLavaAdvance = Core.TickCount + 1000;

@@ -93,6 +93,12 @@ namespace Server.Engines.VvV
                 if (neg != null)
                 {
                     neg.Antique = 1;
+
+                    if (item is IDurability && ((IDurability)item).MaxHitPoints == 0)
+                    {
+                        ((IDurability)item).MaxHitPoints = 255;
+                        ((IDurability)item).HitPoints = 255;
+                    }
                 }
 
                 ViceVsVirtueSystem.Instance.AddVvVItem(item);

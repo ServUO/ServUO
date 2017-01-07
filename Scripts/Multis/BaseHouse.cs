@@ -2669,7 +2669,7 @@ namespace Server.Multis
             writer.WriteItemList(this.m_Doors, true);
 
             writer.Write(m_LockDowns.Count);
-            m_LockDowns.ForEach((key, value) =>
+            ColUtility.ForEach(m_LockDowns, (key, value) =>
                 {
                     writer.Write(key);
                     writer.Write(value);

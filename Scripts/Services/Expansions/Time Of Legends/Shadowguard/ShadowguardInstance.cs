@@ -140,7 +140,7 @@ namespace Server.Engines.Shadowguard
             if (ShadowguardController.Instance == null)
                 return;
 
-            ShadowguardController.Instance.Addons.Where(addon => addon.Map != Map.Internal).ForEach(addon =>
+            ColUtility.ForEach(ShadowguardController.Instance.Addons.Where(addon => addon.Map != Map.Internal), addon =>
                 {
                     ShadowguardInstance instance = ShadowguardController.GetInstance(addon.Location, addon.Map);
 

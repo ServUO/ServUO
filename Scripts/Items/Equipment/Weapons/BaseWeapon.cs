@@ -2105,13 +2105,13 @@ namespace Server.Items
                     splintering = true;
             }
 
-            double chance = NegativeAttributes.Antique > 0 ? 15 : 2;
+            double chance = NegativeAttributes.Antique > 0 ? 5 : 0;
+            bool acidicTarget = MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
 
-            if (m_MaxHits > 0 && m_AosAttributes.SpellChanneling == 0 && 
-                ((MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime)) || (defender != null && splintering) ||
-                 Utility.Random(100) <= chance)) // Stratics says 50% chance, seems more like 4%..
+            if ((m_AosAttributes.SpellChanneling == 0 || MaxRange > 1) && 
+                (acidicTarget || (defender != null && splintering) || Utility.Random(250) <= chance))    // Stratics says 50% chance, seems more like 4%..
             {
-                if (MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime))
+                if (MaxRange <= 1 && acidicTarget)
                 {
                     attacker.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500263); // *Acid blood scars your weapon!*
                 }
@@ -2123,23 +2123,22 @@ namespace Server.Items
                 }
                 else
                 {
-                    if (m_Hits > 0)
+                    if (m_MaxHits > 0)
                     {
-                        HitPoints--;
-                    }
-                    else if (m_MaxHits > 1)
-                    {
-                        MaxHitPoints--;
-
-                        if (Parent is Mobile)
+                        if (this.m_Hits >= 1)
                         {
-                            ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121);
-                            // Your equipment is severely damaged.
+                            HitPoints--;
                         }
-                    }
-                    else
-                    {
-                        Delete();
+                        else if (this.m_MaxHits > 0)
+                        {
+                            this.MaxHitPoints--;
+
+                            if (this.Parent is Mobile)
+                                ((Mobile)this.Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+
+                            if (m_MaxHits == 0)
+                                Delete();
+                        }
                     }
                 }
             }
