@@ -216,7 +216,10 @@ namespace Server.Engines.Shadowguard
 			
 			for(int i = 0; i < count; i++)
 			{
-				Point3D p = Combatant.Location;
+                if (Combatant == null)
+                    return;
+
+                Point3D p = Combatant.Location;
 				
 				for(int j = 0; j < 10; j++)
 				{
@@ -718,8 +721,11 @@ namespace Server.Engines.Shadowguard
 		public override void OnThink()
 		{
 			base.OnThink();
-			
-			if(Combatant is Mobile && InRange(Combatant.Location, 10))
+
+            if (Combatant == null)
+                return;
+
+            if (Combatant is Mobile && InRange(Combatant.Location, 10))
 			{
 				if(_NextNuke < DateTime.UtcNow && 0.05 > Utility.RandomDouble())
 				{
