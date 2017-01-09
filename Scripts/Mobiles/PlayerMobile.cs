@@ -52,7 +52,7 @@ namespace Server.Mobiles
 
 	#region Enums
 	[Flags]
-	public enum PlayerFlag // First 16 bits are reserved for default-distro use, start custom flags at 0x00010000
+	public enum PlayerFlag : ulong // First 16 bits are reserved for default-distro use, start custom flags at 0x00010000
 	{
 		None = 0x00000000,
 		Glassblowing = 0x00000001,
@@ -84,6 +84,7 @@ namespace Server.Mobiles
         ToggleCutTopiaries = 0x10000000,
         HasValiantStatReward = 0x20000000,
         RefuseTrades = 0x40000000,
+        DisabledPvpWarning = 0x80000000,
     }
 
 	public enum NpcGuild
@@ -428,8 +429,15 @@ namespace Server.Mobiles
             set { SetFlag(PlayerFlag.RefuseTrades, value); }
         }
 
-		#region Plant system
-		[CommandProperty(AccessLevel.GameMaster)]
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool DisabledPvpWarning
+        {
+            get { return GetFlag(PlayerFlag.DisabledPvpWarning); }
+            set { SetFlag(PlayerFlag.DisabledPvpWarning, value); }
+        }
+
+        #region Plant system
+        [CommandProperty(AccessLevel.GameMaster)]
 		public bool ToggleClippings { get { return GetFlag(PlayerFlag.ToggleClippings); } set { SetFlag(PlayerFlag.ToggleClippings, value); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -2072,7 +2080,10 @@ namespace Server.Mobiles
 				{
 					list.Add(new CallbackEntry(6210, ToggleChampionTitleDisplay));
 				}
-			}
+
+                if (DisabledPvpWarning)
+                    list.Add(new CallbackEntry(1113797, new ContextCallback(EnablePvpWarning)));
+            }
 			else
 			{
 				if (Core.TOL && from.InRange(this, 2))
@@ -2615,7 +2626,13 @@ namespace Server.Mobiles
 			}
 		}
 
-		private delegate void ContextCallback();
+        private void EnablePvpWarning()
+        {
+            DisabledPvpWarning = false;
+            SendLocalizedMessage(1113798); // Your PvP warning query has been re-enabled.
+        }
+
+        private delegate void ContextCallback();
 
 		private class CallbackEntry : ContextMenuEntry
 		{
