@@ -160,6 +160,17 @@ namespace Server.Items
                 else
                     item = Loot.RandomArmorOrShieldOrWeapon();
 
+                if (item != null && Core.HS && Server.Mobiles.RandomItemGenerator.Enabled)
+                {
+                    int min, max;
+                    TreasureMapChest.GetRandomItemStat(out min, out max);
+
+                    RunicReforging.GenerateRandomItem(item, 0, min, max);
+
+                    DropItem(item);
+                    continue;
+                }
+
                 if (item is BaseWeapon)
                 {
                     BaseWeapon weapon = (BaseWeapon)item;

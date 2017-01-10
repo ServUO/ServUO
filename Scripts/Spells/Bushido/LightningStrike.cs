@@ -98,6 +98,8 @@ namespace Server.Spells.Bushido
             double bushido = m.Skills[SkillName.Bushido].Value;
             int criticalChance = (int)((bushido * bushido) / 720.0);
 
+            m.Delta(MobileDelta.WeaponDamage);
+
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.LightningStrike, 1060599, 1153811, String.Format("50\t{0}", criticalChance)));
         }
 
@@ -108,6 +110,8 @@ namespace Server.Spells.Bushido
             {
                 ThePlayer.ExecutesLightningStrike = 0;
             }
+
+            attacker.Delta(MobileDelta.WeaponDamage);
 
             BuffInfo.RemoveBuff(attacker, BuffIcon.LightningStrike);
         }

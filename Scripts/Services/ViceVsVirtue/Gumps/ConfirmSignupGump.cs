@@ -49,9 +49,9 @@ namespace Server.Engines.VvV
                 case 2:
                     Guild g = User.Guild as Guild;
 
-                    if (g != null && BaseGuildGump.IsLeader(User, g))
+                    if (g != null)
                     {
-                        ViceVsVirtueSystem.Instance.TryAddGuild(g);
+                        ViceVsVirtueSystem.Instance.AddPlayer(User);
                     }
                     break;
             }

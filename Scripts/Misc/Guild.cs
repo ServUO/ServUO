@@ -1263,7 +1263,7 @@ namespace Server.Guilds
 				}
 
 				m.Guild = null;
-                Engines.Points.PointsSystem.ViceVsVirtue.OnRemovedFromGuild(m);
+                Engines.Points.PointsSystem.ViceVsVirtue.OnResign(m, true);
 			}
 
 			m_Members.Clear();
@@ -1657,7 +1657,7 @@ namespace Server.Guilds
 					guild.InvalidateWarNotoriety();
 				}
 
-                Engines.Points.PointsSystem.ViceVsVirtue.OnRemovedFromGuild(m);
+                Engines.Points.PointsSystem.ViceVsVirtue.OnResign(m, message == 1063411);
 
 				m.Delta(MobileDelta.Noto);
 			}

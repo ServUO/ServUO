@@ -260,7 +260,7 @@ namespace Server.Engines.VvV
                 return;
 
             CheckParticipation();
-            UpdateAllGumps(false);
+            UpdateAllGumps();
 
             if (StartTime + TimeSpan.FromMinutes(Duration) < DateTime.UtcNow)
             {
@@ -597,8 +597,10 @@ namespace Server.Engines.VvV
                 });
         }
 
-        public void OccupyAltar(Guild g)
+        public void OccupyAltar(PlayerMobile pm)
         {
+            Guild g = pm.Guild as Guild;
+
             VvVGuildBattleStats killerStats = GetGuildStats(g);
 
             foreach (KeyValuePair<Guild, VvVGuildBattleStats> kvp in GuildStats)
@@ -617,12 +619,12 @@ namespace Server.Engines.VvV
                 }
             }
 
-            SendStatusMessage(String.Format("{0} claimed the altar!", g.Abbreviation));
+            SendStatusMessage(String.Format("{0} claimed the altar!", g != null ? g.Abbreviation : pm.Name));
 
-            foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile p in Region.GetEnumeratedMobiles().Where(player => player is PlayerMobile))
             {
-                if (pm.QuestArrow != null)
-                    pm.QuestArrow = null;
+                if (p.QuestArrow != null)
+                    p.QuestArrow = null;
             }
 
             CheckScore();
@@ -827,7 +829,7 @@ namespace Server.Engines.VvV
             }
         }
 
-        public void UpdateAllGumps(bool recompile = true)
+        public void UpdateAllGumps()
         {
             if (Region == null)
                 return;
@@ -845,7 +847,7 @@ namespace Server.Engines.VvV
                 }
                 else
                 {
-                    g.Refresh(recompile);
+                    g.Refresh();
                 }
             }
         }

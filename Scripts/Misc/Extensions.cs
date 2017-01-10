@@ -232,8 +232,7 @@ namespace Server
                 yield return m;
             }
 
-            list.Clear();
-            list.TrimExcess();
+            ColUtility.Free(list);
         }
     }
 

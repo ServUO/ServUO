@@ -14,8 +14,6 @@ namespace Server.Engines.VvV
         public PlayerMobile User { get; set; }
         public VvVBattle Battle { get; set; }
 
-        public GumpHtml Countdown { get; set; }
-
         public override int GetTypeID()
         {
             return 0xF3ECC;
@@ -83,30 +81,16 @@ namespace Server.Engines.VvV
                 AddBackground(145, 271, (int)Math.Min(216, (stats.Points * offset)), 12, 30584);
             }
 
-            AddCountdown();
-        }
-
-        public void AddCountdown()
-        {
             TimeSpan left = (Battle.StartTime + TimeSpan.FromMinutes(VvVBattle.Duration)) - DateTime.UtcNow;
-            Countdown = new GumpHtml(210, 21, 233, 347, "<basefont color=#FF0000>" + String.Format("{0:mm\\:ss}", left), false, false);
 
-            Add(Countdown);
+            AddHtml(210, 21, 233, 347, "<basefont color=#FF0000>" + String.Format("{0:mm\\:ss}", left), false, false);
         }
 
         public void Refresh(bool recompile = true)
         {
-            if (recompile)
-            {
-                Entries.Clear();
-                Entries.TrimExcess();
-                AddGumpLayout();
-            }
-            else if (Entries.Contains(Countdown))
-            {
-                Entries.Remove(Countdown);
-                AddCountdown();
-            }
+            Entries.Clear();
+            Entries.TrimExcess();
+            AddGumpLayout();
 
             User.SendGump(this, false);
         }

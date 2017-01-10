@@ -138,9 +138,9 @@ namespace Server.Engines.VvV
             CheckTimer.Start();
         }
 
-        public void Complete(Guild g)
+        public void Complete(PlayerMobile pm)
         {
-            Timer.DelayCall<Guild>(TimeSpan.FromSeconds(5), Battle.OccupyAltar, g);
+            Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(5), Battle.OccupyAltar, pm);
             Timer.DelayCall(TimeSpan.FromSeconds(2), DoFireworks);
             IsActive = false;
 
@@ -235,9 +235,12 @@ namespace Server.Engines.VvV
 
                     if (OccupationTimer != null)
                     {
-                        Guild g = OccupationTimer.Occupier;
+                        if (OccupationTimer.Occupier == m)
+                            continue;
 
-                        if (entry.Guild != g && !entry.Guild.IsAlly(g))
+                        Guild g = OccupationTimer.Occupier.Guild as Guild;
+
+                        if (g == null || entry.Guild == null || (entry.Guild != g && !entry.Guild.IsAlly(g)))
                         {
                             Clear();
                             break;
@@ -245,14 +248,19 @@ namespace Server.Engines.VvV
                     }
                     else
                     {
-                        this.OccupationTimer = new OccupyTimer(this, entry.Guild);
-                        this.OccupationTimer.Start();
+                        this.OccupationTimer = new OccupyTimer(this, entry.Player);
                     }
                 }
             }
 
-            if (OccupationTimer != null && count == 0)
+            if (this.OccupationTimer != null && !this.OccupationTimer.Running && count > 0)
+            {
+                this.OccupationTimer.Start();
+            }
+            else if (OccupationTimer != null && count == 0)
+            {
                 Clear();
+            }
 
             eable.Free();
         }
@@ -268,12 +276,12 @@ namespace Server.Engines.VvV
 
         public class OccupyTimer : Timer
         {
-            public Guild Occupier { get; set; }
+            public PlayerMobile Occupier { get; set; }
             public VvVAltar Altar { get; set; }
 
             private int _Tick;
 
-            public OccupyTimer(VvVAltar altar, Guild occupier)
+            public OccupyTimer(VvVAltar altar, PlayerMobile occupier)
                 : base(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
             {
                 Occupier = occupier;
