@@ -1,5 +1,6 @@
 using System;
 using Server.Mobiles;
+using Server.Engines.Shadowguard;
 
 namespace Server.Items
 {
@@ -136,7 +137,7 @@ namespace Server.Items
                     typeof(Niporailem), typeof(DreamWraith),
                     typeof(EffeteUndeadGargoyle), typeof(UndeadGargoyle),
                     typeof(UndeadGuardian), typeof(PutridUndeadGargoyle),
-                    typeof(PutridUndeadGuardian)
+                    typeof(PutridUndeadGuardian), typeof(Juonar)
                 );
 
             undead.Entries = new SlayerEntry[0];
@@ -304,7 +305,8 @@ namespace Server.Items
                         typeof(Betballem), typeof(SkeletalLich),
                         typeof(UsagralemBallem), typeof(EffetePutridGargoyle),
                         typeof(EffeteUndeadGargoyle), typeof(PitFiend),
-                        typeof(ArchDaemon), typeof(AbyssalAbomination)
+                        typeof(ArchDaemon), typeof(AbyssalAbomination),
+                        typeof(Virtuebane)
                     );
 
                 abyss.Entries = new SlayerEntry[]

@@ -221,7 +221,9 @@ namespace Server.Engines.Craft
                 this.ForceNonExceptional(index);
                 this.SetNeededExpansion(index, Expansion.ML);
             }
+            #endregion
 
+            #region SA
             if (Core.SA)
             {
                 index = this.AddCraft(typeof(GargishBanner), 1044294, 1095312, 94.7, 115.0, typeof(Board), 1044041, 50, 1044351);
@@ -234,7 +236,13 @@ namespace Server.Engines.Craft
                 this.AddRes(index, typeof(Granite), 1044607, 10, 1044253);
                 this.AddRes(index, typeof(SmallPieceofBlackrock), 1150016, 10, 1044253);
                 this.AddRes(index, typeof(NexusCore), 1153501, 1, 1044253);
-            }         
+
+                index = AddCraft(typeof(Incubator), 1044294, 1112479, 90.0, 115.0, typeof(Board), 1044041, 100, 1044351);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(ChickenCoop), 1044294, 1112570, 90.0, 115.0, typeof(Board), 1044041, 150, 1044351);
+                SetNeededExpansion(index, Expansion.SA);
+            }
             #endregion
 
             #region TOL
