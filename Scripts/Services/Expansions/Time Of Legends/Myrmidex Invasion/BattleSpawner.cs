@@ -108,18 +108,21 @@ namespace Server.Engines.MyrmidexInvasion
                 ClearWave(Allegiance.Myrmidex, GetWave(MyrmidexTeam, bc));
                 winners = GetPlayers(Allegiance.Myrmidex);
                 RegionMessage(1156630); // The Myrmidex are victorious!  If you are allied to the Myrmidex visit the Tinker in the Barrab village to continue the quest!  Otherwise, continue the fight until your team is victorious!
-                return;
+                break;
             }
 
-            ColUtility.Free(list);
-            list = GetAll(Allegiance.Tribes);
-
-            foreach (BaseCreature bc in list.Where(b => IsInMyrmidexBase(b.Location) && 0.25 > Utility.RandomDouble()))
+            if (winners == null)
             {
-                ClearWave(Allegiance.Tribes, GetWave(TribeTeam, bc));
-                winners = GetPlayers(Allegiance.Tribes);
-                RegionMessage(1156631); // The Eodonians are victorious!  If you are allied to the Eodonians visit the Tinker in the Barrab village to continue the quest!  Otherwise, continue the fight until your team is victorious!
-                break;
+                ColUtility.Free(list);
+                list = GetAll(Allegiance.Tribes);
+
+                foreach (BaseCreature bc in list.Where(b => IsInMyrmidexBase(b.Location) && 0.25 > Utility.RandomDouble()))
+                {
+                    ClearWave(Allegiance.Tribes, GetWave(TribeTeam, bc));
+                    winners = GetPlayers(Allegiance.Tribes);
+                    RegionMessage(1156631); // The Eodonians are victorious!  If you are allied to the Eodonians visit the Tinker in the Barrab village to continue the quest!  Otherwise, continue the fight until your team is victorious!
+                    break;
+                }
             }
 
             if (winners != null)
@@ -308,12 +311,18 @@ namespace Server.Engines.MyrmidexInvasion
 
         public IEnumerable<PlayerMobile> GetPlayers(Allegiance allegiance)
         {
+            if (BattleRegion == null)
+                return null;
+
             return BattleRegion.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(p => MyrmidexInvasionSystem.IsAlliedWith(p, allegiance));
         }
 
         public bool HasPlayers(bool ignorestaff = true)
         {
-            return BattleRegion.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(m => !ignorestaff || m.AccessLevel == AccessLevel.Player).Count() > 0;
+            if (BattleRegion == null)
+                return false;
+
+            return BattleRegion.GetEnumeratedMobiles().Where(m => m is PlayerMobile && (!ignorestaff || m.AccessLevel == AccessLevel.Player)).Count() > 0;
         }
 
         public bool IsInMyrmidexBase(Point3D p)

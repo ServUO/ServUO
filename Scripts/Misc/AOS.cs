@@ -510,6 +510,9 @@ namespace Server
                 if (SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
                     value -= discordanceEffect * 2;
 
+                if (Block.IsBlocking(m))
+                    value -= 30;
+
                 #region SA
                 if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
                     value -= 10;
@@ -684,12 +687,10 @@ namespace Server
                 if (HitLower.IsUnderDefenseEffect(m))
                     value -= 25; // Under Hit Lower Defense effect -> 25% malus
 
-                int blockBonus = 0;
                 int discordanceEffect = 0;
                 int surpriseMalus = 0;
 
-                if (Block.GetBonus(m, ref blockBonus))
-                    value += blockBonus;
+                value += Block.GetBonus(m);
 
                 if (SurpriseAttack.GetMalus(m, ref surpriseMalus))
                     value -= surpriseMalus;

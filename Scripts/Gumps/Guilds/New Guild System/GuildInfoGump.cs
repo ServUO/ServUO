@@ -80,17 +80,14 @@ namespace Server.Guilds
             {
                 if (Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(player))
                 {
-                    if (isLeader)
-                    {
-                        AddButton(67, 375, 0x4B9, 0x4BA, 9, GumpButtonType.Reply, 0); // Resign Vice vs Virtue
-                        AddHtmlLocalized(92, 373, 170, 26, 1155557, m_IsResigningVvV ? 0x5000 : 0, false, false);
-                    }
+                    AddButton(67, 375, 0x4B9, 0x4BA, 9, GumpButtonType.Reply, 0); // Resign Vice vs Virtue
+                    AddHtmlLocalized(92, 373, 170, 26, 1155557, m_IsResigningVvV ? 0x5000 : 0, false, false);
 
                     AddBackground(255, 370, 170, 26, 0x2486);
                     AddButton(257, 375, 0x4B9, 0x4BA, 10, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(282, 373, 150, 26, 1114982, false, false); // Leaderboards
                 }
-                else if (isLeader)
+                else
                 {
                     AddButton(67, 375, 0x4B9, 0x4BA, 8, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(92, 373, 170, 26, 1155556, false, false); // Join Vice vs Virtue
@@ -112,8 +109,8 @@ namespace Server.Guilds
                 return;
 
             pm.DisplayGuildTitle = info.IsSwitched(0);
-			
-            switch( info.ButtonID )
+
+            switch (info.ButtonID)
             {
                 //1-3 handled by base.OnResponse
                 case 4:
@@ -158,35 +155,29 @@ namespace Server.Guilds
                         break;
                     }
                 case 8:
-                    if (IsLeader(pm, guild))
+                    if (pm.Young)
                     {
-                        if (pm.Young)
-                        {
-                            pm.SendLocalizedMessage(1155562); // Young players may not join Vice vs Virtue. Renounce your young player status by saying, "I renounce my young player status" and try again.
-                        }
-                        else
-                        {
-                            pm.SendGump(new Server.Engines.VvV.ConfirmSignupGump(pm));
-                        }
+                        pm.SendLocalizedMessage(1155562); // Young players may not join Vice vs Virtue. Renounce your young player status by saying, "I renounce my young player status" and try again.
+                    }
+                    else
+                    {
+                        pm.SendGump(new Server.Engines.VvV.ConfirmSignupGump(pm));
                     }
                     break;
                 case 9:
-                    if (IsLeader(pm, guild))
+                    if (Server.Engines.Points.PointsSystem.ViceVsVirtue.IsResigning(pm, guild))
                     {
-                        if (Server.Engines.Points.PointsSystem.ViceVsVirtue.IsResigning(pm, guild))
-                        {
-                            pm.SendLocalizedMessage(1155560); // You are currently in the process of quitting Vice vs Virtue.
-                        }
-                        else if (m_IsResigningVvV)
-                        {
-                            pm.SendLocalizedMessage(1155559); // You have begun the Vice vs Virtue resignation process.  You will be removed from VvV in 3 days.
-                            Server.Engines.Points.PointsSystem.ViceVsVirtue.ResignGuild(guild);
-                        }
-                        else
-                        {
-                            pm.SendLocalizedMessage(1155558); // Are you sure you wish to resign from Vice vs Virtue? You will not be allowed to rejoin for 3 days.
-                            pm.SendGump(new GuildInfoGump(pm, guild, false, true));
-                        }
+                        pm.SendLocalizedMessage(1155560); // You are currently in the process of quitting Vice vs Virtue.
+                    }
+                    else if (m_IsResigningVvV)
+                    {
+                        pm.SendLocalizedMessage(1155559); // You have begun the Vice vs Virtue resignation process.  You will be removed from VvV in 3 days.
+                        Server.Engines.Points.PointsSystem.ViceVsVirtue.OnResign(pm);
+                    }
+                    else
+                    {
+                        pm.SendLocalizedMessage(1155558); // Are you sure you wish to resign from Vice vs Virtue? You will not be allowed to rejoin for 3 days.
+                        pm.SendGump(new GuildInfoGump(pm, guild, false, true));
                     }
                     break;
                 case 10:

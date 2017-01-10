@@ -112,7 +112,7 @@ namespace Server.Spells
                 this.Caster.Animate(60, 10, 1, true, false, 0);
                 this.Caster.SendLocalizedMessage(1112567); // You are flying.
                 this.Caster.Flying = true;
-                BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.Fly, 1112567));
+                BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.Fly, 1112567, 1112208));
             }
 
             this.FinishSequence();

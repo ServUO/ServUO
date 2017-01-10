@@ -2287,6 +2287,8 @@ namespace Server.Items
 				}
 			}
 
+            percentageBonus -= Block.GetMeleeReduction(defender);
+
 			#region Stygian Abyss
 			percentageBonus += BattleLust.GetBonus(attacker, defender);
 

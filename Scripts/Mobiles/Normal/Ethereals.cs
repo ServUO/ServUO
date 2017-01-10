@@ -887,4 +887,38 @@ namespace Server.Mobiles
 			}
 		}
 	}
+
+    public class EtherealTiger : EtherealMount
+    {
+        [Constructable]
+        public EtherealTiger(bool light = false)
+            : base(0x9844, light ? 0x3EC7 : 0x3EC8)
+        { }
+
+        public EtherealTiger(Serial serial)
+            : base(serial)
+        { }
+
+        public override int LabelNumber { get { return 1154589; } } // Ethereal Tiger Statuette
+        //public override int EtherealHue { get { return 0; } }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            if (version <= 1 && Hue != 0)
+            {
+                Hue = 0;
+            }
+        }
+    }
 }
