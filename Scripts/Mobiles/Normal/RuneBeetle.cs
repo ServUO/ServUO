@@ -274,7 +274,7 @@ namespace Server.Mobiles
                 timer.Start();
 
                 if (defender is PlayerMobile)
-                    BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.RuneBeetleCorruption, 1153796, 1153823, TimeSpan.FromSeconds(5.0), defender, String.Format("{0}\t{1}\t{2}\t{3}\t{4}", mods[0], mods[1], mods[2], mods[3], mods[4] )));
+                    BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.RuneBeetleCorruption, 1153796, 1153823, TimeSpan.FromSeconds(5.0), defender, String.Format("{0}\t{1}\t{2}\t{3}\t{4}", phy, fire, cold, poison, energy)));
 
                 m_Table[defender] = timer;
             }
