@@ -155,6 +155,8 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.MedScrolls, 1);
         }
 
+        int phy, fire, cold, poison, energy;
+
         public override void OnGaveMeleeAttack(Mobile defender)
         {
             base.OnGaveMeleeAttack(defender);
@@ -214,14 +216,65 @@ namespace Server.Mobiles
                 }
 
                 for (int i = 0; i < mods.Count; ++i)
+                {
                     defender.AddResistanceMod(mods[i]);
+
+                    if (defender is PlayerMobile)
+                    {
+                        if (mods[i].Type == ResistanceType.Physical)
+                        {
+                            phy = mods[i].Offset;
+                        }
+                        else
+                        {
+                            phy = 0;
+                        }
+
+                        if (mods[i].Type == ResistanceType.Fire)
+                        {
+                            fire = mods[i].Offset;
+                        }
+                        else
+                        {
+                            fire = 0;
+                        }
+
+                        if (mods[i].Type == ResistanceType.Cold)
+                        {
+                            cold = mods[i].Offset;
+                        }
+                        else
+                        {
+                            cold = 0;
+                        }
+
+                        if (mods[i].Type == ResistanceType.Poison)
+                        {
+                            poison = mods[i].Offset;
+                        }
+                        else
+                        {
+                            poison = 0;
+                        }
+
+                        if (mods[i].Type == ResistanceType.Energy)
+                        {
+                            energy = mods[i].Offset;
+                        }
+                        else
+                        {
+                            energy = 0;
+                        }
+                    }
+                }
 
                 defender.FixedEffect(0x37B9, 10, 5);
 
                 timer = new ExpireTimer(defender, mods, TimeSpan.FromSeconds(5.0));
                 timer.Start();
 
-                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.RuneBeetleCorruption, 1153796, 1153823, TimeSpan.FromSeconds(5.0), defender, String.Format("{0}\t{1}\t{2}\t{3}\t{4}", mods[0], mods[1], mods[2], mods[3], mods[4] )));
+                if (defender is PlayerMobile)
+                    BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.RuneBeetleCorruption, 1153796, 1153823, TimeSpan.FromSeconds(5.0), defender, String.Format("{0}\t{1}\t{2}\t{3}\t{4}", phy, fire, cold, poison, energy)));
 
                 m_Table[defender] = timer;
             }
