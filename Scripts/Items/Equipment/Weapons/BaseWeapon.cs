@@ -1784,8 +1784,6 @@ namespace Server.Items
 
 			if (!blocked)
 			{
-				double positionChance = Utility.RandomDouble();
-
                 Layer randomLayer = _DamageLayers[Utility.Random(_DamageLayers.Length)];
                 Item armorItem = defender.FindItemOnLayer(randomLayer);
 
@@ -1803,6 +1801,7 @@ namespace Server.Items
 
         private Layer[] _DamageLayers =
         {
+            Layer.OneHanded,
             Layer.Talisman,
             Layer.InnerLegs,
             Layer.InnerTorso,
@@ -4981,7 +4980,7 @@ namespace Server.Items
 			}
 			#endregion
 
-            if (m_AosAttributes.Brittle != 0)
+            if (m_NegativeAttributes.Brittle == 0 && m_AosAttributes.Brittle != 0)
             {
                 list.Add(1116209); // Brittle
             }

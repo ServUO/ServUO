@@ -527,7 +527,7 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(KotlPowerCoil), 1044050, 1124171, 85.0, 135.0, typeof(WorkableGlass), 1154170, 5, 1154171);
             AddRes(index, typeof(CopperWire), 1026265, 5, 1150700);
             AddRes(index, typeof(IronIngot), 1044036, 100, 1044253);
-            AddRes(index, typeof(MoonstoneCrystalShard), 1026265, 5, 1156701);
+            AddRes(index, typeof(MoonstoneCrystalShard), 1124142, 5, 1156701);
             AddRecipe(index, (int)TinkerRecipes.KotlPowerCoil);
             SetNeededExpansion(index, Expansion.TOL);
             #endregion

@@ -68,7 +68,7 @@ namespace Server.Engines.VvV
             robe.ItemID = 9860;
             robe.Name = this.VvVType == VvVType.Virtue ? "Robe of Virtue" : "Robe of Vice";
 
-            SetWearable(robe, this.VvVType == VvVType.Virtue ? 1462 : 1461); // TODO: Get Hues
+            SetWearable(robe, this.VvVType == VvVType.Virtue ? ViceVsVirtueSystem.VirtueHue : ViceVsVirtueSystem.ViceHue); // TODO: Get Hues
         }
 
         public VvVPriest(Serial serial)

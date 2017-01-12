@@ -5461,7 +5461,6 @@ namespace Server.Mobiles
                     var fame = new List<int>();
                     var karma = new List<int>();
 
-                    bool givenQuestKill = false;
                     bool givenFactionKill = false;
                     bool givenToTKill = false;
                     bool givenVASKill = false;
@@ -5553,17 +5552,11 @@ namespace Server.Mobiles
                         {
                             QuestHelper.CheckCreature(pm, this); // This line moved up...
 
-                            if (givenQuestKill)
-                            {
-                                continue;
-                            }
-
                             QuestSystem qs = pm.Quest;
 
                             if (qs != null)
                             {
                                 qs.OnKill(this, c);
-                                givenQuestKill = true;
                             }
                         }
                     }
