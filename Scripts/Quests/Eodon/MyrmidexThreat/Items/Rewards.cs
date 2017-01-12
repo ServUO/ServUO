@@ -255,7 +255,7 @@ namespace Server.Items
 		public override int LabelNumber { get { return 1156690; } } // Wall Map of Eodon
 
 		[Constructable]
-		public EodonianWallMap() : base(15286)
+		public EodonianWallMap() : base(11635)
 		{
 		}
 		

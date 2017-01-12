@@ -118,6 +118,8 @@ namespace Server.Engines.Craft
                     return 1072651; // * Requires the "Mondain's Legacy" expansion
                 case Expansion.SA:
                     return 1094732; // * Requires the "Stygian Abyss" expansion
+                case Expansion.TOL:
+                    return 1155876; // * Requires the "Time of Legends" expansion.
                 default:
                     return String.Format("* Requires the \"{0}\" expansion", ExpansionInfo.GetInfo(expansion).Name);
             }
