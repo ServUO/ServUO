@@ -767,9 +767,12 @@ namespace Server.Engines.VvV
             teams.Sort();
 
             if (teams.Count > 0)
+            {
                 score = teams[0].Score;
-
-            return teams[0];
+                return teams[0];
+            }
+            
+            return null;
         }
 
         /// <summary>
