@@ -2383,6 +2383,12 @@ namespace Server.Items
             if (item is BaseJewel)
                 return ((BaseJewel)item).NegativeAttributes;
 
+            if (item is BaseTalisman)
+                return ((BaseTalisman)item).NegativeAttributes;
+
+            if (item is Spellbook)
+                return ((Spellbook)item).NegativeAttributes;
+
             return null;
         }
 

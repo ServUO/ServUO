@@ -123,9 +123,9 @@ namespace Server.Engines.VvV
             }
         }
 
-        public Dictionary<Guild, VvVGuildBattleStats> GuildStats { get; set; }
+        public List<BattleTeam> Teams { get; set; }
+
         public Dictionary<Mobile, DateTime> KillCooldown { get; set; }
-        public List<Guild> Participants { get; set; }
         public List<string> Messages { get; set; }
 
         public List<VvVAltar> Altars { get; set; }
@@ -153,8 +153,8 @@ namespace Server.Engines.VvV
         {
             System = sys;
 
-            Participants = new List<Guild>();
-            GuildStats = new Dictionary<Guild, VvVGuildBattleStats>();
+            Teams = new List<BattleTeam>();
+
             KillCooldown = new Dictionary<Mobile, DateTime>();
             Messages = new List<string>();
             Altars = new List<VvVAltar>();
@@ -326,10 +326,8 @@ namespace Server.Engines.VvV
                 {
                     Guild g = pm.Guild as Guild;
 
-                    if (pm.Alive && !pm.Hidden && g != null && !Participants.Contains(g) && vvv)
-                    {
-                        Participants.Add(g);
-                    }
+                    if (g != null && pm.Alive && !pm.Hidden)
+                        GetTeam(g);
                 }
             }
         }
@@ -344,7 +342,6 @@ namespace Server.Engines.VvV
             }
 
             CooldownEnds = DateTime.UtcNow + TimeSpan.FromMinutes(Cooldown);
-            ViceVsVirtueSystem.Instance.OnBattleEnd();
 
             foreach (VvVAltar altar in Altars)
             {
@@ -382,35 +379,18 @@ namespace Server.Engines.VvV
                 Sigil = null;
             }
 
-            Guild leader = GetLeader();
-
-            foreach (Mobile m in this.Region.GetEnumeratedMobiles())
-            {
-                Guild g = m.Guild as Guild;
-
-                if (leader != null && (g == leader || leader.IsAlly(g)))
-                {
-                    System.AwardPoints(m, WinSilver + (OppositionCount(g) * 50), message: false);
-                }
-            }
-
+            TallyStats();
             SendBattleStatsGump();
 
             System.SendVvVMessage(1154722); // A VvV battle has just concluded. The next battle will begin in less than five minutes!
 
-            Altars.Clear();
-            GuildStats.Clear();
+            ColUtility.Free(Altars);
+            ColUtility.Free(Teams);
             KillCooldown.Clear();
-            Participants.Clear();
-            Participants.TrimExcess();
-            Messages.Clear();
-            Messages.TrimExcess();
-            Traps.Clear();
-            Traps.TrimExcess();
-            Warned.Clear();
-            Warned.TrimExcess();
-            Turrets.Clear();
-            Turrets.TrimExcess();
+            ColUtility.Free(Messages);
+            ColUtility.Free(Traps);
+            ColUtility.Free(Warned);
+            ColUtility.Free(Turrets);
 
             if (Region is GuardedRegion)
             {
@@ -426,6 +406,66 @@ namespace Server.Engines.VvV
             NextAltarActivate = DateTime.MinValue;
             ManaSpikeEndEffects = DateTime.MinValue;
             NextManaSpike = DateTime.MinValue;
+        }
+
+        public void TallyStats()
+        {
+            BattleTeam leader = GetLeader();
+            List<Guild> added = new List<Guild>();
+
+            // Should never happen
+            if (leader.Guild == null)
+                return;
+
+            foreach (Mobile m in this.Region.GetEnumeratedMobiles())
+            {
+                Guild g = m.Guild as Guild;
+
+                if (g == null)
+                    continue;
+
+                if (leader != null && (leader.Guild == g || leader.Guild.IsAlly(g)))
+                {
+                    System.AwardPoints(m, WinSilver + (OppositionCount(g) * 50), message: false);
+                }
+
+                PlayerMobile pm = m as PlayerMobile;
+
+                if (pm != null)
+                {
+                    BattleTeam team = GetTeam(g);
+                    VvVPlayerBattleStats stats = GetPlayerStats(pm);
+                    VvVPlayerEntry entry = ViceVsVirtueSystem.Instance.GetPlayerEntry<VvVPlayerEntry>(pm);
+
+                    if (entry != null)
+                    {
+                        entry.Score += team.Score;
+                        entry.Points += stats.Silver;
+                        entry.Kills += stats.Kills;
+                        entry.Deaths += stats.Deaths;
+                        entry.Assists += stats.Assists;
+                        entry.ReturnedSigils += stats.ReturnedSigils;
+                        entry.DisarmedTraps += stats.Disarmed;
+                        entry.StolenSigils += stats.Stolen;
+
+                        if (added.Contains(g))
+                            continue;
+                        else
+                            added.Add(g);
+
+                        if (!ViceVsVirtueSystem.Instance.GuildStats.ContainsKey(g))
+                            ViceVsVirtueSystem.Instance.GuildStats[g] = new VvVGuildStats(g);
+
+                        VvVGuildStats gstats = ViceVsVirtueSystem.Instance.GuildStats[g];
+
+                        gstats.Kills += team.Kills;
+                        gstats.ReturnedSigils += team.ReturnedSigils;
+                        gstats.Score += team.Score;
+                    }
+                }
+            }
+
+            ColUtility.Free(added);
         }
 
         public void SpawnSigil()
@@ -484,15 +524,36 @@ namespace Server.Engines.VvV
             }
         }
 
-        public VvVGuildBattleStats GetGuildStats(Guild g)
+        public VvVPlayerBattleStats GetPlayerStats(PlayerMobile pm)
         {
-            if (g == null)
+            if (pm == null || pm.Guild == null)
                 return null;
 
-            if (!GuildStats.ContainsKey(g))
-                GuildStats[g] = new VvVGuildBattleStats(g);
+            Guild g = pm.Guild as Guild;
 
-            return GuildStats[g];
+            BattleTeam team = GetTeam(g);
+            VvVPlayerBattleStats stats = team.PlayerStats.FirstOrDefault(s => s.Player == pm);
+
+            if (stats == null)
+            {
+                stats = new VvVPlayerBattleStats(pm);
+                team.PlayerStats.Add(stats);
+            }
+
+            return stats;
+        }
+
+        public BattleTeam GetTeam(Guild g)
+        {
+            BattleTeam team = Teams.FirstOrDefault(t => t.Guild == g || t.Guild.IsAlly(g));
+
+            if (team != null)
+                return team;
+
+            team = new BattleTeam(g);
+            Teams.Add(team);
+
+            return team;
         }
 
         public void Update(Mobile m, UpdateType type)
@@ -507,77 +568,105 @@ namespace Server.Engines.VvV
 
         public void Update(VvVPlayerEntry victim, VvVPlayerEntry killer, UpdateType type)
         {
-            VvVGuildBattleStats killerStats = GetGuildStats(killer.Guild);
-            VvVGuildBattleStats victimStats = victim == null ? null : GetGuildStats(victim.Guild);
+            if (killer == null || killer.Player == null)
+                return;
+
+            VvVPlayerBattleStats killerStats = GetPlayerStats(killer.Player);
+            VvVPlayerBattleStats victimStats = victim == null ? null : GetPlayerStats(victim.Player);
+
+            BattleTeam killerTeam = GetTeam(killer.Guild);
+            BattleTeam victimTeam = null;
+            
+            if(victim != null)
+                victimTeam = GetTeam(victim.Guild);
 
             switch (type)
             {
                 case UpdateType.Kill:
-                    if (killer != null) killer.Kills++;
-                    if (victim != null) victim.Deaths++;
                     if (killerStats != null) killerStats.Kills++;
                     if (victimStats != null) victimStats.Deaths++;
+
+                    if (killerTeam != null)
+                        killerTeam.Kills++;
+
+                    if (victimTeam != null)
+                        victimTeam.Deaths++;
 
                     if (victim != null && victim.Player != null)
                     {
                         if (!KillCooldown.ContainsKey(victim.Player) || KillCooldown[victim.Player] < DateTime.UtcNow)
                         {
-                            if (killerStats != null) 
-                                killerStats.Points += KillPoints;
+                            if (killerTeam != null)
+                            {
+                                killerTeam.Score += (int)KillPoints;
+                                killerTeam.Silver += KillSilver + (OppositionCount(killer.Guild) * 50);
+                            }
 
                             SendStatusMessage(String.Format("{0} has killed {1}!", killer.Player.Name, victim.Player.Name));
-                            killerStats.Silver += KillSilver + (OppositionCount(killer.Guild) * 50);
                             KillCooldown[victim.Player] = DateTime.UtcNow + TimeSpan.FromMinutes(KillCooldownDuration);
                         }
                     }
 
                     break;
                 case UpdateType.Assist:
-                    if(killer != null) 
-                        killer.Assists++;
-
                     if (killerStats != null) 
                         killerStats.Assists++;
+
+                    if (killerTeam != null)
+                        killerTeam.Assists++;
+
                     break;
                 case UpdateType.Steal:
                     if (killerStats != null)
                     {
-                        killer.StolenSigils++;
                         killerStats.Stolen++;
                         SendStatusMessage(String.Format("{0} has stolen the sigil!", killer.Player.Name));
                     }
+
+                    if (killerTeam != null)
+                        killerTeam.Assists++;
+
                     break;
                 case UpdateType.TurnInVice:
-                    if (killerStats != null) 
-                    {
-                        killer.ReturnedSigils++;
-                        killerStats.ViceReturned++; 
-                        killerStats.Points += TurnInPoints;
-                        killerStats.Silver += TurnInSilver + (OppositionCount(killer.Guild) * 50);
-                        SendStatusMessage(String.Format("{0} has returned the sigil!", killer.Player.Name));
-                        NextSigilSpawn = DateTime.UtcNow + TimeSpan.FromMinutes(1);
-                    }
-                    RemovePriests();
-                    break;
                 case UpdateType.TurnInVirtue:
-                    if (killerStats != null)
+                    if (killerTeam != null)
                     {
-                        killer.ReturnedSigils++;
-                        killerStats.VirtueReturned++; 
-                        killerStats.Points += TurnInPoints;
-                        killerStats.Silver += TurnInSilver + (OppositionCount(killer.Guild) * 50);
-                        SendStatusMessage(String.Format("{0} has returned the sigil!", killer.Player.Name));
-                        NextSigilSpawn = DateTime.UtcNow + TimeSpan.FromMinutes(1);
+                        killerTeam.Score += (int)TurnInPoints;
+                        killerTeam.Silver += TurnInSilver + (OppositionCount(killer.Guild) * 50);
                     }
+
+                    if (killerStats != null && killerTeam != null)
+                    {
+                        if (type == UpdateType.TurnInVirtue)
+                        {
+                            killerStats.VirtueReturned++;
+                            killerTeam.VirtueReturned++;
+                        }
+                        else
+                        {
+                            killerStats.ViceReturned++;
+                            killerTeam.ViceReturned++;
+                        }
+                    }
+
+                    SendStatusMessage(String.Format("{0} has returned the sigil!", killer.Player.Name));
+
+                    NextSigilSpawn = DateTime.UtcNow + TimeSpan.FromMinutes(1);
                     RemovePriests();
+
                     break;
                 case UpdateType.Disarm:
+                    SendStatusMessage(String.Format("{0} has disarmed a trap!", killer.Player.Name));
+
                     if (killerStats != null)
                     {
                         killerStats.Disarmed++;
-                        killer.DisarmedTraps++;
-                        killerStats.Silver += DisarmSilver + (OppositionCount(killer.Guild) * 50);
-                        SendStatusMessage(String.Format("{0} has disarmed a trap!", killer.Player.Name));
+                    }
+
+                    if (killerTeam != null)
+                    {
+                        killerTeam.Silver += DisarmSilver + (OppositionCount(killer.Guild) * 50);
+                        killerTeam.Disarmed++;
                     }
                     break;
             }
@@ -597,29 +686,14 @@ namespace Server.Engines.VvV
                 });
         }
 
-        public void OccupyAltar(PlayerMobile pm)
+        public void OccupyAltar(Guild g)
         {
-            Guild g = pm.Guild as Guild;
+            BattleTeam team = GetTeam(g);
 
-            VvVGuildBattleStats killerStats = GetGuildStats(g);
+            team.Score += (int)AltarPoints;
+            team.Silver += AltarSilver + (OppositionCount(g) * 50);
 
-            foreach (KeyValuePair<Guild, VvVGuildBattleStats> kvp in GuildStats)
-            {
-                Guild guild = kvp.Key;
-
-                if (guild == g || guild.IsAlly(g))
-                {
-                    VvVGuildBattleStats stats = GetGuildStats(guild);
-
-                    if (stats != null)
-                    {
-                        stats.Points += AltarPoints;
-                        stats.Silver += AltarSilver + (OppositionCount(g) * 50);
-                    }
-                }
-            }
-
-            SendStatusMessage(String.Format("{0} claimed the altar!", g != null ? g.Abbreviation : pm.Name));
+            SendStatusMessage(String.Format("{0} claimed the altar!", g != null ? g.Abbreviation : "somebody"));
 
             foreach (PlayerMobile p in Region.GetEnumeratedMobiles().Where(player => player is PlayerMobile))
             {
@@ -636,20 +710,17 @@ namespace Server.Engines.VvV
             if (!OnGoing)
                 return;
 
-            if (Participants.Count == 1)
+            if (Teams.Count == 1)
             {
-                Guild g = Participants[0];
+                BattleTeam team = Teams[0];
 
-                if (!GuildStats.ContainsKey(g))
-                    GuildStats[g] = new VvVGuildBattleStats(g);
-
-                GuildStats[g].Points += OccupyPoints;
+                team.Score += (int)OccupyPoints;
                 UpdateAllGumps();
                 CheckScore();
 
                 if (OnGoing && NextAnnouncement < DateTime.UtcNow)
                 {
-                    System.SendVvVMessage(1154957, g.Name); // ~1_NAME~ is occupying the city!
+                    System.SendVvVMessage(1154957, team.Guild.Name); // ~1_NAME~ is occupying the city!
                     NextAnnouncement = DateTime.UtcNow + TimeSpan.FromMinutes(Announcement);
                 }
             }
@@ -666,7 +737,7 @@ namespace Server.Engines.VvV
         public void CheckScore()
         {
             int score;
-            Guild leader = GetLeader(out score);
+            GetLeader(out score);
 
             if (score >= ScoreToWin)
             {
@@ -677,7 +748,7 @@ namespace Server.Engines.VvV
             UpdateAllGumps();
         }
 
-        public Guild GetLeader()
+        public BattleTeam GetLeader()
         {
             int score;
             return GetLeader(out score);
@@ -688,60 +759,17 @@ namespace Server.Engines.VvV
         /// </summary>
         /// <param name="score"></param>
         /// <returns></returns>
-        public Guild GetLeader(out int score)
+        public BattleTeam GetLeader(out int score)
         {
-            Guild leader = null;
             score = 0;
 
-            foreach (Guild g in Participants)
-            {
-                if(!GuildStats.ContainsKey(g))
-                    GuildStats[g] = new VvVGuildBattleStats(g);
+            List<BattleTeam> teams = new List<BattleTeam>(Teams);
+            teams.Sort();
 
-                if (leader == null || GuildStats[g].Points > score)
-                {
-                    leader = g;
-                    score = (int)GuildStats[g].Points;
-                }
-            }
+            if (teams.Count > 0)
+                score = teams[0].Score;
 
-            return leader;
-        }
-
-        /// <summary>
-        /// Gets all allied participating guilds
-        /// </summary>
-        /// <param name="g"></param>
-        /// <returns></returns>
-        public List<Guild> GetAlliance(Guild g)
-        {
-            if (g == null)
-                return null;
-
-            List<Guild> alliance = new List<Guild>();
-
-            foreach (Guild gu in Participants.Where(guild => guild == g || g.IsAlly(guild)))
-            {
-                alliance.Add(gu);
-            }
-
-            return alliance;
-        }
-
-        /// <summary>
-        /// Indicates whether a guild has an alliance
-        /// </summary>
-        /// <param name="g"></param>
-        /// <returns></returns>
-        public bool HasAlliance(Guild g)
-        {
-            foreach (Guild guild in GuildStats.Keys)
-            {
-                if (g.IsAlly(guild))
-                    return true;
-            }
-
-            return false;
+            return teams[0];
         }
 
         /// <summary>
@@ -754,43 +782,21 @@ namespace Server.Engines.VvV
             List<Guild> exempt = new List<Guild>();
             int count = 0;
 
-            foreach (Guild G in Participants.Where(gui => gui != g && !gui.IsAlly(g)))
+            foreach (BattleTeam team in Teams)
             {
-                if (exempt.Contains(G))
+                if (team.Guild == null || team.Guild == g || team.Guild.IsAlly(g) || exempt.Contains(g))
                     continue;
 
                 count++;
 
-                if (G.Alliance != null)
+                if (team.Guild.Alliance != null)
                 {
-                    foreach (Guild guil in G.Alliance.Members.Where(guil => !exempt.Contains(guil)))
+                    foreach (Guild guil in team.Guild.Alliance.Members.Where(guil => !exempt.Contains(guil)))
                         exempt.Add(guil);
                 }
             }
 
-            exempt.Clear();
-            exempt.TrimExcess();
-
-            return count;
-        }
-
-        /// <summary>
-        /// Friendly guild count
-        /// </summary>
-        /// <param name="g"></param>
-        /// <returns></returns>
-        public int FriendlyCount(Guild g)
-        {
-            List<Guild> guilds = Participants;
-            int count = 0;
-
-            foreach (Guild gu in Participants.Where(gui => gui != g && gui.IsAlly(g)))
-            {
-                count++;
-            }
-
-            guilds.Clear();
-            guilds.TrimExcess();
+            ColUtility.Free(exempt);
 
             return count;
         }
@@ -887,13 +893,12 @@ namespace Server.Engines.VvV
             System = system;
 
             Altars = new List<VvVAltar>();
-            GuildStats = new Dictionary<Guild, VvVGuildBattleStats>();
             KillCooldown = new Dictionary<Mobile, DateTime>();
-            Participants = new List<Guild>();
             Messages = new List<string>();
             Traps = new List<VvVTrap>();
             Warned = new List<Mobile>();
             Turrets = new List<CannonTurret>();
+            Teams = new List<BattleTeam>();
 
             OnGoing = reader.ReadBool();
 
@@ -930,14 +935,23 @@ namespace Server.Engines.VvV
                     }
                 }
 
-                count = reader.ReadInt();
-                for (int i = 0; i < count; i++)
+                if (version == 1)
                 {
-                    Guild g = reader.ReadGuild() as Guild;
-                    VvVGuildBattleStats stats = new VvVGuildBattleStats(reader, g);
-
-                    if (g != null)
-                        GuildStats[g] = stats;
+                    count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        BattleTeam team = new BattleTeam(reader);
+                        Teams.Add(team);
+                    }
+                }
+                else
+                {
+                    count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        Guild g = reader.ReadGuild() as Guild;
+                        VvVGuildBattleStats stats = new VvVGuildBattleStats(reader, g);
+                    }
                 }
 
                 count = reader.ReadInt();
@@ -965,7 +979,7 @@ namespace Server.Engines.VvV
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(0);
+            writer.Write(1);
 
             writer.Write(OnGoing);
 
@@ -986,11 +1000,16 @@ namespace Server.Engines.VvV
                 writer.Write(Altars.Count);
                 Altars.ForEach(altar => writer.Write(altar));
 
-                writer.Write(GuildStats.Count);
+                /*writer.Write(GuildStats.Count);
                 foreach (KeyValuePair<Guild, VvVGuildBattleStats> kvp in GuildStats)
                 {
                     writer.Write(kvp.Key);
                     kvp.Value.Serialize(writer);
+                }*/
+                writer.Write(Teams.Count);
+                foreach (BattleTeam team in Teams)
+                {
+                    team.Serialize(writer);
                 }
 
                 writer.Write(Traps.Count);

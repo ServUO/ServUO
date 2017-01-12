@@ -90,8 +90,6 @@ namespace Server.Engines.VvV
 
                     if (i != null)
                     {
-                        Backpack.DropItem(i);
-
                         if (i is IOwnerRestricted)
                             ((IOwnerRestricted)i).OwnerName = "Your Player Name";
 
@@ -109,7 +107,15 @@ namespace Server.Engines.VvV
                         if (neg != null)
                         {
                             neg.Antique = 1;
+
+                            if (i is IDurability && ((IDurability)i).MaxHitPoints == 0)
+                            {
+                                ((IDurability)i).MaxHitPoints = 255;
+                                ((IDurability)i).HitPoints = 255;
+                            }
                         }
+
+                        Backpack.DropItem(i);
                     }
                 }
             }

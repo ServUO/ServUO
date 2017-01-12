@@ -972,6 +972,9 @@
 		  <rect x="2488" y="3928" width="9" height="11" />
 		  <go x="2496" y="3932" z="0" />
 		</region>
+		<region priority="50" name="South Britannian Sea">
+			<rect x="688" y="3700" width="1412" height="380" />
+		</region>
 	</Facet>
 	<Facet name="Trammel">
 		<region type="GuardedRegion" priority="50" name="Moongates">
@@ -1969,6 +1972,9 @@
 		<region type="NoHousingRegion" priority="50" name="FireIsleCasino">
 			<rect x="4041" y="3364" width="60" height="64" />
 			<go x="4047" y="3371" z="0" />
+		</region>
+		<region priority="50" name="South Britannian Sea">
+			<rect x="688" y="3700" width="1412" height="380" />
 		</region>
 	</Facet>
 	<Facet name="Ilshenar">
