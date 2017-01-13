@@ -19,6 +19,8 @@ namespace Server.Items
             Attributes.BonusHits = 3;
             Attributes.RegenHits = 1;
             Hue = 132;
+
+            Layer = Layer.OuterTorso;
         }
 
         public override int InitMinHits { get { return 255; } }
@@ -35,10 +37,21 @@ namespace Server.Items
             writer.Write(0);
         }
 
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Layer != Layer.OuterTorso)
+            {
+                if (Parent is Mobile)
+                {
+                    ((Mobile)Parent).AddToBackpack(this);
+                }
+
+                Layer = Layer.OuterTorso;
+            }
         }
     }
 }
