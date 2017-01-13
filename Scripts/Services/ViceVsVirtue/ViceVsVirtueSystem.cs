@@ -402,7 +402,7 @@ namespace Server.Engines.VvV
             Guild toguild = to.Guild as Guild;
             
             // This will handle those who recently quit VvV, they are always attackable
-            if ((toguild == null && fromguild != null)  || (fromguild == null && toGuild != null))
+            if ((toguild == null && fromguild != null)  || (fromguild == null && toguild != null))
                 return true;
 
             // in the guild, and/or allied
