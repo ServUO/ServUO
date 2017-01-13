@@ -13,6 +13,21 @@ namespace Server.Regions
         public static void Initialize()
         {
             EventSink.Login += new LoginEventHandler(OnLogin);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
+            {
+                foreach (CorgulRegion reg in Region.Regions.OfType<CorgulRegion>())
+                {
+                    if (reg.Altar != null && reg.Altar.Activated)
+                        continue;
+
+                    foreach (BaseMulti multi in reg.GetEnumeratedMultis())
+                    {
+                        if (multi is BaseBoat)
+                            reg.RemoveBoat((BaseBoat)multi);
+                    }
+                }
+            });
         }
 
         private List<Item> m_Markers;

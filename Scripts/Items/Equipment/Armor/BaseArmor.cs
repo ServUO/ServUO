@@ -3051,10 +3051,11 @@ namespace Server.Items
             }
             #endregion
 
-			if (typeRes == null)
+            if (typeRes == null || craftItem.ForceNonExceptional)
 				typeRes = craftItem.Resources.GetAt(0).ItemType;
 
 			Resource = CraftResources.GetFromType(typeRes);
+
             PlayerConstructed = true;
 
             CraftContext context = craftSystem.GetContext(from);
@@ -3062,12 +3063,12 @@ namespace Server.Items
             if (context != null && context.DoNotColor)
                 this.Hue = 0;
 
-            if (this.Quality == ArmorQuality.Exceptional)
+            if (this.Quality == ArmorQuality.Exceptional && !craftItem.ForceNonExceptional)
             {
-                if (!(Core.ML && this is BaseShield))		// Guessed Core.ML removed exceptional resist bonuses from crafted shields
+                if (!(Core.ML && this is BaseShield) && !craftItem.ForceNonExceptional)		// Guessed Core.ML removed exceptional resist bonuses from crafted shields
                     this.DistributeBonuses((tool is BaseRunicTool ? 6 : Core.SE ? 15 : 14)); // Not sure since when, but right now 15 points are added, not 14.
 
-                if (Core.ML && !(this is BaseShield) && !(this is GargishLeatherWingArmor))
+                if (Core.ML && !(this is BaseShield) && !craftItem.ForceNonExceptional)
                 {
                     int bonus = (int)(from.Skills.ArmsLore.Value / 20);
 
@@ -3105,7 +3106,7 @@ namespace Server.Items
                 }
             }
 
-            if (Core.AOS && tool is BaseRunicTool)
+            if (Core.AOS && tool is BaseRunicTool && !craftItem.ForceNonExceptional)
                 ((BaseRunicTool)tool).ApplyAttributesTo(this);
 
             #region Mondain's Legacy

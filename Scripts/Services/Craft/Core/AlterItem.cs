@@ -302,6 +302,9 @@ namespace Server.Engines.Craft
 			        return false;
 	        }
 
+            if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
+                return false;
+
             if (item is IRewardItem)
                 return false;
 

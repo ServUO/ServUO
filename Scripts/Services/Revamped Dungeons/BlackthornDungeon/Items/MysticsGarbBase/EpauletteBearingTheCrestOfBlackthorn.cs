@@ -16,7 +16,9 @@ namespace Server.Items
             ItemID = 0x9985;            
             Attributes.LowerManaCost = 1;
             Attributes.BonusMana = 5;
-            Hue = 1306;            
+            Hue = 1306;
+
+            Layer = Layer.OuterTorso;
         }
 
         public override int InitMinHits { get { return 255; } }
@@ -37,6 +39,16 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Layer != Layer.OuterTorso)
+            {
+                if (Parent is Mobile)
+                {
+                    ((Mobile)Parent).AddToBackpack(this);
+                }
+
+                Layer = Layer.OuterTorso;
+            }
         }
     }
 }
