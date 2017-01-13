@@ -659,7 +659,7 @@ namespace Server.Engines.Points
             Entries[typeof(MedusaBlood)] = 1000.0;
             Entries[typeof(MedusaDarkScales)] = 200.0;
             Entries[typeof(MedusaLightScales)] = 200.0;
-            Entries[typeof(MiniHouseDeed)] = 6500.0;
+            Entries[typeof(ContestMiniHouseDeed)] = 6500.0;
             Entries[typeof(Moonstone)] = 5000.0;
             Entries[typeof(MysticsGuard)] = 2500.0;
             Entries[typeof(PowerCrystal)] = 100.0;

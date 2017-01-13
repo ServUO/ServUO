@@ -43,11 +43,11 @@ namespace Server.Mobiles
 
             this.Fame = 15000;
             this.Karma = -15000;
-			
+
             if (Utility.RandomDouble() < .25)
                 this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-				
-            switch ( Utility.Random(10))
+
+            switch (Utility.Random(10))
             {
                 case 0:
                     this.PackItem(new LeftArm());
@@ -80,10 +80,10 @@ namespace Server.Mobiles
                     this.PackItem(new BonePile());
                     break;
             }
-				
+
             this.Tamable = true;
             this.ControlSlots = 3;
-            this.MinTameSkill = 93.9;			
+            this.MinTameSkill = 93.9;
         }
 
         public RuneBeetle(Serial serial)
@@ -155,6 +155,8 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.MedScrolls, 1);
         }
 
+        int phy, fire, cold, poison, energy;
+
         public override void OnGaveMeleeAttack(Mobile defender)
         {
             base.OnGaveMeleeAttack(defender);
@@ -178,39 +180,81 @@ namespace Server.Mobiles
 
                 List<ResistanceMod> mods = new List<ResistanceMod>();
 
+                phy = 0; fire = 0; cold = 0; poison = 0; energy = 0;
+
                 if (Core.ML)
                 {
                     if (defender.PhysicalResistance > 0)
-                        mods.Add(new ResistanceMod(ResistanceType.Physical, -(defender.PhysicalResistance / 2)));
+                    {
+                        phy = defender.PhysicalResistance / 2;
+
+                        mods.Add(new ResistanceMod(ResistanceType.Physical, -phy));
+                    }
 
                     if (defender.FireResistance > 0)
-                        mods.Add(new ResistanceMod(ResistanceType.Fire, -(defender.FireResistance / 2)));
+                    {
+                        fire = defender.FireResistance / 2;
+
+                        mods.Add(new ResistanceMod(ResistanceType.Fire, -fire));
+                    }
 
                     if (defender.ColdResistance > 0)
-                        mods.Add(new ResistanceMod(ResistanceType.Cold, -(defender.ColdResistance / 2)));
+                    {
+                        cold = defender.ColdResistance / 2;
+
+                        mods.Add(new ResistanceMod(ResistanceType.Cold, -cold));
+                    }
 
                     if (defender.PoisonResistance > 0)
-                        mods.Add(new ResistanceMod(ResistanceType.Poison, -(defender.PoisonResistance / 2)));
+                    {
+                        poison = defender.PoisonResistance / 2;
+
+                        mods.Add(new ResistanceMod(ResistanceType.Poison, -poison));
+                    }
 
                     if (defender.EnergyResistance > 0)
-                        mods.Add(new ResistanceMod(ResistanceType.Energy, -(defender.EnergyResistance / 2)));
+                    {
+                        energy = defender.EnergyResistance / 2;
+
+                        mods.Add(new ResistanceMod(ResistanceType.Energy, -energy));
+                    }
                 }
                 else
                 {
                     if (defender.PhysicalResistance > 0)
-                        mods.Add(new ResistanceMod(ResistanceType.Physical, (defender.PhysicalResistance > 70) ? -70 : -defender.PhysicalResistance));
+                    {
+                        phy = (defender.PhysicalResistance > 70) ? 70 : defender.PhysicalResistance;
+
+                        mods.Add(new ResistanceMod(ResistanceType.Physical, -phy));
+                    }
 
                     if (defender.FireResistance > 0)
-                        mods.Add(new ResistanceMod(ResistanceType.Fire, (defender.FireResistance > 70) ? -70 : -defender.FireResistance));
+                    {
+                        fire = (defender.FireResistance > 70) ? 70 : defender.FireResistance;
+
+                        mods.Add(new ResistanceMod(ResistanceType.Fire, -fire));
+                    }
 
                     if (defender.ColdResistance > 0)
-                        mods.Add(new ResistanceMod(ResistanceType.Cold, (defender.ColdResistance > 70) ? -70 : -defender.ColdResistance));
+                    {
+                        cold = (defender.ColdResistance > 70) ? 70 : defender.ColdResistance;
+
+                        mods.Add(new ResistanceMod(ResistanceType.Cold, -cold));
+                    }
 
                     if (defender.PoisonResistance > 0)
-                        mods.Add(new ResistanceMod(ResistanceType.Poison, (defender.PoisonResistance > 70) ? -70 : -defender.PoisonResistance));
+                    {
+                        poison = (defender.PoisonResistance > 70) ? 70 : defender.PoisonResistance;
+
+                        mods.Add(new ResistanceMod(ResistanceType.Poison, -poison));
+                    }
 
                     if (defender.EnergyResistance > 0)
-                        mods.Add(new ResistanceMod(ResistanceType.Energy, (defender.EnergyResistance > 70) ? -70 : -defender.EnergyResistance));
+                    {
+                        energy = (defender.EnergyResistance > 70) ? 70 : defender.EnergyResistance;
+
+                        mods.Add(new ResistanceMod(ResistanceType.Energy, -energy));
+                    }
                 }
 
                 for (int i = 0; i < mods.Count; ++i)
@@ -221,7 +265,7 @@ namespace Server.Mobiles
                 timer = new ExpireTimer(defender, mods, TimeSpan.FromSeconds(5.0));
                 timer.Start();
 
-                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.RuneBeetleCorruption, 1153796, 1153823, TimeSpan.FromSeconds(5.0), defender, String.Format("{0}\t{1}\t{2}\t{3}\t{4}", mods[0], mods[1], mods[2], mods[3], mods[4] )));
+                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.RuneBeetleCorruption, 1153796, 1153823, TimeSpan.FromSeconds(5.0), defender, String.Format("{0}\t{1}\t{2}\t{3}\t{4}", phy, cold, poison, energy, fire)));
 
                 m_Table[defender] = timer;
             }

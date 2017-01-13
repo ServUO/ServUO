@@ -413,8 +413,7 @@ namespace Server.Engines.VvV
             BattleTeam leader = GetLeader();
             List<Guild> added = new List<Guild>();
 
-            // Should never happen
-            if (leader.Guild == null)
+            if (leader == null || leader.Guild == null)
                 return;
 
             foreach (Mobile m in this.Region.GetEnumeratedMobiles())
@@ -767,9 +766,12 @@ namespace Server.Engines.VvV
             teams.Sort();
 
             if (teams.Count > 0)
+            {
                 score = teams[0].Score;
-
-            return teams[0];
+                return teams[0];
+            }
+            
+            return null;
         }
 
         /// <summary>
