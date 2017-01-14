@@ -376,6 +376,10 @@ namespace Server.Engines.VvV
         public static bool IsEnemy(Mobile from, Mobile to)
         {
             //TODO: Support for VvV city games regarding non-participants in the city, as well as ones who flagged
+            if(from == null || to == null)
+                return false;
+                
+            //basecreatures convert to their masters
             if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
                 from = ((BaseCreature)from).GetMaster();
 
@@ -385,6 +389,7 @@ namespace Server.Engines.VvV
             VvVPlayerEntry fromentry = Instance.GetPlayerEntry<VvVPlayerEntry>(from);
             VvVPlayerEntry toentry = Instance.GetPlayerEntry<VvVPlayerEntry>(to);
 
+            // TODO: Support for FlaggedTo. For now, any of these are null or inactive, not enemies!
             if (fromentry == null || toentry == null || !fromentry.Active || !toentry.Active)
             {
                 if (fromentry != null && toentry == null && FlaggedTo != null && FlaggedTo.ContainsKey(from) && FlaggedTo[from] == to)
@@ -393,12 +398,14 @@ namespace Server.Engines.VvV
                 return false;
             }
 
-            Guild fromguild = fromentry.Guild;
-            Guild toguild = toentry.Guild;
-
-            if (toguild == null || fromguild == null)
+            Guild fromguild = from.Guild as Guild;
+            Guild toguild = to.Guild as Guild;
+            
+            // This will handle those who recently quit VvV, they are always attackable
+            if ((toguild == null && fromguild != null)  || (fromguild == null && toguild != null))
                 return true;
 
+            // in the guild, and/or allied
             return fromguild != toguild && !fromguild.IsAlly(toguild);
         }
 
