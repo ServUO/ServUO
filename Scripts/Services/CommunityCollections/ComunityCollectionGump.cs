@@ -394,7 +394,126 @@ namespace Server.Gumps
                 if (from.Backpack == null)
                     return;
 
-                // Make sure we have enough
+                if (m_Selected.Type == typeof(Gold))
+                {
+                    if (amount * m_Selected.Points < 1)
+                    {
+                        from.SendLocalizedMessage(1073167); // You do not have enough of that item to make a donation!
+                        from.SendGump(new ComunityCollectionGump((PlayerMobile)from, m_Collection, m_Location));
+                        return;
+                    }
+
+                    Item[] items = from.Backpack.FindItemsByType(m_Selected.Type, true);
+                    Account acct = from.Account as Account;
+
+                    int goldcount = 0;
+                    int accountcount = acct == null ? 0 : acct.TotalGold;
+
+                    foreach (Item item in items)
+                        goldcount += item.Amount;
+
+                    if (goldcount >= amount)
+                    {
+                        foreach (Item item in items)
+                        {
+                            if (item.Amount <= amount)
+                            {
+                                item.Delete();
+                                amount -= item.Amount;
+                            }
+                            else
+                            {
+                                item.Amount -= amount;
+                                amount = 0;
+                            }
+
+                            if (amount == 0)
+                                break;
+                        }
+                    }
+                    else if (goldcount + accountcount >= amount)
+                    {
+                        foreach (Item item in items)
+                        {
+                            amount -= item.Amount;
+                            item.Delete();
+                        }
+
+                        Banker.Withdraw(from, amount);
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
+                        from.SendGump(new ComunityCollectionGump((PlayerMobile)from, m_Collection, m_Location));
+                        return;
+                    }
+
+                    m_Collection.Donate((PlayerMobile)from, m_Selected, amount);
+                    return;
+                }
+                else if (m_Selected.Type == typeof(Fish) || m_Selected.Type == typeof(Crab) || m_Selected.Type == typeof(Lobster))
+                {
+                    if (amount * m_Selected.Points < 1)
+                    {
+                        from.SendLocalizedMessage(1073167); // You do not have enough of that item to make a donation!
+                        from.SendGump(new ComunityCollectionGump((PlayerMobile)from, m_Collection, m_Location));
+                        return;
+                    }
+
+                    Item[] items;
+                    
+                    if(m_Selected.Type == typeof(Fish))
+                        items = ComunityCollectionGump.FindFishyItems(from.Backpack);
+                    else
+                        items = ComunityCollectionGump.FindCrabsAndLobsters(from.Backpack);
+
+                    if (items != null)
+                    {
+                        // count items
+                        int count = 0;
+
+                        for (int i = 0; i < items.Length; i++)
+                            if (m_Selected.Validate((PlayerMobile)from, items[i]) && !items[i].Deleted)
+                                count += items[i].Amount;
+
+                        // check
+                        if (amount > count)
+                        {
+                            from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
+                            from.SendGump(new ComunityCollectionGump((PlayerMobile)from, m_Collection, m_Location));
+                            return;
+                        }
+                        else if (amount * m_Selected.Points < 1)
+                        {
+                            from.SendLocalizedMessage(1073167); // You do not have enough of that item to make a donation!
+                            from.SendGump(new ComunityCollectionGump((PlayerMobile)from, m_Collection, m_Location));
+                            return;
+                        }
+
+                        // donate
+                        int deleted = 0;
+
+                        for (int i = 0; i < items.Length && deleted < amount; i++)
+                        {
+                            if (m_Selected.Validate((PlayerMobile)from, items[i]) && items[i].Stackable && items[i].Amount + deleted > amount && !items[i].Deleted)
+                            {
+                                items[i].Amount -= amount - deleted;
+                                deleted += amount - deleted;
+                            }
+                            else if (m_Selected.Validate((PlayerMobile)from, items[i]) && !items[i].Deleted)
+                            {
+                                deleted += items[i].Amount;
+                                items[i].Delete();
+                            }
+                        }
+
+                        m_Collection.Donate((PlayerMobile)from, m_Selected, amount);
+                        return;
+                    }
+                    else
+                        from.SendLocalizedMessage(1073182); // You do not have enough to make a donation of that magnitude!
+
+                }
                 if(m_Selected.Type == typeof(BankCheck))
                 {
                     int count = from.Backpack.GetChecksWorth(true);
@@ -426,6 +545,7 @@ namespace Server.Gumps
                 {
                     from.Backpack.ConsumeTotal(m_Selected.Type, amount, true, true);
                 }
+
                 m_Collection.Donate((PlayerMobile)from, m_Selected, amount);
             }
 
