@@ -374,31 +374,9 @@ namespace Server.Gumps
                     {
                         this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Generating"), LabelColor32), false, false);
 
-                        /*AddButtonLabeled(20, 150, GetButtonID(3, 100), "Documentation");
-                        AddButtonLabeled(220, 150, GetButtonID(3, 107), "Rebuild Categorization");*/
-
-                        #region Sender
-                        this.AddButtonLabeled(20, 150, this.GetButtonID(3, 137), "Decorate Mondain's Legacy");
-                        this.AddButtonLabeled(220, 150, this.GetButtonID(3, 138), "Remove Mondain's Legacy");
-                        #endregion
-
-                        this.AddButtonLabeled(20, 175, this.GetButtonID(3, 101), "Teleporters");
-                        this.AddButtonLabeled(220, 175, this.GetButtonID(3, 102), "Moongates");
-
-                        this.AddButtonLabeled(20, 200, this.GetButtonID(3, 103), "Vendors");
-                        this.AddButtonLabeled(220, 200, this.GetButtonID(3, 106), "Decoration");
-
-                        this.AddButtonLabeled(20, 225, this.GetButtonID(3, 104), "Doors");
-                        this.AddButtonLabeled(220, 225, this.GetButtonID(3, 105), "Signs");
-
-                        #region Sender
-                        this.AddButton(10, 175 - 1 + 5, 10006, 10006, this.GetButtonID(3, 131), GumpButtonType.Reply, 0); // TelGenDelete
-                        this.AddButton(210, 175 - 1 + 5, 10006, 10006, this.GetButtonID(3, 132), GumpButtonType.Reply, 0); // MoonGenDelete
-                        this.AddButton(10, 200 - 1 + 5, 10006, 10006, this.GetButtonID(3, 133), GumpButtonType.Reply, 0); // UOAMVendorsDelete
-                        this.AddButton(10, 225 - 1 + 5, 10006, 10006, this.GetButtonID(3, 134), GumpButtonType.Reply, 0); // DoorGenDelete
-                        this.AddButton(210, 225 - 1 + 5, 10006, 10006, this.GetButtonID(3, 135), GumpButtonType.Reply, 0); // SignGenDelete
-                        this.AddButton(210, 200 - 1 + 5, 10006, 10006, this.GetButtonID(3, 136), GumpButtonType.Reply, 0); // DecorateDelete
-                        #endregion
+                        this.AddButtonLabeled(20, 150, this.GetButtonID(3, 101), "Create World");
+                        this.AddButtonLabeled(20, 175, this.GetButtonID(3, 102), "Delete World");
+                        this.AddButtonLabeled(20, 200, this.GetButtonID(3, 103), "Recreate World");
 
                         this.AddHtml(20, 275, 400, 30, this.Color(this.Center("Statics"), LabelColor32), false, false);
 
@@ -1804,33 +1782,17 @@ namespace Server.Gumps
                             case 3:
                                 page = AdminGumpPage.Administer_Commands;
                                 break;
-                            case 100:
-                                this.InvokeCommand("DocGen");
-                                notice = "Documentation has been generated.";
-                                break;
                             case 101:
-                                this.InvokeCommand("TelGen");
-                                notice = "Teleporters have been generated.";
+                                this.InvokeCommand("CreateWorld nogump");
+                                notice = "The world has been created.";
                                 break;
                             case 102:
-                                this.InvokeCommand("MoonGen");
-                                notice = "Moongates have been generated.";
+                                this.InvokeCommand("DeleteWorld nogump");
+                                notice = "The world has been deleted.";
                                 break;
                             case 103:
-                                this.InvokeCommand("UOAMVendors");
-                                notice = "Vendor spawners have been generated.";
-                                break;
-                            case 104:
-                                this.InvokeCommand("DoorGen");
-                                notice = "Doors have been generated.";
-                                break;
-                            case 105:
-                                this.InvokeCommand("SignGen");
-                                notice = "Signs have been generated.";
-                                break;
-                            case 106:
-                                this.InvokeCommand("Decorate");
-                                notice = "Decoration has been generated.";
+                                this.InvokeCommand("RecreateWorld nogump");
+                                notice = "The world has been recreated.";
                                 break;
                             case 107:
                                 this.InvokeCommand("RebuildCategorization");
@@ -1844,40 +1806,6 @@ namespace Server.Gumps
                                 this.InvokeCommand("Unfreeze");
                                 notice = "Target bounding points.";
                                 break;
-                                // + Sender
-                            case 131:
-                                this.InvokeCommand("TelGenDelete");
-                                notice = "Teleporters have been deleted.";
-                                break;
-                            case 132:
-                                this.InvokeCommand("MoonGenDelete");
-                                notice = "Moongates have been deleted.";
-                                break;
-                            case 133:
-                                this.InvokeCommand("UOAMVendorsDelete");
-                                notice = "Vendor spawners have been deleted.";
-                                break;
-                            case 134:
-                                this.InvokeCommand("DoorGenDelete");
-                                notice = "Doors have been deleted.";
-                                break;
-                            case 135:
-                                this.InvokeCommand("SignGenDelete");
-                                notice = "Signs have been deleted.";
-                                break;
-                            case 136:
-                                this.InvokeCommand("DecorateDelete");
-                                notice = "Decoration has been deleted.";
-                                break;
-                            case 137:
-                                this.InvokeCommand("DecorateML");
-                                notice = "Mondain's Legacy has been Generated.";
-                                break;
-                            case 138:
-                                this.InvokeCommand("DecorateMLDelete");
-                                notice = "Mondain's Legacy has been removed.";
-                                break;
-                                // - Sender
                             case 200:
                                 this.InvokeCommand("Save");
                                 notice = "The world has been saved.";

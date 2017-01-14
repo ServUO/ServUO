@@ -13,12 +13,12 @@ namespace Server
 	public class QuestArrow
 	{
 		private readonly Mobile m_Mobile;
-		private readonly Mobile m_Target;
+		private readonly IPoint3D m_Target;
 		private bool m_Running;
 
 		public Mobile Mobile { get { return m_Mobile; } }
 
-		public Mobile Target { get { return m_Target; } }
+		public IPoint3D Target { get { return m_Target; } }
 
 		public bool Running { get { return m_Running; } }
 
@@ -43,7 +43,14 @@ namespace Server
 
 			if (ns.HighSeas)
 			{
-				ns.Send(new SetArrowHS(x, y, m_Target.Serial));
+				if (m_Target is IEntity)
+				{
+					ns.Send(new SetArrowHS(x, y, ((IEntity)m_Target).Serial));
+				}
+				else
+				{
+					ns.Send(new SetArrowHS(x, y, Serial.MinusOne));
+				}
 			}
 			else
 			{
@@ -71,7 +78,14 @@ namespace Server
 			{
 				if (ns.HighSeas)
 				{
-					ns.Send(new CancelArrowHS(x, y, m_Target.Serial));
+					if (m_Target is IEntity)
+					{
+						ns.Send(new CancelArrowHS(x, y, ((IEntity)m_Target).Serial));
+					}
+					else
+					{
+						ns.Send(new CancelArrowHS(x, y, Serial.MinusOne));
+					}
 				}
 				else
 				{
@@ -89,14 +103,14 @@ namespace Server
 		public virtual void OnClick(bool rightClick)
 		{ }
 
-		public QuestArrow(Mobile m, Mobile t)
+		public QuestArrow(Mobile m, IPoint3D t)
 		{
 			m_Running = true;
 			m_Mobile = m;
 			m_Target = t;
 		}
 
-		public QuestArrow(Mobile m, Mobile t, int x, int y)
+		public QuestArrow(Mobile m, IPoint3D t, int x, int y)
 			: this(m, t)
 		{
 			Update(x, y);

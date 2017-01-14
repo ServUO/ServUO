@@ -1,80 +1,217 @@
 using System;
 using Server.Gumps;
 using Server.Items;
+using System.Collections.Generic;
+using Server;
+using Server.Mobiles;
+using Server.Spells;
+using Server.Network;
 
 namespace Server.Spells.Mystic
 {
-    public class EnchantSpell : MysticSpell
-    {
-        private static readonly SpellInfo m_Info = new SpellInfo(
-            "Enchant", "In Ort Ylem",
-            680,
-            9022, //change to correct number.
-            Reagent.MandrakeRoot,
-            Reagent.SulfurousAsh,
-            Reagent.SpidersSilk);
-        public EnchantSpell(Mobile caster, Item scroll)
-            : base(caster, scroll, m_Info)
+	public class EnchantSpell : MysticSpell
+	{
+        private static readonly string ModName = "EnchantAttribute";
+
+        public override SpellCircle Circle { get { return SpellCircle.Second; } }
+        public override bool ClearHandsOnCast { get { return false; } }
+
+        public BaseWeapon Weapon { get; set; }
+        public AosWeaponAttribute Attribute { get; set; }
+
+		private static SpellInfo m_Info = new SpellInfo(
+                "Enchant", "In Ort Ylem",
+				230,
+				9022,
+				Reagent.SpidersSilk,
+				Reagent.MandrakeRoot,
+				Reagent.SulfurousAsh
+			);
+
+		public EnchantSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
+		{
+		}
+
+        public EnchantSpell( Mobile caster, Item scroll, BaseWeapon weapon, AosWeaponAttribute attribute ) : base( caster, scroll, m_Info )
         {
+            Weapon = weapon;
+            this.Attribute = attribute;
         }
 
-        // Temporarily enchants a held weapon with a hit spell effect.
-        public override int RequiredMana
+        public override bool CheckCast()
         {
-            get
+            if (Weapon == null)
             {
-                return 6;
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(0.75);
-            }
-        }
-        public override bool ClearHandsOnCast
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override void OnCast()
-        {
-            BaseWeapon weapon = this.Caster.Weapon as BaseWeapon;
+                BaseWeapon wep = Caster.Weapon as BaseWeapon;
 
-            if (weapon == null || weapon is Fists)
-            {
-                this.Caster.SendLocalizedMessage(501078); // You must be holding a weapon.
-                return;
-            }
-
-            if (!this.Caster.CanBeginAction(typeof(EnchantSpell)))
-            {
-                this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
-            }
-            else
-            {
-                if (this.CheckSequence())
+                if (wep == null)
+                    Caster.SendLocalizedMessage(501078); // You must be holding a weapon.
+                else
                 {
-                    if (this.Caster.HasGump(typeof(EnchantGump)))
-                        this.Caster.CloseGump(typeof(EnchantGump));
+                    if (Caster.HasGump(typeof(EnchantSpellGump)))
+                        Caster.CloseGump(typeof(EnchantSpellGump));
 
-                    this.Caster.SendGump(new EnchantGump());
-
-                    this.Caster.PlaySound(0x387);
-                    this.Caster.FixedParticles(0x3779, 1, 15, 9905, 32, 2, EffectLayer.Head);
-                    this.Caster.FixedParticles(0x37B9, 1, 14, 9502, 32, 5, (EffectLayer)255);
+                    Caster.SendGump(new EnchantSpellGump(Caster, Scroll, wep));
                 }
             }
+            else if (IsUnderSpellEffects(Caster, Weapon) || Weapon.Immolating || Weapon.Consecrated)
+                Caster.SendLocalizedMessage(1080128); //You cannot use this ability while your weapon is enchanted.
+            else if (Weapon.FocusWeilder != null)
+                Caster.SendLocalizedMessage(1080446); // You cannot enchant an item that is under the effects of the ninjitsu focus attack ability.
+            else
+                return true;
+
+            return false;
+        }
+
+        public override void OnCast()
+        {
+            if (CheckWSequence() && CheckSequence() && Caster.Weapon == Weapon)
+            {
+                Caster.PlaySound(0x64E);
+                Caster.FixedEffect(0x37C4, 10, 14, 4, 3);
+
+                Caster.SendMessage("You enchant the weapon.");
+
+                int prim = (int)Caster.Skills[CastSkill].Value;
+                int sec = (int)Caster.Skills[DamageSkill].Value;
+
+                int value = (50 * (prim + sec)) / 240;
+                double duration = ((double)(prim + sec) / 2.0) + 30.0;
+
+                if (Table == null)
+                    Table = new Dictionary<Mobile, EnchantmentTimer>();
+
+                if (Table.ContainsKey(Caster))
+                    RemoveEnchantment(Caster);
+
+                Enhancement.SetValue(Caster, this.Attribute, value, ModName);
+
+                if (prim >= 80 && sec >= 80)
+                {
+                    Enhancement.SetValue(Caster, AosAttribute.SpellChanneling, 1, ModName);
+                    Enhancement.SetValue(Caster, AosAttribute.CastSpeed, -1, ModName);
+                }
+
+                Table[Caster] = new EnchantmentTimer(Caster, Weapon, this.Attribute, value, duration);
+
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Enchant, 1080126, 1080129, TimeSpan.FromSeconds(duration), Caster, value));
+
+                Weapon.EnchantedWeilder = Caster;
+                Weapon.InvalidateProperties();
+            }
+
+            FinishSequence();
+        }
+
+        public static Dictionary<Mobile, EnchantmentTimer> Table { get; set; }
+
+        public static bool IsUnderSpellEffects(Mobile Caster, BaseWeapon wep)
+        {
+            if (Table == null)
+                return false;
+
+            return Table.ContainsKey(Caster) && Table[Caster].Weapon == wep;
+        }
+
+        public static AosWeaponAttribute BonusAttribute(Mobile from)
+        {
+            if (Table.ContainsKey(from))
+                return Table[from].WeaponAttribute;
+
+            return AosWeaponAttribute.HitColdArea;
+        }
+
+        public static int BonusValue(Mobile from)
+        {
+            if (Table.ContainsKey(from))
+                return Table[from].AttributeValue;
+
+            return 0;
+        }
+
+        public static bool CastingMalus(Mobile from, BaseWeapon weapon)
+        {
+            if (Table.ContainsKey(from))
+            {
+                SkillName damageSkill = from.Skills[SkillName.Imbuing].Value > from.Skills[SkillName.Focus].Value ? SkillName.Imbuing : SkillName.Focus;
+
+                return from.Skills[SkillName.Mysticism].Value >= 80 && from.Skills[damageSkill].Value >= 80;
+            }
+
+            return false;
+        }
+
+        public static void RemoveEnchantment(Mobile caster)
+        {
+            if(Table != null && Table.ContainsKey(caster))
+            {
+                Table[caster].Stop();
+                Table[caster] = null;
+                Table.Remove(caster);
+
+                Enhancement.RemoveMobile(caster);
+            }
+        }
+
+        public static void OnWeaponRemoved(BaseWeapon wep, Mobile from)
+        {
+            if(IsUnderSpellEffects(from, wep))
+                RemoveEnchantment(from);
+
+            if (wep.EnchantedWeilder != null)
+                wep.EnchantedWeilder = null;
+        }
+
+        private bool CheckWSequence()
+        {
+            BaseWeapon wep = Caster.Weapon as BaseWeapon;
+
+            if (wep == null || wep is Fists)
+            {
+                Caster.SendMessage("You must have a weapon equipped to cast this spell.");
+                return false;
+            }
+
+            int v = wep.WeaponAttributes.HitFireball;
+            v += wep.WeaponAttributes.HitLightning;
+            v += wep.WeaponAttributes.HitMagicArrow;
+            v += wep.WeaponAttributes.HitHarm;
+            v += wep.WeaponAttributes.HitDispel;
+
+            if (v > 0)
+            {
+                Caster.SendLocalizedMessage(1080127); //This weapon already has a hit spell effect and cannot be enchanted.
+                return false;
+            }
+
+            return true;
+        }
+	}
+
+    public class EnchantmentTimer : Timer
+    {
+        public Mobile Owner { get; set; }
+        public BaseWeapon Weapon { get; set; }
+        public AosWeaponAttribute WeaponAttribute { get; set; }
+        public int AttributeValue { get; set; }
+
+        public EnchantmentTimer(Mobile owner, BaseWeapon wep, AosWeaponAttribute attribute, int value, double duration) : base(TimeSpan.FromSeconds(duration))
+        {
+            Owner = owner;
+            Weapon = wep;
+            WeaponAttribute = attribute;
+            AttributeValue = value;
+
+            this.Start();
+        }
+
+        protected override void OnTick()
+        {
+            if(Weapon != null)
+                Weapon.EnchantedWeilder = null;
+
+            EnchantSpell.RemoveEnchantment(Owner);
         }
     }
 }

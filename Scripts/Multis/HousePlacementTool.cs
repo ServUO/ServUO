@@ -685,6 +685,11 @@ namespace Server.Items
                         from.SendLocalizedMessage(1061122); // Castles and keeps cannot be created here.
                         break;
                     }
+                case HousePlacementResult.NoQueenLoyalty:
+                    {
+                        from.SendLocalizedMessage(1113707, "10000"); // You must have at lease ~1_MIN~ loyalty to the Gargoyle Queen to place a house in Ter Mur.
+                        break;
+                    }
             }
         }
 
@@ -786,6 +791,11 @@ namespace Server.Items
                 case HousePlacementResult.InvalidCastleKeep:
                     {
                         from.SendLocalizedMessage(1061122); // Castles and keeps cannot be created here.
+                        break;
+                    }
+                case HousePlacementResult.NoQueenLoyalty:
+                    {
+                        from.SendLocalizedMessage(1113707, "10000"); // You must have at lease ~1_MIN~ loyalty to the Gargoyle Queen to place a house in Ter Mur.
                         break;
                     }
             }

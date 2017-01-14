@@ -1,5 +1,6 @@
 using System;
 using Server.Targeting;
+using Server.Mobiles;
 
 namespace Server.Spells.Spellweaving
 {
@@ -67,6 +68,7 @@ namespace Server.Spells.Spellweaving
                     int maxDamage = (int)this.Caster.Skills.Spellweaving.Value / 3;
                     damage = Utility.RandomMinMax(minDamage, maxDamage);
                     int damageBonus = AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage);
+					
                     if (m.Player && damageBonus > 15)
                         damageBonus = 15;
                     damage *= damageBonus + 100;

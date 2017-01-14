@@ -17,6 +17,7 @@ using Server.Spells.Fifth;
 using Server.Spells.Ninjitsu;
 using Server.Spells.Seventh;
 using Server.Targeting;
+using Server.Engines.VvV;
 #endregion
 
 namespace Server.SkillHandlers
@@ -93,7 +94,7 @@ namespace Server.SkillHandlers
 				{
 					m_Thief.SendLocalizedMessage(1048147); // Your backpack can't hold anything else.
 				}
-					#region Sigils
+				#region Sigils
 				else if (toSteal is Sigil)
 				{
 					PlayerState pl = PlayerState.Find(m_Thief);
@@ -182,9 +183,72 @@ namespace Server.SkillHandlers
 						m_Thief.SendLocalizedMessage(1005588); //	You must join a faction to do that
 					}
 				}
-					#endregion
+				#endregion
+                #region VvV Sigils
+                else if (toSteal is VvVSigil && ViceVsVirtueSystem.Instance != null)
+                {
+                    VvVPlayerEntry entry = ViceVsVirtueSystem.Instance.GetPlayerEntry<VvVPlayerEntry>(m_Thief);
 
-				else if (si == null && (toSteal.Parent == null || !toSteal.Movable) && !ItemFlags.GetStealable(toSteal))
+                    VvVSigil sig = (VvVSigil)toSteal;
+
+                    if (!m_Thief.InRange(toSteal.GetWorldLocation(), 1))
+                    {
+                        m_Thief.SendLocalizedMessage(502703); // You must be standing next to an item to steal it.
+                    }
+                    else if (root != null) // not on the ground
+                    {
+                        m_Thief.SendLocalizedMessage(502710); // You can't steal that!
+                    }
+                    else if (entry != null)
+                    {
+                        if (!m_Thief.CanBeginAction(typeof(IncognitoSpell)))
+                        {
+                            m_Thief.SendLocalizedMessage(1010581); //	You cannot steal the sigil when you are incognito
+                        }
+                        else if (DisguiseTimers.IsDisguised(m_Thief))
+                        {
+                            m_Thief.SendLocalizedMessage(1010583); //	You cannot steal the sigil while disguised
+                        }
+                        else if (!m_Thief.CanBeginAction(typeof(PolymorphSpell)))
+                        {
+                            m_Thief.SendLocalizedMessage(1010582); //	You cannot steal the sigil while polymorphed				
+                        }
+                        else if (TransformationSpellHelper.UnderTransformation(m_Thief))
+                        {
+                            m_Thief.SendLocalizedMessage(1061622); // You cannot steal the sigil while in that form.
+                        }
+                        else if (AnimalForm.UnderTransformation(m_Thief))
+                        {
+                            m_Thief.SendLocalizedMessage(1063222); // You cannot steal the sigil while mimicking an animal.
+                        }
+                        else if (m_Thief.CheckTargetSkill(SkillName.Stealing, toSteal, 100.0, 120.0))
+                        {
+                            if (m_Thief.Backpack == null || !m_Thief.Backpack.CheckHold(m_Thief, sig, false, true))
+                            {
+                                m_Thief.SendLocalizedMessage(1010259); //	The sigil has gone home because your backpack is full
+                            }
+                            else
+                            {
+                                m_Thief.SendLocalizedMessage(1010586); // YOU STOLE THE SIGIL!!!   (woah, calm down now)
+
+                                sig.OnStolen(entry);
+
+                                return sig;
+                            }
+                        }
+                        else
+                        {
+                            m_Thief.SendLocalizedMessage(1005594); //	You do not have enough skill to steal the sigil
+                        }
+                    }
+                    else
+                    {
+                        m_Thief.SendLocalizedMessage(1155415); //	Only participants in Vice vs Virtue may use this item.
+                    }
+                }
+                #endregion
+
+                else if (si == null && (toSteal.Parent == null || !toSteal.Movable) && !ItemFlags.GetStealable(toSteal))
 				{
 					m_Thief.SendLocalizedMessage(502710); // You can't steal that!
 				}
@@ -284,7 +348,17 @@ namespace Server.SkillHandlers
 							}
 						}
 
-						if (stolen != null)
+                        // Non-movable stealable items cannot result in the stealer getting caught
+                        if (stolen != null && stolen.Movable)
+                        {
+                            caught = (m_Thief.Skills[SkillName.Stealing].Value < Utility.Random(150));
+                        }
+                        else
+                        {
+                            caught = false;
+                        }
+
+                        if (stolen != null)
 						{
 							m_Thief.SendLocalizedMessage(502724); // You succesfully steal the item.
 
@@ -302,8 +376,6 @@ namespace Server.SkillHandlers
 						{
 							m_Thief.SendLocalizedMessage(502723); // You fail to steal the item.
 						}
-
-						caught = (m_Thief.Skills[SkillName.Stealing].Value < Utility.Random(150));
 					}
 				}
 

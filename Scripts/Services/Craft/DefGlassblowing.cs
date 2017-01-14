@@ -122,6 +122,12 @@ namespace Server.Engines.Craft
                 index = this.AddCraft(typeof(HollowPrism), 1044050, 1072895, 100.0, 150.0, typeof(Sand), 1044625, 8, 1044627);
                 this.SetNeededExpansion(index, Expansion.ML);
             }
+
+            if (Core.SA)
+            {
+                index = this.AddCraft(typeof(EmptyVenomVial), 1044050, 1112215, 52.5, 102.5, typeof(Sand), 1044625, 1, 1044627);
+                this.SetNeededExpansion(index, Expansion.SA);
+            }
         }
 
         // Delay to synchronize the sound with the hit on the anvil

@@ -13,10 +13,16 @@ namespace Server.Engines.VeteranRewards
 
     public class RewardSystem
     {
-        public static bool Enabled = true;// change to true to enable vet rewards
-        public static bool SkillCapRewards = true;// assuming vet rewards are enabled, should total skill cap bonuses be awarded? (720 skills total at 4th level)
-        public static TimeSpan RewardInterval = TimeSpan.FromDays(30.0);
-        private static RewardCategory[] m_Categories;
+		public static bool Enabled = Config.Get("VetRewards.Enabled", true);
+        public static bool SkillCapRewards = Config.Get("VetRewards.SkillCapRewards", true);
+        public static int SkillCap = Config.Get("PlayerCaps.TotalSkillCap", 7000);
+        public static int SkillCapBonus = Config.Get("VetRewards.SkillCapBonus", 200);
+        public static int SkillCapBonusLevels = Config.Get("VetRewards.SkillCapBonusLevels", 4);
+        public static float SkillCapBonusIncrement = SkillCapBonus / SkillCapBonusLevels;
+        public static TimeSpan RewardInterval = Config.Get("VetRewards.RewardInterval", TimeSpan.FromDays(30.0d));
+		public static int StartingLevel = Config.Get("VetRewards.StartingLevel", 0);
+
+		private static RewardCategory[] m_Categories;
         private static RewardList[] m_Lists;
         public static RewardCategory[] Categories
         {
@@ -80,9 +86,10 @@ namespace Server.Engines.VeteranRewards
                 return false;
             }
 
-            TimeSpan totalTime = (DateTime.UtcNow - acct.Created);
+			TimeSpan totalTime = (DateTime.UtcNow - acct.Created) + TimeSpan.FromDays(RewardInterval.TotalDays * StartingLevel);
 
-            ts = (list.Age - totalTime);
+			ts = (list.Age - totalTime);
+
 
             if (ts <= TimeSpan.Zero)
                 return true;
@@ -108,6 +115,8 @@ namespace Server.Engines.VeteranRewards
 
             if (level < 0)
                 level = 0;
+
+			level += StartingLevel;
 
             return level;
         }
@@ -191,6 +200,9 @@ namespace Server.Engines.VeteranRewards
 
         public static bool CheckIsUsableBy(Mobile from, Item item, object[] args)
         {
+            if (from.AccessLevel > AccessLevel.GameMaster)
+                return true;
+
             if (m_Lists == null)
                 SetupRewardTables();
 
@@ -350,10 +362,12 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1006035, typeof(MonsterStatuette), MonsterStatuetteType.Ratman),
                     new RewardEntry(monsterStatues, 1006036, typeof(MonsterStatuette), MonsterStatuetteType.Skeleton),
                     new RewardEntry(monsterStatues, 1006037, typeof(MonsterStatuette), MonsterStatuetteType.Troll),
-                    new RewardEntry(houseAddOns, 1062692, typeof(ContestMiniHouseDeed), Expansion.AOS, MiniHouseType.MalasMountainPass),
-                    new RewardEntry(houseAddOns, 1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),
-                    new RewardEntry(miscellaneous, 1076155, typeof(RedSoulstone), Expansion.ML),
-                    new RewardEntry(miscellaneous, 1080523, typeof(CommodityDeedBox), Expansion.ML),
+                    new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
+                    new RewardEntry(houseAddOns,    1062692, typeof(ContestMiniHouseDeed), Expansion.AOS, MiniHouseType.MalasMountainPass),
+                    new RewardEntry(houseAddOns,    1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),
+                    new RewardEntry(miscellaneous,  1076155, typeof(RedSoulstone),         Expansion.ML),
+                    new RewardEntry(miscellaneous,  1080523, typeof(CommodityDeedBox),     Expansion.ML),
+                    new RewardEntry( houseAddOns,    1156371, typeof( Server.Engines.Auction.AuctionSafeDeed ), Expansion.TOL ),
                 }),
                 new RewardList(RewardInterval, 2, new RewardEntry[]
                 {
@@ -380,8 +394,8 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1006039, typeof(MonsterStatuette), MonsterStatuetteType.Zombie),
                     new RewardEntry(monsterStatues, 1006040, typeof(MonsterStatuette), MonsterStatuetteType.Llama),
                     new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
-                    new RewardEntry(etherealSteeds, 1006050, typeof(EtherealOstard)),
                     new RewardEntry(etherealSteeds, 1006051, typeof(EtherealLlama)),
+                    new RewardEntry(etherealSteeds, 1006050, typeof(EtherealOstard)),
                     new RewardEntry(houseAddOns, 1080407, typeof(PottedCactusDeed), Expansion.ML)
                 }),
                 new RewardList(RewardInterval, 4, new RewardEntry[]
@@ -422,8 +436,9 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(monsterStatues, 1049770, typeof(MonsterStatuette), MonsterStatuetteType.Wolf),
                     new RewardEntry(etherealSteeds, 1049749, typeof(EtherealSwampDragon)),
                     new RewardEntry(etherealSteeds, 1049748, typeof(EtherealBeetle)),
-                    new RewardEntry(houseAddOns, 1049739, typeof(StoneAnkhDeed)),
-                    new RewardEntry(houseAddOns, 1080384, typeof(BloodyPentagramDeed), Expansion.ML)
+                    new RewardEntry(houseAddOns,    1049739, typeof(StoneAnkhDeed)),
+                    new RewardEntry(houseAddOns,    1080384, typeof(BloodyPentagramDeed), Expansion.ML),
+                    new RewardEntry(houseAddOns,    1154582, typeof(LighthouseAddonDeed), Expansion.HS),
                 }),
                 new RewardList(RewardInterval, 6, new RewardEntry[]
                 {
@@ -439,7 +454,9 @@ namespace Server.Engines.VeteranRewards
                 }),
                 new RewardList(RewardInterval, 8, new RewardEntry[]
                 {
-                    new RewardEntry(miscellaneous,	1076158, typeof(WeaponEngravingTool), Expansion.ML)
+                    new RewardEntry(miscellaneous,	1076158, typeof(WeaponEngravingTool), Expansion.ML),
+                    new RewardEntry( houseAddOns,   "Davies' Locker (South)", typeof(DaviesLockerAddonDeed), Expansion.SA, true),
+                    new RewardEntry( houseAddOns,   "Davies' Locker (East)", typeof(DaviesLockerAddonDeed), Expansion.SA, false),
                 }),
                 new RewardList(RewardInterval, 9, new RewardEntry[]
                 {
@@ -457,8 +474,18 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(cloaksAndRobes,	1080381, typeof(RewardRobe), Expansion.ML, Crimson, 1080381),
                     new RewardEntry(cloaksAndRobes,	1080379, typeof(RewardDress), Expansion.ML, Crimson, 1080379),
                     new RewardEntry(etherealSteeds,	1080386, typeof(EtherealCuSidhe), Expansion.ML),
-                    new RewardEntry(houseAddOns, 1080548, typeof(MiningCartDeed), Expansion.ML),
-                    new RewardEntry(houseAddOns, 1080397, typeof(AnkhOfSacrificeDeed), Expansion.ML)
+                    new RewardEntry(houseAddOns,    1080548, typeof(MiningCartDeed), Expansion.ML),
+                    new RewardEntry(houseAddOns,    1080397, typeof(AnkhOfSacrificeDeed), Expansion.ML),
+                    new RewardEntry(houseAddOns,    1150621, typeof( RaisedGardenSmallAddonDeed), Expansion.SA ),
+
+                    new RewardEntry( houseAddOns,       1150090, typeof( SkullRugEastAddonDeed ), Expansion.SA ),
+                    new RewardEntry( houseAddOns,       1150089, typeof( SkullRugSouthAddonDeed ), Expansion.SA ),
+                    new RewardEntry( houseAddOns,       1150092, typeof( RoseRugEastAddonDeed ), Expansion.SA ),
+                    new RewardEntry( houseAddOns,       1150091, typeof( RoseRugSouthAddonDeed ), Expansion.SA ),
+                    new RewardEntry( houseAddOns,       1150094, typeof( DolphinRugEastAddonDeed ), Expansion.SA ),
+                    new RewardEntry( houseAddOns,       1150093, typeof( DolphinRugSouthAddonDeed ), Expansion.SA ),
+                        
+                    new RewardEntry( miscellaneous,		1150424, typeof( ChestOfSending ), Expansion.SA ),
                 }),
                 new RewardList(RewardInterval, 11, new RewardEntry[]
                 {
@@ -466,7 +493,9 @@ namespace Server.Engines.VeteranRewards
                 }),
                 new RewardList(RewardInterval, 12, new RewardEntry[]
                 {
-                    new RewardEntry(etherealSteeds,	1113813, typeof(EtherealHiryu), Expansion.ML),
+                    new RewardEntry( houseAddOns,   1150382, typeof( RaisedGardenEastAddonDeed), Expansion.SA ),
+                    new RewardEntry( houseAddOns,   1150381, typeof( RaisedGardenSouthAddonDeed), Expansion.SA ),
+                    new RewardEntry( etherealSteeds,1113813, typeof(EtherealHiryu), Expansion.ML),
                 }),
             };
         }
@@ -486,17 +515,30 @@ namespace Server.Engines.VeteranRewards
 
             ComputeRewardInfo(e.Mobile, out cur, out max, out level);
 
-            if (e.Mobile.SkillsCap == 7000 || e.Mobile.SkillsCap == 7050 || e.Mobile.SkillsCap == 7100 || e.Mobile.SkillsCap == 7150 || e.Mobile.SkillsCap == 7200)
-            {
-                if (level > 4)
-                    level = 4;
-                else if (level < 0)
-                    level = 0;
+            if (level > SkillCapBonusLevels)
+                level = SkillCapBonusLevels;
+            else if (level < 0)
+                level = 0;
 
+            if (!Core.SA)
+            {
                 if (SkillCapRewards)
-                    e.Mobile.SkillsCap = 7000 + (level * 50);
+                {
+                    int newLevel = SkillCap + (int)((float)level * SkillCapBonusIncrement);
+                    if (newLevel > SkillCap + SkillCapBonus)
+                    {
+                        newLevel = SkillCap + SkillCapBonus;
+                    }
+                    e.Mobile.SkillsCap = newLevel;
+                }
                 else
-                    e.Mobile.SkillsCap = 7000;
+                {
+                    e.Mobile.SkillsCap = SkillCap;
+                }
+            }
+            else
+            {
+                e.Mobile.SkillsCap = SkillCap + SkillCapBonus;
             }
 
             if (Core.ML && e.Mobile is PlayerMobile && !((PlayerMobile)e.Mobile).HasStatReward && HasHalfLevel(e.Mobile))

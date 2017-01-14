@@ -10,8 +10,6 @@ using System.IO;
 
 using Server;
 using Server.Items;
-
-using SevenZip;
 #endregion
 
 namespace CustomsFramework
@@ -163,38 +161,6 @@ namespace CustomsFramework
 				Console.WriteLine(ObjectDumper.Dump(element));
 				Console.WriteLine();
 			}
-		}
-
-		public static void Compress7z(string copyPath, string outPath, CompressionLevel compressionLevel)
-		{
-			SevenZipCompressor compressor = new SevenZipCompressor();
-
-			compressor.CustomParameters.Add("mt", "on");
-			compressor.CompressionLevel = compressionLevel;
-			compressor.ScanOnlyWritable = true;
-
-			compressor.CompressDirectory(copyPath, outPath + ".7z");
-		}
-
-		public static void Compress7z(string copyPath, Stream outStream, CompressionLevel compressionLevel)
-		{
-			SevenZipCompressor compressor = new SevenZipCompressor();
-
-			compressor.CustomParameters.Add("mt", "on");
-			compressor.CompressionLevel = compressionLevel;
-			compressor.ScanOnlyWritable = true;
-
-			compressor.CompressDirectory(copyPath, outStream);
-		}
-
-		public static void Compress7z(string copyPath, string outPath)
-		{
-			Compress7z(copyPath, outPath, CompressionLevel.Normal);
-		}
-
-		public static void Compress7z(string copyPath, Stream outStream)
-		{
-			Compress7z(copyPath, outStream, CompressionLevel.Normal);
 		}
 	}
 }

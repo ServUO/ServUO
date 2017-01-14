@@ -7,6 +7,7 @@ using Server.Guilds;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
+using Server.Engines.VvV;
 
 namespace Server.Misc
 {
@@ -120,12 +121,21 @@ namespace Server.Misc
 
             Map map = from.Map;
 
-            #region Factions
-            Faction targetFaction = Faction.Find(target, true);
-
-            if ((!Core.ML || map == Faction.Facet) && targetFaction != null)
+            #region Factions/VvV
+            if (Factions.Settings.Enabled)
             {
-                if (Faction.Find(from, true) != targetFaction)
+                Faction targetFaction = Faction.Find(target, true);
+
+                if ((!Core.ML || map == Faction.Facet) && targetFaction != null)
+                {
+                    if (Faction.Find(from, true) != targetFaction)
+                        return false;
+                }
+            }
+
+            if (ViceVsVirtueSystem.Enabled)
+            {
+                if (ViceVsVirtueSystem.IsEnemy(from, target))
                     return false;
             }
             #endregion
@@ -163,8 +173,10 @@ namespace Server.Misc
             return CheckBeneficialStatus(GetGuildStatus(from), GetGuildStatus(target));
         }
 
-        public static bool Mobile_AllowHarmful(Mobile from, Mobile target)
+        public static bool Mobile_AllowHarmful(Mobile from, IDamageable damageable)
         {
+            Mobile target = damageable as Mobile;
+
             if (from == null || target == null || from.IsStaff() || target.IsStaff())
                 return true;
 
@@ -233,6 +245,13 @@ namespace Server.Misc
             if (map != null && (map.Rules & MapRules.HarmfulRestrictions) == 0)
                 return true; // In felucca, anything goes
 
+            // Summons should follow the same rules as their masters
+            if (from is BaseCreature && ((BaseCreature)from).Summoned && ((BaseCreature)from).SummonMaster != null)
+                from = ((BaseCreature)from).SummonMaster;
+
+            if (target is BaseCreature && ((BaseCreature)target).Summoned && ((BaseCreature)target).SummonMaster != null)
+                target = ((BaseCreature)target).SummonMaster;
+
             BaseCreature bc = from as BaseCreature;
 
             if (!from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
@@ -273,7 +292,7 @@ namespace Server.Misc
 
             BaseCreature c = m as BaseCreature;
 
-            if (c != null && c.Controlled && c.ControlMaster != null)
+            if (c != null && c.Controlled && c.ControlMaster != null && !c.ForceNotoriety)
             {
                 c.DisplayGuildTitle = false;
 
@@ -308,10 +327,16 @@ namespace Server.Misc
                         return Notoriety.Enemy;
                 }
 
-                Faction srcFaction = Faction.Find(source, true, true);
-                Faction trgFaction = Faction.Find(target.Owner, true, true);
+                if (Factions.Settings.Enabled)
+                {
+                    Faction srcFaction = Faction.Find(source, true, true);
+                    Faction trgFaction = Faction.Find(target.Owner, true, true);
 
-                if (srcFaction != null && trgFaction != null && srcFaction != trgFaction && source.Map == Faction.Facet)
+                    if (srcFaction != null && trgFaction != null && srcFaction != trgFaction && source.Map == Faction.Facet)
+                        return Notoriety.Enemy;
+                }
+
+                if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, target.Owner) && source.Map == Faction.Facet)
                     return Notoriety.Enemy;
 
                 if (CheckHouseFlag(source, target.Owner, target.Location, target.Map))
@@ -391,8 +416,13 @@ namespace Server.Misc
             }
         }
 
-        public static int MobileNotoriety(Mobile source, Mobile target)
+        public static int MobileNotoriety(Mobile source, IDamageable damageable)
         {
+            Mobile target = damageable as Mobile;
+
+            if (target == null)
+                return Notoriety.CanBeAttacked;
+
             if (Core.AOS && (target.Blessed || (target is BaseVendor && ((BaseVendor)target).IsInvulnerable) || target is PlayerVendor || target is TownCrier))
                 return Notoriety.Invulnerable;
 
@@ -421,7 +451,7 @@ namespace Server.Misc
 
                 master = bc.ControlMaster;
 
-                if (Core.ML && master != null)
+                if (Core.ML && master != null && !bc.ForceNotoriety)
                 {
                     if ((source == master && CheckAggressor(target.Aggressors, source)) || (CheckAggressor(source.Aggressors, bc)))
                         return Notoriety.CanBeAttacked;
@@ -469,10 +499,16 @@ namespace Server.Misc
                     return Notoriety.Enemy;
             }
 
-            Faction srcFaction = Faction.Find(source, true, true);
-            Faction trgFaction = Faction.Find(target, true, true);
+            if (Factions.Settings.Enabled)
+            {
+                Faction srcFaction = Faction.Find(source, true, true);
+                Faction trgFaction = Faction.Find(target, true, true);
 
-            if (srcFaction != null && trgFaction != null && srcFaction != trgFaction && source.Map == Faction.Facet)
+                if (srcFaction != null && trgFaction != null && srcFaction != trgFaction && source.Map == Faction.Facet)
+                    return Notoriety.Enemy;
+            }
+
+            if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(source, damageable) && source.Map == Faction.Facet)
                 return Notoriety.Enemy;
 
             if (SkillHandlers.Stealing.ClassicMode && target is PlayerMobile && ((PlayerMobile)target).PermaFlags.Contains(source))

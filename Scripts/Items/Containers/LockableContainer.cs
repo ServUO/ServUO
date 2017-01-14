@@ -10,9 +10,21 @@ namespace Server.Items
         private int m_LockLevel, m_MaxLockLevel, m_RequiredSkill;
         private uint m_KeyValue;
         private Mobile m_Picker;
+		private Mobile m_Crafter;
         private bool m_TrapOnLockpick;
 
-        [CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty(AccessLevel.GameMaster)]
+		public Mobile Crafter
+		{
+			get { return m_Crafter; }
+			set
+			{
+				m_Crafter = value;
+				InvalidateProperties();
+			}
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
         public Mobile Picker
         {
             get
@@ -120,7 +132,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)6); // version
+            writer.Write((int)7); // version
+
+			writer.Write(this.m_Crafter);
 
             writer.Write(this.m_IsShipwreckedItem);
 
@@ -143,6 +157,12 @@ namespace Server.Items
 
             switch ( version )
             {
+				case 7:
+					{
+						this.m_Crafter = reader.ReadMobile();
+
+						goto case 6;
+					}
                 case 6:
                     {
                         this.m_IsShipwreckedItem = reader.ReadBool();
@@ -351,7 +371,12 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            if (this.m_IsShipwreckedItem)
+			if (m_Crafter != null)
+			{
+				list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
+			}
+
+			if (this.m_IsShipwreckedItem)
                 list.Add(1041645); // recovered from a shipwreck
         }
 
@@ -359,7 +384,12 @@ namespace Server.Items
         {
             base.OnSingleClick(from);
 
-            if (this.m_IsShipwreckedItem)
+			if (m_Crafter != null)
+			{
+				this.LabelTo(from, 1050043, m_Crafter.Name); // crafted by ~1_NAME~
+			}
+
+			if (this.m_IsShipwreckedItem)
                 this.LabelTo(from, 1041645);	//recovered from a shipwreck
         }
 
@@ -367,6 +397,10 @@ namespace Server.Items
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
+			if(makersMark)
+			{
+				Crafter = from;
+			}
             if (from.CheckSkill(SkillName.Tinkering, -5.0, 15.0))
             {
                 from.SendLocalizedMessage(500636); // Your tinker skill was sufficient to make the item lockable.

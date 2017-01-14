@@ -12,6 +12,24 @@ using Server.Targeting;
 
 namespace Server.Factions
 {
+    public static class Settings
+    {
+        public static bool NewCoMLocation { get; private set; }
+        public static bool Enabled { get; private set; }
+
+        public static void Configure()
+        {
+            NewCoMLocation = Config.Get("Factions.NewCoMLocation", true);
+            Enabled = Config.Get("Factions.Enabled", false);
+
+            /*  Disabling Factions:
+             *  PlayerStates are not loaded, ie faction players lose their faction status 
+             *  Factions/Towns are still serialized, so if factions were ever re-enabled, the town, tithe rate, etc would be the same
+             *  stronghold regions are not registered for free movement for non-factions
+             */
+        }
+    }
+
     [CustomEnum(new string[] { "Minax", "Council of Mages", "True Britannians", "Shadowlords" })]
     public abstract class Faction : IComparable
     {
@@ -42,7 +60,9 @@ namespace Server.Factions
             set
             {
                 this.m_Definition = value;
-                this.m_StrongholdRegion = new StrongholdRegion(this);
+
+                if(Settings.Enabled)
+                    this.m_StrongholdRegion = new StrongholdRegion(this);
             }
         }
 
@@ -1471,8 +1491,8 @@ namespace Server.Factions
                                     if (pl != null)
                                     {
                                         pl.Faction.RemoveMember(mob);
-                                        mob.SendMessage("You have been kicked from your faction.");
-                                        this.AddResponse("They have been kicked from their faction.");
+                                        mob.SendMessage("You have been banned from factions.");
+                                        this.AddResponse("They have been banned from factions.");
                                     }
                                 }
                             }

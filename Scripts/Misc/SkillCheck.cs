@@ -1,12 +1,39 @@
 using System;
+using Server.Accounting;
 using Server.Factions;
 using Server.Mobiles;
+using Server.Items;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Misc
 {
     public class SkillCheck
     {
-        private static readonly bool AntiMacroCode = !Core.ML;		//Change this to false to disable anti-macro code
+        private static int StatCap;
+        private static bool m_StatGainDelayEnabled;
+        private static TimeSpan m_StatGainDelay;
+        private static bool m_PetStatGainDelayEnabled;
+        private static TimeSpan m_PetStatGainDelay;
+        private static bool AntiMacroCode;
+        private static double PlayerChanceToGainStats;
+        private static double PetChanceToGainStats;
+
+        public static void Configure()
+        {
+            StatCap = Config.Get("PlayerCaps.StatCap", 125);
+            m_StatGainDelayEnabled = Config.Get("PlayerCaps.EnablePlayerStatTimeDelay", false);
+            m_StatGainDelay = Config.Get("PlayerCaps.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
+            m_PetStatGainDelayEnabled = Config.Get("PlayerCaps.EnablePetStatTimeDelay", false);
+            m_PetStatGainDelay = Config.Get("PlayerCaps.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));
+            AntiMacroCode = Config.Get("PlayerCaps.EnableAntiMacro", !Core.ML);
+            PlayerChanceToGainStats = Config.Get("PlayerCaps.PlayerChanceToGainStats", 5.0);
+            PetChanceToGainStats = Config.Get("PlayerCaps.PetChanceToGainStats", 5.0);
+
+            if (!m_StatGainDelayEnabled)
+                m_StatGainDelay = TimeSpan.FromSeconds(0.5);
+            if (!m_PetStatGainDelayEnabled)
+                m_PetStatGainDelay = TimeSpan.FromSeconds(0.5);
+        }
 
         public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
         public const int Allowance = 3;	//How many times may we use the same location/target for gain
@@ -94,12 +121,18 @@ namespace Server.Misc
 
             double value = skill.Value;
 
+            //TODO: Is there any other place this can go?
+            if (skillName == SkillName.Fishing && Server.Multis.BaseGalleon.FindGalleonAt(from, from.Map) is Server.Multis.TokunoGalleon)
+                value += 1;
+
             if (value < minSkill)
                 return false; // Too difficult
             else if (value >= maxSkill)
                 return true; // No challenge
 
             double chance = (value - minSkill) / (maxSkill - minSkill);
+
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
 
             Point2D loc = new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize);
             return CheckSkill(from, skill, loc, chance);
@@ -111,6 +144,8 @@ namespace Server.Misc
 
             if (skill == null)
                 return false;
+
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
 
             if (chance < 0.0)
                 return false; // Too difficult
@@ -142,8 +177,19 @@ namespace Server.Misc
             if (from is BaseCreature && ((BaseCreature)from).Controlled)
                 gc *= 2;
 
-            if (from.Alive && ((gc >= Utility.RandomDouble() && AllowGain(from, skill, amObj)) || skill.Base < 10.0))
-                Gain(from, skill);
+            if (AllowGain(from, skill, amObj))
+            {
+                if (from.Alive && (gc >= Utility.RandomDouble() || skill.Base < 10.0))
+                {
+                    Gain(from, skill);
+                    if (from.SkillsTotal >= 4500 || skill.Base >= 80.0)
+                    {
+                        Account acc = from.Account as Account;
+                        if (acc != null)
+                            acc.RemoveYoungStatus(1019036);
+                    }
+                }
+            }
 
             return success;
         }
@@ -164,6 +210,8 @@ namespace Server.Misc
 
             double chance = (value - minSkill) / (maxSkill - minSkill);
 
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
+
             return CheckSkill(from, skill, target, chance);
         }
 
@@ -173,6 +221,8 @@ namespace Server.Misc
 
             if (skill == null)
                 return false;
+
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
 
             if (chance < 0.0)
                 return false; // Too difficult
@@ -227,6 +277,26 @@ namespace Server.Misc
 
                 Skills skills = from.Skills;
 
+                #region Mondain's Legacy
+                if (from is PlayerMobile)
+                    if (Server.Engines.Quests.QuestHelper.EnhancedSkill((PlayerMobile)from, skill))
+                        toGain *= Utility.RandomMinMax(2, 4);
+                #endregion
+
+                #region Scroll of Alacrity
+
+                if (from is PlayerMobile)
+                {
+                    PlayerMobile pm = from as PlayerMobile;
+                    
+                    if (pm != null && skill.SkillName == pm.AcceleratedSkill && pm.AcceleratedStart > DateTime.UtcNow)
+                    {
+                        pm.SendLocalizedMessage(1077956); // You are infused with intense energy. You are under the effects of an accelerated skillgain scroll.
+                        toGain = Utility.RandomMinMax(2, 5);
+                    }
+                }
+                #endregion
+
                 if (from.Player && (skills.Total / skills.Cap) >= Utility.RandomDouble())//( skills.Total >= skills.Cap )
                 {
                     for (int i = 0; i < skills.Length; ++i)
@@ -241,21 +311,19 @@ namespace Server.Misc
                     }
                 }
 
-                #region Mondain's Legacy
-                if (from is PlayerMobile)
-                    if (Server.Engines.Quests.QuestHelper.EnhancedSkill((PlayerMobile)from, skill))
-                        toGain *= Utility.RandomMinMax(2, 4);
-                #endregion
-
-                #region Scroll of Alacrity
-                PlayerMobile pm = from as PlayerMobile;
-
-                if (from is PlayerMobile)
+                #region Skill Masteries
+                else if (from is BaseCreature && (((BaseCreature)from).Controlled || ((BaseCreature)from).Summoned))
                 {
-                    if (pm != null && skill.SkillName == pm.AcceleratedSkill && pm.AcceleratedStart > DateTime.UtcNow)
+                    Mobile master = ((BaseCreature)from).GetMaster();
+
+                    if (master != null)
                     {
-                        pm.SendLocalizedMessage(1077956); // You are infused with intense energy. You are under the effects of an accelerated skillgain scroll.
-                        toGain = Utility.RandomMinMax(2, 5);
+                        WhisperingSpell spell = SkillMasterySpell.GetSpell(master, typeof(WhisperingSpell)) as WhisperingSpell;
+
+                        if (spell != null && master.InRange(from.Location, spell.PartyRange) && master.Map == from.Map && spell.EnhancedGainChance >= Utility.Random(100))
+                        {
+                            toGain = Utility.RandomMinMax(2, 5);
+                        }
                     }
                 }
                 #endregion
@@ -271,18 +339,74 @@ namespace Server.Misc
                 Server.Engines.Quests.QuestHelper.CheckSkill((PlayerMobile)from, skill);
             #endregion
 
+			
             if (skill.Lock == SkillLock.Up)
             {
                 SkillInfo info = skill.Info;
 
-                if (from.StrLock == StatLockType.Up && (info.StrGain / 33.3) > Utility.RandomDouble())
-                    GainStat(from, Stat.Str);
-                else if (from.DexLock == StatLockType.Up && (info.DexGain / 33.3) > Utility.RandomDouble())
-                    GainStat(from, Stat.Dex);
-                else if (from.IntLock == StatLockType.Up && (info.IntGain / 33.3) > Utility.RandomDouble())
-                    GainStat(from, Stat.Int);
+				// Old gain mechanic
+				if (!Core.ML)
+				{
+					if (from.StrLock == StatLockType.Up && (info.StrGain / 33.3) > Utility.RandomDouble())
+						GainStat(from, Stat.Str);
+					else if (from.DexLock == StatLockType.Up && (info.DexGain / 33.3) > Utility.RandomDouble())
+						GainStat(from, Stat.Dex);
+					else if (from.IntLock == StatLockType.Up && (info.IntGain / 33.3) > Utility.RandomDouble())
+						GainStat(from, Stat.Int);
+				}
+				else
+				{
+					TryStatGain(info, from);
+				}
             }
         }
+
+		public static void TryStatGain(SkillInfo info, Mobile from)
+		{
+			// Chance roll
+			double chance = 0.0;
+			if(from is BaseCreature && ((BaseCreature)from).Controlled)
+				chance = PetChanceToGainStats;
+			else
+				chance = PlayerChanceToGainStats;
+			if (Utility.RandomDouble() * 100.0 >= chance)
+			{
+				return;
+			}
+
+			// Selection
+			StatLockType primaryLock = StatLockType.Locked;
+			StatLockType secondaryLock = StatLockType.Locked;
+			switch (info.Primary)
+			{
+				case StatCode.Str: primaryLock = from.StrLock; break;
+				case StatCode.Dex: primaryLock = from.DexLock; break;
+				case StatCode.Int: primaryLock = from.IntLock; break;
+			}
+			switch (info.Secondary)
+			{
+				case StatCode.Str: secondaryLock = from.StrLock; break;
+				case StatCode.Dex: secondaryLock = from.DexLock; break;
+				case StatCode.Int: secondaryLock = from.IntLock; break;
+			}
+
+			// Gain
+			// Decision block of both are selected to gain
+			if(primaryLock == StatLockType.Up && secondaryLock == StatLockType.Up)
+			{
+				if (Utility.Random(4) == 0)
+					GainStat(from, (Stat)info.Secondary);
+				else
+					GainStat(from, (Stat)info.Primary);
+			}
+			else // Will not do anything if neither are selected to gain
+			{
+				if(primaryLock == StatLockType.Up)
+					GainStat(from, (Stat)info.Primary);
+				else if(secondaryLock == StatLockType.Up)
+					GainStat(from, (Stat)info.Secondary);
+			}
+		}
 
         public static bool CanLower(Mobile from, Stat stat)
         {
@@ -310,11 +434,11 @@ namespace Server.Misc
             switch ( stat )
             {
                 case Stat.Str:
-                    return (from.StrLock == StatLockType.Up && from.RawStr < 125);
+                    return (from.StrLock == StatLockType.Up && from.RawStr < StatCap);
                 case Stat.Dex:
-                    return (from.DexLock == StatLockType.Up && from.RawDex < 125);
+                    return (from.DexLock == StatLockType.Up && from.RawDex < StatCap);
                 case Stat.Int:
-                    return (from.IntLock == StatLockType.Up && from.RawInt < 125);
+                    return (from.IntLock == StatLockType.Up && from.RawInt < StatCap);
             }
 
             return false;
@@ -374,57 +498,61 @@ namespace Server.Misc
             }
         }
 
-        private static readonly TimeSpan m_StatGainDelay = TimeSpan.FromMinutes(15.0);
-        private static readonly TimeSpan m_PetStatGainDelay = TimeSpan.FromMinutes(5.0);
-
         public static void GainStat(Mobile from, Stat stat)
         {
-            switch( stat )
-            {
-                case Stat.Str:
-                    {
-                        if (from is BaseCreature && ((BaseCreature)from).Controlled)
-                        {
-                            if ((from.LastStrGain + m_PetStatGainDelay) >= DateTime.UtcNow)
-                                return;
-                        }
-                        else if ((from.LastStrGain + m_StatGainDelay) >= DateTime.UtcNow)
-                            return;
-
-                        from.LastStrGain = DateTime.UtcNow;
-                        break;
-                    }
-                case Stat.Dex:
-                    {
-                        if (from is BaseCreature && ((BaseCreature)from).Controlled)
-                        {
-                            if ((from.LastDexGain + m_PetStatGainDelay) >= DateTime.UtcNow)
-                                return;
-                        }
-                        else if ((from.LastDexGain + m_StatGainDelay) >= DateTime.UtcNow)
-                            return;
-
-                        from.LastDexGain = DateTime.UtcNow;
-                        break;
-                    }
-                case Stat.Int:
-                    {
-                        if (from is BaseCreature && ((BaseCreature)from).Controlled)
-                        {
-                            if ((from.LastIntGain + m_PetStatGainDelay) >= DateTime.UtcNow)
-                                return;
-                        }
-                        else if ((from.LastIntGain + m_StatGainDelay) >= DateTime.UtcNow)
-                            return;
-
-                        from.LastIntGain = DateTime.UtcNow;
-                        break;
-                    }
-            }
+		    if (!CheckStatTimer(from, stat))
+			    return;
 
             bool atrophy = ((from.RawStatTotal / (double)from.StatCap) >= Utility.RandomDouble());
 
             IncreaseStat(from, stat, atrophy);
         }
+
+		public static bool CheckStatTimer(Mobile from, Stat stat)
+		{
+			switch (stat)
+			{
+				case Stat.Str:
+					{
+						if (from is BaseCreature && ((BaseCreature)from).Controlled)
+						{
+							if ((from.LastStrGain + m_PetStatGainDelay) >= DateTime.UtcNow)
+								return false;
+						}
+						else if ((from.LastStrGain + m_StatGainDelay) >= DateTime.UtcNow)
+							return false;
+
+						from.LastStrGain = DateTime.UtcNow;
+						break;
+					}
+				case Stat.Dex:
+					{
+						if (from is BaseCreature && ((BaseCreature)from).Controlled)
+						{
+							if ((from.LastDexGain + m_PetStatGainDelay) >= DateTime.UtcNow)
+								return false;
+						}
+						else if ((from.LastDexGain + m_StatGainDelay) >= DateTime.UtcNow)
+							return false;
+
+						from.LastDexGain = DateTime.UtcNow;
+						break;
+					}
+				case Stat.Int:
+					{
+						if (from is BaseCreature && ((BaseCreature)from).Controlled)
+						{
+							if ((from.LastIntGain + m_PetStatGainDelay) >= DateTime.UtcNow)
+								return false;
+						}
+						else if ((from.LastIntGain + m_StatGainDelay) >= DateTime.UtcNow)
+							return false;
+
+						from.LastIntGain = DateTime.UtcNow;
+						break;
+					}
+			}
+			return true;
+		}
     }
 }

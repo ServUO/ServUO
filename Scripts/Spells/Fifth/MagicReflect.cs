@@ -150,5 +150,12 @@ namespace Server.Spells.Fifth
                 this.FinishSequence();
             }
         }
+
+        #region SA
+        public static bool HasReflect(Mobile m)
+        {
+            return m_Table.ContainsKey(m);
+        }
+        #endregion
     }
 }

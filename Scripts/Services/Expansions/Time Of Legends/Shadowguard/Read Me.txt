@@ -1,0 +1,4 @@
+Some stuff to know...
+
+WHile in an encounter, staff can say "getprops" and the shadowguard encounter props will appear.  
+Use Shadowguard config to randomize instance locations, default is not random.

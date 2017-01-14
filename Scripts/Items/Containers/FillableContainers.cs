@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Server.Mobiles;
+using Server.Commands;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -47,6 +49,34 @@ namespace Server.Items
 
     public abstract class FillableContainer : LockableContainer
     {
+        public static void Initialize()
+        {
+            CommandSystem.Register("CheckFillables", AccessLevel.Administrator, CheckFillables_OnCommand);
+        }
+
+        public static void CheckFillables_OnCommand(CommandEventArgs e)
+        {
+            Mobile m = e.Mobile;
+            int count = 0;
+            int fail = 0;
+
+            List<FillableContainer> toCheck = new List<FillableContainer>(World.Items.Values.OfType<FillableContainer>().Where(i => i is FillableContainer && ((FillableContainer)i).ContentType == FillableContentType.None));
+
+            foreach (FillableContainer cont in toCheck)
+            {
+                cont.AcquireContent();
+
+                if (cont.ContentType == FillableContentType.None)
+                    fail++;
+
+                count++;
+            }
+
+            toCheck.Clear();
+            toCheck.TrimExcess();
+            m.SendMessage("Fixed {0} fillable containers, while {1} failed.", count, fail);
+        }
+
         protected FillableContent m_Content;
         protected DateTime m_NextRespawnTime;
         protected Timer m_RespawnTimer;
@@ -255,15 +285,27 @@ namespace Server.Items
             this.CheckRespawn();
         }
 
+        public virtual bool CanSpawnRefinement()
+        {
+            return ContentType == FillableContentType.Clothier || ContentType == FillableContentType.Blacksmith || ContentType == FillableContentType.Carpenter;
+        }
+
         public virtual void GenerateContent()
         {
             if (this.m_Content == null || this.Deleted)
                 return;
 
             int toSpawn = this.GetSpawnCount();
+            bool canspawnRefinement = this.GetAmount(typeof(RefinementComponent)) == 0 && CanSpawnRefinement();
 
             for (int i = 0; i < toSpawn; ++i)
             {
+                if (canspawnRefinement && RefinementComponent.Roll(this, 1, 0.08))
+                {
+                    canspawnRefinement = false;
+                    continue;
+                }
+
                 Item item = this.m_Content.Construct();
 
                 if (item != null)

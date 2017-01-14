@@ -120,7 +120,11 @@ namespace Server
                 typeof(Sewerrat), typeof(Skeleton), typeof(Slime),
                 typeof(Zombie), typeof(Walrus), typeof(RestlessSoul),
                 typeof(CrystalElemental), typeof(DarknightCreeper), typeof(MoundOfMaggots),
-                typeof(Juggernaut), typeof(Yamandon), typeof(Serado)
+                typeof(Juggernaut), typeof(Yamandon), typeof(Serado),
+                typeof(RuddyBoura), typeof(LowlandBoura), typeof(HighPlainsBoura),
+                typeof(Relanord), typeof(Ortanord), typeof(Korpre),
+                typeof(Anzuanord), typeof(Anlorzen), typeof(UndeadGuardian),
+                typeof(PutridUndeadGuardian), typeof(CorgulTheSoulBinder)
             }),
             /* Fast */
             new SpeedInfo(0.2, 0.4, new Type[]
@@ -136,7 +140,12 @@ namespace Server
                 typeof(DemonKnight), typeof(GiantBlackWidow), typeof(SummonedAirElemental),
                 typeof(LesserHiryu), typeof(Hiryu), typeof(LadyOfTheSnow),
                 typeof(RaiJu), typeof(Ronin), typeof(RuneBeetle),
-                typeof(Changeling),
+                typeof(Changeling), typeof(SentinelSpider), typeof(Anlorvaglem),
+                typeof(Medusa), typeof(PrimevalLich), typeof(StygianDragon),
+                typeof(CoralSnake), typeof(DarkWisp), typeof(DreamWraith),
+                typeof(FireAnt), typeof(KepetchAmbusher), typeof(LavaElemental),
+                typeof(MaddeningHorror), typeof(Wight), typeof(WolfSpider),
+                typeof(UndeadGargoyle), typeof(SlasherOfVeils),
                 #region ML named mobs - before Paragon speedboost
                 typeof(LadyJennifyr), typeof(LadyMarai), typeof(MasterJonath),
                 typeof(MasterMikael), typeof(MasterTheophilus), typeof(RedDeath),
@@ -159,7 +168,8 @@ namespace Server
                 typeof(FactionHenchman), typeof(FactionMercenary), typeof(FactionNecromancer),
                 typeof(FactionSorceress), typeof(FactionWizard), typeof(FactionBerserker),
                 typeof(FactionPaladin), typeof(Leviathan), typeof(FireBeetle),
-                typeof(FanDancer), typeof(FactionDeathKnight)
+                typeof(FanDancer), typeof(FactionDeathKnight), typeof (ClockworkExodus),
+                typeof(Navrey), typeof(Raptor), typeof(TrapdoorSpider)
             }),
             /* Medium */
             new SpeedInfo(0.25, 0.5, new Type[]
@@ -234,7 +244,17 @@ namespace Server
                 typeof(Kappa), typeof(KazeKemono), typeof(DeathwatchBeetle),
                 typeof(TsukiWolf), typeof(YomotsuElder), typeof(YomotsuPriest),
                 typeof(YomotsuWarrior), typeof(RevenantLion), typeof(Oni),
-                typeof(Gaman), typeof(Crane), typeof(Beetle)
+                typeof(Gaman), typeof(Crane), typeof(Beetle),
+                typeof(ColdDrake), typeof(Vasanord), typeof(Ballem),
+                typeof(Betballem), typeof(Anlorlem), typeof(BloodWorm),
+                typeof(GreenGoblin), typeof(EnslavedGreenGoblin), typeof(GreenGoblinAlchemist),
+                typeof(GreenGoblinScout), typeof(Kepetch), typeof(ClanRC),
+                typeof(EnslavedGoblinKeeper), typeof(EnslavedGoblinMage), typeof(EnslavedGoblinScout),
+                typeof(EnslavedGrayGoblin), typeof(GrayGoblin), typeof(GrayGoblinKeeper),
+                typeof(GrayGoblinMage), typeof(Gremlin), typeof(SkeletalDrake),
+                typeof(Slith), typeof(StoneSlith), typeof(ToxicSlith),
+                typeof(WyvernRenowned), typeof(GrayGoblinMageRenowned), typeof(FireDaemon),
+                typeof(AcidSlug)
             })
         };
     }

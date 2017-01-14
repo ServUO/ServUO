@@ -65,7 +65,7 @@ namespace Server.Mobiles
             }
 
             // 25% chance to cast poison if needed
-            if (this.m_Mobile.Combatant != null && !this.m_Mobile.Combatant.Poisoned && Utility.RandomDouble() > 0.75)
+            if (this.m_Mobile.Combatant is Mobile && !((Mobile)m_Mobile.Combatant).Poisoned && Utility.RandomDouble() > 0.75)
             {
                 if (this.m_Mobile.Debug)
                     this.m_Mobile.Say(1156, "Casting Poison");
@@ -109,22 +109,22 @@ namespace Server.Mobiles
 
         public Spell CheckBless()
         {
-            StatMod mod = this.m_Mobile.GetStatMod("[Magic] Str Offset");
+            StatMod mod = this.m_Mobile.GetStatMod("[Magic] Str Buff");
 
-            if (mod != null && mod.Offset > 0)
+            if (mod != null)
                 return null;
 
             if (this.m_Mobile.Skills[SkillName.Magery].Value >= 40.0)
                 return new BlessSpell(this.m_Mobile, null);
 
-            mod = this.m_Mobile.GetStatMod("[Magic] Int Offset");
+            mod = this.m_Mobile.GetStatMod("[Magic] Int Buff");
 
-            if (mod == null || mod.Offset < 0)
+            if (mod == null)
                 return new CunningSpell(this.m_Mobile, null);
 
-            mod = this.m_Mobile.GetStatMod("[Magic] Dex Offset");
+            mod = this.m_Mobile.GetStatMod("[Magic] Dex Buff");
 
-            if (mod == null || mod.Offset < 0)
+            if (mod == null)
                 return new AgilitySpell(this.m_Mobile, null);
 
             return new StrengthSpell(this.m_Mobile, null);
@@ -132,14 +132,14 @@ namespace Server.Mobiles
 
         public Spell CheckCurse()
         {
-            Mobile foe = this.m_Mobile.Combatant;
+            Mobile foe = this.m_Mobile.Combatant as Mobile;
 
             if (foe == null)
                 return null;
 
-            StatMod mod = foe.GetStatMod("[Magic] Int Offset");
+            StatMod mod = foe.GetStatMod("[Magic] Int Curse");
 
-            if (mod != null && mod.Offset < 0)
+            if (mod != null)
                 return null;
 
             if (this.m_Mobile.Skills[SkillName.Magery].Value >= 40.0)
@@ -148,10 +148,10 @@ namespace Server.Mobiles
             int whichone = 1;
             Spell spell = null;
 
-            if ((mod = foe.GetStatMod("[Magic] Str Offset")) != null)
+			if ((mod = foe.GetStatMod("[Magic] Str Curse")) != null)
                 whichone++;
 
-            if ((mod = this.m_Mobile.GetStatMod("[Magic] Dex Offset")) != null)
+			if ((mod = this.m_Mobile.GetStatMod("[Magic] Dex Curse")) != null)
                 whichone++;
 
             switch ( whichone )
@@ -172,7 +172,7 @@ namespace Server.Mobiles
 
         public double CheckManaDrain()
         {
-            Mobile foe = this.m_Mobile.Combatant;
+            Mobile foe = this.m_Mobile.Combatant as Mobile;
 
             if (foe == null || foe.Mana < 10)
                 return 0.0;

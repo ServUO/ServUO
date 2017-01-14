@@ -546,9 +546,39 @@ namespace Server
 
 			return i;
 		}
+
+        public static long ToInt64(string value)
+        {
+            long i;
+
+            if (value.StartsWith("0x"))
+                long.TryParse(value.Substring(2), NumberStyles.HexNumber, null, out i);
+            else
+                long.TryParse(value, out i);
+
+            return i;
+        }
 		#endregion
 
 		#region Get[Something]
+		public static double GetXMLDouble(string doubleString, double defaultValue)
+		{
+			try
+			{
+				return XmlConvert.ToDouble(doubleString);
+			}
+			catch
+			{
+				double val;
+				if (double.TryParse(doubleString, out val))
+				{
+					return val;
+				}
+
+				return defaultValue;
+			}
+		}
+
 		public static int GetXMLInt32(string intString, int defaultValue)
 		{
 			try
@@ -833,7 +863,7 @@ namespace Server
 			return total;
 		}
 
-		public static int RandomList(params int[] list)
+		public static T RandomList<T>(params T[] list)
 		{
 			return list[RandomImpl.Next(list.Length)];
 		}
@@ -889,13 +919,51 @@ namespace Server
 		{
 			return RandomImpl.NextDouble();
 		}
-		#endregion
+        #endregion
 
-		#region Random Hues
-		/// <summary>
-		///     Random pink, blue, green, orange, red or yellow hue
-		/// </summary>
-		public static int RandomNondyedHue()
+        #region FixValues
+        public static void FixMin(ref int value, int min)
+        {
+            if (value < min)
+                value = min;
+        }
+
+        public static void FixMin(ref double value, double min)
+        {
+            if (value < min)
+                value = min;
+        }
+
+        public static void FixMax(ref int value, int max)
+        {
+            if (value > max)
+                value = max;
+        }
+
+        public static void FixMax(ref double value, double max)
+        {
+            if (value > max)
+                value = max;
+        }
+
+        public static void FixMinMax(ref int value, int min, int max)
+        {
+            FixMin(ref value, min);
+            FixMax(ref value, max);
+        }
+
+        public static void FixMinMax(ref double value, double min, double max)
+        {
+            FixMin(ref value, min);
+            FixMax(ref value, max);
+        }
+        #endregion
+
+        #region Random Hues
+        /// <summary>
+        ///     Random pink, blue, green, orange, red or yellow hue
+        /// </summary>
+        public static int RandomNondyedHue()
 		{
 			switch (Random(6))
 			{

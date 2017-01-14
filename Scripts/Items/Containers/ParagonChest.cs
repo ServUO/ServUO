@@ -138,6 +138,9 @@ namespace Server.Items
                 case 5:
                     this.RequiredSkill = 100;
                     break;
+                case 6:
+                    this.RequiredSkill = 100;
+                    break;
             }
 
             this.LockLevel = this.RequiredSkill - 10;
@@ -156,6 +159,17 @@ namespace Server.Items
                     item = Loot.RandomArmorOrShieldOrWeaponOrJewelry();
                 else
                     item = Loot.RandomArmorOrShieldOrWeapon();
+
+                if (item != null && Core.HS && Server.Mobiles.RandomItemGenerator.Enabled)
+                {
+                    int min, max;
+                    TreasureMapChest.GetRandomItemStat(out min, out max);
+
+                    RunicReforging.GenerateRandomItem(item, 0, min, max);
+
+                    DropItem(item);
+                    continue;
+                }
 
                 if (item is BaseWeapon)
                 {

@@ -138,28 +138,14 @@ namespace Server.Spells.Chivalry
                             sendEffect = true;
                         }
 
-                        StatMod mod;
+                        if(m.RemoveStatMod("[Magic] Str Offset"))
+							sendEffect = true;
 
-                        mod = m.GetStatMod("[Magic] Str Offset");
-                        if (mod != null && mod.Offset < 0)
-                        {
-                            m.RemoveStatMod("[Magic] Str Offset");
+                        if(m.RemoveStatMod("[Magic] Dex Offset"))
                             sendEffect = true;
-                        }
 
-                        mod = m.GetStatMod("[Magic] Dex Offset");
-                        if (mod != null && mod.Offset < 0)
-                        {
-                            m.RemoveStatMod("[Magic] Dex Offset");
+                        if(m.RemoveStatMod("[Magic] Int Offset"))
                             sendEffect = true;
-                        }
-
-                        mod = m.GetStatMod("[Magic] Int Offset");
-                        if (mod != null && mod.Offset < 0)
-                        {
-                            m.RemoveStatMod("[Magic] Int Offset");
-                            sendEffect = true;
-                        }
 
                         if (m.Paralyzed)
                         {

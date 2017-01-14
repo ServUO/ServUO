@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Server.Targeting;
+using Server.Multis;
+using Server.Regions;
 
 namespace Server.Spells.Spellweaving
 {
@@ -65,7 +67,7 @@ namespace Server.Spells.Spellweaving
 							
                         Point3D p3d = new Point3D(x, y, this.Caster.Map.GetAverageZ(x, y));
 					
-                        if (this.Caster.Map.CanFit(p3d, 12, true, false))
+                        if (CanFitFire(p3d, Caster))
                             new FireItem(duration).MoveToWorld(p3d, this.Caster.Map);
                     }
                 }
@@ -76,6 +78,23 @@ namespace Server.Spells.Spellweaving
             }
 
             this.FinishSequence();
+        }
+
+        private bool CanFitFire(Point3D p, Mobile caster)
+        {
+            if (!Caster.Map.CanFit(p, 12, true, false))
+                return false;
+            if (BaseHouse.FindHouseAt(p, caster.Map, 20) != null)
+                return false;
+            foreach(RegionRect r in caster.Map.GetSector(p).RegionRects)
+            {
+                if (!r.Contains(p))
+                    continue;
+                GuardedRegion reg = (GuardedRegion)Region.Find(p, caster.Map).GetRegion(typeof(GuardedRegion));
+                if (reg != null && !reg.Disabled)
+                    return false;
+            }
+            return true;
         }
 
         public class InternalTarget : Target
@@ -108,6 +127,8 @@ namespace Server.Spells.Spellweaving
             private readonly int m_Damage;
             private readonly int m_Range;
             private int m_LifeSpan;
+            private Map m_Map;
+
             public InternalTimer(Mobile owner, Point3D location, int damage, int range, int duration)
                 : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), duration)
             {
@@ -116,11 +137,12 @@ namespace Server.Spells.Spellweaving
                 this.m_Damage = damage;
                 this.m_Range = range;
                 this.m_LifeSpan = duration;
+                this.m_Map = owner.Map;
             }
 
             protected override void OnTick()
             { 
-                if (this.m_Owner == null)
+                if (this.m_Owner == null || m_Map == null || m_Map == Map.Internal)
                     return;
 					
                 this.m_LifeSpan -= 1;
@@ -144,7 +166,7 @@ namespace Server.Spells.Spellweaving
             {
                 List<Mobile> m_Targets = new List<Mobile>();
 			
-                foreach (Mobile m in this.m_Owner.Map.GetMobilesInRange(this.m_Location, this.m_Range))
+                foreach (Mobile m in this.m_Map.GetMobilesInRange(this.m_Location, this.m_Range))
                 {
                     if (m != this.m_Owner && SpellHelper.ValidIndirectTarget(this.m_Owner, m) && this.m_Owner.CanBeHarmful(m, false))
                         m_Targets.Add(m);

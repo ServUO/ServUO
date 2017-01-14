@@ -1,195 +1,119 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Server.Network;
+using Server.Items;
+using Server.Targeting;
 using Server.Mobiles;
-using Server.Spells.Seventh;
 
 namespace Server.Spells.Mystic
 {
-    public class StoneFormSpell : MysticSpell
-    { 
-        private static readonly SpellInfo m_Info = new SpellInfo(
-            "Stone Form", "In Rel Ylem",
-            230,
-            9022,
-            Reagent.Bloodmoss,
-            Reagent.FertileDirt,
-            Reagent.Garlic);
-        private static readonly Dictionary<Mobile, List<ResistanceMod>> m_Table = new Dictionary<Mobile, List<ResistanceMod>>();
-        public StoneFormSpell(Mobile caster, Item scroll)
-            : base(caster, scroll, m_Info)
-        {
-        }
+	public class StoneFormSpell : MysticTransformationSpell
+	{
+		private static HashSet<Mobile> m_Effected = new HashSet<Mobile>();
+		public static bool IsEffected(Mobile m)
+		{
+			return m_Effected.Contains(m);
+		}
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(2.0);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 33.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public static bool HasEffect(Mobile m)
-        {
-            return m_Table.ContainsKey(m);
-        }
+		private static SpellInfo m_Info = new SpellInfo(
+				"Stone Form", "In Rel Ylem",
+				230,
+				9022,
+				Reagent.Bloodmoss,
+				Reagent.FertileDirt,
+				Reagent.Garlic
+			);
 
-        public static void RemoveEffect(Mobile m)
-        {
-            if (!m_Table.ContainsKey(m))
-                return;
+        private int m_ResisMod;
 
-            List<ResistanceMod> mods = m_Table[m];
+        public override SpellCircle Circle { get { return SpellCircle.Fourth; } }
 
-            for (int i = 0; i < m_Table[m].Count; i++)
-            {
-                m.RemoveResistanceMod(mods[i]);
-            }
+		public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds( 2.0 ); } }
 
-            m_Table.Remove(m);
-            m.EndAction(typeof(StoneFormSpell));
-            m.PlaySound(0x201);  
-            m.FixedParticles(0x3728, 1, 13, 9918, 92, 3, EffectLayer.Head);
-            m.BodyMod = 0;
-        }
+		public override int Body{ get{ return 705; } }
+        public override int PhysResistOffset { get { return m_ResisMod; } }
+        public override int FireResistOffset { get { return m_ResisMod; } }
+        public override int ColdResistOffset { get { return m_ResisMod; } }
+        public override int PoisResistOffset { get { return m_ResisMod; } }
+        public override int NrgyResistOffset { get { return m_ResisMod; } }
+
+		public StoneFormSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
+		{
+		}
 
         public override bool CheckCast()
         {
-            if (!base.CheckCast())
+            bool doCast = base.CheckCast();
+			if (doCast && Caster.Flying)
+			{
+				Caster.SendLocalizedMessage(1112567); // You are flying.
+				doCast = false;
+			}
+
+            if(doCast)
+                m_ResisMod = (int)(Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 24;
+
+            return doCast;
+        }
+
+		public override void DoEffect( Mobile m )
+		{
+			m.PlaySound( 0x65A );
+			m.FixedParticles( 0x3728, 1, 13, 9918, 92, 3, EffectLayer.Head );
+
+            Timer.DelayCall(new TimerCallback(MobileDelta_Callback));
+			m_Effected.Add(m);
+
+            string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}", "-10", "-2", m_ResisMod.ToString(), m_ResisMod.ToString(), "-10");
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.StoneForm, 1080145, 1080146, args));
+		}
+
+        public void MobileDelta_Callback()
+        {
+            Caster.Delta( MobileDelta.WeaponDamage );
+        }
+
+		public override void RemoveEffect( Mobile m )
+		{
+			m.Delta( MobileDelta.WeaponDamage );
+			m_Effected.Remove(m);
+            BuffInfo.RemoveBuff(m, BuffIcon.StoneForm);
+		}
+
+        public static int GetMaxResistMod(PlayerMobile pm)
+        {
+            if (TransformationSpellHelper.UnderTransformation(pm, typeof(Spells.Mystic.StoneFormSpell)))
             {
-                return false;
+                int prim = (int)pm.Skills[SkillName.Mysticism].Value;
+                int sec = (int)pm.Skills[SkillName.Imbuing].Value;
+
+                if (pm.Skills[SkillName.Focus].Value > sec)
+                    sec = (int)pm.Skills[SkillName.Focus].Value;
+
+                return Math.Max(2, (prim + sec) / 48);
             }
-            else if (!this.Caster.CanBeginAction(typeof(StoneFormSpell)))
+            return 0;
+        }
+
+        public static bool CheckImmunity(Mobile from)
+        {
+            if (TransformationSpellHelper.UnderTransformation(from, typeof(Spells.Mystic.StoneFormSpell)))
             {
-                this.Caster.SendLocalizedMessage(1005559);
-                return false;
+                int prim = (int)from.Skills[SkillName.Mysticism].Value;
+                int sec = (int)from.Skills[SkillName.Imbuing].Value;
+                if (from.Skills[SkillName.Focus].Value > sec)
+                    sec = (int)from.Skills[SkillName.Focus].Value;
+
+                int immunity = ((prim + sec) / 240) * 100;
+
+                if (Server.Spells.Necromancy.EvilOmenSpell.TryEndEffect(from))
+                    immunity -= 30;
+
+                return immunity > Utility.Random(100);
             }
-            else if (this.Caster.BodyMod != 0)	
-            {
-                this.Caster.SendMessage("You cannot transform while in that form.");
-                return false;
-            }
-            else if (this.Caster.BodyMod == 183 || this.Caster.BodyMod == 184)
-            {
-                this.Caster.SendMessage("You cannot transform while wearing body paint.");
-                return false;
-            }
-            else if (!this.Caster.CanBeginAction(typeof(PolymorphSpell)))
-            {
-                this.Caster.SendMessage("You cannot transform while polymorphed.");
-                return false;
-            }
-            /* else if ( !Caster.CanBeginAction( typeof( StoneFormSpell ) ) )
-            {
-            StoneFormSpell.RemoveEffect( Caster );
-            Caster.SendMessage( "You are no longer in Stone Form." );
+
             return false;
-            }*/
-
-            return true;
         }
-
-        public override void OnCast()
-        {
-            if (!this.Caster.CanBeginAction(typeof(StoneFormSpell)))
-            {
-                this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.      
-            }
-            else if (this.Caster.BodyMod != 0)
-            {
-                this.Caster.SendMessage("You cannot transform while in that form.");
-            }
-            else if (this.Caster.BodyMod == 183 || this.Caster.BodyMod == 184)
-            {
-                this.Caster.SendMessage("You cannot transform while wearing body paint.");
-            }
-            else if (!this.Caster.CanBeginAction(typeof(PolymorphSpell)))
-            {
-                this.Caster.SendMessage("You cannot transform while polymorphed.");
-            }
-            else if (this.CheckSequence())
-            {
-                // Values
-                int bonus1 = 2 + (int)(this.Caster.Skills[SkillName.Mysticism].Value / 20);
-                int bonus = 1 + (int)(this.Caster.Skills[SkillName.Focus].Value / 20);
-
-                double span = 7.0 + (this.Caster.Skills[SkillName.Mysticism].Value * 0.4);
-
-                // Mount
-                IMount mount = this.Caster.Mount;
-
-                if (mount != null)
-                    mount.Rider = null;
-
-                // Resists
-                List<ResistanceMod> mods = new List<ResistanceMod>();
-                mods.Add(new ResistanceMod(ResistanceType.Physical, bonus1 + bonus));
-                mods.Add(new ResistanceMod(ResistanceType.Fire, bonus1 + bonus));
-                mods.Add(new ResistanceMod(ResistanceType.Cold, bonus1 + bonus));
-                mods.Add(new ResistanceMod(ResistanceType.Poison, bonus1 + bonus));
-                mods.Add(new ResistanceMod(ResistanceType.Energy, bonus1 + bonus));
-
-                if (m_Table.ContainsKey(this.Caster))
-                {
-                    for (int i = 0; i < m_Table[this.Caster].Count; i++)
-                        this.Caster.AddResistanceMod(mods[i]);
-                }
-
-                // Skill
-                this.Caster.AddSkillMod(new TimedSkillMod(SkillName.MagicResist, true, -40, DateTime.UtcNow + TimeSpan.FromSeconds(span)));
-
-                // Effects
-                this.Caster.BodyMod = 705;
-                this.Caster.PlaySound(0x65A);
-                this.Caster.FixedParticles(0x3728, 1, 13, 9918, 92, 3, EffectLayer.Head);
-
-                m_Table.Add(this.Caster, mods);
-                new InternalTimer(this.Caster, TimeSpan.FromSeconds((int)span)).Start();
-
-                object[] objs =
-                {
-                    AosAttribute.CastSpeed, -2,
-                    AosAttribute.WeaponSpeed, -10
-                };
-                new EnhancementTimer(this.Caster, 27, "Stone Form", objs).Start();
-
-                this.Caster.BeginAction(typeof(StoneFormSpell));
-            }
-
-            this.FinishSequence();
-        }
-
-        private class InternalTimer : Timer
-        {
-            private readonly Mobile m_Owner;
-            private readonly DateTime m_Expire;
-            public InternalTimer(Mobile owner, TimeSpan duration)
-                : base(TimeSpan.Zero, TimeSpan.FromSeconds(0.1))
-            {
-                this.m_Owner = owner;
-                this.m_Expire = DateTime.UtcNow + duration;
-            }
-
-            protected override void OnTick()
-            {
-                if (DateTime.UtcNow >= this.m_Expire)
-                {
-                    StoneFormSpell.RemoveEffect(this.m_Owner);
-                    this.Stop();
-                }
-            }
-        }
-    }
+	}
 }

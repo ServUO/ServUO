@@ -1,0 +1,421 @@
+<?xml version="1.0" standalone="yes"?>
+<XmlQuestNPC>
+  <NPC>
+    <Name>Costello</Name>
+    <Running>True</Running>
+    <ProximityRange>4</ProximityRange>
+    <AllowGhost>False</AllowGhost>
+    <ResetTime>0.5</ResetTime>
+    <ConfigFile>costello</ConfigFile>
+  </NPC>
+<SpeechEntry>
+    <EntryNumber>0</EntryNumber>
+    <ID>0</ID>
+<AllowNPCTrigger>True</AllowNPCTrigger>
+    <DependsOn>-1</DependsOn>
+  </SpeechEntry>
+
+  <SpeechEntry>
+    <EntryNumber>999</EntryNumber>
+    <ID>999</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Look Abbott, if you're the coach, you must know all the players.</Text>
+    <Keywords>coach</Keywords>
+    <DependsOn>0</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>1</EntryNumber>
+    <ID>1</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Well you know I've never met the guys. So you'll have to tell me their names, and then I'll know who's playing on the team.</Text>
+    <Keywords>certainly</Keywords>
+    <DependsOn>999</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>2</EntryNumber>
+    <ID>2</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>You mean funny names?</Text>
+    <Keywords>peculiar</Keywords>
+    <DependsOn>1</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>3</EntryNumber>
+    <ID>3</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>His brother Daffy.</Text>
+    <Keywords>dizzy</Keywords>
+    <DependsOn>2</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>4</EntryNumber>
+    <ID>4</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>And their French cousin.</Text>
+    <Keywords>daffy</Keywords>
+    <DependsOn>3</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>5</EntryNumber>
+    <ID>5</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Goofe.</Text>
+    <Keywords>french</Keywords>
+    <DependsOn>4</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>6</EntryNumber>
+    <ID>6</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>That's what I want to find out.</Text>
+    <Keywords>who</Keywords>
+    <DependsOn>5</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>7</EntryNumber>
+    <ID>7</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Are you the manager?</Text>
+    <Keywords>who</Keywords>
+    <DependsOn>6</DependsOn>
+    <PrePause>6</PrePause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>8</EntryNumber>
+    <ID>8</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>You gonna be the coach too?</Text>
+    <Keywords>yes</Keywords>
+    <DependsOn>7</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>9</EntryNumber>
+    <ID>9</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>And you don't know the fellows' names?</Text>
+    <Keywords>yes</Keywords>
+    <DependsOn>8</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>10</EntryNumber>
+    <ID>10</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Well then who's on first?</Text>
+    <Keywords>should</Keywords>
+    <DependsOn>9</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>11</EntryNumber>
+    <ID>11</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>I mean the fellow's name.</Text>
+    <Keywords>yes</Keywords>
+    <DependsOn>10</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>12</EntryNumber>
+    <ID>12</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>The guy on first.</Text>
+    <Keywords>who</Keywords>
+    <DependsOn>11</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>13</EntryNumber>
+    <ID>13</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>The first baseman.</Text>
+    <Keywords>who</Keywords>
+    <DependsOn>12</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>14</EntryNumber>
+    <ID>14</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>The guy playing...</Text>
+    <Keywords>who</Keywords>
+    <DependsOn>13</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>15</EntryNumber>
+    <ID>15</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>I'm asking YOU who's on first.</Text>
+    <Keywords>who</Keywords>
+    <DependsOn>14</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>16</EntryNumber>
+    <ID>16</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>That's who's name?</Text>
+    <Keywords>name</Keywords>
+    <DependsOn>15</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>17</EntryNumber>
+    <ID>17</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Well go ahead and tell me.</Text>
+    <Keywords>yes</Keywords>
+    <DependsOn>16</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>18</EntryNumber>
+    <ID>18</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>That's who?</Text>
+    <Keywords>it</Keywords>
+    <DependsOn>17</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>19</EntryNumber>
+    <ID>19</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Look, you gotta first baseman?</Text>
+    <Keywords>yes</Keywords>
+    <PrePause>9</PrePause>
+    <DependsOn>18</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>20</EntryNumber>
+    <ID>20</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Who's playing first?</Text>
+    <Keywords>certainly</Keywords>
+    <DependsOn>19</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>21</EntryNumber>
+    <ID>21</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>When you pay off the first baseman every month, who gets the money?</Text>
+    <Keywords>right</Keywords>
+    <DependsOn>20</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>22</EntryNumber>
+    <ID>22</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>All I'm trying to find out is the fellow's name on first base.</Text>
+    <Keywords>dollar</Keywords>
+    <DependsOn>21</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>23</EntryNumber>
+    <ID>23</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>The guy that gets...</Text>
+    <Keywords>who</Keywords>
+    <DependsOn>22</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>24</EntryNumber>
+    <ID>24</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Who gets the money...</Text>
+    <Keywords>it</Keywords>
+    <DependsOn>23</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>25</EntryNumber>
+    <ID>25</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Who's wife?</Text>
+    <Keywords>wife</Keywords>
+    <DependsOn>24</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>26</EntryNumber>
+    <ID>26</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Look, all I wanna know is when you sign up the first baseman, how does he sign his name?</Text>
+    <Keywords>wrong</Keywords>
+    <DependsOn>25</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>27</EntryNumber>
+    <ID>27</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>The guy.</Text>
+    <Keywords>who</Keywords>
+    <DependsOn>26</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>28</EntryNumber>
+    <ID>28</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>How does he sign...</Text>
+    <Keywords>who</Keywords>
+    <DependsOn>27</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>29</EntryNumber>
+    <ID>29</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Who?</Text>
+    <Keywords>signs</Keywords>
+    <DependsOn>28</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>30</EntryNumber>
+    <ID>30</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>All I'm trying to find out is what's the guy's name on first base.</Text>
+    <Keywords>yes</Keywords>
+    <PrePause>8</PrePause>
+    <DependsOn>29</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>31</EntryNumber>
+    <ID>31</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>I'm not asking you who's on second.</Text>
+    <Keywords>what</Keywords>
+    <DependsOn>30</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>32</EntryNumber>
+    <ID>32</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>One base at a time!</Text>
+    <Keywords>first</Keywords>
+    <DependsOn>31</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>33</EntryNumber>
+    <ID>33</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>I'm not changing nobody!</Text>
+    <Keywords>change</Keywords>
+    <DependsOn>32</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>34</EntryNumber>
+    <ID>34</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>I'm only asking you, who's the guy on first base?</Text>
+    <Keywords>easy</Keywords>
+    <DependsOn>33</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>35</EntryNumber>
+    <ID>35</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Ok.</Text>
+    <Keywords>right</Keywords>
+    <DependsOn>34</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>36</EntryNumber>
+    <ID>36</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>What's the guy's name on first base?</Text>
+    <Keywords>right</Keywords>
+    <PrePause>8</PrePause>
+    <DependsOn>35</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>37</EntryNumber>
+    <ID>37</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>I'm not asking you who's on second.</Text>
+    <Keywords>what</Keywords>
+    <DependsOn>36</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>38</EntryNumber>
+    <ID>38</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>I don't know.</Text>
+    <Keywords>first</Keywords>
+    <DependsOn>37</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>39</EntryNumber>
+    <ID>39</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Now how did I get on third base?</Text>
+    <Keywords>third</Keywords>
+    <DependsOn>38</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>40</EntryNumber>
+    <ID>40</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>If I mentioned the third baseman's name, who did I say is playing third?</Text>
+    <Keywords>name</Keywords>
+    <DependsOn>39</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>41</EntryNumber>
+    <ID>41</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>What's on base?</Text>
+    <Keywords>first</Keywords>
+    <DependsOn>40</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>42</EntryNumber>
+    <ID>42</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>I don't know.</Text>
+    <Keywords>second</Keywords>
+    <DependsOn>41</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>43</EntryNumber>
+    <ID>43</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>There I go, back on third again!</Text>
+    <Keywords>third</Keywords>
+    <DependsOn>42</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>44</EntryNumber>
+    <ID>44</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Would you just stay on third base and don't go off it.</Text>
+    <PrePause>8</PrePause>
+    <DependsOn>43</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>45</EntryNumber>
+    <ID>45</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Now who's playing third base?</Text>
+    <Keywords>what</Keywords>
+    <DependsOn>44</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>46</EntryNumber>
+    <ID>46</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>What am I putting on third.</Text>
+    <Keywords>who</Keywords>
+    <DependsOn>45</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>47</EntryNumber>
+    <ID>47</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>You don't want who on second?</Text>
+    <Keywords>what</Keywords>
+    <DependsOn>46</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>48</EntryNumber>
+    <ID>48</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>I don't know.</Text>
+    <Keywords>who</Keywords>
+    <DependsOn>47</DependsOn>
+    </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>49</EntryNumber>
+    <ID>49</ID>
+    <AllowNPCTrigger>True</AllowNPCTrigger>
+    <Text>Third base!</Text>
+    <DependsOn>48</DependsOn>
+    </SpeechEntry>
+</XmlQuestNPC>

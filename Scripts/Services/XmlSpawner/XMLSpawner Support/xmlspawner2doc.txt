@@ -1,0 +1,511 @@
+2/3/04
+I would like to thank DeepFreez who wrote these, posted them on the Script Submissions forum, 
+and allowed me to include them in the package.
+
+
+Docs updates for 2.19 
+
+=========================================== 
+Documentation for XmlSpawner 2.19 
+1. Spawning 
+
+A spawner has a MinDelay and MaxDelay associated with it. Once it is activated, spawns will begin to appear with an interval that ranges from MinDelay to MaxDelay. By default a spawner is active when it is created. Adding triggers and conditions will change when a spawner is activated. 
+2. Triggering 
+
+By setting the ProximityRange property to something other than -1 the spawner checks for a player in the given range first and then any other conditions that apply. If no ProximiyRange is set, the Object property condition and Mobile propery condition are checked at each spawn tick. An active spawner will spawn things between its MinDelay and MaxDelay times. This is known as a spawn tick. 
+
+A spawner will be active by default, unless one of the triggering conditions are specified. The following triggers are available 
+2.1. Speech Trigger (SpeechTrigger) 
+
+The spawner will test its trigger conditions to be activated when a given phrase is heard at the location of the spawner. 
+
+Set the SpeechTrigger property to the required phrase 
+2.2. Proximity Trigger (ProximityRange) 
+
+The spawner will test its trigger conditions to be activated when a player enters into the given range of the spawner location. 
+
+Set the ProximityRange value to any non negative value. A value of 0 is valid, meaning that the player has to be at the exact location of the spawner. 
+
+Optionally set the ProximityTriggerSound and ProximityTriggerMsg properties. 
+3. Conditions 
+3.1. Trigger Conditions 
+
+Given the trigger (speech or movement), the following conditions will be checked. All the conditions that are set must be true for the spawner to be activated. 
+3.1.1. Object Property (TriggerObject, TriggerObjectProp) 
+
+A property of a speciffic object somewhere in the world is checked using a property test string. If the property test string is true, the trigger is allowed. 
+
+To set it, use the TriggerObject property and select a specific object. The name of this object will be displayed in the TriggerObjectName field. 
+
+Set the TriggerObjectProp to the required property test string. 
+
+
+3.1.2. Player Property (PlayerTriggerProp) 
+
+A property on the player that set of the proximity trigger is checked. 
+3.1.3. Mobile Property (MobTriggerName, MobTriggerProp) 
+
+A property on a uniquely name Mobile is checked using a property test string. If the Mobile exists and the property is true the trigger is allowed. The Mobile must be named with a unique name. 
+
+To set it, set the MobTriggerName to the unique name of the Mobile in question. If it is valid, the MobTriggerID property will be set to the ID of the Mobile. 
+
+Set the MobTriggerProp to the reqired property test string. 
+3.1.4. Carried Object (TriggerOnCarried, NoTriggerOnCarried) 
+
+The player that triggered the proximity spawn has her backpack checked for the named object. All sub-containers are also searched. 
+
+To set it, set the TriggerOnCarried to the name of the item to be searched for, or set the NoTriggerOnCarried name to the item that should not be absent. 
+3.1.5. Probability Modifier (TriggerProbability) 
+
+This is the probability that given all the other conditions are valid, the spawn will activate. Set it to something less than the default 1 to decrease the probability of the spawn activating. 
+3.2. Time Conditions 
+3.2.1. Time of Day (TODStart, TODEnd, TODMode) 
+
+This specifies a period during the day when the spawner may be activated. During any time that falls outside this period the spawner will not activate given all the other conditions are met. The period stretches from TODStart to TODEnd. If TODEnd is before TODStart, the period stretches over midnight. 
+
+The TODMode can be either Realtime or Gametime. A setting of Gametime indicates that the period uses the time of day in the game itself. 
+4. Spawner Properties 
+4.1.1. Trigger Related 
+4.1.1.1. SpeechTrigger 
+
+This is the phrase that is checked against when some speech is heard near the spawner itself. 
+
+To disable set to NULL 
+
+Default NULL 
+4.1.1.2. ProximityRange 
+
+This is the minimum distance a player has to be from the location of the spawner for it to trigger. A value of 0 is valid, because it means the player is at the exact location of the spawner. 
+
+To disable set to -1 
+
+Default -1 
+4.1.2. Trigger Condition Related 
+4.1.2.1. TriggerObject 
+
+This is the object that an object property condition will check. Us it to set the specific object that will be checked. 
+
+To disable set to NULL 
+
+Default NULL 
+4.1.2.2. TriggerObjectProp 
+
+This is the property test string that will determine if an object property condition is valid. 
+
+Default NULL 
+4.1.2.3. MobTriggerName 
+
+This is the unique name of the Mobile to be checked in a mobile property condition. The name must be of a Mobile that is unique in the world. 
+
+To disalble set to “” 
+
+Default NULL 
+4.1.2.4. MobTriggerProp 
+
+This is the property test string that will determine if a mobile property condition is valid. 
+
+Default NULL 
+4.1.2.5. PlayerTriggerProp 
+
+This is the property test string that will determine for a player property condition is valid. 
+
+Default NULL 
+4.1.2.6. TriggerOnCarried 
+
+This is the name of the object that is searched for in a carried object condition. If this object is found, the spawner will trigger. 
+
+If the item is of type XmlQuestToken, the name can be followed by a comman separated list of objective numbers that must be in the true state. 
+
+Default NULL 
+4.1.2.7. NoTriggerOnCarried 
+
+This is the name of the object that is searched for in a carried object condition. If this object is found, the spawner will not trigger. 
+
+If the item is of type XmlQuestToken, then name can be followed by a comman separated list of objective numbers that must be in the true start. 
+
+Default NULL 
+
+4.1.2.8. TriggerProbability 
+
+This is the probability that the spawn will activate given all the other conditions are met. Set it to a value between 0 and 1. 
+
+Default 1 (always activate) 
+4.1.3. Time Related 
+4.1.3.1. MinDelay, MaxDelay 
+
+This is minimum and maximum times that the spawner will wait to spawn the next thing. This can be set in the HH:MM:SS format. 
+
+Default 5min and 10min respectively 
+4.1.3.2. TODStart, TODEnd 
+
+This is the start and end of the active period for the time of day condition. The given time can be either real time or game time, depending on the TODMode setting 
+
+To disable set both of these to the same value (say 0) 
+
+Default 0 
+4.1.3.3. TODMode 
+
+This allows the Time of Day condition to be either real time or world time based. The two possible values for this are Gametime and Realtime. In the Gametime mode, a value of midnight will be midnight in the game itself and thus will occur several times in a real day. In Realtime mode, a value of midnight will be midnight in the real world and thus will occur only once in a real day. 
+
+Default Realtime 
+
+4.1.3.4. RefractMin, RefractMax 
+
+These relate to the MinDelay and MaxDelay properties. Once a spawn is triggered a delay between RefractMin and RefractMax is started during which the spawner can not be triggered again, but will remain active. This will allow MinDelay and MaxDelay to have a very short period, while not allowing the spawner to be repeatedly triggered. 
+
+Set these values to the refresh time between triggers. For example, setting MinDelay and MaxDelay to 2 seconds and 5 seconds will allow your spawns to appear in 2 to 5 seconds, but will also allow the spawn to be triggered every 2 to 5 seconds. Setting RefractMin and RefractMax to 2 and 5 minutes, will allow the spawn to be triggered once every 2 to 5 minutes only. 
+4.1.3.5. Duration 
+
+This is the length of time that the spawned things will last. When the duration expires, all the spawned things will be deleted. 
+
+To disable, set the value to 0 
+
+Default 0 
+4.1.3.6. NextSpawn 
+
+This is the time when the next spawn will happen. Writing to this property will restart the spawn timer with the given value, ignoring MinDelay and MaxDelay. 
+4.1.4. Activation Related 
+4.1.4.1. ProximityTriggerSound 
+
+This is the sound that will be played when a player enters the ProximityRange. 
+
+To disable, set the value to 0 
+
+Default 500 (click) 
+4.1.4.2. ProximityTriggerMsg 
+
+This is the message that will be displayed when a player enters the ProximityRange. 
+
+To disable, set the value to NULL 
+
+Default NULL (disabled) 
+4.1.5. Spawn Related 
+4.1.5.1. X1_Y1 and X2_Y2 
+
+These specify the north-west corner and south-east corner respectively of where the things will appear for this spawner. Setting these will also set the HomeRange for the spawns 
+4.1.5.2. SpawnRange 
+
+This specifies a range from the spawner location where spawns may appear. Setting this, will also set X1_Y1, X2_Y2 and HomeRange. 
+4.1.5.3. MaxCount 
+
+This is the maximum number of things to spawn. If MaxCount is less than the number of specified spawns, a proportional spawn is done. This means that if you specified 3 skeletons and 7 zombies, you will get 30% skeletons and 70% zombies. If MaxCount is set to 6 in this case you should get more or less 2 skeletons and 4 zombies most of the time. 
+
+To spawn one thing from a list, add all the things you wish to spawn and set MaxCount to 1. 
+4.1.5.4. HomeRange 
+
+This is the home range that will be set on all Mobiles that are spawned. It is used to determine how far a Mobile may walk from its home spot. HomeRangeIsRelative determines where the home spot is. 
+4.1.5.5. HomeRangeIsRelative 
+
+This determines where the home spot is for a spawned Mobile. If it is set to true the home spot is where the Mobile is spawned. If it is se to false, the home spot is the location of the spawner. Mobiles will tend to wander close to or around the home spot in the range given by HomeRange. 
+
+The default settings will prevent Mobiles from wandering outside the spawn area. 
+
+In a large spawn area, setting the HomeRange to a smaller value and making the HomeRangeIsRelative true, will result in Mobiles wandering around the spot that they were randomly placed. They might wander outside of the spawn area however. 
+
+Default is false (meaning that the home spot is the spawner location) 
+4.1.5.6. StackAmount 
+
+For items being spawned, if they can be stacked, create them in stacks of this denomination. 
+
+Default 1 
+4.1.5.7. SetItem 
+
+This is the item that will receive the modifications from the SET spawn command. 
+4.1.5.8. Group 
+
+If the value of Group is set to true, the spawner will respawn on every spawn tick, instead of only spawning one thing. 
+
+Default false 
+4.1.6. Utility 
+4.1.6.1. ShowBounds 
+
+Setting this to true will display the bounds of the spawn area. Setting it to false will remove the display. 
+4.1.6.2. Name 
+
+This is the unique name for this spawner. It is a good idea to start related spawn names with the same word. This will allow the export and other commands to operate on groups of related spawns. For instance, start all the spawns in Yew with the string “Yew – description” 
+4.1.6.3. CurrentCount 
+
+This is the number of things spawned and controlled by the spawner at the moment. It is a read only property. 
+4.1.6.4. WayPoint 
+
+If this is set to a valid waypoint, any Mobile spawned will have this as its initial waypoint. 
+4.1.6.5. Running 
+
+This indicates the status of the spawner. To deactivate a spawner and prevent it from spawning anything, set Running to false. 
+4.1.6.6. Team 
+
+This is the team that is assigned to the spawned Mobiles. 
+4.1.6.7. KillCount 
+
+This is the number of Mobiles that have been killed. The count is reset to 0 once KillReset spawn ticks go by in which no spawn was created. This can happen when CurentCount reaches MaxCount, or when the proximity trigger is no longer valid. 
+
+Note that KillCount does not count the number of Mobile deaths directly. It counts the number of Mobiles it has to delete from its internal lists when the spawner respawns. This means that KillCount might lag behind the actual kill count for one spawn period (between MinDelay and MaxDelay) 
+4.1.6.8. KillReset 
+
+This is the number of number of spawn ticks that has to pass without a kill before KillCount is reset. 
+
+Default 1 
+
+4.1.6.9. RefractoryOver 
+
+This has the time remaining in the refractory period. When this value is set, the refractory period is restarted with the given period. 
+4.1.6.10. DurationOver 
+
+This has the time remaining in the duration period. When the value is set the duration period is restarted with the given period. 
+4.1.6.11. GumpState 
+
+This is a value that is set by gumps sent with the GUMP spawn keyword. It can be used in the Object property condition to create quests. 
+
+5. Property Test Strings 
+
+The format for these strings is <property> <operator> <value> 
+
+The property can be any property on the targeted thing that can be reached with the [get command. 
+
+The operator can be any one of the following: <, >, =, ! 
+
+The value must be appropriate for the property being checked. 
+
+Example 1: maxgold=20 
+
+Example 2: killcount>0 
+
+Example 3: open=true 
+
+Example 4: hue!500 
+6. Spawn Options 
+
+The normal way to specify what to spawn is by giving its name. Several options may be added to set properties or add items in a backpack. 
+6.1. Special Spawns 
+6.1.1. SET 
+
+Using this command as the item being spawned allows you to set a property on the item selected in SetItem. Any property that can be set with the [set command is allowable. 
+
+Example 1: SET/locked/false/MSG/the door is magically opened 
+
+Example 2: SET/visible/true 
+6.1.2. SETONTRIGMOB 
+
+Using this command as the item being spawned allows you to set properties on the Mobile that triggered the spawner in the first place. Any property that can be set with the [set command is allowable. 
+
+Example 1: SETONTRIGMOB/stam/0/mana/0 
+
+Example 2: SETONTRIGMOB/hidden/true 
+6.1.3. GIVE 
+
+Using this command as the item being spawned creates an item directly in the backpack of the player that triggered the spawn. The syntax is the same as the ADD keyword for adding items to spawned Mobiles. The syntax is 
+
+GIVE/item 
+
+GIVE,probability/item 
+
+GIVE,probability/<item/prop1/value1/prop2/value2…> 
+
+Example 1: 
+
+GIVE,0.1/<katana/hue/500> 
+
+This will have a 10% chance of putting a blue katana in backpack of the player that triggered the spawn. 
+6.1.4. TAKE 
+
+Using this command as the itme being spawned will search the backpack of the player that triggered the spawner for the first item with the given name and deletes it. Sub-containers will also be searched. Containers will not be removed. The syntax is 
+
+TAKE/item 
+
+TAKE,probability/item 
+
+6.2. Adding Items 
+
+To add items to the backpack of a spawned Mobile, use the ADD command. 
+
+The format for an ADD command is: /ADD/itemtype or /ADD,probability/itemtype 
+
+This will add one itemtype to the backpack of the Mobile, with the given probability. Properties can be set on the created item. 
+6.2.1. Random items 
+
+Instead of the itemtype, one of the following keywords can be specified to create a random item of the given class. These types can also be used to spawn the items directly. 
+6.2.1.1. ARMOR,min,max 
+
+This creates a random piece of magical armor, jewelry or shiled. A random and bonus is added based on the power of the item between min and max. Min and max can range from 0 to 5. 
+
+6.2.1.2. WEAPON,minmax 
+
+This creates a random weapon. A random and bonus is added based on the power of the item between min and max. Min and max can range from 0 to 5. 
+
+6.2.1.3. SCROLL,mincircle,maxcirlce 
+
+A magical scroll is created with a circle between mincircle and maxcircle. 
+
+6.2.1.4. NECROSCROLL 
+
+A random necromancer scroll is created. 
+
+6.2.1.5. POTION 
+
+A random potion is created. 
+
+
+
+Example 1: 
+
+ogre/ADD,0.5/WEAPON,2,5 
+
+This spawns an ogre with a 50% chance of having a magical weapon of power level between 2 and 5. 
+
+Example 2: 
+
+POTION 
+
+This spawns a random potion, for example in a container. 
+
+Example 3: 
+
+ARMOR,5,5/name/Bruiser/hue/300/durability/200" 
+
+This spawns a random piece of magic armor of level 5, name it Bruiser, turn it blue, and set its durability to 200. 
+
+Example 4: 
+
+ogre/ADD,0.5/<ARMOR,5,5/name/Bruiser/hue/300/durability/200> 
+
+This adds a magical piece of armor of power level 5 to a spawned ogres pack with probability 0.5 
+
+Example 5: 
+
+GIVE/WEAPON,5,5 
+
+This gives a level 5 magic weapon to the player that triggered the spawner. 
+
+Example 6: 
+
+woodenchest/ADD/WEAPON,3,5/ADD/ARMOR,3,4/ADD/ARMOR,3,4/ADD/POTION/ADD/SCROLL,4,6/ADD,.1/<WEAPON,2,3/slayer/elementalban> 
+
+This spawns a chest with a magic weapon, two pieces of magic armor, a potion, a scroll, and occasionally a lev2-3 elemental slayer. 
+
+
+6.3. Setting Properties 
+
+Any property that can be set with the [set command can be set with the following syntax 
+
+Thing/property1/value1/property2/value2… 
+
+This will spawn a Thing and set its property1 to value1 and property2 to value2. To set nested properties, use dot notation for the property name. 
+
+
+
+Example 1: ogre/name/The Butcher/str/190/damagemax/50/hue/500 
+
+This creates a blue ogre, named "The Butcher", with 190 strength, and maximum attack damage of 50. 
+
+Example 2: katana/name/Master of elements/slayer/elementalban/hue/200 
+
+This creates a katana named “Master of elements” that is light blue and is an elemental super slayer. 
+
+Example 3: platehelm/armorattributes.magearmor/1/skillbonuses.skill_1_name/anatomy/skillbonuses.skill_1_value/20 
+
+This creates a plate helm with magearmor set and +20 to anatomy 
+6.3.1. RND 
+
+Any place where an integer is accepted, the RND command may be added. The format for the RND command is /RND,min,max/ It will insert a value between min and max 
+
+
+
+Example 1: 
+
+Ogre/hue/RND,1,500 
+
+This will create an ogre with a random hue between 1 and 500. 
+
+6.3.2. MOB 
+
+Any place where a reference to a Mobile is required the MOB keyword must be used to create the reference. The syntax is: 
+
+/MOB,name/ 
+
+It is required that the Mobile with the given name must exist and that the name must be unique. If either of these conditions are not met, an error will be flagged 
+
+Examlpe 1: 
+
+ogre/combatant/MOB,The outcast 
+
+This will create an ogre that will attack a mobile called “The outcast” immediately. That mobile must already exist. 
+6.3.3. TRIGMOB 
+
+Any plac where a reference to a Mobile is required the TRIGMOB keyword can be used to indicate the Mobile that caused the trigger in the first place. 
+
+Example 1: 
+
+ogre/combatant/TRIGMOB" 
+
+This will spawn an ogre that immediately attacks the player the triggered the spawn. 
+
+Example 2: 
+
+"ogre/name/Slave/controled/true/controlmaster/TRIGMOB" 
+
+This will spawn an ogre that is the pet of the Mobile that triggered the spawn. 
+
+6.3.4. Items in backpacks 
+
+It is also possible to set properties on items that are created in the backpacks of Mobiles that are spanwned. Use the modified syntax: Thing/ADD/<TheItem/prop1/value1/prop2/value2…> 
+
+This will spawn a Thing and add TheItem to its backpack and set prop1 to value1 on TheItem and set prop2 to value2 on TheItem. 
+
+
+
+Example 1: ogre/hue/RND,1,500/ADD,0.1/<katana/hue/500/attributes.luck/RND,50,100> 
+
+This will create an ogre with a random hue and give it a 10% to have a blue katana with a random luck bonus of between 50 and 100 
+6.3.5. SETONCARRIED 
+
+Using this keyword one can set properties on the item identified by TriggerOnCarried or NoTriggerOnCarried. The syntax is 
+
+SETONCARRIED,itemname/prop1/value1/prop2/value2… 
+
+6.4. Special Events 
+6.4.1. MSG 
+
+This will display a message above a thing being spawned. The format for this is /MSG/text or /MSG,probability/text. This will display text above the thing being spawned with the given probability. 
+
+
+
+Example 1: lich/MSG,.5/All hope is lost/MSG,0.2/you feeble mortal 
+
+This will spawn a lich and display the message “All hope is lost” or “you feeble mortal” or “All hope is lost you feeble mortal” 
+6.4.2. GUMP 
+
+This will send a gump to the player that triggered the spawner. Several parameters can be set on the gump. A default set of gumps are available, but the same syntax can be used for gumps scripted by the user, as long as the same interface is use. 
+
+The syntax of the command is 
+
+GUMP,title,number/text 
+
+The title is the title set on the gump 
+
+The number is one of a the following 
+GUMP number 0 is a simple text display gump. GumpState is set to "done" after viewing. 
+
+GUMP number 1 displays a gump with yes/no selections. GumpState is set to either "yes" or "no" depending on the user selection. 
+
+GUMP number 2 displays a gump with a text entry area. GumpState is set to the text entered. 
+
+GUMP number 3 will send a quest gump with accept or decline options. GumpState is set to either "accept" or "decline" depending on the user input. 
+
+These numbers are for the default XmlSimpleGump. 
+
+It is possible to use your own custom gumps, but that is beyond the scope of this document. 
+
+7. Glossary 
+
+Mobile: 
+
+This is the RunUO class that is used as the base for all creatures. This includes NPCs and Players. 
+
+NPC: 
+
+Non Player Character. It is a generic term for any creatures on the server that is not controlled by a player. 
+
+Spawn tick: 
+
+This is the occurrence of a spawn. It happens between the MinDelay and MaxDelay times. 
+

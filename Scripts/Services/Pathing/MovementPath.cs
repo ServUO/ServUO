@@ -14,10 +14,15 @@ namespace Server
         private readonly Point3D m_Start;
         private readonly Point3D m_Goal;
         private readonly Direction[] m_Directions;
-        public MovementPath(Mobile m, Point3D goal)
+
+        public MovementPath(Mobile m, Point3D goal) 
+            : this(m, goal, m.Map)
         {
-            Point3D start = m.Location;
-            Map map = m.Map;
+        }
+
+        public MovementPath(IPoint3D p, Point3D goal, Map map)
+        {
+            Point3D start = new Point3D(p);
 
             this.m_Map = map;
             this.m_Start = start;
@@ -40,12 +45,13 @@ namespace Server
                     //	alg = SlowAStarAlgorithm.Instance;		// TODO: Fix SlowAstar
                 }
 
-                if (alg != null && alg.CheckCondition(m, map, start, goal))
-                    this.m_Directions = alg.Find(m, map, start, goal);
+                if (alg != null && alg.CheckCondition(p, map, start, goal))
+                    this.m_Directions = alg.Find(p, map, start, goal);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Warning: {0}: Pathing error from {1} to {2}", e.GetType().Name, start, goal);
+                Console.WriteLine(e.StackTrace);
             }
         }
 

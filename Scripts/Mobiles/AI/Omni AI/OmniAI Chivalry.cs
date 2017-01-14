@@ -122,18 +122,18 @@ namespace Server.Mobiles
 
             StatMod mod;
 
-            mod = this.m_Mobile.GetStatMod("[Magic] Str Offset");
+            mod = this.m_Mobile.GetStatMod("[Magic] Str Curse");
 
             if (mod == null)
-                mod = this.m_Mobile.GetStatMod("[Magic] Dex Offset");
+                mod = this.m_Mobile.GetStatMod("[Magic] Dex Curse");
 
             if (mod == null)
-                mod = this.m_Mobile.GetStatMod("[Magic] Int Offset");
+                mod = this.m_Mobile.GetStatMod("[Magic] Int Curse");
 
-            if (mod != null && mod.Offset < 0)
+            if (mod != null)
                 return true;
 
-            Mobile foe = this.m_Mobile.Combatant;
+            Mobile foe = this.m_Mobile.Combatant as Mobile;
 
             if (foe == null)
                 return false;

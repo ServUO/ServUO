@@ -4,10 +4,12 @@ using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
+using Server.Accounting;
+using System.Linq;
 
 namespace Server.Items
 {
-    public abstract class BaseContainer : Container
+    public abstract class BaseContainer : Container, IEngravable
     {
         public BaseContainer(int itemID)
             : base(itemID)
@@ -29,7 +31,24 @@ namespace Server.Items
                 return base.DefaultMaxWeight;
             }
         }
-        public override bool IsAccessibleTo(Mobile m)
+
+		private string m_EngravedText = string.Empty;
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public string EngravedText
+		{
+			get { return this.m_EngravedText; }
+			set
+			{
+				if (value != null)
+					this.m_EngravedText = value;
+				else
+					this.m_EngravedText = string.Empty;
+				this.InvalidateProperties();
+			}
+		}
+
+		public override bool IsAccessibleTo(Mobile m)
         {
             if (!BaseHouse.CheckAccessible(m, this))
                 return false;
@@ -92,6 +111,14 @@ namespace Server.Items
 
             ItemFlags.SetTaken(dropped, true);
 
+            if (dropped.HonestyItem && dropped.HonestyPickup == DateTime.MinValue)
+            {
+                dropped.HonestyPickup = DateTime.UtcNow;
+                dropped.StartHonestyTimer();
+
+                from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
+            }
+
             return true;
         }
 
@@ -121,7 +148,27 @@ namespace Server.Items
 
             ItemFlags.SetTaken(item, true);
 
+            if (item.HonestyItem && item.HonestyPickup == DateTime.MinValue)
+            {
+                item.HonestyPickup = DateTime.UtcNow;
+                item.StartHonestyTimer();
+
+                from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
+            }
+
             return true;
+        }
+
+        public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
+        {
+            bool canDrop = base.OnDroppedInto(from, target, p);
+
+            if (canDrop && target is BankBox)
+            {
+                CheckBank((BankBox)target, from);
+            }
+
+            return canDrop;
         }
 
         public override void UpdateTotal(Item sender, TotalType type, int delta)
@@ -140,20 +187,67 @@ namespace Server.Items
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
         }
 
-        public virtual void Open(Mobile from)
+		public override void AddNameProperty(ObjectPropertyList list)
+		{
+			base.AddNameProperty(list);
+
+			if(!String.IsNullOrEmpty(this.EngravedText))
+			{
+				list.Add(1072305, this.EngravedText); // Engraved: ~1_INSCRIPTION~
+			}
+		}
+
+		public virtual void Open(Mobile from)
         {
             this.DisplayTo(from);
         }
 
-        /* Note: base class insertion; we cannot serialize anything here */
+        public void CheckBank(BankBox bank, Mobile from)
+        {
+            if (AccountGold.Enabled && bank.Owner == from && from.Account != null)
+            {
+                List<BankCheck> checks = new List<BankCheck>(this.Items.OfType<BankCheck>());
+
+                foreach (BankCheck check in checks)
+                {
+                    if (from.Account.DepositGold(check.Worth))
+                    {
+                        from.SendLocalizedMessage(1042672, true, check.Worth.ToString("#,0"));
+                        check.Delete();
+                    }
+                    else
+                    {
+                        from.AddToBackpack(check);
+                    }
+                }
+
+                checks.Clear();
+                checks.TrimExcess();
+
+                UpdateTotals();
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+
+			writer.Write(1000); // Version
+			writer.Write(m_EngravedText);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
+			int version = reader.PeekInt();
+			switch(version)
+			{
+				case 1000:
+					reader.ReadInt();
+					m_EngravedText = reader.ReadString();
+					break;
+			}
         }
     }
 

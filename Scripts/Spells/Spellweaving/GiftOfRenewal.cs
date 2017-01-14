@@ -75,10 +75,6 @@ namespace Server.Spells.Spellweaving
                     int hitsPerRound = 5 + (int)(skill / 24) + this.FocusLevel;
                     TimeSpan duration = TimeSpan.FromSeconds(30 + (this.FocusLevel * 10));
 
-                    #region Mondain's Legacy
-                    ArcaneEmpowermentSpell.AddHealBonus(this.Caster, ref hitsPerRound);
-                    #endregion
-
                     GiftOfRenewalInfo info = new GiftOfRenewalInfo(this.Caster, m, hitsPerRound);
 
                     Timer.DelayCall(duration,
@@ -157,6 +153,11 @@ namespace Server.Spells.Spellweaving
                 SpellHelper.Heal(toHeal, m, this.m_Info.m_Caster);
                 m.FixedParticles(0x376A, 9, 32, 5005, EffectLayer.Waist);
             }
+        }
+
+        public static bool IsUnderEffects(Mobile m)
+        {
+            return m_Table.ContainsKey(m);
         }
 
         public static bool StopEffect(Mobile m)

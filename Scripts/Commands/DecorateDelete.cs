@@ -24,6 +24,7 @@ namespace Server.Commands
 
             m_Mobile.SendMessage("Deleting world decoration, please wait.");
 
+			// We still do all this for backward-compatibility
             Generate("Data/Decoration/Britannia", Map.Trammel, Map.Felucca);
             Generate("Data/Decoration/Trammel", Map.Trammel);
             Generate("Data/Decoration/Felucca", Map.Felucca);
@@ -31,7 +32,9 @@ namespace Server.Commands
             Generate("Data/Decoration/Malas", Map.Malas);
             Generate("Data/Decoration/Tokuno", Map.Tokuno);
 
-            m_Mobile.SendMessage("Deleting complete. {0} items were deleted.", m_Count);
+			WeakEntityCollection.Delete("deco");
+
+            m_Mobile.SendMessage("Deleting complete.");
         }
 
         public static void Generate(string folder, params Map[] maps)

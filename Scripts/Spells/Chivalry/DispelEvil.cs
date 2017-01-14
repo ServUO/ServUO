@@ -102,7 +102,7 @@ namespace Server.Spells.Chivalry
 
                         if (dispellable)
                         {
-                            double dispelChance = (50.0 + ((100 * (chiv - bc.DispelDifficulty)) / (bc.DispelFocus * 2))) / 100;
+                            double dispelChance = (50.0 + ((100 * (chiv - bc.GetDispelDifficulty())) / (bc.DispelFocus * 2))) / 100;
                             dispelChance *= dispelSkill / 100.0;
 
                             if (dispelChance > Utility.RandomDouble())

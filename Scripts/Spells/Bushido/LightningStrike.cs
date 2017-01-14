@@ -54,8 +54,11 @@ namespace Server.Spells.Bushido
             bool isValid = base.Validate(from);
             if (isValid)
             {
-                PlayerMobile ThePlayer = from as PlayerMobile;
-                ThePlayer.ExecutesLightningStrike = this.BaseMana;
+                var ThePlayer = from as PlayerMobile;
+                if(ThePlayer != null)
+                {
+                    ThePlayer.ExecutesLightningStrike = this.BaseMana;
+                }
             }
             return isValid;
         }
@@ -88,10 +91,29 @@ namespace Server.Spells.Bushido
             }
         }
 
+        public override void OnUse(Mobile m)
+        {
+            base.OnUse(m);
+
+            double bushido = m.Skills[SkillName.Bushido].Value;
+            int criticalChance = (int)((bushido * bushido) / 720.0);
+
+            m.Delta(MobileDelta.WeaponDamage);
+
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.LightningStrike, 1060599, 1153811, String.Format("50\t{0}", criticalChance)));
+        }
+
         public override void OnClearMove(Mobile attacker)
         {
-            PlayerMobile ThePlayer = attacker as PlayerMobile; // this can be deletet if the PlayerMobile parts are moved to Server.Mobile 
-            ThePlayer.ExecutesLightningStrike = 0;
+            var ThePlayer = attacker as PlayerMobile; // this can be deletet if the PlayerMobile parts are moved to Server.Mobile 
+            if(ThePlayer != null)
+            {
+                ThePlayer.ExecutesLightningStrike = 0;
+            }
+
+            attacker.Delta(MobileDelta.WeaponDamage);
+
+            BuffInfo.RemoveBuff(attacker, BuffIcon.LightningStrike);
         }
     }
 }

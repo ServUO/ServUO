@@ -94,9 +94,15 @@ namespace Server.Spells.Fifth
 
                 if (lowestStat > 150) 
                     lowestStat = 150;
-
-                double damage = this.GetDamageScalar(m) * (highestStat - lowestStat) / 4;//less damage
-				
+                double damage;
+                if (Core.AOS)
+                {
+                    damage = this.GetDamageScalar(m)*(highestStat - lowestStat)/4; //less damage
+                }
+                else
+                {
+                    damage = this.GetDamageScalar(m) * (highestStat - lowestStat) / 2; //less damage
+                }
                 if (damage > 45)
                     damage = 45;
 

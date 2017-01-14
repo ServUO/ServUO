@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Spells.Necromancy
 {
@@ -51,64 +52,88 @@ namespace Server.Spells.Necromancy
             this.Caster.Target = new InternalTarget(this);
         }
 
-        public void Target(Mobile m)
+        public void Target(IDamageable m)
         {
             if (this.CheckHSequence(m))
             {
+                Mobile mob = m as Mobile;
                 SpellHelper.Turn(this.Caster, m);
 
-                /* Creates a blast of poisonous energy centered on the target.
+                ApplyEffects(m);
+                ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
+            }
+
+            this.FinishSequence();
+        }
+
+        public void ApplyEffects(IDamageable m, double strength = 1.0)
+        {
+            /* Creates a blast of poisonous energy centered on the target.
                 * The main target is inflicted with a large amount of Poison damage, and all valid targets in a radius of 2 tiles around the main target are inflicted with a lesser effect.
                 * One tile from main target receives 50% damage, two tiles from target receives 33% damage.
                 */
 
-                //CheckResisted( m ); // Check magic resist for skill, but do not use return value	//reports from OSI:  Necro spells don't give Resist gain
+            Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
+            Effects.PlaySound(m.Location, m.Map, 0x229);
 
-                Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
-                Effects.PlaySound(m.Location, m.Map, 0x229);
+            double damage = Utility.RandomMinMax((Core.ML ? 32 : 36), 40) * ((300 + (this.GetDamageSkill(this.Caster) * 9)) / 1000);
+            damage *= strength;
 
-                double damage = Utility.RandomMinMax((Core.ML ? 32 : 36), 40) * ((300 + (this.GetDamageSkill(this.Caster) * 9)) / 1000);
-				
-                double sdiBonus = (double)AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage) / 100;
-                double pvmDamage = damage * (1 + sdiBonus);
-				
-                if (Core.ML && sdiBonus > 0.15)
-                    sdiBonus = 0.15;
-                double pvpDamage = damage * (1 + sdiBonus);
+            double sdiBonus = (double)AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage) / 100;
 
-                Map map = m.Map;
+            double pvmDamage = (damage * (1 + sdiBonus)) * strength;
 
-                if (map != null)
+            if (Core.ML && sdiBonus > 0.15)
+                sdiBonus = 0.15;
+            double pvpDamage = damage * (1 + sdiBonus);
+
+            Map map = m.Map;
+
+            if (map != null)
+            {
+                List<IDamageable> targets = new List<IDamageable>();
+
+                if (this.Caster.CanBeHarmful(m, false))
+                    targets.Add(m);
+
+                IPooledEnumerable eable = m.Map.GetObjectsInRange(m.Location, 2);
+
+                foreach (object o in eable)
                 {
-                    List<Mobile> targets = new List<Mobile>();
-			
-                    if (this.Caster.CanBeHarmful(m, false))
-                        targets.Add(m);
+                    IDamageable id = o as IDamageable;
 
-                    foreach (Mobile targ in m.GetMobilesInRange(2))
-                        if (!(this.Caster is BaseCreature && targ is BaseCreature))
-                            if ((targ != this.Caster && m != targ) && (SpellHelper.ValidIndirectTarget(this.Caster, targ) && this.Caster.CanBeHarmful(targ, false)))
-                                targets.Add(targ);
-
-                    for (int i = 0; i < targets.Count; ++i)
+                    if (!(this.Caster is BaseCreature && id is BaseCreature))
                     {
-                        Mobile targ = targets[i];
-                        int num;
+                        if ((id is Mobile && (Mobile)id == Caster) || id == m)
+                            continue;
 
-                        if (targ.InRange(m.Location, 0))
-                            num = 1;
-                        else if (targ.InRange(m.Location, 1))
-                            num = 2;
-                        else
-                            num = 3;
-
-                        this.Caster.DoHarmful(targ);
-                        SpellHelper.Damage(this, targ, ((m.Player && this.Caster.Player) ? pvpDamage : pvmDamage) / num, 0, 0, 0, 100, 0);
+                        if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(this.Caster, (Mobile)id)) && this.Caster.CanBeHarmful(id, false))
+                            targets.Add(id);
                     }
                 }
-            }
 
-            this.FinishSequence();
+                eable.Free();
+
+                for (int i = 0; i < targets.Count; ++i)
+                {
+                    IDamageable id = targets[i];
+
+                    int num;
+
+                    if (Utility.InRange(id.Location, m.Location, 0))
+                        num = 1;
+                    else if (Utility.InRange(id.Location, m.Location, 1))
+                        num = 2;
+                    else
+                        num = 3;
+
+                    this.Caster.DoHarmful(id);
+                    SpellHelper.Damage(this, id, ((id is PlayerMobile && this.Caster.Player) ? pvpDamage : pvmDamage) / num, 0, 0, 0, 100, 0);
+                }
+
+                targets.Clear();
+                targets.TrimExcess();
+            }
         }
 
         private class InternalTarget : Target
@@ -122,8 +147,8 @@ namespace Server.Spells.Necromancy
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is Mobile)
-                    this.m_Owner.Target((Mobile)o);
+                if (o is IDamageable)
+                    this.m_Owner.Target((IDamageable)o);
             }
 
             protected override void OnTargetFinish(Mobile from)

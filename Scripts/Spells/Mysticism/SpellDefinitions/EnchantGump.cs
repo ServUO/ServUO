@@ -2,263 +2,86 @@ using System;
 using System.Collections;
 using Server.Items;
 using Server.Network;
+using System.Collections.Generic;
+using Server.Spells.Mystic;
+using Server.Spells;
 
 namespace Server.Gumps
 {
-    public class EnchantGump : Gump
+    public class EnchantSpellGump : Gump
     {
-        public BaseWeapon m_Item;
-        private static readonly Hashtable m_Table = new Hashtable();
-        private string m_Name;
-        public EnchantGump()
-            : base(0, 0)
-        {
-            this.Closable = true;
-            this.Disposable = true;
-            this.Dragable = true;
-            this.Resizable = false;
+        private Mobile m_Caster;
+        private Item m_Scroll;
+        private BaseWeapon m_Weapon;
 
-            this.AddPage(0);
-            this.AddBackground(130, 90, 280, 180, 9270);   /// Background
-            this.AddAlphaRegion(141, 101, 257, 158);   /// Alpha Region
-            this.AddImageTiled(374, 100, 26, 160, 10460);   /// Celctic Bars on right
-            this.AddItem(133, 98, 6882);   /// Top-Left Skull
-            this.AddItem(340, 98, 6883);   /// Top-Right Skull
-            this.AddItem(350, 250, 6881);   /// Bottom-Right Skull
-            this.AddItem(122, 250, 6880);   /// Bottom-Left Skull
-            this.AddHtml(165, 112, 117, 18, @"<BASEFONT COLOR=AQUA>Select Enchant</BASEFONT>", (bool)false, (bool)false);
-            this.AddButton(165, 140, 9702, 9703, 1, GumpButtonType.Reply, 1);
-            this.AddLabel(185, 138, 87, @"Hit Dispel");
-            this.AddButton(165, 160, 9702, 9703, 2, GumpButtonType.Reply, 2);
-            this.AddLabel(185, 158, 87, @"Hit Fireball");
-            this.AddButton(165, 180, 9702, 9703, 3, GumpButtonType.Reply, 3);
-            this.AddLabel(185, 178, 87, @"Hit Harm");
-            this.AddButton(165, 200, 9702, 9703, 4, GumpButtonType.Reply, 4);
-            this.AddLabel(185, 198, 87, @"Hit Lightning");
-            this.AddButton(165, 220, 9702, 9703, 5, GumpButtonType.Reply, 5);
-            this.AddLabel(185, 218, 87, @"Hit Magic Arrow");
+        public EnchantSpellGump(Mobile caster, Item scroll, BaseWeapon weapon)
+            : base(20, 20)
+        {
+            m_Caster = caster;
+            m_Scroll = scroll;
+            m_Weapon = weapon;
+
+            int font = 0x7FFF;
+
+            AddBackground(0, 0, 170, 200, 9270);
+            AddAlphaRegion(10, 10, 150, 180);
+
+            AddHtmlLocalized(20, 22, 150, 16, 1080133, font, false, false); //Select Enchant
+
+            AddButton(20, 50, 9702, 9703, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 50, 200, 16, 1079705, font, false, false); //Hit Lighting
+
+            AddButton(20, 75, 9702, 9703, 2, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 75, 200, 16, 1079703, font, false, false); //Hit Fireball
+
+            AddButton(20, 100, 9702, 9703, 3, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 100, 200, 16, 1079704, font, false, false); //Hit Harm
+
+            AddButton(20, 125, 9702, 9703, 4, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 125, 200, 16, 1079706, font, false, false); //Hit Magic Arrow
+
+            AddButton(20, 150, 9702, 9703, 5, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 150, 200, 16, 1079702, font, false, false); //Hit Dispel
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(NetState sender, RelayInfo info)
         {
-            Mobile m = state.Mobile;
-           
-            BaseWeapon weapon = m.Weapon as BaseWeapon;
-            TimeSpan duration = TimeSpan.FromSeconds((m.Skills[SkillName.Mysticism].Value / 1.2) + 1.0);//needs work, just a base formula.
+            AosWeaponAttribute attr = AosWeaponAttribute.HitLightning;
 
             switch (info.ButtonID)
             {
-                case 0:
+                default:
+                    m_Caster.SendLocalizedMessage(1080132); //You decide not to enchant your weapon.
+                    return;
+                case 1: //Hit Lightning
                     {
-                        m.CloseGump(typeof(EnchantGump));
+                        attr = AosWeaponAttribute.HitLightning;
                         break;
                     }
-                case 1:
+                case 2: //Hit Fireball
                     {
-                        ExpireTimer t = (ExpireTimer)m_Table[weapon];
-                        if (t != null)
-                            t.DoExpire();
-                        m.SendMessage("You added Hit Dispel to your weapon");
-                        weapon.WeaponAttributes.HitDispel += 30;
-                        m.FixedParticles(0x3728, 1, 13, 9912, 1150, 7, EffectLayer.Head);
-                        m.FixedParticles(0x3779, 1, 15, 9502, 67, 7, EffectLayer.Head);
-                        if (weapon.Name == null)
-                            this.m_Name = weapon.GetType().Name;
-                        else
-                            this.m_Name = weapon.Name;
-                        weapon.Name = this.m_Name + " [Enchanted]";
-                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitDispel, duration);
-                        t.Start();
-                        m.CloseGump(typeof(EnchantGump));
+                        attr = AosWeaponAttribute.HitFireball;
                         break;
                     }
-                case 2:
+                case 3: //Hit Harm
                     {
-                        ExpireTimer t = (ExpireTimer)m_Table[weapon];
-                        if (t != null)
-                            t.DoExpire();
-                        m.SendMessage("You added Hit Fireball to your weapon");
-                        weapon.WeaponAttributes.HitFireball += 30;
-                        m.FixedParticles(0x3728, 1, 13, 9912, 1150, 7, EffectLayer.Head);
-                        m.FixedParticles(0x3779, 1, 15, 9502, 67, 7, EffectLayer.Head);
-                        if (weapon.Name == null)
-                            this.m_Name = weapon.GetType().Name;
-                        else
-                            this.m_Name = weapon.Name;
-                        weapon.Name = this.m_Name + " [Enchanted]";
-                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitFireball, duration);
-                        t.Start();
-                        m.CloseGump(typeof(EnchantGump));
+                        attr = AosWeaponAttribute.HitHarm;
                         break;
                     }
-                case 3:
+                case 4: //Hit Magic Arrow
                     {
-                        ExpireTimer t = (ExpireTimer)m_Table[weapon];
-                        if (t != null)
-                            t.DoExpire();
-                        m.SendMessage("You added Hit Harm to your weapon");
-                        weapon.WeaponAttributes.HitHarm += 30;
-                        m.FixedParticles(0x3728, 1, 13, 9912, 1150, 7, EffectLayer.Head);
-                        m.FixedParticles(0x3779, 1, 15, 9502, 67, 7, EffectLayer.Head);
-                        if (weapon.Name == null)
-                            this.m_Name = weapon.GetType().Name;
-                        else
-                            this.m_Name = weapon.Name;
-                        weapon.Name = this.m_Name + " [Enchanted]";
-                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitHarm, duration);
-                        t.Start();
-                        m.CloseGump(typeof(EnchantGump));
+                        attr = AosWeaponAttribute.HitMagicArrow;
                         break;
                     }
-                case 4:
+                case 5: //Hit Dispel
                     {
-                        ExpireTimer t = (ExpireTimer)m_Table[weapon];
-                        if (t != null)
-                            t.DoExpire();
-                        m.SendMessage("You added Hit Lightning to your weapon");
-                        weapon.WeaponAttributes.HitLightning += 30;
-                        m.FixedParticles(0x3728, 1, 13, 9912, 1150, 7, EffectLayer.Head);
-                        m.FixedParticles(0x3779, 1, 15, 9502, 67, 7, EffectLayer.Head);
-                        if (weapon.Name == null)
-                            this.m_Name = weapon.GetType().Name;
-                        else
-                            this.m_Name = weapon.Name;
-                        weapon.Name = this.m_Name + " [Enchanted]";
-                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitLightning, duration);
-                        t.Start();
-                        m.CloseGump(typeof(EnchantGump));
-                        break;
-                    }
-                case 5:
-                    {
-                        ExpireTimer t = (ExpireTimer)m_Table[weapon];
-                        if (t != null)
-                            t.DoExpire();
-                        m.SendMessage("You added Hit Magic Arrow to your weapon");
-                        weapon.WeaponAttributes.HitMagicArrow += 30;
-                        m.FixedParticles(0x3728, 1, 13, 9912, 1150, 7, EffectLayer.Head);
-                        m.FixedParticles(0x3779, 1, 15, 9502, 67, 7, EffectLayer.Head);
-                        if (weapon.Name == null)
-                            this.m_Name = weapon.GetType().Name;
-                        else
-                            this.m_Name = weapon.Name;
-                        weapon.Name = this.m_Name + " [Enchanted]";
-                        m_Table[weapon] = t = new ExpireTimer(weapon, AosWeaponAttribute.HitMagicArrow, duration);
-                        t.Start();
-                        m.CloseGump(typeof(EnchantGump));
+                        attr = AosWeaponAttribute.HitDispel;
                         break;
                     }
             }
-        }
 
-        private class ExpireTimer : Timer
-        {
-            private readonly BaseWeapon m_Weapon;
-            private readonly AosWeaponAttribute m_Attribute;
-            private readonly DateTime m_End;
-            public ExpireTimer(BaseWeapon weapon, AosWeaponAttribute attribute, TimeSpan delay)
-                : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
-            {
-                this.m_Weapon = weapon;
-                this.m_Attribute = attribute;
-                this.m_End = DateTime.UtcNow + delay;
-
-                this.Priority = TimerPriority.TwoFiftyMS;
-            }
-
-            public void DoExpire()
-            {
-                this.Stop();
-                if (this.m_Weapon != null)
-                {
-                    if (this.m_Weapon.Name == this.m_Weapon.GetType().Name + " [Enchanted]")
-                        this.m_Weapon.Name = null;
-                    else
-                        this.m_Weapon.Name = this.m_Weapon.Name.Replace(" [Enchanted]", "");
-
-                    switch (this.m_Attribute)
-                    {
-                        case AosWeaponAttribute.HitDispel:
-                            this.m_Weapon.WeaponAttributes.HitDispel -= 30;
-                            break;
-                        case AosWeaponAttribute.HitFireball:
-                            this.m_Weapon.WeaponAttributes.HitFireball -= 30;
-                            break;
-                        case AosWeaponAttribute.HitHarm:
-                            this.m_Weapon.WeaponAttributes.HitHarm -= 30;
-                            break;
-                        case AosWeaponAttribute.HitLightning:
-                            this.m_Weapon.WeaponAttributes.HitLightning -= 30;
-                            break;
-                        case AosWeaponAttribute.HitMagicArrow:
-                            this.m_Weapon.WeaponAttributes.HitMagicArrow -= 30;
-                            break;
-                    }
-                }
-                m_Table.Remove(this.m_Weapon);
-            }
-
-            protected override void OnTick()
-            {
-                if (DateTime.UtcNow >= this.m_End)
-                {
-                    this.DoExpire();
-                }
-            }
+            Spell spell = new EnchantSpell(m_Caster, m_Scroll, m_Weapon, attr);
+            spell.Cast();
         }
     }
 }
-/* TimeSpan duration = TimeSpan.FromSeconds((Caster.Skills[SkillName.Mysticism].Value / 1.2) + 1.0);//needs work, just a base formula.
-
-Timer t = (Timer)m_Table[weapon];
-
-if (t != null)
-t.Stop();
-
-weapon.Enchanted = true;
-
-m_Table[weapon] = t = new ExpireTimer(weapon, duration);
-
-t.Start();
-}
-
-FinishSequence();
-}
-
-private static Hashtable m_Table = new Hashtable();
-
-private class ExpireTimer : Timer
-{
-private BaseWeapon m_Weapon;
-
-public ExpireTimer(BaseWeapon weapon, TimeSpan delay)
-: base(delay)
-{
-m_Weapon = weapon;
-Priority = TimerPriority.OneSecond;
-}
-
-protected override void OnTick()
-{
-m_Weapon.Enchanted = false;
-Effects.PlaySound(m_Weapon.GetWorldLocation(), m_Weapon.Map, 0xFA);
-m_Table.Remove(this);
-}
-}
-
-private class SoundEffectTimer : Timer
-{
-private Mobile m_Mobile;
-
-public SoundEffectTimer(Mobile m)
-: base(TimeSpan.FromSeconds(0.75))
-{
-m_Mobile = m;
-Priority = TimerPriority.FiftyMS;
-}
-
-protected override void OnTick()
-{
-m_Mobile.PlaySound(0xFA);
-}
-}*/

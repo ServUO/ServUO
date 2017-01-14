@@ -93,7 +93,7 @@ namespace Server.Mobiles
                     }
                 case 6: // Essence of Wind, cold aura and speed debuff.
                     {
-                        if (!EssenceOfWindSpell.IsDebuffed(this.m_Mobile.Combatant))
+                        if (m_Mobile.Combatant is Mobile && !EssenceOfWindSpell.IsDebuffed((Mobile)m_Mobile.Combatant))
                         {
                             new EssenceOfWindSpell(this.m_Mobile, null).Cast();
                             break;

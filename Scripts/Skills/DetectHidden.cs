@@ -3,6 +3,7 @@ using Server.Factions;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Targeting;
+using Server.Engines.VvV;
 
 namespace Server.SkillHandlers
 {
@@ -80,13 +81,16 @@ namespace Server.SkillHandlers
 
                     inRange.Free();
 
-                    if (Faction.Find(src) != null)
+                    bool faction = Faction.Find(src) != null;
+                    bool vvv = ViceVsVirtueSystem.IsVvV(src);
+
+                    if (faction || vvv)
                     {
                         IPooledEnumerable itemsInRange = src.Map.GetItemsInRange(p, range);
 
                         foreach (Item item in itemsInRange)
                         {
-                            if (item is BaseFactionTrap)
+                            if (faction && item is BaseFactionTrap)
                             {
                                 BaseFactionTrap trap = (BaseFactionTrap)item;
 
@@ -100,6 +104,13 @@ namespace Server.SkillHandlers
                                     foundAnyone = true;
                                 }
                             }
+                            else if (vvv && (item is VvVSigil || item is VvVTrap) && Utility.Random(100) <= srcSkill)
+                            {
+                                if (item is VvVTrap && item.ItemID == VvVTrap.HiddenID)
+                                    ((VvVTrap)item).OnRevealed(src);
+                                else if (!item.Visible)
+                                    item.Visible = true;
+                            }
                         }
 
                         itemsInRange.Free();
@@ -111,6 +122,46 @@ namespace Server.SkillHandlers
                     src.SendLocalizedMessage(500817); // You can see nothing hidden there.
                 }
             }
+        }
+
+        public static void DoPassiveDetect(Mobile src)
+        {
+			if (src == null || src.Map == null || src.Location == Point3D.Zero || src.IsStaff())
+				return;
+
+            double ss = src.Skills[SkillName.DetectHidden].Value;
+
+            if (ss <= 0)
+                return;
+
+            IPooledEnumerable eable = src.Map.GetMobilesInRange(src.Location, 4);
+
+			if (eable == null)
+				return;
+
+            foreach (Mobile m in eable)
+            {
+                if (m == null || m is ShadowKnight)
+                    continue;
+
+                int noto = Notoriety.Compute(src, m);
+
+                if (m != src && noto != Notoriety.Innocent && noto != Notoriety.Ally && noto != Notoriety.Invulnerable)
+                {
+                    double ts = (m.Skills[SkillName.Hiding].Value + m.Skills[SkillName.Stealth].Value) / 2;
+
+                    if (src.Race == Race.Elf)
+                        ss += 20;
+
+                    if (src.AccessLevel >= m.AccessLevel && Utility.Random(1000) < (ss - ts) + 1)
+                    {
+                        m.RevealingAction();
+                        m.SendLocalizedMessage(500814); // You have been revealed!
+                    }
+                }
+            }
+
+            eable.Free();
         }
     }
 }

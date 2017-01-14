@@ -6,16 +6,18 @@ namespace Server.Misc
 {
     public class AutoSave : Timer
     {
-        private static readonly TimeSpan m_Delay = TimeSpan.FromMinutes(5.0);
-        private static readonly TimeSpan m_Warning = TimeSpan.Zero;
-        //private static TimeSpan m_Warning = TimeSpan.FromSeconds( 15.0 );
-        private static readonly string[] m_Backups = new string[]
+		private static readonly TimeSpan m_Delay = Config.Get("AutoSave.Frequency", TimeSpan.FromMinutes(5.0d));
+        private static readonly TimeSpan m_Warning = Config.Get("AutoSave.WarningTime", TimeSpan.Zero);
+		
+		private static readonly string[] m_Backups = new string[]
         {
             "Third Backup",
             "Second Backup",
             "Most Recent"
         };
-        private static bool m_SavesEnabled = true;
+
+		private static bool m_SavesEnabled = Config.Get("AutoSave.Enabled", true);
+
         public AutoSave()
             : base(m_Delay - m_Warning, m_Delay)
         {
@@ -33,6 +35,7 @@ namespace Server.Misc
                 m_SavesEnabled = value;
             }
         }
+
         public static void Initialize()
         {
             new AutoSave().Start();

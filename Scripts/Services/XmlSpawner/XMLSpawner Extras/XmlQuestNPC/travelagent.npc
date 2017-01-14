@@ -1,0 +1,112 @@
+<?xml version="1.0" standalone="yes"?>
+<XmlQuestNPC>
+  <NPC>
+    <Name>FlyByNight</Name>
+    <Running>True</Running>
+    <ProximityRange>3</ProximityRange>
+    <AllowGhost>False</AllowGhost>
+    <ResetTime>0.20</ResetTime>
+    <ConfigFile>travelagent</ConfigFile>
+    <SpeechEntries>14</SpeechEntries>
+  </NPC>
+<SpeechEntry>
+<EntryNumber>0</EntryNumber>
+    <ID>0</ID>
+    <DependsOn>999</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+<EntryNumber>1</EntryNumber>
+    <ID>3</ID>
+    <Text>Where can I take you today? </Text>
+    <DependsOn>-1</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+<EntryNumber>2</EntryNumber>
+    <ID>3</ID>
+    <Text>What is your destination? </Text>
+    <DependsOn>-1</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+<EntryNumber>3</EntryNumber>
+    <ID>3</ID>
+    <Text>Just say the word and you are off! </Text>
+    <DependsOn>-1</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+<EntryNumber>20</EntryNumber>
+    <ID>20</ID>
+    <Action>TAKEBYTYPE,1,1000,true/gold</Action>
+    <DependsOn>5</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+<EntryNumber>4</EntryNumber>
+    <ID>4</ID>
+    <Keywords>britain</Keywords>
+    <DependsOn>3</DependsOn>
+    <Text>The fare is 1000 gold.  Is that agreeable? </Text>
+  </SpeechEntry>
+
+<SpeechEntry>
+<EntryNumber>5</EntryNumber>
+    <ID>5</ID>
+    <Keywords>yes</Keywords>
+    <Text>Enjoy your trip! </Text>
+    <Action>SETONTRIGMOB/map/felucca/x/1401/y/1625/z/28</Action>
+    <Pause>0</Pause>
+    <DependsOn>4</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+<EntryNumber>12</EntryNumber>
+    <ID>12</ID>
+    <Keywords>no</Keywords>
+    <Text>Ah well, perhaps when your purse is heavier. </Text>
+    <DependsOn>4</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+<EntryNumber>6</EntryNumber>
+    <Keywords>minoc</Keywords>
+    <Action>SETONTRIGMOB/map/felucca/x/2539/y/501/z/30</Action>
+    <DependsOn>3</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+<EntryNumber>7</EntryNumber>
+    <Keywords>deceit</Keywords>
+    <Action>SETONTRIGMOB/map/felucca/x/4111/y/432/z/5</Action>
+    <DependsOn>3</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+<EntryNumber>8</EntryNumber>
+    <Keywords>luna</Keywords>
+    <Action>SETONTRIGMOB/map/malas/x/991/y/519/z/-50</Action>
+    <DependsOn>3</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+<EntryNumber>9</EntryNumber>
+    <Keywords>umbra</Keywords>
+    <Action>SETONTRIGMOB/map/malas/x/1941/y/1321/z/-88</Action>
+    <DependsOn>3</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+<EntryNumber>10</EntryNumber>
+    <Keywords>doom</Keywords>
+    <Action>SETONTRIGMOB/map/malas/x/2367/y/1268/z/-85</Action>
+    <DependsOn>3</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+<EntryNumber>11</EntryNumber>
+    <Keywords>mistas</Keywords>
+    <Action>SETONTRIGMOB/map/ilshenar/x/820/y/1073/z/-30</Action>
+    <DependsOn>3</DependsOn>
+  </SpeechEntry>
+
+
+</XmlQuestNPC>

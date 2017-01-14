@@ -28,6 +28,8 @@ namespace Server
             }
         }
 
+        public static int Blank { get { return 1114057; } } // ~1_val~
+
         #region Properties
         private readonly BuffIcon m_ID;
         public BuffIcon ID
@@ -53,6 +55,15 @@ namespace Server
             get
             {
                 return this.m_SecondaryCliloc;
+            }
+        }
+
+        private readonly bool m_NoTimer;
+        public bool NoTimer
+        {
+            get
+            {
+                return this.m_NoTimer;
             }
         }
 
@@ -138,6 +149,12 @@ namespace Server
 
                     pm.RemoveBuff(this);
                 }));
+        }
+
+        public BuffInfo(BuffIcon iconID, int titleCliloc, int secondaryCliloc, TimeSpan length, Mobile m, bool notimer)
+            : this(iconID, titleCliloc, secondaryCliloc, length, m)
+        {
+            m_NoTimer = notimer;
         }
 
         public BuffInfo(BuffIcon iconID, int titleCliloc, TextDefinition args)
@@ -233,8 +250,8 @@ namespace Server
         NightSight = 0x3ED,	//*
         DeathStrike,
         EvilOmen,
-        UnknownStandingSwirl,	//Which is healing throttle & Stamina throttle?
-        UnknownKneelingSword,
+        HonoredDebuff,
+        AchievePerfection,
         DivineFury,			//*
         EnemyOfOne,			//*
         HidingAndOrStealth,	//*
@@ -277,15 +294,135 @@ namespace Server
         Sleep,
         StoneForm,
         SpellPlague,
-        SpellTrigger,
-        NetherBolt,
-        Fly      
+        Berserk,
+        MassSleep,
+        Fly,
+        Inspire,
+        Invigorate,
+        Resilience,
+        Perseverance,
+        TribulationTarget,
+        DespairTarget,
+        FishPie = 0x426,
+        HitLowerAttack,
+        HitLowerDefense,
+        DualWield,
+        Block,
+        DefenseMastery,
+        DespairCaster,
+        Healing,
+        SpellFocusingBuff,
+        SpellFocusingDebuff,
+        RageFocusingDebuff,
+        RageFocusingBuff,
+        Warding,
+        TribulationCaster,
+        ForceArrow,
+        Disarm,
+        Surge,
+        Feint,
+        TalonStrike,
+        PsychicAttack,
+        ConsecrateWeapon,
+        GrapesOfWrath,
+        EnemyOfOneDebuff,
+        HorrificBeast,
+        LichForm,
+        VampiricEmbrace,
+        CurseWeapon,
+        ReaperForm,
+        ImmolatingWeapon,
+        Enchant,
+        HonorableExecution,
+        Confidence,
+        Evasion,
+        CounterAttack,
+        LightningStrike,
+        MomentumStrike,
+        OrangePetals,
+        RoseOfTrinsic,
+        PoisonImmunity,
+        Veterinary,
+        Perfection,
+        Honored,
+        ManaPhase,
+        FanDancerFanFire,
+        Rage,
+        Webbing,
+        MedusaStone,
+        TrueFear,
+        AuraOfNausea,
+        HowlOfCacophony,
+        GazeDespair,
+        HiryuPhysicalResistance,
+        RuneBeetleCorruption,
+        BloodwormAnemia,
+        RotwormBloodDisease,
+        SkillUseDelay,
+        FactionStatLoss,
+        HeatOfBattleStatus,
+        CriminalStatus,
+        ArmorPierce,
+        SplinteringEffect,
+        SwingSpeedDebuff,
+        WraithForm,
+        CityTradeDeal = 0x466,
+        HumilityDebuff = 0x467,
+        Spirituality,
+        Humility,
+        // Skill Masteries
+        Rampage,
+        Stagger, // Debuff
+        Toughness,
+        Thrust,
+        Pierce,   // Debuff
+        PlayingTheOdds,
+        FocusedEye,
+        Onslaught, // Debuff
+        ElementalFury,
+        ElementalFuryDebuff, // Debuff
+        CalledShot,
+        Knockout,
+        SavingThrow,
+        Conduit,
+        EtherealBurst,
+        MysticWeapon,
+        ManaShield,
+        AnticipateHit,
+        Warcry,
+        Shadow,
+        WhiteTigerForm,
+        Bodyguard,
+        HeightenedSenses,
+        Tolerance,
+        DeathRay,
+        DeathRayDebuff,
+        Intuition,
+        EnchantedSummoning,
+        ShieldBash,
+        Whispering,
+        CombatTraining,
+        InjectedStrikeDebuff,
+        InjectedStrike,
+        UnknownTomato,
+        PlayingTheOddsDebuff,
+        DragonTurtleDebuff,
+        Boarding,
+        Potency,
+        ThrustDebuff,
+        FistsOfFury, // 1169
+        BarrabHemolymphConcentrate,
+        JukariBurnPoiltice,
+        KurakAmbushersEssence,
+        BarakoDraftOfMight,
+        UraliTranceTonic,
+        SakkhraProphylaxis
     }
 
     public sealed class AddBuffPacket : Packet
     {
         public AddBuffPacket(Mobile m, BuffInfo info)
-            : this(m, info.ID, info.TitleCliloc, info.SecondaryCliloc, info.Args, (info.TimeStart != DateTime.MinValue) ? ((info.TimeStart + info.TimeLength) - DateTime.UtcNow) : TimeSpan.Zero)
+            : this(m, info.ID, info.TitleCliloc, info.SecondaryCliloc, info.Args, info.NoTimer ? TimeSpan.Zero :(info.TimeStart != DateTime.MinValue) ? ((info.TimeStart + info.TimeLength) - DateTime.UtcNow) : TimeSpan.Zero)
         {
         }
 

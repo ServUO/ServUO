@@ -327,6 +327,11 @@ namespace Server
 			return (DateTime.UtcNow - m_Added) >= m_Duration;
 		}
 
+		public TimeSpan TimeLeft()
+		{
+			return m_Duration - (DateTime.UtcNow - m_Added);
+		}
+
 		public StatMod(StatType type, string name, int offset, TimeSpan duration)
 		{
 			m_Type = type;
@@ -490,7 +495,7 @@ namespace Server
 
 	public delegate bool AllowBeneficialHandler(Mobile from, Mobile target);
 
-	public delegate bool AllowHarmfulHandler(Mobile from, Mobile target);
+	public delegate bool AllowHarmfulHandler(Mobile from, IDamageable target);
 
 	public delegate Container CreateCorpseHandler(
 		Mobile from, HairInfo hair, FacialHairInfo facialhair, List<Item> initialContent, List<Item> equipedItems);
@@ -502,7 +507,7 @@ namespace Server
 	///     Base class representing players, npcs, and creatures.
 	/// </summary>
     [System.Runtime.InteropServices.ComVisible(true)]
-	public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable
+	public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable, IDamageable
 	{
 		#region CompareTo(...)
 		public int CompareTo(IEntity other)
@@ -741,7 +746,7 @@ namespace Server
 		private Prompt m_Prompt;
 		private ContextMenu m_ContextMenu;
 		private List<AggressorInfo> m_Aggressors, m_Aggressed;
-		private Mobile m_Combatant;
+		private IDamageable m_Combatant;
 		private List<Mobile> m_Stabled;
 		private bool m_AutoPageNotify;
 		private bool m_CanHearGhosts;
@@ -789,9 +794,9 @@ namespace Server
 		private DateTime m_LastIntGain;
 		private DateTime m_LastDexGain;
 		private Race m_Race;
-		#endregion
+        #endregion
 
-		private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds((Core.SE ? 1.0 : 0.5));
+        private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds((Core.SE ? 1.0 : 0.5));
 		private static readonly TimeSpan WarmodeSpamDelay = TimeSpan.FromSeconds((Core.SE ? 4.0 : 2.0));
 
 		private const int WarmodeCatchCount = 4;
@@ -833,6 +838,11 @@ namespace Server
 		{ }
 
 		public virtual double RacialSkillBonus { get { return 0; } }
+
+        public virtual double GetRacialSkillBonus(SkillName skill)
+        {
+            return RacialSkillBonus;
+        }
 
 		private List<ResistanceMod> m_ResistMods;
 
@@ -965,6 +975,10 @@ namespace Server
 			UpdateResistances();
 		}
 
+		private static int m_MinPlayerResistance = -70;
+
+		public static int MinPlayerResistance { get { return m_MinPlayerResistance; } set { m_MinPlayerResistance = value; } }
+
 		private static int m_MaxPlayerResistance = 70;
 
 		public static int MaxPlayerResistance { get { return m_MaxPlayerResistance; } set { m_MaxPlayerResistance = value; } }
@@ -1037,7 +1051,12 @@ namespace Server
 
 		public virtual int GetMinResistance(ResistanceType type)
 		{
-			return int.MinValue;
+			if (m_Player)
+			{
+				return m_MinPlayerResistance;
+			}
+
+			return -100;
 		}
 
 		public virtual int GetMaxResistance(ResistanceType type)
@@ -1047,7 +1066,7 @@ namespace Server
 				return m_MaxPlayerResistance;
 			}
 
-			return int.MaxValue;
+			return 100;
 		}
 
 		public int GetAOSStatus(int index)
@@ -1115,17 +1134,13 @@ namespace Server
 
 			BaseGuild guild = m_Guild;
 
-			if (guild != null && (m_Player || m_DisplayGuildTitle))
-			{
-				if (suffix.Length > 0)
-				{
-					suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
-				}
-				else
-				{
-					suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
-				}
-			}
+            if (guild != null && m_Player && m_DisplayGuildTitle)
+            {
+                if (suffix.Length > 0)
+                    suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
+                else
+                    suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
+            }
 
 			suffix = ApplyNameSuffix(suffix);
 
@@ -2063,11 +2078,11 @@ namespace Server
 			{
 				if (Core.TickCount - m_Mobile.m_NextCombatTime >= 0)
 				{
-					Mobile combatant = m_Mobile.Combatant;
+					IDamageable combatant = m_Mobile.Combatant;
 
 					// If no combatant, wrong map, one of us is a ghost, or cannot see, or deleted, then stop combat
-					if (combatant == null || combatant.m_Deleted || m_Mobile.m_Deleted || combatant.m_Map != m_Mobile.m_Map ||
-						!combatant.Alive || !m_Mobile.Alive || !m_Mobile.CanSee(combatant) || combatant.IsDeadBondedPet ||
+					if (combatant == null || combatant.Deleted || m_Mobile.m_Deleted || combatant.Map != m_Mobile.m_Map ||
+						!combatant.Alive || !m_Mobile.Alive || !m_Mobile.CanSee(combatant) || (combatant is Mobile && ((Mobile)combatant).IsDeadBondedPet) ||
 						m_Mobile.IsDeadBondedPet)
 					{
 						m_Mobile.Combatant = null;
@@ -2081,12 +2096,12 @@ namespace Server
 						return;
 					}
 
-					if (m_Mobile.InLOS(combatant))
-					{
-						weapon.OnBeforeSwing(m_Mobile, combatant); //OnBeforeSwing for checking in regards to being hidden and whatnot
-						m_Mobile.RevealingAction();
-						m_Mobile.m_NextCombatTime = Core.TickCount + (int)weapon.OnSwing(m_Mobile, combatant).TotalMilliseconds;
-					}
+                    if (m_Mobile.InLOS(combatant))
+                    {
+                        weapon.OnBeforeSwing(m_Mobile, combatant); //OnBeforeSwing for checking in regards to being hidden and whatnot
+                        m_Mobile.RevealingAction();
+                        m_Mobile.m_NextCombatTime = Core.TickCount + (int)weapon.OnSwing(m_Mobile, combatant).TotalMilliseconds;
+                    }
 				}
 			}
 		}
@@ -2166,17 +2181,17 @@ namespace Server
 
 		public bool ChangingCombatant { get { return (m_ChangingCombatant > 0); } }
 
-		public virtual void Attack(Mobile m)
+		public virtual void Attack(IDamageable e)
 		{
-			if (CheckAttack(m))
+			if (CheckAttack(e))
 			{
-				Combatant = m;
+				Combatant = e;
 			}
 		}
 
-		public virtual bool CheckAttack(Mobile m)
+        public virtual bool CheckAttack(IDamageable e)
 		{
-			return (Utility.InUpdateRange(this, m) && CanSee(m) && InLOS(m));
+			return (Utility.InUpdateRange(this, e.Location) && CanSee(e) && InLOS(e));
 		}
 
 		/// <summary>
@@ -2184,7 +2199,7 @@ namespace Server
 		///     <seealso cref="OnCombatantChange" />
 		/// </summary>
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual Mobile Combatant
+		public virtual IDamageable Combatant
 		{
 			get { return m_Combatant; }
 			set
@@ -2196,7 +2211,7 @@ namespace Server
 
 				if (m_Combatant != value && value != this)
 				{
-					Mobile old = m_Combatant;
+					IDamageable old = m_Combatant;
 
 					++m_ChangingCombatant;
 					m_Combatant = value;
@@ -2249,9 +2264,9 @@ namespace Server
 					{
 						DoHarmful(m_Combatant);
 
-						if (m_Combatant != null)
+						if (m_Combatant is Mobile)
 						{
-							m_Combatant.PlaySound(m_Combatant.GetAngerSound());
+                            ((Mobile)m_Combatant).PlaySound(((Mobile)m_Combatant).GetAngerSound());
 						}
 					}
 
@@ -3110,7 +3125,7 @@ namespace Server
 
 		public virtual bool CheckMovement(Direction d, out int newZ)
 		{
-			return Movement.Movement.CheckMovement(this, d, out newZ);
+			return Movement.Movement.CheckMovement(this, this.Map, this.Location, d, out newZ);
 		}
 
 		public virtual bool Move(Direction d)
@@ -3726,7 +3741,7 @@ namespace Server
 			}
 		}
 
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.Owner)]
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
 		public IAccount Account { get; set; }
 
 		private bool m_Deleted;
@@ -3964,6 +3979,8 @@ namespace Server
 					module.Delete();
 				}
 			}
+
+			Timer.DelayCall(EventSink.InvokeMobileDeleted, new MobileDeletedEventArgs(this));
 		}
 
 		public virtual bool AllowSkillUse(SkillName name)
@@ -4589,13 +4606,13 @@ namespace Server
 							}
 
 							int oldAmount = item.Amount;
-							//item.Amount = amount; //Set in LiftItemDupe
 
-							if (amount < oldAmount)
-							{
-								LiftItemDupe(item, amount);
-							}
-							//item.Dupe( oldAmount - amount );
+                            Item oldStack = null;
+
+                            if (amount < oldAmount)
+                            {
+                                oldStack = LiftItemDupe(item, amount);
+                            }
 
 							Map map = from.Map;
 
@@ -4637,7 +4654,7 @@ namespace Server
 							Map fixMap = item.Map;
 							bool shouldFix = (item.Parent == null);
 
-							item.RecordBounce();
+							item.RecordBounce(oldStack);
 							item.OnItemLifted(from, item);
 							item.Internalize();
 
@@ -5547,7 +5564,12 @@ namespace Server
 			Damage(amount, from, true);
 		}
 
-		public virtual void Damage(int amount, Mobile from, bool informMount)
+        public virtual void Damage(int amount, Mobile from, bool informMount)
+        {
+            Damage(amount, from, informMount, true);
+        }
+
+		public virtual void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
 		{
 			if (!CanBeDamaged() || m_Deleted)
 			{
@@ -5564,7 +5586,7 @@ namespace Server
 				int oldHits = Hits;
 				int newHits = oldHits - amount;
 
-				if (m_Spell != null)
+                if (checkDisrupt && m_Spell != null)
 				{
 					m_Spell.OnCasterHurt();
 				}
@@ -6553,11 +6575,6 @@ namespace Server
 			if (CanPaperdollBeOpenedBy(from))
 			{
 				list.Add(new PaperdollEntry(this));
-			}
-
-			if (from == this && Backpack != null && CanSee(Backpack) && CheckAlive(false))
-			{
-				list.Add(new OpenBackpackEntry(this));
 			}
 		}
 
@@ -7582,13 +7599,14 @@ namespace Server
 			}
 
 			Region newRegion = Region.Find(m_Location, m_Map);
-
-			if (newRegion != m_Region)
+			Region oldRegion = m_Region;
+			
+			if (newRegion != oldRegion)
 			{
-				Region.OnRegionChange(this, m_Region, newRegion);
-
 				m_Region = newRegion;
-				OnRegionChange(m_Region, newRegion);
+				
+				Region.OnRegionChange(this, oldRegion, newRegion);
+				OnRegionChange(oldRegion, newRegion);
 			}
 		}
 
@@ -7698,33 +7716,45 @@ namespace Server
 		#endregion
 
 		#region Harmful Checks/Actions
-		public virtual bool CanBeHarmful(Mobile target)
+        public virtual bool CanBeHarmful(IDamageable target)
 		{
 			return CanBeHarmful(target, true);
 		}
 
-		public virtual bool CanBeHarmful(Mobile target, bool message)
+        public virtual bool CanBeHarmful(IDamageable target, bool message)
 		{
 			return CanBeHarmful(target, message, false);
 		}
 
-		public virtual bool CanBeHarmful(Mobile target, bool message, bool ignoreOurBlessedness)
+		public virtual bool CanBeHarmful(IDamageable target, bool message, bool ignoreOurBlessedness)
 		{
-			if (target == null)
+            if (target == null)
 			{
 				return false;
 			}
 
-			if (m_Deleted || (!ignoreOurBlessedness && m_Blessed) || target.m_Deleted || target.m_Blessed || !Alive ||
-				IsDeadBondedPet || !target.Alive || target.IsDeadBondedPet)
-			{
-				if (message)
-				{
-					SendLocalizedMessage(1001018); // You can not perform negative acts on your target.
-				}
+            if (m_Deleted || (!ignoreOurBlessedness && m_Blessed) || !Alive || IsDeadBondedPet || target.Deleted)
+            {
+                if (message)
+                {
+                    SendLocalizedMessage(1001018); // You can not perform negative acts on your target.
+                }
 
-				return false;
-			}
+                return false;
+            }
+
+            if (target is Mobile)
+            {
+                if (((Mobile)target).m_Blessed || !((Mobile)target).Alive || ((Mobile)target).IsDeadBondedPet)
+                {
+                    if (message)
+                    {
+                        SendLocalizedMessage(1001018); // You can not perform negative acts on your target.
+                    }
+
+                    return false;
+                }
+            }
 
 			if (target == this)
 			{
@@ -7746,7 +7776,7 @@ namespace Server
 			return true;
 		}
 
-		public virtual bool IsHarmfulCriminal(Mobile target)
+		public virtual bool IsHarmfulCriminal(IDamageable target)
 		{
 			if (this == target)
 			{
@@ -7759,7 +7789,7 @@ namespace Server
 		/// <summary>
 		///     Overridable. Event invoked when the Mobile <see cref="DoHarmful">does a harmful action</see>.
 		/// </summary>
-		public virtual void OnHarmfulAction(Mobile target, bool isCriminal)
+		public virtual void OnHarmfulAction(IDamageable target, bool isCriminal)
 		{
 			if (isCriminal)
 			{
@@ -7767,12 +7797,12 @@ namespace Server
 			}
 		}
 
-		public virtual void DoHarmful(Mobile target)
+		public virtual void DoHarmful(IDamageable target)
 		{
-			DoHarmful(target, false);
+            DoHarmful(target, false);
 		}
 
-		public virtual void DoHarmful(Mobile target, bool indirect)
+        public virtual void DoHarmful(IDamageable target, bool indirect)
 		{
 			if (target == null || m_Deleted)
 			{
@@ -7782,10 +7812,16 @@ namespace Server
 			bool isCriminal = IsHarmfulCriminal(target);
 
 			OnHarmfulAction(target, isCriminal);
-			target.AggressiveAction(this, isCriminal);
+
+            if(target is Mobile)
+			    ((Mobile)target).AggressiveAction(this, isCriminal);
 
 			Region.OnDidHarmful(this, target);
-			target.Region.OnGotHarmful(this, target);
+
+            if(target is Mobile)
+			    ((Mobile)target).Region.OnGotHarmful(this, target);
+            else if (target is Item)
+                Region.Find(target.Location, target.Map).OnGotHarmful(this, target);
 
 			if (!indirect)
 			{
@@ -7804,7 +7840,7 @@ namespace Server
 			m_ExpireCombatant.Start();
 		}
 
-		public virtual bool HarmfulCheck(Mobile target)
+		public virtual bool HarmfulCheck(IDamageable target)
 		{
 			if (CanBeHarmful(target))
 			{
@@ -8751,7 +8787,7 @@ namespace Server
 		{
 			get
 			{
-				if (m_NetState != null && m_NetState.Socket == null)
+				if (m_NetState != null && m_NetState.Socket == null && !m_NetState.IsDisposing)
 				{
 					NetState = null;
 				}
@@ -9058,6 +9094,15 @@ namespace Server
 		public string RawName { get { return m_Name; } set { Name = value; } }
 
 		[CommandProperty(AccessLevel.Decorator)]
+		public virtual string TitleName
+		{
+			get
+			{
+				return m_Name;
+			}
+		}
+
+		[CommandProperty(AccessLevel.Decorator)]
 		public string Name
 		{
 			get
@@ -9182,27 +9227,27 @@ namespace Server
 			}
 		}
 
-		/// <summary>
-		///     Overridable. Event invoked when a call to <see cref="ApplyPoison" /> failed because <see cref="CheckPoisonImmunity" /> returned false: the Mobile was resistant to the poison. By default, this broadcasts an overhead message: * The poison seems to have no effect. *
-		///     <seealso cref="CheckPoisonImmunity" />
-		///     <seealso cref="ApplyPoison" />
-		///     <seealso cref="Poison" />
-		/// </summary>
-		public virtual void OnPoisonImmunity(Mobile from, Poison poison)
+        /// <summary>
+        ///     Overridable. Event invoked when a call to <see cref="ApplyPoison" /> failed because <see cref="CheckPoisonImmunity" /> returned false: the Mobile was resistant to the poison. By default, this broadcasts an overhead message: * The poison seems to have no effect. *
+        ///     <seealso cref="CheckPoisonImmunity" />
+        ///     <seealso cref="ApplyPoison" />
+        ///     <seealso cref="Poison" />
+        /// </summary>
+        public virtual void OnPoisonImmunity(Mobile from, Poison poison)
 		{
 			PublicOverheadMessage(MessageType.Emote, 0x3B2, 1005534); // * The poison seems to have no effect. *
 		}
 
-		/// <summary>
-		///     Overridable. Virtual event invoked when a call to <see cref="ApplyPoison" /> failed because
-		///     <see
-		///         cref="CheckHigherPoison" />
-		///     returned false: the Mobile was already poisoned by an equal or greater strength poison.
-		///     <seealso cref="CheckHigherPoison" />
-		///     <seealso cref="ApplyPoison" />
-		///     <seealso cref="Poison" />
-		/// </summary>
-		public virtual void OnHigherPoison(Mobile from, Poison poison)
+        /// <summary>
+        ///     Overridable. Virtual event invoked when a call to <see cref="ApplyPoison" /> failed because
+        ///     <see
+        ///         cref="CheckHigherPoison" />
+        ///     returned false: the Mobile was already poisoned by an equal or greater strength poison.
+        ///     <seealso cref="CheckHigherPoison" />
+        ///     <seealso cref="ApplyPoison" />
+        ///     <seealso cref="Poison" />
+        /// </summary>
+        public virtual void OnHigherPoison(Mobile from, Poison poison)
 		{ }
 
 		/// <summary>
@@ -10487,6 +10532,46 @@ namespace Server
 			return true;
 		}
 
+		public bool OpenTrade(Mobile from)
+		{
+			return OpenTrade(from, null);
+		}
+
+		public virtual bool OpenTrade(Mobile from, Item offer)
+		{
+			if (!from.Player || !Player || !from.Alive || !Alive)
+			{
+				return false;
+			}
+
+			NetState ourState = m_NetState;
+			NetState theirState = from.m_NetState;
+
+			if (ourState == null || theirState == null)
+			{
+				return false;
+			}
+
+			SecureTradeContainer cont = theirState.FindTradeContainer(this);
+
+			if (!from.CheckTrade(this, offer, cont, true, true, 0, 0))
+			{
+				return false;
+			}
+
+			if (cont == null)
+			{
+				cont = theirState.AddTrade(ourState);
+			}
+
+			if (offer != null)
+			{
+				cont.DropItem(offer);
+			}
+
+			return true;
+		}
+
 		/// <summary>
 		///     Overridable. Event invoked when a Mobile (<paramref name="from" />) drops an
 		///     <see cref="Item">
@@ -10507,36 +10592,13 @@ namespace Server
 
 				return false;
 			}
-			else if (from.Player && Player && from.Alive && Alive && from.InRange(Location, 2))
+			
+			if (from.InRange(Location, 2))
 			{
-				NetState ourState = m_NetState;
-				NetState theirState = from.m_NetState;
-
-				if (ourState != null && theirState != null)
-				{
-					SecureTradeContainer cont = theirState.FindTradeContainer(this);
-
-					if (!from.CheckTrade(this, dropped, cont, true, true, 0, 0))
-					{
-						return false;
-					}
-
-					if (cont == null)
-					{
-						cont = theirState.AddTrade(ourState);
-					}
-
-					cont.DropItem(dropped);
-
-					return true;
-				}
-
-				return false;
+				return OpenTrade(from, dropped);
 			}
-			else
-			{
-				return false;
-			}
+
+			return false;
 		}
 
 		public virtual bool CheckEquip(Item item)
@@ -10739,6 +10801,8 @@ namespace Server
 				World.m_MobileTypes.Add(ourType);
 				m_TypeRef = World.m_MobileTypes.Count - 1;
 			}
+
+			Timer.DelayCall(EventSink.InvokeMobileCreated, new MobileCreatedEventArgs(this));
 		}
 
 		public Mobile()
@@ -10758,11 +10822,13 @@ namespace Server
 				World.m_MobileTypes.Add(ourType);
 				m_TypeRef = World.m_MobileTypes.Count - 1;
 			}
+
+			Timer.DelayCall(EventSink.InvokeMobileCreated, new MobileCreatedEventArgs(this));
 		}
 
 		public void DefaultMobileInit()
 		{
-			m_StatCap = 225;
+            m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225); ;
 			m_FollowersMax = 5;
 			m_Skills = new Skills(this);
 			m_Items = new List<Item>();
@@ -11422,7 +11488,7 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
-		public bool Criminal
+		public virtual bool Criminal
 		{
 			get { return m_Criminal; }
 			set
@@ -12255,7 +12321,29 @@ namespace Server
 			}
 		}
 
-		public Item Talisman { get { return FindItemOnLayer(Layer.Talisman); } }
+        public Item Talisman
+        {
+            get
+            {
+                return FindItemOnLayer(Layer.Talisman) as Item;
+            }
+        }
+
+        public Item Ring
+        {
+            get
+            {
+                return FindItemOnLayer(Layer.Ring) as Item;
+            }
+        }
+
+        public Item Bracelet
+        {
+            get
+            {
+                return FindItemOnLayer(Layer.Bracelet) as Item;
+            }
+        }
 		#endregion
 
 		/// <summary>
@@ -12277,7 +12365,7 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Meditating { get; set; }
+		public virtual bool Meditating { get; set; }
 
 		[CommandProperty(AccessLevel.Decorator)]
 		public bool CanSwim { get { return m_CanSwim; } set { m_CanSwim = value; } }

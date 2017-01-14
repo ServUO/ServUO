@@ -22,6 +22,7 @@ namespace Server.Items
                 return new AnvilEastDeed();
             }
         }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

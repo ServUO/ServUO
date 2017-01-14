@@ -5,8 +5,7 @@ using Server.Mobiles;
 using Server.Spells;
 using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
-
-using CustomsFramework.Systems.FoodEffects;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Misc
 {
@@ -87,7 +86,7 @@ namespace Server.Misc
 
             if (Core.ML && from.Race == Race.Human)	//Is this affected by the cap?
                 points += 2;
-
+           
             if (points < 0)
                 points = 0;
 
@@ -96,6 +95,22 @@ namespace Server.Misc
 
             if (CheckTransform(from, typeof(HorrificBeastSpell)))
                 points += 20;
+
+            if (from is BaseCreature && ((BaseCreature)from).HumilityBuff > 0)
+            {
+                switch (((BaseCreature)@from).HumilityBuff)
+                {
+                    case 1:
+                        points += 10;
+                        break;
+                    case 2:
+                        points += 20;
+                        break;
+                    case 3:
+                        points += 30;
+                        break;
+                }
+            }
 
             if (CheckAnimal(from, typeof(Dog)) || CheckAnimal(from, typeof(Cat)))
                 points += from.Skills[SkillName.Ninjitsu].Fixed / 30;
@@ -116,8 +131,14 @@ namespace Server.Misc
 
             int points = (int)(from.Skills[SkillName.Focus].Value * 0.1);
 
-            if ((from is BaseCreature && ((BaseCreature)from).IsParagon) || from is Leviathan)
-                points += 40;
+            if (from is BaseCreature)
+            {
+                if (((BaseCreature)from).IsParagon || from is Leviathan)
+                    points += 40;
+
+                // Skill Masteries
+                points += MasteryInfo.EnchantedSummoningBonus((BaseCreature)from);
+            }
 
             int cappedPoints = AosAttributes.GetValue(from, AosAttribute.RegenStam);
 
@@ -131,6 +152,9 @@ namespace Server.Misc
                 cappedPoints = Math.Min(cappedPoints, 24);
 
             points += cappedPoints;
+
+            // Skill Masteries
+            points += RampageSpell.GetBonus(from, RampageSpell.BonusType.StamRegen); // After the cap???
 
             if (points < -1)
                 points = -1;
@@ -182,6 +206,9 @@ namespace Server.Misc
                     cappedPoints = Math.Min(cappedPoints, 18);
 
                 totalPoints += cappedPoints;
+
+				if (from is PlayerMobile && ((PlayerMobile)from).Race == Race.Gargoyle)
+					totalPoints += 2;
 
                 if (totalPoints < -1)
                     totalPoints = -1;

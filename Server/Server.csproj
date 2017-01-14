@@ -18,12 +18,12 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;Framework_4_0,ServUO</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NEWTIMERS, ServUO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -33,9 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
-    <DefineConstants>TRACE;ServUO, Framework_4_0</DefineConstants>
+    <DefineConstants>TRACE;NEWTIMERS, ServUO</DefineConstants>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -82,33 +82,6 @@
     <Compile Include=".\ExpansionInfo.cs" />
     <Compile Include=".\Geometry.cs" />
     <Compile Include=".\Guild.cs" />
-    <Compile Include=".\Gumps\Controls\GumpAlphaRegion.cs" />
-    <Compile Include=".\Gumps\Controls\GumpBackground.cs" />
-    <Compile Include=".\Gumps\Controls\GumpGroup.cs" />
-    <Compile Include=".\Gumps\Controls\GumpHtml.cs" />
-    <Compile Include=".\Gumps\Controls\GumpHtmlLocalized.cs" />
-    <Compile Include=".\Gumps\Controls\GumpImage.cs" />
-    <Compile Include=".\Gumps\Controls\GumpImageTiled.cs" />
-    <Compile Include=".\Gumps\Controls\GumpItem.cs" />
-    <Compile Include=".\Gumps\Controls\GumpLabel.cs" />
-    <Compile Include=".\Gumps\Controls\GumpLabelCropped.cs" />
-    <Compile Include=".\Gumps\Controls\Gumpling.cs" />
-    <Compile Include=".\Gumps\Controls\GumpPage.cs" />
-    <Compile Include=".\Gumps\Controls\GumpTooltip.cs" />
-    <Compile Include=".\Gumps\Controls\Input\GumpButton.cs" />
-    <Compile Include=".\Gumps\Controls\Input\GumpCheck.cs" />
-    <Compile Include=".\Gumps\Controls\Input\GumpImageTileButton.cs" />
-    <Compile Include=".\Gumps\Controls\Input\GumpRadio.cs" />
-    <Compile Include=".\Gumps\Controls\Input\GumpTextEntry.cs" />
-    <Compile Include=".\Gumps\Controls\Input\GumpTextEntryLimited.cs" />
-    <Compile Include=".\Gumps\Core\Buttons.cs" />
-    <Compile Include=".\Gumps\Core\Checks.cs" />
-    <Compile Include=".\Gumps\Core\Gump.cs" />
-    <Compile Include=".\Gumps\Core\Misc\GumpEntry.cs" />
-    <Compile Include=".\Gumps\Core\Misc\RelayInfo.cs" />
-    <Compile Include=".\Gumps\Core\Radios.cs" />
-    <Compile Include=".\Gumps\Core\SharedGumps.cs" />
-    <Compile Include=".\Gumps\Core\TextEntries.cs" />
     <Compile Include=".\HuePicker.cs" />
     <Compile Include=".\IAccount.cs" />
     <Compile Include=".\IEntity.cs" />
@@ -147,7 +120,6 @@
     <Compile Include=".\Network\SendQueue.cs" />
     <Compile Include=".\Notoriety.cs" />
     <Compile Include=".\ObjectPropertyList.cs" />
-    <Compile Include=".\OpenUOSDK.cs" />
     <Compile Include=".\Party.cs" />
     <Compile Include=".\Persistence\BinaryMemoryWriter.cs" />
     <Compile Include=".\Persistence\DualSaveStrategy.cs" />
@@ -186,36 +158,52 @@
     <Compile Include=".\Utility.cs" />
     <Compile Include=".\VirtueInfo.cs" />
     <Compile Include=".\World.cs" />
-    <Compile Include="Gumps\Controls\GumpItemProperty.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Gumps\Gump.cs" />
+    <Compile Include="Gumps\GumpAlphaRegion.cs" />
+    <Compile Include="Gumps\GumpBackground.cs" />
+    <Compile Include="Gumps\GumpButton.cs" />
+    <Compile Include="Gumps\GumpCheck.cs" />
+    <Compile Include="Gumps\GumpEntry.cs" />
+    <Compile Include="Gumps\GumpGroup.cs" />
+    <Compile Include="Gumps\GumpHtml.cs" />
+    <Compile Include="Gumps\GumpHtmlLocalized.cs" />
+    <Compile Include="Gumps\GumpImage.cs" />
+    <Compile Include="Gumps\GumpImageTileButton.cs" />
+    <Compile Include="Gumps\GumpImageTiled.cs" />
+    <Compile Include="Gumps\GumpItem.cs" />
+    <Compile Include="Gumps\GumpItemProperty.cs" />
+    <Compile Include="Gumps\GumpLabel.cs" />
+    <Compile Include="Gumps\GumpLabelCropped.cs" />
+    <Compile Include="Gumps\GumpPage.cs" />
+    <Compile Include="Gumps\GumpRadio.cs" />
+    <Compile Include="Gumps\GumpTextEntry.cs" />
+    <Compile Include="Gumps\GumpTextEntryLimited.cs" />
+    <Compile Include="Gumps\GumpTooltip.cs" />
+    <Compile Include="Gumps\RelayInfo.cs" />
+    <Compile Include="Persistence\Persistence.cs" />
+    <Compile Include="Berserk.cs" />
     <Compile Include="Random.cs" />
+    <Compile Include="Items\VirtualCheck.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OpenUO.Ultima.dll" />
-    <Content Include="OpenUO.Ultima.Windows.Forms.dll" />
     <Content Include="servuo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="OpenUO.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OpenUO.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenUO.Ultima, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OpenUO.Ultima.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenUO.Ultima.Windows.Forms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OpenUO.Ultima.Windows.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SevenZipSharp.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <ProjectReference Include="..\Ultima\Ultima.csproj">
+      <Project>{e08cfbe4-e013-44ee-8829-426d05bc083f}</Project>
+      <Name>Ultima</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

@@ -10,6 +10,12 @@ namespace Server.Commands
 {
     public class Decorate
     {
+		private static string m_Key;
+		public static string Key
+		{
+			get { return m_Key; }
+		}
+
         public static void Initialize()
         {
             CommandSystem.Register("Decorate", AccessLevel.Administrator, new CommandEventHandler(Decorate_OnCommand));
@@ -24,18 +30,20 @@ namespace Server.Commands
 
             m_Mobile.SendMessage("Generating world decoration, please wait.");
 
-            Generate("Data/Decoration/Britannia", Map.Trammel, Map.Felucca);
-            Generate("Data/Decoration/Trammel", Map.Trammel);
-            Generate("Data/Decoration/Felucca", Map.Felucca);
-            Generate("Data/Decoration/Ilshenar", Map.Ilshenar);
-            Generate("Data/Decoration/Malas", Map.Malas);
-            Generate("Data/Decoration/Tokuno", Map.Tokuno);
+            Generate("deco", "Data/Decoration/Britannia", Map.Trammel, Map.Felucca);
+			Generate("deco", "Data/Decoration/Trammel", Map.Trammel);
+			Generate("deco", "Data/Decoration/Felucca", Map.Felucca);
+			Generate("deco", "Data/Decoration/Ilshenar", Map.Ilshenar);
+			Generate("deco", "Data/Decoration/Malas", Map.Malas);
+			Generate("deco", "Data/Decoration/Tokuno", Map.Tokuno);
 
             m_Mobile.SendMessage("World generating complete. {0} items were generated.", m_Count);
         }
 
-        public static void Generate(string folder, params Map[] maps)
+        public static void Generate(string keyName, string folder, params Map[] maps)
         {
+			m_Key = keyName;
+
             if (!Directory.Exists(folder))
                 return;
 
@@ -938,6 +946,48 @@ namespace Server.Commands
                 if (this.m_ItemID > 0)
                     item.ItemID = this.m_ItemID;
             }
+            else if(item is Moongate)
+            {
+                Moongate gate = (Moongate)item;
+
+                foreach(string param in m_Params)
+                {
+                    int indexOf = param.IndexOf('=');
+
+                    if (param.StartsWith("TargetMap"))
+                        gate.TargetMap = Map.Parse(param.Substring(++indexOf));
+                    else if (param.StartsWith("Target"))
+                        gate.Target = Point3D.Parse(param.Substring(++indexOf));
+                }
+            }
+            else if(item is TeleportRope)
+            {
+                TeleportRope rope = (TeleportRope)item;
+
+                foreach (string param in m_Params)
+                {
+                    int indexOf = param.IndexOf('=');
+
+                    if (param.StartsWith("ToMap"))
+                        rope.ToMap = Map.Parse(param.Substring(++indexOf));
+                    else if (param.StartsWith("ToLocation"))
+                        rope.ToLocation = Point3D.Parse(param.Substring(++indexOf));
+                }
+            }
+            else if(item is InstanceExitGate)
+            {
+                InstanceExitGate gate = (InstanceExitGate)item;
+
+                foreach (string param in m_Params)
+                {
+                    int indexOf = param.IndexOf('=');
+
+                    if (param.StartsWith("MapDest"))
+                        gate.MapDest = Map.Parse(param.Substring(++indexOf));
+                    else if (param.StartsWith("LocDest"))
+                        gate.LocDest = Point3D.Parse(param.Substring(++indexOf));
+                }
+            }
             else if (this.m_ItemID > 0)
             {
                 item.ItemID = this.m_ItemID;
@@ -1130,6 +1180,7 @@ namespace Server.Commands
                     }
                     else
                     {
+						WeakEntityCollection.Add(Decorate.Key, item);
                         item.MoveToWorld(loc, maps[j]);
                         ++count;
 

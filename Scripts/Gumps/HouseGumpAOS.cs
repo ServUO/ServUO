@@ -1139,6 +1139,12 @@ namespace Server.Gumps
                                             }
                                         }
                                     }
+                                    #region SA
+                                    else if (m_House.Map == Map.TerMur && !Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
+                                    {
+                                        from.SendLocalizedMessage(1113714, "2000"); //You can't resize a house in Ter Mur unless you have at least ~1_MIN~ loyalty to the Gargoyle Queen.
+                                    }
+                                    #endregion
 
                                     break;
                                 }

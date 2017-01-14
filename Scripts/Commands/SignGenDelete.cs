@@ -17,6 +17,8 @@ namespace Server.Commands
         [Description("Deletes world/shop signs on all facets.")]
         public static void SignGenDelete_OnCommand(CommandEventArgs c)
         {
+			WeakEntityCollection.Delete("sign");
+			// Retained for backward compatibility
             Parse(c.Mobile);
         }
 

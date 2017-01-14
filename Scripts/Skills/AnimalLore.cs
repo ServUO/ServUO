@@ -23,6 +23,22 @@ namespace Server.SkillHandlers
 
         private class InternalTarget : Target
         {
+			private static void SendGump(Mobile from, BaseCreature c)
+			{
+                from.CheckTargetSkill(SkillName.AnimalLore, c, 0.0, 120.0);
+
+				from.CloseGump(typeof(AnimalLoreGump));
+				from.SendGump(new AnimalLoreGump(c));
+			}
+
+			private static void Check(Mobile from, BaseCreature c, double min)
+			{
+				if (from.CheckTargetSkill(SkillName.AnimalLore, c, min, 120.0))
+					SendGump(from, c);
+				else
+					from.SendLocalizedMessage(500334); // You can't think of anything you know offhand.
+			}
+
             public InternalTarget()
                 : base(8, false, TargetFlags.None)
             {
@@ -42,22 +58,31 @@ namespace Server.SkillHandlers
                     {
                         if (c.Body.IsAnimal || c.Body.IsMonster || c.Body.IsSea)
                         {
-                            if (!c.Controlled && from.Skills[SkillName.AnimalLore].Value < 100.0)
+							double skill = from.Skills[SkillName.AnimalLore].Value;
+							if(skill < 100.0)
                             {
-                                from.SendLocalizedMessage(1049674); // At your skill level, you can only lore tamed creatures.
+								if (c.Controlled)
+									SendGump(from, c);
+								else
+									from.SendLocalizedMessage(1049674); // At your skill level, you can only lore tamed creatures.
                             }
-                            else if (!c.Controlled && !c.Tamable && from.Skills[SkillName.AnimalLore].Value < 110.0)
+                            else if (skill < 110.0)
                             {
-                                from.SendLocalizedMessage(1049675); // At your skill level, you can only lore tamed or tameable creatures.
-                            }
-                            else if (!from.CheckTargetSkill(SkillName.AnimalLore, c, 0.0, 120.0))
-                            {
-                                from.SendLocalizedMessage(500334); // You can't think of anything you know offhand.
+								if (c.Controlled)
+									SendGump(from, c);
+								else if (c.Tamable)
+									Check(from, c, 80.0);
+								else
+									from.SendLocalizedMessage(1049675); // At your skill level, you can only lore tamed or tameable creatures.
                             }
                             else
                             {
-                                from.CloseGump(typeof(AnimalLoreGump));
-                                from.SendGump(new AnimalLoreGump(c));
+								if (c.Controlled)
+									SendGump(from, c);
+								else if (c.Tamable)
+									Check(from, c, 80.0);
+								else
+									Check(from, c, 100.0);
                             }
                         }
                         else

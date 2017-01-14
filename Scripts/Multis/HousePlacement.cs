@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Server.Regions;
 using Server.Spells;
+using Server.Mobiles;
 
 namespace Server.Multis
 {
@@ -17,12 +18,14 @@ namespace Server.Multis
         BadRegionHidden,
         BadRegionTemp,
         InvalidCastleKeep,
-        BadRegionRaffle
+        BadRegionRaffle,
+        NoQueenLoyalty
     }
 
     public class HousePlacement
     {
         // Any land tile which matches one of these ID numbers is considered a road and cannot be placed over.
+        public static int[] RoadIDs { get { return m_RoadIDs; } }
         private static readonly int[] m_RoadIDs = new int[]
         {
             0x0071, 0x0078,
@@ -55,7 +58,14 @@ namespace Server.Multis
             if (map == Map.Malas && (multiID == 0x007C || multiID == 0x007E))
                 return HousePlacementResult.InvalidCastleKeep;
 
-            NoHousingRegion noHousingRegion = (NoHousingRegion)Region.Find(center, map).GetRegion(typeof(NoHousingRegion));
+            #region SA
+            if (map == Map.TerMur && !Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
+            {
+                return HousePlacementResult.NoQueenLoyalty;
+            }
+            #endregion
+
+            var noHousingRegion = (NoHousingRegion)Region.Find(center, map).GetRegion(typeof(NoHousingRegion));
 
             if (noHousingRegion != null)
                 return HousePlacementResult.BadRegion;

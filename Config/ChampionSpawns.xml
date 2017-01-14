@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<championSystem>
+    <!-- Spawn elements define a champion spawn'
+    name        String  Displayed name of the spawn in Gumps
+    group       String  The spawn group the spawn belongs to. Optional. If present, only one spawn per group will
+                        automatically restart per group. If not present, the spawn will always be active and will
+                        allways automatically restart.
+    type        Enum    The type of spawn. These are defined in ChampionSpawnType.cs . Optional. If not given the
+                        type will be selected between the random spawn types and will randomize on every
+                        activation.
+    killsMod    Double  Multiplier applied to the number of mobiles needed to be killed to advance from one level
+                        to the next.
+    spawnMod    Double  Multiplier applied to the number of mobiles spawned at a time. Optional.
+    location    Element
+        x       Integer X location of the center of the spawn altar.
+        y       Integer Y location of the center of the spawn altar.
+        z       Integer Z location of the center of the spawn altar.
+        map     Enum    Map containing the spawn. This must match the map's name in MapDefinitions.cs .
+        radius  Integer The initial radius of the area of the champion spawn.
+    -->
+    <spawn name="Deceit" group="FelDungeons" type="UnholyTerror">
+        <location x="5178" y="708" z="20" map="Felucca" radius="60"/>
+    </spawn>
+    <spawn name="Despise" group="FelDungeons" type="VerminHorde">
+        <location x="5557" y="824" z="65" map="Felucca" radius="65"/>
+    </spawn>
+    <spawn name="Destard" group="FelDungeons" type="ColdBlood">
+        <location x="5259" y="837" z="61" map="Felucca" radius="75"/>
+    </spawn>
+    <spawn name="Fire" group="FelDungeons" type="Abyss">
+        <location x="5814" y="1350" z="2" map="Felucca" radius="50"/>
+    </spawn>
+    <spawn name="Tera Keep" group="FelDungeons" type="Arachnid">
+        <location x="5190" y="1605" z="20" map="Felucca" radius="50"/>
+    </spawn>
+    <spawn name="Abyss" group="FelDungeons" type="Terror">
+        <location x="6995" y="733" z="76" map="Felucca" radius="70"/>
+    </spawn>
+    <spawn name="Lich" group="FelDungeons" type="Infuse">
+        <location x="7000" y="1004" z="5" map="Felucca" radius="90"/>
+    </spawn>
+    <spawn name="Desert" group="FelT2A">
+        <location x="5636" y="2916" z="37" map="Felucca" radius="30"/>
+    </spawn>
+    <spawn name="Tortoise" group="FelT2A" spawnMod="0.5">
+        <location x="5724" y="3991" z="42" map="Felucca" radius="20"/>
+    </spawn>
+    <spawn name="Ice West" group="FelT2A">
+        <location x="5511" y="2360" z="40" map="Felucca" radius="35"/>
+    </spawn>
+    <spawn name="Oasis" group="FelT2A" spawnMod="0.75">
+        <location x="5549" y="2640" z="15" map="Felucca" radius="25"/>
+    </spawn>
+    <spawn name="Terra" group="FelT2A">
+        <location x="6035" y="2944" z="52" map="Felucca" radius="35"/>
+    </spawn>
+    <spawn name="Lord Oaks" group="FelT2A" type="ForestLord" spawnMod="0.5">
+        <location x="5559" y="3757" z="21" map="Felucca" radius="18"/>
+    </spawn>
+    <spawn name="Marble" group="FelT2A" spawnMod="0.5">
+        <location x="5267" y="3171" z="104" map="Felucca" radius="18"/>
+    </spawn>
+    <spawn name="Hopper's Bog" group="FelT2A">
+        <location x="5954" y="3475" z="25" map="Felucca" radius="50"/>
+    </spawn>
+    <spawn name="Khaldun" group="FelT2A">
+        <location x="5982" y="3882" z="20" map="Felucca" radius="35"/>
+    </spawn>
+    <spawn name="Ice East" group="FelT2A" spawnMod="0.5">
+        <location x="6038" y="2400" z="46" map="Felucca" radius="20"/>
+    </spawn>
+    <spawn name="Damwin Thicket" group="FelT2A" spawnMod="0.75">
+        <location x="5281" y="3368" z="51" map="Felucca" radius="25"/>
+    </spawn>
+    <spawn name="City of Death" group="FelT2A">
+        <location x="5207" y="3637" z="20" map="Felucca" radius="50"/>
+    </spawn>
+    <spawn name="Valor">
+        <location x="382" y="328" z="-30" map="Ilshenar" radius="100"/>
+    </spawn>
+    <spawn name="Humility">
+        <location x="462" y="926" z="-67" map="Ilshenar" radius="100"/>
+    </spawn>
+    <spawn name="Spirituality" type="ForestLord">
+        <location x="1645" y="1107" z="8" map="Ilshenar" radius="50"/>
+    </spawn>
+    <spawn name="Glade" type="Glade" killsMod="0.5" spawnMod="0.5">
+        <location x="2212" y="1260" z="25" map="Ilshenar" radius="25"/>
+    </spawn>
+    <spawn name="Dragon" type="SleepingDragon">
+        <location x="948" y="434" z="29" map="Tokuno" radius="60"/>
+    </spawn>
+    <spawn name="Bedlam" type="Corrupt" killsMod="0.5" spawnMod="0.5">
+        <location x="174" y="1629" z="8" map="Malas" radius="25"/>
+    </spawn>
+</championSystem>

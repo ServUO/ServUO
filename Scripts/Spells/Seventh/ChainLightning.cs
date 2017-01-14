@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Targeting;
+using Server.Mobiles;
 
 namespace Server.Spells.Seventh
 {
@@ -52,30 +53,27 @@ namespace Server.Spells.Seventh
                 if (p is Item)
                     p = ((Item)p).GetWorldLocation();
 
-                List<Mobile> targets = new List<Mobile>();
+                List<IDamageable> targets = new List<IDamageable>();
 
                 Map map = this.Caster.Map;
 
-                bool playerVsPlayer = false;
-
                 if (map != null)
                 {
-                    IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), 2);
+                    IPooledEnumerable eable = map.GetObjectsInRange(new Point3D(p), 2);
 
-                    foreach (Mobile m in eable)
+                    foreach (object o in eable)
                     {
-                        if (Core.AOS && m == this.Caster)
+                        IDamageable id = o as IDamageable;
+
+                        if (id == null || (Core.AOS && id is Mobile && (Mobile)id == this.Caster))
                             continue;
 
-                        if (SpellHelper.ValidIndirectTarget(this.Caster, m) && this.Caster.CanBeHarmful(m, false))
+                        if ((!(id is Mobile) || SpellHelper.ValidIndirectTarget(this.Caster, id as Mobile)) && this.Caster.CanBeHarmful(id, false))
                         {
-                            if (Core.AOS && !this.Caster.InLOS(m))
+                            if (Core.AOS && !this.Caster.InLOS(id))
                                 continue;
 
-                            targets.Add(m);
-
-                            if (m.Player)
-                                playerVsPlayer = true;
+                            targets.Add(id);
                         }
                     }
 
@@ -84,41 +82,46 @@ namespace Server.Spells.Seventh
 
                 double damage;
 
-                if (Core.AOS)
-                    damage = this.GetNewAosDamage(51, 1, 5, playerVsPlayer);
-                else
-                    damage = Utility.Random(27, 22);
-
                 if (targets.Count > 0)
                 {
-                    if (Core.AOS && targets.Count > 2)
-                        damage = (damage * 2) / targets.Count;
-                    else if (!Core.AOS)
-                        damage /= targets.Count;
-
-                    double toDeal;
                     for (int i = 0; i < targets.Count; ++i)
                     {
-                        toDeal = damage;
-                        Mobile m = targets[i];
+                        IDamageable id = targets[i];
+                        Mobile m = id as Mobile;
 
-                        if (!Core.AOS && this.CheckResisted(m))
+                        if (Core.AOS)
+                            damage = this.GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);
+                        else
+                            damage = Utility.Random(27, 22);
+
+                        if (Core.AOS && targets.Count > 2)
+                            damage = (damage * 2) / targets.Count;
+                        else if (!Core.AOS)
+                            damage /= targets.Count;
+
+                        if (!Core.AOS && m != null && this.CheckResisted(m))
                         {
-                            toDeal *= 0.5;
+                            damage *= 0.5;
 
                             m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                         }
-                        toDeal *= this.GetDamageScalar(m);
-                        this.Caster.DoHarmful(m);
-                        SpellHelper.Damage(this, m, toDeal, 0, 0, 0, 0, 100);
 
-                        m.BoltEffect(0);
+                        if(m != null)
+                            damage *= this.GetDamageScalar(m);
+
+                        this.Caster.DoHarmful(id);
+                        SpellHelper.Damage(this, id, damage, 0, 0, 0, 0, 100);
+
+                        Effects.SendBoltEffect(id, true, 0);
                     }
                 }
                 else
                 {
                     this.Caster.PlaySound(0x29);
                 }
+
+                targets.Clear();
+                targets.TrimExcess();
             }
 
             this.FinishSequence();

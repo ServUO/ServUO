@@ -48,6 +48,8 @@ namespace Server.Spells.Necromancy
             m.PlaySound(0x165);
             m.FixedParticles(0x3728, 1, 13, 9918, 92, 3, EffectLayer.Head);
 
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.HorrificBeast, 1060514, 1153763, "20\t25"));
+
             m.Delta(MobileDelta.WeaponDamage);
             m.CheckStatTimers();
         }
@@ -55,6 +57,7 @@ namespace Server.Spells.Necromancy
         public override void RemoveEffect(Mobile m)
         {
             m.Delta(MobileDelta.WeaponDamage);
+            BuffInfo.RemoveBuff(m, BuffIcon.HorrificBeast);
         }
     }
 }

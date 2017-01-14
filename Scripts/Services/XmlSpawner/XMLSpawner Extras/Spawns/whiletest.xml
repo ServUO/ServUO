@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="yes"?>
+<Spawns>
+  <Points>
+    <Name>WHILETEST#1</Name>
+    <UniqueId>92ebd7cc-e006-4cd2-965a-b7d685eb714e</UniqueId>
+    <Map>Felucca</Map>
+    <X>5437</X>
+    <Y>1159</Y>
+    <Width>10</Width>
+    <Height>10</Height>
+    <CentreX>5442</CentreX>
+    <CentreY>1164</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>16</MaxCount>
+    <MinDelay>2</MinDelay>
+    <MaxDelay>5</MaxDelay>
+    <DelayInSec>True</DelayInSec>
+    <Duration>0</Duration>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>10</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>False</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>WHILE/killcount&lt;10/66:MX=1:SB=1:RT=0:TO=0:KL=0:OBJ=WHILE/killcount&lt;15/77:MX=1:SB=2:RT=0:TO=0:KL=0:OBJ=WHILE/killcount&lt;20/88:MX=1:SB=3:RT=0:TO=0:KL=0:OBJ=ancientlich/name/Dont Mess with me!/ADD/&lt;WEAPON,3,5/name/I messed with him/slayer/silver&gt;:MX=1:SB=4:RT=0:TO=0:KL=0:OBJ=SET/killcount/0:MX=1:SB=5:RT=0:TO=0:KL=0:OBJ=GOTO/1:MX=1:SB=5:RT=0:TO=0:KL=0:OBJ=orc:MX=15:SB=66:RT=0:TO=0:KL=0:OBJ=hellhound:MX=15:SB=77:RT=0:TO=0:KL=0:OBJ=titan:MX=15:SB=88:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+</Spawns>

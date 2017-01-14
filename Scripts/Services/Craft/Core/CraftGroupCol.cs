@@ -26,7 +26,7 @@ namespace Server.Engines.Craft
 
         public CraftGroup GetAt(int index)
         {
-            return (CraftGroup)this.List[index];
+            return index >= 0 && index < List.Count ? (CraftGroup)List[index] : null;
         }
 
         public int SearchFor(TextDefinition groupName)

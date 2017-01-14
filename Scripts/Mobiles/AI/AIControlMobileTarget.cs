@@ -12,7 +12,7 @@ namespace Server.Targets
         private readonly List<BaseAI> m_List;
         private readonly OrderType m_Order;
         private readonly BaseCreature m_Mobile;
-        
+
         public AIControlMobileTarget(BaseAI ai, OrderType order)
             : base(-1, false, (order == OrderType.Attack ? TargetFlags.Harmful : TargetFlags.None))
         {
@@ -38,18 +38,19 @@ namespace Server.Targets
 
         protected override void OnTarget(Mobile from, object o)
         {
-            if (o is Mobile)
+            if (o is IDamageable)
             {
-                Mobile m = (Mobile)o;
+                IDamageable dam = o as IDamageable;
+
                 for (int i = 0; i < this.m_List.Count; ++i)
-                    this.m_List[i].EndPickTarget(from, m, this.m_Order);
+                    this.m_List[i].EndPickTarget(from, dam, this.m_Order);
             }
-            else if ( o is MoonglowDonationBox && m_Order == OrderType.Transfer && from is PlayerMobile )
+            else if (o is MoonglowDonationBox && m_Order == OrderType.Transfer && from is PlayerMobile)
             {
-            	PlayerMobile pm = (PlayerMobile)from;
-            	MoonglowDonationBox box = (MoonglowDonationBox)o;
-            	
-            	pm.SendGump( new ConfirmTransferPetGump( box, from.Location, m_Mobile ) );
+                PlayerMobile pm = (PlayerMobile)from;
+                MoonglowDonationBox box = (MoonglowDonationBox)o;
+
+                pm.SendGump(new ConfirmTransferPetGump(box, from.Location, m_Mobile));
             }
         }
     }

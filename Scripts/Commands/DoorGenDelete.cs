@@ -335,6 +335,8 @@ namespace Server
         [Description("Deletes doors by analyzing the map.")]
         public static void DoorGenDelete_OnCommand(CommandEventArgs e)
         {
+			WeakEntityCollection.Delete("door");
+			// Retained for backward compatibility
             Delete();
         }
 

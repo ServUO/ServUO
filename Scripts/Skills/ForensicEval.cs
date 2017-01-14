@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using Server.Items;
 using Server.Mobiles;
@@ -89,6 +90,25 @@ namespace Server.SkillHandlers
                         from.SendLocalizedMessage(1042749, p.Picker.Name);//This lock was opened by ~1_PICKER_NAME~
                     else
                         from.SendLocalizedMessage(501003);//You notice nothing unusual.
+                }
+                else if (target is Item)
+                {
+                    Item item = (Item)target;
+
+                    if (item.HonestyItem && item.HonestyOwner != null)
+                    {
+                        string region = item.HonestyRegion == null ? "an unknown place" : item.HonestyRegion;
+
+                        if (from.Skills.Forensics.Value >= 65)
+                        {
+                            from.SendLocalizedMessage(1151521, String.Format("{0}\t{1}", item.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
+                        }
+                        else if (from.Skills.Forensics.Value >= 40)
+                        {
+                            from.SendLocalizedMessage(1151522, region); // You find seeds from a familiar plant stuck to the item which suggests that this item is from ~1_val~.
+                        }
+
+                    }
                 }
             }
         }

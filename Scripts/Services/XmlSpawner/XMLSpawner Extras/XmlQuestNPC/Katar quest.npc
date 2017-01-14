@@ -1,0 +1,104 @@
+<?xml version="1.0" standalone="yes"?>
+<XmlQuestNPC>
+  <NPC>
+    <Name>Katar</Name>
+    <Running>True</Running>
+    <ProximityRange>3</ProximityRange>
+    <AllowGhost>False</AllowGhost>
+    <ResetTime>0.5</ResetTime>
+    <ConfigFile>testnpc</ConfigFile>
+    <SpeechEntries>14</SpeechEntries>
+  </NPC>
+----------------------------
+Defaut starting point
+----------------------------
+
+<SpeechEntry>
+    <EntryNumber>0</EntryNumber>
+    <ID>0</ID>
+    <DependsOn>999</DependsOn>
+  </SpeechEntry>
+
+----------------------------
+Here is the banter section
+----------------------------
+
+  <SpeechEntry>
+    <EntryNumber>51</EntryNumber>
+    <ID>33</ID>
+    <Text>Oh this is a fine mess.</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>33</Pause>
+  </SpeechEntry>
+  <SpeechEntry>
+    <EntryNumber>52</EntryNumber>
+    <ID>33</ID>
+    <Text>I should never have gotten out of bed.</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>3</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>53</EntryNumber>
+    <ID>33</ID>
+    <Text>What am I going to do?</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>3</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>54</EntryNumber>
+    <ID>33</ID>
+    <Text>I wish we hadn't drunk so much last night. hic!</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>3</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>55</EntryNumber>
+    <ID>33</ID>
+    <SpeechStyle>Emote</SpeechStyle>
+    <Text>sigh</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>2</Pause>
+  </SpeechEntry>
+
+
+----------------------------
+Here is the conversation section
+----------------------------
+
+  <SpeechEntry>
+    <EntryNumber>1</EntryNumber>
+    <ID>1</ID>
+    <Text>Greetings stranger.</Text>
+    <Keywords>hello,greetings,hi,help,trouble</Keywords>
+    <Action>SETONTHIS/SOUND,1055/</Action>
+    <DependsOn>33</DependsOn>
+  </SpeechEntry>
+
+  <SpeechEntry>
+    <EntryNumber>2</EntryNumber>
+    <ID>2</ID>
+    <Text>I wonder if you could help me.  An orc seems to have stolen my brother Shemp's sword while we slept. </Text>
+    <DependsOn>1</DependsOn>
+  <Pause>5</Pause>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>3</EntryNumber>
+    <ID>3</ID>
+    <Text>He needs to visit our mother's grave in the Britain Graveyards, but can go nowhere without it. </Text>
+    <DependsOn>2</DependsOn>
+  <Pause>5</Pause>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>4</EntryNumber>
+    <ID>4</ID>
+    <Text>I would be grateful if you could return his sword to him, and escort him to the graveyard. </Text>
+    <Action>GIVE/&lt;questnote/partyenabled/true/name/Help Shemp/titlestring/Shemp/notestring/Return Shemp's sword and take him to visit his mother's grave./objective1/ESCORT,Shemp/objective2/GIVENAMED,Shemp,Shemps Blade&gt;</Action>
+    <DependsOn>3</DependsOn>
+  </SpeechEntry>
+
+
+
+
+</XmlQuestNPC>

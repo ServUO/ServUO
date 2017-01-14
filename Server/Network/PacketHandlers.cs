@@ -118,7 +118,7 @@ namespace Server.Network
 			Register(0xB6, 9, true, ObjectHelpRequest);
 			Register(0xB8, 0, true, ProfileReq);
 			Register(0xBB, 9, false, AccountID);
-			Register(0xBD, 0, false, ClientVersion);
+			Register(0xBD, 0, true, ClientVersion);
 			Register(0xBE, 0, true, AssistVersion);
 			Register(0xBF, 0, true, ExtendedCommand);
 			Register(0xC2, 0, true, UnicodePromptResponse);
@@ -354,45 +354,84 @@ namespace Server.Network
 			switch (pvSrc.ReadByte())
 			{
 				case 1: // Cancel
+				{
+					Serial serial = pvSrc.ReadInt32();
+
+					SecureTradeContainer cont = World.FindItem(serial) as SecureTradeContainer;
+
+					if (cont != null)
 					{
-						Serial serial = pvSrc.ReadInt32();
+						SecureTrade trade = cont.Trade;
 
-						SecureTradeContainer cont = World.FindItem(serial) as SecureTradeContainer;
-
-						if (cont != null && cont.Trade != null &&
-							(cont.Trade.From.Mobile == state.Mobile || cont.Trade.To.Mobile == state.Mobile))
+						if (trade != null)
 						{
-							cont.Trade.Cancel();
+							if (trade.From.Mobile == state.Mobile || trade.To.Mobile == state.Mobile)
+							{
+								trade.Cancel();
+							}
 						}
-
-						break;
 					}
+				}
+					break;
 				case 2: // Check
+				{
+					Serial serial = pvSrc.ReadInt32();
+
+					SecureTradeContainer cont = World.FindItem(serial) as SecureTradeContainer;
+
+					if (cont != null)
 					{
-						Serial serial = pvSrc.ReadInt32();
+						SecureTrade trade = cont.Trade;
 
-						SecureTradeContainer cont = World.FindItem(serial) as SecureTradeContainer;
+						bool value = pvSrc.ReadInt32() != 0;
 
-						if (cont != null)
+						if (trade != null)
 						{
-							SecureTrade trade = cont.Trade;
-
-							bool value = (pvSrc.ReadInt32() != 0);
-
-							if (trade != null && trade.From.Mobile == state.Mobile)
+							if (trade.From.Mobile == state.Mobile)
 							{
 								trade.From.Accepted = value;
 								trade.Update();
 							}
-							else if (trade != null && trade.To.Mobile == state.Mobile)
+							else if (trade.To.Mobile == state.Mobile)
 							{
 								trade.To.Accepted = value;
 								trade.Update();
 							}
 						}
-
-						break;
 					}
+				}
+					break;
+				case 3: // Update Gold
+				{
+					Serial serial = pvSrc.ReadInt32();
+
+					SecureTradeContainer cont = World.FindItem(serial) as SecureTradeContainer;
+
+					if (cont != null)
+					{
+						int gold = pvSrc.ReadInt32();
+						int plat = pvSrc.ReadInt32();
+
+						SecureTrade trade = cont.Trade;
+
+						if (trade != null)
+						{
+							if (trade.From.Mobile == state.Mobile)
+							{
+								trade.From.Gold = gold;
+								trade.From.Plat = plat;
+								trade.UpdateFromCurrency();
+							}
+							else if (trade.To.Mobile == state.Mobile)
+							{
+								trade.To.Gold = gold;
+								trade.To.Plat = plat;
+								trade.UpdateToCurrency();
+							}
+						}
+					}
+				}
+					break;
 			}
 		}
 
@@ -587,16 +626,16 @@ namespace Server.Network
 			int type = pvSrc.ReadByte();
 		}
 
-		public static void AttackReq(NetState state, PacketReader pvSrc)
-		{
-			Mobile from = state.Mobile;
-			Mobile m = World.FindMobile(pvSrc.ReadInt32());
+        public static void AttackReq(NetState state, PacketReader pvSrc)
+        {
+            Mobile from = state.Mobile;
+            Mobile m = World.FindMobile(pvSrc.ReadInt32());
 
-			if (m != null)
-			{
-				from.Attack(m);
-			}
-		}
+            if (m != null)
+            {
+                from.Attack(m);
+            }
+        }
 
 		public static void HuePickerResponse(NetState state, PacketReader pvSrc)
 		{
@@ -1304,9 +1343,38 @@ namespace Server.Network
 			{
 				if (gump.Serial == serial && gump.TypeID == typeID)
 				{
+					var buttonExists = buttonID == 0; // 0 is always 'close'
+
+					if (!buttonExists)
+					{
+						foreach (var e in gump.Entries)
+						{
+							if (e is GumpButton && ((GumpButton)e).ButtonID == buttonID)
+							{
+								buttonExists = true;
+								break;
+							}
+
+							if (e is GumpImageTileButton && ((GumpImageTileButton)e).ButtonID == buttonID)
+							{
+								buttonExists = true;
+								break;
+							}
+						}
+					}
+
+					if (!buttonExists)
+					{
+						Utility.PushColor(ConsoleColor.DarkRed);
+						state.WriteConsole("Invalid gump response, disconnecting...");
+						Utility.PopColor();
+						state.Dispose();
+						return;
+					}
+
 					int switchCount = pvSrc.ReadInt32();
 
-					if (switchCount < 0 || switchCount > gump._Switches)
+					if (switchCount < 0 || switchCount > gump.m_Switches)
 					{
 						Utility.PushColor(ConsoleColor.DarkRed);
 						state.WriteConsole("Invalid gump response, disconnecting...");
@@ -1324,7 +1392,7 @@ namespace Server.Network
 
 					int textCount = pvSrc.ReadInt32();
 
-					if (textCount < 0 || textCount > gump._TextEntries)
+					if (textCount < 0 || textCount > gump.m_TextEntries)
 					{
 						Utility.PushColor(ConsoleColor.DarkRed);
 						state.WriteConsole("Invalid gump response, disconnecting...");
@@ -2156,38 +2224,78 @@ namespace Server.Network
 
 			pvSrc.ReadInt32(); // 0xEDEDEDED
 			int type = pvSrc.ReadByte();
-			Mobile m = World.FindMobile(pvSrc.ReadInt32());
 
-			if (m != null)
-			{
-				switch (type)
-				{
-					case 0x00: // Unknown, sent by godclient
-						{
-							if (VerifyGC(state))
-							{
-								Console.WriteLine("God Client: {0}: Query 0x{1:X2} on {2} '{3}'", state, type, m.Serial, m.Name);
-							}
+            Serial serial = pvSrc.ReadInt32();
 
-							break;
-						}
-					case 0x04: // Stats
-						{
-							m.OnStatsQuery(from);
-							break;
-						}
-					case 0x05:
-						{
-							m.OnSkillsQuery(from);
-							break;
-						}
-					default:
-						{
-							pvSrc.Trace(state);
-							break;
-						}
-				}
-			}
+            if (serial.IsMobile)
+            {
+                Mobile m = World.FindMobile(serial);
+
+                if (m != null)
+                {
+                    switch (type)
+                    {
+                        case 0x00: // Unknown, sent by godclient
+                            {
+                                if (VerifyGC(state))
+                                {
+                                    Console.WriteLine("God Client: {0}: Query 0x{1:X2} on {2} '{3}'", state, type, serial, m.Name);
+                                }
+
+                                break;
+                            }
+                        case 0x04: // Stats
+                            {
+                                m.OnStatsQuery(from);
+                                break;
+                            }
+                        case 0x05:
+                            {
+                                m.OnSkillsQuery(from);
+                                break;
+                            }
+                        default:
+                            {
+                                pvSrc.Trace(state);
+                                break;
+                            }
+                    }
+                }
+            }
+            else if (serial.IsItem)
+            {
+                IDamageable item = World.FindItem(serial) as IDamageable;
+
+                if (item != null)
+                {
+                    switch (type)
+                    {
+                        case 0x00:
+                            {
+                                if (VerifyGC(state))
+                                {
+                                    Console.WriteLine("God Client: {0}: Query 0x{1:X2} on {2} '{3}'", state, type, serial, item.Name);
+                                }
+
+                                break;
+                            }
+                        case 0x04: // Stats
+                            {
+                                item.OnStatsQuery(from);
+                                break;
+                            }
+                        case 0x05:
+                            {
+                                break;
+                            }
+                        default:
+                            {
+                                pvSrc.Trace(state);
+                                break;
+                            }
+                    }
+                }
+            }
 		}
 
 		public delegate void PlayCharCallback(NetState state, bool val);

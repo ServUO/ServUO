@@ -94,7 +94,7 @@ namespace Server.Spells.Fourth
 
                         if (poison != null)
                         {
-                            int chanceToCure = 10000 + (int)(this.Caster.Skills[SkillName.Magery].Value * 75) - ((poison.Level + 1) * 1750);
+                            int chanceToCure = 10000 + (int)(this.Caster.Skills[SkillName.Magery].Value * 75) - ((poison.RealLevel + 1) * 1750);
                             chanceToCure /= 100;
                             chanceToCure -= 1;
 
@@ -170,7 +170,7 @@ namespace Server.Spells.Fourth
             return false;
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             private readonly ArchCureSpell m_Owner;
             public InternalTarget(ArchCureSpell owner)

@@ -1,0 +1,60 @@
+
+STEP 1: (RECOMMENDED, FOLLOW EXTREMELY CLOSE THIS IS VERY HARD)
+---------------------------------------------------------------
+
+For Simplistic Sake, We Will Only Make XmlLevelItem Work With BaseWeapon.cs
+You Can Dupe Every Step For, BaseArmor, BaseClothing, BaseJewel, Anything You Want To Level, Pet Rocks!
+
+#1A) In BaseWeapon.cs
+
+Find:
+
+	public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+Replace with This:
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+	    // Xml Spawner 3.26c XmlLevelItem - SOF
+            XmlLevelItem levitem = XmlAttach.FindAttachment(this, typeof(XmlLevelItem)) as XmlLevelItem;
+
+            if (levitem != null)
+            {
+                list.Add(new LevelInfoEntry(from, this, AttributeCategory.Melee));
+            }
+	    // Xml Spawner 3.26c XmlLevelItem - EOF
+     
+
+=======================================================
+
+
+STEP 2:  (OPTIONAL)
+--------------------------------------------------------
+To allow the displaying of level-related properties on mouse over.
+
+In BaseWeapon.cs
+
+Find:
+
+          public override void GetProperties(ObjectPropertyList list)
+          {
+             base.GetProperties(list);
+
+Replace with This:
+
+           base.GetProperties(list);
+	   // Xml Spawner 2.36c XmlLevelItem - SOF
+           XmlLevelItem levitem = XmlAttach.FindAttachment(this, typeof(XmlLevelItem)) as XmlLevelItem;
+
+           if (levitem != null)
+           {
+               list.Add(1060658, "Level\t{0}", levitem.Level);
+
+           if (LevelItems.DisplayExpProp)
+               list.Add(1060659, "Experience\t{0}", levitem.Experience);
+
+           }
+	   // Xml Spawner 2.36c XmlLevelItem - EOF

@@ -11,6 +11,7 @@ namespace Server.Misc
         private static readonly TimeSpan WarningDelay = TimeSpan.FromMinutes(1.0);// at what interval should the shutdown message be displayed?
         private static bool m_Restarting;
         private static DateTime m_RestartTime;
+		private static bool m_Restart = true;
         public AutoRestart()
             : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
         {
@@ -31,8 +32,9 @@ namespace Server.Misc
         }
         public static void Initialize()
         {
-            CommandSystem.Register("Restart", AccessLevel.Administrator, new CommandEventHandler(Restart_OnCommand));
-            new AutoRestart().Start();
+			CommandSystem.Register("Restart", AccessLevel.Administrator, new CommandEventHandler(Restart_OnCommand));
+			CommandSystem.Register("Shutdown", AccessLevel.Administrator, new CommandEventHandler(Shutdown_OnCommand));
+			new AutoRestart().Start();
         }
 
         public static void Restart_OnCommand(CommandEventArgs e)
@@ -43,13 +45,29 @@ namespace Server.Misc
             }
             else
             {
-                e.Mobile.SendMessage("You have initiated server shutdown.");
+                e.Mobile.SendMessage("You have initiated server restart.");
                 Enabled = true;
-                m_RestartTime = DateTime.UtcNow;
+				m_Restart = true;
+				m_RestartTime = DateTime.UtcNow;
             }
         }
 
-        protected override void OnTick()
+		public static void Shutdown_OnCommand(CommandEventArgs e)
+		{
+			if (m_Restarting)
+			{
+				e.Mobile.SendMessage("The server is already restarting.");
+			}
+			else
+			{
+				e.Mobile.SendMessage("You have initiated server shutdown.");
+				Enabled = true;
+				m_Restart = false;
+				m_RestartTime = DateTime.UtcNow;
+			}
+		}
+
+		protected override void OnTick()
         {
             if (m_Restarting || !Enabled)
                 return;
@@ -77,7 +95,7 @@ namespace Server.Misc
 
         private void Restart_Callback()
         {
-            Core.Kill(true);
+            Core.Kill(m_Restart);
         }
     }
 }
