@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    [Alterable(typeof(DefBlacksmithy), typeof(DualPointedSpear))]
+    [Alterable(typeof(DefBlacksmithy), typeof(DualPointedSpear), true)]
     [FlipableAttribute(0x2D20, 0x2D2C)]
     public class ElvenSpellblade : BaseKnife
     {

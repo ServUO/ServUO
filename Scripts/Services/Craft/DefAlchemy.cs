@@ -363,7 +363,7 @@ namespace Server.Engines.Craft
             #region High Seas
             if (Core.HS)
             {
-                index = AddCraft(typeof(Potash), 1044495, 1116319, 0.0, 50.0, typeof(Log), 1044041, 1, 1044253);
+                index = AddCraft(typeof(Potash), 1044495, 1116319, 0.0, 50.0, typeof(Board), 1044041, 1, 1044253);
                 AddRes(index, typeof(BaseBeverage), 1024088, 1, 1044253);
                 SetNeededExpansion(index, Expansion.HS);
             }

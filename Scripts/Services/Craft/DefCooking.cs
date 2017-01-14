@@ -240,7 +240,7 @@ namespace Server.Engines.Craft
             #region High Seas
             if (Core.HS)
             {
-                index = AddCraft(typeof(Charcoal), 1044496, 1116303, 0.0, 50.0, typeof(Log), 1044041, 1, 1044351);
+                index = AddCraft(typeof(Charcoal), 1044496, 1116303, 0.0, 50.0, typeof(Board), 1044041, 1, 1044351);
                 SetUseAllRes(index, true);
                 SetNeedHeat(index, true);
                 SetNeededExpansion(index, Expansion.HS);

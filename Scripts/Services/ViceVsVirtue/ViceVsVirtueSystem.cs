@@ -128,7 +128,6 @@ namespace Server.Engines.VvV
             Guild g = pm.Guild as Guild;
             VvVPlayerEntry entry = GetEntry(pm, true) as VvVPlayerEntry;
 
-            entry.Guild = g;
             entry.Active = true;
 
             pm.SendLocalizedMessage(1155564); // You have joined Vice vs Virtue!
@@ -156,8 +155,6 @@ namespace Server.Engines.VvV
                     entry.ResignExpiration = DateTime.UtcNow + TimeSpan.FromDays(3);
                 else
                     entry.ResignExpiration = DateTime.UtcNow + TimeSpan.FromMinutes(1);
-
-                entry.Guild = null;
 
                 if (quitguild)
                     m.SendLocalizedMessage(1155580); // You have quit a guild while participating in Vice vs Virtue.  You will be freely attackable by members of Vice vs Virtue until your resignation period has ended!
@@ -376,10 +373,6 @@ namespace Server.Engines.VvV
         public static bool IsEnemy(Mobile from, Mobile to)
         {
             //TODO: Support for VvV city games regarding non-participants in the city, as well as ones who flagged
-            if(from == null || to == null)
-                return false;
-                
-            //basecreatures convert to their masters
             if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
                 from = ((BaseCreature)from).GetMaster();
 
@@ -389,7 +382,6 @@ namespace Server.Engines.VvV
             VvVPlayerEntry fromentry = Instance.GetPlayerEntry<VvVPlayerEntry>(from);
             VvVPlayerEntry toentry = Instance.GetPlayerEntry<VvVPlayerEntry>(to);
 
-            // TODO: Support for FlaggedTo. For now, any of these are null or inactive, not enemies!
             if (fromentry == null || toentry == null || !fromentry.Active || !toentry.Active)
             {
                 if (fromentry != null && toentry == null && FlaggedTo != null && FlaggedTo.ContainsKey(from) && FlaggedTo[from] == to)
@@ -398,14 +390,12 @@ namespace Server.Engines.VvV
                 return false;
             }
 
-            Guild fromguild = from.Guild as Guild;
-            Guild toguild = to.Guild as Guild;
-            
-            // This will handle those who recently quit VvV, they are always attackable
-            if ((toguild == null && fromguild != null)  || (fromguild == null && toguild != null))
+            Guild fromguild = fromentry.Guild;
+            Guild toguild = toentry.Guild;
+
+            if (toguild == null || fromguild == null)
                 return true;
 
-            // in the guild, and/or allied
             return fromguild != toguild && !fromguild.IsAlly(toguild);
         }
 
@@ -528,7 +518,13 @@ namespace Server.Engines.VvV
         public int DisarmedTraps { get; set; }
         public int StolenSigils { get; set; }
 
-        public Guild Guild { get; set; }
+        public Guild Guild
+        {
+            get
+            {
+                return Player != null ? Player.Guild as Guild : null;
+            }
+        }
 
         public bool Active
         {
@@ -559,10 +555,9 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1);
+            writer.Write(2);
 
             writer.Write(Active);
-            writer.Write(Guild);
 
             writer.Write(Score);
             writer.Write(Kills);
@@ -584,7 +579,8 @@ namespace Server.Engines.VvV
             if(version == 0)
                 reader.ReadBool();
 
-            Guild = reader.ReadGuild() as Guild;
+            if(version < 2)
+                reader.ReadGuild();
 
             Score = reader.ReadInt();
             Kills = reader.ReadInt();

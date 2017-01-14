@@ -350,14 +350,22 @@ namespace Server.Engines.Craft
 
 		private static readonly Type[][] m_TypesTable = new[]
 		{
-			new[] {typeof(Board), typeof(Log)}, new[] {typeof(HeartwoodBoard), typeof(HeartwoodLog)},
-			new[] {typeof(BloodwoodBoard), typeof(BloodwoodLog)}, new[] {typeof(FrostwoodBoard), typeof(FrostwoodLog)},
-			new[] {typeof(OakBoard), typeof(OakLog)}, new[] {typeof(AshBoard), typeof(AshLog)},
-			new[] {typeof(YewBoard), typeof(YewLog)}, new[] {typeof(Leather), typeof(Hides)},
-			new[] {typeof(SpinedLeather), typeof(SpinedHides)}, new[] {typeof(HornedLeather), typeof(HornedHides)},
-			new[] {typeof(BarbedLeather), typeof(BarbedHides)}, new[] {typeof(BlankMap), typeof(BlankScroll)},
-			new[] {typeof(Cloth), typeof(UncutCloth), typeof(AbyssalCloth)}, new[] {typeof(CheeseWheel), typeof(CheeseWedge)},
-			new[] {typeof(Pumpkin), typeof(SmallPumpkin)}, new[] {typeof(WoodenBowlOfPeas), typeof(PewterBowlOfPeas)},
+			new[] {typeof(Board), typeof(Log)}, 
+            new[] {typeof(HeartwoodBoard), typeof(HeartwoodLog)},
+			new[] {typeof(BloodwoodBoard), typeof(BloodwoodLog)}, 
+            new[] {typeof(FrostwoodBoard), typeof(FrostwoodLog)},
+			new[] {typeof(OakBoard), typeof(OakLog)}, 
+            new[] {typeof(AshBoard), typeof(AshLog)},
+			new[] {typeof(YewBoard), typeof(YewLog)}, 
+            new[] {typeof(Leather), typeof(Hides)},
+			new[] {typeof(SpinedLeather), typeof(SpinedHides)}, 
+            new[] {typeof(HornedLeather), typeof(HornedHides)},
+			new[] {typeof(BarbedLeather), typeof(BarbedHides)}, 
+            new[] {typeof(BlankMap), typeof(BlankScroll)},
+			new[] {typeof(Cloth), typeof(UncutCloth), typeof(AbyssalCloth)},
+            new[] {typeof(CheeseWheel), typeof(CheeseWedge)},
+			new[] {typeof(Pumpkin), typeof(SmallPumpkin)}, 
+            new[] {typeof(WoodenBowlOfPeas), typeof(PewterBowlOfPeas)},
             new[] { typeof( CrystallineFragments ), typeof( BrokenCrystals ), typeof( ShatteredCrystals ), typeof( ScatteredCrystals ), typeof( CrushedCrystals ), typeof( JaggedCrystals ), typeof( AncientPotteryFragments ) },
             new[] { typeof( RedScales ), typeof( BlueScales ), typeof( BlackScales ), typeof( YellowScales ), typeof( GreenScales ), typeof( WhiteScales ), typeof( MedusaDarkScales ), typeof( MedusaLightScales ) }
 		};
