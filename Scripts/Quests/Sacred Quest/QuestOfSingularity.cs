@@ -87,7 +87,7 @@ namespace Server.Engines.Quests
             m_EntryTable[3] = new QuestionAndAnswerEntry(1112604, new string[] { "persistence" }, new string[] { "feeling", "direction", "alexandria" }); //From Diligence springs which Virtue?
             m_EntryTable[4] = new QuestionAndAnswerEntry(1112605, new string[] { "no" }, new string[] { "yes" }); //Is any Virtue more important than another?
             m_EntryTable[5] = new QuestionAndAnswerEntry(1112606, new string[] { "yes" }, new string[] { "no" }); //Are each of the Virtues considered to be equal?
-            m_EntryTable[6] = new QuestionAndAnswerEntry(1112607, new string[] { "eight" }, new string[] { "seven", "nine", "six", "eight" }); //Amongst all else, of how many Virtues does the Circle consist?
+            m_EntryTable[6] = new QuestionAndAnswerEntry(1112607, new string[] { "eight" }, new string[] { "seven", "nine", "six" }); //Amongst all else, of how many Virtues does the Circle consist?
             m_EntryTable[7] = new QuestionAndAnswerEntry(1112608, new string[] { "balance" }, new string[] { "achievement", "precision", "chaos" }); //Passion combined with Control yields which Virtue?
             m_EntryTable[8] = new QuestionAndAnswerEntry(1112609, new string[] { "passion", "deligience" }, new string[] { "control" }); //Achievement is created in part by which Principle?
             m_EntryTable[9] = new QuestionAndAnswerEntry(1112610, new string[] { "precision" }, new string[] { "chaos", "achievement", "balance" }); //If you join Diligence with Control, which Virtue is provided?
