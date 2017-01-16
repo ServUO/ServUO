@@ -100,7 +100,7 @@ namespace Server.Engines.Quests
             m_EntryTable[16] = new QuestionAndAnswerEntry(1112617, new string[] { "no" }, new string[] { "yes" }); //Does the Circle have an end?
             m_EntryTable[17] = new QuestionAndAnswerEntry(1112618, new string[] { "yes" }, new string[] { "no" }); //Are each of the Principles considered equal?
             m_EntryTable[18] = new QuestionAndAnswerEntry(1112619, new string[] { "forever" }, new string[] { "when it ends", "tomorrow", "next week" }); //As with the Circle, how long does our society continue?
-            m_EntryTable[19] = new QuestionAndAnswerEntry(1112620, new string[] { "control", "passion", "diligence", "direction", "persistence", "feeling", "order", "singularity" }, new string[] { "chaos", "alexandria", "OSI" }); //Which of these is one of the Virtues?
+            m_EntryTable[19] = new QuestionAndAnswerEntry(1112620, new string[] { "direction", "feeling", "persistence", "balance", "achivement", "precision", "order", "singularity" }, new string[] { "chaos", "alexandria", "OSI" }); //Which of these is one of the Virtues?
         }
 
         private static QuestionAndAnswerEntry[] m_EntryTable = new QuestionAndAnswerEntry[20];
