@@ -36,13 +36,13 @@ namespace Server.Engines.Reports
             this.m_Values = new ItemValueCollection();
         }
 
-        public override void SerializeChildren(PersistanceWriter op)
+        public override void SerializeChildren(PersistenceWriter op)
         {
             for (int i = 0; i < this.m_Values.Count; ++i)
                 this.m_Values[i].Serialize(op);
         }
 
-        public override void DeserializeChildren(PersistanceReader ip)
+        public override void DeserializeChildren(PersistenceReader ip)
         {
             while (ip.HasChild)
                 this.m_Values.Add(ip.GetChild() as ItemValue);

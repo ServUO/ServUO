@@ -4,9 +4,9 @@ using System.Xml;
 
 namespace Server.Engines.Reports
 {
-    public abstract class PersistanceWriter
+    public abstract class PersistenceWriter
     {
-        public PersistanceWriter()
+        public PersistenceWriter()
         {
         }
 
@@ -31,14 +31,14 @@ namespace Server.Engines.Reports
         public abstract void Close();
     }
 
-    public sealed class XmlPersistanceWriter : PersistanceWriter
+    public sealed class XmlPersistenceWriter : PersistenceWriter
     {
         private readonly string m_RealFilePath;
         private readonly string m_TempFilePath;
         private readonly StreamWriter m_Writer;
         private readonly XmlTextWriter m_Xml;
         private readonly string m_Title;
-        public XmlPersistanceWriter(string filePath, string title)
+        public XmlPersistenceWriter(string filePath, string title)
         {
             this.m_RealFilePath = filePath;
             this.m_TempFilePath = Path.ChangeExtension(filePath, ".tmp");

@@ -4,7 +4,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    [Alterable(typeof(DefTailoring), typeof(GargishLeatherWingArmor), true)]
+    [Alterable(typeof(DefTailoring), typeof(GargishLeatherWingArmor))]
     public abstract class BaseCloak : BaseClothing
     {
         public BaseCloak(int itemID)

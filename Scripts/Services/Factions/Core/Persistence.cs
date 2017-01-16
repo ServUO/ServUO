@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace Server.Factions
 {
-    public class FactionPersistance : Item
+    [TypeAlias("Server.Factions.FactionPersistance")]
+    public class FactionPersistence : Item
     {
-        private static FactionPersistance m_Instance;
-        public FactionPersistance()
+        private static FactionPersistence m_Instance;
+        public FactionPersistence()
             : base(1)
         {
             this.Movable = false;
@@ -17,7 +18,7 @@ namespace Server.Factions
                 base.Delete();
         }
 
-        public FactionPersistance(Serial serial)
+        public FactionPersistence(Serial serial)
             : base(serial)
         {
             m_Instance = this;
@@ -29,7 +30,7 @@ namespace Server.Factions
             Faction,
             Town
         }
-        public static FactionPersistance Instance
+        public static FactionPersistence Instance
         {
             get
             {

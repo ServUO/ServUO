@@ -4869,7 +4869,7 @@ namespace Server.Items
 				return true;
 			}
 
-            return AosAttributes.GetValue(from, AosAttribute.SpellChanneling) > 0;
+            return m_AosAttributes.SpellChanneling > 0;
 		}
 
 		public virtual int ArtifactRarity { get { return 0; } }
