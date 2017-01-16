@@ -15,11 +15,31 @@ namespace Server.Engines.Craft
         public Type AlteredType { get; private set; }
         public bool Inherit { get; private set; }
 
-        public AlterableAttribute(Type craftSystem, Type alteredType, bool inherit = true)
+        public AlterableAttribute(Type craftSystem, Type alteredType, bool inherit = false)
         {
             CraftSystem = craftSystem;
             AlteredType = alteredType;
             Inherit = inherit;
+        }
+
+        /// <summary>
+        /// this enables any craftable item where their parent class can be altered, can be altered too.
+        /// This is mainly for the ML craftable artifacts.
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckInherit(Type original)
+        {
+            if (Inherit)
+                return true;
+
+            var system = CraftContext.Systems.FirstOrDefault(sys => sys.GetType() == CraftSystem);
+
+            if (system != null)
+            {
+                return system.CraftItems.SearchFor(original) != null;
+            }
+
+            return false;
         }
     }
 
@@ -58,15 +78,17 @@ namespace Server.Engines.Craft
             this.m_Tool = tool;
         }
 
-        private static AlterableAttribute GetAlterableAttribute(object o, bool inherit = false)
+        private static AlterableAttribute GetAlterableAttribute(object o, bool inherit)
         {
-            object[] attrs = o.GetType().GetCustomAttributes(typeof(AlterableAttribute), inherit);
+            Type t = o.GetType();
 
+            object[] attrs = t.GetCustomAttributes(typeof(AlterableAttribute), inherit);
+            
             if (attrs != null && attrs.Length > 0)
             {
                 AlterableAttribute attr = attrs[0] as AlterableAttribute;
 
-                if (attr != null && (!inherit || attr.Inherit))
+                if (attr != null && (!inherit || attr.CheckInherit(t)))
                     return attr;
             }
 
@@ -278,7 +300,6 @@ namespace Server.Engines.Craft
                 }
 
                 newitem.Hue = origItem.Hue;
-
                 newitem.LootType = origItem.LootType;
 
                 origItem.Delete();
@@ -300,12 +321,9 @@ namespace Server.Engines.Craft
 
                 if (m_Contract != null)
                     m_Contract.Delete();
+
+                number = 1094727; // You have altered the item.
             }
-
-            number = 1094727; // You have altered the item.
-
-            if (m_Contract != null)
-                m_Contract.Delete();
 
             if (m_Tool != null)
                 from.SendGump(new CraftGump(from, m_System, m_Tool, number));
@@ -351,6 +369,9 @@ namespace Server.Engines.Craft
                     return false;
 
                 if ((armor.RequiredRace != null && armor.RequiredRace == Race.Gargoyle && !armor.IsArtifact))
+                    return false;
+
+                if (armor is RingmailGlovesOfMining && armor.Resource > CraftResource.Iron)
                     return false;
             }
 

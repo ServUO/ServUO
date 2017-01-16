@@ -44,7 +44,7 @@ namespace Server.Engines.Reports
         public void Save()
         {
             string path = Path.Combine(Core.BaseDirectory, "reportHistory.xml");
-            PersistanceWriter pw = new XmlPersistanceWriter(path, "Stats");
+            PersistenceWriter pw = new XmlPersistenceWriter(path, "Stats");
 
             pw.WriteDocument(this);
 
@@ -58,20 +58,20 @@ namespace Server.Engines.Reports
             if (!File.Exists(path))
                 return;
 
-            PersistanceReader pr = new XmlPersistanceReader(path, "Stats");
+            PersistenceReader pr = new XmlPersistenceReader(path, "Stats");
 
             pr.ReadDocument(this);
 
             pr.Close();
         }
 
-        public override void SerializeChildren(PersistanceWriter op)
+        public override void SerializeChildren(PersistenceWriter op)
         {
             for (int i = 0; i < this.m_Snapshots.Count; ++i)
                 this.m_Snapshots[i].Serialize(op);
         }
 
-        public override void DeserializeChildren(PersistanceReader ip)
+        public override void DeserializeChildren(PersistenceReader ip)
         {
             while (ip.HasChild)
                 this.m_Snapshots.Add(ip.GetChild() as Snapshot);

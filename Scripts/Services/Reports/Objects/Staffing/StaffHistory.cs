@@ -129,7 +129,7 @@ namespace Server.Engines.Reports
             lock (SaveLock)
             {
                 string path = Path.Combine(Core.BaseDirectory, "staffHistory.xml");
-                PersistanceWriter pw = new XmlPersistanceWriter(path, "Staff");
+                PersistenceWriter pw = new XmlPersistenceWriter(path, "Staff");
 
                 pw.WriteDocument(this);
 
@@ -144,14 +144,14 @@ namespace Server.Engines.Reports
             if (!File.Exists(path))
                 return;
 
-            PersistanceReader pr = new XmlPersistanceReader(path, "Staff");
+            PersistenceReader pr = new XmlPersistenceReader(path, "Staff");
 
             pr.ReadDocument(this);
 
             pr.Close();
         }
 
-        public override void SerializeChildren(PersistanceWriter op)
+        public override void SerializeChildren(PersistenceWriter op)
         {
             for (int i = 0; i < this.m_Pages.Count; ++i)
                 this.m_Pages[i].Serialize(op);
@@ -160,7 +160,7 @@ namespace Server.Engines.Reports
                 this.m_QueueStats[i].Serialize(op);
         }
 
-        public override void DeserializeChildren(PersistanceReader ip)
+        public override void DeserializeChildren(PersistenceReader ip)
         {
             DateTime min = DateTime.UtcNow - TimeSpan.FromDays(8.0);
 

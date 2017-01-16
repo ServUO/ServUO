@@ -47,7 +47,23 @@ namespace Server.Items
 
     public class GargishCrimsonCincture : GargoyleHalfApron, ITokunoDyable
     {
+        public override Race RequiredRace
+        {
+            get
+            {
+                return Race.Gargoyle;
+            }
+        }
+        public override bool CanBeWornByGargoyles
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public override bool IsArtifact { get { return true; } }
+
         [Constructable]
         public GargishCrimsonCincture()
             : base()

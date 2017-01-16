@@ -1,12 +1,12 @@
 using System;
 
-namespace Server.Ethics
+namespace Server.Misc
 {
-    public class EthicsPersistance : Item
+    [TypeAlias("Server.Misc.TreasuresOfTokunoPersistance")]
+    public class TreasuresOfTokunoPersistence : Item
     {
-        private static EthicsPersistance m_Instance;
-        [Constructable]
-        public EthicsPersistance()
+        private static TreasuresOfTokunoPersistence m_Instance;
+        public TreasuresOfTokunoPersistence()
             : base(1)
         {
             this.Movable = false;
@@ -17,13 +17,13 @@ namespace Server.Ethics
                 base.Delete();
         }
 
-        public EthicsPersistance(Serial serial)
+        public TreasuresOfTokunoPersistence(Serial serial)
             : base(serial)
         {
             m_Instance = this;
         }
 
-        public static EthicsPersistance Instance
+        public static TreasuresOfTokunoPersistence Instance
         {
             get
             {
@@ -34,17 +34,23 @@ namespace Server.Ethics
         {
             get
             {
-                return "Ethics Persistance - Internal";
+                return "TreasuresOfTokuno Persistance - Internal";
             }
         }
+        public static void Initialize()
+        {
+            if (m_Instance == null)
+                new TreasuresOfTokunoPersistence();
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
             writer.Write((int)0); // version
 
-            for (int i = 0; i < Ethics.Ethic.Ethics.Length; ++i)
-                Ethics.Ethic.Ethics[i].Serialize(writer);
+            writer.WriteEncodedInt((int)TreasuresOfTokuno.RewardEra);
+            writer.WriteEncodedInt((int)TreasuresOfTokuno.DropEra);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -57,9 +63,9 @@ namespace Server.Ethics
             {
                 case 0:
                     {
-                        for (int i = 0; i < Ethics.Ethic.Ethics.Length; ++i)
-                            Ethics.Ethic.Ethics[i].Deserialize(reader);
-
+                        TreasuresOfTokuno.RewardEra = (TreasuresOfTokunoEra)reader.ReadEncodedInt();
+                        TreasuresOfTokuno.DropEra = (TreasuresOfTokunoEra)reader.ReadEncodedInt();
+					
                         break;
                     }
             }

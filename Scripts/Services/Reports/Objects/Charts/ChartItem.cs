@@ -57,13 +57,13 @@ namespace Server.Engines.Reports
             this.m_Value = value;
         }
 
-        public override void SerializeAttributes(PersistanceWriter op)
+        public override void SerializeAttributes(PersistenceWriter op)
         {
             op.SetString("n", this.m_Name);
             op.SetInt32("v", this.m_Value);
         }
 
-        public override void DeserializeAttributes(PersistanceReader ip)
+        public override void DeserializeAttributes(PersistenceReader ip)
         {
             this.m_Name = Utility.Intern(ip.GetString("n"));
             this.m_Value = ip.GetInt32("v");

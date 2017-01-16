@@ -4,9 +4,9 @@ using System.Xml;
 
 namespace Server.Engines.Reports
 {
-    public abstract class PersistanceReader
+    public abstract class PersistenceReader
     {
-        public PersistanceReader()
+        public PersistenceReader()
         {
         }
 
@@ -30,14 +30,14 @@ namespace Server.Engines.Reports
         public abstract void Close();
     }
 
-    public class XmlPersistanceReader : PersistanceReader
+    public class XmlPersistenceReader : PersistenceReader
     {
         private readonly StreamReader m_Reader;
         private readonly XmlTextReader m_Xml;
         private readonly string m_Title;
         private bool m_HasChild;
         private bool m_WasEmptyElement;
-        public XmlPersistanceReader(string filePath, string title)
+        public XmlPersistenceReader(string filePath, string title)
         {
             this.m_Reader = new StreamReader(filePath);
             this.m_Xml = new XmlTextReader(this.m_Reader);

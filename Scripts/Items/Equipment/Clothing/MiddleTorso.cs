@@ -35,7 +35,7 @@ namespace Server.Items
         }
     }
 
-    [Alterable(typeof(DefTailoring), typeof(GargishSash), true)]
+    [Alterable(typeof(DefTailoring), typeof(GargishSash))]
     [Flipable(0x1541, 0x1542)]
     public class BodySash : BaseMiddleTorso
     {

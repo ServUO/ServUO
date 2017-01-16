@@ -136,7 +136,9 @@ namespace Server.Misc
             if (ViceVsVirtueSystem.Enabled)
             {
                 if (ViceVsVirtueSystem.IsEnemy(from, target))
+                {
                     return false;
+                }
             }
             #endregion
 			

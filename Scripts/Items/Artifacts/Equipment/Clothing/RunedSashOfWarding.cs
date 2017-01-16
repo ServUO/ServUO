@@ -12,7 +12,7 @@ namespace Server.Items
         SpellDamage
     }
 
-    [Alterable(typeof(DefTailoring), typeof(GargishRunedSashOfWarding), true)]
+    [Alterable(typeof(DefTailoring), typeof(GargishRunedSashOfWarding))]
     public class RunedSashOfWarding : BodySash
     {
         public override bool IsArtifact { get { return true; } }

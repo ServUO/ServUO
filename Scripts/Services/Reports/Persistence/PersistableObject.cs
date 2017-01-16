@@ -9,15 +9,15 @@ namespace Server.Engines.Reports
         }
 
         public abstract PersistableType TypeID { get; }
-        public virtual void SerializeAttributes(PersistanceWriter op)
+        public virtual void SerializeAttributes(PersistenceWriter op)
         {
         }
 
-        public virtual void SerializeChildren(PersistanceWriter op)
+        public virtual void SerializeChildren(PersistenceWriter op)
         {
         }
 
-        public void Serialize(PersistanceWriter op)
+        public void Serialize(PersistenceWriter op)
         {
             op.BeginObject(this.TypeID);
             this.SerializeAttributes(op);
@@ -27,15 +27,15 @@ namespace Server.Engines.Reports
             op.FinishObject();
         }
 
-        public virtual void DeserializeAttributes(PersistanceReader ip)
+        public virtual void DeserializeAttributes(PersistenceReader ip)
         {
         }
 
-        public virtual void DeserializeChildren(PersistanceReader ip)
+        public virtual void DeserializeChildren(PersistenceReader ip)
         {
         }
 
-        public void Deserialize(PersistanceReader ip)
+        public void Deserialize(PersistenceReader ip)
         {
             this.DeserializeAttributes(ip);
 
