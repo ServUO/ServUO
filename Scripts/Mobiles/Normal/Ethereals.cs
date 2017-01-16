@@ -17,11 +17,17 @@ namespace Server.Mobiles
 {
 	public class EtherealMount : Item, IMount, IMountItem, IRewardItem
 	{
+        public static readonly int DefaultEtherealHue = 0x4001;
+
 		private int m_MountedID;
 		private int m_RegularID;
+        private int m_DefaultMountedID;
 		private Mobile m_Rider;
 		private bool m_IsRewardItem;
 		private bool m_IsDonationItem;
+
+        private int m_EtherealHue;
+        private int m_OriginalHue;
 
 		[Constructable]
 		public EtherealMount(int itemID, int mountID)
@@ -29,11 +35,15 @@ namespace Server.Mobiles
 		{
 			m_MountedID = mountID;
 			m_RegularID = itemID;
+            m_DefaultMountedID = mountID;
 			m_Rider = null;
 
 			Layer = Layer.Invalid;
 
 			LootType = LootType.Blessed;
+
+            m_EtherealHue = DefaultEtherealHue;
+            m_OriginalHue = 0;
 		}
 
 		public EtherealMount(Serial serial)
@@ -92,6 +102,26 @@ namespace Server.Mobiles
 			}
 		}
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int DefaultMountedID
+        {
+            get { return m_DefaultMountedID; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int EtherealHue
+        {
+            get { return m_EtherealHue; }
+            set { m_EtherealHue = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int OriginalHue
+        {
+            get { return m_OriginalHue; }
+            set { m_OriginalHue = value; }
+        }
+
 		public override bool DisplayLootType { get { return Core.AOS; } }
 		public virtual int FollowerSlots { get { return 1; } }
 
@@ -132,7 +162,6 @@ namespace Server.Mobiles
 			}
 		}
 
-		public virtual int EtherealHue { get { return 0x4001; } }
 		public IMount Mount { get { return this; } }
 
 		public static void Dismount(Mobile m)
@@ -167,6 +196,8 @@ namespace Server.Mobiles
 			{
 				list.Add(RewardSystem.GetRewardYearLabel(this, new object[] {})); // X Year Veteran Reward
 			}
+
+            EtherealRetouchingTool.AddProperty(this, list);
 		}
 
 		public void RemoveFollowers()
@@ -270,7 +301,11 @@ namespace Server.Mobiles
 		{
 			base.Serialize(writer);
 
-			writer.Write(3); // version
+			writer.Write(4); // version
+
+            writer.Write(m_DefaultMountedID);
+            writer.Write(m_OriginalHue);
+            writer.Write(m_EtherealHue);
 
 			writer.Write(m_IsDonationItem);
 			writer.Write(m_IsRewardItem);
@@ -289,6 +324,11 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 4:
+                    m_DefaultMountedID = reader.ReadInt();
+                    m_OriginalHue = reader.ReadInt();
+                    m_EtherealHue = reader.ReadInt();
+                    goto case 3;
 				case 3:
 					m_IsDonationItem = reader.ReadBool();
 					goto case 2;
@@ -318,6 +358,13 @@ namespace Server.Mobiles
 			{
 				Weight = -1;
 			}
+
+            if (version == 3)
+            {
+                m_DefaultMountedID = m_MountedID;
+                m_EtherealHue = DefaultEtherealHue;
+                m_OriginalHue = 0;
+            }
 		}
 
 		public override DeathMoveResult OnParentDeath(Mobile parent)
@@ -335,10 +382,10 @@ namespace Server.Mobiles
 			Layer = Layer.Invalid;
 			Movable = true;
 
-			if (Hue == EtherealHue)
-			{
-				Hue = 0;
-			}
+            if (Hue != OriginalHue)
+            {
+                Hue = OriginalHue;
+            }
 
 			if (bp != null)
 			{
@@ -749,27 +796,35 @@ namespace Server.Mobiles
 		[Constructable]
 		public RideablePolarBear()
 			: base(0x20E1, 0x3EC5)
-		{ }
+		{
+            EtherealHue = 0;
+            OriginalHue = 0;
+        }
 
 		public RideablePolarBear(Serial serial)
 			: base(serial)
 		{ }
 
 		public override int LabelNumber { get { return 1076159; } } // Rideable Polar Bear 
-		public override int EtherealHue { get { return 0; } }
 
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
 
-			writer.WriteEncodedInt(0); // version
+			writer.WriteEncodedInt(1); // version
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 
-			reader.ReadEncodedInt();
+			int version = reader.ReadEncodedInt();
+
+            if (version == 0)
+            {
+                EtherealHue = 0;
+                OriginalHue = 0;
+            }
 		}
 	}
 
@@ -859,14 +914,16 @@ namespace Server.Mobiles
 		[Constructable]
 		public ChargerOfTheFallen()
 			: base(0x2D9C, 0x3E92)
-		{ }
+		{
+            EtherealHue = 0;
+            OriginalHue = 0;
+        }
 
 		public ChargerOfTheFallen(Serial serial)
 			: base(serial)
 		{ }
 
 		public override int LabelNumber { get { return 1074816; } } // Charger of the Fallen Statuette
-		public override int EtherealHue { get { return 0; } }
 
 		public override void Serialize(GenericWriter writer)
 		{
@@ -881,6 +938,12 @@ namespace Server.Mobiles
 
 			int version = reader.ReadInt();
 
+            if (version == 0)
+            {
+                EtherealHue = 0;
+                OriginalHue = 0;
+            }
+
 			if (version <= 1 && Hue != 0)
 			{
 				Hue = 0;
@@ -888,12 +951,59 @@ namespace Server.Mobiles
 		}
 	}
 
+    public class EtherealBoura : EtherealMount
+    {
+        public override int LabelNumber { get { return 1150006; } } // Rideable Boura Statuette
+
+        [Constructable]
+        public EtherealBoura()
+            : base(0x46F8, 0x3EC6)
+        {
+            EtherealHue = 0;
+            OriginalHue = 0;
+        }
+
+        public EtherealBoura(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)1); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                EtherealHue = 0;
+                OriginalHue = 0;
+            }
+        }
+    }
+
     public class EtherealTiger : EtherealMount
     {
         [Constructable]
+        public EtherealTiger()
+            : this(false)
+        {
+        }
+
+        [Constructable]
         public EtherealTiger(bool light = false)
             : base(0x9844, light ? 0x3EC7 : 0x3EC8)
-        { }
+        {
+            EtherealHue = 0;
+            OriginalHue = 0;
+        }
 
         public EtherealTiger(Serial serial)
             : base(serial)
@@ -915,9 +1025,10 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (version <= 1 && Hue != 0)
+            if (version == 0)
             {
-                Hue = 0;
+                EtherealHue = 0;
+                OriginalHue = 0;
             }
         }
     }

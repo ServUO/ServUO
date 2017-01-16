@@ -293,7 +293,7 @@ namespace Server.Engines.Reports
             this.m_Responses = new ResponseInfoCollection();
         }
 
-        public override void SerializeAttributes(PersistanceWriter op)
+        public override void SerializeAttributes(PersistenceWriter op)
         {
             op.SetInt32("p", (int)this.m_PageType);
 
@@ -303,7 +303,7 @@ namespace Server.Engines.Reports
             op.SetString("m", this.m_Message);
         }
 
-        public override void DeserializeAttributes(PersistanceReader ip)
+        public override void DeserializeAttributes(PersistenceReader ip)
         {
             this.m_PageType = (PageType)ip.GetInt32("p");
 
@@ -313,7 +313,7 @@ namespace Server.Engines.Reports
             this.m_Message = ip.GetString("m");
         }
 
-        public override void SerializeChildren(PersistanceWriter op)
+        public override void SerializeChildren(PersistenceWriter op)
         {
             lock (this)
             {
@@ -322,7 +322,7 @@ namespace Server.Engines.Reports
             }
         }
 
-        public override void DeserializeChildren(PersistanceReader ip)
+        public override void DeserializeChildren(PersistenceReader ip)
         {
             while (ip.HasChild)
                 this.m_Responses.Add(ip.GetChild() as ResponseInfo);

@@ -50,6 +50,8 @@ namespace Server.Engines.VvV
         public Dictionary<Guild, VvVGuildStats> GuildStats { get; set; }
         public static Dictionary<Mobile, Mobile> FlaggedTo { get; set; }
 
+        public List<VvVCity> ExemptCities { get; set; }
+
         public VvVBattle Battle { get; private set; }
 
         public override string ToString()
@@ -63,6 +65,7 @@ namespace Server.Engines.VvV
             Battle = new VvVBattle(this);
 
             GuildStats = new Dictionary<Guild, VvVGuildStats>();
+            ExemptCities = new List<VvVCity>();
         }
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
@@ -177,7 +180,7 @@ namespace Server.Engines.VvV
 
         public void CheckBattleStatus(PlayerMobile pm)
         {
-            if (!IsVvV(pm))
+            if (!IsVvV(pm) || !Enabled)
                 return;
 
             if (Battle.OnGoing)
@@ -249,6 +252,19 @@ namespace Server.Engines.VvV
             return count - 1;
         }
 
+        public void SendVvVMessage(string message)
+        {
+            foreach (NetState state in NetState.Instances.Where(st => st.Mobile != null && IsVvV(st.Mobile)))
+            {
+                Mobile m = state.Mobile;
+
+                if (m != null)
+                {
+                    m.SendMessage("[Guild][VvV] {0}", message);
+                }
+            }
+        }
+
         public void SendVvVMessage(int cliloc, string args = "")
         {
             foreach(NetState state in NetState.Instances.Where(st => st.Mobile != null && IsVvV(st.Mobile)))
@@ -298,6 +314,11 @@ namespace Server.Engines.VvV
                     Instance.Battle.Begin();
             });
 
+            Server.Commands.CommandSystem.Register("ExemptCities", AccessLevel.Administrator, e =>
+            {
+                e.Mobile.SendGump(new ExemptCitiesGump());
+            });
+
             if (!Instance.HasGenerated)
             {
                 CreateSilverTraders();
@@ -314,7 +335,6 @@ namespace Server.Engines.VvV
             if (pm != null && Instance != null)
             {
                 Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(1), Instance.CheckResignation, pm);
-                //Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(1), Instance.CheckPendingJoin, pm);
                 Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(2), Instance.CheckBattleStatus, pm);
             }
         }
@@ -428,7 +448,10 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write(ExemptCities.Count);
+            ExemptCities.ForEach(c => writer.Write((int)c));
 
             writer.Write(HasGenerated);
             Battle.Serialize(writer);
@@ -452,28 +475,47 @@ namespace Server.Engines.VvV
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            HasGenerated = reader.ReadBool();
-
             GuildStats = new Dictionary<Guild, VvVGuildStats>();
-            Battle = new VvVBattle(reader, this);
+            ExemptCities = new List<VvVCity>();
 
-            int count = reader.ReadInt();
-            for (int i = 0; i < count; i++)
+            switch (version)
             {
-                Item item = reader.ReadItem();
+                case 1:
+                    {
+                        int count = reader.ReadInt();
+                        for (int i = 0; i < count; i++)
+                        {
+                            ExemptCities.Add((VvVCity)reader.ReadInt());
+                        }
 
-                if (item != null)
-                    AddVvVItem(item);
-            }
+                        goto case 0;
+                    }
+                case 0:
+                    {
+                        HasGenerated = reader.ReadBool();
 
-            count = reader.ReadInt();
-            for (int i = 0; i < count; i++)
-            {
-                Guild g = reader.ReadGuild() as Guild;
-                VvVGuildStats stats = new VvVGuildStats(g, reader);
+                        Battle = new VvVBattle(reader, this);
 
-                if (g != null)
-                    GuildStats[g] = stats;
+                        int count = reader.ReadInt();
+                        for (int i = 0; i < count; i++)
+                        {
+                            Item item = reader.ReadItem();
+
+                            if (item != null)
+                                AddVvVItem(item);
+                        }
+
+                        count = reader.ReadInt();
+                        for (int i = 0; i < count; i++)
+                        {
+                            Guild g = reader.ReadGuild() as Guild;
+                            VvVGuildStats stats = new VvVGuildStats(g, reader);
+
+                            if (g != null)
+                                GuildStats[g] = stats;
+                        }
+                    }
+                    break;
             }
         }
 

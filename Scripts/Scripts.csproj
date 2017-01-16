@@ -278,6 +278,17 @@
     <Compile Include="Context Menus\TeachEntry.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Deprecated\AlchemyStone.cs" />
+    <Compile Include="Deprecated\FiveOvercapStatScroll.cs" />
+    <Compile Include="Deprecated\GamblingStone.cs" />
+    <Compile Include="Deprecated\GMStone.cs" />
+    <Compile Include="Deprecated\IngotStone.cs" />
+    <Compile Include="Deprecated\RegStone.cs" />
+    <Compile Include="Deprecated\ScribeStone.cs" />
+    <Compile Include="Deprecated\SmithStone.cs" />
+    <Compile Include="Deprecated\SwarmOfFlies.cs" />
+    <Compile Include="Deprecated\TailorStone.cs" />
+    <Compile Include="Deprecated\TenMurdererKillRemoverDeed.cs" />
     <Compile Include="Gumps\AddDoorGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1119,9 +1130,6 @@
     <Compile Include="Items\Consumables\Firebomb.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Depricated\FiveOvercapStatScroll.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Internal\FlipableAddonAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1411,16 +1419,10 @@
     <Compile Include="Items\Addons\TerMurDresserSouthAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Depricated\SwarmOfFlies.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Internal\Teleporter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Internal\TeleportRope.cs" />
-    <Compile Include="Depricated\TenMurdererKillRemoverDeed.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Quest\DragonFlameSectBadge.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -2884,6 +2886,7 @@
     <Compile Include="Services\CleanUpBritannia\Items\NestWithEggs.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\YuccaTree.cs" />
     <Compile Include="Services\Doom\GuardianRoom.cs" />
+    <Compile Include="Services\Ethics\Core\Persistence.cs" />
     <Compile Include="Services\Expansions\High Seas\Generate.cs" />
     <Compile Include="Services\Expansions\High Seas\Gumps\BaseShipGump.cs" />
     <Compile Include="Services\Expansions\High Seas\Gumps\BountyBoard.cs" />
@@ -3063,6 +3066,7 @@
     <Compile Include="Services\Expansions\Time Of Legends\Shadowguard\ShadowguardEncounter.cs" />
     <Compile Include="Services\Expansions\Time Of Legends\Shadowguard\ShadowguardInstance.cs" />
     <Compile Include="Services\Expansions\TimeOfLegends.cs" />
+    <Compile Include="Services\Factions\Core\Persistence.cs" />
     <Compile Include="Services\FireCasino\CasinoGumps.cs" />
     <Compile Include="Services\FireCasino\DiceGames.cs" />
     <Compile Include="Services\FireCasino\FortuesFireGrog.cs" />
@@ -9177,9 +9181,6 @@
     <Compile Include="Services\Ethics\Core\Ethic.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Ethics\Core\Persistance.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Ethics\Core\Player.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9280,9 +9281,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Factions\Core\MerchantTitles.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\Persistance.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Factions\Core\PlayerState.cs">
@@ -9593,6 +9591,17 @@
     <Compile Include="Services\PointsSystems\QueensLoyalty.cs" />
     <Compile Include="Services\PointsSystems\ShameCrystals.cs" />
     <Compile Include="Services\PointsSystems\VoidPool.cs" />
+    <Compile Include="Services\Reports\Persistence\PersistableObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\Reports\Persistence\PersistableObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\Reports\Persistence\PersistableType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\Reports\Persistence\PersistenceReader.cs" />
+    <Compile Include="Services\Reports\Persistence\PersistenceWriter.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\BlackthornRewards.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Creatures\AgentoftheCrown.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Generate.cs" />
@@ -9817,6 +9826,7 @@
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\GoldDust.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\NexusCore.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\SmallPieceofBlackrock.cs" />
+    <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokunoPersistence.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearch.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchGump.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchMap.cs" />
@@ -10621,21 +10631,6 @@
     <Compile Include="Services\Reports\Objects\Staffing\StaffHistory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Reports\Persistance\PersistableObject.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Reports\Persistance\PersistableObjectCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Reports\Persistance\PersistableType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Reports\Persistance\PersistanceReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Reports\Persistance\PersistanceWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Reports\Rendering\BarGraphRenderer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10737,9 +10732,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokuno.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokunoPersistance.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\TrickOrTreat.cs" />
@@ -11596,28 +11588,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Internal\ResGate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\AlchemyStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\GamblingStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\GMStone.cs" />
-    <Compile Include="Depricated\IngotStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\RegStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\ScribeStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\SmithStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\TailorStone.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Containers\AlchemyBag.cs">

@@ -166,16 +166,28 @@ namespace Server.Engines.VvV
         public void Begin()
         {
             VvVCity newCity = City;
-            OnGoing = true;
+            List<VvVCity> cities = new List<VvVCity>();
 
-            do
+            for (int i = 0; i < 8; i++)
             {
-                newCity = (VvVCity)Utility.Random(8);
+                if (!System.ExemptCities.Contains((VvVCity)i) && (VvVCity)i != newCity)
+                    cities.Add((VvVCity)i);
             }
-            while (newCity == City);
 
+            if (cities.Count > 0)
+            {
+                newCity = cities[Utility.Random(cities.Count)];
+            }
+            else if (System.ExemptCities.Contains(newCity))
+            {
+                System.SendVvVMessage("All VvV cities are currently exempt.");
+                return;
+            }
+
+            ColUtility.Free(cities);
+
+            OnGoing = true;
             City = newCity;
-
             BeginTimer();
 
             StartTime = DateTime.UtcNow;

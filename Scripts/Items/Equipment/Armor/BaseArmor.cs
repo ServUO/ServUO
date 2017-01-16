@@ -3104,6 +3104,18 @@ namespace Server.Items
 
                     from.CheckSkill(SkillName.ArmsLore, 0, 100);
                 }
+
+                if (m_AosArmorAttributes.MageArmor <= 0)
+                {
+                    foreach (Type type in _MageArmorTypes)
+                    {
+                        if (type == this.GetType())
+                        {
+                            m_AosArmorAttributes.MageArmor = 1;
+                            break;
+                        }
+                    }
+                }
             }
 
             if (Core.AOS && tool is BaseRunicTool && !craftItem.ForceNonExceptional)
@@ -3152,6 +3164,13 @@ namespace Server.Items
             return quality;
         }
 
+        private Type[] _MageArmorTypes = new Type[]
+        {
+            typeof(HeavyPlateJingasa),  typeof(LightPlateJingasa),
+            typeof(PlateMempo),         typeof(PlateDo),
+            typeof(PlateHiroSode),      typeof(PlateSuneate),
+            typeof(PlateHaidate)
+        };
         #endregion
 
         #region Mondain's Legacy Sets

@@ -75,14 +75,14 @@ namespace Server.Engines.Reports
             this.m_Name = name;
         }
 
-        public override void SerializeAttributes(PersistanceWriter op)
+        public override void SerializeAttributes(PersistenceWriter op)
         {
             op.SetString("w", this.m_Width);
             op.SetString("a", this.m_Align);
             op.SetString("n", this.m_Name);
         }
 
-        public override void DeserializeAttributes(PersistanceReader ip)
+        public override void DeserializeAttributes(PersistenceReader ip)
         {
             this.m_Width = Utility.Intern(ip.GetString("w"));
             this.m_Align = Utility.Intern(ip.GetString("a"));
