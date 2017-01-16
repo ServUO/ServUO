@@ -13,13 +13,14 @@ namespace Server.Items
 
         public bool IsRewardItem
         {
-            get { return true; }
-            set { }
+            get;
+            set;
         }
 
 		[Constructable]
 		public EtherealRetouchingTool() : base( 0x42C6 )
-		{		
+		{
+            LootType = LootType.Blessed;
 		}
 
 		public EtherealRetouchingTool( Serial serial ) : base( serial )
@@ -30,7 +31,8 @@ namespace Server.Items
 		{
 			base.GetProperties( list );
 
-            list.Add("15th Month Veteral Reward"); // 9th Year Veteran Reward
+            if(IsRewardItem)
+                list.Add(1080458); // 11th Year Veteran Reward
 		}
 		
 		public override void OnDoubleClick( Mobile from )
@@ -96,7 +98,6 @@ namespace Server.Items
 
                         mount.InvalidateProperties();
                         from.PlaySound(0x242);
-                        m_Tool.Delete();
                     }
                 }
             }
@@ -150,7 +151,9 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.WriteEncodedInt( 0 ); // version
+			writer.WriteEncodedInt( 1 ); // version
+
+            writer.Write(IsRewardItem);
 		}
 			
 		public override void Deserialize( GenericReader reader )
@@ -158,6 +161,14 @@ namespace Server.Items
 			base.Deserialize( reader );
 
 			int version = reader.ReadEncodedInt();
+
+            if (version == 0)
+                IsRewardItem = true;
+            else
+                IsRewardItem = reader.ReadBool();
+
+            if(LootType != LootType.Blessed)
+                LootType = LootType.Blessed;
 		}
 	}	
 }
