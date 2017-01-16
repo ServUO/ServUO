@@ -87,9 +87,9 @@ namespace Server.Engines.Quests
             m_EntryTable[3] = new QuestionAndAnswerEntry(1112604, new string[] { "persistence" }, new string[] { "feeling", "direction", "alexandria" }); //From Diligence springs which Virtue?
             m_EntryTable[4] = new QuestionAndAnswerEntry(1112605, new string[] { "no" }, new string[] { "yes" }); //Is any Virtue more important than another?
             m_EntryTable[5] = new QuestionAndAnswerEntry(1112606, new string[] { "yes" }, new string[] { "no" }); //Are each of the Virtues considered to be equal?
-            m_EntryTable[6] = new QuestionAndAnswerEntry(1112607, new string[] { "eight" }, new string[] { "seven", "nine", "six", "eight" }); //Amongst all else, of how many Virtues does the Circle consist?
+            m_EntryTable[6] = new QuestionAndAnswerEntry(1112607, new string[] { "eight" }, new string[] { "seven", "nine", "six" }); //Amongst all else, of how many Virtues does the Circle consist?
             m_EntryTable[7] = new QuestionAndAnswerEntry(1112608, new string[] { "balance" }, new string[] { "achievement", "precision", "chaos" }); //Passion combined with Control yields which Virtue?
-            m_EntryTable[8] = new QuestionAndAnswerEntry(1112609, new string[] { "passion", "deligience" }, new string[] { "control" }); //Achievement is created in part by which Principle?
+            m_EntryTable[8] = new QuestionAndAnswerEntry(1112609, new string[] { "passion", "diligence" }, new string[] { "control" }); //Achievement is created in part by which Principle?
             m_EntryTable[9] = new QuestionAndAnswerEntry(1112610, new string[] { "precision" }, new string[] { "chaos", "achievement", "balance" }); //If you join Diligence with Control, which Virtue is provided?
             m_EntryTable[10] = new QuestionAndAnswerEntry(1112611, new string[] { "chaos" }, new string[] { "order", "achievement", "precision" }); //The absence of the Principles is called what?
             m_EntryTable[11] = new QuestionAndAnswerEntry(1112612, new string[] { "order" }, new string[] { "achievement", "precision", "balance" }); //The existence of Chaos points to which Virtue?
@@ -100,7 +100,7 @@ namespace Server.Engines.Quests
             m_EntryTable[16] = new QuestionAndAnswerEntry(1112617, new string[] { "no" }, new string[] { "yes" }); //Does the Circle have an end?
             m_EntryTable[17] = new QuestionAndAnswerEntry(1112618, new string[] { "yes" }, new string[] { "no" }); //Are each of the Principles considered equal?
             m_EntryTable[18] = new QuestionAndAnswerEntry(1112619, new string[] { "forever" }, new string[] { "when it ends", "tomorrow", "next week" }); //As with the Circle, how long does our society continue?
-            m_EntryTable[19] = new QuestionAndAnswerEntry(1112620, new string[] { "control", "passion", "diligence", "direction", "persistene", "feeling", "chaos", "singularity" }, new string[] { "order", "alexandria", "OSI" }); //Which of these is one of the Virtues?
+            m_EntryTable[19] = new QuestionAndAnswerEntry(1112620, new string[] { "direction", "feeling", "persistence", "balance", "achivement", "precision", "order", "singularity" }, new string[] { "chaos", "alexandria", "OSI" }); //Which of these is one of the Virtues?
         }
 
         private static QuestionAndAnswerEntry[] m_EntryTable = new QuestionAndAnswerEntry[20];

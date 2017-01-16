@@ -1,7 +1,7 @@
 using System;
 using Server.Items;
 
-namespace Server
+namespace Server.Misc
 {
     public static class Coords
     {
