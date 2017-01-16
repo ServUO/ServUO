@@ -378,7 +378,7 @@ namespace Server.Engines.VvV
             if (entry != null && !entry.Active)
                 entry = null;
 
-            return entry.Active && (!guildedonly || entry.Guild != null);
+            return entry != null && entry.Active && (!guildedonly || entry.Guild != null);
         }
 
         public static bool IsEnemy(IDamageable from, IDamageable to)
