@@ -341,6 +341,9 @@ namespace Server.Engines.VvV
 
         public static void OnPlayerDeath(PlayerDeathEventArgs e)
         {
+            if (!Enabled)
+                return;
+
             PlayerMobile pm = e.Mobile as PlayerMobile;
 
             if (pm != null && Instance != null)
@@ -351,6 +354,9 @@ namespace Server.Engines.VvV
 
         public static bool IsVvV(Mobile m, bool checkpet = true, bool guildedonly = false)
         {
+            if (!Enabled)
+                return false;
+
             if (m is BaseCreature && checkpet)
             {
                 if (((BaseCreature)m).GetMaster() is PlayerMobile)
@@ -367,6 +373,12 @@ namespace Server.Engines.VvV
 
         public static bool IsVvV(Mobile m, out VvVPlayerEntry entry, bool checkpet = true, bool guildedonly = false)
         {
+            if (!Enabled)
+            {
+                entry = null;
+                return false;
+            }
+
             if (m is BaseCreature && checkpet)
             {
                 if (((BaseCreature)m).GetMaster() is PlayerMobile)
@@ -392,6 +404,9 @@ namespace Server.Engines.VvV
 
         public static bool IsEnemy(Mobile from, Mobile to)
         {
+            if (!Enabled)
+                return false;
+
             //TODO: Support for VvV city games regarding non-participants in the city, as well as ones who flagged
             if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
                 from = ((BaseCreature)from).GetMaster();

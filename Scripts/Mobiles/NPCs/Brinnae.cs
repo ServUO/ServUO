@@ -566,7 +566,7 @@ namespace Server.Engines.Quests
             : base()
         { 
             this.AddObjective(new SlayObjective(typeof(Mongbat), "mongbats", 10));
-            this.AddObjective(new SlayObjective(typeof(StrongMongbat), "greater mongbats", 4));
+            this.AddObjective(new SlayObjective(typeof(GreaterMongbat), "greater mongbats", 4));
 			
             this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
