@@ -597,7 +597,13 @@ namespace Server.Engines.Despise
 
             if (orb != null && !Region.Find(e.From.Location, e.From.Map).IsPartOf(typeof(DespiseRegion)))
             {
-                Timer.DelayCall(orb.Delete);
+                Timer.DelayCall(() =>
+                    {
+                        if (orb.Pet != null && !orb.Pet.Deleted)
+                            orb.Pet.Delete();
+
+                        orb.Delete();
+                    });;
             }
         }
 
@@ -638,36 +644,14 @@ namespace Server.Engines.Despise
 
         #endregion
 
-        #region Despise Points - Removed to PointsSystem
-        /*private Dictionary<Mobile, int> m_PointsTable = new Dictionary<Mobile, int>();
-        public Dictionary<Mobile, int> PointsTable { get { return m_PointsTable; } }
-
-        public void AddDespisePoints(Mobile from, PutridHeart heart)
+        public static void RemoveAnkh()
         {
-            if (!m_PointsTable.ContainsKey(from))
-                m_PointsTable[from] = 0;
+            IPooledEnumerable eable = Map.Trammel.GetItemsInRange(new Point3D(5474, 525, 79), 3);
 
-            int amount = heart.Amount;
-
-            m_PointsTable[from] += amount;
-            from.SendLocalizedMessage(1153423, amount.ToString()); // You have gained ~1_AMT~ Dungeon Crystal Points of Despise.
-            heart.Delete();
+            foreach (Item item in eable)
+                if (item is RejuvinationAddonComponent && !item.Deleted)
+                    item.Delete();
         }
-
-        public int GetDespisePoints(Mobile from)
-        {
-            if (!m_PointsTable.ContainsKey(from))
-                return 0;
-
-            return m_PointsTable[from];
-        }
-
-        public void DeductDespisePoints(Mobile from, int points)
-        {
-            if (m_PointsTable.ContainsKey(from))
-                m_PointsTable[from] -= points;
-        }*/
-        #endregion
 
         public DespiseController(Serial serial)
             : base(serial)
@@ -677,7 +661,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write((int)2);
 
             writer.Write(m_Enabled);
             writer.Write(m_NextBossEncounter);
@@ -692,15 +676,6 @@ namespace Server.Engines.Despise
             writer.Write(m_EvilSpawners.Count);
             foreach (XmlSpawner spawner in m_EvilSpawners)
                 writer.Write(spawner);
-
-            // Moved to PointsSystem
-            /*
-            writer.Write(m_PointsTable.Count);
-            foreach (KeyValuePair<Mobile, int> kvp in m_PointsTable)
-            {
-                writer.Write(kvp.Key);
-                writer.Write(kvp.Value);
-            }*/
         }
 
         public override void Deserialize(GenericReader reader)
@@ -772,6 +747,9 @@ namespace Server.Engines.Despise
 
             if (m_GoodSpawners.Count == 0 && m_EvilSpawners.Count == 0)
                 CreateSpawners();
+
+            if (version < 2)
+                Timer.DelayCall(TimeSpan.FromSeconds(30), RemoveAnkh);
 		}
     }
 }

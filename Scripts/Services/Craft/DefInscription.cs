@@ -186,7 +186,7 @@ namespace Server.Engines.Craft
             for (int i = 1; i < regs.Length; ++i)
             {
                 id = GetRegLocalization(regs[i]);
-                AddRes(index, m_RegTypes[(int)regs[0]], id, 1, 501627);
+                AddRes(index, m_RegTypes[(int)regs[i]], id, 1, 501627);
             }
 
             AddRes(index, typeof(BlankScroll), 1044377, 1, 1044378);
