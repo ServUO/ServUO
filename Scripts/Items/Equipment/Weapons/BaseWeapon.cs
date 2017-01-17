@@ -1385,6 +1385,9 @@ namespace Server.Items
 				chance = 0.02;
 			}
 
+            if (Core.AOS && m_AosWeaponAttributes.MageWeapon > 0 && attacker.Skills[SkillName.Magery].Value > atkSkill.Value)
+                return attacker.CheckSkill(SkillName.Magery, chance);
+
 			return attacker.CheckSkill(atkSkill.SkillName, chance);
 		}
 
