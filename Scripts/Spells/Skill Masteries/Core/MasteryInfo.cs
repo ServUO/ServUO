@@ -263,15 +263,12 @@ namespace Server.Spells.SkillMasteries
             }
 
             RemovePassiveBuffs(m);
-            Console.WriteLine("Attempting focus: {0}", m.Skills.CurrentMastery);
             foreach (MasteryInfo info in Infos.Where(i => i.Passive))
             {
                 if (IsActivePassive(m, info.PassiveSpell))
                 {
                     if (info.PassiveSpell == PassiveSpell.AnticipateHit)
                         continue;
-
-                    Console.WriteLine("Toggling {0} passive spell", info.PassiveSpell.ToString());
 
                     switch (info.PassiveSpell)
                     {
