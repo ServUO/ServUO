@@ -106,7 +106,7 @@ namespace Server
 		StygianAbyss,
 		StygianDragon,
 		Void,
-		CodexShrine
+		CodexShrine,
 		AnvilStrikeInMinoc,
 		ASkaranLullaby,
 		BlackthornsMarch,
