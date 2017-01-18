@@ -263,15 +263,12 @@ namespace Server.Spells.SkillMasteries
             }
 
             RemovePassiveBuffs(m);
-
             foreach (MasteryInfo info in Infos.Where(i => i.Passive))
             {
                 if (IsActivePassive(m, info.PassiveSpell))
                 {
                     if (info.PassiveSpell == PassiveSpell.AnticipateHit)
                         continue;
-
-                    //Console.WriteLine("Toggling {0} passive spell", info.PassiveSpell.ToString());
 
                     switch (info.PassiveSpell)
                     {
@@ -370,7 +367,7 @@ namespace Server.Spells.SkillMasteries
             {
                 case PassiveSpell.EnchantedSummoning: return 714;
                 case PassiveSpell.AnticipateHit: return 715;
-                case PassiveSpell.Intuition: return 716;
+                case PassiveSpell.Intuition: return 717;
                 case PassiveSpell.SavingThrow: return 732;
                 case PassiveSpell.Potency: return 738;
                 case PassiveSpell.Knockout: return 741;

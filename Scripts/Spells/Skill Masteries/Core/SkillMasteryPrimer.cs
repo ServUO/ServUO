@@ -112,6 +112,22 @@ namespace Server.Items
             if (available.Count == 0)
                 return null;
 
+            if (volume == Volume.Three && exclude == Volume.One) // Random loot drop, vol 2 is 3x more likely to drop
+            {
+                List<MasteryInfo> copy = new List<MasteryInfo>(available);
+
+                copy.ForEach(i =>
+                    {
+                        if (i.Volume == Volume.Two)
+                        {
+                            available.Add(i);
+                            available.Add(i);
+                        }
+                    });
+
+                ColUtility.Free(copy);
+            }
+
             MasteryInfo random = available[Utility.Random(available.Count)];
 
             SkillMasteryPrimer primer = new SkillMasteryPrimer(random.SpellID, random.MasterySkill);
