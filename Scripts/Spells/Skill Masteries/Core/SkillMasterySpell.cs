@@ -18,6 +18,7 @@ namespace Server.Spells.SkillMasteries
         public static void Initialize()
         {
             CommandSystem.Register("LearnAllMasteries", AccessLevel.GameMaster, LearnAllSpells);
+            CommandSystem.Register("RandomMastery", AccessLevel.GameMaster, RandomMastery);
         }
 
         public UpkeepTimer Timer { get; set; }
@@ -1084,6 +1085,33 @@ namespace Server.Spells.SkillMasteries
                         e.Mobile.SendMessage("They have learned {0} masteries!", count.ToString());
                     }
                 });
+        }
+
+        [Usage("RandomMastery")]
+        [Description("Drops a random mastery primer on target.")]
+        public static void RandomMastery(CommandEventArgs e)
+        {
+            e.Mobile.BeginTarget(-1, false, TargetFlags.None, (mobile, targeted) =>
+            {
+                Item mastery = SkillMasteryPrimer.GetRandom();
+
+                if (targeted is Mobile)
+                {
+                    Mobile m = targeted as Mobile;
+
+                    m.Backpack.DropItem(mastery);
+
+                    e.Mobile.SendMessage("A mastery has been added to your pack!");
+                }
+                else if (targeted is IPoint3D)
+                {
+                    IPoint3D p = targeted as IPoint3D;
+
+                    mastery.MoveToWorld(new Point3D(p.X, p.Y, p.Z), e.Mobile.Map);
+                }
+                else
+                    mastery.Delete();
+            });
         }
 	}
 }

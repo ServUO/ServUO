@@ -27,6 +27,9 @@ namespace Server.Engines.Points
         {
             double points = 0;
 
+            if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
+                return points;
+
             Type type = item.GetType();
 
             if (Entries.ContainsKey(type))
