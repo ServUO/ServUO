@@ -50,7 +50,7 @@ namespace Server.Spells.Mystic
             {
                 int level = (int)(GetBaseSkill(Caster) + GetBoostSkill(Caster));
 
-                TimeSpan duration = TimeSpan.FromSeconds(level / 4);
+                TimeSpan duration = TimeSpan.FromSeconds(level / 3);
 
                 BaseCreature summon = new RisingColossus(level);
                 BaseCreature.Summon(summon, false, Caster, new Point3D(p), 0x656, duration);

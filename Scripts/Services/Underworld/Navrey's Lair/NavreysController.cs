@@ -256,7 +256,7 @@ namespace Server.Items
 
                 int amount = Utility.RandomMinMax(100, 150);
 
-                foreach (Mobile m in m_Navrey.GetMobilesInRange(1).Where(m => m != null && m.Alive && m.AccessLevel == AccessLevel.Player))
+                foreach (Mobile m in m_Navrey.GetMobilesInRange(1).Where(m => m != null && m.Alive))
                 {
                     m.RevealingAction();
 
