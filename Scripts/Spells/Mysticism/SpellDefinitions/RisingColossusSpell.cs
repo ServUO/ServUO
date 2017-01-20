@@ -25,29 +25,62 @@ namespace Server.Spells.Mystic
 		{
 		}
 
-		public override bool CheckCast()
-		{
-			if ( !base.CheckCast() )
-				return false;
+        public override void OnCast()
+        {
+            Caster.Target = new InternalTarget(this);
+        }
 
-			if ( Caster.Followers + 5 > Caster.FollowersMax )
-			{
-				Caster.SendLocalizedMessage( 1049645 ); // You have too many followers to summon that creature.
-				return false;
-			}
+        public void Target(IPoint3D p)
+        {
+            if ((Caster.Followers + 5) > Caster.FollowersMax)
+            {
+                Caster.SendLocalizedMessage(1049645); // You have too many followers to summon that creature.
+                return;
+            }
 
-			return true;
-		}
+            Map map = Caster.Map;
 
-		public override void OnCast()
-		{
-			if ( CheckSequence() )
-			{
-				TimeSpan duration = TimeSpan.FromSeconds( (2 * Caster.Skills[DamageSkill].Fixed) / 5 );
-				SpellHelper.Summon( new RisingColossus(), Caster, 0x216, duration, true, true, Caster.Player, CastSkill );
-			}
+            SpellHelper.GetSurfaceTop(ref p);
 
-			FinishSequence();
-		}
-	}
+            if (map == null || (Caster.IsPlayer() && !map.CanSpawnMobile(p.X, p.Y, p.Z)))
+            {
+                Caster.SendLocalizedMessage(501942); // That location is blocked.
+            }
+            else if (SpellHelper.CheckTown(p, Caster) && CheckSequence())
+            {
+                int level = (int)(GetBaseSkill(Caster) + GetBoostSkill(Caster));
+
+                TimeSpan duration = TimeSpan.FromSeconds(level / 4);
+
+                BaseCreature summon = new RisingColossus(level);
+                BaseCreature.Summon(summon, false, Caster, new Point3D(p), 0x656, duration);
+
+                Effects.SendTargetParticles(summon, 0x3728, 10, 10, 0x13AA, (EffectLayer)255);
+            }
+
+            FinishSequence();
+        }
+
+        public class InternalTarget : Target
+        {
+            private RisingColossusSpell m_Owner;
+
+            public InternalTarget(RisingColossusSpell owner)
+                : base(12, true, TargetFlags.None)
+            {
+                m_Owner = owner;
+            }
+
+            protected override void OnTarget(Mobile from, object o)
+            {
+                if (o is IPoint3D)
+                    m_Owner.Target((IPoint3D)o);
+            }
+
+            protected override void OnTargetFinish(Mobile from)
+            {
+                m_Owner.FinishSequence();
+            }
+        }
+    }
 }

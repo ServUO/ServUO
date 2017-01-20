@@ -72,7 +72,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(AxesOfFury), typeof(PetrifiedSnake), typeof(SummonersKilt), typeof(GiantSteps), typeof(StoneDragonsTooth), typeof(TokenOfHolyFavor) };
+                return new Type[] { typeof(AxesOfFury), typeof(SummonersKilt), typeof(GiantSteps), typeof(StoneDragonsTooth), typeof(TokenOfHolyFavor) };
             }
         }
         public override bool Unprovokable
@@ -171,6 +171,13 @@ namespace Server.Mobiles
             }
 
             base.OnActionCombat();
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            c.DropItem(new StygianDragonHead());
         }
 
         public override void Serialize(GenericWriter writer)

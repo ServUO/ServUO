@@ -63,7 +63,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(TongueoftheBeast) };
+                return new Type[] { typeof(DeathsHead), typeof(WallofHungryMouths), typeof(AbyssalBlade), typeof(TongueoftheBeast) };
             }
         }
         public override Type[] SharedList
