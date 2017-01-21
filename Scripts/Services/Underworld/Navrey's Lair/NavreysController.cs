@@ -67,7 +67,7 @@ namespace Server.Items
                             pillar.Type = PillarType.Three;
                     }
 
-                    this.TypeRestart = TimeSpan.FromHours(24.0);
+                    this.TypeRestart = TimeSpan.FromMinutes(10.0);
                 }
 
                 return ts;

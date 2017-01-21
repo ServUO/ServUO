@@ -161,7 +161,7 @@ namespace Server.Engines.CannedEvil
             #endregion
 
             #region TOL
-            new ChampionSpawnInfo( "Valley", typeof( DragonTurtle ), new string[]{ "Huntsman", "Msafiri", "Msafiri" } , new Type[][]
+            new ChampionSpawnInfo( "Valley", typeof( DragonTurtle ), new string[]{ "Explorer", "Huntsman", "Msafiri", } , new Type[][]
 		    {																											// DragonTurtle
 				new Type[]{ typeof( MyrmidexDrone ), typeof( MyrmidexLarvae ) },										// Level 1
 				new Type[]{ typeof( SilverbackGorilla ), typeof( WildTiger ) },											// Level 2

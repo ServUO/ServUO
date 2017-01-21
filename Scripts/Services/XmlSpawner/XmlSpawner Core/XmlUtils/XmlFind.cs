@@ -403,6 +403,22 @@ namespace Server.Mobiles
 					if (i.Map != Map.Internal || i.Parent != null || i is Fists || i is MountItem || i is EffectItem || i.HeldBy != null ||
 						i is MovingCrate || i is SpawnPersistence || (i.GetType().DeclaringType == typeof(GenericBuyInfo)))
 						return true;
+
+                    // Ignores shadowguard addons that are internalized while not in use
+                    if (i is AddonComponent)
+                    {
+                        AddonComponent comp = i as AddonComponent;
+                        BaseAddon addon = ((AddonComponent)comp).Addon;
+
+                        if (addon != null && (addon is ArmoryAddon || addon is BarAddon || addon is BelfryAddon || addon is ShadowguardFountainAddon || addon is OrchardAddon))
+                            return true;
+                    }
+
+                    if (i is BaseAddon && (i is ArmoryAddon || i is BarAddon || i is BelfryAddon || i is ShadowguardFountainAddon || i is OrchardAddon))
+                        return true;
+
+                    if (i is BoatMountItem || i is Server.Factions.FactionPersistence || i is Server.Misc.TreasuresOfTokunoPersistence || i is StealableArtifactsSpawner)
+                        return true;
 				}
 
 			return false;

@@ -146,12 +146,12 @@ namespace Server.Spells.Spellweaving
                     return;
 					
                 this.m_LifeSpan -= 1;
-					
-                foreach (Mobile m in this.GetTargets())
+
+                List<Mobile> list = GetTargets();
+
+                foreach (Mobile m in list)
                 {
                     this.m_Owner.DoHarmful(m);
-					
-                    // magic ressit?
 					
                     if (this.m_Owner.Map.CanFit(m.Location, 12, true, false))
                         new FireItem(this.m_LifeSpan).MoveToWorld(m.Location, m.Map);
@@ -160,19 +160,26 @@ namespace Server.Spells.Spellweaving
 					
                     AOS.Damage(m, this.m_Owner, this.m_Damage, 0, 100, 0, 0, 0);	
                 }
+
+                list.Clear();
             }
 
             private List<Mobile> GetTargets()
             {
-                List<Mobile> m_Targets = new List<Mobile>();
-			
-                foreach (Mobile m in this.m_Map.GetMobilesInRange(this.m_Location, this.m_Range))
+                List<Mobile> targets = new List<Mobile>();
+                IPooledEnumerable eable = this.m_Map.GetMobilesInRange(this.m_Location, this.m_Range);
+
+                foreach (Mobile m in eable)
                 {
+                    if (BaseHouse.FindHouseAt(m.Location, m.Map, 20) != null)
+                        continue;
+
                     if (m != this.m_Owner && SpellHelper.ValidIndirectTarget(this.m_Owner, m) && this.m_Owner.CanBeHarmful(m, false))
-                        m_Targets.Add(m);
+                        targets.Add(m);
                 }
-				
-                return m_Targets;					
+
+                eable.Free();
+                return targets;					
             }
         }
 

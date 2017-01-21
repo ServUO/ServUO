@@ -82,12 +82,6 @@ namespace Server.Engines.VvV
                 if (item is IAccountRestricted && User.Account != null)
                     ((IAccountRestricted)item).Account = User.Account.Username;
 
-                if (item is VesperOrderShield)
-                {
-                    item.Name = "Order Shield";
-                    ((VesperOrderShield)item).Attributes.CastSpeed = 0;
-                }
-
                 NegativeAttributes neg = RunicReforging.GetNegativeAttributes(item);
 
                 if (neg != null)
