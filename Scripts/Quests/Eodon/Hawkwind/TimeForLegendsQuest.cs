@@ -56,10 +56,10 @@ namespace Server.Engines.Quests.TimeLord
 
             From.AddToBackpack(new BookOfMasteries());
 
-            var primer = SkillMasteryPrimer.GetPrimer(Mastery);
+            var primer = new SkillMasteryPrimer(Mastery, 1);
 
             if(primer != null)
-                From.AddToBackpack(SkillMasteryPrimer.GetPrimer(Mastery));
+                From.AddToBackpack(primer);
         }
 
         public static Type[] Targets { get { return _Targets; } }
@@ -161,7 +161,7 @@ namespace Server.Engines.Quests.TimeLord
                 if (sk == null || skName == SkillName.Discordance || skName == SkillName.Provocation || skName == SkillName.Peacemaking)
                     continue;
 
-                if (sk.IsMastery && sk.KnownMasteries == 0)
+                if (sk.IsMastery && sk.VolumeLearned == 0)
                 {
                     AddButton(30, y, 4005, 4007, (int)skName + 1, GumpButtonType.Reply, 0);
 

@@ -3040,6 +3040,14 @@ namespace Server.Mobiles
 			base.OnBeneficialAction(target, isCriminal);
 		}
 
+        public override bool IsBeneficialCriminal(Mobile target)
+        {
+            if (!target.Criminal && target is BaseCreature && ((BaseCreature)target).GetMaster() == this)
+                return false;
+
+            return base.IsBeneficialCriminal(target);
+        }
+
 		public override void OnDamage(int amount, Mobile from, bool willKill)
 		{
 			int disruptThreshold;

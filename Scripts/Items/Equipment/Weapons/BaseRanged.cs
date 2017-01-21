@@ -30,17 +30,18 @@ namespace Server.Items
 		public override SkillName AccuracySkill { get { return SkillName.Archery; } }
 
 		private Timer m_RecoveryTimer; // so we don't start too many timers
-		private bool m_Balanced;
 		private int m_Velocity;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Balanced
 		{
-			get { return m_Balanced; }
+            get { return Attributes.BalancedWeapon > 0; }
 			set
 			{
-				m_Balanced = value;
-				InvalidateProperties();
+                if (value)
+                    Attributes.BalancedWeapon = 1;
+                else
+                    Attributes.BalancedWeapon = 0;
 			}
 		}
 
@@ -247,9 +248,8 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(3); // version
+			writer.Write(4); // version
 
-			writer.Write(m_Balanced);
 			writer.Write(m_Velocity);
 		}
 
@@ -261,9 +261,12 @@ namespace Server.Items
 
 			switch (version)
 			{
+                case 4:
 				case 3:
 					{
-						m_Balanced = reader.ReadBool();
+                        if (version == 3 && reader.ReadBool())
+                            Attributes.BalancedWeapon = 1;
+
 						m_Velocity = reader.ReadInt();
 
 						goto case 2;

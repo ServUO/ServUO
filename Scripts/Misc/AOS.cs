@@ -370,7 +370,8 @@ namespace Server
         NightSight = 0x00400000,
         IncreasedKarmaLoss = 0x00800000,
         Brittle = 0x01000000,
-        LowerAmmoCost = 0x02000000
+        LowerAmmoCost = 0x02000000,
+        BalancedWeapon = 0x04000000
     }
 
     public sealed class AosAttributes : BaseAttributes
@@ -1168,6 +1169,19 @@ namespace Server
                 this[AosAttribute.LowerAmmoCost] = value;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int BalancedWeapon
+        {
+            get
+            {
+                return this[AosAttribute.BalancedWeapon];
+            }
+            set
+            {
+                this[AosAttribute.BalancedWeapon] = value;
+            }
+        }
     }
 
     [Flags]
@@ -1204,8 +1218,8 @@ namespace Server
         HitFatigue = 0x10000000,
         HitManaDrain = 0x20000000,
         SplinteringWeapon = 0x40000000,
-        ReactiveParalyze = 0x80000000,
-        MysticWeapon = 0x100000000,
+        ReactiveParalyze =  0x80000000,
+        MysticWeapon =      0x100000000,
     }
 
     public sealed class AosWeaponAttributes : BaseAttributes
