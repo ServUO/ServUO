@@ -110,7 +110,17 @@ namespace Server.Items
 	}
 
     public class RunicAtlasGump : Gump
-    {
+	{
+		public static string ToCoordinates(Point3D location, Map map)
+		{
+			int xLong = 0, yLat = 0, xMins = 0, yMins = 0;
+			bool xEast = false, ySouth = false;
+
+			bool valid = Sextant.Format(location, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth);
+
+			return valid ? String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W") : "unknown";
+		}
+
         public RunicAtlas Atlas { get; set; }
         public PlayerMobile User { get; set; }
         public int Selected { get { return Atlas == null ? -1 : Atlas.Selected; } }
@@ -179,7 +189,7 @@ namespace Server.Items
 
                 if (entry != null)
                 {
-                    string coords = Coords.ToCoordinates(entry.Location, entry.Map);
+                    string coords = ToCoordinates(entry.Location, entry.Map);
 
                     if(coords != "unknown")
                         AddHtml(40, 250, 155, 16, String.Format("<center>{0}</center>", coords), false, false);
@@ -301,10 +311,10 @@ namespace Server.Items
 
             if (RunebookGump.HasSpell(User, 31))
             {
-                string coords = Coords.ToCoordinates(e.Location, e.Map);
+                string coords = ToCoordinates(e.Location, e.Map);
 
                 if(coords != "unknown")
-                    User.SendMessage(Coords.ToCoordinates(e.Location, e.Map));
+                    User.SendMessage(ToCoordinates(e.Location, e.Map));
 
                 Atlas.OnTravel();
                 new RecallSpell(User, null, e, null).Cast();
@@ -324,10 +334,10 @@ namespace Server.Items
             }
             else
             {
-                string coords = Coords.ToCoordinates(e.Location, e.Map);
+                string coords = ToCoordinates(e.Location, e.Map);
 
                 if(coords != "unkown")
-                    User.SendMessage(Coords.ToCoordinates(e.Location, e.Map));
+                    User.SendMessage(ToCoordinates(e.Location, e.Map));
 
                 Atlas.OnTravel();
 
@@ -344,10 +354,10 @@ namespace Server.Items
 
             if (RunebookGump.HasSpell(User, 51))
             {
-                string coords = Coords.ToCoordinates(e.Location, e.Map);
+                string coords = ToCoordinates(e.Location, e.Map);
 
                 if(coords != "unknown")
-                    User.SendMessage(Coords.ToCoordinates(e.Location, e.Map));
+                    User.SendMessage(ToCoordinates(e.Location, e.Map));
 
                 Atlas.OnTravel();
 
@@ -370,7 +380,7 @@ namespace Server.Items
             {
                 if (RunebookGump.HasSpell(User, 209))
                 {
-                    User.SendMessage(Coords.ToCoordinates(e.Location, e.Map));
+                    User.SendMessage(ToCoordinates(e.Location, e.Map));
 
                     Atlas.OnTravel();
                     new SacredJourneySpell(User, null, e, null).Cast();

@@ -7,39 +7,47 @@ namespace Server.Mobiles
 	[CorpseName( "the remains of a rising colossus" )]
 	public class RisingColossus : BaseCreature
 	{
-		public override double DispelDifficulty{ get{ return 125.0; } }
+        private int m_DispelDifficulty;
+        public override double DispelDifficulty{ get{ return m_DispelDifficulty; } }
 		public override double DispelFocus{ get{ return 45.0; } }
 
 		[Constructable]
-		public RisingColossus() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.5 )
+		public RisingColossus(int level) : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.5 )
 		{
-			Name = "Rising Colossus";
-			Body = 829;
+            int statbonus = ((level * 3) / 4);
+            int hitsbonus = ((level * 9) / 8);
+            int skillvalue = level / 2;
 
-			SetStr( 780 );
-			SetDex( 210 );
-			SetInt( 230 );
+            this.Name = "a rising colossus";
+            this.Body = 829;
 
-            SetHits( 470 );
+            this.SetHits(200 + hitsbonus);
 
-			SetDamage( 19, 24 );
+            this.SetStr(600 + statbonus);
+            this.SetDex(30 + statbonus);
+            this.SetInt(50 + statbonus);
 
-			SetDamageType( ResistanceType.Physical, 100 );
+            this.SetDamage(level / 12, level / 10);
 
-			SetResistance( ResistanceType.Physical, 65, 70 );
-			SetResistance( ResistanceType.Fire, 50, 55 );
-			SetResistance( ResistanceType.Cold, 50, 55 );
-			SetResistance( ResistanceType.Poison, 100 );
-			SetResistance( ResistanceType.Energy, 65, 70 );
+            this.SetDamageType( ResistanceType.Physical, 100 );
 
-			SetSkill( SkillName.MagicResist, 120.0 );
-			SetSkill( SkillName.Tactics, 120.0 );
-            SetSkill(SkillName.Tactics, 120.0);
-			SetSkill( SkillName.Wrestling, 120.0 );
+			this.SetResistance( ResistanceType.Physical, 65, 70 );
+			this.SetResistance( ResistanceType.Fire, 50, 55 );
+			this.SetResistance( ResistanceType.Cold, 50, 55 );
+			this.SetResistance( ResistanceType.Poison, 100 );
+			this.SetResistance( ResistanceType.Energy, 65, 70 );
 
-			VirtualArmor = 58;
-			ControlSlots = 5;
-		}
+            this.SetSkill(SkillName.MagicResist, skillvalue);
+            this.SetSkill(SkillName.Tactics, skillvalue);
+            this.SetSkill(SkillName.Wrestling, skillvalue);
+            this.SetSkill(SkillName.Anatomy, skillvalue);
+            this.SetSkill(SkillName.Mysticism, skillvalue);
+
+            this.VirtualArmor = 58;
+			this.ControlSlots = 5;
+
+            m_DispelDifficulty = 40 + (level * 2);
+        }
 
         public override double GetFightModeRanking(Mobile m, FightMode acqType, bool bPlayerOnly)
         {
@@ -57,7 +65,7 @@ namespace Server.Mobiles
 		}
 
 		public override bool BleedImmune{ get{ return true; } }
-		public override Poison PoisonImmune{ get{ return Poison.Lethal; } } // Immune to poison?
+		public override Poison PoisonImmune{ get{ return Poison.Lethal; } }
 
 		public RisingColossus( Serial serial ) : base( serial )
 		{
@@ -67,12 +75,16 @@ namespace Server.Mobiles
 		{
 			base.Serialize( writer );
 			writer.Write( (int) 0 );
-		}
+
+            writer.Write((int)m_DispelDifficulty);
+        }
 
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
 			int version = reader.ReadInt();
-		}
+
+            m_DispelDifficulty = reader.ReadInt();
+        }
 	}
 }

@@ -363,7 +363,7 @@ namespace Server.Items
 		}
 	}
 
-    public enum Size
+	public enum BananaHoardSize
     {
         Small,
         Medium,
@@ -374,32 +374,32 @@ namespace Server.Items
 	{
 		public override BaseAddonDeed Deed { get { return new BananaHoardAddonDeed(); } }
 		
-		public Size Size { get; set; }
+		public BananaHoardSize BananaHoardSize { get; set; }
 		
 		[Constructable]
 		public BananaHoardAddon()
 		{
 		}
 		
-		public BananaHoardAddon(Size size)
+		public BananaHoardAddon(BananaHoardSize bananaHoardSize)
 		{
-			Size = size;
+			BananaHoardSize = bananaHoardSize;
 			
-			switch(size)
+			switch(bananaHoardSize)
 			{
-				case Size.Small:
+				case BananaHoardSize.Small:
                     AddComponent(new LocalizedAddonComponent(40047, 1156484), 0, 0, 0);
                     AddComponent(new LocalizedAddonComponent(40046, 1156484), -1, 0, 0);
                     AddComponent(new LocalizedAddonComponent(40049, 1156484), 0, -1, 0);
                     AddComponent(new LocalizedAddonComponent(40050, 1156484), -1, -1, 0);
 					break;
-				case Size.Medium:
+				case BananaHoardSize.Medium:
                     AddComponent(new LocalizedAddonComponent(40043, 1156485), 0, 0, 0);
                     AddComponent(new LocalizedAddonComponent(40044, 1156485), 0, -1, 0);
                     AddComponent(new LocalizedAddonComponent(40048, 1156485), -1, 0, 0);
                     AddComponent(new LocalizedAddonComponent(40045, 1156485), -1, -1, 0);
 					break;
-				case Size.Large:
+				case BananaHoardSize.Large:
                     AddComponent(new LocalizedAddonComponent(40042, 1156486), 0, 0, 0);
                     AddComponent(new LocalizedAddonComponent(40040, 1156486), -1, 0, 0);
                     AddComponent(new LocalizedAddonComponent(40041, 1156486), 0, -1, 0);
@@ -417,7 +417,7 @@ namespace Server.Items
 			base.Serialize(writer);
 			writer.Write(0);
 			
-			writer.Write((int)this.Size);
+			writer.Write((int)this.BananaHoardSize);
 		}
 		
 		public override void Deserialize(GenericReader reader)
@@ -425,16 +425,16 @@ namespace Server.Items
 			base.Deserialize(reader);
 			int v = reader.ReadInt();
 			
-			this.Size = (Size)reader.ReadInt();
+			this.BananaHoardSize = (BananaHoardSize)reader.ReadInt();
 		}
 	}
 	
 	public class BananaHoardAddonDeed : BaseAddonDeed
 	{
-		public override BaseAddon Addon { get { return new BananaHoardAddon(Size); } }
+		public override BaseAddon Addon { get { return new BananaHoardAddon(BananaHoardSize); } }
         public override int LabelNumber { get { return 1156556; } } // Great Ape's Banana Hoard
 
-		public Size Size { get; set; }
+		public BananaHoardSize BananaHoardSize { get; set; }
 		
 		[Constructable]
 		public BananaHoardAddonDeed()
@@ -447,7 +447,7 @@ namespace Server.Items
 			{
 				from.SendGump(new InternalGump(from as PlayerMobile, s =>
 				{
-					this.Size = s;
+					this.BananaHoardSize = s;
 					base.OnDoubleClick(from);
 				}));
 			}
@@ -455,10 +455,10 @@ namespace Server.Items
 		
 		private class InternalGump : Gump
 		{
-            public Action<Size> Callback { get; set; }
+            public Action<BananaHoardSize> Callback { get; set; }
             public PlayerMobile User { get; set; }
 			
-			public InternalGump(PlayerMobile p, Action<Size> callback) : base(50, 50)
+			public InternalGump(PlayerMobile p, Action<BananaHoardSize> callback) : base(50, 50)
 			{
 				Callback = callback;
                 User = p;
@@ -485,7 +485,7 @@ namespace Server.Items
             {
                 if (info.ButtonID > 0 && Callback != null)
                 {
-                    Callback((Size)info.ButtonID - 1);
+                    Callback((BananaHoardSize)info.ButtonID - 1);
                 }
             }
 		}

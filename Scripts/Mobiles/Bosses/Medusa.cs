@@ -72,10 +72,15 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList { get { return new Type[] { typeof(Slither), typeof(IronwoodCompositeBow) }; } }
-        public override Type[] SharedSAList { get { return new Type[] { typeof(DemonBridleRing), 
-                                                    typeof(PetrifiedSnake), typeof(StoneDragonsTooth), 
-                                                    typeof(SummonersKilt), typeof(Venom), typeof(StormCaller) }; } }
+        public override Type[] UniqueSAList
+        {
+            get { return new Type[] { typeof(Slither), typeof(IronwoodCompositeBow), typeof(Venom), typeof(PetrifiedSnake), typeof(StoneDragonsTooth) }; }
+        }
+
+        public override Type[] SharedSAList
+        {
+            get { return new Type[] { typeof(SummonersKilt) }; }
+        }
 
         public override bool IgnoreYoungProtection { get { return true; } }
         public override bool AutoDispel { get { return true; } }

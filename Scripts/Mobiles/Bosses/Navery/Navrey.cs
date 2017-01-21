@@ -5,28 +5,32 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("an spider corpse")]
+    [CorpseName("a navrey corpse")]
     public class Navrey : BaseCreature
     {
+        private NavreysController m_Spawner;
+        private bool m_UsedPillars;
+        private DateTime m_Delay;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool UsedPillars
+        {
+            get { return m_UsedPillars; }
+            set { m_UsedPillars = value; }
+        }
+
         private static readonly Type[] m_Artifact = new Type[]
         {
             typeof(NightEyes),
-            typeof(Tangle1),
-            typeof(BladeOfBattle),
-            typeof(DemonBridleRing),
-            typeof(GiantSteps),
-            typeof(StormCaller),
-            typeof(SwordOfShatteredHopes),
-            typeof(SummonersKilt),
-            typeof(TokenOfHolyFavor),
-            typeof(Venom),
-        };
-		
-        private DateTime m_Delay;
+            typeof(Tangle1)
+        };		
+        
         [Constructable]
-        public Navrey()
+        public Navrey(NavreysController spawner)
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
+            m_Spawner = spawner;
+
             Name = "Navrey Night-Eyes";
             Body = 735;
             BaseSoundID = 389;
@@ -45,9 +49,9 @@ namespace Server.Mobiles
 
             SetResistance(ResistanceType.Physical, 55, 65);
             SetResistance(ResistanceType.Fire, 45, 55);
-            SetResistance(ResistanceType.Cold, 50, 70);
+            SetResistance(ResistanceType.Cold, 60, 70);
             SetResistance(ResistanceType.Poison, 100);
-            SetResistance(ResistanceType.Energy, 60, 80);
+            SetResistance(ResistanceType.Energy, 65, 80);
 
             SetSkill(SkillName.Anatomy, 50.0, 80.0);
             SetSkill(SkillName.EvalInt, 90.0, 100.0);
@@ -58,12 +62,15 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 90.0, 100.0);
             SetSkill(SkillName.Wrestling, 91.6, 98.2);
 
-            Fame = 30000;
-            Karma = -30000;
+            Fame = 24000;
+            Karma = -24000;
 
             VirtualArmor = 90;
 
-            QLPoints = 75;
+            for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
+            {
+                PackItem(Loot.RandomScroll(0, Loot.MysticismScrollTypes.Length, SpellbookType.Mystic));
+            }
         }
 
         public Navrey(Serial serial)
@@ -71,34 +78,11 @@ namespace Server.Mobiles
         {
         }
  
-        public override bool AlwaysMurderer
-        {
-             get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Parasitic;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override bool AlwaysMurderer { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Parasitic; } }
+        public override Poison HitPoison { get { return Poison.Lethal; } }
+        public override int Meat { get { return 1; } }
+
         public static void DistributeRandomArtifact(BaseCreature bc, Type[] typelist)
         {
             int random = Utility.Random(typelist.Length);
@@ -128,17 +112,20 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (Utility.RandomBool())
-                c.AddItem(ScrollofTranscendence.CreateRandom(30, 30));
+            if (Utility.RandomDouble() < 0.15)
+                c.DropItem(new BottleIchor());
 
-            if (Utility.RandomBool())
-                c.AddItem(new TatteredAncientScroll());
+            if (0.5 >= Utility.RandomDouble())
+                c.DropItem(new SpiderCarapace());
 
             if (Utility.RandomBool())
                 c.AddItem(new UntranslatedAncientTome());
 
             if (Utility.RandomBool())
-                c.AddItem(new SpiderCarapace());
+                c.AddItem(ScrollofTranscendence.CreateRandom(30, 30));
+
+            if (Utility.RandomBool())
+                c.AddItem(new TatteredAncientScroll());            
 
             if (Utility.RandomDouble() < 0.10)
                 c.DropItem(new LuckyCoin());
@@ -267,13 +254,18 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
+
+            writer.Write((Item)m_Spawner);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version >= 1)
+                m_Spawner = reader.ReadItem() as NavreysController;
         }
     }
 }
