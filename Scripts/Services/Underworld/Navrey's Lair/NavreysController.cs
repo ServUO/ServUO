@@ -260,8 +260,8 @@ namespace Server.Items
                 {
                     if (m is Navrey)
                     {
-                        m_Navrey.Damage(amount);
-                        m_Navrey.SendDamageToAll(amount);
+                        m.Damage(amount);
+                        m.SendDamageToAll(amount);
                     }
                     else
                     {
