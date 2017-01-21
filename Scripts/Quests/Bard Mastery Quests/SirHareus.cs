@@ -59,8 +59,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            MasteryInfo.LearnMastery(Owner, SkillName.Provocation, Volume.Two);
-            MasteryInfo.LearnMastery(Owner, SkillName.Provocation, Volume.Three);
+            MasteryInfo.LearnMastery(Owner, SkillName.Provocation, 3);
 
             SkillMasterySpell.SetActiveMastery(Owner, SkillName.Provocation);
         }

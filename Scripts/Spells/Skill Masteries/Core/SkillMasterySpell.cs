@@ -80,13 +80,13 @@ namespace Server.Spells.SkillMasteries
 
             if (IsInCooldown(Caster, this.GetType()))
                 return false;
-
+            
             if (Caster.Skills[CastSkill].Value < RequiredSkill)
                 Caster.SendLocalizedMessage(1115709); // Your skills are not high enough to invoke this mastery ability.
             else if (Caster is PlayerMobile && Caster.Skills.CurrentMastery != CastSkill)
                 Caster.SendLocalizedMessage(1115664); // You are not on the correct path for using this mastery ability.
-            else if (Caster is PlayerMobile && !MasteryInfo.HasLearned(Caster, this.GetType(), CastSkill))
-                Caster.SendMessage("You have not proficient in that mastery to use."); // Todo: MEssage?
+            else if (Caster is PlayerMobile && !MasteryInfo.HasLearned(Caster, CastSkill))
+                Caster.SendLocalizedMessage(1115664); // You are not on the correct path for using this mastery ability.
             else if (Caster.Mana < mana)
                 Caster.SendLocalizedMessage(1060174, mana.ToString()); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
             else
@@ -729,7 +729,7 @@ namespace Server.Spells.SkillMasteries
 		{
             Skill sk = mobile.Skills[name];
 
-            return sk.IsMastery && sk.KnownMasteries != 0;
+            return sk.IsMastery && sk.VolumeLearned != 0;
 		}
 
         public static bool SetActiveMastery(Mobile mobile, SkillName name)
@@ -1078,7 +1078,7 @@ namespace Server.Spells.SkillMasteries
                             if (sk.IsMastery)
                             {
                                 count++;
-                                sk.KnownMasteries = 3;
+                                sk.VolumeLearned = 3;
                             }
                         }
 

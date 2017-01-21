@@ -45,7 +45,7 @@ namespace Server.Gumps
             {
                 Skill sk = User.Skills[skName];
 
-                if (sk != null && sk.IsMastery && sk.KnownMasteries != 0)
+                if (sk != null && sk.IsMastery && sk.VolumeLearned > 0)
                 {
                     if (skName != current)
                         AddButton(30, y, 4005, 4007, (int)skName + 1, GumpButtonType.Reply, 0);
