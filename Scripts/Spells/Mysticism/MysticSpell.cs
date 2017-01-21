@@ -118,6 +118,16 @@ namespace Server.Spells.Mystic
             return GetResistPercentForCircle(target, Circle);
         }
 
+        public static double GetBaseSkill(Mobile m)
+        {
+            return m.Skills[SkillName.Mysticism].Value;
+        }
+
+        public static double GetBoostSkill(Mobile m)
+        {
+            return Math.Max(m.Skills[SkillName.Imbuing].Value, m.Skills[SkillName.Focus].Value);
+        }
+
         public virtual void OnTarget(Object o)
         {
         }
