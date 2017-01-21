@@ -45,7 +45,7 @@ namespace Server.Spells.Necromancy
                 if (Caster.Race == Race.Gargoyle)
                     return Caster.Female ? 667 : 666;
                 else
-                    return Caster.Female ? 745 : 744;
+                    return Caster.Body;
             }
         }
         public override int Hue

@@ -75,6 +75,8 @@ namespace Server
 
             sp = new ChampionSpawn();
             sp.SpawnRadius = 35;
+            sp.SpawnMod = .5;
+            sp.KillsMod = .5;
             sp.Type = ChampionSpawnType.DragonTurtle;
             sp.MoveToWorld(new Point3D(7042, 1889, 60), Map.Felucca);
             sp.Active = true;

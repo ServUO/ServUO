@@ -96,12 +96,6 @@ namespace Server.Engines.VvV
                         if (i is IVvVItem)
                             ((IVvVItem)i).IsVvVItem = true;
 
-                        if (i is VesperOrderShield)
-                        {
-                            i.Name = "Order Shield";
-                            ((VesperOrderShield)i).Attributes.CastSpeed = 0;
-                        }
-
                         NegativeAttributes neg = RunicReforging.GetNegativeAttributes(i);
 
                         if (neg != null)
@@ -114,6 +108,8 @@ namespace Server.Engines.VvV
                                 ((IDurability)i).HitPoints = 255;
                             }
                         }
+
+                        ViceVsVirtueSystem.Instance.AddVvVItem(i);
 
                         Backpack.DropItem(i);
                     }
