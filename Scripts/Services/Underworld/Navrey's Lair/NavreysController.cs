@@ -67,7 +67,7 @@ namespace Server.Items
                             pillar.Type = PillarType.Three;
                     }
 
-                    this.TypeRestart = TimeSpan.FromMinutes(10.0);
+                    this.TypeRestart = TimeSpan.FromHours(24.0); // The timers rotate among the three stone ruins randomly once a day
                 }
 
                 return ts;
@@ -258,9 +258,16 @@ namespace Server.Items
 
                 foreach (Mobile m in m_Navrey.GetMobilesInRange(1).Where(m => m != null && m.Alive))
                 {
-                    m.RevealingAction();
-
-                    AOS.Damage(m, amount, 100, 0, 0, 0, 0);
+                    if (m is Navrey)
+                    {
+                        m.Damage(amount);
+                        m.SendDamageToAll(amount);
+                    }
+                    else
+                    {
+                        m.RevealingAction();
+                        AOS.Damage(m, amount, 100, 0, 0, 0, 0);
+                    }
                 }
 
                 if (m_Ticks == 0 || !m_Navrey.Alive)
