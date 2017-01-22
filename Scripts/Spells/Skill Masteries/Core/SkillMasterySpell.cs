@@ -933,6 +933,8 @@ namespace Server.Spells.SkillMasteries
                     value += PlayingTheOddsSpell.HitChanceBonus(m);
                     value += CalledShotSpell.GetHitChanceBonus(m);
                     value += CombatTrainingSpell.GetHitChanceBonus(m);
+
+                    value += MasteryInfo.SavingThrowChance(m, attr);
                     break;
                 case AosAttribute.DefendChance:
                     spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
@@ -942,6 +944,8 @@ namespace Server.Spells.SkillMasteries
 
                     if (Server.Spells.SkillMasteries.WhiteTigerFormSpell.IsActive(m))
                        value += 20;
+
+                    value += MasteryInfo.SavingThrowChance(m, attr);
                     break;
                 case AosAttribute.RegenHits:
                     spell = SkillMasterySpell.GetSpellForParty(m, typeof(ResilienceSpell));
@@ -972,6 +976,8 @@ namespace Server.Spells.SkillMasteries
 
                     if (spell != null)
                         value += spell.DamageBonus();
+
+                    value += MasteryInfo.SavingThrowChance(m, attr);
                     break;
                 case AosAttribute.SpellDamage:
                     spell = SkillMasterySpell.GetSpellForParty(m, typeof(InspireSpell));
@@ -983,6 +989,9 @@ namespace Server.Spells.SkillMasteries
                     value += RampageSpell.GetBonus(m, RampageSpell.BonusType.SwingSpeed);
                     value += PlayingTheOddsSpell.SwingSpeedBonus(m);
                     value -= StaggerSpell.GetStagger(m);
+                    break;
+                case AosAttribute.BonusStr:
+                    value += MasteryInfo.SavingThrowChance(m, attr);
                     break;
             }
 

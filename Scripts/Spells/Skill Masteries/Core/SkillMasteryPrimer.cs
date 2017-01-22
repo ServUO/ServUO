@@ -29,11 +29,11 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
-                if (MasteryInfo.HasLearned(from, Skill))
+                if (MasteryInfo.HasLearned(from, Skill, Volume))
+                {
                     from.SendLocalizedMessage(1155884, String.Format("#{0}", MasteryInfo.GetLocalization(Skill))); // You are already proficient in this level of ~1_MasterySkill~
-                //else if (MasteryInfo.CanLearn(from, SpellID))
-                //    from.SendLocalizedMessage(1115709); // Your skills are not high enough to invoke this mastery ability.
-                else if(MasteryInfo.LearnMastery(from, Skill, Volume))
+                }
+                else if (MasteryInfo.LearnMastery(from, Skill, Volume))
                 {
                     from.SendLocalizedMessage(1155885, String.Format("#{0}", MasteryInfo.GetLocalization(Skill))); // You have increased your proficiency in ~1_SkillMastery~!
 
@@ -60,7 +60,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1155883, String.Format("{0}", GetVolume(Volume)/*GetVolume(MasteryInfo.GetVolume(SpellID, Skill))*/)); // Volume ~1_Level~
+            list.Add(1155883, String.Format("{0}", GetVolume(Volume))); // Volume ~1_Level~
         }
 
         private string GetVolume(int volume)
