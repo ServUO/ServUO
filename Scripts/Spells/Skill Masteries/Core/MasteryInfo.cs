@@ -201,6 +201,11 @@ namespace Server.Spells.SkillMasteries
             return m.Skills[skill].HasLearnedMastery();
         }
 
+        public static bool HasLearned(Mobile m, SkillName skill, int volume)
+        {
+            return m.Skills[skill].HasLearnedVolume(volume);
+        }
+
         public static bool HasLearned(Mobile m, Type spell, SkillName skill)
         {
             MasteryInfo info = GetInfo(spell, skill);
@@ -276,7 +281,18 @@ namespace Server.Spells.SkillMasteries
                         BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Intuition, 1155907, 1156089, IntuitionBonus(m).ToString(), true)); // Mana Increase ~1_VAL~
                         break;
                     case PassiveSpell.SavingThrow:
-                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SavingThrow, 1155922, 1156032, true)); // Provides a chance to block disarm attempts based on Mastery level, weapon skill level and tactics skill level.
+                        {
+                            string args = null;
+
+                            switch (GetMasteryLevel(m, newMastery))
+                            {
+                                default: args = "5\t0\t0\t0"; break;
+                                case 2: args = "5\t5\t0\t0"; break;
+                                case 3: args = "5\t5\t5\t5"; break;
+                            }
+
+                            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SavingThrow, 1156031, 1156032, args, true)); // Provides a chance to block disarm attempts based on Mastery level, weapon skill level and tactics skill level.
+                        }
                         break;
                     case PassiveSpell.Potency:
                         BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Potency, 1155928, 1156195, NonPoisonConsumeChance(m).ToString(), true)); // ~1_VAL~% chance to not consume poison charges when using infecting strike or injected strike.
@@ -289,6 +305,7 @@ namespace Server.Spells.SkillMasteries
                         break;
                 }
 
+                m.Delta(MobileDelta.WeaponDamage);
                 m.UpdateResistances();
 
                 if (m.Mana > m.ManaMax)
@@ -317,6 +334,9 @@ namespace Server.Spells.SkillMasteries
 
         public static PassiveSpell GetActivePassive(Mobile m)
         {
+            if (m == null || m.Skills == null || Infos == null)
+                return PassiveSpell.None;
+
             SkillName mastery = m.Skills.CurrentMastery;
 
             MasteryInfo info = Infos.FirstOrDefault(i => i.Passive && i.MasterySkill == mastery);
@@ -486,15 +506,21 @@ namespace Server.Spells.SkillMasteries
             return 0;
         }
 
-        public static int SavingThrowChance(Mobile m)
+        public static int SavingThrowChance(Mobile m, AosAttribute attr)
         {
             if (IsActivePassive(m, PassiveSpell.SavingThrow))
             {
-                BaseWeapon wep = m.Weapon as BaseWeapon;
+                int level = GetMasteryLevel(m, m.Skills.CurrentMastery);
 
-                if (wep != null && wep.DefSkill != SkillName.Wrestling)
+                if (level <= 0)
+                    return 0;
+
+                switch (attr)
                 {
-                    return (int)((m.Skills[wep.DefSkill].Value + m.Skills[SkillName.Tactics].Value) / 4.8); // 50% at 120/120
+                    case AosAttribute.AttackChance: return 5;
+                    case AosAttribute.DefendChance: return level > 1 ? 5 : 0;
+                    case AosAttribute.BonusStr: return level > 2 ? 5 : 0;
+                    case AosAttribute.WeaponDamage: return level > 2 ? 5 : 0;
                 }
             }
 
