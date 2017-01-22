@@ -317,6 +317,9 @@ namespace Server.Spells.SkillMasteries
 
         public static PassiveSpell GetActivePassive(Mobile m)
         {
+            if (m == null || m.Skills == null)
+                return PassiveSpell.None;
+
             SkillName mastery = m.Skills.CurrentMastery;
 
             MasteryInfo info = Infos.FirstOrDefault(i => i.Passive && i.MasterySkill == mastery);
