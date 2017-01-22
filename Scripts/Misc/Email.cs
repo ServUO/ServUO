@@ -27,7 +27,7 @@ namespace Server.Misc
         public static readonly string CrashAddresses    = null;
         
         public static readonly string EmailUsername     = null;
-		public static readonly string EmailPassword     = null;
+	public static readonly string EmailPassword     = null;
         
         public static readonly string SpeechLogPageAddresses = null;
         
