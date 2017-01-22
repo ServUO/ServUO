@@ -62,13 +62,13 @@ namespace Server.Engines.Reports
             this.m_Format = format;
         }
 
-        public override void SerializeAttributes(PersistanceWriter op)
+        public override void SerializeAttributes(PersistenceWriter op)
         {
             op.SetString("v", this.m_Value);
             op.SetString("f", this.m_Format);
         }
 
-        public override void DeserializeAttributes(PersistanceReader ip)
+        public override void DeserializeAttributes(PersistenceReader ip)
         {
             this.m_Value = ip.GetString("v");
             this.m_Format = Utility.Intern(ip.GetString("f"));

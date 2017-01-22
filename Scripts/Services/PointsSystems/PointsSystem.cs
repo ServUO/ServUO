@@ -6,6 +6,7 @@ using Server.Mobiles;
 using System.Linq;
 using System.Collections.Generic;
 using Server.Engines.CityLoyalty;
+using Server.Engines.VvV;
 
 namespace Server.Engines.Points
 {
@@ -34,7 +35,8 @@ namespace Server.Engines.Points
         Vesper,
 
         Blackthorn,
-        CleanUpBritannia
+        CleanUpBritannia,
+        ViceVsVirtue
     }
 
     public abstract class PointsSystem
@@ -301,7 +303,8 @@ namespace Server.Engines.Points
 					{
 						PointsType type = (PointsType)reader.ReadInt();
 						PointsSystem s = GetSystemInstance(type);
-						s.Deserialize(reader);
+
+					    s.Deserialize(reader);
 					}	
 				});
 		}
@@ -317,6 +320,7 @@ namespace Server.Engines.Points
         public static CasinoData CasinoData { get; set; }
         public static BlackthornData Blackthorn { get; set; }
         public static CleanUpBritanniaData CleanUpBritannia { get; set; }
+        public static ViceVsVirtueSystem ViceVsVirtue { get; set; }
 
         public static void Configure()
         {
@@ -332,6 +336,7 @@ namespace Server.Engines.Points
             CasinoData = new CasinoData();
             Blackthorn = new BlackthornData();
             CleanUpBritannia = new CleanUpBritanniaData();
+            ViceVsVirtue = new ViceVsVirtueSystem();
 
             CityLoyaltySystem.ConstructSystems();
         }
@@ -351,7 +356,7 @@ namespace Server.Engines.Points
     public class PointsEntry
 	{
 		public PlayerMobile Player { get; set; }
-		public double Points { get; set ; }
+		public double Points { get; set; }
 
         public PointsEntry(PlayerMobile pm)
         {

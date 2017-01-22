@@ -109,13 +109,13 @@ namespace Server.Engines.ResortAndCasino
 
         public virtual void OnWin()
         {
-            /*if (Player != null)
+            if (Player != null)
             {
                 GettingEvenQuest q = QuestHelper.GetQuest(Player, typeof(GettingEvenQuest)) as GettingEvenQuest;
 
                 if (q != null)
                     q.Update(this.GetType());
-            }*/
+            }
         }
 
         public virtual void Reset()

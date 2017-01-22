@@ -1,4 +1,4 @@
-/*using System;
+using System;
 using System.Collections.Generic;
 using Server.Spells;
 using Server.Spells.Fifth;
@@ -258,12 +258,13 @@ namespace Server.Mobiles
             if (spell != null)
                 return spell;
 
-            if(!(c is Mobile)
+            if(!(c is Mobile))
             {
                 return null;
             }
 
-            double damage = ((this.m_Mobile.Skills[SkillName.SpiritSpeak].Value - c.Skills[SkillName.MagicResist].Value) / 10) + (c.Player ? 18 : 30);
+            Mobile mob = c as Mobile;
+            double damage = ((this.m_Mobile.Skills[SkillName.SpiritSpeak].Value - mob.Skills[SkillName.MagicResist].Value) / 10) + (mob.Player ? 18 : 30);
 			
             if (damage > c.Hits)
                 spell = new ManaDrainSpell(this.m_Mobile, null);
@@ -276,7 +277,7 @@ namespace Server.Mobiles
                     {
                         this.m_Mobile.DebugSay("Attempting to BloodOath");
 
-                        if (!c.Poisoned)
+                        if (!mob.Poisoned)
                             spell = new BloodOathSpell(this.m_Mobile, null);
 
                         break;
@@ -316,8 +317,8 @@ namespace Server.Mobiles
                 case 9: // Blood oath them
                     {
                         this.m_Mobile.DebugSay("Attempting to blood oath");
-										
-                        if (this.m_Mobile.Skills[SkillName.Necromancy].Value > 30 && BloodOathSpell.GetBloodOath(c) != this.m_Mobile)
+
+                        if (this.m_Mobile.Skills[SkillName.Necromancy].Value > 30 && BloodOathSpell.GetBloodOath(mob) != this.m_Mobile)
                             spell = new BloodOathSpell(this.m_Mobile, null);
 						
                         break;
@@ -455,9 +456,9 @@ namespace Server.Mobiles
                     else if (!this.m_Mobile.InRange(toDispel, 12))
                         this.RunTo(toDispel);
                 }
-                else
+                else if(c is Mobile)
                 {
-                    this.RunTo(c);
+                    this.RunTo((Mobile)c);
                 }
 
                 if (spell != null)
@@ -472,9 +473,9 @@ namespace Server.Mobiles
 
                 this.m_NextCastTime = DateTime.UtcNow + delay;
             }
-            else if (this.m_Mobile.Spell == null || !this.m_Mobile.Spell.IsCasting)
+            else if (c is Mobile && (this.m_Mobile.Spell == null || !this.m_Mobile.Spell.IsCasting))
             {
-                this.RunTo(c);
+                this.RunTo((Mobile)c);
             }
 
             return true;
@@ -850,4 +851,4 @@ namespace Server.Mobiles
             }
         }
     }
-}*/
+}

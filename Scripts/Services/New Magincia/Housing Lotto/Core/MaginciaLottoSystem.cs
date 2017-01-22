@@ -514,33 +514,6 @@ namespace Server.Engines.NewMagincia
             }
         }
 
-        /*public static void SendTestMessage_OnCommand(CommandEventArgs e)
-        {
-            NewMaginciaMessage message;
-
-            if (e.Length == 0)
-                message = new NewMaginciaMessage(new TextDefinition(1150484), new TextDefinition(1150483), String.Format("{0}\t{1}\t{2}\t{3}\t{4}", "A-1", e.Mobile.Map.ToString(), "Alexandria", MaginciaLottoSystem.WritExpirePeriod.ToString(), e.Mobile.Location.ToString()));
-            else
-            {
-                int sel = 0;
-                try
-                {
-                    sel = Convert.ToInt32(e.Arguments[0]);
-                }
-                catch { }
-
-                switch (sel)
-                {
-                    default:
-                    case 0: message = new NewMaginciaMessage(new TextDefinition(1150484), new TextDefinition(1150483), String.Format("{0}\t{1}\t{2}\t{3}\t{4}", "A-1", e.Mobile.Map.ToString(), "Alexandria", MaginciaLottoSystem.WritExpirePeriod.ToString(), e.Mobile.Location.ToString())); break;
-                    case 1: message = new NewMaginciaMessage(null, new TextDefinition(1150426), String.Format("{0}\t{1}\t{2}", "A-1", e.Mobile.Map.ToString(), "1500")); break;
-                    case 2: message = new NewMaginciaMessage(null, new TextDefinition(1150427), String.Format("{0}\t{1}\t{2}\t{3}\t{4}", "A-1", e.Mobile.Map.ToString(), "1500", "25000", "23500")); break;
-                    case 3: message = new NewMaginciaMessage(null, new TextDefinition(1150428), String.Format("{0}\t{1}\t{2}", "A-2", e.Mobile.Map.ToString(), "4500")); break;
-                }
-            }
-
-            SendMessageTo(e.Mobile, message);
-        }*/
         #endregion
 
         public MaginciaLottoSystem(Serial serial)

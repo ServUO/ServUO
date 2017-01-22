@@ -35,16 +35,16 @@ namespace Server.PathAlgorithms.SlowAStar
             return (x * x) + (y * y) + (z * z);
         }
 
-        public override bool CheckCondition(Mobile m, Map map, Point3D start, Point3D goal)
+        public override bool CheckCondition(IPoint3D p, Map map, Point3D start, Point3D goal)
         {
             return false;
         }
 
-        public override Direction[] Find(Mobile m, Map map, Point3D start, Point3D goal)
+        public override Direction[] Find(IPoint3D p, Map map, Point3D start, Point3D goal)
         {
             this.m_Goal = goal;
 
-            BaseCreature bc = m as BaseCreature;
+            BaseCreature bc = p as BaseCreature;
 
             PathNode curNode;
 
@@ -198,7 +198,7 @@ namespace Server.PathAlgorithms.SlowAStar
                             break;
                     }
 
-                    if (CalcMoves.CheckMovement(m, map, new Point3D(curNode.x, curNode.y, curNode.z), (Direction)i, out z))
+                    if (CalcMoves.CheckMovement(p, map, new Point3D(curNode.x, curNode.y, curNode.z), (Direction)i, out z))
                     {
                         successors[sucCount].x = x + curNode.x;
                         successors[sucCount].y = y + curNode.y;

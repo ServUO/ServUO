@@ -48,8 +48,9 @@ namespace Server.Mobiles
         };
 
         protected const double HealChance = 0.10;// 10% chance to heal at gm magery
-        protected const double TeleportChance = 0.05;// 5% chance to teleport at gm magery
         protected const double DispelChance = 0.75;// 75% chance to dispel at gm magery
+
+        protected double TeleportChance { get { return m_Mobile.TeleportChance; } }
 
         private DateTime m_NextCastTime;
         private DateTime m_NextHealTime;
@@ -1008,6 +1009,9 @@ namespace Server.Mobiles
 
         public Item GetHarmfulFieldItem()
         {
+            if (m_Mobile.Map == null)
+                return null;
+
             IPooledEnumerable eable = m_Mobile.Map.GetItemsInRange(m_Mobile.Location, 0);
 
             foreach (Item item in eable)

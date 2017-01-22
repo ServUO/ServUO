@@ -67,7 +67,7 @@ namespace Server.Items
             new TrophyInfo( typeof( RedHerring ),     0x1E62,		1113567, 1113569 ),
             new TrophyInfo( typeof( MudPuppy ),		  0x1E62,		1113568, 1113570 ),
             //HighSeas - not yet :)
-            /*new TrophyInfo( typeof( AutumnDragonfish),     0,       1116124, 1116185 ),
+            new TrophyInfo( typeof( AutumnDragonfish),     0,       1116124, 1116185 ),
             new TrophyInfo( typeof( BullFish ),            1,       1116129, 1116190 ),
             new TrophyInfo( typeof( FireFish ),            2,       1116127, 1116188 ),
             new TrophyInfo( typeof( GiantKoi ),            3,       1116122, 1116183 ),
@@ -102,7 +102,7 @@ namespace Server.Items
             new TrophyInfo( typeof( DungeonPike ),         31,      1116143, 1116204 ),
             new TrophyInfo( typeof( GoldenTuna ),          32,      1116137, 1116198 ),
             new TrophyInfo( typeof( RainbowFish ),         33,      1116144, 1116205 ),
-            new TrophyInfo( typeof( ZombieFish ),          34,      1116136, 1116197 ),*/
+            new TrophyInfo( typeof( ZombieFish ),          34,      1116136, 1116197 ),
         };
 
         public class TrophyInfo

@@ -67,7 +67,7 @@ namespace Server.Spells.Mystic
 
                 m_Table[m].Add(new SpellPlagueTimer(Caster, m, TimeSpan.FromSeconds(8)));
 
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SpellPlague, 1031690, TimeSpan.FromSeconds(8), m, Caster.Name.ToString()));
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SpellPlague, 1031690, 1080167, TimeSpan.FromSeconds(8), m));
             }
 
             FinishSequence();

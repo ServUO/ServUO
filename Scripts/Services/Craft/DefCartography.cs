@@ -3,6 +3,11 @@ using Server.Items;
 
 namespace Server.Engines.Craft
 {
+    public enum CartographyRecipes
+    {
+        EodonianWallMap = 1000
+    }
+
     public class DefCartography : CraftSystem
     {
         private static CraftSystem m_CraftSystem;
@@ -86,6 +91,11 @@ namespace Server.Engines.Craft
             this.AddCraft(typeof(CityMap), 1044448, 1015231, 25.0, 85.0, typeof(BlankMap), 1044449, 1, 1044450);
             this.AddCraft(typeof(SeaChart), 1044448, 1015232, 35.0, 95.0, typeof(BlankMap), 1044449, 1, 1044450);
             this.AddCraft(typeof(WorldMap), 1044448, 1015233, 39.5, 99.5, typeof(BlankMap), 1044449, 1, 1044450);
+
+            int index = AddCraft(typeof(EodonianWallMap), 1044448, 1156690, 65.0, 125.0, typeof(BlankMap), 1044449, 50, 1044450);
+            AddRes(index, typeof(UnabridgedAtlasOfEodon), 1156721, 1, 1156722);
+            AddRecipe(index, (int)CartographyRecipes.EodonianWallMap);
+            SetNeededExpansion(index, Expansion.TOL);
         }
     }
 }

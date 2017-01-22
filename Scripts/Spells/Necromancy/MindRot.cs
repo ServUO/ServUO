@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Server.Targeting;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Spells.Necromancy
 {
@@ -96,30 +97,36 @@ namespace Server.Spells.Necromancy
             {
                 SpellHelper.Turn(this.Caster, m);
 
-                /* Attempts to place a curse on the Target that increases the mana cost of any spells they cast,
+                ApplyEffects(m);
+                ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
+            }
+
+            this.FinishSequence();
+        }
+
+        public void ApplyEffects(Mobile m, double strength = 1.0)
+        {
+            /* Attempts to place a curse on the Target that increases the mana cost of any spells they cast,
                 * for a duration based off a comparison between the Caster's Spirit Speak skill and the Target's Resisting Spells skill.
                 * The effect lasts for ((Spirit Speak skill level - target's Resist Magic skill level) / 50 ) + 20 seconds.
                 */
 
-                if (m.Spell != null)
-                    m.Spell.OnCasterHurt();
-				
-                m.PlaySound(0x1FB);
-                m.PlaySound(0x258);
-                m.FixedParticles(0x373A, 1, 17, 9903, 15, 4, EffectLayer.Head);
+            if (m.Spell != null)
+                m.Spell.OnCasterHurt();
 
-                TimeSpan duration = TimeSpan.FromSeconds((((this.GetDamageSkill(this.Caster) - this.GetResistSkill(m)) / 5.0) + 20.0) * (m.Player ? 1.0 : 2.0));
-                m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
+            m.PlaySound(0x1FB);
+            m.PlaySound(0x258);
+            m.FixedParticles(0x373A, 1, 17, 9903, 15, 4, EffectLayer.Head);
 
-                if (m.Player)
-                    SetMindRotScalar(this.Caster, m, 1.25, duration);
-                else
-                    SetMindRotScalar(this.Caster, m, 2.00, duration);
+            TimeSpan duration = TimeSpan.FromSeconds(((((GetDamageSkill(Caster) - GetResistSkill(m)) / 5.0) + 20.0) * (m.Player ? 1.0 : 2.0)) * strength);
+            m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
 
-                this.HarmfulSpell(m);
-            }
+            if (m.Player)
+                SetMindRotScalar(Caster, m, 1.25 * strength, duration);
+            else
+                SetMindRotScalar(Caster, m, 2.00 * strength, duration);
 
-            this.FinishSequence();
+            this.HarmfulSpell(m);
         }
 
         private class InternalTarget : Target

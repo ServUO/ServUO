@@ -1,5 +1,6 @@
 using System;
 using Server.Mobiles;
+using Server.Engines.Shadowguard;
 
 namespace Server.Items
 {
@@ -25,6 +26,10 @@ namespace Server.Items
             SlayerGroup arachnid = new SlayerGroup();
             SlayerGroup reptilian = new SlayerGroup();
             SlayerGroup fey = new SlayerGroup();
+            SlayerGroup eodon = new SlayerGroup();
+            SlayerGroup eodonTribe = new SlayerGroup();
+            SlayerGroup dino = new SlayerGroup();
+            SlayerGroup myrmidex = new SlayerGroup();
 
             humanoid.Opposition = new SlayerGroup[]
                 {
@@ -132,7 +137,7 @@ namespace Server.Items
                     typeof(Niporailem), typeof(DreamWraith),
                     typeof(EffeteUndeadGargoyle), typeof(UndeadGargoyle),
                     typeof(UndeadGuardian), typeof(PutridUndeadGargoyle),
-                    typeof(PutridUndeadGuardian)
+                    typeof(PutridUndeadGuardian), typeof(Juonar)
                 );
 
             undead.Entries = new SlayerEntry[0];
@@ -300,7 +305,8 @@ namespace Server.Items
                         typeof(Betballem), typeof(SkeletalLich),
                         typeof(UsagralemBallem), typeof(EffetePutridGargoyle),
                         typeof(EffeteUndeadGargoyle), typeof(PitFiend),
-                        typeof(ArchDaemon), typeof(AbyssalAbomination)
+                        typeof(ArchDaemon), typeof(AbyssalAbomination),
+                        typeof(Virtuebane)
                     );
 
                 abyss.Entries = new SlayerEntry[]
@@ -534,16 +540,70 @@ namespace Server.Items
                     )
             };
 
+            eodon.Opposition = new SlayerGroup[] { };
+            eodon.FoundOn = new Type[] { };
+            eodon.Super = 
+                new SlayerEntry(
+                    
+                    SlayerName.Eodon, 
+                    
+                    typeof(Dimetrosaur), typeof(Gallusaurus), 
+                    typeof(Archaeosaurus), typeof(Najasaurus),
+                    typeof(Saurosaurus), typeof(Allosaurus), 
+                    typeof(MyrmidexLarvae), typeof(MyrmidexDrone), 
+                    typeof(MyrmidexWarrior), typeof(DragonTurtle), 
+                    typeof(DragonTurtleHatchling), typeof(DesertScorpion),
+                    typeof(TribeWarrior), typeof(TribeShaman), 
+                    typeof(TribeChieftan), typeof(WildTiger), 
+                    typeof(WildBlackTiger), typeof(WildWhiteTiger), 
+                    typeof(SilverbackGorilla));
+
+            eodon.Entries = new SlayerEntry[] { };
+
+            eodonTribe.Opposition = new SlayerGroup[] { };
+            eodonTribe.FoundOn = new Type[] { };
+            eodonTribe.Super = new SlayerEntry(SlayerName.EodonTribe, typeof(TribeWarrior), typeof(TribeShaman), typeof(TribeChieftan));
+            eodonTribe.Entries = new SlayerEntry[] { };
+
+            dino.Opposition = new SlayerGroup[] { fey };
+            dino.FoundOn = new Type[] { };
+            dino.Super =
+                new SlayerEntry(
+                    
+                    SlayerName.Dinosaur, 
+                    
+                    typeof(Dimetrosaur), typeof(Gallusaurus), 
+                    typeof(Archaeosaurus), typeof(Najasaurus),
+                    typeof(Saurosaurus), typeof(Allosaurus),
+                    typeof(MyrmidexLarvae), typeof(MyrmidexDrone),
+                    typeof(MyrmidexWarrior));
+
+            dino.Entries = new SlayerEntry[] { };
+
+            myrmidex.Opposition = new SlayerGroup[] { fey };
+            myrmidex.FoundOn = new Type[] { };
+            myrmidex.Super = new SlayerEntry(
+                
+                SlayerName.Myrmidex,
+                
+                typeof(MyrmidexLarvae), typeof(MyrmidexDrone), 
+                typeof(MyrmidexWarrior));
+            myrmidex.Entries = new SlayerEntry[] { };
+
             m_Groups = new SlayerGroup[]
-            {
-                humanoid,
-                undead,
-                elemental,
-                abyss,
-                arachnid,
-                reptilian,
-                fey
-            };
+				{
+					humanoid,
+					undead,
+					elemental,
+					abyss,
+					arachnid,
+					reptilian,
+					fey,
+                    eodon,
+                    eodonTribe,
+                    dino, 
+                    myrmidex,
+				};
 
             m_TotalEntries = CompileEntries(m_Groups);
         }
@@ -650,12 +710,15 @@ namespace Server.Items
                     return true;
             }
 
+            if (m_Super.Name == SlayerName.Eodon && !m_Super.Slays(m))
+                return true;
+
             return false;
         }
 
         private static SlayerEntry[] CompileEntries(SlayerGroup[] groups)
         {
-            SlayerEntry[] entries = new SlayerEntry[28];
+            SlayerEntry[] entries = new SlayerEntry[32];
 
             for (int i = 0; i < groups.Length; ++i)
             {

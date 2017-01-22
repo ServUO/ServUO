@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Server.Items
 {
-    public abstract class BaseArmor : Item, IScissorable, IFactionItem, ICraftable, IWearableDurability, ISetItem
+    public abstract class BaseArmor : Item, IScissorable, IFactionItem, ICraftable, IWearableDurability, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection
     {
         #region Factions
         private FactionItem m_FactionState;
@@ -34,6 +34,30 @@ namespace Server.Items
             }
         }
         #endregion
+
+        private bool _VvVItem;
+        private Mobile _Owner;
+        private string _OwnerName;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsVvVItem
+        {
+            get { return _VvVItem; }
+            set { _VvVItem = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Owner
+        {
+            get { return _Owner; }
+            set { _Owner = value; if (_Owner != null) _OwnerName = _Owner.Name; InvalidateProperties(); }
+        }
+
+        public virtual string OwnerName
+        {
+            get { return _OwnerName; }
+            set { _OwnerName = value; InvalidateProperties(); }
+        }
 
         /* Armor internals work differently now (Jun 19 2003)
         * 
@@ -88,6 +112,8 @@ namespace Server.Items
         private AosSkillBonuses m_AosSkillBonuses;
         private SAAbsorptionAttributes m_SAAbsorptionAttributes;
         private NegativeAttributes m_NegativeAttributes;
+
+        private TalismanAttribute m_TalismanProtection;
 
         // Overridable values. These values are provided to override the defaults which get defined in the individual armor scripts.
         private int m_ArmorBase = -1;
@@ -282,6 +308,7 @@ namespace Server.Items
             armor.m_SetAttributes = new AosAttributes(newItem, this.m_SetAttributes);
             armor.m_SetSkillBonuses = new AosSkillBonuses(newItem, this.m_SetSkillBonuses);
             armor.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
+            armor.m_TalismanProtection = new TalismanAttribute(m_TalismanProtection);
         }
 
         #region Personal Bless Deed
@@ -916,6 +943,17 @@ namespace Server.Items
             }
         }
 
+        public override bool DisplayWeight
+        {
+            get
+            {
+                if (IsVvVItem)
+                    return true;
+
+                return base.DisplayWeight;
+            }
+        }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public ArmorProtectionLevel ProtectionLevel
         {
@@ -996,6 +1034,13 @@ namespace Server.Items
             set 
             { 
             }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public TalismanAttribute Protection
+        {
+            get { return m_TalismanProtection; }
+            set { m_TalismanProtection = value; InvalidateProperties(); }
         }
 
         public override double DefaultWeight
@@ -1561,7 +1606,8 @@ namespace Server.Items
             xAbsorptionAttributes = 0x02000000,
             //TimesImbued = 0x04000000,
             NegativeAttributes  = 0x08000000,
-            Altered = 0x10000000
+            Altered = 0x10000000, 
+            TalismanProtection = 0x20000000
         }
 
         #region Mondain's Legacy Sets
@@ -1599,7 +1645,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)11); // version
+            writer.Write((int)12); // version
+
+            writer.Write(_VvVItem);
+            writer.Write(_Owner);
+            writer.Write(_OwnerName);
 
             //Version 11
             writer.Write(m_RefinedPhysical);
@@ -1688,6 +1738,7 @@ namespace Server.Items
             // Version 7
             SaveFlag flags = SaveFlag.None;
 
+            SetSaveFlag(ref flags, SaveFlag.TalismanProtection, !m_TalismanProtection.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.NegativeAttributes, !this.m_NegativeAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Attributes, !this.m_AosAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.ArmorAttributes, !this.m_AosArmorAttributes.IsEmpty);
@@ -1719,6 +1770,9 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
             writer.WriteEncodedInt((int)flags);
+
+            if (GetSaveFlag(flags, SaveFlag.TalismanProtection))
+                m_TalismanProtection.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.NegativeAttributes))
                 m_NegativeAttributes.Serialize(writer);
@@ -1804,6 +1858,13 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 12:
+                    {
+                        _VvVItem = reader.ReadBool();
+                        _Owner = reader.ReadMobile();
+                        _OwnerName = reader.ReadString();
+                        goto case 11;
+                    }
                 case 11:
                     {
                         m_RefinedPhysical = reader.ReadInt();
@@ -1895,6 +1956,11 @@ namespace Server.Items
                 case 5:
                     {
                         SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.TalismanProtection))
+                            m_TalismanProtection = new TalismanAttribute(reader);
+                        else
+                            m_TalismanProtection = new TalismanAttribute();
 
                         if (GetSaveFlag(flags, SaveFlag.NegativeAttributes))
                             m_NegativeAttributes = new NegativeAttributes(this, reader);
@@ -2242,6 +2308,7 @@ namespace Server.Items
             #endregion
             this.m_AosSkillBonuses = new AosSkillBonuses(this);
             m_NegativeAttributes = new NegativeAttributes(this);
+            m_TalismanProtection = new TalismanAttribute();
 
             // Mod to randomly add sockets and socketability features to armor. These settings will yield
             // 2% drop rate of socketed/socketable items
@@ -2286,6 +2353,29 @@ namespace Server.Items
 
             if (from.IsPlayer())
             {
+                if (_Owner != null && _Owner != from)
+                {
+                    from.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                    return false;
+                }
+
+                if (this is IAccountRestricted && ((IAccountRestricted)this).Account != null)
+                {
+                    Accounting.Account acct = from.Account as Accounting.Account;
+
+                    if (acct == null || acct.Username != ((IAccountRestricted)this).Account)
+                    {
+                        from.SendLocalizedMessage(1071296); // This item is Account Bound and your character is not bound to it. You cannot use this item.
+                        return false;
+                    }
+                }
+
+                if (IsVvVItem && !Engines.VvV.ViceVsVirtueSystem.IsVvV(from))
+                {
+                    from.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
+                    return false;
+                }
+
                 if (from.Race == Race.Gargoyle && !this.CanBeWornByGargoyles)
                 {
                     from.SendLocalizedMessage(1111708); // Gargoyles can't wear this.
@@ -2439,7 +2529,9 @@ namespace Server.Items
             if (Absorbed < 2)
                 Absorbed = 2;
 
-            if (25 > Utility.Random(100)) // 25% chance to lower durability
+            double chance = NegativeAttributes.Antique > 0 ? 80 : 25;
+
+            if (chance >= Utility.Random(100)) // 25% chance to lower durability
             {
                 if (Core.AOS && this.m_AosArmorAttributes.SelfRepair + (this.IsSetItem && this.m_SetEquipped ? this.m_SetSelfRepair : 0) > Utility.Random(10))
                 {
@@ -2453,9 +2545,6 @@ namespace Server.Items
                         wear = Absorbed / 2;
                     else
                         wear = Utility.Random(2);
-
-                    if (NegativeAttributes.Antique > 0)
-                        wear *= 2;
 
                     if (wear > 0 && this.m_MaxHitPoints > 0)
                     {
@@ -2660,9 +2749,22 @@ namespace Server.Items
             return attrInfo.ArmorLuck;
         }
 
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            if (IsVvVItem)
+                list.Add(1154937); // VvV Item
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
+
+            if (OwnerName != null)
+            {
+                list.Add(1153213, OwnerName);
+            }
 
             #region Stygian Abyss
             if (this.IsImbued)
@@ -2690,6 +2792,9 @@ namespace Server.Items
                     list.Add(1073491, this.Pieces.ToString()); // Part of a Weapon/Armor Set (~1_val~ pieces)
                 else
                     list.Add(1072376, this.Pieces.ToString()); // Part of an Armor Set (~1_val~ pieces)
+
+                if (SetID == SetItem.Bestial)
+                    list.Add(1151541, BestialSetHelper.GetTotalBerserk(this).ToString()); // Berserk ~1_VAL~
 
                 if (this.BardMasteryBonus)
                     list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
@@ -2721,6 +2826,9 @@ namespace Server.Items
 
             if ((prop = this.ArtifactRarity) > 0)
                 list.Add(1061078, prop.ToString()); // artifact rarity ~1_val~
+
+            if (m_TalismanProtection != null && !m_TalismanProtection.IsEmpty && m_TalismanProtection.Amount > 0)
+                list.Add(1072387, "{0}\t{1}", m_TalismanProtection.Name != null ? m_TalismanProtection.Name.ToString() : "Unknown", m_TalismanProtection.Amount); // ~1_NAME~ Protection: +~2_val~%
 
             if ((prop = this.m_AosAttributes.WeaponDamage) != 0)
                 list.Add(1060401, prop.ToString()); // damage increase ~1_val~%
@@ -2943,10 +3051,11 @@ namespace Server.Items
             }
             #endregion
 
-			if (typeRes == null)
+            if (typeRes == null || craftItem.ForceNonExceptional)
 				typeRes = craftItem.Resources.GetAt(0).ItemType;
 
 			Resource = CraftResources.GetFromType(typeRes);
+
             PlayerConstructed = true;
 
             CraftContext context = craftSystem.GetContext(from);
@@ -2954,12 +3063,12 @@ namespace Server.Items
             if (context != null && context.DoNotColor)
                 this.Hue = 0;
 
-            if (this.Quality == ArmorQuality.Exceptional)
+            if (this.Quality == ArmorQuality.Exceptional && !craftItem.ForceNonExceptional)
             {
-                if (!(Core.ML && this is BaseShield))		// Guessed Core.ML removed exceptional resist bonuses from crafted shields
+                if (!(Core.ML && this is BaseShield) && !craftItem.ForceNonExceptional)		// Guessed Core.ML removed exceptional resist bonuses from crafted shields
                     this.DistributeBonuses((tool is BaseRunicTool ? 6 : Core.SE ? 15 : 14)); // Not sure since when, but right now 15 points are added, not 14.
 
-                if (Core.ML && !(this is BaseShield) && !(this is GargishLeatherWingArmor))
+                if (Core.ML && !(this is BaseShield) && !craftItem.ForceNonExceptional)
                 {
                     int bonus = (int)(from.Skills.ArmsLore.Value / 20);
 
@@ -2995,9 +3104,21 @@ namespace Server.Items
 
                     from.CheckSkill(SkillName.ArmsLore, 0, 100);
                 }
+
+                if (m_AosArmorAttributes.MageArmor <= 0)
+                {
+                    foreach (Type type in _MageArmorTypes)
+                    {
+                        if (type == this.GetType())
+                        {
+                            m_AosArmorAttributes.MageArmor = 1;
+                            break;
+                        }
+                    }
+                }
             }
 
-            if (Core.AOS && tool is BaseRunicTool)
+            if (Core.AOS && tool is BaseRunicTool && !craftItem.ForceNonExceptional)
                 ((BaseRunicTool)tool).ApplyAttributesTo(this);
 
             #region Mondain's Legacy
@@ -3043,6 +3164,13 @@ namespace Server.Items
             return quality;
         }
 
+        private Type[] _MageArmorTypes = new Type[]
+        {
+            typeof(HeavyPlateJingasa),  typeof(LightPlateJingasa),
+            typeof(PlateMempo),         typeof(PlateDo),
+            typeof(PlateHiroSode),      typeof(PlateSuneate),
+            typeof(PlateHaidate)
+        };
         #endregion
 
         #region Mondain's Legacy Sets
@@ -3072,14 +3200,6 @@ namespace Server.Items
             }
         }
         public virtual int Pieces
-        {
-            get
-            {
-                return 0;
-            }
-        }
-
-        public virtual int Berserk
         {
             get
             {
@@ -3318,6 +3438,11 @@ namespace Server.Items
             return 0;
         }
         #endregion
+
+        public virtual void SetProtection(Type type, TextDefinition name, int amount)
+        {
+            m_TalismanProtection = new TalismanAttribute(type, name, amount);
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Altered

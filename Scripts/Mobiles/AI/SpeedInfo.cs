@@ -124,7 +124,7 @@ namespace Server
                 typeof(RuddyBoura), typeof(LowlandBoura), typeof(HighPlainsBoura),
                 typeof(Relanord), typeof(Ortanord), typeof(Korpre),
                 typeof(Anzuanord), typeof(Anlorzen), typeof(UndeadGuardian),
-                typeof(PutridUndeadGuardian)
+                typeof(PutridUndeadGuardian), typeof(CorgulTheSoulBinder)
             }),
             /* Fast */
             new SpeedInfo(0.2, 0.4, new Type[]

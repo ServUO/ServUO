@@ -1,56 +1,106 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
     /// <summary>
     /// Raises your defenses for a short time. Requires Bushido or Ninjitsu skill.
     /// </summary>
+    /// 
+    // spell/melee
+    // 0 parry - 70/80
+    // 100 parry - 40/65
+    // 120 parry - 20/55
+    // .6875
+
     public class Block : WeaponAbility
     {
-        private static readonly Hashtable m_Table = new Hashtable();
+        private static Dictionary<Mobile, BlockInfo> _Table;
+
         public Block()
         {
         }
 
-        public override int BaseMana
+        public override int BaseMana { get { return 20; } }
+
+        public override int AccuracyBonus { get { return -15; } }
+
+        public static bool IsBlocking(Mobile m)
         {
-            get
+            return _Table != null && _Table.ContainsKey(m);
+        }
+
+        public static int GetBonus(Mobile targ)
+        {
+            if (targ == null || _Table == null)
+                return 0;
+
+            if (_Table.ContainsKey(targ))
+                return _Table[targ]._DCIBonus;
+
+            return 0;
+        }
+
+        public static int GetSpellReduction(Mobile m)
+        {
+            if (m == null || _Table == null)
+                return 0;
+
+            if (_Table.ContainsKey(m))
             {
-                return 20;
+                return _Table[m]._SpellReduction;
             }
+
+            return 0;
         }
-        public static bool GetBonus(Mobile targ, ref int bonus)
+
+        public static int GetMeleeReduction(Mobile m)
         {
-            BlockInfo info = m_Table[targ] as BlockInfo;
+            if (m == null || _Table == null)
+                return 0;
 
-            if (info == null)
-                return false;
+            if (_Table.ContainsKey(m))
+            {
+                return _Table[m]._MeleeReduction;
+            }
 
-            bonus = info.m_Bonus;
-            return true;
+            return 0;
         }
 
-        public static void BeginBlock(Mobile m, int bonus)
+        public static void BeginBlock(Mobile m, int dciBonus, int spellblock, int meleeblock)
         {
             EndBlock(m);
 
-            BlockInfo info = new BlockInfo(m, bonus);
-            info.m_Timer = new InternalTimer(m);
+            if (_Table == null)
+                _Table = new Dictionary<Mobile, BlockInfo>();
 
-            m_Table[m] = info;
+            BlockInfo info = new BlockInfo(dciBonus, spellblock, meleeblock);
+            _Table[m] = info;
+
+            string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}", dciBonus, spellblock, meleeblock, "15", "30");
+
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Block, 1151291, 1151292, TimeSpan.FromSeconds(6), m, args));
+            // Next incoming damage reduced.<br>Defense Chance Increase: +~1_val~%<br>Incoming Spell Damage: -~2_val~%<br>Incoming Attack Damage: -~3_val~%<br>Hit Chance Penalty: ~4_val~%<br>Damage Penalty: ~5_val~%
+
+            Timer.DelayCall(TimeSpan.FromSeconds(6), () =>
+            {
+                if(IsBlocking(m))
+                    EndBlock(m);
+            });
         }
 
         public static void EndBlock(Mobile m)
         {
-            BlockInfo info = m_Table[m] as BlockInfo;
-
-            if (info != null)
+            if (_Table != null && _Table.ContainsKey(m))
             {
-                if (info.m_Timer != null)
-                    info.m_Timer.Stop();
+                _Table.Remove(m);
 
-                m_Table.Remove(m);
+                BuffInfo.RemoveBuff(m, BuffIcon.Block);
+
+                m.SendLocalizedMessage(1150286); // You no longer try to block the next attack.
+
+                if (_Table.Count == 0)
+                    _Table = null;
             }
         }
 
@@ -77,36 +127,28 @@ namespace Server.Items
 
             attacker.FixedParticles(0x37C4, 1, 16, 0x251D, 0x39D, 0x3, EffectLayer.RightHand);
 
-            int bonus = (int)(10.0 * ((Math.Max(attacker.Skills[SkillName.Bushido].Value, attacker.Skills[SkillName.Ninjitsu].Value) - 50.0) / 70.0 + 5));
+            int parry = (int)attacker.Skills[SkillName.Parry].Value;
 
-            BeginBlock(attacker, bonus);
+            int dcibonus = (int)(10.0 * ((Math.Max(attacker.Skills[SkillName.Bushido].Value, attacker.Skills[SkillName.Ninjitsu].Value) - 50.0) / 70.0 + 5));
+            int spellblock = parry <= 70 ? 70 : parry <= 100 ? 40 : 20;
+            int meleeblock = parry <= 70 ? 80 : parry <= 100 ? 65 : 55;
+
+            BeginBlock(attacker, dcibonus, spellblock, meleeblock);
         }
 
         private class BlockInfo
         {
             public readonly Mobile m_Target;
-            public readonly int m_Bonus;
-            public Timer m_Timer;
-            public BlockInfo(Mobile target, int bonus)
-            {
-                this.m_Target = target;
-                this.m_Bonus = bonus;
-            }
-        }
 
-        private class InternalTimer : Timer
-        {
-            private readonly Mobile m_Mobile;
-            public InternalTimer(Mobile m)
-                : base(TimeSpan.FromSeconds(6.0))
-            {
-                this.m_Mobile = m;
-                this.Priority = TimerPriority.TwoFiftyMS;
-            }
+            public readonly int _DCIBonus;
+            public readonly int _SpellReduction;
+            public readonly int _MeleeReduction;
 
-            protected override void OnTick()
+            public BlockInfo(int bonus, int spellred, int meleered)
             {
-                EndBlock(this.m_Mobile);
+                _DCIBonus = bonus;
+                _SpellReduction = spellred;
+                _MeleeReduction = meleered;
             }
         }
     }

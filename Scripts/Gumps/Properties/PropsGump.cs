@@ -67,7 +67,7 @@ namespace Server.Gumps
 			Poison.Lethal, Poison.DarkGlow, Poison.Parasitic
 		};
 
-		private static readonly bool PrevLabel = OldStyle;
+        private static readonly bool PrevLabel = OldStyle;
 		private static readonly bool NextLabel = OldStyle;
 		private static readonly bool TypeLabel = !OldStyle;
 
@@ -104,7 +104,7 @@ namespace Server.Gumps
 		private static readonly Type _TypeOfString = typeof(String);
 		private static readonly Type _TypeOfText = typeof(TextDefinition);
 		private static readonly Type _TypeOfPoison = typeof(Poison);
-		private static readonly Type _TypeOfMap = typeof(Map);
+        private static readonly Type _TypeOfMap = typeof(Map);
 		private static readonly Type _TypeOfSkills = typeof(Skills);
 		private static readonly Type _TypeOfPropertyObject = typeof(PropertyObjectAttribute);
 		private static readonly Type _TypeOfNoSort = typeof(NoSortAttribute);

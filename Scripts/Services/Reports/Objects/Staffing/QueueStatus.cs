@@ -57,13 +57,13 @@ namespace Server.Engines.Reports
             this.m_Count = count;
         }
 
-        public override void SerializeAttributes(PersistanceWriter op)
+        public override void SerializeAttributes(PersistenceWriter op)
         {
             op.SetDateTime("t", this.m_TimeStamp);
             op.SetInt32("c", this.m_Count);
         }
 
-        public override void DeserializeAttributes(PersistanceReader ip)
+        public override void DeserializeAttributes(PersistenceReader ip)
         {
             this.m_TimeStamp = ip.GetDateTime("t");
             this.m_Count = ip.GetInt32("c");

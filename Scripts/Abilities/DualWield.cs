@@ -58,6 +58,8 @@ namespace Server.Items
 
             Timer t = new DualWieldTimer(attacker, (int)(20.0 + 3.0 * (attacker.Skills[SkillName.Ninjitsu].Value - 50.0) / 7.0));	//20-50 % increase
 
+            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.DualWield, 1151294, 1151293, TimeSpan.FromSeconds(6.0), attacker, damage));
+
             t.Start();
             Registry.Add(attacker, t);
         }

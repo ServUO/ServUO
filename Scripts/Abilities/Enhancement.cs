@@ -84,6 +84,9 @@ namespace Server
 
         public static int GetValue(Mobile m, AosAttribute att)
         {
+            if (m == null)
+                return 0;
+
             if (EnhancementList.ContainsKey(m))
             {
                 int value = 0;
@@ -136,6 +139,9 @@ namespace Server
 
         public static int GetValue(Mobile m, AosWeaponAttribute att)
         {
+            if (m == null)
+                return 0;
+
             if (EnhancementList.ContainsKey(m))
             {
                 int value = 0;
@@ -172,6 +178,9 @@ namespace Server
 
         public static int GetValue(Mobile m, AosArmorAttribute att)
         {
+            if (m == null)
+                return 0;
+
             if (EnhancementList.ContainsKey(m))
             {
                 int value = 0;
@@ -208,6 +217,9 @@ namespace Server
 
         public static int GetValue(Mobile m, SAAbsorptionAttribute att)
         {
+            if (m == null)
+                return 0;
+
             if (EnhancementList.ContainsKey(m))
             {
                 int value = 0;

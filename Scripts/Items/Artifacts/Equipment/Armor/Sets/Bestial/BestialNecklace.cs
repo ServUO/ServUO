@@ -1,18 +1,18 @@
 using System;
-using Server.Items;
+using Server;
 
 namespace Server.Items
 {
     public class BestialNecklace : GargishNecklace, ISetItem
     {
+        public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1151544; } } // Bestial Necklace
 
         #region ISetItem Members
         public override SetItem SetID { get { return SetItem.Bestial; } }
         public override int Pieces { get { return 4; } }
-        public override int Berserk { get { return 1; } }
         #endregion
-
+        
         public override int BasePhysicalResistance { get { return 3; } }
         public override int BaseFireResistance { get { return 4; } }
         public override int BaseColdResistance { get { return 4; } }
@@ -24,14 +24,33 @@ namespace Server.Items
         [Constructable]
         public BestialNecklace()
         {
-            Hue = 2010;
+            this.Hue = 2010;
             this.Weight = 1;
-            SetHue = 2010;
         }
 
         public BestialNecklace(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void OnAdded(object parent)
+        {
+            base.OnAdded(parent);
+
+            if (parent is Mobile && !Deleted)
+            {
+                BestialSetHelper.OnAdded((Mobile)parent, this);
+            }
+        }
+
+        public override void OnRemoved(object parent)
+        {
+            base.OnRemoved(parent);
+
+            if (parent is Mobile && !Deleted)
+            {
+                BestialSetHelper.OnRemoved((Mobile)parent, this);
+            }
         }
 
         public override void Serialize(GenericWriter writer)
@@ -44,6 +63,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (this.Hue != 2010)
+                this.Hue = 2010;
         }
     }
 }

@@ -58,6 +58,15 @@ namespace Server
             }
         }
 
+        private readonly bool m_NoTimer;
+        public bool NoTimer
+        {
+            get
+            {
+                return this.m_NoTimer;
+            }
+        }
+
         private readonly TimeSpan m_TimeLength;
         public TimeSpan TimeLength
         {
@@ -140,6 +149,12 @@ namespace Server
 
                     pm.RemoveBuff(this);
                 }));
+        }
+
+        public BuffInfo(BuffIcon iconID, int titleCliloc, int secondaryCliloc, TimeSpan length, Mobile m, bool notimer)
+            : this(iconID, titleCliloc, secondaryCliloc, length, m)
+        {
+            m_NoTimer = notimer;
         }
 
         public BuffInfo(BuffIcon iconID, int titleCliloc, TextDefinition args)
@@ -235,8 +250,8 @@ namespace Server
         NightSight = 0x3ED,	//*
         DeathStrike,
         EvilOmen,
-        UnknownStandingSwirl,	//Which is healing throttle & Stamina throttle?
-        UnknownKneelingSword,
+        HonoredDebuff,
+        AchievePerfection,
         DivineFury,			//*
         EnemyOfOne,			//*
         HidingAndOrStealth,	//*
@@ -279,8 +294,8 @@ namespace Server
         Sleep,
         StoneForm,
         SpellPlague,
-        SpellTrigger,
-        NetherBolt,
+        Berserk,
+        MassSleep,
         Fly,
         Inspire,
         Invigorate,
@@ -407,7 +422,7 @@ namespace Server
     public sealed class AddBuffPacket : Packet
     {
         public AddBuffPacket(Mobile m, BuffInfo info)
-            : this(m, info.ID, info.TitleCliloc, info.SecondaryCliloc, info.Args, (info.TimeStart != DateTime.MinValue) ? ((info.TimeStart + info.TimeLength) - DateTime.UtcNow) : TimeSpan.Zero)
+            : this(m, info.ID, info.TitleCliloc, info.SecondaryCliloc, info.Args, info.NoTimer ? TimeSpan.Zero :(info.TimeStart != DateTime.MinValue) ? ((info.TimeStart + info.TimeLength) - DateTime.UtcNow) : TimeSpan.Zero)
         {
         }
 

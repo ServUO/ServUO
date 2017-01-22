@@ -4,6 +4,7 @@ using Server.Engines.Craft;
 using Server.Items;
 using Server.Targeting;
 using Server.Engines.VeteranRewards;
+using System.Linq;
 
 namespace Server.Engines.Craft
 {
@@ -19,6 +20,26 @@ namespace Server.Engines.Craft
             CraftSystem = craftSystem;
             AlteredType = alteredType;
             Inherit = inherit;
+        }
+
+        /// <summary>
+        /// this enables any craftable item where their parent class can be altered, can be altered too.
+        /// This is mainly for the ML craftable artifacts.
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckInherit(Type original)
+        {
+            if (Inherit)
+                return true;
+
+            var system = CraftContext.Systems.FirstOrDefault(sys => sys.GetType() == CraftSystem);
+
+            if (system != null)
+            {
+                return system.CraftItems.SearchFor(original) != null;
+            }
+
+            return false;
         }
     }
 
@@ -57,15 +78,17 @@ namespace Server.Engines.Craft
             this.m_Tool = tool;
         }
 
-        private static AlterableAttribute GetAlterableAttribute(object o, bool inherit = false)
+        private static AlterableAttribute GetAlterableAttribute(object o, bool inherit)
         {
-            object[] attrs = o.GetType().GetCustomAttributes(typeof(AlterableAttribute), inherit);
+            Type t = o.GetType();
 
+            object[] attrs = t.GetCustomAttributes(typeof(AlterableAttribute), inherit);
+            
             if (attrs != null && attrs.Length > 0)
             {
                 AlterableAttribute attr = attrs[0] as AlterableAttribute;
 
-                if (attr != null && (!inherit || attr.Inherit))
+                if (attr != null && (!inherit || attr.CheckInherit(t)))
                     return attr;
             }
 
@@ -83,7 +106,9 @@ namespace Server.Engines.Craft
             var alterInfo = GetAlterableAttribute(o, false);
 
             if (alterInfo == null)
+            {
                 alterInfo = GetAlterableAttribute(o, true);
+            }
 
             if (origItem == null || !origItem.IsChildOf(from.Backpack))
             {
@@ -128,8 +153,7 @@ namespace Server.Engines.Craft
             }
             else if (alterInfo == null)
             {
-                // You may not alter that item.
-                number = 1094728;
+                number = 1094728; // You may not alter that item.
             }
             else if (!IsAlterable(origItem))
             {
@@ -176,11 +200,18 @@ namespace Server.Engines.Craft
                     BaseWeapon oldweapon = (BaseWeapon)origItem;
                     BaseWeapon newweapon = (BaseWeapon)newitem;
 
-                    newweapon.Attributes = new AosAttributes(oldweapon, newweapon.Attributes);
-                    //newweapon.ElementDamages = new AosElementAttributes( oldweapon, newweapon.ElementDamages ); To Do
-                    newweapon.SkillBonuses = new AosSkillBonuses(oldweapon, newweapon.SkillBonuses);
-                    newweapon.WeaponAttributes = new AosWeaponAttributes(oldweapon, newweapon.WeaponAttributes);
-                    newweapon.AbsorptionAttributes = new SAAbsorptionAttributes(oldweapon, newweapon.AbsorptionAttributes);
+                    newweapon.Slayer = oldweapon.Slayer;
+                    newweapon.Slayer2 = oldweapon.Slayer2;
+                    newweapon.Slayer3 = oldweapon.Slayer3;
+                    newweapon.Resource = oldweapon.Resource;
+
+                    if (oldweapon.PlayerConstructed)
+                    {
+                        newweapon.PlayerConstructed = true;
+                        newweapon.Crafter = oldweapon.Crafter;
+                        newweapon.Quality = oldweapon.Quality;
+                    }
+
                     newweapon.Altered = true;
                 }
                 else if (origItem is BaseArmor && newitem is BaseArmor)
@@ -188,10 +219,32 @@ namespace Server.Engines.Craft
                     BaseArmor oldarmor = (BaseArmor)origItem;
                     BaseArmor newarmor = (BaseArmor)newitem;
 
-                    newarmor.Attributes = new AosAttributes(oldarmor, newarmor.Attributes);
-                    newarmor.ArmorAttributes = new AosArmorAttributes(oldarmor, newarmor.ArmorAttributes);
-                    newarmor.SkillBonuses = new AosSkillBonuses(oldarmor, newarmor.SkillBonuses);
-                    newarmor.AbsorptionAttributes = new SAAbsorptionAttributes(oldarmor, newarmor.AbsorptionAttributes);
+                    if (oldarmor.PlayerConstructed)
+                    {
+                        newarmor.PlayerConstructed = true;
+                        newarmor.Crafter = oldarmor.Crafter;
+                        newarmor.Quality = oldarmor.Quality;
+                    }
+
+                    newarmor.Resource = oldarmor.Resource;
+
+                    if (origItem is Glasses)
+                    {
+                        newarmor.PhysicalBonus = oldarmor.BasePhysicalResistance;
+                        newarmor.FireBonus = oldarmor.BaseFireResistance;
+                        newarmor.ColdBonus = oldarmor.BaseColdResistance;
+                        newarmor.PoisonBonus = oldarmor.BasePoisonResistance;
+                        newarmor.EnergyBonus = oldarmor.BaseEnergyResistance;
+                    }
+                    else
+                    {
+                        newarmor.PhysicalBonus = oldarmor.PhysicalBonus;
+                        newarmor.FireBonus = oldarmor.FireBonus;
+                        newarmor.ColdBonus = oldarmor.ColdBonus;
+                        newarmor.PoisonBonus = oldarmor.PoisonBonus;
+                        newarmor.EnergyBonus = oldarmor.EnergyBonus;
+                    }
+
                     newarmor.Altered = true;
                 }
                 else if (origItem is BaseClothing && newitem is BaseClothing)
@@ -199,9 +252,13 @@ namespace Server.Engines.Craft
                     BaseClothing oldcloth = (BaseClothing)origItem;
                     BaseClothing newcloth = (BaseClothing)newitem;
 
-                    newcloth.Attributes = new AosAttributes(oldcloth, newcloth.Attributes);
-                    newcloth.SkillBonuses = new AosSkillBonuses(oldcloth, newcloth.SkillBonuses);
-                    newcloth.SAAbsorptionAttributes = new SAAbsorptionAttributes(oldcloth, newcloth.SAAbsorptionAttributes);
+                    if (oldcloth.PlayerConstructed)
+                    {
+                        newcloth.PlayerConstructed = true;
+                        newcloth.Crafter = oldcloth.Crafter;
+                        newcloth.Quality = oldcloth.Quality;
+                    }
+
                     newcloth.Altered = true;
                 }
                 else if (origItem is BaseClothing && newitem is BaseArmor)
@@ -209,21 +266,22 @@ namespace Server.Engines.Craft
                     BaseClothing oldcloth = (BaseClothing)origItem;
                     BaseArmor newarmor = (BaseArmor)newitem;
 
-                    newarmor.Attributes = new AosAttributes(oldcloth, newarmor.Attributes);
-                    newarmor.ArmorAttributes = new AosArmorAttributes(oldcloth, newarmor.ArmorAttributes);
-                    newarmor.SkillBonuses = new AosSkillBonuses(oldcloth, newarmor.SkillBonuses);
-                    newarmor.AbsorptionAttributes = new SAAbsorptionAttributes(oldcloth, newarmor.AbsorptionAttributes);
+                    if (oldcloth.PlayerConstructed)
+                    {
+                        int qual = (int)oldcloth.Quality;
+
+                        newarmor.PlayerConstructed = true;
+                        newarmor.Crafter = oldcloth.Crafter;
+                        newarmor.Quality = (ArmorQuality)qual;
+                    }
+
                     newarmor.Altered = true;
                 }
                 else if (origItem is BaseQuiver && newitem is BaseArmor)
                 {
-                    BaseQuiver oldquiver = (BaseQuiver)origItem;
+                    //BaseQuiver oldquiver = (BaseQuiver)origItem;
                     BaseArmor newarmor = (BaseArmor)newitem;
 
-                    newarmor.Attributes = new AosAttributes(oldquiver, newarmor.Attributes);
-                    newarmor.ArmorAttributes = new AosArmorAttributes(oldquiver, newarmor.ArmorAttributes);
-                    newarmor.SkillBonuses = new AosSkillBonuses(oldquiver, newarmor.SkillBonuses);
-                    newarmor.AbsorptionAttributes = new SAAbsorptionAttributes(oldquiver, newarmor.AbsorptionAttributes);
                     newarmor.Altered = true;
                 }
                 else
@@ -231,14 +289,28 @@ namespace Server.Engines.Craft
                     return;
                 }
 
-                newitem.Name = origItem.Name;
-                newitem.Hue = origItem.Hue;
+                if (origItem.Name != null)
+                {
+                    newitem.Name = origItem.Name;
+                }
+                else if (Server.Engines.VendorSearhing.VendorSearch.StringList != null)
+                {
+                    if (origItem.LabelNumber > 0 && RetainsName(origItem))
+                        newitem.Name = Server.Engines.VendorSearhing.VendorSearch.StringList.GetString(origItem.LabelNumber);
+                }
 
+                newitem.Hue = origItem.Hue;
                 newitem.LootType = origItem.LootType;
 
                 origItem.Delete();
                 origItem.OnAfterDuped(newitem);
                 newitem.Parent = null;
+
+                if (origItem is IDurability && newitem is IDurability)
+                {
+                    ((IDurability)newitem).MaxHitPoints = ((IDurability)origItem).MaxHitPoints;
+                    ((IDurability)newitem).HitPoints = ((IDurability)origItem).HitPoints;
+                }
 
                 if (from.Backpack == null)
                     newitem.MoveToWorld(from.Location, from.Map);
@@ -257,6 +329,23 @@ namespace Server.Engines.Craft
                 from.SendGump(new CraftGump(from, m_System, m_Tool, number));
             else
                 from.SendLocalizedMessage(number);
+        }
+
+        private bool RetainsName(Item item)
+        {
+            if (item is Glasses)
+                return true;
+
+            if (item is BaseArmor && ((BaseArmor)item).ArtifactRarity > 0)
+                return true;
+
+            if (item is BaseWeapon && ((BaseWeapon)item).ArtifactRarity > 0)
+                return true;
+
+            if (item is BaseJewel && ((BaseJewel)item).ArtifactRarity > 0)
+                return true;
+
+            return item.LabelNumber >= 1073505 && item.LabelNumber <= 1073552;
         }
 
         private static bool IsAlterable(Item item)
@@ -281,6 +370,9 @@ namespace Server.Engines.Craft
 
                 if ((armor.RequiredRace != null && armor.RequiredRace == Race.Gargoyle && !armor.IsArtifact))
                     return false;
+
+                if (armor is RingmailGlovesOfMining && armor.Resource > CraftResource.Iron)
+                    return false;
             }
 
             if (item is BaseClothing)
@@ -301,6 +393,9 @@ namespace Server.Engines.Craft
 		        if (quiver.SetID != SetItem.None || !quiver.CanAlter)
 			        return false;
 	        }
+
+            if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
+                return false;
 
             if (item is IRewardItem)
                 return false;

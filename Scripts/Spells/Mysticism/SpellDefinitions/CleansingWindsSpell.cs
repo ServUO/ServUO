@@ -90,7 +90,7 @@ namespace Server.Spells.Mystic
                     }
 
                     if (toHealMod > 0)
-                        m.Heal(toHealMod + Utility.RandomMinMax(1, 6));
+                        SpellHelper.Heal(toHealMod + Utility.RandomMinMax(1, 6), m, Caster);
 
                     m.RemoveStatMod("[Magic] Str Curse");
 					m.RemoveStatMod("[Magic] Dex Curse");

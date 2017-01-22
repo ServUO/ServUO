@@ -125,11 +125,11 @@ namespace Server.SkillHandlers
                 if (message)
                     from.SendLocalizedMessage(1080427);  // You cannot magically unravel an item that is currently enchanted.
             }
-            //else if (item is BaseWeapon && ((BaseWeapon)item).FocusWeilder != null)
-            //{
-            //    if (message)
-            //        from.SendLocalizedMessage(1080445); //You cannot magically unravel an item that is under the effects of the ninjitsu focus attack ability.
-            //}
+            else if (item is BaseWeapon && ((BaseWeapon)item).FocusWeilder != null)
+            {
+                if (message)
+                    from.SendLocalizedMessage(1080445); //You cannot magically unravel an item that is under the effects of the ninjitsu focus attack ability.
+            }
             else if (item is IFactionItem && ((IFactionItem)item).FactionItemState != null)
             {
                 if (message)
@@ -427,9 +427,9 @@ namespace Server.SkillHandlers
                         {
                             string p = prop as string;
 
-                            if (p == "BalancedWeapon" && wep is BaseRanged)
+                            /*if (p == "BalancedWeapon" && wep is BaseRanged)
                                 ((BaseRanged)wep).Balanced = true;
-                            else if (p == "WeaponVelocity" && wep is BaseRanged)
+                            else */if (p == "WeaponVelocity" && wep is BaseRanged)
                                 ((BaseRanged)wep).Velocity = value;
                         }
                     }
@@ -642,7 +642,7 @@ namespace Server.SkillHandlers
 				{
 					success = true;
 					resType = typeof(RelicFragment);
-					resAmount = Math.Max(1, resAmount - Utility.Random(3));
+					resAmount = 1;
 				}
 				else if (from.CheckSkill(SkillName.Imbuing, 45.0, 95.0))
 				{
@@ -1184,8 +1184,8 @@ namespace Server.SkillHandlers
                 {
                     BaseRanged ranged = item as BaseRanged;
 
-                    if(ranged.Balanced)
-                        weight += GetIntensityForAttribute("BalancedWeapon", mod, 1);
+                    /*if(ranged.Balanced)
+                        weight += GetIntensityForAttribute("BalancedWeapon", mod, 1);*/
 
                     if(ranged.Velocity > 0)
                         weight += GetIntensityForAttribute("WeaponVelocity", mod, ranged.Velocity);
@@ -1474,7 +1474,7 @@ namespace Server.SkillHandlers
             m_Table[55] = new ImbuingDefinition(AosElementAttribute.Energy,         1061162, 100,   typeof(MagicalResidue), typeof(Amethyst),       typeof(BouraPelt), 15, 1, 1112008);
             
             m_Table[60] = new ImbuingDefinition("WeaponVelocity",                   1080416, 130, 	typeof(RelicFragment),  typeof(Tourmaline), 	typeof(EssenceDirection),   50, 2, 1112048);
-			m_Table[61] = new ImbuingDefinition("BalancedWeapon",	                1072792, 150, 	typeof(RelicFragment),  typeof(Amber), 		    typeof(EssenceBalance),     1, 0, 1112047);
+			m_Table[61] = new ImbuingDefinition(AosAttribute.BalancedWeapon,	    1072792, 150, 	typeof(RelicFragment),  typeof(Amber), 		    typeof(EssenceBalance),     1, 0, 1112047);
             m_Table[62] = new ImbuingDefinition("SearingWeapon",	                1151183, 150, 	null,                   null, 		            null,                       1, 0, -1);
 
 			m_Table[101] = new ImbuingDefinition(SlayerName.OrcSlaying,			1060470, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111977);
@@ -1966,8 +1966,8 @@ namespace Server.SkillHandlers
 
         public static int GetModForAttribute(string str)
         {
-            if (str == "BalancedWeapon")
-                return 61;
+            /*if (str == "BalancedWeapon")
+                return 61;*/
 
             if (str == "WeaponVelocity")
                 return 60;

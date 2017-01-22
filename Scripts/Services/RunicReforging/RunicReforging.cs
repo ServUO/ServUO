@@ -310,11 +310,11 @@ namespace Server.Items
                     if (!(item is BaseWeapon) || (((BaseWeapon)item).PrimaryAbility != WeaponAbility.BleedAttack && ((BaseWeapon)item).SecondaryAbility != WeaponAbility.BleedAttack))
                         list.Remove(col);
                 }
-                else if (list.Contains(col) && col.Attribute is string && (string)col.Attribute == "BalancedWeapon")
+                /*else if (list.Contains(col) && col.Attribute is string && (string)col.Attribute == "BalancedWeapon")
                 {
                     if (!(item is BaseRanged))
                         list.Remove(col);
-                }
+                }*/
                 else if (list.Contains(col) && col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.SplinteringWeapon)
                 {
                     if (playermade || item is BaseRanged)
@@ -384,11 +384,11 @@ namespace Server.Items
                         budget -= weight;
                     }
                 }
-                else if (str == "BalancedWeapon" && item is BaseRanged)
+                /*else if (str == "BalancedWeapon" && item is BaseRanged)
                 {
                     ((BaseRanged)item).Balanced = true;
                     budget -= 100;
-                }
+                }*/
                 else if (str == "WeaponVelocity" && item is BaseRanged)
                 {
                     int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
@@ -897,7 +897,7 @@ namespace Server.Items
                         new NamedInfoCol("Slayer", 1),
                         new NamedInfoCol(AosWeaponAttribute.MageWeapon, MageWeaponTable),
                         new NamedInfoCol(AosAttribute.SpellChanneling, 1),
-                        new NamedInfoCol("BalancedWeapon", 1),
+                        new NamedInfoCol(AosAttribute.BalancedWeapon, 1),
                         new NamedInfoCol("WeaponVelocity", WeaponVelocityTable),
                     },
                     new NamedInfoCol[] // armor
@@ -1030,7 +1030,7 @@ namespace Server.Items
                     new NamedInfoCol[] // Weapon
                     {
                         new NamedInfoCol(AosAttribute.EnhancePotions, WeaponEnhancePots),
-                        new NamedInfoCol("BalancedWeapon", 1),
+                        new NamedInfoCol(AosAttribute.BalancedWeapon, 1),
                     },
                     new NamedInfoCol[] // armor
                     {
@@ -1957,7 +1957,7 @@ namespace Server.Items
                     neg.Antique = 1;
                     budget += 100;
                 }
-                else
+                else if(0.001 < chance)
                 {
                     neg.Brittle = 1;
                     budget += 150;
@@ -2383,6 +2383,12 @@ namespace Server.Items
             if (item is BaseJewel)
                 return ((BaseJewel)item).NegativeAttributes;
 
+            if (item is BaseTalisman)
+                return ((BaseTalisman)item).NegativeAttributes;
+
+            if (item is Spellbook)
+                return ((Spellbook)item).NegativeAttributes;
+
             return null;
         }
 
@@ -2463,7 +2469,7 @@ namespace Server.Items
 
         private static object[] m_RangedStandard = new object[]
         {
-            //AosWeaponAttribute.BalancedWeapon,
+            //AosAttribute.BalancedWeapon,
             //AosWeaponAttribute.WeaponVelocity
         };
 
@@ -2752,12 +2758,12 @@ namespace Server.Items
 
         public static int[][] WeaponWeaponDamage = new int[][]
         {
-            new int[] { 30, 50, 50, 60, 70, 70, 70, 70 },
-            new int[] { 50, 60, 70, 70, 70, 70, 70, 70 },
-            new int[] { 70, 70, 70, 70, 70, 70, 70, 70 },
+            new int[] { 30, 50, 50, 60, 70, 70, 70 },
+            new int[] { 50, 60, 70, 70, 70, 70, 70 },
+            new int[] { 70, 70, 70, 70, 70, 70, 70 },
             new int[] {  },
-            new int[] { 50, 60, 70, 70, 70, 70, 70, 70 },
-            new int[] { 70, 70, 70, 70, 70, 70, 70, 70 },
+            new int[] { 50, 60, 70, 70, 70, 70, 70 },
+            new int[] { 70, 70, 70, 70, 70, 70, 70 },
         };
 
         public static int[][] WeaponEnhancePots = new int[][]

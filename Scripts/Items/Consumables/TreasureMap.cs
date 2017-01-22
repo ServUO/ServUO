@@ -527,6 +527,10 @@ namespace Server.Items
             }
         }
 
+        public virtual void OnMapComplete(TreasureMapChest chest)
+        {
+        }
+
         public TreasureMap(Serial serial)
             : base(serial)
         { }
@@ -1335,6 +1339,8 @@ namespace Server.Items
                     m_Chest.Temporary = false;
                     m_TreasureMap.Completed = true;
                     m_TreasureMap.CompletedBy = m_From;
+
+                    m_TreasureMap.OnMapComplete(m_Chest);
 
                     int spawns;
                     switch (m_TreasureMap.Level)

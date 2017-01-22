@@ -71,6 +71,23 @@ namespace Server.Engines.Craft
         public bool RequiresMechanicalLife { get; set; }
         #endregion
 
+        #region TOL
+        private object m_Data;
+        private int m_DisplayID;
+
+        public object Data
+        {
+            get { return m_Data; }
+            set { m_Data = value; }
+        }
+
+        public int DisplayID
+        {
+            get { return m_DisplayID; }
+            set { m_DisplayID = value; }
+        }
+        #endregion
+
         private Recipe m_Recipe;
 
 		public Recipe Recipe { get { return m_Recipe; } }
@@ -333,14 +350,22 @@ namespace Server.Engines.Craft
 
 		private static readonly Type[][] m_TypesTable = new[]
 		{
-			new[] {typeof(Board), typeof(Log)}, new[] {typeof(HeartwoodBoard), typeof(HeartwoodLog)},
-			new[] {typeof(BloodwoodBoard), typeof(BloodwoodLog)}, new[] {typeof(FrostwoodBoard), typeof(FrostwoodLog)},
-			new[] {typeof(OakBoard), typeof(OakLog)}, new[] {typeof(AshBoard), typeof(AshLog)},
-			new[] {typeof(YewBoard), typeof(YewLog)}, new[] {typeof(Leather), typeof(Hides)},
-			new[] {typeof(SpinedLeather), typeof(SpinedHides)}, new[] {typeof(HornedLeather), typeof(HornedHides)},
-			new[] {typeof(BarbedLeather), typeof(BarbedHides)}, new[] {typeof(BlankMap), typeof(BlankScroll)},
-			new[] {typeof(Cloth), typeof(UncutCloth), typeof(AbyssalCloth)}, new[] {typeof(CheeseWheel), typeof(CheeseWedge)},
-			new[] {typeof(Pumpkin), typeof(SmallPumpkin)}, new[] {typeof(WoodenBowlOfPeas), typeof(PewterBowlOfPeas)},
+			new[] {typeof(Board), typeof(Log)}, 
+            new[] {typeof(HeartwoodBoard), typeof(HeartwoodLog)},
+			new[] {typeof(BloodwoodBoard), typeof(BloodwoodLog)}, 
+            new[] {typeof(FrostwoodBoard), typeof(FrostwoodLog)},
+			new[] {typeof(OakBoard), typeof(OakLog)}, 
+            new[] {typeof(AshBoard), typeof(AshLog)},
+			new[] {typeof(YewBoard), typeof(YewLog)}, 
+            new[] {typeof(Leather), typeof(Hides)},
+			new[] {typeof(SpinedLeather), typeof(SpinedHides)}, 
+            new[] {typeof(HornedLeather), typeof(HornedHides)},
+			new[] {typeof(BarbedLeather), typeof(BarbedHides)}, 
+            new[] {typeof(BlankMap), typeof(BlankScroll)},
+			new[] {typeof(Cloth), typeof(UncutCloth), typeof(AbyssalCloth)},
+            new[] {typeof(CheeseWheel), typeof(CheeseWedge)},
+			new[] {typeof(Pumpkin), typeof(SmallPumpkin)}, 
+            new[] {typeof(WoodenBowlOfPeas), typeof(PewterBowlOfPeas)},
             new[] { typeof( CrystallineFragments ), typeof( BrokenCrystals ), typeof( ShatteredCrystals ), typeof( ScatteredCrystals ), typeof( CrushedCrystals ), typeof( JaggedCrystals ), typeof( AncientPotteryFragments ) },
             new[] { typeof( RedScales ), typeof( BlueScales ), typeof( BlackScales ), typeof( YellowScales ), typeof( GreenScales ), typeof( WhiteScales ), typeof( MedusaDarkScales ), typeof( MedusaLightScales ) }
 		};
@@ -1126,7 +1151,6 @@ namespace Server.Engines.Craft
 
 				if (talisman.Skill == system.MainSkill)
 				{
-					chance -= talisman.SuccessBonus / 100.0;
 					bonus = talisman.ExceptionalBonus / 100.0;
 				}
 			}
@@ -1672,13 +1696,22 @@ namespace Server.Engines.Craft
                     m_PlantPigmentHue = PlantPigmentHue.None;
 					#endregion
 
-					if (tool.Parent is Container) {
-					Container cntnr = (Container) tool.Parent;
-                                        cntnr.TryDropItem(from, item, false);
-					}
-					else {
-					from.AddToBackpack(item);
-					}
+                    if (tool.Parent is Container)
+                    {
+                        Container cntnr = (Container)tool.Parent;
+
+                        if (!cntnr.TryDropItem(from, item, false))
+                        {
+                            if(cntnr != from.Backpack)
+                                from.AddToBackpack(item);
+                            else
+                                item.MoveToWorld(from.Location, from.Map);
+                        }
+                    }
+                    else
+                    {
+                        from.AddToBackpack(item);
+                    }
 
 					EventSink.InvokeCraftSuccess(new CraftSuccessEventArgs(from, item, tool));
 

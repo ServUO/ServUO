@@ -17,7 +17,9 @@ namespace Server.Items
             Attributes.RegenMana = 2;
             Attributes.DefendChance = 5;
             Attributes.Luck = 140;
-            Hue = 1194;            
+            Hue = 1194;
+
+            Layer = Layer.OuterTorso;
         }
 
         public override int InitMinHits { get { return 255; } }
@@ -38,6 +40,16 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Layer != Layer.OuterTorso)
+            {
+                if (Parent is Mobile)
+                {
+                    ((Mobile)Parent).AddToBackpack(this);
+                }
+
+                Layer = Layer.OuterTorso;
+            }
         }
     }
 }

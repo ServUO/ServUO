@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public Thrasher()
-            : base(AIType.AI_Melee, FightMode.Evil, 10, 1, 0.1, 0.2)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.1, 0.2)
         {
             this.Name = "Thrasher";
             this.Body = 0xCE;

@@ -50,8 +50,10 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
+            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.ArmorPierce, 1153803, 1153903, TimeSpan.FromSeconds(5.0), defender, damage));
+
             attacker.SendLocalizedMessage(1063350); // You pierce your opponent's armor!
-            defender.SendLocalizedMessage(1063351); // Your attacker pierced your armor!
+            defender.SendLocalizedMessage(1063351); // Your attacker pierced your armor!            
 
             defender.FixedParticles(0x3728, 1, 26, 0x26D6, 0, 0, EffectLayer.Waist);
         }

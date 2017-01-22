@@ -48,7 +48,7 @@ namespace Server.Gumps
             return (book != null && book.HasSpell(spellID));
         }
 
-        public int GetMapHue(Map map)
+        public static int GetMapHue(Map map)
         {
             if (map == Map.Trammel)
                 return 10;
@@ -64,7 +64,7 @@ namespace Server.Gumps
             return 0;
         }
 
-        public string GetName(string name)
+        public static string GetName(string name)
         {
             if (name == null || (name = name.Trim()).Length <= 0)
                 return "(indescript)";
@@ -318,8 +318,8 @@ namespace Server.Gumps
 
                 if (i < entries.Count)
                 {
-                    desc = this.GetName(entries[i].Description);
-                    hue = this.GetMapHue(entries[i].Map);
+                    desc = GetName(entries[i].Description);
+                    hue = GetMapHue(entries[i].Map);
                 }
                 else
                 {
@@ -350,8 +350,8 @@ namespace Server.Gumps
             {
                 RunebookEntry e = (RunebookEntry)this.m_Book.Entries[index];
 
-                desc = this.GetName(e.Description);
-                hue = this.GetMapHue(e.Map);
+                desc = GetName(e.Description);
+                hue = GetMapHue(e.Map);
 
                 // Location labels
                 int xLong = 0, yLat = 0;

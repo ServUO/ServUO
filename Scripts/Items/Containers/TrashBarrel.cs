@@ -69,38 +69,19 @@ namespace Server.Items
             this.m_Cleanup = new List<CleanupArray>();
         }
 
-        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
-        {
-            base.GetContextMenuEntries(from, list);
-
-            if (from is PlayerMobile)
-            {
-                list.Add(new AppraiseforCleanup(from));
-            }
-        }
-
-        private class AppraiseforCleanup : ContextMenuEntry
-        {
-            private readonly Mobile m_Mobile;
-            public AppraiseforCleanup(Mobile mobile)
-                : base(1151298, 2) //Appraise for Cleanup
-            {
-                this.m_Mobile = mobile;
-            }
-
-            public override void OnClick()
-            {
-                m_Mobile.Target = new AppraiseforCleanupTarget(m_Mobile);
-                m_Mobile.SendLocalizedMessage(1151299); //Target items to see how many Clean Up Britannia points you will receive for throwing them away. Continue targeting items until done, then press the ESC key to cancel the targeting cursor.
-            }
-        }
-
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
             if (!base.OnDragDrop(from, dropped))
                 return false;
 
-            AddCleanupItem(from, dropped);
+            if (!AddCleanupItem(from, dropped))
+            {
+                if (dropped.LootType == LootType.Blessed)
+                {
+                    from.SendLocalizedMessage(1075256); // That is blessed; you cannot throw it away.
+                    return false;
+                }
+            }
 
             if (this.TotalItems >= 50)
             {
@@ -126,7 +107,14 @@ namespace Server.Items
             if (!base.OnDragDropInto(from, item, p))
                 return false;
 
-            AddCleanupItem(from, item);
+            if (!AddCleanupItem(from, item))
+            {
+                if (item.LootType == LootType.Blessed)
+                {
+                    from.SendLocalizedMessage(1075256); // That is blessed; you cannot throw it away.
+                    return false;
+                }
+            }
 
             if (this.TotalItems >= 50)
             {

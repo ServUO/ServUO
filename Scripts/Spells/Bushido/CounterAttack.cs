@@ -53,6 +53,8 @@ namespace Server.Spells.Bushido
 
             m_Table[m] = t;
 
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.CounterAttack, 1060598, 1063266, TimeSpan.FromSeconds(30), m));
+
             t.Start();
         }
 
@@ -64,6 +66,8 @@ namespace Server.Spells.Bushido
                 t.Stop();
 
             m_Table.Remove(m);
+
+            BuffInfo.RemoveBuff(m, BuffIcon.CounterAttack);
 
             OnEffectEnd(m, typeof(CounterAttack));
         }

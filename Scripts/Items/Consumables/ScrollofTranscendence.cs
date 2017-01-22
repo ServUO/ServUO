@@ -1,9 +1,10 @@
 using System;
 using Server.Mobiles;
+using Server.Accounting;
 
 namespace Server.Items
 {
-    public class ScrollofTranscendence : SpecialScroll
+    public class ScrollofTranscendence : SpecialScroll, IAccountRestricted
     {
         public override int LabelNumber
         {
@@ -38,6 +39,9 @@ namespace Server.Items
             return new ScrollofTranscendence(skill, Utility.RandomMinMax(min, max) * 0.1);
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public string Account { get; set; }
+
         public ScrollofTranscendence()
             : this(SkillName.Alchemy, 0.0)
         {
@@ -64,6 +68,9 @@ namespace Server.Items
                 list.Add(1076759, "{0}\t{1}.0 Skill Points", this.GetName(), this.Value);
             else
                 list.Add(1076759, "{0}\t{1} Skill Points", this.GetName(), this.Value);
+
+            if (!String.IsNullOrEmpty(Account))
+                list.Add(1155526); // Account Bound
         }
 		
         public override bool CanUse(Mobile from)
@@ -76,28 +83,6 @@ namespace Server.Items
             if (pm == null)
                 return false;
 			
-            #region Mondain's Legacy
-            /* to add when skillgain quests will be implemented
-			
-            for (int i = pm.Quests.Count - 1; i >= 0; i--)
-            {
-            BaseQuest quest = pm.Quests[i];
-
-            for (int j = quest.Objectives.Count - 1; j >= 0; j--)
-            {
-            BaseObjective objective = quest.Objectives[j];
-
-            if (objective is ApprenticeObjective)
-            {
-            from.SendMessage("You are already under the effect of an enhanced skillgain quest.");
-            return false;
-            }
-            }
-            }
-			
-            */
-            #endregion
-			
             #region Scroll of Alacrity
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
@@ -105,7 +90,18 @@ namespace Server.Items
                 return false;
             }
             #endregion
-			
+
+            if (!String.IsNullOrEmpty(Account))
+            {
+                Account acct = pm.Account as Account;
+
+                if (acct == null || acct.Username != Account)
+                {
+                    from.SendLocalizedMessage(1151920); // This item is Account Bound, you are not permitted to take this action.
+                    return false;
+                }
+            }
+
             return true;
         }
 
@@ -166,7 +162,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+
+            writer.Write(Account);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -174,6 +172,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = (this.InheritsItem ? 0 : reader.ReadInt()); //Required for SpecialScroll insertion
+
+            if (version > 0)
+                Account = reader.ReadString();
 
             this.LootType = LootType.Cursed;
             this.Insured = false;

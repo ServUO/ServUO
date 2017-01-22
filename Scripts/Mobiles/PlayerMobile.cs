@@ -52,7 +52,7 @@ namespace Server.Mobiles
 
 	#region Enums
 	[Flags]
-	public enum PlayerFlag // First 16 bits are reserved for default-distro use, start custom flags at 0x00010000
+	public enum PlayerFlag : ulong // First 16 bits are reserved for default-distro use, start custom flags at 0x00010000
 	{
 		None = 0x00000000,
 		Glassblowing = 0x00000001,
@@ -82,7 +82,9 @@ namespace Server.Mobiles
 		MechanicalLife = 0x04000000,
         HumilityHunt = 0x08000000,
         ToggleCutTopiaries = 0x10000000,
-        HasValiantStatReward = 0x20000000
+        HasValiantStatReward = 0x20000000,
+        RefuseTrades = 0x40000000,
+        DisabledPvpWarning = 0x80000000,
     }
 
 	public enum NpcGuild
@@ -420,8 +422,22 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HasValiantStatReward { get { return GetFlag(PlayerFlag.HasValiantStatReward); } set { SetFlag(PlayerFlag.HasValiantStatReward, value); } }
 
-		#region Plant system
-		[CommandProperty(AccessLevel.GameMaster)]
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool RefuseTrades
+        {
+            get { return GetFlag(PlayerFlag.RefuseTrades); }
+            set { SetFlag(PlayerFlag.RefuseTrades, value); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool DisabledPvpWarning
+        {
+            get { return GetFlag(PlayerFlag.DisabledPvpWarning); }
+            set { SetFlag(PlayerFlag.DisabledPvpWarning, value); }
+        }
+
+        #region Plant system
+        [CommandProperty(AccessLevel.GameMaster)]
 		public bool ToggleClippings { get { return GetFlag(PlayerFlag.ToggleClippings); } set { SetFlag(PlayerFlag.ToggleClippings, value); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -1273,6 +1289,16 @@ namespace Server.Mobiles
 							moved = true;
 						}
 					}
+                    else if (item is BaseQuiver)
+                    {
+                        if (Race == Race.Gargoyle)
+                        {
+                            from.AddToBackpack(item);
+
+                            from.SendLocalizedMessage(1062002, "quiver"); // You can no longer wear your ~1_ARMOR~
+                            moved = true;
+                        }
+                    }
 
 					FactionItem factionItem = FactionItem.Find(item);
 
@@ -1633,6 +1659,10 @@ namespace Server.Mobiles
 					{
 						strOffs += 20;
 					}
+
+                    // Skill Masteries
+                    if(Core.TOL)
+                        strOffs += ToughnessSpell.GetHPBonus(this);
 				}
 				else
 				{
@@ -1650,7 +1680,9 @@ namespace Server.Mobiles
 		public override int ManaMax { get
 		{
 			return base.ManaMax + AosAttributes.GetValue(this, AosAttribute.BonusMana) +
-				   ((Core.ML && Race == Race.Elf) ? 20 : 0);
+				   ((Core.ML && Race == Race.Elf) ? 20 : 0) +
+                   MasteryInfo.IntuitionBonus(this) +
+                   UraliTranceTonic.GetManaBuff(this);
 		} }
 		#endregion
 
@@ -1757,7 +1789,15 @@ namespace Server.Mobiles
 
 			if (context == null)
 			{
-				return base.CheckMovement(d, out newZ);
+                bool check = base.CheckMovement(d, out newZ);
+
+                if (check && Sigil.ExistsOn(this, true) && !Server.Engines.VvV.VvVSigil.CheckMovement(this, d))
+                {
+                    SendLocalizedMessage(1155414); // You may not remove the sigil from the battle region!
+                    return false;
+                }
+
+                return check;
 			}
 
 			HouseFoundation foundation = context.Foundation;
@@ -1774,6 +1814,59 @@ namespace Server.Mobiles
 
 			return (newX >= startX && newY >= startY && newX < endX && newY < endY && Map == foundation.Map);
 		}
+
+        public override void OnHitsChange(int oldValue)
+        {
+            if (Race == Race.Gargoyle)
+            {
+                if (Hits <= HitsMax / 2)
+                {
+                    BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.Berserk, 1080449, 1115021, String.Format("{0}\t{1}", GetRacialBerserkBuff(false), GetRacialBerserkBuff(true)), false));
+                    Delta(MobileDelta.WeaponDamage);
+                }
+                else if (oldValue < Hits && Hits > HitsMax / 2)
+                {
+                    BuffInfo.RemoveBuff(this, BuffIcon.Berserk);
+                    Delta(MobileDelta.WeaponDamage);
+                }
+            }
+
+            base.OnHitsChange(oldValue);
+        }
+
+        /// <summary>
+        /// Returns Racial Berserk value, for spell or melee
+        /// </summary>
+        /// <param name="spell">true for spell damage, false for damage increase (melee)</param>
+        /// <returns></returns>
+        public virtual int GetRacialBerserkBuff(bool spell)
+        {
+            if (Race != Race.Gargoyle || Hits > HitsMax / 2)
+                return 0;
+
+            double perc = ((double)Hits / (double)HitsMax) * 100;
+            int value = 0;
+
+            perc = (100 - perc) / 20;
+
+            if (perc > 4)
+                value += spell ? 12 : 60;
+            else if (perc >= 3)
+                value += spell ? 9 : 45;
+            else if (perc >= 2)
+                value += spell ? 6 : 30;
+            else if (perc >= 1)
+                value += spell ? 3 : 15;
+
+            return value;
+        }
+
+        public override void OnHeal(ref int amount, Mobile from)
+        {
+            BestialSetHelper.OnHeal(this, from, ref amount);
+
+            base.OnHeal(ref amount, from);
+        }
 
 		public override bool AllowItemUse(Item item)
 		{
@@ -1935,16 +2028,21 @@ namespace Server.Mobiles
 
                     if (Core.SA)
                         list.Add(new CallbackEntry(1114299, new ContextCallback(OpenItemInsuranceMenu)));
-
-                    if (AutoRenewInsurance)
-					{
-						list.Add(new CallbackEntry(6202, CancelRenewInventoryInsurance));
-					}
-					else
-					{
-						list.Add(new CallbackEntry(6200, AutoRenewInventoryInsurance));
-					}
+                    else
+                    {
+                        if (AutoRenewInsurance)
+                        {
+                            list.Add(new CallbackEntry(6202, CancelRenewInventoryInsurance));
+                        }
+                        else
+                        {
+                            list.Add(new CallbackEntry(6200, AutoRenewInventoryInsurance));
+                        }
+                    }
 				}
+
+                if (Core.HS)
+                    list.Add(new CallbackEntry(RefuseTrades ? 1154112 : 1154113, new ContextCallback(ToggleTrades))); // Allow Trades / Refuse Trades
 
 				BaseHouse house = BaseHouse.FindHouseAt(this);
 
@@ -1967,14 +2065,25 @@ namespace Server.Mobiles
 				}
 
                 Region r = Region.Find(this.Location, this.Map);
+
+                #region Void Pool
                 if (r is Server.Engines.VoidPool.VoidPoolRegion && ((Server.Engines.VoidPool.VoidPoolRegion)r).Controller != null)
                     list.Add(new Server.Engines.Points.VoidPoolInfo(this));
+                #endregion
 
-				if (!Core.SA && Alive)
+                #region TOL Shadowguard
+                if (Server.Engines.Shadowguard.ShadowguardController.GetInstance(this.Location, this.Map) != null)
+                    list.Add(new Server.Engines.Shadowguard.ExitEntry(this));
+                #endregion
+
+                if (!Core.SA && Alive)
 				{
 					list.Add(new CallbackEntry(6210, ToggleChampionTitleDisplay));
 				}
-			}
+
+                if (DisabledPvpWarning)
+                    list.Add(new CallbackEntry(1113797, new ContextCallback(EnablePvpWarning)));
+            }
 			else
 			{
 				if (Core.TOL && from.InRange(this, 2))
@@ -2491,6 +2600,11 @@ namespace Server.Mobiles
 
         #endregion
 
+        private void ToggleTrades()
+        {
+            RefuseTrades = !RefuseTrades;
+        }
+
         private void GetVendor()
 		{
 			BaseHouse house = BaseHouse.FindHouseAt(this);
@@ -2512,7 +2626,13 @@ namespace Server.Mobiles
 			}
 		}
 
-		private delegate void ContextCallback();
+        private void EnablePvpWarning()
+        {
+            DisabledPvpWarning = false;
+            SendLocalizedMessage(1113798); // Your PvP warning query has been re-enabled.
+        }
+
+        private delegate void ContextCallback();
 
 		private class CallbackEntry : ContextMenuEntry
 		{
@@ -2683,6 +2803,10 @@ namespace Server.Mobiles
 				{
 					msgNum = 1062779; // That person is already involved in a trade
 				}
+                else if (to is PlayerMobile && ((PlayerMobile)to).RefuseTrades)
+                {
+                    msgNum = 1154111; // ~1_NAME~ is refusing all trades.
+                }
 			}
 
 			if (msgNum == 0 && item != null)
@@ -2916,6 +3040,14 @@ namespace Server.Mobiles
 			base.OnBeneficialAction(target, isCriminal);
 		}
 
+        public override bool IsBeneficialCriminal(Mobile target)
+        {
+            if (!target.Criminal && target is BaseCreature && ((BaseCreature)target).GetMaster() == this)
+                return false;
+
+            return base.IsBeneficialCriminal(target);
+        }
+
 		public override void OnDamage(int amount, Mobile from, bool willKill)
 		{
 			int disruptThreshold;
@@ -3055,6 +3187,22 @@ namespace Server.Mobiles
 			}
 			return false;
 		}
+		
+		public override bool Criminal
+        	{
+            		get
+            		{
+                		if (this.Alive)
+                		{
+                    			if (base.Criminal)
+                        			BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.CriminalStatus, 1153802, 1153828));
+                    			else
+                        			BuffInfo.RemoveBuff(this, BuffIcon.CriminalStatus);
+                		}
+
+                		return base.Criminal;
+            		}
+        	}
 
 		public override bool OnBeforeDeath()
 		{
@@ -3064,8 +3212,11 @@ namespace Server.Mobiles
 			{
 				state.CancelAllTrades();
 			}
+			
+			if (Criminal)
+                		BuffInfo.RemoveBuff(this, BuffIcon.CriminalStatus);
 
-			DropHolding();
+            DropHolding();
 
 			if (Core.AOS && Backpack != null && !Backpack.Deleted)
 			{
@@ -3588,26 +3739,6 @@ namespace Server.Mobiles
         {
             Damage(amount, from, informMount, false);
         }
-
-        public override void Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
-		{
-			if (from != null && Talisman is BaseTalisman)
-			{
-				BaseTalisman talisman = (BaseTalisman)Talisman;
-
-				if (talisman.Protection != null && talisman.Protection.Type != null)
-				{
-					Type type = talisman.Protection.Type;
-
-					if (type.IsAssignableFrom(from.GetType()))
-					{
-						amount = (int)(amount * (1 - (double)talisman.Protection.Amount / 100));
-					}
-				}
-			}
-
-			base.Damage(amount, from, informMount, checkDisrupt);
-		}
 
 		#region Poison
 		public override ApplyPoisonResult ApplyPoison(Mobile from, Poison poison)
@@ -5070,8 +5201,9 @@ namespace Server.Mobiles
             }
 
             BaseGuild guild = Guild;
+            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && this.Map == Faction.Facet;
 
-            if (m_OverheadTitle != null)
+            if (!vvv && m_OverheadTitle != null)
             {
                 int loc = Utility.ToInt32(m_OverheadTitle);
 
@@ -5085,9 +5217,16 @@ namespace Server.Mobiles
                 else
                     suffix = String.Format("{0}", m_OverheadTitle);
             }
-            else if (guild != null && m_ShowGuildAbbreviation)
+            else if (vvv || (guild != null && m_ShowGuildAbbreviation))
             {
-                if (suffix.Length > 0)
+                if (vvv)
+                {
+                    if (guild != null && m_ShowGuildAbbreviation)
+                        suffix = String.Format("[{0}][VvV]", Utility.FixHtml(guild.Abbreviation));
+                    else
+                        suffix = "[VvV]";
+                }
+                else if (suffix.Length > 0)
                     suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
                 else
                     suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
@@ -5307,6 +5446,13 @@ namespace Server.Mobiles
 				}
 
 				m_EnemyOfOneType = value;
+
+                //TODO: Figure an efficient way to naming the creature, pluralized!!!
+                /*if (m_EnemyOfOneType != null)
+                {
+                    BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075654, TimeSpan.FromMinutes(delay), this.Caster, 
+                        String.Format("{0}\t{1}\t{2}\t{3}", "50", )));
+                }*/
 
 				DeltaEnemies(oldType, newType);
 			}

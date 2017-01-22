@@ -2,6 +2,8 @@ using System;
 using Server.Accounting;
 using Server.Factions;
 using Server.Mobiles;
+using Server.Items;
+using Server.Spells.SkillMasteries;
 
 namespace Server.Misc
 {
@@ -33,7 +35,7 @@ namespace Server.Misc
                 m_PetStatGainDelay = TimeSpan.FromSeconds(0.5);
         }
 
-    public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
+        public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes(5.0); //How long do we remember targets/locations?
         public const int Allowance = 3;	//How many times may we use the same location/target for gain
         private const int LocationSize = 5; //The size of eeach location, make this smaller so players dont have to move as far
         private static readonly bool[] UseAntiMacro = new bool[]
@@ -119,12 +121,18 @@ namespace Server.Misc
 
             double value = skill.Value;
 
+            //TODO: Is there any other place this can go?
+            if (skillName == SkillName.Fishing && Server.Multis.BaseGalleon.FindGalleonAt(from, from.Map) is Server.Multis.TokunoGalleon)
+                value += 1;
+
             if (value < minSkill)
                 return false; // Too difficult
             else if (value >= maxSkill)
                 return true; // No challenge
 
             double chance = (value - minSkill) / (maxSkill - minSkill);
+
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
 
             Point2D loc = new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize);
             return CheckSkill(from, skill, loc, chance);
@@ -136,6 +144,8 @@ namespace Server.Misc
 
             if (skill == null)
                 return false;
+
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
 
             if (chance < 0.0)
                 return false; // Too difficult
@@ -167,21 +177,21 @@ namespace Server.Misc
             if (from is BaseCreature && ((BaseCreature)from).Controlled)
                 gc *= 2;
 
-		if( AllowGain(from, skill, amObj) )
-		{
-		        if (from.Alive && (gc >= Utility.RandomDouble() || skill.Base < 10.0))
-		        {
-			        Gain(from, skill);
-			        if (from.SkillsTotal >= 4500 || skill.Base >= 80.0)
-			        {
-						Account acc = from.Account as Account;
-						if (acc != null)
-							acc.RemoveYoungStatus(1019036);
-			        }
-		        }
-		}
+            if (AllowGain(from, skill, amObj))
+            {
+                if (from.Alive && (gc >= Utility.RandomDouble() || skill.Base < 10.0))
+                {
+                    Gain(from, skill);
+                    if (from.SkillsTotal >= 4500 || skill.Base >= 80.0)
+                    {
+                        Account acc = from.Account as Account;
+                        if (acc != null)
+                            acc.RemoveYoungStatus(1019036);
+                    }
+                }
+            }
 
-	        return success;
+            return success;
         }
 
         public static bool Mobile_SkillCheckTarget(Mobile from, SkillName skillName, object target, double minSkill, double maxSkill)
@@ -200,6 +210,8 @@ namespace Server.Misc
 
             double chance = (value - minSkill) / (maxSkill - minSkill);
 
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
+
             return CheckSkill(from, skill, target, chance);
         }
 
@@ -209,6 +221,8 @@ namespace Server.Misc
 
             if (skill == null)
                 return false;
+
+            CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
 
             if (chance < 0.0)
                 return false; // Too difficult
@@ -296,6 +310,23 @@ namespace Server.Misc
                         }
                     }
                 }
+
+                #region Skill Masteries
+                else if (from is BaseCreature && (((BaseCreature)from).Controlled || ((BaseCreature)from).Summoned))
+                {
+                    Mobile master = ((BaseCreature)from).GetMaster();
+
+                    if (master != null)
+                    {
+                        WhisperingSpell spell = SkillMasterySpell.GetSpell(master, typeof(WhisperingSpell)) as WhisperingSpell;
+
+                        if (spell != null && master.InRange(from.Location, spell.PartyRange) && master.Map == from.Map && spell.EnhancedGainChance >= Utility.Random(100))
+                        {
+                            toGain = Utility.RandomMinMax(2, 5);
+                        }
+                    }
+                }
+                #endregion
 
                 if (!from.Player || (skills.Total + toGain) <= skills.Cap)
                 {

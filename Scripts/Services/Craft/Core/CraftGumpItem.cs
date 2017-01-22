@@ -118,6 +118,10 @@ namespace Server.Engines.Craft
                     return 1072651; // * Requires the "Mondain's Legacy" expansion
                 case Expansion.SA:
                     return 1094732; // * Requires the "Stygian Abyss" expansion
+                case Expansion.HS:
+                    return 1116296; // * Requires the "High Seas" booster
+                case Expansion.TOL:
+                    return 1155876; // * Requires the "Time of Legends" expansion.
                 default:
                     return String.Format("* Requires the \"{0}\" expansion", ExpansionInfo.GetInfo(expansion).Name);
             }
@@ -128,7 +132,8 @@ namespace Server.Engines.Craft
         public void DrawItem()
         {
             Type type = m_CraftItem.ItemType;
-            int id = CraftItem.ItemIDOf(type);
+            int id = m_CraftItem.DisplayID;
+            if (id == 0) id = CraftItem.ItemIDOf(type);
             Rectangle2D b = ItemBounds.Table[id];
             AddItem(90 - b.Width / 2 - b.X, 110 - b.Height / 2 - b.Y, id, m_CraftItem.ItemHue);
 

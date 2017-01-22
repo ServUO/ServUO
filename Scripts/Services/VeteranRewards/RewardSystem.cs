@@ -367,6 +367,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(houseAddOns,    1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),
                     new RewardEntry(miscellaneous,  1076155, typeof(RedSoulstone),         Expansion.ML),
                     new RewardEntry(miscellaneous,  1080523, typeof(CommodityDeedBox),     Expansion.ML),
+                    new RewardEntry( houseAddOns,    1156371, typeof( Server.Engines.Auction.AuctionSafeDeed ), Expansion.TOL ),
                 }),
                 new RewardList(RewardInterval, 2, new RewardEntry[]
                 {
@@ -489,12 +490,22 @@ namespace Server.Engines.VeteranRewards
                 new RewardList(RewardInterval, 11, new RewardEntry[]
                 {
                     new RewardEntry(etherealSteeds,	1113908, typeof(EtherealReptalon), Expansion.ML),
+
+                    new RewardEntry(miscellaneous,	1113814, typeof(EtherealRetouchingTool), Expansion.SA),
                 }),
                 new RewardList(RewardInterval, 12, new RewardEntry[]
                 {
                     new RewardEntry( houseAddOns,   1150382, typeof( RaisedGardenEastAddonDeed), Expansion.SA ),
                     new RewardEntry( houseAddOns,   1150381, typeof( RaisedGardenSouthAddonDeed), Expansion.SA ),
                     new RewardEntry( etherealSteeds,1113813, typeof(EtherealHiryu), Expansion.ML),
+                }),
+                new RewardList(RewardInterval, 13, new RewardEntry[]
+                {
+                    new RewardEntry( etherealSteeds, 1150006, typeof(EtherealBoura), Expansion.SA),
+                }),
+                new RewardList(RewardInterval, 15, new RewardEntry[]
+                {
+                    new RewardEntry( etherealSteeds, 1154589, typeof(EtherealTiger), Expansion.TOL),
                 }),
             };
         }

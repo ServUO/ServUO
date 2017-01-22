@@ -232,8 +232,85 @@ namespace Server
                 yield return m;
             }
 
-            list.Clear();
-            list.TrimExcess();
+            ColUtility.Free(list);
+        }
+    }
+
+    public static class ColUtility
+    {
+        public static void Free<T>(List<T> l)
+        {
+            if (l == null)
+                return;
+
+            l.Clear();
+            l.TrimExcess();
+        }
+
+        public static void ForEach<T>(IEnumerable<T> list, Action<T> action)
+        {
+            if (list == null || action == null)
+                return;
+
+            List<T> l = list.ToList();
+
+            foreach (T o in l)
+                action(o);
+
+            Free(l);
+        }
+
+        public static void ForEach<TKey, TValue>(
+            IDictionary<TKey, TValue> dictionary, Action<KeyValuePair<TKey, TValue>> action)
+        {
+            if (dictionary == null || dictionary.Count == 0 || action == null)
+                return;
+
+            List<KeyValuePair<TKey, TValue>> l = dictionary.ToList();
+
+            foreach (KeyValuePair<TKey, TValue> kvp in l)
+                action(kvp);
+
+            Free(l);
+        }
+
+        public static void ForEach<TKey, TValue>(IDictionary<TKey, TValue> dictionary, Action<TKey, TValue> action)
+        {
+            if (dictionary == null || dictionary.Count == 0 || action == null)
+                return;
+
+            List<KeyValuePair<TKey, TValue>> l = dictionary.ToList();
+
+            foreach (KeyValuePair<TKey, TValue> kvp in l)
+                action(kvp.Key, kvp.Value);
+
+            Free(l);
+        }
+
+        public static void For<T>(IEnumerable<T> list, Action<int, T> action)
+        {
+            if (list == null || action == null)
+                return;
+
+            List<T> l = list.ToList();
+
+            for (int i = 0; i < l.Count; i++)
+                action(i, l[i]);
+
+            Free(l);
+        }
+
+        public static void For<TKey, TValue>(IDictionary<TKey, TValue> list, Action<int, TKey, TValue> action)
+        {
+            if (list == null || action == null)
+                return;
+
+            List<KeyValuePair<TKey, TValue>> l = list.ToList();
+
+            for (int i = 0; i < l.Count; i++)
+                action(i, l[i].Key, l[i].Value);
+
+            Free(l);
         }
     }
 }

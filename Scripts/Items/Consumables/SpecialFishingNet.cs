@@ -39,7 +39,7 @@ namespace Server.Items
         public SpecialFishingNet()
             : base(0x0DCA)
         {
-            this.Weight = 1.0;
+            this.Weight = 15.0;
 
             if (0.01 > Utility.RandomDouble())
                 this.Hue = Utility.RandomList(m_Hues);
@@ -439,6 +439,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (this.Weight != 15.0)
+                this.Weight = 15.0;
         }
 
         protected override void AddNetProperties(ObjectPropertyList list)

@@ -148,6 +148,11 @@ namespace Server.Guilds
 			}
 		}
 
+        public List<Guild> Members
+        {
+            get { return m_Members; }
+        }
+
 		public bool IsPendingMember(Guild g)
 		{
 			if (g.Alliance != this)
@@ -1258,6 +1263,7 @@ namespace Server.Guilds
 				}
 
 				m.Guild = null;
+                Engines.Points.PointsSystem.ViceVsVirtue.OnResign(m, true);
 			}
 
 			m_Members.Clear();
@@ -1650,6 +1656,8 @@ namespace Server.Guilds
 				{
 					guild.InvalidateWarNotoriety();
 				}
+
+                Engines.Points.PointsSystem.ViceVsVirtue.OnResign(m, message == 1063411);
 
 				m.Delta(MobileDelta.Noto);
 			}

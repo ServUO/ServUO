@@ -46,14 +46,14 @@ namespace Server.Engines.Reports
         {
         }
 
-        public override void SerializeAttributes(PersistanceWriter op)
+        public override void SerializeAttributes(PersistenceWriter op)
         {
             base.SerializeAttributes(op);
 
             op.SetBoolean("p", this.m_ShowPercents);
         }
 
-        public override void DeserializeAttributes(PersistanceReader ip)
+        public override void DeserializeAttributes(PersistenceReader ip)
         {
             base.DeserializeAttributes(ip);
 

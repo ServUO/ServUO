@@ -33,6 +33,7 @@ namespace Server.Engines.MyRunUO
         private StreamWriter m_OpSkills;
         private StreamWriter m_OpLayers;
         private StreamWriter m_OpMobiles;
+	
         public MyRunUO()
             : base(TimeSpan.FromSeconds(CpuInterval), TimeSpan.FromSeconds(CpuInterval))
         {
@@ -57,6 +58,7 @@ namespace Server.Engines.MyRunUO
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(10.0), Config.CharacterUpdateInterval, new TimerCallback(Begin));
 
+		CommandSystem.Register("InitMyRunUO", AccessLevel.Administrator, new CommandEventHandler(InitMyRunUO_OnCommand));
                 CommandSystem.Register("UpdateMyRunUO", AccessLevel.Administrator, new CommandEventHandler(UpdateMyRunUO_OnCommand));
 
                 CommandSystem.Register("PublicChar", AccessLevel.Player, new CommandEventHandler(PublicChar_OnCommand));
@@ -103,6 +105,46 @@ namespace Server.Engines.MyRunUO
                 }
             }
         }
+	
+	[Usage( "InitMyRunUO" )]
+	[Description( "Initially creates the database schema." )]
+	public static void InitMyRunUO_OnCommand( CommandEventArgs e )
+	{
+		if ( m_Command != null && m_Command.HasCompleted )
+		{
+			TableCreation();
+			e.Mobile.SendMessage( "MyRunUO table creation process has been started." );
+		}
+		else
+		{
+			e.Mobile.SendMessage( "MyRunUO table creation is already running." );
+		}
+	}
+	
+	public static void TableCreation()
+	{
+		if ( m_Command != null && !m_Command.HasCompleted )
+			return;
+		DateTime start = DateTime.Now;
+		Console.WriteLine( "MyRunUO: Creating tables" );
+		try
+		{
+			m_Command = new DatabaseCommandQueue( "MyRunUO: Tables created in {0:F1} seconds", "MyRunUO Status Database Thread" );
+			m_Command.Enqueue( "CREATE TABLE IF NOT EXISTS `myrunuo_characters` ( `char_id` int(10) unsigned NOT NULL, `char_name` varchar(255) NOT NULL, `char_str` smallint(3) unsigned NOT NULL, `char_dex` smallint(3) unsigned NOT NULL, `char_int` smallint(3) unsigned NOT NULL, `char_female` tinyint(1) NOT NULL, `char_counts` smallint(6) NOT NULL, `char_guild` varchar(255) DEFAULT NULL, `char_guildtitle` varchar(255) DEFAULT NULL, `char_nototitle` varchar(255) DEFAULT NULL, `char_bodyhue` smallint(5) unsigned DEFAULT NULL, `char_public` tinyint(1) NOT NULL, PRIMARY KEY (`char_id`))" );
+			m_Command.Enqueue( "CREATE TABLE IF NOT EXISTS `myrunuo_characters_layers` ( `char_id` int(10) unsigned NOT NULL, `layer_id` tinyint(3) unsigned NOT NULL, `item_id` smallint(5) unsigned NOT NULL, `item_hue` smallint(5) unsigned NOT NULL, PRIMARY KEY (`char_id`,`layer_id`))" );
+			m_Command.Enqueue( "CREATE TABLE IF NOT EXISTS `myrunuo_characters_skills` ( `char_id` int(10) unsigned NOT NULL, `skill_id` tinyint(3) NOT NULL, `skill_value` smallint(5) unsigned NOT NULL, PRIMARY KEY (`char_id`,`skill_id`),  KEY `skill_id` (`skill_id`))" );
+			m_Command.Enqueue( "CREATE TABLE IF NOT EXISTS `myrunuo_guilds` ( `guild_id` smallint(5) unsigned NOT NULL, `guild_name` varchar(255) NOT NULL, `guild_abbreviation` varchar(8) DEFAULT NULL, `guild_website` varchar(255) DEFAULT NULL, `guild_charter` varchar(255) DEFAULT NULL, `guild_type` varchar(8) NOT NULL, `guild_wars` smallint(5) unsigned NOT NULL, `guild_members` smallint(5) unsigned NOT NULL, `guild_master` int(10) unsigned NOT NULL, PRIMARY KEY (`guild_id`))" );
+			m_Command.Enqueue( "CREATE TABLE IF NOT EXISTS `myrunuo_guilds_wars` ( `guild_1` smallint(5) unsigned NOT NULL DEFAULT '0', `guild_2` smallint(5) unsigned NOT NULL DEFAULT '0', PRIMARY KEY (`guild_1`,`guild_2`), KEY `guild1` (`guild_1`), KEY `guild2` (`guild_2`))" );
+			m_Command.Enqueue( "CREATE TABLE IF NOT EXISTS `myrunuo_status` ( `char_id` int(10) NOT NULL, PRIMARY KEY (`char_id`))" );
+		}
+		catch ( Exception e )
+		{
+			Console.WriteLine( "MyRunUO: Error creating tables." );
+			Console.WriteLine( e );
+		}
+		if ( m_Command != null )
+			m_Command.Enqueue( null );
+	}
 
         [Usage("UpdateMyRunUO")]
         [Description("Starts the process of updating the MyRunUO character and guild database.")]

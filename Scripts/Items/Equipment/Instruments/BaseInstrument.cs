@@ -363,9 +363,6 @@ namespace Server.Items
 
             val += targ.SkillsTotal / 10;
 
-            if (val > 700)
-                val = 700 + (int)((val - 700) * (3.0 / 11));
-
             BaseCreature bc = targ as BaseCreature;
 
             if (IsMageryCreature(bc))
@@ -381,6 +378,9 @@ namespace Server.Items
                 val += 100;
 
             val += GetPoisonLevel(bc) * 20;
+
+            if (val > 700)
+                val = 700 + (int)((val - 700) * (3.0 / 11));
 
             val /= 10;
 
@@ -434,16 +434,20 @@ namespace Server.Items
             m_Instruments[from] = item;
         }
 
+        public BaseInstrument()
+        {
+            RandomInstrument();
+
+            UsesRemaining = Utility.RandomMinMax(this.InitMinUses, this.InitMaxUses);
+        }
+
         public BaseInstrument(int itemID, int wellSound, int badlySound)
             : base(itemID)
         {
             this.m_WellSound = wellSound;
             this.m_BadlySound = badlySound;
 
-            if (this is SnakeCharmerFlute)
-                this.UsesRemaining = Utility.RandomMinMax(50, 80);
-            else
-                this.UsesRemaining = Utility.RandomMinMax(this.InitMinUses, this.InitMaxUses);
+            UsesRemaining = Utility.RandomMinMax(this.InitMinUses, this.InitMaxUses);
         }
 
         public override void GetProperties(ObjectPropertyList list)

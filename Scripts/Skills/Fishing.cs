@@ -100,9 +100,9 @@ namespace Server.Engines.Harvest
             {
                 fish.BonusResources = new BonusHarvestResource[]
                 {
-                    new BonusHarvestResource(0, 99.4, null, null), //set to same chance as mining ml gems
-			        new BonusHarvestResource(80.0, .3, 1113764, typeof(DelicateScales)),
-                	new BonusHarvestResource(80.0, .3, 1072597, typeof(WhitePearl))
+                    new BonusHarvestResource(0, 97.0, null, null), //set to same chance as mining ml gems
+			        new BonusHarvestResource(80.0, 2.0, 1113764, typeof(DelicateScales)),
+                	new BonusHarvestResource(80.0, 1.0, 1072597, typeof(WhitePearl))
                 };
             }
 
@@ -473,6 +473,7 @@ namespace Server.Engines.Harvest
                             chest.Hue = 0x481;
 
                         TreasureMapChest.Fill(chest, from.Luck, Math.Max(1, Math.Min(4, sos.Level)), true, from.Map);
+                        sos.OnSOSComplete(chest);
 
                         if (sos.IsAncient)
                             chest.DropItem(new FabledFishingNet());
@@ -484,6 +485,8 @@ namespace Server.Engines.Harvest
                         chest.TrapType = TrapType.None;
                         chest.TrapPower = 0;
                         chest.TrapLevel = 0;
+
+                        chest.IsShipwreckedItem = true;
 
                         sos.Delete();
 
@@ -656,6 +659,28 @@ namespace Server.Engines.Harvest
                 else
                     from.SendLocalizedMessage(number, true, name);
             }
+        }
+
+        public override void StartHarvesting(Mobile from, Item tool, object toHarvest)
+        {
+            if (from != null && tool != null && tool.IsChildOf(from.Backpack))
+            {
+                Item item = from.FindItemOnLayer(Layer.OneHanded);
+                Item item2 = from.FindItemOnLayer(Layer.TwoHanded);
+
+                if (item != null)
+                    from.AddToBackpack(item);
+
+                if (item2 != null)
+                    from.AddToBackpack(item2);
+
+                Timer.DelayCall(TimeSpan.FromMilliseconds(250), () =>
+                {
+                    from.EquipItem(tool);
+                });
+            }
+
+            base.StartHarvesting(from, tool, toHarvest);
         }
 
         public override void OnHarvestStarted(Mobile from, Item tool, HarvestDefinition def, object toHarvest)

@@ -51,7 +51,8 @@ namespace Server.Items
                         return AddonFitResult.Blocked;
                 }
 
-                from.SendLocalizedMessage(1154596); // Ships placed by this account will now be linked to this lighthouse when they decay. Lost ships will be  found in your house moving crate.
+                if (from != null)
+                    from.SendLocalizedMessage(1154596); // Ships placed by this account will now be linked to this lighthouse when they decay. Lost ships will be  found in your house moving crate.
             }
 
             return result;
@@ -212,6 +213,7 @@ namespace Server.Items
         public LighthouseAddonDeed(string account)
         {
             Account = account;
+            this.LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)

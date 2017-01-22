@@ -1,16 +1,17 @@
 using System;
-using Server.Items;
+using Server;
 
 namespace Server.Items
 {
 	public class BestialHelm : BearMask
     {
-		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber{ get{ return 1151197; } } // Bestial Helm
+        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber{ get{ return 1151197; } } // Bestial Helm
 
+        #region ISetItem Members
         public override SetItem SetID{ get{ return SetItem.Bestial; } }
 		public override int Pieces{ get{ return 4; } }
-        public override int Berserk { get { return 1; } }
+        #endregion
 
         public override int BasePhysicalResistance{ get{ return 8; } }
 		public override int BaseFireResistance{ get{ return 6; } }
@@ -26,23 +27,45 @@ namespace Server.Items
             this.Hue = 2010;
             this.Weight = 5;
             this.StrRequirement = 10;
-            this.SetHue = 2010;
         }
 
 		public BestialHelm( Serial serial ) : base( serial )
 		{
 		}
-		
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );			
-			writer.Write( (int) 0 ); // version
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize( reader );			
-			int version = reader.ReadInt();
-		}
+
+        public override void OnAdded(object parent)
+        {
+            base.OnAdded(parent);
+
+            if (parent is Mobile && !Deleted)
+            {
+                BestialSetHelper.OnAdded((Mobile)parent, this);
+            }
+        }
+
+        public override void OnRemoved(object parent)
+        {
+            base.OnRemoved(parent);
+
+            if (parent is Mobile && !Deleted)
+            {
+                BestialSetHelper.OnRemoved((Mobile)parent, this);
+            }
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            if (this.Hue != 2010)
+                this.Hue = 2010;
+        }
 	}
 }

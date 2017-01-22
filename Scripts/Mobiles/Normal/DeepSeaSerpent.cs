@@ -47,7 +47,11 @@ namespace Server.Mobiles
                 this.PackItem(new SulfurousAsh(4));
             else
                 this.PackItem(new BlackPearl(4));
-            //PackItem( new SpecialFishingNet() );
+
+            this.PackItem(new SpecialFishingNet());
+
+            if (Utility.RandomDouble() < .05)
+                this.PackItem(new MessageInABottle());
         }
 
         public DeepSeaSerpent(Serial serial)
@@ -55,34 +59,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Scales
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override ScaleType ScaleType
-        {
-            get
-            {
-                return ScaleType.Blue;
-            }
-        }
+        public override int TreasureMapLevel { get { return 2; } }
+        public override bool HasBreath { get { return true; } }
+        public override int Meat { get { return 1; } }
+        public override int Scales { get { return 8; } }
+        public override ScaleType ScaleType { get { return ScaleType.Blue; } }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);

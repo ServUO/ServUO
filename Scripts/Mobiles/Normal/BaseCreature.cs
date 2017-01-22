@@ -48,7 +48,8 @@ namespace Server.Mobiles
         Weakest, // Attack the weakest
         Closest, // Attack the closest
         Evil, // Only attack aggressor -or- negative karma
-        Good // Only attack aggressor -or- positive karma
+        Good, // Only attack aggressor -or- positive karma
+        Enemy // Only attacks those returned true in IsEnemy(...)
     }
 
     public enum OrderType
@@ -230,6 +231,9 @@ namespace Server.Mobiles
         private WayPoint m_CurrentWayPoint;
         private IPoint2D m_TargetLocation;
 
+        private int _CurrentNavPoint;
+        private Dictionary<Map, List<Point2D>> _NavPoints;
+
         private Mobile m_SummonMaster;
 
         private int m_HitsMax = -1;
@@ -258,6 +262,8 @@ namespace Server.Mobiles
         private int m_FailedReturnHome; /* return to home failure counter */
 
         private bool m_IsChampionSpawn;
+
+        private Mobile m_InitialFocus;
         #endregion
 
         public virtual InhumanSpeech SpeechType { get { return null; } }
@@ -427,6 +433,8 @@ namespace Server.Mobiles
         }
         #endregion
 
+        public virtual bool AutoRearms { get { return false; } }
+
         public virtual double WeaponAbilityChance { get { return 0.4; } }
 
         public virtual WeaponAbility GetWeaponAbility()
@@ -556,6 +564,38 @@ namespace Server.Mobiles
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile InitialFocus
+        {
+            get { return m_InitialFocus; }
+            set { m_InitialFocus = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public override IDamageable Combatant
+        {
+            get
+            {
+                return base.Combatant;
+            }
+            set
+            {
+                if (base.Combatant == null)
+                {
+                    if (value is Mobile && AttacksFocus)
+                        m_InitialFocus = (Mobile)value;
+                }
+                else if (AttacksFocus && m_InitialFocus != null && value != m_InitialFocus && !m_InitialFocus.Hidden && InRange(m_InitialFocus.Location, this.RangePerception))
+                {
+                    //Keeps focus
+                    base.Combatant = m_InitialFocus;
+                    return;
+                }
+
+                base.Combatant = value;
+            }
+        }
+
         public bool IsAmbusher { get; set; }
 
         public virtual bool HasManaOveride { get { return false; } }
@@ -597,6 +637,8 @@ namespace Server.Mobiles
         // at difficulty - focus we have 0%, at difficulty + focus we have 100%
         public virtual bool DisplayWeight { get { return Backpack is StrongBackpack; } }
 
+        public virtual double TeleportChance { get { return 0.05; } }
+        public virtual bool AttacksFocus { get { return false; } }
         public virtual bool ShowSpellMantra { get { return false; } }
         public virtual bool FreezeOnCast { get { return ShowSpellMantra; } }
 
@@ -1020,14 +1062,14 @@ namespace Server.Mobiles
                 return false;
             }
 
-            if (!(m is BaseCreature) || m is MilitiaFighter)
-            {
-                return true;
-            }
-
             if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
             {
                 return false;
+            }
+
+            if (!(m is BaseCreature) || m is MilitiaFighter)
+            {
+                return true;
             }
 
             BaseCreature c = (BaseCreature)m;
@@ -1175,6 +1217,16 @@ namespace Server.Mobiles
             return ((double)chance / 1000);
         }
 
+        public virtual bool CanTransfer(Mobile m)
+        {
+            return true;
+        }
+
+        public virtual bool CanFriend(Mobile m)
+        {
+            return true;
+        }
+
         private static readonly Type[] m_AnimateDeadTypes = new[]
         {
             typeof(MoundOfMaggots), typeof(HellSteed), typeof(SkeletalMount), typeof(WailingBanshee), typeof(Wraith),
@@ -1318,6 +1370,45 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public WayPoint CurrentWayPoint { get { return m_CurrentWayPoint; } set { m_CurrentWayPoint = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int CurrentNavPoint
+        {
+            get
+            {
+                return _CurrentNavPoint;
+            }
+            set
+            {
+                _CurrentNavPoint = value;
+            }
+        }
+
+        public Dictionary<Map, List<Point2D>> NavPoints
+        {
+            get
+            {
+                if(_NavPoints == null)
+                    _NavPoints = new Dictionary<Map, List<Point2D>>();
+
+                return _NavPoints;
+            }
+            set
+            {
+                _NavPoints = value;
+            }
+        }
+
+        public List<Point2D> CurrentNavPoints
+        {
+            get
+            {
+                if (this.Map != null && _NavPoints.ContainsKey(this.Map))
+                    return _NavPoints[this.Map];
+
+                return null;
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public IPoint2D TargetLocation { get { return m_TargetLocation; } set { m_TargetLocation = value; } }
@@ -1888,7 +1979,7 @@ namespace Server.Mobiles
                 NameHue = 0x35;
             }
 
-            GenerateLoot(true);
+            Timer.DelayCall(() =>GenerateLoot(true));
         }
 
         public BaseCreature(Serial serial)
@@ -2705,6 +2796,9 @@ namespace Server.Mobiles
                     break;
                 case AIType.AI_Paladin:
                     m_AI = new PaladinAI(this);
+                    break;
+                case AIType.AI_Spellbinder:
+                    m_AI = new SpellbinderAI(this);
                     break;
             }
         }
@@ -4385,6 +4479,9 @@ namespace Server.Mobiles
 
         public virtual void GenerateLoot(bool spawning)
         {
+            if (m_NoLootOnDeath)
+                return;
+
             m_Spawning = spawning;
 
             if (!spawning)
@@ -4839,7 +4936,7 @@ namespace Server.Mobiles
                 }
             }
 
-            if (!Summoned && !NoKillAwards && !IsBonded)
+            if (!Summoned && !NoKillAwards && !IsBonded && !NoLootOnDeath)
             {
                 if (treasureLevel >= 0)
                 {
@@ -4887,7 +4984,7 @@ namespace Server.Mobiles
                 }
             }
 
-            if (!Summoned && !NoKillAwards && !m_HasGeneratedLoot)
+            if (!Summoned && !NoKillAwards && !m_HasGeneratedLoot && !m_NoLootOnDeath)
             {
                 m_HasGeneratedLoot = true;
                 GenerateLoot(false);
@@ -4924,8 +5021,10 @@ namespace Server.Mobiles
         }
 
         private bool m_NoKillAwards;
+        private bool m_NoLootOnDeath;
 
         public bool NoKillAwards { get { return m_NoKillAwards; } set { m_NoKillAwards = value; } }
+        public bool NoLootOnDeath { get { return m_NoLootOnDeath; } set { m_NoLootOnDeath = value; } }
 
         public int ComputeBonusDamage(List<DamageEntry> list, Mobile m)
         {
@@ -5362,7 +5461,6 @@ namespace Server.Mobiles
                     var fame = new List<int>();
                     var karma = new List<int>();
 
-                    bool givenQuestKill = false;
                     bool givenFactionKill = false;
                     bool givenToTKill = false;
                     bool givenVASKill = false;
@@ -5454,17 +5552,11 @@ namespace Server.Mobiles
                         {
                             QuestHelper.CheckCreature(pm, this); // This line moved up...
 
-                            if (givenQuestKill)
-                            {
-                                continue;
-                            }
-
                             QuestSystem qs = pm.Quest;
 
                             if (qs != null)
                             {
                                 qs.OnKill(this, c);
-                                givenQuestKill = true;
                             }
                         }
                     }
@@ -5692,6 +5784,10 @@ namespace Server.Mobiles
             Effects.PlaySound(p, creature.Map, sound);
 
             m_Summoning = false;
+
+            // Skill Masteries
+            creature.HitsMaxSeed += MasteryInfo.EnchantedSummoningBonus(creature);
+            creature.Hits = creature.HitsMaxSeed;
 
             return true;
         }
@@ -6203,6 +6299,7 @@ namespace Server.Mobiles
         public virtual bool CanPeace { get { return false; } }
         public virtual bool CanProvoke { get { return false; } }
 
+        public virtual bool PlayInstrumentSound { get { return true; } }
 
         public virtual TimeSpan DiscordInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(60, 120)); } }
         public virtual TimeSpan PeaceInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(60, 120)); } }
@@ -6300,8 +6397,8 @@ namespace Server.Mobiles
                 if (inst == null)
                 {
                     inst = new Harp();
-                    inst.SuccessSound = 0x58B;
-                    inst.FailureSound = 0x58C;
+                    inst.SuccessSound = PlayInstrumentSound ? 0x58B : 0;
+                    inst.FailureSound = PlayInstrumentSound ? 0x58C : 0;
                     inst.Movable = false;
                     PackItem(inst);
                 }
@@ -6568,7 +6665,6 @@ namespace Server.Mobiles
 
             if (Combatant != null && CanDiscord && tc - m_NextDiscord >= 0 && 0.33 > Utility.RandomDouble())
             {
-                Console.WriteLine("Checking Discord");
                 if (DoDiscord())
                     m_NextDiscord = tc + (int)DiscordInterval.TotalMilliseconds;
                 else
@@ -6576,7 +6672,6 @@ namespace Server.Mobiles
             }
             else if (Combatant != null && CanPeace && tc - m_NextPeace >= 0 && 0.33 > Utility.RandomDouble())
             {
-                Console.WriteLine("Checking peace");
                 if (DoPeace())
                     m_NextPeace = tc + (int)PeaceInterval.TotalMilliseconds;
                 else
@@ -6584,7 +6679,6 @@ namespace Server.Mobiles
             }
             else if (Combatant != null && CanProvoke && tc - m_NextProvoke >= 0 && 0.33 > Utility.RandomDouble())
             {
-                Console.WriteLine("Checking provok");
                 if (DoProvoke())
                     m_NextProvoke = tc + (int)ProvokeInterval.TotalMilliseconds;
                 else
@@ -6854,7 +6948,8 @@ namespace Server.Mobiles
             return base.CanBeDamaged();
         }
 
-        public virtual bool PlayerRangeSensitive { get { return (CurrentWayPoint == null); } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual bool PlayerRangeSensitive { get { return CurrentWayPoint == null && (_NavPoints == null || _NavPoints.Count == 0); } }
         //If they are following a waypoint, they'll continue to follow it even if players aren't around
 
         /* until we are sure about who should be getting deleted, move them instead */

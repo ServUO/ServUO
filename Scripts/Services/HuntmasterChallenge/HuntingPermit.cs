@@ -145,7 +145,7 @@ namespace Server.Items
                                 }
 
                                 int measurement = info.MinMeasurement + (int)((double)(info.MaxMeasurement - info.MinMeasurement) * (double)((double)v / 100.0));
-                                m_Permit.KillEntry = new HuntingKillEntry(from, measurement, DateTime.Now, i, WorldLocationInfo.GetLocationString(c.Location, c.Map));
+                                m_Permit.KillEntry = new HuntingKillEntry(m_Permit.Owner, measurement, DateTime.Now, i, WorldLocationInfo.GetLocationString(c.Location, c.Map));
                                 c.VisitedByTaxidermist = true;
 
                                 from.PlaySound(0x249);

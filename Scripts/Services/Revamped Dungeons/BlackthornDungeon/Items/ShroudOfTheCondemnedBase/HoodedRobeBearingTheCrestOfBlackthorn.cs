@@ -1,11 +1,14 @@
 using Server;
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
     [Flipable(0x2684, 0x2683)]
-    public class HoodedRobeBearingTheCrestOfBlackthorn1 : BaseOuterTorso
-    {        
+    public class HoodedRobeBearingTheCrestOfBlackthorn1 : BaseOuterTorso, IRepairable
+    {
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
         public override int LabelNumber { get { return 1029863; } } // Hooded Robe
         public override bool IsArtifact { get { return true; } }        
         

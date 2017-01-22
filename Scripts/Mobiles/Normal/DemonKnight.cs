@@ -182,16 +182,11 @@ namespace Server.Mobiles
 
             pm.GauntletPoints += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100))/2;
 
-
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
 
             double chance = A * Math.Pow(10, B * gpoints);
-           
-
-            double roll = Utility.RandomDouble();
-
-            killer.PlaySound(0x5B4);
+            double roll = Utility.RandomDouble();            
 
             if (chance > roll )
             {
@@ -208,6 +203,8 @@ namespace Server.Mobiles
                 if (i != null)
                 {
                     pm.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
+
+                    pm.PlaySound(0x5B4);
 
                     if (!pm.PlaceInBackpack(i))
                     {

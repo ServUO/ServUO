@@ -23,6 +23,7 @@ using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
 using Server.Spells.Sixth;
 using Server.Spells.Spellweaving;
+using Server.Spells.SkillMasteries;
 #endregion
 
 namespace Server.Items
@@ -33,7 +34,7 @@ namespace Server.Items
 		SlayerName Slayer2 { get; set; }
 	}
 
-	public abstract class BaseWeapon : Item, IWeapon, IFactionItem, ICraftable, ISlayer, IDurability, ISetItem
+    public abstract class BaseWeapon : Item, IWeapon, IFactionItem, ICraftable, ISlayer, IDurability, ISetItem, IVvVItem, IOwnerRestricted
 	{
 		private string m_EngravedText;
 
@@ -67,6 +68,30 @@ namespace Server.Items
 			}
 		}
 		#endregion
+
+        private bool _VvVItem;
+        private Mobile _Owner;
+        private string _OwnerName;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsVvVItem
+        {
+            get { return _VvVItem; }
+            set { _VvVItem = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Owner
+        {
+            get { return _Owner; }
+            set { _Owner = value; if (_Owner != null) _OwnerName = _Owner.Name; InvalidateProperties(); }
+        }
+
+        public virtual string OwnerName
+        {
+            get { return _OwnerName; }
+            set { _OwnerName = value; InvalidateProperties(); }
+        }
 
 		/* Weapon internals work differently now (Mar 13 2003)
         * 
@@ -103,7 +128,7 @@ namespace Server.Items
 		private TalismanSlayerName m_Slayer3;
 		#endregion
 
-		private SkillMod m_SkillMod, m_MageMod;
+		private SkillMod m_SkillMod, m_MageMod, m_MysticMod;
 		private CraftResource m_Resource;
 		private bool m_PlayerConstructed;
 
@@ -896,6 +921,32 @@ namespace Server.Items
 				return false;
 			}
 
+            if (from.IsPlayer())
+            {
+                if (_Owner != null && _Owner != from)
+                {
+                    from.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                    return false;
+                }
+
+                if (this is IAccountRestricted && ((IAccountRestricted)this).Account != null)
+                {
+                    Accounting.Account acct = from.Account as Accounting.Account;
+
+                    if (acct == null || acct.Username != ((IAccountRestricted)this).Account)
+                    {
+                        from.SendLocalizedMessage(1071296); // This item is Account Bound and your character is not bound to it. You cannot use this item.
+                        return false;
+                    }
+                }
+
+                if (IsVvVItem && !Engines.VvV.ViceVsVirtueSystem.IsVvV(from))
+                {
+                    from.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
+                    return false;
+                }
+            }
+
 			#region Stygian Abyss
 			if (from.Race == Race.Gargoyle && !CanBeWornByGargoyles && from.IsPlayer())
 			{
@@ -1016,6 +1067,11 @@ namespace Server.Items
 				from.AddSkillMod(m_MageMod);
 			}
 
+            if (Core.TOL && m_AosWeaponAttributes.MysticWeapon != 0 && m_AosWeaponAttributes.MysticWeapon != 30)
+            {
+                AddMysticMod(from);
+            }
+
 			XmlAttach.CheckOnEquip(this, from);
 
 			return true;
@@ -1099,6 +1155,10 @@ namespace Server.Items
                 if (FocusWeilder != null)
                     FocusWeilder = null;
 
+                //Skill Masteries
+                SkillMasterySpell.OnWeaponRemoved(m, this);
+                RemoveMysticMod();
+
 				#region Mondain's Legacy Sets
 				if (IsSetItem && m_SetEquipped)
 				{
@@ -1107,6 +1167,24 @@ namespace Server.Items
 				#endregion
 			}
 		}
+
+        public void AddMysticMod(Mobile from)
+        {
+            if (m_MysticMod != null)
+                m_MysticMod.Remove();
+
+            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_AosWeaponAttributes.MysticWeapon);
+            from.AddSkillMod(m_MysticMod);
+        }
+
+        public void RemoveMysticMod()
+        {
+            if (m_MysticMod != null)
+            {
+                m_MysticMod.Remove();
+                m_MysticMod = null;
+            }
+        }
 
 		public virtual SkillName GetUsedSkill(Mobile m, bool checkSkillAttrs)
 		{
@@ -1307,6 +1385,9 @@ namespace Server.Items
 				chance = 0.02;
 			}
 
+            if (Core.AOS && m_AosWeaponAttributes.MageWeapon > 0 && attacker.Skills[SkillName.Magery].Value > atkSkill.Value)
+                return attacker.CheckSkill(SkillName.Magery, chance);
+
 			return attacker.CheckSkill(atkSkill.SkillName, chance);
 		}
 
@@ -1408,17 +1489,17 @@ namespace Server.Items
 
 			WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
 
-			if (a != null && !a.OnBeforeSwing(attacker, defender))
-			{
-				WeaponAbility.ClearCurrentAbility(attacker);
-			}
+            if (a != null && (!a.OnBeforeSwing(attacker, defender) || SkillMasterySpell.CancelWeaponAbility(attacker)))
+            {
+                WeaponAbility.ClearCurrentAbility(attacker);
+            }
 
 			SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
-			if (move != null && !move.OnBeforeSwing(attacker, defender))
-			{
-				SpecialMove.ClearCurrentMove(attacker);
-			}
+            if (move != null && (!move.OnBeforeSwing(attacker, defender) || SkillMasterySpell.CancelSpecialMove(attacker)))
+            {
+                SpecialMove.ClearCurrentMove(attacker);
+            }
 		}
 
         public virtual TimeSpan OnSwing(Mobile attacker, IDamageable damageable)
@@ -1684,8 +1765,10 @@ namespace Server.Items
                             attacker.FixedEffect(0x376A, 6, 1);
                         }
                         #endregion
+
                         XmlAttach.OnArmorHit(attacker, defender, shield, this, originalDamage);
                     }
+
                     #region Stygian Abyss
                     else if (weapon != null && weapon.Layer == Layer.TwoHanded && weapon.WeaponAttributes.ReactiveParalyze > 0 && 30 > Utility.Random(100))
                     {
@@ -1696,13 +1779,14 @@ namespace Server.Items
                         attacker.FixedEffect(0x376A, 6, 1);
                     }
                     #endregion
+
+                    //Skill Masteries
+                    SkillMasterySpell.OnParried(attacker, defender);
                 }
 			}
 
 			if (!blocked)
 			{
-				double positionChance = Utility.RandomDouble();
-
                 Layer randomLayer = _DamageLayers[Utility.Random(_DamageLayers.Length)];
                 Item armorItem = defender.FindItemOnLayer(randomLayer);
 
@@ -1720,6 +1804,7 @@ namespace Server.Items
 
         private Layer[] _DamageLayers =
         {
+            Layer.OneHanded,
             Layer.Talisman,
             Layer.InnerLegs,
             Layer.InnerTorso,
@@ -2022,11 +2107,13 @@ namespace Server.Items
                     splintering = true;
             }
 
-            if (m_MaxHits > 0 && m_AosAttributes.SpellChanneling == 0 && 
-                ((MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime)) || (defender != null && splintering) ||
-                 Utility.Random(250) == 0)) // Stratics says 50% chance, seems more like 4%..
+            double chance = NegativeAttributes.Antique > 0 ? 5 : 0;
+            bool acidicTarget = MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
+
+            if ((m_AosAttributes.SpellChanneling == 0 || MaxRange > 1) && 
+                (acidicTarget || (defender != null && splintering) || Utility.Random(250) <= chance))    // Stratics says 50% chance, seems more like 4%..
             {
-                if (MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime))
+                if (MaxRange <= 1 && acidicTarget)
                 {
                     attacker.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500263); // *Acid blood scars your weapon!*
                 }
@@ -2038,23 +2125,22 @@ namespace Server.Items
                 }
                 else
                 {
-                    if (m_Hits > 0)
+                    if (m_MaxHits > 0)
                     {
-                        HitPoints -= NegativeAttributes.Antique > 0 ? 2 : 1;
-                    }
-                    else if (m_MaxHits > 1)
-                    {
-                        MaxHitPoints -= NegativeAttributes.Antique > 0 ? 2 : 1;
-
-                        if (Parent is Mobile)
+                        if (this.m_Hits >= 1)
                         {
-                            ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121);
-                            // Your equipment is severely damaged.
+                            HitPoints--;
                         }
-                    }
-                    else
-                    {
-                        Delete();
+                        else if (this.m_MaxHits > 0)
+                        {
+                            this.MaxHitPoints--;
+
+                            if (this.Parent is Mobile)
+                                ((Mobile)this.Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+
+                            if (m_MaxHits == 0)
+                                Delete();
+                        }
                     }
                 }
             }
@@ -2062,7 +2148,9 @@ namespace Server.Items
             WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
             SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
-            bool ignoreArmor = (a is ArmorIgnore || (move != null && move.IgnoreArmor(attacker)));
+            WeaponAbility weavabil;
+            bool bladeweaving = Bladeweave.BladeWeaving(attacker, out weavabil);
+            bool ignoreArmor = (a is ArmorIgnore || (move != null && move.IgnoreArmor(attacker)) || (bladeweaving && weavabil is ArmorIgnore));
 
             // object is not a mobile, so we end here
             if (defender == null)
@@ -2201,6 +2289,8 @@ namespace Server.Items
 				}
 			}
 
+            percentageBonus -= Block.GetMeleeReduction(defender);
+
 			#region Stygian Abyss
 			percentageBonus += BattleLust.GetBonus(attacker, defender);
 
@@ -2215,23 +2305,6 @@ namespace Server.Items
 
             if (RunedSashOfWarding.IsUnderEffects(defender, WardingEffect.WeaponDamage))
                 percentageBonus -= 10;
-
-            if (attacker.Race == Race.Gargoyle)
-            {
-                double perc = ((double)attacker.Hits / (double)attacker.HitsMax) * 100;
-
-                perc = 100 - perc;
-                perc /= 20;
-
-                if (perc > 4)
-                    percentageBonus += 60;
-                else if (perc >= 3)
-                    percentageBonus += 45;
-                else if (perc >= 2)
-                    percentageBonus += 30;
-                else if (perc >= 1)
-                    percentageBonus += 15;
-            }
 			#endregion
 
 			#region Mondain's Legacy
@@ -2354,6 +2427,13 @@ namespace Server.Items
 
             if (Feint.Registry.ContainsKey(defender) && Feint.Registry[defender].Enemy == attacker)
                 damage -= (int)((double)damage * ((double)Feint.Registry[defender].DamageReduction / 100));
+
+            // Skill Masteries
+            if (this is Fists)
+                damage += (int)((double)damage * ((double)MasteryInfo.GetKnockoutModifier(attacker, defender is PlayerMobile) / 100.0));
+
+            SkillMasterySpell.OnHit(attacker, defender, ref damage);
+            BodyGuardSpell.CheckBodyGuard(attacker, defender, ref damage, phys, fire, cold, pois, nrgy);
 
 			damageGiven = AOS.Damage(
 				defender,
@@ -2656,8 +2736,6 @@ namespace Server.Items
 			// Inscription bonus
 			int inscribeSkill = attacker.Skills[SkillName.Inscribe].Fixed;
 
-
-
 			if (inscribeSkill >= 1000)
 			{
 				damageBonus += 10;
@@ -2931,6 +3009,10 @@ namespace Server.Items
                 {
                     return CheckSlayerResult.Slayer;
                 }
+                else if (Slayer3 != TalismanSlayerName.None && TalismanSlayer.Slays(Slayer3, defender))
+                {
+                    return CheckSlayerResult.Slayer;
+                }
             }
             else
             {
@@ -3096,6 +3178,8 @@ namespace Server.Items
 			{
 				((IHonorTarget)defender).ReceivedHonorContext.OnTargetMissed(attacker);
 			}
+
+            SkillMasterySpell.OnMiss(attacker, defender);
 		}
 
 		public virtual void GetBaseDamageRange(Mobile attacker, out int min, out int max)
@@ -3119,8 +3203,16 @@ namespace Server.Items
 				}
 			}
 
-			min = MinDamage;
-			max = MaxDamage;
+            if (this is Fists && TransformationSpellHelper.UnderTransformation(attacker, typeof(HorrificBeastSpell)))
+            {
+                min = 5;
+                max = 15;
+            }
+            else
+            {
+                min = MinDamage;
+                max = MaxDamage;
+            }
 		}
 
 		public virtual double GetBaseDamage(Mobile attacker)
@@ -3551,7 +3643,11 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(15); // version
+			writer.Write(16); // version
+
+            writer.Write(_VvVItem);
+            writer.Write(_Owner);
+            writer.Write(_OwnerName);
 
             // Version 15 converts old leech to new leech
 
@@ -3905,6 +4001,13 @@ namespace Server.Items
 
 			switch (version)
 			{
+                case 16:
+                    {
+                        _VvVItem = reader.ReadBool();
+                        _Owner = reader.ReadMobile();
+                        _OwnerName = reader.ReadString();
+                        goto case 15;
+                    }
                 case 15:
                 case 14:
                     {
@@ -4234,6 +4337,12 @@ namespace Server.Items
 							((Mobile)Parent).AddSkillMod(m_MageMod);
 						}
 
+                        if (Core.TOL && m_AosWeaponAttributes.MysticWeapon != 0 && m_AosWeaponAttributes.MysticWeapon != 30 && Parent is Mobile)
+                        {
+                            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_AosWeaponAttributes.MysticWeapon);
+                            ((Mobile)Parent).AddSkillMod(m_MysticMod);
+                        }
+
 						if (GetSaveFlag(flags, SaveFlag.PlayerConstructed))
 						{
 							m_PlayerConstructed = true;
@@ -4490,6 +4599,12 @@ namespace Server.Items
 			{
 				m_PlayerConstructed = true; // we don't know, so, assume it's crafted
 			}
+
+            if (m_Slayer == SlayerName.DaemonDismissal || m_Slayer == SlayerName.BalronDamnation)
+                m_Slayer = SlayerName.Exorcism;
+
+            if (m_Slayer2 == SlayerName.DaemonDismissal || m_Slayer2 == SlayerName.BalronDamnation)
+                m_Slayer2 = SlayerName.Exorcism;
 		}
 		#endregion
 
@@ -4757,10 +4872,21 @@ namespace Server.Items
 				return true;
 			}
 
-            return AosAttributes.GetValue(from, AosAttribute.SpellChanneling) > 0;
+            return m_AosAttributes.SpellChanneling > 0;
 		}
 
 		public virtual int ArtifactRarity { get { return 0; } }
+
+        public override bool DisplayWeight
+        {
+            get
+            {
+                if (IsVvVItem)
+                    return true;
+
+                return base.DisplayWeight;
+            }
+        }
 
 		public virtual int GetLuckBonus()
 		{
@@ -4788,9 +4914,22 @@ namespace Server.Items
 			return attrInfo.WeaponLuck;
 		}
 
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            if (IsVvVItem)
+                list.Add(1154937); // VvV Item
+        }
+
 		public override void GetProperties(ObjectPropertyList list)
 		{
 			base.GetProperties(list);
+
+            if (OwnerName != null)
+            {
+                list.Add(1153213, OwnerName);
+            }
 
 			XmlLevelItem levitem = XmlAttach.FindAttachment(this, typeof(XmlLevelItem)) as XmlLevelItem;
 
@@ -4830,6 +4969,9 @@ namespace Server.Items
 			{
 				list.Add(1073491, Pieces.ToString()); // Part of a Weapon/Armor Set (~1_val~ pieces)
 
+                if (SetID == SetItem.Bestial)
+                    list.Add(1151541, BestialSetHelper.GetTotalBerserk(this).ToString()); // Berserk ~1_VAL~
+
                 if (this.BardMasteryBonus)
                     list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
 
@@ -4841,7 +4983,7 @@ namespace Server.Items
 			}
 			#endregion
 
-            if (m_AosAttributes.Brittle != 0)
+            if (m_NegativeAttributes.Brittle == 0 && m_AosAttributes.Brittle != 0)
             {
                 list.Add(1116209); // Brittle
             }
@@ -4881,7 +5023,7 @@ namespace Server.Items
 				list.Add(1060584, ((IUsesRemaining)this).UsesRemaining.ToString()); // uses remaining: ~1_val~
 			}
 
-			if (m_Poison != null && m_PoisonCharges > 0)
+            if (m_Poison != null && m_PoisonCharges > 0 && CanShowPoisonCharges())
 			{
 				#region Mondain's Legacy mod
 				list.Add(m_Poison.LabelNumber, m_PoisonCharges.ToString());
@@ -4965,7 +5107,7 @@ namespace Server.Items
             int prop;
             double fprop;
 
-			if (Core.ML && this is BaseRanged && ((BaseRanged)this).Balanced)
+            if (Core.ML && m_AosAttributes.BalancedWeapon > 0 && Layer == Layer.TwoHanded)
 			{
 				list.Add(1072792); // Balanced
 			}
@@ -5198,6 +5340,15 @@ namespace Server.Items
 			{
 				list.Add(1060438, (30 - prop).ToString()); // mage weapon -~1_val~ skill
 			}
+
+            if ((prop = m_AosWeaponAttributes.MysticWeapon) != 0)
+            {
+                list.Add(1155881, (30 - prop).ToString());   // mystic weapon -~1_val~ skill
+            }
+            else if ((prop = Parent is Mobile ? Enhancement.GetValue((Mobile)Parent, AosWeaponAttribute.MysticWeapon) : 0) != 0)
+            {
+                list.Add(1155881, (30 - prop).ToString());   // mystic weapon -~1_val~ skill
+            }
 
 			if ((prop = m_AosAttributes.BonusMana) != 0)
 			{
@@ -5448,6 +5599,14 @@ namespace Server.Items
                 else
                     list.Add(1152281 + ((int)m_ItemPower - 9));
             }
+        }
+
+        public bool CanShowPoisonCharges()
+        {
+            if (PrimaryAbility == WeaponAbility.InfectiousStrike || SecondaryAbility == WeaponAbility.InfectiousStrike)
+                return true;
+
+            return RootParent is Mobile && SkillMasterySpell.HasSpell((Mobile)RootParent, typeof(InjectedStrikeSpell));
         }
 
         public override void OnSingleClick(Mobile from)
@@ -5766,8 +5925,6 @@ namespace Server.Items
 		public virtual SetItem SetID { get { return SetItem.None; } }
 		public virtual int Pieces { get { return 0; } }
 
-        public virtual int Berserk { get { return 0; } }
-
         public virtual bool BardMasteryBonus
         {
             get
@@ -5832,6 +5989,15 @@ namespace Server.Items
 
         public int SetResistBonus(ResistanceType resist)
         {
+            switch (resist)
+            {
+                case ResistanceType.Physical: return PhysicalResistance;
+                case ResistanceType.Fire: return FireResistance;
+                case ResistanceType.Cold: return ColdResistance;
+                case ResistanceType.Poison: return PoisonResistance;
+                case ResistanceType.Energy: return EnergyResistance;
+            }
+
             return 0;
         }
         #endregion

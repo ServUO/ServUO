@@ -181,6 +181,8 @@ namespace Server.Mobiles
 
                 if (message)
                     dismounted.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
+                    
+                BuffInfo.AddBuff(dismounted, new BuffInfo(BuffIcon.DismountPrevention, 1075635, 1075636, delay, dismounted));
             }
             else if (dismounted.Flying)
             {
@@ -254,13 +256,14 @@ namespace Server.Mobiles
             if (entry.IsExpired)
             {
                 m_Table.Remove(mob);
+                BuffInfo.RemoveBuff(mob, BuffIcon.DismountPrevention);
                 return BlockMountType.None;
             }
 
             return entry.m_Type;
         }
 
-        public static bool CheckMountAllowed(Mobile mob, bool message)
+        public static bool CheckMountAllowed(Mobile mob, bool message, bool flying = false)
         {
             BlockMountType type = GetMountPrevention(mob);
 
@@ -269,21 +272,21 @@ namespace Server.Mobiles
 
             if (message)
             {
-                switch ( type )
+                switch (type)
                 {
                     case BlockMountType.Dazed:
                         {
-                            mob.SendLocalizedMessage(1040024); // You are still too dazed from being knocked off your mount to ride!
+                            mob.SendLocalizedMessage(flying ? 1112457 : 1040024); // You are still too dazed from being knocked off your mount to ride!
                             break;
                         }
                     case BlockMountType.BolaRecovery:
                         {
-                            mob.SendLocalizedMessage(1062910); // You cannot mount while recovering from a bola throw.
+                            mob.SendLocalizedMessage(flying ? 1112455 : 1062910); // You cannot mount while recovering from a bola throw.
                             break;
                         }
                     case BlockMountType.DismountRecovery:
                         {
-                            mob.SendLocalizedMessage(1070859); // You cannot mount while recovering from a dismount special maneuver.
+                            mob.SendLocalizedMessage(flying ? 1112456 : 1070859); // You cannot mount while recovering from a dismount special maneuver.
                             break;
                         }
                 }

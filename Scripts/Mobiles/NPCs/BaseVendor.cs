@@ -65,6 +65,8 @@ namespace Server.Mobiles
 
 		public virtual NpcGuild NpcGuild { get { return NpcGuild.None; } }
 
+        public virtual bool ChangeRace { get { return true; } }
+
 		public override bool IsInvulnerable { get { return true; } }
 
 		public virtual DateTime NextTrickOrTreat { get; set; }
@@ -189,7 +191,7 @@ namespace Server.Mobiles
 		}
 
 		public BaseVendor(string title)
-			: base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 2)
+			: base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 5)
 		{
 			AllVendors.Add(this);
 
@@ -349,16 +351,19 @@ namespace Server.Mobiles
 
 		public virtual void CheckMorph()
 		{
+            if (!ChangeRace)
+                return;
+
 			if (CheckGargoyle())
 			{
 				return;
 			}
-				#region SA
+			#region SA
 			else if (CheckTerMur())
 			{
 				return;
 			}
-				#endregion
+			#endregion
 
 			else if (CheckNecromancer())
 			{
@@ -1416,8 +1421,8 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (totalCost >= 2000)
-			{
+			//if (totalCost >= 2000)
+			//{
 				if (!bought)
 				{
 					if (totalCost <= Int32.MaxValue)
@@ -1486,7 +1491,7 @@ namespace Server.Mobiles
 						}
 					}
 				}
-			}
+			//}
 
 			if (!bought)
 			{

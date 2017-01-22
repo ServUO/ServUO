@@ -12,14 +12,28 @@ namespace Server.Factions
 			CommandSystem.Register("DeleteFactions", AccessLevel.Administrator, new CommandEventHandler(DeleteFactions_OnCommand));
 		}
 
+        public static void RemoveFactions()
+        {
+            // Removes Items, ie monoliths, stones, etc
+            WeakEntityCollection.Delete("factions");
+
+            List<Sigil> sigils = new List<Sigil>(Sigil.Sigils);
+
+            foreach (Sigil sig in sigils)
+            {
+                if (!sig.Deleted)
+                    sig.Delete();
+            }
+        }
+
 		public static void DeleteFactions_OnCommand(CommandEventArgs e)
 		{
-			WeakEntityCollection.Delete("factions");
+            RemoveFactions();
 		}
 
         public static void GenerateFactions_OnCommand(CommandEventArgs e)
         {
-            new FactionPersistance();
+            new FactionPersistence();
 
             List<Faction> factions = Faction.Factions;
 
