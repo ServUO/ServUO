@@ -48,11 +48,14 @@ namespace Server.Spells.Mystic
             }
             else if (SpellHelper.CheckTown(p, Caster) && CheckSequence())
             {
-                int level = (int)(GetBaseSkill(Caster) + GetBoostSkill(Caster));
+                double baseskill = Caster.Skills[SkillName.Mysticism].Value;
+                double boostskill = GetBoostSkill(Caster);
+
+                int level = (int)(baseskill + boostskill);
 
                 TimeSpan duration = TimeSpan.FromSeconds(level / 3);
 
-                BaseCreature summon = new RisingColossus(level);
+                BaseCreature summon = new RisingColossus(baseskill, boostskill);
                 BaseCreature.Summon(summon, false, Caster, new Point3D(p), 0x656, duration);
 
                 Effects.SendTargetParticles(summon, 0x3728, 10, 10, 0x13AA, (EffectLayer)255);
