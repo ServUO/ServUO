@@ -112,6 +112,8 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
+	    
+	    m_Spawner.OnNavreyKilled();
 
             if (Utility.RandomDouble() < 0.15)
                 c.DropItem(new BottleIchor());
