@@ -35,9 +35,7 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 120.0);
             this.SetSkill(SkillName.Anatomy, 120.0);
             this.SetSkill(SkillName.Poisoning, 120.0);
-			
-            this.SpawnBulbous();
-			
+
             this.PackResources(8);
             this.PackTalismans(5);
             Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(SpawnBulbous));  //BulbousPutrification

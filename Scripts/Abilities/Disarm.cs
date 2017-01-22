@@ -56,15 +56,15 @@ namespace Server.Items
             }
             else if (this.CheckMana(attacker, true))
             {
-                // Skill Masteries
-                int saveChance = Server.Spells.SkillMasteries.MasteryInfo.SavingThrowChance(defender);
+                // Skill Masteries - removed publish 96
+                /*int saveChance = Server.Spells.SkillMasteries.MasteryInfo.SavingThrowChance(defender);
 
                 if (saveChance > 0 && saveChance >= Utility.Random(100))
                 {
                     attacker.SendLocalizedMessage(1156033); // Your disarm attempt was blocked!
                     defender.SendLocalizedMessage(1156034); // You blocked a disarm attempt!
                     return;
-                }
+                }*/
 
                 attacker.SendLocalizedMessage(1060092); // You disarm their weapon!
                 defender.SendLocalizedMessage(1060093); // Your weapon has been disarmed!
