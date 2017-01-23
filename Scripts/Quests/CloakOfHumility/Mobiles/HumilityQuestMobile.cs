@@ -30,6 +30,7 @@ namespace Server.Engines.Quests
         public HumilityQuestMobile(string name, string title) : base(title)
         {
             Name = name;
+            Title = title;
             m_NextGreet = DateTime.Now;
         }
 
