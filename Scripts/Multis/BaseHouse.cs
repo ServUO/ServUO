@@ -436,7 +436,8 @@ namespace Server.Multis
                 {
                     SecureInfo si = (SecureInfo)list[i];
 
-                    fromSecures += si.Item.TotalItems;
+                    if(!(si.Item is Server.Engines.Plants.SeedBox))
+                        fromSecures += si.Item.TotalItems;
                 }
 
                 fromLockdowns += list.Count;
@@ -3231,6 +3232,9 @@ namespace Server.Multis
                 foreach(KeyValuePair<Item, Mobile> kvp in m_LockDowns)
                 {
                     Item item = kvp.Key;
+
+                    if (item is Server.Engines.Plants.Seed && item.Parent is Server.Engines.Plants.SeedBox)
+                        continue;
 
                     if (!(item is Container))
                         count += item.TotalItems;

@@ -93,7 +93,7 @@ namespace Server.Engines.Plants
 
 		public override bool ForceShowProperties{ get{ return ObjectPropertyList.Enabled; } }
 
-		private int GetLabel( out string args )
+		public int GetLabel( out string args )
 		{
 			PlantTypeInfo typeInfo = PlantTypeInfo.GetInfo( m_PlantType );
 			PlantHueInfo hueInfo = PlantHueInfo.GetInfo( m_PlantHue );

@@ -411,7 +411,7 @@ namespace Server.Engines.Craft
 			typeof(BambooChair), typeof(WoodenChair), typeof(FancyWoodenChairCushion), typeof(WoodenChairCushion),
 			typeof(Nightstand), typeof(LargeTable), typeof(WritingTable), typeof(YewWoodTable), typeof(PlainLowTable),
 			typeof(ElegantLowTable), typeof(Dressform), typeof(BasePlayerBB), typeof(BaseContainer), typeof(BarrelStaves),
-			typeof(BarrelLid), typeof(Clippers)
+			typeof(BarrelLid), typeof(Clippers), typeof(Scissors), typeof(BaseTool)
 		};
 
 		private static readonly Dictionary<Type, Type> m_ResourceConversionTable = new Dictionary<Type, Type>()

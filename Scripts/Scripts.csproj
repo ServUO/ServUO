@@ -308,6 +308,7 @@
     <Compile Include="Gumps\BaseGridGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\BaseGump.cs" />
     <Compile Include="Gumps\BaseImageTileButtonsGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -743,6 +744,9 @@
     <Compile Include="Items\Functional\HouseCraftables.cs" />
     <Compile Include="Items\Functional\Incubator.cs" />
     <Compile Include="Items\Functional\ScaleCollar.cs" />
+    <Compile Include="Items\Functional\SeedBox\SeedBox.cs" />
+    <Compile Include="Items\Functional\SeedBox\SeedBoxGump.cs" />
+    <Compile Include="Items\Functional\SeedBox\SeedEntry.cs" />
     <Compile Include="Items\Functional\WallSafe.cs" />
     <Compile Include="Items\Internal\BlightedGroveTeleporters.cs" />
     <Compile Include="Items\Internal\BlueNinjaQuestTeleporter.cs" />
