@@ -339,7 +339,7 @@ namespace Server.Spells.SkillMasteries
 
             SkillName mastery = m.Skills.CurrentMastery;
 
-            MasteryInfo info = Infos.FirstOrDefault(i => i.Passive && i.MasterySkill == mastery);
+            MasteryInfo info = Infos.FirstOrDefault(i => i.Passive && i.MasterySkill == mastery && i.PassiveSpell != PassiveSpell.AnticipateHit);
 
             if (info != null)
                 return info.PassiveSpell;
@@ -349,6 +349,9 @@ namespace Server.Spells.SkillMasteries
 
         public static bool IsActivePassive(Mobile m, PassiveSpell spell)
         {
+            if (spell == PassiveSpell.AnticipateHit)
+                return m.Skills.CurrentMastery == SkillName.Bushido;
+
             return GetActivePassive(m) == spell;
         }
 

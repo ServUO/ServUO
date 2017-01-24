@@ -9,9 +9,8 @@ using System.Collections.Generic;
 
 namespace Server.Engines.VvV
 {
-    public class VvVBattleStatusGump : Gump
+    public class VvVBattleStatusGump : BaseGump
     {
-        public PlayerMobile User { get; set; }
         public VvVBattle Battle { get; set; }
 
         public override int GetTypeID()
@@ -19,15 +18,12 @@ namespace Server.Engines.VvV
             return 0xF3ECC;
         }
 
-        public VvVBattleStatusGump(PlayerMobile pm, VvVBattle battle) : base(50, 50)
+        public VvVBattleStatusGump(PlayerMobile pm, VvVBattle battle) : base(pm, 50, 50)
         {
-            User = pm;
             Battle = battle;
-
-            AddGumpLayout();
         }
 
-        public void AddGumpLayout()
+        public override void AddGumpLayout()
         {
             AddPage(0);
             AddImage(0, 0, 30566);
@@ -78,7 +74,7 @@ namespace Server.Engines.VvV
             AddHtml(210, 21, 100, 20, "<basefont color=#FF0000>" + String.Format("{0:mm\\:ss}", left), false, false);
         }
 
-        public void Refresh(bool recompile = true)
+        /*public void Refresh(bool recompile = true)
         {
             Entries.Clear();
             Entries.TrimExcess();
@@ -88,6 +84,6 @@ namespace Server.Engines.VvV
                 User.NetState.RemoveGump(this);
 
             User.SendGump(this, false);
-        }
+        }*/
     }
 }
