@@ -113,7 +113,8 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 	    
-	    m_Spawner.OnNavreyKilled();
+	    if(m_Spawner != null)
+	    	m_Spawner.OnNavreyKilled();
 
             if (Utility.RandomDouble() < 0.15)
                 c.DropItem(new BottleIchor());
