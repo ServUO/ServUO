@@ -5,6 +5,8 @@ using Server.Gumps;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
+using System.Linq;
+
 
 namespace Server.Items
 {
@@ -473,6 +475,8 @@ namespace Server.Items
 
                 this.m_Skill.Base = 0.0;
 
+                CheckSkill(from);
+
                 from.SendLocalizedMessage(1070712); // You have successfully transferred your skill points into the Soulstone.
 
                 this.m_Stone.LastUserName = from.Name;
@@ -483,6 +487,33 @@ namespace Server.Items
                 Effects.SendMovingParticles(new Entity(Server.Serial.Zero, new Point3D(from.X - 6, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
 
                 Effects.SendTargetParticles(from, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
+            }
+
+            private void CheckSkill(Mobile from)
+            {
+                if (m_Skill.SkillName == SkillName.AnimalTaming)
+                {
+                    PlayerMobile owner = from as PlayerMobile;
+
+                    if (owner != null && owner.AllFollowers != null && owner.AllFollowers.Count > 0)
+                    {
+                        foreach (BaseCreature bc in owner.AllFollowers.OfType<BaseCreature>())
+                        {
+                            if (bc.CheckControlChance(owner))
+                            {
+                                bc.ControlTarget = null;
+                                bc.ControlOrder = OrderType.None;
+                            }
+                        }
+                    }
+                }
+
+                if (m_Skill.Owner.CurrentMastery == m_Skill.SkillName)
+                {
+                    SkillName mastery = m_Skill.Owner.CurrentMastery;
+                    m_Skill.Owner.CurrentMastery = SkillName.Alchemy;
+                    Server.Spells.SkillMasteries.MasteryInfo.OnMasteryChanged(from, mastery);
+                }
             }
         }
 
