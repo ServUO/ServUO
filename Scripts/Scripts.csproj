@@ -619,6 +619,7 @@
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
     <Compile Include="Items\Consumables\EtherealRetouchingTool.cs" />
+    <Compile Include="Items\Equipment\Armor\BoneArms.cs" />
     <Compile Include="Items\Equipment\Weapons\Craven.cs" />
     <Compile Include="Items\Equipment\Weapons\GargishCaptainJohnesBlade.cs" />
     <Compile Include="Items\Equipment\Weapons\CaptainJohnesBlade.cs" />
@@ -3505,9 +3506,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Assassin\AssassinLegs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\DaemonBone\BoneArms.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Armor\BoneChest.cs">
