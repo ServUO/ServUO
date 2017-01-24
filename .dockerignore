@@ -1,3 +1,12 @@
 Dockerfile
 Compile.WIN.bat
 Compile.MONO.bat
+.gitigonore
+Makefile
+zlib32.dll
+zlib64.dll
+ServUO.sln
+ServUO.sln.DotSettings
+README.md
+Ultima/Ultima.csproj
+Ultima/Ultima.csproj.user
