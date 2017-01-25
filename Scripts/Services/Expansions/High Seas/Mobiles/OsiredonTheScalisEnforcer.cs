@@ -153,7 +153,7 @@ namespace Server.Mobiles
                 this.MovingParticles(combatant, 0x36D4, 5, 0, false, false, 195, 0, 9502, 3006, 0, 0, 0);
                 AOS.Damage(combatant, this, (int)damage, 100, 0, 0, 0, 0);
 
-                if (combatant is PlayerMobile)
+                if (combatant is PlayerMobile && combatant.Mount != null)
                 {
                     (combatant as PlayerMobile).SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), true);
                 }
