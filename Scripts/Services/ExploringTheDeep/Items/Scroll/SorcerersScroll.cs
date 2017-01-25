@@ -63,7 +63,7 @@ namespace Server.Items
 
             AddPage(0);
             AddBackground(6, 11, 390, 324, 9380);
-            AddHtmlLocalized(130, 60, 250, 24, 1154328, 1062086, false, false); // Magical Reagents: Identification & Applications
+            AddHtmlLocalized(60, 60, 350, 24, 1154328, 1062086, false, false); // Magical Reagents: Identification & Applications
             AddHtmlLocalized(147, 90, 250, 24, 1154415, 1062086, false, false); // Cousteau Perron
             AddHtmlLocalized(42, 120, 323, 174, 1154329, 1, false, true); // <I>*The scroll appears to be a lesson plan for some sort of magical study*</I><BR><BR>The identification and application of magical reagents is an important skill for any studying apprentice of the Arcane Arts.  Reagents can easily be identified occurring naturally within the world, and as such, being able to identify them as useful is an important skill.  Just as a house of cards relies on each individual to support the greater structure, so do reagents support the wider application of magics.  Each reagent has well known properties and documented uses that when combined with one another can produce hugely varying results.   A keen understanding of those properties as well as the result of any combination thereof is essential to any apprentice wishing to advance beyond their current level.  Test your knowledge of reagent identification by placing the correctly identified reagent on the plates.  When each plate has the correct reagent placed on it, the Master Instructor will check your work. 
 
