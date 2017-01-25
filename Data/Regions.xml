@@ -977,6 +977,9 @@
 		</region>
 	</Facet>
 	<Facet name="Trammel">
+    <region type="NoTravelSpellsAllowed" priority="50" name="Underwater World">
+		  <rect x="6251" y="1613" width="222" height="200" />
+    </region>
 		<region type="GuardedRegion" priority="50" name="Moongates">
 			<!-- britain -->
 			<rect x="1330" y="1991" width="13" height="13" />
@@ -1255,6 +1258,9 @@
 				<rect x="1560" y="1760" width="8" height="8" />
 				<zrange min="0" />
 				<logoutDelay active="false" />
+        <region type="CusteauPerronHouseRegion" name="Custeau Perron House">
+          <rect x="1648" y="1544" width="8" height="8" />
+        </region>
 			</region>
 			<region name="A Wheatfield in Britain 1">
 				<rect x="1120" y="1776" width="32" height="32" />
@@ -1710,6 +1716,9 @@
 			<go x="5243" y="1004" z="0" />
 			<entrance x="1176" y="2635" />
 			<music name="Dungeon9" />
+      <region type="ExploringDeepCreaturesRegion" name="Obsidian Wyvern">
+        <rect x="5133" y="959" width="10" height="12" />
+      </region>
 		</region>
 		<region type="DungeonRegion" priority="50" name="Hythloth">
 			<rect x="5898" y="2" width="238" height="244" />
@@ -1843,7 +1852,13 @@
 			<go x="5210" y="2322" z="30" />
 			<entrance x="1996" y="80" />
 			<music name="Dungeon9" />
+      <region type="ExploringDeepCreaturesRegion" name="Ice Wyrm">
+				<rect x="5799" y="232" width="15" height="15" />
+		  </region>
 		</region>
+    <region type="ExploringDeepCreaturesRegion" name="Mercutio The Unsavory">
+      <rect x="2580" y="1112" width="8" height="13" />
+    </region>
 		<region type="BlackthornDungeon" priority="50" name="BlackthornDungeon">
 			<rect x="6151" y="2301" width="413" height="539" />
 			<go x="6430" y="2678" z="0" />
@@ -1910,6 +1925,9 @@
 			<go x="5137" y="2015" z="0" />
 			<music name="Dungeon9" />
 			<entrance x="1014" y="1434" />
+      <region type="ExploringDeepCreaturesRegion" name="Orc Engineer">
+        <rect x="5308" y="1964" width="11" height="11" />
+      </region>
 		</region>
 		<region priority="50" name="A Cotton Field in Moonglow">
 			<rune name="A Cotton Field in Moonglow" />
@@ -1978,6 +1996,9 @@
 		</region>
 	</Facet>
 	<Facet name="Ilshenar">
+    <region type="ExploringDeepCreaturesRegion" name="Djinn">
+      <rect x="1724" y="508" width="18" height="22" />
+    </region>
 		<region type="MondainRegion" priority="50" name="Twisted Weald">
 			<rect x="2107" y="1145" width="147" height="135" />
 			<go x="2189" y="1253" z="0" />
@@ -2320,6 +2341,13 @@
 		</region>
 	</Facet>
 	<Facet name="Malas">
+    <region type="Underwater" priority="50" name="Gravewater Lake">
+		  <rect x="1698" y="1567" width="5" height="60" />
+		  <rect x="1687" y="1627" width="26" height="26" />
+	  </region>
+	  <region type="MondainRegion" priority="50" name="Gravewater Dock">
+		  <rect x="1692" y="1551" width="16" height="16" />
+	  </region>
 		<region type="MondainRegion" priority="50" name="Bedlam">
 			<rect x="80" y="1590" width="130" height="100" />
 			<go x="117" y="1681" z="0" />
