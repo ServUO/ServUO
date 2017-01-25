@@ -14,27 +14,28 @@ namespace Server.Items
         public SkillName Skill { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int SpellID { get; private set; }
+        public int Volume { get; set; }
 
         [Constructable]
-        public SkillMasteryPrimer(int spellID, SkillName skill) : base(7714)
+        public SkillMasteryPrimer(SkillName skill, int volume) : base(7714)
         {
-            SpellID = spellID;
             Skill = skill;
             LootType = LootType.Cursed;
+
+            Volume = volume;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack))
             {
-                if (MasteryInfo.HasLearned(from, SpellID, Skill))
-                    from.SendLocalizedMessage(1155884, String.Format("#{0}", MasteryInfo.GetLocalization(SpellID, Skill))); // You are already proficient in this level of ~1_MasterySkill~
-                //else if (MasteryInfo.CanLearn(from, SpellID))
-                //    from.SendLocalizedMessage(1115709); // Your skills are not high enough to invoke this mastery ability.
-                else if(MasteryInfo.LearnMastery(from, SpellID, Skill))
+                if (MasteryInfo.HasLearned(from, Skill, Volume))
                 {
-                    from.SendLocalizedMessage(1155885, String.Format("#{0}", MasteryInfo.GetLocalization(SpellID, Skill))); // You have increased your proficiency in ~1_SkillMastery~!
+                    from.SendLocalizedMessage(1155884, String.Format("#{0}", MasteryInfo.GetLocalization(Skill))); // You are already proficient in this level of ~1_MasterySkill~
+                }
+                else if (MasteryInfo.LearnMastery(from, Skill, Volume))
+                {
+                    from.SendLocalizedMessage(1155885, String.Format("#{0}", MasteryInfo.GetLocalization(Skill))); // You have increased your proficiency in ~1_SkillMastery~!
 
                     Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
                     Effects.PlaySound(from.Location, from.Map, 0x243);
@@ -52,28 +53,25 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1155882, String.Format("#{0}", MasteryInfo.GetLocalization(SpellID, Skill))); // Primer on ~1_Skill~
+            list.Add(1155882, String.Format("#{0}", MasteryInfo.GetLocalization(Skill))); // Primer on ~1_Skill~
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            list.Add(1155883, String.Format("{0}", GetVolume(MasteryInfo.GetVolume(SpellID, Skill)))); // Volume ~1_Level~
+            list.Add(1155883, String.Format("{0}", GetVolume(Volume))); // Volume ~1_Level~
         }
 
-        private string GetVolume(Volume volume)
+        private string GetVolume(int volume)
         {
-            if (volume == Volume.One)
+            if (volume == 1)
                 return "I";
 
-            if (volume == Volume.Two)
+            if (volume == 2)
                 return "II";
 
-            if (volume == Volume.Three)
-                return "III";
-
-            return "Error";
+            return "III";
         }
 
         public static void CheckPrimerDrop(BaseCreature killed)
@@ -102,34 +100,21 @@ namespace Server.Items
             });
         }
 
-        public static SkillMasteryPrimer GetRandom(Volume volume = Volume.Three, Volume exclude = Volume.One)
+        public static SkillMasteryPrimer GetRandom()
         {
-            List<MasteryInfo> available = new List<MasteryInfo>();
+            SkillName skill = MasteryInfo.Skills[Utility.RandomMinMax(3, 18)];
+            int volume = 1;
 
-            foreach (MasteryInfo info in MasteryInfo.Infos.Where(i => i.Volume <= volume && i.Volume != exclude && i.SpellID > 705))
-                available.Add(info);
+            double random = Utility.RandomDouble();
 
-            if (available.Count == 0)
-                return null;
+            if (0.2 >= random)
+                volume = 3;
+            else if (0.5 >= random)
+                volume = 2;
 
-            MasteryInfo random = available[Utility.Random(available.Count)];
-
-            SkillMasteryPrimer primer = new SkillMasteryPrimer(random.SpellID, random.MasterySkill);
-
-            available.Clear();
-            available.TrimExcess();
+            SkillMasteryPrimer primer = new SkillMasteryPrimer(skill, volume);
 
             return primer;
-        }
-
-        public static SkillMasteryPrimer GetPrimer(SkillName name, Volume volume = Volume.One)
-        {
-            MasteryInfo info = MasteryInfo.Infos.FirstOrDefault(i => i.MasterySkill == name && i.Volume == volume);
-
-            if (info == null)
-                return null;
-
-            return new SkillMasteryPrimer(info.SpellID, name);
         }
 
         public SkillMasteryPrimer(Serial serial)
@@ -141,10 +126,10 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 1 ); // version
 
+            writer.Write(Volume);
             writer.Write((int)Skill);
-            writer.Write(SpellID);
 		}
 
         public override void Deserialize(GenericReader reader)
@@ -153,8 +138,20 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            Skill = (SkillName)reader.ReadInt();
-            SpellID = reader.ReadInt();
+            switch (version)
+            {
+                case 1:
+                    Volume = reader.ReadInt();
+                    Skill = (SkillName)reader.ReadInt();
+                    break;
+                case 0:
+
+                    Skill = (SkillName)reader.ReadInt();
+                    int id = reader.ReadInt();
+
+                    Volume = MasteryInfo.GetVolume(id, Skill);
+                    break;
+            }
         }
     }
 }

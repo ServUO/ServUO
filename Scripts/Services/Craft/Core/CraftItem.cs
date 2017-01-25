@@ -1696,13 +1696,22 @@ namespace Server.Engines.Craft
                     m_PlantPigmentHue = PlantPigmentHue.None;
 					#endregion
 
-					if (tool.Parent is Container) {
-					Container cntnr = (Container) tool.Parent;
-                                        cntnr.TryDropItem(from, item, false);
-					}
-					else {
-					from.AddToBackpack(item);
-					}
+                    if (tool.Parent is Container)
+                    {
+                        Container cntnr = (Container)tool.Parent;
+
+                        if (!cntnr.TryDropItem(from, item, false))
+                        {
+                            if(cntnr != from.Backpack)
+                                from.AddToBackpack(item);
+                            else
+                                item.MoveToWorld(from.Location, from.Map);
+                        }
+                    }
+                    else
+                    {
+                        from.AddToBackpack(item);
+                    }
 
 					EventSink.InvokeCraftSuccess(new CraftSuccessEventArgs(from, item, tool));
 

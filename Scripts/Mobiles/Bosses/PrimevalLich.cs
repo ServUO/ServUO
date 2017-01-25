@@ -105,14 +105,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(LightsRampart) };
+                return new Type[] { typeof(BansheesCall), typeof(CastOffZombieSkin), typeof(ChannelersDefender), typeof(LightsRampart) };
             }
         }
         public override Type[] SharedList
         {
             get
             {
-                return new Type[] { typeof(TheMostKnowledgePerson), typeof(ChannelersDefender), typeof(LieutenantOfTheBritannianRoyalGuard) };
+                return new Type[] { typeof(TokenOfHolyFavor), typeof(TheMostKnowledgePerson), typeof(LieutenantOfTheBritannianRoyalGuard), typeof(ProtectoroftheBattleMage) };
             }
         }
         public override Type[] DecorativeList

@@ -719,8 +719,6 @@ namespace Server.Items
         public TatteredAncientScroll(int amount)
             : base(0x1437)
         {
-            this.Stackable = true;
-            this.Amount = amount;
         }
 
         public TatteredAncientScroll(Serial serial)
@@ -739,7 +737,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -748,8 +746,14 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (ItemID != 0x1437)
+            if (version == 0 && ItemID != 0x1437)
                 ItemID = 0x1437;
+
+            if (version == 0 && Stackable)
+            {
+                Stackable = false;
+                Amount = 1;
+            }
         }
     }
 

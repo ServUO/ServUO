@@ -115,11 +115,11 @@ namespace Server.Items
 
             if (handTwo is BaseWeapon)
                 handOne = handTwo;
-            if (handTwo is BaseRanged)
+            if (handTwo is BaseWeapon)
             {
-                BaseRanged ranged = (BaseRanged)handTwo;
+                BaseWeapon wep = (BaseWeapon)handTwo;
 				
-                if (ranged.Balanced)
+                if (wep.Attributes.BalancedWeapon > 0)
                     return true;
             }
 

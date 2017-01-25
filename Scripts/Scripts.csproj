@@ -617,6 +617,7 @@
     <Compile Include="Items\Artifacts\Equipment\Clothing\MagicalDoor.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
+    <Compile Include="Items\Consumables\EtherealRetouchingTool.cs" />
     <Compile Include="Items\Equipment\Weapons\Craven.cs" />
     <Compile Include="Items\Equipment\Weapons\GargishCaptainJohnesBlade.cs" />
     <Compile Include="Items\Equipment\Weapons\CaptainJohnesBlade.cs" />
@@ -921,7 +922,6 @@
     <Compile Include="Items\Tools\ChestOfSending.cs" />
     <Compile Include="Items\Tools\ForgedMetalOfArtifacts.cs" />
     <Compile Include="Items\Tools\RunicMalletAndChisel.cs" />
-    <Compile Include="Misc\Coords.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Items\Artifacts\Equipment\Glasses\Glasses.cs">
       <SubType>Code</SubType>
@@ -9896,6 +9896,8 @@
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\NexusCore.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\SmallPieceofBlackrock.cs" />
     <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokunoPersistence.cs" />
+    <Compile Include="Services\Underworld\Navrey%27s Lair\NavreysController.cs" />
+    <Compile Include="Services\Underworld\Navrey%27s Lair\NavreysPillar.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearch.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchGump.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchMap.cs" />
@@ -9905,6 +9907,7 @@
     <Compile Include="Services\ViceVsVirtue\Gumps\BattleStatsGump.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\BattleWarningGump.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\ConfirmSignupGump.cs" />
+    <Compile Include="Services\ViceVsVirtue\Gumps\ExemptCityGump.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\GuildLeaderboardGump.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\LeaderboardGump.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\RewardGump.cs" />

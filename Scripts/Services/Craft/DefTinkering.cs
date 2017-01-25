@@ -730,7 +730,7 @@ namespace Server.Engines.Craft
                 index = this.AddCraft(typeof(PendantOfTheMagi), 1073107, 1072937, 100.0, 125.0, typeof(IronIngot), 1044036, 2, 1044037);
                 this.SetMinSkillOffset(index, 25.0);
                 this.AddRes(index, typeof(EyeOfTheTravesty), 1032685, 1, 1044253);
-                this.AddRes(index, typeof(WhitePearl), 1032694, 10, 1044253);
+                this.AddRes(index, typeof(WhitePearl), 1032694, 5, 1044253);
                 this.AddRes(index, typeof(StarSapphire), 1062600, 50, 1044253);
                 this.AddRecipe(index, (int)TinkerRecipes.PendantOfTheMagi);
                 this.ForceNonExceptional(index);

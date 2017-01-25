@@ -25,6 +25,8 @@ namespace Server.Engines.Despise
         {
             if (DespiseController.Instance == null)
             {
+                DespiseController.RemoveAnkh();
+
                 DespiseController controller = new DespiseController();
                 WeakEntityCollection.Add("despise", controller);
                 controller.MoveToWorld(new Point3D(5571, 626, 30), Map.Trammel);

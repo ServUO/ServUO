@@ -863,6 +863,20 @@ namespace Server.Engines.Doom
             }
         }
 
+        public override void Delete()
+        {
+            this.ClearCreatures();
+            this.ClearTraps();
+            this.DestroyRegion();
+
+            if (this.m_Timer != null)
+                this.m_Timer.Stop();
+
+            this.m_Timer = null;
+
+            base.Delete();
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

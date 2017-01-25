@@ -460,11 +460,13 @@ namespace Server.Engines.Blackthorn
             if (this.Map == null || this.Map == Map.Internal)
                 return;
 
+            Map m = this.Map;
+
             for (int i = 0; i < 4; i++)
             {
                 Timer.DelayCall(TimeSpan.FromMilliseconds(i * 50), o =>
                 {
-                    Server.Misc.Geometry.Circle2D(this.Location, this.Map, (int)o, (pnt, map) =>
+                    Server.Misc.Geometry.Circle2D(this.Location, m, (int)o, (pnt, map) =>
                     {
                         Effects.SendLocationEffect(pnt, map, Utility.RandomBool() ? 14000 : 14013, 14, 20, 2018, 0);
                     });
@@ -473,25 +475,28 @@ namespace Server.Engines.Blackthorn
 
             Timer.DelayCall(TimeSpan.FromMilliseconds(200), () =>
                 {
-                    List<Mobile> list = new List<Mobile>();
-                    IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 4);
-
-                    foreach (Mobile m in eable)
+                    if (m != null)
                     {
-                        if (m.AccessLevel > AccessLevel.Player)
-                            continue;
+                        List<Mobile> list = new List<Mobile>();
+                        IPooledEnumerable eable = m.GetMobilesInRange(this.Location, 4);
 
-                        if (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile) && CanBeHarmful(m))
-                            list.Add(m);
-                    }
-
-                    list.ForEach(m =>
+                        foreach (Mobile mob in eable)
                         {
-                            AOS.Damage(m, this, Utility.RandomMinMax(80, 90), 0, 0, 0, 0, 0, 100, 0);
-                        });
+                            if (mob.AccessLevel > AccessLevel.Player)
+                                continue;
 
-                    list.Clear();
-                    list.TrimExcess();
+                            if (mob is PlayerMobile || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() is PlayerMobile) && CanBeHarmful(mob))
+                                list.Add(mob);
+                        }
+
+                        list.ForEach(mob =>
+                            {
+                                AOS.Damage(mob, this, Utility.RandomMinMax(80, 90), 0, 0, 0, 0, 0, 100, 0);
+                            });
+
+                        list.Clear();
+                        list.TrimExcess();
+                    }
                 });
         }
 

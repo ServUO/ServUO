@@ -1385,6 +1385,9 @@ namespace Server.Items
 				chance = 0.02;
 			}
 
+            if (Core.AOS && m_AosWeaponAttributes.MageWeapon > 0 && attacker.Skills[SkillName.Magery].Value > atkSkill.Value)
+                return attacker.CheckSkill(SkillName.Magery, chance);
+
 			return attacker.CheckSkill(atkSkill.SkillName, chance);
 		}
 
@@ -5104,7 +5107,7 @@ namespace Server.Items
             int prop;
             double fprop;
 
-			if (Core.ML && this is BaseRanged && ((BaseRanged)this).Balanced)
+            if (Core.ML && m_AosAttributes.BalancedWeapon > 0 && Layer == Layer.TwoHanded)
 			{
 				list.Add(1072792); // Balanced
 			}
