@@ -56,12 +56,21 @@ namespace Server.Mobiles
 
             PlayerMobile pm = (PlayerMobile)m;
 
+            Item boots = m.Backpack.FindItemByType(typeof(BootsOfBallast));
+            Item robe = m.Backpack.FindItemByType(typeof(CanvassRobe));
+            Item neck = m.Backpack.FindItemByType(typeof(AquaPendant));
+            Item lens = m.Backpack.FindItemByType(typeof(NictitatingLens));
+
             if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.None)
             {
                 if (!m.HasGump(typeof(HeplerPaulsonGump)))
                 {
                     m.SendGump(new HeplerPaulsonGump(m));
                 }
+            }
+            else if (boots != null && robe != null && neck != null && lens != null)
+            {
+                m.AddToBackpack(new UnknownShipwreck());
             }
             else
             {
