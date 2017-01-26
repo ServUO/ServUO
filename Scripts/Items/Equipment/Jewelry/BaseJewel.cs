@@ -553,12 +553,14 @@ namespace Server.Items
 
             if (from.AccessLevel < AccessLevel.GameMaster)
             {
+                bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
+
                 if (from.Race == Race.Gargoyle && !this.CanBeWornByGargoyles)
                 {
                     from.SendLocalizedMessage(1111708); // Gargoyles can't wear this.
                     return false;
                 }
-                else if (this.RequiredRace != null && from.Race != this.RequiredRace)
+                else if (this.RequiredRace != null && from.Race != this.RequiredRace && !morph)
                 {
                     if (this.RequiredRace == Race.Elf)
                         from.SendLocalizedMessage(1072203); // Only Elves may use this.

@@ -229,7 +229,7 @@ namespace Server.Engines.VvV
             {
                 VvVPlayerEntry entry;
 
-                if (ViceVsVirtueSystem.IsVvV(m, out entry, false, true))
+                if (m.Alive && ViceVsVirtueSystem.IsVvV(m, out entry, false, true))
                 {
                     count++;
 

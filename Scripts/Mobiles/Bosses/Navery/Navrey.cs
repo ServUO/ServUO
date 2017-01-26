@@ -79,7 +79,7 @@ namespace Server.Mobiles
         }
  
         public override double TeleportChance { get { return 0; } }
-	public override bool AlwaysMurderer { get { return true; } }
+	    public override bool AlwaysMurderer { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Parasitic; } }
         public override Poison HitPoison { get { return Poison.Lethal; } }
         public override int Meat { get { return 1; } }
@@ -106,7 +106,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.AosSuperBoss, 9);
+            AddLoot(LootPack.AosSuperBoss, 3);
         }
 
         public override void OnDeath(Container c)
@@ -125,10 +125,10 @@ namespace Server.Mobiles
             if (Utility.RandomBool())
                 c.AddItem(new UntranslatedAncientTome());
 
-            if (Utility.RandomBool())
+            if (0.1 >= Utility.RandomDouble())
                 c.AddItem(ScrollofTranscendence.CreateRandom(30, 30));
 
-            if (Utility.RandomBool())
+            if (0.1 >= Utility.RandomDouble())
                 c.AddItem(new TatteredAncientScroll());            
 
             if (Utility.RandomDouble() < 0.10)
