@@ -1,0 +1,50 @@
+﻿using System;
+
+namespace Server.Items
+{
+    public class NictitatingLens : Glasses
+    {
+        public override int LabelNumber { get { return 1154234; } } // Nictitating Lens
+
+        [Constructable]
+        public NictitatingLens()
+            : base()
+        {
+            this.Hue = 1939;
+            this.Weight = 2.0;
+            this.LootType = LootType.Blessed;
+        }
+
+        public override int BasePhysicalResistance { get { return 2; } }
+        public override int BaseFireResistance { get { return 4; } }
+        public override int BaseColdResistance { get { return 4; } }
+        public override int BasePoisonResistance { get { return 3; } }
+        public override int BaseEnergyResistance { get { return 2; } }
+        public override int InitMinHits { get { return 50; } }
+        public override int InitMaxHits { get { return 60; } }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
+        }
+
+        public NictitatingLens(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+}
