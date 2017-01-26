@@ -1,4 +1,4 @@
-# !!! HIGLY EXPERIMENTAL !!!
+# !!! HIGHLY EXPERIMENTAL !!!
 # 
 # TODO:
 #	- ENV Server.cfg
