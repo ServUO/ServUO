@@ -947,6 +947,8 @@ namespace Server.Items
                 }
             }
 
+            bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
+
 			#region Stygian Abyss
 			if (from.Race == Race.Gargoyle && !CanBeWornByGargoyles && from.IsPlayer())
 			{
@@ -955,7 +957,7 @@ namespace Server.Items
 			}
 			#endregion
 
-			if (RequiredRace != null && from.Race != RequiredRace)
+			if (RequiredRace != null && from.Race != RequiredRace && !morph)
 			{
 				if (RequiredRace == Race.Elf)
 				{
@@ -1787,10 +1789,19 @@ namespace Server.Items
 
 			if (!blocked)
 			{
-                Layer randomLayer = _DamageLayers[Utility.Random(_DamageLayers.Length)];
-                Item armorItem = defender.FindItemOnLayer(randomLayer);
+                Layer randomLayer = Layer.FirstValid;
+                Item armorItem = null;
 
-				IWearableDurability armor = armorItem as IWearableDurability;
+                for (int i = 0; i < 10; i++)
+                {
+                    randomLayer = _DamageLayers[Utility.Random(_DamageLayers.Length)];
+                    armorItem = defender.FindItemOnLayer(randomLayer);
+
+                    if (armorItem is IWearableDurability)
+                        break;
+                }
+
+                IWearableDurability armor = armorItem as IWearableDurability;
 
 				if (armor != null)
 				{
@@ -1814,6 +1825,7 @@ namespace Server.Items
             Layer.OuterTorso,
             Layer.Ring,
             Layer.Bracelet,
+            Layer.Earrings,
             Layer.Neck,
             Layer.Neck,
             Layer.Gloves,

@@ -37,7 +37,7 @@ namespace Server.Mobiles
 
         public virtual bool CanGivePowerscrolls { get { return true; } }
 
-        public static void GivePowerScrollTo(Mobile m)
+        public static void GivePowerScrollTo(Mobile m, BaseChampion champ)
         {
             if (m == null)	//sanity
                 return;
@@ -64,7 +64,7 @@ namespace Server.Mobiles
                 {
                     Mobile prot = pm.JusticeProtectors[j];
 
-                    if (prot.Map != m.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot))
+                    if (prot.Map != m.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot) || !prot.InRange(champ, 100))
                         continue;
 
                     int chance = 0;
@@ -160,7 +160,7 @@ namespace Server.Mobiles
             {
                 DamageStore ds = rights[i];
 
-                if (ds.m_HasRight)
+                if (ds.m_HasRight && InRange(ds.m_Mobile, 100) && ds.m_Mobile.Map == this.Map)
                     toGive.Add(ds.m_Mobile);
             }
 
@@ -201,7 +201,7 @@ namespace Server.Mobiles
             {
                 Mobile m = toGive[i % toGive.Count];
 
-                GivePowerScrollTo(m);
+                GivePowerScrollTo(m, this);
             }
         }
 

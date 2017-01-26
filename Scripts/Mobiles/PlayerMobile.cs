@@ -1148,6 +1148,8 @@ namespace Server.Mobiles
 					}
 					#endregion
 
+                    bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
+
 					if (item is BaseWeapon)
 					{
 						BaseWeapon weapon = (BaseWeapon)item;
@@ -1166,7 +1168,7 @@ namespace Server.Mobiles
 						{
 							drop = true;
 						}
-						else if (weapon.RequiredRace != null && weapon.RequiredRace != Race)
+                        else if (weapon.RequiredRace != null && weapon.RequiredRace != Race && !morph)
 						{
 							drop = true;
 						}
@@ -1199,7 +1201,7 @@ namespace Server.Mobiles
 						{
 							drop = true;
 						}
-						else if (armor.RequiredRace != null && armor.RequiredRace != Race)
+                        else if (armor.RequiredRace != null && armor.RequiredRace != Race && !morph)
 						{
 							drop = true;
 						}
@@ -1259,7 +1261,7 @@ namespace Server.Mobiles
 						{
 							drop = true;
 						}
-						else if (clothing.RequiredRace != null && clothing.RequiredRace != Race)
+                        else if (clothing.RequiredRace != null && clothing.RequiredRace != Race && !morph)
 						{
 							drop = true;
 						}

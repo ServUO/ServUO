@@ -272,7 +272,7 @@ namespace Server.Items
                     break;
             }
 
-            FinishSequence();
+            Timer.DelayCall(TimeSpan.FromSeconds(10), FinishSequence);
         }
 
         public virtual bool IsKey(Item item)
@@ -316,7 +316,8 @@ namespace Server.Items
 
         public virtual void AddFighter(Mobile fighter)
         {
-            m_Fighters.Add(fighter);
+            if(!m_Fighters.Contains(fighter))
+                m_Fighters.Add(fighter);
 
             IPooledEnumerable eable = fighter.GetMobilesInRange(5);
             foreach (Mobile m in eable)
@@ -358,7 +359,7 @@ namespace Server.Items
                 {
                     Mobile m = info.Mobile;
 
-                    if (m.InRange(from.Location, 15) && CanEnter(m))
+                    if (m.InRange(from.Location, 25) && CanEnter(m))
                     {
                         if (m == from)
                             AddFighter(from);

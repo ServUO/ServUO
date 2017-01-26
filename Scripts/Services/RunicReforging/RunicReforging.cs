@@ -310,11 +310,6 @@ namespace Server.Items
                     if (!(item is BaseWeapon) || (((BaseWeapon)item).PrimaryAbility != WeaponAbility.BleedAttack && ((BaseWeapon)item).SecondaryAbility != WeaponAbility.BleedAttack))
                         list.Remove(col);
                 }
-                /*else if (list.Contains(col) && col.Attribute is string && (string)col.Attribute == "BalancedWeapon")
-                {
-                    if (!(item is BaseRanged))
-                        list.Remove(col);
-                }*/
                 else if (list.Contains(col) && col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.SplinteringWeapon)
                 {
                     if (playermade || item is BaseRanged)
@@ -384,11 +379,6 @@ namespace Server.Items
                         budget -= weight;
                     }
                 }
-                /*else if (str == "BalancedWeapon" && item is BaseRanged)
-                {
-                    ((BaseRanged)item).Balanced = true;
-                    budget -= 100;
-                }*/
                 else if (str == "WeaponVelocity" && item is BaseRanged)
                 {
                     int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
@@ -399,9 +389,6 @@ namespace Server.Items
 			}
 			else if (attribute is AosAttribute)
 			{
-                //if ((AosAttribute)attribute == AosAttribute.Luck && item is BaseRanged)
-                //    max = 180;
-
                 int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
                 AosAttributes attrs = GetAosAttributes(item);
 
@@ -436,9 +423,6 @@ namespace Server.Items
             {
                 int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
                 AosArmorAttributes attrs = GetAosArmorAttributes(item);
-
-                if (item is BaseArmor) attrs = ((BaseArmor)item).ArmorAttributes;
-                else if (item is BaseClothing) attrs = ((BaseClothing)item).ClothingAttributes;
 
                 if (attrs != null && value > 0 && attrs[(AosArmorAttribute)attribute] == 0)
                 {
@@ -1512,8 +1496,11 @@ namespace Server.Items
                     }
                 }
 
-                if (basebudget > 800)
-                    basebudget = 800;
+                if (basebudget > RandomItemGenerator.MaxBaseBudget)
+                    basebudget = RandomItemGenerator.MaxBaseBudget;
+
+                if (basebudget < RandomItemGenerator.MinBaseBudget)
+                    basebudget = RandomItemGenerator.MinBaseBudget;
 
                 // base budget range
                 int divisor = GetDivisor(basebudget);
@@ -1528,12 +1515,6 @@ namespace Server.Items
                 }
 
                 TryApplyRandomDisadvantage(item, ref budget);
-
-                if (budget > MaxBudget)
-                    budget = MaxBudget;
-
-                if (budget < 150)
-                    budget = 150;
 
                 bool powerful = budget >= 550;
 
@@ -1568,7 +1549,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    int maxmods = Math.Min(9, budget / Utility.RandomMinMax(100, 140));
+                    int maxmods = Math.Min(RandomItemGenerator.MaxProps, budget / Utility.RandomMinMax(100, 140));
                     int minmods = Math.Max(4, maxmods - 1);
                     mods = Utility.RandomMinMax(minmods, maxmods);
 
@@ -2524,7 +2505,7 @@ namespace Server.Items
 		{
 			AosAttribute.SpellChanneling,
 			AosAttribute.DefendChance,
-			AosAttribute.AttackChance,
+			//AosAttribute.AttackChance,
 			AosAttribute.CastSpeed,
 			AosAttribute.ReflectPhysical,
 			AosArmorAttribute.LowerStatReq,

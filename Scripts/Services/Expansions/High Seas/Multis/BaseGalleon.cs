@@ -487,7 +487,7 @@ namespace Server.Multis
 
         public bool HasAccess(Mobile from)
         {
-            if(Owner == null || (Scuttled && IsEnemy(from)) || (Owner is BaseCreature && !Owner.Alive))
+            if(Owner == null || (Scuttled && IsEnemy(from))/* || (Owner is BaseCreature && !Owner.Alive)*/)
                 return true;
 
             return GetSecurityLevel(from) !=  SecurityLevel.Denied;
