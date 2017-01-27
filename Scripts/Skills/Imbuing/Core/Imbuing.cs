@@ -150,6 +150,9 @@ namespace Server.SkillHandlers
             if (item == null)
                 return true;
 
+            if (IsSpecialImbuable(item))
+                return false;
+
 			if (item.IsArtifact)
 				return true;
 
@@ -181,6 +184,20 @@ namespace Server.SkillHandlers
 
             return true;
         }
+
+        private static bool IsSpecialImbuable(Item item)
+        {
+            foreach (Type type in _SpecialImbuable)
+                if (item.GetType() == type)
+                    return true;
+
+            return false;
+        }
+
+        private static Type[] _SpecialImbuable =
+        {
+            typeof(ClockworkLeggings), typeof(GargishClockworkLeggings)
+        };
 
         public static double GetSuccessChance(Mobile from, Item item, int totalItemWeight, int propWeight, out double dif)
         {

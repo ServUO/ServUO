@@ -507,7 +507,6 @@ namespace Server.Items
             if (m_Level > 4)
             {
                 EndBleed(m_Bleeder, true);
-                EndForceWalk(m_Bleeder);
                 RemoveEffects();
                 BuffInfo.RemoveBuff(this.Mobile, BuffIcon.SplinteringEffect);
                 return;
@@ -559,6 +558,8 @@ namespace Server.Items
         {
             if (message)
                 m.SendLocalizedMessage(1060167); // The bleeding wounds have healed, you are no longer bleeding!
+
+            EndForceWalk(m_Bleeder);
 
             m_Bleeding = false;
         }
