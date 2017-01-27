@@ -288,9 +288,15 @@ namespace Server.Factions
 
         public static bool ExistsOn(Mobile mob, bool vvvOnly = false)
         {
+            if (mob == null)
+                return false;
+
             Container pack = mob.Backpack;
 
-            if(vvvOnly && pack.FindItemByType(typeof(Server.Engines.VvV.VvVSigil)) != null)
+            if (pack == null)
+                return false;
+
+            if (vvvOnly && pack.FindItemByType(typeof(Server.Engines.VvV.VvVSigil)) != null)
                 return true;
 
             return (pack != null && (pack.FindItemByType(typeof(Sigil)) != null || pack.FindItemByType(typeof(Server.Engines.VvV.VvVSigil)) != null));
