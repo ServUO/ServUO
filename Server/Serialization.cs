@@ -519,37 +519,21 @@ namespace Server
 			m_Index += 2;
 		}
 
-		public override unsafe void Write(double value)
-		{
-			if ((m_Index + 8) > m_Buffer.Length)
-			{
-				Flush();
-			}
+        public override void Write(double value) {
+            byte[] eightBytes = System.BitConverter.GetBytes(value);
+            for (int i = 0; i < 8; i++) {
+                Write(eightBytes[i]);
+            }
+        }
 
-			fixed (byte* pBuffer = m_Buffer)
-			{
-				*((double*)(pBuffer + m_Index)) = value;
-			}
+        public override void Write(float value) {
+            byte[] fourBytes = System.BitConverter.GetBytes(value);
+            for (int i = 0; i < 4; i++) {
+                Write(fourBytes[i]);
+            }
+        }
 
-			m_Index += 8;
-		}
-
-		public override unsafe void Write(float value)
-		{
-			if ((m_Index + 4) > m_Buffer.Length)
-			{
-				Flush();
-			}
-
-			fixed (byte* pBuffer = m_Buffer)
-			{
-				*((float*)(pBuffer + m_Index)) = value;
-			}
-
-			m_Index += 4;
-		}
-
-		private readonly char[] m_SingleCharBuffer = new char[1];
+        private readonly char[] m_SingleCharBuffer = new char[1];
 
 		public override void Write(char value)
 		{
