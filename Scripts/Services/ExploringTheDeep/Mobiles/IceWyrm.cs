@@ -22,6 +22,8 @@ namespace Server.Mobiles
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
+
+            Tamable = false;
         }
 
         public static IceWyrm Spawn(Point3D platLoc, Map platMap)
@@ -109,6 +111,9 @@ namespace Server.Mobiles
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
+
+            if (Tamable)
+                Tamable = false;
         }
     }
 }

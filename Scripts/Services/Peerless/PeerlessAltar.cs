@@ -200,7 +200,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)3); // version
+
+            // version 3
+            writer.Write(m_IsAvailable);
 
             // version 1
             writer.Write((bool)(m_Helpers != null));
@@ -209,12 +212,12 @@ namespace Server.Items
                 writer.WriteMobileList<BaseCreature>(m_Helpers);
 
             // version 0			
-            writer.Write((Mobile)m_Peerless);
-            writer.Write((Point3D)m_BossLocation);
-            writer.Write((Point3D)m_TeleportDest);
-            writer.Write((Point3D)m_ExitDest);
+            writer.Write(m_Peerless);
+            writer.Write(m_BossLocation);
+            writer.Write(m_TeleportDest);
+            writer.Write(m_ExitDest);
 
-            writer.Write((DateTime)m_Deadline);
+            writer.Write(m_Deadline);
 
             // serialize master keys						
             writer.WriteItemList(m_MasterKeys);
@@ -241,6 +244,9 @@ namespace Server.Items
 
             switch (version)
             {
+                case 3:
+                    m_IsAvailable = reader.ReadBool();
+                    goto case 2;
                 case 2:
                 case 1:
                     if (reader.ReadBool())
@@ -272,7 +278,18 @@ namespace Server.Items
                     break;
             }
 
-            Timer.DelayCall(TimeSpan.FromSeconds(10), FinishSequence);
+            if (version == 2)
+            {
+                if (m_Peerless == null)
+                {
+                    FinishSequence();
+                    m_IsAvailable = true;
+                }
+            }
+            else if (!m_IsAvailable && m_Peerless == null)
+            {
+                FinishSequence();
+            }
         }
 
         public virtual bool IsKey(Item item)
@@ -756,7 +773,7 @@ namespace Server.Items
                 BaseCreature c = m_Helpers[i];
 
                 if (c != null && c.Alive)
-                    c.Kill();
+                    c.Delete();
             }
 
             m_Helpers.Clear();

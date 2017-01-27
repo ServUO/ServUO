@@ -685,7 +685,7 @@ namespace Server.Items
 		private static Dictionary<Type, CraftSystem> m_AllowableTable = new Dictionary<Type, CraftSystem>();
 		private static Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
 		
-        public static void Initialize()
+        public static void Configure()
         {
             Server.Commands.CommandSystem.Register("GetCreatureScore", AccessLevel.GameMaster, e =>
                 {

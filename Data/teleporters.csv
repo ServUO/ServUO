@@ -44,8 +44,8 @@
 5466,1804,12,Felucca,5593,1840,-3,Felucca,False
 5466,1805,12,Felucca,5593,1841,-3,Felucca,False
 5466,1806,12,Felucca,5593,1842,-3,Felucca,False
-5594,1840,-9,Felucca,5467,1804,7,Felucca,False
-5594,1841,-9,Felucca,5467,1805,7,Felucca,False
+5594,1840,-8,Felucca,5467,1804,7,Felucca,False
+5594,1841,-8,Felucca,5467,1805,7,Felucca,False
 5824,631,5,Felucca,2041,215,14,Felucca,True
 5825,631,5,Felucca,2042,215,14,Felucca,True
 5825,631,5,Felucca,2043,215,14,Felucca,True
@@ -332,8 +332,8 @@
 5466,1804,12,Trammel,5593,1840,-3,Trammel,False
 5466,1805,12,Trammel,5593,1841,-3,Trammel,False
 5466,1806,12,Trammel,5593,1842,-3,Trammel,False
-5594,1840,-9,Trammel,5467,1804,7,Trammel,False
-5594,1841,-9,Trammel,5467,1805,7,Trammel,False
+5594,1840,-8,Trammel,5467,1804,7,Trammel,False
+5594,1841,-8,Trammel,5467,1805,7,Trammel,False
 5824,631,5,Trammel,2041,215,14,Trammel,True
 5825,631,5,Trammel,2042,215,14,Trammel,True
 5825,631,5,Trammel,2043,215,14,Trammel,True
