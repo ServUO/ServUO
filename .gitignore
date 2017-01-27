@@ -18,6 +18,7 @@
 /Saves
 /Web
 /Docs
+/uoc
 *.csproj.user
 *.suo
 *.log
