@@ -9855,7 +9855,6 @@
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Mobiles\Bosses.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\Mobiles\Creatures.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameAltar.cs" />
-    <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameBarrier.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameCrystal.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameTeleporter.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameWall.cs" />
