@@ -219,7 +219,7 @@ namespace Server.Items
                 from.RevealingAction();
 
                 int count = this.GetSpawnCount();
-                bool questitem = false;
+                bool questitem = true;
                 BaseCreature spawn;
 
                 for (int i = 0; i < count; ++i)
@@ -228,27 +228,25 @@ namespace Server.Items
                     {
                         default:
                         case 0:
-                            spawn = new HPSeaSerpent();
+                            spawn = new HPSeaSerpent(questitem);
                             break;
                         case 1:
-                            spawn = new HPDeepSeaSerpent();
+                            spawn = new HPDeepSeaSerpent(questitem);
                             break;
                         case 2:
-                            spawn = new HPWaterElemental();
+                            spawn = new HPWaterElemental(questitem);
                             break;
                         case 3:
-                            spawn = new HPKraken();
+                            spawn = new HPKraken(questitem);
                             break;
                     }
 
                     this.Spawn(p, map, spawn);
                     spawn.Combatant = from;
 
-                    if (!questitem)
+                    if (questitem)
                     {
-                        Container pack = spawn.Backpack;
-                        pack.TryDropItem(spawn, new BrokenShipwreckRemains(), false);
-                        questitem = true;
+                        questitem = false;
                     }
                 }
             }
@@ -355,18 +353,18 @@ namespace Server.Items
                         }
 
                         Effects.SendLocationEffect(new Point3D(p.X + x, p.Y + y, p.Z), this.Map, 0x352D, 16, 4);
-                    }                    
-                }
-                else
-                {
-                    Effects.SendLocationEffect(p, this.Map, 0x352D, 16, 4);
-
-                    if (0.5 > Utility.RandomDouble())
+                    }
+                    
+                    if (index == 14 && 0.5 > Utility.RandomDouble())
                     {
                         from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154218); // *The line snaps tight as you snare a piece of wreckage from the sea floor!*
                         this.Delete();
                         return;
                     }
+                }
+                else
+                {
+                    Effects.SendLocationEffect(p, this.Map, 0x352D, 16, 4);                    
                 }
 
                 if (Utility.RandomBool())
