@@ -3,7 +3,6 @@ using Server.Mobiles;
 using Server.Multis;
 using Server.Spells;
 using Server.Targeting;
-using Server.Accounting;
 using Server.Network;
 
 namespace Server.Items
@@ -215,17 +214,16 @@ namespace Server.Items
 
         protected virtual void FinishEffect(Point3D p, Map map, Mobile from)
         {
-            if (from != null)
+            if (from != null || map != null)
             {
                 from.RevealingAction();
 
                 int count = this.GetSpawnCount();
                 bool questitem = false;
+                BaseCreature spawn;
 
-                for (int i = 0; map != null && i < count; ++i)
+                for (int i = 0; i < count; ++i)
                 {
-                    BaseCreature spawn;
-
                     switch (Utility.Random(4))
                     {
                         default:
