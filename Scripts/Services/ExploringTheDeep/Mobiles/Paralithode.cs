@@ -43,13 +43,14 @@ namespace Server.Mobiles
 
             this.Tamable = true;
             this.ControlSlots = 2;
-            this.MinTameSkill = 47.1;
-
-            this.m_Timer = new HideTimer(this);
-            this.m_Timer.Start();
+            this.MinTameSkill = 47.1;            
 
             if (!this.Controlled)
-                PackItem(new FertileDirt(2));
+            {
+                this.PackItem(new FertileDirt(2));
+                this.m_Timer = new HideTimer(this);
+                this.m_Timer.Start();
+            }
         }
 
         public Paralithode(Serial serial)
@@ -67,6 +68,15 @@ namespace Server.Mobiles
             base.OnAfterDelete();
         }
 
+        public override void OnAfterTame(Mobile tamer)
+        {
+            if (this.m_Timer != null)
+                this.m_Timer.Stop();
+
+            this.CantWalk = false;
+            this.Hidden = false;
+        }
+
         private class HideTimer : Timer
         {
             private readonly Paralithode m_Creature;
@@ -80,20 +90,29 @@ namespace Server.Mobiles
 
             protected override void OnTick()
             {
-                if (m_Creature.Warmode == false && m_Creature.Hidden == false)
-                    m_Creature.PerformHide();
-                else if (m_Creature.Warmode == true)
+                if (!m_Creature.Controlled)
                 {
-                    m_Creature.CantWalk = false;
-                    return;
+                    if (m_Creature.Warmode == false && m_Creature.Hidden == false)
+                        m_Creature.PerformHide();
+                    else if (m_Creature.Warmode == true)
+                    {
+                        m_Creature.CantWalk = false;
+                        return;
+                    }
+
+                    foreach (Mobile m in this.m_Creature.GetMobilesInRange(5))
+                    {
+                        if (m == this.m_Creature || (m is Paralithode) || !this.m_Creature.CanBeHarmful(m))
+                            continue;
+
+                        m_Creature.CantWalk = false;
+                    }
                 }
-
-                foreach (Mobile m in this.m_Creature.GetMobilesInRange(5))
+                else
                 {
-                    if (m == this.m_Creature || (m is Paralithode) || !this.m_Creature.CanBeHarmful(m))
-                        continue;
-
+                    this.Stop();
                     m_Creature.CantWalk = false;
+                    m_Creature.Hidden = false;
                 }
             }
         }
@@ -201,20 +220,19 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
-
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            this.m_Timer = new HideTimer(this);
-            this.m_Timer.Start();
-
+            if (!this.Controlled)
+            {
+                this.m_Timer = new HideTimer(this);
+                this.m_Timer.Start();
+            }
         }
     }
 }
