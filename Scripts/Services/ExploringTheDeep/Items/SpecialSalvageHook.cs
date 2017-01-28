@@ -3,7 +3,6 @@ using Server.Mobiles;
 using Server.Multis;
 using Server.Spells;
 using Server.Targeting;
-using Server.Accounting;
 using Server.Network;
 
 namespace Server.Items
@@ -215,40 +214,40 @@ namespace Server.Items
 
         protected virtual void FinishEffect(Point3D p, Map map, Mobile from)
         {
-            from.RevealingAction();
-
-            int count = this.GetSpawnCount();
-            bool questitem = false;
-
-            for (int i = 0; map != null && i < count; ++i)
+            if (from != null || map != null)
             {
+                from.RevealingAction();
+
+                int count = this.GetSpawnCount();
+                bool questitem = true;
                 BaseCreature spawn;
 
-                switch (Utility.Random(4))
+                for (int i = 0; i < count; ++i)
                 {
-                    default:
-                    case 0:
-                        spawn = new HPSeaSerpent();
-                        break;
-                    case 1:
-                        spawn = new HPDeepSeaSerpent();
-                        break;
-                    case 2:
-                        spawn = new HPWaterElemental();
-                        break;
-                    case 3:
-                        spawn = new HPKraken();
-                        break;
-                }
+                    switch (Utility.Random(4))
+                    {
+                        default:
+                        case 0:
+                            spawn = new HPSeaSerpent(questitem);
+                            break;
+                        case 1:
+                            spawn = new HPDeepSeaSerpent(questitem);
+                            break;
+                        case 2:
+                            spawn = new HPWaterElemental(questitem);
+                            break;
+                        case 3:
+                            spawn = new HPKraken(questitem);
+                            break;
+                    }
 
-                this.Spawn(p, map, spawn);
-                spawn.Combatant = from;
+                    this.Spawn(p, map, spawn);
+                    spawn.Combatant = from;
 
-                if (!questitem)
-                {
-                    Container pack = spawn.Backpack;
-                    pack.TryDropItem(spawn, new BrokenShipwreckRemains(), false);
-                    questitem = true;
+                    if (questitem)
+                    {
+                        questitem = false;
+                    }
                 }
             }
 
@@ -354,18 +353,18 @@ namespace Server.Items
                         }
 
                         Effects.SendLocationEffect(new Point3D(p.X + x, p.Y + y, p.Z), this.Map, 0x352D, 16, 4);
-                    }                    
-                }
-                else
-                {
-                    Effects.SendLocationEffect(p, this.Map, 0x352D, 16, 4);
-
-                    if (0.5 > Utility.RandomDouble())
+                    }
+                    
+                    if (index == 14 && 0.5 > Utility.RandomDouble())
                     {
                         from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154218); // *The line snaps tight as you snare a piece of wreckage from the sea floor!*
                         this.Delete();
                         return;
                     }
+                }
+                else
+                {
+                    Effects.SendLocationEffect(p, this.Map, 0x352D, 16, 4);                    
                 }
 
                 if (Utility.RandomBool())

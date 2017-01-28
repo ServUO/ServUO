@@ -6195,9 +6195,6 @@
     <Compile Include="Items\Equipment\Spellbooks\Spellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SpellStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Equipment\Spellbooks\SpellweavingBook.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -11921,9 +11918,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Spells\Mysticism\SpellDefinitions\StoneForm.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Spells\Mysticism\SpellTriggerGump.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Spells\Necromancy\AnimateDeadSpell.cs">
