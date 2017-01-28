@@ -215,40 +215,43 @@ namespace Server.Items
 
         protected virtual void FinishEffect(Point3D p, Map map, Mobile from)
         {
-            from.RevealingAction();
-
-            int count = this.GetSpawnCount();
-            bool questitem = false;
-
-            for (int i = 0; map != null && i < count; ++i)
+            if (from != null)
             {
-                BaseCreature spawn;
+                from.RevealingAction();
 
-                switch (Utility.Random(4))
+                int count = this.GetSpawnCount();
+                bool questitem = false;
+
+                for (int i = 0; map != null && i < count; ++i)
                 {
-                    default:
-                    case 0:
-                        spawn = new HPSeaSerpent();
-                        break;
-                    case 1:
-                        spawn = new HPDeepSeaSerpent();
-                        break;
-                    case 2:
-                        spawn = new HPWaterElemental();
-                        break;
-                    case 3:
-                        spawn = new HPKraken();
-                        break;
-                }
+                    BaseCreature spawn;
 
-                this.Spawn(p, map, spawn);
-                spawn.Combatant = from;
+                    switch (Utility.Random(4))
+                    {
+                        default:
+                        case 0:
+                            spawn = new HPSeaSerpent();
+                            break;
+                        case 1:
+                            spawn = new HPDeepSeaSerpent();
+                            break;
+                        case 2:
+                            spawn = new HPWaterElemental();
+                            break;
+                        case 3:
+                            spawn = new HPKraken();
+                            break;
+                    }
 
-                if (!questitem)
-                {
-                    Container pack = spawn.Backpack;
-                    pack.TryDropItem(spawn, new BrokenShipwreckRemains(), false);
-                    questitem = true;
+                    this.Spawn(p, map, spawn);
+                    spawn.Combatant = from;
+
+                    if (!questitem)
+                    {
+                        Container pack = spawn.Backpack;
+                        pack.TryDropItem(spawn, new BrokenShipwreckRemains(), false);
+                        questitem = true;
+                    }
                 }
             }
 
