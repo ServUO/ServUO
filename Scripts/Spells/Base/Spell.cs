@@ -827,9 +827,7 @@ namespace Server.Spells
             MethodInfo spellTargetMethod = null;
             if (spellType != null && (spellTargetMethod = spellType.GetMethod("Target")) != null) {
 
-            } else if(spellType != null && (spellTargetMethod = spellType.GetMethod("OnTarget")) != null) {
-
-            }else {
+            } else {
                 OnCast();
                 return;
             }
@@ -838,7 +836,7 @@ namespace Server.Spells
             object[] targetArgs = null;
             if (spellTargetParams != null && spellTargetParams.Length > 0) {
 
-                if ((InstantTarget is Mobile) && (spellTargetParams[0].ParameterType == typeof(Server.Mobile) || spellTargetParams[0].ParameterType == typeof(Server.IDamageable) || spellTargetParams[0].ParameterType == typeof(Object))) {
+                if ((InstantTarget is Mobile) && (spellTargetParams[0].ParameterType == typeof(Server.Mobile) || spellTargetParams[0].ParameterType == typeof(Server.IDamageable))) {
                     targetArgs = new object[1];
                     targetArgs[0] = InstantTarget;
                 } else if ((InstantTarget is Mobile) && (spellTargetParams[0].ParameterType == typeof(Server.IPoint3D))){
