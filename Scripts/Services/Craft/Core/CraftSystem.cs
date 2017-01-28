@@ -433,6 +433,12 @@ namespace Server.Engines.Craft
             craftItem.AddRes(type, name, amount, message);
         }
 
+        public void AddResCallback(int index, Func<Mobile, ConsumeType, int> func)
+        {
+            CraftItem craftItem = this.m_CraftItems.GetAt(index);
+            craftItem.ConsumeResCallback = func;
+        }
+
         public void AddSkill(int index, SkillName skillToMake, double minSkill, double maxSkill)
         {
             CraftItem craftItem = this.m_CraftItems.GetAt(index);

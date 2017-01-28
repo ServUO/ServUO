@@ -619,6 +619,7 @@
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
     <Compile Include="Items\Consumables\EtherealRetouchingTool.cs" />
+    <Compile Include="Items\Decorative\TatteredWallMap.cs" />
     <Compile Include="Items\Equipment\Armor\BoneArms.cs" />
     <Compile Include="Items\Equipment\Weapons\Craven.cs" />
     <Compile Include="Items\Equipment\Weapons\GargishCaptainJohnesBlade.cs" />

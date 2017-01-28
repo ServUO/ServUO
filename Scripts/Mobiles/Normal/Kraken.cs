@@ -48,7 +48,8 @@ namespace Server.Mobiles
             this.CanSwim = true;
             this.CantWalk = true;
 
-            this.PackItem(new MessageInABottle());
+            if(.1 >= Utility.RandomDouble())
+                this.PackItem(new MessageInABottle());
 
             //Rope is supposed to be a rare drop.  ref UO Guide Kraken
             if (Utility.RandomDouble() < .05)

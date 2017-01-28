@@ -88,6 +88,8 @@ namespace Server.Engines.Craft
         }
         #endregion
 
+        public Func<Mobile, ConsumeType, int> ConsumeResCallback { get; set; }
+
         private Recipe m_Recipe;
 
 		public Recipe Recipe { get { return m_Recipe; } }
@@ -822,6 +824,17 @@ namespace Server.Engines.Craft
 			{
 				return false;
 			}
+
+            if (ConsumeResCallback != null)
+            {
+                int resMessage = ConsumeResCallback(from, consumeType);
+
+                if (resMessage > 0)
+                {
+                    message = resMessage;
+                    return false;
+                }
+            }
 
 			if (m_NeedHeat && !Find(from, m_HeatSources))
 			{
