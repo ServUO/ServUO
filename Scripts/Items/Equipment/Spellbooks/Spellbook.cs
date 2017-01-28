@@ -16,6 +16,7 @@ using Server.Network;
 using Server.Spells;
 using Server.Targeting;
 using Server.Mobiles;
+using Server.Spells.Mystic;
 #endregion
 
 namespace Server.Items
@@ -557,7 +558,7 @@ namespace Server.Items
 
 		public override bool OnDragDrop(Mobile from, Item dropped)
 		{
-			if (dropped is SpellScroll)
+			if (dropped is SpellScroll && !(dropped is SpellStone))
 			{
 				SpellScroll scroll = (SpellScroll)dropped;
 

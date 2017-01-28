@@ -8,6 +8,7 @@ using Server.Spells.Fourth;
 using Server.Spells.Sixth;
 using Server.Spells.Chivalry;
 using Server.Engines.Quests;
+using System.Linq;
 
 namespace Server.Regions
 {
@@ -113,36 +114,51 @@ namespace Server.Regions
             if (!base.OnMoveInto(m, d, newLocation, oldLocation))
                 return false;
 
-            if (!(m is PlayerMobile) || !(m.IsPlayer()))
-                return false;
-
-            Item robe = m.FindItemOnLayer(Layer.OuterTorso);
-            Item boot = m.FindItemOnLayer(Layer.Shoes);
-            Item lens = m.FindItemOnLayer(Layer.Helm);
-            Item neck = m.FindItemOnLayer(Layer.Neck);
-
-            PlayerMobile pm = m as PlayerMobile;
-
-            if (m.AccessLevel == AccessLevel.Player)
+            if (m is PlayerMobile)
             {
-                if (m.Mounted || m.Flying)
+                Item robe = m.FindItemOnLayer(Layer.OuterTorso);
+                Item boot = m.FindItemOnLayer(Layer.Shoes);
+                Item lens = m.FindItemOnLayer(Layer.Helm);
+                Item neck = m.FindItemOnLayer(Layer.Neck);
+
+                PlayerMobile pm = m as PlayerMobile;
+
+                if (m.AccessLevel == AccessLevel.Player)
                 {
-                    m.SendLocalizedMessage(1154411); // You cannot proceed while mounted or flying!
-                    return false;
+                    if (m.Mounted || m.Flying)
+                    {
+                        m.SendLocalizedMessage(1154411); // You cannot proceed while mounted or flying!
+                        return false;
+                    }
+                    else if (pm.AllFollowers.Count != 0)
+                    {
+                        if (pm.AllFollowers.Where(x => x is Paralithode).Count() == 0)
+                        {
+                            pm.SendLocalizedMessage(1154412); // You cannot proceed while pets are under your control!
+                            return false;
+                        }
+                    }
+                    else if (m.Alive && !(robe is CanvassRobe) || !(lens is NictitatingLens) || !(boot is BootsOfBallast) || !(neck is AquaPendant))
+                    {
+                        m.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
+                        return false;
+                    }
                 }
-                else if (pm.AllFollowers.Count != 0)
-                {
-                    pm.SendLocalizedMessage(1154412); // You cannot proceed while pets are under your control!
-                    return false;
-                }
-                else if (m.Alive && !(robe is CanvassRobe) || !(lens is NictitatingLens) || !(boot is BootsOfBallast) || !(neck is AquaPendant))
-                {
-                    m.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
-                    return false;
-                }
+            }
+            else if (m is BaseCreature && !(m is Paralithode))
+            {
+                return false;
             }
 
             return true;
+        }
+
+        public override void OnExit(Mobile m)
+        {
+            if (m is Paralithode)
+            {
+                m.Delete();
+            }
         }
 
         public override bool AllowHousing(Mobile from, Point3D p)

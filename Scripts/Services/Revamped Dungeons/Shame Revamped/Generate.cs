@@ -162,6 +162,37 @@ namespace Server.Engines.ShameRevamped
                 wall.MoveToWorld(altarLoc, Map.Felucca);
             }
 
+            ShameBarrier barrier;
+            barrier = new ShameBarrier();
+            barrier.PointDest = new Point3D(5618, 56, 0);
+            barrier.Map = Map.Felucca;
+            barrier.MoveToWorld(new Point3D(5618, 58, 0), Map.Felucca);
+            
+            barrier = new ShameBarrier();
+            barrier.PointDest = new Point3D(5618, 56, 0);
+            barrier.Map = Map.Trammel;
+            barrier.MoveToWorld(new Point3D(5618, 58, 0), Map.Trammel);
+
+            barrier = new ShameBarrier();
+            barrier.PointDest = new Point3D(5619, 56, 0);
+            barrier.Map = Map.Felucca;
+            barrier.MoveToWorld(new Point3D(5619, 58, 0), Map.Felucca);
+
+            barrier = new ShameBarrier();
+            barrier.PointDest = new Point3D(5619, 56, 0);
+            barrier.Map = Map.Trammel;
+            barrier.MoveToWorld(new Point3D(5619, 58, 0), Map.Trammel);
+
+            barrier = new ShameBarrier();
+            barrier.PointDest = new Point3D(5620, 56, 0);
+            barrier.Map = Map.Felucca;
+            barrier.MoveToWorld(new Point3D(5620, 58, 0), Map.Felucca);
+
+            barrier = new ShameBarrier();
+            barrier.PointDest = new Point3D(5620, 56, 0);
+            barrier.Map = Map.Trammel;
+            barrier.MoveToWorld(new Point3D(5620, 58, 0), Map.Trammel);
+
             e.Mobile.SendMessage("Shame Revamped setup! Don't forget to setup the spawners!");
         }
 
