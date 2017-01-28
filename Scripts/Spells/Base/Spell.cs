@@ -20,6 +20,7 @@ using Server.Spells.Second;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
 using Server.Spells.SkillMasteries;
+using Server.Spells.Mystic;
 #endregion
 
 namespace Server.Spells
@@ -337,7 +338,7 @@ namespace Server.Spells
 
 		public virtual bool ConsumeReagents()
 		{
-			if (m_Scroll != null || !m_Caster.Player)
+			if ((m_Scroll != null && !(m_Scroll is SpellStone)) || !m_Caster.Player)
 			{
 				return true;
 			}
@@ -635,7 +636,12 @@ namespace Server.Spells
 
 		public virtual void SayMantra()
 		{
-			if (m_Scroll is BaseWand)
+            if (m_Scroll is SpellStone)
+            {
+                return;
+            }
+
+            if (m_Scroll is BaseWand)
 			{
 				return;
 			}
@@ -756,7 +762,7 @@ namespace Server.Spells
 
 					TimeSpan castDelay = GetCastDelay();
 
-					if (ShowHandMovement && (m_Caster.Body.IsHuman || (m_Caster.Player && m_Caster.Body.IsMonster)))
+					if (ShowHandMovement && !(m_Scroll is SpellStone) && (m_Caster.Body.IsHuman || (m_Caster.Player && m_Caster.Body.IsMonster)))
 					{
 						int count = (int)Math.Ceiling(castDelay.TotalSeconds / AnimateDelay.TotalSeconds);
 
@@ -933,7 +939,12 @@ namespace Server.Spells
 
 		public virtual TimeSpan GetCastDelay()
 		{
-			if (m_Scroll is BaseWand)
+            if (m_Scroll is SpellStone)
+            {
+                return TimeSpan.Zero;
+            }
+
+            if (m_Scroll is BaseWand)
 			{
 				return Core.ML ? CastDelayBase : TimeSpan.Zero; // TODO: Should FC apply to wands?
 			}
@@ -1036,18 +1047,15 @@ namespace Server.Spells
 			{
 				m_Caster.Mana -= mana;
 
-				if (m_Scroll is SpellScroll)
+                if (m_Scroll is SpellStone)
+                {
+                    ((SpellStone)m_Scroll).Use(m_Caster);
+                }
+
+                if (m_Scroll is SpellScroll)
 				{
 					m_Scroll.Consume();
 				}
-					#region SA
-				else if (m_Scroll is SpellStone)
-				{
-					// The SpellScroll check above isn't removing the SpellStones for some reason.
-					m_Scroll.Delete();
-				}
-					#endregion
-
 				else if (m_Scroll is BaseWand)
 				{
 					((BaseWand)m_Scroll).ConsumeCharge(m_Caster);
