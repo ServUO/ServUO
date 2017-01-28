@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
 using Server.Items;
-using Server.Targeting;
+using System;
 
 namespace Server.Mobiles
 {
@@ -9,10 +7,12 @@ namespace Server.Mobiles
     public class HPKraken : Kraken
     {
         private Timer m_Timer;
+        private bool m_QuestItem;
 
         [Constructable]
-        public HPKraken() : base()
+        public HPKraken(bool questitem) : base()
         {
+            this.m_QuestItem = questitem;
             this.m_Timer = new InternalDeleteTimer(this);
             this.m_Timer.Start();
         }
@@ -21,16 +21,28 @@ namespace Server.Mobiles
         {
         }
 
+        public override void OnDeath(Container c)
+        {
+            if (m_QuestItem)
+            {
+                c.AddItem(new BrokenShipwreckRemains());
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);
+
+            writer.Write(m_QuestItem);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            m_QuestItem = reader.ReadBool();
 
             this.m_Timer = new InternalDeleteTimer(this);
             this.m_Timer.Start();
@@ -41,10 +53,12 @@ namespace Server.Mobiles
     public class HPDeepSeaSerpent : DeepSeaSerpent
     {
         private Timer m_Timer;
+        private bool m_QuestItem;
 
         [Constructable]
-        public HPDeepSeaSerpent() : base()
+        public HPDeepSeaSerpent(bool questitem) : base()
         {
+            this.m_QuestItem = questitem;
             this.m_Timer = new InternalDeleteTimer(this);
             this.m_Timer.Start();
         }
@@ -53,16 +67,28 @@ namespace Server.Mobiles
         {
         }
 
+        public override void OnDeath(Container c)
+        {
+            if (m_QuestItem)
+            {
+                c.AddItem(new BrokenShipwreckRemains());
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);
+
+            writer.Write(m_QuestItem);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            m_QuestItem = reader.ReadBool();
 
             this.m_Timer = new InternalDeleteTimer(this);
             this.m_Timer.Start();
@@ -73,10 +99,12 @@ namespace Server.Mobiles
     public class HPSeaSerpent : SeaSerpent
     {
         private Timer m_Timer;
+        private bool m_QuestItem;
 
         [Constructable]
-        public HPSeaSerpent() : base()
+        public HPSeaSerpent(bool questitem) : base()
         {
+            this.m_QuestItem = questitem;
             this.m_Timer = new InternalDeleteTimer(this);
             this.m_Timer.Start();
         }
@@ -85,16 +113,28 @@ namespace Server.Mobiles
         {
         }
 
+        public override void OnDeath(Container c)
+        {
+            if (m_QuestItem)
+            {
+                c.AddItem(new BrokenShipwreckRemains());
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);
+
+            writer.Write(m_QuestItem);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            m_QuestItem = reader.ReadBool();
 
             this.m_Timer = new InternalDeleteTimer(this);
             this.m_Timer.Start();
@@ -105,10 +145,12 @@ namespace Server.Mobiles
     public class HPWaterElemental : WaterElemental
     {
         private Timer m_Timer;
+        private bool m_QuestItem;
 
         [Constructable]
-        public HPWaterElemental() : base()
+        public HPWaterElemental(bool questitem) : base()
         {
+            this.m_QuestItem = questitem;
             this.m_Timer = new InternalDeleteTimer(this);
             this.m_Timer.Start();
         }
@@ -117,16 +159,28 @@ namespace Server.Mobiles
         {
         }
 
+        public override void OnDeath(Container c)
+        {
+            if (m_QuestItem)
+            {
+                c.AddItem(new BrokenShipwreckRemains());
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write((int)0);
+
+            writer.Write(m_QuestItem);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            m_QuestItem = reader.ReadBool();
 
             this.m_Timer = new InternalDeleteTimer(this);
             this.m_Timer.Start();
