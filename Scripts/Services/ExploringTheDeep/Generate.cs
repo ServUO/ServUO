@@ -206,9 +206,6 @@ namespace Server.Engines.ExploringTheDeep
             scroll = new MasterThinkerSchematics();
             scroll.MoveToWorld(new Point3D(1649, 1547, 54), Map.Trammel);
 
-            item = new MasterThinkerGarment();
-            item.MoveToWorld(new Point3D(1651, 1545, 47), Map.Trammel);
-
             decor = new Static(0xB7F);
             decor.MoveToWorld(new Point3D(1651, 1549, 45), Map.Trammel);
 
@@ -218,11 +215,8 @@ namespace Server.Engines.ExploringTheDeep
             decor = new Static(0xB7E);
             decor.MoveToWorld(new Point3D(1653, 1549, 45), Map.Trammel);
 
-            item = new MasterThinkerBooks();
-            item.MoveToWorld(new Point3D(1651, 1549, 49), Map.Trammel);
-
-            item = new MasterThinkerTunic();
-            item.MoveToWorld(new Point3D(1653, 1549, 47), Map.Trammel);
+            item = new MasterThinkerContoller();
+            item.MoveToWorld(new Point3D(1652, 1547, 45), Map.Trammel);
             #endregion
 
             #region Ice Dungeon

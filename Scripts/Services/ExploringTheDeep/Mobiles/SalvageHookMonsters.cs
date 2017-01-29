@@ -23,7 +23,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            if (m_QuestItem)
+            if (m_QuestItem && 0.05 >= Utility.RandomDouble())
             {
                 c.AddItem(new BrokenShipwreckRemains());
             }
@@ -69,7 +69,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            if (m_QuestItem)
+            if (m_QuestItem && 0.05 >= Utility.RandomDouble())
             {
                 c.AddItem(new BrokenShipwreckRemains());
             }
@@ -115,7 +115,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            if (m_QuestItem)
+            if (m_QuestItem && 0.05 >= Utility.RandomDouble())
             {
                 c.AddItem(new BrokenShipwreckRemains());
             }
@@ -161,7 +161,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            if (m_QuestItem)
+            if (m_QuestItem && 0.05 >= Utility.RandomDouble())
             {
                 c.AddItem(new BrokenShipwreckRemains());
             }

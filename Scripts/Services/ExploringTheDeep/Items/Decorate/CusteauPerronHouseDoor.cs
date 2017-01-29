@@ -22,7 +22,7 @@ namespace Server.Items
             {
                 PlayerMobile m = from as PlayerMobile;
 
-                if (m.ExploringTheDeepQuest == ExploringTheDeepQuestChain.HeplerPaulson || from.Region.Name == "Custeau Perron House")
+                if (m.ExploringTheDeepQuest == ExploringTheDeepQuestChain.HeplerPaulsonComplete || from.Region.Name == "Custeau Perron House")
                 {
                     base.OnDoubleClick(from);
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1154223); // *You knock on the door but there is no answer.  You decide to let yourself in...*

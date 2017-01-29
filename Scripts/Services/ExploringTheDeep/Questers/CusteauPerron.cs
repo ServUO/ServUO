@@ -55,18 +55,26 @@ namespace Server.Mobiles
 
             PlayerMobile pm = (PlayerMobile)m;
 
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.HeplerPaulson)
+            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerronHouse)
             {
                 if (!m.HasGump(typeof(CousteauPerronGump)))
                 {
                     m.SendGump(new CousteauPerronGump(m));
+                    pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CusteauPerron;
                 }
             }
-            else if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
+            else if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
                 if (!m.HasGump(typeof(CousteauPerronCompleteGump)))
                 {
                     m.SendGump(new CousteauPerronCompleteGump(m));
+                }
+            }
+            else if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+            {
+                if (!m.HasGump(typeof(CousteauPerronPlansGump)))
+                {
+                    m.SendGump(new CousteauPerronPlansGump(m));
                 }
             }
             else
@@ -77,21 +85,26 @@ namespace Server.Mobiles
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            PlayerMobile m = from as PlayerMobile;
+            PlayerMobile pm = from as PlayerMobile;            
 
-            if (m != null)
+            if (pm != null)
             {
-                if (dropped is IceWyrmScale && m.ExploringTheDeepQuest == ExploringTheDeepQuestChain.HeplerPaulson)
+                if (pm.ExploringTheDeepQuest < ExploringTheDeepQuestChain.CusteauPerron)
                 {
-                    m.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CusteauPerron;
-                    dropped.Delete();
+                    pm.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
                 }
-                else if (dropped is SalvagerSuitPlans && m.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
+                else if (dropped is IceWyrmScale && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
                 {
-                    m.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CusteauPerron;
+                    pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.Sorcerers;
+                    dropped.Delete();
+                    pm.SendGump(new CousteauPerronCompleteGump(pm));
+                }
+                else if (dropped is SalvagerSuitPlans && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
+                {
+                    pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CollectTheComponent;
                     dropped.Delete();
 
-                    m.SendGump(new CousteauPerronPlansGump(m));                    
+                    pm.SendGump(new CousteauPerronPlansGump(pm));                    
                 }
                 else
                 {

@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Gumps;
 using Server.Network;
-using Server.Mobiles;
-using Server.ContextMenus;
-using Server;
 using Server.Commands;
 using Server.Engines.Quests;
 
@@ -56,6 +53,12 @@ namespace Server.Mobiles
 
             PlayerMobile pm = (PlayerMobile)m;
 
+            if(pm.Young)
+            {
+                m.SendLocalizedMessage(502593); // Thou art too young to choose this fate.
+                return;
+            }
+
             Item boots = m.Backpack.FindItemByType(typeof(BootsOfBallast));
             Item robe = m.Backpack.FindItemByType(typeof(CanvassRobe));
             Item neck = m.Backpack.FindItemByType(typeof(AquaPendant));
@@ -66,9 +69,10 @@ namespace Server.Mobiles
                 if (!m.HasGump(typeof(HeplerPaulsonGump)))
                 {
                     m.SendGump(new HeplerPaulsonGump(m));
+                    pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.HeplerPaulson;
                 }
             }
-            else if (boots != null && robe != null && neck != null && lens != null)
+            else if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent && boots != null && robe != null && neck != null && lens != null)
             {
                 m.AddToBackpack(new UnknownShipwreck());
             }
@@ -99,10 +103,22 @@ namespace Server.Mobiles
 
             if (m != null)
             {
-                if (dropped is BrokenShipwreckRemains && m.ExploringTheDeepQuest == ExploringTheDeepQuestChain.None)
+                if (dropped is BrokenShipwreckRemains)
                 {
-                    m.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CusteauPerron;
-                    dropped.Delete();
+                    if (m.ExploringTheDeepQuest == ExploringTheDeepQuestChain.HeplerPaulson)
+                    {
+                        dropped.Delete();
+                        m.SendGump(new HeplerPaulsonCompleteGump(m));
+                        m.ExploringTheDeepQuest = ExploringTheDeepQuestChain.HeplerPaulsonComplete;
+                    }
+                    else if (m.ExploringTheDeepQuest >= ExploringTheDeepQuestChain.HeplerPaulsonComplete)
+                    {
+                        m.SendLocalizedMessage(1154320); // You've already completed this task.
+                    }
+                    else
+                    {
+                        m.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
+                    }
                 }
                 else
                 {
@@ -189,13 +205,12 @@ namespace Server.Mobiles
 
         public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
         {
-            Mobile from = state.Mobile;
-            from.Frozen = false;
+            PlayerMobile pm = state.Mobile as PlayerMobile;
+
             switch (info.ButtonID)
             {
                 case 0:
                     {
-                        //Cancel
                         break;
                     }
             }
