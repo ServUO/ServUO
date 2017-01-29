@@ -26,7 +26,7 @@ namespace Server.Items
 
             PlayerMobile pm = (PlayerMobile)from;
 
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
+            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
                 Container pack = from.Backpack;
                 pack.TryDropItem(from, new PerfectBlackPearl(), false);
@@ -119,7 +119,7 @@ namespace Server.Items
 
             PlayerMobile pm = (PlayerMobile)from;
 
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
+            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
                 Container pack = from.Backpack;
                 pack.TryDropItem(from, new BurstingBrimstone(), false);
@@ -212,7 +212,7 @@ namespace Server.Items
 
             PlayerMobile pm = (PlayerMobile)from;
 
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
+            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
                 Container pack = from.Backpack;
                 pack.TryDropItem(from, new BrightDaemonBlood(), false);
@@ -305,7 +305,7 @@ namespace Server.Items
 
             PlayerMobile pm = (PlayerMobile)from;
 
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
+            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
                 Container pack = from.Backpack;
                 pack.TryDropItem(from, new MightyMandrake(), false);
@@ -397,7 +397,7 @@ namespace Server.Items
 
             PlayerMobile pm = (PlayerMobile)from;
 
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
+            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
                 Container pack = from.Backpack;
                 pack.TryDropItem(from, new BurlyBone(), false);

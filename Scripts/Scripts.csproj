@@ -3074,6 +3074,7 @@
     <Compile Include="Services\ExploringTheDeep\Addons\CousteauPerronAddon.cs" />
     <Compile Include="Services\ExploringTheDeep\ExploringTheDeepQuestChain.cs" />
     <Compile Include="Services\ExploringTheDeep\Generate.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Decorate\MasterThinkerContoller.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\QuestItems\StorageLocker.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\QuestItems\LockerKey.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\QuestItems\WireSpool.cs" />
@@ -3095,10 +3096,7 @@
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\LedgerScroll.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\LiamDeFoeScroll.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\MadelineHarteScroll.cs" />
-    <Compile Include="Services\ExploringTheDeep\Items\Decorate\MasterThinkerBooks.cs" />
-    <Compile Include="Services\ExploringTheDeep\Items\Decorate\MasterThinkerGarment.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\MasterThinkerSchematics.cs" />
-    <Compile Include="Services\ExploringTheDeep\Items\Decorate\MasterThinkerTunic.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\QuestItems\MercutiosCutlass.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\QuestItems\NictitatingLens.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\QuestItems\OrcishSchematics.cs" />

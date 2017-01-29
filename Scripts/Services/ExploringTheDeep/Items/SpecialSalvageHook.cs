@@ -4,6 +4,7 @@ using Server.Multis;
 using Server.Spells;
 using Server.Targeting;
 using Server.Network;
+using Server.Engines.Quests;
 
 namespace Server.Items
 {
@@ -116,11 +117,21 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.m_InUse)
+            PlayerMobile pm = from as PlayerMobile;
+
+            if (pm.ExploringTheDeepQuest > ExploringTheDeepQuestChain.None)
             {
-                from.SendLocalizedMessage(1154219); // Where do you wish to use this?
-                from.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(OnTarget));
+                if (!this.m_InUse)
+                {
+                    from.SendLocalizedMessage(1154219); // Where do you wish to use this?
+                    from.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(OnTarget));
+                }
             }
+            else
+            {
+                from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154274); // *You aren't quite sure what to do with this. If you spoke to the Salvage Master at the Sons of the Sea in Trinsic you might have a better understanding of its use...*
+            }
+            
         }
 
         public void OnTarget(Mobile from, object obj)
@@ -247,6 +258,11 @@ namespace Server.Items
                     if (questitem)
                     {
                         questitem = false;
+                    }
+
+                    if (from.InRange(p, 10) && 0.05 >= Utility.RandomDouble())
+                    {
+                        from.AddToBackpack(new BrokenShipwreckRemains());
                     }
                 }
             }
