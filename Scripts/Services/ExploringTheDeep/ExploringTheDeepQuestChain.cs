@@ -6,7 +6,11 @@ namespace Server.Engines.Quests
     {
         None,
         HeplerPaulson,
-        CusteauPerron
+        HeplerPaulsonComplete,
+        CusteauPerronHouse,
+        CusteauPerron,
+        Sorcerers,
+        CollectTheComponent
     }
 
     public class ExploringTheDeepBaseChain
