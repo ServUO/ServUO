@@ -31,7 +31,7 @@ namespace Server
 			{
 				_Random = new RDRand64();
 			}
-			else if (!Core.Is64Bit && File.Exists("drng32.dll"))
+			else if (!Core.Is64Bit && File.Exists("drng.dll"))
 			{
 				_Random = new RDRand32();
 			}
