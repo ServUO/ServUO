@@ -4,6 +4,7 @@ using Server.Network;
 using System.Collections.Generic;
 using System.Linq;
 using Server.Engines.Quests;
+using Server.Commands;
 
 namespace Server.Items
 {
@@ -16,6 +17,38 @@ namespace Server.Items
 
     public class MasterThinkerContoller : Item
     {
+        public static void Initialize()
+        {
+            CommandSystem.Register("GenMasterThinker", AccessLevel.Developer, new CommandEventHandler(GenMasterThinker_Command));
+        }
+
+        [Usage("GenMasterThinker")]
+        private static void GenMasterThinker_Command(CommandEventArgs e)
+        {
+            if (Check())
+            {
+                e.Mobile.SendMessage("Sorcerers Plate is already present.");
+            }
+            else
+            {
+                e.Mobile.SendMessage("Creating Sorcerers Plate...");
+
+                MasterThinkerContoller controller = new MasterThinkerContoller();
+                controller.MoveToWorld(new Point3D(1652, 1547, 45), Map.Trammel);
+
+                e.Mobile.SendMessage("Generation completed!");
+            }
+        }
+
+        private static bool Check()
+        {
+            foreach (Item item in World.Items.Values)
+                if (item is MasterThinkerContoller && !item.Deleted)
+                    return true;
+
+            return false;
+        }
+
         public class MasterThinkerArray
         {
             public Mobile Mobile { get; set; }
