@@ -319,10 +319,10 @@ namespace Server.Mobiles
             if (Combatant == null)
                 return;
 
-            if (m_StoneDelay < DateTime.Now)
+            if (m_StoneDelay < DateTime.UtcNow)
                 SpawnStone();
 
-            if (m_GazeDelay < DateTime.Now)
+            if (m_GazeDelay < DateTime.UtcNow)
                 DoGaze();
         }
 
@@ -378,7 +378,7 @@ namespace Server.Mobiles
                         target.SendLocalizedMessage(1112768); // You have been turned to stone!!!
 
                     new GazeTimer(target, clone, this, Utility.RandomMinMax(5, 10)).Start();
-                    m_GazeDelay = DateTime.Now + TimeSpan.FromSeconds(Utility.RandomMinMax(45, 75));
+                    m_GazeDelay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(45, 75));
 
                     m_Helpers.Add(clone);
                     m_TurnedToStone.Add(target);
@@ -388,7 +388,7 @@ namespace Server.Mobiles
                 }
             }
 
-            m_GazeDelay = DateTime.Now + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 65));
+            m_GazeDelay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 65));
         }
 
         public void SpawnStone()
@@ -438,7 +438,7 @@ namespace Server.Mobiles
                 m_Helpers.Add(stone);
             }
 
-            m_StoneDelay = DateTime.Now + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 150));
+            m_StoneDelay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 150));
         }
 
         private void DefragHelpers()

@@ -106,7 +106,7 @@ namespace Server.Items
 			{
 				m_Item = item;
 				m_From = from;
-				m_NextDamage = DateTime.Now;
+				m_NextDamage = DateTime.UtcNow;
 				m_Tick = 0;
 				
 				if(item != null)
@@ -123,7 +123,7 @@ namespace Server.Items
 					return;
 				}
 				
-				if(DateTime.Now > m_NextDamage)
+				if(DateTime.UtcNow > m_NextDamage)
 				{
 					m_Item.ApplyShock(m_From, m_Tick);
 					
@@ -139,7 +139,7 @@ namespace Server.Items
 					if(m_Tick >= 10)
 						this.Stop();
 					else
-                        m_NextDamage = DateTime.Now + TimeSpan.FromSeconds(delay);
+                        m_NextDamage = DateTime.UtcNow + TimeSpan.FromSeconds(delay);
 				}
 			}
 		}

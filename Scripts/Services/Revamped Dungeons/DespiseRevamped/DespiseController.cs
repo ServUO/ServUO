@@ -105,7 +105,7 @@ namespace Server.Engines.Despise
             m_Enabled = true;
             m_Instance = this;
 
-            m_NextBossEncounter = DateTime.Now;
+            m_NextBossEncounter = DateTime.UtcNow;
             m_Boss = null;
 
             if(m_Enabled)
@@ -192,7 +192,7 @@ namespace Server.Engines.Despise
 
         private void OnTick()
         {
-            if (m_NextBossEncounter == DateTime.MinValue || m_NextBossEncounter > DateTime.Now)
+            if (m_NextBossEncounter == DateTime.MinValue || m_NextBossEncounter > DateTime.UtcNow)
                 return;
 
             int good = GetArmyPower(Alignment.Good);
@@ -201,7 +201,7 @@ namespace Server.Engines.Despise
 
             if (good == 0 && evil == 0)
             {
-                m_NextBossEncounter = DateTime.Now + EncounterCheckDuration;
+                m_NextBossEncounter = DateTime.UtcNow + EncounterCheckDuration;
                 return;
             }
 
@@ -345,7 +345,7 @@ namespace Server.Engines.Despise
 
             if (m_ToTransport.Count == 0)
             {
-                m_NextBossEncounter = DateTime.Now + EncounterCheckDuration;
+                m_NextBossEncounter = DateTime.UtcNow + EncounterCheckDuration;
                 m_SequenceAlignment = Alignment.Neutral;
                 return;
             }
@@ -358,7 +358,7 @@ namespace Server.Engines.Despise
             ResetSpawners(false);
 
             m_Boss.MoveToWorld(BossLocation, Map.Trammel);
-            m_DeadLine = DateTime.Now + DeadLineDuration;
+            m_DeadLine = DateTime.UtcNow + DeadLineDuration;
             //m_NextBossEncounter = DateTime.MinValue;
 
             BeginSequenceTimer();
@@ -386,12 +386,12 @@ namespace Server.Engines.Despise
 
             ResetSpawners(true);
 
-            m_NextBossEncounter = DateTime.Now + EncounterCheckDuration;
+            m_NextBossEncounter = DateTime.UtcNow + EncounterCheckDuration;
         }
 
         private void OnSequenceTick()
         {
-            if (m_SequenceTimer != null && m_DeadLine < DateTime.Now && m_LowerRegion != null)
+            if (m_SequenceTimer != null && m_DeadLine < DateTime.UtcNow && m_LowerRegion != null)
             {
                 EndSequenceTimer();
                 SendRegionMessage(m_LowerRegion, 1153348); // You were unable to defeat the enemy overlord in the time allotted. He has activated a Doom Spell!
@@ -729,7 +729,7 @@ namespace Server.Engines.Despise
 				
 			BeginTimer();
 			
-			if(m_DeadLine > DateTime.Now)
+			if(m_DeadLine > DateTime.UtcNow)
 			{
 				if(m_Boss != null && m_Boss.Alive)
 				{

@@ -143,14 +143,14 @@ namespace Server.Items
                 m_Info = info;
                 Priority = TimerPriority.OneSecond;
 
-                m_Expires = DateTime.Now + TimeSpan.FromSeconds(10);
+                m_Expires = DateTime.UtcNow + TimeSpan.FromSeconds(10);
 
                 Start();
             }
 
             protected override void OnTick()
             {
-                if (m_Expires < DateTime.Now)
+                if (m_Expires < DateTime.UtcNow)
                 {
                     Stop();
                     EndForceArrow(m_Info);

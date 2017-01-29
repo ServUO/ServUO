@@ -39,6 +39,8 @@ namespace Server.Items
         };
 
         private bool m_InUse;
+        private int _Tick;
+        private Timer _EffectTimer;
 
         [Constructable]
         public SpecialSalvageHook()
@@ -68,7 +70,7 @@ namespace Server.Items
         {
             bool valid = ValidateDeepWater(map, x, y);
 
-            for (int j = 1, offset = 4; valid && j <= 4; ++j, offset += 4) //Nuggzy: all instances of 5 changed to 4
+            for (int j = 1, offset = 4; valid && j <= 4; ++j, offset += 4)
             {
                 if (!ValidateDeepWater(map, x + offset, y + offset))
                     valid = false;
@@ -154,6 +156,8 @@ namespace Server.Items
                         from.AddToBackpack(new SpecialSalvageHook());
                 }
 
+                _Tick = 0;
+
                 this.m_InUse = true;
                 this.Movable = false;
                 this.MoveToWorld(p, map);
@@ -164,7 +168,8 @@ namespace Server.Items
                 Effects.SendLocationEffect(p, map, 0x352D, 16, 4);
                 Effects.PlaySound(p, map, 0x364);
 
-                Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.25), 14, new TimerStateCallback(DoEffect), new object[] { p, 0, from });
+                _EffectTimer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.25), new TimerStateCallback(DoEffect), new object[] { p, from });
+                _EffectTimer.Start();
 
                 from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154220); // *You cast the mighty hook into the sea!*
             }
@@ -212,14 +217,13 @@ namespace Server.Items
             spawn.MoveToWorld(new Point3D(x, y, p.Z), map);
         }
 
-        protected virtual void FinishEffect(Point3D p, Map map, Mobile from)
+        protected virtual void SpawnBaddies(Point3D p, Map map, Mobile from)
         {
             if (from != null || map != null)
             {
                 from.RevealingAction();
 
                 int count = this.GetSpawnCount();
-                bool questitem = true;
                 BaseCreature spawn;
 
                 for (int i = 0; i < count; ++i)
@@ -228,30 +232,23 @@ namespace Server.Items
                     {
                         default:
                         case 0:
-                            spawn = new HPSeaSerpent(questitem);
+                            spawn = new SeaSerpent();
                             break;
                         case 1:
-                            spawn = new HPDeepSeaSerpent(questitem);
+                            spawn = new DeepSeaSerpent();
                             break;
                         case 2:
-                            spawn = new HPWaterElemental(questitem);
+                            spawn = new WaterElemental();
                             break;
                         case 3:
-                            spawn = new HPKraken(questitem);
+                            spawn = new Kraken();
                             break;
                     }
 
                     this.Spawn(p, map, spawn);
                     spawn.Combatant = from;
-
-                    if (questitem)
-                    {
-                        questitem = false;
-                    }
                 }
             }
-
-            this.Delete();
         }
 
         private static bool ValidateDeepWater(Map map, int x, int y)
@@ -297,69 +294,50 @@ namespace Server.Items
             object[] states = (object[])state;
 
             Point3D p = (Point3D)states[0];
-            int index = (int)states[1];
-            Mobile from = (Mobile)states[2];
+            Mobile from = (Mobile)states[1];
 
-            states[1] = ++index;
-
-            if (index == 1)
+            if (_Tick == 1)
             {
                 Effects.SendLocationEffect(p, this.Map, 0x352D, 16, 4);
                 Effects.PlaySound(p, this.Map, 0x364);
             }
-            else if (index <= 7 || index == 14)
+            else if (_Tick <= 7 || _Tick == 14)
             {
                 if (this.RequireDeepWater)
                 {
                     for (int i = 0; i < 3; ++i)
                     {
-                        int x, y;
+                        int x, y = 0;
 
-                        switch (Utility.Random(8))
+                        do
                         {
-                            default:
-                            case 0:
-                                x = -1;
-                                y = -1;
-                                break;
-                            case 1:
-                                x = -1;
-                                y = 0;
-                                break;
-                            case 2:
-                                x = -1;
-                                y = +1;
-                                break;
-                            case 3:
-                                x = 0;
-                                y = -1;
-                                break;
-                            case 4:
-                                x = 0;
-                                y = +1;
-                                break;
-                            case 5:
-                                x = +1;
-                                y = -1;
-                                break;
-                            case 6:
-                                x = +1;
-                                y = 0;
-                                break;
-                            case 7:
-                                x = +1;
-                                y = +1;
-                                break;
+                            x = Utility.RandomMinMax(-1, 1);
+                            y = Utility.RandomMinMax(-1, 1);
                         }
+                        while (x == 0 && y == 0);
 
                         Effects.SendLocationEffect(new Point3D(p.X + x, p.Y + y, p.Z), this.Map, 0x352D, 16, 4);
                     }
-                    
-                    if (index == 14 && 0.5 > Utility.RandomDouble())
+
+                    if (_Tick == 14)
                     {
-                        from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154218); // *The line snaps tight as you snare a piece of wreckage from the sea floor!*
+                        if (0.6 >= Utility.RandomDouble())
+                        {
+                            if (0.5 >= Utility.RandomDouble())
+                            {
+                                from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154218); // *The line snaps tight as you snare a piece of wreckage from the sea floor!*
+
+                                from.AddToBackpack(new BrokenShipwreckRemains());
+                            }
+                            else
+                            {
+                                SpawnBaddies(p, this.Map, from);
+                            }
+                        }
+
+                        //TODO: Message?
+
                         this.Delete();
-                        return;
                     }
                 }
                 else
@@ -370,10 +348,20 @@ namespace Server.Items
                 if (Utility.RandomBool())
                     Effects.PlaySound(p, this.Map, 0x364);
 
-                if (index == 14)
-                    this.FinishEffect(p, this.Map, from);
-                else
-                    this.Z -= 1;
+                this.Z -= 1;
+            }
+
+            _Tick++;
+        }
+
+        public override void Delete()
+        {
+            base.Delete();
+
+            if (_EffectTimer != null)
+            {
+                _EffectTimer.Stop();
+                _EffectTimer = null;
             }
         }
     }

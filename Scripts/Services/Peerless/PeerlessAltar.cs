@@ -687,9 +687,9 @@ namespace Server.Items
                 m_SlayTimer.Stop();
 
             if (TimeToSlay != TimeSpan.Zero)
-                m_Deadline = DateTime.Now + TimeToSlay;
+                m_Deadline = DateTime.UtcNow + TimeToSlay;
             else
-                m_Deadline = DateTime.Now + TimeSpan.FromHours(1);
+                m_Deadline = DateTime.UtcNow + TimeSpan.FromHours(1);
 
             m_SlayTimer = Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), new TimerCallback(DeadlineCheck));
             m_SlayTimer.Priority = TimerPriority.OneMinute;
@@ -710,14 +710,14 @@ namespace Server.Items
 
         public virtual void DeadlineCheck()
         {
-            if (DateTime.Now > m_Deadline)
+            if (DateTime.UtcNow > m_Deadline)
             {
                 SendMessage(1072258); // You failed to complete an objective in time!
                 FinishSequence();
                 return;
             }
 
-            TimeSpan timeLeft = m_Deadline - DateTime.Now;
+            TimeSpan timeLeft = m_Deadline - DateTime.UtcNow;
 
             if (timeLeft < TimeSpan.FromMinutes(30))
                 SendMessage(1075611, timeLeft.TotalSeconds);
@@ -730,7 +730,7 @@ namespace Server.Items
 
                     if (player.NetState == null)
                     {
-                        TimeSpan offline = DateTime.Now - player.LastOnline;
+                        TimeSpan offline = DateTime.UtcNow - player.LastOnline;
 
                         if (offline > TimeSpan.FromMinutes(10))
                             Exit(player);

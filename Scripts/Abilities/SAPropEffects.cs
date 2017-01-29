@@ -114,7 +114,7 @@ namespace Server.Items
                 m_Effect = effect;
 
                 if (effect != null && effect.Duration > TimeSpan.MinValue)
-                    m_Expires = DateTime.Now + effect.Duration;
+                    m_Expires = DateTime.UtcNow + effect.Duration;
                 else
                     m_Expires = DateTime.MinValue;
             }
@@ -123,7 +123,7 @@ namespace Server.Items
             {
                 m_Effect.OnTick();
 
-                if (m_Expires > DateTime.MinValue && m_Expires <= DateTime.Now)
+                if (m_Expires > DateTime.MinValue && m_Expires <= DateTime.UtcNow)
                 {
                     m_Effect.RemoveEffects();
                 }

@@ -948,7 +948,7 @@ namespace Server.Mobiles
         {
             Map map = m_Mobile.Map;
 
-            if (m_Mobile.NavPoints != null && m_Mobile.NavPoints.ContainsKey(map))
+            if (map != null && m_Mobile.NavPoints != null && m_Mobile.NavPoints.ContainsKey(map))
             {
                 if (m_Mobile.CurrentNavPoint >= 0 && m_Mobile.CurrentNavPoint < m_Mobile.NavPoints[map].Count - 1)
                 {

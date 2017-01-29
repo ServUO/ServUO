@@ -35,7 +35,7 @@ namespace Server.Spells.SkillMasteries
 
 		public TribulationSpell( Mobile caster, Item scroll ) : base(caster, scroll, m_Info)
 		{
-			m_NextDamage = DateTime.Now;
+			m_NextDamage = DateTime.UtcNow;
 		}
 		
 		public override void OnCast()
@@ -105,7 +105,7 @@ namespace Server.Spells.SkillMasteries
 		/// <param name="damageTaken"></param>
 		public override void DoDamage(Mobile victim, int damageTaken)
 		{
-			if(m_NextDamage > DateTime.Now || !Caster.Player)
+			if(m_NextDamage > DateTime.UtcNow || !Caster.Player)
 				return;
 				
 			double chance = m_DamageChance;
@@ -122,7 +122,7 @@ namespace Server.Spells.SkillMasteries
 
                 AOS.Damage(victim, Caster, damage, 100, 0, 0, 0, 0);
 				
-				m_NextDamage = DateTime.Now + TimeSpan.FromSeconds(1);
+				m_NextDamage = DateTime.UtcNow + TimeSpan.FromSeconds(1);
 			}
 		}
 		

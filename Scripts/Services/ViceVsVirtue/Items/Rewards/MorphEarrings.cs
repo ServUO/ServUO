@@ -42,7 +42,9 @@ namespace Server.Items
             Race race = m.Race;
             bool didDrop = false;
 
-            foreach (Item item in m.Items)
+            List<Item> list = new List<Item>(m.Items);
+
+            foreach (Item item in list)
             {
                 bool drop = false;
 
@@ -66,6 +68,8 @@ namespace Server.Items
                     }
                 }
             }
+
+            ColUtility.Free(list);
 
             if (didDrop)
                 m.SendLocalizedMessage(500647); // Some equipment has been moved to your backpack.

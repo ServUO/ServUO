@@ -70,14 +70,14 @@ namespace Server.Items
 
         public static void AddToTable(Mobile from)
         {
-            m_RestartTable[from] = DateTime.Now + FailDelay;
+            m_RestartTable[from] = DateTime.UtcNow + FailDelay;
         }
 
         public static bool HasDelay(Mobile from)
         {
             if (m_RestartTable.ContainsKey(from))
             {
-                if (m_RestartTable[from] < DateTime.Now)
+                if (m_RestartTable[from] < DateTime.UtcNow)
                     m_RestartTable.Remove(from);
             }
 
@@ -90,7 +90,7 @@ namespace Server.Items
 
             foreach (Mobile mob in list)
             {
-                if (m_RestartTable[mob] < DateTime.Now)
+                if (m_RestartTable[mob] < DateTime.UtcNow)
                     m_RestartTable.Remove(mob);
             }
         }

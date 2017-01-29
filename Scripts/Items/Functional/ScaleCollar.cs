@@ -107,14 +107,14 @@ namespace Server.Items
                 m_Collar = collar;
                 m_Lizard = lizard;
                 m_Owner = owner;
-                m_EndTime = DateTime.Now + TimeSpan.FromSeconds(30);
+                m_EndTime = DateTime.UtcNow + TimeSpan.FromSeconds(30);
 
                 lizard.FixedEffect(0x376A, 1, 32);
             }
 
             protected override void OnTick()
             {
-                if (m_EndTime < DateTime.Now)
+                if (m_EndTime < DateTime.UtcNow)
                     m_Collar.EndTimer(m_Lizard, m_Owner);
                 else
                     m_Collar.OnTick(m_Lizard, m_Owner);
