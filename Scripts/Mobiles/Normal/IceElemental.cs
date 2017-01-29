@@ -58,6 +58,17 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
+        public override bool HasAura { get { return true; } }
+        public override int AuraRange { get { return 2; } }
+        public override int AuraFireDamage { get { return 0; } }
+        public override int AuraColdDamage { get { return 100; } }
+
+        public override void AuraEffect(Mobile m)
+        {
+            m.SendMessage("The intense cold damages you.");
+        }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average, 2);

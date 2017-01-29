@@ -619,6 +619,7 @@
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
     <Compile Include="Items\Consumables\EtherealRetouchingTool.cs" />
+    <Compile Include="Items\Decorative\TatteredWallMap.cs" />
     <Compile Include="Items\Equipment\Armor\BoneArms.cs" />
     <Compile Include="Items\Equipment\Weapons\Craven.cs" />
     <Compile Include="Items\Equipment\Weapons\GargishCaptainJohnesBlade.cs" />
@@ -9608,6 +9609,18 @@
     <Compile Include="Services\MondainsLegacyQuests\Gumps\QAndAGump.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Q&amp;AEntry.cs" />
     <Compile Include="Services\MondainsLegacyQuests\SimpleObjective.cs" />
+    <Compile Include="Services\Monster Stealing\Core\BaseBalm.cs" />
+    <Compile Include="Services\Monster Stealing\Core\BaseThieveConsumable.cs" />
+    <Compile Include="Services\Monster Stealing\Core\StealingHandler.cs" />
+    <Compile Include="Services\Monster Stealing\Items\BalmOfProtection.cs" />
+    <Compile Include="Services\Monster Stealing\Items\BalmOfStrength.cs" />
+    <Compile Include="Services\Monster Stealing\Items\BalmOfSwiftness.cs" />
+    <Compile Include="Services\Monster Stealing\Items\BalmOfWisdom.cs" />
+    <Compile Include="Services\Monster Stealing\Items\GemOfSalvation.cs" />
+    <Compile Include="Services\Monster Stealing\Items\LifeShieldLotion.cs" />
+    <Compile Include="Services\Monster Stealing\Items\ManaDaught.cs" />
+    <Compile Include="Services\Monster Stealing\Items\SeedOflife.cs" />
+    <Compile Include="Services\Monster Stealing\Items\StoneSkinLotion.cs" />
     <Compile Include="Services\New Magincia\Command.cs" />
     <Compile Include="Services\New Magincia\Distillation\CraftDefinition.cs" />
     <Compile Include="Services\New Magincia\Distillation\DistillationContext.cs" />

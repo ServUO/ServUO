@@ -93,6 +93,7 @@ namespace Server.Mobiles
                 return Poison.Lethal;
             }
         }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 4);
@@ -111,55 +112,8 @@ namespace Server.Mobiles
                 scalar = 20; // Male bodies always reflect.. damage scaled 20x
         }
 
-        public void DrainLife()
-        {
-            if (this.Map == null)
-                return;
-
-            ArrayList list = new ArrayList();
-
-            foreach (Mobile m in this.GetMobilesInRange(2))
-            {
-                if (m == this || !this.CanBeHarmful(m))
-                    continue;
-
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
-                    list.Add(m);
-                else if (m.Player)
-                    list.Add(m);
-            }
-
-            foreach (Mobile m in list)
-            {
-                this.DoHarmful(m);
-
-                m.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
-                m.PlaySound(0x231);
-
-                m.SendMessage("You feel the life drain out of you!");
-
-                int toDrain = Utility.RandomMinMax(10, 40);
-
-                this.Hits += toDrain;
-                m.Damage(toDrain, this);
-            }
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (0.25 >= Utility.RandomDouble())
-                this.DrainLife();
-        }
-
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            if (0.25 >= Utility.RandomDouble())
-                this.DrainLife();
-        }
+        public override bool DrainsLife { get { return false; } }
+        public override double DrainsLifeChance { get { return 0.25; } }
 
         public override void Serialize(GenericWriter writer)
         {

@@ -266,6 +266,16 @@ namespace Server.Mobiles
         private Mobile m_InitialFocus;
         #endregion
 
+        #region Monster Stealables
+        private bool m_HasBeenStolen;
+        [CommandProperty(AccessLevel.Administrator)]
+        public bool HasBeenStolen
+        {
+            get { return m_HasBeenStolen; }
+            set { m_HasBeenStolen = value; }
+        }
+        #endregion
+
         public virtual InhumanSpeech SpeechType { get { return null; } }
 
         public int FollowRange { get; set; }
@@ -884,6 +894,52 @@ namespace Server.Mobiles
         public virtual Item NewHarmfulItem()
         {
             return new PoolOfAcid(TimeSpan.FromSeconds(10), 30, 30);
+        }
+        #endregion
+
+        #region Life Drain
+        public virtual bool DrainsLife { get { return false; } }
+        public virtual double DrainsLifeChance { get { return 0.1; } }
+        public virtual int DrainAmount { get { return Utility.RandomMinMax(10, 40); } }
+
+        public virtual void DrainLife()
+        {
+            List<Mobile> list = new List<Mobile>();
+
+            foreach (Mobile m in this.GetMobilesInRange(2))
+            {
+                if (m == this || !CanBeHarmful(m))
+                    continue;
+
+                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
+                    list.Add(m);
+                else if (m.Player)
+                    list.Add(m);
+            }
+
+            foreach (Mobile m in list)
+            {
+                DoHarmful(m);
+
+                m.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
+                m.PlaySound(0x231);
+
+                m.SendMessage("You feel the life drain out of you!");
+
+                int toDrain = DrainAmount;
+
+                //Monster Stealables
+                if (m is PlayerMobile)
+                {
+                    PlayerMobile pm = m as PlayerMobile;
+                    toDrain = (int)drNO.ThieveItems.LifeShieldLotion.HandleLifeDrain(pm, toDrain);
+                }
+                //end 
+
+
+                Hits += toDrain;
+                m.Damage(toDrain, this);
+            }
         }
         #endregion
 
@@ -3207,6 +3263,11 @@ namespace Server.Mobiles
             {
                 DoRage(attacker);
             }
+
+            if (DrainsLife && DrainsLifeChance >= Utility.RandomDouble())
+            {
+                DrainLife();
+            }
         }
 
         public virtual void Dispel(Mobile m)
@@ -3249,6 +3310,11 @@ namespace Server.Mobiles
                 AutoDispelChance > Utility.RandomDouble())
             {
                 Dispel(defender);
+            }
+
+            if (DrainsLife && DrainsLifeChance >= Utility.RandomDouble())
+            {
+                DrainLife();
             }
         }
 
@@ -6196,6 +6262,14 @@ namespace Server.Mobiles
         public virtual int AuraEnergyDamage { get { return 0; } }
         public virtual int AuraChaosDamage { get { return 0; } }
 
+        public virtual int GetAuraDamage(Mobile from)
+        {
+            if(from is PlayerMobile)
+                return (int)drNO.ThieveItems.BalmOfProtection.HandleDamage((PlayerMobile)from, AuraBaseDamage);
+
+            return AuraBaseDamage;
+        }
+
         public virtual void AuraDamage()
         {
             if (!Alive || IsDeadBondedPet)
@@ -6229,22 +6303,64 @@ namespace Server.Mobiles
 
             foreach (Mobile m in list)
             {
+                int damage = GetAuraDamage(m);
+
                 AOS.Damage(
                     m,
                     this,
-                    AuraBaseDamage,
+                    damage,
                     AuraPhysicalDamage,
                     AuraFireDamage,
                     AuraColdDamage,
                     AuraPoisonDamage,
                     AuraEnergyDamage,
                     AuraChaosDamage);
+
+                m.RevealingAction();
                 AuraEffect(m);
             }
         }
 
         public virtual void AuraEffect(Mobile m)
         { }
+        #endregion
+
+        #region Spawn Position
+        public virtual Point3D GetSpawnPosition(int range)
+        {
+            return GetSpawnPosition(this.Location, this.Map, range);
+        }
+
+        public static Point3D GetSpawnPosition(Point3D from, Map map, int range)
+        {
+            if (map == null)
+                return from;
+
+            for (int i = 0; i < 10; i++)
+            {
+                int x = from.X + Utility.Random(range);
+                int y = from.Y + Utility.Random(range);
+                int z = map.GetAverageZ(x, y);
+
+                if (Utility.RandomBool())
+                    x *= -1;
+
+                if (Utility.RandomBool())
+                    y *= -1;
+
+                Point3D p = new Point3D(x, y, from.Z);
+
+                if (map.CanSpawnMobile(p) && map.LineOfSight(from, p))
+                    return p;
+
+                p = new Point3D(x, y, z);
+
+                if (map.CanSpawnMobile(p) && map.LineOfSight(from, p))
+                    return p;
+            }
+
+            return from;
+        }
         #endregion
 
         #region Rage

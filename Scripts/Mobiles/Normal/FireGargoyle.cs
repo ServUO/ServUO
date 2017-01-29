@@ -77,6 +77,15 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
+        public override bool HasAura { get { return true; } }
+        public override int AuraRange { get { return 2; } }
+
+        public override void AuraEffect(Mobile m)
+        {
+            m.SendMessage("The radiating heat scorches your skin!");
+        }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich);
