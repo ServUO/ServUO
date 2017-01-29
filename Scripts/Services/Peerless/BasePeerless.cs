@@ -220,42 +220,6 @@ namespace Server.Mobiles
                 this.PackItem(Loot.RandomTalisman());
         }
 		
-        public virtual Point3D GetSpawnPosition(int range)
-        {
-            return GetSpawnPosition(this.Location, this.Map, range);
-        }
-		
-        public static Point3D GetSpawnPosition(Point3D from, Map map, int range)
-        {
-            if (map == null)
-                return from;
-				
-            for (int i = 0; i < 10; i ++)
-            {
-                int x = from.X + Utility.Random(range);
-                int y = from.Y + Utility.Random(range);
-                int z = map.GetAverageZ(x, y);
-				
-                if (Utility.RandomBool())
-                    x *= -1;
-					
-                if (Utility.RandomBool())
-                    y *= -1;
-					
-                Point3D p = new Point3D(x, y, from.Z);
-				
-                if (map.CanSpawnMobile(p) && map.LineOfSight(from, p))
-                    return p;
-				
-                p = new Point3D(x, y, z);
-					
-                if (map.CanSpawnMobile(p) && map.LineOfSight(from, p))
-                    return p;
-            }
-			
-            return from;
-        }
-		
         #region Fire Ring
         private static readonly int[] m_North = new int[]
         {

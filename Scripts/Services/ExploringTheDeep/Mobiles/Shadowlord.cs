@@ -146,7 +146,10 @@ namespace Server.Mobiles
                 reflect = true; // Reflect spells if ShadowLord having wisps around
         }
 
-        public void DrainLife()
+        public override bool DrainsLife { get { return true; } }
+        public override double DrainsLifeChance { get { return 0.25; } }
+
+        public override void DrainLife()
         {
             if (this.Map == null)
                 return;
@@ -195,22 +198,6 @@ namespace Server.Mobiles
 
                 m.Damage(toDrain, this);
             }
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (0.25 >= Utility.RandomDouble())
-                this.DrainLife();
-        }
-
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            if (0.25 >= Utility.RandomDouble())
-                this.DrainLife();
         }
 
         public override void OnDeath(Container c)

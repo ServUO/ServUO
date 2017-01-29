@@ -234,6 +234,14 @@ namespace Server.Mobiles
 
                     int drain = Utility.RandomMinMax(14, 30);
 
+                    //Monster Stealables 
+                    if (m is PlayerMobile)
+                    {
+                        PlayerMobile pm = m as PlayerMobile;
+                        drain = (int)drNO.ThieveItems.LifeShieldLotion.HandleLifeDrain(pm, drain);
+                    }
+                    //end 
+
                     this.m_Owner.Hits += drain;
 
                     if (this.m_Owner.Harrower != null)

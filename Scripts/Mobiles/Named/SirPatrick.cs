@@ -48,7 +48,10 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+
 		public override bool CanBeParagon { get { return false; } }
+        public override bool DrainsLife { get { return true; } }
+
         public override void OnDeath( Container c )
         {
             base.OnDeath( c );
@@ -70,58 +73,6 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 2);
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (Utility.RandomDouble() < 0.1)
-                this.DrainLife();
-        }
-
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            if (Utility.RandomDouble() < 0.1)
-                this.DrainLife();
-        }
-
-        public virtual void DrainLife()
-        {
-            List<Mobile> list = new List<Mobile>();
-
-            foreach (Mobile m in this.GetMobilesInRange(2))
-            {
-                if (m == this || !this.CanBeHarmful(m, false) || (Core.AOS && !this.InLOS(m)))
-                    continue;
-
-                if (m is BaseCreature)
-                {
-                    BaseCreature bc = (BaseCreature)m;
-
-                    if (bc.Controlled || bc.Summoned || bc.Team != this.Team)
-                        list.Add(m);
-                }
-                else if (m.Player)
-                {
-                    list.Add(m);
-                }
-            }
-
-            foreach (Mobile m in list)
-            {
-                this.DoHarmful(m);
-
-                m.FixedParticles(0x374A, 10, 15, 5013, 0x455, 0, EffectLayer.Waist);
-                m.PlaySound(0x1EA);
-
-                int drain = Utility.RandomMinMax(14, 30);
-
-                this.Hits += drain;
-                m.Damage(drain, this);
-            }
         }
 
         public override void Serialize(GenericWriter writer)

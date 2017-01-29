@@ -83,20 +83,16 @@ namespace Server.Mobiles
         public override int BreathColdDamage { get { return 100; } }
         public override int BreathEffectHue { get { return 1264; } }
 
-        public override bool CanAreaDamage { get { return true; } }
-        public override int AreaDamageRange { get { return 10; } }
-        public override double AreaDamageScalar { get { return 1.0; } }
-        public override double AreaDamageChance { get { return 1.0; } }
-        public override TimeSpan AreaDamageDelay { get { return TimeSpan.FromSeconds(30); } }
+        public override bool HasAura { get { return true; } }
+        public override int AuraRange { get { return 2; } }
+        public override int AuraBaseDamage { get { return 20; } }
+        public override int AuraFireDamage { get { return 0; } }
+        public override int AuraColdDamage { get { return 100; } }
 
-        public override int AreaFireDamage { get { return 0; } }
-        public override int AreaColdDamage { get { return 100; } }
-
-        public override void AreaDamageEffect(Mobile m)
+        public override void AuraEffect(Mobile m)
         {
-            m.FixedParticles(0x374A, 10, 30, 5052, this.Hue, 0, EffectLayer.Waist);
-            m.PlaySound(0x5C6);
-        }	
+            m.SendMessage("The intense cold damages you.");
+        }
 
 		public ColdDrake( Serial serial ) : base( serial )
 		{

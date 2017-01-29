@@ -1052,6 +1052,13 @@ namespace Server.Items
 			DeadOnly = 0x100
 		}
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool DisableMessage
+        {
+            get;
+            set;
+        }
+
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool DenyMounted
 		{
@@ -1182,21 +1189,24 @@ namespace Server.Items
 			{
 				if (GetFlag(ConditionFlag.DenyPackContents) && pack.TotalItems != 0)
 				{
-					m.SendMessage("You must empty your backpack before proceeding.");
+                    if (!DisableMessage)
+					    m.SendMessage("You must empty your backpack before proceeding.");
 					return false;
 				}
 
 				if (GetFlag(ConditionFlag.DenyPackEthereals) &&
 					(pack.FindItemByType(typeof(EtherealMount)) != null || pack.FindItemByType(typeof(BaseImprisonedMobile)) != null))
 				{
-					m.SendMessage("You must empty your backpack of ethereal mounts before proceeding.");
+                    if (!DisableMessage)
+					    m.SendMessage("You must empty your backpack of ethereal mounts before proceeding.");
 					return false;
 				}
 			}
 
 			if (GetFlag(ConditionFlag.DenyHolding) && m.Holding != null)
 			{
-				m.SendMessage("You must let go of what you are holding before proceeding.");
+                if (!DisableMessage)
+				    m.SendMessage("You must let go of what you are holding before proceeding.");
 				return false;
 			}
 
@@ -1216,7 +1226,8 @@ namespace Server.Items
 							}
 						default:
 							{
-								m.SendMessage("You must remove all of your equipment before proceeding.");
+                                if(!DisableMessage)
+								    m.SendMessage("You must remove all of your equipment before proceeding.");
 								return false;
 							}
 					}
@@ -1225,13 +1236,15 @@ namespace Server.Items
 
 			if (GetFlag(ConditionFlag.DenyTransformed) && m.IsBodyMod)
 			{
-				m.SendMessage("You cannot go there in this form.");
+                if (!DisableMessage)
+				    m.SendMessage("You cannot go there in this form.");
 				return false;
 			}
 
 			if (GetFlag(ConditionFlag.DeadOnly) && m.Alive)
 			{
-				m.SendLocalizedMessage(1060014); // Only the dead may pass.
+                if (!DisableMessage)
+				    m.SendLocalizedMessage(1060014); // Only the dead may pass.
 				return false;
 			}
 
@@ -1300,9 +1313,10 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(0); // version
+			writer.Write(1); // version
 
 			writer.Write((int)m_Flags);
+            writer.Write(DisableMessage);
 		}
 
 		public override void Deserialize(GenericReader reader)
@@ -1311,7 +1325,15 @@ namespace Server.Items
 
 			int version = reader.ReadInt();
 
-			m_Flags = (ConditionFlag)reader.ReadInt();
+            switch (version)
+            {
+                case 1:
+                    DisableMessage = reader.ReadBool();
+                    goto case 0;
+                case 0:
+                    m_Flags = (ConditionFlag)reader.ReadInt();
+                    break;
+            }
 		}
 
 		protected bool GetFlag(ConditionFlag flag)

@@ -201,7 +201,8 @@ namespace Server.Items
                     typeof(Flurry), typeof(Mistral),
                     typeof(Tempest), typeof(UnboundEnergyVortex),
                     typeof(ChaosVortex), typeof(WindElemental),
-                    typeof(FlameElemental), typeof(QuartzElemental)
+                    typeof(FlameElemental), typeof(QuartzElemental),
+                    typeof(VoidManifestation)
                 );
 
             elemental.Entries = new SlayerEntry[]

@@ -50,7 +50,9 @@ namespace Server.Mobiles
                 this.PackItem(new BlackPearl(4));
 
             this.PackItem(new RawFishSteak());
-            this.PackItem(new SpecialFishingNet());
+
+            if(0.1 > Utility.RandomDouble())
+                this.PackItem(new SpecialFishingNet());
 
             if (Utility.RandomDouble() < .05)
                 this.PackItem(new MessageInABottle());
