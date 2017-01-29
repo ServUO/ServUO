@@ -32,7 +32,7 @@ namespace Server.Items
 
                 from.SendMessage("You have been pardoned from one murder count.");
                 Delete();
-                m_Table[from] = DateTime.Now + TimeSpan.FromHours(24);
+                m_Table[from] = DateTime.UtcNow + TimeSpan.FromHours(24);
             }
         }
 
@@ -57,7 +57,7 @@ namespace Server.Items
             List<Mobile> toRemove = new List<Mobile>();
             foreach (KeyValuePair<Mobile, DateTime> kvp in m_Table)
             {
-                if (kvp.Value < DateTime.Now)
+                if (kvp.Value < DateTime.UtcNow)
                     toRemove.Add(kvp.Key);
             }
 
@@ -105,7 +105,7 @@ namespace Server.Items
                 Mobile mob = reader.ReadMobile();
                 DateTime dt = reader.ReadDateTime();
 
-                if (mob != null && dt > DateTime.Now)
+                if (mob != null && dt > DateTime.UtcNow)
                     m_Table.Add(mob, dt);
             }
         }

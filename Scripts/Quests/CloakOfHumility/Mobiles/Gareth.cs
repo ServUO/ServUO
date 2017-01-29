@@ -10,7 +10,7 @@ namespace Server.Engines.Quests
         public Gareth()
             : base("Gareth", "the Emissary of the RBC")
         {
-            m_NextTalk = DateTime.Now;
+            m_NextTalk = DateTime.UtcNow;
         }
 
         public Gareth(Serial serial)
@@ -54,7 +54,7 @@ namespace Server.Engines.Quests
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m_NextTalk < DateTime.Now && m is PlayerMobile && m.Backpack != null && m.InRange(this.Location, 8))
+            if (m_NextTalk < DateTime.UtcNow && m is PlayerMobile && m.Backpack != null && m.InRange(this.Location, 8))
             {
                 PlayerMobile pm = (PlayerMobile)m;
 
@@ -67,7 +67,7 @@ namespace Server.Engines.Quests
                     if (chain != null && chain.QuestItem)
                     {
                         SayTo(m, 1075773);
-                        m_NextTalk = DateTime.Now + TimeSpan.FromSeconds(10);
+                        m_NextTalk = DateTime.UtcNow + TimeSpan.FromSeconds(10);
                     }
                 }
             }
@@ -86,7 +86,7 @@ namespace Server.Engines.Quests
 
             int version = reader.ReadInt();
 
-            m_NextTalk = DateTime.Now;
+            m_NextTalk = DateTime.UtcNow;
         }
     }
 }

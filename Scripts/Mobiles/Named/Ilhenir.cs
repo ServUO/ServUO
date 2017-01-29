@@ -348,23 +348,6 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual Point3D GetSpawnPosition(int range)
-        {
-            return this.GetSpawnPosition(this.Location, this.Map, range);
-        }
-
-        public virtual Point3D GetSpawnPosition(Point3D from, Map map, int range)
-        {
-            if (map == null)
-                return from;
-
-            Point3D loc = new Point3D((this.RandomPoint(this.X)), (this.RandomPoint(this.Y)), this.Z);
-
-            loc.Z = this.Map.GetAverageZ(loc.X, loc.Y);
-
-            return loc;
-        }
-
         private void EndCacophonic_Callback(object state)
         {
             if (state is Mobile)

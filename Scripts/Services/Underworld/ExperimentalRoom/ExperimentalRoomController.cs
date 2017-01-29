@@ -27,7 +27,7 @@ namespace Server.Items
             if (from == null)
                 return;
 
-            m_Table[from] = DateTime.Now + TimeSpan.FromHours(24);
+            m_Table[from] = DateTime.UtcNow + TimeSpan.FromHours(24);
         }
 
         public static bool IsInCooldown(Mobile from)
@@ -43,7 +43,7 @@ namespace Server.Items
 
             foreach (KeyValuePair<Mobile, DateTime> kvp in m_Table)
             {
-                if (kvp.Value <= DateTime.Now)
+                if (kvp.Value <= DateTime.UtcNow)
                     list.Add(kvp.Key);
             }
 

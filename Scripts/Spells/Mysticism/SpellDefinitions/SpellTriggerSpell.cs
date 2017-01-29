@@ -213,7 +213,7 @@ namespace Server.Spells.Mystic
             if (m_CooldownTable.ContainsKey(from))
             {
                 DateTime next = m_CooldownTable[from];
-                int seconds = (int)(next - DateTime.Now).TotalSeconds + 1;
+                int seconds = (int)(next - DateTime.UtcNow).TotalSeconds + 1;
 
                 // You must wait ~1_seconds~ seconds before you can use this item.
                 from.SendLocalizedMessage(1079263, seconds.ToString());
@@ -226,7 +226,7 @@ namespace Server.Spells.Mystic
 
         public void Use(Mobile from)
         {
-            m_CooldownTable[from] = DateTime.Now + TimeSpan.FromSeconds(300.0);
+            m_CooldownTable[from] = DateTime.UtcNow + TimeSpan.FromSeconds(300.0);
             Timer.DelayCall(TimeSpan.FromSeconds(300.0), new TimerCallback(
                 delegate
                 {

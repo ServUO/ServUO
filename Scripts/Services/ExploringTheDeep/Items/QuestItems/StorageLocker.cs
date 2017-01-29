@@ -208,7 +208,7 @@ namespace Server.Items
             if (this.m_RestartTimer != null)
                 this.m_RestartTimer.Stop();
 
-            this.m_RestartTime = DateTime.Now + ts;
+            this.m_RestartTime = DateTime.UtcNow + ts;
 
             this.m_RestartTimer = new RestartTimer(this, ts);
             this.m_RestartTimer.Start();

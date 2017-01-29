@@ -220,9 +220,9 @@ namespace Server.Spells.Mystic
             {
                 m_CurseTable[from].Stop();
 
-                if (DateTime.Now > m_CurseTable[from].StartTime)
+                if (DateTime.UtcNow > m_CurseTable[from].StartTime)
                 {
-                    TimeSpan inEffect = DateTime.Now - m_CurseTable[from].StartTime;
+                    TimeSpan inEffect = DateTime.UtcNow - m_CurseTable[from].StartTime;
 
                     int damage = 5 * (int)inEffect.TotalSeconds;
 
@@ -279,7 +279,7 @@ namespace Server.Spells.Mystic
             {
                 m_Mobile = mob;
                 m_Caster = caster;
-                m_StartTime = DateTime.Now;
+                m_StartTime = DateTime.UtcNow;
                 Start();
             }
 

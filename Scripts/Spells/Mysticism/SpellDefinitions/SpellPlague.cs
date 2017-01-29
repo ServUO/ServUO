@@ -94,7 +94,7 @@ namespace Server.Spells.Mystic
 
         public static void OnMobileDamaged(Mobile from)
         {
-            if (m_Table.ContainsKey(from) && m_Table[from].Count > 0 && m_Table[from][0].NextUse < DateTime.Now)
+            if (m_Table.ContainsKey(from) && m_Table[from].Count > 0 && m_Table[from][0].NextUse < DateTime.UtcNow)
             {
                 int amount = m_Table[from][0].Amount;
                 bool doExplosion = false;
@@ -114,7 +114,7 @@ namespace Server.Spells.Mystic
                 {
                     SpellPlagueTimer timer = m_Table[from][0];
 
-                    timer.NextUse = DateTime.Now + TimeSpan.FromSeconds(1.5);
+                    timer.NextUse = DateTime.UtcNow + TimeSpan.FromSeconds(1.5);
 
                     DoExplosion(from, timer.Caster, false);
                     timer.Amount++;
@@ -193,7 +193,7 @@ namespace Server.Spells.Mystic
             m_Caster = caster;
             m_Owner = owner;
             m_Amount = 0;
-            m_NextUse = DateTime.Now;
+            m_NextUse = DateTime.UtcNow;
             this.Start();
         }
 

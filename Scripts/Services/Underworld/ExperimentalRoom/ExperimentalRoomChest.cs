@@ -103,7 +103,7 @@ namespace Server.Items {
 			
 			foreach(Item i in items) 
 			{
-				if (i.Decays && i.LastMoved.Add(DecayTime) < DateTime.Now) 
+				if (i.Decays && i.LastMoved.Add(DecayTime) < DateTime.UtcNow) 
 				{
 					i.Delete();
 					

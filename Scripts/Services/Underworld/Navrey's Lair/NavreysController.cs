@@ -51,7 +51,7 @@ namespace Server.Items
         {
             get
             {
-                TimeSpan ts = m_TypeRestart - DateTime.Now;
+                TimeSpan ts = m_TypeRestart - DateTime.UtcNow;
 
                 if (ts < TimeSpan.Zero)
                 {
@@ -76,7 +76,7 @@ namespace Server.Items
             {
                 try
                 {
-                    m_TypeRestart = DateTime.Now + value;
+                    m_TypeRestart = DateTime.UtcNow + value;
                 }
                 catch
                 { }

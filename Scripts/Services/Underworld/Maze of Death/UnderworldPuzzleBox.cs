@@ -33,7 +33,7 @@ namespace Server.Items
                         from.SendMessage("You recieve a puzzle piece.");
 
                         if (from.AccessLevel == AccessLevel.Player)
-                            m_Table[from] = DateTime.Now + TimeSpan.FromHours(24);
+                            m_Table[from] = DateTime.UtcNow + TimeSpan.FromHours(24);
                     }
                 }
             }
@@ -43,7 +43,7 @@ namespace Server.Items
 		{
 			if(m_Table.ContainsKey(from))
 			{
-				if(m_Table[from] < DateTime.Now)
+				if(m_Table[from] < DateTime.UtcNow)
 					m_Table.Remove(from);
 			}
 			
