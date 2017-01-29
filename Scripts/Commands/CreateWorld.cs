@@ -15,6 +15,7 @@ namespace Server.Commands
 			Delete,
 			Recreate,
 		}
+
 		public struct CommandEntry
 		{
 			public string Name;
@@ -29,7 +30,9 @@ namespace Server.Commands
 				checkId = i;
 			}
 		}
-		public static List<CommandEntry> Commands = new List<CommandEntry>(new CommandEntry[] {
+
+		public static List<CommandEntry> Commands = new List<CommandEntry>(new CommandEntry[] 
+        {
 			new CommandEntry("Moongates",       "Moongen",			"MoonGenDelete",		101),
 			new CommandEntry("Doors",           "DoorGen",			"DoorGenDelete",		102),
 			new CommandEntry("Signs",           "SignGen",			"SignGenDelete",		103),
@@ -55,6 +58,7 @@ namespace Server.Commands
             new CommandEntry("Castle Blackthorn",    "GenBlackthorn",       null,                                  123),
             new CommandEntry("Time of Legends",      "DecorateTOL",         null,                                  124),
 		});
+
         public CreateWorld()
         {
         }
@@ -133,6 +137,7 @@ namespace Server.Commands
 			}
 			DoCommands(ids.ToArray(), type, from);
 		}
+
 		public static void DoCommands(int[] selections, GumpType type, Mobile from)
 		{
 			World.Broadcast(0x35, false, "The world is generating. This may take some time...");

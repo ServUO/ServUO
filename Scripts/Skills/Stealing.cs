@@ -406,6 +406,13 @@ namespace Server.SkillHandlers
 						root = target;
 						stolen = TryStealItem(pack.Items[randomIndex], ref caught);
 					}
+
+                    #region Monster Stealables
+                    if (target is BaseCreature && from is PlayerMobile)
+                    {
+                        drNO.ThieveItems.StealingHandler.HandleSteal(target as BaseCreature, from as PlayerMobile);
+                    }
+                    #endregion
 				}
 				else
 				{

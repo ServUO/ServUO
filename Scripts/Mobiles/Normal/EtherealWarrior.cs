@@ -135,18 +135,38 @@ namespace Server.Mobiles
         {
             base.OnGaveMeleeAttack(defender);
 
-            defender.Damage(Utility.Random(10, 10), this);
+            if (0.25 > Utility.RandomDouble())
+            {
+                int toSap = Utility.RandomMinMax(20, 30);
+
+                switch (Utility.Random(3))
+                {
+                    case 0:
+                        defender.Damage(toSap, this);
+                        Hits += toSap;
+                        break;
+                    case 1:
+                        defender.Stam -= toSap;
+                        Stam += toSap;
+                        break;
+                    case 2:
+                        defender.Mana -= toSap;
+                        Mana += toSap;
+                        break;
+                }
+            }
+            /*defender.Damage(Utility.Random(10, 10), this);
             defender.Stam -= Utility.Random(10, 10);
-            defender.Mana -= Utility.Random(10, 10);
+            defender.Mana -= Utility.Random(10, 10);*/
         }
 
         public override void OnGotMeleeAttack(Mobile attacker)
         {
             base.OnGotMeleeAttack(attacker);
 
-            attacker.Damage(Utility.Random(10, 10), this);
+            /*attacker.Damage(Utility.Random(10, 10), this);
             attacker.Stam -= Utility.Random(10, 10);
-            attacker.Mana -= Utility.Random(10, 10);
+            attacker.Mana -= Utility.Random(10, 10);*/
         }
 
         public override void Serialize(GenericWriter writer) 
