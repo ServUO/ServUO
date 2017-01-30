@@ -491,7 +491,7 @@ namespace Server.Mobiles
 					15,
 					275,
 					20,
-					"<BASEFONT COLOR=#FFFFFF>Select a pet to retrieve from the stables:</BASEFONT>",
+                    "<BASEFONT COLOR=#000008>Select a pet to retrieve from the stables:</BASEFONT>",
 					false,
 					false);
 
@@ -510,7 +510,7 @@ namespace Server.Mobiles
 						35 + (i * 20),
 						275,
 						18,
-						String.Format("<BASEFONT COLOR=#C0C0EE>{0}</BASEFONT>", pet.Name),
+						String.Format("<BASEFONT COLOR=#C6C6EF>{0}</BASEFONT>", pet.Name),
 						false,
 						false);
 				}
