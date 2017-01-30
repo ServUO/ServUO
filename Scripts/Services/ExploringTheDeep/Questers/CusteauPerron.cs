@@ -175,7 +175,7 @@ namespace Server.Gumps
             AddPage(1);
             AddHtmlLocalized(107, 140, 300, 150, 1154287, 0x7FFF, false, true); // *She looks up from the slowly rotating rabbit on a spit* Oh hello there, what brings you way out to this frozen tundra?
 
-            AddHtmlLocalized(145, 300, 250, 24, 1154288, 0x7FFF, false, false); // Hepler sent me to ask about Shipwrecks...
+            AddHtmlLocalized(145, 300, 270, 24, 1154288, 0x7FFF, false, false); // Hepler sent me to ask about Shipwrecks...
             AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
 
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
