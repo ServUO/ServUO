@@ -117,34 +117,41 @@ public class MadelineHarteCompleteGump : Gump
 
     public MadelineHarteCompleteGump(Mobile owner) : base(50, 50)
     {
-        //-------------------------------------------------------------------------------------------------
-        AddPage(0);
-        AddImageTiled(54, 33, 369, 400, 2624);
-        AddAlphaRegion(54, 33, 369, 400);
-        AddImageTiled(416, 39, 44, 389, 203);
-        //--------------------------------------Window size bar--------------------------------------------
+        this.Closable = false;
+        this.Disposable = true;
+        this.Dragable = true;
+        this.Resizable = false;
 
-        AddImage(97, 49, 9005);
-        AddImageTiled(58, 39, 29, 390, 10460);
-        AddImageTiled(412, 37, 31, 389, 10460);
-        AddHtmlLocalized(140, 60, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
-        AddImage(430, 9, 10441);
-        AddImageTiled(40, 38, 17, 391, 9263);
-        AddImage(6, 25, 10421);
-        AddImage(34, 12, 10420);
-        AddImageTiled(94, 25, 342, 15, 10304);
-        AddImageTiled(40, 427, 415, 16, 10304);
-        AddImage(-10, 314, 10402);
-        AddImage(56, 150, 10411);
-        AddImage(136, 84, 96);
+        AddPage(0);
+        this.AddImageTiled(50, 20, 400, 460, 0x1404);
+        this.AddImageTiled(50, 29, 30, 450, 0x28DC);
+        this.AddImageTiled(34, 140, 17, 339, 0x242F);
+        this.AddImage(48, 135, 0x28AB);
+        this.AddImage(-16, 285, 0x28A2);
+        this.AddImage(0, 10, 0x28B5);
+        this.AddImage(25, 0, 0x28B4);
+        this.AddImageTiled(83, 15, 350, 15, 0x280A);
+        this.AddImage(34, 479, 0x2842);
+        this.AddImage(442, 479, 0x2840);
+        this.AddImageTiled(51, 479, 392, 17, 0x2775);
+        this.AddImageTiled(415, 29, 44, 450, 0xA2D);
+        this.AddImageTiled(415, 29, 30, 450, 0x28DC);
+        this.AddImage(370, 50, 0x589);
+
+        this.AddImage(379, 60, 0x15A9);
+        this.AddImage(425, 0, 0x28C9);
+        this.AddImage(90, 33, 0x232D);
+        this.AddImageTiled(130, 65, 175, 1, 0x238D);
+
+        AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
         AddPage(1);
-        AddHtmlLocalized(107, 110, 300, 230, 1154302, 0x7FFF, false, true); // Oh! You’ve found his hat! Did you...*pauses and appears to begin to cry but regains her composure” Oh, I see.  At least he showed Valor...I thank you for give me closure.  I had a chance to read the note from Cousteau, this should be what you need.
+        AddHtmlLocalized(107, 140, 300, 150, 1154302, 0x7FFF, false, true); // Oh! You’ve found his hat! Did you...*pauses and appears to begin to cry but regains her composure” Oh, I see.  At least he showed Valor...I thank you for give me closure.  I had a chance to read the note from Cousteau, this should be what you need.
 
-        AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+        AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
     }
 
-    public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
+    public override void OnResponse(NetState state, RelayInfo info)
     {
         Mobile from = state.Mobile;
 
@@ -172,39 +179,46 @@ public class MadelineHarteGump : Gump
 
     public MadelineHarteGump(Mobile owner) : base(50, 50)
     {
-        //-------------------------------------------------------------------------------------------------
-        AddPage(0);
-        AddImageTiled(54, 33, 369, 400, 2624);
-        AddAlphaRegion(54, 33, 369, 400);
-        AddImageTiled(416, 39, 44, 389, 203);
-        //--------------------------------------Window size bar--------------------------------------------
+        this.Closable = false;
+        this.Disposable = true;
+        this.Dragable = true;
+        this.Resizable = false;
 
-        AddImage(97, 49, 9005);
-        AddImageTiled(58, 39, 29, 390, 10460);
-        AddImageTiled(412, 37, 31, 389, 10460);
-        AddHtmlLocalized(140, 60, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
-        AddImage(430, 9, 10441);
-        AddImageTiled(40, 38, 17, 391, 9263);
-        AddImage(6, 25, 10421);
-        AddImage(34, 12, 10420);
-        AddImageTiled(94, 25, 342, 15, 10304);
-        AddImageTiled(40, 427, 415, 16, 10304);
-        AddImage(-10, 314, 10402);
-        AddImage(56, 150, 10411);
-        AddImage(136, 84, 96);
+        AddPage(0);
+        this.AddImageTiled(50, 20, 400, 460, 0x1404);
+        this.AddImageTiled(50, 29, 30, 450, 0x28DC);
+        this.AddImageTiled(34, 140, 17, 339, 0x242F);
+        this.AddImage(48, 135, 0x28AB);
+        this.AddImage(-16, 285, 0x28A2);
+        this.AddImage(0, 10, 0x28B5);
+        this.AddImage(25, 0, 0x28B4);
+        this.AddImageTiled(83, 15, 350, 15, 0x280A);
+        this.AddImage(34, 479, 0x2842);
+        this.AddImage(442, 479, 0x2840);
+        this.AddImageTiled(51, 479, 392, 17, 0x2775);
+        this.AddImageTiled(415, 29, 44, 450, 0xA2D);
+        this.AddImageTiled(415, 29, 30, 450, 0x28DC);
+        this.AddImage(370, 50, 0x589);
+
+        this.AddImage(379, 60, 0x15A9);
+        this.AddImage(425, 0, 0x28C9);
+        this.AddImage(90, 33, 0x232D);
+        this.AddImageTiled(130, 65, 175, 1, 0x238D);
+
+        AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
         AddPage(1);
-        AddHtmlLocalized(107, 110, 300, 230, 1154300, 0x7FFF, false, true); // *You notice a woman whimpering as she struggles through manipulating the spinning wheel, you smile at her and hand her the note* Oh, hello, *wipes tear*...I’m sorry did you need something...It’s just that...*begins crying again*...my son Willem has been killed Destard! If only I had something to remember him by...
+        AddHtmlLocalized(107, 140, 300, 150, 1154300, 0x7FFF, false, true); // *You notice a woman whimpering as she struggles through manipulating the spinning wheel, you smile at her and hand her the note* Oh, hello, *wipes tear*...I’m sorry did you need something...It’s just that...*begins crying again*...my son Willem has been killed Destard! If only I had something to remember him by...
 
-        AddHtmlLocalized(155, 260, 250, 24, 1154301, 0x7FFF, false, false); // Willem went to Destard?
-        AddButton(125, 260, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
+        AddHtmlLocalized(145, 300, 250, 24, 1154301, 0x7FFF, false, false); // Willem went to Destard?
+        AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
 
-        AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+        AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
         AddPage(2);
-        AddHtmlLocalized(107, 110, 300, 230, 1154335, 0x7FFF, false, true); // That's right! I told him not to go but he didn't listen! If only I had a bit of something of his to remember him by, you look brave...would you venture to Destard and find it for me? Please?
-                
-        AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+        AddHtmlLocalized(107, 140, 300, 150, 1154335, 0x7FFF, false, true); // That's right! I told him not to go but he didn't listen! If only I had a bit of something of his to remember him by, you look brave...would you venture to Destard and find it for me? Please?
+
+        AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
     }
 
     public override void OnResponse(NetState state, RelayInfo info)

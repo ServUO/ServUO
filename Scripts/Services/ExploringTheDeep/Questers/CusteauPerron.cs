@@ -144,47 +144,54 @@ namespace Server.Gumps
 
         public CousteauPerronGump(Mobile owner) : base(50, 50)
         {
-            //-------------------------------------------------------------------------------------------------
-            AddPage(0);
-            AddImageTiled(54, 33, 369, 400, 2624);
-            AddAlphaRegion(54, 33, 369, 400);
-            AddImageTiled(416, 39, 44, 389, 203);
-            //--------------------------------------Window size bar--------------------------------------------
+            this.Closable = false;
+            this.Disposable = true;
+            this.Dragable = true;
+            this.Resizable = false;
 
-            AddImage(97, 49, 9005);
-            AddImageTiled(58, 39, 29, 390, 10460);
-            AddImageTiled(412, 37, 31, 389, 10460);
-            AddHtmlLocalized(140, 60, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
-            AddImage(430, 9, 10441);
-            AddImageTiled(40, 38, 17, 391, 9263);
-            AddImage(6, 25, 10421);
-            AddImage(34, 12, 10420);
-            AddImageTiled(94, 25, 342, 15, 10304);
-            AddImageTiled(40, 427, 415, 16, 10304);
-            AddImage(-10, 314, 10402);
-            AddImage(56, 150, 10411);
-            AddImage(136, 84, 96);
+            AddPage(0);
+            this.AddImageTiled(50, 20, 400, 460, 0x1404);
+            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
+            this.AddImageTiled(34, 140, 17, 339, 0x242F);
+            this.AddImage(48, 135, 0x28AB);
+            this.AddImage(-16, 285, 0x28A2);
+            this.AddImage(0, 10, 0x28B5);
+            this.AddImage(25, 0, 0x28B4);
+            this.AddImageTiled(83, 15, 350, 15, 0x280A);
+            this.AddImage(34, 479, 0x2842);
+            this.AddImage(442, 479, 0x2840);
+            this.AddImageTiled(51, 479, 392, 17, 0x2775);
+            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
+            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
+            this.AddImage(370, 50, 0x589);
+
+            this.AddImage(379, 60, 0x15A9);
+            this.AddImage(425, 0, 0x28C9);
+            this.AddImage(90, 33, 0x232D);
+            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+
+            AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
             AddPage(1);
-            AddHtmlLocalized(107, 110, 300, 230, 1154287, 0x7FFF, false, true); // *She looks up from the slowly rotating rabbit on a spit* Oh hello there, what brings you way out to this frozen tundra?
+            AddHtmlLocalized(107, 140, 300, 150, 1154287, 0x7FFF, false, true); // *She looks up from the slowly rotating rabbit on a spit* Oh hello there, what brings you way out to this frozen tundra?
 
-            AddHtmlLocalized(155, 260, 250, 24, 1154288, 0x7FFF, false, false); // Hepler sent me to ask about Shipwrecks...
-            AddButton(125, 260, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
+            AddHtmlLocalized(145, 300, 250, 24, 1154288, 0x7FFF, false, false); // Hepler sent me to ask about Shipwrecks...
+            AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(2);
-            AddHtmlLocalized(107, 110, 300, 230, 1154289, 0x7FFF, false, true); // Ahh, been listening to old Hepler have you?  So I've heard something of these shipwrecks, even all the way out here.  I'm guessing you want me to tell you of one of these suits to help you explore beneath the waves?
+            AddHtmlLocalized(107, 140, 300, 150, 1154289, 0x7FFF, false, true); // Ahh, been listening to old Hepler have you?  So I've heard something of these shipwrecks, even all the way out here.  I'm guessing you want me to tell you of one of these suits to help you explore beneath the waves?
 
-            AddHtmlLocalized(155, 260, 250, 24, 1154290, 0x7FFF, false, false); // Do you know of the suit?            
-            AddButton(125, 280, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 3);//Suit
+            AddHtmlLocalized(145, 300, 250, 24, 1154290, 0x7FFF, false, false); // Do you know of the suit?            
+            AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 3);//Suit
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(3);
-            AddHtmlLocalized(107, 110, 300, 230, 1154291, 0x7FFF, false, true); // Before I will help you with this perhaps you can assist me with a small task?  I require an Ice Wyrm Scale to assist me in my research, but sadly I am not strong enough to slay one alone.  Do you think you could collect this for me? Yes? Oh grand! Return to me with the ice wyrm scale and I will assist thee further.
+            AddHtmlLocalized(107, 140, 300, 150, 1154291, 0x7FFF, false, true); // Before I will help you with this perhaps you can assist me with a small task?  I require an Ice Wyrm Scale to assist me in my research, but sadly I am not strong enough to slay one alone.  Do you think you could collect this for me? Yes? Oh grand! Return to me with the ice wyrm scale and I will assist thee further.
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
         }
 
@@ -217,31 +224,38 @@ namespace Server.Gumps
 
         public CousteauPerronCompleteGump(Mobile owner) : base(50, 50)
         {
-            //-------------------------------------------------------------------------------------------------
-            AddPage(0);
-            AddImageTiled(54, 33, 369, 400, 2624);
-            AddAlphaRegion(54, 33, 369, 400);
-            AddImageTiled(416, 39, 44, 389, 203);
-            //--------------------------------------Window size bar--------------------------------------------
+            this.Closable = false;
+            this.Disposable = true;
+            this.Dragable = true;
+            this.Resizable = false;
 
-            AddImage(97, 49, 9005);
-            AddImageTiled(58, 39, 29, 390, 10460);
-            AddImageTiled(412, 37, 31, 389, 10460);
-            AddHtmlLocalized(140, 60, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
-            AddImage(430, 9, 10441);
-            AddImageTiled(40, 38, 17, 391, 9263);
-            AddImage(6, 25, 10421);
-            AddImage(34, 12, 10420);
-            AddImageTiled(94, 25, 342, 15, 10304);
-            AddImageTiled(40, 427, 415, 16, 10304);
-            AddImage(-10, 314, 10402);
-            AddImage(56, 150, 10411);
-            AddImage(136, 84, 96);
+            AddPage(0);
+            this.AddImageTiled(50, 20, 400, 460, 0x1404);
+            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
+            this.AddImageTiled(34, 140, 17, 339, 0x242F);
+            this.AddImage(48, 135, 0x28AB);
+            this.AddImage(-16, 285, 0x28A2);
+            this.AddImage(0, 10, 0x28B5);
+            this.AddImage(25, 0, 0x28B4);
+            this.AddImageTiled(83, 15, 350, 15, 0x280A);
+            this.AddImage(34, 479, 0x2842);
+            this.AddImage(442, 479, 0x2840);
+            this.AddImageTiled(51, 479, 392, 17, 0x2775);
+            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
+            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
+            this.AddImage(370, 50, 0x589);
+
+            this.AddImage(379, 60, 0x15A9);
+            this.AddImage(425, 0, 0x28C9);
+            this.AddImage(90, 33, 0x232D);
+            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+
+            AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
             AddPage(1);
-            AddHtmlLocalized(107, 110, 300, 230, 1154292, 0x7FFF, false, true); // You've got one! I don't know how but you did!  This will prove invaluable in my research! I will do as promised.  Long ago I learned of a set of items known as the Salvager's Suit.  It had been quite some time since anyone had seen the actual plans - or a suit for that matter, but legend tells any who wear the suit will be aided in undersea exploration.  Last anyone heard the plans could be found deep within the Sorcerer's Dungeon in Ilshenar.
+            AddHtmlLocalized(107, 140, 300, 150, 1154292, 0x7FFF, false, true); // You've got one! I don't know how but you did!  This will prove invaluable in my research! I will do as promised.  Long ago I learned of a set of items known as the Salvager's Suit.  It had been quite some time since anyone had seen the actual plans - or a suit for that matter, but legend tells any who wear the suit will be aided in undersea exploration.  Last anyone heard the plans could be found deep within the Sorcerer's Dungeon in Ilshenar.
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
@@ -273,31 +287,38 @@ namespace Server.Gumps
 
         public CousteauPerronPlansGump(Mobile owner) : base(50, 50)
         {
-            //-------------------------------------------------------------------------------------------------
-            AddPage(0);
-            AddImageTiled(54, 33, 369, 400, 2624);
-            AddAlphaRegion(54, 33, 369, 400);
-            AddImageTiled(416, 39, 44, 389, 203);
-            //--------------------------------------Window size bar--------------------------------------------
+            this.Closable = false;
+            this.Disposable = true;
+            this.Dragable = true;
+            this.Resizable = false;
 
-            AddImage(97, 49, 9005);
-            AddImageTiled(58, 39, 29, 390, 10460);
-            AddImageTiled(412, 37, 31, 389, 10460);
-            AddHtmlLocalized(140, 60, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
-            AddImage(430, 9, 10441);
-            AddImageTiled(40, 38, 17, 391, 9263);
-            AddImage(6, 25, 10421);
-            AddImage(34, 12, 10420);
-            AddImageTiled(94, 25, 342, 15, 10304);
-            AddImageTiled(40, 427, 415, 16, 10304);
-            AddImage(-10, 314, 10402);
-            AddImage(56, 150, 10411);
-            AddImage(136, 84, 96);
+            AddPage(0);
+            this.AddImageTiled(50, 20, 400, 460, 0x1404);
+            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
+            this.AddImageTiled(34, 140, 17, 339, 0x242F);
+            this.AddImage(48, 135, 0x28AB);
+            this.AddImage(-16, 285, 0x28A2);
+            this.AddImage(0, 10, 0x28B5);
+            this.AddImage(25, 0, 0x28B4);
+            this.AddImageTiled(83, 15, 350, 15, 0x280A);
+            this.AddImage(34, 479, 0x2842);
+            this.AddImage(442, 479, 0x2840);
+            this.AddImageTiled(51, 479, 392, 17, 0x2775);
+            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
+            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
+            this.AddImage(370, 50, 0x589);
+
+            this.AddImage(379, 60, 0x15A9);
+            this.AddImage(425, 0, 0x28C9);
+            this.AddImage(90, 33, 0x232D);
+            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+
+            AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
             AddPage(1);
-            AddHtmlLocalized(107, 110, 300, 230, 1154293, 0x7FFF, false, true); // This is exactly what I was talking about! How did you ever find such a thing! No matter! *reads the plans carefully*  It’s all here by golly, detailed instructions on how to craft each item.  There are a number of professionals throughout the realm who will be able to assist you in crafting such things – I’ve written them down on this list here *hands you a note* Simply seek the professionals I have listed and you should be well on your way!
+            AddHtmlLocalized(107, 140, 300, 150, 1154293, 0x7FFF, false, true); // This is exactly what I was talking about! How did you ever find such a thing! No matter! *reads the plans carefully*  It’s all here by golly, detailed instructions on how to craft each item.  There are a number of professionals throughout the realm who will be able to assist you in crafting such things – I’ve written them down on this list here *hands you a note* Simply seek the professionals I have listed and you should be well on your way!
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
