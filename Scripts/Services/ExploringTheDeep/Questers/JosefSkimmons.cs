@@ -125,37 +125,44 @@ namespace Server.Gumps
 
         public JosefSkimmonsCompleteGump(Mobile owner) : base(50, 50)
         {
-            //-------------------------------------------------------------------------------------------------
-            AddPage(0);
-            AddImageTiled(54, 33, 369, 400, 2624);
-            AddAlphaRegion(54, 33, 369, 400);
-            AddImageTiled(416, 39, 44, 389, 203);
-            //--------------------------------------Window size bar--------------------------------------------
+            this.Closable = false;
+            this.Disposable = true;
+            this.Dragable = true;
+            this.Resizable = false;
 
-            AddImage(97, 49, 9005);
-            AddImageTiled(58, 39, 29, 390, 10460);
-            AddImageTiled(412, 37, 31, 389, 10460);
-            AddHtmlLocalized(140, 60, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
-            AddImage(430, 9, 10441);
-            AddImageTiled(40, 38, 17, 391, 9263);
-            AddImage(6, 25, 10421);
-            AddImage(34, 12, 10420);
-            AddImageTiled(94, 25, 342, 15, 10304);
-            AddImageTiled(40, 427, 415, 16, 10304);
-            AddImage(-10, 314, 10402);
-            AddImage(56, 150, 10411);
-            AddImage(136, 84, 96);
+            AddPage(0);
+            this.AddImageTiled(50, 20, 400, 460, 0x1404);
+            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
+            this.AddImageTiled(34, 140, 17, 339, 0x242F);
+            this.AddImage(48, 135, 0x28AB);
+            this.AddImage(-16, 285, 0x28A2);
+            this.AddImage(0, 10, 0x28B5);
+            this.AddImage(25, 0, 0x28B4);
+            this.AddImageTiled(83, 15, 350, 15, 0x280A);
+            this.AddImage(34, 479, 0x2842);
+            this.AddImage(442, 479, 0x2840);
+            this.AddImageTiled(51, 479, 392, 17, 0x2775);
+            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
+            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
+            this.AddImage(370, 50, 0x589);
+
+            this.AddImage(379, 60, 0x15A9);
+            this.AddImage(425, 0, 0x28C9);
+            this.AddImage(90, 33, 0x232D);
+            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+
+            AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
             AddPage(1);
-            AddHtmlLocalized(107, 110, 300, 230, 1154299, 0x7FFF, false, true); // Great work! *Reading the schematic*  Excellent!  This is just what I need to give me a leg up on the competition! As promised here are those lenses you requested!
-            
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddHtmlLocalized(107, 140, 300, 150, 1154299, 0x7FFF, false, true); // Great work! *Reading the schematic*  Excellent!  This is just what I need to give me a leg up on the competition! As promised here are those lenses you requested!
+
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
         }
 
         public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
         {
             Mobile from = state.Mobile;
-            from.Frozen = false;
+
             switch (info.ButtonID)
             {
                 case 0:
@@ -181,47 +188,54 @@ namespace Server.Gumps
 
         public JosefSkimmonsGump(Mobile owner) : base(50, 50)
         {
-            //-------------------------------------------------------------------------------------------------
-            AddPage(0);
-            AddImageTiled(54, 33, 369, 400, 2624);
-            AddAlphaRegion(54, 33, 369, 400);
-            AddImageTiled(416, 39, 44, 389, 203);
-            //--------------------------------------Window size bar--------------------------------------------
+            this.Closable = false;
+            this.Disposable = true;
+            this.Dragable = true;
+            this.Resizable = false;
 
-            AddImage(97, 49, 9005);
-            AddImageTiled(58, 39, 29, 390, 10460);
-            AddImageTiled(412, 37, 31, 389, 10460);
-            AddHtmlLocalized(140, 60, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
-            AddImage(430, 9, 10441);
-            AddImageTiled(40, 38, 17, 391, 9263);
-            AddImage(6, 25, 10421);
-            AddImage(34, 12, 10420);
-            AddImageTiled(94, 25, 342, 15, 10304);
-            AddImageTiled(40, 427, 415, 16, 10304);
-            AddImage(-10, 314, 10402);
-            AddImage(56, 150, 10411);
-            AddImage(136, 84, 96);
+            AddPage(0);
+            this.AddImageTiled(50, 20, 400, 460, 0x1404);
+            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
+            this.AddImageTiled(34, 140, 17, 339, 0x242F);
+            this.AddImage(48, 135, 0x28AB);
+            this.AddImage(-16, 285, 0x28A2);
+            this.AddImage(0, 10, 0x28B5);
+            this.AddImage(25, 0, 0x28B4);
+            this.AddImageTiled(83, 15, 350, 15, 0x280A);
+            this.AddImage(34, 479, 0x2842);
+            this.AddImage(442, 479, 0x2840);
+            this.AddImageTiled(51, 479, 392, 17, 0x2775);
+            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
+            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
+            this.AddImage(370, 50, 0x589);
+
+            this.AddImage(379, 60, 0x15A9);
+            this.AddImage(425, 0, 0x28C9);
+            this.AddImage(90, 33, 0x232D);
+            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+
+            AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
             AddPage(1);
-            AddHtmlLocalized(107, 110, 300, 230, 1154294, 0x7FFF, false, true); // Hello there...what’s this? *reads the note* Look at these lenses! Cousteau drew these up did she...hrmm…well in any case I might be able to craft these lenses if you would be willing to assist me...
+            AddHtmlLocalized(107, 140, 300, 150, 1154294, 0x7FFF, false, true); // Hello there...what’s this? *reads the note* Look at these lenses! Cousteau drew these up did she...hrmm…well in any case I might be able to craft these lenses if you would be willing to assist me...
 
-            AddHtmlLocalized(155, 260, 250, 24, 1154295, 0x7FFF, false, false); // What do you need assistance with?
-            AddButton(125, 260, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
+            AddHtmlLocalized(145, 300, 250, 24, 1154295, 0x7FFF, false, false); // What do you need assistance with?
+            AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(2);
-            AddHtmlLocalized(107, 110, 300, 230, 1154296, 0x7FFF, false, true); // I’m looking to expand my operation here, before I can do that though I need a more reliable source of raw ore.  Rumor has it the Orcs have a new machine they are using to drill huge quantities of ore!
+            AddHtmlLocalized(107, 140, 300, 150, 1154296, 0x7FFF, false, true); // I’m looking to expand my operation here, before I can do that though I need a more reliable source of raw ore.  Rumor has it the Orcs have a new machine they are using to drill huge quantities of ore!
 
-            AddHtmlLocalized(155, 260, 250, 24, 1154297, 0x7FFF, false, false); // An orcish machine?
-            AddButton(125, 260, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 3);
+            AddHtmlLocalized(145, 300, 250, 24, 1154297, 0x7FFF, false, false); // An orcish machine?
+            AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 3);
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(3);
-            AddHtmlLocalized(107, 110, 300, 230, 1154298, 0x7FFF, false, true); // Yes! That’s exactly what I’m talking about! Drill baby drill! You get me some schematics to make that machine and I’ll strike your lenses for you...I bet those Orcs are holed up in their cave outside Yew.
-                        
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddHtmlLocalized(107, 140, 300, 150, 1154298, 0x7FFF, false, true); // Yes! That’s exactly what I’m talking about! Drill baby drill! You get me some schematics to make that machine and I’ll strike your lenses for you...I bet those Orcs are holed up in their cave outside Yew.
+
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
         }
 
         public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 

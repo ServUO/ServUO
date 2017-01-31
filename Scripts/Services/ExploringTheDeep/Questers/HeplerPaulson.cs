@@ -143,63 +143,70 @@ namespace Server.Mobiles
 
         public HeplerPaulsonGump(Mobile owner) : base(50, 50)
         {
-            //-------------------------------------------------------------------------------------------------
-            AddPage(0);
-            AddImageTiled(54, 33, 369, 400, 2624);
-            AddAlphaRegion(54, 33, 369, 400);
-            AddImageTiled(416, 39, 44, 389, 203);
-            //--------------------------------------Window size bar--------------------------------------------
+            this.Closable = false;
+            this.Disposable = true;
+            this.Dragable = true;
+            this.Resizable = false;
 
-            AddImage(97, 49, 9005);
-            AddImageTiled(58, 39, 29, 390, 10460);
-            AddImageTiled(412, 37, 31, 389, 10460);
-            AddHtmlLocalized(140, 60, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
-            AddImage(430, 9, 10441);
-            AddImageTiled(40, 38, 17, 391, 9263);
-            AddImage(6, 25, 10421);
-            AddImage(34, 12, 10420);
-            AddImageTiled(94, 25, 342, 15, 10304);
-            AddImageTiled(40, 427, 415, 16, 10304);
-            AddImage(-10, 314, 10402);
-            AddImage(56, 150, 10411);
-            AddImage(136, 84, 96);
+            AddPage(0);
+            this.AddImageTiled(50, 20, 400, 460, 0x1404);
+            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
+            this.AddImageTiled(34, 140, 17, 339, 0x242F);
+            this.AddImage(48, 135, 0x28AB);
+            this.AddImage(-16, 285, 0x28A2);
+            this.AddImage(0, 10, 0x28B5);
+            this.AddImage(25, 0, 0x28B4);
+            this.AddImageTiled(83, 15, 350, 15, 0x280A);
+            this.AddImage(34, 479, 0x2842);
+            this.AddImage(442, 479, 0x2840);
+            this.AddImageTiled(51, 479, 392, 17, 0x2775);
+            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
+            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
+            this.AddImage(370, 50, 0x589);
+
+            this.AddImage(379, 60, 0x15A9);
+            this.AddImage(425, 0, 0x28C9);
+            this.AddImage(90, 33, 0x232D);
+            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+
+            AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
             AddPage(1);
-            AddHtmlLocalized(107, 110, 300, 230, 1154279, 0x7FFF, false, true); // Greetings! My have my pockets become burdened with gold! Not that this is a bad thing of course...*grins*  So ye seek to cash in salvaging many wrecks that now litter the sea floor? Well I'll tell you what...buy some of this here salvage gear and go find yerself a wreck.  Return to me when ye have a piece o' wreckage.
+            AddHtmlLocalized(107, 140, 300, 150, 1154279, 0x7FFF, false, true); // Greetings! My have my pockets become burdened with gold! Not that this is a bad thing of course...*grins*  So ye seek to cash in salvaging many wrecks that now litter the sea floor? Well I'll tell you what...buy some of this here salvage gear and go find yerself a wreck.  Return to me when ye have a piece o' wreckage.
+            
+            AddHtmlLocalized(145, 300, 250, 24, 1154280, 0x7FFF, false, false); // What of all these shipwrecks?
+            AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
 
-            AddHtmlLocalized(155, 260, 250, 24, 1154280, 0x7FFF, false, false); // What of all these shipwrecks?
-            AddButton(125, 260, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
+            AddHtmlLocalized(145, 320, 250, 24, 1154282, 0x7FFF, false, false); // How do I use salvage gear?
+            AddButton(115, 320, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 3);
 
-            AddHtmlLocalized(155, 280, 250, 24, 1154282, 0x7FFF, false, false); // How do I use salvage gear?
-            AddButton(125, 280, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 3);
-
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(2);
-            AddHtmlLocalized(107, 110, 300, 230, 1154281, 0x7FFF, false, true); // Almost uncanny how many wrecks now dot the seascape, none can say for sure why there are so many as of late...sure a drunk skipper here or there will bring a ship down quick...but this...well why question good fortune I always say!
+            AddHtmlLocalized(107, 140, 300, 150, 1154281, 0x7FFF, false, true); // Almost uncanny how many wrecks now dot the seascape, none can say for sure why there are so many as of late...sure a drunk skipper here or there will bring a ship down quick...but this...well why question good fortune I always say!
 
-            AddHtmlLocalized(155, 260, 250, 24, 1154282, 0x7FFF, false, false); // How do I use salvage gear?
-            AddButton(125, 260, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 4);
+            AddHtmlLocalized(145, 300, 250, 24, 1154282, 0x7FFF, false, false); // How do I use salvage gear?
+            AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 4);
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(3);
-            AddHtmlLocalized(107, 110, 300, 230, 1154283, 0x7FFF, false, true); // Buy a salvage hook from me, head to deep water and hoist the hook overboard.  With any luck you'll pull out a bit o' wreckage and if fortune smiles on you, a bit o' treasure too!
+            AddHtmlLocalized(107, 140, 300, 150, 1154283, 0x7FFF, false, true); // Buy a salvage hook from me, head to deep water and hoist the hook overboard.  With any luck you'll pull out a bit o' wreckage and if fortune smiles on you, a bit o' treasure too!
 
-            AddHtmlLocalized(155, 260, 250, 24, 1154280, 0x7FFF, false, false); // What of all these shipwrecks?
-            AddButton(125, 260, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 5);
+            AddHtmlLocalized(145, 300, 250, 24, 1154280, 0x7FFF, false, false); // What of all these shipwrecks?
+            AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 5);
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(4);
-            AddHtmlLocalized(107, 110, 300, 230, 1154283, 0x7FFF, false, true); // Buy a salvage hook from me, head to deep water and hoist the hook overboard.  With any luck you'll pull out a bit o' wreckage and if fortune smiles on you, a bit o' treasure too!
+            AddHtmlLocalized(107, 140, 300, 150, 1154283, 0x7FFF, false, true); // Buy a salvage hook from me, head to deep water and hoist the hook overboard.  With any luck you'll pull out a bit o' wreckage and if fortune smiles on you, a bit o' treasure too!
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(5);
-            AddHtmlLocalized(107, 110, 300, 230, 1154281, 0x7FFF, false, true); // Almost uncanny how many wrecks now dot the seascape, none can say for sure why there are so many as of late...sure a drunk skipper here or there will bring a ship down quick...but this...well why question good fortune I always say!
+            AddHtmlLocalized(107, 140, 300, 150, 1154281, 0x7FFF, false, true); // Almost uncanny how many wrecks now dot the seascape, none can say for sure why there are so many as of late...sure a drunk skipper here or there will bring a ship down quick...but this...well why question good fortune I always say!
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
         }
 
@@ -231,39 +238,46 @@ namespace Server.Mobiles
 
         public HeplerPaulsonCompleteGump(Mobile owner) : base(50, 50)
         {
-            //-------------------------------------------------------------------------------------------------
-            AddPage(0);
-            AddImageTiled(54, 33, 369, 400, 2624);
-            AddAlphaRegion(54, 33, 369, 400);
-            AddImageTiled(416, 39, 44, 389, 203);
-            //--------------------------------------Window size bar--------------------------------------------
+            this.Closable = false;
+            this.Disposable = true;
+            this.Dragable = true;
+            this.Resizable = false;
 
-            AddImage(97, 49, 9005);
-            AddImageTiled(58, 39, 29, 390, 10460);
-            AddImageTiled(412, 37, 31, 389, 10460);
-            AddHtmlLocalized(140, 60, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
-            AddImage(430, 9, 10441);
-            AddImageTiled(40, 38, 17, 391, 9263);
-            AddImage(6, 25, 10421);
-            AddImage(34, 12, 10420);
-            AddImageTiled(94, 25, 342, 15, 10304);
-            AddImageTiled(40, 427, 415, 16, 10304);
-            AddImage(-10, 314, 10402);
-            AddImage(56, 150, 10411);
-            AddImage(136, 84, 96);
+            AddPage(0);
+            this.AddImageTiled(50, 20, 400, 460, 0x1404);
+            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
+            this.AddImageTiled(34, 140, 17, 339, 0x242F);
+            this.AddImage(48, 135, 0x28AB);
+            this.AddImage(-16, 285, 0x28A2);
+            this.AddImage(0, 10, 0x28B5);
+            this.AddImage(25, 0, 0x28B4);
+            this.AddImageTiled(83, 15, 350, 15, 0x280A);
+            this.AddImage(34, 479, 0x2842);
+            this.AddImage(442, 479, 0x2840);
+            this.AddImageTiled(51, 479, 392, 17, 0x2775);
+            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
+            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
+            this.AddImage(370, 50, 0x589);
+
+            this.AddImage(379, 60, 0x15A9);
+            this.AddImage(425, 0, 0x28C9);
+            this.AddImage(90, 33, 0x232D);
+            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+
+            AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
             AddPage(1);
-            AddHtmlLocalized(107, 110, 300, 230, 1154284, 0x7FFF, false, true); // Well well! Lookie here! That's a fine pull indeed!  Shame we can only salvage with hooks and the like...if only we could peak beneath the waves and score the big hauls! Say, I heard once of a Master Tinker that may be able to tell of a suit specially made for exploring deep ship wrecks...if you manage to get your hands on one of those suits return to me and I'll share a map with you showing the location of a secret wreck only I know about!
+            AddHtmlLocalized(107, 140, 300, 150, 1154284, 0x7FFF, false, true); // Well well! Lookie here! That's a fine pull indeed!  Shame we can only salvage with hooks and the like...if only we could peak beneath the waves and score the big hauls! Say, I heard once of a Master Tinker that may be able to tell of a suit specially made for exploring deep ship wrecks...if you manage to get your hands on one of those suits return to me and I'll share a map with you showing the location of a secret wreck only I know about!
 
-            AddHtmlLocalized(155, 260, 250, 24, 0x7FFF, false, false); // Who is the Master Tinker?
-            AddButton(125, 260, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
+            AddHtmlLocalized(145, 300, 250, 24, 1154285, 0x7FFF, false, false); // Who is the Master Tinker?
+            AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(2);
-            AddHtmlLocalized(107, 110, 300, 230, 1154284, 0x7FFF, false, true); // I've only heard they live in East Britain, if ye find them I bet ye may convince em to tell you of the suit!
+            AddHtmlLocalized(107, 140, 300, 150, 1154286, 0x7FFF, false, true); // I've only heard they live in East Britain, if ye find them I bet ye may convince em to tell you of the suit!
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
@@ -285,41 +299,48 @@ namespace Server.Mobiles
     {
         public static void Initialize()
         {
-            CommandSystem.Register("HeplerPaulsonComplete", AccessLevel.GameMaster, new CommandEventHandler(HeplerPaulsonCollectCompleteGump_OnCommand));
+            CommandSystem.Register("HeplerPaulsonCollectComplete", AccessLevel.GameMaster, new CommandEventHandler(HeplerPaulsonCollectCompleteGump_OnCommand));
         }
 
         private static void HeplerPaulsonCollectCompleteGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new HeplerPaulsonCompleteGump(e.Mobile));
+            e.Mobile.SendGump(new HeplerPaulsonCollectCompleteGump(e.Mobile));
         }
 
         public HeplerPaulsonCollectCompleteGump(Mobile owner) : base(50, 50)
         {
-            //-------------------------------------------------------------------------------------------------
-            AddPage(0);
-            AddImageTiled(54, 33, 369, 400, 2624);
-            AddAlphaRegion(54, 33, 369, 400);
-            AddImageTiled(416, 39, 44, 389, 203);
-            //--------------------------------------Window size bar--------------------------------------------
+            this.Closable = false;
+            this.Disposable = true;
+            this.Dragable = true;
+            this.Resizable = false;
 
-            AddImage(97, 49, 9005);
-            AddImageTiled(58, 39, 29, 390, 10460);
-            AddImageTiled(412, 37, 31, 389, 10460);
-            AddHtmlLocalized(140, 60, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
-            AddImage(430, 9, 10441);
-            AddImageTiled(40, 38, 17, 391, 9263);
-            AddImage(6, 25, 10421);
-            AddImage(34, 12, 10420);
-            AddImageTiled(94, 25, 342, 15, 10304);
-            AddImageTiled(40, 427, 415, 16, 10304);
-            AddImage(-10, 314, 10402);
-            AddImage(56, 150, 10411);
-            AddImage(136, 84, 96);
+            AddPage(0);
+            this.AddImageTiled(50, 20, 400, 460, 0x1404);
+            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
+            this.AddImageTiled(34, 140, 17, 339, 0x242F);
+            this.AddImage(48, 135, 0x28AB);
+            this.AddImage(-16, 285, 0x28A2);
+            this.AddImage(0, 10, 0x28B5);
+            this.AddImage(25, 0, 0x28B4);
+            this.AddImageTiled(83, 15, 350, 15, 0x280A);
+            this.AddImage(34, 479, 0x2842);
+            this.AddImage(442, 479, 0x2840);
+            this.AddImageTiled(51, 479, 392, 17, 0x2775);
+            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
+            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
+            this.AddImage(370, 50, 0x589);
+
+            this.AddImage(379, 60, 0x15A9);
+            this.AddImage(425, 0, 0x28C9);
+            this.AddImage(90, 33, 0x232D);
+            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+
+            AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
             AddPage(1);
-            AddHtmlLocalized(107, 110, 300, 230, 1154319, 0x7FFF, false, true); // Neptune's trident! I can't believe ye got the suit!  Well best be off then!  Here's a map to the location where I heard a big wreck might be.  Best of luck!
+            AddHtmlLocalized(107, 140, 300, 150, 1154319, 0x7FFF, false, true); // Neptune's trident! I can't believe ye got the suit!  Well best be off then!  Here's a map to the location where I heard a big wreck might be.  Best of luck!
 
-            AddButton(325, 390, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
+            AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0); //OK
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
