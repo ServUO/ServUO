@@ -118,7 +118,7 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (m_Rituals != null && m_Rituals.Count != 0)
+                if (m_Rituals != null && m_Rituals.Count != 0 && m_Mobile != null)
                 {
                     if (CheckParty(m_First_Ritual_Mobile, m_Mobile) || m_First_Ritual_Mobile == from)
                     {
@@ -139,7 +139,7 @@ namespace Server.Items
                                     m_Item.Delete();
 
                                     if (m_Robe != null)
-                                        m_Robe.CoolDown = TimeSpan.FromMinutes(60);
+                                        m_Robe.CoolDown = TimeSpan.FromMinutes(14); // Do not give anyone
                                 }
                                 else
                                     from.SendLocalizedMessage(1153601); // That is not a Summoning Tome. 
