@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using System.Linq;
 
 namespace Server
 {
@@ -26,7 +27,9 @@ namespace Server
         Fisherman,
         Luck2,
         Bestial,
-        Virtuoso
+        Virtuoso,
+        Aloron,
+        Darden
     }
 
     public interface ISetItem
@@ -68,6 +71,16 @@ namespace Server
             bool bardmasterybonus = setItem.BardMasteryBonus;
 
             int prop;
+
+            if (setItem is IFishingAttire)
+            {
+                IFishingAttire attire = (IFishingAttire)setItem;
+
+                if (setItem.SetEquipped && attire.SetBonus > 0)
+                    list.Add(1151573, attire.SetBonus.ToString()); //Fish Bait Strength +~1_VAL~% (total)
+                else if (((IFishingAttire)setItem).BaitBonus > 0)
+                    list.Add(1151572, attire.BaitBonus.ToString()); //Fish Bait Strength +~1_VAL~%
+            }
 
             if (beserk)
                 list.Add(1151542, "5");// Berserk ~1_VAL~ (total)
@@ -306,6 +319,24 @@ namespace Server
                 return true;
 
             return false;
+        }
+
+        public static SlayerName GetSetSlayer(Mobile m)
+        {
+            foreach (ISetItem item in m.Items.OfType<ISetItem>())
+            {
+                if (item.SetID == SetItem.Aloron && item.SetEquipped)
+                {
+                    return SlayerName.Dinosaur;
+                }
+
+                if (item.SetID == SetItem.Darden && item.SetEquipped)
+                {
+                    return SlayerName.Myrmidex;
+                }
+            }
+
+            return SlayerName.None;
         }
     }
 }

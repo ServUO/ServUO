@@ -185,22 +185,51 @@ namespace Server.Items
             base.Delete();
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1115274, m_LifeForce.ToString());
+        }
+
 		public HealingStone( Serial serial ) : base( serial )
 		{
 		}
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.Write( (int) 0 );
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)1);
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();
+            writer.Write(m_Caster);
+            writer.Write(m_LifeForce);
+            writer.Write(m_MaxLifeForce);
+            writer.Write(m_MaxHeal);
+            writer.Write(m_MaxHealTotal);
+        }
 
-            Delete();
-		}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    m_Caster = reader.ReadMobile();
+                    m_LifeForce = reader.ReadInt();
+                    m_MaxLifeForce = reader.ReadInt();
+                    m_MaxHeal = reader.ReadInt();
+                    m_MaxHealTotal = reader.ReadInt();
+                    break;
+                case 0:
+                    break;
+            }
+
+            if (m_LifeForce <= 0)
+            {
+                Delete();
+            }
+        }
 	}
 }

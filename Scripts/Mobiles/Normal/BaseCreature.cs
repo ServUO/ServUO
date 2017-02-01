@@ -5313,6 +5313,7 @@ namespace Server.Mobiles
         public virtual bool GivesMLMinorArtifact { get { return false; } }
         #endregion
 
+        #region Special Drops
         private static readonly Type[] m_Artifacts = new[]
         {
             typeof(AegisOfGrace), typeof(BladeDance), typeof(Bonesmasher), typeof(FeyLeggings), typeof(FleshRipper),
@@ -5388,6 +5389,54 @@ namespace Server.Mobiles
                 m.SendLocalizedMessage(1072523); // You find an artifact, but your backpack and bank are too full to hold it.
             }
         }
+
+        public static void CheckRecipeDrop(BaseCreature bc, Container c)
+        {
+            if (SpellHelper.IsEodon(c.Map, c.Location))
+            {
+                double chance = (double)bc.Fame / 1000000;
+                int luck = bc.LastKiller != null ? bc.LastKiller.Luck : 0;
+
+                if (luck > 0)
+                    chance += (double)luck / 152000;
+
+                if (chance > Utility.RandomDouble())
+                {
+                    if (0.33 > Utility.RandomDouble())
+                    {
+                        Item item = Server.Loot.Construct(_ArmorDropTypes[Utility.Random(_ArmorDropTypes.Length)]);
+
+                        if (item != null)
+                            c.DropItem(item);
+                    }
+                    else
+                    {
+                        Item scroll = new RecipeScroll(_RecipeTypes[Utility.Random(_RecipeTypes.Length)]);
+
+                        if (scroll != null)
+                            c.DropItem(scroll);
+                    }
+                }
+            }
+        }
+
+        public static Type[] ArmorDropTypes { get { return _ArmorDropTypes; } }
+        private static Type[] _ArmorDropTypes =
+        {
+            typeof(AloronsBustier), typeof(AloronsGorget), typeof(AloronsHelm), typeof(AloronsLegs), typeof(AloronsLongSkirt), typeof(AloronsSkirt), typeof(AloronsTunic),
+            typeof(DardensBustier), typeof(DardensHelm), typeof(DardensLegs), typeof(DardensSleeves), typeof(DardensTunic)
+        };
+
+        public static int[] RecipeTypes { get { return _RecipeTypes; } }
+        private static int[] _RecipeTypes =
+        {
+            560, 561, 562, 563, 564, 565, 566, 
+            570, 571, 572, 573, 574, 575, 576, 577, 
+            580, 581, 582, 583, 584
+            //602, 603, 604,  // nutcrackers
+            //800             // runic atlas
+        };
+        #endregion
 
         public virtual void OnRelease(Mobile from)
         {
@@ -5626,6 +5675,9 @@ namespace Server.Mobiles
                             }
                         }
                     }
+
+                    // Eodon Recipe/Armor set drops
+                    CheckRecipeDrop(this, c);
 
                     for (int i = 0; i < titles.Count; ++i)
                     {

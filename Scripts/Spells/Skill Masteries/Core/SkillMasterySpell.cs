@@ -864,7 +864,9 @@ namespace Server.Spells.SkillMasteries
                         else
                         {
                             left = (_Cooldown[spell] - DateTime.UtcNow).TotalSeconds;
-                            m.SendLocalizedMessage(1079335, left.ToString("F", System.Globalization.CultureInfo.InvariantCulture)); // You must wait ~1_seconds~ seconds before you can use this ability again.
+
+                            if(left > 0)
+                                m.SendLocalizedMessage(1079335, left.ToString("F", System.Globalization.CultureInfo.InvariantCulture)); // You must wait ~1_seconds~ seconds before you can use this ability again.
                         }
                     }
 

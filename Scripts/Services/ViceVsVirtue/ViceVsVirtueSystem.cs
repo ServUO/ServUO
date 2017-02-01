@@ -592,7 +592,7 @@ namespace Server.Engines.VvV
 
         public static bool IsEnemy(Mobile from, Mobile to)
         {
-            if (!Enabled)
+            if (!Enabled || from == to)
                 return false;
 
             //TODO: Support for VvV city games regarding non-participants in the city, as well as ones who flagged

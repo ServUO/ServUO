@@ -132,7 +132,8 @@ namespace Server.Engines.Quests
 
 		public static Item TailorRecipe()
 		{
-			return GetRecipe(Enum.GetValues(typeof(TailorRecipe)));
+			//return GetRecipe(Enum.GetValues(typeof(TailorRecipe)));
+            return GetRecipe(new int[] { 501, 502, 503, 504, 505, 550, 551, 552 });
 		}
 
 		public static Item Armor()
@@ -158,7 +159,8 @@ namespace Server.Engines.Quests
 
 		public static Item TinkerRecipe()
 		{
-			return GetRecipe(Enum.GetValues(typeof(TinkerRecipes)));
+			//return GetRecipe(Enum.GetValues(typeof(TinkerRecipes)));
+            return GetRecipe(new int[] { 400, 401, 402, 450, 451, 452, 453, 454 });
 		}
 
 		public static Item CarpRecipe()

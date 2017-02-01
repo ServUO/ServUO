@@ -2278,7 +2278,7 @@ namespace Server.Items
 
 			TransformContext context = TransformationSpellHelper.GetContext(defender);
 
-			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver) 
+			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver || SetHelper.GetSetSlayer(attacker) == SlayerName.Silver) 
                 && ((context != null && context.Spell is NecromancerSpell && context.Type != typeof(HorrificBeastSpell))
                 || (defender is BaseCreature && (defender.Body == 747 || defender.Body == 748 || defender.Body == 749 || defender.Hue == 0x847E))))
 			{
@@ -3031,15 +3031,18 @@ namespace Server.Items
                 BaseWeapon atkWeapon = attacker.Weapon as BaseWeapon;
                 SlayerEntry atkSlayer = SlayerGroup.GetEntryByName(atkWeapon.Slayer);
                 SlayerEntry atkSlayer2 = SlayerGroup.GetEntryByName(atkWeapon.Slayer2);
+                SlayerEntry setSlayer = SlayerGroup.GetEntryByName(SetHelper.GetSetSlayer(attacker));
 
-                List<SlayerName> super = new List<SlayerName>() { SlayerName.Repond, SlayerName.Silver, SlayerName.Fey, SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom, SlayerName.ReptilianDeath };
-
-                if ((atkSlayer != null && atkSlayer.Slays(defender) && super.Contains(atkSlayer.Name)) || (atkSlayer2 != null && atkSlayer2.Slays(defender) && super.Contains(atkSlayer2.Name)))
+                if ((atkSlayer != null && atkSlayer.Slays(defender) && _SuperSlayers.Contains(atkSlayer.Name))
+                    || (atkSlayer2 != null && atkSlayer2.Slays(defender) && _SuperSlayers.Contains(atkSlayer2.Name))
+                    || (setSlayer != null && setSlayer.Slays(defender) && _SuperSlayers.Contains(setSlayer.Name)))
                 {
                     return CheckSlayerResult.SuperSlayer;
                 }
 
-                if (atkSlayer != null && atkSlayer.Slays(defender) || atkSlayer2 != null && atkSlayer2.Slays(defender))
+                if (atkSlayer != null && atkSlayer.Slays(defender) 
+                    || atkSlayer2 != null && atkSlayer2.Slays(defender)
+                    || setSlayer != null && setSlayer.Slays(defender))
                 {
                     return CheckSlayerResult.Slayer;
                 }
@@ -3055,9 +3058,11 @@ namespace Server.Items
                 {
                     SlayerEntry defSlayer = SlayerGroup.GetEntryByName(defISlayer.Slayer);
                     SlayerEntry defSlayer2 = SlayerGroup.GetEntryByName(defISlayer.Slayer2);
+                    SlayerEntry defSetSlayer = SlayerGroup.GetEntryByName(SetHelper.GetSetSlayer(defender));
 
                     if (defSlayer != null && defSlayer.Group.OppositionSuperSlays(attacker) ||
-                        defSlayer2 != null && defSlayer2.Group.OppositionSuperSlays(attacker))
+                        defSlayer2 != null && defSlayer2.Group.OppositionSuperSlays(attacker) ||
+                        defSetSlayer != null && defSetSlayer.Group.OppositionSuperSlays(attacker))
                     {
                         return CheckSlayerResult.Opposition;
                     }
@@ -3066,6 +3071,14 @@ namespace Server.Items
 
             return CheckSlayerResult.None;
         }
+
+        private List<SlayerName> _SuperSlayers = new List<SlayerName>()
+        {
+            SlayerName.Repond, SlayerName.Silver, SlayerName.Fey, 
+            SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom, 
+            SlayerName.ReptilianDeath, SlayerName.Dinosaur, SlayerName.Myrmidex, 
+            SlayerName.Eodon
+        };
 
 		public virtual void AddBlood(Mobile attacker, Mobile defender, int damage)
 		{
@@ -4884,7 +4897,7 @@ namespace Server.Items
 				return true;
 			}
 
-            return m_AosAttributes.SpellChanneling > 0;
+            return m_AosAttributes.SpellChanneling > 0 || Enhancement.GetValue(from, AosAttribute.SpellChanneling) > 0;
 		}
 
 		public virtual int ArtifactRarity { get { return 0; } }
