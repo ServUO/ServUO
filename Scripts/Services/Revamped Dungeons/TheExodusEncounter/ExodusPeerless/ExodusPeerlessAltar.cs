@@ -236,9 +236,9 @@ namespace Server.Items
                 fighter.MoveToWorld(this.m_TeleportDest, Map.Ilshenar);
 
                 // Robe of Rite Delete
-                foreach (Item robe in fighter.Items.Where(i => i is RobeofRite && i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(Layer.OuterTorso) == i))
+                foreach (Item i in fighter.Items.Where(item => item is RobeofRite && item.Parent is Mobile && ((Mobile)item.Parent).FindItemOnLayer(item.Layer) == item).ToList())
                 {
-                    robe.Delete();
+                    i.Delete();
                 }
 
                 Timer.DelayCall(TimeSpan.FromMinutes(1), new TimerCallback(AltarDelete));
