@@ -595,7 +595,20 @@
     <Compile Include="Items\Artifacts\Decorative\MapOfTheKnownWorld.cs" />
     <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsBustier.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsGorget.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsHelm.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsLegs.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsLongSkirt.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsShorts.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsSkirt.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsTunic.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BeastialSetHelper.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Dardens Set\DardensBustier.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Dardens Set\DardensHelm.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Dardens Set\DardensLegs.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Dardens Set\DardensSleeves.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Dardens Set\DardensTunic.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososTunic.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososEarpieces.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososKidGloves.cs" />
@@ -800,6 +813,7 @@
     <Compile Include="Items\Quest\ScrollOfAbraxus.cs" />
     <Compile Include="Items\Quest\SealedNotesForJamal.cs" />
     <Compile Include="Items\Quest\SignedTuitionReimbursementForm.cs" />
+    <Compile Include="Items\Quest\StolenRing.cs" />
     <Compile Include="Items\Quest\StoutWhip.cs" />
     <Compile Include="Items\Quest\TaintedTreeSample.cs" />
     <Compile Include="Items\Quest\TreatForDrithen.cs" />
@@ -2058,6 +2072,8 @@
     <Compile Include="Mobiles\NPCs\Brae.cs" />
     <Compile Include="Mobiles\NPCs\Emilio.cs" />
     <Compile Include="Mobiles\NPCs\Evan.cs" />
+    <Compile Include="Mobiles\NPCs\Kodar.cs" />
+    <Compile Include="Mobiles\NPCs\Lenley.cs" />
     <Compile Include="Mobiles\NPCs\Regina.cs" />
     <Compile Include="Mobiles\NPCs\Thalia.cs" />
     <Compile Include="Mobiles\NPCs\WanderingShaman.cs" />
@@ -2548,6 +2564,7 @@
     <Compile Include="Quests\HumanHeritage.cs" />
     <Compile Include="Quests\MasteringtheSoulforge.cs" />
     <Compile Include="Quests\Ortlem.cs" />
+    <Compile Include="Quests\RatmenSanctuaryQuest.cs" />
     <Compile Include="Quests\Sacred Quest\QuestOfSingularity.cs" />
     <Compile Include="Quests\Sacred Quest\ShrineOfSingularity.cs" />
     <Compile Include="Quests\Spellweaving.cs" />

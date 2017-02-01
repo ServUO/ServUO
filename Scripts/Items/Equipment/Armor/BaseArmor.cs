@@ -305,10 +305,11 @@ namespace Server.Items
             armor.m_AosArmorAttributes = new AosArmorAttributes(newItem, this.m_AosArmorAttributes);
             armor.m_AosSkillBonuses = new AosSkillBonuses(newItem, this.m_AosSkillBonuses);
             armor.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, this.m_SAAbsorptionAttributes);
-            armor.m_SetAttributes = new AosAttributes(newItem, this.m_SetAttributes);
-            armor.m_SetSkillBonuses = new AosSkillBonuses(newItem, this.m_SetSkillBonuses);
             armor.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
             armor.m_TalismanProtection = new TalismanAttribute(m_TalismanProtection);
+
+            armor.m_SetAttributes = new AosAttributes(newItem, this.m_SetAttributes);
+            armor.m_SetSkillBonuses = new AosSkillBonuses(newItem, this.m_SetSkillBonuses);
         }
 
         #region Personal Bless Deed
@@ -2306,6 +2307,7 @@ namespace Server.Items
             this.m_SetAttributes = new AosAttributes(this);
             this.m_SetSkillBonuses = new AosSkillBonuses(this);
             #endregion
+
             this.m_AosSkillBonuses = new AosSkillBonuses(this);
             m_NegativeAttributes = new NegativeAttributes(this);
             m_TalismanProtection = new TalismanAttribute();
@@ -2730,7 +2732,7 @@ namespace Server.Items
             if (base.AllowEquipedCast(from))
                 return true;
 
-            return (this.m_AosAttributes.SpellChanneling != 0);
+            return (this.m_AosAttributes.SpellChanneling != 0 || Enhancement.GetValue(from, AosAttribute.SpellChanneling) != 0);
         }
 
         public virtual int GetLuckBonus()

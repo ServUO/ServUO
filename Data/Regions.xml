@@ -975,6 +975,14 @@
 		<region priority="50" name="South Britannian Sea">
 			<rect x="688" y="3700" width="1412" height="380" />
 		</region>
+		<region type="MondainRegion" priority="50" name="Paroxysmus Exit">
+		<rect x="5620" y="3032" width="10" height="10" />
+		<go x="5623" y="3038" z="15" />
+		</region>
+		<region type="MondainRegion" priority="50" name="Sanctuary Entrance">
+		<rect x="759" y="1635" width="12" height="12" />
+		<go x="762" y="1645" z="0" />
+		</region>
 	</Facet>
 	<Facet name="Trammel">
     <region type="NoTravelSpellsAllowed" priority="50" name="Underwater World">
@@ -1993,6 +2001,14 @@
 		</region>
 		<region priority="50" name="South Britannian Sea">
 			<rect x="688" y="3700" width="1412" height="380" />
+		</region>
+		<region type="MondainRegion" priority="50" name="Paroxysmus Exit">
+		<rect x="5620" y="3032" width="10" height="10" />
+		<go x="5623" y="3038" z="15" />
+		</region>
+		<region type="MondainRegion" priority="50" name="Sanctuary Entrance">
+		<rect x="759" y="1635" width="12" height="12" />
+		<go x="762" y="1645" z="0" />
 		</region>
 	</Facet>
 	<Facet name="Ilshenar">

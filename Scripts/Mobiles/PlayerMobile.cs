@@ -4332,7 +4332,6 @@ namespace Server.Mobiles
 
 			writer.Write(33); // version
 
-            // Version 31/32 Titles
             writer.Write((int)m_ExploringTheDeepQuest);
 
             // Version 31/32 Titles

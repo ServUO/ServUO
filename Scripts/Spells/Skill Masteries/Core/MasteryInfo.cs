@@ -266,6 +266,8 @@ namespace Server.Spells.SkillMasteries
                     list.TrimExcess();
                 }
 
+                m.RemoveStatMod("SavingThrow_Str");
+
                 ColUtility.Free(list);
                 RemovePassiveBuffs(m);
             }
@@ -290,7 +292,8 @@ namespace Server.Spells.SkillMasteries
                                 case 2: args = "5\t5\t0\t0"; break;
                                 case 3: args = "5\t5\t5\t5"; break;
                             }
-
+                            
+                            m.AddStatMod(new StatMod(StatType.Str, "SavingThrow_Str", 5, TimeSpan.Zero));
                             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SavingThrow, 1156031, 1156032, args, true)); // Provides a chance to block disarm attempts based on Mastery level, weapon skill level and tactics skill level.
                         }
                         break;

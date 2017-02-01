@@ -17,7 +17,7 @@ namespace Server.Items
         public Mobile Caster { get { return m_Caster; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int LifeForce { get { return m_LifeForce; } }
+        public int LifeForce { get { return m_LifeForce; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxLifeForce { get { return m_MaxLifeForce; } }
@@ -73,7 +73,7 @@ namespace Server.Items
                     else if (m_LifeForce < toUse)
                     {
                         from.SendLocalizedMessage(1115264); //Your healing stone does not have enough energy to remove the poison.
-                        m_LifeForce -= toUse / 3;
+                        LifeForce -= toUse / 3;
                     }
                     else
                     {
@@ -84,7 +84,7 @@ namespace Server.Items
                         from.FixedEffect(0x373A, 10, 15);
                         from.PlaySound(0x1E0);
 
-                        m_LifeForce -= toUse;
+                        LifeForce -= toUse;
                     }
 
                     if (m_LifeForce <= 0)
@@ -102,7 +102,7 @@ namespace Server.Items
                     from.FixedParticles(0x376A, 9, 32, 5030, EffectLayer.Waist);
                     from.PlaySound(0x202);
 
-                    m_LifeForce -= toHeal;
+                    LifeForce -= toHeal;
                     m_MaxHeal = 1;
                 }
 
@@ -185,22 +185,51 @@ namespace Server.Items
             base.Delete();
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1115274, m_LifeForce.ToString());
+        }
+
 		public HealingStone( Serial serial ) : base( serial )
 		{
 		}
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-			writer.Write( (int) 0 );
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)1);
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-			int version = reader.ReadInt();
+            writer.Write(m_Caster);
+            writer.Write(m_LifeForce);
+            writer.Write(m_MaxLifeForce);
+            writer.Write(m_MaxHeal);
+            writer.Write(m_MaxHealTotal);
+        }
 
-            Delete();
-		}
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    m_Caster = reader.ReadMobile();
+                    m_LifeForce = reader.ReadInt();
+                    m_MaxLifeForce = reader.ReadInt();
+                    m_MaxHeal = reader.ReadInt();
+                    m_MaxHealTotal = reader.ReadInt();
+                    break;
+                case 0:
+                    break;
+            }
+
+            if (m_LifeForce <= 0)
+            {
+                Delete();
+            }
+        }
 	}
 }
