@@ -83,7 +83,7 @@ namespace Server.Items
                         else if (sl.Type == Parts.WireSpool)
                             sl.AddItem(new WireSpool());
 
-                        sl.BeginRestart(TimeSpan.FromMinutes(1.0));
+                        sl.BeginRestart(TimeSpan.FromMinutes(10.0));
 
                         m_Key.Delete();
                     }

@@ -100,7 +100,7 @@ namespace Server.Items
         {
             if (this.Validate(this.m_PerfectBlackPearl) && this.Validate(this.m_BurstingBrimstone) && this.Validate(this.m_BrightDaemonBlood) && this.Validate(this.m_MightyMandrake) && this.Validate(this.m_BurlyBone))
             {
-                Mobile creature = TheMasterInstructor.Spawn(new Point3D(125, 9, -28), Map.Ilshenar, this);
+                Mobile creature = TheMasterInstructor.Spawn(new Point3D(105, 38, -28), Map.Ilshenar, this);
 
                 if (creature == null)
                     return;

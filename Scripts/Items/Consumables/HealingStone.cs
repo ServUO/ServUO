@@ -17,7 +17,7 @@ namespace Server.Items
         public Mobile Caster { get { return m_Caster; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int LifeForce { get { return m_LifeForce; InvalidateProperties(); } }
+        public int LifeForce { get { return m_LifeForce; } set { m_LifeForce = value;  InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxLifeForce { get { return m_MaxLifeForce; } }

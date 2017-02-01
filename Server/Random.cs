@@ -27,11 +27,11 @@ namespace Server
 			{
 				_Random = new SimpleRandom();
 			}
-			else if (Core.Is64Bit && File.Exists("rdrand64.dll"))
+			else if (Core.Is64Bit && File.Exists("drng64.dll"))
 			{
 				_Random = new RDRand64();
 			}
-			else if (!Core.Is64Bit && File.Exists("rdrand32.dll"))
+			else if (!Core.Is64Bit && File.Exists("drng32.dll"))
 			{
 				_Random = new RDRand32();
 			}
@@ -256,10 +256,10 @@ namespace Server
 	{
 		internal class SafeNativeMethods
 		{
-			[DllImport("rdrand32")]
+			[DllImport("drng32")]
 			internal static extern RDRandError rdrand_32(ref uint rand, bool retry);
 
-			[DllImport("rdrand32")]
+			[DllImport("drng32")]
 			internal static extern RDRandError rdrand_get_bytes(int n, byte[] buffer);
 		}
 
@@ -400,10 +400,10 @@ namespace Server
 	{
 		internal class SafeNativeMethods
 		{
-			[DllImport("rdrand64")]
+			[DllImport("drng64")]
 			internal static extern RDRandError rdrand_64(ref ulong rand, bool retry);
 
-			[DllImport("rdrand64")]
+			[DllImport("drng64")]
 			internal static extern RDRandError rdrand_get_bytes(int n, byte[] buffer);
 		}
 

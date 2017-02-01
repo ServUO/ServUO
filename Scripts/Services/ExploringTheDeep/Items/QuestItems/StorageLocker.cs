@@ -186,7 +186,7 @@ namespace Server.Items
             this.m_RestartTimer = null;
 
             if (this.m_Barrels != null)
-            {
+            {                
                 for (int i = 0; i < this.m_Barrels.Count; ++i)
                 {
                     if (this.m_Barrels[i] != null)
@@ -195,11 +195,11 @@ namespace Server.Items
 
                 this.m_Barrels.Clear();
             }
-
-            foreach (Item i in this.Items)
+            
+            for (int i = this.Items.Count - 1; i >= 0; --i)
             {
-                if (i != null)
-                    i.Delete();
+                if (i < this.Items.Count)
+                    this.Items[i].Delete();
             }
         }
 
@@ -241,7 +241,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            bool active = reader.ReadBool();
+            this.m_Active = reader.ReadBool();
             this.m_Type = (Parts)reader.ReadInt();
             this.m_Barrels = reader.ReadStrongItemList();
 
