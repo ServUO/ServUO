@@ -17,7 +17,7 @@ namespace Server.Items
         public Mobile Caster { get { return m_Caster; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int LifeForce { get { return m_LifeForce; } }
+        public int LifeForce { get { return m_LifeForce; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxLifeForce { get { return m_MaxLifeForce; } }
@@ -73,7 +73,7 @@ namespace Server.Items
                     else if (m_LifeForce < toUse)
                     {
                         from.SendLocalizedMessage(1115264); //Your healing stone does not have enough energy to remove the poison.
-                        m_LifeForce -= toUse / 3;
+                        LifeForce -= toUse / 3;
                     }
                     else
                     {
@@ -84,7 +84,7 @@ namespace Server.Items
                         from.FixedEffect(0x373A, 10, 15);
                         from.PlaySound(0x1E0);
 
-                        m_LifeForce -= toUse;
+                        LifeForce -= toUse;
                     }
 
                     if (m_LifeForce <= 0)
@@ -102,7 +102,7 @@ namespace Server.Items
                     from.FixedParticles(0x376A, 9, 32, 5030, EffectLayer.Waist);
                     from.PlaySound(0x202);
 
-                    m_LifeForce -= toHeal;
+                    LifeForce -= toHeal;
                     m_MaxHeal = 1;
                 }
 
