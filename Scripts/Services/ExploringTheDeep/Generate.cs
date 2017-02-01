@@ -10,6 +10,37 @@ namespace Server.Engines.ExploringTheDeep
         public static void Initialize()
         {
             CommandSystem.Register("GenExploringTheDeep", AccessLevel.Administrator, Generate);
+            CommandSystem.Register("GenStorageLocker", AccessLevel.Developer, new CommandEventHandler(GenStorageLocker_Command));
+        }
+
+        [Usage("GenStorageLocker")]
+        private static void GenStorageLocker_Command(CommandEventArgs e)
+        {
+            foreach (Item item in World.Items.Values)
+            {
+                if (item is StorageLocker && !item.Deleted)
+                {
+                    item.Delete();
+                }
+            }
+
+            StorageLocker storagelocker = new StorageLocker(Parts.Flywheel);
+            storagelocker.MoveToWorld(new Point3D(6421, 1753, 0), Map.Trammel);
+            storagelocker.Active = true;
+
+            storagelocker = new StorageLocker(Parts.BearingAssembly);
+            storagelocker.MoveToWorld(new Point3D(6441, 1753, 0), Map.Trammel);
+            storagelocker.Active = true;
+
+            storagelocker = new StorageLocker(Parts.PowerCore);
+            storagelocker.MoveToWorld(new Point3D(6441, 1733, 0), Map.Trammel);
+            storagelocker.Active = true;
+
+            storagelocker = new StorageLocker(Parts.WireSpool);
+            storagelocker.MoveToWorld(new Point3D(6421, 1733, 0), Map.Trammel);
+            storagelocker.Active = true;
+
+            e.Mobile.SendMessage("Storage Locker Generation completed!");
         }
 
         public static void Generate(CommandEventArgs e)
@@ -35,22 +66,7 @@ namespace Server.Engines.ExploringTheDeep
             hatch.MoveToWorld(new Point3D(6303, 1711, 10), Map.Trammel);
 
             // StorageLocker
-
-            StorageLocker storagelocker = new StorageLocker(Parts.Flywheel);
-            storagelocker.MoveToWorld(new Point3D(6421, 1753, 0), Map.Trammel);
-            storagelocker.Active = true;
-
-            storagelocker = new StorageLocker(Parts.BearingAssembly);
-            storagelocker.MoveToWorld(new Point3D(6441, 1753, 0), Map.Trammel);
-            storagelocker.Active = true;
-
-            storagelocker = new StorageLocker(Parts.PowerCore);
-            storagelocker.MoveToWorld(new Point3D(6441, 1733, 0), Map.Trammel);
-            storagelocker.Active = true;
-
-            storagelocker = new StorageLocker(Parts.WireSpool);
-            storagelocker.MoveToWorld(new Point3D(6421, 1733, 0), Map.Trammel);
-            storagelocker.Active = true;
+            CommandSystem.Handle(m, Server.Commands.CommandSystem.Prefix + "GenStorageLocker");
 
             Item door = new LightWoodDoor(DoorFacing.SouthCW);
             door.Hue = 2952;
