@@ -489,7 +489,13 @@ namespace Server.Network
 			EnsureCapacity(12);
 
 			m_Stream.Write((short)0x19);
-			m_Stream.Write((byte)2);
+
+            if (m.NetState.IsEnhancedClient) {
+                m_Stream.Write((byte)5);
+            } else {
+                m_Stream.Write((byte)2);
+            }
+			
 			m_Stream.Write(m.Serial);
 			m_Stream.Write((byte)0);
 
@@ -500,8 +506,14 @@ namespace Server.Network
 			lockBits |= (int)m.IntLock;
 
 			m_Stream.Write((byte)lockBits);
-		}
-	}
+
+            if (m.NetState.IsEnhancedClient)
+            {
+                m_Stream.Write((byte)0);
+                m_Stream.Write((int)0);
+            }
+        }
+    }
 
 	public class EquipInfoAttribute
 	{
@@ -1009,19 +1021,24 @@ namespace Server.Network
 
 	public sealed class DisplayContextMenuOld : Packet
 	{
-		public DisplayContextMenuOld(ContextMenu menu)
-			: base(0xBF)
-		{
-			var entries = menu.Entries;
+        public DisplayContextMenuOld(ContextMenu menu)
+            : base(0xBF)
+            {
+            var entries = menu.Entries;
 
-			int length = (byte)entries.Length;
+            int length = (byte)entries.Length;
 
-			EnsureCapacity(12 + (length * 8));
+            EnsureCapacity(12 + (length * 8));
 
-			m_Stream.Write((short)0x14);
-			m_Stream.Write((short)0x01);
+            m_Stream.Write((short)0x14);
 
-			IEntity target = menu.Target as IEntity;
+            if (menu.From.NetState.IsEnhancedClient) {
+                m_Stream.Write((short)0x02); 
+            } else {
+                m_Stream.Write((short)0x01);
+            }
+
+            IEntity target = menu.Target as IEntity;
 
 			m_Stream.Write((target == null ? Serial.MinusOne : target.Serial));
 
@@ -1046,10 +1063,22 @@ namespace Server.Network
 			{
 				ContextMenuEntry e = entries[i];
 
-				m_Stream.Write((short)i);
-				m_Stream.Write((ushort)(e.Number - 3000000));
+                if (menu.From.NetState.IsEnhancedClient)
+				{
+                    if (e.Number <= 65535) {
+                        m_Stream.Write((uint)(e.Number + 3000000));
+                    } else {
+                        m_Stream.Write((uint)e.Number);
+                    }
+					m_Stream.Write((short)i);
+				}
+				else
+				{
+                    m_Stream.Write((short)i);
+				    m_Stream.Write((ushort)(e.Number - 3000000));
+				}
 
-				int range = e.Range;
+                int range = e.Range;
 
 				if (range == -1)
 				{
@@ -4558,7 +4587,7 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class CharacterList : Packet
 	{
-		public CharacterList(IAccount a, CityInfo[] info)
+		public CharacterList(IAccount a, CityInfo[] info, bool IsEnhancedClient)
 			: base(0xA9)
 		{
 			EnsureCapacity(11 + (a.Length * 60) + (info.Length * 89));
@@ -4623,7 +4652,14 @@ m_Stream.Write( (int) renderMode );
 				flags |= (CharacterListFlags.SlotLimit & CharacterListFlags.OneCharacterSlot); // Limit Characters & One Character
 			}
 
-			m_Stream.Write((int)(flags | m_AdditionalFlags)); // Additional Flags
+            if (IsEnhancedClient) {
+                flags |= CharacterListFlags.KR; // Suppport Enhanced Client / KR flag 1 and 2 (0x200 + 0x400)
+                Console.WriteLine("Enhanced Client Detected");
+            } else {
+                Console.WriteLine("Enhanced Client Not Detected");
+            }
+
+            m_Stream.Write((int)(flags | m_AdditionalFlags)); // Additional Flags
 
 			m_Stream.Write((short)-1);
 
@@ -4956,8 +4992,8 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write(m_AuthID);
 		}
 	}
-
-	public abstract class Packet
+    	
+    public abstract class Packet
 	{
 		[Flags]
 		private enum State

@@ -156,9 +156,13 @@ namespace Server.Network
 
 			#region Stygian Abyss
 			RegisterExtended(0x32, true, ToggleFlying);
-			#endregion
+            #endregion
 
-			RegisterEncoded(0x19, true, SetAbility);
+            RegisterExtended(0x2C, true, TargetedItemUse);
+            RegisterExtended(0x2D, true, TargetedSpell);
+            RegisterExtended(0x2E, true, TargetedSkillUse);
+
+            RegisterEncoded(0x19, true, SetAbility);
 			RegisterEncoded(0x28, true, GuildGumpRequest);
 
 			RegisterEncoded(0x32, true, QuestGumpRequest);
@@ -2928,8 +2932,8 @@ namespace Server.Network
 
 				if (state.NewCharacterList)
 				{
-					state.Send(new CharacterList(state.Account, state.CityInfo));
-				}
+                    state.Send(new CharacterList(state.Account, state.CityInfo, state.IsEnhancedClient));
+                }
 				else
 				{
 					state.Send(new CharacterListOld(state.Account, state.CityInfo));
@@ -3067,10 +3071,33 @@ namespace Server.Network
 			}
 		}
 
-		public static void AccountLogin_ReplyRej(NetState state, ALRReason reason)
-		{
-			state.Send(new AccountLoginRej(reason));
-			state.Dispose();
-		}
-	}
+        public static void AccountLogin_ReplyRej(NetState state, ALRReason reason)
+        {
+            state.Send(new AccountLoginRej(reason));
+            state.Dispose();
+        }
+
+        public static void TargetedSpell(NetState ns, PacketReader pvSrc) {
+            short spellId = (short)(pvSrc.ReadInt16() - 1);    // zero based;
+            Serial target = pvSrc.ReadInt32();
+            TargetedSpellEventArgs e = new TargetedSpellEventArgs(ns, World.FindEntity(target), spellId);
+            EventSink.InvokeTargetedSpell(e);
+        }
+
+        public static void TargetedItemUse(NetState ns, PacketReader pvSrc) {
+            Serial srcItem = pvSrc.ReadInt32();
+            Serial target = pvSrc.ReadInt32();
+            if (srcItem.IsItem) {
+                TargetedItemUseEventArgs e = new TargetedItemUseEventArgs(ns, World.FindItem(srcItem), World.FindEntity(target));
+                EventSink.InvokeTargetedItemUse(e);
+            }
+        }
+
+        public static void TargetedSkillUse(NetState ns, PacketReader pvSrc) {
+            short skillId = pvSrc.ReadInt16();
+            Serial target = pvSrc.ReadInt32();
+            TargetedSkillEventArgs e = new TargetedSkillEventArgs(ns, World.FindEntity(target), skillId);
+            EventSink.InvokeTargetedSkill(e);
+        }
+    }
 }

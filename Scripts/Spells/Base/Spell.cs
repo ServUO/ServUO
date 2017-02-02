@@ -20,6 +20,7 @@ using Server.Spells.Second;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
 using Server.Spells.SkillMasteries;
+using System.Reflection;
 using Server.Spells.Mystic;
 #endregion
 
@@ -28,6 +29,7 @@ namespace Server.Spells
 	public abstract class Spell : ISpell
 	{
 		private readonly Mobile m_Caster;
+        private Object m_InstantTarget = null;  
 		private readonly Item m_Scroll;
 		private readonly SpellInfo m_Info;
 		private SpellState m_State;
@@ -41,8 +43,9 @@ namespace Server.Spells
 		public Type[] Reagents { get { return m_Info.Reagents; } }
 		public Item Scroll { get { return m_Scroll; } }
 		public long StartCastTime { get { return m_StartCastTime; } }
+        public Object InstantTarget { get { return m_InstantTarget; } set { m_InstantTarget = value; }  }
 
-		private static readonly TimeSpan NextSpellDelay = TimeSpan.FromSeconds(0.75);
+        private static readonly TimeSpan NextSpellDelay = TimeSpan.FromSeconds(0.75);
 		private static TimeSpan AnimateDelay = TimeSpan.FromSeconds(1.5);
 
 		public virtual SkillName CastSkill { get { return SkillName.Magery; } }
@@ -338,8 +341,8 @@ namespace Server.Spells
 
 		public virtual bool ConsumeReagents()
 		{
-			if ((m_Scroll != null && !(m_Scroll is SpellStone)) || !m_Caster.Player)
-			{
+            if ((m_Scroll != null && !(m_Scroll is SpellStone)) || !m_Caster.Player)
+            {
 				return true;
 			}
 
@@ -762,8 +765,8 @@ namespace Server.Spells
 
 					TimeSpan castDelay = GetCastDelay();
 
-					if (ShowHandMovement && !(m_Scroll is SpellStone) && (m_Caster.Body.IsHuman || (m_Caster.Player && m_Caster.Body.IsMonster)))
-					{
+                    if (ShowHandMovement && !(m_Scroll is SpellStone) && (m_Caster.Body.IsHuman || (m_Caster.Player && m_Caster.Body.IsMonster)))
+                    {
 						int count = (int)Math.Ceiling(castDelay.TotalSeconds / AnimateDelay.TotalSeconds);
 
 						if (count != 0)
@@ -823,6 +826,37 @@ namespace Server.Spells
 		}
 
 		public abstract void OnCast();
+
+        public void OnCastInstantTarget() { 
+
+            Type spellType = GetType();
+            MethodInfo spellTargetMethod = null;
+            if (spellType != null && (spellTargetMethod = spellType.GetMethod("Target")) != null) {
+
+            } else if(spellType != null && (spellTargetMethod = spellType.GetMethod("OnTarget")) != null) {
+
+            }else {
+                OnCast();
+                return;
+            }
+
+            ParameterInfo[] spellTargetParams = spellTargetMethod.GetParameters();
+            object[] targetArgs = null;
+            if (spellTargetParams != null && spellTargetParams.Length > 0) {
+
+                if ((InstantTarget is Mobile) && (spellTargetParams[0].ParameterType == typeof(Server.Mobile) || spellTargetParams[0].ParameterType == typeof(Server.IDamageable) || spellTargetParams[0].ParameterType == typeof(Object))) {
+                    targetArgs = new object[1];
+                    targetArgs[0] = InstantTarget;
+                } else if ((InstantTarget is Mobile) && (spellTargetParams[0].ParameterType == typeof(Server.IPoint3D))){
+                    targetArgs = new object[1];
+                    targetArgs[0] = ((Mobile)InstantTarget).Location;
+                } else {
+                    OnCast();
+                    return;
+                }
+            }
+            spellTargetMethod.Invoke(this, targetArgs);
+        }
 
 		public virtual void OnBeginCast()
 		{ }
@@ -939,7 +973,7 @@ namespace Server.Spells
 
 		public virtual TimeSpan GetCastDelay()
 		{
-            if (m_Scroll is SpellStone)
+            if (m_Scroll is SpellStone) 
             {
                 return TimeSpan.Zero;
             }
@@ -1053,10 +1087,11 @@ namespace Server.Spells
                 }
 
                 if (m_Scroll is SpellScroll)
-				{
-					m_Scroll.Consume();
-				}
-				else if (m_Scroll is BaseWand)
+                {
+                    m_Scroll.Consume();
+                }
+                
+                else if (m_Scroll is BaseWand)
 				{
 					((BaseWand)m_Scroll).ConsumeCharge(m_Caster);
 					m_Caster.RevealingAction();
@@ -1227,10 +1262,14 @@ namespace Server.Spells
 						// Spell.NextSpellDelay;
 
 					Target originalTarget = m_Spell.m_Caster.Target;
+               
+                    if (m_Spell.InstantTarget != null) {
+                        m_Spell.OnCastInstantTarget();
+                    } else {
+                        m_Spell.OnCast();
+                    }
 
-					m_Spell.OnCast();
-
-					if (m_Spell.m_Caster.Player && m_Spell.m_Caster.Target != originalTarget && m_Spell.Caster.Target != null)
+                    if (m_Spell.m_Caster.Player && m_Spell.m_Caster.Target != originalTarget && m_Spell.Caster.Target != null)
 					{
 						m_Spell.m_Caster.Target.BeginTimeout(m_Spell.m_Caster, TimeSpan.FromSeconds(30.0));
 					}

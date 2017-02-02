@@ -329,11 +329,55 @@ namespace Server.Items
 		{
 			EventSink.OpenSpellbookRequest += EventSink_OpenSpellbookRequest;
 			EventSink.CastSpellRequest += EventSink_CastSpellRequest;
+            EventSink.TargetedSpell += Targeted_Spell;       
 
 			CommandSystem.Register("AllSpells", AccessLevel.GameMaster, AllSpells_OnCommand);
 		}
 
-		public static SpellbookType GetTypeForSpell(int spellID)
+        private static void Targeted_Spell(TargetedSpellEventArgs e) {
+            try {
+                Mobile from = e.NetState.Mobile;
+
+                if (!DesignContext.Check(from)) {
+                    return; // They are customizing
+                }
+
+                Spellbook book = null;
+                int spellID = e.SpellID;
+
+                if (book == null || !book.HasSpell(spellID)) {
+                    book = Find(from, spellID);
+                }
+
+                if (book != null && book.HasSpell(spellID)) {
+                    SpecialMove move = SpellRegistry.GetSpecialMove(spellID);
+
+                    if (move != null) {
+                        SpecialMove.SetCurrentMove(from, move);
+                    } else {
+                        Mobile to = World.FindMobile(e.Target.Serial);                       
+                        Item toI = World.FindItem(e.Target.Serial);
+
+                        Spell spell = SpellRegistry.NewSpell(spellID, from, null);
+                        if (to != null) {
+                            spell.InstantTarget = to;
+                        } else if (toI != null) {
+                            spell.InstantTarget = toI;
+                        }
+                                           
+                        if (spell != null) {
+                            spell.Cast();
+                        } else if (!Server.Spells.SkillMasteries.MasteryInfo.IsPassiveMastery(spellID)) {
+                            from.SendLocalizedMessage(502345); // This spell has been temporarily disabled.
+                        }
+                    }
+                } else {
+                    from.SendLocalizedMessage(500015); // You do not have that spell!
+                }
+            } catch {}
+        }     
+
+        public static SpellbookType GetTypeForSpell(int spellID)
 		{
 			if (spellID >= 0 && spellID < 64)
 			{
@@ -558,8 +602,8 @@ namespace Server.Items
 
 		public override bool OnDragDrop(Mobile from, Item dropped)
 		{
-			if (dropped is SpellScroll && !(dropped is SpellStone))
-			{
+            if (dropped is SpellScroll && !(dropped is SpellStone))
+            {
 				SpellScroll scroll = (SpellScroll)dropped;
 
 				SpellbookType type = GetTypeForSpell(scroll.SpellID);

@@ -59,11 +59,11 @@ namespace Server.Network
 		private bool m_CompressionEnabled;
 		private readonly string m_ToString;
 		private ClientVersion m_Version;
-		private bool m_BlockAllPackets;
+		private bool m_BlockAllPackets;		
 
 		private readonly DateTime m_ConnectedOn;
 
-		public DateTime ConnectedOn { get { return m_ConnectedOn; } }
+        public DateTime ConnectedOn { get { return m_ConnectedOn; } }
 
 		public TimeSpan ConnectedFor { get { return (DateTime.UtcNow - m_ConnectedOn); } }
 
@@ -235,7 +235,17 @@ namespace Server.Network
 
 		public bool IsSAClient { get { return (m_Version != null && m_Version.Type == ClientType.SA); } }
 
-		public List<SecureTrade> Trades { get { return m_Trades; } }
+        private bool m_IsEnhancedClient = false; // seems redundant, but the m_Version changes overtime. So, once it's true, it's true. =)
+        public bool IsEnhancedClient {
+            get {
+                if (m_Version != null && m_Version.Major >= 67) {
+                    m_IsEnhancedClient = true;
+                };
+                return m_IsEnhancedClient;
+            }
+        }
+
+        public List<SecureTrade> Trades { get { return m_Trades; } }
 
 		public void ValidateAllTrades()
 		{
@@ -1341,11 +1351,11 @@ namespace Server.Network
 			}
 
 			if (info.RequiredClient != null)
-			{
-				return (Version >= info.RequiredClient);
-			}
-
-			return ((Flags & info.ClientFlags) != 0);
+            {
+				return ( this.IsEnhancedClient || this.Version >= info.RequiredClient );
+		    }
+	
+            return ((Flags & info.ClientFlags) != 0);
 		}
 
 		public bool SupportsExpansion(Expansion ex, bool checkCoreExpansion)
