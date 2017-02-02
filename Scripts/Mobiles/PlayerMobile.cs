@@ -776,12 +776,61 @@ namespace Server.Mobiles
 			EventSink.Logout += OnLogout;
 			EventSink.Connected += EventSink_Connected;
 			EventSink.Disconnected += EventSink_Disconnected;
+            EventSink.TargetedSkill += Targeted_Skill;  
+            EventSink.TargetedItemUse += Targeted_Item;
 
-			if (Core.SE)
+            if (Core.SE)
 			{
 				Timer.DelayCall(TimeSpan.Zero, CheckPets);
 			}
 		}
+           
+        private static void Targeted_Item(TargetedItemUseEventArgs e) {
+            try {
+                Item from = World.FindItem(e.Source.Serial);
+                Mobile to = World.FindMobile(e.Target.Serial);
+                Item toI = World.FindItem(e.Target.Serial);
+
+                if (from != null) {
+                    if (to != null) {
+                        e.NetState.Mobile.TargetLocked = true;
+                        e.NetState.Mobile.Use(from);
+                        e.NetState.Mobile.Target.Invoke(e.NetState.Mobile, to);
+                        e.NetState.Mobile.TargetLocked = false;
+                    } else if (toI != null) {
+                        e.NetState.Mobile.TargetLocked = true;
+                        e.NetState.Mobile.Use(from);
+                        e.NetState.Mobile.Target.Invoke(e.NetState.Mobile, toI);
+                        e.NetState.Mobile.TargetLocked = false;
+                    }
+                }
+            } catch { }
+        }
+
+        private static void Targeted_Skill(TargetedSkillEventArgs e) {
+            try {
+                Mobile from = e.NetState.Mobile;
+                int SkillId = e.SkillID;
+                Mobile to = World.FindMobile(e.Target.Serial);
+                Item toI = World.FindItem(e.Target.Serial);
+
+
+                if (to != null) {
+                    from.TargetLocked = true;
+
+                    if (from.UseSkill(e.SkillID))
+                        from.Target.Invoke(from, to);
+                    from.TargetLocked = false;
+                } else if (toI != null) {
+                    from.TargetLocked = true;
+
+                    if (from.UseSkill(e.SkillID))
+                        from.Target.Invoke(from, toI);
+                    from.TargetLocked = false;
+                }
+            } catch { }
+
+        }        
 
         private static void CheckPets()
         {
