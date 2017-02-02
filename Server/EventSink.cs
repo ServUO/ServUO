@@ -135,7 +135,13 @@ namespace Server
 
 	public delegate void MobileDeletedEventHandler(MobileDeletedEventArgs e);
 
-	public class ClientVersionReceivedArgs : EventArgs
+    public delegate void TargetedSpellEventHandler(TargetedSpellEventArgs e);
+
+    public delegate void TargetedSkillEventHandler(TargetedSkillEventArgs e);
+
+    public delegate void TargetedItemUseEventHandler(TargetedItemUseEventArgs e);
+
+    public class ClientVersionReceivedArgs : EventArgs
 	{
 		private readonly NetState m_State;
 		private readonly ClientVersion m_Version;
@@ -1092,7 +1098,76 @@ namespace Server
 		}
 	}
 
-	public static class EventSink
+    public class TargetedSpellEventArgs : EventArgs 
+    {
+        private NetState state;
+        private IEntity target;
+        private short spellID;
+
+        public NetState NetState {
+            get { return state; }
+        }
+        public IEntity Target {
+            get { return target; }
+        }
+        public short SpellID {
+            get { return spellID; }
+        }
+
+        public TargetedSpellEventArgs(NetState state, IEntity target, short spellID) {
+            this.state = state;
+            this.target = target;
+            this.spellID = spellID;
+        }
+    }
+
+    public class TargetedSkillEventArgs : EventArgs 
+    {
+        private NetState state;
+        private IEntity target;
+        private short skillID;
+
+        public NetState NetState {
+            get { return state; }
+        }
+        public IEntity Target {
+            get { return target; }
+        }
+        public short SkillID {
+            get { return skillID; }
+        }
+
+        public TargetedSkillEventArgs(NetState state, IEntity target, short skillID) {
+            this.state = state;
+            this.target = target;
+            this.skillID = skillID;
+        }
+    }
+
+    public class TargetedItemUseEventArgs : EventArgs 
+    {
+        private NetState state;
+        private IEntity src;
+        private IEntity target;
+
+        public NetState NetState {
+            get { return state; }
+        }
+        public IEntity Source {
+            get { return src; }
+        }
+        public IEntity Target {
+            get { return target; }
+        }
+
+        public TargetedItemUseEventArgs(NetState state, IEntity src, IEntity target) {
+            this.state = state;
+            this.src = src;
+            this.target = target;
+        }
+    }      
+
+    public static class EventSink
 	{
 		public static event CharacterCreatedEventHandler CharacterCreated;
 		public static event OpenDoorMacroEventHandler OpenDoorMacroUsed;
@@ -1155,7 +1230,11 @@ namespace Server
 		public static event MobileCreatedEventHandler MobileCreated;
 		public static event MobileDeletedEventHandler MobileDeleted;
 
-		public static void InvokeClientVersionReceived(ClientVersionReceivedArgs e)
+        public static event TargetedSpellEventHandler TargetedSpell;
+        public static event TargetedSkillEventHandler TargetedSkill;
+        public static event TargetedItemUseEventHandler TargetedItemUse;
+
+        public static void InvokeClientVersionReceived(ClientVersionReceivedArgs e)
 		{
 			if (ClientVersionReceived != null)
 			{
@@ -1627,7 +1706,22 @@ namespace Server
 			}
 		}
 
-		public static void Reset()
+        public static void InvokeTargetedSpell(TargetedSpellEventArgs e) {
+            if (TargetedSpell != null)
+                TargetedSpell(e);
+        }
+
+        public static void InvokeTargetedSkill(TargetedSkillEventArgs e) {
+            if (TargetedSkill != null)
+                TargetedSkill(e);
+        }
+
+        public static void InvokeTargetedItemUse(TargetedItemUseEventArgs e) {
+            if (TargetedItemUse != null)
+                TargetedItemUse(e);
+        }
+
+        public static void Reset()
 		{
 			CharacterCreated = null;
 			OpenDoorMacroUsed = null;
@@ -1683,6 +1777,10 @@ namespace Server
 			ItemDeleted = null;
 			MobileCreated = null;
 			MobileDeleted = null;
-		}
+
+            TargetedSpell = null;
+            TargetedSkill = null;
+            TargetedItemUse = null;
+        }
 	}
 }
