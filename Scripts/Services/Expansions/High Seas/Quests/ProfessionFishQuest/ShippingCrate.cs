@@ -122,10 +122,10 @@ namespace Server.Items
             return false;
         }
 
-        public override bool DropToItem(Mobile from, Item target, Point3D p)
+        public override bool DropToItem(Mobile from, Item target, Point3D p, byte gridloc)
         {
             if (target is GalleonHold || target is Hold)
-                return base.DropToItem(from, target, p);
+                return base.DropToItem(from, target, p, gridloc);
 
             return false;
         }
@@ -166,14 +166,14 @@ namespace Server.Items
             return false;
         }
 
-        public override bool OnDragDropInto(Mobile from, Item dropped, Point3D p)
+        public override bool OnDragDropInto(Mobile from, Item dropped, Point3D p, byte gridloc)
         {
             if (dropped is BaseHighseasFish && m_Quest != null)
             {
                 FishQuestObjective obj = m_Quest.GetObjective();
 
                 if (obj != null && obj.Update(dropped))
-                    return base.OnDragDropInto(from, dropped, p);
+                    return base.OnDragDropInto(from, dropped, p, gridloc);
             }
 
             from.SendLocalizedMessage(1072355, null, 0x23); // That item does not match any of your quest criteria

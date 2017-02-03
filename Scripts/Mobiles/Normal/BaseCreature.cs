@@ -31,6 +31,7 @@ using Server.Spells.Spellweaving;
 using Server.Targeting;
 using System.Linq;
 using Server.Spells.SkillMasteries;
+using Server.Prompts;
 #endregion
 
 namespace Server.Mobiles
@@ -3476,6 +3477,60 @@ namespace Server.Mobiles
             }
         }
 
+        private class RenameEntry : ContextMenuEntry
+        {
+            private Mobile m_From;
+            private BaseCreature m_Creature;
+
+            public RenameEntry(Mobile from, BaseCreature creature)
+                : base(1111680, 6)
+            {
+                m_From = from;
+                m_Creature = creature;
+            }
+
+            public override void OnClick()
+            {
+                if (!m_Creature.Deleted && m_Creature.Controlled && m_Creature.ControlMaster == m_From)
+                    m_From.Prompt = new PetRenamePrompt(m_Creature);
+            }
+        }
+
+        public class PetRenamePrompt : Prompt
+        {
+            // Enter a new name for your pet.
+            public override int MessageCliloc { get { return 1115558; } }
+
+            private BaseCreature m_Creature;
+
+            public PetRenamePrompt(BaseCreature creature)
+                : base(creature)
+            {
+                m_Creature = creature;
+            }
+
+            public override void OnCancel(Mobile from)
+            {
+                from.SendLocalizedMessage(501806); // Request cancelled.
+            }
+
+            public override void OnResponse(Mobile from, string text)
+            {
+                if (!m_Creature.Deleted && m_Creature.Controlled && m_Creature.ControlMaster == from)
+                {
+                    if (Utility.IsAlpha(text))
+                    {
+                        m_Creature.Name = text;
+                        from.SendLocalizedMessage(1115559); // Pet name changed.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1075246); // That name is not valid.
+                    }
+                }
+            }
+        }
+
         #region Teaching
         public virtual bool CanTeach { get { return false; } }
 
@@ -3805,6 +3860,11 @@ namespace Server.Mobiles
             if (m_bTamable && !m_bControlled && from.Alive)
             {
                 list.Add(new TameEntry(from, this));
+            }
+
+            if (m_bControlled && m_ControlMaster == from && !m_bSummoned)
+            {
+                list.Add(new RenameEntry(from, this));
             }
 
             AddCustomContextEntries(from, list);

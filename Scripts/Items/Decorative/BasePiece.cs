@@ -102,9 +102,9 @@ namespace Server.Items
             return false;
         }
 
-        public override bool DropToItem(Mobile from, Item target, Point3D p)
+        public override bool DropToItem(Mobile from, Item target, Point3D p, byte gridloc)
         {
-            return (target == this.m_Board && p.X != -1 && p.Y != -1 && base.DropToItem(from, target, p));
+            return (target == this.m_Board && p.X != -1 && p.Y != -1 && base.DropToItem(from, target, p, gridloc));
         }
 
         public override bool DropToWorld(Mobile from, Point3D p)

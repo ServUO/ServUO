@@ -141,6 +141,12 @@ namespace Server
 
     public delegate void TargetedItemUseEventHandler(TargetedItemUseEventArgs e);
 
+    public delegate void EquipMacroEventHandler(EquipMacroEventArgs e);
+
+    public delegate void UnequipMacroEventHandler(UnequipMacroEventArgs e);
+
+    public delegate void TargetByResourceMacroEventHandler(TargetByResourceMacroEventArgs e);
+
     public class ClientVersionReceivedArgs : EventArgs
 	{
 		private readonly NetState m_State;
@@ -735,10 +741,11 @@ namespace Server
 		private readonly int m_Str;
 		private readonly int m_Dex;
 		private readonly int m_Int;
-
 		private readonly Race m_Race;
+        private readonly int m_Face;
+        private readonly int m_FaceHue;
 
-		public NetState State { get { return m_State; } }
+        public NetState State { get { return m_State; } }
 		public IAccount Account { get { return m_Account; } }
 		public Mobile Mobile { get; set; }
 		public string Name { get { return m_Name; } }
@@ -757,8 +764,33 @@ namespace Server
 		public int BeardHue { get { return m_BeardHue; } }
 		public int Profession { get; set; }
 		public Race Race { get { return m_Race; } }
+        public int FaceID { get { return m_Face; } }
+        public int FaceHue { get { return m_FaceHue; } }
 
-		public CharacterCreatedEventArgs(
+        public CharacterCreatedEventArgs(
+            NetState state,
+            IAccount a,
+            string name,
+            bool female,
+            int hue,
+            int str,
+            int dex,
+            int intel,
+            CityInfo city,
+            SkillNameValue[] skills,
+            int shirtHue,
+            int pantsHue,
+            int hairID,
+            int hairHue,
+            int beardID,
+            int beardHue,
+            int profession,
+            Race race)
+            : this(state, a, name, female, hue, str, dex, intel, city, skills, shirtHue, pantsHue, hairID, hairHue, beardID, beardHue, profession, race, 0, 0)
+        {
+        }
+
+        public CharacterCreatedEventArgs(
 			NetState state,
 			IAccount a,
 			string name,
@@ -776,7 +808,9 @@ namespace Server
 			int beardID,
 			int beardHue,
 			int profession,
-			Race race)
+			Race race,
+            int faceID,
+            int faceHue)
 		{
 			m_State = state;
 			m_Account = a;
@@ -796,7 +830,9 @@ namespace Server
 			m_BeardHue = beardHue;
 			Profession = profession;
 			m_Race = race;
-		}
+            m_Face = faceID;
+            m_FaceHue = faceHue;
+        }
 	}
 
 	public class OpenDoorMacroEventArgs : EventArgs
@@ -1104,17 +1140,12 @@ namespace Server
         private IEntity target;
         private short spellID;
 
-        public NetState NetState {
-            get { return state; }
-        }
-        public IEntity Target {
-            get { return target; }
-        }
-        public short SpellID {
-            get { return spellID; }
-        }
+        public NetState NetState { get { return state; } }
+        public IEntity Target { get { return target; } }
+        public short SpellID { get { return spellID; } }
 
-        public TargetedSpellEventArgs(NetState state, IEntity target, short spellID) {
+        public TargetedSpellEventArgs(NetState state, IEntity target, short spellID)
+        {
             this.state = state;
             this.target = target;
             this.spellID = spellID;
@@ -1127,17 +1158,12 @@ namespace Server
         private IEntity target;
         private short skillID;
 
-        public NetState NetState {
-            get { return state; }
-        }
-        public IEntity Target {
-            get { return target; }
-        }
-        public short SkillID {
-            get { return skillID; }
-        }
+        public NetState NetState { get { return state; } }
+        public IEntity Target { get { return target; } }
+        public short SkillID { get { return skillID; } }
 
-        public TargetedSkillEventArgs(NetState state, IEntity target, short skillID) {
+        public TargetedSkillEventArgs(NetState state, IEntity target, short skillID)
+        {
             this.state = state;
             this.target = target;
             this.skillID = skillID;
@@ -1150,22 +1176,65 @@ namespace Server
         private IEntity src;
         private IEntity target;
 
-        public NetState NetState {
-            get { return state; }
-        }
-        public IEntity Source {
-            get { return src; }
-        }
-        public IEntity Target {
-            get { return target; }
-        }
+        public NetState NetState { get { return state; } }
+        public IEntity Source { get { return src; } }
+        public IEntity Target { get { return target; } }
 
-        public TargetedItemUseEventArgs(NetState state, IEntity src, IEntity target) {
+        public TargetedItemUseEventArgs(NetState state, IEntity src, IEntity target)
+        {
             this.state = state;
             this.src = src;
             this.target = target;
         }
-    }      
+    }
+
+    public class TargetByResourceMacroEventArgs : EventArgs
+    {
+        private NetState state;
+        private Item m_tool;
+        private int m_resource_type;
+
+        public NetState NetState { get { return state; } }
+        public Item Tool { get { return m_tool; } }
+        public int ResourceType { get { return m_resource_type; } }
+
+        public TargetByResourceMacroEventArgs(NetState state, Item tool, int type)
+        {
+            this.state = state;
+            this.m_tool = tool;
+            this.m_resource_type = type;
+        }
+    }
+
+    public class EquipMacroEventArgs : EventArgs
+    {
+        private NetState state;
+        private List<int> m_list;
+
+        public NetState NetState { get { return state; } }
+        public List<int> List { get { return m_list; } }
+
+        public EquipMacroEventArgs(NetState state, List<int> list)
+        {
+            this.state = state;
+            this.m_list = list;
+        }
+    }
+
+    public class UnequipMacroEventArgs : EventArgs
+    {
+        private NetState state;
+        private List<int> m_list;
+
+        public NetState NetState { get { return state; } }
+        public List<int> List { get { return m_list; } }
+
+        public UnequipMacroEventArgs(NetState state, List<int> list)
+        {
+            this.state = state;
+            this.m_list = list;
+        }
+    }
 
     public static class EventSink
 	{
@@ -1233,6 +1302,9 @@ namespace Server
         public static event TargetedSpellEventHandler TargetedSpell;
         public static event TargetedSkillEventHandler TargetedSkill;
         public static event TargetedItemUseEventHandler TargetedItemUse;
+        public static event EquipMacroEventHandler EquipMacro;
+        public static event UnequipMacroEventHandler UnequipMacro;
+        public static event TargetByResourceMacroEventHandler TargetByResourceMacro;
 
         public static void InvokeClientVersionReceived(ClientVersionReceivedArgs e)
 		{
@@ -1706,19 +1778,52 @@ namespace Server
 			}
 		}
 
-        public static void InvokeTargetedSpell(TargetedSpellEventArgs e) {
+        public static void InvokeTargetedSpell(TargetedSpellEventArgs e)
+        {
             if (TargetedSpell != null)
+            {
                 TargetedSpell(e);
+            }
         }
 
-        public static void InvokeTargetedSkill(TargetedSkillEventArgs e) {
+        public static void InvokeTargetedSkill(TargetedSkillEventArgs e)
+        {
             if (TargetedSkill != null)
+            {
                 TargetedSkill(e);
+            }
         }
 
-        public static void InvokeTargetedItemUse(TargetedItemUseEventArgs e) {
+        public static void InvokeTargetedItemUse(TargetedItemUseEventArgs e)
+        {
             if (TargetedItemUse != null)
+            {
                 TargetedItemUse(e);
+            }
+        }
+
+        public static void InvokeTargetByResourceMacro(TargetByResourceMacroEventArgs e)
+        {
+            if (TargetByResourceMacro != null)
+            { 
+                TargetByResourceMacro(e);
+            }
+        }
+
+        public static void InvokeEquipMacro(EquipMacroEventArgs e)
+        {
+            if (EquipMacro != null)
+            {
+                EquipMacro(e);
+            }
+        }
+
+        public static void InvokeUnequipMacro(UnequipMacroEventArgs e)
+        {
+            if (UnequipMacro != null)
+            {
+                UnequipMacro(e);
+            }
         }
 
         public static void Reset()

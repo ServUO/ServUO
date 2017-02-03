@@ -6,6 +6,7 @@ namespace Server.Gumps
 {
     public class GuildWebsitePrompt : Prompt
     {
+        public override int MessageCliloc { get { return 1013072; } }
         private readonly Mobile m_Mobile;
         private readonly Guild m_Guild;
         public GuildWebsitePrompt(Mobile m, Guild g)

@@ -1315,7 +1315,13 @@ namespace Server.Items
 		public override void OnDoubleClick(Mobile from)
 		{
 			Open(from, Core.AOS);
-		}
+
+            if (m_Owner == from)
+            {
+                if (from.Corpse != null)
+                    from.NetState.Send(new RemoveWaypoint(from.Corpse.Serial));
+            }
+        }
 
 		public override bool CheckContentDisplay(Mobile from)
 		{

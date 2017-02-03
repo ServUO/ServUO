@@ -110,9 +110,9 @@ namespace Server
         Bracelet = 0x0E,
 
         /// <summary>
-        ///     Unused.
+        ///     Face.
         /// </summary>
-        Unused_xF = 0x0F,
+        Face = 0x0F,
 
         /// <summary>
         ///     Beards and mustaches.
@@ -856,6 +856,23 @@ namespace Server
                     VerifyCompactInfo();
                 }
             }
+        }
+        
+        private byte m_GridLocation = 0xFF;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public byte GridLocation
+        {
+            get { return m_GridLocation; }
+            set { m_GridLocation = value; }
+        }
+
+        public void SetGridLocation(byte pos, Container parent)
+        {
+            if (parent.IsFreePosition(pos))
+                m_GridLocation = pos;
+            else
+                m_GridLocation = parent.GetNewPosition();
         }
 
         [Flags]
@@ -3520,7 +3537,7 @@ namespace Server
 
         public void SendInfoTo(NetState state)
         {
-            SendInfoTo(state, ObjectPropertyList.Enabled);
+            SendInfoTo(state, ObjectPropertyList.Enabled && GraphicData == GraphicData.TileData);
         }
 
         public virtual void SendInfoTo(NetState state, bool sendOplPacket)
@@ -3532,6 +3549,8 @@ namespace Server
                 state.Send(OPLPacket);
             }
         }
+
+        public virtual GraphicData GraphicData { get { return GraphicData.TileData; } }
 
         protected virtual Packet GetWorldPacketFor(NetState state)
         {
@@ -4776,7 +4795,7 @@ namespace Server
             }
         }
 
-        public virtual bool OnDroppedInto(Mobile from, Container target, Point3D p)
+        public virtual bool OnDroppedInto(Mobile from, Container target, Point3D p, byte gridloc)
         {
             if (!from.OnDroppedItemInto(this, target, p))
             {
@@ -4788,7 +4807,7 @@ namespace Server
                 return false;
             }
 
-            return target.OnDragDropInto(from, this, p);
+            return target.OnDragDropInto(from, this, p, gridloc);
         }
 
         public virtual bool OnDroppedOnto(Mobile from, Item target)
@@ -4824,7 +4843,7 @@ namespace Server
             }
         }
 
-        public virtual bool DropToItem(Mobile from, Item target, Point3D p)
+        public virtual bool DropToItem(Mobile from, Item target, Point3D p, byte gridloc)
         {
             if (Deleted || from.Deleted || target.Deleted || from.Map != target.Map || from.Map == null || target.Map == null)
             {
@@ -4855,7 +4874,7 @@ namespace Server
             }
             else if (target is Container && p.m_X != -1 && p.m_Y != -1)
             {
-                return OnDroppedInto(from, (Container)target, p);
+                return OnDroppedInto(from, (Container)target, p, gridloc);
             }
             else
             {

@@ -67,7 +67,7 @@ namespace Server.Items
                 EndTimer(from);
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
         {
             return false;
         }

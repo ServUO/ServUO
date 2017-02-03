@@ -126,11 +126,11 @@ namespace Server.Items
             return (piece != null && piece.Board == this && base.OnDragDrop(from, dropped));
         }
 
-        public override bool OnDragDropInto(Mobile from, Item dropped, Point3D point)
+        public override bool OnDragDropInto(Mobile from, Item dropped, Point3D point, byte gridloc)
         {
             BasePiece piece = dropped as BasePiece;
 
-            if (piece != null && piece.Board == this && base.OnDragDropInto(from, dropped, point))
+            if (piece != null && piece.Board == this && base.OnDragDropInto(from, dropped, point, gridloc))
             {
                 Packet p = new PlaySound(0x127, this.GetWorldLocation());
 

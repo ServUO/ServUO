@@ -28,8 +28,9 @@ namespace Server.Gumps
 		private int m_X, m_Y;
 		private int m_Hue;
 		private string m_Text;
+        private int m_TextID;
 
-		public GumpLabel( int x, int y, int hue, string text )
+        public GumpLabel( int x, int y, int hue, string text )
 		{
 			m_X = x;
 			m_Y = y;
@@ -37,7 +38,15 @@ namespace Server.Gumps
 			m_Text = text;
 		}
 
-		public int X
+        public GumpLabel(int x, int y, int hue, int textid)
+        {
+            m_X = x;
+            m_Y = y;
+            m_Hue = hue;
+            m_TextID = textid;
+        }
+
+        public int X
 		{
 			get
 			{
@@ -87,7 +96,7 @@ namespace Server.Gumps
 
 		public override string Compile()
 		{
-			return String.Format( "{{ text {0} {1} {2} {3} }}", m_X, m_Y, m_Hue, Parent.Intern( m_Text ) );
+			return String.Format( "{{ text {0} {1} {2} {3} }}", m_X, m_Y, m_Hue, m_Text == null ? m_TextID : Parent.Intern(m_Text));
 		}
 
 		private static byte[] m_LayoutName = Gump.StringToBuffer( "text" );
@@ -98,7 +107,7 @@ namespace Server.Gumps
 			disp.AppendLayout( m_X );
 			disp.AppendLayout( m_Y );
 			disp.AppendLayout( m_Hue );
-			disp.AppendLayout( Parent.Intern( m_Text ) );
-		}
+            disp.AppendLayout(m_Text == null ? m_TextID : Parent.Intern(m_Text));
+        }
 	}
 }

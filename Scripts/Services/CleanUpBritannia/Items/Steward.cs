@@ -269,6 +269,7 @@ namespace Server.Mobiles
 
         private class RenamePrompt : Prompt
         {
+            public override int MessageCliloc { get { return 1062433; } }
             private readonly Steward steward;
 
             public RenamePrompt(Steward ward)
@@ -1229,7 +1230,7 @@ namespace Server.Mobiles
             return base.TryDropItem(from, dropped, sendFullMessage);
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
         {
             if (mOwner.Owner == from)
             {
@@ -1251,7 +1252,7 @@ namespace Server.Mobiles
             {
                 from.SendMessage("Only the Steward's owner may add items to their backpack.");
             }
-            return base.OnDragDropInto(from, item, p);
+            return base.OnDragDropInto(from, item, p, gridloc);
         }
 
         public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)

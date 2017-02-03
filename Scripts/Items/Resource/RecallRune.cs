@@ -300,6 +300,7 @@ namespace Server.Items
 
         private class RenamePrompt : Prompt
         {
+            public override int MessageCliloc { get { return 501804; } }
             private readonly RecallRune m_Rune;
             public RenamePrompt(RecallRune rune)
             {
