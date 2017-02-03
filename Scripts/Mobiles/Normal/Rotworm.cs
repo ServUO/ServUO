@@ -5,7 +5,6 @@ using Server;
 using Server.Network;
 using Server.Items;
 using Server.Engines.Quests;
-//using Server.Engines.Loyalty;
 
 namespace Server.Mobiles
 {
@@ -69,9 +68,6 @@ namespace Server.Mobiles
 		public override int GetHurtSound() { return 0x62C; }
 		public override int GetDeathSound() { return 0x62B; }
 
-		//public override LoyaltyGroup LoyaltyGroupEnemy { get { return LoyaltyGroup.GargoyleQueen; } }
-		//public override int LoyaltyPointsAward { get { return 10; } }
-
 		public override int Meat { get { return 2; } }
 		//public override MeatType MeatType { get { return MeatType.Rotworm; } }
 
@@ -117,67 +113,35 @@ namespace Server.Mobiles
 		{
 			base.OnGotMeleeAttack( attacker );
 
-			if ( !m_BloodDiseaseTable.ContainsKey( attacker ) && this.InRange( attacker, 1 ) && 0.25 > Utility.RandomDouble()/* && !FontOfFortune.HasBlessing( attacker, FontOfFortune.BlessingType.Protection )*/ )
-			{
-				// The rotworm has infected you with blood disease!!
-				attacker.SendLocalizedMessage( 1111672, "", 0x25 );
-
-				attacker.PlaySound( 0x213 );
-				Effects.SendTargetParticles( attacker, 0x373A, 1, 15, 0x26B9, EffectLayer.Head );
-
-				BloodDiseaseTimer timer = new BloodDiseaseTimer( attacker );
-				timer.Start();
-
-				m_BloodDiseaseTable.Add( attacker, timer );
-			}
+            TryInfect(attacker);
 		}
 
-		public override void OnAfterMove( Point3D oldLocation )
-		{
-			base.OnAfterMove( oldLocation );
+        public override void OnGaveMeleeAttack(Mobile defender)
+        {
+            base.OnGaveMeleeAttack(defender);
 
-			if ( Hits < HitsMax && 0.25 > Utility.RandomDouble() )
-			{
-				Corpse toAbsorb = null;
+            TryInfect(defender);
+        }
 
-				foreach ( Item item in Map.GetItemsInRange( Location, 1 ) )
-				{
-					if ( item is Corpse )
-					{
-						Corpse c = (Corpse) item;
+        private void TryInfect(Mobile attacker)
+        {
+            if (!m_BloodDiseaseTable.ContainsKey(attacker) && this.InRange(attacker, 1) && 0.25 > Utility.RandomDouble() && !FountainOfFortune.UnderProtection(attacker))
+            {
+                // The rotworm has infected you with blood disease!!
+                attacker.SendLocalizedMessage(1111672, "", 0x25);
 
-						if ( c.ItemID == 0x2006 )
-						{
-							toAbsorb = c;
-							break;
-						}
-					}
-				}
+                attacker.PlaySound(0x213);
+                Effects.SendTargetParticles(attacker, 0x373A, 1, 15, 0x26B9, EffectLayer.Head);
 
-				if ( toAbsorb != null )
-				{
-					if ( toAbsorb.Owner == null || toAbsorb.Owner.Player )
-					{
-						// * The rotworm attempts to absorb the remains, but cannot! *
-						PublicOverheadMessage( MessageType.Regular, 0x3B2, 1111666 );
-					}
-					else
-					{
-						toAbsorb.ProcessDelta();
-						toAbsorb.SendRemovePacket();
-						toAbsorb.ItemID = Utility.Random( 0xECA, 9 ); // bone graphic
-						toAbsorb.Hue = 0;
-						toAbsorb.Direction = Direction.North;
-						toAbsorb.ProcessDelta();
+                BloodDiseaseTimer timer = new BloodDiseaseTimer(attacker);
+                timer.Start();
 
-						Hits = HitsMax;
+                // TODO: 2nd cliloc
+                BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.RotwormBloodDisease, 1153798, 1153798));
 
-						// * The rotworm absorbs the fleshy remains of the corpse *
-						PublicOverheadMessage( MessageType.Regular, 0x3B2, 1111667 );
-					}
-				}
-			}
-		}
+                m_BloodDiseaseTable.Add(attacker, timer);
+            }
+        }
 
 		private class BloodDiseaseTimer : Timer
 		{
@@ -200,6 +164,9 @@ namespace Server.Mobiles
 					m_Victim.SendLocalizedMessage( 1111673 );
 
 					m_BloodDiseaseTable.Remove( m_Victim );
+
+                    BuffInfo.RemoveBuff(m_Victim, BuffIcon.RotwormBloodDisease);
+
 					Stop();
 				}
 				else if ( m_Count > 0 )

@@ -15,8 +15,15 @@ namespace Server.Items
         public Dictionary<Mobile, DateTime> RewardCooldown { get { return m_RewardCooldown; } }
 
         private static readonly int LuckBonus = 400;
+
         private static List<FountainOfFortune> m_Fountains = new List<FountainOfFortune>();
         private static Dictionary<Mobile, DateTime> m_LuckTable = new Dictionary<Mobile, DateTime>();
+
+        private static Dictionary<Mobile, DateTime> m_SpecialProtection = new Dictionary<Mobile, DateTime>();
+        private static Dictionary<Mobile, DateTime> m_BalmBoost = new Dictionary<Mobile, DateTime>();
+
+        public static Dictionary<Mobile, DateTime> SpecialProtection { get { return m_SpecialProtection; } }
+        public static Dictionary<Mobile, DateTime> BalmBoost { get { return m_BalmBoost; } }
 
         private static Timer m_Timer;
 
@@ -99,6 +106,14 @@ namespace Server.Items
                         m_LuckTable[from] = DateTime.UtcNow + TimeSpan.FromMinutes(60);
                         from.SendLocalizedMessage(1079551); // Your luck just improved!
 						break;
+                    case 4:
+                        m_SpecialProtection[from] = DateTime.UtcNow + TimeSpan.FromMinutes(60);
+                        from.SendLocalizedMessage(1113375); // You suddenly feel less vulnerable!
+                        break;
+                    case 5:
+                        m_BalmBoost[from] = DateTime.UtcNow + TimeSpan.FromMinutes(60);
+                        from.SendLocalizedMessage(1113372); // The duration of your balm has been increased by an hour!
+                        break;
 				}
 
                 from.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
@@ -133,6 +148,14 @@ namespace Server.Items
                 return LuckBonus;
 
             return 0;
+        }
+
+        public static bool UnderProtection(Mobile m)
+        {
+            if (m_SpecialProtection.ContainsKey(m))
+                return true;
+
+            return false;
         }
 		
 		public bool CanRes(Mobile m)
@@ -199,6 +222,32 @@ namespace Server.Items
                     if (m.NetState != null)
                         m.SendLocalizedMessage(1079552); //Your luck just ran out.
                 });
+
+            remove.Clear();
+
+            foreach (KeyValuePair<Mobile, DateTime> kvp in m_SpecialProtection)
+            {
+                if (kvp.Value < DateTime.UtcNow)
+                    remove.Add(kvp.Key);
+            }
+
+            remove.ForEach(m =>
+            {
+                m_SpecialProtection.Remove(m);
+            });
+
+            remove.Clear();
+
+            foreach (KeyValuePair<Mobile, DateTime> kvp in m_BalmBoost)
+            {
+                if (kvp.Value < DateTime.UtcNow)
+                    remove.Add(kvp.Key);
+            }
+
+            remove.ForEach(m =>
+            {
+                m_BalmBoost.Remove(m);
+            });
 
             remove.Clear();
 		}

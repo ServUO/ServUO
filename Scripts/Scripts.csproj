@@ -631,7 +631,6 @@
     <Compile Include="Items\Artifacts\Equipment\Clothing\MagicalDoor.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
-    <Compile Include="Items\Consumables\EtherealRetouchingTool.cs" />
     <Compile Include="Items\Decorative\TatteredWallMap.cs" />
     <Compile Include="Items\Equipment\Armor\BoneArms.cs" />
     <Compile Include="Items\Equipment\Weapons\Craven.cs" />
@@ -756,6 +755,7 @@
     </Compile>
     <Compile Include="Items\Functional\ChickenLizardEgg.cs" />
     <Compile Include="Items\Functional\DragonTurtleEgg.cs" />
+    <Compile Include="Items\Functional\EtherealRetouchingTool.cs" />
     <Compile Include="Items\Functional\HouseCraftables.cs" />
     <Compile Include="Items\Functional\Incubator.cs" />
     <Compile Include="Items\Functional\ScaleCollar.cs" />
@@ -1777,16 +1777,11 @@
     <Compile Include="Mobiles\Normal\Alligator.cs" />
     <Compile Include="Mobiles\Normal\AncientLich.cs" />
     <Compile Include="Mobiles\Normal\AncientWyrm.cs" />
-    <Compile Include="Mobiles\Normal\Anlorlem.cs" />
-    <Compile Include="Mobiles\Normal\Anlorvaglem.cs" />
-    <Compile Include="Mobiles\Normal\Anlorzen.cs" />
     <Compile Include="Mobiles\Normal\AntLion.cs" />
-    <Compile Include="Mobiles\Normal\Anzuanord.cs" />
     <Compile Include="Mobiles\Normal\ArcaneDaemon.cs" />
     <Compile Include="Mobiles\Normal\ArchDaemon.cs" />
     <Compile Include="Mobiles\Normal\ArcticOgreLord.cs" />
     <Compile Include="Mobiles\Normal\BakeKitsune.cs" />
-    <Compile Include="Mobiles\Normal\Ballem.cs" />
     <Compile Include="Mobiles\Normal\Balron.cs" />
     <Compile Include="Mobiles\Normal\BaseCreature.cs" />
     <Compile Include="Mobiles\Normal\BaseMount.cs" />
@@ -1794,7 +1789,6 @@
     <Compile Include="Mobiles\Normal\BaseSABosses.cs" />
     <Compile Include="Mobiles\Normal\BattleChickenLizard.cs" />
     <Compile Include="Mobiles\Normal\Beetle.cs" />
-    <Compile Include="Mobiles\Normal\Betballem.cs" />
     <Compile Include="Mobiles\Normal\Betrayer.cs" />
     <Compile Include="Mobiles\Normal\Bird.cs" />
     <Compile Include="Mobiles\Normal\BlackBear.cs" />
@@ -2002,7 +1996,6 @@
     <Compile Include="Mobiles\Normal\KhaldunSummoner.cs" />
     <Compile Include="Mobiles\Normal\KhaldunZealot.cs" />
     <Compile Include="Mobiles\Normal\Kirin.cs" />
-    <Compile Include="Mobiles\Normal\Korpre.cs" />
     <Compile Include="Mobiles\Normal\Kraken.cs" />
     <Compile Include="Mobiles\Normal\LadyOfTheSnow.cs" />
     <Compile Include="Mobiles\Normal\LavaElemental.cs" />
@@ -2100,7 +2093,6 @@
     <Compile Include="Mobiles\Normal\RedSolenQueen.cs" />
     <Compile Include="Mobiles\Normal\RedSolenWarrior.cs" />
     <Compile Include="Mobiles\Normal\RedSolenWorker.cs" />
-    <Compile Include="Mobiles\Normal\Relanord.cs" />
     <Compile Include="Mobiles\Normal\RenegadeChangeling.cs" />
     <Compile Include="Mobiles\Normal\Reptalon.cs" />
     <Compile Include="Mobiles\Normal\RestlessSoul.cs" />
@@ -2186,10 +2178,8 @@
     <Compile Include="Mobiles\Normal\UndeadGuardian.cs" />
     <Compile Include="Mobiles\Normal\UnfrozenMummy.cs" />
     <Compile Include="Mobiles\Normal\Unicorn.cs" />
-    <Compile Include="Mobiles\Normal\UsagralemBallem.cs" />
     <Compile Include="Mobiles\Normal\ValoriteElemental.cs" />
     <Compile Include="Mobiles\Normal\VampireBat.cs" />
-    <Compile Include="Mobiles\Normal\Vasanord.cs" />
     <Compile Include="Mobiles\Normal\VeriteElemental.cs" />
     <Compile Include="Mobiles\Normal\Virulent.cs" />
     <Compile Include="Mobiles\Normal\VorpalBunny.cs" />
@@ -2505,6 +2495,17 @@
     <Compile Include="Mobiles\Summons\SummonedPaladin.cs" />
     <Compile Include="Mobiles\Summons\SummonedWaterElemental.cs" />
     <Compile Include="Mobiles\Summons\VampireBat.cs" />
+    <Compile Include="Mobiles\Void Creatures\Anlorlem.cs" />
+    <Compile Include="Mobiles\Void Creatures\Anlorvaglem.cs" />
+    <Compile Include="Mobiles\Void Creatures\Anlorzen.cs" />
+    <Compile Include="Mobiles\Void Creatures\Anzuanord.cs" />
+    <Compile Include="Mobiles\Void Creatures\Ballem.cs" />
+    <Compile Include="Mobiles\Void Creatures\BaseVoidCreature.cs" />
+    <Compile Include="Mobiles\Void Creatures\Betballem.cs" />
+    <Compile Include="Mobiles\Void Creatures\Korpre.cs" />
+    <Compile Include="Mobiles\Void Creatures\Relanord.cs" />
+    <Compile Include="Mobiles\Void Creatures\UsagralemBallem.cs" />
+    <Compile Include="Mobiles\Void Creatures\Vasanord.cs" />
     <Compile Include="Quests\ALittleSomething.cs" />
     <Compile Include="Quests\AmbitiousSolenQueen\AmbitiousQueenQuest.cs" />
     <Compile Include="Quests\AmbitiousSolenQueen\Conversations.cs" />

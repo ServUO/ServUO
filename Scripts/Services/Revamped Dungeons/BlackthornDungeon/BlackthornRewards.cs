@@ -1,6 +1,7 @@
 using Server;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Server.Items;
 
 namespace Server.Engines.Blackthorn
@@ -176,6 +177,11 @@ namespace Server.Engines.Blackthorn
             Rewards.Add(new CollectionItem(typeof(LeatherNinjaBeltBearingTheCrestOfBlackthorn2), 0x2790, 0, 0, 100));
             Rewards.Add(new CollectionItem(typeof(ObiBearingTheCrestOfBlackthorn2), 0x27A0, 0, 0, 100));
             Rewards.Add(new CollectionItem(typeof(WoodlandBeltBearingTheCrestOfBlackthorn2), 0x2B68, 0, 0, 100));
+        }
+
+        public static bool IsTokunoDyable(Type t)
+        {
+            return Rewards.FirstOrDefault(item => item.Type == t) != null;
         }
     }
 }

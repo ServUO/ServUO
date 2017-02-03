@@ -122,31 +122,45 @@ namespace Server.Engines.Shadowguard
                 if (m == null)
                     return;
 
-                if (encounter.Encounter == EncounterType.Roof)
+                Party p = Party.Get(m);
+
+                if (p != null)
                 {
-                    if (Table != null && Table.ContainsKey(m))
+                    foreach (PartyMemberInfo info in p.Members)
                     {
-                        Table.Remove(m);
-
-                        if (Table.Count == 0)
-                            Table = null;
-
-                        return;
+                        AddToTable(info.Mobile, encounter.Encounter);
                     }
-                }
-
-                if (Table != null && Table.ContainsKey(m))
-                {
-                    if ((Table[m] & encounter.Encounter) == 0)
-                        Table[m] |= encounter.Encounter;
                 }
                 else
                 {
-                    if (Table == null)
-                        Table = new Dictionary<Mobile, EncounterType>();
-
-                    Table[m] = encounter.Encounter;
+                    AddToTable(m, encounter.Encounter);
                 }
+            }
+        }
+
+        public void AddToTable(Mobile m, EncounterType encounter)
+        {
+            if (encounter == EncounterType.Roof)
+            {
+                if (Table != null && Table.ContainsKey(m))
+                {
+                    Table.Remove(m);
+
+                    if (Table.Count == 0)
+                        Table = null;
+                }
+            }
+            else if (Table != null && Table.ContainsKey(m))
+            {
+                if ((Table[m] & encounter) == 0)
+                    Table[m] |= encounter;
+            }
+            else
+            {
+                if (Table == null)
+                    Table = new Dictionary<Mobile, EncounterType>();
+
+                Table[m] = encounter;
             }
         }
 
@@ -170,10 +184,24 @@ namespace Server.Engines.Shadowguard
                 return false;
             }
 
-            if (!Server.Misc.TestCenter.Enabled && encounter == EncounterType.Roof && (Table == null || !Table.ContainsKey(m) || (Table[m] & EncounterType.Required) != EncounterType.Required))
+            if (encounter == EncounterType.Roof)
             {
-                m.SendLocalizedMessage(1156196); // You must complete each level of Shadowguard before attempting the Roof.
-                return false;
+                if (p != null)
+                {
+                    foreach (PartyMemberInfo info in p.Members)
+                    {
+                        if (Table == null || !Table.ContainsKey(info.Mobile) || (Table[info.Mobile] & EncounterType.Required) != EncounterType.Required)
+                        {
+                            m.SendLocalizedMessage(1156249); // All members of your party must complete each of the Shadowguard Towers before attempting the finale. 
+                            return false;
+                        }
+                    }
+                }
+                else if (Table == null || !Table.ContainsKey(m) || (Table[m] & EncounterType.Required) != EncounterType.Required)
+                {
+                    m.SendLocalizedMessage(1156196); // You must complete each level of Shadowguard before attempting the Roof.
+                    return false;
+                }
             }
 
             if (p != null)
