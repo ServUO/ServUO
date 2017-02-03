@@ -381,9 +381,9 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(houseAddOns,    1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),
                     new RewardEntry(miscellaneous,  1076155, typeof(RedSoulstone),         Expansion.ML),
                     new RewardEntry(miscellaneous,  1080523, typeof(CommodityDeedBox),     Expansion.ML),
-			new RewardEntry(miscellaneous, 1113945, typeof(CrystalPortal), Expansion.SA),
-			new RewardEntry(miscellaneous, 1150074, typeof(CorruptedCrystalPortal), Expansion.SA)
-                    new RewardEntry( houseAddOns,    1156371, typeof( Server.Engines.Auction.AuctionSafeDeed ), Expansion.TOL ),
+			        new RewardEntry(miscellaneous, 1113945,  typeof(CrystalPortal),        Expansion.SA),
+			        new RewardEntry(miscellaneous, 1150074,  typeof(CorruptedCrystalPortal), Expansion.SA),
+                    new RewardEntry( houseAddOns,  1156371,  typeof( Server.Engines.Auction.AuctionSafeDeed ), Expansion.TOL )
                 }),
                 new RewardList(RewardInterval, 2, new RewardEntry[]
                 {

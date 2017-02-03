@@ -9929,6 +9929,10 @@
     <Compile Include="Services\Vendor Searching\VendorSearch.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchGump.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchMap.cs" />
+    <Compile Include="Services\VeteranRewards\CrystalPortals\CorruptedCrystalPortal.cs" />
+    <Compile Include="Services\VeteranRewards\CrystalPortals\CorruptedCrystalPortalGump.cs" />
+    <Compile Include="Services\VeteranRewards\CrystalPortals\CrystalPortal.cs" />
+    <Compile Include="Services\VeteranRewards\CrystalPortals\CrystalPortalGump.cs" />
     <Compile Include="Services\VeteranRewards\DaviesLocker.cs" />
     <Compile Include="Services\ViceVsVirtue\CityInfo.cs" />
     <Compile Include="Services\ViceVsVirtue\GuildStats.cs" />
