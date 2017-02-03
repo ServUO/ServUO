@@ -182,19 +182,23 @@ namespace Server
 					}
 				}
 
-				if (fmt.IndexOf("god") >= 0 || fmt.IndexOf("gq") >= 0)
-				{
-					m_Type = ClientType.God;
-				}
-				else if (fmt.IndexOf("third dawn") >= 0 || fmt.IndexOf("uo:td") >= 0 || fmt.IndexOf("uotd") >= 0 ||
-						 fmt.IndexOf("uo3d") >= 0 || fmt.IndexOf("uo:3d") >= 0)
-				{
-					m_Type = ClientType.UOTD;
-				}
-				else
-				{
-					m_Type = ClientType.Regular;
-				}
+                if (this.m_Major >= 6 && this.m_Revision >= 14 && this.m_Patch >= 3)
+                {
+                    this.m_Type = ClientType.SA;
+                }
+                else if (fmt.IndexOf("god") >= 0 || fmt.IndexOf("gq") >= 0)
+                {
+                    m_Type = ClientType.God;
+                }
+                else if (fmt.IndexOf("third dawn") >= 0 || fmt.IndexOf("uo:td") >= 0 || fmt.IndexOf("uotd") >= 0 ||
+                         fmt.IndexOf("uo3d") >= 0 || fmt.IndexOf("uo:3d") >= 0)
+                {
+                    m_Type = ClientType.UOTD;
+                }
+                else
+                {
+                    m_Type = ClientType.Regular;
+                }
 			}
 			catch
 			{

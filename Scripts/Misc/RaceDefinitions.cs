@@ -103,6 +103,24 @@ namespace Server.Misc
                 return ((rand < 4) ? 0x203E : 0x2047) + rand;
             }
 
+            public override bool ValidateFace(bool female, int itemID)
+            {
+                if (itemID.Equals(0))
+                    return false;
+
+                if (itemID >= 0x3B44 && itemID <= 0x3B4D)
+                    return true;
+
+                return false;
+            }
+
+            public override int RandomFace(bool female)
+            {
+                int rand = Utility.Random(9);
+
+                return 15172 + rand;
+            }
+
             public override int ClipSkinHue(int hue)
             {
                 if (hue < 1002)
@@ -131,6 +149,16 @@ namespace Server.Misc
             public override int RandomHairHue()
             {
                 return Utility.Random(1102, 48);
+            }
+
+            public override int ClipFaceHue(int hue)
+            {
+                return ClipSkinHue(hue);
+            }
+
+            public override int RandomFaceHue()
+            {
+                return RandomSkinHue();
             }
         }
 
@@ -210,6 +238,23 @@ namespace Server.Misc
                 return 0;
             }
 
+            public override bool ValidateFace(bool female, int itemID)
+            {
+                if (itemID.Equals(0))
+                    return false;
+
+                if (itemID >= 0x3B44 && itemID <= 0x3B4D)
+                    return true;
+
+                return false;
+            }
+            public override int RandomFace(bool female)
+            {
+                int rand = Utility.Random(9);
+
+                return 15172 + rand;
+            }
+
             public override int ClipSkinHue(int hue)
             {
                 for (int i = 0; i < m_SkinHues.Length; i++)
@@ -236,6 +281,16 @@ namespace Server.Misc
             public override int RandomHairHue()
             {
                 return m_HairHues[Utility.Random(m_HairHues.Length)];
+            }
+
+            public override int ClipFaceHue(int hue)
+            {
+                return ClipSkinHue(hue);
+            }
+
+            public override int RandomFaceHue()
+            {
+                return RandomSkinHue();
             }
         }
 
@@ -319,6 +374,27 @@ namespace Server.Misc
                 // 0x86F3, 0x86DB, 0x86DC, 0x86DD
             };
 
+            public override bool ValidateFace(bool female, int itemID)
+            {
+                if (itemID.Equals(0))
+                {
+                    return false;
+                }
+
+                if (itemID >= 0x5679 && itemID <= 0x567E)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+            public override int RandomFace(bool female)
+            {
+                int rand = Utility.Random(5);
+
+                return 22137 + rand;
+            }
+
             public override int ClipSkinHue(int hue)
             {
                 return hue; // for hue infomation gathering
@@ -348,6 +424,16 @@ namespace Server.Misc
             public override int RandomHairHue()
             {
                 return m_HornHues[Utility.Random(m_HornHues.Length)];
+            }
+
+            public override int ClipFaceHue(int hue)
+            {
+                return ClipSkinHue(hue);
+            }
+
+            public override int RandomFaceHue()
+            {
+                return RandomSkinHue();
             }
         }
         #endregion
