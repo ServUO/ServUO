@@ -5693,6 +5693,11 @@ namespace Server.Mobiles
                     c.Delete();
                 }
             }
+
+            #region SA
+            if (LastKiller is BaseVoidCreature)
+                ((BaseVoidCreature)LastKiller).Mutate(VoidEvolution.Killing);
+            #endregion
         }
 
         /* To save on cpu usage, RunUO creatures only reacquire creatures under the following circumstances:

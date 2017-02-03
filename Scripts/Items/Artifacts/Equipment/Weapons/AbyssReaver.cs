@@ -14,7 +14,7 @@ namespace Server.Items
             this.Hue = 1195;
 
             this.SkillBonuses.SetValues(0, SkillName.Throwing, 10.0);
-            this.Attributes.AttackChance = 15;
+            //this.Attributes.AttackChance = 15;
             this.Attributes.WeaponSpeed = 30;
             this.Attributes.WeaponDamage = 35;
 
@@ -153,13 +153,19 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                this.Attributes.AttackChance = 0;
+                this.Attributes.WeaponSpeed = 0;
+            }
         }
     }
 }

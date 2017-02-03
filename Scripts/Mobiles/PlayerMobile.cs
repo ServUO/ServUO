@@ -3562,6 +3562,9 @@ namespace Server.Mobiles
 			{
 				SendGump(new ResurrectGump(this, ResurrectMessage.SilverSapling));
 			}
+
+            if (LastKiller is BaseVoidCreature)
+                ((BaseVoidCreature)LastKiller).Mutate(VoidEvolution.Killing);
 			#endregion
 		}
 

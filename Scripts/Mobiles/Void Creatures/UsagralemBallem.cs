@@ -4,22 +4,25 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("an usagralem ballem corpse")]
-    public class UsagralemBallem : BaseCreature
+    public class UsagralemBallem : BaseVoidCreature
     {
+        public override VoidEvolution Evolution { get { return VoidEvolution.Killing; } }
+        public override int Stage { get { return 3; } }
+
         [Constructable]
         public UsagralemBallem()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "an Usagrallem Ballem";
             this.Hue = 2071;
             this.Body = 318;
             this.BaseSoundID = 0x165;
 
-            this.SetStr(500);
-            this.SetDex(100);
-            this.SetInt(1000);
+            this.SetStr(900, 1000);
+            this.SetDex(1028);
+            this.SetInt(1000, 1100);
 
-            this.SetHits(30000);
+            this.SetHits(2000, 2200);
             this.SetMana(5000);
 
             this.SetDamage(17, 21);
@@ -30,24 +33,43 @@ namespace Server.Mobiles
             this.SetDamageType(ResistanceType.Poison, 20);
             this.SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetResistance(ResistanceType.Physical, 30);
-            this.SetResistance(ResistanceType.Fire, 30);
-            this.SetResistance(ResistanceType.Cold, 30);
-            this.SetResistance(ResistanceType.Poison, 30);
-            this.SetResistance(ResistanceType.Energy, 30);
+            this.SetResistance(ResistanceType.Physical, 30, 40);
+            this.SetResistance(ResistanceType.Fire, 40, 60);
+            this.SetResistance(ResistanceType.Cold, 40, 60);
+            this.SetResistance(ResistanceType.Poison, 40, 60);
+            this.SetResistance(ResistanceType.Energy, 40, 60);
 
-            this.SetSkill(SkillName.DetectHidden, 80.0);
-            this.SetSkill(SkillName.EvalInt, 100.0);
-            this.SetSkill(SkillName.Magery, 100.0);
-            this.SetSkill(SkillName.Meditation, 120.0);
-            this.SetSkill(SkillName.MagicResist, 150.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 120.0);
+            this.SetSkill(SkillName.MagicResist, 80.0, 90.0);
+            this.SetSkill(SkillName.Tactics, 80.0, 90.0);
+            this.SetSkill(SkillName.Wrestling, 80.0, 90.0);
 
-            this.Fame = 28000;
-            this.Karma = -28000;
+            this.Fame = 18000;
+            this.Karma = -18000;
 
             this.VirtualArmor = 64;
+
+            this.PackItem(new DaemonBone(30));
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.3)
+                c.DropItem(new VoidOrb());
+
+            if (Utility.RandomDouble() < 0.30)
+            {
+                switch (Utility.Random(2))
+                {
+                    case 0:
+                        c.DropItem(new VoidEssence());
+                        break;
+                    case 1:
+                        c.DropItem(new AncientPotteryFragments());
+                        break;
+                }
+            }
         }
 
         public UsagralemBallem(Serial serial)
@@ -60,13 +82,6 @@ namespace Server.Mobiles
             get
             {
                 return Core.ML;
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
             }
         }
         public override bool BardImmune
@@ -113,29 +128,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.SuperBoss, 2);
-            this.AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(6, 10));
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.3)
-                c.DropItem(new VoidOrb());
-
-            if (Utility.RandomDouble() < 0.30)
-            {
-                switch (Utility.Random(2))
-                {
-                    case 0:
-                        this.AddToBackpack(new VoidEssence());
-                        break;
-                    case 1:
-                        this.AddToBackpack(new AncientPotteryFragments());
-                        break;
-                }
-            }
+            AddLoot(LootPack.UltraRich, 1);
+            AddLoot(LootPack.FilthyRich, 2);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -191,6 +191,9 @@ namespace Server.Items
             if (i is ITokunoDyable)
                 return true;
 
+            if (Server.Engines.Blackthorn.BlackthornRewards.IsTokunoDyable(t))
+                return true;
+
             return (
                     IsInTypeList(t, TreasuresOfTokuno.LesserArtifactsTotal) ||
                     IsInTypeList(t, TreasuresOfTokuno.GreaterArtifacts) ||

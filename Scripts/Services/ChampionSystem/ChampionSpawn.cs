@@ -10,6 +10,8 @@ namespace Server.Engines.CannedEvil
 {
     public class ChampionSpawn : Item
     {
+        public static readonly int MaxStrayDistance = 250;
+
         private bool m_Active;
         private bool m_RandomizeType;
         private ChampionSpawnType m_Type;
@@ -547,6 +549,10 @@ namespace Server.Engines.CannedEvil
 
 					if(AutoRestart)
 						this.BeginRestart(this.m_RestartDelay);
+                }
+                else if (m_Champion.Alive && m_Champion.GetDistanceToSqrt(this) > MaxStrayDistance)
+                {
+                    this.m_Champion.MoveToWorld(new Point3D(this.X, this.Y, this.Z - 15), this.Map);
                 }
             }
             else
