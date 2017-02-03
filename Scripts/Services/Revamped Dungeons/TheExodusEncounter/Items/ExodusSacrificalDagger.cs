@@ -38,16 +38,21 @@ namespace Server.Items
             RobeofRite robe = from.FindItemOnLayer(Layer.OuterTorso) as RobeofRite;
             ExodusSacrificalDagger dagger = from.FindItemOnLayer(Layer.OneHanded) as ExodusSacrificalDagger;
 
-            if (robe != null && dagger != null)
+            bool alter = false;
+
+            foreach (Item item in GetItemsInRange(5))
             {
-                if (PeerlessExodusAltar.m_Rituals != null)
+                if (item is ExodusTomeAltar)
                 {
-                    if (PeerlessExodusAltar.m_Rituals.Count != 0)
-                    {
-                        from.SendLocalizedMessage(1153604); // Target the summoning tome or yourself to declare your intentions for performing this ritual...
-                        ExodusTomeAltar.RitualTarget(this, from, null);                        
-                    }
-                }                
+                    alter = true;
+                    break;
+                }
+            }
+
+            if (robe != null && dagger != null && alter)
+            {               
+                from.SendLocalizedMessage(1153604); // Target the summoning tome or yourself to declare your intentions for performing this ritual...
+                ExodusTomeAltar.RitualTarget(this, from, null);                                
             }
             else
                 base.OnDoubleClick(from);

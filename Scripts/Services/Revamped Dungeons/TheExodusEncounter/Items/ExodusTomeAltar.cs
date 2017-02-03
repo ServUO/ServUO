@@ -110,62 +110,63 @@ namespace Server.Items
             {
                 m_Item = item;
                 m_Mobile = from;
-                m_Robe = robe;
-
-                m_First_Ritual_Mobile = m_Rituals.First().RitualMobile;
-                m_Ritual_Mobile = m_Rituals.Count(s => s.RitualMobile == m_Mobile);
+                m_Robe = robe;                
             }           
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (m_Rituals != null && m_Rituals.Count != 0 && m_Mobile != null)
+                if (targeted is ExodusTomeAltar)
                 {
-                    if (CheckParty(m_First_Ritual_Mobile, m_Mobile) || m_First_Ritual_Mobile == from)
+                    ExodusTomeAltar altar = (ExodusTomeAltar)targeted;
+
+                    m_First_Ritual_Mobile = altar.Rituals.First().RitualMobile;
+                    m_Ritual_Mobile = altar.Rituals.Count(s => s.RitualMobile == m_Mobile);
+
+                    if (altar.Rituals != null && altar.Rituals.Count != 0 && m_Mobile != null)
                     {
-                        if (m_First_Ritual_Mobile != m_Mobile && m_Ritual_Mobile == 0)
-                            PeerlessExodusAltar.m_Rituals.Add(new RitualArray { RitualMobile = m_Mobile, Ritual1 = false, Ritual2 = false });
-
-                        m_Ritual1 = m_Rituals.Find(s => s.RitualMobile == m_Mobile).Ritual1;
-                        m_Ritual2 = m_Rituals.Find(s => s.RitualMobile == m_Mobile).Ritual2;
-
-                        if (m_Item is ExodusSummoningRite)
+                        if (CheckParty(m_First_Ritual_Mobile, m_Mobile) || m_First_Ritual_Mobile == from)
                         {
-                            if (!m_Ritual1 && !m_Ritual2)
+                            if (m_First_Ritual_Mobile != m_Mobile && m_Ritual_Mobile == 0)
+                                altar.Rituals.Add(new RitualArray { RitualMobile = m_Mobile, Ritual1 = false, Ritual2 = false });
+
+                            m_Ritual1 = altar.Rituals.Find(s => s.RitualMobile == m_Mobile).Ritual1;
+                            m_Ritual2 = altar.Rituals.Find(s => s.RitualMobile == m_Mobile).Ritual2;
+
+                            if (m_Item is ExodusSummoningRite)
                             {
-                                if (targeted is ExodusTomeAltar)
+                                if (!m_Ritual1 && !m_Ritual2)
                                 {
                                     from.Say(1153597); // You place the rite within the tome and begin to meditate...
-                                    m_Rituals.Find(s => s.RitualMobile == m_Mobile).Ritual1 = true;
+                                    altar.Rituals.Find(s => s.RitualMobile == m_Mobile).Ritual1 = true;
                                     m_Item.Delete();
 
                                     if (m_Robe != null)
-                                        m_Robe.CoolDown = TimeSpan.FromMinutes(14); // Do not give anyone
+                                        m_Robe.CoolDown = TimeSpan.FromMinutes(14); // Do not give anyone                                   
                                 }
-                                else
-                                    from.SendLocalizedMessage(1153601); // That is not a Summoning Tome. 
                             }
-                        }
-                        else if (m_Item is ExodusSacrificalDagger)
-                        {
-                            if (m_Ritual1 && !m_Ritual2)
+                            else if (m_Item is ExodusSacrificalDagger)
                             {
-                                if (targeted is ExodusTomeAltar)
+                                if (m_Ritual1 && !m_Ritual2)
                                 {
                                     from.Say(1153597); // You place the rite within the tome and begin to meditate...
-                                    m_Rituals.Find(s => s.RitualMobile == m_Mobile).Ritual2 = true;
+                                    altar.Rituals.Find(s => s.RitualMobile == m_Mobile).Ritual2 = true;
                                     m_Item.Delete();
                                     Effects.SendLocationParticles(EffectItem.Create(((ExodusTomeAltar)targeted).Location, ((ExodusTomeAltar)targeted).Map, EffectItem.DefaultDuration), 0x373A, 10, 10, 2023);
                                 }
                                 else
-                                    from.SendLocalizedMessage(1153601); // That is not a Summoning Tome. 
+                                {
+                                    from.SendLocalizedMessage(1153603); // You must first use the Summoning Rite on a Summoning Tome. 
+                                }
                             }
-                            else
-                                from.SendLocalizedMessage(1153603); // You must first use the Summoning Rite on a Summoning Tome. 
                         }
+                        else
+                            from.SendLocalizedMessage(1153596); // You must join a party with the players you wish to perform the ritual with.  
                     }
-                    else
-                        from.SendLocalizedMessage(1153596); // You must join a party with the players you wish to perform the ritual with.  
-                }                        
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1153601); // That is not a Summoning Tome. 
+                }                      
             }
 
             protected virtual bool CheckParty(Mobile from, Mobile m)

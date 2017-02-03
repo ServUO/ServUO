@@ -32,7 +32,7 @@ namespace Server.Items
 
         private List<Mobile> m_Fighters;
         private Dictionary<Mobile, List<Mobile>> m_Pets;
-        public static List<RitualArray> m_Rituals;
+        private List<RitualArray> m_Rituals;
 
         public List<Mobile> Fighters { get { return this.m_Fighters; } }		
         public Dictionary<Mobile, List<Mobile>> Pets { get { return this.m_Pets; } }       
@@ -64,8 +64,8 @@ namespace Server.Items
                 m_Mobile = from;
                 m_altar = altar;
 
-                if (m_Rituals != null)
-                    if (!AllRitualCheck())
+                if (altar.Rituals != null)
+                    if (!altar.AllRitualCheck())
                         Flags |= CMEFlags.Disabled;
             }
 
@@ -83,7 +83,7 @@ namespace Server.Items
                 list.Add(new BeginTheRitual(this, from));
         }             
 
-        public static bool AllRitualCheck()
+        public bool AllRitualCheck()
         {
             int alllistcount = m_Rituals.Count();
 

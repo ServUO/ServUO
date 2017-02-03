@@ -94,7 +94,30 @@ namespace Server
 		}
 	}
 
-	public sealed class HairEquipUpdate : Packet
+    public class FaceInfo : BaseHairInfo
+    {
+        public FaceInfo(int itemid)
+            : base(itemid, 0)
+        {
+        }
+
+        public FaceInfo(int itemid, int hue)
+            : base(itemid, hue)
+        {
+        }
+
+        public FaceInfo(GenericReader reader)
+            : base(reader)
+        {
+        }
+
+        public static int FakeSerial(Mobile parent)
+        {
+            return (0x7FFFFFFF - 0x400 - 2 - (parent.Serial * 4));
+        }
+    }
+
+    public sealed class HairEquipUpdate : Packet
 	{
 		public HairEquipUpdate(Mobile parent)
 			: base(0x2E, 15)
@@ -140,7 +163,28 @@ namespace Server
 		}
 	}
 
-	public sealed class RemoveHair : Packet
+    public sealed class FaceEquipUpdate : Packet
+    {
+        public FaceEquipUpdate(Mobile parent)
+            : base(0x2E, 15)
+        {
+            int hue = parent.FaceHue;
+
+            if (parent.SolidHueOverride >= 0)
+                hue = parent.SolidHueOverride;
+
+            int faceSerial = FaceInfo.FakeSerial(parent);
+
+            this.m_Stream.Write((int)faceSerial);
+            this.m_Stream.Write((short)parent.FaceItemID);
+            this.m_Stream.Write((byte)0);
+            this.m_Stream.Write((byte)Layer.Face);
+            this.m_Stream.Write((int)parent.Serial);
+            this.m_Stream.Write((short)hue);
+        }
+    }
+
+    public sealed class RemoveHair : Packet
 	{
 		public RemoveHair(Mobile parent)
 			: base(0x1D, 5)
@@ -157,4 +201,13 @@ namespace Server
 			m_Stream.Write(FacialHairInfo.FakeSerial(parent));
 		}
 	}
+
+    public sealed class RemoveFace : Packet
+    {
+        public RemoveFace(Mobile parent)
+            : base(0x1D, 5)
+        {
+            this.m_Stream.Write((int)FaceInfo.FakeSerial(parent));
+        }
+    }
 }

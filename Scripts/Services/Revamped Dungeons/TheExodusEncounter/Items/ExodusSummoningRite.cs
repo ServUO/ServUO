@@ -126,7 +126,18 @@ namespace Server.Items
                 RobeofRite robe = from.FindItemOnLayer(Layer.OuterTorso) as RobeofRite;
                 ExodusSacrificalDagger dagger = from.FindItemOnLayer(Layer.OneHanded) as ExodusSacrificalDagger;
 
-                if (robe != null && dagger != null)
+                bool alter = false;
+
+                foreach (Item item in GetItemsInRange(5))
+                {
+                    if (item is ExodusTomeAltar)
+                    {
+                        alter = true;
+                        break;
+                    }
+                }
+
+                if (robe != null && dagger != null && alter)
                 {
                     if (robe.CoolDown != TimeSpan.Zero)
                     { 
@@ -134,14 +145,8 @@ namespace Server.Items
                         return; 
                     }
 
-                    if (PeerlessExodusAltar.m_Rituals != null)
-                    {
-                        if (PeerlessExodusAltar.m_Rituals.Count != 0)
-                        {
-                            from.SendLocalizedMessage(1153600); // Which Summoning Tome do you wish to use this on? 
-                            ExodusTomeAltar.RitualTarget(this, from, robe);                           
-                        }
-                    }
+                    from.SendLocalizedMessage(1153600); // Which Summoning Tome do you wish to use this on? 
+                    ExodusTomeAltar.RitualTarget(this, from, robe);
                 }
             }
             else
