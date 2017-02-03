@@ -112,7 +112,7 @@ namespace Server
         /// <summary>
         ///     Unused.
         /// </summary>
-        Face = 0x0F,
+        Unused_xF = 0x0F,
 
         /// <summary>
         ///     Beards and mustaches.
@@ -762,7 +762,6 @@ namespace Server
         private Timer m_HonestyTimer;
         private DateTime m_HonestyPickup;
         private Boolean m_HonestyTimerTicking;
-        private int m_GridLocation;
         #endregion
 
         private ItemDelta m_DeltaFlags;
@@ -2489,10 +2488,7 @@ namespace Server
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write(11); // version
-
-            //version 11
-            writer.WriteEncodedInt(m_GridLocation);
+            writer.Write(10); // version
 
             //version 10
             writer.Write(m_HonestyPickup);
@@ -2963,12 +2959,6 @@ namespace Server
 
             switch (version)
             {
-                case 11:
-                    {
-                        m_GridLocation = reader.ReadEncodedInt();
-
-                        goto case 10;
-                    }
                 case 10:
                     {
                         m_HonestyPickup = reader.ReadDateTime();
@@ -2978,7 +2968,7 @@ namespace Server
                         m_HonestyItem = reader.ReadBool();
 
                         if (m_HonestyTimerTicking)
-                            m_HonestyTimer = Timer.DelayCall(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CheckHonestyExpiry);                        
+                            m_HonestyTimer = Timer.DelayCall(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CheckHonestyExpiry);
 
                         goto case 9;
                     }
@@ -4695,17 +4685,6 @@ namespace Server
 
                     Delta(ItemDelta.Update);
                 }
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int GridLocation
-        {
-            get { return m_GridLocation; }
-            set
-            {
-                if (value >= 0 && value < 126)
-                    m_GridLocation = value;
             }
         }
 

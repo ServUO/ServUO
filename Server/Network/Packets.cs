@@ -255,8 +255,8 @@ namespace Server.Network
 			m_Stream.Write((short)item.Amount);
 			m_Stream.Write((short)item.X);
 			m_Stream.Write((short)item.Y);
-            m_Stream.Write((byte)Container.GetGridLocationItemForContainer(item));
-            m_Stream.Write(m.Serial);
+			m_Stream.Write((byte)0); // Grid Location?
+			m_Stream.Write(m.Serial);
 			m_Stream.Write((short)item.Hue);
 		}
 	}
@@ -352,8 +352,8 @@ namespace Server.Network
 				m_Stream.Write((ushort)bis.Amount);
 				m_Stream.Write((short)(i + 1)); //x
 				m_Stream.Write((short)1); //y
-                m_Stream.Write((byte)i); // Grid Location?
-                m_Stream.Write(bis.ContainerSerial);
+				m_Stream.Write((byte)0); // Grid Location?
+				m_Stream.Write(bis.ContainerSerial);
 				m_Stream.Write((ushort)bis.Hue);
 			}
 		}
@@ -1032,12 +1032,9 @@ namespace Server.Network
 
             m_Stream.Write((short)0x14);
 
-            if (menu.From.NetState.IsEnhancedClient)
-            {
+            if (menu.From.NetState.IsEnhancedClient) {
                 m_Stream.Write((short)0x02); 
-            }
-            else
-            {
+            } else {
                 m_Stream.Write((short)0x01);
             }
 
@@ -1068,15 +1065,11 @@ namespace Server.Network
 
                 if (menu.From.NetState.IsEnhancedClient)
 				{
-                    if (e.Number <= 65535)
-                    {
+                    if (e.Number <= 65535) {
                         m_Stream.Write((uint)(e.Number + 3000000));
-                    }
-                    else
-                    {
+                    } else {
                         m_Stream.Write((uint)e.Number);
                     }
-
 					m_Stream.Write((short)i);
 				}
 				else
@@ -2209,8 +2202,8 @@ m_Stream.Write( (int) renderMode );
 					m_Stream.Write((ushort)(i + offset));
 					m_Stream.Write((short)0);
 					m_Stream.Write((short)0);
-                    m_Stream.Write((byte)Container.GetGridLocationItemForContainer(item)); // Grid Location?
-                    m_Stream.Write(item.Serial);
+					m_Stream.Write((byte)0); // Grid Location?
+					m_Stream.Write(item.Serial);
 					m_Stream.Write((short)0);
 
 					++written;
@@ -2294,8 +2287,8 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((ushort)item.Amount);
 			m_Stream.Write((short)item.X);
 			m_Stream.Write((short)item.Y);
-            m_Stream.Write((byte)Container.GetGridLocationItemForContainer(item)); // Grid Location?
-            m_Stream.Write(parentSerial);
+			m_Stream.Write((byte)0); // Grid Location?
+			m_Stream.Write(parentSerial);
 			m_Stream.Write((ushort)(item.QuestItem ? Item.QuestItemHue : item.Hue));
 		}
 	}
@@ -2358,9 +2351,7 @@ m_Stream.Write( (int) renderMode );
 
 			m_Stream.Write((ushort)0);
 
-            bool defineGridLocation = items.FindAll(delegate (Item itemList) { return itemList.GridLocation.Equals(0); }).Count.Equals(items.Count);
-
-            for (int i = 0; i < count; ++i)
+			for (int i = 0; i < count; ++i)
 			{
 				Item child = items[i];
 
@@ -2374,14 +2365,8 @@ m_Stream.Write( (int) renderMode );
 					m_Stream.Write((ushort)child.Amount);
 					m_Stream.Write((short)loc.m_X);
 					m_Stream.Write((short)loc.m_Y);
-
-                    if (defineGridLocation)
-                    {
-                        child.GridLocation = i;
-                        m_Stream.Write((byte)child.GridLocation); // Grid Location
-                    }
-
-                    m_Stream.Write(beheld.Serial);
+					m_Stream.Write((byte)0); // Grid Location?
+					m_Stream.Write(beheld.Serial);
 					m_Stream.Write((ushort)(child.QuestItem ? Item.QuestItemHue : child.Hue));
 
 					++written;
@@ -3605,34 +3590,7 @@ m_Stream.Write( (int) renderMode );
 				m_Stream.Write((short)max); // Damage max
 
 				m_Stream.Write(m.TithingPoints);
-
-                if (m.NetState != null && m.NetState.IsEnhancedClient)
-                {
-                    this.m_Stream.Write((short)m.AttackChance); // Hit Chance Increase
-                    this.m_Stream.Write((short)m.WeaponSpeed); // Swing Speed Increase
-                    this.m_Stream.Write((short)m.WeaponDamage); // Damage Increase
-                    this.m_Stream.Write((short)m.LowerRegCost); // Lower Reagent Cost
-                    this.m_Stream.Write((short)m.RegenHits); // Hit Points Regeneration
-                    this.m_Stream.Write((short)m.RegenStam); // Stamina Regeneration
-                    this.m_Stream.Write((short)m.RegenMana); // Mana Regeneration
-                    this.m_Stream.Write((short)m.ReflectPhysical); // Reflect Physical Damage
-                    this.m_Stream.Write((short)m.EnhancePotions); // Enhance Potions
-                    this.m_Stream.Write((short)m.DefendChance); // Defense Chance Increase
-                    this.m_Stream.Write((short)m.SpellDamage); // Spell Damage Increase
-                    this.m_Stream.Write((short)m.CastRecovery); // Faster Cast Recovery
-                    this.m_Stream.Write((short)m.CastSpeed); // Faster Casting
-                    this.m_Stream.Write((short)m.LowerManaCost); // Lower Mana Cost
-                    this.m_Stream.Write((short)m.BonusStr); // Strength Increase
-                    this.m_Stream.Write((short)m.BonusDex); // Dexterity Increase
-                    this.m_Stream.Write((short)m.BonusInt); // Intelligence Increase
-                    this.m_Stream.Write((short)m.BonusHits); // Hit Points Increase
-                    this.m_Stream.Write((short)m.BonusStam); // Stamina Increase
-                    this.m_Stream.Write((short)m.BonusMana); // Mana Increase
-                    this.m_Stream.Write((short)m.MaxHitIncrease); // Maximum Hit Points Increase
-                    this.m_Stream.Write((short)m.MaxStamIncrease); // Maximum Stamina Increase
-                    this.m_Stream.Write((short)m.MaxManaIncrease); // Maximum Mana Increase
-                }
-            }
+			}
 
 			if (type >= 6)
 			{
@@ -3911,12 +3869,8 @@ m_Stream.Write( (int) renderMode );
 			{
 				count++;
 			}
-            if (beholder.NetState != null && beholder.NetState.IsEnhancedClient && beheld.FaceItemID > 0)
-            {
-                count++;
-            }
 
-            EnsureCapacity(23 + (count * 9));
+			EnsureCapacity(23 + (count * 9));
 
 			int hue = beheld.Hue;
 
@@ -4156,33 +4110,7 @@ m_Stream.Write( (int) renderMode );
 				}
 			}
 
-            if (beheld.FaceItemID > 0)
-            {
-                if (m_DupedLayers[(int)Layer.Face] != m_Version)
-                {
-                    m_DupedLayers[(int)Layer.Face] = m_Version;
-                    hue = beheld.FaceHue;
-
-                    if (beheld.SolidHueOverride >= 0)
-                        hue = beheld.SolidHueOverride;
-
-                    int itemID = beheld.FaceItemID & 0x3FFF;
-
-                    bool writeHue = (hue != 0);
-
-                    if (writeHue)
-                        itemID |= 0x8000;
-
-                    m_Stream.Write((int)FaceInfo.FakeSerial(beheld));
-                    m_Stream.Write((short)itemID);
-                    m_Stream.Write((byte)Layer.Face);
-
-                    if (writeHue)
-                        m_Stream.Write((short)hue);
-                }
-            }
-
-            m_Stream.Write(0); // terminate
+			m_Stream.Write(0); // terminate
 		}
 	}
 
@@ -5064,114 +4992,7 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write(m_AuthID);
 		}
 	}
-
-    public sealed class ECVerifier : Packet
-    {
-        public static readonly Packet Instance = Packet.SetStatic(new ECVerifier());
-
-        public ECVerifier()
-            : base(0xE3, 77)
-        {
-            // First 2 - Size
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x4D);
-
-            // Next ones... I have no idea from now on
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x03);
-            m_Stream.Write((byte)0x02);
-            m_Stream.Write((byte)0x01);
-            m_Stream.Write((byte)0x03);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x13);
-            m_Stream.Write((byte)0x02);
-            m_Stream.Write((byte)0x11);
-
-            // Next 16
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0xFC);
-            m_Stream.Write((byte)0x2F);
-            m_Stream.Write((byte)0xE3);
-            m_Stream.Write((byte)0x81);
-            m_Stream.Write((byte)0x93);
-            m_Stream.Write((byte)0xCB);
-            m_Stream.Write((byte)0xAF);
-            m_Stream.Write((byte)0x98);
-            m_Stream.Write((byte)0xDD);
-            m_Stream.Write((byte)0x83);
-            m_Stream.Write((byte)0x13);
-            m_Stream.Write((byte)0xD2);
-            m_Stream.Write((byte)0x9E);
-            m_Stream.Write((byte)0xEA);
-            m_Stream.Write((byte)0xE4);
-
-            // Next 16
-            m_Stream.Write((byte)0x13);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x10);
-            m_Stream.Write((byte)0x78);
-            m_Stream.Write((byte)0x13);
-            m_Stream.Write((byte)0xB7);
-            m_Stream.Write((byte)0x7B);
-            m_Stream.Write((byte)0xCE);
-            m_Stream.Write((byte)0xA8);
-            m_Stream.Write((byte)0xD7);
-            m_Stream.Write((byte)0xBC);
-            m_Stream.Write((byte)0x52);
-            m_Stream.Write((byte)0xDE);
-            m_Stream.Write((byte)0x38);
-
-            // Next 16
-            m_Stream.Write((byte)0x30);
-            m_Stream.Write((byte)0xEA);
-            m_Stream.Write((byte)0xE9);
-            m_Stream.Write((byte)0x1E);
-            m_Stream.Write((byte)0xA3);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x20);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x00);
-            m_Stream.Write((byte)0x10);
-            m_Stream.Write((byte)0x5A);
-            m_Stream.Write((byte)0xCE);
-            m_Stream.Write((byte)0x3E);
-
-            // Next 13
-            m_Stream.Write((byte)0xE3);
-            m_Stream.Write((byte)0x97);
-            m_Stream.Write((byte)0x92);
-            m_Stream.Write((byte)0xE4);
-            m_Stream.Write((byte)0x8A);
-            m_Stream.Write((byte)0xF1);
-            m_Stream.Write((byte)0x9A);
-            m_Stream.Write((byte)0xD3);
-            m_Stream.Write((byte)0x04);
-            m_Stream.Write((byte)0x41);
-            m_Stream.Write((byte)0x03);
-            m_Stream.Write((byte)0xCB);
-            m_Stream.Write((byte)0x53);
-        }
-    }
-
-    public sealed class ECDropConfirm : Packet
-    {
-        public static readonly Packet Instance = Packet.SetStatic(new ECDropConfirm());
-
-        public ECDropConfirm()
-            : base(0x29, 1)
-        {
-        }
-    }
-
+    	
     public abstract class Packet
 	{
 		[Flags]
@@ -5492,42 +5313,4 @@ m_Stream.Write( (int) renderMode );
 			m_Stream = null;
 		}
 	}
-
-    public sealed class HideWaypoint : Packet
-    {
-        public HideWaypoint(Serial serial)
-            : base(0xE6, 5)
-        {
-            m_Stream.Write((int)serial);
-        }
-    }
-
-    public sealed class DisplayWaypoint : Packet
-    {
-        public DisplayWaypoint(Serial serial, int x, int y, int z, int mapID, int type, string name)
-            : base(0xE5)
-        {
-            this.EnsureCapacity(25);
-
-            m_Stream.Write((int)serial);
-
-            m_Stream.Write((short)x);
-            m_Stream.Write((short)y);
-            m_Stream.Write((sbyte)z);
-            m_Stream.Write((byte)mapID); //map 
-
-            m_Stream.Write((short)type); //type 
-
-            m_Stream.Write((short)0);
-
-            if (type.Equals(1))
-                m_Stream.Write((int)1046414);
-            else
-                m_Stream.Write((int)1062613);
-
-            m_Stream.WriteLittleUniNull(name);
-
-            m_Stream.Write((short)0); // terminate 
-        }
-    }
 }

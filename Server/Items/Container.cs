@@ -255,32 +255,7 @@ namespace Server.Items
 			}
 
 			item.Location = new Point3D(p.m_X, p.m_Y, 0);
-
-            if (item.GridLocation == 0)
-            {
-                Item[] items = this.FindItemsByType(typeof(Item));
-                int grid = 0;
-
-                for (int i = 0; i <= items.Length; i++)
-                {
-                    foreach (Item itemDropOn in items)
-                    {
-                        if (itemDropOn.GridLocation == i && itemDropOn.Parent != null && itemDropOn.Parent == this)
-                            grid++;
-                    }
-                    if (grid == 0)
-                    {
-                        item.GridLocation = i;
-                        break;
-                    }
-                    if (i != items.Length)
-                        grid = 0;
-                    else
-                        item.GridLocation = items.Length;
-                }
-            }
-
-            AddItem(item);
+			AddItem(item);
 
 			from.SendSound(GetDroppedSound(item), GetWorldLocation());
 
@@ -1968,34 +1943,7 @@ namespace Server.Items
 				from.SendLocalizedMessage(500446); // That is too far away.
 			}
 		}
-
-        public static int GetGridLocationItemForContainer(Item item)
-        {
-            if (item.Parent is Container)
-            {
-                Container container = item.Parent as Container;
-                List<Item> items = container.Items;
-
-                // Return his own position.
-                Item existItem = items.Find(delegate (Item itemList) { return itemList.Serial.Value.Equals(item.Serial.Value); });
-                if (existItem != null)
-                    return existItem.GridLocation;
-
-                // Return free position
-                int posEmpty = -1;
-                while (true)
-                {
-                    posEmpty++;
-                    if (items.FindAll(delegate (Item itemList) { return itemList.GridLocation.Equals(posEmpty); }).Count.Equals(0) || posEmpty > 126)
-                        break;
-                }
-
-                return posEmpty;
-            }
-
-            return item.GridLocation;
-        }
-    }
+	}
 
 	public class ContainerData
 	{
