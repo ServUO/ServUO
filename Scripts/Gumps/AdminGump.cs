@@ -27,6 +27,7 @@ namespace Server.Gumps
         Administer_Access,
         Administer_Access_Lockdown,
         Administer_Commands,
+        Administer_Maintenance,
         ClientInfo,
         AccountDetails,
         AccountDetails_Information,
@@ -214,7 +215,7 @@ namespace Server.Gumps
             this.AddBlackAlpha(10, 390, 400, 40);
 
             this.AddPageButton(10, 10, this.GetButtonID(0, 0), "INFORMATION", AdminGumpPage.Information_General, AdminGumpPage.Information_Perf);
-            this.AddPageButton(10, 30, this.GetButtonID(0, 1), "ADMINISTER", AdminGumpPage.Administer, AdminGumpPage.Administer_Access, AdminGumpPage.Administer_Commands, AdminGumpPage.Administer_Server, AdminGumpPage.Administer_WorldBuilding, AdminGumpPage.Administer_Access_Lockdown);
+            this.AddPageButton(10, 30, this.GetButtonID(0, 1), "ADMINISTER", AdminGumpPage.Administer, AdminGumpPage.Administer_Access, AdminGumpPage.Administer_Commands, AdminGumpPage.Administer_Server, AdminGumpPage.Administer_WorldBuilding, AdminGumpPage.Administer_Access_Lockdown, AdminGumpPage.Administer_Maintenance);
             this.AddPageButton(10, 50, this.GetButtonID(0, 2), "CLIENT LIST", AdminGumpPage.Clients, AdminGumpPage.ClientInfo);
             this.AddPageButton(10, 70, this.GetButtonID(0, 3), "ACCOUNT LIST", AdminGumpPage.Accounts, AdminGumpPage.Accounts_Shared, AdminGumpPage.AccountDetails, AdminGumpPage.AccountDetails_Information, AdminGumpPage.AccountDetails_Characters, AdminGumpPage.AccountDetails_Access, AdminGumpPage.AccountDetails_Access_ClientIPs, AdminGumpPage.AccountDetails_Access_Restrictions, AdminGumpPage.AccountDetails_Comments, AdminGumpPage.AccountDetails_Tags, AdminGumpPage.AccountDetails_ChangeAccess, AdminGumpPage.AccountDetails_ChangePassword);
             this.AddPageButton(10, 90, this.GetButtonID(0, 4), "FIREWALL", AdminGumpPage.Firewall, AdminGumpPage.FirewallInfo);
@@ -470,6 +471,15 @@ namespace Server.Gumps
 
                         goto case AdminGumpPage.Administer;
                     }
+                case AdminGumpPage.Administer_Maintenance:
+                    {
+			this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Maintenance"), LabelColor32), false, false);
+			
+                        this.AddButtonLabeled(20, 180, this.GetButtonID(3, 600), "Rebuild Categorization");
+			this.AddButtonLabeled(220, 180, this.GetButtonID(3, 601), "Generate Documentation");
+
+			goto case AdminGumpPage.Administer;
+		    }
                 case AdminGumpPage.Administer_Commands:
                     {
                         this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Commands"), LabelColor32), false, false);
@@ -508,10 +518,11 @@ namespace Server.Gumps
                     }
                 case AdminGumpPage.Administer:
                     {
-                        this.AddPageButton(200, 20, this.GetButtonID(3, 0), "World Building", AdminGumpPage.Administer_WorldBuilding);
-                        this.AddPageButton(200, 40, this.GetButtonID(3, 1), "Server", AdminGumpPage.Administer_Server);
-                        this.AddPageButton(200, 60, this.GetButtonID(3, 2), "Access", AdminGumpPage.Administer_Access, AdminGumpPage.Administer_Access_Lockdown);
-                        this.AddPageButton(200, 80, this.GetButtonID(3, 3), "Commands", AdminGumpPage.Administer_Commands);
+                        this.AddPageButton(200, 10, this.GetButtonID(3, 0), "World Building", AdminGumpPage.Administer_WorldBuilding);
+                        this.AddPageButton(200, 30, this.GetButtonID(3, 1), "Server", AdminGumpPage.Administer_Server);
+                        this.AddPageButton(200, 50, this.GetButtonID(3, 2), "Access", AdminGumpPage.Administer_Access, AdminGumpPage.Administer_Access_Lockdown);
+                        this.AddPageButton(200, 70, this.GetButtonID(3, 3), "Commands", AdminGumpPage.Administer_Commands);
+                        this.AddPageButton(200, 90, this.GetButtonID(3, 4), "Maintenance", AdminGumpPage.Administer_Maintenance);
 
                         break;
                     }
@@ -1757,7 +1768,9 @@ namespace Server.Gumps
                         string notice = null;
                         AdminGumpPage page = AdminGumpPage.Administer;
 
-                        if (index >= 500)
+			if (index >= 600)
+			    page = AdminGumpPage.Administer_Maintenance;
+			else if (index >= 500)
                             page = AdminGumpPage.Administer_Access_Lockdown;
                         else if (index >= 400)
                             page = AdminGumpPage.Administer_Commands;
@@ -1782,6 +1795,9 @@ namespace Server.Gumps
                             case 3:
                                 page = AdminGumpPage.Administer_Commands;
                                 break;
+			    case 4:
+				page = AdminGumpPage.Administer_Maintenance;
+				break;
                             case 101:
                                 this.InvokeCommand("CreateWorld nogump");
                                 notice = "The world has been created.";
@@ -1793,10 +1809,6 @@ namespace Server.Gumps
                             case 103:
                                 this.InvokeCommand("RecreateWorld nogump");
                                 notice = "The world has been recreated.";
-                                break;
-                            case 107:
-                                this.InvokeCommand("RebuildCategorization");
-                                notice = "Categorization menu has been regenerated. The server should be restarted.";
                                 break;
                             case 110:
                                 this.InvokeCommand("Freeze");
@@ -2052,7 +2064,15 @@ namespace Server.Gumps
                                     }
 
                                     break;
-                                }
+				}
+			    case 600:
+                                this.InvokeCommand("RebuildCategorization");
+                                notice = "Categorization menu has been regenerated. The server should be restarted.";
+                                break;
+                            case 601:
+                                this.InvokeCommand("DocGen");
+                                notice = "Documentation has been generated.";
+                                break;
                         }
 
                         from.SendGump(new AdminGump(from, page, 0, null, notice, null));
