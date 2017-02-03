@@ -44,22 +44,22 @@ namespace Server.Misc
                 string pathSA = GetPath(@"Electronic Arts\EA Games\Ultima Online Stygian Abyss Classic", "InstallDir");
                 string pathHS = GetPath(@"Electronic Arts\EA Games\Ultima Online Classic", "InstallDir");
 
-                if (pathUO != null && Core.DataDirectories == null)
+                if (pathHS != null && Core.DataDirectories.Count == 0)
                     Core.DataDirectories.Add(pathHS);
 
-                if (pathTD != null && Core.DataDirectories == null)
+                if (pathSA != null && Core.DataDirectories.Count == 0)
                     Core.DataDirectories.Add(pathSA);
 
-                if (pathKR != null && Core.DataDirectories == null)
+                if (pathKR != null && Core.DataDirectories.Count == 0)
                     Core.DataDirectories.Add(pathKR);
 
-                if (pathSA != null && Core.DataDirectories == null)
+                if (pathTD != null && Core.DataDirectories.Count == 0)
                     Core.DataDirectories.Add(pathTD);
 
-                if (pathHS != null && Core.DataDirectories == null)
+                if (pathUO != null && Core.DataDirectories.Count == 0)
                     Core.DataDirectories.Add(pathUO);
                 
-		if (!Core.Service && Core.DataDirectories == null)
+		if (Core.DataDirectories.Count == 0 && !Core.Service)
 		{
 		Console.WriteLine("Enter the Ultima Online directory:");
                 Console.Write("> ");
