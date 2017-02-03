@@ -427,8 +427,8 @@ namespace Server
 		Race = 0x00400000,
 		HealthbarYellow = 0x00800000,
 		HealthbarPoison = 0x01000000,
-        Face = 0x08000000,
-        Attributes = 0x0000001C
+
+		Attributes = 0x0000001C
 	}
 
 	public enum AccessLevel
@@ -3845,9 +3845,8 @@ namespace Server
 			m_Hair = null;
 			m_FacialHair = null;
 			m_MountItem = null;
-            m_Face = null;
 
-            World.RemoveMobile(this);
+			World.RemoveMobile(this);
 
 			OnAfterDelete();
 
@@ -5890,12 +5889,7 @@ namespace Server
 							m_FacialHair = new FacialHairInfo(reader);
 						}
 
-                        if ((hairflag & 0x04) != 0)
-                        {
-                            m_Face = new FaceInfo(reader);
-                        }
-
-                        goto case 29;
+						goto case 29;
 					}
 				case 29:
 					{
@@ -6367,12 +6361,7 @@ namespace Server
 				hairflag |= 0x02;
 			}
 
-            if (m_Face != null)
-            {
-                hairflag |= 0x04;
-            }
-
-            writer.Write(hairflag);
+			writer.Write(hairflag);
 
 			if ((hairflag & 0x01) != 0)
 			{
@@ -6384,12 +6373,7 @@ namespace Server
 				m_FacialHair.Serialize(writer);
 			}
 
-            if ((hairflag & 0x04) != 0)
-            {
-                m_Face.Serialize(writer);
-            }
-
-            writer.Write(Race);
+			writer.Write(Race);
 
 			writer.Write(m_TithingPoints);
 
@@ -8484,100 +8468,7 @@ namespace Server
 
 		public virtual int Luck { get { return 0; } }
 
-        public virtual int AttackChance
-        {
-            get { return 0; }
-        }
-        public virtual int WeaponSpeed
-        {
-            get { return 0; }
-        }
-        public virtual int WeaponDamage
-        {
-            get { return 0; }
-        }
-        public virtual int LowerRegCost
-        {
-            get { return 0; }
-        }
-        public virtual int RegenHits
-        {
-            get { return 0; }
-        }
-        public virtual int RegenStam
-        {
-            get { return 0; }
-        }
-        public virtual int RegenMana
-        {
-            get { return 0; }
-        }
-        public virtual int ReflectPhysical
-        {
-            get { return 0; }
-        }
-        public virtual int EnhancePotions
-        {
-            get { return 0; }
-        }
-        public virtual int DefendChance
-        {
-            get { return 0; }
-        }
-        public virtual int SpellDamage
-        {
-            get { return 0; }
-        }
-        public virtual int CastRecovery
-        {
-            get { return 0; }
-        }
-        public virtual int CastSpeed
-        {
-            get { return 0; }
-        }
-        public virtual int LowerManaCost
-        {
-            get { return 0; }
-        }
-        public virtual int BonusStr
-        {
-            get { return 0; }
-        }
-        public virtual int BonusDex
-        {
-            get { return 0; }
-        }
-        public virtual int BonusInt
-        {
-            get { return 0; }
-        }
-        public virtual int BonusHits
-        {
-            get { return 0; }
-        }
-        public virtual int BonusStam
-        {
-            get { return 0; }
-        }
-        public virtual int BonusMana
-        {
-            get { return 0; }
-        }
-        public virtual int MaxHitIncrease
-        {
-            get { return this.HitsMax; }
-        }
-        public virtual int MaxStamIncrease
-        {
-            get { return this.StamMax; }
-        }
-        public virtual int MaxManaIncrease
-        {
-            get { return this.ManaMax; }
-        }
-
-        public virtual int HuedItemID { get { return (m_Female ? 0x2107 : 0x2106); } }
+		public virtual int HuedItemID { get { return (m_Female ? 0x2107 : 0x2106); } }
 
 		private int m_HueMod = -1;
 
@@ -10256,66 +10147,9 @@ namespace Server
 				}
 			}
 		}
-        #endregion
+		#endregion
 
-        #region Face
-        private FaceInfo m_Face;
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int FaceItemID
-        {
-            get
-            {
-                if (this.m_Face == null)
-                {
-                    return 0;
-                }
-
-                return this.m_Face.ItemID;
-            }
-            set
-            {
-                if (this.m_Face == null && value > 0)
-                {
-                    this.m_Face = new FaceInfo(value);
-                }
-                else if (value <= 0)
-                {
-                    this.m_Face = null;
-                }
-                else
-                {
-                    this.m_Face.ItemID = value;
-                }
-
-                Delta(MobileDelta.Face);
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int FaceHue
-        {
-            get
-            {
-                if (this.m_Face == null)
-                {
-                    return this.Hue;
-                }
-
-                return this.m_Face.Hue;
-            }
-            set
-            {
-                if (this.m_Face != null)
-                {
-                    this.m_Face.Hue = value;
-                    Delta(MobileDelta.Face);
-                }
-            }
-        }
-        #endregion
-
-        public bool HasFreeHand()
+		public bool HasFreeHand()
 		{
 			return FindItemOnLayer(Layer.TwoHanded) == null;
 		}
@@ -11150,9 +10984,9 @@ namespace Server
 			bool sendMoving = false, sendNonlocalMoving = false;
 			bool sendOPLUpdate = ObjectPropertyList.Enabled && (delta & MobileDelta.Properties) != 0;
 
-			bool sendHair = false, sendFacialHair = false, removeHair = false, removeFacialHair = false, sendFace = false, removeFace = false;
+			bool sendHair = false, sendFacialHair = false, removeHair = false, removeFacialHair = false;
 
-            bool sendHealthbarPoison = false, sendHealthbarYellow = false;
+			bool sendHealthbarPoison = false, sendHealthbarYellow = false;
 
 			if (attrs != MobileDelta.None)
 			{
@@ -11256,17 +11090,7 @@ namespace Server
 				sendFacialHair = true;
 			}
 
-            if ((delta & MobileDelta.Face) != 0)
-            {
-                if (m.FaceItemID <= 0)
-                {
-                    removeFace = true;
-                }
-
-                sendFace = true;
-            }
-
-            var cache = new Packet[2][] {new Packet[8], new Packet[8]};
+			var cache = new Packet[2][] {new Packet[8], new Packet[8]};
 
 			NetState ourState = m.m_NetState;
 
@@ -11385,19 +11209,7 @@ namespace Server
 					}
 				}
 
-                if (sendFace)
-                {
-                    if (removeFace)
-                    {
-                        ourState.Send(new RemoveFace(m));
-                    }
-                    else
-                    {
-                        ourState.Send(new FaceEquipUpdate(m));
-                    }
-                }
-
-                if (sendOPLUpdate)
+				if (sendOPLUpdate)
 				{
 					ourState.Send(OPLPacket);
 				}
@@ -11409,7 +11221,7 @@ namespace Server
 
 			if (m.m_Map != null &&
 				(sendRemove || sendIncoming || sendPublicStats || sendHits || sendMoving || sendOPLUpdate || sendHair ||
-				 sendFacialHair || sendHealthbarPoison || sendHealthbarYellow || sendFace))
+				 sendFacialHair || sendHealthbarPoison || sendHealthbarYellow))
 			{
 				Mobile beholder;
 
@@ -11421,9 +11233,8 @@ namespace Server
 				Packet facialhairPacket = null;
 				Packet hbpPacket = null;
 				Packet hbyPacket = null;
-                Packet facePacket = null;
 
-                var eable = m.Map.GetClientsInRange(m.m_Location);
+				var eable = m.Map.GetClientsInRange(m.m_Location);
 
 				foreach (NetState state in eable)
 				{
@@ -11569,24 +11380,7 @@ namespace Server
 							state.Send(facialhairPacket);
 						}
 
-                        if (sendFace)
-                        {
-                            if (facePacket == null)
-                            {
-                                if (removeFace)
-                                {
-                                    facePacket = Packet.Acquire(new RemoveFace(m));
-                                }
-                                else
-                                {
-                                    facePacket = Packet.Acquire(new FaceEquipUpdate(m));
-                                }
-                            }
-
-                            state.Send(facePacket);
-                        }
-
-                        if (sendOPLUpdate)
+						if (sendOPLUpdate)
 						{
 							state.Send(OPLPacket);
 						}
@@ -11601,9 +11395,8 @@ namespace Server
 				Packet.Release(facialhairPacket);
 				Packet.Release(hbpPacket);
 				Packet.Release(hbyPacket);
-                Packet.Release(facePacket);
 
-                eable.Free();
+				eable.Free();
 			}
 
 			if (sendMoving || sendNonlocalMoving || sendHealthbarPoison || sendHealthbarYellow)

@@ -137,15 +137,7 @@ namespace Server.Network
 
 			Register6017(0x08, 15, true, DropReq6017);
 
-            Register(0x8D, 0, false, ECCreateCharacter);
-            Register(0xE1, 0, false, ECCharacterListUpdate);
-            Register(0xE4, 0, false, ECVerifierResponse);
-            Register(0xFF, 4, false, ECSeed);
-            Register(0x89, 39, false, DeleteCharacter);
-            Register(0xEC, 0, false, EquipMacro);
-            Register(0xED, 0, false, UnequipMacro);
-
-            RegisterExtended(0x05, false, ScreenSize);
+			RegisterExtended(0x05, false, ScreenSize);
 			RegisterExtended(0x06, true, PartyMessage);
 			RegisterExtended(0x07, true, QuestArrow);
 			RegisterExtended(0x09, true, DisarmRequest);
@@ -169,7 +161,6 @@ namespace Server.Network
             RegisterExtended(0x2C, true, TargetedItemUse);
             RegisterExtended(0x2D, true, TargetedSpell);
             RegisterExtended(0x2E, true, TargetedSkillUse);
-            RegisterExtended(0x30, true, TargetByResourceMacro);
 
             RegisterEncoded(0x19, true, SetAbility);
 			RegisterEncoded(0x28, true, GuildGumpRequest);
@@ -1101,13 +1092,7 @@ namespace Server.Network
 		public static void EquipReq(NetState state, PacketReader pvSrc)
 		{
 			Mobile from = state.Mobile;
-
-            if (from.NetState != null && from.NetState.IsEnhancedClient)
-            {
-                from.NetState.Send(new ECDropConfirm());
-            }
-
-            Item item = from.Holding;
+			Item item = from.Holding;
 
 			bool valid = (item != null && item.HeldBy == from && item.Map == Map.Internal);
 
@@ -1173,11 +1158,11 @@ namespace Server.Network
 
 		public static void DropReq6017(NetState state, PacketReader pvSrc)
 		{
-            Serial m_item = pvSrc.ReadInt32(); // serial, ignored
+			pvSrc.ReadInt32(); // serial, ignored
 			int x = pvSrc.ReadInt16();
 			int y = pvSrc.ReadInt16();
 			int z = pvSrc.ReadSByte();
-            int GridLocation = pvSrc.ReadByte(); // Grid Location?
+			pvSrc.ReadByte(); // Grid Location?
 			Serial dest = pvSrc.ReadInt32();
 
 			Point3D loc = new Point3D(x, y, z);
@@ -1191,50 +1176,8 @@ namespace Server.Network
 			else if (dest.IsItem)
 			{
 				Item item = World.FindItem(dest);
-                
-                if (item is Container)
-                {
-                    Container m_container = item as Container;
-                    Item[] items = m_container.FindItemsByType(typeof(Item));
-                    bool canDropGrid = true;
 
-                    foreach (Item itemDropOn in items)
-                    {
-                        if (itemDropOn.GridLocation == GridLocation && itemDropOn.Parent != null && itemDropOn.Parent == m_container)
-                        {
-                            canDropGrid = false;
-                            break;
-                        }
-                    }
-
-                    if (canDropGrid)
-                    {
-                        World.FindItem(m_item).GridLocation = GridLocation;
-                    }
-                    else
-                    {
-                        bool m_sadd = true;
-                        for (int i = 0; i <= items.Length; i++)
-                        {
-                            foreach (Item itemDropOn in items)
-                            {
-                                if (itemDropOn.GridLocation == i && itemDropOn.Parent != null && itemDropOn.Parent == m_container)
-                                    m_sadd = false;
-                            }
-                            if (m_sadd)
-                            {
-                                World.FindItem(m_item).GridLocation = i;
-                                break;
-                            }
-                            if (i != items.Length)
-                                m_sadd = true;
-                        }
-                        if (!m_sadd && (items.Length < 125))
-                            World.FindItem(m_item).GridLocation = items.Length;
-                    }
-                }
-
-                if (item is BaseMulti && ((BaseMulti)item).AllowsRelativeDrop)
+				if (item is BaseMulti && ((BaseMulti)item).AllowsRelativeDrop)
 				{
 					loc.m_X += item.X;
 					loc.m_Y += item.Y;
@@ -3134,175 +3077,14 @@ namespace Server.Network
             state.Dispose();
         }
 
-        public static void ECSeed(NetState state, PacketReader pvSrc)
-        {
-            // EC Client detected 
-            state.Send(new ECVerifier());
-        }
-
-        // EC Client Verifier Response (We still need to research on this thing)
-        public static void ECVerifierResponse(NetState state, PacketReader pvSrc)
-        {
-        }
-
-        public static void ECCharacterListUpdate(NetState state, PacketReader pvSrc)
-        {
-            int length = pvSrc.Size;
-            int always1 = pvSrc.ReadInt16();
-            int clientFlags = pvSrc.ReadInt32();
-
-            // Need to confirm whether to actually call this stretch.
-            state.Send(new CharacterListUpdate(state.Account));
-        }
-
-        // EC Client Character Creation
-        public static void ECCreateCharacter(NetState state, PacketReader pvSrc)
-        {
-            int flags = 0;
-
-            int length = pvSrc.Size;
-
-            int unk1 = pvSrc.ReadInt32(); // Pattern
-            int charSlot = pvSrc.ReadInt32();
-            string name = pvSrc.ReadString(30);
-            string unknown1 = pvSrc.ReadString(30); // "Unknow"
-
-            int profession = pvSrc.ReadByte();
-            int clientFlags = pvSrc.ReadByte();
-
-            int gender = pvSrc.ReadByte();
-            int genderRace = pvSrc.ReadByte();
-
-            int str = pvSrc.ReadByte();
-            int dex = pvSrc.ReadByte();
-            int intel = pvSrc.ReadByte();
-
-            int hue = pvSrc.ReadInt16();
-            int unk5 = pvSrc.ReadInt32(); // 0x00 0x00 0x00 0x00
-            int unk6 = pvSrc.ReadInt32(); // 0x00 0x00 0x00 0x00	
-
-            // isX = skill amount | vsX = skill
-            int is1 = pvSrc.ReadByte();
-            int vs1 = pvSrc.ReadByte();
-            int is2 = pvSrc.ReadByte();
-            int vs2 = pvSrc.ReadByte();
-            int is3 = pvSrc.ReadByte();
-            int vs3 = pvSrc.ReadByte();
-            int is4 = pvSrc.ReadByte();
-            int vs4 = pvSrc.ReadByte();
-
-            string unknown2 = pvSrc.ReadString(25); // Pack of 0x00
-            int unk7 = pvSrc.ReadByte(); // Another 0x00
-
-            int hairColor = pvSrc.ReadInt16();
-            int hairID = pvSrc.ReadInt16();
-
-            int unk8 = pvSrc.ReadByte();
-            int unk9 = pvSrc.ReadInt32();
-            int unk10 = pvSrc.ReadByte();
-            int shirtHue = pvSrc.ReadInt16();
-            int shirtID = pvSrc.ReadInt16();
-            int unk13 = pvSrc.ReadByte();
-
-            int faceColor = pvSrc.ReadInt16();
-            int faceID = pvSrc.ReadInt16();
-
-            int unk14 = pvSrc.ReadByte();
-
-            int beardColor = pvSrc.ReadInt16();
-            int beardID = pvSrc.ReadInt16();
-
-            int cityIndex = 0; // Obsolete
-            int pantsHue = shirtHue; // Obsolete
-            Race race = null;
-            bool female = false;
-
-            female = (gender != 0);
-            race = Race.Races[(byte)(((genderRace - 1)))]; //SA client sends race packet one higher than KR, so this is neccesary
-            if (race == null)
-                race = Race.DefaultRace;
-
-
-            CityInfo[] info = state.CityInfo;
-            IAccount a = state.Account;
-
-            if (clientFlags > 0)
-                flags = clientFlags;
-
-            if (info == null || a == null || cityIndex < 0 || cityIndex >= info.Length)
-            {
-                state.Dispose();
-            }
-            else
-            {
-                // Check if anyone is using this account
-                for (int i = 0; i < a.Length; ++i)
-                {
-                    Mobile check = a[i];
-
-                    if (check != null && check.Map != Map.Internal)
-                    {
-                        Console.WriteLine("Login: {0}: Account in use", state);
-                        state.Send(new PopupMessage(PMMessage.CharInWorld));
-                        return;
-                    }
-                }
-
-                state.Flags = (ClientFlags)flags;
-
-                CharacterCreatedEventArgs args = new CharacterCreatedEventArgs(
-                    state, a,
-                    name, female, hue,
-                    str, dex, intel,
-                    info[cityIndex],
-                    new SkillNameValue[4]
-                    {
-                        new SkillNameValue( (SkillName)is1, vs1 ),
-                        new SkillNameValue( (SkillName)is2, vs2 ),
-                        new SkillNameValue( (SkillName)is3, vs3 ),
-                        new SkillNameValue( (SkillName)is4, vs4 ),
-                    },
-                    shirtHue, pantsHue,
-                    hairID, hairColor,
-                    beardID, beardColor,
-                    profession, race,
-                    faceID, faceColor
-                    );
-
-                state.Send(new ClientVersionReq());
-
-                state.BlockAllPackets = true;
-
-                EventSink.InvokeCharacterCreated(args);
-
-                Mobile m = args.Mobile;
-
-                if (m != null)
-                {
-                    state.Mobile = m;
-                    m.NetState = state;
-
-                    state.BlockAllPackets = false;
-                    DoLogin(state, m);
-                }
-                else
-                {
-                    state.BlockAllPackets = false;
-                    state.Dispose();
-                }
-            }
-        }
-
-        public static void TargetedSpell(NetState ns, PacketReader pvSrc)
-        {
+        public static void TargetedSpell(NetState ns, PacketReader pvSrc) {
             short spellId = (short)(pvSrc.ReadInt16() - 1);    // zero based;
             Serial target = pvSrc.ReadInt32();
             TargetedSpellEventArgs e = new TargetedSpellEventArgs(ns, World.FindEntity(target), spellId);
             EventSink.InvokeTargetedSpell(e);
         }
 
-        public static void TargetedItemUse(NetState ns, PacketReader pvSrc)
-        {
+        public static void TargetedItemUse(NetState ns, PacketReader pvSrc) {
             Serial srcItem = pvSrc.ReadInt32();
             Serial target = pvSrc.ReadInt32();
             if (srcItem.IsItem) {
@@ -3311,58 +3093,11 @@ namespace Server.Network
             }
         }
 
-        public static void TargetedSkillUse(NetState ns, PacketReader pvSrc)
-        {
+        public static void TargetedSkillUse(NetState ns, PacketReader pvSrc) {
             short skillId = pvSrc.ReadInt16();
             Serial target = pvSrc.ReadInt32();
             TargetedSkillEventArgs e = new TargetedSkillEventArgs(ns, World.FindEntity(target), skillId);
             EventSink.InvokeTargetedSkill(e);
-        }
-
-        public static void EquipMacro(NetState ns, PacketReader pvSrc)
-        {
-            int length = pvSrc.Size;
-
-            int count = pvSrc.ReadByte();
-            List<int> serialList = new List<int>(count);
-            for (int i = 0; i < count; ++i)
-            {
-                Serial s = pvSrc.ReadInt32();
-                serialList.Add(s);
-            }
-
-            EquipMacroEventArgs e = new EquipMacroEventArgs(ns, serialList);
-            EventSink.InvokeEquipMacro(e);
-        }
-
-        public static void UnequipMacro(NetState ns, PacketReader pvSrc)
-        {
-            int length = pvSrc.Size;
-
-            int count = pvSrc.ReadByte();
-            List<int> layers = new List<int>(count);
-            for (int i = 0; i < count; ++i)
-            {
-                int s = pvSrc.ReadInt16();
-                layers.Add(s);
-            }
-
-            UnequipMacroEventArgs e = new UnequipMacroEventArgs(ns, layers);
-            EventSink.InvokeUnequipMacro(e);
-        }
-
-        public static void TargetByResourceMacro(NetState ns, PacketReader pvSrc)
-        {
-            int length = pvSrc.Size;
-            int Command = pvSrc.ReadInt16();
-            Serial serial = pvSrc.ReadInt32();
-            int resourcetype = pvSrc.ReadInt16();
-
-            if (serial.IsItem)
-            {
-                TargetByResourceMacroEventArgs e = new TargetByResourceMacroEventArgs(ns, World.FindItem(serial), resourcetype);
-                EventSink.InvokeTargetByResourceMacro(e);
-            }
         }
     }
 }
