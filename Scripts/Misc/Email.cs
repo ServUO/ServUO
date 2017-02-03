@@ -20,16 +20,16 @@ namespace Server.Misc
         * Example:
         *  public static readonly string SpeechLogPageAddresses = "first@email.here,second@email.here,third@email.here";
         */
-        public static readonly string EmailServer       = null;
-        public static readonly int    EmailPort         = 25;
+        public static readonly string 	EmailServer		= Config.Get("Email.EmailServer", null);
+        public static readonly int	EmailPort		= Config.Get("Email.EmailPort", 25);
+        public static readonly bool	EmailSsl		= Config.Get("Email.EmailSsl", false);
         
-        public static readonly string FromAddress       = null;
-        public static readonly string CrashAddresses    = null;
-        
-        public static readonly string EmailUsername     = null;
-	public static readonly string EmailPassword     = null;
-        
-        public static readonly string SpeechLogPageAddresses = null;
+        public static readonly string 	FromAddress		= Config.Get("Email.FromAddress", null);
+        public static readonly string 	CrashAddresses		= Config.Get("Email.CrashAddresses", null);
+      	public static readonly string 	SpeechLogPageAddresses 	= Config.Get("Email.SpeechLogPageAddresses", null);
+
+        public static readonly string 	EmailUsername		= Config.Get("Email.EmailUsername", null);
+	public static readonly string 	EmailPassword		= Config.Get("Email.EmailPassword", null);
         
         private static readonly Regex _pattern = new Regex(@"^[a-z0-9.+_-]+@([a-z0-9-]+\.)+[a-z]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static SmtpClient _Client;
@@ -50,6 +50,8 @@ namespace Server.Misc
 				{
 					_Client.Credentials = new System.Net.NetworkCredential( EmailUsername, EmailPassword );
 				}
+				if ( EmailSsl )
+					_Client.EnableSsl = true;
 			}
         }
 
