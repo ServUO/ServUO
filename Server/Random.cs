@@ -23,7 +23,15 @@ namespace Server
 
 		static RandomImpl()
 		{
-			if (Core.Unix)
+			if (Core.Unix && Core.Is64Bit && File.Exists("libdrng.so"))
+			{
+				_Random = new RDRand64();
+			}
+			else if (Core.Unix && File.Exists("libdrng.so"))
+			{
+				_Random = new RDRand32();
+			}
+			else if (Core.Unix)
 			{
 				_Random = new SimpleRandom();
 			}
