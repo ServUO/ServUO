@@ -1030,7 +1030,6 @@ namespace Server.Network
             EnsureCapacity(12 + (length * 8));
 
             m_Stream.Write((short)0x14);
-            m_Stream.Write((short)0x02);
 
             if (menu.From.NetState.IsEnhancedClient)
             {
@@ -1066,24 +1065,16 @@ namespace Server.Network
 			{
 				ContextMenuEntry e = entries[i];
 
-                if (menu.From.NetState.IsEnhancedClient)
-				{
-                    if (e.Number <= 65535)
-                    {
-                        m_Stream.Write((uint)(e.Number + 3000000));
-                    }
-                    else
-                    {
-                        m_Stream.Write((uint)e.Number);
-                    }
+                if (e.Number <= 65535)
+                {
+                    m_Stream.Write((uint)(e.Number + 3000000));
+                }
+                else
+                {
+                    m_Stream.Write((uint)e.Number);
+                }
 
-					m_Stream.Write((short)i);
-				}
-				else
-				{
-                    m_Stream.Write((short)i);
-				    m_Stream.Write((ushort)(e.Number - 3000000));
-				}
+                m_Stream.Write((short)i);
 
                 int range = e.Range;
 
@@ -1302,11 +1293,6 @@ namespace Server.Network
 				m_Stream.Write((short)itemID);
 
 				m_Stream.Write((byte)0);
-				/*} else if (  ) {
-			m_Stream.Write( (byte) 0x01 );
-			m_Stream.Write( (int) item.Serial );
-			m_Stream.Write( (short) itemID ); 
-			m_Stream.Write( (byte) item.Direction );*/
 			}
 			else
 			{
@@ -1355,11 +1341,17 @@ namespace Server.Network
             int itemID = item.ItemID;
 
             if (item is BaseMulti)
+            {
                 m_Stream.Write((byte)0x02);
+            }
             else if (item is IDamageable)
+            {
                 m_Stream.Write((byte)0x03);
+            }
             else
+            {
                 m_Stream.Write((byte)0x00);
+            }
 
             if (item is BaseMulti)
             {
