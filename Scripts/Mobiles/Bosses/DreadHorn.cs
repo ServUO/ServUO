@@ -24,13 +24,13 @@ namespace Server.Mobiles
 
 			SetStr( 878, 993 );
 			SetDex( 581, 683 );
-			SetInt( 1223, 1389 );
+			SetInt( 1200, 1300 );
 
 			SetHits( 50000 );
 			SetStam( 507, 669 );
-			SetMana( 1206, 1389 );
+			SetMana( 1200, 1300 );
 
-			SetDamage( 27, 31 );
+			SetDamage( 21, 28 );
 
 			SetDamageType( ResistanceType.Physical, 40 );
 			SetDamageType( ResistanceType.Poison, 60 );
@@ -39,7 +39,7 @@ namespace Server.Mobiles
 			SetResistance( ResistanceType.Fire, 50, 65 );
 			SetResistance( ResistanceType.Cold, 50, 65 );
 			SetResistance( ResistanceType.Poison, 65, 75 );
-			SetResistance( ResistanceType.Energy, 65, 75 );
+			SetResistance( ResistanceType.Energy, 60, 75 );
 
 			SetSkill( SkillName.Wrestling, 90.0 );
 			SetSkill( SkillName.Tactics, 90.0 );
@@ -288,7 +288,7 @@ namespace Server.Mobiles
                     m.AddStatMod(new StatMod(StatType.Dex, "DreadHornDex", (int)malas, TimeSpan.FromSeconds(60)));
                     m.AddStatMod(new StatMod(StatType.Int, "DreadHornInt", (int)malas, TimeSpan.FromSeconds(60)));
 
-                    valid.SendLocalizedMessage(1075081); // *Dreadhorn’s eyes light up, his mouth almost a grin, as he slams one hoof to the ground!*
+                    valid.SendLocalizedMessage(1075081); // *DreadhornÂ’s eyes light up, his mouth almost a grin, as he slams one hoof to the ground!*
                 }
 			}
             eable.Free();
