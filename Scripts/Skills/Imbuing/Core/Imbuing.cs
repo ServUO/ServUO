@@ -11,6 +11,7 @@ using Server.ContextMenus;
 using Server.Commands;
 using Server.Factions;
 using Server.Engines.Craft;
+using System.Linq;
 
 namespace Server.SkillHandlers
 {
@@ -18,7 +19,7 @@ namespace Server.SkillHandlers
     {
         public static void Initialize()
         {
-            LoadImbuingDefinitions();
+            //LoadImbuingDefinitions();
 
             SkillInfo.Table[(int)SkillName.Imbuing].Callback = new SkillUseCallback(OnUse);
 
@@ -920,10 +921,10 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
+
+                    if(!ValidateProperty(attr))
+                        continue;
 
                     if (wep.Attributes[attr] > 0)
                     {
@@ -942,6 +943,9 @@ namespace Server.SkillHandlers
                 foreach (long i in Enum.GetValues(typeof(AosWeaponAttribute)))
                 {
                     AosWeaponAttribute attr = (AosWeaponAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (wep.WeaponAttributes[attr] > 0)
                     {
@@ -963,6 +967,9 @@ namespace Server.SkillHandlers
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
 
+                    if (!ValidateProperty(attr))
+                        continue;
+
                     if (wep.AbsorptionAttributes[attr] > 0)
                     {
                         if (!(prop is SAAbsorptionAttribute) || ((SAAbsorptionAttribute)prop) != attr)
@@ -981,6 +988,8 @@ namespace Server.SkillHandlers
                         total++;
                 }
 
+                if (wep.SearingWeapon)
+                    total++;
             }
             else if (itw is BaseArmor)
             {
@@ -988,10 +997,10 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (armor.Attributes[attr] > 0)
                     {
@@ -1017,6 +1026,9 @@ namespace Server.SkillHandlers
                 {
                     AosArmorAttribute attr = (AosArmorAttribute)i;
 
+                    if (!ValidateProperty(attr))
+                        continue;
+
                     if (armor.ArmorAttributes[attr] > 0)
                     {
                         if (!(prop is AosArmorAttribute) || ((AosArmorAttribute)prop) != attr)
@@ -1028,6 +1040,9 @@ namespace Server.SkillHandlers
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (armor.AbsorptionAttributes[attr] > 0)
                     {
@@ -1042,10 +1057,10 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (j.Attributes[attr] > 0)
                     {
@@ -1057,6 +1072,9 @@ namespace Server.SkillHandlers
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (j.AbsorptionAttributes[attr] > 0)
                     {
@@ -1079,10 +1097,10 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (h.Attributes[attr] > 0)
                     {
@@ -1094,6 +1112,9 @@ namespace Server.SkillHandlers
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (h.SAAbsorptionAttributes[attr] > 0)
                     {
@@ -1434,7 +1455,8 @@ namespace Server.SkillHandlers
         private static Dictionary<int, ImbuingDefinition> m_Table;
         public static Dictionary<int, ImbuingDefinition> Table { get { return m_Table; } }
 
-        public static void LoadImbuingDefinitions()
+        //public static void LoadImbuingDefinitions()
+        static Imbuing()
         {
             m_Table = new Dictionary<int, ImbuingDefinition>();
 			
@@ -1993,6 +2015,26 @@ namespace Server.SkillHandlers
                 return 62;
 
             return -1;
+        }
+
+        public static bool ValidateProperty(AosAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is AosAttribute && (AosAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(AosWeaponAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is AosWeaponAttribute && (AosWeaponAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(AosArmorAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is AosArmorAttribute && (AosArmorAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(SAAbsorptionAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is SAAbsorptionAttribute && (SAAbsorptionAttribute)def.Attribute == attr) != null;
         }
 
         #region Prop Ranges

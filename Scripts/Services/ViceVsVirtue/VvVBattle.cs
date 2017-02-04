@@ -334,7 +334,7 @@ namespace Server.Engines.VvV
                     Warned.Add(pm);
                     return;
                 }
-                else if (pm.Alive && !pm.Hidden && BaseBoat.FindBoatAt(pm.Location, pm.Map) == null && BaseHouse.FindHouseAt(pm) == null)
+                else if (vvv && pm.Alive && !pm.Hidden && BaseBoat.FindBoatAt(pm.Location, pm.Map) == null && BaseHouse.FindHouseAt(pm) == null)
                 {
                     Guild g = pm.Guild as Guild;
 

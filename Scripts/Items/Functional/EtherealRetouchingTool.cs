@@ -105,7 +105,7 @@ namespace Server.Items
 
         private static Dictionary<Type, EtherealEntry> m_Table;
 
-        public static void Initialize()
+        static EtherealRetouchingTool()
         {
             m_Table = new Dictionary<Type, EtherealEntry>();
 
