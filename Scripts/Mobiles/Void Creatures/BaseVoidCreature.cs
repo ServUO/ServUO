@@ -1,6 +1,7 @@
 using System;
 using Server.Items;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -14,16 +15,22 @@ namespace Server.Mobiles
 
     public class BaseVoidCreature : BaseCreature
     {
+        public static int MutateCheck { get { return Utility.RandomMinMax(30, 120); } }
+
+        public static bool RemoveFromSpawners { get { return true; } }
+
         private DateTime m_NextMutate;
-        private DateTime m_NextCheckForBuddies;
         private bool m_BuddyMutate;
 
-        public virtual int GroupAmount { get { return 4; } }
+        public virtual int GroupAmount { get { return 2; } }
         public virtual VoidEvolution Evolution { get { return VoidEvolution.None; } }
         public virtual int Stage { get { return 0; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool BuddyMutate { get { return m_BuddyMutate; } set { m_BuddyMutate = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextMutate { get { return m_NextMutate; } set { m_NextMutate = value; } }
 
         public override bool PlayerRangeSensitive { get { return Evolution != VoidEvolution.Killing && Stage < 3; } }
         public override bool AlwaysMurderer { get { return true; } }
@@ -31,8 +38,7 @@ namespace Server.Mobiles
         public BaseVoidCreature(AIType aiType, FightMode fightMode, int perception, int range, double passive, double active)
             : base(aiType, FightMode.Good, perception, range, passive, active)
         {
-            m_NextMutate = DateTime.Now + TimeSpan.FromHours(Utility.RandomMinMax(3, 5));
-            m_NextCheckForBuddies = DateTime.Now + TimeSpan.FromSeconds(5);
+            m_NextMutate = DateTime.UtcNow + TimeSpan.FromMinutes(MutateCheck);
             m_BuddyMutate = true;
         }
 
@@ -40,22 +46,32 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if(m_NextMutate < DateTime.Now && Alive && !Deleted)
-                Mutate(VoidEvolution.Survival);
-
-            if (!m_BuddyMutate || m_NextCheckForBuddies > DateTime.Now || Stage == 3)
+            if (Stage >= 3 || m_NextMutate > DateTime.UtcNow)
                 return;
+
+            if (!MutateGrouped() && Alive && !Deleted)
+            {
+                Mutate(VoidEvolution.Survival);
+            }
+        }
+
+        public bool MutateGrouped()
+        {
+            if (!m_BuddyMutate)
+                return false;
 
             List<BaseVoidCreature> buddies = new List<BaseVoidCreature>();
             IPooledEnumerable eable = this.GetMobilesInRange(12);
+
             foreach (Mobile m in eable)
             {
                 if (m != this && IsEvolutionType(m) && !m.Deleted && m.Alive && !buddies.Contains((BaseVoidCreature)m))
                 {
-                    if(m is BaseVoidCreature && ((BaseVoidCreature)m).BuddyMutate)
+                    if (m is BaseVoidCreature && ((BaseVoidCreature)m).BuddyMutate)
                         buddies.Add((BaseVoidCreature)m);
                 }
             }
+
             eable.Free();
 
             if (buddies.Count >= GroupAmount)
@@ -67,17 +83,16 @@ namespace Server.Mobiles
 
                 ColUtility.Free(buddies);
 
-                m_NextCheckForBuddies = DateTime.Now + TimeSpan.FromHours(24);
-                return;
+                return true;
             }
 
             ColUtility.Free(buddies);
-            m_NextCheckForBuddies = DateTime.Now + TimeSpan.FromMinutes(10);
+            return false;
         }
 
         public bool IsEvolutionType(Mobile from)
         {
-            if (Stage == 0 && from.GetType() != this.GetType())
+            if (Stage == 0 || (from.GetType() != this.GetType()))
                 return false;
 
             return from is BaseVoidCreature;
@@ -101,7 +116,11 @@ namespace Server.Mobiles
                 evo = this.Evolution;
 
             if (0.05 > Utility.RandomDouble())
+            {
                 SpawnOrtanords();
+                this.Delete();
+                return;
+            }
 
             Type type = m_EvolutionCycle[(int)evo - 1][Stage];
 
@@ -172,12 +191,43 @@ namespace Server.Mobiles
         {
         }
 
+        private static bool _CheckSpawners;
+
+        public static void RemoveVoidSpawners()
+        {
+            List<XmlSpawner> list = new List<XmlSpawner>();
+
+            foreach (XmlSpawner spawner in World.Items.Values.OfType<XmlSpawner>())
+            {
+                if (list.Contains(spawner))
+                    break;
+
+                foreach (XmlSpawner.SpawnObject obj in spawner.SpawnObjects)
+                {
+                    if(obj == null || obj.TypeName == null)
+                        continue;
+
+                    Type t = ScriptCompiler.FindTypeByName(obj.TypeName, true);
+
+                    if (t != null && t.IsSubclassOf(typeof(BaseVoidCreature)) || obj.TypeName.ToLower().StartsWith("korpre"))
+                    {
+                        list.Add(spawner);
+                        break;
+                    }
+                }
+            }
+
+            list.ForEach(spawner => spawner.DoReset = true);
+            Console.WriteLine("Reset {0} Void Spawn Spawners.", list.Count);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write((int)1);
 
             writer.Write(m_NextMutate);
+            writer.Write(m_BuddyMutate);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -185,8 +235,20 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
+            if (version == 0 && !_CheckSpawners && RemoveFromSpawners)
+            {
+                Console.WriteLine("Removing Spawners...");
+                Timer.DelayCall(TimeSpan.FromSeconds(30), RemoveVoidSpawners);
+
+                _CheckSpawners = true;
+            }
+
             m_NextMutate = reader.ReadDateTime();
-            m_NextCheckForBuddies = DateTime.Now + TimeSpan.FromSeconds(10);
+
+            if (version > 0)
+                m_BuddyMutate = reader.ReadBool();
+            else
+                m_BuddyMutate = true;
         }
     }
 }
