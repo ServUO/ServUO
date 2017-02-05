@@ -95,7 +95,7 @@ namespace Server.Mobiles
             {
                 BaseHouse house = BaseHouse.FindHouseAt(this);
 
-                if (house != null && house.IsCoOwner(from))
+                if (house != null && house.IsCoOwner(from) && from.AccessLevel == AccessLevel.Player)
                     from.SendLocalizedMessage(1072625); // As the house owner, you may rename this Parrot.
 					
                 from.Send(new Server.Network.MobileStatus(from, this));
