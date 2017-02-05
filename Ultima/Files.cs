@@ -213,7 +213,7 @@ namespace Ultima
 
 		private static readonly string[] knownRegPathkeys = new[] {"ExePath", "Install Dir", "InstallDir"};
 
-		private static string LoadDirectory()
+		public static string LoadDirectory()
 		{
 			string dir = null;
 			for (int i = knownRegkeys.Length - 1; i >= 0; i--)
