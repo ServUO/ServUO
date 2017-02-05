@@ -11,7 +11,7 @@ namespace Server.Items
             this.Movable = true;
             this.Hue = 1159;
 
-            DropItem(new PowerScroll(SkillName.Imbuing, 115.0));
+            DropItem(new PowerScroll(SkillName.Imbuing, Utility.RandomBool() ? 105.0 : 110.0));
 
             if (0.05 >= Utility.RandomDouble())
             {
