@@ -39,7 +39,6 @@ namespace Server.Misc
 			if(Ultima.Files.LoadDirectory() != null && !Core.Unix)
 			{	
 				Core.DataDirectories.Add(Ultima.Files.LoadDirectory());
-				Console.WriteLine("Using:" + Core.DataDirectories[0]);
 			}
 		}	
 
