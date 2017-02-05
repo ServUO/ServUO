@@ -92,7 +92,7 @@ namespace Server.Mobiles
 
         public bool IsEvolutionType(Mobile from)
         {
-            if (Stage == 0 || (from.GetType() != this.GetType()))
+            if (Stage == 0 && from.GetType() != this.GetType())
                 return false;
 
             return from is BaseVoidCreature;
@@ -118,8 +118,6 @@ namespace Server.Mobiles
             if (0.05 > Utility.RandomDouble())
             {
                 SpawnOrtanords();
-                this.Delete();
-                return;
             }
 
             Type type = m_EvolutionCycle[(int)evo - 1][Stage];
