@@ -32,41 +32,23 @@ namespace Server.Misc
         */
         public static void Configure()
         {
-            if (CustomPath != null)
-	    {
-                Core.DataDirectories.Add(CustomPath);
-	    }
-	    else
-            {
-                string pathUO = GetPath(@"Origin Worlds Online\Ultima Online\1.0", "ExePath");
-                string pathTD = GetPath(@"Origin Worlds Online\Ultima Online Third Dawn\1.0", "ExePath"); //These refer to 2D & 3D, not the Third Dawn expansion
-                string pathKR = GetPath(@"Origin Worlds Online\Ultima Online\KR Legacy Beta", "ExePath"); //After KR, This is the new registry key for the 2D client
-                string pathSA = GetPath(@"Electronic Arts\EA Games\Ultima Online Stygian Abyss Classic", "InstallDir");
-                string pathHS = GetPath(@"Electronic Arts\EA Games\Ultima Online Classic", "InstallDir");
+        	if (CustomPath != null) 
+                	Core.DataDirectories.Add(CustomPath);
+		else
+            	{
+			if(Ultima.Files.LoadDirectory() != null && !Core.Unix)
+			{	
+				Core.DataDirectories.Add(Ultima.Files.LoadDirectory());
+			}
+		}	
 
-                if (pathHS != null && Core.DataDirectories.Count == 0)
-                    Core.DataDirectories.Add(pathHS);
-
-                if (pathSA != null && Core.DataDirectories.Count == 0)
-                    Core.DataDirectories.Add(pathSA);
-
-                if (pathKR != null && Core.DataDirectories.Count == 0)
-                    Core.DataDirectories.Add(pathKR);
-
-                if (pathTD != null && Core.DataDirectories.Count == 0)
-                    Core.DataDirectories.Add(pathTD);
-
-                if (pathUO != null && Core.DataDirectories.Count == 0)
-                    Core.DataDirectories.Add(pathUO);
-                
 		if (Core.DataDirectories.Count == 0 && !Core.Service)
 		{
 		Console.WriteLine("Enter the Ultima Online directory:");
                 Console.Write("> ");
 
                 Core.DataDirectories.Add(Console.ReadLine());
-		}
-            }
+	}
 	Ultima.Files.SetMulPath(Core.DataDirectories[0]);
 	Utility.PushColor(ConsoleColor.DarkYellow);
 	Console.WriteLine("DataPath: " + Core.DataDirectories[0]);
