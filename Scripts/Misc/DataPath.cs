@@ -36,7 +36,7 @@ namespace Server.Misc
                 	Core.DataDirectories.Add(CustomPath);
 		else
             	{
-			if(Ultima.Files.LoadDirectory() != null)
+			if(Ultima.Files.LoadDirectory() != null && !Core.Unix)
 			{	
 				Core.DataDirectories.Add(Ultima.Files.LoadDirectory());
 				Console.WriteLine("Using:" + Core.DataDirectories[0]);
