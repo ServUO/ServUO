@@ -241,8 +241,8 @@ namespace Server.Items
             }
         }
 
-        public virtual bool CanRepair { get { return this is Server.Engines.Craft.IRepairable; } }
-        public virtual bool CanFortify { get { return CanRepair; } }
+        public virtual bool CanRepair { get { return true; } }
+        public virtual bool CanFortify { get { return NegativeAttributes.Antique < 3; } }
 
         #region Slayer
         private TalismanSlayerName m_Slayer;
