@@ -776,61 +776,79 @@ namespace Server.Mobiles
 			EventSink.Logout += OnLogout;
 			EventSink.Connected += EventSink_Connected;
 			EventSink.Disconnected += EventSink_Disconnected;
+
+            #region Enchanced Client
             EventSink.TargetedSkill += Targeted_Skill;  
             EventSink.TargetedItemUse += Targeted_Item;
+            #endregion
 
             if (Core.SE)
 			{
 				Timer.DelayCall(TimeSpan.Zero, CheckPets);
 			}
 		}
-           
-        private static void Targeted_Item(TargetedItemUseEventArgs e) {
-            try {
+
+        #region Enhanced Client
+        private static void Targeted_Item(TargetedItemUseEventArgs e)
+        {
+            try
+            {
                 Item from = World.FindItem(e.Source.Serial);
                 Mobile to = World.FindMobile(e.Target.Serial);
                 Item toI = World.FindItem(e.Target.Serial);
 
-                if (from != null) {
-                    if (to != null) {
+                if (from != null)
+                {
+                    if (to != null)
+                    {
                         e.NetState.Mobile.TargetLocked = true;
                         e.NetState.Mobile.Use(from);
                         e.NetState.Mobile.Target.Invoke(e.NetState.Mobile, to);
                         e.NetState.Mobile.TargetLocked = false;
-                    } else if (toI != null) {
+                    }
+                    else if (toI != null)
+                    {
                         e.NetState.Mobile.TargetLocked = true;
                         e.NetState.Mobile.Use(from);
                         e.NetState.Mobile.Target.Invoke(e.NetState.Mobile, toI);
                         e.NetState.Mobile.TargetLocked = false;
                     }
                 }
-            } catch { }
+            }
+            catch { }
         }
 
-        private static void Targeted_Skill(TargetedSkillEventArgs e) {
-            try {
+        private static void Targeted_Skill(TargetedSkillEventArgs e)
+        {
+            try
+            {
                 Mobile from = e.NetState.Mobile;
                 int SkillId = e.SkillID;
                 Mobile to = World.FindMobile(e.Target.Serial);
                 Item toI = World.FindItem(e.Target.Serial);
 
 
-                if (to != null) {
+                if (to != null)
+                {
                     from.TargetLocked = true;
 
                     if (from.UseSkill(e.SkillID))
                         from.Target.Invoke(from, to);
                     from.TargetLocked = false;
-                } else if (toI != null) {
+                }
+                else if (toI != null)
+                {
                     from.TargetLocked = true;
 
                     if (from.UseSkill(e.SkillID))
                         from.Target.Invoke(from, toI);
                     from.TargetLocked = false;
                 }
-            } catch { }
+            }
+            catch { }
 
-        }        
+        }
+        #endregion
 
         private static void CheckPets()
         {

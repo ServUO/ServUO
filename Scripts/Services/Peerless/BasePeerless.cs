@@ -1,6 +1,7 @@
 using System;
 using Server.Items;
 using Server.Spells;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -55,7 +56,24 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-			
+
+            SkillMasteryPrimer primer = SkillMasteryPrimer.GetRandom();
+            List<DamageStore> rights = GetLootingRights();
+
+            if (rights.Count > 0)
+            {
+                Mobile m = rights[Utility.Random(rights.Count)].m_Mobile;
+
+                m.SendLocalizedMessage(1156209); // You have received a mastery primer!
+
+                if (m.Backpack == null || !m.Backpack.TryDropItem(m, primer, false))
+                    m.BankBox.DropItem(primer);
+            }
+            else
+            {
+                c.DropItem(primer);
+            }
+
             if (this.m_Altar != null)
                 this.m_Altar.OnPeerlessDeath();
         }
