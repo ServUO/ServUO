@@ -199,21 +199,21 @@ namespace Ultima
 
 		private static readonly string[] knownRegkeys = new[]
 		{
-			@"Origin Worlds Online\Ultima Online\1.0", @"Origin Worlds Online\Ultima Online Third Dawn\1.0",
-			@"EA GAMES\Ultima Online Samurai Empire", @"EA GAMES\Ultima Online Samurai Empire\1.0",
-			@"EA GAMES\Ultima Online Samurai Empire\1.00.0000", @"EA GAMES\Ultima Online: Samurai Empire\1.0",
-			@"EA GAMES\Ultima Online: Samurai Empire\1.00.0000", @"EA Games\Ultima Online: Mondain's Legacy",
-			@"EA Games\Ultima Online: Mondain's Legacy\1.0", @"EA Games\Ultima Online: Mondain's Legacy\1.00.0000",
-			@"Origin Worlds Online\Ultima Online Samurai Empire BETA\2d\1.0",
-			@"Origin Worlds Online\Ultima Online Samurai Empire BETA\3d\1.0",
+			@"Electronic Arts\EA Games\Ultima Online Classic", @"Electronic Arts\EA Games\Ultima Online Stygian Abyss Classic",
+			@"Origin Worlds Online\Ultima Online\KR Legacy Beta", @"Origin Worlds Online\Ultima Online Samurai Empire\3d\1.0",
 			@"Origin Worlds Online\Ultima Online Samurai Empire\2d\1.0",
-			@"Origin Worlds Online\Ultima Online Samurai Empire\3d\1.0", @"Origin Worlds Online\Ultima Online\KR Legacy Beta",
-			@"Electronic Arts\EA Games\Ultima Online Stygian Abyss Classic", @"Electronic Arts\EA Games\Ultima Online Classic",
+			@"Origin Worlds Online\Ultima Online Samurai Empire BETA\3d\1.0",
+			@"Origin Worlds Online\Ultima Online Samurai Empire BETA\2d\1.0",
+			@"EA Games\Ultima Online: Mondain's Legacy\1.0", @"EA Games\Ultima Online: Mondain's Legacy\1.00.0000",
+			@"EA GAMES\Ultima Online: Samurai Empire\1.00.0000", @"EA Games\Ultima Online: Mondain's Legacy",
+			@"EA GAMES\Ultima Online Samurai Empire\1.00.0000", @"EA GAMES\Ultima Online: Samurai Empire\1.0",
+			@"EA GAMES\Ultima Online Samurai Empire", @"EA GAMES\Ultima Online Samurai Empire\1.0",
+			@"Origin Worlds Online\Ultima Online\1.0", @"Origin Worlds Online\Ultima Online Third Dawn\1.0",
 		};
 
 		private static readonly string[] knownRegPathkeys = new[] {"ExePath", "Install Dir", "InstallDir"};
 
-		private static string LoadDirectory()
+		public static string LoadDirectory()
 		{
 			string dir = null;
 			for (int i = knownRegkeys.Length - 1; i >= 0; i--)
