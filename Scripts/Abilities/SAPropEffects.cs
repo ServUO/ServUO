@@ -522,9 +522,7 @@ namespace Server.Items
 
         public void EndForceWalk(Mobile m)
         {
-            if ( m.NetState != null && !TransformationSpellHelper.UnderTransformation( m, typeof( AnimalForm ) )
-				&& !TransformationSpellHelper.UnderTransformation( m, typeof( Server.Spells.Spellweaving.ReaperFormSpell ) ) )
-				m.Send( SpeedControl.Disable );
+		    m.Send( SpeedControl.Disable );
         }
 
         public void DoBleed(Mobile m, Mobile from, int level)

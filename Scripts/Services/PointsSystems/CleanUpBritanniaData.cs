@@ -135,6 +135,11 @@ namespace Server.Engines.Points
                     points = 500 * pigments.UsesRemaining;
                 }
 
+                if (item.LootType != LootType.Blessed && points < 100 && item is IShipwreckedItem && ((IShipwreckedItem)item).IsShipwreckedItem)
+                {
+                    points = 100;
+                }
+
                 return points;
             }
         }

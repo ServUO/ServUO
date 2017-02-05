@@ -875,6 +875,8 @@ namespace Server.Engines.Harvest
                 id = ((StaticTarget)toHarvest).ItemID;
             else if (toHarvest is LandTarget)
                 id = ((LandTarget)toHarvest).TileID;
+            else if (toHarvest is Static && !((Static)toHarvest).Movable)
+                id = ((Static)toHarvest).ItemID;
 
             return ValidateSpecialTile(id);
         }
