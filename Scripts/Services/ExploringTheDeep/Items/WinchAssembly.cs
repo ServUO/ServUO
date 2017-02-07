@@ -147,7 +147,10 @@ namespace Server.Items
         }
 
         public override void OnDoubleClick(Mobile from)
-        {            
+        {
+            if (m_WinchAssembly == null)
+                return;
+                
             if (m_WinchAssembly.BearingAssembly && m_WinchAssembly.FlyWheel && m_WinchAssembly.WireSpool && m_WinchAssembly.PowerCore)
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), 3, new TimerStateCallback(m_hatch.DoDownEffect), new object[] { m_hatch.Location, 0, from });
