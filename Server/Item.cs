@@ -1600,6 +1600,11 @@ namespace Server
             {
                 ((Mobile)m_Parent).GetChildContextMenuEntries(from, list, this);
             }
+
+            if (from.Region != null)
+            {
+                from.Region.GetContextMenuEntries(from, list, this);
+            }
         }
 
         public virtual bool VerifyMove(Mobile from)

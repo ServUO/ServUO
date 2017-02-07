@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using Server.Commands;
 using Server.Gumps;
 using Server.Network;
+using System.Linq;
+using System.IO;
+using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Commands 
 {
@@ -44,7 +48,7 @@ namespace Server.Commands
 			new CommandEntry("Solen Hives",     "SHTelGen",         "SHTelGenDelete",		109),
 			new CommandEntry("Malas Secrets",   "SecretLocGen",     "SecretLocDelete",		110),
 			new CommandEntry("Factions",        "GenerateFactions",	"DeleteFactions",		111),
-			new CommandEntry("Primeival Lich",  "GenLichPuzzle",	"DeleteLichPuzzle",		112),
+			//new CommandEntry("Primeival Lich",  "GenLichPuzzle",	"DeleteLichPuzzle",		112), Moved to DecorateSA, command remains
 			new CommandEntry("Decorations",     "Decorate",         "DecorateDelete",		113),
 			new CommandEntry("ML Decorations",  "DecorateML",		"DecorateMLDelete",		114),
 			new CommandEntry("SA Decorations",  "DecorateSA",		"DecorateSADelete",		115),
@@ -153,12 +157,19 @@ namespace Server.Commands
 							case CreateWorld.GumpType.Create:
 								from.Say("Generating " + entry.Name);
 								CommandSystem.Handle(from, prefix + entry.CreateCommand);
+
+                                if (CreateWorldData.CreateTable.ContainsKey(entry.checkId))
+                                    CreateWorldData.CreateTable[sel] = true;
+
 								break;
 							case CreateWorld.GumpType.Delete:
 								if (!String.IsNullOrEmpty(entry.DeleteCommand))
 								{
 									from.Say("Deleting " + entry.Name);
 									CommandSystem.Handle(from, prefix + entry.DeleteCommand);
+
+                                    if (CreateWorldData.CreateTable.ContainsKey(entry.checkId))
+                                        CreateWorldData.CreateTable[sel] = false;
 								}
 								break;
 							case CreateWorld.GumpType.Recreate:
@@ -167,6 +178,9 @@ namespace Server.Commands
 									from.Say("Recreating " + entry.Name);
 									CommandSystem.Handle(from, prefix + entry.DeleteCommand);
 									CommandSystem.Handle(from, prefix + entry.CreateCommand);
+
+                                    if (CreateWorldData.CreateTable.ContainsKey(entry.checkId))
+                                        CreateWorldData.CreateTable[sel] = true;
 								}
 								break;
 						}
@@ -184,6 +198,7 @@ namespace Server.Gumps
     {
         private readonly CommandEventArgs m_CommandEventArgs;
 		private CreateWorld.GumpType m_Type;
+
         public CreateWorldGump(CommandEventArgs e, CreateWorld.GumpType type)
             : base(50,50)
         {
@@ -212,15 +227,20 @@ namespace Server.Gumps
 					this.AddLabel(40, 2, 200, "RECREATE WORLD GUMP");
 					break;
 			}
+
 			this.AddImageTiled(10, 20, 220, 10 + items * 25, 3004);
 			int y = 25;
+
 			foreach(CreateWorld.CommandEntry entry in CreateWorld.Commands)
 			{
                 if (entry.Name == "Factions" && !Server.Factions.Settings.Enabled)
                     continue;
 
-				this.AddLabel(20, y + 1, 200, entry.Name);
-				this.AddCheck(180, y - 2, 210, 211, true, entry.checkId);
+                bool created = CreateWorldData.CreateTable.ContainsKey(entry.checkId) && CreateWorldData.CreateTable[entry.checkId];
+
+				this.AddLabel(20, y + 1, created ? 200 : 338, String.Format("{0} {1}", entry.Name, created ? "[created]" : "[not created]"));
+				this.AddCheck(210, y - 2, 210, 211, m_Type == CreateWorld.GumpType.Create ? !created : created, entry.checkId);
+
 				y += 25;
 			}
 
@@ -242,6 +262,94 @@ namespace Server.Gumps
 					CreateWorld.DoCommands(info.Switches, m_Type, from);
 					break;
 			}
+        }
+    }
+
+    public static class CreateWorldData
+    {
+        public static Dictionary<int, bool> CreateTable { get; set; }
+
+        public static bool HasGenerated(int index)
+        {
+            switch (index)
+            {
+                case 101:
+                    return PublicMoongate.Moongates.Count > 0;
+                case 102:
+                    return WeakEntityCollection.HasCollection("door");
+                case 103:
+                    return WeakEntityCollection.HasCollection("sign");
+                case 104:
+                    return WeakEntityCollection.HasCollection("tel");
+                case 105:
+                    return WeakEntityCollection.HasCollection("LeverPuzzleController");
+                case 106:
+                    return WeakEntityCollection.HasCollection("doom");
+                case 107:
+                    return WeakEntityCollection.HasCollection("khaldun");
+                case 108:
+                    return StealableArtifactsSpawner.Instance != null;
+                case 109:
+                    return SHTeleporter.SHTeleporterCreator.FindSHTeleporter(Map.Trammel, new Point3D(5747, 1895, 0)) != null;
+                case 110:
+                    return WeakEntityCollection.HasCollection("malas");
+                case 111:
+                    return WeakEntityCollection.HasCollection("factions");
+                case 113:
+                    return WeakEntityCollection.HasCollection("deco");
+                case 114:
+                    return WeakEntityCollection.HasCollection("ml");
+                case 115:
+                    return WeakEntityCollection.HasCollection("sa");
+                case 116:
+                    return World.Items.Values.Where(i => i != null && i is XmlSpawner).Count() > 1000;
+                case 117:
+                    return WeakEntityCollection.HasCollection("despise");
+                case 118:
+                    return WeakEntityCollection.HasCollection("newcovetous");
+                case 119:
+                    return WeakEntityCollection.HasCollection("newshame");
+                case 120:
+                    return Server.Engines.NewMagincia.MaginciaBazaar.Instance != null;
+                case 121:
+                    return WeakEntityCollection.HasCollection("highseas");
+                case 122:
+                    return Server.Engines.CityLoyalty.CityLoyaltySystem.Cities != null && Server.Engines.CityLoyalty.CityLoyaltySystem.Cities.Count > 0 && Server.Engines.CityLoyalty.CityLoyaltySystem.Cities[0].Stone != null;
+                case 123:
+                    return HasItem(typeof(DungeonHitchingPost), new Point3D(6428, 2677, 0), Map.Trammel) &&
+                           HasItem(typeof(DungeonHitchingPost), new Point3D(6428, 2677, 0), Map.Felucca);
+                case 124:
+                    return WeakEntityCollection.HasCollection("tol");
+            }
+
+            return false;
+        }
+
+        public static bool HasItem(Type type, Point3D p, Map map)
+        {
+            IPooledEnumerable eable = map.GetItemsInRange(p, 0);
+
+            foreach (Item item in eable)
+            {
+                if (item.GetType() == type)
+                {
+                    eable.Free();
+                    return true;
+                }
+            }
+
+            eable.Free();
+            return false;
+        }
+
+        public static void Initialize()
+        {
+            CreateTable = new Dictionary<int, bool>();
+
+            foreach (CreateWorld.CommandEntry entry in CreateWorld.Commands)
+            {
+                CreateTable[entry.checkId] = HasGenerated(entry.checkId);
+            }
         }
     }
 }

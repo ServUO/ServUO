@@ -916,6 +916,10 @@ namespace Server
 			return true;
 		}
 
+        public virtual void GetContextMenuEntries(Mobile from, List<Server.ContextMenus.ContextMenuEntry> list, Item item)
+        {
+        }
+
 		public virtual bool AllowSpawn()
 		{
 			if (m_Parent != null)

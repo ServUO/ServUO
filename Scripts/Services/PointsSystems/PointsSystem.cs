@@ -275,9 +275,7 @@ namespace Server.Engines.Points
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)1);
-
-                    writer.Write(BlackthornHasSaved);
+                    writer.Write((int)2);
 
                     writer.Write(Systems.Count);
                     Systems.ForEach(s =>
@@ -296,7 +294,8 @@ namespace Server.Engines.Points
 				{
 					int version = reader.ReadInt();
 
-                    BlackthornHasSaved = version == 0 ? false : reader.ReadBool();
+                    if (version < 2)
+                        reader.ReadBool();
 
 					int count = reader.ReadInt();
 					for(int i = 0; i < count; i++)
@@ -308,8 +307,6 @@ namespace Server.Engines.Points
 					}	
 				});
 		}
-
-        public static bool BlackthornHasSaved { get; set; }
 
         public static List<PointsSystem> Systems { get; set; }
 

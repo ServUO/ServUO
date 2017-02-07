@@ -2,8 +2,8 @@ using System;
 using Server.Mobiles;
 
 namespace Server.Items
-{ 
-    public class NecromancersPhylactery : BaseTalisman
+{
+    public class NecromancersPhylactery : BaseTalisman, ITokunoDyable
     {
         [Constructable]
         public NecromancersPhylactery()

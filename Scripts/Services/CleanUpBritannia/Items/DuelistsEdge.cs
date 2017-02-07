@@ -2,8 +2,8 @@ using System;
 using Server.Mobiles;
 
 namespace Server.Items
-{ 
-    public class DuelistsEdge : BaseTalisman
+{
+    public class DuelistsEdge : BaseTalisman, ITokunoDyable
     {
         [Constructable]
         public DuelistsEdge()

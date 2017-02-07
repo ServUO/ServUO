@@ -28,6 +28,7 @@ namespace Server.Items
                 return;
 
             BaseBoat boat = BaseBoat.FindBoatAt(from, from.Map);
+
             int range = boat != null && boat == this.Boat ? 3 : 8;
             bool canMove = false;
 

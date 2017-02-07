@@ -3,7 +3,7 @@ using System;
 namespace Server.Items
 {
     [Flipable(0x1F03, 0x1F04)]
-    public class ConjureresGarb : BaseOuterTorso
+    public class ConjureresGarb : BaseOuterTorso, ITokunoDyable
 	{
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
@@ -16,9 +16,6 @@ namespace Server.Items
 			this.Attributes.DefendChance = 5;
 			this.Attributes.Luck = 140;
 			this.Attributes.RegenMana = 2;
-           
-			
-			// TODO: Supports arcane?
         }
 
         public ConjureresGarb(Serial serial)
@@ -27,6 +24,8 @@ namespace Server.Items
         }
 
         // Conjurer's Garb
+        public override int LabelNumber { get { return 1114052; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

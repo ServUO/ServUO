@@ -3,9 +3,10 @@ using System;
 namespace Server.Items
 {
     [Flipable(0x1F03, 0x1F04)]
-    public class ConjureresGarbHarbringer : BaseOuterTorso
+    public class ConjureresGarbHarbringer : BaseOuterTorso, ITokunoDyable
 	{
 		public override bool IsArtifact { get { return true; } }
+
         [Constructable]
         public ConjureresGarbHarbringer()
             : base(0x1F03, 0x486)
@@ -23,7 +24,6 @@ namespace Server.Items
         {
         }
 
-        // Conjurer's Garb on Harbringer
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
