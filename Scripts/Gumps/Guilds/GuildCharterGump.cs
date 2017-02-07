@@ -6,7 +6,7 @@ namespace Server.Gumps
 {
     public class GuildCharterGump : Gump
     {
-        private const string DefaultWebsite = "http://www.runuo.com/";
+        private const string DefaultWebsite = "https://www.servuo.com/";
         private readonly Mobile m_Mobile;
         private readonly Guild m_Guild;
         public GuildCharterGump(Mobile from, Guild guild)
