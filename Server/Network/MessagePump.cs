@@ -173,7 +173,7 @@ namespace Server.Network
 		private bool CheckEncrypted(NetState ns, int packetID)
 		{
 			if (!ns.SentFirstPacket && packetID != 0xF0 && packetID != 0xF1 && packetID != 0xCF && packetID != 0x80 &&
-				packetID != 0x91 && packetID != 0xA4 && packetID != 0xEF)
+				packetID != 0x91 && packetID != 0xA4 && packetID != 0xEF && packetID != 0xE4 && packetID != 0xFF)
 			{
 				Console.WriteLine("Client: {0}: Encrypted client detected, disconnecting", ns);
 				ns.Dispose();

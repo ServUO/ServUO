@@ -122,7 +122,7 @@ namespace Server.Items
             return true;
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
         {
             if (!this.CheckHold(from, item, true, true))
                 return false;
@@ -142,6 +142,7 @@ namespace Server.Items
             }
 
             item.Location = new Point3D(p.X, p.Y, 0);
+            item.SetGridLocation(gridloc, this);
             this.AddItem(item);
 
             from.SendSound(this.GetDroppedSound(item), this.GetWorldLocation());
@@ -159,9 +160,9 @@ namespace Server.Items
             return true;
         }
 
-        public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
+        public override bool OnDroppedInto(Mobile from, Container target, Point3D p, byte gridloc)
         {
-            bool canDrop = base.OnDroppedInto(from, target, p);
+            bool canDrop = base.OnDroppedInto(from, target, p, gridloc);
 
             if (canDrop && target is BankBox)
             {
@@ -292,7 +293,7 @@ namespace Server.Items
             return false;
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
         {
             return false;
         }

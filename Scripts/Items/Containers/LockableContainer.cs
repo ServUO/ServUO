@@ -252,7 +252,7 @@ namespace Server.Items
             return base.TryDropItem(from, dropped, sendFullMessage);
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
         {
             if (from.AccessLevel < AccessLevel.GameMaster && this.m_Locked)
             {
@@ -260,7 +260,7 @@ namespace Server.Items
                 return false;
             }
 
-            return base.OnDragDropInto(from, item, p);
+            return base.OnDragDropInto(from, item, p, gridloc);
         }
 
         public override bool CheckLift(Mobile from, Item item, ref LRReason reject)

@@ -115,14 +115,14 @@
             }
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
         {
             if (!this.IsEmpty)
             {
                 return false;
             }
 
-            return base.OnDragDropInto(from, item, p);
+            return base.OnDragDropInto(from, item, p, gridloc);
         }
 
         public override void Serialize(GenericWriter writer)

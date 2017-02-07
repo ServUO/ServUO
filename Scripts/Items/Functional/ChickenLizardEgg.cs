@@ -158,9 +158,9 @@ namespace Server.Items
             return check;
         }
 
-        public override bool DropToItem(Mobile from, Item target, Point3D p)
+        public override bool DropToItem(Mobile from, Item target, Point3D p, byte gridloc)
         {
-            bool check = base.DropToItem(from, target, p);
+            bool check = base.DropToItem(from, target, p, gridloc);
 
             if (check && !(Parent is Incubator) && m_Incubating)
                 Incubating = false;

@@ -343,6 +343,7 @@ namespace Server.Items
 
         private class RenamePrompt : Prompt
         {
+            public override int MessageCliloc { get { return 501665; } }
             private readonly Key m_Key;
             public RenamePrompt(Key key)
             {

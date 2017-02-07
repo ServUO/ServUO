@@ -30,8 +30,9 @@ namespace Server.Gumps
 		private int m_Hue;
 		private int m_EntryID;
 		private string m_InitialText;
+        private int m_InitialTextID;
 
-		public int X
+        public int X
 		{
 			get
 			{
@@ -126,9 +127,20 @@ namespace Server.Gumps
 			m_InitialText = initialText;
 		}
 
-		public override string Compile()
+        public GumpTextEntry(int x, int y, int width, int height, int hue, int entryID, int initialTextID)
+        {
+            m_X = x;
+            m_Y = y;
+            m_Width = width;
+            m_Height = height;
+            m_Hue = hue;
+            m_EntryID = entryID;
+            m_InitialTextID = initialTextID;
+        }
+
+        public override string Compile()
 		{
-			return String.Format( "{{ textentry {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, m_Hue, m_EntryID, Parent.Intern( m_InitialText ) );
+			return String.Format( "{{ textentry {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, m_Hue, m_EntryID, m_InitialText == null ? m_InitialTextID : Parent.Intern(m_InitialText));
 		}
 
 		private static byte[] m_LayoutName = Gump.StringToBuffer( "textentry" );
@@ -142,9 +154,9 @@ namespace Server.Gumps
 			disp.AppendLayout( m_Height );
 			disp.AppendLayout( m_Hue );
 			disp.AppendLayout( m_EntryID );
-			disp.AppendLayout( Parent.Intern( m_InitialText ) );
+            disp.AppendLayout(m_InitialText == null ? m_InitialTextID : Parent.Intern(m_InitialText));
 
-			disp.TextEntries++;
+            disp.TextEntries++;
 		}
 	}
 }

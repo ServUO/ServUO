@@ -213,16 +213,16 @@ namespace Server.Engines.CityLoyalty
             return false;
         }
 
-        public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
+        public override bool OnDroppedInto(Mobile from, Container target, Point3D p, byte gridloc)
         {
             if (target == from.Backpack)
-                return base.OnDroppedInto(from, target, p);
+                return base.OnDroppedInto(from, target, p, gridloc);
 
             from.SendLocalizedMessage(1076254); // That item cannot be dropped.
             return false;
         }
  
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
         {
             from.SendLocalizedMessage(1076254); // That item cannot be dropped.
             return false;

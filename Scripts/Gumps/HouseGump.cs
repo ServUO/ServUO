@@ -732,6 +732,7 @@ namespace Server.Prompts
 {
     public class RenamePrompt : Prompt
     {
+        public override int MessageCliloc { get { return 501302; } }
         private readonly BaseHouse m_House;
         public RenamePrompt(BaseHouse house)
         {

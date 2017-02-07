@@ -43,9 +43,9 @@ namespace Server.Items
 			return convert;
 		}
 
-		public override bool DropToItem( Mobile from, Item target, Point3D p )
+		public override bool DropToItem( Mobile from, Item target, Point3D p, byte gridloc)
 		{
-			bool convert = base.DropToItem( from, target, p );
+			bool convert = base.DropToItem( from, target, p, gridloc);
 
 			if ( convert && Parent != from.Backpack )
 				ConvertItem( from );

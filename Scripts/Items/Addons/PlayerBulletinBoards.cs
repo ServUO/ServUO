@@ -306,6 +306,7 @@ namespace Server.Items
 
         public class SetTitlePrompt : Prompt
         {
+            public override int MessageCliloc { get { return 1062402; } }
             private readonly int m_Page;
             private readonly BaseHouse m_House;
             private readonly BasePlayerBB m_Board;
