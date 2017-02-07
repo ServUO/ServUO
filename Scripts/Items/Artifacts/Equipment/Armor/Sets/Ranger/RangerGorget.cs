@@ -1,9 +1,12 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class RangerGorget : BaseArmor
+    public class RangerGorget : BaseArmor, IRepairable
     {
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RangerGorget()

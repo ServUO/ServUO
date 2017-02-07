@@ -3,7 +3,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class ConjurersTrinket : BaseTalisman
+    public class ConjurersTrinket : BaseTalisman, ITokunoDyable
     {
         public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1094800; } } // Conjurer's Trinket

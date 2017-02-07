@@ -2,8 +2,8 @@ using System;
 using Server.Mobiles;
 
 namespace Server.Items
-{ 
-    public class LuckyCharm : BaseTalisman
+{
+    public class LuckyCharm : BaseTalisman, ITokunoDyable
     {
         [Constructable]
         public LuckyCharm()

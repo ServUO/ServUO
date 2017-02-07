@@ -17,17 +17,22 @@ namespace Server.Items
         [Usage("GenNavrey")]
         private static void GenNavrey_Command(CommandEventArgs e)
         {
+            GenNavery(e.Mobile);
+        }
+
+        public static void GenNavery(Mobile m)
+        {
             if (Check())
             {
-                e.Mobile.SendMessage("Navrey spawner is already present.");
+                m.SendMessage("Navrey spawner is already present.");
             }
             else
             {
-                e.Mobile.SendMessage("Creating Navrey Night-Eyes Lair...");
+                m.SendMessage("Creating Navrey Night-Eyes Lair...");
 
                 NavreysController controller = new NavreysController();
 
-                e.Mobile.SendMessage("Generation completed!");
+                m.SendMessage("Generation completed!");
             }
         }
 

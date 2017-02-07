@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class ConjurersGrimoire : Spellbook
+    public class ConjurersGrimoire : Spellbook, ITokunoDyable
     {
         public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1094799; } } // Conjurer's Grimoire

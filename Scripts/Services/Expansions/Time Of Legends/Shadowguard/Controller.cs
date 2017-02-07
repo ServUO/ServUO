@@ -110,6 +110,17 @@ namespace Server.Engines.Shadowguard
             });
         }
 
+        public void CompleteRoof(Mobile m)
+        {
+            if (Table != null && Table.ContainsKey(m))
+            {
+                Table.Remove(m);
+
+                if (Table.Count == 0)
+                    Table = null;
+            }
+        }
+
         public void OnEncounterComplete(ShadowguardEncounter encounter, bool expired)
         {
             Encounters.Remove(encounter);
@@ -141,16 +152,9 @@ namespace Server.Engines.Shadowguard
         public void AddToTable(Mobile m, EncounterType encounter)
         {
             if (encounter == EncounterType.Roof)
-            {
-                if (Table != null && Table.ContainsKey(m))
-                {
-                    Table.Remove(m);
+                return;
 
-                    if (Table.Count == 0)
-                        Table = null;
-                }
-            }
-            else if (Table != null && Table.ContainsKey(m))
+            if (Table != null && Table.ContainsKey(m))
             {
                 if ((Table[m] & encounter) == 0)
                     Table[m] |= encounter;

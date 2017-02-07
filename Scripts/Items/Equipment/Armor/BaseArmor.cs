@@ -581,7 +581,8 @@ namespace Server.Items
                 if (armor.ArmorAttributes.MageArmor > 1 || armor is WoodlandArms || armor is WoodlandChest || armor is WoodlandGloves || armor is WoodlandLegs || armor is WoodlandGorget || armor is BaseShield)
                     continue;
 
-                if (armor.MaterialType == ArmorMaterialType.Studded || armor.MaterialType == ArmorMaterialType.Bone)
+                else if (armor.MaterialType == ArmorMaterialType.Studded || armor.MaterialType == ArmorMaterialType.Bone ||
+                    armor is GargishStoneKilt || armor is GargishStoneLegs || armor is GargishStoneChest || armor is GargishStoneArms)
                     toReduce += 3;
                 else if (armor.MaterialType >= ArmorMaterialType.Ringmail)
                     toReduce += 1;

@@ -150,6 +150,11 @@ namespace Server
 			return col;
 		}
 
+        public static bool HasCollection(string name)
+        {
+            return name != null && _Collections.ContainsKey(name);
+        }
+
 		public static void Add(string key, IEntity entity)
 		{
 			if (entity == null || entity.Deleted)

@@ -3,7 +3,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 { 
-    public class WizardsCurio : BaseTalisman
+    public class WizardsCurio : BaseTalisman, ITokunoDyable
     {
         [Constructable]
         public WizardsCurio()

@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class ScrappersCompendium : Spellbook
+    public class ScrappersCompendium : Spellbook, ITokunoDyable
 	{
 		public override bool IsArtifact { get { return true; } }
         [Constructable]

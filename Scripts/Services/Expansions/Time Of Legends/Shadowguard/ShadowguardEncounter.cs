@@ -22,6 +22,7 @@ namespace Server.Engines.Shadowguard
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D StartLoc { get { return Def.StartLoc; } }
+
         public Point3D[] SpawnPoints { get { return Def.SpawnPoints; } }
         public Rectangle2D[] SpawnRecs { get { return Def.SpawnRecs; } }
 
@@ -41,13 +42,24 @@ namespace Server.Engines.Shadowguard
         public ShadowguardInstance Instance { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool ForceEnd
+        public bool ForceExpire
         {
             get { return false; }
             set
             {
                 if (value)
                     Expire();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ForceComplete
+        {
+            get { return false; }
+            set
+            {
+                if (value)
+                    CompleteEncounter();
             }
         }
 
@@ -144,7 +156,7 @@ namespace Server.Engines.Shadowguard
 		{
 			if(m == null || !m.Alive || !m.InRange(Controller.Location, 25) || m.NetState == null)
 			{
-				Reset();
+				Reset(true);
 			}
 			else
 			{
@@ -210,9 +222,14 @@ namespace Server.Engines.Shadowguard
                     Reset(true);
                 });
 		}
+
+        private bool _Completed;
 		
 		public virtual void CompleteEncounter()
 		{
+            if (_Completed)
+                return;
+
 			Timer.DelayCall(ResetDuration, () =>
                 {
                     Reset();
@@ -222,6 +239,8 @@ namespace Server.Engines.Shadowguard
                 SendPartyMessage(1156250); // Congratulations! You have bested Shadowguard and prevented Minax from exploiting the Time Gate! You will be teleported out in a few minutes.
             else
                 SendPartyMessage(1156244); //You have bested this tower of Shadowguard! You will be teleported out of the tower in 60 seconds!
+
+            _Completed = true;
 		}
 		
 		public virtual void Reset(bool expired = false)

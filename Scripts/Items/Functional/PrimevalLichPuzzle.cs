@@ -212,23 +212,28 @@ namespace Server.Engines.CannedEvil
         [Description("Generates the Primeval Lich lever puzzle.")]
         public static void GenLichPuzzle_OnCommand(CommandEventArgs e)
         {
+            GenLichPuzzle(e.Mobile);
+        }
+
+        public static void GenLichPuzzle(Mobile m)
+        {
             if (null != m_Instance)
             {
-                e.Mobile.SendMessage("Primeval Lich lever puzzle already exists: please delete the existing one first ...");
+                m.SendMessage("Primeval Lich lever puzzle already exists: please delete the existing one first ...");
                 return;
             }
 
-            e.Mobile.SendMessage("Generating Primeval Lich lever puzzle...");
-            PrimevalLichPuzzle control = new PrimevalLichPuzzle(e.Mobile);
+            m.SendMessage("Generating Primeval Lich lever puzzle...");
+            PrimevalLichPuzzle control = new PrimevalLichPuzzle(m);
             if (null == control || control.Deleted)
-			{
-				e.Mobile.SendMessage(33, "There was a problem generating the puzzle.");
-			}
-			else
-			{
-				e.Mobile.SendMessage("The puzzle was successfully generated.");
-				WeakEntityCollection.Add("primevallich", control);
-			}
+            {
+                m.SendMessage(33, "There was a problem generating the puzzle.");
+            }
+            else
+            {
+                m.SendMessage("The puzzle was successfully generated.");
+                WeakEntityCollection.Add("primevallich", control);
+            }
         }
 
         // static hook for the ChampionSpawn code to update the puzzle state

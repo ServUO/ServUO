@@ -2,8 +2,8 @@ using System;
 using Server.Mobiles;
 
 namespace Server.Items
-{ 
-    public class SoldiersMedal : BaseTalisman
+{
+    public class SoldiersMedal : BaseTalisman, ITokunoDyable
     {
         [Constructable]
         public SoldiersMedal()
