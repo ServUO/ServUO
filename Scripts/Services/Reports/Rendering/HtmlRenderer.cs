@@ -6,6 +6,7 @@ using System.IO;
 using System.Web.UI;
 using HtmlAttr = System.Web.UI.HtmlTextWriterAttribute;
 using HtmlTag = System.Web.UI.HtmlTextWriterTag;
+using Server.Misc;
 
 namespace Server.Engines.Reports
 {
@@ -16,7 +17,7 @@ namespace Server.Engines.Reports
         private static readonly string FtpPassword = null;
         private static readonly string FtpStatsDirectory = null;
         private static readonly string FtpStaffDirectory = null;
-        private const string ShardTitle = ServerList.ServerName;
+        private static string ShardTitle = ServerList.ServerName;
         private readonly string m_Type;
         private readonly string m_Title;
         private readonly string m_OutputDirectory;
