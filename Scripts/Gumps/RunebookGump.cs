@@ -406,6 +406,7 @@ namespace Server.Gumps
 
         private class InternalPrompt : Prompt
         {
+            public override int MessageCliloc { get { return 502414; } }
             private readonly Runebook m_Book;
             public InternalPrompt(Runebook book)
             {

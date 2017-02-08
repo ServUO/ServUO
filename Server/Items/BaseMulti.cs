@@ -5,6 +5,7 @@
 #endregion
 
 #region References
+using Server.Network;
 using System;
 #endregion
 
@@ -63,7 +64,9 @@ namespace Server.Items
 			}
 		}
 
-		public override int LabelNumber
+        public override GraphicData GraphicData { get { return GraphicData.MultiData; } }
+
+        public override int LabelNumber
 		{
 			get
 			{

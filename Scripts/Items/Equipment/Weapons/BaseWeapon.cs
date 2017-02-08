@@ -2910,19 +2910,23 @@ namespace Server.Items
 		{
 			attacker.SendLocalizedMessage(1113717); // You have hit your target with a curse effect.
 			defender.SendLocalizedMessage(1113718); // You have been hit with a curse effect.
+
 			defender.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
 			defender.PlaySound(0x1EA);
+            TimeSpan duration = TimeSpan.FromSeconds(30);
+
 			defender.AddStatMod(
-				new StatMod(StatType.Str, String.Format("[Magic] {0} Curse", StatType.Str), -10, TimeSpan.FromSeconds(30)));
+                new StatMod(StatType.Str, String.Format("[Magic] {0} Curse", StatType.Str), -10, duration));
 			defender.AddStatMod(
-				new StatMod(StatType.Dex, String.Format("[Magic] {0} Curse", StatType.Dex), -10, TimeSpan.FromSeconds(30)));
+                new StatMod(StatType.Dex, String.Format("[Magic] {0} Curse", StatType.Dex), -10, duration));
 			defender.AddStatMod(
-				new StatMod(StatType.Int, String.Format("[Magic] {0} Curse", StatType.Int), -10, TimeSpan.FromSeconds(30)));
+                new StatMod(StatType.Int, String.Format("[Magic] {0} Curse", StatType.Int), -10, duration));
 
 			int percentage = -10; //(int)(SpellHelper.GetOffsetScalar(Caster, m, true) * 100);
 			string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
 
-			BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, TimeSpan.FromSeconds(30), defender, args));
+            Server.Spells.Fourth.CurseSpell.AddEffect(defender, duration);
+            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, duration, defender, args));
 		}
 
 		public virtual void DoFatigue(Mobile attacker, Mobile defender, int damagegiven)

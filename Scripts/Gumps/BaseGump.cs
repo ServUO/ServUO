@@ -180,7 +180,7 @@ namespace Server.Gumps
             User.CloseGump(this.GetType());
         }
 
-        public void AddItemProperty(Item item)
+        public new void AddItemProperty(Item item)
         {
             if (item == null || item.Deleted)
             {

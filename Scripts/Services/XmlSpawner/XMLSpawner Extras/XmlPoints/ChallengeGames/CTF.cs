@@ -209,7 +209,7 @@ namespace Server.Items
 		{
 		}
 
-		public override bool OnDroppedInto( Mobile from, Container target, Point3D p )
+		public override bool OnDroppedInto( Mobile from, Container target, Point3D p)
         {
             // allow movement within a players backpack
             if(from != null && from.Backpack == target)
