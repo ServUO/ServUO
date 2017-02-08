@@ -389,11 +389,11 @@ namespace Server.Engines.Help
 
 			MailMessage mail = new MailMessage(Email.FromAddress, Email.SpeechLogPageAddresses);
 
-			mail.Subject = "RunUO Speech Log Page Forwarding";
+			mail.Subject = "ServUO Speech Log Page Forwarding";
 
 			using (StringWriter writer = new StringWriter())
 			{
-				writer.WriteLine("RunUO Speech Log Page - {0}", GetPageTypeName(entry.Type));
+				writer.WriteLine("ServUO Speech Log Page - {0}", GetPageTypeName(entry.Type));
 				writer.WriteLine();
 
 				writer.WriteLine(
