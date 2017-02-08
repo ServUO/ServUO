@@ -151,7 +151,7 @@ namespace Server.Items
             return false;
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
         {
             if (this.IsAccessibleTo(from) && (item is PlagueBeastInnard || item is PlagueBeastGland))
             {
@@ -179,7 +179,7 @@ namespace Server.Items
                     }
                 }
 
-                return base.OnDragDropInto(from, item, p, gridloc);
+                return base.OnDragDropInto(from, item, p);
             }
 
             return false;

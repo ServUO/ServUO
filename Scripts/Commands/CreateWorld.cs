@@ -312,7 +312,7 @@ namespace Server.Gumps
                 case 120:
                     return Server.Engines.NewMagincia.MaginciaBazaar.Instance != null;
                 case 121:
-                    return WeakEntityCollection.HasCollection("highseas");
+                    return WeakEntityCollection.HasCollection("highseas") || CharydbisSpawner.SpawnInstance != null;
                 case 122:
                     return Server.Engines.CityLoyalty.CityLoyaltySystem.Cities != null && Server.Engines.CityLoyalty.CityLoyaltySystem.Cities.Count > 0 && Server.Engines.CityLoyalty.CityLoyaltySystem.Cities[0].Stone != null;
                 case 123:

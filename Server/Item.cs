@@ -867,11 +867,9 @@ namespace Server
             set { m_GridLocation = value; }
         }
 
-        public void SetGridLocation(byte pos, Container parent)
+        public void SetGridLocation(Container parent)
         {
-            if (parent.IsFreePosition(pos))
-                m_GridLocation = pos;
-            else
+            if(!parent.IsFreePosition(m_GridLocation))
                 m_GridLocation = parent.GetNewPosition();
         }
 
@@ -4800,7 +4798,7 @@ namespace Server
             }
         }
 
-        public virtual bool OnDroppedInto(Mobile from, Container target, Point3D p, byte gridloc)
+        public virtual bool OnDroppedInto(Mobile from, Container target, Point3D p)
         {
             if (!from.OnDroppedItemInto(this, target, p))
             {
@@ -4812,7 +4810,7 @@ namespace Server
                 return false;
             }
 
-            return target.OnDragDropInto(from, this, p, gridloc);
+            return target.OnDragDropInto(from, this, p);
         }
 
         public virtual bool OnDroppedOnto(Mobile from, Item target)
@@ -4848,7 +4846,7 @@ namespace Server
             }
         }
 
-        public virtual bool DropToItem(Mobile from, Item target, Point3D p, byte gridloc)
+        public virtual bool DropToItem(Mobile from, Item target, Point3D p)
         {
             if (Deleted || from.Deleted || target.Deleted || from.Map != target.Map || from.Map == null || target.Map == null)
             {
@@ -4879,7 +4877,7 @@ namespace Server
             }
             else if (target is Container && p.m_X != -1 && p.m_Y != -1)
             {
-                return OnDroppedInto(from, (Container)target, p, gridloc);
+                return OnDroppedInto(from, (Container)target, p);
             }
             else
             {

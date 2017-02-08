@@ -202,11 +202,11 @@ namespace Server.Items
             }
         }
 
-        public override bool OnDragDropInto(Mobile from, Item dropped, Point3D p, byte gridloc)
+        public override bool OnDragDropInto(Mobile from, Item dropped, Point3D p)
         {
             RecallRune rune = dropped as RecallRune;
 
-            if (rune != null && base.OnDragDropInto(from, dropped, p, gridloc))
+            if (rune != null && base.OnDragDropInto(from, dropped, p))
             {
                 this.Mark(rune);
 

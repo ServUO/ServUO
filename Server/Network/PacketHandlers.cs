@@ -1157,7 +1157,8 @@ namespace Server.Network
 				}
 				else
 				{
-					from.Drop(item, loc, gridloc);
+                    item.GridLocation = gridloc;
+					from.Drop(item, loc);
 				}
 			}
 			else
@@ -1195,7 +1196,8 @@ namespace Server.Network
 				}
 				else
 				{
-					from.Drop(item, loc, gridloc);
+                    item.GridLocation = gridloc;
+					from.Drop(item, loc);
 				}
 			}
 			else

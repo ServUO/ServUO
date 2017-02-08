@@ -33,9 +33,9 @@ namespace Server.Items
             m_Level = SecureLevel.CoOwners;
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
         {
-            bool canDrop = base.OnDragDropInto(from, item, p, gridloc);
+            bool canDrop = base.OnDragDropInto(from, item, p);
 
             if (canDrop && item is ChickenLizardEgg)
             {

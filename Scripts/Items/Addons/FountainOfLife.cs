@@ -166,11 +166,11 @@ namespace Server.Items
             }
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
         {
             if (item is Bandage)
             {
-                bool allow = base.OnDragDropInto(from, item, p, gridloc);
+                bool allow = base.OnDragDropInto(from, item, p);
 
                 if (allow)
                     this.Enhance(from);

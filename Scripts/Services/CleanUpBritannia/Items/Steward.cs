@@ -1230,7 +1230,7 @@ namespace Server.Mobiles
             return base.TryDropItem(from, dropped, sendFullMessage);
         }
 
-        public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
         {
             if (mOwner.Owner == from)
             {
@@ -1252,7 +1252,7 @@ namespace Server.Mobiles
             {
                 from.SendMessage("Only the Steward's owner may add items to their backpack.");
             }
-            return base.OnDragDropInto(from, item, p, gridloc);
+            return base.OnDragDropInto(from, item, p);
         }
 
         public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)

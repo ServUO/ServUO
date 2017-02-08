@@ -318,7 +318,7 @@ namespace Server.Items
 			to.SendLocalizedMessage(500176); // That is not your container, you can't store things here.
 		}
 
-		public virtual bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
+		public virtual bool OnDragDropInto(Mobile from, Item item, Point3D p)
 		{
 			if (!CheckHold(from, item, true, true))
 			{
@@ -326,7 +326,7 @@ namespace Server.Items
 			}
 
 			item.Location = new Point3D(p.m_X, p.m_Y, 0);
-            item.SetGridLocation(gridloc, this);
+            item.SetGridLocation(this);
             AddItem(item);
 
 			from.SendSound(GetDroppedSound(item), GetWorldLocation());
@@ -1785,7 +1785,7 @@ namespace Server.Items
 				return;
 			}
 
-            dropped.SetGridLocation(0, this);
+            dropped.SetGridLocation(this);
             AddItem(dropped);
 
 			Rectangle2D bounds = dropped.GetGraphicBounds();

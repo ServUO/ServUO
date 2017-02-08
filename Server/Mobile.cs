@@ -4816,7 +4816,7 @@ namespace Server
 			}
 		}
 
-		public virtual bool Drop(Item to, Point3D loc, byte gridloc)
+		public virtual bool Drop(Item to, Point3D loc)
 		{
 			Mobile from = this;
 			Item item = from.Holding;
@@ -4834,7 +4834,7 @@ namespace Server
 
 			item.SetLastMoved();
 
-			if (to == null || !item.DropToItem(from, to, loc, gridloc))
+			if (to == null || !item.DropToItem(from, to, loc))
 			{
 				item.Bounce(from);
 			}
@@ -10686,7 +10686,8 @@ namespace Server
 
 				if (pack != null)
 				{
-					return dropped.DropToItem(from, pack, new Point3D(-1, -1, 0), 0x0);
+                    dropped.GridLocation = 0x0;
+					return dropped.DropToItem(from, pack, new Point3D(-1, -1, 0));
 				}
 
 				return false;

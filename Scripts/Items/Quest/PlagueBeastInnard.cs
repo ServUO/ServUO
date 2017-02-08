@@ -132,10 +132,10 @@ namespace Server.Items
                 return this.ItemID == 0x9DF;
             }
         }
-        public override bool DropToItem(Mobile from, Item target, Point3D p, byte gridloc)
+        public override bool DropToItem(Mobile from, Item target, Point3D p)
         {
             if (target is PlagueBeastBackpack)
-                return base.DropToItem(from, target, p, gridloc);
+                return base.DropToItem(from, target, p);
 
             return false;
         }

@@ -308,7 +308,7 @@ namespace Server.Services.Virtues
 			return CheckGain(from, dropped);
 		}
 
-		public override bool OnDragDropInto(Mobile from, Item item, Point3D p, byte gridloc)
+		public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
 		{
 			return CheckGain(from, item);
 		}

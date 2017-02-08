@@ -13,7 +13,9 @@ namespace Server.Spells.Fourth
             Reagent.Nightshade,
             Reagent.Garlic,
             Reagent.SulfurousAsh);
+
         private static readonly Hashtable m_UnderEffect = new Hashtable();
+
         public CurseSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -26,6 +28,17 @@ namespace Server.Spells.Fourth
                 return SpellCircle.Fourth;
             }
         }
+
+        public static void AddEffect(Mobile m, TimeSpan duration)
+        {
+            if (m == null)
+                return;
+
+            m_UnderEffect[m] = Timer.DelayCall(duration, new TimerStateCallback(RemoveEffect), m);
+
+            m.UpdateResistances();
+        }
+
         public static void RemoveEffect(object state)
         {
             Mobile m = (Mobile)state;
@@ -45,46 +58,46 @@ namespace Server.Spells.Fourth
             this.Caster.Target = new InternalTarget(this);
         }
 
-		public static void DoCurse(Mobile caster, Mobile m, bool masscurse)
-		{
-			SpellHelper.AddStatCurse(caster, m, StatType.Str);
-			SpellHelper.DisableSkillCheck = true;
-			SpellHelper.AddStatCurse(caster, m, StatType.Dex);
-			SpellHelper.AddStatCurse(caster, m, StatType.Int);
-			SpellHelper.DisableSkillCheck = false;
+        public static void DoCurse(Mobile caster, Mobile m, bool masscurse)
+        {
+            SpellHelper.AddStatCurse(caster, m, StatType.Str);
+            SpellHelper.DisableSkillCheck = true;
+            SpellHelper.AddStatCurse(caster, m, StatType.Dex);
+            SpellHelper.AddStatCurse(caster, m, StatType.Int);
+            SpellHelper.DisableSkillCheck = false;
 
-			int percentage = (int)(SpellHelper.GetOffsetScalar(caster, m, true) * 100);
-			TimeSpan length = SpellHelper.GetDuration(caster, m);
-			string args;
+            int percentage = (int)(SpellHelper.GetOffsetScalar(caster, m, true) * 100);
+            TimeSpan length = SpellHelper.GetDuration(caster, m);
+            string args;
 
-		    	if (masscurse)
-		    	{
-				args = String.Format("{0}\t{0}\t{0}", percentage);
-				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.MassCurse, 1075839, length, m, args));
-		    	}
-		    	else
-		    	{
-				args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
-				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, length, m, args.ToString()));
-		    	}
+            if (masscurse)
+            {
+                args = String.Format("{0}\t{0}\t{0}", percentage);
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.MassCurse, 1075839, length, m, args));
+            }
+            else
+            {
+                args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, length, m, args.ToString()));
+            }
 
-			Timer t = (Timer)m_UnderEffect[m];
+            Timer t = (Timer)m_UnderEffect[m];
 
-			if (caster.Player && m.Player /*&& Caster != m */ && t == null)    //On OSI you CAN curse yourself and get this effect.
-			{
-				TimeSpan duration = SpellHelper.GetDuration(caster, m);
-				m_UnderEffect[m] = t = Timer.DelayCall(duration, new TimerStateCallback(RemoveEffect), m);
-				m.UpdateResistances();
-			}
+            if (caster.Player && m.Player /*&& Caster != m */ && t == null)    //On OSI you CAN curse yourself and get this effect.
+            {
+                TimeSpan duration = SpellHelper.GetDuration(caster, m);
 
-			if (m.Spell != null)
-				m.Spell.OnCasterHurt();
+                AddEffect(m, duration);
+            }
 
-			m.Paralyzed = false;
+            if (m.Spell != null)
+                m.Spell.OnCasterHurt();
 
-			m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
-			m.PlaySound(0x1E1);
-		}
+            m.Paralyzed = false;
+
+            m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
+            m.PlaySound(0x1E1);
+        }
 
 		public void Target(Mobile m)
         {
