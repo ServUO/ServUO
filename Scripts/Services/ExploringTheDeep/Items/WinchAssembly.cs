@@ -1,10 +1,59 @@
 ﻿using System;
 using Server.Mobiles;
+using Server.Commands;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
     public class WinchAssembly : Item
     {
+        public static void Initialize()
+        {
+            CommandSystem.Register("GenWinchAssembly", AccessLevel.Administrator, GenWinchAssembly_Command);
+        }
+
+        [Usage("GenWinchAssembly")]
+        private static void GenWinchAssembly_Command(CommandEventArgs e)
+        {
+            GenWinchAssembly(e.Mobile);
+        }
+
+        public static void GenWinchAssembly(Mobile m)
+        {
+            DeleteWinchAssembly(m);            
+
+            // Winch 
+            WinchAssembly winch = new WinchAssembly();
+            Hatch hatch = new Hatch();
+            WinchAssemblyLever lever = new WinchAssemblyLever(winch, hatch);
+
+            lever.MoveToWorld(new Point3D(6310, 1705, 0), Map.Trammel);
+            winch.MoveToWorld(new Point3D(6310, 1704, 0), Map.Trammel);
+            hatch.MoveToWorld(new Point3D(6303, 1711, 10), Map.Trammel);
+
+            m.SendMessage("Generation completed!");
+        }
+
+        private static void DeleteWinchAssembly(Mobile from)
+        {
+            List<Item> list = new List<Item>();
+
+            foreach (Item item in World.Items.Values)
+            {
+                if (item is WinchAssembly || item is Hatch || item is WinchAssemblyLever)
+                list.Add(item);
+            }
+
+            foreach (Item item in list)
+                item.Delete();
+
+            if (list.Count > 0)
+                from.SendMessage("{0} items removed.", list.Count);
+
+            list.Clear();
+            list.TrimExcess();
+        }
+
         public override int LabelNumber { get { return 1154433; } } // Winch Assembly
 
         private bool m_flywheel;
@@ -72,10 +121,10 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(m_flywheel ? 1154448 : 1154432);
-            list.Add(m_wirespool ? 1154449 : 1154434);
-            list.Add(m_powercore ? 1154450 : 1154435);
-            list.Add(m_bearingassembly ? 1154451 : 1154436);
+            list.Add(FlyWheel ? 1154448 : 1154432);
+            list.Add(WireSpool ? 1154449 : 1154434);
+            list.Add(PowerCore ? 1154450 : 1154435);
+            list.Add(BearingAssembly ? 1154451 : 1154436);
         }
 
         public override bool OnDragDrop(Mobile from, Item dropped)
@@ -83,22 +132,22 @@ namespace Server.Items
             if (dropped is BearingAssembly && !m_bearingassembly)
             {
                 dropped.Delete();
-                m_bearingassembly = true;
+                BearingAssembly = true;
             }
             else if (dropped is FlyWheel && !m_flywheel)
             {
                 dropped.Delete();
-                m_flywheel = true;
+                FlyWheel = true;
             }
             else if (dropped is PowerCore && !m_powercore)
             {
                 dropped.Delete();
-                m_powercore = true;
+                PowerCore = true;
             }
             else if (dropped is WireSpool && !m_wirespool)
             {
                 dropped.Delete();
-                m_wirespool = true;
+                WireSpool = true;
             }
 
             return false;
@@ -132,6 +181,20 @@ namespace Server.Items
         private WinchAssembly m_WinchAssembly;
         private Hatch m_hatch;
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public WinchAssembly Winch
+        {
+            get { return m_WinchAssembly; }
+            set { m_WinchAssembly = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Hatch Hatch
+        {
+            get { return m_hatch; }
+            set { m_hatch = value; }
+        }
+
         [Constructable]
         public WinchAssemblyLever(WinchAssembly winch, Hatch hatch)
             : base(0x108E)
@@ -147,13 +210,16 @@ namespace Server.Items
         }
 
         public override void OnDoubleClick(Mobile from)
-        {            
+        {
+            if (m_WinchAssembly == null || m_hatch == null)
+                return;
+
             if (m_WinchAssembly.BearingAssembly && m_WinchAssembly.FlyWheel && m_WinchAssembly.WireSpool && m_WinchAssembly.PowerCore)
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), 3, new TimerStateCallback(m_hatch.DoDownEffect), new object[] { m_hatch.Location, 0, from });
 
-                (new Shadowlord()).MoveToWorld(new Point3D(6431, 1664, 0), this.Map);
-
+                Mobile creature = Shadowlord.Spawn(new Point3D(6431, 1664, 0), Map.Trammel);
+              
                 m_WinchAssembly.BearingAssembly = false;
                 m_WinchAssembly.FlyWheel = false;
                 m_WinchAssembly.WireSpool = false;
