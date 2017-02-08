@@ -17,7 +17,6 @@ namespace Server.Engines.Reports
         private static readonly string FtpPassword = null;
         private static readonly string FtpStatsDirectory = null;
         private static readonly string FtpStaffDirectory = null;
-        private static string ShardTitle = ServerList.ServerName;
         private readonly string m_Type;
         private readonly string m_Title;
         private readonly string m_OutputDirectory;
@@ -172,7 +171,7 @@ namespace Server.Engines.Reports
             html.RenderBeginTag(HtmlTag.Head);
 
             html.RenderBeginTag(HtmlTag.Title);
-            html.Write("{0} Statistics", ShardTitle);
+            html.Write("{0} Statistics", ServerList.ServerName);
             html.RenderEndTag();
 
             html.AddAttribute("rel", "stylesheet");
@@ -222,7 +221,7 @@ namespace Server.Engines.Reports
             html.RenderBeginTag(HtmlTag.Head);
 
             html.RenderBeginTag(HtmlTag.Title);
-            html.Write("{0} Statistics - {1}", ShardTitle, this.FindNameFrom(obj));
+            html.Write("{0} Statistics - {1}", ServerList.ServerName, this.FindNameFrom(obj));
             html.RenderEndTag();
 
             html.AddAttribute("rel", "stylesheet");
