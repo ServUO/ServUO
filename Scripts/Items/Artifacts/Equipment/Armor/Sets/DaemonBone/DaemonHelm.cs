@@ -5,6 +5,7 @@ namespace Server.Items
     [FlipableAttribute(0x1451, 0x1456)]
     public class DaemonHelm : BaseArmor
     {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
         public DaemonHelm()
             : base(0x1451)
