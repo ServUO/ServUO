@@ -12,7 +12,7 @@ namespace Server.Engines.Reports
 {
     public class Reports
     {
-        public static bool Enabled = Config.Get(@"Reports.AutoGenerate", false);
+        public static bool Enabled = Config.Get("Reports.AutoGenerate", false);
         private static DateTime m_GenerateTime;
         private static SnapshotHistory m_StatsHistory;
         private static StaffHistory m_StaffHistory;
