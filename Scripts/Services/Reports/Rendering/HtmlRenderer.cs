@@ -16,7 +16,7 @@ namespace Server.Engines.Reports
         private static readonly string FtpPassword = null;
         private static readonly string FtpStatsDirectory = null;
         private static readonly string FtpStaffDirectory = null;
-        private const string ShardTitle = "Shard";
+        private const string ShardTitle = ServerList.ServerName;
         private readonly string m_Type;
         private readonly string m_Title;
         private readonly string m_OutputDirectory;
@@ -54,7 +54,7 @@ namespace Server.Engines.Reports
         {
             this.m_Type = outputDirectory;
             this.m_Title = (this.m_Type == "staff" ? "Staff" : "Stats");
-            this.m_OutputDirectory = Path.Combine(Core.BaseDirectory, "output");
+            this.m_OutputDirectory = Path.Combine(Core.BaseDirectory, Config.Get("Reports.Path", "reports"));
 
             if (!Directory.Exists(this.m_OutputDirectory))
                 Directory.CreateDirectory(this.m_OutputDirectory);
