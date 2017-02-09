@@ -260,9 +260,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
-
-            writer.Write(Spawner as XmlSpawner);
+            writer.Write((int)1);
 
             writer.Write(m_NextMutate);
             writer.Write(m_BuddyMutate);
