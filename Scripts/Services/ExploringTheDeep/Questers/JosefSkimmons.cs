@@ -49,7 +49,7 @@ namespace Server.Mobiles
 
             PlayerMobile pm = (PlayerMobile)m;
 
-            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.HeplerPaulson)
+            if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
             {
                 if (!m.HasGump(typeof(JosefSkimmonsGump)))
                 {
@@ -68,11 +68,10 @@ namespace Server.Mobiles
 
             if (m != null)
             {
-                if (m.ExploringTheDeepQuest == ExploringTheDeepQuestChain.HeplerPaulson)
+                if (m.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                 {
                     if (dropped is OrcishSchematics)
                     {
-                        m.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CusteauPerron;
                         dropped.Delete();
                         from.AddToBackpack(new NictitatingLens());
 
