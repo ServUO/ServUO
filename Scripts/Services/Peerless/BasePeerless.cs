@@ -21,7 +21,10 @@ namespace Server.Mobiles
                 this.m_Altar = value;
             }
         }
+
 		public override bool CanBeParagon { get { return false; } }
+        public virtual bool DropPrimer { get { return true; } }
+
         public override bool Unprovokable
         {
             get
@@ -57,21 +60,24 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            SkillMasteryPrimer primer = SkillMasteryPrimer.GetRandom();
-            List<DamageStore> rights = GetLootingRights();
-
-            if (rights.Count > 0)
+            if (DropPrimer)
             {
-                Mobile m = rights[Utility.Random(rights.Count)].m_Mobile;
+                SkillMasteryPrimer primer = SkillMasteryPrimer.GetRandom();
+                List<DamageStore> rights = GetLootingRights();
 
-                m.SendLocalizedMessage(1156209); // You have received a mastery primer!
+                if (rights.Count > 0)
+                {
+                    Mobile m = rights[Utility.Random(rights.Count)].m_Mobile;
 
-                if (m.Backpack == null || !m.Backpack.TryDropItem(m, primer, false))
-                    m.BankBox.DropItem(primer);
-            }
-            else
-            {
-                c.DropItem(primer);
+                    m.SendLocalizedMessage(1156209); // You have received a mastery primer!
+
+                    if (m.Backpack == null || !m.Backpack.TryDropItem(m, primer, false))
+                        m.BankBox.DropItem(primer);
+                }
+                else
+                {
+                    c.DropItem(primer);
+                }
             }
 
             if (this.m_Altar != null)
