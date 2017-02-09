@@ -16,6 +16,9 @@ namespace Server.Mobiles
     [CorpseName("a shadowlord corpse")]
     public class Shadowlord : BaseCreature
     {
+        private static readonly ArrayList m_Instances = new ArrayList();
+        public static ArrayList Instances { get { return m_Instances; } }
+
         private ShadowlordType m_Type;
         public virtual Type[] ArtifactDrops { get { return _ArtifactTypes; } }
 
@@ -44,6 +47,8 @@ namespace Server.Mobiles
         public Shadowlord()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
+            m_Instances.Add(this);
+
             this.m_Type = (ShadowlordType)Utility.Random(3);
             this.Name = this.m_Type.ToString();
 
@@ -98,6 +103,14 @@ namespace Server.Mobiles
         public Shadowlord(Serial serial)
             : base(serial)
         {
+            m_Instances.Add(this);
+        }
+
+        public override void OnAfterDelete()
+        {
+            m_Instances.Remove(this);
+
+            base.OnAfterDelete();
         }
 
         public override bool AlwaysMurderer { get { return true; } }
@@ -124,7 +137,20 @@ namespace Server.Mobiles
                 }
             }
         }
-        
+
+        public static Shadowlord Spawn(Point3D platLoc, Map platMap)
+        {
+            if (m_Instances.Count > 0)
+                return null;
+
+            Shadowlord creature = new Shadowlord();
+            creature.Home = platLoc;
+            creature.RangeHome = 4;
+            creature.MoveToWorld(platLoc, platMap);
+
+            return creature;
+        }
+
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
 
         public override void GenerateLoot()

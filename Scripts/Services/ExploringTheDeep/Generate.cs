@@ -25,14 +25,7 @@ namespace Server.Engines.ExploringTheDeep
 
             CommandSystem.Handle(m, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns/GravewaterLake.xml");
 
-            // Winch 
-            WinchAssembly winch = new WinchAssembly();
-            Hatch hatch = new Hatch();
-            WinchAssemblyLever lever = new WinchAssemblyLever(winch, hatch);
-
-            lever.MoveToWorld(new Point3D(6310, 1705, 0), Map.Trammel);
-            winch.MoveToWorld(new Point3D(6310, 1704, 0), Map.Trammel);
-            hatch.MoveToWorld(new Point3D(6303, 1711, 10), Map.Trammel);
+            CommandSystem.Handle(m, Server.Commands.CommandSystem.Prefix + "GenWinchAssembly");
 
             // StorageLocker
 
@@ -106,8 +99,8 @@ namespace Server.Engines.ExploringTheDeep
             ladder = new ShipLadder(new Point3D(6432, 1699, 0), Map.Trammel, 0x08A6);
             ladder.MoveToWorld(new Point3D(6304, 1672, -5), Map.Trammel);
 
-            ladder = new ShipLadder(new Point3D(6432, 1699, 0), Map.Trammel, 0x08A1);
-            ladder.MoveToWorld(new Point3D(6292, 1721, 0), Map.Trammel);
+            ladder = new ShipLadder(new Point3D(6292, 1720, 0), Map.Trammel, 0x08A1);
+            ladder.MoveToWorld(new Point3D(6400, 1656, 0), Map.Trammel);
 
             ladder = new ShipLadder(new Point3D(1699, 1646, -115), Map.Malas, 0x14FA);
             ladder.MoveToWorld(new Point3D(6278, 1773, 0), Map.Trammel);
