@@ -105,6 +105,8 @@ namespace Server.Mobiles
             new Type[] { typeof(Anzuanord),     typeof(Relanord),   typeof(Vasanord) }
         };
 
+        private BaseCreature _MutateTo;
+
         public void Mutate(VoidEvolution evolution)
         {
             if (!Alive || Deleted || Stage == 3)
@@ -123,6 +125,8 @@ namespace Server.Mobiles
             Type type = m_EvolutionCycle[(int)evo - 1][Stage];
 
             BaseCreature bc = (BaseCreature)Activator.CreateInstance(type);
+
+            _MutateTo = bc;
 
             if (bc != null)
             {
@@ -183,6 +187,40 @@ namespace Server.Mobiles
 
             if (Stage == 3 && Utility.RandomDouble() < 0.12)
                 c.DropItem(new VoidCore());
+        }
+
+        public override void Delete()
+        {
+            if (_MutateTo != null)
+            {
+                ISpawner s = Spawner;
+
+                if (s is XmlSpawner)
+                {
+                    XmlSpawner xml = (XmlSpawner)s;
+
+                    if (xml.SpawnObjects == null)
+                        return;
+
+                    foreach (XmlSpawner.SpawnObject so in xml.SpawnObjects)
+                    {
+                        for (int i = 0; i < so.SpawnedObjects.Count; ++i)
+                        {
+                            if (so.SpawnedObjects[i] == this)
+                            {
+                                //so.SpawnedObjects.Remove(spawn);
+                                so.SpawnedObjects[i] = _MutateTo;
+
+                                Spawner = null;
+                                base.Delete();
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
+            base.Delete();
         }
 
         public BaseVoidCreature(Serial serial) : base(serial)

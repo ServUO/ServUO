@@ -26,6 +26,9 @@ namespace Server.Mobiles
                 return false;
             }
         }
+
+        public override bool DropPrimer { get { return false; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

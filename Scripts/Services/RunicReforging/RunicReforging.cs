@@ -317,12 +317,12 @@ namespace Server.Items
                 }
                 else if (list.Contains(col) && col.Attribute is AosWeaponAttributes && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.ReactiveParalyze)
                 {
-                    if ((item is BaseWeapon && item.Layer != Layer.TwoHanded) || (item is BaseShield && item.Layer != Layer.TwoHanded))
+                    if (!(item is BaseWeapon && item is BaseShield) && item.Layer != Layer.TwoHanded)
                         list.Remove(col);
                 }
                 else if (list.Contains(col) && col.Attribute is AosArmorAttribute && (AosArmorAttribute)col.Attribute == AosArmorAttribute.ReactiveParalyze)
                 {
-                    if ((item is BaseWeapon && item.Layer != Layer.TwoHanded) || (item is BaseShield && item.Layer != Layer.TwoHanded))
+                    if (!(item is BaseWeapon && item is BaseShield) && item.Layer != Layer.TwoHanded)
                         list.Remove(col);
                 }
             }
