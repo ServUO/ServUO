@@ -54,6 +54,14 @@ namespace Server.Engines.Shadowguard
         {
             EventSink.Login += new LoginEventHandler(OnLogin);
             EventSink.Disconnected += new DisconnectedEventHandler(OnDisconnected);
+
+            CommandSystem.Register("CompleteAllRooms", AccessLevel.GameMaster, e =>
+                {
+                    if (Instance.Table == null)
+                        Instance.Table = new Dictionary<Mobile, EncounterType>();
+
+                    Instance.Table[e.Mobile] = EncounterType.Bar | EncounterType.Orchard | EncounterType.Armory | EncounterType.Fountain | EncounterType.Belfry;
+                });
         }
 
         public void InitializeInstances()
@@ -112,13 +120,28 @@ namespace Server.Engines.Shadowguard
 
         public void CompleteRoof(Mobile m)
         {
-            if (Table != null && Table.ContainsKey(m))
+            if(Table == null)
+                return;
+
+            Party p = Party.Get(m);
+
+            if (p != null)
+            {
+                foreach (PartyMemberInfo info in p.Members)
+                {
+                    Mobile mobile = info.Mobile;
+
+                    if (Table.ContainsKey(mobile))
+                        Table.Remove(mobile);
+                }
+            }
+            else if (Table.ContainsKey(m))
             {
                 Table.Remove(m);
-
-                if (Table.Count == 0)
-                    Table = null;
             }
+
+            if (Table.Count == 0)
+                Table = null;
         }
 
         public void OnEncounterComplete(ShadowguardEncounter encounter, bool expired)

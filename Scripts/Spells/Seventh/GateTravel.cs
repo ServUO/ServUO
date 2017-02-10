@@ -184,7 +184,20 @@ namespace Server.Spells.Seventh
             public override void UseGate(Mobile m)
             {
                 if (m_LinkedGate == null || !(m_LinkedGate is GateTravelSpell.InternalItem) || !((GateTravelSpell.InternalItem)m_LinkedGate).BoatGate || !m_LinkedGate.Deleted)
+                {
+                    if (m_LinkedGate != null && ((GateTravelSpell.InternalItem)m_LinkedGate).BoatGate)
+                    {
+                        BaseBoat boat = BaseBoat.FindBoatAt(m_LinkedGate);
+
+                        if(boat != null && !boat.HasAccess(m))
+                        {
+                            m.SendLocalizedMessage(1116617); //You do not have permission to board this ship.
+                            return;
+                        }
+                    }
+
                     base.UseGate(m);
+                }
                 else
                     m.SendMessage("The other gate no longer exists.");
             }
