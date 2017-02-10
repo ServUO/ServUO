@@ -315,7 +315,7 @@ namespace Server.Items
                     if (playermade || item is BaseRanged)
                         list.Remove(col);
                 }
-                else if (list.Contains(col) && col.Attribute is AosWeaponAttributes && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.ReactiveParalyze)
+                else if (list.Contains(col) && col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.ReactiveParalyze)
                 {
                     if (!(item is BaseWeapon && item is BaseShield) && item.Layer != Layer.TwoHanded)
                         list.Remove(col);

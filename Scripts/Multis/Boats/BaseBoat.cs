@@ -27,6 +27,11 @@ namespace Server.Multis
 
         //private static TimeSpan BoatDecayDelay = TimeSpan.FromDays( 9.0 );
 
+        public static BaseBoat FindBoatAt(IEntity entity)
+        {
+            return FindBoatAt(entity, entity.Map);
+        }
+
         public static BaseBoat FindBoatAt(IPoint2D loc, Map map)
         {
             if (map == null || map == Map.Internal)
@@ -685,6 +690,11 @@ namespace Server.Multis
                 else if (m_TillerMan is Item)
                     ((Item)m_TillerMan).InvalidateProperties();
             }
+        }
+
+        public virtual bool HasAccess(Mobile from)
+        {
+            return true;
         }
 
         public bool StartMove(Direction dir, bool fast)

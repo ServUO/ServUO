@@ -52,6 +52,8 @@ namespace Server.Mobiles
 
         public override void OnAfterTame(Mobile tamer)
         {
+            SkillsCap = this.Skills.Total;
+
             foreach (Skill sk in this.Skills)
             {
                 if (sk.Base > 0)

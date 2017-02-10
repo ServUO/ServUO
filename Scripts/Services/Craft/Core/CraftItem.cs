@@ -1115,8 +1115,8 @@ namespace Server.Engines.Craft
 		private CraftSystem m_System;
 
 		#region Plant Pigments
-		private PlantHue m_PlantHue = PlantHue.Plain;
-		private PlantPigmentHue m_PlantPigmentHue = PlantPigmentHue.Plain;
+		private PlantHue m_PlantHue = PlantHue.None;
+		private PlantPigmentHue m_PlantPigmentHue = PlantPigmentHue.None;
 		#endregion
 
 		private void OnResourceConsumed(Item item, int amount)
@@ -1690,7 +1690,9 @@ namespace Server.Engines.Craft
                             ((IPigmentHue)item).PigmentHue = PlantPigmentHueInfo.HueFromPlantHue(m_PlantHue);
                     }
                     else if (m_PlantPigmentHue != PlantPigmentHue.None && item is IPigmentHue)
+                    {
                         ((IPigmentHue)item).PigmentHue = m_PlantPigmentHue;
+                    }
 
                     CraftContext context = craftSystem.GetContext(from);
 
