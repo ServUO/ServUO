@@ -1030,15 +1030,7 @@ namespace Server.Network
             EnsureCapacity(12 + (length * 8));
 
             m_Stream.Write((short)0x14);
-
-            if (menu.From.NetState.IsEnhancedClient)
-            {
-                m_Stream.Write((short)0x02); 
-            }
-            else
-            {
-                m_Stream.Write((short)0x01);
-            }
+			m_Stream.Write((short)0x02); 
 
             IEntity target = menu.Target as IEntity;
 

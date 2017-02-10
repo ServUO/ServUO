@@ -2,20 +2,21 @@ using System;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x144e, 0x1453)]
-    public class DaemonArms : BaseArmor
+    [FlipableAttribute(0x1451, 0x1456)]
+    public class DaemonHelm : BaseArmor
     {
+        public override bool IsArtifact { get { return true; } }
         [Constructable]
-        public DaemonArms()
-            : base(0x144E)
+        public DaemonHelm()
+            : base(0x1451)
         {
-            this.Weight = 2.0;
             this.Hue = 0x648;
+            this.Weight = 3.0;
 
             this.ArmorAttributes.SelfRepair = 1;
         }
 
-        public DaemonArms(Serial serial)
+        public DaemonHelm(Serial serial)
             : base(serial)
         {
         }
@@ -73,7 +74,7 @@ namespace Server.Items
         {
             get
             {
-                return 55;
+                return 20;
             }
         }
         public override int OldStrReq
@@ -81,13 +82,6 @@ namespace Server.Items
             get
             {
                 return 40;
-            }
-        }
-        public override int OldDexBonus
-        {
-            get
-            {
-                return -2;
             }
         }
         public override int ArmorBase
@@ -115,17 +109,14 @@ namespace Server.Items
         {
             get
             {
-                return 1041371;
+                return 1041374;
             }
-        }// daemon bone arms
+        }// daemon bone helmet
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
             writer.Write((int)0);
-
-            if (this.Weight == 1.0)
-                this.Weight = 2.0;
         }
 
         public override void Deserialize(GenericReader reader)
@@ -133,6 +124,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (this.Weight == 1.0)
+                this.Weight = 3.0;
 
             if (this.ArmorAttributes.SelfRepair == 0)
                 this.ArmorAttributes.SelfRepair = 1;

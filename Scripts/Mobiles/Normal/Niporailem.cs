@@ -31,33 +31,36 @@ namespace Server.Mobiles
 			SetDamageType( ResistanceType.Physical, 40 );
 			SetDamageType( ResistanceType.Cold, 60 );
 
-			SetResistance( ResistanceType.Physical, 42 );
-			SetResistance( ResistanceType.Fire, 29 );
-			SetResistance( ResistanceType.Cold, 53, 56 );
-			SetResistance( ResistanceType.Poison, 23, 24 );
-			SetResistance( ResistanceType.Energy, 34, 39 );
+			SetResistance( ResistanceType.Physical, 34, 46 );
+			SetResistance( ResistanceType.Fire, 0 );
+			SetResistance( ResistanceType.Cold, 31, 49 );
+			SetResistance( ResistanceType.Poison, 100 );
+			SetResistance( ResistanceType.Energy, 31, 49 );
 
 			SetSkill( SkillName.MagicResist, 87.7, 93.5 );
 			SetSkill( SkillName.Tactics, 56.1, 65.0 );
 			SetSkill( SkillName.Wrestling, 68.8, 76.2 );
-            SetSkill( SkillName.EvalInt, 120.0 );
+			SetSkill( SkillName.EvalInt, 120.0 );
 			SetSkill( SkillName.Magery, 120.0 );
 			SetSkill( SkillName.Meditation, 120.0 );
-            SetSkill( SkillName.Necromancy, 120.0 );
-            SetSkill( SkillName.SpiritSpeak, 120.0 );     
+            		SetSkill( SkillName.Necromancy, 120.0 );
+            		SetSkill( SkillName.SpiritSpeak, 120.0 );     
 
 			PackNecroReg( 12, 24 ); /// Stratics didn't specify
+				
+            		Fame = 15000;
+            		Karma = -15000;
 
-            Fame = 15000;
-            Karma = -15000;
-
-            QLPoints = 75;
+			QLPoints = 75;
 		}
 
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.FilthyRich, 6 );
+			AddLoot(LootPack.FilthyRich, 6);
             		AddLoot(LootPack.Gems, 6);
+			
+			if (0.25 > Utility.RandomDouble())
+				this.PackItem(new UndyingFlesh());
 		}
 
 		public override int Meat{ get{ return 1; } }
