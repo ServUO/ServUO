@@ -22,77 +22,79 @@ namespace Server.Items
 	public delegate void ContainerSnoopHandler(Container cont, Mobile from);
 
 	public class Container : Item
-	{
-        private List<byte> m_FreePositions = new List<byte>();
+    {
+        #region Enhanced Client Support
+        Dictionary<byte, Item> _Positions = new Dictionary<byte, Item>();
 
-        public void FreePosition(byte pos)
+        public bool _ValidatedGrids = false;
+
+        public virtual void SetPosition(byte pos, Item item)
         {
-            int maxpos = -1;
-
-            foreach (Item item in Items)
+            if (!IsFreePosition(pos))
             {
-                if (item.GridLocation > maxpos && item.GridLocation != pos)
-                    maxpos = item.GridLocation;
+                pos = GetNewPosition();
             }
 
-            maxpos++;
+            item.GridLocation = pos;
+            _Positions[pos] = item;
+        }
 
-            if (pos > maxpos)
+        public virtual void FreePosition(byte pos)
+        {
+            if (_Positions.ContainsKey(pos))
             {
-                pos = (byte)maxpos;
+                _Positions.Remove(pos);
+            }
+        }
 
-                for (int i = 0; i < m_FreePositions.Count; i++)
+        public virtual bool IsFreePosition(byte pos)
+        {
+            return pos <= 0x7C && !_Positions.ContainsKey(pos);
+        }
+
+        public virtual byte GetNewPosition()
+        {
+            for (byte i = 0; i < 0x7C; i++)
+            {
+                if (!_Positions.ContainsKey(i))
                 {
-                    byte b = m_FreePositions[i];
-
-                    if (b > (pos))
-                    {
-                        m_FreePositions.RemoveAt(i);
-                        i--;
-                    }
+                    return i;
                 }
             }
 
-            if (!m_FreePositions.Contains(pos))
-                m_FreePositions.Add(pos);
+            return 0;
         }
 
-        public bool IsFreePosition(byte pos)
+        private void ValidateGrids()
         {
-            if (m_FreePositions.Contains(pos))
-            {
-                m_FreePositions.Remove(pos);
-                return true;
-            }
-
-            foreach (Item item in this.Items)
-            {
-                if (item.GridLocation == pos)
-                    return false;
-            }
-
-            return true;
-        }
-
-        public byte GetNewPosition()
-        {
-            if (m_FreePositions.Count > 0)
-            {
-                byte newpos = m_FreePositions[m_FreePositions.Count - 1];
-                m_FreePositions.RemoveAt(m_FreePositions.Count - 1);
-                return newpos;
-            }
-
-            int pos = -1;
+            List<Item> redun = new List<Item>();
 
             foreach (Item item in Items)
             {
-                if (item.GridLocation > pos)
-                    pos = item.GridLocation;
+                if (item.GridLocation > 0x7C)
+                {
+                    item.GridLocation = 0x7C;
+                }
+
+                if (!_Positions.ContainsKey(item.GridLocation))
+                {
+                    _Positions[item.GridLocation] = item;
+                }
+                else
+                {
+                    redun.Add(item);
+                }
             }
 
-            return (byte)(pos + 1);
+            foreach (Item item in redun)
+            {
+                item.GridLocation = GetNewPosition();
+                _Positions[item.GridLocation] = item;
+            }
+
+            redun.Clear();
         }
+        #endregion
 
         private static ContainerSnoopHandler m_SnoopHandler;
 
@@ -326,7 +328,6 @@ namespace Server.Items
 			}
 
 			item.Location = new Point3D(p.m_X, p.m_Y, 0);
-            item.SetGridLocation(this);
             AddItem(item);
 
 			from.SendSound(GetDroppedSound(item), GetWorldLocation());
@@ -1619,6 +1620,7 @@ namespace Server.Items
 			}
 
 			UpdateContainerData();
+            ValidateGrids();
 		}
 
 		private static int m_GlobalMaxItems = 125;
@@ -1761,6 +1763,13 @@ namespace Server.Items
 			return true;
 		}
 
+        public override void AddItem(Item item)
+        {
+            SetPosition(item.GridLocation, item);
+
+            base.AddItem(item);
+        }
+
 		public virtual void Destroy()
 		{
 			Point3D loc = GetWorldLocation();
@@ -1785,7 +1794,6 @@ namespace Server.Items
 				return;
 			}
 
-            dropped.SetGridLocation(this);
             AddItem(dropped);
 
 			Rectangle2D bounds = dropped.GetGraphicBounds();

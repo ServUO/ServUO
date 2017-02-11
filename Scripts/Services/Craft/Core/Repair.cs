@@ -176,6 +176,11 @@ namespace Server.Engines.Craft
                 return false;
             }
 
+            private bool IsSpecialJewel(BaseJewel jewel)
+            {
+                return jewel is SilverBracelet || jewel is SilverRing;
+            }
+
             private bool IsSpecialArmor(BaseArmor armor)
             {
                 // Armor repairable but not craftable
@@ -462,7 +467,7 @@ namespace Server.Engines.Craft
                             toWeaken = 3;
                     }
 
-                    if (m_CraftSystem.CraftItems.SearchForSubclass(jewel.GetType()) == null)
+                    if (m_CraftSystem.CraftItems.SearchForSubclass(jewel.GetType()) == null && !IsSpecialJewel(jewel))
                     {
                         number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                     }

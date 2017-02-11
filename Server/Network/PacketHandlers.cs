@@ -1130,7 +1130,7 @@ namespace Server.Network
 
 		public static void DropReq(NetState state, PacketReader pvSrc)
 		{
-			pvSrc.ReadInt32(); // serial, ignored
+			Serial serial = pvSrc.ReadInt32(); // serial, ignored
 			int x = pvSrc.ReadInt16();
 			int y = pvSrc.ReadInt16();
 			int z = pvSrc.ReadSByte();
@@ -1138,8 +1138,17 @@ namespace Server.Network
             Serial dest = pvSrc.ReadInt32();
 
 			Point3D loc = new Point3D(x, y, z);
-
 			Mobile from = state.Mobile;
+
+            if (serial.IsItem)
+            {
+                Item dropped = World.FindItem(serial);
+
+                if (dropped != null)
+                {
+                    dropped.GridLocation = gridloc;
+                }
+            }
 
 			if (dest.IsMobile)
 			{
@@ -1157,7 +1166,6 @@ namespace Server.Network
 				}
 				else
 				{
-                    item.GridLocation = gridloc;
 					from.Drop(item, loc);
 				}
 			}
@@ -1177,8 +1185,17 @@ namespace Server.Network
             Serial dest = pvSrc.ReadInt32();
 
 			Point3D loc = new Point3D(x, y, z);
-
 			Mobile from = state.Mobile;
+
+            if (serial.IsItem)
+            {
+                Item dropped = World.FindItem(serial);
+
+                if (dropped != null)
+                {
+                    dropped.GridLocation = gridloc;
+                }
+            }
 
 			if (dest.IsMobile)
 			{
@@ -1196,7 +1213,6 @@ namespace Server.Network
 				}
 				else
 				{
-                    item.GridLocation = gridloc;
 					from.Drop(item, loc);
 				}
 			}

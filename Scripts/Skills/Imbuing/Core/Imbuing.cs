@@ -445,9 +445,7 @@ namespace Server.SkillHandlers
                         {
                             string p = prop as string;
 
-                            /*if (p == "BalancedWeapon" && wep is BaseRanged)
-                                ((BaseRanged)wep).Balanced = true;
-                            else */if (p == "WeaponVelocity" && wep is BaseRanged)
+                            if (p == "WeaponVelocity" && wep is BaseRanged)
                                 ((BaseRanged)wep).Velocity = value;
                         }
                     }
@@ -981,9 +979,6 @@ namespace Server.SkillHandlers
                 {
                     BaseRanged ranged = wep as BaseRanged;
 
-                    if (ranged.Balanced && mod != 61)
-                        total++;
-
                     if (ranged.Velocity > 0 && mod != 60)
                         total++;
                 }
@@ -1221,9 +1216,6 @@ namespace Server.SkillHandlers
                 if (item is BaseRanged)
                 {
                     BaseRanged ranged = item as BaseRanged;
-
-                    /*if(ranged.Balanced)
-                        weight += GetIntensityForAttribute("BalancedWeapon", mod, 1);*/
 
                     if(ranged.Velocity > 0)
                         weight += GetIntensityForAttribute("WeaponVelocity", mod, ranged.Velocity);

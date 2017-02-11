@@ -142,7 +142,7 @@ namespace Server.Items
             }
 
             item.Location = new Point3D(p.X, p.Y, 0);
-            item.SetGridLocation(this);
+
             this.AddItem(item);
 
             from.SendSound(this.GetDroppedSound(item), this.GetWorldLocation());

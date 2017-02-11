@@ -195,6 +195,7 @@ namespace Server.Engines.Shadowguard
             ConvertOffset(ref p);
 
 			MovePlayer(m, p);
+            m.CloseGump(typeof(ShadowguardGump));
 		}
 		
 		public void DoWarning()

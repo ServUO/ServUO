@@ -858,19 +858,13 @@ namespace Server
             }
         }
         
-        private byte m_GridLocation = 0xFF;
+        private byte m_GridLocation = 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public byte GridLocation
         {
             get { return m_GridLocation; }
             set { m_GridLocation = value; }
-        }
-
-        public void SetGridLocation(Container parent)
-        {
-            if(!parent.IsFreePosition(m_GridLocation))
-                m_GridLocation = parent.GetNewPosition();
         }
 
         [Flags]
