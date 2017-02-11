@@ -268,7 +268,7 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if (DateTime.UtcNow > m_NextArea)
+            if (Core.TOL && DateTime.UtcNow > m_NextArea)
                 Teleport();
         }
 
@@ -279,7 +279,7 @@ namespace Server.Mobiles
             IPooledEnumerable eable = this.GetMobilesInRange(12);
             foreach (Mobile mob in eable)
             {
-                if (mob != this && mob.Alive && mob.Player && this.CanBeHarmful(mob, false))
+                if (mob != this && mob.Alive && mob.Player && this.CanBeHarmful(mob, false) && mob.Name != "unholy bones")
                     toTele.Add(mob);
             }
             eable.Free();
@@ -298,7 +298,7 @@ namespace Server.Mobiles
                 }
             }
 
-            m_NextArea = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(40, 60));
+            m_NextArea = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)); // too much
         }
 
         public override void GenerateLoot()
