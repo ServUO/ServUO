@@ -2211,24 +2211,45 @@ namespace Server.Items
 
             percentageBonus += (int)(damageBonus * 100) - 100;
 
-			CheckSlayerResult cs = CheckSlayers(attacker, defender, false);
+			CheckSlayerResult cs1 = CheckSlayers(attacker, defender, Slayer);
+            CheckSlayerResult cs2 = CheckSlayers(attacker, defender, Slayer2);
+            CheckSlayerResult suit = CheckSlayers(attacker, defender, SetHelper.GetSetSlayer(attacker));
+            CheckSlayerResult tal = CheckTalismanSlayer(attacker, defender);
 
-			if (cs != CheckSlayerResult.None)
+			if (cs1 != CheckSlayerResult.None)
 			{
-			    defender.FixedEffect(0x37B9, 10, 5);
-
-                if (cs == CheckSlayerResult.SuperSlayer || cs == CheckSlayerResult.Opposition)
+                if (cs1 == CheckSlayerResult.SuperSlayer)
                     percentageBonus += 100;
-                else if (cs == CheckSlayerResult.Slayer)
+                else if (cs1 == CheckSlayerResult.Slayer)
                     percentageBonus += 200;
             }
 
-            cs = CheckSlayers(attacker, defender, true);
+            if (cs2 != CheckSlayerResult.None)
+            {
+                if (cs2 == CheckSlayerResult.SuperSlayer)
+                    percentageBonus += 100;
+                else if (cs2 == CheckSlayerResult.Slayer)
+                    percentageBonus += 200;
+            }
 
-            if (cs != CheckSlayerResult.None)
+            if (suit != CheckSlayerResult.None)
+            {
+                percentageBonus += 100;
+            }
+
+            if (tal != CheckSlayerResult.None)
+            {
+                percentageBonus += 100;
+            }
+
+            if (CheckSlayerOpposition(attacker, defender) != CheckSlayerResult.None)
+            {
+                percentageBonus += 100;
+                defender.FixedEffect(0x37B9, 10, 5);
+            }
+            else if (cs1 != CheckSlayerResult.None || cs2 != CheckSlayerResult.None || suit != CheckSlayerResult.None || tal != CheckSlayerResult.None)
             {
                 defender.FixedEffect(0x37B9, 10, 5);
-                percentageBonus += 100;
             }
 
 			if (!attacker.Player)
@@ -3015,62 +3036,64 @@ namespace Server.Items
 		}
 		#endregion
 
-        public virtual CheckSlayerResult CheckSlayers(Mobile attacker, Mobile defender, bool checktalisman)
+        public virtual CheckSlayerResult CheckSlayers(Mobile attacker, Mobile defender, SlayerName slayer)
         {
-            if (checktalisman)
-            {
-                BaseTalisman talisman = attacker.Talisman as BaseTalisman;
+            if (slayer == SlayerName.None)
+                return CheckSlayerResult.None;
 
-                if (talisman != null && TalismanSlayer.Slays(talisman.Slayer, defender))
+            BaseWeapon atkWeapon = attacker.Weapon as BaseWeapon;
+            SlayerEntry atkSlayer = SlayerGroup.GetEntryByName(slayer);
+
+            if (atkSlayer != null && atkSlayer.Slays(defender) && _SuperSlayers.Contains(atkSlayer.Name))
+            {
+                return CheckSlayerResult.SuperSlayer;
+            }
+
+            if (atkSlayer != null && atkSlayer.Slays(defender))
+            {
+                return CheckSlayerResult.Slayer;
+            }
+
+            return CheckSlayerResult.None;
+        }
+
+        public CheckSlayerResult CheckSlayerOpposition(Mobile attacker, Mobile defender)
+        {
+            ISlayer defISlayer = Spellbook.FindEquippedSpellbook(defender);
+
+            if (defISlayer == null)
+            {
+                defISlayer = defender.Weapon as ISlayer;
+            }
+
+            if (defISlayer != null)
+            {
+                SlayerEntry defSlayer = SlayerGroup.GetEntryByName(defISlayer.Slayer);
+                SlayerEntry defSlayer2 = SlayerGroup.GetEntryByName(defISlayer.Slayer2);
+                SlayerEntry defSetSlayer = SlayerGroup.GetEntryByName(SetHelper.GetSetSlayer(defender));
+
+                if (defSlayer != null && defSlayer.Group.OppositionSuperSlays(attacker) ||
+                    defSlayer2 != null && defSlayer2.Group.OppositionSuperSlays(attacker) ||
+                    defSetSlayer != null && defSetSlayer.Group.OppositionSuperSlays(attacker))
                 {
-                    return CheckSlayerResult.Slayer;
-                }
-                else if (Slayer3 != TalismanSlayerName.None && TalismanSlayer.Slays(Slayer3, defender))
-                {
-                    return CheckSlayerResult.Slayer;
+                    return CheckSlayerResult.Opposition;
                 }
             }
-            else
+
+            return CheckSlayerResult.None;
+        }
+
+        public CheckSlayerResult CheckTalismanSlayer(Mobile attacker, Mobile defender)
+        {
+            BaseTalisman talisman = attacker.Talisman as BaseTalisman;
+
+            if (talisman != null && TalismanSlayer.Slays(talisman.Slayer, defender))
             {
-                BaseWeapon atkWeapon = attacker.Weapon as BaseWeapon;
-                SlayerEntry atkSlayer = SlayerGroup.GetEntryByName(atkWeapon.Slayer);
-                SlayerEntry atkSlayer2 = SlayerGroup.GetEntryByName(atkWeapon.Slayer2);
-                SlayerEntry setSlayer = SlayerGroup.GetEntryByName(SetHelper.GetSetSlayer(attacker));
-
-                if ((atkSlayer != null && atkSlayer.Slays(defender) && _SuperSlayers.Contains(atkSlayer.Name))
-                    || (atkSlayer2 != null && atkSlayer2.Slays(defender) && _SuperSlayers.Contains(atkSlayer2.Name))
-                    || (setSlayer != null && setSlayer.Slays(defender) && _SuperSlayers.Contains(setSlayer.Name)))
-                {
-                    return CheckSlayerResult.SuperSlayer;
-                }
-
-                if (atkSlayer != null && atkSlayer.Slays(defender) 
-                    || atkSlayer2 != null && atkSlayer2.Slays(defender)
-                    || setSlayer != null && setSlayer.Slays(defender))
-                {
-                    return CheckSlayerResult.Slayer;
-                }
-
-                ISlayer defISlayer = Spellbook.FindEquippedSpellbook(defender);
-
-                if (defISlayer == null)
-                {
-                    defISlayer = defender.Weapon as ISlayer;
-                }
-
-                if (defISlayer != null)
-                {
-                    SlayerEntry defSlayer = SlayerGroup.GetEntryByName(defISlayer.Slayer);
-                    SlayerEntry defSlayer2 = SlayerGroup.GetEntryByName(defISlayer.Slayer2);
-                    SlayerEntry defSetSlayer = SlayerGroup.GetEntryByName(SetHelper.GetSetSlayer(defender));
-
-                    if (defSlayer != null && defSlayer.Group.OppositionSuperSlays(attacker) ||
-                        defSlayer2 != null && defSlayer2.Group.OppositionSuperSlays(attacker) ||
-                        defSetSlayer != null && defSetSlayer.Group.OppositionSuperSlays(attacker))
-                    {
-                        return CheckSlayerResult.Opposition;
-                    }
-                }
+                return CheckSlayerResult.Slayer;
+            }
+            else if (Slayer3 != TalismanSlayerName.None && TalismanSlayer.Slays(Slayer3, defender))
+            {
+                return CheckSlayerResult.Slayer;
             }
 
             return CheckSlayerResult.None;
