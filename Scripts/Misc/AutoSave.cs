@@ -64,7 +64,7 @@ namespace Server.Misc
         {    
 	    AutoSave.Save(false);
 	    
-	    if (GCSettings.IsServerGC || m_GConSave)
+	    if (GCSettings.IsServerGC || (m_GConSave && Core.ProcessorCount > 1))
 	    {
 	    	if (Core.Debug)
 	    		Console.WriteLine("Total Memory before Garbage Collection: {0}", GC.GetTotalMemory(false));
