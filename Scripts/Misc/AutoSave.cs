@@ -7,7 +7,7 @@ namespace Server.Misc
     public class AutoSave : Timer
     {
 		private static readonly TimeSpan m_Delay = Config.Get("AutoSave.Frequency", TimeSpan.FromMinutes(5.0d));
-        private static readonly TimeSpan m_Warning = Config.Get("AutoSave.WarningTime", TimeSpan.Zero);
+        	private static readonly TimeSpan m_Warning = Config.Get("AutoSave.WarningTime", TimeSpan.Zero);
 		
 		private static readonly string[] m_Backups = new string[]
         {
@@ -17,6 +17,7 @@ namespace Server.Misc
         };
 
 		private static bool m_SavesEnabled = Config.Get("AutoSave.Enabled", true);
+		private static bool m_GConSave = Config.Get("AutoSave.GConSave", false);
 
         public AutoSave()
             : base(m_Delay - m_Warning, m_Delay)
@@ -59,7 +60,16 @@ namespace Server.Misc
 
         public static void Save()
         {
-            AutoSave.Save(false);
+		if ( Core.Debug && (GCSettings.IsServerGC || m_GConSave))
+			Console.WriteLine("Total Memory before Garbage Collection: {0}", GC.GetTotalMemory(false));
+	    
+	    AutoSave.Save(false);
+	    
+	    if ( GCSettings.IsServerGC || m_GConSave )
+	    {
+		GC.Collect();
+		if (Core.Debug)
+			Console.WriteLine("Total Memory before Garbage Collection: {0}", GC.GetTotalMemory(true));
         }
 
         public static void Save(bool permitBackgroundWrite)
