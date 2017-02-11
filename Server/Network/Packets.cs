@@ -2928,13 +2928,6 @@ m_Stream.Write( (int) renderMode );
 
             PacketWriter.ReleaseInstance(m_Layout);
             PacketWriter.ReleaseInstance(m_Strings);
-
-            m_Stream.Write(m_StringCount);
-
-			WritePacked(m_Strings);
-
-			PacketWriter.ReleaseInstance(m_Layout);
-			PacketWriter.ReleaseInstance(m_Strings);
 		}
 
 		private const int GumpBufferSize = 0x5000;
