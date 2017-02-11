@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using Server.Commands;
+using System.Runtime;
+
 
 namespace Server.Misc
 {
@@ -59,17 +61,18 @@ namespace Server.Misc
         }
 
         public static void Save()
-        {
-		if ( Core.Debug && (GCSettings.IsServerGC || m_GConSave))
-			Console.WriteLine("Total Memory before Garbage Collection: {0}", GC.GetTotalMemory(false));
-	    
+        {    
 	    AutoSave.Save(false);
 	    
-	    if ( GCSettings.IsServerGC || m_GConSave )
+	    if (GCSettings.IsServerGC || m_GConSave)
 	    {
-		GC.Collect();
+	    	if (Core.Debug)
+	    		Console.WriteLine("Total Memory before Garbage Collection: {0}", GC.GetTotalMemory(false));
+			
+		GC.Collect(); // https://msdn.microsoft.com/de-de/library/ee787088(v=vs.110).aspx#workstation_and_server_garbage_collection
+		
 		if (Core.Debug)
-			Console.WriteLine("Total Memory before Garbage Collection: {0}", GC.GetTotalMemory(true));
+			Console.WriteLine("Total Memory after Garbage Collection: {0}", GC.GetTotalMemory(true));
 	    }
         }
 
