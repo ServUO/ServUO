@@ -70,6 +70,7 @@ namespace Server.Misc
 		GC.Collect();
 		if (Core.Debug)
 			Console.WriteLine("Total Memory before Garbage Collection: {0}", GC.GetTotalMemory(true));
+	    }
         }
 
         public static void Save(bool permitBackgroundWrite)
