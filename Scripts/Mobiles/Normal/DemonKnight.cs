@@ -279,7 +279,15 @@ namespace Server.Mobiles
             IPooledEnumerable eable = this.GetMobilesInRange(12);
             foreach (Mobile mob in eable)
             {
-                if (mob != this && mob.Alive && mob.Player && this.CanBeHarmful(mob, false) && mob.Name != "unholy bones")
+                if (mob is BaseCreature)
+                {
+                    BaseCreature bc = mob as BaseCreature;
+
+                    if (!bc.Controlled)
+                        continue;
+                }
+
+                if (mob != this && mob.Alive && mob.Player && this.CanBeHarmful(mob, false))
                     toTele.Add(mob);
             }
             eable.Free();
