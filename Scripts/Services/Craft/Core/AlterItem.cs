@@ -228,22 +228,11 @@ namespace Server.Engines.Craft
 
                     newarmor.Resource = oldarmor.Resource;
 
-                    if (origItem is Glasses)
-                    {
-                        newarmor.PhysicalBonus = oldarmor.BasePhysicalResistance;
-                        newarmor.FireBonus = oldarmor.BaseFireResistance;
-                        newarmor.ColdBonus = oldarmor.BaseColdResistance;
-                        newarmor.PoisonBonus = oldarmor.BasePoisonResistance;
-                        newarmor.EnergyBonus = oldarmor.BaseEnergyResistance;
-                    }
-                    else
-                    {
-                        newarmor.PhysicalBonus = oldarmor.PhysicalBonus;
-                        newarmor.FireBonus = oldarmor.FireBonus;
-                        newarmor.ColdBonus = oldarmor.ColdBonus;
-                        newarmor.PoisonBonus = oldarmor.PoisonBonus;
-                        newarmor.EnergyBonus = oldarmor.EnergyBonus;
-                    }
+                    newarmor.PhysicalBonus = oldarmor.PhysicalBonus;
+                    newarmor.FireBonus = oldarmor.FireBonus;
+                    newarmor.ColdBonus = oldarmor.ColdBonus;
+                    newarmor.PoisonBonus = oldarmor.PoisonBonus;
+                    newarmor.EnergyBonus = oldarmor.EnergyBonus;
 
                     newarmor.Altered = true;
                 }
@@ -284,6 +273,16 @@ namespace Server.Engines.Craft
 
                     newarmor.Altered = true;
                 }
+                /*else if ((origItem is Glasses && newitem is GargishGlasses) || (origItem is ELvenGlasses && newitem is GargishGlasses))
+                {
+                    GargishGlasses glasses = (GargishGlasses)newitem;
+                    AosWeaponAttributes attr = RunicReforging.GetAosWeaponAttributes(origItem);
+
+                    if(attr != null)
+                    {
+                        glasses.WeaponAttributes = new AosWeaponAttributes(
+                    }
+                }*/
                 else
                 {
                     return;
@@ -333,7 +332,7 @@ namespace Server.Engines.Craft
 
         private bool RetainsName(Item item)
         {
-            if (item is Glasses)
+            if (item is Glasses || item is ElvenGlasses)
                 return true;
 
             if (item is BaseArmor && ((BaseArmor)item).ArtifactRarity > 0)

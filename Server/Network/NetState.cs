@@ -232,18 +232,8 @@ namespace Server.Network
 		public bool NewSecureTrading { get { return ((_ProtocolChanges & ProtocolChanges.NewSecureTrading) != 0); } }
 
 		public bool IsUOTDClient { get { return ((m_Flags & ClientFlags.UOTD) != 0 || (m_Version != null && m_Version.Type == ClientType.UOTD)); } }
-
 		public bool IsSAClient { get { return (m_Version != null && m_Version.Type == ClientType.SA); } }
-
-        private bool m_IsEnhancedClient = false; // seems redundant, but the m_Version changes overtime. So, once it's true, it's true. =)
-        public bool IsEnhancedClient {
-            get {
-                if (m_Version != null && m_Version.Major >= 67) {
-                    m_IsEnhancedClient = true;
-                };
-                return m_IsEnhancedClient;
-            }
-        }
+        public bool IsEnhancedClient { get { return m_Version != null && m_Version.Major >= 67; } }
 
         public List<SecureTrade> Trades { get { return m_Trades; } }
 
