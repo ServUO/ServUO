@@ -758,7 +758,7 @@ namespace Server.Engines.Craft
                 this.AddRes(index, typeof(BlueDiamond), 1032696, 1, 1044253);
                 this.SetNeededExpansion(index, Expansion.SA);
 
-                index = this.AddCraft(typeof(BraceletOfPrimalConsumption), 1073107, 1157350, 100.0, 125.0, typeof(IronIngot), 1044036, 3, 1044037);
+                index = this.AddCraft(typeof(BraceletOfPrimalConsumption), 1073107, 1157350, 100.0, 580.0, typeof(IronIngot), 1044036, 3, 1044037);
                 this.SetMinSkillOffset(index, 25.0);
                 this.AddRes(index, typeof(RingOfTheElements), 1061104, 1, 1044253);
                 this.AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1044253);

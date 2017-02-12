@@ -83,6 +83,9 @@ namespace Server.Engines.Craft
 
         public override double GetChanceAtMin(CraftItem item)
         {
+            if (item.NameNumber == 1157348) // Cuffs of the Archmage
+                return 0.05; // 5%
+
             return 0.5; // 50%
         }
 
@@ -718,10 +721,11 @@ namespace Server.Engines.Craft
 
             if (Core.SA)
             {
-                index = AddCraft(typeof(CuffsOfTheArchmage), 1049149, 1157348, 120.0, 120.0, typeof(Cloth), 1044286, 8, 1044287);
+                index = AddCraft(typeof(CuffsOfTheArchmage), 1049149, 1157348, 120.0, 120.1, typeof(Cloth), 1044286, 8, 1044287);
                 this.AddRes(index, typeof(MidnightBracers), 1061093, 1, 1049063);
                 this.AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1049063);
                 this.AddRes(index, typeof(DarkSapphire), 1032690, 5, 1044253);
+                this.ForceNonExceptional(index);
                 AddRecipe(index, (int)TailorRecipe.CuffsOfTheArchmage);
                 SetNeededExpansion(index, Expansion.SA);
             }

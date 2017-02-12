@@ -85,6 +85,9 @@ namespace Server.Engines.Craft
 
         public override double GetChanceAtMin(CraftItem item)
         {
+            if (item.NameNumber == 1157349 || item.NameNumber == 1157345) // Gloves Of FeudalGrip and Britches Of Warding
+                return 0.05; // 5%
+
             return 0.0; // 0%
         }
 
@@ -304,7 +307,7 @@ namespace Server.Engines.Craft
             if (Core.SA)
             {
                 #region SA
-                index = AddCraft(typeof(BritchesOfWarding), 1111704, 1157345, 120.0, 120.0, typeof(IronIngot), 1044036, 18, 1044037);
+                index = AddCraft(typeof(BritchesOfWarding), 1111704, 1157345, 120.0, 120.1, typeof(IronIngot), 1044036, 18, 1044037);
                 AddRes(index, typeof(LeggingsOfBane), 1061100, 1, 1053098);
                 AddRes(index, typeof(Turquoise), 1032691, 4, 1053098);
                 AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1053098);
@@ -968,7 +971,7 @@ namespace Server.Engines.Craft
             this.ForceNonExceptional(index);
             this.SetNeededExpansion(index, Expansion.SA);
 
-            index = AddCraft(typeof(GlovesOfFeudalGrip), 1011173, 1157349, 120.0, 120.0, typeof(RedScales), 1060883, 18, 1060884);
+            index = AddCraft(typeof(GlovesOfFeudalGrip), 1011173, 1157349, 120.0, 120.1, typeof(RedScales), 1060883, 18, 1060884);
             SetUseSubRes2(index, true);
             AddRes(index, typeof(BlueDiamond), 1032696, 4, 1044253);
             AddRes(index, typeof(GauntletsOfNobility), 1061092, 1, 1053098);
