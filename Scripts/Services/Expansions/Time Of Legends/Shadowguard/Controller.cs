@@ -103,18 +103,24 @@ namespace Server.Engines.Shadowguard
 
         public void OnTick()
         {
+            if (Encounters == null)
+                return;
+
             Encounters.ForEach(e =>
             {
-                DateTime end = e.StartTime + e.EncounterDuration;
-
-                if (!e.DoneWarning && DateTime.UtcNow > end - TimeSpan.FromMinutes(5))
-                    e.DoWarning();
-                else if (DateTime.UtcNow >= end)
+                if (e != null)
                 {
-                    e.Expire();
+                    DateTime end = e.StartTime + e.EncounterDuration;
+
+                    if (!e.DoneWarning && DateTime.UtcNow > end - TimeSpan.FromMinutes(5))
+                        e.DoWarning();
+                    else if (DateTime.UtcNow >= end)
+                    {
+                        e.Expire();
+                    }
+                    else
+                        e.OnTick();
                 }
-                else
-                    e.OnTick();
             });
         }
 

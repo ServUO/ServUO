@@ -18,7 +18,7 @@ namespace Server.Items
             typeof(FoldedSteelGlasses),
             typeof(PoisonedGlasses),
             typeof(TreasureTrinketGlasses),
-            typeof(MaceShieldGlasses),
+            typeof(MaceAndShieldGlasses),
             typeof(ArtsGlasses),
             typeof(AnthropomorphistGlasses)
         };

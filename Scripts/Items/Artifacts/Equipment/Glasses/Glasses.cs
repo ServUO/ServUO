@@ -1,11 +1,14 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefTinkering), typeof(GargishGlasses), true)]
     public class Glasses : BaseArmor
 	{
 		public override bool IsArtifact { get { return true; } }
         private AosWeaponAttributes m_AosWeaponAttributes;
+
         [Constructable]
         public Glasses()
             : base(0x2FB8)
@@ -75,16 +78,16 @@ namespace Server.Items
                 return this.m_AosWeaponAttributes;
             }
         }
+
         public override void OnAfterDuped(Item newItem)
         {
             base.OnAfterDuped(newItem);
 
-            Glasses glasses = newItem as Glasses;
+            if (newItem is GargishGlasses)
+                ((GargishGlasses)newItem).WeaponAttributes = new AosWeaponAttributes(newItem, m_AosWeaponAttributes);
 
-            if (glasses == null)
-                return;
-
-            glasses.m_AosWeaponAttributes = new AosWeaponAttributes(newItem, this.m_AosWeaponAttributes);
+            if (newItem is Glasses)
+                ((Glasses)newItem).m_AosWeaponAttributes = new AosWeaponAttributes(newItem, m_AosWeaponAttributes);
         }
 
         public override bool CanEquip(Mobile m)

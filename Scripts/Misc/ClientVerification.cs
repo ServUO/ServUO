@@ -14,8 +14,11 @@ namespace Server.Misc
         private static readonly TimeSpan m_AgeLeniency = TimeSpan.FromDays(10);
         private static readonly TimeSpan m_GameTimeLeniency = TimeSpan.FromHours(25);
         private static ClientVersion m_Required;
-        private static bool m_AllowRegular = true, m_AllowUOTD = true, m_AllowGod = true;
-        private static TimeSpan m_KickDelay = TimeSpan.FromSeconds(20.0);
+
+        public static TimeSpan KickDelay = TimeSpan.FromSeconds(Config.Get("Client.KickDelay", 20.0));
+        public static bool AllowRegular = Config.Get("Client.AllowRegular", true);
+        public static bool AllowUOTD = Config.Get("Client.AllowUOTD", true);
+        public static bool AllowGod = Config.Get("Client.AllowGod", true);
 
         private enum OldClientResponse
         {
@@ -34,50 +37,6 @@ namespace Server.Misc
             set
             {
                 m_Required = value;
-            }
-        }
-        public static bool AllowRegular
-        {
-            get
-            {
-                return m_AllowRegular;
-            }
-            set
-            {
-                m_AllowRegular = value;
-            }
-        }
-        public static bool AllowUOTD
-        {
-            get
-            {
-                return m_AllowUOTD;
-            }
-            set
-            {
-                m_AllowUOTD = value;
-            }
-        }
-        public static bool AllowGod
-        {
-            get
-            {
-                return m_AllowGod;
-            }
-            set
-            {
-                m_AllowGod = value;
-            }
-        }
-        public static TimeSpan KickDelay
-        {
-            get
-            {
-                return m_KickDelay;
-            }
-            set
-            {
-                m_KickDelay = value;
             }
         }
         public static void Initialize()
@@ -116,7 +75,7 @@ namespace Server.Misc
             NetState state = e.State;
             ClientVersion version = e.Version;
 
-            if (state.Mobile.IsStaff())
+            if (state.Mobile != null && state.Mobile.IsStaff())
                 return;
 
             if (Required != null && version < Required && (m_OldClientResponse == OldClientResponse.Kick || (m_OldClientResponse == OldClientResponse.LenientKick && (DateTime.UtcNow - state.Mobile.CreationTime) > m_AgeLeniency && state.Mobile is PlayerMobile && ((PlayerMobile)state.Mobile).GameTime > m_GameTimeLeniency)))

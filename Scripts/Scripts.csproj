@@ -3765,9 +3765,6 @@
     <Compile Include="Items\Artifacts\Equipment\Glasses\LyricalGlasses.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Artifacts\Equipment\Glasses\MaceShieldGlasses.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Artifacts\Equipment\Glasses\MaritimeGlasses.cs">
       <SubType>Code</SubType>
     </Compile>
