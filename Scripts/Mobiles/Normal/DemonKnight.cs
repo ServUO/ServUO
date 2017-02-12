@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Items;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -44,11 +45,7 @@ namespace Server.Mobiles
             typeof(HatOfTheMagi),
             typeof(HuntersHeaddress),
             typeof(SpiritOfTheTotem),
-            typeof(BritchesOfWarding),
-            typeof(CuffsOfTheArchmage),
-            typeof(GlovesOfFeudalGrip),
             typeof(TheScholarsHalo),
-            typeof(BraceletOfPrimalConsumption),
             typeof(BowOfTheInfiniteSwarm),
             typeof(Glenda),
             typeof(TheDeceiver)
@@ -232,8 +229,34 @@ namespace Server.Mobiles
                 }
             }
         }
- 
-      
+
+        public override void OnDeath(Container c)
+        {
+            List<DamageStore> rights = GetLootingRights();
+
+            int top = 0;
+            Item blood = null;
+
+            foreach (Mobile m in rights.Select(x => x.m_Mobile).Distinct().Take(3))
+            {
+                if (top == 0)
+                    blood = new BloodOfTheDarkFather(5);
+                else if (top == 1)
+                    blood = new BloodOfTheDarkFather(3);
+                else if (top == 2)
+                    blood = new BloodOfTheDarkFather(2);
+
+                top++;
+
+                if (m.Backpack == null || !m.Backpack.TryDropItem(m, blood, false))
+                {
+                    m.BankBox.DropItem(blood);
+                }
+            }
+
+            base.OnDeath(c);
+        }
+
         public static Mobile FindRandomPlayer(BaseCreature creature)
         {
             List<DamageStore> rights = creature.GetLootingRights();
@@ -287,7 +310,7 @@ namespace Server.Mobiles
                         continue;
                 }
 
-                if (mob != this && mob.Alive && mob.Player && this.CanBeHarmful(mob, false))
+                if (mob != this && mob.Alive && mob.Player && this.CanBeHarmful(mob, false) && mob.AccessLevel == AccessLevel.Player)
                     toTele.Add(mob);
             }
             eable.Free();
@@ -314,7 +337,7 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.SuperBoss, 2);
             this.AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(6, 60));
         }
-
+        
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             if (from != null && from != this && !m_InHere)

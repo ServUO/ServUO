@@ -36,7 +36,10 @@ namespace Server.Engines.Craft
         DragonTurtleHideChest = 581,
         DragonTurtleHideHelm = 582,
         DragonTurtleHideLegs = 583,
-        DragonTurtleHideBustier = 584
+        DragonTurtleHideBustier = 584,
+
+        // doom
+        CuffsOfTheArchmage = 585
     }
 
     public class DefTailoring : CraftSystem
@@ -712,6 +715,16 @@ namespace Server.Engines.Craft
 		
             index = this.AddCraft(typeof(BoneChest), 1049149, 1025199, 96.0, 121.0, typeof(Leather), 1044462, 12, 1044463);
             this.AddRes(index, typeof(Bone), 1049064, 10, 1049063);
+
+            if (Core.SA)
+            {
+                index = AddCraft(typeof(CuffsOfTheArchmage), 1049149, 1157348, 120.0, 120.0, typeof(Cloth), 1044286, 8, 1044287);
+                this.AddRes(index, typeof(MidnightBracers), 1061093, 1, 1049063);
+                this.AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1049063);
+                this.AddRes(index, typeof(DarkSapphire), 1032690, 5, 1044253);
+                AddRecipe(index, (int)TailorRecipe.CuffsOfTheArchmage);
+                SetNeededExpansion(index, Expansion.SA);
+            }
             #endregion
 
             // Set the overridable material

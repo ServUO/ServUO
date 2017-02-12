@@ -18,7 +18,11 @@ namespace Server.Engines.Craft
         ScrappersCompendium = 453,
         HoveringWisp = 454,
 
-        KotlPowerCoil = 455
+        KotlPowerCoil = 455,
+
+        // doom
+        BraceletOfPrimalConsumption = 456
+
     }
 
     public class DefTinkering : CraftSystem
@@ -752,6 +756,15 @@ namespace Server.Engines.Craft
      
                 index = this.AddCraft(typeof(GargishEarrings), 1044049, 1095787, 65.0, 115.0, typeof(IronIngot), 1044036, 4, 1044037);
                 this.AddRes(index, typeof(BlueDiamond), 1032696, 1, 1044253);
+                this.SetNeededExpansion(index, Expansion.SA);
+
+                index = this.AddCraft(typeof(BraceletOfPrimalConsumption), 1073107, 1157350, 100.0, 125.0, typeof(IronIngot), 1044036, 3, 1044037);
+                this.SetMinSkillOffset(index, 25.0);
+                this.AddRes(index, typeof(RingOfTheElements), 1061104, 1, 1044253);
+                this.AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1044253);
+                this.AddRes(index, typeof(WhitePearl), 1032694, 10, 1044240);
+                this.AddRecipe(index, (int)TinkerRecipes.BraceletOfPrimalConsumption);
+                this.ForceNonExceptional(index);
                 this.SetNeededExpansion(index, Expansion.SA);
             }
             #endregion

@@ -60,7 +60,11 @@ namespace Server.Engines.Craft
         ColdForgedBlade = 351,
         OverseerSunderedBlade = 352,
         LuminousRuneBlade = 353,
-        ShardTrasher = 354 //good
+        ShardTrasher = 354, //good
+
+        // doom 
+        BritchesOfWarding = 355,
+        GlovesOfFeudalGrip = 356
     }
     #endregion
 
@@ -296,6 +300,19 @@ namespace Server.Engines.Craft
             AddCraft(typeof(ChainCoif), 1111704, 1025051, 14.5, 64.5, typeof(IronIngot), 1044036, 10, 1044037);
             AddCraft(typeof(ChainLegs), 1111704, 1025054, 36.7, 86.7, typeof(IronIngot), 1044036, 18, 1044037);
             AddCraft(typeof(ChainChest), 1111704, 1025055, 39.1, 89.1, typeof(IronIngot), 1044036, 20, 1044037);
+
+            if (Core.SA)
+            {
+                #region SA
+                index = AddCraft(typeof(BritchesOfWarding), 1111704, 1157345, 120.0, 120.0, typeof(IronIngot), 1044036, 18, 1044037);
+                AddRes(index, typeof(LeggingsOfBane), 1061100, 1, 1053098);
+                AddRes(index, typeof(Turquoise), 1032691, 4, 1053098);
+                AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1053098);
+                AddRecipe(index, (int)SmithRecipes.BritchesOfWarding);
+                ForceNonExceptional(index);
+                SetNeededExpansion(index, Expansion.SA);
+                #endregion
+            }
             #endregion
 
             #region Platemail
@@ -950,6 +967,15 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(SmallPieceofBlackrock), 1150016, 10, 1044253);
             this.ForceNonExceptional(index);
             this.SetNeededExpansion(index, Expansion.SA);
+
+            index = AddCraft(typeof(GlovesOfFeudalGrip), 1011173, 1157349, 120.0, 120.0, typeof(RedScales), 1060883, 18, 1060884);
+            SetUseSubRes2(index, true);
+            AddRes(index, typeof(BlueDiamond), 1032696, 4, 1044253);
+            AddRes(index, typeof(GauntletsOfNobility), 1061092, 1, 1053098);
+            AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1053098);
+            AddRecipe(index, (int)SmithRecipes.GlovesOfFeudalGrip);
+            ForceNonExceptional(index);
+            SetNeededExpansion(index, Expansion.SA);
             #endregion
 
             // Set the overridable material
