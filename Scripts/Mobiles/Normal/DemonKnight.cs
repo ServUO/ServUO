@@ -7,7 +7,8 @@ namespace Server.Mobiles
     [CorpseName("a demon knight corpse")]
     public class DemonKnight : BaseCreature
     {
-              
+        private DateTime m_NextArea;
+
         private static readonly Type[] m_DoomArtifact = new Type[]
         {
             typeof(LegacyOfTheDreadLord),
@@ -42,7 +43,15 @@ namespace Server.Mobiles
             typeof(DivineCountenance),
             typeof(HatOfTheMagi),
             typeof(HuntersHeaddress),
-            typeof(SpiritOfTheTotem)
+            typeof(SpiritOfTheTotem),
+            typeof(BritchesOfWarding),
+            typeof(CuffsOfTheArchmage),
+            typeof(GlovesOfFeudalGrip),
+            typeof(TheScholarsHalo),
+            typeof(BraceletOfPrimalConsumption),
+            typeof(BowOfTheInfiniteSwarm),
+            typeof(Glenda),
+            typeof(TheDeceiver)
         };
         private static bool m_InHere;
         [Constructable]
@@ -90,6 +99,8 @@ namespace Server.Mobiles
             this.Karma = -28000;
 
             this.VirtualArmor = 64;
+
+            m_NextArea = DateTime.UtcNow;
         }
 
         public DemonKnight(Serial serial)
@@ -255,7 +266,49 @@ namespace Server.Mobiles
             }
         }
 
-        
+        public override void OnThink()
+        {
+            if (Core.TOL && DateTime.UtcNow > m_NextArea)
+                Teleport();
+        }
+
+        private void Teleport()
+        {
+            System.Collections.Generic.List<Mobile> toTele = new System.Collections.Generic.List<Mobile>();
+
+            IPooledEnumerable eable = this.GetMobilesInRange(12);
+            foreach (Mobile mob in eable)
+            {
+                if (mob is BaseCreature)
+                {
+                    BaseCreature bc = mob as BaseCreature;
+
+                    if (!bc.Controlled)
+                        continue;
+                }
+
+                if (mob != this && mob.Alive && mob.Player && this.CanBeHarmful(mob, false))
+                    toTele.Add(mob);
+            }
+            eable.Free();
+
+            if (toTele.Count > 0)
+            {
+                Mobile from = toTele[Utility.Random(toTele.Count)];
+
+                if (from != null)
+                {
+                    Combatant = from;
+
+                    from.MoveToWorld(GetSpawnPosition(1), Map);
+                    from.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
+                    from.PlaySound(0x1FE);
+                }
+            }
+
+            m_NextArea = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)); // too much
+        }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.SuperBoss, 2);
@@ -323,6 +376,8 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            m_NextArea = DateTime.UtcNow;
         }
     }
 }
