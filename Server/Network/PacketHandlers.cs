@@ -1737,7 +1737,9 @@ namespace Server.Network
 
 		public static void SetUpdateRange(NetState state, PacketReader pvSrc)
 		{
-			state.Send(ChangeUpdateRange.Instantiate(18));
+            int range = pvSrc.ReadByte();
+
+            state.Send(ChangeUpdateRange.Instantiate(range));
 		}
 
 		private const int BadFood = unchecked((int)0xBAADF00D);
