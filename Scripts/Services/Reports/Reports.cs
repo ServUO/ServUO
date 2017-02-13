@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Server.Accounting;
+using Server.Commands;
 using Server.Engines.ConPVP;
 using Server.Factions;
 using Server.Mobiles;
@@ -12,7 +13,7 @@ namespace Server.Engines.Reports
 {
     public class Reports
     {
-        public static bool Enabled = false;
+        public static bool Enabled = Config.Get("Reports.AutoGenerate", false);
         private static DateTime m_GenerateTime;
         private static SnapshotHistory m_StatsHistory;
         private static StaffHistory m_StaffHistory;
@@ -25,8 +26,7 @@ namespace Server.Engines.Reports
         }
         public static void Initialize()
         {
-            if (!Enabled)
-                return;
+            CommandSystem.Register("GenReports", AccessLevel.Administrator, new CommandEventHandler(GenReports_OnCommand));
 
             m_StatsHistory = new SnapshotHistory();
             m_StatsHistory.Load();
@@ -35,6 +35,9 @@ namespace Server.Engines.Reports
             m_StaffHistory.Load();
 
             DateTime now = DateTime.UtcNow;
+            
+            if (!Enabled)
+                return;
 
             DateTime date = now.Date;
             TimeSpan timeOfDay = now.TimeOfDay;
@@ -51,6 +54,13 @@ namespace Server.Engines.Reports
 
             Generate();
             m_GenerateTime += TimeSpan.FromHours(1.0);
+        }
+        
+        [Usage("GenReports")]
+        [Description("Generates Reports on Command.")]
+        public static void GenReports_OnCommand(CommandEventArgs e)
+        {
+			Generate();
         }
 
         public static void Generate()
