@@ -12,45 +12,38 @@ namespace Server.Mobiles
 
         private static readonly Type[] m_DoomArtifact = new Type[]
         {
-            typeof(LegacyOfTheDreadLord),
-            typeof(TheTaskmaster),
-            typeof(TheDragonSlayer),
-            typeof(ArmorOfFortune),
-            typeof(GauntletsOfNobility),
-            typeof(HelmOfInsight),
-            typeof(HolyKnightsBreastplate),
-            typeof(JackalsCollar),
-            typeof(LeggingsOfBane),
-            typeof(MidnightBracers),
-            typeof(OrnateCrownOfTheHarrower),
-            typeof(ShadowDancerLeggings),
-            typeof(TunicOfFire),
-            typeof(VoiceOfTheFallenKing),
-            typeof(BraceletOfHealth),
-            typeof(OrnamentOfTheMagician),
-            typeof(RingOfTheElements),
-            typeof(RingOfTheVile),
-            typeof(Aegis),
-            typeof(ArcaneShield),
-            typeof(AxeOfTheHeavens),
-            typeof(BladeOfInsanity),
-            typeof(BoneCrusher),
-            typeof(BreathOfTheDead),
-            typeof(Frostbringer),
-            typeof(SerpentsFang),
-            typeof(StaffOfTheMagi),
-            typeof(TheBeserkersMaul),
-            typeof(TheDryadBow),
-            typeof(DivineCountenance),
-            typeof(HatOfTheMagi),
-            typeof(HuntersHeaddress),
-            typeof(SpiritOfTheTotem),
-            typeof(TheScholarsHalo),
-            typeof(BowOfTheInfiniteSwarm),
-            typeof(Glenda),
+            typeof(LegacyOfTheDreadLord),       typeof(TheTaskmaster),              typeof(TheDragonSlayer),
+            typeof(ArmorOfFortune),             typeof(GauntletsOfNobility),        typeof(HelmOfInsight),
+            typeof(HolyKnightsBreastplate),     typeof(JackalsCollar),              typeof(LeggingsOfBane),
+            typeof(MidnightBracers),            typeof(OrnateCrownOfTheHarrower),   typeof(ShadowDancerLeggings),
+            typeof(TunicOfFire),                typeof(VoiceOfTheFallenKing),       typeof(BraceletOfHealth),
+            typeof(OrnamentOfTheMagician),      typeof(RingOfTheElements),          typeof(RingOfTheVile),
+            typeof(Aegis),                      typeof(ArcaneShield),               typeof(AxeOfTheHeavens),
+            typeof(BladeOfInsanity),            typeof(BoneCrusher),                typeof(BreathOfTheDead),
+            typeof(Frostbringer),               typeof(SerpentsFang),               typeof(StaffOfTheMagi),
+            typeof(TheBeserkersMaul),           typeof(TheDryadBow),                typeof(DivineCountenance),
+            typeof(HatOfTheMagi),               typeof(HuntersHeaddress),           typeof(SpiritOfTheTotem)
+        };
+
+        private static readonly Type[] m_NewDoomArtifact = new Type[]
+        {
+            typeof(LegacyOfTheDreadLord),       typeof(TheTaskmaster),              typeof(TheDragonSlayer),
+            typeof(ArmorOfFortune),             typeof(GauntletsOfNobility),        typeof(HelmOfInsight),
+            typeof(HolyKnightsBreastplate),     typeof(JackalsCollar),              typeof(LeggingsOfBane),
+            typeof(MidnightBracers),            typeof(OrnateCrownOfTheHarrower),   typeof(ShadowDancerLeggings),
+            typeof(TunicOfFire),                typeof(VoiceOfTheFallenKing),       typeof(BraceletOfHealth),
+            typeof(OrnamentOfTheMagician),      typeof(RingOfTheElements),          typeof(RingOfTheVile),
+            typeof(Aegis),                      typeof(ArcaneShield),               typeof(AxeOfTheHeavens),
+            typeof(BladeOfInsanity),            typeof(BoneCrusher),                typeof(BreathOfTheDead),
+            typeof(Frostbringer),               typeof(SerpentsFang),               typeof(StaffOfTheMagi),
+            typeof(TheBeserkersMaul),           typeof(TheDryadBow),                typeof(DivineCountenance),
+            typeof(HatOfTheMagi),               typeof(HuntersHeaddress),           typeof(SpiritOfTheTotem),
+            typeof(TheScholarsHalo),            typeof(BowOfTheInfiniteSwarm),      typeof(Glenda),
             typeof(TheDeceiver)
         };
+
         private static bool m_InHere;
+
         [Constructable]
         public DemonKnight()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -109,7 +102,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return m_DoomArtifact;
+                return Core.TOL ? m_NewDoomArtifact : m_DoomArtifact;
             }
         }
        
@@ -202,7 +195,7 @@ namespace Server.Mobiles
 
                 try
                 {
-                    i = Activator.CreateInstance(m_DoomArtifact[Utility.Random(m_DoomArtifact.Length)]) as Item;
+                    i = Activator.CreateInstance(DoomArtifact[Utility.Random(DoomArtifact.Length)]) as Item;
                 }
                 catch
                 {
