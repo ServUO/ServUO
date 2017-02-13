@@ -435,7 +435,7 @@ namespace Server
 			Utility.PopColor();
 			Utility.PushColor(ConsoleColor.Cyan);
 			Console.WriteLine(
-				"ServUO - [http://www.servuo.com] Version {0}.{1}, Build {2}.{3}",
+				"ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3}",
 				ver.Major,
 				ver.Minor,
 				ver.Build,

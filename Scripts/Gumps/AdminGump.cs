@@ -477,6 +477,22 @@ namespace Server.Gumps
 			
                         this.AddButtonLabeled(20, 180, this.GetButtonID(3, 600), "Rebuild Categorization");
 			this.AddButtonLabeled(220, 180, this.GetButtonID(3, 601), "Generate Documentation");
+			
+			//this.AddButtonLabeled(20, 180, this.GetButtonID(3, 602), "Unset"); // Placeholder
+			this.AddButtonLabeled(220, 180, this.GetButtonID(3, 603), "Generate Reports");
+			
+			this.AddHtml(10, 210, 400, 20, this.Color(this.Center("Profiling"), LabelColor32), false, false);
+			
+			this.AddButtonLabeled(20, 240, this.GetButtonID(3, 604), "Dump Timers");
+			this.AddButtonLabeled(220, 240, this.GetButtonID(3, 605), "Count Objects");
+			
+			this.AddButtonLabeled(20, 270, this.GetButtonID(3, 606), "Profile World");
+			this.AddButtonLabeled(220, 270, this.GetButtonID(3, 607), "Write Profiles");
+			
+			this.AddButtonLabeled(20, 300, this.GetButtonID(3, 608), "Trace Internal");
+			this.AddButtonLabeled(220, 300, this.GetButtonID(3, 609), "Trace Expanded");
+			
+			this.AddButtonLabeled(20, 330, this.GetButtonID(3, 610), "Toggle Profiles");
 
 			goto case AdminGumpPage.Administer;
 		    }
@@ -2073,6 +2089,42 @@ namespace Server.Gumps
                                 this.InvokeCommand("DocGen");
                                 notice = "Documentation has been generated.";
                                 break;
+			    //case 602:
+                            //    this.InvokeCommand("Unset");
+                            //    notice = "Unset.";
+                            //    break;
+			   case 603:
+                                this.InvokeCommand("GenReports");
+                                notice = "Reports generated.";
+                                break;
+		           case 604:
+                                this.InvokeCommand("DumpTimers");
+                                notice = "Timers dumped.";
+                                break;
+			   case 605:
+                                this.InvokeCommand("CountObjects");
+                                notice = "Objects counted.";
+                                break;
+			   case 606:
+                                this.InvokeCommand("ProfileWorld");
+                                notice = "World profiled.";
+                                break;
+			   case 607:
+                                this.InvokeCommand("WriteProfiles");
+                                notice = "Profiles written.";
+                                break;
+			   case 608:
+                                this.InvokeCommand("TraceInternal");
+                                notice = "Tracing completed.";
+                                break;
+			   case 609:
+                                this.InvokeCommand("TraceExpanded");
+                                notice = "Tracing completed.";
+                                break;
+			   case 610:
+                                this.InvokeCommand("SetProfiles");
+                                notice = "Profiles toggled. Use with caution. This increases server load.";
+                                break;	
                         }
 
                         from.SendGump(new AdminGump(from, page, 0, null, notice, null));
