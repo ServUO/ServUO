@@ -903,6 +903,11 @@ namespace Server.Mobiles
         public virtual double DrainsLifeChance { get { return 0.1; } }
         public virtual int DrainAmount { get { return Utility.RandomMinMax(10, 40); } }
 
+        public virtual int GetDrainAmount(Mobile target)
+        {
+            return DrainAmount;
+        }
+
         public virtual void DrainLife()
         {
             List<Mobile> list = new List<Mobile>();
@@ -927,7 +932,7 @@ namespace Server.Mobiles
 
                 m.SendMessage("You feel the life drain out of you!");
 
-                int toDrain = DrainAmount;
+                int toDrain = GetDrainAmount(m);
 
                 //Monster Stealables
                 if (m is PlayerMobile)

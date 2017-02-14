@@ -10,7 +10,8 @@ namespace Server.Items
         [Constructable]
         public BowOfTheInfiniteSwarm()
         {
-            // Missing Swarm Props
+            ExtendedWeaponAttributes.HitSwarm = 20;
+
             this.WeaponAttributes.HitLeechMana = 50;
             this.WeaponAttributes.HitLeechStam = 50;
             this.Attributes.BonusStam = 8;

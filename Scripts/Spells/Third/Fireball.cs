@@ -47,8 +47,17 @@ namespace Server.Spells.Third
 
                 SpellHelper.Turn(source, m);
 
-                if(target != null)
-                    SpellHelper.CheckReflect((int)this.Circle, ref source, ref target);
+                if (target != null)
+                {
+                    if (SpellHelper.CheckReflect((int)this.Circle, ref source, ref target))
+                    {
+                        Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
+                            {
+                                source.MovingParticles(target, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160);
+                                source.PlaySound(Core.AOS ? 0x15E : 0x44B);
+                            });
+                    }
+                }
 
                 double damage = 0;
 
@@ -72,10 +81,10 @@ namespace Server.Spells.Third
 
                 if (damage > 0)
                 {
-                    source.MovingParticles(m, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160);
-                    source.PlaySound(Core.AOS ? 0x15E : 0x44B);
+                    this.Caster.MovingParticles(m, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160);
+                    this.Caster.PlaySound(Core.AOS ? 0x15E : 0x44B);
 
-                    SpellHelper.Damage(this, m, damage, 0, 100, 0, 0, 0);
+                    SpellHelper.Damage(this, target != null ? target : m, damage, 0, 100, 0, 0, 0);
                 }
             }
 

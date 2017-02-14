@@ -1005,13 +1005,15 @@ namespace Server.Spells
         }
 
         //magic reflection
-        public static void CheckReflect(int circle, Mobile caster, ref Mobile target)
+        public static bool CheckReflect(int circle, Mobile caster, ref Mobile target)
         {
-            CheckReflect(circle, ref caster, ref target);
+            return CheckReflect(circle, ref caster, ref target);
         }
 
-        public static void CheckReflect(int circle, ref Mobile caster, ref Mobile target)
+        public static bool CheckReflect(int circle, ref Mobile caster, ref Mobile target)
         {
+            bool reflect = false;
+
             if (target.MagicDamageAbsorb > 0)
             {
                 ++circle;
@@ -1020,7 +1022,7 @@ namespace Server.Spells
 
                 // This order isn't very intuitive, but you have to nullify reflect before target gets switched
 
-                bool reflect = (target.MagicDamageAbsorb >= 0);
+                reflect = (target.MagicDamageAbsorb >= 0);
 
                 if (target is BaseCreature)
                     ((BaseCreature)target).CheckReflect(caster, ref reflect);
@@ -1042,7 +1044,7 @@ namespace Server.Spells
             }
             else if (target is BaseCreature)
             {
-                bool reflect = false;
+                reflect = false;
 
                 ((BaseCreature)target).CheckReflect(caster, ref reflect);
 
@@ -1055,6 +1057,8 @@ namespace Server.Spells
                     target = temp;
                 }
             }
+
+            return reflect;
         }
 
         public static void Damage(Spell spell, Mobile target, double damage)

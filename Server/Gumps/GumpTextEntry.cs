@@ -30,7 +30,7 @@ namespace Server.Gumps
 		private int m_Hue;
 		private int m_EntryID;
 		private string m_InitialText;
-        private int m_InitialTextID;
+        private int m_InitialTextID = -1;
 
         public int X
 		{
@@ -140,7 +140,7 @@ namespace Server.Gumps
 
         public override string Compile()
 		{
-			return String.Format( "{{ textentry {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, m_Hue, m_EntryID, m_InitialText == null ? m_InitialTextID : Parent.Intern(m_InitialText));
+			return String.Format( "{{ textentry {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, m_Hue, m_EntryID, m_InitialTextID == -1 ?  Parent.Intern(m_InitialText) : m_InitialTextID);
 		}
 
 		private static byte[] m_LayoutName = Gump.StringToBuffer( "textentry" );
@@ -154,7 +154,7 @@ namespace Server.Gumps
 			disp.AppendLayout( m_Height );
 			disp.AppendLayout( m_Hue );
 			disp.AppendLayout( m_EntryID );
-            disp.AppendLayout(m_InitialText == null ? m_InitialTextID : Parent.Intern(m_InitialText));
+            disp.AppendLayout(m_InitialTextID == -1 ? Parent.Intern(m_InitialText) : m_InitialTextID);
 
             disp.TextEntries++;
 		}

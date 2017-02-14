@@ -334,48 +334,67 @@ namespace Server.Items
 			CommandSystem.Register("AllSpells", AccessLevel.GameMaster, AllSpells_OnCommand);
 		}
 
-        private static void Targeted_Spell(TargetedSpellEventArgs e) {
-            try {
+        #region Enhanced Client
+        private static void Targeted_Spell(TargetedSpellEventArgs e)
+        {
+            try
+            {
                 Mobile from = e.NetState.Mobile;
 
-                if (!DesignContext.Check(from)) {
+                if (!DesignContext.Check(from))
+                {
                     return; // They are customizing
                 }
 
                 Spellbook book = null;
                 int spellID = e.SpellID;
 
-                if (book == null || !book.HasSpell(spellID)) {
+                if (book == null || !book.HasSpell(spellID))
+                {
                     book = Find(from, spellID);
                 }
 
-                if (book != null && book.HasSpell(spellID)) {
+                if (book != null && book.HasSpell(spellID))
+                {
                     SpecialMove move = SpellRegistry.GetSpecialMove(spellID);
 
-                    if (move != null) {
+                    if (move != null)
+                    {
                         SpecialMove.SetCurrentMove(from, move);
-                    } else {
-                        Mobile to = World.FindMobile(e.Target.Serial);                       
+                    }
+                    else
+                    {
+                        Mobile to = World.FindMobile(e.Target.Serial);
                         Item toI = World.FindItem(e.Target.Serial);
-
                         Spell spell = SpellRegistry.NewSpell(spellID, from, null);
-                        if (to != null) {
+
+                        if (to != null)
+                        {
                             spell.InstantTarget = to;
-                        } else if (toI != null) {
-                            spell.InstantTarget = toI;
                         }
-                                           
-                        if (spell != null) {
+                        else if (toI != null)
+                        {
+                            spell.InstantTarget = toI as IDamageableItem;
+                        }
+
+                        if (spell != null)
+                        {
                             spell.Cast();
-                        } else if (!Server.Spells.SkillMasteries.MasteryInfo.IsPassiveMastery(spellID)) {
+                        }
+                        else if (!Server.Spells.SkillMasteries.MasteryInfo.IsPassiveMastery(spellID))
+                        {
                             from.SendLocalizedMessage(502345); // This spell has been temporarily disabled.
                         }
                     }
-                } else {
+                }
+                else
+                {
                     from.SendLocalizedMessage(500015); // You do not have that spell!
                 }
-            } catch {}
-        }     
+            }
+            catch { }
+        }
+        #endregion
 
         public static SpellbookType GetTypeForSpell(int spellID)
 		{

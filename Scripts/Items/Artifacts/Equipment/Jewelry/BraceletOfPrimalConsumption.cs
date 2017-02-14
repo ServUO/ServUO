@@ -10,7 +10,7 @@ namespace Server.Items
         [Constructable]
         public BraceletOfPrimalConsumption()
         {
-            this.AbsorptionAttributes.EaterFire = 6;
+            this.AbsorptionAttributes.EaterDamage = 6;
             this.Attributes.Luck = 200;
             this.Resistances.Physical = 20;
             this.Resistances.Fire = 20;

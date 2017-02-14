@@ -2295,6 +2295,14 @@ namespace Server.Items
             return null;
         }
 
+        public static ExtendedWeaponAttributes GetExtendedWeaponAttributes(Item item)
+        {
+            if (item is BaseWeapon)
+                return ((BaseWeapon)item).ExtendedWeaponAttributes;
+
+            return null;
+        }
+
         public static AosElementAttributes GetElementalAttributes(Item item)
         {
             if (item is BaseClothing)

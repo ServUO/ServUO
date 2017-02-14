@@ -955,6 +955,20 @@ namespace Server.SkillHandlers
                     }
                 }
 
+                foreach (int i in Enum.GetValues(typeof(ExtendedWeaponAttribute)))
+                {
+                    ExtendedWeaponAttribute attr = (ExtendedWeaponAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
+
+                    if (wep.ExtendedWeaponAttributes[attr] > 0)
+                    {
+                        if (!(prop is AosWeaponAttribute) || ((ExtendedWeaponAttribute)prop) != attr)
+                            total += 1;
+                    }
+                }
+
                 if (wep.Slayer != SlayerName.None && (!(prop is SlayerName) || ((SlayerName)prop) != wep.Slayer))
                     total += 1;
 
@@ -1197,12 +1211,14 @@ namespace Server.SkillHandlers
             SAAbsorptionAttributes saAttrs = null;
             AosArmorAttributes armorAttrs = null;
             AosElementAttributes resistAttrs = null;
+            ExtendedWeaponAttributes extattrs = null;
 
             if (item is BaseWeapon)
             {
                 aosAttrs = ((BaseWeapon)item).Attributes;
                 wepAttrs = ((BaseWeapon)item).WeaponAttributes;
                 saAttrs = ((BaseWeapon)item).AbsorptionAttributes;
+                extattrs = ((BaseWeapon)item).ExtendedWeaponAttributes;
 
                 if(((BaseWeapon)item).Slayer != SlayerName.None)
                     weight += GetIntensityForAttribute(((BaseWeapon)item).Slayer, mod, 1);
@@ -1264,6 +1280,10 @@ namespace Server.SkillHandlers
             if (resistAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(AosElementAttribute)))
                     weight += GetIntensityForAttribute((AosElementAttribute)i, mod, resistAttrs[(AosElementAttribute)i]);
+
+            if(extattrs != null)
+                foreach (int i in Enum.GetValues(typeof(ExtendedWeaponAttribute)))
+                    weight += GetIntensityForAttribute((ExtendedWeaponAttribute)i, mod, extattrs[(ExtendedWeaponAttribute)i], item as BaseWeapon);
 
             weight += CheckSkillBonuses(item, mod);
 
@@ -1626,6 +1646,11 @@ namespace Server.SkillHandlers
             m_Table[500] = new ImbuingDefinition(AosArmorAttribute.SelfRepair,              1079709, 100, null, null, null, 5, 1,  1079709);
             m_Table[501] = new ImbuingDefinition(AosWeaponAttribute.SelfRepair,             1079709, 100, null, null, null, 5, 1,  1079709);
             //243 already used above
+
+            m_Table[600] = new ImbuingDefinition(ExtendedWeaponAttribute.BoneBreaker,       1157318, 140, null, null, null, 1, 1,   1157319);
+            m_Table[601] = new ImbuingDefinition(ExtendedWeaponAttribute.HitSwarm,          1157328, 140, null, null, null, 20, 1,   1157327);
+            m_Table[602] = new ImbuingDefinition(ExtendedWeaponAttribute.HitSparks,         1157330, 140, null, null, null, 20, 1,   1157329);
+            m_Table[603] = new ImbuingDefinition(ExtendedWeaponAttribute.Bane,              1154671, 140, null, null, null, 1, 1,   1154570);
         }
 
         public static Type[] IngredTypes { get { return m_IngredTypes; } }
@@ -1716,6 +1741,9 @@ namespace Server.SkillHandlers
 
                 else if (attr is AosWeaponAttribute)
                     return w.WeaponAttributes[(AosWeaponAttribute)attr];
+
+                else if (attr is ExtendedWeaponAttribute)
+                    return w.ExtendedWeaponAttributes[(ExtendedWeaponAttribute)attr];
 
                 else if (attr is SAAbsorptionAttribute)
                     return w.AbsorptionAttributes[(SAAbsorptionAttribute)attr];
@@ -1853,6 +1881,9 @@ namespace Server.SkillHandlers
             else if (attr is AosWeaponAttribute)
                 mod = GetModForAttribute((AosWeaponAttribute)attr);
 
+            else if (attr is ExtendedWeaponAttribute)
+                mod = GetModForAttribute((ExtendedWeaponAttribute)attr);
+
             else if (attr is SkillName)
                 mod = GetModForAttribute((SkillName)attr);
 
@@ -1899,6 +1930,20 @@ namespace Server.SkillHandlers
                 ImbuingDefinition def = kvp.Value;
 
                 if (def.Attribute is AosWeaponAttribute && (AosWeaponAttribute)def.Attribute == attr)
+                    return mod;
+            }
+
+            return -1;
+        }
+
+        public static int GetModForAttribute(ExtendedWeaponAttribute attr)
+        {
+            foreach (KeyValuePair<int, ImbuingDefinition> kvp in m_Table)
+            {
+                int mod = kvp.Key;
+                ImbuingDefinition def = kvp.Value;
+
+                if (def.Attribute is ExtendedWeaponAttribute && (ExtendedWeaponAttribute)def.Attribute == attr)
                     return mod;
             }
 
@@ -2017,6 +2062,11 @@ namespace Server.SkillHandlers
         public static bool ValidateProperty(AosWeaponAttribute attr)
         {
             return Table.Values.FirstOrDefault(def => def.Attribute is AosWeaponAttribute && (AosWeaponAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(ExtendedWeaponAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is ExtendedWeaponAttribute && (ExtendedWeaponAttribute)def.Attribute == attr) != null;
         }
 
         public static bool ValidateProperty(AosArmorAttribute attr)
@@ -2154,6 +2204,18 @@ namespace Server.SkillHandlers
         public static int[] GetPropRange(AosElementAttribute attr)
         {
             return new int[] { 1, 15 };
+        }
+
+        public static int[] GetPropRange(Item item, ExtendedWeaponAttribute attr)
+        {
+            switch (attr)
+            {
+                default:
+                case ExtendedWeaponAttribute.Bane:
+                case ExtendedWeaponAttribute.BoneBreaker: return new int[] { 1, 1 };
+                case ExtendedWeaponAttribute.HitSparks:
+                case ExtendedWeaponAttribute.HitSwarm: return new int[] { 1, 20 };
+            }
         }
         #endregion
     }
