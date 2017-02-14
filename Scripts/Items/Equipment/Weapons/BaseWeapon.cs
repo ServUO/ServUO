@@ -149,6 +149,7 @@ namespace Server.Items
 		private AosElementAttributes m_AosElementDamages;
 		private SAAbsorptionAttributes m_SAAbsorptionAttributes;
         private NegativeAttributes m_NegativeAttributes;
+        private ExtendedWeaponAttributes m_ExtendedWeaponAttributes;
 
 		// Overridable values. These values are provided to override the defaults which get defined in the individual weapon scripts.
 		private int m_StrReq, m_DexReq, m_IntReq;
@@ -304,6 +305,9 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public NegativeAttributes NegativeAttributes { get { return m_NegativeAttributes; } set { } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ExtendedWeaponAttributes ExtendedWeaponAttributes { get { return m_ExtendedWeaponAttributes; } set { } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Cursed { get { return m_Cursed; } set { m_Cursed = value; } }
@@ -731,6 +735,7 @@ namespace Server.Items
 			weap.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
 			weap.m_AosWeaponAttributes = new AosWeaponAttributes(newItem, m_AosWeaponAttributes);
             weap.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
+            weap.m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(newItem, m_ExtendedWeaponAttributes);
 
 			#region Mondain's Legacy
 			weap.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
@@ -3816,6 +3821,7 @@ namespace Server.Items
 			SetSaveFlag(ref flags, SaveFlag.xAbsorptionAttributes, !m_SAAbsorptionAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.xNegativeAttributes, !m_NegativeAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
+            SetSaveFlag(ref flags, SaveFlag.xExtendedWeaponAttributes, !m_ExtendedWeaponAttributes.IsEmpty);
 
             writer.Write((long)flags);
 
@@ -3975,6 +3981,11 @@ namespace Server.Items
                 m_NegativeAttributes.Serialize(writer);
             }
 			#endregion
+
+            if (GetSaveFlag(flags, SaveFlag.xExtendedWeaponAttributes))
+            {
+                m_ExtendedWeaponAttributes.Serialize(writer);
+            }
 		}
 
 		[Flags]
@@ -4014,7 +4025,8 @@ namespace Server.Items
 			EngravedText = 0x40000000,
 			xAbsorptionAttributes = 0x80000000,
             xNegativeAttributes = 0x100000000,
-            Altered = 0x200000000
+            Altered = 0x200000000,
+            xExtendedWeaponAttributes = 0x400000000
         }
 
 		#region Mondain's Legacy Sets
@@ -4449,7 +4461,18 @@ namespace Server.Items
                         #endregion
 
                         if (GetSaveFlag(flags, SaveFlag.Altered))
+                        {
                             m_Altered = true;
+                        }
+
+                        if (GetSaveFlag(flags, SaveFlag.xExtendedWeaponAttributes))
+                        {
+                            m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(this, reader);
+                        }
+                        else
+                        {
+                            m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(this);
+                        }
 
                         break;
 					}
@@ -4688,6 +4711,7 @@ namespace Server.Items
 			m_AosSkillBonuses = new AosSkillBonuses(this);
 			m_AosElementDamages = new AosElementAttributes(this);
             m_NegativeAttributes = new NegativeAttributes(this);
+            m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(this);
 
 			#region Stygian Abyss
 			m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
@@ -5163,6 +5187,29 @@ namespace Server.Items
 			{
 				list.Add(1072792); // Balanced
 			}
+
+            if (Core.TOL)
+            {
+                if (m_ExtendedWeaponAttributes.Bane > 0)
+                {
+                    list.Add(1154671); // Bane
+                }
+
+                if (m_ExtendedWeaponAttributes.BoneBreaker > 0)
+                {
+                    list.Add(1157318); // Bone Breaker
+                }
+
+                if ((prop = m_ExtendedWeaponAttributes.HitSwarm) != 0)
+                {
+                    list.Add(1157325, prop.ToString()); // Swarm ~1_val~%
+                }
+
+                if ((prop = m_ExtendedWeaponAttributes.HitSparks) != 0)
+                {
+                    list.Add(1157326, prop.ToString()); // Sparks ~1_val~%
+                }
+            }
 
 			#region Stygian Abyss
 			if ((prop = m_AosWeaponAttributes.BloodDrinker) != 0)

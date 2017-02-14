@@ -100,17 +100,25 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.FilthyRich);
         }
 
+        public override int GetDrainAmount(Mobile m)
+        {
+            if (m.Female)
+                return base.GetDrainAmount(m);
+
+            return base.GetDrainAmount(m) * 2;
+        }
+
         public override void CheckReflect(Mobile caster, ref bool reflect)
         {
-            if (caster.Body.IsMale)
+            if (!caster.Female && !caster.IsBodyMod)
                 reflect = true; // Always reflect if caster isn't female
         }
 
-        public override void AlterDamageScalarFrom(Mobile caster, ref double scalar)
+        /*public override void AlterDamageScalarFrom(Mobile caster, ref double scalar)
         {
             if (caster.Body.IsMale)
                 scalar = 20; // Male bodies always reflect.. damage scaled 20x
-        }
+        }*/
 
         public override bool DrainsLife { get { return false; } }
         public override double DrainsLifeChance { get { return 0.25; } }

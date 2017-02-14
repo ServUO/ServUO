@@ -10,7 +10,16 @@ namespace Server.Items
         [Constructable]
         public BritchesOfWarding()
         {
-            this.AbsorptionAttributes.EaterKinetic = 9;
+            switch (Utility.Random(6))
+            {
+                case 0: this.AbsorptionAttributes.EaterKinetic = 9; break;
+                case 1: this.AbsorptionAttributes.EaterFire = 9; break;
+                case 2: this.AbsorptionAttributes.EaterCold = 9; break;
+                case 3: this.AbsorptionAttributes.EaterPoison = 9; break;
+                case 4: this.AbsorptionAttributes.EaterEnergy = 9; break;
+                case 5: this.AbsorptionAttributes.EaterDamage = 9; break;
+            }
+
             this.Attributes.BonusStam = 12;
             this.Attributes.AttackChance = 10;
             this.Attributes.LowerManaCost = 8;

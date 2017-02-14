@@ -11,7 +11,8 @@ namespace Server.Items
         [Constructable]
         public TheDeceiver() 
         {
-            // Missing Sparks Props
+            ExtendedWeaponAttributes.HitSparks = 20;
+
             this.WeaponAttributes.HitLowerAttack = 20;
             this.WeaponAttributes.HitEnergyArea = 75;
             this.WeaponAttributes.HitLowerDefend = 20;

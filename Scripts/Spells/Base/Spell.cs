@@ -29,11 +29,11 @@ namespace Server.Spells
 	public abstract class Spell : ISpell
 	{
 		private readonly Mobile m_Caster;
-        private Object m_InstantTarget = null;  
 		private readonly Item m_Scroll;
 		private readonly SpellInfo m_Info;
 		private SpellState m_State;
 		private long m_StartCastTime;
+        private IDamageable m_InstantTarget;
 
 		public SpellState State { get { return m_State; } set { m_State = value; } }
 		public Mobile Caster { get { return m_Caster; } }
@@ -43,7 +43,7 @@ namespace Server.Spells
 		public Type[] Reagents { get { return m_Info.Reagents; } }
 		public Item Scroll { get { return m_Scroll; } }
 		public long StartCastTime { get { return m_StartCastTime; } }
-        public Object InstantTarget { get { return m_InstantTarget; } set { m_InstantTarget = value; }  }
+        public IDamageable InstantTarget { get { return m_InstantTarget; } set { m_InstantTarget = value; } }
 
         private static readonly TimeSpan NextSpellDelay = TimeSpan.FromSeconds(0.75);
 		private static TimeSpan AnimateDelay = TimeSpan.FromSeconds(1.5);
@@ -827,38 +827,47 @@ namespace Server.Spells
 
 		public abstract void OnCast();
 
-        public void OnCastInstantTarget() { 
-
+        #region Enhanced Client
+        public void OnCastInstantTarget()
+        {
             Type spellType = GetType();
             MethodInfo spellTargetMethod = null;
-            if (spellType != null && (spellTargetMethod = spellType.GetMethod("Target")) != null) {
 
-            } else if(spellType != null && (spellTargetMethod = spellType.GetMethod("OnTarget")) != null) {
-
-            }else {
+            if (spellType != null && (spellTargetMethod = spellType.GetMethod("Target")) != null) { }
+            else if (spellType != null && (spellTargetMethod = spellType.GetMethod("OnTarget")) != null) { }
+            else
+            {
                 OnCast();
                 return;
             }
 
             ParameterInfo[] spellTargetParams = spellTargetMethod.GetParameters();
             object[] targetArgs = null;
-            if (spellTargetParams != null && spellTargetParams.Length > 0) {
 
-                if ((InstantTarget is Mobile) && (spellTargetParams[0].ParameterType == typeof(Server.Mobile) || spellTargetParams[0].ParameterType == typeof(Server.IDamageable) || spellTargetParams[0].ParameterType == typeof(Object))) {
+            if (spellTargetParams != null && spellTargetParams.Length > 0)
+            {
+                if (InstantTarget != null && spellTargetParams[0].ParameterType == typeof(IDamageable))
+                {
                     targetArgs = new object[1];
                     targetArgs[0] = InstantTarget;
-                } else if ((InstantTarget is Mobile) && (spellTargetParams[0].ParameterType == typeof(Server.IPoint3D))){
+                }
+                else if (InstantTarget is Mobile && spellTargetParams[0].ParameterType == typeof(Server.Mobile))
+                {
                     targetArgs = new object[1];
-                    targetArgs[0] = ((Mobile)InstantTarget).Location;
-                } else {
+                    targetArgs[0] = InstantTarget as Mobile;
+                }
+                else
+                {
                     OnCast();
                     return;
                 }
             }
+
             spellTargetMethod.Invoke(this, targetArgs);
         }
+        #endregion
 
-		public virtual void OnBeginCast()
+        public virtual void OnBeginCast()
 		{ }
 
 		public virtual void GetCastSkills(out double min, out double max)

@@ -10,7 +10,8 @@ namespace Server.Items
         [Constructable]
         public Glenda()
         {
-            // Missing Bone Breaker Props
+            ExtendedWeaponAttributes.BoneBreaker = 1;
+
             this.WeaponAttributes.HitLeechMana = 20;
             this.WeaponAttributes.HitLowerDefend = 70;
             this.Attributes.BonusStr = 16;

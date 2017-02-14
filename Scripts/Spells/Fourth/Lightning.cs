@@ -46,9 +46,10 @@ namespace Server.Spells.Fourth
             else if (this.CheckHSequence(m))
             {
                 SpellHelper.Turn(this.Caster, m);
+                Mobile source = this.Caster;
 
                 if(mob != null)
-                    SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref mob);
+                    SpellHelper.CheckReflect((int)this.Circle, ref source, ref mob);
 
                 double damage = 0;
 
@@ -70,11 +71,11 @@ namespace Server.Spells.Fourth
                     damage *= this.GetDamageScalar(mob);
                 }
 
-                Effects.SendBoltEffect(m, true, 0);
+                Effects.SendBoltEffect(mob, true, 0);
 
                 if (damage > 0)
                 {
-                    SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
+                    SpellHelper.Damage(this, mob != null ? mob : m, damage, 0, 0, 0, 0, 100);
                 }
             }
 
