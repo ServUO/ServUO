@@ -60,7 +60,7 @@ namespace Server.Gumps
 			//	m_Strings.Clear();
 		}
 
-		public virtual int TypeID { get { return m_TypeID; } }
+		public int TypeID { get { return m_TypeID; } }
 
 		public List<GumpEntry> Entries { get { return m_Entries; } }
 
