@@ -39,7 +39,7 @@ namespace Server.Mobiles
             typeof(TheBeserkersMaul),           typeof(TheDryadBow),                typeof(DivineCountenance),
             typeof(HatOfTheMagi),               typeof(HuntersHeaddress),           typeof(SpiritOfTheTotem),
             typeof(TheScholarsHalo),            typeof(BowOfTheInfiniteSwarm),      typeof(Glenda),
-            typeof(TheDeceiver)
+            typeof(TheDeceiver),                typeof(DoomRecipeScroll)
         };
 
         private static bool m_InHere;
