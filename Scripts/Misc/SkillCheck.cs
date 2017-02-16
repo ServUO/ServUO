@@ -232,23 +232,24 @@ namespace Server.Misc
             return CheckSkill(from, skill, target, chance);
         }
 
-        private static bool AllowGain(Mobile from, Skill skill, object obj)
-        {
-            if (Core.AOS && Faction.InSkillLoss(from))	//Changed some time between the introduction of AoS and SE.
-                return false;
+		private static bool AllowGain(Mobile from, Skill skill, object obj)
+		{
+			if (Core.AOS && Faction.InSkillLoss(from))  //Changed some time between the introduction of AoS and SE.
+				return false;
+			if (from is PlayerMobile)
+			{
+				#region SA
+				if (skill.Info.SkillID == (int)SkillName.Archery && from.Race == Race.Gargoyle)
+					return false;
+				else if (skill.Info.SkillID == (int)SkillName.Throwing && from.Race != Race.Gargoyle)
+					return false;
+				#endregion
 
-            #region SA
-            if (from is PlayerMobile && from.Race == Race.Gargoyle && skill.Info.SkillID == (int)SkillName.Archery)
-                return false;
-            else if (from is PlayerMobile && from.Race != Race.Gargoyle && skill.Info.SkillID == (int)SkillName.Throwing)
-                return false;
-            #endregion
-
-            if (AntiMacroCode && from is PlayerMobile && UseAntiMacro[skill.Info.SkillID])
-                return ((PlayerMobile)from).AntiMacroCheck(skill, obj);
-            else
-                return true;
-        }
+				if (AntiMacroCode && UseAntiMacro[skill.Info.SkillID])
+					return ((PlayerMobile)from).AntiMacroCheck(skill, obj);
+			}
+			return true;
+		}
 
         public enum Stat
         {
