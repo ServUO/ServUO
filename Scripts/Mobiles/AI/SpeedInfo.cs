@@ -149,7 +149,7 @@ namespace Server
                 #region ML named mobs - before Paragon speedboost
                 typeof(LadyJennifyr), typeof(LadyMarai), typeof(MasterJonath),
                 typeof(MasterMikael), typeof(MasterTheophilus), typeof(RedDeath),
-                typeof(SirPatrick), typeof(Miasma), typeof(Rend),
+                typeof(SirPatrick), typeof(Rend),
                 typeof(Grobu), typeof(Gnaw), typeof(Guile),
                 typeof(Irk), typeof(Spite), typeof(LadyLissith),
                 typeof(LadySabrix), typeof(Malefic), typeof(Silk),
@@ -160,8 +160,8 @@ namespace Server
             /* Very Fast */
             new SpeedInfo(0.175, 0.350, new Type[]
             {
-                typeof(Barracoon), typeof(Mephitis), typeof(Neira),
-                typeof(Rikktor), typeof(Semidar), typeof(EnergyVortex),
+                typeof(Barracoon), typeof(Neira),
+                typeof(Rikktor), typeof(EnergyVortex),
                 typeof(EliteNinja), typeof(Pixie), typeof(SilverSerpent),
                 typeof(VorpalBunny), typeof(FleshRenderer), typeof(KhaldunRevenant),
                 typeof(FactionDragoon), typeof(FactionKnight), typeof(FactionPaladin),
@@ -170,6 +170,11 @@ namespace Server
                 typeof(FactionPaladin), typeof(Leviathan), typeof(FireBeetle),
                 typeof(FanDancer), typeof(FactionDeathKnight), typeof (ClockworkExodus),
                 typeof(Navrey), typeof(Raptor), typeof(TrapdoorSpider)
+            }),
+            /* Extremely Fast */
+            new SpeedInfo(0.08, 0.20, new Type[]
+            {
+                typeof(Miasma), typeof(Semidar), typeof(Mephitis)
             }),
             /* Medium */
             new SpeedInfo(0.25, 0.5, new Type[]

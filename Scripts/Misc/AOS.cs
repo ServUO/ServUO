@@ -1304,6 +1304,9 @@ namespace Server
 
         public void ScaleLeech(BaseWeapon wep, int weaponSpeed)
         {
+            if (wep.IsArtifact)
+                return;
+
             if (HitLeechHits > 0)
             {
                 double postcap = (double)HitLeechHits / (double)Imbuing.GetPropRange(wep, AosWeaponAttribute.HitLeechHits)[1];
