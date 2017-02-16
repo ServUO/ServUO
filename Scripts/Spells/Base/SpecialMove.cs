@@ -322,6 +322,8 @@ namespace Server.Spells
                 if (moveID > 0)
                     m.Send(new ToggleSpecialAbility(moveID + 1, true));
 
+                Server.Spells.SkillMasteries.SkillMasterySpell.OnToggleSpecialAbility(m);
+
                 move.SendAbilityMessage(m);
             }
 

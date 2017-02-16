@@ -10,7 +10,8 @@ namespace Server.Mobiles
     {
         private DateTime m_NextArea;
 
-        private static readonly Type[] m_DoomArtifact = new Type[]
+        public static Type[] DoomArtifact { get { return m_DoomArtifact; } }
+        private static Type[] m_DoomArtifact = new Type[]
         {
             typeof(LegacyOfTheDreadLord),       typeof(TheTaskmaster),              typeof(TheDragonSlayer),
             typeof(ArmorOfFortune),             typeof(GauntletsOfNobility),        typeof(HelmOfInsight),
@@ -25,21 +26,30 @@ namespace Server.Mobiles
             typeof(HatOfTheMagi),               typeof(HuntersHeaddress),           typeof(SpiritOfTheTotem)
         };
 
-        private static readonly Type[] m_NewDoomArtifact = new Type[]
+        public static Type[][] RewardTable { get { return m_RewardTable; } }
+        private static Type[][] m_RewardTable = new Type[][]
         {
-            typeof(LegacyOfTheDreadLord),       typeof(TheTaskmaster),              typeof(TheDragonSlayer),
-            typeof(ArmorOfFortune),             typeof(GauntletsOfNobility),        typeof(HelmOfInsight),
-            typeof(HolyKnightsBreastplate),     typeof(JackalsCollar),              typeof(LeggingsOfBane),
-            typeof(MidnightBracers),            typeof(OrnateCrownOfTheHarrower),   typeof(ShadowDancerLeggings),
-            typeof(TunicOfFire),                typeof(VoiceOfTheFallenKing),       typeof(BraceletOfHealth),
-            typeof(OrnamentOfTheMagician),      typeof(RingOfTheElements),          typeof(RingOfTheVile),
-            typeof(Aegis),                      typeof(ArcaneShield),               typeof(AxeOfTheHeavens),
-            typeof(BladeOfInsanity),            typeof(BoneCrusher),                typeof(BreathOfTheDead),
-            typeof(Frostbringer),               typeof(SerpentsFang),               typeof(StaffOfTheMagi),
-            typeof(TheBeserkersMaul),           typeof(TheDryadBow),                typeof(DivineCountenance),
-            typeof(HatOfTheMagi),               typeof(HuntersHeaddress),           typeof(SpiritOfTheTotem),
-            typeof(TheScholarsHalo),            typeof(BowOfTheInfiniteSwarm),      typeof(Glenda),
-            typeof(TheDeceiver),                typeof(DoomRecipeScroll)
+            new Type[] { typeof(HatOfTheMagi) },            new Type[] { typeof(StaffOfTheMagi) },      new Type[] { typeof(OrnamentOfTheMagician) },
+            new Type[] { typeof(ShadowDancerLeggings) },    new Type[] {typeof(RingOfTheElements) },    new Type[] { typeof(GauntletsOfNobility) },
+            new Type[] { typeof(LeggingsOfBane) },          new Type[] { typeof(MidnightBracers) },     new Type[] { typeof(Glenda) },
+            new Type[] { typeof(BowOfTheInfiniteSwarm) },   new Type[] { typeof(TheDeceiver) },         new Type[] { typeof(TheScholarsHalo) },
+            new Type[] { typeof(DoomRecipeScroll) },
+            new Type[] 
+            {
+                typeof(LegacyOfTheDreadLord),       typeof(TheTaskmaster),
+                typeof(ArmorOfFortune),             typeof(HelmOfInsight),
+                typeof(HolyKnightsBreastplate),     typeof(JackalsCollar),              
+                typeof(OrnateCrownOfTheHarrower),   typeof(TheDragonSlayer),
+                typeof(TunicOfFire),                typeof(VoiceOfTheFallenKing),
+                typeof(RingOfTheVile),              typeof(BraceletOfHealth),
+                typeof(Aegis),                      typeof(ArcaneShield),
+                typeof(BladeOfInsanity),            typeof(BoneCrusher),
+                typeof(Frostbringer),               typeof(SerpentsFang),
+                typeof(TheBeserkersMaul),           typeof(TheDryadBow),
+                typeof(HuntersHeaddress),           typeof(SpiritOfTheTotem),
+                typeof(AxeOfTheHeavens),            typeof(BreathOfTheDead),
+                typeof(DivineCountenance)
+            }
         };
 
         private static bool m_InHere;
@@ -97,15 +107,6 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-
-        public static Type[] DoomArtifact   
-        {
-            get
-            {
-                return Core.TOL ? m_NewDoomArtifact : m_DoomArtifact;
-            }
-        }
-       
        
         public override bool IgnoreYoungProtection
         {
@@ -165,7 +166,6 @@ namespace Server.Mobiles
 
         public static void HandleKill(Mobile victim, Mobile killer)
         {
-
             PlayerMobile pm = killer as PlayerMobile;
             BaseCreature bc = victim as BaseCreature;
 
@@ -187,18 +187,38 @@ namespace Server.Mobiles
             const double B = 0.00000425531915;
 
             double chance = A * Math.Pow(10, B * gpoints);
-            double roll = Utility.RandomDouble();            
+            double roll = Utility.RandomDouble();
 
             if (chance > roll )
             {
                 Item i = null;
 
-                try
+                if (Core.TOL)
                 {
-                    i = Activator.CreateInstance(DoomArtifact[Utility.Random(DoomArtifact.Length)]) as Item;
+                    int ran = Utility.Random(m_RewardTable.Length + 1);
+
+                    if (ran >= m_RewardTable.Length)
+                    {
+                        i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
+                        RunicReforging.GenerateRandomArtifactItem(i, killer.Luck, Utility.RandomMinMax(1000, 1200));
+                        NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(i);
+
+                        if (attrs != null)
+                        {
+                            attrs.Prized = 1;
+                        }
+                    }
+                    else
+                    {
+                        Type[] list = m_RewardTable[ran];
+                        Type t = list.Length == 1 ? list[0] : list[Utility.Random(list.Length)];
+
+                        i = Activator.CreateInstance(t) as Item;
+                    }
                 }
-                catch
+                else
                 {
+                    i = Activator.CreateInstance(m_DoomArtifact[Utility.Random(m_DoomArtifact.Length)]) as Item;
                 }
 
                 if (i != null)

@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class BowOfTheInfiniteSwarm : CompositeBow
+    public class BowOfTheInfiniteSwarm : CompositeBow, ITokunoDyable
 	{
         public override int LabelNumber { get { return 1157347; } } // bow of the infinite swarm
         public override bool IsArtifact { get { return true; } }
@@ -38,7 +38,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -46,6 +46,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+            if (version == 0 && this.WeaponAttributes.HitLeechMana != 50)
+                this.WeaponAttributes.HitLeechMana = 50;
         }
     }
 }

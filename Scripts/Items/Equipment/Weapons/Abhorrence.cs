@@ -17,7 +17,8 @@ namespace Server.Items
             this.Attributes.WeaponSpeed = 35;
             this.Attributes.WeaponDamage = 50;
             this.MaxRange = 8;
-            // TODO attributes Bane
+
+            ExtendedWeaponAttributes.Bane = 1;
 
             this.Hue = 1910; // checked
         }

@@ -120,6 +120,10 @@ namespace Server.Items
             set
             {
                 this.m_MaxHitPoints = value;
+
+                if (this.m_MaxHitPoints > 255)
+                    this.m_MaxHitPoints = 255;
+
                 this.InvalidateProperties();
             }
         }
@@ -1037,20 +1041,16 @@ namespace Server.Items
         {
             int scale = 100 + this.m_AosClothingAttributes.DurabilityBonus;
 
-            this.m_HitPoints = ((this.m_HitPoints * 100) + (scale - 1)) / scale;
-            this.m_MaxHitPoints = ((this.m_MaxHitPoints * 100) + (scale - 1)) / scale;
-
-            this.InvalidateProperties();
+            HitPoints = ((this.m_HitPoints * 100) + (scale - 1)) / scale;
+            MaxHitPoints = ((this.m_MaxHitPoints * 100) + (scale - 1)) / scale;
         }
 
         public void ScaleDurability()
         {
             int scale = 100 + this.m_AosClothingAttributes.DurabilityBonus;
 
-            this.m_HitPoints = ((this.m_HitPoints * scale) + 99) / 100;
-            this.m_MaxHitPoints = ((this.m_MaxHitPoints * scale) + 99) / 100;
-
-            this.InvalidateProperties();
+            HitPoints = ((this.m_HitPoints * scale) + 99) / 100;
+            MaxHitPoints = ((this.m_MaxHitPoints * scale) + 99) / 100;
         }
 
         public override bool CheckPropertyConfliction(Mobile m)
