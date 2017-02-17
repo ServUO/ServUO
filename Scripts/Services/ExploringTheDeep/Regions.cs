@@ -23,34 +23,34 @@ namespace Server.Regions
 
         public override void OnEnter(Mobile m)
         {
-            if (!(m is PlayerMobile) || !(m.IsPlayer()))
-                return;
+            if ((m is PlayerMobile) && m.Alive)
+            {
+                PlayerMobile pm = m as PlayerMobile;
 
-            PlayerMobile pm = m as PlayerMobile;            
+                if (m.Region.Name == "Ice Wyrm" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
+                {
+                    creature = IceWyrm.Spawn(new Point3D(5805 + Utility.RandomMinMax(-5, 5), 240 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
+                }
+                else if (m.Region.Name == "Mercutio The Unsavory" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+                {
+                    creature = MercutioTheUnsavory.Spawn(new Point3D(2582 + Utility.RandomMinMax(-5, 5), 1118 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
+                }
+                else if (m.Region.Name == "Djinn" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+                {
+                    creature = Djinn.Spawn(new Point3D(1732 + Utility.RandomMinMax(-5, 5), 520 + Utility.RandomMinMax(-5, 5), 8), Map.Ilshenar);
+                }
+                else if (m.Region.Name == "Obsidian Wyvern" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+                {
+                    creature = ObsidianWyvern.Spawn(new Point3D(5136 + Utility.RandomMinMax(-5, 5), 966 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
+                }
+                else if (m.Region.Name == "Orc Engineer" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+                {
+                    creature = OrcEngineer.Spawn(new Point3D(5311 + Utility.RandomMinMax(-5, 5), 1968 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
+                }
 
-            if (m.Region.Name == "Ice Wyrm" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
-            {
-                creature = IceWyrm.Spawn(new Point3D(5805 + Utility.RandomMinMax(-5, 5), 240 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
+                if (creature == null)
+                    return;
             }
-            else if (m.Region.Name == "Mercutio The Unsavory" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
-            {
-                creature = MercutioTheUnsavory.Spawn(new Point3D(2582 + Utility.RandomMinMax(-5, 5), 1118 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
-            }
-            else if (m.Region.Name == "Djinn" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
-            {
-                creature = Djinn.Spawn(new Point3D(1732 + Utility.RandomMinMax(-5, 5), 520 + Utility.RandomMinMax(-5, 5), 0), Map.Ilshenar);
-            }
-            else if (m.Region.Name == "Obsidian Wyvern" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
-            {
-                creature = ObsidianWyvern.Spawn(new Point3D(5136 + Utility.RandomMinMax(-5, 5), 966 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
-            }
-            else if (m.Region.Name == "Orc Engineer" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
-            {
-                creature = OrcEngineer.Spawn(new Point3D(5311 + Utility.RandomMinMax(-5, 5), 1968 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);                
-            }
-
-            if (creature == null)
-                return;
         }
     }
 
