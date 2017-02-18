@@ -48,6 +48,13 @@ namespace Server.Commands
 
             e.Mobile.SendMessage("Categorization menu rebuilt.");
         }
+        
+        public static void RebuildCategorization()
+        {
+            CategoryEntry root = new CategoryEntry(null, "Add Menu", new CategoryEntry[] { Items, Mobiles });
+
+            Export(root, "Cache/objects.xml", "Objects");
+        }
 
         public static void RecurseFindCategories(CategoryEntry ce, ArrayList list)
         {
