@@ -13,7 +13,7 @@ namespace Server.Items
             BaseRunicTool.ApplyAttributesTo(this, Utility.RandomMinMax(2, 3), 0, 100);
 			
             if (Utility.RandomBool())
-                this.Attributes.EnhancePotions = 75;	
+                this.Attributes.EnhancePotions = 50;	
             else
                 this.Attributes.BonusStr += 5;
         }
@@ -42,6 +42,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (this.Attributes.EnhancePotions == 75)
+                this.Attributes.EnhancePotions = 50;
         }
     }
 }

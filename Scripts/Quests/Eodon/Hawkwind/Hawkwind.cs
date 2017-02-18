@@ -90,7 +90,7 @@ namespace Server.Engines.Quests.TimeLord
         {
             foreach (SkillName sk in MasteryInfo.Skills)
             {
-                if (!m.Skills[sk].HasLearnedMastery(1))
+                if (!m.Skills[sk].HasLearnedMastery())
                     return true;
             }
 

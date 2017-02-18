@@ -33,7 +33,7 @@ namespace Server.Spells.SkillMasteries
 
 		public InvigorateSpell( Mobile caster, Item scroll ) : base(caster, scroll, m_Info)
 		{
-			m_NextHeal = DateTime.Now + TimeSpan.FromSeconds(4);
+			m_NextHeal = DateTime.UtcNow + TimeSpan.FromSeconds(4);
 		}
 		
 		public override void OnCast()
@@ -86,7 +86,7 @@ namespace Server.Spells.SkillMasteries
 		{
 			base.OnTick();
 			
-			if(m_NextHeal > DateTime.Now)
+			if(m_NextHeal > DateTime.UtcNow)
                 return false;
 			
 			foreach(Mobile m in GetParty())
@@ -105,7 +105,7 @@ namespace Server.Spells.SkillMasteries
 				}
 			}
 
-            m_NextHeal = DateTime.Now + TimeSpan.FromSeconds(4);
+            m_NextHeal = DateTime.UtcNow + TimeSpan.FromSeconds(4);
             return true;
 		}
 

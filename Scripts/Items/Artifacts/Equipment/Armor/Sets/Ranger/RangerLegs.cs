@@ -1,10 +1,13 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
     [FlipableAttribute(0x13da, 0x13e1)]
-    public class RangerLegs : BaseArmor
+    public class RangerLegs : BaseArmor, IRepairable
     {
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public RangerLegs()

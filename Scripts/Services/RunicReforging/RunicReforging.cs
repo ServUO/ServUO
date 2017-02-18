@@ -310,24 +310,19 @@ namespace Server.Items
                     if (!(item is BaseWeapon) || (((BaseWeapon)item).PrimaryAbility != WeaponAbility.BleedAttack && ((BaseWeapon)item).SecondaryAbility != WeaponAbility.BleedAttack))
                         list.Remove(col);
                 }
-                else if (list.Contains(col) && col.Attribute is string && (string)col.Attribute == "BalancedWeapon")
-                {
-                    if (!(item is BaseRanged))
-                        list.Remove(col);
-                }
                 else if (list.Contains(col) && col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.SplinteringWeapon)
                 {
                     if (playermade || item is BaseRanged)
                         list.Remove(col);
                 }
-                else if (list.Contains(col) && col.Attribute is AosWeaponAttributes && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.ReactiveParalyze)
+                else if (list.Contains(col) && col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.ReactiveParalyze)
                 {
-                    if ((item is BaseWeapon && item.Layer != Layer.TwoHanded) || (item is BaseShield && item.Layer != Layer.TwoHanded))
+                    if (!(item is BaseWeapon && item is BaseShield) && item.Layer != Layer.TwoHanded)
                         list.Remove(col);
                 }
                 else if (list.Contains(col) && col.Attribute is AosArmorAttribute && (AosArmorAttribute)col.Attribute == AosArmorAttribute.ReactiveParalyze)
                 {
-                    if ((item is BaseWeapon && item.Layer != Layer.TwoHanded) || (item is BaseShield && item.Layer != Layer.TwoHanded))
+                    if (!(item is BaseWeapon && item is BaseShield) && item.Layer != Layer.TwoHanded)
                         list.Remove(col);
                 }
             }
@@ -384,11 +379,6 @@ namespace Server.Items
                         budget -= weight;
                     }
                 }
-                else if (str == "BalancedWeapon" && item is BaseRanged)
-                {
-                    ((BaseRanged)item).Balanced = true;
-                    budget -= 100;
-                }
                 else if (str == "WeaponVelocity" && item is BaseRanged)
                 {
                     int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
@@ -399,9 +389,6 @@ namespace Server.Items
 			}
 			else if (attribute is AosAttribute)
 			{
-                //if ((AosAttribute)attribute == AosAttribute.Luck && item is BaseRanged)
-                //    max = 180;
-
                 int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
                 AosAttributes attrs = GetAosAttributes(item);
 
@@ -436,9 +423,6 @@ namespace Server.Items
             {
                 int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
                 AosArmorAttributes attrs = GetAosArmorAttributes(item);
-
-                if (item is BaseArmor) attrs = ((BaseArmor)item).ArmorAttributes;
-                else if (item is BaseClothing) attrs = ((BaseClothing)item).ClothingAttributes;
 
                 if (attrs != null && value > 0 && attrs[(AosArmorAttribute)attribute] == 0)
                 {
@@ -701,7 +685,7 @@ namespace Server.Items
 		private static Dictionary<Type, CraftSystem> m_AllowableTable = new Dictionary<Type, CraftSystem>();
 		private static Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
 		
-        public static void Initialize()
+        public static void Configure()
         {
             Server.Commands.CommandSystem.Register("GetCreatureScore", AccessLevel.GameMaster, e =>
                 {
@@ -897,7 +881,7 @@ namespace Server.Items
                         new NamedInfoCol("Slayer", 1),
                         new NamedInfoCol(AosWeaponAttribute.MageWeapon, MageWeaponTable),
                         new NamedInfoCol(AosAttribute.SpellChanneling, 1),
-                        new NamedInfoCol("BalancedWeapon", 1),
+                        new NamedInfoCol(AosAttribute.BalancedWeapon, 1),
                         new NamedInfoCol("WeaponVelocity", WeaponVelocityTable),
                     },
                     new NamedInfoCol[] // armor
@@ -1030,7 +1014,7 @@ namespace Server.Items
                     new NamedInfoCol[] // Weapon
                     {
                         new NamedInfoCol(AosAttribute.EnhancePotions, WeaponEnhancePots),
-                        new NamedInfoCol("BalancedWeapon", 1),
+                        new NamedInfoCol(AosAttribute.BalancedWeapon, 1),
                     },
                     new NamedInfoCol[] // armor
                     {
@@ -1426,6 +1410,23 @@ namespace Server.Items
             return false;
         }
 
+        /// <summary>
+        /// Called in DemonKnight.cs for forcing rad items
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="luck"></param>
+        /// <param name="artifact"></param>
+        /// <returns></returns>
+        public static bool GenerateRandomArtifactItem(Item item, int luck, int budget)
+        {
+            if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
+            {
+                GenerateRandomItem(item, null, budget, luck, ChooseRandomPrefix(item), ChooseRandomSuffix(item), artifact: true);
+                return true;
+            }
+            return false;
+        }
+
         public static Item GenerateRandomItem(Mobile killer, BaseCreature creature)
         {
             Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
@@ -1490,101 +1491,115 @@ namespace Server.Items
         /// <param name="forcedprefix"></param>
         /// <param name="forcedsuffix"></param>
         /// <param name="map"></param>
-        public static void GenerateRandomItem(Item item, Mobile killer, int basebudget, int luck, ReforgedPrefix forcedprefix, ReforgedSuffix forcedsuffix, Map map = null)
+        public static void GenerateRandomItem(Item item, Mobile killer, int basebudget, int luck, ReforgedPrefix forcedprefix, ReforgedSuffix forcedsuffix, Map map = null, bool artifact = false)
         {
             if (map == null && killer != null)
                 map = killer.Map;
 
             if (item != null)
             {
-                int budgetBonus = 0;
-
-                if (killer != null || luck > 0)
-                {
-                    if (map != null && map.Rules == MapRules.FeluccaRules)
-                    {
-                        luck += RandomItemGenerator.FeluccaLuckBonus;
-                        budgetBonus = RandomItemGenerator.FeluccaBudgetBonus;
-                    }
-                    else
-                    {
-                        luck += 240;
-                    }
-                }
-
-                if (basebudget > 800)
-                    basebudget = 800;
-
-                // base budget range
-                int divisor = GetDivisor(basebudget);
-                int budget = Utility.RandomMinMax(basebudget - (basebudget / divisor), basebudget + (basebudget <= 400 ? (basebudget / 4) : 0)) + budgetBonus;
+                int budget = basebudget;
                 int luckchance = LootPack.GetLuckChance(luck);
 
-                // Gives a rare chance for a high end item to drop on a low budgeted monster
-                if (luck > 0 && budget < 550 && LootPack.CheckLuck(luckchance / 6))
-                {
-                    int inc = Utility.RandomMinMax((550 - budget) / 2, 750 - budget);
-                    budget += inc;
-                }
-
-                TryApplyRandomDisadvantage(item, ref budget);
-
-                if (budget > MaxBudget)
-                    budget = MaxBudget;
-
-                if (budget < 150)
-                    budget = 150;
+                int mods = 0;
+                int perclow = 0;
+                int perchigh = 0;
 
                 bool powerful = budget >= 550;
 
                 ReforgedPrefix prefix = forcedprefix;
                 ReforgedSuffix suffix = forcedsuffix;
 
-                if (!(item is BaseWeapon) && prefix == ReforgedPrefix.Vampiric)
-                    prefix = ReforgedPrefix.None;
-
-                if (!(item is BaseWeapon) && suffix == ReforgedSuffix.Vampire)
-                    suffix = ReforgedSuffix.None;
-
-                if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix != ReforgedSuffix.Minax)
-                    prefix = ChooseRandomPrefix(item);
-
-                if (forcedsuffix == ReforgedSuffix.None && budget >= Utility.Random(2700))
-                    suffix = ChooseRandomSuffix(item, prefix);
-
-                if (suffix == ReforgedSuffix.Minax)
-                    item.Hue = 1157;
-
-                int mods;
-                int perclow;
-                int perchigh;
-
-                if (!powerful)
+                if (artifact)
                 {
-                    mods = Utility.RandomMinMax(2, 5);
-
-                    perchigh = Math.Max(30, Math.Min(500, budget) / (mods - 1));
-                    perclow = Math.Max(20, perchigh / 3);
+                    ChooseArtifactMods(item, budget, out mods, out perclow, out perchigh);
                 }
                 else
                 {
-                    int maxmods = Math.Min(9, budget / Utility.RandomMinMax(100, 140));
-                    int minmods = Math.Max(4, maxmods - 1);
-                    mods = Utility.RandomMinMax(minmods, maxmods);
+                    int budgetBonus = 0;
 
-                    perchigh = 100;
-                    perclow = Math.Max(50, (budget / 2) / mods);
+                    if (killer != null || luck > 0)
+                    {
+                        if (map != null && map.Rules == MapRules.FeluccaRules)
+                        {
+                            luck += RandomItemGenerator.FeluccaLuckBonus;
+                            budgetBonus = RandomItemGenerator.FeluccaBudgetBonus;
+                        }
+                        else
+                        {
+                            luck += 240;
+                        }
+                    }
+
+                    if (basebudget > RandomItemGenerator.MaxBaseBudget)
+                        basebudget = RandomItemGenerator.MaxBaseBudget;
+
+                    if (basebudget < RandomItemGenerator.MinBaseBudget)
+                        basebudget = RandomItemGenerator.MinBaseBudget;
+
+                    int divisor = GetDivisor(basebudget);
+                    budget = Utility.RandomMinMax(basebudget - (basebudget / divisor), basebudget + (basebudget <= 400 ? (basebudget / 4) : 0)) + budgetBonus;
+
+                    // Gives a rare chance for a high end item to drop on a low budgeted monster
+                    if (luck > 0 && budget < 550 && LootPack.CheckLuck(luckchance / 6))
+                    {
+                        int inc = Utility.RandomMinMax((550 - budget) / 2, 750 - budget);
+                        budget += inc;
+                    }
+
+                    TryApplyRandomDisadvantage(item, ref budget);
+
+                    if (!(item is BaseWeapon) && prefix == ReforgedPrefix.Vampiric)
+                        prefix = ReforgedPrefix.None;
+
+                    if (!(item is BaseWeapon) && suffix == ReforgedSuffix.Vampire)
+                        suffix = ReforgedSuffix.None;
+
+                    if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix != ReforgedSuffix.Minax)
+                        prefix = ChooseRandomPrefix(item);
+
+                    if (forcedsuffix == ReforgedSuffix.None && budget >= Utility.Random(2700))
+                        suffix = ChooseRandomSuffix(item, prefix);
+
+                    if (suffix == ReforgedSuffix.Minax)
+                        item.Hue = 1157;
+
+                    if (!powerful)
+                    {
+                        mods = Utility.RandomMinMax(2, 5);
+
+                        perchigh = Math.Max(30, Math.Min(500, budget) / (mods - 1));
+                        perclow = Math.Max(20, perchigh / 3);
+                    }
+                    else
+                    {
+                        int maxmods = Math.Min(RandomItemGenerator.MaxProps, budget / Utility.RandomMinMax(110, 140));
+                        int minmods = Math.Max(4, maxmods - 1);
+                        mods = Utility.RandomMinMax(minmods, maxmods);
+
+                        perchigh = 100;
+                        perclow = Math.Max(50, (budget / 2) / mods);
+                    }
+
+                    if (perchigh > 100) perchigh = 100;
+                    if (perclow < 10) perclow = 10;
+                    if (perclow > 90) perclow = 90;
                 }
-
-                if (perchigh > 100) perchigh = 100;
-                if (perclow < 10) perclow = 10;
-                if (perclow > 90) perclow = 90;
 
                 if (LootPack.CheckLuck(luckchance))
                     mods++;
 
                 ApplyReforgedProperties(item, prefix, suffix, false, budget, perclow, perchigh, mods, luckchance);
             }
+        }
+
+        private static void ChooseArtifactMods(Item item, int budget, out int mods, out int perclow, out int perchigh)
+        {
+            int maxmods = Math.Min(10, budget / 120);
+            mods = Utility.RandomMinMax(6, maxmods);
+
+            perchigh = 100;
+            perclow = item is BaseShield ? 100 : 80;
         }
 
         private static int GetDivisor(int basebudget)
@@ -2306,6 +2321,19 @@ namespace Server.Items
             if (item is Glasses)
                 return ((Glasses)item).WeaponAttributes;
 
+            if (item is GargishGlasses)
+                return ((GargishGlasses)item).WeaponAttributes;
+
+            if(item is ElvenGlasses)
+                return ((ElvenGlasses)item).WeaponAttributes;
+            return null;
+        }
+
+        public static ExtendedWeaponAttributes GetExtendedWeaponAttributes(Item item)
+        {
+            if (item is BaseWeapon)
+                return ((BaseWeapon)item).ExtendedWeaponAttributes;
+
             return null;
         }
 
@@ -2469,7 +2497,7 @@ namespace Server.Items
 
         private static object[] m_RangedStandard = new object[]
         {
-            //AosWeaponAttribute.BalancedWeapon,
+            //AosAttribute.BalancedWeapon,
             //AosWeaponAttribute.WeaponVelocity
         };
 
@@ -2524,7 +2552,7 @@ namespace Server.Items
 		{
 			AosAttribute.SpellChanneling,
 			AosAttribute.DefendChance,
-			AosAttribute.AttackChance,
+			//AosAttribute.AttackChance,
 			AosAttribute.CastSpeed,
 			AosAttribute.ReflectPhysical,
 			AosArmorAttribute.LowerStatReq,

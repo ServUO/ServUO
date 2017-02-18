@@ -182,7 +182,11 @@ namespace Server
 					}
 				}
 
-				if (fmt.IndexOf("god") >= 0 || fmt.IndexOf("gq") >= 0)
+                if (m_Major >= 6 && m_Revision >= 14 && m_Patch >= 3)
+                {
+                    m_Type = ClientType.SA;
+                }
+                else if(fmt.IndexOf("god") >= 0 || fmt.IndexOf("gq") >= 0)
 				{
 					m_Type = ClientType.God;
 				}

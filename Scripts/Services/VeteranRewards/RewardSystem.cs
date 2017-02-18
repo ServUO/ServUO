@@ -200,13 +200,11 @@ namespace Server.Engines.VeteranRewards
 
         public static bool CheckIsUsableBy(Mobile from, Item item, object[] args)
         {
-            if (from.AccessLevel > AccessLevel.GameMaster)
+            if (from.AccessLevel > AccessLevel.GameMaster || UseableByAnyone(item.GetType()))
                 return true;
 
             if (m_Lists == null)
                 SetupRewardTables();
-
-            bool isRelaxedRules = (item is DyeTub || item is MonsterStatuette);
 
             Type type = item.GetType();
 
@@ -222,7 +220,7 @@ namespace Server.Engines.VeteranRewards
                     {
                         if (args == null && entries[j].Args.Length == 0)
                         {
-                            if ((!isRelaxedRules || i > 0) && !HasAccess(from, list, out ts))
+                            if (i > 0 && !HasAccess(from, list, out ts))
                             {
                                 from.SendLocalizedMessage(1008126, true, Math.Ceiling(ts.TotalDays / 30.0).ToString()); // Your account is not old enough to use this item. Months until you can use this item : 
                                 return false;
@@ -240,7 +238,7 @@ namespace Server.Engines.VeteranRewards
 
                             if (match)
                             {
-                                if ((!isRelaxedRules || i > 0) && !HasAccess(from, list, out ts))
+                                if (i > 0 && !HasAccess(from, list, out ts))
                                 {
                                     from.SendLocalizedMessage(1008126, true, Math.Ceiling(ts.TotalDays / 30.0).ToString()); // Your account is not old enough to use this item. Months until you can use this item : 
                                     return false;
@@ -256,6 +254,22 @@ namespace Server.Engines.VeteranRewards
             // no entry?
             return true;
         }
+
+        private static bool UseableByAnyone(Type type)
+        {
+            foreach (Type t in _AnyoneTypes)
+            {
+                if (t == type || type.IsSubclassOf(t))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private static Type[] _AnyoneTypes =
+        {
+            typeof(DyeTub), typeof(MonsterStatuette)
+        };
 
         public static int GetRewardYearLabel(Item item, object[] args)
         {
@@ -367,7 +381,9 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(houseAddOns,    1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),
                     new RewardEntry(miscellaneous,  1076155, typeof(RedSoulstone),         Expansion.ML),
                     new RewardEntry(miscellaneous,  1080523, typeof(CommodityDeedBox),     Expansion.ML),
-                    new RewardEntry( houseAddOns,    1156371, typeof( Server.Engines.Auction.AuctionSafeDeed ), Expansion.TOL ),
+			        new RewardEntry(miscellaneous, 1113945,  typeof(CrystalPortal),        Expansion.SA),
+			        new RewardEntry(miscellaneous, 1150074,  typeof(CorruptedCrystalPortal), Expansion.SA),
+                    new RewardEntry( houseAddOns,  1156371,  typeof( Server.Engines.Auction.AuctionSafeDeed ), Expansion.TOL )
                 }),
                 new RewardList(RewardInterval, 2, new RewardEntry[]
                 {
@@ -417,7 +433,8 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(etherealSteeds, 1049745, typeof(EtherealUnicorn)),
                     new RewardEntry(etherealSteeds, 1049747, typeof(EtherealRidgeback)),
                     new RewardEntry(houseAddOns, 1049737, typeof(DecorativeShieldDeed)),
-                    new RewardEntry(houseAddOns, 1049738, typeof(HangingSkeletonDeed))
+                    new RewardEntry(houseAddOns, 1049738, typeof(HangingSkeletonDeed)),
+                    new RewardEntry(miscellaneous, 1098160, typeof(Server.Engines.Plants.SeedBox))
                 }),
                 new RewardList(RewardInterval, 5, new RewardEntry[]
                 {
@@ -490,12 +507,22 @@ namespace Server.Engines.VeteranRewards
                 new RewardList(RewardInterval, 11, new RewardEntry[]
                 {
                     new RewardEntry(etherealSteeds,	1113908, typeof(EtherealReptalon), Expansion.ML),
+
+                    new RewardEntry(miscellaneous,	1113814, typeof(EtherealRetouchingTool), Expansion.SA),
                 }),
                 new RewardList(RewardInterval, 12, new RewardEntry[]
                 {
                     new RewardEntry( houseAddOns,   1150382, typeof( RaisedGardenEastAddonDeed), Expansion.SA ),
                     new RewardEntry( houseAddOns,   1150381, typeof( RaisedGardenSouthAddonDeed), Expansion.SA ),
                     new RewardEntry( etherealSteeds,1113813, typeof(EtherealHiryu), Expansion.ML),
+                }),
+                new RewardList(RewardInterval, 13, new RewardEntry[]
+                {
+                    new RewardEntry( etherealSteeds, 1150006, typeof(EtherealBoura), Expansion.SA),
+                }),
+                new RewardList(RewardInterval, 15, new RewardEntry[]
+                {
+                    new RewardEntry( etherealSteeds, 1154589, typeof(EtherealTiger), Expansion.TOL),
                 }),
             };
         }

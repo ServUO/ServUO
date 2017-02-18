@@ -110,9 +110,9 @@ namespace Server
         Bracelet = 0x0E,
 
         /// <summary>
-        ///     Unused.
+        ///     Face.
         /// </summary>
-        Unused_xF = 0x0F,
+        Face = 0x0F,
 
         /// <summary>
         ///     Beards and mustaches.
@@ -857,6 +857,15 @@ namespace Server
                 }
             }
         }
+        
+        private byte m_GridLocation = 0;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public byte GridLocation
+        {
+            get { return m_GridLocation; }
+            set { m_GridLocation = value; }
+        }
 
         [Flags]
         private enum ImplFlag : byte
@@ -1599,6 +1608,11 @@ namespace Server
             else if (m_Parent is Mobile)
             {
                 ((Mobile)m_Parent).GetChildContextMenuEntries(from, list, this);
+            }
+
+            if (from.Region != null)
+            {
+                from.Region.GetContextMenuEntries(from, list, this);
             }
         }
 
@@ -3520,7 +3534,7 @@ namespace Server
 
         public void SendInfoTo(NetState state)
         {
-            SendInfoTo(state, ObjectPropertyList.Enabled);
+            SendInfoTo(state, ObjectPropertyList.Enabled && GraphicData == GraphicData.TileData);
         }
 
         public virtual void SendInfoTo(NetState state, bool sendOplPacket)
@@ -3532,6 +3546,8 @@ namespace Server
                 state.Send(OPLPacket);
             }
         }
+
+        public virtual GraphicData GraphicData { get { return GraphicData.TileData; } }
 
         protected virtual Packet GetWorldPacketFor(NetState state)
         {

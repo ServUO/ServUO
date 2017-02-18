@@ -153,7 +153,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public SakkhraHighChieftess()
-            : base(BaseEodonTribesman.GetRandomName(), "the sakkhra high cheiftess")
+            : base(BaseEodonTribesman.GetRandomName(), "the sakkhra high chieftess")
         {
         }
 
@@ -195,6 +195,9 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (Title != "the sakkhra high chieftess")
+                Title = "the sakkhra high chieftess";
         }
     }
 
@@ -204,7 +207,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public UraliHighChieftess()
-            : base(BaseEodonTribesman.GetRandomName(), "the urali high cheiftess")
+            : base(BaseEodonTribesman.GetRandomName(), "the urali high chieftess")
         {
         }
 
@@ -247,6 +250,9 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (Title != "the urali high chieftess")
+                Title = "the urali high chieftess";
         }
     }
 
@@ -256,7 +262,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public JukariHighChief()
-            : base(BaseEodonTribesman.GetRandomName(), "the jukari high cheif")
+            : base(BaseEodonTribesman.GetRandomName(), "the jukari high chief")
         {
         }
 
@@ -295,6 +301,9 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (Title != "the jukari high chief")
+                Title = "the jukari high chief";
         }
     }
 
@@ -304,7 +313,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public KurakHighChief()
-            : base(BaseEodonTribesman.GetRandomName(), "the kurak high cheif")
+            : base(BaseEodonTribesman.GetRandomName(), "the kurak high chief")
         {
         }
 
@@ -344,6 +353,9 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (Title != "the kurak high chief")
+                Title = "the kurak high chief";
         }
     }
 
@@ -353,7 +365,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public BarakoHighChief()
-            : base(BaseEodonTribesman.GetRandomName(), "the barako high cheif")
+            : base(BaseEodonTribesman.GetRandomName(), "the barako high chief")
         {
         }
 
@@ -395,6 +407,9 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (Title != "the barako high chief")
+                Title = "the barako high chief";
         }
     }
 }

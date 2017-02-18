@@ -51,7 +51,7 @@ namespace Server.Mobiles
                 m_Mobile.Combatant = m_Mobile.FocusMob;
                 Action = ActionType.Combat;
 
-                NextCastTime = DateTime.Now;
+                NextCastTime = DateTime.UtcNow;
             }
             else if (m_Mobile.Mana < m_Mobile.ManaMax)
             {

@@ -69,8 +69,13 @@ namespace Server.Items
             this.Donations.Add(new CollectionItem(typeof(Fish), 0x9CC, 1074939, 0x0, 1));										
             this.Donations.Add(new CollectionItem(typeof(FishingPole), 0xDC0, 1011406, 0x0, 2));				
             this.Donations.Add(new CollectionItem(typeof(BrownBook), 0xFEF, 1074906, 0x0, 3));
-            this.Donations.Add(new CollectionItem(typeof(TanBook), 0xFF0, 1074906, 0x0, 3));								
-			
+            this.Donations.Add(new CollectionItem(typeof(TanBook), 0xFF0, 1074906, 0x0, 3));
+
+            #region High Seas
+            Donations.Add(new CollectionItem(typeof(Lobster), 17619, 1096491, 0x0, 10));
+            Donations.Add(new CollectionItem(typeof(Crab), 17617, 1096490, 0x0, 10));
+            #endregion
+
             int[] hues = new int[] { 0x1E0, 0x190, 0x151 };			
             this.Rewards.Add(new CollectionHuedItem(typeof(LibraryFriendBodySash), 0x1541, 1073346, 0x190, 100000.0, hues));
             this.Rewards.Add(new CollectionHuedItem(typeof(LibraryFriendFeatheredHat), 0x171A, 1073347, 0x190, 100000.0, hues));

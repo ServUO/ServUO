@@ -31,6 +31,7 @@ using Server.Spells.Spellweaving;
 using Server.Targeting;
 using System.Linq;
 using Server.Spells.SkillMasteries;
+using Server.Prompts;
 #endregion
 
 namespace Server.Mobiles
@@ -264,6 +265,16 @@ namespace Server.Mobiles
         private bool m_IsChampionSpawn;
 
         private Mobile m_InitialFocus;
+        #endregion
+
+        #region Monster Stealables
+        private bool m_HasBeenStolen;
+        [CommandProperty(AccessLevel.Administrator)]
+        public bool HasBeenStolen
+        {
+            get { return m_HasBeenStolen; }
+            set { m_HasBeenStolen = value; }
+        }
         #endregion
 
         public virtual InhumanSpeech SpeechType { get { return null; } }
@@ -884,6 +895,57 @@ namespace Server.Mobiles
         public virtual Item NewHarmfulItem()
         {
             return new PoolOfAcid(TimeSpan.FromSeconds(10), 30, 30);
+        }
+        #endregion
+
+        #region Life Drain
+        public virtual bool DrainsLife { get { return false; } }
+        public virtual double DrainsLifeChance { get { return 0.1; } }
+        public virtual int DrainAmount { get { return Utility.RandomMinMax(10, 40); } }
+
+        public virtual int GetDrainAmount(Mobile target)
+        {
+            return DrainAmount;
+        }
+
+        public virtual void DrainLife()
+        {
+            List<Mobile> list = new List<Mobile>();
+
+            foreach (Mobile m in this.GetMobilesInRange(2))
+            {
+                if (m == this || !CanBeHarmful(m))
+                    continue;
+
+                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
+                    list.Add(m);
+                else if (m.Player)
+                    list.Add(m);
+            }
+
+            foreach (Mobile m in list)
+            {
+                DoHarmful(m);
+
+                m.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
+                m.PlaySound(0x231);
+
+                m.SendMessage("You feel the life drain out of you!");
+
+                int toDrain = GetDrainAmount(m);
+
+                //Monster Stealables
+                if (m is PlayerMobile)
+                {
+                    PlayerMobile pm = m as PlayerMobile;
+                    toDrain = (int)drNO.ThieveItems.LifeShieldLotion.HandleLifeDrain(pm, toDrain);
+                }
+                //end 
+
+
+                Hits += toDrain;
+                m.Damage(toDrain, this);
+            }
         }
         #endregion
 
@@ -3207,6 +3269,11 @@ namespace Server.Mobiles
             {
                 DoRage(attacker);
             }
+
+            if (DrainsLife && DrainsLifeChance >= Utility.RandomDouble())
+            {
+                DrainLife();
+            }
         }
 
         public virtual void Dispel(Mobile m)
@@ -3249,6 +3316,11 @@ namespace Server.Mobiles
                 AutoDispelChance > Utility.RandomDouble())
             {
                 Dispel(defender);
+            }
+
+            if (DrainsLife && DrainsLifeChance >= Utility.RandomDouble())
+            {
+                DrainLife();
             }
         }
 
@@ -3407,6 +3479,60 @@ namespace Server.Mobiles
 
                 AnimalTaming.DisableMessage = false;
                 Owner.From.TargetLocked = false;
+            }
+        }
+
+        private class RenameEntry : ContextMenuEntry
+        {
+            private Mobile m_From;
+            private BaseCreature m_Creature;
+
+            public RenameEntry(Mobile from, BaseCreature creature)
+                : base(1111680, 6)
+            {
+                m_From = from;
+                m_Creature = creature;
+            }
+
+            public override void OnClick()
+            {
+                if (!m_Creature.Deleted && m_Creature.Controlled && m_Creature.ControlMaster == m_From)
+                    m_From.Prompt = new PetRenamePrompt(m_Creature);
+            }
+        }
+
+        public class PetRenamePrompt : Prompt
+        {
+            // Enter a new name for your pet.
+            public override int MessageCliloc { get { return 1115558; } }
+
+            private BaseCreature m_Creature;
+
+            public PetRenamePrompt(BaseCreature creature)
+                : base(creature)
+            {
+                m_Creature = creature;
+            }
+
+            public override void OnCancel(Mobile from)
+            {
+                from.SendLocalizedMessage(501806); // Request cancelled.
+            }
+
+            public override void OnResponse(Mobile from, string text)
+            {
+                if (!m_Creature.Deleted && m_Creature.Controlled && m_Creature.ControlMaster == from)
+                {
+                    if (Utility.IsAlpha(text))
+                    {
+                        m_Creature.Name = text;
+                        from.SendLocalizedMessage(1115559); // Pet name changed.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1075246); // That name is not valid.
+                    }
+                }
             }
         }
 
@@ -3739,6 +3865,11 @@ namespace Server.Mobiles
             if (m_bTamable && !m_bControlled && from.Alive)
             {
                 list.Add(new TameEntry(from, this));
+            }
+
+            if (m_bControlled && m_ControlMaster == from && !m_bSummoned)
+            {
+                list.Add(new RenameEntry(from, this));
             }
 
             AddCustomContextEntries(from, list);
@@ -5247,6 +5378,7 @@ namespace Server.Mobiles
         public virtual bool GivesMLMinorArtifact { get { return false; } }
         #endregion
 
+        #region Special Drops
         private static readonly Type[] m_Artifacts = new[]
         {
             typeof(AegisOfGrace), typeof(BladeDance), typeof(Bonesmasher), typeof(FeyLeggings), typeof(FleshRipper),
@@ -5322,6 +5454,54 @@ namespace Server.Mobiles
                 m.SendLocalizedMessage(1072523); // You find an artifact, but your backpack and bank are too full to hold it.
             }
         }
+
+        public static void CheckRecipeDrop(BaseCreature bc, Container c)
+        {
+            if (SpellHelper.IsEodon(c.Map, c.Location))
+            {
+                double chance = (double)bc.Fame / 1000000;
+                int luck = bc.LastKiller != null ? bc.LastKiller.Luck : 0;
+
+                if (luck > 0)
+                    chance += (double)luck / 152000;
+
+                if (chance > Utility.RandomDouble())
+                {
+                    if (0.33 > Utility.RandomDouble())
+                    {
+                        Item item = Server.Loot.Construct(_ArmorDropTypes[Utility.Random(_ArmorDropTypes.Length)]);
+
+                        if (item != null)
+                            c.DropItem(item);
+                    }
+                    else
+                    {
+                        Item scroll = new RecipeScroll(_RecipeTypes[Utility.Random(_RecipeTypes.Length)]);
+
+                        if (scroll != null)
+                            c.DropItem(scroll);
+                    }
+                }
+            }
+        }
+
+        public static Type[] ArmorDropTypes { get { return _ArmorDropTypes; } }
+        private static Type[] _ArmorDropTypes =
+        {
+            typeof(AloronsBustier), typeof(AloronsGorget), typeof(AloronsHelm), typeof(AloronsLegs), typeof(AloronsLongSkirt), typeof(AloronsSkirt), typeof(AloronsTunic),
+            typeof(DardensBustier), typeof(DardensHelm), typeof(DardensLegs), typeof(DardensSleeves), typeof(DardensTunic)
+        };
+
+        public static int[] RecipeTypes { get { return _RecipeTypes; } }
+        private static int[] _RecipeTypes =
+        {
+            560, 561, 562, 563, 564, 565, 566, 
+            570, 571, 572, 573, 574, 575, 576, 577, 
+            580, 581, 582, 583, 584
+            //602, 603, 604,  // nutcrackers
+            //800             // runic atlas
+        };
+        #endregion
 
         public virtual void OnRelease(Mobile from)
         {
@@ -5561,6 +5741,9 @@ namespace Server.Mobiles
                         }
                     }
 
+                    // Eodon Recipe/Armor set drops
+                    CheckRecipeDrop(this, c);
+
                     for (int i = 0; i < titles.Count; ++i)
                     {
                         Titles.AwardFame(titles[i], fame[i], true);
@@ -5575,6 +5758,11 @@ namespace Server.Mobiles
                     c.Delete();
                 }
             }
+
+            #region SA
+            if (LastKiller is BaseVoidCreature)
+                ((BaseVoidCreature)LastKiller).Mutate(VoidEvolution.Killing);
+            #endregion
         }
 
         /* To save on cpu usage, RunUO creatures only reacquire creatures under the following circumstances:
@@ -6196,6 +6384,14 @@ namespace Server.Mobiles
         public virtual int AuraEnergyDamage { get { return 0; } }
         public virtual int AuraChaosDamage { get { return 0; } }
 
+        public virtual int GetAuraDamage(Mobile from)
+        {
+            if(from is PlayerMobile)
+                return (int)drNO.ThieveItems.BalmOfProtection.HandleDamage((PlayerMobile)from, AuraBaseDamage);
+
+            return AuraBaseDamage;
+        }
+
         public virtual void AuraDamage()
         {
             if (!Alive || IsDeadBondedPet)
@@ -6229,22 +6425,64 @@ namespace Server.Mobiles
 
             foreach (Mobile m in list)
             {
+                int damage = GetAuraDamage(m);
+
                 AOS.Damage(
                     m,
                     this,
-                    AuraBaseDamage,
+                    damage,
                     AuraPhysicalDamage,
                     AuraFireDamage,
                     AuraColdDamage,
                     AuraPoisonDamage,
                     AuraEnergyDamage,
                     AuraChaosDamage);
+
+                m.RevealingAction();
                 AuraEffect(m);
             }
         }
 
         public virtual void AuraEffect(Mobile m)
         { }
+        #endregion
+
+        #region Spawn Position
+        public virtual Point3D GetSpawnPosition(int range)
+        {
+            return GetSpawnPosition(this.Location, this.Map, range);
+        }
+
+        public static Point3D GetSpawnPosition(Point3D from, Map map, int range)
+        {
+            if (map == null)
+                return from;
+
+            for (int i = 0; i < 10; i++)
+            {
+                int x = from.X + Utility.Random(range);
+                int y = from.Y + Utility.Random(range);
+                int z = map.GetAverageZ(x, y);
+
+                if (Utility.RandomBool())
+                    x *= -1;
+
+                if (Utility.RandomBool())
+                    y *= -1;
+
+                Point3D p = new Point3D(x, y, from.Z);
+
+                if (map.CanSpawnMobile(p) && map.LineOfSight(from, p))
+                    return p;
+
+                p = new Point3D(x, y, z);
+
+                if (map.CanSpawnMobile(p) && map.LineOfSight(from, p))
+                    return p;
+            }
+
+            return from;
+        }
         #endregion
 
         #region Rage

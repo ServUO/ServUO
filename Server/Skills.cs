@@ -157,7 +157,7 @@ namespace Server
 
                             if ((version & 0x8) != 0)
                             {
-                                KnownMasteries = reader.ReadInt();
+                                VolumeLearned = reader.ReadInt();
                             }
 						}
 
@@ -216,7 +216,7 @@ namespace Server
 					flags |= 0x4;
 				}
 
-                if (KnownMasteries != 0)
+                if (VolumeLearned != 0)
                 {
                     flags |= 0x8;
                 }
@@ -238,9 +238,9 @@ namespace Server
 					writer.Write((byte)m_Lock);
 				}
 
-                if (KnownMasteries != 0)
+                if (VolumeLearned != 0)
                 {
-                    writer.Write((int)KnownMasteries);
+                    writer.Write((int)VolumeLearned);
                 }
 			}
 		}
@@ -260,7 +260,7 @@ namespace Server
 		public SkillLock Lock { get { return m_Lock; } }
 
         [CommandProperty(AccessLevel.Counselor)]
-        public int KnownMasteries
+        public int VolumeLearned
         {
             get;
             set;
@@ -445,20 +445,28 @@ namespace Server
 
         public bool LearnMastery(int volume)
         {
-            if (!IsMastery || HasLearnedMastery(volume))
+            if (!IsMastery || HasLearnedVolume(volume))
                 return false;
 
-            KnownMasteries = volume;
+            VolumeLearned = volume;
 
-            if (KnownMasteries > 3)
-                KnownMasteries = 3;
+            if (VolumeLearned > 3)
+                VolumeLearned = 3;
+
+            if (VolumeLearned < 0)
+                VolumeLearned = 0;
 
             return true;
         }
 
-        public bool HasLearnedMastery(int volume)
+        public bool HasLearnedVolume(int volume)
         {
-            return KnownMasteries >= volume;
+            return VolumeLearned >= volume;
+        }
+
+        public bool HasLearnedMastery()
+        {
+            return VolumeLearned > 0;
         }
 
         public bool SetCurrent()
@@ -601,7 +609,7 @@ namespace Server
 			new SkillInfo(51, "Chivalry", 0.0, 0.0, 0.0, "Paladin", null, 0.0, 0.0, 0.0, 1.0, StatCode.Str, StatCode.Int, true ),
 			new SkillInfo(52, "Bushido", 0.0, 0.0, 0.0, "Samurai", null, 0.0, 0.0, 0.0, 1.0, StatCode.Str, StatCode.Int, true ),
 			new SkillInfo(53, "Ninjitsu", 0.0, 0.0, 0.0, "Ninja", null, 0.0, 0.0, 0.0, 1.0, StatCode.Dex, StatCode.Int, true ),
-			new SkillInfo(54, "Spellweaving", 0.0, 0.0, 0.0, "Arcanist", null, 0.0, 0.0, 0.0, 1.0, StatCode.Int, StatCode.Str),
+			new SkillInfo(54, "Spellweaving", 0.0, 0.0, 0.0, "Arcanist", null, 0.0, 0.0, 0.0, 1.0, StatCode.Int, StatCode.Str, true),
 			new SkillInfo(55, "Mysticism", 0.0, 0.0, 0.0, "Mystic", null, 0.0, 0.0, 0.0, 1.0, StatCode.Str, StatCode.Int, true ),
 			new SkillInfo(56, "Imbuing", 0.0, 0.0, 0.0, "Artificer", null, 0.0, 0.0, 0.0, 1.0, StatCode.Int, StatCode.Str),
 			new SkillInfo(57, "Throwing", 0.0, 0.0, 0.0, "Bladeweaver", null, 0.0, 0.0, 0.0, 1.0, StatCode.Dex, StatCode.Str, true ),
@@ -1000,7 +1008,7 @@ namespace Server
 							{
 								Skill sk = new Skill(this, info[i], reader);
 
-                                if (sk.BaseFixedPoint != 0 || sk.CapFixedPoint != 1000 || sk.Lock != SkillLock.Up || sk.KnownMasteries != 0)
+                                if (sk.BaseFixedPoint != 0 || sk.CapFixedPoint != 1000 || sk.Lock != SkillLock.Up || sk.VolumeLearned != 0)
 								{
 									m_Skills[i] = sk;
 									m_Total += sk.BaseFixedPoint;

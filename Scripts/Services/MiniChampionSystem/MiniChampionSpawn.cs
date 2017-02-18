@@ -330,7 +330,7 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                TimeSpan ts = this.m_ExpireTime - DateTime.Now;
+                TimeSpan ts = this.m_ExpireTime - DateTime.UtcNow;
 
                 if (ts < TimeSpan.Zero)
                     ts = TimeSpan.Zero;
@@ -341,7 +341,7 @@ namespace Server.Engines.CannedEvil
             {
                 try
                 {
-                    this.m_ExpireTime = DateTime.Now + value;
+                    this.m_ExpireTime = DateTime.UtcNow + value;
                 }
                 catch
                 { }
@@ -443,7 +443,7 @@ namespace Server.Engines.CannedEvil
             if (this.m_RestartTimer != null)
                 this.m_RestartTimer.Stop();
 
-            this.m_RestartTime = DateTime.Now + ts;
+            this.m_RestartTime = DateTime.UtcNow + ts;
 
             this.m_RestartTimer = new MCRestartTimer(this, ts);
             this.m_RestartTimer.Start();
@@ -872,7 +872,7 @@ namespace Server.Engines.CannedEvil
 
         public void AdvanceLevel()
         {
-            /*m_ExpireTime = DateTime.Now + m_ExpireDelay;*/
+            /*m_ExpireTime = DateTime.UtcNow + m_ExpireDelay;*/
 
             if (this.m_Level < 3 && (m_Type == MiniChampType.SkeletalDragon))
             {
@@ -1383,7 +1383,7 @@ namespace Server.Engines.CannedEvil
                         if (reader.ReadBool())
                         {
                             this.m_RestartTime = reader.ReadDeltaTime();
-                            BeginRestart(this.m_RestartTime - DateTime.Now);
+                            BeginRestart(this.m_RestartTime - DateTime.UtcNow);
                         }
 
                         if (active)

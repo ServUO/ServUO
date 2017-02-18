@@ -172,6 +172,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ASCIIFont.cs" />
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="CalibrationInfo.cs">
       <SubType>Code</SubType>
     </Compile>

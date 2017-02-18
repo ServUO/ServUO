@@ -12,6 +12,7 @@ namespace Server
         public AosWeaponAttributes WeaponAttributes { get; private set; }
         public AosArmorAttributes ArmorAttributes { get; private set; }
         public SAAbsorptionAttributes AbsorptionAttributes { get; private set; }
+        public ExtendedWeaponAttributes ExtendedWeaponAttributes { get; private set; }
 
         public EnhancementAttributes(string title)
         {
@@ -20,6 +21,7 @@ namespace Server
             this.WeaponAttributes = new AosWeaponAttributes(null);
             this.ArmorAttributes = new AosArmorAttributes(null);
             this.AbsorptionAttributes = new SAAbsorptionAttributes(null);
+            this.ExtendedWeaponAttributes = new ExtendedWeaponAttributes(null);
         }
     }
 
@@ -245,6 +247,45 @@ namespace Server
             {
                 match = new EnhancementAttributes(title);
                 match.AbsorptionAttributes[att] = value;
+
+                EnhancementList[m].Add(match);
+            }
+
+            m.CheckStatTimers();
+            m.UpdateResistances();
+            m.Delta(MobileDelta.Stat | MobileDelta.WeaponDamage | MobileDelta.Hits | MobileDelta.Stam | MobileDelta.Mana);
+        }
+
+        public static int GetValue(Mobile m, ExtendedWeaponAttribute att)
+        {
+            if (m == null)
+                return 0;
+
+            if (EnhancementList.ContainsKey(m))
+            {
+                int value = 0;
+                EnhancementList[m].ForEach(attrs => value += attrs.ExtendedWeaponAttributes[att]);
+                return value;
+            }
+
+            return 0;
+        }
+
+        public static void SetValue(Mobile m, ExtendedWeaponAttribute att, int value, string title)
+        {
+            if (!EnhancementList.ContainsKey(m))
+                AddMobile(m);
+
+            EnhancementAttributes match = EnhancementList[m].FirstOrDefault(attrs => attrs.Title == title);
+
+            if (match != null)
+            {
+                match.ExtendedWeaponAttributes[att] = value;
+            }
+            else
+            {
+                match = new EnhancementAttributes(title);
+                match.ExtendedWeaponAttributes[att] = value;
 
                 EnhancementList[m].Add(match);
             }

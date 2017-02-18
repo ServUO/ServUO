@@ -1351,7 +1351,14 @@ namespace Server.Engines.Shadowguard
 		public override void CheckEncounter()
 		{
 		}
-		
+
+        public override void CompleteEncounter()
+        {
+            base.CompleteEncounter();
+
+            Controller.CompleteRoof(PartyLeader);
+        }
+
 		public override void OnCreatureKilled(BaseCreature bc)
 		{
 			if(Bosses != null && bc is ShadowguardBoss && bc == CurrentBoss)

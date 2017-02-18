@@ -269,6 +269,7 @@ namespace Server.Mobiles
 
         private class RenamePrompt : Prompt
         {
+            public override int MessageCliloc { get { return 1062433; } }
             private readonly Steward steward;
 
             public RenamePrompt(Steward ward)

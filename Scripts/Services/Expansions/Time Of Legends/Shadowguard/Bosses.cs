@@ -92,32 +92,34 @@ namespace Server.Engines.Shadowguard
 		
 		public override void OnDeath(Container c)
 		{
-			List<DamageStore> rights = GetLootingRights();
-			
-			foreach(DamageStore ds in rights.Where(s => s.m_HasRight))
-			{
-				int chance = 75 + (ds.m_Mobile.Luck / 15);
-				
-				if(chance > Utility.Random(5000))
-				{
-					Mobile m = ds.m_Mobile;
-					Item artifact = Loot.Construct(ArtifactDrops[Utility.Random(ArtifactDrops.Length)]);
-					
-					if(artifact != null)
-					{
-						if(m.Backpack == null || !m.Backpack.TryDropItem(m, artifact, false))
-						{
-							m.BankBox.DropItem(artifact);
-							m.SendMessage("For your valor in combating the fallen beast, a special reward has been placed in your bankbox.");
-						}
-						else
-							m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special reward has been bestowed on you.
-					}
-				}
-			}
-
             if (IsLastBoss)
+            {
+                List<DamageStore> rights = GetLootingRights();
+
+                foreach (DamageStore ds in rights.Where(s => s.m_HasRight))
+                {
+                    int chance = 1000 + (ds.m_Mobile.Luck / 15);
+
+                    if (chance > Utility.Random(5000))
+                    {
+                        Mobile m = ds.m_Mobile;
+                        Item artifact = Loot.Construct(ArtifactDrops[Utility.Random(ArtifactDrops.Length)]);
+
+                        if (artifact != null)
+                        {
+                            if (m.Backpack == null || !m.Backpack.TryDropItem(m, artifact, false))
+                            {
+                                m.BankBox.DropItem(artifact);
+                                m.SendMessage("For your valor in combating the fallen beast, a special reward has been placed in your bank box.");
+                            }
+                            else
+                                m.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special reward has been bestowed on you.
+                        }
+                    }
+                }
+
                 DoGoldSpray();
+            }
 
 			base.OnDeath(c);
 		}
@@ -805,7 +807,7 @@ namespace Server.Engines.Shadowguard
 		{
             Mobile m = o as Mobile;
  
-            if (m != null)
+            if (m != null && this.Map != null)
             {
                 DoHarmful(m);
                 AOS.Damage(m, this, Utility.RandomMinMax(100, 150), 50, 50, 0, 0, 0);

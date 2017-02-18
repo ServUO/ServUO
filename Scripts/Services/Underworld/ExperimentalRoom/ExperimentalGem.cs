@@ -167,7 +167,7 @@ namespace Server.Items
 			}
 			while(index == m_LastIndex);
 
-            m_Expire = DateTime.Now + HueToLocDelay;
+            m_Expire = DateTime.UtcNow + HueToLocDelay;
 			m_Holding = false;
 			m_LastIndex = index;
 
@@ -182,7 +182,7 @@ namespace Server.Items
 
         public void OnTick()
         {
-            if (m_Holding || m_Expire > DateTime.Now)
+            if (m_Holding || m_Expire > DateTime.UtcNow)
                 return;
 
             Mobile m = (Mobile)RootParent;
@@ -199,7 +199,7 @@ namespace Server.Items
                     m_CurrentHue = Hue;
                     m_IsExtremeHue = false;
                     m_LastIndex = GetIndexFor(nextHue);
-                    m_Expire = DateTime.Now + HueToLocDelay;
+                    m_Expire = DateTime.UtcNow + HueToLocDelay;
                     m.PlaySound(0x51);
 
                     m_Completed += 0.5;
@@ -273,7 +273,7 @@ namespace Server.Items
                     if (m != null)
                         m.SendMessage("As a GM, you get another chance!");
 
-                    m_Expire = DateTime.Now + HueToLocDelay;
+                    m_Expire = DateTime.UtcNow + HueToLocDelay;
                 }
 
                 if (m != null)
@@ -291,7 +291,7 @@ namespace Server.Items
                 if (m != null)
                     m.LocalOverheadMessage(MessageType.Regular, 0x21, 1113401); // The state of your gem worsens!!
 
-                m_Expire = DateTime.Now + HueToLocDelay;
+                m_Expire = DateTime.UtcNow + HueToLocDelay;
             }
         }
         

@@ -485,9 +485,14 @@ namespace Server.Multis
             return m_SecurityEntry.IsPublic;
         }
 
-        public bool HasAccess(Mobile from)
+        public override bool CanCommand(Mobile m)
         {
-            if(Owner == null || (Scuttled && IsEnemy(from)) || (Owner is BaseCreature && !Owner.Alive))
+            return GetSecurityLevel(m) >= SecurityLevel.Crewman;
+        }
+
+        public override bool HasAccess(Mobile from)
+        {
+            if(Owner == null || (Scuttled && IsEnemy(from))/* || (Owner is BaseCreature && !Owner.Alive)*/)
                 return true;
 
             return GetSecurityLevel(from) !=  SecurityLevel.Denied;

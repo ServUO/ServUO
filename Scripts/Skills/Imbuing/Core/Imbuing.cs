@@ -11,6 +11,7 @@ using Server.ContextMenus;
 using Server.Commands;
 using Server.Factions;
 using Server.Engines.Craft;
+using System.Linq;
 
 namespace Server.SkillHandlers
 {
@@ -18,7 +19,7 @@ namespace Server.SkillHandlers
     {
         public static void Initialize()
         {
-            LoadImbuingDefinitions();
+            //LoadImbuingDefinitions();
 
             SkillInfo.Table[(int)SkillName.Imbuing].Callback = new SkillUseCallback(OnUse);
 
@@ -150,6 +151,9 @@ namespace Server.SkillHandlers
             if (item == null)
                 return true;
 
+            if (IsSpecialImbuable(item))
+                return false;
+
 			if (item.IsArtifact)
 				return true;
 
@@ -181,6 +185,20 @@ namespace Server.SkillHandlers
 
             return true;
         }
+
+        private static bool IsSpecialImbuable(Item item)
+        {
+            foreach (Type type in _SpecialImbuable)
+                if (item.GetType() == type)
+                    return true;
+
+            return false;
+        }
+
+        private static Type[] _SpecialImbuable =
+        {
+            typeof(ClockworkLeggings), typeof(GargishClockworkLeggings)
+        };
 
         public static double GetSuccessChance(Mobile from, Item item, int totalItemWeight, int propWeight, out double dif)
         {
@@ -427,9 +445,7 @@ namespace Server.SkillHandlers
                         {
                             string p = prop as string;
 
-                            if (p == "BalancedWeapon" && wep is BaseRanged)
-                                ((BaseRanged)wep).Balanced = true;
-                            else if (p == "WeaponVelocity" && wep is BaseRanged)
+                            if (p == "WeaponVelocity" && wep is BaseRanged)
                                 ((BaseRanged)wep).Velocity = value;
                         }
                     }
@@ -903,10 +919,10 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
+
+                    if(!ValidateProperty(attr))
+                        continue;
 
                     if (wep.Attributes[attr] > 0)
                     {
@@ -926,12 +942,29 @@ namespace Server.SkillHandlers
                 {
                     AosWeaponAttribute attr = (AosWeaponAttribute)i;
 
+                    if (!ValidateProperty(attr))
+                        continue;
+
                     if (wep.WeaponAttributes[attr] > 0)
                     {
                         if (IsHitAreaOrSpell(attr, mod))
                             continue;
 
                         if (!(prop is AosWeaponAttribute) || ((AosWeaponAttribute)prop) != attr)
+                            total += 1;
+                    }
+                }
+
+                foreach (int i in Enum.GetValues(typeof(ExtendedWeaponAttribute)))
+                {
+                    ExtendedWeaponAttribute attr = (ExtendedWeaponAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
+
+                    if (wep.ExtendedWeaponAttributes[attr] > 0)
+                    {
+                        if (!(prop is AosWeaponAttribute) || ((ExtendedWeaponAttribute)prop) != attr)
                             total += 1;
                     }
                 }
@@ -946,6 +979,9 @@ namespace Server.SkillHandlers
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
 
+                    if (!ValidateProperty(attr))
+                        continue;
+
                     if (wep.AbsorptionAttributes[attr] > 0)
                     {
                         if (!(prop is SAAbsorptionAttribute) || ((SAAbsorptionAttribute)prop) != attr)
@@ -957,13 +993,12 @@ namespace Server.SkillHandlers
                 {
                     BaseRanged ranged = wep as BaseRanged;
 
-                    if (ranged.Balanced && mod != 61)
-                        total++;
-
                     if (ranged.Velocity > 0 && mod != 60)
                         total++;
                 }
 
+                if (wep.SearingWeapon)
+                    total++;
             }
             else if (itw is BaseArmor)
             {
@@ -971,10 +1006,10 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (armor.Attributes[attr] > 0)
                     {
@@ -1000,6 +1035,9 @@ namespace Server.SkillHandlers
                 {
                     AosArmorAttribute attr = (AosArmorAttribute)i;
 
+                    if (!ValidateProperty(attr))
+                        continue;
+
                     if (armor.ArmorAttributes[attr] > 0)
                     {
                         if (!(prop is AosArmorAttribute) || ((AosArmorAttribute)prop) != attr)
@@ -1011,6 +1049,9 @@ namespace Server.SkillHandlers
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (armor.AbsorptionAttributes[attr] > 0)
                     {
@@ -1025,10 +1066,10 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (j.Attributes[attr] > 0)
                     {
@@ -1040,6 +1081,9 @@ namespace Server.SkillHandlers
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (j.AbsorptionAttributes[attr] > 0)
                     {
@@ -1062,10 +1106,10 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (h.Attributes[attr] > 0)
                     {
@@ -1077,6 +1121,9 @@ namespace Server.SkillHandlers
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (h.SAAbsorptionAttributes[attr] > 0)
                     {
@@ -1164,12 +1211,14 @@ namespace Server.SkillHandlers
             SAAbsorptionAttributes saAttrs = null;
             AosArmorAttributes armorAttrs = null;
             AosElementAttributes resistAttrs = null;
+            ExtendedWeaponAttributes extattrs = null;
 
             if (item is BaseWeapon)
             {
                 aosAttrs = ((BaseWeapon)item).Attributes;
                 wepAttrs = ((BaseWeapon)item).WeaponAttributes;
                 saAttrs = ((BaseWeapon)item).AbsorptionAttributes;
+                extattrs = ((BaseWeapon)item).ExtendedWeaponAttributes;
 
                 if(((BaseWeapon)item).Slayer != SlayerName.None)
                     weight += GetIntensityForAttribute(((BaseWeapon)item).Slayer, mod, 1);
@@ -1183,9 +1232,6 @@ namespace Server.SkillHandlers
                 if (item is BaseRanged)
                 {
                     BaseRanged ranged = item as BaseRanged;
-
-                    if(ranged.Balanced)
-                        weight += GetIntensityForAttribute("BalancedWeapon", mod, 1);
 
                     if(ranged.Velocity > 0)
                         weight += GetIntensityForAttribute("WeaponVelocity", mod, ranged.Velocity);
@@ -1234,6 +1280,10 @@ namespace Server.SkillHandlers
             if (resistAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(AosElementAttribute)))
                     weight += GetIntensityForAttribute((AosElementAttribute)i, mod, resistAttrs[(AosElementAttribute)i]);
+
+            if(extattrs != null)
+                foreach (int i in Enum.GetValues(typeof(ExtendedWeaponAttribute)))
+                    weight += GetIntensityForAttribute((ExtendedWeaponAttribute)i, mod, extattrs[(ExtendedWeaponAttribute)i], item as BaseWeapon);
 
             weight += CheckSkillBonuses(item, mod);
 
@@ -1417,7 +1467,8 @@ namespace Server.SkillHandlers
         private static Dictionary<int, ImbuingDefinition> m_Table;
         public static Dictionary<int, ImbuingDefinition> Table { get { return m_Table; } }
 
-        public static void LoadImbuingDefinitions()
+        //public static void LoadImbuingDefinitions()
+        static Imbuing()
         {
             m_Table = new Dictionary<int, ImbuingDefinition>();
 			
@@ -1474,7 +1525,7 @@ namespace Server.SkillHandlers
             m_Table[55] = new ImbuingDefinition(AosElementAttribute.Energy,         1061162, 100,   typeof(MagicalResidue), typeof(Amethyst),       typeof(BouraPelt), 15, 1, 1112008);
             
             m_Table[60] = new ImbuingDefinition("WeaponVelocity",                   1080416, 130, 	typeof(RelicFragment),  typeof(Tourmaline), 	typeof(EssenceDirection),   50, 2, 1112048);
-			m_Table[61] = new ImbuingDefinition("BalancedWeapon",	                1072792, 150, 	typeof(RelicFragment),  typeof(Amber), 		    typeof(EssenceBalance),     1, 0, 1112047);
+			m_Table[61] = new ImbuingDefinition(AosAttribute.BalancedWeapon,	    1072792, 150, 	typeof(RelicFragment),  typeof(Amber), 		    typeof(EssenceBalance),     1, 0, 1112047);
             m_Table[62] = new ImbuingDefinition("SearingWeapon",	                1151183, 150, 	null,                   null, 		            null,                       1, 0, -1);
 
 			m_Table[101] = new ImbuingDefinition(SlayerName.OrcSlaying,			1060470, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111977);
@@ -1595,6 +1646,11 @@ namespace Server.SkillHandlers
             m_Table[500] = new ImbuingDefinition(AosArmorAttribute.SelfRepair,              1079709, 100, null, null, null, 5, 1,  1079709);
             m_Table[501] = new ImbuingDefinition(AosWeaponAttribute.SelfRepair,             1079709, 100, null, null, null, 5, 1,  1079709);
             //243 already used above
+
+            m_Table[600] = new ImbuingDefinition(ExtendedWeaponAttribute.BoneBreaker,       1157318, 140, null, null, null, 1, 1,   1157319);
+            m_Table[601] = new ImbuingDefinition(ExtendedWeaponAttribute.HitSwarm,          1157328, 140, null, null, null, 20, 1,   1157327);
+            m_Table[602] = new ImbuingDefinition(ExtendedWeaponAttribute.HitSparks,         1157330, 140, null, null, null, 20, 1,   1157329);
+            m_Table[603] = new ImbuingDefinition(ExtendedWeaponAttribute.Bane,              1154671, 140, null, null, null, 1, 1,   1154570);
         }
 
         public static Type[] IngredTypes { get { return m_IngredTypes; } }
@@ -1685,6 +1741,9 @@ namespace Server.SkillHandlers
 
                 else if (attr is AosWeaponAttribute)
                     return w.WeaponAttributes[(AosWeaponAttribute)attr];
+
+                else if (attr is ExtendedWeaponAttribute)
+                    return w.ExtendedWeaponAttributes[(ExtendedWeaponAttribute)attr];
 
                 else if (attr is SAAbsorptionAttribute)
                     return w.AbsorptionAttributes[(SAAbsorptionAttribute)attr];
@@ -1822,6 +1881,9 @@ namespace Server.SkillHandlers
             else if (attr is AosWeaponAttribute)
                 mod = GetModForAttribute((AosWeaponAttribute)attr);
 
+            else if (attr is ExtendedWeaponAttribute)
+                mod = GetModForAttribute((ExtendedWeaponAttribute)attr);
+
             else if (attr is SkillName)
                 mod = GetModForAttribute((SkillName)attr);
 
@@ -1868,6 +1930,20 @@ namespace Server.SkillHandlers
                 ImbuingDefinition def = kvp.Value;
 
                 if (def.Attribute is AosWeaponAttribute && (AosWeaponAttribute)def.Attribute == attr)
+                    return mod;
+            }
+
+            return -1;
+        }
+
+        public static int GetModForAttribute(ExtendedWeaponAttribute attr)
+        {
+            foreach (KeyValuePair<int, ImbuingDefinition> kvp in m_Table)
+            {
+                int mod = kvp.Key;
+                ImbuingDefinition def = kvp.Value;
+
+                if (def.Attribute is ExtendedWeaponAttribute && (ExtendedWeaponAttribute)def.Attribute == attr)
                     return mod;
             }
 
@@ -1966,8 +2042,8 @@ namespace Server.SkillHandlers
 
         public static int GetModForAttribute(string str)
         {
-            if (str == "BalancedWeapon")
-                return 61;
+            /*if (str == "BalancedWeapon")
+                return 61;*/
 
             if (str == "WeaponVelocity")
                 return 60;
@@ -1976,6 +2052,31 @@ namespace Server.SkillHandlers
                 return 62;
 
             return -1;
+        }
+
+        public static bool ValidateProperty(AosAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is AosAttribute && (AosAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(AosWeaponAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is AosWeaponAttribute && (AosWeaponAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(ExtendedWeaponAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is ExtendedWeaponAttribute && (ExtendedWeaponAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(AosArmorAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is AosArmorAttribute && (AosArmorAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(SAAbsorptionAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is SAAbsorptionAttribute && (SAAbsorptionAttribute)def.Attribute == attr) != null;
         }
 
         #region Prop Ranges
@@ -2103,6 +2204,18 @@ namespace Server.SkillHandlers
         public static int[] GetPropRange(AosElementAttribute attr)
         {
             return new int[] { 1, 15 };
+        }
+
+        public static int[] GetPropRange(Item item, ExtendedWeaponAttribute attr)
+        {
+            switch (attr)
+            {
+                default:
+                case ExtendedWeaponAttribute.Bane:
+                case ExtendedWeaponAttribute.BoneBreaker: return new int[] { 1, 1 };
+                case ExtendedWeaponAttribute.HitSparks:
+                case ExtendedWeaponAttribute.HitSwarm: return new int[] { 1, 20 };
+            }
         }
         #endregion
     }

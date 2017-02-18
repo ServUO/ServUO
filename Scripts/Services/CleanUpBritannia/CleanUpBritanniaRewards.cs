@@ -104,6 +104,24 @@ namespace Server.Engines.CleanUpBritannia
             Rewards.Add(new CollectionItem(typeof(FishermansArms), 0x0302, 1151580, 2578, 50000));
             Rewards.Add(new CollectionItem(typeof(FishermansEarrings), 0x4213, 1151581, 2578, 50000));
 
+            Rewards.Add(new CollectionItem(typeof(BestialArms), 0x0302, 1151549, 2010, 50000));
+            Rewards.Add(new CollectionItem(typeof(BestialEarrings), 0x4213, 1151547, 2010, 50000));
+            Rewards.Add(new CollectionItem(typeof(BestialGloves), 0x13C6, 1151230, 2010, 50000));
+            Rewards.Add(new CollectionItem(typeof(BestialGorget), 0x13D6, 1151232, 2010, 50000));
+            Rewards.Add(new CollectionItem(typeof(BestialHelm), 0x1545, 1151229, 2010, 50000));
+            Rewards.Add(new CollectionItem(typeof(BestialKilt), 0x0408, 1151550, 2010, 50000));
+            Rewards.Add(new CollectionItem(typeof(BestialLegs), 0x13CB, 1151231, 2010, 50000));
+            Rewards.Add(new CollectionItem(typeof(BestialNecklace), 0x4210, 1151548, 2010, 50000));
+
+            Rewards.Add(new CollectionItem(typeof(VirtuososArmbands), 0x0308, 1151563, 1374, 50000));
+            Rewards.Add(new CollectionItem(typeof(VirtuososCap), 0x171C, 1151324, 1374, 50000));
+            Rewards.Add(new CollectionItem(typeof(VirtuososCollar), 0x13C7, 1151323, 1374, 50000));
+            Rewards.Add(new CollectionItem(typeof(VirtuososEarpieces), 0x4213, 1151562, 1374, 50000));
+            Rewards.Add(new CollectionItem(typeof(VirtuososKidGloves), 0x13C6, 1151560, 1374, 50000));
+            Rewards.Add(new CollectionItem(typeof(VirtuososKilt), 0x0408, 1151564, 1374, 50000));
+            Rewards.Add(new CollectionItem(typeof(VirtuososNecklace), 0x4213, 1151561, 1374, 50000));
+            Rewards.Add(new CollectionItem(typeof(VirtuososTunic), 0x13CC, 1151325, 1374, 50000));
+
             Rewards.Add(new CollectionItem(typeof(FirePitDeed), 0x29FD, 1080206, 0, 75000));
             Rewards.Add(new CollectionItem(typeof(PresentationStone), 0x32F2, 1154745, 0, 75000));
             Rewards.Add(new CollectionItem(typeof(Beehive), 0x091A, 1080263, 0, 80000));

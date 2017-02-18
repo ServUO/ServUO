@@ -305,10 +305,11 @@ namespace Server.Items
             armor.m_AosArmorAttributes = new AosArmorAttributes(newItem, this.m_AosArmorAttributes);
             armor.m_AosSkillBonuses = new AosSkillBonuses(newItem, this.m_AosSkillBonuses);
             armor.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, this.m_SAAbsorptionAttributes);
-            armor.m_SetAttributes = new AosAttributes(newItem, this.m_SetAttributes);
-            armor.m_SetSkillBonuses = new AosSkillBonuses(newItem, this.m_SetSkillBonuses);
             armor.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
             armor.m_TalismanProtection = new TalismanAttribute(m_TalismanProtection);
+
+            armor.m_SetAttributes = new AosAttributes(newItem, this.m_SetAttributes);
+            armor.m_SetSkillBonuses = new AosSkillBonuses(newItem, this.m_SetSkillBonuses);
         }
 
         #region Personal Bless Deed
@@ -580,7 +581,8 @@ namespace Server.Items
                 if (armor.ArmorAttributes.MageArmor > 1 || armor is WoodlandArms || armor is WoodlandChest || armor is WoodlandGloves || armor is WoodlandLegs || armor is WoodlandGorget || armor is BaseShield)
                     continue;
 
-                if (armor.MaterialType == ArmorMaterialType.Studded || armor.MaterialType == ArmorMaterialType.Bone)
+                else if (armor.MaterialType == ArmorMaterialType.Studded || armor.MaterialType == ArmorMaterialType.Bone ||
+                    armor is GargishStoneKilt || armor is GargishStoneLegs || armor is GargishStoneChest || armor is GargishStoneArms)
                     toReduce += 3;
                 else if (armor.MaterialType >= ArmorMaterialType.Ringmail)
                     toReduce += 1;
@@ -861,6 +863,10 @@ namespace Server.Items
             set
             {
                 this.m_MaxHitPoints = value;
+
+                if (this.m_MaxHitPoints > 255)
+                    this.m_MaxHitPoints = 255;
+
                 this.InvalidateProperties();
             }
         }
@@ -1329,18 +1335,16 @@ namespace Server.Items
         {
             int scale = 100 + this.GetDurabilityBonus();
 
-            this.m_HitPoints = ((this.m_HitPoints * 100) + (scale - 1)) / scale;
-            this.m_MaxHitPoints = ((this.m_MaxHitPoints * 100) + (scale - 1)) / scale;
-            this.InvalidateProperties();
+            HitPoints = ((this.m_HitPoints * 100) + (scale - 1)) / scale;
+            MaxHitPoints = ((this.m_MaxHitPoints * 100) + (scale - 1)) / scale;
         }
 
         public void ScaleDurability()
         {
             int scale = 100 + this.GetDurabilityBonus();
 
-            this.m_HitPoints = ((this.m_HitPoints * scale) + 99) / 100;
-            this.m_MaxHitPoints = ((this.m_MaxHitPoints * scale) + 99) / 100;
-            this.InvalidateProperties();
+            HitPoints = ((this.m_HitPoints * scale) + 99) / 100;
+            MaxHitPoints = ((this.m_MaxHitPoints * scale) + 99) / 100;
         }
 
         public int GetDurabilityBonus()
@@ -2306,6 +2310,7 @@ namespace Server.Items
             this.m_SetAttributes = new AosAttributes(this);
             this.m_SetSkillBonuses = new AosSkillBonuses(this);
             #endregion
+
             this.m_AosSkillBonuses = new AosSkillBonuses(this);
             m_NegativeAttributes = new NegativeAttributes(this);
             m_TalismanProtection = new TalismanAttribute();
@@ -2376,12 +2381,14 @@ namespace Server.Items
                     return false;
                 }
 
+                bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
+
                 if (from.Race == Race.Gargoyle && !this.CanBeWornByGargoyles)
                 {
                     from.SendLocalizedMessage(1111708); // Gargoyles can't wear this.
                     return false;
                 }
-                if (this.RequiredRace != null && from.Race != this.RequiredRace)
+                if (this.RequiredRace != null && from.Race != this.RequiredRace && !morph)
                 {
                     if (this.RequiredRace == Race.Elf)
                         from.SendLocalizedMessage(1072203); // Only Elves may use this.
@@ -2728,7 +2735,7 @@ namespace Server.Items
             if (base.AllowEquipedCast(from))
                 return true;
 
-            return (this.m_AosAttributes.SpellChanneling != 0);
+            return (this.m_AosAttributes.SpellChanneling != 0 || Enhancement.GetValue(from, AosAttribute.SpellChanneling) != 0);
         }
 
         public virtual int GetLuckBonus()
@@ -3104,6 +3111,18 @@ namespace Server.Items
 
                     from.CheckSkill(SkillName.ArmsLore, 0, 100);
                 }
+
+                if (m_AosArmorAttributes.MageArmor <= 0)
+                {
+                    foreach (Type type in _MageArmorTypes)
+                    {
+                        if (type == this.GetType())
+                        {
+                            m_AosArmorAttributes.MageArmor = 1;
+                            break;
+                        }
+                    }
+                }
             }
 
             if (Core.AOS && tool is BaseRunicTool && !craftItem.ForceNonExceptional)
@@ -3152,6 +3171,13 @@ namespace Server.Items
             return quality;
         }
 
+        private Type[] _MageArmorTypes = new Type[]
+        {
+            typeof(HeavyPlateJingasa),  typeof(LightPlateJingasa),
+            typeof(PlateMempo),         typeof(PlateDo),
+            typeof(PlateHiroSode),      typeof(PlateSuneate),
+            typeof(PlateHaidate)
+        };
         #endregion
 
         #region Mondain's Legacy Sets

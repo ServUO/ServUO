@@ -41,8 +41,8 @@ namespace Server.Mobiles
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
-				m_NextCastTime = DateTime.Now;
-				m_NextHealTime = DateTime.Now;
+				m_NextCastTime = DateTime.UtcNow;
+				m_NextHealTime = DateTime.UtcNow;
 			}
 			else
 			{
@@ -68,7 +68,7 @@ namespace Server.Mobiles
 		{
 			bool ret = base.DoActionCombat();
 			
-			if ( m_Mobile.Spell == null && DateTime.Now > m_NextCastTime )
+			if ( m_Mobile.Spell == null && DateTime.UtcNow > m_NextCastTime )
 			{
 				Spell spell = null;
 				
@@ -99,7 +99,7 @@ namespace Server.Mobiles
 				else
 					delay = GetDelay();
 					
-				m_NextCastTime = DateTime.Now + delay;
+				m_NextCastTime = DateTime.UtcNow + delay;
 			}			
 
 			return ret;
@@ -114,8 +114,8 @@ namespace Server.Mobiles
 			return TimeSpan.FromSeconds( min + ((max - min) * Utility.RandomDouble()) );
 		}
 		
-		private DateTime m_NextCastTime = DateTime.Now;
-		private DateTime m_NextHealTime = DateTime.Now;
+		private DateTime m_NextCastTime = DateTime.UtcNow;
+		private DateTime m_NextHealTime = DateTime.UtcNow;
 		
 		public virtual Spell CheckCastHealingSpell()
 		{
@@ -125,7 +125,7 @@ namespace Server.Mobiles
 				
 			if ( m_Mobile.Controlled )
 			{
-				if ( DateTime.Now < m_NextHealTime )
+				if ( DateTime.UtcNow < m_NextHealTime )
 					return null;
 			}
 			
@@ -144,7 +144,7 @@ namespace Server.Mobiles
 			else
 				delay = Math.Sqrt( 600 - m_Mobile.Int );			
 			
-			m_NextHealTime = DateTime.Now + TimeSpan.FromSeconds( delay );
+			m_NextHealTime = DateTime.UtcNow + TimeSpan.FromSeconds( delay );
 			
 			return spell;
 		}

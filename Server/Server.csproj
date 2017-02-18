@@ -180,9 +180,14 @@
     <Compile Include="Gumps\GumpTextEntry.cs" />
     <Compile Include="Gumps\GumpTextEntryLimited.cs" />
     <Compile Include="Gumps\GumpTooltip.cs" />
+    <Compile Include="Gumps\KRGumpButton.cs" />
+    <Compile Include="Gumps\KRGumpHtmlLocalized.cs" />
+    <Compile Include="Gumps\KRGumpImage.cs" />
+    <Compile Include="Gumps\KRGumpLabel.cs" />
     <Compile Include="Gumps\RelayInfo.cs" />
     <Compile Include="Persistence\Persistence.cs" />
     <Compile Include="Berserk.cs" />
+    <Compile Include="PromptExtensions.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Items\VirtualCheck.cs" />
   </ItemGroup>

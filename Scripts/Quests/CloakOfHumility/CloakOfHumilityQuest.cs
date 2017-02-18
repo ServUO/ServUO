@@ -83,7 +83,7 @@ namespace Server.Engines.Quests
         public override void OnResign(bool chain)
         {
             base.OnResign(chain);
-            m_CooldownTable[Owner] = DateTime.Now + TimeSpan.FromHours(24);
+            m_CooldownTable[Owner] = DateTime.UtcNow + TimeSpan.FromHours(24);
         }
 
         public override bool CanOffer()
@@ -102,7 +102,7 @@ namespace Server.Engines.Quests
 
             foreach (KeyValuePair<Mobile, DateTime> kvp in m_CooldownTable)
             {
-                if (kvp.Value < DateTime.Now)
+                if (kvp.Value < DateTime.UtcNow)
                     toRemove.Add(kvp.Key);
             }
 

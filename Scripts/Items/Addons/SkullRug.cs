@@ -25,7 +25,7 @@ namespace Server.Items
         private DateTime m_NextUse;
 
         [Constructable]
-        public SkullRugEastAddon() : this(DateTime.Now)
+        public SkullRugEastAddon() : this(DateTime.UtcNow)
         {
         }
 
@@ -40,7 +40,7 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (m_NextUse < DateTime.Now)
+            if (m_NextUse < DateTime.UtcNow)
             {
                 Container cont = from.Backpack;
                 Map facet;
@@ -67,7 +67,7 @@ namespace Server.Items
                 else
                     from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
 
-                m_NextUse = DateTime.Now + TimeSpan.FromDays(7);
+                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
             }
         }
 
@@ -100,7 +100,7 @@ namespace Server.Items
         private DateTime m_NextUse;
 
         [Constructable]
-        public SkullRugEastAddonDeed() : this(DateTime.Now)
+        public SkullRugEastAddonDeed() : this(DateTime.UtcNow)
         {
         }
 
@@ -151,7 +151,7 @@ namespace Server.Items
 
         [Constructable]
         public SkullRugSouthAddon()
-            : this(DateTime.Now)
+            : this(DateTime.UtcNow)
         {
         }
 
@@ -166,7 +166,7 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (m_NextUse < DateTime.Now)
+            if (m_NextUse < DateTime.UtcNow)
             {
                 Container cont = from.Backpack;
                 Map facet;
@@ -193,7 +193,7 @@ namespace Server.Items
                 else
                     from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
 
-                m_NextUse = DateTime.Now + TimeSpan.FromDays(7);
+                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
             }
         }
 
@@ -227,7 +227,7 @@ namespace Server.Items
 
         [Constructable]
         public SkullRugSouthAddonDeed()
-            : this(DateTime.Now)
+            : this(DateTime.UtcNow)
         {
         }
 

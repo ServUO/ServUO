@@ -86,17 +86,11 @@ namespace Server.Engines.Points
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
             }
-
-            if (!PointsSystem.BlackthornHasSaved)
-                PointsSystem.BlackthornHasSaved = true;
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            if (!PointsSystem.BlackthornHasSaved)
-                return;
 
             int version = reader.ReadInt();
 

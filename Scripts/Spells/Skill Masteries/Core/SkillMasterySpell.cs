@@ -18,6 +18,7 @@ namespace Server.Spells.SkillMasteries
         public static void Initialize()
         {
             CommandSystem.Register("LearnAllMasteries", AccessLevel.GameMaster, LearnAllSpells);
+            CommandSystem.Register("RandomMastery", AccessLevel.GameMaster, RandomMastery);
         }
 
         public UpkeepTimer Timer { get; set; }
@@ -40,6 +41,7 @@ namespace Server.Spells.SkillMasteries
 
         public virtual bool CancelsWeaponAbility { get { return false; } }
         public virtual bool CancelsSpecialMove { get { return CancelsWeaponAbility; } }
+        public virtual bool ClearOnSpecialAbility { get { return false; } }
 
         public virtual TimeSpan ExpirationPeriod { get { return TimeSpan.FromMinutes(30); } }
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.0); } }
@@ -79,13 +81,13 @@ namespace Server.Spells.SkillMasteries
 
             if (IsInCooldown(Caster, this.GetType()))
                 return false;
-
+            
             if (Caster.Skills[CastSkill].Value < RequiredSkill)
                 Caster.SendLocalizedMessage(1115709); // Your skills are not high enough to invoke this mastery ability.
             else if (Caster is PlayerMobile && Caster.Skills.CurrentMastery != CastSkill)
                 Caster.SendLocalizedMessage(1115664); // You are not on the correct path for using this mastery ability.
-            else if (Caster is PlayerMobile && !MasteryInfo.HasLearned(Caster, this.GetType(), CastSkill))
-                Caster.SendMessage("You have not proficient in that mastery to use."); // Todo: MEssage?
+            else if (Caster is PlayerMobile && !MasteryInfo.HasLearned(Caster, CastSkill))
+                Caster.SendLocalizedMessage(1115664); // You are not on the correct path for using this mastery ability.
             else if (Caster.Mana < mana)
                 Caster.SendLocalizedMessage(1060174, mana.ToString()); // You must have at least ~1_MANA_REQUIREMENT~ Mana to use this ability.
             else
@@ -728,7 +730,7 @@ namespace Server.Spells.SkillMasteries
 		{
             Skill sk = mobile.Skills[name];
 
-            return sk.IsMastery && sk.KnownMasteries != 0;
+            return sk.IsMastery && sk.VolumeLearned != 0;
 		}
 
         public static bool SetActiveMastery(Mobile mobile, SkillName name)
@@ -826,6 +828,27 @@ namespace Server.Spells.SkillMasteries
             return false;
         }
 
+        public static void OnToggleSpecialAbility(Mobile m)
+        {
+            if (m_Table.ContainsKey(m))
+            {
+                if (m_Table[m] == null || m_Table[m].Count == 0)
+                {
+                    m_Table.Remove(m);
+                }
+                else
+                {
+                    foreach (SkillMasterySpell sp in EnumerateSpells(m))
+                    {
+                        if (sp.ClearOnSpecialAbility)
+                        {
+                            sp.Expire(true);
+                        }
+                    }
+                }
+            }
+        }
+
         private static Dictionary<SkillMasterySpell, DateTime> _Cooldown;
 
         protected void AddToCooldown(TimeSpan ts)
@@ -863,7 +886,9 @@ namespace Server.Spells.SkillMasteries
                         else
                         {
                             left = (_Cooldown[spell] - DateTime.UtcNow).TotalSeconds;
-                            m.SendLocalizedMessage(1079335, left.ToString("F", System.Globalization.CultureInfo.InvariantCulture)); // You must wait ~1_seconds~ seconds before you can use this ability again.
+
+                            if(left > 0)
+                                m.SendLocalizedMessage(1079335, left.ToString("F", System.Globalization.CultureInfo.InvariantCulture)); // You must wait ~1_seconds~ seconds before you can use this ability again.
                         }
                     }
 
@@ -932,6 +957,8 @@ namespace Server.Spells.SkillMasteries
                     value += PlayingTheOddsSpell.HitChanceBonus(m);
                     value += CalledShotSpell.GetHitChanceBonus(m);
                     value += CombatTrainingSpell.GetHitChanceBonus(m);
+
+                    value += MasteryInfo.SavingThrowChance(m, attr);
                     break;
                 case AosAttribute.DefendChance:
                     spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
@@ -941,6 +968,8 @@ namespace Server.Spells.SkillMasteries
 
                     if (Server.Spells.SkillMasteries.WhiteTigerFormSpell.IsActive(m))
                        value += 20;
+
+                    value += MasteryInfo.SavingThrowChance(m, attr);
                     break;
                 case AosAttribute.RegenHits:
                     spell = SkillMasterySpell.GetSpellForParty(m, typeof(ResilienceSpell));
@@ -971,6 +1000,8 @@ namespace Server.Spells.SkillMasteries
 
                     if (spell != null)
                         value += spell.DamageBonus();
+
+                    value += MasteryInfo.SavingThrowChance(m, attr);
                     break;
                 case AosAttribute.SpellDamage:
                     spell = SkillMasterySpell.GetSpellForParty(m, typeof(InspireSpell));
@@ -982,6 +1013,9 @@ namespace Server.Spells.SkillMasteries
                     value += RampageSpell.GetBonus(m, RampageSpell.BonusType.SwingSpeed);
                     value += PlayingTheOddsSpell.SwingSpeedBonus(m);
                     value -= StaggerSpell.GetStagger(m);
+                    break;
+                case AosAttribute.BonusStr:
+                    value += MasteryInfo.SavingThrowChance(m, attr);
                     break;
             }
 
@@ -1077,13 +1111,40 @@ namespace Server.Spells.SkillMasteries
                             if (sk.IsMastery)
                             {
                                 count++;
-                                sk.KnownMasteries = 3;
+                                sk.VolumeLearned = 3;
                             }
                         }
 
                         e.Mobile.SendMessage("They have learned {0} masteries!", count.ToString());
                     }
                 });
+        }
+
+        [Usage("RandomMastery")]
+        [Description("Drops a random mastery primer on target.")]
+        public static void RandomMastery(CommandEventArgs e)
+        {
+            e.Mobile.BeginTarget(-1, false, TargetFlags.None, (mobile, targeted) =>
+            {
+                Item mastery = SkillMasteryPrimer.GetRandom();
+
+                if (targeted is Mobile)
+                {
+                    Mobile m = targeted as Mobile;
+
+                    m.Backpack.DropItem(mastery);
+
+                    e.Mobile.SendMessage("A mastery has been added to your pack!");
+                }
+                else if (targeted is IPoint3D)
+                {
+                    IPoint3D p = targeted as IPoint3D;
+
+                    mastery.MoveToWorld(new Point3D(p.X, p.Y, p.Z), e.Mobile.Map);
+                }
+                else
+                    mastery.Delete();
+            });
         }
 	}
 }

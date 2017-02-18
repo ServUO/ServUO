@@ -126,7 +126,7 @@ namespace Services.Toolbar.Gumps
 						}
 
 						m.CloseGump(typeof(ToolbarGump));
-						m.SendGump(new ToolbarGump(module.ToolbarInfo));
+						m.SendGump(new ToolbarGump(module.ToolbarInfo, m));
 
 						break;
 					}

@@ -46,11 +46,19 @@ namespace Server.Spells.Sixth
             else if (this.CheckHSequence(m))
             {
                 Mobile source = this.Caster;
-
                 SpellHelper.Turn(this.Caster, m);
 
-                if(mob != null)
-                    SpellHelper.CheckReflect((int)this.Circle, ref source, ref mob);
+                if (mob != null)
+                {
+                    if (SpellHelper.CheckReflect((int)this.Circle, ref source, ref mob))
+                    {
+                        Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
+                        {
+                            source.MovingParticles(mob, 0x379F, 7, 0, false, true, 3043, 4043, 0x211);
+                            source.PlaySound(0x20A);
+                        });
+                    }
+                }
 
                 double damage = 0;
 
@@ -74,13 +82,13 @@ namespace Server.Spells.Sixth
                 }
 
                 // Do the effects
-                source.MovingParticles(m, 0x379F, 7, 0, false, true, 3043, 4043, 0x211);
-                source.PlaySound(0x20A);
+                this.Caster.MovingParticles(m, 0x379F, 7, 0, false, true, 3043, 4043, 0x211);
+                this.Caster.PlaySound(0x20A);
 
                 if (damage > 0)
                 {
                     // Deal the damage
-                    SpellHelper.Damage(this, m, damage, 0, 0, 0, 0, 100);
+                    SpellHelper.Damage(this, mob != null ? mob : m, damage, 0, 0, 0, 0, 100);
                 }
             }
 

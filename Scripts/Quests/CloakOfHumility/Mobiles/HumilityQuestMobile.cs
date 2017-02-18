@@ -24,13 +24,13 @@ namespace Server.Engines.Quests
         public HumilityQuestMobile(string name) : base(null)
         {
             Name = name;
-            m_NextGreet = DateTime.Now;
+            m_NextGreet = DateTime.UtcNow;
         }
 
         public HumilityQuestMobile(string name, string title) : base(title)
         {
             Name = name;
-            m_NextGreet = DateTime.Now;
+            m_NextGreet = DateTime.UtcNow;
         }
 
         public static List<HumilityQuestMobile> Instance { get { return m_Instances; } }
@@ -53,7 +53,7 @@ namespace Server.Engines.Quests
 
             if (quest != null)
             {
-                if (m_NextGreet < DateTime.Now && pm is PlayerMobile)
+                if (m_NextGreet < DateTime.UtcNow && pm is PlayerMobile)
                 {
                     Item item = pm.FindItemOnLayer(Layer.Cloak);
 
@@ -61,7 +61,7 @@ namespace Server.Engines.Quests
                     {
                         SayTo(pm, Greeting);
 
-                        m_NextGreet = DateTime.Now + TimeSpan.FromSeconds(5);
+                        m_NextGreet = DateTime.UtcNow + TimeSpan.FromSeconds(5);
                     }
                 }
             }
@@ -135,7 +135,7 @@ namespace Server.Engines.Quests
 
             int version = reader.ReadInt();
 
-            m_NextGreet = DateTime.Now;
+            m_NextGreet = DateTime.UtcNow;
         }
     }
 

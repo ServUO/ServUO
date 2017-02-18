@@ -253,7 +253,7 @@ namespace Server.Items
         #region IComunityCollection
         public virtual void Donate(PlayerMobile player, CollectionItem item, int amount)
         {
-            int points = (int)(amount * item.Points);
+            int points = (int)Math.Round(amount * item.Points);
 		
             player.AddCollectionPoints(this.CollectionID, points);
 			

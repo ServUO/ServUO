@@ -166,16 +166,28 @@ namespace Server.Engines.VvV
         public void Begin()
         {
             VvVCity newCity = City;
-            OnGoing = true;
+            List<VvVCity> cities = new List<VvVCity>();
 
-            do
+            for (int i = 0; i < 8; i++)
             {
-                newCity = (VvVCity)Utility.Random(8);
+                if (!System.ExemptCities.Contains((VvVCity)i) && (VvVCity)i != newCity)
+                    cities.Add((VvVCity)i);
             }
-            while (newCity == City);
 
+            if (cities.Count > 0)
+            {
+                newCity = cities[Utility.Random(cities.Count)];
+            }
+            else if (System.ExemptCities.Contains(newCity))
+            {
+                System.SendVvVMessage("All VvV cities are currently exempt.");
+                return;
+            }
+
+            ColUtility.Free(cities);
+
+            OnGoing = true;
             City = newCity;
-
             BeginTimer();
 
             StartTime = DateTime.UtcNow;
@@ -322,7 +334,7 @@ namespace Server.Engines.VvV
                     Warned.Add(pm);
                     return;
                 }
-                else if (pm.Alive && !pm.Hidden && BaseBoat.FindBoatAt(pm.Location, pm.Map) == null && BaseHouse.FindHouseAt(pm) == null)
+                else if (vvv && pm.Alive && !pm.Hidden && BaseBoat.FindBoatAt(pm.Location, pm.Map) == null && BaseHouse.FindHouseAt(pm) == null)
                 {
                     Guild g = pm.Guild as Guild;
 
@@ -825,7 +837,7 @@ namespace Server.Engines.VvV
                 if (m.HasGump(typeof(VvVBattleStatusGump)))
                     m.CloseGump(typeof(VvVBattleStatusGump));
 
-                m.SendGump(new VvVBattleStatusGump((PlayerMobile)m, this));
+                BaseGump.SendGump(new VvVBattleStatusGump((PlayerMobile)m, this));
             }
         }
 
@@ -833,7 +845,7 @@ namespace Server.Engines.VvV
         {
             if (m is PlayerMobile && OnGoing)
             {
-                m.SendGump(new VvVBattleStatusGump((PlayerMobile)m, this));
+                BaseGump.SendGump(new VvVBattleStatusGump((PlayerMobile)m, this));
             }
         }
 
@@ -851,11 +863,11 @@ namespace Server.Engines.VvV
 
                 if (g == null)
                 {
-                    m.SendGump(new VvVBattleStatusGump(m, this));
+                    BaseGump.SendGump(new VvVBattleStatusGump(m, this));
                 }
                 else
                 {
-                    g.Refresh();
+                    g.Refresh(true, false);
                 }
             }
         }

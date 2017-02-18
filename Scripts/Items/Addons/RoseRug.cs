@@ -25,7 +25,7 @@ namespace Server.Items
         private DateTime m_NextUse;
 
         [Constructable]
-        public RoseRugEastAddon() : this(DateTime.Now)
+        public RoseRugEastAddon() : this(DateTime.UtcNow)
         {
         }
 
@@ -40,7 +40,7 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (m_NextUse < DateTime.Now)
+            if (m_NextUse < DateTime.UtcNow)
             {
                 Container cont = from.Backpack;
 
@@ -54,7 +54,7 @@ namespace Server.Items
                 else
                     from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
 
-                m_NextUse = DateTime.Now + TimeSpan.FromDays(7);
+                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Server.Items
         private DateTime m_NextUse;
 
         [Constructable]
-        public RoseRugEastAddonDeed() : this(DateTime.Now)
+        public RoseRugEastAddonDeed() : this(DateTime.UtcNow)
         {
         }
 
@@ -138,7 +138,7 @@ namespace Server.Items
 
         [Constructable]
         public RoseRugSouthAddon()
-            : this(DateTime.Now)
+            : this(DateTime.UtcNow)
         {
         }
 
@@ -153,7 +153,7 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (m_NextUse < DateTime.Now)
+            if (m_NextUse < DateTime.UtcNow)
             {
                 Container cont = from.Backpack;
 
@@ -167,7 +167,7 @@ namespace Server.Items
                 else
                     from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
 
-                m_NextUse = DateTime.Now + TimeSpan.FromDays(7);
+                m_NextUse = DateTime.UtcNow + TimeSpan.FromDays(7);
             }
         }
 
@@ -201,7 +201,7 @@ namespace Server.Items
 
         [Constructable]
         public RoseRugSouthAddonDeed()
-            : this(DateTime.Now)
+            : this(DateTime.UtcNow)
         {
         }
 

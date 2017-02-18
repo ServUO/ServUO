@@ -122,7 +122,7 @@ namespace Server.Misc
 				op.WriteLine("   tr.even td { background: #DDD; color: #222; }");
 				op.WriteLine("   </style>");
 				op.WriteLine("   <body>");
-				op.WriteLine("      <h1>RunUO Server Status</h1>");
+				op.WriteLine("      <h1>" + ServerList.ServerName + "Server Status</h1>");
 				op.WriteLine("      <h3>Online clients</h3>");
 				op.WriteLine("      <table cellpadding=\"0\" cellspacing=\"0\">");
 				op.WriteLine("         <tr class=\"ruo-header\"><td>Name</td><td>Location</td><td>Kills</td><td>Karma/Fame</td></tr>");

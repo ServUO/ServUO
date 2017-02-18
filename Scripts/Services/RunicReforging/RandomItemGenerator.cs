@@ -11,11 +11,19 @@ namespace Server.Mobiles
         public static int FeluccaLuckBonus { get; private set; }
         public static int FeluccaBudgetBonus { get; private set; }
 
+        public static int MaxBaseBudget { get; private set; }
+        public static int MinBaseBudget { get; private set; }
+        public static int MaxProps { get; private set; }
+
         public static void Configure()
         {
             Enabled = Config.Get("Loot.Enabled", true);
             FeluccaLuckBonus = Config.Get("Loot.FeluccaLuckBonus", 1000);
             FeluccaBudgetBonus = Config.Get("Loot.FeluccaBudgetBonus", 100);
+
+            MaxBaseBudget = Config.Get("Loot.MaxBaseBudget", 900);
+            MinBaseBudget = Config.Get("Loot.MinBaseBudget", 150);
+            MaxProps = Config.Get("Loot.MaxProps", 9);
         }
 
         private RandomItemGenerator()

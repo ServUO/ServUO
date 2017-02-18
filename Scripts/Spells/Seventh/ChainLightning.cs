@@ -106,11 +106,16 @@ namespace Server.Spells.Seventh
                             m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                         }
 
-                        if(m != null)
-                            damage *= this.GetDamageScalar(m);
+                        Mobile source = this.Caster;
 
-                        this.Caster.DoHarmful(id);
-                        SpellHelper.Damage(this, id, damage, 0, 0, 0, 0, 100);
+                        if (m != null)
+                        {
+                            SpellHelper.CheckReflect((int)this.Circle, ref source, ref m);
+                            damage *= this.GetDamageScalar(m);
+                        }
+
+                        this.Caster.DoHarmful(m != null ? m : id);
+                        SpellHelper.Damage(this, m != null ? m : id, damage, 0, 0, 0, 0, 100);
 
                         Effects.SendBoltEffect(id, true, 0);
                     }

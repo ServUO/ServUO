@@ -69,52 +69,7 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.MedScrolls, 2);
         }
 
-        public void DrainLife()
-        {
-            ArrayList list = new ArrayList();
-
-            foreach (Mobile m in this.GetMobilesInRange(2))
-            {
-                if (m == this || !this.CanBeHarmful(m))
-                    continue;
-
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
-                    list.Add(m);
-                else if (m.Player)
-                    list.Add(m);
-            }
-
-            foreach (Mobile m in list)
-            {
-                this.DoHarmful(m);
-
-                m.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
-                m.PlaySound(0x231);
-
-                //m.SendMessage( "You feel the life drain out of you!" );
-
-                int toDrain = Utility.RandomMinMax(10, 40);
-
-                this.Hits += toDrain;
-                m.Damage(toDrain, this);
-            }
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (0.1 >= Utility.RandomDouble())
-                this.DrainLife();
-        }
-
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            if (0.1 >= Utility.RandomDouble())
-                this.DrainLife();
-        }
+        public override bool DrainsLife { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {

@@ -59,8 +59,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            MasteryInfo.LearnMastery(Owner, SkillName.Peacemaking, Volume.Two);
-            MasteryInfo.LearnMastery(Owner, SkillName.Peacemaking, Volume.Three);
+            MasteryInfo.LearnMastery(Owner, SkillName.Peacemaking, 3);
 
             SkillMasterySpell.SetActiveMastery(Owner, SkillName.Peacemaking);
         }

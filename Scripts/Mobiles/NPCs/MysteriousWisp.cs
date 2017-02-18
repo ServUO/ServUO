@@ -188,7 +188,7 @@ namespace Server.Mobiles
 
         public void CheckRestock()
         {
-            if (m_NextRestock <= DateTime.Now)
+            if (m_NextRestock <= DateTime.UtcNow)
                 DoRestock();
         }
 
@@ -257,7 +257,7 @@ namespace Server.Mobiles
                 this.Backpack.DropItem(item);
             }
 
-            m_NextRestock = DateTime.Now + TimeSpan.FromMinutes(Utility.RandomMinMax(m_RestockMin, m_RestockMax));
+            m_NextRestock = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(m_RestockMin, m_RestockMax));
         }
 
         public int GetCostFor(Item item)
@@ -354,7 +354,7 @@ namespace Server.Mobiles
             m_IntensityMax = reader.ReadInt();
             m_MutateChance = reader.ReadDouble();
 
-            m_NextRestock = DateTime.Now;
+            m_NextRestock = DateTime.UtcNow;
         }
 
         public class BuyBackpack : Backpack

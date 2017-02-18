@@ -28,6 +28,7 @@ namespace Server.Items
                 return;
 
             BaseBoat boat = BaseBoat.FindBoatAt(from, from.Map);
+
             int range = boat != null && boat == this.Boat ? 3 : 8;
             bool canMove = false;
 
@@ -64,7 +65,7 @@ namespace Server.Items
                 {
                     if (!from.Alive)
                         from.SendLocalizedMessage(1060190); //You cannot do that while dead!
-                    else if (boat is BaseGalleon && m_Boat is RowBoat && ((RowBoat)m_Boat).HasAccess(from))
+                    else if (m_Boat is RowBoat && ((RowBoat)m_Boat).HasAccess(from))
                         canMove = true;
                     else if (boat is RowBoat && m_Boat is BaseGalleon && ((BaseGalleon)m_Boat).HasAccess(from))
                         canMove = true;

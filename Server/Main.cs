@@ -429,25 +429,17 @@ namespace Server
 
 			Version ver = Assembly.GetName().Version;
 
-			String publishNumber = "";
-
-			if (File.Exists("publish.txt"))
-			{
-				publishNumber = File.ReadAllText("publish.txt");
-			}
-
 			// Added to help future code support on forums, as a 'check' people can ask for to it see if they recompiled core or not
 			Utility.PushColor(ConsoleColor.DarkGreen);
 			Console.WriteLine(new String('-', Console.BufferWidth));
 			Utility.PopColor();
 			Utility.PushColor(ConsoleColor.Cyan);
 			Console.WriteLine(
-				"ServUO - [http://www.servuo.com] Version {0}.{1}, Build {2}.{3}",
+				"ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3}",
 				ver.Major,
 				ver.Minor,
 				ver.Build,
 				ver.Revision);
-			Console.WriteLine("Publish {0}", publishNumber);
 			Utility.PopColor();
 
 			string s = Arguments;

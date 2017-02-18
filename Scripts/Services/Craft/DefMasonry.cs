@@ -358,6 +358,10 @@ namespace Server.Engines.Craft
             }
             #endregion
 
+            this.MarkOption = true;
+            this.Repair = Core.SA;
+            this.CanEnhance = Core.SA;
+
             this.SetSubRes(typeof(Granite), 1044525);
 
             this.AddSubRes(typeof(Granite), 1044525, 00.0, 1044514, 1044526);

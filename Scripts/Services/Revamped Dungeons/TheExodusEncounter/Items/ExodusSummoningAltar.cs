@@ -122,9 +122,9 @@ namespace Server.Items
 
                         if (p != Point3D.Zero)
                         {
-                            ExodusTomeAltar.Altar = new ExodusTomeAltar(from);
-                            ExodusTomeAltar.Altar.MoveToWorld(p, from.Map);
-                            PeerlessExodusAltar.m_Rituals.Add(new RitualArray { RitualMobile = from, Ritual1 = false, Ritual2 = false });
+                            ExodusTomeAltar altar = new ExodusTomeAltar(from);
+                            altar.MoveToWorld(p, from.Map);
+                            altar.Rituals.Add(new RitualArray { RitualMobile = from, Ritual1 = false, Ritual2 = false });
                             this.Delete();
                         }                        
                     }

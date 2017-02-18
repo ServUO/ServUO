@@ -278,6 +278,17 @@
     <Compile Include="Context Menus\TeachEntry.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Deprecated\AlchemyStone.cs" />
+    <Compile Include="Deprecated\FiveOvercapStatScroll.cs" />
+    <Compile Include="Deprecated\GamblingStone.cs" />
+    <Compile Include="Deprecated\GMStone.cs" />
+    <Compile Include="Deprecated\IngotStone.cs" />
+    <Compile Include="Deprecated\RegStone.cs" />
+    <Compile Include="Deprecated\ScribeStone.cs" />
+    <Compile Include="Deprecated\SmithStone.cs" />
+    <Compile Include="Deprecated\SwarmOfFlies.cs" />
+    <Compile Include="Deprecated\TailorStone.cs" />
+    <Compile Include="Deprecated\TenMurdererKillRemoverDeed.cs" />
     <Compile Include="Gumps\AddDoorGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -297,6 +308,7 @@
     <Compile Include="Gumps\BaseGridGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\BaseGump.cs" />
     <Compile Include="Gumps\BaseImageTileButtonsGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -583,7 +595,23 @@
     <Compile Include="Items\Artifacts\Decorative\MapOfTheKnownWorld.cs" />
     <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfFeudalGrip.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\BritchesOfWarding.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\CuffsOfTheArchmage.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsBustier.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsGorget.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsHelm.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsLegs.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsLongSkirt.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsShorts.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsSkirt.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Alorons Set\AloronsTunic.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BeastialSetHelper.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Dardens Set\DardensBustier.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Dardens Set\DardensHelm.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Dardens Set\DardensLegs.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Dardens Set\DardensSleeves.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Dardens Set\DardensTunic.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososTunic.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososEarpieces.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Virtuosos\VirtuososKidGloves.cs" />
@@ -602,10 +630,17 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Bestial\BestialLegs.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Luck\LuneRouge.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Luck\SoleilRouge.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Clothing\TheScholarsHalo.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\JadeArmband.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\MagicalDoor.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\AnkhPendant.cs" />
     <Compile Include="Items\Artifacts\Equipment\Jewelry\NecklaceofDiligence.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Jewelry\BraceletOfPrimalConsumption.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Weapons\Glenda.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Weapons\BowOfTheInfiniteSwarm.cs" />
+    <Compile Include="Items\Artifacts\Equipment\Weapons\TheDeceiver.cs" />
+    <Compile Include="Items\Decorative\TatteredWallMap.cs" />
+    <Compile Include="Items\Equipment\Armor\BoneArms.cs" />
     <Compile Include="Items\Equipment\Weapons\Craven.cs" />
     <Compile Include="Items\Equipment\Weapons\GargishCaptainJohnesBlade.cs" />
     <Compile Include="Items\Equipment\Weapons\CaptainJohnesBlade.cs" />
@@ -728,9 +763,13 @@
     </Compile>
     <Compile Include="Items\Functional\ChickenLizardEgg.cs" />
     <Compile Include="Items\Functional\DragonTurtleEgg.cs" />
+    <Compile Include="Items\Functional\EtherealRetouchingTool.cs" />
     <Compile Include="Items\Functional\HouseCraftables.cs" />
     <Compile Include="Items\Functional\Incubator.cs" />
     <Compile Include="Items\Functional\ScaleCollar.cs" />
+    <Compile Include="Items\Functional\SeedBox\SeedBox.cs" />
+    <Compile Include="Items\Functional\SeedBox\SeedBoxGump.cs" />
+    <Compile Include="Items\Functional\SeedBox\SeedEntry.cs" />
     <Compile Include="Items\Functional\WallSafe.cs" />
     <Compile Include="Items\Internal\BlightedGroveTeleporters.cs" />
     <Compile Include="Items\Internal\BlueNinjaQuestTeleporter.cs" />
@@ -782,6 +821,7 @@
     <Compile Include="Items\Quest\ScrollOfAbraxus.cs" />
     <Compile Include="Items\Quest\SealedNotesForJamal.cs" />
     <Compile Include="Items\Quest\SignedTuitionReimbursementForm.cs" />
+    <Compile Include="Items\Quest\StolenRing.cs" />
     <Compile Include="Items\Quest\StoutWhip.cs" />
     <Compile Include="Items\Quest\TaintedTreeSample.cs" />
     <Compile Include="Items\Quest\TreatForDrithen.cs" />
@@ -804,6 +844,7 @@
     <Compile Include="Items\Artifacts\Equipment\Clothing\ShadowCloakOfRejuvenation.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\WardedDemonboneBracers.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\WardensArmorOfAugmentation.cs" />
+    <Compile Include="Items\Resource\BloodOfTheDarkFather.cs" />
     <Compile Include="Items\Resource\WorkableGlass.cs" />
     <Compile Include="Items\Tools\BaseHarvestTool.cs">
       <SubType>Code</SubType>
@@ -910,7 +951,6 @@
     <Compile Include="Items\Tools\ChestOfSending.cs" />
     <Compile Include="Items\Tools\ForgedMetalOfArtifacts.cs" />
     <Compile Include="Items\Tools\RunicMalletAndChisel.cs" />
-    <Compile Include="Misc\Coords.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Items\Artifacts\Equipment\Glasses\Glasses.cs">
       <SubType>Code</SubType>
@@ -1117,9 +1157,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\Firebomb.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\FiveOvercapStatScroll.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Internal\FlipableAddonAttribute.cs">
@@ -1411,16 +1448,10 @@
     <Compile Include="Items\Addons\TerMurDresserSouthAddon.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Depricated\SwarmOfFlies.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Internal\Teleporter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Internal\TeleportRope.cs" />
-    <Compile Include="Depricated\TenMurdererKillRemoverDeed.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Quest\DragonFlameSectBadge.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1755,16 +1786,11 @@
     <Compile Include="Mobiles\Normal\Alligator.cs" />
     <Compile Include="Mobiles\Normal\AncientLich.cs" />
     <Compile Include="Mobiles\Normal\AncientWyrm.cs" />
-    <Compile Include="Mobiles\Normal\Anlorlem.cs" />
-    <Compile Include="Mobiles\Normal\Anlorvaglem.cs" />
-    <Compile Include="Mobiles\Normal\Anlorzen.cs" />
     <Compile Include="Mobiles\Normal\AntLion.cs" />
-    <Compile Include="Mobiles\Normal\Anzuanord.cs" />
     <Compile Include="Mobiles\Normal\ArcaneDaemon.cs" />
     <Compile Include="Mobiles\Normal\ArchDaemon.cs" />
     <Compile Include="Mobiles\Normal\ArcticOgreLord.cs" />
     <Compile Include="Mobiles\Normal\BakeKitsune.cs" />
-    <Compile Include="Mobiles\Normal\Ballem.cs" />
     <Compile Include="Mobiles\Normal\Balron.cs" />
     <Compile Include="Mobiles\Normal\BaseCreature.cs" />
     <Compile Include="Mobiles\Normal\BaseMount.cs" />
@@ -1772,7 +1798,6 @@
     <Compile Include="Mobiles\Normal\BaseSABosses.cs" />
     <Compile Include="Mobiles\Normal\BattleChickenLizard.cs" />
     <Compile Include="Mobiles\Normal\Beetle.cs" />
-    <Compile Include="Mobiles\Normal\Betballem.cs" />
     <Compile Include="Mobiles\Normal\Betrayer.cs" />
     <Compile Include="Mobiles\Normal\Bird.cs" />
     <Compile Include="Mobiles\Normal\BlackBear.cs" />
@@ -1980,7 +2005,6 @@
     <Compile Include="Mobiles\Normal\KhaldunSummoner.cs" />
     <Compile Include="Mobiles\Normal\KhaldunZealot.cs" />
     <Compile Include="Mobiles\Normal\Kirin.cs" />
-    <Compile Include="Mobiles\Normal\Korpre.cs" />
     <Compile Include="Mobiles\Normal\Kraken.cs" />
     <Compile Include="Mobiles\Normal\LadyOfTheSnow.cs" />
     <Compile Include="Mobiles\Normal\LavaElemental.cs" />
@@ -2050,6 +2074,8 @@
     <Compile Include="Mobiles\NPCs\Brae.cs" />
     <Compile Include="Mobiles\NPCs\Emilio.cs" />
     <Compile Include="Mobiles\NPCs\Evan.cs" />
+    <Compile Include="Mobiles\NPCs\Kodar.cs" />
+    <Compile Include="Mobiles\NPCs\Lenley.cs" />
     <Compile Include="Mobiles\NPCs\Regina.cs" />
     <Compile Include="Mobiles\NPCs\Thalia.cs" />
     <Compile Include="Mobiles\NPCs\WanderingShaman.cs" />
@@ -2076,7 +2102,6 @@
     <Compile Include="Mobiles\Normal\RedSolenQueen.cs" />
     <Compile Include="Mobiles\Normal\RedSolenWarrior.cs" />
     <Compile Include="Mobiles\Normal\RedSolenWorker.cs" />
-    <Compile Include="Mobiles\Normal\Relanord.cs" />
     <Compile Include="Mobiles\Normal\RenegadeChangeling.cs" />
     <Compile Include="Mobiles\Normal\Reptalon.cs" />
     <Compile Include="Mobiles\Normal\RestlessSoul.cs" />
@@ -2162,10 +2187,8 @@
     <Compile Include="Mobiles\Normal\UndeadGuardian.cs" />
     <Compile Include="Mobiles\Normal\UnfrozenMummy.cs" />
     <Compile Include="Mobiles\Normal\Unicorn.cs" />
-    <Compile Include="Mobiles\Normal\UsagralemBallem.cs" />
     <Compile Include="Mobiles\Normal\ValoriteElemental.cs" />
     <Compile Include="Mobiles\Normal\VampireBat.cs" />
-    <Compile Include="Mobiles\Normal\Vasanord.cs" />
     <Compile Include="Mobiles\Normal\VeriteElemental.cs" />
     <Compile Include="Mobiles\Normal\Virulent.cs" />
     <Compile Include="Mobiles\Normal\VorpalBunny.cs" />
@@ -2481,6 +2504,17 @@
     <Compile Include="Mobiles\Summons\SummonedPaladin.cs" />
     <Compile Include="Mobiles\Summons\SummonedWaterElemental.cs" />
     <Compile Include="Mobiles\Summons\VampireBat.cs" />
+    <Compile Include="Mobiles\Void Creatures\Anlorlem.cs" />
+    <Compile Include="Mobiles\Void Creatures\Anlorvaglem.cs" />
+    <Compile Include="Mobiles\Void Creatures\Anlorzen.cs" />
+    <Compile Include="Mobiles\Void Creatures\Anzuanord.cs" />
+    <Compile Include="Mobiles\Void Creatures\Ballem.cs" />
+    <Compile Include="Mobiles\Void Creatures\BaseVoidCreature.cs" />
+    <Compile Include="Mobiles\Void Creatures\Betballem.cs" />
+    <Compile Include="Mobiles\Void Creatures\Korpre.cs" />
+    <Compile Include="Mobiles\Void Creatures\Relanord.cs" />
+    <Compile Include="Mobiles\Void Creatures\UsagralemBallem.cs" />
+    <Compile Include="Mobiles\Void Creatures\Vasanord.cs" />
     <Compile Include="Quests\ALittleSomething.cs" />
     <Compile Include="Quests\AmbitiousSolenQueen\AmbitiousQueenQuest.cs" />
     <Compile Include="Quests\AmbitiousSolenQueen\Conversations.cs" />
@@ -2540,6 +2574,7 @@
     <Compile Include="Quests\HumanHeritage.cs" />
     <Compile Include="Quests\MasteringtheSoulforge.cs" />
     <Compile Include="Quests\Ortlem.cs" />
+    <Compile Include="Quests\RatmenSanctuaryQuest.cs" />
     <Compile Include="Quests\Sacred Quest\QuestOfSingularity.cs" />
     <Compile Include="Quests\Sacred Quest\ShrineOfSingularity.cs" />
     <Compile Include="Quests\Spellweaving.cs" />
@@ -2884,6 +2919,7 @@
     <Compile Include="Services\CleanUpBritannia\Items\NestWithEggs.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\YuccaTree.cs" />
     <Compile Include="Services\Doom\GuardianRoom.cs" />
+    <Compile Include="Services\Ethics\Core\Persistence.cs" />
     <Compile Include="Services\Expansions\High Seas\Generate.cs" />
     <Compile Include="Services\Expansions\High Seas\Gumps\BaseShipGump.cs" />
     <Compile Include="Services\Expansions\High Seas\Gumps\BountyBoard.cs" />
@@ -3010,7 +3046,6 @@
     <Compile Include="Services\Expansions\High Seas\Quests\ProfessionFishQuest\ProfessionalFisherQuest.cs" />
     <Compile Include="Services\Expansions\High Seas\Quests\ProfessionFishQuest\ShippingCrate.cs" />
     <Compile Include="Services\Expansions\High Seas\Regions\CorgulRegion.cs" />
-    <Compile Include="Services\Expansions\High Seas\Regions\GravewaterLake.cs" />
     <Compile Include="Services\Expansions\High Seas\Regions\SeaMarket.cs" />
     <Compile Include="Services\Expansions\High Seas\Regions\TokunoDocksRegion.cs" />
     <Compile Include="Services\Expansions\High Seas\Regions\WarpRegion.cs" />
@@ -3063,6 +3098,75 @@
     <Compile Include="Services\Expansions\Time Of Legends\Shadowguard\ShadowguardEncounter.cs" />
     <Compile Include="Services\Expansions\Time Of Legends\Shadowguard\ShadowguardInstance.cs" />
     <Compile Include="Services\Expansions\TimeOfLegends.cs" />
+    <Compile Include="Services\ExploringTheDeep\Addons\CousteauPerronAddon.cs" />
+    <Compile Include="Services\ExploringTheDeep\ExploringTheDeepQuestChain.cs" />
+    <Compile Include="Services\ExploringTheDeep\Generate.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Decorate\MasterThinkerContoller.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\StorageLocker.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\LockerKey.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\WireSpool.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\PowerCore.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\FlyWheel.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\BearingAssembly.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\AquaGem.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\AquaPendant.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\BootsOfBallast.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\BrokenShipwreckRemains.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\CanvassRobe.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Decorate\CusteauPerronHouseDoor.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\CaptainsLogScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\CusteauPerronNote.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\HeplerPaulsonMap.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Decorate\IceCrystals.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\IceWyrmScale.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\JournalScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\LedgerScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\LiamDeFoeScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\MadelineHarteScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\MasterThinkerSchematics.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\MercutiosCutlass.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\NictitatingLens.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\OrcishSchematics.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\SalvagerSuitPlans.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\SealedLettersScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\SuspicionsScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\SorcerersPlates.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\SorcerersRegs.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\SorcerersRewardChest.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\SorcerersScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\SpecialSalvageHook.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\UnknownShipwreck.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Teleporter\ShipSign.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Teleporter\ShipLadder.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Teleporter\Whirlpool.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\WillemHarteScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\CalculationsScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\QuestItems\WillemHartesHat.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\WinchAssembly.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\WoodenKeyBarrel.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\DiabolicalSeaweed.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\Djinn.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\IceWyrm.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\MercutioTheUnsavory.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\ObsidianWyvern.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\OrcEngineer.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\Paralithode.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\RockMite.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\SalvageHookMonsters.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\SeaSnake.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\Shadowlord.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\ShipBat.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\ShipRat.cs" />
+    <Compile Include="Services\ExploringTheDeep\Mobiles\TheMasterInstructor.cs" />
+    <Compile Include="Services\ExploringTheDeep\Questers\ChampHuthwait.cs" />
+    <Compile Include="Services\ExploringTheDeep\Questers\CusteauPerron.cs" />
+    <Compile Include="Services\ExploringTheDeep\Questers\GipsyGemologist.cs" />
+    <Compile Include="Services\ExploringTheDeep\Questers\HeplerPaulson.cs" />
+    <Compile Include="Services\ExploringTheDeep\Questers\JosefSkimmons.cs" />
+    <Compile Include="Services\ExploringTheDeep\Questers\MadelineHarte.cs" />
+    <Compile Include="Services\ExploringTheDeep\Questers\SBHepler.cs" />
+    <Compile Include="Services\ExploringTheDeep\Regions.cs" />
+    <Compile Include="Services\Factions\Core\Persistence.cs" />
     <Compile Include="Services\FireCasino\CasinoGumps.cs" />
     <Compile Include="Services\FireCasino\DiceGames.cs" />
     <Compile Include="Services\FireCasino\FortuesFireGrog.cs" />
@@ -3499,9 +3603,6 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\Assassin\AssassinLegs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\DaemonBone\BoneArms.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Equipment\Armor\BoneChest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -3523,7 +3624,10 @@
     <Compile Include="Items\Equipment\Armor\ChainLegs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Equipment\Armor\DaemonArms.cs">
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\DaemonBone\DaemonHelm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items\Artifacts\Equipment\Armor\Sets\DaemonBone\DaemonArms.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Armor\Sets\DaemonBone\DaemonChest.cs">
@@ -3670,9 +3774,6 @@
     <Compile Include="Items\Artifacts\Equipment\Glasses\LyricalGlasses.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Artifacts\Equipment\Glasses\MaceShieldGlasses.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Artifacts\Equipment\Glasses\MaritimeGlasses.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -3707,9 +3808,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Armor\CloseHelm.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Equipment\Armor\DaemonHelm.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Armor\GemmedCirclet.cs">
@@ -6117,9 +6215,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Spellbooks\Spellbook.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Consumables\SpellStone.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Spellbooks\SpellweavingBook.cs">
@@ -9177,9 +9272,6 @@
     <Compile Include="Services\Ethics\Core\Ethic.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Ethics\Core\Persistance.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Ethics\Core\Player.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9280,9 +9372,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Factions\Core\MerchantTitles.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Factions\Core\Persistance.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Factions\Core\PlayerState.cs">
@@ -9542,6 +9631,18 @@
     <Compile Include="Services\MondainsLegacyQuests\Gumps\QAndAGump.cs" />
     <Compile Include="Services\MondainsLegacyQuests\Q&amp;AEntry.cs" />
     <Compile Include="Services\MondainsLegacyQuests\SimpleObjective.cs" />
+    <Compile Include="Services\Monster Stealing\Core\BaseBalm.cs" />
+    <Compile Include="Services\Monster Stealing\Core\BaseThieveConsumable.cs" />
+    <Compile Include="Services\Monster Stealing\Core\StealingHandler.cs" />
+    <Compile Include="Services\Monster Stealing\Items\BalmOfProtection.cs" />
+    <Compile Include="Services\Monster Stealing\Items\BalmOfStrength.cs" />
+    <Compile Include="Services\Monster Stealing\Items\BalmOfSwiftness.cs" />
+    <Compile Include="Services\Monster Stealing\Items\BalmOfWisdom.cs" />
+    <Compile Include="Services\Monster Stealing\Items\GemOfSalvation.cs" />
+    <Compile Include="Services\Monster Stealing\Items\LifeShieldLotion.cs" />
+    <Compile Include="Services\Monster Stealing\Items\ManaDaught.cs" />
+    <Compile Include="Services\Monster Stealing\Items\SeedOflife.cs" />
+    <Compile Include="Services\Monster Stealing\Items\StoneSkinLotion.cs" />
     <Compile Include="Services\New Magincia\Command.cs" />
     <Compile Include="Services\New Magincia\Distillation\CraftDefinition.cs" />
     <Compile Include="Services\New Magincia\Distillation\DistillationContext.cs" />
@@ -9593,6 +9694,17 @@
     <Compile Include="Services\PointsSystems\QueensLoyalty.cs" />
     <Compile Include="Services\PointsSystems\ShameCrystals.cs" />
     <Compile Include="Services\PointsSystems\VoidPool.cs" />
+    <Compile Include="Services\Reports\Persistence\PersistableObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\Reports\Persistence\PersistableObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\Reports\Persistence\PersistableType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\Reports\Persistence\PersistenceReader.cs" />
+    <Compile Include="Services\Reports\Persistence\PersistenceWriter.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\BlackthornRewards.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Creatures\AgentoftheCrown.cs" />
     <Compile Include="Services\Revamped Dungeons\BlackthornDungeon\Generate.cs" />
@@ -9817,15 +9929,23 @@
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\GoldDust.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\NexusCore.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Resources\SmallPieceofBlackrock.cs" />
+    <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokunoPersistence.cs" />
+    <Compile Include="Services\Underworld\Navrey%27s Lair\NavreysController.cs" />
+    <Compile Include="Services\Underworld\Navrey%27s Lair\NavreysPillar.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearch.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchGump.cs" />
     <Compile Include="Services\Vendor Searching\VendorSearchMap.cs" />
+    <Compile Include="Services\VeteranRewards\CrystalPortals\CorruptedCrystalPortal.cs" />
+    <Compile Include="Services\VeteranRewards\CrystalPortals\CorruptedCrystalPortalGump.cs" />
+    <Compile Include="Services\VeteranRewards\CrystalPortals\CrystalPortal.cs" />
+    <Compile Include="Services\VeteranRewards\CrystalPortals\CrystalPortalGump.cs" />
     <Compile Include="Services\VeteranRewards\DaviesLocker.cs" />
     <Compile Include="Services\ViceVsVirtue\CityInfo.cs" />
     <Compile Include="Services\ViceVsVirtue\GuildStats.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\BattleStatsGump.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\BattleWarningGump.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\ConfirmSignupGump.cs" />
+    <Compile Include="Services\ViceVsVirtue\Gumps\ExemptCityGump.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\GuildLeaderboardGump.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\LeaderboardGump.cs" />
     <Compile Include="Services\ViceVsVirtue\Gumps\RewardGump.cs" />
@@ -10621,21 +10741,6 @@
     <Compile Include="Services\Reports\Objects\Staffing\StaffHistory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Reports\Persistance\PersistableObject.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Reports\Persistance\PersistableObjectCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Reports\Persistance\PersistableType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Reports\Persistance\PersistanceReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Reports\Persistance\PersistanceWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Reports\Rendering\BarGraphRenderer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10737,9 +10842,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokuno.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\TreasuresOfTokuno\TreasuresOfTokunoPersistance.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\TrickOrTreat.cs" />
@@ -11598,28 +11700,6 @@
     <Compile Include="Items\Internal\ResGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Depricated\AlchemyStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\GamblingStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\GMStone.cs" />
-    <Compile Include="Depricated\IngotStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\RegStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\ScribeStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\SmithStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Depricated\TailorStone.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Containers\AlchemyBag.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -11876,9 +11956,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Spells\Mysticism\SpellDefinitions\StoneForm.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Spells\Mysticism\SpellTriggerGump.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Spells\Necromancy\AnimateDeadSpell.cs">

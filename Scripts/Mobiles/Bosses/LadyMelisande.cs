@@ -351,8 +351,10 @@ namespace Server.Mobiles
                     if (this.CanBeHarmful(fighter))
                     {
                         EnslavedSatyr satyr = new EnslavedSatyr();
-                        satyr.Combatant = fighter;
+                        satyr.FightMode = FightMode.Closest;
                         this.SpawnHelper(satyr, GetSpawnPosition(fighter.Location, fighter.Map, 2));
+
+                        satyr.Combatant = fighter;
 
                         fighter.SendLocalizedMessage(1075116); // A twisted satyr scrambles onto the branch beside you and attacks!
                     }

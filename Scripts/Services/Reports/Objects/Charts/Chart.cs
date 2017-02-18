@@ -41,25 +41,25 @@ namespace Server.Engines.Reports
                 return this.m_Items;
             }
         }
-        public override void SerializeAttributes(PersistanceWriter op)
+        public override void SerializeAttributes(PersistenceWriter op)
         {
             op.SetString("n", this.m_Name);
             op.SetString("f", this.m_FileName);
         }
 
-        public override void DeserializeAttributes(PersistanceReader ip)
+        public override void DeserializeAttributes(PersistenceReader ip)
         {
             this.m_Name = Utility.Intern(ip.GetString("n"));
             this.m_FileName = Utility.Intern(ip.GetString("f"));
         }
 
-        public override void SerializeChildren(PersistanceWriter op)
+        public override void SerializeChildren(PersistenceWriter op)
         {
             for (int i = 0; i < this.m_Items.Count; ++i)
                 this.m_Items[i].Serialize(op);
         }
 
-        public override void DeserializeChildren(PersistanceReader ip)
+        public override void DeserializeChildren(PersistenceReader ip)
         {
             while (ip.HasChild)
                 this.m_Items.Add(ip.GetChild() as ChartItem);

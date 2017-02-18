@@ -91,6 +91,7 @@ namespace Server.Engines.ShameRevamped
                 var wall = new ShameWall(dictionary, altarLoc, new Point3D(5405, 90, 10), Map.Trammel);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Trammel);
+                ShameWall.AddTeleporters(wall);
             }
 
             if (!CheckForAltar(altarLoc, Map.Felucca))
@@ -104,6 +105,7 @@ namespace Server.Engines.ShameRevamped
                 var wall = new ShameWall(dictionary, altarLoc, new Point3D(5405, 90, 10), Map.Felucca);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Felucca);
+                ShameWall.AddTeleporters(wall);
             }
 
             // Wall 2
@@ -120,6 +122,7 @@ namespace Server.Engines.ShameRevamped
                 var wall = new ShameWall(dictionary, altarLoc, new Point3D(5472, 26, -30), Map.Trammel);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Trammel);
+                ShameWall.AddTeleporters(wall);
             }
 
             if (!CheckForAltar(altarLoc, Map.Felucca))
@@ -133,6 +136,7 @@ namespace Server.Engines.ShameRevamped
                 var wall = new ShameWall(dictionary, altarLoc, new Point3D(5472, 26, -30), Map.Felucca);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Felucca);
+                ShameWall.AddTeleporters(wall);
             }
 
             // Wall 3
@@ -148,6 +152,7 @@ namespace Server.Engines.ShameRevamped
                 var wall = new ShameWall(dictionary, altarLoc, new Point3D(5621, 43, 0), Map.Trammel);
                 WeakEntityCollection.Add("newshame", wall);
                 wall.MoveToWorld(altarLoc, Map.Trammel);
+                ShameWall.AddTeleporters(wall);
             }
 
             if (!CheckForAltar(altarLoc, Map.Felucca))

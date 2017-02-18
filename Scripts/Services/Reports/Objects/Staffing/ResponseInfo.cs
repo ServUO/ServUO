@@ -72,7 +72,7 @@ namespace Server.Engines.Reports
             this.m_Message = message;
         }
 
-        public override void SerializeAttributes(PersistanceWriter op)
+        public override void SerializeAttributes(PersistenceWriter op)
         {
             op.SetDateTime("t", this.m_TimeStamp);
 
@@ -80,7 +80,7 @@ namespace Server.Engines.Reports
             op.SetString("m", this.m_Message);
         }
 
-        public override void DeserializeAttributes(PersistanceReader ip)
+        public override void DeserializeAttributes(PersistenceReader ip)
         {
             this.m_TimeStamp = ip.GetDateTime("t");
 

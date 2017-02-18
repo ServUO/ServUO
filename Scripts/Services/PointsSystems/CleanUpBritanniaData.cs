@@ -5,6 +5,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
 using Server.Engines.Quests.Doom;
+using drNO.ThieveItems;
 
 namespace Server.Engines.Points
 {
@@ -26,6 +27,9 @@ namespace Server.Engines.Points
         public static double GetPoints(Item item)
         {
             double points = 0;
+
+            if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
+                return points;
 
             Type type = item.GetType();
 
@@ -129,6 +133,11 @@ namespace Server.Engines.Points
                 {
                     BasePigmentsOfTokuno pigments = (BasePigmentsOfTokuno)item;
                     points = 500 * pigments.UsesRemaining;
+                }
+
+                if (item.LootType != LootType.Blessed && points < 100 && item is IShipwreckedItem && ((IShipwreckedItem)item).IsShipwreckedItem)
+                {
+                    points = 100;
                 }
 
                 return points;
@@ -677,7 +686,7 @@ namespace Server.Engines.Points
             Entries[typeof(UntranslatedAncientTome)] = 200.0;
             Entries[typeof(WallBlood)] = 5000.0;
             Entries[typeof(Whip)] = 200.0;
-            //Entries[typeof(BalmOfSwiftness)] = 100.0;
+            Entries[typeof(BalmOfSwiftness)] = 100.0;
             Entries[typeof(TaintedMushroom)] = 1000.0;
             Entries[typeof(GoldenSkull)] = 1000.0;
 

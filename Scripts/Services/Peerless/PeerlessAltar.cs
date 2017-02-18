@@ -200,7 +200,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)3); // version
+
+            // version 3
+            writer.Write(m_IsAvailable);
 
             // version 1
             writer.Write((bool)(m_Helpers != null));
@@ -209,12 +212,12 @@ namespace Server.Items
                 writer.WriteMobileList<BaseCreature>(m_Helpers);
 
             // version 0			
-            writer.Write((Mobile)m_Peerless);
-            writer.Write((Point3D)m_BossLocation);
-            writer.Write((Point3D)m_TeleportDest);
-            writer.Write((Point3D)m_ExitDest);
+            writer.Write(m_Peerless);
+            writer.Write(m_BossLocation);
+            writer.Write(m_TeleportDest);
+            writer.Write(m_ExitDest);
 
-            writer.Write((DateTime)m_Deadline);
+            writer.Write(m_Deadline);
 
             // serialize master keys						
             writer.WriteItemList(m_MasterKeys);
@@ -241,6 +244,9 @@ namespace Server.Items
 
             switch (version)
             {
+                case 3:
+                    m_IsAvailable = reader.ReadBool();
+                    goto case 2;
                 case 2:
                 case 1:
                     if (reader.ReadBool())
@@ -272,7 +278,18 @@ namespace Server.Items
                     break;
             }
 
-            FinishSequence();
+            if (version == 2)
+            {
+                if (m_Peerless == null)
+                {
+                    FinishSequence();
+                    m_IsAvailable = true;
+                }
+            }
+            else if (!m_IsAvailable && m_Peerless == null)
+            {
+                FinishSequence();
+            }
         }
 
         public virtual bool IsKey(Item item)
@@ -316,7 +333,8 @@ namespace Server.Items
 
         public virtual void AddFighter(Mobile fighter)
         {
-            m_Fighters.Add(fighter);
+            if(!m_Fighters.Contains(fighter))
+                m_Fighters.Add(fighter);
 
             IPooledEnumerable eable = fighter.GetMobilesInRange(5);
             foreach (Mobile m in eable)
@@ -358,7 +376,7 @@ namespace Server.Items
                 {
                     Mobile m = info.Mobile;
 
-                    if (m.InRange(from.Location, 15) && CanEnter(m))
+                    if (m.InRange(from.Location, 25) && CanEnter(m))
                     {
                         if (m == from)
                             AddFighter(from);
@@ -669,9 +687,9 @@ namespace Server.Items
                 m_SlayTimer.Stop();
 
             if (TimeToSlay != TimeSpan.Zero)
-                m_Deadline = DateTime.Now + TimeToSlay;
+                m_Deadline = DateTime.UtcNow + TimeToSlay;
             else
-                m_Deadline = DateTime.Now + TimeSpan.FromHours(1);
+                m_Deadline = DateTime.UtcNow + TimeSpan.FromHours(1);
 
             m_SlayTimer = Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), new TimerCallback(DeadlineCheck));
             m_SlayTimer.Priority = TimerPriority.OneMinute;
@@ -692,14 +710,14 @@ namespace Server.Items
 
         public virtual void DeadlineCheck()
         {
-            if (DateTime.Now > m_Deadline)
+            if (DateTime.UtcNow > m_Deadline)
             {
                 SendMessage(1072258); // You failed to complete an objective in time!
                 FinishSequence();
                 return;
             }
 
-            TimeSpan timeLeft = m_Deadline - DateTime.Now;
+            TimeSpan timeLeft = m_Deadline - DateTime.UtcNow;
 
             if (timeLeft < TimeSpan.FromMinutes(30))
                 SendMessage(1075611, timeLeft.TotalSeconds);
@@ -712,7 +730,7 @@ namespace Server.Items
 
                     if (player.NetState == null)
                     {
-                        TimeSpan offline = DateTime.Now - player.LastOnline;
+                        TimeSpan offline = DateTime.UtcNow - player.LastOnline;
 
                         if (offline > TimeSpan.FromMinutes(10))
                             Exit(player);
@@ -755,7 +773,7 @@ namespace Server.Items
                 BaseCreature c = m_Helpers[i];
 
                 if (c != null && c.Alive)
-                    c.Kill();
+                    c.Delete();
             }
 
             m_Helpers.Clear();

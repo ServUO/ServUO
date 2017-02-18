@@ -2,6 +2,7 @@ using System;
 using Server.Items;
 using Server.Targeting;
 using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Engines.Craft
 {
@@ -21,6 +22,27 @@ namespace Server.Engines.Craft
 
     public class Enhance
     {
+        private static Dictionary<Type, CraftSystem> _SpecialTable;
+
+        public static void Initialize()
+        {
+            _SpecialTable = new Dictionary<Type, CraftSystem>();
+
+            _SpecialTable[typeof(ClockworkLeggings)] = DefBlacksmithy.CraftSystem;
+            _SpecialTable[typeof(GargishClockworkLeggings)] = DefBlacksmithy.CraftSystem;
+        }
+
+        private static bool IsSpecial(Item item, CraftSystem system)
+        {
+            foreach (KeyValuePair<Type, CraftSystem> kvp in _SpecialTable)
+            {
+                if (kvp.Key == item.GetType() && kvp.Value == system)
+                    return true;
+            }
+
+            return false;
+        }
+
         public static EnhanceResult Invoke(Mobile from, CraftSystem craftSystem, BaseTool tool, Item item, CraftResource resource, Type resType, ref object resMessage)
         {
             if (item == null)
@@ -52,8 +74,15 @@ namespace Server.Engines.Craft
 
             CraftItem craftItem = craftSystem.CraftItems.SearchFor(item.GetType());
 
+            if (IsSpecial(item, craftSystem))
+            {
+                craftItem = craftSystem.CraftItems.SearchForSubclass(item.GetType());
+            }
+            
             if (craftItem == null || craftItem.Resources.Count == 0)
+            {
                 return EnhanceResult.BadItem;
+            }
 
             #region Mondain's Legacy
             if (craftItem.ForceNonExceptional)

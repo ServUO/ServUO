@@ -44,7 +44,7 @@ namespace Server.Mobiles
             if (0.05 > Utility.RandomDouble())
                 PackItem(new ChickenLizardEgg());
 
-            m_NextEgg = DateTime.Now + TimeSpan.FromDays(7);
+            m_NextEgg = DateTime.UtcNow + TimeSpan.FromDays(7);
         }
 
         public override int Meat { get { return 3; } }
@@ -63,7 +63,7 @@ namespace Server.Mobiles
 
             bool fed = base.CheckFeed(from, dropped);
 
-            if (fed && DateTime.Now >= m_NextEgg)
+            if (fed && DateTime.UtcNow >= m_NextEgg)
             {
                 if (Utility.RandomBool())
                 {
@@ -73,7 +73,7 @@ namespace Server.Mobiles
                         egg.MoveToWorld(from.Location, from.Map);
                 }
 
-                m_NextEgg = DateTime.Now + TimeSpan.FromDays(7);
+                m_NextEgg = DateTime.UtcNow + TimeSpan.FromDays(7);
             }
 
             return fed;

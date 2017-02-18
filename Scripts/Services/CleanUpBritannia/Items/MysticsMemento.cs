@@ -2,8 +2,8 @@ using System;
 using Server.Mobiles;
 
 namespace Server.Items
-{ 
-    public class MysticsMemento : BaseTalisman
+{
+    public class MysticsMemento : BaseTalisman, ITokunoDyable
     {
         [Constructable]
         public MysticsMemento()

@@ -268,7 +268,7 @@ namespace Server.Engines.CannedEvil
 
 		private static void OnSlice()
 		{
-			if (DateTime.Now > m_LastRotate + m_RotateDelay)
+			if (DateTime.UtcNow > m_LastRotate + m_RotateDelay)
 				Rotate();
 		}
 

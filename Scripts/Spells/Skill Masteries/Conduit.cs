@@ -110,6 +110,9 @@ namespace Server.Spells.SkillMasteries
 
         public static bool CheckAffected(Mobile caster, IDamageable victim, Action<Mobile, double> callback)
         {
+            if (victim == null || victim.Map == null)
+                return false;
+
             foreach (SkillMasterySpell spell in EnumerateSpells(caster, typeof(ConduitSpell)))
             {
                 ConduitSpell conduit = spell as ConduitSpell;

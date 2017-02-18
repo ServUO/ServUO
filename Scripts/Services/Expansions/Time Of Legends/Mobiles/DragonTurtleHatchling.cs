@@ -41,7 +41,7 @@ namespace Server.Mobiles
             Karma = -16000;
 
             Tamable = true;
-            ControlSlots = 2;
+            ControlSlots = 5;
             MinTameSkill = 104.7;
         }
 
@@ -52,6 +52,8 @@ namespace Server.Mobiles
 
         public override void OnAfterTame(Mobile tamer)
         {
+            SkillsCap = this.Skills.Total;
+
             foreach (Skill sk in this.Skills)
             {
                 if (sk.Base > 0)

@@ -416,52 +416,49 @@ namespace Server.Engines.VvV
 
         public override void Use(Mobile m)
         {
-            m.BeginTarget(8, true, Server.Targeting.TargetFlags.None, (from, targeted) =>
-            {
-                if (targeted is IPoint3D)
+            Effects.SendMovingEffect(m, new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z + 25), m.Map), this.ItemID, 3, 0, false, false, this.Hue, 0);
+            
+            int count = 5;
+
+            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                 {
-                    IPoint3D p = targeted as IPoint3D;
-                    Map map = from.Map;
+                    m.PlaySound(0x1DD);
 
-                    if (map == null)
-                        return;
-
-                    int range = (int)m.GetDistanceToSqrt(p);
-
-                    Server.Spells.SpellHelper.GetSurfaceTop(ref p);
-                    IEntity to;
-
-                    if (p is Mobile)
-                        to = (Mobile)p;
-                    else
-                        to = new Entity(Serial.Zero, new Point3D(p), map);
-
-                    Effects.SendMovingEffect(m, to, this.ItemID, 7, 0, false, false, this.Hue, 0);
-                    Consume();
-
-                    Timer.DelayCall(TimeSpan.FromMilliseconds(range * 200), () =>
+                    for (int i = 0; i < count; i++)
                     {
-                        Point3D loc = new Point3D(p);
-
-                        for (int x = loc.X - 2; x <= loc.X + 2; x++)
-                        {
-                            for (int y = loc.Y - 2; y <= loc.Y + 2; y++)
+                        Timer.DelayCall(TimeSpan.FromMilliseconds(i * 170), index =>
                             {
-                                Point3D pnt = new Point3D(x, y, map.GetAverageZ(x, y));
+                                Server.Misc.Geometry.Circle2D(m.Location, m.Map, index, (pnt, map) =>
+                                {
+                                    Effects.SendLocationEffect(pnt, map, 0x3709, 30, 10, 0, 5);
+                                });
+                            }, i);
+                    }
+                });
 
-                                if (map.CanFit(pnt, 12, true, false) && from.InLOS(p))
-                                    new BaseConflagrationPotion.InternalItem(m, pnt, map, 10, 15);
-                            }
+            Timer.DelayCall(TimeSpan.FromMilliseconds(170 * count), () =>
+                {
+                    IPooledEnumerable eable = m.Map.GetMobilesInRange(m.Location, count);
+
+                    foreach (Mobile mob in eable)
+                    {
+                        if (mob != m && Server.Spells.SpellHelper.ValidIndirectTarget(m, mob) && m.CanBeHarmful(mob, false))
+                        {
+                            m.DoHarmful(mob);
+                            AOS.Damage(mob, m, Utility.RandomMinMax(40, 60), 0, 100, 0, 0, 0);
                         }
+                    }
 
-                        Effects.PlaySound(p, map, 0x20C);
-                    });
-                }
-            });
+                    eable.Free();
+                });
+
+            if (m.AccessLevel == AccessLevel.Player)
+                Consume();
         }
 
         public override void UseEffects(Mobile m)
         {
+            AddToCooldown(m);
         }
 
         public SupernovaPotion(Serial serial)

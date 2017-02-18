@@ -56,6 +56,8 @@ namespace Server.Network
 
 		public static PacketHandler[] Handlers { get { return m_Handlers; } }
 
+        public static bool AllowEC = Config.Get("Client.AllowEC", true);
+
 		static PacketHandlers()
 		{
 			m_Handlers = new PacketHandler[0x100];
@@ -136,8 +138,14 @@ namespace Server.Network
 			Register(0xF8, 106, false, CreateCharacter70160);
 
 			Register6017(0x08, 15, true, DropReq6017);
+            Register(0x8D, 0, false, KRCreateCharacter);
+            Register(0xE1, 0, false, KRCharacterListUpdate);
+            Register(0xE4, 0, false, KRVerifierResponse);
+            Register(0xFF, 4, false, KRSeed);
+            Register(0xEC, 0, false, EquipMacro);
+            Register(0xED, 0, false, UnequipMacro);
 
-			RegisterExtended(0x05, false, ScreenSize);
+            RegisterExtended(0x05, false, ScreenSize);
 			RegisterExtended(0x06, true, PartyMessage);
 			RegisterExtended(0x07, true, QuestArrow);
 			RegisterExtended(0x09, true, DisarmRequest);
@@ -156,9 +164,14 @@ namespace Server.Network
 
 			#region Stygian Abyss
 			RegisterExtended(0x32, true, ToggleFlying);
-			#endregion
+            #endregion
 
-			RegisterEncoded(0x19, true, SetAbility);
+            RegisterExtended(0x2C, true, TargetedItemUse);
+            RegisterExtended(0x2D, true, TargetedSpell);
+            RegisterExtended(0x2E, true, TargetedSkillUse);
+            RegisterExtended(0x30, true, TargetByResourceMacro);
+
+            RegisterEncoded(0x19, true, SetAbility);
 			RegisterEncoded(0x28, true, GuildGumpRequest);
 
 			RegisterEncoded(0x32, true, QuestGumpRequest);
@@ -952,9 +965,9 @@ namespace Server.Network
 			Mobile from = state.Mobile;
 			Prompt p = from.Prompt;
 
-			if (p != null && p.Serial == serial && p.Serial == prompt)
-			{
-				from.Prompt = null;
+            if (p != null && p.Sender.Serial == serial && p.TypeId == prompt)
+            {
+                from.Prompt = null;
 
 				if (type == 0)
 				{
@@ -983,9 +996,11 @@ namespace Server.Network
 			Mobile from = state.Mobile;
 			Prompt p = from.Prompt;
 
-			if (p != null && p.Serial == serial && p.Serial == prompt)
-			{
-				from.Prompt = null;
+            int promptSerial = (p != null && p.Sender != null) ? p.Sender.Serial.Value : from.Serial.Value;
+
+            if (p != null && promptSerial == serial && p.TypeId == prompt)
+            {
+                from.Prompt = null;
 
 				if (type == 0)
 				{
@@ -1117,15 +1132,25 @@ namespace Server.Network
 
 		public static void DropReq(NetState state, PacketReader pvSrc)
 		{
-			pvSrc.ReadInt32(); // serial, ignored
+			Serial serial = pvSrc.ReadInt32(); // serial, ignored
 			int x = pvSrc.ReadInt16();
 			int y = pvSrc.ReadInt16();
 			int z = pvSrc.ReadSByte();
-			Serial dest = pvSrc.ReadInt32();
+            byte gridloc = pvSrc.ReadByte(); // grid location
+            Serial dest = pvSrc.ReadInt32();
 
 			Point3D loc = new Point3D(x, y, z);
-
 			Mobile from = state.Mobile;
+
+            if (serial.IsItem)
+            {
+                Item dropped = World.FindItem(serial);
+
+                if (dropped != null)
+                {
+                    dropped.GridLocation = gridloc;
+                }
+            }
 
 			if (dest.IsMobile)
 			{
@@ -1154,16 +1179,25 @@ namespace Server.Network
 
 		public static void DropReq6017(NetState state, PacketReader pvSrc)
 		{
-			pvSrc.ReadInt32(); // serial, ignored
-			int x = pvSrc.ReadInt16();
+            Serial serial = pvSrc.ReadInt32();
+            int x = pvSrc.ReadInt16();
 			int y = pvSrc.ReadInt16();
 			int z = pvSrc.ReadSByte();
-			pvSrc.ReadByte(); // Grid Location?
-			Serial dest = pvSrc.ReadInt32();
+            byte gridloc = pvSrc.ReadByte(); // grid location
+            Serial dest = pvSrc.ReadInt32();
 
 			Point3D loc = new Point3D(x, y, z);
-
 			Mobile from = state.Mobile;
+
+            if (serial.IsItem)
+            {
+                Item dropped = World.FindItem(serial);
+
+                if (dropped != null)
+                {
+                    dropped.GridLocation = gridloc;
+                }
+            }
 
 			if (dest.IsMobile)
 			{
@@ -1703,7 +1737,9 @@ namespace Server.Network
 
 		public static void SetUpdateRange(NetState state, PacketReader pvSrc)
 		{
-			state.Send(ChangeUpdateRange.Instantiate(18));
+            int range = pvSrc.ReadByte();
+
+            state.Send(ChangeUpdateRange.Instantiate(range));
 		}
 
 		private const int BadFood = unchecked((int)0xBAADF00D);
@@ -2210,12 +2246,18 @@ namespace Server.Network
 
 		public static void ClientType(NetState state, PacketReader pvSrc)
 		{
-			pvSrc.ReadUInt16();
+			pvSrc.ReadUInt16(); // 0x1
+			pvSrc.ReadUInt32(); // 0x3
 
-			int type = pvSrc.ReadUInt16();
-			CV version = state.Version = new CV(pvSrc.ReadString());
+            // TODO: Eventually create a EC event sink to handle in ClientVerification.cs if EC clients matter
+            if (!AllowEC && state.IsEnhancedClient)
+            {
+                Utility.PushColor(ConsoleColor.DarkRed);
+                Console.WriteLine("Enhanced Client: {0}: Disconnecting...", state);
+                Utility.PopColor();
 
-			//EventSink.InvokeClientVersionReceived( new ClientVersionReceivedArgs( state, version ) );//todo
+                state.Dispose();
+            }
 		}
 
 		public static void MobileQuery(NetState state, PacketReader pvSrc)
@@ -2928,8 +2970,8 @@ namespace Server.Network
 
 				if (state.NewCharacterList)
 				{
-					state.Send(new CharacterList(state.Account, state.CityInfo));
-				}
+                    state.Send(new CharacterList(state.Account, state.CityInfo, state.IsEnhancedClient));
+                }
 				else
 				{
 					state.Send(new CharacterListOld(state.Account, state.CityInfo));
@@ -3067,10 +3109,243 @@ namespace Server.Network
 			}
 		}
 
-		public static void AccountLogin_ReplyRej(NetState state, ALRReason reason)
-		{
-			state.Send(new AccountLoginRej(reason));
-			state.Dispose();
-		}
-	}
+        public static void AccountLogin_ReplyRej(NetState state, ALRReason reason)
+        {
+            state.Send(new AccountLoginRej(reason));
+            state.Dispose();
+        }
+
+        public static void KRSeed(NetState state, PacketReader pvSrc)
+        {
+            // KR Client detected 
+            state.Send(new KRVerifier());
+        }
+
+        // KR Client Verifier Response (We still need to research on this thing)
+        public static void KRVerifierResponse(NetState state, PacketReader pvSrc)
+        {
+        }
+
+        public static void KRCharacterListUpdate(NetState state, PacketReader pvSrc)
+        {
+            int length = pvSrc.Size;
+            int always1 = pvSrc.ReadInt16();
+            int clientFlags = pvSrc.ReadInt32();
+
+            // Need to confirm whether to actually call this stretch.
+            state.Send(new CharacterListUpdate(state.Account));
+        }
+
+        // KR Client Character Creation
+        public static void KRCreateCharacter(NetState state, PacketReader pvSrc)
+        {
+            int flags = 0;
+
+            int length = pvSrc.Size;
+
+            int unk1 = pvSrc.ReadInt32(); // Pattern
+            int charSlot = pvSrc.ReadInt32();
+            string name = pvSrc.ReadString(30);
+            string unknown1 = pvSrc.ReadString(30); // "Unknow"
+
+            int profession = pvSrc.ReadByte();
+            int clientFlags = pvSrc.ReadByte();
+
+            int gender = pvSrc.ReadByte();
+            int genderRace = pvSrc.ReadByte();
+
+            int str = pvSrc.ReadByte();
+            int dex = pvSrc.ReadByte();
+            int intel = pvSrc.ReadByte();
+
+            int hue = pvSrc.ReadInt16();
+            int unk5 = pvSrc.ReadInt32(); // 0x00 0x00 0x00 0x00
+            int unk6 = pvSrc.ReadInt32(); // 0x00 0x00 0x00 0x00	
+
+            // isX = skill amount | vsX = skill
+            int is1 = pvSrc.ReadByte();
+            int vs1 = pvSrc.ReadByte();
+            int is2 = pvSrc.ReadByte();
+            int vs2 = pvSrc.ReadByte();
+            int is3 = pvSrc.ReadByte();
+            int vs3 = pvSrc.ReadByte();
+            int is4 = pvSrc.ReadByte();
+            int vs4 = pvSrc.ReadByte();
+
+            string unknown2 = pvSrc.ReadString(25); // Pack of 0x00
+            int unk7 = pvSrc.ReadByte(); // Another 0x00
+
+            int hairColor = pvSrc.ReadInt16();
+            int hairID = pvSrc.ReadInt16();
+
+            int unk8 = pvSrc.ReadByte();
+            int unk9 = pvSrc.ReadInt32();
+            int unk10 = pvSrc.ReadByte();
+            int shirtHue = pvSrc.ReadInt16();
+            int shirtID = pvSrc.ReadInt16();
+            int unk13 = pvSrc.ReadByte();
+
+            int faceColor = pvSrc.ReadInt16();
+            int faceID = pvSrc.ReadInt16();
+
+            int unk14 = pvSrc.ReadByte();
+
+            int beardColor = pvSrc.ReadInt16();
+            int beardID = pvSrc.ReadInt16();
+
+            int cityIndex = 0; // Obsolete
+            int pantsHue = shirtHue; // Obsolete
+            Race race = null;
+            bool female = false;
+
+            female = (gender != 0);
+            race = Race.Races[(byte)(((genderRace - 1)))]; //SA client sends race packet one higher than KR, so this is neccesary
+            if (race == null)
+                race = Race.DefaultRace;
+
+
+            CityInfo[] info = state.CityInfo;
+            IAccount a = state.Account;
+
+            if (clientFlags > 0)
+                flags = clientFlags;
+
+            if (info == null || a == null || cityIndex < 0 || cityIndex >= info.Length)
+            {
+                state.Dispose();
+            }
+            else
+            {
+                // Check if anyone is using this account
+                for (int i = 0; i < a.Length; ++i)
+                {
+                    Mobile check = a[i];
+
+                    if (check != null && check.Map != Map.Internal)
+                    {
+                        Console.WriteLine("Login: {0}: Account in use", state);
+                        state.Send(new PopupMessage(PMMessage.CharInWorld));
+                        return;
+                    }
+                }
+
+                state.Flags = (ClientFlags)flags;
+
+                CharacterCreatedEventArgs args = new CharacterCreatedEventArgs(
+                    state, a,
+                    name, female, hue,
+                    str, dex, intel,
+                    info[cityIndex],
+                    new SkillNameValue[4]
+                    {
+                        new SkillNameValue( (SkillName)is1, vs1 ),
+                        new SkillNameValue( (SkillName)is2, vs2 ),
+                        new SkillNameValue( (SkillName)is3, vs3 ),
+                        new SkillNameValue( (SkillName)is4, vs4 ),
+                    },
+                    shirtHue, pantsHue,
+                    hairID, hairColor,
+                    beardID, beardColor,
+                    profession, race,
+                    faceID, faceColor
+                    );
+
+                state.Send(new ClientVersionReq());
+
+                state.BlockAllPackets = true;
+
+                EventSink.InvokeCharacterCreated(args);
+
+                Mobile m = args.Mobile;
+
+                if (m != null)
+                {
+                    state.Mobile = m;
+                    m.NetState = state;
+
+                    state.BlockAllPackets = false;
+                    DoLogin(state, m);
+                }
+                else
+                {
+                    state.BlockAllPackets = false;
+                    state.Dispose();
+                }
+            }
+        }
+
+        public static void EquipMacro(NetState ns, PacketReader pvSrc)
+        {
+            int length = pvSrc.Size;
+
+            int count = pvSrc.ReadByte();
+            List<int> serialList = new List<int>(count);
+            for (int i = 0; i < count; ++i)
+            {
+                Serial s = pvSrc.ReadInt32();
+                serialList.Add(s);
+            }
+
+            EquipMacroEventArgs e = new EquipMacroEventArgs(ns, serialList);
+            EventSink.InvokeEquipMacro(e);
+        }
+
+        public static void UnequipMacro(NetState ns, PacketReader pvSrc)
+        {
+            int length = pvSrc.Size;
+
+            int count = pvSrc.ReadByte();
+            List<int> layers = new List<int>(count);
+            for (int i = 0; i < count; ++i)
+            {
+                int s = pvSrc.ReadInt16();
+                layers.Add(s);
+            }
+
+            UnequipMacroEventArgs e = new UnequipMacroEventArgs(ns, layers);
+            EventSink.InvokeUnequipMacro(e);
+        }
+
+        public static void TargetedSpell(NetState ns, PacketReader pvSrc)
+        {
+            short spellId = (short)(pvSrc.ReadInt16() - 1);    // zero based;
+            Serial target = pvSrc.ReadInt32();
+            TargetedSpellEventArgs e = new TargetedSpellEventArgs(ns, World.FindEntity(target), spellId);
+            EventSink.InvokeTargetedSpell(e);
+        }
+
+        public static void TargetedItemUse(NetState ns, PacketReader pvSrc)
+        {
+            Serial srcItem = pvSrc.ReadInt32();
+            Serial target = pvSrc.ReadInt32();
+
+            if (srcItem.IsItem)
+            {
+                TargetedItemUseEventArgs e = new TargetedItemUseEventArgs(ns, World.FindItem(srcItem), World.FindEntity(target));
+                EventSink.InvokeTargetedItemUse(e);
+            }
+        }
+
+        public static void TargetedSkillUse(NetState ns, PacketReader pvSrc)
+        {
+            short skillId = pvSrc.ReadInt16();
+            Serial target = pvSrc.ReadInt32();
+            TargetedSkillEventArgs e = new TargetedSkillEventArgs(ns, World.FindEntity(target), skillId);
+            EventSink.InvokeTargetedSkill(e);
+        }
+
+        public static void TargetByResourceMacro(NetState ns, PacketReader pvSrc)
+        {
+            int length = pvSrc.Size;
+            int Command = pvSrc.ReadInt16();
+            Serial serial = pvSrc.ReadInt32();
+            int resourcetype = pvSrc.ReadInt16();
+
+            if (serial.IsItem)
+            {
+                TargetByResourceMacroEventArgs e = new TargetByResourceMacroEventArgs(ns, World.FindItem(serial), resourcetype);
+                EventSink.InvokeTargetByResourceMacro(e);
+            }
+        }
+    }
 }

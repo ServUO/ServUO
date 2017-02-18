@@ -54,12 +54,12 @@ namespace Server.Items
 			return base.OnDragDrop( from, item );
 		}
 
-		public override bool OnDragDropInto( Mobile from, Item item, Point3D p )
+		public override bool OnDragDropInto( Mobile from, Item item, Point3D p)
 		{
 			if ( m_Boat == null || !m_Boat.Contains( from ) || m_Boat.IsMoving )
 				return false;
 
-			return base.OnDragDropInto( from, item, p );
+			return base.OnDragDropInto( from, item, p);
 		}
 
 		public override bool CheckItemUse( Mobile from, Item item )

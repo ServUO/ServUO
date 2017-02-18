@@ -88,6 +88,8 @@ namespace Server.Engines.Craft
         }
         #endregion
 
+        public Func<Mobile, ConsumeType, int> ConsumeResCallback { get; set; }
+
         private Recipe m_Recipe;
 
 		public Recipe Recipe { get { return m_Recipe; } }
@@ -350,14 +352,22 @@ namespace Server.Engines.Craft
 
 		private static readonly Type[][] m_TypesTable = new[]
 		{
-			new[] {typeof(Board), typeof(Log)}, new[] {typeof(HeartwoodBoard), typeof(HeartwoodLog)},
-			new[] {typeof(BloodwoodBoard), typeof(BloodwoodLog)}, new[] {typeof(FrostwoodBoard), typeof(FrostwoodLog)},
-			new[] {typeof(OakBoard), typeof(OakLog)}, new[] {typeof(AshBoard), typeof(AshLog)},
-			new[] {typeof(YewBoard), typeof(YewLog)}, new[] {typeof(Leather), typeof(Hides)},
-			new[] {typeof(SpinedLeather), typeof(SpinedHides)}, new[] {typeof(HornedLeather), typeof(HornedHides)},
-			new[] {typeof(BarbedLeather), typeof(BarbedHides)}, new[] {typeof(BlankMap), typeof(BlankScroll)},
-			new[] {typeof(Cloth), typeof(UncutCloth), typeof(AbyssalCloth)}, new[] {typeof(CheeseWheel), typeof(CheeseWedge)},
-			new[] {typeof(Pumpkin), typeof(SmallPumpkin)}, new[] {typeof(WoodenBowlOfPeas), typeof(PewterBowlOfPeas)},
+			new[] {typeof(Board), typeof(Log)}, 
+            new[] {typeof(HeartwoodBoard), typeof(HeartwoodLog)},
+			new[] {typeof(BloodwoodBoard), typeof(BloodwoodLog)}, 
+            new[] {typeof(FrostwoodBoard), typeof(FrostwoodLog)},
+			new[] {typeof(OakBoard), typeof(OakLog)}, 
+            new[] {typeof(AshBoard), typeof(AshLog)},
+			new[] {typeof(YewBoard), typeof(YewLog)}, 
+            new[] {typeof(Leather), typeof(Hides)},
+			new[] {typeof(SpinedLeather), typeof(SpinedHides)}, 
+            new[] {typeof(HornedLeather), typeof(HornedHides)},
+			new[] {typeof(BarbedLeather), typeof(BarbedHides)}, 
+            new[] {typeof(BlankMap), typeof(BlankScroll)},
+			new[] {typeof(Cloth), typeof(UncutCloth), typeof(AbyssalCloth)},
+            new[] {typeof(CheeseWheel), typeof(CheeseWedge)},
+			new[] {typeof(Pumpkin), typeof(SmallPumpkin)}, 
+            new[] {typeof(WoodenBowlOfPeas), typeof(PewterBowlOfPeas)},
             new[] { typeof( CrystallineFragments ), typeof( BrokenCrystals ), typeof( ShatteredCrystals ), typeof( ScatteredCrystals ), typeof( CrushedCrystals ), typeof( JaggedCrystals ), typeof( AncientPotteryFragments ) },
             new[] { typeof( RedScales ), typeof( BlueScales ), typeof( BlackScales ), typeof( YellowScales ), typeof( GreenScales ), typeof( WhiteScales ), typeof( MedusaDarkScales ), typeof( MedusaLightScales ) }
 		};
@@ -403,7 +413,7 @@ namespace Server.Engines.Craft
 			typeof(BambooChair), typeof(WoodenChair), typeof(FancyWoodenChairCushion), typeof(WoodenChairCushion),
 			typeof(Nightstand), typeof(LargeTable), typeof(WritingTable), typeof(YewWoodTable), typeof(PlainLowTable),
 			typeof(ElegantLowTable), typeof(Dressform), typeof(BasePlayerBB), typeof(BaseContainer), typeof(BarrelStaves),
-			typeof(BarrelLid), typeof(Clippers)
+			typeof(BarrelLid), typeof(Clippers), typeof(Scissors), typeof(BaseTool)
 		};
 
 		private static readonly Dictionary<Type, Type> m_ResourceConversionTable = new Dictionary<Type, Type>()
@@ -815,6 +825,17 @@ namespace Server.Engines.Craft
 				return false;
 			}
 
+            if (ConsumeResCallback != null)
+            {
+                int resMessage = ConsumeResCallback(from, consumeType);
+
+                if (resMessage > 0)
+                {
+                    message = resMessage;
+                    return false;
+                }
+            }
+
 			if (m_NeedHeat && !Find(from, m_HeatSources))
 			{
 				message = 1044487; // You must be near a fire source to cook.
@@ -1094,8 +1115,8 @@ namespace Server.Engines.Craft
 		private CraftSystem m_System;
 
 		#region Plant Pigments
-		private PlantHue m_PlantHue = PlantHue.Plain;
-		private PlantPigmentHue m_PlantPigmentHue = PlantPigmentHue.Plain;
+		private PlantHue m_PlantHue = PlantHue.None;
+		private PlantPigmentHue m_PlantPigmentHue = PlantPigmentHue.None;
 		#endregion
 
 		private void OnResourceConsumed(Item item, int amount)
@@ -1669,7 +1690,9 @@ namespace Server.Engines.Craft
                             ((IPigmentHue)item).PigmentHue = PlantPigmentHueInfo.HueFromPlantHue(m_PlantHue);
                     }
                     else if (m_PlantPigmentHue != PlantPigmentHue.None && item is IPigmentHue)
+                    {
                         ((IPigmentHue)item).PigmentHue = m_PlantPigmentHue;
+                    }
 
                     CraftContext context = craftSystem.GetContext(from);
 
@@ -1688,13 +1711,22 @@ namespace Server.Engines.Craft
                     m_PlantPigmentHue = PlantPigmentHue.None;
 					#endregion
 
-					if (tool.Parent is Container) {
-					Container cntnr = (Container) tool.Parent;
-                                        cntnr.TryDropItem(from, item, false);
-					}
-					else {
-					from.AddToBackpack(item);
-					}
+                    if (tool.Parent is Container)
+                    {
+                        Container cntnr = (Container)tool.Parent;
+
+                        if (!cntnr.TryDropItem(from, item, false))
+                        {
+                            if(cntnr != from.Backpack)
+                                from.AddToBackpack(item);
+                            else
+                                item.MoveToWorld(from.Location, from.Map);
+                        }
+                    }
+                    else
+                    {
+                        from.AddToBackpack(item);
+                    }
 
 					EventSink.InvokeCraftSuccess(new CraftSuccessEventArgs(from, item, tool));
 

@@ -22,8 +22,81 @@ namespace Server.Items
 	public delegate void ContainerSnoopHandler(Container cont, Mobile from);
 
 	public class Container : Item
-	{
-		private static ContainerSnoopHandler m_SnoopHandler;
+    {
+        #region Enhanced Client Support
+        Dictionary<byte, Item> _Positions = new Dictionary<byte, Item>();
+
+        public bool _ValidatedGrids = false;
+
+        public virtual void SetPosition(byte pos, Item item)
+        {
+            if (!IsFreePosition(pos))
+            {
+                pos = GetNewPosition();
+            }
+
+            item.GridLocation = pos;
+            _Positions[pos] = item;
+        }
+
+        public virtual void FreePosition(byte pos)
+        {
+            if (_Positions.ContainsKey(pos))
+            {
+                _Positions.Remove(pos);
+            }
+        }
+
+        public virtual bool IsFreePosition(byte pos)
+        {
+            return pos <= 0x7C && !_Positions.ContainsKey(pos);
+        }
+
+        public virtual byte GetNewPosition()
+        {
+            for (byte i = 0; i < 0x7C; i++)
+            {
+                if (!_Positions.ContainsKey(i))
+                {
+                    return i;
+                }
+            }
+
+            return 0;
+        }
+
+        private void ValidateGrids()
+        {
+            List<Item> redun = new List<Item>();
+
+            foreach (Item item in Items)
+            {
+                if (item.GridLocation > 0x7C)
+                {
+                    item.GridLocation = 0x7C;
+                }
+
+                if (!_Positions.ContainsKey(item.GridLocation))
+                {
+                    _Positions[item.GridLocation] = item;
+                }
+                else
+                {
+                    redun.Add(item);
+                }
+            }
+
+            foreach (Item item in redun)
+            {
+                item.GridLocation = GetNewPosition();
+                _Positions[item.GridLocation] = item;
+            }
+
+            redun.Clear();
+        }
+        #endregion
+
+        private static ContainerSnoopHandler m_SnoopHandler;
 
 		public static ContainerSnoopHandler SnoopHandler { get { return m_SnoopHandler; } set { m_SnoopHandler = value; } }
 
@@ -255,7 +328,7 @@ namespace Server.Items
 			}
 
 			item.Location = new Point3D(p.m_X, p.m_Y, 0);
-			AddItem(item);
+            AddItem(item);
 
 			from.SendSound(GetDroppedSound(item), GetWorldLocation());
 
@@ -1547,6 +1620,7 @@ namespace Server.Items
 			}
 
 			UpdateContainerData();
+            ValidateGrids();
 		}
 
 		private static int m_GlobalMaxItems = 125;
@@ -1689,6 +1763,13 @@ namespace Server.Items
 			return true;
 		}
 
+        public override void AddItem(Item item)
+        {
+            SetPosition(item.GridLocation, item);
+
+            base.AddItem(item);
+        }
+
 		public virtual void Destroy()
 		{
 			Point3D loc = GetWorldLocation();
@@ -1713,7 +1794,7 @@ namespace Server.Items
 				return;
 			}
 
-			AddItem(dropped);
+            AddItem(dropped);
 
 			Rectangle2D bounds = dropped.GetGraphicBounds();
 			Rectangle2D ourBounds = Bounds;

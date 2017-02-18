@@ -15,7 +15,7 @@ namespace Server.Spells.SkillMasteries
 
         public override SkillName MoveSkill { get { return SkillName.Swords; } }
         public override TextDefinition AbilityMessage { get { return new TextDefinition(1156007); } } // *You ready an onslaught!*
-        public override TimeSpan CooldownPeriod { get { return TimeSpan.FromSeconds(10); } }
+        public override TimeSpan CooldownPeriod { get { return TimeSpan.FromSeconds(5); } }
 
         public OnslaughtSpell()
         {

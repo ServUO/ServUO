@@ -1061,7 +1061,7 @@ namespace Server.Gumps
                 if ((id >= 1152739 && id <= 1152893) || id == 1154017)
                     return 1152893; // This title is gained through city loyalty.
 
-                if ((id >= 1151739 && id <= 1151747) || id == 1155481)
+                if ((id >= 1151739 && id <= 1151747) || id == 1155481 || id == 1154505)
                     return id + 1;
 
                 switch (id)

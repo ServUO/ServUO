@@ -50,6 +50,8 @@ namespace Server.Engines.VvV
         public Dictionary<Guild, VvVGuildStats> GuildStats { get; set; }
         public static Dictionary<Mobile, Mobile> FlaggedTo { get; set; }
 
+        public List<VvVCity> ExemptCities { get; set; }
+
         public VvVBattle Battle { get; private set; }
 
         public override string ToString()
@@ -63,6 +65,7 @@ namespace Server.Engines.VvV
             Battle = new VvVBattle(this);
 
             GuildStats = new Dictionary<Guild, VvVGuildStats>();
+            ExemptCities = new List<VvVCity>();
         }
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
@@ -128,7 +131,6 @@ namespace Server.Engines.VvV
             Guild g = pm.Guild as Guild;
             VvVPlayerEntry entry = GetEntry(pm, true) as VvVPlayerEntry;
 
-            entry.Guild = g;
             entry.Active = true;
 
             pm.SendLocalizedMessage(1155564); // You have joined Vice vs Virtue!
@@ -157,8 +159,6 @@ namespace Server.Engines.VvV
                 else
                     entry.ResignExpiration = DateTime.UtcNow + TimeSpan.FromMinutes(1);
 
-                entry.Guild = null;
-
                 if (quitguild)
                     m.SendLocalizedMessage(1155580); // You have quit a guild while participating in Vice vs Virtue.  You will be freely attackable by members of Vice vs Virtue until your resignation period has ended!
             }
@@ -180,7 +180,7 @@ namespace Server.Engines.VvV
 
         public void CheckBattleStatus(PlayerMobile pm)
         {
-            if (!IsVvV(pm))
+            if (!IsVvV(pm) || !Enabled)
                 return;
 
             if (Battle.OnGoing)
@@ -252,6 +252,19 @@ namespace Server.Engines.VvV
             return count - 1;
         }
 
+        public void SendVvVMessage(string message)
+        {
+            foreach (NetState state in NetState.Instances.Where(st => st.Mobile != null && IsVvV(st.Mobile)))
+            {
+                Mobile m = state.Mobile;
+
+                if (m != null)
+                {
+                    m.SendMessage("[Guild][VvV] {0}", message);
+                }
+            }
+        }
+
         public void SendVvVMessage(int cliloc, string args = "")
         {
             foreach(NetState state in NetState.Instances.Where(st => st.Mobile != null && IsVvV(st.Mobile)))
@@ -278,6 +291,194 @@ namespace Server.Engines.VvV
             {
                 ((IVvVItem)item).IsVvVItem = true;
                 VvVItems.Add(item);
+
+                CheckProperties(item);
+            }
+        }
+
+        private void CheckProperties(Item item)
+        {
+            if (item is PrimerOnArmsTalisman && ((PrimerOnArmsTalisman)item).Attributes.AttackChance != 10)
+            {
+                ((PrimerOnArmsTalisman)item).Attributes.AttackChance = 10;
+            }
+
+            if (item is ClaininsSpellbook && ((ClaininsSpellbook)item).Attributes.LowerManaCost != 10)
+            {
+                ((ClaininsSpellbook)item).Attributes.LowerManaCost = 10;
+            }
+
+            if(item is CrimsonCincture && ((CrimsonCincture)item).Attributes.BonusDex != 10)
+            {
+                ((CrimsonCincture)item).Attributes.BonusDex = 10;
+            }
+
+            if (item is CrystallineRing && ((CrystallineRing)item).Attributes.CastRecovery != 3)
+            {
+                ((CrystallineRing)item).Attributes.CastRecovery = 3;
+            }
+
+            if (item is FeyLeggings)
+            {
+                if (((FeyLeggings)item).PhysicalBonus != 3)
+                    ((FeyLeggings)item).PhysicalBonus = 3;
+
+                if (((FeyLeggings)item).FireBonus != 3)
+                    ((FeyLeggings)item).FireBonus = 3;
+
+                if (((FeyLeggings)item).ColdBonus != 3)
+                    ((FeyLeggings)item).ColdBonus = 3;
+
+                if (((FeyLeggings)item).EnergyBonus != 3)
+                    ((FeyLeggings)item).EnergyBonus = 3;
+            }
+
+            if (item is FoldedSteelGlasses && ((FoldedSteelGlasses)item).Attributes.DefendChance != 25)
+            {
+                ((FoldedSteelGlasses)item).Attributes.DefendChance = 25;
+            }
+
+            if (item is HeartOfTheLion)
+            {
+                if (((HeartOfTheLion)item).PhysicalBonus != 5)
+                    ((HeartOfTheLion)item).PhysicalBonus = 5;
+
+                if (((HeartOfTheLion)item).FireBonus != 5)
+                    ((HeartOfTheLion)item).FireBonus = 5;
+
+                if (((HeartOfTheLion)item).ColdBonus != 5)
+                    ((HeartOfTheLion)item).ColdBonus = 5;
+
+                if (((HeartOfTheLion)item).PoisonBonus != 5)
+                    ((HeartOfTheLion)item).PoisonBonus = 5;
+
+                if (((HeartOfTheLion)item).EnergyBonus != 5)
+                    ((HeartOfTheLion)item).EnergyBonus = 5;
+            }
+
+            if (item is HuntersHeaddress)
+            {
+                if (((HuntersHeaddress)item).Resistances.Physical != 8)
+                    ((HuntersHeaddress)item).Resistances.Physical = 8;
+
+                if (((HuntersHeaddress)item).Resistances.Fire != 4)
+                    ((HuntersHeaddress)item).Resistances.Fire = 4;
+
+                if (((HuntersHeaddress)item).Resistances.Cold != -8)
+                    ((HuntersHeaddress)item).Resistances.Cold = -8;
+
+                if (((HuntersHeaddress)item).Resistances.Poison != 9)
+                    ((HuntersHeaddress)item).Resistances.Poison = 9;
+
+                if (((HuntersHeaddress)item).Resistances.Energy != 3)
+                    ((HuntersHeaddress)item).Resistances.Energy = 3;
+            }
+
+            if (item is KasaOfTheRajin && ((KasaOfTheRajin)item).Attributes.DefendChance != 10)
+            {
+                ((KasaOfTheRajin)item).Attributes.DefendChance = 10;
+            }
+
+            if (item is MaceAndShieldGlasses && ((MaceAndShieldGlasses)item).Attributes.WeaponDamage != 10)
+            {
+                ((MaceAndShieldGlasses)item).Attributes.WeaponDamage = 10;
+            }
+
+            if (item is VesperOrderShield && ((VesperOrderShield)item).Attributes.CastSpeed != 0)
+            {
+                ((VesperOrderShield)item).Attributes.CastSpeed = 0;
+
+                if (item.Name != "Order Shield")
+                    item.Name = "Order Shield";
+            }
+
+            if (item is OrnamentOfTheMagician && ((OrnamentOfTheMagician)item).Attributes.RegenMana != 3)
+            {
+                ((OrnamentOfTheMagician)item).Attributes.RegenMana = 3;
+            }
+
+            if (item is RingOfTheVile && ((RingOfTheVile)item).Attributes.AttackChance != 25)
+            {
+                ((RingOfTheVile)item).Attributes.AttackChance = 25;
+            }
+
+            if (item is RuneBeetleCarapace)
+            {
+                if (((RuneBeetleCarapace)item).PhysicalBonus != 3)
+                    ((RuneBeetleCarapace)item).PhysicalBonus = 3;
+
+                if (((RuneBeetleCarapace)item).FireBonus != 3)
+                    ((RuneBeetleCarapace)item).FireBonus = 3;
+
+                if (((RuneBeetleCarapace)item).ColdBonus != 3)
+                    ((RuneBeetleCarapace)item).ColdBonus = 3;
+
+                if (((RuneBeetleCarapace)item).PoisonBonus != 3)
+                    ((RuneBeetleCarapace)item).PoisonBonus = 3;
+
+                if (((RuneBeetleCarapace)item).EnergyBonus != 3)
+                    ((RuneBeetleCarapace)item).EnergyBonus = 3;
+            }
+
+            if (item is SpiritOfTheTotem)
+            {
+                if (((SpiritOfTheTotem)item).Resistances.Fire != 7)
+                    ((SpiritOfTheTotem)item).Resistances.Fire = 7;
+
+                if (((SpiritOfTheTotem)item).Resistances.Cold != 2)
+                    ((SpiritOfTheTotem)item).Resistances.Cold = 2;
+
+                if (((SpiritOfTheTotem)item).Resistances.Poison != 6)
+                    ((SpiritOfTheTotem)item).Resistances.Poison = 6;
+
+                if (((SpiritOfTheTotem)item).Resistances.Energy != 6)
+                    ((SpiritOfTheTotem)item).Resistances.Energy = 6;
+            }
+
+            if (item is Stormgrip && ((Stormgrip)item).Attributes.AttackChance != 10)
+            {
+                ((Stormgrip)item).Attributes.AttackChance = 10;
+            }
+
+            if (item is InquisitorsResolution)
+            {
+                if (((InquisitorsResolution)item).PhysicalBonus != 5)
+                    ((InquisitorsResolution)item).PhysicalBonus = 5;
+
+                if (((InquisitorsResolution)item).FireBonus != 7)
+                    ((InquisitorsResolution)item).FireBonus = 7;
+
+                if (((InquisitorsResolution)item).ColdBonus != -2)
+                    ((InquisitorsResolution)item).ColdBonus = -2;
+
+                if (((InquisitorsResolution)item).PoisonBonus != 7)
+                    ((InquisitorsResolution)item).PoisonBonus = 7;
+
+                if (((InquisitorsResolution)item).EnergyBonus != -7)
+                    ((InquisitorsResolution)item).EnergyBonus = -7;
+            }
+
+            if (item is TomeOfLostKnowledge && ((TomeOfLostKnowledge)item).Attributes.RegenMana != 3)
+            {
+                ((TomeOfLostKnowledge)item).Attributes.RegenMana = 3;
+            }
+
+            if (item is WizardsCrystalGlasses)
+            {
+                if (((WizardsCrystalGlasses)item).PhysicalBonus != 5)
+                    ((WizardsCrystalGlasses)item).PhysicalBonus = 5;
+
+                if (((WizardsCrystalGlasses)item).FireBonus != 5)
+                    ((WizardsCrystalGlasses)item).FireBonus = 5;
+
+                if (((WizardsCrystalGlasses)item).ColdBonus != 5)
+                    ((WizardsCrystalGlasses)item).ColdBonus = 5;
+
+                if (((WizardsCrystalGlasses)item).PoisonBonus != 5)
+                    ((WizardsCrystalGlasses)item).PoisonBonus = 5;
+
+                if (((WizardsCrystalGlasses)item).EnergyBonus != 5)
+                    ((WizardsCrystalGlasses)item).EnergyBonus = 5;
             }
         }
 
@@ -301,6 +502,11 @@ namespace Server.Engines.VvV
                     Instance.Battle.Begin();
             });
 
+            Server.Commands.CommandSystem.Register("ExemptCities", AccessLevel.Administrator, e =>
+            {
+                e.Mobile.SendGump(new ExemptCitiesGump());
+            });
+
             if (!Instance.HasGenerated)
             {
                 CreateSilverTraders();
@@ -317,13 +523,15 @@ namespace Server.Engines.VvV
             if (pm != null && Instance != null)
             {
                 Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(1), Instance.CheckResignation, pm);
-                //Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(1), Instance.CheckPendingJoin, pm);
                 Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(2), Instance.CheckBattleStatus, pm);
             }
         }
 
         public static void OnPlayerDeath(PlayerDeathEventArgs e)
         {
+            if (!Enabled)
+                return;
+
             PlayerMobile pm = e.Mobile as PlayerMobile;
 
             if (pm != null && Instance != null)
@@ -334,6 +542,9 @@ namespace Server.Engines.VvV
 
         public static bool IsVvV(Mobile m, bool checkpet = true, bool guildedonly = false)
         {
+            if (!Enabled)
+                return false;
+
             if (m is BaseCreature && checkpet)
             {
                 if (((BaseCreature)m).GetMaster() is PlayerMobile)
@@ -350,6 +561,12 @@ namespace Server.Engines.VvV
 
         public static bool IsVvV(Mobile m, out VvVPlayerEntry entry, bool checkpet = true, bool guildedonly = false)
         {
+            if (!Enabled)
+            {
+                entry = null;
+                return false;
+            }
+
             if (m is BaseCreature && checkpet)
             {
                 if (((BaseCreature)m).GetMaster() is PlayerMobile)
@@ -361,7 +578,7 @@ namespace Server.Engines.VvV
             if (entry != null && !entry.Active)
                 entry = null;
 
-            return entry.Active && (!guildedonly || entry.Guild != null);
+            return entry != null && entry.Active && (!guildedonly || entry.Guild != null);
         }
 
         public static bool IsEnemy(IDamageable from, IDamageable to)
@@ -375,11 +592,10 @@ namespace Server.Engines.VvV
 
         public static bool IsEnemy(Mobile from, Mobile to)
         {
-            //TODO: Support for VvV city games regarding non-participants in the city, as well as ones who flagged
-            if(from == null || to == null)
+            if (!Enabled || from == to)
                 return false;
-                
-            //basecreatures convert to their masters
+
+            //TODO: Support for VvV city games regarding non-participants in the city, as well as ones who flagged
             if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
                 from = ((BaseCreature)from).GetMaster();
 
@@ -389,7 +605,6 @@ namespace Server.Engines.VvV
             VvVPlayerEntry fromentry = Instance.GetPlayerEntry<VvVPlayerEntry>(from);
             VvVPlayerEntry toentry = Instance.GetPlayerEntry<VvVPlayerEntry>(to);
 
-            // TODO: Support for FlaggedTo. For now, any of these are null or inactive, not enemies!
             if (fromentry == null || toentry == null || !fromentry.Active || !toentry.Active)
             {
                 if (fromentry != null && toentry == null && FlaggedTo != null && FlaggedTo.ContainsKey(from) && FlaggedTo[from] == to)
@@ -398,14 +613,12 @@ namespace Server.Engines.VvV
                 return false;
             }
 
-            Guild fromguild = from.Guild as Guild;
-            Guild toguild = to.Guild as Guild;
-            
-            // This will handle those who recently quit VvV, they are always attackable
-            if ((toguild == null && fromguild != null)  || (fromguild == null && toguild != null))
+            Guild fromguild = fromentry.Guild;
+            Guild toguild = toentry.Guild;
+
+            if (toguild == null || fromguild == null)
                 return true;
 
-            // in the guild, and/or allied
             return fromguild != toguild && !fromguild.IsAlly(toguild);
         }
 
@@ -438,7 +651,10 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write(ExemptCities.Count);
+            ExemptCities.ForEach(c => writer.Write((int)c));
 
             writer.Write(HasGenerated);
             Battle.Serialize(writer);
@@ -462,28 +678,47 @@ namespace Server.Engines.VvV
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            HasGenerated = reader.ReadBool();
-
             GuildStats = new Dictionary<Guild, VvVGuildStats>();
-            Battle = new VvVBattle(reader, this);
+            ExemptCities = new List<VvVCity>();
 
-            int count = reader.ReadInt();
-            for (int i = 0; i < count; i++)
+            switch (version)
             {
-                Item item = reader.ReadItem();
+                case 1:
+                    {
+                        int count = reader.ReadInt();
+                        for (int i = 0; i < count; i++)
+                        {
+                            ExemptCities.Add((VvVCity)reader.ReadInt());
+                        }
 
-                if (item != null)
-                    AddVvVItem(item);
-            }
+                        goto case 0;
+                    }
+                case 0:
+                    {
+                        HasGenerated = reader.ReadBool();
 
-            count = reader.ReadInt();
-            for (int i = 0; i < count; i++)
-            {
-                Guild g = reader.ReadGuild() as Guild;
-                VvVGuildStats stats = new VvVGuildStats(g, reader);
+                        Battle = new VvVBattle(reader, this);
 
-                if (g != null)
-                    GuildStats[g] = stats;
+                        int count = reader.ReadInt();
+                        for (int i = 0; i < count; i++)
+                        {
+                            Item item = reader.ReadItem();
+
+                            if (item != null)
+                                AddVvVItem(item);
+                        }
+
+                        count = reader.ReadInt();
+                        for (int i = 0; i < count; i++)
+                        {
+                            Guild g = reader.ReadGuild() as Guild;
+                            VvVGuildStats stats = new VvVGuildStats(g, reader);
+
+                            if (g != null)
+                                GuildStats[g] = stats;
+                        }
+                    }
+                    break;
             }
         }
 
@@ -528,7 +763,13 @@ namespace Server.Engines.VvV
         public int DisarmedTraps { get; set; }
         public int StolenSigils { get; set; }
 
-        public Guild Guild { get; set; }
+        public Guild Guild
+        {
+            get
+            {
+                return Player != null ? Player.Guild as Guild : null;
+            }
+        }
 
         public bool Active
         {
@@ -559,10 +800,9 @@ namespace Server.Engines.VvV
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1);
+            writer.Write(2);
 
             writer.Write(Active);
-            writer.Write(Guild);
 
             writer.Write(Score);
             writer.Write(Kills);
@@ -584,7 +824,8 @@ namespace Server.Engines.VvV
             if(version == 0)
                 reader.ReadBool();
 
-            Guild = reader.ReadGuild() as Guild;
+            if(version < 2)
+                reader.ReadGuild();
 
             Score = reader.ReadInt();
             Kills = reader.ReadInt();

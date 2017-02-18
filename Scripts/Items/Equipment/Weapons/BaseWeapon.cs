@@ -149,6 +149,7 @@ namespace Server.Items
 		private AosElementAttributes m_AosElementDamages;
 		private SAAbsorptionAttributes m_SAAbsorptionAttributes;
         private NegativeAttributes m_NegativeAttributes;
+        private ExtendedWeaponAttributes m_ExtendedWeaponAttributes;
 
 		// Overridable values. These values are provided to override the defaults which get defined in the individual weapon scripts.
 		private int m_StrReq, m_DexReq, m_IntReq;
@@ -305,6 +306,9 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public NegativeAttributes NegativeAttributes { get { return m_NegativeAttributes; } set { } }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ExtendedWeaponAttributes ExtendedWeaponAttributes { get { return m_ExtendedWeaponAttributes; } set { } }
+
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Cursed { get { return m_Cursed; } set { m_Cursed = value; } }
 
@@ -356,6 +360,10 @@ namespace Server.Items
 			set
 			{
 				m_MaxHits = value;
+
+                if (this.m_MaxHits > 255)
+                    this.m_MaxHits = 255;
+
 				InvalidateProperties();
 			}
 		}
@@ -731,6 +739,7 @@ namespace Server.Items
 			weap.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
 			weap.m_AosWeaponAttributes = new AosWeaponAttributes(newItem, m_AosWeaponAttributes);
             weap.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
+            weap.m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(newItem, m_ExtendedWeaponAttributes);
 
 			#region Mondain's Legacy
 			weap.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
@@ -746,18 +755,16 @@ namespace Server.Items
 		{
 			int scale = 100 + GetDurabilityBonus();
 
-			m_Hits = ((m_Hits * 100) + (scale - 1)) / scale;
-			m_MaxHits = ((m_MaxHits * 100) + (scale - 1)) / scale;
-			InvalidateProperties();
+			HitPoints = ((m_Hits * 100) + (scale - 1)) / scale;
+            MaxHitPoints = ((m_MaxHits * 100) + (scale - 1)) / scale;
 		}
 
 		public virtual void ScaleDurability()
 		{
 			int scale = 100 + GetDurabilityBonus();
 
-			m_Hits = ((m_Hits * scale) + 99) / 100;
-			m_MaxHits = ((m_MaxHits * scale) + 99) / 100;
-			InvalidateProperties();
+            HitPoints = ((m_Hits * scale) + 99) / 100;
+            MaxHitPoints = ((m_MaxHits * scale) + 99) / 100;
 		}
 
 		public int GetDurabilityBonus()
@@ -947,6 +954,8 @@ namespace Server.Items
                 }
             }
 
+            bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
+
 			#region Stygian Abyss
 			if (from.Race == Race.Gargoyle && !CanBeWornByGargoyles && from.IsPlayer())
 			{
@@ -955,7 +964,7 @@ namespace Server.Items
 			}
 			#endregion
 
-			if (RequiredRace != null && from.Race != RequiredRace)
+			if (RequiredRace != null && from.Race != RequiredRace && !morph)
 			{
 				if (RequiredRace == Race.Elf)
 				{
@@ -1385,6 +1394,9 @@ namespace Server.Items
 				chance = 0.02;
 			}
 
+            if (Core.AOS && m_AosWeaponAttributes.MageWeapon > 0 && attacker.Skills[SkillName.Magery].Value > atkSkill.Value)
+                return attacker.CheckSkill(SkillName.Magery, chance);
+
 			return attacker.CheckSkill(atkSkill.SkillName, chance);
 		}
 
@@ -1784,10 +1796,19 @@ namespace Server.Items
 
 			if (!blocked)
 			{
-                Layer randomLayer = _DamageLayers[Utility.Random(_DamageLayers.Length)];
-                Item armorItem = defender.FindItemOnLayer(randomLayer);
+                Layer randomLayer = Layer.FirstValid;
+                Item armorItem = null;
 
-				IWearableDurability armor = armorItem as IWearableDurability;
+                for (int i = 0; i < 10; i++)
+                {
+                    randomLayer = _DamageLayers[Utility.Random(_DamageLayers.Length)];
+                    armorItem = defender.FindItemOnLayer(randomLayer);
+
+                    if (armorItem is IWearableDurability)
+                        break;
+                }
+
+                IWearableDurability armor = armorItem as IWearableDurability;
 
 				if (armor != null)
 				{
@@ -1811,6 +1832,7 @@ namespace Server.Items
             Layer.OuterTorso,
             Layer.Ring,
             Layer.Bracelet,
+            Layer.Earrings,
             Layer.Neck,
             Layer.Neck,
             Layer.Gloves,
@@ -2196,24 +2218,45 @@ namespace Server.Items
 
             percentageBonus += (int)(damageBonus * 100) - 100;
 
-			CheckSlayerResult cs = CheckSlayers(attacker, defender, false);
+			CheckSlayerResult cs1 = CheckSlayers(attacker, defender, Slayer);
+            CheckSlayerResult cs2 = CheckSlayers(attacker, defender, Slayer2);
+            CheckSlayerResult suit = CheckSlayers(attacker, defender, SetHelper.GetSetSlayer(attacker));
+            CheckSlayerResult tal = CheckTalismanSlayer(attacker, defender);
 
-			if (cs != CheckSlayerResult.None)
+			if (cs1 != CheckSlayerResult.None)
 			{
-			    defender.FixedEffect(0x37B9, 10, 5);
-
-                if (cs == CheckSlayerResult.SuperSlayer || cs == CheckSlayerResult.Opposition)
+                if (cs1 == CheckSlayerResult.SuperSlayer)
                     percentageBonus += 100;
-                else if (cs == CheckSlayerResult.Slayer)
+                else if (cs1 == CheckSlayerResult.Slayer)
                     percentageBonus += 200;
             }
 
-            cs = CheckSlayers(attacker, defender, true);
+            if (cs2 != CheckSlayerResult.None)
+            {
+                if (cs2 == CheckSlayerResult.SuperSlayer)
+                    percentageBonus += 100;
+                else if (cs2 == CheckSlayerResult.Slayer)
+                    percentageBonus += 200;
+            }
 
-            if (cs != CheckSlayerResult.None)
+            if (suit != CheckSlayerResult.None)
+            {
+                percentageBonus += 100;
+            }
+
+            if (tal != CheckSlayerResult.None)
+            {
+                percentageBonus += 100;
+            }
+
+            if (CheckSlayerOpposition(attacker, defender) != CheckSlayerResult.None)
+            {
+                percentageBonus += 100;
+                defender.FixedEffect(0x37B9, 10, 5);
+            }
+            else if (cs1 != CheckSlayerResult.None || cs2 != CheckSlayerResult.None || suit != CheckSlayerResult.None || tal != CheckSlayerResult.None)
             {
                 defender.FixedEffect(0x37B9, 10, 5);
-                percentageBonus += 100;
             }
 
 			if (!attacker.Player)
@@ -2263,7 +2306,7 @@ namespace Server.Items
 
 			TransformContext context = TransformationSpellHelper.GetContext(defender);
 
-			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver) 
+			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver || SetHelper.GetSetSlayer(attacker) == SlayerName.Silver) 
                 && ((context != null && context.Spell is NecromancerSpell && context.Type != typeof(HorrificBeastSpell))
                 || (defender is BaseCreature && (defender.Body == 747 || defender.Body == 748 || defender.Body == 749 || defender.Hue == 0x847E))))
 			{
@@ -2895,19 +2938,23 @@ namespace Server.Items
 		{
 			attacker.SendLocalizedMessage(1113717); // You have hit your target with a curse effect.
 			defender.SendLocalizedMessage(1113718); // You have been hit with a curse effect.
+
 			defender.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
 			defender.PlaySound(0x1EA);
+            TimeSpan duration = TimeSpan.FromSeconds(30);
+
 			defender.AddStatMod(
-				new StatMod(StatType.Str, String.Format("[Magic] {0} Curse", StatType.Str), -10, TimeSpan.FromSeconds(30)));
+                new StatMod(StatType.Str, String.Format("[Magic] {0} Curse", StatType.Str), -10, duration));
 			defender.AddStatMod(
-				new StatMod(StatType.Dex, String.Format("[Magic] {0} Curse", StatType.Dex), -10, TimeSpan.FromSeconds(30)));
+                new StatMod(StatType.Dex, String.Format("[Magic] {0} Curse", StatType.Dex), -10, duration));
 			defender.AddStatMod(
-				new StatMod(StatType.Int, String.Format("[Magic] {0} Curse", StatType.Int), -10, TimeSpan.FromSeconds(30)));
+                new StatMod(StatType.Int, String.Format("[Magic] {0} Curse", StatType.Int), -10, duration));
 
 			int percentage = -10; //(int)(SpellHelper.GetOffsetScalar(Caster, m, true) * 100);
 			string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
 
-			BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, TimeSpan.FromSeconds(30), defender, args));
+            Server.Spells.Fourth.CurseSpell.AddEffect(defender, duration);
+            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, duration, defender, args));
 		}
 
 		public virtual void DoFatigue(Mobile attacker, Mobile defender, int damagegiven)
@@ -2996,61 +3043,76 @@ namespace Server.Items
 		}
 		#endregion
 
-        public virtual CheckSlayerResult CheckSlayers(Mobile attacker, Mobile defender, bool checktalisman)
+        public virtual CheckSlayerResult CheckSlayers(Mobile attacker, Mobile defender, SlayerName slayer)
         {
-            if (checktalisman)
-            {
-                BaseTalisman talisman = attacker.Talisman as BaseTalisman;
+            if (slayer == SlayerName.None)
+                return CheckSlayerResult.None;
 
-                if (talisman != null && TalismanSlayer.Slays(talisman.Slayer, defender))
-                {
-                    return CheckSlayerResult.Slayer;
-                }
-                else if (Slayer3 != TalismanSlayerName.None && TalismanSlayer.Slays(Slayer3, defender))
-                {
-                    return CheckSlayerResult.Slayer;
-                }
+            BaseWeapon atkWeapon = attacker.Weapon as BaseWeapon;
+            SlayerEntry atkSlayer = SlayerGroup.GetEntryByName(slayer);
+
+            if (atkSlayer != null && atkSlayer.Slays(defender) && _SuperSlayers.Contains(atkSlayer.Name))
+            {
+                return CheckSlayerResult.SuperSlayer;
             }
-            else
+
+            if (atkSlayer != null && atkSlayer.Slays(defender))
             {
-                BaseWeapon atkWeapon = attacker.Weapon as BaseWeapon;
-                SlayerEntry atkSlayer = SlayerGroup.GetEntryByName(atkWeapon.Slayer);
-                SlayerEntry atkSlayer2 = SlayerGroup.GetEntryByName(atkWeapon.Slayer2);
+                return CheckSlayerResult.Slayer;
+            }
 
-                List<SlayerName> super = new List<SlayerName>() { SlayerName.Repond, SlayerName.Silver, SlayerName.Fey, SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom, SlayerName.ReptilianDeath };
+            return CheckSlayerResult.None;
+        }
 
-                if ((atkSlayer != null && atkSlayer.Slays(defender) && super.Contains(atkSlayer.Name)) || (atkSlayer2 != null && atkSlayer2.Slays(defender) && super.Contains(atkSlayer2.Name)))
+        public CheckSlayerResult CheckSlayerOpposition(Mobile attacker, Mobile defender)
+        {
+            ISlayer defISlayer = Spellbook.FindEquippedSpellbook(defender);
+
+            if (defISlayer == null)
+            {
+                defISlayer = defender.Weapon as ISlayer;
+            }
+
+            if (defISlayer != null)
+            {
+                SlayerEntry defSlayer = SlayerGroup.GetEntryByName(defISlayer.Slayer);
+                SlayerEntry defSlayer2 = SlayerGroup.GetEntryByName(defISlayer.Slayer2);
+                SlayerEntry defSetSlayer = SlayerGroup.GetEntryByName(SetHelper.GetSetSlayer(defender));
+
+                if (defSlayer != null && defSlayer.Group.OppositionSuperSlays(attacker) ||
+                    defSlayer2 != null && defSlayer2.Group.OppositionSuperSlays(attacker) ||
+                    defSetSlayer != null && defSetSlayer.Group.OppositionSuperSlays(attacker))
                 {
-                    return CheckSlayerResult.SuperSlayer;
-                }
-
-                if (atkSlayer != null && atkSlayer.Slays(defender) || atkSlayer2 != null && atkSlayer2.Slays(defender))
-                {
-                    return CheckSlayerResult.Slayer;
-                }
-
-                ISlayer defISlayer = Spellbook.FindEquippedSpellbook(defender);
-
-                if (defISlayer == null)
-                {
-                    defISlayer = defender.Weapon as ISlayer;
-                }
-
-                if (defISlayer != null)
-                {
-                    SlayerEntry defSlayer = SlayerGroup.GetEntryByName(defISlayer.Slayer);
-                    SlayerEntry defSlayer2 = SlayerGroup.GetEntryByName(defISlayer.Slayer2);
-
-                    if (defSlayer != null && defSlayer.Group.OppositionSuperSlays(attacker) ||
-                        defSlayer2 != null && defSlayer2.Group.OppositionSuperSlays(attacker))
-                    {
-                        return CheckSlayerResult.Opposition;
-                    }
+                    return CheckSlayerResult.Opposition;
                 }
             }
 
             return CheckSlayerResult.None;
         }
+
+        public CheckSlayerResult CheckTalismanSlayer(Mobile attacker, Mobile defender)
+        {
+            BaseTalisman talisman = attacker.Talisman as BaseTalisman;
+
+            if (talisman != null && TalismanSlayer.Slays(talisman.Slayer, defender))
+            {
+                return CheckSlayerResult.Slayer;
+            }
+            else if (Slayer3 != TalismanSlayerName.None && TalismanSlayer.Slays(Slayer3, defender))
+            {
+                return CheckSlayerResult.Slayer;
+            }
+
+            return CheckSlayerResult.None;
+        }
+
+        private List<SlayerName> _SuperSlayers = new List<SlayerName>()
+        {
+            SlayerName.Repond, SlayerName.Silver, SlayerName.Fey, 
+            SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom, 
+            SlayerName.ReptilianDeath, SlayerName.Dinosaur, SlayerName.Myrmidex, 
+            SlayerName.Eodon
+        };
 
 		public virtual void AddBlood(Mobile attacker, Mobile defender, int damage)
 		{
@@ -3761,6 +3823,7 @@ namespace Server.Items
 			SetSaveFlag(ref flags, SaveFlag.xAbsorptionAttributes, !m_SAAbsorptionAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.xNegativeAttributes, !m_NegativeAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
+            SetSaveFlag(ref flags, SaveFlag.xExtendedWeaponAttributes, !m_ExtendedWeaponAttributes.IsEmpty);
 
             writer.Write((long)flags);
 
@@ -3920,6 +3983,11 @@ namespace Server.Items
                 m_NegativeAttributes.Serialize(writer);
             }
 			#endregion
+
+            if (GetSaveFlag(flags, SaveFlag.xExtendedWeaponAttributes))
+            {
+                m_ExtendedWeaponAttributes.Serialize(writer);
+            }
 		}
 
 		[Flags]
@@ -3959,7 +4027,8 @@ namespace Server.Items
 			EngravedText = 0x40000000,
 			xAbsorptionAttributes = 0x80000000,
             xNegativeAttributes = 0x100000000,
-            Altered = 0x200000000
+            Altered = 0x200000000,
+            xExtendedWeaponAttributes = 0x400000000
         }
 
 		#region Mondain's Legacy Sets
@@ -4394,7 +4463,18 @@ namespace Server.Items
                         #endregion
 
                         if (GetSaveFlag(flags, SaveFlag.Altered))
+                        {
                             m_Altered = true;
+                        }
+
+                        if (GetSaveFlag(flags, SaveFlag.xExtendedWeaponAttributes))
+                        {
+                            m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(this, reader);
+                        }
+                        else
+                        {
+                            m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(this);
+                        }
 
                         break;
 					}
@@ -4633,6 +4713,7 @@ namespace Server.Items
 			m_AosSkillBonuses = new AosSkillBonuses(this);
 			m_AosElementDamages = new AosElementAttributes(this);
             m_NegativeAttributes = new NegativeAttributes(this);
+            m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(this);
 
 			#region Stygian Abyss
 			m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
@@ -4869,7 +4950,7 @@ namespace Server.Items
 				return true;
 			}
 
-            return AosAttributes.GetValue(from, AosAttribute.SpellChanneling) > 0;
+            return m_AosAttributes.SpellChanneling > 0 || Enhancement.GetValue(from, AosAttribute.SpellChanneling) > 0;
 		}
 
 		public virtual int ArtifactRarity { get { return 0; } }
@@ -5104,10 +5185,33 @@ namespace Server.Items
             int prop;
             double fprop;
 
-			if (Core.ML && this is BaseRanged && ((BaseRanged)this).Balanced)
+            if (Core.ML && m_AosAttributes.BalancedWeapon > 0 && Layer == Layer.TwoHanded)
 			{
 				list.Add(1072792); // Balanced
 			}
+
+            if (Core.TOL)
+            {
+                if (m_ExtendedWeaponAttributes.Bane > 0)
+                {
+                    list.Add(1154671); // Bane
+                }
+
+                if (m_ExtendedWeaponAttributes.BoneBreaker > 0)
+                {
+                    list.Add(1157318); // Bone Breaker
+                }
+
+                if ((prop = m_ExtendedWeaponAttributes.HitSwarm) != 0)
+                {
+                    list.Add(1157325, prop.ToString()); // Swarm ~1_val~%
+                }
+
+                if ((prop = m_ExtendedWeaponAttributes.HitSparks) != 0)
+                {
+                    list.Add(1157326, prop.ToString()); // Sparks ~1_val~%
+                }
+            }
 
 			#region Stygian Abyss
 			if ((prop = m_AosWeaponAttributes.BloodDrinker) != 0)

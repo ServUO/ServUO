@@ -332,15 +332,14 @@ namespace Server
             {
                 this.m_Perfection = 100;
                 this.m_Source.SendLocalizedMessage(1063254); // You have Achieved Perfection in inflicting damage to this opponent!
-
-                /* TODO: ??? */
-                //BuffInfo.AddBuff(from, new BuffInfo(BuffIcon.AchievePerfection, 1075651, 1075652, TimeSpan.FromSeconds(5), from, String.Format("{0}\t{1}", m_Perfection, m_Target.Name)));
+                
+                BuffInfo.AddBuff(m_Target, new BuffInfo(BuffIcon.AchievePerfection, 1075651, 1075652, TimeSpan.FromSeconds(5), from, String.Format("{0}\t{1}", m_Perfection, from.Name)));
             }
             else
             {
                 this.m_Source.SendLocalizedMessage(1063255); // You gain in Perfection as you precisely strike your opponent.
 
-                BuffInfo.AddBuff(from, new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, String.Format("{0}\t{1}", m_Target.Name, damagebonus)));
+                BuffInfo.AddBuff(from, new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, String.Format("{0}\t{1}", m_Target.Name, m_Perfection)));
             }
         }
 

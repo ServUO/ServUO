@@ -32,7 +32,7 @@ namespace Server.Items
 
         private List<Mobile> m_Fighters;
         private Dictionary<Mobile, List<Mobile>> m_Pets;
-        public static List<RitualArray> m_Rituals;
+        private List<RitualArray> m_Rituals;
 
         public List<Mobile> Fighters { get { return this.m_Fighters; } }		
         public Dictionary<Mobile, List<Mobile>> Pets { get { return this.m_Pets; } }       
@@ -64,8 +64,8 @@ namespace Server.Items
                 m_Mobile = from;
                 m_altar = altar;
 
-                if (m_Rituals != null)
-                    if (!AllRitualCheck())
+                if (altar.Rituals != null)
+                    if (!altar.AllRitualCheck())
                         Flags |= CMEFlags.Disabled;
             }
 
@@ -83,7 +83,7 @@ namespace Server.Items
                 list.Add(new BeginTheRitual(this, from));
         }             
 
-        public static bool AllRitualCheck()
+        public bool AllRitualCheck()
         {
             int alllistcount = m_Rituals.Count();
 
@@ -234,6 +234,12 @@ namespace Server.Items
                 fighter.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
                 fighter.PlaySound(0x1FE);
                 fighter.MoveToWorld(this.m_TeleportDest, Map.Ilshenar);
+
+                // Robe of Rite Delete
+                foreach (Item i in fighter.Items.Where(item => item is RobeofRite && item.Parent is Mobile && ((Mobile)item.Parent).FindItemOnLayer(item.Layer) == item).ToList())
+                {
+                    i.Delete();
+                }
 
                 Timer.DelayCall(TimeSpan.FromMinutes(1), new TimerCallback(AltarDelete));
             }

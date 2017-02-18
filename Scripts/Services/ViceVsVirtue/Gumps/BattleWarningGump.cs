@@ -60,9 +60,10 @@ namespace Server.Engines.VvV
                         }
                     }
                 }
-
-                BaseCreature.TeleportPets(User, closestGate.Location, closestGate.Map);
-                User.MoveToWorld(closestGate.Location, closestGate.Map);
+                else
+                {
+                    User.SendLocalizedMessage(1155584); // You are now open to attack!
+                }
             }
             else
             {

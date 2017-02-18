@@ -217,8 +217,10 @@ namespace Server.Engines.PartySystem
                     {
                         f.Send(new MobileStatusCompact(m.CanBeRenamedBy(f), m));
                         f.Send(attrs);
+                        f.Send(new KRDisplayWaypoint(m, WaypointType.PartyMember, false, 1062613, m.Name));
                         m.Send(new MobileStatusCompact(f.CanBeRenamedBy(m), f));
                         m.Send(new MobileAttributesN(f));
+                        m.Send(new KRDisplayWaypoint(f, WaypointType.PartyMember, false, 1062613, f.Name));
                     }
                 }
 
@@ -498,6 +500,7 @@ namespace Server.Engines.PartySystem
                         m.Send(attrs);
                         this.m_Mobile.Send(new MobileStatusCompact(m.CanBeRenamedBy(this.m_Mobile), m));
                         this.m_Mobile.Send(new MobileAttributesN(m));
+                        m_Mobile.Send(new KRDisplayWaypoint(m, WaypointType.PartyMember, false, 1062613, m.Name));
                     }
                 }
 

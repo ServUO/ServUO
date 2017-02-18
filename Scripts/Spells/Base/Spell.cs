@@ -20,6 +20,8 @@ using Server.Spells.Second;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
 using Server.Spells.SkillMasteries;
+using System.Reflection;
+using Server.Spells.Mystic;
 #endregion
 
 namespace Server.Spells
@@ -31,6 +33,7 @@ namespace Server.Spells
 		private readonly SpellInfo m_Info;
 		private SpellState m_State;
 		private long m_StartCastTime;
+        private IDamageable m_InstantTarget;
 
 		public SpellState State { get { return m_State; } set { m_State = value; } }
 		public Mobile Caster { get { return m_Caster; } }
@@ -40,8 +43,9 @@ namespace Server.Spells
 		public Type[] Reagents { get { return m_Info.Reagents; } }
 		public Item Scroll { get { return m_Scroll; } }
 		public long StartCastTime { get { return m_StartCastTime; } }
+        public IDamageable InstantTarget { get { return m_InstantTarget; } set { m_InstantTarget = value; } }
 
-		private static readonly TimeSpan NextSpellDelay = TimeSpan.FromSeconds(0.75);
+        private static readonly TimeSpan NextSpellDelay = TimeSpan.FromSeconds(0.75);
 		private static TimeSpan AnimateDelay = TimeSpan.FromSeconds(1.5);
 
 		public virtual SkillName CastSkill { get { return SkillName.Magery; } }
@@ -337,8 +341,8 @@ namespace Server.Spells
 
 		public virtual bool ConsumeReagents()
 		{
-			if (m_Scroll != null || !m_Caster.Player)
-			{
+            if ((m_Scroll != null && !(m_Scroll is SpellStone)) || !m_Caster.Player)
+            {
 				return true;
 			}
 
@@ -635,7 +639,12 @@ namespace Server.Spells
 
 		public virtual void SayMantra()
 		{
-			if (m_Scroll is BaseWand)
+            if (m_Scroll is SpellStone)
+            {
+                return;
+            }
+
+            if (m_Scroll is BaseWand)
 			{
 				return;
 			}
@@ -756,8 +765,8 @@ namespace Server.Spells
 
 					TimeSpan castDelay = GetCastDelay();
 
-					if (ShowHandMovement && (m_Caster.Body.IsHuman || (m_Caster.Player && m_Caster.Body.IsMonster)))
-					{
+                    if (ShowHandMovement && !(m_Scroll is SpellStone) && (m_Caster.Body.IsHuman || (m_Caster.Player && m_Caster.Body.IsMonster)))
+                    {
 						int count = (int)Math.Ceiling(castDelay.TotalSeconds / AnimateDelay.TotalSeconds);
 
 						if (count != 0)
@@ -818,7 +827,47 @@ namespace Server.Spells
 
 		public abstract void OnCast();
 
-		public virtual void OnBeginCast()
+        #region Enhanced Client
+        public void OnCastInstantTarget()
+        {
+            Type spellType = GetType();
+            MethodInfo spellTargetMethod = null;
+
+            if (spellType != null && (spellTargetMethod = spellType.GetMethod("Target")) != null) { }
+            else if (spellType != null && (spellTargetMethod = spellType.GetMethod("OnTarget")) != null) { }
+            else
+            {
+                OnCast();
+                return;
+            }
+
+            ParameterInfo[] spellTargetParams = spellTargetMethod.GetParameters();
+            object[] targetArgs = null;
+
+            if (spellTargetParams != null && spellTargetParams.Length > 0)
+            {
+                if (InstantTarget != null && spellTargetParams[0].ParameterType == typeof(IDamageable))
+                {
+                    targetArgs = new object[1];
+                    targetArgs[0] = InstantTarget;
+                }
+                else if (InstantTarget is Mobile && spellTargetParams[0].ParameterType == typeof(Server.Mobile))
+                {
+                    targetArgs = new object[1];
+                    targetArgs[0] = InstantTarget as Mobile;
+                }
+                else
+                {
+                    OnCast();
+                    return;
+                }
+            }
+
+            spellTargetMethod.Invoke(this, targetArgs);
+        }
+        #endregion
+
+        public virtual void OnBeginCast()
 		{ }
 
 		public virtual void GetCastSkills(out double min, out double max)
@@ -933,7 +982,12 @@ namespace Server.Spells
 
 		public virtual TimeSpan GetCastDelay()
 		{
-			if (m_Scroll is BaseWand)
+            if (m_Scroll is SpellStone) 
+            {
+                return TimeSpan.Zero;
+            }
+
+            if (m_Scroll is BaseWand)
 			{
 				return Core.ML ? CastDelayBase : TimeSpan.Zero; // TODO: Should FC apply to wands?
 			}
@@ -1036,19 +1090,17 @@ namespace Server.Spells
 			{
 				m_Caster.Mana -= mana;
 
-				if (m_Scroll is SpellScroll)
-				{
-					m_Scroll.Consume();
-				}
-					#region SA
-				else if (m_Scroll is SpellStone)
-				{
-					// The SpellScroll check above isn't removing the SpellStones for some reason.
-					m_Scroll.Delete();
-				}
-					#endregion
+                if (m_Scroll is SpellStone)
+                {
+                    ((SpellStone)m_Scroll).Use(m_Caster);
+                }
 
-				else if (m_Scroll is BaseWand)
+                if (m_Scroll is SpellScroll)
+                {
+                    m_Scroll.Consume();
+                }
+                
+                else if (m_Scroll is BaseWand)
 				{
 					((BaseWand)m_Scroll).ConsumeCharge(m_Caster);
 					m_Caster.RevealingAction();
@@ -1219,10 +1271,14 @@ namespace Server.Spells
 						// Spell.NextSpellDelay;
 
 					Target originalTarget = m_Spell.m_Caster.Target;
+               
+                    if (m_Spell.InstantTarget != null) {
+                        m_Spell.OnCastInstantTarget();
+                    } else {
+                        m_Spell.OnCast();
+                    }
 
-					m_Spell.OnCast();
-
-					if (m_Spell.m_Caster.Player && m_Spell.m_Caster.Target != originalTarget && m_Spell.Caster.Target != null)
+                    if (m_Spell.m_Caster.Player && m_Spell.m_Caster.Target != originalTarget && m_Spell.Caster.Target != null)
 					{
 						m_Spell.m_Caster.Target.BeginTimeout(m_Spell.m_Caster, TimeSpan.FromSeconds(30.0));
 					}

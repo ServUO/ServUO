@@ -18,7 +18,7 @@ namespace Server.Items
             typeof(FoldedSteelGlasses),
             typeof(PoisonedGlasses),
             typeof(TreasureTrinketGlasses),
-            typeof(MaceShieldGlasses),
+            typeof(MaceAndShieldGlasses),
             typeof(ArtsGlasses),
             typeof(AnthropomorphistGlasses)
         };
@@ -189,6 +189,9 @@ namespace Server.Items
                 return true;
 
             if (i is ITokunoDyable)
+                return true;
+
+            if (Server.Engines.Blackthorn.BlackthornRewards.IsTokunoDyable(t))
                 return true;
 
             return (

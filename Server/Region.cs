@@ -106,7 +106,22 @@ namespace Server
 		StygianAbyss,
 		StygianDragon,
 		Void,
-		CodexShrine
+		CodexShrine,
+		AnvilStrikeInMinoc,
+		ASkaranLullaby,
+		BlackthornsMarch,
+		DupresNightInTrinsic,
+		FayaxionAndTheSix,
+		FlightOfTheNexus,
+		GalehavenJaunt,
+		JhelomToArms,
+		MidnightInYew,
+		MoonglowSonata,
+		NewMaginciaMarch,
+		NujelmWaltz,
+		SherrysSong,
+		StarlightInBritain,
+		TheVesperMist
 	}
 
 	public class Region : IComparable
@@ -900,6 +915,10 @@ namespace Server
 
 			return true;
 		}
+
+        public virtual void GetContextMenuEntries(Mobile from, List<Server.ContextMenus.ContextMenuEntry> list, Item item)
+        {
+        }
 
 		public virtual bool AllowSpawn()
 		{

@@ -84,7 +84,7 @@ namespace Server.Items
 			m_SpawnTimer = new SpawnTimer( this, delay );
 			m_SpawnTimer.Start();
 
-			m_NextSpawnTime = DateTime.Now + delay;
+			m_NextSpawnTime = DateTime.UtcNow + delay;
 		}
 
 		private void StopSpawnTimer()
@@ -193,7 +193,7 @@ namespace Server.Items
 			}
 
 			if ( m_Honeypots < 10 )
-				StartSpawnTimer( m_NextSpawnTime - DateTime.Now );
+				StartSpawnTimer( m_NextSpawnTime - DateTime.UtcNow );
 		}
 	}
 }
