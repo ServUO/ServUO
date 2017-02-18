@@ -17,8 +17,10 @@ namespace Server.Cache
 		public static void Initialize()
 		{	
 			if((Ultima.Files.MulPath["artlegacymul.uop"] != null || (Ultima.Files.MulPath["art.mul"] != null && Ultima.Files.MulPath["artidx.mul"] != null)) && !File.Exists("Cache/Bounds.bin"))
-			{		
-				Console.WriteLine("Cache: Generating Bounds.bin");
+			{	
+				Utility.PushColor(ConsoleColor.Yellow);
+				Console.Write("Cache: Generating Bounds.bin...");
+				
 				Cache.CreateFolder();
 				FileStream fs = new FileStream( "Cache/Bounds.bin", FileMode.Create, FileAccess.Write );
 			
@@ -35,6 +37,9 @@ namespace Server.Cache
 						bin.Write((ushort)xMax);
 						bin.Write((ushort)yMax);
 					}
+				Utility.PushColor(ConsoleColor.Green);
+				Console.WriteLine("done");
+				Utility.PopColor();
 				bin.Close();	
 			}
 		}
@@ -46,9 +51,14 @@ namespace Server.Cache
 		{	
 			if(!File.Exists("Cache/objects.xml"))
 			{
-				Console.WriteLine("Cache: Generating objects.xml");
+				Utility.PushColor(ConsoleColor.Yellow);
+				Console.WriteLine("Cache: Generating objects.xml...");
+				Utility.PopColor();
 				Cache.CreateFolder();
 				Categorization.RebuildCategorization();
+				Utility.PushColor(ConsoleColor.Green);
+				Console.WriteLine("done");
+				Utility.PopColor();
 			}
 		}
 	}
