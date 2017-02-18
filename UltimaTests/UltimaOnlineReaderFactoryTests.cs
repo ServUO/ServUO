@@ -13,9 +13,13 @@ namespace Ultima.Tests
         [TestMethod()]
         public void UltimaOnlineReaderFactoryTest()
         {
-            var factory = new UltimaOnlineReaderFactory(@"C:\Ultima\OSI_seas_mul - Copia");
-            Assert.IsNotNull(factory);
-            factory.Dispose();
+            Assert.AreSame("", "");
+        }
+
+        [TestMethod()]
+        public void DisposeTest()
+        {
+            Assert.AreSame("", "");
         }
     }
 }

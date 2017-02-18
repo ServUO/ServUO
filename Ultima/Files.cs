@@ -89,7 +89,7 @@ namespace Ultima
 			m_RootDir = Directory;
 			if (m_RootDir == null)
 			{
-				m_RootDir = "";
+				m_RootDir = string.Empty;
 			}
 			foreach (string file in m_Files)
 			{
@@ -100,7 +100,7 @@ namespace Ultima
 				}
 				else
 				{
-					m_MulPath[file] = "";
+					m_MulPath[file] = string.Empty;
 				}
 			}
 		}

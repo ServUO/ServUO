@@ -377,6 +377,14 @@ namespace Ultima
 	    private BodyTable BodyTable;
 	    private Hues _hues;
 	    private Files _files;
+	    public UltimaOnlineReaderFactory Factory { get; }
+
+	    public Animations(UltimaOnlineReaderFactory factory)
+            :this(factory.Verdata, factory.Hues, factory.Files)
+	    {
+	        Factory = factory;
+	    }
+
         /// <summary>
         /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
         /// </summary>
@@ -392,7 +400,8 @@ namespace Ultima
             _BodyConverter = new BodyConverter(_files);
             BodyTable = new BodyTable(_files);
             _hues = hues;
-	    }
+            LoadTable();
+        }
 
 	    private  FileIndex m_FileIndex;
 

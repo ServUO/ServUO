@@ -20,41 +20,46 @@ namespace Ultima
 
         private bool disposed;
 
-        private string Folder { get; }
-        private Dictionary<MapNames, Map> _Maps;
-        public Gumps Gumps { get; }
-        public Animations Animations { get; }
-        public Skills Skills { get; }
-        public Light Light { get; }
-        public Multis Multis { get; }
-        public Sounds Sound { get; }
+        public string Folder { get; private set;}
+        public Dictionary<MapNames, Map> Maps { get; private set; }
+        public Gumps Gumps { get; private set; }
+        public Animations Animations { get; private set; }
+        public Skills Skills { get; private set; }
+        public Light Light { get; private set; }
+        public Multis Multis { get; private set; }
+        public Sounds Sound { get; private set; }
 
-        public TileData  TileData { get; }
+        public TileData  TileData { get; private set; }
 
-        public RadarCol RadarCol { get; }
+        public RadarCol RadarCol { get; private set; }
 
-        public Art Art { get; }
+        public Art Art { get; private set; }
 
-        public Files Files { get; }
+        public Files Files { get; private set; }
 
-        public Verdata Verdata { get; }
+        public Verdata Verdata { get; private set; }
 
-        public Hues Hues { get; }
+        public Hues Hues { get; private set; }
 
-        public Textures Textures { get; }
+        public Textures Textures { get; private set; }
 
-        public AnimationEdit AnimationEdit { get; }
+        public AnimationEdit AnimationEdit { get; private set; }
 
-        public ASCIIText ASCIIText { get; }
+        public ASCIIText ASCIIText { get; private set; }
 
-        public MultiMap MultiMap { get; }
+        public MultiMap MultiMap { get; private set; }
 
         public Dictionary<string, Map> CustomMaps { get; set; } = new Dictionary<string, Map>();
 
         public UltimaOnlineReaderFactory(string folder)
         {
             Folder = folder;
-            Files = new Files(folder);
+            Files = new Files(Folder);
+
+        }
+
+        public void Init()
+        {
             Verdata = new Verdata(this);
             RadarCol = new RadarCol(this);
             Hues = new Hues(this);
@@ -68,7 +73,7 @@ namespace Ultima
             Multis = new Multis(this);
             AnimationEdit = new AnimationEdit(this);
             ASCIIText = new ASCIIText(this);
-            _Maps = new Dictionary<MapNames, Map>
+            Maps = new Dictionary<MapNames, Map>
             {
                 {MapNames.Felucca, Map.Felucca(this)},
                 {MapNames.Ilshenar, Map.Ilshenar(this)},
@@ -78,9 +83,7 @@ namespace Ultima
                 {MapNames.TerMur, Map.TerMur(this)}
             };
             MultiMap = new Ultima.MultiMap(this);
-            Animations = new Animations(Verdata, Hues, Files);
-        
-
+            Animations = new Animations(this);
         }
 
 
@@ -114,7 +117,7 @@ namespace Ultima
                 // and unmanaged resources. 
                 if (disposing)
                 {
-                    foreach (var map in _Maps)
+                    foreach (var map in Maps)
                     {
                         map.Value.Dispose();
                     }
@@ -133,8 +136,8 @@ namespace Ultima
                 // unmanaged resources here. 
                 // If disposing is false, 
                 // only the following code is executed.
-                _Maps.Clear();
-                _Maps = null;
+                Maps.Clear();
+                
                 // Note disposing has been done.
                 disposed = true;
 

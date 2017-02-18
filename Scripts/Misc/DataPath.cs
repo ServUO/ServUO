@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 
 using Microsoft.Win32;
+using Ultima;
 
 namespace Server.Misc
 {
@@ -16,6 +17,7 @@ namespace Server.Misc
         */
         private static readonly string CustomPath = Config.Get(@"DataPath.CustomPath", null);
         private static readonly bool IgnoreStandardPaths = Config.Get("DataPath.IgnoreStandardPaths", false);
+        
         /* The following is a list of files which a required for proper execution:
         * 
         * Multi.idx
@@ -67,11 +69,13 @@ namespace Server.Misc
 
                 Core.DataDirectories.Add(Console.ReadLine());
             }
+            World.Factory = new UltimaOnlineReaderFactory(CustomPath);
 
 	        foreach (var dir in Core.DataDirectories)
 	        {
-		        Ultima.Files.SetMulPath(dir);
+                World.Factory.Files.SetMulPath(dir);
 	        }
+            World.Factory.Init();
         }
 
         private static string GetPath(string subName, string keyName)

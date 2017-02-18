@@ -1,0 +1,8 @@
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests3\bin\Debug\UltimaTests3.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests3\bin\Debug\UltimaTests3.pdb
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests3\bin\Debug\nunit.framework.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests3\bin\Debug\Ultima.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests3\bin\Debug\nunit.framework.xml
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests3\obj\Debug\UltimaTests3.csprojResolveAssemblyReference.cache
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests3\obj\Debug\UltimaTests3.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests3\obj\Debug\UltimaTests3.pdb

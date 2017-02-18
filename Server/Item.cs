@@ -1034,7 +1034,7 @@ namespace Server
         {
             try
             {
-                return Ultima.Art.GetStatic(itemID);
+                return World.Factory.Art.Get(itemID);
             }
             catch
             {
@@ -1048,7 +1048,7 @@ namespace Server
 
         public static void Measure(Bitmap bmp, out int xMin, out int yMin, out int xMax, out int yMax)
         {
-            Ultima.Art.Measure(bmp, out xMin, out yMin, out xMax, out yMax);
+            World.Factory.Art.Measure(bmp, out xMin, out yMin, out xMax, out yMax);
         }
 
         public static Rectangle MeasureBound(Bitmap bmp)
