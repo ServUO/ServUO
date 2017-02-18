@@ -360,8 +360,9 @@ namespace Server.Commands
             {
                 Type type = ScriptCompiler.FindTypeByName(split[i].Trim());
 
-                if (type == null && Core.Debug)
-                    Console.WriteLine("Match type not found ('{0}')", split[i].Trim());
+                if (type == null)
+			if (Core.Debug)
+                    		Console.WriteLine("Match type not found ('{0}')", split[i].Trim());
                 else
                     list.Add(type);
             }
