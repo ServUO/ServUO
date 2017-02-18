@@ -5,7 +5,7 @@ using System.IO;
 // FileIDs
 //0 - map0.mul
 //1 - staidx0.mul
-//2 - statics0.mul
+//2 - s0.mul
 //3 - artidx.mul
 //4 - art.mul
 //5 - anim.idx
@@ -27,19 +27,20 @@ namespace Ultima
 {
 	public sealed class Verdata
 	{
-		public static Stream Stream { get; private set; }
-		public static Entry5D[] Patches { get; private set; }
+		public  Stream Stream { get; private set; }
+		public  Entry5D[] Patches { get; private set; }
 
-		private static string path;
+		private  string path;
 
-		static Verdata()
+		 public Verdata(Files files)
 		{
-			Initialize();
+
+			Initialize(files);
 		}
 
-		public static void Initialize()
+		public  void Initialize(Files file)
 		{
-			path = Files.GetFilePath("verdata.mul");
+			path = file.GetFilePath("verdata.mul");
 
 			if (path == null)
 			{
@@ -68,7 +69,7 @@ namespace Ultima
 			}
 		}
 
-		public static void Seek(int lookup)
+		public  void Seek(int lookup)
 		{
 			if (Stream == null || !Stream.CanRead || !Stream.CanSeek)
 			{

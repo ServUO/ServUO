@@ -12,21 +12,22 @@ namespace Ultima
 {
 	public sealed class SpeechList
 	{
-		public static List<SpeechEntry> Entries { get; set; }
+		public  List<SpeechEntry> Entries { get; set; }
+	    private Files _Files;
+		private  readonly byte[] m_Buffer = new byte[128];
 
-		private static readonly byte[] m_Buffer = new byte[128];
-
-		static SpeechList()
+		public SpeechList(Files files)
 		{
-			Initialize();
+		    this._Files = files;
+		    Initialize();
 		}
 
-		/// <summary>
+	    /// <summary>
 		///     Loads speech.mul in <see cref="SpeechList.Entries" />
 		/// </summary>
-		public static void Initialize()
+		public  void Initialize()
 		{
-			string path = Files.GetFilePath("speech.mul");
+			string path = _Files.GetFilePath("speech.mul");
 			if (path == null)
 			{
 				Entries = new List<SpeechEntry>(0);
@@ -70,7 +71,7 @@ namespace Ultima
 		///     Saves speech.mul to <see cref="FileName" />
 		/// </summary>
 		/// <param name="FileName"></param>
-		public static void SaveSpeechList(string FileName)
+		public  void SaveSpeechList(string FileName)
 		{
 			Entries.Sort(new OrderComparer());
 			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
@@ -89,7 +90,7 @@ namespace Ultima
 			}
 		}
 
-		public static void ExportToCSV(string FileName)
+		public  void ExportToCSV(string FileName)
 		{
 			using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.Unicode))
 			{
@@ -101,7 +102,7 @@ namespace Ultima
 			}
 		}
 
-		public static void ImportFromCSV(string FileName)
+		public  void ImportFromCSV(string FileName)
 		{
 			Entries = new List<SpeechEntry>(0);
 			if (!File.Exists(FileName))
@@ -141,7 +142,7 @@ namespace Ultima
 			}
 		}
 
-		public static int ConvertStringToInt(string text)
+		public  int ConvertStringToInt(string text)
 		{
 			int result;
 			if (text.Contains("0x"))

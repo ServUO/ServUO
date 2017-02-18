@@ -12,16 +12,31 @@ namespace Ultima
 {
 	public sealed class Art
 	{
-		private static FileIndex m_FileIndex = new FileIndex(
-			"Artidx.mul", "Art.mul", "artLegacyMUL.uop", 0x10000 /*0x13FDC*/, 4, ".tga", 0x13FDC, false);
+	    private readonly Files _Files;
+	    /// <summary>
+	    /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
+	    /// </summary>
+	    public Art(Verdata verdata, Files files)
+	    {
+	        _Files = files;
+	        m_Cache = new Bitmap[0xFFFF];
+            m_Removed = new bool[0xFFFF];
+	        m_FileIndex = new FileIndex("Artidx.mul", "Art.mul", "artLegacyMUL.uop", 0x10000 /*0x13FDC*/, 4, ".tga",
+	            0x13FDC, false, verdata, files);
 
-		private static Bitmap[] m_Cache;
-		private static bool[] m_Removed;
-		private static readonly Hashtable m_patched = new Hashtable();
-		public static bool Modified = false;
+            m_patched.Clear();
+            Modified = false;
+        }
 
-		private static byte[] m_StreamBuffer;
-		private static byte[] Validbuffer;
+	    private FileIndex m_FileIndex;
+
+		private Bitmap[] m_Cache;
+		private bool[] m_Removed;
+		private readonly Hashtable m_patched = new Hashtable();
+		public bool Modified = false;
+
+		private byte[] m_StreamBuffer;
+		private byte[] Validbuffer;
 
 		private struct CheckSums
 		{
@@ -31,16 +46,11 @@ namespace Ultima
 			public int index;
 		}
 
-		private static List<CheckSums> checksumsLand;
-		private static List<CheckSums> checksumsStatic;
+		private  List<CheckSums> checksumsLand;
+		private  List<CheckSums> checksums;
 
-		static Art()
-		{
-			m_Cache = new Bitmap[0xFFFF];
-			m_Removed = new bool[0xFFFF];
-		}
 
-		public static int GetMaxItemID()
+		public  int GetMaxItemID()
 		{
 			if (GetIdxLength() >= 0x13FDC)
 			{
@@ -55,12 +65,12 @@ namespace Ultima
 			return 0x3FFF;
 		}
 
-		public static bool IsUOAHS()
+		public  bool IsUOAHS()
 		{
 			return (GetIdxLength() >= 0x13FDC);
 		}
 
-		public static ushort GetLegalItemID(int itemID, bool checkmaxid = true)
+		public  ushort GetLegalItemID(int itemID, bool checkmaxid = true)
 		{
 			if (itemID < 0)
 			{
@@ -78,7 +88,7 @@ namespace Ultima
 			return (ushort)itemID;
 		}
 
-		public static int GetIdxLength()
+		public  int GetIdxLength()
 		{
 			return (int)(m_FileIndex.IdxLength / 12);
 		}
@@ -86,22 +96,17 @@ namespace Ultima
 		/// <summary>
 		///     ReReads Art.mul
 		/// </summary>
-		public static void Reload()
+		public  void Reload()
 		{
-			m_FileIndex = new FileIndex(
-				"Artidx.mul", "Art.mul", "artLegacyMUL.uop", 0x10000 /*0x13FDC*/, 4, ".tga", 0x13FDC, false);
-			m_Cache = new Bitmap[0xFFFF];
-			m_Removed = new bool[0xFFFF];
-			m_patched.Clear();
-			Modified = false;
+		
 		}
 
 		/// <summary>
-		///     Sets bmp of index in <see cref="m_Cache" /> of Static
+		///     Sets bmp of index in <see cref="m_Cache" /> of 
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="bmp"></param>
-		public static void ReplaceStatic(int index, Bitmap bmp)
+		public  void Replace(int index, Bitmap bmp)
 		{
 			index = GetLegalItemID(index);
 			index += 0x4000;
@@ -120,7 +125,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="bmp"></param>
-		public static void ReplaceLand(int index, Bitmap bmp)
+		public  void ReplaceLand(int index, Bitmap bmp)
 		{
 			index &= 0x3FFF;
 			m_Cache[index] = bmp;
@@ -133,10 +138,10 @@ namespace Ultima
 		}
 
 		/// <summary>
-		///     Removes Static index <see cref="m_Removed" />
+		///     Removes  index <see cref="m_Removed" />
 		/// </summary>
 		/// <param name="index"></param>
-		public static void RemoveStatic(int index)
+		public  void Remove(int index)
 		{
 			index = GetLegalItemID(index);
 			index += 0x4000;
@@ -149,7 +154,7 @@ namespace Ultima
 		///     Removes Land index <see cref="m_Removed" />
 		/// </summary>
 		/// <param name="index"></param>
-		public static void RemoveLand(int index)
+		public  void RemoveLand(int index)
 		{
 			index &= 0x3FFF;
 			m_Removed[index] = true;
@@ -157,11 +162,11 @@ namespace Ultima
 		}
 
 		/// <summary>
-		///     Tests if Static is definied (width and hight check)
+		///     Tests if  is definied (width and hight check)
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static unsafe bool IsValidStatic(int index)
+		public  unsafe bool IsValid(int index)
 		{
 			index = GetLegalItemID(index);
 			index += 0x4000;
@@ -206,7 +211,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static bool IsValidLand(int index)
+		public  bool IsValidLand(int index)
 		{
 			index &= 0x3FFF;
 			if (m_Removed[index])
@@ -229,7 +234,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static Bitmap GetLand(int index)
+		public  Bitmap GetLand(int index)
 		{
 			bool patched;
 			return GetLand(index, out patched);
@@ -241,7 +246,7 @@ namespace Ultima
 		/// <param name="index"></param>
 		/// <param name="patched"></param>
 		/// <returns></returns>
-		public static Bitmap GetLand(int index, out bool patched)
+		public  Bitmap GetLand(int index, out bool patched)
 		{
 			index &= 0x3FFF;
 			if (m_patched.Contains(index))
@@ -273,7 +278,7 @@ namespace Ultima
 				m_patched[index] = true;
 			}
 
-			if (Files.CacheData)
+			if (_Files.CacheData)
 			{
 				return m_Cache[index] = LoadLand(stream, length);
 			}
@@ -283,7 +288,7 @@ namespace Ultima
 			}
 		}
 
-		public static byte[] GetRawLand(int index)
+		public  byte[] GetRawLand(int index)
 		{
 			index &= 0x3FFF;
 
@@ -301,23 +306,23 @@ namespace Ultima
 		}
 
 		/// <summary>
-		///     Returns Bitmap of Static (with Cache)
+		///     Returns Bitmap of  (with Cache)
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static Bitmap GetStatic(int index, bool checkmaxid = true)
+		public  Bitmap Get(int index, bool checkmaxid = true)
 		{
 			bool patched;
-			return GetStatic(index, out patched, checkmaxid);
+			return Get(index, out patched, checkmaxid);
 		}
 
 		/// <summary>
-		///     Returns Bitmap of Static (with Cache) and verdata bool
+		///     Returns Bitmap of  (with Cache) and verdata bool
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="patched"></param>
 		/// <returns></returns>
-		public static Bitmap GetStatic(int index, out bool patched, bool checkmaxid = true)
+		public  Bitmap Get(int index, out bool patched, bool checkmaxid = true)
 		{
 			index = GetLegalItemID(index, checkmaxid);
 			index += 0x4000;
@@ -351,17 +356,17 @@ namespace Ultima
 				m_patched[index] = true;
 			}
 
-			if (Files.CacheData)
+			if (_Files.CacheData)
 			{
-				return m_Cache[index] = LoadStatic(stream, length);
+				return m_Cache[index] = Load(stream, length);
 			}
 			else
 			{
-				return LoadStatic(stream, length);
+				return Load(stream, length);
 			}
 		}
 
-		public static byte[] GetRawStatic(int index)
+		public  byte[] GetRaw(int index)
 		{
 			index = GetLegalItemID(index);
 			index += 0x4000;
@@ -379,7 +384,7 @@ namespace Ultima
 			return buffer;
 		}
 
-		public static unsafe void Measure(Bitmap bmp, out int xMin, out int yMin, out int xMax, out int yMax)
+		public  unsafe void Measure(Bitmap bmp, out int xMin, out int yMin, out int xMax, out int yMax)
 		{
 			xMin = yMin = 0;
 			xMax = yMax = -1;
@@ -452,7 +457,7 @@ namespace Ultima
 			bmp.UnlockBits(bd);
 		}
 
-		private static unsafe Bitmap LoadStatic(Stream stream, int length)
+		private  unsafe Bitmap Load(Stream stream, int length)
 		{
 			Bitmap bmp;
 			if (m_StreamBuffer == null || m_StreamBuffer.Length < length)
@@ -523,7 +528,7 @@ namespace Ultima
 			return bmp;
 		}
 
-		private static unsafe Bitmap LoadLand(Stream stream, int length)
+		private  unsafe Bitmap LoadLand(Stream stream, int length)
 		{
 			var bmp = new Bitmap(44, 44, PixelFormat.Format16bppArgb1555);
 			BitmapData bd = bmp.LockBits(new Rectangle(0, 0, 44, 44), ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
@@ -575,10 +580,10 @@ namespace Ultima
 		///     Saves mul
 		/// </summary>
 		/// <param name="path"></param>
-		public static unsafe void Save(string path)
+		public  unsafe void Save(string path)
 		{
 			checksumsLand = new List<CheckSums>();
-			checksumsStatic = new List<CheckSums>();
+			checksums = new List<CheckSums>();
 			string idx = Path.Combine(path, "artidx.mul");
 			string mul = Path.Combine(path, "art.mul");
 			using (
@@ -594,7 +599,7 @@ namespace Ultima
 				{
 					for (int index = 0; index < GetIdxLength(); index++)
 					{
-						Files.FireFileSaveEvent();
+                        _Files.FireFileSaveEvent();
 						if (m_Cache[index] == null)
 						{
 							if (index < 0x4000)
@@ -603,7 +608,7 @@ namespace Ultima
 							}
 							else
 							{
-								m_Cache[index] = GetStatic(index - 0x4000, false);
+								m_Cache[index] = Get(index - 0x4000, false);
 							}
 						}
 						Bitmap bmp = m_Cache[index];
@@ -682,7 +687,7 @@ namespace Ultima
 							bmp.Save(ms, ImageFormat.Bmp);
 							byte[] checksum = sha.ComputeHash(ms.ToArray());
 							CheckSums sum;
-							if (compareSaveImagesStatic(checksum, out sum))
+							if (compareSaveImages(checksum, out sum))
 							{
 								binidx.Write(sum.pos); //lookup
 								binidx.Write(sum.length);
@@ -769,7 +774,7 @@ namespace Ultima
 								index = index
 							};
 							//Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, start, length));
-							checksumsStatic.Add(s);
+							checksums.Add(s);
 						}
 					}
 					memidx.WriteTo(fsidx);
@@ -778,7 +783,7 @@ namespace Ultima
 			}
 		}
 
-		private static bool compareSaveImagesLand(byte[] newchecksum, out CheckSums sum)
+		private  bool compareSaveImagesLand(byte[] newchecksum, out CheckSums sum)
 		{
 			sum = new CheckSums();
 			for (int i = 0; i < checksumsLand.Count; ++i)
@@ -806,12 +811,12 @@ namespace Ultima
 			return false;
 		}
 
-		private static bool compareSaveImagesStatic(byte[] newchecksum, out CheckSums sum)
+		private  bool compareSaveImages(byte[] newchecksum, out CheckSums sum)
 		{
 			sum = new CheckSums();
-			for (int i = 0; i < checksumsStatic.Count; ++i)
+			for (int i = 0; i < checksums.Count; ++i)
 			{
-				byte[] cmp = checksumsStatic[i].checksum;
+				byte[] cmp = checksums[i].checksum;
 				if (((cmp == null) || (newchecksum == null)) || (cmp.Length != newchecksum.Length))
 				{
 					return false;
@@ -827,7 +832,7 @@ namespace Ultima
 				}
 				if (valid)
 				{
-					sum = checksumsStatic[i];
+					sum = checksums[i];
 					return true;
 				}
 			}

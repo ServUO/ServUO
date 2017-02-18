@@ -37,9 +37,10 @@ namespace Ultima
 	public sealed class TileList
 	{
 		private readonly List<Tile> m_Tiles;
-
-		public TileList()
+	    private readonly Art art ;
+		public TileList(Art art)
 		{
+		    this.art = art;
 			m_Tiles = new List<Tile>();
 		}
 
@@ -76,28 +77,32 @@ namespace Ultima
 	public sealed class MTileList
 	{
 		private readonly List<MTile> m_Tiles;
-
 		public MTileList()
 		{
 			m_Tiles = new List<MTile>();
 		}
 
-		public int Count { get { return m_Tiles.Count; } }
+		public int Count => m_Tiles.Count;
 
-		public void Add(ushort id, sbyte z)
+	    public void Add(ushort id, sbyte z, ItemData ourItemData, ItemData theirItemData, ushort artGetLegalItemId)
 		{
-			m_Tiles.Add(new MTile(id, z));
+			m_Tiles.Add(new MTile(id, z, ourItemData, theirItemData, artGetLegalItemId));
 		}
 
-		public void Add(ushort id, sbyte z, sbyte flag)
+		public void Add(ushort id, sbyte z, sbyte flag, ItemData ourItemData, ItemData theirItemData, ushort artGetLegalItemId)
 		{
-			m_Tiles.Add(new MTile(id, z, flag));
+			m_Tiles.Add(new MTile(id, z, flag, ourItemData, theirItemData, artGetLegalItemId));
 		}
 
-		public void Add(ushort id, sbyte z, sbyte flag, int unk1)
+		public void Add(ushort id, sbyte z, sbyte flag, int unk1, ItemData ourItemData, ItemData theirItemData, ushort artGetLegalItemId)
 		{
-			m_Tiles.Add(new MTile(id, z, flag, unk1));
+			m_Tiles.Add(new MTile(id, z, flag, unk1, ourItemData, theirItemData, artGetLegalItemId));
 		}
+
+	    public void Add(MTile mtle)
+	    {
+	        m_Tiles.Add(mtle);
+	    }
 
 		public MTile[] ToArray()
 		{
@@ -117,27 +122,27 @@ namespace Ultima
 			return m_Tiles[i];
 		}
 
-		public void Set(int i, ushort id, sbyte z)
+		public void Set(int i, ushort id, sbyte z, ushort artGetLegalItemId)
 		{
 			if (i < Count)
 			{
-				m_Tiles[i].Set(id, z);
+				m_Tiles[i].Set(id, z, artGetLegalItemId);
 			}
 		}
 
-		public void Set(int i, ushort id, sbyte z, sbyte flag)
+		public void Set(int i, ushort id, sbyte z, sbyte flag, ushort artGetLegalItemId)
 		{
 			if (i < Count)
 			{
-				m_Tiles[i].Set(id, z, flag);
+				m_Tiles[i].Set(id, z, flag, artGetLegalItemId);
 			}
 		}
 
-		public void Set(int i, ushort id, sbyte z, sbyte flag, int unk1)
+		public void Set(int i, ushort id, sbyte z, sbyte flag, int unk1, ushort artGetLegalItemId)
 		{
 			if (i < Count)
 			{
-				m_Tiles[i].Set(id, z, flag, unk1);
+				m_Tiles[i].Set(id, z, flag, unk1, artGetLegalItemId);
 			}
 		}
 

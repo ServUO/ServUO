@@ -10,14 +10,20 @@ namespace Ultima
 	public sealed class MultiMap
 	{
 		private static byte[] m_StreamBuffer;
+	    private readonly Files _Files;
 
-		/// <summary>
+	    public MultiMap(Files files)
+	    {
+	        _Files = files;
+	    }
+
+	    /// <summary>
 		///     Returns Bitmap
 		/// </summary>
 		/// <returns></returns>
-		public static unsafe Bitmap GetMultiMap()
+		public unsafe Bitmap GetMultiMap()
 		{
-			string path = Files.GetFilePath("Multimap.rle");
+			string path = _Files.GetFilePath("Multimap.rle");
 			if (path != null)
 			{
 				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -155,10 +161,10 @@ namespace Ultima
 		/// </summary>
 		/// <param name="id">facet id</param>
 		/// <returns>Bitmap</returns>
-		public static unsafe Bitmap GetFacetImage(int id)
+		public unsafe Bitmap GetFacetImage(int id)
 		{
 			Bitmap bmp;
-			string path = Files.GetFilePath(String.Format("facet0{0}.mul", id));
+			string path = _Files.GetFilePath(String.Format("facet0{0}.mul", id));
 			if (path != null)
 			{
 				using (var reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)))

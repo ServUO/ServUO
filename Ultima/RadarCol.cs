@@ -10,15 +10,17 @@ namespace Ultima
 {
 	public sealed class RadarCol
 	{
-		static RadarCol()
+	    private Files _Files;
+		public RadarCol(Files files)
 		{
-			Initialize();
+		    _Files = files;
+		    Initialize();
 		}
 
-		private static short[] m_Colors;
-		public static short[] Colors { get { return m_Colors; } }
+	    private  short[] m_Colors;
+		public  short[] Colors { get { return m_Colors; } }
 
-		public static short GetItemColor(int index)
+		public  short GetItemColor(int index)
 		{
 			if (index + 0x4000 < m_Colors.Length)
 			{
@@ -27,7 +29,7 @@ namespace Ultima
 			return 0;
 		}
 
-		public static short GetLandColor(int index)
+		public  short GetLandColor(int index)
 		{
 			if (index < m_Colors.Length)
 			{
@@ -36,19 +38,19 @@ namespace Ultima
 			return 0;
 		}
 
-		public static void SetItemColor(int index, short value)
+		public  void SetItemColor(int index, short value)
 		{
 			m_Colors[index + 0x4000] = value;
 		}
 
-		public static void SetLandColor(int index, short value)
+		public  void SetLandColor(int index, short value)
 		{
 			m_Colors[index] = value;
 		}
 
-		public static void Initialize()
+		public  void Initialize()
 		{
-			string path = Files.GetFilePath("radarcol.mul");
+			string path = _Files.GetFilePath("radarcol.mul");
 			if (path != null)
 			{
 				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -67,7 +69,7 @@ namespace Ultima
 			}
 		}
 
-		public static void Save(string FileName)
+		public  void Save(string FileName)
 		{
 			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
 			{
@@ -81,7 +83,7 @@ namespace Ultima
 			}
 		}
 
-		public static void ExportToCSV(string FileName)
+		public  void ExportToCSV(string FileName)
 		{
 			using (
 				var Tex = new StreamWriter(
@@ -96,7 +98,7 @@ namespace Ultima
 			}
 		}
 
-		public static void ImportFromCSV(string FileName)
+		public  void ImportFromCSV(string FileName)
 		{
 			if (!File.Exists(FileName))
 			{
@@ -151,7 +153,7 @@ namespace Ultima
 			}
 		}
 
-		private static int ConvertStringToInt(string text)
+		private  int ConvertStringToInt(string text)
 		{
 			int result;
 			if (text.Contains("0x"))

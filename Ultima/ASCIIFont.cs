@@ -10,15 +10,17 @@ namespace Ultima
 {
 	public sealed class ASCIIFont
 	{
-		public byte Header { get; private set; }
+	    private ASCIIText ASCIIText;
+        public byte Header { get; private set; }
 		public byte[] Unk { get; set; }
 		public Bitmap[] Characters { get; set; }
 		public int Height { get; set; }
 
-		public ASCIIFont(byte header)
+		public ASCIIFont(byte header, ASCIIText asciiText)
 		{
 			Header = header;
-			Height = 0;
+		    ASCIIText = asciiText;
+		    Height = 0;
 			Unk = new byte[224];
 			Characters = new Bitmap[224];
 		}
@@ -56,32 +58,33 @@ namespace Ultima
 			Height = import.Height;
 		}
 
-		public static ASCIIFont GetFixed(int font)
+		public  static ASCIIFont GetFixed(int font, ASCIIText asciiText)
 		{
 			if (font < 0 || font > 9)
 			{
-				return ASCIIText.Fonts[3];
+				return asciiText.Fonts[3];
 			}
 
-			return ASCIIText.Fonts[font];
+			return asciiText.Fonts[font];
 		}
 	}
 
-	public static class ASCIIText
+	public  class ASCIIText
 	{
-		public static ASCIIFont[] Fonts = new ASCIIFont[10];
+	    private Files _Files;
+		public ASCIIFont[] Fonts = new ASCIIFont[10];
 
-		static ASCIIText()
-		{
-			Initialize();
+         ASCIIText()
+         {
+            Initialize();
 		}
 
 		/// <summary>
 		///     Reads fonts.mul
 		/// </summary>
-		public static unsafe void Initialize()
+		public  unsafe void Initialize()
 		{
-			string path = Files.GetFilePath("fonts.mul");
+			string path = _Files.GetFilePath("fonts.mul");
 
 			if (path != null)
 			{
@@ -95,7 +98,7 @@ namespace Ultima
 						for (int i = 0; i < 10; ++i)
 						{
 							byte header = *read++;
-							Fonts[i] = new ASCIIFont(header);
+							Fonts[i] = new ASCIIFont(header, this);
 
 							for (int k = 0; k < 224; ++k)
 							{
@@ -143,7 +146,7 @@ namespace Ultima
 			}
 		}
 
-		public static unsafe void Save(string FileName)
+		public  unsafe void Save(string FileName)
 		{
 			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
 			{
@@ -190,9 +193,9 @@ namespace Ultima
 		/// <param name="fontId"></param>
 		/// <param name="text"></param>
 		/// <returns></returns>
-		public static Bitmap DrawText(int fontId, string text)
+		public  Bitmap DrawText(int fontId, string text)
 		{
-			ASCIIFont font = ASCIIFont.GetFixed(fontId);
+			ASCIIFont font = ASCIIFont.GetFixed(fontId, this);
 			var result = new Bitmap(font.GetWidth(text) + 2, font.Height + 2);
 
 			int dx = 2;

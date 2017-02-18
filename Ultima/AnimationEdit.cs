@@ -11,75 +11,65 @@ namespace Ultima
 {
 	public sealed class AnimationEdit
 	{
-		private static FileIndex m_FileIndex = new FileIndex("Anim.idx", "Anim.mul", 6);
-		private static FileIndex m_FileIndex2 = new FileIndex("Anim2.idx", "Anim2.mul", -1);
-		private static FileIndex m_FileIndex3 = new FileIndex("Anim3.idx", "Anim3.mul", -1);
-		private static FileIndex m_FileIndex4 = new FileIndex("Anim4.idx", "Anim4.mul", -1);
-		private static FileIndex m_FileIndex5 = new FileIndex("Anim5.idx", "Anim5.mul", -1);
+	    private Files _files;
+	    private readonly Animations _Animations;
+        /// <summary>
+        /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
+        /// </summary>
+        public AnimationEdit(Verdata verdata, Animations animations, Files files)
+	    {
+            this._Animations = animations;
+            _files = files;
+            m_FileIndex = new FileIndex("Anim.idx", "Anim.mul", 6, verdata, _files);
+            m_FileIndex2 = new FileIndex("Anim2.idx", "Anim2.mul", -1, verdata, _files);
+            m_FileIndex3 = new FileIndex("Anim3.idx", "Anim3.mul", -1, verdata, _files);
+            m_FileIndex4 = new FileIndex("Anim4.idx", "Anim4.mul", -1, verdata, _files);
+            m_FileIndex5 = new FileIndex("Anim5.idx", "Anim5.mul", -1, verdata, _files);
+            if (m_FileIndex.IdxLength > 0)
+            {
+                animcache = new AnimIdx[m_FileIndex.IdxLength / 12];
+            }
+            if (m_FileIndex2.IdxLength > 0)
+            {
+                animcache = new AnimIdx[m_FileIndex2.IdxLength / 12];
+            }
+            if (m_FileIndex3.IdxLength > 0)
+            {
+                animcache = new AnimIdx[m_FileIndex3.IdxLength / 12];
+            }
+            if (m_FileIndex4.IdxLength > 0)
+            {
+                animcache = new AnimIdx[m_FileIndex4.IdxLength / 12];
+            }
+            if (m_FileIndex5.IdxLength > 0)
+            {
+                animcache = new AnimIdx[m_FileIndex5.IdxLength / 12];
+            }
+        }
 
-		private static AnimIdx[] animcache;
-		private static readonly AnimIdx[] animcache2;
-		private static readonly AnimIdx[] animcache3;
-		private static readonly AnimIdx[] animcache4;
-		private static readonly AnimIdx[] animcache5;
+	    private  FileIndex m_FileIndex;
+		private  FileIndex m_FileIndex2;
+		private  FileIndex m_FileIndex3;
+		private  FileIndex m_FileIndex4;
+		private  FileIndex m_FileIndex5;
 
-		static AnimationEdit()
-		{
-			if (m_FileIndex.IdxLength > 0)
-			{
-				animcache = new AnimIdx[m_FileIndex.IdxLength / 12];
-			}
-			if (m_FileIndex2.IdxLength > 0)
-			{
-				animcache2 = new AnimIdx[m_FileIndex2.IdxLength / 12];
-			}
-			if (m_FileIndex3.IdxLength > 0)
-			{
-				animcache3 = new AnimIdx[m_FileIndex3.IdxLength / 12];
-			}
-			if (m_FileIndex4.IdxLength > 0)
-			{
-				animcache4 = new AnimIdx[m_FileIndex4.IdxLength / 12];
-			}
-			if (m_FileIndex5.IdxLength > 0)
-			{
-				animcache5 = new AnimIdx[m_FileIndex5.IdxLength / 12];
-			}
-		}
+		private  AnimIdx[] animcache;
+		private  readonly AnimIdx[] animcache2;
+		private  readonly AnimIdx[] animcache3;
+		private  readonly AnimIdx[] animcache4;
+		private  readonly AnimIdx[] animcache5;
+
+	
 
 		/// <summary>
 		///     Rereads AnimX files
 		/// </summary>
-		public static void Reload()
+		public  void Reload()
 		{
-			m_FileIndex = new FileIndex("Anim.idx", "Anim.mul", 6);
-			m_FileIndex2 = new FileIndex("Anim2.idx", "Anim2.mul", -1);
-			m_FileIndex3 = new FileIndex("Anim3.idx", "Anim3.mul", -1);
-			m_FileIndex4 = new FileIndex("Anim4.idx", "Anim4.mul", -1);
-			m_FileIndex5 = new FileIndex("Anim5.idx", "Anim5.mul", -1);
-			if (m_FileIndex.IdxLength > 0)
-			{
-				animcache = new AnimIdx[m_FileIndex.IdxLength / 12];
-			}
-			if (m_FileIndex2.IdxLength > 0)
-			{
-				animcache = new AnimIdx[m_FileIndex2.IdxLength / 12];
-			}
-			if (m_FileIndex3.IdxLength > 0)
-			{
-				animcache = new AnimIdx[m_FileIndex3.IdxLength / 12];
-			}
-			if (m_FileIndex4.IdxLength > 0)
-			{
-				animcache = new AnimIdx[m_FileIndex4.IdxLength / 12];
-			}
-			if (m_FileIndex5.IdxLength > 0)
-			{
-				animcache = new AnimIdx[m_FileIndex5.IdxLength / 12];
-			}
+			
 		}
 
-		private static void GetFileIndex(
+		private  void GetFileIndex(
 			int body, int fileType, int action, int direction, out FileIndex fileIndex, out int index)
 		{
 			switch (fileType)
@@ -170,7 +160,7 @@ namespace Ultima
 			}
 		}
 
-		private static AnimIdx[] GetCache(int filetype)
+		private  AnimIdx[] GetCache(int filetype)
 		{
 			switch (filetype)
 			{
@@ -189,7 +179,7 @@ namespace Ultima
 			}
 		}
 
-		public static AnimIdx GetAnimation(int filetype, int body, int action, int dir)
+		public  AnimIdx GetAnimation(int filetype, int body, int action, int dir)
 		{
 			AnimIdx[] cache = GetCache(filetype);
 			FileIndex fileIndex;
@@ -206,7 +196,7 @@ namespace Ultima
 			return cache[index] = new AnimIdx(index, fileIndex, filetype);
 		}
 
-		public static bool IsActionDefinied(int filetype, int body, int action)
+		public  bool IsActionDefinied(int filetype, int body, int action)
 		{
 			AnimIdx[] cache = GetCache(filetype);
 			FileIndex fileIndex;
@@ -228,7 +218,7 @@ namespace Ultima
 				}
 			}
 
-			int AnimCount = Animations.GetAnimLength(body, filetype);
+			int AnimCount = _Animations.GetAnimLength(body, filetype);
 			if (AnimCount < action)
 			{
 				return false;
@@ -244,13 +234,13 @@ namespace Ultima
 			return true;
 		}
 
-		public static void LoadFromVD(int filetype, int body, BinaryReader bin)
+		public  void LoadFromVD(int filetype, int body, BinaryReader bin)
 		{
 			AnimIdx[] cache = GetCache(filetype);
 			FileIndex fileIndex;
 			int index;
 			GetFileIndex(body, filetype, 0, 0, out fileIndex, out index);
-			int animlength = Animations.GetAnimLength(body, filetype) * 5;
+			int animlength = _Animations.GetAnimLength(body, filetype) * 5;
 			var entries = new Entry3D[animlength];
 
 			for (int i = 0; i < animlength; ++i)
@@ -270,7 +260,7 @@ namespace Ultima
 			}
 		}
 
-		public static void ExportToVD(int filetype, int body, string file)
+		public  void ExportToVD(int filetype, int body, string file)
 		{
 			AnimIdx[] cache = GetCache(filetype);
 			FileIndex fileIndex;
@@ -281,7 +271,7 @@ namespace Ultima
 				using (var bin = new BinaryWriter(fs))
 				{
 					bin.Write((short)6);
-					int animlength = Animations.GetAnimLength(body, filetype);
+					int animlength = _Animations.GetAnimLength(body, filetype);
 					int currtype = animlength == 22 ? 0 : animlength == 13 ? 1 : 2;
 					bin.Write((short)currtype);
 					long indexpos = bin.BaseStream.Position;
@@ -322,7 +312,7 @@ namespace Ultima
 			}
 		}
 
-		public static void Save(int filetype, string path)
+		public  void Save(int filetype, string path)
 		{
 			string filename;
 			AnimIdx[] cache;
@@ -1056,7 +1046,7 @@ namespace Ultima
 			Center = new Point(x, y);
 		}
 
-		private static byte GetPaletteIndex(ushort[] palette, ushort col)
+		private  byte GetPaletteIndex(ushort[] palette, ushort col)
 		{
 			for (int i = 0; i < palette.Length; i++)
 			{

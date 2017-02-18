@@ -11,6 +11,7 @@ namespace Ultima
 	{
 		private int m_Header1;
 		private short m_Header2;
+        private Files _Files;
 
 		public List<StringEntry> Entries { get; set; }
 		public string Language { get; private set; }
@@ -24,10 +25,11 @@ namespace Ultima
 		///     Initialize <see cref="StringList" /> of Language
 		/// </summary>
 		/// <param name="language"></param>
-		public StringList(string language)
+		public StringList(string language, Files files)
 		{
 			Language = language;
-			LoadEntry(Files.GetFilePath(String.Format("cliloc.{0}", language)));
+		    _Files = files;
+		    LoadEntry(_Files.GetFilePath(String.Format("cliloc.{0}", language)));
 		}
 
 		/// <summary>
@@ -35,10 +37,11 @@ namespace Ultima
 		/// </summary>
 		/// <param name="language"></param>
 		/// <param name="path"></param>
-		public StringList(string language, string path)
+		public StringList(string language, string path, Files files)
 		{
 			Language = language;
-			LoadEntry(path);
+		    this._Files = files;
+		    LoadEntry(path);
 		}
 
 		private void LoadEntry(string path)
