@@ -43,8 +43,15 @@ namespace Server.Commands
         public static void RebuildCategorization_OnCommand(CommandEventArgs e)
         {
             CategoryEntry root = new CategoryEntry(null, "Add Menu", new CategoryEntry[] { Items, Mobiles });
-
-            Export(root, "Data/objects.xml", "Objects");
+            
+            if (!File.Exists("Cache/objects.xml"))
+            {
+                Export(root, "Data/objects.xml", "Objects");
+            }
+			else
+			{
+				Export(root, "Cache/objects.xml", "Objects");
+			}
 
             e.Mobile.SendMessage("Categorization menu rebuilt.");
         }
