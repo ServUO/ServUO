@@ -631,6 +631,8 @@ namespace Ultima
             GetImage(x, y, width, height, bmp, true);
         }
 
+
+
         /// <summary>
         ///     Draws in given Bitmap
         /// </summary>
@@ -714,6 +716,8 @@ namespace Ultima
             bmp.UnlockBits(bd);
             m_Tiles.CloseStreams();
         }
+
+        
 
         public void DefragStatics(string path, Map map, int width, int height, bool remove)
         {

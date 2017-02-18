@@ -54,7 +54,7 @@ namespace Ultima
         public UltimaOnlineReaderFactory(string folder)
         {
             Folder = folder;
-            Files = new Files(Folder);
+            Files = new Files(this,Folder);
 
         }
 

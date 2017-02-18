@@ -11,16 +11,14 @@ namespace Ultima
 {
 	public sealed class Files
 	{
-		public delegate void FileSaveHandler();
+        public UltimaOnlineReaderFactory Factory { get; }
+        public delegate void FileSaveHandler();
 
 		public  event FileSaveHandler FileSaveEvent;
 
 		public  void FireFileSaveEvent()
 		{
-			if (FileSaveEvent != null)
-			{
-				FileSaveEvent();
-			}
+		    FileSaveEvent?.Invoke();
 		}
 
 		private  bool m_CacheData = true;
@@ -73,8 +71,11 @@ namespace Ultima
 			"unifont9.mul", "unifont10.mul", "unifont11.mul", "unifont12.mul", "uotd.exe", "verdata.mul"
 		};
 
-		public Files(String folder)
+        
+
+		public Files(UltimaOnlineReaderFactory factory ,String folder)
 		{
+		    Factory = factory;
 		    m_Directory = folder;
 			LoadMulPath();
 		}
@@ -375,28 +376,28 @@ namespace Ultima
 		/// </summary>
 		public  void CheckForNewMapSize()
 		{
-			//if (GetFilePath("map1.mul") != null)
-			//{
-			//	if (Map.Trammel.Width == 7168)
-			//	{
-			//		Map.Trammel = new Map(1, 1, 7168, 4096);
-			//	}
-			//	else
-			//	{
-			//		Map.Trammel = new Map(1, 1, 6144, 4096);
-			//	}
-			//}
-			//else
-			//{
-			//	if (Map.Trammel.Width == 7168)
-			//	{
-			//		Map.Trammel = new Map(0, 1, 7168, 4096);
-			//	}
-			//	else
-			//	{
-			//		Map.Trammel = new Map(0, 1, 6144, 4096);
-			//	}
-			//}
-		}
+            if (GetFilePath("map1.mul") != null)
+            {
+                if (Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel].Width == 7168)
+                {
+                    Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel] = new Map(Factory, 1, 1, 7168, 4096 );
+                }
+                else
+                {
+                    Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel] = new Map(Factory, 1, 1, 6144, 4096);
+                }
+            }
+            else
+            {
+                if (Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel].Width == 7168)
+                {
+                    Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel] = new Map(Factory ,0, 1, 7168, 4096);
+                }
+                else
+                {
+                    Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel] = new Map(Factory, 0, 1, 6144, 4096);
+                }
+            }
+        }
 	}
 }
