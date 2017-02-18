@@ -38,7 +38,7 @@ namespace Server.Cache
 						bin.Write((ushort)yMax);
 					}
 				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine("done");
+				Console.WriteLine("done. This requires a restart to take effect.");
 				Utility.PopColor();
 				bin.Close();	
 			}
@@ -52,12 +52,12 @@ namespace Server.Cache
 			if(!File.Exists("Cache/objects.xml"))
 			{
 				Utility.PushColor(ConsoleColor.Yellow);
-				Console.WriteLine("Cache: Generating objects.xml...");
+				Console.Write("Cache: Generating objects.xml...");
 				Utility.PopColor();
 				Cache.CreateFolder();
 				Categorization.RebuildCategorization();
 				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine("done");
+				Console.WriteLine("done. This requires a restart to take effect.");
 				Utility.PopColor();
 			}
 		}
