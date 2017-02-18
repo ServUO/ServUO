@@ -231,9 +231,6 @@ namespace Server.Engines.Despise
 
         public override void OnLocationChanged(Mobile m, Point3D oldLocation)
         {
-            if (m == null || m.Map == Map.Internal)
-                return;
-
             if (!IsInStartRegion(m.Location) && m is BaseCreature && !(m is DespiseCreature) && !(m is CorruptedWisp) && !(m is EnsorcledWisp) && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned))
             {
                 KickPet(m);
