@@ -6,7 +6,7 @@ using System.Text;
 namespace Ultima
 {
     
-    public class UltimaOnlineReaderFactory
+    public sealed class UltimaOnlineReaderFactory : IDisposable
     {
         public enum MapNames
         {
@@ -18,53 +18,129 @@ namespace Ultima
             TerMur
         }
 
-        private String _folder;
-        private Verdata _verdata;
-        private Files _files;
-        private Art _art;
-        private TileData _tileData;
-        private RadarCol _radarCol;
-        private Dictionary<MapNames, Map> maps = new Dictionary<MapNames, Map>();
-        private Hues _hues;
-        private Gumps _gumps;
-        private Animations _animations;
-        private Skills _skills;
-        private Light _Light;
-        private Multis _multis;
-        private Sounds _Sound;
-        private Textures _Textures;
+        private bool disposed;
 
-        public TileData  TileData => _tileData;
-        public RadarCol RadarCol => _radarCol;
-        public Art Art => _art;
-        public Files Files => _files;
-        public Verdata Verdata => _verdata;
-        public Hues Hues => _hues;
+        private string Folder { get; }
+        private Dictionary<MapNames, Map> _Maps;
+        public Gumps Gumps { get; }
+        public Animations Animations { get; }
+        public Skills Skills { get; }
+        public Light Light { get; }
+        public Multis Multis { get; }
+        public Sounds Sound { get; }
 
-        public UltimaOnlineReaderFactory(String folder)
+        public TileData  TileData { get; }
+
+        public RadarCol RadarCol { get; }
+
+        public Art Art { get; }
+
+        public Files Files { get; }
+
+        public Verdata Verdata { get; }
+
+        public Hues Hues { get; }
+
+        public Textures Textures { get; }
+
+        public AnimationEdit AnimationEdit { get; }
+
+        public ASCIIText ASCIIText { get; }
+
+        public MultiMap MultiMap { get; }
+
+        public Dictionary<string, Map> CustomMaps { get; set; } = new Dictionary<string, Map>();
+
+        public UltimaOnlineReaderFactory(string folder)
         {
-            _files = new Files(folder);
-            _verdata = new Verdata(_files);
-            _radarCol = new RadarCol(_files);
-            _hues = new Hues(_files);
-            _gumps = new Gumps(_verdata, _files);
-            _art = new Art(_verdata, _files);
-            _tileData = new TileData(_art, _files);
-            _skills = new Skills(_verdata, _files);
-            _Light = new Light(_verdata, _files);
-            _Sound = new Sounds(_verdata, _files);
-            _Textures = new Textures(_verdata, _files);
-            _multis = new Multis(_verdata, _art, _tileData, _files);
-            maps.Add(MapNames.Felucca, Map.Felucca(_radarCol, _tileData, _hues, _files, _art));
-            maps.Add(MapNames.Ilshenar, Map.Ilshenar(_radarCol, _tileData, _hues, _files, _art));
-            maps.Add(MapNames.Malas, Map.Malas(_radarCol, _tileData, _hues, _files, _art));
-            maps.Add(MapNames.Trammel, Map.Trammel(_radarCol, _tileData, _hues, _files, _art));
-            maps.Add(MapNames.Tokuno, Map.Tokuno(_radarCol, _tileData, _hues, _files, _art));
-            maps.Add(MapNames.TerMur, Map.TerMur(_radarCol, _tileData, _hues, _files, _art));
-            _animations = new Animations(_verdata, _hues, _files);
+            Folder = folder;
+            Files = new Files(folder);
+            Verdata = new Verdata(this);
+            RadarCol = new RadarCol(this);
+            Hues = new Hues(this);
+            Gumps = new Gumps(this);
+            Art = new Art(this);
+            TileData = new TileData(this);
+            Skills = new Skills(this);
+            Light = new Light(this);
+            Sound = new Sounds(this);
+            Textures = new Textures(this);
+            Multis = new Multis(this);
+            AnimationEdit = new AnimationEdit(this);
+            ASCIIText = new ASCIIText(this);
+            _Maps = new Dictionary<MapNames, Map>
+            {
+                {MapNames.Felucca, Map.Felucca(this)},
+                {MapNames.Ilshenar, Map.Ilshenar(this)},
+                {MapNames.Malas, Map.Malas(this)},
+                {MapNames.Trammel, Map.Trammel(this)},
+                {MapNames.Tokuno, Map.Tokuno(this)},
+                {MapNames.TerMur, Map.TerMur(this)}
+            };
+            MultiMap = new Ultima.MultiMap(this);
+            Animations = new Animations(Verdata, Hues, Files);
         
 
         }
+
+
+        // Implement IDisposable. 
+        // Do not make this method virtual. 
+        // A derived class should not be able to override this method. 
+        public void Dispose()
+        {
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method. 
+            // Therefore, you should call GC.SupressFinalize to 
+            // take this object off the finalization queue 
+            // and prevent finalization code for this object 
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios. 
+        // If disposing equals true, the method has been called directly 
+        // or indirectly by a user's code. Managed and unmanaged resources 
+        // can be disposed. 
+        // If disposing equals false, the method has been called by the 
+        // runtime from inside the finalizer and you should not reference 
+        // other objects. Only unmanaged resources can be disposed. 
+        protected void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called. 
+            if (!this.disposed)
+            {
+                // If disposing equals true, dispose all managed 
+                // and unmanaged resources. 
+                if (disposing)
+                {
+                    foreach (var map in _Maps)
+                    {
+                        map.Value.Dispose();
+                    }
+
+                    if (CustomMaps != null)
+                    {
+                        foreach (var map in CustomMaps)
+                        {
+                            map.Value.Dispose();
+                        }
+                    }
+                }
+
+
+                // Call the appropriate methods to clean up 
+                // unmanaged resources here. 
+                // If disposing is false, 
+                // only the following code is executed.
+                _Maps.Clear();
+                _Maps = null;
+                // Note disposing has been done.
+                disposed = true;
+
+            }
+        }
+
 
 
     }

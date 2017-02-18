@@ -15,68 +15,72 @@ namespace Ultima
 
 		public  Hue[] List { get; private set; }
 	    private readonly Files _Files;
-		 public Hues(Files files)
+        UltimaOnlineReaderFactory Factory { get; }
+        public Hues(UltimaOnlineReaderFactory factory)
+            : this(factory.Files)
+        {
+            Factory = factory;
+        }
+
+        /// <summary>
+        ///  Reads hues.mul and fills <see cref="List" />
+        /// </summary>
+        /// <param name="files"></param>
+        public Hues(Files files)
 		 {
 		     this._Files = files;
-		     Initialize();
-		 }
+            string path = _Files.GetFilePath("hues.mul");
+            int index = 0;
 
-	    /// <summary>
-		///     Reads hues.mul and fills <see cref="List" />
-		/// </summary>
-		public  void Initialize()
-		{
-			string path = _Files.GetFilePath("hues.mul");
-			int index = 0;
+            List = new Hue[3000];
 
-			List = new Hue[3000];
+            if (path != null)
+            {
+                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    int blockCount = (int)fs.Length / 708;
 
-			if (path != null)
-			{
-				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-				{
-					int blockCount = (int)fs.Length / 708;
+                    if (blockCount > 375)
+                    {
+                        blockCount = 375;
+                    }
+                    m_Header = new int[blockCount];
+                    int structsize = Marshal.SizeOf(typeof(HueDataMul));
+                    var buffer = new byte[blockCount * (4 + 8 * structsize)];
+                    GCHandle gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                    try
+                    {
+                        fs.Read(buffer, 0, buffer.Length);
+                        long currpos = 0;
 
-					if (blockCount > 375)
-					{
-						blockCount = 375;
-					}
-					m_Header = new int[blockCount];
-					int structsize = Marshal.SizeOf(typeof(HueDataMul));
-					var buffer = new byte[blockCount * (4 + 8 * structsize)];
-					GCHandle gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-					try
-					{
-						fs.Read(buffer, 0, buffer.Length);
-						long currpos = 0;
+                        for (int i = 0; i < blockCount; ++i)
+                        {
+                            var ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+                            currpos += 4;
+                            m_Header[i] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
 
-						for (int i = 0; i < blockCount; ++i)
-						{
-							var ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
-							currpos += 4;
-							m_Header[i] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
+                            for (int j = 0; j < 8; ++j, ++index)
+                            {
+                                var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+                                currpos += structsize;
+                                var cur = (HueDataMul)Marshal.PtrToStructure(ptr, typeof(HueDataMul));
+                                List[index] = new Hue(index, cur, this);
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        gc.Free();
+                    }
+                }
+            }
 
-							for (int j = 0; j < 8; ++j, ++index)
-							{
-								var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
-								currpos += structsize;
-								var cur = (HueDataMul)Marshal.PtrToStructure(ptr, typeof(HueDataMul));
-								List[index] = new Hue(index, cur, this);
-							}
-						}
-					}
-					finally
-					{
-						gc.Free();
-					}
-				}
-			}
+            for (; index < List.Length; ++index)
+            {
+                List[index] = new Hue(index, this);
+            }
+        }
 
-			for (; index < List.Length; ++index)
-			{
-				List[index] = new Hue(index, this);
-			}
-		}
 
 		public  void Save(string path)
 		{

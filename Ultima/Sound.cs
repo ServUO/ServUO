@@ -24,13 +24,21 @@ namespace Ultima
 
 	public  class Sounds
 	{
-	    private Files _Files;
+      
+        private Files _Files;
 		private  Dictionary<int, int> m_Translations;
 		private  FileIndex m_FileIndex;
 		private  UOSound[] m_Cache;
 		private  bool[] m_Removed;
 
-		public Sounds(Verdata verdata, Files files)
+        UltimaOnlineReaderFactory Factory { get; }
+        public Sounds(UltimaOnlineReaderFactory factory)
+            : this(factory.Verdata, factory.Files)
+        {
+            Factory = factory;
+        }
+
+        public Sounds(Verdata verdata, Files files)
 		{
 		    _Files = files;
 		    Initialize(verdata);

@@ -9,10 +9,24 @@ namespace Ultima
 	public sealed class Skills
 	{
 	    private Files _files;
-	    /// <summary>
-	    /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
-	    /// </summary>
-	    public Skills(Verdata verdata, Files files)
+
+        public UltimaOnlineReaderFactory Factory { get; }
+        /// <summary>
+        /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
+        /// </summary>
+        /// 
+        public Skills(UltimaOnlineReaderFactory factory)
+            :this(factory.Verdata, factory.Files)
+        {
+            Factory = factory;
+        }
+
+
+        /// <summary>
+        /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
+        /// </summary>
+        /// 
+        public Skills(Verdata verdata, Files files)
 	    {
 	        _files = files;
 	        m_FileIndex = new FileIndex("skills.idx", "skills.mul", 16, verdata, _files);

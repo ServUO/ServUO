@@ -15,7 +15,15 @@ namespace Ultima
 	    private readonly Art _art;
 	    private readonly TileData _tileData;
 	    private Files _Files;
-	    public Multis(Verdata verdata, Art art, TileData tileData, Files files)
+
+        UltimaOnlineReaderFactory Factory { get; }
+        public Multis(UltimaOnlineReaderFactory factory)
+            : this(factory.Verdata, factory.Art, factory.TileData, factory.Files)
+        {
+            Factory = factory;
+        }
+
+        public Multis(Verdata verdata, Art art, TileData tileData, Files files)
 	    {
 	        _art = art;
 	        _tileData = tileData;

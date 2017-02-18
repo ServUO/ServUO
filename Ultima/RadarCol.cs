@@ -11,11 +11,37 @@ namespace Ultima
 	public sealed class RadarCol
 	{
 	    private Files _Files;
-		public RadarCol(Files files)
-		{
-		    _Files = files;
-		    Initialize();
-		}
+
+        UltimaOnlineReaderFactory Factory { get; }
+
+
+        public RadarCol(UltimaOnlineReaderFactory factory)
+            :this(factory.Files)
+        {
+            Factory = factory;
+        }
+
+        public RadarCol(Files files)
+        {
+            _Files = files;
+            string path = _Files.GetFilePath("radarcol.mul");
+            if (path != null)
+            {
+                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    m_Colors = new short[fs.Length / 2];
+                    GCHandle gc = GCHandle.Alloc(m_Colors, GCHandleType.Pinned);
+                    var buffer = new byte[(int)fs.Length];
+                    fs.Read(buffer, 0, (int)fs.Length);
+                    Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)fs.Length);
+                    gc.Free();
+                }
+            }
+            else
+            {
+                m_Colors = new short[0x8000];
+            }
+        }
 
 	    private  short[] m_Colors;
 		public  short[] Colors { get { return m_Colors; } }
@@ -48,26 +74,6 @@ namespace Ultima
 			m_Colors[index] = value;
 		}
 
-		public  void Initialize()
-		{
-			string path = _Files.GetFilePath("radarcol.mul");
-			if (path != null)
-			{
-				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-				{
-					m_Colors = new short[fs.Length / 2];
-					GCHandle gc = GCHandle.Alloc(m_Colors, GCHandleType.Pinned);
-					var buffer = new byte[(int)fs.Length];
-					fs.Read(buffer, 0, (int)fs.Length);
-					Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)fs.Length);
-					gc.Free();
-				}
-			}
-			else
-			{
-				m_Colors = new short[0x8000];
-			}
-		}
 
 		public  void Save(string FileName)
 		{

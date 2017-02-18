@@ -21,7 +21,15 @@ namespace Ultima
 		private  byte[] m_ColorTable;
 	    private  Files _Files;
 
-		public Gumps(Verdata verdata, Files files)
+        public UltimaOnlineReaderFactory Factory { get; }
+
+	    public Gumps(UltimaOnlineReaderFactory factory)
+	        : this(factory.Verdata, factory.Files)
+	    {
+	        Factory = factory;
+	    }
+
+        public Gumps(Verdata verdata, Files files)
 		{
 		    _Files = files;
 		    if (m_FileIndex != null)

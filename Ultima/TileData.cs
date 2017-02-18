@@ -858,13 +858,20 @@ namespace Ultima
 		}
 
 
-		private static int[] landheader;
-		private static int[] itemheader;
+		private  int[] landheader;
+		private  int[] itemheader;
+	    private UltimaOnlineReaderFactory Factory;
 
-		public TileData(Art art, Files files)
+        public TileData(UltimaOnlineReaderFactory factory)
+            :this(factory.Art, factory.Files)
+        {
+            Factory = factory;
+        }
+
+        public TileData(Art art, Files files)
 		{
 		    _art = art;
-		    this._Files = files;
+		    _Files = files;
 		    Initialize();
         }
 

@@ -13,10 +13,20 @@ namespace Ultima
 	public sealed class Art
 	{
 	    private readonly Files _Files;
-	    /// <summary>
-	    /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
-	    /// </summary>
-	    public Art(Verdata verdata, Files files)
+
+
+        public UltimaOnlineReaderFactory Factory { get; }
+
+	    public Art(UltimaOnlineReaderFactory factory)
+	        : this(factory.Verdata, factory.Files)
+	    {
+	        Factory = Factory;
+	    }
+
+        /// <summary>
+        /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
+        /// </summary>
+        public Art(Verdata verdata, Files files)
 	    {
 	        _Files = files;
 	        m_Cache = new Bitmap[0xFFFF];
@@ -27,6 +37,8 @@ namespace Ultima
             m_patched.Clear();
             Modified = false;
         }
+
+
 
 	    private FileIndex m_FileIndex;
 

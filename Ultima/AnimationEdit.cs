@@ -13,6 +13,12 @@ namespace Ultima
 	{
 	    private Files _files;
 	    private readonly Animations _Animations;
+        UltimaOnlineReaderFactory Factory { get; }
+        public AnimationEdit(UltimaOnlineReaderFactory factory)
+            : this(factory.Verdata, factory.Animations, factory.Files)
+        {
+            Factory = factory;
+        }
         /// <summary>
         /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
         /// </summary>
@@ -47,13 +53,13 @@ namespace Ultima
             }
         }
 
-	    private  FileIndex m_FileIndex;
-		private  FileIndex m_FileIndex2;
-		private  FileIndex m_FileIndex3;
-		private  FileIndex m_FileIndex4;
-		private  FileIndex m_FileIndex5;
+	    private readonly FileIndex m_FileIndex;
+		private readonly FileIndex m_FileIndex2;
+		private readonly FileIndex m_FileIndex3;
+		private readonly FileIndex m_FileIndex4;
+		private readonly FileIndex m_FileIndex5;
 
-		private  AnimIdx[] animcache;
+		private readonly AnimIdx[] animcache;
 		private  readonly AnimIdx[] animcache2;
 		private  readonly AnimIdx[] animcache3;
 		private  readonly AnimIdx[] animcache4;

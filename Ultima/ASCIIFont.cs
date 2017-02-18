@@ -71,15 +71,23 @@ namespace Ultima
 
 	public  class ASCIIText
 	{
-	    private Files _Files;
+	    private readonly Files _Files;
 		public ASCIIFont[] Fonts = new ASCIIFont[10];
 
-         ASCIIText()
-         {
-            Initialize();
-		}
 
-		/// <summary>
+        UltimaOnlineReaderFactory Factory { get; }
+        public ASCIIText(UltimaOnlineReaderFactory factory)
+            : this( factory.Files)
+        {
+            Factory = factory;
+        }
+        public ASCIIText(Files files)
+         {
+             _Files = files;
+             Initialize();
+         }
+
+	    /// <summary>
 		///     Reads fonts.mul
 		/// </summary>
 		public  unsafe void Initialize()

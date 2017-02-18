@@ -11,6 +11,13 @@ namespace Ultima
 	{
 		private static byte[] m_StreamBuffer;
 	    private readonly Files _Files;
+	    private UltimaOnlineReaderFactory Factory { get; }
+
+	    public MultiMap(UltimaOnlineReaderFactory factory)
+	        : this(factory.Files)
+	    {
+	        Factory = factory;
+	    }
 
 	    public MultiMap(Files files)
 	    {

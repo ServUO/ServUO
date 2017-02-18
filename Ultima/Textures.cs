@@ -12,7 +12,13 @@ namespace Ultima
 	public sealed class Textures
 	{
 	    private Files _Files;
-	    public Textures(Verdata verdata, Files files)
+        UltimaOnlineReaderFactory Factory { get; }
+        public Textures(UltimaOnlineReaderFactory factory)
+            : this(factory.Verdata, factory.Files)
+        {
+            Factory = factory;
+        }
+        public Textures(Verdata verdata, Files files)
 	    {
 	        this._Files = files;
 	        m_FileIndex = new FileIndex("Texidx.mul", "Texmaps.mul", 0x4000, 10, verdata, _Files);

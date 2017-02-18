@@ -29,45 +29,47 @@ namespace Ultima
 	{
 		public  Stream Stream { get; private set; }
 		public  Entry5D[] Patches { get; private set; }
+        public UltimaOnlineReaderFactory Factory { get; }
 
-		private  string path;
+        private  string path;
 
 		 public Verdata(Files files)
 		{
+            path = files.GetFilePath("verdata.mul");
 
-			Initialize(files);
-		}
+            if (path == null)
+            {
+                Patches = new Entry5D[0];
+                Stream = Stream.Null;
+            }
+            else
+            {
+                using (Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    using (var bin = new BinaryReader(Stream))
+                    {
+                        Patches = new Entry5D[bin.ReadInt32()];
 
-		public  void Initialize(Files file)
-		{
-			path = file.GetFilePath("verdata.mul");
+                        for (int i = 0; i < Patches.Length; ++i)
+                        {
+                            Patches[i].file = bin.ReadInt32();
+                            Patches[i].index = bin.ReadInt32();
+                            Patches[i].lookup = bin.ReadInt32();
+                            Patches[i].length = bin.ReadInt32();
+                            Patches[i].extra = bin.ReadInt32();
+                        }
+                    }
+                }
+                Stream.Close();
+            }
+        }
 
-			if (path == null)
-			{
-				Patches = new Entry5D[0];
-				Stream = Stream.Null;
-			}
-			else
-			{
-				using (Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-				{
-					using (var bin = new BinaryReader(Stream))
-					{
-						Patches = new Entry5D[bin.ReadInt32()];
+	    public Verdata(UltimaOnlineReaderFactory factory)
+            :this(factory.Files)
+	    {
+	        Factory = factory;
+	    }
 
-						for (int i = 0; i < Patches.Length; ++i)
-						{
-							Patches[i].file = bin.ReadInt32();
-							Patches[i].index = bin.ReadInt32();
-							Patches[i].lookup = bin.ReadInt32();
-							Patches[i].length = bin.ReadInt32();
-							Patches[i].extra = bin.ReadInt32();
-						}
-					}
-				}
-				Stream.Close();
-			}
-		}
 
 		public  void Seek(int lookup)
 		{

@@ -11,10 +11,16 @@ namespace Ultima
 
 	    private Files _files;
 
-	    /// <summary>
-	    /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
-	    /// </summary>
-	    public Light(Verdata verdata, Files files)
+        UltimaOnlineReaderFactory Factory { get; }
+        public Light(UltimaOnlineReaderFactory factory)
+            :this(factory.Verdata, factory.Files)
+        {
+            Factory = factory;
+        }
+        /// <summary>
+        /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
+        /// </summary>
+        public Light(Verdata verdata, Files files)
 	    {
 	        _files = files;
             m_FileIndex = new FileIndex("lightidx.mul", "light.mul", 100, -1, verdata, files);
