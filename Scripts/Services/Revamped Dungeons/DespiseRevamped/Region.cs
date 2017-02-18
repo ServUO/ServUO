@@ -215,8 +215,10 @@ namespace Server.Engines.Despise
             if (m.AccessLevel > AccessLevel.Player)
                 return;
 
-            if (!IsInStartRegion(m.Location) && m is BaseCreature && !(m is DespiseCreature) && !(m is CorruptedWisp) && !(m is EnsorcledWisp) && ((BaseCreature)m).Controlled)
-                KickFromRegion(m, false);
+            if (!IsInStartRegion(m.Location) && m is BaseCreature && !(m is DespiseCreature) && !(m is CorruptedWisp) && !(m is EnsorcledWisp) && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned))
+            {
+                KickPet(m);
+            }
 
             if (m is PlayerMobile && IsInLowerRegion(m.Location))
             {
@@ -229,10 +231,29 @@ namespace Server.Engines.Despise
 
         public override void OnLocationChanged(Mobile m, Point3D oldLocation)
         {
-            if (!IsInStartRegion(m.Location) && m is BaseCreature && !(m is DespiseCreature) && !(m is CorruptedWisp) && !(m is EnsorcledWisp) && ((BaseCreature)m).Controlled)
-                KickFromRegion(m, false);
+            if (m == null || m.Map == Map.Internal)
+                return;
+
+            if (!IsInStartRegion(m.Location) && m is BaseCreature && !(m is DespiseCreature) && !(m is CorruptedWisp) && !(m is EnsorcledWisp) && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned))
+            {
+                KickPet(m);
+            }
 
             base.OnLocationChanged(m, oldLocation);
+        }
+
+        private void KickPet(Mobile m)
+        {
+            Timer.DelayCall<BaseCreature>(TimeSpan.FromSeconds(0.5), bc =>
+            {
+                if (bc.Summoned)
+                    bc.Delete();
+                else
+                    KickFromRegion(bc, false);
+
+                if (bc.GetMaster() != null)
+                    bc.GetMaster().SendLocalizedMessage(bc.Summoned ? 1153193 : 1153192); // Your pet has been teleported outside the Despise dungeon entrance.
+            }, (BaseCreature)m);
         }
 
         public void Kick_Callback(object o)
