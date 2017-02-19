@@ -19,6 +19,7 @@ namespace Server.Bounds
 			{	
 				Utility.PushColor(ConsoleColor.Yellow);
 				Console.Write("Generating Bounds.bin...");
+				Utility.PopColor();
 				
 				FileStream fs = new FileStream( "Data/Binary/Bounds.bin", FileMode.Create, FileAccess.Write );
 			
