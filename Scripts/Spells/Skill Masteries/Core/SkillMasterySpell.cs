@@ -44,7 +44,7 @@ namespace Server.Spells.SkillMasteries
         public virtual bool ClearOnSpecialAbility { get { return false; } }
 
         public virtual TimeSpan ExpirationPeriod { get { return TimeSpan.FromMinutes(30); } }
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.0); } }
+        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.25); } }
 
 		public virtual double BaseSkillBonus 
 		{

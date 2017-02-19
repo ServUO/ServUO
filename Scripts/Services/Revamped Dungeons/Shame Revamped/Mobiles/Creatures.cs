@@ -1459,6 +1459,9 @@ namespace Server.Mobiles
 
             if (0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(5));
+
+            if(0.2 > Utility.RandomDouble())
+                c.DropItem(new VoidCore());
         }
 
         public override void GenerateLoot()

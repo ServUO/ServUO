@@ -110,17 +110,7 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.Average, 2);
             this.AddLoot(LootPack.MedScrolls, 2);
         }
-        public override void OnDeath(Container c)
-        {
-
-            base.OnDeath(c);
-            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
-            if (0.25 > Utility.RandomDouble() && reg.Name == "Abyssal Lair Entrance")
-            {
-                if (Utility.RandomDouble() < 0.6)
-                    c.DropItem(new EssenceAchievement());
-            }
-        }
+ 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

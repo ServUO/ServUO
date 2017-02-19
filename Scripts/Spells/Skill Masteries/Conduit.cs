@@ -92,7 +92,7 @@ namespace Server.Spells.SkillMasteries
 
                 Zone = rec;
                 Strength = (int)((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value + (GetMasteryLevel() * 20)) / 3.75);
-                Expires = DateTime.UtcNow + TimeSpan.FromSeconds(10);
+                Expires = DateTime.UtcNow + TimeSpan.FromSeconds(Core.TOL ? 6 : 4 + (Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 36);
 
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Conduit, 1155901, 1156053, Strength.ToString())); //Targeted Necromancy spells used on a target within the Conduit field will affect all valid targets within the field at ~1_PERCT~% strength. 
 

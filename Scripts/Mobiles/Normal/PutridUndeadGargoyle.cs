@@ -47,11 +47,6 @@ namespace Server.Mobiles
 
             VirtualArmor = 32;
 
-            QLPoints = 15;
-
-            if (0.05 > Utility.RandomDouble())
-                PackItem(new UndyingFlesh());
-
             if (0.05 > Utility.RandomDouble())
                 PackItem(new TatteredAncientScroll());
 

@@ -112,15 +112,9 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-	    
-	    if(m_Spawner != null)
-	    	m_Spawner.OnNavreyKilled();
 
-            if (Utility.RandomDouble() < 0.15)
-                c.DropItem(new BottleIchor());
-
-            if (0.5 >= Utility.RandomDouble())
-                c.DropItem(new SpiderCarapace());
+            if (m_Spawner != null)
+                m_Spawner.OnNavreyKilled();
 
             if (Utility.RandomBool())
                 c.AddItem(new UntranslatedAncientTome());
@@ -129,7 +123,7 @@ namespace Server.Mobiles
                 c.AddItem(ScrollofTranscendence.CreateRandom(30, 30));
 
             if (0.1 >= Utility.RandomDouble())
-                c.AddItem(new TatteredAncientScroll());            
+                c.AddItem(new TatteredAncientScroll());
 
             if (Utility.RandomDouble() < 0.10)
                 c.DropItem(new LuckyCoin());
@@ -157,7 +151,7 @@ namespace Server.Mobiles
                         if (quest is GreenWithEnvyQuest)
                         {
                             Container pack = pm.Backpack;
-                            Item item = new EyeOfNavrey(); 
+                            Item item = new EyeOfNavrey();
                             if (pack == null || !pack.TryDropItem(pm, item, false))
                                 pm.BankBox.DropItem(item);
                             pm.SendLocalizedMessage(1095155); // As Navrey Night-Eyes dies, you find and claim one of her eyes as proof of her demise.

@@ -62,46 +62,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Gems, 2);
             AddLoot(LootPack.MedScrolls);
         }
-        public override void OnDeath(Container c)
-        {
-
-            base.OnDeath(c);
-            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
-			if (0.25 > Utility.RandomDouble() && reg.Name == "Crimson Veins")
-			{
-				if (Utility.RandomDouble() < 0.6)
-				{
-					switch (Utility.Random(2))
-					{
-						case 0: c.DropItem(new EssencePrecision()); break;
-						case 1: c.DropItem(new LavaSerpentCrust()); break;
-					}
-				}
-			}
-
-			if (0.25 > Utility.RandomDouble() && reg.Name == "Fire Temple Ruins")
-			{
-				if (Utility.RandomDouble() < 0.6)
-				{
-					switch (Utility.Random(2))
-					{
-						case 0: c.DropItem(new EssenceOrder()); break;
-						case 1: c.DropItem(new LavaSerpentCrust()); break;
-					}
-				}
-			}
-			if (0.25 > Utility.RandomDouble() && reg.Name == "Lava Caldera")
-			{
-				if (Utility.RandomDouble() < 0.6)
-				{
-					switch (Utility.Random(2))
-					{
-						case 0: c.DropItem(new EssencePassion()); break;
-						case 1: c.DropItem(new LavaSerpentCrust()); break;
-					}
-				}
-			}
-        }
+        
         public override int GetIdleSound()
         {
             return 1549;

@@ -57,6 +57,9 @@ namespace Server.Spells.Mystic
 
         public override int GetMana()
         {
+            if (Core.TOL && this is HailStormSpell)
+                return 50;
+
             return m_ManaTable[(int)Circle];
         }
 

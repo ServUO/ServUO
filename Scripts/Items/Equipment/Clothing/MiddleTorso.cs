@@ -73,6 +73,7 @@ namespace Server.Items
     }
 
     [Flipable(0x153d, 0x153e)]
+    [Alterable(typeof(DefTailoring), typeof(GargoyleHalfApron))]
     public class FullApron : BaseMiddleTorso
     {
         [Constructable]

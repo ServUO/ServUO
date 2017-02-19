@@ -54,14 +54,6 @@ namespace Server.Mobiles
             this.VirtualArmor = 50;
         }
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.5)
-                c.DropItem(new VoidOrb());
-        }
-
         public Anzuanord(Serial serial)
             : base(serial)
         {

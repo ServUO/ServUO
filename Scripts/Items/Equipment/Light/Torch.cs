@@ -56,7 +56,10 @@ namespace Server.Items
             base.OnAdded(parent);
 
             if (parent is Mobile && this.Burning)
+            {
                 Mobiles.MeerMage.StopEffect((Mobile)parent, true);
+                SwarmContext.CheckRemove((Mobile)parent);
+            }
         }
 
         public override void Ignite()
@@ -64,7 +67,10 @@ namespace Server.Items
             base.Ignite();
 
             if (this.Parent is Mobile && this.Burning)
+            {
                 Mobiles.MeerMage.StopEffect((Mobile)this.Parent, true);
+                SwarmContext.CheckRemove((Mobile)this.Parent);
+            }
         }
 
         public override void Serialize(GenericWriter writer)

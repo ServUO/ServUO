@@ -55,20 +55,9 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (Utility.RandomDouble() < 0.5)
-                c.DropItem(new VoidOrb());
-
             if (Utility.RandomDouble() < 0.10)
             {
-                switch (Utility.Random(2))
-                {
-                    case 0:
-                        c.DropItem(new VoidEssence());
-                        break;
-                    case 1:
-                        c.DropItem(new AncientPotteryFragments());
-                        break;
-                }
+                c.DropItem(new AncientPotteryFragments());
             }
         }
 

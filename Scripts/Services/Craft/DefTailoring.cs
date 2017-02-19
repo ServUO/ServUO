@@ -161,9 +161,17 @@ namespace Server.Engines.Craft
         {
             int index = -1;
 
+            if (Core.SA)
+            {
+                index = AddCraft(typeof(AbyssalCloth), 1044457, 1113350, 110.0, 160.0, typeof(Cloth), 1044286, 50, 1044253);
+                AddRes(index, typeof(CrystallineBlackrock), 1077568, 1, 1044253);
+                SetItemHue(index, 2075);
+                SetNeededExpansion(index, Expansion.SA);
+            }
+
+            #region High Seas
             if (Core.HS)
             {
-                #region High Seas
                 index = AddCraft(typeof(LightPowderCharge), 1044457, 1116159, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
                 AddRes(index, typeof(BlackPowder), 1095826, 1, 1044253);
                 SetNeededExpansion(index, Expansion.HS);

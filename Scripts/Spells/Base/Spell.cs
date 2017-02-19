@@ -169,32 +169,7 @@ namespace Server.Spells
 			int intBonus = Caster.Int / 10;
 			damageBonus += intBonus;
 
-			int sdiBonus = AosAttributes.GetValue(m_Caster, AosAttribute.SpellDamage);
-
-			#region Mondain's Legacy
-			sdiBonus += ArcaneEmpowermentSpell.GetSpellBonus(m_Caster, playerVsPlayer);
-			#endregion
-
-            if (target != null && RunedSashOfWarding.IsUnderEffects(target, WardingEffect.SpellDamage))
-                sdiBonus -= 10;
-
-            sdiBonus -= Block.GetSpellReduction(target);
-
-			// PvP spell damage increase cap of 15% from an item’s magic property, 30% if spell school focused.
-			if (playerVsPlayer)
-			{
-			    if (SpellHelper.HasSpellFocus(m_Caster, CastSkill) && sdiBonus > 30)
-                {
-                    sdiBonus = 30;
-                }
-
-                if (!SpellHelper.HasSpellFocus(m_Caster, CastSkill) && sdiBonus > 15)
-                {
-                    sdiBonus = 15;
-                }
-			}
-
-			damageBonus += sdiBonus;
+            damageBonus += SpellHelper.GetSpellDamageBonus(m_Caster, target, CastSkill, playerVsPlayer);
 
 			damage = AOS.Scale(damage, 100 + damageBonus);
 

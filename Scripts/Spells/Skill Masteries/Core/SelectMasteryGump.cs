@@ -47,8 +47,7 @@ namespace Server.Gumps
 
                 if (sk != null && sk.IsMastery && sk.VolumeLearned > 0)
                 {
-                    if (skName != current)
-                        AddButton(30, y, 4005, 4007, (int)skName + 1, GumpButtonType.Reply, 0);
+                    AddButton(30, y, 4005, 4007, (int)skName + 1, GumpButtonType.Reply, 0);
 
                     AddHtmlLocalized(75, y, 200, 16, MasteryInfo.GetLocalization(skName), skName == current ? Red : Blue, false, false);
                     AddHtmlLocalized(250, y, 100, 16, 1156052, MasteryInfo.GetMasteryLevel(User, skName).ToString(), 0, false, false);
@@ -66,7 +65,12 @@ namespace Server.Gumps
             SkillName n = (SkillName)info.ButtonID - 1;
             SkillName current = User.Skills.CurrentMastery;
 
-            if (User.Skills[n].Value >= MasteryInfo.MinSkillRequirement)
+            if (n == current)
+            {
+                User.Skills.CurrentMastery = SkillName.Alchemy;
+                MasteryInfo.OnMasteryChanged(User, current);
+            }
+            else if (User.Skills[n].Value >= MasteryInfo.MinSkillRequirement)
             {
                 User.SendLocalizedMessage(1155886, User.Skills[n].Info.Name); // Your active skill mastery is now set to ~1_MasterySkill~!
                 User.Skills.CurrentMastery = n;

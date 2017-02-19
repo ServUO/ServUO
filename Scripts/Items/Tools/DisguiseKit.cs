@@ -7,7 +7,7 @@
 #region References
 using System;
 using System.Collections;
-
+using System.Collections.Generic;
 using Server.Factions;
 using Server.Gumps;
 using Server.Mobiles;
@@ -297,15 +297,15 @@ namespace Server.Items
 
 	public class DisguiseTimers
 	{
-		private static readonly Hashtable m_Timers = new Hashtable();
+        private static Dictionary<Mobile, InternalTimer> m_Timers = new Dictionary<Mobile, InternalTimer>();
 
-		public static Hashtable Timers { get { return m_Timers; } }
+        public static Dictionary<Mobile, InternalTimer> Timers { get { return m_Timers; } }
 
 		public static void CreateTimer(Mobile m, TimeSpan delay)
 		{
 			if (m != null)
 			{
-				if (!m_Timers.Contains(m))
+				if (!m_Timers.ContainsKey(m))
 				{
 					m_Timers[m] = new InternalTimer(m, delay);
 				}
@@ -314,66 +314,85 @@ namespace Server.Items
 
 		public static void StartTimer(Mobile m)
 		{
-			var t = (Timer)m_Timers[m];
+            if (m_Timers.ContainsKey(m))
+            {
+                var t = m_Timers[m];
 
-			if (t != null)
-			{
-				t.Start();
-			}
+                if (t != null)
+                {
+                    t.Start();
+                }
+            }
 		}
 
 		public static bool IsDisguised(Mobile m)
 		{
-			return m_Timers.Contains(m);
+			return m_Timers.ContainsKey(m);
 		}
 
 		public static bool StopTimer(Mobile m)
 		{
-			var t = (Timer)m_Timers[m];
+            if (m_Timers.ContainsKey(m))
+            {
+                var t = m_Timers[m];
 
-			if (t != null)
-			{
-				t.Delay = t.Next - DateTime.UtcNow;
-				t.Stop();
-			}
+                if (t != null)
+                {
+                    t.Stop();
+                }
 
-			return (t != null);
+                return true;
+            }
+
+            return false;
 		}
 
 		public static bool RemoveTimer(Mobile m)
 		{
-			var t = (Timer)m_Timers[m];
+            if (m_Timers.ContainsKey(m))
+            {
+                var t = m_Timers[m];
 
-			if (t != null)
-			{
-				t.Stop();
-				m_Timers.Remove(m);
-			}
+                if (t != null)
+                {
+                    t.Stop();
+                    m_Timers.Remove(m);
+                }
 
-			return (t != null);
+                return true;
+            }
+
+            return false;
 		}
 
 		public static TimeSpan TimeRemaining(Mobile m)
 		{
-			var t = (Timer)m_Timers[m];
+            if (m_Timers.ContainsKey(m))
+            {
+                var t = m_Timers[m];
 
-			if (t != null && t.Next > DateTime.UtcNow)
-			{
-				return t.Next - DateTime.UtcNow;
-			}
+                if (t != null && t.Expires > DateTime.UtcNow)
+                {
+                    return t.Expires - DateTime.UtcNow;
+                }
+            }
 
 			return TimeSpan.Zero;
 		}
 
-		private class InternalTimer : Timer
+		public class InternalTimer : Timer
 		{
 			private readonly Mobile m_Player;
+
+            public DateTime Expires { get; private set; }
 
 			public InternalTimer(Mobile m, TimeSpan delay)
 				: base(delay)
 			{
 				m_Player = m;
 				Priority = TimerPriority.OneMinute;
+
+                Expires = DateTime.UtcNow + delay;
 			}
 
 			protected override void OnTick()
