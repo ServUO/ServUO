@@ -91,6 +91,14 @@ namespace Server.Engines.Craft
             return 0.0; // 0%
         }
 
+        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
+        {
+            if (resourceType == typeof(LeggingsOfBane) || resourceType == typeof(GauntletsOfNobility))
+                return false;
+
+            return base.ConsumeOnFailure(from, resourceType, craftItem);
+        }
+
         private DefBlacksmithy()
             : base(1, 1, 1.25) // base( 1, 2, 1.7 )
         {

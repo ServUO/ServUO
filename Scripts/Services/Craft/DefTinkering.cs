@@ -160,7 +160,7 @@ namespace Server.Engines.Craft
 
         public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            if (resourceType == typeof(Silver))
+            if (resourceType == typeof(Silver) || resourceType == typeof(RingOfTheElements))
                 return false;
 
             return base.ConsumeOnFailure(from, resourceType, craftItem);
