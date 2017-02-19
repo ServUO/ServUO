@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Server.Mobiles
 {
@@ -10,9 +10,9 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "a rock mite";
-            this.Body = 806;
-            this.BaseSoundID = 959;
-            this.Hue = 0x453;
+            this.Body = 787;
+            this.BaseSoundID = 1006;
+            this.Hue = 2500;
 
             this.SetStr(733, 754);
             this.SetDex(126, 144);
@@ -50,27 +50,27 @@ namespace Server.Mobiles
 
         public override int GetAngerSound()
         {
-            return 0xB5;
+            return 0x5A;
         }
 
         public override int GetIdleSound()
         {
-            return 0xB5;
+            return 0x5A;
         }
 
         public override int GetAttackSound()
         {
-            return 0x289;
+            return 0x164;
         }
 
         public override int GetHurtSound()
         {
-            return 0xBC;
+            return 0x187;
         }
 
         public override int GetDeathSound()
         {
-            return 0xE4;
+            return 0x1BA;
         }
 
         public override void GenerateLoot()
