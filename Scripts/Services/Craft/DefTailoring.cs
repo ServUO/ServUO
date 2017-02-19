@@ -89,6 +89,14 @@ namespace Server.Engines.Craft
             return 0.5; // 50%
         }
 
+        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
+        {
+            if (resourceType == typeof(MidnightBracers))
+                return false;
+
+            return base.ConsumeOnFailure(from, resourceType, craftItem);
+        }
+
         private DefTailoring()
             : base(1, 1, 1.25)// base( 1, 1, 4.5 )
         {
