@@ -10003,6 +10003,7 @@
     <Compile Include="Skills\Fishing.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Skills\Imbuing\ResourceDrops.cs" />
     <Compile Include="Skills\Lumberjacking.cs">
       <SubType>Code</SubType>
     </Compile>
