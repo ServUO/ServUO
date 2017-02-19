@@ -15,7 +15,8 @@ namespace Server.Items
             this.Attributes.WeaponSpeed = 26;
             this.Attributes.WeaponDamage = 35;
             this.Attributes.LowerManaCost = 8;
-            // TODO attributes Balanced
+
+            Attributes.BalancedWeapon = 1;
 
             this.Hue = 2124;
         }

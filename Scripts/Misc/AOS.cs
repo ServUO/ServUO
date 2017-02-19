@@ -167,7 +167,7 @@ namespace Server
                     damage += damage * quiver.DamageIncrease / 100;
 
                 if (!deathStrike)
-                    totalDamage = Math.Min(damage, 35);	// Direct Damage cap of 35
+                    totalDamage = Math.Min(damage, Core.TOL && archer ? 30 : 35);	// Direct Damage cap of 30/35
                 else
                     totalDamage = Math.Min(damage, 70);	// Direct Damage cap of 70
             }
@@ -254,6 +254,9 @@ namespace Server
                 DamageEaterContext.CheckDamage(m, totalDamage, 0, 0, 0, 0, 0, 100);
             else
                 DamageEaterContext.CheckDamage(m, totalDamage, phys, fire, cold, pois, nrgy, direct);
+
+            if (fire > 0 && totalDamage > 0)
+                SwarmContext.CheckRemove(m);
 
             if(totalDamage > 0)
                 Spells.Mystic.SpellPlagueSpell.OnMobileDamaged(m);

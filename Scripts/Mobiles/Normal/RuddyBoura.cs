@@ -137,11 +137,6 @@ namespace Server.Mobiles
             base.OnDeath(c);
 
             c.DropItem(new BouraSkin());
-
-            if (Utility.RandomDouble() < 0.05)
-            {
-                c.DropItem(new BouraPelt());
-            }
         }
 
         public override void OnGaveMeleeAttack(Mobile defender)

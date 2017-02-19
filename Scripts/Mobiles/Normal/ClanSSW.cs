@@ -79,16 +79,6 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.Meager);
         }
 
-        public override void OnDeath(Container c)
-        {
-
-            base.OnDeath(c);
-            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
-            if (0.25 > Utility.RandomDouble() && reg.Name == "Cavern of the Discarded")
-            {
-                c.DropItem(new ReflectiveWolfEye());
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

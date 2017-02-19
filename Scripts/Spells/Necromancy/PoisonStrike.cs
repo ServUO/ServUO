@@ -79,12 +79,29 @@ namespace Server.Spells.Necromancy
             double damage = Utility.RandomMinMax((Core.ML ? 32 : 36), 40) * ((300 + (this.GetDamageSkill(this.Caster) * 9)) / 1000);
             damage *= strength;
 
-            double sdiBonus = (double)AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage) / 100;
+            int sdiBonus;
+
+            if (Core.SE)
+            {
+                if (Core.SA)
+                {
+                    sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is PlayerMobile);
+                }
+                else
+                {
+                    sdiBonus = AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage);
+
+                    // PvP spell damage increase cap of 15% from an item’s magic property in Publish 33(SE)
+                    if (m is PlayerMobile && this.Caster.Player && sdiBonus > 15)
+                        sdiBonus = 15;
+                }
+            }
+            else
+            {
+                sdiBonus = AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage);
+            }
 
             double pvmDamage = (damage * (1 + sdiBonus)) * strength;
-
-            if (Core.ML && sdiBonus > 0.15)
-                sdiBonus = 0.15;
             double pvpDamage = damage * (1 + sdiBonus);
 
             Map map = m.Map;

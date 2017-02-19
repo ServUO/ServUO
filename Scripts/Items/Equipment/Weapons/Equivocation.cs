@@ -10,7 +10,8 @@ namespace Server.Items
         [Constructable]
         public Equivocation()
         {
-            // TODO attributes Balanced
+            Attributes.BalancedWeapon = 1;
+
             this.Slayer2 = BaseRunicTool.GetRandomSlayer();
             this.Attributes.AttackChance = 10;
             this.Attributes.RegenHits = 6;

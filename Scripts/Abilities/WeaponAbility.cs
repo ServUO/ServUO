@@ -85,6 +85,21 @@ namespace Server.Items
             return 200.0;
         }
 
+        public virtual double GetRequiredTactics(Mobile from)
+        {
+            if (!this.RequiresTactics(from))
+                return 0.0;
+
+            BaseWeapon weapon = from.Weapon as BaseWeapon;
+
+            if (weapon != null && weapon.PrimaryAbility == this || weapon.PrimaryAbility == Bladeweave)
+                return Core.TOL ? 30.0 : 70.0;
+            else if (weapon != null && weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave)
+                return Core.TOL ? 60.0 : 90.0;
+
+            return 200.0;
+        }
+
         public virtual int CalculateMana(Mobile from)
         {
             int mana = this.BaseMana;
@@ -126,12 +141,14 @@ namespace Server.Items
                 return false;
 
             Skill skill = from.Skills[weapon.Skill];
-            double reqSkill = this.GetRequiredSkill(from);
-            bool reqTactics = Core.ML && this.RequiresTactics(from);
 
-            if (Core.ML && reqTactics && from.Skills[SkillName.Tactics].Base < reqSkill)
+            double reqSkill = this.GetRequiredSkill(from);
+            double reqTactics = this.GetRequiredTactics(from);
+
+            if (Core.ML && from.Skills[SkillName.Tactics].Base < reqTactics)
             {
-                from.SendLocalizedMessage(1079308, reqSkill.ToString()); // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack
+                from.SendLocalizedMessage(Core.TOL ? 1157351 : 1079308, reqSkill.ToString()); // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack
+                                                                                              // You need ~1_SKILL_REQUIREMENT~ tactics skill to perform that attack
                 return false;
             }
 
@@ -143,7 +160,7 @@ namespace Server.Items
                 return true;
             /* </UBWS> */
 
-            if (reqTactics)
+            if (reqTactics != 0.0 && !Core.TOL)
             {
                 from.SendLocalizedMessage(1079308, reqSkill.ToString()); // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack
             }

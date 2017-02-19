@@ -6,12 +6,14 @@ namespace Server.Items
     public class ShroudOfTheCondemned : BaseOuterTorso
 	{
 		public override bool IsArtifact { get { return true; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
+
+        public override int LabelNumber { get { return 1113703; } } // Shroud of the Condemned
+
         [Constructable]
         public ShroudOfTheCondemned()
             : base(0x1F04, 0xD6)
         {
-            this.Name = ("Shroud Of The Condemned");
-		
             this.Hue = 2075;
             this.Attributes.BonusHits = 3;
             this.Attributes.BonusInt = 5;

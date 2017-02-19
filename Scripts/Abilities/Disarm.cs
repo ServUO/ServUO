@@ -1,5 +1,6 @@
 using System;
 using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -39,6 +40,13 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
+            if (IsImmune(defender))
+            {
+                attacker.SendLocalizedMessage(1111827); // Your opponent is gripping their weapon too tightly to be disarmed.
+                defender.SendLocalizedMessage(1111828); // You will not be caught off guard by another disarm attack for some time.
+                return;
+            }
+
             Item toDisarm = defender.FindItemOnLayer(Layer.OneHanded);
 
             if (toDisarm == null || !toDisarm.Movable)
@@ -56,16 +64,6 @@ namespace Server.Items
             }
             else if (this.CheckMana(attacker, true))
             {
-                // Skill Masteries - removed publish 96
-                /*int saveChance = Server.Spells.SkillMasteries.MasteryInfo.SavingThrowChance(defender);
-
-                if (saveChance > 0 && saveChance >= Utility.Random(100))
-                {
-                    attacker.SendLocalizedMessage(1156033); // Your disarm attempt was blocked!
-                    defender.SendLocalizedMessage(1156034); // You blocked a disarm attempt!
-                    return;
-                }*/
-
                 attacker.SendLocalizedMessage(1060092); // You disarm their weapon!
                 defender.SendLocalizedMessage(1060093); // Your weapon has been disarmed!
 
@@ -86,7 +84,31 @@ namespace Server.Items
                             defender.EquipItem(toDisarm);
                     });
                 }
+
+                if(Core.SA)
+                    AddImmunity(defender, Core.TOL && attacker.Weapon is Fists ? TimeSpan.FromSeconds(10) : TimeSpan.FromSeconds(15));
             }
+        }
+
+        public static List<Mobile> _Immunity;
+
+        public static bool IsImmune(Mobile m)
+        {
+            return _Immunity != null && _Immunity.Contains(m);
+        }
+
+        public static void AddImmunity(Mobile m, TimeSpan duration)
+        {
+            if (_Immunity == null)
+                _Immunity = new List<Mobile>();
+
+            _Immunity.Add(m);
+
+            Timer.DelayCall<Mobile>(duration, mob =>
+                {
+                    if (_Immunity != null && _Immunity.Contains(mob))
+                        _Immunity.Remove(mob);
+                }, m);
         }
     }
 }

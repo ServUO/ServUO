@@ -583,6 +583,12 @@ namespace Server.Engines.Craft
                 this.AddRes(index, typeof(VoidEssence), 1112327, 3, 502910);
                 this.SetNeededExpansion(index, Expansion.SA);
                 this.ForceNonExceptional(index);
+
+                index = this.AddCraft(typeof(ArcanicRuneStone), 1044051, 1113352, 90.0, 140.0, typeof(CrystalShards), 1073161, 1, 1044253);
+                this.AddRes(index, typeof(PowerCrystal), 1112811, 5, 502910);
+                this.AddSkill(index, SkillName.Magery, 80.0, 85.0);
+                this.SetNeededExpansion(index, Expansion.SA);
+                this.ForceNonExceptional(index);
             }
 
             #region Hitching Post

@@ -17,7 +17,7 @@ namespace Server.Spells.SkillMasteries
 
         public override double RequiredSkill { get { return 90; } }
         public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 30; } }
+        public override int RequiredMana { get { return 40; } }
 
         public override SkillName CastSkill { get { return SkillName.Throwing; } }
         public override SkillName DamageSkill { get { return SkillName.Tactics; } }
@@ -97,8 +97,8 @@ namespace Server.Spells.SkillMasteries
 
             damage = damage + (int)((double)damage * ((double)_DamageBonus / 100.0));
 
-            if (defender is PlayerMobile && damage > 35)
-                damage = 35;
+            if (defender is PlayerMobile && damage > 100)
+                damage = 100;
         }
 
         public static int GetHitChanceBonus(Mobile m)

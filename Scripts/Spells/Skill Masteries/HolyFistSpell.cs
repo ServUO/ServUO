@@ -28,6 +28,8 @@ namespace Server.Spells.SkillMasteries
 
         public override bool DelayedDamage { get { return true; } }
 
+        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.5); } }
+
         public HolyFistSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {

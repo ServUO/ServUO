@@ -73,27 +73,10 @@ namespace Server.Mobiles
         {
 
             base.OnDeath(c);
-            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
-            if (0.25 > Utility.RandomDouble() && reg.Name == "Stygian Dragon Lair")
-            {
-                switch (Utility.Random(2))
-                {
-                    case 0: c.DropItem(new EssenceDiligence()); break;
-                    case 1: c.DropItem(new FaeryDust()); break;
-                }
-            }
+
             if (Utility.RandomDouble() <= 0.25)
             {
-                switch (Utility.Random(2))
-                {
-                    case 0:
-                        c.DropItem(new FeyWings());
-                        break;
-                    case 1:
-                        c.DropItem(new FairyDragonWing());
-                        break;
-
-                }
+                c.DropItem(new FairyDragonWing());
             }
 
             if (Utility.RandomDouble() < 0.30)

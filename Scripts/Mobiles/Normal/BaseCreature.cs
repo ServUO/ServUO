@@ -4913,6 +4913,22 @@ namespace Server.Mobiles
             item.Movable = dropChance > Utility.RandomDouble();
         }
 
+        #region SA Imbuing Ingredient
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual double ImbuingDropRate
+        {
+            get
+            {
+                int fame = Fame;
+                if (fame <= 1000) fame = 1000;
+
+                return (double)fame / 100000;
+            }
+        }
+
+        #endregion
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.AccessLevel >= AccessLevel.GameMaster && !Body.IsHuman)
@@ -5760,6 +5776,9 @@ namespace Server.Mobiles
             }
 
             #region SA
+            if(!c.Deleted)
+                IngredientDropEntry.CheckDrop(this, c);
+
             if (LastKiller is BaseVoidCreature)
                 ((BaseVoidCreature)LastKiller).Mutate(VoidEvolution.Killing);
             #endregion

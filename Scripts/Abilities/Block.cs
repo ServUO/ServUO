@@ -79,10 +79,10 @@ namespace Server.Items
 
             string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}", dciBonus, spellblock, meleeblock, "15", "30");
 
-            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Block, 1151291, 1151292, TimeSpan.FromSeconds(6), m, args));
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Block, 1151291, 1151292, TimeSpan.FromSeconds(Core.TOL ? 6 : 3), m, args));
             // Next incoming damage reduced.<br>Defense Chance Increase: +~1_val~%<br>Incoming Spell Damage: -~2_val~%<br>Incoming Attack Damage: -~3_val~%<br>Hit Chance Penalty: ~4_val~%<br>Damage Penalty: ~5_val~%
 
-            Timer.DelayCall(TimeSpan.FromSeconds(6), () =>
+            Timer.DelayCall(TimeSpan.FromSeconds(Core.TOL ? 6 : 3), () =>
             {
                 if(IsBlocking(m))
                     EndBlock(m);

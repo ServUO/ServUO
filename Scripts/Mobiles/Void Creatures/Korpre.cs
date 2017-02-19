@@ -45,16 +45,6 @@ namespace Server.Mobiles
             this.VirtualArmor = 8;
         }
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.05)
-            {
-                c.DropItem(new VoidOrb());
-            }
-        }
-
         public Korpre(Serial serial)
             : base(serial)
         {

@@ -11,7 +11,8 @@ namespace Server.Items
         public Pincer()
         {
             this.Hue = 2500;
-            // TODO attributes Balanced
+
+            Attributes.BalancedWeapon = 1;
             this.Slayer2 = BaseRunicTool.GetRandomSlayer();
             this.SetSkillBonuses.SetValues(0, SkillName.Lumberjacking, 10);
             this.WeaponAttributes.HitLeechHits = 87;

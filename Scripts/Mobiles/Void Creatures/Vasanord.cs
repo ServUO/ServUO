@@ -58,22 +58,6 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.6)
                 c.DropItem(new TaintedSeeds(2));
-
-            if (Utility.RandomDouble() < 0.5)
-                c.DropItem(new VoidEssence(2));
-
-            if (Utility.RandomDouble() < 0.10)
-            {
-                switch (Utility.Random(2))
-                {
-                    case 0:
-                        c.DropItem(new VoidOrb());
-                        break;
-                    case 1:
-                        c.DropItem(new VoidCore());
-                        break;
-                }
-            }
         }
 
 		public override void GenerateLoot()
