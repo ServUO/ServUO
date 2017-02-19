@@ -5,7 +5,7 @@ using System.Collections;
 namespace Server.Mobiles
 {
     [CorpseName("a djinn corpse")]
-    public class Djinn : CrystalDaemon
+    public class Djinn : BaseCreature
     {
         private static readonly ArrayList m_Instances = new ArrayList();
         public static ArrayList Instances { get { return m_Instances; } }
@@ -13,12 +13,12 @@ namespace Server.Mobiles
 
         [Constructable]
         public Djinn()
-            : base()
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             m_Instances.Add(this);
 
+            this.Body = 0x2EA;
             this.Name = "Djinn";
-            this.Hue = 12;
 
             this.SetStr(476, 505);
             this.SetDex(76, 95);
@@ -37,6 +37,13 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Cold, 30, 40);
             this.SetResistance(ResistanceType.Poison, 20, 30);
             this.SetResistance(ResistanceType.Energy, 30, 40);
+
+            this.SetSkill(SkillName.Wrestling, 60.0, 80.0);
+            this.SetSkill(SkillName.Tactics, 70.0, 80.0);
+            this.SetSkill(SkillName.MagicResist, 100.0, 110.0);
+            this.SetSkill(SkillName.Magery, 120.0, 130.0);
+            this.SetSkill(SkillName.EvalInt, 100.0, 110.0);
+            this.SetSkill(SkillName.Meditation, 100.0, 110.0);
 
             this.Fame = 15000;
             this.Karma = -15000;
