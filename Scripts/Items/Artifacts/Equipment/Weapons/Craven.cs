@@ -18,7 +18,7 @@ namespace Server.Items
 
             Attributes.BalancedWeapon = 1;
 
-            this.Hue = 2124;
+            this.Hue = 1365;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
