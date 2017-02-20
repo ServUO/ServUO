@@ -135,7 +135,7 @@ namespace Server.Regions
                             return false;
                         }
                     }
-                    else if (m.Alive && equipment < 4)
+                    else if (equipment < 4)
                     {
                         m.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
                         return false;
