@@ -8,41 +8,66 @@ using System.Linq;
 namespace Server.Mobiles
 {
     [CorpseName("a mercutio corpse")]
-    public class MercutioTheUnsavory : Brigand
+    public class MercutioTheUnsavory : BaseCreature
     {
         private static readonly ArrayList m_Instances = new ArrayList();
         public static ArrayList Instances { get { return m_Instances; } }
 
         [Constructable]
         public MercutioTheUnsavory()
-            : base()
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             m_Instances.Add(this);
 
+            this.Body = 0x190;
+            this.Hue = Utility.RandomSkinHue();
             this.Name = "Mercutio";
             this.Title = "The Unsavory";
+            this.Female = false;
 
-            this.SetStr(120, 150);
+            this.SetStr(1000, 1300);
             this.SetDex(101, 125);
             this.SetInt(61, 75);
-            this.Hits = 200;
 
             this.SetDamage(11, 24);
+
+            this.SetDamageType(ResistanceType.Physical, 100);
+
+            this.SetResistance(ResistanceType.Physical, 10, 15);
+            this.SetResistance(ResistanceType.Fire, 10, 15);
+            this.SetResistance(ResistanceType.Poison, 10, 15);
+            this.SetResistance(ResistanceType.Energy, 10, 15);
 
             this.SetSkill(SkillName.Fencing, 106.0, 117.5);
             this.SetSkill(SkillName.Macing, 105.0, 117.5);
             this.SetSkill(SkillName.MagicResist, 50.0, 90.5);
             this.SetSkill(SkillName.Swords, 105.0, 117.5);
+            this.SetSkill(SkillName.Parry, 105.0, 117.5);
             this.SetSkill(SkillName.Tactics, 105.0, 117.5);
             this.SetSkill(SkillName.Wrestling, 55.0, 87.5);
 
             this.Fame = 3000;
-            this.Karma = -3000;            
+            this.Karma = -3000;
+
+            this.AddImmovableItem(new MercutiosCutlass());
+            this.AddItem(new ChainChest());
+            this.AddItem(Loot.RandomShield());
+            this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
+            this.AddItem(new Boots(Utility.RandomNeutralHue()));
+
+            Utility.AssignRandomHair(this);
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
         }
 
+        private void AddImmovableItem(Item item)
+        {
+            item.LootType = LootType.Blessed;
+            AddItem(item);
+        }
+
+        public override bool ClickTitle { get { return false; } }
         public override bool AlwaysMurderer { get { return true; } }
 
         public override void OnDeath(Container c)
@@ -89,7 +114,12 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        
+
+        public override void GenerateLoot()
+        {
+            this.AddLoot(LootPack.Average);
+        }
+
         public class InternalSelfDeleteTimer : Timer
         {
             private MercutioTheUnsavory Mare;
@@ -156,7 +186,7 @@ namespace Server.Mobiles
 
                 for (int i = 0; i < newBrigands; ++i)
                 {
-                    BaseCreature brigand = new Brigand();
+                    BaseCreature brigand = new HumanBrigand();
 
                     brigand.Team = this.Team;
 
