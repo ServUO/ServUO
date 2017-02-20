@@ -128,7 +128,7 @@ namespace Server.Items
             this.LabelToAffix(m, 1017323, AffixType.Append, ": " + this.m_UsesRemaining.ToString()); // Durability
         }
 
-        public virtual bool CheckAccessible(Mobile m, ref int num)
+		public virtual bool CheckAccessible(Mobile m, ref int num)
         {
             if (!IsChildOf(m) && Parent != m)
             {
@@ -139,7 +139,35 @@ namespace Server.Items
             return true;
         }
 
-        public static bool CheckTool(Item tool, Mobile m)
+	    public static bool CheckAccessible(Item tool, Mobile m)
+	    {
+		    return CheckAccessible(tool, m, false);
+	    }
+
+	    public static bool CheckAccessible(Item tool, Mobile m, bool message)
+	    {
+		    var num = 0;
+
+			bool res;
+
+		    if (tool is BaseTool)
+		    {
+			    res = ((BaseTool)tool).CheckAccessible(m, ref num);
+		    }
+		    else
+		    {
+				res = tool.IsChildOf(m) || tool.Parent == m;
+		    }
+
+		    if (num > 0 && message)
+		    {
+			    m.SendLocalizedMessage(num);
+		    }
+
+		    return res;
+	    }
+
+	    public static bool CheckTool(Item tool, Mobile m)
         {
             Item check = m.FindItemOnLayer(Layer.OneHanded);
 

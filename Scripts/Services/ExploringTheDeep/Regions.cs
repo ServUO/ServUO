@@ -116,11 +116,8 @@ namespace Server.Regions
 
             if (m is PlayerMobile)
             {
-                Item robe = m.FindItemOnLayer(Layer.OuterTorso);
-                Item boot = m.FindItemOnLayer(Layer.Shoes);
-                Item lens = m.FindItemOnLayer(Layer.Helm);
-                Item neck = m.FindItemOnLayer(Layer.Neck);
-
+                int equipment = m.Items.Where(i => (i is CanvassRobe || i is BootsOfBallast || i is NictitatingLens || i is AquaPendant || i is GargishNictitatingLens) && (i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i)).Count();
+                
                 PlayerMobile pm = m as PlayerMobile;
 
                 if (m.AccessLevel == AccessLevel.Player)
@@ -138,7 +135,7 @@ namespace Server.Regions
                             return false;
                         }
                     }
-                    else if (m.Alive && !(robe is CanvassRobe) || !(lens is NictitatingLens) || !(boot is BootsOfBallast) || !(neck is AquaPendant))
+                    else if (equipment < 4 || pm.ExploringTheDeepQuest != ExploringTheDeepQuestChain.CollectTheComponentComplete)
                     {
                         m.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
                         return false;
