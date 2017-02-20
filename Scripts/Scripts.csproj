@@ -116,6 +116,9 @@
     <Compile Include="Commands\ExportWSC.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\GenBounds.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Commands\GenCategorization.cs">
       <SubType>Code</SubType>
     </Compile>
