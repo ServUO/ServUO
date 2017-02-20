@@ -478,7 +478,14 @@ namespace Server.Gumps
                         this.AddButtonLabeled(20, 180, this.GetButtonID(3, 600), "Rebuild Categorization");
 			this.AddButtonLabeled(220, 180, this.GetButtonID(3, 601), "Generate Documentation");
 			
-			//this.AddButtonLabeled(20, 180, this.GetButtonID(3, 602), "Unset"); // Placeholder
+			if(Ultima.Files.MulPath["artlegacymul.uop"] != null || (Ultima.Files.MulPath["art.mul"] != null && Ultima.Files.MulPath["artidx.mul"] != null))
+			{
+				this.AddButtonLabeled(20, 180, this.GetButtonID(3, 602), "Rebuild Bounds.bin");
+			}
+			else
+			{	
+				this.AddLabelCropped(55, 180, 120, 20, RedHue, "Rebuild Bounds.bin");
+			}
 			this.AddButtonLabeled(220, 180, this.GetButtonID(3, 603), "Generate Reports");
 			
 			this.AddHtml(10, 210, 400, 20, this.Color(this.Center("Profiling"), LabelColor32), false, false);
@@ -2089,39 +2096,39 @@ namespace Server.Gumps
                                 this.InvokeCommand("DocGen");
                                 notice = "Documentation has been generated.";
                                 break;
-			    //case 602:
-                            //    this.InvokeCommand("Unset");
-                            //    notice = "Unset.";
-                            //    break;
-			   case 603:
+			    case 602:
+                                this.InvokeCommand("GenBounds");
+                                notice = "Bounds.bin rebuild. Restart server to take effect.";
+                                break;
+			    case 603:
                                 this.InvokeCommand("GenReports");
                                 notice = "Reports generated.";
                                 break;
-		           case 604:
+		            case 604:
                                 this.InvokeCommand("DumpTimers");
                                 notice = "Timers dumped.";
                                 break;
-			   case 605:
+			    case 605:
                                 this.InvokeCommand("CountObjects");
                                 notice = "Objects counted.";
                                 break;
-			   case 606:
+			    case 606:
                                 this.InvokeCommand("ProfileWorld");
                                 notice = "World profiled.";
                                 break;
-			   case 607:
+			    case 607:
                                 this.InvokeCommand("WriteProfiles");
                                 notice = "Profiles written.";
                                 break;
-			   case 608:
+			    case 608:
                                 this.InvokeCommand("TraceInternal");
                                 notice = "Tracing completed.";
                                 break;
-			   case 609:
+			    case 609:
                                 this.InvokeCommand("TraceExpanded");
                                 notice = "Tracing completed.";
                                 break;
-			   case 610:
+			    case 610:
                                 this.InvokeCommand("SetProfiles");
                                 notice = "Profiles toggled. Use with caution. This increases server load.";
                                 break;	
