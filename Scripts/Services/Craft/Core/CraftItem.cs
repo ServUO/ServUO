@@ -273,6 +273,18 @@ namespace Server.Engines.Craft
 
 			if (Mana > 0)
 			{
+                if (from.Backpack != null && m_System is DefInscription)
+                {
+                    Item item = from.Backpack.FindItemByType(typeof(ChronicleOfTheGargoyleQueen1));
+
+                    if (item != null && item is ChronicleOfTheGargoyleQueen1 && ((ChronicleOfTheGargoyleQueen1)item).Charges > 0)
+                    {
+                        if (consume)
+                            ((ChronicleOfTheGargoyleQueen1)item).Charges--;
+                        return true;
+                    }
+                }
+
                 if (ManaPhasingOrb.IsInManaPhase(from))
                 {
                     if (consume)
@@ -1399,17 +1411,21 @@ namespace Server.Engines.Craft
 		}
 
 		private object RequiredExpansionMessage(Expansion expansion)
-			//Eventually convert to TextDefinition, but that requires that we convert all the gumps to ues it too.  Not that it wouldn't be a bad idea.
 		{
 			switch (expansion)
 			{
-				case Expansion.SE:
-					return 1063307; // The "Samurai Empire" expansion is required to attempt this item.
-				case Expansion.ML:
-					return 1072650; // The "Mondain's Legacy" expansion is required to attempt this item.
-				default:
-					return String.Format(
-						"The \"{0}\" expansion is required to attempt this item.", ExpansionInfo.GetInfo(expansion).Name);
+                case Expansion.SE:
+                    return 1063307; // The "Samurai Empire" expansion is required to attempt this item.
+                case Expansion.ML:
+                    return 1072650; // The "Mondain's Legacy" expansion is required to attempt this item.
+                case Expansion.SA:
+                    return 1094731; // You must have the Stygian Abyss expansion pack to use this feature.
+                case Expansion.HS:
+                    return 1116295; // You must have the High Seas booster pack to use this feature
+                case Expansion.TOL:
+                    return 1155875; // You must have the Time of Legends expansion to use this feature.
+                default:
+                    return String.Format("The \"{0}\" expansion is required to attempt this item.", ExpansionInfo.GetInfo(expansion).Name);
 			}
 		}
 
@@ -1581,7 +1597,7 @@ namespace Server.Engines.Craft
 				}
 				else
 				{
-					if (tool.UsesRemaining < 1)
+					if (tool.UsesRemaining < 1 && tool.BreakOnDepletion)
 					{
 						toolBroken = true;
 					}
@@ -1839,7 +1855,7 @@ namespace Server.Engines.Craft
 
 				tool.UsesRemaining--;
 
-				if (tool.UsesRemaining < 1)
+                if (tool.UsesRemaining < 1 && tool.BreakOnDepletion)
 				{
 					toolBroken = true;
 				}

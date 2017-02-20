@@ -286,7 +286,7 @@ namespace Server.Engines.Craft
         private static List<CraftContext> Contexts = new List<CraftContext>();
 
         public static CraftSystem[] Systems { get { return _Systems; } }
-        private static CraftSystem[] _Systems = new CraftSystem[12];
+        private static CraftSystem[] _Systems = new CraftSystem[11];
 
         public static void Configure()
         {
@@ -301,7 +301,6 @@ namespace Server.Engines.Craft
             _Systems[8] = DefMasonry.CraftSystem;
             _Systems[9] = DefTailoring.CraftSystem;
             _Systems[10] = DefTinkering.CraftSystem;
-            _Systems[11] = DefBasketweaving.CraftSystem;
 
             EventSink.WorldSave += OnSave;
             EventSink.WorldLoad += OnLoad;

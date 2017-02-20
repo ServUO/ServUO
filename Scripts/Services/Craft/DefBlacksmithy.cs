@@ -192,7 +192,9 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
         {
-            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
+            int num = 0;
+
+            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
             {
                 return 1044038; // You have worn out your tool!
             }
@@ -202,9 +204,9 @@ namespace Server.Engines.Craft
                 return 1048146; // If you have a tool equipped, you must use that tool.
             }
 
-            if (!BaseTool.CheckAccessible(tool, from))
+            else if (!tool.CheckAccessible(from, ref num))
             {
-                return 1044263; // The tool must be on your person to use.
+                return num; // The tool must be on your person to use.
             }
 
             bool anvil, forge;

@@ -79,17 +79,17 @@ namespace Server.Spells.Necromancy
             double damage = Utility.RandomMinMax((Core.ML ? 32 : 36), 40) * ((300 + (this.GetDamageSkill(this.Caster) * 9)) / 1000);
             damage *= strength;
 
-            int sdiBonus;
+            double sdiBonus;
 
             if (Core.SE)
             {
                 if (Core.SA)
                 {
-                    sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is PlayerMobile);
+                    sdiBonus = (double)SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is PlayerMobile) / 100;
                 }
                 else
                 {
-                    sdiBonus = AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage);
+                    sdiBonus = (double)AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage) / 100;
 
                     // PvP spell damage increase cap of 15% from an item’s magic property in Publish 33(SE)
                     if (m is PlayerMobile && this.Caster.Player && sdiBonus > 15)
@@ -98,7 +98,7 @@ namespace Server.Spells.Necromancy
             }
             else
             {
-                sdiBonus = AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage);
+                sdiBonus = (double)AosAttributes.GetValue(this.Caster, AosAttribute.SpellDamage) / 100;
             }
 
             double pvmDamage = (damage * (1 + sdiBonus)) * strength;
