@@ -76,26 +76,7 @@ namespace Server.Engines.VvV
 
             if (item != null)
             {
-                if (item is IOwnerRestricted)
-                    ((IOwnerRestricted)item).Owner = User;
-
-                if (item is IAccountRestricted && User.Account != null)
-                    ((IAccountRestricted)item).Account = User.Account.Username;
-
-                NegativeAttributes neg = RunicReforging.GetNegativeAttributes(item);
-
-                if (neg != null)
-                {
-                    neg.Antique = 1;
-
-                    if (item is IDurability && ((IDurability)item).MaxHitPoints == 0)
-                    {
-                        ((IDurability)item).MaxHitPoints = 255;
-                        ((IDurability)item).HitPoints = 255;
-                    }
-                }
-
-                ViceVsVirtueSystem.Instance.AddVvVItem(item);
+                VvVRewards.OnRewardItemCreated(User, item);
 
                 if (User.Backpack == null || !User.Backpack.TryDropItem(User, item, false))
                 {

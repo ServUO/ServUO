@@ -117,5 +117,29 @@ namespace Server.Engines.VvV
             Rewards.Add(new CollectionItem(typeof(ShameBanner), 39347, 1123371, 0, 10000)); // Shame Banner
             Rewards.Add(new CollectionItem(typeof(WrongBanner), 39349, 1123373, 0, 10000)); // Wrong Banner
         }
+
+        public static void OnRewardItemCreated(Mobile from, Item item)
+        {
+            if (item is IOwnerRestricted)
+                ((IOwnerRestricted)item).Owner = from;
+
+            if (item is IAccountRestricted && from.Account != null)
+                ((IAccountRestricted)item).Account = from.Account.Username;
+
+            NegativeAttributes neg = RunicReforging.GetNegativeAttributes(item);
+
+            if (neg != null)
+            {
+                neg.Antique = 1;
+
+                if (item is IDurability && ((IDurability)item).MaxHitPoints == 0)
+                {
+                    ((IDurability)item).MaxHitPoints = 255;
+                    ((IDurability)item).HitPoints = 255;
+                }
+            }
+
+            ViceVsVirtueSystem.Instance.AddVvVItem(item);
+        }
     }
 }

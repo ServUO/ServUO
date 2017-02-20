@@ -583,6 +583,13 @@
     <Compile Include="Items\Addons\BaseAddonDeed.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Addons\Craft Addons\AddonToolComponenet.cs" />
+    <Compile Include="Items\Addons\Craft Addons\CraftAddon.cs" />
+    <Compile Include="Items\Addons\Craft Addons\CraftAddonDeed.cs" />
+    <Compile Include="Items\Addons\Craft Addons\FletchingStation.cs" />
+    <Compile Include="Items\Addons\Craft Addons\SewingMachine.cs" />
+    <Compile Include="Items\Addons\Craft Addons\SmithingPress.cs" />
+    <Compile Include="Items\Addons\Craft Addons\SpinningLathe.cs" />
     <Compile Include="Items\Addons\Distillery.cs" />
     <Compile Include="Items\Addons\DolphinRug.cs" />
     <Compile Include="Items\Addons\DungeonHitchingPost.cs" />
@@ -595,6 +602,7 @@
     <Compile Include="Items\Artifacts\Decorative\MapOfTheKnownWorld.cs" />
     <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
+    <Compile Include="Items\Artifacts\Decorative\TOLDecorationArtifacts.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfFeudalGrip.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\BritchesOfWarding.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\CuffsOfTheArchmage.cs" />
@@ -818,6 +826,7 @@
     <Compile Include="Items\Quest\RedKey1.cs" />
     <Compile Include="Items\Quest\Redkeyfragment.cs" />
     <Compile Include="Items\Quest\SAQuestItems.cs" />
+    <Compile Include="Items\Quest\SatietyCure.cs" />
     <Compile Include="Items\Quest\ScrollOfAbraxus.cs" />
     <Compile Include="Items\Quest\SealedNotesForJamal.cs" />
     <Compile Include="Items\Quest\SignedTuitionReimbursementForm.cs" />
@@ -2078,6 +2087,7 @@
     <Compile Include="Mobiles\NPCs\Lenley.cs" />
     <Compile Include="Mobiles\NPCs\Regina.cs" />
     <Compile Include="Mobiles\NPCs\Thalia.cs" />
+    <Compile Include="Mobiles\NPCs\Vrulkax.cs" />
     <Compile Include="Mobiles\NPCs\WanderingShaman.cs" />
     <Compile Include="Mobiles\PlayerMobile.cs" />
     <Compile Include="Mobiles\Normal\PoisonElemental.cs" />
@@ -2574,6 +2584,7 @@
     <Compile Include="Quests\HumanHeritage.cs" />
     <Compile Include="Quests\MasteringtheSoulforge.cs" />
     <Compile Include="Quests\Ortlem.cs" />
+    <Compile Include="Quests\PeptaQuest.cs" />
     <Compile Include="Quests\RatmenSanctuaryQuest.cs" />
     <Compile Include="Quests\Sacred Quest\QuestOfSingularity.cs" />
     <Compile Include="Quests\Sacred Quest\ShrineOfSingularity.cs" />
@@ -10230,16 +10241,10 @@
     <Compile Include="Services\BasketWeaving\BasketWeavingBook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\BasketWeaving\Basketweavingpliers.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\BasketWeaving\Clippers.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\BasketWeaving\ColorFixative.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BasketWeaving\DefBasketweaving.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\BasketWeaving\MiscSAResources.cs">

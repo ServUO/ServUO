@@ -81,10 +81,12 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
         {
-            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
+            int num = 0;
+
+            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
                 return 1044038; // You have worn out your tool!
-            else if (!BaseTool.CheckAccessible(tool, from))
-                return 1044263; // The tool must be on your person to use.
+            else if (!tool.CheckAccessible(from, ref num))
+                return num; // The tool must be on your person to use.
             else if (itemType != null && (itemType.IsSubclassOf(typeof(BaseFactionTrapDeed)) || itemType == typeof(FactionTrapRemovalKit)) && Faction.Find(from) == null)
                 return 1044573; // You have to be in a faction to do that.
             else if (itemType == typeof(ModifiedClockworkAssembly) && !(from is PlayerMobile && ((PlayerMobile)from).MechanicalLife))
@@ -160,7 +162,7 @@ namespace Server.Engines.Craft
 
         public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            if (resourceType == typeof(Silver))
+            if (resourceType == typeof(Silver) || resourceType == typeof(RingOfTheElements))
                 return false;
 
             return base.ConsumeOnFailure(from, resourceType, craftItem);

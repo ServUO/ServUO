@@ -52,6 +52,19 @@ namespace Server.Engines.VvV
             list.Add(1155513); // Vice vs Virtue Reward Vendor
         }
 
+        private DateTime _NextSpeak;
+
+        public override void OnMovement(Mobile m, Point3D oldLocation)
+        {
+            base.OnMovement(m, oldLocation);
+
+            if (_NextSpeak < DateTime.UtcNow && ViceVsVirtueSystem.IsVvV(m) && InRange(m.Location, 6))
+            {
+                SayTo(m, 1155534); // I will convert your human artifacts to gargoyle versions if you hand them to me.
+                _NextSpeak = DateTime.UtcNow + TimeSpan.FromSeconds(25);
+            }
+        }
+
         public override void OnDoubleClick(Mobile m)
         {
             if (m is PlayerMobile && InRange(m.Location, 3))
@@ -115,6 +128,53 @@ namespace Server.Engines.VvV
                     }
                 }
             }
+        }
+
+        private Type[][] _Table =
+        {
+            new Type[] { typeof(CrimsonCincture), typeof(GargishCrimsonCincture) },
+            new Type[] { typeof(MaceAndShieldGlasses), typeof(GargishMaceAndShieldGlasses) },
+            new Type[] { typeof(WizardsCrystalGlasses), typeof(GargishWizardsCrystalGlasses) },
+            new Type[] { typeof(FoldedSteelGlasses), typeof(GargishFoldedSteelGlasses) },
+            new Type[] { typeof(WizardsCrystalGlasses), typeof(GargishWizardsCrystalGlasses) },
+        };
+
+        public override bool OnDragDrop(Mobile from, Item dropped)
+        {
+            if (ViceVsVirtueSystem.IsVvV(from))
+            {
+                if (!(dropped is IOwnerRestricted) || ((IOwnerRestricted)dropped).Owner == from)
+                {
+                    if (dropped is IVvVItem)
+                    {
+                        foreach (var t in _Table)
+                        {
+                            if (dropped.GetType() == t[0])
+                            {
+                                IDurability dur = dropped as IDurability;
+
+                                if (dur != null && dur.MaxHitPoints == 255 && dur.HitPoints == 255)
+                                {
+                                    var item = Loot.Construct(t[1]);
+
+                                    if (item != null)
+                                    {
+                                        VvVRewards.OnRewardItemCreated(from, item);
+
+                                        from.AddToBackpack(item);
+                                        dropped.Delete();
+
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            SayTo(from, 1157365); // I'm sorry, I cannot accept this item.
+            return false;
         }
 
         public SilverTrader(Serial serial) : base(serial)
