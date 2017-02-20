@@ -135,7 +135,7 @@ namespace Server.Regions
                             return false;
                         }
                     }
-                    else if (equipment < 4)
+                    else if (equipment < 4 || pm.ExploringTheDeepQuest != ExploringTheDeepQuestChain.CollectTheComponentComplete)
                     {
                         m.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
                         return false;

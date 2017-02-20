@@ -74,6 +74,7 @@ namespace Server.Mobiles
             }
             else if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent && boots != null && robe != null && neck != null && lens != null)
             {
+                pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CollectTheComponentComplete;
                 m.AddToBackpack(new UnknownShipwreck());
             }
             else
