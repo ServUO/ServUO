@@ -62,7 +62,7 @@ namespace Server.Mobiles
             Item boots = m.Backpack.FindItemByType(typeof(BootsOfBallast));
             Item robe = m.Backpack.FindItemByType(typeof(CanvassRobe));
             Item neck = m.Backpack.FindItemByType(typeof(AquaPendant));
-            Item lens = m.Backpack.FindItemByType(typeof(NictitatingLens));
+            Item lens = m.Backpack.FindItemByType(m.Race == Race.Gargoyle ? typeof(GargishNictitatingLens) : typeof(NictitatingLens));
 
             if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.None)
             {

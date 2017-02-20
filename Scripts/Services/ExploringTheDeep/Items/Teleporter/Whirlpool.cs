@@ -174,9 +174,9 @@ namespace Server.Items
 
             else if (m_Active && CanTeleport(from))
             {
-                bool equipment = mobile.Items.Where(i => (i is CanvassRobe || i is BootsOfBallast || i is NictitatingLens || i is AquaPendant) && (i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i)) != null;
-                                
-                if (!equipment)
+                int equipment = mobile.Items.Where(i => (i is CanvassRobe || i is BootsOfBallast || i is NictitatingLens || i is AquaPendant || i is GargishNictitatingLens) && (i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i)).Count();
+
+                if (equipment < 4)
                 {
                     mobile.Kill();
                     return;
