@@ -1,6 +1,9 @@
 ﻿using System;
 using Server.Items;
 using System.Collections;
+using System.Collections.Generic;
+using Server.Engines.Quests;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -86,24 +89,32 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool OnBeforeDeath()
+        public override void OnDeath(Container c)
         {
-            Mobile killer = DemonKnight.FindRandomPlayer(this);
+            List<DamageStore> rights = GetLootingRights();            
 
-            if (killer != null)
+            foreach (Mobile m in rights.Select(x => x.m_Mobile).Distinct())
             {
-                Item item = new WillemHartesHat();
+                if (m is PlayerMobile)
+                {
+                    PlayerMobile pm = m as PlayerMobile;
 
-                Container pack = killer.Backpack;
+                    if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+                    {
+                        Item item = new WillemHartesHat();
 
-                if (pack == null || !pack.TryDropItem(killer, item, false))
-                    killer.BankBox.DropItem(item);
+                        if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
+                        {
+                            m.BankBox.DropItem(item);
+                        }
 
-                killer.SendLocalizedMessage(1154489); // You received a Quest Item!
+                        m.SendLocalizedMessage(1154489); // You received a Quest Item!
+                    }
+                }
             }
 
-            return base.OnBeforeDeath();
-        }        
+            base.OnDeath(c);
+        }
 
         public override bool HasBreath { get { return true; } }
         public override bool ReacquireOnMovement { get { return true; } }
