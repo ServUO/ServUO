@@ -30,6 +30,8 @@ namespace Server.Mobiles
 		public override bool Commandable { get { return false; } }
 		public override bool PlayerRangeSensitive { get { return false; } }
 
+        public virtual bool AttacksMastersTarget { get { return true; } }
+
 		public virtual void RangeCheck()
 		{
 			if (!Deleted && ControlMaster != null && !ControlMaster.Deleted)
@@ -87,6 +89,26 @@ namespace Server.Mobiles
 				return;
 			}
 
+            if (AttacksMastersTarget)
+            {
+                if (Combatant == null)
+                {
+                    if (master.Combatant != null)
+                    {
+                        Combatant = master.Combatant;
+                    }
+                }
+                else
+                {
+                    if (Combatant.Deleted)
+                    {
+                        Combatant = null;
+                    }
+
+                    return;
+                }
+            }
+
 			RangeCheck();
 
 			if (m_LastHidden != master.Hidden)
@@ -119,7 +141,6 @@ namespace Server.Mobiles
                     Combatant = null;
                     CurrentSpeed = 0.01;
                 }
- 
             }
 			else
 			{

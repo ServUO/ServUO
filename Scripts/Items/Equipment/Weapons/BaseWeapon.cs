@@ -2650,7 +2650,7 @@ namespace Server.Items
 				}
 			}
 
-			if (attacker is VampireBatFamiliar)
+			if (attacker is VampireBatFamiliar || attacker is VampireBat)
 			{
 				BaseCreature bc = (BaseCreature)attacker;
 				Mobile caster = bc.ControlMaster;
