@@ -103,10 +103,15 @@ namespace Server.Spells.Necromancy
 
             TimeSpan duration = TimeSpan.FromSeconds((((ss - mr) / 2.5) + 40.0) * strength);
 
+            int baseReduce = (int)Math.Min(15, (Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) * 0.075);
+
+            int fire = (m.FireResistance > 70 ? m.FireResistance - 70 : 0) + baseReduce;
+            int poison = (m.FireResistance > 70 ? m.FireResistance - 70 : 0) + baseReduce;
+
             ResistanceMod[] mods = new ResistanceMod[4]
 					{
-						new ResistanceMod( ResistanceType.Fire, (int)(-15.0 * strength) ),
-						new ResistanceMod( ResistanceType.Poison, (int)(-15.0 * strength) ),
+						new ResistanceMod( ResistanceType.Fire, (int)(-fire * strength) ),
+						new ResistanceMod( ResistanceType.Poison, (int)(-poison * strength) ),
 						new ResistanceMod( ResistanceType.Cold, (int)(+10.0 * strength) ),
 						new ResistanceMod( ResistanceType.Physical, (int)(+10.0 * strength) )
 					};

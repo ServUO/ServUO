@@ -177,6 +177,10 @@ namespace Server.Spells.SkillMasteries
 
                 Expire();
             }
+            else if (Caster.Skills[CastSkill].Value < RequiredSkill)
+            {
+                Expire();
+            }
             else
             {
                 DoEffects();
@@ -660,7 +664,7 @@ namespace Server.Spells.SkillMasteries
             if (move != null)
                 move.OnDamaged(damager, victim, damage);
 
-            //CombatTrainingSpell.CheckDamage(damager, victim, ref damage);
+            CombatTrainingSpell.CheckDamage(damager, victim, ref damage);
 		}
 
         /// <summary>

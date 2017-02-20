@@ -115,6 +115,11 @@ namespace Server.Misc
             if (CheckAnimal(from, typeof(Dog)) || CheckAnimal(from, typeof(Cat)))
                 points += from.Skills[SkillName.Ninjitsu].Fixed / 30;
 
+            // Skill Masteries
+            points += RampageSpell.GetBonus(from, RampageSpell.BonusType.HitPointRegen);
+            points += CombatTrainingSpell.RegenBonus(from);
+            points += BarrabHemolymphConcentrate.HPRegenBonus(from);
+
             if (Core.AOS)
                 foreach (RegenBonusHandler handler in HitsBonusHandlers)
                     points += handler(from);

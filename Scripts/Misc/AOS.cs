@@ -262,6 +262,16 @@ namespace Server
                 Spells.Mystic.SpellPlagueSpell.OnMobileDamaged(m);
             #endregion
 
+            #region Skill Mastery Spells
+            SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
+
+            if (spell != null)
+                spell.AbsorbDamage(ref totalDamage);
+
+            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
+            SkillMasterySpell.OnCasterDamaged(m, from, ref totalDamage);
+            #endregion
+
             if (keepAlive && totalDamage > m.Hits)
                 totalDamage = m.Hits;
 
