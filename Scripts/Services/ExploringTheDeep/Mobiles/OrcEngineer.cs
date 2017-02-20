@@ -83,9 +83,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            List<DamageStore> rights = GetLootingRights();
-
-            Item item = new OrcishSchematics();
+            List<DamageStore> rights = GetLootingRights();            
 
             foreach (Mobile m in rights.Select(x => x.m_Mobile).Distinct())
             {
@@ -95,6 +93,8 @@ namespace Server.Mobiles
 
                     if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                     {
+                        Item item = new OrcishSchematics();
+
                         if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
                         {
                             m.BankBox.DropItem(item);
