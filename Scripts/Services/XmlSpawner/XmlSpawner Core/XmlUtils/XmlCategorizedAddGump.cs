@@ -164,7 +164,7 @@ namespace Server.Gumps
 
 				}
 				} catch (Exception ex){
-                    Console.WriteLine("XmlCategorizedAddGump: Corrupted Data/objects.xml file detected. Not all XmlCAG objects loaded. {0}", ex); 
+                    Console.WriteLine("XmlCategorizedAddGump: Corrupted Data/objects.xml or Cache/objects.xml file detected. Not all XmlCAG objects loaded. {0}", ex); 
                 }
 
 
@@ -180,8 +180,17 @@ namespace Server.Gumps
 			get
 			{
 				if ( m_Root == null )
-					m_Root = Load( "Data/objects.xml" );
-
+				{
+					if (!File.Exists("Cache/objects.xml"))
+					{
+						m_Root = Load("Data/objects.xml");
+					}
+					else
+					{
+						m_Root = Load("Cache/objects.xml");
+					}
+				}
+				
 				return m_Root;
 			}
 		}

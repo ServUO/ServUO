@@ -134,14 +134,23 @@ namespace Server.Gumps
 
         public static CAGCategory Root
         {
-            get
-            {
-                if (m_Root == null)
-                    m_Root = Load("Data/objects.xml");
-
-                return m_Root;
-            }
-        }
+			get
+			{
+				if ( m_Root == null )
+				{
+					if (!File.Exists("Cache/objects.xml"))
+					{
+						m_Root = Load("Data/objects.xml");
+					}
+					else
+					{
+						m_Root = Load("Cache/objects.xml");
+					}
+				}
+				
+				return m_Root;
+			}
+		}
         public string Title
         {
             get
