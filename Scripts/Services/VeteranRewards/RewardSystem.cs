@@ -466,8 +466,12 @@ namespace Server.Engines.VeteranRewards
                 }),
                 new RewardList(RewardInterval, 7, new RewardEntry[]
                 {
-                    new RewardEntry(houseAddOns,	1076157, typeof(CannonDeed), Expansion.ML),
-                    new RewardEntry(houseAddOns,	1080550, typeof(TreeStumpDeed), Expansion.ML)
+                    new RewardEntry(houseAddOns,	1076157, typeof(CannonDeed),           Expansion.ML),
+                    new RewardEntry(houseAddOns,	1080550, typeof(TreeStumpDeed),        Expansion.ML),
+                    new RewardEntry(houseAddOns,    1123504, typeof(SewingMachineDeed),    Expansion.TOL),
+                    new RewardEntry(houseAddOns,    1123577, typeof(SmithingPressDeed),    Expansion.TOL),
+                    new RewardEntry(houseAddOns,    1156369, typeof(SpinningLatheDeed),    Expansion.TOL),
+                    new RewardEntry(houseAddOns,    1156370, typeof(FletchingStationDeed), Expansion.TOL),
                 }),
                 new RewardList(RewardInterval, 8, new RewardEntry[]
                 {
@@ -493,7 +497,6 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(etherealSteeds,	1080386, typeof(EtherealCuSidhe), Expansion.ML),
                     new RewardEntry(houseAddOns,    1080548, typeof(MiningCartDeed), Expansion.ML),
                     new RewardEntry(houseAddOns,    1080397, typeof(AnkhOfSacrificeDeed), Expansion.ML),
-                    new RewardEntry(houseAddOns,    1150621, typeof( RaisedGardenSmallAddonDeed), Expansion.SA ),
 
                     new RewardEntry( houseAddOns,       1150090, typeof( SkullRugEastAddonDeed ), Expansion.SA ),
                     new RewardEntry( houseAddOns,       1150089, typeof( SkullRugSouthAddonDeed ), Expansion.SA ),
@@ -512,8 +515,6 @@ namespace Server.Engines.VeteranRewards
                 }),
                 new RewardList(RewardInterval, 12, new RewardEntry[]
                 {
-                    new RewardEntry( houseAddOns,   1150382, typeof( RaisedGardenEastAddonDeed), Expansion.SA ),
-                    new RewardEntry( houseAddOns,   1150381, typeof( RaisedGardenSouthAddonDeed), Expansion.SA ),
                     new RewardEntry( etherealSteeds,1113813, typeof(EtherealHiryu), Expansion.ML),
                 }),
                 new RewardList(RewardInterval, 13, new RewardEntry[]
