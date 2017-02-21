@@ -61,7 +61,7 @@ namespace Server
 				catch
 				{
 					if (Core.Debug)
-                        Console.WriteLine("Metrics: Metrics enabled. Performance counters creation requires ServUO to be started as Administratior once!");
+                        Console.WriteLine("Metrics: Metrics enabled. Performance counters creation requires ServUO to be run as Administrator once!");
 				}               
                 #endif
             }
