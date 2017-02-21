@@ -1496,7 +1496,7 @@ namespace Server.SkillHandlers
 			m_Table[22] = new ImbuingDefinition(AosAttribute.SpellChanneling,       1079766, 100, 	typeof(MagicalResidue), typeof(Diamond), 		typeof(SilverSnakeSkin),    1, 0, 1112040);
 			m_Table[23] = new ImbuingDefinition(AosAttribute.NightSight, 	        1015168, 50, 	typeof(MagicalResidue), typeof(Tourmaline), 	typeof(BottleIchor), 	    1, 0, 1112004);
 
-			m_Table[24] = new ImbuingDefinition(AosWeaponAttribute.LowerStatReq,	1079757, 100, 	typeof(EnchantEssence), typeof(Amethyst), 	    typeof(ElvenFletchings),     100, 10, 1111998);
+			m_Table[24] = new ImbuingDefinition(AosWeaponAttribute.LowerStatReq,	1079757, 100, 	typeof(EnchantEssence), typeof(Amethyst), 	    typeof(ElvenFletching),     100, 10, 1111998);
 			m_Table[25] = new ImbuingDefinition(AosWeaponAttribute.HitLeechHits,  	1079698, 110, 	typeof(MagicalResidue), typeof(Ruby), 		    typeof(VoidOrb), 	        50, 2, 1111964);
 			m_Table[26] = new ImbuingDefinition(AosWeaponAttribute.HitLeechStam,    1079707, 100, 	typeof(MagicalResidue), typeof(Diamond), 		typeof(VoidOrb), 	        50, 2, 1111992);
 			m_Table[27] = new ImbuingDefinition(AosWeaponAttribute.HitLeechMana,    1079701, 110, 	typeof(MagicalResidue), typeof(Sapphire), 	    typeof(VoidOrb), 	        50, 2, 1111967);
@@ -1665,7 +1665,7 @@ namespace Server.SkillHandlers
 			typeof(SpiderCarapace), 	typeof(DaemonClaw), 			typeof(VialOfVitriol),
 			typeof(GoblinBlood), 		typeof(LavaSerpentCrust), 		typeof(UndyingFlesh),
 			typeof(CrushedGlass), 		typeof(CrystallineBlackrock), 	typeof(PowderedIron),
-			typeof(ElvenFletchings),    typeof(DelicateScales),
+			typeof(ElvenFletching),    typeof(DelicateScales),
 			
 			typeof(EssenceSingularity), typeof(EssenceBalance), 		typeof(EssencePassion),
 			typeof(EssenceDirection), 	typeof(EssencePrecision), 		typeof(EssenceControl),

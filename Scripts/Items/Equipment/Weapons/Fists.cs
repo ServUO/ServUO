@@ -6,7 +6,8 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            Mobile.DefaultWeapon = new Fists();
+            if (Mobile.DefaultWeapon == null)
+                Mobile.DefaultWeapon = new Fists();
 
             EventSink.DisarmRequest += new DisarmRequestEventHandler(EventSink_DisarmRequest);
             EventSink.StunRequest += new StunRequestEventHandler(EventSink_StunRequest);
@@ -284,6 +285,11 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (Mobile.DefaultWeapon == null)
+                Mobile.DefaultWeapon = this;
+            else
+                Delete();
         }
 
         /* Wrestling moves */

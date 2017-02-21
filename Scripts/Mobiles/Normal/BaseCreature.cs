@@ -5760,6 +5760,9 @@ namespace Server.Mobiles
             }
 
             #region SA
+            if(!c.Deleted)
+                IngredientDropEntry.CheckDrop(this, c);
+
             if (LastKiller is BaseVoidCreature)
                 ((BaseVoidCreature)LastKiller).Mutate(VoidEvolution.Killing);
             #endregion

@@ -104,13 +104,10 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            SARegionDrops.GetSADrop(c);
-
             if (Utility.RandomDouble() < 0.25)
             {
                 c.DropItem(new SearedFireAntGoo());
             }
-
         }
 
         public override void Serialize(GenericWriter writer)

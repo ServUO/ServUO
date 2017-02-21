@@ -81,10 +81,12 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
         {
-            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
+            int num = 0;
+
+            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
                 return 1044038; // You have worn out your tool!
-            else if (!BaseTool.CheckAccessible(tool, from))
-                return 1044263; // The tool must be on your person to use.
+            else if (!tool.CheckAccessible(from, ref num))
+                return num; // The tool must be on your person to use.
             else if (itemType != null && (itemType.IsSubclassOf(typeof(BaseFactionTrapDeed)) || itemType == typeof(FactionTrapRemovalKit)) && Faction.Find(from) == null)
                 return 1044573; // You have to be in a faction to do that.
             else if (itemType == typeof(ModifiedClockworkAssembly) && !(from is PlayerMobile && ((PlayerMobile)from).MechanicalLife))
@@ -160,7 +162,7 @@ namespace Server.Engines.Craft
 
         public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            if (resourceType == typeof(Silver))
+            if (resourceType == typeof(Silver) || resourceType == typeof(RingOfTheElements))
                 return false;
 
             return base.ConsumeOnFailure(from, resourceType, craftItem);
@@ -581,6 +583,12 @@ namespace Server.Engines.Craft
                 index = this.AddCraft(typeof(ModifiedClockworkAssembly), 1044051, 1113033, 65.0, 115.0, typeof(ClockworkAssembly), 1073426, 1, 502910);
                 this.AddRes(index, typeof(PowerCrystal), 1112811, 1, 502910);
                 this.AddRes(index, typeof(VoidEssence), 1112327, 3, 502910);
+                this.SetNeededExpansion(index, Expansion.SA);
+                this.ForceNonExceptional(index);
+
+                index = this.AddCraft(typeof(ArcanicRuneStone), 1044051, 1113352, 90.0, 140.0, typeof(CrystalShards), 1073161, 1, 1044253);
+                this.AddRes(index, typeof(PowerCrystal), 1112811, 5, 502910);
+                this.AddSkill(index, SkillName.Magery, 80.0, 85.0);
                 this.SetNeededExpansion(index, Expansion.SA);
                 this.ForceNonExceptional(index);
             }

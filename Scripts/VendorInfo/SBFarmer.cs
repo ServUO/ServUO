@@ -30,7 +30,8 @@ namespace Server.Mobiles
         public class InternalBuyInfo : List<GenericBuyInfo> 
         { 
             public InternalBuyInfo() 
-            { 
+            {
+                this.Add(new GenericBuyInfo("1031235", typeof(FreshGinger), 505, 10, 11235, 0));
                 this.Add(new GenericBuyInfo(typeof(Cabbage), 5, 20, 0xC7B, 0));
                 this.Add(new GenericBuyInfo(typeof(Cantaloupe), 6, 20, 0xC79, 0));
                 this.Add(new GenericBuyInfo(typeof(Carrot), 3, 20, 0xC78, 0));

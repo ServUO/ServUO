@@ -273,16 +273,6 @@ namespace Server.Engines.Craft
 
                     newarmor.Altered = true;
                 }
-                /*else if ((origItem is Glasses && newitem is GargishGlasses) || (origItem is ELvenGlasses && newitem is GargishGlasses))
-                {
-                    GargishGlasses glasses = (GargishGlasses)newitem;
-                    AosWeaponAttributes attr = RunicReforging.GetAosWeaponAttributes(origItem);
-
-                    if(attr != null)
-                    {
-                        glasses.WeaponAttributes = new AosWeaponAttributes(
-                    }
-                }*/
                 else
                 {
                     return;

@@ -166,7 +166,15 @@ namespace Server.Items
 	        new StealableEntry(Map.TerMur, new Point3D(1226, 966, -29), 9216, 13824, typeof(PricelessTreasureArtifact)),
 	        // UnderWorld - Artifact rarity 9
 	        new StealableEntry(Map.TerMur, new Point3D(1066, 1193, -36), 18432, 27648, typeof(TyballsFlaskStandArtifact)),
-	        new StealableEntry(Map.TerMur, new Point3D(1131, 1128, -42), 18432, 27648, typeof(BlockAndTackleArtifact))
+	        new StealableEntry(Map.TerMur, new Point3D(1131, 1128, -42), 18432, 27648, typeof(BlockAndTackleArtifact)),
+
+            //TOL - Artifact rarity 11 - does not show rarity on item
+            new StealableEntry(Map.TerMur, new Point3D(538, 1496, 40), 36864, 55296, typeof(StretchedDinosaurHide)),
+            new StealableEntry(Map.TerMur, new Point3D(174, 1808, 80), 36864, 55296, typeof(CarvedMyrmydexGlyph)),
+            new StealableEntry(Map.TerMur, new Point3D(630, 1689, 100), 36864, 55296, typeof(WakuOnASpit)),
+            new StealableEntry(Map.TerMur, new Point3D(688, 2125, 45), 36864, 55296, typeof(SacredLavaRock)),
+            new StealableEntry(Map.TerMur, new Point3D(393, 1838, 0), 36864, 55296, typeof(WhiteTigerFigurine)),
+            new StealableEntry(Map.TerMur, new Point3D(421, 1571, 40), 36864, 55296, typeof(DragonTurtleHatchlingNet)),
         };
         private static Type[] m_TypesOfEntries = null;
         private static StealableArtifactsSpawner m_Instance;

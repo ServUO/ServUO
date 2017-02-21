@@ -167,7 +167,7 @@ namespace Server
                     damage += damage * quiver.DamageIncrease / 100;
 
                 if (!deathStrike)
-                    totalDamage = Math.Min(damage, 35);	// Direct Damage cap of 35
+                    totalDamage = Math.Min(damage, Core.TOL && archer ? 30 : 35);	// Direct Damage cap of 30/35
                 else
                     totalDamage = Math.Min(damage, 70);	// Direct Damage cap of 70
             }
@@ -255,8 +255,21 @@ namespace Server
             else
                 DamageEaterContext.CheckDamage(m, totalDamage, phys, fire, cold, pois, nrgy, direct);
 
+            if (fire > 0 && totalDamage > 0)
+                SwarmContext.CheckRemove(m);
+
             if(totalDamage > 0)
                 Spells.Mystic.SpellPlagueSpell.OnMobileDamaged(m);
+            #endregion
+
+            #region Skill Mastery Spells
+            SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
+
+            if (spell != null)
+                spell.AbsorbDamage(ref totalDamage);
+
+            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
+            SkillMasterySpell.OnCasterDamaged(m, from, ref totalDamage);
             #endregion
 
             if (keepAlive && totalDamage > m.Hits)
@@ -1304,6 +1317,9 @@ namespace Server
 
         public void ScaleLeech(BaseWeapon wep, int weaponSpeed)
         {
+            if (wep.IsArtifact)
+                return;
+
             if (HitLeechHits > 0)
             {
                 double postcap = (double)HitLeechHits / (double)Imbuing.GetPropRange(wep, AosWeaponAttribute.HitLeechHits)[1];

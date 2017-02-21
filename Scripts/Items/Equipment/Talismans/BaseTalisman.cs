@@ -198,6 +198,10 @@ namespace Server.Items
             set
             {
                 this.m_MaxHitPoints = value;
+
+                if (this.m_MaxHitPoints > 255)
+                    this.m_MaxHitPoints = 255;
+
                 this.InvalidateProperties();
             }
         }

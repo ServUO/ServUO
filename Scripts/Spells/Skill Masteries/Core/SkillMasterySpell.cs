@@ -41,9 +41,10 @@ namespace Server.Spells.SkillMasteries
 
         public virtual bool CancelsWeaponAbility { get { return false; } }
         public virtual bool CancelsSpecialMove { get { return CancelsWeaponAbility; } }
+        public virtual bool ClearOnSpecialAbility { get { return false; } }
 
         public virtual TimeSpan ExpirationPeriod { get { return TimeSpan.FromMinutes(30); } }
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.0); } }
+        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.25); } }
 
 		public virtual double BaseSkillBonus 
 		{
@@ -174,6 +175,10 @@ namespace Server.Spells.SkillMasteries
                 if(UpkeepCancelMessage > 0)
                     Caster.SendLocalizedMessage(UpkeepCancelMessage);
 
+                Expire();
+            }
+            else if (Caster.Skills[CastSkill].Value < RequiredSkill)
+            {
                 Expire();
             }
             else
@@ -659,7 +664,7 @@ namespace Server.Spells.SkillMasteries
             if (move != null)
                 move.OnDamaged(damager, victim, damage);
 
-            //CombatTrainingSpell.CheckDamage(damager, victim, ref damage);
+            CombatTrainingSpell.CheckDamage(damager, victim, ref damage);
 		}
 
         /// <summary>
@@ -825,6 +830,27 @@ namespace Server.Spells.SkillMasteries
             }
 
             return false;
+        }
+
+        public static void OnToggleSpecialAbility(Mobile m)
+        {
+            if (m_Table.ContainsKey(m))
+            {
+                if (m_Table[m] == null || m_Table[m].Count == 0)
+                {
+                    m_Table.Remove(m);
+                }
+                else
+                {
+                    foreach (SkillMasterySpell sp in EnumerateSpells(m))
+                    {
+                        if (sp.ClearOnSpecialAbility)
+                        {
+                            sp.Expire(true);
+                        }
+                    }
+                }
+            }
         }
 
         private static Dictionary<SkillMasterySpell, DateTime> _Cooldown;

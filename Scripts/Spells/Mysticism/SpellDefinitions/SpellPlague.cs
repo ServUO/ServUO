@@ -134,6 +134,12 @@ namespace Server.Spells.Mystic
 
             from.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
             from.PlaySound(0x307);
+
+            int sdiBonus = SpellHelper.GetSpellDamageBonus(caster, from, SkillName.Mysticism, from is PlayerMobile);
+
+            damage *= (100 + sdiBonus);
+            damage /= 100;
+
             AOS.Damage(from, caster, damage, false, 0, 0, 0, 0, 0, 100, 0, false, false, false);
         }
 

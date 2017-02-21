@@ -1,11 +1,14 @@
 ﻿using System;
 using Server.Items;
 using System.Collections;
+using Server.Engines.Quests;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Mobiles
 {
     [CorpseName("a djinn corpse")]
-    public class Djinn : CrystalDaemon
+    public class Djinn : BaseCreature
     {
         private static readonly ArrayList m_Instances = new ArrayList();
         public static ArrayList Instances { get { return m_Instances; } }
@@ -13,12 +16,12 @@ namespace Server.Mobiles
 
         [Constructable]
         public Djinn()
-            : base()
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             m_Instances.Add(this);
 
+            this.Body = 0x2EA;
             this.Name = "Djinn";
-            this.Hue = 12;
 
             this.SetStr(476, 505);
             this.SetDex(76, 95);
@@ -38,6 +41,13 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Poison, 20, 30);
             this.SetResistance(ResistanceType.Energy, 30, 40);
 
+            this.SetSkill(SkillName.Wrestling, 60.0, 80.0);
+            this.SetSkill(SkillName.Tactics, 70.0, 80.0);
+            this.SetSkill(SkillName.MagicResist, 100.0, 110.0);
+            this.SetSkill(SkillName.Magery, 120.0, 130.0);
+            this.SetSkill(SkillName.EvalInt, 100.0, 110.0);
+            this.SetSkill(SkillName.Meditation, 100.0, 110.0);
+
             this.Fame = 15000;
             this.Karma = -15000;
 
@@ -48,23 +58,31 @@ namespace Server.Mobiles
             this.m_Timer.Start();
         }
 
-        public override bool OnBeforeDeath()
+        public override void OnDeath(Container c)
         {
-            Mobile killer = DemonKnight.FindRandomPlayer(this);
+            List<DamageStore> rights = GetLootingRights();            
 
-            if (killer != null)
+            foreach (Mobile m in rights.Select(x => x.m_Mobile).Distinct())
             {
-                Item item = new AquaGem();
+                if (m is PlayerMobile)
+                {
+                    PlayerMobile pm = m as PlayerMobile;
 
-                Container pack = killer.Backpack;
+                    if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+                    {
+                        Item item = new AquaGem();
 
-                if (pack == null || !pack.TryDropItem(killer, item, false))
-                    killer.BankBox.DropItem(item);
+                        if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
+                        {
+                            m.BankBox.DropItem(item);
+                        }
 
-                killer.SendLocalizedMessage(1154489); // You received a Quest Item!
+                        m.SendLocalizedMessage(1154489); // You received a Quest Item!
+                    }
+                }
             }
 
-            return base.OnBeforeDeath();
+            base.OnDeath(c);
         }
 
         public static Djinn Spawn(Point3D platLoc, Map platMap)

@@ -307,7 +307,9 @@ namespace Server.Items
 	public class HalawasHuntingBow : Yumi
 	{
 		public override int LabelNumber { get { return 1156127; } }
-	
+
+        public override bool IsArtifact { get { return true; } }
+
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
 	
@@ -328,20 +330,25 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
+			writer.Write(1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
+
+            if (version == 0 && this.WeaponAttributes.HitLeechMana != 50)
+                this.WeaponAttributes.HitLeechMana = 50;
 		}
 	}
 	
 	public class HalawasHuntingBowGargoyle : Cyclone
 	{
 		public override int LabelNumber { get { return 1156127; } }
-	
+
+        public override bool IsArtifact { get { return true; } }
+
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
 	
@@ -362,13 +369,16 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
+			writer.Write(1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
+
+            if (version == 0 && this.WeaponAttributes.HitLeechMana != 50)
+                this.WeaponAttributes.HitLeechMana = 50;
 		}
 	}
 	
@@ -511,7 +521,9 @@ namespace Server.Items
 	public class LereisHuntingSpear : Spear
 	{
 		public override int LabelNumber { get { return 1156128; } }
-	
+
+        public override bool IsArtifact { get { return true; } }
+
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
 		
@@ -535,20 +547,25 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
+			writer.Write(1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
+
+            if (version == 0 && this.WeaponAttributes.HitLeechMana != 50)
+                this.WeaponAttributes.HitLeechMana = 50;
 		}
 	}
 
     public class LereisHuntingSpearGargoyle : DualPointedSpear
 	{
 		public override int LabelNumber { get { return 1156128; } }
-	
+
+        public override bool IsArtifact { get { return true; } }
+
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
 		
@@ -572,13 +589,16 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write(0);
+			writer.Write(1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
+
+            if (version == 0 && this.WeaponAttributes.HitLeechMana != 50)
+                this.WeaponAttributes.HitLeechMana = 50;
 		}
 	}
 	

@@ -3,7 +3,7 @@ using System;
 namespace Server.Items
 {
     [FlipableAttribute(0x1443, 0x1442)]
-    public class TheDeceiver : TwoHandedAxe
+    public class TheDeceiver : TwoHandedAxe, ITokunoDyable
     {
         public override int LabelNumber { get { return 1157344; } } // the deceiver
         public override bool IsArtifact { get { return true; } }

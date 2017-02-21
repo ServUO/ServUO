@@ -43,7 +43,7 @@ namespace Server.Items
             switch (Utility.Random(5))
             {
                 case 0:
-                    this.AddItem(new ElvenFletchings(20));
+                    this.AddItem(new ElvenFletching(20));
                     break;
                 case 1:
                     this.AddItem(new RelicFragment(20));

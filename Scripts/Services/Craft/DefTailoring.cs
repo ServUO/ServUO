@@ -89,6 +89,14 @@ namespace Server.Engines.Craft
             return 0.5; // 50%
         }
 
+        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
+        {
+            if (resourceType == typeof(MidnightBracers))
+                return false;
+
+            return base.ConsumeOnFailure(from, resourceType, craftItem);
+        }
+
         private DefTailoring()
             : base(1, 1, 1.25)// base( 1, 1, 4.5 )
         {
@@ -96,10 +104,12 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
         {
-            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
+            int num = 0;
+
+            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
                 return 1044038; // You have worn out your tool!
-            else if (!BaseTool.CheckAccessible(tool, from))
-                return 1044263; // The tool must be on your person to use.
+            else if (!tool.CheckAccessible(from, ref num))
+                return num; // The tool must be on your person to use.
 
             return 0;
         }
@@ -161,9 +171,17 @@ namespace Server.Engines.Craft
         {
             int index = -1;
 
+            if (Core.SA)
+            {
+                index = AddCraft(typeof(AbyssalCloth), 1044457, 1113350, 110.0, 160.0, typeof(Cloth), 1044286, 50, 1044253);
+                AddRes(index, typeof(CrystallineBlackrock), 1077568, 1, 1044253);
+                SetItemHue(index, 2075);
+                SetNeededExpansion(index, Expansion.SA);
+            }
+
+            #region High Seas
             if (Core.HS)
             {
-                #region High Seas
                 index = AddCraft(typeof(LightPowderCharge), 1044457, 1116159, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
                 AddRes(index, typeof(BlackPowder), 1095826, 1, 1044253);
                 SetNeededExpansion(index, Expansion.HS);

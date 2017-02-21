@@ -5,6 +5,8 @@ namespace Server.Mobiles
     [CorpseName("a death adder corpse")]
     public class DeathAdder : BaseFamiliar
     {
+        public override bool AttacksMastersTarget { get { return true; } }
+
         public DeathAdder()
         {
             this.Name = "a death adder";

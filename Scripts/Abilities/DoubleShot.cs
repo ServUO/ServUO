@@ -15,7 +15,7 @@ namespace Server.Items
         {
             get
             {
-                return 35;
+                return Core.TOL ? 30 : 35;
             }
         }
         public override bool CheckSkills(Mobile from)

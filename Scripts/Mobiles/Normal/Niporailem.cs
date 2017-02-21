@@ -58,9 +58,6 @@ namespace Server.Mobiles
 		{
 			AddLoot(LootPack.FilthyRich, 6);
             		AddLoot(LootPack.Gems, 6);
-			
-			if (0.25 > Utility.RandomDouble())
-				this.PackItem(new UndyingFlesh());
 		}
 
 		public override int Meat{ get{ return 1; } }

@@ -49,17 +49,6 @@ namespace Server.Mobiles
             this.PackItem(new DaemonBone(5));
         }
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.10)
-                c.DropItem(new VoidOrb());
-
-            if (Utility.RandomDouble() < 0.20)
-                c.DropItem(new VoidEssence());
-        }
-
         public Anlorzen(Serial serial)
             : base(serial)
         {

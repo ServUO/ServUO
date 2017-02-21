@@ -360,6 +360,10 @@ namespace Server.Items
 			set
 			{
 				m_MaxHits = value;
+
+                if (this.m_MaxHits > 255)
+                    this.m_MaxHits = 255;
+
 				InvalidateProperties();
 			}
 		}
@@ -751,18 +755,16 @@ namespace Server.Items
 		{
 			int scale = 100 + GetDurabilityBonus();
 
-			m_Hits = ((m_Hits * 100) + (scale - 1)) / scale;
-			m_MaxHits = ((m_MaxHits * 100) + (scale - 1)) / scale;
-			InvalidateProperties();
+			HitPoints = ((m_Hits * 100) + (scale - 1)) / scale;
+            MaxHitPoints = ((m_MaxHits * 100) + (scale - 1)) / scale;
 		}
 
 		public virtual void ScaleDurability()
 		{
 			int scale = 100 + GetDurabilityBonus();
 
-			m_Hits = ((m_Hits * scale) + 99) / 100;
-			m_MaxHits = ((m_MaxHits * scale) + 99) / 100;
-			InvalidateProperties();
+            HitPoints = ((m_Hits * scale) + 99) / 100;
+            MaxHitPoints = ((m_MaxHits * scale) + 99) / 100;
 		}
 
 		public int GetDurabilityBonus()
@@ -2058,67 +2060,78 @@ namespace Server.Items
 
 			int damage = ComputeDamage(attacker, defender);
 
+            WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
+            SpecialMove move = SpecialMove.GetCurrentMove(attacker);
+
             int phys, fire, cold, pois, nrgy, chaos, direct;
 
-            GetDamageTypes(attacker, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
-
-            if (m_Consecrated)
+            if (Core.TOL && a is MovingShot)
             {
-                phys = damageable.PhysicalResistance;
-                fire = damageable.FireResistance;
-                cold = damageable.ColdResistance;
-                pois = damageable.PoisonResistance;
-                nrgy = damageable.EnergyResistance;
+                phys = 100;
+                fire = cold = pois = nrgy = chaos = direct = 0;
+            }
+            else
+            {
+                GetDamageTypes(attacker, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
 
-                int low = phys, type = 0;
+                if (m_Consecrated)
+                {
+                    phys = damageable.PhysicalResistance;
+                    fire = damageable.FireResistance;
+                    cold = damageable.ColdResistance;
+                    pois = damageable.PoisonResistance;
+                    nrgy = damageable.EnergyResistance;
 
-                if (fire < low)
-                {
-                    low = fire;
-                    type = 1;
-                }
-                if (cold < low)
-                {
-                    low = cold;
-                    type = 2;
-                }
-                if (pois < low)
-                {
-                    low = pois;
-                    type = 3;
-                }
-                if (nrgy < low)
-                {
-                    low = nrgy;
-                    type = 4;
-                }
+                    int low = phys, type = 0;
 
-                phys = fire = cold = pois = nrgy = chaos = direct = 0;
+                    if (fire < low)
+                    {
+                        low = fire;
+                        type = 1;
+                    }
+                    if (cold < low)
+                    {
+                        low = cold;
+                        type = 2;
+                    }
+                    if (pois < low)
+                    {
+                        low = pois;
+                        type = 3;
+                    }
+                    if (nrgy < low)
+                    {
+                        low = nrgy;
+                        type = 4;
+                    }
 
-                if (type == 0)
-                {
-                    phys = 100;
-                }
-                else if (type == 1)
-                {
-                    fire = 100;
-                }
-                else if (type == 2)
-                {
-                    cold = 100;
-                }
-                else if (type == 3)
-                {
-                    pois = 100;
-                }
-                else if (type == 4)
-                {
-                    nrgy = 100;
+                    phys = fire = cold = pois = nrgy = chaos = direct = 0;
+
+                    if (type == 0)
+                    {
+                        phys = 100;
+                    }
+                    else if (type == 1)
+                    {
+                        fire = 100;
+                    }
+                    else if (type == 2)
+                    {
+                        cold = 100;
+                    }
+                    else if (type == 3)
+                    {
+                        pois = 100;
+                    }
+                    else if (type == 4)
+                    {
+                        nrgy = 100;
+                    }
                 }
             }
 
             bool splintering = false;
-            if (m_AosWeaponAttributes.SplinteringWeapon > 0 && m_AosWeaponAttributes.SplinteringWeapon > Utility.Random(100))
+            if (!(a is Disarm) && m_AosWeaponAttributes.SplinteringWeapon > 0 && m_AosWeaponAttributes.SplinteringWeapon > Utility.Random(100))
             {
                 if (SplinteringWeaponContext.CheckHit(attacker, defender, this))
                     splintering = true;
@@ -2161,9 +2174,6 @@ namespace Server.Items
                     }
                 }
             }
-
-            WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
-            SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
             WeaponAbility weavabil;
             bool bladeweaving = Bladeweave.BladeWeaving(attacker, out weavabil);
@@ -2414,7 +2424,7 @@ namespace Server.Items
 			#endregion
 
             #region SA
-            if (m_SearingWeapon && attacker.Mana > 0)
+            if (defender != null && m_SearingWeapon && attacker.Mana > 0)
             {
                 int d = SearingWeaponContext.Damage;
 
@@ -2425,13 +2435,31 @@ namespace Server.Items
 
                     defender.FixedParticles(0x36F4, 1, 11, 0x13A8, 0, 0, EffectLayer.Waist);
 
-                    SearingWeaponContext.CheckHit(defender);
+                    SearingWeaponContext.CheckHit(attacker, defender);
                     attacker.Mana--;
                 }
             }
             #endregion
 
-			AddBlood(attacker, defender, damage);
+            #region BoneBreaker/Swarm/Sparks
+            bool sparks = false;
+            if (a == null && move == null)
+            {
+                if (m_ExtendedWeaponAttributes.BoneBreaker > 0)
+                    damage += BoneBreakerContext.CheckHit(attacker, defender);
+
+                if (m_ExtendedWeaponAttributes.HitSwarm > 0 && Utility.Random(100) < m_ExtendedWeaponAttributes.HitSwarm)
+                    SwarmContext.CheckHit(attacker, defender);
+
+                if (m_ExtendedWeaponAttributes.HitSparks > 0 && Utility.Random(100) < m_ExtendedWeaponAttributes.HitSparks)
+                {
+                    SparksContext.CheckHit(attacker, defender);
+                    sparks = true;
+                }
+            }
+            #endregion
+
+            AddBlood(attacker, defender, damage);
 
 			if (Core.ML && this is BaseRanged)
 			{
@@ -2473,6 +2501,17 @@ namespace Server.Items
             SkillMasterySpell.OnHit(attacker, defender, ref damage);
             BodyGuardSpell.CheckBodyGuard(attacker, defender, ref damage, phys, fire, cold, pois, nrgy);
 
+            // Bane
+            if (m_ExtendedWeaponAttributes.Bane > 0 && defender.Hits < defender.HitsMax / 2)
+            {
+                double inc = Math.Min(350, (double)defender.HitsMax * .3);
+                inc -= (double)((double)defender.Hits / (double)defender.HitsMax) * inc;
+
+                Effects.SendTargetEffect(defender, 0x37BE, 1, 4, 0x30, 3);
+
+                damage += (int)inc;
+            }
+
 			damageGiven = AOS.Damage(
 				defender,
 				attacker,
@@ -2492,6 +2531,13 @@ namespace Server.Items
             #region Stygian Abyss
             SoulChargeContext.CheckHit(attacker, defender, damageGiven);
             #endregion
+
+            if (sparks)
+            {
+                int mana = attacker.Mana + damageGiven;
+                if (!defender.Player) mana *= 2;
+                attacker.Mana = Math.Min(attacker.ManaMax, attacker.Mana + mana);
+            }
 
 			double propertyBonus = (move == null) ? 1.0 : move.GetPropertyBonus(attacker);
 
@@ -2604,7 +2650,7 @@ namespace Server.Items
 				}
 			}
 
-			if (attacker is VampireBatFamiliar)
+			if (attacker is VampireBatFamiliar || attacker is VampireBat)
 			{
 				BaseCreature bc = (BaseCreature)attacker;
 				Mobile caster = bc.ControlMaster;

@@ -2,34 +2,35 @@ using System;
 
 namespace Server.Items
 {
-    public class GargishCaptainJohnesBlade : GlassSword
+    public class Craven : DualPointedSpear
 	{
 		public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1154475; } } // GargishCaptainJohnesBlade
+        public override int LabelNumber { get { return 1154474; } } // Craven
 
         [Constructable]
-        public GargishCaptainJohnesBlade()
+        public Craven()
         {
             this.Slayer2 = BaseRunicTool.GetRandomSlayer();
-            this.Attributes.AttackChance = 15;
-            this.Attributes.DefendChance = 15;
-            this.Attributes.WeaponSpeed = 30;
-            this.Attributes.WeaponDamage = 60;
-            // TODO attributes Bane
+            this.WeaponAttributes.HitLowerAttack = 40;
+            this.Attributes.WeaponSpeed = 26;
+            this.Attributes.WeaponDamage = 35;
+            this.Attributes.LowerManaCost = 8;
 
-            this.Hue = 2124;
+            Attributes.BalancedWeapon = 1;
+
+            this.Hue = 1365;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {
-            pois = 75; cold = 25;
-            phys = nrgy = chaos = direct = fire = 0;
+            phys = 70; cold = 30;
+            nrgy = pois = chaos = direct = fire = 0;
         }
 
-        public override int InitMinHits { get { return 150; } }
-        public override int InitMaxHits { get { return 150; } }
+        public override int InitMinHits { get { return 118; } }
+        public override int InitMaxHits { get { return 118; } }
 
-        public GargishCaptainJohnesBlade(Serial serial)
+        public Craven(Serial serial)
             : base(serial)
         {
         }

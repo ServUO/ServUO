@@ -10,7 +10,8 @@ namespace Server.Engines.Quests
         CusteauPerronHouse,
         CusteauPerron,
         Sorcerers,
-        CollectTheComponent
+        CollectTheComponent,
+        CollectTheComponentComplete
     }
 
     public class ExploringTheDeepBaseChain

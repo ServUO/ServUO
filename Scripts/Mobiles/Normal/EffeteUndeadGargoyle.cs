@@ -39,9 +39,6 @@ namespace Server.Mobiles
             this.Karma = -3500;
 
             this.VirtualArmor = 32;
-
-            if (0.05 > Utility.RandomDouble())
-                this.PackItem(new UndyingFlesh());
         }
 
         public EffeteUndeadGargoyle(Serial serial)
