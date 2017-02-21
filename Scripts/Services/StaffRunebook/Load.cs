@@ -27,7 +27,7 @@ namespace Joeku.SR
             {
                 Utility.PushColor(ConsoleColor.Yellow);
                 Console.WriteLine("Joeku's Staff Runebook: Loading...");
-			    Utility.PopColor();
+		Utility.PopColor();
             }
 
             XmlDocument doc = new XmlDocument();
