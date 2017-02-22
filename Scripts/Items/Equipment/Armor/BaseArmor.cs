@@ -3061,8 +3061,6 @@ namespace Server.Items
             if (typeRes == null || craftItem.ForceNonExceptional)
 				typeRes = craftItem.Resources.GetAt(0).ItemType;
 
-			Resource = CraftResources.GetFromType(typeRes);
-
             PlayerConstructed = true;
 
             CraftContext context = craftSystem.GetContext(from);

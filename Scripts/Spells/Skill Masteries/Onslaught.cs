@@ -86,7 +86,7 @@ namespace Server.Spells.SkillMasteries
 
                 ResistanceType resistType = (ResistanceType)type;
 
-                int amount = (int)(attacker.Skills[MoveSkill].Value + attacker.Skills[SkillName.Tactics].Value / 12);
+                int amount = (int)((attacker.Skills[MoveSkill].Value + attacker.Skills[SkillName.Tactics].Value) / 12);
                 int duration = (MasteryInfo.GetMasteryLevel(attacker, MoveSkill) * 2) + 1;
 
                 if (defender is PlayerMobile)

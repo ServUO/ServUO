@@ -65,7 +65,9 @@ namespace Server.Spells.SkillMasteries
                     if (m is BaseCreature && IsUndead((BaseCreature)m))
                         damage *= 1.5;
                     else if (m is PlayerMobile)
-                        damage /= 2;
+                        damage /= 1.5;
+
+                    damage += Utility.RandomMinMax(0, 5);
 
                     Caster.MovingParticles(m, 0x9BB5, 7, 0, false, true, 9502, 4019, 0x160);
                     Caster.PlaySound(0x5CE);
