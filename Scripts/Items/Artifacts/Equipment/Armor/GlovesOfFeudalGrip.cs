@@ -10,6 +10,8 @@ namespace Server.Items
         [Constructable]
         public GlovesOfFeudalGrip()
         {
+            Resource = CraftResource.None;
+
             this.Attributes.BonusStr = 8;
             this.Attributes.BonusStam = 8;
             this.Attributes.RegenHits = 3;
@@ -34,7 +36,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -42,6 +44,11 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+            if (version == 0)
+            {
+                Resource = CraftResource.None;
+            }
         }
     }
 
@@ -53,6 +60,8 @@ namespace Server.Items
         [Constructable]
         public GargishKiltOfFeudalVise()
         {
+            Resource = CraftResource.None;
+
             this.Attributes.BonusStr = 8;
             this.Attributes.BonusStam = 8;
             this.Attributes.RegenHits = 3;
@@ -77,7 +86,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -85,6 +94,11 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+            if (version == 0)
+            {
+                Resource = CraftResource.None;
+            }
         }
     }
 }

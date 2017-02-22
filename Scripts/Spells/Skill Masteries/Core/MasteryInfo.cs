@@ -266,6 +266,11 @@ namespace Server.Spells.SkillMasteries
                     list.TrimExcess();
                 }
 
+                SpecialMove move = SpecialMove.GetCurrentMove(m);
+
+                if(move is SkillMasteryMove)
+                    SpecialMove.ClearCurrentMove(m);
+
                 m.RemoveStatMod("SavingThrow_Str");
 
                 ColUtility.Free(list);
