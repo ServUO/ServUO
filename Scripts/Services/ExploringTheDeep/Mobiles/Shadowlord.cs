@@ -24,9 +24,9 @@ namespace Server.Mobiles
 
         private Type[] _ArtifactTypes = new Type[]
         {
-            typeof(FigureheadOfBmvArarat),      typeof(ShipsBellOfBmvArarat),       typeof(SternAnchorOfBmvArarat),         typeof(Abhorrence),
-            typeof(CaptainJohnesBlade),         typeof(Craven),                     typeof(Equivocation),                   typeof(GargishCaptainJohnesBlade),
-            typeof(GargishEquivocation),        typeof(GargishPincer),              typeof(Pincer)
+            typeof(Abhorrence),         typeof(CaptainJohnesBlade),             typeof(Craven),
+            typeof(Equivocation),       typeof(GargishCaptainJohnesBlade),      typeof(GargishEquivocation),
+            typeof(GargishPincer),      typeof(Pincer)
         };
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -82,6 +82,7 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 110.2, 120.0);
             this.SetSkill(SkillName.Tactics, 110.1, 115.0);
             this.SetSkill(SkillName.Wrestling, 110.1, 115.0);
+            this.SetSkill(SkillName.Necromancy, 120.0);
 
             this.Fame = 24000;
             this.Karma = -24000;

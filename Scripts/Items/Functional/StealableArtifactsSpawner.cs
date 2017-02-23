@@ -168,6 +168,11 @@ namespace Server.Items
 	        new StealableEntry(Map.TerMur, new Point3D(1066, 1193, -36), 18432, 27648, typeof(TyballsFlaskStandArtifact)),
 	        new StealableEntry(Map.TerMur, new Point3D(1131, 1128, -42), 18432, 27648, typeof(BlockAndTackleArtifact)),
 
+            //Ararat Stealables (Exploring the Deep) - Artifact rarity 8
+            new StealableEntry(Map.Trammel, new Point3D(6430, 1637, 0), 9216, 13824, typeof(SternAnchorOfBmvArarat)),
+            new StealableEntry(Map.Trammel, new Point3D(6423, 1658, 0), 9216, 13824, typeof(ShipsBellOfBmvArarat)),
+            new StealableEntry(Map.Trammel, new Point3D(6405, 1640, 0), 9216, 13824, typeof(FigureheadOfBmvArarat)),
+
             //TOL - Artifact rarity 11 - does not show rarity on item
             new StealableEntry(Map.TerMur, new Point3D(538, 1496, 40), 36864, 55296, typeof(StretchedDinosaurHide)),
             new StealableEntry(Map.TerMur, new Point3D(174, 1808, 80), 36864, 55296, typeof(CarvedMyrmydexGlyph)),
