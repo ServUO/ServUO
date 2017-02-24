@@ -653,21 +653,20 @@ namespace Server.Engines.Shadowguard
             if (Combatant == null)
                 return;
 
-            if (Combatant is Mobile && InRange(Combatant.Location, 10))
+            if (Combatant is Mobile)
             {
-                if (_NextTeleport < DateTime.UtcNow)
+                Mobile m = Combatant as Mobile;
+
+                if (InRange(m.Location, 10) && !InRange(m.Location, 2) && m.Alive && this.CanBeHarmful(m, false) && m.AccessLevel == AccessLevel.Player)
                 {
-                    _NextTeleport = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)); // too much
-
-                    Say(1112362); // You will burn to a pile of ash! yellow hue
-                    Mobile m = Combatant as Mobile;
-
-                    Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
+                    if (_NextTeleport < DateTime.UtcNow)
                     {
+                        _NextTeleport = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)); // too much
+
                         m.MoveToWorld(GetSpawnPosition(1), Map);
                         m.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
                         m.PlaySound(0x1FE);
-                    });
+                    }
                 }
             }
         }
