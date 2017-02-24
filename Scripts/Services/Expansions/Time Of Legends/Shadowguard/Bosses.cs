@@ -645,8 +645,33 @@ namespace Server.Engines.Shadowguard
 
             _NextTeleport = DateTime.UtcNow;
 		}
-		
-		public Juonar(Serial serial) : base(serial)
+
+        public override void OnThink()
+        {
+            base.OnThink();
+
+            if (Combatant == null)
+                return;
+
+            if (Combatant is Mobile)
+            {
+                Mobile m = Combatant as Mobile;
+
+                if (InRange(m.Location, 10) && !InRange(m.Location, 2) && m.Alive && this.CanBeHarmful(m, false) && m.AccessLevel == AccessLevel.Player)
+                {
+                    if (_NextTeleport < DateTime.UtcNow)
+                    {
+                        _NextTeleport = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)); // too much
+
+                        m.MoveToWorld(GetSpawnPosition(1), Map);
+                        m.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
+                        m.PlaySound(0x1FE);
+                    }
+                }
+            }
+        }
+
+        public Juonar(Serial serial) : base(serial)
 		{
 		}
 		

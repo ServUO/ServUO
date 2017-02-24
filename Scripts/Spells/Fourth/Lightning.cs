@@ -71,7 +71,8 @@ namespace Server.Spells.Fourth
                     damage *= this.GetDamageScalar(mob);
                 }
 
-                Effects.SendBoltEffect(mob, true, 0);
+                if (mob != null)
+                    Effects.SendBoltEffect(mob, true, 0);
 
                 if (damage > 0)
                 {

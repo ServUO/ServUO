@@ -1316,13 +1316,6 @@ namespace Server.Network
 		}
 	}
 
-    public enum GraphicData : byte
-    {
-        TileData = 0x0,
-        BodyData = 0x1,
-        MultiData = 0x2
-    }
-
     public sealed class WorldItemHS : Packet
     {
         public WorldItemHS(Item item)

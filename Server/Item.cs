@@ -3537,7 +3537,7 @@ namespace Server
 
         public void SendInfoTo(NetState state)
         {
-            SendInfoTo(state, ObjectPropertyList.Enabled && GraphicData == GraphicData.TileData);
+            SendInfoTo(state, ObjectPropertyList.Enabled);
         }
 
         public virtual void SendInfoTo(NetState state, bool sendOplPacket)
@@ -3549,9 +3549,7 @@ namespace Server
                 state.Send(OPLPacket);
             }
         }
-
-        public virtual GraphicData GraphicData { get { return GraphicData.TileData; } }
-
+        
         protected virtual Packet GetWorldPacketFor(NetState state)
         {
             if (state.HighSeas)
