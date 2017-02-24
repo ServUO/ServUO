@@ -645,8 +645,34 @@ namespace Server.Engines.Shadowguard
 
             _NextTeleport = DateTime.UtcNow;
 		}
-		
-		public Juonar(Serial serial) : base(serial)
+
+        public override void OnThink()
+        {
+            base.OnThink();
+
+            if (Combatant == null)
+                return;
+
+            if (Combatant is Mobile && InRange(Combatant.Location, 10))
+            {
+                if (_NextTeleport < DateTime.UtcNow)
+                {
+                    _NextTeleport = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)); // too much
+
+                    Say(1112362); // You will burn to a pile of ash! yellow hue
+                    Mobile m = Combatant as Mobile;
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(3), () =>
+                    {
+                        m.MoveToWorld(GetSpawnPosition(1), Map);
+                        m.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
+                        m.PlaySound(0x1FE);
+                    });
+                }
+            }
+        }
+
+        public Juonar(Serial serial) : base(serial)
 		{
 		}
 		
