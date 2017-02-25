@@ -289,6 +289,14 @@ namespace Server.Items
                         ApplySuffixName(item, suffix);
                 }
 
+                NegativeAttributes neg = GetNegativeAttributes(item);
+
+                if (neg != null && item is IDurability && (neg.Antique == 1 || neg.Brittle == 1 || item is BaseJewel))
+                {
+                    ((IDurability)item).MaxHitPoints = 255;
+                    ((IDurability)item).HitPoints = 255;
+                }
+
                 ApplyItemPower(item, playermade);
             }
         }
@@ -1977,12 +1985,6 @@ namespace Server.Items
                     neg.Brittle = 1;
                     budget += 150;
                 }
-            }
-
-            if (item is IDurability && (neg.Antique == 1 || neg.Brittle == 1 || item is BaseJewel))
-            {
-                ((IDurability)item).MaxHitPoints = 255;
-                ((IDurability)item).HitPoints = 255;
             }
         }
 
