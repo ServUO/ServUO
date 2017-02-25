@@ -218,7 +218,7 @@ namespace Server.Items
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), 3, new TimerStateCallback(m_hatch.DoDownEffect), new object[] { m_hatch.Location, 0, from });
 
-                Mobile creature = Shadowlord.Spawn(new Point3D(6431, 1664, 0), Map.Trammel);
+                Mobile creature = Shadowlord.Spawn(new Point3D(6417, 1649, 0), Map.Trammel);
               
                 m_WinchAssembly.BearingAssembly = false;
                 m_WinchAssembly.FlyWheel = false;

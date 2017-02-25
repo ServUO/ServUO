@@ -64,8 +64,6 @@ namespace Server.Items
 			}
 		}
 
-        public override GraphicData GraphicData { get { return GraphicData.MultiData; } }
-
         public override int LabelNumber
 		{
 			get
