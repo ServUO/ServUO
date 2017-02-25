@@ -38,8 +38,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 90, 110);
             SetSkill(SkillName.Wrestling, 90, 110);
 
-            PackItem(new DragonBlood(6));
-
             Fame = 8100;
             Karma = -8100;
         }
@@ -51,6 +49,7 @@ namespace Server.Mobiles
 
         public override int Meat { get { return 1; } }
         public override int Hides { get { return 7; } }
+        public override int DragonBlood { get { return 6; } }
 
         public override WeaponAbility GetWeaponAbility()
         {

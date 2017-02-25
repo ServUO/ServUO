@@ -52,11 +52,8 @@ namespace Server.Mobiles
 
 			PackReg(20);
 			PackItem(new Bandage(10));
-			PackItem(new DragonBlood(4));
 
 			Tamable = false;
-			//ControlSlots = 2;
-			//MinTameSkill = 106.0;
 		}
 
 		public FairyDragon1(Serial serial)
@@ -98,6 +95,8 @@ namespace Server.Mobiles
                 }
             }
         }
+
+        public override int DragonBlood { get { return 4; } }
 
 		public override int GetIdleSound()
 		{

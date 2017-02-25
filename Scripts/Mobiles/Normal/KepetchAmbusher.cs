@@ -110,6 +110,8 @@ namespace Server.Mobiles
             return WeaponAbility.ShadowStrike;
         }
 
+        public override int DragonBlood { get { return 8; } }
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average, 2);
@@ -138,8 +140,6 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-
-            c.DropItem(new DragonBlood(6));
 
             if (Utility.RandomDouble() < 0.1)
             {

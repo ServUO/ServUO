@@ -2200,7 +2200,7 @@ namespace Server.Items
                         }
                         else if (str == "ElementalDamage")
                         {
-                            BaseRunicTool.GetElementalDamages((BaseWeapon)item);
+                            BaseRunicTool.ApplyElementalDamage((BaseWeapon)item, perclow, perchigh);
                         }
                     }
                     else if (skillbonuses != null && str == "SkillBonus")

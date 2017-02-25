@@ -1328,18 +1328,6 @@ namespace Server.Network
             if (item is BaseMulti)
             {
                 m_Stream.Write((byte)0x02);
-            }
-            else if (item is IDamageable)
-            {
-                m_Stream.Write((byte)0x03);
-            }
-            else
-            {
-                m_Stream.Write((byte)0x00);
-            }
-
-            if (item is BaseMulti)
-            {
                 m_Stream.Write(item.Serial);
 
                 itemID &= 0x3FFF;
@@ -1350,6 +1338,15 @@ namespace Server.Network
             }
             else
             {
+                if (item is IDamageable)
+                {
+                    m_Stream.Write((byte)0x03);
+                }
+                else
+                {
+                    m_Stream.Write((byte)0x00);
+                }
+
                 m_Stream.Write(item.Serial);
 
                 itemID &= 0xFFFF;
@@ -1385,14 +1382,8 @@ namespace Server.Network
             int itemID = item.ItemID;
 
             if (item is BaseMulti)
-                m_Stream.Write((byte)0x02);
-            else if (item is IDamageable)
-                m_Stream.Write((byte)0x03);
-            else
-                m_Stream.Write((byte)0x00);
-
-            if (item is BaseMulti)
             {
+                m_Stream.Write((byte)0x02);
                 stream.Write((int)item.Serial);
                 itemID &= 0x3FFF;
                 stream.Write((ushort)itemID);
@@ -1400,6 +1391,15 @@ namespace Server.Network
             }
             else
             {
+                if (item is IDamageable)
+                {
+                    m_Stream.Write((byte)0x03);
+                }
+                else
+                {
+                    m_Stream.Write((byte)0x00);
+                }
+
                 stream.Write((int)item.Serial);
                 itemID &= 0xFFFF;
                 stream.Write((ushort)itemID);

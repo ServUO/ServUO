@@ -36,8 +36,6 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Tactics, 110, 120 );
 			SetSkill( SkillName.Wrestling, 110, 130 );
             SetSkill( SkillName.Anatomy, 50, 60 );
-
-			PackItem(new DragonBlood(8));
 			
 			Fame = 11000;
 			Karma = -11000;
@@ -50,7 +48,8 @@ namespace Server.Mobiles
 		
 		public override int Meat{ get{ return 5; } }
 		public override int Hides{ get{ return 11; } }
-		
+        public override int DragonBlood { get { return 8; } }
+
 		public Saurosaurus(Serial serial) : base(serial)
 		{
 		}

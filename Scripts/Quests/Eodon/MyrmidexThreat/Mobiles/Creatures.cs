@@ -59,6 +59,9 @@ namespace Server.Mobiles
             _NextEggThrow = DateTime.UtcNow;
 
             _Spawn = new List<BaseCreature>();
+
+            Fame = 35000;
+            Karma = -35000;
         }
 
         public override void GenerateLoot()
@@ -464,6 +467,9 @@ namespace Server.Mobiles
 
             _NextMastery = DateTime.UtcNow;
             _NextSpecial = DateTime.UtcNow;
+
+            Fame = 35000;
+            Karma = -35000;
         }
 
         public override bool TeleportsTo { get { return true; } }
