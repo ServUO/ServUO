@@ -29,9 +29,57 @@ namespace Server.Multis
                 }
             }
 
+            if (multiID >= 0x13ec && multiID <= 0x147b)
+            {
+                AddSignAndPost(mcl);
+                AddExteriorStairs(mcl);
+            }
+
             this.m_Timer = new DecayTimer(this);
             this.m_Timer.Start();
         }
+
+        public void AddSignAndPost(MultiComponentList mcl)
+        {
+            int xoffset = mcl.Min.X;
+            int y = mcl.Height - 1 - mcl.Center.Y;
+
+            Item signpost = new Static((int)9);
+            signpost.MoveToWorld(new Point3D(X + xoffset, Y + y, Z + 7), this.Map);
+            this.m_Components.Add(signpost);
+
+
+            xoffset = Components.Min.X;
+            y = Components.Height - Components.Center.Y;
+
+            Item signhanger = new Static((int)0xB98);
+            signhanger.MoveToWorld(new Point3D(X + xoffset, Y + y, Z + 7), this.Map);
+            this.m_Components.Add(signhanger);
+
+            Item housesign = new Static((int)0xBD2);
+            housesign.MoveToWorld(new Point3D(X + xoffset, Y + y, Z + 7), this.Map);
+            this.m_Components.Add(housesign);
+        }
+
+        public void AddExteriorStairs(MultiComponentList mcl)
+        {
+            // this won't work correctly without declaring a new mcl so it can then be resized
+            MultiComponentList mclNew = new MultiComponentList(MultiData.GetComponents(ItemID));
+
+            mclNew.Resize(mclNew.Width, mclNew.Height + 1);
+
+            int xCenter = mcl.Center.X;
+            int yCenter = mcl.Center.Y;
+            int y = mcl.Height;
+
+            for (int x = 1; x < mclNew.Width; ++x)
+            {
+                Item stair = new Static((int)0x751);
+                stair.MoveToWorld(new Point3D(x - xCenter, y - yCenter, 0), this.Map);
+                this.m_Components.Add(stair);
+            }
+        }
+
 
         public PreviewHouse(Serial serial)
             : base(serial)

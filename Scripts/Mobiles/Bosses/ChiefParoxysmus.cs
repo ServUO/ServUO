@@ -39,6 +39,9 @@ namespace Server.Mobiles
             this.PackResources(8);
             this.PackTalismans(5);
             Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(SpawnBulbous));  //BulbousPutrification
+
+            this.Fame = 25000;
+            this.Karma = -25000;
         }
 
         public ChiefParoxysmus(Serial serial)

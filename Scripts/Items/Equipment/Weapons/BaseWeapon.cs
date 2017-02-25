@@ -361,9 +361,6 @@ namespace Server.Items
 			{
 				m_MaxHits = value;
 
-                if (this.m_MaxHits > 255)
-                    this.m_MaxHits = 255;
-
 				InvalidateProperties();
 			}
 		}
@@ -755,16 +752,26 @@ namespace Server.Items
 		{
 			int scale = 100 + GetDurabilityBonus();
 
-			HitPoints = ((m_Hits * 100) + (scale - 1)) / scale;
-            MaxHitPoints = ((m_MaxHits * 100) + (scale - 1)) / scale;
+            m_Hits = ((m_Hits * 100) + (scale - 1)) / scale;
+            m_MaxHits = ((m_MaxHits * 100) + (scale - 1)) / scale;
+
+            InvalidateProperties();
 		}
 
 		public virtual void ScaleDurability()
 		{
 			int scale = 100 + GetDurabilityBonus();
 
-            HitPoints = ((m_Hits * scale) + 99) / 100;
-            MaxHitPoints = ((m_MaxHits * scale) + 99) / 100;
+            m_Hits = ((m_Hits * scale) + 99) / 100;
+            m_MaxHits = ((m_MaxHits * scale) + 99) / 100;
+
+            if (m_MaxHits > 255)
+                m_MaxHits = 255;
+
+            if (m_Hits > 255)
+                m_Hits = 255;
+
+            InvalidateProperties();
 		}
 
 		public int GetDurabilityBonus()

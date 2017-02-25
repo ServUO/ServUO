@@ -349,7 +349,7 @@ namespace Server.Items
                         weapon.Slayer = GetRandomSlayer();
                         break;
                     case 24:
-                        GetElementalDamages(weapon);
+                        ApplyElementalDamage(weapon, min, max);
                         break;
                     case 25:
                         BaseRanged brb = weapon as BaseRanged;
@@ -361,57 +361,6 @@ namespace Server.Items
                    		break;
                 }
             }
-        }
-
-        public static void GetElementalDamages(BaseWeapon weapon)
-        {
-            GetElementalDamages(weapon, true);
-        }
-
-        public static void GetElementalDamages(BaseWeapon weapon, bool randomizeOrder)
-        {
-            int fire, phys, cold, nrgy, pois, chaos, direct;
-
-            weapon.GetDamageTypes(null, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
-
-            int totalDamage = phys;
-
-            AosElementAttribute[] attrs = new AosElementAttribute[]
-            {
-                AosElementAttribute.Cold,
-                AosElementAttribute.Energy,
-                AosElementAttribute.Fire,
-                AosElementAttribute.Poison
-            };
-
-            if (randomizeOrder)
-            {
-                for (int i = 0; i < attrs.Length; i++)
-                {
-                    int rand = Utility.Random(attrs.Length);
-                    AosElementAttribute temp = attrs[i];
-
-                    attrs[i] = attrs[rand];
-                    attrs[rand] = temp;
-                }
-            }
-
-            /*
-            totalDamage = AssignElementalDamage( weapon, AosElementAttribute.Cold,		totalDamage );
-            totalDamage = AssignElementalDamage( weapon, AosElementAttribute.Energy,	totalDamage );
-            totalDamage = AssignElementalDamage( weapon, AosElementAttribute.Fire,		totalDamage );
-            totalDamage = AssignElementalDamage( weapon, AosElementAttribute.Poison,	totalDamage );
-
-            weapon.AosElementDamages[AosElementAttribute.Physical] = 100 - totalDamage;
-            * */
-
-            for (int i = 0; i < attrs.Length; i++)
-                totalDamage = AssignElementalDamage(weapon, attrs[i], totalDamage);
-
-            //Order is Cold, Energy, Fire, Poison -> Physical left
-            //Cannot be looped, AoselementAttribute is 'out of order'
-
-            weapon.Hue = weapon.GetElementalDamageHue();
         }
 
         public static SlayerName GetRandomSlayer()
@@ -972,6 +921,27 @@ namespace Server.Items
         {
             attrs[attr] = Scale(min, max, low / scale, high / scale) * scale;
         }
+
+        public static void ApplyElementalDamage(BaseWeapon weapon, int min, int max)
+        {
+            int fire, phys, cold, nrgy, pois, chaos, direct;
+
+            weapon.GetDamageTypes(null, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
+
+            int intensity = Math.Min(phys, Scale(min, max, 10 / 10, 100 / 10) * 10);
+
+            weapon.AosElementDamages[_DamageTypes[Utility.Random(_DamageTypes.Length)]] = intensity;
+
+            weapon.Hue = weapon.GetElementalDamageHue();
+        }
+
+        private static AosElementAttribute[] _DamageTypes =
+        {
+            AosElementAttribute.Cold,
+            AosElementAttribute.Energy,
+            AosElementAttribute.Fire,
+            AosElementAttribute.Poison
+        };
 
         private static void ApplySkillBonus(AosSkillBonuses attrs, int min, int max, int index, int low, int high)
         {

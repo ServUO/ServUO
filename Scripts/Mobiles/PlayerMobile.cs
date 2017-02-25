@@ -887,7 +887,14 @@ namespace Server.Mobiles
             max += BaseArmor.GetRefinedResist(this, type);
 
             if (type != ResistanceType.Physical && 60 < max && Spells.Fourth.CurseSpell.UnderEffect(this))
+            {
                 max = 60;
+            }
+
+            if ((type == ResistanceType.Fire || type == ResistanceType.Poison) && CorpseSkinSpell.IsUnderEffects(this))
+            {
+                max = CorpseSkinSpell.GetResistMalus(this);
+            }
 
             if (Core.ML && this.Race == Race.Elf && type == ResistanceType.Energy)
                 max += 5; //Intended to go after the 60 max from curse

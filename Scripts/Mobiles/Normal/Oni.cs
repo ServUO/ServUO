@@ -37,8 +37,8 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Tactics, 86.1, 101.0);
             this.SetSkill(SkillName.Wrestling, 90.1, 100.0);
 
-            this.Fame = 12000;
-            this.Karma = -12000;
+            this.Fame = 15000;
+            this.Karma = -15000;
 
             if (Utility.RandomDouble() < .33)
                 this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());

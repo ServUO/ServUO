@@ -57,6 +57,9 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 110.0, 123.2);
             this.SetSkill(SkillName.Tactics, 112.2, 122.6);
             this.SetSkill(SkillName.Wrestling, 118.9, 128.6);
+
+            Fame = 35000;
+            Karma = -35000;
         }
 
         public SlasherOfVeils(Serial serial)

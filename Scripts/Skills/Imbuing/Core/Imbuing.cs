@@ -771,7 +771,6 @@ namespace Server.SkillHandlers
                      return 550;
                     else if (itemToImbue.Layer == Layer.TwoHanded)
                       return 600;
-
                   else
                      return  500;
 

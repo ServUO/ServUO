@@ -473,36 +473,37 @@ namespace Server.Gumps
                     }
                 case AdminGumpPage.Administer_Maintenance:
                     {
-			this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Maintenance"), LabelColor32), false, false);
-			
-                        this.AddButtonLabeled(20, 180, this.GetButtonID(3, 600), "Rebuild Categorization");
-			this.AddButtonLabeled(220, 180, this.GetButtonID(3, 601), "Generate Documentation");
-			
-			if(Ultima.Files.MulPath["artlegacymul.uop"] != null || (Ultima.Files.MulPath["art.mul"] != null && Ultima.Files.MulPath["artidx.mul"] != null))
-			{
-				this.AddButtonLabeled(20, 180, this.GetButtonID(3, 602), "Rebuild Bounds.bin");
-			}
-			else
-			{	
-				this.AddLabelCropped(55, 180, 120, 20, RedHue, "Rebuild Bounds.bin");
-			}
-			this.AddButtonLabeled(220, 180, this.GetButtonID(3, 603), "Generate Reports");
-			
-			this.AddHtml(10, 210, 400, 20, this.Color(this.Center("Profiling"), LabelColor32), false, false);
-			
-			this.AddButtonLabeled(20, 240, this.GetButtonID(3, 604), "Dump Timers");
-			this.AddButtonLabeled(220, 240, this.GetButtonID(3, 605), "Count Objects");
-			
-			this.AddButtonLabeled(20, 270, this.GetButtonID(3, 606), "Profile World");
-			this.AddButtonLabeled(220, 270, this.GetButtonID(3, 607), "Write Profiles");
-			
-			this.AddButtonLabeled(20, 300, this.GetButtonID(3, 608), "Trace Internal");
-			this.AddButtonLabeled(220, 300, this.GetButtonID(3, 609), "Trace Expanded");
-			
-			this.AddButtonLabeled(20, 330, this.GetButtonID(3, 610), "Toggle Profiles");
+                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Maintenance"), LabelColor32), false, false);
 
-			goto case AdminGumpPage.Administer;
-		    }
+                        this.AddButtonLabeled(20, 150, this.GetButtonID(3, 600), "Rebuild Categorization");
+                        this.AddButtonLabeled(220, 150, this.GetButtonID(3, 601), "Generate Documentation");
+
+                        if (Ultima.Files.MulPath["artlegacymul.uop"] != null || (Ultima.Files.MulPath["art.mul"] != null && Ultima.Files.MulPath["artidx.mul"] != null))
+                        {
+                            this.AddButtonLabeled(20, 180, this.GetButtonID(3, 602), "Rebuild Bounds.bin");
+                        }
+                        else
+                        {
+                            this.AddLabelCropped(55, 180, 120, 20, RedHue, "Rebuild Bounds.bin");
+                        }
+
+                        this.AddButtonLabeled(220, 180, this.GetButtonID(3, 603), "Generate Reports");
+
+                        this.AddHtml(10, 210, 400, 20, this.Color(this.Center("Profiling"), LabelColor32), false, false);
+
+                        this.AddButtonLabeled(20, 240, this.GetButtonID(3, 604), "Dump Timers");
+                        this.AddButtonLabeled(220, 240, this.GetButtonID(3, 605), "Count Objects");
+
+                        this.AddButtonLabeled(20, 270, this.GetButtonID(3, 606), "Profile World");
+                        this.AddButtonLabeled(220, 270, this.GetButtonID(3, 607), "Write Profiles");
+
+                        this.AddButtonLabeled(20, 300, this.GetButtonID(3, 608), "Trace Internal");
+                        this.AddButtonLabeled(220, 300, this.GetButtonID(3, 609), "Trace Expanded");
+
+                        this.AddButtonLabeled(20, 330, this.GetButtonID(3, 610), "Toggle Profiles");
+
+                        goto case AdminGumpPage.Administer;
+                    }
                 case AdminGumpPage.Administer_Commands:
                     {
                         this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Commands"), LabelColor32), false, false);

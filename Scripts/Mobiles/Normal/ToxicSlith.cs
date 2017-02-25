@@ -32,14 +32,14 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 85.5, 90.9);
             SetSkill(SkillName.Wrestling, 90.4, 95.1);
 
-            PackItem(new DragonBlood(6));
-
             Tamable = false;
             ControlSlots = 1;
             MinTameSkill = 80.7;
 
             QLPoints = 30;
         }
+
+        public override int DragonBlood { get { return 6; } }
 
         public ToxicSlith(Serial serial) : base(serial)
         {

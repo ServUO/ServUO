@@ -437,25 +437,22 @@ namespace Server.Spells.SkillMasteries
 			
 			return false;
 		}
-		
-		public static SkillMasterySpell GetSpell(Mobile from, Type type)
-		{
-			if(m_Table.ContainsKey(from))
-			{
-				if(m_Table[from] == null || m_Table[from].Count == 0)
-					m_Table.Remove(from);
-				else
-				{
-                    foreach (SkillMasterySpell spell in m_Table[from])
-                    {
-                        if (spell != null && spell.GetType() == type)
-                            return spell;
-                    }
-				}
-			}
-			
-			return null;
-		}
+
+        public static SkillMasterySpell GetSpell(Mobile from, Type type)
+        {
+            CheckTable(from);
+
+            if (m_Table.ContainsKey(from))
+            {
+                foreach (SkillMasterySpell spell in m_Table[from])
+                {
+                    if (spell != null && spell.GetType() == type)
+                        return spell;
+                }
+            }
+
+            return null;
+        }
 
         public static SkillMasterySpell GetSpell(Func<SkillMasterySpell, bool> predicate)
 		{
@@ -492,17 +489,14 @@ namespace Server.Spells.SkillMasteries
 
         public static bool HasSpell(Mobile from, Type type)
         {
+            CheckTable(from);
+
             if (m_Table.ContainsKey(from))
             {
-                if (m_Table[from] == null || m_Table[from].Count == 0)
-                    m_Table.Remove(from);
-                else
+                foreach (SkillMasterySpell spell in m_Table[from])
                 {
-                    foreach (SkillMasterySpell spell in m_Table[from])
-                    {
-                        if (spell != null && spell.GetType() == type)
-                            return true;
-                    }
+                    if (spell != null && spell.GetType() == type)
+                        return true;
                 }
             }
 
@@ -511,15 +505,11 @@ namespace Server.Spells.SkillMasteries
 
         public static SkillMasterySpell GetSpellForParty(Mobile from, Type type)
         {
-            //First checks the bard
+            CheckTable(from);
+
+            //First checks the caster
             if (m_Table.ContainsKey(from))
             {
-                if (m_Table[from] == null || m_Table[from].Count == 0)
-                {
-                    m_Table.Remove(from);
-                    return null;
-                }
-
                 foreach (SkillMasterySpell spell in m_Table[from])
                     if (spell != null && spell.GetType() == type)
                         return spell;
@@ -548,7 +538,21 @@ namespace Server.Spells.SkillMasteries
             return null;
         }
 
-        private static object _AllSpellsLock = new object();
+        private static object _Lock = new object();
+
+        public static void CheckTable(Mobile m)
+        {
+            lock (_Lock)
+            {
+                if (m_Table.ContainsKey(m))
+                {
+                    if (m_Table[m] == null || m_Table[m].Count == 0)
+                    {
+                        m_Table.Remove(m);
+                    }
+                }
+            }
+        }
 
         public static IEnumerable<SkillMasterySpell> EnumerateAllSpells()
         {
@@ -557,7 +561,7 @@ namespace Server.Spells.SkillMasteries
 
             List<SkillMasterySpell> list = new List<SkillMasterySpell>();
 
-            lock (_AllSpellsLock)
+            lock (_Lock)
             {
                 foreach (KeyValuePair<Mobile, List<SkillMasterySpell>> kvp in m_Table)
                 {
@@ -570,8 +574,6 @@ namespace Server.Spells.SkillMasteries
                 yield return spell;
             }
         }
-
-        private static object _Lock = new object();
 
         public static IEnumerable<SkillMasterySpell> EnumerateSpells(Mobile from, Type t = null)
         {
@@ -594,7 +596,7 @@ namespace Server.Spells.SkillMasteries
 
             lock (_Lock)
             {
-                e = list.AsParallel().Where(s => s.GetType() == t || t == null);
+                e = list.Where(s => s.GetType() == t || t == null);
             }
 
             foreach (SkillMasterySpell spell in e)
@@ -615,20 +617,30 @@ namespace Server.Spells.SkillMasteries
 		
 		protected void AddToTable(Mobile from, SkillMasterySpell spell)
 		{
-			if(!m_Table.ContainsKey(from))
-				m_Table[from] = new List<SkillMasterySpell>();
-				
-			m_Table[from].Add(spell);
+            lock (_Lock)
+            {
+                if (!m_Table.ContainsKey(from))
+                {
+                    m_Table[from] = new List<SkillMasterySpell>();
+                }
+
+                m_Table[from].Add(spell);
+            }
 		}
 		
 		protected void RemoveFromTable()
 		{
 			if(m_Table.ContainsKey(Caster) && m_Table[Caster].Contains(this))
 			{
-				m_Table[Caster].Remove(this);
-				
-				if(m_Table[Caster].Count == 0)
-					m_Table.Remove(Caster);
+                lock (_Lock)
+                {
+                    m_Table[Caster].Remove(this);
+
+                    if (m_Table[Caster].Count == 0)
+                    {
+                        m_Table.Remove(Caster);
+                    }
+                }
 			}
 		}
 		
@@ -643,19 +655,16 @@ namespace Server.Spells.SkillMasteries
 			if(victim == null)
 				return;
 
+            CheckTable(victim);
+
             if (m_Table.ContainsKey(victim))
             {
-                if (m_Table[victim] == null || m_Table[victim].Count == 0)
-                    m_Table.Remove(victim);
-                else
+                foreach (SkillMasterySpell sp in EnumerateSpells(victim))
                 {
-                    foreach (SkillMasterySpell sp in EnumerateSpells(victim))
-                    {
-                        if (sp.DamageCanDisrupt && damage > sp.DamageThreshold)
-                            sp.Expire(true);
+                    if (sp.DamageCanDisrupt && damage > sp.DamageThreshold)
+                        sp.Expire(true);
 
-                        sp.OnDamaged(damager, damage);
-                    }
+                    sp.OnDamaged(damager, damage);
                 }
             }
 
@@ -834,20 +843,16 @@ namespace Server.Spells.SkillMasteries
 
         public static void OnToggleSpecialAbility(Mobile m)
         {
+            CheckTable(m);
+
             if (m_Table.ContainsKey(m))
             {
-                if (m_Table[m] == null || m_Table[m].Count == 0)
+
+                foreach (SkillMasterySpell sp in EnumerateSpells(m))
                 {
-                    m_Table.Remove(m);
-                }
-                else
-                {
-                    foreach (SkillMasterySpell sp in EnumerateSpells(m))
+                    if (sp.ClearOnSpecialAbility)
                     {
-                        if (sp.ClearOnSpecialAbility)
-                        {
-                            sp.Expire(true);
-                        }
+                        sp.Expire(true);
                     }
                 }
             }

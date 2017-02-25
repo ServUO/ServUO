@@ -46,14 +46,6 @@ namespace Server.Mobiles
 			VirtualArmor = 60;
 		}
 
-        public override void OnCarve(Mobile from, Corpse corpse, Item with)
-        {
-            if (corpse != null)
-                corpse.DropItem(new DragonBlood(8));
-
-            base.OnCarve(from, corpse, with);
-        }
-
 		public override void GenerateLoot()
 		{
 			AddLoot( LootPack.UltraRich, 2 );
@@ -66,8 +58,7 @@ namespace Server.Mobiles
 		public override int Meat{ get{ return 19; } }
 		public override int Hides{ get{ return 33; } }
 		public override HideType HideType{ get{ return HideType.Barbed; } }
-		//public override int Scales{ get{ return 7; } }
-		//public override ScaleType ScaleType{ get{ return ScaleType.Blue; } }
+        public override int DragonBlood { get { return 8; } }
 		public override FoodType FavoriteFood{ get{ return FoodType.Meat; } }
 
         public override bool HasBreath { get { return true; } } // fire breath enabled
