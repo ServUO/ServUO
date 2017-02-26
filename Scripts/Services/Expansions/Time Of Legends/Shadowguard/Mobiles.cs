@@ -19,7 +19,7 @@ namespace Server.Engines.Shadowguard
 			SetDex( 151, 165 );
 			SetInt( 161, 175 );
 
-            SetHits(2000, 2250);
+            SetHits(1200);
  
 			SetDamage( 15, 21 );
  
@@ -87,7 +87,7 @@ namespace Server.Engines.Shadowguard
 		{
 			Name = "Shanty";
 
-            SetHits(20000, 22500);
+            SetHits(10000);
 			
 			SetSkill( SkillName.Fencing, 120.0 );
 			SetSkill( SkillName.Macing,  120.0 );
