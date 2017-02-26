@@ -131,6 +131,14 @@ namespace Server.Items
 			{
 				return;
 			}
+			
+			PlayerMobile pm = m as PlayerMobile;
+
+            		if (!pm.AbyssEntry)
+            		{
+                		m.SendLocalizedMessage(1112226);
+                		return;
+            		}
 
 			Effects.SendLocationEffect(m.Location, m.Map, 0x3728, 10, 10);
 			Effects.PlaySound(m.Location, m.Map, 0x1FE);
