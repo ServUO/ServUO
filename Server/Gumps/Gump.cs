@@ -420,7 +420,7 @@ namespace Server.Gumps
 		public void SendTo(NetState state)
 		{
 			state.AddGump(this);
-			state.Send(Compile());
+			state.Send(Compile(state));
 		}
 
 		public static byte[] StringToBuffer(string str)
@@ -436,9 +436,23 @@ namespace Server.Gumps
 		private static readonly byte[] m_NoDispose = StringToBuffer("{ nodispose }");
 		private static readonly byte[] m_NoResize = StringToBuffer("{ noresize }");
 
-        protected Packet Compile()
+		protected virtual Packet GetPacketFor(NetState ns)
 		{
-            IGumpWriter disp = new DisplayGumpPacked(this);
+			return Compile(ns);
+		}
+
+		private Packet Compile(NetState ns)
+		{
+            IGumpWriter disp;
+			
+			if (ns == null || ns.Unpack)
+			{
+ 				disp = new DisplayGumpPacked(this);
+			}
+			else
+			{
+ 				disp = new DisplayGumpFast(this);
+			}
 
             if (!m_Dragable)
 			{
