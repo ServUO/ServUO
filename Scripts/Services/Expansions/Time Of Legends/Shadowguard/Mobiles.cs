@@ -19,7 +19,7 @@ namespace Server.Engines.Shadowguard
 			SetDex( 151, 165 );
 			SetInt( 161, 175 );
 
-            SetHits(2000, 2250);
+            SetHits(1200);
  
 			SetDamage( 15, 21 );
  
