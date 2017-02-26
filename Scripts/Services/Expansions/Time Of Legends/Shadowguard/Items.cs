@@ -795,7 +795,7 @@ namespace Server.Engines.Shadowguard
 	
 	public class MagicDrakeWing : BaseDecayingItem
 	{
-		public override int Lifespan { get { return 60; } }
+		public override int Lifespan { get { return 90; } }
 		public override int LabelNumber { get { return 1156233; } } // Magic Drake Wing
 
         [Constructable]
