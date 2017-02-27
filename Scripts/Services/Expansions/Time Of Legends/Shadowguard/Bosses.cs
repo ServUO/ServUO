@@ -713,7 +713,7 @@ namespace Server.Engines.Shadowguard
 		private DateTime _NextDismount;
 
         [Constructable]
-		public Virtuebane() : base(AIType.AI_NecroMage)
+		public Virtuebane() : base(AIType.AI_Mage)
 		{
 			Name = "virtuebane";
 		
@@ -737,8 +737,6 @@ namespace Server.Engines.Shadowguard
 			SetSkill( SkillName.Magery, 135.0, 150.0 );
 			SetSkill( SkillName.EvalInt, 130.0, 150.0 );
 			SetSkill( SkillName.Meditation, 0.0 );
-            SetSkill(SkillName.Necromancy, 120.0);
-            SetSkill(SkillName.SpiritSpeak, 150.0);
 			
 			SetResistance(ResistanceType.Physical, 60, 85);
 			SetResistance(ResistanceType.Fire, 70, 90);
