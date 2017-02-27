@@ -14,18 +14,12 @@ namespace Server.Items
         [Constructable]
         public SalvagerSuitPlans(int amount) : base(0x2258)
         {
-            Hue = 1264;
-            Stackable = false;
-            Weight = 1.0;
-            Amount = amount;
-            LootType = LootType.Blessed;
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
+            this.Hue = 1264;
+            this.Stackable = false;
+            this.Weight = 1.0;
+            this.Amount = amount;
+            this.LootType = LootType.Blessed;
+            this.QuestItem = true;
         }
 
         public override int Lifespan { get { return 18000; } }
