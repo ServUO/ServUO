@@ -13,14 +13,8 @@ namespace Server.Items
 		{
             this.Hue = 1167;
 			this.Weight = 2.0;
+            this.QuestItem = true;
 		}
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
-        }
 
         public LetterOfIntroduction( Serial serial ) : base( serial )
 		{
@@ -51,13 +45,7 @@ namespace Server.Items
         {
             this.Hue = 744;
             this.Weight = 2.0;
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
+            this.QuestItem = true;
         }
 
         public MasteringWeaving(Serial serial)

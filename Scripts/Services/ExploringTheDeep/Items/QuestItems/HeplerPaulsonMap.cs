@@ -8,9 +8,9 @@ namespace Server.Items
         [Constructable]
         public HeplerPaulsonMap()
         {
-            //SetDisplay(1578, 1434, 1818, 1760, 400, 400, Map.Malas);
-            Name = "Map To An Unknown Shipwreck";
-            LootType = LootType.Blessed;
+            this.Name = "Map To An Unknown Shipwreck";
+            this.LootType = LootType.Blessed;
+            this.QuestItem = true;
         }
 
         public override int LabelNumber
@@ -23,12 +23,6 @@ namespace Server.Items
 
         public HeplerPaulsonMap(Serial serial) : base(serial)
         {
-        }
-
-        public override void AddNameProperties(ObjectPropertyList list)
-        {
-            base.AddNameProperties(list);
-            list.Add(1070722, "Quest Item");
         }
 
         public override void OnDoubleClick(Mobile from)
