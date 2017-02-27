@@ -650,6 +650,7 @@
     <Compile Include="Items\Artifacts\Equipment\Weapons\Glenda.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\BowOfTheInfiniteSwarm.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\TheDeceiver.cs" />
+    <Compile Include="Items\Decorative\DecorativeCarpet.cs" />
     <Compile Include="Items\Decorative\TatteredWallMap.cs" />
     <Compile Include="Items\Equipment\Armor\BoneArms.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\Craven.cs" />
@@ -12297,6 +12298,7 @@
     <Compile Include="VendorInfo\SBBowyer.cs" />
     <Compile Include="VendorInfo\SBButcher.cs" />
     <Compile Include="VendorInfo\SBCarpenter.cs" />
+    <Compile Include="VendorInfo\SBCarpets.cs" />
     <Compile Include="VendorInfo\SBChainmailArmor.cs" />
     <Compile Include="VendorInfo\SBCobbler.cs" />
     <Compile Include="VendorInfo\SBCook.cs" />

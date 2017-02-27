@@ -7,14 +7,14 @@ using System.Collections.Generic;
 
 namespace Server.Engines.Quests
 {
-	public class ShearingKnowledgeQuest : BaseQuest
-	{
-        public override QuestChain ChainID { get { return QuestChain.LaifemTheWeaver; } }///////////////////////////
+    public class ShearingKnowledgeQuest : BaseQuest
+    {
+        public override QuestChain ChainID { get { return QuestChain.LaifemTheWeaver; } }
         public override Type NextQuest { get { return typeof(WeavingFriendshipsQuest); } }
-		public override TimeSpan RestartDelay { get { return TimeSpan.FromMinutes(30); } }
+        public override TimeSpan RestartDelay { get { return TimeSpan.FromMinutes(30); } }
         public override bool DoneOnce { get { return true; } }
-		
-		/*Shearing Knowledge */
+
+        /*Shearing Knowledge */
         public override object Title { get { return 1113245; } }
         /*Welcome to my little shop!<BR><BR>Don't you just love these beautiful carpet samples?
          * Look at these embroidery patterns! And the intricate knotwork! It was sure worth every
@@ -37,38 +37,37 @@ namespace Server.Engines.Quests
          * <I>Laifem skillfully spins the wool into a beautiful ball of white yarn - before you know it, 
          * she's staring down at her first attempt to weave a Britannian carpet</I> */
         public override object Complete { get { return 1113253; } }
-	
-		public ShearingKnowledgeQuest() : base()
 
-		{
-            AddObjective(new ObtainObjective(typeof(BritannianWool), "Britannian Wool", 10, 0xDF8));
+        public ShearingKnowledgeQuest() : base()
+        {
+            this.AddObjective(new ObtainObjective(typeof(BritannianWool), "Britannian Wool", 10, 0xDF8));
 
-            AddReward(new BaseReward( 1113256 ));/*A step closer to having access to Laifem's inventory of decorative carpets. */
-		}
-		
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+            this.AddReward(new BaseReward(1113256)); /*A step closer to having access to Laifem's inventory of decorative carpets. */
+        }
 
-			writer.Write( (int) 0 ); // version
-		}
-		
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			int version = reader.ReadInt();
-		}		
-	}
-	
-	public class WeavingFriendshipsQuest : BaseQuest
-	{
-        public override QuestChain ChainID { get { return QuestChain.LaifemTheWeaver; } }///////////////////////////
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class WeavingFriendshipsQuest : BaseQuest
+    {
+        public override QuestChain ChainID { get { return QuestChain.LaifemTheWeaver; } }
         public override Type NextQuest { get { return typeof(NewSpinQuest); } }
-		public override TimeSpan RestartDelay { get { return TimeSpan.FromMinutes(30); } }
+        public override TimeSpan RestartDelay { get { return TimeSpan.FromMinutes(30); } }
         public override bool DoneOnce { get { return true; } }
 
-		/* Weaving Friendships */
+        /* Weaving Friendships */
         public override object Title { get { return 1113254; } }
         /* <I>Laifem stares down at the ruins of her first carpet weaving attempt</I><BR><BR>Hrm... I guess I thought
          * this would be a bit easier.<BR><BR><I>She reaches up and twists on her ear a little, obviously deep in 
@@ -83,33 +82,33 @@ namespace Server.Engines.Quests
         public override object Uncomplete { get { return 1113258; } }
         /* A letter? From a Gargoyle you say? */
         public override object Complete { get { return 1113259; } }
-	
-		public WeavingFriendshipsQuest() : base()
-		{
-            AddObjective(new DeliverObjective(typeof(LetterOfIntroduction), "Letter of Introduction", 1, typeof(Dermott), "Dermott (Vesper)"));
 
-            AddReward(new BaseReward(1113256)); // A step closer to having access to Laifem's inventory of decorative carpets.
-		}
-		
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public WeavingFriendshipsQuest() : base()
+        {
+            this.AddObjective(new DeliverObjective(typeof(LetterOfIntroduction), "Letter of Introduction", 1, typeof(Dermott), "Dermott (Vesper)"));
 
-			writer.Write( (int) 0 ); // version
-		}
-		
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+            this.AddReward(new BaseReward(1113256)); // A step closer to having access to Laifem's inventory of decorative carpets.
+        }
 
-			int version = reader.ReadInt();
-		}		
-	}
-	
-	public class NewSpinQuest : BaseQuest
-	{
-        public override QuestChain ChainID { get { return QuestChain.LaifemTheWeaver; } }///////////////////////////
-		public override TimeSpan RestartDelay { get { return TimeSpan.FromMinutes(30); } }
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class NewSpinQuest : BaseQuest
+    {
+        public override QuestChain ChainID { get { return QuestChain.LaifemTheWeaver; } }
+        public override TimeSpan RestartDelay { get { return TimeSpan.FromMinutes(30); } }
         public override bool DoneOnce { get { return true; } }
 
         /* A New Spin on Things */
@@ -135,68 +134,80 @@ namespace Server.Engines.Quests
 
         public NewSpinQuest()
             : base()
-		{
-            AddObjective(new DeliverObjective(typeof(MasteringWeaving), "Mastering the Art of Weaving", 1, typeof(Laifem), "Laifem (Royal City)"));
+        {
+            this.AddObjective(new DeliverObjective(typeof(MasteringWeaving), "Mastering the Art of Weaving", 1, typeof(Laifem), "Laifem (Royal City)"));
 
-            AddReward(new BaseReward(typeof(VariableCarpetAddonDeed), "Variable Carpet Deed"));
-            //AddReward(new BaseReward( 1113250 )); //Access to Laifem's inventory of decorative carpets.
-		}
+            this.AddReward(new BaseReward(1113250)); // Access to Laifem's inventory of decorative carpets.
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public override void GiveRewards()
+        {
+            base.GiveRewards();
 
-			writer.Write( (int) 0 ); // version
-		}
-		
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+            Owner.SendLocalizedMessage(1113265, "", 0x2A); // You have succeeded in aiding Laifem's attempts to master Britannian weaving, and can now access her inventory of decorative carpets!
+            Owner.CanBuyCarpets = true;
+        }
 
-			int version = reader.ReadInt();
-		}		
-	}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 
     public class Laifem : MondainQuester
-	{
+    {
+        public override bool IsActiveVendor { get { return true; } }
 
-      /*  public override void InitSBInfo()
+        public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBTailor());
-        }*/
-
-		[Constructable]
-		public Laifem() : base( "Laifem", "the Weaver" )
-		{			
-			SetSkill( SkillName.Tailoring, 80.0, 100.0 );
-			SetSkill( SkillName.Focus, 60.0, 83.0 );
-		}
-
-		public Laifem( Serial serial ) : base( serial )
-		{
-		}
-
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[] 
-			{ 
-				typeof( ShearingKnowledgeQuest ),
-				//typeof( WeavingFriendshipsQuest ),
-			};
-            }
+            this.m_SBInfos.Add(new SBCarpets());
         }
+
+        [Constructable]
+        public Laifem() : base("Laifem", "the Weaver")
+        {
+        }
+
+        public Laifem(Serial serial) : base(serial)
+        {
+        }
+
+        public override void VendorBuy(Mobile from)
+        {
+            if (!(from is PlayerMobile) || !((PlayerMobile)from).CanBuyCarpets)
+            {
+                SayTo(from, 1113266); // I'm sorry, but I don't have any carpets to sell you yet.
+                return;
+            }
+
+            base.VendorBuy(from);
+        }
+
+        public override void Advertise()
+        {
+        }
+
+        private static Type[] m_Quests = new Type[] { typeof(ShearingKnowledgeQuest) };
+        public override Type[] Quests { get { return m_Quests; } }
 
         public override void InitBody()
         {
-            InitStats(100, 100, 25);
+            this.InitStats(100, 100, 25);
 
-            Female = true;
-            CantWalk = true;
-            Body = 667;
-            HairItemID = 16987;
-            HairHue = 1801;
+            this.Female = true;
+            this.CantWalk = true;
+            this.Body = 667;
+            this.HairItemID = 16987;
+            this.HairHue = 1801;
         }
 
         public override void InitOutfit()
@@ -207,41 +218,34 @@ namespace Server.Engines.Quests
             AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
             AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
         }
-		
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
-		}
-		
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
 
-			int version = reader.ReadInt();
-		}
-	}
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
 
     public class Dermott : MondainQuester
     {
-        public override Type[] Quests{ get{ return null; } }
-       /* public override Type[] Quests
-        {
-            get
-            {
-                return new Type[] 
-			{ 
-				typeof( NewSpinQuest ),
-			};
-            }
-        }*/
-
+        public override Type[] Quests { get { return null; } }
+        
         [Constructable]
-        public Dermott(): base("Dermott", "the Weaver")
+        public Dermott() : base("Dermott", "the Weaver")
         {
-            SetSkill(SkillName.Tailoring, 80.0, 100.0);
-            SetSkill(SkillName.Focus, 60.0, 83.0);
+            this.SetSkill(SkillName.Magery, 60.0, 90.0);
+            this.SetSkill(SkillName.EvalInt, 60.0, 90.0);
+            this.SetSkill(SkillName.MagicResist, 60.0, 90.0);
+            this.SetSkill(SkillName.Wrestling, 60.0, 90.0);
+            this.SetSkill(SkillName.Meditation, 60.0, 90.0);
         }
 
         public Dermott(Serial serial)
@@ -251,14 +255,16 @@ namespace Server.Engines.Quests
 
         public override void InitBody()
         {
-            InitStats(100, 100, 25);
+            this.InitStats(100, 100, 25);
 
-            Female = false;
-            Race = Race.Human;
-			
-            CantWalk = true;           
-            HairItemID = 0x2049;
-            HairHue = 0x45E;
+            this.Female = false;
+            this.Race = Race.Human;
+
+            this.Hue = 0x83FC;
+            this.HairItemID = 0x2049; // Pig Tails
+            this.HairHue = 0x459;
+            this.FacialHairItemID = 0x2041; // Mustache
+            this.FacialHairHue = 0x459;
         }
 
         public override void InitOutfit()

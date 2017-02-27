@@ -9,13 +9,20 @@ namespace Server.Items
 				
 		[Constructable]
         public LetterOfIntroduction()
-            : base(0xEC0)
+            : base(0x1F23)
 		{
-			LootType = LootType.Blessed;
-			Weight = 1.0;
+            this.Hue = 1167;
+			this.Weight = 2.0;
 		}
-		
-		public LetterOfIntroduction( Serial serial ) : base( serial )
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
+        }
+
+        public LetterOfIntroduction( Serial serial ) : base( serial )
 		{
 		}
 		
@@ -40,10 +47,17 @@ namespace Server.Items
 
         [Constructable]
         public MasteringWeaving()
-            : base(0x0FF0)
+            : base(0x1E20)
         {
-            LootType = LootType.Blessed;
-            Weight = 1.0;
+            this.Hue = 744;
+            this.Weight = 2.0;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public MasteringWeaving(Serial serial)
