@@ -130,7 +130,7 @@ namespace Server.Items
 			if (m == null || loc == Point3D.Zero || map == null || map == Map.Internal)
 			{
 				return;
-			}
+			}		
 
 			Effects.SendLocationEffect(m.Location, m.Map, 0x3728, 10, 10);
 			Effects.PlaySound(m.Location, m.Map, 0x1FE);
@@ -152,7 +152,7 @@ namespace Server.Items
 			Point3D loc = Point3D.Zero;
 			Map map = null;
 
-			ResolveDest(e.Speech.Trim(), ref loc, ref map);
+			ResolveDest(e.Mobile, e.Speech.Trim(), ref loc, ref map);
 
 			if (loc == Point3D.Zero || map == null || map == Map.Internal)
 			{
@@ -185,7 +185,7 @@ namespace Server.Items
 			this.m_Level = (SecureLevel)reader.ReadEncodedInt();
 		}
 
-		public static void ResolveDest(string name, ref Point3D loc, ref Map map)
+		public static void ResolveDest(Mobile m, string name, ref Point3D loc, ref Map map)
 		{
 			if (String.IsNullOrWhiteSpace(name))
 			{
@@ -306,6 +306,14 @@ namespace Server.Items
 					break;
 					case "dungeon abyss":
 					{
+						PlayerMobile pm = m as PlayerMobile;
+
+						if (!pm.AbyssEntry)
+						{
+							m.SendLocalizedMessage(1112226);
+							break;
+						}
+						
 						loc = new Point3D( 946, 71, 72 );
 						map = Map.TerMur;
 					}

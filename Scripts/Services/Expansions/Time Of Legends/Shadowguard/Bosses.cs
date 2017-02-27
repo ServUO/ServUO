@@ -35,7 +35,7 @@ namespace Server.Engines.Shadowguard
 		{
 			_NextSummon = DateTime.UtcNow;
 			
-			SetHits(25000);
+			SetHits(9500, 10000);
 			SetMana(4500);
 			SetStam(250);
 
@@ -120,7 +120,6 @@ namespace Server.Engines.Shadowguard
 
                 DoGoldSpray();
             }
-
 			base.OnDeath(c);
 		}
 
@@ -368,34 +367,37 @@ namespace Server.Engines.Shadowguard
 
             Hue = Race.RandomSkinHue();
 
-			SetInt(225, 250);
-			SetDex(100);
+			SetStam(100, 125);
+			SetMana(800, 900);
+			SetStr(150, 200);
+			SetInt(175, 200);
+			SetDex(100, 200);
 			
-			SetDamage( 12, 17 );
+			SetDamage( 14, 17 );
 			
-			SetDamageType(ResistanceType.Physical, 50);
-			SetDamageType(ResistanceType.Energy, 50);
+			SetDamageType(ResistanceType.Physical, 100);
 			
-			SetSkill( SkillName.Wrestling, 110.0 );
-			SetSkill( SkillName.Swords, 110.0 );
-			SetSkill( SkillName.Anatomy, 10.0 );
-			SetSkill( SkillName.MagicResist,  110.0 );
+			SetSkill( SkillName.Wrestling, 220.0, 240.0 );
+			SetSkill( SkillName.Tactics, 110.0, 125.0 );
+			//SetSkill( SkillName.Swords, 110.0 );
+			//SetSkill( SkillName.Anatomy, 10.0 );
+			SetSkill( SkillName.MagicResist,  120.0 , 140.0);
 			SetSkill( SkillName.Magery, 120.0 );
 			SetSkill( SkillName.EvalInt, 150.0 );
 			SetSkill( SkillName.Meditation, 120.0 );
 			
-			SetResistance(ResistanceType.Physical, 90, 99);
-			SetResistance(ResistanceType.Fire, 50, 60);
-			SetResistance(ResistanceType.Cold, 50, 60);
-			SetResistance(ResistanceType.Poison, 50, 60);
-			SetResistance(ResistanceType.Energy, 50, 60);
+			SetResistance(ResistanceType.Physical, 65, 70);
+			SetResistance(ResistanceType.Fire, 65, 70);
+			SetResistance(ResistanceType.Cold, 65, 70);
+			SetResistance(ResistanceType.Poison, 65, 70);
+			SetResistance(ResistanceType.Energy, 65, 70);
 
-            SetSkill(SkillName.Wrestling, 120);
-            SetSkill(SkillName.Magery, 120);
-            SetSkill(SkillName.EvalInt, 180);
-            SetSkill(SkillName.Meditation, 200);
-            SetSkill(SkillName.Tactics, 100);
-            SetSkill(SkillName.MagicResist, 200);
+            //SetSkill(SkillName.Wrestling, 120);
+            //SetSkill(SkillName.Magery, 120);
+            //SetSkill(SkillName.EvalInt, 180);
+            //SetSkill(SkillName.Meditation, 200);
+            //SetSkill(SkillName.Tactics, 100);
+            //SetSkill(SkillName.MagicResist, 200);
 
 			SetWearable(new Robe(), 1320);
 			SetWearable(new WizardsHat(), 1320);
@@ -618,30 +620,37 @@ namespace Server.Engines.Shadowguard
             BaseSoundID = 412;
             Hue = 2951;
 
-			SetInt(225, 250);
-			SetDex(100);
+			SetStam(100, 125);
+			SetMana(5000, 5500);
+			SetStr(500, 560);
+			SetInt(1000, 1200);
+			SetDex(100, 125);
+		
+			SetDamage( 17, 21 );
 			
-			SetDamage( 15, 20 );
+			SetDamageType(ResistanceType.Physical, 20);
+			SetDamageType(ResistanceType.Fire, 20);
+			SetDamageType(ResistanceType.Cold, 20);
+			SetDamageType(ResistanceType.Poison, 20);
+			SetDamageType(ResistanceType.Energy, 20);
 			
-			SetDamageType(ResistanceType.Physical, 50);
-			SetDamageType(ResistanceType.Energy, 50);
-			
-			SetSkill( SkillName.Wrestling, 110.0 );
-			SetSkill( SkillName.Anatomy, 10.0 );
-			SetSkill( SkillName.MagicResist,  110.0 );
-			SetSkill( SkillName.Magery, 120.0 );
-			SetSkill( SkillName.EvalInt, 150.0 );
+			SetSkill( SkillName.Wrestling, 120.0 );
+			SetSkill( SkillName.Tactics, 100.0 );
+			SetSkill( SkillName.MagicResist,  150.0 );
+			SetSkill( SkillName.Magery, 100.0 );
+			SetSkill( SkillName.EvalInt, 100.0 );
 			SetSkill( SkillName.Meditation, 120.0 );
 			SetSkill( SkillName.Necromancy, 120.0 );
 			SetSkill( SkillName.SpiritSpeak, 120.0 );
-            SetSkill( SkillName.Musicianship, 120.0 );
-            SetSkill( SkillName.Discordance, 120.0 );
 			
-			SetResistance(ResistanceType.Physical, 40, 50);
-			SetResistance(ResistanceType.Fire, 20, 30);
-			SetResistance(ResistanceType.Cold, 50, 60);
-			SetResistance(ResistanceType.Poison, 50, 60);
-			SetResistance(ResistanceType.Energy, 50, 60);
+            		SetSkill( SkillName.Musicianship, 120.0 );
+            		SetSkill( SkillName.Discordance, 100.0 );
+			
+			SetResistance(ResistanceType.Physical, 30);
+			SetResistance(ResistanceType.Fire, 30);
+			SetResistance(ResistanceType.Cold, 30);
+			SetResistance(ResistanceType.Poison, 30);
+			SetResistance(ResistanceType.Energy, 30);
 
             _NextTeleport = DateTime.UtcNow;
 		}
@@ -705,35 +714,36 @@ namespace Server.Engines.Shadowguard
 		private DateTime _NextDismount;
 
         [Constructable]
-		public Virtuebane() : base(AIType.AI_NecroMage)
+		public Virtuebane() : base(AIType.AI_Mage)
 		{
 			Name = "virtuebane";
 		
-			Body = 1071; // Giant monotaur?
+			Body = 1071; // Giant minotaur?
             SpeechHue = 452;
 
-			SetInt(225, 250);
-			SetDex(100);
+			SetStam(500, 650);
+			SetMana(525, 650);
+			SetStr(525, 500);
+			SetInt(525, 600);
+			SetDex(500, 650);
 			
-			SetDamage( 22, 29 );
+			SetDamage( 24, 33 );
 			
 			SetDamageType(ResistanceType.Physical, 50);
 			SetDamageType(ResistanceType.Energy, 50);
 			
-			SetSkill( SkillName.Wrestling, 150.0 );
-			SetSkill( SkillName.Anatomy, 10.0 );
-			SetSkill( SkillName.MagicResist,  110.0 );
-			SetSkill( SkillName.Magery, 120.0 );
-			SetSkill( SkillName.EvalInt, 150.0 );
-			SetSkill( SkillName.Meditation, 120.0 );
-            SetSkill(SkillName.Necromancy, 120.0);
-            SetSkill(SkillName.SpiritSpeak, 150.0);
+			SetSkill( SkillName.Wrestling, 120.0, 130.0 );
+			SetSkill( SkillName.Tactics, 115.0, 130.0 );
+			SetSkill( SkillName.MagicResist,  150.0, 200.0 );
+			SetSkill( SkillName.Magery, 135.0, 150.0 );
+			SetSkill( SkillName.EvalInt, 130.0, 150.0 );
+			SetSkill( SkillName.Meditation, 0.0 );
 			
-			SetResistance(ResistanceType.Physical, 60, 70);
-			SetResistance(ResistanceType.Fire, 60, 70);
-			SetResistance(ResistanceType.Cold, 20, 30);
-			SetResistance(ResistanceType.Poison, 60, 70);
-			SetResistance(ResistanceType.Energy, 60, 70);
+			SetResistance(ResistanceType.Physical, 60, 85);
+			SetResistance(ResistanceType.Fire, 70, 90);
+			SetResistance(ResistanceType.Cold, 40, 50);
+			SetResistance(ResistanceType.Poison, 90, 95);
+			SetResistance(ResistanceType.Energy, 50, 75);
 			
 			_NextNuke = DateTime.UtcNow + TimeSpan.FromMinutes(1);
 			_NextDismount = DateTime.UtcNow + TimeSpan.FromMinutes(1);
