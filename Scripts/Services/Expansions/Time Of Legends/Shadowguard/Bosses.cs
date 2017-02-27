@@ -642,8 +642,9 @@ namespace Server.Engines.Shadowguard
 			SetSkill( SkillName.Meditation, 120.0 );
 			SetSkill( SkillName.Necromancy, 120.0 );
 			SetSkill( SkillName.SpiritSpeak, 120.0 );
-            SetSkill( SkillName.Musicianship, 120.0 );
-            SetSkill( SkillName.Discordance, 120.0 );
+			
+            		SetSkill( SkillName.Musicianship, 120.0 );
+            		SetSkill( SkillName.Discordance, 100.0 );
 			
 			SetResistance(ResistanceType.Physical, 30);
 			SetResistance(ResistanceType.Fire, 30);
