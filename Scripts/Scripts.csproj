@@ -2651,8 +2651,6 @@
     <Compile Include="Mobiles\NPCs\Laifem.cs" />
     <Compile Include="Items\Quest\LaifemItems.cs" />
     <Compile Include="Items\Addons\goldcarpetAddon.cs" />
-    <Compile Include="Items\Addons\VariableCarpetAddon.cs" />
-    <Compile Include="Items\Addons\VariableCarpetAddonDeed.cs" />
     <Compile Include="Quests\EscortToDugan.cs" />
     <Compile Include="Items\Equipment\Talismans\TalismanofGoblinSlaying.cs" />
     <Compile Include="Mobiles\NPCs\Neville.cs" />
