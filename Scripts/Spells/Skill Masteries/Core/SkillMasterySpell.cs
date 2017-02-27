@@ -291,8 +291,8 @@ namespace Server.Spells.SkillMasteries
 				
 			if(disrupt && DisruptMessage > 0)
 				Caster.SendLocalizedMessage(DisruptMessage);
-				
-			RemoveFromTable();
+
+            Server.Timer.DelayCall(RemoveFromTable);
 			RemoveStatMods();
             EndEffects();
 
