@@ -333,7 +333,7 @@ namespace Server.Engines.Shadowguard
             if (Trees != null) Trees.ForEach(t => writer.Write(t));
 
             writer.Write(Spawn == null ? 0 : Spawn.Count);
-            if (Spawn != null) Trees.ForEach(s => writer.Write(s));
+            if (Spawn != null) Spawn.ForEach(s => writer.Write(s));
 
             writer.Write(Bones);
         }
