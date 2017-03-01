@@ -203,7 +203,7 @@ namespace Server
                 typeof(GreyWolf), typeof(GrizzlyBear), typeof(Guardian),
                 typeof(Harpy), typeof(Harrower), typeof(HellHound),
                 typeof(Hind), typeof(HordeMinion), typeof(Horse),
-                typeof(Horse), typeof(IceElemental), typeof(IceFiend),
+                typeof(IceElemental), typeof(IceFiend),
                 typeof(IceSnake), typeof(Imp), typeof(JackRabbit),
                 typeof(Kirin), typeof(Kraken), typeof(PredatorHellCat),
                 typeof(LavaLizard), typeof(LavaSerpent), typeof(LavaSnake),
