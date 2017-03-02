@@ -154,6 +154,8 @@ namespace Server.Items
                             house.Addons.Add(addon);
                         else if (boat != null)
                             boat.AddAddon(addon);
+
+                        this.m_Deed.DeleteDeed();
                     }
                     else if (res == AddonFitResult.Blocked)
                         from.SendLocalizedMessage(500269); // You cannot build that there.
