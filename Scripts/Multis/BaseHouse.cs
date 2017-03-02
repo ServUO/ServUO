@@ -361,6 +361,7 @@ namespace Server.Multis
         private ArrayList m_Secures;
 
         private ArrayList m_Addons;
+        private ArrayList m_Carpets;
 
         private readonly ArrayList m_VendorInventories = new ArrayList();
         private readonly ArrayList m_RelocatedEntities = new ArrayList();
@@ -1327,6 +1328,7 @@ namespace Server.Multis
             this.m_LockDowns = new Dictionary<Item, Mobile>();
             this.m_Secures = new ArrayList();
             this.m_Addons = new ArrayList();
+            this.m_Carpets = new ArrayList();
 
             this.m_CoOwners = new ArrayList();
             this.m_Friends = new ArrayList();
@@ -2595,7 +2597,9 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)16); // version
+            writer.Write((int)17); // version
+
+            writer.WriteItemList(m_Carpets, true);
 
             if (!DynamicDecay.Enabled)
             {
@@ -2713,6 +2717,11 @@ namespace Server.Multis
 
             switch (version)
             {
+                case 17:
+                    {
+                        m_Carpets = reader.ReadItemList();
+                        goto case 16;
+                    }
                 case 16: // version 16, converted lockdown list to dictionary
                 case 15:
                     {
@@ -2829,6 +2838,9 @@ namespace Server.Multis
                     }
                 case 0:
                     {
+                        if (version < 17)
+                            m_Carpets = new ArrayList();
+
                         if (version < 14)
                             this.m_RelativeBanLocation = this.BaseBanLocation;
 
@@ -3299,6 +3311,8 @@ namespace Server.Multis
             }
         }
 
+        public ArrayList Carpets { get { return m_Carpets; } set { m_Carpets = value; } }
+
         public ArrayList Addons
         {
             get
@@ -3596,6 +3610,21 @@ namespace Server.Multis
                 }
 
                 this.m_Addons.Clear();
+            }
+
+            if (m_Carpets != null)
+            {
+                for (int i = 0; i < m_Carpets.Count; ++i)
+                {
+                    Item carpet = (Item)m_Carpets[i];
+
+                    if (carpet != null)
+                    {
+                        carpet.Movable = true;
+                        carpet.SetLastMoved();
+                        carpet.InvalidateProperties();
+                    }
+                }
             }
 
             ArrayList inventories = new ArrayList(this.VendorInventories);

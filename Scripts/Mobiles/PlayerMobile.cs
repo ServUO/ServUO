@@ -85,6 +85,7 @@ namespace Server.Mobiles
         HasValiantStatReward = 0x20000000,
         RefuseTrades = 0x40000000,
         DisabledPvpWarning = 0x80000000,
+        CanBuyCarpets = 0x100000000,
     }
 
 	public enum NpcGuild
@@ -434,6 +435,13 @@ namespace Server.Mobiles
         {
             get { return GetFlag(PlayerFlag.DisabledPvpWarning); }
             set { SetFlag(PlayerFlag.DisabledPvpWarning, value); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool CanBuyCarpets
+        {
+            get { return GetFlag(PlayerFlag.CanBuyCarpets); }
+            set { SetFlag(PlayerFlag.CanBuyCarpets, value); }
         }
 
         #region Plant system

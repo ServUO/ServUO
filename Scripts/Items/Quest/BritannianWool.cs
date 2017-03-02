@@ -25,7 +25,7 @@ namespace Server.Items
         public BritannianWool(int amount) : base(0x101F)
         {
             Stackable = true;
-            Hue = 962;//dark grey
+            Hue = 992;
             Weight = 4.0;
             Amount = amount;
         }

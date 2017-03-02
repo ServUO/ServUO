@@ -13,6 +13,7 @@ namespace Server.Items
             this.Hue = 1939;
             this.Weight = 2.0;
             this.LootType = LootType.Blessed;
+            this.QuestItem = true;
         }
 
         public override int BasePhysicalResistance { get { return 2; } }
@@ -22,14 +23,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 2; } }
         public override int InitMinHits { get { return 50; } }
         public override int InitMaxHits { get { return 60; } }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
-        }
-
+        
         public NictitatingLens(Serial serial)
             : base(serial)
         {
