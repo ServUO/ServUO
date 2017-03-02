@@ -161,6 +161,11 @@ namespace Server.Engines.VvV
                                     {
                                         VvVRewards.OnRewardItemCreated(from, item);
 
+                                        if (item is GargishCrimsonCincture)
+                                        {
+                                            ((GargishCrimsonCincture)item).Attributes.BonusDex = 10;
+                                        }
+
                                         from.AddToBackpack(item);
                                         dropped.Delete();
 
