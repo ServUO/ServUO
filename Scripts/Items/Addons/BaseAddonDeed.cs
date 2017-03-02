@@ -142,7 +142,19 @@ namespace Server.Items
                     AddonFitResult res = addon.CouldFit(p, map, from, ref house, ref boat);
 
                     if (res == AddonFitResult.Valid)
+                    {
+                        addon.Resource = this.m_Deed.Resource;
+
+                        if (addon.RetainDeedHue)
+                            addon.Hue = this.m_Deed.Hue;
+
                         addon.MoveToWorld(new Point3D(p), map);
+
+                        if (house != null)
+                            house.Addons.Add(addon);
+                        else if (boat != null)
+                            boat.AddAddon(addon);
+                    }
                     else if (res == AddonFitResult.Blocked)
                         from.SendLocalizedMessage(500269); // You cannot build that there.
                     else if (res == AddonFitResult.NotInHouse)
@@ -152,24 +164,7 @@ namespace Server.Items
                     else if (res == AddonFitResult.NoWall)
                         from.SendLocalizedMessage(500268); // This object needs to be mounted on something.
 					
-                    if (res == AddonFitResult.Valid)
-                    {
-                        if (addon != null)
-                        {
-                            addon.Resource = this.m_Deed.Resource;
-
-                            if (addon.RetainDeedHue)
-                                addon.Hue = this.m_Deed.Hue;
-                        }
-
-                        this.m_Deed.DeleteDeed();
-
-                        if (house != null)
-                            house.Addons.Add(addon);
-                        else if (boat != null)
-                            boat.AddAddon(addon);
-                    }
-                    else
+                    if (res != AddonFitResult.Valid)
                     {
                         addon.Delete();
                     }

@@ -10,7 +10,7 @@ namespace Server.Engines.Shadowguard
 {
 	public class ShadowguardBoss : BaseCreature
 	{
-        public const int MaxSummons = 8;
+        public const int MaxSummons = 3;
 
 		public List<BaseCreature> SummonedHelpers { get; set; }
         public bool IsLastBoss { get; set; }
@@ -246,9 +246,12 @@ namespace Server.Engines.Shadowguard
 					Timer.DelayCall(TimeSpan.FromSeconds(1), (o) =>
 					{
 						BaseCreature s = o as BaseCreature;
-						
-						if(s != null)
-							s.Combatant = this.Combatant;
+
+                        if (s != null && s.Combatant != null)
+                        {
+                            if(!(s.Combatant is PlayerMobile) || !((PlayerMobile)s.Combatant).HonorActive)
+                                s.Combatant = this.Combatant;
+                        }
 							
 					}, spawn);
 
@@ -379,8 +382,6 @@ namespace Server.Engines.Shadowguard
 			
 			SetSkill( SkillName.Wrestling, 220.0, 240.0 );
 			SetSkill( SkillName.Tactics, 110.0, 125.0 );
-			//SetSkill( SkillName.Swords, 110.0 );
-			//SetSkill( SkillName.Anatomy, 10.0 );
 			SetSkill( SkillName.MagicResist,  120.0 , 140.0);
 			SetSkill( SkillName.Magery, 120.0 );
 			SetSkill( SkillName.EvalInt, 150.0 );
@@ -391,13 +392,6 @@ namespace Server.Engines.Shadowguard
 			SetResistance(ResistanceType.Cold, 65, 70);
 			SetResistance(ResistanceType.Poison, 65, 70);
 			SetResistance(ResistanceType.Energy, 65, 70);
-
-            //SetSkill(SkillName.Wrestling, 120);
-            //SetSkill(SkillName.Magery, 120);
-            //SetSkill(SkillName.EvalInt, 180);
-            //SetSkill(SkillName.Meditation, 200);
-            //SetSkill(SkillName.Tactics, 100);
-            //SetSkill(SkillName.MagicResist, 200);
 
 			SetWearable(new Robe(), 1320);
 			SetWearable(new WizardsHat(), 1320);

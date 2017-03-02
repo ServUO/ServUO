@@ -136,11 +136,6 @@ namespace Server.SkillHandlers
                 if (message)
                     from.SendLocalizedMessage(1112408); // You cannot magically unravel a faction reward item.
             }
-            /*else if (IsSpecialItem(item))
-            {
-                if (message)
-                    from.SendMessage("You cannot magically unravel an item with such strange magical properties.");
-            }*/
             else
                 return true;
             return false;
@@ -157,16 +152,7 @@ namespace Server.SkillHandlers
 			if (item.IsArtifact)
 				return true;
 
-            if (item is BaseWeapon && ((BaseWeapon)item).ArtifactRarity > 0)
-                return true;
-
-            if (item is BaseArmor && ((BaseArmor)item).ArtifactRarity > 0)
-                return true;
-
-            if (item is BaseJewel && ((BaseJewel)item).ArtifactRarity > 0)
-                return true;
-
-            if (item is BaseClothing && ((BaseClothing)item).ArtifactRarity > 0)
+            if (RunicReforging.GetArtifactRarity(item) > 0)
                 return true;
 
 			if (item.GetType() == typeof(SilverRing) || item.GetType() == typeof(SilverBracelet))
@@ -1205,84 +1191,61 @@ namespace Server.SkillHandlers
         {
             double weight = 0;
 
-            AosAttributes aosAttrs = null;
-            AosWeaponAttributes wepAttrs = null;
-            SAAbsorptionAttributes saAttrs = null;
-            AosArmorAttributes armorAttrs = null;
-            AosElementAttributes resistAttrs = null;
-            ExtendedWeaponAttributes extattrs = null;
+            AosAttributes aosAttrs = RunicReforging.GetAosAttributes(item);
+            AosWeaponAttributes wepAttrs = RunicReforging.GetAosWeaponAttributes(item);
+            SAAbsorptionAttributes saAttrs = RunicReforging.GetSAAbsorptionAttributes(item);
+            AosArmorAttributes armorAttrs = RunicReforging.GetAosArmorAttributes(item);
+            AosElementAttributes resistAttrs = RunicReforging.GetElementalAttributes(item);
+            ExtendedWeaponAttributes extattrs = RunicReforging.GetExtendedWeaponAttributes(item);
 
             if (item is BaseWeapon)
             {
-                aosAttrs = ((BaseWeapon)item).Attributes;
-                wepAttrs = ((BaseWeapon)item).WeaponAttributes;
-                saAttrs = ((BaseWeapon)item).AbsorptionAttributes;
-                extattrs = ((BaseWeapon)item).ExtendedWeaponAttributes;
-
                 if(((BaseWeapon)item).Slayer != SlayerName.None)
-                    weight += GetIntensityForAttribute(((BaseWeapon)item).Slayer, mod, 1);
+                    weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer, mod, 1);
 
                 if (((BaseWeapon)item).Slayer2 != SlayerName.None)
-                    weight += GetIntensityForAttribute(((BaseWeapon)item).Slayer2, mod, 1);
+                    weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer2, mod, 1);
 
                 if(((BaseWeapon)item).SearingWeapon)
-                    weight += GetIntensityForAttribute("SearingWeapon", mod, 1);
+                    weight += GetIntensityForAttribute(item, "SearingWeapon", mod, 1);
 
                 if (item is BaseRanged)
                 {
                     BaseRanged ranged = item as BaseRanged;
 
                     if(ranged.Velocity > 0)
-                        weight += GetIntensityForAttribute("WeaponVelocity", mod, ranged.Velocity);
+                        weight += GetIntensityForAttribute(item, "WeaponVelocity", mod, ranged.Velocity);
                 }
             }
-            else if (item is BaseArmor)
+            
+            if (item is BaseArmor)
             {
-                aosAttrs = ((BaseArmor)item).Attributes;
-                armorAttrs = ((BaseArmor)item).ArmorAttributes;
-                saAttrs = ((BaseArmor)item).AbsorptionAttributes;
-
                 weight += CheckResists((BaseArmor)item, mod);
             }
-            else if (item is BaseHat)
-            {
-                aosAttrs = ((BaseHat)item).Attributes;
-                armorAttrs = ((BaseHat)item).ClothingAttributes;
-                resistAttrs = ((BaseHat)item).Resistances;
-                saAttrs = ((BaseHat)item).SAAbsorptionAttributes;
-            }
-            else if (item is BaseJewel)
-            {
-                aosAttrs = ((BaseJewel)item).Attributes;
-                resistAttrs = ((BaseJewel)item).Resistances;
-                saAttrs = ((BaseJewel)item).AbsorptionAttributes;
-            }
-            else
-                return 0;
 
             if (aosAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
-                    weight += GetIntensityForAttribute((AosAttribute)i, mod, aosAttrs[(AosAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (AosAttribute)i, mod, aosAttrs[(AosAttribute)i]);
 
             if (wepAttrs != null)
                 foreach (long i in Enum.GetValues(typeof(AosWeaponAttribute)))
-                    weight += GetIntensityForAttribute((AosWeaponAttribute)i, mod, wepAttrs[(AosWeaponAttribute)i], item as BaseWeapon);
+                    weight += GetIntensityForAttribute(item, (AosWeaponAttribute)i, mod, wepAttrs[(AosWeaponAttribute)i]);
 
             if (saAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
-                    weight += GetIntensityForAttribute((SAAbsorptionAttribute)i, mod, saAttrs[(SAAbsorptionAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (SAAbsorptionAttribute)i, mod, saAttrs[(SAAbsorptionAttribute)i]);
 
             if (armorAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(AosArmorAttribute)))
-                    weight += GetIntensityForAttribute((AosArmorAttribute)i, mod, armorAttrs[(AosArmorAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (AosArmorAttribute)i, mod, armorAttrs[(AosArmorAttribute)i]);
 
             if (resistAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(AosElementAttribute)))
-                    weight += GetIntensityForAttribute((AosElementAttribute)i, mod, resistAttrs[(AosElementAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (AosElementAttribute)i, mod, resistAttrs[(AosElementAttribute)i]);
 
             if(extattrs != null)
                 foreach (int i in Enum.GetValues(typeof(ExtendedWeaponAttribute)))
-                    weight += GetIntensityForAttribute((ExtendedWeaponAttribute)i, mod, extattrs[(ExtendedWeaponAttribute)i], item as BaseWeapon);
+                    weight += GetIntensityForAttribute(item, (ExtendedWeaponAttribute)i, mod, extattrs[(ExtendedWeaponAttribute)i]);
 
             weight += CheckSkillBonuses(item, mod);
 
@@ -1294,20 +1257,10 @@ namespace Server.SkillHandlers
             double weight = 0;
             int mod = -1;
 
-            AosSkillBonuses skills = null;
-
-            if (item is BaseWeapon)
-                skills = ((BaseWeapon)item).SkillBonuses;
-
-            if(item is BaseArmor)
-                skills = ((BaseArmor)item).SkillBonuses;
-
-            if(item is BaseHat)
-                skills = ((BaseHat)item).SkillBonuses;
+            AosSkillBonuses skills = RunicReforging.GetAosSkillBonuses(item);
 
             if (item is BaseJewel)
             {
-                skills = ((BaseJewel)item).SkillBonuses;
                 mod = modification;
             }
 
@@ -1844,7 +1797,7 @@ namespace Server.SkillHandlers
             return 0;
         }
 
-        public static int GetIntensityForAttribute(object attr, int checkMod, int value, BaseWeapon wep = null)
+        public static int GetIntensityForAttribute(Item item, object attr, int checkMod, int value)
         {
             if (value <= 0)
                 return 0;
@@ -1854,10 +1807,16 @@ namespace Server.SkillHandlers
             if (mod != checkMod && m_Table.ContainsKey(mod))
             {
                 double max;
+                BaseWeapon wep = item as BaseWeapon;
+                BaseJewel jewel = item as BaseJewel;
 
                 if (wep != null && attr is AosWeaponAttribute && (mod == 25 || mod == 27))
                 {
                     max = GetPropRange(wep, (AosWeaponAttribute)attr)[1];
+                }
+                else if (jewel != null && attr is AosAttribute && (AosAttribute)attr == AosAttribute.WeaponDamage)
+                {
+                    max = 25;
                 }
                 else
                 {

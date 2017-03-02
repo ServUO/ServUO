@@ -413,6 +413,8 @@ namespace Server.Gumps
                 ((IDurability)item).MaxHitPoints = durability;
                 ((IDurability)item).HitPoints = durability;
             }
+
+            RunicReforging.ApplyItemPower(item, true);
         }
 
         public class ItemNameGump : BaseQuestGump
