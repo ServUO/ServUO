@@ -10,19 +10,13 @@ namespace Server.Items
         public AquaPendant()
         {
             this.Hue = 1916;
-            LootType = LootType.Blessed;
+            this.LootType = LootType.Blessed;
+            this.QuestItem = true;
         }
 
         public AquaPendant(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
         }
 
         public override void Serialize(GenericWriter writer)

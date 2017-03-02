@@ -14,6 +14,7 @@ namespace Server.Items
         {
             this.Hue = 67;
             this.StrRequirement = 10;
+            this.QuestItem = true;
 
             if (this.Lifespan > 0)
             {
@@ -41,8 +42,6 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
 
             if (this.Lifespan > 0)
             {

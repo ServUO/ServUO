@@ -14,18 +14,12 @@ namespace Server.Items
             this.Hue = 2072;
             this.LootType = LootType.Blessed;
             this.StrRequirement = 10;
+            this.QuestItem = true;
         }
 
         public BootsOfBallast(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
         }
 
         public override void Serialize(GenericWriter writer)

@@ -67,17 +67,11 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
+            this.QuestItem = true;
         }
 
         public override int Lifespan { get { return 3600; } }
         public override bool UseSeconds { get { return false; } }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
-        }
 
         public PerfectBlackPearl(Serial serial)
             : base(serial)
@@ -160,17 +154,11 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
+            this.QuestItem = true;
         }
 
         public override int Lifespan { get { return 3600; } }
         public override bool UseSeconds { get { return false; } }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
-        }
 
         public BurstingBrimstone(Serial serial)
             : base(serial)
@@ -253,17 +241,11 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
+            this.QuestItem = true;
         }
 
         public override int Lifespan { get { return 3600; } }
         public override bool UseSeconds { get { return false; } }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
-        }
 
         public BrightDaemonBlood(Serial serial)
             : base(serial)
@@ -346,17 +328,11 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
+            this.QuestItem = true;
         }
 
         public override int Lifespan { get { return 3600; } }
         public override bool UseSeconds { get { return false; } }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
-        }
 
         public MightyMandrake(Serial serial)
             : base(serial)
@@ -438,17 +414,11 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
+            this.QuestItem = true;
         }
 
         public override int Lifespan { get { return 3600; } }
         public override bool UseSeconds { get { return false; } }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1072351); // Quest Item
-        }
 
         public BurlyBone(Serial serial)
             : base(serial)
