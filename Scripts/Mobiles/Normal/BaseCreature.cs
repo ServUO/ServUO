@@ -321,6 +321,8 @@ namespace Server.Mobiles
         public virtual Faction FactionAllegiance { get { return null; } }
         public virtual int FactionSilverWorth { get { return 30; } }
 
+        public virtual int BaseLootBudget { get { return RandomItemGenerator.GetBaseBudget(this); } }
+
         public int HumilityBuff = 0;
 
         #region Bonding

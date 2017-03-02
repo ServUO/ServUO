@@ -1281,6 +1281,9 @@ namespace Server.Multis
                     return true;
             }
 
+            if (tiles.Length == 0 && this is Castle)
+                return true;
+
             return false;
         }
 

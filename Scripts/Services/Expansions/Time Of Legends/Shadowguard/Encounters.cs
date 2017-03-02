@@ -36,7 +36,7 @@ namespace Server.Engines.Shadowguard
             Bottles = new List<ShadowguardBottleOfLiquor>();
             Wave = 0;
 
-            int toSpawn = 5 + (PartySize() * 2);
+            int toSpawn = Math.Max(3, PartySize() * 3);
 
             for (int i = 0; i < toSpawn; i++)
                 SpawnRandomPirate();
@@ -109,7 +109,7 @@ namespace Server.Engines.Shadowguard
 				Wave++;
 				Pirates.Clear();
 
-                int toSpawn = 5 + (PartySize() * 2);
+                int toSpawn = Math.Max(3, PartySize() * 3);
 				
 				if(Wave < 4)
 				{

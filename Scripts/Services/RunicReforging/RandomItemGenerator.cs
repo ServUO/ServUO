@@ -1,7 +1,10 @@
 using System;
 using Server;
 using Server.Items;
+using System.Linq;
 using System.Collections.Generic;
+using Server.Engines.Despise;
+using Server.Engines.Shadowguard;
 
 namespace Server.Mobiles
 {
@@ -15,15 +18,21 @@ namespace Server.Mobiles
         public static int MinBaseBudget { get; private set; }
         public static int MaxProps { get; private set; }
 
+        public static int MaxAdjustedBudget { get; private set; }
+        public static int MinAdjustedBudget { get; private set; }
+
         public static void Configure()
         {
             Enabled = Config.Get("Loot.Enabled", true);
             FeluccaLuckBonus = Config.Get("Loot.FeluccaLuckBonus", 1000);
             FeluccaBudgetBonus = Config.Get("Loot.FeluccaBudgetBonus", 100);
 
-            MaxBaseBudget = Config.Get("Loot.MaxBaseBudget", 900);
+            MaxBaseBudget = Config.Get("Loot.MaxBaseBudget", 600);
             MinBaseBudget = Config.Get("Loot.MinBaseBudget", 150);
-            MaxProps = Config.Get("Loot.MaxProps", 9);
+            MaxProps = Config.Get("Loot.MaxProps", 11);
+
+            MaxAdjustedBudget = Config.Get("Loot.MaxAdjustedBudget", 1350);
+            MinAdjustedBudget = Config.Get("Loot.MinAdjustedBudget", 150);
         }
 
         private RandomItemGenerator()
@@ -42,6 +51,80 @@ namespace Server.Mobiles
             if(Enabled)
                 return RunicReforging.GenerateRandomItem(item, killer, victim);
             return false;
+        }
+
+        /// <summary>
+        /// 24000 is the normalized fame for MaxBaseBudget, ie Balron.  
+        /// Called in BaseCreature.cs virtual BaseLootBudget Property
+        /// </summary>
+        /// <param name="bc">Creature to be evaluated</param>
+        /// <returns></returns>
+        public static int GetBaseBudget(BaseCreature bc)
+        {
+            return bc.Fame / (24000 / MaxBaseBudget);
+        }
+
+        public static int GetDifficultyFor(BaseCreature bc)
+        {
+            if (bc == null)
+                return 0;
+
+            int fame = bc.Fame;
+
+            if (fame > 0)
+            {
+                int budget = bc.BaseLootBudget;
+
+                BossEntry.CheckBoss(bc, ref budget);
+
+                return Math.Max(MinBaseBudget, budget);
+            }
+
+            return 0;
+        }
+    }
+
+    public class BossEntry
+    {
+        public int Bonus { get; private set; }
+        public List<Type> List { get; private set; }
+
+        public BossEntry(int bonus, params Type[] list)
+        {
+            Bonus = bonus;
+            List = list.ToList(); // new List<BossEntry>(list);
+        }
+
+        public static List<BossEntry> Entries { get; set; }
+
+        public static void CheckBoss(BaseCreature bc, ref int budget)
+        {
+            foreach (var entry in Entries)
+            {
+                if (entry.List.FirstOrDefault(t => t == bc.GetType() || bc.GetType().IsSubclassOf(t)) != null)
+                {
+                    budget += entry.Bonus;
+                    return;
+                }
+            }
+        }
+
+        public static void Initialize()
+        {
+            Entries = new List<BossEntry>();
+
+            Entries.Add(
+                new BossEntry(100, typeof(BaseRenowned), typeof(TRex), typeof(BaseShipCaptain)));
+
+            Entries.Add(
+                new BossEntry(150, typeof(BaseChampion), typeof(Impaler), typeof(DarknightCreeper), typeof(FleshRenderer), 
+                                   typeof(ShadowKnight), typeof(AbysmalHorror), typeof(AdrianTheGloriousLord), typeof(AndrosTheDreadLord)));
+
+            Entries.Add(
+                new BossEntry(250, typeof(BasePeerless), typeof(Harrower), typeof(DemonKnight), typeof(ShadowguardBoss), typeof(Osiredon)));
+
+            Entries.Add(
+                new BossEntry(350, typeof(ClockworkExodus), typeof(CoraTheSorceress), typeof(Charydbis), typeof(Zipactriotl), typeof(MyrmidexQueen)));
         }
     }
 }

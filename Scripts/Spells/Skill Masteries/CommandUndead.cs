@@ -108,8 +108,19 @@ namespace Server.Spells.SkillMasteries
             //FinishSequence();
         }
 
+        private Type[] _CommandTypes =
+        {
+            typeof(SkeletalDragon)
+        };
+
         private bool ValidateTarget(BaseCreature bc)
         {
+            foreach (var t in _CommandTypes)
+            {
+                if (t == bc.GetType())
+                    return true;
+            }
+
             SlayerEntry entry = SlayerGroup.GetEntryByName(SlayerName.Silver);
 
             return entry != null && entry.Slays(bc);
