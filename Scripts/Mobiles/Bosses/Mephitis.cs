@@ -1,17 +1,17 @@
 using System;
 using Server.Engines.CannedEvil;
 using Server.Items;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
     public class Mephitis : BaseChampion
     {
-        public static Hashtable m_Table = new Hashtable();
+        public static List<Mobile> mlist = new List<Mobile>();
 
         public static bool UnderWebEffect(Mobile m)
         {
-            return m_Table.Contains(m);
+            return mlist.Contains(m);
         }
 
         [Constructable]
@@ -143,9 +143,9 @@ namespace Server.Mobiles
 
                 MovingEffect(person, 0xF7E, 10, 1, true, false, 0x496, 0);
 
-                MephitisCocoon mCocoon = new MephitisCocoon((PlayerMobile)person);
+                MephitisCocoon mCocoon = new MephitisCocoon(person);
 
-                m_Table[person] = true;
+                mlist.Add(person);
 
                 mCocoon.MoveToWorld(person.Location, person.Map);
                 mCocoon.Movable = false;
@@ -170,20 +170,32 @@ namespace Server.Mobiles
         {
             private DelayTimer m_Timer;
 
-            public MephitisCocoon(PlayerMobile target)
-                : base(0x10da)
+            public MephitisCocoon(Mobile target)
+                : base(Utility.RandomList(0x0EE3, 0x0EE4, 0x0EE5, 0x0EE6))
             {
                 Weight = 1.0;
-                int nCocoonID = (int)(3 * Utility.RandomDouble());
-                ItemID = 4314 + nCocoonID; // is this correct itemid?
 
                 target.Frozen = true;
-                target.Hidden = true;
-
                 target.SendLocalizedMessage(1042555); // You become entangled in the spider web.
 
                 m_Timer = new DelayTimer(this, target);
                 m_Timer.Start();
+            }
+
+            public override bool OnMoveOver(Mobile m)
+            {
+                if (m is Mephitis)
+                    return true;
+
+                if (m.AccessLevel == AccessLevel.Player && m.Alive)
+                {
+                    m.Frozen = true;
+
+                    m_Timer = new DelayTimer(this, m);
+                    m_Timer.Start();
+                }
+
+                return true;
             }
 
             public MephitisCocoon(Serial serial)
@@ -208,12 +220,12 @@ namespace Server.Mobiles
 
         private class DelayTimer : Timer
         {
-            private PlayerMobile m_Target;
+            private Mobile m_Target;
             private MephitisCocoon m_Cocoon;
 
             private int m_Ticks;
 
-            public DelayTimer(MephitisCocoon mCocoon, PlayerMobile target)
+            public DelayTimer(MephitisCocoon mCocoon, Mobile target)
                 : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
             {
                 m_Target = target;
@@ -245,14 +257,14 @@ namespace Server.Mobiles
                     m_Target.Frozen = false;
                     m_Target.SendLocalizedMessage(1042532); // You free yourself from the web!
 
-                    Mephitis.m_Table.Remove(m_Target);
-
-                    if (m_Target.Alive)
-                        m_Target.Hidden = false;
+                    if (UnderWebEffect(m_Target))
+                        mlist.Remove(m_Target);
                 }
 
                 if (recycle)
-                    m_Cocoon.Delete();
+                {
+                    Timer.DelayCall(TimeSpan.FromSeconds(10.0), new TimerCallback(delegate () { m_Cocoon.Delete(); }));
+                }
 
                 this.Stop();
             }
