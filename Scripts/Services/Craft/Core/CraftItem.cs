@@ -1698,16 +1698,16 @@ namespace Server.Engines.Craft
 					}
 
 					#region Plant Pigments
-                    if (m_PlantHue != PlantHue.None)
+                    if (item is IPlantHue && m_PlantHue != PlantHue.None)
+                        ((IPlantHue)item).PlantHue = m_PlantHue;
+
+                    if (item is IPigmentHue)
                     {
-                        if (item is IPlantHue)
-                            ((IPlantHue)item).PlantHue = m_PlantHue;
-                        else if (item is IPigmentHue)
-                            ((IPigmentHue)item).PigmentHue = PlantPigmentHueInfo.HueFromPlantHue(m_PlantHue);
-                    }
-                    else if (m_PlantPigmentHue != PlantPigmentHue.None && item is IPigmentHue)
-                    {
-                        ((IPigmentHue)item).PigmentHue = m_PlantPigmentHue;
+                        if (m_PlantPigmentHue != PlantPigmentHue.None)
+                            ((IPigmentHue)item).PigmentHue = m_PlantPigmentHue;
+                        else
+                            if (m_PlantHue != PlantHue.None)
+                                ((IPigmentHue)item).PigmentHue = PlantPigmentHueInfo.HueFromPlantHue(m_PlantHue); // really need?
                     }
 
                     CraftContext context = craftSystem.GetContext(from);
