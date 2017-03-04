@@ -58,7 +58,7 @@ namespace Server.Engines.VvV
         {
             base.OnMovement(m, oldLocation);
 
-            if (_NextSpeak < DateTime.UtcNow && ViceVsVirtueSystem.IsVvV(m) && InRange(m.Location, 6))
+            if (_NextSpeak < DateTime.UtcNow && ViceVsVirtueSystem.IsVvV(m) && InRange(m.Location, 6) && m.Race == Race.Gargoyle)
             {
                 SayTo(m, 1155534); // I will convert your human artifacts to gargoyle versions if you hand them to me.
                 _NextSpeak = DateTime.UtcNow + TimeSpan.FromSeconds(25);
@@ -145,7 +145,7 @@ namespace Server.Engines.VvV
             {
                 if (!(dropped is IOwnerRestricted) || ((IOwnerRestricted)dropped).Owner == from)
                 {
-                    if (dropped is IVvVItem)
+                    if (dropped is IVvVItem && from.Race == Race.Gargoyle)
                     {
                         foreach (var t in _Table)
                         {
@@ -161,6 +161,11 @@ namespace Server.Engines.VvV
                                     {
                                         VvVRewards.OnRewardItemCreated(from, item);
 
+                                        if (item is GargishCrimsonCincture)
+                                        {
+                                            ((GargishCrimsonCincture)item).Attributes.BonusDex = 10;
+                                        }
+
                                         from.AddToBackpack(item);
                                         dropped.Delete();
 
@@ -169,6 +174,10 @@ namespace Server.Engines.VvV
                                 }
                             }
                         }
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }
             }

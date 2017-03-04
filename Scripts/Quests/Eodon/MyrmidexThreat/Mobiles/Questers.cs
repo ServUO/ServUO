@@ -384,17 +384,22 @@ namespace Server.Mobiles
             HairItemID = Race.RandomHair(true);
             Hue = Race.RandomSkinHue();
 		}
-		
-		public override void InitOutfit()
-		{
-			SetWearable(new PlateChest());		
-			SetWearable(new PlateLegs());
-			SetWearable(new BodySash(), 1828);
-			SetWearable(new OrderShield());
-			SetWearable(new Longsword());
-		}		
-		
-		public Foxx(Serial serial) : base(serial)
+
+        public override void InitOutfit()
+        {
+            SetWearable(new PlateChest());
+            SetWearable(new PlateLegs());
+            SetWearable(new BodySash(), 1828);
+            SetWearable(new OrderShield());
+            SetWearable(new Longsword());
+        }
+
+        public override void Advertise()
+        {
+            Say(1156619); // Fall in now! These Myrmidex aren't going to slay themselves! We've got to squash these bugs!
+        }
+
+        public Foxx(Serial serial) : base(serial)
 		{
 		}
 		

@@ -85,6 +85,7 @@ namespace Server.Items
         public GargishStoneAmulet()
             : base(0x4D0A)
         {
+            this.Hue = 2500;
         }
 
         public GargishStoneAmulet(Serial serial)

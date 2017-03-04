@@ -76,7 +76,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public SirGeoffery()
-            : base("Sir Geoffrey", "the Captain of the Royal Guard")
+            : base("Sir Geoffrey", "the Guardsman")
         {
         }
 

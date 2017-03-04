@@ -234,6 +234,9 @@ namespace Server.Engines.Craft
  
                 index = this.AddCraft(typeof(StoneWarSword), 1111705, 1112753, 55.0, 105.0, typeof(Granite), 1044514, 18, 1044513);
                 this.SetNeededExpansion(index, Expansion.SA);
+
+                index = this.AddCraft(typeof(GargishStoneAmulet), 1111705, 1098594, 60.0, 110.0, typeof(Granite), 1044514, 3, 1044513);
+                this.SetNeededExpansion(index, Expansion.SA);
             }
             #endregion
 
