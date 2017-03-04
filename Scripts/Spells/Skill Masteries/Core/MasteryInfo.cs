@@ -359,7 +359,7 @@ namespace Server.Spells.SkillMasteries
         {
             if (spell == PassiveSpell.AnticipateHit)
                 return m.Skills.CurrentMastery == SkillName.Bushido;
-
+            
             return GetActivePassive(m) == spell;
         }
 

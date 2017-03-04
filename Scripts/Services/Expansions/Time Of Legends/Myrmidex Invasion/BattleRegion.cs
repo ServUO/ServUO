@@ -21,10 +21,18 @@ namespace Server.Engines.MyrmidexInvasion
         {
             base.OnDeath(m);
 
-            if (BattleSpawner.Active && m is BaseCreature && ((BaseCreature)m).GetMaster() == null && Spawner != null)
+            bool nomaster = m is BaseCreature && ((BaseCreature)m).GetMaster() == null;
+
+            if (BattleSpawner.Active && nomaster && Spawner != null)
             {
                 Timer.DelayCall<BaseCreature>(TimeSpan.FromSeconds(.25), Spawner.RegisterDeath, (BaseCreature)m);
             }
+
+            Timer.DelayCall(() =>
+                {
+                    if (nomaster && m.Corpse != null)
+                        m.Corpse.Delete();
+                });
         }
 
         public override void OnExit(Mobile m)

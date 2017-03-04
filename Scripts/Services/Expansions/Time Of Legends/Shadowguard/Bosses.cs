@@ -918,7 +918,6 @@ namespace Server.Engines.Shadowguard
 	
 	public class Ozymandias : ShadowguardBoss
 	{
-	
 		public override Type[] SummonTypes { get { return _SummonTypes; } }
 		private Type[] _SummonTypes = new Type[] { typeof(LesserHiryu), typeof(EliteNinja), typeof(TsukiWolf) };
 		
@@ -929,7 +928,7 @@ namespace Server.Engines.Shadowguard
 		}
 		
 		[Constructable]
-		public Ozymandias() : base(AIType.AI_Archer)
+		public Ozymandias() : base(AIType.AI_Melee)
 		{
 			Name = "ozymandias";
 			Title = "the lord of castle barataria";
@@ -963,8 +962,53 @@ namespace Server.Engines.Shadowguard
             SetWearable(new Waraji());
             SetWearable(new BoneArms());
 
+            var scimitar = new Scimitar();
+            scimitar.Movable = false;
+
+            PackItem(scimitar);
             PackItem(new Arrow(25));
 		}
+
+        private DateTime _NextWeaponSwitch;
+
+        public override void OnThink()
+        {
+            base.OnThink();
+
+            if (Combatant == null || this.Backpack == null || _NextWeaponSwitch > DateTime.UtcNow)
+                return;
+
+            BaseWeapon wep = Weapon as BaseWeapon;
+
+            if ((wep is Fists || wep is BaseRanged) && InRange(Combatant.Location, 1) && 0.1 > Utility.RandomDouble())
+            {
+                Item scimitar = this.Backpack.FindItemByType(typeof(Scimitar));
+
+                if (scimitar != null)
+                {
+                    if (wep is BaseRanged)
+                        this.Backpack.DropItem(wep);
+
+                    SetWearable(scimitar);
+
+                    _NextWeaponSwitch = DateTime.UtcNow + TimeSpan.FromSeconds(10);
+                }
+            }
+            else if ((wep is Fists || !(wep is BaseRanged)) && !InRange(Combatant.Location, 1) && 0.1 > Utility.RandomDouble())
+            {
+                Item yumi = this.Backpack.FindItemByType(typeof(Yumi));
+
+                if (yumi != null)
+                {
+                    if (!(wep is Fists))
+                        this.Backpack.DropItem(wep);
+
+                    SetWearable(yumi);
+
+                    _NextWeaponSwitch = DateTime.UtcNow + TimeSpan.FromSeconds(10);
+                }
+            }
+        }
 	
 		public Ozymandias(Serial serial) : base(serial)
 		{

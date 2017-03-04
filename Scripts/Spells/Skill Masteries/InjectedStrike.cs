@@ -190,7 +190,7 @@ namespace Server.Spells.SkillMasteries
             // Skill Masteries
             int noChargeChance = MasteryInfo.NonPoisonConsumeChance(Caster);
 
-            if (noChargeChance > 0 && noChargeChance < Utility.Random(100))
+            if (noChargeChance == 0 || noChargeChance < Utility.Random(100))
                 --weapon.PoisonCharges;
             else
                 Caster.SendLocalizedMessage(1156095); // Your mastery of poisoning allows you to use your poison charge without consuming it.
