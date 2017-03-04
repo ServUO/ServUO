@@ -22,7 +22,7 @@ namespace Server.Engines.MyrmidexInvasion
 				if(_AllegianceType == Allegiance.Myrmidex) 
 				{
                     ItemID = 9730;
-                    Hue = 2676;
+                    Hue = 2503;
 				}
 				else
 				{
