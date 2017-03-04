@@ -114,7 +114,7 @@ namespace Server.Mobiles
             Entries = new List<BossEntry>();
 
             Entries.Add(
-                new BossEntry(100, typeof(BaseRenowned), typeof(TRex), typeof(BaseShipCaptain)));
+                new BossEntry(100, typeof(BaseRenowned), typeof(TRex), typeof(BaseShipCaptain), typeof(Navrey)));
 
             Entries.Add(
                 new BossEntry(150, typeof(BaseChampion), typeof(Impaler), typeof(DarknightCreeper), typeof(FleshRenderer), 
