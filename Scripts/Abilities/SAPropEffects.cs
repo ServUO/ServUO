@@ -468,6 +468,13 @@ namespace Server.Items
             m_Bleeding = false;
         }
 
+        public override void RemoveEffects()
+        {
+            EndForceWalk(Victim);
+
+            base.RemoveEffects();
+        }
+
         public static void EndBleeding(Mobile m)
         {
             foreach (PropertyEffect effect in PropertyEffect.Effects)
