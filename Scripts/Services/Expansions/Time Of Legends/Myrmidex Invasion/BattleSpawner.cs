@@ -215,6 +215,8 @@ namespace Server.Engines.MyrmidexInvasion
                     else
                         bc = Activator.CreateInstance(type) as BaseCreature;
 
+                    bc.NoLootOnDeath = true;
+
                     if (bc != null)
                     {
                         for (int j = 0; j < 20; j++)

@@ -27,11 +27,11 @@ namespace Server.Mobiles
             FeluccaLuckBonus = Config.Get("Loot.FeluccaLuckBonus", 1000);
             FeluccaBudgetBonus = Config.Get("Loot.FeluccaBudgetBonus", 100);
 
-            MaxBaseBudget = Config.Get("Loot.MaxBaseBudget", 600);
+            MaxBaseBudget = Config.Get("Loot.MaxBaseBudget", 700);
             MinBaseBudget = Config.Get("Loot.MinBaseBudget", 150);
             MaxProps = Config.Get("Loot.MaxProps", 11);
 
-            MaxAdjustedBudget = Config.Get("Loot.MaxAdjustedBudget", 1350);
+            MaxAdjustedBudget = Config.Get("Loot.MaxAdjustedBudget", 1450);
             MinAdjustedBudget = Config.Get("Loot.MinAdjustedBudget", 150);
         }
 
@@ -61,7 +61,7 @@ namespace Server.Mobiles
         /// <returns></returns>
         public static int GetBaseBudget(BaseCreature bc)
         {
-            return bc.Fame / (24000 / MaxBaseBudget);
+            return bc.Fame / (20500 / MaxBaseBudget);
         }
 
         public static int GetDifficultyFor(BaseCreature bc)
@@ -73,7 +73,7 @@ namespace Server.Mobiles
 
             if (fame > 0)
             {
-                int budget = bc.BaseLootBudget;
+                int budget = Math.Min(MaxBaseBudget, bc.BaseLootBudget);
 
                 BossEntry.CheckBoss(bc, ref budget);
 
@@ -92,7 +92,7 @@ namespace Server.Mobiles
         public BossEntry(int bonus, params Type[] list)
         {
             Bonus = bonus;
-            List = list.ToList(); // new List<BossEntry>(list);
+            List = list.ToList();
         }
 
         public static List<BossEntry> Entries { get; set; }

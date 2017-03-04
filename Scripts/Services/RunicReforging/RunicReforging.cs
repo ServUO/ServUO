@@ -486,18 +486,18 @@ namespace Server.Items
 
         public static int Scale(int min, int max, int perclow, int perchigh, int luckchance, bool usesqrt)
         {
-            int percent;
+            int percent = Utility.RandomMinMax(0, perchigh * 100);
+            // this takes off the curve of generating better items.  Its the downfall of the old lootsystem, 
+            // so lets just take it out and use a linear system like runic crafting
+            usesqrt = false;
 
             if (usesqrt)
-            {
-                percent = Utility.RandomMinMax(perclow * 100, perchigh * 100);
-                percent = 100 - (int)Math.Sqrt(percent);
-            }
+                percent = (int)Math.Sqrt(percent);
             else
-            {
-                percent = Utility.RandomMinMax(perclow * 100, perchigh * 100);
                 percent /= 100;
-            }
+
+            if (LootPack.CheckLuck(luckchance))
+                percent += 10;
 
             if (percent < perclow) percent = perclow;
             if (percent > perchigh) percent = perchigh;
@@ -1525,13 +1525,19 @@ namespace Server.Items
                     }
 
                     int divisor = GetDivisor(basebudget);
-                    double perc = (100.0 - Math.Sqrt(Utility.RandomMinMax(0, 10000))) / 100.0;
 
+                    double perc = 0.0;
+                    double highest = 0.0;
+                    
                     for (int i = 0; i < 1 + (luck / 600); i++)
                     {
-                        if (LootPack.CheckLuck(luckchance))
-                            perc += .1;
+                        perc = (100.0 - Math.Sqrt(Utility.RandomMinMax(0, 10000))) / 100.0;
+
+                        if (perc > highest)
+                            highest = perc;
                     }
+
+                    perc = highest;
 
                     if (perc > 1.0) perc = 1.0;
                     int toAdd = Math.Min(500, RandomItemGenerator.MaxAdjustedBudget - basebudget);
@@ -1539,7 +1545,7 @@ namespace Server.Items
                     budget = Utility.RandomMinMax(basebudget - (basebudget / divisor), (int)(basebudget + (toAdd * perc))) + budgetBonus;
 
                     // Gives a rare chance for a high end item to drop on a low budgeted monster
-                    if (luck > 0 && budget < 550 && LootPack.CheckLuck(luckchance / 6))
+                    if (luck > 0 && budget <= 550 && LootPack.CheckLuck(luckchance / 6))
                     {
                         budget = Utility.RandomMinMax(600, 1150);
                     }
@@ -1564,19 +1570,20 @@ namespace Server.Items
 
                     if (!powerful)
                     {
-                        mods = Utility.RandomMinMax(2, 5);
+                        mods = Math.Max(1, GetProperties(5));
 
-                        perchigh = Math.Max(50, Math.Min(500, budget) / (mods - 1));
+                        perchigh = Math.Max(50, Math.Min(500, budget) / mods);
                         perclow = Math.Max(20, perchigh / 3);
                     }
                     else
                     {
-                        int maxmods = Math.Max(5, Math.Min(RandomItemGenerator.MaxProps - 1, (int)Math.Ceiling((double)budget / (double)Utility.RandomMinMax(100, 180))));
+                        int maxmods = Math.Max(5, Math.Min(RandomItemGenerator.MaxProps - 1, (int)Math.Ceiling((double)budget / (double)Utility.RandomMinMax(100, 140))));
                         int minmods = Math.Max(4, maxmods - 4);
-                        mods = Utility.RandomMinMax(minmods, maxmods);
+
+                        mods = Math.Max(minmods, GetProperties(maxmods));
 
                         perchigh = 100;
-                        perclow = Math.Max(50, (budget / 2) / mods);
+                        perclow = Utility.RandomMinMax(61, 71);
                     }
 
                     if (perchigh > 100) perchigh = 100;
@@ -1612,6 +1619,82 @@ namespace Server.Items
 
                 ApplyItemPower(item, false);
             }
+        }
+
+        public static int GetProperties(int max)
+        {
+            if (max > RandomItemGenerator.MaxProps - 1)
+                max = RandomItemGenerator.MaxProps - 1;
+
+            int p0 = 0, p1 = 0, p2 = 0, p3 = 0, p4 = 0, p5 = 0, p6 = 0, p7 = 0, p8 = 0, p9 = 0, p10 = 0, p11 = 0;
+
+            switch (max)
+            {
+                case 1: p0 = 3; p1 = 1; break;
+                case 2: p0 = 6; p1 = 3; p2 = 1; break;
+                case 3: p0 = 10; p1 = 6; p2 = 3; p3 = 1; break;
+                case 4: p0 = 16; p1 = 12; p2 = 6; p3 = 5; p4 = 1; break;
+                case 5: p0 = 30; p1 = 25; p2 = 20; p3 = 15; p4 = 9; p5 = 1; break;
+                case 6: p0 = 35; p1 = 30; p2 = 25; p3 = 20; p4 = 15; p5 = 9; p6 = 1; break;
+                case 7: p0 = 40; p1 = 35; p2 = 30; p3 = 25; p4 = 20; p5 = 15; p6 = 9; p7 = 1; break;
+                case 8: p0 = 50; p1 = 40; p2 = 35; p3 = 30; p4 = 25; p5 = 20; p6 = 15; p7 = 9; p8 = 1; break;
+                case 9: p0 = 70; p1 = 55; p2 = 45; p3 = 35; p4 = 30; p5 = 25; p6 = 20; p7 = 15; p8 = 9; p9 = 1; break;
+                case 10: p0 = 90; p1 = 70; p2 = 55; p3 = 45; p4 = 40; p5 = 35; p6 = 25; p7 = 15; p8 = 10; p9 = 5; p10 = 1; break;
+            }
+
+            int pc = p0 + p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11;
+
+            int rnd = Utility.Random(pc);
+
+            if (rnd < p10)
+                return 10;
+            else
+                rnd -= p10;
+
+            if (rnd < p9)
+                return 9;
+            else
+                rnd -= p9;
+
+            if (rnd < p8)
+                return 8;
+            else
+                rnd -= p8;
+
+            if (rnd < p7)
+                return 7;
+            else
+                rnd -= p7;
+
+            if (rnd < p6)
+                return 6;
+            else
+                rnd -= p6;
+
+            if (rnd < p5)
+                return 5;
+            else
+                rnd -= p5;
+
+            if (rnd < p4)
+                return 4;
+            else
+                rnd -= p4;
+
+            if (rnd < p3)
+                return 3;
+            else
+                rnd -= p3;
+
+            if (rnd < p2)
+                return 2;
+            else
+                rnd -= p2;
+
+            if (rnd < p1)
+                return 1;
+
+            return 0;
         }
 
         private static void ChooseArtifactMods(Item item, int budget, out int mods, out int perclow, out int perchigh)

@@ -1239,7 +1239,7 @@ namespace Server.SkillHandlers
                 foreach (int i in Enum.GetValues(typeof(AosArmorAttribute)))
                     weight += GetIntensityForAttribute(item, (AosArmorAttribute)i, mod, armorAttrs[(AosArmorAttribute)i]);
 
-            if (resistAttrs != null)
+            if (resistAttrs != null && !(item is BaseWeapon))
                 foreach (int i in Enum.GetValues(typeof(AosElementAttribute)))
                     weight += GetIntensityForAttribute(item, (AosElementAttribute)i, mod, resistAttrs[(AosElementAttribute)i]);
 

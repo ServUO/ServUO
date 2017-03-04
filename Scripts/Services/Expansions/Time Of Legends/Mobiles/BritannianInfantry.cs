@@ -40,19 +40,19 @@ namespace Server.Mobiles
             SetSkill(SkillName.Fencing, 120);
             SetSkill(SkillName.Macing, 120);
 
-            SetWearable(new PlateChest(), -1, 1.0);
-            SetWearable(new PlateLegs(), -1, 1.0);
-            SetWearable(new PlateArms(), -1, 1.0);
-            SetWearable(new PlateGloves(), -1, 1.0);
-            SetWearable(new PlateHelm(), -1, 1.0);
+            SetWearable(new PlateChest());
+            SetWearable(new PlateLegs());
+            SetWearable(new PlateArms());
+            SetWearable(new PlateGloves());
+            SetWearable(new PlateHelm());
 
             switch (Utility.Random(5))
             {
-                case 0: SetWearable(new Halberd(), -1, 1.0); break;
-                case 1: SetWearable(new Bardiche(), -1, 1.0); break;
-                case 2: SetWearable(new Spear(), -1, 1.0); break;
-                case 3: SetWearable(new ShortSpear(), -1, 1.0); break;
-                case 4: SetWearable(new WarHammer(), -1, 1.0); break;
+                case 0: SetWearable(new Halberd()); break;
+                case 1: SetWearable(new Bardiche()); break;
+                case 2: SetWearable(new Spear()); break;
+                case 3: SetWearable(new ShortSpear()); break;
+                case 4: SetWearable(new WarHammer()); break;
             }
 
             PackGold(Utility.RandomMinMax(250, 300));
