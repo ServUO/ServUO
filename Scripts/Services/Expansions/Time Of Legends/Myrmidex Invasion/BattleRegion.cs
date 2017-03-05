@@ -27,12 +27,6 @@ namespace Server.Engines.MyrmidexInvasion
             {
                 Timer.DelayCall<BaseCreature>(TimeSpan.FromSeconds(.25), Spawner.RegisterDeath, (BaseCreature)m);
             }
-
-            Timer.DelayCall(() =>
-                {
-                    if (nomaster && m.Corpse != null)
-                        m.Corpse.Delete();
-                });
         }
 
         public override void OnExit(Mobile m)

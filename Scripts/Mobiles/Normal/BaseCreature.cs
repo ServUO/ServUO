@@ -5155,9 +5155,12 @@ namespace Server.Mobiles
 
         private bool m_NoKillAwards;
         private bool m_NoLootOnDeath;
+        private bool m_NoCorpseKillCreature;
 
         public bool NoKillAwards { get { return m_NoKillAwards; } set { m_NoKillAwards = value; } }
         public bool NoLootOnDeath { get { return m_NoLootOnDeath; } set { m_NoLootOnDeath = value; } }
+        public bool NoCorpseKillCreature { get { return m_NoCorpseKillCreature; } set { m_NoCorpseKillCreature = value; } }
+
 
         public int ComputeBonusDamage(List<DamageEntry> list, Mobile m)
         {
@@ -5758,6 +5761,16 @@ namespace Server.Mobiles
                 if (DeleteCorpseOnDeath)
                 {
                     c.Delete();
+                }
+
+                if (NoCorpseKillCreature)
+                {
+                    Mobile killer = LastKiller;
+
+                    if (killer is BaseCreature && !(((BaseCreature)killer).GetMaster() is PlayerMobile))
+                    {
+                        c.Delete();
+                    }
                 }
             }
 
