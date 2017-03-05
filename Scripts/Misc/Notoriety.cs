@@ -486,7 +486,7 @@ namespace Server.Misc
             if (target.Criminal)
                 return Notoriety.Criminal;
 
-            if (target is BritannianInfantry || target is TribeWarrior && target is TribeShaman && target.Region.IsPartOf(typeof(BattleRegion)))
+            if ((target is BritannianInfantry || target is TribeWarrior || target is TribeShaman) && target.Region.IsPartOf(typeof(BattleRegion)))
                 return Notoriety.CanBeAttacked;
 
             if (XmlPoints.AreTeamMembers(source, target))
