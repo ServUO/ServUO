@@ -27,6 +27,16 @@ namespace Server.Engines.MyrmidexInvasion
             {
                 Timer.DelayCall<BaseCreature>(TimeSpan.FromSeconds(.25), Spawner.RegisterDeath, (BaseCreature)m);
             }
+
+            if ((m is BritannianInfantry || m is TribeWarrior || m is TribeShaman || m is MyrmidexDrone || m is MyrmidexWarrior) && m.Region.IsPartOf(typeof(BattleRegion)))
+            {
+                Mobile killer = m.LastKiller;
+
+                if (killer is BaseCreature && !(((BaseCreature)killer).GetMaster() is PlayerMobile))
+                {
+                    m.Corpse.Delete();
+                }
+            }
         }
 
         public override void OnExit(Mobile m)
