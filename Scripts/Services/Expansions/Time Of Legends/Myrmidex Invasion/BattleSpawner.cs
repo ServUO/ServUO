@@ -215,8 +215,6 @@ namespace Server.Engines.MyrmidexInvasion
                     else
                         bc = Activator.CreateInstance(type) as BaseCreature;
 
-                    bc.NoLootOnDeath = true;
-
                     if (bc != null)
                     {
                         for (int j = 0; j < 20; j++)
@@ -427,7 +425,7 @@ namespace Server.Engines.MyrmidexInvasion
 
         private Type[] _TribeTypes =
         {
-            typeof(TribeWarrior), typeof(TribeShaman), typeof(BritannianInfantry)
+            typeof(BritannianInfantry)
         };
 
         public void AssignNavPoints()

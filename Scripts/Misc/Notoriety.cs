@@ -8,6 +8,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Engines.VvV;
+using Server.Engines.MyrmidexInvasion;
 
 namespace Server.Misc
 {
@@ -484,6 +485,9 @@ namespace Server.Misc
 
             if (target.Criminal)
                 return Notoriety.Criminal;
+
+            if ((target is BritannianInfantry || target is TribeWarrior || target is TribeShaman) && target.Region.IsPartOf(typeof(BattleRegion)))
+                return Notoriety.CanBeAttacked;
 
             if (XmlPoints.AreTeamMembers(source, target))
                 return Notoriety.Ally;
