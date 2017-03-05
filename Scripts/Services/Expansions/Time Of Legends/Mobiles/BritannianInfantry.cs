@@ -2,6 +2,7 @@ using System;
 using Server;
 using Server.Items;
 using Server.Engines.MyrmidexInvasion;
+using Server.Misc;
 
 namespace Server.Mobiles
 {
@@ -69,6 +70,9 @@ namespace Server.Mobiles
         public override bool IsEnemy(Mobile m)
         {
             if (MyrmidexInvasionSystem.Active && MyrmidexInvasionSystem.IsAlliedWithEodonTribes(m))
+                return false;
+
+            if ((m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).Controlled)) && !NotorietyHandlers.CheckAggressor(Aggressors, m))
                 return false;
 
             if (MyrmidexInvasionSystem.Active && MyrmidexInvasionSystem.IsAlliedWithMyrmidex(m))
