@@ -10,8 +10,9 @@ namespace Server.Engines.MyrmidexInvasion
     public class BattleFlag : Item
 	{
         [Constructable]
-        public BattleFlag(int itemid) : base(itemid)
+        public BattleFlag(int itemid, int hue) : base(itemid)
         {
+            Hue = hue;
             Movable = false;
         }
 

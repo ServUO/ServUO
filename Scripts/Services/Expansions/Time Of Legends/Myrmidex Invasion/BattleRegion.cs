@@ -28,11 +28,15 @@ namespace Server.Engines.MyrmidexInvasion
                 Timer.DelayCall<BaseCreature>(TimeSpan.FromSeconds(.25), Spawner.RegisterDeath, (BaseCreature)m);
             }
 
-            Timer.DelayCall(() =>
+            if (m is BritannianInfantry || m is TribeWarrior || m is TribeShaman || m is MyrmidexDrone || m is MyrmidexWarrior)
+            {
+                Mobile killer = m.LastKiller;
+
+                if (killer is BaseCreature && !(((BaseCreature)killer).GetMaster() is PlayerMobile))
                 {
-                    if (nomaster && m.Corpse != null)
-                        m.Corpse.Delete();
-                });
+                    m.Corpse.Delete();
+                }
+            }
         }
 
         public override void OnExit(Mobile m)
