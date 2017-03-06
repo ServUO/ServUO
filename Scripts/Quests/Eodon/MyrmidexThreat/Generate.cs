@@ -174,41 +174,23 @@ namespace Server.Engines.MyrmidexInvasion
             BattleSpawner spawner = new BattleSpawner();
             spawner.MoveToWorld(new Point3D(851, 1776, 0), Map.TerMur);
 
-            Item st = new Static(9);
-            st.MoveToWorld(new Point3D(981, 1879, 0), Map.TerMur);
+            Item st = new Static(0xA1F);
+            st.MoveToWorld(new Point3D(913, 1871, 0), Map.TerMur);
 
-            st = new Static(9);
-            st.MoveToWorld(new Point3D(982, 1879, 0), Map.TerMur);
+            st = new Static(0xA1F);
+            st.MoveToWorld(new Point3D(914, 1871, 0), Map.TerMur);
 
-            BattleFlag bflag = new BattleFlag(17101);
-            bflag.MoveToWorld(new Point3D(982, 1880, 3), Map.TerMur);
+            BattleFlag bflag = new BattleFlag(0x42CB, 0);
+            bflag.MoveToWorld(new Point3D(914, 1872, 5), Map.TerMur);
 
-            st = new Static(9);
-            st.MoveToWorld(new Point3D(987, 1879, 0), Map.TerMur);
+            st = new Static(0xA1F);
+            st.MoveToWorld(new Point3D(913, 1792, 0), Map.TerMur);
 
-            st = new Static(9);
-            st.MoveToWorld(new Point3D(988, 1879, 0), Map.TerMur);
+            bflag = new BattleFlag(0x42C, 2520);
+            bflag.MoveToWorld(new Point3D(914, 1793, 6), Map.TerMur);
 
-            bflag = new BattleFlag(17101);
-            bflag.MoveToWorld(new Point3D(988, 1880, 3), Map.TerMur);
-
-            st = new Static(9);
-            st.MoveToWorld(new Point3D(850, 1792, 0), Map.TerMur);
-
-            st = new Static(9);
-            st.MoveToWorld(new Point3D(851, 1792, 0), Map.TerMur);
-
-            bflag = new BattleFlag(17099);
-            bflag.MoveToWorld(new Point3D(851, 1793, 3), Map.TerMur);
-
-            st = new Static(9);
-            st.MoveToWorld(new Point3D(855, 1792, 0), Map.TerMur);
-
-            st = new Static(9);
-            st.MoveToWorld(new Point3D(856, 1792, 0), Map.TerMur);
-
-            bflag = new BattleFlag(17099);
-            bflag.MoveToWorld(new Point3D(856, 1793, 3), Map.TerMur);
+            bflag = new BattleFlag(0x42D, 2520);
+            bflag.MoveToWorld(new Point3D(913, 1793, 6), Map.TerMur);
 
             var sp = new XmlSpawner("Yar");
             sp.SpawnRange = 1;

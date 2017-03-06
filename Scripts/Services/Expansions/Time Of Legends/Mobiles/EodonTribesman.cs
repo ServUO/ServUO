@@ -400,6 +400,9 @@ namespace Server.Mobiles
             }
 		}
 
+        public override bool AlwaysAttackable { get { return this.Region.IsPartOf(typeof(BattleRegion)); } }
+        public override bool ShowFameTitle { get { return false; } }
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich, 2);
@@ -615,8 +618,11 @@ namespace Server.Mobiles
                 SetWearable(weapon);
             }
 		}
-		
-		public TribeShaman(Serial serial) : base(serial)
+
+        public override bool AlwaysAttackable { get { return this.Region.IsPartOf(typeof(BattleRegion)); } }
+        public override bool ShowFameTitle { get { return false; } }
+
+        public TribeShaman(Serial serial) : base(serial)
 		{
 		}
 		

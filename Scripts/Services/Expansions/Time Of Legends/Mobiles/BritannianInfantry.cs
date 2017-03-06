@@ -1,10 +1,11 @@
 using System;
-using Server;
 using Server.Items;
 using Server.Engines.MyrmidexInvasion;
+using Server.Misc;
 
 namespace Server.Mobiles
 {
+    [CorpseName("a human corpse")]
     public class BritannianInfantry : BaseCreature
     {
         [Constructable]
@@ -14,7 +15,9 @@ namespace Server.Mobiles
             SpeechHue = Utility.RandomDyedHue();
 
             Body = 0x190;
+            Hue = 33779;
             Name = NameList.RandomName("male");
+            Title = "the Britannian";
 
             SetStr(115, 150);
             SetDex(150);
@@ -25,11 +28,11 @@ namespace Server.Mobiles
             SetHits(2400);
             SetMana(250);
 
-            SetResistance(ResistanceType.Physical, 20);
-            SetResistance(ResistanceType.Fire, 20);
-            SetResistance(ResistanceType.Cold, 20);
-            SetResistance(ResistanceType.Poison, 20);
-            SetResistance(ResistanceType.Energy, 20);
+            SetResistance(ResistanceType.Physical, 25);
+            SetResistance(ResistanceType.Fire, 15);
+            SetResistance(ResistanceType.Cold, 10);
+            SetResistance(ResistanceType.Poison, 15);
+            SetResistance(ResistanceType.Energy, 10);
 
             SetDamageType(ResistanceType.Physical, 100);
 
@@ -40,30 +43,35 @@ namespace Server.Mobiles
             SetSkill(SkillName.Fencing, 120);
             SetSkill(SkillName.Macing, 120);
 
-            SetWearable(new PlateChest());
-            SetWearable(new PlateLegs());
-            SetWearable(new PlateArms());
-            SetWearable(new PlateGloves());
-            SetWearable(new PlateHelm());
-
-            switch (Utility.Random(5))
-            {
-                case 0: SetWearable(new Halberd()); break;
-                case 1: SetWearable(new Bardiche()); break;
-                case 2: SetWearable(new Spear()); break;
-                case 3: SetWearable(new ShortSpear()); break;
-                case 4: SetWearable(new WarHammer()); break;
-            }
+            AddImmovableItem(new PlateChest());
+            AddImmovableItem(new PlateLegs());
+            AddImmovableItem(new PlateArms());
+            AddImmovableItem(new PlateGloves());
+            AddImmovableItem(new PlateGorget());
+            AddImmovableItem(new Kilt(1175));
+            AddImmovableItem(new BodySash(1157));
+            AddImmovableItem(new Halberd());
 
             PackGold(Utility.RandomMinMax(250, 300));
 
             Fame = 7500;
             Karma = 4500;
+
+            Utility.AssignRandomHair(this);
+        }
+
+        private void AddImmovableItem(Item item)
+        {
+            item.LootType = LootType.Blessed;
+            AddItem(item);
         }
 
         public override bool IsEnemy(Mobile m)
         {
             if (MyrmidexInvasionSystem.Active && MyrmidexInvasionSystem.IsAlliedWithEodonTribes(m))
+                return false;
+
+            if ((m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).Controlled)) && !NotorietyHandlers.CheckAggressor(Aggressors, m))
                 return false;
 
             if (MyrmidexInvasionSystem.Active && MyrmidexInvasionSystem.IsAlliedWithMyrmidex(m))
@@ -72,13 +80,16 @@ namespace Server.Mobiles
             return base.IsEnemy(m);
         }
 
+        public override bool AlwaysAttackable { get { return this.Region.IsPartOf(typeof(BattleRegion)); } }
+        public override bool ShowFameTitle { get { return false; } }
+        public override bool ClickTitle { get { return false; } }
         public override bool AutoRearms { get { return true; } }
         public override bool CanHeal { get { return true; } }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich, 1);
-        }	
+        }
 
         public override WeaponAbility GetWeaponAbility()
         {
@@ -112,5 +123,4 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
     }
-	
 }
