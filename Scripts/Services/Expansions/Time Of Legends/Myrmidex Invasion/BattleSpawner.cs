@@ -427,7 +427,7 @@ namespace Server.Engines.MyrmidexInvasion
 
         private Type[] _TribeTypes =
         {
-            typeof(TribeWarrior), typeof(TribeShaman), typeof(BritannianInfantry)
+            typeof(BritannianInfantry)
         };
 
         public void AssignNavPoints()
