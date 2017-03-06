@@ -619,7 +619,7 @@ namespace Server.Engines.MyrmidexInvasion
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
 
             writer.Write(MyrmidexTeam.Count);
             foreach (KeyValuePair<int, List<BaseCreature>> kvp in MyrmidexTeam)
@@ -719,6 +719,45 @@ namespace Server.Engines.MyrmidexInvasion
                 TribeTeam.Clear();
                 Players.Clear();
             }
+
+            if (v == 0)
+                Timer.DelayCall(TimeSpan.FromSeconds(20), FixFlags);
+        }
+
+        private void FixFlags()
+        {
+            if (BattleRegion != null)
+            {
+                foreach (Item item in BattleRegion.GetEnumeratedItems())
+                {
+                    if (item is Static && (item.ItemID == 9))
+                    {
+                        item.Delete();
+                    }
+                    else if (item is BattleFlag)
+                    {
+                        item.Delete();
+                    }
+                }
+            }
+
+            Item st = new Static(0xA1F);
+            st.MoveToWorld(new Point3D(913, 1871, 0), Map.TerMur);
+
+            st = new Static(0xA1F);
+            st.MoveToWorld(new Point3D(914, 1871, 0), Map.TerMur);
+
+            BattleFlag bflag = new BattleFlag(0x42CB, 0);
+            bflag.MoveToWorld(new Point3D(914, 1872, 5), Map.TerMur);
+
+            st = new Static(0xA1F);
+            st.MoveToWorld(new Point3D(913, 1792, 0), Map.TerMur);
+
+            bflag = new BattleFlag(0x42C, 2520);
+            bflag.MoveToWorld(new Point3D(914, 1793, 6), Map.TerMur);
+
+            bflag = new BattleFlag(0x42D, 2520);
+            bflag.MoveToWorld(new Point3D(913, 1793, 6), Map.TerMur);
         }
 	}
 }
