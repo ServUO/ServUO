@@ -71,9 +71,6 @@ namespace Server.Mobiles
             if (MyrmidexInvasionSystem.Active && MyrmidexInvasionSystem.IsAlliedWithEodonTribes(m))
                 return false;
 
-            if ((m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).Controlled)) && !NotorietyHandlers.CheckAggressor(Aggressors, m))
-                return false;
-
             if (MyrmidexInvasionSystem.Active && MyrmidexInvasionSystem.IsAlliedWithMyrmidex(m))
                 return true;
 
