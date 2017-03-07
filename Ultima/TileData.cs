@@ -28,20 +28,20 @@ namespace Ultima
 			m_Unk1 = unk1;
 		}
 
-		public unsafe LandData(NewLandTileDataMul mulstruct)
+		public unsafe LandData(NewLandTileDataMul mulstruct, TileData tileData)
 		{
 			m_TexID = mulstruct.texID;
 			m_Flags = (TileFlag)mulstruct.flags;
 			m_Unk1 = mulstruct.unk1;
-			m_Name = TileData.ReadNameString(mulstruct.name);
+			m_Name = tileData.ReadNameString(mulstruct.name);
 		}
 
-		public unsafe LandData(OldLandTileDataMul mulstruct)
+		public unsafe LandData(OldLandTileDataMul mulstruct, TileData tileData)
 		{
 			m_TexID = mulstruct.texID;
 			m_Flags = (TileFlag)mulstruct.flags;
 			m_Unk1 = 0;
-			m_Name = TileData.ReadNameString(mulstruct.name);
+			m_Name = tileData.ReadNameString(mulstruct.name);
 		}
 
 		/// <summary>
@@ -288,9 +288,9 @@ namespace Ultima
 			m_Unk3 = (byte)unk3;
 		}
 
-		public unsafe ItemData(NewItemTileDataMul mulstruct)
+		public unsafe ItemData(NewItemTileDataMul mulstruct, TileData tileData)
 		{
-			m_Name = TileData.ReadNameString(mulstruct.name);
+			m_Name = tileData.ReadNameString(mulstruct.name);
 			m_Flags = (TileFlag)mulstruct.flags;
 			m_Unk1 = mulstruct.unk1;
 			m_Weight = mulstruct.weight;
@@ -306,9 +306,9 @@ namespace Ultima
 			m_Unk3 = mulstruct.unk3;
 		}
 
-		public unsafe ItemData(OldItemTileDataMul mulstruct)
+		public unsafe ItemData(OldItemTileDataMul mulstruct, TileData tileData)
 		{
-			m_Name = TileData.ReadNameString(mulstruct.name);
+			m_Name = tileData.ReadNameString(mulstruct.name);
 			m_Flags = (TileFlag)mulstruct.flags;
 			m_Unk1 = 0;
 			m_Weight = mulstruct.weight;
@@ -808,25 +808,31 @@ namespace Ultima
 	/// </summary>
 	public sealed class TileData
 	{
-		private static LandData[] m_LandData;
-		private static ItemData[] m_ItemData;
-		private static int[] m_HeightTable;
+		private LandData[] m_LandData;
+		private ItemData[] m_ItemData;
+		private int[] m_HeightTable;
+	    private readonly Art _art;
+	    private Files _Files;
+
+
+
+
 
 		/// <summary>
 		///     Gets the list of <see cref="LandData">land tile data</see>.
 		/// </summary>
-		public static LandData[] LandTable { get { return m_LandData; } set { m_LandData = value; } }
+		public LandData[] LandTable { get { return m_LandData; } set { m_LandData = value; } }
 
 		/// <summary>
 		///     Gets the list of <see cref="ItemData">item tile data</see>.
 		/// </summary>
-		public static ItemData[] ItemTable { get { return m_ItemData; } set { m_ItemData = value; } }
+		public ItemData[] ItemTable { get { return m_ItemData; } set { m_ItemData = value; } }
 
-		public static int[] HeightTable { get { return m_HeightTable; } }
+		public int[] HeightTable { get { return m_HeightTable; } }
 
-		private static readonly byte[] m_StringBuffer = new byte[20];
+		private readonly byte[] m_StringBuffer = new byte[20];
 
-		private static string ReadNameString(BinaryReader bin)
+		private string ReadNameString(BinaryReader bin)
 		{
 			bin.Read(m_StringBuffer, 0, 20);
 
@@ -840,7 +846,7 @@ namespace Ultima
 			return Encoding.Default.GetString(m_StringBuffer, 0, count);
 		}
 
-		public static unsafe string ReadNameString(byte* buffer)
+		public unsafe string ReadNameString(byte* buffer)
 		{
 			int count;
 			for (count = 0; count < 20 && *buffer != 0; ++count)
@@ -851,26 +857,33 @@ namespace Ultima
 			return Encoding.Default.GetString(m_StringBuffer, 0, count);
 		}
 
-		private TileData()
-		{ }
 
-		private static int[] landheader;
-		private static int[] itemheader;
+		private  int[] landheader;
+		private  int[] itemheader;
+	    private UltimaOnlineReaderFactory Factory;
 
-		static TileData()
+        public TileData(UltimaOnlineReaderFactory factory)
+            :this(factory.Art, factory.Files)
+        {
+            Factory = factory;
+        }
+
+        public TileData(Art art, Files files)
 		{
-			Initialize();
-		}
+		    _art = art;
+		    _Files = files;
+		    Initialize();
+        }
 
-		public static unsafe void Initialize()
+		public unsafe void Initialize()
 		{
-			string filePath = Files.GetFilePath("tiledata.mul");
+			string filePath = _Files.GetFilePath("tiledata.mul");
 
 			if (filePath != null)
 			{
 				using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					bool useNeWTileDataFormat = Art.IsUOAHS();
+					bool useNeWTileDataFormat = _art.IsUOAHS();
 					landheader = new int[512];
 					int j = 0;
 					m_LandData = new LandData[0x4000];
@@ -893,13 +906,13 @@ namespace Ultima
 								{
 									currpos += sizeof(NewLandTileDataMul);
 									var cur = (NewLandTileDataMul)Marshal.PtrToStructure(ptr, typeof(NewLandTileDataMul));
-									m_LandData[i + count] = new LandData(cur);
+									m_LandData[i + count] = new LandData(cur, this);
 								}
 								else
 								{
 									currpos += sizeof(OldLandTileDataMul);
 									var cur = (OldLandTileDataMul)Marshal.PtrToStructure(ptr, typeof(OldLandTileDataMul));
-									m_LandData[i + count] = new LandData(cur);
+									m_LandData[i + count] = new LandData(cur, this);
 								}
 							}
 						}
@@ -925,14 +938,14 @@ namespace Ultima
 								{
 									currpos += sizeof(NewItemTileDataMul);
 									var cur = (NewItemTileDataMul)Marshal.PtrToStructure(ptr, typeof(NewItemTileDataMul));
-									m_ItemData[i + count] = new ItemData(cur);
+									m_ItemData[i + count] = new ItemData(cur, this);
 									m_HeightTable[i + count] = cur.height;
 								}
 								else
 								{
 									currpos += sizeof(OldItemTileDataMul);
 									var cur = (OldItemTileDataMul)Marshal.PtrToStructure(ptr, typeof(OldItemTileDataMul));
-									m_ItemData[i + count] = new ItemData(cur);
+									m_ItemData[i + count] = new ItemData(cur, this);
 									m_HeightTable[i + count] = cur.height;
 								}
 							}
@@ -950,14 +963,14 @@ namespace Ultima
 		///     Saves <see cref="LandData" /> and <see cref="ItemData" /> to tiledata.mul
 		/// </summary>
 		/// <param name="FileName"></param>
-		public static void SaveTileData(string FileName)
+		public void SaveTileData(string FileName)
 		{
 			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
 			{
 				using (var bin = new BinaryWriter(fs))
 				{
 					int j = 0;
-					bool useNewTileDataFormat = Art.IsUOAHS();
+					bool useNewTileDataFormat = _art.IsUOAHS();
 					for (int i = 0; i < 0x4000; ++i)
 					{
 						if ((i & 0x1F) == 0)
@@ -1029,7 +1042,7 @@ namespace Ultima
 		///     Exports <see cref="ItemData" /> to csv file
 		/// </summary>
 		/// <param name="FileName"></param>
-		public static void ExportItemDataToCSV(string FileName)
+		public void ExportItemDataToCSV(string FileName)
 		{
 			using (
 				var Tex = new StreamWriter(
@@ -1099,7 +1112,7 @@ namespace Ultima
 		///     Exports <see cref="LandData" /> to csv file
 		/// </summary>
 		/// <param name="FileName"></param>
-		public static void ExportLandDataToCSV(string FileName)
+		public void ExportLandDataToCSV(string FileName)
 		{
 			using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite)))
 			{
@@ -1169,7 +1182,7 @@ namespace Ultima
 			return result;
 		}
 
-		public static void ImportItemDataFromCSV(string FileName)
+		public void ImportItemDataFromCSV(string FileName)
 		{
 			if (!File.Exists(FileName))
 			{
@@ -1205,7 +1218,7 @@ namespace Ultima
 			}
 		}
 
-		public static void ImportLandDataFromCSV(string FileName)
+		public  void ImportLandDataFromCSV(string FileName)
 		{
 			if (!File.Exists(FileName))
 			{

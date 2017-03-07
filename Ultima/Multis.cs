@@ -12,8 +12,28 @@ namespace Ultima
 {
 	public sealed class Multis
 	{
-		private static MultiComponentList[] m_Components = new MultiComponentList[0x2000];
-		private static FileIndex m_FileIndex = new FileIndex("Multi.idx", "Multi.mul", 0x2000, 14);
+	    private readonly Art _art;
+	    private readonly TileData _tileData;
+	    private Files _Files;
+
+        UltimaOnlineReaderFactory Factory { get; }
+        public Multis(UltimaOnlineReaderFactory factory)
+            : this(factory.Verdata, factory.Art, factory.TileData, factory.Files)
+        {
+            Factory = factory;
+        }
+
+        public Multis(Verdata verdata, Art art, TileData tileData, Files files)
+	    {
+	        _art = art;
+	        _tileData = tileData;
+	        this._Files = files;
+	        m_FileIndex = new FileIndex("Multi.idx", "Multi.mul", 0x2000, 14, verdata, _Files);
+            m_Components = new MultiComponentList[0x2000];
+
+        }
+		private MultiComponentList[] m_Components;
+		private FileIndex m_FileIndex;
 
 		public enum ImportType
 		{
@@ -25,23 +45,18 @@ namespace Ultima
 			UOADESIGN
 		}
 
-		public static bool PostHSFormat { get; set; }
+		public bool PostHSFormat { get; set; }
 
 		/// <summary>
 		///     ReReads multi.mul
 		/// </summary>
-		public static void Reload()
-		{
-			m_FileIndex = new FileIndex("Multi.idx", "Multi.mul", 0x2000, 14);
-			m_Components = new MultiComponentList[0x2000];
-		}
 
 		/// <summary>
 		///     Gets <see cref="MultiComponentList" /> of multi
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static MultiComponentList GetComponents(int index)
+		public MultiComponentList GetComponents(int index)
 		{
 			MultiComponentList mcl;
 
@@ -58,13 +73,13 @@ namespace Ultima
 			}
 			else
 			{
-				mcl = MultiComponentList.Empty;
+				mcl = MultiComponentList.Empty(this, _art, _tileData);
 			}
 
 			return mcl;
 		}
 
-		public static MultiComponentList Load(int index)
+		public MultiComponentList Load(int index)
 		{
 			try
 			{
@@ -74,59 +89,59 @@ namespace Ultima
 
 				if (stream == null)
 				{
-					return MultiComponentList.Empty;
+					return MultiComponentList.Empty(this, _art, _tileData);
 				}
 
-				if (PostHSFormat || Art.IsUOAHS())
+				if (PostHSFormat || _art.IsUOAHS())
 				{
-					return new MultiComponentList(new BinaryReader(stream), length / 16);
+					return new MultiComponentList(new BinaryReader(stream), length / 16, this);
 				}
 				else
 				{
-					return new MultiComponentList(new BinaryReader(stream), length / 12);
+					return new MultiComponentList(new BinaryReader(stream), length / 12, this);
 				}
 			}
 			catch
 			{
-				return MultiComponentList.Empty;
+				return MultiComponentList.Empty(this, _art, _tileData);
 			}
 		}
 
-		public static void Remove(int index)
+		public  void Remove(int index)
 		{
-			m_Components[index] = MultiComponentList.Empty;
+			m_Components[index] = MultiComponentList.Empty(this, _art, _tileData);
 		}
 
-		public static void Add(int index, MultiComponentList comp)
+		public  void Add(int index, MultiComponentList comp)
 		{
 			m_Components[index] = comp;
 		}
 
-		public static MultiComponentList ImportFromFile(int index, string FileName, ImportType type)
+		public  MultiComponentList ImportFromFile(int index, string FileName, ImportType type)
 		{
 			try
 			{
-				return m_Components[index] = new MultiComponentList(FileName, type);
+				return m_Components[index] = new MultiComponentList(FileName, type, this);
 			}
 			catch
 			{
-				return m_Components[index] = MultiComponentList.Empty;
+				return m_Components[index] = MultiComponentList.Empty(this, _art, _tileData);
 			}
 		}
 
-		public static MultiComponentList LoadFromFile(string FileName, ImportType type)
+		public  MultiComponentList LoadFromFile(string FileName, ImportType type)
 		{
 			try
 			{
-				return new MultiComponentList(FileName, type);
+				return new MultiComponentList(FileName, type, this);
 			}
 			catch
 			{
-				return MultiComponentList.Empty;
+				return MultiComponentList.Empty(this, _art, _tileData);
 			}
 		}
 
-		public static List<MultiComponentList> LoadFromCache(string FileName)
+		public  List<MultiComponentList> LoadFromCache(string FileName)
 		{
 			var multilist = new List<MultiComponentList>();
 			using (var ip = new StreamReader(FileName))
@@ -138,14 +153,14 @@ namespace Ultima
 					if (split.Length == 7)
 					{
 						int count = Convert.ToInt32(split[2]);
-						multilist.Add(new MultiComponentList(ip, count));
+						multilist.Add(new MultiComponentList(ip, count, this));
 					}
 				}
 			}
 			return multilist;
 		}
 
-		public static string ReadUOAString(BinaryReader bin)
+		public  string ReadUOAString(BinaryReader bin)
 		{
 			byte flag = bin.ReadByte();
 
@@ -159,7 +174,7 @@ namespace Ultima
 			}
 		}
 
-		public static List<Object[]> LoadFromDesigner(string FileName)
+		public  List<Object[]> LoadFromDesigner(string FileName)
 		{
 			var multilist = new List<Object[]>();
 			string root = Path.GetFileNameWithoutExtension(FileName);
@@ -229,7 +244,7 @@ namespace Ultima
 									tempitem.m_Unk1 = 0;
 									arr.Add(tempitem);
 								}
-								data[1] = new MultiComponentList(arr);
+								data[1] = new MultiComponentList(arr, this);
 								break;
 						}
 						multilist.Add(data);
@@ -239,7 +254,7 @@ namespace Ultima
 			}
 		}
 
-		public static List<MultiComponentList.MultiTileEntry> RebuildTiles(MultiComponentList.MultiTileEntry[] tiles)
+		public  List<MultiComponentList.MultiTileEntry> RebuildTiles(MultiComponentList.MultiTileEntry[] tiles)
 		{
 			var newtiles = new List<MultiComponentList.MultiTileEntry>();
 			newtiles.AddRange(tiles);
@@ -323,9 +338,9 @@ namespace Ultima
 			return newtiles;
 		}
 
-		public static void Save(string path)
+		public  void Save(string path)
 		{
-			bool isUOAHS = PostHSFormat || Art.IsUOAHS();
+			bool isUOAHS = PostHSFormat || _art.IsUOAHS();
 			string idx = Path.Combine(path, "multi.idx");
 			string mul = Path.Combine(path, "multi.mul");
 			using (
@@ -338,7 +353,7 @@ namespace Ultima
 					{
 						MultiComponentList comp = GetComponents(index);
 
-						if (comp == MultiComponentList.Empty)
+						if (comp == MultiComponentList.Empty(this, _art, _tileData))
 						{
 							binidx.Write(-1); // lookup
 							binidx.Write(-1); // length
@@ -384,10 +399,17 @@ namespace Ultima
 		private int m_Surface;
 		private MTile[][][] m_Tiles;
 		private readonly MultiTileEntry[] m_SortedTiles;
+	    private  Art _art;
+	    private TileData _tileData;
+	    
+	    public static MultiComponentList Empty(Multis multis, Art art, TileData tileData)
+	    {
+	        
+	        return new MultiComponentList(multis, art, tileData);
+	    }
 
-		public static readonly MultiComponentList Empty = new MultiComponentList();
 
-		public Point Min { get { return m_Min; } }
+        public Point Min { get { return m_Min; } }
 		public Point Max { get { return m_Max; } }
 		public Point Center { get { return m_Center; } }
 		public int Width { get { return m_Width; } }
@@ -437,7 +459,7 @@ namespace Ultima
 
 					for (int i = 0; i < tiles.Length; ++i)
 					{
-						Bitmap bmp = Art.GetStatic(tiles[i].ID);
+						Bitmap bmp = _art.Get(tiles[i].ID);
 
 						if (bmp == null)
 						{
@@ -488,7 +510,7 @@ namespace Ultima
 
 					for (int i = 0; i < tiles.Length; ++i)
 					{
-						Bitmap bmp = Art.GetStatic(tiles[i].ID);
+						Bitmap bmp = _art.Get(tiles[i].ID);
 
 						if (bmp == null)
 						{
@@ -522,14 +544,15 @@ namespace Ultima
 			return canvas;
 		}
 
-		public MultiComponentList(BinaryReader reader, int count)
+		public MultiComponentList(BinaryReader reader, int count, Multis multis)
 		{
-			bool useNewMultiFormat = Multis.PostHSFormat || Art.IsUOAHS();
+		    this.multis = multis;
+		    bool useNewMultiFormat = multis.PostHSFormat || _art.IsUOAHS();
 			m_Min = m_Max = Point.Empty;
 			m_SortedTiles = new MultiTileEntry[count];
 			for (int i = 0; i < count; ++i)
 			{
-				m_SortedTiles[i].m_ItemID = Art.GetLegalItemID(reader.ReadUInt16());
+				m_SortedTiles[i].m_ItemID = _art.GetLegalItemID(reader.ReadUInt16());
 				m_SortedTiles[i].m_OffsetX = reader.ReadInt16();
 				m_SortedTiles[i].m_OffsetY = reader.ReadInt16();
 				m_SortedTiles[i].m_OffsetZ = reader.ReadInt16();
@@ -574,9 +597,11 @@ namespace Ultima
 			reader.Close();
 		}
 
-		public MultiComponentList(string FileName, Multis.ImportType Type)
+	    private Multis multis;
+		public MultiComponentList(string FileName, Multis.ImportType Type, Multis multis)
 		{
-			m_Min = m_Max = Point.Empty;
+		    this.multis = multis;
+		    m_Min = m_Max = Point.Empty;
 			int itemcount;
 			switch (Type)
 			{
@@ -779,9 +804,9 @@ namespace Ultima
 								return;
 							}
 							string tmp;
-							tmp = Multis.ReadUOAString(reader); //Name
-							tmp = Multis.ReadUOAString(reader); //Category
-							tmp = Multis.ReadUOAString(reader); //Subsection
+							tmp = multis.ReadUOAString(reader); //Name
+							tmp = multis.ReadUOAString(reader); //Category
+							tmp = multis.ReadUOAString(reader); //Subsection
 							int width = reader.ReadInt32();
 							int height = reader.ReadInt32();
 							int uwidth = reader.ReadInt32();
@@ -982,9 +1007,10 @@ namespace Ultima
 			ConvertList();
 		}
 
-		public MultiComponentList(List<MultiTileEntry> arr)
+		public MultiComponentList(List<MultiTileEntry> arr, Multis multis)
 		{
-			m_Min = m_Max = Point.Empty;
+		    this.multis = multis;
+		    m_Min = m_Max = Point.Empty;
 			int itemcount = arr.Count;
 			m_SortedTiles = new MultiTileEntry[itemcount];
 			m_Min.X = 10000;
@@ -1050,9 +1076,10 @@ namespace Ultima
 			ConvertList();
 		}
 
-		public MultiComponentList(StreamReader stream, int count)
+		public MultiComponentList(StreamReader stream, int count, Multis multis)
 		{
-			string line;
+		    this.multis = multis;
+		    string line;
 			int itemcount = 0;
 			m_Min = m_Max = Point.Empty;
 			m_SortedTiles = new MultiTileEntry[count];
@@ -1157,7 +1184,7 @@ namespace Ultima
 					(m_SortedTiles[i].m_ItemID),
 					(sbyte)m_SortedTiles[i].m_OffsetZ,
 					(sbyte)m_SortedTiles[i].m_Flags,
-					m_SortedTiles[i].m_Unk1);
+					m_SortedTiles[i].m_Unk1, _tileData.ItemTable[m_SortedTiles[i].m_ItemID], new ItemData(), _art.GetLegalItemID(m_SortedTiles[i].m_ItemID));
 			}
 
 			m_Surface = 0;
@@ -1183,9 +1210,10 @@ namespace Ultima
 			}
 		}
 
-		public MultiComponentList(MTileList[][] newtiles, int count, int width, int height)
+		public MultiComponentList(MTileList[][] newtiles, int count, int width, int height, Multis multis)
 		{
-			m_Min = m_Max = Point.Empty;
+		    this.multis = multis;
+		    m_Min = m_Max = Point.Empty;
 			m_SortedTiles = new MultiTileEntry[count];
 			m_Center = new Point((int)(Math.Round((width / 2.0))) - 1, (int)(Math.Round((height / 2.0))) - 1);
 			if (m_Center.X < 0)
@@ -1240,12 +1268,15 @@ namespace Ultima
 			ConvertList();
 		}
 
-		private MultiComponentList()
+		private MultiComponentList(Multis multis, Art art, TileData tileData)
 		{
-			m_Tiles = new MTile[0][][];
+            _art = art;
+            _tileData = tileData;
+            this.multis = multis;
+		    m_Tiles = new MTile[0][][];
 		}
 
-		public void ExportToTextFile(string FileName)
+	    public void ExportToTextFile(string FileName)
 		{
 			using (
 				var Tex = new StreamWriter(

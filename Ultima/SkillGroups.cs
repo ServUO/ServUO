@@ -19,18 +19,20 @@ namespace Ultima
 
 	public sealed class SkillGroups
 	{
-		public static List<SkillGroup> List { get; private set; }
-		public static List<int> SkillList { get; private set; }
-		private static bool unicode;
+	    private readonly Files _Files;
+		public  List<SkillGroup> List { get; private set; }
+		public  List<int> SkillList { get; private set; }
+		private  bool unicode;
 
-		static SkillGroups()
-		{
-			Initialize();
-		}
+		 SkillGroups(Files files)
+		 {
+		     _Files = files;
+		     Initialize();
+		 }
 
-		public static void Initialize()
+	    public  void Initialize()
 		{
-			string path = Files.GetFilePath("skillgrp.mul");
+			string path = _Files.GetFilePath("skillgrp.mul");
 
 			List = new List<SkillGroup>();
 			SkillList = new List<int>();
@@ -89,7 +91,7 @@ namespace Ultima
 			}
 		}
 
-		public static void Save(string path)
+		public  void Save(string path)
 		{
 			string mul = Path.Combine(path, "skillgrp.mul");
 			using (var fs = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))

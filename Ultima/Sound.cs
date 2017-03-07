@@ -22,32 +22,42 @@ namespace Ultima
 		}
 	};
 
-	public static class Sounds
+	public  class Sounds
 	{
-		private static Dictionary<int, int> m_Translations;
-		private static FileIndex m_FileIndex;
-		private static UOSound[] m_Cache;
-		private static bool[] m_Removed;
+      
+        private Files _Files;
+		private  Dictionary<int, int> m_Translations;
+		private  FileIndex m_FileIndex;
+		private  UOSound[] m_Cache;
+		private  bool[] m_Removed;
 
-		static Sounds()
+        UltimaOnlineReaderFactory Factory { get; }
+        public Sounds(UltimaOnlineReaderFactory factory)
+            : this(factory.Verdata, factory.Files)
+        {
+            Factory = factory;
+        }
+
+        public Sounds(Verdata verdata, Files files)
 		{
-			Initialize();
+		    _Files = files;
+		    Initialize(verdata);
 		}
 
-		/// <summary>
+	    /// <summary>
 		///     Reads Sounds and def
 		/// </summary>
-		public static void Initialize()
+		public  void Initialize(Verdata verdata)
 		{
 			m_Cache = new UOSound[0xFFF];
 			m_Removed = new bool[0xFFF];
-			m_FileIndex = new FileIndex("soundidx.mul", "sound.mul", "soundLegacyMUL.uop", 0xFFF, 8, ".dat", -1, false);
+			m_FileIndex = new FileIndex("soundidx.mul", "sound.mul", "soundLegacyMUL.uop", 0xFFF, 8, ".dat", -1, false, verdata, _Files);
 			var reg = new Regex(@"(\d{1,3}) \x7B(\d{1,3})\x7D (\d{1,3})", RegexOptions.Compiled);
 
 			m_Translations = new Dictionary<int, int>();
 
 			string line;
-			string path = Files.GetFilePath("Sound.def");
+			string path = _Files.GetFilePath("Sound.def");
 			if (path == null)
 			{
 				return;
@@ -74,7 +84,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="soundID"></param>
 		/// <returns></returns>
-		public static UOSound GetSound(int soundID)
+		public  UOSound GetSound(int soundID)
 		{
 			bool translated;
 			return GetSound(soundID, out translated);
@@ -86,7 +96,7 @@ namespace Ultima
 		/// <param name="soundID"></param>
 		/// <param name="translated"></param>
 		/// <returns></returns>
-		public static UOSound GetSound(int soundID, out bool translated)
+		public  UOSound GetSound(int soundID, out bool translated)
 		{
 			translated = false;
 			if (soundID < 0)
@@ -141,7 +151,7 @@ namespace Ultima
 			}
 			var sound = new UOSound(str, soundID, resultBuffer);
 
-			if (Files.CacheData)
+			if (_Files.CacheData)
 			{
 				if (!translated) // no .def definition
 				{
@@ -152,7 +162,7 @@ namespace Ultima
 			return sound;
 		}
 
-		private static int[] WaveHeader(int length)
+		private  int[] WaveHeader(int length)
 		{
 			/* ====================
 			 * = WAVE File layout =
@@ -182,7 +192,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="soundID"></param>
 		/// <returns></returns>
-		public static bool IsValidSound(int soundID, out string name)
+		public  bool IsValidSound(int soundID, out string name)
 		{
 			name = "";
 			if (soundID < 0)
@@ -223,7 +233,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="soundID"></param>
 		/// <returns></returns>
-		public static double GetSoundLength(int soundID)
+		public  double GetSoundLength(int soundID)
 		{
 			if (soundID < 0)
 			{
@@ -263,7 +273,7 @@ namespace Ultima
 			return len;
 		}
 
-		public static void Add(int id, string name, string file)
+		public  void Add(int id, string name, string file)
 		{
 			using (var wav = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
@@ -276,13 +286,13 @@ namespace Ultima
 			}
 		}
 
-		public static void Remove(int id)
+		public  void Remove(int id)
 		{
 			m_Removed[id] = true;
 			m_Cache[id] = null;
 		}
 
-		public static void Save(string path)
+		public  void Save(string path)
 		{
 			string idx = Path.Combine(path, "soundidx.mul");
 			string mul = Path.Combine(path, "sound.mul");
@@ -348,7 +358,7 @@ namespace Ultima
 			}
 		}
 
-		public static void SaveSoundListToCSV(string FileName)
+		public  void SaveSoundListToCSV(string FileName)
 		{
 			using (
 				var Tex = new StreamWriter(

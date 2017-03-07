@@ -1,0 +1,7 @@
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests\bin\Debug\UltimaTests.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests\bin\Debug\UltimaTests.pdb
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests\bin\Debug\Ultima.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests\obj\Debug\UltimaTests.csprojResolveAssemblyReference.cache
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests\obj\Debug\UltimaTests.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests\obj\Debug\UltimaTests.pdb

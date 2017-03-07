@@ -231,6 +231,7 @@
     <Compile Include="TileMatrixPatch.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UltimaOnlineReaderFactory.cs" />
     <Compile Include="UnicodeFont.cs" />
     <Compile Include="Verdata.cs">
       <SubType>Code</SubType>

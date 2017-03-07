@@ -8,28 +8,39 @@ namespace Ultima
 {
 	public sealed class Light
 	{
-		private static FileIndex m_FileIndex = new FileIndex("lightidx.mul", "light.mul", 100, -1);
-		private static Bitmap[] m_Cache = new Bitmap[100];
-		private static bool[] m_Removed = new bool[100];
-		private static byte[] m_StreamBuffer;
 
-		/// <summary>
-		///     ReReads light.mul
-		/// </summary>
-		public static void Reload()
-		{
-			m_FileIndex = new FileIndex("lightidx.mul", "light.mul", 100, -1);
-			m_Cache = new Bitmap[100];
-			m_Removed = new bool[100];
-		}
+	    private Files _files;
+
+        UltimaOnlineReaderFactory Factory { get; }
+        public Light(UltimaOnlineReaderFactory factory)
+            :this(factory.Verdata, factory.Files)
+        {
+            Factory = factory;
+        }
+        /// <summary>
+        /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
+        /// </summary>
+        public Light(Verdata verdata, Files files)
+	    {
+	        _files = files;
+            m_FileIndex = new FileIndex("lightidx.mul", "light.mul", 100, -1, verdata, files);
+            m_Cache = new Bitmap[100];
+            m_Removed = new bool[100];
+        }
+
+	    private  FileIndex m_FileIndex;
+		private  Bitmap[] m_Cache = new Bitmap[100];
+		private  bool[] m_Removed = new bool[100];
+		private  byte[] m_StreamBuffer;
+
 
 		/// <summary>
 		///     Gets count of definied lights
 		/// </summary>
 		/// <returns></returns>
-		public static int GetCount()
+		public  int GetCount()
 		{
-			string idxPath = Files.GetFilePath("lightidx.mul");
+			string idxPath = _files.GetFilePath("lightidx.mul");
 			if (idxPath == null)
 			{
 				return 0;
@@ -45,7 +56,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static bool TestLight(int index)
+		public  bool TestLight(int index)
 		{
 			if (m_Removed[index])
 			{
@@ -80,7 +91,7 @@ namespace Ultima
 		///     Removes Light <see cref="m_Removed" />
 		/// </summary>
 		/// <param name="index"></param>
-		public static void Remove(int index)
+		public  void Remove(int index)
 		{
 			m_Removed[index] = true;
 		}
@@ -90,13 +101,13 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="bmp"></param>
-		public static void Replace(int index, Bitmap bmp)
+		public  void Replace(int index, Bitmap bmp)
 		{
 			m_Cache[index] = bmp;
 			m_Removed[index] = false;
 		}
 
-		public static byte[] GetRawLight(int index, out int width, out int height)
+		public  byte[] GetRawLight(int index, out int width, out int height)
 		{
 			width = 0;
 			height = 0;
@@ -127,7 +138,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static unsafe Bitmap GetLight(int index)
+		public  unsafe Bitmap GetLight(int index)
 		{
 			if (m_Removed[index])
 			{
@@ -182,7 +193,7 @@ namespace Ultima
 
 			bmp.UnlockBits(bd);
 			stream.Close();
-			if (!Files.CacheData)
+			if (!_files.CacheData)
 			{
 				return m_Cache[index] = bmp;
 			}
@@ -192,7 +203,7 @@ namespace Ultima
 			}
 		}
 
-		public static unsafe void Save(string path)
+		public  unsafe void Save(string path)
 		{
 			string idx = Path.Combine(path, "lightidx.mul");
 			string mul = Path.Combine(path, "light.mul");

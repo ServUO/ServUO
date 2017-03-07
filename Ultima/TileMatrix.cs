@@ -13,15 +13,17 @@ namespace Ultima
 		private readonly Tile[][][] m_LandTiles;
 		private bool[][] m_RemovedStaticBlock;
 		private List<StaticTile>[][] m_StaticTiles_ToAdd;
+	    private Art art;
 
 		public static Tile[] InvalidLandBlock { get; private set; }
 		public static HuedTile[][][] EmptyStaticBlock { get; private set; }
+	    private Map _Map;
 
 		private FileStream m_Map;
 		private BinaryReader m_UOPReader;
 		private FileStream m_Statics;
 		private Entry3D[] m_StaticIndex;
-
+	    private readonly Files _files;
 		public Entry3D[] StaticIndex
 		{
 			get
@@ -68,20 +70,23 @@ namespace Ultima
 			}
 		}
 
-		public TileMatrix(int fileIndex, int mapID, int width, int height, string path)
+		public TileMatrix(int fileIndex, int mapID, int width, int height, string path, Map map, Art art, Files files)
 		{
 			Width = width;
 			Height = height;
-			BlockWidth = width >> 3;
+		    _Map = map;
+		    this.art = art;
+		    BlockWidth = width >> 3;
 			BlockHeight = height >> 3;
+		    _files = files;
 
 			if (path == null)
 			{
-				mapPath = Files.GetFilePath("map{0}.mul", fileIndex);
+				mapPath = _files.GetFilePath("map{0}.mul", fileIndex);
 
 				if (String.IsNullOrEmpty(mapPath) || !File.Exists(mapPath))
 				{
-					mapPath = Files.GetFilePath("map{0}LegacyMUL.uop", fileIndex);
+					mapPath = _files.GetFilePath("map{0}LegacyMUL.uop", fileIndex);
 				}
 
 				if (mapPath != null && mapPath.EndsWith(".uop"))
@@ -110,7 +115,7 @@ namespace Ultima
 
 			if (path == null)
 			{
-				indexPath = Files.GetFilePath("staidx{0}.mul", fileIndex);
+				indexPath = _files.GetFilePath("staidx{0}.mul", fileIndex);
 			}
 			else
 			{
@@ -123,7 +128,7 @@ namespace Ultima
 
 			if (path == null)
 			{
-				staticsPath = Files.GetFilePath("statics{0}.mul", fileIndex);
+				staticsPath = _files.GetFilePath("statics{0}.mul", fileIndex);
 			}
 			else
 			{
@@ -151,7 +156,7 @@ namespace Ultima
 			m_LandTiles = new Tile[BlockWidth][][];
 			m_StaticTiles = new HuedTile[BlockWidth][][][][];
 
-			Patch = new TileMatrixPatch(this, mapID, path);
+			Patch = new TileMatrixPatch(this, mapID, path, art, _files);
 		}
 
 		public void SetStaticBlock(int x, int y, HuedTile[][][] value)
@@ -193,7 +198,7 @@ namespace Ultima
 				tiles = m_StaticTiles[x][y] = ReadStaticBlock(x, y);
 			}
 
-			if ((Map.UseDiff) && (patch))
+			if ((_Map.UseDiff) && (patch))
 			{
 				if (Patch.StaticBlocksCount > 0)
 				{
@@ -258,7 +263,7 @@ namespace Ultima
 				tiles = m_LandTiles[x][y] = ReadLandBlock(x, y);
 			}
 
-			if ((Map.UseDiff) && (patch))
+			if ((_Map.UseDiff) && (patch))
 			{
 				if (Patch.LandBlocksCount > 0)
 				{
@@ -381,7 +386,7 @@ namespace Ultima
 						{
 							var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + i * sizeof(StaticTile));
 							var cur = (StaticTile)Marshal.PtrToStructure(ptr, typeof(StaticTile));
-							lists[cur.m_X & 0x7][cur.m_Y & 0x7].Add(Art.GetLegalItemID(cur.m_ID), cur.m_Hue, cur.m_Z);
+							lists[cur.m_X & 0x7][cur.m_Y & 0x7].Add(art.GetLegalItemID(cur.m_ID), cur.m_Hue, cur.m_Z);
 						}
 
 						var tiles = new HuedTile[8][][];
@@ -731,57 +736,65 @@ namespace Ultima
 		internal sbyte m_Flag;
 		internal int m_Unk1;
 		internal int m_Solver;
+	    private ItemData ourItemData;
+	    private ItemData theirItemData;
 
-		public ushort ID { get { return m_ID; } }
+        public ushort ID { get { return m_ID; } }
 		public int Z { get { return m_Z; } set { m_Z = (sbyte)value; } }
 
 		public int Flag { get { return m_Flag; } set { m_Flag = (sbyte)value; } }
 		public int Unk1 { get { return m_Unk1; } set { m_Unk1 = value; } }
 		public int Solver { get { return m_Solver; } set { m_Solver = value; } }
 
-		public MTile(ushort id, sbyte z)
+		public MTile(ushort id, sbyte z, ItemData ourItemData, ItemData theirItemData, ushort artGetLegalItemID)
 		{
-			m_ID = Art.GetLegalItemID(id);
+			m_ID = artGetLegalItemID;
 			m_Z = z;
-			m_Flag = 1;
+		    this.ourItemData = ourItemData;
+		    this.theirItemData = theirItemData;
+		    m_Flag = 1;
 			m_Solver = 0;
 			m_Unk1 = 0;
 		}
 
-		public MTile(ushort id, sbyte z, sbyte flag)
+		public MTile(ushort id, sbyte z, sbyte flag, ItemData ourItemData, ItemData theirItemData, ushort artGetLegalItemID)
 		{
-			m_ID = Art.GetLegalItemID(id);
+			m_ID = artGetLegalItemID;
 			m_Z = z;
 			m_Flag = flag;
-			m_Solver = 0;
+		    this.ourItemData = ourItemData;
+		    this.theirItemData = theirItemData;
+		    m_Solver = 0;
 			m_Unk1 = 0;
 		}
 
-		public MTile(ushort id, sbyte z, sbyte flag, int unk1)
+		public MTile(ushort id, sbyte z, sbyte flag, int unk1, ItemData ourItemData, ItemData theirItemData, ushort artGetLegalItemID)
 		{
-			m_ID = Art.GetLegalItemID(id);
+			m_ID = artGetLegalItemID;
 			m_Z = z;
 			m_Flag = flag;
 			m_Solver = 0;
 			m_Unk1 = unk1;
+		    this.ourItemData = ourItemData;
+		    this.theirItemData = theirItemData;
 		}
 
-		public void Set(ushort id, sbyte z)
+		public void Set(ushort id, sbyte z, ushort artGetLegalItemID)
 		{
-			m_ID = Art.GetLegalItemID(id);
+			m_ID = artGetLegalItemID;
 			m_Z = z;
 		}
 
-		public void Set(ushort id, sbyte z, sbyte flag)
+		public void Set(ushort id, sbyte z, sbyte flag, ushort artGetLegalItemID)
 		{
-			m_ID = Art.GetLegalItemID(id);
+			m_ID = artGetLegalItemID;
 			m_Z = z;
 			m_Flag = flag;
 		}
 
-		public void Set(ushort id, sbyte z, sbyte flag, int unk1)
+		public void Set(ushort id, sbyte z, sbyte flag, int unk1, ushort artGetLegalItemID)
 		{
-			m_ID = Art.GetLegalItemID(id);
+			m_ID = artGetLegalItemID;
 			m_Z = z;
 			m_Flag = flag;
 			m_Unk1 = unk1;
@@ -801,25 +814,24 @@ namespace Ultima
 
 			var a = (MTile)x;
 
-			ItemData ourData = TileData.ItemTable[m_ID];
-			ItemData theirData = TileData.ItemTable[a.ID];
+		
 
 			int ourTreshold = 0;
-			if (ourData.Height > 0)
+			if (ourItemData.Height > 0)
 			{
 				++ourTreshold;
 			}
-			if (!ourData.Background)
+			if (!ourItemData.Background)
 			{
 				++ourTreshold;
 			}
 			int ourZ = Z;
 			int theirTreshold = 0;
-			if (theirData.Height > 0)
+			if (theirItemData.Height > 0)
 			{
 				++theirTreshold;
 			}
-			if (!theirData.Background)
+			if (!theirItemData.Background)
 			{
 				++theirTreshold;
 			}
@@ -845,7 +857,6 @@ namespace Ultima
 	{
 		internal ushort m_ID;
 		internal sbyte m_Z;
-
 		public ushort ID { get { return m_ID; } }
 		public int Z { get { return m_Z; } set { m_Z = (sbyte)value; } }
 
@@ -857,7 +868,7 @@ namespace Ultima
 
 		public Tile(ushort id, sbyte z, sbyte flag)
 		{
-			m_ID = id;
+            m_ID = id;
 			m_Z = z;
 		}
 
@@ -896,26 +907,23 @@ namespace Ultima
 				return -1;
 			}
 
-			ItemData ourData = TileData.ItemTable[m_ID];
-			ItemData theirData = TileData.ItemTable[a.m_ID];
+			//if (ourData.Height > theirData.Height)
+			//{
+			//	return 1;
+			//}
+			//else if (theirData.Height > ourData.Height)
+			//{
+			//	return -1;
+			//}
 
-			if (ourData.Height > theirData.Height)
-			{
-				return 1;
-			}
-			else if (theirData.Height > ourData.Height)
-			{
-				return -1;
-			}
-
-			if (ourData.Background && !theirData.Background)
-			{
-				return -1;
-			}
-			else if (theirData.Background && !ourData.Background)
-			{
-				return 1;
-			}
+			//if (ourData.Background && !theirData.Background)
+			//{
+			//	return -1;
+			//}
+			//else if (theirData.Background && !ourData.Background)
+			//{
+			//	return 1;
+			//}
 
 			return 0;
 		}

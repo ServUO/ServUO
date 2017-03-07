@@ -7,23 +7,25 @@ namespace Ultima
 {
 	public sealed class Animdata
 	{
-		private static int[] m_Header;
-		private static byte[] m_Unknown;
+		private  int[] m_Header;
+		private  byte[] m_Unknown;
+	    private Files _Files;
 
-		public static Hashtable AnimData { get; set; }
+		public  Hashtable AnimData { get; set; }
 
-		static Animdata()
+		public Animdata(Files files)
 		{
-			Initialize();
+		    _Files = files;
+		    Initialize();
 		}
 
-		/// <summary>
+	    /// <summary>
 		///     Reads animdata.mul and fills <see cref="AnimData" />
 		/// </summary>
-		public static void Initialize()
+		private  void Initialize()
 		{
 			AnimData = new Hashtable();
-			string path = Files.GetFilePath("animdata.mul");
+			string path = _Files.GetFilePath("animdata.mul");
 			if (path != null)
 			{
 				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -82,7 +84,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public static Data GetAnimData(int id)
+		public  Data GetAnimData(int id)
 		{
 			if (AnimData.Contains(id))
 			{
@@ -94,7 +96,7 @@ namespace Ultima
 			}
 		}
 
-		public static void Save(string path)
+		public  void Save(string path)
 		{
 			string FileName = Path.Combine(path, "animdata.mul");
 			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))

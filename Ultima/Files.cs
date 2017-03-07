@@ -11,49 +11,47 @@ namespace Ultima
 {
 	public sealed class Files
 	{
-		public delegate void FileSaveHandler();
+        public UltimaOnlineReaderFactory Factory { get; }
+        public delegate void FileSaveHandler();
 
-		public static event FileSaveHandler FileSaveEvent;
+		public  event FileSaveHandler FileSaveEvent;
 
-		public static void FireFileSaveEvent()
+		public  void FireFileSaveEvent()
 		{
-			if (FileSaveEvent != null)
-			{
-				FileSaveEvent();
-			}
+		    FileSaveEvent?.Invoke();
 		}
 
-		private static bool m_CacheData = true;
-		private static Dictionary<string, string> m_MulPath;
-		private static string m_Directory;
-		private static string m_RootDir;
+		private  bool m_CacheData = true;
+		private  Dictionary<string, string> m_MulPath;
+		private  string m_Directory;
+		private  string m_RootDir;
 
 		/// <summary>
 		///     Should loaded Data be cached
 		/// </summary>
-		public static bool CacheData { get { return m_CacheData; } set { m_CacheData = value; } }
+		public  bool CacheData { get { return m_CacheData; } set { m_CacheData = value; } }
 
 		/// <summary>
 		///     Should a Hashfile be used to speed up loading
 		/// </summary>
-		public static bool UseHashFile { get; set; }
+		public  bool UseHashFile { get; set; }
 
 		/// <summary>
 		///     Contains the path infos
 		/// </summary>
-		public static Dictionary<string, string> MulPath { get { return m_MulPath; } set { m_MulPath = value; } }
+		public  Dictionary<string, string> MulPath { get { return m_MulPath; } set { m_MulPath = value; } }
 
 		/// <summary>
 		///     Gets a list of paths to the Client's data files.
 		/// </summary>
-		public static string Directory { get { return m_Directory; } }
+		public  string Directory { get { return m_Directory; } }
 
 		/// <summary>
 		///     Contains the rootDir (so relative values are possible for <see cref="MulPath" />
 		/// </summary>
-		public static string RootDir { get { return m_RootDir; } set { m_RootDir = value; } }
+		public  string RootDir { get { return m_RootDir; } set { m_RootDir = value; } }
 
-		private static readonly string[] m_Files = new[]
+		private  readonly string[] m_Files = new[]
 		{
 			"anim.idx", "anim.mul", "anim2.idx", "anim2.mul", "anim3.idx", "anim3.mul", "anim4.idx", "anim4.mul", "anim5.idx",
 			"anim5.mul", "animdata.mul", "art.mul", "artidx.mul", "artlegacymul.uop", "body.def", "bodyconv.def", "client.exe",
@@ -67,36 +65,32 @@ namespace Ultima
 			"soundidx.mul", "soundlegacymul.uop", "speech.mul", "stadif0.mul", "stadif1.mul", "stadif2.mul", "stadif3.mul",
 			"stadif4.mul", "stadifi0.mul", "stadifi1.mul", "stadifi2.mul", "stadifi3.mul", "stadifi4.mul", "stadifl0.mul",
 			"stadifl1.mul", "stadifl2.mul", "stadifl3.mul", "stadifl4.mul", "staidx0.mul", "staidx1.mul", "staidx2.mul",
-			"staidx3.mul", "staidx4.mul", "staidx5.mul", "statics0.mul", "statics1.mul", "statics2.mul", "statics3.mul",
-			"statics4.mul", "statics5.mul", "texidx.mul", "texmaps.mul", "tiledata.mul", "unifont.mul", "unifont1.mul",
+			"staidx3.mul", "staidx4.mul", "staidx5.mul", "s0.mul", "s1.mul", "s2.mul", "s3.mul",
+			"s4.mul", "s5.mul", "texidx.mul", "texmaps.mul", "tiledata.mul", "unifont.mul", "unifont1.mul",
 			"unifont2.mul", "unifont3.mul", "unifont4.mul", "unifont5.mul", "unifont6.mul", "unifont7.mul", "unifont8.mul",
 			"unifont9.mul", "unifont10.mul", "unifont11.mul", "unifont12.mul", "uotd.exe", "verdata.mul"
 		};
 
-		static Files()
+        
+
+		public Files(UltimaOnlineReaderFactory factory ,String folder)
 		{
-			m_Directory = LoadDirectory();
+		    Factory = factory;
+		    m_Directory = folder;
 			LoadMulPath();
 		}
 
-		/// <summary>
-		///     ReReads Registry Client dir
-		/// </summary>
-		public static void ReLoadDirectory()
-		{
-			m_Directory = LoadDirectory();
-		}
 
 		/// <summary>
 		///     Fills <see cref="MulPath" /> with <see cref="Files.Directory" />
 		/// </summary>
-		public static void LoadMulPath()
+		public  void LoadMulPath()
 		{
 			m_MulPath = new Dictionary<string, string>();
 			m_RootDir = Directory;
 			if (m_RootDir == null)
 			{
-				m_RootDir = "";
+				m_RootDir = string.Empty;
 			}
 			foreach (string file in m_Files)
 			{
@@ -107,7 +101,7 @@ namespace Ultima
 				}
 				else
 				{
-					m_MulPath[file] = "";
+					m_MulPath[file] = string.Empty;
 				}
 			}
 		}
@@ -116,7 +110,7 @@ namespace Ultima
 		///     ReSets <see cref="MulPath" /> with given path
 		/// </summary>
 		/// <param name="path"></param>
-		public static void SetMulPath(string path)
+		public  void SetMulPath(string path)
 		{
 			m_RootDir = path;
 			foreach (string file in m_Files)
@@ -155,7 +149,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="path"></param>
 		/// <param name="key"></param>
-		public static void SetMulPath(string path, string key)
+		public  void SetMulPath(string path, string key)
 		{
 			MulPath[key] = path;
 		}
@@ -166,7 +160,7 @@ namespace Ultima
 		/// <returns>
 		///     The absolute path to <paramref name="file" /> -or- <c>null</c> if <paramref name="file" /> was not found.
 		/// </returns>
-		public static string GetFilePath(string file)
+		public  string GetFilePath(string file)
 		{
 			if (MulPath.Count > 0)
 			{
@@ -192,12 +186,12 @@ namespace Ultima
 			return null;
 		}
 
-		internal static string GetFilePath(string format, params object[] args)
+		internal  string GetFilePath(string format, params object[] args)
 		{
 			return GetFilePath(String.Format(format, args));
 		}
 
-		private static readonly string[] knownRegkeys = new[]
+		private  readonly string[] knownRegkeys = new[]
 		{
 			@"Electronic Arts\EA Games\Ultima Online Classic", @"Electronic Arts\EA Games\Ultima Online Stygian Abyss Classic",
 			@"Origin Worlds Online\Ultima Online\KR Legacy Beta", @"Origin Worlds Online\Ultima Online Samurai Empire\3d\1.0",
@@ -211,10 +205,9 @@ namespace Ultima
 			@"Origin Worlds Online\Ultima Online\1.0", @"Origin Worlds Online\Ultima Online Third Dawn\1.0",
 		};
 
-		private static readonly string[] knownRegPathkeys = new[] {"ExePath", "Install Dir", "InstallDir"};
+		private  readonly string[] knownRegPathkeys = new[] {"ExePath", "Install Dir", "InstallDir"};
 
-		public static string LoadDirectory()
-		{
+		private  string LoadDirectory()		{
 			string dir = null;
 			for (int i = knownRegkeys.Length - 1; i >= 0; i--)
 			{
@@ -238,7 +231,7 @@ namespace Ultima
 			return dir;
 		}
 
-		private static string GetPath(string regkey)
+		private  string GetPath(string regkey)
 		{
 			try
 			{
@@ -306,7 +299,7 @@ namespace Ultima
 		/// <param name="file"></param>
 		/// <param name="hash"></param>
 		/// <returns></returns>
-		public static bool CompareMD5(string file, string hash)
+		public  bool CompareMD5(string file, string hash)
 		{
 			if (file == null)
 			{
@@ -334,7 +327,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="file"></param>
 		/// <returns></returns>
-		public static byte[] GetMD5(string file)
+		public  byte[] GetMD5(string file)
 		{
 			if (file == null)
 			{
@@ -354,7 +347,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="what"></param>
 		/// <returns></returns>
-		public static bool CompareHashFile(string what, string path)
+		public  bool CompareHashFile(string what, string path)
 		{
 			string FileName = Path.Combine(path, String.Format("UOFiddler{0}.hash", what));
 			if (File.Exists(FileName))
@@ -381,30 +374,30 @@ namespace Ultima
 		/// <summary>
 		///     Checks if map1.mul exists and sets <see cref="Ultima.Map" />
 		/// </summary>
-		public static void CheckForNewMapSize()
+		public  void CheckForNewMapSize()
 		{
-			if (GetFilePath("map1.mul") != null)
-			{
-				if (Map.Trammel.Width == 7168)
-				{
-					Map.Trammel = new Map(1, 1, 7168, 4096);
-				}
-				else
-				{
-					Map.Trammel = new Map(1, 1, 6144, 4096);
-				}
-			}
-			else
-			{
-				if (Map.Trammel.Width == 7168)
-				{
-					Map.Trammel = new Map(0, 1, 7168, 4096);
-				}
-				else
-				{
-					Map.Trammel = new Map(0, 1, 6144, 4096);
-				}
-			}
-		}
+            if (GetFilePath("map1.mul") != null)
+            {
+                if (Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel].Width == 7168)
+                {
+                    Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel] = new Map(Factory, 1, 1, 7168, 4096 );
+                }
+                else
+                {
+                    Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel] = new Map(Factory, 1, 1, 6144, 4096);
+                }
+            }
+            else
+            {
+                if (Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel].Width == 7168)
+                {
+                    Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel] = new Map(Factory ,0, 1, 7168, 4096);
+                }
+                else
+                {
+                    Factory.Maps[UltimaOnlineReaderFactory.MapNames.Trammel] = new Map(Factory, 0, 1, 6144, 4096);
+                }
+            }
+        }
 	}
 }

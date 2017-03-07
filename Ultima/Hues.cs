@@ -11,73 +11,78 @@ namespace Ultima
 {
 	public sealed class Hues
 	{
-		private static int[] m_Header;
+		private  int[] m_Header;
 
-		public static Hue[] List { get; private set; }
+		public  Hue[] List { get; private set; }
+	    private readonly Files _Files;
+        UltimaOnlineReaderFactory Factory { get; }
+        public Hues(UltimaOnlineReaderFactory factory)
+            : this(factory.Files)
+        {
+            Factory = factory;
+        }
 
-		static Hues()
-		{
-			Initialize();
-		}
+        /// <summary>
+        ///  Reads hues.mul and fills <see cref="List" />
+        /// </summary>
+        /// <param name="files"></param>
+        public Hues(Files files)
+		 {
+		     this._Files = files;
+            string path = _Files.GetFilePath("hues.mul");
+            int index = 0;
 
-		/// <summary>
-		///     Reads hues.mul and fills <see cref="List" />
-		/// </summary>
-		public static void Initialize()
-		{
-			string path = Files.GetFilePath("hues.mul");
-			int index = 0;
+            List = new Hue[3000];
 
-			List = new Hue[3000];
+            if (path != null)
+            {
+                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    int blockCount = (int)fs.Length / 708;
 
-			if (path != null)
-			{
-				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-				{
-					int blockCount = (int)fs.Length / 708;
+                    if (blockCount > 375)
+                    {
+                        blockCount = 375;
+                    }
+                    m_Header = new int[blockCount];
+                    int structsize = Marshal.SizeOf(typeof(HueDataMul));
+                    var buffer = new byte[blockCount * (4 + 8 * structsize)];
+                    GCHandle gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                    try
+                    {
+                        fs.Read(buffer, 0, buffer.Length);
+                        long currpos = 0;
 
-					if (blockCount > 375)
-					{
-						blockCount = 375;
-					}
-					m_Header = new int[blockCount];
-					int structsize = Marshal.SizeOf(typeof(HueDataMul));
-					var buffer = new byte[blockCount * (4 + 8 * structsize)];
-					GCHandle gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-					try
-					{
-						fs.Read(buffer, 0, buffer.Length);
-						long currpos = 0;
+                        for (int i = 0; i < blockCount; ++i)
+                        {
+                            var ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+                            currpos += 4;
+                            m_Header[i] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
 
-						for (int i = 0; i < blockCount; ++i)
-						{
-							var ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
-							currpos += 4;
-							m_Header[i] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
+                            for (int j = 0; j < 8; ++j, ++index)
+                            {
+                                var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+                                currpos += structsize;
+                                var cur = (HueDataMul)Marshal.PtrToStructure(ptr, typeof(HueDataMul));
+                                List[index] = new Hue(index, cur, this);
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        gc.Free();
+                    }
+                }
+            }
 
-							for (int j = 0; j < 8; ++j, ++index)
-							{
-								var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
-								currpos += structsize;
-								var cur = (HueDataMul)Marshal.PtrToStructure(ptr, typeof(HueDataMul));
-								List[index] = new Hue(index, cur);
-							}
-						}
-					}
-					finally
-					{
-						gc.Free();
-					}
-				}
-			}
+            for (; index < List.Length; ++index)
+            {
+                List[index] = new Hue(index, this);
+            }
+        }
 
-			for (; index < List.Length; ++index)
-			{
-				List[index] = new Hue(index);
-			}
-		}
 
-		public static void Save(string path)
+		public  void Save(string path)
 		{
 			string mul = Path.Combine(path, "hues.mul");
 			using (var fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
@@ -119,7 +124,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static Hue GetHue(int index)
+		public  Hue GetHue(int index)
 		{
 			index &= 0x3FFF;
 
@@ -136,7 +141,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="c"></param>
 		/// <returns></returns>
-		public static short ColorToHue(Color c)
+		public  short ColorToHue(Color c)
 		{
 			ushort origred = c.R;
 			ushort origgreen = c.G;
@@ -166,28 +171,28 @@ namespace Ultima
 		/// </summary>
 		/// <param name="hue"></param>
 		/// <returns></returns>
-		public static Color HueToColor(short hue)
+		public  Color HueToColor(short hue)
 		{
 			const int scale = 255 / 31;
 			return Color.FromArgb((((hue & 0x7c00) >> 10) * scale), (((hue & 0x3e0) >> 5) * scale), ((hue & 0x1f) * scale));
 		}
 
-		public static int HueToColorR(short hue)
+		public  int HueToColorR(short hue)
 		{
 			return (((hue & 0x7c00) >> 10) * (255 / 31));
 		}
 
-		public static int HueToColorG(short hue)
+		public  int HueToColorG(short hue)
 		{
 			return (((hue & 0x3e0) >> 5) * (255 / 31));
 		}
 
-		public static int HueToColorB(short hue)
+		public  int HueToColorB(short hue)
 		{
 			return ((hue & 0x1f) * (255 / 31));
 		}
 
-		public static unsafe void ApplyTo(Bitmap bmp, short[] Colors, bool onlyHueGrayPixels)
+		public  unsafe void ApplyTo(Bitmap bmp, short[] Colors, bool onlyHueGrayPixels)
 		{
 			BitmapData bd = bmp.LockBits(
 				new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format16bppArgb1555);
@@ -254,33 +259,36 @@ namespace Ultima
 
 	public sealed class Hue
 	{
+	    private Hues hues;   
 		public int Index { get; private set; }
 		public short[] Colors { get; set; }
 		public string Name { get; set; }
 		public short TableStart { get; set; }
 		public short TableEnd { get; set; }
 
-		public Hue(int index)
+		public Hue(int index, Hues hues)
 		{
 			Name = "Null";
 			Index = index;
-			Colors = new short[32];
+		    this.hues = hues;
+		    Colors = new short[32];
 			TableStart = 0;
 			TableEnd = 0;
 		}
 
 		public Color GetColor(int index)
 		{
-			return Hues.HueToColor(Colors[index]);
+			return hues.HueToColor(Colors[index]);
 		}
 
-		private static readonly byte[] m_StringBuffer = new byte[20];
-		private static byte[] m_Buffer = new byte[88];
+		private  readonly byte[] m_StringBuffer = new byte[20];
+		private  byte[] m_Buffer = new byte[88];
 
-		public Hue(int index, BinaryReader bin)
+		public Hue(int index, BinaryReader bin, Hues hues)
 		{
 			Index = index;
-			Colors = new short[32];
+		    this.hues = hues;
+		    Colors = new short[32];
 
 			m_Buffer = bin.ReadBytes(88);
 			unsafe
@@ -306,10 +314,11 @@ namespace Ultima
 			}
 		}
 
-		public Hue(int index, HueDataMul mulstruct)
+		public Hue(int index, HueDataMul mulstruct, Hues hues)
 		{
 			Index = index;
-			Colors = new short[32];
+		    this.hues = hues;
+		    Colors = new short[32];
 			for (int i = 0; i < 32; ++i)
 			{
 				Colors[i] = (short)(mulstruct.colors[i] | 0x8000);

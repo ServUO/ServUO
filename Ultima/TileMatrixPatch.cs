@@ -13,12 +13,13 @@ namespace Ultima
 
 		public Tile[][][] LandBlocks { get; private set; }
 		public HuedTile[][][][][] StaticBlocks { get; private set; }
-
+	    readonly Art _Art;
 		private readonly int BlockWidth;
 		private readonly int BlockHeight;
 
 		private static byte[] m_Buffer;
 		private static StaticTile[] m_TileBuffer = new StaticTile[128];
+	    private Files _files;
 
 		public bool IsLandBlockPatched(int x, int y)
 		{
@@ -90,17 +91,18 @@ namespace Ultima
 			return GetStaticBlock(x >> 3, y >> 3)[x & 0x7][y & 0x7];
 		}
 
-		public TileMatrixPatch(TileMatrix matrix, int index, string path)
+		public TileMatrixPatch(TileMatrix matrix, int index, string path, Art art, Files _files)
 		{
-			BlockWidth = matrix.BlockWidth;
+		    this._Art = art;
+		    BlockWidth = matrix.BlockWidth;
 			BlockHeight = matrix.BlockWidth;
 
 			LandBlocksCount = StaticBlocksCount = 0;
 			string mapDataPath, mapIndexPath;
 			if (path == null)
 			{
-				mapDataPath = Files.GetFilePath("mapdif{0}.mul", index);
-				mapIndexPath = Files.GetFilePath("mapdifl{0}.mul", index);
+				mapDataPath = _files.GetFilePath("mapdif{0}.mul", index);
+				mapIndexPath = _files.GetFilePath("mapdifl{0}.mul", index);
 			}
 			else
 			{
@@ -125,9 +127,9 @@ namespace Ultima
 			string staDataPath, staIndexPath, staLookupPath;
 			if (path == null)
 			{
-				staDataPath = Files.GetFilePath("stadif{0}.mul", index);
-				staIndexPath = Files.GetFilePath("stadifl{0}.mul", index);
-				staLookupPath = Files.GetFilePath("stadifi{0}.mul", index);
+				staDataPath = _files.GetFilePath("stadif{0}.mul", index);
+				staIndexPath = _files.GetFilePath("stadifl{0}.mul", index);
+				staLookupPath = _files.GetFilePath("stadifi{0}.mul", index);
 			}
 			else
 			{
@@ -272,7 +274,7 @@ namespace Ultima
 							for (int j = 0; j < tileCount; ++j)
 							{
 								StaticTile cur = staTiles[j];
-								lists[cur.m_X & 0x7][cur.m_Y & 0x7].Add(Art.GetLegalItemID(cur.m_ID), cur.m_Hue, cur.m_Z);
+								lists[cur.m_X & 0x7][cur.m_Y & 0x7].Add(_Art.GetLegalItemID(cur.m_ID), cur.m_Hue, cur.m_Z);
 							}
 
 							var tiles = new HuedTile[8][][];

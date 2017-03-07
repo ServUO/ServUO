@@ -10,20 +10,29 @@ namespace Ultima
 {
 	public sealed class Gumps
 	{
-		private static FileIndex m_FileIndex = new FileIndex(
-			"Gumpidx.mul", "Gumpart.mul", "gumpartLegacyMUL.uop", 0xFFFF, 12, ".tga", -1, true);
+		private  FileIndex m_FileIndex;
 
-		private static Bitmap[] m_Cache;
-		private static bool[] m_Removed;
-		private static readonly Hashtable m_patched = new Hashtable();
+		private  Bitmap[] m_Cache;
+		private  bool[] m_Removed;
+		private  readonly Hashtable m_patched = new Hashtable();
 
-		private static byte[] m_PixelBuffer;
-		private static byte[] m_StreamBuffer;
-		private static byte[] m_ColorTable;
+		private  byte[] m_PixelBuffer;
+		private  byte[] m_StreamBuffer;
+		private  byte[] m_ColorTable;
+	    private  Files _Files;
 
-		static Gumps()
+        public UltimaOnlineReaderFactory Factory { get; }
+
+	    public Gumps(UltimaOnlineReaderFactory factory)
+	        : this(factory.Verdata, factory.Files)
+	    {
+	        Factory = factory;
+	    }
+
+        public Gumps(Verdata verdata, Files files)
 		{
-			if (m_FileIndex != null)
+		    _Files = files;
+		    if (m_FileIndex != null)
 			{
 				m_Cache = new Bitmap[m_FileIndex.Index.Length];
 				m_Removed = new bool[m_FileIndex.Index.Length];
@@ -33,33 +42,28 @@ namespace Ultima
 				m_Cache = new Bitmap[0xFFFF];
 				m_Removed = new bool[0xFFFF];
 			}
-		}
 
-		/// <summary>
-		///     ReReads gumpart
-		/// </summary>
-		public static void Reload()
-		{
-			try
-			{
-				m_FileIndex = new FileIndex("Gumpidx.mul", "Gumpart.mul", "gumpartLegacyMUL.uop", 12, -1, ".tga", -1, true);
-				m_Cache = new Bitmap[m_FileIndex.Index.Length];
-				m_Removed = new bool[m_FileIndex.Index.Length];
-			}
-			catch
-			{
-				m_FileIndex = null;
-				m_Cache = new Bitmap[0xFFFF];
-				m_Removed = new bool[0xFFFF];
-			}
+            try
+            {
+                m_FileIndex = new FileIndex("Gumpidx.mul", "Gumpart.mul", "gumpartLegacyMUL.uop", 12, -1, ".tga", -1, true, verdata, _Files);
+                m_Cache = new Bitmap[m_FileIndex.Index.Length];
+                m_Removed = new bool[m_FileIndex.Index.Length];
+            }
+            catch
+            {
+                m_FileIndex = null;
+                m_Cache = new Bitmap[0xFFFF];
+                m_Removed = new bool[0xFFFF];
+            }
 
-			m_PixelBuffer = null;
-			m_StreamBuffer = null;
-			m_ColorTable = null;
-			m_patched.Clear();
-		}
+            m_PixelBuffer = null;
+            m_StreamBuffer = null;
+            m_ColorTable = null;
+            m_patched.Clear();
+        }
 
-		public static int GetCount()
+
+		public  int GetCount()
 		{
 			return m_Cache.Length;
 		}
@@ -69,7 +73,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="bmp"></param>
-		public static void ReplaceGump(int index, Bitmap bmp)
+		public  void ReplaceGump(int index, Bitmap bmp)
 		{
 			m_Cache[index] = bmp;
 			m_Removed[index] = false;
@@ -83,7 +87,7 @@ namespace Ultima
 		///     Removes Gumpindex <see cref="m_Removed" />
 		/// </summary>
 		/// <param name="index"></param>
-		public static void RemoveGump(int index)
+		public  void RemoveGump(int index)
 		{
 			m_Removed[index] = true;
 		}
@@ -93,7 +97,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static bool IsValidIndex(int index)
+		public  bool IsValidIndex(int index)
 		{
 			if (m_FileIndex == null)
 			{
@@ -133,7 +137,7 @@ namespace Ultima
 			return true;
 		}
 
-		public static byte[] GetRawGump(int index, out int width, out int height)
+		public  byte[] GetRawGump(int index, out int width, out int height)
 		{
 			width = -1;
 			height = -1;
@@ -167,7 +171,7 @@ namespace Ultima
 		/// <param name="hue"></param>
 		/// <param name="onlyHueGrayPixels"></param>
 		/// <returns></returns>
-		public static unsafe Bitmap GetGump(int index, Hue hue, bool onlyHueGrayPixels, out bool patched)
+		public  unsafe Bitmap GetGump(int index, Hue hue, bool onlyHueGrayPixels, out bool patched)
 		{
 			int length, extra;
 			Stream stream = m_FileIndex.Seek(index, out length, out extra, out patched);
@@ -331,7 +335,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static Bitmap GetGump(int index)
+		public  Bitmap GetGump(int index)
 		{
 			bool patched;
 			return GetGump(index, out patched);
@@ -343,7 +347,7 @@ namespace Ultima
 		/// <param name="index"></param>
 		/// <param name="patched"></param>
 		/// <returns></returns>
-		public static unsafe Bitmap GetGump(int index, out bool patched)
+		public  unsafe Bitmap GetGump(int index, out bool patched)
 		{
 			if (m_patched.Contains(index))
 			{
@@ -435,7 +439,7 @@ namespace Ultima
 			}
 
 			bmp.UnlockBits(bd);
-			if (Files.CacheData)
+			if (_Files.CacheData)
 			{
 				return m_Cache[index] = bmp;
 			}
@@ -445,7 +449,7 @@ namespace Ultima
 			}
 		}
 
-		public static unsafe void Save(string path)
+		public  unsafe void Save(string path)
 		{
 			string idx = Path.Combine(path, "Gumpidx.mul");
 			string mul = Path.Combine(path, "Gumpart.mul");

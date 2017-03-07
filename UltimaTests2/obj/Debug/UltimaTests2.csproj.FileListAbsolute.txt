@@ -1,0 +1,6 @@
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests2\bin\Debug\UltimaTests2.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests2\bin\Debug\UltimaTests2.pdb
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests2\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests2\bin\Debug\Ultima.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests2\obj\Debug\UltimaTests2.dll
+C:\Ultima\Server\SERVUO_SERVERS\ServUO\UltimaTests2\obj\Debug\UltimaTests2.pdb

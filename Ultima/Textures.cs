@@ -11,12 +11,28 @@ namespace Ultima
 {
 	public sealed class Textures
 	{
-		private static FileIndex m_FileIndex = new FileIndex("Texidx.mul", "Texmaps.mul", 0x4000, 10);
-		private static Bitmap[] m_Cache = new Bitmap[0x4000];
-		private static bool[] m_Removed = new bool[0x4000];
-		private static readonly Hashtable m_patched = new Hashtable();
+	    private Files _Files;
+        UltimaOnlineReaderFactory Factory { get; }
+        public Textures(UltimaOnlineReaderFactory factory)
+            : this(factory.Verdata, factory.Files)
+        {
+            Factory = factory;
+        }
+        public Textures(Verdata verdata, Files files)
+	    {
+	        this._Files = files;
+	        m_FileIndex = new FileIndex("Texidx.mul", "Texmaps.mul", 0x4000, 10, verdata, _Files);
+            m_Cache = new Bitmap[0x4000];
+            m_Removed = new bool[0x4000];
+            m_patched.Clear();
+        }
 
-		private static byte[] m_StreamBuffer;
+	    private FileIndex m_FileIndex;
+		private Bitmap[] m_Cache = new Bitmap[0x4000];
+		private bool[] m_Removed = new bool[0x4000];
+		private readonly Hashtable m_patched = new Hashtable();
+
+		private byte[] m_StreamBuffer;
 
 		private struct CheckSums
 		{
@@ -26,20 +42,10 @@ namespace Ultima
 			public int index;
 		}
 
-		private static List<CheckSums> checksums;
+		private  List<CheckSums> checksums;
 
-		/// <summary>
-		///     ReReads texmaps
-		/// </summary>
-		public static void Reload()
-		{
-			m_FileIndex = new FileIndex("Texidx.mul", "Texmaps.mul", 0x4000, 10);
-			m_Cache = new Bitmap[0x4000];
-			m_Removed = new bool[0x4000];
-			m_patched.Clear();
-		}
 
-		public static int GetIdxLength()
+		public int GetIdxLength()
 		{
 			return (int)(m_FileIndex.IdxLength / 12);
 		}
@@ -48,7 +54,7 @@ namespace Ultima
 		///     Removes Texture <see cref="m_Removed" />
 		/// </summary>
 		/// <param name="index"></param>
-		public static void Remove(int index)
+		public void Remove(int index)
 		{
 			m_Removed[index] = true;
 		}
@@ -58,7 +64,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="bmp"></param>
-		public static void Replace(int index, Bitmap bmp)
+		public void Replace(int index, Bitmap bmp)
 		{
 			m_Cache[index] = bmp;
 			m_Removed[index] = false;
@@ -73,7 +79,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static bool TestTexture(int index)
+		public bool TestTexture(int index)
 		{
 			int length, extra;
 			bool patched;
@@ -98,7 +104,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static Bitmap GetTexture(int index)
+		public  Bitmap GetTexture(int index)
 		{
 			bool patched;
 			return GetTexture(index, out patched);
@@ -110,7 +116,7 @@ namespace Ultima
 		/// <param name="index"></param>
 		/// <param name="patched"></param>
 		/// <returns></returns>
-		public static unsafe Bitmap GetTexture(int index, out bool patched)
+		public  unsafe Bitmap GetTexture(int index, out bool patched)
 		{
 			if (m_patched.Contains(index))
 			{
@@ -179,7 +185,7 @@ namespace Ultima
 			bmp.UnlockBits(bd);
 
 			stream.Close();
-			if (!Files.CacheData)
+			if (!_Files.CacheData)
 			{
 				return m_Cache[index] = bmp;
 			}
@@ -189,7 +195,7 @@ namespace Ultima
 			}
 		}
 
-		public static unsafe void Save(string path)
+		public  unsafe void Save(string path)
 		{
 			string idx = Path.Combine(path, "texidx.mul");
 			string mul = Path.Combine(path, "texmaps.mul");
@@ -271,7 +277,7 @@ namespace Ultima
 			}
 		}
 
-		private static bool compareSaveImages(byte[] newchecksum, out CheckSums sum)
+		private  bool compareSaveImages(byte[] newchecksum, out CheckSums sum)
 		{
 			sum = new CheckSums();
 			for (int i = 0; i < checksums.Count; ++i)

@@ -147,29 +147,31 @@ namespace Ultima
 		}
 	}
 
-	public static class UnicodeFonts
+	public class UnicodeFonts
 	{
+	    private Files _Files;
 		private static readonly string[] m_files = new[]
 		{
 			"unifont.mul", "unifont1.mul", "unifont2.mul", "unifont3.mul", "unifont4.mul", "unifont5.mul", "unifont6.mul",
 			"unifont7.mul", "unifont8.mul", "unifont9.mul", "unifont10.mul", "unifont11.mul", "unifont12.mul"
 		};
 
-		public static UnicodeFont[] Fonts = new UnicodeFont[13];
+		public UnicodeFont[] Fonts = new UnicodeFont[13];
 
-		static UnicodeFonts()
+		public UnicodeFonts(Files files)
 		{
-			Initialize();
+		    this._Files = files;
+		    Initialize();
 		}
 
-		/// <summary>
+	    /// <summary>
 		///     Reads unifont*.mul
 		/// </summary>
-		public static void Initialize()
+		public  void Initialize()
 		{
 			for (int i = 0; i < m_files.Length; i++)
 			{
-				string filePath = Files.GetFilePath(m_files[i]);
+				string filePath = _Files.GetFilePath(m_files[i]);
 				if (filePath == null)
 				{
 					continue;
@@ -213,7 +215,7 @@ namespace Ultima
 		/// <param name="fontId"></param>
 		/// <param name="text"></param>
 		/// <returns></returns>
-		public static Bitmap WriteText(int fontId, string text)
+		public Bitmap WriteText(int fontId, string text)
 		{
 			var result = new Bitmap(Fonts[fontId].GetWidth(text) + 2, Fonts[fontId].GetHeight(text) + 2);
 
@@ -239,7 +241,7 @@ namespace Ultima
 		/// <param name="path"></param>
 		/// <param name="filetype"></param>
 		/// <returns></returns>
-		public static string Save(string path, int filetype)
+		public string Save(string path, int filetype)
 		{
 			string FileName = Path.Combine(path, m_files[filetype]);
 			using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))

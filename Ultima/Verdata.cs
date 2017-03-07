@@ -5,7 +5,7 @@ using System.IO;
 // FileIDs
 //0 - map0.mul
 //1 - staidx0.mul
-//2 - statics0.mul
+//2 - s0.mul
 //3 - artidx.mul
 //4 - art.mul
 //5 - anim.idx
@@ -27,48 +27,51 @@ namespace Ultima
 {
 	public sealed class Verdata
 	{
-		public static Stream Stream { get; private set; }
-		public static Entry5D[] Patches { get; private set; }
+		public  Stream Stream { get; private set; }
+		public  Entry5D[] Patches { get; private set; }
+        public UltimaOnlineReaderFactory Factory { get; }
 
-		private static string path;
+        private  string path;
 
-		static Verdata()
+		 public Verdata(Files files)
 		{
-			Initialize();
-		}
+            path = files.GetFilePath("verdata.mul");
 
-		public static void Initialize()
-		{
-			path = Files.GetFilePath("verdata.mul");
+            if (path == null)
+            {
+                Patches = new Entry5D[0];
+                Stream = Stream.Null;
+            }
+            else
+            {
+                using (Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    using (var bin = new BinaryReader(Stream))
+                    {
+                        Patches = new Entry5D[bin.ReadInt32()];
 
-			if (path == null)
-			{
-				Patches = new Entry5D[0];
-				Stream = Stream.Null;
-			}
-			else
-			{
-				using (Stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-				{
-					using (var bin = new BinaryReader(Stream))
-					{
-						Patches = new Entry5D[bin.ReadInt32()];
+                        for (int i = 0; i < Patches.Length; ++i)
+                        {
+                            Patches[i].file = bin.ReadInt32();
+                            Patches[i].index = bin.ReadInt32();
+                            Patches[i].lookup = bin.ReadInt32();
+                            Patches[i].length = bin.ReadInt32();
+                            Patches[i].extra = bin.ReadInt32();
+                        }
+                    }
+                }
+                Stream.Close();
+            }
+        }
 
-						for (int i = 0; i < Patches.Length; ++i)
-						{
-							Patches[i].file = bin.ReadInt32();
-							Patches[i].index = bin.ReadInt32();
-							Patches[i].lookup = bin.ReadInt32();
-							Patches[i].length = bin.ReadInt32();
-							Patches[i].extra = bin.ReadInt32();
-						}
-					}
-				}
-				Stream.Close();
-			}
-		}
+	    public Verdata(UltimaOnlineReaderFactory factory)
+            :this(factory.Files)
+	    {
+	        Factory = factory;
+	    }
 
-		public static void Seek(int lookup)
+
+		public  void Seek(int lookup)
 		{
 			if (Stream == null || !Stream.CanRead || !Stream.CanSeek)
 			{

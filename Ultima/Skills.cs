@@ -8,11 +8,45 @@ namespace Ultima
 {
 	public sealed class Skills
 	{
-		private static FileIndex m_FileIndex = new FileIndex("skills.idx", "skills.mul", 16);
+	    private Files _files;
 
-		private static List<SkillInfo> m_SkillEntries;
+        public UltimaOnlineReaderFactory Factory { get; }
+        /// <summary>
+        /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
+        /// </summary>
+        /// 
+        public Skills(UltimaOnlineReaderFactory factory)
+            :this(factory.Verdata, factory.Files)
+        {
+            Factory = factory;
+        }
 
-		public static List<SkillInfo> SkillEntries
+
+        /// <summary>
+        /// Inizializza una nuova istanza della classe <see cref="T:System.Object"/>.
+        /// </summary>
+        /// 
+        public Skills(Verdata verdata, Files files)
+	    {
+	        _files = files;
+	        m_FileIndex = new FileIndex("skills.idx", "skills.mul", 16, verdata, _files);
+            m_SkillEntries = new List<SkillInfo>();
+            for (int i = 0; i < m_FileIndex.Index.Length; ++i)
+            {
+                SkillInfo info = GetSkill(i);
+                if (info == null)
+                {
+                    break;
+                }
+                m_SkillEntries.Add(info);
+            }
+        }
+
+	    private  FileIndex m_FileIndex;
+
+		private  List<SkillInfo> m_SkillEntries;
+
+		public  List<SkillInfo> SkillEntries
 		{
 			get
 			{
@@ -37,19 +71,9 @@ namespace Ultima
 		/// <summary>
 		///     ReReads skills.mul
 		/// </summary>
-		public static void Reload()
+		public  void Reload()
 		{
-			m_FileIndex = new FileIndex("skills.idx", "skills.mul", 16);
-			m_SkillEntries = new List<SkillInfo>();
-			for (int i = 0; i < m_FileIndex.Index.Length; ++i)
-			{
-				SkillInfo info = GetSkill(i);
-				if (info == null)
-				{
-					break;
-				}
-				m_SkillEntries.Add(info);
-			}
+			
 		}
 
 		/// <summary>
@@ -57,7 +81,7 @@ namespace Ultima
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static SkillInfo GetSkill(int index)
+		public  SkillInfo GetSkill(int index)
 		{
 			int length, extra;
 			bool patched;
@@ -80,9 +104,9 @@ namespace Ultima
 			}
 		}
 
-		private static readonly byte[] m_StringBuffer = new byte[1024];
+		private  readonly byte[] m_StringBuffer = new byte[1024];
 
-		private static string ReadNameString(BinaryReader bin, int length)
+		private  string ReadNameString(BinaryReader bin, int length)
 		{
 			bin.Read(m_StringBuffer, 0, length);
 			int count;
@@ -94,7 +118,7 @@ namespace Ultima
 			return Encoding.Default.GetString(m_StringBuffer, 0, count);
 		}
 
-		public static void Save(string path)
+		public  void Save(string path)
 		{
 			string idx = Path.Combine(path, "skills.idx");
 			string mul = Path.Combine(path, "skills.mul");

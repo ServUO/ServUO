@@ -25,7 +25,7 @@ namespace Server
 		private static Dictionary<Serial, Mobile> m_Mobiles;
 		private static Dictionary<Serial, Item> m_Items;
 		private static Dictionary<CustomSerial, SaveData> _Data;
-
+	    public static Ultima.UltimaOnlineReaderFactory Factory;
 		private static bool m_Loading;
 		private static bool m_Loaded;
 
