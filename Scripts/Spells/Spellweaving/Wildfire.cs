@@ -209,6 +209,8 @@ namespace Server.Spells.Spellweaving
                 base.Deserialize(reader);
 
                 int version = reader.ReadInt();
+
+                Delete();
             }
         }
     }

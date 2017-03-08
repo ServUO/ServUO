@@ -1383,7 +1383,7 @@ namespace Server.Mobiles
 			{
 				if (totalCost <= Int32.MaxValue)
 				{
-					if (cont.ConsumeTotal(typeof(Gold), (int)totalCost))
+					if (ConsumeGold(cont, (int)totalCost))
 					{
 						bought = true;
 					}
@@ -1451,7 +1451,7 @@ namespace Server.Mobiles
 					{
 						if (totalCost <= Int32.MaxValue)
 						{
-							if (cont.ConsumeTotal(typeof(Gold), (int)totalCost))
+                            if (ConsumeGold(cont, (int)totalCost))
 							{
 								bought = true;
 								fromBank = true;
@@ -1647,6 +1647,50 @@ namespace Server.Mobiles
 
 			return true;
 		}
+
+        public static bool ConsumeGold(Container cont, int amount)
+        {
+            var items = cont.FindItemsByType(typeof(Gold), true);
+            int total = 0;
+
+            foreach (Item item in items.Where(i => !(i.Parent is LockableContainer) || 
+                                                (!((LockableContainer)i.Parent).Locked && 
+                                                ((LockableContainer)i.Parent).TrapType == TrapType.None)))
+            {
+                total += item.Amount;
+            }
+
+            if (total >= amount)
+            {
+                int need = amount;
+
+                for (int i = 0; i < items.Length; ++i)
+                {
+                    Item item = items[i];
+
+                    if (item.Parent is LockableContainer && (((LockableContainer)item.Parent).Locked || ((LockableContainer)item.Parent).TrapType != TrapType.None))
+                        continue;
+
+                    int theirAmount = item.Amount;
+
+                    if (theirAmount < need)
+                    {
+                        item.Delete();
+                        need -= theirAmount;
+                    }
+                    else
+                    {
+                        item.Consume(need);
+
+                        return true;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
 
 		public virtual bool CheckVendorAccess(Mobile from)
 		{

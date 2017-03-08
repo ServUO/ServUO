@@ -774,11 +774,13 @@ namespace Server.Engines.Quests
                 {
                     Item item = (Item)obj;
 					
-                    if (item.IsChildOf(player.Backpack))
+                    if (item.Parent != null && item.Parent == player.Backpack)
                     {
                         if (!QuestHelper.CheckItem(player, item))
                             player.SendLocalizedMessage(1072355, null, 0x23); // That item does not match any of your quest criteria
                     }
+                    else
+                        player.SendLocalizedMessage(1074769); // An item must be in your backpack (and not in a container within) to be toggled as a quest item.
                 }
                 else
                     player.SendLocalizedMessage(1074769); // An item must be in your backpack (and not in a container within) to be toggled as a quest item.
