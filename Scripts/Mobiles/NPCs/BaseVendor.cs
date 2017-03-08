@@ -1650,7 +1650,7 @@ namespace Server.Mobiles
 						continue;
 					}
 
-					foreach (var gold in FindGold(cont, true))
+					foreach (var gold in FindGold((Container)item, true))
 					{
 						yield return gold;
 					}
