@@ -77,6 +77,7 @@ namespace Server.Engines.MyrmidexInvasion
             CheckPlayers();
             CheckAdvance();
             CheckWaves();
+            BattleRegion.CanSee(this);
         }
 
         public void CheckPlayers()
@@ -420,12 +421,12 @@ namespace Server.Engines.MyrmidexInvasion
                 });
         }
 
-        private Type[] _MyrmidexTypes =
+        public Type[] _MyrmidexTypes =
         {
             typeof(MyrmidexDrone), typeof(MyrmidexWarrior), typeof(TribeWarrior), typeof(TribeShaman)
         };
 
-        private Type[] _TribeTypes =
+        public Type[] _TribeTypes =
         {
             typeof(BritannianInfantry)
         };

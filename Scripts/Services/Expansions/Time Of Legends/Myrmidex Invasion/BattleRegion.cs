@@ -5,6 +5,7 @@ using Server.Items;
 using System.Collections.Generic;
 using Server.Regions;
 using System.Xml;
+using System.Linq;
 
 namespace Server.Engines.MyrmidexInvasion
 {
@@ -61,5 +62,31 @@ namespace Server.Engines.MyrmidexInvasion
 
             return base.OnDamage(m, ref Damage);
         }
-	}
+
+        public void CanSee(BattleSpawner spawner)
+        {
+            List<Mobile> region_mobile = this.GetMobiles();
+            List<Mobile> creature = region_mobile.Where(z => spawner._MyrmidexTypes.Contains(z.GetType()) || spawner._TribeTypes.Contains(z.GetType())).ToList();
+            List<Mobile> player = region_mobile.Where(z => z.AccessLevel == AccessLevel.Player && (z is PlayerMobile || (z is BaseCreature && ((BaseCreature)z).GetMaster() is PlayerMobile))).ToList();
+
+            bool see = false;
+
+            player.ForEach(x =>
+                creature.ForEach(y =>
+                {
+                    if (x.InRange(y.Location, 24))
+                        see = true;
+                })
+            );
+
+            if (!see)
+            {
+                creature.ForEach(x => x.Frozen = true);
+            }
+            else
+            {
+                creature.ForEach(x => x.Frozen = false);
+            }
+        }
+    }
 }
