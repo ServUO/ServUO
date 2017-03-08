@@ -1379,46 +1379,9 @@ namespace Server.Mobiles
 				totalCost -= discount;
 			}
 
-			if (!bought && cont != null)
+			if (!bought && cont != null && ConsumeGold(cont, totalCost))
 			{
-				if (totalCost <= Int32.MaxValue)
-				{
-					if (cont.ConsumeTotal(typeof(Gold), (int)totalCost))
-					{
-						bought = true;
-					}
-				}
-				else
-				{
-					var items = cont.FindItemsByType<Gold>();
-					var total = items.Aggregate(0.0, (c, o) => c + o.Amount);
-
-					if (total >= totalCost)
-					{
-						total = totalCost;
-
-						foreach (var o in items)
-						{
-							if (o.Amount >= total)
-							{
-								o.Consume((int)total);
-								total = 0;
-							}
-							else
-							{
-								total -= o.Amount;
-								o.Delete();
-							}
-
-							if (total <= 0)
-							{
-								break;
-							}
-						}
-
-						bought = true;
-					}
-				}
+				bought = true;
 			}
 
 			//if (totalCost >= 2000)
@@ -1447,48 +1410,10 @@ namespace Server.Mobiles
 				{
 					cont = buyer.FindBankNoCreate();
 
-					if (cont != null)
+					if (cont != null && ConsumeGold(cont, totalCost))
 					{
-						if (totalCost <= Int32.MaxValue)
-						{
-							if (cont.ConsumeTotal(typeof(Gold), (int)totalCost))
-							{
-								bought = true;
-								fromBank = true;
-							}
-						}
-						else
-						{
-							var items = cont.FindItemsByType<Gold>();
-							var total = items.Aggregate(0.0, (c, o) => c + o.Amount);
-
-							if (total >= totalCost)
-							{
-								total = totalCost;
-
-								foreach (var o in items)
-								{
-									if (o.Amount >= total)
-									{
-										o.Consume((int)total);
-										total = 0;
-									}
-									else
-									{
-										total -= o.Amount;
-										o.Delete();
-									}
-
-									if (total <= 0)
-									{
-										break;
-									}
-								}
-
-								bought = true;
-								fromBank = true;
-							}
-						}
+						bought = true;
+						fromBank = true;
 					}
 				}
 			//}
@@ -1646,6 +1571,95 @@ namespace Server.Mobiles
 			}
 
 			return true;
+		}
+
+		public static bool ConsumeGold(Container cont, double amount)
+		{
+			return ConsumeGold(cont, amount, true);
+		}
+
+		public static bool ConsumeGold(Container cont, double amount, bool recurse)
+		{
+			var gold = new Queue<Gold>(FindGold(cont, recurse));
+			var total = gold.Aggregate(0.0, (c, g) => c + g.Amount);
+
+			if (total < amount)
+			{
+				gold.Clear();
+
+				return false;
+			}
+
+			var consume = amount;
+
+			while (consume > 0)
+			{
+				var g = gold.Dequeue();
+
+				if (g.Amount > consume)
+				{
+					g.Consume((int)consume);
+
+					consume = 0;
+				}
+				else
+				{
+					consume -= g.Amount;
+
+					g.Delete();
+				}
+			}
+
+			gold.Clear();
+
+			return true;
+		}
+
+		private static IEnumerable<Gold> FindGold(Container cont, bool recurse)
+		{
+			if (cont == null || cont.Items.Count == 0)
+			{
+				yield break;
+			}
+
+			if (cont is ILockable && ((ILockable)cont).Locked)
+			{
+				yield break;
+			}
+
+			if (cont is TrapableContainer && ((TrapableContainer)cont).TrapType != TrapType.None)
+			{
+				yield break;
+			}
+
+			var count = cont.Items.Count;
+
+			while(--count >= 0)
+			{
+				if (count >= cont.Items.Count)
+				{
+					continue;
+				}
+
+				var item = cont.Items[count];
+
+				if (item is Container)
+				{
+					if (!recurse)
+					{
+						continue;
+					}
+
+					foreach (var gold in FindGold((Container)item, true))
+					{
+						yield return gold;
+					}
+				}
+				else if (item is Gold)
+				{
+					yield return (Gold)item;
+				}
+			}
 		}
 
 		public virtual bool CheckVendorAccess(Mobile from)

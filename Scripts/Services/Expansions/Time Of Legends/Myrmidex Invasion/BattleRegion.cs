@@ -28,15 +28,19 @@ namespace Server.Engines.MyrmidexInvasion
                 Timer.DelayCall<BaseCreature>(TimeSpan.FromSeconds(.25), Spawner.RegisterDeath, (BaseCreature)m);
             }
 
-            if (m.Corpse != null && (m is BritannianInfantry || m is TribeWarrior || m is TribeShaman || m is MyrmidexDrone || m is MyrmidexWarrior))
-            {
-                Mobile killer = m.LastKiller;
-
-                if (killer is BaseCreature && !(((BaseCreature)killer).GetMaster() is PlayerMobile))
+            // the delay ensures the corpse is created after death
+            Timer.DelayCall(() =>
                 {
-                    m.Corpse.Delete();
-                }
-            }
+                    if (m.Corpse != null && (m is BritannianInfantry || m is TribeWarrior || m is TribeShaman || m is TribeChieftan || m is MyrmidexDrone || m is MyrmidexWarrior))
+                    {
+                        Mobile killer = m.LastKiller;
+
+                        if (killer == null || (killer is BaseCreature && !(((BaseCreature)killer).GetMaster() is PlayerMobile)))
+                        {
+                            m.Corpse.Delete();
+                        }
+                    }
+                });
         }
 
         public override void OnExit(Mobile m)
