@@ -77,7 +77,7 @@ namespace Server.Engines.MyrmidexInvasion
             CheckPlayers();
             CheckAdvance();
             CheckWaves();
-            BattleRegion.CanSee(this);
+            BattleRegion.ValidateVisibility(this);
         }
 
         public void CheckPlayers()
@@ -87,10 +87,10 @@ namespace Server.Engines.MyrmidexInvasion
                 if (LastPlayers != DateTime.MinValue)
                     LastPlayers = DateTime.MinValue;
 
-                if (LastMyrmidexWave + TimeSpan.FromSeconds(WaveDuration) < DateTime.UtcNow && MyrmidexTeam.Count < MaxWaves)
+                if (LastMyrmidexWave + TimeSpan.FromSeconds(WaveDuration) < DateTime.UtcNow && MyrmidexTeam.Count < MaxWaves && BattleRegion.WaveStatus)
                     SpawnWave(Allegiance.Myrmidex);
 
-                if (LastTribeWave + TimeSpan.FromSeconds(WaveDuration) < DateTime.UtcNow && TribeTeam.Count < MaxWaves)
+                if (LastTribeWave + TimeSpan.FromSeconds(WaveDuration) < DateTime.UtcNow && TribeTeam.Count < MaxWaves && BattleRegion.WaveStatus)
                     SpawnWave(Allegiance.Tribes);
             }
             else if (LastPlayers == DateTime.MinValue)
@@ -206,7 +206,7 @@ namespace Server.Engines.MyrmidexInvasion
                 MyrmidexTeam[wave] = new List<BaseCreature>();
                 List<BaseCreature> list = MyrmidexTeam[wave];
 
-                for (int i = 0; i < WaveCount; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     BaseCreature bc;
                     Type type = _MyrmidexTypes[Utility.Random(_MyrmidexTypes.Length)];
@@ -244,7 +244,7 @@ namespace Server.Engines.MyrmidexInvasion
                 TribeTeam[wave] = new List<BaseCreature>();
                 List<BaseCreature> list = TribeTeam[wave];
 
-                for (int i = 0; i < WaveCount; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     BaseCreature bc;
                     Type type = _TribeTypes[Utility.Random(_TribeTypes.Length)];
