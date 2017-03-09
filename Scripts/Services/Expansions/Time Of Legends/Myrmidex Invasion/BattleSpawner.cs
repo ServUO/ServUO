@@ -422,12 +422,12 @@ namespace Server.Engines.MyrmidexInvasion
 			});
 		}
 
-		public Type[] _MyrmidexTypes =
+		public static Type[] _MyrmidexTypes =
 		{
 		    typeof(MyrmidexDrone), typeof(MyrmidexWarrior), typeof(TribeWarrior), typeof(TribeShaman)
 		};
 
-		public Type[] _TribeTypes =
+		public static Type[] _TribeTypes =
 		{
 		    typeof(BritannianInfantry)
 		};
