@@ -78,7 +78,10 @@ namespace Server.Engines.MyrmidexInvasion
 		    CheckAdvance();
 		    CheckWaves();
 
-		    BattleRegion.ValidateVisibility(this);
+		    if(BattleRegion != null)
+		    {
+		        BattleRegion.ValidateSpawn();
+		    }
 		}
 
 		public void CheckPlayers()
