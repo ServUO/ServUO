@@ -82,7 +82,7 @@ namespace Server.Engines.MyrmidexInvasion
             if (!see)
             {
                 region_mobile.Where(z => spawner._MyrmidexTypes.Contains(z.GetType()) || spawner._TribeTypes.Contains(z.GetType())).ToList().ForEach(x => x.Frozen = true);
-                WaveStatus = false;
+                WaveStatus = region_mobile.Where(z => spawner._MyrmidexTypes.Contains(z.GetType()) || spawner._TribeTypes.Contains(z.GetType())).Count() == 0;
             }
             else
             {
