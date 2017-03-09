@@ -74,7 +74,7 @@ namespace Server.Engines.MyrmidexInvasion
 			
 			foreach(var m in mobiles.Where(m => !m.Player && (BattleSpawner._MyrmidexTypes.Contains(m.GetType()) || BattleSpawner._TribeTypes.Contains(m.GetType()))))
 			{
-				if(!mobiles.Any(o => o.Player && o.CanSee(m) && i.InRange(m, Core.GlobalMaxUpdateRange)))
+				if(!mobiles.Any(o => o.Player && o.CanSee(m) && o.InRange(m, Core.GlobalMaxUpdateRange)))
 				{
 					m.Frozen = true;
 				}
