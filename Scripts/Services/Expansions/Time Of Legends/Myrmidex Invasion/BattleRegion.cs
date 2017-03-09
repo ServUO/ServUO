@@ -73,7 +73,7 @@ namespace Server.Engines.MyrmidexInvasion
             return base.OnDamage(m, ref Damage);
         }
 
-        public void c(BattleSpawner spawner)
+        public void ValidateVisibility(BattleSpawner spawner)
         {
             region_mobile = this.GetMobiles();
 
