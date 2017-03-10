@@ -2466,7 +2466,7 @@ namespace Server.Items
             }
             #endregion
 
-            AddBlood(attacker, defender, damage);
+            Timer.DelayCall(() => AddBlood(attacker, defender, damage));
 
 			if (Core.ML && this is BaseRanged)
 			{

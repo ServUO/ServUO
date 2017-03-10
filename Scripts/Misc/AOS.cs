@@ -258,8 +258,11 @@ namespace Server
             if (fire > 0 && totalDamage > 0)
                 SwarmContext.CheckRemove(m);
 
-            if(totalDamage > 0)
+            if (totalDamage > 0)
+            {
                 Spells.Mystic.SpellPlagueSpell.OnMobileDamaged(m);
+                Spells.Mystic.SleepSpell.OnDamage(m);
+            }
             #endregion
 
             #region Skill Mastery Spells

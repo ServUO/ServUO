@@ -183,6 +183,8 @@ namespace Server.Spells.Mystic
     {
         private SpellTriggerDef m_SpellDef;
 
+        public override bool Nontransferable { get { return true; } }
+
         [Constructable]
         public SpellStone(SpellTriggerDef spellDef)
             : base(spellDef.SpellId, 0x4079, 1)

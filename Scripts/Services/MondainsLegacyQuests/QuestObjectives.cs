@@ -2,6 +2,7 @@ using System;
 using Server.Mobiles;
 using Server.Regions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Engines.Quests
 { 
@@ -661,6 +662,17 @@ namespace Server.Engines.Quests
                 this.m_Compassion = value;
             }
         }
+
+        public override void OnCompleted()
+        {
+            if (Quest != null && Quest.Owner != null && Quest.Owner.Kills >= 5 && Quest.Owner.DoneQuests.FirstOrDefault(info => info.QuestType == typeof(ResponsibilityQuest)) == null)
+            {
+                QuestHelper.Delay(Quest.Owner, typeof(ResponsibilityQuest), Quest.RestartDelay);
+            }
+
+            base.OnCompleted();
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

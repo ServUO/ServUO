@@ -28,6 +28,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxHealTotal { get { return m_MaxHealTotal; } }
 
+        public override bool Nontransferable { get { return true; } }
+
 		[Constructable]
 		public HealingStone( Mobile caster, int amount, int maxHeal ) : base( 0x4078 )
 		{
