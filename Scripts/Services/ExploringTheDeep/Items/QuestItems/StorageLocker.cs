@@ -119,7 +119,7 @@ namespace Server.Items
             int index = Utility.Random(0, 8);
             int randomkey = Utility.Random(-4, 4);            
             bool loot = false;
-            Item barrel;
+            Item barrel = null;
 
             for (int k = 0; k < 8; k++)
             {
@@ -129,7 +129,7 @@ namespace Server.Items
 
                 if (index == k)
                 {
-                    barrel = new WoodenKeyBarrel(Parts.None);
+                    barrel = new WoodenKeyBarrel(Parts.None);                    
                     this.m_Barrels.Add(barrel);
                 }
                 else
@@ -158,14 +158,22 @@ namespace Server.Items
                         {
                             key = m_Type;
                             loot = true;
+
+                            barrel = new WoodenKeyBarrel(key);
+                            ((WoodenKeyBarrel)barrel).StorageLocker = this;
+                        }
+                        else
+                        {
+                            key = Parts.None;
+                            barrel = new WoodenKeyBarrel(key);
                         }
                     }
                     else
                     {
                         key = Parts.None;
+                        barrel = new WoodenKeyBarrel(key);
                     }
-
-                    barrel = new WoodenKeyBarrel(key);
+                    
                     this.m_Barrels.Add(barrel);                    
 
                     barrel.MoveToWorld(new Point3D(itemx, itemy, z), this.Map);
@@ -249,6 +257,8 @@ namespace Server.Items
             {
                 this.m_RestartTime = reader.ReadDeltaTime();
             }
+
+            this.BeginRestart(TimeSpan.FromSeconds(10.0));
         }
     }
 

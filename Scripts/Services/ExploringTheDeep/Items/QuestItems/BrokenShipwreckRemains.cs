@@ -18,8 +18,14 @@ namespace Server.Items
             this.Hue = 2969;
             this.Weight = 25.0;
             this.Amount = amount;
-            this.LootType = LootType.Blessed;
-            this.QuestItem = true;
+            this.LootType = LootType.Blessed;            
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int Lifespan { get { return 3600; } }
