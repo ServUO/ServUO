@@ -14,7 +14,13 @@ namespace Server.Items
         {
             this.Hue = 5185;
             this.LootType = LootType.Blessed;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
