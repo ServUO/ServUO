@@ -113,7 +113,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); //version
+            writer.Write((int)0); //version
 
             writer.Write((int)this.m_key);
             writer.Write(this.m_StorageLocker);
@@ -124,8 +124,16 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            this.m_key = (Parts)reader.ReadInt();
-            this.m_StorageLocker = (StorageLocker)reader.ReadItem();
+            switch (version)
+            {
+                case 0:
+                    {
+                        this.m_key = (Parts)reader.ReadInt();
+                        this.m_StorageLocker = (StorageLocker)reader.ReadItem();
+
+                        break;
+                    }
+            }            
         }
     }
 
