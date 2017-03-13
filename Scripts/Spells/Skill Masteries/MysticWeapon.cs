@@ -52,7 +52,7 @@ namespace Server.Spells.SkillMasteries
                 Caster.SendLocalizedMessage(1060179); //You must be wielding a weapon to use this ability!
                 return false;
             }
-            else if (weapon.WeaponAttributes.MysticWeapon > 0 || Enhancement.GetValue(Caster, AosWeaponAttribute.MysticWeapon) > 0)
+            else if (weapon.ExtendedWeaponAttributes.MysticWeapon > 0 || Enhancement.GetValue(Caster, ExtendedWeaponAttribute.MysticWeapon) > 0)
             {
                 Caster.SendMessage("That weapon is already under these effects.");
                 return false;
@@ -72,13 +72,13 @@ namespace Server.Spells.SkillMasteries
                 double skill = ((Caster.Skills[CastSkill].Value * 1.5) + Caster.Skills[DamageSkill].Value);
                 double duration = (skill + (GetMasteryLevel() * 50)) * 2;
 
-                Enhancement.SetValue(Caster, AosWeaponAttribute.MysticWeapon, 25, "MysticWeapon");
+                Enhancement.SetValue(Caster, ExtendedWeaponAttribute.MysticWeapon, 25, "MysticWeapon");
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.MysticWeapon, 1155899, 1156055, TimeSpan.FromSeconds(duration), Caster));
 
                 Effects.SendLocationParticles(EffectItem.Create(Caster.Location, Caster.Map, EffectItem.DefaultDuration), 0x36CB, 1, 14, 0x55C, 7, 9915, 0);
                 Caster.PlaySound(0x64E);
 
-                weapon.OnEquip(Caster);
+                weapon.AddMysticMod(Caster);
                 weapon.InvalidateProperties();
 
                 Expires = DateTime.UtcNow + TimeSpan.FromSeconds(duration);
@@ -100,7 +100,7 @@ namespace Server.Spells.SkillMasteries
             BuffInfo.RemoveBuff(Caster, BuffIcon.MysticWeapon);
 
             Enhancement.RemoveMobile(Caster);
-            _Weapon.OnRemoved(Caster);
+            _Weapon.RemoveMysticMod();
 
             Caster.SendLocalizedMessage(1115273); // The enchantment on your weapon has expired.
             Caster.PlaySound(0x1ED);
