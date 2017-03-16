@@ -134,7 +134,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    barrel = new WoodenToMetalBarrel();
+                    barrel = new WoodenToMetalBarrel(this);
                     this.m_Barrels.Add(barrel);
                 }
 
