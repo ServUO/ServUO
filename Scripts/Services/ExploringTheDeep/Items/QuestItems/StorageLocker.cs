@@ -21,7 +21,7 @@ namespace Server.Items
 
         private bool m_Active;
         private Parts m_Type;
-        private List<Item> m_Barrels;
+        public List<Item> m_Barrels;
         private Timer m_RestartTimer;
         private DateTime m_RestartTime;
 
