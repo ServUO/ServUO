@@ -74,14 +74,15 @@ namespace Server.Items
             if (!base.OnDragDrop(from, dropped))
                 return false;
 
-            if (!AddCleanupItem(from, dropped))
-            {
-                if (dropped.LootType == LootType.Blessed)
-                {
-                    from.SendLocalizedMessage(1075256); // That is blessed; you cannot throw it away.
-                    return false;
-                }
-            }
+            // You can delete blessed items per EA.  Tested with Spell Books, Fountain of Life Deed, and Robes that are blessed. Tested by ruaduck.
+            //if (!AddCleanupItem(from, dropped))
+            //{
+            //    if (dropped.LootType == LootType.Blessed)
+            //    {
+            //        from.SendLocalizedMessage(1075256); // That is blessed; you cannot throw it away.
+            //        return false;
+            //    }
+            //}
 
             if (this.TotalItems >= 50)
             {
@@ -107,14 +108,15 @@ namespace Server.Items
             if (!base.OnDragDropInto(from, item, p))
                 return false;
 
-            if (!AddCleanupItem(from, item))
-            {
-                if (item.LootType == LootType.Blessed)
-                {
-                    from.SendLocalizedMessage(1075256); // That is blessed; you cannot throw it away.
-                    return false;
-                }
-            }
+            // You can delete blessed items per EA.  Tested with Spell Books, Fountain of Life Deed, and Robes that are blessed. Tested by ruaduck.
+            //if (!AddCleanupItem(from, dropped))
+            //{
+            //    if (dropped.LootType == LootType.Blessed)
+            //    {
+            //        from.SendLocalizedMessage(1075256); // That is blessed; you cannot throw it away.
+            //        return false;
+            //    }
+            //}
 
             if (this.TotalItems >= 50)
             {
