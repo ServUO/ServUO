@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -110,6 +111,7 @@ namespace Server.Items
         }
     }
 
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons))]
     [Flipable(0x2307, 0x2308)]
     public class FurBoots : BaseShoes
     {
@@ -146,6 +148,7 @@ namespace Server.Items
         }
     }
 
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons))]
     [FlipableAttribute(0x170b, 0x170c)]
     public class Boots : BaseShoes
     {
@@ -190,6 +193,7 @@ namespace Server.Items
         }
     }
 
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons))]
     [Flipable]
     public class ThighBoots : BaseShoes, IArcaneEquip
     {
@@ -341,6 +345,7 @@ namespace Server.Items
         }
     }
 
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons))]
     [FlipableAttribute(0x170f, 0x1710)]
     public class Shoes : BaseShoes
     {
@@ -385,6 +390,7 @@ namespace Server.Items
         }
     }
 
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons))]
     [FlipableAttribute(0x170d, 0x170e)]
     public class Sandals : BaseShoes
     {
@@ -434,6 +440,7 @@ namespace Server.Items
         }
     }
 
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons))]
     [Flipable(0x2797, 0x27E2)]
     public class NinjaTabi : BaseShoes
     {
@@ -470,6 +477,7 @@ namespace Server.Items
         }
     }
 
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons))]
     [Flipable(0x2796, 0x27E1)]
     public class SamuraiTabi : BaseShoes
     {
@@ -506,6 +514,7 @@ namespace Server.Items
         }
     }
 
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons))]
     [Flipable(0x2796, 0x27E1)]
     public class Waraji : BaseShoes
     {
@@ -542,6 +551,7 @@ namespace Server.Items
         }
     }
 
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons))]
     [FlipableAttribute(0x2FC4, 0x317A)]
     public class ElvenBoots : BaseShoes
     {
@@ -596,6 +606,41 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+        }
+    }
+
+    [Alterable(typeof(DefTailoring), typeof(LeatherTalons))]
+    public class JesterShoes : BaseShoes
+    {
+        public override int LabelNumber { get { return 1109617; } } // Jester Shoes
+
+        [Constructable]
+        public JesterShoes()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public JesterShoes(int hue)
+            : base(0x7819, hue)
+        {
+        }
+
+        public JesterShoes(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
         }
     }
 }

@@ -136,7 +136,7 @@ namespace Server.Mobiles
             }
         }
 		
-        public override void BreathStart(Mobile target)
+        public override void BreathStart(IDamageable target)
         { 
             this.BreathStallMovement();
             this.BreathPlayAngerSound();
@@ -145,8 +145,10 @@ namespace Server.Mobiles
             this.Direction = this.GetDirectionTo(target);
 			
             int count = 0;
-			
-            foreach (Mobile m in this.GetMobilesInRange(this.BreathRange))
+
+            IPooledEnumerable eable = this.GetMobilesInRange(this.BreathRange);
+
+            foreach (Mobile m in eable)
             {
                 if (count++ > 3)
                     break;
@@ -154,6 +156,9 @@ namespace Server.Mobiles
                 if (m != null && m != target && m.Alive && !m.IsDeadBondedPet && this.CanBeHarmful(m) && m.Map == this.Map && !this.IsDeadBondedPet && m.InRange(this, this.BreathRange) && this.InLOS(m) && !this.BardPacified)
                     Timer.DelayCall(TimeSpan.FromSeconds(this.BreathEffectDelay), new TimerStateCallback(BreathEffect_Callback), m);
             }
+
+            eable.Free();
+
             Timer.DelayCall(TimeSpan.FromSeconds(this.BreathEffectDelay), new TimerStateCallback(BreathEffect_Callback), target);
         }
 

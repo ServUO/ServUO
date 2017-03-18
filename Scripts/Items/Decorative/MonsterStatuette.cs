@@ -46,7 +46,19 @@ namespace Server.Items
         DreadHorn,
         Minotaur,
         BlackCat,
-        HalloweenGhoul
+        HalloweenGhoul,
+        SherryTheMouse,
+        SlasherOfVeils,
+        StygianDragon,
+        Medusa,
+        PrimevalLich,
+        AbyssalInfernal,
+        ArchDemon,
+        FireAnt,
+        Navrey,
+        DragonTurtle,
+        TigerCub,
+        SakkhranBirdOfPrey
     }
 
     public class MonsterStatuetteInfo
@@ -91,7 +103,18 @@ namespace Server.Items
             /* DreadHorn */			new MonsterStatuetteInfo(1031651, 0x2D83, 0xA8),
             /* Minotaur */			new MonsterStatuetteInfo(1031657, 0x2D89, 0x596),
             /* Black Cat */		    new MonsterStatuetteInfo(1096928, 0x4688, 0x69),
-            /* HalloweenGhoul */	new MonsterStatuetteInfo(1076782, 0x2109, 0x482)
+            /* HalloweenGhoul */	new MonsterStatuetteInfo(1076782, 0x2109, 0x482),
+            /* Slasher of Veils */  new MonsterStatuetteInfo( 1113624, 0x42A0, 0x632 ),
+            /* Stygian Dragon   */  new MonsterStatuetteInfo( 1113625, 0x42A6, 0x63E ),
+            /* Medusa */            new MonsterStatuetteInfo( 1113626, 0x4298, 0x612 ),
+            /* Primeval Lich */     new MonsterStatuetteInfo( 1113627, 0x429A, 0x61E ),
+            /* Abyssal Infernal */  new MonsterStatuetteInfo( 1113628, 0x4287, 1492 ), 
+            /* ArchDemon */         new MonsterStatuetteInfo( 1112411, 0x20D3, 357 ), 
+            /* FireAnt */           new MonsterStatuetteInfo( 1113801, 0x42A7, 849 ),
+            /* Navrey Night-Eyes */ new MonsterStatuetteInfo( 1153593, 0x4C07, 0x61A ),
+            /* Dragon Turtle */     new MonsterStatuetteInfo( 1156367, 0x9848, 362 ),
+            /* Tiger Cub     */     new MonsterStatuetteInfo( 1156517, 0x9CA7, 0x69 ),
+            /* SakkhranBirdOfPrey */new MonsterStatuetteInfo( 1156699, 0x276A, 0x4FE ),
         };
         private readonly int m_LabelNumber;
         private readonly int m_ItemID;
@@ -167,6 +190,20 @@ namespace Server.Items
                 this.Hue = 0x21;
             else if (this.m_Type == MonsterStatuetteType.HalloweenGhoul)
                 this.Hue = 0xF4;
+            else if (m_Type == MonsterStatuetteType.ArchDemon)
+                Hue = 2021;
+            else if (m_Type == MonsterStatuetteType.SakkhranBirdOfPrey)
+            {
+                double ran = Utility.RandomDouble();
+                if (0.01 > ran)
+                    Hue = 1907;
+                else if (0.1 > ran)
+                    Hue = 2562;
+                else if (0.25 > ran)
+                    Hue = 2525;
+                else
+                    Hue = 2309;
+            }
         }
 
         public MonsterStatuette(Serial serial)
@@ -208,6 +245,8 @@ namespace Server.Items
             }
             set
             {
+                MonsterStatuetteType old = m_Type;
+
                 this.m_Type = value;
                 this.ItemID = MonsterStatuetteInfo.GetInfo(this.m_Type).ItemID;
 
@@ -217,6 +256,18 @@ namespace Server.Items
                     this.Hue = 0x21;
                 else if (this.m_Type == MonsterStatuetteType.HalloweenGhoul)
                     this.Hue = 0xF4;
+                else if (m_Type != old && m_Type == MonsterStatuetteType.SakkhranBirdOfPrey)
+                {
+                    double ran = Utility.RandomDouble();
+                    if (0.01 > ran)
+                        Hue = 1907;
+                    else if (0.1 > ran)
+                        Hue = 2562;
+                    else if (0.25 > ran)
+                        Hue = 2525;
+                    else
+                        Hue = 2309;
+                }
                 else
                     this.Hue = 0;
 

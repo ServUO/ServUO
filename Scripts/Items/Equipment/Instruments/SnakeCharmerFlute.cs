@@ -10,6 +10,21 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1112174; } } // snake charmer flute
 
+        public override int InitMinUses
+        {
+            get
+            {
+                return 50;
+            }
+        }
+        public override int InitMaxUses
+        {
+            get
+            {
+                return 80;
+            }
+        }
+
         [Constructable]
         public SnakeCharmerFlute()
         {

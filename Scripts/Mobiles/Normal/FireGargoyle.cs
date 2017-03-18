@@ -77,33 +77,21 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
+        public override bool HasAura { get { return true; } }
+        public override int AuraRange { get { return 2; } }
+
+        public override void AuraEffect(Mobile m)
+        {
+            m.SendMessage("The radiating heat scorches your skin!");
+        }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich);
             this.AddLoot(LootPack.Gems);
         }
-        public override void OnDeath(Container c)
-        {
-
-            base.OnDeath(c);
-            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
-            if (0.25 > Utility.RandomDouble() && reg.Name == "Crimson Veins")
-            {
-                if (Utility.RandomDouble() < 0.6)
-                    c.DropItem(new EssencePrecision());
-            }
-
-            if (0.25 > Utility.RandomDouble() && reg.Name == "Fire Temple Ruins")
-            {
-                if (Utility.RandomDouble() < 0.6)
-                    c.DropItem(new EssenceOrder());
-            }
-            if (0.25 > Utility.RandomDouble() && reg.Name == "Lava Caldera")
-            {
-                if (Utility.RandomDouble() < 0.6)
-                    c.DropItem(new EssencePassion());
-            }
-        }
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

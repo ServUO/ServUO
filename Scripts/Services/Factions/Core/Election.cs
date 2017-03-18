@@ -308,7 +308,7 @@ namespace Server.Factions
 
         public void Slice()
         {
-            if (this.m_Faction.Election != this)
+            if (this.m_Faction == null || this.m_Faction.Election != this)
             {
                 if (this.m_Timer != null)
                     this.m_Timer.Stop();

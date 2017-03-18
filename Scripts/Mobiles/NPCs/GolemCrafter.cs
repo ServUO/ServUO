@@ -29,7 +29,7 @@ namespace Server.Mobiles
         }
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBTinker());
+            this.m_SBInfos.Add(new SBTinker(this));
             this.m_SBInfos.Add(new SBVagabond());
         }
 

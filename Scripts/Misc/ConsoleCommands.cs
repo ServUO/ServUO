@@ -384,7 +384,7 @@ namespace Server.Misc
 							Console.WriteLine("                      Account, Char Name, IP.");
 							Console.WriteLine("bc <message>    - Type this command and your message after it. It will then be");
 							Console.WriteLine("                      sent to all players.");
-							Console.WriteLine("sc <message>    - Type this command and your message after it.It will then be ");
+							Console.WriteLine("sc <message>    - Type this command and your message after it. It will then be");
 							Console.WriteLine("                      sent to all staff.");
 							Console.WriteLine("hear            - Copies all local speech to this console:");
 							Console.WriteLine("                      Char Name (Region name): Speech.");

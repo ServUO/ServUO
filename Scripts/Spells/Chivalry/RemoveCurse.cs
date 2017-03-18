@@ -63,6 +63,11 @@ namespace Server.Spells.Chivalry
             return base.CheckCast();
         }
 
+        public override bool CheckDisturb(DisturbType type, bool firstCircle, bool resistable)
+        {
+            return true;
+        }
+
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

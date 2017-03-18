@@ -10,6 +10,8 @@ namespace Server.Engines.CannedEvil
 {
     public class ChampionSpawn : Item
     {
+        public static readonly int MaxStrayDistance = 250;
+
         private bool m_Active;
         private bool m_RandomizeType;
         private ChampionSpawnType m_Type;
@@ -104,6 +106,9 @@ namespace Server.Engines.CannedEvil
 
             this.m_DamageEntries = new Dictionary<Mobile, int>();
 			this.m_RandomizeType = false;
+
+            SpawnRadius = 35;
+            SpawnMod = 1;
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(SetInitialSpawnArea));
         }
@@ -545,6 +550,10 @@ namespace Server.Engines.CannedEvil
 					if(AutoRestart)
 						this.BeginRestart(this.m_RestartDelay);
                 }
+                else if (m_Champion.Alive && m_Champion.GetDistanceToSqrt(this) > MaxStrayDistance)
+                {
+                    this.m_Champion.MoveToWorld(new Point3D(this.X, this.Y, this.Z - 15), this.Map);
+                }
             }
             else
             {
@@ -629,6 +638,8 @@ namespace Server.Engines.CannedEvil
                                 PlayerMobile.ChampionTitleInfo info = ((PlayerMobile)killer).ChampionTitles;
 
                                 info.Award(this.m_Type, mobSubLevel);
+
+                                Server.Engines.CityLoyalty.CityLoyaltySystem.OnSpawnCreatureKilled(m as BaseCreature, mobSubLevel);
                             }
                         }
                     }
@@ -745,6 +756,7 @@ namespace Server.Engines.CannedEvil
                 {
                     BaseCreature bc = m as BaseCreature;
                     bc.Tamable = false;
+                    bc.IsChampionSpawn = true;
 
                     if (!this.m_ConfinedRoaming)
                     {
@@ -1332,6 +1344,11 @@ namespace Server.Engines.CannedEvil
 
                         break;
                     }
+            }
+
+            foreach (BaseCreature bc in m_Creatures.OfType<BaseCreature>())
+            {
+                bc.IsChampionSpawn = true;
             }
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateRegion));

@@ -618,7 +618,7 @@ namespace Server.Items
 					m_Aggressors.Add(master);
 				}
 
-				var rights = BaseCreature.GetLootingRights(bc.DamageEntries, bc.HitsMax);
+				var rights = bc.GetLootingRights();
 				for (int i = 0; i < rights.Count; ++i)
 				{
 					DamageStore ds = rights[i];
@@ -1315,7 +1315,13 @@ namespace Server.Items
 		public override void OnDoubleClick(Mobile from)
 		{
 			Open(from, Core.AOS);
-		}
+
+            if (m_Owner == from)
+            {
+                if (from.Corpse != null)
+                    from.NetState.Send(new RemoveWaypoint(from.Corpse.Serial));
+            }
+        }
 
 		public override bool CheckContentDisplay(Mobile from)
 		{

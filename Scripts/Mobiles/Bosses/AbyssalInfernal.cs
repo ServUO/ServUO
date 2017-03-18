@@ -63,28 +63,28 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(DeathsHead), typeof(WallofHungryMouths), typeof(AbyssalBlade) };
+                return new Type[] { typeof(DeathsHead), typeof(WallofHungryMouths), typeof(AbyssalBlade), typeof(TongueoftheBeast) };
             }
         }
         public override Type[] SharedList
         {
             get
             {
-                return new Type[] { };
+                return new Type[] { typeof(RoyalGuardInvestigatorsCloak), typeof(JadeArmband), typeof(DetectiveBoots) };
             }
         }
         public override Type[] DecorativeList
         {
             get
             {
-                return new Type[] { };
+                return new Type[] { typeof(MagicalDoor), typeof(MonsterStatuette) };
             }
         }
         public override MonsterStatuetteType[] StatueTypes
         {
             get
             {
-                return new MonsterStatuetteType[] { };
+                return new MonsterStatuetteType[] { MonsterStatuetteType.ArchDemon };
             }
         }
         public override bool AlwaysMurderer
@@ -216,39 +216,8 @@ namespace Server.Mobiles
             base.OnDamagedBySpell(caster);
         }
 
-        public void DrainLife()
-        {
-            if (this.Map == null)
-                return;
-
-            ArrayList list = new ArrayList();
-
-            foreach (Mobile m in this.GetMobilesInRange(8))
-            {
-                if (m == this || !this.CanBeHarmful(m))
-                    continue;
-
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
-                    list.Add(m);
-                else if (m.Player)
-                    list.Add(m);
-            }
-
-            foreach (Mobile m in list)
-            {
-                this.DoHarmful(m);
-
-                m.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
-                m.PlaySound(0x231);////////////////
-
-                m.SendMessage("You feel the life drain out of you!");
-
-                int toDrain = Utility.RandomMinMax(25, 30);
-
-                this.Hits += toDrain;
-                m.Damage(toDrain, this);
-            }
-        }
+        public override bool DrainsLife { get { return true; } }
+        public override double DrainsLifeChance { get { return .25; } }
 
         public void SpawnFollowers(Mobile target)
         {

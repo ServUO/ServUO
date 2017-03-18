@@ -75,7 +75,6 @@ namespace Server.Engines.Quests
 
     public class Frazer : MondainQuester
     { 
-        private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
         [Constructable]
         public Frazer()
             : base("Frazer", "the vagabond")
@@ -108,7 +107,7 @@ namespace Server.Engines.Quests
         public override void InitSBInfo()
         {
             this.m_SBInfos.Add(new SBJewel());
-            this.m_SBInfos.Add(new SBTinker());
+            this.m_SBInfos.Add(new SBTinker(this));
         }
 
         public override void InitBody()

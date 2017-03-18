@@ -15,6 +15,7 @@ namespace Server.Items
             this.WeaponAttributes.HitFatigue = 50;
             this.WeaponAttributes.HitLeechHits = 60;
             this.WeaponAttributes.HitLeechStam = 60;
+            this.WeaponAttributes.HitLeechMana = 60;
             this.Attributes.WeaponSpeed = 20;
             this.Attributes.WeaponDamage = 60;
             this.AosElementDamages.Chaos = 100;

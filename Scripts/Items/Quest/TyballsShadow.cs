@@ -31,7 +31,7 @@ namespace Server.Mobiles
             this.SetDamageType(ResistanceType.Poison, 20);
             this.SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetResistance(ResistanceType.Physical, 100);
+            this.SetResistance(ResistanceType.Physical, 70);
             this.SetResistance(ResistanceType.Fire, 70);
             this.SetResistance(ResistanceType.Cold, 70);
             this.SetResistance(ResistanceType.Poison, 70);
@@ -89,7 +89,7 @@ namespace Server.Mobiles
         {
             if (this.Map == Map.TerMur)
             {
-                List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+                List<DamageStore> rights = GetLootingRights();
                 List<Mobile> toGive = new List<Mobile>();
 
                 for (int i = rights.Count - 1; i >= 0; --i)

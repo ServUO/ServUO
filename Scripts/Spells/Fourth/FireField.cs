@@ -99,6 +99,9 @@ namespace Server.Spells.Fourth
             private DateTime m_End;
             private Mobile m_Caster;
             private int m_Damage;
+
+            public Mobile Caster { get { return m_Caster; } }
+
             public FireFieldItem(int itemID, Point3D loc, Mobile caster, Map map, TimeSpan duration, int val)
                 : this(itemID, loc, caster, map, duration, val, 2)
             {
@@ -300,7 +303,7 @@ namespace Server.Spells.Fourth
             }
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             private readonly FireFieldSpell m_Owner;
             public InternalTarget(FireFieldSpell owner)

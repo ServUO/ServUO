@@ -17,10 +17,9 @@ namespace Server.Spells.Mystic
 				"Sleep", "In Zu",
 				230,
 				9022,
-				Reagent.Bloodmoss,
-				Reagent.Garlic,
-				Reagent.SulfurousAsh,
-				Reagent.DragonBlood
+				Reagent.Nightshade,
+				Reagent.SpidersSilk,
+				Reagent.BlackPearl
 			);
 
 		public SleepSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
@@ -50,7 +49,7 @@ namespace Server.Spells.Mystic
             }
             else if (CheckHSequence(target))
             {
-                double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 3;
+                double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 2;
                 duration -= target.Skills[SkillName.MagicResist].Value / 10;
 
                 if (duration <= 0 || Server.Spells.Mystic.StoneFormSpell.CheckImmunity(target))
@@ -77,13 +76,12 @@ namespace Server.Spells.Mystic
             target.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
             target.FixedParticles(0x376A, 1, 15, 9502, 97, 3, (EffectLayer)255);
 
-            
-            BuffInfo.AddBuff(target, new BuffInfo(BuffIcon.Sleep, 1080139));
-
             if (m_Table.ContainsKey(target))
                 m_Table[target].Stop();
 
             m_Table[target] = new SleepTimer(target, duration);
+	    
+	        BuffInfo.AddBuff(target, new BuffInfo(BuffIcon.Sleep, 1080139, 1080140, duration, target));
 
             target.Delta(MobileDelta.WeaponDamage);
         }

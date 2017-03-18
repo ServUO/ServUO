@@ -126,6 +126,8 @@ namespace Server.Mobiles
                     this.Add(new GenericBuyInfo(typeof(Scepter), 39, 20, 0x26BC, 0));
                     this.Add(new GenericBuyInfo(typeof(BladedStaff), 40, 20, 0x26BD, 0));
                 }
+
+                Add(new GenericBuyInfo("1154005", typeof(MalleableAlloy), 50, 500, 7139, 2949));
             }
         }
 

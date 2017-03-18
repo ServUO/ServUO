@@ -26,6 +26,9 @@ namespace Server.Mobiles
                 return false;
             }
         }
+
+        public override bool DropPrimer { get { return false; } }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -166,7 +169,7 @@ namespace Server.Mobiles
             if (this.Map == Map.Felucca || this.Map == Map.TerMur)
             {
                 //TODO: Confirm SE change or AoS one too?
-                List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+                List<DamageStore> rights = GetLootingRights();
                 List<Mobile> toGive = new List<Mobile>();
 
                 for (int i = rights.Count - 1; i >= 0; --i)

@@ -1,6 +1,8 @@
 using System;
 using Server.Items;
 using Server.Targeting;
+using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Engines.Craft
 {
@@ -20,6 +22,27 @@ namespace Server.Engines.Craft
 
     public class Enhance
     {
+        private static Dictionary<Type, CraftSystem> _SpecialTable;
+
+        public static void Initialize()
+        {
+            _SpecialTable = new Dictionary<Type, CraftSystem>();
+
+            _SpecialTable[typeof(ClockworkLeggings)] = DefBlacksmithy.CraftSystem;
+            _SpecialTable[typeof(GargishClockworkLeggings)] = DefBlacksmithy.CraftSystem;
+        }
+
+        private static bool IsSpecial(Item item, CraftSystem system)
+        {
+            foreach (KeyValuePair<Type, CraftSystem> kvp in _SpecialTable)
+            {
+                if (kvp.Key == item.GetType() && kvp.Value == system)
+                    return true;
+            }
+
+            return false;
+        }
+
         public static EnhanceResult Invoke(Mobile from, CraftSystem craftSystem, BaseTool tool, Item item, CraftResource resource, Type resType, ref object resMessage)
         {
             if (item == null)
@@ -40,9 +63,9 @@ namespace Server.Engines.Craft
 
             if (CraftResources.IsStandard(resource))
                 return EnhanceResult.BadResource;
-			
+
             int num = craftSystem.CanCraft(from, tool, item.GetType());
-			
+
             if (num > 0)
             {
                 resMessage = num;
@@ -51,8 +74,15 @@ namespace Server.Engines.Craft
 
             CraftItem craftItem = craftSystem.CraftItems.SearchFor(item.GetType());
 
+            if (IsSpecial(item, craftSystem))
+            {
+                craftItem = craftSystem.CraftItems.SearchForSubclass(item.GetType());
+            }
+            
             if (craftItem == null || craftItem.Resources.Count == 0)
+            {
                 return EnhanceResult.BadItem;
+            }
 
             #region Mondain's Legacy
             if (craftItem.ForceNonExceptional)
@@ -165,6 +195,8 @@ namespace Server.Engines.Craft
 
             EnhanceResult res = EnhanceResult.Success;
 
+            PlayerMobile user = from as PlayerMobile;
+
             if (physBonus)
                 CheckResult(ref res, baseChance + phys);
 
@@ -192,7 +224,14 @@ namespace Server.Engines.Craft
             if (dincBonus)
                 CheckResult(ref res, baseChance + (dinc / 4));
 
-            switch ( res )
+            if (user.NextEnhanceSuccess)
+            {
+                user.NextEnhanceSuccess = false;
+                user.SendLocalizedMessage(1149969); // The magical aura that surrounded you disipates and you feel that your item enhancement chances have returned to normal.
+                res = EnhanceResult.Success;
+            }
+
+            switch (res)
             {
                 case EnhanceResult.Broken:
                     {
@@ -219,12 +258,12 @@ namespace Server.Engines.Craft
                                 w.Attributes.WeaponDamage += attributes.WeaponDamage;
                                 w.Attributes.WeaponSpeed += attributes.WeaponSwingSpeed;
                                 w.Attributes.AttackChance += attributes.WeaponHitChance;
-                                w.Attributes.RegenHits += attributes.WeaponRegenHits;			
+                                w.Attributes.RegenHits += attributes.WeaponRegenHits;
                                 w.WeaponAttributes.HitLeechHits += attributes.WeaponHitLifeLeech;
                             }
                             else
                             {
-                                switch ( Utility.Random(6) )
+                                switch (Utility.Random(6))
                                 {
                                     case 0:
                                         w.Attributes.WeaponDamage += attributes.WeaponDamage;
@@ -259,23 +298,23 @@ namespace Server.Engines.Craft
 
                             shield.Resource = resource;
 
-                            switch ( resource )
+                            switch (resource)
                             {
-                                case CraftResource.AshWood: 
-                                    shield.ArmorAttributes.LowerStatReq += 20; 
+                                case CraftResource.AshWood:
+                                    shield.ArmorAttributes.LowerStatReq += 20;
                                     break;
-                                case CraftResource.YewWood: 
-                                    shield.Attributes.RegenHits += 1; 
+                                case CraftResource.YewWood:
+                                    shield.Attributes.RegenHits += 1;
                                     break;
                                 case CraftResource.Heartwood:
-                                    switch ( Utility.Random(7) )
+                                    switch (Utility.Random(7))
                                     {
                                         case 0:
                                             shield.Attributes.BonusDex += 2;
                                             break;
                                         case 1:
                                             shield.Attributes.BonusStr += 2;
-                                            break; 
+                                            break;
                                         case 2:
                                             shield.Attributes.ReflectPhysical += 5;
                                             break;
@@ -285,7 +324,7 @@ namespace Server.Engines.Craft
                                             break;
                                         case 4:
                                             shield.ArmorAttributes.SelfRepair += 2;
-                                            break;			
+                                            break;
                                         case 5:
                                             shield.PhysicalBonus += 5;
                                             break;
@@ -294,12 +333,12 @@ namespace Server.Engines.Craft
                                             break;
                                     }
                                     break;
-                                case CraftResource.Bloodwood: 
+                                case CraftResource.Bloodwood:
                                     shield.Attributes.RegenHits += 2;
                                     shield.Attributes.Luck += 40;
                                     break;
                                 case CraftResource.Frostwood:
-                                    shield.Attributes.SpellChanneling = 1; 
+                                    shield.Attributes.SpellChanneling = 1;
                                     shield.Attributes.CastSpeed = -1;
                                     break;
                             }
@@ -316,12 +355,12 @@ namespace Server.Engines.Craft
                             {
                                 armor.Attributes.WeaponDamage += attributes.ArmorDamage;
                                 armor.Attributes.AttackChance += attributes.ArmorHitChance;
-                                armor.Attributes.RegenHits += attributes.ArmorRegenHits;				
-                                armor.ArmorAttributes.MageArmor += attributes.ArmorMage;
+                                armor.Attributes.RegenHits += attributes.ArmorRegenHits;
+                                //armor.ArmorAttributes.MageArmor += attributes.ArmorMage;
                             }
                             else
                             {
-                                switch ( Utility.Random(5) )
+                                switch (Utility.Random(5))
                                 {
                                     case 0:
                                         armor.Attributes.WeaponDamage += attributes.ArmorDamage;
@@ -331,7 +370,7 @@ namespace Server.Engines.Craft
                                         break;
                                     case 2:
                                         armor.ArmorAttributes.MageArmor += attributes.ArmorMage;
-                                        break;			 
+                                        break;
                                     case 3:
                                         armor.Attributes.Luck += attributes.ArmorLuck;
                                         break;
@@ -373,6 +412,7 @@ namespace Server.Engines.Craft
         public static void BeginTarget(Mobile from, CraftSystem craftSystem, BaseTool tool)
         {
             CraftContext context = craftSystem.GetContext(from);
+            PlayerMobile user = from as PlayerMobile;
 
             if (context == null)
                 return;
@@ -395,7 +435,15 @@ namespace Server.Engines.Craft
                     if (resource != CraftResource.None)
                     {
                         from.Target = new InternalTarget(craftSystem, tool, res.ItemType, resource);
-                        from.SendLocalizedMessage(1061004); // Target an item to enhance with the properties of your selected material.
+
+                        if (user.NextEnhanceSuccess)
+                        {
+                            from.SendLocalizedMessage(1149869, "100"); // Target an item to enhance with the properties of your selected material (Success Rate: ~1_VAL~%).
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(1061004); // Target an item to enhance with the properties of your selected material.
+                        }
                     }
                     else
                     {
@@ -432,7 +480,7 @@ namespace Server.Engines.Craft
                     object message = null;
                     EnhanceResult res = Enhance.Invoke(from, this.m_CraftSystem, this.m_Tool, (Item)targeted, this.m_Resource, this.m_ResourceType, ref message);
 
-                    switch ( res )
+                    switch (res)
                     {
                         case EnhanceResult.NotInBackpack:
                             message = 1061005;

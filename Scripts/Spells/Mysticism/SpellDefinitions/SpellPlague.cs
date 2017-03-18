@@ -67,7 +67,7 @@ namespace Server.Spells.Mystic
 
                 m_Table[m].Add(new SpellPlagueTimer(Caster, m, TimeSpan.FromSeconds(8)));
 
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SpellPlague, 1031690, TimeSpan.FromSeconds(8), m, Caster.Name.ToString()));
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SpellPlague, 1031690, 1080167, TimeSpan.FromSeconds(8), m));
             }
 
             FinishSequence();
@@ -94,7 +94,7 @@ namespace Server.Spells.Mystic
 
         public static void OnMobileDamaged(Mobile from)
         {
-            if (m_Table.ContainsKey(from) && m_Table[from].Count > 0 && m_Table[from][0].NextUse < DateTime.Now)
+            if (m_Table.ContainsKey(from) && m_Table[from].Count > 0 && m_Table[from][0].NextUse < DateTime.UtcNow)
             {
                 int amount = m_Table[from][0].Amount;
                 bool doExplosion = false;
@@ -114,7 +114,7 @@ namespace Server.Spells.Mystic
                 {
                     SpellPlagueTimer timer = m_Table[from][0];
 
-                    timer.NextUse = DateTime.Now + TimeSpan.FromSeconds(1.5);
+                    timer.NextUse = DateTime.UtcNow + TimeSpan.FromSeconds(1.5);
 
                     DoExplosion(from, timer.Caster, false);
                     timer.Amount++;
@@ -134,6 +134,12 @@ namespace Server.Spells.Mystic
 
             from.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
             from.PlaySound(0x307);
+
+            int sdiBonus = SpellHelper.GetSpellDamageBonus(caster, from, SkillName.Mysticism, from is PlayerMobile);
+
+            damage *= (100 + sdiBonus);
+            damage /= 100;
+
             AOS.Damage(from, caster, damage, false, 0, 0, 0, 0, 0, 100, 0, false, false, false);
         }
 
@@ -193,7 +199,7 @@ namespace Server.Spells.Mystic
             m_Caster = caster;
             m_Owner = owner;
             m_Amount = 0;
-            m_NextUse = DateTime.Now;
+            m_NextUse = DateTime.UtcNow;
             this.Start();
         }
 

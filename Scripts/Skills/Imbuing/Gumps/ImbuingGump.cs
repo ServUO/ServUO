@@ -70,9 +70,6 @@ namespace Server.Gumps
             AddButton(25, 213, 4017, 4018, 10011, GumpButtonType.Reply, 0);
             AddHtmlLocalized(66, 215, 430, 18, 1114275, LabelColor, false, false); //Unravel Container - Unravels all items in a container
 
-            //AddButton(25, 242, 4017, 4018, 10012, GumpButtonType.Reply, 0);
-            //AddHtml(66, 244, 430, 18, "<BASEFONT COLOR=#FFFFFF>Soul Reinforcement - Fortify a cursed artifact", false, false);
-
             AddButton(19, 300, 4017, 4018, 10002, GumpButtonType.Reply, 0);
             AddHtmlLocalized(58, 300, 50, 16, 1006045, FontColor, false, false); //CANCEL
 
@@ -111,8 +108,6 @@ namespace Server.Gumps
                     }
                 case 10005:  // = Imbue Item
                     {
-                        from.CloseGump(typeof(ImbuingGump));
-
                         if (!Imbuing.CheckSoulForge(from, 1))
                             break;
 
@@ -126,8 +121,6 @@ namespace Server.Gumps
                         Item it = context.LastImbued;
                         int mod = context.Imbue_Mod;
                         int modint = context.Imbue_ModInt;
-
-                        from.CloseGump(typeof(ImbuingGump));
 
                         if (!Imbuing.CheckSoulForge(from, 1))
                             break;
@@ -152,8 +145,6 @@ namespace Server.Gumps
                         int mod = context.Imbue_Mod;
                         int modint = context.Imbue_ModInt;
 
-                        from.CloseGump(typeof(ImbuingGump));
-                        
                         if(!Imbuing.CheckSoulForge(from, 1))
                             break;
 
@@ -177,8 +168,6 @@ namespace Server.Gumps
                         if (modint < 0)
                             modint = 0;
 
-                        from.CloseGump(typeof(ImbuingGump));
-
                         if (!Imbuing.CheckSoulForge(from, 1))
                             break;
 
@@ -194,8 +183,6 @@ namespace Server.Gumps
                     }
                 case 10010:  // = Unravel Item
                     {
-                        from.CloseGump(typeof(ImbuingGump));
-
                         if (!Imbuing.CheckSoulForge(from, 1))
                             break;
 
@@ -205,8 +192,6 @@ namespace Server.Gumps
                     }
                 case 10011:  // = Unravel Container
                     {
-                        from.CloseGump(typeof(ImbuingGump));
-
                         if (!Imbuing.CheckSoulForge(from, 1))
                             break;
 
@@ -279,6 +264,9 @@ namespace Server.Gumps
                                     unraveled++;
                             }
                         }
+
+                        list.Clear();
+                        list.TrimExcess();
 
                         if (unraveled <= 0)
                         {

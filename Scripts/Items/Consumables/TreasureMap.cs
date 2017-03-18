@@ -275,6 +275,11 @@ namespace Server.Items
         }
 
         [Constructable]
+        public TreasureMap()
+        {
+        }
+
+        [Constructable]
         public TreasureMap(int level, Map map)
         {
             m_Level = level;
@@ -520,6 +525,10 @@ namespace Server.Items
                 if (y2 <= 2760)
                     y2 = 2761;
             }
+        }
+
+        public virtual void OnMapComplete(TreasureMapChest chest)
+        {
         }
 
         public TreasureMap(Serial serial)
@@ -1330,6 +1339,8 @@ namespace Server.Items
                     m_Chest.Temporary = false;
                     m_TreasureMap.Completed = true;
                     m_TreasureMap.CompletedBy = m_From;
+
+                    m_TreasureMap.OnMapComplete(m_Chest);
 
                     int spawns;
                     switch (m_TreasureMap.Level)

@@ -41,7 +41,9 @@ namespace Server.Items
         Fortune, 
         Alchemy,
         Slaughter,
-        Aegis
+        Aegis,
+        Blackthorn,
+        Minax
     }
 
     public enum ItemPower
@@ -90,7 +92,7 @@ namespace Server.Items
 
             bool goodtogo = true;
             int mods = GetTotalMods(item);
-            int maxmods = item is JukaBow ? 1 : 0;
+            int maxmods = item is JukaBow ||item is BaseWeapon && !((BaseWeapon)item).DImodded ? 1 : 0;
 
             if(m_AllowableTable.ContainsKey(item.GetType()) && m_AllowableTable[item.GetType()] != crsystem)
                 goodtogo = false;
@@ -104,6 +106,10 @@ namespace Server.Items
                 goodtogo = false;
             else if (!allowableSpecial && ((item is BaseWeapon && !((BaseWeapon)item).PlayerConstructed) || (item is BaseArmor && !((BaseArmor)item).PlayerConstructed)))
                 goodtogo = false;
+            else if (!allowableSpecial && item is BaseClothing && !(item is BaseHat))
+                goodtogo = false;
+            else if (Imbuing.IsInNonImbueList(item.GetType()))
+                goodtogo = false;
 
             if (!goodtogo)
                 from.SendLocalizedMessage(1152113); // You cannot reforge that item.
@@ -113,32 +119,37 @@ namespace Server.Items
 
         public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods)
         {
-            ApplyReforgedProperties(item, prefix, suffix, playermade, budget, perclow, perchigh, maxmods, 0, 0);
+            ApplyReforgedProperties(item, prefix, suffix, playermade, budget, perclow, perchigh, maxmods, 0);
         }
 
-        public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods, int luckchance)
+        public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods, int luckchance, BaseRunicTool tool = null, ReforgingOption option = ReforgingOption.None)
         {
-            ApplyReforgedProperties(item, prefix, suffix, playermade, budget, perclow, perchigh, maxmods, 0, luckchance);
-        }
-
-        public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, bool playermade, int budget, int perclow, int perchigh, int maxmods, int powermod, int luckchance)
-		{
-			if(prefix == ReforgedPrefix.None && suffix == ReforgedSuffix.None)
-			{
-                for(int i = 0; i < maxmods; i++)
+            if (prefix == ReforgedPrefix.None && (suffix == ReforgedSuffix.None || suffix > ReforgedSuffix.Aegis))
+            {
+                for (int i = 0; i < maxmods; i++)
                     ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance);
 
-                ApplyItemPower(item, playermade);
-			}
-			else
-			{
-				int prefixID = (int)prefix;
-				int suffixID = (int)suffix;
-				int index = GetCollectionIndex(item);
-				
-				if(index == -1)
-					return;
-				
+                if (suffix != ReforgedSuffix.None)
+                    ApplySuffixName(item, suffix);
+            }
+            else
+            {
+                int prefixID = (int)prefix;
+                int suffixID = (int)suffix;
+
+                int index = GetCollectionIndex(item);
+                int resIndex = -1;
+                int preIndex = -1;
+
+                if (tool != null)
+                {
+                    resIndex = GetResourceIndex(tool.Resource);
+                    preIndex = GetPrerequisiteIndex(option);
+                }
+
+                if (index == -1)
+                    return;
+
                 List<NamedInfoCol> prefixCol = null;
                 List<NamedInfoCol> suffixCol = null;
 
@@ -173,131 +184,108 @@ namespace Server.Items
                 //Removes things like blood drinking/balanced/splintering
                 CheckAttributes(item, prefixCol, playermade);
                 CheckAttributes(item, suffixCol, playermade);
-				
-				int i = 0;
+
+                int i = 0;
                 int mods = 0;
-                bool addedprefix = false;
-                bool addedsuffix = false;
 
-                int moddedPercLow = perclow - (int)((double)powermod / 2.0);
-                int moddedPercHigh = perchigh - powermod;
+                int moddedPercLow = CalculateMinIntensity(perclow, perchigh, option);
+                int moddedPercHigh = perchigh;
 
-                if (moddedPercLow < 0) moddedPercLow = 0;
-                if (moddedPercHigh > 100) moddedPercHigh = 100;
-
-				if(prefix != ReforgedPrefix.None && suffix == ReforgedSuffix.None && prefixCol != null)
-				{
+                if (prefix != ReforgedPrefix.None && suffix == ReforgedSuffix.None && prefixCol != null)
+                {
                     int specialAdd = GetModsPer(index, prefixID, maxmods, false);
 
-					while(budget > 0 && mods < maxmods && i < 25)
-					{
+                    while (budget > 25 && mods < maxmods && i < 25)
+                    {
                         if (prefixCol.Count > 0 && specialAdd > 0)
-						{
+                        {
                             int random = Utility.Random(prefixCol.Count);
-
-                            if (ApplyAttribute(item, prefixCol[random].Attribute, moddedPercLow, moddedPercHigh, prefixCol[random].Min, prefixCol[random].Max, ref budget, luckchance))
+                            if (ApplyAttribute(item, prefixCol[random].Attribute, prefixCol[random].Min(resIndex, preIndex, item), prefixCol[random].Max(resIndex, preIndex, item), moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
-                                addedprefix = true;
                                 specialAdd--;
                                 mods++;
                             }
 
                             prefixCol.RemoveAt(random);
-						}
+                        }
                         else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance))
                             mods++;
 
                         i++;
-					}
+                    }
 
-                    if(addedprefix)
-					    ApplyPrefixName(item, prefix);
-				}
+                    if (prefix != ReforgedPrefix.None)
+                        ApplyPrefixName(item, prefix);
+                }
                 else if (prefix == ReforgedPrefix.None && suffix != ReforgedSuffix.None && suffixCol != null)
-				{
+                {
                     int specialAdd = GetModsPer(index, suffixID, maxmods, false);
 
-                    while (budget > 0 && mods < maxmods && i < 25)
-					{
-						if(suffixCol.Count > 0 && specialAdd > 0)
-						{
+                    while (budget > 25 && mods < maxmods && i < 25)
+                    {
+                        if (suffixCol.Count > 0 && specialAdd > 0)
+                        {
                             int random = Utility.Random(suffixCol.Count);
-
-                            if (ApplyAttribute(item, suffixCol[random].Attribute, moddedPercLow, moddedPercHigh, suffixCol[random].Min, suffixCol[random].Max, ref budget, luckchance))
+                            if (ApplyAttribute(item, suffixCol[random].Attribute, suffixCol[random].Min(resIndex, preIndex, item), suffixCol[random].Max(resIndex, preIndex, item), moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
-                                addedsuffix = true;
                                 specialAdd--;
                                 mods++;
                             }
 
                             suffixCol.RemoveAt(random);
-						}
+                        }
                         else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance))
                             mods++;
 
                         i++;
-					}
+                    }
 
-                    if(addedsuffix)
-					    ApplySuffixName(item, suffix);
-				}
+                    if (suffix != ReforgedSuffix.None)
+                        ApplySuffixName(item, suffix);
+                }
                 else if (prefix != ReforgedPrefix.None && suffix != ReforgedSuffix.None && prefixCol != null && suffixCol != null)
-				{
+                {
                     int specialAddPrefix = GetModsPer(index, prefixID, maxmods, true);
                     int specialAddSuffix = GetModsPer(index, suffixID, maxmods, true);
 
-                    while (budget > 0 && mods < maxmods && i < 25)
-					{
+                    while (budget > 25 && mods < maxmods && i < 25)
+                    {
                         if (prefixCol.Count > 0 && specialAddPrefix > 0)
-						{
-							int random = Utility.Random(prefixCol.Count);
-
-                            if (ApplyAttribute(item, prefixCol[random].Attribute, moddedPercLow, moddedPercHigh, prefixCol[random].Min, prefixCol[random].Max, ref budget, luckchance))
+                        {
+                            int random = Utility.Random(prefixCol.Count);
+                            if (ApplyAttribute(item, prefixCol[random].Attribute, prefixCol[random].Min(resIndex, preIndex, item), prefixCol[random].Max(resIndex, preIndex, item), moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
-                                addedprefix = true;
                                 specialAddPrefix--;
                                 mods++;
                             }
 
                             prefixCol.RemoveAt(random);
-						}
+                        }
                         else if (suffixCol.Count > 0 && specialAddSuffix > 0)
-						{
+                        {
                             int random = Utility.Random(suffixCol.Count);
-
-                            if (ApplyAttribute(item, suffixCol[random].Attribute, moddedPercLow, moddedPercHigh, suffixCol[random].Min, suffixCol[random].Max, ref budget, luckchance))
+                            if (ApplyAttribute(item, suffixCol[random].Attribute, suffixCol[random].Min(resIndex, preIndex, item), suffixCol[random].Max(resIndex, preIndex, item), moddedPercLow, moddedPercHigh, ref budget, luckchance))
                             {
-                                addedsuffix = true;
                                 specialAddSuffix--;
                                 mods++;
                             }
 
                             suffixCol.RemoveAt(random);
-						}
+                        }
                         else if (ApplyRunicAttributes(item, perclow, perchigh, ref budget, i, luckchance))
                             mods++;
 
                         i++;
-					}
+                    }
 
-                    if(addedprefix)
-					    ApplyPrefixName(item, prefix);
+                    if (prefix != ReforgedPrefix.None)
+                        ApplyPrefixName(item, prefix);
 
-                    if(addedsuffix)
-					    ApplySuffixName(item, suffix);
-				}
-
-                ApplyItemPower(item, playermade);
-
-                if (prefixCol != null)
-                    prefixCol.Clear();
-
-                if (suffixCol != null)
-                    suffixCol.Clear();
-			}
-
-            //item.Hue = 25;
-		}
+                    if (suffix != ReforgedSuffix.None)
+                        ApplySuffixName(item, suffix);
+                }
+            }
+        }
 
         private static void CheckAttributes(Item item, List<NamedInfoCol> list, bool playermade)
         {
@@ -316,24 +304,19 @@ namespace Server.Items
                     if (!(item is BaseWeapon) || (((BaseWeapon)item).PrimaryAbility != WeaponAbility.BleedAttack && ((BaseWeapon)item).SecondaryAbility != WeaponAbility.BleedAttack))
                         list.Remove(col);
                 }
-                else if (list.Contains(col) && col.Attribute is string && (string)col.Attribute == "BalancedWeapon")
-                {
-                    if (!(item is BaseRanged))
-                        list.Remove(col);
-                }
                 else if (list.Contains(col) && col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.SplinteringWeapon)
                 {
                     if (playermade || item is BaseRanged)
                         list.Remove(col);
                 }
-                else if (list.Contains(col) && col.Attribute is AosWeaponAttributes && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.ReactiveParalyze)
+                else if (list.Contains(col) && col.Attribute is AosWeaponAttribute && (AosWeaponAttribute)col.Attribute == AosWeaponAttribute.ReactiveParalyze)
                 {
-                    if ((item is BaseWeapon && item.Layer != Layer.TwoHanded) || (item is BaseShield && item.Layer != Layer.TwoHanded))
+                    if (!(item is BaseWeapon && item is BaseShield) && item.Layer != Layer.TwoHanded)
                         list.Remove(col);
                 }
                 else if (list.Contains(col) && col.Attribute is AosArmorAttribute && (AosArmorAttribute)col.Attribute == AosArmorAttribute.ReactiveParalyze)
                 {
-                    if ((item is BaseWeapon && item.Layer != Layer.TwoHanded) || (item is BaseShield && item.Layer != Layer.TwoHanded))
+                    if (!(item is BaseWeapon && item is BaseShield) && item.Layer != Layer.TwoHanded)
                         list.Remove(col);
                 }
             }
@@ -357,7 +340,7 @@ namespace Server.Items
             }
         }
 
-        private static bool ApplyAttribute(Item item, object attribute, int perclow, int perchigh, int min, int max, ref int budget, int luckchance)
+        private static bool ApplyAttribute(Item item, object attribute, int min, int max, int perclow, int perchigh, ref int budget, int luckchance)
 		{
             int start = budget;
 
@@ -369,20 +352,20 @@ namespace Server.Items
 				string str = attribute as string;
                 if (str == "RandomEater" && !HasEater(item) && (item is BaseArmor || item is BaseJewel || item is BaseWeapon))
 				{
-				    budget -= ApplyRandomEater(item, perclow, perchigh, budget, luckchance);
+				    budget -= ApplyRandomEater(item, min, max, perclow, perchigh, budget, luckchance, true);
 				}
 				else if (str == "HitSpell" && item is BaseWeapon && !HasHitSpell((BaseWeapon)item))
 				{
-                    budget -= ApplyRandomHitSpell((BaseWeapon)item, perclow, perchigh, budget, luckchance);
+                    budget -= ApplyRandomHitSpell((BaseWeapon)item, min, max, perclow, perchigh, budget, luckchance, true);
 				}
                 else if (str == "HitArea" && item is BaseWeapon && !HasHitArea((BaseWeapon)item))
 				{
-                    budget -= ApplyRandomHitArea((BaseWeapon)item, perclow, perchigh, budget, luckchance);
+                    budget -= ApplyRandomHitArea((BaseWeapon)item, min, max, perclow, perchigh, budget, luckchance, true);
 				}
                 else if (str == "Slayer" && item is BaseWeapon && ((BaseWeapon)item).Slayer == SlayerName.None)
                 {
                     SlayerName name = BaseRunicTool.GetRandomSlayer();
-                    int weight = Imbuing.GetIntensityForAttribute(name, -1, 1);
+                    int weight = Imbuing.GetIntensityForAttribute(item, name, -1, 1);
 
                     if (weight <= budget)
                     {
@@ -390,14 +373,9 @@ namespace Server.Items
                         budget -= weight;
                     }
                 }
-                else if (str == "BalancedWeapon" && item is BaseRanged)
-                {
-                    ((BaseRanged)item).Balanced = true;
-                    budget -= 100;
-                }
                 else if (str == "WeaponVelocity" && item is BaseRanged)
                 {
-                    int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
+                    int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, false);
 
                     ((BaseRanged)item).Velocity = value;
                     budget -= 100;
@@ -405,16 +383,13 @@ namespace Server.Items
 			}
 			else if (attribute is AosAttribute)
 			{
-                //if ((AosAttribute)attribute == AosAttribute.Luck && item is BaseRanged)
-                //    max = 180;
-
-                int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
+                int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, false);
                 AosAttributes attrs = GetAosAttributes(item);
 
 				if(attrs != null && value > 0 && attrs[(AosAttribute)attribute] == 0)
 				{
 					attrs[(AosAttribute)attribute] = value;
-                    budget -= Imbuing.GetIntensityForAttribute((AosAttribute)attribute, -1, value);
+                    budget -= Imbuing.GetIntensityForAttribute(item, (AosAttribute)attribute, -1, value);
 
                     if ((AosAttribute)attribute == AosAttribute.SpellChanneling && attrs[AosAttribute.CastSpeed] > -1)
                         attrs[AosAttribute.CastSpeed]--;
@@ -423,48 +398,51 @@ namespace Server.Items
 			else if (attribute is AosWeaponAttribute)
 			{
                 AosWeaponAttribute wepattr = (AosWeaponAttribute)attribute;
-                int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
+
+                if (item is BaseWeapon && (wepattr == AosWeaponAttribute.HitLeechHits || wepattr == AosWeaponAttribute.HitLeechMana))
+                {
+                    max = (int)((double)Imbuing.GetPropRange((BaseWeapon)item, wepattr)[1] * 1.4);
+                }
+
+                int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, false);
                 AosWeaponAttributes attrs = GetAosWeaponAttributes(item);
 				
 				if(attrs != null && value > 0 && attrs[wepattr] == 0)
 				{
 					attrs[wepattr] = value;
-                    budget -= Imbuing.GetIntensityForAttribute(wepattr, -1, value);
+                    budget -= Imbuing.GetIntensityForAttribute(item, wepattr, -1, value);
 				}
 			}
             else if (attribute is AosArmorAttribute)
             {
-                int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
+                int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, false);
                 AosArmorAttributes attrs = GetAosArmorAttributes(item);
-
-                if (item is BaseArmor) attrs = ((BaseArmor)item).ArmorAttributes;
-                else if (item is BaseClothing) attrs = ((BaseClothing)item).ClothingAttributes;
 
                 if (attrs != null && value > 0 && attrs[(AosArmorAttribute)attribute] == 0)
                 {
                     attrs[(AosArmorAttribute)attribute] = value;
-                    budget -= Imbuing.GetIntensityForAttribute((AosArmorAttribute)attribute, -1, value);
+                    budget -= Imbuing.GetIntensityForAttribute(item, (AosArmorAttribute)attribute, -1, value);
                 }
             }
             else if (attribute is SAAbsorptionAttribute)
             {
-                int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
+                int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, false);
                 SAAbsorptionAttributes attrs = GetSAAbsorptionAttributes(item);
 
                 if (attrs != null && value > 0 && attrs[(SAAbsorptionAttribute)attribute] == 0)
                 {
                     attrs[(SAAbsorptionAttribute)attribute] = value;
-                    budget -= Imbuing.GetIntensityForAttribute((SAAbsorptionAttribute)attribute, -1, value);
+                    budget -= Imbuing.GetIntensityForAttribute(item, (SAAbsorptionAttribute)attribute, -1, value);
                 }
             }
             else if (attribute is AosElementAttribute)
             {
-                int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, true);
+                int value = CalculateValue(attribute, min, max, perclow, perchigh, ref budget, luckchance, false);
 
                 if (value > 0)
                 {
                     ApplyResistance(item, value, (AosElementAttribute)attribute);
-                    budget -= Imbuing.GetIntensityForAttribute((AosElementAttribute)attribute, -1, value);
+                    budget -= Imbuing.GetIntensityForAttribute(item, (AosElementAttribute)attribute, -1, value);
                 }
             }
 
@@ -509,10 +487,9 @@ namespace Server.Items
         public static int Scale(int min, int max, int perclow, int perchigh, int luckchance, bool usesqrt)
         {
             int percent = Utility.RandomMinMax(0, perchigh * 100);
-
             // this takes off the curve of generating better items.  Its the downfall of the old lootsystem, 
             // so lets just take it out and use a linear system like runic crafting
-            usesqrt = false; 
+            usesqrt = false;
 
             if (usesqrt)
                 percent = (int)Math.Sqrt(percent);
@@ -545,7 +522,10 @@ namespace Server.Items
             int scale = ScaleAttribute(attribute);
             int value = Scale(min / scale, max / scale, perclow, perchigh, luckchance, usesqrt) * scale;
             int totalweight = GetTotalWeight(attribute, value);
-				
+
+            if (value > max) value = max;
+            if (value < min) value = min;
+
 			while(budget <= totalweight)
 			{
 				value -= scale;
@@ -633,11 +613,72 @@ namespace Server.Items
 				
 			return -1;
 		}
+
+        private static int GetResourceIndex(CraftResource resource)
+        {
+           // RunicIndex 0 - dullcopper; 1 - shadow; 2 - copper; 3 - spined; 4 - Oak; 5 - ash
+            switch (resource)
+            {
+                default:
+                case CraftResource.DullCopper: return 0;
+                case CraftResource.ShadowIron: return 1;
+                case CraftResource.Bronze:
+                case CraftResource.Gold:
+                case CraftResource.Agapite:
+                case CraftResource.Verite:
+                case CraftResource.Valorite:
+                case CraftResource.Copper: return 2;
+                case CraftResource.HornedLeather:
+                case CraftResource.BarbedLeather:
+                case CraftResource.SpinedLeather: return 3;
+                case CraftResource.OakWood: return 4;
+                case CraftResource.YewWood:
+                case CraftResource.Heartwood:
+                case CraftResource.Bloodwood:
+                case CraftResource.Frostwood:
+                case CraftResource.AshWood: return 5;
+            }
+        }
+
+        private static int GetPrerequisiteIndex(ReforgingOption option)
+        {
+            if ((option & ReforgingOption.Powerful) != 0 &&
+                (option & ReforgingOption.Structural) != 0 &&
+                (option & ReforgingOption.Fundamental) != 0)
+                return 6;
+
+            if ((option & ReforgingOption.Structural) != 0 &&
+                (option & ReforgingOption.Fundamental) != 0)
+                return 5;
+
+            if ((option & ReforgingOption.Powerful) != 0 &&
+                (option & ReforgingOption.Structural) != 0)
+                return 4;
+
+            if ((option & ReforgingOption.Fundamental) != 0)
+                return 3;
+
+            if ((option & ReforgingOption.Structural) != 0)
+                return 2;
+
+            if ((option & ReforgingOption.Powerful) != 0)
+                return 1;
+
+            return 0;
+        }
+
+        private static int CalculateMinIntensity(int perclow, int perchi, ReforgingOption option)
+        {
+            if (option == ReforgingOption.None)
+                return perclow;
+
+            return perclow + (int)((double)(perchi - perclow) * ((double)(GetPrerequisiteIndex(option) * 5.0) / 100.0));
+        }
 		
 		private static Dictionary<Type, CraftSystem> m_AllowableTable = new Dictionary<Type, CraftSystem>();
 		private static Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
 		
-        public static void Initialize()
+        public static void Configure()
         {
             Server.Commands.CommandSystem.Register("GetCreatureScore", AccessLevel.GameMaster, e =>
                 {
@@ -677,173 +718,176 @@ namespace Server.Items
             m_AllowableTable[typeof(ButcherKnife)] = DefBlacksmithy.CraftSystem;
             m_AllowableTable[typeof(GargishNecklace)] = DefBlacksmithy.CraftSystem;
             m_AllowableTable[typeof(GargishEarrings)] = DefBlacksmithy.CraftSystem;
-            //m_AllowableTable[typeof(GargishAmulet)] = DefBlacksmithy.CraftSystem;
-            //m_AllowableTable[typeof(GargishStoneAmulet)] = DefMasonry.CraftSystem;
 
-			// Index 0 - Weapon; 1 - Armor; 2 - Shield; 3 - Jewels
+            m_AllowableTable[typeof(GargishAmulet)] = DefBlacksmithy.CraftSystem;
+            m_AllowableTable[typeof(GargishStoneAmulet)] = DefMasonry.CraftSystem;
+
+			// TypeIndex 0 - Weapon; 1 - Armor; 2 - Shield; 3 - Jewels
+            // RunicIndex 0 - dullcopper; 1 - shadow; 2 - copper; 3 - spined; 4 - Oak; 5 - ash
+
 			m_PrefixSuffixInfo[0] = null;
 			m_PrefixSuffixInfo[1] = new NamedInfoCol[][] 	//Might
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosWeaponAttribute.HitLeechHits, 2, 70),
-                        new NamedInfoCol(AosAttribute.BonusHits, 1, 7),
-                        new NamedInfoCol(AosAttribute.BonusStr, 1, 10),
-                        new NamedInfoCol(AosAttribute.RegenHits, 1, 9)
+                        new NamedInfoCol(AosWeaponAttribute.HitLeechHits, HitsAndManaLeechTable),
+                        new NamedInfoCol(AosAttribute.BonusHits, WeaponHitsTable),
+                        new NamedInfoCol(AosAttribute.BonusStr, WeaponStrTable),
+                        new NamedInfoCol(AosAttribute.RegenHits, WeaponRegenTable),
                     },
 
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // armor
                     {
-                        new NamedInfoCol("RandomEater", 1, 15),
-                        new NamedInfoCol(AosAttribute.BonusHits, 1, 7),
-                        new NamedInfoCol(AosAttribute.BonusStr, 1, 10),
-                        new NamedInfoCol(AosAttribute.RegenHits, 1, 4)
+                        new NamedInfoCol("RandomEater", EaterTable),
+                        new NamedInfoCol(AosAttribute.BonusHits, ArmorHitsTable),
+                        new NamedInfoCol(AosAttribute.BonusStr, ArmorStrTable),
+                        new NamedInfoCol(AosAttribute.RegenHits, ArmorRegenTable),
                     },
 					
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // shield
                     {
-                        new NamedInfoCol("RandomEater", 1, 15),
-                        new NamedInfoCol(AosAttribute.BonusHits, 1, 7),
-                        new NamedInfoCol(AosAttribute.BonusStr, 1, 10),
-                        new NamedInfoCol(AosAttribute.RegenHits, 1, 4)
+                        new NamedInfoCol("RandomEater", EaterTable),
+                        new NamedInfoCol(AosAttribute.BonusHits, ArmorHitsTable),
+                        new NamedInfoCol(AosAttribute.BonusStr, ArmorStrTable),
+                        new NamedInfoCol(AosAttribute.RegenHits, ArmorRegenTable),
                     },
 
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // jewels
                     {
-                        new NamedInfoCol(AosAttribute.BonusHits, 1, 7),
-                        new NamedInfoCol(AosAttribute.BonusStr, 1, 10)
+                        new NamedInfoCol(AosAttribute.BonusHits, ArmorHitsTable),
+                        new NamedInfoCol(AosAttribute.BonusStr, ArmorStrTable),
                     }
 				};
 				
 			m_PrefixSuffixInfo[2] = new NamedInfoCol[][] 	//Mystic
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosWeaponAttribute.HitLeechMana, 2, 70),
-                        new NamedInfoCol(AosAttribute.BonusMana, 1, 10),
-                        new NamedInfoCol(AosAttribute.BonusInt, 1, 10),
-                        new NamedInfoCol(AosAttribute.LowerManaCost, 1, 10),
-                        new NamedInfoCol(AosAttribute.LowerRegCost, 1, 9)
+                        new NamedInfoCol(AosWeaponAttribute.HitLeechMana, HitsAndManaLeechTable),
+                        new NamedInfoCol(AosAttribute.BonusMana, WeaponStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.BonusInt, DexIntTable),
+                        new NamedInfoCol(AosAttribute.LowerManaCost, WeaponStamManaLMCTable),
+                        /*new NamedInfoCol(AosAttribute.LowerRegCost, LowerRegTable), */
+                    },
+                    new NamedInfoCol[] // armor
+                    {
+                        new NamedInfoCol(AosAttribute.LowerRegCost, LowerRegTable),
+                        new NamedInfoCol(AosAttribute.BonusMana, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.LowerManaCost, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.LowerRegCost, 2, 25),
-                        new NamedInfoCol(AosAttribute.BonusMana, 1, 10),
-                        new NamedInfoCol(AosAttribute.LowerManaCost, 1, 10),
-                        new NamedInfoCol(AosAttribute.RegenMana, 1, 4)
+                        new NamedInfoCol(AosAttribute.BonusMana, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.BonusInt, DexIntTable),
+                        new NamedInfoCol(AosAttribute.LowerManaCost, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.BonusMana, 1, 10),
-                        new NamedInfoCol(AosAttribute.BonusInt, 1, 10),
-                        new NamedInfoCol(AosAttribute.LowerManaCost, 1, 10),
-                        new NamedInfoCol(AosAttribute.RegenMana, 1, 4)
-                    },
-                    new NamedInfoCol[]
-                    {
-                        new NamedInfoCol(AosAttribute.BonusMana, 1, 10),
-                        new NamedInfoCol(AosAttribute.BonusInt, 1, 10),
-                        new NamedInfoCol(AosAttribute.LowerManaCost, 1, 10),
-                        new NamedInfoCol(AosAttribute.LowerRegCost, 1, 25)
+                        new NamedInfoCol(AosAttribute.BonusMana, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.BonusInt, DexIntTable),
+                        new NamedInfoCol(AosAttribute.LowerManaCost, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.LowerRegCost, LowerRegTable),
                     },
 				};
 				
 			m_PrefixSuffixInfo[3] = new NamedInfoCol[][]	// Animated
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosWeaponAttribute.HitLeechStam, 2, 70),
-                        new NamedInfoCol(AosAttribute.BonusStam, 1, 10),
-                        new NamedInfoCol(AosAttribute.BonusDex, 1, 10),
-                        new NamedInfoCol(AosAttribute.RegenStam, 1, 9),
-                        new NamedInfoCol(AosAttribute.WeaponSpeed, 10, 40)
+                        new NamedInfoCol(AosWeaponAttribute.HitLeechStam, HitStamLeechTable),
+                        new NamedInfoCol(AosAttribute.BonusStam, WeaponStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.BonusDex, DexIntTable),
+                        new NamedInfoCol(AosAttribute.RegenStam, WeaponRegenTable),
+                        new NamedInfoCol(AosAttribute.WeaponSpeed, WeaponWeaponSpeedTable),
+                    },
+                    new NamedInfoCol[] // armor
+                    {
+                        new NamedInfoCol(AosAttribute.BonusStam, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.BonusDex, DexIntTable),
+                        new NamedInfoCol(AosAttribute.RegenStam, ArmorRegenTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.BonusStam, 1, 10),
-                        new NamedInfoCol(AosAttribute.BonusDex, 1, 10),
-                        new NamedInfoCol(AosAttribute.RegenStam, 1, 4)
+                        new NamedInfoCol(AosAttribute.BonusStam, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.BonusDex, DexIntTable),
+                        new NamedInfoCol(AosAttribute.RegenStam, ArmorRegenTable),
+                        new NamedInfoCol(AosAttribute.WeaponSpeed, ShieldWeaponSpeedTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.BonusStam, 1, 10),
-                        new NamedInfoCol(AosAttribute.BonusDex, 1, 10),
-                        new NamedInfoCol(AosAttribute.RegenStam, 1, 4),
-                        new NamedInfoCol(AosAttribute.WeaponSpeed, 1, 10)
-                    },
-                    new NamedInfoCol[]
-                    {
-                        new NamedInfoCol(AosAttribute.BonusStam, 1, 10),
-                        new NamedInfoCol(AosAttribute.BonusDex, 1, 10),
-                        new NamedInfoCol(AosAttribute.WeaponSpeed, 1, 10)
+                        new NamedInfoCol(AosAttribute.BonusStam, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.BonusDex, DexIntTable),
+                        new NamedInfoCol(AosAttribute.WeaponSpeed, ShieldWeaponSpeedTable),
                     },
 				};
 			m_PrefixSuffixInfo[4] = new NamedInfoCol[][]	//Arcane
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosWeaponAttribute.HitLeechMana, 2, 70),
-                        new NamedInfoCol(AosWeaponAttribute.HitManaDrain, 2, 70),
-                        new NamedInfoCol(AosAttribute.BonusMana, 1, 10),
-                        new NamedInfoCol(AosAttribute.BonusInt, 1, 10),
-                        new NamedInfoCol(AosAttribute.LowerManaCost, 1, 10),
-                        new NamedInfoCol(AosAttribute.CastSpeed, 1, 1),
-                        new NamedInfoCol(AosAttribute.SpellChanneling, 1, 1),
-                        new NamedInfoCol(AosWeaponAttribute.MageWeapon, 1, 15),
-                        new NamedInfoCol(AosAttribute.RegenMana, 1, 9)
+                        new NamedInfoCol(AosWeaponAttribute.HitLeechMana, HitsAndManaLeechTable),
+                        new NamedInfoCol(AosWeaponAttribute.HitManaDrain, HitWeaponTable2),
+                        new NamedInfoCol(AosAttribute.BonusMana, WeaponStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.BonusInt, DexIntTable),
+                        new NamedInfoCol(AosAttribute.LowerManaCost, WeaponStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.CastSpeed, 1),
+                        new NamedInfoCol(AosAttribute.SpellChanneling, 1),
+                        new NamedInfoCol(AosWeaponAttribute.MageWeapon, MageWeaponTable),
+                        new NamedInfoCol(AosAttribute.RegenMana, WeaponRegenTable),
+                    },
+                    new NamedInfoCol[] // armor
+                    {
+                        new NamedInfoCol(AosAttribute.BonusMana, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.BonusInt, DexIntTable),
+                        new NamedInfoCol(AosAttribute.LowerManaCost, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
+                        new NamedInfoCol(AosAttribute.LowerRegCost, LowerRegTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.BonusMana, 1, 10),
-                        new NamedInfoCol(AosAttribute.BonusInt, 1, 10),
-                        new NamedInfoCol(AosAttribute.LowerManaCost,1, 10),
-                        new NamedInfoCol(AosAttribute.RegenMana, 1, 4),
-                        new NamedInfoCol(AosAttribute.LowerRegCost, 1, 25)
+                        new NamedInfoCol(AosAttribute.BonusMana, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.BonusInt, DexIntTable),
+                        new NamedInfoCol(AosAttribute.LowerManaCost, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.BonusMana, 1, 10),
-                        new NamedInfoCol(AosAttribute.BonusInt, 1, 10),
-                        new NamedInfoCol(AosAttribute.LowerManaCost,1, 10),
-                        new NamedInfoCol(AosAttribute.RegenMana, 1, 4),
-                    },
-                    new NamedInfoCol[]
-                    {
-                        new NamedInfoCol(AosAttribute.BonusMana, 1, 10),
-                        new NamedInfoCol(AosAttribute.BonusInt, 1, 10),
-                        new NamedInfoCol(AosAttribute.LowerManaCost,1, 10),
-                        new NamedInfoCol(AosAttribute.RegenMana, 1, 4),
-                        new NamedInfoCol(AosAttribute.LowerRegCost, 1, 25),
-                        new NamedInfoCol(AosAttribute.CastSpeed, 1, 2),
-                        new NamedInfoCol(AosAttribute.CastRecovery, 1, 4),
-                        new NamedInfoCol(AosAttribute.SpellDamage, 1, 15),
+                        new NamedInfoCol(AosAttribute.BonusMana, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.BonusInt, DexIntTable),
+                        new NamedInfoCol(AosAttribute.LowerManaCost, ArmorStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
+                        new NamedInfoCol(AosAttribute.LowerRegCost, LowerRegTable),
+                        new NamedInfoCol(AosAttribute.CastSpeed, 2),
+                        new NamedInfoCol(AosAttribute.CastRecovery, 4),
+                        new NamedInfoCol(AosAttribute.SpellDamage, 15),
                     },
 				};
 			m_PrefixSuffixInfo[5] = new NamedInfoCol[][]	// Exquisite
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosWeaponAttribute.SelfRepair, 1, 7),
-                        new NamedInfoCol(AosWeaponAttribute.DurabilityBonus, 10, 100),
-                        new NamedInfoCol(AosWeaponAttribute.HitLowerDefend, 1, 70),
-                        new NamedInfoCol(AosWeaponAttribute.LowerStatReq, 10, 100),
-                        new NamedInfoCol("Slayer", 1, 1),
-                        new NamedInfoCol(AosWeaponAttribute.MageWeapon, 1, 15),
-                        new NamedInfoCol(AosAttribute.SpellChanneling, 1, 1),
-                        new NamedInfoCol("BalancedWeapon", 1, 1),
-                        new NamedInfoCol("WeaponVelocity", 1, 70)
+                        new NamedInfoCol(AosWeaponAttribute.SelfRepair, SelfRepairTable),
+                        new NamedInfoCol(AosWeaponAttribute.DurabilityBonus, DurabilityTable),
+                        new NamedInfoCol(AosWeaponAttribute.HitLowerDefend, HitWeaponTable2),
+                        new NamedInfoCol(AosWeaponAttribute.LowerStatReq, LowerStatReqTable),
+                        new NamedInfoCol("Slayer", 1),
+                        new NamedInfoCol(AosWeaponAttribute.MageWeapon, MageWeaponTable),
+                        new NamedInfoCol(AosAttribute.SpellChanneling, 1),
+                        new NamedInfoCol(AosAttribute.BalancedWeapon, 1),
+                        new NamedInfoCol("WeaponVelocity", WeaponVelocityTable),
                     },
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // armor
                     {
-                        new NamedInfoCol(AosArmorAttribute.SelfRepair, 1, 7),
-                        new NamedInfoCol(AosArmorAttribute.DurabilityBonus, 10, 100),
-                        new NamedInfoCol(AosArmorAttribute.LowerStatReq, 10, 100),
+                        new NamedInfoCol(AosArmorAttribute.SelfRepair, SelfRepairTable),
+                        new NamedInfoCol(AosArmorAttribute.DurabilityBonus, DurabilityTable),
+                        new NamedInfoCol(AosArmorAttribute.LowerStatReq, LowerStatReqTable),
                     },
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // shield
                     {
-                        new NamedInfoCol(AosArmorAttribute.SelfRepair, 1, 7),
-                        new NamedInfoCol(AosArmorAttribute.DurabilityBonus, 10, 100),
-                        new NamedInfoCol(AosArmorAttribute.LowerStatReq, 10, 100),
+                        new NamedInfoCol(AosArmorAttribute.SelfRepair, SelfRepairTable),
+                        new NamedInfoCol(AosArmorAttribute.DurabilityBonus, DurabilityTable),
+                        new NamedInfoCol(AosArmorAttribute.LowerStatReq, LowerStatReqTable),
                     },
                     new NamedInfoCol[]
                     {
@@ -851,16 +895,16 @@ namespace Server.Items
 				};
 			m_PrefixSuffixInfo[6] = new NamedInfoCol[][]	//Vampiric
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosWeaponAttribute.HitLeechHits, 2, 70),
-                        new NamedInfoCol(AosWeaponAttribute.HitLeechStam, 2, 70),
-                        new NamedInfoCol(AosWeaponAttribute.HitLeechMana, 2, 70),
-                        new NamedInfoCol(AosWeaponAttribute.HitManaDrain, 2, 70),
-                        new NamedInfoCol(AosWeaponAttribute.HitFatigue, 2, 70),
-                        new NamedInfoCol(AosWeaponAttribute.BloodDrinker, 1, 1),
+                        new NamedInfoCol(AosWeaponAttribute.HitLeechHits, HitsAndManaLeechTable),
+                        new NamedInfoCol(AosWeaponAttribute.HitLeechStam, HitStamLeechTable),
+                        new NamedInfoCol(AosWeaponAttribute.HitLeechMana, HitsAndManaLeechTable),
+                        new NamedInfoCol(AosWeaponAttribute.HitManaDrain, HitWeaponTable2),
+                        new NamedInfoCol(AosWeaponAttribute.HitFatigue, HitWeaponTable2),
+                        new NamedInfoCol(AosWeaponAttribute.BloodDrinker, 1),
                     },
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // armor
                     {
                     },
                     new NamedInfoCol[]
@@ -872,182 +916,231 @@ namespace Server.Items
 				};
 			m_PrefixSuffixInfo[7] = new NamedInfoCol[][]	// Invigorating
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosAttribute.RegenHits, 1, 9),
-                        new NamedInfoCol(AosAttribute.RegenStam, 1, 9),
-                        new NamedInfoCol(AosAttribute.RegenMana, 1, 9),
+                        new NamedInfoCol(AosAttribute.RegenHits, WeaponRegenTable),
+                        new NamedInfoCol(AosAttribute.RegenStam, WeaponRegenTable),
+                        new NamedInfoCol(AosAttribute.RegenMana, WeaponRegenTable),
+                    },
+                    new NamedInfoCol[] // armor
+                    {
+                        new NamedInfoCol(AosAttribute.RegenHits, ArmorRegenTable),
+                        new NamedInfoCol(AosAttribute.RegenStam, ArmorRegenTable),
+                        new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
+
+                        new NamedInfoCol("RandomEater",  EaterTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.RegenHits, 1, 4),
-                        new NamedInfoCol(AosAttribute.RegenStam, 1, 4),
-                        new NamedInfoCol(AosAttribute.RegenMana, 1, 4),
-                        new NamedInfoCol("RandomEater", 1, 15)
+                        new NamedInfoCol(AosAttribute.RegenHits, ArmorRegenTable),
+                        new NamedInfoCol(AosAttribute.RegenStam, ArmorRegenTable),
+                        new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
+                        new NamedInfoCol(AosArmorAttribute.SoulCharge, ShieldSoulChargeTable),
+                        new NamedInfoCol("RandomEater", EaterTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.RegenHits, 1, 4),
-                        new NamedInfoCol(AosAttribute.RegenStam, 1, 4),
-                        new NamedInfoCol(AosAttribute.RegenMana, 1, 4),
-                        new NamedInfoCol(AosArmorAttribute.SoulCharge, 1, 30),
-                        new NamedInfoCol("RandomEater", 1, 15)
-                    },
-                    new NamedInfoCol[]
-                    {
-                        new NamedInfoCol(AosAttribute.RegenHits, 1, 4),
-                        new NamedInfoCol(AosAttribute.RegenStam, 1, 4),
-                        new NamedInfoCol(AosAttribute.RegenMana, 1, 4),
-                        new NamedInfoCol("RandomEater", 1, 15)
+                        new NamedInfoCol(AosAttribute.RegenHits, ArmorRegenTable),
+                        new NamedInfoCol(AosAttribute.RegenStam, ArmorRegenTable),
+                        new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),
+                        new NamedInfoCol("RandomEater", EaterTable),
                     },
 				};
 			m_PrefixSuffixInfo[8] = new NamedInfoCol[][]	// Fortified
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosWeaponAttribute.ResistPhysicalBonus, 1, 20),
-                        new NamedInfoCol(AosWeaponAttribute.ResistFireBonus, 1, 20),
-                        new NamedInfoCol(AosWeaponAttribute.ResistColdBonus, 1, 20),
-                        new NamedInfoCol(AosWeaponAttribute.ResistPoisonBonus, 1, 20),
-                        new NamedInfoCol(AosWeaponAttribute.ResistEnergyBonus, 1, 20),
+                        new NamedInfoCol(AosWeaponAttribute.ResistPhysicalBonus, ResistTable),
+                        new NamedInfoCol(AosWeaponAttribute.ResistFireBonus, ResistTable),
+                        new NamedInfoCol(AosWeaponAttribute.ResistColdBonus, ResistTable),
+                        new NamedInfoCol(AosWeaponAttribute.ResistPoisonBonus, ResistTable),
+                        new NamedInfoCol(AosWeaponAttribute.ResistEnergyBonus, ResistTable),
+                    },
+                    new NamedInfoCol[] // armor
+                    {
+                        new NamedInfoCol(AosElementAttribute.Physical, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Fire, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Cold, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Poison, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Energy, ResistTable),
+                        new NamedInfoCol("RandomEater", EaterTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosElementAttribute.Physical, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Fire, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Cold, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Poison, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Energy, 1, 20),
-                        new NamedInfoCol("RandomEater", 1, 15)
+                        new NamedInfoCol(AosElementAttribute.Physical, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Fire, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Cold, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Poison, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Energy, ResistTable),
+                        new NamedInfoCol("RandomEater", EaterTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosElementAttribute.Physical, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Fire, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Cold, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Poison, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Energy, 1, 20),
-                        new NamedInfoCol("RandomEater", 1, 15)
-                    },
-                    new NamedInfoCol[]
-                    {
-                        new NamedInfoCol(AosElementAttribute.Physical, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Fire, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Cold, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Poison, 1, 20),
-                        new NamedInfoCol(AosElementAttribute.Energy, 1, 20),
+                        new NamedInfoCol(AosElementAttribute.Physical, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Fire, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Cold, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Poison, ResistTable),
+                        new NamedInfoCol(AosElementAttribute.Energy, ResistTable),
                     },
 				};
 			m_PrefixSuffixInfo[9] = new NamedInfoCol[][]	// Auspicious
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosAttribute.Luck, 10, 150),
+                        new NamedInfoCol(AosAttribute.Luck, LuckTable, RangedLuckTable),
                     },
-					new NamedInfoCol[]
+					new NamedInfoCol[] // armor
                     {
-                        new NamedInfoCol(AosAttribute.Luck, 10, 150),
-                    },
-                    new NamedInfoCol[]
-                    {
-                        new NamedInfoCol(AosAttribute.Luck, 10, 150),
+                        new NamedInfoCol(AosAttribute.Luck, LuckTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.Luck, 10, 150),
+                        new NamedInfoCol(AosAttribute.Luck, LuckTable),
+                    },
+                    new NamedInfoCol[]
+                    {
+                        new NamedInfoCol(AosAttribute.Luck, LuckTable),
                     },
 				};
 			m_PrefixSuffixInfo[10] = new NamedInfoCol[][]	// Charmed
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosAttribute.EnhancePotions, 1, 15),
-                        new NamedInfoCol("BalancedWeapon", 1, 1),
+                        new NamedInfoCol(AosAttribute.EnhancePotions, WeaponEnhancePots),
+                        new NamedInfoCol(AosAttribute.BalancedWeapon, 1),
+                    },
+                    new NamedInfoCol[] // armor
+                    {
+                        new NamedInfoCol(AosAttribute.EnhancePotions, ArmorEnhancePotsTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.EnhancePotions, 1, 7),
                     },
                     new NamedInfoCol[]
                     {
-                    },
-                    new NamedInfoCol[]
-                    {
-                        new NamedInfoCol(AosAttribute.EnhancePotions, 1, 7),
+                        new NamedInfoCol(AosAttribute.EnhancePotions, ArmorEnhancePotsTable),
                     },
 				};
 			m_PrefixSuffixInfo[11] = new NamedInfoCol[][]	//Vicious
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol("HitSpell", 2, 70),
-                        new NamedInfoCol("HitArea", 2, 70),
-                        new NamedInfoCol(AosAttribute.AttackChance, 1, 25),
-                        new NamedInfoCol(AosAttribute.WeaponDamage, 1, 70),
-                        new NamedInfoCol(AosWeaponAttribute.BattleLust, 1, 1),
-                        new NamedInfoCol(AosWeaponAttribute.SplinteringWeapon, 5, 30),
-                        new NamedInfoCol("Slayer", 1, 1),
+                        new NamedInfoCol("HitSpell", HitWeaponTable1),
+                        new NamedInfoCol("HitArea", HitWeaponTable1),
+                        new NamedInfoCol(AosAttribute.AttackChance, WeaponHCITable, RangedHCITable),
+                        new NamedInfoCol(AosAttribute.WeaponDamage, WeaponWeaponDamage),
+                        new NamedInfoCol(AosWeaponAttribute.BattleLust, 1),
+                        new NamedInfoCol(AosWeaponAttribute.SplinteringWeapon, 30),
+                        new NamedInfoCol("Slayer", 1),
+                    },
+                    new NamedInfoCol[] // armor
+                    {
+                        new NamedInfoCol(AosAttribute.AttackChance, ArmorHCIDCITable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.AttackChance, 1, 5),
+                        new NamedInfoCol(AosAttribute.AttackChance, WeaponHCITable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.AttackChance, 1, 20),
-                    },
-                    new NamedInfoCol[]
-                    {
-                        new NamedInfoCol(AosAttribute.AttackChance, 1, 20),
-                        new NamedInfoCol(AosAttribute.SpellDamage, 1, 15),
+                        new NamedInfoCol(AosAttribute.AttackChance, WeaponHCITable),
+                        new NamedInfoCol(AosAttribute.SpellDamage, 15),
                     }, 
 				};
 			m_PrefixSuffixInfo[12] = new NamedInfoCol[][]	// Towering
 				{
-                    new NamedInfoCol[]
+                    new NamedInfoCol[] // Weapon
                     {
-                        new NamedInfoCol(AosWeaponAttribute.HitLowerAttack, 1, 70),
-                        new NamedInfoCol(AosWeaponAttribute.ReactiveParalyze, 1, 1),
-                        new NamedInfoCol(AosAttribute.DefendChance, 1, 25),
+                        new NamedInfoCol(AosWeaponAttribute.HitLowerAttack, HitWeaponTable1),
+                        new NamedInfoCol(AosWeaponAttribute.ReactiveParalyze, 1),
+                        new NamedInfoCol(AosAttribute.DefendChance, WeaponDCITable, RangedDCITable),
+                    },
+                    new NamedInfoCol[] // armor
+                    {
+                        new NamedInfoCol(AosAttribute.DefendChance, ArmorHCIDCITable),
+                        new NamedInfoCol(SAAbsorptionAttribute.CastingFocus, ArmorCastingFocusTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.DefendChance, 1, 5),
-                        new NamedInfoCol(SAAbsorptionAttribute.CastingFocus, 1, 3),
+                        new NamedInfoCol(AosAttribute.DefendChance, WeaponDCITable),
+                        new NamedInfoCol(AosArmorAttribute.ReactiveParalyze, 1),
+                        new NamedInfoCol(AosArmorAttribute.SoulCharge, ShieldSoulChargeTable),
                     },
                     new NamedInfoCol[]
                     {
-                        new NamedInfoCol(AosAttribute.DefendChance, 1, 20),
-                        new NamedInfoCol(AosArmorAttribute.ReactiveParalyze, 1, 1),
-                        new NamedInfoCol(AosArmorAttribute.SoulCharge, 1, 30),
-                    },
-                    new NamedInfoCol[]
-                    {
-                        new NamedInfoCol(AosAttribute.DefendChance, 1, 20),
-                        new NamedInfoCol(SAAbsorptionAttribute.CastingFocus, 1, 3),
+                        new NamedInfoCol(AosAttribute.DefendChance, ArmorHCIDCITable),
+                        new NamedInfoCol(SAAbsorptionAttribute.CastingFocus, ArmorCastingFocusTable),
                     },
 				};
         }
-		
-		public class NamedInfoCol
-		{
-			private object m_Attribute;
-			private int m_Min;
-			private int m_Max;
-			
-			public object Attribute { get { return m_Attribute; } }
-			public int Min { get { return m_Min; } }
-			public int Max { get { return m_Max; } }
-			
-			public NamedInfoCol(object attr, int min, int max)
-			{
-				m_Attribute = attr;
-				m_Min = min;
-				m_Max = max;
-			}
-		}
 
-        private static int ApplyRandomHitSpell(BaseWeapon weapon, int perclow, int perchigh, int budget, int luckchance)
+        public class NamedInfoCol
+        {
+            public object Attribute { get; private set; }
+            public int[][] Info { get; private set; }
+            public int[][] SecondaryInfo { get; private set; }
+
+            public int HardCap { get; set; }
+
+            public NamedInfoCol(object attr, int[][] info, int[][] secondary = null)
+            {
+                this.Attribute = attr;
+                Info = info;
+                SecondaryInfo = secondary;
+            }
+
+            public NamedInfoCol(object attr, int hardcap)
+            {
+                this.Attribute = attr;
+                HardCap = hardcap;
+            }
+
+            public int Min(int resIndex, int preIndex, Item item)
+            {
+                if (HardCap == 1)
+                    return 1;
+
+                int max = Max(resIndex, preIndex, item);
+
+                if (resIndex != -1 && preIndex != -1)
+                {
+                    return (int)((double)max * .4);
+                }
+
+                return (int)((double)max * .5);
+            }
+
+            public int Max(int resIndex, int preIndex, Item item)
+            {
+                int[][] info = item is BaseRanged && SecondaryInfo != null ? SecondaryInfo : Info;
+
+                if (resIndex != -1 && preIndex != -1)
+                {
+                    if (item is BaseWeapon && this.Attribute is AosWeaponAttribute && ((AosWeaponAttribute)this.Attribute == AosWeaponAttribute.HitLeechHits
+                                                            || (AosWeaponAttribute)this.Attribute == AosWeaponAttribute.HitLeechMana))
+                    {
+                        int weight = Info[resIndex][preIndex];
+                        return (int)(((BaseWeapon)item).MlSpeed * (weight * 100) / (100 + ((BaseWeapon)item).Attributes.WeaponSpeed));
+                    }
+
+                    if (info != null && resIndex >= 0 && resIndex < info.Length && preIndex >= 0 && preIndex < info[resIndex].Length)
+                    {
+                        return info[resIndex][preIndex];
+                    }
+
+                    return HardCap;
+                }
+
+                if (info == null)
+                {
+                    return HardCap;
+                }
+
+                return info[Info.Length - 1][Info[Info.Length - 1].Length - 1];
+            }
+        }
+
+        private static int ApplyRandomHitSpell(BaseWeapon weapon, int min, int max, int perclow, int perchigh, int budget, int luckchance, bool usesqrt)
         {
             object attr;
 
@@ -1061,13 +1154,13 @@ namespace Server.Items
                 case 4: attr = AosWeaponAttribute.HitCurse; break;
             }
 
-            int value = CalculateValue(attr, 2, 70, perclow, perchigh, ref budget, luckchance, true);
+            int value = CalculateValue(attr, min, max, perclow, perchigh, ref budget, luckchance, usesqrt);
             weapon.WeaponAttributes[(AosWeaponAttribute)attr] = value;
 
 			return (140 / 50) * value;
         }
 
-        private static int ApplyRandomHitArea(BaseWeapon weapon, int perclow, int perchigh, int budget, int luckchance)
+        private static int ApplyRandomHitArea(BaseWeapon weapon, int min, int max, int perclow, int perchigh, int budget, int luckchance, bool usesqrt)
         {
             object attr;
 
@@ -1081,13 +1174,13 @@ namespace Server.Items
                 case 4: attr = AosWeaponAttribute.HitEnergyArea; break;
             }
 
-            int value = CalculateValue(attr, 2, 70, perclow, perchigh, ref budget, luckchance, true);
+            int value = CalculateValue(attr, min, max, perclow, perchigh, ref budget, luckchance, usesqrt);
             weapon.WeaponAttributes[(AosWeaponAttribute)attr] = value;
 
             return (100 / 50) * value;
         }
 
-        private static int ApplyRandomEater(Item item, int perclow, int perchigh, int budget, int luckchance)
+        private static int ApplyRandomEater(Item item, int min, int max, int perclow, int perchigh, int budget, int luckchance, bool usesqrt)
         {
             object attr;
 
@@ -1101,7 +1194,7 @@ namespace Server.Items
                 case 4: attr = SAAbsorptionAttribute.EaterEnergy; break;
             }
 
-            int value = CalculateValue(attr, 1, 15, perclow, perchigh, ref budget, luckchance, true);
+            int value = CalculateValue(attr, min, max, perclow, perchigh, ref budget, luckchance, usesqrt);
 
             if(item is BaseWeapon)
                 ((BaseWeapon)item).AbsorptionAttributes[(SAAbsorptionAttribute)attr] = value;
@@ -1247,7 +1340,39 @@ namespace Server.Items
             new int[] { 1151702, 1151703 },
             new int[] { 1151704, 1151705 },
         };
-		
+
+        private static readonly SkillName[] m_Skills = new SkillName[]
+        {
+            SkillName.Swords,
+            SkillName.Fencing,
+            SkillName.Macing,
+            SkillName.Archery,
+            SkillName.Wrestling,
+            SkillName.Parry,
+            SkillName.Tactics,
+            SkillName.Anatomy,
+            SkillName.Healing,
+            SkillName.Magery,
+            SkillName.Meditation,
+            SkillName.EvalInt,
+            SkillName.MagicResist,
+            SkillName.AnimalTaming,
+            SkillName.AnimalLore,
+            SkillName.Veterinary,
+            SkillName.Musicianship,
+            SkillName.Provocation,
+            SkillName.Discordance,
+            SkillName.Peacemaking,
+            SkillName.Chivalry,
+            SkillName.Focus,
+            SkillName.Necromancy,
+            SkillName.Stealing,
+            SkillName.Stealth,
+            SkillName.SpiritSpeak,
+            SkillName.Bushido,
+            SkillName.Ninjitsu
+        };
+
         #region Random Item Generation
         public static Item GenerateRandomItem(IEntity e)
         {
@@ -1267,14 +1392,29 @@ namespace Server.Items
         /// <param name="minBudget"></param>
         /// <param name="maxBudget"></param>
         /// <returns></returns>
-        public static bool GenerateRandomItem(Item item, int luckChance, int minBudget, int maxBudget)
+        public static bool GenerateRandomItem(Item item, int luck, int minBudget, int maxBudget)
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
                 int budget = Utility.RandomMinMax(minBudget, maxBudget);
-                //Utility.WriteLine(ConsoleColor.Magenta, String.Format("Creating Random Item: {0}, BUDGET: {1}", item.GetType().Name, budget));
-                GenerateRandomItem(item, null, budget, luckChance, ReforgedPrefix.None, ReforgedSuffix.None);
-                //Utility.WriteLine(ConsoleColor.Green, String.Format("Total Weight: {0}", Imbuing.GetTotalWeight(item)));
+                GenerateRandomItem(item, null, budget, luck, ReforgedPrefix.None, ReforgedSuffix.None);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Called in DemonKnight.cs for forcing rad items
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="luck"></param>
+        /// <param name="artifact"></param>
+        /// <returns></returns>
+        public static bool GenerateRandomArtifactItem(Item item, int luck, int budget)
+        {
+            if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
+            {
+                GenerateRandomItem(item, null, budget, luck, ChooseRandomPrefix(item), ChooseRandomSuffix(item), artifact: true);
                 return true;
             }
             return false;
@@ -1282,10 +1422,10 @@ namespace Server.Items
 
         public static Item GenerateRandomItem(Mobile killer, BaseCreature creature)
         {
-			Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
+            Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
 
-            if(item != null)
-                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
+            if (item != null)
+                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), GetLuckForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
 
             return item;
         }
@@ -1297,7 +1437,7 @@ namespace Server.Items
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
-                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
+                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), GetLuckForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
                 return true;
             }
 
@@ -1308,176 +1448,323 @@ namespace Server.Items
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
-                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChanceForKiller(creature), prefix, suffix);
+                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), GetLuckForKiller(creature), prefix, suffix);
                 return true;
             }
             return false;
         }
 
-        public static void GenerateRandomItem(Item item, Mobile killer, int basebudget, int luckchance, ReforgedPrefix forcedprefix, ReforgedSuffix forcedsuffix)
+        /// <summary>
+        /// Called from TreasureMapChest.cs
+        /// </summary>
+        /// <param name="item">item to mutate</param>
+        /// <param name="luck">raw luck</param>
+        /// <param name="minBudget"></param>
+        /// <param name="maxBudget"></param>
+        /// <param name="map"></param>
+        /// <returns></returns>
+        public static bool GenerateRandomItem(Item item, int luck, int minBudget, int maxBudget, Map map)
         {
-            int luckbonus = 0;
-            int budgetBonus = 0;
+            if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
+            {
+                int budget = Utility.RandomMinMax(minBudget, maxBudget);
+                GenerateRandomItem(item, null, budget, luck, ReforgedPrefix.None, ReforgedSuffix.None, map);
+                return true;
+            }
+            return false;
+        }
 
-            if (killer != null)
-            {
-                luckbonus = killer.Luck;
-                if (killer.Map == Map.Felucca)
-                {
-                    luckbonus += RandomItemGenerator.FeluccaLuckBonus;
-                    budgetBonus += RandomItemGenerator.FeluccaBudgetBonus;
-                }
-            }
-            else
-            {
-                luckbonus = 240;
-            }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item">item to mutate</param>
+        /// <param name="killer">who killed the monster, if applicable</param>
+        /// <param name="basebudget">where to we start, regarding the difficulty of the monster we killed</param>
+        /// <param name="luckchance">raw luck</param>
+        /// <param name="forcedprefix"></param>
+        /// <param name="forcedsuffix"></param>
+        /// <param name="map"></param>
+        public static void GenerateRandomItem(Item item, Mobile killer, int basebudget, int luck, ReforgedPrefix forcedprefix, ReforgedSuffix forcedsuffix, Map map = null, bool artifact = false)
+        {
+            if (map == null && killer != null)
+                map = killer.Map;
 
             if (item != null)
-			{
-                // base budget range
-                int budget = Utility.RandomMinMax(basebudget - (basebudget / 4), basebudget);
+            {
+                int budget = basebudget;
+                int luckchance = LootPack.GetLuckChance(luck);
 
-                // Gives a rare chance for a high end item to drop on a low budgeted monster
-				if(Utility.RandomDouble() < (double)luckbonus / 2000.0)
-					budget += Utility.RandomMinMax(150, Math.Max(160, 400 - basebudget));
-
-                budget += budgetBonus;
-
-                TryApplyRandomDisadvantage(item, ref budget);
-
-                if (budget > 900)
-                    budget = 900;
+                int mods = 0;
+                int perclow = 0;
+                int perchigh = 0;
 
                 bool powerful = budget >= 550;
 
-				ReforgedPrefix prefix = forcedprefix;
-				ReforgedSuffix suffix = forcedsuffix;
+                ReforgedPrefix prefix = forcedprefix;
+                ReforgedSuffix suffix = forcedsuffix;
 
-                if (!(item is BaseWeapon) && prefix == ReforgedPrefix.Vampiric)
-                    prefix = ReforgedPrefix.None;
-
-                if (!(item is BaseWeapon) && suffix == ReforgedSuffix.Vampire)
-                    suffix = ReforgedSuffix.None;
-
-				if(forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2100))
-					prefix = ChooseRandomPrefix(item);
-
-                if (forcedsuffix == ReforgedSuffix.None && budget >= Utility.Random(2100))
-					suffix = ChooseRandomSuffix(item, prefix);
-
-                int mods;
-                int perclow;
-                int perchigh;
-
-                if (!powerful)
+                if (artifact)
                 {
-                    if (prefix == ReforgedPrefix.None && suffix == ReforgedSuffix.None)
-                        mods = Utility.RandomMinMax(4, 5);
-                    else
-                        mods = Utility.RandomMinMax(2, 4);
-
-                    perchigh = Math.Max(20, Math.Min(500, budget) / mods);
-                    perclow = Math.Max(10, perchigh / 3);
+                    ChooseArtifactMods(item, budget, out mods, out perclow, out perchigh);
                 }
                 else
                 {
-                    int maxmods = Math.Min(9, budget / Utility.RandomMinMax(100, 140));
-                    int minmods = Math.Max(5, maxmods - 1);
-                    mods = Utility.RandomMinMax(minmods, maxmods);
+                    int budgetBonus = 0;
 
-                    perchigh = 100;
-                    perclow = Math.Max(50, (budget / 2) / mods);
+                    if (killer != null || luck > 0)
+                    {
+                        if (map != null && map.Rules == MapRules.FeluccaRules)
+                        {
+                            luck += RandomItemGenerator.FeluccaLuckBonus;
+                            budgetBonus = RandomItemGenerator.FeluccaBudgetBonus;
+                        }
+                        else
+                        {
+                            luck += 240;
+                        }
+                    }
+
+                    int divisor = GetDivisor(basebudget);
+
+                    double perc = 0.0;
+                    double highest = 0.0;
+                    
+                    for (int i = 0; i < 1 + (luck / 600); i++)
+                    {
+                        perc = (100.0 - Math.Sqrt(Utility.RandomMinMax(0, 10000))) / 100.0;
+
+                        if (perc > highest)
+                            highest = perc;
+                    }
+
+                    perc = highest;
+
+                    if (perc > 1.0) perc = 1.0;
+                    int toAdd = Math.Min(500, RandomItemGenerator.MaxAdjustedBudget - basebudget);
+
+                    budget = Utility.RandomMinMax(basebudget - (basebudget / divisor), (int)(basebudget + (toAdd * perc))) + budgetBonus;
+
+                    // Gives a rare chance for a high end item to drop on a low budgeted monster
+                    if (luck > 0 && budget <= 550 && LootPack.CheckLuck(luckchance / 6))
+                    {
+                        budget = Utility.RandomMinMax(600, 1150);
+                    }
+
+                    budget = Math.Min(RandomItemGenerator.MaxAdjustedBudget, budget);
+                    budget = Math.Max(RandomItemGenerator.MinAdjustedBudget, budget);
+
+                    if (!(item is BaseWeapon) && prefix == ReforgedPrefix.Vampiric)
+                        prefix = ReforgedPrefix.None;
+
+                    if (!(item is BaseWeapon) && suffix == ReforgedSuffix.Vampire)
+                        suffix = ReforgedSuffix.None;
+
+                    if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix != ReforgedSuffix.Minax)
+                        prefix = ChooseRandomPrefix(item);
+
+                    if (forcedsuffix == ReforgedSuffix.None && budget >= Utility.Random(2700))
+                        suffix = ChooseRandomSuffix(item, prefix);
+
+                    if (suffix == ReforgedSuffix.Minax)
+                        item.Hue = 1157;
+
+                    if (!powerful)
+                    {
+                        mods = Math.Max(1, GetProperties(5));
+
+                        perchigh = Math.Max(50, Math.Min(500, budget) / mods);
+                        perclow = Math.Max(20, perchigh / 3);
+                    }
+                    else
+                    {
+                        int maxmods = Math.Max(5, Math.Min(RandomItemGenerator.MaxProps - 1, (int)Math.Ceiling((double)budget / (double)Utility.RandomMinMax(100, 140))));
+                        int minmods = Math.Max(4, maxmods - 4);
+
+                        mods = Math.Max(minmods, GetProperties(maxmods));
+
+                        perchigh = 100;
+                        perclow = Utility.RandomMinMax(61, 71);
+                    }
+
+                    if (perchigh > 100) perchigh = 100;
+                    if (perclow < 10) perclow = 10;
+                    if (perclow > 80) perclow = 80;
                 }
 
-                if (perchigh > 100)
-                    perchigh = 100;
-
-                if (perclow < 10)
-                    perclow = 10;
+                if (mods < RandomItemGenerator.MaxProps - 1 && LootPack.CheckLuck(luckchance))
+                    mods++;
 
                 ApplyReforgedProperties(item, prefix, suffix, false, budget, perclow, perchigh, mods, luckchance);
-			}
+
+                int addonbudget = TryApplyRandomDisadvantage(item);
+
+                if (addonbudget > 0)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        ApplyRunicAttributes(item, perclow, perchigh, ref addonbudget, i, luckchance);
+
+                        if (addonbudget <= 0 || mods + (i + 1) >= RandomItemGenerator.MaxProps)
+                            break;
+                    }
+                }
+
+                NegativeAttributes neg = GetNegativeAttributes(item);
+
+                if (neg != null && item is IDurability && (neg.Antique == 1 || neg.Brittle == 1 || item is BaseJewel))
+                {
+                    ((IDurability)item).MaxHitPoints = 255;
+                    ((IDurability)item).HitPoints = 255;
+                }
+
+                ApplyItemPower(item, false);
+            }
+        }
+
+        public static int GetProperties(int max)
+        {
+            if (max > RandomItemGenerator.MaxProps - 1)
+                max = RandomItemGenerator.MaxProps - 1;
+
+            int p0 = 0, p1 = 0, p2 = 0, p3 = 0, p4 = 0, p5 = 0, p6 = 0, p7 = 0, p8 = 0, p9 = 0, p10 = 0, p11 = 0;
+
+            switch (max)
+            {
+                case 1: p0 = 3; p1 = 1; break;
+                case 2: p0 = 6; p1 = 3; p2 = 1; break;
+                case 3: p0 = 10; p1 = 6; p2 = 3; p3 = 1; break;
+                case 4: p0 = 16; p1 = 12; p2 = 6; p3 = 5; p4 = 1; break;
+                case 5: p0 = 30; p1 = 25; p2 = 20; p3 = 15; p4 = 9; p5 = 1; break;
+                case 6: p0 = 35; p1 = 30; p2 = 25; p3 = 20; p4 = 15; p5 = 9; p6 = 1; break;
+                case 7: p0 = 40; p1 = 35; p2 = 30; p3 = 25; p4 = 20; p5 = 15; p6 = 9; p7 = 1; break;
+                case 8: p0 = 50; p1 = 40; p2 = 35; p3 = 30; p4 = 25; p5 = 20; p6 = 15; p7 = 9; p8 = 1; break;
+                case 9: p0 = 70; p1 = 55; p2 = 45; p3 = 35; p4 = 30; p5 = 25; p6 = 20; p7 = 15; p8 = 9; p9 = 1; break;
+                case 10: p0 = 90; p1 = 70; p2 = 55; p3 = 45; p4 = 40; p5 = 35; p6 = 25; p7 = 15; p8 = 10; p9 = 5; p10 = 1; break;
+            }
+
+            int pc = p0 + p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11;
+
+            int rnd = Utility.Random(pc);
+
+            if (rnd < p10)
+                return 10;
+            else
+                rnd -= p10;
+
+            if (rnd < p9)
+                return 9;
+            else
+                rnd -= p9;
+
+            if (rnd < p8)
+                return 8;
+            else
+                rnd -= p8;
+
+            if (rnd < p7)
+                return 7;
+            else
+                rnd -= p7;
+
+            if (rnd < p6)
+                return 6;
+            else
+                rnd -= p6;
+
+            if (rnd < p5)
+                return 5;
+            else
+                rnd -= p5;
+
+            if (rnd < p4)
+                return 4;
+            else
+                rnd -= p4;
+
+            if (rnd < p3)
+                return 3;
+            else
+                rnd -= p3;
+
+            if (rnd < p2)
+                return 2;
+            else
+                rnd -= p2;
+
+            if (rnd < p1)
+                return 1;
+
+            return 0;
+        }
+
+        private static void ChooseArtifactMods(Item item, int budget, out int mods, out int perclow, out int perchigh)
+        {
+            int maxmods = Math.Min(10, budget / 120);
+            mods = Utility.RandomMinMax(6, maxmods);
+
+            perchigh = 100;
+            perclow = item is BaseShield ? 100 : 80;
+        }
+
+        private static int GetDivisor(int basebudget)
+        {
+            if (basebudget < 400)
+                return 5;
+
+            if (basebudget < 550)
+                return 4;
+
+            if (basebudget < 650)
+                return 3;
+
+            return 2;
+        }
+
+        public static int GetLuckForKiller(BaseCreature dead)
+        {
+            Mobile highest = dead.GetHighestDamager();
+
+            if (highest != null)
+            {
+                return highest is PlayerMobile ? ((PlayerMobile)highest).RealLuck : highest.Luck;
+            }
+
+            return 0;
         }
 
         private static int[] m_Standard = new int[] { 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12 };
         private static int[] m_Weapon = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-		
-		public static ReforgedPrefix ChooseRandomPrefix(Item item)
-		{
+
+        public static ReforgedPrefix ChooseRandomPrefix(Item item)
+        {
             if (item is BaseWeapon)
                 return (ReforgedPrefix)m_Weapon[Utility.Random(m_Weapon.Length)];
 
             return (ReforgedPrefix)m_Standard[Utility.Random(m_Standard.Length)];
-		}
+        }
 
         public static ReforgedSuffix ChooseRandomSuffix(Item item)
         {
             return ChooseRandomSuffix(item, ReforgedPrefix.None);
         }
 
-		public static ReforgedSuffix ChooseRandomSuffix(Item item, ReforgedPrefix prefix)
-		{
+        public static ReforgedSuffix ChooseRandomSuffix(Item item, ReforgedPrefix prefix)
+        {
             int random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
 
-            while((int)prefix != 0 && random == (int)prefix)
+            while ((int)prefix != 0 && random == (int)prefix)
                 random = item is BaseWeapon ? m_Weapon[Utility.Random(m_Weapon.Length)] : m_Standard[Utility.Random(m_Standard.Length)];
+
+            if (random == 13 || random == 14)
+                random = 50;
 
             return (ReforgedSuffix)random;
 
-		}
-		
+        }
+
         public static int GetDifficultyFor(BaseCreature bc)
-		{
-            if (bc == null)
-                return 100;
-
-			double val = (bc.HitsMax * 1.6) + bc.StamMax + bc.ManaMax;
-
-			val += bc.SkillsTotal / 10;
-
-			if ( val > 600 )
-				val = 600 + (int)((val - 600) * (3.0 / 11));
-
-			if ( IsSpellCastingCreature(bc) )
-				val += 100;
-
-            if ( bc.HasBreath )
-				val += 100;
-
-            if (bc.PoisonImmune != null)
-				val += 100;
-
-			val += BaseInstrument.GetPoisonLevel( bc ) * 20;
-
-			val /= 5;
-
-			if (bc.IsParagon )
-				val += 50.0;
-
-			if(val > 400) val = 400;
-
-			val *= 2;
-
-			return (int)val;
-		}
-
-        private static bool IsSpellCastingCreature(BaseCreature bc)
         {
-            AIType type = bc.AI;
-
-            switch (type) {
-                default: return false;
-                case AIType.AI_Mage: return bc.Skills[SkillName.Magery].Value >= 10;
-                //case AIType.AI_Necro: return bc.Skills[SkillName.Necromancy].Value >= 10;
-                case AIType.AI_NecroMage: return bc.Skills[SkillName.Necromancy].Value >= 10;
-                case AIType.AI_Spellweaving: return bc.Skills[SkillName.Spellweaving].Value >= 10;
-                //case AIType.AI_Paladin: return bc.Skills[SkillName.Chivalry].Value >= 10;
-                case AIType.AI_Mystic: return bc.Skills[SkillName.Mysticism].Value >= 10;
-                case AIType.AI_Spellbinder: return bc.Skills[SkillName.Magery].Value >= 10;
-                case AIType.AI_Ninja: return bc.Skills[SkillName.Ninjitsu].Value >= 10;
-                case AIType.AI_Samurai: return bc.Skills[SkillName.Bushido].Value >= 10;
-            }
+            return RandomItemGenerator.GetDifficultyFor(bc);
         }
 
         /* LegendaryArtifact:
@@ -1516,173 +1803,186 @@ namespace Server.Items
          * Minor Magic Item
          * None: most common: (95%)
          * Prized/Antique/Unlucky: Uncommon
-         */ 
+         */
 
-        private static void TryApplyRandomDisadvantage(Item item, ref int budget)
+        private static int TryApplyRandomDisadvantage(Item item)
         {
-            AosAttributes attrs = null;
-            NegativeAttributes neg = null;
+            AosAttributes attrs = GetAosAttributes(item);
+            NegativeAttributes neg = GetNegativeAttributes(item);
 
-            if (item is BaseWeapon)
+            if (attrs == null || neg == null)
+                return 0;
+
+            int max = Imbuing.GetMaxWeight(item);
+            double chance = Utility.RandomDouble();
+
+            ItemPower power = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), false);
+
+            switch (power)
             {
-                attrs = ((BaseWeapon)item).Attributes;
-                neg = ((BaseWeapon)item).NegativeAttributes;
-            }
-            else if (item is BaseArmor)
-            {
-                attrs = ((BaseArmor)item).Attributes;
-                neg = ((BaseArmor)item).NegativeAttributes;
-            }
-            else if (item is BaseJewel)
-            {
-                attrs = ((BaseJewel)item).Attributes;
-                neg = ((BaseJewel)item).NegativeAttributes;
-            }
-            else if (item is BaseClothing)
-            {
-                attrs = ((BaseClothing)item).Attributes;
-                neg = ((BaseClothing)item).NegativeAttributes;
-            }
-
-            if (budget < 150) // minor magic
-            {
-                if (.99 > Utility.RandomDouble())
-                    return;
-
-                switch (Utility.Random(3))
-                {
-                    case 0: neg.Prized = 1; break;
-                    case 1: neg.Antique = 1; break;
-                    case 2: attrs.Luck = -100; break;
-                }
-
-                budget += 100;
-            }
-            else if (budget < 225) // lesser magic
-            {
-                if (.80 > Utility.RandomDouble())
-                    return;
-
-                switch (Utility.Random(3))
-                {
-                    case 0: neg.Prized = 1; break;
-                    case 1: neg.Antique = 1; break;
-                    case 2: attrs.Luck = -100; break;
-                }
-
-                budget += 100;
-            }
-            else if (budget < 350) // greater magic
-            {
-                if (.60 > Utility.RandomDouble())
-                    return;
-
-                if (.85 > Utility.RandomDouble())
-                {
-                    if (Utility.RandomBool())
-                        neg.Prized = 1;
-                    else
-                        attrs.Luck = -100;
-
-                    budget += 100;
-                }
-                else
-                {
-                    if (Utility.RandomBool())
-                        neg.Antique = 1;
-                    else
-                        neg.Brittle = 1;
-
-                    budget += 150;
-                }
-
-            }
-            else if (budget < 500) // major magic
-            {
-                if (.33 > Utility.RandomDouble())
-                    return;
-
-                if (.5 > Utility.RandomDouble())
-                {
-                    neg.Prized = 1;
-                    budget += 100;
-                }
-                else if (.9 > Utility.RandomDouble())
-                {
-                    if (Utility.RandomBool())
+                default:
+                    return 0;
+                case ItemPower.Lesser: // lesser magic
                     {
-                        neg.Antique = 1;
-                        budget += 150;
+                        if (.95 >= chance)
+                            return 0;
+
+                        switch (Utility.Random(8))
+                        {
+                            case 0: neg.Prized = 1; break;
+                            case 1: neg.Antique = 1; break;
+                            case 2:
+                            case 3: neg.Massive = 1; break;
+                            case 4:
+                            case 5: neg.Unwieldly = 1; break;
+                            case 6:
+                            case 7: attrs.Luck = -100; break;
+                        }
+
+                        return 100;
                     }
-                    else
+                case ItemPower.Greater:// greater magic
                     {
-                        attrs.Luck = -100;
-                        budget += 100;
+                        if (.75 >= chance)
+                            return 0;
+
+                        chance = Utility.RandomDouble();
+
+                        if (.75 > chance)
+                        {
+                            switch (Utility.Random(8))
+                            {
+                                case 0: neg.Prized = 1; break;
+                                case 1: neg.Antique = 1; break;
+                                case 2:
+                                case 3: neg.Massive = 1; break;
+                                case 4:
+                                case 5: neg.Unwieldly = 1; break;
+                                case 6:
+                                case 7: attrs.Luck = -100; break;
+                            }
+
+                            return 100;
+                        }
+                        else if (.5 > chance)
+                        {
+                            if (Utility.RandomBool())
+                                neg.Prized = 1;
+                            else
+                                attrs.Luck = -100;
+
+                            return 100;
+                        }
+                        else
+                        {
+                            if (Utility.RandomBool())
+                                neg.Antique = 1;
+                            else
+                                neg.Brittle = 1;
+
+                            return 150;
+                        }
+
                     }
-                }
-                else
-                {
-                    neg.Brittle = 1;
-                    budget += 150;
-                }
-            }
-            else if (budget < 650) // lesser arty
-            {
-                if (0.01 > Utility.RandomDouble())
-                    return;
+                case ItemPower.Major: // major magic
+                    {
+                        if (.50 >= chance)
+                            return 0;
 
-                if (0.5 > Utility.RandomDouble())
-                {
-                    neg.Prized = 1;
-                    budget += 100;
-                }
-                else if (0.9 > Utility.RandomDouble())
-                {
-                    neg.Antique = 1;
-                    budget += 150;
-                }
-                else
-                {
-                    neg.Brittle = 1;
-                    budget += 150;
-                }
-            }
-            else if (budget < 800) // greater arty
-            {
-                if (0.85 > Utility.RandomDouble())
-                {
-                    if (Utility.RandomBool())
-                        neg.Antique = 1;
-                    else
-                        neg.Prized = 1;
+                        chance = Utility.RandomDouble();
 
-                    budget += 100;
-                }
-                else
-                {
-                    neg.Brittle = 1;
-                    budget += 150;
-                }
-            }
-            else
-            {
-                if (0.85 > Utility.RandomDouble())
-                {
-                    neg.Antique = 1;
-                    budget += 100;
-                }
-                else
-                {
-                    neg.Brittle = 1;
-                    budget += 150;
-                }
-            }
+                        if (.4 > chance)
+                        {
+                            neg.Prized = 1;
+                            return 100;
+                        }
+                        else if (.6 > chance)
+                        {
+                            switch (Utility.Random(8))
+                            {
+                                case 0: neg.Prized = 1; break;
+                                case 1: neg.Antique = 1; break;
+                                case 2:
+                                case 3: neg.Massive = 1; break;
+                                case 4:
+                                case 5: neg.Unwieldly = 1; break;
+                                case 6:
+                                case 7: attrs.Luck = -100; break;
+                            }
 
-            //TODO: Verify this
-            if (item is IDurability && (neg.Antique == 1 || neg.Brittle == 1 || item is BaseJewel))
-            {
-                ((IDurability)item).MaxHitPoints = 255;
-                ((IDurability)item).HitPoints = 255;
+                            return 100;
+                        }
+                        else if (.9 > chance)
+                        {
+                            neg.Antique = 1;
+                            return 150;
+                        }
+                        else
+                        {
+                            neg.Brittle = 1;
+                            return 150;
+                        }
+                    }
+                case ItemPower.LesserArtifact: // lesser arty
+                    {
+                        if (0.01 > chance)
+                            return 0;
+
+                        chance = Utility.RandomDouble();
+
+                        if (0.5 > chance)
+                        {
+                            neg.Prized = 1;
+                            return 100;
+                        }
+                        else if (0.9 > chance)
+                        {
+                            neg.Antique = 1;
+                            return 150;
+                        }
+                        else
+                        {
+                            neg.Brittle = 1;
+                            return 150;
+                        }
+                    }
+                case ItemPower.GreaterArtifact: // greater arty
+                    {
+                        if (0.001 > Utility.RandomDouble())
+                            return 0;
+
+                        if (0.85 > chance)
+                        {
+                            if (Utility.RandomBool())
+                                neg.Antique = 1;
+                            else
+                                neg.Prized = 1;
+
+                            return 100;
+                        }
+                        else
+                        {
+                            neg.Brittle = 1;
+                            return 150;
+                        }
+                    }
+                case ItemPower.MajorArtifact:
+                case ItemPower.LegendaryArtifact:
+                    {
+                        if (0.0001 > Utility.RandomDouble())
+                            return 0;
+
+                        if (0.85 > chance)
+                        {
+                            neg.Antique = 1;
+                            return 100;
+                        }
+                        else
+                        {
+                            neg.Brittle = 1;
+                            return 150;
+                        }
+                    }
             }
         }
 
@@ -1698,53 +1998,54 @@ namespace Server.Items
                 ((BaseClothing)item).BlockRepair = true;
         }
 
-        private static void ApplyItemPower(Item item, bool playermade)
+        public static void ApplyItemPower(Item item, bool playermade)
         {
             if (item is BaseWeapon)
-                ((BaseWeapon)item).ItemPower = GetItemPower(item, playermade);
+                ((BaseWeapon)item).ItemPower = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
             else if (item is BaseArmor)
-                ((BaseArmor)item).ItemPower = GetItemPower(item, playermade);
+                ((BaseArmor)item).ItemPower = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
             else if (item is BaseJewel)
-                ((BaseJewel)item).ItemPower = GetItemPower(item, playermade);
+                ((BaseJewel)item).ItemPower = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
             else if (item is BaseClothing)
-                ((BaseClothing)item).ItemPower = GetItemPower(item, playermade);
+                ((BaseClothing)item).ItemPower = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
         }
 
-        public static ItemPower GetItemPower(Item item, bool playermade)
+        public static ItemPower GetItemPower(Item item, int weight, int totalMods, bool playermade)
         {
-            int max = Imbuing.GetMaxWeight(item);
-            int weight = Imbuing.GetTotalWeight(item);
-            int totalMods = Imbuing.GetTotalMods(item);
+            // pre-arty uses max imbuing weight + 100
+            // arty ranges from pre-arty to a flat 1200
+            double preArty = Imbuing.GetMaxWeight(item) + 100;
+            double arty = 1200 - preArty;
 
             if (totalMods == 0)
                 return ItemPower.None;
 
-            if (weight < 250 && totalMods <= 4)
+            if (weight < preArty * .4)
                 return playermade ? ItemPower.ReforgedMinor : ItemPower.Minor;
 
-            if (weight < 250)
+            if (weight < preArty * .6)
                 return playermade ? ItemPower.ReforgedLesser : ItemPower.Lesser;
 
-            if (weight < max && totalMods <= 4)
+            if (weight < preArty * .8)
                 return playermade ? ItemPower.ReforgedGreater : ItemPower.Greater;
 
-            if (weight < max)
+            if (weight <= preArty)
                 return playermade ? ItemPower.ReforgedGreater : ItemPower.Major;
 
-            if (weight >= max && weight < max + 100)
+            if (weight < preArty + (arty * .2))
                 return playermade ? ItemPower.ReforgedMajor : ItemPower.LesserArtifact;
 
-            if (weight < 700)
+            if (weight < preArty + (arty * .4))
                 return playermade ? ItemPower.ReforgedMajor : ItemPower.GreaterArtifact;
 
-            if (totalMods < 6 && !playermade)
+            if (weight < preArty + (arty * .7) || totalMods <= 5)
                 return ItemPower.MajorArtifact;
 
             return playermade ? ItemPower.ReforgedLegendary : ItemPower.LegendaryArtifact;
         }
-		
-		private static bool ApplyRunicAttributes(Item item, int perclow, int perchigh, ref int budget, int idx, int luckchance)
-		{
+
+        private static bool ApplyRunicAttributes(Item item, int perclow, int perchigh, ref int budget, int idx, int luckchance)
+        {
             List<object> attrList = null;
             AosWeaponAttributes wepattrs = GetAosWeaponAttributes(item);
             AosAttributes aosattrs = GetAosAttributes(item);
@@ -1752,44 +2053,44 @@ namespace Server.Items
             AosSkillBonuses skillbonuses = GetAosSkillBonuses(item);
             AosElementAttributes resistattrs = GetElementalAttributes(item);
 
-			if(item is BaseWeapon)
-			{
+            if (item is BaseWeapon)
+            {
                 if (item is BaseRanged)
                     attrList = new List<object>(m_RangedWeaponList);
                 else
                     attrList = new List<object>(m_MeleeWeaponList);
-			}
-			else if (item is BaseShield)
-			{
+            }
+            else if (item is BaseShield)
+            {
                 attrList = new List<object>(m_ShieldList);
-			}
-			else if (item is BaseArmor)
-			{
+            }
+            else if (item is BaseArmor)
+            {
                 attrList = new List<object>(m_ArmorList);
-			}
-			else if (item is BaseClothing)
-			{
+            }
+            else if (item is BaseClothing)
+            {
                 attrList = new List<object>(m_ArmorList);
-			}
-			else if (item is BaseJewel)
-			{
+            }
+            else if (item is BaseJewel)
+            {
                 attrList = new List<object>(m_JewelList);
-			}
-			else 
-				return false;
+            }
+            else
+                return false;
 
             int random = 0;
             int start = budget;
 
-			while(start == budget && budget > 0 && idx < 25)
-			{
+            while (start == budget && budget > 0 && idx < 25)
+            {
                 if (attrList.Count == 0)
                     return false;
 
                 random = Utility.Random(attrList.Count);
                 object attr = attrList[random];
-				int[] minmax = new int[] { 1, 1 };
-				int value = 1;
+                int[] minmax = new int[] { 1, 1 };
+                int value = 1;
 
                 if (CheckAttribute(item, attr))
                 {
@@ -1797,21 +2098,21 @@ namespace Server.Items
                     continue;
                 }
 
-				if(wepattrs != null && attr is AosWeaponAttribute[])
-				{
-					int ran = Utility.Random(((AosWeaponAttribute[])attr).Length);
-					
-					while(wepattrs[(AosWeaponAttribute)ran] != 0)
-						ran = Utility.Random(((AosWeaponAttribute[])attr).Length);
+                if (wepattrs != null && attr is AosWeaponAttribute[])
+                {
+                    int ran = Utility.Random(((AosWeaponAttribute[])attr).Length);
+
+                    while (wepattrs[(AosWeaponAttribute)ran] != 0)
+                        ran = Utility.Random(((AosWeaponAttribute[])attr).Length);
 
                     AosWeaponAttribute[] list = attr as AosWeaponAttribute[];
 
-					attr = list[ran];
-				}
-				
-				if(aosattrs != null && attr is AosAttribute)
-				{
-					minmax = Imbuing.GetPropRange((AosAttribute)attr);
+                    attr = list[ran];
+                }
+
+                if (aosattrs != null && attr is AosAttribute)
+                {
+                    minmax = Imbuing.GetPropRange((AosAttribute)attr);
 
                     int min = minmax[0];
                     int max = minmax[1];
@@ -1819,48 +2120,48 @@ namespace Server.Items
                     if (item is BaseJewel && (AosAttribute)attr == AosAttribute.WeaponDamage)
                         max = 25;
 
-                    value = CalculateValue(attr, min, max, perclow, perchigh, ref budget, luckchance);
+                    value = CalculateValue(attr, min, max, perclow, perchigh, ref budget, luckchance, true);
 
                     if (aosattrs[(AosAttribute)attr] == 0)
                     {
                         aosattrs[(AosAttribute)attr] = value;
-                        budget -= Imbuing.GetIntensityForAttribute((AosAttribute)attr, -1, value);
+                        budget -= Imbuing.GetIntensityForAttribute(item, (AosAttribute)attr, -1, value);
 
                         if ((AosAttribute)attr == AosAttribute.SpellChanneling && aosattrs[AosAttribute.CastSpeed] > -1)
                             aosattrs[AosAttribute.CastSpeed]--;
                     }
-				}
-				else if (wepattrs != null && attr is AosWeaponAttribute)
-				{
-                    minmax = Imbuing.GetPropRange((AosWeaponAttribute)attr);
-                    value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance);
+                }
+                else if (wepattrs != null && attr is AosWeaponAttribute)
+                {
+                    minmax = Imbuing.GetPropRange(item, (AosWeaponAttribute)attr);
+                    value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance, true);
 
                     if (wepattrs[(AosWeaponAttribute)attr] == 0)
                     {
                         wepattrs[(AosWeaponAttribute)attr] = value;
-                        budget -= Imbuing.GetIntensityForAttribute((AosWeaponAttribute)attr, -1, value);
+                        budget -= Imbuing.GetIntensityForAttribute(item, (AosWeaponAttribute)attr, -1, value);
                     }
-				}
-				else if (armorattrs != null && attr is AosArmorAttribute)
-				{
+                }
+                else if (armorattrs != null && attr is AosArmorAttribute)
+                {
                     minmax = Imbuing.GetPropRange((AosArmorAttribute)attr);
-                    value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance);
+                    value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance, true);
 
                     if (armorattrs[(AosArmorAttribute)attr] == 0)
                     {
                         armorattrs[(AosArmorAttribute)attr] = value;
-                        budget -= Imbuing.GetIntensityForAttribute((AosArmorAttribute)attr, -1, value);
+                        budget -= Imbuing.GetIntensityForAttribute(item, (AosArmorAttribute)attr, -1, value);
                     }
-				}
+                }
                 else if (attr is AosElementAttribute && (resistattrs != null || item is BaseArmor))
                 {
                     minmax = Imbuing.GetPropRange((AosElementAttribute)attr);
-                    value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance);
+                    value = CalculateValue(attr, minmax[0], minmax[1], perclow, perchigh, ref budget, luckchance, true);
 
                     if (resistattrs != null && resistattrs[(AosElementAttribute)attr] == 0)
                     {
                         resistattrs[(AosElementAttribute)attr] = value;
-                        budget -= Imbuing.GetIntensityForAttribute((AosElementAttribute)attr, -1, value);
+                        budget -= Imbuing.GetIntensityForAttribute(item, (AosElementAttribute)attr, -1, value);
                     }
                     else if (item is BaseArmor)
                     {
@@ -1875,22 +2176,29 @@ namespace Server.Items
                             case AosElementAttribute.Energy: armor.EnergyBonus = value; break;
                         }
 
-                        budget -= Imbuing.GetIntensityForAttribute((AosElementAttribute)attr, -1, value);
+                        budget -= Imbuing.GetIntensityForAttribute(item, (AosElementAttribute)attr, -1, value);
                     }
                 }
                 else if (attr is string)
                 {
                     string str = attr as string;
 
-                    if (item is BaseWeapon && str == "Slayer" && ((BaseWeapon)item).Slayer == SlayerName.None)
+                    if (item is BaseWeapon)
                     {
-                        SlayerName name = BaseRunicTool.GetRandomSlayer();
-                        int weight = Imbuing.GetIntensityForAttribute(name, -1, value);
-
-                        if (weight <= budget)
+                        if (str == "Slayer" && ((BaseWeapon)item).Slayer == SlayerName.None)
                         {
-                            ((BaseWeapon)item).Slayer = name;
-                            budget -= weight;
+                            SlayerName name = BaseRunicTool.GetRandomSlayer();
+                            int weight = Imbuing.GetIntensityForAttribute(item, name, -1, value);
+
+                            if (weight <= budget)
+                            {
+                                ((BaseWeapon)item).Slayer = name;
+                                budget -= weight;
+                            }
+                        }
+                        else if (str == "ElementalDamage")
+                        {
+                            BaseRunicTool.ApplyElementalDamage((BaseWeapon)item, perclow, perchigh);
                         }
                     }
                     else if (skillbonuses != null && str == "SkillBonus")
@@ -1913,21 +2221,21 @@ namespace Server.Items
                                 found = (skillbonuses.GetValues(i, out check, out bonus) && check == sk);
                         } while (found);
 
-                        value = CalculateValue(sk, 1, 15, perclow, perchigh, ref budget, luckchance);
+                        value = CalculateValue(sk, 1, 15, perclow, perchigh, ref budget, luckchance, true);
                         skillbonuses.SetValues(skillIdx, sk, value);
-                        budget -= Imbuing.GetIntensityForAttribute(sk, -1, value);
+                        budget -= Imbuing.GetIntensityForAttribute(item, sk, -1, value);
                     }
                 }
 
                 attrList.RemoveAt(random);
                 idx++;
-			}
+            }
 
-            if(attrList != null)
+            if (attrList != null)
                 attrList.Clear();
 
-			return true;
-		}
+            return true;
+        }
 
         public static bool CheckAttribute(Item item, object attr)
         {
@@ -2000,12 +2308,6 @@ namespace Server.Items
             if (item is BaseClothing)
                 return ((BaseClothing)item).ClothingAttributes;
 
-            //if (item is BaseTalisman)
-            //    return ((BaseTalisman)item).ArmorAttributes;
-
-            //if (item is BaseJewel)
-            //    return ((BaseJewel)item).ArmorAttributes;
-
             return null;
         }
 
@@ -2017,6 +2319,19 @@ namespace Server.Items
             if (item is Glasses)
                 return ((Glasses)item).WeaponAttributes;
 
+            if (item is GargishGlasses)
+                return ((GargishGlasses)item).WeaponAttributes;
+
+            if(item is ElvenGlasses)
+                return ((ElvenGlasses)item).WeaponAttributes;
+            return null;
+        }
+
+        public static ExtendedWeaponAttributes GetExtendedWeaponAttributes(Item item)
+        {
+            if (item is BaseWeapon)
+                return ((BaseWeapon)item).ExtendedWeaponAttributes;
+
             return null;
         }
 
@@ -2025,22 +2340,31 @@ namespace Server.Items
             if (item is BaseClothing)
                 return ((BaseClothing)item).Resistances;
 
-            if (item is BaseJewel)
+            else if (item is BaseJewel)
                 return ((BaseJewel)item).Resistances;
+
+            else if (item is BaseWeapon)
+                return ((BaseWeapon)item).AosElementDamages;
+
+            else if (item is BaseQuiver)
+                return ((BaseQuiver)item).Resistances;
 
             return null;
         }
 
         public static SAAbsorptionAttributes GetSAAbsorptionAttributes(Item item)
         {
-            if (item is BaseArmor) 
+            if (item is BaseArmor)
                 return ((BaseArmor)item).AbsorptionAttributes;
 
-            else if (item is BaseJewel) 
+            else if (item is BaseJewel)
                 return ((BaseJewel)item).AbsorptionAttributes;
 
-            else if (item is BaseWeapon) 
+            else if (item is BaseWeapon)
                 return ((BaseWeapon)item).AbsorptionAttributes;
+
+            else if (item is BaseClothing)
+                return ((BaseClothing)item).SAAbsorptionAttributes;
 
             return null;
         }
@@ -2049,6 +2373,24 @@ namespace Server.Items
         {
             if (item is BaseJewel)
                 return ((BaseJewel)item).SkillBonuses;
+
+            else if (item is BaseWeapon)
+                return ((BaseWeapon)item).SkillBonuses;
+
+            else if (item is BaseArmor)
+                return ((BaseArmor)item).SkillBonuses;
+
+            else if (item is BaseTalisman)
+                return ((BaseTalisman)item).SkillBonuses;
+
+            else if (item is Spellbook)
+                return ((Spellbook)item).SkillBonuses;
+
+            else if (item is BaseQuiver)
+                return ((BaseQuiver)item).SkillBonuses;
+
+            else if (item is BaseClothing)
+                return ((BaseClothing)item).SkillBonuses;
 
             return null;
         }
@@ -2067,21 +2409,44 @@ namespace Server.Items
             if (item is BaseJewel)
                 return ((BaseJewel)item).NegativeAttributes;
 
+            if (item is BaseTalisman)
+                return ((BaseTalisman)item).NegativeAttributes;
+
+            if (item is Spellbook)
+                return ((Spellbook)item).NegativeAttributes;
+
             return null;
         }
-		
-		private static int ScaleAttribute(object o)
-		{
-			if(o is AosAttribute)
-			{
-				AosAttribute attr = (AosAttribute)o;
-				
-				if(attr == AosAttribute.Luck)
-					return 10;
-					
-				if(attr == AosAttribute.WeaponSpeed)
-					return 5;
-			}
+
+        public static int GetArtifactRarity(Item item)
+        {
+            if (item is BaseWeapon)
+                return ((BaseWeapon)item).ArtifactRarity;
+
+            if (item is BaseArmor)
+                return ((BaseArmor)item).ArtifactRarity;
+
+            if (item is BaseJewel)
+                return ((BaseJewel)item).ArtifactRarity;
+
+            if (item is BaseClothing)
+                return ((BaseClothing)item).ArtifactRarity;
+
+            return 0;
+        }
+
+        private static int ScaleAttribute(object o)
+        {
+            if (o is AosAttribute)
+            {
+                AosAttribute attr = (AosAttribute)o;
+
+                if (attr == AosAttribute.Luck)
+                    return 10;
+
+                if (attr == AosAttribute.WeaponSpeed)
+                    return 5;
+            }
             else if (o is AosArmorAttribute)
             {
                 AosArmorAttribute attr = (AosArmorAttribute)o;
@@ -2107,21 +2472,22 @@ namespace Server.Items
             }
             else if (o is SkillName)
                 return 5;
-			
-			return 1;
-		}
+
+            return 1;
+        }
 
         public static List<object> m_MeleeWeaponList;
         public static List<object> m_RangedWeaponList;
         public static List<object> m_ArmorList;
         public static List<object> m_JewelList;
         public static List<object> m_ShieldList;
-		
-		private static object[] m_WeaponBasic = new object[]
+
+        private static object[] m_WeaponBasic = new object[]
 		{
 			new AosWeaponAttribute[] { AosWeaponAttribute.HitMagicArrow, AosWeaponAttribute.HitHarm, AosWeaponAttribute.HitFireball, AosWeaponAttribute.HitLightning },// Hit spell
 			new AosWeaponAttribute[] { AosWeaponAttribute.HitPhysicalArea, AosWeaponAttribute.HitFireArea, AosWeaponAttribute.HitColdArea, AosWeaponAttribute.HitPoisonArea, AosWeaponAttribute.HitEnergyArea, },// hit area
 			"Slayer",
+            "ElementalDamage",
 			AosAttribute.WeaponDamage,
 			AosAttribute.DefendChance,
 			AosAttribute.CastSpeed,
@@ -2146,7 +2512,7 @@ namespace Server.Items
 
         private static object[] m_RangedStandard = new object[]
         {
-            //AosWeaponAttribute.BalancedWeapon,
+            //AosAttribute.BalancedWeapon,
             //AosWeaponAttribute.WeaponVelocity
         };
 
@@ -2155,8 +2521,8 @@ namespace Server.Items
             AosWeaponAttribute.UseBestSkill,
             AosWeaponAttribute.MageWeapon
         };
-		
-		private static object[] m_ArmorStandard = new object[]
+
+        private static object[] m_ArmorStandard = new object[]
 		{
 			AosAttribute.RegenHits,
 			AosAttribute.RegenStam,
@@ -2196,18 +2562,18 @@ namespace Server.Items
 			AosElementAttribute.Poison,
 			AosElementAttribute.Energy
 		};
-		
-		private static object[] m_ShieldStandard = new object[]
+
+        private static object[] m_ShieldStandard = new object[]
 		{
 			AosAttribute.SpellChanneling,
 			AosAttribute.DefendChance,
-			AosAttribute.AttackChance,
+			//AosAttribute.AttackChance,
 			AosAttribute.CastSpeed,
 			AosAttribute.ReflectPhysical,
 			AosArmorAttribute.LowerStatReq,
 		};
-		
-		private static object[] m_JewelStandard = new object[]
+
+        private static object[] m_JewelStandard = new object[]
 		{
 			AosElementAttribute.Physical,
 			AosElementAttribute.Fire,
@@ -2237,37 +2603,367 @@ namespace Server.Items
 
         #endregion
 
-        private static readonly SkillName[] m_Skills = new SkillName[]
+        #region Tables
+        #region All
+        public static int[][] DexIntTable = new int[][]
         {
-            SkillName.Swords,
-            SkillName.Fencing,
-            SkillName.Macing,
-            SkillName.Archery,
-            SkillName.Wrestling,
-            SkillName.Parry,
-            SkillName.Tactics,
-            SkillName.Anatomy,
-            SkillName.Healing,
-            SkillName.Magery,
-            SkillName.Meditation,
-            SkillName.EvalInt,
-            SkillName.MagicResist,
-            SkillName.AnimalTaming,
-            SkillName.AnimalLore,
-            SkillName.Veterinary,
-            SkillName.Musicianship,
-            SkillName.Provocation,
-            SkillName.Discordance,
-            SkillName.Peacemaking,
-            SkillName.Chivalry,
-            SkillName.Focus,
-            SkillName.Necromancy,
-            SkillName.Stealing,
-            SkillName.Stealth,
-            SkillName.SpiritSpeak,
-            SkillName.Bushido,
-            SkillName.Ninjitsu
+            new int[] { 3, 4, 4, 4, 5, 5, 5 },
+            new int[] { 4, 4, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+            new int[] { 4, 4, 5, 5, 5, 5, 5 },
+            new int[] { 4, 4, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
         };
+
+        public static int[][] LowerStatReqTable = new int[][]
+        {
+            new int[] { 60, 70, 80, 100, 100, 100, 100 },
+            new int[] { 80, 100, 100, 100, 100, 100, 100 },
+            new int[] { 100, 100, 100, 100, 100, 100, 100 },
+            new int[] { 70, 100, 100, 100, 100, 100, 100 },
+            new int[] { 80, 100, 100, 100, 100, 100, 100 },
+            new int[] { 100, 100, 100, 100, 100, 100, 100 },
+        };
+
+        public static int[][] SelfRepairTable = new int[][]
+        {
+            new int[] { 2, 4, 0, 0, 0, 0, 0 },
+            new int[] { 5, 5, 0, 0, 0, 0, 0 },
+            new int[] { 6, 7, 0, 0, 0, 0, 0 },
+            new int[] { 5, 5, 0, 0, 0, 0, 0 },
+            new int[] { 5, 5, 0, 0, 0, 0, 0 },
+            new int[] { 7, 7, 0, 0, 0, 0, 0 },
+        };
+
+        public static int[][] DurabilityTable = new int[][]
+        {
+            new int[] { 90, 100, 0, 0, 0, 0, 0 },
+            new int[] { 110, 140, 0, 0, 0, 0, 0 },
+            new int[] { 150, 150, 0, 0, 0, 0, 0 },
+            new int[] { 100, 140, 0, 0, 0, 0, 0 },
+            new int[] { 110, 140, 0, 0, 0, 0, 0 },
+            new int[] { 150, 150, 0, 0, 0, 0, 0 },
+        };
+
+        public static int[][] ResistTable = new int[][]
+        {
+            new int[] { 10, 15, 15, 15, 20, 20, 20 },
+            new int[] { 15, 15, 15, 20, 20, 20, 20 },
+            new int[] { 20, 20, 20, 20, 20, 20, 20 },
+            new int[] { 20, 20, 20, 20, 20, 20, 20 },
+            new int[] { 15, 15, 20, 20, 20, 20, 20 },
+            new int[] { 20, 20, 20, 20, 20, 20, 20 },
+        };
+
+        public static int[][] EaterTable = new int[][]
+        {
+            new int[] { 9, 12, 12, 15, 15, 15, 15 },
+            new int[] { 12, 15, 15, 15, 15, 15, 15 },
+            new int[] { 15, 15, 15, 15, 15, 15, 15 },
+            new int[] { 12, 15, 15, 15, 15, 15, 15 },
+            new int[] { 12, 15, 15, 15, 15, 15, 15 },
+            new int[] { 15, 15, 15, 15, 15, 15, 15 },
+        };
+        #endregion
+
+        #region Weapon Tables
+        // Hit magic, area, HLA
+        public static int[][] HitWeaponTable1 = new int[][]
+        {
+            new int[] { 30, 50, 50, 60, 70, 70, 70 },
+            new int[] { 50, 60, 70, 70, 70, 70, 70 },
+            new int[] { 70, 70, 70, 70, 70, 70, 70 },
+            new int[] {  },
+            new int[] { 50, 60, 70, 70, 70, 70, 70 },
+            new int[] { 70, 70, 70, 70, 70, 70, 70 },
+        };
+
+        // hit fatigue, mana drain, HLD
+        public static int[][] HitWeaponTable2 = new int[][]
+        {
+            new int[] { 30, 40, 50, 50, 60, 70, 70 },
+            new int[] { 50, 50, 50, 60, 70, 70, 70 },
+            new int[] { 50, 60, 70, 70, 70, 70, 70 },
+            new int[] {  },
+            new int[] { 50, 50, 50, 60, 70, 70, 70 },
+            new int[] { 70, 70, 70, 70, 70, 70, 70 },
+        };
+
+        public static int[][] WeaponVelocityTable = new int[][]
+        {
+            new int[] { 25, 35, 40, 40, 40, 45, 50 },
+            new int[] { 40, 40, 40, 45, 50, 50, 50 },
+            new int[] { 40, 45, 50, 50, 50, 50, 50 },
+            new int[] {  },
+            new int[] { 40, 40, 40, 45, 50, 50, 50 },
+            new int[] { 45, 50, 50, 50, 50, 50, 50 },
+        };
+
+        public static int[][] HitsAndManaLeechTable = new int[][]
+        {
+            new int[] { 15, 25, 25, 30, 35, 35, 35 },
+            new int[] { 25, 25, 30, 35, 35, 35, 35 },
+            new int[] { 30, 35, 35, 35, 35, 35, 35 },
+            new int[] {  },
+            new int[] { 25, 25, 30, 35, 35, 35, 35 },
+            new int[] { 35, 35, 35, 35, 35, 35, 35 },
+        };
+
+        public static int[][] HitStamLeechTable = new int[][]
+        {
+            new int[] { 30, 50, 50, 60, 70, 70, 70 },
+            new int[] { 50, 60, 70, 70, 70, 70, 70 },
+            new int[] { 70, 70, 70, 70, 70, 70, 70 },
+            new int[] {  },
+            new int[] { 50, 60, 70, 70, 70, 70, 70 },
+            new int[] { 70, 70, 70, 70, 70, 70, 70 },
+        };
+
+        public static int[][] LuckTable = new int[][]
+        {
+            new int[] { 80, 100, 100, 120, 140, 150, 150 },
+            new int[] { 100, 120, 140, 150, 150, 150, 150 },
+            new int[] { 130, 150, 150, 150, 150, 150, 150 },
+            new int[] { 100, 120, 140, 150, 150, 150, 150 },
+            new int[] { 100, 120, 140, 150, 150, 150, 150 },
+            new int[] { 150, 150, 150, 150, 150, 150, 150 },
+        };
+
+        public static int[][] MageWeaponTable = new int[][]
+        {
+            new int[] { 25, 20, 20, 20, 20, 15, 15 },
+            new int[] { 20, 20, 20, 15, 15, 15, 15 },
+            new int[] { 20, 15, 15, 15, 15, 15, 15 },
+            new int[] {  },
+            new int[] { 20, 20, 20, 15, 15, 15, 15 },
+            new int[] { 15, 15, 15, 15, 15, 15, 15 },
+        };
+
+        public static int[][] WeaponRegenTable = new int[][]
+        {
+            new int[] { 2, 3, 6, 6, 6, 6, 6 },
+            new int[] { 3, 6, 6, 6, 6, 6, 6 },
+            new int[] { 6, 6, 6, 6, 6, 9, 9 },
+            new int[] {  },
+            new int[] { 3, 6, 6, 6, 6, 6, 9 },
+            new int[] { 6, 9, 9, 9, 9, 9, 9 },
+        };
+
+        public static int[][] WeaponHitsTable = new int[][]
+        {
+            new int[] { 2, 3, 3, 3, 4, 4, 4 },
+            new int[] { 3, 3, 4, 4, 4, 4, 4 },
+            new int[] { 4, 4, 4, 4, 4, 4, 4 },
+            new int[] { },
+            new int[] { 3, 3, 4, 4, 4, 4, 4 },
+            new int[] { 4, 4, 4, 4, 4, 4, 4 },
+        };
+
+        public static int[][] WeaponStamManaLMCTable = new int[][]
+        {
+            new int[] { 2, 4, 4, 4, 5, 5, 5 },
+            new int[] { 4, 4, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+            new int[] { },
+            new int[] { 4, 4, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+        };
+
+        public static int[][] WeaponStrTable = new int[][]
+        {
+            new int[] { 2, 4, 4, 4, 5, 5, 5 },
+            new int[] { 4, 4, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+            new int[] {  },
+            new int[] { 4, 4, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+        };
+
+        public static int[][] WeaponHCITable = new int[][]
+        {
+            new int[] { 5, 10, 15, 15, 15, 20, 20 },
+            new int[] { 15, 15, 15, 20, 20, 20, 20 },
+            new int[] { 15, 20, 20, 20, 20, 20, 20 },
+            new int[] {  },
+            new int[] { 15, 15, 20, 20, 20, 20, 20 },
+            new int[] { 20, 20, 20, 20, 20, 20, 20 },
+        };
+
+        public static int[][] WeaponDCITable = new int[][]
+        {
+            new int[] { 10, 15, 15, 15, 20, 20, 20 },
+            new int[] { 15, 15, 20, 20, 20, 20, 20 },
+            new int[] { 20, 20, 20, 20, 20, 20, 20 },
+            new int[] {  },
+            new int[] { 15, 15, 20, 20, 20, 20, 20 },
+            new int[] { 20, 20, 20, 20, 20, 20, 20 },
+        };
+
+        public static int[][] WeaponWeaponDamage = new int[][]
+        {
+            new int[] { 30, 50, 50, 60, 70, 70, 70 },
+            new int[] { 50, 60, 70, 70, 70, 70, 70 },
+            new int[] { 70, 70, 70, 70, 70, 70, 70 },
+            new int[] {  },
+            new int[] { 50, 60, 70, 70, 70, 70, 70 },
+            new int[] { 70, 70, 70, 70, 70, 70, 70 },
+        };
+
+        public static int[][] WeaponEnhancePots = new int[][]
+        {
+            new int[] { 5, 10, 10, 10, 10, 15, 15 },
+            new int[] { 10, 10, 10, 15, 15, 15, 15 },
+            new int[] { 10, 15, 15, 15, 15, 15, 15 },
+            new int[] {  },
+            new int[] { 10, 10, 10, 15, 15, 15, 15 },
+            new int[] { 15, 15, 15, 15, 15, 15, 15 },
+        };
+
+        public static int[][] WeaponWeaponSpeedTable = new int[][]
+        {
+            new int[] { 20, 30, 30, 35, 40, 40, 40 },
+            new int[] { 30, 35, 40, 40, 40, 40, 40 },
+            new int[] { 35, 40, 40, 40, 40, 40, 40 },
+            new int[] {  },
+            new int[] { 30, 35, 40, 40, 40, 40, 40 },
+            new int[] { 40, 40, 40, 40, 40, 40, 40 },
+        };
+        #endregion
+
+        #region Ranged Weapons
+        public static int[][] RangedLuckTable = new int[][]
+        {
+            new int[] { 90, 120, 120, 140, 170, 170, 170 },
+            new int[] { 120, 140, 160, 170, 170, 170, 170 },
+            new int[] { 160, 170, 170, 170, 170, 170, 170 },
+            new int[] {  },
+            new int[] { 120, 140, 160, 170, 170, 170, 170 },
+            new int[] { 170, 170, 170, 170, 170, 170, 170 },
+        };
+
+        public static int[][] RangedHCITable = new int[][]
+        {
+            new int[] { 15, 25, 25, 30, 35, 35, 35 },
+            new int[] { 25, 30, 35, 35, 35, 35, 35 },
+            new int[] { 35, 35, 35, 35, 35, 35, 35 },
+            new int[] {  },
+            new int[] { 25, 25, 30, 35, 35, 35, 35 },
+            new int[] { 35, 35, 35, 35, 35, 35, 35 },
+        };
+
+        public static int[][] RangedDCITable = new int[][]
+        {
+            new int[] {  },
+            new int[] {  },
+            new int[] {  },
+            new int[] {  },
+            new int[] { 25, 25, 30, 35, 35, 35, 35 },
+            new int[] { 35, 35, 35, 35, 35, 35, 35 },
+        };
+        #endregion
+
+        #region Armor Tables
+        public static int[][] LowerRegTable = new int[][]
+        {
+            new int[] { 10, 20, 20, 20, 25, 25, 25 },
+            new int[] { 20, 20, 25, 25, 25, 25, 25 },
+            new int[] { 25, 25, 25, 25, 25, 25, 25 },
+            new int[] { 20, 20, 25, 25, 25, 25, 25 },
+            new int[] { 20, 20, 25, 25, 25, 25, 25 },
+            new int[] { 25, 25, 25, 25, 25, 25, 25 },
+        };
+
+        public static int[][] ArmorHitsTable = new int[][]
+        {
+            new int[] { 3, 5, 5, 6, 7, 7, 7 },
+            new int[] { 5, 6, 7, 7, 7, 7, 7 },
+            new int[] { 7, 7, 7, 7, 7, 7, 7 },
+            new int[] { 5, 5, 6, 7, 7, 7, 7 },
+            new int[] { 5, 6, 7, 7, 7, 7, 7 },
+            new int[] { 7, 7, 7, 7, 7, 7, 7 },
+        };
+
+        public static int[][] ArmorStrTable = new int[][]
+        {
+            new int[] { 3, 4, 4, 4, 5, 5, 5 },
+            new int[] { 4, 4, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+            new int[] { 4, 4, 5, 5, 5, 5, 5 },
+            new int[] { 4, 4, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+        };
+
+        public static int[][] ArmorRegenTable = new int[][]
+        {
+            new int[] { 2, 3, 3, 3, 4, 4, 4 },
+            new int[] { 3, 3, 4, 4, 4, 4, 4 },
+            new int[] { 4, 4, 4, 4, 4, 4, 4 },
+            new int[] { 3, 3, 4, 4, 4, 4, 4 },
+            new int[] { 3, 3, 4, 4, 4, 4, 4 },
+            new int[] { 4, 4, 4, 4, 4, 4, 4 },
+        };
+
+        public static int[][] ArmorStamManaLMCTable = new int[][]
+        {
+            new int[] { 4, 8, 8, 8, 10, 10, 10 },
+            new int[] { 8, 8, 10, 10, 10, 10, 10 },
+            new int[] { 10, 10, 10, 10, 10, 10, 10 },
+            new int[] { 8, 8, 10, 10, 10, 10, 10 },
+            new int[] { 8, 8, 10, 10, 10, 10, 10 },
+            new int[] { 10, 10, 10, 10, 10, 10, 10 },
+        };
+
+        public static int[][] ArmorEnhancePotsTable = new int[][]
+        {
+            new int[] { 2, 2, 3, 3, 3, 3, 3 },
+            new int[] { 3, 3, 3, 3, 3, 3, 3 },
+            new int[] { 3, 3, 3, 3, 3, 3, 3 },
+            new int[] { 3, 3, 3, 3, 3, 3, 3 },
+            new int[] { 3, 3, 3, 3, 3, 3, 3 },
+            new int[] { 3, 3, 3, 3, 3, 3, 3 },
+        };
+
+        public static int[][] ArmorHCIDCITable = new int[][]
+        {
+            new int[] { 4, 4, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+            new int[] { 5, 5, 5, 5, 5, 5, 5 },
+        };
+
+        public static int[][] ArmorCastingFocusTable = new int[][]
+        {
+            new int[] { 1, 2, 2, 2, 3, 3, 3 },
+            new int[] { 2, 2, 3, 3, 3, 3, 3 },
+            new int[] { 3, 3, 3, 3, 3, 3, 3 },
+            new int[] { 2, 2, 3, 3, 3, 3, 3 },
+            new int[] { 2, 2, 3, 3, 3, 3, 3 },
+            new int[] { 3, 3, 3, 3, 3, 3, 3 },
+        };
+
+        public static int[][] ShieldWeaponSpeedTable = new int[][]
+        {
+            new int[] { 5, 5, 5, 5, 10, 10, 10 },
+            new int[] { 5, 5, 10, 10, 10, 10, 10 },
+            new int[] { 10, 10, 10, 10, 10, 10, 10 },
+            new int[] {  },
+            new int[] { 5, 5, 10, 10, 10, 10, 10 },
+            new int[] { 10, 10, 10, 10, 10, 10, 10 },
+        };
+
+        public static int[][] ShieldSoulChargeTable = new int[][]
+        {
+            new int[] { 15, 20, 20, 20, 25, 25, 25 },
+            new int[] { 20, 20, 25, 30, 30, 30, 30 },
+            new int[] { 25, 30, 30, 30, 30, 30, 30 },
+            new int[] {  },
+            new int[] { 20, 20, 25, 30, 30, 30, 30 },
+            new int[] { 25, 30, 30, 30, 30, 30, 30 },
+        };
+        #endregion
+        #endregion
     }
 
     public class RunicReforgingTarget : Target
@@ -2284,17 +2980,41 @@ namespace Server.Items
         {
             if (targeted is Item && m_Tool != null)
             {
-                if (((Item)targeted).IsChildOf(from.Backpack))
-                {
-                    Item item = targeted as Item;
+                Item item = targeted as Item;
 
-                    if (RunicReforging.CanReforge(from, item, m_Tool.CraftSystem))
+                if (item is BaseRunicTool)
+                {
+                    if (item.IsChildOf(from.Backpack))
                     {
-                        from.SendGump(new RunicReforgingGump(from, item, m_Tool));
+                        if (item == m_Tool)
+                            from.SendLocalizedMessage(1010087); // You cannot use that!
+                        else if (item.GetType() != m_Tool.GetType())
+                            from.SendLocalizedMessage(1152274); // You may only combine runic tools of the same type.
+                        else if (((BaseRunicTool)item).Resource != m_Tool.Resource)
+                            from.SendLocalizedMessage(1152275); // You may only combine runic tools of the same material.
+                        else if (m_Tool.UsesRemaining + ((BaseRunicTool)item).UsesRemaining > 100)
+                            from.SendLocalizedMessage(1152276); // The combined charges of the two tools cannot exceed 100.
+                        else
+                        {
+                            m_Tool.UsesRemaining += ((BaseRunicTool)item).UsesRemaining;
+                            item.Delete();
+
+                            from.SendLocalizedMessage(1152278); // You combine the runic tools, consolidating their Uses Remaining.
+                        }
                     }
+                    else
+                        from.SendLocalizedMessage(1152277); // Both tools must be in your backpack in order to combine them.
                 }
                 else
-                    from.SendLocalizedMessage(1152271); // That must be in your backpack for you to use it.
+                {
+                    if (item.IsChildOf(from.Backpack))
+                    {
+                        if (RunicReforging.CanReforge(from, item, m_Tool.CraftSystem))
+                            from.SendGump(new RunicReforgingGump(from, item, m_Tool));
+                    }
+                    else
+                        from.SendLocalizedMessage(1152271); // The item must be in your backpack to re-forge it.
+                }
             }
         }
     }

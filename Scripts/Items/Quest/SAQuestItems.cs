@@ -29,9 +29,13 @@ namespace Server.Items
         }// acid sac
         public override void OnDoubleClick(Mobile from)
         {
-            from.SendLocalizedMessage(1111656); // What do you wish to use the acid on?
-
-            from.Target = new InternalTarget(this);
+            if (IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1111656); // What do you wish to use the acid on?
+                from.Target = new InternalTarget(this);
+            }
+            else
+                from.SendLocalizedMessage(1080063); // This must be in your backpack to use it.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -541,7 +545,7 @@ namespace Server.Items
 
         [Constructable]
         public PileInspectedIngots(int amount)
-            : base(0x2F5F)
+            : base(0x1BEA)
         {
             this.Stackable = true;
             this.Amount = amount;
@@ -564,6 +568,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (ItemID != 0x1BEA)
+                ItemID = 0x1BEA;
         }
     }
 
@@ -620,11 +627,11 @@ namespace Server.Items
 
 		[Constructable]
 		public SearedFireAntGoo(int amount)
-			: base(0x0976)
+            : base(0x122E)
 		{
 			this.Stackable = true;
 			this.Amount = amount;
-			this.Hue = 1174; // TODO Get correct hue from OSI
+            this.Hue = 1359;
 		}
 
         public SearedFireAntGoo(Serial serial)
@@ -651,6 +658,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (ItemID != 0x122E)
+                ItemID = 0x122E;
         }
     }
 
@@ -707,10 +717,8 @@ namespace Server.Items
 
         [Constructable]
         public TatteredAncientScroll(int amount)
-            : base(0x2F5F)
+            : base(0x1437)
         {
-            this.Stackable = true;
-            this.Amount = amount;
         }
 
         public TatteredAncientScroll(Serial serial)
@@ -729,7 +737,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -737,6 +745,15 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0 && ItemID != 0x1437)
+                ItemID = 0x1437;
+
+            if (version == 0 && Stackable)
+            {
+                Stackable = false;
+                Amount = 1;
+            }
         }
     }
 
@@ -750,7 +767,7 @@ namespace Server.Items
 
         [Constructable]
         public UndamagedIronBeetleScale(int amount)
-            : base(0x2F5F)
+            : base(0x26B3)
         {
             this.Stackable = true;
             this.Amount = amount;
@@ -780,6 +797,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (ItemID != 0x26B3)
+                ItemID = 0x26B3;
         }
     }
 
@@ -793,7 +813,7 @@ namespace Server.Items
 
         [Constructable]
         public UndeadGargHorn(int amount)
-            : base(0x2F5F)
+            : base(0x315C)
         {
             this.Stackable = true;
             this.Amount = amount;
@@ -823,6 +843,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (ItemID != 0x315C)
+                ItemID = 0x315C;
         }
     }
 
@@ -836,10 +859,13 @@ namespace Server.Items
 
         [Constructable]
         public UndeadGargMedallion(int amount)
-            : base(0x2F5F)
+            : base(0x1088)
         {
             this.Stackable = true;
             this.Amount = amount;
+
+            Hue = 2207;
+            LootType = LootType.Blessed;
         }
 
         public UndeadGargMedallion(Serial serial)
@@ -866,26 +892,32 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (ItemID != 0x1088)
+                ItemID = 0x1088;
         }
     }
 
-    public class UntransTome : Item
+    [TypeAlias("Server.Items.UntransTome")]
+    public class UntranslatedAncientTome : Item
     {
         [Constructable]
-        public UntransTome()
+        public UntranslatedAncientTome()
             : this(1)
         {
         }
 
         [Constructable]
-        public UntransTome(int amount)
-            : base(0x2F5F)
+        public UntranslatedAncientTome(int amount)
+            : base(0x0FF2)
         {
             this.Stackable = true;
             this.Amount = amount;
+
+            Hue = 2405;
         }
 
-        public UntransTome(Serial serial)
+        public UntranslatedAncientTome(Serial serial)
             : base(serial)
         {
         }
@@ -909,6 +941,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (ItemID != 0x0FF2)
+                ItemID = 0x0FF2;
         }
     }
 

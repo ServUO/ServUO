@@ -22,32 +22,40 @@ namespace Server.Engines.Harvest
 
         protected override void OnTarget(Mobile from, object targeted)
         {
-            if (this.m_System is Mining && targeted is StaticTarget)
+            if (this.m_System is Mining)
             {
-                int itemID = ((StaticTarget)targeted).ItemID;
-
-                // grave
-                if (itemID == 0xED3 || itemID == 0xEDF || itemID == 0xEE0 || itemID == 0xEE1 || itemID == 0xEE2 || itemID == 0xEE8)
+                if (targeted is StaticTarget)
                 {
-                    PlayerMobile player = from as PlayerMobile;
+                    int itemID = ((StaticTarget)targeted).ItemID;
 
-                    if (player != null)
+                    // grave
+                    if (itemID == 0xED3 || itemID == 0xEDF || itemID == 0xEE0 || itemID == 0xEE1 || itemID == 0xEE2 || itemID == 0xEE8)
                     {
-                        QuestSystem qs = player.Quest;
+                        PlayerMobile player = from as PlayerMobile;
 
-                        if (qs is WitchApprenticeQuest)
+                        if (player != null)
                         {
-                            FindIngredientObjective obj = qs.FindObjective(typeof(FindIngredientObjective)) as FindIngredientObjective;
+                            QuestSystem qs = player.Quest;
 
-                            if (obj != null && !obj.Completed && obj.Ingredient == Ingredient.Bones)
+                            if (qs is WitchApprenticeQuest)
                             {
-                                player.SendLocalizedMessage(1055037); // You finish your grim work, finding some of the specific bones listed in the Hag's recipe.
-                                obj.Complete();
+                                FindIngredientObjective obj = qs.FindObjective(typeof(FindIngredientObjective)) as FindIngredientObjective;
 
-                                return;
+                                if (obj != null && !obj.Completed && obj.Ingredient == Ingredient.Bones)
+                                {
+                                    player.SendLocalizedMessage(1055037); // You finish your grim work, finding some of the specific bones listed in the Hag's recipe.
+                                    obj.Complete();
+
+                                    return;
+                                }
                             }
                         }
                     }
+                }
+                else if (targeted is LandTarget && ((LandTarget)targeted).TileID >= 113 && ((LandTarget)targeted).TileID <= 120)
+                {
+                    if (Server.Engines.Quests.TheGreatVolcanoQuest.OnHarvest(from, m_Tool))
+                        return;
                 }
             }
 
@@ -69,6 +77,14 @@ namespace Server.Engines.Harvest
                 this.DestroyFurniture(from, (Item)targeted);
             else if (this.m_System is Mining && targeted is TreasureMap)
                 ((TreasureMap)targeted).OnBeginDig(from);
+            #region High Seas
+            else if (m_System is Mining && targeted is NiterDeposit)
+                ((NiterDeposit)targeted).OnMine(from, m_Tool);
+            else if (m_System is Lumberjacking && targeted is CrackedLavaRockEast)
+                ((CrackedLavaRockEast)targeted).OnCrack(from);
+            else if (m_System is Lumberjacking && targeted is CrackedLavaRockSouth)
+                ((CrackedLavaRockSouth)targeted).OnCrack(from);
+            #endregion
 			else
 			{
 				// If we got here and we're lumberjacking then we didn't target something that cna be done from the pack

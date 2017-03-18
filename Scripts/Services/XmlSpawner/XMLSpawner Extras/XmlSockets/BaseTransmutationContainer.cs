@@ -158,7 +158,7 @@ namespace Server.Items
 
         }
 
-        public override bool OnDragDropInto( Mobile from, Item item, Point3D p )
+        public override bool OnDragDropInto( Mobile from, Item item, Point3D p)
         {
             bool diddrop = base.OnDragDropInto( from, item, p);
 

@@ -1,24 +1,30 @@
 using System;
+using Server;
 using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
-    [Flipable(0x0EE3, 0x0EE4, 0x0EE5, 0x0EE6)]
     public class NavreyParalyzingWeb : Item
     {
-        private static readonly TimeSpan duration = TimeSpan.FromSeconds(60.0);
         private Timer m_Timer;
-        private DateTime m_End;
-        public NavreyParalyzingWeb()
-            : base(0x0EE3 + Utility.Random(4))
+        private List<Mobile> m_StuckMobs = new List<Mobile>();
+        private TimeSpan m_Duration;
+
+        public List<Mobile> StuckMobs { get { return m_StuckMobs; } }
+
+        public NavreyParalyzingWeb(TimeSpan duration, Mobile mob)
+            : base(Utility.RandomList(0x0EE3, 0x0EE4, 0x0EE5, 0x0EE6))
         {
             this.Visible = true;
             this.Movable = false;
+            m_StuckMobs.Add(mob);
+            m_Duration = duration;
 
-            this.m_Timer = new InternalTimer(this, duration);
+            this.m_Timer = new InternalTimer(this, m_Duration);
             this.m_Timer.Start();
 
-            this.m_End = DateTime.UtcNow + duration;
+            BuffInfo.AddBuff(mob, new BuffInfo(BuffIcon.Webbing, 1153789, 1153825));
         }
 
         public NavreyParalyzingWeb(Serial serial)
@@ -40,11 +46,15 @@ namespace Server.Items
             if (this.m_Timer != null)
                 this.m_Timer.Stop();
 
-            // remove paralyze from all chars in this location
-            foreach (Mobile m in this.Map.GetMobilesInRange(this.Location, 0))
+            foreach (Mobile m in m_StuckMobs)
             {
-                if (null != m)
-                    m.Paralyzed = false;
+                if (m.Frozen)
+                {
+                    m.SendLocalizedMessage(1005603); //You can move again!
+                    m.Frozen = false;
+                }
+
+                Server.Mobiles.Navrey.RemoveFromTable(m);
             }
         }
 
@@ -54,7 +64,9 @@ namespace Server.Items
 
             writer.Write((int)0); // version
 
-            writer.WriteDeltaTime(this.m_End);
+            writer.Write(m_StuckMobs.Count);
+            foreach (Mobile m in m_StuckMobs)
+                writer.Write(m);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -63,18 +75,15 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            int c = reader.ReadInt();
+            for (int i = 0; i < c; i++)
             {
-                case 0:
-                    {
-                        this.m_End = reader.ReadDeltaTime();
-
-                        this.m_Timer = new InternalTimer(this, this.m_End - DateTime.UtcNow);
-                        this.m_Timer.Start();
-
-                        break;
-                    }
+                Mobile m = reader.ReadMobile();
+                if (m != null && m.Frozen)
+                    m.Frozen = false;
             }
+
+            Delete();
         }
 
         public override bool OnMoveOver(Mobile m)
@@ -82,12 +91,16 @@ namespace Server.Items
             if (m is Navrey)
                 return true;
 
-            if (AccessLevel.Player == m.AccessLevel)
+            if (m.AccessLevel == AccessLevel.Player && m.Alive)
             {
-                m.Paralyze(duration);
-    
+                m.Paralyze(m_Duration);
+
+                m_StuckMobs.Add(m);
+
                 m.PlaySound(0x204);
                 m.FixedEffect(0x376A, 10, 16);
+
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Webbing, 1153789, 1153825));
             }
 
             return true;
@@ -96,6 +109,7 @@ namespace Server.Items
         private class InternalTimer : Timer
         {
             private readonly Item m_Item;
+
             public InternalTimer(Item item, TimeSpan duration)
                 : base(duration)
             {

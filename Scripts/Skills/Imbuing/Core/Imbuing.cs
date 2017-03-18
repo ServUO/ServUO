@@ -9,9 +9,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Commands;
-//using Server.Engines.QueensLoyalty;
 using Server.Factions;
 using Server.Engines.Craft;
+using System.Linq;
 
 namespace Server.SkillHandlers
 {
@@ -19,9 +19,9 @@ namespace Server.SkillHandlers
     {
         public static void Initialize()
         {
-            SkillInfo.Table[(int)SkillName.Imbuing].Callback = new SkillUseCallback(OnUse);
+            //LoadImbuingDefinitions();
 
-            LoadImbuingDefinition();
+            SkillInfo.Table[(int)SkillName.Imbuing].Callback = new SkillUseCallback(OnUse);
 
             CommandSystem.Register("GetTotalWeight", AccessLevel.GameMaster, new CommandEventHandler(GetTotalWeight_OnCommand));
             CommandSystem.Register("GetTotalMods", AccessLevel.GameMaster, new CommandEventHandler(GetTotalMods_OnCommand));
@@ -99,7 +99,6 @@ namespace Server.SkillHandlers
 
         public static bool OnBeforeImbue(Mobile from, Item item, int mod, int value, int totalprops, int maxprops, int totalitemweight, int maxweight)
         {
-         
             if (totalprops >= maxprops || totalitemweight > maxweight)
             {
                 from.SendLocalizedMessage(1079772); // You cannot imbue this item with any more item properties.
@@ -127,21 +126,16 @@ namespace Server.SkillHandlers
                 if (message)
                     from.SendLocalizedMessage(1080427);  // You cannot magically unravel an item that is currently enchanted.
             }
-            //else if (item is BaseWeapon && ((BaseWeapon)item).FocusWeilder != null)
-            //{
-            //    if (message)
-            //        from.SendLocalizedMessage(1080445); //You cannot magically unravel an item that is under the effects of the ninjitsu focus attack ability.
-            //}
+            else if (item is BaseWeapon && ((BaseWeapon)item).FocusWeilder != null)
+            {
+                if (message)
+                    from.SendLocalizedMessage(1080445); //You cannot magically unravel an item that is under the effects of the ninjitsu focus attack ability.
+            }
             else if (item is IFactionItem && ((IFactionItem)item).FactionItemState != null)
             {
                 if (message)
                     from.SendLocalizedMessage(1112408); // You cannot magically unravel a faction reward item.
             }
-            /*else if (IsSpecialItem(item))
-            {
-                if (message)
-                    from.SendMessage("You cannot magically unravel an item with such strange magical properties.");
-            }*/
             else
                 return true;
             return false;
@@ -152,19 +146,13 @@ namespace Server.SkillHandlers
             if (item == null)
                 return true;
 
+            if (IsSpecialImbuable(item))
+                return false;
+
 			if (item.IsArtifact)
 				return true;
 
-            if (item is BaseWeapon && ((BaseWeapon)item).ArtifactRarity > 0)
-                return true;
-
-            if (item is BaseArmor && ((BaseArmor)item).ArtifactRarity > 0)
-                return true;
-
-            if (item is BaseJewel && ((BaseJewel)item).ArtifactRarity > 0)
-                return true;
-
-            if (item is BaseClothing && ((BaseClothing)item).ArtifactRarity > 0)
+            if (RunicReforging.GetArtifactRarity(item) > 0)
                 return true;
 
 			if (item.GetType() == typeof(SilverRing) || item.GetType() == typeof(SilverBracelet))
@@ -183,6 +171,20 @@ namespace Server.SkillHandlers
 
             return true;
         }
+
+        private static bool IsSpecialImbuable(Item item)
+        {
+            foreach (Type type in _SpecialImbuable)
+                if (item.GetType() == type)
+                    return true;
+
+            return false;
+        }
+
+        private static Type[] _SpecialImbuable =
+        {
+            typeof(ClockworkLeggings), typeof(GargishClockworkLeggings)
+        };
 
         public static double GetSuccessChance(Mobile from, Item item, int totalItemWeight, int propWeight, out double dif)
         {
@@ -306,10 +308,9 @@ namespace Server.SkillHandlers
 
                 int totalItemWeight = GetTotalWeight(i, mod);
                 int totalItemMods = GetTotalMods(i, mod);
+                int maxint = GetMaxIntensity(i, def);
 
-                double propWeight = ((double)def.Weight / (double)def.MaxIntensity) * value;
-                propWeight = Math.Round(propWeight);
-                int propweight = Convert.ToInt32(propWeight);
+                int propweight = (int)(((double)def.Weight / (double)maxint) * value);
 
                 if ((totalItemWeight + propweight) > maxWeight)
                 {
@@ -369,6 +370,10 @@ namespace Server.SkillHandlers
                                 if (wep.Attributes.CastSpeed >= 0) 
                                     wep.Attributes.CastSpeed -= 1;
                             }
+                            else if (attr == AosAttribute.CastSpeed)
+                            {
+                                wep.Attributes.CastSpeed += value;
+                            }
                             else if (attr == AosAttribute.WeaponDamage)
                             {
                                 wep.Attributes.WeaponDamage = value;
@@ -426,9 +431,7 @@ namespace Server.SkillHandlers
                         {
                             string p = prop as string;
 
-                            if (p == "BalancedWeapon" && wep is BaseRanged)
-                                ((BaseRanged)wep).Balanced = true;
-                            else if (p == "WeaponVelocity" && wep is BaseRanged)
+                            if (p == "WeaponVelocity" && wep is BaseRanged)
                                 ((BaseRanged)wep).Velocity = value;
                         }
                     }
@@ -436,6 +439,9 @@ namespace Server.SkillHandlers
                     {
                         BaseArmor arm = i as BaseArmor;
                         arm.ArmorAttributes.SelfRepair = 0;
+
+                        if (prop is AosWeaponAttribute && (AosWeaponAttribute)prop == AosWeaponAttribute.DurabilityBonus)
+                            prop = AosArmorAttribute.DurabilityBonus;
 
                         if (prop is AosAttribute)
                         {
@@ -477,6 +483,9 @@ namespace Server.SkillHandlers
                         BaseShield shield = i as BaseShield;
                         shield.ArmorAttributes.SelfRepair = 0;
 
+                        if (prop is AosWeaponAttribute && (AosWeaponAttribute)prop == AosWeaponAttribute.DurabilityBonus)
+                            prop = AosArmorAttribute.DurabilityBonus;
+
                         if (prop is AosAttribute)
                         {
                             AosAttribute attr = (AosAttribute)prop;
@@ -487,6 +496,10 @@ namespace Server.SkillHandlers
 
                                 if (shield.Attributes.CastSpeed >= 0)
                                     shield.Attributes.CastSpeed -= 1;
+                            }
+                            else if (attr == AosAttribute.CastSpeed)
+                            {
+                                shield.Attributes.CastSpeed += value;
                             }
                             else
                                 shield.Attributes[attr] = value;
@@ -590,98 +603,144 @@ namespace Server.SkillHandlers
             }
         }
 
-        public static bool UnravelItem(Mobile from, Item item, bool message = true)
+	    public static bool UnravelItem(Mobile from, Item item, bool message = true)
+	    {
+		    int weight = GetTotalWeight(item);
+			
+		    if (weight <= 0)
+			{
+				if (message)
+				{
+					// You cannot magically unravel this item. It appears to possess little or no magic.
+					from.SendLocalizedMessage(1080437);
+				}
+
+				return false;
+		    }
+
+		    ImbuingContext context = GetContext(from);
+
+		    int bonus = context.Imbue_SFBonus;
+			
+		    Type resType = null;
+		    var resAmount = Math.Max(1, weight / 100);
+
+			var success = false;
+
+		    if (weight >= 480 - bonus)
+			{
+				if (from.Skills[SkillName.Imbuing].Value < 95.0)
+				{
+					if (message)
+					{
+						// Your Imbuing skill is not high enough to magically unravel this item.
+						from.SendLocalizedMessage(1080434);
+					}
+
+					return false;
+				}
+				
+				if (from.CheckSkill(SkillName.Imbuing, 95.0, 120.0))
+				{
+					success = true;
+					resType = typeof(RelicFragment);
+					resAmount = 1;
+				}
+				else if (from.CheckSkill(SkillName.Imbuing, 45.0, 95.0))
+				{
+					success = true;
+					resType = typeof(EnchantEssence);
+					resAmount = Math.Max(1, resAmount - Utility.Random(3));
+				}
+			}
+		    else if (weight > 200 - bonus && weight < 480 - bonus)
+			{
+				if (from.Skills[SkillName.Imbuing].Value < 45.0)
+				{
+					if (message)
+					{
+						// Your Imbuing skill is not high enough to magically unravel this item.
+						from.SendLocalizedMessage(1080434);
+					}
+
+					return false;
+				}
+				
+				if (from.CheckSkill(SkillName.Imbuing, 45.0, 95.0))
+				{
+					success = true;
+					resType = typeof(EnchantEssence);
+					resAmount = Math.Max(1, resAmount);
+				}
+				else if (from.CheckSkill(SkillName.Imbuing, 0.0, 45.0))
+				{
+					success = true;
+					resType = typeof(MagicalResidue);
+					resAmount = Math.Max(1, resAmount + Utility.Random(2));
+				}
+			}
+			else if (weight <= 200 - bonus)
+			{
+				if (from.CheckSkill(SkillName.Imbuing, 0.0, 45.0))
+				{
+					success = true;
+					resType = typeof(MagicalResidue);
+					resAmount = Math.Max(1, resAmount + Utility.Random(2));
+				}
+			}
+			else
+			{
+				if (message)
+				{
+					// You cannot magically unravel this item. It appears to possess little or no magic.
+					from.SendLocalizedMessage(1080437);
+				}
+
+				return false;
+			}
+
+		    if (!success)
+		    {
+			    return false;
+		    }
+
+		    Item res;
+
+		    while (resAmount > 0)
+		    {
+			    res = Activator.CreateInstance(resType) as Item;
+
+			    if (res == null)
+			    {
+				    break;
+			    }
+
+			    if (res.Stackable)
+			    {
+				    res.Amount = Math.Max(1, Math.Min(60000, resAmount));
+			    }
+
+			    resAmount -= res.Amount;
+
+			    @from.AddToBackpack(res);
+		    }
+
+		    item.Delete();
+
+		    return true;
+	    }
+
+	    public static int GetMaxIntensity(Item item, ImbuingDefinition def)
         {
-            int weight = GetTotalWeight(item);
-
-            ImbuingContext context = Imbuing.GetContext(from);
-
-            int bonus = context.Imbue_SFBonus;
-            int unravelQTY = weight / 100 ;
-            bool success = false;
-
-            if (weight > 0)
+            if (item is BaseWeapon && def.Attribute is AosWeaponAttribute)
             {
-                // == Relic Fragment ==
-                if (weight >= (480 - bonus))
-                {
-                    if (from.Skills[SkillName.Imbuing].Base >= 95.0)
-                    {
-                        if (success = from.CheckSkill(SkillName.Imbuing, 95.0, 120.0))
-                        {
-                            item.Delete();
-                            from.AddToBackpack(new RelicFragment(unravelQTY - Utility.Random(0, 3)));
+                AosWeaponAttribute attr = (AosWeaponAttribute)def.Attribute;
 
-                        }
-                        else if (success = from.CheckSkill(SkillName.Imbuing, 45.0, 95.0))
-                        {
-                            item.Delete();
-                            from.AddToBackpack(new EnchantEssence(unravelQTY - Utility.Random(0, 3)));
-                        }
-                        else
-                        {
-                            Effects.PlaySound(from.Location, from.Map, 0x3BF);
-                            if (message)
-                                from.SendLocalizedMessage(1080428);  //You attempt to magically unravel the item, but fail.
-                        }
-                    }
-                    else
-                    {
-                        if (message)
-                            from.SendLocalizedMessage(1080434); // Your Imbuing skill is not high enough to magically unravel this item.
-                        return false;
-                    }
-                }
-                // == Enchanted Essence ==
-                else if (weight > (200 - bonus) && weight < (480 - bonus))
-                {
-                    if (from.Skills[SkillName.Imbuing].Base >= 45.0)
-                    {
-                        if (success = from.CheckSkill(SkillName.Imbuing, 45.0, 95.0))
-                        {
-                            item.Delete();
-                            from.AddToBackpack(new EnchantEssence(unravelQTY));
-                        }
-                        else if(success = from.CheckSkill(SkillName.Imbuing, 0.0, 45.0))
-                        {
-                            item.Delete();
-                            from.AddToBackpack(new MagicalResidue(unravelQTY + Utility.Random(0, 2)));
-                        }
-                        else
-                        {
-                            Effects.PlaySound(from.Location, from.Map, 0x3BF);
-                            if (message)
-                                from.SendLocalizedMessage(1080428);  //You attempt to magically unravel the item, but fail.
-                        }
-                    }
-                    else
-                    {
-                        if (message)
-                            from.SendLocalizedMessage(1080434); // Your Imbuing skill is not high enough to magically unravel this item.
-                        return false;
-                    }
-                }
-                 // == Magical Residue ==
-                else if (weight <= (200 - bonus))
-                {
-                    if (success = from.CheckSkill(SkillName.Imbuing, 0.0, 45.0))
-                    {
-                        item.Delete();
-                        from.AddToBackpack(new MagicalResidue(unravelQTY + Utility.Random(1,2)));
-                    }
-                    else
-                    {
-                        Effects.PlaySound(from.Location, from.Map, 0x3BF);
-                        if (message)
-                            from.SendLocalizedMessage(1080428);  //You attempt to magically unravel the item, but fail.
-                    }
-                }
-                     
+                if (attr == AosWeaponAttribute.HitLeechMana || attr == AosWeaponAttribute.HitLeechHits)
+                    return GetPropRange(item, attr)[1];
             }
-            else if (message)
-                from.SendLocalizedMessage(1080437); // You cannot magically unravel this item. It appears to possess little or no magic.
 
-            return success;
+            return def.MaxIntensity;
         }
 
         public static int GetMaxWeight(object itw)
@@ -698,7 +757,6 @@ namespace Server.SkillHandlers
                      return 550;
                     else if (itemToImbue.Layer == Layer.TwoHanded)
                       return 600;
-
                   else
                      return  500;
 
@@ -846,12 +904,12 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
 
-                    if (wep.Attributes[attr] > 0 && (attr != AosAttribute.WeaponDamage || (attr == AosAttribute.WeaponDamage && wep.Attributes[attr] > 50)))
+                    if(!ValidateProperty(attr))
+                        continue;
+
+                    if (wep.Attributes[attr] > 0)
                     {
                         if (!(prop is AosAttribute) || ((AosAttribute)prop) != attr)
                             total += 1;
@@ -869,12 +927,29 @@ namespace Server.SkillHandlers
                 {
                     AosWeaponAttribute attr = (AosWeaponAttribute)i;
 
+                    if (!ValidateProperty(attr))
+                        continue;
+
                     if (wep.WeaponAttributes[attr] > 0)
                     {
                         if (IsHitAreaOrSpell(attr, mod))
                             continue;
 
                         if (!(prop is AosWeaponAttribute) || ((AosWeaponAttribute)prop) != attr)
+                            total += 1;
+                    }
+                }
+
+                foreach (int i in Enum.GetValues(typeof(ExtendedWeaponAttribute)))
+                {
+                    ExtendedWeaponAttribute attr = (ExtendedWeaponAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
+
+                    if (wep.ExtendedWeaponAttributes[attr] > 0)
+                    {
+                        if (!(prop is AosWeaponAttribute) || ((ExtendedWeaponAttribute)prop) != attr)
                             total += 1;
                     }
                 }
@@ -889,6 +964,9 @@ namespace Server.SkillHandlers
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
 
+                    if (!ValidateProperty(attr))
+                        continue;
+
                     if (wep.AbsorptionAttributes[attr] > 0)
                     {
                         if (!(prop is SAAbsorptionAttribute) || ((SAAbsorptionAttribute)prop) != attr)
@@ -900,13 +978,12 @@ namespace Server.SkillHandlers
                 {
                     BaseRanged ranged = wep as BaseRanged;
 
-                    if (ranged.Balanced && mod != 61)
-                        total++;
-
                     if (ranged.Velocity > 0 && mod != 60)
                         total++;
                 }
 
+                if (wep.SearingWeapon)
+                    total++;
             }
             else if (itw is BaseArmor)
             {
@@ -914,10 +991,10 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (armor.Attributes[attr] > 0)
                     {
@@ -943,6 +1020,9 @@ namespace Server.SkillHandlers
                 {
                     AosArmorAttribute attr = (AosArmorAttribute)i;
 
+                    if (!ValidateProperty(attr))
+                        continue;
+
                     if (armor.ArmorAttributes[attr] > 0)
                     {
                         if (!(prop is AosArmorAttribute) || ((AosArmorAttribute)prop) != attr)
@@ -954,6 +1034,9 @@ namespace Server.SkillHandlers
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (armor.AbsorptionAttributes[attr] > 0)
                     {
@@ -968,10 +1051,10 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (j.Attributes[attr] > 0)
                     {
@@ -983,6 +1066,9 @@ namespace Server.SkillHandlers
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (j.AbsorptionAttributes[attr] > 0)
                     {
@@ -1005,10 +1091,10 @@ namespace Server.SkillHandlers
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
-                    if (i >= 0x10000000) // Brittle/Inc. Karma Loss
-                        continue;
-
                     AosAttribute attr = (AosAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (h.Attributes[attr] > 0)
                     {
@@ -1020,6 +1106,9 @@ namespace Server.SkillHandlers
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
+
+                    if (!ValidateProperty(attr))
+                        continue;
 
                     if (h.SAAbsorptionAttributes[attr] > 0)
                     {
@@ -1102,78 +1191,61 @@ namespace Server.SkillHandlers
         {
             double weight = 0;
 
-            AosAttributes aosAttrs = null;
-            AosWeaponAttributes wepAttrs = null;
-            SAAbsorptionAttributes saAttrs = null;
-            AosArmorAttributes armorAttrs = null;
-            AosElementAttributes resistAttrs = null;
+            AosAttributes aosAttrs = RunicReforging.GetAosAttributes(item);
+            AosWeaponAttributes wepAttrs = RunicReforging.GetAosWeaponAttributes(item);
+            SAAbsorptionAttributes saAttrs = RunicReforging.GetSAAbsorptionAttributes(item);
+            AosArmorAttributes armorAttrs = RunicReforging.GetAosArmorAttributes(item);
+            AosElementAttributes resistAttrs = RunicReforging.GetElementalAttributes(item);
+            ExtendedWeaponAttributes extattrs = RunicReforging.GetExtendedWeaponAttributes(item);
 
             if (item is BaseWeapon)
             {
-                aosAttrs = ((BaseWeapon)item).Attributes;
-                wepAttrs = ((BaseWeapon)item).WeaponAttributes;
-                saAttrs = ((BaseWeapon)item).AbsorptionAttributes;
-
                 if(((BaseWeapon)item).Slayer != SlayerName.None)
-                    weight += GetIntensityForAttribute(((BaseWeapon)item).Slayer, mod, 1);
+                    weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer, mod, 1);
 
                 if (((BaseWeapon)item).Slayer2 != SlayerName.None)
-                    weight += GetIntensityForAttribute(((BaseWeapon)item).Slayer2, mod, 1);
+                    weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer2, mod, 1);
+
+                if(((BaseWeapon)item).SearingWeapon)
+                    weight += GetIntensityForAttribute(item, "SearingWeapon", mod, 1);
 
                 if (item is BaseRanged)
                 {
                     BaseRanged ranged = item as BaseRanged;
 
-                    if(ranged.Balanced)
-                        weight += GetIntensityForAttribute("BalancedWeapon", mod, 1);
-
                     if(ranged.Velocity > 0)
-                        weight += GetIntensityForAttribute("WeaponVelocity", mod, ranged.Velocity);
+                        weight += GetIntensityForAttribute(item, "WeaponVelocity", mod, ranged.Velocity);
                 }
             }
-            else if (item is BaseArmor)
+            
+            if (item is BaseArmor)
             {
-                aosAttrs = ((BaseArmor)item).Attributes;
-                armorAttrs = ((BaseArmor)item).ArmorAttributes;
-                saAttrs = ((BaseArmor)item).AbsorptionAttributes;
-
                 weight += CheckResists((BaseArmor)item, mod);
             }
-            else if (item is BaseHat)
-            {
-                aosAttrs = ((BaseHat)item).Attributes;
-                armorAttrs = ((BaseHat)item).ClothingAttributes;
-                resistAttrs = ((BaseHat)item).Resistances;
-                saAttrs = ((BaseHat)item).SAAbsorptionAttributes;
-            }
-            else if (item is BaseJewel)
-            {
-                aosAttrs = ((BaseJewel)item).Attributes;
-                resistAttrs = ((BaseJewel)item).Resistances;
-                saAttrs = ((BaseJewel)item).AbsorptionAttributes;
-            }
-            else
-                return 0;
 
             if (aosAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
-                    weight += GetIntensityForAttribute((AosAttribute)i, mod, aosAttrs[(AosAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (AosAttribute)i, mod, aosAttrs[(AosAttribute)i]);
 
             if (wepAttrs != null)
                 foreach (long i in Enum.GetValues(typeof(AosWeaponAttribute)))
-                    weight += GetIntensityForAttribute((AosWeaponAttribute)i, mod, wepAttrs[(AosWeaponAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (AosWeaponAttribute)i, mod, wepAttrs[(AosWeaponAttribute)i]);
 
             if (saAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
-                    weight += GetIntensityForAttribute((SAAbsorptionAttribute)i, mod, saAttrs[(SAAbsorptionAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (SAAbsorptionAttribute)i, mod, saAttrs[(SAAbsorptionAttribute)i]);
 
             if (armorAttrs != null)
                 foreach (int i in Enum.GetValues(typeof(AosArmorAttribute)))
-                    weight += GetIntensityForAttribute((AosArmorAttribute)i, mod, armorAttrs[(AosArmorAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (AosArmorAttribute)i, mod, armorAttrs[(AosArmorAttribute)i]);
 
-            if (resistAttrs != null)
+            if (resistAttrs != null && !(item is BaseWeapon))
                 foreach (int i in Enum.GetValues(typeof(AosElementAttribute)))
-                    weight += GetIntensityForAttribute((AosElementAttribute)i, mod, resistAttrs[(AosElementAttribute)i]);
+                    weight += GetIntensityForAttribute(item, (AosElementAttribute)i, mod, resistAttrs[(AosElementAttribute)i]);
+
+            if(extattrs != null)
+                foreach (int i in Enum.GetValues(typeof(ExtendedWeaponAttribute)))
+                    weight += GetIntensityForAttribute(item, (ExtendedWeaponAttribute)i, mod, extattrs[(ExtendedWeaponAttribute)i]);
 
             weight += CheckSkillBonuses(item, mod);
 
@@ -1185,20 +1257,10 @@ namespace Server.SkillHandlers
             double weight = 0;
             int mod = -1;
 
-            AosSkillBonuses skills = null;
-
-            if (item is BaseWeapon)
-                skills = ((BaseWeapon)item).SkillBonuses;
-
-            if(item is BaseArmor)
-                skills = ((BaseArmor)item).SkillBonuses;
-
-            if(item is BaseHat)
-                skills = ((BaseHat)item).SkillBonuses;
+            AosSkillBonuses skills = RunicReforging.GetAosSkillBonuses(item);
 
             if (item is BaseJewel)
             {
-                skills = ((BaseJewel)item).SkillBonuses;
                 mod = modification;
             }
 
@@ -1288,6 +1350,16 @@ namespace Server.SkillHandlers
             return CheckSoulForge(from, range, true);
         }
 
+        public static bool CheckQueen(Mobile from)
+        {
+            PlayerMobile pm = from as PlayerMobile;
+
+            if (pm != null && pm.Region.IsPartOf("Queen's Palace"))
+                return Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from);
+
+            return true;
+        }
+
         public static bool CheckSoulForge(Mobile from, int range, bool message)
         {
             PlayerMobile m = from as PlayerMobile;
@@ -1325,9 +1397,9 @@ namespace Server.SkillHandlers
 
 			if (from.Region != null && from.Region.IsPartOf("Royal Soulforge"))
 			{
-				long level = ((PlayerMobile)from).Exp;
+				//long level = ((PlayerMobile)from).Exp;
 
-				if (level < PlayerMobile.Noble)
+                if (!Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
 				{
 					if (message)
 						from.SendMessage("You must be of Noble loyalty to the Queen in order to use this forge.");
@@ -1347,7 +1419,8 @@ namespace Server.SkillHandlers
         private static Dictionary<int, ImbuingDefinition> m_Table;
         public static Dictionary<int, ImbuingDefinition> Table { get { return m_Table; } }
 
-        public static void LoadImbuingDefinition()
+        //public static void LoadImbuingDefinitions()
+        static Imbuing()
         {
             m_Table = new Dictionary<int, ImbuingDefinition>();
 			
@@ -1375,7 +1448,7 @@ namespace Server.SkillHandlers
 			m_Table[22] = new ImbuingDefinition(AosAttribute.SpellChanneling,       1079766, 100, 	typeof(MagicalResidue), typeof(Diamond), 		typeof(SilverSnakeSkin),    1, 0, 1112040);
 			m_Table[23] = new ImbuingDefinition(AosAttribute.NightSight, 	        1015168, 50, 	typeof(MagicalResidue), typeof(Tourmaline), 	typeof(BottleIchor), 	    1, 0, 1112004);
 
-			m_Table[24] = new ImbuingDefinition(AosWeaponAttribute.LowerStatReq,	1079757, 100, 	typeof(EnchantEssence), typeof(Amethyst), 	    typeof(ElvenFletchings),     100, 10, 1111998);
+			m_Table[24] = new ImbuingDefinition(AosWeaponAttribute.LowerStatReq,	1079757, 100, 	typeof(EnchantEssence), typeof(Amethyst), 	    typeof(ElvenFletching),     100, 10, 1111998);
 			m_Table[25] = new ImbuingDefinition(AosWeaponAttribute.HitLeechHits,  	1079698, 110, 	typeof(MagicalResidue), typeof(Ruby), 		    typeof(VoidOrb), 	        50, 2, 1111964);
 			m_Table[26] = new ImbuingDefinition(AosWeaponAttribute.HitLeechStam,    1079707, 100, 	typeof(MagicalResidue), typeof(Diamond), 		typeof(VoidOrb), 	        50, 2, 1111992);
 			m_Table[27] = new ImbuingDefinition(AosWeaponAttribute.HitLeechMana,    1079701, 110, 	typeof(MagicalResidue), typeof(Sapphire), 	    typeof(VoidOrb), 	        50, 2, 1111967);
@@ -1395,7 +1468,7 @@ namespace Server.SkillHandlers
 			m_Table[41] = new ImbuingDefinition(AosWeaponAttribute.MageWeapon,		1079759, 100, 	typeof(EnchantEssence), typeof(Emerald), 		typeof(ArcanicRuneStone),   10, 1, 1112001);
 			m_Table[42] = new ImbuingDefinition(AosWeaponAttribute.DurabilityBonus,	1017323, 100, 	typeof(EnchantEssence), typeof(Diamond), 		typeof(PowderedIron),       100, 10, 1112949);
 
-            m_Table[49] = new ImbuingDefinition(AosArmorAttribute.MageArmor,        1079758, 0,   typeof(EnchantEssence), typeof(Diamond),        typeof(AbyssalCloth), 1, 0, 1112000);
+            m_Table[49] = new ImbuingDefinition(AosArmorAttribute.MageArmor,        1079758, 0,     typeof(EnchantEssence), typeof(Diamond),        typeof(AbyssalCloth), 1, 0, 1112000);
 
             m_Table[51] = new ImbuingDefinition(AosElementAttribute.Physical,       1061158, 100,   typeof(MagicalResidue), typeof(Diamond),        typeof(BouraPelt), 15, 1, 1112010);
             m_Table[52] = new ImbuingDefinition(AosElementAttribute.Fire,           1061159, 100,   typeof(MagicalResidue), typeof(Ruby),           typeof(BouraPelt), 15, 1, 1112009);
@@ -1404,7 +1477,8 @@ namespace Server.SkillHandlers
             m_Table[55] = new ImbuingDefinition(AosElementAttribute.Energy,         1061162, 100,   typeof(MagicalResidue), typeof(Amethyst),       typeof(BouraPelt), 15, 1, 1112008);
             
             m_Table[60] = new ImbuingDefinition("WeaponVelocity",                   1080416, 130, 	typeof(RelicFragment),  typeof(Tourmaline), 	typeof(EssenceDirection),   50, 2, 1112048);
-			m_Table[61] = new ImbuingDefinition("BalancedWeapon",	                1072792, 150, 	typeof(RelicFragment),  typeof(Amber), 		    typeof(EssenceBalance),     1, 0, 1112047);
+			m_Table[61] = new ImbuingDefinition(AosAttribute.BalancedWeapon,	    1072792, 150, 	typeof(RelicFragment),  typeof(Amber), 		    typeof(EssenceBalance),     1, 0, 1112047);
+            m_Table[62] = new ImbuingDefinition("SearingWeapon",	                1151183, 150, 	null,                   null, 		            null,                       1, 0, -1);
 
 			m_Table[101] = new ImbuingDefinition(SlayerName.OrcSlaying,			1060470, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111977);
 			m_Table[102] = new ImbuingDefinition(SlayerName.TrollSlaughter,  	1060480, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111990);
@@ -1427,6 +1501,7 @@ namespace Server.SkillHandlers
 			m_Table[119] = new ImbuingDefinition(SlayerName.BloodDrinking,		1060459, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111969);
 			m_Table[120] = new ImbuingDefinition(SlayerName.SummerWind,			1060476, 100, 	typeof(MagicalResidue), typeof(Emerald),            typeof(WhitePearl),         1, 0, 1111981);
 		
+            //Super Slayers
 			m_Table[121] = new ImbuingDefinition(SlayerName.Silver,			    1060479, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(UndyingFlesh), 	    1, 0, 1111988);
 			m_Table[122] = new ImbuingDefinition(SlayerName.Repond,			    1060472, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(GoblinBlood), 	    1, 0, 1111986);
             m_Table[123] = new ImbuingDefinition(SlayerName.ReptilianDeath,     1060473, 130,   typeof(RelicFragment),      typeof(Ruby),           typeof(LavaSerpentCrust),   1, 0, 1111987);
@@ -1435,34 +1510,48 @@ namespace Server.SkillHandlers
 			m_Table[126] = new ImbuingDefinition(SlayerName.ElementalBan,	    1060464, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(VialOfVitriol), 	    1, 0, 1111985);
             m_Table[127] = new ImbuingDefinition(SlayerName.Fey,                1070855, 130,   typeof(RelicFragment),      typeof(Ruby),           typeof(FeyWings),           1, 0, 1154652);
 
-            m_Table[151] = new ImbuingDefinition(SkillName.Fencing,		 	    1044102, 140, 	typeof(EnchantEssence), 	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112012);
+            // Talisman Slayers
+            m_Table[135] = new ImbuingDefinition(TalismanSlayerName.Bear,       1072504, 130, null, null, null, 1, 0, 0);
+            m_Table[136] = new ImbuingDefinition(TalismanSlayerName.Vermin,     1072505, 130, null, null, null, 1, 0, 0);
+            m_Table[137] = new ImbuingDefinition(TalismanSlayerName.Bat,        1072506, 130, null, null, null, 1, 0, 0);
+            m_Table[138] = new ImbuingDefinition(TalismanSlayerName.Mage,       1072507, 130, null, null, null, 1, 0, 0);
+            m_Table[139] = new ImbuingDefinition(TalismanSlayerName.Beetle,     1072508, 130, null, null, null, 1, 0, 0);
+            m_Table[140] = new ImbuingDefinition(TalismanSlayerName.Bird,       1072509, 130, null, null, null, 1, 0, 0);
+            m_Table[141] = new ImbuingDefinition(TalismanSlayerName.Ice,        1072510, 130, null, null, null, 1, 0, 0);
+            m_Table[142] = new ImbuingDefinition(TalismanSlayerName.Flame,      1072511, 130, null, null, null, 1, 0, 0);
+            m_Table[143] = new ImbuingDefinition(TalismanSlayerName.Bovine,     1072512, 130, null, null, null, 1, 0, 0);
+            m_Table[144] = new ImbuingDefinition(TalismanSlayerName.Wolf,       1075462, 130, null, null, null, 1, 0, 0);
+            m_Table[145] = new ImbuingDefinition(TalismanSlayerName.Undead,     1079752, 130, null, null, null, 1, 0, 0);
+            m_Table[146] = new ImbuingDefinition(TalismanSlayerName.Goblin,     1095010, 130, null, null, null, 1, 0, 0);
+
+            m_Table[151] = new ImbuingDefinition(SkillName.Fencing,		 	    1044102, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112012);
 			m_Table[152] = new ImbuingDefinition(SkillName.Macing, 	            1044101, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112013);
 			m_Table[153] = new ImbuingDefinition(SkillName.Swords,	            1044100, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112016);
 			m_Table[154] = new ImbuingDefinition(SkillName.Musicianship,	    1044089, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112015);
 			m_Table[155] = new ImbuingDefinition(SkillName.Magery,			    1044085, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112014);
 			
-			m_Table[156] = new ImbuingDefinition(SkillName.Wrestling,		    1044103, 140, 	typeof(EnchantEssence), 	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112021);
+			m_Table[156] = new ImbuingDefinition(SkillName.Wrestling,		    1044103, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112021);
 			m_Table[157] = new ImbuingDefinition(SkillName.AnimalTaming, 	    1044095, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112017);
 			m_Table[158] = new ImbuingDefinition(SkillName.SpiritSpeak,		    1044092, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112019);
 			m_Table[159] = new ImbuingDefinition(SkillName.Tactics,			    1044087, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112020);
 			m_Table[160] = new ImbuingDefinition(SkillName.Provocation,		    1044082, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112018);
 			
-			m_Table[161] = new ImbuingDefinition(SkillName.Focus,			    1044110, 140, 	typeof(EnchantEssence),	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112024);
+			m_Table[161] = new ImbuingDefinition(SkillName.Focus,			    1044110, 140, 	typeof(EnchantEssence),	  typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112024);
 			m_Table[162] = new ImbuingDefinition(SkillName.Parry, 		        1044065, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112026);
 			m_Table[163] = new ImbuingDefinition(SkillName.Stealth,			    1044107, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112027);
 			m_Table[164] = new ImbuingDefinition(SkillName.Meditation,		    1044106, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112025);
 			m_Table[165] = new ImbuingDefinition(SkillName.AnimalLore,		    1044062, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112022);
 			m_Table[166] = new ImbuingDefinition(SkillName.Discordance,		    1044075, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112023);
 			
-            m_Table[167] = new ImbuingDefinition(SkillName.Mysticism,			1044115, 140, 	typeof(EnchantEssence),	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1115213);
-			m_Table[168] = new ImbuingDefinition(SkillName.Bushido,			    1044112, 140, 	typeof(EnchantEssence),	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112029);
+            m_Table[167] = new ImbuingDefinition(SkillName.Mysticism,			1044115, 140, 	typeof(EnchantEssence),	  typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1115213);
+			m_Table[168] = new ImbuingDefinition(SkillName.Bushido,			    1044112, 140, 	typeof(EnchantEssence),	  typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112029);
 			m_Table[169] = new ImbuingDefinition(SkillName.Necromancy, 		    1044109, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112031);
 			m_Table[170] = new ImbuingDefinition(SkillName.Veterinary,		    1044099, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112033);
 			m_Table[171] = new ImbuingDefinition(SkillName.Stealing,		    1044093, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112032);
 			m_Table[172] = new ImbuingDefinition(SkillName.EvalInt, 		    1044076, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112030);
 			m_Table[173] = new ImbuingDefinition(SkillName.Anatomy,			    1044061, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112028);
 			
-			m_Table[174] = new ImbuingDefinition(SkillName.Peacemaking,		    1044069, 140, 	typeof(EnchantEssence), 	typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112038);
+			m_Table[174] = new ImbuingDefinition(SkillName.Peacemaking,		    1044069, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112038);
 			m_Table[175] = new ImbuingDefinition(SkillName.Ninjitsu, 		    1044113, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112037);
 			m_Table[176] = new ImbuingDefinition(SkillName.Chivalry,		    1044111, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112035);
 			m_Table[177] = new ImbuingDefinition(SkillName.Archery,			    1044091, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112034);
@@ -1470,6 +1559,10 @@ namespace Server.SkillHandlers
 			m_Table[179] = new ImbuingDefinition(SkillName.Healing,			    1044077, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1112036);
             m_Table[180] = new ImbuingDefinition(SkillName.Throwing,			1044117, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1115212); 
             
+            m_Table[181] = new ImbuingDefinition(SkillName.Lumberjacking,	    1002100, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1002101);
+			m_Table[182] = new ImbuingDefinition(SkillName.Snooping,			1002138, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1002139);
+            m_Table[183] = new ImbuingDefinition(SkillName.Mining,			    1002111, 140, 	typeof(EnchantEssence),   typeof(StarSapphire), 	typeof(CrystallineBlackrock),  15, 1, 1002112);
+
             // Non-Imbuables for getting item intensity only
             m_Table[200] = new ImbuingDefinition(AosWeaponAttribute.BloodDrinker,           1017407, 140, null, null, null, 1, 1, 1152387);
             m_Table[201] = new ImbuingDefinition(AosWeaponAttribute.BattleLust,             1113710, 140, null, null, null, 1, 1, 1152385);
@@ -1497,19 +1590,70 @@ namespace Server.SkillHandlers
             m_Table[217] = new ImbuingDefinition(SAAbsorptionAttribute.ResonanceEnergy,     1154658, 140, null, null, null, 20, 1, 1152391);
             m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.ResonanceKinetic,    1154659, 140, null, null, null, 20, 1, 1152391);
 
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.SoulChargeFire,      1154659, 140, null, null, null, 20, 1, 1152391);
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.SoulChargeCold,      1154659, 140, null, null, null, 20, 1, 1152391);
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.SoulChargePoison,    1154659, 140, null, null, null, 20, 1, 1152391);
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.SoulChargeEnergy,    1154659, 140, null, null, null, 20, 1, 1152391);
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.SoulChargeKinetic,   1154659, 140, null, null, null, 20, 1, 1152391);
-            m_Table[218] = new ImbuingDefinition(SAAbsorptionAttribute.CastingFocus,        1154659, 140, null, null, null, 20, 1, 1116535);
+            m_Table[219] = new ImbuingDefinition(SAAbsorptionAttribute.CastingFocus,        1154659, 140, null, null, null, 20, 1, 1116535);
 
-            m_Table[219] = new ImbuingDefinition(AosArmorAttribute.ReactiveParalyze,        1154660, 140, null, null, null, 1, 1,  1152400);
-            m_Table[220] = new ImbuingDefinition(AosArmorAttribute.SoulCharge,              1116536, 140, null, null, null, 20, 1, 1152391);
+            m_Table[220] = new ImbuingDefinition(AosArmorAttribute.ReactiveParalyze,        1154660, 140, null, null, null, 1, 1,  1152400);
+            m_Table[221] = new ImbuingDefinition(AosArmorAttribute.SoulCharge,              1116536, 140, null, null, null, 20, 1, 1152391);
+
+            m_Table[500] = new ImbuingDefinition(AosArmorAttribute.SelfRepair,              1079709, 100, null, null, null, 5, 1,  1079709);
+            m_Table[501] = new ImbuingDefinition(AosWeaponAttribute.SelfRepair,             1079709, 100, null, null, null, 5, 1,  1079709);
             //243 already used above
+
+            m_Table[600] = new ImbuingDefinition(ExtendedWeaponAttribute.BoneBreaker,       1157318, 140, null, null, null, 1, 1,   1157319);
+            m_Table[601] = new ImbuingDefinition(ExtendedWeaponAttribute.HitSwarm,          1157328, 140, null, null, null, 20, 1,   1157327);
+            m_Table[602] = new ImbuingDefinition(ExtendedWeaponAttribute.HitSparks,         1157330, 140, null, null, null, 20, 1,   1157329);
+            m_Table[603] = new ImbuingDefinition(ExtendedWeaponAttribute.Bane,              1154671, 140, null, null, null, 1, 1,   1154570);
         }
 
-        private static bool IsInNonImbueList(Type itemType)
+        public static Type[] IngredTypes { get { return m_IngredTypes; } }
+        private static Type[] m_IngredTypes = new Type[]
+		{
+			typeof(MagicalResidue), 	typeof(EnchantEssence), 		typeof(RelicFragment),
+			
+			typeof(SeedRenewal), 		typeof(ChagaMushroom), 			typeof(CrystalShards),
+			typeof(BottleIchor), 		typeof(ReflectiveWolfEye), 		typeof(FaeryDust),
+			typeof(BouraPelt), 			typeof(SilverSnakeSkin), 		typeof(ArcanicRuneStone),
+			typeof(SlithTongue), 		typeof(VoidOrb), 				typeof(RaptorTeeth),
+			typeof(SpiderCarapace), 	typeof(DaemonClaw), 			typeof(VialOfVitriol),
+			typeof(GoblinBlood), 		typeof(LavaSerpentCrust), 		typeof(UndyingFlesh),
+			typeof(CrushedGlass), 		typeof(CrystallineBlackrock), 	typeof(PowderedIron),
+			typeof(ElvenFletching),    typeof(DelicateScales),
+			
+			typeof(EssenceSingularity), typeof(EssenceBalance), 		typeof(EssencePassion),
+			typeof(EssenceDirection), 	typeof(EssencePrecision), 		typeof(EssenceControl),
+			typeof(EssenceDiligence), 	typeof(EssenceAchievement), 	typeof(EssenceFeeling), 
+			typeof(EssenceOrder),
+			
+			typeof(ParasiticPlant), 	typeof(LuminescentFungi), 		typeof(BrilliantAmber), 
+			typeof(FireRuby), 			typeof(WhitePearl), 			typeof(BlueDiamond), 
+			typeof(Turquoise)
+		};
+
+        public static int GetAttributeName(object o)
+        {
+            int mod = GetMod(o);
+
+            if (Imbuing.Table.ContainsKey(mod))
+            {
+                return m_Table[mod].AttributeName;
+            }
+
+            return 0;
+        }
+
+        public static int GetMaxValue(object o)
+        {
+            int mod = GetMod(o);
+
+            if (Imbuing.Table.ContainsKey(mod))
+            {
+                return m_Table[mod].MaxIntensity;
+            }
+
+            return 0;
+        }
+
+        public static bool IsInNonImbueList(Type itemType)
         {
             foreach (Type type in m_CannotImbue)
             {
@@ -1549,6 +1693,9 @@ namespace Server.SkillHandlers
 
                 else if (attr is AosWeaponAttribute)
                     return w.WeaponAttributes[(AosWeaponAttribute)attr];
+
+                else if (attr is ExtendedWeaponAttribute)
+                    return w.ExtendedWeaponAttributes[(ExtendedWeaponAttribute)attr];
 
                 else if (attr is SAAbsorptionAttribute)
                     return w.AbsorptionAttributes[(SAAbsorptionAttribute)attr];
@@ -1650,11 +1797,40 @@ namespace Server.SkillHandlers
             return 0;
         }
 
-        public static int GetIntensityForAttribute(object attr, int checkMod, int value)
+        public static int GetIntensityForAttribute(Item item, object attr, int checkMod, int value)
         {
             if (value <= 0)
                 return 0;
 
+            int mod = GetMod(attr);
+
+            if (mod != checkMod && m_Table.ContainsKey(mod))
+            {
+                double max;
+                BaseWeapon wep = item as BaseWeapon;
+                BaseJewel jewel = item as BaseJewel;
+
+                if (wep != null && attr is AosWeaponAttribute && (mod == 25 || mod == 27))
+                {
+                    max = GetPropRange(wep, (AosWeaponAttribute)attr)[1];
+                }
+                else if (jewel != null && attr is AosAttribute && (AosAttribute)attr == AosAttribute.WeaponDamage)
+                {
+                    max = 25;
+                }
+                else
+                {
+                    max = (double)m_Table[mod].MaxIntensity;
+                }
+
+                return (int)(((double)m_Table[mod].Weight / max) * (double)value);
+            }
+
+            return 0;
+        }
+
+        public static int GetMod(object attr)
+        {
             int mod = -1;
 
             if (attr is AosAttribute)
@@ -1662,6 +1838,9 @@ namespace Server.SkillHandlers
 
             else if (attr is AosWeaponAttribute)
                 mod = GetModForAttribute((AosWeaponAttribute)attr);
+
+            else if (attr is ExtendedWeaponAttribute)
+                mod = GetModForAttribute((ExtendedWeaponAttribute)attr);
 
             else if (attr is SkillName)
                 mod = GetModForAttribute((SkillName)attr);
@@ -1678,13 +1857,13 @@ namespace Server.SkillHandlers
             else if (attr is AosElementAttribute)
                 mod = GetModForAttribute((AosElementAttribute)attr);
 
+            else if (attr is TalismanSlayerName)
+                mod = GetModForAttribute((TalismanSlayerName)attr);
+
             else if (attr is string)
                 mod = GetModForAttribute((string)attr);
 
-            if (mod != checkMod && m_Table.ContainsKey(mod))
-                return (int)(((double)m_Table[mod].Weight / (double)m_Table[mod].MaxIntensity) * (double)value);
-
-            return 0;
+            return mod;
         }
 
         public static int GetModForAttribute(AosAttribute attr)
@@ -1709,6 +1888,20 @@ namespace Server.SkillHandlers
                 ImbuingDefinition def = kvp.Value;
 
                 if (def.Attribute is AosWeaponAttribute && (AosWeaponAttribute)def.Attribute == attr)
+                    return mod;
+            }
+
+            return -1;
+        }
+
+        public static int GetModForAttribute(ExtendedWeaponAttribute attr)
+        {
+            foreach (KeyValuePair<int, ImbuingDefinition> kvp in m_Table)
+            {
+                int mod = kvp.Key;
+                ImbuingDefinition def = kvp.Value;
+
+                if (def.Attribute is ExtendedWeaponAttribute && (ExtendedWeaponAttribute)def.Attribute == attr)
                     return mod;
             }
 
@@ -1777,6 +1970,20 @@ namespace Server.SkillHandlers
             return -1;
         }
 
+        public static int GetModForAttribute(TalismanSlayerName attr)
+        {
+            foreach (KeyValuePair<int, ImbuingDefinition> kvp in m_Table)
+            {
+                int mod = kvp.Key;
+                ImbuingDefinition def = kvp.Value;
+
+                if (def.Attribute is TalismanSlayerName && (TalismanSlayerName)def.Attribute == attr)
+                    return mod;
+            }
+
+            return -1;
+        }
+
         public static int GetModForAttribute(AosElementAttribute type)
         {
             switch (type)
@@ -1793,13 +2000,41 @@ namespace Server.SkillHandlers
 
         public static int GetModForAttribute(string str)
         {
-            if (str == "BalancedWeapon")
-                return 61;
+            /*if (str == "BalancedWeapon")
+                return 61;*/
 
             if (str == "WeaponVelocity")
                 return 60;
 
+            if (str == "SearingWeapon")
+                return 62;
+
             return -1;
+        }
+
+        public static bool ValidateProperty(AosAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is AosAttribute && (AosAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(AosWeaponAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is AosWeaponAttribute && (AosWeaponAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(ExtendedWeaponAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is ExtendedWeaponAttribute && (ExtendedWeaponAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(AosArmorAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is AosArmorAttribute && (AosArmorAttribute)def.Attribute == attr) != null;
+        }
+
+        public static bool ValidateProperty(SAAbsorptionAttribute attr)
+        {
+            return Table.Values.FirstOrDefault(def => def.Attribute is SAAbsorptionAttribute && (SAAbsorptionAttribute)def.Attribute == attr) != null;
         }
 
         #region Prop Ranges
@@ -1835,8 +2070,19 @@ namespace Server.SkillHandlers
             }
         }
 
-        public static int[] GetPropRange(AosWeaponAttribute attr)
+        public static int[] GetPropRange(Item item, AosWeaponAttribute attr)
         {
+            if (Core.SA && item is BaseWeapon && (attr == AosWeaponAttribute.HitLeechHits || attr == AosWeaponAttribute.HitLeechMana))
+            {
+                BaseWeapon wep = item as BaseWeapon;
+
+                int max = (int)(wep.MlSpeed * 2500 / (100 + wep.Attributes.WeaponSpeed));
+
+                if (wep is BaseRanged) max /= 2;
+
+                return new int[] { 2, max };
+            }
+
             switch (attr)
             {
                 case AosWeaponAttribute.DurabilityBonus:
@@ -1916,6 +2162,18 @@ namespace Server.SkillHandlers
         public static int[] GetPropRange(AosElementAttribute attr)
         {
             return new int[] { 1, 15 };
+        }
+
+        public static int[] GetPropRange(Item item, ExtendedWeaponAttribute attr)
+        {
+            switch (attr)
+            {
+                default:
+                case ExtendedWeaponAttribute.Bane:
+                case ExtendedWeaponAttribute.BoneBreaker: return new int[] { 1, 1 };
+                case ExtendedWeaponAttribute.HitSparks:
+                case ExtendedWeaponAttribute.HitSwarm: return new int[] { 1, 20 };
+            }
         }
         #endregion
     }

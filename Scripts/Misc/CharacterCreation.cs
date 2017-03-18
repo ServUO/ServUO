@@ -79,7 +79,7 @@ namespace Server.Misc
             }
             else if (m.Race == Race.Gargoyle)
             {
-                EquipItem(new GargishClothChest(hue));
+                EquipItem(new GargishClothChestArmor(hue));
             }
         }
 
@@ -120,7 +120,7 @@ namespace Server.Misc
             }
             else if (m.Race == Race.Gargoyle)
             {
-                EquipItem(new GargishClothKilt(hue));
+                EquipItem(new GargishClothKiltArmor(hue));
             }
         }
 
@@ -200,9 +200,6 @@ namespace Server.Misc
 
                 if (pm.IsPlayer() && ((Account)pm.Account).Young)
                     young = pm.Young = true;
-
-                if (pm.Race == Race.Gargoyle) // Gargoyles start with 2000 loyalty points
-                    pm.Exp = 2000;
             }
 
             SetName(newChar, args.Name);
@@ -721,10 +718,10 @@ namespace Server.Misc
 
                             int hue = hues[Utility.Random(hues.Length)];
 
-                            EquipItem(new GargishClothChest(hue));
-                            EquipItem(new GargishClothArms(hue));
-                            EquipItem(new GargishClothLegs(hue));
-                            EquipItem(new GargishClothKilt(hue));
+                            EquipItem(new GargishClothChestArmor(hue));
+                            EquipItem(new GargishClothArmsArmor(hue));
+                            EquipItem(new GargishClothLegsArmor(hue));
+                            EquipItem(new GargishClothKiltArmor(hue));
                         }
 
                         PackItem(new SmokeBomb());

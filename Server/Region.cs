@@ -106,7 +106,22 @@ namespace Server
 		StygianAbyss,
 		StygianDragon,
 		Void,
-		CodexShrine
+		CodexShrine,
+		AnvilStrikeInMinoc,
+		ASkaranLullaby,
+		BlackthornsMarch,
+		DupresNightInTrinsic,
+		FayaxionAndTheSix,
+		FlightOfTheNexus,
+		GalehavenJaunt,
+		JhelomToArms,
+		MidnightInYew,
+		MoonglowSonata,
+		NewMaginciaMarch,
+		NujelmWaltz,
+		SherrysSong,
+		StarlightInBritain,
+		TheVesperMist
 	}
 
 	public class Region : IComparable
@@ -647,7 +662,7 @@ namespace Server
 			}
 		}
 
-		public virtual void OnDidHarmful(Mobile harmer, Mobile harmed)
+		public virtual void OnDidHarmful(Mobile harmer, IDamageable harmed)
 		{
 			if (m_Parent != null)
 			{
@@ -655,7 +670,7 @@ namespace Server
 			}
 		}
 
-		public virtual void OnGotHarmful(Mobile harmer, Mobile harmed)
+		public virtual void OnGotHarmful(Mobile harmer, IDamageable harmed)
 		{
 			if (m_Parent != null)
 			{
@@ -681,7 +696,7 @@ namespace Server
 			return true;
 		}
 
-		public virtual bool OnCombatantChange(Mobile m, Mobile Old, Mobile New)
+        public virtual bool OnCombatantChange(Mobile m, IDamageable Old, IDamageable New)
 		{
 			if (m_Parent != null)
 			{
@@ -731,7 +746,7 @@ namespace Server
 			return true;
 		}
 
-		public virtual bool AllowHarmful(Mobile from, Mobile target)
+		public virtual bool AllowHarmful(Mobile from, IDamageable target)
 		{
 			if (m_Parent != null)
 			{
@@ -901,6 +916,10 @@ namespace Server
 			return true;
 		}
 
+        public virtual void GetContextMenuEntries(Mobile from, List<Server.ContextMenus.ContextMenuEntry> list, Item item)
+        {
+        }
+
 		public virtual bool AllowSpawn()
 		{
 			if (m_Parent != null)
@@ -1048,6 +1067,13 @@ namespace Server
 		{
 			foreach (XmlElement xmlReg in xml.SelectNodes("region"))
 			{
+				var expansion = Expansion.None;
+
+				if (ReadEnum(xmlReg, "expansion", ref expansion, false) && expansion > Core.Expansion)
+				{
+					continue;
+				}
+
 				Type type = DefaultRegionType;
 
 				ReadType(xmlReg, "type", ref type, false);
@@ -1113,6 +1139,13 @@ namespace Server
 			var area = new List<Rectangle3D>();
 			foreach (XmlElement xmlRect in xml.SelectNodes("rect"))
 			{
+				var expansion = Expansion.None;
+
+				if (ReadEnum(xmlRect, "expansion", ref expansion, false) && expansion > Core.Expansion)
+				{
+					continue;
+				}
+
 				Rectangle3D rect = new Rectangle3D();
 				if (ReadRectangle3D(xmlRect, minZ, maxZ, ref rect))
 				{

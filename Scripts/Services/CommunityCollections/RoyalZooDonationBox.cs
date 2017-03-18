@@ -77,7 +77,8 @@ namespace Server.Items
             {
                 0x555, 0xAE, 0x94, 0x278, 0x32, 0x28, 0x327, 0x41A
             };
-			
+
+            Rewards.Add(new CollectionItem(typeof(ForTheLifeOfBritanniaSash), 0x1541, 1075792, 0x0, 5000.0, true));
             this.Rewards.Add(new CollectionHuedItem(typeof(ZooMemberCloak), 0x1515, 1073221, 0x555, 100000.0, hues));
             this.Rewards.Add(new CollectionHuedItem(typeof(ZooMemberRobe), 0x1F03, 1073221, 0x555, 100000.0, hues));
             this.Rewards.Add(new CollectionHuedItem(typeof(ZooMemberSkirt), 0x1F01, 1073221, 0x555, 100000.0, hues));

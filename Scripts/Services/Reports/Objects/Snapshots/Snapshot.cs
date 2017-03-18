@@ -52,23 +52,23 @@ namespace Server.Engines.Reports
             this.m_Children = new ObjectCollection();
         }
 
-        public override void SerializeAttributes(PersistanceWriter op)
+        public override void SerializeAttributes(PersistenceWriter op)
         {
             op.SetDateTime("t", this.m_TimeStamp);
         }
 
-        public override void DeserializeAttributes(PersistanceReader ip)
+        public override void DeserializeAttributes(PersistenceReader ip)
         {
             this.m_TimeStamp = ip.GetDateTime("t");
         }
 
-        public override void SerializeChildren(PersistanceWriter op)
+        public override void SerializeChildren(PersistenceWriter op)
         {
             for (int i = 0; i < this.m_Children.Count; ++i)
                 this.m_Children[i].Serialize(op);
         }
 
-        public override void DeserializeChildren(PersistanceReader ip)
+        public override void DeserializeChildren(PersistenceReader ip)
         {
             while (ip.HasChild)
                 this.m_Children.Add(ip.GetChild());

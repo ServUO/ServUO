@@ -167,7 +167,6 @@ namespace Server.Engines.Craft
                 int resIndex = (context == null ? -1 : context.LastResourceIndex);
 
                 Type resourceType = craftSystem.CraftSubRes.ResType;
-                Type resourceType2 = GetAltType(resourceType);
 
                 if (resIndex > -1)
                 {
@@ -178,6 +177,7 @@ namespace Server.Engines.Craft
                     resourceType = subResource.ItemType;
                 }
 
+                Type resourceType2 = GetAltType(resourceType);
                 int resourceCount = 0;
 
                 if (from.Backpack != null)
@@ -306,8 +306,8 @@ namespace Server.Engines.Craft
 
                     CraftContext context = this.m_CraftSystem.GetContext(this.m_From);
 
-                    this.AddButton(220, 290, 4005, 4007, GetButtonID(6, 4), GumpButtonType.Reply, 0);
-                    this.AddHtmlLocalized(255, 293, 200, 18, (context == null || !context.DoNotColor) ? 1061591 : 1061590, LabelColor, false, false);
+                    this.AddButton(220, 260, 4005, 4007, GetButtonID(6, 4), GumpButtonType.Reply, 0);
+                    this.AddHtmlLocalized(255, 260, 200, 18, (context == null || !context.DoNotColor) ? 1061591 : 1061590, LabelColor, false, false);
                 }
 
                 int resourceCount = 0;
@@ -318,6 +318,16 @@ namespace Server.Engines.Craft
 
                     for (int j = 0; j < items.Length; ++j)
                         resourceCount += items[j].Amount;
+
+                    Type alt = GetAltType(subResource.ItemType);
+
+                    if (alt != null)
+                    {
+                        Item[] items2 = m_From.Backpack.FindItemsByType(alt, true);
+
+                        for (int j = 0; j < items2.Length; ++j)
+                            resourceCount += items2[j].Amount;
+                    }
                 }
 
                 this.AddButton(220, 70 + (index * 20), 4005, 4007, GetButtonID(5, i), GumpButtonType.Reply, 0);

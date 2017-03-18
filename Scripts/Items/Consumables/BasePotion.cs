@@ -36,6 +36,14 @@ namespace Server.Items
         Parasitic,
         Darkglow,
 		ExplodingTarPotion,
+        #region TOL Publish 93
+        Barrab,
+        Jukari,
+        Kurak,
+        Barako,
+        Urali,
+        Sakkhra,
+        #endregion
     }
 
     public abstract class BasePotion : Item, ICraftable, ICommodity
@@ -107,11 +115,11 @@ namespace Server.Items
 
             if (handTwo is BaseWeapon)
                 handOne = handTwo;
-            if (handTwo is BaseRanged)
+            if (handTwo is BaseWeapon)
             {
-                BaseRanged ranged = (BaseRanged)handTwo;
+                BaseWeapon wep = (BaseWeapon)handTwo;
 				
-                if (ranged.Balanced)
+                if (wep.Attributes.BalancedWeapon > 0)
                     return true;
             }
 
@@ -122,6 +130,14 @@ namespace Server.Items
         {
             if (!this.Movable)
                 return;
+
+            if (!from.BeginAction(this.GetType()))
+            {
+                from.SendLocalizedMessage(500119); // You must wait to perform another action.
+                return;
+            }
+
+            Timer.DelayCall(TimeSpan.FromMilliseconds(500), () => from.EndAction(this.GetType()));
 
             if (from.InRange(this.GetWorldLocation(), 1))
             {

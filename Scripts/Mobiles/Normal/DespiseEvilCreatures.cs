@@ -9,8 +9,6 @@ namespace Server.Engines.Despise
 {
 	public class Phantom : DespiseCreature
 	{
-		private DateTime m_NextDiscord;
-	
 		[Constructable]
 		public Phantom() : this(1)
 		{
@@ -41,7 +39,6 @@ namespace Server.Engines.Despise
 			Fame = GetFame;
 			Karma = GetKarmaEvil;
 			
-			m_NextDiscord = DateTime.Now;
             Power = powerLevel;
 		}
 
@@ -103,8 +100,6 @@ namespace Server.Engines.Despise
 		{
 			base.Deserialize(reader);
 			int v = reader.ReadInt();
-			
-			m_NextDiscord = DateTime.Now;
 		}
 	}
 	
@@ -557,7 +552,7 @@ namespace Server.Engines.Despise
 			Fame = GetFame;
 			Karma = GetKarmaEvil;
 			
-			m_NextHeal = DateTime.Now;
+			m_NextHeal = DateTime.UtcNow;
             Power = powerLevel;
 		}
 
@@ -572,7 +567,7 @@ namespace Server.Engines.Despise
 		{
 			base.OnThink();
 			
-			if(m_NextHeal < DateTime.Now && this.Map != null && this.Map != Map.Internal)
+			if(m_NextHeal < DateTime.UtcNow && this.Map != null && this.Map != Map.Internal)
 			{
 				List<Mobile> eligables = new List<Mobile>();
 				IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 8);
@@ -594,11 +589,11 @@ namespace Server.Engines.Despise
 					m.PlaySound( 0x202 );
 
                     int nextHeal = Utility.RandomMinMax(20 - Power, 30 - Power);
-					m_NextHeal = DateTime.Now + TimeSpan.FromSeconds(nextHeal);
+					m_NextHeal = DateTime.UtcNow + TimeSpan.FromSeconds(nextHeal);
 					return;
 				}
 				
-				m_NextHeal = DateTime.Now + TimeSpan.FromSeconds(5);
+				m_NextHeal = DateTime.UtcNow + TimeSpan.FromSeconds(5);
 			}
 		}
 
@@ -625,7 +620,7 @@ namespace Server.Engines.Despise
 			base.Deserialize(reader);
 			int v = reader.ReadInt();
 			
-			m_NextHeal = DateTime.Now;
+			m_NextHeal = DateTime.UtcNow;
 		}
 	}
 }

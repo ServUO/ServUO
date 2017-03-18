@@ -3,6 +3,8 @@ using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
+using System.Collections.Generic;
+using Server.ContextMenus;
 
 namespace Server.Regions
 {
@@ -12,6 +14,7 @@ namespace Server.Regions
         public static TimeSpan CombatHeatDelay = TimeSpan.FromSeconds(30.0);
         private readonly BaseHouse m_House;
         private bool m_Recursion;
+
         public HouseRegion(BaseHouse house)
             : base(null, house.Map, HousePriority, GetArea(house))
         {
@@ -180,6 +183,32 @@ namespace Server.Regions
             }
 
             return true;
+        }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list, Item item)
+        {
+            if (m_House.IsOwner(from) && item.Parent == null && m_House.IsLockedDown(item))
+            {
+                list.Add(new SimpleContextMenuEntry(from, 1153880, m => // Retrieve
+                    {
+                        if (BaseHouse.FindHouseAt(m) == m_House && m_House.IsOwner(m))
+                        {
+                            if (m.Backpack == null || !m.Backpack.CheckHold(m, item, false))
+                            {
+                                m.SendLocalizedMessage(1153881); // Your pack cannot hold this
+                            }
+                            else
+                            {
+                                m_House.Release(m, item);
+                                m.Backpack.DropItem(item);
+                            }
+                        }
+                        else
+                        {
+                            m.SendLocalizedMessage(1153882); // You do not own that.
+                        }
+                    }, 8));
+            }
         }
 
         public override bool OnDecay(Item item)

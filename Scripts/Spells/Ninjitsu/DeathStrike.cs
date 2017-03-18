@@ -107,6 +107,8 @@ namespace Server.Spells.Ninjitsu
             info.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerStateCallback(ProcessDeathStrike), defender);
 
             m_Table[defender] = info;
+            
+            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.DeathStrike, 1075645, TimeSpan.FromSeconds(5.0), defender, String.Format("{0}", damageBonus)));
 
             this.CheckGain(attacker);
         }

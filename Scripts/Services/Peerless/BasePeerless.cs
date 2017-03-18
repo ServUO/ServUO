@@ -1,6 +1,7 @@
 using System;
 using Server.Items;
 using Server.Spells;
+using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -20,7 +21,10 @@ namespace Server.Mobiles
                 this.m_Altar = value;
             }
         }
+
 		public override bool CanBeParagon { get { return false; } }
+        public virtual bool DropPrimer { get { return true; } }
+
         public override bool Unprovokable
         {
             get
@@ -55,7 +59,27 @@ namespace Server.Mobiles
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
-			
+
+            if (DropPrimer)
+            {
+                SkillMasteryPrimer primer = SkillMasteryPrimer.GetRandom();
+                List<DamageStore> rights = GetLootingRights();
+
+                if (rights.Count > 0)
+                {
+                    Mobile m = rights[Utility.Random(rights.Count)].m_Mobile;
+
+                    m.SendLocalizedMessage(1156209); // You have received a mastery primer!
+
+                    if (m.Backpack == null || !m.Backpack.TryDropItem(m, primer, false))
+                        m.BankBox.DropItem(primer);
+                }
+                else
+                {
+                    c.DropItem(primer);
+                }
+            }
+
             if (this.m_Altar != null)
                 this.m_Altar.OnPeerlessDeath();
         }
@@ -218,42 +242,6 @@ namespace Server.Mobiles
 			
             for (int i = 0; i < count; i ++)
                 this.PackItem(Loot.RandomTalisman());
-        }
-		
-        public virtual Point3D GetSpawnPosition(int range)
-        {
-            return GetSpawnPosition(this.Location, this.Map, range);
-        }
-		
-        public static Point3D GetSpawnPosition(Point3D from, Map map, int range)
-        {
-            if (map == null)
-                return from;
-				
-            for (int i = 0; i < 10; i ++)
-            {
-                int x = from.X + Utility.Random(range);
-                int y = from.Y + Utility.Random(range);
-                int z = map.GetAverageZ(x, y);
-				
-                if (Utility.RandomBool())
-                    x *= -1;
-					
-                if (Utility.RandomBool())
-                    y *= -1;
-					
-                Point3D p = new Point3D(x, y, from.Z);
-				
-                if (map.CanSpawnMobile(p) && map.LineOfSight(from, p))
-                    return p;
-				
-                p = new Point3D(x, y, z);
-					
-                if (map.CanSpawnMobile(p) && map.LineOfSight(from, p))
-                    return p;
-            }
-			
-            return from;
         }
 		
         #region Fire Ring

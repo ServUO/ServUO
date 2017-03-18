@@ -66,26 +66,49 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.FilthyRich);
         }
-        public override void OnDeath(Container c)
+
+        public override void OnDamage(int amount, Mobile from, bool willKill)
         {
+            if (Utility.RandomDouble() < 0.3)
+                this.DropOoze();
 
-            base.OnDeath(c);
-            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
-            if (0.25 > Utility.RandomDouble() && reg.Name == "Passage of Tears")
+            base.OnDamage(amount, from, willKill);
+        }
+
+        public virtual void DropOoze()
+        {
+            int amount = Utility.RandomMinMax(1, 3);
+
+            for (int i = 0; i < amount; i++)
             {
-                if (Utility.RandomDouble() < 0.6)
-                    c.DropItem(new EssenceSingularity());
+                Item ooze = new InfernalOoze(false, Utility.RandomMinMax(6, 10));
+                Point3D p = new Point3D(this.Location);
 
+                for (int j = 0; j < 5; j++)
+                {
+                    p = this.GetSpawnPosition(2);
+                    bool found = false;
+
+                    foreach (Item item in this.Map.GetItemsInRange(p, 0))
+                        if (item is InfernalOoze)
+                        {
+                            found = true;
+                            break;
+                        }
+
+                    if (!found)
+                        break;
+                }
+
+                ooze.MoveToWorld(p, this.Map);
+            }
+
+            if (this.Combatant is Mobile)
+            {
+                ((Mobile)this.Combatant).SendLocalizedMessage(1070820); // The creature spills a pool of acidic slime!
             }
         }
-        // TODO: Acid Blood
 
-        /*
-        * Message: 1070820
-        * Spits pool of acid (blood, hue 0x3F), hits lost 6-10 per second/step
-        * Damage is resistable (physical)
-        * Acid last 10 seconds
-        */
         public override int GetAngerSound()
         {
             return 0x581;

@@ -443,6 +443,14 @@ namespace Server.SkillHandlers
 								{
 									ScaleStats(m_Creature, 0.50);
 								}
+
+                                foreach (Skill sk in m_Creature.Skills)
+                                {
+                                    if (sk.Base > 100)
+                                        sk.Cap = sk.Base;
+                                    else
+                                        sk.Cap = 100;
+                                }
 							}
 
 							if (alreadyOwned)
@@ -458,6 +466,8 @@ namespace Server.SkillHandlers
 
 							m_Creature.SetControlMaster(m_Tamer);
 							m_Creature.IsBonded = false;
+
+                            m_Creature.OnAfterTame(m_Tamer);
 						}
 						else
 						{

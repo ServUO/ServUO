@@ -314,6 +314,13 @@ namespace Server.Items
                 {
                     double difficulty;
 
+                    #region Void Pool Rewards
+                    bool talisman = false;
+                    SmeltersTalisman t = from.FindItemOnLayer(Layer.Talisman) as SmeltersTalisman;
+                    if (t != null && t.Resource == m_Ore.Resource)
+                        talisman = true;
+                    #endregion
+
                     switch ( this.m_Ore.Resource )
                     {
                         default:
@@ -348,7 +355,7 @@ namespace Server.Items
                     double minSkill = difficulty - 25.0;
                     double maxSkill = difficulty + 25.0;
 
-                    if (difficulty > 50.0 && difficulty > from.Skills[SkillName.Mining].Value)
+                    if (difficulty > 50.0 && difficulty > from.Skills[SkillName.Mining].Value && !talisman)
                     {
                         from.SendLocalizedMessage(501986); // You have no idea how to smelt this strange ore!
                         return;
@@ -360,7 +367,7 @@ namespace Server.Items
                         return;
                     }
 
-                    if (from.CheckTargetSkill(SkillName.Mining, targeted, minSkill, maxSkill))
+                    if (talisman || from.CheckTargetSkill(SkillName.Mining, targeted, minSkill, maxSkill))
                     {
                         int toConsume = this.m_Ore.Amount;
 
@@ -398,7 +405,13 @@ namespace Server.Items
                             from.AddToBackpack(ingot);
                             //from.PlaySound( 0x57 );
 
-                            from.SendLocalizedMessage(501988); // You smelt the ore removing the impurities and put the metal in your backpack.
+                            if (talisman && t != null)
+                            {
+                                t.UsesRemaining--;
+                                from.SendLocalizedMessage(1152620); // The magic of your talisman guides your hands as you purify the metal. Success is ensured!
+                            }
+                            else
+                                from.SendLocalizedMessage(501988); // You smelt the ore removing the impurities and put the metal in your backpack.
                         }
                     }
                     else

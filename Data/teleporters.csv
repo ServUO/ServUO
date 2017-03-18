@@ -44,8 +44,8 @@
 5466,1804,12,Felucca,5593,1840,-3,Felucca,False
 5466,1805,12,Felucca,5593,1841,-3,Felucca,False
 5466,1806,12,Felucca,5593,1842,-3,Felucca,False
-5594,1840,-9,Felucca,5467,1804,7,Felucca,False
-5594,1841,-9,Felucca,5467,1805,7,Felucca,False
+5594,1840,-8,Felucca,5467,1804,7,Felucca,False
+5594,1841,-8,Felucca,5467,1805,7,Felucca,False
 5824,631,5,Felucca,2041,215,14,Felucca,True
 5825,631,5,Felucca,2042,215,14,Felucca,True
 5825,631,5,Felucca,2043,215,14,Felucca,True
@@ -332,8 +332,8 @@
 5466,1804,12,Trammel,5593,1840,-3,Trammel,False
 5466,1805,12,Trammel,5593,1841,-3,Trammel,False
 5466,1806,12,Trammel,5593,1842,-3,Trammel,False
-5594,1840,-9,Trammel,5467,1804,7,Trammel,False
-5594,1841,-9,Trammel,5467,1805,7,Trammel,False
+5594,1840,-8,Trammel,5467,1804,7,Trammel,False
+5594,1841,-8,Trammel,5467,1805,7,Trammel,False
 5824,631,5,Trammel,2041,215,14,Trammel,True
 5825,631,5,Trammel,2042,215,14,Trammel,True
 5825,631,5,Trammel,2043,215,14,Trammel,True
@@ -1200,7 +1200,7 @@
 7152,756,25,Felucca,977,419,-21,TerMur,True
 6026,196,22,Felucca,6987,805,24,Felucca,False
 6026,197,25,Felucca,6987,805,24,Felucca,False
-5172,1589,-4,Felucca,5143,1774,0,Felucca,False
+5172,1589,-2,Felucca,5143,1774,0,Felucca,False
 1037,579,-73,Ilshenar,1790,66,-26,Ilshenar,False
 1037,580,-73,Ilshenar,1790,67,-26,Ilshenar,False
 1037,581,-73,Ilshenar,1790,68,-26,Ilshenar,False
@@ -1355,3 +1355,5 @@
 5260,1841,0,Trammel,3613,2592,0,Trammel,False
 311,786,0,Trammel,5750,350,5,Trammel,False
 311,786,-24,Trammel,314,784,0,Trammel,False
+4194,3260,5,Trammel,1127,1215,5,TerMur,False
+4195,3260,5,Trammel,1129,1215,5,TerMur,False

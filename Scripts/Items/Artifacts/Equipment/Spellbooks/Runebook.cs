@@ -141,9 +141,11 @@ namespace Server.Items
             }
         }// runebook
 
+        public virtual int MaxEntries { get { return 16; } }
+
         [Constructable]
-        public Runebook(int maxCharges)
-            : base(Core.AOS ? 0x22C5 : 0xEFA)
+        public Runebook(int maxCharges, int id = 0x22C5)
+            : base(Core.AOS ? id : 0xEFA)
         {
             this.Weight = (Core.SE ? 1.0 : 3.0);
             this.LootType = LootType.Blessed;
@@ -172,6 +174,12 @@ namespace Server.Items
             {
                 return this.m_Entries;
             }
+        }
+
+        public int DefaultIndex
+        {
+            get { return m_DefaultIndex; }
+            set { m_DefaultIndex = value; }
         }
 
         public RunebookEntry Default
@@ -287,15 +295,31 @@ namespace Server.Items
 
             this.m_Entries.RemoveAt(index);
 
-            RecallRune rune = new RecallRune();
+            if (e.Galleon != null)
+            {
+                if (e.Galleon.Deleted)
+                {
+                    from.SendMessage("You discard the rune as the galleon is no longer available.");
+                    return;
+                }
+                else
+                {
+                    ShipRune rune = new ShipRune(e.Galleon);
+                    from.AddToBackpack(rune);
+                }
+            }
+            else
+            {
+                RecallRune rune = new RecallRune();
 
-            rune.Target = e.Location;
-            rune.TargetMap = e.Map;
-            rune.Description = e.Description;
-            rune.House = e.House;
-            rune.Marked = true;
+                rune.Target = e.Location;
+                rune.TargetMap = e.Map;
+                rune.Description = e.Description;
+                rune.House = e.House;
+                rune.Marked = true;
 
-            from.AddToBackpack(rune);
+                from.AddToBackpack(rune);
+            }
 
             from.SendLocalizedMessage(502421); // You have removed the rune.
         }
@@ -431,7 +455,7 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (dropped is RecallRune)
+            if (dropped is RecallRune || dropped is ShipRune)
             {
                 if (this.IsLockedDown && from.AccessLevel < AccessLevel.GameMaster)
                 {
@@ -441,30 +465,62 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1005571); // You cannot place objects in the book while viewing the contents.
                 }
-                else if (this.m_Entries.Count < 16)
+                else if (this.m_Entries.Count < MaxEntries)
                 {
-                    RecallRune rune = (RecallRune)dropped;
-
-                    if (rune.Marked && rune.TargetMap != null)
+                    if (dropped is RecallRune)
                     {
-                        this.m_Entries.Add(new RunebookEntry(rune.Target, rune.TargetMap, rune.Description, rune.House));
+                        RecallRune rune = (RecallRune)dropped;
 
-                        dropped.Delete();
+                        if (rune.Marked && rune.TargetMap != null)
+                        {
+                            this.m_Entries.Add(new RunebookEntry(rune.Target, rune.TargetMap, rune.Description, rune.House));
 
-                        from.Send(new PlaySound(0x42, this.GetWorldLocation()));
+                            dropped.Delete();
 
-                        string desc = rune.Description;
+                            from.Send(new PlaySound(0x42, this.GetWorldLocation()));
 
-                        if (desc == null || (desc = desc.Trim()).Length == 0)
-                            desc = "(indescript)";
+                            string desc = rune.Description;
 
-                        from.SendMessage(desc);
+                            if (desc == null || (desc = desc.Trim()).Length == 0)
+                                desc = "(indescript)";
 
-                        return true;
+                            from.SendMessage(desc);
+
+                            return true;
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(502409); // This rune does not have a marked location.
+                        }
                     }
-                    else
+                    else if(dropped is ShipRune)
                     {
-                        from.SendLocalizedMessage(502409); // This rune does not have a marked location.
+                        ShipRune rune = (ShipRune)dropped;
+
+                        if (rune.Galleon != null && !rune.Galleon.Deleted)
+                        {
+                            m_Entries.Add(new RunebookEntry(Point3D.Zero, null, rune.Galleon.ShipName, null, rune.Galleon));
+
+                            dropped.Delete();
+
+                            from.Send(new PlaySound(0x42, GetWorldLocation()));
+
+                            string desc = rune.Galleon.ShipName;
+
+                            if (desc == null || (desc = desc.Trim()).Length == 0)
+                                desc = "an unnamed ship";
+
+                            from.SendMessage(desc);
+
+                            return true;
+                        }
+                        else
+                        {
+                            if (rune.DockedBoat != null)
+                                from.SendMessage("You cannot place a rune to a docked boat in the runebook.");
+                            else
+                                from.SendLocalizedMessage(502409); // This rune does not have a marked location.
+                        }
                     }
                 }
                 else
@@ -504,7 +560,7 @@ namespace Server.Items
 
         #region ICraftable Members
 
-        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
             int charges = 5 + quality + (int)(from.Skills[SkillName.Inscribe].Value / 30);
 
@@ -529,12 +585,18 @@ namespace Server.Items
         private readonly Map m_Map;
         private readonly string m_Description;
         private readonly BaseHouse m_House;
+        private BaseGalleon m_Galleon;
 
         public Point3D Location
         {
             get
             {
-                return this.m_Location;
+                if (m_Galleon != null && !m_Galleon.Deleted)
+                {
+                    return m_Galleon.GetMarkedLocation();
+                }
+
+                return m_Location;
             }
         }
 
@@ -542,7 +604,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Map;
+                if (m_Galleon != null && !m_Galleon.Deleted && m_Galleon.Map != Map.Internal && m_Galleon.Map != null)
+                {
+                    return m_Galleon.Map;
+                }
+
+                return m_Map;
             }
         }
 
@@ -562,12 +629,18 @@ namespace Server.Items
             }
         }
 
-        public RunebookEntry(Point3D loc, Map map, string desc, BaseHouse house)
+        public BaseGalleon Galleon
+        {
+            get { return m_Galleon; }
+        }
+
+        public RunebookEntry(Point3D loc, Map map, string desc, BaseHouse house, BaseGalleon g = null)
         {
             this.m_Location = loc;
             this.m_Map = map;
             this.m_Description = desc;
             this.m_House = house;
+            this.m_Galleon = g;
         }
 
         public RunebookEntry(GenericReader reader)
@@ -576,6 +649,11 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 2:
+                    {
+                        this.m_Galleon = reader.ReadItem() as BaseGalleon;
+                        goto case 0;
+                    }
                 case 1:
                     {
                         this.m_House = reader.ReadItem() as BaseHouse;
@@ -594,20 +672,26 @@ namespace Server.Items
 
         public void Serialize(GenericWriter writer)
         {
-            if (this.m_House != null && !this.m_House.Deleted)
+            if (m_Galleon != null && !m_Galleon.Deleted)
+            {
+                writer.Write((byte)2);
+
+                writer.Write(m_Galleon);
+            }
+            else if (m_House != null && !m_House.Deleted)
             {
                 writer.Write((byte)1); // version
 
-                writer.Write(this.m_House);
+                writer.Write(m_House);
             }
             else
             {
                 writer.Write((byte)0); // version
             }
 
-            writer.Write(this.m_Location);
-            writer.Write(this.m_Map);
-            writer.Write(this.m_Description);
+            writer.Write(m_Location);
+            writer.Write(m_Map);
+            writer.Write(m_Description);
         }
     }
 }

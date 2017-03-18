@@ -6,7 +6,8 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            Mobile.DefaultWeapon = new Fists();
+            if (Mobile.DefaultWeapon == null)
+                Mobile.DefaultWeapon = new Fists();
 
             EventSink.DisarmRequest += new DisarmRequestEventHandler(EventSink_DisarmRequest);
             EventSink.StunRequest += new StunRequestEventHandler(EventSink_StunRequest);
@@ -45,7 +46,7 @@ namespace Server.Items
         {
             get
             {
-                return 4;
+                return 6;
             }
         }
         public override int AosSpeed
@@ -259,10 +260,10 @@ namespace Server.Items
             }
         }
 
-        public override TimeSpan OnSwing(Mobile attacker, Mobile defender)
+        public override TimeSpan OnSwing(Mobile attacker, IDamageable defender)
         {
-            if (!Core.AOS)
-                this.CheckPreAOSMoves(attacker, defender);
+            if (!Core.AOS && defender is Mobile)
+                this.CheckPreAOSMoves(attacker, (Mobile)defender);
 
             return base.OnSwing(attacker, defender);
         }
@@ -284,6 +285,11 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (Mobile.DefaultWeapon == null)
+                Mobile.DefaultWeapon = this;
+            else
+                Delete();
         }
 
         /* Wrestling moves */

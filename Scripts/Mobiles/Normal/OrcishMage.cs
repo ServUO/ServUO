@@ -51,6 +51,9 @@ namespace Server.Mobiles
 
             if (0.05 > Utility.RandomDouble())
                 this.PackItem(new OrcishKinMask());
+
+            if (0.5 > Utility.RandomDouble())
+                PackItem(new Yeast());
         }
 
         public OrcishMage(Serial serial)

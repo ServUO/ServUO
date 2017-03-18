@@ -36,6 +36,8 @@ namespace Server
             pm.HonorActive = true;
             pm.SendLocalizedMessage(1063235); // You embrace your honor
 
+            BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.Honored, 1075649, BuffInfo.Blank, TimeSpan.FromSeconds(duration), pm, "You have embraced your honor"));
+
             Timer.DelayCall(TimeSpan.FromSeconds(duration),
                 delegate()
                 {
@@ -157,6 +159,9 @@ namespace Server
 
             if (!source.Mounted)
                 source.Animate(32, 5, 1, true, true, 0);
+
+            BuffInfo.AddBuff(source, new BuffInfo(BuffIcon.Honored, 1075649, 1153815, String.Format("{0}", target.Name)));
+            BuffInfo.AddBuff(source, new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, String.Format("0\t{0}", target.Name)));
         }
 
         private class InternalTarget : Target
@@ -315,24 +320,33 @@ namespace Server
                 return;
 
             int bushido = (int)from.Skills.Bushido.Value;
+
             if (bushido < 50)
                 return;
 
-            this.m_Perfection += bushido / 10;
+            int damagebonus = bushido / 10;
+
+            this.m_Perfection += damagebonus;
 
             if (this.m_Perfection >= 100)
             {
                 this.m_Perfection = 100;
                 this.m_Source.SendLocalizedMessage(1063254); // You have Achieved Perfection in inflicting damage to this opponent!
+                
+                BuffInfo.AddBuff(m_Target, new BuffInfo(BuffIcon.AchievePerfection, 1075651, 1075652, TimeSpan.FromSeconds(5), from, String.Format("{0}\t{1}", m_Perfection, from.Name)));
             }
             else
             {
                 this.m_Source.SendLocalizedMessage(1063255); // You gain in Perfection as you precisely strike your opponent.
+
+                BuffInfo.AddBuff(from, new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, String.Format("{0}\t{1}", m_Target.Name, m_Perfection)));
             }
         }
 
         public void OnTargetMissed(Mobile from)
         {
+            BuffInfo.RemoveBuff(from, BuffIcon.Perfection);
+
             if (from != this.m_Source || this.m_Perfection == 0)
                 return;
 
@@ -353,6 +367,8 @@ namespace Server
         {
             if (to != this.m_Target)
                 return;
+
+            BuffInfo.RemoveBuff(m_Source, BuffIcon.Perfection);
 
             if (this.m_Perfection >= 0)
             {
@@ -423,6 +439,9 @@ namespace Server
             ((IHonorTarget)this.m_Target).ReceivedHonorContext = null;
 
             this.m_Timer.Stop();
+
+            BuffInfo.RemoveBuff(m_Source, BuffIcon.Perfection);
+            BuffInfo.RemoveBuff(m_Source, BuffIcon.Honored);
         }
 
         private class InternalTimer : Timer

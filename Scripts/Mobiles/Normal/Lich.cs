@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public Lich()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "a lich";
             this.Body = 24;

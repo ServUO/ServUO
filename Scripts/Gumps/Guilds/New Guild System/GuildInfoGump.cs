@@ -9,15 +9,18 @@ namespace Server.Guilds
     public class GuildInfoGump : BaseGuildGump
     {
         private readonly bool m_IsResigning;
+        private readonly bool m_IsResigningVvV;
+
         public GuildInfoGump(PlayerMobile pm, Guild g)
-            : this(pm, g, false)
+            : this(pm, g, false, false)
         {
         }
 
-        public GuildInfoGump(PlayerMobile pm, Guild g, bool isResigning)
+        public GuildInfoGump(PlayerMobile pm, Guild g, bool isResigning, bool isResigningVvV)
             : base(pm, g)
         {
             this.m_IsResigning = isResigning;
+            this.m_IsResigningVvV = isResigningVvV;
             this.PopulateGump();
         }
 
@@ -62,18 +65,38 @@ namespace Server.Guilds
                 this.AddButton(40, 251, 0x4B9, 0x4BA, 4, GumpButtonType.Reply, 0);	//Charter Edit button
 
             s = this.guild.Website;
+
             if (string.IsNullOrEmpty(s))
                 s = "Guild website not yet set.";
+
             this.AddHtml(65, 306, 480, 30, s, true, false);
+
             if (isLeader)
                 this.AddButton(40, 313, 0x4B9, 0x4BA, 5, GumpButtonType.Reply, 0);	//Website Edit button
 
-            this.AddCheck(65, 370, 0xD2, 0xD3, this.player.DisplayGuildTitle, 0);
-            this.AddHtmlLocalized(95, 370, 150, 26, 1063085, 0x0, false, false); // Show Guild Title
-            this.AddBackground(450, 370, 100, 26, 0x2486);
+            AddBackground(65, 370, 170, 26, 0x2486);
 
-            this.AddButton(455, 375, 0x845, 0x846, 7, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(480, 373, 60, 26, 3006115, (this.m_IsResigning) ? 0x5000 : 0, false, false); // Resign
+            if (Server.Engines.VvV.ViceVsVirtueSystem.Enabled)
+            {
+                if (Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(player))
+                {
+                    AddButton(67, 375, 0x4B9, 0x4BA, 9, GumpButtonType.Reply, 0); // Resign Vice vs Virtue
+                    AddHtmlLocalized(92, 373, 170, 26, 1155557, m_IsResigningVvV ? 0x5000 : 0, false, false);
+
+                    AddBackground(255, 370, 170, 26, 0x2486);
+                    AddButton(257, 375, 0x4B9, 0x4BA, 10, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(282, 373, 150, 26, 1114982, false, false); // Leaderboards
+                }
+                else
+                {
+                    AddButton(67, 375, 0x4B9, 0x4BA, 8, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(92, 373, 170, 26, 1155556, false, false); // Join Vice vs Virtue
+                }
+            }
+
+            AddBackground(445, 370, 100, 26, 0x2486);
+            AddButton(447, 375, 0x845, 0x846, 7, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(472, 373, 60, 26, 3006115, (this.m_IsResigning) ? 0x5000 : 0, false, false); // Resign
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -86,8 +109,8 @@ namespace Server.Guilds
                 return;
 
             pm.DisplayGuildTitle = info.IsSwitched(0);
-			
-            switch( info.ButtonID )
+
+            switch (info.ButtonID)
             {
                 //1-3 handled by base.OnResponse
                 case 4:
@@ -123,7 +146,7 @@ namespace Server.Guilds
                         if (!this.m_IsResigning)
                         {
                             pm.SendLocalizedMessage(1063332); // Are you sure you wish to resign from your guild?
-                            pm.SendGump(new GuildInfoGump(pm, this.guild, true));
+                            pm.SendGump(new GuildInfoGump(pm, this.guild, true, false));
                         }
                         else
                         {
@@ -131,6 +154,35 @@ namespace Server.Guilds
                         }
                         break;
                     }
+                case 8:
+                    if (pm.Young)
+                    {
+                        pm.SendLocalizedMessage(1155562); // Young players may not join Vice vs Virtue. Renounce your young player status by saying, "I renounce my young player status" and try again.
+                    }
+                    else
+                    {
+                        pm.SendGump(new Server.Engines.VvV.ConfirmSignupGump(pm));
+                    }
+                    break;
+                case 9:
+                    if (Server.Engines.Points.PointsSystem.ViceVsVirtue.IsResigning(pm, guild))
+                    {
+                        pm.SendLocalizedMessage(1155560); // You are currently in the process of quitting Vice vs Virtue.
+                    }
+                    else if (m_IsResigningVvV)
+                    {
+                        pm.SendLocalizedMessage(1155559); // You have begun the Vice vs Virtue resignation process.  You will be removed from VvV in 3 days.
+                        Server.Engines.Points.PointsSystem.ViceVsVirtue.OnResign(pm);
+                    }
+                    else
+                    {
+                        pm.SendLocalizedMessage(1155558); // Are you sure you wish to resign from Vice vs Virtue? You will not be allowed to rejoin for 3 days.
+                        pm.SendGump(new GuildInfoGump(pm, guild, false, true));
+                    }
+                    break;
+                case 10:
+                    pm.SendGump(new Server.Engines.VvV.ViceVsVirtueLeaderboardGump(pm));
+                    break;
             }
         }
 

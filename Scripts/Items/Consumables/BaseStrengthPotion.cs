@@ -33,10 +33,14 @@ namespace Server.Items
         public bool DoStrength(Mobile from)
         {
             // TODO: Verify scaled; is it offset, duration, or both?
-            if (Spells.SpellHelper.AddStatOffset(from, StatType.Str, Scale(from, this.StrOffset), this.Duration))
+            int scale = Scale(from, this.StrOffset);
+            if (Spells.SpellHelper.AddStatOffset(from, StatType.Str, scale, this.Duration))
             {
                 from.FixedEffect(0x375A, 10, 15);
                 from.PlaySound(0x1E7);
+
+                BuffInfo.AddBuff(from, new BuffInfo(BuffIcon.Strength, 1075845, this.Duration, from, scale.ToString()));
+
                 return true;
             }
 

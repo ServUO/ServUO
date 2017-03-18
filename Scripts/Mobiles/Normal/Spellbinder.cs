@@ -7,34 +7,29 @@ namespace Server.Mobiles
     {
         [Constructable]
         public Spellbinder()
-            : base(AIType.AI_Spellbinder, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Spellbinder, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             this.Name = "a Spectral Spellbinder";
             this.Body = 153;
             this.BaseSoundID = 0x482;
 
-            this.SetStr(76, 100);
-            this.SetDex(76, 95);
-            this.SetInt(36, 60);
+            this.SetStr(46, 70);
+            this.SetDex(47, 65);
+            this.SetInt(187, 210);
 
-            this.SetHits(46, 60);
-            this.SetMana(100);
+            this.SetHits(36, 50);
 
-            this.SetDamage(0, 1);
+            this.SetDamage(3, 6);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 25, 30);
-            this.SetResistance(ResistanceType.Cold, 20, 30);
-            this.SetResistance(ResistanceType.Poison, 5, 10);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            this.SetResistance(ResistanceType.Physical, 20, 30);
+            this.SetResistance(ResistanceType.Cold, 15, 25);
+            this.SetResistance(ResistanceType.Poison, 10, 20);
 
-            this.SetSkill(SkillName.MagicResist, 45.1, 60.0);
-            this.SetSkill(SkillName.Tactics, 45.1, 60.0);
-            this.SetSkill(SkillName.Wrestling, 45.1, 55.0);
-            this.SetSkill(SkillName.Magery, 70.0, 80.0);
-            this.SetSkill(SkillName.Meditation, 100.0, 120.0);
-            this.SetSkill(SkillName.Necromancy, 100.0, 120.0);
+            this.SetSkill(SkillName.MagicResist, 35.1, 45.0);
+            this.SetSkill(SkillName.Tactics, 35.1, 50.0);
+            this.SetSkill(SkillName.Wrestling, 35.1, 50.0);
 
             this.Fame = 2500;
             this.Karma = -2500;

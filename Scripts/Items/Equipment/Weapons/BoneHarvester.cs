@@ -1,7 +1,9 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefBlacksmithy), typeof(GargishBoneHarvester))]
     [FlipableAttribute(0x26BB, 0x26C5)]
     public class BoneHarvester : BaseSword
     {

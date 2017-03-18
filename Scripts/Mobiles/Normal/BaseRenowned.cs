@@ -7,6 +7,9 @@ namespace Server.Mobiles
     public abstract class BaseRenowned : BaseCreature
     {
         Dictionary<Mobile, int> m_DamageEntries;
+
+        public override int BaseLootBudget { get { return RandomItemGenerator.MaxBaseBudget; } }
+
         public BaseRenowned(AIType aiType)
             : this(aiType, FightMode.Closest)
         {
@@ -189,7 +192,7 @@ namespace Server.Mobiles
             if (this.Map == Map.Felucca || this.Map == Map.TerMur)
             {
                 //TODO: Confirm SE change or AoS one too?
-                List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+                List<DamageStore> rights = GetLootingRights();
                 List<Mobile> toGive = new List<Mobile>();
 
                 for (int i = rights.Count - 1; i >= 0; --i)

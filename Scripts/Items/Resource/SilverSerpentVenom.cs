@@ -12,7 +12,7 @@ namespace Server.Items
 
         [Constructable]
         public SilverSerpentVenom(int amount)
-            : base(0x2F5F)
+            : base(0x5722)
         {
             this.Stackable = true;
             this.Amount = amount;
@@ -42,6 +42,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (ItemID != 0x5722)
+                ItemID = 0x5722;
         }
     }
 }

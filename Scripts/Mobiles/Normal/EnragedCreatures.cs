@@ -253,7 +253,7 @@ namespace Server.Mobiles
                 {
                     bc = (BaseCreature)this.Combatant;
                 }
-                if (this.Combatant.Player || (bc != null && (bc.Controlled || bc.SummonMaster != null)))
+                if (this.Combatant is PlayerMobile || (bc != null && (bc.Controlled || bc.SummonMaster != null)))
                 {
                     this.SummonMaster.Combatant = this.Combatant;
                 }
@@ -290,7 +290,8 @@ namespace Server.Mobiles
 
         private bool Combat(Mobile mobile)
         {
-            Mobile combatant = mobile.Combatant;
+            Mobile combatant = mobile.Combatant as Mobile;
+
             if (combatant == null || combatant.Deleted)
             { 
                 return false;

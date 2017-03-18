@@ -160,7 +160,7 @@ namespace Server.Gumps
 			if(m_Object is Item)
                 AddLabelCropped( x + TextOffsetX, y, TypeWidth - TextOffsetX, EntryHeight, TextHue, ((Item)m_Object).Name );
             int propcount = 0;
-			for ( int i = 0, index = page * EntryCount; i < count && index < m_List.Count; ++i, ++index )
+			for ( int i = 0, index = page * EntryCount; i <= count && index < m_List.Count; ++i, ++index )
 			{
 			// do the multi column display
 				int column = propcount/ColumnEntryCount;

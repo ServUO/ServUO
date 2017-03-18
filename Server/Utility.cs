@@ -13,6 +13,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 #endregion
 
@@ -546,6 +547,18 @@ namespace Server
 
 			return i;
 		}
+
+        public static long ToInt64(string value)
+        {
+            long i;
+
+            if (value.StartsWith("0x"))
+                long.TryParse(value.Substring(2), NumberStyles.HexNumber, null, out i);
+            else
+                long.TryParse(value, out i);
+
+            return i;
+        }
 		#endregion
 
 		#region Get[Something]
@@ -907,13 +920,51 @@ namespace Server
 		{
 			return RandomImpl.NextDouble();
 		}
-		#endregion
+        #endregion
 
-		#region Random Hues
-		/// <summary>
-		///     Random pink, blue, green, orange, red or yellow hue
-		/// </summary>
-		public static int RandomNondyedHue()
+        #region FixValues
+        public static void FixMin(ref int value, int min)
+        {
+            if (value < min)
+                value = min;
+        }
+
+        public static void FixMin(ref double value, double min)
+        {
+            if (value < min)
+                value = min;
+        }
+
+        public static void FixMax(ref int value, int max)
+        {
+            if (value > max)
+                value = max;
+        }
+
+        public static void FixMax(ref double value, double max)
+        {
+            if (value > max)
+                value = max;
+        }
+
+        public static void FixMinMax(ref int value, int min, int max)
+        {
+            FixMin(ref value, min);
+            FixMax(ref value, max);
+        }
+
+        public static void FixMinMax(ref double value, double min, double max)
+        {
+            FixMin(ref value, min);
+            FixMax(ref value, max);
+        }
+        #endregion
+
+        #region Random Hues
+        /// <summary>
+        ///     Random pink, blue, green, orange, red or yellow hue
+        /// </summary>
+        public static int RandomNondyedHue()
 		{
 			switch (Random(6))
 			{
@@ -1226,7 +1277,7 @@ namespace Server
 						bytes.Append("  ");
 					}
 
-					if (c >= 0x20 && c < 0x7F)
+					if (c >= 0x20 && c < 0x80)
 					{
 						chars.Append((char)c);
 					}
@@ -1265,7 +1316,7 @@ namespace Server
 							bytes.Append("  ");
 						}
 
-						if (c >= 0x20 && c < 0x7F)
+						if (c >= 0x20 && c < 0x80)
 						{
 							chars.Append((char)c);
 						}
@@ -1393,5 +1444,25 @@ namespace Server
 
 			return output;
 		}
-	}
+
+        public static String RemoveHtml(String str)
+        {
+            return str.Replace("<", "").Replace(">", "").Trim();
+        }
+
+        public static bool IsNumeric(String str)
+        {
+            return !Regex.IsMatch(str, "[^0-9]");
+        }
+
+        public static bool IsAlpha(String str)
+        {
+            return !Regex.IsMatch(str, "[^a-z]", RegexOptions.IgnoreCase);
+        }
+
+        public static bool IsAlphaNumeric(String str)
+        {
+            return !Regex.IsMatch(str, "[^a-z0-9]", RegexOptions.IgnoreCase);
+        }
+    }
 }

@@ -107,7 +107,7 @@ namespace Server.Engines.Harvest
                     new BonusHarvestResource(100, 02.0, 1072547, typeof(SwitchItem)),
                     new BonusHarvestResource(100, 01.0, 1072549, typeof(ParasiticPlant)),
                     new BonusHarvestResource(100, 01.0, 1072551, typeof(BrilliantAmber)),
-                    new BonusHarvestResource(100, 01.0, 1072551, typeof(CrystalShards), Map.TerMur),
+                    new BonusHarvestResource(100, 01.0, 1113756, typeof(CrystalShards), Map.TerMur),
                 };
             }
             else
@@ -160,6 +160,34 @@ namespace Server.Engines.Harvest
 			}
 
 			return true;
+        }
+
+        public override Type GetResourceType(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, HarvestResource resource)
+        {
+            #region Void Pool Items
+            HarvestMap hmap = HarvestMap.CheckMapOnHarvest(from, loc, def);
+
+            if (hmap != null && hmap.Resource >= CraftResource.RegularWood && hmap.Resource <= CraftResource.Frostwood)
+            {
+                hmap.UsesRemaining--;
+                hmap.InvalidateProperties();
+
+                CraftResourceInfo info = CraftResources.GetInfo(hmap.Resource);
+
+                if (info != null)
+                    return info.ResourceTypes[0];
+            }
+            #endregion
+
+            return base.GetResourceType(from, tool, def, map, loc, resource);
+        }
+
+        public override bool CheckResources(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)
+        {
+            if (HarvestMap.CheckMapOnHarvest(from, loc, def) == null)
+                return base.CheckResources(from, tool, def, map, loc, timed);
+
+            return true;
         }
 
         public override void OnBadHarvestTarget(Mobile from, Item tool, object toHarvest)

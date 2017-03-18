@@ -159,7 +159,8 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            if (ReforgedSuffix != ReforgedSuffix.Blackthorn)
+                list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
 
             if (this.m_Poison != null && this.m_PoisonCharges > 0)
                 list.Add(1062412 + this.m_Poison.Level, this.m_PoisonCharges.ToString());

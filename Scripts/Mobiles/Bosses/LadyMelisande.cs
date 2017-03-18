@@ -116,14 +116,19 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (this.CanTakeLife(this.Combatant))
-                this.TakeLife(this.Combatant);
+            Mobile combatant = Combatant as Mobile;
 
-            if (this.CanSmackTalk())
-                this.SmackTalk();
+            if (combatant != null)
+            {
+                if (this.CanTakeLife(combatant))
+                    this.TakeLife(combatant);
 
-            if (this.CanPutridNausea())
-                this.PutridNausea();
+                if (this.CanSmackTalk())
+                    this.SmackTalk();
+
+                if (this.CanPutridNausea())
+                    this.PutridNausea();
+            }
         }
 
         public override void SetLocation(Point3D newLocation, bool isTeleport)
@@ -250,6 +255,8 @@ namespace Server.Mobiles
 
                 m.Animate(32, 5, 1, true, false, 0); // bow animation
                 m.SendLocalizedMessage(1072068); // Your enemy's putrid presence envelops you, overwhelming you with nausea.
+
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.AuraOfNausea, 1153792, 1153819, TimeSpan.FromSeconds(30), m, "60\t60\t60\t5"));
             }
 
             this.m_NextPutridNausea = DateTime.UtcNow + TimeSpan.FromSeconds(40 + Utility.RandomDouble() * 30);
@@ -258,6 +265,7 @@ namespace Server.Mobiles
         public void EndPutridNausea(Mobile m)
         {
             m_Table.Remove(m);
+            BuffInfo.RemoveBuff(m, BuffIcon.AuraOfNausea);
         }
 
         public static void HandleDeath(Mobile m)
@@ -343,8 +351,10 @@ namespace Server.Mobiles
                     if (this.CanBeHarmful(fighter))
                     {
                         EnslavedSatyr satyr = new EnslavedSatyr();
-                        satyr.Combatant = fighter;
+                        satyr.FightMode = FightMode.Closest;
                         this.SpawnHelper(satyr, GetSpawnPosition(fighter.Location, fighter.Map, 2));
+
+                        satyr.Combatant = fighter;
 
                         fighter.SendLocalizedMessage(1075116); // A twisted satyr scrambles onto the branch beside you and attacks!
                     }

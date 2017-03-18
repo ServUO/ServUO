@@ -121,14 +121,15 @@ namespace Server.Engines.Harvest
             {
                 oreAndStone.BonusResources = new BonusHarvestResource[]
                 {
-                    new BonusHarvestResource(0, 99.3, null, null), //Nothing
+                    new BonusHarvestResource(0, 99.2, null, null), //Nothing
                     new BonusHarvestResource(100, .1, 1072562, typeof(BlueDiamond)),
                     new BonusHarvestResource(100, .1, 1072567, typeof(DarkSapphire)),
                     new BonusHarvestResource(100, .1, 1072570, typeof(EcruCitrine)),
                     new BonusHarvestResource(100, .1, 1072564, typeof(FireRuby)),
                     new BonusHarvestResource(100, .1, 1072566, typeof(PerfectEmerald)),
                     new BonusHarvestResource(100, .1, 1072568, typeof(Turquoise)),
-					new BonusHarvestResource(100, .1, 1113344, typeof(CrystallineBlackrock), Map.TerMur)
+                    new BonusHarvestResource(100, .1, 1077180, typeof(SmallPieceofBlackrock)),
+                    new BonusHarvestResource(100, .1, 1113344, typeof(CrystallineBlackrock), Map.TerMur)
 				};
             }
 
@@ -202,6 +203,21 @@ namespace Server.Engines.Harvest
         {
             if (def == this.m_OreAndStone)
             {
+                #region Void Pool Items
+                HarvestMap hmap = HarvestMap.CheckMapOnHarvest(from, loc, def);
+
+                if (hmap != null && hmap.Resource >= CraftResource.Iron && hmap.Resource <= CraftResource.Valorite)
+                {
+                    hmap.UsesRemaining--;
+                    hmap.InvalidateProperties();
+
+                    CraftResourceInfo info = CraftResources.GetInfo(hmap.Resource);
+
+                    if (info != null)
+                        return info.ResourceTypes[1];
+                }
+                #endregion
+
                 PlayerMobile pm = from as PlayerMobile;
 
                 if (pm != null && pm.GemMining && pm.ToggleMiningGem && from.Skills[SkillName.Mining].Base >= 100.0 && 0.1 > Utility.RandomDouble())
@@ -214,6 +230,14 @@ namespace Server.Engines.Harvest
             }
 
             return base.GetResourceType(from, tool, def, map, loc, resource);
+        }
+
+        public override bool CheckResources(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)
+        {
+            if (HarvestMap.CheckMapOnHarvest(from, loc, def) == null)
+                return base.CheckResources(from, tool, def, map, loc, timed);
+
+            return true;
         }
 
         public override bool CheckHarvest(Mobile from, Item tool)
@@ -296,7 +320,7 @@ namespace Server.Engines.Harvest
 
         public override void OnHarvestFinished(Mobile from, Item tool, HarvestDefinition def, HarvestVein vein, HarvestBank bank, HarvestResource resource, object harvested)
         {
-            if (tool is GargoylesPickaxe && def == this.m_OreAndStone && 0.1 > Utility.RandomDouble())
+            if (tool is GargoylesPickaxe && def == this.m_OreAndStone && 0.1 > Utility.RandomDouble() && HarvestMap.CheckMapOnHarvest(from, harvested, def) == null)
             {
                 HarvestResource res = vein.PrimaryResource;
 
@@ -352,6 +376,89 @@ namespace Server.Engines.Harvest
                 }
             }
         }
+
+        #region High Seas
+        public override bool SpecialHarvest(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc)
+        {
+            if (!Core.HS)
+                return base.SpecialHarvest(from, tool, def, map, loc);
+
+            HarvestBank bank = def.GetBank(map, loc.X, loc.Y);
+
+            if (bank == null)
+                return false;
+
+            bool boat = Server.Multis.BaseBoat.FindBoatAt(from, from.Map) != null;
+            bool dungeon = IsDungeonRegion(from);
+
+            if (!boat && !dungeon)
+                return false;
+
+            if (boat || !NiterDeposit.HasBeenChecked(bank))
+            {
+                double bonus = (from.Skills[SkillName.Mining].Value / 9999) + ((double)from.Luck / 150000);
+
+                if (boat)
+                    bonus -= (bonus * .33);
+
+                if (dungeon)
+                    NiterDeposit.AddBank(bank);
+
+                if (Utility.RandomDouble() < bonus)
+                {
+                    int size = Utility.RandomMinMax(1, 5);
+
+                    if (from.Luck / 2500 > Utility.RandomDouble())
+                        size++;
+
+                    NiterDeposit niter = new NiterDeposit(size);
+
+                    if (!dungeon)
+                    {
+                        niter.MoveToWorld(new Point3D(loc.X, loc.Y, from.Z + 3), from.Map);
+                        from.SendLocalizedMessage(1149918, niter.Size.ToString()); //You have uncovered a ~1_SIZE~ deposit of niter! Mine it to obtain saltpeter.
+                        NiterDeposit.AddBank(bank);
+                        return true;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 50; i++)
+                        {
+                            int x = Utility.RandomMinMax(loc.X - 2, loc.X + 2);
+                            int y = Utility.RandomMinMax(loc.Y - 2, loc.Y + 2);
+                            int z = from.Z;
+
+                            if (from.Map.CanSpawnMobile(x, y, z))
+                            {
+                                niter.MoveToWorld(new Point3D(x, y, z), from.Map);
+                                from.SendLocalizedMessage(1149918, niter.Size.ToString()); //You have uncovered a ~1_SIZE~ deposit of niter! Mine it to obtain saltpeter.
+                                return true;
+                            }
+                        }
+                    }
+
+                    niter.Delete();
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsDungeonRegion(Mobile from)
+        {
+            if (from == null)
+                return false;
+
+            Map map = from.Map;
+            Region reg = from.Region;
+            Rectangle2D bounds = new Rectangle2D(0, 0, 5114, 4100);
+
+            if ((map == Map.Felucca || map == Map.Trammel) && bounds.Contains(new Point2D(from.X, from.Y)))
+                return false;
+
+            return reg != null && (reg.IsPartOf(typeof(Server.Regions.DungeonRegion)) || map == Map.Ilshenar);
+        }
+        #endregion
 
         public override bool BeginHarvesting(Mobile from, Item tool)
         {

@@ -7,23 +7,23 @@ using Server.Engines.Quests;
 
 namespace Server.Gumps
 {
+    [Flags]
+    public enum ReforgingOption
+    {
+        None                = 0x00000000,
+        Powerful            = 0x00000001,
+        Structural          = 0x00000002,
+        Fortified           = 0x00000004,
+        Fundamental         = 0x00000008,
+        Integral            = 0x00000010,
+        GrandArtifice       = 0x00000020,
+        InspiredArtifice    = 0x00000040,
+        ExaltedArtifice     = 0x00000080,
+        SublimeArtifice     = 0x00000100,
+    }
+
     public class RunicReforgingGump : BaseQuestGump
     {
-        [Flags]
-        public enum ReforgingOption
-        {
-            None                = 0x00000000,
-            Powerful            = 0x00000001,
-            Structural          = 0x00000002,
-            Fortified           = 0x00000004,
-            Fundamental         = 0x00000008,
-            Integral            = 0x00000010,
-            GrandArtifice       = 0x00000020,
-            InspiredArtifice    = 0x00000040,
-            ExaltedArtifice     = 0x00000080,
-            SublimeArtifice     = 0x00000100,
-        }
-
         public static readonly int Orange = 31137;
 
         private BaseRunicTool m_Tool;
@@ -31,6 +31,19 @@ namespace Server.Gumps
         private ReforgingOption m_Options;
         private ReforgedPrefix m_Prefix;
         private ReforgedSuffix m_Suffix;
+
+        private ReforgingOption[] Options =
+        {
+            ReforgingOption.Powerful,
+            ReforgingOption.Structural,
+            ReforgingOption.Fortified,
+            ReforgingOption.Fundamental,
+            ReforgingOption.Integral,
+            ReforgingOption.GrandArtifice,
+            ReforgingOption.InspiredArtifice,
+            ReforgingOption.ExaltedArtifice,
+            ReforgingOption.SublimeArtifice,
+        };
 
         public RunicReforgingGump(Mobile from, Item toReforge, BaseRunicTool tool) : this(from, toReforge, tool, ReforgingOption.None, ReforgedPrefix.None, ReforgedSuffix.None)
         {
@@ -54,12 +67,9 @@ namespace Server.Gumps
             int y = 40;
             int idx = 0;
 
-            foreach (int i in Enum.GetValues(typeof(ReforgingOption)))
+            for(int i = 0; i < Options.Length; i++)
             {
-                if (i == 0x00000000)
-                    continue;
-
-                ReforgingOption option = (ReforgingOption)i;
+                ReforgingOption option = Options[i];
 
                 if ((m_Options & option) != 0)
                 {
@@ -142,9 +152,42 @@ namespace Server.Gumps
                 case ReforgingOption.GrandArtifice: return true;
                 case ReforgingOption.InspiredArtifice: return (m_Options & ReforgingOption.GrandArtifice) != 0;
                 case ReforgingOption.ExaltedArtifice: return (m_Options & ReforgingOption.GrandArtifice) != 0;
-                case ReforgingOption.SublimeArtifice: return (m_Options & ReforgingOption.ExaltedArtifice) != 0;
+                case ReforgingOption.SublimeArtifice: return (m_Options & ReforgingOption.ExaltedArtifice) != 0 && (m_Options & ReforgingOption.GrandArtifice) != 0;
             }
             return true;
+        }
+
+        private void InvalidatePrerequisite(ReforgingOption option)
+        {
+            switch (option)
+            {
+                case ReforgingOption.None:
+                case ReforgingOption.Powerful: break;
+                case ReforgingOption.Structural:
+                    if ((m_Options & ReforgingOption.Fortified) != 0)
+                        m_Options ^= ReforgingOption.Fortified;
+                    break;
+                case ReforgingOption.Fortified: break;
+                case ReforgingOption.Fundamental:
+                    if ((m_Options & ReforgingOption.Integral) != 0)
+                        m_Options ^= ReforgingOption.Integral;
+                    break;
+                case ReforgingOption.Integral: break;
+                case ReforgingOption.GrandArtifice:
+                    if ((m_Options & ReforgingOption.InspiredArtifice) != 0)
+                        m_Options ^= ReforgingOption.InspiredArtifice;
+                    if ((m_Options & ReforgingOption.ExaltedArtifice) != 0)
+                        m_Options ^= ReforgingOption.ExaltedArtifice;
+                    if ((m_Options & ReforgingOption.SublimeArtifice) != 0)
+                        m_Options ^= ReforgingOption.SublimeArtifice;
+                    break;
+                case ReforgingOption.InspiredArtifice: break;
+                case ReforgingOption.ExaltedArtifice:
+                    if ((m_Options & ReforgingOption.SublimeArtifice) != 0)
+                        m_Options ^= ReforgingOption.SublimeArtifice;
+                    break;
+                case ReforgingOption.SublimeArtifice: break;
+            }
         }
 
         private bool CanReforge(Mobile from, ReforgingOption option)
@@ -224,7 +267,6 @@ namespace Server.Gumps
 
                             CraftAttributeInfo attrs = resInfo.AttributeInfo;
                             int budget = GetBudget();
-                            int powerMod = GetPowerMod();
 
                             int min = 10;
                             int max = 40;
@@ -241,20 +283,29 @@ namespace Server.Gumps
                             if (m_Prefix == ReforgedPrefix.None && (m_Options & ReforgingOption.GrandArtifice) != 0)
                             {
                                 m_Prefix = RunicReforging.ChooseRandomPrefix(m_ToReforge);
-                                budget = Math.Min(800, budget + 25);
+                                budget = Math.Min(800, budget + 50);
                             }
 
                             if (m_Suffix == ReforgedSuffix.None && (m_Options & ReforgingOption.ExaltedArtifice) != 0)
                             {
                                 m_Suffix = RunicReforging.ChooseRandomSuffix(m_ToReforge, m_Prefix);
-                                budget = Math.Min(800, budget + 25);
+                                budget = Math.Min(800, budget + 50);
                             }
 
-                            int maxprops = Math.Min(5, (budget / 110) + 1);
-                            if (maxprops == 5 && 0.10 > Utility.RandomDouble())
+                            int maxprops;
+
+                            if (attrs != null)
+                                maxprops = Utility.RandomMinMax(attrs.RunicMinAttributes, attrs.RunicMaxAttributes);
+                            else
+                                maxprops = Math.Min(5, (budget / 110) + 1);
+
+                            if (maxprops == 5 && 0.25 > Utility.RandomDouble())
                                 maxprops = 6;
-                            
-							RunicReforging.ApplyReforgedProperties(m_ToReforge, m_Prefix, m_Suffix, true, budget, min, max, maxprops, powerMod, 0);
+
+                            if (maxprops == 6 && budget >= 650 && 0.10 > Utility.RandomDouble())
+                                maxprops = 7;
+
+                            RunicReforging.ApplyReforgedProperties(m_ToReforge, m_Prefix, m_Suffix, true, budget, min, max, maxprops, 0, m_Tool, m_Options);
 
                             OnAfterReforged(m_ToReforge);
                             from.SendLocalizedMessage(1152286); // You re-forge the item!
@@ -277,18 +328,16 @@ namespace Server.Gumps
                     break;
                 default: // Option
                     {
-                        int index = info.ButtonID - 100;
+                        ReforgingOption option = Options[info.ButtonID - 100];
 
-                        if (index > (int)ReforgingOption.None && index <= (int)ReforgingOption.SublimeArtifice)
+                        if (HasMetPrerequisite(option))
                         {
-                            ReforgingOption option = (ReforgingOption)index;
-
-                            if (HasMetPrerequisite(option))
+                            if ((m_Options & option) == 0)
+                                m_Options |= option;
+                            else
                             {
-                                if ((m_Options & option) == 0)
-                                    m_Options |= option;
-                                else
-                                    m_Options ^= option;
+                                m_Options ^= option;
+                                InvalidatePrerequisite(option);
                             }
                         }
 
@@ -298,47 +347,39 @@ namespace Server.Gumps
             }
         }
 
-        private int GetPowerMod()
-        {
-            if ((m_Options & ReforgingOption.Fundamental) != 0)
-                return 0;
-
-            if ((m_Options & ReforgingOption.Structural) != 0)
-                return 10;
-
-            if ((m_Options & ReforgingOption.Powerful) != 0)
-                return 20;
-
-            return 30;
-        }
-
         private int GetBudget()
         {
-            int budget = 250;
+            int budget;
 
             switch (m_Tool.Resource)
             {
                 default:
-                    break;
+                case CraftResource.DullCopper:
+                    budget = Utility.RandomMinMax(160, 220); break;
                 case CraftResource.ShadowIron:
-                case CraftResource.Copper:
                 case CraftResource.SpinedLeather:
+                case CraftResource.OakWood:
+                    budget = Utility.RandomMinMax(220, 300); break;
+                case CraftResource.Copper:
                 case CraftResource.AshWood:
-                    budget = 400; break;
+                    budget = Utility.RandomMinMax(300, 400); break;
                 case CraftResource.Bronze:
-                case CraftResource.Gold:
-                case CraftResource.HornedLeather:
                 case CraftResource.YewWood:
-                    budget = 550; break;
+                case CraftResource.HornedLeather:
+                    budget = Utility.RandomMinMax(400, 500); break;
+                case CraftResource.Gold:
                 case CraftResource.Agapite:
-                case CraftResource.Verite: 
-                    budget = 700; break;
-                case CraftResource.Valorite:
-                case CraftResource.BarbedLeather:
                 case CraftResource.Heartwood:
-                    budget = 800; break;
+                case CraftResource.Bloodwood: 
+                    budget = Utility.RandomMinMax(500, 600); break;
+                case CraftResource.Verite:
+                case CraftResource.Frostwood:
+                case CraftResource.BarbedLeather:
+                    budget = Utility.RandomMinMax(600, 800); break;
+                case CraftResource.Valorite:
+                    budget = Utility.RandomMinMax(700, 900); break;
             }
-            
+
             return budget;
         }
 
@@ -372,6 +413,8 @@ namespace Server.Gumps
                 ((IDurability)item).MaxHitPoints = durability;
                 ((IDurability)item).HitPoints = durability;
             }
+
+            RunicReforging.ApplyItemPower(item, true);
         }
 
         public class ItemNameGump : BaseQuestGump

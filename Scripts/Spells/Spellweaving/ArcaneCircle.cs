@@ -72,7 +72,7 @@ namespace Server.Spells.Spellweaving
 
                 duration += TimeSpan.FromHours(Math.Min(5, Arcanists.Count));
 
-                int strengthBonus = Math.Min(Arcanists.Count, IsSanctuary(this.Caster.Location, this.Caster.Map) ? 6 : 5);	//The Sanctuary is a special, single location place
+                int strengthBonus = Math.Min(Arcanists.Count, IsBonus(this.Caster.Location, this.Caster.Map) ? 6 : 5);	//The Sanctuary is a special, single location place
 
                 for (int i = 0; i < Arcanists.Count; i++)
                     this.GiveArcaneFocus(Arcanists[i], duration, strengthBonus);
@@ -81,9 +81,11 @@ namespace Server.Spells.Spellweaving
             this.FinishSequence();
         }
 
-        private static bool IsSanctuary(Point3D p, Map m)
+        private static bool IsBonus(Point3D p, Map m)
         {
-            return (m == Map.Trammel || m == Map.Felucca) && p.X == 6267 && p.Y == 131;
+            return (m == Map.Trammel || m == Map.Felucca) && 
+                (p.X == 6267 && p.Y == 131) ||
+                (p.X == 6589 && p.Y == 178);
         }
 
         private static bool IsValidLocation(Point3D location, Map map)

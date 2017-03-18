@@ -8,7 +8,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public WolfSpider()
-            : base(AIType.AI_Melee, FightMode.Evil, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a Wolf spider";
             Body = 737;
@@ -92,8 +92,8 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (Utility.RandomDouble() < 0.15)
-                c.DropItem(new BottleIchor());
+			if (Controlled)
+				return;
 
             if (Utility.RandomDouble() < 0.01)
                 c.DropItem(new LuckyCoin());

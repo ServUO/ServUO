@@ -15,15 +15,15 @@ namespace Server.Items
 		[Constructable]
 		public GrapeVine() : base(Utility.Random(3355, 10)) 
 		{
-			m_NextHarvest = DateTime.Now;
+			m_NextHarvest = DateTime.UtcNow;
 		}
 
 		public override void OnDoubleClick(Mobile from)
 		{
-			if((ItemID == 3358 || ItemID == 3363) && Movable == false && m_NextHarvest < DateTime.Now)
+			if((ItemID == 3358 || ItemID == 3363) && Movable == false && m_NextHarvest < DateTime.UtcNow)
 			{
 				from.AddToBackpack(new GrapeBunch());	
-				m_NextHarvest = DateTime.Now + TimeSpan.FromHours(HarvestWait);
+				m_NextHarvest = DateTime.UtcNow + TimeSpan.FromHours(HarvestWait);
 			}
 		}
 				

@@ -181,7 +181,7 @@ namespace Server.Items
             list.Add(new ToggleMiningStoneEntry(pm, false, true, 1112237));
         }
 
-        private class ToggleMiningStoneEntry : ContextMenuEntry
+        public class ToggleMiningStoneEntry : ContextMenuEntry
         {
             private readonly PlayerMobile m_Mobile;
             private bool m_Valuestone;

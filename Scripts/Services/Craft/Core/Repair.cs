@@ -176,6 +176,11 @@ namespace Server.Engines.Craft
                 return false;
             }
 
+            private bool IsSpecialJewel(BaseJewel jewel)
+            {
+                return jewel is SilverBracelet || jewel is SilverRing;
+            }
+
             private bool IsSpecialArmor(BaseArmor armor)
             {
                 // Armor repairable but not craftable
@@ -348,7 +353,7 @@ namespace Server.Engines.Craft
                     {
                         number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                     }
-                    else if (weapon.BlockRepair)
+                    else if (weapon.BlockRepair || weapon.NegativeAttributes.NoRepair > 0)
                     {
                         number = 1044277; // That item cannot be repaired.
                     }
@@ -413,7 +418,7 @@ namespace Server.Engines.Craft
                     {
                         number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                     }
-                    else if (armor.BlockRepair)
+                    else if (armor.BlockRepair || armor.NegativeAttributes.NoRepair > 0)
                     {
                         number = 1044277; // That item cannot be repaired.
                     }
@@ -440,7 +445,7 @@ namespace Server.Engines.Craft
                         toDelete = true;
                     }
                 }
-                else if (targeted is BaseJewel && ((BaseJewel)targeted).TimesImbued > 0)
+                else if (targeted is BaseJewel)
                 {
                     BaseJewel jewel = (BaseJewel)targeted;
                     SkillName skill = m_CraftSystem.MainSkill;
@@ -462,7 +467,7 @@ namespace Server.Engines.Craft
                             toWeaken = 3;
                     }
 
-                    if (m_CraftSystem.CraftItems.SearchForSubclass(jewel.GetType()) == null)
+                    if (m_CraftSystem.CraftItems.SearchForSubclass(jewel.GetType()) == null && !IsSpecialJewel(jewel))
                     {
                         number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                     }
@@ -478,7 +483,7 @@ namespace Server.Engines.Craft
                     {
                         number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                     }
-                    else if (jewel.BlockRepair)
+                    else if (jewel.BlockRepair || jewel.NegativeAttributes.NoRepair > 0)
                     {
                         number = 1044277; // That item cannot be repaired.
                     }
@@ -543,7 +548,7 @@ namespace Server.Engines.Craft
                     {
                         number = 1044278; // That item has been repaired many times, and will break if repairs are attempted again.
                     }
-                    else if (clothing.BlockRepair)// quick fix
+                    else if (clothing.BlockRepair || clothing.NegativeAttributes.NoRepair > 0)// quick fix
                     {
                         number = 1044277; // That item cannot be repaired.
                     }
@@ -592,7 +597,7 @@ namespace Server.Engines.Craft
                             toWeaken = 3;
                     }
 
-                    if (talisman is IRepairable && ((IRepairable)talisman).RepairSystem != m_CraftSystem)
+                    if (!(m_CraftSystem is DefTinkering))
                     {
                         number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                     }

@@ -92,6 +92,8 @@ namespace Server.Items
             }
         }
 
+        public virtual bool BreakOnDepletion { get { return true; } }
+
         public abstract CraftSystem CraftSystem { get; }
 
         public BaseTool(int itemID)
@@ -126,12 +128,46 @@ namespace Server.Items
             this.LabelToAffix(m, 1017323, AffixType.Append, ": " + this.m_UsesRemaining.ToString()); // Durability
         }
 
-        public static bool CheckAccessible(Item tool, Mobile m)
+		public virtual bool CheckAccessible(Mobile m, ref int num)
         {
-            return (tool.IsChildOf(m) || tool.Parent == m);
+            if (!IsChildOf(m) && Parent != m)
+            {
+                num = 1044263;
+                return false;
+            }
+
+            return true;
         }
 
-        public static bool CheckTool(Item tool, Mobile m)
+	    public static bool CheckAccessible(Item tool, Mobile m)
+	    {
+		    return CheckAccessible(tool, m, false);
+	    }
+
+	    public static bool CheckAccessible(Item tool, Mobile m, bool message)
+	    {
+		    var num = 0;
+
+			bool res;
+
+		    if (tool is BaseTool)
+		    {
+			    res = ((BaseTool)tool).CheckAccessible(m, ref num);
+		    }
+		    else
+		    {
+				res = tool.IsChildOf(m) || tool.Parent == m;
+		    }
+
+		    if (num > 0 && message)
+		    {
+			    m.SendLocalizedMessage(num);
+		    }
+
+		    return res;
+	    }
+
+	    public static bool CheckTool(Item tool, Mobile m)
         {
             Item check = m.FindItemOnLayer(Layer.OneHanded);
 

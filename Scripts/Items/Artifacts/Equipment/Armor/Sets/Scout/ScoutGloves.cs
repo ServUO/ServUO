@@ -6,9 +6,9 @@ namespace Server.Items
 	public class ScoutGloves : StuddedGloves
 	{
 		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber{ get{ return 1080477; } } //Thank you Paradyme
-		
-		public override SetItem SetID{ get{ return SetItem.Scout; } }
+		public override int LabelNumber{ get{ return 1080477; } } // Scout's Studded Gloves
+
+        public override SetItem SetID{ get{ return SetItem.Scout; } }
 		public override int Pieces{ get{ return 6; } }
 	
 		public override int BasePhysicalResistance{ get{ return 7; } }
@@ -22,23 +22,25 @@ namespace Server.Items
 		[Constructable]
 		public ScoutGloves() : base()
 		{
-	
-			SetHue = 0x46D;
-			Weight = 1;
-			
-			Attributes.BonusDex = 1;
-			ArmorAttributes.MageArmor = 1;
+            this.Hue = 1148;			
+			this.Weight = 1;
 
-			SetAttributes.BonusDex = 6;
-			SetAttributes.RegenHits = 2;
-			SetAttributes.RegenMana = 2;			
-			SetAttributes.AttackChance = 10;
-			SetAttributes.DefendChance = 10;
-			SetPhysicalBonus = 28;
-			SetFireBonus = 28;
-			SetColdBonus = 28;
-			SetPoisonBonus = 28;
-			SetEnergyBonus = 28;
+            this.Attributes.BonusDex = 1;
+            this.ArmorAttributes.MageArmor = 1;
+
+            this.SetAttributes.BonusDex = 6;
+            this.SetAttributes.RegenHits = 2;
+            this.SetAttributes.RegenMana = 2;
+            this.SetAttributes.AttackChance = 10;
+            this.SetAttributes.DefendChance = 10;
+
+            this.SetHue = 1148;
+
+            this.SetPhysicalBonus = 28;
+            this.SetFireBonus = 28;
+            this.SetColdBonus = 28;
+            this.SetPoisonBonus = 28;
+            this.SetEnergyBonus = 28;
 		}
 
 		public ScoutGloves( Serial serial ) : base( serial )

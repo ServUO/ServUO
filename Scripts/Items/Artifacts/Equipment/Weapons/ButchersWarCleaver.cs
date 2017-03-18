@@ -9,6 +9,7 @@ namespace Server.Items
         public ButchersWarCleaver()
             : base()
         {
+            this.Slayer3 = TalismanSlayerName.Bovine;
         }
 
         public ButchersWarCleaver(Serial serial)
@@ -42,6 +43,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+            if (this.Slayer3 != TalismanSlayerName.Bovine)
+                this.Slayer3 = TalismanSlayerName.Bovine;
         }
     }
 }

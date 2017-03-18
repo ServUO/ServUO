@@ -132,6 +132,65 @@ namespace Server.Items
             return v;
         }
 
+        #region High Seas
+        public void ApplyAttributesTo(FishingPole pole)
+        {
+            CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
+
+            if (resInfo == null)
+                return;
+
+            CraftAttributeInfo attrs = resInfo.AttributeInfo;
+
+            int attributeCount = Utility.RandomMinMax(attrs.RunicMinAttributes, attrs.RunicMaxAttributes);
+            int min = attrs.RunicMinIntensity;
+            int max = attrs.RunicMaxIntensity;
+
+            ApplyAttributesTo(pole, true, 0, attributeCount, min, max);
+        }
+
+        public static void ApplyAttributesTo(FishingPole pole, bool isRunicTool, int luckChance, int attributeCount, int min, int max)
+        {
+            m_IsRunicTool = isRunicTool;
+            m_LuckChance = luckChance;
+
+            AosAttributes primary = pole.Attributes;
+            AosSkillBonuses skills = pole.SkillBonuses;
+
+            m_Props.SetAll(false);
+
+            for (int i = 0; i < attributeCount; ++i)
+            {
+                int random = GetUniqueRandom(21);
+
+                switch (random)
+                {
+                    case 0: ApplyAttribute(primary, min, max, AosAttribute.DefendChance, 1, 15); break;
+                    case 1: ApplyAttribute(primary, min, max, AosAttribute.CastSpeed, 1, 1); break;
+                    case 2: ApplyAttribute(primary, min, max, AosAttribute.CastRecovery, 1, 1); break;
+                    case 3: ApplyAttribute(primary, min, max, AosAttribute.AttackChance, 1, 15); break;
+                    case 4: ApplyAttribute(primary, min, max, AosAttribute.Luck, 1, 100); break;
+                    case 5: ApplyAttribute(primary, min, max, AosAttribute.SpellChanneling, 1, 1); break;
+                    case 6: ApplyAttribute(primary, min, max, AosAttribute.RegenHits, 1, 2); break;
+                    case 7: ApplyAttribute(primary, min, max, AosAttribute.RegenMana, 1, 2); break;
+                    case 8: ApplyAttribute(primary, min, max, AosAttribute.RegenStam, 1, 3); break;
+                    case 9: ApplyAttribute(primary, min, max, AosAttribute.BonusHits, 1, 8); break;
+                    case 10: ApplyAttribute(primary, min, max, AosAttribute.BonusMana, 1, 8); break;
+                    case 11: ApplyAttribute(primary, min, max, AosAttribute.BonusStam, 1, 8); break;
+                    case 12: ApplyAttribute(primary, min, max, AosAttribute.BonusStr, 1, 8); break;
+                    case 13: ApplyAttribute(primary, min, max, AosAttribute.BonusDex, 1, 8); break;
+                    case 14: ApplyAttribute(primary, min, max, AosAttribute.BonusInt, 1, 8); break;
+                    case 15: ApplyAttribute(primary, min, max, AosAttribute.SpellDamage, 1, 12); break;
+                    case 16: ApplySkillBonus(skills, min, max, 0, 1, 15); break;
+                    case 17: ApplySkillBonus(skills, min, max, 1, 1, 15); break;
+                    case 18: ApplySkillBonus(skills, min, max, 2, 1, 15); break;
+                    case 19: ApplySkillBonus(skills, min, max, 3, 1, 15); break;
+                    case 20: ApplySkillBonus(skills, min, max, 4, 1, 15); break;
+                }
+            }
+        }
+        #endregion
+
         public static void ApplyAttributesTo(BaseWeapon weapon, int attributeCount, int min, int max)
         {
             ApplyAttributesTo(weapon, false, 0, attributeCount, min, max);
@@ -251,7 +310,7 @@ namespace Server.Items
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitDispel, 2, 50, 2);
                         break;
                     case 11:
-                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechHits, 2, 50, 2);
+                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechHits, 2, Server.SkillHandlers.Imbuing.GetPropRange(weapon, AosWeaponAttribute.HitLeechHits)[1], 2);
                         break;
                     case 12:
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLowerAttack, 2, 50, 2);
@@ -260,7 +319,7 @@ namespace Server.Items
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLowerDefend, 2, 50, 2);
                         break;
                     case 14:
-                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechMana, 2, 50, 2);
+                        ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechMana, 2, Server.SkillHandlers.Imbuing.GetPropRange(weapon, AosWeaponAttribute.HitLeechMana)[1], 2);
                         break;
                     case 15:
                         ApplyAttribute(secondary, min, max, AosWeaponAttribute.HitLeechStam, 2, 50, 2);
@@ -290,7 +349,7 @@ namespace Server.Items
                         weapon.Slayer = GetRandomSlayer();
                         break;
                     case 24:
-                        GetElementalDamages(weapon);
+                        ApplyElementalDamage(weapon, min, max);
                         break;
                     case 25:
                         BaseRanged brb = weapon as BaseRanged;
@@ -304,57 +363,6 @@ namespace Server.Items
             }
         }
 
-        public static void GetElementalDamages(BaseWeapon weapon)
-        {
-            GetElementalDamages(weapon, true);
-        }
-
-        public static void GetElementalDamages(BaseWeapon weapon, bool randomizeOrder)
-        {
-            int fire, phys, cold, nrgy, pois, chaos, direct;
-
-            weapon.GetDamageTypes(null, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
-
-            int totalDamage = phys;
-
-            AosElementAttribute[] attrs = new AosElementAttribute[]
-            {
-                AosElementAttribute.Cold,
-                AosElementAttribute.Energy,
-                AosElementAttribute.Fire,
-                AosElementAttribute.Poison
-            };
-
-            if (randomizeOrder)
-            {
-                for (int i = 0; i < attrs.Length; i++)
-                {
-                    int rand = Utility.Random(attrs.Length);
-                    AosElementAttribute temp = attrs[i];
-
-                    attrs[i] = attrs[rand];
-                    attrs[rand] = temp;
-                }
-            }
-
-            /*
-            totalDamage = AssignElementalDamage( weapon, AosElementAttribute.Cold,		totalDamage );
-            totalDamage = AssignElementalDamage( weapon, AosElementAttribute.Energy,	totalDamage );
-            totalDamage = AssignElementalDamage( weapon, AosElementAttribute.Fire,		totalDamage );
-            totalDamage = AssignElementalDamage( weapon, AosElementAttribute.Poison,	totalDamage );
-
-            weapon.AosElementDamages[AosElementAttribute.Physical] = 100 - totalDamage;
-            * */
-
-            for (int i = 0; i < attrs.Length; i++)
-                totalDamage = AssignElementalDamage(weapon, attrs[i], totalDamage);
-
-            //Order is Cold, Energy, Fire, Poison -> Physical left
-            //Cannot be looped, AoselementAttribute is 'out of order'
-
-            weapon.Hue = weapon.GetElementalDamageHue();
-        }
-
         public static SlayerName GetRandomSlayer()
         {
             // TODO: Check random algorithm on OSI
@@ -363,7 +371,7 @@ namespace Server.Items
             if (groups.Length == 0)
                 return SlayerName.None;
 
-            SlayerGroup group = groups[Utility.Random(groups.Length - 1)]; //-1 To Exclude the Fey Slayer which appears ONLY on a certain artifact.
+            SlayerGroup group = groups[Utility.Random(6)]; //-1 To Exclude the Fey Slayer which appears ONLY on a certain artifact.
             SlayerEntry entry;
 
             if (group.Entries.Length == 0 || 10 > Utility.Random(100)) // 10% chance to do super slayer
@@ -913,6 +921,27 @@ namespace Server.Items
         {
             attrs[attr] = Scale(min, max, low / scale, high / scale) * scale;
         }
+
+        public static void ApplyElementalDamage(BaseWeapon weapon, int min, int max)
+        {
+            int fire, phys, cold, nrgy, pois, chaos, direct;
+
+            weapon.GetDamageTypes(null, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
+
+            int intensity = Math.Min(phys, Scale(min, max, 10 / 10, 100 / 10) * 10);
+
+            weapon.AosElementDamages[_DamageTypes[Utility.Random(_DamageTypes.Length)]] = intensity;
+
+            weapon.Hue = weapon.GetElementalDamageHue();
+        }
+
+        private static AosElementAttribute[] _DamageTypes =
+        {
+            AosElementAttribute.Cold,
+            AosElementAttribute.Energy,
+            AosElementAttribute.Fire,
+            AosElementAttribute.Poison
+        };
 
         private static void ApplySkillBonus(AosSkillBonuses attrs, int min, int max, int index, int low, int high)
         {

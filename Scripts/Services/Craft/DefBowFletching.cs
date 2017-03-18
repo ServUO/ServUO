@@ -68,10 +68,12 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
         {
-            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
+            int num = 0;
+
+            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
                 return 1044038; // You have worn out your tool!
-            else if (!BaseTool.CheckAccessible(tool, from))
-                return 1044263; // The tool must be on your person to use.
+            else if (!tool.CheckAccessible(from, ref num))
+                return num; // The tool must be on your person to use.
 
             return 0;
         }
@@ -122,6 +124,13 @@ namespace Server.Engines.Craft
             int index = -1;
 
             // Materials
+            if (Core.SA)
+            {
+                index = AddCraft(typeof(ElvenFletching), 1044457, 1113346, 90.0, 130.0, typeof(Feather), 1044562, 20, 1044563);
+                AddRes(index, typeof(FaeryDust), 1113358, 1, 1044253);
+                this.SetNeededExpansion(index, Expansion.SA);
+            }
+
             this.AddCraft(typeof(Kindling), 1044457, 1023553, 0.0, 00.0, typeof(Board), 1044041, 1, 1044351);
 
             index = this.AddCraft(typeof(Shaft), 1044457, 1027124, 0.0, 40.0, typeof(Board), 1044041, 1, 1044351);

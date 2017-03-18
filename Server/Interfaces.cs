@@ -56,8 +56,8 @@ namespace Server
 	public interface IWeapon
 	{
 		int MaxRange { get; }
-		void OnBeforeSwing(Mobile attacker, Mobile defender);
-		TimeSpan OnSwing(Mobile attacker, Mobile defender);
+		void OnBeforeSwing(Mobile attacker, IDamageable damageable);
+        TimeSpan OnSwing(Mobile attacker, IDamageable damageable);
 		void GetStatusDamage(Mobile from, out int min, out int max);
 	}
 
@@ -102,4 +102,21 @@ namespace Server
 
 		ISpawner Spawner { get; set; }
 	}
+
+    public interface IDamageable : IEntity
+    {
+        string Name { get; set; }
+        int Hits { get; set; }
+        int HitsMax { get; }
+        bool Alive { get; }
+
+        int PhysicalResistance { get; }
+        int FireResistance { get; }
+        int ColdResistance { get; }
+        int PoisonResistance { get; }
+        int EnergyResistance { get; }
+
+        void OnStatsQuery(Mobile from);
+        void Damage(int amount, Mobile from);
+    }
 }

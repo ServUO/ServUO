@@ -133,7 +133,7 @@ namespace Server.Mobiles
             if (mod != null)
                 return true;
 
-            Mobile foe = this.m_Mobile.Combatant;
+            Mobile foe = this.m_Mobile.Combatant as Mobile;
 
             if (foe == null)
                 return false;

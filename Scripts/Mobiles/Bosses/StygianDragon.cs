@@ -19,7 +19,7 @@ namespace Server.Mobiles
             this.SetDex(250);
             this.SetInt(180);
 
-            this.SetHits(100000);
+            this.SetHits(30000);
             this.SetStam(431);
             this.SetMana(180);
 
@@ -29,11 +29,11 @@ namespace Server.Mobiles
             this.SetDamageType(ResistanceType.Fire, 50);
             this.SetDamageType(ResistanceType.Energy, 25);
 
-            this.SetResistance(ResistanceType.Physical, 85, 89);
-            this.SetResistance(ResistanceType.Fire, 85, 89);
-            this.SetResistance(ResistanceType.Cold, 65, 69);
-            this.SetResistance(ResistanceType.Poison, 80, 81);
-            this.SetResistance(ResistanceType.Energy, 85, 87);
+            this.SetResistance(ResistanceType.Physical, 80, 90);
+            this.SetResistance(ResistanceType.Fire, 80, 90);
+            this.SetResistance(ResistanceType.Cold, 60, 70);
+            this.SetResistance(ResistanceType.Poison, 80, 90);
+            this.SetResistance(ResistanceType.Energy, 80, 90);
 
             this.SetSkill(SkillName.Anatomy, 100.0);
             this.SetSkill(SkillName.MagicResist, 150.0, 155.0);
@@ -72,7 +72,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return new Type[] { typeof(AxesOfFury), typeof(PetrifiedSnake), typeof(SummonersKilt), typeof(GiantSteps), typeof(StoneDragonsTooth), typeof(TokenOfHolyFavor) };
+                return new Type[] { typeof(AxesOfFury), typeof(SummonersKilt), typeof(GiantSteps), typeof(StoneDragonsTooth), typeof(TokenOfHolyFavor) };
             }
         }
         public override bool Unprovokable
@@ -171,6 +171,13 @@ namespace Server.Mobiles
             }
 
             base.OnActionCombat();
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            c.DropItem(new StygianDragonHead());
         }
 
         public override void Serialize(GenericWriter writer)

@@ -29,7 +29,7 @@ namespace Services.Toolbar.Gumps
 
 		public int InitOptsW, InitOptsH;
 
-		public ToolbarGump(ToolbarInfo info)
+		public ToolbarGump(ToolbarInfo info, Mobile m)
 			: base(0, 28)
 		{
 			_Info = info;
@@ -73,13 +73,23 @@ namespace Services.Toolbar.Gumps
 
 			int temp = 0, x, y;
 
-			for (int i = 0; i < _Info.Rows * _Info.Collumns; i++)
+            NetState ns = m.NetState;
+
+            for (int i = 0; i < _Info.Rows * _Info.Collumns; i++)
 			{
 				x = offset + ((i % _Info.Rows) * 110);
 				y = offset + (int)(Math.Floor((double)(i / _Info.Rows)) * 24) + cy;
 
-				AddButton(x + 1, y, 2445, 2445, temp + 10, GumpButtonType.Reply, 0);
-				AddBackground(x, y, 110, 24, GumpIDs.Misc[(int)GumpIDs.MiscIDs.Buttonground].Content[_Info.Skin, 0]);
+                if (ns.IsEnhancedClient)
+                {
+                    AddButton(x + 1, y, 2435, 2436, temp + 10, GumpButtonType.Reply, 0);//4005, 4007
+                }
+                else
+                {
+                    AddButton(x + 1, y, 2445, 2445, temp + 10, GumpButtonType.Reply, 0);
+                }
+
+                AddBackground(x, y, 110, 24, GumpIDs.Misc[(int)GumpIDs.MiscIDs.Buttonground].Content[_Info.Skin, 0]);
 
 				if (_Info.Phantom)
 				{
@@ -87,25 +97,22 @@ namespace Services.Toolbar.Gumps
 					AddAlphaRegion(x + 2, y + 2, 106, 20); // Alpha Area 1_2
 				}
 
-				AddHtml(x + 5, y + 3, 100, 20, String.Format("<center>{0}{1}", font, _Info.Entries[temp]), false, false);
-				//AddLabelCropped(x + 5, y + 3, 100, 20, GumpIDs.Misc[(int)GumpIDs.MiscIDs.Color].Content[p_Skin,0], Commands[temp]); 
+                if (ns.IsEnhancedClient)
+                {
+                    AddHtml(x + 30, y + 3, 100, 20, String.Format("<center>{0}{1}", font, _Info.Entries[temp]), false, false);
+                }
+                else
+                {
+                    AddHtml(x + 5, y + 3, 100, 20, String.Format("<center>{0}{1}", font, _Info.Entries[temp]), false, false);
+                }
 
-				if (i % _Info.Rows == _Info.Rows - 1)
+                if (i % _Info.Rows == _Info.Rows - 1)
 				{
 					temp += 9 - _Info.Rows;
 				}
 
 				++temp;
 			}
-
-			/*TEST---
-            0%5 == 0
-            1%5 == 1
-            2%5 == 2
-            3%5 == 3
-            4%5 == 4
-            5%5 == 0
-            END TEST---*/
 
 			if (_Info.Stealth)
 			{
@@ -135,22 +142,21 @@ namespace Services.Toolbar.Gumps
 					{
 						mob.SendGump(this);
 
-                        if (_Info.Entries.Count <= 0)
+						int buttonPressedIndex = info.ButtonID - 10;
+
+                        if (buttonPressedIndex >= _Info.Entries.Count)
                             return;
 
-                        if (info.ButtonID - 10 <= 0)
-                            return;
+                        String buttonText = _Info.Entries[buttonPressedIndex];
 
-                        if (_Info.Entries[info.ButtonID - 10].StartsWith(CommandSystem.Prefix))
+                        if (buttonText.StartsWith(CommandSystem.Prefix))
 						{
-							mob.SendMessage(_Info.Entries[info.ButtonID - 10]);
-							CommandSystem.Handle(mob, _Info.Entries[info.ButtonID - 10]);
+							mob.SendMessage(buttonText);
+							CommandSystem.Handle(mob, buttonText);
 						}
 						else
 						{
-							//SpeechEventArgs args = new SpeechEventArgs( mob, Commands[info.ButtonID - 10], MessageType.Regular, mob.SpeechHue, null );
-							mob.DoSpeech(_Info.Entries[info.ButtonID - 10], new int[0], MessageType.Regular, mob.SpeechHue);
-							//mob.Say(Commands[info.ButtonID - 10]);
+							mob.DoSpeech(buttonText, new int[0], MessageType.Regular, mob.SpeechHue);
 						}
 					}
 					break;

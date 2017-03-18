@@ -55,11 +55,14 @@ namespace Server.Spells.Sixth
                     {
                         from.SendLocalizedMessage(1005049); // That cannot be dispelled.
                     }
-                    else if (this.m_Owner.CheckHSequence(m))
+                    else if (bc.SummonMaster == from || m_Owner.CheckHSequence(m))
                     {
                         SpellHelper.Turn(from, m);
 
                         double dispelChance = (50.0 + ((100 * (from.Skills.Magery.Value - bc.GetDispelDifficulty())) / (bc.DispelFocus * 2))) / 100;
+                        
+                        //Skill Masteries
+                        dispelChance -= ((double)SkillMasteries.MasteryInfo.EnchantedSummoningBonus(bc) / 100);
 
                         if (dispelChance > Utility.RandomDouble())
                         {

@@ -16,6 +16,7 @@ using Server.Network;
 using Server.Spells;
 using Server.Targeting;
 using Server.Mobiles;
+using Server.Spells.Mystic;
 #endregion
 
 namespace Server.Items
@@ -29,7 +30,8 @@ namespace Server.Items
 		Ninja,
 		Samurai,
 		Arcanist,
-		Mystic
+		Mystic,
+        SkillMasteries
 	}
 
 	public enum BookQuality
@@ -38,7 +40,7 @@ namespace Server.Items
 		Exceptional,
 	}
 
-	public class Spellbook : Item, ICraftable, ISlayer, IEngravable
+    public class Spellbook : Item, ICraftable, ISlayer, IEngravable, IVvVItem, IOwnerRestricted, IWearableDurability
 	{
 		private static readonly Dictionary<Mobile, List<Spellbook>> m_Table = new Dictionary<Mobile, List<Spellbook>>();
 
@@ -83,6 +85,7 @@ namespace Server.Items
 		private BookQuality m_Quality;
 		private AosAttributes m_AosAttributes;
 		private AosSkillBonuses m_AosSkillBonuses;
+        private NegativeAttributes m_NegativeAttributes;
 		private ulong m_Content;
 		private int m_Count;
 		private Mobile m_Crafter;
@@ -104,6 +107,7 @@ namespace Server.Items
 		{
 			m_AosAttributes = new AosAttributes(this);
 			m_AosSkillBonuses = new AosSkillBonuses(this);
+            m_NegativeAttributes = new NegativeAttributes(this);
 
 			Weight = 3.0;
 			Layer = Layer.OneHanded;
@@ -145,6 +149,9 @@ namespace Server.Items
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public AosSkillBonuses SkillBonuses { get { return m_AosSkillBonuses; } set { } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public NegativeAttributes NegativeAttributes { get { return m_NegativeAttributes; } set { } }
 
 		public virtual SpellbookType SpellbookType { get { return SpellbookType.Regular; } }
 		public virtual int BookOffset { get { return 0; } }
@@ -211,15 +218,185 @@ namespace Server.Items
 			}
 		}
 
-		public static void Initialize()
+        #region IVvVItem / IOwnerRestricted
+        private bool _VvVItem;
+        private Mobile _Owner;
+        private string _OwnerName;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsVvVItem
+        {
+            get { return _VvVItem; }
+            set { _VvVItem = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Owner
+        {
+            get { return _Owner; }
+            set { _Owner = value; if (_Owner != null) _OwnerName = _Owner.Name; InvalidateProperties(); }
+        }
+
+        public virtual string OwnerName
+        {
+            get { return _OwnerName; }
+            set { _OwnerName = value; InvalidateProperties(); }
+        }
+        #endregion
+
+        #region IWearableDurability
+        private int m_MaxHitPoints;
+        private int m_HitPoints;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int HitPoints
+        {
+            get { return m_HitPoints; }
+            set
+            {
+                if (m_HitPoints == value)
+                {
+                    return;
+                }
+
+                if (value > m_MaxHitPoints)
+                {
+                    value = m_MaxHitPoints;
+                }
+
+                m_HitPoints = value;
+
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int MaxHitPoints
+        {
+            get { return m_MaxHitPoints; }
+            set
+            {
+                m_MaxHitPoints = value;
+                InvalidateProperties();
+            }
+        }
+
+        public virtual bool CanFortify { get { return false; } }
+
+        public virtual int InitMinHits { get { return 0; } }
+        public virtual int InitMaxHits { get { return 0; } }
+
+        public virtual void ScaleDurability()
+        {
+        }
+
+        public virtual void UnscaleDurability()
+        {
+        }
+
+        public virtual int OnHit(BaseWeapon weap, int damage)
+        {
+            if (m_MaxHitPoints == 0)
+                return damage;
+
+            int chance = m_NegativeAttributes.Antique > 0 ? 50 : 25;
+
+            if (chance > Utility.Random(100)) // 25% chance to lower durability
+            {
+                if (m_HitPoints >= 1)
+                {
+                    HitPoints--;
+                }
+                else if (m_MaxHitPoints > 0)
+                {
+                    MaxHitPoints--;
+
+                    if (Parent is Mobile)
+                        ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+
+                    if (m_MaxHitPoints == 0)
+                    {
+                        Delete();
+                    }
+                }
+            }
+
+            return damage;
+        }
+        #endregion
+
+        public static void Initialize()
 		{
 			EventSink.OpenSpellbookRequest += EventSink_OpenSpellbookRequest;
 			EventSink.CastSpellRequest += EventSink_CastSpellRequest;
+            EventSink.TargetedSpell += Targeted_Spell;       
 
 			CommandSystem.Register("AllSpells", AccessLevel.GameMaster, AllSpells_OnCommand);
 		}
 
-		public static SpellbookType GetTypeForSpell(int spellID)
+        #region Enhanced Client
+        private static void Targeted_Spell(TargetedSpellEventArgs e)
+        {
+            try
+            {
+                Mobile from = e.NetState.Mobile;
+
+                if (!DesignContext.Check(from))
+                {
+                    return; // They are customizing
+                }
+
+                Spellbook book = null;
+                int spellID = e.SpellID;
+
+                if (book == null || !book.HasSpell(spellID))
+                {
+                    book = Find(from, spellID);
+                }
+
+                if (book != null && book.HasSpell(spellID))
+                {
+                    SpecialMove move = SpellRegistry.GetSpecialMove(spellID);
+
+                    if (move != null)
+                    {
+                        SpecialMove.SetCurrentMove(from, move);
+                    }
+                    else
+                    {
+                        Mobile to = World.FindMobile(e.Target.Serial);
+                        Item toI = World.FindItem(e.Target.Serial);
+                        Spell spell = SpellRegistry.NewSpell(spellID, from, null);
+
+                        if (to != null)
+                        {
+                            spell.InstantTarget = to;
+                        }
+                        else if (toI != null)
+                        {
+                            spell.InstantTarget = toI as IDamageableItem;
+                        }
+
+                        if (spell != null)
+                        {
+                            spell.Cast();
+                        }
+                        else if (!Server.Spells.SkillMasteries.MasteryInfo.IsPassiveMastery(spellID))
+                        {
+                            from.SendLocalizedMessage(502345); // This spell has been temporarily disabled.
+                        }
+                    }
+                }
+                else
+                {
+                    from.SendLocalizedMessage(500015); // You do not have that spell!
+                }
+            }
+            catch { }
+        }
+        #endregion
+
+        public static SpellbookType GetTypeForSpell(int spellID)
 		{
 			if (spellID >= 0 && spellID < 64)
 			{
@@ -249,6 +426,10 @@ namespace Server.Items
 			{
 				return SpellbookType.Mystic;
 			}
+            else if (spellID >= 700 && spellID < 746)
+            {
+                return SpellbookType.SkillMasteries;
+            }
 
 			return SpellbookType.Invalid;
 		}
@@ -419,6 +600,16 @@ namespace Server.Items
 			{
 				return false;
 			}
+            else if (_Owner != null && _Owner != from)
+            {
+                from.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                return false;
+            }
+            else if (IsVvVItem && !Engines.VvV.ViceVsVirtueSystem.IsVvV(from))
+            {
+                from.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
+                return false;
+            }
 
 			return base.CanEquip(from);
 		}
@@ -430,8 +621,8 @@ namespace Server.Items
 
 		public override bool OnDragDrop(Mobile from, Item dropped)
 		{
-			if (dropped is SpellScroll)
-			{
+            if (dropped is SpellScroll && !(dropped is SpellStone))
+            {
 				SpellScroll scroll = (SpellScroll)dropped;
 
 				SpellbookType type = GetTypeForSpell(scroll.SpellID);
@@ -485,6 +676,7 @@ namespace Server.Items
 
 			book.m_AosAttributes = new AosAttributes(newItem, m_AosAttributes);
 			book.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
+            book.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
 		}
 
 		public override void OnAdded(object parent)
@@ -639,6 +831,21 @@ namespace Server.Items
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 			}
 
+            if (IsVvVItem)
+            {
+                list.Add(1154937); // VvV Item
+            }
+
+            if (OwnerName != null)
+            {
+                list.Add(1153213, OwnerName);
+            }
+
+            if (m_NegativeAttributes != null)
+            {
+                m_NegativeAttributes.GetProperties(list, this);
+            }
+
 			m_AosSkillBonuses.GetProperties(list);
 
 			if (m_Slayer != SlayerName.None)
@@ -781,8 +988,17 @@ namespace Server.Items
 				list.Add(1075210, prop.ToString()); // Increased Karma Loss ~1val~%
 			}
 
+            AddProperty(list);
+
 			list.Add(1042886, m_Count.ToString()); // ~1_NUMBERS_OF_SPELLS~ Spells
+
+            if (this.m_MaxHitPoints > 0)
+                list.Add(1060639, "{0}\t{1}", this.m_HitPoints, this.m_MaxHitPoints); // durability ~1_val~ / ~2_val~
 		}
+
+        public virtual void AddProperty(ObjectPropertyList list)
+        {
+        }
 
 		public override void OnSingleClick(Mobile from)
 		{
@@ -815,7 +1031,16 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(5); // version
+			writer.Write(6); // version
+
+            m_NegativeAttributes.Serialize(writer);
+
+            writer.Write(m_HitPoints);
+            writer.Write(m_MaxHitPoints);
+
+            writer.Write(_VvVItem);
+            writer.Write(_Owner);
+            writer.Write(_OwnerName);
 
 			writer.Write((byte)m_Quality);
 
@@ -841,6 +1066,20 @@ namespace Server.Items
 
 			switch (version)
 			{
+                case 6:
+                    {
+                        m_NegativeAttributes = new NegativeAttributes(this, reader);
+
+                        
+                        m_MaxHitPoints = reader.ReadInt();
+                        m_HitPoints = reader.ReadInt();
+
+                        _VvVItem = reader.ReadBool();
+                        _Owner = reader.ReadMobile();
+                        _OwnerName = reader.ReadString();
+
+                        goto case 5;
+                    }
 				case 5:
 					{
 						m_Quality = (BookQuality)reader.ReadByte();
@@ -889,6 +1128,11 @@ namespace Server.Items
 			{
 				m_AosSkillBonuses = new AosSkillBonuses(this);
 			}
+
+            if (m_NegativeAttributes == null)
+            {
+                m_NegativeAttributes = new NegativeAttributes(this);
+            }
 
 			if (Core.AOS && Parent is Mobile)
 			{
@@ -1104,10 +1348,10 @@ namespace Server.Items
 					{
 						spell.Cast();
 					}
-					else
-					{
-						from.SendLocalizedMessage(502345); // This spell has been temporarily disabled.
-					}
+                    else if ( !Server.Spells.SkillMasteries.MasteryInfo.IsPassiveMastery( spellID ) )
+                    {
+						from.SendLocalizedMessage( 502345 ); // This spell has been temporarily disabled.
+                    }
 				}
 			}
 			else

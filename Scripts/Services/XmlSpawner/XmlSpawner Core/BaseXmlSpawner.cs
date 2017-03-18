@@ -1160,35 +1160,36 @@ namespace Server.Mobiles
 			if (result != null)
 				return result;
 
-			try
-			{
-				if (shouldLog)
-					CommandLogging.LogChangeProperty(from, o, p.Name, value);
+            try
+            {
+                if (shouldLog)
+                    CommandLogging.LogChangeProperty(from, o, p.Name, value);
 
-				if (ptype.IsPrimitive)
-				{
-					p.SetValue(o, toSet, null);
-				}
-				else if ((ptype.GetInterface("IList") != null) && index >= 0)
-				{
-					try
-					{
-						object arrayvalue = p.GetValue(o, null);
-						((IList<object>)arrayvalue)[index] = toSet;
-					}
-					catch { }
-				}
-				else
-				{
-					p.SetValue(o, toSet, null);
-				}
+                if (ptype.IsPrimitive)
+                {
+                    p.SetValue(o, toSet, null);
+                }
+                else if ((ptype.GetInterface("IList") != null) && index >= 0)
+                {
+                    try
+                    {
+                        object arrayvalue = p.GetValue(o, null);
+                        ((IList<object>)arrayvalue)[index] = toSet;
+                    }
+                    catch { }
+                }
+                else
+                {
+                    p.SetValue(o, toSet, null);
+                }
 
-				return "Property has been set.";
-			}
-			catch
-			{
-				return "An exception was caught, the property may not be set.";
-			}
+                return "Property has been set.";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return "An exception was caught, the property may not be set.";
+            }
 		}
 
 		// set property values with support for nested attributes

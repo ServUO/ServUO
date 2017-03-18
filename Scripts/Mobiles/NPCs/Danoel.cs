@@ -431,7 +431,10 @@ namespace Server.Engines.Quests
                     typeof(MusicToMyEarsQuest),
                     typeof(LazyHumansQuest),
                     typeof(InventiveToolsQuest),
-                    typeof(LeatherAndLaceQuest)
+                    typeof(LeatherAndLaceQuest),
+                    typeof(SpringCleaningQuest),
+                    typeof(CowardsQuest),
+                    typeof(TokenOfLoveQuest)
                 };
             }
         }

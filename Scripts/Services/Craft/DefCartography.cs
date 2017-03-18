@@ -1,8 +1,14 @@
 using System;
 using Server.Items;
+using System.Collections.Generic;
 
 namespace Server.Engines.Craft
 {
+    public enum CartographyRecipes
+    {
+        EodonianWallMap = 1000
+    }
+
     public class DefCartography : CraftSystem
     {
         private static CraftSystem m_CraftSystem;
@@ -42,10 +48,12 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
         {
-            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
+            int num = 0;
+
+            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
                 return 1044038; // You have worn out your tool!
-            else if (!BaseTool.CheckAccessible(tool, from))
-                return 1044263; // The tool must be on your person to use.
+            else if (!tool.CheckAccessible(from, ref num))
+                return num; // The tool must be on your person to use.
 
             return 0;
         }
@@ -86,6 +94,94 @@ namespace Server.Engines.Craft
             this.AddCraft(typeof(CityMap), 1044448, 1015231, 25.0, 85.0, typeof(BlankMap), 1044449, 1, 1044450);
             this.AddCraft(typeof(SeaChart), 1044448, 1015232, 35.0, 95.0, typeof(BlankMap), 1044449, 1, 1044450);
             this.AddCraft(typeof(WorldMap), 1044448, 1015233, 39.5, 99.5, typeof(BlankMap), 1044449, 1, 1044450);
+
+            int index = AddCraft(typeof(TatteredWallMapSouth), 1044448, 1072891, 90.0, 150.0, typeof(TreasureMap), 1073494, 10, 1073495);
+            AddRes(index, typeof(TreasureMap), 1073498, 5, 1073499);
+            AddRes(index, typeof(TreasureMap), 1073500, 3, 1073501);
+            AddRes(index, typeof(TreasureMap), 1073502, 1, 1073503);
+            AddResCallback(index, ConsumeTatteredWallMapRes);
+
+            index = AddCraft(typeof(TatteredWallMapEast), 1044448, 1072891, 90.0, 150.0, typeof(TreasureMap), 1073494, 10, 1073495);
+            AddRes(index, typeof(TreasureMap), 1073498, 5, 1073499);
+            AddRes(index, typeof(TreasureMap), 1073500, 3, 1073501);
+            AddRes(index, typeof(TreasureMap), 1073502, 1, 1073503);
+            AddResCallback(index, ConsumeTatteredWallMapRes);
+
+            index = AddCraft(typeof(EodonianWallMap), 1044448, 1156690, 65.0, 125.0, typeof(BlankMap), 1044449, 50, 1044450);
+            AddRes(index, typeof(UnabridgedAtlasOfEodon), 1156721, 1, 1156722);
+            AddRecipe(index, (int)CartographyRecipes.EodonianWallMap);
+            SetNeededExpansion(index, Expansion.TOL);
+        }
+
+        public int ConsumeTatteredWallMapRes(Mobile from, ConsumeType type)
+        {
+            Item[] maps = from.Backpack.FindItemsByType(typeof(TreasureMap));
+            List<Item> toConsume = new List<Item>();
+
+            int one = 10;
+            int three = 5;
+            int four = 3;
+            int five = 1;
+
+            foreach (Item item in maps)
+            {
+                TreasureMap map = item as TreasureMap;
+
+                if (map != null)
+                {
+                    switch (map.Level)
+                    {
+                        case 1:
+                            if (map.CompletedBy == from)
+                            {
+                                one--;
+                                toConsume.Add(map);
+                            }
+                            break;
+                        case 3:
+                             if (map.CompletedBy == from)
+                             {
+                                three--;
+                                toConsume.Add(map);
+                             }
+                            break;
+                        case 4:
+                             if (map.CompletedBy == from)
+                             {
+                                four--;
+                                toConsume.Add(map);
+                             }
+                            break;
+                        case 5:
+                             if (map.CompletedBy == from)
+                             {
+                                five--;
+                                toConsume.Add(map);
+                             }
+                            break;
+                    }
+                }
+            }
+
+            int message = 0;
+
+            if (one > 0)
+                message = 1073495;
+            else if (three > 0)
+                message = 1073499;
+            else if (four > 0)
+                message = 1073501;
+            else if (five > 0)
+                message = 1073503;
+
+            if (message == 0 && type == ConsumeType.All)
+            {
+                foreach (Item item in toConsume)
+                    item.Consume();
+            }
+
+            toConsume.Clear();
+            return message;
         }
     }
 }

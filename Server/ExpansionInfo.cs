@@ -95,8 +95,9 @@ namespace Server
 		SE = 0x00000080,
 		ML = 0x00000100,
 		Unk2 = 0x00000200,
-		UO3DClientType = 0x00000400,
-		Unk3 = 0x00000800,
+		UO3DClientType = 0x00000400,        
+        KR = 0x00000600, // uo:kr support flags
+        Unk3 = 0x00000800,
 		SeventhCharacterSlot = 0x00001000,
 		Unk4 = 0x00002000,
 		NewMovementSystem = 0x00004000,

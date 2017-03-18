@@ -9,7 +9,7 @@ namespace Server.Items
         public Windsong()
             : base()
         {
-            this.Hue = 0xF7;
+            this.Hue = 172;
 			
             this.Attributes.WeaponDamage = 35;
             this.WeaponAttributes.SelfRepair = 3;
@@ -55,6 +55,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+            if (this.Hue == 0xF7)
+                this.Hue = 172;
         }
     }
 }

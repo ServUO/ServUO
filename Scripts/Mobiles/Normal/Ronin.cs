@@ -106,7 +106,7 @@ namespace Server.Mobiles
         {
             get
             {
-                if(Combatant != null && Combatant.Mounted)
+                if(Combatant is Mobile && ((Mobile)Combatant).Mounted)
                     return 0.8;
 
                 return base.WeaponAbilityChance;
@@ -143,7 +143,7 @@ namespace Server.Mobiles
 
                 AddItem(weapons[Utility.Random(weapons.Count)]);
 
-                m_NextWeaponChange = DateTime.Now + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
+                m_NextWeaponChange = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
             }
         }
 
@@ -151,7 +151,7 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (Combatant != null && m_NextWeaponChange < DateTime.Now)
+            if (Combatant != null && m_NextWeaponChange < DateTime.UtcNow)
                 ChangeWeapon();
         }
 
@@ -172,7 +172,7 @@ namespace Server.Mobiles
 
 			int version = reader.ReadInt();
 
-            m_NextWeaponChange = DateTime.Now;
+            m_NextWeaponChange = DateTime.UtcNow;
 		}
 	}
 }

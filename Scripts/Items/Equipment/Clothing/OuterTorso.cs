@@ -1546,4 +1546,167 @@ namespace Server.Items
             int version = reader.ReadEncodedInt();
         }
     }
+
+    public class FloweredDress : BaseOuterTorso
+    {
+        public override int LabelNumber { get { return 1109622; } } // Flowered Dress
+
+        [Constructable]
+        public FloweredDress()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public FloweredDress(int hue)
+            : base(0x781E, hue)
+        {
+        }
+
+        public FloweredDress(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class EveningGown : BaseOuterTorso
+    {
+        public override int LabelNumber { get { return 1109625; } } // Evening Gown
+
+        [Constructable]
+        public EveningGown()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public EveningGown(int hue)
+            : base(0x7821, hue)
+        {
+        }
+
+        public EveningGown(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class Epaulette : BaseClothing
+    {
+        public override int LabelNumber { get { return 1123325; } } // Epaulette
+
+        [Constructable]
+        public Epaulette()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public Epaulette(int hue)
+            : base(0x9985, Layer.OuterTorso, hue)
+        {
+            this.Weight = 1.0;
+        }
+
+        public Epaulette(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            if (Layer != Layer.OuterTorso)
+                Layer = Layer.OuterTorso;
+        }
+    }
+
+    public class GargishEpaulette : BaseClothing
+    {
+        public override int LabelNumber { get { return 1123326; } } // Gargish Epaulette
+
+        public override Race RequiredRace
+        {
+            get
+            {
+                return Race.Gargoyle;
+            }
+        }
+        public override bool CanBeWornByGargoyles
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        [Constructable]
+        public GargishEpaulette()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public GargishEpaulette(int hue)
+            : base(0x9986, Layer.OuterTorso, hue)
+        {
+            this.Weight = 1.0;
+        }
+
+        public GargishEpaulette(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            if (Layer != Layer.OuterTorso)
+                Layer = Layer.OuterTorso;
+        }
+    }
 }

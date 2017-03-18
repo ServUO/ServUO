@@ -5,6 +5,7 @@
 #endregion
 
 #region References
+using Server.Network;
 using System;
 #endregion
 
@@ -63,7 +64,7 @@ namespace Server.Items
 			}
 		}
 
-		public override int LabelNumber
+        public override int LabelNumber
 		{
 			get
 			{

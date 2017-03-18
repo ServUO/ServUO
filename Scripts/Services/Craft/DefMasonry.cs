@@ -3,7 +3,13 @@ using Server.Items;
 using Server.Mobiles; 
 
 namespace Server.Engines.Craft 
-{ 
+{
+    public enum MasonryRecipes
+    {
+        AnniversaryVaseShort = 701,
+        AnniversaryVaseTall = 702
+    }
+
     public class DefMasonry : CraftSystem 
     { 
         public override SkillName MainSkill 
@@ -52,14 +58,16 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
         {
-            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
+            int num = 0;
+
+            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
                 return 1044038; // You have worn out your tool!
             else if (!BaseTool.CheckTool(tool, from))
                 return 1048146; // If you have a tool equipped, you must use that tool.
             else if (!(from is PlayerMobile && ((PlayerMobile)from).Masonry && from.Skills[SkillName.Carpentry].Base >= 100.0))
                 return 1044633; // You havent learned stonecraft.
-            else if (!BaseTool.CheckAccessible(tool, from))
-                return 1044263; // The tool must be on your person to use.
+            else if (!tool.CheckAccessible(from, ref num))
+                return num; // The tool must be on your person to use.
 
             return 0;
         }
@@ -140,7 +148,20 @@ namespace Server.Engines.Craft
                 index = this.AddCraft(typeof(GargoyleVase), 1044501, 1095322, 76.0, 126.0, typeof(Granite), 1044514, 3, 1044513);
                 this.SetNeededExpansion(index, Expansion.SA);
  
-            }            
+            }
+
+            #region TOL
+            if (Core.TOL)
+            {
+                int index = AddCraft(typeof(AnniversaryVaseShort), 1044501, 1156148, 60.0, 110.0, typeof(Granite), 1044514, 6, 1044513);
+                SetNeededExpansion(index, Expansion.TOL);
+                AddRecipe(index, (int)MasonryRecipes.AnniversaryVaseShort);
+
+                index = AddCraft(typeof(AnniversaryVaseTall), 1044501, 1156147, 60.0, 110.0, typeof(Granite), 1044514, 6, 1044513);
+                SetNeededExpansion(index, Expansion.TOL);
+                AddRecipe(index, (int)MasonryRecipes.AnniversaryVaseTall);
+            }
+            #endregion
 
             // Furniture
             this.AddCraft(typeof(StoneChair), 1044502, 1024635, 55.0, 105.0, typeof(Granite), 1044514, 4, 1044513);
@@ -213,8 +234,138 @@ namespace Server.Engines.Craft
  
                 index = this.AddCraft(typeof(StoneWarSword), 1111705, 1112753, 55.0, 105.0, typeof(Granite), 1044514, 18, 1044513);
                 this.SetNeededExpansion(index, Expansion.SA);
+
+                index = this.AddCraft(typeof(GargishStoneAmulet), 1111705, 1098594, 60.0, 110.0, typeof(Granite), 1044514, 3, 1044513);
+                this.SetNeededExpansion(index, Expansion.SA);
             }
             #endregion
+
+            //Walls
+            #region TOL
+            if (Core.TOL)
+            {
+                int index = AddCraft(typeof(CraftableHouseAddonDeed), 1155792, 1155794, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, CraftableAddonType.RoughWindowless);
+                SetDisplayID(index, 464);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155792, 1155797, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, CraftableAddonType.RoughWindow);
+                SetDisplayID(index, 467);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155792, 1155799, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, CraftableAddonType.RoughArch);
+                SetDisplayID(index, 469);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155792, 1155804, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, CraftableAddonType.RoughPillar);
+                SetDisplayID(index, 474);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155792, 1155805, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, CraftableAddonType.RoughRoundedArch);
+                SetDisplayID(index, 475);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155792, 1155810, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, CraftableAddonType.RoughSmallArch);
+                SetDisplayID(index, 480);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155792, 1155814, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, CraftableAddonType.RoughAngledPillar);
+                SetDisplayID(index, 486);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155792, 1155816, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, CraftableAddonType.ShortRough);
+                SetDisplayID(index, 488);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseDoorDeed), 1155792, 1156078, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, DoorType.StoneDoor_S_In);
+                SetDisplayID(index, 804);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseDoorDeed), 1155792, 1156079, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, DoorType.StoneDoor_E_Out);
+                SetDisplayID(index, 805);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseDoorDeed), 1155792, 1156348, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, DoorType.StoneDoor_S_Out);
+                SetDisplayID(index, 804);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseDoorDeed), 1155792, 1156349, 60.0, 110.0, typeof(Granite), 1044514, 10, 1044513);
+                SetData(index, DoorType.StoneDoor_E_In);
+                SetDisplayID(index, 805);
+                SetNeededExpansion(index, Expansion.TOL);
+            }
+            #endregion
+
+            // Stairs
+            #region TOL
+            if (Core.TOL)
+            {
+                int index = AddCraft(typeof(CraftableHouseAddonDeed), 1155820, 1155821, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+                SetData(index, CraftableAddonType.RoughBlock);
+                SetDisplayID(index, 1928);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155820, 1155822, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+                SetData(index, CraftableAddonType.RoughSteps);
+                SetDisplayID(index, 1929);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155820, 1155826, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+                SetData(index, CraftableAddonType.RoughCornerSteps);
+                SetDisplayID(index, 1934);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155820, 1155830, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+                SetData(index, CraftableAddonType.RoughRoundedCornerSteps);
+                SetDisplayID(index, 1938);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155820, 1155834, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+                SetData(index, CraftableAddonType.RoughInsetSteps);
+                SetDisplayID(index, 1941);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155820, 1155838, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+                SetData(index, CraftableAddonType.RoughRoundedInsetSteps);
+                SetDisplayID(index, 1945);
+                SetNeededExpansion(index, Expansion.TOL);
+            }
+            #endregion
+
+            // Floors
+            #region TOL
+            if (Core.TOL)
+            {
+                int index = AddCraft(typeof(CraftableHouseAddonDeed), 1155877, 1155821, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+                SetData(index, CraftableAddonType.LightPaver);
+                SetDisplayID(index, 1305);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155877, 1155821, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+                SetData(index, CraftableAddonType.MediumPaver);
+                SetDisplayID(index, 1309);
+                SetNeededExpansion(index, Expansion.TOL);
+
+                index = AddCraft(typeof(CraftableHouseAddonDeed), 1155877, 1155821, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+                SetData(index, CraftableAddonType.DarkPaver);
+                SetDisplayID(index, 1313);
+                SetNeededExpansion(index, Expansion.TOL);
+            }
+            #endregion
+
+            this.MarkOption = true;
+            this.Repair = Core.SA;
+            this.CanEnhance = Core.SA;
 
             this.SetSubRes(typeof(Granite), 1044525);
 

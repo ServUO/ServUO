@@ -22,7 +22,7 @@ namespace Server.Items
         int MaxArcaneCharges { get; set; }
     }
 
-    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, ISetItem
+    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, ISetItem, IVvVItem, IOwnerRestricted
     {
         #region Factions
         private FactionItem m_FactionState;
@@ -45,8 +45,33 @@ namespace Server.Items
         }
         #endregion
 
+        private bool _VvVItem;
+        private Mobile _Owner;
+        private string _OwnerName;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsVvVItem
+        {
+            get { return _VvVItem; }
+            set { _VvVItem = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Owner
+        {
+            get { return _Owner; }
+            set { _Owner = value; if (_Owner != null) _OwnerName = _Owner.Name; InvalidateProperties(); }
+        }
+
+        public virtual string OwnerName
+        {
+            get { return _OwnerName; }
+            set { _OwnerName = value; InvalidateProperties(); }
+        }
+
         public virtual bool CanFortify { get { return !IsImbued && NegativeAttributes.Antique < 3; } }
         public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
+		public virtual bool CanAlter { get { return true; } }
 
         private int m_MaxHitPoints;
         private int m_HitPoints;
@@ -55,6 +80,8 @@ namespace Server.Items
         private bool m_PlayerConstructed;
         protected CraftResource m_Resource;
         private int m_StrReq = -1;
+
+        private bool m_Altered;
 
         private AosAttributes m_AosAttributes;
         private AosArmorAttributes m_AosClothingAttributes;
@@ -93,6 +120,7 @@ namespace Server.Items
             set
             {
                 this.m_MaxHitPoints = value;
+
                 this.InvalidateProperties();
             }
         }
@@ -468,35 +496,35 @@ namespace Server.Items
         {
             get
             {
-                return this.BasePhysicalResistance + this.m_AosResistances.Physical + (this.m_SetEquipped ? this.m_SetPhysicalBonus : 0);
+                return this.BasePhysicalResistance + this.m_AosResistances.Physical;
             }
         }
         public override int FireResistance
         {
             get
             {
-                return this.BaseFireResistance + this.m_AosResistances.Fire + (this.m_SetEquipped ? this.m_SetFireBonus : 0);
+                return this.BaseFireResistance + this.m_AosResistances.Fire;
             }
         }
         public override int ColdResistance
         {
             get
             {
-                return this.BaseColdResistance + this.m_AosResistances.Cold + (this.m_SetEquipped ? this.m_SetColdBonus : 0);
+                return this.BaseColdResistance + this.m_AosResistances.Cold;
             }
         }
         public override int PoisonResistance
         {
             get
             {
-                return this.BasePoisonResistance + this.m_AosResistances.Poison + (this.m_SetEquipped ? this.m_SetPoisonBonus : 0);
+                return this.BasePoisonResistance + this.m_AosResistances.Poison;
             }
         }
         public override int EnergyResistance
         {
             get
             {
-                return this.BaseEnergyResistance + this.m_AosResistances.Energy + (this.m_SetEquipped ? this.m_SetEnergyBonus : 0);
+                return this.BaseEnergyResistance + this.m_AosResistances.Energy;
             }
         }
         #endregion
@@ -506,6 +534,17 @@ namespace Server.Items
             get
             {
                 return 0;
+            }
+        }
+
+        public override bool DisplayWeight
+        {
+            get
+            {
+                if (IsVvVItem)
+                    return true;
+
+                return base.DisplayWeight;
             }
         }
 
@@ -575,6 +614,31 @@ namespace Server.Items
 
             if (from.IsPlayer())
             {
+                if (_Owner != null && _Owner != from)
+                {
+                    from.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                    return false;
+                }
+
+                if (this is IAccountRestricted && ((IAccountRestricted)this).Account != null)
+                {
+                    Accounting.Account acct = from.Account as Accounting.Account;
+
+                    if (acct == null || acct.Username != ((IAccountRestricted)this).Account)
+                    {
+                        from.SendLocalizedMessage(1071296); // This item is Account Bound and your character is not bound to it. You cannot use this item.
+                        return false;
+                    }
+                }
+
+                if (IsVvVItem && !Engines.VvV.ViceVsVirtueSystem.IsVvV(from))
+                {
+                    from.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
+                    return false;
+                }
+
+                bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
+
                 #region Stygian Abyss
                 if (from.Race == Race.Gargoyle && !this.CanBeWornByGargoyles)
                 {
@@ -582,7 +646,7 @@ namespace Server.Items
                     return false;
                 }
                 #endregion
-                else if (this.RequiredRace != null && from.Race != this.RequiredRace)
+                else if (this.RequiredRace != null && from.Race != this.RequiredRace && !morph)
                 {
                     if (this.RequiredRace == Race.Elf)
                         from.SendLocalizedMessage(1072203); // Only Elves may use this.
@@ -857,7 +921,9 @@ namespace Server.Items
             if (damageTaken < 0) 
                 damageTaken = 0;
 
-            if (25 > Utility.Random(100)) // 25% chance to lower durability
+            double chance = NegativeAttributes.Antique > 0 ? 80 : 25;
+
+            if (chance >= Utility.Random(100)) // 25% chance to lower durability
             {
                 if (Core.AOS && this.m_AosClothingAttributes.SelfRepair + (this.IsSetItem && this.m_SetEquipped ? this.m_SetSelfRepair : 0) > Utility.Random(10))
                 {
@@ -871,9 +937,6 @@ namespace Server.Items
                         wear = Absorbed / 2;
                     else
                         wear = Utility.Random(2);
-
-                    if (NegativeAttributes.Antique > 0)
-                        wear *= 2;
 
                     if (wear > 0 && this.m_MaxHitPoints > 0)
                     {
@@ -975,20 +1038,26 @@ namespace Server.Items
         {
             int scale = 100 + this.m_AosClothingAttributes.DurabilityBonus;
 
-            this.m_HitPoints = ((this.m_HitPoints * 100) + (scale - 1)) / scale;
-            this.m_MaxHitPoints = ((this.m_MaxHitPoints * 100) + (scale - 1)) / scale;
+            m_HitPoints = ((this.m_HitPoints * 100) + (scale - 1)) / scale;
+            m_MaxHitPoints = ((this.m_MaxHitPoints * 100) + (scale - 1)) / scale;
 
-            this.InvalidateProperties();
+            InvalidateProperties();
         }
 
         public void ScaleDurability()
         {
             int scale = 100 + this.m_AosClothingAttributes.DurabilityBonus;
 
-            this.m_HitPoints = ((this.m_HitPoints * scale) + 99) / 100;
-            this.m_MaxHitPoints = ((this.m_MaxHitPoints * scale) + 99) / 100;
+            m_HitPoints = ((this.m_HitPoints * scale) + 99) / 100;
+            m_MaxHitPoints = ((this.m_MaxHitPoints * scale) + 99) / 100;
 
-            this.InvalidateProperties();
+            if (m_MaxHitPoints > 255)
+                m_MaxHitPoints = 255;
+
+            if (m_HitPoints > 255)
+                m_HitPoints = 255;
+
+            InvalidateProperties();
         }
 
         public override bool CheckPropertyConfliction(Mobile m)
@@ -1089,7 +1158,14 @@ namespace Server.Items
                         list.Add(1151756, String.Format("#{0}\t{1}\t#{2}", prefix, GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_PREFIX~ ~2_ITEM~ of ~3_SUFFIX~
                 }
                 else if (m_ReforgedSuffix != ReforgedSuffix.None)
-                    list.Add(1151758, String.Format("{0}\t#{1}", GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_ITEM~ of ~2_SUFFIX~
+                {
+                    if (m_ReforgedSuffix == ReforgedSuffix.Blackthorn)
+                        list.Add(1154548, String.Format("{0}", GetNameString())); // ~1_TYPE~ bearing the crest of Blackthorn
+                    else if (m_ReforgedSuffix == ReforgedSuffix.Minax)
+                        list.Add(1154507, String.Format("{0}", GetNameString())); // ~1_ITEM~ bearing the crest of Minax
+                    else
+                        list.Add(1151758, String.Format("{0}\t#{1}", GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_ITEM~ of ~2_SUFFIX~
+                }
             }
             else if (oreType != 0)
                 list.Add(1053099, "#{0}\t{1}", oreType, this.GetNameString()); // ~1_oretype~ ~2_armortype~
@@ -1099,9 +1175,22 @@ namespace Server.Items
                 list.Add(this.Name);
         }
 
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            if (IsVvVItem)
+                list.Add(1154937); // VvV Item
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
+
+            if (OwnerName != null)
+            {
+                list.Add(1153213, OwnerName);
+            }
 
             #region Stygian Abyss
             if (IsImbued == true)
@@ -1113,6 +1202,9 @@ namespace Server.Items
 			
             if (this.m_Crafter != null)
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+
+            if (m_Altered)
+                list.Add(1111880); // Altered
 
             #region Factions
             if (this.m_FactionState != null)
@@ -1126,6 +1218,12 @@ namespace Server.Items
                     list.Add(1073491, this.Pieces.ToString()); // Part of a Weapon/Armor Set (~1_val~ pieces)
                 else
                     list.Add(1072376, this.Pieces.ToString()); // Part of an Armor Set (~1_val~ pieces)
+
+                if (SetID == SetItem.Bestial)
+                    list.Add(1151541, BestialSetHelper.GetTotalBerserk(this).ToString()); // Berserk ~1_VAL~
+
+                if (this.BardMasteryBonus)
+                    list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
 
                 if (this.m_SetEquipped)
                 {
@@ -1383,6 +1481,7 @@ namespace Server.Items
             #region Imbuing
             //TimesImbued = 0x12000000,
             #endregion
+            Altered = 0x00001000
         }
 
         #region Mondain's Legacy Sets
@@ -1420,7 +1519,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(8); // version
+            writer.Write(9); // version
+
+            writer.Write(_VvVItem);
+            writer.Write(_Owner);
+            writer.Write(_OwnerName);
 
             //Version 8
             writer.Write((bool)this.m_IsImbued);
@@ -1521,6 +1624,7 @@ namespace Server.Items
             #region Imbuing
             //SetSaveFlag(ref flags, SaveFlag.TimesImbued, this.m_TimesImbued != 0);
             #endregion
+            SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
             writer.WriteEncodedInt((int)flags);
 
@@ -1566,6 +1670,13 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 9:
+                    {
+                        _VvVItem = reader.ReadBool();
+                        _Owner = reader.ReadMobile();
+                        _OwnerName = reader.ReadString();
+                        goto case 8;
+                    }
                 case 8:
                         {
                             this.m_IsImbued = reader.ReadBool();
@@ -1705,6 +1816,9 @@ namespace Server.Items
 
                         if (GetSaveFlag(flags, SaveFlag.PlayerConstructed))
                             this.m_PlayerConstructed = true;
+
+                        if (GetSaveFlag(flags, SaveFlag.Altered))
+                            m_Altered = true;
 
                         break;
                     }
@@ -1943,6 +2057,15 @@ namespace Server.Items
                 return 0;
             }
         }
+
+        public virtual bool BardMasteryBonus
+        {
+            get
+            {
+                return (this.SetID == SetItem.Virtuoso);
+            }
+        }
+
         public virtual bool MixedSet
         {
             get
@@ -2121,6 +2244,9 @@ namespace Server.Items
 
             if (!this.m_SetEquipped)
             {
+                if (this.SetID == SetItem.Virtuoso)
+                    list.Add(1151571); // Mastery Bonus Cooldown: 15 min.
+
                 if (this.m_SetPhysicalBonus != 0)
                     list.Add(1072382, this.m_SetPhysicalBonus.ToString()); // physical resist +~1_val~%
 
@@ -2142,6 +2268,31 @@ namespace Server.Items
 
             SetHelper.GetSetProperties(list, this);
         }
+
+        public int SetResistBonus(ResistanceType resist)
+        {
+            switch (resist)
+            {
+                case ResistanceType.Physical: return m_SetEquipped ? LastEquipped ? (PhysicalResistance * Pieces) + m_SetPhysicalBonus : 0 : PhysicalResistance;
+                case ResistanceType.Fire: return m_SetEquipped ? LastEquipped ? (FireResistance * Pieces) + m_SetFireBonus : 0 : FireResistance;
+                case ResistanceType.Cold: return m_SetEquipped ? LastEquipped ? (ColdResistance * Pieces) + m_SetColdBonus : 0 : ColdResistance;
+                case ResistanceType.Poison: return m_SetEquipped ? LastEquipped ? (PoisonResistance * Pieces) + m_SetPoisonBonus : 0 : PoisonResistance;
+                case ResistanceType.Energy: return m_SetEquipped ? LastEquipped ? (EnergyResistance * Pieces) + m_SetEnergyBonus : 0 : EnergyResistance;
+            }
+
+            return 0;
+        }
         #endregion
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Altered
+        {
+            get { return m_Altered; }
+            set
+            {
+                m_Altered = value;
+                InvalidateProperties();
+            }
+        }
     }
 }

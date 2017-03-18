@@ -72,7 +72,7 @@ namespace Server.Spells.Fourth
                         if (m == this.Caster || (party != null && party.Contains(m)))
                         {
                             this.Caster.DoBeneficial(m);
-                            Spells.Second.ProtectionSpell.Toggle(this.Caster, m);
+                            Spells.Second.ProtectionSpell.Toggle(this.Caster, m, true);
                         }
                     }
                 }

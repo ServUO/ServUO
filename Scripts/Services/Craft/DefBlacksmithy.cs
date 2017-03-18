@@ -60,7 +60,11 @@ namespace Server.Engines.Craft
         ColdForgedBlade = 351,
         OverseerSunderedBlade = 352,
         LuminousRuneBlade = 353,
-        ShardTrasher = 354 //good
+        ShardTrasher = 354, //good
+
+        // doom 
+        BritchesOfWarding = 355,
+        GlovesOfFeudalGrip = 356
     }
     #endregion
 
@@ -81,7 +85,18 @@ namespace Server.Engines.Craft
 
         public override double GetChanceAtMin(CraftItem item)
         {
+            if (item.NameNumber == 1157349 || item.NameNumber == 1157345) // Gloves Of FeudalGrip and Britches Of Warding
+                return 0.05; // 5%
+
             return 0.0; // 0%
+        }
+
+        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
+        {
+            if (resourceType == typeof(LeggingsOfBane) || resourceType == typeof(GauntletsOfNobility))
+                return false;
+
+            return base.ConsumeOnFailure(from, resourceType, craftItem);
         }
 
         private DefBlacksmithy()
@@ -177,7 +192,9 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
         {
-            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
+            int num = 0;
+
+            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
             {
                 return 1044038; // You have worn out your tool!
             }
@@ -187,9 +204,9 @@ namespace Server.Engines.Craft
                 return 1048146; // If you have a tool equipped, you must use that tool.
             }
 
-            if (!BaseTool.CheckAccessible(tool, from))
+            else if (!tool.CheckAccessible(from, ref num))
             {
-                return 1044263; // The tool must be on your person to use.
+                return num; // The tool must be on your person to use.
             }
 
             bool anvil, forge;
@@ -296,6 +313,19 @@ namespace Server.Engines.Craft
             AddCraft(typeof(ChainCoif), 1111704, 1025051, 14.5, 64.5, typeof(IronIngot), 1044036, 10, 1044037);
             AddCraft(typeof(ChainLegs), 1111704, 1025054, 36.7, 86.7, typeof(IronIngot), 1044036, 18, 1044037);
             AddCraft(typeof(ChainChest), 1111704, 1025055, 39.1, 89.1, typeof(IronIngot), 1044036, 20, 1044037);
+
+            if (Core.SA)
+            {
+                #region SA
+                index = AddCraft(typeof(BritchesOfWarding), 1111704, 1157345, 120.0, 120.1, typeof(IronIngot), 1044036, 18, 1044037);
+                AddRes(index, typeof(LeggingsOfBane), 1061100, 1, 1053098);
+                AddRes(index, typeof(Turquoise), 1032691, 4, 1053098);
+                AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1053098);
+                AddRecipe(index, (int)SmithRecipes.BritchesOfWarding);
+                ForceNonExceptional(index);
+                SetNeededExpansion(index, Expansion.SA);
+                #endregion
+            }
             #endregion
 
             #region Platemail
@@ -383,7 +413,7 @@ namespace Server.Engines.Craft
                     typeof(StandardPlateKabuto), 1011079, 1030196, 90.0, 140.0, typeof(IronIngot), 1044036, 25, 1044037);
                 SetNeededExpansion(index, Expansion.SE);
 
-                /*if (Core.ML)
+                if (Core.ML)
                 {
                     index = AddCraft(typeof(Circlet), 1011079, 1032645, 62.1, 112.1, typeof(IronIngot), 1044036, 6, 1044037);
                     SetNeededExpansion(index, Expansion.ML);
@@ -396,7 +426,7 @@ namespace Server.Engines.Craft
                     AddRes(index, typeof(Amethyst), 1044236, 1, 1044240);
                     AddRes(index, typeof(BlueDiamond), 1032696, 1, 1044240);
                     SetNeededExpansion(index, Expansion.ML);
-                }*/
+                }
             }
             #endregion
 
@@ -889,22 +919,78 @@ namespace Server.Engines.Craft
             #endregion
             #endregion
 
+            #region High Seas Cannons
+            if (Core.HS)
+            {
+                index = AddCraft(typeof(LightCannonball), 1116354, 1116266, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(HeavyCannonball), 1116354, 1116267, 10.0, 60.0, typeof(IronIngot), 1044036, 12, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(LightGrapeshot), 1116354, 1116030, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
+                AddRes(index, typeof(Cloth), 1044286, 1, 1044287);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(HeavyGrapeshot), 1116354, 1116166, 15.0, 70.0, typeof(IronIngot), 1044036, 12, 1044037);
+                AddRes(index, typeof(Cloth), 1044286, 2, 1044287);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(LightShipCannonDeed), 1116354, 1095790, 65.0, 120.0, typeof(IronIngot), 1044036, 900, 1044037);
+                AddRes(index, typeof(Board), 1044041, 50, 1044351);
+                AddSkill(index, SkillName.Carpentry, 65.0, 100.0);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(HeavyShipCannonDeed), 1116354, 1095794, 70.0, 120.0, typeof(IronIngot), 1044036, 1800, 1044037);
+                AddRes(index, typeof(Board), 1044041, 75, 1044351);
+                AddSkill(index, SkillName.Carpentry, 70.0, 100.0);
+                SetNeededExpansion(index, Expansion.SA);
+            }
+            #endregion
+
             #region Dragon Scale Armor
-            //TODO: Change category to 1011173 (Misc) once HS cannon content is put in
-            index = AddCraft(typeof(DragonGloves), 1053114, 1029795, 68.9, 118.9, typeof(RedScales), 1060883, 16, 1060884);
+            index = AddCraft(typeof(DragonGloves), 1011173, 1029795, 68.9, 118.9, typeof(RedScales), 1060883, 16, 1060884);
             SetUseSubRes2(index, true);
 
-            index = AddCraft(typeof(DragonHelm), 1053114, 1029797, 72.6, 122.6, typeof(RedScales), 1060883, 20, 1060884);
+            index = AddCraft(typeof(DragonHelm), 1011173, 1029797, 72.6, 122.6, typeof(RedScales), 1060883, 20, 1060884);
             SetUseSubRes2(index, true);
 
-            index = AddCraft(typeof(DragonLegs), 1053114, 1029799, 78.8, 128.8, typeof(RedScales), 1060883, 28, 1060884);
+            index = AddCraft(typeof(DragonLegs), 1011173, 1029799, 78.8, 128.8, typeof(RedScales), 1060883, 28, 1060884);
             SetUseSubRes2(index, true);
 
-            index = AddCraft(typeof(DragonArms), 1053114, 1029815, 76.3, 126.3, typeof(RedScales), 1060883, 24, 1060884);
+            index = AddCraft(typeof(DragonArms), 1011173, 1029815, 76.3, 126.3, typeof(RedScales), 1060883, 24, 1060884);
             SetUseSubRes2(index, true);
 
-            index = AddCraft(typeof(DragonChest), 1053114, 1029793, 85.0, 135.0, typeof(RedScales), 1060883, 36, 1060884);
+            index = AddCraft(typeof(DragonChest), 1011173, 1029793, 85.0, 135.0, typeof(RedScales), 1060883, 36, 1060884);
             SetUseSubRes2(index, true);
+            #endregion
+
+			#region SA Craftables
+			index = AddCraft(typeof(CrushedGlass), 1011173, 1113351, 110.0, 135.0, typeof(BlueDiamond), 1032696, 1, 1044253);
+			AddRes(index, typeof(GlassSword), 1095371, 5, 1044253);
+			SetNeededExpansion(index, Expansion.SA);
+
+            AddCraft(typeof(MetalKeg), 1011173, 1150675, 85.0, 100.0, typeof(IronIngot), 1044036, 25, 1044253);
+
+			index = AddCraft(typeof(PowderedIron), 1011173, 1113353, 110.0, 135.0, typeof(WhitePearl), 1026253, 1, 1044253);
+			AddRes(index, typeof(IronIngot), 1044036, 20, 1044037);
+			SetNeededExpansion(index, Expansion.SA);
+
+            index = this.AddCraft(typeof(ExodusSacrificalDagger), 1011173, 1153500, 95.0, 120.0, typeof(IronIngot), 1044036, 12, 1044253);
+            AddRes(index, typeof(BlueDiamond), 1032696, 2, 1044253);
+            AddRes(index, typeof(FireRuby), 1032695, 2, 1044253);
+            AddRes(index, typeof(SmallPieceofBlackrock), 1150016, 10, 1044253);
+            this.ForceNonExceptional(index);
+            this.SetNeededExpansion(index, Expansion.SA);
+
+            index = AddCraft(typeof(GlovesOfFeudalGrip), 1011173, 1157349, 120.0, 120.1, typeof(RedScales), 1060883, 18, 1060884);
+            SetUseSubRes2(index, true);
+            AddRes(index, typeof(BlueDiamond), 1032696, 4, 1044253);
+            AddRes(index, typeof(GauntletsOfNobility), 1061092, 1, 1053098);
+            AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1053098);
+            AddRecipe(index, (int)SmithRecipes.GlovesOfFeudalGrip);
+            ForceNonExceptional(index);
+            SetNeededExpansion(index, Expansion.SA);
             #endregion
 
             // Set the overridable material

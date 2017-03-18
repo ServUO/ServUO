@@ -6,10 +6,12 @@ namespace Server.Mobiles
 { 
     public class SBTinker : SBInfo 
     { 
-        private readonly List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
+        private readonly List<GenericBuyInfo> m_BuyInfo;
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
-        public SBTinker() 
-        { 
+
+        public SBTinker(BaseVendor owner) 
+        {
+            m_BuyInfo = new InternalBuyInfo(owner);
         }
 
         public override IShopSellInfo SellInfo
@@ -29,7 +31,7 @@ namespace Server.Mobiles
 
         public class InternalBuyInfo : List<GenericBuyInfo> 
         { 
-            public InternalBuyInfo() 
+            public InternalBuyInfo(BaseVendor owner) 
             { 
                 this.Add(new GenericBuyInfo(typeof(Clock), 22, 20, 0x104B, 0));
                 this.Add(new GenericBuyInfo(typeof(Nails), 3, 20, 0x102E, 0));
@@ -84,6 +86,9 @@ namespace Server.Mobiles
                 this.Add(new GenericBuyInfo(typeof(Tambourine), 21, 20, 0x0E9E, 0));
                 this.Add(new GenericBuyInfo(typeof(LapHarp), 21, 20, 0x0EB2, 0));
                 this.Add(new GenericBuyInfo(typeof(Lute), 21, 20, 0x0EB3, 0));
+
+                if (owner != null && owner.Race == Race.Gargoyle)
+                    Add(new GenericBuyInfo(typeof(BasketWeavingBook), 10625, 20, 0xFBE, 0));
             }
         }
 

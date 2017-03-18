@@ -54,7 +54,7 @@ namespace Server.Spells.Seventh
                     IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), 8);
 
                     foreach (Mobile m in eable)
-                        if (m is BaseCreature && (m as BaseCreature).IsDispellable && this.Caster.CanBeHarmful(m, false))
+                        if (m is BaseCreature && (m as BaseCreature).IsDispellable && (((BaseCreature)m).SummonMaster == this.Caster || this.Caster.CanBeHarmful(m, false)))
                             targets.Add(m);
 
                     eable.Free();
@@ -70,6 +70,9 @@ namespace Server.Spells.Seventh
                         continue;
 
                     double dispelChance = (50.0 + ((100 * (this.Caster.Skills.Magery.Value - bc.GetDispelDifficulty())) / (bc.DispelFocus * 2))) / 100;
+                    
+                    // Skill Masteries
+                    dispelChance -= ((double)SkillMasteries.MasteryInfo.EnchantedSummoningBonus(bc) / 100);
 
                     if (dispelChance > Utility.RandomDouble())
                     {
@@ -90,7 +93,7 @@ namespace Server.Spells.Seventh
             this.FinishSequence();
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             private readonly MassDispelSpell m_Owner;
             public InternalTarget(MassDispelSpell owner)

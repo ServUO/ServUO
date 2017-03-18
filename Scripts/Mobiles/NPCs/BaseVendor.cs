@@ -8,6 +8,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Accounting;
 using Server.ContextMenus;
 using Server.Engines.BulkOrders;
@@ -54,12 +56,16 @@ namespace Server.Mobiles
 
 		public override bool PlayerRangeSensitive { get { return true; } }
 
+        public override bool UseSmartAI { get { return true; } }
+
 		public virtual bool IsActiveVendor { get { return true; } }
 		public virtual bool IsActiveBuyer { get { return IsActiveVendor; } } // response to vendor SELL
 		public virtual bool IsActiveSeller { get { return IsActiveVendor; } } // repsonse to vendor BUY
 		public virtual bool HasHonestyDiscount { get { return true; } }
 
 		public virtual NpcGuild NpcGuild { get { return NpcGuild.None; } }
+
+        public virtual bool ChangeRace { get { return true; } }
 
 		public override bool IsInvulnerable { get { return true; } }
 
@@ -125,7 +131,7 @@ namespace Server.Mobiles
 			private readonly BaseVendor m_Vendor;
 
 			public BulkOrderInfoEntry(Mobile from, BaseVendor vendor)
-				: base(6152)
+				: base(6152, 3)
 			{
 				m_From = from;
 				m_Vendor = vendor;
@@ -133,6 +139,9 @@ namespace Server.Mobiles
 
 			public override void OnClick()
 			{
+                if (!m_From.InRange(m_Vendor.Location, 3))
+                    return;
+
 				EventSink.InvokeBODOffered(new BODOfferEventArgs(m_From, m_Vendor));
 				if (m_Vendor.SupportsBulkOrders(m_From))
 				{
@@ -182,7 +191,7 @@ namespace Server.Mobiles
 		}
 
 		public BaseVendor(string title)
-			: base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 2)
+			: base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 5)
 		{
 			AllVendors.Add(this);
 
@@ -342,16 +351,19 @@ namespace Server.Mobiles
 
 		public virtual void CheckMorph()
 		{
+            if (!ChangeRace)
+                return;
+
 			if (CheckGargoyle())
 			{
 				return;
 			}
-				#region SA
+			#region SA
 			else if (CheckTerMur())
 			{
 				return;
 			}
-				#endregion
+			#endregion
 
 			else if (CheckNecromancer())
 			{
@@ -1082,6 +1094,7 @@ namespace Server.Mobiles
 				Titles.AwardFame(from, fame, true);
 
 				OnSuccessfulBulkOrderReceive(from);
+                Server.Engines.CityLoyalty.CityLoyaltySystem.OnBODTurnIn(from, gold);
 
 				if (Core.ML && pm != null)
 				{
@@ -1118,7 +1131,7 @@ namespace Server.Mobiles
 			List<BuyItemResponse> validBuy,
 			ref int controlSlots,
 			ref bool fullPurchase,
-			ref int totalCost)
+			ref double totalCost)
 		{
 			int amount = buy.Amount;
 
@@ -1144,7 +1157,7 @@ namespace Server.Mobiles
 				return;
 			}
 
-			totalCost += bii.Price * amount;
+			totalCost += (double)bii.Price * amount;
 			validBuy.Add(buy);
 		}
 
@@ -1253,9 +1266,9 @@ namespace Server.Mobiles
 
 			UpdateBuyInfo();
 
-			var buyInfo = GetBuyInfo();
+			//var buyInfo = GetBuyInfo();
 			var info = GetSellInfo();
-			int totalCost = 0;
+			var totalCost = 0.0;
 			var validBuy = new List<BuyItemResponse>(list.Count);
 			Container cont;
 			bool bought = false;
@@ -1301,7 +1314,7 @@ namespace Server.Mobiles
 							{
 								if (ssi.IsResellable(item))
 								{
-									totalCost += ssi.GetBuyPriceFor(item) * amount;
+									totalCost += (double)ssi.GetBuyPriceFor(item) * amount;
 									validBuy.Add(buy);
 									break;
 								}
@@ -1342,7 +1355,7 @@ namespace Server.Mobiles
 			}
 
 			bought = buyer.AccessLevel >= AccessLevel.GameMaster;
-			int discount = 0;
+			var discount = 0.0;
 			cont = buyer.Backpack;
 
 			if (Core.SA && HasHonestyDiscount)
@@ -1362,51 +1375,48 @@ namespace Server.Mobiles
 						discountPc = 0;
 						break;
 				}
-				discount = totalCost - (int)(totalCost * (1 - discountPc));
+				discount = totalCost - (totalCost * (1.0 - discountPc));
 				totalCost -= discount;
 			}
 
-			if (!bought && cont != null)
+			if (!bought && cont != null && ConsumeGold(cont, totalCost))
 			{
-				if (cont.ConsumeTotal(typeof(Gold), totalCost))
-				{
-					bought = true;
-
-					if (discount > 0)
-					{
-						SayTo(buyer, 1151517, discount.ToString());
-					}
-				}
+				bought = true;
 			}
 
-			if (!bought &&(totalCost >= 2000 ||AccountGold.Enabled))
-			{
-				if (Banker.Withdraw(buyer, totalCost))
+			//if (totalCost >= 2000)
+			//{
+				if (!bought)
 				{
-					bought = true;
-					fromBank = true;
-
-					if (discount > 0)
+					if (totalCost <= Int32.MaxValue)
 					{
-						SayTo(buyer, 1151517, discount.ToString());
-					}
-				}
-				else
-				{
-					cont = buyer.FindBankNoCreate();
-
-					if (cont != null && cont.ConsumeTotal(typeof(Gold), totalCost))
-					{
-						bought = true;
-						fromBank = true;
-
-						if (discount > 0)
+						if (Banker.Withdraw(buyer, (int)totalCost))
 						{
-							SayTo(buyer, 1151517, discount.ToString());
+							bought = true;
+							fromBank = true;
+						}
+					}
+					else if (buyer.Account != null && AccountGold.Enabled)
+					{
+						if (buyer.Account.WithdrawCurrency(totalCost / AccountGold.CurrencyThreshold))
+						{
+							bought = true;
+							fromBank = true;
 						}
 					}
 				}
-			}
+
+				if (!bought)
+				{
+					cont = buyer.FindBankNoCreate();
+
+					if (cont != null && ConsumeGold(cont, totalCost))
+					{
+						bought = true;
+						fromBank = true;
+					}
+				}
+			//}
 
 			if (!bought)
 			{
@@ -1415,6 +1425,11 @@ namespace Server.Mobiles
 				SayTo(buyer, totalCost >= 2000 ? 500191 : 500192);
 
 				return false;
+			}
+
+			if (discount > 0)
+			{
+				SayTo(buyer, 1151517, discount.ToString());
 			}
 
 			buyer.PlaySound(0x32);
@@ -1504,6 +1519,11 @@ namespace Server.Mobiles
 				}
 			} //foreach
 
+			if (discount > 0)
+			{
+				SayTo(buyer, 1151517, discount.ToString());
+			}
+
 			if (fullPurchase)
 			{
 				if (buyer.AccessLevel >= AccessLevel.GameMaster)
@@ -1551,6 +1571,95 @@ namespace Server.Mobiles
 			}
 
 			return true;
+		}
+
+		public static bool ConsumeGold(Container cont, double amount)
+		{
+			return ConsumeGold(cont, amount, true);
+		}
+
+		public static bool ConsumeGold(Container cont, double amount, bool recurse)
+		{
+			var gold = new Queue<Gold>(FindGold(cont, recurse));
+			var total = gold.Aggregate(0.0, (c, g) => c + g.Amount);
+
+			if (total < amount)
+			{
+				gold.Clear();
+
+				return false;
+			}
+
+			var consume = amount;
+
+			while (consume > 0)
+			{
+				var g = gold.Dequeue();
+
+				if (g.Amount > consume)
+				{
+					g.Consume((int)consume);
+
+					consume = 0;
+				}
+				else
+				{
+					consume -= g.Amount;
+
+					g.Delete();
+				}
+			}
+
+			gold.Clear();
+
+			return true;
+		}
+
+		private static IEnumerable<Gold> FindGold(Container cont, bool recurse)
+		{
+			if (cont == null || cont.Items.Count == 0)
+			{
+				yield break;
+			}
+
+			if (cont is ILockable && ((ILockable)cont).Locked)
+			{
+				yield break;
+			}
+
+			if (cont is TrapableContainer && ((TrapableContainer)cont).TrapType != TrapType.None)
+			{
+				yield break;
+			}
+
+			var count = cont.Items.Count;
+
+			while(--count >= 0)
+			{
+				if (count >= cont.Items.Count)
+				{
+					continue;
+				}
+
+				var item = cont.Items[count];
+
+				if (item is Container)
+				{
+					if (!recurse)
+					{
+						continue;
+					}
+
+					foreach (var gold in FindGold((Container)item, true))
+					{
+						yield return gold;
+					}
+				}
+				else if (item is Gold)
+				{
+					yield return (Gold)item;
+				}
+			}
 		}
 
 		public virtual bool CheckVendorAccess(Mobile from)

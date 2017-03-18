@@ -3,13 +3,15 @@ using System.Text;
 using Server.Engines.CannedEvil;
 using Server.Items;
 using Server.Mobiles;
+using System.Collections.Generic;
+using Server.Accounting;
 
 namespace Server.Misc
 {
     public class Titles
     {
         public const int MinFame = 0;
-        public const int MaxFame = 15000;
+        public const int MaxFame = 32000;
 
         public static void AwardFame(Mobile m, int offset, bool message)
         {
@@ -62,8 +64,8 @@ namespace Server.Misc
             }
         }
 
-        public const int MinKarma = -15000;
-        public const int MaxKarma = 15000;
+        public const int MinKarma = -32000;
+        public const int MaxKarma = 32000;
 
         public static void AwardKarma(Mobile m, int offset, bool message)
         {
@@ -148,6 +150,36 @@ namespace Server.Misc
             }
         }
 
+        public static List<string> GetFameKarmaEntries(Mobile m)
+        {
+            List<string> list = new List<string>();
+            int fame = m.Fame;
+            int karma = m.Karma;
+
+            for (int i = 0; i < m_FameEntries.Length; ++i)
+            {
+                FameEntry fe = m_FameEntries[i];
+
+                if (fame >= fe.m_Fame)
+                {
+                    KarmaEntry[] karmaEntries = fe.m_Karma;
+
+                    for (int j = 0; j < karmaEntries.Length; ++j)
+                    {
+                        KarmaEntry ke = karmaEntries[j];
+                        StringBuilder title = new StringBuilder();
+
+                        if ((karma >= 0 && ke.m_Karma >= 0 && karma >= ke.m_Karma) || (karma < 0 && ke.m_Karma < 0 && karma < ke.m_Karma))
+                        {
+                            list.Add(title.AppendFormat(ke.m_Title, m.Name, m.Female ? "Lady" : "Lord").ToString());
+                        }
+                    }
+                }
+            }
+
+            return list;
+        }
+
         public static string[] HarrowerTitles = new string[] { "Spite", "Opponent", "Hunter", "Venom", "Executioner", "Annihilator", "Champion", "Assailant", "Purifier", "Nullifier" };
 
         public static string ComputeFameTitle(Mobile beheld)
@@ -185,7 +217,11 @@ namespace Server.Misc
 
             bool showSkillTitle = beheld.ShowFameTitle && ((beholder == beheld) || (beheld.Fame >= 5000));
 
-			if (beheld.ShowFameTitle || (beholder == beheld))
+            if (Core.SA && beheld.ShowFameTitle && beheld is PlayerMobile && ((PlayerMobile)beheld).FameKarmaTitle != null)
+            {
+                title.AppendFormat(((PlayerMobile)beheld).FameKarmaTitle, beheld.Name, beheld.Female ? "Lady" : "Lord");
+            }
+			else if (beheld.ShowFameTitle || (beholder == beheld))
             {
                 title.Append(ComputeFameTitle(beheld));
             }
@@ -198,7 +234,12 @@ namespace Server.Misc
             {
                 PlayerMobile.ChampionTitleInfo info = ((PlayerMobile)beheld).ChampionTitles;
 
-                if (info.Harrower > 0)
+                if (Core.SA)
+                {
+                    if (((PlayerMobile)beheld).CurrentChampTitle != null)
+                        title.AppendFormat(((PlayerMobile)beheld).CurrentChampTitle);
+                }
+				else if (info.Harrower > 0)
                     title.AppendFormat(": {0} of Evil", HarrowerTitles[Math.Min(HarrowerTitles.Length, info.Harrower) - 1]);
                 else
                 {
@@ -230,7 +271,12 @@ namespace Server.Misc
 
             string customTitle = beheld.Title;
 
-            if (customTitle != null && (customTitle = customTitle.Trim()).Length > 0)
+            if (Core.SA)
+            {
+                if (beheld is PlayerMobile && ((PlayerMobile)beheld).PaperdollSkillTitle != null)
+                    title.Append(", ").Append(((PlayerMobile)beheld).PaperdollSkillTitle);
+            }
+            else if (customTitle != null && (customTitle = customTitle.Trim()).Length > 0)
             {
                 title.AppendFormat(" {0}", customTitle);
             }
@@ -263,6 +309,17 @@ namespace Server.Misc
             }
 
             return null;
+        }
+
+        public static string GetSkillTitle(Mobile mob, Skill skill)
+        {
+            string skillLevel = GetSkillLevel(skill);
+            string skillTitle = skill.Info.Title;
+
+            if (mob.Female && skillTitle.EndsWith("man"))
+                skillTitle = skillTitle.Substring(0, skillTitle.Length - 3) + "woman";
+
+            return String.Concat(skillLevel, " ", skillTitle);
         }
 
         private static Skill GetHighestSkill(Mobile m)
@@ -399,6 +456,42 @@ namespace Server.Misc
                 new KarmaEntry(10000, "The Glorious {1} {0}")
             })
         };
+
+        public static VeteranTitle[] VeteranTitles { get; set; }
+
+        public static void Initialize()
+        {
+            VeteranTitles = new VeteranTitle[9];
+
+            for (int i = 0; i < 9; i++)
+            {
+                VeteranTitles[i] = new VeteranTitle(1154341 + i, 2 * (i + 1));
+            }
+        }
+
+        public static List<VeteranTitle> GetVeteranTitles(Mobile m)
+        {
+            Account a = m.Account as Account;
+
+            if (a == null)
+                return null;
+
+            int years = (int)(DateTime.UtcNow - a.Created).TotalDays;
+            years /= 365;
+
+            if (years < 2)
+                return null;
+
+            List<VeteranTitle> titles = new List<VeteranTitle>();
+
+            foreach (VeteranTitle title in VeteranTitles)
+            {
+                if (years >= title.Years)
+                    titles.Add(title);
+            }
+
+            return titles;
+        }
     }
 
     public class FameEntry
@@ -422,6 +515,18 @@ namespace Server.Misc
         {
             this.m_Karma = karma;
             this.m_Title = title;
+        }
+    }
+
+    public class VeteranTitle
+    {
+        public int Title { get; set; }
+        public int Years { get; set; }
+
+        public VeteranTitle(int title, int years)
+        {
+            Title = title;
+            Years = years;
         }
     }
 }

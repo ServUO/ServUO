@@ -3,7 +3,7 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a blood elemental corpse")]
-    public class BloodElemental : BaseCreature
+    public class BloodElemental : BaseCreature, IBloodCreature
     {
         [Constructable]
         public BloodElemental()

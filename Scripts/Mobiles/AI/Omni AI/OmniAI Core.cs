@@ -192,7 +192,7 @@ namespace Server.Mobiles
 
         public override bool DoActionCombat()
         {
-            Mobile combatant = this.m_Mobile.Combatant;
+            Mobile combatant = this.m_Mobile.Combatant as Mobile;
 
             if (DateTime.UtcNow > this.m_NextPetCommand)
             {
@@ -239,7 +239,7 @@ namespace Server.Mobiles
                     this.m_Mobile.Combatant = null;
                 }
 
-                combatant = this.m_Mobile.Combatant;
+                combatant = this.m_Mobile.Combatant as Mobile;
 
                 if (combatant == null)
                 {
@@ -419,19 +419,19 @@ namespace Server.Mobiles
                 this.m_Mobile.PlaySound(0x22F);
             }
 
-            this.m_Mobile.FocusMob = this.m_Mobile.Combatant;
+            this.m_Mobile.FocusMob = this.m_Mobile.Combatant as Mobile;
             base.DoActionFlee();
 
             return true;
         }
 
-        public override bool MoveTo(Mobile m, bool run, int range)
+        public override bool MoveTo(IPoint3D p, bool run, int range)
         {
             if (this.m_Mobile.Hidden && !this.m_Mobile.Poisoned && this.m_CanUseNinjitsu)
             {
                 Server.SkillHandlers.Stealth.OnUse(this.m_Mobile);
 
-                if (base.MoveTo(m, false, range) == false)
+                if (base.MoveTo(p, false, range) == false)
                 {
                     if (this.m_Mobile.Hidden && this.m_Mobile.AllowedStealthSteps >= 1 && this.m_CanUseNinjitsu)
                     {
@@ -444,13 +444,13 @@ namespace Server.Mobiles
                 else
                     return true;
             }
-            else if (!this.m_Melees && m != null) 
+            else if (!this.m_Melees && p != null) 
             {
-                if (this.m_Mobile.InRange(m, 2) && this.CheckMove())
+                if (this.m_Mobile.InRange(p, 2) && this.CheckMove())
                 {
                     Direction d = Direction.North;
 
-                    switch( this.m_Mobile.GetDirectionTo(m) )
+                    switch( this.m_Mobile.GetDirectionTo(p) )
                     {
                         case Direction.North:
                             d = Direction.South;
@@ -481,23 +481,23 @@ namespace Server.Mobiles
                     return this.DoMove(d, run);
                     // base.DoActionFlee();
                 }
-                else if (this.m_Mobile.InRange(m, 4))
+                else if (this.m_Mobile.InRange(p, 4))
                     return true;
             }
 
-            return base.MoveTo(m, run, range);
+            return base.MoveTo(p, run, range);
         }
 
-        public override bool WalkMobileRange(Mobile m, int iSteps, bool bRun, int iWantDistMin, int iWantDistMax)
+        public override bool WalkMobileRange(IPoint3D p, int iSteps, bool bRun, int iWantDistMin, int iWantDistMax)
         {
             if (this.m_Mobile.Hidden && !this.m_Mobile.Poisoned && this.m_CanUseNinjitsu)
             {
                 Server.SkillHandlers.Stealth.OnUse(this.m_Mobile);
 
-                return base.WalkMobileRange(m, iSteps, false, iWantDistMin, iWantDistMax);
+                return base.WalkMobileRange(p, iSteps, false, iWantDistMin, iWantDistMax);
             }
             else
-                return base.WalkMobileRange(m, iSteps, bRun, iWantDistMin, iWantDistMax);
+                return base.WalkMobileRange(p, iSteps, bRun, iWantDistMin, iWantDistMax);
         }
 
         public override void WalkRandom(int iChanceToNotMove, int iChanceToDir, int iSteps)
@@ -529,7 +529,7 @@ namespace Server.Mobiles
 
             Mobile toTarget;
 
-            toTarget = this.m_Mobile.Combatant;
+            toTarget = this.m_Mobile.Combatant as Mobile;
 
             //if ( toTarget != null )
             //RunTo( toTarget );

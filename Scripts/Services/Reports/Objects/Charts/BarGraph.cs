@@ -134,7 +134,7 @@ namespace Server.Engines.Reports
         {
         }
 
-        public override void SerializeAttributes(PersistanceWriter op)
+        public override void SerializeAttributes(PersistenceWriter op)
         {
             base.SerializeAttributes(op);
 
@@ -148,7 +148,7 @@ namespace Server.Engines.Reports
             op.SetInt32("i", this.m_Interval);
         }
 
-        public override void DeserializeAttributes(PersistanceReader ip)
+        public override void DeserializeAttributes(PersistenceReader ip)
         {
             base.DeserializeAttributes(ip);
 

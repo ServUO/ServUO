@@ -20,7 +20,7 @@ namespace Server.Items
         Diamond
     }
 
-    public abstract class BaseJewel : Item, ICraftable, ISetItem, IWearableDurability
+    public abstract class BaseJewel : Item, ICraftable, ISetItem, IWearableDurability, IVvVItem, IOwnerRestricted, ITalismanProtection
     {
         private int m_MaxHitPoints;
         private int m_HitPoints;
@@ -46,6 +46,39 @@ namespace Server.Items
         private ReforgedPrefix m_ReforgedPrefix;
         private ReforgedSuffix m_ReforgedSuffix;
         #endregion
+
+        private TalismanAttribute m_TalismanProtection;
+
+        private bool _VvVItem;
+        private Mobile _Owner;
+        private string _OwnerName;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public TalismanAttribute Protection
+        {
+            get { return m_TalismanProtection; }
+            set { m_TalismanProtection = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsVvVItem
+        {
+            get { return _VvVItem; }
+            set { _VvVItem = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Owner
+        {
+            get { return _Owner; }
+            set { _Owner = value; if (_Owner != null) _OwnerName = _Owner.Name; InvalidateProperties(); }
+        }
+
+        public virtual string OwnerName
+        {
+            get { return _OwnerName; }
+            set { _OwnerName = value; InvalidateProperties(); }
+        }
 
         private Mobile m_BlessedBy;
 
@@ -110,6 +143,10 @@ namespace Server.Items
             set
             {
                 this.m_MaxHitPoints = value;
+
+                if (this.m_MaxHitPoints > 255)
+                    this.m_MaxHitPoints = 255;
+
                 this.InvalidateProperties();
             }
         }
@@ -403,6 +440,7 @@ namespace Server.Items
             jewel.m_AosResistances = new AosElementAttributes(newItem, this.m_AosResistances);
             jewel.m_AosSkillBonuses = new AosSkillBonuses(newItem, this.m_AosSkillBonuses);
             jewel.m_NegativeAttributes = new NegativeAttributes(newItem, this.m_NegativeAttributes);
+            jewel.m_TalismanProtection = new TalismanAttribute(m_TalismanProtection);
 
             #region Mondain's Legacy
             jewel.m_SetAttributes = new AosAttributes(newItem, this.m_SetAttributes);
@@ -417,6 +455,17 @@ namespace Server.Items
             get
             {
                 return 0;
+            }
+        }
+
+        public override bool DisplayWeight
+        {
+            get
+            {
+                if (IsVvVItem)
+                    return true;
+
+                return base.DisplayWeight;
             }
         }
 
@@ -468,6 +517,7 @@ namespace Server.Items
             this.m_SetSkillBonuses = new AosSkillBonuses(this);
             this.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
             m_NegativeAttributes = new NegativeAttributes(this);
+            m_TalismanProtection = new TalismanAttribute();
         }
 
         #region Stygian Abyss
@@ -479,14 +529,42 @@ namespace Server.Items
                 return false;
             }
 
+            if (from.IsPlayer())
+            {
+                if (_Owner != null && _Owner != from)
+                {
+                    from.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                    return false;
+                }
+
+                if (this is IAccountRestricted && ((IAccountRestricted)this).Account != null)
+                {
+                    Accounting.Account acct = from.Account as Accounting.Account;
+
+                    if (acct == null || acct.Username != ((IAccountRestricted)this).Account)
+                    {
+                        from.SendLocalizedMessage(1071296); // This item is Account Bound and your character is not bound to it. You cannot use this item.
+                        return false;
+                    }
+                }
+
+                if (IsVvVItem && !Engines.VvV.ViceVsVirtueSystem.IsVvV(from))
+                {
+                    from.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
+                    return false;
+                }
+            }
+
             if (from.AccessLevel < AccessLevel.GameMaster)
             {
+                bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
+
                 if (from.Race == Race.Gargoyle && !this.CanBeWornByGargoyles)
                 {
                     from.SendLocalizedMessage(1111708); // Gargoyles can't wear this.
                     return false;
                 }
-                else if (this.RequiredRace != null && from.Race != this.RequiredRace)
+                else if (this.RequiredRace != null && from.Race != this.RequiredRace && !morph)
                 {
                     if (this.RequiredRace == Race.Elf)
                         from.SendLocalizedMessage(1072203); // Only Elves may use this.
@@ -511,12 +589,11 @@ namespace Server.Items
             if (m_TimesImbued >= 1 && m_MaxHitPoints == 0)
                 return damageTaken;
 
-            if (25 > Utility.Random(100)) // 25% chance to lower durability
+            double chance = NegativeAttributes.Antique > 0 ? 80 : 25;
+
+            if (chance >= Utility.Random(100)) // 25% chance to lower durability
             {
                 int wear = Utility.Random(2);
-
-                if (NegativeAttributes.Antique > 0)
-                    wear *= 2;
 
                 if (wear > 0)
                 {
@@ -639,6 +716,11 @@ namespace Server.Items
             Server.Engines.XmlSpawner2.XmlAttach.CheckOnRemoved(this, parent);
         }
 
+        public virtual void SetProtection(Type type, TextDefinition name, int amount)
+        {
+            m_TalismanProtection = new TalismanAttribute(type, name, amount);
+        }
+
         public BaseJewel(Serial serial)
             : base(serial)
         {
@@ -658,7 +740,12 @@ namespace Server.Items
                         list.Add(1151756, String.Format("#{0}\t{1}\t#{2}", prefix, GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_PREFIX~ ~2_ITEM~ of ~3_SUFFIX~
                 }
                 else if (m_ReforgedSuffix != ReforgedSuffix.None)
-                    list.Add(1151758, String.Format("{0}\t#{1}", GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_ITEM~ of ~2_SUFFIX~
+                {
+                    if (m_ReforgedSuffix == ReforgedSuffix.Minax)
+                        list.Add(1154507, String.Format("{0}", GetNameString())); // ~1_ITEM~ bearing the crest of Minax
+                    else
+                        list.Add(1151758, String.Format("{0}\t#{1}", GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_ITEM~ of ~2_SUFFIX~
+                }
             }
             else
             {
@@ -676,9 +763,22 @@ namespace Server.Items
             return name;
         }
 
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            if (IsVvVItem)
+                list.Add(1154937); // VvV Item
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
+
+            if (OwnerName != null)
+            {
+                list.Add(1153213, OwnerName);
+            }
 
             #region Stygian Abyss
             if (IsImbued)
@@ -700,6 +800,12 @@ namespace Server.Items
             if (this.IsSetItem)
             {
                 list.Add(1080240, this.Pieces.ToString()); // Part of a Jewelry Set (~1_val~ pieces)
+
+                if (SetID == SetItem.Bestial)
+                    list.Add(1151541, BestialSetHelper.GetTotalBerserk(this).ToString()); // Berserk ~1_VAL~
+
+                if (this.BardMasteryBonus)
+                    list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
 
                 if (this.m_SetEquipped)
                 {
@@ -723,6 +829,9 @@ namespace Server.Items
 
             if ((prop = this.ArtifactRarity) > 0)
                 list.Add(1061078, prop.ToString()); // artifact rarity ~1_val~
+
+            if (m_TalismanProtection != null && !m_TalismanProtection.IsEmpty && m_TalismanProtection.Amount > 0)
+                list.Add(1072387, "{0}\t{1}", m_TalismanProtection.Name != null ? m_TalismanProtection.Name.ToString() : "Unknown", m_TalismanProtection.Amount); // ~1_NAME~ Protection: +~2_val~%
 
             if ((prop = this.m_AosAttributes.WeaponDamage) != 0)
                 list.Add(1060401, prop.ToString()); // damage increase ~1_val~%
@@ -841,6 +950,12 @@ namespace Server.Items
             if (this.m_HitPoints >= 0 && this.m_MaxHitPoints > 0)
                 list.Add(1060639, "{0}\t{1}", this.m_HitPoints, this.m_MaxHitPoints); // durability ~1_val~ / ~2_val~
 
+            if (this.IsSetItem && !this.m_SetEquipped)
+            {
+                list.Add(1072378); // <br>Only when full set is present:				
+                SetHelper.GetSetProperties(list, this);
+            }
+
             if (m_ItemPower != ItemPower.None)
             {
                 if (m_ItemPower <= ItemPower.LegendaryArtifact)
@@ -864,7 +979,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(7); // version
+            writer.Write(9); // version
+
+            m_TalismanProtection.Serialize(writer);
+
+            writer.Write(_VvVItem);
+            writer.Write(_Owner);
+            writer.Write(_OwnerName);
 
             //Version 7
             writer.Write((bool)this.m_IsImbued);
@@ -921,6 +1042,18 @@ namespace Server.Items
 
             switch (version)
             {
+                case 9:
+                    {
+                        m_TalismanProtection = new TalismanAttribute(reader);
+                        goto case 8;
+                    }
+                case 8:
+                    {
+                        _VvVItem = reader.ReadBool();
+                        _Owner = reader.ReadMobile();
+                        _OwnerName = reader.ReadString();
+                        goto case 7;
+                    }
                 case 7:
                     {
                         this.m_IsImbued = reader.ReadBool();
@@ -1025,6 +1158,9 @@ namespace Server.Items
             if (m_NegativeAttributes == null)
                 m_NegativeAttributes = new NegativeAttributes(this);
 
+            if (m_TalismanProtection == null)
+                m_TalismanProtection = new TalismanAttribute();
+
             #region Mondain's Legacy Sets
             if (this.m_SetAttributes == null)
                 this.m_SetAttributes = new AosAttributes(this);
@@ -1119,6 +1255,15 @@ namespace Server.Items
                 return 0;
             }
         }
+
+        public virtual bool BardMasteryBonus
+        {
+            get
+            {
+                return (this.SetID == SetItem.Virtuoso);
+            }
+        }
+
         public virtual bool MixedSet
         {
             get
@@ -1202,6 +1347,20 @@ namespace Server.Items
             set
             {
             }
+        }
+
+        public int SetResistBonus(ResistanceType resist)
+        {
+            switch (resist)
+            {
+                case ResistanceType.Physical: return PhysicalResistance;
+                case ResistanceType.Fire: return FireResistance;
+                case ResistanceType.Cold: return ColdResistance;
+                case ResistanceType.Poison: return PoisonResistance;
+                case ResistanceType.Energy: return EnergyResistance;
+            }
+
+            return 0;
         }
         #endregion
     }

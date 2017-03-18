@@ -59,11 +59,11 @@ namespace Server.Network
 		private bool m_CompressionEnabled;
 		private readonly string m_ToString;
 		private ClientVersion m_Version;
-		private bool m_BlockAllPackets;
+		private bool m_BlockAllPackets;		
 
 		private readonly DateTime m_ConnectedOn;
 
-		public DateTime ConnectedOn { get { return m_ConnectedOn; } }
+        public DateTime ConnectedOn { get { return m_ConnectedOn; } }
 
 		public TimeSpan ConnectedFor { get { return (DateTime.UtcNow - m_ConnectedOn); } }
 
@@ -232,10 +232,10 @@ namespace Server.Network
 		public bool NewSecureTrading { get { return ((_ProtocolChanges & ProtocolChanges.NewSecureTrading) != 0); } }
 
 		public bool IsUOTDClient { get { return ((m_Flags & ClientFlags.UOTD) != 0 || (m_Version != null && m_Version.Type == ClientType.UOTD)); } }
-
 		public bool IsSAClient { get { return (m_Version != null && m_Version.Type == ClientType.SA); } }
+        public bool IsEnhancedClient { get { return m_Version != null && m_Version.Major >= 67; } }
 
-		public List<SecureTrade> Trades { get { return m_Trades; } }
+        public List<SecureTrade> Trades { get { return m_Trades; } }
 
 		public void ValidateAllTrades()
 		{
@@ -1341,11 +1341,11 @@ namespace Server.Network
 			}
 
 			if (info.RequiredClient != null)
-			{
-				return (Version >= info.RequiredClient);
-			}
-
-			return ((Flags & info.ClientFlags) != 0);
+            {
+				return ( this.IsEnhancedClient || this.Version >= info.RequiredClient );
+		    }
+	
+            return ((Flags & info.ClientFlags) != 0);
 		}
 
 		public bool SupportsExpansion(Expansion ex, bool checkCoreExpansion)

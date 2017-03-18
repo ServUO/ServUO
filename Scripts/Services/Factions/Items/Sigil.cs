@@ -286,11 +286,17 @@ namespace Server.Factions
             }
         }
 
-        public static bool ExistsOn(Mobile mob)
+        public static bool ExistsOn(Mobile mob, bool vvvOnly = false)
         {
+            if (mob == null || mob.Backpack == null)
+                return false;
+
             Container pack = mob.Backpack;
 
-            return (pack != null && pack.FindItemByType(typeof(Sigil)) != null);
+            if (Server.Engines.VvV.ViceVsVirtueSystem.Enabled && vvvOnly && pack.FindItemByType(typeof(Server.Engines.VvV.VvVSigil)) != null)
+                return true;
+
+            return (pack.FindItemByType(typeof(Sigil)) != null || pack.FindItemByType(typeof(Server.Engines.VvV.VvVSigil)) != null);
         }
 
         private void BeginCorrupting(Faction faction)

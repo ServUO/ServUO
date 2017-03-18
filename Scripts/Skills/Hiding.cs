@@ -31,6 +31,11 @@ namespace Server.SkillHandlers
                 return TimeSpan.FromSeconds(1.0);
             }
 
+            if (Server.Engines.VvV.ManaSpike.UnderEffects(m))
+            {
+                return TimeSpan.FromSeconds(1.0);
+            }
+
             if (Core.ML && m.Target != null)
             {
                 Targeting.Target.Cancel(m);
@@ -65,7 +70,7 @@ namespace Server.SkillHandlers
             //int range = 18 - (int)(m.Skills[SkillName.Hiding].Value / 10);
             int range = Math.Min((int)((100 - m.Skills[SkillName.Hiding].Value) / 2) + 8, 18);	//Cap of 18 not OSI-exact, intentional difference
 
-            bool badCombat = (!m_CombatOverride && m.Combatant != null && m.InRange(m.Combatant.Location, range) && m.Combatant.InLOS(m));
+            bool badCombat = (!m_CombatOverride && m.Combatant is Mobile && m.InRange(m.Combatant.Location, range) && ((Mobile)m.Combatant).InLOS(m.Combatant));
             bool ok = (!badCombat /*&& m.CheckSkill( SkillName.Hiding, 0.0 - bonus, 100.0 - bonus )*/);
 
             if (ok)

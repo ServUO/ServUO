@@ -44,32 +44,33 @@ namespace Server.Gumps
 
             ImbuingContext context = Imbuing.GetContext(m);
 
+            // = Check Type of Ingredients Needed 
+            if (!Imbuing.Table.ContainsKey(mod))
+                return;
+
+            m_Definition = Imbuing.Table[mod];
+
+            if (value == -1)
+                value = m_Definition.IncAmount;
+
             m_Item = item;
             m_Mod = mod;
             m_Value = value;
 
-            // = Check Type of Ingredients Needed 
-            if (!Imbuing.Table.ContainsKey(m_Mod))
-                return;
-
-            m_Definition = Imbuing.Table[m_Mod];
-            int maxInt = m_Definition.MaxIntensity;
+            int maxInt = Imbuing.GetMaxIntensity(item, m_Definition);
             int inc = m_Definition.IncAmount;
             int weight = m_Definition.Weight;
 
             if (m_Item is BaseJewel && m_Mod == 12)
                 maxInt /= 2;
 
-            if (m_Value < inc)
-                m_Value = inc;
-            if (m_Value > maxInt)
-                 m_Value = maxInt;
+            if (m_Value < inc) m_Value = inc;
+            if (m_Value > maxInt) m_Value = maxInt;
 
             if (m_Value <= 0)
                 m_Value = 1;
 
-            double currentIntensity = ((double)weight / (double)maxInt * m_Value);
-            currentIntensity = Math.Floor(currentIntensity);
+            double currentIntensity = Math.Floor((m_Value / (double)maxInt) * 100);
 
 			//Set context
 			context.LastImbued = item;
@@ -85,9 +86,7 @@ namespace Server.Gumps
             if (maxInt <= 1)
 				currentIntensity= 100;
 
-            double propweight = ((double)weight / (double)maxInt) * m_Value;
-            propweight = Math.Floor(propweight);
-            m_PropWeight = Convert.ToInt32(propweight);
+            m_PropWeight = (int)Math.Floor(((double)weight / (double)maxInt) * m_Value);
 
             // - Maximum allowed Property Weight & Item Mod Count
             m_MaxWeight = Imbuing.GetMaxWeight(m_Item);
@@ -200,7 +199,6 @@ namespace Server.Gumps
             AddHtml(430, 300, 80, 17, String.Format("<BASEFONT COLOR={0}>\t{1}%", color, suc), false, false);
 
             // - Attribute Level
-            int ModValue_plus = 0;
             if (maxInt > 1)
             {
                 // - Set Intesity to Minimum
@@ -211,13 +209,13 @@ namespace Server.Gumps
                 AddHtmlLocalized(245, 350, 100, 17, 1062300, LabelColor, false, false); 
                 // - Mage Weapon Value ( i.e [Mage Weapon -25] )
                 if (m_Mod == 41)
-					AddHtml(254, 374, 50, 17, String.Format("<BASEFONT COLOR=#CCCCFF> -{0}", (30 - m_Value)), false, false);
+					AddHtml(254, 374, 50, 17, String.Format("<BASEFONT COLOR=#CCCCFF> -{0}", 30 - m_Value), false, false);
                 // - Show Property Value as % ( i.e [Hit Fireball 25%] )
                 else if (maxInt <= 8 || m_Mod == 21 || m_Mod == 17) 
-                    AddHtml(254, 374, 50, 17, String.Format("<BASEFONT COLOR=#CCCCFF> {0}", (m_Value + ModValue_plus)), false, false);
+                    AddHtml(254, 374, 50, 17, String.Format("<BASEFONT COLOR=#CCCCFF> {0}", m_Value), false, false);
                 // - Show Property Value as just Number ( i.e [Mana Regen 2] )
                 else
-					AddHtml(254, 374, 50, 17, String.Format("<BASEFONT COLOR=#CCCCFF> {0}%", (m_Value + ModValue_plus)), false, false);
+					AddHtml(254, 374, 50, 17, String.Format("<BASEFONT COLOR=#CCCCFF> {0}%", m_Value), false, false);
 
                 // == Buttons ==
                 //0x1467???
@@ -282,7 +280,6 @@ namespace Server.Gumps
                         if (context.Imbue_ModInt > m_Definition.IncAmount)
                             context.Imbue_ModInt -= m_Definition.IncAmount;
 
-                        from.CloseGump(typeof(ImbuingGumpC));
                         from.SendGump(new ImbuingGumpC(from, m_Item, context.Imbue_Mod, context.Imbue_ModInt));
                         break;
                     }
@@ -295,37 +292,34 @@ namespace Server.Gumps
                         else  if (context.Imbue_ModInt > 5)
                             context.Imbue_ModInt -= 5;
 
-                        from.CloseGump(typeof(ImbuingGumpC));
                         from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
                         break;
                     }
                 case 10053:// = Minimum Mod Value [<<<]
                     {
                         context.Imbue_ModInt = 1;
-                        from.CloseGump(typeof(ImbuingGumpC));
                         from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
                         break;
                     }
                 case 10054: // = Increase Mod Value [>]
                     {
-                        int max = m_Definition.MaxIntensity;
+                        int max = Imbuing.GetMaxIntensity(m_Item, m_Definition);
 
                         if(m_Mod == 12 && context.LastImbued is BaseJewel)
-                            max = m_Definition.MaxIntensity / 2;
+                            max /= 2;
 
                         if (context.Imbue_ModInt + m_Definition.IncAmount <= max)
                             context.Imbue_ModInt += m_Definition.IncAmount;
 
-                        from.CloseGump(typeof(ImbuingGumpC));
                         from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
                         break;
                     }
                 case 10055: // = Increase Mod Value [>>]
                     {
-                        int max = m_Definition.MaxIntensity;
+                        int max = Imbuing.GetMaxIntensity(m_Item, m_Definition);
 
                         if (m_Mod == 12 && context.LastImbued is BaseJewel)
-                            max = m_Definition.MaxIntensity / 2;
+                            max /= 2;
 
                         if (m_Mod == 42 || m_Mod == 24)
                         {
@@ -344,21 +338,19 @@ namespace Server.Gumps
                         else if (context.Imbue_ModInt + 5 <= max)
                             context.Imbue_ModInt += 5;
                         else
-                            context.Imbue_ModInt = m_Definition.MaxIntensity;
+                            context.Imbue_ModInt = Imbuing.GetMaxIntensity(m_Item, m_Definition);
 
-                        from.CloseGump(typeof(ImbuingGumpC));
                         from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
                         break;
                     }
                 case 10056: // = Maximum Mod Value [>>>]
                     {
-                        int max = m_Definition.MaxIntensity;
+                        int max = Imbuing.GetMaxIntensity(m_Item, m_Definition);
 
                         if (m_Mod == 12 && context.LastImbued is BaseJewel)
-                            max = m_Definition.MaxIntensity / 2;
+                            max /= 2;
 
                         context.Imbue_ModInt = max;
-                        from.CloseGump(typeof(ImbuingGumpC));
                         from.SendGump(new ImbuingGumpC(from, context.LastImbued, context.Imbue_Mod, context.Imbue_ModInt));
                         break;
                     }
@@ -374,9 +366,7 @@ namespace Server.Gumps
 
                         if (Imbuing.OnBeforeImbue(from, m_Item, m_Mod, m_Value, m_TotalProps, MaxProps, m_TotalItemWeight, m_MaxWeight))
                         {
-                            from.CloseGump(typeof(ImbuingGumpC));
                             Imbuing.ImbueItem(from, m_Item, m_Mod, m_Value);
-
                             SendGumpDelayed(from);
                         }
 

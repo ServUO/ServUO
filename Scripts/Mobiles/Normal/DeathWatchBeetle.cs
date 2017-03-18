@@ -131,7 +131,7 @@ namespace Server.Mobiles
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
-            Mobile combatant = this.Combatant;
+            Mobile combatant = this.Combatant as Mobile;
 
             if (combatant == null || combatant.Deleted || combatant.Map != this.Map || !this.InRange(combatant, 12) || !this.CanBeHarmful(combatant) || !this.InLOS(combatant))
                 return;

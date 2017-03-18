@@ -76,19 +76,19 @@ namespace Server.Engines.Reports
             this.m_Items = new ReportItemCollection();
         }
 
-        public override void SerializeAttributes(PersistanceWriter op)
+        public override void SerializeAttributes(PersistenceWriter op)
         {
             op.SetString("n", this.m_Name);
             op.SetString("w", this.m_Width);
         }
 
-        public override void DeserializeAttributes(PersistanceReader ip)
+        public override void DeserializeAttributes(PersistenceReader ip)
         {
             this.m_Name = Utility.Intern(ip.GetString("n"));
             this.m_Width = Utility.Intern(ip.GetString("w"));
         }
 
-        public override void SerializeChildren(PersistanceWriter op)
+        public override void SerializeChildren(PersistenceWriter op)
         {
             for (int i = 0; i < this.m_Columns.Count; ++i)
                 this.m_Columns[i].Serialize(op);
@@ -97,7 +97,7 @@ namespace Server.Engines.Reports
                 this.m_Items[i].Serialize(op);
         }
 
-        public override void DeserializeChildren(PersistanceReader ip)
+        public override void DeserializeChildren(PersistenceReader ip)
         {
             while (ip.HasChild)
             {

@@ -1,7 +1,9 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefBlacksmithy), typeof(GargishTalwar))]
     [FlipableAttribute(0x26C1, 0x26CB)]
     public class CrescentBlade : BaseSword
     {

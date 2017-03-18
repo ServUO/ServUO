@@ -1,5 +1,6 @@
 using System;
 using Server.Commands;
+using Server.Items;
 
 namespace Server
 {
@@ -26,7 +27,10 @@ namespace Server
             Decorate.Generate("sa", "Data/Decoration/Stygian Abyss/Ter Mur", Map.TerMur);
 			Decorate.Generate("sa", "Data/Decoration/Stygian Abyss/Trammel", Map.Trammel);
 			Decorate.Generate("sa", "Data/Decoration/Stygian Abyss/Felucca", Map.Felucca);
-			
+
+            NavreysController.GenNavery(e.Mobile);
+            Server.Engines.CannedEvil.PrimevalLichPuzzle.GenLichPuzzle(e.Mobile);
+
             e.Mobile.SendMessage("Stygian Abyss world generation complete.");
         }
     }

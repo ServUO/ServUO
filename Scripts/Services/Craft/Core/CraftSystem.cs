@@ -252,6 +252,18 @@ namespace Server.Engines.Craft
 
         public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
+		    Item item = from.FindItemOnLayer(Layer.Talisman);
+
+			if (item is MasterCraftsmanTalisman)
+			{
+				MasterCraftsmanTalisman mct = (MasterCraftsmanTalisman)item;
+				
+				if( mct.Charges > 0 )
+				{
+					mct.Charges--;
+					return false;
+				}
+			}
             return true;
         }
 
@@ -376,6 +388,40 @@ namespace Server.Engines.Craft
             craftItem.RequiredExpansion = expansion;
         }
 
+        #region SA
+        public void SetRequiresBasketWeaving(int index)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.RequiresBasketWeaving = true;
+        }
+
+        public void SetRequireResTarget(int index)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.RequiresResTarget = true;
+        }
+
+        public void SetRequiresMechanicalLife(int index)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.RequiresMechanicalLife = true;
+        }
+        #endregion
+
+        #region TOL
+        public void SetData(int index, object data)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.Data = data;
+        }
+
+        public void SetDisplayID(int index, int id)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.DisplayID = id;
+        }
+        #endregion
+
         public void AddRes(int index, Type type, TextDefinition name, int amount)
         {
             this.AddRes(index, type, name, amount, "");
@@ -385,6 +431,12 @@ namespace Server.Engines.Craft
         {
             CraftItem craftItem = this.m_CraftItems.GetAt(index);
             craftItem.AddRes(type, name, amount, message);
+        }
+
+        public void AddResCallback(int index, Func<Mobile, ConsumeType, int> func)
+        {
+            CraftItem craftItem = this.m_CraftItems.GetAt(index);
+            craftItem.ConsumeResCallback = func;
         }
 
         public void AddSkill(int index, SkillName skillToMake, double minSkill, double maxSkill)

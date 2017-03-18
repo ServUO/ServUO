@@ -257,6 +257,8 @@ namespace Server.Mobiles
                 to.PlaySound(0x584);
 				
                 m_Table[to] = Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerStateCallback(EndCacophonic_Callback), to);
+
+                BuffInfo.AddBuff(to, new BuffInfo(BuffIcon.HowlOfCacophony, 1153793, 1153820, TimeSpan.FromSeconds(30), to, "60\t5\t5"));
             }
         }
 
@@ -266,7 +268,9 @@ namespace Server.Mobiles
                 m_Table = new Hashtable();
 				
             m_Table[from] = null;
-				
+
+            BuffInfo.RemoveBuff(from, BuffIcon.HowlOfCacophony);
+
             from.Send(SpeedControl.Disable);
         }
 
@@ -299,12 +303,12 @@ namespace Server.Mobiles
                 ooze.MoveToWorld(p, this.Map);
             }
 			
-            if (this.Combatant != null)
+            if (this.Combatant is PlayerMobile)
             {
                 if (corrosive)
-                    this.Combatant.SendLocalizedMessage(1072071); // A corrosive gas seeps out of your enemy's skin!
+                    ((PlayerMobile)Combatant).SendLocalizedMessage(1072071); // A corrosive gas seeps out of your enemy's skin!
                 else
-                    this.Combatant.SendLocalizedMessage(1072072); // A poisonous gas seeps out of your enemy's skin!
+                    ((PlayerMobile)Combatant).SendLocalizedMessage(1072072); // A poisonous gas seeps out of your enemy's skin!
             }
         }
 
@@ -319,6 +323,9 @@ namespace Server.Mobiles
     { 
         private bool m_Corrosive;
         private Hashtable m_Table;
+
+        private int m_Damage;
+
         [Constructable]
         public InfernalOoze()
             : this(false)
@@ -326,11 +333,13 @@ namespace Server.Mobiles
         }
 
         [Constructable]
-        public InfernalOoze(bool corrosive)
+        public InfernalOoze(bool corrosive, int damage = 40)
             : base(0x122A)
         {
             this.Movable = false;
             this.Hue = 0x95;
+
+            m_Damage = damage;
 			
             this.m_Corrosive = corrosive;			
             Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerCallback(Morph));
@@ -403,15 +412,15 @@ namespace Server.Mobiles
         { 
             if (!m.Alive)
                 this.StopTimer(m);
-			
+
             if (this.m_Corrosive)
             {
-                for (int i = 0; i < m.Items.Count; i ++)
+                for (int i = 0; i < m.Items.Count; i++)
                 {
                     IDurability item = m.Items[i] as IDurability;
-	
+
                     if (item != null && Utility.RandomDouble() < 0.25)
-                    { 
+                    {
                         if (item.HitPoints > 10)
                             item.HitPoints -= 10;
                         else
@@ -420,7 +429,18 @@ namespace Server.Mobiles
                 }
             }
             else
-                AOS.Damage(m, 40, 0, 0, 0, 100, 0);
+            {
+                int dmg = m_Damage;
+
+                if (m is PlayerMobile)
+                {
+                    PlayerMobile pm = m as PlayerMobile;
+                    dmg = (int)drNO.ThieveItems.BalmOfProtection.HandleDamage(pm, dmg);
+                    AOS.Damage(m, dmg, 0, 0, 0, 100, 0);
+                }
+                else
+                    AOS.Damage(m, dmg, 0, 0, 0, 100, 0);
+            }
         }
 
         public virtual void Morph()

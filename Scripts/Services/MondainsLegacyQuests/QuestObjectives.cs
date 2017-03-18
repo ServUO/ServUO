@@ -1,6 +1,8 @@
 using System;
 using Server.Mobiles;
 using Server.Regions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Engines.Quests
 { 
@@ -660,6 +662,17 @@ namespace Server.Engines.Quests
                 this.m_Compassion = value;
             }
         }
+
+        public override void OnCompleted()
+        {
+            if (Quest != null && Quest.Owner != null && Quest.Owner.Kills >= 5 && Quest.Owner.DoneQuests.FirstOrDefault(info => info.QuestType == typeof(ResponsibilityQuest)) == null)
+            {
+                QuestHelper.Delay(Quest.Owner, typeof(ResponsibilityQuest), Quest.RestartDelay);
+            }
+
+            base.OnCompleted();
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -798,6 +811,66 @@ namespace Server.Engines.Quests
             base.Deserialize(reader);
 			
             int version = reader.ReadEncodedInt();
+        }
+    }
+
+    public class QuestionAndAnswerObjective : BaseObjective
+    {
+        private List<int> m_Done = new List<int>();
+        private QuestionAndAnswerEntry[] m_EntryTable;
+
+        public virtual QuestionAndAnswerEntry[] EntryTable { get { return m_EntryTable; } }
+
+        public QuestionAndAnswerObjective(int count, QuestionAndAnswerEntry[] table)
+            : base(count)
+        {
+            m_EntryTable = table;
+        }
+
+        public QuestionAndAnswerEntry GetRandomQandA()
+        {
+            if (m_EntryTable == null || m_EntryTable.Length == 0 || m_EntryTable.Length - m_Done.Count <= 0)
+                return null;
+
+            int ran;
+
+            do
+            {
+                ran = Utility.Random(m_EntryTable.Length);
+            }
+            while (m_Done.Contains(ran));
+
+            m_Done.Add(ran);
+            return m_EntryTable[ran];
+        }
+
+        public override bool Update(object obj)
+        {
+            if (!Completed)
+                CurProgress++;
+
+            return true;
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+
+            writer.Write(m_Done.Count);
+            for (int i = 0; i < m_Done.Count; i++)
+                writer.Write(m_Done[i]);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+            int c = reader.ReadInt();
+            for (int i = 0; i < c; i++)
+                m_Done.Add(reader.ReadInt());
         }
     }
 }

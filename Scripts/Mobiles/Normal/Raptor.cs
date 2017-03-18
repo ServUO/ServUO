@@ -7,10 +7,6 @@ namespace Server.Mobiles
 	[CorpseName("a raptor corpse")]
 	public class Raptor : BaseCreature
 	{
-		public static Type[] VArtifacts =
-        {
-            typeof (RaptorClaw)
-        };
 		private const int MaxFriends = 2;
 
 		private bool m_IsFriend;
@@ -185,11 +181,6 @@ namespace Server.Mobiles
 				c.DropItem(new AncientPotteryFragments());
 			}
 
-			if (Utility.RandomDouble() < 0.05)
-			{
-				c.DropItem(new RaptorTeeth());
-			}
-
 			if (c != null && !c.Deleted && c is Corpse)
 			{
 				var corpse = (Corpse)c;
@@ -202,7 +193,7 @@ namespace Server.Mobiles
 
 		public static void GiveVArtifactTo(Mobile m)
 		{
-			var item = (Item)Activator.CreateInstance(VArtifacts[Utility.Random(VArtifacts.Length)]);
+            var item = new RaptorClaw();
 			m.PlaySound(0x5B4);
 
 			if (m.AddToBackpack(item))

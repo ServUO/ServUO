@@ -34,26 +34,25 @@ namespace Server.Mobiles
                 return false;
             }
         }
-        public static void GivePowerScrollTo(Mobile m)
+
+        public virtual bool CanGivePowerscrolls { get { return true; } }
+
+        public static void GivePowerScrollTo(Mobile m, Item item, BaseChampion champ)
         {
             if (m == null)	//sanity
                 return;
 
-			PowerScroll ps = CreateRandomPowerScroll();
-
-            m.SendLocalizedMessage(1049524); // You have received a scroll of power!
-
             if (!Core.SE || m.Alive)
-                m.AddToBackpack(ps);
+                m.AddToBackpack(item);
             else
             {
                 if (m.Corpse != null && !m.Corpse.Deleted)
-                    m.Corpse.DropItem(ps);
+                    m.Corpse.DropItem(item);
                 else
-                    m.AddToBackpack(ps);
+                    m.AddToBackpack(item);
             }
 
-            if (m is PlayerMobile)
+            if (item is PowerScroll && m is PlayerMobile)
             {
                 PlayerMobile pm = (PlayerMobile)m;
 
@@ -61,7 +60,7 @@ namespace Server.Mobiles
                 {
                     Mobile prot = pm.JusticeProtectors[j];
 
-                    if (prot.Map != m.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot))
+                    if (prot.Map != m.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot) || !prot.InRange(champ, 100))
                         continue;
 
                     int chance = 0;
@@ -113,7 +112,7 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
 
-        public Item GetArtifact()
+        public virtual Item GetArtifact()
         {
             double random = Utility.RandomDouble();
             if (0.05 >= random)
@@ -145,19 +144,19 @@ namespace Server.Mobiles
             return artifact;
         }
 
-        public void GivePowerScrolls()
+        public virtual void GivePowerScrolls()
         {
             if (this.Map != Map.Felucca)
                 return;
 
             List<Mobile> toGive = new List<Mobile>();
-            List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+            List<DamageStore> rights = GetLootingRights();
 
             for (int i = rights.Count - 1; i >= 0; --i)
             {
                 DamageStore ds = rights[i];
 
-                if (ds.m_HasRight)
+                if (ds.m_HasRight && InRange(ds.m_Mobile, 100) && ds.m_Mobile.Map == this.Map)
                     toGive.Add(ds.m_Mobile);
             }
 
@@ -185,7 +184,7 @@ namespace Server.Mobiles
                 }
             }
 
-            // Randomize
+            // Randomize - PowerScrolls
             for (int i = 0; i < toGive.Count; ++i)
             {
                 int rand = Utility.Random(toGive.Count);
@@ -198,13 +197,35 @@ namespace Server.Mobiles
             {
                 Mobile m = toGive[i % toGive.Count];
 
-                GivePowerScrollTo(m);
+                PowerScroll ps = CreateRandomPowerScroll();
+                m.SendLocalizedMessage(1049524); // You have received a scroll of power!
+
+                GivePowerScrollTo(m, ps, this);
+            }
+
+            // Randomize - Primers
+            for (int i = 0; i < toGive.Count; ++i)
+            {
+                int rand = Utility.Random(toGive.Count);
+                Mobile hold = toGive[i];
+                toGive[i] = toGive[rand];
+                toGive[rand] = hold;
+            }
+
+            for (int i = 0; i < ChampionSystem.PowerScrollAmount; ++i)
+            {
+                Mobile m = toGive[i % toGive.Count];
+
+                SkillMasteryPrimer p = CreateRandomPrimer();
+                m.SendLocalizedMessage(1156209); // You have received a mastery primer!
+
+                GivePowerScrollTo(m, p, this);
             }
         }
 
         public override bool OnBeforeDeath()
         {
-            if (!this.NoKillAwards)
+            if (CanGivePowerscrolls && !NoKillAwards)
             {
                 this.GivePowerScrolls();
 
@@ -222,7 +243,7 @@ namespace Server.Mobiles
             if (this.Map == Map.Felucca)
             {
                 //TODO: Confirm SE change or AoS one too?
-                List<DamageStore> rights = BaseCreature.GetLootingRights(this.DamageEntries, this.HitsMax);
+                List<DamageStore> rights = GetLootingRights();
                 List<Mobile> toGive = new List<Mobile>();
 
                 for (int i = rights.Count - 1; i >= 0; --i)
@@ -233,10 +254,16 @@ namespace Server.Mobiles
                         toGive.Add(ds.m_Mobile);
                 }
 
-                if (toGive.Count > 0)
-                    toGive[Utility.Random(toGive.Count)].AddToBackpack(new ChampionSkull(this.SkullType));
-                else
-                    c.DropItem(new ChampionSkull(this.SkullType));
+                if (SkullType != ChampionSkullType.None)
+                {
+                    if (toGive.Count > 0)
+                        toGive[Utility.Random(toGive.Count)].AddToBackpack(new ChampionSkull(this.SkullType));
+                    else
+                        c.DropItem(new ChampionSkull(this.SkullType));
+                }
+
+                if(Core.SA)
+                    RefinementComponent.Roll(c, 3, 0.10);
             }
 
             base.OnDeath(c);
@@ -257,5 +284,9 @@ namespace Server.Mobiles
             return PowerScroll.CreateRandomNoCraft(level, level);
         }
 
+        private static SkillMasteryPrimer CreateRandomPrimer()
+        {
+            return SkillMasteryPrimer.GetRandom();
+        }
     }
 }

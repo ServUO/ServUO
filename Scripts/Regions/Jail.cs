@@ -18,9 +18,9 @@ namespace Server.Regions
             return (from.IsStaff());
         }
 
-        public override bool AllowHarmful(Mobile from, Mobile target)
+        public override bool AllowHarmful(Mobile from, IDamageable target)
         {
-            if (from.IsPlayer())
+            if (from.Player)
                 from.SendMessage("You may not do that in jail.");
 
             return (from.IsStaff());
@@ -52,7 +52,7 @@ namespace Server.Regions
             return (from.IsStaff());
         }
 
-        public override bool OnCombatantChange(Mobile from, Mobile Old, Mobile New)
+        public override bool OnCombatantChange(Mobile from, IDamageable Old, IDamageable New)
         {
             return (from.IsStaff());
         }

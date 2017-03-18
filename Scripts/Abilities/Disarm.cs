@@ -1,4 +1,6 @@
 using System;
+using Server.Mobiles;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
@@ -20,25 +22,7 @@ namespace Server.Items
                 return 20;
             }
         }
-        // No longer active in pub21:
 
-        /*public override bool CheckSkills( Mobile from )
-        {
-        if ( !base.CheckSkills( from ) )
-        return false;
-
-        if ( !(from.Weapon is Fists) )
-        return true;
-
-        Skill skill = from.Skills[SkillName.ArmsLore];
-
-        if ( skill != null && skill.Base >= 80.0 )
-        return true;
-
-        from.SendLocalizedMessage( 1061812 ); // You lack the required skill in armslore to perform that attack!
-
-        return false;
-        }*/
         public override bool RequiresTactics(Mobile from)
         {
             BaseWeapon weapon = from.Weapon as BaseWeapon;
@@ -55,6 +39,13 @@ namespace Server.Items
                 return;
 
             ClearCurrentAbility(attacker);
+
+            if (IsImmune(defender))
+            {
+                attacker.SendLocalizedMessage(1111827); // Your opponent is gripping their weapon too tightly to be disarmed.
+                defender.SendLocalizedMessage(1111828); // You will not be caught off guard by another disarm attack for some time.
+                return;
+            }
 
             Item toDisarm = defender.FindItemOnLayer(Layer.OneHanded);
 
@@ -80,9 +71,44 @@ namespace Server.Items
                 defender.FixedParticles(0x37BE, 232, 25, 9948, EffectLayer.LeftHand);
 
                 pack.DropItem(toDisarm);
+                
+                BuffInfo.AddBuff(defender, new BuffInfo( BuffIcon.NoRearm, 1075637, BlockEquipDuration, defender));
 
                 BaseWeapon.BlockEquip(defender, BlockEquipDuration);
+
+                if (defender is BaseCreature && ((BaseCreature)defender).AutoRearms)
+                {
+                    Timer.DelayCall(BlockEquipDuration + TimeSpan.FromSeconds(Utility.RandomMinMax(3, 10)), () =>
+                    {
+                        if (toDisarm != null && !toDisarm.Deleted && toDisarm.IsChildOf(defender.Backpack))
+                            defender.EquipItem(toDisarm);
+                    });
+                }
+
+                if(Core.SA)
+                    AddImmunity(defender, Core.TOL && attacker.Weapon is Fists ? TimeSpan.FromSeconds(10) : TimeSpan.FromSeconds(15));
             }
+        }
+
+        public static List<Mobile> _Immunity;
+
+        public static bool IsImmune(Mobile m)
+        {
+            return _Immunity != null && _Immunity.Contains(m);
+        }
+
+        public static void AddImmunity(Mobile m, TimeSpan duration)
+        {
+            if (_Immunity == null)
+                _Immunity = new List<Mobile>();
+
+            _Immunity.Add(m);
+
+            Timer.DelayCall<Mobile>(duration, mob =>
+                {
+                    if (_Immunity != null && _Immunity.Contains(mob))
+                        _Immunity.Remove(mob);
+                }, m);
         }
     }
 }

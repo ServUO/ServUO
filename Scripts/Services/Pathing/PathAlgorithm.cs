@@ -16,9 +16,9 @@ namespace Server.PathAlgorithms
             Direction.South,
             Direction.Down
         };
-        public abstract bool CheckCondition(Mobile m, Map map, Point3D start, Point3D goal);
+        public abstract bool CheckCondition(IPoint3D p, Map map, Point3D start, Point3D goal);
 
-        public abstract Direction[] Find(Mobile m, Map map, Point3D start, Point3D goal);
+        public abstract Direction[] Find(IPoint3D p, Map map, Point3D start, Point3D goal);
 
         public Direction GetDirection(int xSource, int ySource, int xDest, int yDest)
         {

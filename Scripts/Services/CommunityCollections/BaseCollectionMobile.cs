@@ -330,7 +330,7 @@ namespace Server.Mobiles
         #region IComunityCollection
         public virtual void Donate(PlayerMobile player, CollectionItem item, int amount)
         {
-            int points = (int)(amount * item.Points);
+            int points = (int)Math.Round(amount * item.Points);
 		
             player.AddCollectionPoints(this.CollectionID, points);
 			
@@ -354,7 +354,10 @@ namespace Server.Mobiles
 				
                 player.AddCollectionPoints(this.CollectionID, (int)reward.Points * -1);
                 player.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
-                player.PlaySound(0x5A7);	
+                player.PlaySound(0x5A7);
+
+                if (reward.QuestItem)
+                    CollectionsObtainObjective.CheckReward(player, item);
             }
             else if (item != null)
             {

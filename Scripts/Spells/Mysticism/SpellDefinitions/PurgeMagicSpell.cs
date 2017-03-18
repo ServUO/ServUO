@@ -23,7 +23,9 @@ namespace Server.Spells.Mystic
         Transformation,
         StrBonus,
         DexBonus,
-        IntBonus
+        IntBonus,
+        BarrabHemolymph,
+        UraliTrance
     }
 
 	public class PurgeMagicSpell : MysticSpell
@@ -118,6 +120,14 @@ namespace Server.Spells.Mystic
                                 BuffInfo.RemoveBuff(target, BuffIcon.Bless);
                                 BuffInfo.RemoveBuff(target, BuffIcon.Cunning);
                                 break;
+                            case BuffType.BarrabHemolymph:
+                                arg = "Barrab hemolymph";
+                                EodonianPotion.RemoveEffects(target, PotionEffect.Barrab);
+                                break;
+                            case BuffType.UraliTrance:
+                                arg = "Urali Trance";
+                                EodonianPotion.RemoveEffects(target, PotionEffect.Urali);
+                                break;
                         }
 
                         target.SendLocalizedMessage(1080117, arg); //Your ~1_ABILITY_NAME~ has been purged.
@@ -177,6 +187,12 @@ namespace Server.Spells.Mystic
             if (mod != null)
                 buffs.Add(BuffType.IntBonus);
 
+            if (EodonianPotion.IsUnderEffects(target, PotionEffect.Barrab))
+                buffs.Add(BuffType.BarrabHemolymph);
+
+            if (EodonianPotion.IsUnderEffects(target, PotionEffect.Urali))
+                buffs.Add(BuffType.UraliTrance);
+
             if (buffs.Count == 0)
                 return BuffType.None;
 
@@ -204,9 +220,9 @@ namespace Server.Spells.Mystic
             {
                 m_CurseTable[from].Stop();
 
-                if (DateTime.Now > m_CurseTable[from].StartTime)
+                if (DateTime.UtcNow > m_CurseTable[from].StartTime)
                 {
-                    TimeSpan inEffect = DateTime.Now - m_CurseTable[from].StartTime;
+                    TimeSpan inEffect = DateTime.UtcNow - m_CurseTable[from].StartTime;
 
                     int damage = 5 * (int)inEffect.TotalSeconds;
 
@@ -263,7 +279,7 @@ namespace Server.Spells.Mystic
             {
                 m_Mobile = mob;
                 m_Caster = caster;
-                m_StartTime = DateTime.Now;
+                m_StartTime = DateTime.UtcNow;
                 Start();
             }
 

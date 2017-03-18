@@ -339,30 +339,13 @@ namespace Server.Mobiles
                 ooze.MoveToWorld(p, this.Map);
             }
 
-            if (this.Combatant != null)
+            if (this.Combatant is PlayerMobile)
             {
                 if (corrosive)
-                    this.Combatant.SendLocalizedMessage(1072071); // A corrosive gas seeps out of your enemy's skin!
+                    ((PlayerMobile)Combatant).SendLocalizedMessage(1072071); // A corrosive gas seeps out of your enemy's skin!
                 else
-                    this.Combatant.SendLocalizedMessage(1072072); // A poisonous gas seeps out of your enemy's skin!
+                    ((PlayerMobile)Combatant).SendLocalizedMessage(1072072); // A poisonous gas seeps out of your enemy's skin!
             }
-        }
-
-        public virtual Point3D GetSpawnPosition(int range)
-        {
-            return this.GetSpawnPosition(this.Location, this.Map, range);
-        }
-
-        public virtual Point3D GetSpawnPosition(Point3D from, Map map, int range)
-        {
-            if (map == null)
-                return from;
-
-            Point3D loc = new Point3D((this.RandomPoint(this.X)), (this.RandomPoint(this.Y)), this.Z);
-
-            loc.Z = this.Map.GetAverageZ(loc.X, loc.Y);
-
-            return loc;
         }
 
         private void EndCacophonic_Callback(object state)

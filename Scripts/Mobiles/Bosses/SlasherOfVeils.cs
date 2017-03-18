@@ -57,6 +57,9 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 110.0, 123.2);
             this.SetSkill(SkillName.Tactics, 112.2, 122.6);
             this.SetSkill(SkillName.Wrestling, 118.9, 128.6);
+
+            Fame = 35000;
+            Karma = -35000;
         }
 
         public SlasherOfVeils(Serial serial)
@@ -187,12 +190,14 @@ namespace Server.Mobiles
         {
             base.OnMovement(m, oldLocation);
 
-            if (this.m_NextTerror < DateTime.UtcNow && m != null && this.InRange(m.Location, 10) && m.IsPlayer())
+            if (this.m_NextTerror < DateTime.UtcNow && m != null && this.InRange(m.Location, 10) && m.IsPlayer() && m.Alive)
             {
                 m.Frozen = true;
                 m.SendLocalizedMessage(1080342, this.Name, 33); // Terror slices into your very being, destroying any chance of resisting ~1_name~ you might have had
 
                 Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerStateCallback(Terrorize), m);
+
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.TrueFear, 1153791, 1153827, TimeSpan.FromSeconds(10), m));
             }
         }
 

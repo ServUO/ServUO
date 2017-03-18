@@ -10,6 +10,7 @@ namespace Server.Items
             : base(0x1EA8)
         {
             this.Weight = 1.0;
+            this.QuestItem = true;
         }
 
         public CompletedClockworkAssembly(Serial serial)
@@ -24,11 +25,6 @@ namespace Server.Items
                 return 1112879;
             }
         }// completed clockwork assembly
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-            list.Add(1072351); // Quest Item
-        }
 
         public override void Serialize(GenericWriter writer)
         {

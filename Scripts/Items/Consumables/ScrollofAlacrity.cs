@@ -43,7 +43,7 @@ namespace Server.Items
             : base(skill, 0.0)
         {
             this.ItemID = 0x14EF;
-            this.Hue = 0x4AB;
+            this.Hue = 1195;
         }
 
         public ScrollofAlacrity(Serial serial)

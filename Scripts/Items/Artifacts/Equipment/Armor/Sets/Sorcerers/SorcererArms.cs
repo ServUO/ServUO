@@ -6,9 +6,9 @@ namespace Server.Items
 	public class SorcererArms : LeatherArms
 	{
 		public override bool IsArtifact { get { return true; } }
-		public override int LabelNumber{ get{ return 1080467; } } // Thank You Paradyme
-		
-		public override SetItem SetID{ get{ return SetItem.Sorcerer; } }
+		public override int LabelNumber{ get{ return 1080467; } } // Sorcerer's Sleeves
+
+        public override SetItem SetID{ get{ return SetItem.Sorcerer; } }
 		public override int Pieces{ get{ return 6; } }
 	
 		public override int BasePhysicalResistance{ get{ return 7; } }
@@ -22,22 +22,25 @@ namespace Server.Items
 		[Constructable]
 		public SorcererArms() : base()
 		{
-			SetHue = 0x1F4;	
-			Weight = 2;	
-			
-			Attributes.BonusInt = 1;
-			Attributes.LowerRegCost = 10;
-			
-			SetAttributes.BonusInt = 6;
-			SetAttributes.RegenMana = 2;
-			SetAttributes.DefendChance = 10;
-			SetAttributes.LowerManaCost = 5;
-			SetAttributes.LowerRegCost = 40;			
-			SetPhysicalBonus = 28;
-			SetFireBonus = 28;
-			SetColdBonus = 28;
-			SetPoisonBonus = 28;
-			SetEnergyBonus = 28;
+            this.Hue = 1165;			
+			this.Weight = 2;
+
+            this.Attributes.BonusInt = 1;
+            this.Attributes.LowerRegCost = 10;
+
+            this.SetAttributes.BonusInt = 6;
+            this.SetAttributes.RegenMana = 2;
+            this.SetAttributes.DefendChance = 10;
+            this.SetAttributes.LowerManaCost = 5;
+            this.SetAttributes.LowerRegCost = 40;
+            
+            this.SetHue = 1165;
+
+            this.SetPhysicalBonus = 28;
+            this.SetFireBonus = 28;
+            this.SetColdBonus = 28;
+            this.SetPoisonBonus = 28;
+            this.SetEnergyBonus = 28;
 		}
 
 		public SorcererArms( Serial serial ) : base( serial )

@@ -137,11 +137,26 @@ namespace Server.Items
                     Server.Spells.SpellHelper.GetSurfaceTop(ref p);
 
                     BaseHouse house = null;
+                    BaseGalleon boat = null;
 
-                    AddonFitResult res = addon.CouldFit(p, map, from, ref house);
+                    AddonFitResult res = addon.CouldFit(p, map, from, ref house, ref boat);
 
                     if (res == AddonFitResult.Valid)
+                    {
+                        addon.Resource = this.m_Deed.Resource;
+
+                        if (addon.RetainDeedHue)
+                            addon.Hue = this.m_Deed.Hue;
+
                         addon.MoveToWorld(new Point3D(p), map);
+
+                        if (house != null)
+                            house.Addons.Add(addon);
+                        else if (boat != null)
+                            boat.AddAddon(addon);
+
+                        this.m_Deed.DeleteDeed();
+                    }
                     else if (res == AddonFitResult.Blocked)
                         from.SendLocalizedMessage(500269); // You cannot build that there.
                     else if (res == AddonFitResult.NotInHouse)
@@ -151,21 +166,7 @@ namespace Server.Items
                     else if (res == AddonFitResult.NoWall)
                         from.SendLocalizedMessage(500268); // This object needs to be mounted on something.
 					
-                    if (res == AddonFitResult.Valid)
-                    {
-                        if (addon != null)
-                        {
-                            addon.Resource = this.m_Deed.Resource;
-
-                            if (addon.RetainDeedHue)
-                                addon.Hue = this.m_Deed.Hue;
-                        }
-
-                        this.m_Deed.DeleteDeed();
-
-                        house.Addons.Add(addon);
-                    }
-                    else
+                    if (res != AddonFitResult.Valid)
                     {
                         addon.Delete();
                     }
