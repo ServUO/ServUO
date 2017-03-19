@@ -704,6 +704,12 @@
 			<go x="5825" y="599" z="0" />
 			<music name="Dungeon9" />
 			<entrance x="2042" y="226" />
+      <region type="WrongLevel3">
+        <rect x="5687" y="623" width="33" height="44" />
+        <region type="WrongJail">
+          <rect x="5700" y="636" width="7" height="7" />
+        </region>
+      </region>
 		</region>
 		<region priority="50" name="Cave 1">
 			<rect x="2373" y="900" width="22" height="28" />
@@ -1754,6 +1760,12 @@
 			<go x="5825" y="599" z="0" />
 			<entrance x="2042" y="226" />
 			<music name="Dungeon9" />
+      <region type="WrongLevel3">
+        <rect x="5687" y="623" width="33" height="44" />
+        <region type="WrongJail">
+          <rect x="5700" y="636" width="7" height="7" />
+        </region>
+      </region>
 		</region>
 		<region priority="50" name="Cave 1">
 			<rect x="2373" y="900" width="22" height="28" />
