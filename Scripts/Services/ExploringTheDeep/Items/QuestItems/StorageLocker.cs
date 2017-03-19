@@ -21,9 +21,15 @@ namespace Server.Items
 
         private bool m_Active;
         private Parts m_Type;
-        public List<Item> m_Barrels;
+        private List<Item> m_Barrels;
         private Timer m_RestartTimer;
         private DateTime m_RestartTime;
+
+        public List<Item> Barrels
+        {
+            get { return m_Barrels; }
+            set { m_Barrels = value; }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active

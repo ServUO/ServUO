@@ -168,7 +168,7 @@ namespace Server.Items
         {
             Item barrel = new MetalBarrel();
 
-            m_StorageLocker.m_Barrels.Add(barrel);
+            m_StorageLocker.Barrels.Add(barrel);
             barrel.MoveToWorld(new Point3D(this.Location), this.Map);
 
             return true;
