@@ -1235,7 +1235,6 @@ namespace Server
         HitManaDrain = 0x20000000,
         SplinteringWeapon = 0x40000000,
         ReactiveParalyze =  0x80000000,
-        MysticWeapon =      0x100000000,
     }
 
     public sealed class AosWeaponAttributes : BaseAttributes
@@ -1774,19 +1773,6 @@ namespace Server
             }
         }
         #endregion
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int MysticWeapon
-        {
-            get
-            {
-                return this[AosWeaponAttribute.MysticWeapon];
-            }
-            set
-            {
-                this[AosWeaponAttribute.MysticWeapon] = value;
-            }
-        }
     }
 
     [Flags]
@@ -1796,6 +1782,7 @@ namespace Server
         HitSwarm = 0x00000002,
         HitSparks = 0x00000004,
         Bane = 0x00000008,
+        MysticWeapon = 0x00000010
     }
 
     public sealed class ExtendedWeaponAttributes : BaseAttributes
@@ -1909,6 +1896,19 @@ namespace Server
             set
             {
                 this[ExtendedWeaponAttribute.Bane] = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int MysticWeapon
+        {
+            get
+            {
+                return this[ExtendedWeaponAttribute.MysticWeapon];
+            }
+            set
+            {
+                this[ExtendedWeaponAttribute.MysticWeapon] = value;
             }
         }
     }

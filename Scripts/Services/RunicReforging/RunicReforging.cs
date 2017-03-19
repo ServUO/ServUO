@@ -2540,7 +2540,7 @@ namespace Server.Items
 			AosElementAttribute.Cold,
 			AosElementAttribute.Poison,
 			AosElementAttribute.Energy,
-            //AosArmorAttribute.MageArmor
+            AosArmorAttribute.MageArmor
 		};
 
         private static object[] m_HatStandard = new object[]

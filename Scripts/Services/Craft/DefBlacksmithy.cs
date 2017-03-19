@@ -970,6 +970,8 @@ namespace Server.Engines.Craft
 			AddRes(index, typeof(GlassSword), 1095371, 5, 1044253);
 			SetNeededExpansion(index, Expansion.SA);
 
+            AddCraft(typeof(MetalKeg), 1011173, 1150675, 85.0, 100.0, typeof(IronIngot), 1044036, 25, 1044253);
+
 			index = AddCraft(typeof(PowderedIron), 1011173, 1113353, 110.0, 135.0, typeof(WhitePearl), 1026253, 1, 1044253);
 			AddRes(index, typeof(IronIngot), 1044036, 20, 1044037);
 			SetNeededExpansion(index, Expansion.SA);

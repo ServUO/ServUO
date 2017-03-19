@@ -21,7 +21,7 @@ namespace Server.Items
 
         private bool m_Active;
         private Parts m_Type;
-        private List<Item> m_Barrels;
+        public List<Item> m_Barrels;
         private Timer m_RestartTimer;
         private DateTime m_RestartTime;
 
@@ -134,7 +134,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    barrel = new WoodenToMetalBarrel();
+                    barrel = new WoodenToMetalBarrel(this);
                     this.m_Barrels.Add(barrel);
                 }
 

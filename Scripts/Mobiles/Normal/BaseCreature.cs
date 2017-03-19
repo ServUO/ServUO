@@ -328,7 +328,7 @@ namespace Server.Mobiles
         #region Bonding
         public const bool BondingEnabled = true;
 
-        public virtual bool IsBondable { get { return (BondingEnabled && !Summoned); } }
+        public virtual bool IsBondable { get { return (BondingEnabled && !Summoned && !m_Allured); } }
         public virtual TimeSpan BondingDelay { get { return TimeSpan.FromDays(7.0); } }
         public virtual TimeSpan BondingAbandonDelay { get { return TimeSpan.FromDays(1.0); } }
 

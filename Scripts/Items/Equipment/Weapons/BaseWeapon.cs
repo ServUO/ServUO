@@ -1083,9 +1083,10 @@ namespace Server.Items
 				from.AddSkillMod(m_MageMod);
 			}
 
-            if (Core.TOL && m_AosWeaponAttributes.MysticWeapon != 0 && m_AosWeaponAttributes.MysticWeapon != 30)
+            if (Core.TOL)
             {
-                AddMysticMod(from);
+                if ((m_ExtendedWeaponAttributes.MysticWeapon != 0 && m_ExtendedWeaponAttributes.MysticWeapon != 30) || Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon) > 0)
+                    AddMysticMod(from);
             }
 
 			XmlAttach.CheckOnEquip(this, from);
@@ -1173,7 +1174,7 @@ namespace Server.Items
 
                 //Skill Masteries
                 SkillMasterySpell.OnWeaponRemoved(m, this);
-                RemoveMysticMod();
+                //RemoveMysticMod();
 
 				#region Mondain's Legacy Sets
 				if (IsSetItem && m_SetEquipped)
@@ -1189,7 +1190,12 @@ namespace Server.Items
             if (m_MysticMod != null)
                 m_MysticMod.Remove();
 
-            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_AosWeaponAttributes.MysticWeapon);
+            int value = m_ExtendedWeaponAttributes.MysticWeapon;
+
+            if (Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon) > value)
+                value = Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon);
+
+            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + value);
             from.AddSkillMod(m_MysticMod);
         }
 
@@ -4454,12 +4460,6 @@ namespace Server.Items
 							((Mobile)Parent).AddSkillMod(m_MageMod);
 						}
 
-                        if (Core.TOL && m_AosWeaponAttributes.MysticWeapon != 0 && m_AosWeaponAttributes.MysticWeapon != 30 && Parent is Mobile)
-                        {
-                            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_AosWeaponAttributes.MysticWeapon);
-                            ((Mobile)Parent).AddSkillMod(m_MysticMod);
-                        }
-
 						if (GetSaveFlag(flags, SaveFlag.PlayerConstructed))
 						{
 							m_PlayerConstructed = true;
@@ -4525,6 +4525,12 @@ namespace Server.Items
                         else
                         {
                             m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(this);
+                        }
+
+                        if (Core.TOL && m_ExtendedWeaponAttributes.MysticWeapon != 0 && m_ExtendedWeaponAttributes.MysticWeapon != 30 && Parent is Mobile)
+                        {
+                            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_ExtendedWeaponAttributes.MysticWeapon);
+                            ((Mobile)Parent).AddSkillMod(m_MysticMod);
                         }
 
                         break;
@@ -5493,11 +5499,11 @@ namespace Server.Items
 				list.Add(1060438, (30 - prop).ToString()); // mage weapon -~1_val~ skill
 			}
 
-            if ((prop = m_AosWeaponAttributes.MysticWeapon) != 0)
+            if ((prop = m_ExtendedWeaponAttributes.MysticWeapon) != 0)
             {
                 list.Add(1155881, (30 - prop).ToString());   // mystic weapon -~1_val~ skill
             }
-            else if ((prop = Parent is Mobile ? Enhancement.GetValue((Mobile)Parent, AosWeaponAttribute.MysticWeapon) : 0) != 0)
+            else if ((prop = Parent is Mobile ? Enhancement.GetValue((Mobile)Parent, ExtendedWeaponAttribute.MysticWeapon) : 0) != 0)
             {
                 list.Add(1155881, (30 - prop).ToString());   // mystic weapon -~1_val~ skill
             }
