@@ -2313,10 +2313,18 @@ namespace Server.Mobiles
 				return MoveResult.BadState;
 			}
 
+			int delay = (int)(TransformMoveDelay(m_Mobile.CurrentSpeed) * 1000);
+
+			var mounted = m_Mobile.Mounted || m_Mobile.Flying;
+			var running = (mounted && delay <= Mobile.RunMount) || (!mounted && delay <= Mobile.RunFoot);
+
+			if (running)
+			{
+				d |= Direction.Running;
+			}
+            
 			// This makes them always move one step, never any direction changes
 			m_Mobile.Direction = d;
-
-			int delay = (int)(TransformMoveDelay(m_Mobile.CurrentSpeed) * 1000);
             
 			m_NextMove += delay;
 
