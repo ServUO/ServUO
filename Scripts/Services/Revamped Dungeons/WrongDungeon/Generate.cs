@@ -1,6 +1,8 @@
 using Server;
 using Server.Commands;
 using Server.Items;
+using Server.Mobiles;
+using System.Linq;
 
 namespace Server.Engines
 {
@@ -8,10 +10,45 @@ namespace Server.Engines
     {
         public static void Initialize()
         {
-            CommandSystem.Register("GenWrongRewamp", AccessLevel.Administrator, Generate);
+            CommandSystem.Register("GenWrongRewamp", AccessLevel.Administrator, Generate_NewWrong);
+            CommandSystem.Register("DeleteOldWrong", AccessLevel.Administrator, Delete_OldWrong);
         }
 
-        public static void Generate(CommandEventArgs e)
+        public static void Delete_OldWrong(CommandEventArgs e)
+        {
+            Mobile m = e.Mobile as Mobile;
+            int count = 0;
+
+            IPooledEnumerable eable = Map.Felucca.GetItemsInBounds(new Rectangle2D(5633, 511, 253, 510));
+
+            foreach (Item item in eable)
+            {
+                if (item is XmlSpawner || item is Teleporter || item.ItemID == 0x375A || item is BarredMetalDoor || item is SecretDungeonDoor)
+                {
+                    count++;
+                    item.Delete();
+                }
+            }
+
+            eable.Free();
+
+            eable = Map.Trammel.GetItemsInBounds(new Rectangle2D(5633, 511, 253, 510));
+
+            foreach (Item item in eable)
+            {
+                if (item is XmlSpawner || item is Teleporter || item.ItemID == 0x375A || item is BarredMetalDoor || item is SecretDungeonDoor)
+                {
+                    count++;
+                    item.Delete();
+                }
+            }
+
+            eable.Free();
+
+            m.SendMessage("{0} items deleted.", count);
+        }
+
+        public static void Generate_NewWrong(CommandEventArgs e)
         {
             CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns/WrongRevamped.xml");
 
