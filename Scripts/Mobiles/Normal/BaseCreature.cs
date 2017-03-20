@@ -1087,67 +1087,89 @@ namespace Server.Mobiles
         }
         #endregion
 
-        public virtual bool IsEnemy(Mobile m)
-        {
-            XmlIsEnemy a = (XmlIsEnemy)XmlAttach.FindAttachment(this, typeof(XmlIsEnemy));
+		public virtual bool IsEnemy(Mobile m)
+		{
+			XmlIsEnemy a = (XmlIsEnemy)XmlAttach.FindAttachment(this, typeof(XmlIsEnemy));
 
-            if (a != null)
-            {
-                return a.IsEnemy(m);
-            }
+			if (a != null)
+			{
+				return a.IsEnemy(m);
+			}
 
-            OppositionGroup g = OppositionGroup;
+			OppositionGroup g = OppositionGroup;
 
-            if (g != null && g.IsEnemy(this, m))
-            {
-                return true;
-            }
+			if (g != null && g.IsEnemy(this, m))
+			{
+				return true;
+			}
 
-            if (m is BaseGuard)
-            {
-                return false;
-            }
+			if (m is BaseGuard)
+			{
+				return false;
+			}
 
-            if (GetFactionAllegiance(m) == Allegiance.Ally)
-            {
-                return false;
-            }
+			// Faction Allied Players/Pets are not my enemies
+			if (GetFactionAllegiance(m) == Allegiance.Ally)
+			{
+				return false;
+			}
 
-            Ethic ourEthic = EthicAllegiance;
-            Player pl = Ethics.Player.Find(m, true);
+			Ethic ourEthic = EthicAllegiance;
+			Player pl = Ethics.Player.Find(m, true);
 
-            if (pl != null && pl.IsShielded && (ourEthic == null || ourEthic == pl.Ethic))
-            {
-                return false;
-            }
+			// Ethic Allied Players/Pets are not my enemies
+			if (pl != null && pl.IsShielded && (ourEthic == null || ourEthic == pl.Ethic))
+			{
+				return false;
+			}
 
-            if (m is PlayerMobile && ((PlayerMobile)m).HonorActive)
-            {
-                return false;
-            }
+			if (m is PlayerMobile && ((PlayerMobile)m).HonorActive)
+			{
+				return false;
+			}
 
-            if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
-            {
-                return false;
-            }
+			if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
+			{
+				return false;
+			}
 
-            if (!(m is BaseCreature) || m is MilitiaFighter)
-            {
-                return true;
-            }
+			if (!(m is BaseCreature) || m is MilitiaFighter)
+			{
+				return true;
+			}
 
-            BaseCreature c = (BaseCreature)m;
-            BaseCreature t = this;
+			BaseCreature c = (BaseCreature)m;
+			BaseCreature t = this;
 
-            // Summons should have same rules as their master
-            if (c.Summoned && c.SummonMaster != null && c.SummonMaster is BaseCreature)
-                c = c.SummonMaster as BaseCreature;
+			// Summons should have same rules as their master
+			if (c.Summoned && c.SummonMaster != null && c.SummonMaster is BaseCreature)
+			{
+				c = c.SummonMaster as BaseCreature;
+			}
 
-            if (t.Summoned && t.SummonMaster != null && t.SummonMaster is BaseCreature)
-                t = t.SummonMaster as BaseCreature;
+			if (t.Summoned && t.SummonMaster != null && t.SummonMaster is BaseCreature)
+			{
+				t = t.SummonMaster as BaseCreature;
+			}
 
-            return (t.m_iTeam != c.m_iTeam || ((t.m_bSummoned || t.m_bControlled) != (c.m_bSummoned || c.m_bControlled))/* || c.Combatant == this*/ );
-        }
+			// Creatures on other teams are my enemies
+			if (t.m_iTeam != c.m_iTeam)
+			{
+				return true;
+			}
+
+			// If I'm summoned/controlled and they aren't summoned/controlled, they are my enemy
+			// If I'm not summoned/controlled and they are summoned/controlled, they are my enemy
+			return ((t.m_bSummoned || t.m_bControlled) != (c.m_bSummoned || c.m_bControlled));
+/*
+			// Note that this is unused, but would be before summoned/controlled check if it were
+			// Creatures attacking me are my enemies
+			if (c.Combatant == this)
+			{
+				return true;
+			}
+*/
+		}
 
         public override string ApplyNameSuffix(string suffix)
         {
