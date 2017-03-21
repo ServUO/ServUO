@@ -5,7 +5,7 @@ using Server.Spells;
 using Server.Spells.Chivalry;
 using Server.Spells.First;
 using Server.Spells.Fourth;
-using Server.Spells.Mystic;
+using Server.Spells.Mysticism;
 using Server.Spells.Second;
 
 namespace Server.Mobiles

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Server.ContextMenus;
 using Server.Network;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
 	public class SpellTriggerSpell : MysticSpell
 	{

@@ -66,7 +66,7 @@ namespace Server.SkillHandlers
                 from.SendLocalizedMessage(1079575);  // The item must be in your backpack to imbue it.
             else if (item.LootType == LootType.Blessed || item.LootType == LootType.Newbied)
                 from.SendLocalizedMessage(1080438);  // You cannot imbue a blessed item.
-            else if (item is BaseWeapon && Spells.Mystic.EnchantSpell.IsUnderSpellEffects(from, (BaseWeapon)item))
+            else if (item is BaseWeapon && Spells.Mysticism.EnchantSpell.IsUnderSpellEffects(from, (BaseWeapon)item))
                 from.SendLocalizedMessage(1080130);  // You cannot imbue an item that is currently enchanted.
             else if (item is BaseWeapon && ((BaseWeapon)item).FocusWeilder != null)
                 from.SendLocalizedMessage(1080444);  //You cannot imbue an item that is under the effects of the ninjitsu focus attack ability.
@@ -121,7 +121,7 @@ namespace Server.SkillHandlers
                 if (message)
                     from.SendLocalizedMessage(1080421);  // You cannot unravel the magic of a blessed item.
             }
-            else if (item is BaseWeapon && Spells.Mystic.EnchantSpell.IsUnderSpellEffects(from, (BaseWeapon)item))
+            else if (item is BaseWeapon && Spells.Mysticism.EnchantSpell.IsUnderSpellEffects(from, (BaseWeapon)item))
             {
                 if (message)
                     from.SendLocalizedMessage(1080427);  // You cannot magically unravel an item that is currently enchanted.

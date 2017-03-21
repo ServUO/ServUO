@@ -889,7 +889,7 @@ namespace Server.Mobiles
             int max = base.GetMaxResistance(type);
 
             #region SA
-            max += Spells.Mystic.StoneFormSpell.GetMaxResistMod(this);
+            max += Spells.Mysticism.StoneFormSpell.GetMaxResistMod(this);
             #endregion
 
             max += BaseArmor.GetRefinedResist(this, type);

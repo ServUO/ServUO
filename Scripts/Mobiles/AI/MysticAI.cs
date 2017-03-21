@@ -1,7 +1,7 @@
 using System;
 using Server;
 using System.Collections.Generic;
-using Server.Spells.Mystic;
+using Server.Spells.Mysticism;
 using Server.Spells;
 using Server.Targeting;
 

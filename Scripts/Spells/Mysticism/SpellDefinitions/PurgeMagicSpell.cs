@@ -12,7 +12,7 @@ using Server.Spells.Fourth;
 using Server.Spells.Fifth;
 using Server.Spells.Ninjitsu;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
     public enum BuffType
     {
