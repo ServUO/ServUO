@@ -11,7 +11,7 @@ namespace Server.Engines
         public static void Initialize()
         {
             CommandSystem.Register("GenWrongRewamp", AccessLevel.Administrator, Generate_NewWrong);
-            CommandSystem.Register("DeleteOldWrong", AccessLevel.Administrator, Delete_OldWrong);
+            //CommandSystem.Register("DeleteOldWrong", AccessLevel.Administrator, Delete_OldWrong);
         }
 
         public static void Delete_OldWrong(CommandEventArgs e)
@@ -50,6 +50,8 @@ namespace Server.Engines
 
         public static void Generate_NewWrong(CommandEventArgs e)
         {
+            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "DeleteOldWrong"); // Delete Old Wrong 
+
             CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns/WrongRevamped.xml");
 
             Decorate.Generate("wrong", "Data/Decoration/Wrong", Map.Trammel, Map.Felucca);
