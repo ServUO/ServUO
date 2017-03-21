@@ -6507,9 +6507,11 @@ namespace Server.Mobiles
         public ExploringTheDeepQuestChain ExploringTheDeepQuest { get { return m_ExploringTheDeepQuest; } set { m_ExploringTheDeepQuest = value; } }
         #endregion
 
+        public static bool PetAutoStable { get { return Core.SE; } }
+
         public void AutoStablePets()
 		{
-			if (Core.SE && AllFollowers.Count > 0)
+			if (PetAutoStable && AllFollowers.Count > 0)
 			{
 				for (int i = m_AllFollowers.Count - 1; i >= 0; --i)
 				{
@@ -6566,7 +6568,7 @@ namespace Server.Mobiles
 
 		public void ClaimAutoStabledPets()
 		{
-			if (!Core.SE || !this.Region.AllowAutoClaim(this) || m_AutoStabled.Count <= 0)
+			if (!PetAutoStable || !this.Region.AllowAutoClaim(this) || m_AutoStabled.Count <= 0)
 			{
 				return;
 			}
