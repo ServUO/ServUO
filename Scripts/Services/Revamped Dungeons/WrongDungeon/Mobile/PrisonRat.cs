@@ -7,10 +7,11 @@ namespace Server.Mobiles
     {
         [Constructable]
         public PrisonRat()
-            : base(AIType.AI_Animal, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "a prison rat";
-            this.Body = 238;
+            this.Body = 0xEE;
+            this.Hue = 443;
             this.BaseSoundID = 0xCC;
 
             this.SetStr(9);
@@ -37,10 +38,6 @@ namespace Server.Mobiles
             this.Karma = -150;
 
             this.VirtualArmor = 6;
-
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = -0.9;
         }
 
         public PrisonRat(Serial serial)
