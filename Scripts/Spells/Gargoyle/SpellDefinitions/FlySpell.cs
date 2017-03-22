@@ -92,7 +92,11 @@ namespace Server.Spells
             this.Caster.Flying = false;
             BuffInfo.RemoveBuff(this.Caster, BuffIcon.Fly);
 
-			if (Factions.Sigil.ExistsOn(Caster))
+            if (!Caster.Region.AllowFlying(Caster))
+            {
+                Caster.SendMessage("You may not fly here.");
+            }
+			else if (Factions.Sigil.ExistsOn(Caster))
 			{
 				Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
 			}
