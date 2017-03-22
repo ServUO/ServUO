@@ -146,7 +146,8 @@ namespace Server
                 typeof(CoralSnake), typeof(DarkWisp), typeof(DreamWraith),
                 typeof(FireAnt), typeof(KepetchAmbusher), typeof(LavaElemental),
                 typeof(MaddeningHorror), typeof(Wight), typeof(WolfSpider),
-                typeof(UndeadGargoyle), typeof(SlasherOfVeils), typeof(SavagePackWolf), 
+                typeof(UndeadGargoyle), typeof(SlasherOfVeils), typeof(SavagePackWolf),
+                typeof(DemonicJailor),
                 #region ML named mobs - before Paragon speedboost
                 typeof(LadyJennifyr), typeof(LadyMarai), typeof(MasterJonath),
                 typeof(MasterMikael), typeof(MasterTheophilus), typeof(RedDeath),
