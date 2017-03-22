@@ -100,7 +100,7 @@ namespace Server.Items
                 goodtogo = false;
             else if (item.LootType == LootType.Blessed || item.LootType == LootType.Newbied)
                 goodtogo = false;
-            else if (item is BaseWeapon && Server.Spells.Mystic.EnchantSpell.IsUnderSpellEffects(from, (BaseWeapon)item))
+            else if (item is BaseWeapon && Server.Spells.Mysticism.EnchantSpell.IsUnderSpellEffects(from, (BaseWeapon)item))
                 goodtogo = false;
             else if (item is BaseWeapon && ((BaseWeapon)item).FocusWeilder != null)
                 goodtogo = false;

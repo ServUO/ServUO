@@ -101,7 +101,7 @@ namespace Server.Spells
 				Caster.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
 			}
 			else if (Ninjitsu.AnimalForm.UnderTransformation(Caster) ||
-				Mystic.StoneFormSpell.IsEffected(Caster) ||
+				Mysticism.StoneFormSpell.IsEffected(Caster) ||
 				(TransformationSpellHelper.UnderTransformation(Caster) && !TransformationSpellHelper.UnderTransformation(Caster, typeof(Spells.Necromancy.VampiricEmbraceSpell))) ||
                 (Caster.IsBodyMod && !Caster.Body.IsHuman))
 			{

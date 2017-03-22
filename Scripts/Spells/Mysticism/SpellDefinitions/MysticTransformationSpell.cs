@@ -5,7 +5,7 @@ using Server;
 using Server.Spells.Fifth;
 using Server.Spells.Seventh;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
 	public abstract class MysticTransformationSpell : MysticSpell, ITransformationSpell
 	{

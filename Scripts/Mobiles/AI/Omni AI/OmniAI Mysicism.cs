@@ -1,6 +1,6 @@
 using System;
 using Server.Spells;
-using Server.Spells.Mystic;
+using Server.Spells.Mysticism;
 
 namespace Server.Mobiles
 {

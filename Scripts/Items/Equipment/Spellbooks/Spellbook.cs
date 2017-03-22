@@ -16,7 +16,7 @@ using Server.Network;
 using Server.Spells;
 using Server.Targeting;
 using Server.Mobiles;
-using Server.Spells.Mystic;
+using Server.Spells.Mysticism;
 #endregion
 
 namespace Server.Items

@@ -7,7 +7,7 @@ using Server.Mobiles;
 using Server.Spells;
 using Server.Network;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
 	public class EnchantSpell : MysticSpell
 	{
