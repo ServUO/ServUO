@@ -5,9 +5,9 @@ using Server.Commands;
 namespace Server.Items
 {
     public class StealableArtifactsSpawner : Item
-    {
+    { 
         private static readonly StealableEntry[] m_Entries = new StealableEntry[]
-        {
+        {            
             // Doom - Artifact rarity 1
             new StealableEntry(Map.Malas, new Point3D(317, 56, -1), 72, 108, typeof(RockArtifact)),
             new StealableEntry(Map.Malas, new Point3D(360, 31, 8), 72, 108, typeof(SkullCandleArtifact)),
@@ -180,7 +180,23 @@ namespace Server.Items
             new StealableEntry(Map.TerMur, new Point3D(688, 2125, 45), 36864, 55296, typeof(SacredLavaRock)),
             new StealableEntry(Map.TerMur, new Point3D(393, 1838, 0), 36864, 55296, typeof(WhiteTigerFigurine)),
             new StealableEntry(Map.TerMur, new Point3D(421, 1571, 40), 36864, 55296, typeof(DragonTurtleHatchlingNet)),
+
+            // Wrong - Artifact rarity 8
+            new StealableEntry(Map.Trammel, new Point3D(5790, 579, 10), 18432, 27648, typeof(BlanketOfDarkness)),
+            new StealableEntry(Map.Felucca, new Point3D(5790, 579, 10), 18432, 27648, typeof(BlanketOfDarkness)),
+            new StealableEntry(Map.Trammel, new Point3D(5865, 559, 15), 18432, 27648, typeof(BlanketOfDarkness)),
+            new StealableEntry(Map.Felucca, new Point3D(5865, 559, 15), 18432, 27648, typeof(BlanketOfDarkness)),
+            new StealableEntry(Map.Trammel, new Point3D(5832, 576, 10), 18432, 27648, typeof(BlanketOfDarkness)),
+            new StealableEntry(Map.Felucca, new Point3D(5832, 576, 10), 18432, 27648, typeof(BlanketOfDarkness)),
+
+			// Wrong - Arfifact rarity 10
+            new StealableEntry(Map.Trammel, new Point3D(5703, 521, 0), 36864, 55296, typeof(TortureRackSouth)),
+            new StealableEntry(Map.Felucca, new Point3D(5703, 521, 0), 36864, 55296, typeof(TortureRackSouth)),
+            new StealableEntry(Map.Trammel, new Point3D(5680, 537, 0), 46864, 55296, typeof(TortureRackEast)),
+            new StealableEntry(Map.Felucca, new Point3D(5680, 537, 0), 46864, 55296, typeof(TortureRackEast)),
+
         };
+
         private static Type[] m_TypesOfEntries = null;
         private static StealableArtifactsSpawner m_Instance;
         private Timer m_RespawnTimer;

@@ -25,6 +25,12 @@ namespace Server.Items
         private Timer m_RestartTimer;
         private DateTime m_RestartTime;
 
+        public List<Item> Barrels
+        {
+            get { return m_Barrels; }
+            set { m_Barrels = value; }
+        }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
@@ -134,7 +140,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    barrel = new WoodenToMetalBarrel();
+                    barrel = new WoodenToMetalBarrel(this);
                     this.m_Barrels.Add(barrel);
                 }
 
