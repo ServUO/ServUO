@@ -786,7 +786,7 @@ namespace Server.Mobiles
 			EventSink.Disconnected += EventSink_Disconnected;
 
             #region Enchanced Client
-            EventSink.TargetedSkill += Targeted_Skill;  
+            EventSink.TargetedSkill += Targeted_Skill;
             EventSink.TargetedItemUse += Targeted_Item;
             #endregion
 
@@ -889,7 +889,7 @@ namespace Server.Mobiles
             int max = base.GetMaxResistance(type);
 
             #region SA
-            max += Spells.Mystic.StoneFormSpell.GetMaxResistMod(this);
+            max += Spells.Mysticism.StoneFormSpell.GetMaxResistMod(this);
             #endregion
 
             max += BaseArmor.GetRefinedResist(this, type);
@@ -946,7 +946,7 @@ namespace Server.Mobiles
                 }
 
                 bool setitem = item is ISetItem;
-                
+
                 Resistances[0] += setitem ? ((ISetItem)item).SetResistBonus(ResistanceType.Physical) : item.PhysicalResistance;
                 Resistances[1] += setitem ? ((ISetItem)item).SetResistBonus(ResistanceType.Fire) : item.FireResistance;
                 Resistances[2] += setitem ? ((ISetItem)item).SetResistBonus(ResistanceType.Cold) : item.ColdResistance;
@@ -1478,7 +1478,8 @@ namespace Server.Mobiles
 				#endregion
 
 				pm.BedrollLogout = false;
-				pm.LastOnline = DateTime.UtcNow;
+                pm.BlanketOfDarknessLogout = false;
+                pm.LastOnline = DateTime.UtcNow;
 			}
 
 			DisguiseTimers.StartTimer(e.Mobile);
@@ -3303,7 +3304,7 @@ namespace Server.Mobiles
 			}
 			return false;
 		}
-		
+
 		public override bool Criminal
         	{
             		get
@@ -3328,7 +3329,7 @@ namespace Server.Mobiles
 			{
 				state.CancelAllTrades();
 			}
-			
+
 			if (Criminal)
                 		BuffInfo.RemoveBuff(this, BuffIcon.CriminalStatus);
 
@@ -3492,7 +3493,7 @@ namespace Server.Mobiles
 					killer = ((BaseCreature)m).ControlMaster as PlayerMobile;
 				}
 			}
-			
+
 			if (m_NonAutoreinsuredItems > 0)
 			{
 				SendLocalizedMessage(1061115);
@@ -5026,8 +5027,9 @@ namespace Server.Mobiles
 		}
 
 		public bool BedrollLogout { get; set; }
+        public bool BlanketOfDarknessLogout { get; set; }
 
-		[CommandProperty(AccessLevel.GameMaster)]
+        [CommandProperty(AccessLevel.GameMaster)]
 		public override bool Paralyzed
 		{
 			get { return base.Paralyzed; }
@@ -5225,11 +5227,11 @@ namespace Server.Mobiles
                     if (m_CollectionTitles[num] is int && !silent)
                     {
                         SendLocalizedMessage(1074008, "#" + (int)m_CollectionTitles[num]);
-                        // You change your Reward Title to "~1_TITLE~".	
+                        // You change your Reward Title to "~1_TITLE~".
                     }
                     else if (m_CollectionTitles[num] is string && !silent)
                     {
-                        SendLocalizedMessage(1074008, (string)m_CollectionTitles[num]); // You change your Reward Title to "~1_TITLE~".	
+                        SendLocalizedMessage(1074008, (string)m_CollectionTitles[num]); // You change your Reward Title to "~1_TITLE~".
                     }
                 }
                 else if (!silent)
@@ -5609,7 +5611,7 @@ namespace Server.Mobiles
                 //TODO: Figure an efficient way to naming the creature, pluralized!!!
                 /*if (m_EnemyOfOneType != null)
                 {
-                    BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075654, TimeSpan.FromMinutes(delay), this.Caster, 
+                    BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075654, TimeSpan.FromMinutes(delay), this.Caster,
                         String.Format("{0}\t{1}\t{2}\t{3}", "50", )));
                 }*/
 
@@ -5827,7 +5829,7 @@ namespace Server.Mobiles
 
 		public override TimeSpan GetLogoutDelay()
 		{
-			if (Young || BedrollLogout || TestCenter.Enabled)
+			if (Young || BedrollLogout || BlanketOfDarknessLogout || TestCenter.Enabled)
 			{
 				return TimeSpan.Zero;
 			}
@@ -6507,9 +6509,11 @@ namespace Server.Mobiles
         public ExploringTheDeepQuestChain ExploringTheDeepQuest { get { return m_ExploringTheDeepQuest; } set { m_ExploringTheDeepQuest = value; } }
         #endregion
 
+        public static bool PetAutoStable { get { return Core.SE; } }
+
         public void AutoStablePets()
 		{
-			if (Core.SE && AllFollowers.Count > 0)
+			if (PetAutoStable && AllFollowers.Count > 0)
 			{
 				for (int i = m_AllFollowers.Count - 1; i >= 0; --i)
 				{
@@ -6566,7 +6570,7 @@ namespace Server.Mobiles
 
 		public void ClaimAutoStabledPets()
 		{
-			if (!Core.SE || m_AutoStabled.Count <= 0)
+			if (!PetAutoStable || !this.Region.AllowAutoClaim(this) || m_AutoStabled.Count <= 0)
 			{
 				return;
 			}

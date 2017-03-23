@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Server.Items;
 using Server.Targeting;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
 	public class NetherCycloneSpell : MysticSpell
 	{

@@ -260,8 +260,8 @@ namespace Server
 
             if (totalDamage > 0)
             {
-                Spells.Mystic.SpellPlagueSpell.OnMobileDamaged(m);
-                Spells.Mystic.SleepSpell.OnDamage(m);
+                Spells.Mysticism.SpellPlagueSpell.OnMobileDamaged(m);
+                Spells.Mysticism.SleepSpell.OnDamage(m);
             }
             #endregion
 
@@ -531,7 +531,7 @@ namespace Server
                     value -= 30;
 
                 #region SA
-                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mysticism.StoneFormSpell)))
                     value -= 10;
 
                 if (m is PlayerMobile && m.Race == Race.Gargoyle)
@@ -589,10 +589,10 @@ namespace Server
                 #endregion
 
                 #region SA
-                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 2;
 
-                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mysticism.StoneFormSpell)))
                     value -= 2;
                 #endregion
             }
@@ -604,7 +604,7 @@ namespace Server
                 value -= ThunderstormSpell.GetCastRecoveryMalus(m);
 
                 #region SA
-                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 3;
                 #endregion
             }
@@ -641,10 +641,10 @@ namespace Server
                 #endregion
 
                 #region SA
-                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 45;
 
-                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mystic.StoneFormSpell)))
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(Spells.Mysticism.StoneFormSpell)))
                     value -= 10;
 
                 if (MudPie.IsUnderEffects(m))
@@ -681,7 +681,7 @@ namespace Server
                 #endregion
 
                 #region SA
-                if (Spells.Mystic.SleepSpell.IsUnderSleepEffects(m))
+                if (Spells.Mysticism.SleepSpell.IsUnderSleepEffects(m))
                     value -= 45;
 
                 if (m.Race == Race.Gargoyle)

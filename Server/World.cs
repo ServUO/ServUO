@@ -25,6 +25,8 @@ namespace Server
 		private static Dictionary<Serial, Mobile> m_Mobiles;
 		private static Dictionary<Serial, Item> m_Items;
 		private static Dictionary<CustomSerial, SaveData> _Data;
+		
+		private static bool m_Metrics = Config.Get("General.Metrics", false);
 
 		private static bool m_Loading;
 		private static bool m_Loaded;
@@ -1125,9 +1127,16 @@ namespace Server
 				Directory.CreateDirectory("Saves/Customs/");
 			}
 
-			/*using ( SaveMetrics metrics = new SaveMetrics() ) {*/
-			strategy.Save(null, permitBackgroundWrite);
-			/*}*/
+			if (m_Metrics)
+			{
+				using ( SaveMetrics metrics = new SaveMetrics() ) {
+					strategy.Save(metrics, permitBackgroundWrite);
+				}
+			}
+			else
+			{
+				strategy.Save(null, permitBackgroundWrite);
+			}
 
 			try
 			{

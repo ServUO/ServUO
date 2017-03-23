@@ -243,7 +243,7 @@ namespace Server.Items
             return freeToClose;
         }
 
-        public void OnTelekinesis(Mobile from)
+        public virtual void OnTelekinesis(Mobile from)
         {
             Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x376A, 9, 32, 5022);
             Effects.PlaySound(this.Location, this.Map, 0x1F5);

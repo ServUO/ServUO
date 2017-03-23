@@ -5,7 +5,7 @@ using Server.Mobiles;
 using Server.Targeting;
 using System.Collections.Generic;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
     public class SpellPlagueSpell : MysticSpell
     {

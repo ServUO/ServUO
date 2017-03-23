@@ -7,7 +7,7 @@ using Server.Spells.Necromancy;
 using Server.Targeting;
 using Server.Engines.PartySystem;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
 	public class CleansingWindsSpell : MysticSpell
 	{

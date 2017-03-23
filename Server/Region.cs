@@ -706,6 +706,22 @@ namespace Server
 			return true;
 		}
 
+	    public virtual bool AllowAutoClaim(Mobile from)
+	    {
+	        if (m_Parent != null)
+	            return m_Parent.AllowAutoClaim( from );
+
+	        return true;
+	    }
+
+	    public virtual bool AllowFlying(Mobile from)
+	    {
+	        if (m_Parent != null)
+	            return m_Parent.AllowFlying(from);
+
+	        return true;
+	    }
+
 		public virtual bool AllowHousing(Mobile from, Point3D p)
 		{
 			if (m_Parent != null)

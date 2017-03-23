@@ -63,7 +63,7 @@ namespace Server.SkillHandlers
 				StealableArtifactsSpawner.StealableInstance si = null;
 				if (toSteal.Parent == null || !toSteal.Movable)
 				{
-					si = StealableArtifactsSpawner.GetStealableInstance(toSteal);
+					si = toSteal is AddonComponent ? StealableArtifactsSpawner.GetStealableInstance(((AddonComponent)toSteal).Addon) : StealableArtifactsSpawner.GetStealableInstance(toSteal);
 				}
 
 				if (!IsEmptyHanded(m_Thief))
@@ -421,7 +421,16 @@ namespace Server.SkillHandlers
 
 				if (stolen != null)
 				{
-					from.AddToBackpack(stolen);
+                    if (stolen is AddonComponent)
+                    {
+                        BaseAddon addon = ((AddonComponent)stolen).Addon as BaseAddon;
+                        from.AddToBackpack(addon.Deed);
+                        addon.Delete();
+                    }
+                    else
+                    {
+                        from.AddToBackpack(stolen);
+                    }
 
 					if (!(stolen is Container || stolen.Stackable))
 					{

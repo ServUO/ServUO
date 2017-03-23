@@ -7,7 +7,7 @@ using Server.Mobiles;
 using Server.Spells;
 using Server.Targeting;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
     public class HailStormSpell : MysticSpell
     {

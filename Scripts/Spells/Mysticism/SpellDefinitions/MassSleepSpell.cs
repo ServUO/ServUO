@@ -7,7 +7,7 @@ using Server.Targeting;
 using System.Collections.Generic;
 using Server.Network;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
 	public class MassSleepSpell : MysticSpell
 	{
