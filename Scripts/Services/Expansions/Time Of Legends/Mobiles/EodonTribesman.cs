@@ -57,7 +57,7 @@ namespace Server.Mobiles
 
         public override bool InitialInnocent { get { return true; } }
 
-		public BaseEodonTribesman(AIType ai, EodonTribe type) : base(ai, FightMode.Closest, 10, 1, .2, .4)
+		public BaseEodonTribesman(AIType ai, EodonTribe type) : base(ai, FightMode.Enemy, 10, 1, .2, .4)
 		{
 			TribeType = type;
 			
