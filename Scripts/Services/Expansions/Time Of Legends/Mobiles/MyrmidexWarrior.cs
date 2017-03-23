@@ -63,6 +63,20 @@ namespace Server.Mobiles
         public override Poison HitPoison { get { return Poison.Deadly; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
 
+        public override bool PlayerRangeSensitive
+        {
+            get
+            {
+                if (this.Region != null && this.Region.IsPartOf(typeof(BattleRegion)))
+                {
+                    if(((BattleRegion)this.Region).Spawner != null)
+                        return !((BattleRegion)this.Region).Spawner.HasPlayers();
+                }
+
+                return base.PlayerRangeSensitive;
+            }
+        }
+
         public override bool IsEnemy(Mobile m)
         {
             if (MyrmidexInvasionSystem.Active && MyrmidexInvasionSystem.IsAlliedWithEodonTribes(m))
