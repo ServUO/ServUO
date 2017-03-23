@@ -7,7 +7,15 @@ namespace Server.Items
     public class WoodenKeyBarrel : DamageableItem
     {
         private Parts m_key;
+        private StorageLocker m_StorageLocker;
         public override int LabelNumber { get { return 1023703; } } // barrel
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public StorageLocker StorageLocker
+        {
+            get { return this.m_StorageLocker; }
+            set { this.m_StorageLocker = value; }
+        }
 
         [Constructable]
         public WoodenKeyBarrel(Parts key)
@@ -29,6 +37,7 @@ namespace Server.Items
             if (m_key != Parts.None)
             {
                 (new LockerKey(m_key)).MoveToWorld(new Point3D(base.Location), base.Map);
+                m_StorageLocker.BeginRestart(TimeSpan.FromMinutes(10.0));
             }
             else
             {
@@ -104,27 +113,50 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); //version
+            writer.Write((int)1); //version
+
+            writer.Write((int)this.m_key);
+            writer.Write(this.m_StorageLocker);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    {
+                        this.m_key = (Parts)reader.ReadInt();
+                        this.m_StorageLocker = (StorageLocker)reader.ReadItem();
+
+                        break;
+                    }
+            }            
         }
     }
 
     public class WoodenToMetalBarrel : DamageableItem
     {
         public override int LabelNumber { get { return 1023703; } } // barrel
+        private StorageLocker m_StorageLocker;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public StorageLocker StorageLocker
+        {
+            get { return this.m_StorageLocker; }
+            set { this.m_StorageLocker = value; }
+        }
 
         [Constructable]
-        public WoodenToMetalBarrel()
+        public WoodenToMetalBarrel(StorageLocker item)
             : base(0x0FAE, 0x0FAE)
         {
             this.Level = ItemLevel.VeryEasy;
             this.Movable = false;
             this.HitsMax = 60;
+            this.m_StorageLocker = item;
         }
 
         public WoodenToMetalBarrel(Serial serial)
@@ -136,6 +168,7 @@ namespace Server.Items
         {
             Item barrel = new MetalBarrel();
 
+            m_StorageLocker.Barrels.Add(barrel);
             barrel.MoveToWorld(new Point3D(this.Location), this.Map);
 
             return true;
@@ -144,13 +177,25 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); //version
+            writer.Write((int)1); //version
+
+            writer.Write(this.m_StorageLocker);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    {
+                        this.m_StorageLocker = (StorageLocker)reader.ReadItem();
+
+                        break;
+                    }
+            }
         }
     }
 

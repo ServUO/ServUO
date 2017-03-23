@@ -54,7 +54,15 @@ namespace Server
                     PerformanceCounterType.RateOfCountsPerSecond32));
 
                 #if !MONO
-                PerformanceCounterCategory.Create(PerformanceCategoryName, PerformanceCategoryDesc, PerformanceCounterCategoryType.SingleInstance, counters);
+                try
+				{
+					PerformanceCounterCategory.Create(PerformanceCategoryName, PerformanceCategoryDesc, PerformanceCounterCategoryType.SingleInstance, counters);
+				}
+				catch
+				{
+					if (Core.Debug)
+                        Console.WriteLine("Metrics: Metrics enabled. Performance counters creation requires ServUO to be run as Administrator once!");
+				}               
                 #endif
             }
 

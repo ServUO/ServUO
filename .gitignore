@@ -23,5 +23,6 @@ staffHistory.xml
 reportHistory.xml
 *.csproj.user
 *.suo
+/.idea
 *.log
 *.bin

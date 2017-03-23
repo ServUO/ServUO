@@ -11,7 +11,7 @@ using Server.Spells.Sixth;
 using Server.Spells.Third;
 using Server.Spells.Eighth;
 using Server.Spells.Necromancy;
-using Server.Spells.Mystic;
+using Server.Spells.Mysticism;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
 

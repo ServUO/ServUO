@@ -1,6 +1,6 @@
 using System;
 using Server;
-using Server.Spells.Mystic;
+using Server.Spells.Mysticism;
 using Server.Items;
 using Server.Spells;
 

@@ -6,7 +6,7 @@ using Server.Items;
 using Server.Targeting;
 using Server.Mobiles;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
 	public class StoneFormSpell : MysticTransformationSpell
 	{
@@ -83,7 +83,7 @@ namespace Server.Spells.Mystic
 
         public static int GetMaxResistMod(PlayerMobile pm)
         {
-            if (TransformationSpellHelper.UnderTransformation(pm, typeof(Spells.Mystic.StoneFormSpell)))
+            if (TransformationSpellHelper.UnderTransformation(pm, typeof(StoneFormSpell)))
             {
                 int prim = (int)pm.Skills[SkillName.Mysticism].Value;
                 int sec = (int)pm.Skills[SkillName.Imbuing].Value;
@@ -98,7 +98,7 @@ namespace Server.Spells.Mystic
 
         public static bool CheckImmunity(Mobile from)
         {
-            if (TransformationSpellHelper.UnderTransformation(from, typeof(Spells.Mystic.StoneFormSpell)))
+            if (TransformationSpellHelper.UnderTransformation(from, typeof(StoneFormSpell)))
             {
                 int prim = (int)from.Skills[SkillName.Mysticism].Value;
                 int sec = (int)from.Skills[SkillName.Imbuing].Value;

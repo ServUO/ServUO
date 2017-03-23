@@ -1,7 +1,7 @@
 using System;
 using Server.Mobiles;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
 	public class AnimatedWeaponSpell : MysticSpell
 	{

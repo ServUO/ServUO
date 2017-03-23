@@ -13,7 +13,13 @@ namespace Server.Items
             this.Hue = 1939;
             this.Weight = 2.0;
             this.LootType = LootType.Blessed;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int BasePhysicalResistance { get { return 2; } }

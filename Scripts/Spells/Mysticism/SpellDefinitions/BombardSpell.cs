@@ -1,7 +1,7 @@
 using System;
 using Server.Targeting;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
 	public class BombardSpell : MysticSpell
 	{

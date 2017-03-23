@@ -32,7 +32,6 @@ namespace Server.Items
             this.LootType = LootType.Blessed;
             this.Hue = 1359;
             this.m_Type = type;
-            this.QuestItem = true;
         }
 
         public override int Lifespan { get { return 300; } }
@@ -106,6 +105,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             list.Add(1154445, String.Format("#{0}", 1154427 + (int)m_Type)); // A Key to the Spare ~1_PART~ Parts Locker
+            list.Add(1072351); // Quest Item
         }
 
         public override void Serialize(GenericWriter writer)

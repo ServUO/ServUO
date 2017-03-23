@@ -7,7 +7,7 @@ using Server.Targeting;
 using System.Collections.Generic;
 using Server.Network;
 
-namespace Server.Spells.Mystic
+namespace Server.Spells.Mysticism
 {
 	public class SleepSpell : MysticSpell
 	{
@@ -52,7 +52,7 @@ namespace Server.Spells.Mystic
                 double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 2;
                 duration -= target.Skills[SkillName.MagicResist].Value / 10;
 
-                if (duration <= 0 || Server.Spells.Mystic.StoneFormSpell.CheckImmunity(target))
+                if (duration <= 0 || StoneFormSpell.CheckImmunity(target))
                 {
                     Caster.SendLocalizedMessage(1080136); //Your target resists sleep.
                     target.SendLocalizedMessage(1080137); //You resist sleep.

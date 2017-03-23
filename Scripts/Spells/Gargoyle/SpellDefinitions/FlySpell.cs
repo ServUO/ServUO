@@ -92,7 +92,11 @@ namespace Server.Spells
             this.Caster.Flying = false;
             BuffInfo.RemoveBuff(this.Caster, BuffIcon.Fly);
 
-			if (Factions.Sigil.ExistsOn(Caster))
+            if (!Caster.Region.AllowFlying(Caster))
+            {
+                Caster.SendMessage("You may not fly here.");
+            }
+			else if (Factions.Sigil.ExistsOn(Caster))
 			{
 				Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
 			}
@@ -101,7 +105,7 @@ namespace Server.Spells
 				Caster.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
 			}
 			else if (Ninjitsu.AnimalForm.UnderTransformation(Caster) ||
-				Mystic.StoneFormSpell.IsEffected(Caster) ||
+				Mysticism.StoneFormSpell.IsEffected(Caster) ||
 				(TransformationSpellHelper.UnderTransformation(Caster) && !TransformationSpellHelper.UnderTransformation(Caster, typeof(Spells.Necromancy.VampiricEmbraceSpell))) ||
                 (Caster.IsBodyMod && !Caster.Body.IsHuman))
 			{

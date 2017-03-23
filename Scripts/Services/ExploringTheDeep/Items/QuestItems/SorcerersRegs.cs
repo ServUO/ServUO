@@ -67,7 +67,13 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int Lifespan { get { return 3600; } }
@@ -154,7 +160,13 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int Lifespan { get { return 3600; } }
@@ -241,7 +253,13 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int Lifespan { get { return 3600; } }
@@ -328,7 +346,13 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int Lifespan { get { return 3600; } }
@@ -414,7 +438,13 @@ namespace Server.Items
             this.Stackable = false;
             this.LootType = LootType.Blessed;
             this.Weight = 1;
-            this.QuestItem = true;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072351); // Quest Item
         }
 
         public override int Lifespan { get { return 3600; } }

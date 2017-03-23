@@ -14,7 +14,6 @@ namespace Server.Items
         {
             this.Hue = 67;
             this.StrRequirement = 10;
-            this.QuestItem = true;
 
             if (this.Lifespan > 0)
             {
@@ -63,6 +62,8 @@ namespace Server.Items
                 else
                     list.Add(1072517, this.m_Lifespan.ToString()); // Lifespan: ~1_val~ seconds
             }
+
+            list.Add(1072351); // Quest Item
         }
 
         public virtual void StartTimer()

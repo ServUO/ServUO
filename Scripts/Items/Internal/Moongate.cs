@@ -61,6 +61,8 @@ namespace Server.Items
             }
         }
 
+        public virtual bool TeleportPets { get { return true; } }
+
         [Constructable]
         public Moongate()
             : this(Point3D.Zero, null)
@@ -150,7 +152,8 @@ namespace Server.Items
             }
             else if (this.m_TargetMap != null && this.m_TargetMap != Map.Internal)
             {
-                BaseCreature.TeleportPets(m, this.m_Target, this.m_TargetMap);
+                if (TeleportPets)
+                    BaseCreature.TeleportPets(m, this.m_Target, this.m_TargetMap);
 
                 m.MoveToWorld(this.m_Target, this.m_TargetMap);
 
@@ -173,7 +176,7 @@ namespace Server.Items
 
             writer.Write(this.m_Target);
             writer.Write(this.m_TargetMap);
-			
+
             // Version 1
             writer.Write(this.m_bDispellable);
         }
