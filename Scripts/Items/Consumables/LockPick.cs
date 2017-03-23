@@ -108,7 +108,7 @@ namespace Server.Items
                 private readonly ILockpickable m_Item;
                 private readonly Lockpick m_Lockpick;
                 public InternalTimer(Mobile from, ILockpickable item, Lockpick lockpick)
-                    : base(TimeSpan.Zero)
+                    : base(TimeSpan.FromMilliseconds(200.0))
                 {
                     this.m_From = from;
                     this.m_Item = item;
