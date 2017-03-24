@@ -108,12 +108,11 @@ namespace Server.Items
                 private readonly ILockpickable m_Item;
                 private readonly Lockpick m_Lockpick;
                 public InternalTimer(Mobile from, ILockpickable item, Lockpick lockpick)
-                    : base(TimeSpan.FromSeconds(3.0))
+                    : base(TimeSpan.FromMilliseconds(200.0))
                 {
                     this.m_From = from;
                     this.m_Item = item;
                     this.m_Lockpick = lockpick;
-                    this.Priority = TimerPriority.TwoFiftyMS;
                 }
 
                 protected void BrokeLockPickTest()
