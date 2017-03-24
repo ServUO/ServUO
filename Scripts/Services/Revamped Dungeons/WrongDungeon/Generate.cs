@@ -75,7 +75,7 @@ namespace Server.Engines
             teleporter = new Teleporter(new Point3D(2043, 215, 14), Map.Trammel);
             teleporter.MoveToWorld(new Point3D(5825, 631, 5), Map.Trammel);
 
-            e.Mobile.SendMessage("Wrong Revamep generation complete.");
+            e.Mobile.SendMessage("Wrong Revamp generation complete.");
         }
 
         public static void DeleteOldWrong(Mobile m)
