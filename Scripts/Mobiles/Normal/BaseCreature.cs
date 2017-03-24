@@ -1142,12 +1142,18 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			if (!(m is BaseCreature) || m.IsMilitiaFighter)
+			if (!(m is BaseCreature))
 			{
 				return true;
 			}
 
 			BaseCreature c = (BaseCreature)m;
+            
+			if (c.IsMilitiaFighter)
+			{
+				return true;
+			}
+
 			BaseCreature t = this;
 
 			// Summons should have same rules as their master
@@ -7446,3 +7452,4 @@ namespace Server.Mobiles
         }
     }
 }
+IsEnemy
