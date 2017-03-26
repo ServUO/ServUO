@@ -337,21 +337,20 @@ namespace Server.Network
 			internal static extern string zlibVersion();
 
 			[DllImport("libz")]
-			internal static extern ZLibError compress(byte[] dest, ref ulong destLength, byte[] source, int sourceLength);
+			internal static extern ZLibError compress(byte[] dest, ref long destLength, byte[] source, long sourceLength);
 
 			[DllImport("libz")]
-			internal static extern ZLibError compress2(
-				byte[] dest, ref ulong destLength, byte[] source, int sourceLength, ZLibQuality quality);
+			internal static extern ZLibError compress2(byte[] dest, ref long destLength, byte[] source, long sourceLength, ZLibQuality quality);
 
 			[DllImport("libz")]
-			internal static extern ZLibError uncompress(byte[] dest, ref ulong destLen, byte[] source, int sourceLen);
+			internal static extern ZLibError uncompress(byte[] dest, ref long destLen, byte[] source, long sourceLen);
 		}
 
 		public string Version { get { return SafeNativeMethods.zlibVersion(); } }
 
 		public ZLibError Compress(byte[] dest, ref int destLength, byte[] source, int sourceLength)
 		{
-			ulong destLengthLong = (ulong)destLength;
+			long destLengthLong = destLength;
 			ZLibError z = SafeNativeMethods.compress(dest, ref destLengthLong, source, sourceLength);
 			destLength = (int)destLengthLong;
 			return z;
@@ -359,7 +358,7 @@ namespace Server.Network
 
 		public ZLibError Compress(byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality)
 		{
-			ulong destLengthLong = (ulong)destLength;
+			long destLengthLong = destLength;
 			ZLibError z = SafeNativeMethods.compress2(dest, ref destLengthLong, source, sourceLength, quality);
 			destLength = (int)destLengthLong;
 			return z;
@@ -367,7 +366,7 @@ namespace Server.Network
 
 		public ZLibError Decompress(byte[] dest, ref int destLength, byte[] source, int sourceLength)
 		{
-			ulong destLengthLong = (ulong)destLength;
+			long destLengthLong = destLength;
 			ZLibError z = SafeNativeMethods.uncompress(dest, ref destLengthLong, source, sourceLength);
 			destLength = (int)destLengthLong;
 			return z;
