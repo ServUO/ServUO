@@ -85,7 +85,6 @@ namespace Server.Mobiles
         }
 
         public override bool AlwaysMurderer { get { return true; } }
-        public override bool PropertyTitle { get { return false; } }
         public override bool ShowFameTitle { get { return false; } }
 		public override Poison PoisonImmune{ get{ return Poison.Lethal; } }
 		
