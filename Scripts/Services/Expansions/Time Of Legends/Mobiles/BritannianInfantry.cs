@@ -10,7 +10,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public BritannianInfantry()
-            : base(AIType.AI_Melee, FightMode.Enemy, 10, 1, .15, .3)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .15, .3)
         {
             SpeechHue = Utility.RandomDyedHue();
 

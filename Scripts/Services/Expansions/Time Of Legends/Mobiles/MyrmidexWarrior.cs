@@ -10,7 +10,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public MyrmidexWarrior()
-            : base(AIType.AI_Mage, FightMode.Enemy, 10, 1, .2, .4)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, .2, .4)
         {
             Name = "a myrmidex warrior";
 
