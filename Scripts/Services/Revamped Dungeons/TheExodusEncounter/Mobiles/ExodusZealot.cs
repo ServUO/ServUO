@@ -49,33 +49,20 @@ namespace Server.Mobiles
 
             Item boots = new ThighBoots();
             boots.Movable = false;
-            this.AddItem(boots);
+            this.SetWearable(boots);
 
             Item item = new HoodedShroudOfShadows(2702);
             item.LootType = LootType.Blessed;
-            this.AddItem(item);
+            this.SetWearable(item);
 
             item = new Spellbook();
             item.LootType = LootType.Blessed;
-            this.AddItem(item);
+            this.SetWearable(item);
 
             if (Utility.RandomDouble() < 0.1)
             {
-                switch (Utility.Random(4))
-                {
-                    case 0:
-                        PackItem(new ExodusSummoningRite());
-                        break;
-                    case 1:
-                        PackItem(new ExodusSacrificalDagger());
-                        break;
-                    case 2:
-                        PackItem(new RobeofRite());
-                        break;
-                    case 3:
-                        PackItem(new ExodusSummoningAlter());
-                        break;
-                }
+                item = Activator.CreateInstance(ExodusChest.RituelItem[Utility.Random(ExodusChest.RituelItem.Length)]) as Item;
+                this.PackItem(item);
             }
         }
 
