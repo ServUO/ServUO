@@ -14,7 +14,7 @@ namespace Server.Items
     {
         [Constructable]
         public LifeStone()
-            : this(Utility.RandomMinMax(25, 50))
+            : this(Utility.RandomMinMax(100, 100))
         {
         }
 

@@ -65,7 +65,7 @@ namespace Server.Items
         //-----------------
         // Edit to your liking or leave blank for default values
         //------------------------
-        private int statcap=900;
+        private int statcap;
         private int defaultStr;
         private int defaultDex;
         private int defaultInt;

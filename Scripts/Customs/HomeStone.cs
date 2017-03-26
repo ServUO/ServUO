@@ -16,9 +16,9 @@ namespace Server.Items
 {
     public class HomeStone : Item
     {
-        private static readonly TimeSpan delay = TimeSpan.FromMinutes( 15.0 );
+        private static readonly TimeSpan delay = TimeSpan.FromMinutes( 5.0 );
         private static readonly bool oneStonePerMobile = true;
-        private static readonly TimeSpan totalDelay = TimeSpan.FromMinutes( 15.0 );
+        private static readonly TimeSpan totalDelay = TimeSpan.FromMinutes( 5.0 );
        
         private static List<HomeStoneUse> useRegistry = new List<HomeStoneUse>();
        

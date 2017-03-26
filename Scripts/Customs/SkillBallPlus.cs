@@ -10,7 +10,7 @@ namespace Server
 {
 	public class SkillPickGump : Gump
 	{
-		public static int skillsToBoost = 15;  // How many skills to boost
+		public static int skillsToBoost = 10;  // How many skills to boost
 		private SkillBallPlus m_SkillBallPlus;
 		public static double boostValue = 50;  // How high to boost each selected skill
 		public string blueSix = "<BASEFONT SIZE=6 FACE=1 COLOR=#001052>";
