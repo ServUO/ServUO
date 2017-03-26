@@ -18,6 +18,8 @@ namespace Server.Network
 {
 	public class Listener : IDisposable
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private Socket m_Listener;
 
 		private readonly Queue<Socket> m_Accepted;
@@ -90,23 +92,16 @@ namespace Server.Network
 					if (se.ErrorCode == 10048)
 					{
 						// WSAEADDRINUSE
-						Utility.PushColor(ConsoleColor.Red);
-						Console.WriteLine("Listener Failed: {0}:{1} (In Use)", ipep.Address, ipep.Port);
-						Utility.PopColor();
+						log.Error("Listener Failed: {0}:{1} (In Use)", ipep.Address, ipep.Port);
 					}
 					else if (se.ErrorCode == 10049)
 					{
 						// WSAEADDRNOTAVAIL
-						Utility.PushColor(ConsoleColor.Red);
-						Console.WriteLine("Listener Failed: {0}:{1} (Unavailable)", ipep.Address, ipep.Port);
-						Utility.PopColor();
+						log.Error("Listener Failed: {0}:{1} (Unavailable)", ipep.Address, ipep.Port);
 					}
 					else
 					{
-						Utility.PushColor(ConsoleColor.Red);
-						Console.WriteLine("Listener Exception:");
-						Console.WriteLine(e);
-						Utility.PopColor();
+						log.Error("Listener exception: {0}", e);
 					}
 				}
 
@@ -116,50 +111,30 @@ namespace Server.Network
 
 		private void DisplayListener()
 		{
-			IPEndPoint ipep = m_Listener.LocalEndPoint as IPEndPoint;
+			var ipep = m_Listener.LocalEndPoint as IPEndPoint;
 
 			if (ipep == null)
-			{
 				return;
-			}
 
 			if (ipep.Address.Equals(IPAddress.Any) || ipep.Address.Equals(IPAddress.IPv6Any))
 			{
 				var adapters = NetworkInterface.GetAllNetworkInterfaces();
-				foreach (NetworkInterface adapter in adapters)
+				foreach (var adapter in adapters)
 				{
-					IPInterfaceProperties properties = adapter.GetIPProperties();
-					foreach (IPAddressInformation unicast in properties.UnicastAddresses)
+					var properties = adapter.GetIPProperties();
+					foreach (var unicast in properties.UnicastAddresses)
 					{
 						if (ipep.AddressFamily == unicast.Address.AddressFamily)
 						{
-							Utility.PushColor(ConsoleColor.Green);
-							Console.WriteLine("Listening: {0}:{1}", unicast.Address, ipep.Port);
-							Utility.PopColor();
+							log.Info("Listening: {0}:{1}", unicast.Address, ipep.Port);
 						}
 					}
 				}
-				/*
-                try {
-                Console.WriteLine( "Listening: {0}:{1}", IPAddress.Loopback, ipep.Port );
-                IPHostEntry iphe = Dns.GetHostEntry( Dns.GetHostName() );
-                IPAddress[] ip = iphe.AddressList;
-                for ( int i = 0; i < ip.Length; ++i )
-                Console.WriteLine( "Listening: {0}:{1}", ip[i], ipep.Port );
-                }
-                catch { }
-                */
 			}
 			else
 			{
-				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine("Listening: {0}:{1}", ipep.Address, ipep.Port);
-				Utility.PopColor();
+				log.Info("Listening: {0}:{1}", ipep.Address, ipep.Port);
 			}
-
-			Utility.PushColor(ConsoleColor.DarkGreen);
-			Console.WriteLine(@"----------------------------------------------------------------------");
-			Utility.PopColor();
 		}
 
 #if NewAsyncSockets

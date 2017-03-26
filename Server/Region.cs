@@ -126,6 +126,8 @@ namespace Server
 
 	public class Region : IComparable
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static readonly List<Region> m_Regions = new List<Region>();
 
 		public static List<Region> Regions { get { return m_Regions; } }
@@ -314,7 +316,7 @@ namespace Server
 
 			if (m_Children.Count > 0)
 			{
-				Console.WriteLine("Warning: Unregistering region '{0}' with children", this);
+				log.Warning("Unregistering region '{0}' with children", this);
 			}
 
 			if (m_Parent != null)
@@ -1032,15 +1034,11 @@ namespace Server
 		{
 			if (!File.Exists("Data/Regions.xml"))
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Error: Data/Regions.xml does not exist");
-				Utility.PopColor();
+				log.Error("Data/Regions.xml does not exist");
 				return;
 			}
 
-			Utility.PushColor(ConsoleColor.Yellow);
-			Console.Write("Regions: Loading...");
-			Utility.PopColor();
+			log.Info("Loading regions...");
 
 			XmlDocument doc = new XmlDocument();
 			doc.Load(Path.Combine(Core.BaseDirectory, "Data/Regions.xml"));
@@ -1049,9 +1047,7 @@ namespace Server
 
 			if (root == null)
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Could not find root element 'ServerRegions' in Regions.xml");
-				Utility.PopColor();
+				log.Warning("Could not find root element 'ServerRegions' in Regions.xml");
 			}
 			else
 			{
@@ -1062,9 +1058,7 @@ namespace Server
 					{
 						if (map == Map.Internal)
 						{
-							Utility.PushColor(ConsoleColor.Red);
-							Console.WriteLine("Invalid internal map in a facet element");
-							Utility.PopColor();
+							log.Warning("Invalid internal map in a facet element");
 						}
 						else
 						{
@@ -1074,9 +1068,7 @@ namespace Server
 				}
 			}
 
-			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine("done");
-			Utility.PopColor();
+			log.Info("Regions loaded successfully");
 		}
 
 		private static void LoadRegions(XmlElement xml, Map map, Region parent)
@@ -1096,9 +1088,7 @@ namespace Server
 
 				if (!typeof(Region).IsAssignableFrom(type))
 				{
-					Utility.PushColor(ConsoleColor.Red);
-					Console.WriteLine("Invalid region type '{0}' in regions.xml", type.FullName);
-					Utility.PopColor();
+					log.Warning("Invalid region type '{0}' in regions.xml", type.FullName);
 					continue;
 				}
 
@@ -1109,9 +1099,7 @@ namespace Server
 				}
 				catch (Exception ex)
 				{
-					Utility.PushColor(ConsoleColor.Red);
-					Console.WriteLine("Error during the creation of region type '{0}': {1}", type.FullName, ex);
-					Utility.PopColor();
+					log.Error("Could not create region of type '{0}': {1}", type.FullName, ex);
 					continue;
 				}
 
@@ -1171,14 +1159,12 @@ namespace Server
 
 			m_Area = area.ToArray();
 
-			if (m_Area.Length == 0)
-			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Empty area for region '{0}'", this);
-				Utility.PopColor();
-			}
+		    if (m_Area.Length == 0)
+		    {
+		        log.Warning("Empty area for region '{0}'", this);
+		    }
 
-			if (!ReadPoint3D(xml["go"], map, ref m_GoLocation, false) && m_Area.Length > 0)
+		    if (!ReadPoint3D(xml["go"], map, ref m_GoLocation, false) && m_Area.Length > 0)
 			{
 				Point3D start = m_Area[0].Start;
 				Point3D end = m_Area[0].End;
@@ -1202,9 +1188,7 @@ namespace Server
 			{
 				if (mandatory)
 				{
-					Utility.PushColor(ConsoleColor.Red);
-					Console.WriteLine("Missing element for attribute '{0}'", attribute);
-					Utility.PopColor();
+					log.Warning("Missing element for attribute '{0}'", attribute);
 				}
 
 				return null;
@@ -1217,9 +1201,7 @@ namespace Server
 			{
 				if (mandatory)
 				{
-					Utility.PushColor(ConsoleColor.Red);
-					Console.WriteLine("Missing attribute '{0}' in element '{1}'", attribute, xml.Name);
-					Utility.PopColor();
+					log.Warning("Missing attribute '{0}' in element '{1}'", attribute, xml.Name);
 				}
 
 				return null;
@@ -1264,9 +1246,7 @@ namespace Server
 			}
 			catch
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Could not parse integer attribute '{0}' in element '{1}'", attribute, xml.Name);
-				Utility.PopColor();
+				log.Warning("Could not parse integer attribute '{0}' in element '{1}'", attribute, xml.Name);
 				return false;
 			}
 
@@ -1293,9 +1273,7 @@ namespace Server
 			}
 			catch
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Could not parse boolean attribute '{0}' in element '{1}'", attribute, xml.Name);
-				Utility.PopColor();
+				log.Warning("Could not parse boolean attribute '{0}' in element '{1}'", attribute, xml.Name);
 				return false;
 			}
 
@@ -1322,9 +1300,7 @@ namespace Server
 			}
 			catch
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Could not parse DateTime attribute '{0}' in element '{1}'", attribute, xml.Name);
-				Utility.PopColor();
+				log.Warning("Could not parse DateTime attribute '{0}' in element '{1}'", attribute, xml.Name);
 				return false;
 			}
 
@@ -1351,9 +1327,7 @@ namespace Server
 			}
 			catch
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Could not parse TimeSpan attribute '{0}' in element '{1}'", attribute, xml.Name);
-				Utility.PopColor();
+				log.Warning("Could not parse TimeSpan attribute '{0}' in element '{1}'", attribute, xml.Name);
 				return false;
 			}
 
@@ -1385,9 +1359,7 @@ namespace Server
 			}
 			else
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Could not parse {0} enum attribute '{1}' in element '{2}'", type, attribute, xml.Name);
-				Utility.PopColor();
+				log.Warning("Could not parse {0} enum attribute '{1}' in element '{2}'", type, attribute, xml.Name);
 				return false;
 			}
 		}
@@ -1412,9 +1384,7 @@ namespace Server
 			}
 			catch
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Could not parse Map attribute '{0}' in element '{1}'", attribute, xml.Name);
-				Utility.PopColor();
+				log.Warning("Could not parse Map attribute '{0}' in element '{1}'", attribute, xml.Name);
 				return false;
 			}
 
@@ -1442,17 +1412,13 @@ namespace Server
 			}
 			catch
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Could not parse Type attribute '{0}' in element '{1}'", attribute, xml.Name);
-				Utility.PopColor();
+				log.Warning("Could not parse Type attribute '{0}' in element '{1}'", attribute, xml.Name);
 				return false;
 			}
 
 			if (type == null)
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Could not find Type '{0}'", s);
-				Utility.PopColor();
+				log.Warning("Could not find Type '{0}'", s);
 				return false;
 			}
 

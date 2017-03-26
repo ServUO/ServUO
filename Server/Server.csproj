@@ -185,6 +185,11 @@
     <Compile Include="Gumps\KRGumpImage.cs" />
     <Compile Include="Gumps\KRGumpLabel.cs" />
     <Compile Include="Gumps\RelayInfo.cs" />
+    <Compile Include="Logging\BaseLogger.cs" />
+    <Compile Include="Logging\ConsoleLogger.cs" />
+    <Compile Include="Logging\ILog.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Persistence\Persistence.cs" />
     <Compile Include="Berserk.cs" />
     <Compile Include="PromptExtensions.cs" />

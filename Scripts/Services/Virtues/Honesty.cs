@@ -19,6 +19,8 @@ namespace Server.Services.Virtues
 {
 	public static class Honesty
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public static bool Enabled = Config.Get("Honesty.Enabled", true);
         public static int MaxGeneration = Config.Get("Honesty.MaxGeneration", 1000);
         public static bool TrammelGeneration = Config.Get("Honesty.TrammelGeneration", true);
@@ -227,9 +229,7 @@ namespace Server.Services.Virtues
 			}
 			catch (Exception e)
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine(e);
-				Utility.PopColor();
+				log.Error("Could not generate honesty virtue items: {0}", e);
 			}
 		}
 

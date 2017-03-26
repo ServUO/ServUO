@@ -96,6 +96,8 @@ namespace Server
 	[PropertyObject]
 	public class Skill
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private readonly Skills m_Owner;
 		private readonly SkillInfo m_Info;
 		private ushort m_Base;
@@ -167,7 +169,7 @@ namespace Server
 
 			if (m_Lock < SkillLock.Up || m_Lock > SkillLock.Locked)
 			{
-				Console.WriteLine("Bad skill lock -> {0}.{1}", owner.Owner, m_Lock);
+				log.Warning("Bad skill lock -> {0}.{1}", owner.Owner, m_Lock);
 				m_Lock = SkillLock.Up;
 			}
 		}
@@ -503,7 +505,7 @@ namespace Server
 			double intGain,
 			double gainFactor,
 			StatCode primary,
-            StatCode secondary, 
+            StatCode secondary,
             bool mastery = false)
 		{
 			Name = name;

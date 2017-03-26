@@ -7,11 +7,15 @@ namespace Server.RemoteAdmin
 {
     public class RemoteAdminLogging
     {
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static StreamWriter m_Output;
         private static bool m_Enabled = true;
         private static bool Initialized = false;
+
         const string LogBaseDirectory = "Logs";
         const string LogSubDirectory = "RemoteAdmin";
+
         public static bool Enabled
         {
             get
@@ -23,6 +27,7 @@ namespace Server.RemoteAdmin
                 m_Enabled = value;
             }
         }
+
         public static StreamWriter Output
         {
             get
@@ -30,6 +35,7 @@ namespace Server.RemoteAdmin
                 return m_Output;
             }
         }
+
         public static void LazyInitialize()
         {
             if (Initialized || !m_Enabled)
@@ -56,9 +62,7 @@ namespace Server.RemoteAdmin
             }
             catch
             {
-                Utility.PushColor(ConsoleColor.Red);
-                Console.WriteLine("RemoteAdminLogging: Failed to initialize LogWriter.");
-                Utility.PopColor();
+                log.Error("Failed to initialize LogWriter.");
                 m_Enabled = false;
             }
         }
@@ -66,6 +70,7 @@ namespace Server.RemoteAdmin
         public static object Format(object o)
         {
             o = Commands.CommandLogging.Format(o);
+
             if (o == null)
                 return "(null)";
 

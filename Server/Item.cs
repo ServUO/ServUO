@@ -668,6 +668,8 @@ namespace Server
 
     public class Item : IEntity, IHued, IComparable<Item>, ISerializable, ISpawnable
     {
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         #region Customs Framework
         private List<BaseModule> m_Modules = new List<BaseModule>();
 
@@ -857,7 +859,7 @@ namespace Server
                 }
             }
         }
-        
+
         private byte m_GridLocation = 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1047,12 +1049,10 @@ namespace Server
             }
             catch
             {
-		if(Core.Debug)
-		{
-                	Utility.PushColor(ConsoleColor.Red);
-                	Console.WriteLine("Ultima Art: Unable to read client files.");
-                	Utility.PopColor();
-		}
+                if (Core.Debug)
+                {
+                    log.Warning("Ultima Art: Unable to read client files.");
+                }
             }
 
             return null;
@@ -1570,7 +1570,7 @@ namespace Server
         /// 	{
         /// 		if ( from.Int &gt;= 100 )
         /// 			return true;
-        /// 		
+        ///
         /// 		return base.AllowEquipedCast( from );
         ///  }</code>
         ///     When placed in an Item script, the item may be cast when equiped if the <paramref name="from" /> has 100 or more intelligence. Otherwise, it will drop to their backpack.
@@ -3549,7 +3549,7 @@ namespace Server
                 state.Send(OPLPacket);
             }
         }
-        
+
         protected virtual Packet GetWorldPacketFor(NetState state)
         {
             if (state.HighSeas)
@@ -3800,24 +3800,25 @@ namespace Server
             }
             else if (item == this)
             {
-                Console.WriteLine(
-                    "Warning: Adding item to itself: [0x{0:X} {1}].AddItem( [0x{2:X} {3}] )",
+                log.Warning(
+                    "Adding item to itself: [0x{0:X} {1}].AddItem( [0x{2:X} {3}] ): {4}",
                     Serial.Value,
                     GetType().Name,
                     item.Serial.Value,
-                    item.GetType().Name);
-                Console.WriteLine(new StackTrace());
+                    item.GetType().Name,
+                    new StackTrace());
                 return;
             }
             else if (IsChildOf(item))
             {
-                Console.WriteLine(
-                    "Warning: Adding parent item to child: [0x{0:X} {1}].AddItem( [0x{2:X} {3}] )",
+                log.Warning(
+                    "Adding parent item to child: [0x{0:X} {1}].AddItem( [0x{2:X} {3}] ): {4}",
                     Serial.Value,
                     GetType().Name,
                     item.Serial.Value,
-                    item.GetType().Name);
-                Console.WriteLine(new StackTrace());
+                    item.GetType().Name,
+                    new StackTrace());
+
                 return;
             }
             else if (item.m_Parent is Mobile)
@@ -4735,8 +4736,7 @@ namespace Server
 
                     if (!Stackable && m_Amount > 1)
                     {
-                        Console.WriteLine(
-                            "Warning: 0x{0:X}: Amount changed for non-stackable item '{2}'. ({1})", m_Serial.Value, m_Amount, GetType().Name);
+                        log.Warning("0x{0:X}: Amount changed for non-stackable item '{2}'. ({1})", m_Serial.Value, m_Amount, GetType().Name);
                     }
                 }
             }
@@ -5143,12 +5143,12 @@ namespace Server
                     }
 
                     okay = ((m_OpenSlots >> i) & match) == match;
-                  
+
                     if (okay)
                     {
                         z += i;
                         break;
-                    }                   
+                    }
                 }
 			    if (!okay)
 			    {

@@ -2028,6 +2028,8 @@ namespace Server.Items
 
 	public class ContainerData
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		static ContainerData()
 		{
 			m_Table = new Dictionary<int, ContainerData>();
@@ -2093,7 +2095,7 @@ namespace Server.Items
 
 									if (m_Table.ContainsKey(id))
 									{
-										Console.WriteLine(@"Warning: double ItemID entry in Data\containers.cfg");
+										log.Warning(@"Double ItemID entry in Data\containers.cfg");
 									}
 									else
 									{

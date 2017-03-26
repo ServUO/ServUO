@@ -45,6 +45,8 @@ namespace Server.Network
 
 	public static class PacketHandlers
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static readonly PacketHandler[] m_Handlers;
 		private static readonly PacketHandler[] m_6017Handlers;
 
@@ -327,8 +329,7 @@ namespace Server.Network
 			{
 				if (ph.Ingame && state.Mobile == null)
 				{
-					Console.WriteLine(
-						"Client: {0}: Sent ingame packet (0xD7x{1:X2}) before having been attached to a mobile", state, packetID);
+					log.Warning("Client: {0}: Sent ingame packet (0xD7x{1:X2}) before having been attached to a mobile", state, packetID);
 					state.Dispose();
 				}
 				else if (ph.Ingame && state.Mobile.Deleted)
@@ -799,7 +800,7 @@ namespace Server.Network
 			{
 				if (state.Running)
 				{
-					Console.WriteLine("Warning: {0}: Player using godclient, disconnecting", state);
+					log.Warning("{0}: Player using godclient, disconnecting", state);
 				}
 
 				state.Dispose();
@@ -1399,9 +1400,7 @@ namespace Server.Network
 
 					if (!buttonExists)
 					{
-						Utility.PushColor(ConsoleColor.DarkRed);
-						state.WriteConsole("Invalid gump response, disconnecting...");
-						Utility.PopColor();
+						state.WriteConsole(LogLevel.Warning, "Invalid gump response, disconnecting...");
 						state.Dispose();
 						return;
 					}
@@ -1410,9 +1409,7 @@ namespace Server.Network
 
 					if (switchCount < 0 || switchCount > gump.m_Switches)
 					{
-						Utility.PushColor(ConsoleColor.DarkRed);
-						state.WriteConsole("Invalid gump response, disconnecting...");
-						Utility.PopColor();
+						state.WriteConsole(LogLevel.Warning, "Invalid gump response, disconnecting...");
 						state.Dispose();
 						return;
 					}
@@ -1428,9 +1425,7 @@ namespace Server.Network
 
 					if (textCount < 0 || textCount > gump.m_TextEntries)
 					{
-						Utility.PushColor(ConsoleColor.DarkRed);
-						state.WriteConsole("Invalid gump response, disconnecting...");
-						Utility.PopColor();
+						state.WriteConsole(LogLevel.Warning, "Invalid gump response, disconnecting...");
 						state.Dispose();
 						return;
 					}
@@ -1444,9 +1439,7 @@ namespace Server.Network
 
 						if (textLength > 239)
 						{
-							Utility.PushColor(ConsoleColor.DarkRed);
-							state.WriteConsole("Invalid gump response, disconnecting...");
-							Utility.PopColor();
+							state.WriteConsole(LogLevel.Warning, "Invalid gump response, disconnecting...");
 							state.Dispose();
 							return;
 						}
@@ -1820,7 +1813,7 @@ namespace Server.Network
 			{
 				if (ph.Ingame && state.Mobile == null)
 				{
-					Console.WriteLine(
+					log.Warning(
 						"Client: {0}: Sent ingame packet (0xBFx{1:X2}) before having been attached to a mobile", state, packetID);
 					state.Dispose();
 				}
@@ -2252,9 +2245,7 @@ namespace Server.Network
             // TODO: Eventually create a EC event sink to handle in ClientVerification.cs if EC clients matter
             if (!AllowEC && state.IsEnhancedClient)
             {
-                Utility.PushColor(ConsoleColor.DarkRed);
-                Console.WriteLine("Enhanced Client: {0}: Disconnecting...", state);
-                Utility.PopColor();
+                log.Info("Enhanced Client: {0}: Disconnecting...", state);
 
                 state.Dispose();
             }
@@ -2448,9 +2439,7 @@ namespace Server.Network
 
 					if (check != null && check.Map != Map.Internal && check != m)
 					{
-						Utility.PushColor(ConsoleColor.Red);
-						Console.WriteLine("Login: {0}: Account in use", state);
-						Utility.PopColor();
+						log.Info("Login: {0}: Account in use", state);
 						state.Send(new PopupMessage(PMMessage.CharInWorld));
 						return;
 					}
@@ -2665,9 +2654,7 @@ namespace Server.Network
 
 					if (check != null && check.Map != Map.Internal)
 					{
-						Utility.PushColor(ConsoleColor.Red);
-						Console.WriteLine("Login: {0}: Account in use", state);
-						Utility.PopColor();
+						log.Info("Login: {0}: Account in use", state);
 						state.Send(new PopupMessage(PMMessage.CharInWorld));
 						return;
 					}
@@ -2795,9 +2782,7 @@ namespace Server.Network
 
 					if (check != null && check.Map != Map.Internal)
 					{
-						Utility.PushColor(ConsoleColor.Red);
-						Console.WriteLine("Login: {0}: Account in use", state);
-						Utility.PopColor();
+						log.Info("Login: {0}: Account in use", state);
 						state.Send(new PopupMessage(PMMessage.CharInWorld));
 						return;
 					}
@@ -2930,26 +2915,20 @@ namespace Server.Network
 			}
 			else if (m_ClientVerification)
 			{
-				Utility.PushColor(ConsoleColor.DarkRed);
-				Console.WriteLine("Login: {0}: Invalid client detected, disconnecting", state);
-				Utility.PopColor();
+				log.Warning("Login: {0}: Invalid client detected, disconnecting", state);
 				state.Dispose();
 				return;
 			}
 
 			if (state.m_AuthID != 0 && authID != state.m_AuthID)
 			{
-				Utility.PushColor(ConsoleColor.DarkRed);
-				Console.WriteLine("Login: {0}: Invalid client detected, disconnecting", state);
-				Utility.PopColor();
+				log.Warning("Login: {0}: Invalid client detected, disconnecting", state);
 				state.Dispose();
 				return;
 			}
 			else if (state.m_AuthID == 0 && authID != state.m_Seed)
 			{
-				Utility.PushColor(ConsoleColor.DarkRed);
-				Console.WriteLine("Login: {0}: Invalid client detected, disconnecting", state);
-				Utility.PopColor();
+				log.Warning("Login: {0}: Invalid client detected, disconnecting", state);
 				state.Dispose();
 				return;
 			}
@@ -3011,9 +2990,7 @@ namespace Server.Network
 
 			if (state.m_Seed == 0)
 			{
-				Utility.PushColor(ConsoleColor.DarkRed);
-				Console.WriteLine("Login: {0}: Invalid client detected, disconnecting", state);
-				Utility.PopColor();
+				log.Warning("Login: {0}: Invalid client detected, disconnecting", state);
 				state.Dispose();
 				return;
 			}
@@ -3117,7 +3094,7 @@ namespace Server.Network
 
         public static void KRSeed(NetState state, PacketReader pvSrc)
         {
-            // KR Client detected 
+            // KR Client detected
             state.Send(new KRVerifier());
         }
 
@@ -3160,7 +3137,7 @@ namespace Server.Network
 
             int hue = pvSrc.ReadInt16();
             int unk5 = pvSrc.ReadInt32(); // 0x00 0x00 0x00 0x00
-            int unk6 = pvSrc.ReadInt32(); // 0x00 0x00 0x00 0x00	
+            int unk6 = pvSrc.ReadInt32(); // 0x00 0x00 0x00 0x00
 
             // isX = skill amount | vsX = skill
             int is1 = pvSrc.ReadByte();
@@ -3223,7 +3200,7 @@ namespace Server.Network
 
                     if (check != null && check.Map != Map.Internal)
                     {
-                        Console.WriteLine("Login: {0}: Account in use", state);
+                        log.Info("Login: {0}: Account in use", state);
                         state.Send(new PopupMessage(PMMessage.CharInWorld));
                         return;
                     }

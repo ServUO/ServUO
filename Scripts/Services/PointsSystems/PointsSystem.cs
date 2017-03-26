@@ -27,7 +27,7 @@ namespace Server.Engines.Points
         Moonglow,
         Britain,
         Jhelom,
-        Yew, 
+        Yew,
         Minoc,
         Trinsic,
         SkaraBrae,
@@ -41,6 +41,8 @@ namespace Server.Engines.Points
 
     public abstract class PointsSystem
     {
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public static string FilePath = Path.Combine("Saves/PointsSystem", "Persistence.bin");
 
         public List<PointsEntry> PlayerTable { get; set; }
@@ -87,9 +89,7 @@ namespace Server.Engines.Points
                 AddEntry(from, true);
                 GetEntry(from).Points = points;
 
-                Utility.PushColor(ConsoleColor.Green);
-                Console.WriteLine("Converted {0} points for {1} to {2}!", (int)points, from.Name, this.GetType().Name);
-                Utility.PopColor();
+                log.Info("Converted {0} points for {1} to {2}!", (int)points, from.Name, this.GetType().Name);
             }
         }
 
@@ -121,7 +121,7 @@ namespace Server.Engines.Points
         public virtual void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
             if (quest)
-                from.SendLocalizedMessage(1113719, ((int)points).ToString(), 0x26); //You have received ~1_val~ loyalty points as a reward for completing the quest. 
+                from.SendLocalizedMessage(1113719, ((int)points).ToString(), 0x26); //You have received ~1_val~ loyalty points as a reward for completing the quest.
             else
                 from.SendLocalizedMessage(1115920, String.Format("{0}\t{1}", Name.ToString(), ((int)points).ToString()));  // Your loyalty to ~1_GROUP~ has increased by ~2_AMOUNT~;Original
         }
@@ -190,7 +190,7 @@ namespace Server.Engines.Points
 
             if (entry == null && (create || AutoAdd))
                 entry = AddEntry(pm);
-				
+
 			return entry;
 		}
 
@@ -245,7 +245,7 @@ namespace Server.Engines.Points
                     {
                         PlayerMobile player = reader.ReadMobile() as PlayerMobile;
                         PointsEntry entry = GetSystemEntry(player);
-                        
+
                         if (version > 0)
                             entry.Deserialize(reader);
                         else
@@ -304,7 +304,7 @@ namespace Server.Engines.Points
 						PointsSystem s = GetSystemInstance(type);
 
 					    s.Deserialize(reader);
-					}	
+					}
 				});
 		}
 
@@ -383,14 +383,14 @@ namespace Server.Engines.Points
 
             return base.GetHashCode();
         }
-		
+
 		public virtual void Serialize(GenericWriter writer)
 		{
 			writer.Write(0);
 			writer.Write(Player);
 			writer.Write(Points);
 		}
-		
+
 		public virtual void Deserialize(GenericReader reader)
 		{
 			int version = reader.ReadInt();

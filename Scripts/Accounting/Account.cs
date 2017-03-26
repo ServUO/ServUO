@@ -26,6 +26,8 @@ namespace Server.Accounting
 	[PropertyObject]
 	public class Account : IAccount, IComparable, IComparable<Account>
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public static readonly TimeSpan YoungDuration = TimeSpan.FromHours(40.0);
 		public static readonly TimeSpan InactiveDuration = TimeSpan.FromDays(180.0);
 		public static readonly TimeSpan EmptyInactiveDuration = TimeSpan.FromDays(30.0);
@@ -333,9 +335,7 @@ namespace Server.Accounting
                     }
                     catch (Exception ex)
                     {
-                        Utility.PushColor(ConsoleColor.Red);
-                        Console.WriteLine("Writing Secure Account Exception: {0}", ex);
-                        Utility.PopColor();
+                        log.Error("Writing secure account exception: {0}", ex);
                     }
                 }
             }
