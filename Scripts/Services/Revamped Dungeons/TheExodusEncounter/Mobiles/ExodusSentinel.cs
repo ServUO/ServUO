@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a exodus sentinel's corpse")]
+    [CorpseName("a sentinel's corpse")]
     public class ExodusSentinel : BaseCreature
     {
         private bool m_FieldActive;
@@ -22,6 +22,9 @@ namespace Server.Mobiles
 
             this.SetDamage(16, 22);
 
+            this.SetDamageType(ResistanceType.Physical, 60);
+            this.SetDamageType(ResistanceType.Energy, 40);
+
             this.SetResistance(ResistanceType.Physical, 60, 70);
             this.SetResistance(ResistanceType.Fire, 40, 50);
             this.SetResistance(ResistanceType.Cold, 25, 35);
@@ -39,113 +42,41 @@ namespace Server.Mobiles
             this.PackItem(new PowerCrystal());
             this.PackItem(new ArcaneGem());
             this.PackItem(new ClockworkAssembly());
-		}
-		
+
+            this.m_FieldActive = this.CanUseField;
+        }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich);
+        }
+
+        public override void OnKilledBy(Mobile m)
+        {
+            base.OnKilledBy(m);
 
             if (Utility.RandomDouble() < 0.1)
             {
-                switch (Utility.Random(4))
-                {
-                    case 0:
-                        PackItem(new ExodusSummoningRite());
-                        break;
-                    case 1:
-                        PackItem(new ExodusSacrificalDagger());
-                        break;
-                    case 2:
-                        PackItem(new RobeofRite());
-                        break;
-                    case 3:
-                        PackItem(new ExodusSummoningAlter());
-                        break;
-                }
-            }
-
-            this.m_FieldActive = this.CanUseField;
+                ExodusChest.GiveRituelItem(m);
+            }            
         }
 
         public ExodusSentinel(Serial serial) : base(serial)
         {
         }
 
-        public bool FieldActive
-        {
-            get
-            {
-                return this.m_FieldActive;
-            }
-        }
-        public bool CanUseField
-        {
-            get
-            {
-                return this.Hits >= this.HitsMax * 9 / 10;
-            }
-        }// TODO: an OSI bug prevents to verify this
-        public override bool IsScaredOfScaryThings
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsScaryToPets
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-
-
-        public override int GetIdleSound()
-        {
-            return 0x218;
-        }
-
-        public override int GetAngerSound()
-        {
-            return 0x26C;
-        }
-
-        public override int GetDeathSound()
-        {
-            return 0x211;
-        }
-
-        public override int GetAttackSound()
-        {
-            return 0x232;
-        }
-
-        public override int GetHurtSound()
-        {
-            return 0x140;
-        }
+        public bool FieldActive { get { return this.m_FieldActive; } }
+        public bool CanUseField { get { return this.Hits >= this.HitsMax * 9 / 10; } }// TODO: an OSI bug prevents to verify this
+        public override bool IsScaredOfScaryThings { get { return false; } }
+        public override bool IsScaryToPets { get { return true; } }
+        public override bool BardImmune { get { return !Core.AOS; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        
+        public override int GetIdleSound() { return 0x218; }
+        public override int GetAngerSound() { return 0x26C; }
+        public override int GetDeathSound() { return 0x211; }
+        public override int GetAttackSound() { return 0x232; }
+        public override int GetHurtSound() { return 0x140; }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
         {
@@ -238,9 +169,6 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 
             this.m_FieldActive = this.CanUseField;
-
-            if (this.Name == "Exodus Sentinel")
-                this.Name = "exodus sentinel";
         }
     }
 }

@@ -4,6 +4,7 @@ using Server.Mobiles;
 using Server.Multis;
 using Server.Targeting;
 using Server.Engines.VvV;
+using Server.Items;
 
 namespace Server.SkillHandlers
 {
@@ -76,6 +77,20 @@ namespace Server.SkillHandlers
                                 trg.SendLocalizedMessage(500814); // You have been revealed!
                                 foundAnyone = true;
                             }
+                        }
+                    }
+
+                    inRange.Free();
+                    
+                    IPooledEnumerable ExodusChestInRange = src.Map.GetItemsInRange(p, 3);
+
+                    foreach (Item item in ExodusChestInRange)
+                    {
+                        if (item is ExodusChest && !item.Visible)
+                        {
+                            ExodusChest chest = item as ExodusChest;
+                            chest.Visible = true;
+                            chest.StartDeleteTimer();
                         }
                     }
 
