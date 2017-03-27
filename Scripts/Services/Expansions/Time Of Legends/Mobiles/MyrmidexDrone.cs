@@ -10,7 +10,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public MyrmidexDrone()
-            : base(AIType.AI_Melee, FightMode.Enemy, 10, 1, .2, .4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .2, .4)
         {
             Name = "a myrmidex drone";
 
@@ -57,6 +57,26 @@ namespace Server.Mobiles
         public override int Meat { get { return 4; } }
         public override Poison HitPoison { get { return Poison.Regular; } }
         public override Poison PoisonImmune { get { return Poison.Regular; } }
+
+        public override bool PlayerRangeSensitive
+        {
+            get
+            {
+                if (this.Region != null && this.Region.IsPartOf(typeof(BattleRegion)))
+                {
+                    if (((BattleRegion)this.Region).Spawner != null)
+                        return !((BattleRegion)this.Region).Spawner.HasPlayers();
+                }
+
+                return base.PlayerRangeSensitive;
+            }
+        }
+
+        private void AddImmovableItem(Item item)
+        {
+            item.LootType = LootType.Blessed;
+            SetWearable(item);
+        }
 
         public override bool IsEnemy(Mobile m)
         {

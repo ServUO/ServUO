@@ -108,7 +108,7 @@ namespace Server.Items
                 if (count == 0)
                     Delete();
             }
-            
+
         }
 
         public override void Delete()
@@ -167,12 +167,12 @@ namespace Server.Items
             else
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
-                    {
-                        EodonTribeRegion r = Region.Find(this.Location, this.Map) as EodonTribeRegion;
+                {
+                    EodonTribeRegion r = Region.Find(this.Location, this.Map) as EodonTribeRegion;
 
-                        if (r != null)
-                            Zone = r;
-                    });
+                    if (r != null)
+                        Zone = r;
+                });
             }
         }
     }

@@ -1228,6 +1228,9 @@ namespace Server.Spells
                     DoLeech(damageGiven, from, target);
                 }
 
+                if(target != null)
+                    Spells.Mysticism.SpellPlagueSpell.OnMobileDamaged(target);
+
                 WeightOverloading.DFA = DFAlgorithm.Standard;
             }
             else
@@ -1402,6 +1405,9 @@ namespace Server.Spells
                     c.OnHarmfulSpell(this.m_From);
                     c.OnDamagedBySpell(this.m_From);
                 }
+
+                if (target != null)
+                    Spells.Mysticism.SpellPlagueSpell.OnMobileDamaged(target);
 
                 if (this.m_Spell != null)
                     this.m_Spell.RemoveDelayedDamageContext(this.m_Target);
