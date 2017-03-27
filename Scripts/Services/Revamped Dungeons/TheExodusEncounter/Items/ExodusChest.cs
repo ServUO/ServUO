@@ -20,13 +20,6 @@ namespace Server.Items
             typeof(ExodusSummoningRite), typeof(ExodusSacrificalDagger), typeof(RobeofRite), typeof(ExodusSummoningAlter)
         };
 
-        private static Type[] m_ImbuingEssenceIngreds =
-        {
-            typeof(EssencePrecision), typeof(EssenceAchievement), typeof(EssenceBalance), typeof(EssenceControl), typeof(EssenceDiligence),
-            typeof(EssenceDirection),   typeof(EssenceFeeling), typeof(EssenceOrder),   typeof(EssencePassion),   typeof(EssencePersistence),
-            typeof(EssenceSingularity)
-        };
-
         private Timer m_Timer;
         private ExodusChestRegion m_Region;
 
@@ -140,7 +133,7 @@ namespace Server.Items
 
             if (0.2 > Utility.RandomDouble())
             {
-                item = Activator.CreateInstance(m_ImbuingEssenceIngreds[Utility.Random(m_ImbuingEssenceIngreds.Length)]) as Item;
+                item = Loot.RandomEssence();
                 item.Amount = Utility.Random(3, 6);
                 this.DropItem(item);
             }
