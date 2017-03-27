@@ -11,7 +11,6 @@ namespace drNO.ThieveItems
 {
     class StealingHandler
     {
-
         private static Type[] SpecialItemList = 
         { 
             typeof(SeedOflife), 
@@ -38,7 +37,7 @@ namespace drNO.ThieveItems
                 return;
             }
 
-            if (!((thieve.Map == Map.Felucca && thieve.Region is DungeonRegion) || thieve.Region is ChampionSpawnRegion))  
+            if (!((thieve.Map == Map.Felucca && thieve.Region is DungeonRegion) || thieve.Region is ChampionSpawnRegion || from is ExodusZealot))  
             {
                 return; 
             }
@@ -74,9 +73,16 @@ namespace drNO.ThieveItems
             {
                 thieve.SendLocalizedMessage(1094947);//You successfully steal a special item from the creature!
 
-                int rnd = Utility.Random(SpecialItemList.Length);
+                Item itm;
 
-                Item itm = (Item)Activator.CreateInstance(SpecialItemList[rnd]);
+                if (from is ExodusZealot)
+                {
+                    itm = Activator.CreateInstance(ExodusChest.RituelItem[Utility.Random(ExodusChest.RituelItem.Length)]) as Item;
+                }
+                else
+                {
+                    itm = Activator.CreateInstance(SpecialItemList[Utility.Random(SpecialItemList.Length)]) as Item;
+                }                
 
                 thieve.AddToBackpack(itm);
             } 
