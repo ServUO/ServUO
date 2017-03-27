@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -58,19 +59,13 @@ namespace Server.Mobiles
             item = new Spellbook();
             item.LootType = LootType.Blessed;
             this.SetWearable(item);
-
-            if (Utility.RandomDouble() < 0.1)
-            {
-                item = Activator.CreateInstance(ExodusChest.RituelItem[Utility.Random(ExodusChest.RituelItem.Length)]) as Item;
-                this.PackItem(item);
-            }
         }
 
         public ExodusZealot(Serial serial)
             : base(serial)
         {
         }
-
+        
         public override bool AlwaysMurderer { get { return true; } }
         public override bool ShowFameTitle { get { return false; } }
 		public override Poison PoisonImmune{ get{ return Poison.Lethal; } }

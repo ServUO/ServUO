@@ -4,13 +4,18 @@ using System;
 
 namespace Server.Items
 {
-    public class ExodusChest : LockableContainer
+    public class ExodusChest : DecorativeBox
     {
-        public override int LabelNumber { get { return 1073403; } } // decorative box
+        public static void Initialize()
+        {
+            TileData.ItemTable[0x2DF3].Flags = TileFlag.None;
+        }
+
+        public override int DefaultGumpID { get { return 0x10C; } }
 
         public static Type[] RituelItem { get { return m_RituelItem; } }
 
-        private static readonly Type[] m_RituelItem = new[]
+        private static readonly Type[] m_RituelItem =
         {
             typeof(ExodusSummoningRite), typeof(ExodusSacrificalDagger), typeof(RobeofRite), typeof(ExodusSummoningAlter)
         };
@@ -25,18 +30,20 @@ namespace Server.Items
         private Timer m_Timer;
         private ExodusChestRegion m_Region;
 
-        public override bool IsDecoContainer { get { return false; } }
+        public override bool IsDecoContainer { get { return false; } }        
 
         [Constructable]
-        public ExodusChest() : base(0x2DF3)
+        public ExodusChest() 
+            : base()
         {
             this.Visible = false;
             this.Locked = true;
-            this.LockLevel = 90;
-            this.RequiredSkill = 90;
-            this.Weight = 255.0;
+            this.LockLevel = 100;
+            this.RequiredSkill = 110;
+            this.MaxLockLevel = 130;
+            this.Weight = 0.0;
             this.Hue = 2700;
-            this.Movable = true;
+            this.Movable = false;
 
             this.TrapType = TrapType.PoisonTrap;
             this.TrapPower = 100;
@@ -194,7 +201,7 @@ namespace Server.Items
 
         public override void OnEnter(Mobile m)
         {
-            if (!m_Chest.Visible && m is PlayerMobile)
+            if (!m_Chest.Visible && m is PlayerMobile && m.Skills[SkillName.DetectHidden].Value >= 98.0)
             {
                 m.SendLocalizedMessage(1153493); // Your keen senses detect something hidden in the area...
             }

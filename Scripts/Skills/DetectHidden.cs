@@ -81,20 +81,23 @@ namespace Server.SkillHandlers
                     }
 
                     inRange.Free();
-                    
-                    IPooledEnumerable ExodusChestInRange = src.Map.GetItemsInRange(p, 3);
 
-                    foreach (Item item in ExodusChestInRange)
+                    if (src.Skills[SkillName.DetectHidden].Value >= 98.0)
                     {
-                        if (item is ExodusChest && !item.Visible)
-                        {
-                            ExodusChest chest = item as ExodusChest;
-                            chest.Visible = true;
-                            chest.StartDeleteTimer();
-                        }
-                    }
+                        IPooledEnumerable ExodusChestInRange = src.Map.GetItemsInRange(p, 3);
 
-                    inRange.Free();
+                        foreach (Item item in ExodusChestInRange)
+                        {
+                            if (item is ExodusChest && !item.Visible && src.Skills[SkillName.DetectHidden].Value >= 98.0)
+                            {
+                                ExodusChest chest = item as ExodusChest;
+                                chest.Visible = true;
+                                chest.StartDeleteTimer();
+                            }
+                        }
+
+                        inRange.Free();
+                    }
 
                     bool faction = Faction.Find(src) != null;
                     bool vvv = ViceVsVirtueSystem.IsVvV(src);
