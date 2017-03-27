@@ -80,7 +80,7 @@ namespace Server.Items
 				return;
 			}
 
-			if (from.InRange(GetWorldLocation(), 1) || from.AccessLevel >= AccessLevel.Counselor)
+			if (from.InRange(GetWorldLocation(), 1) || from.IsStaff())
 			{
 				UseGate(from);
 			}
@@ -114,7 +114,7 @@ namespace Server.Items
 
 		public bool UseGate(Mobile m)
 		{
-			if (m.AccessLevel >= AccessLevel.Counselor)
+			if (m.IsStaff())
 			{
 				//Staff can always use a gate!
 			}
@@ -372,7 +372,7 @@ namespace Server.Items
 
 			if (mobile.Player)
 			{
-				if (mobile.AccessLevel >= AccessLevel.Counselor)
+				if (mobile.IsStaff())
 				{
 					ClientFlags flags = mobile.NetState == null ? ClientFlags.None : mobile.NetState.Flags;
 
@@ -522,7 +522,7 @@ namespace Server.Items
 				m_Mobile.SendLocalizedMessage(1019003); // You are already there.
 				return;
 			}
-			else if (m_Mobile.AccessLevel >= AccessLevel.Counselor)
+			else if (m_Mobile.IsStaff())
 			{
 				//Staff can always use a gate!
 			}
