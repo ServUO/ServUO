@@ -150,6 +150,8 @@ namespace Server.Items
         private List<WrongBedrollBase> Bedrolls { get; set; }
         public List<MysteriousTunnel> MysteriousTunnels { get; set; }
 
+        public static List<BedrollSpawner> Instances { get; set; }
+
         public BedrollSpawner()
             : base(3796)
         {
@@ -160,6 +162,11 @@ namespace Server.Items
             Timer.DelayCall(TimeSpan.FromSeconds(10), CheckRespawn);
             this.m_Timer = Timer.DelayCall(RestartDelay, RestartDelay, new TimerCallback(CheckRespawn));
             this.m_Timer.Start();
+
+            if (Instances == null)
+                Instances = new List<BedrollSpawner>();
+
+            Instances.Add(this);
         }        
 
         private void CheckRespawn()
@@ -275,6 +282,11 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Instances == null)
+                Instances = new List<BedrollSpawner>();
+
+            Instances.Add(this);
 
             DateTime next = reader.ReadDateTime();
 

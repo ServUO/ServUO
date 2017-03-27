@@ -50,7 +50,6 @@ namespace Server.Mobiles
         Closest, // Attack the closest
         Evil, // Only attack aggressor -or- negative karma
         Good, // Only attack aggressor -or- positive karma
-        Enemy // Only attacks those returned true in IsEnemy(...)
     }
 
     public enum OrderType

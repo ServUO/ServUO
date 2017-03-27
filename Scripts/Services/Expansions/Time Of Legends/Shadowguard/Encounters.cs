@@ -1306,7 +1306,7 @@ namespace Server.Engines.Shadowguard
 		
 		private Type[] _Bosses = new Type[] { typeof(Anon), typeof(Virtuebane), typeof(Ozymandias), typeof(Juonar) };
 
-        public override TimeSpan EncounterDuration { get { return TimeSpan.FromMinutes(120); } }
+        public override TimeSpan EncounterDuration { get { return TimeSpan.MaxValue; } }
         public override TimeSpan ResetDuration { get { return TimeSpan.FromMinutes(5); } }
 
         public override Type AddonType { get { return null; } }

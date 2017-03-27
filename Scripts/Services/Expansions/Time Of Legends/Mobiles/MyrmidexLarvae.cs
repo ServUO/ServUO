@@ -10,7 +10,7 @@ namespace Server.Mobiles
 	{
         [Constructable]
 		public MyrmidexLarvae() 
-            : base(AIType.AI_Melee, FightMode.Enemy, 10, 1, .2, .4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .2, .4)
 		{
 			Name = "a myrmidex larvae";
 			

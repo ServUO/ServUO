@@ -131,6 +131,7 @@ namespace Server.Spells.Mysticism
                 sec = caster.Skills[SkillName.Focus].Value;
 
             int damage = (int)(((prim + sec) / 2) * .66) + Utility.RandomMinMax(1, 6);
+            damage -= 3;
 
             from.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
             from.PlaySound(0x307);
@@ -143,7 +144,7 @@ namespace Server.Spells.Mysticism
             AOS.Damage(from, caster, damage, false, 0, 0, 0, 0, 0, 100, 0, false, false, false);
         }
 
-        public static void RemoveFromList(Mobile from, SpellPlagueTimer timer)
+        public static void RemoveFromList(Mobile from)
         {
             if (m_Table.ContainsKey(from) && m_Table[from].Count > 0)
             {
@@ -211,7 +212,7 @@ namespace Server.Spells.Mysticism
         private void EndTimer()
         {
             this.Stop();
-            SpellPlagueSpell.RemoveFromList(m_Owner, this);
+            SpellPlagueSpell.RemoveFromList(m_Owner);
         }
     }
 }

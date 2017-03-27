@@ -2913,8 +2913,8 @@ namespace Server.Mobiles
 								continue;
 							}
 */
-							if (acqType == FightMode.Aggressor || acqType == FightMode.Evil || acqType == FightMode.Good 
-								|| ((m is BaseCreature) && ((BaseCreature)m).Summoned && ((BaseCreature)m).GetMaster() == null))
+							if (acqType == FightMode.Aggressor || acqType == FightMode.Evil || acqType == FightMode.Good
+                                || (m is BaseCreature && ((BaseCreature)m).Summoned))
 							{
 
 								//Ignore anyone under EtherealVoyage
@@ -2962,15 +2962,6 @@ namespace Server.Mobiles
 											bValid = (m.Karma > 0);
 										}
 									}
-									else if (acqType == FightMode.Enemy)
-									{
-										if (!m_Mobile.IsEnemy(m))
-											continue;
-									}
-									else if (acqType == FightMode.Aggressor)
-									{
-										bValid = m_Mobile.Aggressors.FirstOrDefault(agg => agg.Attacker == m) != null;
-									}
 
 									// Ignore Invalid targets
 									if (!bValid)
@@ -3017,12 +3008,12 @@ namespace Server.Mobiles
 			{
 				for (int a = 0; a < count; ++a)
 				{
-					if (a < m_Mobile.Aggressed.Count && m_Mobile.Aggressed[a].Attacker == from)
+					if (a < m_Mobile.Aggressed.Count && m_Mobile.Aggressed[a].Defender == from)
 					{
 						return true;
 					}
 
-					if (a < m_Mobile.Aggressors.Count && m_Mobile.Aggressors[a].Defender == from)
+					if (a < m_Mobile.Aggressors.Count && m_Mobile.Aggressors[a].Attacker == from)
 					{
 						return true;
 					}
