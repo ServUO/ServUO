@@ -1,6 +1,7 @@
 using System;
 using Server.Spells.Fourth;
 using Server.Spells.Necromancy;
+using Server.Spells.Mysticism;
 
 namespace Server.Items
 {
@@ -66,6 +67,7 @@ namespace Server.Items
 				MortalStrike.EndWound(from);
 	            BloodOathSpell.RemoveCurse(from);
 				MindRotSpell.ClearMindRotScalar(from);
+                SpellPlagueSpell.RemoveFromList(from);
 
                 BuffInfo.RemoveBuff(from, BuffIcon.Clumsy);
                 BuffInfo.RemoveBuff(from, BuffIcon.FeebleMind);

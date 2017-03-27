@@ -75,10 +75,11 @@ namespace Server.Spells.Mysticism
 
                     if (m.Poisoned)
                     {
-                        int chanceToCure = (10000 + (int)(((prim + sec) / 2) * 75) - ((m.Poison.RealLevel + 1) * 1750)) / 100;
+                        int level = m.Poison.RealLevel + 1;
+                        int chanceToCure = (10000 + (int)(((prim + sec) / 2) * 75) - (level * 1750)) / 100;
 
                         if (chanceToCure > Utility.Random(100) && m.CurePoison(Caster))
-                            toHealMod /= 3;
+                            toHealMod /= level;
                         else
                             toHealMod = 0;
                     }
@@ -89,20 +90,69 @@ namespace Server.Spells.Mysticism
                         toHealMod = 0;
                     }
 
-                    if (toHealMod > 0)
-                        SpellHelper.Heal(toHealMod + Utility.RandomMinMax(1, 6), m, Caster);
+                    int curselevel = 0;
 
-                    m.RemoveStatMod("[Magic] Str Curse");
-					m.RemoveStatMod("[Magic] Dex Curse");
-					m.RemoveStatMod("[Magic] Int Curse");
+                    if (SleepSpell.IsUnderSleepEffects(m))
+                    {
+                        SleepSpell.EndSleep(m);
+                        curselevel += 2;
+                    }
 
-                    SleepSpell.EndSleep(m);
-                    EvilOmenSpell.TryEndEffect(m);
-                    StrangleSpell.RemoveCurse(m);
-                    CorpseSkinSpell.RemoveCurse(m);
-                    CurseSpell.RemoveEffect(m);
-                    BloodOathSpell.RemoveCurse(m);
-                    MindRotSpell.ClearMindRotScalar(m);
+                    if (EvilOmenSpell.TryEndEffect(m))
+                    {
+                        curselevel += 1;
+                    }
+
+                    if (StrangleSpell.RemoveCurse(m))
+                    {
+                        curselevel += 2;
+                    }
+
+                    if (CorpseSkinSpell.RemoveCurse(m))
+                    {
+                        curselevel += 3;
+                    }
+
+                    if (CurseSpell.UnderEffect(m))
+                    {
+                        CurseSpell.RemoveEffect(m);
+                        curselevel += 4;
+                    }
+
+                    if (BloodOathSpell.RemoveCurse(m))
+                    {
+                        curselevel += 3;
+                    }
+
+                    if (MindRotSpell.HasMindRotScalar(m))
+                    {
+                        MindRotSpell.ClearMindRotScalar(m);
+                        curselevel += 2;
+                    }
+
+                    if (SpellPlagueSpell.HasSpellPlague(m))
+                    {
+                        SpellPlagueSpell.RemoveFromList(m);
+                        curselevel += 4;
+                    }
+
+                    if (m.GetStatMod("[Magic] Str Curse") != null)
+                    {
+                        m.RemoveStatMod("[Magic] Str Curse");
+                        curselevel += 1;
+                    }
+
+                    if (m.GetStatMod("[Magic] Dex Curse") != null)
+                    {
+                        m.RemoveStatMod("[Magic] Dex Curse");
+                        curselevel += 1;
+                    }
+
+                    if (m.GetStatMod("[Magic] Int Curse") != null)
+                    {
+                        m.RemoveStatMod("[Magic] Int Curse");
+                        curselevel += 1;
+                    }
 
                     BuffInfo.RemoveBuff(m, BuffIcon.Clumsy);
                     BuffInfo.RemoveBuff(m, BuffIcon.FeebleMind);
@@ -115,7 +165,16 @@ namespace Server.Spells.Mysticism
                     BuffInfo.RemoveBuff( m, BuffIcon.Strangle );
                     BuffInfo.RemoveBuff( m, BuffIcon.EvilOmen );
 
-                    //TODO: Message/Effects???
+                    if (toHealMod > 0 && curselevel > 0)
+                    {
+                        int toHealMod1 = toHealMod - (curselevel * 3);
+                        int toHealMod2 = toHealMod - (int)((double)toHealMod * ((double)curselevel / 100));
+
+                        toHealMod -= toHealMod1 + toHealMod2;
+                    }
+
+                    if (toHealMod > 0)
+                        SpellHelper.Heal(toHealMod + Utility.RandomMinMax(1, 6), m, Caster);
                 }
             }
 

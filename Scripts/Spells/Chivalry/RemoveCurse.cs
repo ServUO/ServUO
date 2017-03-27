@@ -3,6 +3,7 @@ using Server.Items;
 using Server.Spells.Fourth;
 using Server.Spells.Necromancy;
 using Server.Targeting;
+using Server.Spells.Mysticism;
 
 namespace Server.Spells.Chivalry
 {
@@ -117,11 +118,14 @@ namespace Server.Spells.Chivalry
                     CorpseSkinSpell.RemoveCurse(m);
                     CurseSpell.RemoveEffect(m);
                     MortalStrike.EndWound(m);
+
                     if (Core.ML)
                     {
                         BloodOathSpell.RemoveCurse(m);
                     }
+
                     MindRotSpell.ClearMindRotScalar(m);
+                    SpellPlagueSpell.RemoveFromList(m);
 
                     BuffInfo.RemoveBuff(m, BuffIcon.Clumsy);
                     BuffInfo.RemoveBuff(m, BuffIcon.FeebleMind);
@@ -130,7 +134,6 @@ namespace Server.Spells.Chivalry
                     BuffInfo.RemoveBuff(m, BuffIcon.MassCurse);
                     BuffInfo.RemoveBuff(m, BuffIcon.MortalStrike);
                     BuffInfo.RemoveBuff(m, BuffIcon.Mindrot);
-                    // TODO: Should this remove blood oath? Pain spike?
                 }
                 else
                 {

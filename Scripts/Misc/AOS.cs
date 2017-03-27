@@ -260,7 +260,6 @@ namespace Server
 
             if (totalDamage > 0)
             {
-                Spells.Mysticism.SpellPlagueSpell.OnMobileDamaged(m);
                 Spells.Mysticism.SleepSpell.OnDamage(m);
             }
             #endregion

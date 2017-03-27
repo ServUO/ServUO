@@ -60,10 +60,24 @@ namespace Server.Mobiles
             Utility.AssignRandomHair(this);
         }
 
+        public override bool PlayerRangeSensitive
+        {
+            get
+            {
+                if (this.Region != null && this.Region.IsPartOf(typeof(BattleRegion)))
+                {
+                    if (((BattleRegion)this.Region).Spawner != null)
+                        return !((BattleRegion)this.Region).Spawner.HasPlayers();
+                }
+
+                return base.PlayerRangeSensitive;
+            }
+        }
+
         private void AddImmovableItem(Item item)
         {
             item.LootType = LootType.Blessed;
-            AddItem(item);
+            SetWearable(item);
         }
 
         public override bool IsEnemy(Mobile m)
