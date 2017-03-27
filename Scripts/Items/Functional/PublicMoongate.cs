@@ -6,8 +6,6 @@ using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
 
-using CustomsFramework;
-
 namespace Server.Items
 {
 	public class PublicMoongate : Item
@@ -82,7 +80,7 @@ namespace Server.Items
 				return;
 			}
 
-			if (from.InRange(GetWorldLocation(), 1) || Utilities.IsStaff(from))
+			if (from.InRange(GetWorldLocation(), 1) || from.AccessLevel >= AccessLevel.Counselor)
 			{
 				UseGate(from);
 			}
@@ -116,7 +114,7 @@ namespace Server.Items
 
 		public bool UseGate(Mobile m)
 		{
-			if (Utilities.IsStaff(m))
+			if (m.AccessLevel >= AccessLevel.Counselor)
 			{
 				//Staff can always use a gate!
 			}
@@ -374,7 +372,7 @@ namespace Server.Items
 
 			if (mobile.Player)
 			{
-				if (Utilities.IsStaff(mobile))
+				if (mobile.AccessLevel >= AccessLevel.Counselor)
 				{
 					ClientFlags flags = mobile.NetState == null ? ClientFlags.None : mobile.NetState.Flags;
 
@@ -524,7 +522,7 @@ namespace Server.Items
 				m_Mobile.SendLocalizedMessage(1019003); // You are already there.
 				return;
 			}
-			else if (Utilities.IsStaff(m_Mobile))
+			else if (m_Mobile.AccessLevel >= AccessLevel.Counselor)
 			{
 				//Staff can always use a gate!
 			}
