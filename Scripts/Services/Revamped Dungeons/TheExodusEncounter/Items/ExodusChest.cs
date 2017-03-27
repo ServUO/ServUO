@@ -15,7 +15,7 @@ namespace Server.Items
 
         public static Type[] RituelItem { get { return m_RituelItem; } }
 
-        private static readonly Type[] m_RituelItem =
+        private static Type[] m_RituelItem = new Type[]
         {
             typeof(ExodusSummoningRite), typeof(ExodusSacrificalDagger), typeof(RobeofRite), typeof(ExodusSummoningAlter)
         };
