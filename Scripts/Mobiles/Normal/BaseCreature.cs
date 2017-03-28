@@ -7452,4 +7452,3 @@ namespace Server.Mobiles
         }
     }
 }
-IsEnemy
