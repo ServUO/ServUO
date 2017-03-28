@@ -1,64 +1,73 @@
 using System;
 using System.Collections.Generic;
 using Server.Engines.Craft;
+using Server.Items;
 
 namespace Server.Engines.BulkOrders
 {
-    [TypeAlias("Scripts.Engines.BulkOrders.SmallSmithBOD")]
-    public class SmallSmithBOD : SmallBOD
+    public class SmallFletchingBOD : SmallBOD
     {
-        public static double[] m_BlacksmithMaterialChances = new double[]
+        public static double[] m_FletchingMaterialChances = new double[]
         {
-            0.501953125, // None
-            0.250000000, // Dull Copper
-            0.125000000, // Shadow Iron
-            0.062500000, // Copper
-            0.031250000, // Bronze
-            0.015625000, // Gold
-            0.007812500, // Agapite
-            0.003906250, // Verite
-            0.001953125  // Valorite
+            0.513718750, // None
+            0.292968750, // Oak
+            0.117187500, // Ash
+            0.046875000, // Yew
+            0.018750000, // Heartwood
+            0.007500000, // Bloodwood
+            0.003000000 // Frostwood
         };
+
+        public override BODType BODType { get { return BODType.Fletching; } }
+
         [Constructable]
-        public SmallSmithBOD()
+        public SmallFletchingBOD()
         {
             SmallBulkEntry[] entries;
-            bool useMaterials;
+            bool useMaterials = false;
 
-            if (useMaterials = Utility.RandomBool())
-                entries = SmallBulkEntry.BlacksmithArmor;
+            if (0.20 > Utility.RandomDouble())
+            {
+                entries = SmallBulkEntry.FletchingSmallsRegular;
+            }
             else
-                entries = SmallBulkEntry.BlacksmithWeapons;
+            {
+                useMaterials = true;
+                entries = SmallBulkEntry.FletchingSmalls;
+            }
 
             if (entries.Length > 0)
             {
-                int hue = 0x44E;
+                 SmallBulkEntry entry = entries[Utility.Random(entries.Length)];
+
                 int amountMax = Utility.RandomList(10, 15, 20);
 
                 BulkMaterialType material;
 
                 if (useMaterials)
-                    material = GetRandomMaterial(BulkMaterialType.DullCopper, m_BlacksmithMaterialChances);
+                    material = GetRandomMaterial(BulkMaterialType.OakWood, m_FletchingMaterialChances);
                 else
                     material = BulkMaterialType.None;
 
-                bool reqExceptional = Utility.RandomBool() || (material == BulkMaterialType.None);
+                bool reqExceptional = false;
 
-                SmallBulkEntry entry = entries[Utility.Random(entries.Length)];
+                if(useMaterials)
+                    reqExceptional = Utility.RandomBool() || (material == BulkMaterialType.None);
 
-                this.Hue = hue;
+                this.Hue = 1425;
                 this.AmountMax = amountMax;
                 this.Type = entry.Type;
                 this.Number = entry.Number;
                 this.Graphic = entry.Graphic;
                 this.RequireExceptional = reqExceptional;
                 this.Material = material;
+                this.GraphicHue = entry.Hue;
             }
         }
 
-        public SmallSmithBOD(int amountCur, int amountMax, Type type, int number, int graphic, bool reqExceptional, BulkMaterialType mat)
+        public SmallFletchingBOD(int amountCur, int amountMax, Type type, int number, int graphic, bool reqExceptional, BulkMaterialType mat, int hue)
         {
-            this.Hue = 0x44E;
+            this.Hue = 1425;
             this.AmountMax = amountMax;
             this.AmountCur = amountCur;
             this.Type = type;
@@ -66,16 +75,17 @@ namespace Server.Engines.BulkOrders
             this.Graphic = graphic;
             this.RequireExceptional = reqExceptional;
             this.Material = mat;
+            this.GraphicHue = hue;
         }
 
-        public SmallSmithBOD(Serial serial)
+        public SmallFletchingBOD(Serial serial)
             : base(serial)
         {
         }
 
-        private SmallSmithBOD(SmallBulkEntry entry, BulkMaterialType material, int amountMax, bool reqExceptional)
+        private SmallFletchingBOD(SmallBulkEntry entry, BulkMaterialType material, int amountMax, bool reqExceptional)
         {
-            this.Hue = 0x44E;
+            this.Hue = 1425;
             this.AmountMax = amountMax;
             this.Type = entry.Type;
             this.Number = entry.Number;
@@ -84,19 +94,25 @@ namespace Server.Engines.BulkOrders
             this.Material = material;
         }
 
-        public static SmallSmithBOD CreateRandomFor(Mobile m)
+        public static SmallFletchingBOD CreateRandomFor(Mobile m)
         {
             SmallBulkEntry[] entries;
-            bool useMaterials;
 
-            if (useMaterials = Utility.RandomBool())
-                entries = SmallBulkEntry.BlacksmithArmor;
+            double theirSkill = m.Skills[SkillName.Fletching].Base;
+            bool useMaterials = false;
+
+            if (.20 > Utility.RandomDouble())
+            {
+                entries = SmallBulkEntry.FletchingSmallsRegular;
+            }
             else
-                entries = SmallBulkEntry.BlacksmithWeapons;
+            {
+                useMaterials = true;
+                entries = SmallBulkEntry.FletchingSmalls;
+            }
 
             if (entries.Length > 0)
             {
-                double theirSkill = m.Skills[SkillName.Blacksmith].Base;
                 int amountMax;
 
                 if (theirSkill >= 70.1)
@@ -112,45 +128,8 @@ namespace Server.Engines.BulkOrders
                 {
                     for (int i = 0; i < 20; ++i)
                     {
-                        BulkMaterialType check = GetRandomMaterial(BulkMaterialType.DullCopper, m_BlacksmithMaterialChances);
-                        double skillReq = 0.0;
-
-                        switch ( check )
-                        {
-                            case BulkMaterialType.DullCopper:
-                                skillReq = 65.0;
-                                break;
-                            case BulkMaterialType.ShadowIron:
-                                skillReq = 70.0;
-                                break;
-                            case BulkMaterialType.Copper:
-                                skillReq = 75.0;
-                                break;
-                            case BulkMaterialType.Bronze:
-                                skillReq = 80.0;
-                                break;
-                            case BulkMaterialType.Gold:
-                                skillReq = 85.0;
-                                break;
-                            case BulkMaterialType.Agapite:
-                                skillReq = 90.0;
-                                break;
-                            case BulkMaterialType.Verite:
-                                skillReq = 95.0;
-                                break;
-                            case BulkMaterialType.Valorite:
-                                skillReq = 100.0;
-                                break;
-                            case BulkMaterialType.Spined:
-                                skillReq = 65.0;
-                                break;
-                            case BulkMaterialType.Horned:
-                                skillReq = 80.0;
-                                break;
-                            case BulkMaterialType.Barbed:
-                                skillReq = 99.0;
-                                break;
-                        }
+                        BulkMaterialType check = GetRandomMaterial(BulkMaterialType.OakWood, m_FletchingMaterialChances);
+                        double skillReq = GetRequiredSkill(check);
 
                         if (theirSkill >= skillReq)
                         {
@@ -165,9 +144,9 @@ namespace Server.Engines.BulkOrders
                 if (theirSkill >= 70.1)
                     excChance = (theirSkill + 80.0) / 200.0;
 
-                bool reqExceptional = (excChance > Utility.RandomDouble());
+                bool reqExceptional = useMaterials && excChance > Utility.RandomDouble();
 
-                CraftSystem system = DefBlacksmithy.CraftSystem;
+                CraftSystem system = DefBowFletching.CraftSystem;
 
                 List<SmallBulkEntry> validEntries = new List<SmallBulkEntry>();
 
@@ -194,7 +173,7 @@ namespace Server.Engines.BulkOrders
                 if (validEntries.Count > 0)
                 {
                     SmallBulkEntry entry = validEntries[Utility.Random(validEntries.Count)];
-                    return new SmallSmithBOD(entry, material, amountMax, reqExceptional);
+                    return new SmallFletchingBOD(entry, material, amountMax, reqExceptional);
                 }
             }
 
@@ -203,19 +182,19 @@ namespace Server.Engines.BulkOrders
 
         public override int ComputeFame()
         {
-            return SmithRewardCalculator.Instance.ComputeFame(this);
+            return FletchingRewardCalculator.Instance.ComputeFame(this);
         }
 
         public override int ComputeGold()
         {
-            return SmithRewardCalculator.Instance.ComputeGold(this);
+            return FletchingRewardCalculator.Instance.ComputeGold(this);
         }
 
         public override List<Item> ComputeRewards(bool full)
         {
             List<Item> list = new List<Item>();
 
-            RewardGroup rewardGroup = SmithRewardCalculator.Instance.LookupRewards(SmithRewardCalculator.Instance.ComputePoints(this));
+            RewardGroup rewardGroup = FletchingRewardCalculator.Instance.LookupRewards(FletchingRewardCalculator.Instance.ComputePoints(this));
 
             if (rewardGroup != null)
             {

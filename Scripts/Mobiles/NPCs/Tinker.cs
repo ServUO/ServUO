@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Server.Engines.BulkOrders;
 
 namespace Server.Mobiles
 {
@@ -38,6 +39,27 @@ namespace Server.Mobiles
         {
             this.m_SBInfos.Add(new SBTinker(this));
         }
+
+        #region Bulk Orders
+        public override BODType BODType { get { return BODType.Tinkering; } }
+
+        public override bool IsValidBulkOrder(Item item)
+        {
+            return (item is SmallTinkerBOD || item is LargeTinkerBOD);
+        }
+
+        public override bool SupportsBulkOrders(Mobile from)
+        {
+            return BulkOrderSystem.NewSystemEnabled && from is PlayerMobile && from.Skills[SkillName.Tinkering].Base > 0;
+        }
+
+        public override void OnSuccessfulBulkOrderReceive(Mobile from)
+        {
+            if (from is PlayerMobile)
+                ((PlayerMobile)from).NextTinkeringBulkOrder = TimeSpan.Zero;
+        }
+
+        #endregion
 
         public override void Serialize(GenericWriter writer)
         {

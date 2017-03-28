@@ -7,10 +7,13 @@ namespace Server.Engines.BulkOrders
     [TypeAlias("Scripts.Engines.BulkOrders.LargeBOD")]
     public abstract class LargeBOD : Item
     {
+        public abstract BODType BODType { get; }
+
         private int m_AmountMax;
         private bool m_RequireExceptional;
         private BulkMaterialType m_Material;
         private LargeBulkEntry[] m_Entries;
+
         public LargeBOD(int hue, int amountMax, bool requireExeptional, BulkMaterialType material, LargeBulkEntry[] entries)
             : base(Core.AOS ? 0x2258 : 0x14EF)
         {
@@ -100,6 +103,16 @@ namespace Server.Engines.BulkOrders
 
                 return true;
             }
+            set
+            {
+                if (value)
+                {
+                    for (int i = 0; i < this.m_Entries.Length; ++i)
+                    {
+                        m_Entries[i].Amount = m_AmountMax;
+                    }
+                }
+            }
         }
         public override int LabelNumber
         {
@@ -135,16 +148,19 @@ namespace Server.Engines.BulkOrders
             gold = this.ComputeGold();
             fame = this.ComputeFame();
 
-            List<Item> rewards = this.ComputeRewards(false);
-
-            if (rewards.Count > 0)
+            if (!BulkOrderSystem.NewSystemEnabled)
             {
-                reward = rewards[Utility.Random(rewards.Count)];
+                List<Item> rewards = this.ComputeRewards(false);
 
-                for (int i = 0; i < rewards.Count; ++i)
+                if (rewards.Count > 0)
                 {
-                    if (rewards[i] != reward)
-                        rewards[i].Delete();
+                    reward = rewards[Utility.Random(rewards.Count)];
+
+                    for (int i = 0; i < rewards.Count; ++i)
+                    {
+                        if (rewards[i] != reward)
+                            rewards[i].Delete();
+                    }
                 }
             }
         }
@@ -159,7 +175,7 @@ namespace Server.Engines.BulkOrders
                 list.Add(1045141); // All items must be exceptional.
 
             if (this.m_Material != BulkMaterialType.None)
-                list.Add(LargeBODGump.GetMaterialNumberFor(this.m_Material)); // All items must be made with x material.
+                list.Add(SmallBODGump.GetMaterialNumberFor(this.m_Material)); // All items must be made with x material.
 
             list.Add(1060656, this.m_AmountMax.ToString()); // amount to make: ~1_val~
 
@@ -222,13 +238,9 @@ namespace Server.Engines.BulkOrders
                     {
                         from.SendLocalizedMessage(1045161); // Both orders must be of exceptional quality.
                     }
-                    else if (this.m_Material >= BulkMaterialType.DullCopper && this.m_Material <= BulkMaterialType.Valorite && small.Material != this.m_Material)
+                    else if (small.Material != this.m_Material)
                     {
-                        from.SendLocalizedMessage(1045162); // Both orders must use the same ore type.
-                    }
-                    else if (this.m_Material >= BulkMaterialType.Spined && this.m_Material <= BulkMaterialType.Barbed && small.Material != this.m_Material)
-                    {
-                        from.SendLocalizedMessage(1049351); // Both orders must use the same leather type.
+                        from.SendLocalizedMessage(1157311); // Both orders must use the same resource type.
                     }
                     else if (this.m_AmountMax != small.AmountMax)
                     {
@@ -270,7 +282,7 @@ namespace Server.Engines.BulkOrders
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
 
             writer.Write(this.m_AmountMax);
             writer.Write(this.m_RequireExceptional);
@@ -290,6 +302,7 @@ namespace Server.Engines.BulkOrders
 
             switch ( version )
             {
+                case 1:
                 case 0:
                     {
                         this.m_AmountMax = reader.ReadInt();
@@ -299,8 +312,7 @@ namespace Server.Engines.BulkOrders
                         this.m_Entries = new LargeBulkEntry[reader.ReadInt()];
 
                         for (int i = 0; i < this.m_Entries.Length; ++i)
-                            this.m_Entries[i] = new LargeBulkEntry(this, reader);
-
+                            this.m_Entries[i] = new LargeBulkEntry(this, reader, version);
                         break;
                     }
             }

@@ -58,7 +58,7 @@ namespace Server.Engines.BulkOrders
 
                 if (deed.Material != BulkMaterialType.None)
                 {
-                    this.AddHtmlLocalized(40, y, 350, 20, GetMaterialNumberFor(deed.Material), 0x7FFF, false, false); // All items must be made with x material.
+                    this.AddHtmlLocalized(40, y, 350, 20, SmallBODGump.GetMaterialNumberFor(deed.Material), 0x7FFF, false, false); // All items must be made with x material.
                     y += 24;
                 }
             }
@@ -70,16 +70,6 @@ namespace Server.Engines.BulkOrders
 
             this.AddButton(275, 216 + (entries.Length * 24), 4005, 4007, 0, GumpButtonType.Reply, 0);
             this.AddHtmlLocalized(310, 216 + (entries.Length * 24), 120, 20, 1011012, 0x7FFF, false, false); // CANCEL
-        }
-
-        public static int GetMaterialNumberFor(BulkMaterialType material)
-        {
-            if (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite)
-                return 1045142 + (int)(material - BulkMaterialType.DullCopper);
-            else if (material >= BulkMaterialType.Spined && material <= BulkMaterialType.Barbed)
-                return 1049348 + (int)(material - BulkMaterialType.Spined);
-
-            return 0;
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)

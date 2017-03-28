@@ -2,21 +2,17 @@ using System;
 using Server.Engines.Craft;
 using Server.Network;
 using Server.Mobiles;
+using Server.ContextMenus;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public enum ToolQuality
-    {
-        Low,
-        Regular,
-        Exceptional
-    }
-
     public abstract class BaseTool : Item, IUsesRemaining, ICraftable
     {
         private Mobile m_Crafter;
-        private ToolQuality m_Quality;
+        private ItemQuality m_Quality;
         private int m_UsesRemaining;
+        private bool m_RepairMode;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
@@ -33,7 +29,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ToolQuality Quality
+        public ItemQuality Quality
         {
             get
             {
@@ -62,6 +58,19 @@ namespace Server.Items
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool RepairMode
+        {
+            get
+            {
+                return m_RepairMode;
+            }
+            set
+            {
+                m_RepairMode = value;
+            }
+        }
+
         public void ScaleUses()
         {
             this.m_UsesRemaining = (this.m_UsesRemaining * this.GetUsesScalar()) / 100;
@@ -75,7 +84,7 @@ namespace Server.Items
 
         public int GetUsesScalar()
         {
-            if (this.m_Quality == ToolQuality.Exceptional)
+            if (this.m_Quality == ItemQuality.Exceptional)
                 return 200;
 
             return 100;
@@ -105,7 +114,7 @@ namespace Server.Items
             : base(itemID)
         {
             this.m_UsesRemaining = uses;
-            this.m_Quality = ToolQuality.Regular;
+            this.m_Quality = ItemQuality.Normal;
         }
 
         public BaseTool(Serial serial)
@@ -117,7 +126,10 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.m_Quality == ToolQuality.Exceptional)
+            if(m_Crafter != null)
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+
+            if (this.m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
 
             list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
@@ -195,17 +207,24 @@ namespace Server.Items
             {
                 CraftSystem system = this.CraftSystem;
 
-                int num = system.CanCraft(from, this, null);
-
-                if (num > 0 && (num != 1044267 || !Core.SE)) // Blacksmithing shows the gump regardless of proximity of an anvil and forge after SE
+                if (Core.TOL && m_RepairMode)
                 {
-                    from.SendLocalizedMessage(num);
+                    Repair.Do(from, system, this);
                 }
                 else
                 {
-                    CraftContext context = system.GetContext(from);
+                    int num = system.CanCraft(from, this, null);
 
-                    from.SendGump(new CraftGump(from, system, this, null));
+                    if (num > 0 && (num != 1044267 || !Core.SE)) // Blacksmithing shows the gump regardless of proximity of an anvil and forge after SE
+                    {
+                        from.SendLocalizedMessage(num);
+                    }
+                    else
+                    {
+                        CraftContext context = system.GetContext(from);
+
+                        from.SendGump(new CraftGump(from, system, this, null));
+                    }
                 }
             }
             else
@@ -218,7 +237,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
+
+            writer.Write(m_RepairMode);
 
             writer.Write((Mobile)this.m_Crafter);
             writer.Write((int)this.m_Quality);
@@ -234,10 +255,15 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 2:
+                    {
+                        m_RepairMode = reader.ReadBool();
+                        goto case 1;
+                    }
                 case 1:
                     {
                         this.m_Crafter = reader.ReadMobile();
-                        this.m_Quality = (ToolQuality)reader.ReadInt();
+                        this.m_Quality = (ItemQuality)reader.ReadInt();
                         goto case 0;
                     }
                 case 0:
@@ -252,7 +278,7 @@ namespace Server.Items
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ToolQuality)quality;
+            this.Quality = (ItemQuality)quality;
 
             if (makersMark)
                 this.Crafter = from;
@@ -260,5 +286,40 @@ namespace Server.Items
             return quality;
         }
         #endregion
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+
+            if(Core.TOL)
+                list.Add(new ToggleRepairContextMenuEntry(from, this));
+        }
+
+        public class ToggleRepairContextMenuEntry : ContextMenuEntry
+        {
+            private Mobile _From;
+            private BaseTool _Tool;
+
+            public ToggleRepairContextMenuEntry(Mobile from, BaseTool tool)
+                : base(1157040) // Toggle Repair Mode
+            {
+                _From = from;
+                _Tool = tool;
+            }
+
+            public override void OnClick()
+            {
+                if (_Tool.RepairMode)
+                {
+                    _From.SendLocalizedMessage(1157042); // This tool is fully functional. 
+                    _Tool.RepairMode = false;
+                }
+                else
+                {
+                    _From.SendLocalizedMessage(1157041); // This tool will only repair items in this mode.
+                    _Tool.RepairMode = true;
+                }
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using Server.Engines.Craft;
 
 namespace Server.Engines.BulkOrders
 {
@@ -16,14 +17,21 @@ namespace Server.Engines.BulkOrders
         Valorite,
         Spined,
         Horned,
-        Barbed
+        Barbed,
+        OakWood,
+        AshWood,
+        YewWood,
+        Heartwood,
+        Bloodwood,
+        Frostwood
     }
 
     public enum BulkGenericType
     {
         Iron,
         Cloth,
-        Leather
+        Leather,
+        Wood
     }
 
     public class BGTClassifier
@@ -36,6 +44,25 @@ namespace Server.Engines.BulkOrders
                     return BulkGenericType.Leather;
 
                 return BulkGenericType.Cloth;
+            }
+            else if (deedType == BODType.Tinkering && itemType != null)
+            {
+                if(itemType == typeof(Clock) || itemType.IsSubclassOf(typeof(Clock)))
+                    return BulkGenericType.Wood;
+
+                CraftItem item = DefTinkering.CraftSystem.CraftItems.SearchFor(itemType);
+
+                if (item != null)
+                {
+                    Type typeRes = item.Resources.GetAt(0).ItemType;
+
+                    if (typeRes == typeof(Board) || typeRes == typeof(Log))
+                        return BulkGenericType.Wood;
+                }
+            }
+            else if (deedType == BODType.Fletching || deedType == BODType.Carpentry)
+            {
+                return BulkGenericType.Wood;
             }
 
             return BulkGenericType.Iron;

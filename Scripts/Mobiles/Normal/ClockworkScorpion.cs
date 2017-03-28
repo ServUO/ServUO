@@ -3,8 +3,10 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a clockwork scorpion corpse")]
-    public class ClockworkScorpion : BaseCreature
+    public class ClockworkScorpion : BaseCreature, IRepairableMobile
     {
+        public Type RepairResource { get { return typeof(Server.Items.IronIngot); } }
+
         [Constructable]
         public ClockworkScorpion()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.8)

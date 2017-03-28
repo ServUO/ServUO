@@ -6,6 +6,8 @@ namespace Server.Engines.BulkOrders
 {
     public class SmallTailorBOD : SmallBOD
     {
+        public override BODType BODType { get { return BODType.Tailor; } }
+
         public static double[] m_TailoringMaterialChances = new double[]
         {
             0.857421875, // None
@@ -47,10 +49,11 @@ namespace Server.Engines.BulkOrders
                 this.Graphic = entry.Graphic;
                 this.RequireExceptional = reqExceptional;
                 this.Material = material;
+                this.GraphicHue = entry.Hue;
             }
         }
 
-        public SmallTailorBOD(int amountCur, int amountMax, Type type, int number, int graphic, bool reqExceptional, BulkMaterialType mat)
+        public SmallTailorBOD(int amountCur, int amountMax, Type type, int number, int graphic, bool reqExceptional, BulkMaterialType mat, int hue)
         {
             this.Hue = 0x483;
             this.AmountMax = amountMax;
@@ -60,6 +63,7 @@ namespace Server.Engines.BulkOrders
             this.Graphic = graphic;
             this.RequireExceptional = reqExceptional;
             this.Material = mat;
+            this.GraphicHue = hue;
         }
 
         public SmallTailorBOD(Serial serial)
@@ -107,38 +111,7 @@ namespace Server.Engines.BulkOrders
                     for (int i = 0; i < 20; ++i)
                     {
                         BulkMaterialType check = GetRandomMaterial(BulkMaterialType.Spined, m_TailoringMaterialChances);
-                        double skillReq = 0.0;
-
-                        switch ( check )
-                        {
-                            case BulkMaterialType.DullCopper:
-                                skillReq = 65.0;
-                                break;
-                            case BulkMaterialType.Bronze:
-                                skillReq = 80.0;
-                                break;
-                            case BulkMaterialType.Gold:
-                                skillReq = 85.0;
-                                break;
-                            case BulkMaterialType.Agapite:
-                                skillReq = 90.0;
-                                break;
-                            case BulkMaterialType.Verite:
-                                skillReq = 95.0;
-                                break;
-                            case BulkMaterialType.Valorite:
-                                skillReq = 100.0;
-                                break;
-                            case BulkMaterialType.Spined:
-                                skillReq = 65.0;
-                                break;
-                            case BulkMaterialType.Horned:
-                                skillReq = 80.0;
-                                break;
-                            case BulkMaterialType.Barbed:
-                                skillReq = 99.0;
-                                break;
-                        }
+                        double skillReq = GetRequiredSkill(check);
 
                         if (theirSkill >= skillReq)
                         {

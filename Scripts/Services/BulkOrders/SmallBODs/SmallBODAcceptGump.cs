@@ -36,7 +36,7 @@ namespace Server.Engines.BulkOrders
             this.AddLabel(250, 72, 1152, deed.AmountMax.ToString());
 
             this.AddHtmlLocalized(40, 96, 120, 20, 1045136, 0x7FFF, false, false); // Item requested:
-            this.AddItem(385, 96, deed.Graphic);
+            this.AddItem(385, 96, deed.Graphic, deed.GraphicHue);
             this.AddHtmlLocalized(40, 120, 210, 20, deed.Number, 0xFFFFFF, false, false);
 
             if (deed.RequireExceptional || deed.Material != BulkMaterialType.None)
@@ -47,7 +47,7 @@ namespace Server.Engines.BulkOrders
                     this.AddHtmlLocalized(40, 168, 350, 20, 1045141, 0x7FFF, false, false); // All items must be exceptional.
 
                 if (deed.Material != BulkMaterialType.None)
-                    this.AddHtmlLocalized(40, deed.RequireExceptional ? 192 : 168, 350, 20, GetMaterialNumberFor(deed.Material), 0x7FFF, false, false); // All items must be made with x material.
+                    this.AddHtmlLocalized(40, deed.RequireExceptional ? 192 : 168, 350, 20, SmallBODGump.GetMaterialNumberFor(deed.Material), 0x7FFF, false, false); // All items must be made with x material.
             }
 
             this.AddHtmlLocalized(40, 216, 350, 20, 1045139, 0x7FFF, false, false); // Do you want to accept this order?
@@ -57,16 +57,6 @@ namespace Server.Engines.BulkOrders
 
             this.AddButton(275, 240, 4005, 4007, 0, GumpButtonType.Reply, 0);
             this.AddHtmlLocalized(310, 240, 120, 20, 1011012, 0x7FFF, false, false); // CANCEL
-        }
-
-        public static int GetMaterialNumberFor(BulkMaterialType material)
-        {
-            if (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite)
-                return 1045142 + (int)(material - BulkMaterialType.DullCopper);
-            else if (material >= BulkMaterialType.Spined && material <= BulkMaterialType.Barbed)
-                return 1049348 + (int)(material - BulkMaterialType.Spined);
-
-            return 0;
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)

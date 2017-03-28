@@ -6,12 +6,13 @@ using CustomsFramework;
 
 namespace Server.Items
 {
-    public abstract class Food : Item, IEngravable
+    public abstract class Food : Item, IEngravable, IQuality
     {
         private Mobile m_Poisoner;
         private Poison m_Poison;
         private int m_FillFactor;
         private bool m_PlayerConstructed;
+        private ItemQuality _Quality;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Poisoner
@@ -66,6 +67,9 @@ namespace Server.Items
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
 		private string m_EngravedText = string.Empty;
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -106,6 +110,16 @@ namespace Server.Items
 
             if (from.Alive)
                 list.Add(new ContextMenus.EatEntry(from, this));
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -205,7 +219,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)6); // version
+            writer.Write((int)7); // version
+
+            writer.Write((int)_Quality);
 
 			writer.Write(this.m_EngravedText);
 
@@ -271,12 +287,17 @@ namespace Server.Items
 				case 6:
 					this.m_EngravedText = reader.ReadString();
 					goto case 5;
+                case 7:
+                    _Quality = (ItemQuality)reader.ReadInt();
+                    goto case 6;
             }
         }
     }
 
     public class BreadLoaf : Food
     {
+        public override ItemQuality Quality { get { return ItemQuality.Normal; } set { } }
+
         [Constructable]
         public BreadLoaf()
             : this(1)
@@ -385,6 +406,8 @@ namespace Server.Items
 
     public class FishSteak : Food
     {
+        public override ItemQuality Quality { get { return ItemQuality.Normal; } set { } }
+
         public override double DefaultWeight
         {
             get
@@ -593,6 +616,8 @@ namespace Server.Items
 
     public class FriedEggs : Food
     {
+        public override ItemQuality Quality { get { return ItemQuality.Normal; } set { } }
+
         [Constructable]
         public FriedEggs()
             : this(1)
@@ -629,6 +654,8 @@ namespace Server.Items
 
     public class CookedBird : Food
     {
+        public override ItemQuality Quality { get { return ItemQuality.Normal; } set { } }
+
         [Constructable]
         public CookedBird()
             : this(1)
@@ -804,6 +831,8 @@ namespace Server.Items
 
     public class Ribs : Food
     {
+        public override ItemQuality Quality { get { return ItemQuality.Normal; } set { } }
+
         [Constructable]
         public Ribs()
             : this(1)
@@ -1246,6 +1275,8 @@ namespace Server.Items
 
     public class LambLeg : Food
     {
+        public override ItemQuality Quality { get { return ItemQuality.Normal; } set { } }
+
         [Constructable]
         public LambLeg()
             : this(1)
@@ -1282,6 +1313,8 @@ namespace Server.Items
 
     public class ChickenLeg : Food
     {
+        public override ItemQuality Quality { get { return ItemQuality.Normal; } set { } }
+
         [Constructable]
         public ChickenLeg()
             : this(1)
@@ -1526,6 +1559,90 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+        }
+    }
+
+    public class ThreeTieredCake : Item, IQuality
+    {
+        private ItemQuality _Quality;
+        private int _Pieces;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Pieces 
+        { 
+            get { return _Pieces; }
+            set 
+            { 
+                _Pieces = value; 
+
+                if (_Pieces <= 0) 
+                    Delete(); 
+            } 
+        }
+
+        public override int LabelNumber { get { return 1098235; } } // A Three Tiered Cake 
+
+        [Constructable]
+        public ThreeTieredCake()
+            : base(0x4BA3)
+        {
+            this.Weight = 1.0;
+            this.Pieces = 10;
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsChildOf(from.Backpack))
+            {
+                var cake = new Cake();
+                cake.ItemID = 0x4BA4;
+
+                from.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1157341, from.NetState); // *You cut a slice from the cake.*
+                from.AddToBackpack(cake);
+
+                Pieces--;
+            }
+            else
+            {
+                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            }
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+        }
+
+        public ThreeTieredCake(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+            writer.Write((int)_Quality);
+            writer.Write(_Pieces);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            _Quality = (ItemQuality)reader.ReadInt();
+            _Pieces = reader.ReadInt();
         }
     }
 }

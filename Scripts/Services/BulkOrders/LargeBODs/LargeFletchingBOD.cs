@@ -3,69 +3,55 @@ using System.Collections.Generic;
 
 namespace Server.Engines.BulkOrders
 {
-    [TypeAlias("Scripts.Engines.BulkOrders.LargeSmithBOD")]
-    public class LargeSmithBOD : LargeBOD
+    public class LargeFletchingBOD : LargeBOD
     {
-        public static double[] m_BlacksmithMaterialChances = new double[]
+        public override BODType BODType { get { return BODType.Fletching; } }
+
+        public static double[] m_FletchingingMaterialChances = new double[]
         {
-            0.501953125, // None
-            0.250000000, // Dull Copper
-            0.125000000, // Shadow Iron
-            0.062500000, // Copper
-            0.031250000, // Bronze
-            0.015625000, // Gold
-            0.007812500, // Agapite
-            0.003906250, // Verite
-            0.001953125  // Valorite
+            0.513718750, // None
+            0.292968750, // Oak
+            0.117187500, // Ash
+            0.046875000, // Yew
+            0.018750000, // Heartwood
+            0.007500000, // Bloodwood
+            0.003000000 // Frostwood
         };
+
         [Constructable]
-        public LargeSmithBOD()
+        public LargeFletchingBOD()
         {
             LargeBulkEntry[] entries;
             bool useMaterials = true;
-			
-            int rand = Utility.Random(8);
 
-            switch ( rand )
+            switch (Utility.Random(5))
             {
                 default:
                 case 0:
-                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeRing);
+                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeHumanBows1);
                     break;
                 case 1:
-                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargePlate);
+                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeHumanBows2);
                     break;
                 case 2:
-                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeChain);
+                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeAmmunition);
                     break;
                 case 3:
-                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeAxes);
+                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeElvenBows1);
                     break;
                 case 4:
-                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeFencing);
-                    break;
-                case 5:
-                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeMaces);
-                    break;
-                case 6:
-                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargePolearms);
-                    break;
-                case 7:
-                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeSwords);
+                    entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeElvenBows2);
                     break;
             }
-			
-            if (rand > 2 && rand < 8)
-                useMaterials = false;
 
-            int hue = 0x44E;
+            int hue = 1425;
             int amountMax = Utility.RandomList(10, 15, 20, 20);
             bool reqExceptional = (0.825 > Utility.RandomDouble());
 
             BulkMaterialType material;
 
             if (useMaterials)
-                material = GetRandomMaterial(BulkMaterialType.DullCopper, m_BlacksmithMaterialChances);
+                material = GetRandomMaterial(BulkMaterialType.OakWood, m_FletchingingMaterialChances);
             else
                 material = BulkMaterialType.None;
 
@@ -76,35 +62,35 @@ namespace Server.Engines.BulkOrders
             this.Material = material;
         }
 
-        public LargeSmithBOD(int amountMax, bool reqExceptional, BulkMaterialType mat, LargeBulkEntry[] entries)
+        public LargeFletchingBOD(int amountMax, bool reqExceptional, BulkMaterialType mat, LargeBulkEntry[] entries)
         {
-            this.Hue = 0x44E;
+            this.Hue = 1425;
             this.AmountMax = amountMax;
             this.Entries = entries;
             this.RequireExceptional = reqExceptional;
             this.Material = mat;
         }
 
-        public LargeSmithBOD(Serial serial)
+        public LargeFletchingBOD(Serial serial)
             : base(serial)
         {
         }
 
         public override int ComputeFame()
         {
-            return SmithRewardCalculator.Instance.ComputeFame(this);
+            return FletchingRewardCalculator.Instance.ComputeFame(this);
         }
 
         public override int ComputeGold()
         {
-            return SmithRewardCalculator.Instance.ComputeGold(this);
+            return FletchingRewardCalculator.Instance.ComputeGold(this);
         }
 
         public override List<Item> ComputeRewards(bool full)
         {
             List<Item> list = new List<Item>();
 
-            RewardGroup rewardGroup = SmithRewardCalculator.Instance.LookupRewards(SmithRewardCalculator.Instance.ComputePoints(this));
+            RewardGroup rewardGroup = FletchingRewardCalculator.Instance.LookupRewards(FletchingRewardCalculator.Instance.ComputePoints(this));
 
             if (rewardGroup != null)
             {

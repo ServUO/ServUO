@@ -261,6 +261,13 @@ namespace Server.Engines.Craft
 				if( mct.Charges > 0 )
 				{
 					mct.Charges--;
+
+                    if (mct.Charges <= 0)
+                    {
+                        mct.Delete();
+                        from.SendLocalizedMessage(1157211); // Your talisman has been destroyed.
+                    }
+
 					return false;
 				}
 			}

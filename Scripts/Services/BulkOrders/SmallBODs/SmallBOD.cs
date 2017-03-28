@@ -8,14 +8,18 @@ namespace Server.Engines.BulkOrders
     [TypeAlias("Scripts.Engines.BulkOrders.SmallBOD")]
     public abstract class SmallBOD : Item
     {
+        public abstract BODType BODType { get; }
+
         private int m_AmountCur, m_AmountMax;
         private Type m_Type;
         private int m_Number;
         private int m_Graphic;
+        private int m_GraphicHue;
         private bool m_RequireExceptional;
         private BulkMaterialType m_Material;
+
         [Constructable]
-        public SmallBOD(int hue, int amountMax, Type type, int number, int graphic, bool requireExeptional, BulkMaterialType material)
+        public SmallBOD(int hue, int amountMax, Type type, int number, int graphic, bool requireExeptional, BulkMaterialType material, int graphichue = 0)
             : base(Core.AOS ? 0x2258 : 0x14EF)
         {
             this.Weight = 1.0;
@@ -26,6 +30,7 @@ namespace Server.Engines.BulkOrders
             this.m_Type = type;
             this.m_Number = number;
             this.m_Graphic = graphic;
+            this.m_GraphicHue = graphichue;
             this.m_RequireExceptional = requireExeptional;
             this.m_Material = material;
         }
@@ -103,6 +108,18 @@ namespace Server.Engines.BulkOrders
             set
             {
                 this.m_Graphic = value;
+            }
+        }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int GraphicHue
+        {
+            get
+            {
+                return this.m_GraphicHue;
+            }
+            set
+            {
+                this.m_GraphicHue = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -187,6 +204,18 @@ namespace Server.Engines.BulkOrders
                     return BulkMaterialType.Horned;
                 case CraftResource.BarbedLeather:
                     return BulkMaterialType.Barbed;
+                case CraftResource.OakWood:
+                    return BulkMaterialType.OakWood;
+                case CraftResource.YewWood:
+                    return BulkMaterialType.YewWood;
+                case CraftResource.AshWood:
+                    return BulkMaterialType.AshWood;
+                case CraftResource.Heartwood:
+                    return BulkMaterialType.Heartwood;
+                case CraftResource.Bloodwood:
+                    return BulkMaterialType.Bloodwood;
+                case CraftResource.Frostwood:
+                    return BulkMaterialType.Frostwood;
             }
 
             return BulkMaterialType.None;
@@ -251,16 +280,19 @@ namespace Server.Engines.BulkOrders
             gold = this.ComputeGold();
             fame = this.ComputeFame();
 
-            List<Item> rewards = this.ComputeRewards(false);
-
-            if (rewards.Count > 0)
+            if (!BulkOrderSystem.NewSystemEnabled)
             {
-                reward = rewards[Utility.Random(rewards.Count)];
+                List<Item> rewards = this.ComputeRewards(false);
 
-                for (int i = 0; i < rewards.Count; ++i)
+                if (rewards.Count > 0)
                 {
-                    if (rewards[i] != reward)
-                        rewards[i].Delete();
+                    reward = rewards[Utility.Random(rewards.Count)];
+
+                    for (int i = 0; i < rewards.Count; ++i)
+                    {
+                        if (rewards[i] != reward)
+                            rewards[i].Delete();
+                    }
                 }
             }
         }
@@ -270,12 +302,13 @@ namespace Server.Engines.BulkOrders
             if (o is Item && ((Item)o).IsChildOf(from.Backpack))
             {
                 Type objectType = o.GetType();
+                Item item = o as Item;
 
                 if (this.m_AmountCur >= this.m_AmountMax)
                 {
                     from.SendLocalizedMessage(1045166); // The maximum amount of requested items have already been combined to this deed.
                 }
-                else if (this.m_Type == null || (objectType != this.m_Type && !objectType.IsSubclassOf(this.m_Type)) || (!(o is BaseWeapon) && !(o is BaseArmor) && !(o is BaseClothing)))
+                else if (this.m_Type == null || (objectType != this.m_Type && !objectType.IsSubclassOf(this.m_Type)) /*|| (!(o is BaseWeapon) && !(o is BaseArmor) && !(o is BaseClothing))*/)
                 {
                     from.SendLocalizedMessage(1045169); // The item is not in the request.
                 }
@@ -289,14 +322,12 @@ namespace Server.Engines.BulkOrders
                         material = GetMaterial(((BaseArmor)o).Resource);
                     else if (o is BaseClothing)
                         material = GetMaterial(((BaseClothing)o).Resource);
+                    else if (o is IResource)
+                        material = GetMaterial(((IResource)o).Resource);
 
-                    if (this.m_Material >= BulkMaterialType.DullCopper && this.m_Material <= BulkMaterialType.Valorite && material != this.m_Material)
+                    if (material != this.m_Material)
                     {
-                        from.SendLocalizedMessage(1045168); // The item is not made from the requested ore.
-                    }
-                    else if (this.m_Material >= BulkMaterialType.Spined && this.m_Material <= BulkMaterialType.Barbed && material != this.m_Material)
-                    {
-                        from.SendLocalizedMessage(1049352); // The item is not made from the requested leather type.
+                        from.SendLocalizedMessage(1157310); // The item is not made from the requested resource.
                     }
                     else
                     {
@@ -308,6 +339,8 @@ namespace Server.Engines.BulkOrders
                             isExceptional = (((BaseArmor)o).Quality == ArmorQuality.Exceptional);
                         else if (o is BaseClothing)
                             isExceptional = (((BaseClothing)o).Quality == ClothingQuality.Exceptional);
+                        else if (o is IQuality)
+                            isExceptional = (((IQuality)o).Quality == ItemQuality.Exceptional);
 
                         if (this.m_RequireExceptional && !isExceptional)
                         {
@@ -315,8 +348,24 @@ namespace Server.Engines.BulkOrders
                         }
                         else
                         {
-                            ((Item)o).Delete();
-                            ++this.AmountCur;
+                            if (item.Amount > 1)
+                            {
+                                if (AmountCur + item.Amount > AmountMax)
+                                {
+                                    from.SendLocalizedMessage(1157222); // You have provided more than which has been requested by this deed.
+                                    return;
+                                }
+                                else
+                                {
+                                    AmountCur += item.Amount;
+                                    item.Delete();
+                                }
+                            }
+                            else
+                            {
+                                item.Delete();
+                                ++this.AmountCur;
+                            }
 
                             from.SendLocalizedMessage(1045170); // The item has been combined with the deed.
 
@@ -334,11 +383,62 @@ namespace Server.Engines.BulkOrders
             }
         }
 
+        public static double GetRequiredSkill(BulkMaterialType type)
+        {
+            double skillReq = 0.0;
+
+            switch (type)
+            {
+                case BulkMaterialType.DullCopper:
+                    skillReq = 65.0;
+                    break;
+                case BulkMaterialType.Bronze:
+                    skillReq = 80.0;
+                    break;
+                case BulkMaterialType.Gold:
+                    skillReq = 85.0;
+                    break;
+                case BulkMaterialType.Agapite:
+                    skillReq = 90.0;
+                    break;
+                case BulkMaterialType.Verite:
+                    skillReq = 95.0;
+                    break;
+                case BulkMaterialType.Valorite:
+                    skillReq = 100.0;
+                    break;
+                case BulkMaterialType.Spined:
+                    skillReq = 65.0;
+                    break;
+                case BulkMaterialType.Horned:
+                    skillReq = 80.0;
+                    break;
+                case BulkMaterialType.OakWood:
+                    skillReq = 65.0;
+                    break;
+                case BulkMaterialType.AshWood:
+                    skillReq = 75.0;
+                    break;
+                case BulkMaterialType.YewWood:
+                    skillReq = 85.0;
+                    break;
+                case BulkMaterialType.Heartwood:
+                case BulkMaterialType.Bloodwood:
+                case BulkMaterialType.Frostwood:
+                    skillReq = 95.0;
+                    break;
+            }
+
+            return skillReq;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+
+            writer.Write(m_GraphicHue);
 
             writer.Write(this.m_AmountCur);
             writer.Write(this.m_AmountMax);
@@ -357,6 +457,11 @@ namespace Server.Engines.BulkOrders
 
             switch ( version )
             {
+                case 1:
+                    {
+                        m_GraphicHue = reader.ReadInt();
+                        goto case 0;
+                    }
                 case 0:
                     {
                         this.m_AmountCur = reader.ReadInt();

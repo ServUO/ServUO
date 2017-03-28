@@ -3,8 +3,9 @@ using Server.Targeting;
 
 namespace Server.Items
 {
-    public abstract class CookableFood : Item
+    public abstract class CookableFood : Item, IQuality
     {
+        private ItemQuality _Quality;
         private int m_CookingLevel;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -20,6 +21,9 @@ namespace Server.Items
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
         public CookableFood(int itemID, int cookingLevel)
             : base(itemID)
         {
@@ -31,13 +35,26 @@ namespace Server.Items
         {
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+        }
+
         public abstract Food Cook();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
+
+            writer.Write((int)_Quality);
+
             // Version 1
             writer.Write((int)this.m_CookingLevel);
         }
@@ -50,10 +67,14 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 2:
+                    {
+                        _Quality = (ItemQuality)reader.ReadInt();
+                        goto case 1;
+                    }
                 case 1:
                     {
                         this.m_CookingLevel = reader.ReadInt();
-
                         break;
                     }
             }
@@ -874,6 +895,7 @@ namespace Server.Items
     // ********** CookieMix **********
     public class CookieMix : CookableFood
     {
+
         [Constructable]
         public CookieMix()
             : base(0x103F, 20)
@@ -933,7 +955,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
