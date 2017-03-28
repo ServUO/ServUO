@@ -2266,12 +2266,25 @@ namespace Server
             }
             if (acontext != null)
             {
-                int i;
-                for (i = 0; i < AnimalForm.Entries.Length; ++i)
-                    if (AnimalForm.Entries[i].Type == acontext.Type)
-                        break;
-                if (m.Skills[SkillName.Ninjitsu].Value < AnimalForm.Entries[i].ReqSkill)
+                if (acontext.Type == typeof(WildWhiteTiger) && m.Skills[SkillName.Ninjitsu].Value < 90)
+                {
                     AnimalForm.RemoveContext(m, true);
+                }
+                else
+                {
+                    int i;
+
+                    for (i = 0; i < AnimalForm.Entries.Length; ++i)
+                    {
+                        if (AnimalForm.Entries[i].Type == acontext.Type)
+                            break;
+                    }
+
+                    if (i < AnimalForm.Entries.Length && m.Skills[SkillName.Ninjitsu].Value < AnimalForm.Entries[i].ReqSkill)
+                    {
+                        AnimalForm.RemoveContext(m, true);
+                    }
+                }
             }
             if (!m.CanBeginAction(typeof(PolymorphSpell)) && m.Skills[SkillName.Magery].Value < 66.1)
             {
