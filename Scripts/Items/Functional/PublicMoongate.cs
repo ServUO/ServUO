@@ -17,8 +17,8 @@ namespace Server.Items
         public PublicMoongate()
             : base(0xF6C)
         {
-            this.Movable = false;
-            this.Light = LightType.Circle300;
+            Movable = false;
+            Light = LightType.Circle300;
 
             _Moongates.Add(this);
         }
@@ -44,11 +44,11 @@ namespace Server.Items
         }
         public static void Initialize()
         {
-			CommandSystem.Register("MoonGen", AccessLevel.Administrator, new CommandEventHandler(MoonGen_OnCommand));
-			CommandSystem.Register("MoonGenDelete", AccessLevel.Administrator, new CommandEventHandler(MoonGenDelete_OnCommand));
-		}
+            CommandSystem.Register("MoonGen", AccessLevel.Administrator, new CommandEventHandler(MoonGen_OnCommand));
+            CommandSystem.Register("MoonGenDelete", AccessLevel.Administrator, new CommandEventHandler(MoonGenDelete_OnCommand));
+        }
 
-		[Usage("MoonGen")]
+        [Usage("MoonGen")]
         [Description("Generates public moongates. Removes all old moongates.")]
         public static void MoonGen_OnCommand(CommandEventArgs e)
         {
@@ -66,29 +66,37 @@ namespace Server.Items
             World.Broadcast(0x35, true, "{0} moongates generated.", count);
         }
 
-		[Usage("MoonGenDelete")]
-		[Description("Removes all public moongates.")]
-		public static void MoonGenDelete_OnCommand(CommandEventArgs e)
-		{
-			DeleteAll();
-		}
+        [Usage("MoonGenDelete")]
+        [Description("Removes all public moongates.")]
+        public static void MoonGenDelete_OnCommand(CommandEventArgs e)
+        {
+            DeleteAll();
+        }
 
-		public override void OnDoubleClick(Mobile from)
+        public override void OnDoubleClick(Mobile from)
         {
             if (!from.Player)
+            {
                 return;
+            }
 
-            if (from.InRange(this.GetWorldLocation(), 1))
-                this.UseGate(from);
+            if (from.InRange(GetWorldLocation(), 1) || from.IsStaff())
+            {
+                UseGate(from);
+            }
             else
+            {
                 from.SendLocalizedMessage(500446); // That is too far away.
+            }
         }
 
         public override bool OnMoveOver(Mobile m)
         {
             // Changed so criminals are not blocked by it.
             if (m.Player)
-                this.UseGate(m);
+            {
+                UseGate(m);
+            }
 
             return true;
         }
@@ -97,14 +105,20 @@ namespace Server.Items
         {
             if (m is PlayerMobile)
             {
-                if (!Utility.InRange(m.Location, this.Location, 1) && Utility.InRange(oldLocation, this.Location, 1))
+                if (!Utility.InRange(m.Location, Location, 1) && Utility.InRange(oldLocation, Location, 1))
+                {
                     m.CloseGump(typeof(MoongateGump));
+                }
             }
         }
 
         public bool UseGate(Mobile m)
         {
-            if (m.Criminal)
+            if (m.IsStaff())
+            {
+                //Staff can always use a gate!
+            }
+            else if (m.Criminal)
             {
                 m.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
                 return false;
@@ -124,16 +138,16 @@ namespace Server.Items
                 m.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
                 return false;
             }
-            else
+
+            m.CloseGump(typeof(MoongateGump));
+            m.SendGump(new MoongateGump(m, this));
+
+            if (!m.Hidden || m.IsPlayer())
             {
-                m.CloseGump(typeof(MoongateGump));
-                m.SendGump(new MoongateGump(m, this));
-
-                if (!m.Hidden || m.IsPlayer())
-                    Effects.PlaySound(m.Location, m.Map, 0x20E);
-
-                return true;
+                Effects.PlaySound(m.Location, m.Map, 0x20E);
             }
+
+            return true;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -157,7 +171,9 @@ namespace Server.Items
             base.Delete();
 
             if (_Moongates.Contains(this))
+            {
                 _Moongates.Remove(this);
+            }
         }
 
         private static void DeleteAll()
@@ -170,10 +186,14 @@ namespace Server.Items
             }
 
             foreach (PublicMoongate gate in list)
+            {
                 gate.Delete();
+            }
 
             if (list.Count > 0)
+            {
                 World.Broadcast(0x35, true, "{0} moongates removed.", list.Count);
+            }
         }
 
         private static int MoonGen(PMList list)
@@ -185,7 +205,9 @@ namespace Server.Items
                 item.MoveToWorld(entry.Location, list.Map);
 
                 if (entry.Number == 1060642) // Umbra
+                {
                     item.Hue = 0x497;
+                }
             }
 
             return list.Entries.Length;
@@ -198,22 +220,22 @@ namespace Server.Items
         private readonly int m_Number;
         public PMEntry(Point3D loc, int number)
         {
-            this.m_Location = loc;
-            this.m_Number = number;
+            m_Location = loc;
+            m_Number = number;
         }
 
         public Point3D Location
         {
             get
             {
-                return this.m_Location;
+                return m_Location;
             }
         }
         public int Number
         {
             get
             {
-                return this.m_Number;
+                return m_Number;
             }
         }
     }
@@ -276,11 +298,11 @@ namespace Server.Items
             });
         public static readonly PMList TerMur =
             new PMList(1113602, 1113602, Map.TerMur, new PMEntry[]
-			{
-				new PMEntry(new Point3D(852, 3526, -43), 1113603), // Royal City
+            {
+                new PMEntry(new Point3D(852, 3526, -43), 1113603), // Royal City
                 Core.TOL ? new PMEntry(new Point3D(719, 1863, 40), 1156262) : new PMEntry(new Point3D(926, 3989, -36), 1112572), // Valley of Eodon
-				// Holy City
-			});
+                // Holy City
+            });
         public static readonly PMList[] UORLists = new PMList[] { Trammel, Felucca };
         public static readonly PMList[] UORListsYoung = new PMList[] { Trammel };
         public static readonly PMList[] LBRLists = new PMList[] { Trammel, Felucca, Ilshenar };
@@ -289,8 +311,8 @@ namespace Server.Items
         public static readonly PMList[] AOSListsYoung = new PMList[] { Trammel, Ilshenar, Malas };
         public static readonly PMList[] SELists = new PMList[] { Trammel, Felucca, Ilshenar, Malas, Tokuno };
         public static readonly PMList[] SEListsYoung = new PMList[] { Trammel, Ilshenar, Malas, Tokuno };
-		public static readonly PMList[] SALists	= new PMList[] { Trammel, Felucca, Ilshenar, Malas, Tokuno, TerMur };
-		public static readonly PMList[] SAListsYoung = new PMList[] { Trammel, Ilshenar, Malas, Tokuno, TerMur };
+        public static readonly PMList[] SALists    = new PMList[] { Trammel, Felucca, Ilshenar, Malas, Tokuno, TerMur };
+        public static readonly PMList[] SAListsYoung = new PMList[] { Trammel, Ilshenar, Malas, Tokuno, TerMur };
         public static readonly PMList[] RedLists = new PMList[] { Felucca };
         public static readonly PMList[] SigilLists = new PMList[] { Felucca };
         private readonly int m_Number;
@@ -299,38 +321,38 @@ namespace Server.Items
         private readonly PMEntry[] m_Entries;
         public PMList(int number, int selNumber, Map map, PMEntry[] entries)
         {
-            this.m_Number = number;
-            this.m_SelNumber = selNumber;
-            this.m_Map = map;
-            this.m_Entries = entries;
+            m_Number = number;
+            m_SelNumber = selNumber;
+            m_Map = map;
+            m_Entries = entries;
         }
 
         public int Number
         {
             get
             {
-                return this.m_Number;
+                return m_Number;
             }
         }
         public int SelNumber
         {
             get
             {
-                return this.m_SelNumber;
+                return m_SelNumber;
             }
         }
         public Map Map
         {
             get
             {
-                return this.m_Map;
+                return m_Map;
             }
         }
         public PMEntry[] Entries
         {
             get
             {
-                return this.m_Entries;
+                return m_Entries;
             }
         }
     }
@@ -343,14 +365,39 @@ namespace Server.Items
         public MoongateGump(Mobile mobile, Item moongate)
             : base(100, 100)
         {
-            this.m_Mobile = mobile;
-            this.m_Moongate = moongate;
+            m_Mobile = mobile;
+            m_Moongate = moongate;
 
             PMList[] checkLists;
 
             if (mobile.Player)
             {
-                if (Factions.Sigil.ExistsOn(mobile))
+                if (mobile.IsStaff())
+                {
+                    ClientFlags flags = mobile.NetState == null ? ClientFlags.None : mobile.NetState.Flags;
+
+                    if (Core.SA && (flags & ClientFlags.TerMur) != 0)
+                    {
+                        checkLists = PMList.SALists;
+                    }
+                    else if (Core.SE && (flags & ClientFlags.Tokuno) != 0)
+                    {
+                        checkLists = PMList.SELists;
+                    }
+                    else if (Core.AOS && (flags & ClientFlags.Malas) != 0)
+                    {
+                        checkLists = PMList.AOSLists;
+                    }
+                    else if ((flags & ClientFlags.Ilshenar) != 0)
+                    {
+                        checkLists = PMList.LBRLists;
+                    }
+                    else
+                    {
+                        checkLists = PMList.UORLists;
+                    }
+                }
+                else if (Factions.Sigil.ExistsOn(mobile))
                 {
                     checkLists = PMList.SigilLists;
                 }
@@ -364,147 +411,180 @@ namespace Server.Items
                     bool young = mobile is PlayerMobile ? ((PlayerMobile)mobile).Young : false;
 
                     if (Core.SA && (flags & ClientFlags.TerMur) != 0)
+                    {
                         checkLists = young ? PMList.SAListsYoung : PMList.SALists;
+                    }
                     else if (Core.SE && (flags & ClientFlags.Tokuno) != 0)
+                    {
                         checkLists = young ? PMList.SEListsYoung : PMList.SELists;
+                    }
                     else if (Core.AOS && (flags & ClientFlags.Malas) != 0)
+                    {
                         checkLists = young ? PMList.AOSListsYoung : PMList.AOSLists;
+                    }
                     else if ((flags & ClientFlags.Ilshenar) != 0)
+                    {
                         checkLists = young ? PMList.LBRListsYoung : PMList.LBRLists;
+                    }
                     else
+                    {
                         checkLists = young ? PMList.UORListsYoung : PMList.UORLists;
-                }
+                    }
+               }
             }
             else
             {
                 checkLists = PMList.SELists;
             }
 
-            this.m_Lists = new PMList[checkLists.Length];
+            m_Lists = new PMList[checkLists.Length];
 
-            for (int i = 0; i < this.m_Lists.Length; ++i)
-                this.m_Lists[i] = checkLists[i];
-
-            for (int i = 0; i < this.m_Lists.Length; ++i)
+            for (int i = 0; i < m_Lists.Length; ++i)
             {
-                if (this.m_Lists[i].Map == mobile.Map)
-                {
-                    PMList temp = this.m_Lists[i];
+                m_Lists[i] = checkLists[i];
+            }
 
-                    this.m_Lists[i] = this.m_Lists[0];
-                    this.m_Lists[0] = temp;
+            for (int i = 0; i < m_Lists.Length; ++i)
+            {
+                if (m_Lists[i].Map == mobile.Map)
+                {
+                    PMList temp = m_Lists[i];
+
+                    m_Lists[i] = m_Lists[0];
+                    m_Lists[0] = temp;
 
                     break;
                 }
             }
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(0, 0, 380, 280, 5054);
+            AddBackground(0, 0, 380, 280, 5054);
 
-            this.AddButton(10, 210, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(45, 210, 140, 25, 1011036, false, false); // OKAY
+            AddButton(10, 210, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 210, 140, 25, 1011036, false, false); // OKAY
 
-            this.AddButton(10, 235, 4005, 4007, 0, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(45, 235, 140, 25, 1011012, false, false); // CANCEL
+            AddButton(10, 235, 4005, 4007, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 235, 140, 25, 1011012, false, false); // CANCEL
 
-            this.AddHtmlLocalized(5, 5, 200, 20, 1012011, false, false); // Pick your destination:
+            AddHtmlLocalized(5, 5, 200, 20, 1012011, false, false); // Pick your destination:
 
             for (int i = 0; i < checkLists.Length; ++i)
             {
-                this.AddButton(10, 35 + (i * 25), 2117, 2118, 0, GumpButtonType.Page, Array.IndexOf(this.m_Lists, checkLists[i]) + 1);
-                this.AddHtmlLocalized(30, 35 + (i * 25), 150, 20, checkLists[i].Number, false, false);
+                AddButton(10, 35 + (i * 25), 2117, 2118, 0, GumpButtonType.Page, Array.IndexOf(m_Lists, checkLists[i]) + 1);
+                AddHtmlLocalized(30, 35 + (i * 25), 150, 20, checkLists[i].Number, false, false);
             }
 
-            for (int i = 0; i < this.m_Lists.Length; ++i)
-                this.RenderPage(i, Array.IndexOf(checkLists, this.m_Lists[i]));
+            for (int i = 0; i < m_Lists.Length; ++i)
+            {
+                RenderPage(i, Array.IndexOf(checkLists, m_Lists[i]));
+            }
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
             if (info.ButtonID == 0) // Cancel
+            {
                 return;
-            else if (this.m_Mobile.Deleted || this.m_Moongate.Deleted || this.m_Mobile.Map == null)
+            }
+            else if (m_Mobile.Deleted || m_Moongate.Deleted || m_Mobile.Map == null)
+            {
                 return;
+            }
 
             int[] switches = info.Switches;
 
             if (switches.Length == 0)
+            {
                 return;
+            }
 
             int switchID = switches[0];
             int listIndex = switchID / 100;
             int listEntry = switchID % 100;
 
-            if (listIndex < 0 || listIndex >= this.m_Lists.Length)
+            if (listIndex < 0 || listIndex >= m_Lists.Length)
+            {
                 return;
+            }
 
-            PMList list = this.m_Lists[listIndex];
+            PMList list = m_Lists[listIndex];
 
             if (listEntry < 0 || listEntry >= list.Entries.Length)
+            {
                 return;
+            }
 
             PMEntry entry = list.Entries[listEntry];
 
-            if (!this.m_Mobile.InRange(this.m_Moongate.GetWorldLocation(), 1) || this.m_Mobile.Map != this.m_Moongate.Map)
+            if (m_Mobile.Map == list.Map && m_Mobile.InRange(entry.Location, 1))
             {
-                this.m_Mobile.SendLocalizedMessage(1019002); // You are too far away to use the gate.
+                m_Mobile.SendLocalizedMessage(1019003); // You are already there.
+                return;
             }
-            else if (this.m_Mobile.Player && this.m_Mobile.Kills >= 5 && list.Map != Map.Felucca)
+            else if (m_Mobile.IsStaff())
             {
-                this.m_Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
+                //Staff can always use a gate!
             }
-            else if (Factions.Sigil.ExistsOn(this.m_Mobile) && list.Map != Factions.Faction.Facet)
+            else if (!m_Mobile.InRange(m_Moongate.GetWorldLocation(), 1) || m_Mobile.Map != m_Moongate.Map)
             {
-                this.m_Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
+                m_Mobile.SendLocalizedMessage(1019002); // You are too far away to use the gate.
+                return;
             }
-            else if (this.m_Mobile.Criminal)
+            else if (m_Mobile.Player && m_Mobile.Kills >= 5 && list.Map != Map.Felucca)
             {
-                this.m_Mobile.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
+                m_Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
+                return;
             }
-            else if (SpellHelper.CheckCombat(this.m_Mobile))
+            else if (Factions.Sigil.ExistsOn(m_Mobile) && list.Map != Factions.Faction.Facet)
             {
-                this.m_Mobile.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
+                m_Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
+                return;
             }
-            else if (this.m_Mobile.Spell != null)
+            else if (m_Mobile.Criminal)
             {
-                this.m_Mobile.SendLocalizedMessage(1049616); // You are too busy to do that at the moment.
+                m_Mobile.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
+                return;
             }
-            else if (this.m_Mobile.Map == list.Map && this.m_Mobile.InRange(entry.Location, 1))
+            else if (SpellHelper.CheckCombat(m_Mobile))
             {
-                this.m_Mobile.SendLocalizedMessage(1019003); // You are already there.
+                m_Mobile.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
+                return;
             }
-            else
+            else if (m_Mobile.Spell != null)
             {
-                BaseCreature.TeleportPets(this.m_Mobile, entry.Location, list.Map);
+                m_Mobile.SendLocalizedMessage(1049616); // You are too busy to do that at the moment.
+                return;
+            }
 
-                this.m_Mobile.Combatant = null;
-                this.m_Mobile.Warmode = false;
-                this.m_Mobile.Hidden = true;
+            BaseCreature.TeleportPets(m_Mobile, entry.Location, list.Map);
 
-                this.m_Mobile.MoveToWorld(entry.Location, list.Map);
+            m_Mobile.Combatant = null;
+            m_Mobile.Warmode = false;
+            m_Mobile.Hidden = true;
 
-                Effects.PlaySound(entry.Location, list.Map, 0x1FE);
+            m_Mobile.MoveToWorld(entry.Location, list.Map);
 
-                Server.Engines.CityLoyalty.CityTradeSystem.OnPublicMoongateUsed(m_Mobile);
-            }
+            Effects.PlaySound(entry.Location, list.Map, 0x1FE);
+
+            Server.Engines.CityLoyalty.CityTradeSystem.OnPublicMoongateUsed(m_Mobile);
         }
 
         private void RenderPage(int index, int offset)
         {
-            PMList list = this.m_Lists[index];
+            PMList list = m_Lists[index];
 
-            this.AddPage(index + 1);
+            AddPage(index + 1);
 
-            this.AddButton(10, 35 + (offset * 25), 2117, 2118, 0, GumpButtonType.Page, index + 1);
-            this.AddHtmlLocalized(30, 35 + (offset * 25), 150, 20, list.SelNumber, false, false);
+            AddButton(10, 35 + (offset * 25), 2117, 2118, 0, GumpButtonType.Page, index + 1);
+            AddHtmlLocalized(30, 35 + (offset * 25), 150, 20, list.SelNumber, false, false);
 
             PMEntry[] entries = list.Entries;
 
             for (int i = 0; i < entries.Length; ++i)
             {
-                this.AddRadio(200, 35 + (i * 25), 210, 211, false, (index * 100) + i);
-                this.AddHtmlLocalized(225, 35 + (i * 25), 150, 20, entries[i].Number, false, false);
+                AddRadio(200, 35 + (i * 25), 210, 211, false, (index * 100) + i);
+                AddHtmlLocalized(225, 35 + (i * 25), 150, 20, entries[i].Number, false, false);
             }
         }
     }

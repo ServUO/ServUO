@@ -4,6 +4,8 @@ using Server.Mobiles;
 using Server.Multis;
 using Server.Targeting;
 using Server.Engines.VvV;
+using Server.Items;
+using System.Linq;
 
 namespace Server.SkillHandlers
 {
@@ -80,6 +82,15 @@ namespace Server.SkillHandlers
                     }
 
                     inRange.Free();
+
+                    if (src.Skills[SkillName.DetectHidden].Value >= 98.0)
+                    {
+                        foreach (var chest in src.Map.GetItemsInRange(p, 3).OfType<ExodusChest>().Where(it => !it.Visible))
+                        {
+                            chest.Visible = true;
+                            chest.StartDeleteTimer();
+                        }
+                    }
 
                     bool faction = Faction.Find(src) != null;
                     bool vvv = ViceVsVirtueSystem.IsVvV(src);

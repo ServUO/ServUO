@@ -1324,6 +1324,9 @@ namespace Server
         /// </summary>
         public virtual void AddWeightProperty(ObjectPropertyList list)
         {
+            if (Weight == 0)
+                return;
+
             int weight = PileWeight + TotalWeight;
 
             if (weight == 1)

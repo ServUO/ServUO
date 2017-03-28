@@ -92,16 +92,18 @@ namespace Server.Items
                 {
                     if (Utility.RandomDouble() < 0.01)
                     {
+                        Item soap = new Soap();
+
                         Effects.PlaySound(from.Location, from.Map, 0x247);  //powder
 
                         if (Utility.RandomBool())
                         {
-                            from.AddToBackpack(new Soap());
+                            from.AddToBackpack(soap);
                             from.SendLocalizedMessage(1152268, String.Format("soap"));
                         }
                         else
                         {
-                            this.AddItem(new Soap());
+                            soap.MoveToWorld(this.Location, this.Map);
                         }
                     }
                     else

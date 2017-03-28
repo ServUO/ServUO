@@ -3,38 +3,24 @@ using Server.Items;
 
 namespace Server.Mobiles 
 {
-	[CorpseName( "a knight's corpse" )]
+	[CorpseName( "a human corpse" )]
 	public class DupresKnight : BaseCreature
-	{
-		private static string[] m_Names = new string[]
-		{
-			"Percy",
-			"Jim",
-			"Bob",
-			"Gary",
-			"Jack",
-			"Troy",
-			"Roy"
-		};
-
-		private static string[] m_Titles = new string[]
-		{
-			"The Knight"
-		};	
-			
+	{			
 		[Constructable]
 		public DupresKnight() : base( AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
 		{
-			Name = m_Names[Utility.Random( m_Names.Length )];
-			Title = m_Titles[Utility.Random( m_Titles.Length )];
-			Body = 0x190;
+			Name = NameList.RandomName("male");
+            Title = "The Knight";
+            Body = 0x190;
 			Hue = Utility.RandomSkinHue();
+            Female = false;
 
-			SetStr( 190, 200 );
+            SetStr( 190, 200 );
 			SetDex( 50, 75 );
 			SetInt( 150, 250  );
 			SetHits( 3900, 4100 );
 			SetDamage( 22, 28 );
+
 			SetDamageType( ResistanceType.Physical, 100 );
 
 			SetResistance( ResistanceType.Physical, 50, 70 );
@@ -54,66 +40,55 @@ namespace Server.Mobiles
 
             Item longsword = new Longsword();
             longsword.LootType = LootType.Blessed;
-            AddItem(longsword);
+            SetWearable(longsword);
 
             Item ph = new PlateHelm();
             ph.LootType = LootType.Blessed;
-            AddItem(ph);
+            SetWearable(ph);
 
             Item pa = new PlateArms();
             pa.LootType = LootType.Blessed;
-            AddItem(pa);
+            SetWearable(pa);
 
             Item pg = new PlateGorget();
             pg.LootType = LootType.Blessed;
-            AddItem(pg);
+            SetWearable(pg);
 
             Item pgl = new PlateGloves();
             pgl.LootType = LootType.Blessed;
-            AddItem(pgl);
+            SetWearable(pgl);
 
             Item pl = new PlateLegs();
             pl.LootType = LootType.Blessed;
-            AddItem(pl);
+            SetWearable(pl);
 
             Item pc = new PlateChest();
             pc.LootType = LootType.Blessed;
-            AddItem(pc);
+            SetWearable(pc);
 
             Item mks = new MetalKiteShield();
             mks.LootType = LootType.Blessed;
             mks.Hue = 0x794;
-            AddItem(mks);
+            SetWearable(mks);
 
             Item bs = new BodySash(0x794); // dark purple
             bs.LootType = LootType.Blessed;
-            AddItem(bs);
+            SetWearable(bs);
 
             PackGold( 400, 600 );            
 		}
-		
-        public override void GenerateLoot()
+
+        public override void OnKilledBy(Mobile m)
         {
+            base.OnKilledBy(m);
+
             if (Utility.RandomDouble() < 0.1)
             {
-                switch (Utility.Random(4))
-                {
-                    case 0:
-                        PackItem(new ExodusSummoningRite());
-                        break;
-                    case 1:
-                        PackItem(new ExodusSacrificalDagger());
-                        break;
-                    case 2:
-                        PackItem(new RobeofRite());
-                        break;
-                    case 3:
-                        PackItem(new ExodusSummoningAlter());
-                        break;
-                }
+                ExodusChest.GiveRituelItem(m);
             }
         }
 
+        public override bool CanBeParagon { get { return false; } }
         public override bool InitialInnocent { get { return true; } }
         public override Poison PoisonImmune{ get{ return Poison.Lethal; } }
 		public override int TreasureMapLevel{ get{ return 5; } }

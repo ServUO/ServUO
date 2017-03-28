@@ -44,7 +44,13 @@ namespace Server.Engines
 
             teleporter = new Teleporter(new Point3D(5792, 526, 10), Map.Felucca);
             teleporter.MoveToWorld(new Point3D(5698, 662, 0), Map.Felucca);
-            
+
+            teleporter = new Teleporter(new Point3D(2041, 215, 14), Map.Felucca);
+            teleporter.MoveToWorld(new Point3D(5824, 631, 5), Map.Felucca);
+
+            teleporter = new Teleporter(new Point3D(2043, 215, 14), Map.Felucca);
+            teleporter.MoveToWorld(new Point3D(5825, 631, 5), Map.Felucca);
+
             teleporter = new Teleporter(new Point3D(5690, 569, 25), Map.Trammel);
             teleporter.MoveToWorld(new Point3D(5827, 590, 1), Map.Trammel);
 
@@ -63,7 +69,13 @@ namespace Server.Engines
             teleporter = new Teleporter(new Point3D(5792, 526, 10), Map.Trammel);
             teleporter.MoveToWorld(new Point3D(5698, 662, 0), Map.Trammel);
 
-            e.Mobile.SendMessage("Wrong Revamep generation complete.");
+            teleporter = new Teleporter(new Point3D(2041, 215, 14), Map.Trammel);
+            teleporter.MoveToWorld(new Point3D(5824, 631, 5), Map.Trammel);
+
+            teleporter = new Teleporter(new Point3D(2043, 215, 14), Map.Trammel);
+            teleporter.MoveToWorld(new Point3D(5825, 631, 5), Map.Trammel);
+
+            e.Mobile.SendMessage("Wrong Revamp generation complete.");
         }
 
         public static void DeleteOldWrong(Mobile m)
