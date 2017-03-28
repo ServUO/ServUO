@@ -83,7 +83,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (0.001 > Utility.RandomDouble())
+            if (0.2 > Utility.RandomDouble())
             {
                 c.DropItem(new RecipeScroll(603));
             }
