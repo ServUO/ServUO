@@ -69,7 +69,10 @@ namespace Server.Mobiles
         Release, //"(Name) release"  Releases pet back into the wild (removes "tame" status).
         Stay, //"(All/Name) stay" All or the specified pet(s) will stop and stay in current spot.
         Stop, //"(All/Name) stop Cancels any current orders to attack, guard or follow.
-        Transfer //"(Name) transfer" Transfers complete ownership to targeted player.
+        Transfer, //"(Name) transfer" Transfers complete ownership to targeted player.
+		Aggro,	// Familiar fight mode
+		Heel,	// Familiar follow mode
+		Fetch	// Familiar quest herding mode
     }
 
     [Flags]
@@ -3835,7 +3838,8 @@ namespace Server.Mobiles
 
             if (m_AI != null)
             {
-                if (!Core.ML || (ct != OrderType.Follow && ct != OrderType.Stop && ct != OrderType.Stay))
+				if (!Core.ML || (ct != OrderType.Follow && ct != OrderType.Stop &&
+					ct != OrderType.Stay && ct != OrderType.Heel))
                 {
                     m_AI.OnAggressiveAction(aggressor);
                 }
@@ -3861,13 +3865,23 @@ namespace Server.Mobiles
                 }
             }
 
-            if (aggressor.ChangingCombatant && (m_bControlled || m_bSummoned) &&
-                (ct == OrderType.Come || (!Core.ML && ct == OrderType.Stay) || ct == OrderType.Stop || ct == OrderType.None ||
-                 ct == OrderType.Follow))
-            {
-                ControlTarget = aggressor;
-                ControlOrder = OrderType.Attack;
-            }
+			if (aggressor.ChangingCombatant && (m_bControlled || m_bSummoned) &&
+				(ct == OrderType.Come || (!Core.ML && ct == OrderType.Stay) || ct == OrderType.Stop || ct == OrderType.None ||
+				 ct == OrderType.Follow || (this is BaseFamiliar)))
+			{
+				ControlTarget = aggressor;
+				if (this is BaseFamiliar)
+				{
+					if (ct != OrderType.Fetch)
+					{
+						ControlOrder = OrderType.Aggro;
+					}
+				}
+				else
+				{
+					ControlOrder = OrderType.Attack;
+				}
+			}
             else if (Combatant == null && !m_bBardPacified)
             {
                 Warmode = true;
@@ -5910,8 +5924,17 @@ namespace Server.Mobiles
                 ControlMaster = m;
                 Controlled = true;
                 ControlTarget = null;
-                ControlOrder = OrderType.Come;
                 Guild = null;
+
+				if (this is BaseFamiliar)
+				{
+					ControlOrder = OrderType.Heel;
+				}
+				else
+				{
+					ControlOrder = OrderType.Come;
+				}
+				
 
                 if (m_DeleteTimer != null)
                 {
@@ -7155,8 +7178,8 @@ namespace Server.Mobiles
                     {
                         if (!onlyBonded || pet.IsBonded)
                         {
-                            if (pet.ControlOrder == OrderType.Guard || pet.ControlOrder == OrderType.Follow ||
-                                pet.ControlOrder == OrderType.Come)
+							if (pet.ControlOrder == OrderType.Guard || pet.ControlOrder == OrderType.Follow ||
+								pet.ControlOrder == OrderType.Come || pet.ControlOrder == OrderType.Heel)
                             {
                                 move.Add(pet);
                             }
