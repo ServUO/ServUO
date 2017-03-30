@@ -16,6 +16,7 @@ namespace Server.Items
         {
             this.Weight = 4.0;
             this.Layer = Layer.OneHanded;
+            this.Hue = 2500;
 
             if (this.Lifespan > 0)
             {
