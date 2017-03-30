@@ -9,37 +9,37 @@ namespace Server.Mobiles
         public OphidianMatriarch()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an ophidian matriarch";
-            this.Body = 87;
-            this.BaseSoundID = 644;
+            Name = "an ophidian matriarch";
+            Body = 87;
+            BaseSoundID = 644;
 
-            this.SetStr(416, 505);
-            this.SetDex(96, 115);
-            this.SetInt(366, 455);
+            SetStr(416, 505);
+            SetDex(96, 115);
+            SetInt(366, 455);
 
-            this.SetHits(250, 303);
+            SetHits(250, 303);
 
-            this.SetDamage(11, 13);
+            SetDamage(11, 13);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Cold, 35, 45);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 35, 45);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Cold, 35, 45);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 35, 45);
 
-            this.SetSkill(SkillName.EvalInt, 90.1, 100.0);
-            this.SetSkill(SkillName.Magery, 90.1, 100.0);
-            this.SetSkill(SkillName.Meditation, 5.4, 25.0);
-            this.SetSkill(SkillName.MagicResist, 90.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 50.1, 70.0);
-            this.SetSkill(SkillName.Wrestling, 60.1, 80.0);
+            SetSkill(SkillName.EvalInt, 90.1, 100.0);
+            SetSkill(SkillName.Magery, 90.1, 100.0);
+            SetSkill(SkillName.Meditation, 5.4, 25.0);
+            SetSkill(SkillName.MagicResist, 90.1, 100.0);
+            SetSkill(SkillName.Tactics, 50.1, 70.0);
+            SetSkill(SkillName.Wrestling, 60.1, 80.0);
 
-            this.Fame = 16000;
-            this.Karma = -16000;
+            Fame = 16000;
+            Karma = -16000;
 
-            this.VirtualArmor = 50;
+            VirtualArmor = 50;
         }
 
         public OphidianMatriarch(Serial serial)
@@ -47,32 +47,15 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Greater;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.TerathansAndOphidians;
-            }
-        }
+        public override int TreasureMapLevel { get { return 4; } }
+        public override OppositionType OppositionList{ get{ return OppositionType.Ophidian; } }
+        public override Poison PoisonImmune{ get{ return Poison.Greater; } }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Average, 2);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)
