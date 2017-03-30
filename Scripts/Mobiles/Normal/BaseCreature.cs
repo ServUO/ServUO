@@ -941,7 +941,7 @@ namespace Server.Mobiles
                     PlayerMobile pm = m as PlayerMobile;
                     toDrain = (int)drNO.ThieveItems.LifeShieldLotion.HandleLifeDrain(pm, toDrain);
                 }
-                //end 
+                //end
 
 
                 Hits += toDrain;
@@ -993,6 +993,147 @@ namespace Server.Mobiles
         public virtual OppositionGroup OppositionGroup { get { return null; } }
         public virtual bool IsMilitiaFighter { get { return false; } }
 
+        // Opposition List stuff
+        public virtual OppositionType OppositionList{ get{ return OppositionType.None ; } } // What opposition list am I in?
+
+        public enum OppositionType
+        {
+            None,
+            Juka,
+            Meer,
+            Terathan,
+            Ophidian,
+            Savage,
+            Orc,
+            Fey,
+            Undead,
+            BlackSolen,
+            RedSolen
+        }
+
+        public virtual bool OppositionListEnemy(Mobile m)
+        {
+            // Target must be BaseCreature
+            if (!(m is BaseCreature))
+            {
+                return false;
+            }
+
+            BaseCreature c = (BaseCreature)m;
+
+            // Target must have an OppositionType
+            if (c.OppositionList == OppositionType.None)
+            {
+                return false;
+            }
+
+            // Pick my OppositionType
+            switch (OppositionList)
+            {
+                case OppositionType.Juka: return m_JukaEnemy(c.OppositionList);
+                case OppositionType.Meer: return m_MeerEnemy(c.OppositionList);
+                case OppositionType.Terathan: return m_TerathanEnemy(c.OppositionList);
+                case OppositionType.Ophidian: return m_OphidianEnemy(c.OppositionList);
+                case OppositionType.Savage: return m_SavageEnemy(c.OppositionList);
+                case OppositionType.Orc: return m_OrcEnemy(c.OppositionList);
+                case OppositionType.Fey: return m_FeyEnemy(c.OppositionList);
+                case OppositionType.Undead: return m_UndeadEnemy(c.OppositionList);
+                case OppositionType.BlackSolen: return m_BlackSolenEnemy(c.OppositionList);
+                case OppositionType.RedSolen: return m_RedSolenEnemy(c.OppositionList);
+                default: return false;
+            }
+        }
+
+        private bool m_JukaEnemy(OppositionType egroup)
+        {
+            switch (egroup)
+            {
+                case OppositionType.Meer: return true;
+                default: return false;
+            }
+        }
+
+        private bool m_MeerEnemy(OppositionType egroup)
+        {
+            switch (egroup)
+            {
+                case OppositionType.Juka: return true;
+                default: return false;
+            }
+        }
+
+        private bool m_TerathanEnemy(OppositionType egroup)
+        {
+            switch (egroup)
+            {
+                case OppositionType.Ophidian: return true;
+                default: return false;
+            }
+        }
+
+        private bool m_OphidianEnemy(OppositionType egroup)
+        {
+            switch (egroup)
+            {
+                case OppositionType.Terathan: return true;
+                default: return false;
+            }
+        }
+
+        private bool m_SavageEnemy(OppositionType egroup)
+        {
+            switch (egroup)
+            {
+                case OppositionType.Orc: return true;
+                default: return false;
+            }
+        }
+
+        private bool m_OrcEnemy(OppositionType egroup)
+        {
+            switch (egroup)
+            {
+                case OppositionType.Savage: return true;
+                default: return false;
+            }
+        }
+
+        private bool m_FeyEnemy(OppositionType egroup)
+        {
+            switch (egroup)
+            {
+                case OppositionType.Undead: return true;
+                default: return false;
+            }
+        }
+
+        private bool m_UndeadEnemy(OppositionType egroup)
+        {
+            switch (egroup)
+            {
+                case OppositionType.Fey: return true;
+                default: return false;
+            }
+        }
+
+        private bool m_BlackSolenEnemy(OppositionType egroup)
+        {
+            switch (egroup)
+            {
+                case OppositionType.RedSolen: return true;
+                default: return false;
+            }
+        }
+
+        private bool m_RedSolenEnemy(OppositionType egroup)
+        {
+            switch (egroup)
+            {
+                case OppositionType.BlackSolen: return true;
+                default: return false;
+            }
+        }
+
         #region Friends
         public List<Mobile> Friends { get { return m_Friends; } }
 
@@ -1023,9 +1164,7 @@ namespace Server.Mobiles
 
 		public virtual bool IsFriend(Mobile m)
 		{
-			OppositionGroup g = OppositionGroup;
-
-			if (g != null && g.IsEnemy(this, m))
+			if (OppositionList != OppositionType.None && OppositionListEnemy(m))
 			{
 				return false;
 			}
@@ -1105,9 +1244,7 @@ namespace Server.Mobiles
 				return a.IsEnemy(m);
 			}
 
-			OppositionGroup g = OppositionGroup;
-
-			if (g != null && g.IsEnemy(this, m))
+			if (OppositionList != OppositionType.None && OppositionListEnemy(m))
 			{
 				return true;
 			}
@@ -1148,7 +1285,7 @@ namespace Server.Mobiles
 			}
 
 			BaseCreature c = (BaseCreature)m;
-            
+
 			if (c.IsMilitiaFighter)
 			{
 				return true;
@@ -1682,8 +1819,8 @@ namespace Server.Mobiles
 
         Seems this actually was removed on OSI somewhere between the original bug report and now.
         We will call it ML, until we can get better information. I suspect it was on the OSI TC when
-        originally it taken out of RunUO, and not implmented on OSIs production shards until more 
-        recently.  Either way, this is, or was, accurate OSI behavior, and just entirely 
+        originally it taken out of RunUO, and not implmented on OSIs production shards until more
+        recently.  Either way, this is, or was, accurate OSI behavior, and just entirely
         removing it was incorrect.  OSI followers were distracted by being attacked well into
         AoS, at very least.
 
@@ -4133,8 +4270,8 @@ namespace Server.Mobiles
             return true; // entered idle state
         }
 
-        /* 
-			this way, due to the huge number of locations this will have to be changed 
+        /*
+			this way, due to the huge number of locations this will have to be changed
 			Perhaps we can change this in the future when fixing game play is not the
 			major issue.
 		*/
@@ -5532,8 +5669,8 @@ namespace Server.Mobiles
         public static int[] RecipeTypes { get { return _RecipeTypes; } }
         private static int[] _RecipeTypes =
         {
-            560, 561, 562, 563, 564, 565, 566, 
-            570, 571, 572, 573, 574, 575, 576, 577, 
+            560, 561, 562, 563, 564, 565, 566,
+            570, 571, 572, 573, 574, 575, 576, 577,
             580, 581, 582, 583, 584
             //602, 603, 604,  // nutcrackers
             //800             // runic atlas
@@ -7315,7 +7452,7 @@ namespace Server.Mobiles
         private bool m_RemoveOnSave;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool RemoveOnSave { get { return m_RemoveOnSave; } set { m_RemoveOnSave = value; } }    
+        public bool RemoveOnSave { get { return m_RemoveOnSave; } set { m_RemoveOnSave = value; } }
     }
 
     public class LoyaltyTimer : Timer
