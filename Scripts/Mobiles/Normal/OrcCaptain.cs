@@ -78,34 +78,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override InhumanSpeech SpeechType
-        {
-            get
-            {
-                return InhumanSpeech.Orc;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
+        public override bool CanRummageCorpses{ get{ return true; } }
+        public override int Meat{ get{ return 1; } }
+        public override InhumanSpeech SpeechType{ get{ return InhumanSpeech.Orc; } }
+        public override OppositionType OppositionList{ get{ return OppositionType.Orc; } }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager, 2);
