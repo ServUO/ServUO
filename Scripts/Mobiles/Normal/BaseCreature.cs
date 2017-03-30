@@ -999,16 +999,12 @@ namespace Server.Mobiles
         public enum OppositionType
         {
             None,
-            Juka,
-            Meer,
             Terathan,
             Ophidian,
             Savage,
             Orc,
             Fey,
-            Undead,
-            BlackSolen,
-            RedSolen
+            Undead
         }
 
         public virtual bool OppositionListEnemy(Mobile m)
@@ -1030,34 +1026,12 @@ namespace Server.Mobiles
             // Pick my OppositionType
             switch (OppositionList)
             {
-                case OppositionType.Juka: return m_JukaEnemy(c.OppositionList);
-                case OppositionType.Meer: return m_MeerEnemy(c.OppositionList);
                 case OppositionType.Terathan: return m_TerathanEnemy(c.OppositionList);
                 case OppositionType.Ophidian: return m_OphidianEnemy(c.OppositionList);
                 case OppositionType.Savage: return m_SavageEnemy(c.OppositionList);
                 case OppositionType.Orc: return m_OrcEnemy(c.OppositionList);
                 case OppositionType.Fey: return m_FeyEnemy(c.OppositionList);
                 case OppositionType.Undead: return m_UndeadEnemy(c.OppositionList);
-                case OppositionType.BlackSolen: return m_BlackSolenEnemy(c.OppositionList);
-                case OppositionType.RedSolen: return m_RedSolenEnemy(c.OppositionList);
-                default: return false;
-            }
-        }
-
-        private bool m_JukaEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Meer: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_MeerEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Juka: return true;
                 default: return false;
             }
         }
@@ -1112,24 +1086,6 @@ namespace Server.Mobiles
             switch (egroup)
             {
                 case OppositionType.Fey: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_BlackSolenEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.RedSolen: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_RedSolenEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.BlackSolen: return true;
                 default: return false;
             }
         }
