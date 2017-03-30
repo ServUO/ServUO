@@ -100,9 +100,8 @@ namespace Server.Gumps
             while (offset + next < 320 && Index < Collection.Count)
 			{
                 CollectionItem item = Collection[Index];
-				
 				int height = Math.Max(item.Height, 20);
-                Console.WriteLine("POints2: {0}", Points);
+
 				if (Points >= item.Points)
                 {
                     AddButton(35, offset + (int)(height / 2) - 5, 0x837, 0x838, 200 + Index, GumpButtonType.Reply, 0);
