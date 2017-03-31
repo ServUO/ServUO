@@ -51,7 +51,7 @@ All notable changes to this project will be documented in this file.
 - *Savage Shaman* can now be female only.
 - *Savage Rider* can now be male only.
 - Healing stone/spell stone can no longer be added to other containers.
-- Added zero delay timer to `AddBlood to prevent console warnings.
+- Added zero delay timer to `AddBlood` to prevent console warnings.
 - *Sleep* spell effects are now canceled on damage.
 - Fixed region extension crash.
 - Fixed VvV gump crash.
