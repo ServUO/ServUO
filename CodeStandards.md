@@ -4,6 +4,35 @@
 
 ### Use tabs for indents. 
 
+### Add contrite, descriptive comments above code that is complex, counter-intuitive, or has exceptions to standards that are required to function.
+
+    // Example: you have a faction check, but it only checks players and their pets, ignoring uncontrolled faction creatures.
+
+    if (IsStaff())
+    {
+        //Staff can always do this!
+    }
+    else if(Criminal || Kills >= 5)
+    {
+        return;
+    }
+
+    // bad example - such a construct would require an explanation
+
+    if (Criminal || Kills >= 5 ? "T" : "F" == "T") 
+    {
+        return; 
+    }
+
+    // bad example - doesn't need explanation.
+
+    // if the mobile is a criminal
+    if (Criminal)
+    {
+         // reduce their health by 10.
+        Health -= 10;
+    }
+
 ### Omit `this` for member access. 
 
 Do not use `this` to denote access to an object's members. If `this` must be used to access a
