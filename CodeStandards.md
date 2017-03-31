@@ -6,10 +6,10 @@
 
 ### Omit `this` for member access. 
 
-Do not use `this` to denote access to an instance's members. If `this` must be used to to access a
+Do not use `this` to denote access to an object's members. If `this` must be used to access a
 member, rename or refactor the code to not require it. 
 
-**Exception**: Scripts may use `this` to denote member access.
+**Note**: A solitary `this` may be used to reference the current object itself. 
 
 ### Use immutable data when possible. 
 
@@ -92,7 +92,7 @@ For example,
     public static bool Enabled = true; 
     public int TotalGold { get; }
 
-### Method parameters must be in pascalCase.
+### Method parameters and local variables must be in pascalCase.
 
 For example, 
 
