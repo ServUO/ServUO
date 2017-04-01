@@ -431,7 +431,11 @@ namespace Server
 
 			// Added to help future code support on forums, as a 'check' people can ask for to it see if they recompiled core or not
 			Utility.PushColor(ConsoleColor.DarkGreen);
-			Console.WriteLine(new String('-', Console.BufferWidth));
+            try
+            {
+                Console.WriteLine(new String('-', Console.BufferWidth));
+            }
+            catch { }
 			Utility.PopColor();
 			Utility.PushColor(ConsoleColor.Cyan);
 			Console.WriteLine(
