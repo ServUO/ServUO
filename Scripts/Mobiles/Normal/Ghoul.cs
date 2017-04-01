@@ -9,34 +9,34 @@ namespace Server.Mobiles
         public Ghoul()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a ghoul";
-            this.Body = 153;
-            this.BaseSoundID = 0x482;
+            Name = "a ghoul";
+            Body = 153;
+            BaseSoundID = 0x482;
 
-            this.SetStr(76, 100);
-            this.SetDex(76, 95);
-            this.SetInt(36, 60);
+            SetStr(76, 100);
+            SetDex(76, 95);
+            SetInt(36, 60);
 
-            this.SetHits(46, 60);
-            this.SetMana(0);
+            SetHits(46, 60);
+            SetMana(0);
 
-            this.SetDamage(7, 9);
+            SetDamage(7, 9);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 25, 30);
-            this.SetResistance(ResistanceType.Cold, 20, 30);
-            this.SetResistance(ResistanceType.Poison, 5, 10);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetResistance(ResistanceType.Physical, 25, 30);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Poison, 5, 10);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.MagicResist, 45.1, 60.0);
-            this.SetSkill(SkillName.Tactics, 45.1, 60.0);
-            this.SetSkill(SkillName.Wrestling, 45.1, 55.0);
+            SetSkill(SkillName.MagicResist, 45.1, 60.0);
+            SetSkill(SkillName.Tactics, 45.1, 60.0);
+            SetSkill(SkillName.Wrestling, 45.1, 55.0);
 
-            this.Fame = 2500;
-            this.Karma = -2500;
+            Fame = 2500;
+            Karma = -2500;
 
-            this.VirtualArmor = 28;
+            VirtualArmor = 28;
         }
 
         public Ghoul(Serial serial)
@@ -44,31 +44,14 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+        public override bool BleedImmune{ get{ return true; } }
+        public override Poison PoisonImmune{ get{ return Poison.Regular; } }
+        public override OppositionType OppositionList{ get{ return OppositionType.Undead; } }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
-            this.PackItem(Loot.RandomWeapon());
+            AddLoot(LootPack.Meager);
+            PackItem(Loot.RandomWeapon());
         }
 
         public override void Serialize(GenericWriter writer)
