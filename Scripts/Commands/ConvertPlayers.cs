@@ -53,7 +53,7 @@ namespace Server.Commands
             
                 Console.WriteLine("{0} players have been converted to PlayerMobile. {1}.", count, Core.NoConsole ? "The server is now restarting" : "Press any key to restart the server");
                 
-                if (!Core.NoConsole)
+                if (!Core.NoConsole && !Core.Service)
                     Console.ReadKey(true);
 
                 Core.Kill(true);

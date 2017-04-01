@@ -442,7 +442,7 @@ namespace Server
 
 			// Added to help future code support on forums, as a 'check' people can ask for to it see if they recompiled core or not
 			Utility.PushColor(ConsoleColor.DarkGreen);
-            if(NoConsole)
+            if(!NoConsole)
             {
                 Console.WriteLine(new String('-', Console.BufferWidth));
             }
