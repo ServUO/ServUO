@@ -87,6 +87,8 @@ namespace Server
 		}
 
 		public static bool Service { get; private set; }
+
+        public static bool NoConsole { get; private set; }
 		public static bool Debug { get; private set; }
 
 		public static bool HaltOnWarning { get; private set; }
@@ -385,7 +387,16 @@ namespace Server
 				{
 					_UseHRT = true;
 				}
+                else if (Insensitive.Equals(a, "-noconsole"))
+                {
+                    NoConsole = false;
+                }
 			}
+
+            if (!Environment.UserInteractive || Service)
+            {
+                NoConsole = false;
+            }
 
 			try
 			{
@@ -431,11 +442,14 @@ namespace Server
 
 			// Added to help future code support on forums, as a 'check' people can ask for to it see if they recompiled core or not
 			Utility.PushColor(ConsoleColor.DarkGreen);
-            try
+            if(NoConsole)
             {
                 Console.WriteLine(new String('-', Console.BufferWidth));
             }
-            catch { }
+            else
+            {
+                Console.WriteLine(new String('-', 10));
+            }
 			Utility.PopColor();
 			Utility.PushColor(ConsoleColor.Cyan);
 			Console.WriteLine(
@@ -527,7 +541,7 @@ namespace Server
 
 				Console.WriteLine(" - Press return to exit, or R to try again.");
 
-				if (Console.ReadKey(true).Key != ConsoleKey.R)
+				if (Insensitive.Equals(Console.ReadLine(), "R"))
 				{
 					return;
 				}
@@ -636,6 +650,11 @@ namespace Server
 				{
 					Utility.Separate(sb, "-usehrt", " ");
 				}
+
+                if (NoConsole)
+                {
+                    Utility.Separate(sb, "-noconsole", " ");
+                }
 
 				return sb.ToString();
 			}
