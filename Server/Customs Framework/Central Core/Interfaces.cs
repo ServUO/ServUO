@@ -23,7 +23,7 @@ namespace CustomsFramework
 		CustomSerial Serial { get; }
 		string Name { get; }
 		void Delete();
-
+		bool Deleted { get; }
 		void Prep();
 	}
 }
