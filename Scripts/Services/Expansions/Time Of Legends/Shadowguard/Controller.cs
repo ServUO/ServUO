@@ -819,11 +819,14 @@ namespace Server.Engines.Shadowguard
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(2), () =>
                 {
-                    Instance.Encounter.CheckPlayerStatus(m);
+                    if(Instance.Encounter != null)
+                        Instance.Encounter.CheckPlayerStatus(m);
                 });
             }
-            else if (m is BaseCreature)
+            else if (m is BaseCreature && Instance.Encounter != null)
+            {
                 Instance.Encounter.OnCreatureKilled((BaseCreature)m);
+            }
         }
 
         public override bool OnTarget(Mobile m, Server.Targeting.Target t, object o)
