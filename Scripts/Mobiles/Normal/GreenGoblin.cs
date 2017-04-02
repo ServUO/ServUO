@@ -122,24 +122,9 @@ namespace Server.Mobiles
                 return 1;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
-        //public override bool IsEnemy( Mobile m )
-        //{
-        //	if ( m.Player && m.FindItemOnLayer( Layer.Helm ) is OrcishKinMask )
-        //		return false;
 
-        //	return base.IsEnemy( m );
-        //}
+        public override OppositionType OppositionList{ get{ return OppositionType.GreenGoblin; } }
 
-        //public override void AggressiveAction( Mobile aggressor, bool criminal )
-        //{
-        //base.AggressiveAction( aggressor, criminal );
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
