@@ -994,6 +994,19 @@ namespace Server.Mobiles
         public virtual bool IsMilitiaFighter { get { return false; } }
 
         // Opposition List stuff
+        private bool m_HasFoughtPlayer;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool HasFoughtPlayer
+        {
+            get { return m_HasFoughtPlayer; }
+            set
+            {
+                m_HasFoughtPlayer = value;
+                InvalidateProperties();
+            }
+        }
+
         public virtual OppositionType OppositionList{ get{ return OppositionType.None ; } } // What opposition list am I in?
 
         public enum OppositionType
@@ -1004,7 +1017,9 @@ namespace Server.Mobiles
             Savage,
             Orc,
             Fey,
-            Undead
+            Undead,
+            GrayGoblin,
+            GreenGoblin
         }
 
         public virtual bool OppositionListEnemy(Mobile m)
@@ -1032,12 +1047,20 @@ namespace Server.Mobiles
                 case OppositionType.Orc: return m_OrcEnemy(c.OppositionList);
                 case OppositionType.Fey: return m_FeyEnemy(c.OppositionList);
                 case OppositionType.Undead: return m_UndeadEnemy(c.OppositionList);
+                case OppositionType.GrayGoblin: return m_GrayGoblinEnemy(c.OppositionList);
+                case OppositionType.GreenGoblin: return m_GreenGoblinEnemy(c.OppositionList);
                 default: return false;
             }
         }
 
         private bool m_TerathanEnemy(OppositionType egroup)
         {
+            // Don't fight monsters after fighting players, until sector deactivate/server restart
+            if (HasFoughtPlayer)
+            {
+                return false;
+            }
+
             switch (egroup)
             {
                 case OppositionType.Ophidian: return true;
@@ -1047,6 +1070,12 @@ namespace Server.Mobiles
 
         private bool m_OphidianEnemy(OppositionType egroup)
         {
+            // Don't fight monsters after fighting players, until sector deactivate/server restart
+            if (HasFoughtPlayer)
+            {
+                return false;
+            }
+
             switch (egroup)
             {
                 case OppositionType.Terathan: return true;
@@ -1086,6 +1115,36 @@ namespace Server.Mobiles
             switch (egroup)
             {
                 case OppositionType.Fey: return true;
+                default: return false;
+            }
+        }
+
+        private bool m_GrayGoblinEnemy(OppositionType egroup)
+        {
+            // Don't fight monsters after fighting players, until sector deactivate/server restart
+            if (HasFoughtPlayer)
+            {
+                return false;
+            }
+
+            switch (egroup)
+            {
+                case OppositionType.GreenGoblin: return true;
+                default: return false;
+            }
+        }
+
+        private bool m_GreenGoblinEnemy(OppositionType egroup)
+        {
+            // Don't fight monsters after fighting players, until sector deactivate/server restart
+            if (HasFoughtPlayer)
+            {
+                return false;
+            }
+
+            switch (egroup)
+            {
+                case OppositionType.GrayGoblin: return true;
                 default: return false;
             }
         }
@@ -3923,6 +3982,11 @@ namespace Server.Mobiles
                     aggressor.Aggressors.Add(AggressorInfo.Create(this, aggressor, true));
                 }
             }
+            else if (!HasFoughtPlayer && (aggressor.Player ||
+                (aggressor is BaseCreature && ((BaseCreature)aggressor).GetMaster() is PlayerMobile)))
+            {
+                HasFoughtPlayer = true;
+            }
 
             OrderType ct = m_ControlOrder;
 
@@ -4261,9 +4325,18 @@ namespace Server.Mobiles
 
             Warmode = (Combatant != null && !Combatant.Deleted && Combatant.Alive);
 
-            if (CanFly && Warmode)
+            if (Warmode)
             {
-                Flying = false;
+                if (!HasFoughtPlayer && (Combatant is PlayerMobile ||
+                    (Combatant is BaseCreature && ((BaseCreature)Combatant).GetMaster() is PlayerMobile)))
+                {
+                    HasFoughtPlayer = true;
+                }
+
+                if (CanFly)
+                {
+                    Flying = false;
+                }
             }
         }
 
@@ -7361,6 +7434,8 @@ namespace Server.Mobiles
             {
                 m_AI.Deactivate();
             }
+
+            HasFoughtPlayer = false;
 
             base.OnSectorDeactivate();
         }
