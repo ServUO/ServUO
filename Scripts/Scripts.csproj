@@ -8952,30 +8952,14 @@
     <Compile Include="Services\ChampionSystem\StarRoomGate.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Chat\Channel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Chat\Chat.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Chat\ChatActionHandler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Chat\ChatActionHandlers.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Chat\ChatCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Chat\Chatold.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Chat\ChatUser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Chat\Packets.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Services\Chat\Channel.cs" />
+    <Compile Include="Services\Chat\ChatActionHandler.cs" />
+    <Compile Include="Services\Chat\ChatActionHandlers.cs" />
+    <Compile Include="Services\Chat\ChatCommand.cs" />
+    <Compile Include="Services\Chat\ChatSystem.cs" />
+    <Compile Include="Services\Chat\ChatUser.cs" />
+    <Compile Include="Services\Chat\Logging.cs" />
+    <Compile Include="Services\Chat\Packets.cs" />
     <Compile Include="Services\CommunityCollections\BaseCollectionItem.cs">
       <SubType>Code</SubType>
     </Compile>
