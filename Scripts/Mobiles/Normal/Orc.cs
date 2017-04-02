@@ -11,74 +11,74 @@ namespace Server.Mobiles
         public Orc()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = NameList.RandomName("orc");
-            Body = 17;
-            BaseSoundID = 0x45A;
+            this.Name = NameList.RandomName("orc");
+            this.Body = 17;
+            this.BaseSoundID = 0x45A;
 
-            SetStr(96, 120);
-            SetDex(81, 105);
-            SetInt(36, 60);
+            this.SetStr(96, 120);
+            this.SetDex(81, 105);
+            this.SetInt(36, 60);
 
-            SetHits(58, 72);
+            this.SetHits(58, 72);
 
-            SetDamage(5, 7);
+            this.SetDamage(5, 7);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 25, 30);
-            SetResistance(ResistanceType.Fire, 20, 30);
-            SetResistance(ResistanceType.Cold, 10, 20);
-            SetResistance(ResistanceType.Poison, 10, 20);
-            SetResistance(ResistanceType.Energy, 20, 30);
+            this.SetResistance(ResistanceType.Physical, 25, 30);
+            this.SetResistance(ResistanceType.Fire, 20, 30);
+            this.SetResistance(ResistanceType.Cold, 10, 20);
+            this.SetResistance(ResistanceType.Poison, 10, 20);
+            this.SetResistance(ResistanceType.Energy, 20, 30);
 
-            SetSkill(SkillName.MagicResist, 50.1, 75.0);
-            SetSkill(SkillName.Tactics, 55.1, 80.0);
-            SetSkill(SkillName.Wrestling, 50.1, 70.0);
+            this.SetSkill(SkillName.MagicResist, 50.1, 75.0);
+            this.SetSkill(SkillName.Tactics, 55.1, 80.0);
+            this.SetSkill(SkillName.Wrestling, 50.1, 70.0);
 
-            Fame = 1500;
-            Karma = -1500;
+            this.Fame = 1500;
+            this.Karma = -1500;
 
-            VirtualArmor = 28;
+            this.VirtualArmor = 28;
 
             switch ( Utility.Random(20) )
             {
                 case 0:
-                    PackItem(new Scimitar());
+                    this.PackItem(new Scimitar());
                     break;
                 case 1:
-                    PackItem(new Katana());
+                    this.PackItem(new Katana());
                     break;
                 case 2:
-                    PackItem(new WarMace());
+                    this.PackItem(new WarMace());
                     break;
                 case 3:
-                    PackItem(new WarHammer());
+                    this.PackItem(new WarHammer());
                     break;
                 case 4:
-                    PackItem(new Kryss());
+                    this.PackItem(new Kryss());
                     break;
                 case 5:
-                    PackItem(new Pitchfork());
+                    this.PackItem(new Pitchfork());
                     break;
             }
 
-            PackItem(new ThighBoots());
+            this.PackItem(new ThighBoots());
 
             switch ( Utility.Random(3) )
             {
                 case 0:
-                    PackItem(new Ribs());
+                    this.PackItem(new Ribs());
                     break;
                 case 1:
-                    PackItem(new Shaft());
+                    this.PackItem(new Shaft());
                     break;
                 case 2:
-                    PackItem(new Candle());
+                    this.PackItem(new Candle());
                     break;
             }
 
             if (0.2 > Utility.RandomDouble())
-                PackItem(new BolaBall());
+                this.PackItem(new BolaBall());
 
             if (0.5 > Utility.RandomDouble())
                 PackItem(new Yeast());
@@ -89,15 +89,44 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanRummageCorpses{ get{ return true; } }
-        public override int Meat{ get{ return 1; } }
-        public override int TreasureMapLevel{ get{ return 1; } }
-        public override InhumanSpeech SpeechType{ get{ return InhumanSpeech.Orc; } }
-        public override OppositionType OppositionList{ get{ return OppositionType.Orc; } }
-
+        public override InhumanSpeech SpeechType
+        {
+            get
+            {
+                return InhumanSpeech.Orc;
+            }
+        }
+        public override bool CanRummageCorpses
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override int TreasureMapLevel
+        {
+            get
+            {
+                return 1;
+            }
+        }
+        public override int Meat
+        {
+            get
+            {
+                return 1;
+            }
+        }
+        public override OppositionGroup OppositionGroup
+        {
+            get
+            {
+                return OppositionGroup.SavagesAndOrcs;
+            }
+        }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Meager);
+            this.AddLoot(LootPack.Meager);
         }
 
         public override bool IsEnemy(Mobile m)
