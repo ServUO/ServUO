@@ -112,13 +112,9 @@ namespace Server.Mobiles
                 return 1;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
+
+        public override OppositionType OppositionList{ get{ return OppositionType.GrayGoblin; } }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);
