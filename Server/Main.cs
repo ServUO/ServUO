@@ -389,13 +389,13 @@ namespace Server
 				}
                 else if (Insensitive.Equals(a, "-noconsole"))
                 {
-                    NoConsole = false;
+                    NoConsole = true;
                 }
 			}
 
             if (!Environment.UserInteractive || Service)
             {
-                NoConsole = false;
+                NoConsole = true;
             }
 
 			try
