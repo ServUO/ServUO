@@ -87,16 +87,6 @@ namespace Server.Mobiles
                 PackItem(new BolaBall());
         }
 
-        //Item item = aggressor.FindItemOnLayer( Layer.Helm );
-
-        //if ( item is OrcishKinMask )
-        //{
-        //	AOS.Damage( aggressor, 50, 0, 100, 0, 0, 0 );
-        //	item.Delete();
-        //	aggressor.FixedParticles( 0x36BD, 20, 10, 5044, EffectLayer.Head );
-        //	aggressor.PlaySound( 0x307 );
-        //}
-        //}
         public GreenGoblinAlchemist(Serial serial)
             : base(serial)
         {
@@ -123,24 +113,9 @@ namespace Server.Mobiles
                 return 1;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
-        //public override bool IsEnemy( Mobile m )
-        //{
-        //	if ( m.Player && m.FindItemOnLayer( Layer.Helm ) is OrcishKinMask )
-        //		return false;
 
-        //	return base.IsEnemy( m );
-        //}
+        public override OppositionType OppositionList{ get{ return OppositionType.GreenGoblin; } }
 
-        //public override void AggressiveAction( Mobile aggressor, bool criminal )
-        //{
-        //base.AggressiveAction( aggressor, criminal );
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
