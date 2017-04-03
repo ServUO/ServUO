@@ -192,6 +192,7 @@
     <Compile Include="Scripts\CachedCompilerBackend.cs" />
     <Compile Include="Scripts\CodeDomCompilerBackend.cs" />
     <Compile Include="Scripts\Compiler.cs" />
+    <Compile Include="Scripts\CompilerWorkspace.cs" />
     <Compile Include="Scripts\ICompilerBackend.cs" />
     <Compile Include="Scripts\ScriptCompiler.cs" />
     <Compile Include="Scripts\TypeCache.cs" />

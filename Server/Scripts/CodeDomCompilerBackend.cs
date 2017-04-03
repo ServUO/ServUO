@@ -3,35 +3,30 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace Server
 {
     public class CodeDomCompilerBackend : ICompilerBackend
     {
-        private readonly string m_LanguageString;
+        public CompilerWorkspace Workspace { get; }
         private readonly CodeDomProvider m_CodeDomProvider;
 
-        public CodeDomCompilerBackend(string languageString, CodeDomProvider codeDomProvider)
+        public CodeDomCompilerBackend(CompilerWorkspace workspace, CodeDomProvider codeDomProvider)
         {
-            m_LanguageString = languageString;
+            Workspace = workspace;
             m_CodeDomProvider = codeDomProvider;
         }
 
-        public string OutputDirectory => "Scripts/Output";
-        public string AssemblyFileName => string.Format("Scripts.{0}.dll", LanguageString);
-        public string AssemblyPathPath => Path.Combine(OutputDirectory, AssemblyFileName);
-        public string LanguageString => m_LanguageString;
 
         public Assembly CompileImpl(string[] files, bool debug)
         {
             CompilerResults results = null;
 
-            DeleteFiles(string.Format("Scripts.{0}*.dll", LanguageString));
+            DeleteFiles(string.Format("Scripts.{0}*.dll", Workspace.LanguageString));
 
             using (CodeDomProvider provider = m_CodeDomProvider)
             {
-                string path = GetUnusedPath(string.Format("Scripts.{0}", LanguageString));
+                string path = GetUnusedPath(string.Format("Scripts.{0}", Workspace.LanguageString));
 
                 CompilerParameters parms = new CompilerParameters(ScriptCompiler.GetReferenceAssemblies(), path, debug);
 
@@ -108,18 +103,14 @@ namespace Server
 
                 if (errors.Count > 0)
                 {
-                    Utility.PushColor(ConsoleColor.Red);
                     Console.WriteLine("Failed with: {0} errors, {1} warnings", errors.Count, warnings.Count);
-                    Utility.PopColor();
                 }
                 else
                 {
-                    Utility.PushColor(ConsoleColor.Green);
                     Console.WriteLine("Finished with: {0} errors, {1} warnings", errors.Count, warnings.Count);
-                    Utility.PopColor();
                 }
 
-                string scriptRoot = Path.GetFullPath(Path.Combine(Core.BaseDirectory, "Scripts" + Path.DirectorySeparatorChar));
+                string scriptRoot = Path.GetFullPath(ScriptCompiler.ScriptDirectory);
                 Uri scriptRootUri = new Uri(scriptRoot);
 
                 Utility.PushColor(ConsoleColor.Yellow);
@@ -182,19 +173,17 @@ namespace Server
             }
             else
             {
-                Utility.PushColor(ConsoleColor.Green);
                 Console.WriteLine("Finished with: 0 errors, 0 warnings");
-                Utility.PopColor();
             }
         }
 
         public string GetUnusedPath(string name)
         {
-            string path = Path.Combine(Core.BaseDirectory, String.Format("{0}/{1}.dll", OutputDirectory, name));
+            string path = Path.Combine(string.Format("{0}/{1}.dll", Workspace.OutputDirectory, name));
 
             for (int i = 2; File.Exists(path) && i <= 1000; ++i)
             {
-                path = Path.Combine(Core.BaseDirectory, String.Format("{0}/{1}.{2}.dll", OutputDirectory, name, i));
+                path = Path.Combine(string.Format("{0}/{1}.{2}.dll", Workspace.OutputDirectory, name, i));
             }
 
             return path;
@@ -204,7 +193,7 @@ namespace Server
         {
             try
             {
-                var files = Directory.GetFiles(Path.Combine(Core.BaseDirectory, OutputDirectory), mask);
+                var files = Directory.GetFiles(Workspace.OutputDirectory, mask);
 
                 foreach (string file in files)
                 {

@@ -20,6 +20,8 @@ namespace Server
 {
 	public static class ScriptCompiler
 	{
+	    public static string ScriptDirectory => Path.Combine( Core.BaseDirectory, "Scripts" );
+
 		private static Assembly[] m_Assemblies;
 
 		public static Assembly[] Assemblies { get { return m_Assemblies; } set { m_Assemblies = value; } }
@@ -124,7 +126,7 @@ namespace Server
 
 			Assembly assembly;
 
-		    ICompilerBackend csCompilerBackend = new CodeDomCompilerBackend("CS", new CSharpCodeProvider());
+		    ICompilerBackend csCompilerBackend = new CodeDomCompilerBackend(new CompilerWorkspace("CS"), new CSharpCodeProvider());
 		    if (cache)
 		        csCompilerBackend = new CachedCompilerBackend(csCompilerBackend);
 
@@ -149,7 +151,7 @@ namespace Server
 
 			if (Core.VBdotNet)
 			{
-			    ICompilerBackend vbCompilerBackend = new CodeDomCompilerBackend("VB", new VBCodeProvider());
+			    ICompilerBackend vbCompilerBackend = new CodeDomCompilerBackend(new CompilerWorkspace("VB"), new VBCodeProvider());
 			    if (cache)
 			        vbCompilerBackend = new CachedCompilerBackend(vbCompilerBackend);
 

@@ -7,32 +7,29 @@ namespace Server
 {
     public class CachedCompilerBackend : ICompilerBackend
     {
-        public string OutputDirectory => m_InnerCompiler.OutputDirectory;
-        public string AssemblyFileName => m_InnerCompiler.AssemblyFileName;
-        public string AssemblyPathPath => m_InnerCompiler.AssemblyPathPath;
-        public string LanguageString => m_InnerCompiler.LanguageString;
-
-        protected string HashFileName => string.Format("Scripts.{0}.hash", LanguageString);
-        protected string HashFilePath => Path.Combine(m_InnerCompiler.OutputDirectory, HashFileName);
+        protected string HashFileName => string.Format("Scripts.{0}.hash", Workspace.LanguageString);
+        protected string HashFilePath => Path.Combine(Workspace.OutputDirectory, HashFileName);
 
         private ICompilerBackend m_InnerCompiler;
+        public CompilerWorkspace Workspace { get; }
 
         public CachedCompilerBackend(ICompilerBackend innerCompiler)
         {
             m_InnerCompiler = innerCompiler;
+            Workspace = innerCompiler.Workspace;
         }
 
         public Assembly CompileImpl(string[] files, bool debug)
         {
-            if (File.Exists(AssemblyPathPath) && File.Exists(HashFilePath))
+            if (File.Exists(Workspace.AssemblyPathPath) && File.Exists(HashFilePath))
             {
                 try
                 {
-                    var hashCode = CalculateHashCode(AssemblyPathPath, files, debug);
+                    var hashCode = CalculateHashCode(Workspace.AssemblyPathPath, files, debug);
 
                     if (VerifyHashCode(hashCode))
                     {
-                        var cachedAssembly = Assembly.LoadFrom(AssemblyPathPath);
+                        var cachedAssembly = Assembly.LoadFrom(Workspace.AssemblyPathPath);
 
                         Console.WriteLine("done (cached)");
 
@@ -46,7 +43,7 @@ namespace Server
 
             var assembly = m_InnerCompiler.CompileImpl(files, debug);
 
-            if (assembly != null && Path.GetFileName(assembly.Location) == AssemblyFileName)
+            if (assembly != null && Path.GetFileName(assembly.Location) == Workspace.AssemblyFileName)
             {
                 try
                 {
