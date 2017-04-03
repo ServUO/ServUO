@@ -21,9 +21,6 @@ namespace Server
 	    public static string ScriptsDirectory => Path.Combine( Core.BaseDirectory, "Scripts" );
 	    public static string ScriptsOutputDirectory => Path.Combine( Core.BaseDirectory, "Scripts", "Output" );
 
-	    public static string ScriptsExtraDirectory => Path.Combine( Core.BaseDirectory, "Extra" );
-	    public static string ScriptsExtraOutputDirectory => Path.Combine( Core.BaseDirectory, "Extra", "Output" );
-
 		private static Assembly[] m_Assemblies;
 
 		public static Assembly[] Assemblies { get { return m_Assemblies; } set { m_Assemblies = value; } }
@@ -73,7 +70,7 @@ namespace Server
 			AppendCompilerOption( ref sb, "/d:MONO" );
             #endif
 
-			//These two defines are legacy, ie, depreciated.
+			//These two defines are legacy, ie, deprecated.
 			if (Core.Is64Bit)
 			{
 				AppendCompilerOption(ref sb, "/d:x64");
@@ -166,28 +163,6 @@ namespace Server
 			{
 				Console.WriteLine("Scripts: Skipping VB.NET Scripts...done (use -vb to enable)");
 			}
-
-		    if (Directory.Exists(ScriptsExtraDirectory))
-		    {
-		        EnsureDirectory(ScriptsExtraOutputDirectory);
-
-		        library = new Library("extra C# scripts", "Extra.CS", GetScripts(ScriptsExtraDirectory, "*.cs"), ScriptsExtraOutputDirectory, debug);
-
-		        if (CompileScripts(library, new CSharpCompiler(), cache, out assembly))
-		        {
-		            if (assembly != null)
-		            {
-		                assemblies.Add(assembly);
-
-		                if (!m_AdditionalReferences.Contains(assembly.Location))
-		                    m_AdditionalReferences.Add(assembly.Location);
-		            }
-		        }
-		        else
-		        {
-		            return false;
-		        }
-		    }
 
 			if (assemblies.Count == 0)
 			{
