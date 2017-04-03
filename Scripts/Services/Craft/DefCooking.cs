@@ -12,7 +12,8 @@ namespace Server.Engines.Craft
 
         DarkChocolateNutcracker = 600,
         MilkChocolateNutcracker = 601,
-        WhiteChocolateNutcracker = 602
+        WhiteChocolateNutcracker = 602,
+        ThreeTierCakee = 603
     }
     #endregion
 
@@ -313,6 +314,10 @@ namespace Server.Engines.Craft
             index = this.AddCraft(typeof(GingerBreadCookie), 1044497, 1031233, 35.0, 85.0, typeof(CookieMix), 1044474, 1, 1044253);
             this.AddRes(index, typeof(FreshGinger), 1031235, 1, 1044253);
             this.AddRecipe(index, (int)CookRecipes.GingerbreadCookie);
+            this.SetNeedOven(index, true);
+
+            index = this.AddCraft(typeof(ThreeTieredCake), 1044497, 1154465, 60.0, 100.0, typeof(CookieMix), 1044474, 3, 1044253);
+            this.AddRecipe(index, (int)CookRecipes.ThreeTierCakee);
             this.SetNeedOven(index, true);
             /* End Baking */
 

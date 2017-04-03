@@ -802,6 +802,39 @@ namespace Server.Items
         }
     }
 
+    public class ThreeTieredCake : Food
+    {
+        public override int LabelNumber { get { return 1098235; } } // A Three Tiered Cake 
+
+        [Constructable]
+        public ThreeTieredCake()
+            : base(0x4BA3)
+        {
+            this.Stackable = false;
+            this.Weight = 10.0;
+            this.FillFactor = 10;
+        }
+
+        public ThreeTieredCake(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
     public class Ribs : Food
     {
         [Constructable]
