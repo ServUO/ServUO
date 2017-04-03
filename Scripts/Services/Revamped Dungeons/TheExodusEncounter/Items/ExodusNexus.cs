@@ -23,8 +23,10 @@ namespace Server.Items
         public Dictionary<Mobile, DamageTimer> m_DamageTable = new Dictionary<Mobile, DamageTimer>();
         private int m_SideLength;
         private Node[] m_Path;
-        public Mobile m_User;
+        private Mobile m_User;
         public DateTime m_LastUse;
+
+        public Mobile User { get { return m_User; } set { m_User = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active { get { return this.Hue == 0; } }
@@ -166,10 +168,10 @@ namespace Server.Items
                 this.m_Path[i] = stack[i];
             }
 
-            if (this.m_User != null)
+            if (this.User != null)
             {
-                this.m_User.CloseGump(typeof(NexusGameGump));
-                this.m_User = null;
+                this.User.CloseGump(typeof(NexusGameGump));
+                this.User = null;
             }
         }
 
@@ -185,15 +187,15 @@ namespace Server.Items
                 return;
             }
 
-            if (this.m_User != null)
+            if (this.User != null)
             {
-                if (this.m_User == from)
+                if (this.User == from)
                     return;
 
-                if (this.m_User.Deleted || this.m_User.Map != this.Map || !this.m_User.InRange(this, 3) ||
-                    this.m_User.NetState == null || DateTime.UtcNow - this.m_LastUse >= m_UseTimeout)
+                if (this.User.Deleted || this.User.Map != this.Map || !this.User.InRange(this, 3) ||
+                    this.User.NetState == null || DateTime.UtcNow - this.m_LastUse >= m_UseTimeout)
                 {
-                    this.m_User.CloseGump(typeof(NexusGameGump));
+                    this.User.CloseGump(typeof(NexusGameGump));
                 }
                 else
                 {
@@ -202,7 +204,7 @@ namespace Server.Items
                 }
             }
 
-            this.m_User = from;
+            this.User = from;
             this.m_LastUse = DateTime.UtcNow;
 
             from.SendGump(new NexusGameGump(this, from, 0, false));
@@ -434,14 +436,14 @@ namespace Server.Items
             {
                 if (this.m_Nexus.Deleted || info.ButtonID == 0 || !this.m_From.CheckAlive())
                 {
-                    this.m_Nexus.m_User = null;
+                    this.m_Nexus.User = null;
                     return;
                 }
 
                 if (this.m_From.Map != this.m_Nexus.Map || !this.m_From.InRange(this.m_Nexus, 3))
                 {
                     this.m_From.SendLocalizedMessage(500446); // That is too far away.
-                    this.m_Nexus.m_User = null;
+                    this.m_Nexus.User = null;
                     return;
                 }
 
@@ -464,7 +466,7 @@ namespace Server.Items
                     else
                     {
                         this.m_Nexus.DoDamage(this.m_From);
-                        this.m_Nexus.m_User = null;
+                        this.m_Nexus.User = null;
                     }
                 }
                 else
@@ -499,7 +501,7 @@ namespace Server.Items
                         if (this.m_Step + 1 == this.m_Nexus.Path.Length - 1)
                         {
                             this.m_Nexus.Solve(this.m_From);
-                            this.m_Nexus.m_User = null;
+                            this.m_Nexus.User = null;
                         }
                         else
                         {
@@ -511,7 +513,7 @@ namespace Server.Items
                     else
                     {
                         this.m_Nexus.DoDamage(this.m_From);
-                        this.m_Nexus.m_User = null;
+                        this.m_Nexus.User = null;
                     }
                 }
             }
