@@ -1,60 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
+using System.Security.Cryptography;
 
 namespace Server
 {
     public class Library
     {
-        private string m_Name, m_FileExtension;
+        public string DisplayName { get; }
+        public string BaseName { get; }
+        public string[] Files { get; }
+        public bool Debug { get; }
 
-        public Library(string name, string fileExtension)
+        private string OutputDirectory => ScriptCompiler.ScriptsOutputDirectory;
+
+        public string AssemblyFileName => $"{BaseName}.dll";
+        public string AssemblyFilePath => Path.Combine(OutputDirectory, AssemblyFileName);
+        public string HashFileName => $"{BaseName}.hash";
+        public string HashFilePath => Path.Combine(OutputDirectory, HashFileName);
+
+        public Library(string displayName, string baseName, string[] files, bool debug)
         {
-            m_Name = name;
-            m_FileExtension = fileExtension;
+            DisplayName = displayName;
+            BaseName = baseName;
+            Files = files;
+            Debug = debug;
         }
 
-        public bool CompileScripts(ICompiler compiler, out Assembly assembly)
+        public string GetUnusedPath()
         {
-            return CompileScripts(compiler, false, out assembly);
-        }
+            var path = Path.Combine(string.Format("{0}/{1}.dll", OutputDirectory, BaseName));
 
-        public bool CompileScripts(ICompiler compiler, bool debug, out Assembly assembly)
-        {
-            Console.Write("Scripts: Compiling {0} scripts...", m_Name);
-
-            var files = GetScripts(string.Format("*.{0}", m_FileExtension));
-
-            if (files.Length == 0)
+            for (int i = 2; File.Exists(path) && i <= 1000; ++i)
             {
-                Console.WriteLine("no files found.");
-                assembly = null;
-                return true;
+                path = Path.Combine(string.Format("{0}/{1}.{2}.dll", OutputDirectory, BaseName, i));
             }
 
-            assembly = compiler.CompileImpl(files, debug);
-
-            return assembly != null;
+            return path;
         }
 
-        public static string[] GetScripts(string filter)
+        public void Clean()
         {
-            var list = new List<string>();
-
-            GetScripts(list, ScriptCompiler.ScriptsDirectory, filter);
-
-            return list.ToArray();
+            DeleteFiles($"{BaseName}*.dll");
         }
 
-        public static void GetScripts(List<string> list, string path, string filter)
+        private void DeleteFiles(string mask)
         {
-            foreach (string dir in Directory.GetDirectories(path))
+            try
             {
-                GetScripts(list, dir, filter);
-            }
+                var files = Directory.GetFiles(OutputDirectory, mask);
 
-            list.AddRange(Directory.GetFiles(path, filter));
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        File.Delete(file);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            catch
+            {
+            }
         }
     }
 }

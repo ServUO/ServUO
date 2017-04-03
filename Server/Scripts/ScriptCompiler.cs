@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 #endregion
 
@@ -18,6 +19,7 @@ namespace Server
 	public static class ScriptCompiler
 	{
 	    public static string ScriptsDirectory => Path.Combine( Core.BaseDirectory, "Scripts" );
+	    public static string ScriptsOutputDirectory => Path.Combine( Core.BaseDirectory, "Scripts", "Output" );
 
 		private static Assembly[] m_Assemblies;
 
@@ -29,7 +31,7 @@ namespace Server
 		{
 			var list = new List<string>();
 
-			string path = Path.Combine(Core.BaseDirectory, "Data/Assemblies.cfg");
+			string path = Path.Combine(Core.BaseDirectory, "Data", "Assemblies.cfg");
 
 			if (File.Exists(path))
 			{
@@ -111,25 +113,20 @@ namespace Server
 
 		public static bool Compile(bool debug, bool cache)
 		{
-			EnsureDirectory("Scripts/");
-			EnsureDirectory("Scripts/Output/");
+			EnsureDirectory(ScriptsDirectory);
+			EnsureDirectory(ScriptsOutputDirectory);
 
 			if (m_AdditionalReferences.Count > 0)
-			{
 				m_AdditionalReferences.Clear();
-			}
 
-			var assemblies = new List<Assembly>();
+		    var assemblies = new List<Assembly>();
 
+		    Library library;
 			Assembly assembly;
 
-		    ICompiler csCompiler = new CSharpCompiler(new CompilerWorkspace("cs"));
-		    if (cache)
-		        csCompiler = new CachedCompiler(csCompiler);
+		    library = new Library("C# scripts", "Scripts.CS", GetScripts("*.cs"), debug);
 
-		    Library csLibrary = new Library("C#", "cs");
-
-			if (csLibrary.CompileScripts(csCompiler, debug, out assembly))
+			if (CompileScripts(library, new CSharpCompiler(), cache, out assembly))
 			{
 				if (assembly != null)
 				{
@@ -148,13 +145,9 @@ namespace Server
 
 			if (Core.VBdotNet)
 			{
-			    ICompiler vbCompiler = new VBCompiler(new CompilerWorkspace("vb"));
-			    if (cache)
-			        vbCompiler = new CachedCompiler(vbCompiler);
+			    library = new Library("VB.NET scripts", "Scripts.VB", GetScripts("*.vb"), debug);
 
-			    Library vbLibrary = new Library("VB.NET", "vb");
-
-				if (vbLibrary.CompileScripts(vbCompiler, debug, out assembly))
+				if (CompileScripts(library, new VBCompiler(), cache, out assembly))
 				{
 					if (assembly != null)
 					{
@@ -183,7 +176,7 @@ namespace Server
 
 			m_Assemblies = assemblies.ToArray();
 
-			Console.WriteLine("Scripts: Verifying...");
+			Console.Write("Scripts: Verifying...");
 
 			Stopwatch watch = Stopwatch.StartNew();
 
@@ -200,6 +193,142 @@ namespace Server
 
 			return true;
 		}
+
+	    public static string[] GetScripts(string filter)
+	    {
+	        var list = new List<string>();
+
+	        GetScripts(list, ScriptCompiler.ScriptsDirectory, filter);
+
+	        return list.ToArray();
+	    }
+
+	    public static void GetScripts(List<string> list, string path, string filter)
+	    {
+	        foreach (string dir in Directory.GetDirectories(path))
+	        {
+	            GetScripts(list, dir, filter);
+	        }
+
+	        list.AddRange(Directory.GetFiles(path, filter));
+	    }
+
+	    private static bool CompileScripts(Library library, ICompiler compiler, bool cache, out Assembly assembly)
+	    {
+	        Console.Write("Scripts: Compiling {0}...", library.DisplayName);
+
+	        if (library.Files.Length == 0)
+	        {
+	            Console.WriteLine("no files found.");
+	            assembly = null;
+	            return true;
+	        }
+
+            if (cache && File.Exists(library.AssemblyFilePath) && File.Exists(library.HashFilePath))
+            {
+                try
+                {
+                    var hashCode = CalculateHashCode(library, library.AssemblyFilePath);
+
+                    if (VerifyHashCode(library, hashCode))
+                    {
+                        var cachedAssembly = Assembly.LoadFrom(library.AssemblyFilePath);
+
+                        Console.WriteLine("done (cached)");
+
+                        assembly = cachedAssembly;
+                        return true;
+                    }
+                }
+                catch
+                {
+                }
+            }
+
+	        library.Clean();
+
+	        assembly = compiler.Compile(library);
+
+	        if (cache && assembly != null && Path.GetFileName(assembly.Location) == library.AssemblyFileName)
+	        {
+	            try
+	            {
+	                var hashCode = CalculateHashCode(library, assembly.Location);
+
+	                WriteHashCode(library, hashCode);
+	            }
+	            catch
+	            {
+	            }
+
+	            return true;
+	        }
+
+	        return false;
+	    }
+
+	    private static byte[] CalculateHashCode(Library library, string assemblyFile)
+	    {
+	        using (var ms = new MemoryStream())
+	        {
+	            using (var bin = new BinaryWriter(ms))
+	            {
+	                var fileInfo = new FileInfo(assemblyFile);
+
+	                bin.Write(fileInfo.LastWriteTimeUtc.Ticks);
+
+	                foreach (var scriptFile in library.Files)
+	                {
+	                    fileInfo = new FileInfo(scriptFile);
+
+	                    bin.Write(fileInfo.LastWriteTimeUtc.Ticks);
+	                }
+
+	                bin.Write(library.Debug);
+	                bin.Write(Core.Version.ToString());
+
+	                ms.Position = 0;
+
+	                using (var sha1 = SHA1.Create())
+	                {
+	                    return sha1.ComputeHash(ms);
+	                }
+	            }
+	        }
+	    }
+
+	    private static bool VerifyHashCode(Library library, byte[] hashCode)
+	    {
+	        using (var fs = new FileStream(library.HashFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+	        {
+	            using (var bin = new BinaryReader(fs))
+	            {
+	                var bytes = bin.ReadBytes(hashCode.Length);
+
+	                if (bytes.Length != hashCode.Length)
+	                    return false;
+
+	                for (int i = 0; i < bytes.Length; ++i)
+	                {
+	                    if (bytes[i] != hashCode[i])
+	                        return false;
+	                }
+
+	                return true;
+	            }
+	        }
+	    }
+
+	    private static void WriteHashCode(Library library, byte[] hashCode)
+	    {
+	        using (var fs = new FileStream(library.HashFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+	        {
+	            using (var bin = new BinaryWriter(fs))
+	            {
+	                bin.Write(hashCode, 0, hashCode.Length);
+	            }
+	        }
+	    }
 
 		public static void Invoke(string method)
 		{
