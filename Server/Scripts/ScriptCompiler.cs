@@ -123,13 +123,13 @@ namespace Server
 
 			Assembly assembly;
 
-		    ICompiler csCompiler = new CSharpCompiler(new CompilerWorkspace("CS"));
+		    ICompiler csCompiler = new CSharpCompiler(new CompilerWorkspace("cs"));
 		    if (cache)
 		        csCompiler = new CachedCompiler(csCompiler);
 
-		    Library csLibrary = new Library("C#", "cs", csCompiler);
+		    Library csLibrary = new Library("C#", "cs");
 
-			if (csLibrary.CompileScripts(debug, out assembly))
+			if (csLibrary.CompileScripts(csCompiler, debug, out assembly))
 			{
 				if (assembly != null)
 				{
@@ -148,13 +148,13 @@ namespace Server
 
 			if (Core.VBdotNet)
 			{
-			    ICompiler vbCompiler = new VBCompiler(new CompilerWorkspace("VB"));
+			    ICompiler vbCompiler = new VBCompiler(new CompilerWorkspace("vb"));
 			    if (cache)
 			        vbCompiler = new CachedCompiler(vbCompiler);
 
-			    Library vbLibrary = new Library("VB.NET", "vb", vbCompiler);
+			    Library vbLibrary = new Library("VB.NET", "vb");
 
-				if (vbLibrary.CompileScripts(debug, out assembly))
+				if (vbLibrary.CompileScripts(vbCompiler, debug, out assembly))
 				{
 					if (assembly != null)
 					{

@@ -4,16 +4,16 @@ namespace Server
 {
     public class CompilerWorkspace
     {
-        private string m_LanguageString;
+        private string m_FileExtension;
 
-        public CompilerWorkspace( string mLanguageString )
+        public CompilerWorkspace( string fileExtension )
         {
-            m_LanguageString = mLanguageString;
+            m_FileExtension = fileExtension;
         }
 
         public string OutputDirectory => Path.Combine(ScriptCompiler.ScriptsDirectory, "Output");
-        public string AssemblyFileName => string.Format("Scripts.{0}.dll", LanguageString);
-        public string AssemblyPathPath => Path.Combine(OutputDirectory, AssemblyFileName);
-        public string LanguageString => m_LanguageString;
+        public string AssemblyFileName => string.Format("Scripts.{0}.dll", FileExtension.ToUpper());
+        public string AssemblyFilePath => Path.Combine(OutputDirectory, AssemblyFileName);
+        public string FileExtension => m_FileExtension;
     }
 }

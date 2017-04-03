@@ -8,21 +8,19 @@ namespace Server
     public class Library
     {
         private string m_Name, m_FileExtension;
-        private ICompiler m_Compiler;
 
-        public Library(string name, string fileExtension, ICompiler compiler)
+        public Library(string name, string fileExtension)
         {
             m_Name = name;
             m_FileExtension = fileExtension;
-            m_Compiler = compiler;
         }
 
-        public bool CompileScripts(out Assembly assembly)
+        public bool CompileScripts(ICompiler compiler, out Assembly assembly)
         {
-            return CompileScripts(false, out assembly);
+            return CompileScripts(compiler, false, out assembly);
         }
 
-        public bool CompileScripts(bool debug, out Assembly assembly)
+        public bool CompileScripts(ICompiler compiler, bool debug, out Assembly assembly)
         {
             Console.Write("Scripts: Compiling {0} scripts...", m_Name);
 
@@ -35,7 +33,7 @@ namespace Server
                 return true;
             }
 
-            assembly = m_Compiler.CompileImpl(files, debug);
+            assembly = compiler.CompileImpl(files, debug);
 
             return assembly != null;
         }

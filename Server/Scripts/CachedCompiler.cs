@@ -7,7 +7,7 @@ namespace Server
 {
     public class CachedCompiler : ICompiler
     {
-        protected string HashFileName => string.Format("Scripts.{0}.hash", Workspace.LanguageString);
+        protected string HashFileName => string.Format("Scripts.{0}.hash", Workspace.FileExtension.ToUpper());
         protected string HashFilePath => Path.Combine(Workspace.OutputDirectory, HashFileName);
 
         private ICompiler m_InnerCompiler;
@@ -21,15 +21,15 @@ namespace Server
 
         public Assembly CompileImpl(string[] files, bool debug)
         {
-            if (File.Exists(Workspace.AssemblyPathPath) && File.Exists(HashFilePath))
+            if (File.Exists(Workspace.AssemblyFilePath) && File.Exists(HashFilePath))
             {
                 try
                 {
-                    var hashCode = CalculateHashCode(Workspace.AssemblyPathPath, files, debug);
+                    var hashCode = CalculateHashCode(Workspace.AssemblyFilePath, files, debug);
 
                     if (VerifyHashCode(hashCode))
                     {
-                        var cachedAssembly = Assembly.LoadFrom(Workspace.AssemblyPathPath);
+                        var cachedAssembly = Assembly.LoadFrom(Workspace.AssemblyFilePath);
 
                         Console.WriteLine("done (cached)");
 

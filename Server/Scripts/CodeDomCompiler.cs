@@ -19,11 +19,11 @@ namespace Server
         {
             CompilerResults results = null;
 
-            DeleteFiles(string.Format("Scripts.{0}*.dll", Workspace.LanguageString));
+            DeleteFiles(string.Format("Scripts.{0}*.dll", Workspace.FileExtension.ToUpper()));
 
             using (CodeDomProvider provider = AcquireCodeDomProvider())
             {
-                string path = GetUnusedPath(string.Format("Scripts.{0}", Workspace.LanguageString));
+                string path = GetUnusedPath(string.Format("Scripts.{0}", Workspace.FileExtension.ToUpper()));
 
                 CompilerParameters parms = new CompilerParameters(ScriptCompiler.GetReferenceAssemblies(), path, debug);
 
