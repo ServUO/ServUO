@@ -158,6 +158,9 @@
     <Compile Include=".\Utility.cs" />
     <Compile Include=".\VirtueInfo.cs" />
     <Compile Include=".\World.cs" />
+    <Compile Include="CachedCompilerBackend.cs" />
+    <Compile Include="CodeDomCompilerBackend.cs" />
+    <Compile Include="Compiler.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Gumps\Gump.cs" />
     <Compile Include="Gumps\GumpAlphaRegion.cs" />
@@ -185,6 +188,7 @@
     <Compile Include="Gumps\KRGumpImage.cs" />
     <Compile Include="Gumps\KRGumpLabel.cs" />
     <Compile Include="Gumps\RelayInfo.cs" />
+    <Compile Include="ICompilerBackend.cs" />
     <Compile Include="Persistence\Persistence.cs" />
     <Compile Include="Berserk.cs" />
     <Compile Include="PromptExtensions.cs" />
