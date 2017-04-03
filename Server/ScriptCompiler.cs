@@ -132,156 +132,6 @@ namespace Server
 			}
 		}
 
-		public static bool CompileCSScripts(out Assembly assembly)
-		{
-			return CompileCSScripts(false, true, out assembly);
-		}
-
-		public static bool CompileCSScripts(bool debug, out Assembly assembly)
-		{
-			return CompileCSScripts(debug, true, out assembly);
-		}
-
-		public static bool CompileCSScripts(bool debug, bool cache, out Assembly assembly)
-		{
-			Utility.PushColor(ConsoleColor.Green);
-			Console.Write("Scripts: Compiling C# scripts...");
-			Utility.PopColor();
-			var files = GetScripts("*.cs");
-
-			if (files.Length == 0)
-			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("no files found.");
-				Utility.PopColor();
-				assembly = null;
-				return true;
-			}
-
-			if (File.Exists("Scripts/Output/Scripts.CS.dll"))
-			{
-				if (cache && File.Exists("Scripts/Output/Scripts.CS.hash"))
-				{
-					try
-					{
-						var hashCode = GetHashCode("Scripts/Output/Scripts.CS.dll", files, debug);
-
-						using (
-							FileStream fs = new FileStream("Scripts/Output/Scripts.CS.hash", FileMode.Open, FileAccess.Read, FileShare.Read))
-						{
-							using (BinaryReader bin = new BinaryReader(fs))
-							{
-								var bytes = bin.ReadBytes(hashCode.Length);
-
-								if (bytes.Length == hashCode.Length)
-								{
-									bool valid = true;
-
-									for (int i = 0; i < bytes.Length; ++i)
-									{
-										if (bytes[i] != hashCode[i])
-										{
-											valid = false;
-											break;
-										}
-									}
-
-									if (valid)
-									{
-										assembly = Assembly.LoadFrom("Scripts/Output/Scripts.CS.dll");
-
-										if (!m_AdditionalReferences.Contains(assembly.Location))
-										{
-											m_AdditionalReferences.Add(assembly.Location);
-										}
-
-										Utility.PushColor(ConsoleColor.Green);
-										Console.WriteLine("done (cached)");
-										Utility.PopColor();
-
-										return true;
-									}
-								}
-							}
-						}
-					}
-					catch
-					{ }
-				}
-			}
-
-			DeleteFiles("Scripts.CS*.dll");
-
-			using (CSharpCodeProvider provider = new CSharpCodeProvider())
-			{
-				string path = GetUnusedPath("Scripts.CS");
-
-				CompilerParameters parms = new CompilerParameters(GetReferenceAssemblies(), path, debug);
-
-				string options = GetCompilerOptions(debug);
-
-				if (options != null)
-				{
-					parms.CompilerOptions = options;
-				}
-
-				if (Core.HaltOnWarning)
-				{
-					parms.WarningLevel = 4;
-				}
-
-#if !MONO
-				CompilerResults results = provider.CompileAssemblyFromFile(parms, files);
-#else
-				parms.CompilerOptions = String.Format( "{0} /nowarn:169,219,414 /recurse:Scripts/*.cs", parms.CompilerOptions );
-				CompilerResults results = provider.CompileAssemblyFromFile( parms, "" );
-                #endif
-				m_AdditionalReferences.Add(path);
-
-				Display(results);
-
-#if !MONO
-				if (results.Errors.Count > 0)
-				{
-					assembly = null;
-					return false;
-				}
-#else
-				if( results.Errors.Count > 0 ) {
-					foreach( CompilerError err in results.Errors ) {
-						if ( !err.IsWarning ) {
-							assembly = null;
-							return false;
-						}
-					}
-				}
-                #endif
-
-				if (cache && Path.GetFileName(path) == "Scripts.CS.dll")
-				{
-					try
-					{
-						var hashCode = GetHashCode(path, files, debug);
-
-						using (
-							FileStream fs = new FileStream(
-								"Scripts/Output/Scripts.CS.hash", FileMode.Create, FileAccess.Write, FileShare.None))
-						{
-							using (BinaryWriter bin = new BinaryWriter(fs))
-							{
-								bin.Write(hashCode, 0, hashCode.Length);
-							}
-						}
-					}
-					catch
-					{ }
-				}
-
-				assembly = results.CompiledAssembly;
-				return true;
-			}
-		}
-
 		public static bool CompileVBScripts(out Assembly assembly)
 		{
 			return CompileVBScripts(false, out assembly);
@@ -555,8 +405,6 @@ namespace Server
 			{ }
 		}
 
-		private delegate CompilerResults Compiler(bool debug);
-
 		public static bool Compile()
 		{
 			return Compile(false);
@@ -581,11 +429,22 @@ namespace Server
 
 			Assembly assembly;
 
-			if (CompileCSScripts(debug, cache, out assembly))
+		    ICompilerBackend csCompilerBackend = new CodeDomCompilerBackend("CS", new CSharpCodeProvider());
+		    if (cache)
+		        csCompilerBackend = new CachedCompilerBackend(csCompilerBackend);
+
+		    Compiler csCompiler = new Compiler("C#", "cs", csCompilerBackend);
+
+			if (csCompiler.CompileScripts(debug, out assembly))
 			{
 				if (assembly != null)
 				{
 					assemblies.Add(assembly);
+
+				    if (!m_AdditionalReferences.Contains(assembly.Location))
+				    {
+				        m_AdditionalReferences.Add(assembly.Location);
+				    }
 				}
 			}
 			else
@@ -595,11 +454,22 @@ namespace Server
 
 			if (Core.VBdotNet)
 			{
-				if (CompileVBScripts(debug, cache, out assembly))
+			    ICompilerBackend vbCompilerBackend = new CodeDomCompilerBackend("VB", new VBCodeProvider());
+			    if (cache)
+			        vbCompilerBackend = new CachedCompilerBackend(vbCompilerBackend);
+
+			    Compiler vbCompiler = new Compiler("VB.NET", "vb", vbCompilerBackend);
+
+				if (vbCompiler.CompileScripts(debug, out assembly))
 				{
 					if (assembly != null)
 					{
 						assemblies.Add(assembly);
+
+					    if (!m_AdditionalReferences.Contains(assembly.Location))
+					    {
+					        m_AdditionalReferences.Add(assembly.Location);
+					    }
 					}
 				}
 				else
