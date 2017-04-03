@@ -194,7 +194,6 @@
     <Compile Include="Scripts\CSharpCompiler.cs" />
     <Compile Include="Scripts\Library.cs" />
     <Compile Include="Scripts\ICompiler.cs" />
-    <Compile Include="Scripts\LibraryCache.cs" />
     <Compile Include="Scripts\ScriptCompiler.cs" />
     <Compile Include="Scripts\TypeCache.cs" />
     <Compile Include="Scripts\TypeTable.cs" />

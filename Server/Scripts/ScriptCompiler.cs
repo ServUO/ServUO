@@ -116,8 +116,7 @@ namespace Server
 			EnsureDirectory(ScriptsDirectory);
 			EnsureDirectory(ScriptsOutputDirectory);
 
-			if (m_AdditionalReferences.Count > 0)
-				m_AdditionalReferences.Clear();
+			m_AdditionalReferences.Clear();
 
 		    var assemblies = new List<Assembly>();
 
@@ -133,9 +132,7 @@ namespace Server
 					assemblies.Add(assembly);
 
 				    if (!m_AdditionalReferences.Contains(assembly.Location))
-				    {
 				        m_AdditionalReferences.Add(assembly.Location);
-				    }
 				}
 			}
 			else
@@ -154,9 +151,7 @@ namespace Server
 						assemblies.Add(assembly);
 
 					    if (!m_AdditionalReferences.Contains(assembly.Location))
-					    {
 					        m_AdditionalReferences.Add(assembly.Location);
-					    }
 					}
 				}
 				else
