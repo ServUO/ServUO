@@ -9,39 +9,39 @@ namespace Server.Mobiles
         public TerathanWarrior()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a terathan warrior";
-            Body = 70;
-            BaseSoundID = 589;
+            this.Name = "a terathan warrior";
+            this.Body = 70;
+            this.BaseSoundID = 589;
 
-            SetStr(166, 215);
-            SetDex(96, 145);
-            SetInt(41, 65);
+            this.SetStr(166, 215);
+            this.SetDex(96, 145);
+            this.SetInt(41, 65);
 
-            SetHits(100, 129);
-            SetMana(0);
+            this.SetHits(100, 129);
+            this.SetMana(0);
 
-            SetDamage(7, 17);
+            this.SetDamage(7, 17);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 30, 35);
-            SetResistance(ResistanceType.Fire, 20, 30);
-            SetResistance(ResistanceType.Cold, 25, 35);
-            SetResistance(ResistanceType.Poison, 30, 40);
-            SetResistance(ResistanceType.Energy, 25, 35);
+            this.SetResistance(ResistanceType.Physical, 30, 35);
+            this.SetResistance(ResistanceType.Fire, 20, 30);
+            this.SetResistance(ResistanceType.Cold, 25, 35);
+            this.SetResistance(ResistanceType.Poison, 30, 40);
+            this.SetResistance(ResistanceType.Energy, 25, 35);
 
-            SetSkill(SkillName.Poisoning, 60.1, 80.0);
-            SetSkill(SkillName.MagicResist, 60.1, 75.0);
-            SetSkill(SkillName.Tactics, 80.1, 100.0);
-            SetSkill(SkillName.Wrestling, 80.1, 90.0);
+            this.SetSkill(SkillName.Poisoning, 60.1, 80.0);
+            this.SetSkill(SkillName.MagicResist, 60.1, 75.0);
+            this.SetSkill(SkillName.Tactics, 80.1, 100.0);
+            this.SetSkill(SkillName.Wrestling, 80.1, 90.0);
 
-            Fame = 4000;
-            Karma = -4000;
+            this.Fame = 4000;
+            this.Karma = -4000;
 
-            VirtualArmor = 30;
+            this.VirtualArmor = 30;
 
             if (Core.ML && Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
+                this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
         }
 
         public TerathanWarrior(Serial serial)
@@ -49,13 +49,30 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat{ get{ return 4; } }
-        public override int TreasureMapLevel{ get{ return 1; } }
-        public override OppositionType OppositionList{ get{ return OppositionType.Terathan; } }
-
+        public override int TreasureMapLevel
+        {
+            get
+            {
+                return 1;
+            }
+        }
+        public override int Meat
+        {
+            get
+            {
+                return 4;
+            }
+        }
+        public override OppositionGroup OppositionGroup
+        {
+            get
+            {
+                return OppositionGroup.TerathansAndOphidians;
+            }
+        }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Average);
+            this.AddLoot(LootPack.Average);
         }
 
         public override void Serialize(GenericWriter writer)

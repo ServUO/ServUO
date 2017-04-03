@@ -16,38 +16,38 @@ namespace Server.Mobiles
         public OphidianMage()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = m_Names[Utility.Random(m_Names.Length)];
-            Body = 85;
-            BaseSoundID = 639;
+            this.Name = m_Names[Utility.Random(m_Names.Length)];
+            this.Body = 85;
+            this.BaseSoundID = 639;
 
-            SetStr(181, 205);
-            SetDex(191, 215);
-            SetInt(96, 120);
+            this.SetStr(181, 205);
+            this.SetDex(191, 215);
+            this.SetInt(96, 120);
 
-            SetHits(109, 123);
+            this.SetHits(109, 123);
 
-            SetDamage(5, 10);
+            this.SetDamage(5, 10);
 
-            SetDamageType(ResistanceType.Physical, 100);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 25, 35);
-            SetResistance(ResistanceType.Fire, 30, 40);
-            SetResistance(ResistanceType.Cold, 35, 45);
-            SetResistance(ResistanceType.Poison, 40, 50);
-            SetResistance(ResistanceType.Energy, 35, 45);
+            this.SetResistance(ResistanceType.Physical, 25, 35);
+            this.SetResistance(ResistanceType.Fire, 30, 40);
+            this.SetResistance(ResistanceType.Cold, 35, 45);
+            this.SetResistance(ResistanceType.Poison, 40, 50);
+            this.SetResistance(ResistanceType.Energy, 35, 45);
 
-            SetSkill(SkillName.EvalInt, 85.1, 100.0);
-            SetSkill(SkillName.Magery, 85.1, 100.0);
-            SetSkill(SkillName.MagicResist, 75.0, 97.5);
-            SetSkill(SkillName.Tactics, 65.0, 87.5);
-            SetSkill(SkillName.Wrestling, 20.2, 60.0);
+            this.SetSkill(SkillName.EvalInt, 85.1, 100.0);
+            this.SetSkill(SkillName.Magery, 85.1, 100.0);
+            this.SetSkill(SkillName.MagicResist, 75.0, 97.5);
+            this.SetSkill(SkillName.Tactics, 65.0, 87.5);
+            this.SetSkill(SkillName.Wrestling, 20.2, 60.0);
 
-            Fame = 4000;
-            Karma = -4000;
+            this.Fame = 4000;
+            this.Karma = -4000;
 
-            VirtualArmor = 30;
+            this.VirtualArmor = 30;
 
-            PackReg(10);
+            this.PackReg(10);
 
 			switch (Utility.Random(6))
             {
@@ -61,16 +61,33 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat{ get{ return 1; } }
-        public override int TreasureMapLevel { get { return 2; } }
-        public override OppositionType OppositionList{ get{ return OppositionType.Ophidian; } }
-
+        public override int Meat
+        {
+            get
+            {
+                return 1;
+            }
+        }
+        public override int TreasureMapLevel
+        {
+            get
+            {
+                return 2;
+            }
+        }
+        public override OppositionGroup OppositionGroup
+        {
+            get
+            {
+                return OppositionGroup.TerathansAndOphidians;
+            }
+        }
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Average);
-            AddLoot(LootPack.LowScrolls);
-            AddLoot(LootPack.MedScrolls);
-            AddLoot(LootPack.Potions);
+            this.AddLoot(LootPack.Average);
+            this.AddLoot(LootPack.LowScrolls);
+            this.AddLoot(LootPack.MedScrolls);
+            this.AddLoot(LootPack.Potions);
         }
 
         public override void Serialize(GenericWriter writer)
