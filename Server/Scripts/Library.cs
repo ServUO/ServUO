@@ -8,30 +8,30 @@ namespace Server
         public string DisplayName { get; }
         public string BaseName { get; }
         public string[] Files { get; }
+        public string OutputDirectory { get; }
         public bool Debug { get; }
-
-        private string OutputDirectory => ScriptCompiler.ScriptsOutputDirectory;
 
         public string AssemblyFileName => $"{BaseName}.dll";
         public string AssemblyFilePath => Path.Combine(OutputDirectory, AssemblyFileName);
         public string HashFileName => $"{BaseName}.hash";
         public string HashFilePath => Path.Combine(OutputDirectory, HashFileName);
 
-        public Library(string displayName, string baseName, string[] files, bool debug)
+        public Library(string displayName, string baseName, string[] files, string outputDirectory, bool debug)
         {
             DisplayName = displayName;
             BaseName = baseName;
             Files = files;
+            OutputDirectory = outputDirectory;
             Debug = debug;
         }
 
         public string GetUnusedPath()
         {
-            var path = Path.Combine(string.Format("{0}/{1}.dll", OutputDirectory, BaseName));
+            var path = Path.Combine($"{OutputDirectory}/{BaseName}.dll");
 
             for (int i = 2; File.Exists(path) && i <= 1000; ++i)
             {
-                path = Path.Combine(string.Format("{0}/{1}.{2}.dll", OutputDirectory, BaseName, i));
+                path = Path.Combine($"{OutputDirectory}/{BaseName}.{i}.dll");
             }
 
             return path;

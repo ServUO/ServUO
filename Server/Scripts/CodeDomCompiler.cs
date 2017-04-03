@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.IO;
 using System.Reflection;
 
 namespace Server
@@ -31,8 +32,21 @@ namespace Server
 #if !MONO
                 results = provider.CompileAssemblyFromFile(parms, library.Files);
 #else
-				parms.CompilerOptions = String.Format( "{0} /nowarn:169,219,414 /recurse:Scripts/*.cs", parms.CompilerOptions );
-				results = provider.CompileAssemblyFromFile( parms, "" );
+                var tempFile = Path.GetTempFileName();
+
+                // To prevent an "argument list too long" error, we write a list of file names to a temporary file and add them with @filename
+                var writer = new StreamWriter( tempFile, false );
+                foreach (string file in library.Files)
+                {
+                    writer.Write( "\"" + file + "\" " );
+                }
+                writer.Close();
+
+                parms.CompilerOptions += " @" + tempFile;
+
+                results = provider.CompileAssemblyFromFile(parms);
+
+                File.Delete(tempFile);
 #endif
             }
 

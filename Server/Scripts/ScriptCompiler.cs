@@ -21,6 +21,9 @@ namespace Server
 	    public static string ScriptsDirectory => Path.Combine( Core.BaseDirectory, "Scripts" );
 	    public static string ScriptsOutputDirectory => Path.Combine( Core.BaseDirectory, "Scripts", "Output" );
 
+	    public static string ScriptsExtraDirectory => Path.Combine( Core.BaseDirectory, "Extra" );
+	    public static string ScriptsExtraOutputDirectory => Path.Combine( Core.BaseDirectory, "Extra", "Output" );
+
 		private static Assembly[] m_Assemblies;
 
 		public static Assembly[] Assemblies { get { return m_Assemblies; } set { m_Assemblies = value; } }
@@ -123,7 +126,7 @@ namespace Server
 		    Library library;
 			Assembly assembly;
 
-		    library = new Library("C# scripts", "Scripts.CS", GetScripts("*.cs"), debug);
+		    library = new Library("C# scripts", "Scripts.CS", GetScripts(ScriptsDirectory, "*.cs"), ScriptsOutputDirectory, debug);
 
 			if (CompileScripts(library, new CSharpCompiler(), cache, out assembly))
 			{
@@ -142,7 +145,7 @@ namespace Server
 
 			if (Core.VBdotNet)
 			{
-			    library = new Library("VB.NET scripts", "Scripts.VB", GetScripts("*.vb"), debug);
+			    library = new Library("VB.NET scripts", "Scripts.VB", GetScripts(ScriptsDirectory, "*.vb"), ScriptsOutputDirectory, debug);
 
 				if (CompileScripts(library, new VBCompiler(), cache, out assembly))
 				{
@@ -163,6 +166,28 @@ namespace Server
 			{
 				Console.WriteLine("Scripts: Skipping VB.NET Scripts...done (use -vb to enable)");
 			}
+
+		    if (Directory.Exists(ScriptsExtraDirectory))
+		    {
+		        EnsureDirectory(ScriptsExtraOutputDirectory);
+
+		        library = new Library("extra C# scripts", "Extra.CS", GetScripts(ScriptsExtraDirectory, "*.cs"), ScriptsExtraOutputDirectory, debug);
+
+		        if (CompileScripts(library, new CSharpCompiler(), cache, out assembly))
+		        {
+		            if (assembly != null)
+		            {
+		                assemblies.Add(assembly);
+
+		                if (!m_AdditionalReferences.Contains(assembly.Location))
+		                    m_AdditionalReferences.Add(assembly.Location);
+		            }
+		        }
+		        else
+		        {
+		            return false;
+		        }
+		    }
 
 			if (assemblies.Count == 0)
 			{
@@ -189,11 +214,11 @@ namespace Server
 			return true;
 		}
 
-	    public static string[] GetScripts(string filter)
+	    public static string[] GetScripts(string path, string filter)
 	    {
 	        var list = new List<string>();
 
-	        GetScripts(list, ScriptCompiler.ScriptsDirectory, filter);
+	        GetScripts(list, path, filter);
 
 	        return list.ToArray();
 	    }
