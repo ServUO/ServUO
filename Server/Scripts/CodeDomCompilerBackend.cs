@@ -35,7 +35,7 @@ namespace Server
 
                 CompilerParameters parms = new CompilerParameters(ScriptCompiler.GetReferenceAssemblies(), path, debug);
 
-                string options = GetCompilerOptions(debug);
+                string options = ScriptCompiler.GetCompilerOptions(debug);
 
                 if (options != null)
                 {
@@ -198,51 +198,6 @@ namespace Server
             }
 
             return path;
-        }
-
-        public static string GetCompilerOptions(bool debug)
-        {
-            StringBuilder sb = null;
-            AppendCompilerOption(ref sb, "/d:ServUO");
-
-            if (!debug)
-            {
-                AppendCompilerOption(ref sb, "/optimize");
-            }
-
-#if MONO
-			AppendCompilerOption( ref sb, "/d:MONO" );
-            #endif
-
-            //These two defines are legacy, ie, depreciated.
-            if (Core.Is64Bit)
-            {
-                AppendCompilerOption(ref sb, "/d:x64");
-            }
-
-#if NEWTIMERS
-            AppendCompilerOption(ref sb, "/d:NEWTIMERS");
-#endif
-
-#if NEWPARENT
-			AppendCompilerOption(ref sb, "/d:NEWPARENT");
-#endif
-
-            return (sb == null ? null : sb.ToString());
-        }
-
-        private static void AppendCompilerOption(ref StringBuilder sb, string define)
-        {
-            if (sb == null)
-            {
-                sb = new StringBuilder();
-            }
-            else
-            {
-                sb.Append(' ');
-            }
-
-            sb.Append(define);
         }
 
         public void DeleteFiles(string mask)

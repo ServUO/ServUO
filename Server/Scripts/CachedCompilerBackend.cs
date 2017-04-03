@@ -34,9 +34,7 @@ namespace Server
                     {
                         var cachedAssembly = Assembly.LoadFrom(AssemblyPathPath);
 
-                        Utility.PushColor(ConsoleColor.Green);
                         Console.WriteLine("done (cached)");
-                        Utility.PopColor();
 
                         return cachedAssembly;
                     }

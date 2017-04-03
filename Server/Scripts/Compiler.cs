@@ -25,17 +25,13 @@ namespace Server
 
         public bool CompileScripts(bool debug, out Assembly assembly)
         {
-            Utility.PushColor(ConsoleColor.Green);
             Console.Write("Scripts: Compiling {0} scripts...", m_LanguageName);
-            Utility.PopColor();
 
             var files = GetScripts(string.Format("*.{0}", m_LanguageExtension));
 
             if (files.Length == 0)
             {
-                Utility.PushColor(ConsoleColor.Red);
                 Console.WriteLine("no files found.");
-                Utility.PopColor();
                 assembly = null;
                 return true;
             }
