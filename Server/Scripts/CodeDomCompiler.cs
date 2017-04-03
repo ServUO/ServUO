@@ -6,17 +6,14 @@ using System.Reflection;
 
 namespace Server
 {
-    public class CodeDomCompilerBackend : ICompilerBackend
+    public abstract class CodeDomCompiler : ICompiler
     {
         public CompilerWorkspace Workspace { get; }
-        private readonly CodeDomProvider m_CodeDomProvider;
 
-        public CodeDomCompilerBackend(CompilerWorkspace workspace, CodeDomProvider codeDomProvider)
+        public CodeDomCompiler(CompilerWorkspace workspace)
         {
             Workspace = workspace;
-            m_CodeDomProvider = codeDomProvider;
         }
-
 
         public Assembly CompileImpl(string[] files, bool debug)
         {
@@ -24,7 +21,7 @@ namespace Server
 
             DeleteFiles(string.Format("Scripts.{0}*.dll", Workspace.LanguageString));
 
-            using (CodeDomProvider provider = m_CodeDomProvider)
+            using (CodeDomProvider provider = AcquireCodeDomProvider())
             {
                 string path = GetUnusedPath(string.Format("Scripts.{0}", Workspace.LanguageString));
 
@@ -70,6 +67,8 @@ namespace Server
             return results.CompiledAssembly;
         }
 
+        protected abstract CodeDomProvider AcquireCodeDomProvider();
+
         public static void Display(CompilerResults results)
         {
             if (results.Errors.Count > 0)
@@ -110,7 +109,7 @@ namespace Server
                     Console.WriteLine("Finished with: {0} errors, {1} warnings", errors.Count, warnings.Count);
                 }
 
-                string scriptRoot = Path.GetFullPath(ScriptCompiler.ScriptDirectory);
+                string scriptRoot = Path.GetFullPath(ScriptCompiler.ScriptsDirectory);
                 Uri scriptRootUri = new Uri(scriptRoot);
 
                 Utility.PushColor(ConsoleColor.Yellow);

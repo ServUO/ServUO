@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Server
 {
-    public interface ICompilerBackend
+    public interface ICompiler
     {
         CompilerWorkspace Workspace { get; }
         Assembly CompileImpl(string[] files, bool debug);

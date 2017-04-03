@@ -11,16 +11,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
-
-using Microsoft.CSharp;
-using Microsoft.VisualBasic;
 #endregion
 
 namespace Server
 {
 	public static class ScriptCompiler
 	{
-	    public static string ScriptDirectory => Path.Combine( Core.BaseDirectory, "Scripts" );
+	    public static string ScriptsDirectory => Path.Combine( Core.BaseDirectory, "Scripts" );
 
 		private static Assembly[] m_Assemblies;
 
@@ -126,13 +123,13 @@ namespace Server
 
 			Assembly assembly;
 
-		    ICompilerBackend csCompilerBackend = new CodeDomCompilerBackend(new CompilerWorkspace("CS"), new CSharpCodeProvider());
+		    ICompiler csCompiler = new CSharpCompiler(new CompilerWorkspace("CS"));
 		    if (cache)
-		        csCompilerBackend = new CachedCompilerBackend(csCompilerBackend);
+		        csCompiler = new CachedCompiler(csCompiler);
 
-		    Compiler csCompiler = new Compiler("C#", "cs", csCompilerBackend);
+		    Library csLibrary = new Library("C#", "cs", csCompiler);
 
-			if (csCompiler.CompileScripts(debug, out assembly))
+			if (csLibrary.CompileScripts(debug, out assembly))
 			{
 				if (assembly != null)
 				{
@@ -151,13 +148,13 @@ namespace Server
 
 			if (Core.VBdotNet)
 			{
-			    ICompilerBackend vbCompilerBackend = new CodeDomCompilerBackend(new CompilerWorkspace("VB"), new VBCodeProvider());
+			    ICompiler vbCompiler = new VBCompiler(new CompilerWorkspace("VB"));
 			    if (cache)
-			        vbCompilerBackend = new CachedCompilerBackend(vbCompilerBackend);
+			        vbCompiler = new CachedCompiler(vbCompiler);
 
-			    Compiler vbCompiler = new Compiler("VB.NET", "vb", vbCompilerBackend);
+			    Library vbLibrary = new Library("VB.NET", "vb", vbCompiler);
 
-				if (vbCompiler.CompileScripts(debug, out assembly))
+				if (vbLibrary.CompileScripts(debug, out assembly))
 				{
 					if (assembly != null)
 					{

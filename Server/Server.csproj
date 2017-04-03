@@ -189,14 +189,16 @@
     <Compile Include="PromptExtensions.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Items\VirtualCheck.cs" />
-    <Compile Include="Scripts\CachedCompilerBackend.cs" />
-    <Compile Include="Scripts\CodeDomCompilerBackend.cs" />
-    <Compile Include="Scripts\Compiler.cs" />
+    <Compile Include="Scripts\CachedCompiler.cs" />
+    <Compile Include="Scripts\CodeDomCompiler.cs" />
+    <Compile Include="Scripts\CSharpCompiler.cs" />
+    <Compile Include="Scripts\Library.cs" />
     <Compile Include="Scripts\CompilerWorkspace.cs" />
-    <Compile Include="Scripts\ICompilerBackend.cs" />
+    <Compile Include="Scripts\ICompiler.cs" />
     <Compile Include="Scripts\ScriptCompiler.cs" />
     <Compile Include="Scripts\TypeCache.cs" />
     <Compile Include="Scripts\TypeTable.cs" />
+    <Compile Include="Scripts\VBCompiler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="servuo.ico" />

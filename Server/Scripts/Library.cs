@@ -5,17 +5,16 @@ using System.Reflection;
 
 namespace Server
 {
-    public class Compiler
+    public class Library
     {
-        private string m_LanguageName;
-        private string m_LanguageExtension;
-        private ICompilerBackend m_CompilerBackend;
+        private string m_Name, m_FileExtension;
+        private ICompiler m_Compiler;
 
-        public Compiler(string languageName, string languageExtension, ICompilerBackend compilerBackend)
+        public Library(string name, string fileExtension, ICompiler compiler)
         {
-            m_LanguageName = languageName;
-            m_LanguageExtension = languageExtension;
-            m_CompilerBackend = compilerBackend;
+            m_Name = name;
+            m_FileExtension = fileExtension;
+            m_Compiler = compiler;
         }
 
         public bool CompileScripts(out Assembly assembly)
@@ -25,9 +24,9 @@ namespace Server
 
         public bool CompileScripts(bool debug, out Assembly assembly)
         {
-            Console.Write("Scripts: Compiling {0} scripts...", m_LanguageName);
+            Console.Write("Scripts: Compiling {0} scripts...", m_Name);
 
-            var files = GetScripts(string.Format("*.{0}", m_LanguageExtension));
+            var files = GetScripts(string.Format("*.{0}", m_FileExtension));
 
             if (files.Length == 0)
             {
@@ -36,7 +35,7 @@ namespace Server
                 return true;
             }
 
-            assembly = m_CompilerBackend.CompileImpl(files, debug);
+            assembly = m_Compiler.CompileImpl(files, debug);
 
             return assembly != null;
         }
@@ -45,7 +44,7 @@ namespace Server
         {
             var list = new List<string>();
 
-            GetScripts(list, Path.Combine(Core.BaseDirectory, "Scripts"), filter);
+            GetScripts(list, ScriptCompiler.ScriptsDirectory, filter);
 
             return list.ToArray();
         }

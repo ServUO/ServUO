@@ -11,7 +11,7 @@ namespace Server
             m_LanguageString = mLanguageString;
         }
 
-        public string OutputDirectory => Path.Combine(ScriptCompiler.ScriptDirectory, "Output");
+        public string OutputDirectory => Path.Combine(ScriptCompiler.ScriptsDirectory, "Output");
         public string AssemblyFileName => string.Format("Scripts.{0}.dll", LanguageString);
         public string AssemblyPathPath => Path.Combine(OutputDirectory, AssemblyFileName);
         public string LanguageString => m_LanguageString;

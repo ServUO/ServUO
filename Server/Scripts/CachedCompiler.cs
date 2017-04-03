@@ -5,15 +5,15 @@ using System.Security.Cryptography;
 
 namespace Server
 {
-    public class CachedCompilerBackend : ICompilerBackend
+    public class CachedCompiler : ICompiler
     {
         protected string HashFileName => string.Format("Scripts.{0}.hash", Workspace.LanguageString);
         protected string HashFilePath => Path.Combine(Workspace.OutputDirectory, HashFileName);
 
-        private ICompilerBackend m_InnerCompiler;
+        private ICompiler m_InnerCompiler;
         public CompilerWorkspace Workspace { get; }
 
-        public CachedCompilerBackend(ICompilerBackend innerCompiler)
+        public CachedCompiler(ICompiler innerCompiler)
         {
             m_InnerCompiler = innerCompiler;
             Workspace = innerCompiler.Workspace;
