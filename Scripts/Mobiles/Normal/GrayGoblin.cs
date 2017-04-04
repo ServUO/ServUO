@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public GrayGoblin()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Gray Goblin";
+            this.Name = "a gray goblin";
             this.Body = 334;
             this.BaseSoundID = 0x45A;
 
@@ -110,13 +110,9 @@ namespace Server.Mobiles
                 return 1;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
+
+        public override TribeType Tribe { get { return TribeType.GrayGoblin; } }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);
