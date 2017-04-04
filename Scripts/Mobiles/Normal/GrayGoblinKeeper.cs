@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public GrayGoblinKeeper()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a Gray goblin keeper";
+            this.Name = "a gray goblin keeper";
             this.Body = 334;
             this.BaseSoundID = 0x45A;
 
