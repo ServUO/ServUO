@@ -83,13 +83,9 @@ namespace Server.Mobiles
                 return TimeSpan.FromHours(1.0);
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+
+        public override TribeType Tribe { get { return TribeType.Fey; } }
+
         public override Poison PoisonImmune
         {
             get
