@@ -51,13 +51,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+        public override TribeType Tribe { get { return TribeType.Fey; } }
 
         public override void GenerateLoot()
         {
