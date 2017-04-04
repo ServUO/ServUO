@@ -135,13 +135,9 @@ namespace Server.Mobiles
                 return Core.SE;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+
+        public override TribeType Tribe { get { return TribeType.Undead; } }
+
         public override Poison PoisonImmune
         {
             get
