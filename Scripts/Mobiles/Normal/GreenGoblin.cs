@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("an goblin corpse")]
+    [CorpseName("a goblin corpse")]
     public class GreenGoblin : BaseCreature
     {
         //public override InhumanSpeech SpeechType{ get{ return InhumanSpeech.Orc; } }
