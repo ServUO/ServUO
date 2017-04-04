@@ -117,13 +117,9 @@ namespace Server.Mobiles
                 return 1;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
+
+        public override TribeType Tribe { get { return TribeType.Orc; } }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);
