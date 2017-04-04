@@ -127,6 +127,19 @@ namespace Server.Mobiles
         Barbed,
         Fur
     }
+
+    public enum TribeType
+    {
+        None,
+        Terathan,
+        Ophidian,
+        Savage,
+        Orc,
+        Fey,
+        Undead,
+        GrayGoblin,
+        GreenGoblin
+    }
     #endregion
 
     public class DamageStore : IComparable
@@ -941,7 +954,7 @@ namespace Server.Mobiles
                     PlayerMobile pm = m as PlayerMobile;
                     toDrain = (int)drNO.ThieveItems.LifeShieldLotion.HandleLifeDrain(pm, toDrain);
                 }
-                //end 
+                //end
 
 
                 Hits += toDrain;
@@ -993,6 +1006,94 @@ namespace Server.Mobiles
         public virtual OppositionGroup OppositionGroup { get { return null; } }
         public virtual bool IsMilitiaFighter { get { return false; } }
 
+        // Tribe Opposition stuff
+        public virtual TribeType Tribe{ get{ return TribeType.None ; } } // What opposition list am I in?
+/*      Stupid-OSI behavior
+        private bool m_HasFoughtPlayer;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool HasFoughtPlayer
+        {
+            get { return m_HasFoughtPlayer; }
+            set
+            {
+                m_HasFoughtPlayer = value;
+                InvalidateProperties();
+            }
+        }
+*/
+        private static readonly Tuple<TribeType, TribeType>[] TribeConflicts =
+            new Tuple<TribeType, TribeType>[]
+        {
+            Tuple.Create(TribeType.Terathan, TribeType.Ophidian),
+            Tuple.Create(TribeType.Savage, TribeType.Orc),
+            Tuple.Create(TribeType.Fey, TribeType.Undead),
+            Tuple.Create(TribeType.GrayGoblin, TribeType.GreenGoblin)
+        };
+
+        private Dictionary<TribeType, ISet<TribeType>> m_TribeTable;
+
+        public Dictionary<TribeType, ISet<TribeType>> TribeTable
+        {
+            get
+            {
+                if (m_TribeTable == null)
+                {
+                    m_TribeTable = new Dictionary<TribeType, ISet<TribeType>>();
+
+                    foreach (var tribeConflict in TribeConflicts)
+                    {
+                        ISet<TribeType> conflicts;
+                        if (m_TribeTable.ContainsKey(tribeConflict.Item1))
+                        {
+                            conflicts = m_TribeTable[tribeConflict.Item1];
+                        }
+                        else
+                        {
+                            conflicts = m_TribeTable[tribeConflict.Item1] = new HashSet<TribeType>();
+                        }
+                        conflicts.Add(tribeConflict.Item2);
+
+                        ISet<TribeType> conflicts2;
+                        if (m_TribeTable.ContainsKey(tribeConflict.Item2))
+                        {
+                            conflicts2 = m_TribeTable[tribeConflict.Item2];
+                        }
+                        else
+                        {
+                            conflicts2 = m_TribeTable[tribeConflict.Item2] = new HashSet<TribeType>();
+                        }
+                        conflicts2.Add(tribeConflict.Item1);
+                    }
+                }
+                return m_TribeTable;
+            }
+        }
+
+        private bool IsTribeEnemy(Mobile m)
+        {
+/*          Stupid-OSI behavior
+            // Don't fight monsters after fighting players, until sector deactivate/server restart
+            if (HasFoughtPlayer)
+            {
+                return false;
+            }
+*/
+            // Target must be BaseCreature
+            if (!(m is BaseCreature))
+            {
+                return false;
+            }
+/*
+            // Sanity check. Only necessary if you have a non-None creature with no enemy TribeType.
+            if (!TribeTable.ContainsKey(Tribe))
+            {
+                return false;
+            }
+*/
+            return TribeTable[Tribe].Contains(((BaseCreature)m).Tribe);
+        }
+
         #region Friends
         public List<Mobile> Friends { get { return m_Friends; } }
 
@@ -1023,9 +1124,7 @@ namespace Server.Mobiles
 
 		public virtual bool IsFriend(Mobile m)
 		{
-			OppositionGroup g = OppositionGroup;
-
-			if (g != null && g.IsEnemy(this, m))
+			if (Tribe != TribeType.None && IsTribeEnemy(m))
 			{
 				return false;
 			}
@@ -1105,9 +1204,7 @@ namespace Server.Mobiles
 				return a.IsEnemy(m);
 			}
 
-			OppositionGroup g = OppositionGroup;
-
-			if (g != null && g.IsEnemy(this, m))
+			if (Tribe != TribeType.None && IsTribeEnemy(m))
 			{
 				return true;
 			}
@@ -1148,7 +1245,7 @@ namespace Server.Mobiles
 			}
 
 			BaseCreature c = (BaseCreature)m;
-            
+
 			if (c.IsMilitiaFighter)
 			{
 				return true;
@@ -1682,8 +1779,8 @@ namespace Server.Mobiles
 
         Seems this actually was removed on OSI somewhere between the original bug report and now.
         We will call it ML, until we can get better information. I suspect it was on the OSI TC when
-        originally it taken out of RunUO, and not implmented on OSIs production shards until more 
-        recently.  Either way, this is, or was, accurate OSI behavior, and just entirely 
+        originally it taken out of RunUO, and not implmented on OSIs production shards until more
+        recently.  Either way, this is, or was, accurate OSI behavior, and just entirely
         removing it was incorrect.  OSI followers were distracted by being attacked well into
         AoS, at very least.
 
@@ -3830,7 +3927,13 @@ namespace Server.Mobiles
                     aggressor.Aggressors.Add(AggressorInfo.Create(this, aggressor, true));
                 }
             }
-
+/*          Stupid-OSI behavior
+            else if (!HasFoughtPlayer && (aggressor.Player ||
+                (aggressor is BaseCreature && ((BaseCreature)aggressor).GetMaster() is PlayerMobile)))
+            {
+                HasFoughtPlayer = true;
+            }
+*/
             OrderType ct = m_ControlOrder;
 
             if (m_AI != null)
@@ -4133,8 +4236,8 @@ namespace Server.Mobiles
             return true; // entered idle state
         }
 
-        /* 
-			this way, due to the huge number of locations this will have to be changed 
+        /*
+			this way, due to the huge number of locations this will have to be changed
 			Perhaps we can change this in the future when fixing game play is not the
 			major issue.
 		*/
@@ -4167,10 +4270,19 @@ namespace Server.Mobiles
             base.OnCombatantChange();
 
             Warmode = (Combatant != null && !Combatant.Deleted && Combatant.Alive);
-
-            if (CanFly && Warmode)
+            if (Warmode)
             {
-                Flying = false;
+/*              Stupid-OSI behavior
+                if (!HasFoughtPlayer && (Combatant is PlayerMobile ||
+                    (Combatant is BaseCreature && ((BaseCreature)Combatant).GetMaster() is PlayerMobile)))
+                {
+                    HasFoughtPlayer = true;
+                }
+*/
+                if (CanFly)
+                {
+                    Flying = false;
+                }
             }
         }
 
@@ -5532,8 +5644,8 @@ namespace Server.Mobiles
         public static int[] RecipeTypes { get { return _RecipeTypes; } }
         private static int[] _RecipeTypes =
         {
-            560, 561, 562, 563, 564, 565, 566, 
-            570, 571, 572, 573, 574, 575, 576, 577, 
+            560, 561, 562, 563, 564, 565, 566,
+            570, 571, 572, 573, 574, 575, 576, 577,
             580, 581, 582, 583, 584
             //602, 603, 604,  // nutcrackers
             //800             // runic atlas
@@ -7268,7 +7380,9 @@ namespace Server.Mobiles
             {
                 m_AI.Deactivate();
             }
-
+/*          Stupid-OSI behavior
+            HasFoughtPlayer = false;
+*/
             base.OnSectorDeactivate();
         }
 
@@ -7315,7 +7429,7 @@ namespace Server.Mobiles
         private bool m_RemoveOnSave;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool RemoveOnSave { get { return m_RemoveOnSave; } set { m_RemoveOnSave = value; } }    
+        public bool RemoveOnSave { get { return m_RemoveOnSave; } set { m_RemoveOnSave = value; } }
     }
 
     public class LoyaltyTimer : Timer
