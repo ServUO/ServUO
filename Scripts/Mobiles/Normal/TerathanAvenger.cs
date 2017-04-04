@@ -77,13 +77,9 @@ namespace Server.Mobiles
                 return 2;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.TerathansAndOphidians;
-            }
-        }
+
+        public override TribeType Tribe { get { return TribeType.Terathan; } }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich, 2);
