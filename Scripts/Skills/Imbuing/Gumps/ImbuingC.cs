@@ -37,7 +37,8 @@ namespace Server.Gumps
 
             from.CloseGump(typeof(ImbuingGump));
             from.CloseGump(typeof(ImbuingGumpB));
-
+            from.CloseGump(typeof(RunicReforgingGump));
+            
             // SoulForge Check
             if (!Imbuing.CheckSoulForge(from, 1))
                 return;

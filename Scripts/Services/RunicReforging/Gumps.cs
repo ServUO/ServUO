@@ -52,6 +52,9 @@ namespace Server.Gumps
         public RunicReforgingGump(Mobile from, Item toReforge, BaseRunicTool tool, ReforgingOption options, ReforgedPrefix prefix, ReforgedSuffix suffix)
             : base(25, 25)
         {
+            from.CloseGump(typeof(RunicReforgingGump));
+            from.CloseGump(typeof(ImbuingGumpC));
+
             m_Tool = tool;
             m_ToReforge = toReforge;
             m_Options = options;
@@ -256,6 +259,11 @@ namespace Server.Gumps
                     break;
                 case 3: // Reforge Item
                     {
+                        if (!RunicReforging.CanReforge(from, m_ToReforge, m_Tool.CraftSystem))
+                        {
+                            return;
+                        }
+
                         int totalCharges = GetTotalCharges();
 
                         if (m_Tool.UsesRemaining >= totalCharges)
