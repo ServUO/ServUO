@@ -1008,90 +1008,29 @@ namespace Server.Mobiles
 
         // Tribe Opposition stuff
         public virtual TribeType Tribe{ get{ return TribeType.None ; } } // What opposition list am I in?
-/*      Stupid-OSI behavior
-        private bool m_HasFoughtPlayer;
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasFoughtPlayer
-        {
-            get { return m_HasFoughtPlayer; }
-            set
-            {
-                m_HasFoughtPlayer = value;
-                InvalidateProperties();
-            }
-        }
-*/
-        private static readonly Tuple<TribeType, TribeType>[] TribeConflicts =
-            new Tuple<TribeType, TribeType>[]
-        {
-            Tuple.Create(TribeType.Terathan, TribeType.Ophidian),
-            Tuple.Create(TribeType.Savage, TribeType.Orc),
-            Tuple.Create(TribeType.Fey, TribeType.Undead),
-            Tuple.Create(TribeType.GrayGoblin, TribeType.GreenGoblin)
-        };
-
-        private Dictionary<TribeType, ISet<TribeType>> m_TribeTable;
-
-        public Dictionary<TribeType, ISet<TribeType>> TribeTable
-        {
-            get
-            {
-                if (m_TribeTable == null)
-                {
-                    m_TribeTable = new Dictionary<TribeType, ISet<TribeType>>();
-
-                    foreach (var tribeConflict in TribeConflicts)
-                    {
-                        ISet<TribeType> conflicts;
-                        if (m_TribeTable.ContainsKey(tribeConflict.Item1))
-                        {
-                            conflicts = m_TribeTable[tribeConflict.Item1];
-                        }
-                        else
-                        {
-                            conflicts = m_TribeTable[tribeConflict.Item1] = new HashSet<TribeType>();
-                        }
-                        conflicts.Add(tribeConflict.Item2);
-
-                        ISet<TribeType> conflicts2;
-                        if (m_TribeTable.ContainsKey(tribeConflict.Item2))
-                        {
-                            conflicts2 = m_TribeTable[tribeConflict.Item2];
-                        }
-                        else
-                        {
-                            conflicts2 = m_TribeTable[tribeConflict.Item2] = new HashSet<TribeType>();
-                        }
-                        conflicts2.Add(tribeConflict.Item1);
-                    }
-                }
-                return m_TribeTable;
-            }
-        }
 
         private bool IsTribeEnemy(Mobile m)
         {
-/*          Stupid-OSI behavior
-            // Don't fight monsters after fighting players, until sector deactivate/server restart
-            if (HasFoughtPlayer)
-            {
-                return false;
-            }
-*/
             // Target must be BaseCreature
             if (!(m is BaseCreature))
             {
                 return false;
             }
-/*
-            // Sanity check. Only necessary if you have a non-None creature with no enemy TribeType.
-            if (!TribeTable.ContainsKey(Tribe))
+
+            BaseCreature c = (BaseCreature)m;
+
+            switch(Tribe)
             {
-                return false;
+                case TribeType.Terathan: return (c.TribeType == TribeType.Ophidian);
+                case TribeType.Ophidian: return (c.TribeType == TribeType.Terathan);
+                case TribeType.Savage: return (c.TribeType == TribeType.Orc);
+                case TribeType.Orc: return (c.TribeType == TribeType.Savage);
+                case TribeType.Fey: return (c.TribeType == TribeType.Undead);
+                case TribeType.Undead: return (c.TribeType == TribeType.Fey);
+                case TribeType.GrayGoblin: return (c.TribeType == TribeType.GreenGoblin);
+                case TribeType.GreenGoblin: return (c.TribeType == TribeType.GrayGoblin);
+                default: return false;
             }
-*/
-            return TribeTable[Tribe].Contains(((BaseCreature)m).Tribe);
         }
 
         #region Friends
@@ -3927,13 +3866,7 @@ namespace Server.Mobiles
                     aggressor.Aggressors.Add(AggressorInfo.Create(this, aggressor, true));
                 }
             }
-/*          Stupid-OSI behavior
-            else if (!HasFoughtPlayer && (aggressor.Player ||
-                (aggressor is BaseCreature && ((BaseCreature)aggressor).GetMaster() is PlayerMobile)))
-            {
-                HasFoughtPlayer = true;
-            }
-*/
+
             OrderType ct = m_ControlOrder;
 
             if (m_AI != null)
@@ -4270,19 +4203,10 @@ namespace Server.Mobiles
             base.OnCombatantChange();
 
             Warmode = (Combatant != null && !Combatant.Deleted && Combatant.Alive);
-            if (Warmode)
+
+            if (CanFly && Warmode)
             {
-/*              Stupid-OSI behavior
-                if (!HasFoughtPlayer && (Combatant is PlayerMobile ||
-                    (Combatant is BaseCreature && ((BaseCreature)Combatant).GetMaster() is PlayerMobile)))
-                {
-                    HasFoughtPlayer = true;
-                }
-*/
-                if (CanFly)
-                {
-                    Flying = false;
-                }
+                Flying = false;
             }
         }
 
@@ -7380,9 +7304,7 @@ namespace Server.Mobiles
             {
                 m_AI.Deactivate();
             }
-/*          Stupid-OSI behavior
-            HasFoughtPlayer = false;
-*/
+
             base.OnSectorDeactivate();
         }
 
