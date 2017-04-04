@@ -11,7 +11,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-	[CorpseName("an goblin corpse")]
+	[CorpseName("a goblin corpse")]
 	public class GreenGoblinScout : BaseCreature
 	{
 		//public override InhumanSpeech SpeechType { get { return InhumanSpeech.Orc; } }
@@ -19,7 +19,7 @@ namespace Server.Mobiles
 		public GreenGoblinScout()
 			: base(AIType.AI_OrcScout, FightMode.Closest, 10, 7, 0.2, 0.4)
 		{
-			Name = "an green goblin scout";
+			Name = "a green goblin scout";
 			Body = 723;
 			BaseSoundID = 0x45A;
 
@@ -56,7 +56,9 @@ namespace Server.Mobiles
 			: base(serial)
 		{ }
 
-		public override OppositionGroup OppositionGroup { get { return OppositionGroup.SavagesAndOrcs; } }
+
+        public override TribeType Tribe { get { return TribeType.GreenGoblin; } }
+
 		public override bool CanRummageCorpses { get { return true; } }
 		public override int Meat { get { return 1; } }
 
