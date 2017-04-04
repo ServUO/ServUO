@@ -74,13 +74,9 @@ namespace Server.Mobiles
                 return Core.ML;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+
+        public override TribeType Tribe { get { return TribeType.Undead; } }
+
         public override bool BardImmune
         {
             get
