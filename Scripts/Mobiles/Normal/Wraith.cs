@@ -56,13 +56,9 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+
+        public override TribeType Tribe { get { return TribeType.Undead; } }
+
         public override Poison PoisonImmune
         {
             get
