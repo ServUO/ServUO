@@ -1,184 +1,222 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
+using Server.Engines.PartySystem;
 using Server.Items;
-using Server.Mobiles;
 using Server.Spells.Fourth;
 using Server.Spells.Necromancy;
 using Server.Targeting;
-using Server.Engines.PartySystem;
 
 namespace Server.Spells.Mysticism
 {
-	public class CleansingWindsSpell : MysticSpell
-	{
-        public override SpellCircle Circle { get { return SpellCircle.Sixth; } }
+    public class CleansingWindsSpell : MysticSpell
+    {
+        public override SpellCircle Circle => SpellCircle.Sixth;
 
-		private static SpellInfo m_Info = new SpellInfo(
-				"Cleansing Winds", "In Vas Mani Hur",
-				230,
-				9022,
-				Reagent.Garlic,
-				Reagent.Ginseng,
-				Reagent.MandrakeRoot,
-				Reagent.DragonBlood
-			);
+        private static SpellInfo m_Info = new SpellInfo(
+            "Cleansing Winds", "In Vas Mani Hur",
+            230,
+            9022,
+            Reagent.Garlic,
+            Reagent.Ginseng,
+            Reagent.MandrakeRoot,
+            Reagent.DragonBlood
+        );
 
-		public CleansingWindsSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
-		{
-		}
+        public CleansingWindsSpell(Mobile caster, Item scroll)
+            : base(caster, scroll, m_Info)
+        {
+        }
 
-		public override void OnCast()
-		{
-			Caster.Target = new MysticSpellTarget( this, TargetFlags.Beneficial );
-		}
+        public override void OnCast()
+        {
+            Caster.Target = new MysticSpellTarget(this, TargetFlags.Beneficial);
+        }
 
-		public override void OnTarget( Object o )
-		{
-			IPoint3D p = o as IPoint3D;
+        public override void OnTarget(object o)
+        {
+            var targeted = o as Mobile;
 
-			if ( p == null )
-				return;
+            if (targeted == null)
+                return;
 
-            if (CheckSequence())
+            if (CheckBSequence(targeted))
             {
-                List<Mobile> targets = new List<Mobile>();
-                Party party = Party.Get(Caster);
+                /* Soothing winds attempt to neutralize poisons, lift curses, and heal a valid
+                 * Target. The Caster's Mysticism and either Focus or Imbuing (whichever is
+                 * greater) skills determine the effectiveness of the Cleansing Winds.
+                 */
 
-                double prim = Caster.Skills[CastSkill].Value;
-                double sec = Caster.Skills[DamageSkill].Value;
-
-                IPooledEnumerable eable = Caster.Map.GetMobilesInRange(new Point3D(p), 3);
-                foreach (Mobile mob in eable)
-                {
-                    if (mob == null)
-                        continue;
-
-                    if (mob == Caster)
-                        targets.Add(mob);
-
-                    if (Caster.CanBeBeneficial(mob, false) && party != null && party.Contains(mob))
-                        targets.Add(mob);
-                }
-                eable.Free();
-
-                Mobile m;
-                int toheal = (int)(((prim + sec) / 2) * 0.3) - 6;
                 Caster.PlaySound(0x64C);
 
-                for (int i = 0; i < targets.Count; i++)
+                var targets = new List<Mobile> {targeted};
+                targets.AddRange(FindAdditionalTargets(targeted).Take(3)); // This effect can hit up to 3 additional players beyond the primary target.
+
+                double primarySkill = Caster.Skills[CastSkill].Value;
+                double secondarySkill = Caster.Skills[DamageSkill].Value;
+
+                var toHeal = (int)((primarySkill + secondarySkill) / 4.0) + Utility.RandomMinMax(-3, 3);
+                toHeal /= targets.Count; // The effectiveness of the spell is reduced by the number of targets affected.
+
+                foreach (var target in targets)
                 {
-                    m = targets[i];
-                    int toHealMod = toheal;
+                    // WARNING: This spell will flag the caster as a criminal if a criminal or murderer party member is close enough
+                    // to the target to receive the benefits from the area of effect.
+                    Caster.DoBeneficial(target);
 
-                    if (!m.Alive)
-                        continue;
+                    PlayEffect(target);
 
-                    if (m.Poisoned)
+                    int toHealMod = toHeal;
+
+                    if (target.Poisoned)
                     {
-                        int level = m.Poison.RealLevel + 1;
-                        int chanceToCure = (10000 + (int)(((prim + sec) / 2) * 75) - (level * 1750)) / 100;
+                        int poisonLevel = target.Poison.RealLevel + 1;
+                        int chanceToCure = (10000 + (int)((primarySkill + secondarySkill) / 2 * 75) - (poisonLevel * 1750)) / 100;
 
-                        if (chanceToCure > Utility.Random(100) && m.CurePoison(Caster))
-                            toHealMod /= level;
+                        if (chanceToCure > Utility.Random(100) && target.CurePoison(Caster))
+                        {
+                            // Poison reduces healing factor by 15% per level of poison.
+                            toHealMod -= (int)(toHeal * poisonLevel * 0.15);
+                        }
                         else
+                        {
+                            // If the cure fails, the target will not be healed.
                             toHealMod = 0;
+                        }
                     }
 
-                    if (MortalStrike.IsWounded(m))
+                    // Cleansing Winds will not heal the target after removing mortal wound.
+                    if (MortalStrike.IsWounded(target))
                     {
-                        MortalStrike.EndWound(m);
+                        MortalStrike.EndWound(target);
                         toHealMod = 0;
                     }
 
-                    int curselevel = 0;
+                    var curseLevel = RemoveCurses(target);
 
-                    if (SleepSpell.IsUnderSleepEffects(m))
+                    if (toHealMod > 0 && curseLevel > 0)
                     {
-                        SleepSpell.EndSleep(m);
-                        curselevel += 2;
-                    }
-
-                    if (EvilOmenSpell.TryEndEffect(m))
-                    {
-                        curselevel += 1;
-                    }
-
-                    if (StrangleSpell.RemoveCurse(m))
-                    {
-                        curselevel += 2;
-                    }
-
-                    if (CorpseSkinSpell.RemoveCurse(m))
-                    {
-                        curselevel += 3;
-                    }
-
-                    if (CurseSpell.UnderEffect(m))
-                    {
-                        CurseSpell.RemoveEffect(m);
-                        curselevel += 4;
-                    }
-
-                    if (BloodOathSpell.RemoveCurse(m))
-                    {
-                        curselevel += 3;
-                    }
-
-                    if (MindRotSpell.HasMindRotScalar(m))
-                    {
-                        MindRotSpell.ClearMindRotScalar(m);
-                        curselevel += 2;
-                    }
-
-                    if (SpellPlagueSpell.HasSpellPlague(m))
-                    {
-                        SpellPlagueSpell.RemoveFromList(m);
-                        curselevel += 4;
-                    }
-
-                    if (m.GetStatMod("[Magic] Str Curse") != null)
-                    {
-                        m.RemoveStatMod("[Magic] Str Curse");
-                        curselevel += 1;
-                    }
-
-                    if (m.GetStatMod("[Magic] Dex Curse") != null)
-                    {
-                        m.RemoveStatMod("[Magic] Dex Curse");
-                        curselevel += 1;
-                    }
-
-                    if (m.GetStatMod("[Magic] Int Curse") != null)
-                    {
-                        m.RemoveStatMod("[Magic] Int Curse");
-                        curselevel += 1;
-                    }
-
-                    BuffInfo.RemoveBuff(m, BuffIcon.Clumsy);
-                    BuffInfo.RemoveBuff(m, BuffIcon.FeebleMind);
-                    BuffInfo.RemoveBuff(m, BuffIcon.Weaken);
-                    BuffInfo.RemoveBuff(m, BuffIcon.Curse);
-                    BuffInfo.RemoveBuff(m, BuffIcon.MassCurse);
-                    BuffInfo.RemoveBuff( m, BuffIcon.MortalStrike );
-                    BuffInfo.RemoveBuff ( m, BuffIcon.Mindrot );
-                    BuffInfo.RemoveBuff( m, BuffIcon.CorpseSkin );
-                    BuffInfo.RemoveBuff( m, BuffIcon.Strangle );
-                    BuffInfo.RemoveBuff( m, BuffIcon.EvilOmen );
-
-                    if (toHealMod > 0 && curselevel > 0)
-                    {
-                        int toHealMod1 = toHealMod - (curselevel * 3);
-                        int toHealMod2 = toHealMod - (int)((double)toHealMod * ((double)curselevel / 100));
+                        // Each Curse reduces healing by 3 points + 1% per curse level.
+                        int toHealMod1 = toHealMod - (curseLevel * 3);
+                        int toHealMod2 = toHealMod - (int)(toHealMod * (curseLevel / 100.0));
 
                         toHealMod -= toHealMod1 + toHealMod2;
                     }
 
                     if (toHealMod > 0)
-                        SpellHelper.Heal(toHealMod + Utility.RandomMinMax(1, 6), m, Caster);
+                        SpellHelper.Heal(toHealMod, target, Caster);
                 }
             }
 
             FinishSequence();
-		}
-	}
+        }
+
+        private static void PlayEffect(Mobile m)
+        {
+            m.FixedParticles(0x3709, 1, 30, 9963, 13, 3, EffectLayer.Head);
+
+            var from = new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z - 10), m.Map);
+            var to = new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z + 50), m.Map);
+            Effects.SendMovingParticles(from, to, 0x2255, 1, 0, false, false, 13, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
+        }
+
+        private IEnumerable<Mobile> FindAdditionalTargets(Mobile targeted)
+        {
+            var casterParty = Party.Get(Caster);
+
+            if (casterParty == null)
+                yield break;
+
+            foreach (var m in Caster.Map.GetMobilesInRange(new Point3D(targeted), 2))
+            {
+                if (m == null || m == targeted)
+                    continue;
+
+                // Players in the area must be in the casters party in order to receive the beneficial effects of the spell.
+                if (Caster.CanBeBeneficial(m, false) && casterParty.Contains(m))
+                    yield return m;
+            }
+        }
+
+        private static int RemoveCurses(Mobile m)
+        {
+            int curseLevel = 0;
+
+            if (SleepSpell.IsUnderSleepEffects(m))
+            {
+                SleepSpell.EndSleep(m);
+                curseLevel += 2;
+            }
+
+            if (EvilOmenSpell.TryEndEffect(m))
+            {
+                curseLevel += 1;
+            }
+
+            if (StrangleSpell.RemoveCurse(m))
+            {
+                curseLevel += 2;
+            }
+
+            if (CorpseSkinSpell.RemoveCurse(m))
+            {
+                curseLevel += 3;
+            }
+
+            if (CurseSpell.UnderEffect(m))
+            {
+                CurseSpell.RemoveEffect(m);
+                curseLevel += 4;
+            }
+
+            if (BloodOathSpell.RemoveCurse(m))
+            {
+                curseLevel += 3;
+            }
+
+            if (MindRotSpell.HasMindRotScalar(m))
+            {
+                MindRotSpell.ClearMindRotScalar(m);
+                curseLevel += 2;
+            }
+
+            if (SpellPlagueSpell.HasSpellPlague(m))
+            {
+                SpellPlagueSpell.RemoveFromList(m);
+                curseLevel += 4;
+            }
+
+            if (m.GetStatMod("[Magic] Str Curse") != null)
+            {
+                m.RemoveStatMod("[Magic] Str Curse");
+                curseLevel += 1;
+            }
+
+            if (m.GetStatMod("[Magic] Dex Curse") != null)
+            {
+                m.RemoveStatMod("[Magic] Dex Curse");
+                curseLevel += 1;
+            }
+
+            if (m.GetStatMod("[Magic] Int Curse") != null)
+            {
+                m.RemoveStatMod("[Magic] Int Curse");
+                curseLevel += 1;
+            }
+
+            BuffInfo.RemoveBuff(m, BuffIcon.Clumsy);
+            BuffInfo.RemoveBuff(m, BuffIcon.FeebleMind);
+            BuffInfo.RemoveBuff(m, BuffIcon.Weaken);
+            BuffInfo.RemoveBuff(m, BuffIcon.Curse);
+            BuffInfo.RemoveBuff(m, BuffIcon.MassCurse);
+            BuffInfo.RemoveBuff(m, BuffIcon.MortalStrike);
+            BuffInfo.RemoveBuff(m, BuffIcon.Mindrot);
+            BuffInfo.RemoveBuff(m, BuffIcon.CorpseSkin);
+            BuffInfo.RemoveBuff(m, BuffIcon.Strangle);
+            BuffInfo.RemoveBuff(m, BuffIcon.EvilOmen);
+
+            return curseLevel;
+        }
+    }
 }
