@@ -81,13 +81,9 @@ namespace Server.Mobiles
                 return 2;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
+
+        public override TribeType Tribe { get { return TribeType.Orc; } }
+
         public override bool CanRummageCorpses
         {
             get
