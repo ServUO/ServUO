@@ -64,13 +64,9 @@ namespace Server.Mobiles
                 return Core.AOS ? 5 : 0;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
+
+        public override TribeType Tribe { get { return TribeType.Fey; } }
+
         public override int Feathers
         {
             get
