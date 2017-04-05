@@ -1,15 +1,10 @@
 using System;
-using System.Collections;
 using Server.Items;
 using System.Collections.Generic;
-using Server.Mobiles;
-using Server.Commands;
-using Server.Targeting;
-using Server;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a Vile corpse")]
+    [CorpseName("a vile corpse")]
     public class ClockworkExodus : BaseCreature
     {
         public static int m_MinHits;
@@ -45,6 +40,8 @@ namespace Server.Mobiles
             this.Name = "Clockwork Exodus";
             this.Body = 1248;
             this.BaseSoundID = 639;
+            this.Hue = 2500;
+            this.Female = true;
 
             this.SetStr(851, 950);
             this.SetDex(581, 683);
@@ -144,6 +141,11 @@ namespace Server.Mobiles
         public override Poison PoisonImmune { get { return Poison.Greater; } }
         public override int TreasureMapLevel { get { return 5; } }
 
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.BleedAttack;
+        }
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.AosSuperBoss, 2);
@@ -155,12 +157,18 @@ namespace Server.Mobiles
 
             if (map == null)
                 return;
-
-            DeathVortexTrap dv = new DeathVortexTrap();
-
+            
             this.MovingParticles(target, 0x1AF6, 5, 0, false, false, 0x816, 0, 3006, 0, 0, 0);
 
-            dv.MoveToWorld(new Point3D(target.X + 1, target.Y + 1, this.Z), map);
+            DeathVortexTrap dv;
+
+            for (int i = 0; i < 3; ++i)
+            {
+                dv = new DeathVortexTrap();
+                dv.MoveToWorld(GetSpawnPosition(target.Location, map, 3), map);
+            }
+
+            target.SendLocalizedMessage(1152693); // The power of the Void surges around you! 
 
             m_LastTarget = target.Location;
         }
@@ -183,7 +191,7 @@ namespace Server.Mobiles
             {
                 if (m_LastTarget != target.Location)
                 {
-                    target.SendLocalizedMessage(1152692, this.Name); // ~1_CREATURE~ casts a deadly vortex at you! 
+                    target.SendLocalizedMessage(1152692, this.Name); // ~1_CREATURE~ casts a deadly vortex at you!                    
                     SpawnVortices(target);
                 }                
             }
