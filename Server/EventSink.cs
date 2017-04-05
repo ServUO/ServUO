@@ -69,8 +69,6 @@ namespace Server
 
 	public delegate void VirtueMacroRequestEventHandler(VirtueMacroRequestEventArgs e);
 
-	public delegate void ChatRequestEventHandler(ChatRequestEventArgs e);
-
 	public delegate void AccountLoginEventHandler(AccountLoginEventArgs e);
 
 	public delegate void PaperdollRequestEventHandler(PaperdollRequestEventArgs e);
@@ -407,18 +405,6 @@ namespace Server
 		{
 			m_Mobile = mobile;
 			m_VirtueID = virtueID;
-		}
-	}
-
-	public class ChatRequestEventArgs : EventArgs
-	{
-		private readonly Mobile m_Mobile;
-
-		public Mobile Mobile { get { return m_Mobile; } }
-
-		public ChatRequestEventArgs(Mobile mobile)
-		{
-			m_Mobile = mobile;
 		}
 	}
 
@@ -1134,7 +1120,7 @@ namespace Server
 		}
 	}
 
-    public class TargetedSpellEventArgs : EventArgs 
+    public class TargetedSpellEventArgs : EventArgs
     {
         private NetState state;
         private IEntity target;
@@ -1152,7 +1138,7 @@ namespace Server
         }
     }
 
-    public class TargetedSkillEventArgs : EventArgs 
+    public class TargetedSkillEventArgs : EventArgs
     {
         private NetState state;
         private IEntity target;
@@ -1170,7 +1156,7 @@ namespace Server
         }
     }
 
-    public class TargetedItemUseEventArgs : EventArgs 
+    public class TargetedItemUseEventArgs : EventArgs
     {
         private NetState state;
         private IEntity src;
@@ -1263,7 +1249,6 @@ namespace Server
 		public static event VirtueGumpRequestEventHandler VirtueGumpRequest;
 		public static event VirtueItemRequestEventHandler VirtueItemRequest;
 		public static event VirtueMacroRequestEventHandler VirtueMacroRequest;
-		public static event ChatRequestEventHandler ChatRequest;
 		public static event AccountLoginEventHandler AccountLogin;
 		public static event PaperdollRequestEventHandler PaperdollRequest;
 		public static event ProfileRequestEventHandler ProfileRequest;
@@ -1423,14 +1408,6 @@ namespace Server
 			if (AccountLogin != null)
 			{
 				AccountLogin(e);
-			}
-		}
-
-		public static void InvokeChatRequest(ChatRequestEventArgs e)
-		{
-			if (ChatRequest != null)
-			{
-				ChatRequest(e);
 			}
 		}
 
@@ -1805,7 +1782,7 @@ namespace Server
         public static void InvokeTargetByResourceMacro(TargetByResourceMacroEventArgs e)
         {
             if (TargetByResourceMacro != null)
-            { 
+            {
                 TargetByResourceMacro(e);
             }
         }
@@ -1853,7 +1830,6 @@ namespace Server
 			VirtueGumpRequest = null;
 			VirtueItemRequest = null;
 			VirtueMacroRequest = null;
-			ChatRequest = null;
 			AccountLogin = null;
 			PaperdollRequest = null;
 			ProfileRequest = null;
@@ -1877,7 +1853,7 @@ namespace Server
 			ResourceHarvestAttempt = null;
 			ResourceHarvestSuccess = null;
 			CraftSuccess = null;
-			
+
 			ItemCreated = null;
 			ItemDeleted = null;
 			MobileCreated = null;

@@ -1,4 +1,5 @@
 using System;
+
 using Server.Network;
 
 namespace Server.Engines.Chat
@@ -14,17 +15,17 @@ namespace Server.Engines.Chat
             if (param2 == null)
                 param2 = String.Empty;
 
-            this.EnsureCapacity(13 + ((param1.Length + param2.Length) * 2));
+            EnsureCapacity(13 + ((param1.Length + param2.Length) * 2));
 
-            this.m_Stream.Write((ushort)(number - 20));
+            m_Stream.Write((ushort)(number - 20));
 
             if (who != null)
-                this.m_Stream.WriteAsciiFixed(who.Language, 4);
+                m_Stream.WriteAsciiFixed(who.Language, 4);
             else
-                this.m_Stream.Write((int)0);
+                m_Stream.Write((int)0);
 
-            this.m_Stream.WriteBigUniNull(param1);
-            this.m_Stream.WriteBigUniNull(param2);
+            m_Stream.WriteBigUniNull(param1);
+            m_Stream.WriteBigUniNull(param2);
         }
     }
 }
