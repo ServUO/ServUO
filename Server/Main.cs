@@ -216,8 +216,8 @@ namespace Server
 			}
 		}
 
-	    public static string LogsDirectory => Path.Combine(BaseDirectory, "Logs");
-	    public static string SavesDirectory => Path.Combine(BaseDirectory, "Saves");
+	    public static string LogsDirectory => Config.Get("Logs.Directory", Path.Combine("{basedir}", "Logs")).Replace("{basedir}", BaseDirectory);
+	    public static string SavesDirectory => Config.Get("Saves.Directory", Path.Combine("{basedir}", "Saves")).Replace("{basedir}", BaseDirectory);
 
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
