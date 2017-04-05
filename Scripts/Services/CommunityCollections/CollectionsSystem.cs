@@ -12,7 +12,7 @@ namespace Server.Services.Community_Collections
 	{
 		private static Dictionary<Collection, CollectionData> m_Collections = new Dictionary<Collection, CollectionData>();
 		private static List<BaseCollectionMobile> m_Mobiles = new List<BaseCollectionMobile>();
-		private static string m_Path = Path.Combine("Saves", "CommunityCollections.bin");
+		private static string m_Path = Path.Combine(Core.SavesDirectory, "CommunityCollections.bin");
 
 		public static void Configure()
 		{

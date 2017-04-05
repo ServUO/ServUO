@@ -76,10 +76,10 @@ namespace Server.Mobiles
 				if ( spawners.Count == 0 )
 					return;
 			
-				if ( !Directory.Exists( "Saves/Spawners" ) )
-					Directory.CreateDirectory( "Saves/Spawners" );
+				if ( !Directory.Exists( Path.Combine(Core.SavesDirectory, "Spawners") ) )
+					Directory.CreateDirectory( Path.Combine(Core.SavesDirectory, "Spawners") );
 	
-				string filePath = Path.Combine( "Saves/Spawners", filename );
+				string filePath = Path.Combine( Path.Combine(Core.SavesDirectory, "Spawners"), filename );
 	
 				using ( StreamWriter op = new StreamWriter( filePath ) )
 				{
@@ -170,7 +170,7 @@ namespace Server.Mobiles
 			if ( e.Arguments.Length >= 1 )
 			{
 				string filename = e.GetString( 0 );
-				string filePath = Path.Combine( "Saves/Spawners", filename );
+				string filePath = Path.Combine( Core.SavesDirectory, "Spawners", filename );
 				
 				if ( File.Exists( filePath ) )
 				{

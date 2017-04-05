@@ -281,7 +281,7 @@ namespace Server.Engines.Craft
         }
 
         #region Serialize/Deserialize Persistence
-        private static string FilePath = Path.Combine("Saves", "CraftContext", "Contexts.bin");
+        private static string FilePath = Path.Combine(Core.SavesDirectory, "CraftContext", "Contexts.bin");
 
         private static List<CraftContext> Contexts = new List<CraftContext>();
 

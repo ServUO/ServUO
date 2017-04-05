@@ -11,7 +11,7 @@ namespace Server.Items
 {
     public class HighSeasPersistance
     {
-        public static string FilePath = Path.Combine("Saves", "Highseas.bin");
+        public static string FilePath = Path.Combine(Core.SavesDirectory, "Highseas.bin");
         public static bool DefaultRestrictBoats = true;
 
         public static void Initialize()

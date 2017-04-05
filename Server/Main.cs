@@ -103,7 +103,7 @@ namespace Server
 
 		public static MultiTextWriter MultiConsoleOut { get; private set; }
 
-		/* 
+		/*
 		 * DateTime.Now and DateTime.UtcNow are based on actual system clock time.
 		 * The resolution is acceptable but large clock jumps are possible and cause issues.
 		 * GetTickCount and GetTickCount64 have poor resolution.
@@ -215,6 +215,9 @@ namespace Server
 				return _BaseDirectory;
 			}
 		}
+
+	    public static string LogsDirectory => Path.Combine(BaseDirectory, "Logs");
+	    public static string SavesDirectory => Path.Combine(BaseDirectory, "Saves");
 
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
@@ -391,12 +394,10 @@ namespace Server
 			{
 				if (Service)
 				{
-					if (!Directory.Exists("Logs"))
-					{
-						Directory.CreateDirectory("Logs");
-					}
+					if (!Directory.Exists(Core.LogsDirectory))
+						Directory.CreateDirectory(Core.LogsDirectory);
 
-					Console.SetOut(MultiConsoleOut = new MultiTextWriter(new FileLogger("Logs/Console.log")));
+					Console.SetOut(MultiConsoleOut = new MultiTextWriter(new FileLogger(Path.Combine(Core.LogsDirectory, "Console.log"))));
 				}
 				else
 				{
@@ -639,7 +640,7 @@ namespace Server
 
 		public static int GlobalUpdateRange { get; set; }
 		public static int GlobalMaxUpdateRange { get; set; }
-		
+
 		private static int m_ItemCount, m_MobileCount, m_CustomsCount;
 
 		public static int ScriptItems { get { return m_ItemCount; } }
@@ -817,7 +818,7 @@ namespace Server
 						new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
 			{
 				writer.WriteLine(">>>Logging started on {0}.", DateTime.UtcNow.ToString("f"));
-				//f = Tuesday, April 10, 2001 3:51 PM 
+				//f = Tuesday, April 10, 2001 3:51 PM
 			}
 
 			_NewLine = true;

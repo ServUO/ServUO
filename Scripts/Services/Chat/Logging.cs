@@ -13,10 +13,10 @@ namespace Server.Engines.Chat
 
         public static void Initialize()
         {
-            if (!Directory.Exists("Logs"))
-                Directory.CreateDirectory("Logs");
+            if (!Directory.Exists(Core.LogsDirectory))
+                Directory.CreateDirectory(Core.LogsDirectory);
 
-            var directory = Path.Combine("Logs", "Chat");
+            var directory = Path.Combine(Core.LogsDirectory, "Chat");
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
@@ -58,10 +58,10 @@ namespace Server.Engines.Chat
                     channelOutput = m_OutputPerChannel[channel];
                 else
                 {
-                    var path = "Logs";
+                    var path = Core.LogsDirectory;
 
-                    AppendPath(ref path, "chat");
-                    AppendPath(ref path, "channels");
+                    AppendPath(ref path, "Chat");
+                    AppendPath(ref path, "Channels");
                     path = Path.Combine(path, string.Format("{0}.log", channel));
 
                     channelOutput = new StreamWriter(path, true);

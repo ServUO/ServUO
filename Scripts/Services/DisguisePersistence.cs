@@ -13,7 +13,7 @@ namespace Server.Items
 {
 	public static class DisguisePersistence
 	{
-		private static string FilePath = Path.Combine("Saves", "Disguises", "Persistence.bin");
+		private static string FilePath = Path.Combine(Core.SavesDirectory, "Disguises", "Persistence.bin");
 
 		public static void Configure()
 		{

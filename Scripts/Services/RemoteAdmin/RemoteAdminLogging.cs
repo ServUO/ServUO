@@ -10,8 +10,9 @@ namespace Server.RemoteAdmin
         private static StreamWriter m_Output;
         private static bool m_Enabled = true;
         private static bool Initialized = false;
-        const string LogBaseDirectory = "Logs";
-        const string LogSubDirectory = "RemoteAdmin";
+
+        private static string LogsDirectory = Path.Combine(Core.LogsDirectory, "RemoteAdmin");
+
         public static bool Enabled
         {
             get
@@ -34,19 +35,15 @@ namespace Server.RemoteAdmin
         {
             if (Initialized || !m_Enabled)
                 return;
+
             Initialized = true;
 
-            if (!Directory.Exists(LogBaseDirectory))
-                Directory.CreateDirectory(LogBaseDirectory);
-
-            string directory = Path.Combine(LogBaseDirectory, LogSubDirectory);
-
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
+            if (!Directory.Exists(LogsDirectory))
+                Directory.CreateDirectory(LogsDirectory);
 
             try
             {
-                m_Output = new StreamWriter(Path.Combine(directory, String.Format(LogSubDirectory + "{0}.log", DateTime.UtcNow.ToString("yyyyMMdd"))), true);
+                m_Output = new StreamWriter(Path.Combine(LogsDirectory, string.Format(LogsDirectory + "{0}.log", DateTime.UtcNow.ToString("yyyyMMdd"))), true);
 
                 m_Output.AutoFlush = true;
 
@@ -96,12 +93,10 @@ namespace Server.RemoteAdmin
 
                 m_Output.WriteLine("{0}: {1}: {2}: {3}", DateTime.UtcNow, statestr, name, text);
 
-                string path = Core.BaseDirectory;
+                string path = LogsDirectory;
 
-                Commands.CommandLogging.AppendPath(ref path, LogBaseDirectory);
-                Commands.CommandLogging.AppendPath(ref path, LogSubDirectory);
                 Commands.CommandLogging.AppendPath(ref path, accesslevel);
-                path = Path.Combine(path, String.Format("{0}.log", name));
+                path = Path.Combine(path, $"{name}.log");
 
                 using (StreamWriter sw = new StreamWriter(path, true))
                     sw.WriteLine("{0}: {1}: {2}", DateTime.UtcNow, statestr, text);

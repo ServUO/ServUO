@@ -31,10 +31,10 @@ namespace Server.Commands
         {
             EventSink.Command += new CommandEventHandler(EventSink_Command);
 
-            if (!Directory.Exists("Logs"))
-                Directory.CreateDirectory("Logs");
+            if (!Directory.Exists(Core.LogsDirectory))
+                Directory.CreateDirectory(Core.LogsDirectory);
 
-            string directory = "Logs/Commands";
+            string directory = Path.Combine(Core.LogsDirectory, "Commands");
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
@@ -92,13 +92,12 @@ namespace Server.Commands
             {
                 m_Output.WriteLine("{0}: {1}: {2}", DateTime.UtcNow, from.NetState, text);
 
-                string path = Core.BaseDirectory;
+                string path = Core.LogsDirectory;
 
                 Account acct = from.Account as Account;
 
                 string name = (acct == null ? from.Name : acct.Username);
 
-                AppendPath(ref path, "Logs");
                 AppendPath(ref path, "Commands");
                 AppendPath(ref path, from.AccessLevel.ToString());
                 path = Path.Combine(path, String.Format("{0}.log", name));
