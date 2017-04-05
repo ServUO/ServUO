@@ -6,12 +6,10 @@ using Server.Network;
 
 namespace Server.Gumps
 {
-	public class ConfirmCallbackGump : Gump
+	public class ConfirmCallbackGump : BaseGump
 	{
 		public Action<Mobile, object> ConfirmCallback { get; set; }
 		public Action<Mobile, object> CloseCallback { get; set; }
-
-        public Mobile User { get; set; }
 
 		public object Title { get; set; }
 		public object Body { get; set; }
@@ -19,10 +17,8 @@ namespace Server.Gumps
 		public string Arguments { get; set; }
 		
         public ConfirmCallbackGump(PlayerMobile user, object title, object body, object state, string args = null, Action<Mobile, object> confirm = null, Action<Mobile, object> close = null, int x = 20, int y = 20)
-            : base(x, y)
+            : base(user, x, y)
 		{
-            User = user;
-
 			Title = title;
 			Body = body;
 			State = state;
@@ -31,10 +27,11 @@ namespace Server.Gumps
 			ConfirmCallback = confirm;
 			CloseCallback = close;
 
-            AddGumpLayout();
+            if(!Open)
+                AddGumpLayout();
 		}
 		
-		public void AddGumpLayout()
+		public override void AddGumpLayout()
 		{
 			AddImageTiled( 0, 0, 348, 262, 0xA8E );
 			AddAlphaRegion( 0, 0, 348, 262 );
@@ -81,7 +78,7 @@ namespace Server.Gumps
             AddButton(265, 220, 0xF7, 0xF8, 1, GumpButtonType.Reply, 0);
 		}
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID != 1)
                 return;

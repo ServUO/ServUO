@@ -3,8 +3,10 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a vollem corpse")]
-    public class Vollem : BaseCreature
+    public class Vollem : BaseCreature, IRepairableMobile
     {
+        public Type RepairResource { get { return typeof(Server.Items.IronIngot); } }
+
         [Constructable]
         public Vollem()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.8)

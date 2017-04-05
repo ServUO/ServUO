@@ -23,14 +23,29 @@ namespace Server.Items
     }
 
     // ********** Dough **********
-    public class Dough : Item
+    public class Dough : Item, IQuality
     {
+        private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
         [Constructable]
         public Dough()
             : base(0x103d)
         {
             this.Stackable = Core.ML;
             this.Weight = 1.0;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
         }
 
         public Dough(Serial serial)
@@ -42,7 +57,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+
+            writer.Write((int)_Quality);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -50,6 +67,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version > 0)
+                _Quality = (ItemQuality)reader.ReadInt();
         }
 
         #if false
@@ -125,6 +145,11 @@ namespace Server.Items
     // ********** SweetDough **********
     public class SweetDough : Item
     {
+        private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
         public override int LabelNumber
         {
             get
@@ -142,6 +167,16 @@ namespace Server.Items
             this.Hue = 150;
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+        }
+
         public SweetDough(Serial serial)
             : base(serial)
         {
@@ -151,7 +186,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
+
+            writer.Write((int)_Quality);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -159,6 +196,9 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version > 0)
+                _Quality = (ItemQuality)reader.ReadInt();
 
             if (this.Hue == 51)
                 this.Hue = 150;
@@ -434,9 +474,10 @@ namespace Server.Items
 
     // ********** SackFlour **********
     [TypeAlias("Server.Items.SackFlourOpen")]
-    public class SackFlour : Item, IHasQuantity
+    public class SackFlour : Item, IHasQuantity, IQuality
     {
         private int m_Quantity;
+        private ItemQuality _Quality;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Quantity
@@ -461,12 +502,25 @@ namespace Server.Items
             }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
         [Constructable]
         public SackFlour()
             : base(0x1039)
         {
             this.Weight = 5.0;
             this.m_Quantity = 20;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
         }
 
         public SackFlour(Serial serial)
@@ -478,7 +532,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)3); // version
+
+            writer.Write((int)_Quality);
 
             writer.Write((int)this.m_Quantity);
         }
@@ -491,6 +547,11 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 3:
+                    {
+                        _Quality = (ItemQuality)reader.ReadInt();
+                        goto case 2;
+                    }
                 case 2:
                 case 1:
                     {

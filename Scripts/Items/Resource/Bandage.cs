@@ -564,7 +564,7 @@ namespace Server.Items
 		{
 			bool isDeadPet = (patient is BaseCreature && ((BaseCreature)patient).IsDeadPet);
 
-			if (patient is Golem)
+            if (patient is IRepairableMobile)
 			{
 				healer.SendLocalizedMessage(500970); // Bandages cannot be used on that.
 			}

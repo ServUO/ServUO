@@ -17,7 +17,7 @@ namespace Server.Items
     public abstract class BaseHarvestTool : Item, IUsesRemaining, ICraftable
     {
         private Mobile m_Crafter;
-        private ToolQuality m_Quality;
+        private ItemQuality m_Quality;
         private int m_UsesRemaining;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -35,7 +35,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ToolQuality Quality
+        public ItemQuality Quality
         {
             get
             {
@@ -77,7 +77,7 @@ namespace Server.Items
 
         public int GetUsesScalar()
         {
-            if (this.m_Quality == ToolQuality.Exceptional)
+            if (this.m_Quality == ItemQuality.Exceptional)
                 return 200;
 
             return 100;
@@ -105,14 +105,14 @@ namespace Server.Items
             : base(itemID)
         {
             this.m_UsesRemaining = usesRemaining;
-            this.m_Quality = ToolQuality.Regular;
+            this.m_Quality = ItemQuality.Normal;
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (this.m_Quality == ToolQuality.Exceptional)
+            if (this.m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
 
             list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
@@ -288,7 +288,7 @@ namespace Server.Items
                 case 1:
                     {
                         this.m_Crafter = reader.ReadMobile();
-                        this.m_Quality = (ToolQuality)reader.ReadInt();
+                        this.m_Quality = (ItemQuality)reader.ReadInt();
                         goto case 0;
                     }
                 case 0:
@@ -303,7 +303,7 @@ namespace Server.Items
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ToolQuality)quality;
+            this.Quality = (ItemQuality)quality;
 
             if (makersMark)
                 this.Crafter = from;

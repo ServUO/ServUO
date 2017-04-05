@@ -8,7 +8,8 @@ namespace Server.Items
         public override int LabelNumber { get { return 1155604; } } // A Deed for a Reward Title
         public abstract TextDefinition Title { get; }
 
-        public BaseRewardTitleDeed() : base(5360)
+        public BaseRewardTitleDeed()
+            : base(5360)
         {
         }
 
