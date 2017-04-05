@@ -209,6 +209,15 @@ namespace Server
 
         public static Type[] PotionTypes { get { return m_PotionTypes; } }
 
+        private static readonly Type[] m_ImbuingEssenceIngreds = new[]
+        {
+            typeof(EssencePrecision), typeof(EssenceAchievement), typeof(EssenceBalance), typeof(EssenceControl), typeof(EssenceDiligence),
+            typeof(EssenceDirection),   typeof(EssenceFeeling), typeof(EssenceOrder),   typeof(EssencePassion),   typeof(EssencePersistence),
+            typeof(EssenceSingularity)
+        };
+
+        public static Type[] ImbuingEssenceIngreds { get { return m_ImbuingEssenceIngreds; } }
+
         private static readonly Type[] m_SEInstrumentTypes = new[] { typeof(BambooFlute) };
 
         public static Type[] SEInstrumentTypes { get { return m_SEInstrumentTypes; } }
@@ -407,6 +416,11 @@ namespace Server
 
         public static Type[] LibraryBookTypes { get { return m_LibraryBookTypes; } }
         #endregion
+
+        public static Item RandomEssence()
+        {
+            return Construct(m_ImbuingEssenceIngreds) as Item;
+        }
 
         #region Accessors
         public static BaseWand RandomWand()

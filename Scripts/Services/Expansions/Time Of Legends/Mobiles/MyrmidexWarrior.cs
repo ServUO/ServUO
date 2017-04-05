@@ -10,7 +10,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public MyrmidexWarrior()
-            : base(AIType.AI_Mage, FightMode.Enemy, 10, 1, .2, .4)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, .2, .4)
         {
             Name = "a myrmidex warrior";
 
@@ -62,6 +62,26 @@ namespace Server.Mobiles
 
         public override Poison HitPoison { get { return Poison.Deadly; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
+
+        public override bool PlayerRangeSensitive
+        {
+            get
+            {
+                if (this.Region != null && this.Region.IsPartOf(typeof(BattleRegion)))
+                {
+                    if (((BattleRegion)this.Region).Spawner != null)
+                        return !((BattleRegion)this.Region).Spawner.HasPlayers();
+                }
+
+                return base.PlayerRangeSensitive;
+            }
+        }
+
+        private void AddImmovableItem(Item item)
+        {
+            item.LootType = LootType.Blessed;
+            SetWearable(item);
+        }
 
         public override bool IsEnemy(Mobile m)
         {

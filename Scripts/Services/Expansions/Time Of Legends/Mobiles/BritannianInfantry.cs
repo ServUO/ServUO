@@ -10,7 +10,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public BritannianInfantry()
-            : base(AIType.AI_Melee, FightMode.Enemy, 10, 1, .15, .3)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .15, .3)
         {
             SpeechHue = Utility.RandomDyedHue();
 
@@ -60,10 +60,24 @@ namespace Server.Mobiles
             Utility.AssignRandomHair(this);
         }
 
+        public override bool PlayerRangeSensitive
+        {
+            get
+            {
+                if (this.Region != null && this.Region.IsPartOf(typeof(BattleRegion)))
+                {
+                    if (((BattleRegion)this.Region).Spawner != null)
+                        return !((BattleRegion)this.Region).Spawner.HasPlayers();
+                }
+
+                return base.PlayerRangeSensitive;
+            }
+        }
+
         private void AddImmovableItem(Item item)
         {
             item.LootType = LootType.Blessed;
-            AddItem(item);
+            SetWearable(item);
         }
 
         public override bool IsEnemy(Mobile m)

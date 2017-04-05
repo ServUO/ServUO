@@ -118,7 +118,6 @@ namespace Server.Network
 			Register(0xA7, 4, true, RequestScrollWindow);
 			Register(0xAD, 0, true, UnicodeSpeech);
 			Register(0xB1, 0, true, DisplayGumpResponse);
-			Register(0xB5, 64, true, ChatRequest);
 			Register(0xB6, 9, true, ObjectHelpRequest);
 			Register(0xB8, 0, true, ProfileReq);
 			Register(0xBB, 9, false, AccountID);
@@ -356,11 +355,6 @@ namespace Server.Network
 			{
 				EventSink.InvokeRenameRequest(new RenameRequestEventArgs(from, targ, pvSrc.ReadStringSafe()));
 			}
-		}
-
-		public static void ChatRequest(NetState state, PacketReader pvSrc)
-		{
-			EventSink.InvokeChatRequest(new ChatRequestEventArgs(state.Mobile));
 		}
 
 		public static void SecureTrade(NetState state, PacketReader pvSrc)

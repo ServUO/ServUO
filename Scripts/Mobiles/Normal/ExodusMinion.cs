@@ -89,13 +89,7 @@ namespace Server.Mobiles
                 return true;
             }
         }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
+
         public override bool BardImmune
         {
             get

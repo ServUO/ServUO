@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a exodus juggernaut's corpse")]
+    [CorpseName("a juggernaut's corpse")]
     public class ExodusJuggernaut : BaseCreature
     {
         private bool m_FieldActive;
@@ -13,13 +13,16 @@ namespace Server.Mobiles
         {
             this.Name = "Exodus Juggernaut";
             this.Body = 0x2F0;
-            this.Hue = 0xA92;
+            this.Hue = 2702;
             this.SetStr(1506, 1565);
             this.SetDex(92, 99);
             this.SetInt(101, 126);
 
             this.SetHits(1012, 1069);
             this.SetDamage(19, 25);
+
+            this.SetDamageType(ResistanceType.Physical, 60);
+            this.SetDamageType(ResistanceType.Energy, 40);
 
             this.SetResistance(ResistanceType.Physical, 60, 80);
             this.SetResistance(ResistanceType.Fire, 60, 80);
@@ -39,112 +42,40 @@ namespace Server.Mobiles
             this.PackItem(new ArcaneGem());
             this.PackItem(new ClockworkAssembly());
 
-		}
+            this.m_FieldActive = this.CanUseField;
+        }
 		
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
+            this.AddLoot(LootPack.Rich);            
+        }
+
+        public override void OnKilledBy(Mobile m)
+        {
+            base.OnKilledBy(m);
 
             if (Utility.RandomDouble() < 0.1)
             {
-                switch (Utility.Random(4))
-                {
-                    case 0:
-                        PackItem(new ExodusSummoningRite());
-                        break;
-                    case 1:
-                        PackItem(new ExodusSacrificalDagger());
-                        break;
-                    case 2:
-                        PackItem(new RobeofRite());
-                        break;
-                    case 3:
-                        PackItem(new ExodusSummoningAlter());
-                        break;
-                }
+                ExodusChest.GiveRituelItem(m);
             }
-
-            this.m_FieldActive = this.CanUseField;
         }
 
         public ExodusJuggernaut(Serial serial): base(serial)
         {
         }
 
-        public bool FieldActive
-        {
-            get
-            {
-                return this.m_FieldActive;
-            }
-        }
-        public bool CanUseField
-        {
-            get
-            {
-                return this.Hits >= this.HitsMax * 9 / 10;
-            }
-        }// TODO: an OSI bug prevents to verify this
-        public override bool IsScaredOfScaryThings
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsScaryToPets
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public bool FieldActive { get { return this.m_FieldActive; } }
+        public bool CanUseField { get { return this.Hits >= this.HitsMax * 9 / 10; } } // TODO: an OSI bug prevents to verify this
+        public override bool IsScaredOfScaryThings { get { return false; } }
+        public override bool IsScaryToPets { get { return true; } }
+        public override bool BardImmune { get { return !Core.AOS; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
 
-        public override int GetIdleSound()
-        {
-            return 0x218;
-        }
-
-        public override int GetAngerSound()
-        {
-            return 0x26C;
-        }
-
-        public override int GetDeathSound()
-        {
-            return 0x211;
-        }
-
-        public override int GetAttackSound()
-        {
-            return 0x232;
-        }
-
-        public override int GetHurtSound()
-        {
-            return 0x140;
-        }
+        public override int GetIdleSound() { return 0x218; }
+        public override int GetAngerSound() { return 0x26C; }
+        public override int GetDeathSound() { return 0x211; }
+        public override int GetAttackSound() { return 0x232; }
+        public override int GetHurtSound() { return 0x140; }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
         {
@@ -237,9 +168,6 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
 
             this.m_FieldActive = this.CanUseField;
-
-            if (this.Name == "Exodus Juggernaut")
-                this.Name = "exodus juggernaut";
         }
     }
 }

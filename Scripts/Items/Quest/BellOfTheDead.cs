@@ -80,7 +80,7 @@ namespace Server.Engines.Quests.Doom
             {
                 from.SendLocalizedMessage(1050010); // The ferry man has already been summoned.  There is no need to ring for him again.
             }
-            else if (this.m_Dragon != null && !this.m_Dragon.Deleted)
+            else if (this.m_Dragon != null && !this.m_Dragon.Deleted && !this.m_Dragon.Controlled)
             {
                 from.SendLocalizedMessage(1050017); // The ferryman has recently been summoned already.  You decide against ringing the bell again so soon.
             }
@@ -102,7 +102,7 @@ namespace Server.Engines.Quests.Doom
             {
                 from.SendLocalizedMessage(1050010); // The ferry man has already been summoned.  There is no need to ring for him again.
             }
-            else if (this.m_Dragon != null && !this.m_Dragon.Deleted)
+            else if (this.m_Dragon != null && !this.m_Dragon.Deleted && !this.m_Dragon.Controlled)
             {
                 from.SendLocalizedMessage(1050017); // The ferryman has recently been summoned already.  You decide against ringing the bell again so soon.
             }

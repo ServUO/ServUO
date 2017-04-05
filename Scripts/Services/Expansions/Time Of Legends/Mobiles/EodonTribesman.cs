@@ -57,7 +57,27 @@ namespace Server.Mobiles
 
         public override bool InitialInnocent { get { return true; } }
 
-		public BaseEodonTribesman(AIType ai, EodonTribe type) : base(ai, FightMode.Enemy, 10, 1, .2, .4)
+        public override bool PlayerRangeSensitive
+        {
+            get
+            {
+                if (this.Region != null && this.Region.IsPartOf(typeof(BattleRegion)))
+                {
+                    if (((BattleRegion)this.Region).Spawner != null)
+                        return !((BattleRegion)this.Region).Spawner.HasPlayers();
+                }
+
+                return base.PlayerRangeSensitive;
+            }
+        }
+
+        private void AddImmovableItem(Item item)
+        {
+            item.LootType = LootType.Blessed;
+            SetWearable(item);
+        }
+
+		public BaseEodonTribesman(AIType ai, EodonTribe type) : base(ai, FightMode.Closest, 10, 1, .2, .4)
 		{
 			TribeType = type;
 			

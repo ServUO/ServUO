@@ -113,12 +113,35 @@ namespace Server.Spells.SkillMasteries
             typeof(SkeletalDragon)
         };
 
+        private Type[] _NoCommandTypes =
+        {
+
+            typeof(UnfrozenMummy),
+            typeof(RedDeath),
+            typeof(SirPatrick),
+            typeof(LadyJennifyr),
+            typeof(MasterMikael),
+            typeof(MasterJonath),
+            typeof(LadyMarai),
+            typeof(Niporailem),
+            typeof(PestilentBandage),
+        };
+
         private bool ValidateTarget(BaseCreature bc)
         {
+            if (bc is BaseRenowned || bc is BaseChampion || bc is Server.Engines.Shadowguard.ShadowguardBoss)
+                return false;
+
             foreach (var t in _CommandTypes)
             {
                 if (t == bc.GetType())
                     return true;
+            }
+
+            foreach (var t in _NoCommandTypes)
+            {
+                if (t == bc.GetType())
+                    return false;
             }
 
             SlayerEntry entry = SlayerGroup.GetEntryByName(SlayerName.Silver);
