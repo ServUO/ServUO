@@ -54,6 +54,9 @@ namespace Server.Mobiles
         {
         }
 
+
+        public override bool IsRedSolen { get { return true; } }
+
         public override void OnGotMeleeAttack(Mobile attacker)
         {
 
