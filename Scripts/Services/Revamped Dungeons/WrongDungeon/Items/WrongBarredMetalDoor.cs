@@ -1,13 +1,15 @@
 ﻿using Server.Network;
+using Server.Spells.Third;
 using System;
 
 namespace Server.Items
 {
-    public class WrongBarredMetalDoor : BaseDoor, ILockpickable
+    public class WrongBarredMetalDoor : BaseDoor, ILockpickable, IMageUnlockable
     {
         private int m_LockLevel, m_MaxLockLevel, m_RequiredSkill;
         private Mobile m_Picker;
         private Timer m_Timer;
+        private bool m_MagicUnlocked;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Picker
@@ -63,11 +65,34 @@ namespace Server.Items
         {
             this.m_Timer = new InternalTimer(this);
             this.m_Timer.Start();
-            base.Use(from);
+
+            if (from.Skills.Magery.Value >= m_RequiredSkill)
+            {
+                m_MagicUnlocked = true;
+            }
+
+            Use(from);
+        }
+
+        public void OnMageUnlock(Mobile from)
+        {
+            this.m_Timer = new InternalTimer(this);
+            this.m_Timer.Start();
+
+            if (from.Skills.Magery.Value >= m_RequiredSkill)
+            {
+                m_MagicUnlocked = true;
+            }
         }
 
         public override void Use(Mobile from)
         {
+            if (m_MagicUnlocked)
+            {
+                this.Locked = false;
+                m_MagicUnlocked = false;
+            }
+
             if (this.Locked && !this.Open)                
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 501746); // It appears to be locked.
