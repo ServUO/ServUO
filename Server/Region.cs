@@ -436,6 +436,11 @@ namespace Server
 			return (GetRegion(regionType) != null);
 		}
 
+		public bool IsPartOf<T>() where T : Region
+		{
+			return IsPartOf(typeof(T));
+		}
+
 		public bool IsPartOf(string regionName)
 		{
 			return (GetRegion(regionName) != null);

@@ -456,7 +456,7 @@ namespace Server.Engines.Harvest
             if ((map == Map.Felucca || map == Map.Trammel) && bounds.Contains(new Point2D(from.X, from.Y)))
                 return false;
 
-            return reg != null && (reg.IsPartOf(typeof(Server.Regions.DungeonRegion)) || map == Map.Ilshenar);
+            return reg != null && (reg.IsPartOf<Server.Regions.DungeonRegion>() || map == Map.Ilshenar);
         }
         #endregion
 

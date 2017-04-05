@@ -36,7 +36,7 @@ namespace Server.Regions
         private static void Desert_OnLogin(LoginEventArgs e) 
         {
             Mobile m = e.Mobile;
-            if (m.Region.IsPartOf(typeof(TwistedWealdDesert)) && m.AccessLevel < AccessLevel.GameMaster)
+            if (m.Region.IsPartOf<TwistedWealdDesert>() && m.AccessLevel < AccessLevel.GameMaster)
                 m.Send(SpeedControl.WalkSpeed);
         }
     }

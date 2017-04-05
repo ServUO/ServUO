@@ -67,7 +67,7 @@ namespace Server.Engines.MyrmidexInvasion
                             entry,
                             confirm: (m, state) =>
                                 {
-                                    if (m.Region.IsPartOf(typeof(BattleRegion)))
+                                    if (m.Region.IsPartOf<BattleRegion>())
                                     {
                                         m.SendLocalizedMessage(1156632); // You cannot switch allegiance in the midst of the battle field!
                                     }

@@ -2138,7 +2138,7 @@ namespace Server.Mobiles
 						list.Add(new CallbackEntry(6204, GetVendor));
 					}
 
-					if (house.IsAosRules && !Region.IsPartOf(typeof(SafeZone))) // Dueling
+					if (house.IsAosRules && !Region.IsPartOf<SafeZone>()) // Dueling
 					{
 						list.Add(new CallbackEntry(6207, LeaveHouse));
 					}
@@ -3055,7 +3055,7 @@ namespace Server.Mobiles
 			}
 
 			#region Dueling
-			if (Region.IsPartOf(typeof(SafeZone)) && m is PlayerMobile)
+			if (Region.IsPartOf<SafeZone>() && m is PlayerMobile)
 			{
 				PlayerMobile pm = (PlayerMobile)m;
 
@@ -5907,7 +5907,7 @@ namespace Server.Mobiles
 
 		public bool YoungDeathTeleport()
 		{
-			if (Region.IsPartOf(typeof(Jail)) || Region.IsPartOf("Samurai start location") ||
+			if (Region.IsPartOf<Jail>() || Region.IsPartOf("Samurai start location") ||
 				Region.IsPartOf("Ninja start location") || Region.IsPartOf("Ninja cave"))
 			{
 				return false;

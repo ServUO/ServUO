@@ -68,11 +68,11 @@ namespace Server.SkillHandlers
 				{
 					from.SendLocalizedMessage(1049528); // You cannot calm that!
 				}
-				else if (from.Region.IsPartOf(typeof(SafeZone)))
+				else if (from.Region.IsPartOf<SafeZone>())
 				{
 					from.SendMessage("You may not peacemake in this area.");
 				}
-				else if (((Mobile)targeted).Region.IsPartOf(typeof(SafeZone)))
+				else if (((Mobile)targeted).Region.IsPartOf<SafeZone>())
 				{
 					from.SendMessage("You may not peacemake there.");
 				}

@@ -60,7 +60,7 @@ namespace Server.Items
         {
             if (!from.InRange(GetWorldLocation(), 2))
                 from.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
-            else if (!from.Region.IsPartOf(typeof(HouseRegion)))
+            else if (!from.Region.IsPartOf<HouseRegion>())
                 from.SendLocalizedMessage(502092); // You must be in your house to do this.
             else if (!IsLockedDown && !IsSecure)
                 from.SendLocalizedMessage(1112573); // This must be locked down or secured in order to use it.
@@ -119,7 +119,7 @@ namespace Server.Items
                 if (item == null || from.Backpack == null)
                     return;
 
-                if (!from.Region.IsPartOf(typeof(HouseRegion)))
+                if (!from.Region.IsPartOf<HouseRegion>())
                 {
                     from.SendLocalizedMessage(502092); // You must be in your house to do this.
                 }
