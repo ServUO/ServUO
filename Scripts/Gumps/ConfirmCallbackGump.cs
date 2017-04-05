@@ -27,7 +27,8 @@ namespace Server.Gumps
 			ConfirmCallback = confirm;
 			CloseCallback = close;
 
-            AddGumpLayout();
+            if(!Open)
+                AddGumpLayout();
 		}
 		
 		public override void AddGumpLayout()

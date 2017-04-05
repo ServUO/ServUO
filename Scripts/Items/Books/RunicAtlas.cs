@@ -38,7 +38,7 @@ namespace Server.Items
                         return;
                     }
 
-                    from.SendGump(new RunicAtlasGump((PlayerMobile)from, this));
+                    BaseGump.SendGump(new RunicAtlasGump((PlayerMobile)from, this));
                     Openers.Add(from);
                 }
                 else
@@ -109,7 +109,7 @@ namespace Server.Items
 		}
 	}
 
-    public class RunicAtlasGump : Gump
+    public class RunicAtlasGump : BaseGump
 	{
 		public static string ToCoordinates(Point3D location, Map map)
 		{
@@ -122,31 +122,17 @@ namespace Server.Items
 		}
 
         public RunicAtlas Atlas { get; set; }
-        public PlayerMobile User { get; set; }
         public int Selected { get { return Atlas == null ? -1 : Atlas.Selected; } }
         public int Page { get; set; }
 
         public RunicAtlasGump(PlayerMobile pm, RunicAtlas atlas)
-            : base(150, 200)
+            : base(pm, 150, 200)
         {
             Atlas = atlas;
-            User = pm;
             Page = 0;
-
-            AddGumpLayout();
         }
 
-        public void Refresh()
-        {
-            Entries.Clear();
-            Entries.TrimExcess();
-            AddGumpLayout();
-
-            User.CloseGump(this.GetType());
-            User.SendGump(this, false);
-        }
-
-        public void AddGumpLayout()
+        public override void AddGumpLayout()
         {
             AddImage(0, 0, 39923);
 
@@ -229,9 +215,9 @@ namespace Server.Items
             }
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(RelayInfo info)
         {
-            if (info.ButtonID >= 100)
+            if (info.ButtonID >= 100 && info.ButtonID < 1000)
             {
                 SelectEntry(info.ButtonID - 100);
             }
