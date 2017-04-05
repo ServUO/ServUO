@@ -996,103 +996,6 @@ namespace Server.Mobiles
         public virtual OppositionGroup OppositionGroup { get { return null; } }
         public virtual bool IsMilitiaFighter { get { return false; } }
 
-        // Opposition List stuff
-        public virtual OppositionType OppositionList{ get{ return OppositionType.None ; } } // What opposition list am I in?
-
-        public enum OppositionType
-        {
-            None,
-            Terathan,
-            Ophidian,
-            Savage,
-            Orc,
-            Fey,
-            Undead
-        }
-
-        public virtual bool OppositionListEnemy(Mobile m)
-        {
-            // Target must be BaseCreature
-            if (!(m is BaseCreature))
-            {
-                return false;
-            }
-
-            BaseCreature c = (BaseCreature)m;
-
-            // Target must have an OppositionType
-            if (c.OppositionList == OppositionType.None)
-            {
-                return false;
-            }
-
-            // Pick my OppositionType
-            switch (OppositionList)
-            {
-                case OppositionType.Terathan: return m_TerathanEnemy(c.OppositionList);
-                case OppositionType.Ophidian: return m_OphidianEnemy(c.OppositionList);
-                case OppositionType.Savage: return m_SavageEnemy(c.OppositionList);
-                case OppositionType.Orc: return m_OrcEnemy(c.OppositionList);
-                case OppositionType.Fey: return m_FeyEnemy(c.OppositionList);
-                case OppositionType.Undead: return m_UndeadEnemy(c.OppositionList);
-                default: return false;
-            }
-        }
-
-        private bool m_TerathanEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Ophidian: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_OphidianEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Terathan: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_SavageEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Orc: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_OrcEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Savage: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_FeyEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Undead: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_UndeadEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Fey: return true;
-                default: return false;
-            }
-        }
-
         #region Friends
         public List<Mobile> Friends { get { return m_Friends; } }
 
@@ -1123,7 +1026,9 @@ namespace Server.Mobiles
 
 		public virtual bool IsFriend(Mobile m)
 		{
-			if (OppositionList != OppositionType.None && OppositionListEnemy(m))
+			OppositionGroup g = OppositionGroup;
+
+			if (g != null && g.IsEnemy(this, m))
 			{
 				return false;
 			}
@@ -1203,7 +1108,9 @@ namespace Server.Mobiles
 				return a.IsEnemy(m);
 			}
 
-			if (OppositionList != OppositionType.None && OppositionListEnemy(m))
+			OppositionGroup g = OppositionGroup;
+
+			if (g != null && g.IsEnemy(this, m))
 			{
 				return true;
 			}
@@ -3937,12 +3844,10 @@ namespace Server.Mobiles
 
             if (m_AI != null)
             {
-                // Pre-ML creatures could be distracted from these orders by attackers too
                 if (!Core.ML || (ct != OrderType.Follow && ct != OrderType.Stop && ct != OrderType.Stay))
                 {
                     m_AI.OnAggressiveAction(aggressor);
                 }
-                // In ML, Follow, Stop, and Stay will not fight at all
                 else
                 {
                     DebugSay("I'm being attacked but my master told me not to fight.");
