@@ -101,6 +101,9 @@ namespace Server
 
 		public int Next(int c)
 		{
+            if(c <= 0)
+                return 0;
+            
 			int r;
 			lock (m_Random)
 				r = m_Random.Next(c);
