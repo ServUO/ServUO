@@ -1179,10 +1179,10 @@ namespace Server.Mobiles
 					return DoOrderTransfer();
 
 				case OrderType.Aggro:
-					return DoOrderAggro();
+					return CheckFamiliar();
 
 				case OrderType.Heel:
-					return DoOrderHeel();
+					return CheckFamiliar();
 
 				case OrderType.Fetch:
 					return DoOrderFetch();
@@ -2076,190 +2076,186 @@ namespace Server.Mobiles
 			return true;
 		}
 
-		private bool m_LastHidden;
+        private bool m_LastHidden;
 
-		public virtual bool DoOrderHeel()
-		{
-			return CheckFamiliar();
-		}
+        public virtual bool CheckFamiliar()
+        {
+            // Part 1: Delete Familiar check
+            BaseCreature m = m_Mobile;
+            Mobile master = m.ControlMaster;
+            Map map = m.Map;
 
-		public virtual bool DoOrderAggro()
-		{
-			return CheckFamiliar();
-		}
+            if (master == null || master.Deleted)
+            {
 
-		public virtual bool CheckFamiliar()
-		{
-			// Part 1: Delete Familiar check
-			Mobile master = m_Mobile.ControlMaster;
-			Map map = m_Mobile.Map;
+                if (map != null && map != Map.Internal)
+                {
+                    Container pack = m.Backpack;
 
-			if (master == null || master.Deleted)
-			{
+                    if (pack != null)
+                    {
+                        var list = new List<Item>(pack.Items);
 
-				if (map != null && map != Map.Internal)
-				{
-					Container pack = m_Mobile.Backpack;
+                        for (int i = 0; i < list.Count; ++i)
+                        {
+                            list[i].MoveToWorld(m.Location, map);
+                        }
 
-					if (pack != null)
-					{
-						var list = new List<Item>(pack.Items);
+                    }
+                    Effects.SendLocationParticles(
+                        EffectItem.Create(m.Location, map, EffectItem.DefaultDuration), 0x3728, 1, 13, 2100, 3, 5042, 0);
+                    m.PlaySound(0x201);
+                }
+                m.Delete();
+                return false;
+            }
 
-						for (int i = 0; i < list.Count; ++i)
-						{
-							list[i].MoveToWorld(m_Mobile.Location, map);
-						}
+            // Part 2: Teleport to master check
+            Point3D m_Loc = Point3D.Zero;
 
-					}
-					Effects.SendLocationParticles(
-						EffectItem.Create(m_Mobile.Location, map, EffectItem.DefaultDuration), 0x3728, 1, 13, 2100, 3, 5042, 0);
-					m_Mobile.PlaySound(0x201);
-				}
-				m_Mobile.Delete();
-				return false;
-			}
+            if (map != master.Map)
+            {
+                m.Map = master.Map;
+                m.SetLocation(master.Location, true);
+            }
+            else if (!m.InRange(master.Location, m.RangePerception))
+            {
+                int range = (int)(m.RangeHome / 2 + 1);
+                int x = (m.X > master.X) ? (master.X + range) : (master.X - range);
+                int y = (m.Y > master.Y) ? (master.Y + range) : (master.Y - range);
 
-			// Part 2: Teleport to master check
-			Point3D m_Loc = Point3D.Zero;
+                for (int i = 0; i < 10; i++)
+                {
+                    m_Loc.X = x + Utility.RandomMinMax(-1, 1);
+                    m_Loc.Y = y + Utility.RandomMinMax(-1, 1);
 
-			if (map != master.Map)
-			{
-				m_Mobile.Map = master.Map;
-				m_Mobile.SetLocation(master.Location, true);
-			}
-			else if (!m_Mobile.InRange(master.Location, m_Mobile.RangePerception))
-			{
-				int range = (int)(m_Mobile.RangeHome / 2 + 1);
-				int x = (m_Mobile.X > master.X) ? (master.X + range) : (master.X - range);
-				int y = (m_Mobile.Y > master.Y) ? (master.Y + range) : (master.Y - range);
+                    m_Loc.Z = map.GetAverageZ(m_Loc.X, m_Loc.Y);
 
-				for (int i = 0; i < 10; i++)
-				{
-					m_Loc.X = x + Utility.RandomMinMax(-1, 1);
-					m_Loc.Y = y + Utility.RandomMinMax(-1, 1);
+                    if (map.CanSpawnMobile(m_Loc))
+                    {
+                        break;
+                    }
 
-					m_Loc.Z = map.GetAverageZ(m_Loc.X, m_Loc.Y);
+                    m_Loc = master.Location;
+                }
 
-					if (map.CanSpawnMobile(m_Loc))
-					{
-						break;
-					}
+                m.SetLocation(m_Loc, true);
+            }
 
-					m_Loc = master.Location;
-				}
+            //Part 3: Attack master's target check
+            IDamageable combatant = m.Combatant;
+            IDamageable mc = master.Combatant;
 
-				m_Mobile.SetLocation(m_Loc, true);
-			}
+            // Don't attack your familiar!
+            if (mc == m)
+            {
+                master.Combatant = null;
+                mc = null;
+            }
 
-			//Part 3: Attack master's target check
-			IDamageable combatant = m_Mobile.Combatant;
-			IDamageable mc = master.Combatant;
+            // Don't attack my master!
+            if (combatant == master)
+            {
+                m.Combatant = null;
+                combatant = null;
+            }
 
-			// Don't attack your familiar!
-			if (mc == m_Mobile)
-			{
-				master.Combatant = null;
-				mc = null;
-			}
+            // Only attack my master's combatant, and only if he's in range
+            if (mc != null && ((BaseFamiliar)m).AttacksMastersTarget && master.InRange(mc.Location, m.RangeHome))
+            {
+                combatant = m.Combatant = mc;
+            }
+            else
+            {
+                combatant = m.Combatant = null;
+            }
 
-			// Don't attack my master!
-			if (combatant == master)
-			{
-				m_Mobile.Combatant = null;
-				combatant = null;
-			}
+            int delay = (int)(TransformMoveDelay(m.CurrentSpeed) * 1000);
+            bool mounted = m.Mounted || m.Flying;
+            bool bRun = (mounted && delay < Mobile.WalkMount) || (!mounted && delay < Mobile.WalkFoot);
 
-			// Only attack my master's combatant, and only if he's in range
-			if (mc != null && ((BaseFamiliar)m_Mobile).AttacksMastersTarget && master.InRange(mc.Location, m_Mobile.RangeHome))
-			{
-				combatant = m_Mobile.Combatant = mc;
-			}
-			else
-			{
-				combatant = m_Mobile.Combatant = null;
-			}
+            // Do I lack a combatant?
+            if (combatant == null)
+            {
+                m.ControlTarget = master;
 
-			bool bRun;
+                if (WalkMobileRange(master, 1, bRun, 0, 1) &&
+                    m.Direction != m.GetDirectionTo(master) &&
+                    (m.LastMoveTime + 500) < Core.TickCount)
+                {
+                    m.Direction = m.GetDirectionTo(master);
+                }
 
-			// Do I lack a combatant?
-			if (combatant == null)
-			{
-				m_Mobile.ControlTarget = m_Mobile.ControlMaster;
+                if (m_LastHidden != master.Hidden)
+                {
+                    m.Hidden = m_LastHidden = master.Hidden;
+                }
 
-				bRun = ((int)m_Mobile.GetDistanceToSqrt(master) > 5);
-				if (WalkMobileRange(master, 1, bRun, 0, 1))
-				{
-					m_Mobile.Direction = m_Mobile.GetDirectionTo(master);
-				}
+                if (m.ControlOrder != OrderType.Heel)
+                {
+                    m.ControlOrder = OrderType.Heel;
+                }
 
-				if (m_LastHidden != master.Hidden)
-				{
-					m_Mobile.Hidden = m_LastHidden = master.Hidden;
-				}
+                return true;
+            }
 
-				if (m_Mobile.ControlOrder != OrderType.Heel)
-				{
-					m_Mobile.ControlOrder = OrderType.Heel;
-				}
+            m.ControlTarget = combatant;
 
-				return true;
-			}
+            if (MoveTo(combatant, bRun, m.RangeFight) &&
+                m.Direction != m.GetDirectionTo(combatant) &&
+                (m.LastMoveTime + 1000) < Core.TickCount)
+            {
+                m.Direction = m.GetDirectionTo(combatant);
+            }
 
-			m_Mobile.ControlTarget = combatant;
+            if (m.ControlOrder != OrderType.Aggro)
+            {
+                m.ControlOrder = OrderType.Aggro;
+            }
 
-			bRun = ((int)m_Mobile.GetDistanceToSqrt(combatant) > 5);
-			if (MoveTo(combatant, bRun, m_Mobile.RangeFight))
-			{
-				m_Mobile.Direction = m_Mobile.GetDirectionTo(combatant);
-			}
+            return true;
+        }
 
-			if (m_Mobile.ControlOrder != OrderType.Aggro)
-			{
-				m_Mobile.ControlOrder = OrderType.Aggro;
-			}
+        public virtual bool DoOrderFetch()
+        {
+            BaseCreature m = m_Mobile;
+            IPoint2D target = m.TargetLocation;
 
-			return true;
-		}
+            if (target == null)
+            {
+                m.ControlOrder = OrderType.Heel;
+                return false; // Creature is not being herded
+            }
 
-		public virtual bool DoOrderFetch()
-		{
-			IPoint2D target = m_Mobile.TargetLocation;
+            double distance = m.GetDistanceToSqrt(target);
 
-			if (target == null)
-			{
-				m_Mobile.ControlOrder = OrderType.Heel;
-				return false; // Creature is not being herded
-			}
+            if (distance < 1 && target.X == 1076 && target.Y == 450 && (m is HordeMinionFamiliar))
+            {
+                PlayerMobile pm = m.ControlMaster as PlayerMobile;
 
-			double distance = m_Mobile.GetDistanceToSqrt(target);
+                if (pm != null)
+                {
+                    QuestSystem qs = pm.Quest;
 
-			if (distance < 1 && target.X == 1076 && target.Y == 450 && (m_Mobile is HordeMinionFamiliar))
-			{
-				PlayerMobile pm = m_Mobile.ControlMaster as PlayerMobile;
+                    if (qs is DarkTidesQuest)
+                    {
+                        QuestObjective obj = qs.FindObjective(typeof(FetchAbraxusScrollObjective));
 
-				if (pm != null)
-				{
-					QuestSystem qs = pm.Quest;
+                        if (obj != null && !obj.Completed)
+                        {
+                            m.AddToBackpack(new ScrollOfAbraxus());
+                            obj.Complete();
+                            m.TargetLocation = null;
+                            m.ControlTarget = pm;
+                            m.ControlOrder = OrderType.Heel;
+                        }
+                    }
+                }
+            }
 
-					if (qs is DarkTidesQuest)
-					{
-						QuestObjective obj = qs.FindObjective(typeof(FetchAbraxusScrollObjective));
-
-						if (obj != null && !obj.Completed)
-						{
-							m_Mobile.AddToBackpack(new ScrollOfAbraxus());
-							obj.Complete();
-							m_Mobile.TargetLocation = null;
-							m_Mobile.ControlTarget = pm;
-							m_Mobile.ControlOrder = OrderType.Heel;
-						}
-					}
-				}
-			}
-
-			DoMove(m_Mobile.GetDirectionTo(target));
-			return true;
-		}
+            DoMove(m.GetDirectionTo(target));
+            return true;
+        }
 
 		public virtual bool DoBardPacified()
 		{
