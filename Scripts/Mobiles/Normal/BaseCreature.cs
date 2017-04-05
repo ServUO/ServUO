@@ -941,7 +941,7 @@ namespace Server.Mobiles
                     PlayerMobile pm = m as PlayerMobile;
                     toDrain = (int)drNO.ThieveItems.LifeShieldLotion.HandleLifeDrain(pm, toDrain);
                 }
-                //end 
+                //end
 
 
                 Hits += toDrain;
@@ -1148,7 +1148,7 @@ namespace Server.Mobiles
 			}
 
 			BaseCreature c = (BaseCreature)m;
-            
+
 			if (c.IsMilitiaFighter)
 			{
 				return true;
@@ -1682,8 +1682,8 @@ namespace Server.Mobiles
 
         Seems this actually was removed on OSI somewhere between the original bug report and now.
         We will call it ML, until we can get better information. I suspect it was on the OSI TC when
-        originally it taken out of RunUO, and not implmented on OSIs production shards until more 
-        recently.  Either way, this is, or was, accurate OSI behavior, and just entirely 
+        originally it taken out of RunUO, and not implmented on OSIs production shards until more
+        recently.  Either way, this is, or was, accurate OSI behavior, and just entirely
         removing it was incorrect.  OSI followers were distracted by being attacked well into
         AoS, at very least.
 
@@ -4133,8 +4133,8 @@ namespace Server.Mobiles
             return true; // entered idle state
         }
 
-        /* 
-			this way, due to the huge number of locations this will have to be changed 
+        /*
+			this way, due to the huge number of locations this will have to be changed
 			Perhaps we can change this in the future when fixing game play is not the
 			major issue.
 		*/
@@ -4282,7 +4282,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            if (!Body.IsHuman || Kills >= 5 || AlwaysMurderer || AlwaysAttackable || m.Kills < 5 || !m.InRange(Location, 12) ||
+            if (!Body.IsHuman || Murderer || AlwaysMurderer || AlwaysAttackable || m.Kills < 5 || !m.InRange(Location, 12) ||
                 !m.Alive)
             {
                 return;
@@ -5532,8 +5532,8 @@ namespace Server.Mobiles
         public static int[] RecipeTypes { get { return _RecipeTypes; } }
         private static int[] _RecipeTypes =
         {
-            560, 561, 562, 563, 564, 565, 566, 
-            570, 571, 572, 573, 574, 575, 576, 577, 
+            560, 561, 562, 563, 564, 565, 566,
+            570, 571, 572, 573, 574, 575, 576, 577,
             580, 581, 582, 583, 584
             //602, 603, 604,  // nutcrackers
             //800             // runic atlas
@@ -7315,7 +7315,7 @@ namespace Server.Mobiles
         private bool m_RemoveOnSave;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool RemoveOnSave { get { return m_RemoveOnSave; } set { m_RemoveOnSave = value; } }    
+        public bool RemoveOnSave { get { return m_RemoveOnSave; } set { m_RemoveOnSave = value; } }
     }
 
     public class LoyaltyTimer : Timer

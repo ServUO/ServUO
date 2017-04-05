@@ -91,7 +91,7 @@ namespace Server
                 protector.SendLocalizedMessage(1049678); // Only players can be protected.
             else if (pm.Map != Map.Felucca)
                 protector.SendLocalizedMessage(1049372); // You cannot use this ability here.
-            else if (pm == protector || pm.Criminal || pm.Kills >= 5)
+            else if (pm == protector || pm.Criminal || pm.Murderer)
                 protector.SendLocalizedMessage(1049436); // That player cannot be protected.
             else if (pm.JusticeProtectors.Count > 0)
                 protector.SendLocalizedMessage(1049369); // You cannot protect that player right now.
@@ -123,7 +123,7 @@ namespace Server
             {
                 protector.SendLocalizedMessage(1049372); // You cannot use this ability here.
             }
-            else if (protectee == protector || protectee.Criminal || protectee.Kills >= 5)
+            else if (protectee == protector || protectee.Criminal || protectee.Murderer)
             {
                 protector.SendLocalizedMessage(1049436); // That player cannot be protected.
             }

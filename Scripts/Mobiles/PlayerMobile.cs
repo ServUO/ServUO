@@ -3544,7 +3544,7 @@ namespace Server.Mobiles
 			}
 
 			if(killer != null &&
-				Kills >= 5 &&
+				Murderer &&
 				DateTime.UtcNow >= killer.m_NextJustAward)
 			{
 				// This scales 700.0 skill points to 1000 valor points

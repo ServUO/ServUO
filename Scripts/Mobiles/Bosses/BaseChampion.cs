@@ -60,7 +60,7 @@ namespace Server.Mobiles
                 {
                     Mobile prot = pm.JusticeProtectors[j];
 
-                    if (prot.Map != m.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot) || !prot.InRange(champ, 100))
+                    if (prot.Map != m.Map || prot.Murderer || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot) || !prot.InRange(champ, 100))
                         continue;
 
                     int chance = 0;

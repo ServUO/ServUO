@@ -43,7 +43,7 @@ namespace Server.Engines.Quests
 
             while (j < player.DoneQuests.Count && player.DoneQuests[j].QuestType != this.m_Quest)
             {
-                //if(player.Kills >= 5 && this.m_Quest == typeof(ResponsibilityQuest)  && player.DoneQuests[j].QuestType.IsSubclassOf(typeof(
+                //if(player.Murderer && this.m_Quest == typeof(ResponsibilityQuest)  && player.DoneQuests[j].QuestType.IsSubclassOf(typeof(
 
                 j += 1;
             }
