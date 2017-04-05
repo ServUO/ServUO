@@ -56,6 +56,8 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool IsBlackSolen { get { return true; } }
+
         public override void OnGotMeleeAttack(Mobile attacker)
         {
             if (attacker.Weapon is BaseRanged)
