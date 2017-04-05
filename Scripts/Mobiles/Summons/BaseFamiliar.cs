@@ -27,7 +27,7 @@ namespace Server.Mobiles
 		public override Poison PoisonImmune { get { return Poison.Lethal; } }
 		public override bool Commandable { get { return false; } }
 		public override bool PlayerRangeSensitive { get { return false; } }
-		public virtual bool AttacksMastersTarget { get { return true; } }
+		public virtual bool AttacksMastersTarget { get { return false; } }
 
 		public override void OnThink()
 		{
