@@ -190,12 +190,12 @@ namespace Server.Engines.BulkOrders
 
                         try
                         {
-                            string[] split = line.Split('\t');
+                            string[] split = line.Split(',');
 
-                            if (split.Length <= 3)
+                            if (split.Length <= 2)
                             {
                                 Type type = ScriptCompiler.FindTypeByName(split[0]);
-                                int graphic = Utility.ToInt32(split[split.Length - 1]);
+                                int graphic = Utility.ToInt32(split[1]);
 
                                 if (type != null && graphic > 0)
                                 {
@@ -206,18 +206,18 @@ namespace Server.Engines.BulkOrders
                                     Console.WriteLine("Error Loading BOD Entry at {2}, [Type: {0}], [graphic: {1}]", split[0], graphic.ToString(), path);
                                 }
                             }
-                            else if (split.Length >= 4)
+                            else if (split.Length >= 3)
                             {
                                 int name, hue;
 
                                 Type type = ScriptCompiler.FindTypeByName(split[0]);
-                                int graphic = Utility.ToInt32(split[2]);
+                                int graphic = Utility.ToInt32(split[1]);
 
-                                name = Utility.ToInt32(split[3]);
+                                name = Utility.ToInt32(split[2]);
 
-                                if (split.Length >= 5)
+                                if (split.Length >= 4)
                                 {
-                                    hue = Utility.ToInt32(split[4]);
+                                    hue = Utility.ToInt32(split[3]);
                                 }
                                 else
                                 {
