@@ -1,49 +1,19 @@
-#region Header
-//Exodus Encounter by Redmoon
-#endregion Header
 using System;
-using System.Collections.Generic;
-using Server;
-using Server.Mobiles;
 
 namespace Server.Items
 {
     public class RobeofRite : Robe
     {
+        public override int LabelNumber { get { return 1153510; } } // robe of rite
+
         private int m_Lifespan;
         private Timer m_Timer;
-        private DateTime m_CoolDown;
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan CoolDown
-        {
-            get
-            {
-                TimeSpan ts = m_CoolDown - DateTime.Now;
-
-                if (ts < TimeSpan.Zero)
-                {
-                    ts = TimeSpan.Zero;
-                }
-
-                return ts;
-            }
-            set
-            {
-                try
-                {
-                    m_CoolDown = DateTime.Now + value;
-                }
-                catch
-                { }
-            }
-        }
 
         [Constructable]
-        public RobeofRite() : base(0x1F04)
+        public RobeofRite() : base(0x1F03)
         {
             this.Weight = 3;
-            this.Hue = 0xA91;
+            this.Hue = 2702;
             this.StrRequirement = 10;
 
             if (this.Lifespan > 0)
@@ -57,17 +27,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1153510; } }
-
         public virtual int Lifespan { get { return 604800; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft
         {
-            get
-            {
-                return this.m_Lifespan;
-            }
+            get { return this.m_Lifespan; }
             set
             {
                 this.m_Lifespan = value;
