@@ -1,40 +1,29 @@
 using System;
 using System.IO;
+
 using Server.Commands;
 
 namespace Server.Misc
 {
     public class AutoSave : Timer
     {
-		private static readonly TimeSpan m_Delay = Config.Get("AutoSave.Frequency", TimeSpan.FromMinutes(5.0d));
+        private static readonly TimeSpan m_Delay = Config.Get("AutoSave.Frequency", TimeSpan.FromMinutes(5.0d));
         private static readonly TimeSpan m_Warning = Config.Get("AutoSave.WarningTime", TimeSpan.Zero);
-		
-		private static readonly string[] m_Backups = new string[]
+
+        private static readonly string[] m_Backups = new string[]
         {
             "Third Backup",
             "Second Backup",
             "Most Recent"
         };
 
-		private static bool m_SavesEnabled = Config.Get("AutoSave.Enabled", true);
-
         public AutoSave()
             : base(m_Delay - m_Warning, m_Delay)
         {
-            this.Priority = TimerPriority.OneMinute;
+            Priority = TimerPriority.OneMinute;
         }
 
-        public static bool SavesEnabled
-        {
-            get
-            {
-                return m_SavesEnabled;
-            }
-            set
-            {
-                m_SavesEnabled = value;
-            }
-        }
+        public static bool SavesEnabled { get; set; } = Config.Get("AutoSave.Enabled", true);
 
         public static void Initialize()
         {
@@ -48,8 +37,8 @@ namespace Server.Misc
         {
             if (e.Length == 1)
             {
-                m_SavesEnabled = e.GetBoolean(0);
-                e.Mobile.SendMessage("Saves have been {0}.", m_SavesEnabled ? "enabled" : "disabled");
+                SavesEnabled = e.GetBoolean(0);
+                e.Mobile.SendMessage("Saves have been {0}.", SavesEnabled ? "enabled" : "disabled");
             }
             else
             {
@@ -59,7 +48,7 @@ namespace Server.Misc
 
         public static void Save()
         {
-            AutoSave.Save(false);
+            Save(false);
         }
 
         public static void Save(bool permitBackgroundWrite)
@@ -83,7 +72,7 @@ namespace Server.Misc
 
         protected override void OnTick()
         {
-            if (!m_SavesEnabled || AutoRestart.Restarting)
+            if (!SavesEnabled || AutoRestart.Restarting)
                 return;
 
             if (m_Warning == TimeSpan.Zero)
@@ -92,8 +81,8 @@ namespace Server.Misc
             }
             else
             {
-                int s = (int)m_Warning.TotalSeconds;
-                int m = s / 60;
+                var s = (int)m_Warning.TotalSeconds;
+                var m = s / 60;
                 s %= 60;
 
                 if (m > 0 && s > 0)
@@ -103,7 +92,7 @@ namespace Server.Misc
                 else
                     World.Broadcast(0x35, true, "The world will save in {0} second{1}.", s, s != 1 ? "s" : "");
 
-                Timer.DelayCall(m_Warning, new TimerCallback(Save));
+                DelayCall(m_Warning, new TimerCallback(Save));
             }
         }
 
@@ -112,23 +101,23 @@ namespace Server.Misc
             if (m_Backups.Length == 0)
                 return;
 
-            string root = Path.Combine(Core.BaseDirectory, "Backups/Automatic");
+            var root = Path.Combine(Core.BackupsDirectory, "Automatic");
 
             if (!Directory.Exists(root))
                 Directory.CreateDirectory(root);
 
-            string[] existing = Directory.GetDirectories(root);
+            var existing = Directory.GetDirectories(root);
 
-            for (int i = 0; i < m_Backups.Length; ++i)
+            for (var i = 0; i < m_Backups.Length; ++i)
             {
-                DirectoryInfo dir = Match(existing, m_Backups[i]);
+                var dir = Match(existing, m_Backups[i]);
 
                 if (dir == null)
                     continue;
 
                 if (i > 0)
                 {
-                    string timeStamp = FindTimeStamp(dir.Name);
+                    var timeStamp = FindTimeStamp(dir.Name);
 
                     if (timeStamp != null)
                     {
@@ -153,7 +142,7 @@ namespace Server.Misc
                 }
             }
 
-            string saves = Core.SavesDirectory;
+            var saves = Core.SavesDirectory;
 
             if (Directory.Exists(saves))
                 Directory.Move(saves, FormatDirectory(root, m_Backups[m_Backups.Length - 1], GetTimeStamp()));
@@ -161,9 +150,9 @@ namespace Server.Misc
 
         private static DirectoryInfo Match(string[] paths, string match)
         {
-            for (int i = 0; i < paths.Length; ++i)
+            for (var i = 0; i < paths.Length; ++i)
             {
-                DirectoryInfo info = new DirectoryInfo(paths[i]);
+                var info = new DirectoryInfo(paths[i]);
 
                 if (info.Name.StartsWith(match))
                     return info;
@@ -174,16 +163,16 @@ namespace Server.Misc
 
         private static string FormatDirectory(string root, string name, string timeStamp)
         {
-            return Path.Combine(root, String.Format("{0} ({1})", name, timeStamp));
+            return Path.Combine(root, string.Format("{0} ({1})", name, timeStamp));
         }
 
         private static string FindTimeStamp(string input)
         {
-            int start = input.IndexOf('(');
+            var start = input.IndexOf('(');
 
             if (start >= 0)
             {
-                int end = input.IndexOf(')', ++start);
+                var end = input.IndexOf(')', ++start);
 
                 if (end >= start)
                     return input.Substring(start, end - start);
@@ -194,9 +183,9 @@ namespace Server.Misc
 
         private static string GetTimeStamp()
         {
-            DateTime now = DateTime.UtcNow;
+            var now = DateTime.UtcNow;
 
-            return String.Format("{0}-{1}-{2} {3}-{4:D2}-{5:D2}",
+            return string.Format("{0}-{1}-{2} {3}-{4:D2}-{5:D2}",
                 now.Day,
                 now.Month,
                 now.Year,

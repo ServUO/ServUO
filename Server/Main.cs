@@ -216,8 +216,15 @@ namespace Server
 			}
 		}
 
-	    public static string LogsDirectory => Config.Get("Logs.Directory", Path.Combine("{basedir}", "Logs")).Replace("{basedir}", BaseDirectory);
-	    public static string SavesDirectory => Config.Get("Saves.Directory", Path.Combine("{basedir}", "Saves")).Replace("{basedir}", BaseDirectory);
+		public static string LogsDirectory => ConfigurablePath("Logs.Directory", "Logs");
+		public static string SavesDirectory => ConfigurablePath("Saves.Directory", "Saves");
+		public static string BackupsDirectory => ConfigurablePath("Backups.Directory", "Backups");
+
+		private static string ConfigurablePath(string configKey, string defaultPath)
+		{
+			return Config.Get(configKey, Path.Combine("{BaseDirectory}", defaultPath))
+				.Replace("{BaseDirectory}", BaseDirectory);
+		}
 
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
@@ -687,7 +694,7 @@ namespace Server
 					{
 						warningSb = new StringBuilder();
 
-						warningSb.AppendLine("       - No serialization constructor");
+						warningSb.AppendLine("	   - No serialization constructor");
 					}
 
 					if (
@@ -700,7 +707,7 @@ namespace Server
 							warningSb = new StringBuilder();
 						}
 
-						warningSb.AppendLine("       - No Serialize() method");
+						warningSb.AppendLine("	   - No Serialize() method");
 					}
 
 					if (
@@ -713,7 +720,7 @@ namespace Server
 							warningSb = new StringBuilder();
 						}
 
-						warningSb.AppendLine("       - No Deserialize() method");
+						warningSb.AppendLine("	   - No Deserialize() method");
 					}
 
 					if (warningSb != null && warningSb.Length > 0)
@@ -742,7 +749,7 @@ namespace Server
 					{
 						warningSb = new StringBuilder();
 
-						warningSb.AppendLine("       - No serialization constructor");
+						warningSb.AppendLine("	   - No serialization constructor");
 					}
 
 					if (
@@ -755,7 +762,7 @@ namespace Server
 							warningSb = new StringBuilder();
 						}
 
-						warningSb.AppendLine("       - No Serialize() method");
+						warningSb.AppendLine("	   - No Serialize() method");
 					}
 
 					if (
@@ -768,7 +775,7 @@ namespace Server
 							warningSb = new StringBuilder();
 						}
 
-						warningSb.AppendLine("       - No Deserialize() method");
+						warningSb.AppendLine("	   - No Deserialize() method");
 					}
 
 					if (warningSb != null && warningSb.Length > 0)
