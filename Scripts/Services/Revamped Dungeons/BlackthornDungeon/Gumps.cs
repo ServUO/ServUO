@@ -17,9 +17,9 @@ namespace Server.Engines.Blackthorn
 		{
 		}
 
-        public override int GetPoints(Mobile m)
+        public override double GetPoints(Mobile m)
         {
-            return (int)PointsSystem.Blackthorn.GetPoints(m);
+            return PointsSystem.Blackthorn.GetPoints(m);
         }
 
         public override void OnConfirmed(CollectionItem citem, int index)

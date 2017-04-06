@@ -160,13 +160,23 @@ namespace Server.Engines.Quests
 
 		public static Item TinkerRecipe()
 		{
-			//return GetRecipe(Enum.GetValues(typeof(TinkerRecipes)));
             return GetRecipe(new int[] { 400, 401, 402, 450, 451, 452, 453, 454 });
 		}
 
 		public static Item CarpRecipe()
 		{
-			return GetRecipe(Enum.GetValues(typeof(CarpRecipes)));
+            int[] array = new int[23];
+
+            for (int i = 0; i < 20; i++)
+            {
+                array[i] = 100 + i;
+            }
+
+            array[20] = 150;
+            array[21] = 151;
+            array[22] = 152;
+
+            return GetRecipe(array);
 		}
 
 		public static Item CarpRunic()

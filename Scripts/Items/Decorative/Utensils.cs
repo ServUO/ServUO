@@ -1,9 +1,125 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    public class BaseUtensil : Item, ICraftable, IResource
+    {
+        private CraftResource _Resource;
+        private Mobile _Crafter;
+        private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; Hue = CraftResources.GetHue(this._Resource); InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
+        #region Old Item Serialization Vars
+        /* DO NOT USE! Only used in serialization of special scrolls that originally derived from Item */
+        private bool m_InheritsItem;
+
+        protected bool InheritsItem
+        {
+            get
+            {
+                return this.m_InheritsItem;
+            }
+        }
+        #endregion
+
+        public BaseUtensil(int itemID)
+            : base(itemID)
+        {
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (_Crafter != null)
+            {
+                list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~
+            }
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (_Resource > CraftResource.Iron)
+            {
+                list.Add(1053099, "#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource), String.Format("#{0}", LabelNumber.ToString())); // ~1_oretype~ ~2_armortype~
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            this.Quality = (ItemQuality)quality;
+
+            if (makersMark)
+                this.Crafter = from;
+
+            if (!craftItem.ForceNonExceptional)
+            {
+                if (typeRes == null)
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(typeRes);
+            }
+
+            return quality;
+        }
+
+        public BaseUtensil(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)1); // version
+
+            writer.Write((int)_Resource);
+            writer.Write(_Crafter);
+            writer.Write((int)_Quality);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    _Resource = (CraftResource)reader.ReadInt();
+                    _Crafter = reader.ReadMobile();
+                    _Quality = (ItemQuality)reader.ReadInt();
+
+                    break;
+                case 0:
+                    m_InheritsItem = true;
+                    break;
+            }
+        }
+    }
+
     [Flipable(0x9F4, 0x9F5, 0x9A3, 0x9A4)]
-    public class Fork : Item
+    public class Fork : BaseUtensil
     {
         [Constructable]
         public Fork()
@@ -28,11 +144,11 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
-    public class ForkLeft : Item
+    public class ForkLeft : BaseUtensil
     {
         [Constructable]
         public ForkLeft()
@@ -57,11 +173,11 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
-    public class ForkRight : Item
+    public class ForkRight : BaseUtensil
     {
         [Constructable]
         public ForkRight()
@@ -86,12 +202,12 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
     [Flipable(0x9F8, 0x9F9, 0x9C2, 0x9C3)]
-    public class Spoon : Item
+    public class Spoon : BaseUtensil
     {
         [Constructable]
         public Spoon()
@@ -116,11 +232,11 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
-    public class SpoonLeft : Item
+    public class SpoonLeft : BaseUtensil
     {
         [Constructable]
         public SpoonLeft()
@@ -145,11 +261,11 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
-    public class SpoonRight : Item
+    public class SpoonRight : BaseUtensil
     {
         [Constructable]
         public SpoonRight()
@@ -174,12 +290,12 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
     [Flipable(0x9F6, 0x9F7, 0x9A5, 0x9A6)]
-    public class Knife : Item
+    public class Knife : BaseUtensil
     {
         [Constructable]
         public Knife()
@@ -204,11 +320,11 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
-    public class KnifeLeft : Item
+    public class KnifeLeft : BaseUtensil
     {
         [Constructable]
         public KnifeLeft()
@@ -233,11 +349,11 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
-    public class KnifeRight : Item
+    public class KnifeRight : BaseUtensil
     {
         [Constructable]
         public KnifeRight()
@@ -262,11 +378,11 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
-    public class Plate : Item
+    public class Plate : BaseUtensil
     {
         [Constructable]
         public Plate()
@@ -291,7 +407,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 }

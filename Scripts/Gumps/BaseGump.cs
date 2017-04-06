@@ -70,7 +70,7 @@ namespace Server.Gumps
             return gump;
         }
 
-        public void SendGump()
+        public virtual void SendGump()
         {
             AddGumpLayout();
             Open = true;

@@ -425,7 +425,10 @@ namespace Server.Engines.Craft
 			typeof(BambooChair), typeof(WoodenChair), typeof(FancyWoodenChairCushion), typeof(WoodenChairCushion),
 			typeof(Nightstand), typeof(LargeTable), typeof(WritingTable), typeof(YewWoodTable), typeof(PlainLowTable),
 			typeof(ElegantLowTable), typeof(Dressform), typeof(BasePlayerBB), typeof(BaseContainer), typeof(BarrelStaves),
-			typeof(BarrelLid), typeof(Clippers), typeof(Scissors), typeof(BaseTool)
+			typeof(BarrelLid), typeof(Clippers), typeof(Scissors), typeof(BaseTool),
+
+            typeof(KeyRing), typeof(Key), typeof(Globe), typeof(Spyglass), typeof(Lantern), typeof(Candelabra), typeof(Scales),
+            typeof(BaseUtensil), typeof(BaseBeverage)
 		};
 
 		private static readonly Dictionary<Type, Type> m_ResourceConversionTable = new Dictionary<Type, Type>()
@@ -1180,6 +1183,13 @@ namespace Server.Engines.Craft
 				}
 			}
 
+            MasterChefsApron apron = from.FindItemOnLayer(Layer.MiddleTorso) as MasterChefsApron;
+
+            if (apron != null)
+            {
+                bonus += apron.Bonus / 100.0;
+            }
+
 			switch (system.ECA)
 			{
 				default:
@@ -1684,6 +1694,13 @@ namespace Server.Engines.Craft
 					{
 						item.Hue = resHue;
 					}
+
+
+                    if (item is IQuality)
+                    {
+                        ((IQuality)item).Quality = (ItemQuality)quality;
+                    }
+
 
 					if (maxAmount > 0)
 					{

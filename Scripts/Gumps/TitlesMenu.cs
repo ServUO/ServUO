@@ -1064,6 +1064,9 @@ namespace Server.Gumps
                 if ((id >= 1151739 && id <= 1151747) || id == 1155481 || id == 1154505)
                     return id + 1;
 
+                if (id >= 1157181 && id <= 1157203)
+                    return 1157180; // This title is obtained from turning in Bulk Order Deeds.
+
                 switch (id)
                 {
                     default: return "This reward title has no desciption.";

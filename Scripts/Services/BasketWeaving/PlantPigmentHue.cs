@@ -67,7 +67,7 @@ namespace Server.Engines.Plants
 
         Ice = 0x2000000,
         Dark = 0x4000000,
-        Bright = 0x8000000
+        Bright = 0x8000000,
     }
 
     public class PlantPigmentHueInfo

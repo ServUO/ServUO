@@ -207,7 +207,7 @@ namespace Server.Items
             public override void AddNameProperty(ObjectPropertyList list)
             {
                 if (Addon != null)
-                    list.Add(1152600, String.Format("#{0}", CraftResources.GetLocalizationNumber(Addon.Resource))); // ~1_RES~ Cauldron of Transmutation
+                    list.Add(1152600, String.Format("#{0}", CraftResources.GetLocalizationNumber(Addon.Resource).ToString())); // ~1_RES~ Cauldron of Transmutation
                 else
                     base.AddNameProperty(list);
             }
@@ -290,6 +290,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime Expires { get; set; }
 
+        [Constructable]
         public CauldronOfTransmutationDeed(CraftResource resource)
         {
             Resource = resource;
