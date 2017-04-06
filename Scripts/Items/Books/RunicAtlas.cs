@@ -37,7 +37,7 @@ namespace Server.Items
                         from.SendLocalizedMessage(502406); // This book needs time to recharge.
                         return;
                     }
-
+                    
                     BaseGump.SendGump(new RunicAtlasGump((PlayerMobile)from, this));
                     Openers.Add(from);
                 }
@@ -118,7 +118,7 @@ namespace Server.Items
 
 			bool valid = Sextant.Format(location, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth);
 
-			return valid ? String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W") : "unknown";
+			return valid ? String.Format("{0}Â° {1}'{2}, {3}Â° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W") : "unknown";
 		}
 
         public RunicAtlas Atlas { get; set; }
@@ -147,7 +147,7 @@ namespace Server.Items
             for (int i = startIndex; i < startIndex + 16; i++)
             {
                 string desc;
-				int hue;
+				        int hue;
 
                 if (i < Atlas.Entries.Count)
                 {
