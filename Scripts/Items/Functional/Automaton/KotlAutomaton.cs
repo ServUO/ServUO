@@ -1,0 +1,196 @@
+using System;
+using Server.Mobiles;
+
+namespace Server.Items
+{
+    public class KotlAutomaton : BaseCreature, IRepairableMobile
+    {
+        private CraftResource _Resource;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource 
+        { 
+            get { return _Resource; }
+            set 
+            {
+                var old = _Resource;
+                _Resource = value;
+
+                if (old != _Resource)
+                    OnResourceChanged();
+
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual Type RepairResource
+        {
+            get
+            {
+                CraftResourceInfo resInfo = CraftResources.GetInfo(_Resource);
+
+                if (resInfo == null || resInfo.ResourceTypes.Length == 0)
+                    return typeof(IronIngot);
+
+                return resInfo.ResourceTypes[0];
+            }
+        }
+
+        [Constructable]
+        public KotlAutomaton()
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+        {
+            _Resource = CraftResource.Iron;
+
+            Name = "kotl automaton";
+            Body = 1406;
+            BaseSoundID = 541;
+
+            SetStr(793, 875);
+            SetDex(67, 74);
+            SetInt(255, 263);
+
+            SetHits(774, 876);
+
+            SetDamage(15, 20);
+
+            SetDamageType(ResistanceType.Physical, 100);
+
+            SetResistance(ResistanceType.Physical, 45, 50);
+            SetResistance(ResistanceType.Fire, 45, 50);
+            SetResistance(ResistanceType.Cold, 45, 50);
+            SetResistance(ResistanceType.Poison, 45, 50);
+            SetResistance(ResistanceType.Energy, 45, 50);
+
+            SetSkill(SkillName.Anatomy, 90.3, 99.9);
+            SetSkill(SkillName.MagicResist, 121.0, 126.7);
+            SetSkill(SkillName.Tactics, 82.0, 94.8);
+            SetSkill(SkillName.Wrestling, 94.4, 108.4);
+            SetSkill(SkillName.Bushido, 50.1);
+
+            Fame = 400;
+            Karma = -400;
+
+            ControlSlots = 4;
+        }
+
+        public virtual void OnResourceChanged()
+        {
+            Hue = 0x8000 | CraftResources.GetHue(_Resource);
+
+            CraftResourceInfo resInfo = CraftResources.GetInfo(_Resource);
+
+            if (resInfo == null)
+                return;
+
+            CraftAttributeInfo attrs = resInfo.AttributeInfo;
+
+            if (attrs == null)
+                return;
+
+            SetResistance(ResistanceType.Physical, Utility.RandomMinMax(45, 50) + attrs.ArmorPhysicalResist);
+            SetResistance(ResistanceType.Fire, Utility.RandomMinMax(45, 50) + attrs.ArmorFireResist);
+            SetResistance(ResistanceType.Cold, Utility.RandomMinMax(45, 50) + attrs.ArmorColdResist);
+            SetResistance(ResistanceType.Poison, Utility.RandomMinMax(45, 50) + attrs.ArmorPoisonResist);
+            SetResistance(ResistanceType.Energy, Utility.RandomMinMax(45, 50) + attrs.ArmorEnergyResist);
+
+            int fire = attrs.WeaponFireDamage;
+            int cold = attrs.WeaponColdDamage;
+            int poison = attrs.WeaponPoisonDamage;
+            int energy = attrs.WeaponEnergyDamage;
+            int physical = 100 - fire - cold - poison - energy;
+
+            SetDamageType(ResistanceType.Physical, physical);
+            SetDamageType(ResistanceType.Fire, fire);
+            SetDamageType(ResistanceType.Cold, cold);
+            SetDamageType(ResistanceType.Poison, poison);
+            SetDamageType(ResistanceType.Energy, energy);
+        }
+
+        public override double GetControlChance(Mobile m, bool useBaseSkill)
+        {
+            if (m.Skills[SkillName.Tinkering].Base < 100.0)
+            {
+                m.SendLocalizedMessage(1157043); // You lack the skill to command this Automaton.
+                return 0;
+            }
+
+            return 1.0;
+        }
+
+        public override void OnDeath(Container c)
+        {
+            Mobile master = GetMaster();
+
+            if (Controlled && master != null && master.Backpack != null)
+            {
+                BrokenAutomatonHead broke = new BrokenAutomatonHead(this);
+
+                ControlTarget = null;
+                ControlOrder = OrderType.Stay;
+                Internalize();
+
+                IsStabled = true;
+                Loyalty = MaxLoyalty;
+
+                master.Backpack.DropItem(broke); // This needs to drop regardless of weight/item count, right?
+
+                master.SendLocalizedMessage(1157048); // A broken automaton head has been placed in your backpack.
+            }
+
+            base.OnDeath(c);
+        }
+
+        public KotlAutomaton(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override double WeaponAbilityChance { get { return 0.33; } }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            if (Utility.RandomBool())
+                return WeaponAbility.ParalyzingBlow;
+
+            return WeaponAbility.Disarm;
+        }
+
+        public override bool IsScaredOfScaryThings { get {  return false;  } }
+        public override bool IsScaryToPets { get { return true; } }
+        public override FoodType FavoriteFood { get { return FoodType.None; } }
+        public override bool CanBeDistracted { get { return false; } }
+        public override bool DeleteOnRelease { get { return true; } }
+        public override bool AutoDispel { get { return !Controlled; } }
+        public override bool BleedImmune { get { return true; } }
+        public override bool BardImmune { get { return !Core.AOS || Controlled; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+
+        public override bool CanTransfer(Mobile m)
+        {
+            return false;
+        }
+
+        public override bool CanFriend(Mobile m)
+        {
+            return false;
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)0);
+
+            writer.Write((int)_Resource);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            _Resource = (CraftResource)reader.ReadInt();
+        }
+    }
+}

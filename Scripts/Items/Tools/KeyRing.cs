@@ -1,11 +1,25 @@
 using System;
 using System.Collections.Generic;
 using Server.Targeting;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class KeyRing : Item
+    public class KeyRing : Item, ICraftable, IResource
     {
+        private CraftResource _Resource;
+        private Mobile _Crafter;
+        private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(this._Resource); InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
         public static readonly int MaxKeys = 20;
         private List<Key> m_Keys;
         [Constructable]
@@ -136,11 +150,60 @@ namespace Server.Items
             return false;
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (_Crafter != null)
+            {
+                list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~
+            }
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (_Resource > CraftResource.Iron)
+            {
+                list.Add(1053099, "#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource), String.Format("#{0}", LabelNumber.ToString())); // ~1_oretype~ ~2_armortype~
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            this.Quality = (ItemQuality)quality;
+
+            if (makersMark)
+                this.Crafter = from;
+
+            if (!craftItem.ForceNonExceptional)
+            {
+                if (typeRes == null)
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(typeRes);
+            }
+
+            return quality;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
+
+            writer.Write((int)_Resource);
+            writer.Write(_Crafter);
+            writer.Write((int)_Quality);
 
             writer.WriteItemList<Key>(this.m_Keys);
         }
@@ -151,7 +214,17 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Keys = reader.ReadStrongItemList<Key>();
+            switch (version)
+            {
+                case 1:
+                    _Resource = (CraftResource)reader.ReadInt();
+                    _Crafter = reader.ReadMobile();
+                    _Quality = (ItemQuality)reader.ReadInt();
+                    goto case 0;
+                case 0:
+                    this.m_Keys = reader.ReadStrongItemList<Key>();
+                    break;
+            }
         }
 
         private void UpdateItemID()

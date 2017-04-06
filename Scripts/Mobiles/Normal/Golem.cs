@@ -5,8 +5,17 @@ using Server.Network;
 namespace Server.Mobiles
 {
     [CorpseName("a golem corpse")]
-    public class Golem : BaseCreature
+    public class Golem : BaseCreature, IRepairableMobile
     {
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual Type RepairResource
+        {
+            get
+            {
+                return typeof(IronIngot);
+            }
+        }
+
         private bool m_Stunning;
         [Constructable]
         public Golem()
