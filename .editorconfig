@@ -1,7 +1,7 @@
 # http://editorconfig.org
 root=true
 
-[*]
+[*.cs]
 indent_size = 4
 indent_style = space
 charset = utf-8

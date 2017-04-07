@@ -2397,7 +2397,7 @@ namespace Server.Engines.ConPVP
                             {
                                 Mobile mob = (Mobile)players[j];
 
-                                if (mob.Kills >= 5)
+                                if (mob.Murderer)
                                     parts[0].Players.Add(mob);
                                 else
                                     parts[1].Players.Add(mob);

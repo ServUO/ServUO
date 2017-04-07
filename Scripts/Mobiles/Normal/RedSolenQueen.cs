@@ -6,7 +6,7 @@ using Server.Network;
 namespace Server.Mobiles
 {
     [CorpseName("a solen queen corpse")]
-    public class RedSolenQueen : BaseCreature
+    public class RedSolenQueen : BaseCreature, IRedSolen
     {
         private bool m_BurstSac;
 
