@@ -4,6 +4,14 @@ using Server.Network;
 
 namespace Server.Mobiles
 {
+    interface IBlackSolen
+    {
+    }
+
+    interface IRedSolen
+    {
+    }
+
     public class SolenHelper
     {
         public static void PackPicnicBasket(BaseCreature solen)
