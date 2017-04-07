@@ -760,6 +760,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\AcidVine.cs" />
+    <Compile Include="Items\Functional\Automaton\AutomatonActuator.cs" />
+    <Compile Include="Items\Functional\Automaton\BlackrockAutomaton.cs" />
+    <Compile Include="Items\Functional\Automaton\BlackrockAutomatonHead.cs" />
+    <Compile Include="Items\Functional\Automaton\BlackrockMoonstone.cs" />
+    <Compile Include="Items\Functional\Automaton\BrokenAutomatonHead.cs" />
+    <Compile Include="Items\Functional\Automaton\InoperativeAutomatonHead.cs" />
+    <Compile Include="Items\Functional\Automaton\KotlAutomaton.cs" />
+    <Compile Include="Items\Functional\Automaton\KotlAutomatonHead.cs" />
     <Compile Include="Items\Functional\BaseDecayingItem.cs" />
     <Compile Include="Items\Functional\BaseDoor.cs">
       <SubType>Code</SubType>
@@ -1736,6 +1744,7 @@
     <Compile Include="Mobiles\Factions\MinaxWarHorse.cs" />
     <Compile Include="Mobiles\Factions\SLWarHorse.cs" />
     <Compile Include="Mobiles\Factions\TBWarHorse.cs" />
+    <Compile Include="Mobiles\MobileInterfaces.cs" />
     <Compile Include="Mobiles\Named\Abscess.cs" />
     <Compile Include="Mobiles\Named\AcidElementalRenowned.cs" />
     <Compile Include="Mobiles\Named\AncientLichRenowned.cs" />
@@ -2848,7 +2857,47 @@
     <Compile Include="Services\Armor Refinement\Gumps.cs" />
     <Compile Include="Services\Armor Refinement\Items.cs" />
     <Compile Include="Services\BasketWeaving\Baskets\BasketCraftable.cs" />
+    <Compile Include="Services\BulkOrders\BulkOrderSystem.cs" />
+    <Compile Include="Services\BulkOrders\Items\BODRewardTitleDeed.cs" />
+    <Compile Include="Services\BulkOrders\Items\DrSpectorsLenses.cs" />
+    <Compile Include="Services\BulkOrders\Items\FementationBarrel.cs" />
+    <Compile Include="Services\BulkOrders\Items\GuaranteedSpellbookImprovementTalisman.cs" />
+    <Compile Include="Services\BulkOrders\Items\KotlBlackRod.cs" />
+    <Compile Include="Services\BulkOrders\Items\MasterChefsApron.cs" />
     <Compile Include="Services\BulkOrders\Items\MasterCraftsmanTalisman.cs" />
+    <Compile Include="Services\BulkOrders\Items\PlumTreeAddon.cs" />
+    <Compile Include="Services\BulkOrders\Items\PowderOfFortKeg.cs" />
+    <Compile Include="Services\BulkOrders\Items\RockHammer.cs" />
+    <Compile Include="Services\BulkOrders\Items\SpecialNaturalDye.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeAlchemyBOD.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeBOD.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeBODAcceptGump.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeBODGump.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeBODTarget.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeBulkEntry.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeCarpentryBOD.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeCookingBOD.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeFletchingBOD.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeInscriptionBOD.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeSmithBOD.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeTailorBOD.cs" />
+    <Compile Include="Services\BulkOrders\LargeBODs\LargeTinkerBOD.cs" />
+    <Compile Include="Services\BulkOrders\Rewards\ConfirmBankPointsGump.cs" />
+    <Compile Include="Services\BulkOrders\Rewards\Rewards.cs" />
+    <Compile Include="Services\BulkOrders\Rewards\RewardsGump.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallAlchemyBOD.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallBOD.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallBODAcceptGump.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallBODGump.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallBODTarget.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallBulkEntry.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallCarpentryBOD.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallCookingBOD.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallFletchingBOD.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallInscriptionBOD.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallSmithBOD.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallTailorBOD.cs" />
+    <Compile Include="Services\BulkOrders\SmallBODs\SmallTinkerBOD.cs" />
     <Compile Include="Services\City Loyalty System\CityDefinition.cs" />
     <Compile Include="Services\City Loyalty System\CityLoyaltyEntry.cs" />
     <Compile Include="Services\City Loyalty System\CityLoyaltySystem.cs" />
@@ -8862,51 +8911,6 @@
     <Compile Include="Services\BulkOrders\BulkMaterialType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\BulkOrders\LargeBOD.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\LargeBODAcceptGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\LargeBODGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\LargeBODTarget.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\LargeBulkEntry.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\LargeSmithBOD.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\LargeTailorBOD.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\Rewards.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\SmallBOD.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\SmallBODAcceptGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\SmallBODGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\SmallBODTarget.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\SmallBulkEntry.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\SmallSmithBOD.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\BulkOrders\SmallTailorBOD.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\ChampionSystem\ChampionAltar.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10478,9 +10482,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\GorgonLens.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mobiles\IFreezable.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Weapons\IronwoodCompositeBow.cs">

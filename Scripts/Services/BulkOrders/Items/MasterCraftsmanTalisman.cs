@@ -6,9 +6,11 @@ namespace Server.Items
 	public class MasterCraftsmanTalisman : BaseTalisman
     {
         [Constructable]
-        public MasterCraftsmanTalisman(int charges)
-            : base(0x2F58)
-        { 
+        public MasterCraftsmanTalisman(int charges, int itemID)
+            : base(itemID)
+        {
+            this.Skill = BaseTalisman.GetRandomSkill();
+
             this.SuccessBonus = GetRandomSuccessful();
             this.Blessed = GetRandomBlessed();	
 			Charges = charges;

@@ -148,9 +148,55 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_BardingExceptional ? 2500 : 1000;
+                switch (m_BardingResource)
+                {
+                    default:
+                        return BardingExceptional ? 12000 : 10000;
+                    case CraftResource.DullCopper:
+                    case CraftResource.Valorite:
+                        return BardingExceptional ? 12500 : 14500;
+                    case CraftResource.ShadowIron:
+                        return BardingExceptional ? 15000 : 17000;
+                }
             }
         }
+
+        private int CalculateBardingResistance(ResistanceType type)
+        {
+            if (m_BardingResource == CraftResource.None || !m_HasBarding)
+                return 0;
+
+            CraftResourceInfo resInfo = CraftResources.GetInfo(m_BardingResource);
+
+            if (resInfo == null)
+                return 0;
+
+            CraftAttributeInfo attrs = resInfo.AttributeInfo;
+
+            if (attrs == null)
+                return 0;
+
+            int expBonus = BardingExceptional ? 1 : 0;
+            int resBonus = 0;
+            
+            switch (type)
+            {
+                default:
+                case ResistanceType.Physical: resBonus = Math.Max(5, attrs.ArmorPhysicalResist); break;
+                case ResistanceType.Fire: resBonus = Math.Max(3, attrs.ArmorFireResist); break;
+                case ResistanceType.Cold: resBonus = Math.Max(2, attrs.ArmorColdResist); break;
+                case ResistanceType.Poison: resBonus = Math.Max(3, attrs.ArmorPoisonResist); break;
+                case ResistanceType.Energy: resBonus = Math.Max(2, attrs.ArmorEnergyResist); break;
+            }
+
+            return (resBonus + expBonus) * 5;
+        }
+
+        public override int GetResistance(ResistanceType type)
+        {
+            return base.GetResistance(type) + CalculateBardingResistance(type);
+        }
+
         public override bool ReacquireOnMovement
         {
             get
@@ -242,7 +288,14 @@ namespace Server.Mobiles
             base.GetProperties(list);
 
             if (this.m_HasBarding && this.m_BardingExceptional && this.m_BardingCrafter != null)
+            {
                 list.Add(1060853, this.m_BardingCrafter.Name); // armor exceptionally crafted by ~1_val~
+            }
+
+            if (this.m_HasBarding)
+            {
+                list.Add(1115719, m_BardingHP.ToString()); // armor points: ~1_val~
+            }
         }
 
         public override void Serialize(GenericWriter writer)
@@ -264,7 +317,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
                 case 1:
                     {

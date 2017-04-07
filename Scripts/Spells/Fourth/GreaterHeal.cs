@@ -57,7 +57,7 @@ namespace Server.Spells.Fourth
             {
                 this.Caster.SendLocalizedMessage(1060177); // You cannot heal a creature that is already dead!
             }
-            else if (m is Golem)
+            else if (m is IRepairableMobile)
             {
                 this.Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500951); // You cannot heal that.
             }
