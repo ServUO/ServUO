@@ -8490,29 +8490,6 @@ namespace Server
 		#endregion
 
 		public virtual int Luck { get { return 0; } }
-        public virtual int AttackChance { get { return 0; } }
-        public virtual int WeaponSpeed { get { return 0; } }
-        public virtual int WeaponDamage { get { return 0; } }
-        public virtual int LowerRegCost { get { return 0; } }
-        public virtual int RegenHits { get { return 0; } }
-        public virtual int RegenStam { get { return 0; } }
-        public virtual int RegenMana { get { return 0; } }
-        public virtual int ReflectPhysical { get { return 0; } }
-        public virtual int EnhancePotions { get { return 0; } }
-        public virtual int DefendChance { get { return 0; } }
-        public virtual int SpellDamage { get { return 0; } }
-        public virtual int CastRecovery { get { return 0; } }
-        public virtual int CastSpeed { get { return 0; } }
-        public virtual int LowerManaCost { get { return 0; } }
-        public virtual int BonusStr { get { return 0; } }
-        public virtual int BonusDex { get { return 0; } }
-        public virtual int BonusInt { get { return 0; } }
-        public virtual int BonusHits { get { return 0; } }
-        public virtual int BonusStam { get { return 0; } }
-        public virtual int BonusMana { get { return 0; } }
-        public virtual int MaxHitIncrease { get { return 0; } }
-        public virtual int MaxStamIncrease { get { return 0; } }
-        public virtual int MaxManaIncrease { get { return 0; } }
 
         public virtual int HuedItemID { get { return (m_Female ? 0x2107 : 0x2106); } }
 
