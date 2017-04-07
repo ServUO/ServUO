@@ -78,6 +78,13 @@ namespace Server.Mobiles
 
         public override TribeType Tribe { get { return TribeType.Ophidian; } }
 
+        public override OppositionGroup OppositionGroup
+        {
+            get
+            {
+                return OppositionGroup.TerathansAndOphidians;
+            }
+        }
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average);
