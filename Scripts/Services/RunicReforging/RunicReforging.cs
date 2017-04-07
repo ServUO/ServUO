@@ -1342,6 +1342,21 @@ namespace Server.Items
             new int[] { 1151704, 1151705 },
         };
 
+        public static void AddSuffixName(ObjectPropertyList list, ReforgedSuffix suffix, string name)
+        {
+            switch (suffix)
+            {
+                case ReforgedSuffix.Minax:
+                    list.Add(1154507, name); break; // ~1_ITEM~ bearing the crest of Minax
+                case ReforgedSuffix.Blackthorn:
+                    list.Add(1154548, name); break;// ~1_TYPE~ bearing the crest of Blackthorn
+                case ReforgedSuffix.Kotl:
+                    list.Add(1156900, name); break;// ~1_ITEM~ of the Kotl
+                default:
+                    list.Add(1151758, String.Format("{0}\t#{1}", name, GetSuffixName(suffix))); break;// ~1_ITEM~ of ~2_SUFFIX~
+            }
+        }
+
         private static readonly SkillName[] m_Skills = new SkillName[]
         {
             SkillName.Swords,

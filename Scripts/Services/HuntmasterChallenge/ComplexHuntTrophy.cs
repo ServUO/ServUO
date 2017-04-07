@@ -77,7 +77,7 @@ namespace Server.Items
                     AddComponent(new HuntTrophyComponent(SouthID), 0, 0, 0);
                     AddComponent(new HuntTrophyComponent(SouthID + 1), 0, -1, 0);
                     break;
-                case Direction.North:
+                case Direction.aNorth:
                     AddComponent(new HuntTrophyComponent(EastID), 0, 0, 0);
                     AddComponent(new HuntTrophyComponent(EastID + 1), 1, 0, 0);
                     break;
