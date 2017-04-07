@@ -319,7 +319,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
                 return false;
             }
-            else if (from.Kills >= 5 && boundRoot.Map != Map.Felucca)
+            else if (from.Murderer && boundRoot.Map != Map.Felucca)
             {
                 from.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 return false;
