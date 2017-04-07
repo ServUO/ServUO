@@ -1009,7 +1009,7 @@ namespace Server.Mobiles
         // Tribe Opposition stuff
         public virtual TribeType Tribe{ get{ return TribeType.None ; } } // What opposition list am I in?
 
-        private bool IsTribeEnemy(Mobile m)
+        public virtual bool IsTribeEnemy(Mobile m)
         {
             // Target must be BaseCreature
             if (!(m is BaseCreature))
@@ -1063,9 +1063,21 @@ namespace Server.Mobiles
 
 		public virtual bool IsFriend(Mobile m)
 		{
-			if (Tribe != TribeType.None && IsTribeEnemy(m))
+			if (Core.TOL)
 			{
-				return false;
+				if (Tribe != TribeType.None && IsTribeEnemy(m))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				OppositionGroup g = OppositionGroup;
+
+				if (g != null && g.IsEnemy(this, m))
+				{
+					return false;
+				}
 			}
 
 			if (!(m is BaseCreature))
@@ -1143,9 +1155,21 @@ namespace Server.Mobiles
 				return a.IsEnemy(m);
 			}
 
-			if (Tribe != TribeType.None && IsTribeEnemy(m))
+			if (Core.TOL)
 			{
-				return true;
+				if (Tribe != TribeType.None && IsTribeEnemy(m))
+				{
+					return true;
+				}
+			}
+			else
+			{
+				OppositionGroup g = OppositionGroup;
+
+				if (g != null && g.IsEnemy(this, m))
+				{
+					return true;
+				}
 			}
 
 			if (m is BaseGuard)
