@@ -43,7 +43,8 @@ namespace Server.Items
         Slaughter,
         Aegis,
         Blackthorn,
-        Minax
+        Minax,
+        Kotl
     }
 
     public enum ItemPower
@@ -1559,7 +1560,7 @@ namespace Server.Items
                     if (!(item is BaseWeapon) && suffix == ReforgedSuffix.Vampire)
                         suffix = ReforgedSuffix.None;
 
-                    if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix != ReforgedSuffix.Minax)
+                    if (forcedprefix == ReforgedPrefix.None && budget >= Utility.Random(2700) && suffix != ReforgedSuffix.Minax && suffix != ReforgedSuffix.Kotl)
                         prefix = ChooseRandomPrefix(item);
 
                     if (forcedsuffix == ReforgedSuffix.None && budget >= Utility.Random(2700))
