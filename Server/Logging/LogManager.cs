@@ -3,21 +3,28 @@ using System.Collections.Generic;
 
 namespace Server
 {
-    public class LogManager
+    public static class LogManager
     {
-        private static Dictionary<Type, ILog> m_Loggers = new Dictionary<Type, ILog>();
+        private static Dictionary<Type, ILog> m_Loggers = new Dictionary<Type, ILog>( );
 
-        public static ILog GetLogger( Type declaringType )
+        public static ILog GetLogger<T>( )
         {
-            if ( m_Loggers.ContainsKey( declaringType ) )
-                return m_Loggers[declaringType];
-            else
-                return m_Loggers[declaringType] = CreateLogger( declaringType );
+            return GetLogger( typeof(T) );
         }
 
-        private static ILog CreateLogger( Type declaringType )
+        public static ILog GetLogger( Type type )
         {
-            return new ConsoleLogger( declaringType.Name );
+            ILog logger;
+            
+            if( !m_Loggers.TryGetValue( type, out logger ) || logger == null )
+                m_Loggers[type] = logger = CreateLogger( type.Name );
+            
+            return logger;
         }
+        
+        private static ILog CreateLogger( string name )
+        {
+            return new ConsoleLogger( name );
+        }        
     }
 }
