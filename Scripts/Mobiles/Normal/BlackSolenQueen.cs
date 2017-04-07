@@ -61,6 +61,8 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool IsBlackSolen { get { return true; } }
+
         public bool BurstSac
         {
             get

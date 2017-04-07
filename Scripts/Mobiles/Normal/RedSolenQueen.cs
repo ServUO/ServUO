@@ -67,6 +67,9 @@ namespace Server.Mobiles
                 return this.m_BurstSac;
             }
         }
+
+        public override bool IsRedSolen { get { return true; } }
+
         public override int GetAngerSound()
         {
             return 0x259;

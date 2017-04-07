@@ -52,6 +52,8 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool IsBlackSolen { get { return true; } }
+
         public override int GetAngerSound()
         {
             return 0x269;

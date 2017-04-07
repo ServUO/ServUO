@@ -992,6 +992,8 @@ namespace Server.Mobiles
 
         public virtual OppositionGroup OppositionGroup { get { return null; } }
         public virtual bool IsMilitiaFighter { get { return false; } }
+        public virtual bool IsBlackSolen { get { return false; } }
+        public virtual bool IsRedSolen { get { return false; } }
 
         #region Friends
         public List<Mobile> Friends { get { return m_Friends; } }
