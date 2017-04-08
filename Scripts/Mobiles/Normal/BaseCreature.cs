@@ -1021,14 +1021,14 @@ namespace Server.Mobiles
 
             switch(Tribe)
             {
-                case TribeType.Terathan: return (c.TribeType == TribeType.Ophidian);
-                case TribeType.Ophidian: return (c.TribeType == TribeType.Terathan);
-                case TribeType.Savage: return (c.TribeType == TribeType.Orc);
-                case TribeType.Orc: return (c.TribeType == TribeType.Savage);
-                case TribeType.Fey: return (c.TribeType == TribeType.Undead);
-                case TribeType.Undead: return (c.TribeType == TribeType.Fey);
-                case TribeType.GrayGoblin: return (c.TribeType == TribeType.GreenGoblin);
-                case TribeType.GreenGoblin: return (c.TribeType == TribeType.GrayGoblin);
+                case TribeType.Terathan: return (c.Tribe == TribeType.Ophidian);
+                case TribeType.Ophidian: return (c.Tribe == TribeType.Terathan);
+                case TribeType.Savage: return (c.Tribe == TribeType.Orc);
+                case TribeType.Orc: return (c.Tribe == TribeType.Savage);
+                case TribeType.Fey: return (c.Tribe == TribeType.Undead);
+                case TribeType.Undead: return (c.Tribe == TribeType.Fey);
+                case TribeType.GrayGoblin: return (c.Tribe == TribeType.GreenGoblin);
+                case TribeType.GreenGoblin: return (c.Tribe == TribeType.GrayGoblin);
                 default: return false;
             }
         }
