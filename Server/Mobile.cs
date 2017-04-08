@@ -834,7 +834,10 @@ namespace Server
 			}
 		}
 
-		protected virtual void OnRaceChange(Race oldRace)
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool CharacterOut { get; set; }
+
+        protected virtual void OnRaceChange(Race oldRace)
 		{ }
 
 		public virtual double RacialSkillBonus { get { return 0; } }
@@ -8896,10 +8899,15 @@ namespace Server
 
 						if (m_Map == Map.Internal && m_LogoutMap != null)
 						{
-							Map = m_LogoutMap;
+                            CharacterOut = true;
+                            Map = m_LogoutMap;
 							Location = m_LogoutLocation;
 						}
-					}
+                        else
+                        {
+                            CharacterOut = false;
+                        }
+                    }
 
 					for (int i = m_Items.Count - 1; i >= 0; --i)
 					{
