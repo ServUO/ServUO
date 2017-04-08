@@ -152,11 +152,10 @@ namespace Server.Spells.Spellweaving
 		{
 			base.OnBeginCast();
 
-			SendCastEffect();
 			m_CastTimeFocusLevel = GetFocusLevel(Caster);
 		}
 
-		public virtual void SendCastEffect()
+		public override void SendCastEffect()
 		{
 			Caster.FixedEffect(0x37C4, 10, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
 		}
