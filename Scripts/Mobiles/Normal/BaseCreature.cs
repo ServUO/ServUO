@@ -127,6 +127,19 @@ namespace Server.Mobiles
         Barbed,
         Fur
     }
+
+    public enum TribeType
+    {
+        None,
+        Terathan,
+        Ophidian,
+        Savage,
+        Orc,
+        Fey,
+        Undead,
+        GrayGoblin,
+        GreenGoblin
+    }
     #endregion
 
     public class DamageStore : IComparable
@@ -993,6 +1006,33 @@ namespace Server.Mobiles
         public virtual OppositionGroup OppositionGroup { get { return null; } }
         public virtual bool IsMilitiaFighter { get { return false; } }
 
+        // Tribe Opposition stuff
+        public virtual TribeType Tribe{ get{ return TribeType.None ; } } // What opposition list am I in?
+
+        public virtual bool IsTribeEnemy(Mobile m)
+        {
+            // Target must be BaseCreature
+            if (!(m is BaseCreature))
+            {
+                return false;
+            }
+
+            BaseCreature c = (BaseCreature)m;
+
+            switch(Tribe)
+            {
+                case TribeType.Terathan: return (c.Tribe == TribeType.Ophidian);
+                case TribeType.Ophidian: return (c.Tribe == TribeType.Terathan);
+                case TribeType.Savage: return (c.Tribe == TribeType.Orc);
+                case TribeType.Orc: return (c.Tribe == TribeType.Savage);
+                case TribeType.Fey: return (c.Tribe == TribeType.Undead);
+                case TribeType.Undead: return (c.Tribe == TribeType.Fey);
+                case TribeType.GrayGoblin: return (c.Tribe == TribeType.GreenGoblin);
+                case TribeType.GreenGoblin: return (c.Tribe == TribeType.GrayGoblin);
+                default: return false;
+            }
+        }
+
         #region Friends
         public List<Mobile> Friends { get { return m_Friends; } }
 
@@ -1023,11 +1063,21 @@ namespace Server.Mobiles
 
 		public virtual bool IsFriend(Mobile m)
 		{
-			OppositionGroup g = OppositionGroup;
-
-			if (g != null && g.IsEnemy(this, m))
+			if (Core.TOL)
 			{
-				return false;
+				if (Tribe != TribeType.None && IsTribeEnemy(m))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				OppositionGroup g = OppositionGroup;
+
+				if (g != null && g.IsEnemy(this, m))
+				{
+					return false;
+				}
 			}
 
 			if (!(m is BaseCreature))
@@ -1105,11 +1155,21 @@ namespace Server.Mobiles
 				return a.IsEnemy(m);
 			}
 
-			OppositionGroup g = OppositionGroup;
-
-			if (g != null && g.IsEnemy(this, m))
+			if (Core.TOL)
 			{
-				return true;
+				if (Tribe != TribeType.None && IsTribeEnemy(m))
+				{
+					return true;
+				}
+			}
+			else
+			{
+				OppositionGroup g = OppositionGroup;
+
+				if (g != null && g.IsEnemy(this, m))
+				{
+					return true;
+				}
 			}
 
 			if (m is BaseGuard)

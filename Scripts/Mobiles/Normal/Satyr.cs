@@ -51,6 +51,8 @@ namespace Server.Mobiles
             }
         }
 
+        public override TribeType Tribe { get { return TribeType.Fey; } }
+
         public override OppositionGroup OppositionGroup
         {
             get
@@ -58,7 +60,6 @@ namespace Server.Mobiles
                 return OppositionGroup.FeyAndUndead;
             }
         }
-
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.MlRich);
