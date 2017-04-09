@@ -44,11 +44,22 @@ namespace Server.Mobiles
 					pets.Add(bc);
 			}
 
+            if (from.Backpack != null)
+            {
+                BrokenAutomatonHead head = from.Backpack.FindItemByType(typeof(BrokenAutomatonHead)) as BrokenAutomatonHead;
+
+                if (head != null && head.Automaton != null && !head.Automaton.Deleted)
+                    pets.Add(head.Automaton);
+            }
+
 			return pets.ToArray();
 		}
 
 		public static int GetResurrectionFee(BaseCreature bc)
 		{
+            if (bc is KotlAutomaton)
+                return 0;
+
 			int fee = (int)(100 + Math.Pow(1.1041, bc.MinTameSkill));
 
 			if (fee > 30000)
@@ -211,6 +222,9 @@ namespace Server.Mobiles
 
 									for (int j = 0; j < pet.Skills.Length; ++j) // Decrease all skills on pet.
 										pet.Skills[j].Base -= 0.2;
+
+                                    if (pet.Map == Map.Internal)
+                                        pet.MoveToWorld(from.Location, from.Map);
 
 									from.SendLocalizedMessage(1060398, fee.ToString()); // ~1_AMOUNT~ gold has been withdrawn from your bank box.
 									from.SendLocalizedMessage(1060022, Banker.GetBalance(from).ToString(), 0x16); // You have ~1_AMOUNT~ gold in cash remaining in your bank box.

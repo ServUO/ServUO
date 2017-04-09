@@ -138,7 +138,7 @@ namespace Server.Items
             {
                 m.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
             }
-            else if ((m.Kills >= 5 && this.m_TargetMap != Map.Felucca) || (this.m_TargetMap == Map.Tokuno && (flags & ClientFlags.Tokuno) == 0) || (this.m_TargetMap == Map.Malas && (flags & ClientFlags.Malas) == 0) || (this.m_TargetMap == Map.Ilshenar && (flags & ClientFlags.Ilshenar) == 0))
+            else if ((m.Murderer && this.m_TargetMap != Map.Felucca) || (this.m_TargetMap == Map.Tokuno && (flags & ClientFlags.Tokuno) == 0) || (this.m_TargetMap == Map.Malas && (flags & ClientFlags.Malas) == 0) || (this.m_TargetMap == Map.Ilshenar && (flags & ClientFlags.Ilshenar) == 0))
             {
                 m.SendLocalizedMessage(1019004); // You are not allowed to travel there.
             }

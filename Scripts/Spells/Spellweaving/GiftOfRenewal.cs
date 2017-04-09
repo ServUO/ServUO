@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Server.Targeting;
+using Server.Mobiles;
 
 namespace Server.Spells.Spellweaving
 {

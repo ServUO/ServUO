@@ -1222,6 +1222,22 @@ namespace Server.Items
 
 				int propertyCount = propertyCounts[Utility.Random(propertyCounts.Length)];
 
+                GuaranteedSpellbookImprovementTalisman talisman = from.FindItemOnLayer(Layer.Talisman) as GuaranteedSpellbookImprovementTalisman;
+
+                if (talisman != null && talisman.Charges > 0)
+                {
+                    propertyCount++;
+                    talisman.Charges--;
+
+                    from.SendLocalizedMessage(1157210); // Your talisman magically improves your spellbook.
+
+                    if (talisman.Charges <= 0)
+                    {
+                        from.SendLocalizedMessage(1157211); // Your talisman has been destroyed.
+                        talisman.Delete();
+                    }
+                }
+
 				BaseRunicTool.ApplyAttributesTo(this, true, 0, propertyCount, minIntensity, maxIntensity);
 			}
 

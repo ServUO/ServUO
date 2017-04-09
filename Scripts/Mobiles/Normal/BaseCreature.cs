@@ -127,6 +127,19 @@ namespace Server.Mobiles
         Barbed,
         Fur
     }
+
+    public enum TribeType
+    {
+        None,
+        Terathan,
+        Ophidian,
+        Savage,
+        Orc,
+        Fey,
+        Undead,
+        GrayGoblin,
+        GreenGoblin
+    }
     #endregion
 
     public class DamageStore : IComparable
@@ -993,21 +1006,10 @@ namespace Server.Mobiles
         public virtual OppositionGroup OppositionGroup { get { return null; } }
         public virtual bool IsMilitiaFighter { get { return false; } }
 
-        // Opposition List stuff
-        public virtual OppositionType OppositionList{ get{ return OppositionType.None ; } } // What opposition list am I in?
+        // Tribe Opposition stuff
+        public virtual TribeType Tribe{ get{ return TribeType.None ; } } // What opposition list am I in?
 
-        public enum OppositionType
-        {
-            None,
-            Terathan,
-            Ophidian,
-            Savage,
-            Orc,
-            Fey,
-            Undead
-        }
-
-        public virtual bool OppositionListEnemy(Mobile m)
+        public virtual bool IsTribeEnemy(Mobile m)
         {
             // Target must be BaseCreature
             if (!(m is BaseCreature))
@@ -1017,75 +1019,16 @@ namespace Server.Mobiles
 
             BaseCreature c = (BaseCreature)m;
 
-            // Target must have an OppositionType
-            if (c.OppositionList == OppositionType.None)
+            switch(Tribe)
             {
-                return false;
-            }
-
-            // Pick my OppositionType
-            switch (OppositionList)
-            {
-                case OppositionType.Terathan: return m_TerathanEnemy(c.OppositionList);
-                case OppositionType.Ophidian: return m_OphidianEnemy(c.OppositionList);
-                case OppositionType.Savage: return m_SavageEnemy(c.OppositionList);
-                case OppositionType.Orc: return m_OrcEnemy(c.OppositionList);
-                case OppositionType.Fey: return m_FeyEnemy(c.OppositionList);
-                case OppositionType.Undead: return m_UndeadEnemy(c.OppositionList);
-                default: return false;
-            }
-        }
-
-        private bool m_TerathanEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Ophidian: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_OphidianEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Terathan: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_SavageEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Orc: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_OrcEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Savage: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_FeyEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Undead: return true;
-                default: return false;
-            }
-        }
-
-        private bool m_UndeadEnemy(OppositionType egroup)
-        {
-            switch (egroup)
-            {
-                case OppositionType.Fey: return true;
+                case TribeType.Terathan: return (c.Tribe == TribeType.Ophidian);
+                case TribeType.Ophidian: return (c.Tribe == TribeType.Terathan);
+                case TribeType.Savage: return (c.Tribe == TribeType.Orc);
+                case TribeType.Orc: return (c.Tribe == TribeType.Savage);
+                case TribeType.Fey: return (c.Tribe == TribeType.Undead);
+                case TribeType.Undead: return (c.Tribe == TribeType.Fey);
+                case TribeType.GrayGoblin: return (c.Tribe == TribeType.GreenGoblin);
+                case TribeType.GreenGoblin: return (c.Tribe == TribeType.GrayGoblin);
                 default: return false;
             }
         }
@@ -1120,9 +1063,21 @@ namespace Server.Mobiles
 
 		public virtual bool IsFriend(Mobile m)
 		{
-			if (OppositionList != OppositionType.None && OppositionListEnemy(m))
+			if (Core.TOL)
 			{
-				return false;
+				if (Tribe != TribeType.None && IsTribeEnemy(m))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				OppositionGroup g = OppositionGroup;
+
+				if (g != null && g.IsEnemy(this, m))
+				{
+					return false;
+				}
 			}
 
 			if (!(m is BaseCreature))
@@ -1200,9 +1155,21 @@ namespace Server.Mobiles
 				return a.IsEnemy(m);
 			}
 
-			if (OppositionList != OppositionType.None && OppositionListEnemy(m))
+			if (Core.TOL)
 			{
-				return true;
+				if (Tribe != TribeType.None && IsTribeEnemy(m))
+				{
+					return true;
+				}
+			}
+			else
+			{
+				OppositionGroup g = OppositionGroup;
+
+				if (g != null && g.IsEnemy(this, m))
+				{
+					return true;
+				}
 			}
 
 			if (m is BaseGuard)
@@ -2620,7 +2587,7 @@ namespace Server.Mobiles
 
         public virtual bool IsHumanInTown()
         {
-            return (Body.IsHuman && Region.IsPartOf(typeof(GuardedRegion)));
+            return (Body.IsHuman && Region.IsPartOf<GuardedRegion>());
         }
 
         public virtual bool CheckGold(Mobile from, Item dropped)
@@ -4375,7 +4342,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            if (!Body.IsHuman || Kills >= 5 || AlwaysMurderer || AlwaysAttackable || m.Kills < 5 || !m.InRange(Location, 12) ||
+            if (!Body.IsHuman || Murderer || AlwaysMurderer || AlwaysAttackable || m.Kills < 5 || !m.InRange(Location, 12) ||
                 !m.Alive)
             {
                 return;
@@ -5961,7 +5928,7 @@ namespace Server.Mobiles
         {
             bool ret = base.CanBeRenamedBy(from);
 
-            if (Controlled && from == ControlMaster && !from.Region.IsPartOf(typeof(Jail)))
+            if (Controlled && from == ControlMaster && !from.Region.IsPartOf<Jail>())
             {
                 ret = true;
             }
@@ -7505,7 +7472,7 @@ namespace Server.Mobiles
 
                         // added lines to check if a wild creature in a house region has to be removed or not
                         if (!c.Controlled && !c.IsStabled &&
-                            ((c.Region.IsPartOf(typeof(HouseRegion)) && c.CanBeDamaged()) || (c.RemoveIfUntamed && c.Spawner == null)))
+                            ((c.Region.IsPartOf<HouseRegion>() && c.CanBeDamaged()) || (c.RemoveIfUntamed && c.Spawner == null)))
                         {
                             c.RemoveStep++;
 

@@ -2,6 +2,7 @@ using System;
 using Server.Network;
 using Server.Prompts;
 using Server.Targeting;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -19,12 +20,26 @@ namespace Server.Items
         uint KeyValue { get; set; }
     }
 
-    public class Key : Item
+    public class Key : Item, ICraftable, IResource
     {
         private string m_Description;
         private uint m_KeyVal;
         private Item m_Link;
         private int m_MaxRange;
+
+        private CraftResource _Resource;
+        private Mobile _Crafter;
+        private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(this._Resource); InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
         [Constructable]
         public Key()
             : this(KeyType.Iron, 0)
@@ -189,7 +204,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)3); // version
+
+            writer.Write((int)_Resource);
+            writer.Write(_Crafter);
+            writer.Write((int)_Quality);
 
             writer.Write((int)this.m_MaxRange);
 
@@ -207,6 +226,14 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 3:
+                    {
+                        _Resource = (CraftResource)reader.ReadInt();
+                        _Crafter = reader.ReadMobile();
+                        _Quality = (ItemQuality)reader.ReadInt();
+
+                        goto case 2;
+                    }
                 case 2:
                     {
                         this.m_MaxRange = reader.ReadInt();
@@ -272,6 +299,46 @@ namespace Server.Items
 
             if (desc != null)
                 list.Add(desc);
+
+            if (_Crafter != null)
+            {
+                list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~
+            }
+
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (_Resource > CraftResource.Iron)
+            {
+                list.Add(1053099, "#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource), String.Format("#{0}", LabelNumber.ToString())); // ~1_oretype~ ~2_armortype~
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            this.Quality = (ItemQuality)quality;
+
+            if (makersMark)
+                this.Crafter = from;
+
+            if (!craftItem.ForceNonExceptional)
+            {
+                if (typeRes == null)
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(typeRes);
+            }
+
+            return quality;
         }
 
         public override void OnSingleClick(Mobile from)

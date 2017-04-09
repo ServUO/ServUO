@@ -17,7 +17,7 @@ namespace Server.Mobiles
 
             foreach (Mobile mob in World.Mobiles.Values)
             {
-                if (mob != null && mob is PlayerMobile && mob.Kills >= 5)
+                if (mob != null && mob is PlayerMobile && mob.Murderer)
                     m_RedNames.Add(mob.Name);
             }
         }

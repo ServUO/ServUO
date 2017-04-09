@@ -96,6 +96,8 @@ namespace Server.Mobiles
 		public virtual void OnSuccessfulBulkOrderReceive(Mobile from)
 		{ }
 
+        public virtual BODType BODType { get { return BODType.Smith; } }
+
 		#region Faction
 		public virtual int GetPriceScalar()
 		{
@@ -143,52 +145,119 @@ namespace Server.Mobiles
                     return;
 
 				EventSink.InvokeBODOffered(new BODOfferEventArgs(m_From, m_Vendor));
-				if (m_Vendor.SupportsBulkOrders(m_From))
-				{
-					TimeSpan ts = m_Vendor.GetNextBulkOrder(m_From);
 
-					int totalSeconds = (int)ts.TotalSeconds;
-					int totalHours = (totalSeconds + 3599) / 3600;
-					int totalMinutes = (totalSeconds + 59) / 60;
+                if (m_Vendor.SupportsBulkOrders(m_From) && m_From is PlayerMobile)
+                {
+                    if (BulkOrderSystem.NewSystemEnabled)
+                    {
+                        if (BulkOrderSystem.CanGetBulkOrder(m_From, m_Vendor.BODType))
+                        {
+                            Item bulkOrder = BulkOrderSystem.CreateBulkOrder(m_From, m_Vendor.BODType, true);
 
-					if (((Core.SE) ? totalMinutes == 0 : totalHours == 0))
-					{
-						m_From.SendLocalizedMessage(1049038); // You can get an order now.
+                            if (bulkOrder is LargeBOD)
+                            {
+                                m_From.SendGump(new LargeBODAcceptGump(m_From, (LargeBOD)bulkOrder));
+                            }
+                            else if (bulkOrder is SmallBOD)
+                            {
+                                m_From.SendGump(new SmallBODAcceptGump(m_From, (SmallBOD)bulkOrder));
+                            }
+                        }
+                        else
+                        {
+                            TimeSpan ts = BulkOrderSystem.GetNextBulkOrder(m_Vendor.BODType, (PlayerMobile)m_From);
 
-						if (Core.AOS)
-						{
-							Item bulkOrder = m_Vendor.CreateBulkOrder(m_From, true);
+                            int totalSeconds = (int)ts.TotalSeconds;
+                            int totalHours = (totalSeconds + 3599) / 3600;
+                            int totalMinutes = (totalSeconds + 59) / 60;
 
-							if (bulkOrder is LargeBOD)
-							{
-								m_From.SendGump(new LargeBODAcceptGump(m_From, (LargeBOD)bulkOrder));
-							}
-							else if (bulkOrder is SmallBOD)
-							{
-								m_From.SendGump(new SmallBODAcceptGump(m_From, (SmallBOD)bulkOrder));
-							}
-						}
-					}
-					else
-					{
-						int oldSpeechHue = m_Vendor.SpeechHue;
-						m_Vendor.SpeechHue = 0x3B2;
+                            m_Vendor.SayTo(m_From, 1072058, totalMinutes.ToString(), 0x3B2); // An offer may be available in about ~1_minutes~ minutes.
+                        }
+                    }
+                    else
+                    {
+                        TimeSpan ts = m_Vendor.GetNextBulkOrder(m_From);
 
-						if (Core.SE)
-						{
-							m_Vendor.SayTo(m_From, 1072058, totalMinutes.ToString());
-							// An offer may be available in about ~1_minutes~ minutes.
-						}
-						else
-						{
-							m_Vendor.SayTo(m_From, 1049039, totalHours.ToString()); // An offer may be available in about ~1_hours~ hours.
-						}
+                        int totalSeconds = (int)ts.TotalSeconds;
+                        int totalHours = (totalSeconds + 3599) / 3600;
+                        int totalMinutes = (totalSeconds + 59) / 60;
 
-						m_Vendor.SpeechHue = oldSpeechHue;
-					}
-				}
+                        if (((Core.SE) ? totalMinutes == 0 : totalHours == 0))
+                        {
+                            m_From.SendLocalizedMessage(1049038); // You can get an order now.
+
+                            if (Core.AOS)
+                            {
+                                Item bulkOrder = m_Vendor.CreateBulkOrder(m_From, true);
+
+                                if (bulkOrder is LargeBOD)
+                                {
+                                    m_From.SendGump(new LargeBODAcceptGump(m_From, (LargeBOD)bulkOrder));
+                                }
+                                else if (bulkOrder is SmallBOD)
+                                {
+                                    m_From.SendGump(new SmallBODAcceptGump(m_From, (SmallBOD)bulkOrder));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int oldSpeechHue = m_Vendor.SpeechHue;
+                            m_Vendor.SpeechHue = 0x3B2;
+
+                            if (Core.SE)
+                            {
+                                m_Vendor.SayTo(m_From, 1072058, totalMinutes.ToString(), 0x3B2);
+                                // An offer may be available in about ~1_minutes~ minutes.
+                            }
+                            else
+                            {
+                                m_Vendor.SayTo(m_From, 1049039, totalHours.ToString(), 0x3B2); // An offer may be available in about ~1_hours~ hours.
+                            }
+
+                            m_Vendor.SpeechHue = oldSpeechHue;
+                        }
+                    }
+                }
 			}
 		}
+
+        private class ClaimRewardsEntry : ContextMenuEntry
+        {
+            private readonly Mobile m_From;
+			private readonly BaseVendor m_Vendor;
+
+            public ClaimRewardsEntry(Mobile from, BaseVendor vendor)
+                : base(1155593, 3)
+			{
+				m_From = from;
+				m_Vendor = vendor;
+			}
+
+			public override void OnClick()
+			{
+                if (!m_From.InRange(m_Vendor.Location, 3) || !(m_From is PlayerMobile))
+                    return;
+
+                if (!BulkOrderSystem.CanClaimRewards(m_From, m_Vendor.BODType))
+                {
+                    m_Vendor.SayTo(m_From, 1157083, 0x3B2); // You must claim your last turn-in reward in order for us to continue doing business.
+                }
+                else
+                {
+                    int pending = BulkOrderSystem.GetPendingRewardFor(m_From, m_Vendor.BODType);
+
+                    if (pending > 0)
+                    {
+                        m_From.SendGump(new RewardsGump(m_Vendor, (PlayerMobile)m_From, m_Vendor.BODType, pending));
+                    }
+                    else
+                    {
+                        m_From.SendGump(new RewardsGump(m_Vendor, (PlayerMobile)m_From, m_Vendor.BODType));
+                    }
+                }
+			}
+        }
 
 		public BaseVendor(string title)
 			: base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 5)
@@ -1043,53 +1112,85 @@ namespace Server.Mobiles
 			if (dropped is SmallBOD || dropped is LargeBOD)
 			{
 				PlayerMobile pm = from as PlayerMobile;
+                Item bod = dropped as Item;
 
 				if (Core.ML && pm != null && pm.NextBODTurnInTime > DateTime.UtcNow)
 				{
-					SayTo(from, 1079976); // You'll have to wait a few seconds while I inspect the last order.
+                    this.SayTo(from, 1079976, 0x3B2); // You'll have to wait a few seconds while I inspect the last order.
 					return false;
 				}
 				else if (!IsValidBulkOrder(dropped) || !SupportsBulkOrders(from))
 				{
-					SayTo(from, 1045130); // That order is for some other shopkeeper.
+                    this.SayTo(from, 1045130, 0x3B2); // That order is for some other shopkeeper.
 					return false;
 				}
 				else if ((dropped is SmallBOD && !((SmallBOD)dropped).Complete) ||
 						 (dropped is LargeBOD && !((LargeBOD)dropped).Complete))
 				{
-					SayTo(from, 1045131); // You have not completed the order yet.
+                    this.SayTo(from, 1045131, 0x3B2); // You have not completed the order yet.
 					return false;
 				}
 
-				Item reward;
-				int gold, fame;
+                Item reward;
+                int gold, fame;
 
-				if (dropped is SmallBOD)
-				{
-					((SmallBOD)dropped).GetRewards(out reward, out gold, out fame);
-				}
-				else
-				{
-					((LargeBOD)dropped).GetRewards(out reward, out gold, out fame);
-				}
+                if (dropped is SmallBOD)
+                {
+                    ((SmallBOD)dropped).GetRewards(out reward, out gold, out fame);
+                }
+                else
+                {
+                    ((LargeBOD)dropped).GetRewards(out reward, out gold, out fame);
+                }
 
-				from.SendSound(0x3D);
+                from.SendSound(0x3D);
 
-				SayTo(from, 1045132); // Thank you so much!  Here is a reward for your effort.
+                if (BulkOrderSystem.NewSystemEnabled && from is PlayerMobile)
+                {
+                    this.SayTo(from, 1157204, from.Name, 0x3B2); // Ho! Ho! Thank ye ~1_PLAYER~ for giving me a Bulk Order Deed!
 
-				if (reward != null)
-				{
-					from.AddToBackpack(reward);
-				}
+                    BODContext context = BulkOrderSystem.GetContext(from); 
 
-				if (gold > 1000)
-				{
-					from.AddToBackpack(new BankCheck(gold));
-				}
-				else if (gold > 0)
-				{
-					from.AddToBackpack(new Gold(gold));
-				}
+                    int points = 0;
+                    double banked = 0.0;
+
+                    if(dropped is SmallBOD)
+                        BulkOrderSystem.ComputePoints((SmallBOD)dropped, out points, out banked);
+                    else
+                        BulkOrderSystem.ComputePoints((LargeBOD)dropped, out points, out banked);
+
+                    switch (context.PointsMode)
+                    {
+                        case PointsMode.Enabled:
+                            from.SendGump(new ConfirmBankPointsGump((PlayerMobile)from, this, bod, this.BODType, points, banked));
+                            break;
+                        case PointsMode.Disabled:
+                            from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType, points));
+                            break;
+                        case PointsMode.Automatic:
+                            {
+                                BulkOrderSystem.SetPoints(from, this.BODType, banked);
+                                from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType));
+                            }
+                            break;
+                    }
+
+                    // On EA, you have to choose the reward before you get the gold/fame reward.  IF you right click the gump, you lose 
+                    // the gold/fame for that bod.
+
+                    Banker.Deposit(from, gold, true);
+                }
+                else
+                {
+                    this.SayTo(from, 1045132, 0x3B2); // Thank you so much!  Here is a reward for your effort.
+
+                    if (reward != null)
+                    {
+                        from.AddToBackpack(reward);
+                    }
+
+                    Banker.Deposit(from, gold, true);
+                }
 
 				Titles.AwardFame(from, fame, true);
 
@@ -1985,6 +2086,11 @@ namespace Server.Mobiles
 				if (SupportsBulkOrders(from))
 				{
 					list.Add(new BulkOrderInfoEntry(from, this));
+
+                    if (BulkOrderSystem.NewSystemEnabled)
+                    {
+                        list.Add(new ClaimRewardsEntry(from, this));
+                    }
 				}
 
 				if (IsActiveSeller)

@@ -8,12 +8,15 @@ namespace Server.Engines.BulkOrders
         private readonly int m_AmountCur;
         private readonly int m_Number;
         private readonly int m_Graphic;
+        private readonly int m_Hue;
+
         public BOBLargeSubEntry(LargeBulkEntry lbe)
         {
             this.m_ItemType = lbe.Details.Type;
             this.m_AmountCur = lbe.Amount;
             this.m_Number = lbe.Details.Number;
             this.m_Graphic = lbe.Details.Graphic;
+            this.m_Hue = lbe.Details.Hue;
         }
 
         public BOBLargeSubEntry(GenericReader reader)
@@ -22,6 +25,11 @@ namespace Server.Engines.BulkOrders
 
             switch ( version )
             {
+                case 1:
+                    {
+                        m_Hue = reader.ReadEncodedInt();
+                        goto case 0;
+                    }
                 case 0:
                     {
                         string type = reader.ReadString();
@@ -66,9 +74,18 @@ namespace Server.Engines.BulkOrders
                 return this.m_Graphic;
             }
         }
+        public int Hue
+        {
+            get
+            {
+                return this.m_Hue;
+            }
+        }
         public void Serialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
+
+            writer.WriteEncodedInt((int)this.m_Hue);
 
             writer.Write(this.m_ItemType == null ? null : this.m_ItemType.FullName);
 
