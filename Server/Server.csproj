@@ -142,7 +142,6 @@
     <Compile Include=".\Sector.cs" />
     <Compile Include=".\SecureTrade.cs" />
     <Compile Include=".\Serial.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="IO\AsyncWriter.cs" />
     <Compile Include="IO\BinaryFileReader.cs" />
     <Compile Include="IO\BinaryFileWriter.cs" />
