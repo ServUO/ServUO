@@ -582,7 +582,7 @@ namespace Server.Mobiles
 
 									if (m_Mobile.CheckControlChance(e.Mobile))
 									{
-										
+
 										m_Mobile.ControlOrder = OrderType.Guard;
                                         m_Mobile.ControlTarget = null;
 									}
@@ -711,7 +711,7 @@ namespace Server.Mobiles
 									{
                                         m_Mobile.ControlOrder = OrderType.Guard;
                                         m_Mobile.ControlTarget = null;
-										
+
 									}
 
 									return;
@@ -1326,7 +1326,7 @@ namespace Server.Mobiles
 
 					if (WalkMobileRange(m_Mobile.ControlMaster, 1, bRun, 0, 1))
 					{
-						if (m_Mobile.Combatant is Mobile && !m_Mobile.Combatant.Deleted && 
+						if (m_Mobile.Combatant is Mobile && !m_Mobile.Combatant.Deleted &&
                             m_Mobile.Combatant.Alive && (!(m_Mobile.Combatant is Mobile) || !((Mobile)m_Mobile.Combatant).IsDeadBondedPet))
 						{
 							m_Mobile.Warmode = true;
@@ -2323,10 +2323,10 @@ namespace Server.Mobiles
 			{
 				d |= Direction.Running;
 			}
-            
+
 			// This makes them always move one step, never any direction changes
 			m_Mobile.Direction = d;
-            
+
 			m_NextMove += delay;
 
 			if (Core.TickCount - m_NextMove > 0)
@@ -2645,12 +2645,12 @@ namespace Server.Mobiles
 
 		/*
         *  Walk at range distance from mobile
-        * 
+        *
         *	iSteps : Number of steps
         *	bRun   : Do we run
         *	iWantDistMin : The minimum distance we want to be
         *  iWantDistMax : The maximum distance we want to be
-        * 
+        *
         */
 
 		public virtual bool WalkMobileRange(IPoint3D p, int iSteps, bool bRun, int iWantDistMin, int iWantDistMax)
@@ -2738,13 +2738,13 @@ namespace Server.Mobiles
 
 		/*
         * Here we check to acquire a target from our surronding
-        * 
+        *
         *  iRange : The range
         *  acqType : A type of acquire we want (closest, strongest, etc)
         *  bPlayerOnly : Don't bother with other creatures or NPCs, want a player
         *  bFacFriend : Check people in my faction
         *  bFacFoe : Check people in other factions
-        * 
+        *
         */
 
 		public virtual bool AcquireFocusMob(int iRange, FightMode acqType, bool bPlayerOnly, bool bFacFriend, bool bFacFoe)
@@ -2835,8 +2835,8 @@ namespace Server.Mobiles
 						continue;
 					}
 
-					// Let's not target ourselves...
-					if (m == m_Mobile || m is BaseFamiliar)
+					// Let's not target ourself...
+					if (m == m_Mobile)
 					{
 						continue;
 					}
@@ -2860,29 +2860,20 @@ namespace Server.Mobiles
 					}
 
 					// Can't acquire a target we can't see.
-					if (!m_Mobile.CanSee(m))
+					if (!m_Mobile.CanSee(m) || !m_Mobile.InLOS(m))
 					{
 						continue;
-					}
-
-					if (m_Mobile.Summoned && m_Mobile.SummonMaster != null)
-					{
-						// If this is a summon, it can't target its controller.
-						if (m == m_Mobile.SummonMaster)
-							continue;
-
-						// It also must abide by harmful spell rules if the master is a player.
-						if (m_Mobile.SummonMaster is PlayerMobile && !Server.Spells.SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
-							continue;
-
-						// Players animated creatures cannot attack other players directly.
-						if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
-							continue;
 					}
 
 					// If we only want faction friends
 					if (bFacFriend && !bFacFoe)
 					{
+						// Ignore anyone we can't help
+						if (!m_Mobile.CanBeBeneficial(m, false))
+						{
+							continue;
+						}
+
 						// Ignore anyone who's not a friend
 						if (!m_Mobile.IsFriend(m))
 						{
@@ -2892,6 +2883,28 @@ namespace Server.Mobiles
 					// Don't ignore friends we want to and can help
 					else if (!bFacFriend || !m_Mobile.IsFriend(m))
 					{
+						// Let's not target familiars...
+						if (m is BaseFamiliar)
+						{
+							continue;
+						}
+
+						// Summons have special enemy acquisition rules
+						if (m_Mobile.Summoned && m_Mobile.SummonMaster != null)
+						{
+							// If this is a summon, it can't target its controller.
+							if (m == m_Mobile.SummonMaster)
+								continue;
+
+							// It also must abide by harmful spell rules if the master is a player.
+							if (m_Mobile.SummonMaster is PlayerMobile && !Server.Spells.SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
+								continue;
+
+							// Players animated creatures cannot attack other players directly.
+							if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
+								continue;
+						}
+
 						// Ignore anyone we can't hurt
 						if (!m_Mobile.CanBeHarmful(m, false))
 						{
@@ -2914,10 +2927,8 @@ namespace Server.Mobiles
 								continue;
 							}
 */
-							if (acqType == FightMode.Aggressor || acqType == FightMode.Evil || acqType == FightMode.Good
-                                || (m is BaseCreature && ((BaseCreature)m).Summoned))
+							if (acqType == FightMode.Aggressor || acqType == FightMode.Evil || acqType == FightMode.Good)
 							{
-
 								//Ignore anyone under EtherealVoyage
 								if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
 								{
@@ -2925,7 +2936,7 @@ namespace Server.Mobiles
 								}
 
 								// Ignore players with activated honor
-								if (m is PlayerMobile && ((PlayerMobile)m).HonorActive && !(m_Mobile.Combatant == m))
+								if (m is PlayerMobile && ((PlayerMobile)m).HonorActive)
 								{
 									continue;
 								}
@@ -2934,17 +2945,17 @@ namespace Server.Mobiles
 								bool bValid = (m_Mobile.GetFactionAllegiance(m) == BaseCreature.Allegiance.Enemy ||
 											  m_Mobile.GetEthicAllegiance(m) == BaseCreature.Allegiance.Enemy);
 
-								BaseCreature c = m as BaseCreature;
-
 								// We want a special FightMode enemy
 								if (!bValid)
 								{
+									BaseCreature c = m as BaseCreature;
+
 									// We want a karma enemy
 									if (acqType == FightMode.Evil)
 									{
-										if (c != null && c.Controlled && c.ControlMaster != null)
+										if (c != null && c.GetMaster() != null)
 										{
-											bValid = (c.ControlMaster.Karma < 0);
+											bValid = (c.GetMaster().Karma < 0);
 										}
 										else
 										{
@@ -2954,9 +2965,9 @@ namespace Server.Mobiles
 									// We want a karma enemy
 									else if (acqType == FightMode.Good)
 									{
-										if (c != null && c.Controlled && c.ControlMaster != null)
+										if (c != null && c.GetMaster() != null)
 										{
-											bValid = (c.ControlMaster.Karma > 0);
+											bValid = (c.GetMaster().Karma > 0);
 										}
 										else
 										{
@@ -2981,7 +2992,7 @@ namespace Server.Mobiles
 
 					theirVal = m_Mobile.GetFightModeRanking(m, acqType, bPlayerOnly);
 
-					if (theirVal > val && m_Mobile.InLOS(m))
+					if (theirVal > val)
 					{
 						newFocusMob = m;
 						val = theirVal;
