@@ -2996,7 +2996,7 @@ namespace Server.Mobiles
 			return (m_Mobile.FocusMob != null);
 		}
 
-		private bool IsHostile(Mobile from)
+		public virtual bool IsHostile(Mobile from)
 		{
 			int count = Math.Max(m_Mobile.Aggressors.Count, m_Mobile.Aggressed.Count);
 
