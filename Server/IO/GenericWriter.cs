@@ -184,65 +184,61 @@ namespace Server
                foreach(var o in list)
                    writer(o);
         }
-        
-		public virtual void WriteItemList(ArrayList list, bool tidy = false) => 
-			WriteListTidy(list, () => WriteCol(list.OfType<Item>(), Write), tidy, i => ((Item) list[i]).Deleted);
 
-		public virtual void WriteMobileList(ArrayList list, bool tidy = false) => 
-			WriteListTidy(list, () => WriteCol(list.OfType<Mobile>(), Write), tidy, i => ((Mobile)list[i]).Deleted);
+        [Obsolete("Use the Write method that takes a List<Item> as its first parameter.")]
+        public virtual void WriteItemList(ArrayList list, bool tidy = false) => 
+			WriteListTidy(list, () => WriteCol(list.OfType<Item>(), Write), tidy, i => list[i] == null || ((Item) list[i]).Deleted);
 
-		public virtual void WriteGuildList(ArrayList list, bool tidy = false) =>
-			WriteListTidy(list, () => WriteCol(list.OfType<BaseGuild>(), Write), tidy, i => ((BaseGuild) list[i]).Disbanded);
+        [Obsolete("Use the Write method that takes a List<Mobile> as its first parameter.")]
+        public virtual void WriteMobileList(ArrayList list, bool tidy = false) => 
+			WriteListTidy(list, () => WriteCol(list.OfType<Mobile>(), Write), tidy, i => list[i] == null || ((Mobile)list[i]).Deleted);
 
-		public virtual void WriteDataList(ArrayList list, bool tidy = false) =>
-			WriteListTidy(list, () => WriteCol(list.OfType<SaveData>(), Write), tidy, i => ((SaveData)list[i]).Deleted);
+        [Obsolete("Use the Write method that takes a List<BaseGuild> as its first parameter.")]
+        public virtual void WriteGuildList(ArrayList list, bool tidy = false) =>
+			WriteListTidy(list, () => WriteCol(list.OfType<BaseGuild>(), Write), tidy, i => list[i] == null || ((BaseGuild) list[i]).Disbanded);
 
-		public virtual void Write(List<Item> list, bool tidy = false) =>
-			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i].Deleted);
+        [Obsolete("Use the Write method that takes a List<SaveData> as its first parameter.")]
+        public virtual void WriteDataList(ArrayList list, bool tidy = false) =>
+			WriteListTidy(list, () => WriteCol(list.OfType<SaveData>(), Write), tidy, i => list[i] == null || ((SaveData)list[i]).Deleted);
+
+		public virtual void Write(List<Item> list, bool tidy = false) => WriteItemList(list, tidy);
 
 		public virtual void WriteItemList<T>(List<T> list, bool tidy = false) where T : Item =>
-			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i].Deleted);
+			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i] == null || list[i].Deleted);
 
-		public virtual void Write(HashSet<Item> set, bool tidy = false) =>
-			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item.Deleted);
+		public virtual void Write(HashSet<Item> set, bool tidy = false) => WriteItemSet(set, tidy);
 
 		public virtual void WriteItemSet<T>(HashSet<T> set, bool tidy) where T : Item =>
-			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item.Deleted);
+			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item == null || item.Deleted);
 
-		public virtual void Write(List<Mobile> list, bool tidy = false) =>
-			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i].Deleted);
+		public virtual void Write(List<Mobile> list, bool tidy = false) => WriteMobileList(list, tidy);
 
 		public virtual void WriteMobileList<T>(List<T> list, bool tidy = false) where T : Mobile =>
-			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i].Deleted);
+			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i] == null || list[i].Deleted);
 
-		public virtual void Write(HashSet<Mobile> set, bool tidy = false) =>
-			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item.Deleted);
+		public virtual void Write(HashSet<Mobile> set, bool tidy = false) => WriteMobileSet(set, tidy);
 
 		public virtual void WriteMobileSet<T>(HashSet<T> set, bool tidy = false) where T : Mobile =>
-			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item.Deleted);
+			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item == null || item.Deleted);
 
-		public virtual void Write(List<BaseGuild> list, bool tidy = false) =>
-			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i].Disbanded);
+		public virtual void Write(List<BaseGuild> list, bool tidy = false) => WriteGuildList(list, tidy);
 
 		public virtual void WriteGuildList<T>(List<T> list, bool tidy = false) where T : BaseGuild =>
-			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i].Disbanded);
+			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i] == null || list[i].Disbanded);
 
-		public virtual void Write(HashSet<BaseGuild> set, bool tidy = false) =>
-			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item.Disbanded);
+		public virtual void Write(HashSet<BaseGuild> set, bool tidy = false) => WriteGuildSet(set, tidy);
 
-		public virtual void WriteGuildSet<T>(HashSet<T> set, bool tidy = false) where T : BaseGuild =>
-			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item.Disbanded);
+        public virtual void WriteGuildSet<T>(HashSet<T> set, bool tidy = false) where T : BaseGuild =>
+			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item == null || item.Disbanded);
 
-		public virtual void Write(List<SaveData> list, bool tidy = false) =>
-			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i].Deleted);
+		public virtual void Write(List<SaveData> list, bool tidy = false) => WriteDataList(list, tidy);
 
 		public virtual void WriteDataList<T>(List<T> list, bool tidy = false) where T : SaveData =>
-			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i].Deleted);
+			WriteListTidy(list, () => WriteCol(list, Write), tidy, i => list[i] == null || list[i].Deleted);
 
-		public virtual void Write(HashSet<SaveData> set, bool tidy = false) =>
-			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item.Deleted);
+		public virtual void Write(HashSet<SaveData> set, bool tidy = false) => WriteDataSet(set, tidy);
 
 		public virtual void WriteDataSet<T>(HashSet<T> set, bool tidy = false) where T : SaveData =>
-			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item.Deleted);
+			WriteSetTidy(set, () => WriteCol(set, Write), tidy, item => item == null || item.Deleted);
 	}
 }
