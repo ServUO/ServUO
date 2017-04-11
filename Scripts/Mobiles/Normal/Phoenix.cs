@@ -36,11 +36,16 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 86.0, 135.0);
             this.SetSkill(SkillName.Tactics, 80.1, 90.0);
             this.SetSkill(SkillName.Wrestling, 90.1, 100.0);
+            this.SetSkill(SkillName.DetectHidden, 70.0, 80.0);
 
             this.Fame = 15000;
             this.Karma = 0;
 
             this.VirtualArmor = 60;
+
+            this.Tamable = true;
+            this.ControlSlots = 4;
+            this.MinTameSkill = 102.0;
         }
 
         public Phoenix(Serial serial)
@@ -48,35 +53,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override MeatType MeatType
-        {
-            get
-            {
-                return MeatType.Bird;
-            }
-        }
-        public override int Feathers
-        {
-            get
-            {
-                return 36;
-            }
-        }
-        public override bool CanFly
-        {
-            get
-            {
-                return true;
-            }
-        }
-
+        public override bool CanAngerOnTame { get { return true; } }
+        public override bool StatLossAfterTame { get { return true; } }
+        public override int Meat { get { return 1; } }
+        public override MeatType MeatType { get { return MeatType.Bird; } }
+        public override int Feathers { get { return 36; } }
+        public override bool CanFly { get { return true; } }
         public override bool HasAura { get { return true; } }
         public override int AuraRange { get { return 2; } }
 
