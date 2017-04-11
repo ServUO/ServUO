@@ -11,6 +11,7 @@ namespace Server.Items
         public BlackrockMoonstone()
             : base(0x9CAA)
         {
+            Hue = 1175;
         }
 
         public BlackrockMoonstone(Serial serial)
