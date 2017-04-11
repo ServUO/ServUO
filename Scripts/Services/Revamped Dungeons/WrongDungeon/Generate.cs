@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace Server.Engines
 {
-    public static class GenerateWrongRewamp
+    public static class GenerateWrongRevamp
     {
         public static void Initialize()
         {
-            CommandSystem.Register("GenWrongRewamp", AccessLevel.Administrator, Generate_NewWrong);
+            CommandSystem.Register("GenWrongRevamp", AccessLevel.Administrator, Generate_NewWrong);
         }        
 
         public static void Generate_NewWrong(CommandEventArgs e)
