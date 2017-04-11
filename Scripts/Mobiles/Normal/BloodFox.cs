@@ -43,6 +43,9 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool CanAngerOnTame { get { return true; } }
+        public override bool StatLossAfterTame { get { return true; } }
+
         public override WeaponAbility GetWeaponAbility()
         {
             return WeaponAbility.BleedAttack;

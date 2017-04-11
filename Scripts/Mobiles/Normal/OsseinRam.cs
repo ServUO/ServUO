@@ -80,6 +80,9 @@ namespace Server.Mobiles
             return WeaponAbility.Disarm;
         }
 
+        public override bool CanAngerOnTame { get { return true; } }
+        public override bool StatLossAfterTame { get { return true; } }
+
         public OsseinRam(Serial serial) : base(serial)
         {
         }
