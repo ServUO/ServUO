@@ -45,11 +45,8 @@ namespace Server.Mobiles
             this.Karma = -5000;
 
             this.VirtualArmor = 36;
-
-            if (!this.Controlled)
-            {
-                this.PackItem(new SpidersSilk(8));
-            }
+            
+            this.PackItem(new SpidersSilk(8));
 
             this.Tamable = true;
             this.ControlSlots = 3;

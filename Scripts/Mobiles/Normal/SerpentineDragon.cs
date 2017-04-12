@@ -43,7 +43,7 @@ namespace Server.Mobiles
 
             this.VirtualArmor = 36;
 
-            if (!this.Controlled && Core.ML && Utility.RandomDouble() < .33)
+            if (Core.ML && Utility.RandomDouble() < .33)
                 this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
 
             this.Tamable = true;

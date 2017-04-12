@@ -54,46 +54,44 @@ namespace Server.Mobiles
             this.Fame = 8500;
             this.Karma = -8500;
 
-            if (!this.Controlled)
+            
+            if (Core.ML && Utility.RandomDouble() < .33)
+                this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(1));
+
+            switch (Utility.Random(10))
             {
-                if (Core.ML && Utility.RandomDouble() < .33)
-                    this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(1));
-
-                switch (Utility.Random(10))
-                {
-                    case 0:
-                        this.PackItem(new LeftArm());
-                        break;
-                    case 1:
-                        this.PackItem(new RightArm());
-                        break;
-                    case 2:
-                        this.PackItem(new Torso());
-                        break;
-                    case 3:
-                        this.PackItem(new Bone());
-                        break;
-                    case 4:
-                        this.PackItem(new RibCage());
-                        break;
-                    case 5:
-                        this.PackItem(new RibCage());
-                        break;
-                    case 6:
-                        this.PackItem(new BonePile());
-                        break;
-                    case 7:
-                        this.PackItem(new BonePile());
-                        break;
-                    case 8:
-                        this.PackItem(new BonePile());
-                        break;
-                    case 9:
-                        this.PackItem(new BonePile());
-                        break;
-                }
+                case 0:
+                    this.PackItem(new LeftArm());
+                    break;
+                case 1:
+                    this.PackItem(new RightArm());
+                    break;
+                case 2:
+                    this.PackItem(new Torso());
+                    break;
+                case 3:
+                    this.PackItem(new Bone());
+                    break;
+                case 4:
+                    this.PackItem(new RibCage());
+                    break;
+                case 5:
+                    this.PackItem(new RibCage());
+                    break;
+                case 6:
+                    this.PackItem(new BonePile());
+                    break;
+                case 7:
+                    this.PackItem(new BonePile());
+                    break;
+                case 8:
+                    this.PackItem(new BonePile());
+                    break;
+                case 9:
+                    this.PackItem(new BonePile());
+                    break;
             }
-
+            
             this.Tamable = true;
             this.ControlSlots = 3;
             this.MinTameSkill = 96.0;
