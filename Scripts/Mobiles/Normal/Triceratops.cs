@@ -3,46 +3,63 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a saber-toothed tiger corpse")]
-    public class SabertoothedTiger : BaseCreature
+    [CorpseName("a triceratops corpse")]
+    public class Triceratops : BaseCreature
     {
         [Constructable]
-        public SabertoothedTiger()
+        public Triceratops()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "saber-toothed tiger";
-            this.Body = 0x588;
+            this.Name = "Triceratops";
+            this.Body = 0x587;
             this.Female = true;
 
-            this.SetStr(521);
-            this.SetDex(403);
-            this.SetInt(448);
+            this.SetStr(1100, 1300);
+            this.SetDex(150, 170);
+            this.SetInt(280, 310);
 
-            this.SetHits(404);
+            this.SetHits(1100 , 1200);
 
             this.SetDamage(21, 28);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
+            this.SetResistance(ResistanceType.Physical, 70, 80);
+            this.SetResistance(ResistanceType.Fire, 40, 50);
+            this.SetResistance(ResistanceType.Cold, 40, 50);
             this.SetResistance(ResistanceType.Poison, 30, 40);
             this.SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.Parry, 105.0, 110.0);
+            this.SetSkill(SkillName.Anatomy, 65.0, 75.0);
             this.SetSkill(SkillName.Tactics, 90.0, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0, 105.0);
+            this.SetSkill(SkillName.Wrestling, 95.0, 105.0);
             this.SetSkill(SkillName.DetectHidden, 75.0);
             this.SetSkill(SkillName.Focus, 95.0, 105.0);
+            this.SetSkill(SkillName.Parry, 0.0, 105.0);
 
-            this.Fame = 11000;
-            this.Karma = -11000;
-            
             this.Tamable = true;
-            this.ControlSlots = 2;
+            this.ControlSlots = 3;
             this.MinTameSkill = 102.0;
         }
+
+        public override void OnGaveMeleeAttack(Mobile defender)
+        {
+            base.OnGaveMeleeAttack(defender);
+
+            Paralyze(defender);
+        }
+
+        #region Paralyze
+        private void Paralyze(Mobile defender)
+        {
+            defender.Paralyze(TimeSpan.FromSeconds(Utility.Random(3)));
+
+            defender.FixedEffect(0x376A, 6, 1);
+            defender.PlaySound(0x204);
+
+            defender.SendLocalizedMessage(1060164); // The attack has temporarily paralyzed you!
+        }
+        #endregion
 
         public override int GetIdleSound() { return 0x673; }
         public override int GetAngerSound() { return 0x670; }
@@ -56,9 +73,9 @@ namespace Server.Mobiles
             switch(Utility.Random(3))
             {
                 default:
-                case 0: return WeaponAbility.Disarm; 
-                case 1: return WeaponAbility.ArmorIgnore; 
-                case 2: return WeaponAbility.NerveStrike;
+                case 0: return WeaponAbility.ArmorIgnore; 
+                case 1: return WeaponAbility.ArmorPierce;
+                case 2: return WeaponAbility.BleedAttack;
             }
         }
         
@@ -75,7 +92,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich, 1);
         }
 
-        public SabertoothedTiger(Serial serial)
+        public Triceratops(Serial serial)
             : base(serial)
         {
         }

@@ -2094,6 +2094,7 @@
     <Compile Include="Mobiles\Normal\PlagueRat.cs" />
     <Compile Include="Mobiles\Normal\PlagueSpawn.cs" />
     <Compile Include="Mobiles\Normal\Lion.cs" />
+    <Compile Include="Mobiles\Normal\Triceratops.cs" />
     <Compile Include="Mobiles\Normal\Turkey.cs" />
     <Compile Include="Mobiles\Normal\PalaminoHorse.cs" />
     <Compile Include="Mobiles\Normal\SabertoothedTiger.cs" />
