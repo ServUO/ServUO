@@ -2314,7 +2314,7 @@ namespace Server.Items
 
 						//percentageBonus += 50;
                         //Based on chiv skill will give damage modifier bonus up to 64. Karma is not considered yet
-                        percentageBonus += Convert.ToInt32(Math.Floor((attacker.Skills[SkillName.Chivalry].Base - 30) / 7 * 5));
+                        percentageBonus += Convert.ToInt32(Math.Floor((attacker.Skills[SkillName.Chivalry].Value - 30) / 7 * 5));
 					}
 				}
 			}
