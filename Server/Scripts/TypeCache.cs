@@ -13,9 +13,9 @@ namespace Server
         private readonly TypeTable m_Names;
         private readonly TypeTable m_FullNames;
 
-        public Type[] Types => m_Types;
-        public TypeTable Names => m_Names;
-        public TypeTable FullNames => m_FullNames;
+        public Type[] Types { get { return m_Types; } }
+        public TypeTable Names { get { return m_Names; } }
+        public TypeTable FullNames { get { return m_FullNames; } }
 
         public Type GetTypeByName(string name, bool ignoreCase)
         {

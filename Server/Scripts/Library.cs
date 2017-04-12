@@ -5,16 +5,16 @@ namespace Server
 {
     public class Library
     {
-        public string DisplayName { get; }
-        public string BaseName { get; }
-        public string[] Files { get; }
-        public string OutputDirectory { get; }
-        public bool Debug { get; }
+        public string DisplayName { get; private set; }
+        public string BaseName { get; private set; }
+        public string[] Files { get; private set; }
+        public string OutputDirectory { get; private set; }
+        public bool Debug { get; private set; }
 
-        public string AssemblyFileName => $"{BaseName}.dll";
-        public string AssemblyFilePath => Path.Combine(OutputDirectory, AssemblyFileName);
-        public string HashFileName => $"{BaseName}.hash";
-        public string HashFilePath => Path.Combine(OutputDirectory, HashFileName);
+        public string AssemblyFileName { get { return string.Format("{0}.dll", BaseName); } }
+        public string AssemblyFilePath { get { return Path.Combine(OutputDirectory, AssemblyFileName); } }
+        public string HashFileName { get { return string.Format("{0}.hash", BaseName); } }
+        public string HashFilePath { get { return Path.Combine(OutputDirectory, HashFileName); } }
 
         public Library(string displayName, string baseName, string[] files, string outputDirectory, bool debug)
         {
@@ -27,11 +27,11 @@ namespace Server
 
         public string GetUnusedPath()
         {
-            var path = Path.Combine($"{OutputDirectory}/{BaseName}.dll");
+            var path = Path.Combine(string.Format("{0}/{1}.dll", OutputDirectory, BaseName));
 
             for (int i = 2; File.Exists(path) && i <= 1000; ++i)
             {
-                path = Path.Combine($"{OutputDirectory}/{BaseName}.{i}.dll");
+                path = Path.Combine(string.Format("{0}/{1}.{2}.dll", OutputDirectory, BaseName, i));
             }
 
             return path;
@@ -39,7 +39,7 @@ namespace Server
 
         public void Clean()
         {
-            DeleteFiles($"{BaseName}*.dll");
+            DeleteFiles(string.Format("{0}*.dll", BaseName));
         }
 
         private void DeleteFiles(string mask)
