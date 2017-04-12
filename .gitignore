@@ -24,5 +24,6 @@ reportHistory.xml
 *.csproj.user
 *.suo
 /.idea
+*.DotSettings.user
 *.log
 *.bin

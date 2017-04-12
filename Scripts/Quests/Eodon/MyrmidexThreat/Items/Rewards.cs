@@ -175,7 +175,7 @@ namespace Server.Items
 					User.SendLocalizedMessage( 1019002 ); // You are too far away to use the gate.
 				}
 				/* CEO - 02/20/06 - Removed to allow Reds access to other lands
-				else if ( User.Kills >= 5 )
+				else if ( User.Murderer )
 				{
 					User.SendLocalizedMessage( 1019004 ); // You are not allowed to travel there.
 				}

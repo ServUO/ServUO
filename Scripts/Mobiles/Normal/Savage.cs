@@ -78,6 +78,9 @@ namespace Server.Mobiles
                 return false;
             }
         }
+
+        public override TribeType Tribe { get { return TribeType.Savage; } }
+
         public override OppositionGroup OppositionGroup
         {
             get

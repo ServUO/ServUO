@@ -27,7 +27,7 @@ namespace Server.Items
 
         public override void CheckGate(Mobile m, int range)
         {
-            if (m.Kills >= 5)
+            if (m.Murderer)
                 return;
 
             Party casterParty = Party.Get(this.m_Caster);
@@ -39,7 +39,7 @@ namespace Server.Items
 
         public override void UseGate(Mobile m)
         {
-            if (m.Kills >= 5)
+            if (m.Murderer)
                 return;
 
             Party casterParty = Party.Get(this.m_Caster);

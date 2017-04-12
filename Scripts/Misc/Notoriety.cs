@@ -141,7 +141,7 @@ namespace Server.Misc
                 }
             }
             #endregion
-			
+
             #region Mondain's Legacy
             if (target is Gregorio)
                 return false;
@@ -187,12 +187,12 @@ namespace Server.Misc
             {
                 if (Gregorio.IsMurderer(from))
                     return true;
-				
+
                 from.SendLocalizedMessage(1075456); // You are not allowed to damage this NPC unless your on the Guilty Quest
                 return false;
             }
             #endregion
-			
+
             #region Dueling
             PlayerMobile pmFrom = from as PlayerMobile;
             PlayerMobile pmTarg = target as PlayerMobile;
@@ -465,9 +465,9 @@ namespace Server.Misc
                     return Notoriety.Enemy;
             }
 
-            if (target.Kills >= 5 || (target.Body.IsMonster && IsSummoned(target as BaseCreature) && !(target is BaseFamiliar) && !(target is ArcaneFey) && !(target is Golem)) || (target is BaseCreature && (((BaseCreature)target).AlwaysMurderer || ((BaseCreature)target).IsAnimatedDead)))
+            if (target.Murderer || (target.Body.IsMonster && IsSummoned(target as BaseCreature) && !(target is BaseFamiliar) && !(target is ArcaneFey) && !(target is Golem)) || (target is BaseCreature && (((BaseCreature)target).AlwaysMurderer || ((BaseCreature)target).IsAnimatedDead)))
                 return Notoriety.Murderer;
-				
+
             #region Mondain's Legacy
             if (target is Gregorio)
             {
@@ -475,7 +475,7 @@ namespace Server.Misc
 
                 if (Gregorio.IsMurderer(source))
                     return Notoriety.Murderer;
-				
+
                 return Notoriety.Innocent;
             }
             else if (source.Player && target is Engines.Quests.BaseEscort)

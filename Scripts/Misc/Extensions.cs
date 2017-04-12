@@ -90,6 +90,27 @@ namespace Server.Items
     }
 }
 
+namespace Server.Mobiles
+{
+    public static class MobileExtensions
+    {
+        public static void SayTo(this Mobile mobile, Mobile to, int number, int hue)
+        {
+            mobile.PrivateOverheadMessage(MessageType.Regular, hue, number, to.NetState);
+        }
+
+        public static void SayTo(this Mobile mobile, Mobile to, int number, string args, int hue)
+        {
+            mobile.PrivateOverheadMessage(MessageType.Regular, hue, number, args, to.NetState);
+        }
+
+        public static void SayTo(this Mobile mobile, Mobile to, string text, int hue, bool ascii = false)
+        {
+            mobile.PrivateOverheadMessage(MessageType.Regular, hue, ascii, text, to.NetState);
+        }
+    }
+}
+
 namespace Server
 {
     public static class GeomontryExtentions

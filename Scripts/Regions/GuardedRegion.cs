@@ -163,7 +163,7 @@ namespace Server.Regions
 				return;
 			}
 
-			if (!AllowReds && m.Kills >= 5)
+			if (!AllowReds && m.Murderer)
 			{
 				CheckGuardCandidate(m);
 			}
@@ -301,7 +301,7 @@ namespace Server.Regions
 			foreach (Mobile m in eable)
 			{
 				if (IsGuardCandidate(m) &&
-					((!AllowReds && m.Kills >= 5 && m.Region.IsPartOf(this)) || m_GuardCandidates.ContainsKey(m)))
+					((!AllowReds && m.Murderer && m.Region.IsPartOf(this)) || m_GuardCandidates.ContainsKey(m)))
 				{
 					GuardTimer timer = null;
 					m_GuardCandidates.TryGetValue(m, out timer);
@@ -329,7 +329,7 @@ namespace Server.Regions
 				return false;
 			}
 
-			return (!AllowReds && m.Kills >= 5) || m.Criminal;
+			return (!AllowReds && m.Murderer) || m.Criminal;
 		}
 
 		[Usage("CheckGuarded")]

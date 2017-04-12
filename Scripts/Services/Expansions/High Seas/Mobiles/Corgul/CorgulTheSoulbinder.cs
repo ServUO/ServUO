@@ -209,7 +209,7 @@ namespace Server.Mobiles
             {
                 Point3D p = CorgulAltar.SpawnLoc;
 
-                if (this.Region.IsPartOf(typeof(CorgulRegion)) && !Utility.InRange(this.Location, p, 15))
+                if (this.Region.IsPartOf<CorgulRegion>() && !Utility.InRange(this.Location, p, 15))
                 {
                     PlaySound(0x1FE);
                     FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);

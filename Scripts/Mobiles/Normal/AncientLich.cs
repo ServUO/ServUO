@@ -53,6 +53,8 @@ namespace Server.Mobiles
         {
         }
 
+        public override TribeType Tribe { get { return TribeType.Undead; } }
+
         public override OppositionGroup OppositionGroup
         {
             get

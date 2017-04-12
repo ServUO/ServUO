@@ -32,7 +32,10 @@ namespace Server.Engines.Craft
         // arties
         PhantomStaff = 150,
         IronwoodCrown = 151,
-        BrambleCoat = 152
+        BrambleCoat = 152,
+
+        KotlBlackRod = 170,
+        KotlAutomaton = 171
     }
     #endregion
 
@@ -120,6 +123,14 @@ namespace Server.Engines.Craft
                 else
                     return 1044154; // You create the item.
             }
+        }
+
+        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
+        {
+            if (resourceType == typeof(StaffOfTheMagi))
+                return false;
+
+            return base.ConsumeOnFailure(from, resourceType, craftItem);
         }
 
         public override void InitCraftList()
@@ -518,6 +529,12 @@ namespace Server.Engines.Craft
 
             this.AddCraft(typeof(Club), 1044566, 1025043, 65.0, 115.0, typeof(Board), 1044041, 9, 1044351);
             this.AddCraft(typeof(BlackStaff), 1044566, 1023568, 81.5, 141.8, typeof(Board), 1044041, 9, 1044351);
+
+            index = AddCraft(typeof(KotlBlackRod), 1044566, 1156990, 100.0, 160.0, typeof(Board), 1044041, 20, 1044351);
+            this.AddRes(index, typeof(BlackrockMoonstone), 1156993, 1, 1156992);
+            this.AddRes(index, typeof(StaffOfTheMagi), 1061600, 1, 1044253);
+            this.AddRecipe(index, (int)CarpRecipes.KotlBlackRod);
+            this.SetNeededExpansion(index, Expansion.TOL);
 
             // Armor
             this.AddCraft(typeof(WoodenShield), 1062760, 1027034, 52.6, 77.6, typeof(Board), 1044041, 9, 1044351);

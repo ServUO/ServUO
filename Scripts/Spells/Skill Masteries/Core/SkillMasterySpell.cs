@@ -116,17 +116,10 @@ namespace Server.Spells.SkillMasteries
             }
         }
 
-        public virtual void SendCastEffect()
+        public override void SendCastEffect()
         {
-            Caster.FixedEffect(0x37C4, 10, (int)(GetCastDelay().TotalSeconds * 28), 4, 3);
+            Caster.FixedEffect(0x37C4, 5, (int)(GetCastDelay().TotalSeconds * 28), 4, 2);
         }
-
-		public override void OnBeginCast()
-		{
-			base.OnBeginCast();
-
-			SendCastEffect();
-		}
 
 		public override void GetCastSkills( out double min, out double max )
 		{
