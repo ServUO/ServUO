@@ -2217,7 +2217,8 @@ namespace Server.Items
             * Capped at x3 (300%).
             */
 			int percentageBonus = 0;
-
+            double attackerChivSkill = attacker.Skills[SkillName.Chivalry].Value;
+            
 			if (a != null)
 			{
 				percentageBonus += (int)(a.DamageScalar * 100) - 100;
@@ -2237,8 +2238,7 @@ namespace Server.Items
                 //}
                 
                 // Based on chiv skill will give 1-15 damage modifier bonus when skill value >= 92 as OSI Test Center
-                double chivSkill = attacker.Skills[SkillName.Chivalry].Value;
-                percentageBonus += chivSkill < 92.0 ? 0 : Convert.ToInt32(Math.Floor((chivSkill - 92) / 2) + 1);
+                percentageBonus += attackerChivSkill < 92.0 ? 0 : Convert.ToInt32(Math.Floor((attackerChivSkill - 92) / 2) + 1);
             }
 
             percentageBonus += (int)(damageBonus * 100) - 100;
@@ -2314,7 +2314,7 @@ namespace Server.Items
 
 						//percentageBonus += 50;
                         //Based on chiv skill will give damage modifier bonus up to 64. Karma is not considered yet
-                        percentageBonus += Convert.ToInt32(Math.Floor((attacker.Skills[SkillName.Chivalry].Value - 30) / 7 * 5));
+                        percentageBonus += Convert.ToInt32(Math.Floor((attackerChivSkill - 30) / 7 * 5));
 					}
 				}
 			}
