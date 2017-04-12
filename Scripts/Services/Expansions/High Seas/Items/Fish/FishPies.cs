@@ -26,8 +26,13 @@ namespace Server.Items
         CastFocus,
     }
 
-    public class BaseFishPie : Item
+    public class BaseFishPie : Item, IQuality
     {
+        private ItemQuality _Quality;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
         public virtual TimeSpan Duration { get { return TimeSpan.FromMinutes(5); } }
         public virtual int BuffName { get { return 0; } }
         public virtual int BuffAmount { get { return 0; } }
@@ -163,6 +168,11 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
+            if (_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+
             list.Add(BuffName, BuffAmount.ToString());
         }
 
@@ -186,13 +196,20 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+
+            writer.Write((int)1); // version
+
+            writer.Write((int)_Quality);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
+
+            if (version > 0)
+                _Quality = (ItemQuality)reader.ReadInt();
         }
     }
 

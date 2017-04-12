@@ -61,7 +61,7 @@ namespace Server.Mobiles
         {
             get
             {
-                if (this.Region != null && this.Region.IsPartOf(typeof(BattleRegion)))
+                if (this.Region != null && this.Region.IsPartOf<BattleRegion>())
                 {
                     if (((BattleRegion)this.Region).Spawner != null)
                         return !((BattleRegion)this.Region).Spawner.HasPlayers();
@@ -420,7 +420,7 @@ namespace Server.Mobiles
             }
 		}
 
-        public override bool AlwaysAttackable { get { return this.Region.IsPartOf(typeof(BattleRegion)); } }
+        public override bool AlwaysAttackable { get { return this.Region.IsPartOf<BattleRegion>(); } }
         public override bool ShowFameTitle { get { return false; } }
 
         public override void GenerateLoot()
@@ -639,7 +639,7 @@ namespace Server.Mobiles
             }
 		}
 
-        public override bool AlwaysAttackable { get { return this.Region.IsPartOf(typeof(BattleRegion)); } }
+        public override bool AlwaysAttackable { get { return this.Region.IsPartOf<BattleRegion>(); } }
         public override bool ShowFameTitle { get { return false; } }
 
         public TribeShaman(Serial serial) : base(serial)

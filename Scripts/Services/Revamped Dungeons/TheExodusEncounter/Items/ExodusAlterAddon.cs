@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Server.Items
 {
@@ -10,17 +7,17 @@ namespace Server.Items
         [Constructable]
         public ExodusAlterAddon()
         {
-            this.AddComponent(0x0782, 0, 1, 5);
-            this.AddComponent(0x0783, 1, 0, 5);
-            this.AddComponent(0x074E, 0, 0, 5);
-            this.AddComponent(0x074F, 1, 1, 5);
+            this.AddComponent(0x3F9, 0, 1, 5);
+            this.AddComponent(0x3FA, 1, 0, 5);
+            this.AddComponent(0x3F7, 0, 0, 5);
+            this.AddComponent(0x3F8, 1, 1, 5);
         }
 
         public void AddComponent(int id, int x, int y, int z)
         {
             AddonComponent ac = new AddonComponent(id);
 
-            ac.Hue = 0xA92;
+            ac.Hue = 2702;
             this.AddComponent(ac, x, y, z);
         }
        

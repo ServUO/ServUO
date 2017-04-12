@@ -319,7 +319,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
                 return false;
             }
-            else if (from.Kills >= 5 && boundRoot.Map != Map.Felucca)
+            else if (from.Murderer && boundRoot.Map != Map.Felucca)
             {
                 from.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 return false;
@@ -339,12 +339,12 @@ namespace Server.Items
                 from.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
                 return false;
             }
-            else if (from.Region.IsPartOf(typeof(Server.Regions.Jail)))
+            else if (from.Region.IsPartOf<Server.Regions.Jail>())
             {
                 from.SendLocalizedMessage(1114345, "", 0x35); // You'll need a better jailbreak plan than that!
                 return false;
             }
-            else if (boundRoot.Region.IsPartOf(typeof(Server.Regions.Jail)))
+            else if (boundRoot.Region.IsPartOf<Server.Regions.Jail>())
             {
                 from.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 return false;

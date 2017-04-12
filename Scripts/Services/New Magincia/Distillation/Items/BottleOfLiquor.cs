@@ -68,8 +68,10 @@ namespace Server.Engines.Distillation
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write((int)0);
-			
+			writer.Write((int)1);
+
+            writer.Write(m_IsStrong);
+
 			writer.Write((int)m_Liquor);
 			writer.Write(m_Label);
             writer.Write(m_Distiller);
@@ -79,10 +81,20 @@ namespace Server.Engines.Distillation
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
-			
-			m_Liquor = (Liquor)reader.ReadInt();
-			m_Label = reader.ReadString();
-            m_Distiller = reader.ReadMobile();
+
+            switch (version)
+            {
+                case 1:
+                    m_IsStrong = reader.ReadBool();
+                    goto case 0;
+                case 0:
+                    m_Liquor = (Liquor)reader.ReadInt();
+                    m_Label = reader.ReadString();
+                    m_Distiller = reader.ReadMobile();
+
+                    m_IsStrong = true;
+                    break;
+            }
 		}
 	}
 }

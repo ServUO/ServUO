@@ -17,9 +17,9 @@ namespace Server.Engines.VvV
         {
         }
 
-        public override int GetPoints(Mobile m)
+        public override double GetPoints(Mobile m)
         {
-            return (int)PointsSystem.ViceVsVirtue.GetPoints(m);
+            return PointsSystem.ViceVsVirtue.GetPoints(m);
         }
 
         public override void OnConfirmed(CollectionItem citem, int index)

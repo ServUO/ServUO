@@ -12,7 +12,9 @@ namespace Server.Engines.Craft
 
         DarkChocolateNutcracker = 600,
         MilkChocolateNutcracker = 601,
-        WhiteChocolateNutcracker = 602
+        WhiteChocolateNutcracker = 602,
+
+        ThreeTieredCake = 603
     }
     #endregion
 
@@ -314,6 +316,10 @@ namespace Server.Engines.Craft
             this.AddRes(index, typeof(FreshGinger), 1031235, 1, 1044253);
             this.AddRecipe(index, (int)CookRecipes.GingerbreadCookie);
             this.SetNeedOven(index, true);
+
+            index = this.AddCraft(typeof(ThreeTieredCake), 1044497, 1154465, 60.0, 110.0, typeof(CakeMix), 1044471, 3, 1044253);
+            this.AddRecipe(index, (int)CookRecipes.ThreeTieredCake);
+            this.SetNeedOven(index, true);
             /* End Baking */
 
             /* Begin Barbecue */
@@ -345,6 +351,14 @@ namespace Server.Engines.Craft
             /* Begin Chocolatiering */
             if (Core.ML)
             {
+                if (Core.TOL)
+                {
+                    index = this.AddCraft(typeof(SweetCocoaButter), 1080001, 1156401, 15.0, 100.0, typeof(SackOfSugar), 1079997, 1, 1044253);
+                    this.AddRes(index, typeof(CocoaButter), 1079998, 1, 1044253);
+                    this.SetItemHue(index, 0x457);
+                    this.SetNeedOven(index, true);
+                }
+
                 index = this.AddCraft(typeof(DarkChocolate), 1080001, 1079994, 15.0, 100.0, typeof(SackOfSugar), 1079997, 1, 1044253);
                 this.AddRes(index, typeof(CocoaButter), 1079998, 1, 1044253);
                 this.AddRes(index, typeof(CocoaLiquor), 1079999, 1, 1044253);
@@ -368,23 +382,29 @@ namespace Server.Engines.Craft
                 this.SetNeededExpansion(index, Expansion.ML);
 
                 #region TOL
-                index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156390, 15.0, 100.0, typeof(GoldFoil), 1124032, 1, 1156402);
-                AddRes(index, typeof(DarkChocolate), 1079994, 1, 1044253);
-                AddRecipe(index, (int)CookRecipes.DarkChocolateNutcracker);
-                SetData(index, ChocolateNutcracker.ChocolateType.Dark);
-                SetNeededExpansion(index, Expansion.TOL);
+                if (Core.TOL)
+                {
+                    index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156390, 15.0, 100.0, typeof(SweetCocoaButter), 1156401, 1, 1044253);
+                    AddRes(index, typeof(SweetCocoaButter), 1124032, 1, 1156402);
+                    AddRes(index, typeof(CocoaLiquor), 1079999, 1, 1044253);
+                    AddRecipe(index, (int)CookRecipes.DarkChocolateNutcracker);
+                    SetData(index, ChocolateNutcracker.ChocolateType.Dark);
+                    SetNeededExpansion(index, Expansion.TOL);
 
-                index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156391, 32.5, 107.5, typeof(GoldFoil), 1124032, 1, 1156402);
-                AddRes(index, typeof(MilkChocolate), 1079995, 1, 1044253);
-                AddRecipe(index, (int)CookRecipes.MilkChocolateNutcracker);
-                SetData(index, ChocolateNutcracker.ChocolateType.Milk);
-                SetNeededExpansion(index, Expansion.TOL);
+                    index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156391, 32.5, 107.5, typeof(SweetCocoaButter), 1156401, 1, 1044253);
+                    AddRes(index, typeof(SweetCocoaButter), 1124032, 1, 1156402);
+                    AddRes(index, typeof(CocoaLiquor), 1079999, 1, 1044253);
+                    AddRecipe(index, (int)CookRecipes.MilkChocolateNutcracker);
+                    SetData(index, ChocolateNutcracker.ChocolateType.Milk);
+                    SetNeededExpansion(index, Expansion.TOL);
 
-                index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156392, 52.5, 127.5, typeof(GoldFoil), 1124032, 1, 1156402);
-                AddRes(index, typeof(WhiteChocolate), 1079996, 1, 1044253);
-                AddRecipe(index, (int)CookRecipes.WhiteChocolateNutcracker);
-                SetData(index, ChocolateNutcracker.ChocolateType.White);
-                SetNeededExpansion(index, Expansion.TOL);
+                    index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156392, 52.5, 127.5, typeof(SweetCocoaButter), 1156401, 1, 1044253);
+                    AddRes(index, typeof(SweetCocoaButter), 1124032, 1, 1156402);
+                    AddRes(index, typeof(CocoaLiquor), 1079999, 1, 1044253);
+                    AddRecipe(index, (int)CookRecipes.WhiteChocolateNutcracker);
+                    SetData(index, ChocolateNutcracker.ChocolateType.White);
+                    SetNeededExpansion(index, Expansion.TOL);
+                }
                 #endregion
             }
             /* End Chocolatiering */

@@ -21,8 +21,9 @@ namespace Server.Engines.Craft
         KotlPowerCoil = 455,
 
         // doom
-        BraceletOfPrimalConsumption = 456
-
+        BraceletOfPrimalConsumption = 456,
+        DrSpectorLenses = 457,
+        KotlAutomatonHead = 458
     }
 
     public class DefTinkering : CraftSystem
@@ -109,7 +110,9 @@ namespace Server.Engines.Craft
             typeof(HeatingStand),
             typeof(GorgonLense), typeof(MedusaLightScales), typeof(MedusaDarkScales), typeof(RedScales), 
             typeof(BlueScales), typeof(BlackScales), typeof(GreenScales), typeof(YellowScales), typeof(WhiteScales),
-            typeof(PlantPigment), typeof(SoftenedReeds), typeof(DryReeds), typeof(PlantClippings)
+            typeof(PlantPigment), typeof(SoftenedReeds), typeof(DryReeds), typeof(PlantClippings),
+
+            typeof(KotlAutomatonHead)
         };
 
         public override bool RetainsColorFrom(CraftItem item, Type type)
@@ -131,8 +134,7 @@ namespace Server.Engines.Craft
 
         public override void PlayCraftEffect(Mobile from)
         {
-            // no sound
-            //from.PlaySound( 0x241 );
+            from.PlaySound( 0x23B );
         }
 
         public override int PlayEndingEffect(Mobile from, bool failed, bool lostMaterial, bool toolBroken, int quality, bool makersMark, CraftItem item)
@@ -162,7 +164,7 @@ namespace Server.Engines.Craft
 
         public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            if (resourceType == typeof(Silver) || resourceType == typeof(RingOfTheElements))
+            if (resourceType == typeof(Silver) || resourceType == typeof(RingOfTheElements) || resourceType == typeof(HatOfTheMagi) || resourceType == typeof(AutomatonActuator))
                 return false;
 
             return base.ConsumeOnFailure(from, resourceType, craftItem);
@@ -638,6 +640,14 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(CopperWire), 1026265, 1, 1044253);
             ForceNonExceptional(index);
 
+            index = AddCraft(typeof(KotlAutomatonHead), 1044051, 1156998, 100.0, 580.0, typeof(IronIngot), 1044036, 300, 1044037);
+            SetMinSkillOffset(index, 25.0);
+            AddRes(index, typeof(AutomatonActuator), 1156997, 1, 1156999);
+            AddRes(index, typeof(StasisChamberPowerCore), 1156623, 1, 1157000);
+            AddRes(index, typeof(InoperativeAutomatonHead), 1157002, 1, 1157001);
+            SetNeededExpansion(index, Expansion.TOL);
+            AddRecipe(index, (int)TinkerRecipes.KotlAutomatonHead);
+
             #endregion
 
             #region Traps
@@ -766,6 +776,14 @@ namespace Server.Engines.Craft
                 this.AddRes(index, typeof(BlueDiamond), 1032696, 1, 1044253);
                 this.SetNeededExpansion(index, Expansion.SA);
 
+                index = this.AddCraft(typeof(DrSpectorsLenses), 1073107, 1156991, 100.0, 580.0, typeof(IronIngot), 1044036, 20, 1044037);
+                this.SetMinSkillOffset(index, 25.0);
+                this.AddRes(index, typeof(BlackrockMoonstone), 1156993, 1, 1156992);
+                this.AddRes(index, typeof(HatOfTheMagi), 1061597, 1, 1044253);
+                this.AddRecipe(index, (int)TinkerRecipes.DrSpectorLenses);
+                this.ForceNonExceptional(index);
+                this.SetNeededExpansion(index, Expansion.TOL);
+
                 index = this.AddCraft(typeof(BraceletOfPrimalConsumption), 1073107, 1157350, 100.0, 580.0, typeof(IronIngot), 1044036, 3, 1044037);
                 this.SetMinSkillOffset(index, 25.0);
                 this.AddRes(index, typeof(RingOfTheElements), 1061104, 1, 1044253);
@@ -773,7 +791,7 @@ namespace Server.Engines.Craft
                 this.AddRes(index, typeof(WhitePearl), 1032694, 10, 1044240);
                 this.AddRecipe(index, (int)TinkerRecipes.BraceletOfPrimalConsumption);
                 this.ForceNonExceptional(index);
-                this.SetNeededExpansion(index, Expansion.SA);
+                this.SetNeededExpansion(index, Expansion.TOL);
             }
             #endregion
 

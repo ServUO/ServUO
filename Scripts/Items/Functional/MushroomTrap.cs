@@ -59,7 +59,7 @@ namespace Server.Items
 
         public virtual void OnMushroomReset()
         {
-            if (Region.Find(this.Location, this.Map).IsPartOf(typeof(DungeonRegion)))
+            if (Region.Find(this.Location, this.Map).IsPartOf<DungeonRegion>())
                 this.ItemID = 0x1125; // reset
             else
                 this.Delete();

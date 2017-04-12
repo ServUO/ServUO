@@ -11,6 +11,11 @@ namespace Server.Spells.Mysticism
 	{
         public override SpellCircle Circle { get { return SpellCircle.First; } }
 
+        public override TimeSpan GetCastDelay()
+        {
+            return TimeSpan.FromTicks(base.GetCastDelay().Ticks * 5);
+        }
+
 		private static SpellInfo m_Info = new SpellInfo(
 				"Healing Stone", "Kal In Mani",
 				230,
@@ -38,6 +43,8 @@ namespace Server.Spells.Mysticism
                 int maxHeal = (int)((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 5);
 
 				Caster.PlaySound( 0x650 );
+                Caster.FixedParticles(0x3779, 1, 15, 0x251E, 0, 0, EffectLayer.Waist);
+
 				Caster.Backpack.DropItem( new HealingStone( Caster, amount, maxHeal ) );
 				Caster.SendLocalizedMessage( 1080115 ); // A Healing Stone appears in your backpack.
 			}

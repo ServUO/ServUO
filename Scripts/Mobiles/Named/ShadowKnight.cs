@@ -74,6 +74,9 @@ namespace Server.Mobiles
                 return Core.ML;
             }
         }
+
+        public override TribeType Tribe { get { return TribeType.Undead; } }
+
         public override OppositionGroup OppositionGroup
         {
             get
@@ -125,8 +128,6 @@ namespace Server.Mobiles
         {
             this.AddLoot(LootPack.UltraRich, 2);
         }
-
-        
 
         public override int GetIdleSound()
         {
