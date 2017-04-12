@@ -82,7 +82,7 @@ namespace Server.Mobiles
         public override int Hides { get { return 11; } }
         public override HideType HideType { get { return HideType.Regular; } }
         public override int Meat { get { return 3; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
 
         public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame { get { return true; } }

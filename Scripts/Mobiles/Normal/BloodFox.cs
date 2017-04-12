@@ -43,6 +43,8 @@ namespace Server.Mobiles
         {
         }
 
+        public override int Meat { get { return 5; } }
+        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
         public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame { get { return true; } }
 

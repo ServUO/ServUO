@@ -40,6 +40,8 @@ namespace Server.Mobiles
             this.MinTameSkill = 102.0;
         }
 
+        public override int Meat { get { return 5; } }
+        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
         public override bool HasAura { get { return true; } }
         public override int AuraRange { get { return 2; } }
         public override int AuraBaseDamage { get { return 15; } }
