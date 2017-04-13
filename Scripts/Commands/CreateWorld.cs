@@ -62,6 +62,7 @@ namespace Server.Commands
             new CommandEntry("Castle Blackthorn",    "GenBlackthorn",       null,                                  123),
             new CommandEntry("Time of Legends",      "DecorateTOL",         null,                                  124),
             new CommandEntry("New Wrong",      "GenWrongRewamp",            null,                                  125),
+            new CommandEntry("Kotl City",      "GenerateTreasuresOfKotlCity", null,  126),
 		});
 
         public CreateWorld()
@@ -323,6 +324,8 @@ namespace Server.Gumps
                     return WeakEntityCollection.HasCollection("tol");
                 case 125:
                     return BedrollSpawner.Instances != null && BedrollSpawner.Instances.Count > 0;
+                case 126:
+                    return Server.Engines.TreasuresOfKotlCity.KotlBattleSimulator.Instance != null;
             }
 
             return false;

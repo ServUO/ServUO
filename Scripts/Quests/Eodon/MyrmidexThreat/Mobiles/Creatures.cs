@@ -709,6 +709,7 @@ namespace Server.Mobiles
     {
         public override bool AlwaysMurderer { get { return true; } }
 
+        [Constructable]
         public IgnisFatalis()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.15, 0.3)
         {

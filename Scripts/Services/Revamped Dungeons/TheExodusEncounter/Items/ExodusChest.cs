@@ -4,7 +4,7 @@ using System;
 
 namespace Server.Items
 {
-    public class ExodusChest : DecorativeBox
+    public class ExodusChest : DecorativeBox, IRevealableItem
     {
         public static void Initialize()
         {
@@ -29,22 +29,36 @@ namespace Server.Items
         public ExodusChest() 
             : base()
         {
-            this.Visible = false;
-            this.Locked = true;
-            this.LockLevel = 100;
-            this.RequiredSkill = 110;
-            this.MaxLockLevel = 130;
-            this.Weight = 0.0;
-            this.Hue = 2700;
-            this.Movable = false;
+            Visible = false;
+            Locked = true;
+            LockLevel = 100;
+            RequiredSkill = 110;
+            MaxLockLevel = 130;
+            Weight = 0.0;
+            Hue = 2700;
+            Movable = false;
 
-            this.TrapType = TrapType.PoisonTrap;
-            this.TrapPower = 100;
-            this.GenerateTreasure();           
+            TrapType = TrapType.PoisonTrap;
+            TrapPower = 100;
+            GenerateTreasure();           
         }
 
         public ExodusChest(Serial serial) : base(serial)
         {
+        }
+
+        public bool CheckReveal(Mobile m)
+        {
+            if (!m.InRange(Location, 3))
+                return false;
+
+            return m.Skills[SkillName.DetectHidden].Value >= 98.0;
+        }
+
+        public virtual void OnRevealed(Mobile m)
+        {
+            Visible = true;
+            StartDeleteTimer();
         }
 
         public void StartDeleteTimer()
@@ -52,56 +66,56 @@ namespace Server.Items
             if (Utility.RandomDouble() < 0.2)
             {
                 Item item = Activator.CreateInstance(m_RituelItem[Utility.Random(m_RituelItem.Length)]) as Item;
-                this.DropItem(item);
+                DropItem(item);
             }
 
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(5), new TimerCallback(this.Delete));
-            this.m_Timer.Start();
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(5), new TimerCallback(Delete));
+            m_Timer.Start();
         }
 
         public override void OnLocationChange(Point3D oldLoc)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            this.UpdateRegion();
+            UpdateRegion();
         }
 
         public override void OnMapChange()
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;           
 
-            this.UpdateRegion();
+            UpdateRegion();
         }
 
         public void UpdateRegion()
         {
-            if (this.m_Region != null)
-                this.m_Region.Unregister();
+            if (m_Region != null)
+                m_Region.Unregister();
 
-            if (!this.Deleted && this.Map != Map.Internal)
+            if (!Deleted && Map != Map.Internal)
             {
-                this.m_Region = new ExodusChestRegion(this);
-                this.m_Region.Register();
+                m_Region = new ExodusChestRegion(this);
+                m_Region.Register();
             }
         }
 
         public override void OnAfterDelete()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
 
             base.OnAfterDelete();
 
-            this.UpdateRegion();
+            UpdateRegion();
         }
 
         protected virtual void GenerateTreasure()
         {
-            this.DropItem(new Gold(1500, 3000));           
+            DropItem(new Gold(1500, 3000));           
 
             Item item = null;
 
@@ -109,13 +123,13 @@ namespace Server.Items
             {               
                 item = Activator.CreateInstance(Loot.GemTypes[i]) as Item;
                 item.Amount = Utility.Random(1, 6);
-                this.DropItem(item);
+                DropItem(item);
             }
 
             if (0.25 > Utility.RandomDouble())
             {
                 item = new SmokeBomb(Utility.Random(3, 6));
-                this.DropItem(item);
+                DropItem(item);
             }
 
             if (0.25 > Utility.RandomDouble())
@@ -128,24 +142,24 @@ namespace Server.Items
                         item = new InvisibilityPotion(Utility.Random(1, 3)); break;
                 }                        
 
-                this.DropItem(item);
+                DropItem(item);
             }
 
             if (0.2 > Utility.RandomDouble())
             {
                 item = Loot.RandomEssence();
                 item.Amount = Utility.Random(3, 6);
-                this.DropItem(item);
+                DropItem(item);
             }
             
             if (0.1 > Utility.RandomDouble())
             {
                 switch (Utility.Random(4))
                 {
-                    case 0: this.DropItem(new Taint()); break;
-                    case 1: this.DropItem(new Corruption()); break;
-                    case 2: this.DropItem(new Blight()); break;
-                    case 3: this.DropItem(new LuminescentFungi()); break;
+                    case 0: DropItem(new Taint()); break;
+                    case 1: DropItem(new Corruption()); break;
+                    case 2: DropItem(new Blight()); break;
+                    case 3: DropItem(new LuminescentFungi()); break;
                 }
             }
         }
@@ -173,8 +187,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (!this.Locked)
-                this.Delete();
+            if (!Locked)
+                Delete();
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateRegion));
         }
@@ -184,12 +198,12 @@ namespace Server.Items
     {
         private readonly ExodusChest m_Chest;
 
-        public ExodusChest ExodusChest { get { return this.m_Chest; } }
+        public ExodusChest ExodusChest { get { return m_Chest; } }
 
         public ExodusChestRegion(ExodusChest chest)
             : base(null, chest.Map, Region.Find(chest.Location, chest.Map), new Rectangle2D(chest.Location.X, chest.Location.Y, 5, 5) )
         {
-            this.m_Chest = chest;
+            m_Chest = chest;
         }
 
         public override void OnEnter(Mobile m)

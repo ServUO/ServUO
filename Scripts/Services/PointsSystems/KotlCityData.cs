@@ -3,7 +3,7 @@ using Server;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Mobiles;
-using Server.Engines.ResortAndCasino;
+using Server.Commands;
 
 namespace Server.Engines.Points
 {
@@ -17,6 +17,8 @@ namespace Server.Engines.Points
 
         private TextDefinition m_Name = null;
 
+        public bool Enabled { get; set; }
+
         public KotlCityData()
         {
             DungeonPoints = new Dictionary<Mobile, int>();
@@ -29,6 +31,9 @@ namespace Server.Engines.Points
 
         public override void ProcessKill(BaseCreature victim, Mobile damager, int index)
         {
+            if (!Enabled)
+                return;
+
             Region r = victim.Region;
 
             if (damager is PlayerMobile && r.IsPartOf("KotlCity"))
@@ -80,6 +85,8 @@ namespace Server.Engines.Points
             base.Serialize(writer);
             writer.Write(0);
 
+            writer.Write(Enabled);
+
             writer.Write(DungeonPoints.Count);
             foreach (KeyValuePair<Mobile, int> kvp in DungeonPoints)
             {
@@ -94,6 +101,9 @@ namespace Server.Engines.Points
 
             int version = reader.ReadInt();
 
+            reader.ReadBool();
+            Enabled = reader.ReadBool();
+
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++)
             {
@@ -102,6 +112,56 @@ namespace Server.Engines.Points
 
                 if (m != null && points > 0)
                     DungeonPoints[m] = points;
+            }
+        }
+
+        public static void Initialize()
+        {
+            if (Core.TOL)
+            {
+                CommandSystem.Register("EnableTKC", AccessLevel.Administrator, PointsSystem.TreasuresOfKotlCity.Enable);
+                CommandSystem.Register("DisableTKC", AccessLevel.Administrator, PointsSystem.TreasuresOfKotlCity.Disable);
+                CommandSystem.Register("ToggleTKC", AccessLevel.Administrator, PointsSystem.TreasuresOfKotlCity.Toggle);
+            }
+        }
+
+        public void Enable(CommandEventArgs e)
+        {
+            if (!Enabled)
+            {
+                Enabled = true;
+                e.Mobile.SendMessage("Treasures of Kotl City enabled!");
+            }
+            else
+            {
+                e.Mobile.SendMessage("Treasures of Kotl City is already enabled!");
+            }
+        }
+
+        public void Disable(CommandEventArgs e)
+        {
+            if (Enabled)
+            {
+                Enabled = false;
+                e.Mobile.SendMessage("Treasures of Kotl City disabled!");
+            }
+            else
+            {
+                e.Mobile.SendMessage("Treasures of Kotl City is already disabled!");
+            }
+        }
+
+        public void Toggle(CommandEventArgs e)
+        {
+            if (Enabled)
+            {
+                Enabled = false;
+                e.Mobile.SendMessage("Treasures of Kotl City disabled!");
+            }
+            else
+            {
+                Enabled = true;
+                e.Mobile.SendMessage("Treasures of Kotl City enabled!");
             }
         }
     }

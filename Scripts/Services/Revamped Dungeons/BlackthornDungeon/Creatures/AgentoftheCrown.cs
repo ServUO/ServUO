@@ -14,7 +14,9 @@ namespace Server.Engines.Blackthorn
     public class AgentOfTheCrown : BaseTurnInMobile
     {
         public override int TitleLocalization { get { return 1154520; } } // Click a minor artifact to turn in for reward points.
-        public override int CancelLocalization { get { return CancelLocalization; } }	// Bring me items bearing the crest of Minax and I will reward you with valuable items.     
+        public override int CancelLocalization { get { return 1154519; } }	// Bring me items bearing the crest of Minax and I will reward you with valuable items.     
+        public override int TurnInLocalization { get { return 1154571; } } // Turn In Minax Artifacts
+        public override int ClaimLocalization { get { return 1154572; } } // Claim Blackthorn Artifacts
 
         [Constructable]
         public AgentOfTheCrown() : base("the Agent Of The Crown")
@@ -628,7 +630,7 @@ namespace Server.Engines.Blackthorn
             PointsSystem.Blackthorn.AwardPoints(pm, amount);
         }
 
-        public override void IsRedeemableItem(Item item)
+        public override bool IsRedeemableItem(Item item)
         {
             if (item is BaseWeapon && ((BaseWeapon)item).ReforgedSuffix == ReforgedSuffix.Minax)
                 return true;

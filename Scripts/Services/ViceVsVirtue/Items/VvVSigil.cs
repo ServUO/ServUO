@@ -11,7 +11,7 @@ using Server.Engines.Points;
 
 namespace Server.Engines.VvV
 {
-    public class VvVSigil : Item
+    public class VvVSigil : Item, IRevealableItem
     {
         public const int OwnershipHue = 0xB;
 
@@ -102,6 +102,19 @@ namespace Server.Engines.VvV
             Region r = Region.Find(new Point3D(x, y, pm.Map.GetAverageZ(x, y)), pm.Map);
 
             return ViceVsVirtueSystem.IsBattleRegion(r);
+        }
+
+        public bool CheckReveal(Mobile m)
+        {
+            if (!ViceVsVirtueSystem.IsVvV(m))
+                return false;
+
+            return Utility.Random(100) <= m.Skills[SkillName.DetectHidden].Value;
+        }
+
+        public virtual void OnRevealed(Mobile m)
+        {
+            Visible = true;
         }
 
         public VvVSigil(Serial serial)

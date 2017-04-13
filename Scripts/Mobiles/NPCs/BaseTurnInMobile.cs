@@ -2,13 +2,15 @@ using System;
 using Server;
 using Server.Items;
 using Server.Gumps;
+using Server.ContextMenus;
+using Server.Network;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Mobiles
 {
-    public abstract class BaseTurnInMobile : BaseHealer
+    public abstract class BaseTurnInMobile : ShrineHealer
     {
-        public override bool IsActiveVendor { get { return false; } }
         public override bool IsInvulnerable { get { return true; } }
         public override bool DisallowAllMoves { get { return true; } }
         public override bool ClickTitle { get { return true; } }
@@ -16,22 +18,25 @@ namespace Server.Mobiles
 
         public virtual int TitleLocalization { get { return 0; } }
         public virtual int CancelLocalization { get { return 0; } }
+        public virtual int TurnInLocalization { get { return 0; } }
+        public virtual int ClaimLocalization { get { return 1155593; } } // Claim Rewards
 
         public virtual int TurnInPoints { get { return 1; } }
 
-        public BaseTurnInMobile(string title) : base(title)
+        public BaseTurnInMobile(string title)
         {
+            Title = title;
         }
 
-        public virtual IEnumerable<Item> FindRedeemableItems(Mobile m)
+        public virtual IEnumerable<ItemTileButtonInfo> FindRedeemableItems(Mobile m)
         {
             if (m == null || m.Backpack == null)
                 yield break;
 
-            foreach (var item in m.Items)
+            foreach (var item in m.Backpack.Items)
             {
                 if (IsRedeemableItem(item))
-                    yield return item;
+                    yield return new ItemTileButtonInfo(item);
             }
         }
 
@@ -48,7 +53,11 @@ namespace Server.Mobiles
 
             if (from is PlayerMobile)
             {
-                list.Add(new TurnInEntry(from, this));
+                if (TurnInLocalization > 0)
+                {
+                    list.Add(new TurnInEntry(from, this));
+                }
+
                 list.Add(new ClaimEntry(from, this));
             }
         }
@@ -57,17 +66,17 @@ namespace Server.Mobiles
         {
             private Mobile m_Mobile;
             private BaseTurnInMobile m_Vendor;
-            private IEnumerable<Item> m_Buttons;
+            private IEnumerable<ItemTileButtonInfo> m_Buttons;
 
-            public TurnInEntry(Mobile mobile, Mobile vendor)
-                : base(1154571, 2)
+            public TurnInEntry(Mobile mobile, BaseTurnInMobile vendor)
+                : base(vendor.TurnInLocalization, 2)
             {
                 m_Mobile = mobile;
                 m_Vendor = vendor;
 
                 m_Buttons = m_Vendor.FindRedeemableItems(m_Mobile);
 
-                if (m_Buttons.Count > 0)
+                if (m_Buttons.Count() > 0)
                     Enabled = true;
                 else
                     Enabled = false;
@@ -75,17 +84,17 @@ namespace Server.Mobiles
 
             public override void OnClick()
             {
-                m_Mobile.SendGump(new RewardTurnInGump(m_Vendor, TitleLocalization, list));
+                m_Mobile.SendGump(new TurnInGump(m_Vendor, m_Buttons));
             }
         }
 
-        private class Claim : ContextMenuEntry
+        private class ClaimEntry : ContextMenuEntry
         {
             private Mobile m_Mobile;
-            private Mobile m_Vendor;
+            private BaseTurnInMobile m_Vendor;
 
-            public Claim(Mobile mobile, Mobile vendor)
-                : base(1154572, 2)
+            public ClaimEntry(Mobile mobile, BaseTurnInMobile vendor)
+                : base(vendor.ClaimLocalization, 2)
             {
                 m_Mobile = mobile;
                 m_Vendor = vendor;
@@ -94,7 +103,7 @@ namespace Server.Mobiles
             public override void OnClick()
             {
                 if (m_Mobile.CheckAlive())
-                    SendRewardGump(m_Mobile);
+                    m_Vendor.SendRewardGump(m_Mobile);
             }
         }
 
@@ -128,14 +137,8 @@ namespace Server.Mobiles
 
         public BaseTurnInMobile Collector { get { return m_Collector; } }
 
-        public TurnInGump(Mobile collector, int localization, IEnumerable<Item> buttons)
+        public TurnInGump(BaseTurnInMobile collector, IEnumerable<ItemTileButtonInfo> buttons)
             : base(collector.TitleLocalization, buttons.ToArray())
-        {
-            m_Collector = collector;
-        }
-
-        public TurnInGump(Mobile collector, int localization, ItemTileButtonInfo[] buttons)
-            : base(collector.TitleLocalization, buttons)
         {
             m_Collector = collector;
         }
@@ -153,10 +156,10 @@ namespace Server.Mobiles
 
             m_Collector.AwardPoints(pm, m_Collector.TurnInPoints);
 
-            IEnumerable<Item> buttons = FindRedeemableItems(pm);
+            IEnumerable<ItemTileButtonInfo> buttons = m_Collector.FindRedeemableItems(pm);
 
             if (buttons != null && buttons.Count() > 0)
-                pm.SendGump(new ToTTurnInGump(this.m_Collector, buttons));
+                pm.SendGump(new TurnInGump(m_Collector, buttons));
         }
 
         public override void HandleCancel(NetState sender)

@@ -69,10 +69,15 @@ namespace Server.Items
             SetSkill(SkillName.Wrestling, 94.4, 108.4);
             SetSkill(SkillName.Bushido, 50.1);
 
-            Fame = 400;
-            Karma = -400;
+            Fame = 14000;
+            Karma = -14000;
 
             ControlSlots = 4;
+        }
+
+        public override void GenerateLoot()
+        {
+            this.AddLoot(LootPack.Rich, 4);
         }
 
         public virtual void OnResourceChanged()
@@ -117,6 +122,19 @@ namespace Server.Items
             }
 
             return 1.0;
+        }
+
+        public override bool OnBeforeDeath()
+        {
+            if (!Controlled)
+            {
+                if (Region.IsPartOf("KotlCity"))
+                {
+                    AutomatonStatue.OnDeath(this);
+                }
+            }
+
+            return base.OnBeforeDeath();
         }
 
         public override void OnDeath(Container c)

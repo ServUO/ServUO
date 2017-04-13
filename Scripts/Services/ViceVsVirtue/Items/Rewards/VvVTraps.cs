@@ -22,8 +22,8 @@ namespace Server.Engines.VvV
 		Proximaty = 1154939,
 		Tripwire = 1154940
 	}
-	
-	public class VvVTrap : Item
+
+    public class VvVTrap : Item, IRevealableItem
 	{
         [CommandProperty(AccessLevel.GameMaster)]
 		public Mobile Owner { get; set; }
@@ -100,6 +100,14 @@ namespace Server.Engines.VvV
                 this.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x21, 500813, m.NetState); // [trapped]
             }
 		}
+
+        public bool CheckReveal(Mobile m)
+        {
+            if (!ViceVsVirtueSystem.IsVvV(m) || ItemID != VvVTrap.HiddenID)
+                return false;
+
+            return Utility.Random(100) <= m.Skills[SkillName.DetectHidden].Value;
+        }
 
         public void OnRevealed(Mobile m)
         {
