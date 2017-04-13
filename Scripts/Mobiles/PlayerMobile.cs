@@ -4101,12 +4101,12 @@ namespace Server.Mobiles
 			SetHairMods(-1, -1);
 		}
 
-		public BOBFilter BOBFilter 
-        { 
+		public BOBFilter BOBFilter
+        {
             get
             {
                 return BulkOrderSystem.GetBOBFilter(this);
-            } 
+            }
         }
 
 		public override void Deserialize(GenericReader reader)
@@ -5639,63 +5639,6 @@ namespace Server.Mobiles
 			}
 
 			return (ts < FastwalkThreshold);
-		}
-		#endregion
-
-		#region Enemy of One
-		private Type m_EnemyOfOneType;
-
-		public Type EnemyOfOneType
-		{
-			get { return m_EnemyOfOneType; }
-			set
-			{
-				Type oldType = m_EnemyOfOneType;
-				Type newType = value;
-
-				if (oldType == newType)
-				{
-					return;
-				}
-
-				m_EnemyOfOneType = value;
-
-                //TODO: Figure an efficient way to naming the creature, pluralized!!!
-                /*if (m_EnemyOfOneType != null)
-                {
-                    BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075654, TimeSpan.FromMinutes(delay), this.Caster,
-                        String.Format("{0}\t{1}\t{2}\t{3}", "50", )));
-                }*/
-
-				DeltaEnemies(oldType, newType);
-			}
-		}
-
-		public bool WaitingForEnemy { get; set; }
-
-		private void DeltaEnemies(Type oldType, Type newType)
-		{
-			foreach (Mobile m in GetMobilesInRange(18))
-			{
-				Type t = m.GetType();
-
-				if (t == oldType || t == newType)
-				{
-					NetState ns = NetState;
-
-					if (ns != null)
-					{
-						if (ns.StygianAbyss)
-						{
-							ns.Send(new MobileMoving(m, Notoriety.Compute(this, m)));
-						}
-						else
-						{
-							ns.Send(new MobileMovingOld(m, Notoriety.Compute(this, m)));
-						}
-					}
-				}
-			}
 		}
 		#endregion
 
