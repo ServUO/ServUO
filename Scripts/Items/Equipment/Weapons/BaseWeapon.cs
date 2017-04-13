@@ -2231,12 +2231,6 @@ namespace Server.Items
 
             if (m_Consecrated)
             {
-                //if (Utility.RandomDouble() <= ConsecrateProcChance / 100)
-                //{
-                //    if (ConsecrateDamageBonus > 0)
-                //        damageBonus *= 1 + ConsecrateDamageBonus / 100;
-                //}
-                
                 // Based on chiv skill will give 1-15 damage modifier bonus when skill value >= 92 as OSI Test Center
                 percentageBonus += attackerChivSkill < 92.0 ? 0 : Convert.ToInt32(Math.Floor((attackerChivSkill - 92) / 2) + 1);
             }
@@ -2312,7 +2306,6 @@ namespace Server.Items
 					{
 					    defender.FixedEffect(0x37B9, 10, 5, 1160, 0);
 
-						//percentageBonus += 50;
                         //Based on chiv skill will give damage modifier bonus up to 64. Karma is not considered yet
                         percentageBonus += Convert.ToInt32(Math.Floor((attackerChivSkill - 30) / 7 * 5));
 					}
