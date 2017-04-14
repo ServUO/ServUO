@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("an goblin corpse")]
+    [CorpseName("a goblin corpse")]
     public class GreenGoblinAlchemist : BaseCreature
     {
         //public override InhumanSpeech SpeechType{ get{ return InhumanSpeech.Orc; } }
@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public GreenGoblinAlchemist()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "Green Goblin Alchemist";
+            Name = "a green goblin alchemist";
             Body = 723;
             BaseSoundID = 0x45A;
 
@@ -123,13 +123,9 @@ namespace Server.Mobiles
                 return 1;
             }
         }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.SavagesAndOrcs;
-            }
-        }
+
+        public override TribeType Tribe { get { return TribeType.GreenGoblin; } }
+
         //public override bool IsEnemy( Mobile m )
         //{
         //	if ( m.Player && m.FindItemOnLayer( Layer.Helm ) is OrcishKinMask )

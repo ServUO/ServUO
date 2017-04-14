@@ -10,73 +10,53 @@ namespace Server.Spells.Chivalry
 			"Enemy of One", "Forul Solum",
 			-1,
 			9002);
+
 		private static readonly Hashtable m_Table = new Hashtable();
+
 		public EnemyOfOneSpell(Mobile caster, Item scroll)
 			: base(caster, scroll, m_Info)
 		{
 		}
 
-		public override TimeSpan CastDelayBase
+		public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(0.5); } }
+
+		public override double RequiredSkill { get { return 45.0; } }
+		public override int RequiredMana { get { return 20; } }
+		public override int RequiredTithing { get { return 10; } }
+		public override int MantraNumber { get { return 1060723; } } // Forul Solum
+		public override bool BlocksMovement { get { return false; } }
+
+		public override TimeSpan GetCastDelay()
 		{
-			get
-			{
-				return TimeSpan.FromSeconds(0.5);
-			}
+			if (Core.SA && UnderEffect(Caster))
+				return TimeSpan.Zero;
+
+			return base.GetCastDelay();
 		}
-		public override double RequiredSkill
-		{
-			get
-			{
-				return 45.0;
-			}
-		}
-		public override int RequiredMana
-		{
-			get
-			{
-				return 20;
-			}
-		}
-		public override int RequiredTithing
-		{
-			get
-			{
-				return 10;
-			}
-		}
-		public override int MantraNumber
-		{
-			get
-			{
-				return 1060723;
-			}
-		}// Forul Solum
-		public override bool BlocksMovement
-		{
-			get
-			{
-				return false;
-			}
-		}
+
 		public override void OnCast()
 		{
-			if (this.CheckSequence())
+			if (Core.SA && UnderEffect(Caster))
 			{
-				this.Caster.PlaySound(0x0F5);
-				this.Caster.PlaySound(0x1ED);
-				this.Caster.FixedParticles(0x375A, 1, 30, 9966, 33, 2, EffectLayer.Head);
-				this.Caster.FixedParticles(0x37B9, 1, 30, 9502, 43, 3, EffectLayer.Head);
+				PlayEffects();
 
-				Timer t = (Timer)m_Table[this.Caster];
+				// As per Pub 71, Enemy of one has now been changed to a Spell Toggle. You can remove the effect
+				// before the duration expires by recasting the spell.
+				RemoveEffect(Caster);
+			}
+			else if (CheckSequence())
+			{
+				PlayEffects();
+
+				Timer t = (Timer)m_Table[Caster];
 
 				if (t != null)
 				{
 					t.Stop();
-					Expire_Callback(this.Caster);
+					RemoveEffect(Caster);
 				}
 
-
-				double delay = (double)this.ComputePowerValue(1) / 60;
+				double delay = (double)ComputePowerValue(1) / 60;
 
 				// TODO: Should caps be applied?
 				if (delay < 1.5)
@@ -84,25 +64,36 @@ namespace Server.Spells.Chivalry
 				else if (delay > 3.5)
 					delay = 3.5;
 
-				m_Table[this.Caster] = Timer.DelayCall(TimeSpan.FromMinutes(delay), new TimerStateCallback(Expire_Callback), this.Caster);
+				m_Table[Caster] = Timer.DelayCall(TimeSpan.FromMinutes(delay), RemoveEffect, Caster);
 
-				if (this.Caster is PlayerMobile)
+				if (Caster is PlayerMobile)
 				{
-					((PlayerMobile)this.Caster).EnemyOfOneType = null;
-					((PlayerMobile)this.Caster).WaitingForEnemy = true;
+					((PlayerMobile)Caster).EnemyOfOneType = null;
+					((PlayerMobile)Caster).WaitingForEnemy = true;
 
-                    BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075902, TimeSpan.FromMinutes(delay), this.Caster, "50\t100"));
+					BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075902, TimeSpan.FromMinutes(delay), Caster, "50\t100"));
 				}
-
 			}
 
-			this.FinishSequence();
+			FinishSequence();
 		}
 
-		private static void Expire_Callback(object state)
+		private void PlayEffects()
 		{
-			Mobile m = (Mobile)state;
+			Caster.PlaySound(0x0F5);
+			Caster.PlaySound(0x1ED);
 
+			Caster.FixedParticles(0x375A, 1, 30, 9966, 33, 2, EffectLayer.Head);
+			Caster.FixedParticles(0x37B9, 1, 30, 9502, 43, 3, EffectLayer.Head);
+		}
+
+		private static bool UnderEffect(Mobile m)
+		{
+			return m_Table.ContainsKey(m);
+		}
+
+		private static void RemoveEffect(Mobile m)
+		{
 			m_Table.Remove(m);
 
 			m.PlaySound(0x1F8);
@@ -112,6 +103,8 @@ namespace Server.Spells.Chivalry
 				((PlayerMobile)m).EnemyOfOneType = null;
 				((PlayerMobile)m).WaitingForEnemy = false;
 			}
+
+			BuffInfo.RemoveBuff(m, BuffIcon.EnemyOfOne);
 		}
 	}
 }

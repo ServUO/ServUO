@@ -548,6 +548,7 @@
     <Compile Include="Gumps\SkillsGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\StormLevelGump.cs" />
     <Compile Include="Gumps\TithingGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -599,6 +600,7 @@
     <Compile Include="Items\Addons\GeoffreyCampAddon.cs" />
     <Compile Include="Items\Addons\HitchingPost.cs" />
     <Compile Include="Items\Addons\LighthouseAddon.cs" />
+    <Compile Include="Items\Addons\NexusAddon.cs" />
     <Compile Include="Items\Addons\RoseRug.cs" />
     <Compile Include="Items\Addons\SkullRug.cs" />
     <Compile Include="Items\Addons\SouthEastPlacementGump.cs" />
@@ -9895,6 +9897,11 @@
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameTeleporter.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameWall.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\ExodusPeerless\ExodusPeerlessAltar.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusNexus.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExoticToolkit.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\KeypunchReader.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\MechanicalComponent.cs" />
+    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\PunchCard.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Region.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\VerLorRegController.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusAlterAddon.cs" />
@@ -9931,6 +9938,7 @@
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\Soap.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\Artifacts\TortureRackArtifact.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\BedrollSpawner.cs" />
+    <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\StinkingCauldron.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\WrongBedrolls.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Mobile\PrisonRat.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Region.cs" />

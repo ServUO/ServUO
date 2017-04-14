@@ -331,27 +331,28 @@ namespace Server.Mobiles
 
 			if (order == OrderType.Attack)
 			{
-				if (target is BaseCreature && ((BaseCreature)target).IsScaryToPets && m_Mobile.IsScaredOfScaryThings)
+				if (target is BaseCreature)
 				{
-					m_Mobile.SayTo(from, "Your pet refuses to attack this creature!");
-					return;
-				}
+					BaseCreature bc = (BaseCreature)target;
 
-				if ((SolenHelper.CheckRedFriendship(from) &&
-					 (target is RedSolenInfiltratorQueen || target is RedSolenInfiltratorWarrior || target is RedSolenQueen ||
-					  target is RedSolenWarrior || target is RedSolenWorker)) ||
-					(SolenHelper.CheckBlackFriendship(from) &&
-					 (target is BlackSolenInfiltratorQueen || target is BlackSolenInfiltratorWarrior || target is BlackSolenQueen ||
-					  target is BlackSolenWarrior || target is BlackSolenWorker)))
-				{
-					from.SendAsciiMessage("You can not force your pet to attack a creature you are protected from.");
-					return;
-				}
+					if (bc.IsScaryToPets && m_Mobile.IsScaredOfScaryThings)
+					{
+						m_Mobile.SayTo(from, "Your pet refuses to attack this creature!");
+						return;
+					}
 
-				if (target is BaseFactionGuard)
-				{
-					m_Mobile.SayTo(from, "Your pet refuses to attack the guard.");
-					return;
+					if ((bc is IBlackSolen && SolenHelper.CheckBlackFriendship(from)) ||
+						(bc is IRedSolen && SolenHelper.CheckRedFriendship(from)))
+					{
+						from.SendAsciiMessage("You can not force your pet to attack a creature you are protected from.");
+						return;
+					}
+
+					if (bc is BaseFactionGuard)
+					{
+						m_Mobile.SayTo(from, "Your pet refuses to attack the guard.");
+						return;
+					}
 				}
 			}
 

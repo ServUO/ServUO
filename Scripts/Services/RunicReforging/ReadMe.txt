@@ -20,7 +20,7 @@ GenerateRandomItem(Item item, Mobile killer, BaseCreature victim)
    if(victim != null && victim.Map == Map.Felucca && .10 > Utility.RandomDouble())
      return RunicReforging.GenerateRandomItem(item, killer, victim);
 
-   if(victim.Region != null && victim.Region.IsPartOf(typeof(DespiseRegion)))
+   if(victim.Region != null && victim.Region.IsPartOf<DespiseRegion>())
       return RunicReforging.GenerateRandomItem(item, killer, victim);
 }
 

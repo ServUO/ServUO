@@ -64,6 +64,9 @@ namespace Server.Mobiles
                 return 1;
             }
         }
+
+        public override TribeType Tribe { get { return TribeType.Ophidian; } }
+
         public override OppositionGroup OppositionGroup
         {
             get

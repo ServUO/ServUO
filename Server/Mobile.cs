@@ -834,7 +834,10 @@ namespace Server
 			}
 		}
 
-		protected virtual void OnRaceChange(Race oldRace)
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool CharacterOut { get; set; }
+
+        protected virtual void OnRaceChange(Race oldRace)
 		{ }
 
 		public virtual double RacialSkillBonus { get { return 0; } }
@@ -855,7 +858,7 @@ namespace Server
 
         [CommandProperty(AccessLevel.Decorator)]
         public bool SpecialSlayerMechanics { get { return m_SpecialSlayerMechanics; } }
-  
+
 		public int[] Resistances { get { return m_Resistances; } }
 
 		public virtual int BasePhysicalResistance { get { return 0; } }
@@ -1601,15 +1604,15 @@ namespace Server
 		public int AllowedStealthSteps { get { return m_AllowedStealthSteps; } set { m_AllowedStealthSteps = value; } }
 
 		/* Logout:
-		* 
+		*
 		* When a client logs into mobile x
 		*  - if ( x is Internalized ) move x to logout location and map
-		* 
+		*
 		* When a client attached to a mobile disconnects
 		*  - LogoutTimer is started
 		*	   - Delay is taken from Region.GetLogoutDelay to allow insta-logout regions.
 		*     - OnTick : Location and map are stored, and mobile is internalized
-		* 
+		*
 		* Some things to consider:
 		*  - An internalized person getting killed (say, by poison). Where does the body go?
 		*  - Regions now have a GetLogoutDelay( Mobile m ); virtual function (see above)
@@ -6352,7 +6355,7 @@ namespace Server
             {
                 writer.Write(false);
             }
-            
+
             writer.Write(m_IgnoreMobiles);
 
 			writer.WriteDeltaTime(m_LastStrGain);
@@ -7623,11 +7626,11 @@ namespace Server
 
 			Region newRegion = Region.Find(m_Location, m_Map);
 			Region oldRegion = m_Region;
-			
+
 			if (newRegion != oldRegion)
 			{
 				m_Region = newRegion;
-				
+
 				Region.OnRegionChange(this, oldRegion, newRegion);
 				OnRegionChange(oldRegion, newRegion);
 			}
@@ -8896,10 +8899,15 @@ namespace Server
 
 						if (m_Map == Map.Internal && m_LogoutMap != null)
 						{
-							Map = m_LogoutMap;
+                            CharacterOut = true;
+                            Map = m_LogoutMap;
 							Location = m_LogoutLocation;
 						}
-					}
+                        else
+                        {
+                            CharacterOut = false;
+                        }
+                    }
 
 					for (int i = m_Items.Count - 1; i >= 0; --i)
 					{
@@ -10669,7 +10677,7 @@ namespace Server
 
 				return false;
 			}
-			
+
 			if (from.InRange(Location, 2))
 			{
 				return OpenTrade(from, dropped);
@@ -10723,7 +10731,7 @@ namespace Server
 		/// 			SendMessage( "That is too heavy for you to lift." );
 		/// 			return false;
 		/// 		}
-		/// 		
+		///
 		/// 		return base.OnDragLift( item );
 		///  }</code>
 		/// </example>
@@ -11605,7 +11613,7 @@ namespace Server
 			}
 		}
 
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
+	    [CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public virtual bool Criminal
 		{
 			get { return m_Criminal; }
@@ -11638,6 +11646,9 @@ namespace Server
 				}
 			}
 		}
+
+		[CommandProperty(AccessLevel.Counselor)]
+		public virtual bool Murderer { get { return m_Kills >= 5; } }
 
 		public bool CheckAlive()
 		{
@@ -12232,7 +12243,7 @@ namespace Server
 		public static bool GuildClickMessage { get { return m_GuildClickMessage; } set { m_GuildClickMessage = value; } }
 		public static bool OldPropertyTitles { get { return m_OldPropertyTitles; } set { m_OldPropertyTitles = value; } }
 
-		public virtual bool ShowFameTitle { get { return true; } } //(m_Player || m_Body.IsHuman) && m_Fame >= 10000; } 
+		public virtual bool ShowFameTitle { get { return true; } } //(m_Player || m_Body.IsHuman) && m_Fame >= 10000; }
 
 		/// <summary>
 		///     Overridable. Event invoked when the Mobile is single clicked.

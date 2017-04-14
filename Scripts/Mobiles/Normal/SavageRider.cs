@@ -12,10 +12,7 @@ namespace Server.Mobiles
         {
             this.Name = NameList.RandomName("savage rider");
 
-            if (this.Female = Utility.RandomBool())
-                this.Body = 186;
-            else
-                this.Body = 185;
+            this.Body = 185;
 
             this.SetStr(151, 170);
             this.SetDex(92, 130);
@@ -75,6 +72,9 @@ namespace Server.Mobiles
                 return false;
             }
         }
+
+        public override TribeType Tribe { get { return TribeType.Savage; } }
+
         public override OppositionGroup OppositionGroup
         {
             get

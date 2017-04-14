@@ -4,7 +4,7 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a solen infiltrator corpse")]
-    public class BlackSolenInfiltratorWarrior : BaseCreature
+    public class BlackSolenInfiltratorWarrior : BaseCreature, IBlackSolen
     {
         [Constructable]
         public BlackSolenInfiltratorWarrior()
