@@ -1390,7 +1390,7 @@ namespace Server.Engines.Shadowguard
             {
                 foreach (PartyMemberInfo info in p.Members)
                 {
-                    if (info.Mobile is PlayerMobile && info.Mobile.Region.IsPartOf(typeof(ShadowguardRegion)))
+                    if (info.Mobile is PlayerMobile && info.Mobile.Region.IsPartOf<ShadowguardRegion>())
                         ((PlayerMobile)info.Mobile).AddCollectionTitle(1156318); // Destroyer of the Time Rift
                 }
             }

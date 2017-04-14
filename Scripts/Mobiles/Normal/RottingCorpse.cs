@@ -78,6 +78,9 @@ namespace Server.Mobiles
                 return 5;
             }
         }
+
+        public override TribeType Tribe { get { return TribeType.Undead; } }
+
         public override OppositionGroup OppositionGroup
         {
             get

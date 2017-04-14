@@ -78,14 +78,17 @@ namespace Server.Mobiles
                 return Poison.Lesser;
             }
         }
-        public override OppositionGroup OppositionGroup
+
+        public override TribeType Tribe { get { return TribeType.Undead; } }
+
+         public override OppositionGroup OppositionGroup
         {
             get
             {
                 return OppositionGroup.FeyAndUndead;
             }
         }
-        public override void GenerateLoot()
+       public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Poor);
         }

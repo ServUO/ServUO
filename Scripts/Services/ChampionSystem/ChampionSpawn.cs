@@ -473,7 +473,7 @@ namespace Server.Engines.CannedEvil
             {
                 Mobile prot = (Mobile)pm.JusticeProtectors[j];
 				
-                if (prot.Map != killer.Map || prot.Kills >= 5 || prot.Criminal || !JusticeVirtue.CheckMapRegion(killer, prot))
+                if (prot.Map != killer.Map || prot.Murderer || prot.Criminal || !JusticeVirtue.CheckMapRegion(killer, prot))
                     continue;
 
                 int chance = 0;

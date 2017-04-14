@@ -368,7 +368,7 @@ namespace Server.Engines.CityLoyalty
             if (crate == null || crate.Deleted || crate.Entry == null || crate.Expired || crate.Entry.LastAmbush + TimeSpan.FromMinutes(AmbushWaitDuration) > DateTime.UtcNow)
                 return;
 
-            if (crate.RootParentEntity is Mobile && !((Mobile)crate.RootParentEntity).Region.IsPartOf(typeof(GuardedRegion)))
+            if (crate.RootParentEntity is Mobile && !((Mobile)crate.RootParentEntity).Region.IsPartOf<GuardedRegion>())
             {
                 Mobile m = crate.RootParentEntity as Mobile;
 

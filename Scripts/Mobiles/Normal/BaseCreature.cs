@@ -127,6 +127,19 @@ namespace Server.Mobiles
         Barbed,
         Fur
     }
+
+    public enum TribeType
+    {
+        None,
+        Terathan,
+        Ophidian,
+        Savage,
+        Orc,
+        Fey,
+        Undead,
+        GrayGoblin,
+        GreenGoblin
+    }
     #endregion
 
     public class DamageStore : IComparable
@@ -941,7 +954,7 @@ namespace Server.Mobiles
                     PlayerMobile pm = m as PlayerMobile;
                     toDrain = (int)drNO.ThieveItems.LifeShieldLotion.HandleLifeDrain(pm, toDrain);
                 }
-                //end 
+                //end
 
 
                 Hits += toDrain;
@@ -993,6 +1006,33 @@ namespace Server.Mobiles
         public virtual OppositionGroup OppositionGroup { get { return null; } }
         public virtual bool IsMilitiaFighter { get { return false; } }
 
+        // Tribe Opposition stuff
+        public virtual TribeType Tribe{ get{ return TribeType.None ; } } // What opposition list am I in?
+
+        public virtual bool IsTribeEnemy(Mobile m)
+        {
+            // Target must be BaseCreature
+            if (!(m is BaseCreature))
+            {
+                return false;
+            }
+
+            BaseCreature c = (BaseCreature)m;
+
+            switch(Tribe)
+            {
+                case TribeType.Terathan: return (c.Tribe == TribeType.Ophidian);
+                case TribeType.Ophidian: return (c.Tribe == TribeType.Terathan);
+                case TribeType.Savage: return (c.Tribe == TribeType.Orc);
+                case TribeType.Orc: return (c.Tribe == TribeType.Savage);
+                case TribeType.Fey: return (c.Tribe == TribeType.Undead);
+                case TribeType.Undead: return (c.Tribe == TribeType.Fey);
+                case TribeType.GrayGoblin: return (c.Tribe == TribeType.GreenGoblin);
+                case TribeType.GreenGoblin: return (c.Tribe == TribeType.GrayGoblin);
+                default: return false;
+            }
+        }
+
         #region Friends
         public List<Mobile> Friends { get { return m_Friends; } }
 
@@ -1023,11 +1063,21 @@ namespace Server.Mobiles
 
 		public virtual bool IsFriend(Mobile m)
 		{
-			OppositionGroup g = OppositionGroup;
-
-			if (g != null && g.IsEnemy(this, m))
+			if (Core.TOL)
 			{
-				return false;
+				if (Tribe != TribeType.None && IsTribeEnemy(m))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				OppositionGroup g = OppositionGroup;
+
+				if (g != null && g.IsEnemy(this, m))
+				{
+					return false;
+				}
 			}
 
 			if (!(m is BaseCreature))
@@ -1105,11 +1155,21 @@ namespace Server.Mobiles
 				return a.IsEnemy(m);
 			}
 
-			OppositionGroup g = OppositionGroup;
-
-			if (g != null && g.IsEnemy(this, m))
+			if (Core.TOL)
 			{
-				return true;
+				if (Tribe != TribeType.None && IsTribeEnemy(m))
+				{
+					return true;
+				}
+			}
+			else
+			{
+				OppositionGroup g = OppositionGroup;
+
+				if (g != null && g.IsEnemy(this, m))
+				{
+					return true;
+				}
 			}
 
 			if (m is BaseGuard)
@@ -1148,7 +1208,7 @@ namespace Server.Mobiles
 			}
 
 			BaseCreature c = (BaseCreature)m;
-            
+
 			if (c.IsMilitiaFighter)
 			{
 				return true;
@@ -1682,8 +1742,8 @@ namespace Server.Mobiles
 
         Seems this actually was removed on OSI somewhere between the original bug report and now.
         We will call it ML, until we can get better information. I suspect it was on the OSI TC when
-        originally it taken out of RunUO, and not implmented on OSIs production shards until more 
-        recently.  Either way, this is, or was, accurate OSI behavior, and just entirely 
+        originally it taken out of RunUO, and not implmented on OSIs production shards until more
+        recently.  Either way, this is, or was, accurate OSI behavior, and just entirely
         removing it was incorrect.  OSI followers were distracted by being attacked well into
         AoS, at very least.
 
@@ -2527,7 +2587,7 @@ namespace Server.Mobiles
 
         public virtual bool IsHumanInTown()
         {
-            return (Body.IsHuman && Region.IsPartOf(typeof(GuardedRegion)));
+            return (Body.IsHuman && Region.IsPartOf<GuardedRegion>());
         }
 
         public virtual bool CheckGold(Mobile from, Item dropped)
@@ -4133,8 +4193,8 @@ namespace Server.Mobiles
             return true; // entered idle state
         }
 
-        /* 
-			this way, due to the huge number of locations this will have to be changed 
+        /*
+			this way, due to the huge number of locations this will have to be changed
 			Perhaps we can change this in the future when fixing game play is not the
 			major issue.
 		*/
@@ -4282,7 +4342,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            if (!Body.IsHuman || Kills >= 5 || AlwaysMurderer || AlwaysAttackable || m.Kills < 5 || !m.InRange(Location, 12) ||
+            if (!Body.IsHuman || Murderer || AlwaysMurderer || AlwaysAttackable || m.Kills < 5 || !m.InRange(Location, 12) ||
                 !m.Alive)
             {
                 return;
@@ -5532,8 +5592,8 @@ namespace Server.Mobiles
         public static int[] RecipeTypes { get { return _RecipeTypes; } }
         private static int[] _RecipeTypes =
         {
-            560, 561, 562, 563, 564, 565, 566, 
-            570, 571, 572, 573, 574, 575, 576, 577, 
+            560, 561, 562, 563, 564, 565, 566,
+            570, 571, 572, 573, 574, 575, 576, 577,
             580, 581, 582, 583, 584
             //602, 603, 604,  // nutcrackers
             //800             // runic atlas
@@ -5868,7 +5928,7 @@ namespace Server.Mobiles
         {
             bool ret = base.CanBeRenamedBy(from);
 
-            if (Controlled && from == ControlMaster && !from.Region.IsPartOf(typeof(Jail)))
+            if (Controlled && from == ControlMaster && !from.Region.IsPartOf<Jail>())
             {
                 ret = true;
             }
@@ -7315,7 +7375,7 @@ namespace Server.Mobiles
         private bool m_RemoveOnSave;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool RemoveOnSave { get { return m_RemoveOnSave; } set { m_RemoveOnSave = value; } }    
+        public bool RemoveOnSave { get { return m_RemoveOnSave; } set { m_RemoveOnSave = value; } }
     }
 
     public class LoyaltyTimer : Timer
@@ -7412,7 +7472,7 @@ namespace Server.Mobiles
 
                         // added lines to check if a wild creature in a house region has to be removed or not
                         if (!c.Controlled && !c.IsStabled &&
-                            ((c.Region.IsPartOf(typeof(HouseRegion)) && c.CanBeDamaged()) || (c.RemoveIfUntamed && c.Spawner == null)))
+                            ((c.Region.IsPartOf<HouseRegion>() && c.CanBeDamaged()) || (c.RemoveIfUntamed && c.Spawner == null)))
                         {
                             c.RemoveStep++;
 

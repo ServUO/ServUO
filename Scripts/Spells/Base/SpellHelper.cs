@@ -550,7 +550,7 @@ namespace Server.Spells
 
             int noto = Notoriety.Compute(from, to);
 
-            return (noto != Notoriety.Innocent || from.Kills >= 5);
+            return (noto != Notoriety.Innocent || from.Murderer);
         }
 
         private static readonly int[] m_Offsets = new int[]
@@ -750,7 +750,7 @@ namespace Server.Spells
             if (caster != null && caster.IsPlayer())
             {
 				// Jail region
-				if (caster.Region.IsPartOf(typeof(Regions.Jail)))
+				if (caster.Region.IsPartOf<Regions.Jail>())
 				{
 					caster.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
 					return false;
@@ -864,7 +864,7 @@ namespace Server.Spells
         public static bool IsFeluccaDungeon(Map map, Point3D loc)
         {
             Region region = Region.Find(loc, map);
-            return (region.IsPartOf(typeof(DungeonRegion)) && region.Map == Map.Felucca);
+            return (region.IsPartOf<DungeonRegion>() && region.Map == Map.Felucca);
         }
 
         public static bool IsKhaldun(Map map, Point3D loc)
@@ -888,7 +888,7 @@ namespace Server.Spells
         public static bool IsSafeZone(Map map, Point3D loc)
         {
             #region Duels
-            if (Region.Find(loc, map).IsPartOf(typeof(Engines.ConPVP.SafeZone)))
+            if (Region.Find(loc, map).IsPartOf<Engines.ConPVP.SafeZone>())
             {
                 if (m_TravelType == TravelCheckType.TeleportTo || m_TravelType == TravelCheckType.TeleportFrom)
                 {
@@ -913,12 +913,12 @@ namespace Server.Spells
             if ( Factions.Faction.Find( m_TravelCaster, true, true ) != null )
             return false;
             }*/
-            return (Region.Find(loc, map).IsPartOf(typeof(Factions.StrongholdRegion)));
+            return (Region.Find(loc, map).IsPartOf<Factions.StrongholdRegion>());
         }
 
         public static bool IsChampionSpawn(Map map, Point3D loc)
         {
-            return (Region.Find(loc, map).IsPartOf(typeof(Engines.CannedEvil.ChampionSpawnRegion)));
+            return (Region.Find(loc, map).IsPartOf<Engines.CannedEvil.ChampionSpawnRegion>());
         }
 
         public static bool IsDoomFerry(Map map, Point3D loc)

@@ -78,7 +78,7 @@ namespace Server
 
             e.Beholder.CloseGump(typeof(VirtueGump));
 
-            if (e.Beholder.Kills >= 5)
+            if (e.Beholder.Murderer)
             {
                 e.Beholder.SendLocalizedMessage(1049609); // Murderers cannot invoke this virtue.
                 return;
@@ -117,7 +117,7 @@ namespace Server
             Mobile beholder = e.Beholder;
             Mobile beheld = e.Beheld;
 
-            if (beholder == beheld && beholder.Kills >= 5)
+            if (beholder == beheld && beholder.Murderer)
             {
                 beholder.SendLocalizedMessage(1049609); // Murderers cannot invoke this virtue.
             }

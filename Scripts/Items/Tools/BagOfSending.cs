@@ -170,7 +170,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.Region.IsPartOf(typeof(Regions.Jail)))
+            if (from.Region.IsPartOf<Regions.Jail>())
             {
                 from.SendMessage("You may not do that in jail.");
             }
@@ -260,7 +260,7 @@ namespace Server.Items
                 if (this.m_Bag.Deleted)
                     return;
 
-                if (from.Region.IsPartOf(typeof(Regions.Jail)))
+                if (from.Region.IsPartOf<Regions.Jail>())
                 {
                     from.SendMessage("You may not do that in jail.");
                 }

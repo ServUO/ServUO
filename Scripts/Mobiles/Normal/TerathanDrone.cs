@@ -56,6 +56,9 @@ namespace Server.Mobiles
                 return 4;
             }
         }
+
+        public override TribeType Tribe { get { return TribeType.Terathan; } }
+
         public override OppositionGroup OppositionGroup
         {
             get

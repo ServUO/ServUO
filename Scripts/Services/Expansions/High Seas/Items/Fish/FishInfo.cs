@@ -401,7 +401,7 @@ namespace Server.Items
 
         public static bool IsDungeon(Point3D pnt, Map map, Region region)
         {
-            return region.IsPartOf(typeof(DungeonRegion)) || IsMondainDungeon(region) || Server.Spells.SpellHelper.IsTrammelWind(map, pnt) || Server.Spells.SpellHelper.IsFeluccaWind(map, pnt);
+            return region.IsPartOf<DungeonRegion>() || IsMondainDungeon(region) || Server.Spells.SpellHelper.IsTrammelWind(map, pnt) || Server.Spells.SpellHelper.IsFeluccaWind(map, pnt);
         }
 
         public static bool IsMondainDungeon(Region region)
