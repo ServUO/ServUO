@@ -472,17 +472,16 @@ namespace Server.Engines.VoidPool
 
         public void ClearSpawn(bool effects)
         {
-            List<Mobile> list = Region.GetMobiles();
+            if (Region == null)
+                return;
 
-            foreach (Mobile m in list.Where(m => m is CovetousCreature))
+            foreach (Mobile m in Region.GetEnumeratedMobiles().Where(m => m is CovetousCreature))
             {
                 if (effects)
                     Effects.SendLocationEffect(m.Location, m.Map, 0xDDA, 30, 10, 0, 0);
 
                 m.Delete();
             }
-            list.Clear();
-            list.TrimExcess();
         }
 
 		public int GetCurrentPoints(Mobile from)
