@@ -92,13 +92,6 @@ namespace Server.Engines.VvV
 			{
 				Detonate(m);
 			}
-            else if (m.InRange(this.Location, 8))
-            {
-                int skill = (int)m.Skills[SkillName.DetectHidden].Value;
-
-                if(skill >= 80 && Utility.Random(600) < skill)
-                this.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x21, 500813, m.NetState); // [trapped]
-            }
 		}
 
         public bool CheckReveal(Mobile m)
@@ -129,6 +122,19 @@ namespace Server.Engines.VvV
 
                 ParentTrap.OnRevealed(m);
             }
+        }
+
+        public bool CheckPassiveDetect(Mobile m)
+        {
+            if (m.InRange(this.Location, 6))
+            {
+                int skill = (int)m.Skills[SkillName.DetectHidden].Value;
+
+                if (skill >= 80 && Utility.Random(600) < skill)
+                    this.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x21, 500813, m.NetState); // [trapped]
+            }
+
+            return false;
         }
 		
 		public override bool OnMoveOver(Mobile m)

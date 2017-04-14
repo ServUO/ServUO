@@ -13,6 +13,7 @@ namespace Server.Items
     public interface IRevealableItem
     {
         bool CheckReveal(Mobile m);
+        bool CheckPassiveDetect(Mobile m);
         void OnRevealed(Mobile m);
     }
 }
@@ -154,6 +155,18 @@ namespace Server.SkillHandlers
                         m.RevealingAction();
                         m.SendLocalizedMessage(500814); // You have been revealed!
                     }
+                }
+            }
+
+            eable.Free();
+
+            eable = src.Map.GetItemsInRange(src.Location, 8);
+
+            foreach (var item in eable)
+            {
+                if (item is IRevealableItem && ((IRevealableItem)item).CheckPassiveDetect(src))
+                {
+                    src.SendLocalizedMessage(1153493); // Your keen senses detect something hidden in the area...
                 }
             }
 

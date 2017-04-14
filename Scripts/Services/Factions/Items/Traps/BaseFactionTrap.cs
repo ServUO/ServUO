@@ -224,17 +224,6 @@ namespace Server.Factions
             return 0;
         }
 
-        public override void OnMovement(Mobile m, Point3D oldLocation)
-        {
-            base.OnMovement(m, oldLocation);
-
-            if (!CheckDecay() && CheckRange(m.Location, oldLocation, 6))
-            {
-                if (Faction.Find(m) != null && ((m.Skills[SkillName.DetectHidden].Value - 80.0) / 20.0) > Utility.RandomDouble())
-                    PrivateOverheadLocalizedMessage(m, 1010154, MessageHue, "", ""); // [Faction Trap]
-            }
-        }
-
         public void PrivateOverheadLocalizedMessage(Mobile to, int number, int hue, string name, string args)
         {
             if (to == null)
@@ -295,6 +284,17 @@ namespace Server.Factions
 
             if (!Deleted)
                 Visible = false;
+        }
+
+        public virtual bool CheckPassiveDetect(Mobile m)
+        {
+            if (!CheckDecay() && m.InRange(Location, 6))
+            {
+                if (Faction.Find(m) != null && ((m.Skills[SkillName.DetectHidden].Value - 80.0) / 20.0) > Utility.RandomDouble())
+                    PrivateOverheadLocalizedMessage(m, 1010154, MessageHue, "", ""); // [Faction Trap]
+            }
+
+            return false;
         }
 
         public override void Serialize(GenericWriter writer)

@@ -108,6 +108,19 @@ namespace Server.Engines.TreasuresOfKotlCity
             Visible = true;
         }
 
+        public virtual bool CheckPassiveDetect(Mobile m)
+        {
+            if (m.InRange(this.Location, 4))
+            {
+                int skill = (int)m.Skills[SkillName.DetectHidden].Value;
+
+                if (skill >= 80 && Utility.Random(300) < skill)
+                    return true;
+            }
+
+            return false;
+        }
+
         public override void LockPick(Mobile from)
         {
             Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(4, 6)), Fill);
