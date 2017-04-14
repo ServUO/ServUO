@@ -101,7 +101,6 @@ namespace Server.Engines.Points
 
             int version = reader.ReadInt();
 
-            reader.ReadBool();
             Enabled = reader.ReadBool();
 
             int count = reader.ReadInt();

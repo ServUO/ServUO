@@ -2,6 +2,7 @@ using System;
 using Server;
 using Server.Mobiles;
 using Server.Items;
+using System.Linq;
 
 namespace Server.Engines.TreasuresOfKotlCity
 {
@@ -40,10 +41,17 @@ namespace Server.Engines.TreasuresOfKotlCity
         {
             EnergyTileComponent comp = Components[Utility.Random(Components.Count)] as EnergyTileComponent;
 
-            if (comp != null)
+            foreach (EnergyTileComponent component in Components.OfType<EnergyTileComponent>())
             {
-                comp.Active = false;
-                m_NextDeactivation = DateTime.UtcNow + TimeSpan.FromMinutes(120);
+                if (comp == component)
+                {
+                    comp.Active = false;
+                    m_NextDeactivation = DateTime.UtcNow + TimeSpan.FromMinutes(120);
+                }
+                else if (!component.Active)
+                {
+                    component.Active = true;
+                }
             }
         }
 
