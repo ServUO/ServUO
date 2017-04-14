@@ -795,11 +795,13 @@
     <Compile Include="Items\Internal\GreenNinjaQuestTeleporter.cs" />
     <Compile Include="Items\Internal\ItemInterfaces.cs" />
     <Compile Include="Items\Internal\MacawSpawner.cs" />
+    <Compile Include="Items\Internal\NavreyParalyzingWeb.cs" />
     <Compile Include="Items\Internal\PrismOfLightTeleporters.cs" />
     <Compile Include="Items\Internal\PvPWarnTeleporter.cs" />
     <Compile Include="Items\Internal\UnderworldTele.cs" />
     <Compile Include="Items\Internal\WhiteNinjaQuestTeleporter.cs" />
     <Compile Include="Items\Quest\AbyssKey.cs" />
+    <Compile Include="Items\Quest\AcidPopper.cs" />
     <Compile Include="Items\Quest\BlueKey1.cs" />
     <Compile Include="Items\Quest\Bluekeyfragment.cs" />
     <Compile Include="Items\Quest\CompletedTuitionReimbursementForm.cs" />
@@ -811,6 +813,7 @@
     <Compile Include="Items\Quest\EminosKatana.cs" />
     <Compile Include="Items\Quest\EminosKatanaChest.cs" />
     <Compile Include="Items\Quest\EnchantedPaints.cs" />
+    <Compile Include="Items\Quest\EyeOfNavrey.cs" />
     <Compile Include="Items\Quest\FoolishGold.cs" />
     <Compile Include="Items\Quest\GamanHorn.cs" />
     <Compile Include="Items\Quest\GaramonsBook.cs" />
@@ -1722,23 +1725,35 @@
     <Compile Include="Misc\UntamedPetsCleaning.cs" />
     <Compile Include="Misc\WorldLocationInfo.cs" />
     <Compile Include="Mobiles\AI\PaladinAI.cs" />
-    <Compile Include="Mobiles\Bosses\AbyssalInfernal.cs" />
-    <Compile Include="Mobiles\Bosses\Barracoon.cs" />
-    <Compile Include="Mobiles\Bosses\BaseChampion.cs" />
-    <Compile Include="Mobiles\Bosses\Harrower\Harrower.cs" />
-    <Compile Include="Mobiles\Bosses\Harrower\HarrowerTentacles.cs" />
-    <Compile Include="Mobiles\Bosses\LordOaks.cs" />
-    <Compile Include="Mobiles\Bosses\Mephitis.cs" />
-    <Compile Include="Mobiles\Bosses\Navery\EyeOfNavrey.cs" />
-    <Compile Include="Mobiles\Bosses\Navery\Navrey.cs" />
-    <Compile Include="Mobiles\Bosses\Navery\NavreyParalyzingWeb.cs" />
-    <Compile Include="Mobiles\Bosses\Neira.cs" />
-    <Compile Include="Mobiles\Bosses\PrimevalLich.cs" />
-    <Compile Include="Mobiles\Bosses\Rikktor.cs" />
-    <Compile Include="Mobiles\Bosses\Semidar.cs" />
-    <Compile Include="Mobiles\Bosses\Serado.cs" />
-    <Compile Include="Mobiles\Bosses\ServantOfSemidar.cs" />
-    <Compile Include="Mobiles\Bosses\Silvani.cs" />
+    <Compile Include="Mobiles\BaseCreature.cs" />
+    <Compile Include="Mobiles\BaseMount.cs" />
+    <Compile Include="Mobiles\Bosses\AbysmalHorror.cs" />
+    <Compile Include="Mobiles\Bosses\BaseSABosses.cs" />
+    <Compile Include="Mobiles\Bosses\BoneDemon.cs" />
+    <Compile Include="Mobiles\Bosses\DarknightCreeper.cs" />
+    <Compile Include="Mobiles\Bosses\DemonKnight.cs" />
+    <Compile Include="Mobiles\Bosses\FleshRenderer.cs" />
+    <Compile Include="Mobiles\Bosses\Harrower.cs" />
+    <Compile Include="Mobiles\Bosses\HarrowerTentacles.cs" />
+    <Compile Include="Mobiles\Bosses\Impaler.cs" />
+    <Compile Include="Mobiles\Bosses\Navrey.cs" />
+    <Compile Include="Mobiles\Bosses\ShadowKnight.cs" />
+    <Compile Include="Mobiles\Champion\AbyssalInfernal.cs" />
+    <Compile Include="Mobiles\Champion\Barracoon.cs" />
+    <Compile Include="Mobiles\Champion\BaseChampion.cs" />
+    <Compile Include="Mobiles\Champion\Ilhenir.cs" />
+    <Compile Include="Mobiles\Champion\LordOaks.cs" />
+    <Compile Include="Mobiles\Champion\Mephitis.cs" />
+    <Compile Include="Mobiles\Champion\Meraktus.cs" />
+    <Compile Include="Mobiles\Champion\Neira.cs" />
+    <Compile Include="Mobiles\Champion\PrimevalLich.cs" />
+    <Compile Include="Mobiles\Champion\Rikktor.cs" />
+    <Compile Include="Mobiles\Champion\Semidar.cs" />
+    <Compile Include="Mobiles\Champion\Serado.cs" />
+    <Compile Include="Mobiles\Champion\ServantOfSemidar.cs" />
+    <Compile Include="Mobiles\Champion\Silvani.cs" />
+    <Compile Include="Mobiles\Champion\Twaulo.cs" />
+    <Compile Include="Mobiles\Ethereals.cs" />
     <Compile Include="Mobiles\Event\PumpkinHead.cs" />
     <Compile Include="Mobiles\Event\Wanderer.cs" />
     <Compile Include="Mobiles\Factions\BaseWarHorse.cs" />
@@ -1748,21 +1763,14 @@
     <Compile Include="Mobiles\Factions\TBWarHorse.cs" />
     <Compile Include="Mobiles\MobileInterfaces.cs" />
     <Compile Include="Mobiles\Named\Abscess.cs" />
-    <Compile Include="Mobiles\Named\AcidElementalRenowned.cs" />
-    <Compile Include="Mobiles\Named\AncientLichRenowned.cs" />
     <Compile Include="Mobiles\Named\Chiikkaha.cs" />
     <Compile Include="Mobiles\Named\Coil.cs" />
-    <Compile Include="Mobiles\Named\DevourerRenowned.cs" />
-    <Compile Include="Mobiles\Named\FireDaemonRenowned.cs" />
-    <Compile Include="Mobiles\Named\FireElementalRenowned.cs" />
     <Compile Include="Mobiles\Named\Flurry.cs" />
     <Compile Include="Mobiles\Named\Gnaw.cs" />
-    <Compile Include="Mobiles\Named\GrayGoblinMageRenowned.cs" />
-    <Compile Include="Mobiles\Named\GreenGoblinAlchemistRenowned.cs" />
+    <Compile Include="Mobiles\Named\Gregorio.cs" />
     <Compile Include="Mobiles\Named\Grim.cs" />
     <Compile Include="Mobiles\Named\Grobu.cs" />
     <Compile Include="Mobiles\Named\Guile.cs" />
-    <Compile Include="Mobiles\Named\Ilhenir.cs" />
     <Compile Include="Mobiles\Named\Irk.cs" />
     <Compile Include="Mobiles\Named\LadyJennifyr.cs" />
     <Compile Include="Mobiles\Named\LadyLissith.cs" />
@@ -1773,34 +1781,24 @@
     <Compile Include="Mobiles\Named\MasterJonath.cs" />
     <Compile Include="Mobiles\Named\MasterMikael.cs" />
     <Compile Include="Mobiles\Named\MasterTheophilus.cs" />
-    <Compile Include="Mobiles\Named\Meraktus.cs" />
     <Compile Include="Mobiles\Named\Miasma.cs" />
     <Compile Include="Mobiles\Named\Mistral.cs" />
     <Compile Include="Mobiles\Named\MougGuur.cs" />
-    <Compile Include="Mobiles\Named\PixieRenowned.cs" />
     <Compile Include="Mobiles\Named\Putrefier.cs" />
     <Compile Include="Mobiles\Named\Pyre.cs" />
-    <Compile Include="Mobiles\Named\RakktaviRenowned.cs" />
     <Compile Include="Mobiles\Named\RedDeath.cs" />
     <Compile Include="Mobiles\Named\Rend.cs" />
     <Compile Include="Mobiles\Named\Saliva.cs" />
     <Compile Include="Mobiles\Named\Silk.cs" />
     <Compile Include="Mobiles\Named\SirPatrick.cs" />
-    <Compile Include="Mobiles\Named\SkeletalDragonRenowned.cs" />
     <Compile Include="Mobiles\Named\Spite.cs" />
     <Compile Include="Mobiles\Named\Swoop.cs" />
     <Compile Include="Mobiles\Named\Szavetra.cs" />
     <Compile Include="Mobiles\Named\Tangle.cs" />
     <Compile Include="Mobiles\Named\Tempest.cs" />
     <Compile Include="Mobiles\Named\Thrasher.cs" />
-    <Compile Include="Mobiles\Named\TikitaviRenowned.cs" />
-    <Compile Include="Mobiles\Named\Twaulo.cs" />
-    <Compile Include="Mobiles\Named\VitaviRenowned.cs" />
-    <Compile Include="Mobiles\Named\WyvernRenowned.cs" />
-    <Compile Include="Mobiles\Normal\AbysmalHorror.cs" />
     <Compile Include="Mobiles\Normal\AbyssalAbomination.cs" />
     <Compile Include="Mobiles\Normal\AcidElemental.cs" />
-    <Compile Include="Mobiles\Normal\AcidPopper.cs" />
     <Compile Include="Mobiles\Normal\AcidSlug.cs" />
     <Compile Include="Mobiles\Normal\AgapiteElemental.cs" />
     <Compile Include="Mobiles\Normal\AirElemental.cs" />
@@ -1813,10 +1811,6 @@
     <Compile Include="Mobiles\Normal\ArcticOgreLord.cs" />
     <Compile Include="Mobiles\Normal\BakeKitsune.cs" />
     <Compile Include="Mobiles\Normal\Balron.cs" />
-    <Compile Include="Mobiles\Normal\BaseCreature.cs" />
-    <Compile Include="Mobiles\Normal\BaseMount.cs" />
-    <Compile Include="Mobiles\Normal\BaseRenowned.cs" />
-    <Compile Include="Mobiles\Normal\BaseSABosses.cs" />
     <Compile Include="Mobiles\Normal\BattleChickenLizard.cs" />
     <Compile Include="Mobiles\Normal\Beetle.cs" />
     <Compile Include="Mobiles\Normal\Betrayer.cs" />
@@ -1833,7 +1827,6 @@
     <Compile Include="Mobiles\Normal\Bogle.cs" />
     <Compile Include="Mobiles\Normal\Bogling.cs" />
     <Compile Include="Mobiles\Normal\BogThing.cs" />
-    <Compile Include="Mobiles\Normal\BoneDemon.cs" />
     <Compile Include="Mobiles\Normal\BoneKnight.cs" />
     <Compile Include="Mobiles\Normal\BoneMagi.cs" />
     <Compile Include="Mobiles\Normal\Brigand.cs" />
@@ -1883,13 +1876,11 @@
     <Compile Include="Mobiles\Normal\Cyclops.cs" />
     <Compile Include="Mobiles\Normal\Daemon.cs" />
     <Compile Include="Mobiles\Normal\DarkGuardian.cs" />
-    <Compile Include="Mobiles\Normal\DarknightCreeper.cs" />
     <Compile Include="Mobiles\Normal\DarkWisp.cs" />
     <Compile Include="Mobiles\Normal\DeadlyImp.cs" />
     <Compile Include="Mobiles\Normal\DeathWatchBeetle.cs" />
     <Compile Include="Mobiles\Normal\DeathWatchBeetleHatchling.cs" />
     <Compile Include="Mobiles\Normal\DeepSeaSerpent.cs" />
-    <Compile Include="Mobiles\Normal\DemonKnight.cs" />
     <Compile Include="Mobiles\Normal\DesertOstard.cs" />
     <Compile Include="Mobiles\Normal\Devourer.cs" />
     <Compile Include="Mobiles\Normal\DireWolf.cs" />
@@ -1922,7 +1913,6 @@
     <Compile Include="Mobiles\Normal\EnslavedGreenGoblin.cs" />
     <Compile Include="Mobiles\Normal\EnslavedGreenGoblinAlchemist.cs" />
     <Compile Include="Mobiles\Normal\EnslavedSatyr.cs" />
-    <Compile Include="Mobiles\Normal\Ethereals.cs" />
     <Compile Include="Mobiles\Normal\EtherealWarrior.cs" />
     <Compile Include="Mobiles\Normal\Ettin.cs" />
     <Compile Include="Mobiles\Normal\EvilMage.cs" />
@@ -1945,7 +1935,6 @@
     <Compile Include="Mobiles\Normal\FireRabbit.cs" />
     <Compile Include="Mobiles\Normal\FireSteed.cs" />
     <Compile Include="Mobiles\Normal\FleshGolem.cs" />
-    <Compile Include="Mobiles\Normal\FleshRenderer.cs" />
     <Compile Include="Mobiles\Normal\ForestOstard.cs" />
     <Compile Include="Mobiles\Normal\ForgottenServant.cs" />
     <Compile Include="Mobiles\Normal\FrenziedOstard.cs" />
@@ -1981,7 +1970,6 @@
     <Compile Include="Mobiles\Normal\GreenGoblin.cs" />
     <Compile Include="Mobiles\Normal\GreenGoblinAlchemist.cs" />
     <Compile Include="Mobiles\Normal\GreenGoblinScout.cs" />
-    <Compile Include="Mobiles\Normal\Gregorio.cs" />
     <Compile Include="Mobiles\Normal\Gremlin.cs" />
     <Compile Include="Mobiles\Normal\GrayGoblin.cs" />
     <Compile Include="Mobiles\Normal\GrayGoblinKeeper.cs" />
@@ -2007,7 +1995,6 @@
     <Compile Include="Mobiles\Normal\IceSerpent.cs" />
     <Compile Include="Mobiles\Normal\IceSnake.cs" />
     <Compile Include="Mobiles\Normal\Imp.cs" />
-    <Compile Include="Mobiles\Normal\Impaler.cs" />
     <Compile Include="Mobiles\Normal\InjuredWolf.cs" />
     <Compile Include="Mobiles\Normal\InsaneDryad.cs" />
     <Compile Include="Mobiles\Normal\InterredGrizzle .cs" />
@@ -2092,16 +2079,6 @@
     <Compile Include="Mobiles\Normal\PlagueSpawn.cs" />
     <Compile Include="Mobiles\Normal\Turkey.cs" />
     <Compile Include="Mobiles\Normal\WildTiger.cs" />
-    <Compile Include="Mobiles\NPCs\Brae.cs" />
-    <Compile Include="Mobiles\NPCs\Emilio.cs" />
-    <Compile Include="Mobiles\NPCs\Evan.cs" />
-    <Compile Include="Mobiles\NPCs\Kodar.cs" />
-    <Compile Include="Mobiles\NPCs\Lenley.cs" />
-    <Compile Include="Mobiles\NPCs\Regina.cs" />
-    <Compile Include="Mobiles\NPCs\Thalia.cs" />
-    <Compile Include="Mobiles\NPCs\Vrulkax.cs" />
-    <Compile Include="Mobiles\NPCs\WanderingShaman.cs" />
-    <Compile Include="Mobiles\PlayerMobile.cs" />
     <Compile Include="Mobiles\Normal\PoisonElemental.cs" />
     <Compile Include="Mobiles\Normal\PolarBear.cs" />
     <Compile Include="Mobiles\Normal\PredatorHellCat.cs" />
@@ -2155,7 +2132,6 @@
     <Compile Include="Mobiles\Normal\ShadowDweller.cs" />
     <Compile Include="Mobiles\Normal\ShadowFiend.cs" />
     <Compile Include="Mobiles\Normal\ShadowIronElemental.cs" />
-    <Compile Include="Mobiles\Named\ShadowKnight.cs" />
     <Compile Include="Mobiles\Normal\ShadowWisp.cs" />
     <Compile Include="Mobiles\Normal\ShadowWyrm.cs" />
     <Compile Include="Mobiles\Normal\Sheep.cs" />
@@ -2175,7 +2151,6 @@
     <Compile Include="Mobiles\Normal\Snake.cs" />
     <Compile Include="Mobiles\Normal\SnowElemental.cs" />
     <Compile Include="Mobiles\Normal\SnowLeopard.cs" />
-    <Compile Include="Mobiles\Normal\SolenHelper.cs" />
     <Compile Include="Mobiles\Normal\SpeckledScorpion.cs" />
     <Compile Include="Mobiles\Normal\SpectralArmour.cs" />
     <Compile Include="Mobiles\Normal\Spectre.cs" />
@@ -2233,6 +2208,15 @@
     <Compile Include="Mobiles\Normal\YoungNinja.cs" />
     <Compile Include="Mobiles\Normal\YoungRonin.cs" />
     <Compile Include="Mobiles\Normal\Zombie.cs" />
+    <Compile Include="Mobiles\NPCs\Brae.cs" />
+    <Compile Include="Mobiles\NPCs\Emilio.cs" />
+    <Compile Include="Mobiles\NPCs\Evan.cs" />
+    <Compile Include="Mobiles\NPCs\Kodar.cs" />
+    <Compile Include="Mobiles\NPCs\Lenley.cs" />
+    <Compile Include="Mobiles\NPCs\Regina.cs" />
+    <Compile Include="Mobiles\NPCs\Thalia.cs" />
+    <Compile Include="Mobiles\NPCs\Vrulkax.cs" />
+    <Compile Include="Mobiles\NPCs\WanderingShaman.cs" />
     <Compile Include="Mobiles\NPCs\Abbein.cs" />
     <Compile Include="Mobiles\NPCs\Acob.cs" />
     <Compile Include="Mobiles\NPCs\Actor.cs" />
@@ -2506,6 +2490,22 @@
     <Compile Include="Mobiles\NPCs\Yorus.cs" />
     <Compile Include="Mobiles\NPCs\Zoel.cs" />
     <Compile Include="Mobiles\NPCs\Zorda.cs" />
+    <Compile Include="Mobiles\PlayerMobile.cs" />
+    <Compile Include="Mobiles\Renowned\AcidElementalRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\AncientLichRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\BaseRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\DevourerRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\FireDaemonRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\FireElementalRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\GrayGoblinMageRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\GreenGoblinAlchemistRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\PixieRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\RakktaviRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\SkeletalDragonRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\TikitaviRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\VitaviRenowned.cs" />
+    <Compile Include="Mobiles\Renowned\WyvernRenowned.cs" />
+    <Compile Include="Mobiles\SolenHelper.cs" />
     <Compile Include="Mobiles\Summons\AnimatedWeapon.cs" />
     <Compile Include="Mobiles\Summons\BaseFamiliar.cs" />
     <Compile Include="Mobiles\Summons\BladeSpirits.cs" />
@@ -9244,13 +9244,13 @@
     <Compile Include="Mobiles\Bosses\DespiseBosses.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Normal\DespiseCreature.cs">
+    <Compile Include="Mobiles\DespiseCreature.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Normal\DespiseEvilCreatures.cs">
+    <Compile Include="Mobiles\DespiseEvilCreatures.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Normal\DespiseGoodCreatures.cs">
+    <Compile Include="Mobiles\DespiseGoodCreatures.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\NPCs\MysteriousWisp.cs">
@@ -10459,7 +10459,7 @@
     <Compile Include="Items\Quest\DisintegratingThesisNotes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Bosses\LadyMelisande.cs">
+    <Compile Include="Mobiles\Peerless\LadyMelisande.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Quest\LibrariansKey.cs">
@@ -10468,7 +10468,7 @@
     <Compile Include="Items\Quest\BedlamKey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Bosses\MonstrousInterredGrizzle.cs">
+    <Compile Include="Mobiles\Peerless\MonstrousInterredGrizzle.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\BlightedGroveAltar.cs">
@@ -10543,7 +10543,7 @@
     <Compile Include="Items\Functional\ParoxysmusAltar.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Bosses\ChiefParoxysmus.cs">
+    <Compile Include="Mobiles\Peerless\ChiefParoxysmus.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Quest\CoagulatedLegs.cs">
@@ -10597,13 +10597,13 @@
     <Compile Include="Items\Quest\ShatteredCrystals.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Bosses\ShimmeringEffusion.cs">
+    <Compile Include="Mobiles\Peerless\ShimmeringEffusion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\Bosses\SlasherOfVeils.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Bosses\CrimsonDragon.cs">
+    <Compile Include="Mobiles\Peerless\CrimsonDragon.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Quest\DraconicOrbKey.cs">
@@ -10648,7 +10648,7 @@
     <Compile Include="Items\Artifacts\Decorative\TragicRemainsOfTravesty.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Bosses\Travesty.cs">
+    <Compile Include="Mobiles\Peerless\Travesty.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\TwistedWealdAltar.cs">
@@ -10660,7 +10660,7 @@
     <Compile Include="Items\Artifacts\Equipment\Instruments\DreadFlute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mobiles\Bosses\DreadHorn.cs">
+    <Compile Include="Mobiles\Peerless\DreadHorn.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Quest\GnawsFang.cs">
@@ -12228,13 +12228,13 @@
     <Compile Include="Spells\Spellweaving\Items\TransientItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Spells\Spellweaving\Mobiles\ArcaneFey.cs">
+    <Compile Include="Spells\Mobiles\Summons\ArcaneFey.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Spells\Spellweaving\Mobiles\ArcaneFiend.cs">
+    <Compile Include="Spells\Mobiles\Summons\ArcaneFiend.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Spells\Spellweaving\Mobiles\NatureFury.cs">
+    <Compile Include="Spells\Mobiles\Summons\NatureFury.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Spells\Spellweaving\NatureFury.cs">
