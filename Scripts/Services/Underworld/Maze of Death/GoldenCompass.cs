@@ -24,7 +24,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (IsChildOf(from.Backpack) && from.Region != null && from.Region.IsPartOf(typeof(MazeOfDeathRegion)))
+            if (IsChildOf(from.Backpack) && from.Region != null && from.Region.IsPartOf<MazeOfDeathRegion>())
             {
                 from.CloseGump(typeof(CompassDirectionGump));
                 from.SendGump(new CompassDirectionGump(from));

@@ -463,7 +463,7 @@ namespace Server.Engines.Despise
             foreach (Mobile m in list)
             {
                 WispOrb orb = GetWispOrb(m);
-                if (orb == null || orb.Deleted || !orb.Conscripted || m.Region == null || !m.Region.IsPartOf(typeof(DespiseRegion)))
+                if (orb == null || orb.Deleted || !orb.Conscripted || m.Region == null || !m.Region.IsPartOf<DespiseRegion>())
                     m_ToTransport.Remove(m);
             }
 
@@ -476,7 +476,7 @@ namespace Server.Engines.Despise
             {
                 foreach (Mobile m in m_ToTransport)
                 {
-                    if (m != null && m.Region != null && m.Region.IsPartOf(typeof(DespiseRegion)))
+                    if (m != null && m.Region != null && m.Region.IsPartOf<DespiseRegion>())
                     {
                         WispOrb orb = GetWispOrb(m);
 
@@ -595,7 +595,7 @@ namespace Server.Engines.Despise
         {
             WispOrb orb = GetWispOrb(e.From);
 
-            if (orb != null && !Region.Find(e.From.Location, e.From.Map).IsPartOf(typeof(DespiseRegion)))
+            if (orb != null && !Region.Find(e.From.Location, e.From.Map).IsPartOf<DespiseRegion>())
             {
                 Timer.DelayCall(() =>
                     {

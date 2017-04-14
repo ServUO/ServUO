@@ -247,8 +247,10 @@ namespace Server.Mobiles
 		private List<Mobile> m_AllFollowers;
 		private List<Mobile> m_RecentlyReported;
 
-		#region Guantlet Points
-		private double m_GauntletPoints;
+        public bool UseSummoningRite { get; set; }
+
+        #region Guantlet Points
+        private double m_GauntletPoints;
 
 		[CommandProperty(AccessLevel.Administrator)]
 		public double GauntletPoints { get { return m_GauntletPoints; } set { m_GauntletPoints = value; } }
@@ -1140,7 +1142,14 @@ namespace Server.Mobiles
 			{
 				((PlayerMobile)from).ClaimAutoStabledPets();
 			}
-		}
+
+            if (((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle")) || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
+            {
+                StormLevelGump menu = new StormLevelGump(from);
+                menu.BeginClose();
+                from.SendGump(menu);
+            }
+        }
 
 		private bool m_NoDeltaRecursion;
 
@@ -2138,7 +2147,7 @@ namespace Server.Mobiles
 						list.Add(new CallbackEntry(6204, GetVendor));
 					}
 
-					if (house.IsAosRules && !Region.IsPartOf(typeof(SafeZone))) // Dueling
+					if (house.IsAosRules && !Region.IsPartOf<SafeZone>()) // Dueling
 					{
 						list.Add(new CallbackEntry(6207, LeaveHouse));
 					}
@@ -3055,7 +3064,7 @@ namespace Server.Mobiles
 			}
 
 			#region Dueling
-			if (Region.IsPartOf(typeof(SafeZone)) && m is PlayerMobile)
+			if (Region.IsPartOf<SafeZone>() && m is PlayerMobile)
 			{
 				PlayerMobile pm = (PlayerMobile)m;
 
@@ -5950,7 +5959,7 @@ namespace Server.Mobiles
 
 		public bool YoungDeathTeleport()
 		{
-			if (Region.IsPartOf(typeof(Jail)) || Region.IsPartOf("Samurai start location") ||
+			if (Region.IsPartOf<Jail>() || Region.IsPartOf("Samurai start location") ||
 				Region.IsPartOf("Ninja start location") || Region.IsPartOf("Ninja cave"))
 			{
 				return false;

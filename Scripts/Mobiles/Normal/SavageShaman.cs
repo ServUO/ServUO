@@ -23,14 +23,8 @@ namespace Server.Mobiles
 		{
 			Name = NameList.RandomName("savage shaman");
 
-			if (Utility.RandomBool())
-			{
-				Body = 184;
-			}
-			else
-			{
-				Body = 183;
-			}
+			Female = true;
+			Body = 186;
 
 			SetStr(126, 145);
 			SetDex(91, 110);
@@ -79,7 +73,15 @@ namespace Server.Mobiles
 		public override int Meat { get { return 1; } }
 		public override bool AlwaysMurderer { get { return true; } }
 		public override bool ShowFameTitle { get { return false; } }
-		public override OppositionGroup OppositionGroup { get { return OppositionGroup.SavagesAndOrcs; } }
+        public override TribeType Tribe { get { return TribeType.Savage; } }
+
+        public override OppositionGroup OppositionGroup
+        {
+            get
+            {
+                return OppositionGroup.SavagesAndOrcs;
+            }
+        }
 
 		public override void GenerateLoot()
 		{

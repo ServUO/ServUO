@@ -1346,14 +1346,14 @@ namespace Server.Engines.XmlSpawner2
 
 			// uncomment the code below if you want to restrict challenges to towns only
 			/*
-			if (!from.Region.IsPartOf(typeof(Regions.TownRegion)) || !target.Region.IsPartOf(typeof(Regions.TownRegion)))
+			if (!from.Region.IsPartOf<Regions.TownRegion>() || !target.Region.IsPartOf<Regions.TownRegion>())
 			{
 				from.SendMessage("You must be in a town to issue a challenge"); 
 				return false;
 			}
 			*/
 
-			if (from.Region.IsPartOf(typeof(Regions.Jail)) || target.Region.IsPartOf(typeof(Regions.Jail)))
+			if (from.Region.IsPartOf<Regions.Jail>() || target.Region.IsPartOf<Regions.Jail>())
 			{
 				from.SendLocalizedMessage(1042632); // You'll need a better jailbreak plan then that!
 				return false;

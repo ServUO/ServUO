@@ -1036,7 +1036,7 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x14EC, 1152667, CraftResources.GetHue(CraftResource.Verite), 850, HarvestMap, (int)CraftResource.Verite));
             RewardCollection.Add(new BODCollectionItem(0x9E2B, 1157265, 0, 900, CraftsmanTalisman, 50));
             RewardCollection.Add(new BODCollectionItem(0x9E7E, 1157216, 0, 950, RockHammer));
-            RewardCollection.Add(new BODCollectionItem(0x9CAA, 1157286, 0, 1000, CreateItem, 2));
+            RewardCollection.Add(new BODCollectionItem(0x9CAA, 1157286, 1175, 1000, CreateItem, 2));
             RewardCollection.Add(new BODCollectionItem(0x2F5B, 1152677, CraftResources.GetHue(CraftResource.Valorite), 1050, SmeltersTalisman, (int)CraftResource.Valorite));
             RewardCollection.Add(new BODCollectionItem(0x14EC, 1152668, CraftResources.GetHue(CraftResource.Valorite), 1100, HarvestMap, (int)CraftResource.Valorite));
             RewardCollection.Add(new BODCollectionItem(0x9DB1, 1157220, 1175, 1200, CreateItem, 3));

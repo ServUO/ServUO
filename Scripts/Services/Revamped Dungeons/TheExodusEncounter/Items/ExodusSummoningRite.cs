@@ -1,12 +1,14 @@
 using System;
+using Server.Engines.PartySystem;
 using Server.Targeting;
+using System.Linq;
+using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class ExodusSummoningRite : Item
+    public class ExodusSummoningRite : BaseDecayingItem
     {
-        private int m_Lifespan;
-        private Timer m_Timer;
+        public override int LabelNumber { get { return 1153498; } } // exodus summoning rite 
 
         [Constructable]
         public ExodusSummoningRite() : base(0x2258)
@@ -14,106 +16,10 @@ namespace Server.Items
             this.Weight = 1;
             this.Hue = 1910;
             this.LootType = LootType.Regular;
-
-            if (this.Lifespan > 0)
-            {
-                this.m_Lifespan = this.Lifespan;
-                this.StartTimer();
-            }
         }
 
-        public virtual int Lifespan { get { return 604800; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int TimeLeft
-        {
-            get
-            {
-                return this.m_Lifespan;
-            }
-            set
-            {
-                this.m_Lifespan = value;
-                this.InvalidateProperties();
-            }
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            if (this.Lifespan > 0)
-            {
-                TimeSpan t = TimeSpan.FromSeconds(this.m_Lifespan);
-
-                int weeks = (int)t.Days / 7;
-                int days = t.Days;
-                int hours = t.Hours;
-                int minutes = t.Minutes;
-
-                if (weeks > 1)
-                    list.Add(1153092, weeks.ToString()); // Lifespan: ~1_val~ weeks
-                else if (days > 1)
-                    list.Add(1153091, days.ToString()); // Lifespan: ~1_val~ days
-                else if (hours > 1)
-                    list.Add(1153090, hours.ToString()); // Lifespan: ~1_val~ hours
-                else if (minutes > 1)
-                    list.Add(1153089, minutes.ToString()); // Lifespan: ~1_val~ minutes
-                else
-                    list.Add(1072517, this.m_Lifespan.ToString()); // Lifespan: ~1_val~ seconds
-            }
-        }
-
-        public virtual void StartTimer()
-        {
-            if (this.m_Timer != null)
-                return;
-
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), new TimerCallback(Slice));
-            this.m_Timer.Priority = TimerPriority.OneSecond;
-        }
-
-        public virtual void StopTimer()
-        {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
-
-            this.m_Timer = null;
-        }
-
-        public virtual void Slice()
-        {
-            this.m_Lifespan -= 10;
-
-            this.InvalidateProperties();
-
-            if (this.m_Lifespan <= 0)
-                this.Decay();
-        }
-
-        public virtual void Decay()
-        {
-            if (this.RootParent is Mobile)
-            {
-                Mobile parent = (Mobile)this.RootParent;
-
-                if (this.Name == null)
-                    parent.SendLocalizedMessage(1072515, "#" + this.LabelNumber); // The ~1_name~ expired...
-                else
-                    parent.SendLocalizedMessage(1072515, this.Name); // The ~1_name~ expired...
-
-                Effects.SendLocationParticles(EffectItem.Create(parent.Location, parent.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
-                Effects.PlaySound(parent.Location, parent.Map, 0x201);
-            }
-            else
-            {
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
-                Effects.PlaySound(this.Location, this.Map, 0x201);
-            }
-
-            this.StopTimer();
-            this.Delete();
-        }
+        public override int Lifespan { get { return 604800; } }
+        public override bool UseSeconds { get { return false; } }
 
         public ExodusSummoningRite(Serial serial) : base(serial)
         {
@@ -121,56 +27,87 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (IsChildOf(from.Backpack))
+            RobeofRite robe = from.FindItemOnLayer(Layer.OuterTorso) as RobeofRite;
+            ExodusSacrificalDagger dagger = from.FindItemOnLayer(Layer.OneHanded) as ExodusSacrificalDagger;
+
+            if (!IsChildOf(from.Backpack))
             {
-                RobeofRite robe = from.FindItemOnLayer(Layer.OuterTorso) as RobeofRite;
-                ExodusSacrificalDagger dagger = from.FindItemOnLayer(Layer.OneHanded) as ExodusSacrificalDagger;
-
-                bool alter = false;
-
-                foreach (Item item in GetItemsInRange(5))
-                {
-                    if (item is ExodusTomeAltar)
-                    {
-                        alter = true;
-                        break;
-                    }
-                }
-
-                if (robe != null && dagger != null && alter)
-                {
-                    if (robe.CoolDown != TimeSpan.Zero)
-                    { 
-                        from.SendLocalizedMessage(1153599); // You've already used this item in another ritual.
-                        return; 
-                    }
-
-                    from.SendLocalizedMessage(1153600); // Which Summoning Tome do you wish to use this on? 
-                    ExodusTomeAltar.RitualTarget(this, from, robe);
-                }
+                from.SendLocalizedMessage(1054107); // This item must be in your backpack.
+            }
+            else if (Party.Get(from) == null)
+            {
+                from.SendLocalizedMessage(1153596); // You must join a party with the players you wish to perform the ritual with. 
+            }
+            else if (robe == null || dagger == null)
+            {
+                from.SendLocalizedMessage(1153591); // Thou art not properly attired to perform such a ritual.
             }
             else
-                from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+            {
+                from.SendLocalizedMessage(1153600); // Which Summoning Tome do you wish to use this on? 
+                from.Target = new RiteTarget(this);
+            }
         }
 
-        public override int LabelNumber { get { return 1153498; } } // exodus summoning rite 
-        
+        public class RiteTarget : Target
+        {
+            private Item m_Deed;
+
+            public RiteTarget(Item deed) : base(2, true, TargetFlags.None)
+            {
+                m_Deed = deed;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (targeted is ExodusTomeAltar)
+                {
+                    ExodusTomeAltar altar = (ExodusTomeAltar)targeted;
+
+                    if (altar.CheckParty(altar.Owner, from))
+                    {
+                        if (altar.Rituals.Count(s => s.RitualMobile == from) == 0)
+                        {
+                            altar.Rituals.Add(new RitualArray { RitualMobile = from, Ritual1 = false, Ritual2 = false });
+                        }
+
+                        bool RiteRitual = altar.Rituals.Find(s => s.RitualMobile == from).Ritual1;
+
+                        if (!RiteRitual)
+                        {
+                            ((PlayerMobile)from).UseSummoningRite = true;
+                            from.Say(1153597); // You place the rite within the tome and begin to meditate...
+                            altar.Rituals.Find(s => s.RitualMobile == from).Ritual1 = true;
+                            m_Deed.Delete();
+                            from.SendLocalizedMessage(1153598, from.Name); // ~1_PLAYER~ has read the Summoning Rite! 
+                        }
+                        else
+                        {
+                            from.SendLocalizedMessage(1153599); // You've already used this item in another ritual. 
+                        }
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1153595); // You must first join the party of the person who built this altar.
+                    }
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1153601); // That is not a Summoning Tome. 
+                }
+            }
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
-            writer.Write((int)this.m_Lifespan);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-            this.m_Lifespan = reader.ReadInt();
-
-            this.StartTimer();
         }
     }
 }

@@ -6,6 +6,8 @@ namespace Server.Mobiles
     [CorpseName("an ogre corpse")]
     public class Fezzik : BaseCreature
     {
+        private DateTime m_StinkingCauldronTime;
+
         [Constructable]
         public Fezzik()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -32,8 +34,11 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Energy, 65, 75);
 
             this.SetSkill(SkillName.MagicResist, 133.3, 151.9);
-            this.SetSkill(SkillName.Tactics, 120.3, 128.9);
+            this.SetSkill(SkillName.Tactics, 120.3, 130.0);
             this.SetSkill(SkillName.Wrestling, 122.2, 128.9);
+            this.SetSkill(SkillName.Anatomy, 10.0, 15.0);
+            this.SetSkill(SkillName.DetectHidden, 90.0);
+            this.SetSkill(SkillName.Parry, 95.0, 100.0);
 
             this.Fame = 3000;
             this.Karma = -3000;
@@ -50,46 +55,10 @@ namespace Server.Mobiles
 
         public override int Meat { get { return 2; } }
 
-        public void SpawnGreenGoo(Mobile target)
-        {
-            Map map = this.Map;
-
-            if (map == null)
-                return;
-
-            int newGreenGoo = Utility.RandomMinMax(3, 6);
-
-            for (int i = 0; i < newGreenGoo; ++i)
-            {
-                GooeyMaggots goo = new GooeyMaggots();
-
-                goo.Team = this.Team;
-                goo.FightMode = FightMode.Closest;
-
-                bool validLocation = false;
-                Point3D loc = this.Location;
-
-                for (int j = 0; !validLocation && j < 10; ++j)
-                {
-                    int x = this.X + Utility.Random(3) - 1;
-                    int y = this.Y + Utility.Random(3) - 1;
-                    int z = map.GetAverageZ(x, y);
-
-                    if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
-                        loc = new Point3D(x, y, this.Z);
-                    else if (validLocation = map.CanFit(x, y, z, 16, false, false))
-                        loc = new Point3D(x, y, z);
-                }
-
-                goo.MoveToWorld(loc, map);
-                goo.Combatant = target;
-            }
-        }
-
         public override void AlterDamageScalarFrom(Mobile caster, ref double scalar)
         {
             if (0.5 >= Utility.RandomDouble())
-                this.SpawnGreenGoo(caster);
+                this.SpawnGreenGoo();
         }
 
         public override void OnGotMeleeAttack(Mobile attacker)
@@ -97,7 +66,32 @@ namespace Server.Mobiles
             base.OnGotMeleeAttack(attacker);
 
             if (0.5 >= Utility.RandomDouble())
-                this.SpawnGreenGoo(attacker);
+                this.SpawnGreenGoo();
+        }
+
+        public void SpawnGreenGoo()
+        {
+            if (this.m_StinkingCauldronTime <= DateTime.UtcNow)
+            {
+                new StinkingCauldron().MoveToWorld(this.Location, this.Map);
+
+                this.m_StinkingCauldronTime = DateTime.UtcNow + TimeSpan.FromMinutes(2);
+            }
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            /* if (0.2 > Utility.RandomDouble())
+            {
+                c.DropItem(new RecipeScroll(603));
+            } */
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Meager, 2);
         }
 
         public override void Serialize(GenericWriter writer)

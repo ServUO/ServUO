@@ -32,7 +32,7 @@ namespace Server.Misc
 	        if (m is BaseCreature && ((BaseCreature)m).IsChampionSpawn)
 		        return false;
 	        
-	        if (r.IsPartOf(typeof(Server.Regions.HouseRegion)) || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
+	        if (r.IsPartOf<Server.Regions.HouseRegion>() || Server.Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
                 return false;
 
             return (r.IsPartOf("Covetous") || r.IsPartOf("Deceit") || r.IsPartOf("Despise") || r.IsPartOf("Destard") ||

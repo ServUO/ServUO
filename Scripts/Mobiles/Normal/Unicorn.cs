@@ -83,6 +83,9 @@ namespace Server.Mobiles
                 return TimeSpan.FromHours(1.0);
             }
         }
+
+        public override TribeType Tribe { get { return TribeType.Fey; } }
+
         public override OppositionGroup OppositionGroup
         {
             get
