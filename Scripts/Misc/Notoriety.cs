@@ -8,6 +8,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Engines.VvV;
+using Server.Spells.Chivalry;
 
 namespace Server.Misc
 {
@@ -461,8 +462,13 @@ namespace Server.Misc
                         return MobileNotoriety(source, master);
                 }
 
-                if (!bc.Summoned && !bc.Controlled && ((PlayerMobile)source).EnemyOfOneType == target.GetType())
-                    return Notoriety.Enemy;
+                if (!bc.Summoned && !bc.Controlled)
+                {
+                    var context = EnemyOfOneSpell.GetContext( source );
+
+                    if ( context != null && context.IsEnemy(target) )
+                        return Notoriety.Enemy;
+                }
             }
 
             if (target.Murderer || (target.Body.IsMonster && IsSummoned(target as BaseCreature) && !(target is BaseFamiliar) && !(target is ArcaneFey) && !(target is Golem)) || (target is BaseCreature && (((BaseCreature)target).AlwaysMurderer || ((BaseCreature)target).IsAnimatedDead)))
