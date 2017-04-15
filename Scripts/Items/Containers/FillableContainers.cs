@@ -1597,7 +1597,7 @@ namespace Server.Items
             Mobile nearest = null;
             FillableContent content = null;
 
-            foreach (Mobile mob in map.GetMobilesInRange(loc, 20))
+            foreach (Mobile mob in map.GetMobilesInRange(loc, 60))
             {
                 if (nearest != null && mob.GetDistanceToSqrt(loc) > nearest.GetDistanceToSqrt(loc) && !(nearest is Cobbler && mob is Provisioner))
                     continue;
