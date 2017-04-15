@@ -1828,6 +1828,8 @@
     <Compile Include="Mobiles\Normal\BlackSolenWarrior.cs" />
     <Compile Include="Mobiles\Normal\BlackSolenWorker.cs" />
     <Compile Include="Mobiles\Normal\BloodElemental.cs" />
+    <Compile Include="Mobiles\Normal\OsseinRam.cs" />
+    <Compile Include="Mobiles\Normal\FrostMite.cs" />
     <Compile Include="Mobiles\Normal\BloodWorm.cs" />
     <Compile Include="Mobiles\Normal\Boar.cs" />
     <Compile Include="Mobiles\Normal\Bogle.cs" />
@@ -2078,6 +2080,7 @@
     <Compile Include="Mobiles\Normal\Ortanord.cs" />
     <Compile Include="Mobiles\Normal\PackHorse.cs" />
     <Compile Include="Mobiles\Normal\PackLlama.cs" />
+    <Compile Include="Mobiles\Normal\BloodFox.cs" />
     <Compile Include="Mobiles\Normal\Panther.cs" />
     <Compile Include="Mobiles\Normal\ParoxysmusSwampDragon.cs" />
     <Compile Include="Mobiles\Normal\PatchworkSkeleton.cs" />
@@ -2090,7 +2093,11 @@
     <Compile Include="Mobiles\Normal\PlagueBeastLord.cs" />
     <Compile Include="Mobiles\Normal\PlagueRat.cs" />
     <Compile Include="Mobiles\Normal\PlagueSpawn.cs" />
+    <Compile Include="Mobiles\Normal\Lion.cs" />
+    <Compile Include="Mobiles\Normal\Triceratops.cs" />
     <Compile Include="Mobiles\Normal\Turkey.cs" />
+    <Compile Include="Mobiles\Normal\PalaminoHorse.cs" />
+    <Compile Include="Mobiles\Normal\SabertoothedTiger.cs" />
     <Compile Include="Mobiles\Normal\WildTiger.cs" />
     <Compile Include="Mobiles\NPCs\Brae.cs" />
     <Compile Include="Mobiles\NPCs\Emilio.cs" />

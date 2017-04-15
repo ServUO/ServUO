@@ -36,6 +36,7 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 100.0);
             this.SetSkill(SkillName.Tactics, 50.1, 60.0);
             this.SetSkill(SkillName.Wrestling, 30.1, 100.0);
+            this.SetSkill(SkillName.DetectHidden, 100.0);
 
             this.Fame = 15000;
             this.Karma = 15000;
@@ -44,6 +45,10 @@ namespace Server.Mobiles
 
             if (Core.ML && Utility.RandomDouble() < .33)
                 this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
+
+            this.Tamable = true;
+            this.ControlSlots = 3;
+            this.MinTameSkill = 108.0;
         }
 
         public SerpentineDragon(Serial serial)
@@ -51,62 +56,15 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool ReacquireOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
-        public override double BonusPetDamageScalar
-        {
-            get
-            {
-                return (Core.SE) ? 3.0 : 1.0;
-            }
-        }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Barbed;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 19;
-            }
-        }
-        public override int Scales
-        {
-            get
-            {
-                return 6;
-            }
-        }
+        public override bool ReacquireOnMovement { get { return true; } }
+        public override bool HasBreath { get { return true; } } // fire breath enabled
+        public override double BonusPetDamageScalar { get { return (Core.SE) ? 3.0 : 1.0; } }
+        public override bool AutoDispel { get { return true; } }
+        public override HideType HideType { get { return HideType.Barbed; } }
+        public override int Hides { get { return 20; } }
+        public override int Meat { get { return 19; } }
+        public override int Scales { get { return 6; } }
+
         public override ScaleType ScaleType
         {
             get
@@ -114,13 +72,10 @@ namespace Server.Mobiles
                 return (Utility.RandomBool() ? ScaleType.Black : ScaleType.White);
             }
         }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override int TreasureMapLevel { get { return 4; } }
+        public override bool CanAngerOnTame { get { return true; } }
+        public override bool StatLossAfterTame { get { return true; } }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.FilthyRich, 2);
