@@ -66,6 +66,9 @@ namespace Server.Mobiles
                 return Poison.Lesser;
             }
         }
+
+        public override TribeType Tribe { get { return TribeType.Undead; } }
+
         public override OppositionGroup OppositionGroup
         {
             get

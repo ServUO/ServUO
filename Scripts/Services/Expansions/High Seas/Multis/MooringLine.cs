@@ -192,7 +192,7 @@ namespace Server.Items
 
             Map map = from.Map;
 
-            if (Server.Spells.SpellHelper.CheckMulti(p, map) || Region.Find(p, map).IsPartOf(typeof(Factions.StrongholdRegion)))
+            if (Server.Spells.SpellHelper.CheckMulti(p, map) || Region.Find(p, map).IsPartOf<Factions.StrongholdRegion>())
                 return false;
 
             StaticTile[] staticTiles = map.Tiles.GetStaticTiles(x, y, true);

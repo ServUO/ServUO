@@ -1196,7 +1196,7 @@ namespace Server.Factions
                 return;
 
             #region Dueling
-            if (victim.Region.IsPartOf(typeof(Engines.ConPVP.SafeZone)))
+            if (victim.Region.IsPartOf<Engines.ConPVP.SafeZone>())
                 return;
             #endregion
 

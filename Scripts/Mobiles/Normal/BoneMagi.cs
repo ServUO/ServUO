@@ -10,42 +10,42 @@ namespace Server.Mobiles
         public BoneMagi()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a bone mage";
-            this.Body = 148;
-            this.BaseSoundID = 451;
+            Name = "a bone mage";
+            Body = 148;
+            BaseSoundID = 451;
 
-            this.SetStr(76, 100);
-            this.SetDex(56, 75);
-            this.SetInt(186, 210);
+            SetStr(76, 100);
+            SetDex(56, 75);
+            SetInt(186, 210);
 
-            this.SetHits(46, 60);
+            SetHits(46, 60);
 
-            this.SetDamage(3, 7);
+            SetDamage(3, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 35, 40);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 35, 40);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.EvalInt, 60.1, 70.0);
-            this.SetSkill(SkillName.Magery, 60.1, 70.0);
-            this.SetSkill(SkillName.MagicResist, 55.1, 70.0);
-            this.SetSkill(SkillName.Tactics, 45.1, 60.0);
-            this.SetSkill(SkillName.Wrestling, 45.1, 55.0);
-            this.SetSkill(SkillName.Necromancy, 89, 99.1);
-            this.SetSkill(SkillName.SpiritSpeak, 90.0, 99.0);
+            SetSkill(SkillName.EvalInt, 60.1, 70.0);
+            SetSkill(SkillName.Magery, 60.1, 70.0);
+            SetSkill(SkillName.MagicResist, 55.1, 70.0);
+            SetSkill(SkillName.Tactics, 45.1, 60.0);
+            SetSkill(SkillName.Wrestling, 45.1, 55.0);
+            SetSkill(SkillName.Necromancy, 89, 99.1);
+            SetSkill(SkillName.SpiritSpeak, 90.0, 99.0);
 
-            this.Fame = 3000;
-            this.Karma = -3000;
+            Fame = 3000;
+            Karma = -3000;
 
-            this.VirtualArmor = 38;
+            VirtualArmor = 38;
 
-            this.PackReg(3);
-            this.PackNecroReg(3, 10);
-            this.PackItem(new Bone());
+            PackReg(3);
+            PackNecroReg(3, 10);
+            PackItem(new Bone());
         }
 
         public BoneMagi(Serial serial)
@@ -53,32 +53,16 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override OppositionGroup OppositionGroup
-        {
-            get
-            {
-                return OppositionGroup.FeyAndUndead;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
+        public override bool BleedImmune { get { return true; } }
+        public override OppositionGroup OppositionGroup { get { return OppositionGroup.FeyAndUndead; } }
+        public override Poison PoisonImmune { get { return Poison.Regular; } }
+        public override TribeType Tribe { get { return TribeType.Undead; } }
+
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
-            this.AddLoot(LootPack.LowScrolls);
-            this.AddLoot(LootPack.Potions);
+            AddLoot(LootPack.Average);
+            AddLoot(LootPack.LowScrolls);
+            AddLoot(LootPack.Potions);
         }
 
         public override void Serialize(GenericWriter writer)

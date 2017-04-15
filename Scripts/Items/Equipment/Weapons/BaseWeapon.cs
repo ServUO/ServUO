@@ -94,7 +94,7 @@ namespace Server.Items
         }
 
 		/* Weapon internals work differently now (Mar 13 2003)
-        * 
+        *
         * The attributes defined below default to -1.
         * If the value is -1, the corresponding virtual 'Aos/Old' property is used.
         * If not, the attribute value itself is used. Here's the list:
@@ -637,14 +637,14 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsImbued
         {
-            get 
+            get
             {
                 if (this.TimesImbued >= 1 && !m_IsImbued)
                     m_IsImbued = true;
 
-                return m_IsImbued; 
+                return m_IsImbued;
             }
-            set 
+            set
             {
                 if (this.TimesImbued >= 1)
                     m_IsImbued = true;
@@ -1483,7 +1483,7 @@ namespace Server.Items
 
 				delayInSeconds = Math.Floor(40000.0 / v) * 0.5;
 
-				// Maximum swing rate capped at one swing per second 
+				// Maximum swing rate capped at one swing per second
 				// OSI dev said that it has and is supposed to be 1.25
 				if (delayInSeconds < 1.25)
 				{
@@ -2153,7 +2153,7 @@ namespace Server.Items
             double chance = NegativeAttributes.Antique > 0 ? 5 : 0;
             bool acidicTarget = MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
 
-            if ((m_AosAttributes.SpellChanneling == 0 || MaxRange > 1) && 
+            if ((m_AosAttributes.SpellChanneling == 0 || MaxRange > 1) &&
                 (acidicTarget || (defender != null && splintering) || Utility.Random(250) <= chance))    // Stratics says 50% chance, seems more like 4%..
             {
                 if (MaxRange <= 1 && acidicTarget)
@@ -2230,11 +2230,8 @@ namespace Server.Items
 
             if (m_Consecrated)
             {
-                if (Utility.RandomDouble() <= ConsecrateProcChance / 100)
-                {
-                    if (ConsecrateDamageBonus > 0)
-                        damageBonus *= 1 + ConsecrateDamageBonus / 100;
-                }
+                // Based on chiv skill will give 1-15 damage modifier bonus when skill value >= 92 as OSI Test Center
+                percentageBonus += attacker.Skills[SkillName.Chivalry].Value < 92.0 ? 0 : Convert.ToInt32(Math.Floor((attacker.Skills[SkillName.Chivalry].Value - 92) / 2) + 1);
             }
 
             percentageBonus += (int)(damageBonus * 100) - 100;
@@ -2280,38 +2277,30 @@ namespace Server.Items
                 defender.FixedEffect(0x37B9, 10, 5);
             }
 
+			#region Enemy of One
 			if (!attacker.Player)
 			{
-				if (defender is PlayerMobile)
-				{
-					PlayerMobile pm = (PlayerMobile)defender;
+				var enemyOfOneContext = EnemyOfOneSpell.GetContext(defender);
 
-					if (pm.EnemyOfOneType != null && pm.EnemyOfOneType != attacker.GetType())
-					{
-						percentageBonus += 100;
-					}
-				}
+				if (enemyOfOneContext != null && !enemyOfOneContext.IsWaitingForEnemy && !enemyOfOneContext.IsEnemy(attacker))
+					percentageBonus += 100;
 			}
 			else if (!defender.Player)
 			{
-				if (attacker is PlayerMobile)
+				var enemyOfOneContext = EnemyOfOneSpell.GetContext(attacker);
+
+				if (enemyOfOneContext != null)
 				{
-					PlayerMobile pm = (PlayerMobile)attacker;
+					enemyOfOneContext.OnHit(defender);
 
-					if (pm.WaitingForEnemy)
-					{
-						pm.EnemyOfOneType = defender.GetType();
-						pm.WaitingForEnemy = false;
-					}
-
-					if (pm.EnemyOfOneType == defender.GetType())
+					if (enemyOfOneContext.IsEnemy(defender))
 					{
 						defender.FixedEffect(0x37B9, 10, 5, 1160, 0);
-
-						percentageBonus += 50;
+						percentageBonus += enemyOfOneContext.DamageScalar;
 					}
 				}
 			}
+			#endregion
 
 			int packInstinctBonus = GetPackInstinctBonus(attacker, defender);
 
@@ -2327,7 +2316,7 @@ namespace Server.Items
 
 			TransformContext context = TransformationSpellHelper.GetContext(defender);
 
-			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver || SetHelper.GetSetSlayer(attacker) == SlayerName.Silver) 
+			if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver || SetHelper.GetSetSlayer(attacker) == SlayerName.Silver)
                 && ((context != null && context.Spell is NecromancerSpell && context.Type != typeof(HorrificBeastSpell))
                 || (defender is BaseCreature && (defender.Body == 747 || defender.Body == 748 || defender.Body == 749 || defender.Hue == 0x847E))))
 			{
@@ -2412,7 +2401,7 @@ namespace Server.Items
 			else if (Core.AOS && damage == 0) // parried
 			{
 				if (a != null && a.Validate(attacker) /*&& a.CheckMana( attacker, true )*/)
-					// Parried special moves have no mana cost 
+					// Parried special moves have no mana cost
 				{
 					a = null;
 					WeaponAbility.ClearCurrentAbility(attacker);
@@ -2868,8 +2857,8 @@ namespace Server.Items
 						damageBonus += 6;
 					else if (perc >= 1)
 						damageBonus += 3;
-				} 
-				
+				}
+
 				TransformContext context = TransformationSpellHelper.GetContext(attacker);
 
 				if (context != null && context.Spell is ReaperFormSpell)
@@ -3172,9 +3161,9 @@ namespace Server.Items
 
         private List<SlayerName> _SuperSlayers = new List<SlayerName>()
         {
-            SlayerName.Repond, SlayerName.Silver, SlayerName.Fey, 
-            SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom, 
-            SlayerName.ReptilianDeath, SlayerName.Dinosaur, SlayerName.Myrmidex, 
+            SlayerName.Repond, SlayerName.Silver, SlayerName.Fey,
+            SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom,
+            SlayerName.ReptilianDeath, SlayerName.Dinosaur, SlayerName.Myrmidex,
             SlayerName.Eodon
         };
 
@@ -3579,7 +3568,7 @@ namespace Server.Items
 			    lumberValue = (lumberValue/5.0)/100.0;
 			    if (lumberValue > 0.2)
 			        lumberValue = 0.2;
-			    
+
 				modifiers += lumberValue;
 
 				if (lumberValue >= 100.0)
@@ -3793,7 +3782,7 @@ namespace Server.Items
 
 			// Version 11
 			writer.Write(m_TimesImbued);
-         
+
             #endregion
 
             // Version 10
@@ -4162,7 +4151,7 @@ namespace Server.Items
 				case 11:
 					{
 						m_TimesImbued = reader.ReadInt();
-                     
+
                         #endregion
 
                         goto case 10;
@@ -4227,7 +4216,7 @@ namespace Server.Items
 				case 5:
 					{
 						SaveFlag flags;
-                        
+
                         if(version < 13)
                             flags = (SaveFlag)reader.ReadInt();
                         else
@@ -4988,14 +4977,14 @@ namespace Server.Items
             }
 
 			/*
-            * Want to move this to the engraving tool, let the non-harmful 
+            * Want to move this to the engraving tool, let the non-harmful
             * formatting show, and remove CLILOCs embedded: more like OSI
             * did with the books that had markup, etc.
-            * 
-            * This will have a negative effect on a few event things imgame 
+            *
+            * This will have a negative effect on a few event things imgame
             * as is.
-            * 
-            * If we cant find a more OSI-ish way to clean it up, we can 
+            *
+            * If we cant find a more OSI-ish way to clean it up, we can
             * easily put this back, and use it in the deserialize
             * method and engraving tool, to make it perm cleaned up.
             */
@@ -5084,7 +5073,7 @@ namespace Server.Items
 					list.Add(1060659, "Experience\t{0}", levitem.Experience);
 				}
 			}
-           
+
 
 			if (IsImbued)
 			{
@@ -5097,7 +5086,7 @@ namespace Server.Items
 			}
 
             if (m_Altered)
-                list.Add(1111880); // Altered  
+                list.Add(1111880); // Altered
 
             #region Factions
             if (m_FactionState != null)
@@ -5119,7 +5108,7 @@ namespace Server.Items
 
                 if (m_SetEquipped)
 				{
-					list.Add(1073492); // Full Weapon/Armor Set Present			
+					list.Add(1073492); // Full Weapon/Armor Set Present
 					GetSetProperties(list);
 				}
 			}
@@ -5753,7 +5742,7 @@ namespace Server.Items
 
 			if (IsSetItem && !m_SetEquipped)
 			{
-				list.Add(1072378); // <br>Only when full set is present:				
+				list.Add(1072378); // <br>Only when full set is present:
 				GetSetProperties(list);
 			}
 
@@ -6146,7 +6135,7 @@ namespace Server.Items
 
 			if ((prop = m_SetSelfRepair) != 0 && WeaponAttributes.SelfRepair == 0)
 			{
-				list.Add(1060450, prop.ToString()); // self repair ~1_val~	
+				list.Add(1060450, prop.ToString()); // self repair ~1_val~
 			}
 
 			SetHelper.GetSetProperties(list, this);

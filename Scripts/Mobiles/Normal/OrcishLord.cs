@@ -103,6 +103,9 @@ namespace Server.Mobiles
                 return 1;
             }
         }
+
+        public override TribeType Tribe { get { return TribeType.Orc; } }
+
         public override OppositionGroup OppositionGroup
         {
             get
