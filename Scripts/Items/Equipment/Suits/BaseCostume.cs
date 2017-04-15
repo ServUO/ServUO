@@ -130,7 +130,7 @@ namespace Server.Items
 			if (Transformed) DeMask(m_Wearer);
 				m_Wearer = null;	
 
-      			if( o is Mobile && ((Mobile)o).Kills >= 5)
+      			if( o is Mobile && ((Mobile)o).Murderer)
                		{
                			( (Mobile)o).Criminal = true;
                 	}

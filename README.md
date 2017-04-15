@@ -1,5 +1,7 @@
 # [ServUO]
 
+[![Travis Build Status](https://travis-ci.org/ServUO/ServUO.svg)](https://travis-ci.org/ServUO/ServUO)
+
 ServUO is a community driven Ultima Online Server Emulator written in C#.
 
 ### Website

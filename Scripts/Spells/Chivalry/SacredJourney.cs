@@ -126,7 +126,7 @@ namespace Server.Spells.Chivalry
             {
                 this.Caster.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
             }
-            else if (this.Caster.Kills >= 5 && map != Map.Felucca)
+            else if (this.Caster.Murderer && map != Map.Felucca)
             {
                 this.Caster.SendLocalizedMessage(1019004); // You are not allowed to travel there.
             }
