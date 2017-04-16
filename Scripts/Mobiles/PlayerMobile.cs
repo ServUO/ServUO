@@ -4186,7 +4186,7 @@ namespace Server.Mobiles
                         char_kxp = reader.ReadInt();
                         char_SKPoints = reader.ReadInt();
                         char_StatPoints = reader.ReadInt();
-                        goto case 29;
+                        goto case 33;
                     }
                 //end level system
                 // Version 34 - new BOD System
