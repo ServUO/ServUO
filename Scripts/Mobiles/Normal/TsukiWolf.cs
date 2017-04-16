@@ -45,14 +45,20 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 65.1, 70.0);
             this.SetSkill(SkillName.Tactics, 95.1, 110.0);
             this.SetSkill(SkillName.Wrestling, 97.6, 107.5);
+            this.SetSkill(SkillName.Necromancy, 20.0);
+            this.SetSkill(SkillName.SpiritSpeak, 20.0);
+            this.SetSkill(SkillName.Anatomy, 40.0, 50.0);
+            this.SetSkill(SkillName.DetectHidden, 100.0);
+            this.SetSkill(SkillName.Parry, 90.0, 100.0);
 
             this.Fame = 8500;
             this.Karma = -8500;
 
+            
             if (Core.ML && Utility.RandomDouble() < .33)
                 this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(1));
 
-            switch( Utility.Random(10) )
+            switch (Utility.Random(10))
             {
                 case 0:
                     this.PackItem(new LeftArm());
@@ -85,6 +91,10 @@ namespace Server.Mobiles
                     this.PackItem(new BonePile());
                     break;
             }
+            
+            this.Tamable = true;
+            this.ControlSlots = 3;
+            this.MinTameSkill = 96.0;
         }
 
         public TsukiWolf(Serial serial)
@@ -92,27 +102,13 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 25;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
+        public override bool CanAngerOnTame { get { return true; } }
+        public override bool StatLossAfterTame { get { return true; } }
+
+        public override int Meat { get { return 4; } }
+        public override int Hides { get { return 25; } }
+        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average);

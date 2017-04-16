@@ -37,6 +37,9 @@ namespace Server.Commands
 			Generate("deco", "Data/Decoration/Malas", Map.Malas);
 			Generate("deco", "Data/Decoration/Tokuno", Map.Tokuno);
 
+            // The problem is, this needs to have vendors present so the fillable knows what type to assign
+            Timer.DelayCall(TimeSpan.FromMinutes(30), () => { FillableContainer.CheckFillables_OnCommand(e); });
+
             m_Mobile.SendMessage("World generating complete. {0} items were generated.", m_Count);
         }
 
