@@ -11,7 +11,7 @@ using Server.Engines.Points;
 
 namespace Server.Engines.VvV
 {
-    public class VvVSigil : Item
+    public class VvVSigil : Item, IRevealableItem
     {
         public const int OwnershipHue = 0xB;
 
@@ -34,19 +34,6 @@ namespace Server.Engines.VvV
             Visible = false;
 
             LootType = LootType.Cursed;
-        }
-
-        public override void OnMovement(Mobile m, Point3D oldLocation)
-        {
-            base.OnMovement(m, oldLocation);
-
-            if (Utility.InRange(this.Location, m.Location, 8))
-            {
-                int skill = (int)m.Skills[SkillName.DetectHidden].Value;
-
-                if (skill >= 80 && Utility.Random(600) < skill)
-                    m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1153493, m.NetState); // Your keen senses detect something hidden in the area...
-            }
         }
 
         public void OnStolen(VvVPlayerEntry entry)
@@ -102,6 +89,32 @@ namespace Server.Engines.VvV
             Region r = Region.Find(new Point3D(x, y, pm.Map.GetAverageZ(x, y)), pm.Map);
 
             return ViceVsVirtueSystem.IsBattleRegion(r);
+        }
+
+        public bool CheckReveal(Mobile m)
+        {
+            if (!ViceVsVirtueSystem.IsVvV(m))
+                return false;
+
+            return Utility.Random(100) <= m.Skills[SkillName.DetectHidden].Value;
+        }
+
+        public virtual void OnRevealed(Mobile m)
+        {
+            Visible = true;
+        }
+
+        public virtual bool CheckPassiveDetect(Mobile m)
+        {
+            if (m.InRange(this.Location, 4))
+            {
+                int skill = (int)m.Skills[SkillName.DetectHidden].Value;
+
+                if (skill >= 80 && Utility.Random(300) < skill)
+                    return true;
+            }
+
+            return false;
         }
 
         public VvVSigil(Serial serial)

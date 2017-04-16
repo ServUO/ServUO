@@ -2853,5 +2853,9 @@
       <rect x="828" y="1762" width="195" height="158" zmin="-25" />
       <go x="853" y="1784" z="0" />
     </region>
+    <region type="StygianAbyssRegion" priority="50" name="KotlCity">
+      <rect x="435" y="2270" width="240" height="220" zmin="-25" />
+      <go x="542" y="2473" z="0" />
+    </region>
   </Facet>
 </ServerRegions>

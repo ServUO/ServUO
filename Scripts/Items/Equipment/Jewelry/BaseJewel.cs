@@ -741,10 +741,7 @@ namespace Server.Items
                 }
                 else if (m_ReforgedSuffix != ReforgedSuffix.None)
                 {
-                    if (m_ReforgedSuffix == ReforgedSuffix.Minax)
-                        list.Add(1154507, String.Format("{0}", GetNameString())); // ~1_ITEM~ bearing the crest of Minax
-                    else
-                        list.Add(1151758, String.Format("{0}\t#{1}", GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_ITEM~ of ~2_SUFFIX~
+                    RunicReforging.AddSuffixName(list, m_ReforgedSuffix, GetNameString());
                 }
             }
             else

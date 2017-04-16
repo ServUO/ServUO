@@ -6,7 +6,7 @@ using Server.Mobiles;
 namespace Server.Engines.BulkOrders
 {
     [TypeAlias("Scripts.Engines.BulkOrders.SmallBOD")]
-    public abstract class SmallBOD : Item
+    public abstract class SmallBOD : Item, IBOD
     {
         public abstract BODType BODType { get; }
 
@@ -392,6 +392,12 @@ namespace Server.Engines.BulkOrders
                 case BulkMaterialType.DullCopper:
                     skillReq = 65.0;
                     break;
+                case BulkMaterialType.ShadowIron:
+                    skillReq = 70.0;
+                    break;
+                case BulkMaterialType.Copper:
+                    skillReq = 75.0;
+                    break;
                 case BulkMaterialType.Bronze:
                     skillReq = 80.0;
                     break;
@@ -412,6 +418,9 @@ namespace Server.Engines.BulkOrders
                     break;
                 case BulkMaterialType.Horned:
                     skillReq = 80.0;
+                    break;
+                case BulkMaterialType.Barbed:
+                    skillReq = 99.0;
                     break;
                 case BulkMaterialType.OakWood:
                     skillReq = 65.0;

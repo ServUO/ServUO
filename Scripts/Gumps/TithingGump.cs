@@ -1,6 +1,7 @@
 using System;
 using Server.Items;
 using Server.Network;
+using Server.Mobiles;
 
 namespace Server.Gumps
 {
@@ -11,45 +12,47 @@ namespace Server.Gumps
         public TithingGump(Mobile from, int offer)
             : base(160, 40)
         {
-            int totalGold = from.TotalGold;
+            int totalGold = Banker.GetBalance(from); //from.TotalGold;
 
             if (offer > totalGold)
                 offer = totalGold;
             else if (offer < 0)
                 offer = 0;
 
-            this.m_From = from;
-            this.m_Offer = offer;
+            m_From = from;
+            m_Offer = offer;
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddImage(30, 30, 102);
+            AddImage(30, 30, 102);
 
-            this.AddHtmlLocalized(95, 100, 120, 100, 1060198, 0, false, false); // May your wealth bring blessings to those in need, if tithed upon this most sacred site.
+            AddHtmlLocalized(95, 100, 120, 100, 1060198, 0, false, false); // May your wealth bring blessings to those in need, if tithed upon this most sacred site.
 
-            this.AddLabel(57, 274, 0, "Gold:");
-            this.AddLabel(87, 274, 53, (totalGold - offer).ToString());
+            string total = totalGold - offer > 100000 ? "100000+" : (totalGold - offer).ToString();
 
-            this.AddLabel(137, 274, 0, "Tithe:");
-            this.AddLabel(172, 274, 53, offer.ToString());
+            AddLabel(57, 274, 0, "Gold:");
+            AddLabel(87, 274, 53, total);
 
-            this.AddButton(105, 230, 5220, 5220, 2, GumpButtonType.Reply, 0);
-            this.AddButton(113, 230, 5222, 5222, 2, GumpButtonType.Reply, 0);
-            this.AddLabel(108, 228, 0, "<");
-            this.AddLabel(112, 228, 0, "<");
+            AddLabel(137, 274, 0, "Tithe:");
+            AddLabel(172, 274, 53, offer.ToString());
 
-            this.AddButton(127, 230, 5223, 5223, 1, GumpButtonType.Reply, 0);
-            this.AddLabel(131, 228, 0, "<");
+            AddButton(105, 230, 5220, 5220, 2, GumpButtonType.Reply, 0);
+            AddButton(113, 230, 5222, 5222, 2, GumpButtonType.Reply, 0);
+            AddLabel(108, 228, 0, "<");
+            AddLabel(112, 228, 0, "<");
 
-            this.AddButton(147, 230, 5224, 5224, 3, GumpButtonType.Reply, 0);
-            this.AddLabel(153, 228, 0, ">");
+            AddButton(127, 230, 5223, 5223, 1, GumpButtonType.Reply, 0);
+            AddLabel(131, 228, 0, "<");
 
-            this.AddButton(168, 230, 5220, 5220, 4, GumpButtonType.Reply, 0);
-            this.AddButton(176, 230, 5222, 5222, 4, GumpButtonType.Reply, 0);
-            this.AddLabel(172, 228, 0, ">");
-            this.AddLabel(176, 228, 0, ">");
+            AddButton(147, 230, 5224, 5224, 3, GumpButtonType.Reply, 0);
+            AddLabel(153, 228, 0, ">");
 
-            this.AddButton(217, 272, 4023, 4024, 5, GumpButtonType.Reply, 0);
+            AddButton(168, 230, 5220, 5220, 4, GumpButtonType.Reply, 0);
+            AddButton(176, 230, 5222, 5222, 4, GumpButtonType.Reply, 0);
+            AddLabel(172, 228, 0, ">");
+            AddLabel(176, 228, 0, ">");
+
+            AddButton(217, 272, 4023, 4024, 5, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -59,7 +62,7 @@ namespace Server.Gumps
                 case 0:
                     {
                         // You have decided to tithe no gold to the shrine.
-                        this.m_From.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1060193);
+                        m_From.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1060193);
                         break;
                     }
                 case 1:
@@ -72,56 +75,56 @@ namespace Server.Gumps
                         switch ( info.ButtonID )
                         {
                             case 1:
-                                offer = this.m_Offer - 100;
+                                offer = m_Offer - 100;
                                 break;
                             case 2:
                                 offer = 0;
                                 break;
                             case 3:
-                                offer = this.m_Offer + 100;
+                                offer = m_Offer + 100;
                                 break;
                             case 4:
-                                offer = this.m_From.TotalGold;
+                                offer = Math.Min(100000, Banker.GetBalance(m_From));
                                 break;
                         }
 
-                        this.m_From.SendGump(new TithingGump(this.m_From, offer));
+                        m_From.SendGump(new TithingGump(m_From, offer));
                         break;
                     }
                 case 5:
                     {
-                        int totalGold = this.m_From.TotalGold;
+                        int totalGold = Banker.GetBalance(m_From);  // m_From.TotalGold;
 
-                        if (this.m_Offer > totalGold)
-                            this.m_Offer = totalGold;
-                        else if (this.m_Offer < 0)
-                            this.m_Offer = 0;
+                        if (m_Offer > totalGold)
+                            m_Offer = totalGold;
+                        else if (m_Offer < 0)
+                            m_Offer = 0;
 
-                        if ((this.m_From.TithingPoints + this.m_Offer) > 100000) // TODO: What's the maximum?
-                            this.m_Offer = (100000 - this.m_From.TithingPoints);
+                        if ((m_From.TithingPoints + m_Offer) > 100000) // TODO: What's the maximum?
+                            m_Offer = (100000 - m_From.TithingPoints);
 
-                        if (this.m_Offer <= 0)
+                        if (m_Offer <= 0)
                         {
                             // You have decided to tithe no gold to the shrine.
-                            this.m_From.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1060193);
+                            m_From.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1060193);
                             break;
                         }
 
-                        Container pack = this.m_From.Backpack;
+                        Container pack = m_From.Backpack;
 
-                        if (pack != null && pack.ConsumeTotal(typeof(Gold), this.m_Offer))
+                        if (Banker.Withdraw(m_From, m_Offer, true))
                         {
                             // You tithe gold to the shrine as a sign of devotion.
-                            this.m_From.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1060195);
-                            this.m_From.TithingPoints += this.m_Offer;
+                            m_From.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1060195);
+                            m_From.TithingPoints += m_Offer;
 
-                            this.m_From.PlaySound(0x243);
-                            this.m_From.PlaySound(0x2E6);
+                            m_From.PlaySound(0x243);
+                            m_From.PlaySound(0x2E6);
                         }
                         else
                         {
                             // You do not have enough gold to tithe that amount!
-                            this.m_From.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1060194);
+                            m_From.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1060194);
                         }
 
                         break;

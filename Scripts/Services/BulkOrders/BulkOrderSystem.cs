@@ -3,6 +3,7 @@ using Server;
 using Server.Mobiles;
 using Server.Items;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Server.Engines.BulkOrders
@@ -12,6 +13,14 @@ namespace Server.Engines.BulkOrders
         Enabled,
         Disabled,
         Automatic
+    }
+
+    public interface IBOD
+    {
+        int AmountMax { get; set; }
+        bool RequireExceptional { get; set; }
+        BulkMaterialType Material { get; set; }
+        BODType BODType { get; }
     }
 
     public class BulkOrderSystem
@@ -463,6 +472,202 @@ namespace Server.Engines.BulkOrders
             return false;
         }
 
+        public static bool CanExchangeBOD(Mobile from, BaseVendor vendor, IBOD bod, int cost)
+        {
+            if (bod.BODType != vendor.BODType)
+            {
+                vendor.SayTo(from, 1152298, 0x3B2); // I don't deal in those goods.
+                return false;
+            }
+
+            if ((bod is SmallBOD && ((SmallBOD)bod).AmountCur > 0) ||
+                     (bod is LargeBOD && ((LargeBOD)bod).Entries != null &&
+                     ((LargeBOD)bod).Entries.FirstOrDefault(e => e.Amount > 0) != null))
+            {
+                vendor.SayTo(from, 1152299, 0x3B2); // I am sorry to say I cannot work with a deed that is even partially filled.
+                return false;
+            }
+
+            if (bod.AmountMax == 20 && (!CanBeExceptional(bod) || bod.RequireExceptional) &&
+                     (!CanUseMaterial(bod) ||
+                     (bod.Material == BulkMaterialType.Valorite ||
+                      bod.Material == BulkMaterialType.Frostwood ||
+                      bod.Material == BulkMaterialType.Barbed)))
+            {
+                vendor.SayTo(from, 1152291, 0x3B2); // I won't be able to replace that bulk order with a better one.
+                return false;
+            }
+
+            if (cost > -1 && !Banker.Withdraw(from, cost, true))
+            {
+                vendor.SayTo(from, 1152302, 0x3B2); // I am afraid your bank box does not contain the funds needed to complete this transaction.
+                return false;
+            }
+
+            return true;
+        }
+
+        public static Type GetTypeFromBOD(IBOD bod)
+        {
+            Type t = null;
+
+            if (bod is SmallBOD)
+            {
+                t = ((SmallBOD)bod).Type;
+            }
+            else if (bod is LargeBOD && ((LargeBOD)bod).Entries != null && ((LargeBOD)bod).Entries.Length > 0)
+            {
+                t = ((LargeBOD)bod).Entries[0].Details.Type;
+            }
+
+            return t;
+        }
+
+        public static bool CanBeExceptional(IBOD bod)
+        {
+            switch (bod.BODType)
+            {
+                default: return true;
+                case BODType.Alchemy:
+                case BODType.Inscription: return false;
+                case BODType.Tinkering: 
+                case BODType.Cooking:
+                case BODType.Fletching:
+                    return !IsInExceptionalExcludeList(bod);
+            }
+        }
+
+        private static bool IsInExceptionalExcludeList(IBOD bod)
+        {
+            Type t = GetTypeFromBOD(bod);
+
+            if (t == null)
+                return false;
+
+            return _ExceptionalExcluded.FirstOrDefault(type => type == t) != null;
+        }
+
+        public static bool CanUseMaterial(IBOD bod)
+        {
+            switch (bod.BODType)
+            {
+                default: return true;
+                case BODType.Alchemy:
+                case BODType.Inscription:
+                case BODType.Cooking: return false;
+                case BODType.Tinkering:
+                case BODType.Fletching: return !IsInExceptionalExcludeList(bod);
+                case BODType.Tailor: return BGTClassifier.Classify(BODType.Tailor, GetTypeFromBOD(bod)) == BulkGenericType.Leather;
+            }
+        }
+
+        private static Type[] _ExceptionalExcluded =
+        {
+            typeof(Arrow), typeof(Bolt), typeof(Kindling), typeof(Shaft),
+
+            typeof(EnchantedApple), typeof(TribalPaint), typeof(WrathGrapes), 
+            typeof(EggBomb), typeof(CookedBird), typeof(FishSteak), typeof(FriedEggs),
+            typeof(LambLeg), typeof(Ribs), 
+
+            typeof(Gears), typeof(Axle), typeof(Springs), typeof(AxleGears), typeof(ClockParts),
+            typeof(Clock), typeof(PotionKeg), typeof(ClockFrame), typeof(MetalContainerEngraver)
+        };
+
+        public static void MutateBOD(IBOD bod)
+        {
+            List<int> picker = new List<int>();
+
+            if (!bod.RequireExceptional && CanBeExceptional(bod))
+            {
+                picker.Add(0);
+            }
+
+            if (bod.AmountMax < 20)
+            {
+                picker.Add(1);
+            }
+
+            if (CanUseMaterial(bod) && bod.Material != BulkMaterialType.Frostwood && bod.Material != BulkMaterialType.Barbed && bod.Material != BulkMaterialType.Valorite)
+            {
+                picker.Add(2);
+            }
+
+            if (picker.Count == 0)
+                return;
+
+            switch (picker[Utility.Random(picker.Count)])
+            {
+                case 0: bod.RequireExceptional = true; break;
+                case 1: bod.AmountMax += 5; break;
+                case 2:
+                    if (bod.Material == BulkMaterialType.None)
+                    {
+                        BulkGenericType type = BGTClassifier.Classify(bod.BODType, null);
+
+                        switch (type)
+                        {
+                            case BulkGenericType.Iron: bod.Material = BulkMaterialType.DullCopper; break;
+                            case BulkGenericType.Cloth: break;
+                            case BulkGenericType.Leather: bod.Material = BulkMaterialType.Spined; break;
+                            case BulkGenericType.Wood: bod.Material = BulkMaterialType.OakWood; break;
+                        }
+                    }
+                    else
+                    {
+                        bod.Material++;
+                    }
+                    break;
+            }
+
+            picker.Clear();
+        }
+
+        public static int GetBribe(IBOD bod)
+        {
+            int worth = 0;
+
+            if (bod.RequireExceptional)
+            {
+                worth += 400;
+            }
+
+            switch (bod.Material)
+            {
+                case BulkMaterialType.DullCopper: worth += 25; break;
+                case BulkMaterialType.ShadowIron: worth += 50; break;
+                case BulkMaterialType.Copper: worth += 100; break;
+                case BulkMaterialType.Bronze: worth += 200; break;
+                case BulkMaterialType.Gold: worth += 300; break;
+                case BulkMaterialType.Agapite: worth += 400; break;
+                case BulkMaterialType.Verite: worth += 500; break;
+                case BulkMaterialType.Valorite: worth += 600; break;
+                case BulkMaterialType.Spined: worth += 100; break;
+                case BulkMaterialType.Horned: worth += 250; break;
+                case BulkMaterialType.Barbed: worth += 500; break;
+                case BulkMaterialType.OakWood: worth += 100; break;
+                case BulkMaterialType.AshWood: worth += 200; break;
+                case BulkMaterialType.YewWood: worth += 300; break;
+                case BulkMaterialType.Heartwood: worth += 400; break;
+                case BulkMaterialType.Bloodwood: worth += 500; break;
+                case BulkMaterialType.Frostwood: worth += 600; break;
+            }
+
+            switch (bod.AmountMax)
+            {
+                default:
+                case 10:
+                case 15: worth += 100; break;
+                case 20: worth += 250; break;
+            }
+
+            if (bod is LargeBOD && ((LargeBOD)bod).Entries != null)
+            {
+                worth *= Math.Min(4, ((LargeBOD)bod).Entries.Length);
+            }
+
+            return worth;
+        }
+
         public static string FilePath = Path.Combine("Saves/CraftContext", "BODs.bin");
 
         public static void Configure()
@@ -651,6 +856,18 @@ namespace Server.Engines.BulkOrders
                 writer.Write(1);
                 writer.Write(_NextBulkOrder);
             }
+        }
+    }
+
+    public class PendingBribe
+    {
+        public IBOD BOD { get; set; }
+        public int Amount { get; set; }
+
+        public PendingBribe(IBOD bod, int amount)
+        {
+            BOD = bod;
+            Amount = amount;
         }
     }
 }

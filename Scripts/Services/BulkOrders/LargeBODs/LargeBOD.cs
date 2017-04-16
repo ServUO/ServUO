@@ -5,7 +5,7 @@ using Server.Mobiles;
 namespace Server.Engines.BulkOrders
 {
     [TypeAlias("Scripts.Engines.BulkOrders.LargeBOD")]
-    public abstract class LargeBOD : Item
+    public abstract class LargeBOD : Item, IBOD
     {
         public abstract BODType BODType { get; }
 

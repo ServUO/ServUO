@@ -36,7 +36,9 @@ namespace Server.Engines.Points
 
         Blackthorn,
         CleanUpBritannia,
-        ViceVsVirtue
+        ViceVsVirtue,
+
+        TreasuresOfKotlCity
     }
 
     public abstract class PointsSystem
@@ -318,6 +320,7 @@ namespace Server.Engines.Points
         public static BlackthornData Blackthorn { get; set; }
         public static CleanUpBritanniaData CleanUpBritannia { get; set; }
         public static ViceVsVirtueSystem ViceVsVirtue { get; set; }
+        public static KotlCityData TreasuresOfKotlCity { get; set; }
 
         public static void Configure()
         {
@@ -334,6 +337,7 @@ namespace Server.Engines.Points
             Blackthorn = new BlackthornData();
             CleanUpBritannia = new CleanUpBritanniaData();
             ViceVsVirtue = new ViceVsVirtueSystem();
+            TreasuresOfKotlCity = new KotlCityData();
 
             CityLoyaltySystem.ConstructSystems();
         }

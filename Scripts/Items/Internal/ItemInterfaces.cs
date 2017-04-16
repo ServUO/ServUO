@@ -18,7 +18,7 @@ namespace Server.Items
         string OwnerName { get; set; }
     }
 
-    public interface IFlippable
+    public interface IFlipable
     {
         int WestID { get; }
         int NorthID { get; }

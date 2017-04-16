@@ -7,7 +7,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public ShadowWyrm()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "a shadow wyrm";
             this.Body = 106;
@@ -36,11 +36,18 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 100.3, 130.0);
             this.SetSkill(SkillName.Tactics, 97.6, 100.0);
             this.SetSkill(SkillName.Wrestling, 97.6, 100.0);
+            this.SetSkill(SkillName.DetectHidden, 90.0, 100.0);
+            this.SetSkill(SkillName.Necromancy, 80.0, 90.0);
+            this.SetSkill(SkillName.SpiritSpeak, 100.0, 105.0);
 
             this.Fame = 22500;
             this.Karma = -22500;
 
             this.VirtualArmor = 70;
+
+            this.Tamable = true;
+            this.ControlSlots = 5;
+            this.MinTameSkill = 105.0;
         }
 
         public ShadowWyrm(Serial serial)
@@ -48,90 +55,21 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool ReacquireOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 19;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int Scales
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override ScaleType ScaleType
-        {
-            get
-            {
-                return ScaleType.Black;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Barbed;
-            }
-        }
-        public override bool CanFly
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanAngerOnTame { get { return true; } }
+        public override bool StatLossAfterTame { get { return true; } }
+        public override bool ReacquireOnMovement { get { return true; } }
+        public override bool HasBreath { get { return true; } } // fire breath enabled
+        public override bool AutoDispel { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Deadly; } }
+        public override Poison HitPoison { get { return Poison.Deadly; } }
+        public override int TreasureMapLevel { get { return 5; } }
+        public override int Meat { get { return 19; } }
+        public override int Hides { get { return 20; } }
+        public override int Scales { get { return 10; } }
+        public override ScaleType ScaleType { get { return ScaleType.Black; } }
+        public override HideType HideType { get { return HideType.Barbed; } }
+        public override bool CanFly { get { return true; } }
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.FilthyRich, 3);

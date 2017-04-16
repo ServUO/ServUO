@@ -1,7 +1,7 @@
 int	int	int	int	int	int	int	int	int	int	string
-
+										
 Category	Piece1	Piece2	Piece3	Piece4	Piece5	Piece6	Piece7	Piece8	FeatureMask	Comment
-
+										
 0	1657	1659	1653	1655	1661	1663	1665	1667	0	Metal Door
 1	8177	8179	8173	8175	8181	8183	8185	8187	0	Metal Gate
 2	1689	1691	1685	1687	1693	1695	1697	1699	0	Rattan Door
@@ -37,3 +37,5 @@ Category	Piece1	Piece2	Piece3	Piece4	Piece5	Piece6	Piece7	Piece8	FeatureMask	Com
 32	0	0	19746	19748	19750	19752	0	0	65536	Gargish Blue Door
 33	20680	20682	20688	20690	20684	20686	20692	20694	65536	Gargish Red Doors
 34	0	0	20802	20804	20806	20808	0	0	65536	Gargish Prison Door
+35	39643	39645	39639	39641	39647	39649	39651	39653	4194304	Jungle Doors
+36	39744	39746	39740	39742	39748	39750	39752	39754	4194304	Shadowguard Doors
