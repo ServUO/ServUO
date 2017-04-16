@@ -150,7 +150,7 @@ namespace Server.Mobiles
                 {
                     if (BulkOrderSystem.NewSystemEnabled)
                     {
-                        if (BulkOrderSystem.CanGetBulkOrder(m_From, m_Vendor.BODType))
+                        if (BulkOrderSystem.CanGetBulkOrder(m_From, m_Vendor.BODType) || m_From.AccessLevel > AccessLevel.Player)
                         {
                             Item bulkOrder = BulkOrderSystem.CreateBulkOrder(m_From, m_Vendor.BODType, true);
 
@@ -222,6 +222,30 @@ namespace Server.Mobiles
 			}
 		}
 
+        private class BribeEntry : ContextMenuEntry
+        {
+            private Mobile m_From;
+            private BaseVendor m_Vendor;
+
+            public BribeEntry(Mobile from, BaseVendor vendor)
+                : base(1152294, 2)
+            {
+                m_From = from;
+                m_Vendor = vendor;
+            }
+
+            public override void OnClick()
+            {
+                if (!m_From.InRange(m_Vendor.Location, 2) || !(m_From is PlayerMobile))
+                    return;
+
+                if (m_Vendor.SupportsBulkOrders(m_From) && m_From is PlayerMobile)
+                {
+                    m_Vendor.TryBribe(m_From);
+                }
+            }
+        }
+
         private class ClaimRewardsEntry : ContextMenuEntry
         {
             private readonly Mobile m_From;
@@ -284,6 +308,8 @@ namespace Server.Mobiles
 			pack.Movable = false;
 			pack.Visible = false;
 			AddItem(pack);
+
+            BribeMultiplier = Utility.Random(10);
 
 			m_LastRestock = DateTime.UtcNow;
 		}
@@ -1112,9 +1138,18 @@ namespace Server.Mobiles
 			if (dropped is SmallBOD || dropped is LargeBOD)
 			{
 				PlayerMobile pm = from as PlayerMobile;
-                Item bod = dropped as Item;
+                IBOD bod = dropped as IBOD;
 
-				if (Core.ML && pm != null && pm.NextBODTurnInTime > DateTime.UtcNow)
+                if (bod != null && BulkOrderSystem.NewSystemEnabled && Bribes != null && Bribes.ContainsKey(from) && Bribes[from].BOD == bod)
+                {
+                    if (BulkOrderSystem.CanExchangeBOD(from, this, bod, Bribes[from].Amount))
+                    {
+                        DoBribe(from, bod);
+                        return false;
+                    }
+                }
+				
+                if (Core.ML && pm != null && pm.NextBODTurnInTime > DateTime.UtcNow)
 				{
                     this.SayTo(from, 1079976, 0x3B2); // You'll have to wait a few seconds while I inspect the last order.
 					return false;
@@ -1162,7 +1197,7 @@ namespace Server.Mobiles
                     switch (context.PointsMode)
                     {
                         case PointsMode.Enabled:
-                            from.SendGump(new ConfirmBankPointsGump((PlayerMobile)from, this, bod, this.BODType, points, banked));
+                            from.SendGump(new ConfirmBankPointsGump((PlayerMobile)from, this, (Item)bod, this.BODType, points, banked));
                             break;
                         case PointsMode.Disabled:
                             from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType, points));
@@ -1209,7 +1244,97 @@ namespace Server.Mobiles
 			return base.OnDragDrop(from, dropped);
 		}
 
-		private GenericBuyInfo LookupDisplayObject(object obj)
+        #region BOD Bribing
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int BribeMultiplier { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextMultiplierDecay { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime WatchEnds { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int RecentBribes { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool UnderWatch { get { return WatchEnds > DateTime.MinValue; } }
+
+        public Dictionary<Mobile, PendingBribe> Bribes { get; set; }
+
+        public void TryBribe(Mobile m)
+        {
+            if (UnderWatch)
+            {
+                if (WatchEnds < DateTime.UtcNow)
+                {
+                    WatchEnds = DateTime.MinValue;
+                }
+                else
+                {
+                    this.SayTo(m, 1152293, 0x3B2); // My business is being watched by the Guild, so I can't be messing with bulk orders right now. Come back when there's less heat on me!
+                    return;
+                }
+            }
+
+            this.SayTo(m, 1152295, 0x3B2); // So you want to do a little business under the table?
+            m.SendLocalizedMessage(1152296); // Target a bulk order deed to show to the shopkeeper.
+            m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
+                {
+                    IBOD bod = targeted as IBOD;
+
+                    if (bod is Item && ((Item)bod).IsChildOf(from.Backpack))
+                    {
+                        if(BulkOrderSystem.CanExchangeBOD(from, this, bod, -1))
+                        {
+                            int amount = BulkOrderSystem.GetBribe(bod);
+                            amount *= BribeMultiplier;
+
+                            if (Bribes == null)
+                                Bribes = new Dictionary<Mobile, PendingBribe>();
+
+                            // Per EA, new bribe replaced old pending bribe
+                            if (!Bribes.ContainsKey(m))
+                            {
+                                Bribes[m] = new PendingBribe(bod, amount);
+                            }
+                            else
+                            {
+                                Bribes[m].BOD = bod;
+                                Bribes[m].Amount = amount;
+                            }
+
+                            this.SayTo(from, 1152292, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")), 0x3B2);
+                            // If you help me out, I'll help you out. I can replace that bulk order with a better one, but it's gonna cost you ~1_amt~ gold coin. Payment is due immediately. Just hand me the order and I'll pull the old switcheroo.
+                        }
+                    }
+                    else if(bod == null)
+                    {
+                        this.SayTo(from, 1152297, 0x3B2); // That is not a bulk order deed.
+                    }
+                });
+        }
+
+        public void DoBribe(Mobile m, IBOD bod)
+        {
+            BulkOrderSystem.MutateBOD(bod);
+
+            RecentBribes++;
+
+            if (RecentBribes >= 3 && Utility.Random(6) < RecentBribes)
+            {
+                WatchEnds = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(120, 180));
+            }
+
+            this.SayTo(m, 1152303, 0x3B2); // You'll find this one much more to your liking. It's been a pleasure, and I look forward to you greasing my palm again very soon.
+
+            BribeMultiplier++;
+            NextMultiplierDecay = DateTime.UtcNow + TimeSpan.FromDays(Utility.RandomMinMax(25, 30));
+        }
+
+        #endregion
+
+        private GenericBuyInfo LookupDisplayObject(object obj)
 		{
 			var buyInfo = GetBuyInfo();
 
@@ -1953,7 +2078,11 @@ namespace Server.Mobiles
 		{
 			base.Serialize(writer);
 
-			writer.Write(1); // version
+			writer.Write(2); // version
+
+            writer.Write(BribeMultiplier);
+            writer.Write(NextMultiplierDecay);
+            writer.Write(RecentBribes);
 
 			var sbInfos = SBInfos;
 
@@ -2000,6 +2129,17 @@ namespace Server.Mobiles
 			}
 
 			writer.WriteEncodedInt(0);
+
+            if (NextMultiplierDecay != DateTime.MinValue && NextMultiplierDecay < DateTime.UtcNow)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+                    {
+                        if (BribeMultiplier > 0)
+                            BribeMultiplier /= 2;
+
+                        NextMultiplierDecay = DateTime.UtcNow + TimeSpan.FromDays(Utility.RandomMinMax(25, 30));
+                    });
+            }
 		}
 
 		public override void Deserialize(GenericReader reader)
@@ -2014,6 +2154,11 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 2:
+                    BribeMultiplier = reader.ReadInt();
+                    NextMultiplierDecay = reader.ReadDateTime();
+                    RecentBribes = reader.ReadInt();
+                    goto case 1;
 				case 1:
 					{
 						int index;
@@ -2076,6 +2221,11 @@ namespace Server.Mobiles
 				IsParagon = false;
 			}
 
+            if (version == 1)
+            {
+                BribeMultiplier = Utility.Random(10);
+            }
+
 			Timer.DelayCall(TimeSpan.Zero, CheckMorph);
 		}
 
@@ -2089,6 +2239,7 @@ namespace Server.Mobiles
 
                     if (BulkOrderSystem.NewSystemEnabled)
                     {
+                        list.Add(new BribeEntry(from, this));
                         list.Add(new ClaimRewardsEntry(from, this));
                     }
 				}

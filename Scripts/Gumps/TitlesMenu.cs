@@ -1067,6 +1067,9 @@ namespace Server.Gumps
                 if (id >= 1157181 && id <= 1157203)
                     return 1157180; // This title is obtained from turning in Bulk Order Deeds.
 
+                if (id >= 1156985 && id <= 1156987)
+                    return 1156984; // This title is obtained from the Halloween Treasures of the Kotl City Event.	
+
                 switch (id)
                 {
                     default: return "This reward title has no desciption.";

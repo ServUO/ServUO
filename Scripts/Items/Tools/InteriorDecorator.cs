@@ -266,9 +266,9 @@ namespace Server.Items
 
             private static void Turn(Item item, Mobile from)
             {
-                if (item is IFlippable)
+                if (item is IFlipable)
                 {
-                    ((IFlippable)item).OnFlip();
+                    ((IFlipable)item).OnFlip();
                     return;
                 }
 
