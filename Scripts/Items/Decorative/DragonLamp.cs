@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class CraftableDragonLamp : BaseLight, IFlippable
+	public class CraftableDragonLamp : BaseLight, IFlipable
 	{
 		public override int LitItemID
 		{

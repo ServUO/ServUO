@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-	public class TallDoubleLamp : BaseLight, IFlippable
+	public class TallDoubleLamp : BaseLight, IFlipable
 	{
 		public override int LitItemID
 		{

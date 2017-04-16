@@ -35,6 +35,7 @@ namespace Server.Engines.BulkOrders
                     break;
                 case 2:
                     entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeAmmunition);
+                    useMaterials = false;
                     break;
                 case 3:
                     entries = LargeBulkEntry.ConvertEntries(this, LargeBulkEntry.LargeElvenBows1);
@@ -46,7 +47,7 @@ namespace Server.Engines.BulkOrders
 
             int hue = 1425;
             int amountMax = Utility.RandomList(10, 15, 20, 20);
-            bool reqExceptional = (0.825 > Utility.RandomDouble());
+            bool reqExceptional = useMaterials && 0.825 > Utility.RandomDouble();
 
             BulkMaterialType material;
 

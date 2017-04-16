@@ -37,7 +37,7 @@ namespace Server.Items
         EndCurledMetalSignHanger,
     }
 
-    public class CraftableHouseAddonComponent : AddonComponent, IFlippable
+    public class CraftableHouseAddonComponent : AddonComponent, IFlipable
     {
         public int NorthID { get { return 0; } }
         public int WestID { get { return 0; } }
