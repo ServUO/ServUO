@@ -299,6 +299,11 @@ namespace Server.Misc
 
             if (highest != null && highest.BaseFixedPoint >= 300)
             {
+                //Level System
+                PlayerMobile pm = mob as PlayerMobile;
+                Configured c = new Configured();
+                string d = LevelCore.Display(pm, new Configured());
+
                 string skillLevel = GetSkillLevel(highest);
                 string skillTitle = highest.Info.Title;
 

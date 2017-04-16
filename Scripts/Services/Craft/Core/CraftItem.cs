@@ -1744,6 +1744,16 @@ namespace Server.Engines.Craft
                     m_PlantPigmentHue = PlantPigmentHue.None;
 					#endregion
 
+                    //Level System
+                    PlayerMobile pm = from as PlayerMobile;
+                    Configured c = new Configured();
+
+                    double ch = GetSuccessChance(pm, typeRes, craftSystem, false, ref allRequiredSkills);
+                    double ex = GetExceptionalChance(craftSystem, ch, pm);
+
+                    LevelCore.Craft(item, quality, ch, ex, pm, new Configured());
+                    //End Level System
+
                     if (tool.Parent is Container)
                     {
                         Container cntnr = (Container)tool.Parent;

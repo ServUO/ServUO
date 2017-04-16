@@ -971,6 +971,14 @@
     <Compile Include="Items\Tools\ChestOfSending.cs" />
     <Compile Include="Items\Tools\ForgedMetalOfArtifacts.cs" />
     <Compile Include="Items\Tools\RunicMalletAndChisel.cs" />
+    <Compile Include="Misc\LevelSystem\Configuration.CS" />
+    <Compile Include="Misc\LevelSystem\Core\Exp Tables.CS" />
+    <Compile Include="Misc\LevelSystem\Core\Level Core.cs" />
+    <Compile Include="Misc\LevelSystem\Core\Level Handler.CS" />
+    <Compile Include="Misc\LevelSystem\Core\MountCheck.cs" />
+    <Compile Include="Misc\LevelSystem\PlayerLevelGump.cs" />
+    <Compile Include="Misc\LevelSystem\RaiseMaxLevelScroll.CS" />
+    <Compile Include="Misc\LevelSystem\SkillCoin.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Items\Artifacts\Equipment\Glasses\Glasses.cs">
       <SubType>Code</SubType>
@@ -1719,6 +1727,7 @@
     <Compile Include="Items\Addons\Aquarium\Rewards\Shell.cs" />
     <Compile Include="Items\Addons\Aquarium\Rewards\ToyBoat.cs" />
     <Compile Include="Items\Addons\Aquarium\Rewards\WaterloggedBoots.cs" />
+    <Compile Include="Misc\Titles.cs" />
     <Compile Include="Misc\UntamedPetsCleaning.cs" />
     <Compile Include="Misc\WorldLocationInfo.cs" />
     <Compile Include="Mobiles\AI\PaladinAI.cs" />
@@ -2979,6 +2988,7 @@
     <Compile Include="Services\CleanUpBritannia\Items\NaturesTears.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\NestWithEggs.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\YuccaTree.cs" />
+    <Compile Include="Services\Craft\Core\CraftItem.cs" />
     <Compile Include="Services\Doom\GuardianRoom.cs" />
     <Compile Include="Services\Ethics\Core\Persistence.cs" />
     <Compile Include="Services\Expansions\High Seas\Generate.cs" />
@@ -8571,9 +8581,6 @@
     <Compile Include="Misc\TextDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\Titles.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Misc\ToggleItem.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9143,9 +9150,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Craft\Core\CraftGumpItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Craft\Core\CraftItem.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Craft\Core\CraftItemCol.cs">
@@ -9894,7 +9898,6 @@
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameCrystal.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameTeleporter.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameWall.cs" />
-    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\ExodusPeerless\ExodusPeerlessAltar.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusNexus.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExoticToolkit.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\KeypunchReader.cs" />
@@ -12533,7 +12536,9 @@
     <Content Include="Services\XmlSpawner\XMLSpawner Support\xmlspawner2doc.txt" />
     <Content Include="Spells\Mysticism\Blank.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\Revamped Dungeons\TheExodusEncounter\ExodusPeerless\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />

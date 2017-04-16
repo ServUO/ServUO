@@ -199,6 +199,65 @@ namespace Server.Mobiles
 		}
 		#endregion
 
+        //Level System
+        private int char_Level;
+        private int char_MaxLevel;
+        private int char_Exp;
+        private int char_ToLevel;
+        private int char_kxp;
+        private int char_SKPoints;
+        private int char_StatPoints;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int charLevel
+        {
+            get { return char_Level; }
+            set { char_Level = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int charMaxLevel
+        {
+            get { return char_MaxLevel; }
+            set { char_MaxLevel = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int charExp
+        {
+            get { return char_Exp = LevelCore.TExp(this); }
+            set { char_Exp = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int charToLevel
+        {
+            get { return char_ToLevel; }
+            set { char_ToLevel = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int charkxp
+        {
+            get { return char_kxp; }
+            set { char_kxp = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int charSKPoints
+        {
+            get { return char_SKPoints; }
+            set { char_SKPoints = value; }
+        }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int charStatPoints
+        {
+            get { return char_StatPoints; }
+            set { char_StatPoints = value; }
+        }
+
+        //End level system code
+
 		private class CountAndTimeStamp
 		{
 			private int m_Count;
@@ -4116,7 +4175,21 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
-                    // Version 34 - new BOD System
+                   
+                case 35:
+                    //Level System
+                    {
+                        char_Level = reader.ReadInt();
+                        char_MaxLevel = reader.ReadInt();
+                        char_Exp = reader.ReadInt();
+                        char_ToLevel = reader.ReadInt();
+                        char_kxp = reader.ReadInt();
+                        char_SKPoints = reader.ReadInt();
+                        char_StatPoints = reader.ReadInt();
+                        goto case 29;
+                    }
+                //end level system
+                // Version 34 - new BOD System
                 case 34:
                 case 33:
                     {
@@ -4539,7 +4612,19 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(34); // version
+			writer.Write(35); // version
+
+            //Level System
+            writer.Write((int)char_Level);
+            writer.Write((int)char_MaxLevel);
+            writer.Write((int)char_Exp);
+            writer.Write((int)char_ToLevel);
+            writer.Write((int)char_kxp);
+            writer.Write((int)char_SKPoints);
+            writer.Write((int)char_StatPoints);
+            //End Level System
+
+            // Version 29
 
             writer.Write((int)m_ExploringTheDeepQuest);
 
@@ -4846,6 +4931,17 @@ namespace Server.Mobiles
 		public override void GetProperties(ObjectPropertyList list)
 		{
 			base.GetProperties(list);
+
+            //Level System
+            if (BelowName.Enabled && charLevel >= 0)
+            {
+                Configured c = new Configured();
+                string d = LevelCore.Display(this, new Configured());
+
+                if (d != null)
+                    list.Add("Level: " + d);
+            }
+            //End Level System		
 
             if (Core.SA)
             {

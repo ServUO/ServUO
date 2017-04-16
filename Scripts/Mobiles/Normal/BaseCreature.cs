@@ -1246,6 +1246,24 @@ namespace Server.Mobiles
 
         public override string ApplyNameSuffix(string suffix)
         {
+
+            //Level System
+            Configured c = new Configured();
+
+            int cl = LevelCore.CreatureLevel(this, new Configured());
+
+            if (c.CreatureLevels)
+            {
+                if (cl > 0)
+                {
+                    if (suffix.Length == 0)
+                        suffix = String.Concat(suffix, "(level " + cl + ")");
+                    else
+                        suffix = String.Concat(suffix, " (level " + cl + ")");
+                }
+            }
+            //End Level System
+
             XmlData customtitle = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData), "ParagonTitle");
 
             if (customtitle != null)
@@ -1812,6 +1830,11 @@ namespace Server.Mobiles
             {
                 m_ReceivedHonorContext.OnTargetDamaged(from, amount);
             }
+
+            //Level System
+            if (willKill && En.Enabled)
+                LevelHandler.Set(from, this);
+            //End Level System
 
             if (!willKill)
             {
