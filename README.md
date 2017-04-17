@@ -34,6 +34,12 @@ Want to contribute? Great!
 
 You can submit a pull request at any time and we will review it asap!
 
+#### Hardware Random Number Generator (Windows)
+
+Intel® Digital Random Number Generator (DRNG) can be found here (compiles drng32.dll and drng64.dll):
+
+https://github.com/Xeroxxx/libdrng-1.0 
+
 License
 ----
 
