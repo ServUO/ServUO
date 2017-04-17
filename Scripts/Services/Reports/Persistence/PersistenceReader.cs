@@ -107,12 +107,16 @@ namespace Server.Engines.Reports
 
         public override void ReadDocument(PersistableObject root)
         {
+            Utility.PushColor(ConsoleColor.Yellow);
             Console.Write("Reports: {0}: Loading...", this.m_Title);
+            Utility.PopColor();
             this.m_Xml.Read();
             this.m_Xml.Read();
             this.m_HasChild = !this.m_Xml.IsEmptyElement;
             root.Deserialize(this);
+            Utility.PushColor(ConsoleColor.Green);
             Console.WriteLine("done");
+            Utility.PopColor();
         }
 
         public override void Close()
