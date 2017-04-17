@@ -134,9 +134,6 @@ namespace Server.Items
 
 		private bool m_Cursed; // Is this weapon cursed via Curse Weapon necromancer spell? Temporary; not serialized.
 
-		private bool m_Consecrated;
-					 // Is this weapon blessed via Consecrate Weapon paladin ability? Temporary; not serialized.
-
 		#region Mondain's Legacy
 		private bool m_Immolating; // Is this weapon blessed via Immolating Weapon arcanists spell? Temporary; not serialized.
         #endregion
@@ -312,8 +309,8 @@ namespace Server.Items
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Cursed { get { return m_Cursed; } set { m_Cursed = value; } }
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool Consecrated { get { return m_Consecrated; } set { m_Consecrated = value; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ConsecratedWeaponContext ConsecratedContext { get; set; }
 
 		#region Mondain's Legacy
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -639,14 +636,14 @@ namespace Server.Items
         {
             get
             {
-                if (this.TimesImbued >= 1 && !m_IsImbued)
+                if (TimesImbued >= 1 && !m_IsImbued)
                     m_IsImbued = true;
 
                 return m_IsImbued;
             }
             set
             {
-                if (this.TimesImbued >= 1)
+                if (TimesImbued >= 1)
                     m_IsImbued = true;
                 else
                     m_IsImbued = value; InvalidateProperties();
@@ -699,10 +696,6 @@ namespace Server.Items
             set { m_ReforgedSuffix = value; InvalidateProperties(); }
         }
         #endregion
-
-
-        public double ConsecrateProcChance { get; set; }
-        public double ConsecrateDamageBonus { get; set; }
         #endregion
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -966,7 +959,7 @@ namespace Server.Items
 			#region Stygian Abyss
 			if (from.Race == Race.Gargoyle && !CanBeWornByGargoyles && from.IsPlayer())
 			{
-				from.SendLocalizedMessage(1111708); // Gargoyles can't wear this.
+				from.SendLocalizedMessage(1111708); // Gargoyles can't wear 
 				return false;
 			}
 			#endregion
@@ -975,18 +968,18 @@ namespace Server.Items
 			{
 				if (RequiredRace == Race.Elf)
 				{
-					from.SendLocalizedMessage(1072203); // Only Elves may use this.
+					from.SendLocalizedMessage(1072203); // Only Elves may use 
 				}
 					#region SA
 				else if (RequiredRace == Race.Gargoyle)
 				{
-					from.SendLocalizedMessage(1111707); // Only gargoyles can wear this.
+					from.SendLocalizedMessage(1111707); // Only gargoyles can wear 
 				}
 					#endregion
 
 				else
 				{
-					from.SendMessage("Only {0} may use this.", RequiredRace.PluralName);
+					from.SendMessage("Only {0} may use ", RequiredRace.PluralName);
 				}
 
 				return false;
@@ -2087,7 +2080,7 @@ namespace Server.Items
             {
                 GetDamageTypes(attacker, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
 
-                if (m_Consecrated && !OnslaughtSpell.HasOnslaught(attacker, defender))
+                if (!OnslaughtSpell.HasOnslaught(attacker, defender) && ConsecratedContext != null && ConsecratedContext.ConsecrateProcChance >= Utility.Random(100))
                 {
                     phys = damageable.PhysicalResistance;
                     fire = damageable.FireResistance;
@@ -2170,16 +2163,16 @@ namespace Server.Items
                 {
                     if (m_MaxHits > 0)
                     {
-                        if (this.m_Hits >= 1)
+                        if (m_Hits >= 1)
                         {
                             HitPoints--;
                         }
-                        else if (this.m_MaxHits > 0)
+                        else if (m_MaxHits > 0)
                         {
-                            this.MaxHitPoints--;
+                            MaxHitPoints--;
 
-                            if (this.Parent is Mobile)
-                                ((Mobile)this.Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                            if (Parent is Mobile)
+                                ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
 
                             if (m_MaxHits == 0)
                                 Delete();
@@ -2228,10 +2221,9 @@ namespace Server.Items
 				percentageBonus += (int)(move.GetDamageScalar(attacker, defender) * 100) - 100;
 			}
 
-            if (m_Consecrated)
+            if (ConsecratedContext != null)
             {
-                // Based on chiv skill will give 1-15 damage modifier bonus when skill value >= 92 as OSI Test Center
-                percentageBonus += attacker.Skills[SkillName.Chivalry].Value < 92.0 ? 0 : Convert.ToInt32(Math.Floor((attacker.Skills[SkillName.Chivalry].Value - 92) / 2) + 1);
+                percentageBonus += ConsecratedContext.ConsecrateDamageBonus;
             }
 
             percentageBonus += (int)(damageBonus * 100) - 100;
@@ -5100,7 +5092,7 @@ namespace Server.Items
                 if (SetID == SetItem.Bestial)
                     list.Add(1151541, BestialSetHelper.GetTotalBerserk(this).ToString()); // Berserk ~1_VAL~
 
-                if (this.BardMasteryBonus)
+                if (BardMasteryBonus)
                     list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
 
                 if (m_SetEquipped)
@@ -6080,7 +6072,7 @@ namespace Server.Items
         {
             get
             {
-                return (this.SetID == SetItem.Virtuoso);
+                return (SetID == SetItem.Virtuoso);
             }
         }
 

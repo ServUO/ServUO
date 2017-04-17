@@ -232,7 +232,7 @@ namespace Server.Mobiles
 				case 1:				
 					BaseWeapon weapon = m_Mobile.Weapon as BaseWeapon;
 					
-					if ( weapon != null && !weapon.Consecrated )
+					if ( weapon != null && weapon.ConsecratedContext != null )
 						spell = new ConsecrateWeaponSpell( m_Mobile, null );				
 					
 					break;

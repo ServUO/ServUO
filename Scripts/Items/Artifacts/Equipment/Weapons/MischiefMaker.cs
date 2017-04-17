@@ -17,13 +17,13 @@ namespace Server.Items
         public MischiefMaker()
             : base()
         {
-            this.Hue = 0x8AB;
-            this.Balanced = true;
+            Hue = 0x8AB;
+            Balanced = true;
 			
-            this.Slayer = SlayerName.Exorcism;
+            Slayer = SlayerName.Silver;
 			
-            this.Attributes.WeaponSpeed = 35;
-            this.Attributes.WeaponDamage = 45;
+            Attributes.WeaponSpeed = 35;
+            Attributes.WeaponDamage = 45;
         }
 
         public MischiefMaker(Serial serial)
@@ -52,6 +52,11 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+            if (Slayer != SlayerName.Silver)
+            {
+                Slayer = SlayerName.Silver;
+            }
         }
     }
 }

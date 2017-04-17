@@ -26,27 +26,27 @@ namespace Server.Spells.Third
 
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
-            if (!this.Caster.CanSee(m))
+            if (!Caster.CanSee(m))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (this.CheckHSequence(m))
+            else if (CheckHSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
-                SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
+                SpellHelper.CheckReflect((int)Circle, Caster, ref m);
 
                 if (m.Spell != null)
                     m.Spell.OnCasterHurt();
 
                 m.Paralyzed = false;
 
-                if (this.CheckResisted(m))
+                if (CheckResisted(m))
                 {
                     m.SendLocalizedMessage(501783); // You feel yourself resisting magical energy.
                 }
@@ -56,10 +56,29 @@ namespace Server.Spells.Third
 
                     if (Core.AOS)
                     {
-                        if (this.Caster.InRange(m, 2))
-                        {
-                            int total = (this.Caster.Skills.Magery.Fixed + this.Caster.Skills.Poisoning.Fixed) / 2;
+                        int total = (Caster.Skills.Magery.Fixed + Caster.Skills.Poisoning.Fixed) / 2;
 
+                        if (Core.SA && Caster.InRange(m, 8))
+                        {
+                            int range = (int)Caster.GetDistanceToSqrt(m.Location);
+
+                            if (total >= 1000)
+                                level = Utility.RandomDouble() <= .1 ? 4 : 3;
+                            else if (total > 850)
+                                level = 2;
+                            else if (total > 650)
+                                level = 1;
+                            else
+                                level = 0;
+
+                            if (!Caster.InRange(m, 2))
+                                level -= range / 2;
+
+                            if (level < 0)
+                                level = 0;
+                        }
+                        else if (Caster.InRange(m, 2))
+                        {
                             if (total >= 1000)
                                 level = 3;
                             else if (total > 850)
@@ -78,27 +97,27 @@ namespace Server.Spells.Third
                     {
                         //double total = Caster.Skills[SkillName.Magery].Value + Caster.Skills[SkillName.Poisoning].Value;
                         #region Dueling
-                        double total = this.Caster.Skills[SkillName.Magery].Value;
+                        double total = Caster.Skills[SkillName.Magery].Value;
 
-                        if (this.Caster is Mobiles.PlayerMobile)
+                        if (Caster is Mobiles.PlayerMobile)
                         {
-                            Mobiles.PlayerMobile pm = (Mobiles.PlayerMobile)this.Caster;
+                            Mobiles.PlayerMobile pm = (Mobiles.PlayerMobile)Caster;
 
                             if (pm.DuelContext != null && pm.DuelContext.Started && !pm.DuelContext.Finished && !pm.DuelContext.Ruleset.GetOption("Skills", "Poisoning"))
                             {
                             }
                             else
                             {
-                                total += this.Caster.Skills[SkillName.Poisoning].Value;
+                                total += Caster.Skills[SkillName.Poisoning].Value;
                             }
                         }
                         else
                         {
-                            total += this.Caster.Skills[SkillName.Poisoning].Value;
+                            total += Caster.Skills[SkillName.Poisoning].Value;
                         }
                         #endregion
 
-                        double dist = this.Caster.GetDistanceToSqrt(m);
+                        double dist = Caster.GetDistanceToSqrt(m);
 
                         if (dist >= 3.0)
                             total -= (dist - 3.0) * 10.0;
@@ -113,16 +132,16 @@ namespace Server.Spells.Third
                             level = 0;
                     }
 
-                    m.ApplyPoison(this.Caster, Poison.GetPoison(level));
+                    m.ApplyPoison(Caster, Poison.GetPoison(level));
                 }
 
                 m.FixedParticles(0x374A, 10, 15, 5021, EffectLayer.Waist);
                 m.PlaySound(0x205);
 
-                this.HarmfulSpell(m);
+                HarmfulSpell(m);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private class InternalTarget : Target
@@ -132,20 +151,20 @@ namespace Server.Spells.Third
             public InternalTarget(PoisonSpell owner)
                 : base(Core.ML ? 10 : 12, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
                 {
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
                 }
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }
