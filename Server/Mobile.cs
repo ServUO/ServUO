@@ -765,8 +765,6 @@ namespace Server
 		private long m_NextActionMessage;
 		private bool m_Paralyzed;
 		private ParalyzedTimer m_ParaTimer;
-		private bool _Sleep;
-		private SleepTimer _SleepTimer;
 		private bool m_Frozen;
 		private FrozenTimer m_FrozenTimer;
 		private int m_AllowedStealthSteps;
@@ -1691,26 +1689,6 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual bool Asleep
-		{
-			get { return _Sleep; }
-			set
-			{
-				if (_Sleep != value)
-				{
-					_Sleep = value;
-
-					if (_SleepTimer != null)
-					{
-						Send(SpeedControl.Disable);
-						_SleepTimer.Stop();
-						_SleepTimer = null;
-					}
-				}
-			}
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
 		public bool DisarmReady
 		{
 			get { return m_DisarmReady; }
@@ -1760,18 +1738,6 @@ namespace Server
 
 				m_ParaTimer = new ParalyzedTimer(this, duration);
 				m_ParaTimer.Start();
-			}
-		}
-
-		public void Sleep(TimeSpan duration)
-		{
-			if (!_Sleep)
-			{
-				Asleep = true;
-				Send(SpeedControl.WalkSpeed);
-
-				_SleepTimer = new SleepTimer(this, duration);
-				_SleepTimer.Start();
 			}
 		}
 
@@ -2025,23 +1991,6 @@ namespace Server
 			protected override void OnTick()
 			{
 				m_Mobile.Paralyzed = false;
-			}
-		}
-
-		private class SleepTimer : Timer
-		{
-			private readonly Mobile _Mobile;
-
-			public SleepTimer(Mobile m, TimeSpan duration)
-				: base(duration)
-			{
-				Priority = TimerPriority.TwentyFiveMS;
-				_Mobile = m;
-			}
-
-			protected override void OnTick()
-			{
-				_Mobile.Asleep = false;
 			}
 		}
 
@@ -3158,7 +3107,7 @@ namespace Server
 					return false;
 				}
 
-				if (m_Paralyzed || m_Frozen || _Sleep)
+				if (m_Paralyzed || m_Frozen)
 				{
 					SendLocalizedMessage(500111); // You are frozen and can not move.
 
@@ -3962,11 +3911,6 @@ namespace Server
 				m_ParaTimer.Stop();
 			}
 
-			if (_SleepTimer != null)
-			{
-				_SleepTimer.Stop();
-			}
-
 			if (m_FrozenTimer != null)
 			{
 				m_FrozenTimer.Stop();
@@ -4095,17 +4039,6 @@ namespace Server
 				if (m_FrozenTimer != null)
 				{
 					m_FrozenTimer.Stop();
-				}
-			}
-
-			if (Asleep)
-			{
-				Asleep = false;
-				Send(SpeedControl.Disable);
-
-				if (_SleepTimer != null)
-				{
-					_SleepTimer.Stop();
 				}
 			}
 
@@ -5610,16 +5543,6 @@ namespace Server
 				DisruptiveAction();
 
 				Paralyzed = false;
-
-				if (Asleep)
-				{
-					Asleep = false;
-
-					if (from != null)
-					{
-						from.Send(SpeedControl.Disable);
-					}
-				}
 
 				switch (m_VisibleDamageType)
 				{
@@ -8616,7 +8539,7 @@ namespace Server
 		{
 			int flags = 0x0;
 
-			if (m_Paralyzed || m_Frozen || _Sleep)
+			if (m_Paralyzed || m_Frozen)
 			{
 				flags |= 0x01;
 			}

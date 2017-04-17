@@ -40,6 +40,12 @@ namespace Server.Spells.Necromancy
                 return 29;
             }
         }
+
+        public static bool UnderEffects(Mobile m)
+        {
+            return m_Table.ContainsKey(m);
+        }
+
         public static bool RemoveCurse(Mobile m)
         {
             Timer t = (Timer)m_Table[m];
