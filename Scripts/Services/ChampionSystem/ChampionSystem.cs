@@ -14,7 +14,7 @@ namespace Server.Engines.CannedEvil
 		private static bool m_Enabled = false;
 		private static bool m_Initialized = false;
 		private static readonly string m_Path = Path.Combine("Saves", "Champions", "ChampionSystem.bin");
-		private static readonly string m_ConfigPath = Path.Combine("Config", "ChampionSpawns.xml");
+		private static readonly string m_ConfigPath = Path.Combine("Spawns", "ChampionSpawns.xml");
 		private static DateTime m_LastRotate;
 		private static TimeSpan m_RotateDelay;
 		private static List<ChampionSpawn> m_AllSpawns = new List<ChampionSpawn>();
