@@ -3509,8 +3509,19 @@ namespace Server.Mobiles
 			}
 
 			base.OnDeath(c);
-
-			m_EquipSnapshot = null;
+            #region Life Stone Edit Begin
+            for (int i = 0; i < LifeStoneCore.LifeStoneList.Count; i++)
+            {
+                if (LifeStoneCore.LifeStoneList[i].LifeStoneOwner == this)
+                {
+                    if (LifeStoneCore.LifeStoneList[i].Stone.UsesRemaining > 0)
+                    {
+                        this.SendGump(new LifeStoneReturnGump(this, LifeStoneCore.LifeStoneList[i].Stone));
+                    }
+                }
+            }
+            #endregion Life Stone Edit End
+            m_EquipSnapshot = null;
 
 			HueMod = -1;
 			NameMod = null;

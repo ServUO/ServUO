@@ -1,0 +1,23 @@
+Installation
+
+1. Drop the "Life Stone System" folder into your Customs directory.
+2. Find the following line in your PlayerMobile.cs file
+
+Code:
+base.OnDeath(c);
+Directly under that, place this bit of code.
+
+Code:
+#region Life Stone Edit Begin
+            for (int i = 0; i < LifeStoneCore.LifeStoneList.Count; i++)
+            {
+                if (LifeStoneCore.LifeStoneList[i].LifeStoneOwner == this)
+                {
+                    if (LifeStoneCore.LifeStoneList[i].Stone.UsesRemaining > 0)
+                    {
+                        this.SendGump(new LifeStoneReturnGump(this, LifeStoneCore.LifeStoneList[i].Stone));
+                    }
+                }
+            }
+            #endregion Life Stone Edit End
+3. Restart your shard and use [LSConfig or [LifeStoneConfig to set it up, then issue your stones how ever you want.

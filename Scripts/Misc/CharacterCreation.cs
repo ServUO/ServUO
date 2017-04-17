@@ -45,8 +45,15 @@ namespace Server.Misc
             }
 
             PackItem(new RedBook("a book", m.Name, 20, true));
-            PackItem(new Gold(1000)); // Starting gold can be customized here
+            PackItem(new Gold(100000)); // Starting gold can be customized here
             PackItem(new Candle());
+            PackItem(new HousePlacementTool());
+            PackItem(new LifeStone());
+            PackItem(new HomeStone());
+            PackItem(new SkillBall());
+            PackItem(new SkillBallPlus());
+            PackItem(new CheckBook());
+         
 
             if (m.Race != Race.Gargoyle)
                 PackItem(new Dagger());
