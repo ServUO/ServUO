@@ -15,8 +15,6 @@ namespace Server.Mobiles
 {
 	public abstract class BaseFamiliar : BaseCreature
 	{
-		private bool m_LastHidden;
-
 		public BaseFamiliar()
 			: base(AIType.AI_Melee, FightMode.Closest, 10, 1, -1, -1)
 		{ }
@@ -29,127 +27,11 @@ namespace Server.Mobiles
 		public override Poison PoisonImmune { get { return Poison.Lethal; } }
 		public override bool Commandable { get { return false; } }
 		public override bool PlayerRangeSensitive { get { return false; } }
-
-        public virtual bool AttacksMastersTarget { get { return true; } }
-
-		public virtual void RangeCheck()
-		{
-			if (!Deleted && ControlMaster != null && !ControlMaster.Deleted)
-			{
-				int range = (RangeHome - 2);
-
-				if (!InRange(ControlMaster.Location, RangeHome))
-				{
-					Mobile master = ControlMaster;
-
-					Point3D m_Loc = Point3D.Zero;
-
-					if (Map == master.Map)
-					{
-						int x = (X > master.X) ? (master.X + range) : (master.X - range);
-						int y = (Y > master.Y) ? (master.Y + range) : (master.Y - range);
-
-						for (int i = 0; i < 10; i++)
-						{
-							m_Loc.X = x + Utility.RandomMinMax(-1, 1);
-							m_Loc.Y = y + Utility.RandomMinMax(-1, 1);
-
-							m_Loc.Z = Map.GetAverageZ(m_Loc.X, m_Loc.Y);
-
-							if (Map.CanSpawnMobile(m_Loc))
-							{
-								break;
-							}
-
-							m_Loc = master.Location;
-						}
-
-						if (!Deleted)
-						{
-							SetLocation(m_Loc, true);
-						}
-					}
-				}
-			}
-		}
+		public virtual bool AttacksMastersTarget { get { return false; } }
 
 		public override void OnThink()
 		{
-			Mobile master = ControlMaster;
-
-			if (Deleted)
-			{
-				return;
-			}
-
-			if (master == null || master.Deleted)
-			{
-				DropPackContents();
-				EndRelease(null);
-				return;
-			}
-
-            if (AttacksMastersTarget)
-            {
-                if (Combatant == null)
-                {
-                    if (master.Combatant != null)
-                    {
-                        Combatant = master.Combatant;
-                    }
-                }
-                else
-                {
-                    if (Combatant.Deleted)
-                    {
-                        Combatant = null;
-                    }
-
-                    return;
-                }
-            }
-
-			RangeCheck();
-
-			if (m_LastHidden != master.Hidden)
-			{
-				Hidden = m_LastHidden = master.Hidden;
-			}
-
-			if (AIObject != null && AIObject.WalkMobileRange(master, 5, true, 1, 1))
-			{
-                if ((master.Combatant !=null) && (InRange(master.Combatant, 1)))
-                {
-		            Warmode = master.Warmode;
-		            Combatant = master.Combatant;
-
-		            CurrentSpeed = 0.10;
-			    }
-
-                if ((master.Combatant !=null) && (!InRange(master.Combatant, 1)))
-                {
-                    Warmode = false;
-                    FocusMob = null;
-                    Combatant = null;
-                    CurrentSpeed = 0.01;
-                }
-
-                if (master.Combatant == null)
-                {
-                    Warmode = false;
-                    FocusMob = null;
-                    Combatant = null;
-                    CurrentSpeed = 0.01;
-                }
-            }
-			else
-			{
-				Warmode = false;
-				FocusMob = null;
-                Combatant = null;
-
-				CurrentSpeed = .01;
-			}
+			return;
 		}
 
 		public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)

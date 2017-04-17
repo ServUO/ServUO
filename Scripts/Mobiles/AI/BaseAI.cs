@@ -582,7 +582,7 @@ namespace Server.Mobiles
 
 									if (m_Mobile.CheckControlChance(e.Mobile))
 									{
-										
+
 										m_Mobile.ControlOrder = OrderType.Guard;
                                         m_Mobile.ControlTarget = null;
 									}
@@ -711,7 +711,7 @@ namespace Server.Mobiles
 									{
                                         m_Mobile.ControlOrder = OrderType.Guard;
                                         m_Mobile.ControlTarget = null;
-										
+
 									}
 
 									return;
@@ -1179,6 +1179,15 @@ namespace Server.Mobiles
 				case OrderType.Transfer:
 					return DoOrderTransfer();
 
+				case OrderType.Aggro:
+					return CheckFamiliar();
+
+				case OrderType.Heel:
+					return CheckFamiliar();
+
+				case OrderType.Fetch:
+					return DoOrderFetch();
+
 				default:
 					return false;
 			}
@@ -1233,7 +1242,6 @@ namespace Server.Mobiles
 					m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
-
 					m_Mobile.Warmode = true;
 					m_Mobile.Combatant = null;
 					break;
@@ -1270,7 +1278,6 @@ namespace Server.Mobiles
 					m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = m_Mobile.ActiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
-
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
 					break;
@@ -1278,7 +1285,27 @@ namespace Server.Mobiles
 					m_Mobile.ControlMaster.RevealingAction();
 					m_Mobile.CurrentSpeed = m_Mobile.PassiveSpeed;
 					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
-
+					m_Mobile.Warmode = false;
+					m_Mobile.Combatant = null;
+					break;
+				case OrderType.Aggro:
+					m_Mobile.DebugSay("I aggro for my master");
+					m_Mobile.CurrentSpeed = 0.1;
+					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
+					m_Mobile.Warmode = true;
+					m_Mobile.Combatant = null;
+					break;
+				case OrderType.Heel:
+					m_Mobile.DebugSay("I heel to my master");
+					m_Mobile.CurrentSpeed = 0.01;
+					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
+					m_Mobile.Warmode = false;
+					m_Mobile.Combatant = null;
+					break;
+				case OrderType.Fetch:
+					m_Mobile.DebugSay("I fetch for my master");
+					m_Mobile.CurrentSpeed = 0.3;
+					m_Mobile.PlaySound(m_Mobile.GetIdleSound());
 					m_Mobile.Warmode = false;
 					m_Mobile.Combatant = null;
 					break;
@@ -1326,7 +1353,7 @@ namespace Server.Mobiles
 
 					if (WalkMobileRange(m_Mobile.ControlMaster, 1, bRun, 0, 1))
 					{
-						if (m_Mobile.Combatant is Mobile && !m_Mobile.Combatant.Deleted && 
+						if (m_Mobile.Combatant is Mobile && !m_Mobile.Combatant.Deleted &&
                             m_Mobile.Combatant.Alive && (!(m_Mobile.Combatant is Mobile) || !((Mobile)m_Mobile.Combatant).IsDeadBondedPet))
 						{
 							m_Mobile.Warmode = true;
@@ -1399,27 +1426,6 @@ namespace Server.Mobiles
 
 			if (distance < 1 || distance > 15)
 			{
-				if (distance < 1 && target.X == 1076 && target.Y == 450 && (m_Mobile is HordeMinionFamiliar))
-				{
-					PlayerMobile pm = m_Mobile.ControlMaster as PlayerMobile;
-
-					if (pm != null)
-					{
-						QuestSystem qs = pm.Quest;
-
-						if (qs is DarkTidesQuest)
-						{
-							QuestObjective obj = qs.FindObjective(typeof(FetchAbraxusScrollObjective));
-
-							if (obj != null && !obj.Completed)
-							{
-								m_Mobile.AddToBackpack(new ScrollOfAbraxus());
-								obj.Complete();
-							}
-						}
-					}
-				}
-
 				m_Mobile.TargetLocation = null;
 				return false; // At the target or too far away
 			}
@@ -2071,6 +2077,187 @@ namespace Server.Mobiles
 			return true;
 		}
 
+        private bool m_LastHidden;
+
+        public virtual bool CheckFamiliar()
+        {
+            // Part 1: Delete Familiar check
+            BaseCreature m = m_Mobile;
+            Mobile master = m.ControlMaster;
+            Map map = m.Map;
+
+            if (master == null || master.Deleted)
+            {
+
+                if (map != null && map != Map.Internal)
+                {
+                    Container pack = m.Backpack;
+
+                    if (pack != null)
+                    {
+                        var list = new List<Item>(pack.Items);
+
+                        for (int i = 0; i < list.Count; ++i)
+                        {
+                            list[i].MoveToWorld(m.Location, map);
+                        }
+
+                    }
+                    Effects.SendLocationParticles(
+                        EffectItem.Create(m.Location, map, EffectItem.DefaultDuration), 0x3728, 1, 13, 2100, 3, 5042, 0);
+                    m.PlaySound(0x201);
+                }
+                m.Delete();
+                return false;
+            }
+
+            // Part 2: Teleport to master check
+            Point3D m_Loc = Point3D.Zero;
+
+            if (map != master.Map)
+            {
+                m.Map = master.Map;
+                m.SetLocation(master.Location, true);
+            }
+            else if (!m.InRange(master.Location, m.RangePerception))
+            {
+                int range = (int)(m.RangeHome / 2 + 1);
+                int x = (m.X > master.X) ? (master.X + range) : (master.X - range);
+                int y = (m.Y > master.Y) ? (master.Y + range) : (master.Y - range);
+
+                for (int i = 0; i < 10; i++)
+                {
+                    m_Loc.X = x + Utility.RandomMinMax(-1, 1);
+                    m_Loc.Y = y + Utility.RandomMinMax(-1, 1);
+
+                    m_Loc.Z = map.GetAverageZ(m_Loc.X, m_Loc.Y);
+
+                    if (map.CanSpawnMobile(m_Loc))
+                    {
+                        break;
+                    }
+
+                    m_Loc = master.Location;
+                }
+
+                m.SetLocation(m_Loc, true);
+            }
+
+            //Part 3: Attack master's target check
+            IDamageable combatant = m.Combatant;
+            IDamageable mc = master.Combatant;
+
+            // Don't attack your familiar!
+            if (mc == m)
+            {
+                master.Combatant = null;
+                mc = null;
+            }
+
+            // Don't attack my master!
+            if (combatant == master)
+            {
+                m.Combatant = null;
+                combatant = null;
+            }
+
+            // Only attack my master's combatant, and only if he's in range
+            if (mc != null && ((BaseFamiliar)m).AttacksMastersTarget && master.InRange(mc.Location, m.RangeHome))
+            {
+                combatant = m.Combatant = mc;
+            }
+            else
+            {
+                combatant = m.Combatant = null;
+            }
+
+            int delay = (int)(TransformMoveDelay(m.CurrentSpeed) * 1000);
+            bool mounted = m.Mounted || m.Flying;
+            bool bRun = (mounted && delay < Mobile.WalkMount) || (!mounted && delay < Mobile.WalkFoot);
+
+            // Do I lack a combatant?
+            if (combatant == null)
+            {
+                m.ControlTarget = master;
+
+                if (WalkMobileRange(master, 1, bRun, 0, 1) &&
+                    m.Direction != m.GetDirectionTo(master) &&
+                    (m.LastMoveTime + 500) < Core.TickCount)
+                {
+                    m.Direction = m.GetDirectionTo(master);
+                }
+
+                if (m_LastHidden != master.Hidden)
+                {
+                    m.Hidden = m_LastHidden = master.Hidden;
+                }
+
+                if (m.ControlOrder != OrderType.Heel)
+                {
+                    m.ControlOrder = OrderType.Heel;
+                }
+
+                return true;
+            }
+
+            m.ControlTarget = combatant;
+
+            if (MoveTo(combatant, bRun, m.RangeFight) &&
+                m.Direction != m.GetDirectionTo(combatant) &&
+                (m.LastMoveTime + 1000) < Core.TickCount)
+            {
+                m.Direction = m.GetDirectionTo(combatant);
+            }
+
+            if (m.ControlOrder != OrderType.Aggro)
+            {
+                m.ControlOrder = OrderType.Aggro;
+            }
+
+            return true;
+        }
+
+        public virtual bool DoOrderFetch()
+        {
+            BaseCreature m = m_Mobile;
+            IPoint2D target = m.TargetLocation;
+
+            if (target == null)
+            {
+                m.ControlOrder = OrderType.Heel;
+                return false; // Creature is not being herded
+            }
+
+            double distance = m.GetDistanceToSqrt(target);
+
+            if (distance < 1 && target.X == 1076 && target.Y == 450 && (m is HordeMinionFamiliar))
+            {
+                PlayerMobile pm = m.ControlMaster as PlayerMobile;
+
+                if (pm != null)
+                {
+                    QuestSystem qs = pm.Quest;
+
+                    if (qs is DarkTidesQuest)
+                    {
+                        QuestObjective obj = qs.FindObjective(typeof(FetchAbraxusScrollObjective));
+
+                        if (obj != null && !obj.Completed)
+                        {
+                            m.AddToBackpack(new ScrollOfAbraxus());
+                            obj.Complete();
+                            m.TargetLocation = null;
+                            m.ControlTarget = pm;
+                            m.ControlOrder = OrderType.Heel;
+                        }
+                    }
+                }
+            }
+
+            DoMove(m.GetDirectionTo(target));
+            return true;
+        }
+
 		public virtual bool DoBardPacified()
 		{
 			if (DateTime.UtcNow < m_Mobile.BardEndTime)
@@ -2323,10 +2510,10 @@ namespace Server.Mobiles
 			{
 				d |= Direction.Running;
 			}
-            
+
 			// This makes them always move one step, never any direction changes
 			m_Mobile.Direction = d;
-            
+
 			m_NextMove += delay;
 
 			if (Core.TickCount - m_NextMove > 0)
@@ -2645,12 +2832,12 @@ namespace Server.Mobiles
 
 		/*
         *  Walk at range distance from mobile
-        * 
+        *
         *	iSteps : Number of steps
         *	bRun   : Do we run
         *	iWantDistMin : The minimum distance we want to be
         *  iWantDistMax : The maximum distance we want to be
-        * 
+        *
         */
 
 		public virtual bool WalkMobileRange(IPoint3D p, int iSteps, bool bRun, int iWantDistMin, int iWantDistMax)
@@ -2738,13 +2925,13 @@ namespace Server.Mobiles
 
 		/*
         * Here we check to acquire a target from our surronding
-        * 
+        *
         *  iRange : The range
         *  acqType : A type of acquire we want (closest, strongest, etc)
         *  bPlayerOnly : Don't bother with other creatures or NPCs, want a player
         *  bFacFriend : Check people in my faction
         *  bFacFoe : Check people in other factions
-        * 
+        *
         */
 
 		public virtual bool AcquireFocusMob(int iRange, FightMode acqType, bool bPlayerOnly, bool bFacFriend, bool bFacFoe)

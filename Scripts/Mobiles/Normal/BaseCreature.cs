@@ -69,7 +69,10 @@ namespace Server.Mobiles
         Release, //"(Name) release"  Releases pet back into the wild (removes "tame" status).
         Stay, //"(All/Name) stay" All or the specified pet(s) will stop and stay in current spot.
         Stop, //"(All/Name) stop Cancels any current orders to attack, guard or follow.
-        Transfer //"(Name) transfer" Transfers complete ownership to targeted player.
+        Transfer, //"(Name) transfer" Transfers complete ownership to targeted player.
+        Aggro, // Familiar fight mode
+        Heel, // Familiar follow mode
+        Fetch // Familiar quest herding mode
     }
 
     [Flags]
@@ -3889,6 +3892,12 @@ namespace Server.Mobiles
                 {
                     aggressor.Aggressors.Add(AggressorInfo.Create(this, aggressor, true));
                 }
+
+                if (this is BaseFamiliar)
+                {
+                    DebugSay("Familiars only attack what their masters do.");
+                    return;
+                }
             }
 
             OrderType ct = m_ControlOrder;
@@ -5970,8 +5979,16 @@ namespace Server.Mobiles
                 ControlMaster = m;
                 Controlled = true;
                 ControlTarget = null;
-                ControlOrder = OrderType.Come;
                 Guild = null;
+
+                if (this is BaseFamiliar)
+                {
+                    ControlOrder = OrderType.Heel;
+                }
+                else
+                {
+                    ControlOrder = OrderType.Come;
+                }
 
                 if (m_DeleteTimer != null)
                 {
@@ -7216,7 +7233,7 @@ namespace Server.Mobiles
                         if (!onlyBonded || pet.IsBonded)
                         {
                             if (pet.ControlOrder == OrderType.Guard || pet.ControlOrder == OrderType.Follow ||
-                                pet.ControlOrder == OrderType.Come)
+                                pet.ControlOrder == OrderType.Come || (pet is BaseFamiliar))
                             {
                                 move.Add(pet);
                             }
