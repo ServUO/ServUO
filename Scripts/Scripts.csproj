@@ -652,6 +652,9 @@
     <Compile Include="Items\Artifacts\Equipment\Weapons\Glenda.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\BowOfTheInfiniteSwarm.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\TheDeceiver.cs" />
+    <Compile Include="Items\Consumables\DeliciouslyTastyTreat.cs" />
+    <Compile Include="Items\Consumables\IrresistiblyTastyTreat.cs" />
+    <Compile Include="Items\Consumables\TastyTreat.cs" />
     <Compile Include="Items\Decorative\DecorativeCarpet.cs" />
     <Compile Include="Items\Decorative\TatteredWallMap.cs" />
     <Compile Include="Items\Equipment\Armor\BoneArms.cs" />
@@ -2692,7 +2695,6 @@
     <Compile Include="Items\Quest\PileofInspectedDullCopperIngots.cs" />
     <Compile Include="Items\Quest\PileofInspectedGoldIngots.cs" />
     <Compile Include="Items\Quest\PileofInspectedShadowIronIngots.cs" />
-    <Compile Include="Items\Artifacts\Consumables\TastyTreat.cs" />
     <Compile Include="Quests\MetalHead.cs" />
     <Compile Include="Quests\PinkistheNewBlack.cs" />
     <Compile Include="Quests\TastyTreats.cs" />
@@ -2703,14 +2705,12 @@
     <Compile Include="Mobiles\NPCs\Zhah.cs" />
     <Compile Include="Quests\ArmorUp.cs" />
     <Compile Include="Quests\DabblingontheDarkSide.cs" />
-    <Compile Include="Items\Artifacts\Consumables\DeliciouslyTastyTreat.cs" />
     <Compile Include="Items\Artifacts\Consumables\ElixirofValoriteConversion.cs" />
     <Compile Include="Items\Artifacts\Consumables\ElixirofVeriteConversion.cs" />
     <Compile Include="Items\Artifacts\Consumables\InfusedAlchemistsGem.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\InfusedGlassStave.cs" />
     <Compile Include="Items\Quest\InspectedKegofGreaterPoison.cs" />
     <Compile Include="Items\Quest\InspectedKegofTotalRefreshment.cs" />
-    <Compile Include="Quests\IrresistiblyTastyTreat.cs" />
     <Compile Include="Quests\PileofInspectedValoriteIngots.cs" />
     <Compile Include="Quests\PileofInspectedVeriteIngots.cs" />
     <Compile Include="Mobiles\Normal\TreefellowGuardian.cs" />
