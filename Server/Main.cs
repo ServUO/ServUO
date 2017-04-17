@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -484,6 +485,13 @@ namespace Server
 				m_ConsoleEventHandler = OnConsoleEvent;
 				UnsafeNativeMethods.SetConsoleCtrlHandler(m_ConsoleEventHandler, true);
 			}
+			
+                        if (IsPrivileged())
+                        {
+                                Utility.PushColor(ConsoleColor.Red);
+                                Console.WriteLine("Core: Running ServUO as " + (Core.Unix ? "root" : "Administrator") +". This is NOT recommended!");
+                                Utility.PopColor();
+                        }
 
 			if (GCSettings.IsServerGC)
 			{
@@ -591,6 +599,11 @@ namespace Server
 				CurrentDomain_UnhandledException(null, new UnhandledExceptionEventArgs(e, true));
 			}
 		}
+
+		private static bool IsPrivileged()
+                {
+                        return (new WindowsPrincipal(WindowsIdentity.GetCurrent())).IsInRole(WindowsBuiltInRole.Administrator);
+                }
 
 		public static string Arguments
 		{
