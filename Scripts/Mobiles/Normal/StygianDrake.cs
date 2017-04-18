@@ -65,6 +65,7 @@ namespace Server.Mobiles
         public override ScaleType ScaleType { get { return ScaleType.Yellow; } }
         public override FoodType FavoriteFood { get { return FoodType.Meat | FoodType.Fish; } }
         public override bool CanFly { get { return true; } }
+        public override bool CanAngerOnTame { get { return true; } }
 
         public override void GenerateLoot()
         {
