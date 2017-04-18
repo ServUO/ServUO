@@ -771,6 +771,11 @@ namespace Server.Spells
                     return true;
             }
 
+            if (Siege.SiegeShard && !Siege.CheckTravel(caster, loc, map, type))
+            {
+                return false;
+            }
+
             m_TravelCaster = caster;
             m_TravelType = type;
 
