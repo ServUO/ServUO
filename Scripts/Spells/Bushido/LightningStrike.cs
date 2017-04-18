@@ -13,7 +13,7 @@ namespace Server.Spells.Bushido
         {
             get
             {
-                return 5;
+                return Core.SA ? 10 : 5;
             }
         }
         public override double RequiredSkill

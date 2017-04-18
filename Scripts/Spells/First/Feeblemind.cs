@@ -1,5 +1,6 @@
 using System;
 using Server.Targeting;
+using System.Collections.Generic;
 
 namespace Server.Spells.First
 {
@@ -14,6 +15,30 @@ namespace Server.Spells.First
         public FeeblemindSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
+        }
+
+        public static Dictionary<Mobile, Timer> m_Table = new Dictionary<Mobile, Timer>();
+
+        public static bool IsUnderEffects(Mobile m)
+        {
+            return m_Table.ContainsKey(m);
+        }
+
+        public static void RemoveEffects(Mobile m)
+        {
+            if (m_Table.ContainsKey(m))
+            {
+                Timer t = m_Table[m];
+
+                if (t != null && t.Running)
+                {
+                    t.Stop();
+                }
+
+                m.RemoveStatMod("[Magic] Int Curse");
+
+                m_Table.Remove(m);
+            }
         }
 
         public override SpellCircle Circle
@@ -54,6 +79,8 @@ namespace Server.Spells.First
                 m.PlaySound(0x1E4);
 
                 this.HarmfulSpell(m);
+
+                m_Table[m] = Timer.DelayCall<Mobile>(length, RemoveEffects, m);
             }
 
             this.FinishSequence();

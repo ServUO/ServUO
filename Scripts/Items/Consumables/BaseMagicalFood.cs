@@ -18,9 +18,9 @@ namespace Server.Items
         public BaseMagicalFood(int itemID)
             : base(itemID)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 0;
-            this.Stackable = false;
+            Weight = 1.0;
+            FillFactor = 0;
+            Stackable = false;
         }
 
         public BaseMagicalFood(Serial serial)
@@ -132,14 +132,14 @@ namespace Server.Items
 
         public override bool Eat(Mobile from)
         {
-            if (!IsUnderInfluence(from, this.FoodID))
+            if (!IsUnderInfluence(from, FoodID))
             {
-                if (!CoolingDown(from, this.FoodID))
+                if (!CoolingDown(from, FoodID))
                 {
-                    from.SendLocalizedMessage(this.EatMessage);
+                    from.SendLocalizedMessage(EatMessage);
 					
-                    StartInfluence(from, this.FoodID, this.Duration, this.Cooldown);				
-                    this.Consume();		
+                    StartInfluence(from, FoodID, Duration, Cooldown);				
+                    Consume();		
 				
                     return true;
                 }

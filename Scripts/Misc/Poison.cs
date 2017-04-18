@@ -168,19 +168,25 @@ namespace Server
 
             protected override void OnTick()
             {
-                #region Mondain's Legacy mod
+                bool usingPetals = OrangePetals.UnderEffect(m_Mobile);
+
+                if (Core.SA && usingPetals && m_Poison.RealLevel >= 3 && 0.25 > Utility.RandomDouble())
+                {
+                    OrangePetals.RemoveContext(m_Mobile);
+                    usingPetals = false;
+
+                    m_Mobile.LocalOverheadMessage(MessageType.Regular, 0x3F, 1053093); // * The strength of the poison overcomes your resistance! *
+                }
+
                 if ((Core.AOS && m_Poison.RealLevel < 4 && TransformationSpellHelper.UnderTransformation(m_Mobile, typeof(VampiricEmbraceSpell))) ||
-                    (m_Poison.RealLevel < 3 && OrangePetals.UnderEffect(m_Mobile)) ||
+                    (m_Poison.RealLevel <= 3 && usingPetals) ||
                     AnimalForm.UnderTransformation(m_Mobile, typeof(Unicorn)))
-                #endregion
                 {
                     if (m_Mobile.CurePoison(m_Mobile))
                     {
-                        m_Mobile.LocalOverheadMessage(MessageType.Emote, 0x3F, true,
-                            "* You feel yourself resisting the effects of the poison *");
+                        m_Mobile.LocalOverheadMessage(MessageType.Emote, 0x3F, 1053092); // * You feel yourself resisting the effects of the poison *
 
-                        m_Mobile.NonlocalOverheadMessage(MessageType.Emote, 0x3F, true,
-                            String.Format("* {0} seems resistant to the poison *", m_Mobile.Name));
+                        m_Mobile.NonlocalOverheadMessage(MessageType.Emote, 0x3F, 1114442, m_Mobile.Name); // * ~1_NAME~ seems resistant to the poison *
 
                         Stop();
                         return;

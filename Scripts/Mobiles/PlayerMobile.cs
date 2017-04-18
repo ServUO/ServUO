@@ -5100,27 +5100,6 @@ namespace Server.Mobiles
 			}
 		}
 
-		#region Mysticism
-		[CommandProperty(AccessLevel.GameMaster)]
-		public override bool Asleep
-		{
-			get { return base.Asleep; }
-			set
-			{
-				base.Asleep = value;
-
-				if (value)
-				{
-					AddBuff(new BuffInfo(BuffIcon.Sleep, 1080139)); //Paralyze/You are frozen and can not move
-				}
-				else
-				{
-					RemoveBuff(BuffIcon.Sleep);
-				}
-			}
-		}
-		#endregion
-
 		#region Ethics
 		private Player m_EthicPlayer;
 

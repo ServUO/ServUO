@@ -9,7 +9,9 @@ namespace Server.Spells.Chivalry
             "Divine Fury", "Divinum Furis",
             -1,
             9002);
+
         private static readonly Hashtable m_Table = new Hashtable();
+
         public DivineFurySpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
@@ -64,21 +66,21 @@ namespace Server.Spells.Chivalry
 
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
-                this.Caster.PlaySound(0x20F);
-                this.Caster.PlaySound(this.Caster.Female ? 0x338 : 0x44A);
-                this.Caster.FixedParticles(0x376A, 1, 31, 9961, 1160, 0, EffectLayer.Waist);
-                this.Caster.FixedParticles(0x37C4, 1, 31, 9502, 43, 2, EffectLayer.Waist);
+                Caster.PlaySound(0x20F);
+                Caster.PlaySound(Caster.Female ? 0x338 : 0x44A);
+                Caster.FixedParticles(0x376A, 1, 31, 9961, 1160, 0, EffectLayer.Waist);
+                Caster.FixedParticles(0x37C4, 1, 31, 9502, 43, 2, EffectLayer.Waist);
 
-                this.Caster.Stam = this.Caster.StamMax;
+                Caster.Stam = Caster.StamMax;
 
-                Timer t = (Timer)m_Table[this.Caster];
+                Timer t = (Timer)m_Table[Caster];
 
                 if (t != null)
                     t.Stop();
 
-                int delay = this.ComputePowerValue(10);
+                int delay = ComputePowerValue(10);
 
                 // TODO: Should caps be applied?
                 if (delay < 7)
@@ -86,13 +88,13 @@ namespace Server.Spells.Chivalry
                 else if (delay > 24)
                     delay = 24;
 
-                m_Table[this.Caster] = t = Timer.DelayCall(TimeSpan.FromSeconds(delay), new TimerStateCallback(Expire_Callback), this.Caster);
-                this.Caster.Delta(MobileDelta.WeaponDamage);
+                m_Table[Caster] = t = Timer.DelayCall(TimeSpan.FromSeconds(delay), new TimerStateCallback(Expire_Callback), Caster);
+                Caster.Delta(MobileDelta.WeaponDamage);
 
-                BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.DivineFury, 1060589, 1075634, TimeSpan.FromSeconds(delay), this.Caster));
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.DivineFury, 1060589, 1075634, TimeSpan.FromSeconds(delay), Caster));
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private static void Expire_Callback(object state)

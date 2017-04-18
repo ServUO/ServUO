@@ -1,18 +1,22 @@
 using System;
 using Server.Mobiles;
 using Server.Targeting;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
     public class VialofArmorEssence : Item
     {
-		public override bool IsArtifact { get { return true; } }
-        private bool m_Used;
+        public static Dictionary<BaseCreature, DateTime> m_Table = new Dictionary<BaseCreature, DateTime>();
+
+        public virtual int Bonus { get { return 10; } }
+        public virtual TimeSpan Duration { get { return TimeSpan.FromMinutes(10); } }
+        public virtual TimeSpan CoolDown { get { return TimeSpan.FromMinutes(120); } }
+
         [Constructable]
         public VialofArmorEssence()
             : base(0x5722)
-        { 
-            this.m_Used = false;
+        {
         }
 
         public VialofArmorEssence(Serial serial)
@@ -27,49 +31,99 @@ namespace Server.Items
                 return 1113018;
             }
         }
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool Used
+
+        public override bool DropToMobile(Mobile from, Mobile target, Point3D p)
         {
-            get
+            TryFeed(from, target);
+
+            return false;
+        }
+
+        public override void OnDoubleClick(Mobile m)
+        {
+            if (IsChildOf(m.Backpack))
             {
-                return this.m_Used;
-            }
-            set
-            {
-                this.m_Used = value;
+                m.BeginTarget(2, false, TargetFlags.Beneficial, (from, targeted) =>
+                {
+                    if (targeted is Mobile)
+                    {
+                        TryFeed(from, (Mobile)targeted);
+                    }
+                });
             }
         }
+
+        private void TryFeed(Mobile from, Mobile target)
+        {
+            if (target is BaseCreature && !((BaseCreature)target).IsDeadBondedPet)
+            {
+                BaseCreature bc = (BaseCreature)target;
+
+                if (UnderInfluence(bc))
+                {
+                    if (m_Table[bc] + (CoolDown + Duration) < DateTime.Now)
+                    {
+                        from.SendLocalizedMessage(1113076); //Your pet is still recovering from the last armor essence it consumed.
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(1113075); //Your pet is still under the effect of armor essence.
+                    }
+                }
+                else if (bc.ControlMaster == from)
+                {
+                    from.SendLocalizedMessage(1113050); //Your pet looks much happier.
+                    DoEffects(bc);
+                }
+            }
+        }
+
+        public bool DoEffects(BaseCreature bc)
+        {
+            bc.PlaySound(0x1EA);
+            bc.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
+
+            m_Table.Add(bc, DateTime.Now);
+            Timer.DelayCall(Duration + CoolDown, new TimerStateCallback(RemoveInfluence), bc);
+
+            bc.TempDamageAbsorb = Bonus;
+            bc.Loyalty = BaseCreature.MaxLoyalty;
+
+            Consume();
+            return true;
+        }
+
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
-              
-            list.Add(1113213);
-            list.Add(1113219);
-            list.Add(1070722, "Duration: 10 Min"); 
-            list.Add(1042971, "Cooldown: 2 Hours");  
+
+            list.Add(1113213); //* For Pets Only *
+            list.Add(1113219); //Stats Increased by 10%
+
+            list.Add(1113212, Duration.TotalMinutes.ToString()); //Duration: ~1_val~ minutes
+            list.Add(1113218, CoolDown.TotalMinutes.ToString()); //Cooldown: ~1_val~ minutes
         }
 
-        public override void OnDoubleClick(Mobile from)
+        public static bool UnderInfluence(BaseCreature bc)
         {
-            if (!this.m_Used)
-            { 
-                from.SendMessage("Which animal you want to Targhet ?"); 
-  
-                from.Target = new InternalTarget(this);
-            }
-            else
-            {
-                from.SendMessage("You must wait until the Effect of Vial of Armor Essence wears off !");                  
-            }
+            return m_Table.ContainsKey(bc);
+        }
+
+        public static void RemoveInfluence(object obj)
+        {
+            BaseCreature bc = (BaseCreature)obj;
+
+            if (m_Table.ContainsKey(bc))
+                m_Table.Remove(bc);
+
+            bc.TempDamageAbsorb = 0;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
-
-            writer.Write((bool)this.m_Used); 
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -78,87 +132,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.m_Used = reader.ReadBool();
-        }
-
-        private class InternalTarget : Target
-        {
-            private readonly VialofArmorEssence m_Tasty;
-            public InternalTarget(VialofArmorEssence tasty)
-                : base(10, false, TargetFlags.None)
-            {
-                this.m_Tasty = tasty;
-            }
-
-            protected override void OnTarget(Mobile from, object targeted)
-            {
-                PlayerMobile pm = from as PlayerMobile;
-
-                if (this.m_Tasty.Deleted)
-                    return;
-
-                if (targeted is BaseCreature)
-                {
-                    BaseCreature creature = (BaseCreature)targeted;
-
-                    if ((creature.Controlled || creature.Summoned) && (from == creature.ControlMaster) && !(creature.Asleep))
-                    {
-                        creature.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
-                        creature.PlaySound(0x1EA);
-
-                        ResistanceMod mod = new ResistanceMod(ResistanceType.Physical, +15);
-                        ResistanceMod mod1 = new ResistanceMod(ResistanceType.Fire, +10);
-                        ResistanceMod mod2 = new ResistanceMod(ResistanceType.Cold, +10);
-                        ResistanceMod mod3 = new ResistanceMod(ResistanceType.Poison, +10);
-                        ResistanceMod mod4 = new ResistanceMod(ResistanceType.Energy, +10);
-                        creature.AddResistanceMod(mod);
-                        creature.AddResistanceMod(mod1); 
-                        creature.AddResistanceMod(mod2);
-                        creature.AddResistanceMod(mod3);
-                        creature.AddResistanceMod(mod4); 
-
-                        from.SendMessage("You have increased the Damage Absorption of your pet by 10% for 10 Minutes !!");  
-                        this.m_Tasty.m_Used = true;
-                        creature.Asleep = true; 
-
-                        Timer.DelayCall(TimeSpan.FromMinutes(10.0), delegate()
-                        {
-                            ResistanceMod mod5 = new ResistanceMod(ResistanceType.Physical, -15);
-                            ResistanceMod mod6 = new ResistanceMod(ResistanceType.Fire, -10);
-                            ResistanceMod mod7 = new ResistanceMod(ResistanceType.Cold, -10);
-                            ResistanceMod mod8 = new ResistanceMod(ResistanceType.Poison, -10);
-                            ResistanceMod mod9 = new ResistanceMod(ResistanceType.Energy, -10);
-                            creature.AddResistanceMod(mod5);
-                            creature.AddResistanceMod(mod6); 
-                            creature.AddResistanceMod(mod7);
-                            creature.AddResistanceMod(mod8);
-                            creature.AddResistanceMod(mod9); 
-                            creature.PlaySound(0x1EB);
-                       
-                            this.m_Tasty.m_Used = true; 
-                            creature.Asleep = false;
-                            from.SendMessage("The effect of Vial of Armor Essence is finish !");   
-
-                            Timer.DelayCall(TimeSpan.FromMinutes(120.0), delegate()
-                            {
-                                this.m_Tasty.m_Used = false;                                                
-                            });
-                        });
-                    }
-                    else if ((creature.Controlled || creature.Summoned) && (from == creature.ControlMaster) && (creature.Asleep))
-                    {
-                        from.SendMessage("Pet already under the influence of Vial of Armor Essence !");     
-                    }
-                    else 
-                    {
-                        from.SendLocalizedMessage(1113049);    
-                    }
-                }
-                else
-                {
-                    from.SendLocalizedMessage(500329);        
-                }
-            }
+            if (version == 0)
+                reader.ReadBool();
         }
     }
 }

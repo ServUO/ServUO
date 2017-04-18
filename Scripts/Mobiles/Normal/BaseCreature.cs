@@ -1861,7 +1861,10 @@ namespace Server.Mobiles
         { }
 
         public virtual void AlterSpellDamageFrom(Mobile from, ref int damage)
-        { }
+        {
+            if (m_TempDamageAbsorb > 0 && VialofArmorEssence.UnderInfluence(this))
+                damage -= damage / m_TempDamageAbsorb;
+        }
 
         public virtual void AlterSpellDamageTo(Mobile to, ref int damage)
         { }
@@ -1884,10 +1887,24 @@ namespace Server.Mobiles
                 }
             }
             #endregion
+
+            if (m_TempDamageAbsorb > 0 && VialofArmorEssence.UnderInfluence(this))
+                damage -= damage / m_TempDamageAbsorb;
         }
 
         public virtual void AlterMeleeDamageTo(Mobile to, ref int damage)
-        { }
+        {
+            if (m_TempDamageBonus > 0 && TastyTreat.UnderInfluence(this))
+                damage += damage / m_TempDamageBonus;
+        }
+        #endregion
+
+        #region SA / High Seas Tasty Treats/Vial of Armor Essense
+        private int m_TempDamageBonus = 0;
+        private int m_TempDamageAbsorb = 0;
+
+        public int TempDamageBonus { get { return m_TempDamageBonus; } set { m_TempDamageBonus = value; } }
+        public int TempDamageAbsorb { get { return m_TempDamageAbsorb; } set { m_TempDamageAbsorb = value; } }
         #endregion
 
         public virtual void CheckReflect(Mobile caster, ref bool reflect)

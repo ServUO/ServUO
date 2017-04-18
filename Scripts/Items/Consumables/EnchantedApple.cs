@@ -1,4 +1,5 @@
 using System;
+using Server.Spells.First;
 using Server.Spells.Fourth;
 using Server.Spells.Necromancy;
 using Server.Spells.Mysticism;
@@ -42,46 +43,133 @@ namespace Server.Items
                 return 1074846;
             }
         }// A tasty bite of the enchanted apple lifts all curses from your soul.
+
         public override bool Eat(Mobile from)
         {
-            if (base.Eat(from))
+            if (!IsUnderInfluence(from, FoodID))
             {
-                from.PlaySound(0xF6);
-                from.PlaySound(0x1F7);
-                from.FixedParticles(0x3709, 1, 30, 9963, 13, 3, EffectLayer.Head);
+                if (CoolingDown(from, FoodID))
+                {
+                    from.SendLocalizedMessage(1151180); // You must wait a while before eating another enchanted apple.
+                }
+                else
+                {
+                    from.PlaySound(0xF6);
+                    from.PlaySound(0x1F7);
+                    from.FixedParticles(0x3709, 1, 30, 9963, 13, 3, EffectLayer.Head);
 
-                IEntity mfrom = new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z - 10), from.Map);
-                IEntity mto = new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 50), from.Map);
-                Effects.SendMovingParticles(mfrom, mto, 0x2255, 1, 0, false, false, 13, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
+                    IEntity mfrom = new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z - 10), from.Map);
+                    IEntity mto = new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 50), from.Map);
+                    Effects.SendMovingParticles(mfrom, mto, 0x2255, 1, 0, false, false, 13, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
 
-                from.RemoveStatMod("[Magic] Str Curse");
-				from.RemoveStatMod("[Magic] Dex Curse");
-				from.RemoveStatMod("[Magic] Int Curse");
+                    if (Core.SA)
+                    {
+                        int totalCurses = GetTotalCurses(from);
 
-                from.Asleep = false;
+                        if (totalCurses > 2 && totalCurses > Utility.Random(10))
+                        {
+                            from.SendLocalizedMessage(1150174); // The apple was not strong enough to purify you.
 
-                EvilOmenSpell.TryEndEffect(from);
-                StrangleSpell.RemoveCurse(from);
-                CorpseSkinSpell.RemoveCurse(from);
-                CurseSpell.RemoveEffect(from);
-				MortalStrike.EndWound(from);
-	            BloodOathSpell.RemoveCurse(from);
-				MindRotSpell.ClearMindRotScalar(from);
-                SpellPlagueSpell.RemoveFromList(from);
+                            Consume();
 
-                BuffInfo.RemoveBuff(from, BuffIcon.Clumsy);
-                BuffInfo.RemoveBuff(from, BuffIcon.FeebleMind);
-                BuffInfo.RemoveBuff(from, BuffIcon.Weaken);
-                BuffInfo.RemoveBuff(from, BuffIcon.MassCurse);
-				BuffInfo.RemoveBuff(from, BuffIcon.Curse);
-				BuffInfo.RemoveBuff(from, BuffIcon.MortalStrike);
-				BuffInfo.RemoveBuff(from, BuffIcon.Mindrot);
-				BuffInfo.RemoveBuff(from, BuffIcon.CorpseSkin);
-				
-                return true;
+                            return false;
+                        }
+                    }
+
+                    EvilOmenSpell.TryEndEffect(from);
+                    StrangleSpell.RemoveCurse(from);
+                    CorpseSkinSpell.RemoveCurse(from);
+                    WeakenSpell.RemoveEffects(from);
+                    FeeblemindSpell.RemoveEffects(from);
+                    ClumsySpell.RemoveEffects(from);
+                    CurseSpell.RemoveEffect(from);
+                    MortalStrike.EndWound(from);
+                    BloodOathSpell.RemoveCurse(from);
+                    MindRotSpell.ClearMindRotScalar(from);
+                    SpellPlagueSpell.RemoveFromList(from);
+                    SleepSpell.EndSleep(from);
+
+                    BuffInfo.RemoveBuff(from, BuffIcon.Clumsy);
+                    BuffInfo.RemoveBuff(from, BuffIcon.FeebleMind);
+                    BuffInfo.RemoveBuff(from, BuffIcon.Weaken);
+                    BuffInfo.RemoveBuff(from, BuffIcon.MassCurse);
+                    BuffInfo.RemoveBuff(from, BuffIcon.Curse);
+                    BuffInfo.RemoveBuff(from, BuffIcon.MortalStrike);
+                    BuffInfo.RemoveBuff(from, BuffIcon.Mindrot);
+                    BuffInfo.RemoveBuff(from, BuffIcon.CorpseSkin);
+
+                    from.SendLocalizedMessage(EatMessage);
+
+                    StartInfluence(from, FoodID, Duration, Cooldown);
+                    Consume();
+
+                    return true;
+                }
             }
-			
+
             return false;
+        }
+
+        public static int GetTotalCurses(Mobile m)
+        {
+            int curses = 0;
+
+            if (EvilOmenSpell.UnderEffects(m))
+            {
+                curses++;
+            }
+
+            if (StrangleSpell.UnderEffects(m))
+            {
+                curses++;
+            }
+
+            if (CorpseSkinSpell.IsUnderEffects(m))
+            {
+                curses++;
+            }
+
+            if (BloodOathSpell.GetBloodOath(m) != null)
+            {
+                curses++;
+            }
+
+            if (MindRotSpell.HasMindRotScalar(m))
+            {
+                curses++;
+            }
+
+            if (SpellPlagueSpell.HasSpellPlague(m))
+            {
+                curses++;
+            }
+
+            if (SleepSpell.IsUnderSleepEffects(m))
+            {
+                curses++;
+            }
+
+            if (CurseSpell.UnderEffect(m))
+            {
+                curses++;
+            }
+
+            if (FeeblemindSpell.IsUnderEffects(m))
+            {
+                curses++;
+            }
+
+            if (ClumsySpell.IsUnderEffects(m))
+            {
+                curses++;
+            }
+
+            if (WeakenSpell.IsUnderEffects(m))
+            {
+                curses++;
+            }
+
+            return curses;
         }
 
         public override void Serialize(GenericWriter writer)

@@ -54,7 +54,7 @@ namespace Server.Spells.Mysticism
                     Caster.SendGump(new EnchantSpellGump(Caster, Scroll, wep));
                 }
             }
-            else if (IsUnderSpellEffects(Caster, Weapon) || Weapon.Immolating || Weapon.Consecrated)
+            else if (IsUnderSpellEffects(Caster, Weapon) || Weapon.Immolating || Weapon.ConsecratedContext != null)
                 Caster.SendLocalizedMessage(1080128); //You cannot use this ability while your weapon is enchanted.
             else if (Weapon.FocusWeilder != null)
                 Caster.SendLocalizedMessage(1080446); // You cannot enchant an item that is under the effects of the ninjitsu focus attack ability.
