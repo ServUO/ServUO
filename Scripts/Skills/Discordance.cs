@@ -182,7 +182,7 @@ namespace Server.SkillHandlers
 							{
 								double discord = from.Skills[SkillName.Discordance].Value;
 
-							    effect = (int)Math.Min(28.0, (discord / -4.0));
+							    effect = (int)Math.Max(-28.0, (discord / -4.0));
 
 								if (Core.SE && BaseInstrument.GetBaseDifficulty(targ) >= 160.0)
 								{
