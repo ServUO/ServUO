@@ -298,6 +298,9 @@
     <Compile Include="Gumps\AddGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\AddSignGump.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Gumps\AdminGump.cs">
       <SubType>Code</SubType>
     </Compile>
