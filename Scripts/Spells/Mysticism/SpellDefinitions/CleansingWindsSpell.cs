@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Server.Engines.PartySystem;
 using Server.Items;
+using Server.Spells.First;
 using Server.Spells.Fourth;
 using Server.Spells.Necromancy;
 using Server.Targeting;
@@ -187,21 +187,21 @@ namespace Server.Spells.Mysticism
                 curseLevel += 4;
             }
 
-            if (m.GetStatMod("[Magic] Str Curse") != null)
+            if (FeeblemindSpell.IsUnderEffects(m))
             {
-                m.RemoveStatMod("[Magic] Str Curse");
+                FeeblemindSpell.RemoveEffects(m);
                 curseLevel += 1;
             }
 
-            if (m.GetStatMod("[Magic] Dex Curse") != null)
+            if (ClumsySpell.IsUnderEffects(m))
             {
-                m.RemoveStatMod("[Magic] Dex Curse");
+                ClumsySpell.RemoveEffects(m);
                 curseLevel += 1;
             }
 
-            if (m.GetStatMod("[Magic] Int Curse") != null)
+            if (WeakenSpell.IsUnderEffects(m))
             {
-                m.RemoveStatMod("[Magic] Int Curse");
+                WeakenSpell.RemoveEffects(m);
                 curseLevel += 1;
             }
 

@@ -19,7 +19,9 @@ namespace Server.Engines.Shadowguard
 		
 		public virtual Type[] SummonTypes { get { return null; } }
 		public virtual Type[] ArtifactDrops { get { return _ArtifactTypes; } }
-		
+
+        public virtual bool CanSummon { get { return Hits <= HitsMax - (HitsMax / 4); } }
+
 		private Type[] _ArtifactTypes = new Type[]
 		{
 			typeof(AnonsBoots),					typeof(AnonsBootsGargoyle),			typeof(AnonsSpellbook),			typeof(BalakaisShamanStaff),
@@ -76,7 +78,7 @@ namespace Server.Engines.Shadowguard
 
 		public override void OnGotMeleeAttack(Mobile m)
 		{
-			if(_NextSummon < DateTime.UtcNow)
+            if (CanSummon && !(m is GreaterDragon) && _NextSummon < DateTime.UtcNow)
 				Summon();
 				
 			base.OnGotMeleeAttack(m);
@@ -84,7 +86,7 @@ namespace Server.Engines.Shadowguard
 		
 		public override void OnDamagedBySpell(Mobile m)
 		{
-			if(_NextSummon < DateTime.UtcNow)
+            if (CanSummon && !(m is GreaterDragon) && _NextSummon < DateTime.UtcNow)
 				Summon();
 				
 			base.OnDamagedBySpell(m);
@@ -607,47 +609,48 @@ namespace Server.Engines.Shadowguard
         private DateTime _NextTeleport;
 
         [Constructable]
-		public Juonar() : base(AIType.AI_NecroMage)
-		{
-			Name = "juo'nar";
+        public Juonar()
+            : base(AIType.AI_NecroMage)
+        {
+            Name = "juo'nar";
             Body = 78;
             BaseSoundID = 412;
             Hue = 2951;
 
-			SetStam(100, 125);
-			SetMana(5000, 5500);
-			SetStr(500, 560);
-			SetInt(1000, 1200);
-			SetDex(100, 125);
-		
-			SetDamage( 17, 21 );
-			
-			SetDamageType(ResistanceType.Physical, 20);
-			SetDamageType(ResistanceType.Fire, 20);
-			SetDamageType(ResistanceType.Cold, 20);
-			SetDamageType(ResistanceType.Poison, 20);
-			SetDamageType(ResistanceType.Energy, 20);
-			
-			SetSkill( SkillName.Wrestling, 120.0 );
-			SetSkill( SkillName.Tactics, 100.0 );
-			SetSkill( SkillName.MagicResist,  150.0 );
-			SetSkill( SkillName.Magery, 100.0 );
-			SetSkill( SkillName.EvalInt, 100.0 );
-			SetSkill( SkillName.Meditation, 120.0 );
-			SetSkill( SkillName.Necromancy, 120.0 );
-			SetSkill( SkillName.SpiritSpeak, 120.0 );
-			
-            		SetSkill( SkillName.Musicianship, 120.0 );
-            		SetSkill( SkillName.Discordance, 100.0 );
-			
-			SetResistance(ResistanceType.Physical, 30);
-			SetResistance(ResistanceType.Fire, 30);
-			SetResistance(ResistanceType.Cold, 30);
-			SetResistance(ResistanceType.Poison, 30);
-			SetResistance(ResistanceType.Energy, 30);
+            SetStam(100, 125);
+            SetMana(5000, 5500);
+            SetStr(500, 560);
+            SetInt(1000, 1200);
+            SetDex(100, 125);
+
+            SetDamage(17, 21);
+
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Cold, 20);
+            SetDamageType(ResistanceType.Poison, 20);
+            SetDamageType(ResistanceType.Energy, 20);
+
+            SetSkill(SkillName.Wrestling, 120.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.MagicResist, 150.0);
+            SetSkill(SkillName.Magery, 100.0);
+            SetSkill(SkillName.EvalInt, 100.0);
+            SetSkill(SkillName.Meditation, 120.0);
+            SetSkill(SkillName.Necromancy, 120.0);
+            SetSkill(SkillName.SpiritSpeak, 120.0);
+
+            SetSkill(SkillName.Musicianship, 120.0);
+            SetSkill(SkillName.Discordance, 80.0);
+
+            SetResistance(ResistanceType.Physical, 30);
+            SetResistance(ResistanceType.Fire, 30);
+            SetResistance(ResistanceType.Cold, 30);
+            SetResistance(ResistanceType.Poison, 30);
+            SetResistance(ResistanceType.Energy, 30);
 
             _NextTeleport = DateTime.UtcNow;
-		}
+        }
 
         public override void OnThink()
         {
@@ -967,6 +970,9 @@ namespace Server.Engines.Shadowguard
 
             PackItem(scimitar);
             PackItem(new Arrow(25));
+
+            var hiryu = new LesserHiryu();
+            hiryu.Rider = this;
 		}
 
         private DateTime _NextWeaponSwitch;
