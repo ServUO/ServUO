@@ -131,30 +131,26 @@ namespace Server.Spells.SkillMasteries
 
             return damage;
         }
-		
-		public override bool OnTick()
-		{
-			base.OnTick();
-			
-			if(!Caster.Player || Target == null || !Caster.InRange(Target.Location, PartyRange))
-				return false;
+
+        public override bool OnTick()
+        {
+            bool tick = base.OnTick();
+
+            if (!Caster.Player || Target == null || !Caster.InRange(Target.Location, PartyRange))
+                return false;
 
             int damage = m_Damage;
-			double modifier = DamageModifier(Target);
-			
-			damage -= (int)((double)damage * modifier);
+            double modifier = DamageModifier(Target);
+
+            damage -= (int)((double)damage * modifier);
 
             AOS.Damage(Target, Caster, damage, 100, 0, 0, 0, 0); // Now only does physical
-            return true;
-			/*switch(((PlayerMobile)Caster).MasteryDamType)
-			{
-				case ResistanceType.Physical: 	AOS.Damage(Target, Caster, damage, 100, 0, 0, 0, 0); break;
-				case ResistanceType.Fire: 		AOS.Damage(Target, Caster, damage, 0, 100, 0, 0, 0); break;
-				case ResistanceType.Cold: 		AOS.Damage(Target, Caster, damage, 0, 0, 100, 0, 0); break;
-				case ResistanceType.Poison: 	AOS.Damage(Target, Caster, damage, 0, 0, 0, 100, 0); break;
-				case ResistanceType.Energy: 	AOS.Damage(Target, Caster, damage, 0, 0, 0, 0, 100); break;
-			}*/
-		}
+
+            if (Target != null && Target.Alive && Target.Map != null)
+                Target.FixedEffect(0x376A, 1, 32);
+
+            return tick;
+        }
 		
 		private class InternalTarget : Target
 		{
