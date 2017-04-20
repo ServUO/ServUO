@@ -34,7 +34,7 @@ namespace Server.Items
 		SlayerName Slayer2 { get; set; }
 	}
 
-    public abstract class BaseWeapon : Item, IWeapon, IFactionItem, ICraftable, ISlayer, IDurability, ISetItem, IVvVItem, IOwnerRestricted
+    public abstract class BaseWeapon : Item, IWeapon, IFactionItem, IUsesRemaining, ICraftable, ISlayer, IDurability, ISetItem, IVvVItem, IOwnerRestricted
 	{
 		private string m_EngravedText;
 
@@ -69,6 +69,35 @@ namespace Server.Items
 		}
 		#endregion
 
+        #region IUsesRemaining members
+        private int m_UsesRemaining;
+        private bool m_ShowUsesRemaining;
+        
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int UsesRemaining { get { return m_UsesRemaining; } set { m_UsesRemaining = value; InvalidateProperties(); } }
+        
+        public ShowUsesRemaining { get { return m_ShowUsesRemaining; } { m_ShowUsesRemaining = value; InvalidateProperties(); } }
+        
+        public void ScaleUses()
+        {
+            m_UsesRemaining = (m_UsesRemaining * GetUsesScalar()) / 100;
+            InvalidateProperties();
+        }
+
+        public void UnscaleUses()
+        {
+            m_UsesRemaining = (m_UsesRemaining * 100) / GetUsesScalar();
+        }
+
+        public int GetUsesScalar()
+        {
+            if (m_Quality == WeaponQuality.Exceptional)
+                return 200;
+
+            return 100;
+        }
+        #endregion
+        
         private bool _VvVItem;
         private Mobile _Owner;
         private string _OwnerName;
@@ -391,8 +420,10 @@ namespace Server.Items
 			set
 			{
 				UnscaleDurability();
+                UnscaleUses();
 				m_Quality = value;
 				ScaleDurability();
+                ScaleUses();
 				InvalidateProperties();
 			}
 		}
@@ -3754,7 +3785,10 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(16); // version
+			writer.Write(17); // version
+
+            writer.Write(m_UsesRemaining);
+            writer.Write(m_ShowUsesRemaining);
 
             writer.Write(_VvVItem);
             writer.Write(_Owner);
@@ -4119,6 +4153,11 @@ namespace Server.Items
 
 			switch (version)
 			{
+                case 17:
+                    {
+                        m_UsesRemaining = reader.ReadInt();
+                        m_ShowUsesRemaining = reader.ReadBool();
+                    }
                 case 16:
                     {
                         _VvVItem = reader.ReadBool();
@@ -4777,6 +4816,8 @@ namespace Server.Items
 			#endregion
 
 			m_AosSkillBonuses = new AosSkillBonuses(this);
+            
+            m_UsesRemaining = 50;
 			// Xml Spawner XmlSockets - SOF
 			// mod to randomly add sockets and socketability features to armor. These settings will yield
 			// 2% drop rate of socketed/socketable items
