@@ -5,7 +5,7 @@ using Server.Engines.Harvest;
 
 namespace Server.Items
 {
-    public abstract class BasePoleArm : BaseMeleeWeapon
+    public abstract class BasePoleArm : BaseMeleeWeapon, IUsesRemaining
     {
         private int m_UsesRemaining;
         private bool m_ShowUsesRemaining;
