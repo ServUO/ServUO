@@ -1474,9 +1474,10 @@ namespace Server.Items
                             IEntity mto = new Entity(Serial.Zero, new Point3D(target.X, target.Y, target.Z + 50), from.Map);
                             Effects.SendMovingParticles(mfrom, mto, 0x2255, 1, 0, false, false, 13, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
 
-                            target.RemoveStatMod("[Magic] Str Curse");
-							target.RemoveStatMod("[Magic] Dex Curse");
-							target.RemoveStatMod("[Magic] Int Curse");
+                            WeakenSpell.RemoveEffects(target);
+                            FeeblemindSpell.RemoveEffects(target);
+                            ClumsySpell.RemoveEffects(target);
+                            CurseSpell.RemoveEffect(target);
 
                             target.Paralyzed = false;
 
@@ -1485,9 +1486,6 @@ namespace Server.Items
                             CorpseSkinSpell.RemoveCurse(target);
                             CurseSpell.RemoveEffect(target);
 
-                            BuffInfo.RemoveBuff(target, BuffIcon.Clumsy);
-                            BuffInfo.RemoveBuff(target, BuffIcon.FeebleMind);
-                            BuffInfo.RemoveBuff(target, BuffIcon.Weaken);
                             BuffInfo.RemoveBuff(target, BuffIcon.MassCurse);
 
                             target.SendLocalizedMessage(1072408); // Any curses on you have been lifted

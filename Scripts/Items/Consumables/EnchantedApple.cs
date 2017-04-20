@@ -89,14 +89,7 @@ namespace Server.Items
                     SpellPlagueSpell.RemoveFromList(from);
                     SleepSpell.EndSleep(from);
 
-                    BuffInfo.RemoveBuff(from, BuffIcon.Clumsy);
-                    BuffInfo.RemoveBuff(from, BuffIcon.FeebleMind);
-                    BuffInfo.RemoveBuff(from, BuffIcon.Weaken);
                     BuffInfo.RemoveBuff(from, BuffIcon.MassCurse);
-                    BuffInfo.RemoveBuff(from, BuffIcon.Curse);
-                    BuffInfo.RemoveBuff(from, BuffIcon.MortalStrike);
-                    BuffInfo.RemoveBuff(from, BuffIcon.Mindrot);
-                    BuffInfo.RemoveBuff(from, BuffIcon.CorpseSkin);
 
                     from.SendLocalizedMessage(EatMessage);
 

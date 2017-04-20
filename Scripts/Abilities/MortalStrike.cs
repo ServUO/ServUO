@@ -56,6 +56,8 @@ namespace Server.Items
 
             m_Table.Remove(m);
 
+            BuffInfo.RemoveBuff(m, BuffIcon.MortalStrike);
+
             m.YellowHealthbar = false;
             m.SendLocalizedMessage(1060208); // You are no longer mortally wounded.
         }
