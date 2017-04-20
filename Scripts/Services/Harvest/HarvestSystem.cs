@@ -225,7 +225,8 @@ namespace Server.Engines.Harvest
 							}
                         }
 
-                        if (tool is IUsesRemaining)
+                        // Siege rules will take into account axes and polearms used for lumberjacking
+                        if (tool is IUsesRemaining && (tool is BaseHarvestTool || Siege.SiegeShard))
                         {
                             IUsesRemaining toolWithUses = (IUsesRemaining)tool;
 
