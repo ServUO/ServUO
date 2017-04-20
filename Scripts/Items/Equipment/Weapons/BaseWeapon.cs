@@ -4817,7 +4817,7 @@ namespace Server.Items
 
 			m_AosSkillBonuses = new AosSkillBonuses(this);
             
-            m_UsesRemaining = 50;
+            m_UsesRemaining = 150;
 			// Xml Spawner XmlSockets - SOF
 			// mod to randomly add sockets and socketability features to armor. These settings will yield
 			// 2% drop rate of socketed/socketable items
