@@ -88,7 +88,7 @@ namespace Server.Spells.Third
             {
                 if (o is ITelekinesisable)
                     this.m_Owner.Target((ITelekinesisable)o);
-                else if (o is Container)
+                else if (o is Container && !Siege.SiegeShard)
                     this.m_Owner.Target((Container)o);
                 else
                     from.SendLocalizedMessage(501857); // This spell won't work on that!
