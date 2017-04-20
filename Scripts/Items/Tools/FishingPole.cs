@@ -10,7 +10,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class FishingPole : Item, ICraftable
+    public class FishingPole : Item, ICraftable, IUsesRemaining
     {
         private Type m_BaitType;
         private bool m_EnhancedBait;
@@ -25,6 +25,9 @@ namespace Server.Items
         private AosAttributes m_AosAttributes;
         private AosSkillBonuses m_AosSkillBonuses;
         private CraftResource m_Resource;
+        
+        private int m_UsesRemaining;
+        private bool m_ShowUsesRemaining;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Type BaitType
@@ -144,7 +147,26 @@ namespace Server.Items
         public WeaponQuality Quality
         {
             get { return m_Quality; }
-            set { m_Quality = value; }
+            set 
+            { 
+                UnscaleUses();
+                m_Quality = value;
+                ScaleUses();
+            }
+        }
+        
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int UsesRemaining
+        {
+            get { return m_UsesRemaining; }
+            set { m_UsesRemaining = value; InvalidateProperties(); }
+        }
+        
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int ShowUsesRemaining
+        {
+            get { return m_ShowUsesRemaining; }
+            set { m_ShowUsesRemaining = value; InvalidateProperties(); }
         }
 
         [Constructable]
@@ -159,6 +181,27 @@ namespace Server.Items
 
             m_AosAttributes = new AosAttributes(this);
             m_AosSkillBonuses = new AosSkillBonuses(this);
+            
+            UsesRemaining = 50;
+        }
+
+        public void ScaleUses()
+        {
+            m_UsesRemaining = (m_UsesRemaining * GetUsesScalar()) / 100;
+            InvalidateProperties();
+        }
+
+        public void UnscaleUses()
+        {
+            m_UsesRemaining = (m_UsesRemaining * 100) / GetUsesScalar();
+        }
+
+        public int GetUsesScalar()
+        {
+            if (m_Quality == WeaponQuality.Exceptional)
+                return 200;
+
+            return 100;
         }
 
         public void OnFishedHarvest(Mobile from, bool caughtAnything)
@@ -286,6 +329,11 @@ namespace Server.Items
             if (m_AosSkillBonuses != null)
                 m_AosSkillBonuses.GetProperties(list);
 
+            if(Siege.SiegeShard && m_ShowUsesRemaining)
+            {
+                list.Add(1060584, ((IUsesRemaining)this).UsesRemaining.ToString()); // uses remaining: ~1_val~
+            }
+            
             base.AddResistanceProperties(list);
 
             int prop = 0;
@@ -405,7 +453,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)3); // version
+
+            writer.Write(m_UsesRemaining);
+            writer.Write(m_ShowUsesRemaining);
 
             writer.Write(m_OriginalHue);
 
@@ -437,6 +488,10 @@ namespace Server.Items
 
             switch (version)
             {
+                case 3:
+                    m_UsesRemaining = reader.ReadInt();
+                    m_ShowUsesRemaining = reader.ReadBool();
+                    goto case 2;
                 case 2:
                     m_OriginalHue = reader.ReadInt();
                     int idx = reader.ReadInt();
