@@ -7,6 +7,8 @@ namespace Server.Items
     [FlipableAttribute(0x9E7E, 0x9E7F)]
     public class RockHammer : BaseHarvestTool
     {
+        public override int LabelNumber { get { return 1124598; } }
+    
         [Constructable]
         public RockHammer()
             : this(500)
