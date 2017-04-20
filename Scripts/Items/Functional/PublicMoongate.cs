@@ -320,7 +320,6 @@ namespace Server.Items
         public static readonly PMList[] SAListsYoung = new PMList[] { Trammel, Ilshenar, Malas, Tokuno, TerMur };
         public static readonly PMList[] RedLists = new PMList[] { Felucca };
         public static readonly PMList[] SigilLists = new PMList[] { Felucca };
-        public static readonly PMList[] SiegeLists = new PMList[] { Felucca, Ilshenar, Malas, Tokuno, TerMur };
 
         private readonly int m_Number;
         private readonly int m_SelNumber;
@@ -478,6 +477,9 @@ namespace Server.Items
 
             for (int i = 0; i < checkLists.Length; ++i)
             {
+                if (Siege.SiegeShard && checkLists[i].Number == 1012000) // Trammel
+                    continue;
+
                 AddButton(10, 35 + (i * 25), 2117, 2118, 0, GumpButtonType.Page, Array.IndexOf(m_Lists, checkLists[i]) + 1);
                 AddHtmlLocalized(30, 35 + (i * 25), 150, 20, checkLists[i].Number, false, false);
             }
