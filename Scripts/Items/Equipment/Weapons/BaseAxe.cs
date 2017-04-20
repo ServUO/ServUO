@@ -10,7 +10,7 @@ namespace Server.Items
         bool Axe(Mobile from, BaseAxe axe);
     }
 
-    public abstract class BaseAxe : BaseMeleeWeapon
+    public abstract class BaseAxe : BaseMeleeWeapon, IUsesRemaining
     {
         private int m_UsesRemaining;
         private bool m_ShowUsesRemaining;
