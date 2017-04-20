@@ -10,14 +10,11 @@ namespace Server.Items
         bool Axe(Mobile from, BaseAxe axe);
     }
 
-    public abstract class BaseAxe : BaseMeleeWeapon, IUsesRemaining
+    public abstract class BaseAxe : BaseMeleeWeapon
     {
-        private int m_UsesRemaining;
-        private bool m_ShowUsesRemaining;
         public BaseAxe(int itemID)
             : base(itemID)
         {
-            this.m_UsesRemaining = 150;
         }
 
         public BaseAxe(Serial serial)
@@ -69,57 +66,6 @@ namespace Server.Items
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
-        {
-            get
-            {
-                return this.m_UsesRemaining;
-            }
-            set
-            {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
-            }
-        }
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool ShowUsesRemaining
-        {
-            get
-            {
-                return this.m_ShowUsesRemaining;
-            }
-            set
-            {
-                this.m_ShowUsesRemaining = value;
-                this.InvalidateProperties();
-            }
-        }
-        public virtual int GetUsesScalar()
-        {
-            if (this.Quality == WeaponQuality.Exceptional)
-                return 200;
-
-            return 100;
-        }
-
-        public override void UnscaleDurability()
-        {
-            base.UnscaleDurability();
-
-            int scale = this.GetUsesScalar();
-
-            this.m_UsesRemaining = ((this.m_UsesRemaining * 100) + (scale - 1)) / scale;
-            this.InvalidateProperties();
-        }
-
-        public override void ScaleDurability()
-        {
-            base.ScaleDurability();
-
-            int scale = this.GetUsesScalar();
-
-            this.m_UsesRemaining = ((this.m_UsesRemaining * scale) + 99) / 100;
-            this.InvalidateProperties();
-        }
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -157,11 +103,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
-
-            writer.Write((bool)this.m_ShowUsesRemaining);
-
-            writer.Write((int)this.m_UsesRemaining);
+            writer.Write((int)3); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -172,21 +114,22 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 3:
+                    break;
                 case 2:
                     {
-                        this.m_ShowUsesRemaining = reader.ReadBool();
+                        if(version == 2)
+                            ShowUsesRemaining = reader.ReadBool();
                         goto case 1;
                     }
                 case 1:
                     {
-                        this.m_UsesRemaining = reader.ReadInt();
+                        if(version == 2)
+                            UsesRemaining = reader.ReadInt();
                         goto case 0;
                     }
                 case 0:
                     {
-                        if (this.m_UsesRemaining < 1)
-                            this.m_UsesRemaining = 150;
-
                         break;
                     }
             }
