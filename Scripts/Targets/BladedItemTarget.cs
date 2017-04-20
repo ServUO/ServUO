@@ -115,6 +115,20 @@ namespace Server.Targets
 
                             item.Delete();
                         }
+                        
+                        if(Siege.SiegeShard && m_Item is IUsesRemaining)
+                        {
+                            IUsesRemaining uses = m_Item as IUsesRemaining;
+                            
+                            uses.ShowUsesRemaining = true;
+                            uses.UsesRemaining--;
+                            
+                            if(uses.UsesRemaining <= 0)
+                            {
+                                m_Item.Delete();
+                                from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                            }
+                        }
                     }
                 }
             }
