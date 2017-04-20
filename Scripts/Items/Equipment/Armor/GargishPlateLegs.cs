@@ -6,7 +6,7 @@ namespace Server.Items
     {
         [Constructable]
         public GargishPlateLegs()
-            : base(0x030E)
+            : base(0x4055)
         {
             this.Weight = 1.0;
         }
