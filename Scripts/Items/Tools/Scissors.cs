@@ -6,6 +6,7 @@
 
 #region References
 using Server.Targeting;
+using Server.Engines.Craft;
 #endregion
 
 namespace Server.Items
@@ -16,14 +17,52 @@ namespace Server.Items
 	}
 
 	[Flipable(0xf9f, 0xf9e)]
-	public class Scissors : Item
+	public class Scissors : Item, ICraftable, IQuality
 	{
+        private int m_UsesRemaining;
+        private Mobile m_Crafter;
+        private ItemQuality m_Quality;
+        
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int UsesRemaining { get { return m_UsesRemaining; } set { m_UsesRemaining = value; InvalidateProperties(); } }
+    
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Crafter { get { return m_Crafter; } set { m_Crafter = value; InvalidateProperties(); } }
+        
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality 
+        { 
+            get { return m_Quality; } 
+            set
+            { 
+                UnscaleUses();
+                m_Quality = value; 
+                ScaleUses();
+            } 
+        }
+    
 		[Constructable]
 		public Scissors()
 			: base(0xF9F)
 		{
 			Weight = 1.0;
+            
+            m_UsesRemaining = 50;
 		}
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if(m_Crafter != null)
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+
+            if (m_Quality == ItemQuality.Exceptional)
+                list.Add(1060636); // exceptional
+
+            if(Siege.SiegeShard)
+                list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+        }
 
 		public Scissors(Serial serial)
 			: base(serial)
@@ -33,7 +72,11 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(0); // version
+			writer.Write(1); // version
+            
+            writer.Write(m_UsesRemaining);
+            writer.Write(m_Crafter);
+            writer.Write((int)m_Quality);
 		}
 
 		public override void Deserialize(GenericReader reader)
@@ -41,7 +84,38 @@ namespace Server.Items
 			base.Deserialize(reader);
 
 			int version = reader.ReadInt();
+            
+            switch(version)
+            {
+                case 1:
+                    m_UsesRemaining = reader.ReadInt();
+                    m_Crafter = reader.ReadMobile();
+                    m_Quality = (ItemQuality)reader.ReadInt();
+                    break;
+                case 0: 
+                    break;
+            }
+                
 		}
+
+        public void ScaleUses()
+        {
+            m_UsesRemaining = (m_UsesRemaining * GetUsesScalar()) / 100;
+            InvalidateProperties();
+        }
+
+        public void UnscaleUses()
+        {
+            m_UsesRemaining = (m_UsesRemaining * 100) / GetUsesScalar();
+        }
+
+        public int GetUsesScalar()
+        {
+            if (m_Quality == ItemQuality.Exceptional)
+                return 200;
+
+            return 100;
+        }
 
 		public override void OnDoubleClick(Mobile from)
 		{
@@ -49,6 +123,18 @@ namespace Server.Items
 
 			from.Target = new InternalTarget(this);
 		}
+        
+        #region ICraftable Members
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            if (makersMark)
+                Crafter = from;
+
+            return quality;
+        }
+        #endregion
 
 		private class InternalTarget : Target
 		{
@@ -91,6 +177,17 @@ namespace Server.Items
 						if (obj.Scissor(from, m_Item))
 						{
 							from.PlaySound(0x248);
+                            
+                            if(Siege.SiegeShard)
+                            {
+                                UsesRemaining--;
+                                
+                                if(m_UsesRemaining <= 0)
+                                {
+                                    Delete();
+                                    from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                                }
+                            }
 						}
 					}
 				}
@@ -101,6 +198,17 @@ namespace Server.Items
 					if (obj.Scissor(from, m_Item))
 					{
 						from.PlaySound(0x248);
+                        
+                        if(Siege.SiegeShard)
+                        {
+                            UsesRemaining--;
+
+                            if(m_UsesRemaining <= 0)
+                            {
+                                Delete();
+                                from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                            }
+                        }
 					}
 				}
 				else
