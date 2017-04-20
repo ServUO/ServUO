@@ -456,12 +456,23 @@ namespace Server.Engines.Craft
 
             if (Core.SA)
             {
-                AddCraft(typeof(SmallPlateShield), 1011080, 1095770, -15.2, 34.8, typeof(IronIngot), 1044036, 12, 1044037);
-                AddCraft(typeof(GargishKiteShield), 1011080, 1095774, 4.6, 54.6, typeof(IronIngot), 1044036, 16, 1044037);
-                AddCraft(typeof(LargePlateShield), 1011080, 1095772, 24.3, 74.3, typeof(IronIngot), 1044036, 18, 1044037);
-                AddCraft(typeof(MediumPlateShield), 1011080, 1095771, -10.2, 39.8, typeof(IronIngot), 1044036, 14, 1044037);                
-                AddCraft(typeof(GargishChaosShield), 1011080, 1095808, 85.0, 135.0, typeof(IronIngot), 1044036, 25, 1044037);
-                AddCraft(typeof(GargishOrderShield), 1011080, 1095810, 85.0, 135.0, typeof(IronIngot), 1044036, 25, 1044037);
+                index = AddCraft(typeof(SmallPlateShield), 1011080, 1095770, -15.2, 34.8, typeof(IronIngot), 1044036, 12, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(GargishKiteShield), 1011080, 1095774, 4.6, 54.6, typeof(IronIngot), 1044036, 16, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(LargePlateShield), 1011080, 1095772, 24.3, 74.3, typeof(IronIngot), 1044036, 18, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(MediumPlateShield), 1011080, 1095771, -10.2, 39.8, typeof(IronIngot), 1044036, 14, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(GargishChaosShield), 1011080, 1095808, 85.0, 135.0, typeof(IronIngot), 1044036, 25, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(GargishOrderShield), 1011080, 1095810, 85.0, 135.0, typeof(IronIngot), 1044036, 25, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
             }
             #endregion
 
@@ -952,28 +963,28 @@ namespace Server.Engines.Craft
             if (Core.HS)
             {
                 index = AddCraft(typeof(LightCannonball), 1116354, 1116266, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
-                SetNeededExpansion(index, Expansion.SA);
+                SetNeededExpansion(index, Expansion.HS);
 
                 index = AddCraft(typeof(HeavyCannonball), 1116354, 1116267, 10.0, 60.0, typeof(IronIngot), 1044036, 12, 1044037);
-                SetNeededExpansion(index, Expansion.SA);
+                SetNeededExpansion(index, Expansion.HS);
 
                 index = AddCraft(typeof(LightGrapeshot), 1116354, 1116030, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
                 AddRes(index, typeof(Cloth), 1044286, 1, 1044287);
-                SetNeededExpansion(index, Expansion.SA);
+                SetNeededExpansion(index, Expansion.HS);
 
                 index = AddCraft(typeof(HeavyGrapeshot), 1116354, 1116166, 15.0, 70.0, typeof(IronIngot), 1044036, 12, 1044037);
                 AddRes(index, typeof(Cloth), 1044286, 2, 1044287);
-                SetNeededExpansion(index, Expansion.SA);
+                SetNeededExpansion(index, Expansion.HS);
 
                 index = AddCraft(typeof(LightShipCannonDeed), 1116354, 1095790, 65.0, 120.0, typeof(IronIngot), 1044036, 900, 1044037);
                 AddRes(index, typeof(Board), 1044041, 50, 1044351);
                 AddSkill(index, SkillName.Carpentry, 65.0, 100.0);
-                SetNeededExpansion(index, Expansion.SA);
+                SetNeededExpansion(index, Expansion.HS);
 
                 index = AddCraft(typeof(HeavyShipCannonDeed), 1116354, 1095794, 70.0, 120.0, typeof(IronIngot), 1044036, 1800, 1044037);
                 AddRes(index, typeof(Board), 1044041, 75, 1044351);
                 AddSkill(index, SkillName.Carpentry, 70.0, 100.0);
-                SetNeededExpansion(index, Expansion.SA);
+                SetNeededExpansion(index, Expansion.HS);
             }
 
             #endregion
@@ -1010,32 +1021,38 @@ namespace Server.Engines.Craft
 
             index = AddCraft(typeof(DragonChest), 1011173, 1029793, 85.0, 135.0, typeof(RedScales), 1060883, 36, 1060884);
             SetUseSubRes2(index, true);
-            
-			index = AddCraft(typeof(CrushedGlass), 1011173, 1113351, 110.0, 135.0, typeof(BlueDiamond), 1032696, 1, 1044253);
-			AddRes(index, typeof(GlassSword), 1095371, 5, 1044253);
-			SetNeededExpansion(index, Expansion.SA);
-            
-			index = AddCraft(typeof(PowderedIron), 1011173, 1113353, 110.0, 135.0, typeof(WhitePearl), 1026253, 1, 1044253);
-			AddRes(index, typeof(IronIngot), 1044036, 20, 1044037);
-			SetNeededExpansion(index, Expansion.SA);
+
+            if (Core.SA)
+            {
+                index = AddCraft(typeof(CrushedGlass), 1011173, 1113351, 110.0, 135.0, typeof(BlueDiamond), 1032696, 1, 1044253);
+                AddRes(index, typeof(GlassSword), 1095371, 5, 1044253);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(PowderedIron), 1011173, 1113353, 110.0, 135.0, typeof(WhitePearl), 1026253, 1, 1044253);
+                AddRes(index, typeof(IronIngot), 1044036, 20, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+            }
 
             AddCraft(typeof(MetalKeg), 1011173, 1150675, 85.0, 100.0, typeof(IronIngot), 1044036, 25, 1044253);
-            
-            index = this.AddCraft(typeof(ExodusSacrificalDagger), 1011173, 1153500, 95.0, 120.0, typeof(IronIngot), 1044036, 12, 1044253);
-            AddRes(index, typeof(BlueDiamond), 1032696, 2, 1044253);
-            AddRes(index, typeof(FireRuby), 1032695, 2, 1044253);
-            AddRes(index, typeof(SmallPieceofBlackrock), 1150016, 10, 1044253);
-            this.ForceNonExceptional(index);
-            this.SetNeededExpansion(index, Expansion.SA);
 
-            index = AddCraft(typeof(GlovesOfFeudalGrip), 1011173, 1157349, 120.0, 120.1, typeof(RedScales), 1060883, 18, 1060884);
-            SetUseSubRes2(index, true);
-            AddRes(index, typeof(BlueDiamond), 1032696, 4, 1044253);
-            AddRes(index, typeof(GauntletsOfNobility), 1061092, 1, 1053098);
-            AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1053098);
-            AddRecipe(index, (int)SmithRecipes.GlovesOfFeudalGrip);
-            ForceNonExceptional(index);
-            SetNeededExpansion(index, Expansion.SA);
+            if (Core.SA)
+            {
+                index = this.AddCraft(typeof(ExodusSacrificalDagger), 1011173, 1153500, 95.0, 120.0, typeof(IronIngot), 1044036, 12, 1044253);
+                AddRes(index, typeof(BlueDiamond), 1032696, 2, 1044253);
+                AddRes(index, typeof(FireRuby), 1032695, 2, 1044253);
+                AddRes(index, typeof(SmallPieceofBlackrock), 1150016, 10, 1044253);
+                this.ForceNonExceptional(index);
+                this.SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(GlovesOfFeudalGrip), 1011173, 1157349, 120.0, 120.1, typeof(RedScales), 1060883, 18, 1060884);
+                SetUseSubRes2(index, true);
+                AddRes(index, typeof(BlueDiamond), 1032696, 4, 1044253);
+                AddRes(index, typeof(GauntletsOfNobility), 1061092, 1, 1053098);
+                AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1053098);
+                AddRecipe(index, (int)SmithRecipes.GlovesOfFeudalGrip);
+                ForceNonExceptional(index);
+                SetNeededExpansion(index, Expansion.SA);
+            }
 
             #endregion
 
