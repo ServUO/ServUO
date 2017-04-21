@@ -141,7 +141,7 @@ namespace Server.Spells.SkillMasteries
 				double reduce = DamageModifier(victim);
 				
 				damage -= (int)(damage * reduce);
-                damage *= m_SlayerBonus;
+                damage = (int)((double)damage * m_SlayerBonus);
                 
                 AOS.Damage(victim, Caster, damage, 100, 0, 0, 0, 0);
 				
