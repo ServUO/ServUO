@@ -456,7 +456,7 @@ namespace Server.Engines.Craft
 
             if (Core.SA)
             {
-                index = AddCraft(typeof(SmallPlateShield), 1011080, 1095770, -15.2, 34.8, typeof(IronIngot), 1044036, 12, 1044037);
+                index = AddCraft(typeof(SmallPlateShield), 1011080, 1095770, -25.0, 25.0, typeof(IronIngot), 1044036, 12, 1044037);
                 SetNeededExpansion(index, Expansion.SA);
 
                 index = AddCraft(typeof(GargishKiteShield), 1011080, 1095774, 4.6, 54.6, typeof(IronIngot), 1044036, 16, 1044037);
@@ -870,7 +870,7 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(GargishLance), 1011083, 1097506, 48.0, 98.0, typeof(IronIngot), 1044036, 20, 1044037);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(DualPointedSpear), 1011083, 1095365, 45.0, 100.0, typeof(IronIngot), 1044036, 16, 1044037);
+                index = AddCraft(typeof(DualPointedSpear), 1011083, 1095365, 47.0, 97.0, typeof(IronIngot), 1044036, 16, 1044037);
                 SetNeededExpansion(index, Expansion.SA);
             }
 
@@ -945,12 +945,12 @@ namespace Server.Engines.Craft
                 index = AddCraft(typeof(GargishMaul), 1011084, 1097498, 19.4, 69.4, typeof(IronIngot), 1044036, 10, 1044037);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(GargishTessen), 1011084, 1097508, 50.0, 100.0, typeof(IronIngot), 1044036, 16, 1044037);
+                index = AddCraft(typeof(GargishTessen), 1011084, 1097508, 85.0, 135.0, typeof(IronIngot), 1044036, 16, 1044037);
                 AddSkill(index, SkillName.Tailoring, 50.0, 55.0);
                 AddRes(index, typeof(Cloth), 1044286, 10, 1044287);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(DiscMace), 1011084, 1029929, 70.0, 100.0, typeof(IronIngot), 1044036, 20, 1044037);
+                index = AddCraft(typeof(DiscMace), 1011084, 1095366, 70.0, 120.0, typeof(IronIngot), 1044036, 20, 1044037);
                 SetNeededExpansion(index, Expansion.SA);                
             }
 
@@ -993,13 +993,13 @@ namespace Server.Engines.Craft
 
             if (Core.SA)
             {
-                index = AddCraft(typeof(Boomerang), 1079508, 1095359, 75.0, 100.0, typeof(IronIngot), 1044036, 5, 1044037);
+                index = AddCraft(typeof(Boomerang), 1079508, 1095359, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(Cyclone), 1079508, 1095364, 75.0, 100.0, typeof(IronIngot), 1044036, 9, 1044037);
+                index = AddCraft(typeof(Cyclone), 1079508, 1095364, 75.0, 125.0, typeof(IronIngot), 1044036, 9, 1044037);
                 SetNeededExpansion(index, Expansion.SA);
 
-                index = AddCraft(typeof(SoulGlaive), 1079508, 1095363, 75.0, 100.0, typeof(IronIngot), 1044036, 9, 1044037);
+                index = AddCraft(typeof(SoulGlaive), 1079508, 1095363, 75.0, 125.0, typeof(IronIngot), 1044036, 9, 1044037);
                 SetNeededExpansion(index, Expansion.SA);
             }
 
