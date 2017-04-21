@@ -351,18 +351,6 @@ namespace Server.Engines.Craft
             if (Core.SA)
             {
                 #region SA
-                index = AddCraft(typeof(GargishPlateArms), 1111704, 1095336, 66.3, 116.3, typeof(IronIngot), 1044036, 18, 1044037);
-                SetNeededExpansion(index, Expansion.SA);
-
-                index = AddCraft(typeof(GargishPlateChest), 1111704, 1095338, 75.0, 125.0, typeof(IronIngot), 1044036, 25, 1044037);
-                SetNeededExpansion(index, Expansion.SA);
-
-                index = AddCraft(typeof(GargishPlateLegs), 1111704, 1095342, 68.8, 118.8, typeof(IronIngot), 1044036, 20, 1044037);
-                SetNeededExpansion(index, Expansion.SA);
-
-                index = AddCraft(typeof(GargishPlateKilt), 1111704, 1095340, 58.9, 116.3, typeof(IronIngot), 1044036, 12, 1044037);
-                SetNeededExpansion(index, Expansion.SA);
-
                 index = AddCraft(typeof(FemaleGargishPlateArms), 1111704, 1095336, 66.3, 116.3, typeof(IronIngot), 1044036, 18, 1044037);
                 SetNeededExpansion(index, Expansion.SA);
 
@@ -374,6 +362,18 @@ namespace Server.Engines.Craft
 
                 index = AddCraft(typeof(FemaleGargishPlateKilt), 1111704, 1095340, 58.9, 116.3, typeof(IronIngot), 1044036, 12, 1044037);
                 SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(GargishPlateArms), 1111704, 1095336, 66.3, 116.3, typeof(IronIngot), 1044036, 18, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(GargishPlateChest), 1111704, 1095338, 75.0, 125.0, typeof(IronIngot), 1044036, 25, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(GargishPlateLegs), 1111704, 1095342, 68.8, 118.8, typeof(IronIngot), 1044036, 20, 1044037);
+                SetNeededExpansion(index, Expansion.SA);
+
+                index = AddCraft(typeof(GargishPlateKilt), 1111704, 1095340, 58.9, 116.3, typeof(IronIngot), 1044036, 12, 1044037);
+                SetNeededExpansion(index, Expansion.SA);                
 
                 index = AddCraft(typeof(GargishAmulet), 1111704, 1098595, 60.0, 110.0, typeof(IronIngot), 1044036, 3, 1044037);
                 SetNeededExpansion(index, Expansion.SA);
