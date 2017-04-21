@@ -48,7 +48,16 @@ namespace Server.Spells.Fourth
 
             BuffInfo.RemoveBuff(m, BuffIcon.Curse);
 
-            m_UnderEffect.Remove(m);
+            if(m_UnderEffect.ContainsKey(m))
+            {
+                Timer t = m_UnderEffect[m];
+                
+                if(t != null)
+                    t.Stop();
+                
+                m_UnderEffect.Remove(m);
+            }
+            
             m.UpdateResistances();
         }
 
