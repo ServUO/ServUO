@@ -4,6 +4,7 @@ using Server.Spells;
 using Server.Network;
 using Server.Mobiles;
 using Server.Targeting;
+using Server.Items;
 
 /*Target Hit Chance reduced by up to 33%, Spell Damaged reduced by 33%, Damage 
  Taken can trigger additional damage between 20-60% of the damage taken as 
@@ -27,11 +28,13 @@ namespace Server.Spells.SkillMasteries
 		public override double UpKeep { get { return 10; } }
 		public override int RequiredMana{ get { return 24; } }
 		public override bool PartyEffects { get { return false; } }
+        public override double TickTime { get { return 1.5; } }
 
         public override SkillName CastSkill { get { return SkillName.Discordance; } }
 
         private int m_PropertyBonus;
         private double m_DamageChance;
+        private double m_SlayerBonus;
 
 		public TribulationSpell( Mobile caster, Item scroll ) : base(caster, scroll, m_Info)
 		{
@@ -61,7 +64,7 @@ namespace Server.Spells.SkillMasteries
 			}
 			else if (Caster == m)
 			{
-                Caster.SendMessage("!You cannot target yourself.");
+                Caster.SendMessage("You cannot target yourself!");
 			}
             else if (BardSpell.HasHarmfulEffects(m, this.GetType()))
             {
@@ -78,19 +81,40 @@ namespace Server.Spells.SkillMasteries
 
                 m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
 
-                m_PropertyBonus = (int)((BaseSkillBonus * 25) + (CollectiveBonus * 8)) * -1;
-                m_DamageChance = ((Caster.Skills[DamageSkill].Value / 5) / 100);
+                m_PropertyBonus = (int)Math.Max(5, ((BaseSkillBonus * 23) + (CollectiveBonus * 8))) * -1;
+                m_DamageChance = Math.Max(20.0, (Caster.Skills[DamageSkill].Value / 2.0)) / 100;
+                m_SlayerBonus = 1;
 
                 string args = String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, (int)(m_DamageChance * 100));
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.TribulationTarget, 1115740, 1115743, args.ToString()));
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.TribulationCaster, 1115740, 1115742, args.ToString()));
 
-                BeginTimer();
+                ISlayer slayer = Instrument as ISlayer;
 
+                if (slayer != null)
+                {
+                    SlayerEntry se1 = SlayerGroup.GetEntryByName(slayer.Slayer);
+                    SlayerEntry se2 = SlayerGroup.GetEntryByName(slayer.Slayer2);
+
+                    if ((se1 != null && se1.Slays(Target)) || (se2 != null && se2.Slays(Target)))
+                    {
+                        m_SlayerBonus = 1.5;
+                    }
+                }
+
+                BeginTimer();
             }
 			
 			FinishSequence();
 		}
+
+        public override bool OnTick()
+        {
+            if(Target != null && Target.Alive && Target.Map != null)
+                Target.FixedEffect(0x376A, 1, 32);
+
+            return base.OnTick();
+        }
 
         public override void EndEffects()
         {
@@ -108,9 +132,7 @@ namespace Server.Spells.SkillMasteries
 			if(m_NextDamage > DateTime.UtcNow || !Caster.Player)
 				return;
 				
-			double chance = m_DamageChance;
-			
-			if(chance > Utility.RandomDouble())
+            if (m_DamageChance > Utility.RandomDouble())
 			{
 				double mod = Math.Max(20, ((Caster.Skills[CastSkill].Value / 120) * 60));
 				mod /= 100;
@@ -119,7 +141,8 @@ namespace Server.Spells.SkillMasteries
 				double reduce = DamageModifier(victim);
 				
 				damage -= (int)(damage * reduce);
-
+                damage = (int)((double)damage * m_SlayerBonus);
+                
                 AOS.Damage(victim, Caster, damage, 100, 0, 0, 0, 0);
 				
 				m_NextDamage = DateTime.UtcNow + TimeSpan.FromSeconds(1);

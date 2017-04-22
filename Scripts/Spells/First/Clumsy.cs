@@ -35,6 +35,7 @@ namespace Server.Spells.First
                     t.Stop();
                 }
 
+                BuffInfo.RemoveBuff(m, BuffIcon.Clumsy);
                 m.RemoveStatMod("[Magic] Dex Curse");
 
                 m_Table.Remove(m);

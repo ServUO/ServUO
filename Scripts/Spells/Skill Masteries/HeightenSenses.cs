@@ -20,7 +20,7 @@ namespace Server.Spells.SkillMasteries
 
 		public override double UpKeep { get { return 10; } }
 		public override int RequiredMana{ get { return 10; } }
-		public override int TickTime { get { return 3; } }
+		public override double TickTime { get { return 3; } }
 		public override bool BlocksMovement{ get{ return false; } }
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
 

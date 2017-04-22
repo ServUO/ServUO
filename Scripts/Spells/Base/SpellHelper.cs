@@ -333,7 +333,7 @@ namespace Server.Spells
 
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type)
         {
-            return AddStatCurse(caster, target, type, GetOffset(caster, target, type, true), GetDuration(caster, target));
+            return AddStatCurse(caster, target, type, GetOffset(caster, target, type, true), TimeSpan.Zero);
         }
 
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, int curse, TimeSpan duration)
@@ -342,12 +342,14 @@ namespace Server.Spells
             string name = String.Format("[Magic] {0} Curse", type);
 
             StatMod mod = target.GetStatMod(name);
+
 			if (mod != null)
 				offset = Math.Max(mod.Offset, offset);
+
 			offset *= -1;
 
-            target.AddStatMod(new StatMod(type, name, offset, duration));
-			Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
+            target.AddStatMod(new StatMod(type, name, offset, TimeSpan.Zero));
+			//Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
 			return true;
         }
 

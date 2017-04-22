@@ -35,6 +35,7 @@ namespace Server.Spells.First
                     t.Stop();
                 }
 
+                BuffInfo.RemoveBuff(m, BuffIcon.FeebleMind);
                 m.RemoveStatMod("[Magic] Int Curse");
 
                 m_Table.Remove(m);

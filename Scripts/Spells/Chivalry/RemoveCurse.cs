@@ -127,13 +127,7 @@ namespace Server.Spells.Chivalry
                     MindRotSpell.ClearMindRotScalar(m);
                     SpellPlagueSpell.RemoveFromList(m);
 
-                    BuffInfo.RemoveBuff(m, BuffIcon.Clumsy);
-                    BuffInfo.RemoveBuff(m, BuffIcon.FeebleMind);
-                    BuffInfo.RemoveBuff(m, BuffIcon.Weaken);
-                    BuffInfo.RemoveBuff(m, BuffIcon.Curse);
                     BuffInfo.RemoveBuff(m, BuffIcon.MassCurse);
-                    BuffInfo.RemoveBuff(m, BuffIcon.MortalStrike);
-                    BuffInfo.RemoveBuff(m, BuffIcon.Mindrot);
                 }
                 else
                 {
