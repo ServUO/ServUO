@@ -10,21 +10,22 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "Stygian Drake";
-            this.Body = 0x58b;
+            this.Body = 0x58E;
+            this.Hue = 32768;
             this.Female = true;
             this.BaseSoundID = 362;
 
-            this.SetStr(800, 830);
-            this.SetDex(95, 125);
+            this.SetStr(790, 830);
+            this.SetDex(85, 125);
             this.SetInt(400, 450);
 
-            this.SetHits(490, 510);
+            this.SetHits(480, 510);
 
             this.SetDamage(11, 17);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 55);
+            this.SetResistance(ResistanceType.Physical, 55, 65);
             this.SetResistance(ResistanceType.Fire, 60, 70);
             this.SetResistance(ResistanceType.Cold, 30, 40);
             this.SetResistance(ResistanceType.Poison, 30, 40);
