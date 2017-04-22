@@ -498,7 +498,7 @@ namespace Server.Network
             {
                 m_Stream.Write((byte)2);
             }
-			
+
 			m_Stream.Write(m.Serial);
 			m_Stream.Write((byte)0);
 
@@ -1030,7 +1030,7 @@ namespace Server.Network
             EnsureCapacity(12 + (length * 8));
 
             m_Stream.Write((short)0x14);
-			m_Stream.Write((short)0x02); 
+			m_Stream.Write((short)0x02);
 
             IEntity target = menu.Target as IEntity;
 
@@ -1140,6 +1140,8 @@ namespace Server.Network
 
 	public sealed class EquipUpdate : Packet
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public EquipUpdate(Item item)
 			: base(0x2E, 15)
 		{
@@ -1151,7 +1153,7 @@ namespace Server.Network
 			}
 			else
 			{
-				Console.WriteLine("Warning: EquipUpdate on item with !(parent is Mobile)");
+				log.Warning("EquipUpdate on item with !(parent is Mobile)");
 				parentSerial = Serial.Zero;
 			}
 
@@ -2258,6 +2260,8 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class ContainerContentUpdate : Packet
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public ContainerContentUpdate(Item item)
 			: base(0x25, 20)
 		{
@@ -2269,7 +2273,7 @@ m_Stream.Write( (int) renderMode );
 			}
 			else
 			{
-				Console.WriteLine("Warning: ContainerContentUpdate on item with !(parent is Item)");
+				log.Warning("ContainerContentUpdate on item with !(parent is Item)");
 				parentSerial = Serial.Zero;
 			}
 
@@ -2287,6 +2291,8 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class ContainerContentUpdate6017 : Packet
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public ContainerContentUpdate6017(Item item)
 			: base(0x25, 21)
 		{
@@ -2298,7 +2304,7 @@ m_Stream.Write( (int) renderMode );
 			}
 			else
 			{
-				Console.WriteLine("Warning: ContainerContentUpdate on item with !(parent is Item)");
+				log.Warning("ContainerContentUpdate on item with !(parent is Item)");
 				parentSerial = Serial.Zero;
 			}
 
@@ -2817,6 +2823,8 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class DisplayGumpPacked : Packet, IGumpWriter
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public int TextEntries { get; set; }
 		public int Switches { get; set; }
 
@@ -2948,7 +2956,7 @@ m_Stream.Write( (int) renderMode );
 
 			if (m_PackBuffer.Length < wantLength)
 			{
-				Console.WriteLine("Notice: DisplayGumpPacked creating new {0} byte buffer", wantLength);
+				log.Debug("DisplayGumpPacked creating new {0} byte buffer", wantLength);
 				m_PackBuffer = new byte[wantLength];
 			}
 
@@ -4627,6 +4635,8 @@ m_Stream.Write( (int) renderMode );
 
 	public sealed class CharacterList : Packet
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public CharacterList(IAccount a, CityInfo[] info, bool IsEnhancedClient)
 			: base(0xA9)
 		{
@@ -4694,9 +4704,9 @@ m_Stream.Write( (int) renderMode );
 
             if (IsEnhancedClient) {
                 flags |= CharacterListFlags.KR; // Suppport Enhanced Client / KR flag 1 and 2 (0x200 + 0x400)
-                Console.WriteLine("Enhanced Client Detected");
+                log.Debug("Enhanced Client Detected");
             } else {
-                Console.WriteLine("Enhanced Client Not Detected");
+                log.Debug("Enhanced Client Not Detected");
             }
 
             m_Stream.Write((int)(flags | m_AdditionalFlags)); // Additional Flags
@@ -5171,10 +5181,10 @@ m_Stream.Write( (int) renderMode );
             m_Stream.Write((short)x);
             m_Stream.Write((short)y);
             m_Stream.Write((sbyte)z);
-            m_Stream.Write((byte)mapID); //map 
+            m_Stream.Write((byte)mapID); //map
 
             m_Stream.Write((ushort)type);
-            //m_Stream.Write((short)type); //type 
+            //m_Stream.Write((short)type); //type
 
             m_Stream.Write((short)0);
 
@@ -5185,7 +5195,7 @@ m_Stream.Write( (int) renderMode );
 
             m_Stream.WriteLittleUniNull(name);
 
-            m_Stream.Write((short)0); // terminate 
+            m_Stream.Write((short)0); // terminate
         }
     }
 
@@ -5244,6 +5254,8 @@ m_Stream.Write( (int) renderMode );
 
     public abstract class Packet
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		[Flags]
 		private enum State
 		{
@@ -5484,7 +5496,7 @@ m_Stream.Write( (int) renderMode );
 			{
 				int diff = (int)m_Stream.Length - m_Length;
 
-				Console.WriteLine("Packet: 0x{0:X2}: Bad packet length! ({1}{2} bytes)", m_PacketID, diff >= 0 ? "+" : "", diff);
+				log.Warning("Packet: 0x{0:X2}: Bad packet length! ({1}{2} bytes)", m_PacketID, diff >= 0 ? "+" : "", diff);
 			}
 
 			MemoryStream ms = m_Stream.UnderlyingStream;
@@ -5502,8 +5514,8 @@ m_Stream.Write( (int) renderMode );
 
 				if (length <= 0)
 				{
-					Console.WriteLine(
-						"Warning: Compression buffer overflowed on packet 0x{0:X2} ('{1}') (length={2})",
+					log.Warning(
+						"Compression buffer overflowed on packet 0x{0:X2} ('{1}') (length={2})",
 						m_PacketID,
 						GetType().Name,
 						length);

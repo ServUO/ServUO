@@ -5,6 +5,8 @@ namespace Server
 {
     public sealed class SaveMetrics : IDisposable
     {
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private const string PerformanceCategoryName = "ServUO";
         private const string PerformanceCategoryDesc = "Performance counters for ServUO";
 
@@ -61,8 +63,8 @@ namespace Server
 				catch
 				{
 					if (Core.Debug)
-                        Console.WriteLine("Metrics: Metrics enabled. Performance counters creation requires ServUO to be run as Administrator once!");
-				}               
+                        log.Info("Metrics enabled. Performance counters creation requires ServUO to be run as Administrator once!");
+				}
                 #endif
             }
 

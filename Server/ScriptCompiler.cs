@@ -22,6 +22,8 @@ namespace Server
 {
 	public static class ScriptCompiler
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static Assembly[] m_Assemblies;
 
 		public static Assembly[] Assemblies { get { return m_Assemblies; } set { m_Assemblies = value; } }
@@ -144,16 +146,13 @@ namespace Server
 
 		public static bool CompileCSScripts(bool debug, bool cache, out Assembly assembly)
 		{
-			Utility.PushColor(ConsoleColor.Green);
-			Console.Write("Scripts: Compiling C# scripts...");
-			Utility.PopColor();
-			var files = GetScripts("*.cs");
+			log.Info("Compiling C# scripts...");
+
+		    var files = GetScripts("*.cs");
 
 			if (files.Length == 0)
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("no files found.");
-				Utility.PopColor();
+				log.Warning("No C# source files found.");
 				assembly = null;
 				return true;
 			}
@@ -195,9 +194,7 @@ namespace Server
 											m_AdditionalReferences.Add(assembly.Location);
 										}
 
-										Utility.PushColor(ConsoleColor.Green);
-										Console.WriteLine("done (cached)");
-										Utility.PopColor();
+										log.Info("Compiling C# scripts done (cached)");
 
 										return true;
 									}
@@ -238,7 +235,7 @@ namespace Server
                 #endif
 				m_AdditionalReferences.Add(path);
 
-				Display(results);
+				Display(results, Console.Out);
 
 #if !MONO
 				if (results.Errors.Count > 0)
@@ -294,12 +291,12 @@ namespace Server
 
 		public static bool CompileVBScripts(bool debug, bool cache, out Assembly assembly)
 		{
-			Console.Write("Scripts: Compiling VB.NET scripts...");
+			log.Info("Compiling VB.NET scripts...");
 			var files = GetScripts("*.vb");
 
 			if (files.Length == 0)
 			{
-				Console.WriteLine("no files found.");
+				log.Warning("No VB.NET source files found.");
 				assembly = null;
 				return true;
 			}
@@ -341,7 +338,7 @@ namespace Server
 											m_AdditionalReferences.Add(assembly.Location);
 										}
 
-										Console.WriteLine("done (cached)");
+										log.Info("Compiling VB.NET scripts done (cached)");
 
 										return true;
 									}
@@ -377,7 +374,7 @@ namespace Server
 				CompilerResults results = provider.CompileAssemblyFromFile(parms, files);
 				m_AdditionalReferences.Add(path);
 
-				Display(results);
+				Display(results, Console.Out);
 
 				if (results.Errors.Count > 0)
 				{
@@ -410,7 +407,7 @@ namespace Server
 			}
 		}
 
-		public static void Display(CompilerResults results)
+		public static void Display(CompilerResults results, TextWriter writer)
 		{
 			if (results.Errors.Count > 0)
 			{
@@ -424,7 +421,7 @@ namespace Server
 					// Ridiculous. FileName is null if the warning/error is internally generated in csc.
 					if (string.IsNullOrEmpty(file))
 					{
-						Console.WriteLine("ScriptCompiler: {0}: {1}", e.ErrorNumber, e.ErrorText);
+					    writer.WriteLine("ScriptCompiler: {0}: {1}", e.ErrorNumber, e.ErrorText);
 						continue;
 					}
 
@@ -443,15 +440,11 @@ namespace Server
 
 				if (errors.Count > 0)
 				{
-					Utility.PushColor(ConsoleColor.Red);
-					Console.WriteLine("Failed with: {0} errors, {1} warnings", errors.Count, warnings.Count);
-					Utility.PopColor();
+					log.Error("Compilation failed with: {0} errors, {1} warnings", errors.Count, warnings.Count);
 				}
 				else
 				{
-					Utility.PushColor(ConsoleColor.Green);
-					Console.WriteLine("Finished with: {0} errors, {1} warnings", errors.Count, warnings.Count);
-					Utility.PopColor();
+					log.Info("Compilation finished with: {0} errors, {1} warnings", errors.Count, warnings.Count);
 				}
 
 				string scriptRoot = Path.GetFullPath(Path.Combine(Core.BaseDirectory, "Scripts" + Path.DirectorySeparatorChar));
@@ -461,7 +454,7 @@ namespace Server
 
 				if (warnings.Count > 0)
 				{
-					Console.WriteLine("Warnings:");
+				    writer.WriteLine("Warnings:");
 				}
 
 				foreach (var kvp in warnings)
@@ -472,13 +465,13 @@ namespace Server
 					string fullPath = Path.GetFullPath(fileName);
 					string usedPath = Uri.UnescapeDataString(scriptRootUri.MakeRelativeUri(new Uri(fullPath)).OriginalString);
 
-					Console.WriteLine(" + {0}:", usedPath);
+				    writer.WriteLine(" + {0}:", usedPath);
 
 					Utility.PushColor(ConsoleColor.DarkYellow);
 
 					foreach (CompilerError e in list)
 					{
-						Console.WriteLine("    {0}: Line {1}: {2}", e.ErrorNumber, e.Line, e.ErrorText);
+					    writer.WriteLine("    {0}: Line {1}: {2}", e.ErrorNumber, e.Line, e.ErrorText);
 					}
 
 					Utility.PopColor();
@@ -490,7 +483,7 @@ namespace Server
 
 				if (errors.Count > 0)
 				{
-					Console.WriteLine("Errors:");
+				    writer.WriteLine("Errors:");
 				}
 
 				foreach (var kvp in errors)
@@ -501,13 +494,13 @@ namespace Server
 					string fullPath = Path.GetFullPath(fileName);
 					string usedPath = Uri.UnescapeDataString(scriptRootUri.MakeRelativeUri(new Uri(fullPath)).OriginalString);
 
-					Console.WriteLine(" + {0}:", usedPath);
+				    writer.WriteLine(" + {0}:", usedPath);
 
 					Utility.PushColor(ConsoleColor.DarkRed);
 
 					foreach (CompilerError e in list)
 					{
-						Console.WriteLine("    {0}: Line {1}: {2}", e.ErrorNumber, e.Line, e.ErrorText);
+					    writer.WriteLine("    {0}: Line {1}: {2}", e.ErrorNumber, e.Line, e.ErrorText);
 					}
 
 					Utility.PopColor();
@@ -517,9 +510,7 @@ namespace Server
 			}
 			else
 			{
-				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine("Finished with: 0 errors, 0 warnings");
-				Utility.PopColor();
+				log.Info("Compilation finished with: 0 errors, 0 warnings");
 			}
 		}
 
@@ -609,9 +600,7 @@ namespace Server
 			}
 			else
 			{
-				Utility.PushColor(ConsoleColor.DarkRed);
-				Console.WriteLine("Scripts: Skipping VB.NET Scripts...done (use -vb to enable)");
-				Utility.PopColor();
+				log.Info("Skipping VB.NET Scripts...done (use -vb to enable)");
 			}
 
 			if (assemblies.Count == 0)
@@ -621,9 +610,7 @@ namespace Server
 
 			m_Assemblies = assemblies.ToArray();
 
-			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("Scripts: Verifying...");
-			Utility.PopColor();
+			log.Info("Verifying scripts...");
 
 			Stopwatch watch = Stopwatch.StartNew();
 
@@ -631,14 +618,12 @@ namespace Server
 
 			watch.Stop();
 
-			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine(
-				"Finished ({0} items, {1} mobiles, {3} customs) ({2:F2} seconds)",
+			log.Info(
+				"Verifying scripts finished ({0} items, {1} mobiles, {3} customs) ({2:F2} seconds)",
 				Core.ScriptItems,
 				Core.ScriptMobiles,
 				watch.Elapsed.TotalSeconds,
 				Core.ScriptCustoms);
-			Utility.PopColor();
 
 			return true;
 		}

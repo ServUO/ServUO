@@ -13,6 +13,8 @@ namespace Server
 {
 	public static class ItemBounds
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static readonly Rectangle2D[] m_Bounds;
 
 		public static Rectangle2D[] Table { get { return m_Bounds; } }
@@ -44,7 +46,7 @@ namespace Server
 			}
 			else
 			{
-				Console.WriteLine("Warning: Data/Binary/Bounds.bin does not exist");
+				log.Warning("Data/Binary/Bounds.bin does not exist");
 			}
 		}
 	}

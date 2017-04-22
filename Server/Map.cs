@@ -10,10 +10,10 @@
  * Date: 20th August, 2015
  * Author: Vorspire
  * Testing: Punkte
- * 
+ *
  * Test Methods: Stealth; 250+ clients connected, all moving randomly.
  * Test Results: 35ms average latency (ping) under load.
- * 
+ *
  * Notes:
  * Until these updates become main-stream, they will remain differentiated
  * by their preprocessor directives. When they are deemed stable enough,
@@ -22,10 +22,10 @@
 
 /*
  * Map_AllUpdates
- * 
+ *
  * When defined, enables all updates listed below regardless of whether their
  * preprocessor directives are defined.
- * 
+ *
  * This can be used to compile your server with all of the updates enabled by
  * adding a single preprocessor directive definition to your build solution.
  */
@@ -33,15 +33,15 @@
 
 /*
  *	Map_NewEnumerables
- *	
+ *
  *	When defined, enables a major update to the IPooledEnumerables factory.
- *	
- *	This update removes the need for enumerator instantiation and replaces 
+ *
+ *	This update removes the need for enumerator instantiation and replaces
  *	them with simple, yet powerful Linq queries.
- *	
+ *
  *	In addition, the PooledEnumerable class is replaced with a compatible,
- *	single generic class template and takes advantage of the nature of 
- *	nested static context to ensure that a buffer pool is available for 
+ *	single generic class template and takes advantage of the nature of
+ *	nested static context to ensure that a buffer pool is available for
  *	each type of PooledEnumerable<T> result, where result is T.
  *	This update generally increases performance and reduces overall player
  *	connection latency.
@@ -50,16 +50,16 @@
 
 /*
  * UseMaxRange
- * 
+ *
  * When defined, enables a minor update that forces Get*InRange methods to
  * use Core.GlobalMaxUpdateRange, when no range is specified.
- * 
+ *
  * By default, a constant range of 18 is used however, Core.GlobalMaxUpdateRange
  * is usually greater than that with a default value of 24.
- * 
+ *
  * This update will allow things such as Effects to be displayed to more players,
  * as well as increasing the range of player sight.
- * 
+ *
  * The benefits of this update appeal to players who choose to increase the
  * dimensions of their game window beyond the client's limits.
  * (This can also be beneficial for shards that mainly target the Enhanced client)
@@ -68,31 +68,31 @@
 
 /*
  * Map_PoolFixColumn
- * 
+ *
  * When defined, enables aminor update that attempts to improve the performance
  * of Item stack fixing.
- * 
+ *
  * Item stack fixing is a feature that corrects the Z level of items that
  * are stacked on a single tile.
- * 
+ *
  * This update also uses linq to increase performance.
  */
 #define Map_PoolFixColumn
 
 /*
  * Map_InternalProtection
- * 
+ *
  * When defined, enables a minor update that protects the Internal Map from
  * potential name changes and ensures that Maps can be correctly parsed by
  * ID or Name without conflicts.
- * 
+ *
  * In some cases where the AllMaps list is modified after all Maps have been
  * defined, the Map names may be cached and that cache will become stale.
  * This update removes the caching and uses Linq to improve performance.
- * 
+ *
  * If you have issues with Map parsing where the Map returns null or an
  * unexpected Map instance, try enabling this update.
- * 
+ *
  * If your shard implements any kind of feature that modifies (adds or removes)
  * the AllMaps list, then you should enable this update.
  * If this update is not enabled in the case of the above context, issues can
@@ -374,6 +374,8 @@ namespace Server
 	//[CustomEnum( new string[]{ "Felucca", "Trammel", "Ilshenar", "Malas", "Internal" } )]
 	public sealed class Map : IComparable, IComparable<Map>
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		#region Compile-Time -> Run-Time Support
 #if Map_NewEnumerables || Map_AllUpdates
 		public static readonly bool NewEnumerables = true;
@@ -1755,7 +1757,7 @@ namespace Server
 			{
 				if (m_Regions.ContainsKey(regName))
 				{
-					Console.WriteLine("Warning: Duplicate region name '{0}' for map '{1}'", regName, this.Name);
+					log.Warning("Duplicate region name '{0}' for map '{1}'", regName, this.Name);
 				}
 				else
 				{
@@ -2244,7 +2246,7 @@ namespace Server
 					if (m_CurrentIndex < 0 || m_CurrentIndex > m_CurrentList.Count)
 					{
 						// Sanity
-						Console.WriteLine("EntityEnumerator OOB: {0}", m_CurrentIndex);
+						log.Warning("EntityEnumerator OOB: {0}", m_CurrentIndex);
 						return false;
 					}
 
@@ -2722,7 +2724,7 @@ namespace Server
 			}
 			else
 			{
-				Console.WriteLine("Warning: Invalid object ({0}) in line of sight", o);
+				log.Warning("Invalid object ({0}) in line of sight", o);
 				p = Point3D.Zero;
 			}
 

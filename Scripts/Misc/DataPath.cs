@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 
 using Microsoft.Win32;
 
@@ -8,51 +7,51 @@ namespace Server.Misc
 {
     public class DataPath
     {
-        /* If you have not installed Ultima Online,
-        * or wish the server to use a separate set of datafiles,
-        * change the 'CustomPath' value.
-        * Example:
-        *  private static string CustomPath = @"C:\Program Files\Ultima Online";
-        */
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        /*
+         * If you have not installed Ultima Online, or wish the server to use a separate set of datafiles,
+         * change the 'CustomPath' value.
+         *
+         * Example:
+         *     private static string CustomPath = @"C:\Program Files\Ultima Online";
+         */
         private static readonly string CustomPath = Config.Get(@"DataPath.CustomPath", null);
-        /* The following is a list of files which a required for proper execution:
-        * 
-        * Multi.idx
-        * Multi.mul
-        * VerData.mul
-        * TileData.mul
-        * Map*.mul or Map*LegacyMUL.uop
-        * StaIdx*.mul
-        * Statics*.mul
-        * MapDif*.mul
-        * MapDifL*.mul
-        * StaDif*.mul
-        * StaDifL*.mul
-        * StaDifI*.mul
-        */
+
+        /*
+         * The following is a list of files which a required for proper execution:
+         *
+         * Multi.idx
+         * Multi.mul
+         * VerData.mul
+         * TileData.mul
+         * Map*.mul or Map*LegacyMUL.uop
+         * StaIdx*.mul
+         * Statics*.mul
+         * MapDif*.mul
+         * MapDifL*.mul
+         * StaDif*.mul
+         * StaDifL*.mul
+         * StaDifI*.mul
+         */
         public static void Configure()
         {
-        	if (CustomPath != null) 
-                	Core.DataDirectories.Add(CustomPath);
-		else
-            	{
-			if(Ultima.Files.LoadDirectory() != null && !Core.Unix)
-			{	
-				Core.DataDirectories.Add(Ultima.Files.LoadDirectory());
-			}
-		}	
+            if (CustomPath != null)
+                Core.DataDirectories.Add(CustomPath);
+            else if (Ultima.Files.LoadDirectory() != null && !Core.Unix)
+                Core.DataDirectories.Add(Ultima.Files.LoadDirectory());
 
-		if (Core.DataDirectories.Count == 0 && !Core.Service)
-		{
-		Console.WriteLine("Enter the Ultima Online directory:");
+            if (Core.DataDirectories.Count == 0 && !Core.Service)
+            {
+                Console.WriteLine("Enter the Ultima Online directory:");
                 Console.Write("> ");
 
                 Core.DataDirectories.Add(Console.ReadLine());
-	}
-	Ultima.Files.SetMulPath(Core.DataDirectories[0]);
-	Utility.PushColor(ConsoleColor.DarkYellow);
-	Console.WriteLine("DataPath: " + Core.DataDirectories[0]);
-	Utility.PopColor();
+            }
+
+            Ultima.Files.SetMulPath(Core.DataDirectories[0]);
+
+            log.Info("DataPath: " + Core.DataDirectories[0]);
         }
 
         private static string GetPath(string subName, string keyName)

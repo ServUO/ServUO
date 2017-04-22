@@ -1,4 +1,5 @@
 using System;
+
 using Server.Engines.PartySystem;
 using Server.Network;
 
@@ -6,7 +7,10 @@ namespace Server.Misc
 {
     public class ProtocolExtensions
     {
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static readonly PacketHandler[] m_Handlers = new PacketHandler[0x100];
+
         public static void Initialize()
         {
             PacketHandlers.Register(0xF0, 0, false, new OnPacketReceive(DecodeBundledPacket));
@@ -51,9 +55,7 @@ namespace Server.Misc
             {
                 if (ph.Ingame && state.Mobile == null)
                 {
-                    Utility.PushColor(ConsoleColor.DarkRed);
-                    Console.WriteLine("Client: {0}: Sent ingame packet (0xF0x{1:X2}) before having been attached to a mobile", state, packetID);
-                    Utility.PopColor();
+                    log.Warning("Client: {0}: Sent ingame packet (0xF0x{1:X2}) before having been attached to a mobile", state, packetID);
                     state.Dispose();
                 }
                 else if (ph.Ingame && state.Mobile.Deleted)
@@ -70,19 +72,17 @@ namespace Server.Misc
 
     public abstract class ProtocolExtension : Packet
     {
-        public ProtocolExtension(int packetID, int capacity)
-            : base(0xF0)
+        public ProtocolExtension(int packetID, int capacity) : base(0xF0)
         {
-            this.EnsureCapacity(4 + capacity);
+            EnsureCapacity(4 + capacity);
 
-            this.m_Stream.Write((byte)packetID);
+            m_Stream.Write((byte)packetID);
         }
     }
 
     public class AckPartyLocations : ProtocolExtension
     {
-        public AckPartyLocations(Mobile from, Party party)
-            : base(0x01, ((party.Members.Count - 1) * 9) + 4)
+        public AckPartyLocations(Mobile from, Party party) : base(0x01, ((party.Members.Count - 1) * 9) + 4)
         {
             for (int i = 0; i < party.Members.Count; ++i)
             {
@@ -96,13 +96,13 @@ namespace Server.Misc
                 if (Utility.InUpdateRange(from, mob) && from.CanSee(mob))
                     continue;
 
-                this.m_Stream.Write((int)mob.Serial);
-                this.m_Stream.Write((short)mob.X);
-                this.m_Stream.Write((short)mob.Y);
-                this.m_Stream.Write((byte)(mob.Map == null ? 0 : mob.Map.MapID));
+                m_Stream.Write((int)mob.Serial);
+                m_Stream.Write((short)mob.X);
+                m_Stream.Write((short)mob.Y);
+                m_Stream.Write((byte)(mob.Map == null ? 0 : mob.Map.MapID));
             }
 
-            this.m_Stream.Write((int)0);
+            m_Stream.Write((int)0);
         }
     }
 }

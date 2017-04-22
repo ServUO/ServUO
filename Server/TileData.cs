@@ -167,6 +167,8 @@ namespace Server
 
 	public static class TileData
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static readonly LandData[] m_LandData;
 		private static readonly ItemData[] m_ItemData;
 
@@ -324,11 +326,9 @@ namespace Server
 			}
 			else
 			{
-				Console.WriteLine("tiledata.mul was not found");
-				Console.WriteLine("Make sure your Scripts/Misc/DataPath.cs is properly configured");
-				Console.WriteLine("After pressing return an exception will be thrown and the server will terminate");
+				log.Fatal("tiledata.mul was not found. Make sure your Config/DataPath.cfg is properly configured");
 
-				throw new Exception(String.Format("TileData: {0} not found", filePath));
+				throw new Exception(string.Format("TileData: {0} not found", filePath));
 			}
 		}
 	}

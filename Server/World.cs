@@ -22,10 +22,12 @@ namespace Server
 {
 	public static class World
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static Dictionary<Serial, Mobile> m_Mobiles;
 		private static Dictionary<Serial, Item> m_Items;
 		private static Dictionary<CustomSerial, SaveData> _Data;
-		
+
 		private static bool m_Metrics = Config.Get("General.Metrics", false);
 
 		private static bool m_Loading;
@@ -60,7 +62,7 @@ namespace Server
 		{
 			if (m_DiskWriteHandle.Set())
 			{
-				Console.WriteLine("Closing Save Files. ");
+				log.Info("Closing save files. ");
 			}
 		}
 
@@ -282,7 +284,7 @@ namespace Server
 
 				if (t == null)
 				{
-					Console.WriteLine("failed");
+					log.Error("World load failed");
 
 					if (!Core.Service)
 					{
@@ -291,7 +293,7 @@ namespace Server
 						if (Console.ReadKey(true).Key == ConsoleKey.Y)
 						{
 							types.Add(null);
-							Console.Write("World: Loading...");
+							log.Info("World load resumed...");
 							continue;
 						}
 
@@ -299,7 +301,7 @@ namespace Server
 					}
 					else
 					{
-						Console.WriteLine("Error: Type '{0}' was not found.", typeName);
+						log.Error("Type '{0}' was not found.", typeName);
 					}
 
 					throw new Exception(String.Format("Bad type '{0}'", typeName));
@@ -328,16 +330,12 @@ namespace Server
 		public static void Load()
 		{
 			if (m_Loaded)
-			{
 				return;
-			}
 
 			m_Loaded = true;
 			m_LoadingType = null;
 
-			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("World: Loading...");
-			Utility.PopColor();
+			log.Info("World load started...");
 
 			Stopwatch watch = Stopwatch.StartNew();
 
@@ -546,9 +544,7 @@ namespace Server
 							}
 							catch
 							{
-								Utility.PushColor(ConsoleColor.Red);
-								Console.WriteLine("Error loading {0}, Serial: {1}", typeName, serial);
-								Utility.PopColor();
+								log.Error("Error loading {0}, Serial: {1}", typeName, serial);
 							}
 
 							if (saveData != null)
@@ -755,19 +751,17 @@ namespace Server
 
 			if (failedItems || failedMobiles || failedGuilds || failedData)
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("An error was encountered while loading a saved object");
-				Utility.PopColor();
+				log.Error("An error was encountered while loading a saved object");
 
-				Console.WriteLine(" - Type: {0}", failedType);
+				log.Error(" - Type: {0}", failedType);
 
 				if (failedSerial != Serial.Zero)
 				{
-					Console.WriteLine(" - Serial: {0}", failedSerial);
+					log.Error(" - Serial: {0}", failedSerial);
 				}
 				else
 				{
-					Console.WriteLine(" - Serial: {0}", failedCustomSerial);
+					log.Error(" - Serial: {0}", failedCustomSerial);
 				}
 
 				if (!Core.Service)
@@ -838,9 +832,7 @@ namespace Server
 				}
 				else
 				{
-					Utility.PushColor(ConsoleColor.Red);
-					Console.WriteLine("An exception will be thrown and the server will terminate.");
-					Utility.PopColor();
+					log.Fatal("An exception will be thrown and the server will terminate.");
 				}
 
 				throw new Exception(
@@ -886,14 +878,12 @@ namespace Server
 
 			watch.Stop();
 
-			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine(
-				"...done ({1} items, {2} mobiles, {3} customs) ({0:F2} seconds)",
+			log.Info(
+				"World load done ({1} items, {2} mobiles, {3} customs) ({0:F2} seconds)",
 				watch.Elapsed.TotalSeconds,
 				m_Items.Count,
 				m_Mobiles.Count,
 				_Data.Count);
-			Utility.PopColor();
 		}
 
 		private static void ProcessSafetyQueues()
@@ -1104,9 +1094,9 @@ namespace Server
 			}
 
 			SaveStrategy strategy = SaveStrategy.Acquire();
-			Console.WriteLine("Core: Using {0} save strategy", strategy.Name.ToLowerInvariant());
+			log.Info("Using {0} save strategy", strategy.Name.ToLowerInvariant());
 
-			Console.WriteLine("World: Saving...");
+			log.Info("World save started");
 
 			Stopwatch watch = Stopwatch.StartNew();
 
@@ -1161,7 +1151,7 @@ namespace Server
 
 			strategy.ProcessDecay();
 
-			Console.WriteLine("Save finished in {0:F2} seconds.", watch.Elapsed.TotalSeconds);
+			log.Info("World save finished in {0:F2} seconds.", watch.Elapsed.TotalSeconds);
 
 			if (message)
 			{

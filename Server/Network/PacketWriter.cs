@@ -18,6 +18,8 @@ namespace Server.Network
 	/// </summary>
 	public class PacketWriter
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static readonly Stack<PacketWriter> m_Pool = new Stack<PacketWriter>();
 
 		public static PacketWriter CreateInstance()
@@ -70,7 +72,7 @@ namespace Server.Network
 					}
 					catch
 					{
-						Console.WriteLine("net error");
+						log.Warning("net error");
 					}
 				}
 			}
@@ -192,7 +194,7 @@ namespace Server.Network
 		{
 			if (value == null)
 			{
-				Console.WriteLine("Network: Attempted to WriteAsciiFixed() with null value");
+				log.Warning("Attempted to WriteAsciiFixed() with null value");
 				value = String.Empty;
 			}
 
@@ -230,7 +232,7 @@ namespace Server.Network
 		{
 			if (value == null)
 			{
-				Console.WriteLine("Network: Attempted to WriteAsciiNull() with null value");
+				log.Warning("Attempted to WriteAsciiNull() with null value");
 				value = String.Empty;
 			}
 
@@ -254,7 +256,7 @@ namespace Server.Network
 		{
 			if (value == null)
 			{
-				Console.WriteLine("Network: Attempted to WriteLittleUniNull() with null value");
+				log.Warning("Attempted to WriteLittleUniNull() with null value");
 				value = String.Empty;
 			}
 
@@ -281,7 +283,7 @@ namespace Server.Network
 		{
 			if (value == null)
 			{
-				Console.WriteLine("Network: Attempted to WriteLittleUniFixed() with null value");
+				log.Warning("Attempted to WriteLittleUniFixed() with null value");
 				value = String.Empty;
 			}
 
@@ -323,7 +325,7 @@ namespace Server.Network
 		{
 			if (value == null)
 			{
-				Console.WriteLine("Network: Attempted to WriteBigUniNull() with null value");
+				log.Warning("Attempted to WriteBigUniNull() with null value");
 				value = String.Empty;
 			}
 
@@ -351,7 +353,7 @@ namespace Server.Network
 		{
 			if (value == null)
 			{
-				Console.WriteLine("Network: Attempted to WriteBigUniFixed() with null value");
+				log.Warning("Attempted to WriteBigUniFixed() with null value");
 				value = String.Empty;
 			}
 

@@ -34,6 +34,8 @@ namespace Server.Network
 
 	public class NetState : IComparable<NetState>
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private Socket m_Socket;
 		private readonly IPAddress m_Address;
 		private ByteQueue m_Buffer;
@@ -59,7 +61,7 @@ namespace Server.Network
 		private bool m_CompressionEnabled;
 		private readonly string m_ToString;
 		private ClientVersion m_Version;
-		private bool m_BlockAllPackets;		
+		private bool m_BlockAllPackets;
 
 		private readonly DateTime m_ConnectedOn;
 
@@ -337,14 +339,14 @@ namespace Server.Network
 
 		public static int MenuCap { get { return m_MenuCap; } set { m_MenuCap = value; } }
 
-		public void WriteConsole(string text)
-		{
-			Console.WriteLine("Client: {0}: {1}", this, text);
-		}
+	    public void WriteConsole(string format, params object[] args)
+	    {
+	        WriteConsole(LogLevel.Info, format, args);
+	    }
 
-		public void WriteConsole(string format, params object[] args)
+		public void WriteConsole(LogLevel level, string format, params object[] args)
 		{
-			WriteConsole(String.Format(format, args));
+		    log.Log(level, "Client: {0}: {1}", this, format);
 		}
 
 		public void AddMenu(IMenu menu)
@@ -360,9 +362,7 @@ namespace Server.Network
 			}
 			else
 			{
-				Utility.PushColor(ConsoleColor.DarkRed);
-				WriteConsole("Exceeded menu cap, disconnecting...");
-				Utility.PopColor();
+				WriteConsole(LogLevel.Warning, "Exceeded menu cap, disconnecting...");
 				Dispose();
 			}
 		}
@@ -404,9 +404,7 @@ namespace Server.Network
 			}
 			else
 			{
-				Utility.PushColor(ConsoleColor.DarkRed);
-				WriteConsole("Exceeded hue picker cap, disconnecting...");
-				Utility.PopColor();
+				WriteConsole(LogLevel.Warning, "Exceeded hue picker cap, disconnecting...");
 				Dispose();
 			}
 		}
@@ -448,9 +446,7 @@ namespace Server.Network
 			}
 			else
 			{
-				Utility.PushColor(ConsoleColor.DarkRed);
-				WriteConsole("Exceeded gump cap, disconnecting...");
-				Utility.PopColor();
+				WriteConsole(LogLevel.Warning, "Exceeded gump cap, disconnecting...");
 				Dispose();
 			}
 		}
@@ -613,9 +609,7 @@ namespace Server.Network
 				}
 				catch (CapacityExceededException)
 				{
-					Utility.PushColor(ConsoleColor.DarkRed);
-					Console.WriteLine("Client: {0}: Too much data pending, disconnecting...", this);
-					Utility.PopColor();
+					log.Warning("Client: {0}: Too much data pending, disconnecting...", this);
 					Dispose(false);
 				}
 
@@ -628,10 +622,9 @@ namespace Server.Network
 			}
 			else
 			{
-				Utility.PushColor(ConsoleColor.DarkRed);
-				Console.WriteLine("Client: {0}: null buffer send, disconnecting...", this);
-				Utility.PopColor();
-				using (StreamWriter op = new StreamWriter("null_send.log", true))
+				log.Warning("Client: {0}: null buffer send, disconnecting...", this);
+
+			    using (StreamWriter op = new StreamWriter("null_send.log", true))
 				{
 					op.WriteLine("{0} Client: {1}: null buffer send, disconnecting...", DateTime.UtcNow, this);
 					op.WriteLine(new StackTrace());
@@ -726,7 +719,7 @@ namespace Server.Network
 
 					if ( result )
 						Send_Process( m_SendEventArgs );
-				} while ( result ); 
+				} while ( result );
 			} catch ( Exception ex ) {
 				TraceException( ex );
 				Dispose( false );
@@ -1119,9 +1112,7 @@ namespace Server.Network
 				return;
 			}
 
-			Utility.PushColor(ConsoleColor.DarkRed);
-			Console.WriteLine("Client: {0}: Disconnecting due to inactivity...", this);
-			Utility.PopColor();
+			log.Info("Client: {0}: Disconnecting due to inactivity...", this);
 
 			Dispose();
 			return;
@@ -1151,7 +1142,7 @@ namespace Server.Network
 
 			try
 			{
-				Console.WriteLine(ex);
+				log.Warning("Network exception: {0}", ex);
 			}
 			catch
 			{ }
@@ -1289,8 +1280,6 @@ namespace Server.Network
 
 					m_Instances.Remove(ns);
 
-					Utility.PushColor(ConsoleColor.DarkRed);
-
 					if (a != null)
 					{
 						ns.WriteConsole("Disconnected. [{0} Online] [{1}]", m_Instances.Count, a);
@@ -1299,8 +1288,6 @@ namespace Server.Network
 					{
 						ns.WriteConsole("Disconnected. [{0} Online]", m_Instances.Count);
 					}
-
-					Utility.PopColor();
 				}
 			}
 		}
@@ -1344,7 +1331,7 @@ namespace Server.Network
             {
 				return ( this.IsEnhancedClient || this.Version >= info.RequiredClient );
 		    }
-	
+
             return ((Flags & info.ClientFlags) != 0);
 		}
 

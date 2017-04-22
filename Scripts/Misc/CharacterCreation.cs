@@ -5,17 +5,25 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Network;
 
-
 namespace Server.Misc
 {
     public class CharacterCreation
     {
-        private static readonly CityInfo m_NewHavenInfo = new CityInfo("New Haven", "The Bountiful Harvest Inn", 3503, 2574, 14, Map.Trammel);
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private static readonly CityInfo m_NewHavenInfo = new CityInfo(
+            "New Haven",
+            "The Bountiful Harvest Inn",
+            3503, 2574, 14,
+            Map.Trammel
+        );
+
         private static Mobile m_Mobile;
+
         public static void Initialize()
         {
             // Register our event handler
-            EventSink.CharacterCreated += new CharacterCreatedEventHandler(EventSink_CharacterCreated);
+            EventSink.CharacterCreated += EventSink_CharacterCreated;
         }
 
         public static bool VerifyProfession(int profession)
@@ -160,9 +168,7 @@ namespace Server.Misc
 
             if (newChar == null)
             {
-                Utility.PushColor(ConsoleColor.Red);
-                Console.WriteLine("Login: {0}: Character creation failed, account full", state);
-                Utility.PopColor();
+                log.Info("Login: {0}: Character creation failed, account full", state);
                 return;
             }
 
@@ -244,13 +250,9 @@ namespace Server.Misc
 
             newChar.MoveToWorld(city.Location, city.Map);
 
-            Utility.PushColor(ConsoleColor.Green);
-            Console.WriteLine("Login: {0}: New character being created (account={1})", state, args.Account.Username);
-            Utility.PopColor();
-            Utility.PushColor(ConsoleColor.DarkGreen);
-            Console.WriteLine(" - Character: {0} (serial={1})", newChar.Name, newChar.Serial);
-            Console.WriteLine(" - Started: {0} {1} in {2}", city.City, city.Location, city.Map.ToString());
-            Utility.PopColor();
+            log.Info("Login: {0}: New character being created (account={1})", state, args.Account.Username);
+            log.Info(" - Character: {0} (serial={1})", newChar.Name, newChar.Serial);
+            log.Info(" - Started: {0} {1} in {2}", city.City, city.Location, city.Map.ToString());
 
             new WelcomeTimer(newChar).Start();
 
@@ -276,7 +278,7 @@ namespace Server.Misc
 
             switch ( args.Profession )
             {
-                case 4: //Necro
+                case 4: // Necro
                     {
                         if ((flags & ClientFlags.Malas) != 0)
                         {
@@ -284,25 +286,25 @@ namespace Server.Misc
                         }
                         else
                         {
-                            useHaven = true; 
+                            useHaven = true;
 
-                            new BadStartMessage(m, 1062205);
                             /*
-                            * Unfortunately you are playing on a *NON-Age-Of-Shadows* game 
-                            * installation and cannot be transported to Malas.  
-                            * You will not be able to take your new player quest in Malas 
-                            * without an AOS client.  You are now being taken to the city of 
-                            * Haven on the Trammel facet.
-                            * */
+                             * Unfortunately you are playing on a *NON-Age-Of-Shadows* game
+                             * installation and cannot be transported to Malas.
+                             * You will not be able to take your new player quest in Malas
+                             * without an AOS client.  You are now being taken to the city of
+                             * Haven on the Trammel facet.
+                             */
+                            new BadStartMessage(m, 1062205);
                         }
 
                         break;
                     }
-                case 5:	//Paladin
+                case 5:	// Paladin
                     {
                         return m_NewHavenInfo;
                     }
-                case 6:	//Samurai
+                case 6:	// Samurai
                     {
                         if ((flags & ClientFlags.Tokuno) != 0)
                         {
@@ -312,19 +314,19 @@ namespace Server.Misc
                         {
                             useHaven = true;
 
-                            new BadStartMessage(m, 1063487);
                             /*
-                            * Unfortunately you are playing on a *NON-Samurai-Empire* game 
-                            * installation and cannot be transported to Tokuno. 
-                            * You will not be able to take your new player quest in Tokuno 
-                            * without an SE client. You are now being taken to the city of 
-                            * Haven on the Trammel facet.
-                            * */
+                             * Unfortunately you are playing on a *NON-Samurai-Empire* game
+                             * installation and cannot be transported to Tokuno.
+                             * You will not be able to take your new player quest in Tokuno
+                             * without an SE client. You are now being taken to the city of
+                             * Haven on the Trammel facet.
+                             */
+                            new BadStartMessage(m, 1063487);
                         }
 
                         break;
                     }
-                case 7:	//Ninja
+                case 7:	// Ninja
                     {
                         if ((flags & ClientFlags.Tokuno) != 0)
                         {
@@ -334,14 +336,14 @@ namespace Server.Misc
                         {
                             useHaven = true;
 
-                            new BadStartMessage(m, 1063487);
                             /*
-                            * Unfortunately you are playing on a *NON-Samurai-Empire* game 
-                            * installation and cannot be transported to Tokuno. 
-                            * You will not be able to take your new player quest in Tokuno 
-                            * without an SE client. You are now being taken to the city of 
-                            * Haven on the Trammel facet.
-                            * */
+                             * Unfortunately you are playing on a *NON-Samurai-Empire* game
+                             * installation and cannot be transported to Tokuno.
+                             * You will not be able to take your new player quest in Tokuno
+                             * without an SE client. You are now being taken to the city of
+                             * Haven on the Trammel facet.
+                             */
+                            new BadStartMessage(m, 1063487);
                         }
 
                         break;
@@ -661,7 +663,7 @@ namespace Server.Misc
                         addSkillItems = false;
                         break;
                     }
-					
+
                 case 6: // Samurai
                     {
                         if (elf || human)
@@ -733,7 +735,7 @@ namespace Server.Misc
                         break;
                     }
             }
-            
+
 			for (int i = 0; i < skills.Length; ++i)
 			{
 				SkillNameValue snv = skills[i];
@@ -745,7 +747,7 @@ namespace Server.Misc
 					if (skill != null)
 					{
 						skill.BaseFixedPoint = snv.Value * 10;
-						
+
 						if ( addSkillItems )
 							AddSkillItems(snv.Name, m);
 					}
@@ -973,7 +975,7 @@ namespace Server.Misc
                             EquipItem(new ElvenCompositeLongbow());
                         else if (human)
                             EquipItem(new Bow());
-					
+
                         break;
                     }
                 case SkillName.ArmsLore:
@@ -1043,7 +1045,7 @@ namespace Server.Misc
                         PackItem(new Pickaxe());
                         PackItem(new Pickaxe());
                         PackItem(new IronIngot(50));
-					
+
                         if (human || elf)
                         {
                             EquipItem(new HalfApron(Utility.RandomYellowHue()));

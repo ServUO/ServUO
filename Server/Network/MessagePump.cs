@@ -16,6 +16,8 @@ namespace Server.Network
 {
 	public class MessagePump
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private Listener[] m_Listeners;
 		private Queue<NetState> m_Queue;
 		private Queue<NetState> m_WorkingQueue;
@@ -43,9 +45,7 @@ namespace Server.Network
 
 				if (!success)
 				{
-					Utility.PushColor(ConsoleColor.Yellow);
-					Console.WriteLine("Retrying...");
-					Utility.PopColor();
+					log.Warning("Retrying...");
 					Thread.Sleep(10000);
 				}
 			}
@@ -85,9 +85,7 @@ namespace Server.Network
 
 					if (ns.Running)
 					{
-						Utility.PushColor(ConsoleColor.Green);
-						Console.WriteLine("Client: {0}: Connected. [{1} Online]", ns, NetState.Instances.Count);
-						Utility.PopColor();
+					    log.Info("Client: {0}: Connected. [{1} Online]", ns, NetState.Instances.Count);
 					}
 				}
 			}
@@ -153,9 +151,7 @@ namespace Server.Network
 
 				if (seed == 0)
 				{
-					Utility.PushColor(ConsoleColor.Green);
-					Console.WriteLine("Login: {0}: Invalid client detected, disconnecting", ns);
-					Utility.PopColor();
+					log.Info("Login: {0}: Invalid client detected, disconnecting", ns);
 					ns.Dispose();
 					return false;
 				}
@@ -175,7 +171,7 @@ namespace Server.Network
 			if (!ns.SentFirstPacket && packetID != 0xF0 && packetID != 0xF1 && packetID != 0xCF && packetID != 0x80 &&
 				packetID != 0x91 && packetID != 0xA4 && packetID != 0xEF && packetID != 0xE4 && packetID != 0xFF)
 			{
-				Console.WriteLine("Client: {0}: Encrypted client detected, disconnecting", ns);
+				log.Info("Client: {0}: Encrypted client detected, disconnecting", ns);
 				ns.Dispose();
 				return true;
 			}
@@ -248,10 +244,7 @@ namespace Server.Network
 						{
 							if (ns.Mobile == null)
 							{
-								Utility.PushColor(ConsoleColor.DarkRed);
-								Console.WriteLine(
-									"Client: {0}: Sent ingame packet (0x{1:X2}) before having been attached to a mobile", ns, packetID);
-								Utility.PopColor();
+								log.Warning("Client: {0}: Sent ingame packet (0x{1:X2}) before having been attached to a mobile", ns, packetID);
 								ns.Dispose();
 								break;
 							}

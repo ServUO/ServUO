@@ -20,6 +20,8 @@ namespace Server.Misc
 
     public class AccountHandler
     {
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 	    public static PasswordProtection ProtectPasswords = Config.GetEnum(
 		    "Accounts.ProtectPasswords",
 			PasswordProtection.NewCrypt);
@@ -216,8 +218,7 @@ namespace Server.Misc
 
         public static void EventSink_AccountLogin(AccountLoginEventArgs e)
         {
-			// If the login attempt has already been rejected by another event handler
-			// then just return
+			// If the login attempt has already been rejected by another event handler then just return
 			if (e.Accepted == false)
 				return;
 
@@ -226,9 +227,7 @@ namespace Server.Misc
                 e.Accepted = false;
                 e.RejectReason = ALRReason.InUse;
 
-                Utility.PushColor(ConsoleColor.DarkRed);
-                Console.WriteLine("Login: {0}: Past IP limit threshold", e.State);
-                Utility.PopColor();
+                log.Warning("Login: {0}: Past IP limit threshold", e.State);
 
                 using (StreamWriter op = new StreamWriter("ipLimits.log", true))
                     op.WriteLine("{0}\tPast IP limit threshold\t{1}", e.State, DateTime.UtcNow);
@@ -254,38 +253,28 @@ namespace Server.Misc
                 }
                 else
                 {
-                    Utility.PushColor(ConsoleColor.DarkRed);
-                    Console.WriteLine("Login: {0}: Invalid username '{1}'", e.State, un);
-                    Utility.PopColor();
+                    log.Info("Login: {0}: Invalid username '{1}'", e.State, un);
                     e.RejectReason = ALRReason.Invalid;
                 }
             }
             else if (!acct.HasAccess(e.State))
             {
-                Utility.PushColor(ConsoleColor.Red);
-                Console.WriteLine("Login: {0}: Access denied for '{1}'", e.State, un);
-                Utility.PopColor();
+                log.Info("Login: {0}: Access denied for '{1}'", e.State, un);
                 e.RejectReason = (m_LockdownLevel > AccessLevel.VIP ? ALRReason.BadComm : ALRReason.BadPass);
             }
             else if (!acct.CheckPassword(pw))
             {
-                Utility.PushColor(ConsoleColor.Red);
-                Console.WriteLine("Login: {0}: Invalid password for '{1}'", e.State, un);
-                Utility.PopColor();
+                log.Info("Login: {0}: Invalid password for '{1}'", e.State, un);
                 e.RejectReason = ALRReason.BadPass;
             }
             else if (acct.Banned)
             {
-                Utility.PushColor(ConsoleColor.Red);
-                Console.WriteLine("Login: {0}: Banned account '{1}'", e.State, un);
-                Utility.PopColor();
+                log.Info("Login: {0}: Banned account '{1}'", e.State, un);
                 e.RejectReason = ALRReason.Blocked;
             }
             else
             {
-                Utility.PushColor(ConsoleColor.Green);
-                Console.WriteLine("Login: {0}: Valid credentials for '{1}'", e.State, un);
-                Utility.PopColor();
+                log.Info("Login: {0}: Valid credentials for '{1}'", e.State, un);
                 e.State.Account = acct;
                 e.Accepted = true;
 
@@ -302,9 +291,7 @@ namespace Server.Misc
             {
                 e.Accepted = false;
 
-                Utility.PushColor(ConsoleColor.DarkRed);
-                Console.WriteLine("Login: {0}: Past IP limit threshold", e.State);
-                Utility.PopColor();
+                log.Warning("Login: {0}: Past IP limit threshold", e.State);
 
                 using (StreamWriter op = new StreamWriter("ipLimits.log", true))
                     op.WriteLine("{0}\tPast IP limit threshold\t{1}", e.State, DateTime.UtcNow);
@@ -323,32 +310,24 @@ namespace Server.Misc
             }
             else if (!acct.HasAccess(e.State))
             {
-                Utility.PushColor(ConsoleColor.Red);
-                Console.WriteLine("Login: {0}: Access denied for '{1}'", e.State, un);
-                Utility.PopColor();
+                log.Info("Login: {0}: Access denied for '{1}'", e.State, un);
                 e.Accepted = false;
             }
             else if (!acct.CheckPassword(pw))
             {
-                Utility.PushColor(ConsoleColor.Red);
-                Console.WriteLine("Login: {0}: Invalid password for '{1}'", e.State, un);
-                Utility.PopColor();
+                log.Info("Login: {0}: Invalid password for '{1}'", e.State, un);
                 e.Accepted = false;
             }
             else if (acct.Banned)
             {
-                Utility.PushColor(ConsoleColor.Red);
-                Console.WriteLine("Login: {0}: Banned account '{1}'", e.State, un);
-                Utility.PopColor();
+                log.Info("Login: {0}: Banned account '{1}'", e.State, un);
                 e.Accepted = false;
             }
             else
             {
                 acct.LogAccess(e.State);
 
-                Utility.PushColor(ConsoleColor.Yellow);
-                Console.WriteLine("Login: {0}: Account '{1}' at character list", e.State, un);
-                Utility.PopColor();
+                log.Info("Login: {0}: Account '{1}' at character list", e.State, un);
                 e.State.Account = acct;
                 e.Accepted = true;
                 e.CityInfo = StartingCities;
@@ -419,9 +398,7 @@ namespace Server.Misc
                 }
                 else
                 {
-                    Utility.PushColor(ConsoleColor.Red);
-                    Console.WriteLine("Client: {0}: Deleting character {1} (0x{2:X})", state, index, m.Serial.Value);
-                    Utility.PopColor();
+                    log.Info("Client: {0}: Deleting character {1} (0x{2:X})", state, index, m.Serial.Value);
 
                     acct.Comments.Add(new AccountComment("System", String.Format("Character #{0} {1} deleted by {2}", index + 1, m, state)));
 
@@ -458,15 +435,11 @@ namespace Server.Misc
 
             if (!CanCreate(state.Address))
             {
-                Utility.PushColor(ConsoleColor.DarkYellow);
-                Console.WriteLine("Login: {0}: Account '{1}' not created, ip already has {2} account{3}.", state, un, MaxAccountsPerIP, MaxAccountsPerIP == 1 ? "" : "s");
-                Utility.PopColor();
+                log.Warning("Login: {0}: Account '{1}' not created, ip already has {2} account{3}.", state, un, MaxAccountsPerIP, MaxAccountsPerIP == 1 ? "" : "s");
                 return null;
             }
 
-            Utility.PushColor(ConsoleColor.Green);
-            Console.WriteLine("Login: {0}: Creating new account '{1}'", state, un);
-            Utility.PopColor();
+            log.Info("Login: {0}: Creating new account '{1}'", state, un);
 
             Account a = new Account(un, pw);
 

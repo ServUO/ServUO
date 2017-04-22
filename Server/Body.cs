@@ -23,6 +23,8 @@ namespace Server
 
 	public struct Body
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private readonly int m_BodyID;
 
 		private static readonly BodyType[] m_Types;
@@ -56,15 +58,14 @@ namespace Server
 						}
 						else
 						{
-							Console.WriteLine("Warning: Invalid bodyTable entry:");
-							Console.WriteLine(line);
+							log.Warning("Invalid bodyTable entry: {0}", line);
 						}
 					}
 				}
 			}
 			else
 			{
-				Console.WriteLine("Warning: Data/bodyTable.cfg does not exist");
+				log.Warning("Data/bodyTable.cfg does not exist");
 
 				m_Types = new BodyType[0];
 			}

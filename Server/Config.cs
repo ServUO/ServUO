@@ -18,6 +18,8 @@ namespace Server
 {
 	public static class Config
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public sealed class Entry : IEquatable<Entry>, IComparable<Entry>
 		{
 			public int FileIndex { get; private set; }
@@ -124,9 +126,7 @@ namespace Server
 			_Initialized = true;
 
 			if (!Directory.Exists(_Path))
-			{
 				Directory.CreateDirectory(_Path);
-			}
 
 			IEnumerable<string> files;
 
@@ -136,7 +136,7 @@ namespace Server
 			}
 			catch (DirectoryNotFoundException)
 			{
-				Console.WriteLine("Warning: No configuration files found!");
+				log.Warning("No configuration files found!");
 				return;
 			}
 
@@ -148,34 +148,33 @@ namespace Server
 				}
 				catch (Exception e)
 				{
-					Console.WriteLine("Warning: Failed to load configuration file:");
-					Console.WriteLine(path);
-					Utility.PushColor(ConsoleColor.Red);
-					Console.WriteLine(e.Message);
-					Utility.PopColor();
+					log.Warning("Failed to load configuration file {0}: {1}", path, e.Message);
 
 					ConsoleKeyInfo key;
 
-					do
-					{
-						Console.WriteLine("Ignore this warning? (y/n)");
-						key = Console.ReadKey(true);
-					}
-					while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N && //
-						   key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape);
+				    if (!Core.Service)
+				    {
+                        do
+                        {
+                            Console.WriteLine("Ignore this warning? (y/n)");
+                            key = Console.ReadKey(true);
+                        }
+                        while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N && //
+                               key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape);
 
-					switch (key.Key)
-					{
-						case ConsoleKey.Escape:
-						case ConsoleKey.N:
-						{
-							Console.WriteLine("Press any key to exit...");
-							Console.ReadKey();
+                        switch (key.Key)
+                        {
+                            case ConsoleKey.Escape:
+                            case ConsoleKey.N:
+                            {
+                                Console.WriteLine("Press any key to exit...");
+                                Console.ReadKey();
 
-							Core.Kill(false);
-						}
-							return;
-					}
+                                Core.Kill(false);
+                            }
+                                return;
+                        }
+				    }
 				}
 			}
 
@@ -213,7 +212,7 @@ namespace Server
 			var parts = path.Split(Path.DirectorySeparatorChar);
 
 			var scope = String.Join(".", parts.Where(p => !String.IsNullOrWhiteSpace(p)));
-			
+
 			if (scope.Length > 0)
 			{
 				scope += ".";
@@ -250,7 +249,7 @@ namespace Server
 				}
 
 				io = line.IndexOf('=');
-				
+
 				if (io < 0)
 				{
 					throw new FormatException(String.Format("Bad format at line {0}", i + 1));
@@ -285,7 +284,7 @@ namespace Server
 			{
 				Load();
 			}
-			
+
 			if (!Directory.Exists(_Path))
 			{
 				Directory.CreateDirectory(_Path);
@@ -299,11 +298,7 @@ namespace Server
 				}
 				catch (Exception e)
 				{
-					Console.WriteLine("Warning: Failed to save configuration file:");
-					Console.WriteLine(g.Key);
-					Utility.PushColor(ConsoleColor.Red);
-					Console.WriteLine(e.Message);
-					Utility.PopColor();
+					log.Warning("Failed to save configuration file {0}: {1}", g.Key, e.Message);
 				}
 			}
 		}
@@ -476,17 +471,13 @@ namespace Server
 
 		private static void Warn<T>(string key)
 		{
-			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("Config: Warning, '{0}' invalid value for '{1}'", typeof(T), key);
-			Utility.PopColor();
+			log.Warning("'{0}' invalid value for '{1}'", typeof(T), key);
 		}
 
 		private static string InternalGet(string key)
 		{
 			if (!_Initialized)
-			{
 				Load();
-			}
 
 			Entry e;
 
@@ -495,9 +486,7 @@ namespace Server
 				return e.UseDefault ? null : e.Value;
 			}
 
-			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("Config: Warning, using default value for {0}", key);
-			Utility.PopColor();
+			log.Warning("Using default value for {0}", key);
 
 			return null;
 		}
@@ -675,7 +664,7 @@ namespace Server
 		public static bool Get(string key, bool defaultValue)
 		{
 			var value = InternalGet(key);
-			
+
 			if (value == null)
 			{
 				return defaultValue;

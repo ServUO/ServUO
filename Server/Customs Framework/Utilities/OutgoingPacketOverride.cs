@@ -19,6 +19,8 @@ namespace CustomsFramework
 
 	public static class OutgoingPacketOverrides
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public const int CallPriority = ((byte)'r') << 16 + ((byte)'a') << 8 + ((byte)'d');
 		private static NetStateCreatedCallback _CreatedCallbackSuccessor;
 		private static readonly OutgoingPacketOverrideHandler[] _Handlers;
@@ -108,9 +110,7 @@ namespace CustomsFramework
 
 					if (!firstByte.HasValue)
 					{
-						Utility.PushColor(ConsoleColor.Yellow);
-						Console.WriteLine("Outgoing Packet Override: Unable to decompress packet!");
-						Utility.PopColor();
+						log.Warning("Outgoing Packet Override: Unable to decompress packet!");
 
 						return;
 					}

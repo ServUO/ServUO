@@ -509,6 +509,8 @@ namespace Server
     [System.Runtime.InteropServices.ComVisible(true)]
 	public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable, IDamageable
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		#region CompareTo(...)
 		public int CompareTo(IEntity other)
 		{
@@ -3550,7 +3552,7 @@ namespace Server
 			set
 			{
 				//if( m_Spell != null && value != null )
-				//	Console.WriteLine("Warning: Spell has been overwritten");
+				//	log.Warning("Spell has been overwritten");
 
 				m_Spell = value;
 			}
@@ -4676,8 +4678,8 @@ namespace Server
 			}
 			catch
 			{
-				Console.WriteLine(
-					"Warning: 0x{0:X}: Item must have a zero paramater constructor to be separated from a stack. '{1}'.",
+				log.Warning(
+					"0x{0:X}: Item must have a zero paramater constructor to be separated from a stack. '{1}'.",
 					oldItem.Serial.Value,
 					oldItem.GetType().Name);
 				return null;

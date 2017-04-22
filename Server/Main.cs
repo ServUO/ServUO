@@ -20,7 +20,6 @@ using System.Threading.Tasks;
 using CustomsFramework;
 
 using Server.Network;
-using System.Collections;
 #endregion
 
 namespace Server
@@ -29,6 +28,8 @@ namespace Server
 
 	public static class Core
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		static Core()
 		{
 			DataDirectories = new List<string>();
@@ -103,7 +104,7 @@ namespace Server
 
 		public static MultiTextWriter MultiConsoleOut { get; private set; }
 
-		/* 
+		/*
 		 * DateTime.Now and DateTime.UtcNow are based on actual system clock time.
 		 * The resolution is acceptable but large clock jumps are possible and cause issues.
 		 * GetTickCount and GetTickCount64 have poor resolution.
@@ -218,8 +219,10 @@ namespace Server
 
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
-			Console.WriteLine(e.IsTerminating ? "Error:" : "Warning:");
-			Console.WriteLine(e.ExceptionObject);
+		    if (e.IsTerminating)
+		        log.Fatal("Fatal: {0}", e.ExceptionObject);
+		    else
+		        log.Warning("Warning: {0}", e.ExceptionObject);
 
 			if (e.IsTerminating)
 			{
@@ -229,7 +232,7 @@ namespace Server
 
 				try
 				{
-					CrashedEventArgs args = new CrashedEventArgs(e.ExceptionObject as Exception);
+					var args = new CrashedEventArgs(e.ExceptionObject as Exception);
 
 					EventSink.InvokeCrashed(args);
 
@@ -329,7 +332,7 @@ namespace Server
 
 			Closing = true;
 
-			Console.Write("Exiting...");
+			log.Info("Exiting...");
 
 			World.WaitForWriteCompletion();
 
@@ -340,7 +343,7 @@ namespace Server
 
 			Timer.TimerThread.Set();
 
-			Console.WriteLine("done");
+			log.Info("Exiting done");
 		}
 
 		private static readonly AutoResetEvent _Signal = new AutoResetEvent(true);
@@ -430,9 +433,6 @@ namespace Server
 			Version ver = Assembly.GetName().Version;
 
 			// Added to help future code support on forums, as a 'check' people can ask for to it see if they recompiled core or not
-			Utility.PushColor(ConsoleColor.DarkGreen);
-			Console.WriteLine(new String('-', Console.BufferWidth));
-			Utility.PopColor();
 			Utility.PushColor(ConsoleColor.Cyan);
 			Console.WriteLine(
 				"ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3}",
@@ -446,9 +446,7 @@ namespace Server
 
 			if (s.Length > 0)
 			{
-				Utility.PushColor(ConsoleColor.Yellow);
-				Console.WriteLine("Core: Running with arguments: {0}", s);
-				Utility.PopColor();
+				log.Info("Running with arguments: {0}", s);
 			}
 
 			ProcessorCount = Environment.ProcessorCount;
@@ -460,13 +458,11 @@ namespace Server
 
 			if (MultiProcessor || Is64Bit)
 			{
-				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine(
-					"Core: Optimizing for {0} {2}processor{1}",
+				log.Info(
+					"Optimizing for {0} {2}processor{1}",
 					ProcessorCount,
 					ProcessorCount == 1 ? "" : "s",
 					Is64Bit ? "64-bit " : "");
-				Utility.PopColor();
 			}
 
 			int platform = (int)Environment.OSVersion.Platform;
@@ -475,9 +471,7 @@ namespace Server
 			{
 				// MS 4, MONO 128
 				Unix = true;
-				Utility.PushColor(ConsoleColor.Yellow);
-				Console.WriteLine("Core: Unix environment detected");
-				Utility.PopColor();
+				log.Info("Unix environment detected");
 			}
 			else
 			{
@@ -487,34 +481,24 @@ namespace Server
 
 			if (GCSettings.IsServerGC)
 			{
-				Utility.PushColor(ConsoleColor.DarkYellow);
-				Console.WriteLine("Core: Server garbage collection mode enabled");
-				Utility.PopColor();
+				log.Info("Server garbage collection mode enabled");
 			}
 
 			if (_UseHRT)
 			{
-				Utility.PushColor(ConsoleColor.DarkYellow);
-				Console.WriteLine(
-					"Core: Requested high resolution timing ({0})",
+				log.Info(
+					"Requested high resolution timing ({0})",
 					UsingHighResolutionTiming ? "Supported" : "Unsupported");
-				Utility.PopColor();
 			}
 
-			Utility.PushColor(ConsoleColor.DarkYellow);
-			Console.WriteLine("RandomImpl: {0} ({1})", RandomImpl.Type.Name, RandomImpl.IsHardwareRNG ? "Hardware" : "Software");
-			Utility.PopColor();
+			log.Info("RandomImpl: {0} ({1})", RandomImpl.Type.Name, RandomImpl.IsHardwareRNG ? "Hardware" : "Software");
 
-			Utility.PushColor(ConsoleColor.DarkYellow);
-			Console.WriteLine("Core: Loading config...");
+			log.Info("Loading config...");
 			Config.Load();
-			Utility.PopColor();
 
 			while (!ScriptCompiler.Compile(Debug, _Cache))
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Scripts: One or more scripts failed to compile or no script files were found.");
-				Utility.PopColor();
+				log.Fatal("Scripts: One or more scripts failed to compile or no script files were found.");
 
 				if (Service)
 				{
@@ -639,7 +623,7 @@ namespace Server
 
 		public static int GlobalUpdateRange { get; set; }
 		public static int GlobalMaxUpdateRange { get; set; }
-		
+
 		private static int m_ItemCount, m_MobileCount, m_CustomsCount;
 
 		public static int ScriptItems { get { return m_ItemCount; } }
@@ -717,16 +701,12 @@ namespace Server
 
 					if (warningSb != null && warningSb.Length > 0)
 					{
-						Utility.PushColor(ConsoleColor.Yellow);
-						Console.WriteLine("Warning: {0}\n{1}", t, warningSb);
-						Utility.PopColor();
+						log.Warning("{0}\n{1}", t, warningSb);
 					}
 				}
 				catch
 				{
-					Utility.PushColor(ConsoleColor.Yellow);
-					Console.WriteLine("Warning: Exception in serialization verification of type {0}", t);
-					Utility.PopColor();
+					log.Error("Exception in serialization verification of type {0}", t);
 				}
 			}
 			else if (t.IsSubclassOf(typeof(SaveData)))
@@ -772,16 +752,13 @@ namespace Server
 
 					if (warningSb != null && warningSb.Length > 0)
 					{
-						Utility.PushColor(ConsoleColor.Yellow);
-						Console.WriteLine("Warning: {0}\n{1}", t, warningSb);
-						Utility.PopColor();
+						log.Warning("{0}\n{1}", t, warningSb);
 					}
 				}
 				catch
 				{
-					Utility.PushColor(ConsoleColor.Yellow);
-					Console.WriteLine("Warning: Exception in serialization verification of type {0}", t);
-					Utility.PopColor();
+
+					log.Error("Warning: Exception in serialization verification of type {0}", t);
 				}
 			}
 		}
@@ -817,7 +794,7 @@ namespace Server
 						new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
 			{
 				writer.WriteLine(">>>Logging started on {0}.", DateTime.UtcNow.ToString("f"));
-				//f = Tuesday, April 10, 2001 3:51 PM 
+				//f = Tuesday, April 10, 2001 3:51 PM
 			}
 
 			_NewLine = true;

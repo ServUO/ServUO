@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
 using Server.Gumps;
 using Server.Commands;
@@ -11,6 +10,8 @@ namespace Server.Engines.CannedEvil
 {
 	public class ChampionSystem
 	{
+	    private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private static bool m_Enabled = false;
 		private static bool m_Initialized = false;
 		private static readonly string m_Path = Path.Combine("Saves", "Champions", "ChampionSystem.bin");
@@ -156,9 +157,7 @@ namespace Server.Engines.CannedEvil
 
 			m_AllSpawns.Clear();
 
-			Utility.PushColor(ConsoleColor.White);
-			Console.WriteLine("Generating Champion Spawns");
-			Utility.PopColor();
+			log.Info("Generating Champion Spawns");
 
 			ChampionSpawn spawn;
 

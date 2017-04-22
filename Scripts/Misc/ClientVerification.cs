@@ -9,6 +9,8 @@ namespace Server.Misc
 {
     public class ClientVerification
     {
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static readonly bool m_DetectClientRequirement = true;
         private static readonly OldClientResponse m_OldClientResponse = OldClientResponse.LenientKick;
         private static readonly TimeSpan m_AgeLeniency = TimeSpan.FromDays(10);
@@ -63,9 +65,7 @@ namespace Server.Misc
 
             if (Required != null)
             {
-                Utility.PushColor(ConsoleColor.White);
-                Console.WriteLine("Restricting client version to {0}. Action to be taken: {1}", Required, m_OldClientResponse);
-                Utility.PopColor();
+                log.Info("Restricting client version to {0}. Action to be taken: {1}", Required, m_OldClientResponse);
             }
         }
 
@@ -119,9 +119,7 @@ namespace Server.Misc
                 {
                     if (state.Socket != null)
                     {
-                        Utility.PushColor(ConsoleColor.DarkRed);
-                        Console.WriteLine("Client: {0}: Disconnecting, bad version", state);
-                        Utility.PopColor();
+                        log.Warning("Client: {0}: Disconnecting, bad version", state);
                         state.Dispose();
                     }
                 });
