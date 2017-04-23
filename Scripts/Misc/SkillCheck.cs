@@ -9,7 +9,6 @@ namespace Server.Misc
 {
     public class SkillCheck
     {
-        private static int StatCap;
         private static bool m_StatGainDelayEnabled;
         private static TimeSpan m_StatGainDelay;
         private static bool m_PetStatGainDelayEnabled;
@@ -20,7 +19,6 @@ namespace Server.Misc
 
         public static void Configure()
         {
-            StatCap = Config.Get("PlayerCaps.StatCap", 125);
             m_StatGainDelayEnabled = Config.Get("PlayerCaps.EnablePlayerStatTimeDelay", false);
             m_StatGainDelay = Config.Get("PlayerCaps.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
             m_PetStatGainDelayEnabled = Config.Get("PlayerCaps.EnablePetStatTimeDelay", false);
@@ -289,7 +287,7 @@ namespace Server.Misc
                 if (from is PlayerMobile)
                 {
                     PlayerMobile pm = from as PlayerMobile;
-                    
+
                     if (pm != null && skill.SkillName == pm.AcceleratedSkill && pm.AcceleratedStart > DateTime.UtcNow)
                     {
                         pm.SendLocalizedMessage(1077956); // You are infused with intense energy. You are under the effects of an accelerated skillgain scroll.
@@ -340,7 +338,7 @@ namespace Server.Misc
                 Server.Engines.Quests.QuestHelper.CheckSkill((PlayerMobile)from, skill);
             #endregion
 
-			
+
             if (skill.Lock == SkillLock.Up)
             {
                 SkillInfo info = skill.Info;
@@ -435,11 +433,11 @@ namespace Server.Misc
             switch ( stat )
             {
                 case Stat.Str:
-                    return (from.StrLock == StatLockType.Up && from.RawStr < StatCap);
+                    return (from.StrLock == StatLockType.Up && from.RawStr < from.StrCap);
                 case Stat.Dex:
-                    return (from.DexLock == StatLockType.Up && from.RawDex < StatCap);
+                    return (from.DexLock == StatLockType.Up && from.RawDex < from.DexCap);
                 case Stat.Int:
-                    return (from.IntLock == StatLockType.Up && from.RawInt < StatCap);
+                    return (from.IntLock == StatLockType.Up && from.RawInt < from.IntCap);
             }
 
             return false;
