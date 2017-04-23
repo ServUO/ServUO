@@ -92,7 +92,7 @@ namespace Server.Mobiles
             m.FixedParticles(0x374A, 10, 15, 5038, 1181, 2, EffectLayer.Head);
             m.PlaySound(0x213);
 
-            m.SendLocalizedMessage(1008111, false, m.Name); //  : The intense cold is damaging you!
+            m.SendLocalizedMessage(1008111, false, this.Name); //  : The intense cold is damaging you!
         }
 
         public override void GenerateLoot()

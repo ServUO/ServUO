@@ -89,7 +89,7 @@ namespace Server.Mobiles
 
         public override void AuraEffect(Mobile m)
         {
-            m.SendLocalizedMessage(1008111, false, m.Name); //  : The intense cold is damaging you!
+            m.SendLocalizedMessage(1008111, false, this.Name); //  : The intense cold is damaging you!
         }
 
         public ColdDrake(Serial serial) : base(serial)
