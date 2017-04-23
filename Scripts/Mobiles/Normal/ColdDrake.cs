@@ -81,7 +81,7 @@ namespace Server.Mobiles
         public override int BreathColdDamage { get { return 100; } }
         public override int BreathEffectHue { get { return 1264; } }
 
-        public override bool HasAura { get { return true; } }
+        public override bool HasAura { get { return !this.Controlled; } }
         public override int AuraRange { get { return 2; } }
         public override int AuraBaseDamage { get { return 20; } }
         public override int AuraFireDamage { get { return 0; } }

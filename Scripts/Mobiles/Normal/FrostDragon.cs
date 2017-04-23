@@ -78,7 +78,7 @@ namespace Server.Mobiles
         public override int BreathColdDamage { get { return 100; } }
         public override int BreathEffectHue { get { return 1264; } }
 
-        public override bool CanAreaDamage { get { return true; } }
+        public override bool CanAreaDamage { get { return !Controlled; } }
         public override int AreaDamageRange { get { return 10; } }
         public override double AreaDamageScalar { get { return 1.0; } }
         public override double AreaDamageChance { get { return 1.0; } }
