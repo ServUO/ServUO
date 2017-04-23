@@ -59,7 +59,7 @@ namespace Server.Mobiles
         public override MeatType MeatType { get { return MeatType.Bird; } }
         public override int Feathers { get { return 36; } }
         public override bool CanFly { get { return true; } }
-        public override bool HasAura { get { return true; } }
+        public override bool HasAura { get { return !this.Controlled; } }
         public override int AuraRange { get { return 2; } }
 
         public override void AuraEffect(Mobile m)
