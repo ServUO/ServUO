@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public abstract class BaseTool : Item, IUsesRemaining, ICraftable
+    public abstract class BaseTool : Item, IUsesRemaining, ICraftable, IResource
     {
         private Mobile m_Crafter;
         private ItemQuality m_Quality;

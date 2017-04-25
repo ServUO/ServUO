@@ -324,8 +324,6 @@ namespace Server.Engines.BulkOrders
                         material = GetMaterial(((BaseClothing)o).Resource);
                     else if (o is IResource)
                         material = GetMaterial(((IResource)o).Resource);
-                    else if (o is BaseTool)
-                        material = GetMaterial(((BaseTool)o).Resource);
 
                     if (material != this.m_Material)
                     {
