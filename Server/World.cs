@@ -288,7 +288,7 @@ namespace Server
 					{
 						Console.WriteLine("Error: Type '{0}' was not found. Delete all of those types? (y/n)", typeName);
 
-						if (Console.ReadKey(true).Key == ConsoleKey.Y)
+						if (Insensitive.Equals(Console.ReadLine(), "Y"))
 						{
 							types.Add(null);
 							Console.Write("World: Loading...");
@@ -774,13 +774,13 @@ namespace Server
 				{
 					Console.WriteLine("Delete the object? (y/n)");
 
-					if (Console.ReadKey(true).Key == ConsoleKey.Y)
+					if (Insensitive.Equals(Console.ReadLine(), "Y"))
 					{
 						if (failedType != typeof(BaseGuild))
 						{
 							Console.WriteLine("Delete all objects of that type? (y/n)");
 
-							if (Console.ReadKey(true).Key == ConsoleKey.Y)
+							if (Insensitive.Equals(Console.ReadLine(), "Y"))
 							{
 								if (failedMobiles)
 								{
