@@ -69,7 +69,7 @@ namespace Server.Mobiles
         }
 
         public override bool CanAngerOnTame { get { return true; } }
-        public override bool ReacquireOnMovement { get { return true; } }
+        public override bool ReacquireOnMovement { get { return !this.Controlled; } }
         public override int Meat { get { return 10; } }
         public override int Hides { get { return 22; } }
         public override HideType HideType { get { return HideType.Horned; } }
@@ -81,7 +81,7 @@ namespace Server.Mobiles
         public override int BreathColdDamage { get { return 100; } }
         public override int BreathEffectHue { get { return 1264; } }
 
-        public override bool HasAura { get { return true; } }
+        public override bool HasAura { get { return !this.Controlled; } }
         public override int AuraRange { get { return 2; } }
         public override int AuraBaseDamage { get { return 20; } }
         public override int AuraFireDamage { get { return 0; } }
@@ -89,7 +89,7 @@ namespace Server.Mobiles
 
         public override void AuraEffect(Mobile m)
         {
-            m.SendMessage("The intense cold damages you.");
+            m.SendLocalizedMessage(1008111, false, this.Name); //  : The intense cold is damaging you!
         }
 
         public ColdDrake(Serial serial) : base(serial)

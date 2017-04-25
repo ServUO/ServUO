@@ -61,11 +61,10 @@ namespace Server.Mobiles
             return WeaponAbility.BleedAttack;
         }
 
-
         public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame { get { return true; } }
-        public override bool ReacquireOnMovement { get { return !Controlled; } }
-        public override bool AutoDispel { get { return !Controlled; } }
+        public override bool ReacquireOnMovement { get { return !this.Controlled; } }
+        public override bool AutoDispel { get { return !this.Controlled; } }
         public override int TreasureMapLevel { get { return 4; } }
         public override int Meat { get { return 19; } }
         public override int Hides { get { return 33; } }
@@ -78,7 +77,7 @@ namespace Server.Mobiles
         public override int BreathColdDamage { get { return 100; } }
         public override int BreathEffectHue { get { return 1264; } }
 
-        public override bool CanAreaDamage { get { return true; } }
+        public override bool CanAreaDamage { get { return !this.Controlled; } }
         public override int AreaDamageRange { get { return 10; } }
         public override double AreaDamageScalar { get { return 1.0; } }
         public override double AreaDamageChance { get { return 1.0; } }
