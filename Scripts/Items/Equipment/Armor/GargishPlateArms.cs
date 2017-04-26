@@ -6,7 +6,7 @@ namespace Server.Items
     {
         [Constructable]
         public GargishPlateArms()
-            : base(0x0308)
+            : base(0x4050)
         {
             this.Weight = 4.0;
         }
@@ -106,18 +106,6 @@ namespace Server.Items
             {
                 return true;
             }
-        }
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile)
-            {
-                if (((Mobile)parent).Female && this.ItemID != 0x0307)
-                    this.ItemID = 0x0307;
-                else if (this.ItemID != 0x0308)
-                    this.ItemID = 0x0308;
-            }
-
-            base.OnAdded(parent);
         }
 
         public override void Serialize(GenericWriter writer)

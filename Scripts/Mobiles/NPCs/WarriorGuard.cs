@@ -99,7 +99,7 @@ namespace Server.Mobiles
 
 			weapon.Movable = false;
 			weapon.Crafter = this;
-			weapon.Quality = WeaponQuality.Exceptional;
+			weapon.Quality = ItemQuality.Exceptional;
 
 			AddItem(weapon);
 

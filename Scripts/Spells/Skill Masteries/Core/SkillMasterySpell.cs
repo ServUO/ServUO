@@ -32,7 +32,7 @@ namespace Server.Spells.SkillMasteries
         public virtual bool PartyEffects { get { return false; } }
         public virtual int DamageThreshold { get { return 45; } }
         public virtual bool DamageCanDisrupt { get { return false; } }
-        public virtual int TickTime { get { return 2; } }
+        public virtual double TickTime { get { return 2; } }
         public virtual int PartyRange { get { return 12; } }
 
         public virtual int UpkeepCancelMessage { get { return 1156111; } } // You do not have enough mana to keep your ability active.

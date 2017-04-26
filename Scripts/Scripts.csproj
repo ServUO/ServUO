@@ -1831,6 +1831,9 @@
     <Compile Include="Mobiles\Normal\BlackSolenWarrior.cs" />
     <Compile Include="Mobiles\Normal\BlackSolenWorker.cs" />
     <Compile Include="Mobiles\Normal\BloodElemental.cs" />
+    <Compile Include="Mobiles\Normal\StygianDrake.cs" />
+    <Compile Include="Mobiles\Normal\CrimsonDrake.cs" />
+    <Compile Include="Mobiles\Normal\PlatinumDrake.cs" />
     <Compile Include="Mobiles\Normal\OsseinRam.cs" />
     <Compile Include="Mobiles\Normal\FrostMite.cs" />
     <Compile Include="Mobiles\Normal\BloodWorm.cs" />

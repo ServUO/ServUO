@@ -507,9 +507,9 @@ namespace Server.Items
 
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ClothingQuality)quality;
+            this.Quality = (ItemQuality)quality;
 
-            if (this.Quality == ClothingQuality.Exceptional)
+            if (this.Quality == ItemQuality.Exceptional)
                 this.DistributeBonuses((tool is BaseRunicTool ? 6 : (Core.SE ? 15 : 14)));	//BLAME OSI. (We can't confirm it's an OSI bug yet.)
 
             return base.OnCraft(quality, makersMark, from, craftSystem, typeRes, tool, craftItem, resHue);

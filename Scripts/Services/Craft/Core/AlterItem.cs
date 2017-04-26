@@ -261,7 +261,7 @@ namespace Server.Engines.Craft
 
                         newarmor.PlayerConstructed = true;
                         newarmor.Crafter = oldcloth.Crafter;
-                        newarmor.Quality = (ArmorQuality)qual;
+                        newarmor.Quality = (ItemQuality)qual;
                     }
 
                     newarmor.Altered = true;

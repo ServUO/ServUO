@@ -8,14 +8,14 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Flipable(0x14F5, 0x14F6)]
-    public class Spyglass : Item, ICraftable, IResource
+    public class Spyglass : Item, IResource
     {
         private CraftResource _Resource;
         private Mobile _Crafter;
         private ItemQuality _Quality;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(this._Resource); InvalidateProperties(); } }
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
@@ -23,11 +23,13 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
+        public bool PlayerConstructed { get { return true; } }
+
         [Constructable]
         public Spyglass()
             : base(0x14F5)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public Spyglass(Serial serial)
@@ -101,10 +103,10 @@ namespace Server.Items
 
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ItemQuality)quality;
+            Quality = (ItemQuality)quality;
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
             if (!craftItem.ForceNonExceptional)
             {

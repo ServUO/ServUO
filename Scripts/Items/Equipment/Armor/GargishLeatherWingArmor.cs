@@ -90,7 +90,7 @@ namespace Server.Items
 
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            Quality = (ArmorQuality)quality;
+            Quality = (ItemQuality)quality;
 
             if (makersMark)
                 Crafter = from;

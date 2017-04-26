@@ -4,6 +4,9 @@
 // **********
 #endregion
 
+using System;
+using Server.Engines.Craft;
+
 namespace Server.Items
 {
 	public class CocoaLiquor : Item
@@ -85,6 +88,8 @@ namespace Server.Items
         public override int LabelNumber { get { return 1080005; } } // Cocoa butter
         public override double DefaultWeight { get { return 1.0; } }
 
+        public bool PlayerConstructed { get { return true; } }
+
         [Constructable]
         public CocoaButter()
             : base(0x1044)
@@ -100,6 +105,13 @@ namespace Server.Items
             {
                 list.Add(1060636); // Exceptional
             }
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            return quality;
         }
 
         public CocoaButter(Serial serial)
@@ -136,6 +148,8 @@ namespace Server.Items
         public override int LabelNumber { get { return 1156401; } } // Sweet Cocoa butter
         public override double DefaultWeight { get { return 1.0; } }
 
+        public bool PlayerConstructed { get { return true; } }
+
         [Constructable]
         public SweetCocoaButter()
             : base(0x103D)
@@ -150,6 +164,13 @@ namespace Server.Items
             {
                 list.Add(1060636); // Exceptional
             }
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            return quality;
         }
 
         public SweetCocoaButter(Serial serial)

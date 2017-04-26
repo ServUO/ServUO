@@ -135,7 +135,7 @@ namespace Server.Items
         {
             this.Visible = false;
             this.Movable = false;
-            this.Quality = WeaponQuality.Regular;
+            this.Quality = ItemQuality.Normal;
         }
 
         public Fists(Serial serial)

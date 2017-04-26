@@ -57,9 +57,9 @@ namespace Server.Mobiles
 
         public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame { get { return true; } }
-        public override bool ReacquireOnMovement { get { return true; } }
+        public override bool ReacquireOnMovement { get { return !this.Controlled; } }
         public override bool HasBreath { get { return true; } } // fire breath enabled
-        public override bool AutoDispel { get { return true; } }
+        public override bool AutoDispel { get { return !this.Controlled; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
         public override Poison HitPoison { get { return Poison.Deadly; } }
         public override int TreasureMapLevel { get { return 5; } }

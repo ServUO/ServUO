@@ -5,7 +5,6 @@ namespace Server.Items
 {
     public class PlumTreeAddon : BaseFruitTreeAddon
     {
-        public override int LabelNumber { get { return 1156997; } } // Automaton Actuator
         public override BaseAddonDeed Deed { get { return new PlumTreeAddonDeed(); } }
 
         [Constructable]
