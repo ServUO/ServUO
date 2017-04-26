@@ -140,53 +140,53 @@ namespace Server.Engines.BulkOrders
             from.CloseGump(typeof(BOBGump));
             from.CloseGump(typeof(BOBFilterGump));
 
-            this.m_From = from;
-            this.m_Book = book;
+            m_From = from;
+            m_Book = book;
 
             BOBFilter f = (from.UseOwnFilter ? from.BOBFilter : book.Filter);
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(10, 10, 600, 695, 5054);
+            AddBackground(10, 10, 600, 695, 5054);
 
-            this.AddImageTiled(18, 20, 583, 676, 2624);
-            this.AddAlphaRegion(18, 20, 583, 676);
+            AddImageTiled(18, 20, 583, 676, 2624);
+            AddAlphaRegion(18, 20, 583, 676);
 
-            this.AddImage(5, 5, 10460);
-            this.AddImage(585, 5, 10460);
-            this.AddImage(5, 690, 10460);
-            this.AddImage(585, 690, 10460);
+            AddImage(5, 5, 10460);
+            AddImage(585, 5, 10460);
+            AddImage(5, 690, 10460);
+            AddImage(585, 690, 10460);
 
-            this.AddHtmlLocalized(270, 32, 200, 32, 1062223, LabelColor, false, false); // Filter Preference
+            AddHtmlLocalized(270, 32, 200, 32, 1062223, LabelColor, false, false); // Filter Preference
 
-            this.AddHtmlLocalized(26, 64, 120, 32, 1062228, LabelColor, false, false); // Bulk Order Type
-            this.AddFilterList(25, 96, m_XOffsets_Type, 40, m_TypeFilters, m_XWidths_Small, f.Type, 0);
+            AddHtmlLocalized(26, 64, 120, 32, 1062228, LabelColor, false, false); // Bulk Order Type
+            AddFilterList(25, 96, m_XOffsets_Type, 40, m_TypeFilters, m_XWidths_Small, f.Type, 0);
 
-            this.AddHtmlLocalized(320, 64, 50, 32, 1062215, LabelColor, false, false); // Quality
-            this.AddFilterList(320, 96, m_XOffsets_Quality, 40, m_QualityFilters, m_XWidths_Small, f.Quality, 1);
+            AddHtmlLocalized(320, 64, 50, 32, 1062215, LabelColor, false, false); // Quality
+            AddFilterList(320, 96, m_XOffsets_Quality, 40, m_QualityFilters, m_XWidths_Small, f.Quality, 1);
 
-            this.AddHtmlLocalized(26, 130, 120, 32, 1062232, LabelColor, false, false); // Material Type
-            this.AddFilterList(25, 162, m_XOffsets_Material, 35, m_MaterialFilters, m_XWidths_Large, f.Material, 2);
+            AddHtmlLocalized(26, 130, 120, 32, 1062232, LabelColor, false, false); // Material Type
+            AddFilterList(25, 162, m_XOffsets_Material, 35, m_MaterialFilters, m_XWidths_Large, f.Material, 2);
 
-            this.AddHtmlLocalized(26, 608, 120, 32, 1062217, LabelColor, false, false); // Amount
-            this.AddFilterList(25, 640, m_XOffsets_Amount, 40, m_AmountFilters, m_XWidths_Small, f.Quantity, 3);
+            AddHtmlLocalized(26, 608, 120, 32, 1062217, LabelColor, false, false); // Amount
+            AddFilterList(25, 640, m_XOffsets_Amount, 40, m_AmountFilters, m_XWidths_Small, f.Quantity, 3);
 
-            this.AddHtmlLocalized(75, 670, 120, 32, 1062477, (from.UseOwnFilter ? LabelColor : 16927), false, false); // Set Book Filter
-            this.AddButton(40, 670, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(75, 670, 120, 32, 1062477, (from.UseOwnFilter ? LabelColor : 16927), false, false); // Set Book Filter
+            AddButton(40, 670, 4005, 4007, 1, GumpButtonType.Reply, 0);
 
-            this.AddHtmlLocalized(235, 670, 120, 32, 1062478, (from.UseOwnFilter ? 16927 : LabelColor), false, false); // Set Your Filter
-            this.AddButton(200, 670, 4005, 4007, 2, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(235, 670, 120, 32, 1062478, (from.UseOwnFilter ? 16927 : LabelColor), false, false); // Set Your Filter
+            AddButton(200, 670, 4005, 4007, 2, GumpButtonType.Reply, 0);
 
-            this.AddHtmlLocalized(405, 670, 120, 32, 1062231, LabelColor, false, false); // Clear Filter
-            this.AddButton(370, 670, 4005, 4007, 3, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(405, 670, 120, 32, 1062231, LabelColor, false, false); // Clear Filter
+            AddButton(370, 670, 4005, 4007, 3, GumpButtonType.Reply, 0);
 
-            this.AddHtmlLocalized(540, 670, 50, 32, 1011046, LabelColor, false, false); // APPLY
-            this.AddButton(505, 670, 4017, 4018, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(540, 670, 50, 32, 1011046, LabelColor, false, false); // APPLY
+            AddButton(505, 670, 4017, 4018, 0, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(Server.Network.NetState sender, RelayInfo info)
         {
-            BOBFilter f = (this.m_From.UseOwnFilter ? this.m_From.BOBFilter : this.m_Book.Filter);
+            BOBFilter f = (m_From.UseOwnFilter ? m_From.BOBFilter : m_Book.Filter);
 
             int index = info.ButtonID;
 
@@ -194,28 +194,28 @@ namespace Server.Engines.BulkOrders
             {
                 case 0: // Apply
                     {
-                        this.m_From.SendGump(new BOBGump(this.m_From, this.m_Book));
+                        m_From.SendGump(new BOBGump(m_From, m_Book));
 
                         break;
                     }
                 case 1: // Set Book Filter
                     {
-                        this.m_From.UseOwnFilter = false;
-                        this.m_From.SendGump(new BOBFilterGump(this.m_From, this.m_Book));
+                        m_From.UseOwnFilter = false;
+                        m_From.SendGump(new BOBFilterGump(m_From, m_Book));
 
                         break;
                     }
                 case 2: // Set Your Filter
                     {
-                        this.m_From.UseOwnFilter = true;
-                        this.m_From.SendGump(new BOBFilterGump(this.m_From, this.m_Book));
+                        m_From.UseOwnFilter = true;
+                        m_From.SendGump(new BOBFilterGump(m_From, m_Book));
 
                         break;
                     }
                 case 3: // Clear Filter
                     {
                         f.Clear();
-                        this.m_From.SendGump(new BOBFilterGump(this.m_From, this.m_Book));
+                        m_From.SendGump(new BOBFilterGump(m_From, m_Book));
 
                         break;
                     }
@@ -251,7 +251,7 @@ namespace Server.Engines.BulkOrders
                                         break;
                                 }
 
-                                this.m_From.SendGump(new BOBFilterGump(this.m_From, this.m_Book));
+                                m_From.SendGump(new BOBFilterGump(m_From, m_Book));
                             }
                         }
 
@@ -274,8 +274,8 @@ namespace Server.Engines.BulkOrders
                 if (!isSelected && (i % xOffsets.Length) == 0)
                     isSelected = (filterValue == 0);
 
-                this.AddHtmlLocalized(x + 35 + xOffsets[i % xOffsets.Length], y + ((i / xOffsets.Length) * yOffset), xWidths[i % xOffsets.Length], 32, number, isSelected ? 16927 : LabelColor, false, false);
-                this.AddButton(x + xOffsets[i % xOffsets.Length], y + ((i / xOffsets.Length) * yOffset), 4005, 4007, 4 + filterIndex + (i * 4), GumpButtonType.Reply, 0);
+                AddHtmlLocalized(x + 35 + xOffsets[i % xOffsets.Length], y + ((i / xOffsets.Length) * yOffset), xWidths[i % xOffsets.Length], 32, number, isSelected ? 16927 : LabelColor, false, false);
+                AddButton(x + xOffsets[i % xOffsets.Length], y + ((i / xOffsets.Length) * yOffset), 4005, 4007, 4 + filterIndex + (i * 4), GumpButtonType.Reply, 0);
             }
         }
     }
