@@ -74,7 +74,7 @@ namespace Server.Mobiles
 
         public override void AuraEffect(Mobile m)
         {
-            m.SendMessage("The intense cold damages you.");
+            m.SendLocalizedMessage(1008111, false, this.Name); //  : The intense cold is damaging you!
         }
 
         public override void GenerateLoot()

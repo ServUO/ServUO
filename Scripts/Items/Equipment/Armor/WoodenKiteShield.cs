@@ -6,7 +6,7 @@ namespace Server.Items
     {
         [Constructable]
         public WoodenKiteShield()
-            : base(0x1B79)
+            : base(0x1B78)
         {
             this.Weight = 5.0;
         }

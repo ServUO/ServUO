@@ -281,7 +281,7 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return GetEntries("Carpentry", "LargeLargeChests");
+                return GetEntries("Carpentry", "LargeChests");
             }
         }
         public static SmallBulkEntry[] LargeElvenWeapons
