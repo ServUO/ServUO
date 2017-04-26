@@ -94,6 +94,20 @@ namespace Server.Mobiles
                 {
                     from.SendLocalizedMessage(1112353); // You place the gathered boura fur into your backpack.
                     GatheredFur = true;
+
+                    if (item is IUsesRemaining && Siege.SiegeShard)
+                    {
+                        IUsesRemaining uses = item as IUsesRemaining;
+
+                        uses.ShowUsesRemaining = true;
+                        uses.UsesRemaining--;
+
+                        if (uses.UsesRemaining <= 0)
+                        {
+                            item.Delete();
+                            from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                        }
+                    }
                 }
             }
             else

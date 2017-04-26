@@ -75,8 +75,8 @@ namespace Server.Items
         
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining { get { return m_UsesRemaining; } set { m_UsesRemaining = value; InvalidateProperties(); } }
-        
-        public ShowUsesRemaining { get { return m_ShowUsesRemaining; } { m_ShowUsesRemaining = value; InvalidateProperties(); } }
+
+        public bool ShowUsesRemaining { get { return m_ShowUsesRemaining; } set { m_ShowUsesRemaining = value; InvalidateProperties(); } }
         
         public void ScaleUses()
         {
@@ -4157,6 +4157,7 @@ namespace Server.Items
                     {
                         m_UsesRemaining = reader.ReadInt();
                         m_ShowUsesRemaining = reader.ReadBool();
+                        goto case 16;
                     }
                 case 16:
                     {

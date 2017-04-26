@@ -2089,6 +2089,20 @@ namespace Server.Mobiles
 
                 corpse.Carved = true;
 
+                if (with is IUsesRemaining && Siege.SiegeShard)
+                {
+                    IUsesRemaining uses = with as IUsesRemaining;
+
+                    uses.ShowUsesRemaining = true;
+                    uses.UsesRemaining--;
+
+                    if (uses.UsesRemaining <= 0)
+                    {
+                        with.Delete();
+                        from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                    }
+                }
+
                 if (corpse.IsCriminalAction(from))
                 {
                     from.CriminalAction(true);
@@ -3655,7 +3669,7 @@ namespace Server.Mobiles
 
         public virtual bool CheckTeach(SkillName skill, Mobile from)
         {
-            if (!CanTeach)
+            if (!CanTeach || Siege.SiegeShard)
             {
                 return false;
             }

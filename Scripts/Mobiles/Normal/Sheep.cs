@@ -102,6 +102,20 @@ namespace Server.Mobiles
             from.SendLocalizedMessage(500452); // You place the gathered wool into your backpack.
             from.AddToBackpack(new Wool(this.Map == Map.Felucca ? 2 : 1));
 
+            if (item is IUsesRemaining && Siege.SiegeShard)
+            {
+                IUsesRemaining uses = item as IUsesRemaining;
+
+                uses.ShowUsesRemaining = true;
+                uses.UsesRemaining--;
+
+                if (uses.UsesRemaining <= 0)
+                {
+                    item.Delete();
+                    from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                }
+            }
+
             if (from is PlayerMobile)
             {
                 PlayerMobile player = (PlayerMobile)from;

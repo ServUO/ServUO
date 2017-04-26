@@ -64,8 +64,6 @@ namespace Server.Items
                 return Lumberjacking.System;
             }
         }
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int UsesRemaining
 
         public override void OnDoubleClick(Mobile from)
         {

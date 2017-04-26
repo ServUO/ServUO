@@ -45,8 +45,21 @@ namespace Server.Items
 
                 gold.MoveToWorld(this.GetWorldLocation(), this.Map);
 
-                this.Delete();
+                if (item is IUsesRemaining && Siege.SiegeShard)
+                {
+                    IUsesRemaining uses = item as IUsesRemaining;
 
+                    uses.ShowUsesRemaining = true;
+                    uses.UsesRemaining--;
+
+                    if (uses.UsesRemaining <= 0)
+                    {
+                        item.Delete();
+                        from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                    }
+                }
+
+                this.Delete();
                 this.m_Timer.Stop();
             }
             else

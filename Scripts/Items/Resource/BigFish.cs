@@ -40,6 +40,20 @@ namespace Server.Items
         }// a big fish
         public void Carve(Mobile from, Item item)
         {
+            if (item is IUsesRemaining && Siege.SiegeShard)
+            {
+                IUsesRemaining uses = item as IUsesRemaining;
+
+                uses.ShowUsesRemaining = true;
+                uses.UsesRemaining--;
+
+                if (uses.UsesRemaining <= 0)
+                {
+                    item.Delete();
+                    from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                }
+            }
+
             base.ScissorHelper(from, new RawFishSteak(), Math.Max(16, (int)this.Weight) / 4, false);
         }
 

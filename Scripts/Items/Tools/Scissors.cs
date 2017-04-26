@@ -5,6 +5,7 @@
 #endregion
 
 #region References
+using System;
 using Server.Targeting;
 using Server.Engines.Craft;
 #endregion
@@ -180,11 +181,11 @@ namespace Server.Items
                             
                             if(Siege.SiegeShard)
                             {
-                                UsesRemaining--;
-                                
-                                if(m_UsesRemaining <= 0)
+                                m_Item.UsesRemaining--;
+
+                                if (m_Item.UsesRemaining <= 0)
                                 {
-                                    Delete();
+                                    m_Item.Delete();
                                     from.SendLocalizedMessage(1044038); // You have worn out your tool!
                                 }
                             }
@@ -201,11 +202,11 @@ namespace Server.Items
                         
                         if(Siege.SiegeShard)
                         {
-                            UsesRemaining--;
+                            m_Item.UsesRemaining--;
 
-                            if(m_UsesRemaining <= 0)
+                            if (m_Item.UsesRemaining <= 0)
                             {
-                                Delete();
+                                m_Item.Delete();
                                 from.SendLocalizedMessage(1044038); // You have worn out your tool!
                             }
                         }

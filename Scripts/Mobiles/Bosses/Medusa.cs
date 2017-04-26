@@ -303,6 +303,20 @@ namespace Server.Mobiles
                         scales.MoveToWorld(from.Location, from.Map);
                     }
 
+                    if (item is IUsesRemaining && Siege.SiegeShard)
+                    {
+                        IUsesRemaining uses = item as IUsesRemaining;
+
+                        uses.ShowUsesRemaining = true;
+                        uses.UsesRemaining--;
+
+                        if (uses.UsesRemaining <= 0)
+                        {
+                            item.Delete();
+                            from.SendLocalizedMessage(1044038); // You have worn out your tool!
+                        }
+                    }
+
                     new Blood(0x122D).MoveToWorld(Location, Map);
 
                     m_NextCarve = DateTime.UtcNow + TimeSpan.FromMinutes(1.0);

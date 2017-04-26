@@ -163,7 +163,7 @@ namespace Server.Items
         }
         
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ShowUsesRemaining
+        public bool ShowUsesRemaining
         {
             get { return m_ShowUsesRemaining; }
             set { m_ShowUsesRemaining = value; InvalidateProperties(); }
@@ -182,7 +182,7 @@ namespace Server.Items
             m_AosAttributes = new AosAttributes(this);
             m_AosSkillBonuses = new AosSkillBonuses(this);
             
-            UsesRemaining = 50;
+            UsesRemaining = 150;
         }
 
         public void ScaleUses()

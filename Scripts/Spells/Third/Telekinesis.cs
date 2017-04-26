@@ -86,7 +86,7 @@ namespace Server.Spells.Third
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is ITelekinesisable)
+                if (o is ITelekinesisable && (!(o is Container) || !Siege.SiegeShard))
                     this.m_Owner.Target((ITelekinesisable)o);
                 else if (o is Container && !Siege.SiegeShard)
                     this.m_Owner.Target((Container)o);

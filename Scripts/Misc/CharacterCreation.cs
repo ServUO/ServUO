@@ -241,8 +241,9 @@ namespace Server.Misc
             }
 
             CityInfo city = GetStartLocation(args, young);
+            Map map = Siege.SiegeShard ? Map.Felucca : city.Map;
 
-            newChar.MoveToWorld(city.Location, city.Map);
+            newChar.MoveToWorld(city.Location, map);
 
             Utility.PushColor(ConsoleColor.Green);
             Console.WriteLine("Login: {0}: New character being created (account={1})", state, args.Account.Username);
@@ -262,14 +263,16 @@ namespace Server.Misc
 
         private static CityInfo GetStartLocation(CharacterCreatedEventArgs args, bool isYoung)
         {
-            if (Core.ML)
+            bool siege = Siege.SiegeShard;
+
+            if (Core.ML && !siege)
             {
                 //if( args.State != null && args.State.NewHaven )
                 return m_NewHavenInfo;	//We don't get the client Version until AFTER Character creation
                 //return args.City;  TODO: Uncomment when the old quest system is actually phased out
             }
 
-            bool useHaven = isYoung;
+            bool useHaven = isYoung && !siege;
 
             ClientFlags flags = args.State == null ? ClientFlags.None : args.State.Flags;
             Mobile m = args.Mobile;
