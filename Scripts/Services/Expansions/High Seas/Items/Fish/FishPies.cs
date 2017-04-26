@@ -1,6 +1,7 @@
 ﻿using Server;
 using System;
 using Server.Mobiles;
+using Server.Engines.Craft;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -33,6 +34,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
+        public bool PlayerConstructed { get { return true; } }
+
         public virtual TimeSpan Duration { get { return TimeSpan.FromMinutes(5); } }
         public virtual int BuffName { get { return 0; } }
         public virtual int BuffAmount { get { return 0; } }
@@ -43,6 +46,13 @@ namespace Server.Items
         public BaseFishPie() : base(4161)
         {
             Stackable = true;
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            return quality;
         }
 
         public static bool IsUnderEffects(Mobile from, FishPieEffect type)
@@ -155,7 +165,7 @@ namespace Server.Items
             {
                 m_From = from;
                 m_EffectType = type;
-                this.Start();
+                Start();
             }
 
             protected override void OnTick()

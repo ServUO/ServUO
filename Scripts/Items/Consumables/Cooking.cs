@@ -1,5 +1,6 @@
 using System;
 using Server.Targeting;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -30,12 +31,21 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
+        public bool PlayerConstructed { get { return true; } }
+
         [Constructable]
         public Dough()
             : base(0x103d)
         {
-            this.Stackable = Core.ML;
-            this.Weight = 1.0;
+            Stackable = Core.ML;
+            Weight = 1.0;
+        }
+
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            return quality;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -89,17 +99,17 @@ namespace Server.Items
             public InternalTarget(Dough item)
                 : base(1, false, TargetFlags.None)
             {
-                this.m_Item = item;
+                m_Item = item;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Item.Deleted)
+                if (m_Item.Deleted)
                     return;
 
                 if (targeted is Eggs)
                 {
-                    this.m_Item.Delete();
+                    m_Item.Delete();
 
                     ((Eggs)targeted).Consume();
 
@@ -108,7 +118,7 @@ namespace Server.Items
                 }
                 else if (targeted is CheeseWheel)
                 {
-                    this.m_Item.Delete();
+                    m_Item.Delete();
 
                     ((CheeseWheel)targeted).Consume();
 
@@ -116,7 +126,7 @@ namespace Server.Items
                 }
                 else if (targeted is Sausage)
                 {
-                    this.m_Item.Delete();
+                    m_Item.Delete();
 
                     ((Sausage)targeted).Consume();
 
@@ -124,7 +134,7 @@ namespace Server.Items
                 }
                 else if (targeted is Apple)
                 {
-                    this.m_Item.Delete();
+                    m_Item.Delete();
 
                     ((Apple)targeted).Consume();
 
@@ -132,7 +142,7 @@ namespace Server.Items
                 }
                 else if (targeted is Peach)
                 {
-                    this.m_Item.Delete();
+                    m_Item.Delete();
 
                     ((Peach)targeted).Consume();
 
@@ -162,9 +172,9 @@ namespace Server.Items
         public SweetDough()
             : base(0x103d)
         {
-            this.Stackable = Core.ML;
-            this.Weight = 1.0;
-            this.Hue = 150;
+            Stackable = Core.ML;
+            Weight = 1.0;
+            Hue = 150;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -200,8 +210,8 @@ namespace Server.Items
             if (version > 0)
                 _Quality = (ItemQuality)reader.ReadInt();
 
-            if (this.Hue == 51)
-                this.Hue = 150;
+            if (Hue == 51)
+                Hue = 150;
         }
 
         #if false
@@ -221,17 +231,17 @@ namespace Server.Items
             public InternalTarget(SweetDough item)
                 : base(1, false, TargetFlags.None)
             {
-                this.m_Item = item;
+                m_Item = item;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Item.Deleted)
+                if (m_Item.Deleted)
                     return;
 
                 if (targeted is BowlFlour)
                 {
-                    this.m_Item.Delete();
+                    m_Item.Delete();
                     ((BowlFlour)targeted).Delete();
 
                     from.AddToBackpack(new CakeMix());
@@ -239,7 +249,7 @@ namespace Server.Items
                 else if (targeted is Campfire)
                 {
                     from.PlaySound(0x225);
-                    this.m_Item.Delete();
+                    m_Item.Delete();
                     InternalTimer t = new InternalTimer(from, (Campfire)targeted);
                     t.Start();
                 }
@@ -253,26 +263,26 @@ namespace Server.Items
                 public InternalTimer(Mobile from, Campfire campfire)
                     : base(TimeSpan.FromSeconds(5.0))
                 {
-                    this.m_From = from;
-                    this.m_Campfire = campfire;
+                    m_From = from;
+                    m_Campfire = campfire;
                 }
 
                 protected override void OnTick()
                 {
-                    if (this.m_From.GetDistanceToSqrt(this.m_Campfire) > 3)
+                    if (m_From.GetDistanceToSqrt(m_Campfire) > 3)
                     {
-                        this.m_From.SendLocalizedMessage(500686); // You burn the food to a crisp! It's ruined.
+                        m_From.SendLocalizedMessage(500686); // You burn the food to a crisp! It's ruined.
                         return;
                     }
 
-                    if (this.m_From.CheckSkill(SkillName.Cooking, 0, 10))
+                    if (m_From.CheckSkill(SkillName.Cooking, 0, 10))
                     {
-                        if (this.m_From.AddToBackpack(new Muffins()))
-                            this.m_From.PlaySound(0x57);
+                        if (m_From.AddToBackpack(new Muffins()))
+                            m_From.PlaySound(0x57);
                     }
                     else
                     {
-                        this.m_From.SendLocalizedMessage(500686); // You burn the food to a crisp! It's ruined.
+                        m_From.SendLocalizedMessage(500686); // You burn the food to a crisp! It's ruined.
                     }
                 }
             }
@@ -286,8 +296,8 @@ namespace Server.Items
         public JarHoney()
             : base(0x9ec)
         {
-            this.Weight = 1.0;
-            this.Stackable = true;
+            Weight = 1.0;
+            Stackable = true;
         }
 
         public JarHoney(Serial serial)
@@ -307,7 +317,7 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            this.Stackable = true;
+            Stackable = true;
         }
 
         /*public override void OnDoubleClick( Mobile from )
@@ -325,17 +335,17 @@ namespace Server.Items
             public InternalTarget(JarHoney item)
                 : base(1, false, TargetFlags.None)
             {
-                this.m_Item = item;
+                m_Item = item;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Item.Deleted)
+                if (m_Item.Deleted)
                     return;
 
                 if (targeted is Dough)
                 {
-                    this.m_Item.Delete();
+                    m_Item.Delete();
                     ((Dough)targeted).Consume();
 
                     from.AddToBackpack(new SweetDough());
@@ -343,7 +353,7 @@ namespace Server.Items
 				
                 if (targeted is BowlFlour)
                 {
-                    this.m_Item.Consume();
+                    m_Item.Consume();
                     ((BowlFlour)targeted).Delete();
 
                     from.AddToBackpack(new CookieMix());
@@ -359,7 +369,7 @@ namespace Server.Items
         public BowlFlour()
             : base(0xa1e)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public BowlFlour(Serial serial)
@@ -389,7 +399,7 @@ namespace Server.Items
         public WoodenBowl()
             : base(0x15f8)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public WoodenBowl(Serial serial)
@@ -412,66 +422,6 @@ namespace Server.Items
         }
     }
 
-    // ********** PitcherWater **********
-    /*public class PitcherWater : Item
-    {
-    [Constructable]
-    public PitcherWater() : base(Utility.Random( 0x1f9d, 2 ))
-    {
-    Weight = 1.0;
-    }
-
-    public PitcherWater( Serial serial ) : base( serial )
-    {
-    }
-
-    public override void Serialize( GenericWriter writer )
-    {
-    base.Serialize( writer );
-
-    writer.Write( (int) 0 ); // version
-    }
-
-    public override void Deserialize( GenericReader reader )
-    {
-    base.Deserialize( reader );
-
-    int version = reader.ReadInt();
-    }
-
-    public override void OnDoubleClick( Mobile from )
-    {
-    if ( !Movable )
-    return;
-
-    from.Target = new InternalTarget( this );
-    }
-
-    private class InternalTarget : Target
-    {
-    private PitcherWater m_Item;
-
-    public InternalTarget( PitcherWater item ) : base( 1, false, TargetFlags.None )
-    {
-    m_Item = item;
-    }
-
-    protected override void OnTarget( Mobile from, object targeted )
-    {
-    if ( m_Item.Deleted ) return;
-
-    if ( targeted is BowlFlour )
-    {
-    m_Item.Delete();
-    ((BowlFlour)targeted).Delete();
-
-    from.AddToBackpack( new Dough() );
-    from.AddToBackpack( new WoodenBowl() );
-    }
-    }
-    }
-    }*/
-
     // ********** SackFlour **********
     [TypeAlias("Server.Items.SackFlourOpen")]
     public class SackFlour : Item, IHasQuantity, IQuality
@@ -484,7 +434,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Quantity;
+                return m_Quantity;
             }
             set
             {
@@ -493,24 +443,33 @@ namespace Server.Items
                 else if (value > 20)
                     value = 20;
 
-                this.m_Quantity = value;
+                m_Quantity = value;
 
-                if (this.m_Quantity == 0)
-                    this.Delete();
-                else if (this.m_Quantity < 20 && (this.ItemID == 0x1039 || this.ItemID == 0x1045))
-                    ++this.ItemID;
+                if (m_Quantity == 0)
+                    Delete();
+                else if (m_Quantity < 20 && (ItemID == 0x1039 || ItemID == 0x1045))
+                    ++ItemID;
             }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
+        public bool PlayerConstructed { get { return true; } }
+
         [Constructable]
         public SackFlour()
             : base(0x1039)
         {
-            this.Weight = 5.0;
-            this.m_Quantity = 20;
+            Weight = 5.0;
+            m_Quantity = 20;
+        }
+
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            return quality;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -536,7 +495,7 @@ namespace Server.Items
 
             writer.Write((int)_Quality);
 
-            writer.Write((int)this.m_Quantity);
+            writer.Write((int)m_Quantity);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -555,29 +514,29 @@ namespace Server.Items
                 case 2:
                 case 1:
                     {
-                        this.m_Quantity = reader.ReadInt();
+                        m_Quantity = reader.ReadInt();
                         break;
                     }
                 case 0:
                     {
-                        this.m_Quantity = 20;
+                        m_Quantity = 20;
                         break;
                     }
             }
 
-            if (version < 2 && this.Weight == 1.0)
-                this.Weight = 5.0;
+            if (version < 2 && Weight == 1.0)
+                Weight = 5.0;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.Movable)
+            if (!Movable)
                 return;
 
-            if ((this.ItemID == 0x1039 || this.ItemID == 0x1045))
-                ++this.ItemID;
+            if ((ItemID == 0x1039 || ItemID == 0x1045))
+                ++ItemID;
             #if false
-			this.Delete();
+			Delete();
 			from.AddToBackpack( new SackFlourOpen() );
             #endif
         }
@@ -669,7 +628,7 @@ namespace Server.Items
         public Eggshells()
             : base(0x9b4)
         {
-            this.Weight = 0.5;
+            Weight = 0.5;
         }
 
         public Eggshells(Serial serial)
@@ -704,14 +663,14 @@ namespace Server.Items
         public WheatSheaf(int amount)
             : base(7869)
         {
-            this.Weight = 1.0;
-            this.Stackable = true;
-            this.Amount = amount;
+            Weight = 1.0;
+            Stackable = true;
+            Amount = amount;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.Movable)
+            if (!Movable)
                 return;
 
             from.BeginTarget(4, false, TargetFlags.None, new TargetCallback(OnTarget));
@@ -728,11 +687,11 @@ namespace Server.Items
             {
                 int needs = mill.MaxFlour - mill.CurFlour;
 
-                if (needs > this.Amount)
-                    needs = this.Amount;
+                if (needs > Amount)
+                    needs = Amount;
 
                 mill.CurFlour += needs;
-                this.Consume(needs);
+                Consume(needs);
             }
         }
 

@@ -15,6 +15,7 @@ namespace Server.Items
         private CraftResource _Resource;
         private Mobile _Crafter;
         private ItemQuality _Quality;
+        private bool _PlayerConstructed;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(this._Resource); InvalidateProperties(); } }
@@ -24,6 +25,9 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool PlayerConstructed { get { return _PlayerConstructed; } set { _PlayerConstructed = value; InvalidateProperties(); } }
 
         [Constructable]
         public BaseLight(int itemID)
@@ -217,7 +221,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (_Crafter != null)
+            if (_PlayerConstructed && _Crafter != null)
             {
                 list.Add(1050043, _Crafter.TitleName); // crafted by ~1_NAME~
             }
@@ -244,6 +248,8 @@ namespace Server.Items
         {
             this.Quality = (ItemQuality)quality;
 
+            PlayerConstructed = true;
+
             if (makersMark)
                 this.Crafter = from;
 
@@ -262,7 +268,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write((int)2);
+
+            writer.Write(_PlayerConstructed);
 
             writer.Write((int)_Resource);
             writer.Write(_Crafter);
@@ -285,6 +293,11 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 2:
+                    {
+                        _PlayerConstructed = reader.ReadBool();
+                        goto case 1;
+                    }
                 case 1:
                     {
                         _Resource = (CraftResource)reader.ReadInt();

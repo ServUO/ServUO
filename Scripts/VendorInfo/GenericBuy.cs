@@ -235,13 +235,13 @@ namespace Server.Mobiles
             if ( item is BaseWeapon )
             {
             BaseWeapon weapon = (BaseWeapon)item;
-            if ( weapon.Quality == WeaponQuality.Low || weapon.Quality == WeaponQuality.Exceptional || (int)weapon.DurabilityLevel > 0 || (int)weapon.DamageLevel > 0 || (int)weapon.AccuracyLevel > 0 )
+            if ( weapon.Quality == ItemQuality.Low || weapon.Quality == ItemQuality.Exceptional || (int)weapon.DurabilityLevel > 0 || (int)weapon.DamageLevel > 0 || (int)weapon.AccuracyLevel > 0 )
             return false;
             }
             if ( item is BaseArmor )
             {
             BaseArmor armor = (BaseArmor)item;
-            if ( armor.Quality == ArmorQuality.Low || armor.Quality == ArmorQuality.Exceptional || (int)armor.Durability > 0 || (int)armor.ProtectionLevel > 0 )
+            if ( armor.Quality == ItemQuality.Low || armor.Quality == ItemQuality.Exceptional || (int)armor.Durability > 0 || (int)armor.ProtectionLevel > 0 )
             return false;
             }
             m_Amount += amount;

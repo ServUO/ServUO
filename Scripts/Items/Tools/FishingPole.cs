@@ -20,7 +20,7 @@ namespace Server.Items
         private int m_OriginalHue;
 
         private Mobile m_Crafter;
-        private WeaponQuality m_Quality;
+        private ItemQuality m_Quality;
 
         private AosAttributes m_AosAttributes;
         private AosSkillBonuses m_AosSkillBonuses;
@@ -141,7 +141,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public WeaponQuality Quality
+        public ItemQuality Quality
         {
             get { return m_Quality; }
             set { m_Quality = value; }
@@ -280,7 +280,7 @@ namespace Server.Items
             if (m_Crafter != null)
                 list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
 
-            if (m_Quality == WeaponQuality.Exceptional) // Change this to same position in BaseWeapon.cs
+            if (m_Quality == ItemQuality.Exceptional) // Change this to same position in BaseWeapon.cs
                 list.Add(1060636); // exceptional
 
             if (m_AosSkillBonuses != null)
@@ -506,7 +506,7 @@ namespace Server.Items
 
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            Quality = (WeaponQuality)quality;
+            Quality = (ItemQuality)quality;
 
             if (makersMark) // Add to CraftItem.cs mark table
                 Crafter = from;

@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -25,9 +26,10 @@ namespace Server.Items
         void OnFlip();
     }
 
-    public interface IQuality
+    public interface IQuality : ICraftable
     {
         ItemQuality Quality { get; set; }
+        bool PlayerConstructed { get; }
     }
 
     public interface IResource : IQuality
