@@ -4166,7 +4166,7 @@ namespace Server.Mobiles
 
             m_IdleReleaseTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(15, 25));
 
-            if (Body.IsHuman)
+            if (Body.IsHuman && !Mounted && !Flying)
             {
                 switch (Utility.Random(2))
                 {
@@ -4208,20 +4208,6 @@ namespace Server.Mobiles
 
             PlaySound(GetIdleSound());
             return true; // entered idle state
-        }
-
-        /*
-			this way, due to the huge number of locations this will have to be changed
-			Perhaps we can change this in the future when fixing game play is not the
-			major issue.
-		*/
-
-        public virtual void CheckedAnimate(int action, int frameCount, int repeatCount, bool forward, bool repeat, int delay)
-        {
-            if (!Mounted)
-            {
-                base.Animate(action, frameCount, repeatCount, forward, repeat, delay);
-            }
         }
 
         public override void Animate(int action, int frameCount, int repeatCount, bool forward, bool repeat, int delay)
