@@ -202,7 +202,7 @@ namespace Server.Spells.Chivalry
 			m_DamageScalar = 50;
 		}
 
-		public bool IsWaitingForEnemy { get { return m_TargetType != null; } }
+		public bool IsWaitingForEnemy { get { return m_TargetType == null; } }
 
 		public bool IsEnemy(Mobile m)
 		{

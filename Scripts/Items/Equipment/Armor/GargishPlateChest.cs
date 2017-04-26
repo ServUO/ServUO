@@ -6,7 +6,7 @@ namespace Server.Items
     {
         [Constructable]
         public GargishPlateChest()
-            : base(0x4051)
+            : base(0x4052)
         {
             this.Weight = 10.0;
         }
@@ -50,18 +50,6 @@ namespace Server.Items
             {
                 return true;
             }
-        }
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile)
-            {
-                if (((Mobile)parent).Female && this.ItemID != 0x0309)
-                    this.ItemID = 0x0309;
-                else if (this.ItemID != 0x030A)
-                    this.ItemID = 0x030A;
-            }
-
-            base.OnAdded(parent);
         }
 
         public override void Serialize(GenericWriter writer)

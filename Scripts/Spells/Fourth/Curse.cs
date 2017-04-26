@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Server.Targeting;
 
 namespace Server.Spells.Fourth
@@ -14,7 +14,7 @@ namespace Server.Spells.Fourth
             Reagent.Garlic,
             Reagent.SulfurousAsh);
 
-        private static readonly Hashtable m_UnderEffect = new Hashtable();
+        private static readonly Dictionary<Mobile, Timer> m_UnderEffect = new Dictionary<Mobile, Timer>();
 
         public CurseSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -34,8 +34,7 @@ namespace Server.Spells.Fourth
             if (m == null)
                 return;
 
-            m_UnderEffect[m] = Timer.DelayCall(duration, new TimerStateCallback(RemoveEffect), m);
-
+            m_UnderEffect[m] = Timer.DelayCall<Mobile>(duration, RemoveEffect, m);
             m.UpdateResistances();
         }
 
@@ -43,14 +42,28 @@ namespace Server.Spells.Fourth
         {
             Mobile m = (Mobile)state;
 
-            m_UnderEffect.Remove(m);
+            m.RemoveStatMod("[Magic] Str Curse");
+            m.RemoveStatMod("[Magic] Dex Curse");
+            m.RemoveStatMod("[Magic] Int Curse");
 
+            BuffInfo.RemoveBuff(m, BuffIcon.Curse);
+
+            if(m_UnderEffect.ContainsKey(m))
+            {
+                Timer t = m_UnderEffect[m];
+                
+                if(t != null)
+                    t.Stop();
+                
+                m_UnderEffect.Remove(m);
+            }
+            
             m.UpdateResistances();
         }
 
         public static bool UnderEffect(Mobile m)
         {
-            return m_UnderEffect.Contains(m);
+            return m_UnderEffect.ContainsKey(m);
         }
 
         public override void OnCast()
@@ -81,13 +94,9 @@ namespace Server.Spells.Fourth
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, length, m, args.ToString()));
             }
 
-            Timer t = (Timer)m_UnderEffect[m];
-
-            if (caster.Player && m.Player /*&& Caster != m */ && t == null)    //On OSI you CAN curse yourself and get this effect.
+            if (!m_UnderEffect.ContainsKey(m))
             {
-                TimeSpan duration = SpellHelper.GetDuration(caster, m);
-
-                AddEffect(m, duration);
+                AddEffect(m, SpellHelper.GetDuration(caster, m));
             }
 
             if (m.Spell != null)

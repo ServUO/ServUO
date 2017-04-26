@@ -2165,7 +2165,14 @@ namespace Server.Items
                     {
                         if (m_Hits >= 1)
                         {
-                            HitPoints--;
+                            if (splintering)
+                            {
+                                HitPoints = Math.Max(0, HitPoints - 10);
+                            }
+                            else
+                            {
+                                HitPoints--;
+                            }
                         }
                         else if (m_MaxHits > 0)
                         {

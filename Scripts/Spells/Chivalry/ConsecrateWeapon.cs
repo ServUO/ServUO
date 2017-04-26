@@ -182,7 +182,7 @@ namespace Server.Spells.Chivalry
         {
             get
             {
-                if (Owner.Skills.Chivalry.Value >= 80)
+                if (!Core.SA || Owner.Skills.Chivalry.Value >= 80)
                 {
                     return 100;
                 }
@@ -195,11 +195,14 @@ namespace Server.Spells.Chivalry
         {
             get
             {
-                double value = Owner.Skills.Chivalry.Value;
-
-                if (value >= 90)
+                if (Core.SA)
                 {
-                    return (int)Math.Truncate((value - 90) / 2);
+                    double value = Owner.Skills.Chivalry.Value;
+
+                    if (value >= 90)
+                    {
+                        return (int)Math.Truncate((value - 90) / 2);
+                    }
                 }
 
                 return 0;

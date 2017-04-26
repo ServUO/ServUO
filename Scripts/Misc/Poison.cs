@@ -170,7 +170,7 @@ namespace Server
             {
                 bool usingPetals = OrangePetals.UnderEffect(m_Mobile);
 
-                if (usingPetals && m_Poison.RealLevel >= 3 && 0.25 > Utility.RandomDouble())
+                if (Core.SA && usingPetals && m_Poison.RealLevel >= 3 && 0.25 > Utility.RandomDouble())
                 {
                     OrangePetals.RemoveContext(m_Mobile);
                     usingPetals = false;

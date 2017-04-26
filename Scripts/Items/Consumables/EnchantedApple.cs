@@ -62,24 +62,26 @@ namespace Server.Items
                     IEntity mto = new Entity(Serial.Zero, new Point3D(from.X, from.Y, from.Z + 50), from.Map);
                     Effects.SendMovingParticles(mfrom, mto, 0x2255, 1, 0, false, false, 13, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
 
-                    from.RemoveStatMod("[Magic] Str Curse");
-                    from.RemoveStatMod("[Magic] Dex Curse");
-                    from.RemoveStatMod("[Magic] Int Curse");
-
-                    int totalCurses = GetTotalCurses(from);
-
-                    if (totalCurses > 2 && totalCurses > Utility.Random(10))
+                    if (Core.SA)
                     {
-                        from.SendLocalizedMessage(1150174); // The apple was not strong enough to purify you.
+                        int totalCurses = GetTotalCurses(from);
 
-                        Consume();
+                        if (totalCurses > 2 && totalCurses > Utility.Random(10))
+                        {
+                            from.SendLocalizedMessage(1150174); // The apple was not strong enough to purify you.
 
-                        return false;
+                            Consume();
+
+                            return false;
+                        }
                     }
 
                     EvilOmenSpell.TryEndEffect(from);
                     StrangleSpell.RemoveCurse(from);
                     CorpseSkinSpell.RemoveCurse(from);
+                    WeakenSpell.RemoveEffects(from);
+                    FeeblemindSpell.RemoveEffects(from);
+                    ClumsySpell.RemoveEffects(from);
                     CurseSpell.RemoveEffect(from);
                     MortalStrike.EndWound(from);
                     BloodOathSpell.RemoveCurse(from);
@@ -87,14 +89,7 @@ namespace Server.Items
                     SpellPlagueSpell.RemoveFromList(from);
                     SleepSpell.EndSleep(from);
 
-                    BuffInfo.RemoveBuff(from, BuffIcon.Clumsy);
-                    BuffInfo.RemoveBuff(from, BuffIcon.FeebleMind);
-                    BuffInfo.RemoveBuff(from, BuffIcon.Weaken);
                     BuffInfo.RemoveBuff(from, BuffIcon.MassCurse);
-                    BuffInfo.RemoveBuff(from, BuffIcon.Curse);
-                    BuffInfo.RemoveBuff(from, BuffIcon.MortalStrike);
-                    BuffInfo.RemoveBuff(from, BuffIcon.Mindrot);
-                    BuffInfo.RemoveBuff(from, BuffIcon.CorpseSkin);
 
                     from.SendLocalizedMessage(EatMessage);
 

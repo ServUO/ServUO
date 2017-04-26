@@ -27,7 +27,19 @@ namespace Server.Spells.First
         public static void RemoveEffects(Mobile m)
         {
             if (m_Table.ContainsKey(m))
+            {
+                Timer t = m_Table[m];
+
+                if (t != null && t.Running)
+                {
+                    t.Stop();
+                }
+
+                BuffInfo.RemoveBuff(m, BuffIcon.FeebleMind);
+                m.RemoveStatMod("[Magic] Int Curse");
+
                 m_Table.Remove(m);
+            }
         }
 
         public override SpellCircle Circle

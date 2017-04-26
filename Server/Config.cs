@@ -154,26 +154,23 @@ namespace Server
 					Console.WriteLine(e.Message);
 					Utility.PopColor();
 
-					ConsoleKeyInfo key;
+					string key;
 
-					do
+                    do
+                    {
+                        Console.WriteLine("Ignore this warning? (y/n)");
+                        key = Console.ReadLine().ToUpper();
+                    }
+                    while (!key.Equals("Y") && !key.Equals("N"));
+                    
+					if (!key.Equals("Y"))
 					{
-						Console.WriteLine("Ignore this warning? (y/n)");
-						key = Console.ReadKey(true);
-					}
-					while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N && //
-						   key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape);
-
-					switch (key.Key)
-					{
-						case ConsoleKey.Escape:
-						case ConsoleKey.N:
-						{
+						
 							Console.WriteLine("Press any key to exit...");
 							Console.ReadKey();
 
 							Core.Kill(false);
-						}
+						
 							return;
 					}
 				}

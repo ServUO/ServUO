@@ -182,21 +182,14 @@ namespace Server.SkillHandlers
 							{
 								double discord = from.Skills[SkillName.Discordance].Value;
 
-								if (discord > 100.0)
-								{
-									effect = -20 + (int)((discord - 100.0) / -2.5);
-								}
-								else
-								{
-									effect = (int)(discord / -5.0);
-								}
+							    effect = (int)Math.Max(-28.0, (discord / -4.0));
 
 								if (Core.SE && BaseInstrument.GetBaseDifficulty(targ) >= 160.0)
 								{
 									effect /= 2;
 								}
 
-								scalar = effect * 0.01;
+								scalar = (double)effect / 100;
 
 								mods.Add(new ResistanceMod(ResistanceType.Physical, effect));
 								mods.Add(new ResistanceMod(ResistanceType.Fire, effect));
@@ -208,7 +201,7 @@ namespace Server.SkillHandlers
 								{
 									if (targ.Skills[i].Value > 0)
 									{
-										mods.Add(new DefaultSkillMod((SkillName)i, true, targ.Skills[i].Value * scalar));
+                                        mods.Add(new DefaultSkillMod((SkillName)i, true, targ.Skills[i].Value * scalar));
 									}
 								}
 							}
@@ -225,7 +218,7 @@ namespace Server.SkillHandlers
 								{
 									if (targ.Skills[i].Value > 0)
 									{
-										mods.Add(new DefaultSkillMod((SkillName)i, true, targ.Skills[i].Value * scalar));
+										mods.Add(new DefaultSkillMod((SkillName)i, true, Math.Max(100, targ.Skills[i].Value) * scalar));
 									}
 								}
 							}
