@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class BaseUtensil : Item, ICraftable, IResource
+    public class BaseUtensil : Item, IResource
     {
         private CraftResource _Resource;
         private Mobile _Crafter;
@@ -17,6 +17,8 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
+        public bool PlayerConstructed { get { return true; } }
 
         #region Old Item Serialization Vars
         /* DO NOT USE! Only used in serialization of special scrolls that originally derived from Item */

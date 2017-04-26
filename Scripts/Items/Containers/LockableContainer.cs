@@ -4,7 +4,7 @@ using Server.Network;
 
 namespace Server.Items
 {
-    public abstract class LockableContainer : TrapableContainer, ILockable, ILockpickable, ICraftable, IShipwreckedItem
+    public abstract class LockableContainer : TrapableContainer, ILockable, ILockpickable, IShipwreckedItem, IResource
     {
         private bool m_Locked;
         private int m_LockLevel, m_MaxLockLevel, m_RequiredSkill;
@@ -12,6 +12,10 @@ namespace Server.Items
         private Mobile m_Picker;
 		private Mobile m_Crafter;
         private bool m_TrapOnLockpick;
+
+        private ItemQuality m_Quality;
+        private CraftResource m_Resource;
+        private bool m_PlayerConstructed;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public Mobile Crafter
@@ -29,11 +33,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Picker;
+                return m_Picker;
             }
             set
             {
-                this.m_Picker = value;
+                m_Picker = value;
             }
         }
 
@@ -42,11 +46,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_MaxLockLevel;
+                return m_MaxLockLevel;
             }
             set
             {
-                this.m_MaxLockLevel = value;
+                m_MaxLockLevel = value;
             }
         }
 
@@ -55,11 +59,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_LockLevel;
+                return m_LockLevel;
             }
             set
             {
-                this.m_LockLevel = value;
+                m_LockLevel = value;
             }
         }
 
@@ -68,11 +72,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_RequiredSkill;
+                return m_RequiredSkill;
             }
             set
             {
-                this.m_RequiredSkill = value;
+                m_RequiredSkill = value;
             }
         }
 
@@ -81,16 +85,16 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Locked;
+                return m_Locked;
             }
             set
             {
-                this.m_Locked = value;
+                m_Locked = value;
 
-                if (this.m_Locked)
-                    this.m_Picker = null;
+                if (m_Locked)
+                    m_Picker = null;
 
-                this.InvalidateProperties();
+                InvalidateProperties();
             }
         }
 
@@ -99,11 +103,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_KeyValue;
+                return m_KeyValue;
             }
             set
             {
-                this.m_KeyValue = value;
+                m_KeyValue = value;
             }
         }
 
@@ -111,7 +115,7 @@ namespace Server.Items
         {
             get
             {
-                return !this.m_TrapOnLockpick;
+                return !m_TrapOnLockpick;
             }
         }
 
@@ -120,11 +124,41 @@ namespace Server.Items
         {
             get
             {
-                return this.m_TrapOnLockpick;
+                return m_TrapOnLockpick;
             }
             set
             {
-                this.m_TrapOnLockpick = value;
+                m_TrapOnLockpick = value;
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality
+        {
+            get { return m_Quality; }
+            set { m_Quality = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource
+        {
+            get { return m_Resource; }
+            set 
+            { 
+                m_Resource = value;
+                Hue = CraftResources.GetHue(m_Resource);
+                InvalidateProperties(); 
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool PlayerConstructed
+        {
+            get { return m_PlayerConstructed; }
+            set
+            {
+                m_PlayerConstructed = value;
+                InvalidateProperties();
             }
         }
 
@@ -132,21 +166,25 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)7); // version
+            writer.Write((int)8); // version
 
-			writer.Write(this.m_Crafter);
+            writer.Write(m_PlayerConstructed);
+            writer.Write((int)m_Resource);
+            writer.Write((int)m_Quality);
 
-            writer.Write(this.m_IsShipwreckedItem);
+			writer.Write(m_Crafter);
 
-            writer.Write((bool)this.m_TrapOnLockpick);
+            writer.Write(m_IsShipwreckedItem);
 
-            writer.Write((int)this.m_RequiredSkill);
+            writer.Write((bool)m_TrapOnLockpick);
 
-            writer.Write((int)this.m_MaxLockLevel);
+            writer.Write((int)m_RequiredSkill);
 
-            writer.Write(this.m_KeyValue);
-            writer.Write((int)this.m_LockLevel);
-            writer.Write((bool)this.m_Locked);
+            writer.Write((int)m_MaxLockLevel);
+
+            writer.Write(m_KeyValue);
+            writer.Write((int)m_LockLevel);
+            writer.Write((bool)m_Locked);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -157,68 +195,76 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 8:
+                    {
+                        m_PlayerConstructed = reader.ReadBool();
+                        m_Resource = (CraftResource)reader.ReadInt();
+                        m_Quality = (ItemQuality)reader.ReadInt();
+
+                        goto case 7;
+                    }
 				case 7:
 					{
-						this.m_Crafter = reader.ReadMobile();
+						m_Crafter = reader.ReadMobile();
 
 						goto case 6;
 					}
                 case 6:
                     {
-                        this.m_IsShipwreckedItem = reader.ReadBool();
+                        m_IsShipwreckedItem = reader.ReadBool();
 
                         goto case 5;
                     }
                 case 5:
                     {
-                        this.m_TrapOnLockpick = reader.ReadBool();
+                        m_TrapOnLockpick = reader.ReadBool();
 
                         goto case 4;
                     }
                 case 4:
                     {
-                        this.m_RequiredSkill = reader.ReadInt();
+                        m_RequiredSkill = reader.ReadInt();
 
                         goto case 3;
                     }
                 case 3:
                     {
-                        this.m_MaxLockLevel = reader.ReadInt();
+                        m_MaxLockLevel = reader.ReadInt();
 
                         goto case 2;
                     }
                 case 2:
                     {
-                        this.m_KeyValue = reader.ReadUInt();
+                        m_KeyValue = reader.ReadUInt();
 
                         goto case 1;
                     }
                 case 1:
                     {
-                        this.m_LockLevel = reader.ReadInt();
+                        m_LockLevel = reader.ReadInt();
 
                         goto case 0;
                     }
                 case 0:
                     {
                         if (version < 3)
-                            this.m_MaxLockLevel = 100;
+                            m_MaxLockLevel = 100;
 
                         if (version < 4)
                         {
-                            if ((this.m_MaxLockLevel - this.m_LockLevel) == 40)
+                            if ((m_MaxLockLevel - m_LockLevel) == 40)
                             {
-                                this.m_RequiredSkill = this.m_LockLevel + 6;
-                                this.m_LockLevel = this.m_RequiredSkill - 10;
-                                this.m_MaxLockLevel = this.m_RequiredSkill + 39;
+                                m_RequiredSkill = m_LockLevel + 6;
+                                m_LockLevel = m_RequiredSkill - 10;
+                                m_MaxLockLevel = m_RequiredSkill + 39;
                             }
                             else
                             {
-                                this.m_RequiredSkill = this.m_LockLevel;
+                                m_RequiredSkill = m_LockLevel;
                             }
                         }
 
-                        this.m_Locked = reader.ReadBool();
+                        m_Locked = reader.ReadBool();
 
                         break;
                     }
@@ -228,7 +274,7 @@ namespace Server.Items
         public LockableContainer(int itemID)
             : base(itemID)
         {
-            this.m_MaxLockLevel = 100;
+            m_MaxLockLevel = 100;
         }
 
         public LockableContainer(Serial serial)
@@ -238,12 +284,12 @@ namespace Server.Items
 
         public override bool CheckContentDisplay(Mobile from)
         {
-            return !this.m_Locked && base.CheckContentDisplay(from);
+            return !m_Locked && base.CheckContentDisplay(from);
         }
 
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
-            if (from.AccessLevel < AccessLevel.GameMaster && this.m_Locked)
+            if (from.AccessLevel < AccessLevel.GameMaster && m_Locked)
             {
                 from.SendLocalizedMessage(501747); // It appears to be locked.
                 return false;
@@ -254,7 +300,7 @@ namespace Server.Items
 
         public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
         {
-            if (from.AccessLevel < AccessLevel.GameMaster && this.m_Locked)
+            if (from.AccessLevel < AccessLevel.GameMaster && m_Locked)
             {
                 from.SendLocalizedMessage(501747); // It appears to be locked.
                 return false;
@@ -268,7 +314,7 @@ namespace Server.Items
             if (!base.CheckLift(from, item, ref reject))
                 return false;
 
-            if (item != this && from.AccessLevel < AccessLevel.GameMaster && this.m_Locked)
+            if (item != this && from.AccessLevel < AccessLevel.GameMaster && m_Locked)
                 return false;
 
             return true;
@@ -279,7 +325,7 @@ namespace Server.Items
             if (!base.CheckItemUse(from, item))
                 return false;
 
-            if (item != this && from.AccessLevel < AccessLevel.GameMaster && this.m_Locked)
+            if (item != this && from.AccessLevel < AccessLevel.GameMaster && m_Locked)
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
                 return false;
@@ -292,7 +338,7 @@ namespace Server.Items
         {
             get
             {
-                return !this.m_Locked;
+                return !m_Locked;
             }
         }
 
@@ -300,7 +346,7 @@ namespace Server.Items
         {
             bool inaccessible = false;
 
-            if (this.m_Locked)
+            if (m_Locked)
             {
                 int number;
 
@@ -314,7 +360,7 @@ namespace Server.Items
                     inaccessible = true;
                 }
 
-                from.Send(new MessageLocalized(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, number, "", ""));
+                from.Send(new MessageLocalized(Serial, ItemID, MessageType.Regular, 0x3B2, 3, number, "", ""));
             }
 
             return inaccessible;
@@ -322,10 +368,10 @@ namespace Server.Items
 
         public override void OnTelekinesis(Mobile from)
         {
-            if (this.CheckLocked(from))
+            if (CheckLocked(from))
             {
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x376A, 9, 32, 5022);
-                Effects.PlaySound(this.Location, this.Map, 0x1F5);
+                Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x376A, 9, 32, 5022);
+                Effects.PlaySound(Location, Map, 0x1F5);
                 return;
             }
 
@@ -334,7 +380,7 @@ namespace Server.Items
 
         public override void OnDoubleClickSecureTrade(Mobile from)
         {
-            if (this.CheckLocked(from))
+            if (CheckLocked(from))
                 return;
 
             base.OnDoubleClickSecureTrade(from);
@@ -342,7 +388,7 @@ namespace Server.Items
 
         public override void Open(Mobile from)
         {
-            if (this.CheckLocked(from))
+            if (CheckLocked(from))
                 return;
 
             base.Open(from);
@@ -350,7 +396,7 @@ namespace Server.Items
 
         public override void OnSnoop(Mobile from)
         {
-            if (this.CheckLocked(from))
+            if (CheckLocked(from))
                 return;
 
             base.OnSnoop(from);
@@ -358,26 +404,38 @@ namespace Server.Items
 
         public virtual void LockPick(Mobile from)
         {
-            this.Locked = false;
-            this.Picker = from;
+            Locked = false;
+            Picker = from;
 
-            if (this.TrapOnLockpick && this.ExecuteTrap(from))
+            if (TrapOnLockpick && ExecuteTrap(from))
             {
-                this.TrapOnLockpick = false;
+                TrapOnLockpick = false;
             }
         }
 
-        public override void AddNameProperties(ObjectPropertyList list)
+        public override void GetProperties(ObjectPropertyList list)
         {
-            base.AddNameProperties(list);
+            base.GetProperties(list);
 
-			if (m_Crafter != null)
-			{
-				list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
-			}
+            if (m_PlayerConstructed && m_Crafter != null)
+            {
+                list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
+            }
 
-			if (this.m_IsShipwreckedItem)
+            if (m_Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+
+            if (m_Resource > CraftResource.Iron)
+            {
+                list.Add(1114057, "#{0}", CraftResources.GetLocalizationNumber(m_Resource)); // ~1_val~
+            }
+
+            if (m_IsShipwreckedItem)
+            {
                 list.Add(1041645); // recovered from a shipwreck
+            }
         }
 
         public override void OnSingleClick(Mobile from)
@@ -386,47 +444,60 @@ namespace Server.Items
 
 			if (m_Crafter != null)
 			{
-				this.LabelTo(from, 1050043, m_Crafter.Name); // crafted by ~1_NAME~
+				LabelTo(from, 1050043, m_Crafter.Name); // crafted by ~1_NAME~
 			}
 
-			if (this.m_IsShipwreckedItem)
-                this.LabelTo(from, 1041645);	//recovered from a shipwreck
+			if (m_IsShipwreckedItem)
+                LabelTo(from, 1041645);	//recovered from a shipwreck
         }
 
         #region ICraftable Members
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
+            Quality = (ItemQuality)quality;
+
 			if(makersMark)
 			{
 				Crafter = from;
 			}
+
+            if (!craftItem.ForceNonExceptional)
+            {
+                if (typeRes == null)
+                {
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
+                }
+
+                Resource = CraftResources.GetFromType(typeRes);
+            }
+
             if (from.CheckSkill(SkillName.Tinkering, -5.0, 15.0))
             {
                 from.SendLocalizedMessage(500636); // Your tinker skill was sufficient to make the item lockable.
 
                 Key key = new Key(KeyType.Copper, Key.RandomValue());
 
-                this.KeyValue = key.KeyValue;
-                this.DropItem(key);
+                KeyValue = key.KeyValue;
+                DropItem(key);
 
                 double tinkering = from.Skills[SkillName.Tinkering].Value;
                 int level = (int)(tinkering * 0.8);
 
-                this.RequiredSkill = level - 4;
-                this.LockLevel = level - 14;
-                this.MaxLockLevel = level + 35;
+                RequiredSkill = level - 4;
+                LockLevel = level - 14;
+                MaxLockLevel = level + 35;
 
-                if (this.LockLevel == 0)
-                    this.LockLevel = -1;
-                else if (this.LockLevel > 95)
-                    this.LockLevel = 95;
+                if (LockLevel == 0)
+                    LockLevel = -1;
+                else if (LockLevel > 95)
+                    LockLevel = 95;
 
-                if (this.RequiredSkill > 95)
-                    this.RequiredSkill = 95;
+                if (RequiredSkill > 95)
+                    RequiredSkill = 95;
 
-                if (this.MaxLockLevel > 95)
-                    this.MaxLockLevel = 95;
+                if (MaxLockLevel > 95)
+                    MaxLockLevel = 95;
             }
             else
             {
@@ -447,11 +518,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsShipwreckedItem;
+                return m_IsShipwreckedItem;
             }
             set
             {
-                this.m_IsShipwreckedItem = value;
+                m_IsShipwreckedItem = value;
             }
         }
         #endregion

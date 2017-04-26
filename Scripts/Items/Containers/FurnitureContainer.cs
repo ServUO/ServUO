@@ -1,11 +1,164 @@
 using System;
+using Server.Engines.Craft;
 using System.Collections.Generic;
 
 namespace Server.Items
 {
+    public class FurnitureContainer : BaseContainer, IResource
+    {
+        #region Old Item Serialization Vars
+        /* DO NOT USE! Only used in serialization of old furniture that originally derived from BaseContainer */
+        private bool m_InheritsItem;
+
+        protected bool InheritsItem
+        {
+            get
+            {
+                return this.m_InheritsItem;
+            }
+        }
+        #endregion
+
+        private Mobile m_Crafter;
+        private CraftResource m_Resource;
+        private ItemQuality m_Quality;
+        private bool m_PlayerConstructed;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Mobile Crafter
+        {
+            get { return m_Crafter; }
+            set
+            {
+                m_Crafter = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public ItemQuality Quality
+        {
+            get { return m_Quality; }
+            set { m_Quality = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource
+        {
+            get { return m_Resource; }
+            set
+            {
+                m_Resource = value;
+                Hue = CraftResources.GetHue(m_Resource);
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool PlayerConstructed
+        {
+            get { return m_PlayerConstructed; }
+            set
+            {
+                m_PlayerConstructed = value;
+                InvalidateProperties();
+            }
+        }
+
+        public FurnitureContainer(int id) : base(id)
+        {
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (m_Crafter != null)
+            {
+                list.Add(1050043, m_Crafter.Name); // crafted by ~1_NAME~
+            }
+
+            if (Quality == ItemQuality.Exceptional)
+            {
+                list.Add(1060636); // Exceptional
+            }
+
+            if (m_Resource > CraftResource.Iron)
+            {
+                list.Add(1114057, "#{0}", CraftResources.GetLocalizationNumber(m_Resource)); // ~1_val~
+            }
+        }
+
+        public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            PlayerConstructed = true;
+
+            Quality = (ItemQuality)quality;
+
+            if (makersMark)
+            {
+                Crafter = from;
+            }
+
+            if (!craftItem.ForceNonExceptional)
+            {
+                if (typeRes == null)
+                {
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
+                }
+
+                Resource = CraftResources.GetFromType(typeRes);
+            }
+
+            return quality;
+        }
+
+        public FurnitureContainer(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write((int)2); // version
+
+            writer.Write(m_PlayerConstructed);
+            writer.Write((int)m_Resource);
+            writer.Write((int)m_Quality);
+            writer.Write(m_Crafter);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 2:
+                case 1:
+                    if (version == 1 && this is EmptyBookcase)
+                    {
+                        m_InheritsItem = true;
+                        break;
+                    }
+
+                    m_PlayerConstructed = reader.ReadBool();
+                    m_Resource = (CraftResource)reader.ReadInt();
+                    m_Quality = (ItemQuality)reader.ReadInt();
+                    m_Crafter = reader.ReadMobile();
+                    break;
+                case 0:
+                    m_InheritsItem = true;
+                    break;
+            }
+        }
+    }
+
     [Furniture]
     [Flipable(0x2815, 0x2816)]
-    public class TallCabinet : BaseContainer
+    public class TallCabinet : FurnitureContainer
     {
         [Constructable]
         public TallCabinet()
@@ -28,13 +181,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
         }
     }
 
     [Furniture]
     [Flipable(0x2817, 0x2818)]
-    public class ShortCabinet : BaseContainer
+    public class ShortCabinet : FurnitureContainer
     {
         [Constructable]
         public ShortCabinet()
@@ -57,13 +210,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
         }
     }
 
     [Furniture]
     [Flipable(0x2857, 0x2858)]
-    public class RedArmoire : BaseContainer
+    public class RedArmoire : FurnitureContainer
     {
         [Constructable]
         public RedArmoire()
@@ -86,13 +239,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
         }
     }
 
     [Furniture]
     [Flipable(0x285D, 0x285E)]
-    public class CherryArmoire : BaseContainer
+    public class CherryArmoire : FurnitureContainer
     {
         [Constructable]
         public CherryArmoire()
@@ -115,13 +268,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
         }
     }
 
     [Furniture]
     [Flipable(0x285B, 0x285C)]
-    public class MapleArmoire : BaseContainer
+    public class MapleArmoire : FurnitureContainer
     {
         [Constructable]
         public MapleArmoire()
@@ -144,13 +297,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
         }
     }
 
     [Furniture]
     [Flipable(0x2859, 0x285A)]
-    public class ElegantArmoire : BaseContainer
+    public class ElegantArmoire : FurnitureContainer
     {
         [Constructable]
         public ElegantArmoire()
@@ -173,13 +326,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
         }
     }
 
     [Furniture]
     [Flipable(0xa97, 0xa99, 0xa98, 0xa9a, 0xa9b, 0xa9c)]
-    public class FullBookcase : BaseContainer
+    public class FullBookcase : FurnitureContainer
     {
         [Constructable]
         public FullBookcase()
@@ -202,13 +355,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
         }
     }
 
     [Furniture]
     [Flipable(0xa9d, 0xa9e)]
-    public class EmptyBookcase : BaseContainer
+    public class EmptyBookcase : FurnitureContainer
     {
         [Constructable]
         public EmptyBookcase()
@@ -225,22 +378,19 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (version == 0 && this.Weight == 1.0)
-                this.Weight = -1;
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
         }
     }
 
     [Furniture]
     [Flipable(0xa2c, 0xa34)]
-    public class Drawer : BaseContainer
+    public class Drawer : FurnitureContainer
     {
         [Constructable]
         public Drawer()
@@ -263,13 +413,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
         }
     }
 
     [Furniture]
     [Flipable(0xa30, 0xa38)]
-    public class FancyDrawer : BaseContainer
+    public class FancyDrawer : FurnitureContainer
     {
         [Constructable]
         public FancyDrawer()
@@ -292,13 +442,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
         }
     }
 
     [Furniture]
     [Flipable(0xa4f, 0xa53)]
-    public class Armoire : BaseContainer
+    public class Armoire : FurnitureContainer
     {
         [Constructable]
         public Armoire()
@@ -327,7 +477,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
 
             DynamicFurniture.Close(this);
         }
@@ -335,7 +485,7 @@ namespace Server.Items
 
     [Furniture]
     [Flipable(0xa4d, 0xa51)]
-    public class FancyArmoire : BaseContainer
+    public class FancyArmoire : FurnitureContainer
     {
         [Constructable]
         public FancyArmoire()
@@ -364,7 +514,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for FurnitureContainer insertion
 
             DynamicFurniture.Close(this);
         }

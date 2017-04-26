@@ -121,7 +121,17 @@ namespace Server.Engines.BulkOrders
             else if (material >= BulkMaterialType.Spined && material <= BulkMaterialType.Barbed)
                 return 1049348 + (int)(material - BulkMaterialType.Spined);
             else if (material >= BulkMaterialType.OakWood && material <= BulkMaterialType.Frostwood)
-                return 1071428 + (int)(material - BulkMaterialType.OakWood);
+            {
+                switch (material)
+                {
+                    case BulkMaterialType.OakWood: return 1071428;
+                    case BulkMaterialType.AshWood: return 1071429;
+                    case BulkMaterialType.YewWood: return 1071430;
+                    case BulkMaterialType.Heartwood: return 1071432;
+                    case BulkMaterialType.Bloodwood: return 1071431;
+                    case BulkMaterialType.Frostwood: return 1071433;
+                }
+            }
             return 0;
         }
 

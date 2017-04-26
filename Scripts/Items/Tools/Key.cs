@@ -20,7 +20,7 @@ namespace Server.Items
         uint KeyValue { get; set; }
     }
 
-    public class Key : Item, ICraftable, IResource
+    public class Key : Item, IResource
     {
         private string m_Description;
         private uint m_KeyVal;
@@ -32,13 +32,15 @@ namespace Server.Items
         private ItemQuality _Quality;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(this._Resource); InvalidateProperties(); } }
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+
+        public bool PlayerConstructed { get { return true; } }
 
         [Constructable]
         public Key()
@@ -62,17 +64,17 @@ namespace Server.Items
         public Key(KeyType type, uint LockVal)
             : this(type, LockVal, null)
         {
-            this.m_KeyVal = LockVal;
+            m_KeyVal = LockVal;
         }
 
         public Key(KeyType type, uint LockVal, Item link)
             : base((int)type)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
 
-            this.m_MaxRange = 3;
-            this.m_KeyVal = LockVal;
-            this.m_Link = link;
+            m_MaxRange = 3;
+            m_KeyVal = LockVal;
+            m_Link = link;
         }
 
         public Key(Serial serial)
@@ -85,12 +87,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Description;
+                return m_Description;
             }
             set
             {
-                this.m_Description = value;
-                this.InvalidateProperties();
+                m_Description = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -98,12 +100,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_MaxRange;
+                return m_MaxRange;
             }
 
             set
             {
-                this.m_MaxRange = value;
+                m_MaxRange = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -111,13 +113,13 @@ namespace Server.Items
         {
             get
             {
-                return this.m_KeyVal;
+                return m_KeyVal;
             }
 
             set
             {
-                this.m_KeyVal = value;
-                this.InvalidateProperties();
+                m_KeyVal = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -125,12 +127,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Link;
+                return m_Link;
             }
 
             set
             {
-                this.m_Link = value;
+                m_Link = value;
             }
         }
         public static uint RandomValue()
@@ -210,12 +212,12 @@ namespace Server.Items
             writer.Write(_Crafter);
             writer.Write((int)_Quality);
 
-            writer.Write((int)this.m_MaxRange);
+            writer.Write((int)m_MaxRange);
 
-            writer.Write((Item)this.m_Link);
+            writer.Write((Item)m_Link);
 
-            writer.Write((string)this.m_Description);
-            writer.Write((uint)this.m_KeyVal);
+            writer.Write((string)m_Description);
+            writer.Write((uint)m_KeyVal);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -236,24 +238,24 @@ namespace Server.Items
                     }
                 case 2:
                     {
-                        this.m_MaxRange = reader.ReadInt();
+                        m_MaxRange = reader.ReadInt();
 
                         goto case 1;
                     }
                 case 1:
                     {
-                        this.m_Link = reader.ReadItem();
+                        m_Link = reader.ReadItem();
 
                         goto case 0;
                     }
                 case 0:
                     {
-                        if (version < 2 || this.m_MaxRange == 0)
-                            this.m_MaxRange = 3;
+                        if (version < 2 || m_MaxRange == 0)
+                            m_MaxRange = 3;
 
-                        this.m_Description = reader.ReadString();
+                        m_Description = reader.ReadString();
 
-                        this.m_KeyVal = reader.ReadUInt();
+                        m_KeyVal = reader.ReadUInt();
 
                         break;
                     }
@@ -262,7 +264,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(501661); // That key is unreachable.
                 return;
@@ -271,7 +273,7 @@ namespace Server.Items
             Target t;
             int number;
 
-            if (this.m_KeyVal != 0)
+            if (m_KeyVal != 0)
             {
                 number = 501662; // What shall I use this key on?
                 t = new UnlockTarget(this);
@@ -292,9 +294,9 @@ namespace Server.Items
 
             string desc;
 
-            if (this.m_KeyVal == 0)
+            if (m_KeyVal == 0)
                 desc = "(blank)";
-            else if ((desc = this.m_Description) == null || (desc = desc.Trim()).Length <= 0)
+            else if ((desc = m_Description) == null || (desc = desc.Trim()).Length <= 0)
                 desc = null;
 
             if (desc != null)
@@ -325,10 +327,10 @@ namespace Server.Items
 
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ItemQuality)quality;
+            Quality = (ItemQuality)quality;
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
             if (!craftItem.ForceNonExceptional)
             {
@@ -347,18 +349,18 @@ namespace Server.Items
 
             string desc;
 
-            if (this.m_KeyVal == 0)
+            if (m_KeyVal == 0)
                 desc = "(blank)";
-            else if ((desc = this.m_Description) == null || (desc = desc.Trim()).Length <= 0)
+            else if ((desc = m_Description) == null || (desc = desc.Trim()).Length <= 0)
                 desc = "";
 
             if (desc.Length > 0)
-                from.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, "ENU", "", desc));
+                from.Send(new UnicodeMessage(Serial, ItemID, MessageType.Regular, 0x3B2, 3, "ENU", "", desc));
         }
 
         public bool UseOn(Mobile from, ILockable o)
         {
-            if (o.KeyValue == this.KeyValue)
+            if (o.KeyValue == KeyValue)
             {
                 if (o is BaseDoor && !((BaseDoor)o).UseLocks())
                 {
@@ -414,18 +416,18 @@ namespace Server.Items
             private readonly Key m_Key;
             public RenamePrompt(Key key)
             {
-                this.m_Key = key;
+                m_Key = key;
             }
 
             public override void OnResponse(Mobile from, string text)
             {
-                if (this.m_Key.Deleted || !this.m_Key.IsChildOf(from.Backpack))
+                if (m_Key.Deleted || !m_Key.IsChildOf(from.Backpack))
                 {
                     from.SendLocalizedMessage(501661); // That key is unreachable.
                     return;
                 }
 
-                this.m_Key.Description = Utility.FixHtml(text);
+                m_Key.Description = Utility.FixHtml(text);
             }
         }
 
@@ -435,13 +437,13 @@ namespace Server.Items
             public UnlockTarget(Key key)
                 : base(key.MaxRange, false, TargetFlags.None)
             {
-                this.m_Key = key;
-                this.CheckLOS = false;
+                m_Key = key;
+                CheckLOS = false;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Key.Deleted || !this.m_Key.IsChildOf(from.Backpack))
+                if (m_Key.Deleted || !m_Key.IsChildOf(from.Backpack))
                 {
                     from.SendLocalizedMessage(501661); // That key is unreachable.
                     return;
@@ -449,15 +451,15 @@ namespace Server.Items
 
                 int number;
 
-                if (targeted == this.m_Key)
+                if (targeted == m_Key)
                 {
                     number = 501665; // Enter a description for this key.
 
-                    from.Prompt = new RenamePrompt(this.m_Key);
+                    from.Prompt = new RenamePrompt(m_Key);
                 }
                 else if (targeted is ILockable)
                 {
-                    if (this.m_Key.UseOn(from, (ILockable)targeted))
+                    if (m_Key.UseOn(from, (ILockable)targeted))
                         number = -1;
                     else
                         number = 501668; // This key doesn't seem to unlock that.
@@ -480,12 +482,12 @@ namespace Server.Items
             public CopyTarget(Key key)
                 : base(3, false, TargetFlags.None)
             {
-                this.m_Key = key;
+                m_Key = key;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Key.Deleted || !this.m_Key.IsChildOf(from.Backpack))
+                if (m_Key.Deleted || !m_Key.IsChildOf(from.Backpack))
                 {
                     from.SendLocalizedMessage(501661); // That key is unreachable.
                     return;
@@ -505,10 +507,10 @@ namespace Server.Items
                     {
                         number = 501676; // You make a copy of the key.
 
-                        this.m_Key.Description = k.Description;
-                        this.m_Key.KeyValue = k.KeyValue;
-                        this.m_Key.Link = k.Link;
-                        this.m_Key.MaxRange = k.MaxRange;
+                        m_Key.Description = k.Description;
+                        m_Key.KeyValue = k.KeyValue;
+                        m_Key.Link = k.Link;
+                        m_Key.MaxRange = k.MaxRange;
                     }
                     else if (Utility.RandomDouble() <= 0.1) // 10% chance to destroy the key
                     {
@@ -516,7 +518,7 @@ namespace Server.Items
 
                         number = 501678; // The key was destroyed in the attempt.
 
-                        this.m_Key.Delete();
+                        m_Key.Delete();
                     }
                     else
                     {

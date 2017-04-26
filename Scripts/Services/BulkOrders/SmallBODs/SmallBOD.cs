@@ -316,13 +316,7 @@ namespace Server.Engines.BulkOrders
                 {
                     BulkMaterialType material = BulkMaterialType.None;
 
-                    if (o is BaseWeapon)
-                        material = GetMaterial(((BaseWeapon)o).Resource);
-                    else if (o is BaseArmor)
-                        material = GetMaterial(((BaseArmor)o).Resource);
-                    else if (o is BaseClothing)
-                        material = GetMaterial(((BaseClothing)o).Resource);
-                    else if (o is IResource)
+                    if (o is IResource)
                         material = GetMaterial(((IResource)o).Resource);
 
                     if (material != this.m_Material)
@@ -333,13 +327,7 @@ namespace Server.Engines.BulkOrders
                     {
                         bool isExceptional = false;
 
-                        if (o is BaseWeapon)
-                            isExceptional = (((BaseWeapon)o).Quality == WeaponQuality.Exceptional);
-                        else if (o is BaseArmor)
-                            isExceptional = (((BaseArmor)o).Quality == ArmorQuality.Exceptional);
-                        else if (o is BaseClothing)
-                            isExceptional = (((BaseClothing)o).Quality == ClothingQuality.Exceptional);
-                        else if (o is IQuality)
+                        if (o is IQuality)
                             isExceptional = (((IQuality)o).Quality == ItemQuality.Exceptional);
 
                         if (this.m_RequireExceptional && !isExceptional)

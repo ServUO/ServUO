@@ -57,7 +57,7 @@ namespace Server.Mobiles
 
 			bow.Movable = false;
 			bow.Crafter = this;
-			bow.Quality = WeaponQuality.Exceptional;
+			bow.Quality = ItemQuality.Exceptional;
 
 			AddItem(bow);
 

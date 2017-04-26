@@ -8,13 +8,6 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public enum ClothingQuality
-    {
-        Low,
-        Regular,
-        Exceptional
-    }
-
     public interface IArcaneEquip
     {
         bool IsArcane { get; }
@@ -22,7 +15,7 @@ namespace Server.Items
         int MaxArcaneCharges { get; set; }
     }
 
-    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, ISetItem, IVvVItem, IOwnerRestricted
+    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted
     {
         #region Factions
         private FactionItem m_FactionState;
@@ -76,7 +69,7 @@ namespace Server.Items
         private int m_MaxHitPoints;
         private int m_HitPoints;
         private Mobile m_Crafter;
-        private ClothingQuality m_Quality;
+        private ItemQuality m_Quality;
         private bool m_PlayerConstructed;
         protected CraftResource m_Resource;
         private int m_StrReq = -1;
@@ -177,7 +170,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ClothingQuality Quality
+        public ItemQuality Quality
         {
             get
             {
@@ -984,7 +977,7 @@ namespace Server.Items
             this.Hue = hue;
 
             this.m_Resource = this.DefaultResource;
-            this.m_Quality = ClothingQuality.Regular;
+            this.m_Quality = ItemQuality.Normal;
 
             this.m_HitPoints = this.m_MaxHitPoints = Utility.RandomMinMax(this.InitMinHits, this.InitMaxHits);
 
@@ -1232,7 +1225,7 @@ namespace Server.Items
             }
             #endregion
 
-            if (this.m_Quality == ClothingQuality.Exceptional)
+            if (this.m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
 
             if (this.RequiredRace == Race.Elf)
@@ -1441,7 +1434,7 @@ namespace Server.Items
                 attrs.Add(new EquipInfoAttribute(1041350)); // faction item
             #endregion
 
-            if (this.m_Quality == ClothingQuality.Exceptional)
+            if (this.m_Quality == ItemQuality.Exceptional)
                 attrs.Add(new EquipInfoAttribute(1018305 - (int)this.m_Quality));
         }
 
@@ -1614,7 +1607,7 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.HitPoints, this.m_HitPoints != 0);
             SetSaveFlag(ref flags, SaveFlag.PlayerConstructed, this.m_PlayerConstructed != false);
             SetSaveFlag(ref flags, SaveFlag.Crafter, this.m_Crafter != null);
-            SetSaveFlag(ref flags, SaveFlag.Quality, this.m_Quality != ClothingQuality.Regular);
+            SetSaveFlag(ref flags, SaveFlag.Quality, this.m_Quality != ItemQuality.Normal);
             SetSaveFlag(ref flags, SaveFlag.StrReq, this.m_StrReq != -1);
             #region Imbuing
             //SetSaveFlag(ref flags, SaveFlag.TimesImbued, this.m_TimesImbued != 0);
@@ -1800,9 +1793,9 @@ namespace Server.Items
                             this.m_Crafter = reader.ReadMobile();
 
                         if (GetSaveFlag(flags, SaveFlag.Quality))
-                            this.m_Quality = (ClothingQuality)reader.ReadEncodedInt();
+                            this.m_Quality = (ItemQuality)reader.ReadEncodedInt();
                         else
-                            this.m_Quality = ClothingQuality.Regular;
+                            this.m_Quality = ItemQuality.Normal;
 
                         if (GetSaveFlag(flags, SaveFlag.StrReq))
                             this.m_StrReq = reader.ReadEncodedInt();
@@ -1840,13 +1833,13 @@ namespace Server.Items
                 case 1:
                     {
                         this.m_Crafter = reader.ReadMobile();
-                        this.m_Quality = (ClothingQuality)reader.ReadInt();
+                        this.m_Quality = (ItemQuality)reader.ReadInt();
                         break;
                     }
                 case 0:
                     {
                         this.m_Crafter = null;
-                        this.m_Quality = ClothingQuality.Regular;
+                        this.m_Quality = ItemQuality.Normal;
                         break;
                     }
             }
@@ -1990,7 +1983,7 @@ namespace Server.Items
 
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ClothingQuality)quality;
+            this.Quality = (ItemQuality)quality;
 
             if (makersMark)
                 this.Crafter = from;
