@@ -1,40 +1,40 @@
 using System;
 using Server.Engines.Craft;
 using Server.Network;
-using Server.Mobiles;
 using Server.ContextMenus;
 using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public abstract class BaseTool : Item, IUsesRemaining, ICraftable
+    public abstract class BaseTool : Item, IUsesRemaining, ICraftable, IResource
     {
         private Mobile m_Crafter;
         private ItemQuality m_Quality;
         private int m_UsesRemaining;
         private bool m_RepairMode;
+        private CraftResource _Resource;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource
+        {
+            get { return _Resource; }
+            set
+            {
+                _Resource = value; InvalidateProperties();
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
         {
-            get
-            {
-                return this.m_Crafter;
-            }
-            set
-            {
-                this.m_Crafter = value;
-                this.InvalidateProperties();
-            }
+            get { return this.m_Crafter; }
+            set { this.m_Crafter = value; this.InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality
         {
-            get
-            {
-                return this.m_Quality;
-            }
+            get { return this.m_Quality; }
             set
             {
                 this.UnscaleUses();
@@ -47,28 +47,15 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
-            get
-            {
-                return this.m_UsesRemaining;
-            }
-            set
-            {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
-            }
+            get { return this.m_UsesRemaining; }
+            set { this.m_UsesRemaining = value; this.InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool RepairMode
         {
-            get
-            {
-                return m_RepairMode;
-            }
-            set
-            {
-                m_RepairMode = value;
-            }
+            get { return m_RepairMode; }
+            set { m_RepairMode = value; }
         }
 
         public void ScaleUses()
@@ -92,13 +79,8 @@ namespace Server.Items
 
         public bool ShowUsesRemaining
         {
-            get
-            {
-                return true;
-            }
-            set
-            {
-            }
+            get { return true; }
+            set { }
         }
 
         public virtual bool BreakOnDepletion { get { return true; } }
@@ -126,7 +108,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if(m_Crafter != null)
+            if (m_Crafter != null)
                 list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
             if (this.m_Quality == ItemQuality.Exceptional)
@@ -140,7 +122,7 @@ namespace Server.Items
             this.LabelToAffix(m, 1017323, AffixType.Append, ": " + this.m_UsesRemaining.ToString()); // Durability
         }
 
-		public virtual bool CheckAccessible(Mobile m, ref int num)
+        public virtual bool CheckAccessible(Mobile m, ref int num)
         {
             if (!IsChildOf(m) && Parent != m)
             {
@@ -151,35 +133,35 @@ namespace Server.Items
             return true;
         }
 
-	    public static bool CheckAccessible(Item tool, Mobile m)
-	    {
-		    return CheckAccessible(tool, m, false);
-	    }
+        public static bool CheckAccessible(Item tool, Mobile m)
+        {
+            return CheckAccessible(tool, m, false);
+        }
 
-	    public static bool CheckAccessible(Item tool, Mobile m, bool message)
-	    {
-		    var num = 0;
+        public static bool CheckAccessible(Item tool, Mobile m, bool message)
+        {
+            var num = 0;
 
-			bool res;
+            bool res;
 
-		    if (tool is BaseTool)
-		    {
-			    res = ((BaseTool)tool).CheckAccessible(m, ref num);
-		    }
-		    else
-		    {
-				res = tool.IsChildOf(m) || tool.Parent == m;
-		    }
+            if (tool is BaseTool)
+            {
+                res = ((BaseTool)tool).CheckAccessible(m, ref num);
+            }
+            else
+            {
+                res = tool.IsChildOf(m) || tool.Parent == m;
+            }
 
-		    if (num > 0 && message)
-		    {
-			    m.SendLocalizedMessage(num);
-		    }
+            if (num > 0 && message)
+            {
+                m.SendLocalizedMessage(num);
+            }
 
-		    return res;
-	    }
+            return res;
+        }
 
-	    public static bool CheckTool(Item tool, Mobile m)
+        public static bool CheckTool(Item tool, Mobile m)
         {
             Item check = m.FindItemOnLayer(Layer.OneHanded);
 
@@ -237,13 +219,12 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write((int)3); // version
 
+            writer.Write((int)_Resource);
             writer.Write(m_RepairMode);
-
             writer.Write((Mobile)this.m_Crafter);
             writer.Write((int)this.m_Quality);
-
             writer.Write((int)this.m_UsesRemaining);
         }
 
@@ -253,8 +234,13 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            switch ( version )
+            switch (version)
             {
+                case 3:
+                    {
+                        _Resource = (CraftResource)reader.ReadInt();
+                        goto case 2;
+                    }
                 case 2:
                     {
                         m_RepairMode = reader.ReadBool();
@@ -283,6 +269,14 @@ namespace Server.Items
             if (makersMark)
                 this.Crafter = from;
 
+            if (!craftItem.ForceNonExceptional)
+            {
+                if (typeRes == null)
+                    typeRes = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(typeRes);
+            }
+
             return quality;
         }
         #endregion
@@ -291,7 +285,7 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if(Core.TOL)
+            if (Core.TOL)
                 list.Add(new ToggleRepairContextMenuEntry(from, this));
         }
 

@@ -2,15 +2,53 @@ using System;
 
 namespace Server.Mobiles
 {
+    public enum DrakeType
+    {
+        Physical,
+        Fire,
+        Cold,
+        Poison
+    }
+
     [CorpseName("a platinum drake corpse")]
     public class PlatinumDrake : BaseCreature
     {
+        private DrakeType m_type;
+
         [Constructable]
-        public PlatinumDrake()
+        public PlatinumDrake(DrakeType type)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
+            m_type = type;
+
+            switch (type)
+            {
+                case DrakeType.Physical:
+                    this.Body = 0x589;
+                    this.Hue = 0;
+                    this.SetDamageType(ResistanceType.Physical, 100);
+                    break;
+                case DrakeType.Fire:
+                    this.Body = 0x58A;
+                    this.Hue = 33929;
+                    this.SetDamageType(ResistanceType.Physical, 0);
+                    this.SetDamageType(ResistanceType.Fire, 100);
+                    break;
+                case DrakeType.Cold:
+                    this.Body = 0x58A;
+                    this.Hue = 34134;
+                    this.SetDamageType(ResistanceType.Physical, 0);
+                    this.SetDamageType(ResistanceType.Cold, 100);
+                    break;
+                case DrakeType.Poison:
+                    this.Body = 0x58A;
+                    this.Hue = 34136;
+                    this.SetDamageType(ResistanceType.Physical, 0);
+                    this.SetDamageType(ResistanceType.Poison, 100);
+                    break;
+            }
+
             this.Name = "Platinum Drake";
-            this.Body = 0x589;
             this.Female = true;
             this.BaseSoundID = 362;
 
@@ -21,8 +59,6 @@ namespace Server.Mobiles
             this.SetHits(241, 258);
 
             this.SetDamage(11, 17);
-
-            this.SetDamageType(ResistanceType.Physical, 100);
 
             this.SetResistance(ResistanceType.Physical, 30, 50);
             this.SetResistance(ResistanceType.Fire, 30, 50);
@@ -53,8 +89,13 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool ReacquireOnMovement { get { return true; } }
-        public override bool HasBreath { get { return true; } } // fire breath enabled
+        public override bool ReacquireOnMovement { get { return !this.Controlled; } }
+        public override bool HasBreath { get { return true; } }
+        public override int BreathPhysicalDamage { get { return this.m_type == DrakeType.Physical ? 100 : 0; } }
+        public override int BreathFireDamage { get { return this.m_type == DrakeType.Fire ? 100 : 0; } }
+        public override int BreathColdDamage { get { return this.m_type == DrakeType.Cold ? 100 : 0; } }
+        public override int BreathPoisonDamage { get { return this.m_type == DrakeType.Poison ? 100 : 0; } }
+        public override int BreathEffectHue { get { return this.m_type == DrakeType.Cold ? 0x480 : 0; } }
         public override int TreasureMapLevel { get { return 2; } }
         public override int Meat { get { return 10; } }
         public override int DragonBlood { get { return 8; } }
@@ -75,12 +116,16 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
             writer.Write((int)0);
+
+            writer.Write((int)m_type);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            m_type = (DrakeType)reader.ReadInt();
         }
     }
 }

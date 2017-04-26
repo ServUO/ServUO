@@ -16,39 +16,39 @@ namespace Server.Mobiles
         public TRex()
             : base(AIType.AI_Melee, FightMode.Weakest, 10, 1, .08, .17)
         {
-            Name = "a tyrannosaurus rex";
-            Body = 1400;
-            BaseSoundID = 362;
+            this.Name = "Tyrannosaurus Rex";
+            this.Body = 1400;
+            this.BaseSoundID = 362;
 
-            SetStr(986, 1185);
-            SetDex(177, 255);
-            SetInt(151, 250);
+            this.SetStr(500, 700);
+            this.SetDex(500, 700);
+            this.SetInt(100, 180);
 
-            SetHits(15000);
+            this.SetHits(15000);
 
-            SetDamage(30, 42);
+            this.SetDamage(33, 55);
 
-            SetDamageType(ResistanceType.Physical, 50);
-            SetDamageType(ResistanceType.Fire, 25);
-            SetDamageType(ResistanceType.Energy, 25);
+            this.SetDamageType(ResistanceType.Physical, 100);
 
-            SetResistance(ResistanceType.Physical, 65, 80);
-            SetResistance(ResistanceType.Fire, 60, 80);
-            SetResistance(ResistanceType.Cold, 50, 60);
-            SetResistance(ResistanceType.Poison, 100);
-            SetResistance(ResistanceType.Energy, 40, 50);
+            this.SetResistance(ResistanceType.Physical, 80, 90);
+            this.SetResistance(ResistanceType.Fire, 60, 80);
+            this.SetResistance(ResistanceType.Cold, 60, 70);
+            this.SetResistance(ResistanceType.Poison, 80, 100);
+            this.SetResistance(ResistanceType.Energy, 60, 70);
 
-            SetSkill(SkillName.Anatomy, 25.1, 50.0);
-            SetSkill(SkillName.MagicResist, 150.0);
-            SetSkill(SkillName.Tactics, 120, 140);
-            SetSkill(SkillName.Wrestling, 140, 150);
+            this.SetSkill(SkillName.Anatomy, 100.0);
+            this.SetSkill(SkillName.MagicResist, 140.0, 150.0);
+            this.SetSkill(SkillName.Tactics, 110.0, 130.0);
+            this.SetSkill(SkillName.Wrestling, 130.0, 150.0);
+            this.SetSkill(SkillName.Poisoning, 60.0, 70.0);
+            this.SetSkill(SkillName.Parry, 100);
 
-            Fame = 35000;
-            Karma = -35000;
+            this.Fame = 24000;
+            this.Karma = -24000;
 
             _NextFreeze = DateTime.UtcNow;
 
-            CanSwim = true;
+            this.CanSwim = true;
         }
 
         public override bool AutoDispel { get { return true; } }
@@ -56,6 +56,13 @@ namespace Server.Mobiles
         public override bool UseSmartAI { get { return true; } }
         public override bool ReacquireOnMovement { get { return true; } }
         public override bool AttacksFocus { get { return true; } }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            return WeaponAbility.ArmorIgnore;
+        }
+
+        // Missing Tail Swipe Ability
 
         public override void OnThink()
         {
