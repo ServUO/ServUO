@@ -4166,16 +4166,23 @@ namespace Server.Mobiles
 
             m_IdleReleaseTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(15, 25));
 
-            if (Body.IsHuman && !Mounted && !Flying)
+            if (Body.IsHuman && !Mounted)
             {
-                switch (Utility.Random(2))
+                if (Flying)
                 {
-                    case 0:
-                        Animate(5, 5, 1, true, true, 1);
-                        break;
-                    case 1:
-                        Animate(6, 5, 1, true, false, 1);
-                        break;
+                    Animate(66, 10, 1, true, false, 1);
+                }
+                else
+                {
+                    switch (Utility.Random(2))
+                    {
+                        case 0:
+                            Animate(5, 5, 1, true, true, 1);
+                            break;
+                        case 1:
+                            Animate(6, 5, 1, true, false, 1);
+                            break;
+                    }
                 }
             }
             else if (Body.IsAnimal)
