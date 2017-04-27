@@ -58,6 +58,7 @@ namespace Server.Mobiles
         public override Poison PoisonImmune { get { return Poison.Regular; } }
         public override int TreasureMapLevel { get { return 4; } }
         public override int Meat { get { return 1; } }
+        public override int TreasureMapLevel { get { return 4; } }
 
         public override void GenerateLoot()
         {
