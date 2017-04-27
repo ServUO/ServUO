@@ -1,75 +1,68 @@
 using System;
-using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("an fire daemon corpse")]
+    [CorpseName("a fire daemon corpse")]
     public class FireDaemon : BaseCreature
     {
         [Constructable]
         public FireDaemon()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an fire daemon";
+            this.Name = "a fire daemon";
             this.Body = 9;
             this.BaseSoundID = 0x47D;
-            this.Hue = 0x664;
+            this.Hue = 1636;
 
-            this.SetStr(549, 1199);
-            this.SetDex(136, 206);
-            this.SetInt(202, 336);
+            this.SetStr(504, 539);
+            this.SetDex(126, 145);
+            this.SetInt(329, 364);
 
-            this.SetMana(202, 336);
-            this.SetStam(136, 206);
-            this.SetHits(1111, 1478);
+            this.SetHits(1026, 1174);
 
-            this.SetDamage(22, 29);
+            this.SetDamage(7, 14);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Fire, 25);
-            this.SetDamageType(ResistanceType.Energy, 25);
+            this.SetDamageType(ResistanceType.Physical, 20);
+            this.SetDamageType(ResistanceType.Fire, 80);
 
-            this.SetResistance(ResistanceType.Physical, 48, 93);
-            this.SetResistance(ResistanceType.Fire, 60, 100);
-            this.SetResistance(ResistanceType.Cold, -8, 57);
-            this.SetResistance(ResistanceType.Poison, 30, 100);
-            this.SetResistance(ResistanceType.Energy, 37, 50);
+            this.SetResistance(ResistanceType.Physical, 45, 60);
+            this.SetResistance(ResistanceType.Fire, 100);
+            this.SetResistance(ResistanceType.Cold, -10, 0);
+            this.SetResistance(ResistanceType.Poison, 20, 30);
+            this.SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.MagicResist, 98.1, 132.6);
-            this.SetSkill(SkillName.Tactics, 86.9, 95.5);
-            this.SetSkill(SkillName.Wrestling, 42.2, 98.8);
-            this.SetSkill(SkillName.Magery, 97.1, 100.8);
-            this.SetSkill(SkillName.EvalInt, 91.1, 91.8);
-            this.SetSkill(SkillName.Meditation, 45.4, 94.1);
+            this.SetSkill(SkillName.Anatomy, 75.5, 84.9);
+            this.SetSkill(SkillName.MagicResist, 95.7, 109.8);
+            this.SetSkill(SkillName.Tactics, 81.0, 98.6);
+            this.SetSkill(SkillName.Wrestling, 40.2, 78.7);
+            this.SetSkill(SkillName.EvalInt, 91.1, 104.5);
+            this.SetSkill(SkillName.Magery, 91.3, 105.0);
+            this.SetSkill(SkillName.Meditation, 90.1, 103.7);
+            this.SetSkill(SkillName.DetectHidden, 66.0);
 
             this.Fame = 15000;
             this.Karma = -15000;
 
             this.VirtualArmor = 58;
-        }
-
-        public override int TreasureMapLevel { get { return 4; } }
+        }        
 
         public FireDaemon(Serial serial)
             : base(serial)
         {
         }
 
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
-        public override WeaponAbility GetWeaponAbility()
-        {
-            return WeaponAbility.ConcussionBlow;
-        }
+        public override bool HasAura { get { return true; } }
+        public override int AuraRange { get { return 5; } }
+        public override bool HasBreath { get { return true; } }
+        public override bool CanRummageCorpses { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Regular; } }
+        public override int TreasureMapLevel { get { return 4; } }
+        public override int Meat { get { return 1; } }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average, 2);
+            this.AddLoot(LootPack.FilthyRich);
+            this.AddLoot(LootPack.Rich);
         }
 
         public override void Serialize(GenericWriter writer)

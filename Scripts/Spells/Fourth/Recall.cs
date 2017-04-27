@@ -120,11 +120,11 @@ namespace Server.Spells.Fourth
             }
             else if (!map.CanSpawnMobile(loc.X, loc.Y, loc.Z) && !isboatkey)
             {
-                this.Caster.SendLocalizedMessage(501942); // That location is blocked.
+                this.Caster.SendLocalizedMessage(501025); // Something is blocking the location.
             }
             else if ((checkMulti && SpellHelper.CheckMulti(loc, map)) && !isboatkey)
             {
-                this.Caster.SendLocalizedMessage(501942); // That location is blocked.
+                this.Caster.SendLocalizedMessage(501025); // Something is blocking the location.
             }
             else if (this.m_Book != null && this.m_Book.CurCharges <= 0)
             {
