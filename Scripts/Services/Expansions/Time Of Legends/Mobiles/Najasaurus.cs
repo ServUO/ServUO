@@ -6,7 +6,7 @@ namespace Server.Mobiles
     [CorpseName("a najasaurus corpse")]
     public class Najasaurus : BaseCreature
     {
-        public override bool AttacksFocus { get { return true; } }
+        public override bool AttacksFocus { get { return !Controlled; } }
 
         [Constructable]
         public Najasaurus()
