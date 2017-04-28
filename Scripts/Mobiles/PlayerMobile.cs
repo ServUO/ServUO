@@ -6493,7 +6493,7 @@ namespace Server.Mobiles
 				{
 					BaseCreature pet = AllFollowers[i] as BaseCreature;
 
-					if (pet == null || pet.ControlMaster == null)
+					if (pet == null || pet.ControlMaster == null || pet.Allured)
 					{
 						continue;
 					}

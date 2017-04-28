@@ -45,35 +45,87 @@ namespace Server.Spells.Mysticism
                 BaseWeapon wep = Caster.Weapon as BaseWeapon;
 
                 if (wep == null)
+                {
                     Caster.SendLocalizedMessage(501078); // You must be holding a weapon.
+                }
                 else
                 {
                     if (Caster.HasGump(typeof(EnchantSpellGump)))
+                    {
                         Caster.CloseGump(typeof(EnchantSpellGump));
+                    }
 
-                    Caster.SendGump(new EnchantSpellGump(Caster, Scroll, wep));
+                    var gump = new EnchantSpellGump(Caster, Scroll, wep);
+                    int serial = gump.Serial;
+
+                    Caster.SendGump(gump);
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
+                    {
+                        var current = Caster.FindGump(typeof(EnchantSpellGump));
+
+                        if (current != null && current.Serial == serial)
+                        {
+                            Caster.CloseGump(typeof(EnchantSpellGump));
+                            FinishSequence();
+                        }
+                    });
                 }
-            }
-            else if (IsUnderSpellEffects(Caster, Weapon) || Weapon.Immolating || Weapon.ConsecratedContext != null)
-                Caster.SendLocalizedMessage(1080128); //You cannot use this ability while your weapon is enchanted.
-            else if (Weapon.FocusWeilder != null)
-                Caster.SendLocalizedMessage(1080446); // You cannot enchant an item that is under the effects of the ninjitsu focus attack ability.
-            else if (Weapon.WeaponAttributes.HitLightning > 0 || Weapon.WeaponAttributes.HitFireball > 0 || Weapon.WeaponAttributes.HitHarm > 0 || Weapon.WeaponAttributes.HitMagicArrow > 0 || Weapon.WeaponAttributes.HitDispel > 0)
-                Caster.SendLocalizedMessage(1080127); // This weapon already has a hit spell effect and cannot be enchanted.
-            else
-                return true;
 
-            return false;
+                return false;
+            }
+            else if (IsUnderSpellEffects(Caster, Weapon))
+            {
+                Caster.SendLocalizedMessage(501775); // This spell is already in effect.
+                return false;
+            }
+            else if (Weapon.Immolating || Weapon.ConsecratedContext != null)
+            {
+                Caster.SendLocalizedMessage(1080128); //You cannot use this ability while your weapon is enchanted.
+                return false;
+            }
+            else if (Weapon.FocusWeilder != null)
+            {
+                Caster.SendLocalizedMessage(1080446); // You cannot enchant an item that is under the effects of the ninjitsu focus attack ability.
+                return false;
+            }
+            else if (Weapon.WeaponAttributes.HitLightning > 0 || Weapon.WeaponAttributes.HitFireball > 0 || Weapon.WeaponAttributes.HitHarm > 0 || Weapon.WeaponAttributes.HitMagicArrow > 0 || Weapon.WeaponAttributes.HitDispel > 0)
+            {
+                Caster.SendLocalizedMessage(1080127); // This weapon already has a hit spell effect and cannot be enchanted.
+                return false;
+            }
+
+            return true;
         }
 
         public override void OnCast()
         {
-            if (CheckWSequence() && CheckSequence() && Caster.Weapon == Weapon)
+            BaseWeapon wep = Caster.Weapon as BaseWeapon;
+
+            if (wep == null || wep != Weapon)
+            {
+                Caster.SendLocalizedMessage(501078); // You must be holding a weapon.
+            }
+            else if (IsUnderSpellEffects(Caster, Weapon))
+            {
+                Caster.SendLocalizedMessage(501775); // This spell is already in effect.
+            }
+            else if (Weapon.Immolating || Weapon.ConsecratedContext != null)
+            {
+                Caster.SendLocalizedMessage(1080128); //You cannot use this ability while your weapon is enchanted.
+            }
+            else if (Weapon.FocusWeilder != null)
+            {
+                Caster.SendLocalizedMessage(1080446); // You cannot enchant an item that is under the effects of the ninjitsu focus attack ability.
+            }
+            else if (Weapon.WeaponAttributes.HitLightning > 0 || Weapon.WeaponAttributes.HitFireball > 0 || Weapon.WeaponAttributes.HitHarm > 0 || Weapon.WeaponAttributes.HitMagicArrow > 0 || Weapon.WeaponAttributes.HitDispel > 0)
+            {
+                Caster.SendLocalizedMessage(1080127); // This weapon already has a hit spell effect and cannot be enchanted.
+            }
+            else if (CheckSequence() && Caster.Weapon == Weapon)
             {
                 Caster.PlaySound(0x64E);
-                Caster.FixedEffect(0x37C4, 10, 14, 4, 3);
-
-                Caster.SendMessage("You enchant the weapon.");
+                Caster.FixedEffect(0x36CB, 1, 9, 1915, 0);
 
                 int prim = (int)Caster.Skills[CastSkill].Value;
                 int sec = (int)Caster.Skills[DamageSkill].Value;
@@ -83,9 +135,6 @@ namespace Server.Spells.Mysticism
 
                 if (Table == null)
                     Table = new Dictionary<Mobile, EnchantmentTimer>();
-
-                if (Table.ContainsKey(Caster))
-                    RemoveEnchantment(Caster);
 
                 Enhancement.SetValue(Caster, this.Attribute, value, ModName);
 
@@ -152,6 +201,9 @@ namespace Server.Spells.Mysticism
                 Table[caster] = null;
                 Table.Remove(caster);
 
+                caster.SendLocalizedMessage(1115273); // The enchantment on your weapon has expired.
+                caster.PlaySound(0x1E6);
+
                 Enhancement.RemoveMobile(caster);
             }
         }
@@ -163,31 +215,6 @@ namespace Server.Spells.Mysticism
 
             if (wep.EnchantedWeilder != null)
                 wep.EnchantedWeilder = null;
-        }
-
-        private bool CheckWSequence()
-        {
-            BaseWeapon wep = Caster.Weapon as BaseWeapon;
-
-            if (wep == null || wep is Fists)
-            {
-                Caster.SendMessage("You must have a weapon equipped to cast this spell.");
-                return false;
-            }
-
-            int v = wep.WeaponAttributes.HitFireball;
-            v += wep.WeaponAttributes.HitLightning;
-            v += wep.WeaponAttributes.HitMagicArrow;
-            v += wep.WeaponAttributes.HitHarm;
-            v += wep.WeaponAttributes.HitDispel;
-
-            if (v > 0)
-            {
-                Caster.SendLocalizedMessage(1080127); //This weapon already has a hit spell effect and cannot be enchanted.
-                return false;
-            }
-
-            return true;
         }
 	}
 
