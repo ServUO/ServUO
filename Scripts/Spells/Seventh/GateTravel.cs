@@ -85,7 +85,7 @@ namespace Server.Spells.Seventh
             {
                 this.Caster.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
             }
-            else if (this.Caster.Murderer && map.Rules != MapRules.FeluccaRules)
+            else if (this.Caster.Murderer && map.Rules != MapRules.FeluccaRules && !Siege.SiegeShard)
             {
                 this.Caster.SendLocalizedMessage(1019004); // You are not allowed to travel there.
             }

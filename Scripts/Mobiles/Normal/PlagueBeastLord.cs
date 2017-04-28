@@ -207,7 +207,7 @@ namespace Server.Mobiles
             return false;
         }
 
-        public virtual void Carve(Mobile from, Item item)
+        public virtual bool Carve(Mobile from, Item item)
         {
             if (this.m_OpenedBy == null && this.IsAccessibleTo(from))
             {
@@ -236,20 +236,10 @@ namespace Server.Mobiles
                 from.LocalOverheadMessage(MessageType.Regular, 0x21, 1071904); // * You slice through the plague beast's amorphous tissue *
                 Timer.DelayCall<Mobile>(TimeSpan.Zero, new TimerStateCallback<Mobile>(pack.Open), from);
 
-                if (item is IUsesRemaining && Siege.SiegeShard)
-                {
-                    IUsesRemaining uses = item as IUsesRemaining;
-
-                    uses.ShowUsesRemaining = true;
-                    uses.UsesRemaining--;
-
-                    if (uses.UsesRemaining <= 0)
-                    {
-                        item.Delete();
-                        from.SendLocalizedMessage(1044038); // You have worn out your tool!
-                    }
-                }
+                return true;
             }
+
+            return false;
         }
 
         public virtual bool Scissor(Mobile from, Scissors scissors)

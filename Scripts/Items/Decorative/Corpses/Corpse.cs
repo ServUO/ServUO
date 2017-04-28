@@ -1381,7 +1381,7 @@ namespace Server.Items
 			}
 		}
 
-		public void Carve(Mobile from, Item item)
+		public bool Carve(Mobile from, Item item)
 		{
 			if (IsCriminalAction(from) && Map != null && (Map.Rules & MapRules.HarmfulRestrictions) != 0)
 			{
@@ -1394,7 +1394,7 @@ namespace Server.Items
 					from.SendLocalizedMessage(1010049); // You may not loot this corpse.
 				}
 
-				return;
+				return false;
 			}
 
 			Mobile dead = m_Owner;
@@ -1426,20 +1426,6 @@ namespace Server.Items
 				{
 					from.CriminalAction(true);
 				}
-                
-                if(item is IUsesRemaining && Siege.SiegeShard)
-                {
-                    IUsesRemaining uses = item as IUsesRemaining;
-                    
-                    uses.ShowUsesRemaining = true;
-                    uses.UsesRemaining--;
-                    
-                    if(uses.UsesRemaining <= 0)
-                    {
-                        item.Delete();
-                        from.SendLocalizedMessage(1044038); // You have worn out your tool!
-                    }
-                }
 			}
 			else if (dead is BaseCreature)
 			{
@@ -1449,6 +1435,8 @@ namespace Server.Items
 			{
 				from.SendLocalizedMessage(500485); // You see nothing useful to carve from the corpse.
 			}
+
+            return true;
 		}
 	}
 }

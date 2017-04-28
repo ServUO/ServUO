@@ -198,7 +198,7 @@ namespace Server.Items
 
         public int GetUsesScalar()
         {
-            if (m_Quality == WeaponQuality.Exceptional)
+            if (m_Quality == ItemQuality.Exceptional)
                 return 200;
 
             return 100;

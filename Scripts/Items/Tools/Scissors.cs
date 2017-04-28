@@ -41,6 +41,8 @@ namespace Server.Items
                 ScaleUses();
             } 
         }
+
+        public bool PlayerConstructed { get { return false; } }
     
 		[Constructable]
 		public Scissors()
@@ -178,16 +180,10 @@ namespace Server.Items
 						if (obj.Scissor(from, m_Item))
 						{
 							from.PlaySound(0x248);
-                            
-                            if(Siege.SiegeShard)
-                            {
-                                m_Item.UsesRemaining--;
 
-                                if (m_Item.UsesRemaining <= 0)
-                                {
-                                    m_Item.Delete();
-                                    from.SendLocalizedMessage(1044038); // You have worn out your tool!
-                                }
+                            if (Siege.SiegeShard)
+                            {
+                                Siege.CheckUsesRemaining(from, m_Item);
                             }
 						}
 					}
@@ -199,16 +195,10 @@ namespace Server.Items
 					if (obj.Scissor(from, m_Item))
 					{
 						from.PlaySound(0x248);
-                        
-                        if(Siege.SiegeShard)
-                        {
-                            m_Item.UsesRemaining--;
 
-                            if (m_Item.UsesRemaining <= 0)
-                            {
-                                m_Item.Delete();
-                                from.SendLocalizedMessage(1044038); // You have worn out your tool!
-                            }
+                        if (Siege.SiegeShard)
+                        {
+                            Siege.CheckUsesRemaining(from, m_Item);
                         }
 					}
 				}

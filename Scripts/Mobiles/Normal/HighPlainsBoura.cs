@@ -81,7 +81,7 @@ namespace Server.Mobiles
             get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; }
         }
 
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
             if (!GatheredFur)
             {
@@ -97,23 +97,13 @@ namespace Server.Mobiles
                     from.SendLocalizedMessage(1112353); // You place the gathered boura fur into your backpack.
                     GatheredFur = true;
 
-                    if (item is IUsesRemaining && Siege.SiegeShard)
-                    {
-                        IUsesRemaining uses = item as IUsesRemaining;
-
-                        uses.ShowUsesRemaining = true;
-                        uses.UsesRemaining--;
-
-                        if (uses.UsesRemaining <= 0)
-                        {
-                            item.Delete();
-                            from.SendLocalizedMessage(1044038); // You have worn out your tool!
-                        }
-                    }
+                    return true;
                 }
             }
             else
                 from.SendLocalizedMessage(1112354); // The boura glares at you and will not let you shear its fur.
+
+            return false;
         }
 
         public override void OnCarve(Mobile from, Corpse corpse, Item with)

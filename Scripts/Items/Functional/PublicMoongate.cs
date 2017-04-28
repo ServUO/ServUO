@@ -540,7 +540,7 @@ namespace Server.Items
                 m_Mobile.SendLocalizedMessage(1019002); // You are too far away to use the gate.
                 return;
             }
-            else if (m_Mobile.Player && m_Mobile.Murderer && list.Map != Map.Felucca)
+            else if (m_Mobile.Player && m_Mobile.Murderer && list.Map != Map.Felucca && !Siege.SiegeShard)
             {
                 m_Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 return;

@@ -10,6 +10,8 @@ namespace Server
     public static class Siege
     {
         public static bool SiegeShard = Config.Get("Siege.IsSiege", false);
+        public static int CharacterSlots = Config.Get("Siege.CharacterSlots", 1);
+
         public static int StatsPerDay = 15;
 
         public static void Configure()
@@ -221,6 +223,23 @@ namespace Server
                             pm.SendLocalizedMessage(1075292, old.Name != null ? old.Name : "#" + old.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
                         }
                     }
+                }
+            }
+        }
+
+        public static void CheckUsesRemaining(Mobile from, Item item)
+        {
+            IUsesRemaining uses = item as IUsesRemaining;
+
+            if (uses != null)
+            {
+                uses.ShowUsesRemaining = true;
+                uses.UsesRemaining--;
+
+                if (uses.UsesRemaining <= 0)
+                {
+                    item.Delete();
+                    from.SendLocalizedMessage(1044038); // You have worn out your tool!
                 }
             }
         }

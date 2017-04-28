@@ -90,31 +90,17 @@ namespace Server.Mobiles
                 return (this.Body == 0xCF ? 3 : 0);
             }
         }
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
             if (DateTime.UtcNow < this.m_NextWoolTime)
             {
                 // This sheep is not yet ready to be shorn.
                 this.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500449, from.NetState);
-                return;
+                return false;
             }
 
             from.SendLocalizedMessage(500452); // You place the gathered wool into your backpack.
             from.AddToBackpack(new Wool(this.Map == Map.Felucca ? 2 : 1));
-
-            if (item is IUsesRemaining && Siege.SiegeShard)
-            {
-                IUsesRemaining uses = item as IUsesRemaining;
-
-                uses.ShowUsesRemaining = true;
-                uses.UsesRemaining--;
-
-                if (uses.UsesRemaining <= 0)
-                {
-                    item.Delete();
-                    from.SendLocalizedMessage(1044038); // You have worn out your tool!
-                }
-            }
 
             if (from is PlayerMobile)
             {
@@ -134,6 +120,8 @@ namespace Server.Mobiles
             }
 
             this.NextWoolTime = DateTime.UtcNow + TimeSpan.FromHours(3.0); // TODO: Proper time delay
+
+            return true;
         }
 
         public override void OnThink()

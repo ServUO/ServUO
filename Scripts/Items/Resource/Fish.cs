@@ -24,23 +24,10 @@ namespace Server.Items
         {
         }
 
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
-            if (item is IUsesRemaining && Siege.SiegeShard)
-            {
-                IUsesRemaining uses = item as IUsesRemaining;
-
-                uses.ShowUsesRemaining = true;
-                uses.UsesRemaining--;
-
-                if (uses.UsesRemaining <= 0)
-                {
-                    item.Delete();
-                    from.SendLocalizedMessage(1044038); // You have worn out your tool!
-                }
-            }
-
             base.ScissorHelper(from, new RawFishSteak(), 4);
+            return true;
         }
 
         public override void Serialize(GenericWriter writer)

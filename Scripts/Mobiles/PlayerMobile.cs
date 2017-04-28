@@ -1869,7 +1869,7 @@ namespace Server.Mobiles
 
 			m_NextMovementTime += speed;
 
-            if (Core.TickCount - NextPassiveDetectHidden >= 0)
+            if (!Siege.SiegeShard && Core.TickCount - NextPassiveDetectHidden >= 0)
             {
                 DetectHidden.DoPassiveDetect(this);
                 NextPassiveDetectHidden = Core.TickCount + (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
