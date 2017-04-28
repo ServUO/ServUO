@@ -6020,12 +6020,12 @@ namespace Server
 					{
 						if (version < 34)
 						{
-							m_StrCap = 125;
-							m_DexCap = 125;
-							m_IntCap = 125;
-							m_StrMaxCap = 150;
-							m_DexMaxCap = 150;
-							m_IntMaxCap = 150;
+                            m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
+                            m_DexCap = Config.Get("PlayerCaps.DexCap", 125);
+                            m_IntCap = Config.Get("PlayerCaps.IntCap", 125);
+                            m_StrMaxCap = Config.Get("PlayerCaps.StrMaxCap", 150);
+                            m_DexMaxCap = Config.Get("PlayerCaps.DexMaxCap", 150);
+                            m_IntMaxCap = Config.Get("PlayerCaps.IntMaxCap", 150);
 						}
 
 						if (version < 21)
@@ -6045,7 +6045,7 @@ namespace Server
 
 						if (version < 3)
 						{
-							m_StatCap = 225;
+                            m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
 						}
 
 						if (version < 15)
@@ -10870,13 +10870,13 @@ namespace Server
 
 		public void DefaultMobileInit()
 		{
-            m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225); ;
-            m_StrCap = Config.Get("PlayerCaps.StrCap", 125); ;
-            m_DexCap = Config.Get("PlayerCaps.DexCap", 125); ;
-            m_IntCap = Config.Get("PlayerCaps.IntCap", 125); ;
-            m_StrMaxCap = Config.Get("PlayerCaps.StrMaxCap", 150); ;
-            m_DexMaxCap = Config.Get("PlayerCaps.DexMaxCap", 150); ;
-            m_IntMaxCap = Config.Get("PlayerCaps.IntMaxCap", 150); ;
+            m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
+            m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
+            m_DexCap = Config.Get("PlayerCaps.DexCap", 125);
+            m_IntCap = Config.Get("PlayerCaps.IntCap", 125);
+            m_StrMaxCap = Config.Get("PlayerCaps.StrMaxCap", 150);
+            m_DexMaxCap = Config.Get("PlayerCaps.DexMaxCap", 150);
+            m_IntMaxCap = Config.Get("PlayerCaps.IntMaxCap", 150);
 			m_FollowersMax = 5;
 			m_Skills = new Skills(this);
 			m_Items = new List<Item>();
