@@ -223,14 +223,14 @@ namespace Server.Items
                         weapon.DamageLevel = (WeaponDamageLevel)Utility.Random(3);
                         weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random(3);
                         weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random(3);
-                        weapon.Quality = WeaponQuality.Regular;
+                        weapon.Quality = ItemQuality.Normal;
                     }
                     else if (item is BaseArmor)
                     {
                         BaseArmor armor = (BaseArmor)item;
                         armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random(3);
                         armor.Durability = (ArmorDurabilityLevel)Utility.Random(3);
-                        armor.Quality = ArmorQuality.Regular;
+                        armor.Quality = ItemQuality.Normal;
                     }
                 }
                 else
@@ -318,14 +318,14 @@ namespace Server.Items
                         weapon.DamageLevel = (WeaponDamageLevel)Utility.Random(4);
                         weapon.AccuracyLevel = (WeaponAccuracyLevel)Utility.Random(4);
                         weapon.DurabilityLevel = (WeaponDurabilityLevel)Utility.Random(4);
-                        weapon.Quality = WeaponQuality.Regular;
+                        weapon.Quality = ItemQuality.Normal;
                     }
                     else if (item is BaseArmor)
                     {
                         BaseArmor armor = (BaseArmor)item;
                         armor.ProtectionLevel = (ArmorProtectionLevel)Utility.Random(4);
                         armor.Durability = (ArmorDurabilityLevel)Utility.Random(4);
-                        armor.Quality = ArmorQuality.Regular;
+                        armor.Quality = ItemQuality.Normal;
                     }
                 }
                 else

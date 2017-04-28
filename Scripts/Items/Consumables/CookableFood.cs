@@ -1,5 +1,6 @@
 using System;
 using Server.Targeting;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -13,21 +14,23 @@ namespace Server.Items
         {
             get
             {
-                return this.m_CookingLevel;
+                return m_CookingLevel;
             }
             set
             {
-                this.m_CookingLevel = value;
+                m_CookingLevel = value;
             }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
+        public bool PlayerConstructed { get { return true; } }
+
         public CookableFood(int itemID, int cookingLevel)
             : base(itemID)
         {
-            this.m_CookingLevel = cookingLevel;
+            m_CookingLevel = cookingLevel;
         }
 
         public CookableFood(Serial serial)
@@ -45,6 +48,13 @@ namespace Server.Items
             }
         }
 
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            Quality = (ItemQuality)quality;
+
+            return quality;
+        }
+
         public abstract Food Cook();
 
         public override void Serialize(GenericWriter writer)
@@ -56,7 +66,7 @@ namespace Server.Items
             writer.Write((int)_Quality);
 
             // Version 1
-            writer.Write((int)this.m_CookingLevel);
+            writer.Write((int)m_CookingLevel);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -74,7 +84,7 @@ namespace Server.Items
                     }
                 case 1:
                     {
-                        this.m_CookingLevel = reader.ReadInt();
+                        m_CookingLevel = reader.ReadInt();
                         break;
                     }
             }
@@ -126,12 +136,12 @@ namespace Server.Items
             public InternalTarget(CookableFood item)
                 : base(1, false, TargetFlags.None)
             {
-                this.m_Item = item;
+                m_Item = item;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Item.Deleted)
+                if (m_Item.Deleted)
                     return;
 
                 if (CookableFood.IsHeatSource(targeted))
@@ -140,9 +150,9 @@ namespace Server.Items
                     {
                         from.PlaySound(0x225);
 
-                        this.m_Item.Consume();
+                        m_Item.Consume();
 
-                        InternalTimer t = new InternalTimer(from, targeted as IPoint3D, from.Map, this.m_Item);
+                        InternalTimer t = new InternalTimer(from, targeted as IPoint3D, from.Map, m_Item);
                         t.Start();
                     }
                     else
@@ -162,32 +172,32 @@ namespace Server.Items
                 public InternalTimer(Mobile from, IPoint3D p, Map map, CookableFood cookableFood)
                     : base(TimeSpan.FromSeconds(5.0))
                 {
-                    this.m_From = from;
-                    this.m_Point = p;
-                    this.m_Map = map;
-                    this.m_CookableFood = cookableFood;
+                    m_From = from;
+                    m_Point = p;
+                    m_Map = map;
+                    m_CookableFood = cookableFood;
                 }
 
                 protected override void OnTick()
                 {
-                    this.m_From.EndAction(typeof(CookableFood));
+                    m_From.EndAction(typeof(CookableFood));
 
-                    if (this.m_From.Map != this.m_Map || (this.m_Point != null && this.m_From.GetDistanceToSqrt(this.m_Point) > 3))
+                    if (m_From.Map != m_Map || (m_Point != null && m_From.GetDistanceToSqrt(m_Point) > 3))
                     {
-                        this.m_From.SendLocalizedMessage(500686); // You burn the food to a crisp! It's ruined.
+                        m_From.SendLocalizedMessage(500686); // You burn the food to a crisp! It's ruined.
                         return;
                     }
 
-                    if (this.m_From.CheckSkill(SkillName.Cooking, this.m_CookableFood.CookingLevel, 100))
+                    if (m_From.CheckSkill(SkillName.Cooking, m_CookableFood.CookingLevel, 100))
                     {
-                        Food cookedFood = this.m_CookableFood.Cook();
+                        Food cookedFood = m_CookableFood.Cook();
 
-                        if (this.m_From.AddToBackpack(cookedFood))
-                            this.m_From.PlaySound(0x57);
+                        if (m_From.AddToBackpack(cookedFood))
+                            m_From.PlaySound(0x57);
                     }
                     else
                     {
-                        this.m_From.SendLocalizedMessage(500686); // You burn the food to a crisp! It's ruined.
+                        m_From.SendLocalizedMessage(500686); // You burn the food to a crisp! It's ruined.
                     }
                 }
             }
@@ -207,9 +217,9 @@ namespace Server.Items
         public RawRibs(int amount)
             : base(0x9F1, 10)
         {
-            this.Weight = 1.0;
-            this.Stackable = true;
-            this.Amount = amount;
+            Weight = 1.0;
+            Stackable = true;
+            Amount = amount;
         }
 
         public RawRibs(Serial serial)
@@ -250,8 +260,8 @@ namespace Server.Items
         public RawLambLeg(int amount)
             : base(0x1609, 10)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public RawLambLeg(Serial serial)
@@ -272,8 +282,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.Weight == 1)
-                this.Weight = -1;
+            if (version == 0 && Weight == 1)
+                Weight = -1;
         }
 
         public override Food Cook()
@@ -289,8 +299,8 @@ namespace Server.Items
         public RawChickenLeg()
             : base(0x1607, 10)
         {
-            this.Weight = 1.0;
-            this.Stackable = true;
+            Weight = 1.0;
+            Stackable = true;
         }
 
         public RawChickenLeg(Serial serial)
@@ -331,9 +341,9 @@ namespace Server.Items
         public RawBird(int amount)
             : base(0x9B9, 10)
         {
-            this.Weight = 1.0;
-            this.Stackable = true;
-            this.Amount = amount;
+            Weight = 1.0;
+            Stackable = true;
+            Amount = amount;
         }
 
         public RawBird(Serial serial)
@@ -376,7 +386,7 @@ namespace Server.Items
         public UnbakedPeachCobbler()
             : base(0x1042, 25)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public UnbakedPeachCobbler(Serial serial)
@@ -419,7 +429,7 @@ namespace Server.Items
         public UnbakedFruitPie()
             : base(0x1042, 25)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public UnbakedFruitPie(Serial serial)
@@ -462,7 +472,7 @@ namespace Server.Items
         public UnbakedMeatPie()
             : base(0x1042, 25)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public UnbakedMeatPie(Serial serial)
@@ -505,7 +515,7 @@ namespace Server.Items
         public UnbakedPumpkinPie()
             : base(0x1042, 25)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public UnbakedPumpkinPie(Serial serial)
@@ -548,7 +558,7 @@ namespace Server.Items
         public UnbakedApplePie()
             : base(0x1042, 25)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public UnbakedApplePie(Serial serial)
@@ -592,7 +602,7 @@ namespace Server.Items
         public UncookedCheesePizza()
             : base(0x1083, 20)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public UncookedCheesePizza(Serial serial)
@@ -613,11 +623,11 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.ItemID == 0x1040)
-                this.ItemID = 0x1083;
+            if (ItemID == 0x1040)
+                ItemID = 0x1083;
 
-            if (this.Hue == 51)
-                this.Hue = 0;
+            if (Hue == 51)
+                Hue = 0;
         }
 
         public override Food Cook()
@@ -641,7 +651,7 @@ namespace Server.Items
         public UncookedSausagePizza()
             : base(0x1083, 20)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public UncookedSausagePizza(Serial serial)
@@ -725,7 +735,7 @@ namespace Server.Items
         public UnbakedQuiche()
             : base(0x1042, 25)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public UnbakedQuiche(Serial serial)
@@ -766,9 +776,9 @@ namespace Server.Items
         public Eggs(int amount)
             : base(0x9B5, 15)
         {
-            this.Weight = 1.0;
-            this.Stackable = true;
-            this.Amount = amount;
+            Weight = 1.0;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Eggs(Serial serial)
@@ -791,10 +801,10 @@ namespace Server.Items
 
             if (version < 1)
             {
-                this.Stackable = true;
+                Stackable = true;
 
-                if (this.Weight == 0.5)
-                    this.Weight = 1.0;
+                if (Weight == 0.5)
+                    Weight = 1.0;
             }
         }
 
@@ -819,8 +829,8 @@ namespace Server.Items
         public BrightlyColoredEggs()
             : base(0x9B5, 15)
         {
-            this.Weight = 0.5;
-            this.Hue = 3 + (Utility.Random(20) * 5);
+            Weight = 0.5;
+            Hue = 3 + (Utility.Random(20) * 5);
         }
 
         public BrightlyColoredEggs(Serial serial)
@@ -863,8 +873,8 @@ namespace Server.Items
         public EasterEggs()
             : base(0x9B5, 15)
         {
-            this.Weight = 0.5;
-            this.Hue = 3 + (Utility.Random(20) * 5);
+            Weight = 0.5;
+            Hue = 3 + (Utility.Random(20) * 5);
         }
 
         public EasterEggs(Serial serial)
@@ -900,7 +910,7 @@ namespace Server.Items
         public CookieMix()
             : base(0x103F, 20)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public CookieMix(Serial serial)
@@ -943,7 +953,7 @@ namespace Server.Items
         public CakeMix()
             : base(0x103F, 40)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public CakeMix(Serial serial)
@@ -991,8 +1001,8 @@ namespace Server.Items
         public RawFishSteak(int amount)
             : base(0x097A, 10)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public RawFishSteak(Serial serial)

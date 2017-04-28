@@ -233,32 +233,15 @@ namespace Server.SkillHandlers
 
         public static int GetQualityBonus(Item item)
         {
-            if (item is BaseWeapon)
+            IQuality quality = item as IQuality;
+
+            if (quality != null)
             {
-                if (((BaseWeapon)item).Quality == WeaponQuality.Exceptional)
+                if (quality.Quality == ItemQuality.Exceptional)
                     return 20;
 
-                if (((BaseWeapon)item).PlayerConstructed)
+                if (quality.PlayerConstructed)
                     return 10;
-            }
-            else if (item is BaseArmor)
-            {
-                if (((BaseArmor)item).Quality == ArmorQuality.Exceptional)
-                    return 20;
-
-                if (((BaseArmor)item).PlayerConstructed)
-                    return 10;
-            }
-            else if (item is BaseHat)
-            {
-                if (((BaseHat)item).Quality == ClothingQuality.Exceptional)
-                    return 20;
-
-                if (((BaseHat)item).PlayerConstructed)
-                    return 10;
-            }
-            else if (item is BaseJewel)
-            {
             }
 
             return 0;
@@ -743,25 +726,27 @@ namespace Server.SkillHandlers
             return def.MaxIntensity;
         }
 
-        public static int GetMaxWeight(object itw)
+        public static int GetMaxWeight(object item)
         {
-            int MaxW = 450;
+            int maxWeight = 450;
 
-            if (itw is BaseWeapon)
+            IQuality quality = item as IQuality;
+
+            if (item is BaseWeapon)
             {
-                BaseWeapon itemToImbue = itw as BaseWeapon;
+                BaseWeapon itemToImbue = item as BaseWeapon;
 
-                if (itemToImbue.Quality == WeaponQuality.Exceptional)
+                if (quality != null && quality.Quality == ItemQuality.Exceptional)
                 {
                     if (itemToImbue is BaseRanged)
-                     return 550;
+                        return 550;
                     else if (itemToImbue.Layer == Layer.TwoHanded)
-                      return 600;
-                  else
-                     return  500;
+                        return 600;
+                    else
+                        return 500;
 
                 }
-                else if (itemToImbue.Quality == WeaponQuality.Regular)
+                else if (quality != null && quality.Quality == ItemQuality.Normal)
                 {
                     if (itemToImbue is BaseRanged)
                         return 500;
@@ -774,30 +759,32 @@ namespace Server.SkillHandlers
                 else
                     return 450;
             }
-            else if (itw is BaseArmor)
+            else if (item is BaseArmor)
             {
-                BaseArmor itemToImbue = itw as BaseArmor;
-                if (itemToImbue.Quality == ArmorQuality.Exceptional)
-                    MaxW = 500;
-                else if (itemToImbue.Quality == ArmorQuality.Regular)
-                    MaxW = 450;
-                
+                BaseArmor itemToImbue = item as BaseArmor;
+
+                if (quality != null && quality.Quality == ItemQuality.Exceptional)
+                    maxWeight = 500;
+                else if (quality != null && quality.Quality == ItemQuality.Normal)
+                    maxWeight = 450;
+
             }
-            else if (itw is BaseHat)
+            else if (item is BaseHat)
             {
-                BaseHat itemToImbue = itw as BaseHat;
-                if (itemToImbue.Quality == ClothingQuality.Exceptional)
-                    MaxW = 500;
-                else if (itemToImbue.Quality == ClothingQuality.Regular)
-                    MaxW = 450;
-               
+                BaseHat itemToImbue = item as BaseHat;
+
+                if (quality != null && quality.Quality == ItemQuality.Exceptional)
+                    maxWeight = 500;
+                else if (quality != null && quality.Quality == ItemQuality.Normal)
+                    maxWeight = 450;
+
             }
-            else if (itw is BaseJewel)
+            else if (item is BaseJewel)
             {
                 return 500;
             }
 
-            return MaxW;
+            return maxWeight;
         }
 
         public static int GetGemAmount(Item item, int mod, int value)
@@ -893,14 +880,14 @@ namespace Server.SkillHandlers
                 from.SendMessage("That is not an item!");
         }
 
-        public static int GetTotalMods(Item itw, int mod = -1)
+        public static int GetTotalMods(Item item, int mod = -1)
         {
             int total = 0;
             object prop = GetAttribute(mod);
 
-            if (itw is BaseWeapon)
+            if (item is BaseWeapon)
             {
-                BaseWeapon wep = itw as BaseWeapon;
+                BaseWeapon wep = item as BaseWeapon;
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
@@ -985,9 +972,9 @@ namespace Server.SkillHandlers
                 if (wep.SearingWeapon)
                     total++;
             }
-            else if (itw is BaseArmor)
+            else if (item is BaseArmor)
             {
-                BaseArmor armor = itw as BaseArmor;
+                BaseArmor armor = item as BaseArmor;
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
@@ -1045,9 +1032,9 @@ namespace Server.SkillHandlers
                     }
                 }
             }
-            else if (itw is BaseJewel)
+            else if (item is BaseJewel)
             {
-                BaseJewel j = itw as BaseJewel;
+                BaseJewel j = item as BaseJewel;
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
@@ -1085,9 +1072,9 @@ namespace Server.SkillHandlers
                 if (j.Resistances.Poison > 0 && mod != 54) { total += 1; }
                 if (j.Resistances.Energy > 0 && mod != 55) { total += 1; }
             }
-            else if (itw is BaseHat)
+            else if (item is BaseHat)
             {
-                BaseHat h = itw as BaseHat;
+                BaseHat h = item as BaseHat;
 
                 foreach (int i in Enum.GetValues(typeof(AosAttribute)))
                 {
@@ -1280,7 +1267,7 @@ namespace Server.SkillHandlers
         {
             double weight = 0;
 
-            if (i.Quality != ArmorQuality.Exceptional)
+            if (i.Quality != ItemQuality.Exceptional)
             {
                 if (i.PhysicalBonus > 0) { if (mod != 51) { weight += ((double)(100.0 / 15.0) * (double)i.PhysicalBonus); } }
                 if (i.FireBonus > 0) { if (mod != 52) { weight += ((double)(100.0 / 15.0) * (double)i.FireBonus); } }
@@ -1288,7 +1275,7 @@ namespace Server.SkillHandlers
                 if (i.PoisonBonus > 0) { if (mod != 54) { weight += ((double)(100.0 / 15.0) * (double)i.PoisonBonus); } }
                 if (i.EnergyBonus > 0) { if (mod != 55) { weight += ((double)(100.0 / 15.0) * (double)i.EnergyBonus); } }
             }
-            else if (i.Quality == ArmorQuality.Exceptional)
+            else if (i.Quality == ItemQuality.Exceptional)
             {
                 if (i.PhysicalBonus > i.PhysImbuing) { if (mod != 51) { weight += ((double)(100.0 / 15.0) * (double)(i.PhysicalBonus - i.PhysImbuing)); } }
                 if (i.FireBonus > i.FireImbuing) { if (mod != 52) { weight += ((double)(100.0 / 15.0) * (double)(i.FireBonus - i.FireImbuing)); } }

@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Server.Items
 {
-    public abstract class BaseArmor : Item, IScissorable, IFactionItem, ICraftable, IWearableDurability, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection
+    public abstract class BaseArmor : Item, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, ITalismanProtection
     {
         #region Factions
         private FactionItem m_FactionState;
@@ -78,7 +78,7 @@ namespace Server.Items
         private int m_MaxHitPoints;
         private int m_HitPoints;
         private Mobile m_Crafter;
-        private ArmorQuality m_Quality;
+        private ItemQuality m_Quality;
         private ArmorDurabilityLevel m_Durability;
         private ArmorProtectionLevel m_Protection;
         private CraftResource m_Resource;
@@ -906,7 +906,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ArmorQuality Quality
+        public ItemQuality Quality
         {
             get
             {
@@ -1358,7 +1358,7 @@ namespace Server.Items
         {
             int bonus = 0;
 
-            if (this.m_Quality == ArmorQuality.Exceptional &&!(this is GargishLeatherWingArmor))
+            if (this.m_Quality == ItemQuality.Exceptional &&!(this is GargishLeatherWingArmor))
                 bonus += 20;
 
             switch ( this.m_Durability )
@@ -1762,7 +1762,7 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.MaxHitPoints, this.m_MaxHitPoints != 0);
             SetSaveFlag(ref flags, SaveFlag.HitPoints, this.m_HitPoints != 0);
             SetSaveFlag(ref flags, SaveFlag.Crafter, this.m_Crafter != null);
-            SetSaveFlag(ref flags, SaveFlag.Quality, this.m_Quality != ArmorQuality.Regular);
+            SetSaveFlag(ref flags, SaveFlag.Quality, this.m_Quality != ItemQuality.Normal);
             SetSaveFlag(ref flags, SaveFlag.Durability, this.m_Durability != ArmorDurabilityLevel.Regular);
             SetSaveFlag(ref flags, SaveFlag.Protection, this.m_Protection != ArmorProtectionLevel.Regular);
             SetSaveFlag(ref flags, SaveFlag.Resource, this.m_Resource != this.DefaultResource);
@@ -2016,12 +2016,12 @@ namespace Server.Items
                             this.m_Crafter = reader.ReadMobile();
 
                         if (GetSaveFlag(flags, SaveFlag.Quality))
-                            this.m_Quality = (ArmorQuality)reader.ReadEncodedInt();
+                            this.m_Quality = (ItemQuality)reader.ReadEncodedInt();
                         else
-                            this.m_Quality = ArmorQuality.Regular;
+                            this.m_Quality = ItemQuality.Normal;
 
-                        if (version == 5 && this.m_Quality == ArmorQuality.Low)
-                            this.m_Quality = ArmorQuality.Regular;
+                        if (version == 5 && this.m_Quality == ItemQuality.Low)
+                            this.m_Quality = ItemQuality.Normal;
 
                         if (GetSaveFlag(flags, SaveFlag.Durability))
                         {
@@ -2130,7 +2130,7 @@ namespace Server.Items
                         this.m_MaxHitPoints = reader.ReadInt();
                         this.m_HitPoints = reader.ReadInt();
                         this.m_Crafter = reader.ReadMobile();
-                        this.m_Quality = (ArmorQuality)reader.ReadInt();
+                        this.m_Quality = (ItemQuality)reader.ReadInt();
                         this.m_Durability = (ArmorDurabilityLevel)reader.ReadInt();
                         this.m_Protection = (ArmorProtectionLevel)reader.ReadInt();
 
@@ -2147,7 +2147,7 @@ namespace Server.Items
                             this.m_AosArmorAttributes = new AosArmorAttributes(this);
                         }
 
-                        if (version < 3 && this.m_Quality == ArmorQuality.Exceptional)
+                        if (version < 3 && this.m_Quality == ItemQuality.Exceptional)
                             this.DistributeBonuses(6);
 
                         if (version >= 2)
@@ -2296,7 +2296,7 @@ namespace Server.Items
         public BaseArmor(int itemID)
             : base(itemID)
         {
-            this.m_Quality = ArmorQuality.Regular;
+            this.m_Quality = ItemQuality.Normal;
             this.m_Durability = ArmorDurabilityLevel.Regular;
             this.m_Crafter = null;
 
@@ -2714,7 +2714,7 @@ namespace Server.Items
                     RunicReforging.AddSuffixName(list, m_ReforgedSuffix, GetNameString());
                 }
             }
-            else if (this.m_Quality == ArmorQuality.Exceptional)
+            else if (this.m_Quality == ItemQuality.Exceptional)
             {
                 if (oreType != 0)
                     list.Add(1053100, "#{0}\t{1}", oreType, this.GetNameString()); // exceptional ~1_oretype~ ~2_armortype~
@@ -3007,7 +3007,7 @@ namespace Server.Items
                 attrs.Add(new EquipInfoAttribute(1041350)); // faction item
             #endregion
 
-            if (this.m_Quality == ArmorQuality.Exceptional)
+            if (this.m_Quality == ItemQuality.Exceptional)
                 attrs.Add(new EquipInfoAttribute(1018305 - (int)this.m_Quality));
 
             if (this.m_Identified || from.AccessLevel >= AccessLevel.GameMaster)
@@ -3045,7 +3045,7 @@ namespace Server.Items
 
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ArmorQuality)quality;
+            this.Quality = (ItemQuality)quality;
 
             if (makersMark)
                 this.Crafter = from;
@@ -3070,7 +3070,7 @@ namespace Server.Items
             if (context != null && context.DoNotColor)
                 this.Hue = 0;
 
-            if (this.Quality == ArmorQuality.Exceptional && !craftItem.ForceNonExceptional)
+            if (this.Quality == ItemQuality.Exceptional && !craftItem.ForceNonExceptional)
             {
                 if (!(Core.ML && this is BaseShield) && !craftItem.ForceNonExceptional)		// Guessed Core.ML removed exceptional resist bonuses from crafted shields
                     this.DistributeBonuses((tool is BaseRunicTool ? 6 : Core.SE ? 15 : 14)); // Not sure since when, but right now 15 points are added, not 14.

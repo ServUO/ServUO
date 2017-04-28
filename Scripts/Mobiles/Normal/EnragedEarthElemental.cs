@@ -13,28 +13,28 @@ namespace Server.Mobiles
             this.Name = "Enraged Earth Elemental";
             this.Body = 14;
             this.BaseSoundID = 268;
+            this.Hue = 442;
 
             this.SetStr(147, 155);
-            this.SetDex(78, 89);
-            this.SetInt(94, 110);
+            this.SetDex(78, 90);
+            this.SetInt(94, 115);
 
-            this.SetHits(500, 505);
-			this.SetMana(94, 110);
-			this.SetStam(78, 89);
+            this.SetHits(500, 550);
 
             this.SetDamage(9, 16);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 59, 65);
+            this.SetResistance(ResistanceType.Physical, 55, 65);
             this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 21, 28);
-            this.SetResistance(ResistanceType.Poison, 47, 51);
-            this.SetResistance(ResistanceType.Energy, 30, 33);
+            this.SetResistance(ResistanceType.Cold, 20, 30);
+            this.SetResistance(ResistanceType.Poison, 45, 55);
+            this.SetResistance(ResistanceType.Energy, 25, 35);
 
             this.SetSkill(SkillName.MagicResist, 100.0);
             this.SetSkill(SkillName.Tactics, 100.0);
             this.SetSkill(SkillName.Wrestling, 120.0);
+            this.SetSkill(SkillName.Parry, 120.0);
 
             this.Fame = 3500;
             this.Karma = -3500;

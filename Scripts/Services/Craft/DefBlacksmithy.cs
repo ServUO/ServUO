@@ -209,6 +209,11 @@ namespace Server.Engines.Craft
                 return num; // The tool must be on your person to use.
             }
 
+            if (tool is AddonToolComponent && from.InRange(tool.GetWorldLocation(), 2))
+            {
+                return 0;
+            }
+
             bool anvil, forge;
             CheckAnvilAndForge(from, 2, out anvil, out forge);
 

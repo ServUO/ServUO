@@ -4,14 +4,14 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class Scales : Item, ICraftable, IResource
+    public class Scales : Item, IResource
     {
         private CraftResource _Resource;
         private Mobile _Crafter;
         private ItemQuality _Quality;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(this._Resource); InvalidateProperties(); } }
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
@@ -19,12 +19,13 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
+        public bool PlayerConstructed { get { return true; } }
 
         [Constructable]
         public Scales()
             : base(0x1852)
         {
-            this.Weight = 4.0;
+            Weight = 4.0;
         }
 
         public Scales(Serial serial)
@@ -61,10 +62,10 @@ namespace Server.Items
 
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ItemQuality)quality;
+            Quality = (ItemQuality)quality;
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
             if (!craftItem.ForceNonExceptional)
             {
@@ -118,14 +119,14 @@ namespace Server.Items
             public InternalTarget(Scales item)
                 : base(1, false, TargetFlags.None)
             {
-                this.m_Item = item;
+                m_Item = item;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
                 string message;
 
-                if (targeted == this.m_Item)
+                if (targeted == m_Item)
                 {
                     message = "It cannot weight itself.";
                 }

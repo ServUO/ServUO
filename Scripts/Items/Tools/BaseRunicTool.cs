@@ -48,17 +48,16 @@ namespace Server.Items
         private static bool m_IsRunicTool;
         private static int m_LuckChance;
         private const int MaxProperties = 32;
-        private CraftResource m_Resource;
         public BaseRunicTool(CraftResource resource, int itemID)
             : base(itemID)
         {
-            this.m_Resource = resource;
+            Resource = resource;
         }
 
         public BaseRunicTool(CraftResource resource, int uses, int itemID)
             : base(uses, itemID)
         {
-            this.m_Resource = resource;
+            Resource = resource;
         }
 
         public BaseRunicTool(Serial serial)
@@ -98,20 +97,6 @@ namespace Server.Items
         }
         #endregion
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource
-        {
-            get
-            {
-                return this.m_Resource;
-            }
-            set
-            {
-                this.m_Resource = value;
-                this.Hue = CraftResources.GetHue(this.m_Resource);
-                this.InvalidateProperties();
-            }
-        }
         public static int GetUniqueRandom(int count)
         {
             int avail = 0;
@@ -135,7 +120,7 @@ namespace Server.Items
         #region High Seas
         public void ApplyAttributesTo(FishingPole pole)
         {
-            CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
+            CraftResourceInfo resInfo = CraftResources.GetInfo(Resource);
 
             if (resInfo == null)
                 return;
@@ -782,7 +767,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.Write((int)0); // version
-            writer.Write((int)this.m_Resource);
+            writer.Write((int)Resource);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -795,7 +780,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Resource = (CraftResource)reader.ReadInt();
+                        Resource = (CraftResource)reader.ReadInt();
                         break;
                     }
             }
@@ -803,7 +788,7 @@ namespace Server.Items
 
         public void ApplyAttributesTo(BaseWeapon weapon)
         {
-            CraftResourceInfo resInfo = CraftResources.GetInfo(this.m_Resource);
+            CraftResourceInfo resInfo = CraftResources.GetInfo(Resource);
 
             if (resInfo == null)
                 return;
@@ -822,7 +807,7 @@ namespace Server.Items
 
         public void ApplyAttributesTo(BaseArmor armor)
         {
-            CraftResourceInfo resInfo = CraftResources.GetInfo(this.m_Resource);
+            CraftResourceInfo resInfo = CraftResources.GetInfo(Resource);
 
             if (resInfo == null)
                 return;
