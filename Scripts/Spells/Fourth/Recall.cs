@@ -120,11 +120,19 @@ namespace Server.Spells.Fourth
             }
             else if (!map.CanSpawnMobile(loc.X, loc.Y, loc.Z) && !isboatkey)
             {
+<<<<<<< HEAD
                 Caster.SendLocalizedMessage(501942); // That location is blocked.
             }
             else if ((checkMulti && SpellHelper.CheckMulti(loc, map)) && !isboatkey)
             {
                 Caster.SendLocalizedMessage(501942); // That location is blocked.
+=======
+                this.Caster.SendLocalizedMessage(501025); // Something is blocking the location.
+            }
+            else if ((checkMulti && SpellHelper.CheckMulti(loc, map)) && !isboatkey)
+            {
+                this.Caster.SendLocalizedMessage(501025); // Something is blocking the location.
+>>>>>>> Bug_Fixes
             }
             else if (m_Book != null && m_Book.CurCharges <= 0)
             {

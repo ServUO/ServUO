@@ -6,13 +6,14 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public abstract class BaseTool : Item, IUsesRemaining, ICraftable, IResource
+    public abstract class BaseTool : Item, IUsesRemaining, IResource
     {
         private Mobile m_Crafter;
         private ItemQuality m_Quality;
         private int m_UsesRemaining;
         private bool m_RepairMode;
         private CraftResource _Resource;
+        private bool _PlayerConstructed;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
@@ -20,35 +21,47 @@ namespace Server.Items
             get { return _Resource; }
             set
             {
-                _Resource = value; InvalidateProperties();
+                _Resource = value;
+                Hue = CraftResources.GetHue(_Resource);
+                InvalidateProperties();
             }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
         {
-            get { return this.m_Crafter; }
-            set { this.m_Crafter = value; this.InvalidateProperties(); }
+            get { return m_Crafter; }
+            set { m_Crafter = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality
         {
-            get { return this.m_Quality; }
+            get { return m_Quality; }
             set
             {
-                this.UnscaleUses();
-                this.m_Quality = value;
-                this.InvalidateProperties();
-                this.ScaleUses();
+                UnscaleUses();
+                m_Quality = value;
+                InvalidateProperties();
+                ScaleUses();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool PlayerConstructed
+        {
+            get { return _PlayerConstructed; }
+            set
+            {
+                _PlayerConstructed = value; InvalidateProperties();
             }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
-            get { return this.m_UsesRemaining; }
-            set { this.m_UsesRemaining = value; this.InvalidateProperties(); }
+            get { return m_UsesRemaining; }
+            set { m_UsesRemaining = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -60,18 +73,18 @@ namespace Server.Items
 
         public void ScaleUses()
         {
-            this.m_UsesRemaining = (this.m_UsesRemaining * this.GetUsesScalar()) / 100;
-            this.InvalidateProperties();
+            m_UsesRemaining = (m_UsesRemaining * GetUsesScalar()) / 100;
+            InvalidateProperties();
         }
 
         public void UnscaleUses()
         {
-            this.m_UsesRemaining = (this.m_UsesRemaining * 100) / this.GetUsesScalar();
+            m_UsesRemaining = (m_UsesRemaining * 100) / GetUsesScalar();
         }
 
         public int GetUsesScalar()
         {
-            if (this.m_Quality == ItemQuality.Exceptional)
+            if (m_Quality == ItemQuality.Exceptional)
                 return 200;
 
             return 100;
@@ -95,8 +108,8 @@ namespace Server.Items
         public BaseTool(int uses, int itemID)
             : base(itemID)
         {
-            this.m_UsesRemaining = uses;
-            this.m_Quality = ItemQuality.Normal;
+            m_UsesRemaining = uses;
+            m_Quality = ItemQuality.Normal;
         }
 
         public BaseTool(Serial serial)
@@ -111,15 +124,15 @@ namespace Server.Items
             if (m_Crafter != null)
                 list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
-            if (this.m_Quality == ItemQuality.Exceptional)
+            if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
 
-            list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
         public virtual void DisplayDurabilityTo(Mobile m)
         {
-            this.LabelToAffix(m, 1017323, AffixType.Append, ": " + this.m_UsesRemaining.ToString()); // Durability
+            LabelToAffix(m, 1017323, AffixType.Append, ": " + m_UsesRemaining.ToString()); // Durability
         }
 
         public virtual bool CheckAccessible(Mobile m, ref int num)
@@ -178,16 +191,16 @@ namespace Server.Items
 
         public override void OnSingleClick(Mobile from)
         {
-            this.DisplayDurabilityTo(from);
+            DisplayDurabilityTo(from);
 
             base.OnSingleClick(from);
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack) || this.Parent == from)
+            if (IsChildOf(from.Backpack) || Parent == from)
             {
-                CraftSystem system = this.CraftSystem;
+                CraftSystem system = CraftSystem;
 
                 if (Core.TOL && m_RepairMode)
                 {
@@ -219,13 +232,15 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write((int)4); // version
+
+            writer.Write(_PlayerConstructed);
 
             writer.Write((int)_Resource);
             writer.Write(m_RepairMode);
-            writer.Write((Mobile)this.m_Crafter);
-            writer.Write((int)this.m_Quality);
-            writer.Write((int)this.m_UsesRemaining);
+            writer.Write((Mobile)m_Crafter);
+            writer.Write((int)m_Quality);
+            writer.Write((int)m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -236,6 +251,11 @@ namespace Server.Items
 
             switch (version)
             {
+                case 4:
+                    {
+                        _PlayerConstructed = reader.ReadBool();
+                        goto case 3;
+                    }
                 case 3:
                     {
                         _Resource = (CraftResource)reader.ReadInt();
@@ -248,13 +268,13 @@ namespace Server.Items
                     }
                 case 1:
                     {
-                        this.m_Crafter = reader.ReadMobile();
-                        this.m_Quality = (ItemQuality)reader.ReadInt();
+                        m_Crafter = reader.ReadMobile();
+                        m_Quality = (ItemQuality)reader.ReadInt();
                         goto case 0;
                     }
                 case 0:
                     {
-                        this.m_UsesRemaining = reader.ReadInt();
+                        m_UsesRemaining = reader.ReadInt();
                         break;
                     }
             }
@@ -264,10 +284,12 @@ namespace Server.Items
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ItemQuality)quality;
+            PlayerConstructed = true;
+
+            Quality = (ItemQuality)quality;
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
             if (!craftItem.ForceNonExceptional)
             {

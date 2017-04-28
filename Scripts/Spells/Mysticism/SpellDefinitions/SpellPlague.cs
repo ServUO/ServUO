@@ -19,8 +19,6 @@ namespace Server.Spells.Mysticism
                 Reagent.SulfurousAsh
             );
 
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.5); } }
-
         public override SpellCircle Circle { get { return SpellCircle.Seventh; } }
 
         public SpellPlagueSpell(Mobile caster, Item scroll)
@@ -33,14 +31,14 @@ namespace Server.Spells.Mysticism
             Caster.Target = new MysticSpellTarget(this, TargetFlags.Harmful);
         }
 
-        public override void OnTarget(Object o)
+        public override void OnTarget(object o)
         {
             Mobile m = o as Mobile;
 
             if (m == null)
                 return;
 
-            if(Caster == m || !(m is PlayerMobile || m is BaseCreature))
+            if(!(m is PlayerMobile || m is BaseCreature))
             {
                 Caster.SendLocalizedMessage(1080194); // Your target cannot be affected by spell plague.
             }
@@ -54,13 +52,9 @@ namespace Server.Spells.Mysticism
                 SpellHelper.Turn(Caster, m);
 
                 Caster.PlaySound(0x658);
-                Caster.FixedParticles(0x375A, 1, 17, 9919, 1161, 7, EffectLayer.Waist);
-                Caster.FixedParticles(0x3728, 1, 13, 9502, 1161, 7, (EffectLayer)255);
 
                 m.FixedParticles(0x375A, 1, 17, 9919, 1161, 7, EffectLayer.Waist);
                 m.FixedParticles(0x3728, 1, 13, 9502, 1161, 7, (EffectLayer)255);
-
-                DoExplosion(m, Caster, true);
 
                 if (!m_Table.ContainsKey(m) || m_Table[m] == null)
                     m_Table.Add(m, new List<SpellPlagueTimer>());
@@ -68,6 +62,8 @@ namespace Server.Spells.Mysticism
                 m_Table[m].Add(new SpellPlagueTimer(Caster, m, TimeSpan.FromSeconds(8)));
 
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.SpellPlague, 1031690, 1080167, TimeSpan.FromSeconds(8), m));
+
+                DoExplosion(m, Caster, true, 1);
             }
 
             FinishSequence();
@@ -116,13 +112,13 @@ namespace Server.Spells.Mysticism
 
                     timer.NextUse = DateTime.UtcNow + TimeSpan.FromSeconds(1.5);
 
-                    DoExplosion(from, timer.Caster, false);
+                    DoExplosion(from, timer.Caster, false, amount);
                     timer.Amount++;
                 }
             }
         }
 
-        public static void DoExplosion(Mobile from, Mobile caster, bool initial)
+        public static void DoExplosion(Mobile from, Mobile caster, bool initial, int amount)
         {
             double prim = caster.Skills[SkillName.Mysticism].Value;
             double sec = caster.Skills[SkillName.Imbuing].Value;
@@ -130,18 +126,22 @@ namespace Server.Spells.Mysticism
             if (caster.Skills[SkillName.Focus].Value > sec)
                 sec = caster.Skills[SkillName.Focus].Value;
 
-            int damage = (int)(((prim + sec) / 2) * .66) + Utility.RandomMinMax(1, 6);
-            damage -= 3;
+            int damage = (int)((prim + sec) / 12) + Utility.RandomMinMax(1, 6);
 
-            from.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
-            from.PlaySound(0x307);
+            if(amount > 1)
+                damage /= amount;
+
+            from.PlaySound(0x658);
+
+            from.FixedParticles(0x375A, 1, 17, 9919, 1161, 7, EffectLayer.Waist);
+            from.FixedParticles(0x3728, 1, 13, 9502, 1161, 7, (EffectLayer)255);
 
             int sdiBonus = SpellHelper.GetSpellDamageBonus(caster, from, SkillName.Mysticism, from is PlayerMobile);
 
             damage *= (100 + sdiBonus);
             damage /= 100;
 
-            AOS.Damage(from, caster, damage, false, 0, 0, 0, 0, 0, 100, 0, false, false, false);
+            SpellHelper.Damage(null, TimeSpan.Zero, from, caster, damage, 0, 0, 0, 0, 0, Server.Misc.DFAlgorithm.Standard, 100, 0);
         }
 
         public static void RemoveFromList(Mobile from)

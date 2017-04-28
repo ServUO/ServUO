@@ -10,6 +10,8 @@ namespace Server.Spells.Mysticism
 	public class EagleStrikeSpell : MysticSpell
 	{
         public override SpellCircle Circle { get { return SpellCircle.Third; } }
+        public override bool DelayedDamage { get { return true; } }
+        public override bool DelayedDamageStacking { get { return false; } }
 
 		private static SpellInfo m_Info = new SpellInfo(
 				"Eagle Strike", "Kal Por Xen",
@@ -30,7 +32,7 @@ namespace Server.Spells.Mysticism
 			Caster.Target = new MysticSpellTarget( this, TargetFlags.Harmful );
 		}
 
-		public override void OnTarget( Object o )
+		public override void OnTarget( object o )
 		{
 			Mobile target = o as Mobile;
 
@@ -40,8 +42,13 @@ namespace Server.Spells.Mysticism
 			}
 			else if ( CheckHSequence( target ) )
 			{
-				Caster.MovingEffect( target, 0x407A, 8, 1, false, false, 0, 1 );
-				Caster.PlaySound( 0x64D );
+				Caster.MovingEffect( target, 0x407A, 8, 1, false, true, 0, 0 );
+                Caster.PlaySound(0x2EE); 
+
+                Timer.DelayCall(TimeSpan.FromSeconds(.5), () => 
+                {
+                    Caster.PlaySound(0x64D);
+                });
 
 				SpellHelper.Damage( this, target, (int)GetNewAosDamage( 19, 1, 5, target ), 0, 0, 0, 0, 100 );
 			}

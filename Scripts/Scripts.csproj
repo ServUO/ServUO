@@ -1762,6 +1762,7 @@
     <Compile Include="Mobiles\Named\Gnaw.cs" />
     <Compile Include="Mobiles\Named\GrayGoblinMageRenowned.cs" />
     <Compile Include="Mobiles\Named\GreenGoblinAlchemistRenowned.cs" />
+    <Compile Include="Mobiles\Named\NightTerror.cs" />
     <Compile Include="Mobiles\Named\Grim.cs" />
     <Compile Include="Mobiles\Named\Grobu.cs" />
     <Compile Include="Mobiles\Named\Guile.cs" />

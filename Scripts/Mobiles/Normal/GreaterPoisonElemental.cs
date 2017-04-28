@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public GreaterPoisonElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a Greater Poison Elemental";
+            this.Name = "Greater Poison Elemental";
             this.Body = 162;
             this.BaseSoundID = 263;
 
@@ -27,19 +27,20 @@ namespace Server.Mobiles
             this.SetDamageType(ResistanceType.Physical, 10);
             this.SetDamageType(ResistanceType.Poison, 90);
 
-            this.SetResistance(ResistanceType.Physical, 60, 61);
-            this.SetResistance(ResistanceType.Fire, 20, 24);
+            this.SetResistance(ResistanceType.Physical, 60, 70);
+            this.SetResistance(ResistanceType.Fire, 20, 30);
             this.SetResistance(ResistanceType.Cold, 20, 30);
             this.SetResistance(ResistanceType.Poison, 100);
-            this.SetResistance(ResistanceType.Energy, 40, 49);
+            this.SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.EvalInt, 80.1, 88.3);
+            this.SetSkill(SkillName.EvalInt, 80.1, 110.0);
             this.SetSkill(SkillName.Magery, 80.1, 97.0);
             this.SetSkill(SkillName.Meditation, 80.2, 105.8);
             this.SetSkill(SkillName.Poisoning, 100.1, 114.9);
             this.SetSkill(SkillName.MagicResist, 85.2, 93.2);
-            this.SetSkill(SkillName.Tactics, 80.1, 87.3);
-            this.SetSkill(SkillName.Wrestling, 80.1, 88.3);
+            this.SetSkill(SkillName.Tactics, 80.1, 100.0);
+            this.SetSkill(SkillName.Wrestling, 75.0, 88.3);
+            this.SetSkill(SkillName.DetectHidden, 71.5);
 
             this.Fame = 12500;
             this.Karma = -12500;

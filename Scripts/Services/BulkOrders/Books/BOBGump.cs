@@ -25,9 +25,9 @@ namespace Server.Engines.BulkOrders
             from.CloseGump(typeof(BOBGump));
             from.CloseGump(typeof(BOBFilterGump));
 
-            this.m_From = from;
-            this.m_Book = book;
-            this.m_Page = page;
+            m_From = from;
+            m_Book = book;
+            m_Page = page;
 
             if (list == null)
             {
@@ -37,15 +37,15 @@ namespace Server.Engines.BulkOrders
                 {
                     object obj = book.Entries[i];
 
-                    if (this.CheckFilter(obj))
+                    if (CheckFilter(obj))
                         list.Add(obj);
                 }
             }
 
-            this.m_List = list;
+            m_List = list;
 
-            int index = this.GetIndexForPage(page);
-            int count = this.GetCountForIndex(index);
+            int index = GetIndexForPage(page);
+            int count = GetCountForIndex(index);
 
             int tableIndex = 0;
 
@@ -67,36 +67,36 @@ namespace Server.Engines.BulkOrders
             if (!canPrice)
                 width = 516;
 
-            this.X = (624 - width) / 2;
+            X = (624 - width) / 2;
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(10, 10, width, 439, 5054);
-            this.AddImageTiled(18, 20, width - 17, 420, 2624);
+            AddBackground(10, 10, width, 439, 5054);
+            AddImageTiled(18, 20, width - 17, 420, 2624);
 
             if (canPrice)
             {
-                this.AddImageTiled(573, 64, 24, 352, 200);
-                this.AddImageTiled(493, 64, 78, 352, 1416);
+                AddImageTiled(573, 64, 24, 352, 200);
+                AddImageTiled(493, 64, 78, 352, 1416);
             }
 
             if (canDrop)
-                this.AddImageTiled(24, 64, 32, 352, 1416);
+                AddImageTiled(24, 64, 32, 352, 1416);
 
-            this.AddImageTiled(58, 64, 36, 352, 200);
-            this.AddImageTiled(96, 64, 133, 352, 1416);
-            this.AddImageTiled(231, 64, 80, 352, 200);
-            this.AddImageTiled(313, 64, 100, 352, 1416);
-            this.AddImageTiled(415, 64, 76, 352, 200);
+            AddImageTiled(58, 64, 36, 352, 200);
+            AddImageTiled(96, 64, 133, 352, 1416);
+            AddImageTiled(231, 64, 80, 352, 200);
+            AddImageTiled(313, 64, 100, 352, 1416);
+            AddImageTiled(415, 64, 76, 352, 200);
 
             for (int i = index; i < (index + count) && i >= 0 && i < list.Count; ++i)
             {
                 object obj = list[i];
 
-                if (!this.CheckFilter(obj))
+                if (!CheckFilter(obj))
                     continue;
 
-                this.AddImageTiled(24, 94 + (tableIndex * 32), canPrice ? 573 : 489, 2, 2624);
+                AddImageTiled(24, 94 + (tableIndex * 32), canPrice ? 573 : 489, 2, 2624);
 
                 if (obj is BOBLargeEntry)
                     tableIndex += ((BOBLargeEntry)obj).Entries.Length;
@@ -104,51 +104,51 @@ namespace Server.Engines.BulkOrders
                     ++tableIndex;
             }
 
-            this.AddAlphaRegion(18, 20, width - 17, 420);
-            this.AddImage(5, 5, 10460);
-            this.AddImage(width - 15, 5, 10460);
-            this.AddImage(5, 424, 10460);
-            this.AddImage(width - 15, 424, 10460);
+            AddAlphaRegion(18, 20, width - 17, 420);
+            AddImage(5, 5, 10460);
+            AddImage(width - 15, 5, 10460);
+            AddImage(5, 424, 10460);
+            AddImage(width - 15, 424, 10460);
 
-            this.AddHtmlLocalized(canPrice ? 266 : 224, 32, 200, 32, 1062220, LabelColor, false, false); // Bulk Order Book
-            this.AddHtmlLocalized(63, 64, 200, 32, 1062213, LabelColor, false, false); // Type
-            this.AddHtmlLocalized(147, 64, 200, 32, 1062214, LabelColor, false, false); // Item
-            this.AddHtmlLocalized(246, 64, 200, 32, 1062215, LabelColor, false, false); // Quality
-            this.AddHtmlLocalized(336, 64, 200, 32, 1062216, LabelColor, false, false); // Material
-            this.AddHtmlLocalized(429, 64, 200, 32, 1062217, LabelColor, false, false); // Amount
+            AddHtmlLocalized(canPrice ? 266 : 224, 32, 200, 32, 1062220, LabelColor, false, false); // Bulk Order Book
+            AddHtmlLocalized(63, 64, 200, 32, 1062213, LabelColor, false, false); // Type
+            AddHtmlLocalized(147, 64, 200, 32, 1062214, LabelColor, false, false); // Item
+            AddHtmlLocalized(246, 64, 200, 32, 1062215, LabelColor, false, false); // Quality
+            AddHtmlLocalized(336, 64, 200, 32, 1062216, LabelColor, false, false); // Material
+            AddHtmlLocalized(429, 64, 200, 32, 1062217, LabelColor, false, false); // Amount
 
-            this.AddButton(35, 32, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(70, 32, 200, 32, 1062476, LabelColor, false, false); // Set Filter
+            AddButton(35, 32, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(70, 32, 200, 32, 1062476, LabelColor, false, false); // Set Filter
 
             BOBFilter f = (from.UseOwnFilter ? from.BOBFilter : book.Filter);
 
             if (f.IsDefault)
-                this.AddHtmlLocalized(canPrice ? 470 : 386, 32, 120, 32, 1062475, 16927, false, false); // Using No Filter
+                AddHtmlLocalized(canPrice ? 470 : 386, 32, 120, 32, 1062475, 16927, false, false); // Using No Filter
             else if (from.UseOwnFilter)
-                this.AddHtmlLocalized(canPrice ? 470 : 386, 32, 120, 32, 1062451, 16927, false, false); // Using Your Filter
+                AddHtmlLocalized(canPrice ? 470 : 386, 32, 120, 32, 1062451, 16927, false, false); // Using Your Filter
             else
-                this.AddHtmlLocalized(canPrice ? 470 : 386, 32, 120, 32, 1062230, 16927, false, false); // Using Book Filter
+                AddHtmlLocalized(canPrice ? 470 : 386, 32, 120, 32, 1062230, 16927, false, false); // Using Book Filter
 
-            this.AddButton(375, 416, 4017, 4018, 0, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(410, 416, 120, 20, 1011441, LabelColor, false, false); // EXIT
+            AddButton(375, 416, 4017, 4018, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(410, 416, 120, 20, 1011441, LabelColor, false, false); // EXIT
 
             if (canDrop)
-                this.AddHtmlLocalized(26, 64, 50, 32, 1062212, LabelColor, false, false); // Drop
+                AddHtmlLocalized(26, 64, 50, 32, 1062212, LabelColor, false, false); // Drop
 
             if (canPrice)
             {
-                this.AddHtmlLocalized(516, 64, 200, 32, 1062218, LabelColor, false, false); // Price
+                AddHtmlLocalized(516, 64, 200, 32, 1062218, LabelColor, false, false); // Price
 
                 if (canBuy)
                 {
-                    this.AddHtmlLocalized(576, 64, 200, 32, 1062219, LabelColor, false, false); // Buy
+                    AddHtmlLocalized(576, 64, 200, 32, 1062219, LabelColor, false, false); // Buy
                 }
                 else
                 {
-                    this.AddHtmlLocalized(576, 64, 200, 32, 1062227, LabelColor, false, false); // Set
+                    AddHtmlLocalized(576, 64, 200, 32, 1062227, LabelColor, false, false); // Set
 
-                    this.AddButton(450, 416, 4005, 4007, 4, GumpButtonType.Reply, 0);
-                    this.AddHtml(485, 416, 120, 20, "<BASEFONT COLOR=#FFFFFF>Price all</FONT>", false, false);
+                    AddButton(450, 416, 4005, 4007, 4, GumpButtonType.Reply, 0);
+                    AddHtml(485, 416, 120, 20, "<BASEFONT COLOR=#FFFFFF>Price all</FONT>", false, false);
                 }
             }
 
@@ -156,21 +156,21 @@ namespace Server.Engines.BulkOrders
 
             if (page > 0)
             {
-                this.AddButton(75, 416, 4014, 4016, 2, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(110, 416, 150, 20, 1011067, LabelColor, false, false); // Previous page
+                AddButton(75, 416, 4014, 4016, 2, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(110, 416, 150, 20, 1011067, LabelColor, false, false); // Previous page
             }
 
-            if (this.GetIndexForPage(page + 1) < list.Count)
+            if (GetIndexForPage(page + 1) < list.Count)
             {
-                this.AddButton(225, 416, 4005, 4007, 3, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(260, 416, 150, 20, 1011066, LabelColor, false, false); // Next page
+                AddButton(225, 416, 4005, 4007, 3, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(260, 416, 150, 20, 1011066, LabelColor, false, false); // Next page
             }
 
             for (int i = index; i < (index + count) && i >= 0 && i < list.Count; ++i)
             {
                 object obj = list[i];
 
-                if (!this.CheckFilter(obj))
+                if (!CheckFilter(obj))
                     continue;
 
                 if (obj is BOBLargeEntry)
@@ -180,35 +180,35 @@ namespace Server.Engines.BulkOrders
                     int y = 96 + (tableIndex * 32);
 
                     if (canDrop)
-                        this.AddButton(35, y + 2, 5602, 5606, 5 + (i * 2), GumpButtonType.Reply, 0);
+                        AddButton(35, y + 2, 5602, 5606, 5 + (i * 2), GumpButtonType.Reply, 0);
 
                     if (canDrop || (canBuy && e.Price > 0))
                     {
-                        this.AddButton(579, y + 2, 2117, 2118, 6 + (i * 2), GumpButtonType.Reply, 0);
-                        this.AddLabel(495, y, 1152, e.Price.ToString());
+                        AddButton(579, y + 2, 2117, 2118, 6 + (i * 2), GumpButtonType.Reply, 0);
+                        AddLabel(495, y, 1152, e.Price.ToString());
                     }
 
-                    this.AddHtmlLocalized(61, y, 50, 32, 1062225, LabelColor, false, false); // Large
+                    AddHtmlLocalized(61, y, 50, 32, 1062225, LabelColor, false, false); // Large
 
                     for (int j = 0; j < e.Entries.Length; ++j)
                     {
                         BOBLargeSubEntry sub = e.Entries[j];
 
-                        this.AddHtmlLocalized(103, y, 130, 32, sub.Number, LabelColor, false, false);
+                        AddHtmlLocalized(103, y, 130, 32, sub.Number, LabelColor, false, false);
 
                         if (e.RequireExceptional)
-                            this.AddHtmlLocalized(235, y, 80, 20, 1060636, LabelColor, false, false); // exceptional
+                            AddHtmlLocalized(235, y, 80, 20, 1060636, LabelColor, false, false); // exceptional
                         else
-                            this.AddHtmlLocalized(235, y, 80, 20, 1011542, LabelColor, false, false); // normal
+                            AddHtmlLocalized(235, y, 80, 20, 1011542, LabelColor, false, false); // normal
 
-                        object name = this.GetMaterialName(e.Material, e.DeedType, sub.ItemType);
+                        object name = GetMaterialName(e.Material, e.DeedType, sub.ItemType);
 
                         if (name is int)
-                            this.AddHtmlLocalized(316, y, 100, 20, (int)name, LabelColor, false, false);
+                            AddHtmlLocalized(316, y, 100, 20, (int)name, LabelColor, false, false);
                         else if (name is string)
-                            this.AddLabel(316, y, 1152, (string)name);
+                            AddLabel(316, y, 1152, (string)name);
 
-                        this.AddLabel(421, y, 1152, String.Format("{0} / {1}", sub.AmountCur, e.AmountMax));
+                        AddLabel(421, y, 1152, String.Format("{0} / {1}", sub.AmountCur, e.AmountMax));
 
                         ++tableIndex;
                         y += 32;
@@ -221,31 +221,31 @@ namespace Server.Engines.BulkOrders
                     int y = 96 + (tableIndex++ * 32);
 
                     if (canDrop)
-                        this.AddButton(35, y + 2, 5602, 5606, 5 + (i * 2), GumpButtonType.Reply, 0);
+                        AddButton(35, y + 2, 5602, 5606, 5 + (i * 2), GumpButtonType.Reply, 0);
 
                     if (canDrop || (canBuy && e.Price > 0))
                     {
-                        this.AddButton(579, y + 2, 2117, 2118, 6 + (i * 2), GumpButtonType.Reply, 0);
-                        this.AddLabel(495, y, 1152, e.Price.ToString());
+                        AddButton(579, y + 2, 2117, 2118, 6 + (i * 2), GumpButtonType.Reply, 0);
+                        AddLabel(495, y, 1152, e.Price.ToString());
                     }
 
-                    this.AddHtmlLocalized(61, y, 50, 32, 1062224, LabelColor, false, false); // Small
+                    AddHtmlLocalized(61, y, 50, 32, 1062224, LabelColor, false, false); // Small
 
-                    this.AddHtmlLocalized(103, y, 130, 32, e.Number, LabelColor, false, false);
+                    AddHtmlLocalized(103, y, 130, 32, e.Number, LabelColor, false, false);
 
                     if (e.RequireExceptional)
-                        this.AddHtmlLocalized(235, y, 80, 20, 1060636, LabelColor, false, false); // exceptional
+                        AddHtmlLocalized(235, y, 80, 20, 1060636, LabelColor, false, false); // exceptional
                     else
-                        this.AddHtmlLocalized(235, y, 80, 20, 1011542, LabelColor, false, false); // normal
+                        AddHtmlLocalized(235, y, 80, 20, 1011542, LabelColor, false, false); // normal
 
-                    object name = this.GetMaterialName(e.Material, e.DeedType, e.ItemType);
+                    object name = GetMaterialName(e.Material, e.DeedType, e.ItemType);
 
                     if (name is int)
-                        this.AddHtmlLocalized(316, y, 100, 20, (int)name, LabelColor, false, false);
+                        AddHtmlLocalized(316, y, 100, 20, (int)name, LabelColor, false, false);
                     else if (name is string)
-                        this.AddLabel(316, y, 1152, (string)name);
+                        AddLabel(316, y, 1152, (string)name);
 
-                    this.AddLabel(421, y, 1152, String.Format("{0} / {1}", e.AmountCur, e.AmountMax));
+                    AddLabel(421, y, 1152, String.Format("{0} / {1}", e.AmountCur, e.AmountMax));
                 }
             }
         }
@@ -268,13 +268,13 @@ namespace Server.Engines.BulkOrders
             {
                 BOBLargeEntry e = (BOBLargeEntry)obj;
 
-                return this.CheckFilter(e.Material, e.AmountMax, true, e.RequireExceptional, e.DeedType, (e.Entries.Length > 0 ? e.Entries[0].ItemType : null));
+                return CheckFilter(e.Material, e.AmountMax, true, e.RequireExceptional, e.DeedType, (e.Entries.Length > 0 ? e.Entries[0].ItemType : null));
             }
             else if (obj is BOBSmallEntry)
             {
                 BOBSmallEntry e = (BOBSmallEntry)obj;
 
-                return this.CheckFilter(e.Material, e.AmountMax, false, e.RequireExceptional, e.DeedType, e.ItemType);
+                return CheckFilter(e.Material, e.AmountMax, false, e.RequireExceptional, e.DeedType, e.ItemType);
             }
 
             return false;
@@ -282,7 +282,7 @@ namespace Server.Engines.BulkOrders
 
         public bool CheckFilter(BulkMaterialType mat, int amountMax, bool isLarge, bool reqExc, BODType deedType, Type itemType)
         {
-            BOBFilter f = (this.m_From.UseOwnFilter ? this.m_From.BOBFilter : this.m_Book.Filter);
+            BOBFilter f = (m_From.UseOwnFilter ? m_From.BOBFilter : m_Book.Filter);
 
             if (f.IsDefault)
                 return true;
@@ -411,7 +411,7 @@ namespace Server.Engines.BulkOrders
             int index = 0;
 
             while (page-- > 0)
-                index += this.GetCountForIndex(index);
+                index += GetCountForIndex(index);
 
             return index;
         }
@@ -421,13 +421,13 @@ namespace Server.Engines.BulkOrders
             int slots = 0;
             int count = 0;
 
-            ArrayList list = this.m_List;
+            ArrayList list = m_List;
 
             for (int i = index; i >= 0 && i < list.Count; ++i)
             {
                 object obj = list[i];
 
-                if (this.CheckFilter(obj))
+                if (CheckFilter(obj))
                 {
                     int add;
 
@@ -456,14 +456,14 @@ namespace Server.Engines.BulkOrders
             int count = 0;
             int add = 0;
             int page = 0;
-            ArrayList list = this.m_List;
+            ArrayList list = m_List;
             int i;
             object obj;
 
             for (i = 0; (i < index) && (i < list.Count); i++)
             {
                 obj = list[i];
-                if (this.CheckFilter(obj))
+                if (CheckFilter(obj))
                 {
                     if (obj is BOBLargeEntry)
                         add = ((BOBLargeEntry)obj).Entries.Length;
@@ -492,7 +492,7 @@ namespace Server.Engines.BulkOrders
                 while ((i < list.Count) && (count <= 10))
                 {
                     obj = list[i];
-                    if (this.CheckFilter(obj))
+                    if (CheckFilter(obj))
                     {
                         if (obj is BOBLargeEntry)
                             count += ((BOBLargeEntry)obj).Entries.Length;
@@ -572,7 +572,16 @@ namespace Server.Engines.BulkOrders
                         if (mat == BulkMaterialType.None)
                             return 1079435;
 
-                        return 1071428 + (int)(mat - BulkMaterialType.OakWood);
+                        switch (mat)
+                        {
+                            default:
+                            case BulkMaterialType.OakWood: return 1071428;
+                            case BulkMaterialType.AshWood: return 1071429;
+                            case BulkMaterialType.YewWood: return 1071430;
+                            case BulkMaterialType.Heartwood: return 1071432;
+                            case BulkMaterialType.Bloodwood: return 1071431;
+                            case BulkMaterialType.Frostwood: return 1071433;
+                        }
                     }
             }
 
@@ -591,72 +600,72 @@ namespace Server.Engines.BulkOrders
                     }
                 case 1: // Set Filter
                     {
-                        this.m_From.SendGump(new BOBFilterGump(this.m_From, this.m_Book));
+                        m_From.SendGump(new BOBFilterGump(m_From, m_Book));
 
                         break;
                     }
                 case 2: // Previous page
                     {
-                        if (this.m_Page > 0)
-                            this.m_From.SendGump(new BOBGump(this.m_From, this.m_Book, this.m_Page - 1, this.m_List));
+                        if (m_Page > 0)
+                            m_From.SendGump(new BOBGump(m_From, m_Book, m_Page - 1, m_List));
 
                         return;
                     }
                 case 3: // Next page
                     {
-                        if (this.GetIndexForPage(this.m_Page + 1) < this.m_List.Count)
-                            this.m_From.SendGump(new BOBGump(this.m_From, this.m_Book, this.m_Page + 1, this.m_List));
+                        if (GetIndexForPage(m_Page + 1) < m_List.Count)
+                            m_From.SendGump(new BOBGump(m_From, m_Book, m_Page + 1, m_List));
 
                         break;
                     }
                 case 4: // Price all
                     {
-                        if (this.m_Book.IsChildOf(this.m_From.Backpack))
+                        if (m_Book.IsChildOf(m_From.Backpack))
                         {
-                            this.m_From.Prompt = new SetPricePrompt(this.m_Book, null, this.m_Page, this.m_List);
-                            this.m_From.SendMessage("Type in a price for all deeds in the book:");
+                            m_From.Prompt = new SetPricePrompt(m_Book, null, m_Page, m_List);
+                            m_From.SendMessage("Type in a price for all deeds in the book:");
                         }
 
                         break;
                     }
                 default:
                     {
-                        bool canDrop = this.m_Book.IsChildOf(this.m_From.Backpack);
-                        bool canPrice = canDrop || (this.m_Book.RootParent is PlayerVendor);
+                        bool canDrop = m_Book.IsChildOf(m_From.Backpack);
+                        bool canPrice = canDrop || (m_Book.RootParent is PlayerVendor);
 
                         index -= 5;
 
                         int type = index % 2;
                         index /= 2;
 
-                        if (index < 0 || index >= this.m_List.Count)
+                        if (index < 0 || index >= m_List.Count)
                             break;
 
-                        object obj = this.m_List[index];
+                        object obj = m_List[index];
 
-                        if (!this.m_Book.Entries.Contains(obj))
+                        if (!m_Book.Entries.Contains(obj))
                         {
-                            this.m_From.SendLocalizedMessage(1062382); // The deed selected is not available.
+                            m_From.SendLocalizedMessage(1062382); // The deed selected is not available.
                             break;
                         }
 
                         if (type == 0) // Drop
                         {
-                            if (this.m_Book.IsChildOf(this.m_From.Backpack))
+                            if (m_Book.IsChildOf(m_From.Backpack))
                             {
-                                Item item = this.Reconstruct(obj);
+                                Item item = Reconstruct(obj);
 
                                 if (item != null)
                                 {
-                                    Container pack = this.m_From.Backpack;
-                                    if ((pack == null) || ((pack != null) && (!pack.CheckHold(this.m_From, item, true, true, 0, item.PileWeight + item.TotalWeight))))
+                                    Container pack = m_From.Backpack;
+                                    if ((pack == null) || ((pack != null) && (!pack.CheckHold(m_From, item, true, true, 0, item.PileWeight + item.TotalWeight))))
                                     {
-                                        this.m_From.SendLocalizedMessage(503204); // You do not have room in your backpack for this
-                                        this.m_From.SendGump(new BOBGump(this.m_From, this.m_Book, this.m_Page, null));
+                                        m_From.SendLocalizedMessage(503204); // You do not have room in your backpack for this
+                                        m_From.SendGump(new BOBGump(m_From, m_Book, m_Page, null));
                                     }
                                     else
                                     {
-                                        if (this.m_Book.IsChildOf(this.m_From.Backpack))
+                                        if (m_Book.IsChildOf(m_From.Backpack))
                                         {
                                             int sizeOfDroppedBod;
                                             if (obj is BOBLargeEntry)
@@ -664,44 +673,44 @@ namespace Server.Engines.BulkOrders
                                             else
                                                 sizeOfDroppedBod = 1;
 
-                                            this.m_From.AddToBackpack(item);
-                                            this.m_From.SendLocalizedMessage(1045152); // The bulk order deed has been placed in your backpack.
-                                            this.m_Book.Entries.Remove(obj);
-                                            this.m_Book.InvalidateProperties();
+                                            m_From.AddToBackpack(item);
+                                            m_From.SendLocalizedMessage(1045152); // The bulk order deed has been placed in your backpack.
+                                            m_Book.Entries.Remove(obj);
+                                            m_Book.InvalidateProperties();
 										
-                                            if (this.m_Book.Entries.Count / 5 < this.m_Book.ItemCount)
+                                            if (m_Book.Entries.Count / 5 < m_Book.ItemCount)
                                             {
-                                                this.m_Book.ItemCount--;
-                                                this.m_Book.InvalidateItems();
+                                                m_Book.ItemCount--;
+                                                m_Book.InvalidateItems();
                                             }
 										
-                                            if (this.m_Book.Entries.Count > 0)
+                                            if (m_Book.Entries.Count > 0)
                                             {
-                                                this.m_Page = this.GetPageForIndex(index, sizeOfDroppedBod);
-                                                this.m_From.SendGump(new BOBGump(this.m_From, this.m_Book, this.m_Page, null));
+                                                m_Page = GetPageForIndex(index, sizeOfDroppedBod);
+                                                m_From.SendGump(new BOBGump(m_From, m_Book, m_Page, null));
                                             }
                                             else
-                                                this.m_From.SendLocalizedMessage(1062381); // The book is empty.
+                                                m_From.SendLocalizedMessage(1062381); // The book is empty.
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    this.m_From.SendMessage("Internal error. The bulk order deed could not be reconstructed.");
+                                    m_From.SendMessage("Internal error. The bulk order deed could not be reconstructed.");
                                 }
                             }
                         }
                         else // Set Price | Buy
                         {
-                            if (this.m_Book.IsChildOf(this.m_From.Backpack))
+                            if (m_Book.IsChildOf(m_From.Backpack))
                             {
-                                this.m_From.Prompt = new SetPricePrompt(this.m_Book, obj, this.m_Page, this.m_List);
-                                this.m_From.SendLocalizedMessage(1062383); // Type in a price for the deed:
+                                m_From.Prompt = new SetPricePrompt(m_Book, obj, m_Page, m_List);
+                                m_From.SendLocalizedMessage(1062383); // Type in a price for the deed:
                             }
-                            else if (this.m_Book.RootParent is PlayerVendor)
+                            else if (m_Book.RootParent is PlayerVendor)
                             {
-                                PlayerVendor pv = (PlayerVendor)this.m_Book.RootParent;
-                                VendorItem vi = pv.GetVendorItem(this.m_Book);
+                                PlayerVendor pv = (PlayerVendor)m_Book.RootParent;
+                                VendorItem vi = pv.GetVendorItem(m_Book);
 
                                 if (vi != null && !vi.IsForSale)
                                 {
@@ -718,16 +727,16 @@ namespace Server.Engines.BulkOrders
                                         sizeOfDroppedBod = 1;
                                     }
                                     if (price == 0)
-                                        this.m_From.SendLocalizedMessage(1062382); // The deed selected is not available.
+                                        m_From.SendLocalizedMessage(1062382); // The deed selected is not available.
                                     else
                                     {
-                                        if (this.m_Book.Entries.Count > 0)
+                                        if (m_Book.Entries.Count > 0)
                                         {
-                                            this.m_Page = this.GetPageForIndex(index, sizeOfDroppedBod);
-                                            this.m_From.SendGump(new BODBuyGump(this.m_From, this.m_Book, obj, this.m_Page, price));
+                                            m_Page = GetPageForIndex(index, sizeOfDroppedBod);
+                                            m_From.SendGump(new BODBuyGump(m_From, m_Book, obj, m_Page, price));
                                         }
                                         else
-                                            this.m_From.SendLocalizedMessage(1062381); // The book is emptz
+                                            m_From.SendLocalizedMessage(1062381); // The book is emptz
                                     }
                                 }
                             }
@@ -746,15 +755,15 @@ namespace Server.Engines.BulkOrders
             private readonly ArrayList m_List;
             public SetPricePrompt(BulkOrderBook book, object obj, int page, ArrayList list)
             {
-                this.m_Book = book;
-                this.m_Object = obj;
-                this.m_Page = page;
-                this.m_List = list;
+                m_Book = book;
+                m_Object = obj;
+                m_Page = page;
+                m_List = list;
             }
 
             public override void OnResponse(Mobile from, string text)
             {
-                if (this.m_Object != null && !this.m_Book.Entries.Contains(this.m_Object))
+                if (m_Object != null && !m_Book.Entries.Contains(m_Object))
                 {
                     from.SendLocalizedMessage(1062382); // The deed selected is not available.
                     return;
@@ -766,13 +775,13 @@ namespace Server.Engines.BulkOrders
                 {
                     from.SendLocalizedMessage(1062390); // The price you requested is outrageous!
                 }
-                else if (this.m_Object == null)
+                else if (m_Object == null)
                 {
-                    for (int i = 0; i < this.m_List.Count; ++i)
+                    for (int i = 0; i < m_List.Count; ++i)
                     {
-                        object obj = this.m_List[i];
+                        object obj = m_List[i];
 
-                        if (!this.m_Book.Entries.Contains(obj))
+                        if (!m_Book.Entries.Contains(obj))
                             continue;
 
                         if (obj is BOBLargeEntry)
@@ -784,25 +793,25 @@ namespace Server.Engines.BulkOrders
                     from.SendMessage("Deed prices set.");
 
                     if (from is PlayerMobile)
-                        from.SendGump(new BOBGump((PlayerMobile)from, this.m_Book, this.m_Page, this.m_List));
+                        from.SendGump(new BOBGump((PlayerMobile)from, m_Book, m_Page, m_List));
                 }
-                else if (this.m_Object is BOBLargeEntry)
+                else if (m_Object is BOBLargeEntry)
                 {
-                    ((BOBLargeEntry)this.m_Object).Price = price;
+                    ((BOBLargeEntry)m_Object).Price = price;
 
                     from.SendLocalizedMessage(1062384); // Deed price set.
 
                     if (from is PlayerMobile)
-                        from.SendGump(new BOBGump((PlayerMobile)from, this.m_Book, this.m_Page, this.m_List));
+                        from.SendGump(new BOBGump((PlayerMobile)from, m_Book, m_Page, m_List));
                 }
-                else if (this.m_Object is BOBSmallEntry)
+                else if (m_Object is BOBSmallEntry)
                 {
-                    ((BOBSmallEntry)this.m_Object).Price = price;
+                    ((BOBSmallEntry)m_Object).Price = price;
 
                     from.SendLocalizedMessage(1062384); // Deed price set.
 
                     if (from is PlayerMobile)
-                        from.SendGump(new BOBGump((PlayerMobile)from, this.m_Book, this.m_Page, this.m_List));
+                        from.SendGump(new BOBGump((PlayerMobile)from, m_Book, m_Page, m_List));
                 }
             }
         }
