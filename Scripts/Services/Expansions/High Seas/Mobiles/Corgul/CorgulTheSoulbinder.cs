@@ -37,6 +37,17 @@ namespace Server.Mobiles
         public override bool NoGoodies { get { return true; } }
         public override bool CanGivePowerscrolls { get { return false; } }
 
+        private readonly int _SpawnPerLoc = 15;
+
+        private Point3D[] _SpawnLocs =
+        {
+            new Point3D(6447, 1262, 10),
+            new Point3D(6424, 1279, 10),
+            new Point3D(6406, 1250, 10),
+            new Point3D(6423, 1220, 10),
+            new Point3D(6461, 1237, 10),
+        };
+
         [Constructable]
         public CorgulTheSoulBinder()
             : this(null)
@@ -130,48 +141,31 @@ namespace Server.Mobiles
 
         public void SpawnHelpers()
         {
-            for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
+            foreach (var pnt in _SpawnLocs)
             {
-                BaseCreature bs = new BoundSoul();
-                SpawnMobile(bs);
-                m_Helpers.Add(bs);
-            }
+                for (int i = 0; i < _SpawnPerLoc; i++)
+                {
+                    BaseCreature bc;
 
-            for (int i = 0; i < 5; i++)
-            {
-                BaseCreature mage = new SoulboundApprenticeMage();
-                SpawnMobile(mage);
-                m_Helpers.Add(mage);
-            }
+                    switch (Utility.Random(7))
+                    {
+                        default:
+                        case 0: bc = new BoundSoul(); break;
+                        case 1: bc = new SoulboundApprenticeMage(); break;
+                        case 2: bc = new SoulboundBattleMage(); break;
+                        case 3: bc = new SoulboundPirateCaptain(); break;
+                        case 4: bc = new SoulboundPirateRaider(); break;
+                        case 5: bc = new SoulboundSpellSlinger(); break;
+                        case 6: bc = new SoulboundSwashbuckler(); break;
+                    }
 
-            for (int i = 0; i < 2; i++)
-            {
-                BaseCreature bmage = new SoulboundBattleMage();
-                SpawnMobile(bmage);
-                m_Helpers.Add(bmage);
-            }
-
-            BaseCreature capt = new SoulboundPirateCaptain();
-            SpawnMobile(capt);
-            m_Helpers.Add(capt);
-
-            BaseCreature raider = new SoulboundPirateRaider();
-            SpawnMobile(raider);
-            m_Helpers.Add(raider);
-
-            BaseCreature slinger = new SoulboundSpellSlinger();
-            SpawnMobile(slinger);
-            m_Helpers.Add(slinger);
-
-            for (int i = 0; i < 3; i++)
-            {
-                BaseCreature sb = new SoulboundSwashbuckler();
-                SpawnMobile(sb);
-                m_Helpers.Add(sb);
+                    m_Helpers.Add(bc);
+                    SpawnMobile(bc, pnt);
+                }
             }
         }
 
-        public void SpawnMobile(BaseCreature bc)
+        public void SpawnMobile(BaseCreature bc, Point3D p)
         {
             if(this.Map == null || bc == null)
             {
@@ -180,15 +174,12 @@ namespace Server.Mobiles
                 return;
             }
 
-            int x = this.X;
-            int y = this.Y;
-            int z = this.Z;
-            Point3D p = new Point3D(x, y, z);
+            int x, y, z = 0;
 
             for(int i = 0; i < 25; i++)
             {
-                x = Utility.RandomMinMax(this.X - 15, this.X + 15);
-                y = Utility.RandomMinMax(this.Y - 15, this.Y + 15);
+                x = Utility.RandomMinMax(p.X - 4, p.X + 4);
+                y = Utility.RandomMinMax(p.Y - 4, p.Y + 4);
                 z = this.Map.GetAverageZ(x, y);
 
                 if (this.Map.CanSpawnMobile(x, y, z))
@@ -199,6 +190,8 @@ namespace Server.Mobiles
             }
 
             bc.MoveToWorld(p, this.Map);
+            bc.Home = p;
+            bc.RangeHome = 5;
         }
 
         public override void OnThink()
@@ -233,11 +226,11 @@ namespace Server.Mobiles
             else if (DateTime.UtcNow > m_NextArea && 0.1 > Utility.RandomDouble())
                 DoAreaAttack();
 
-            if (!m_HasDone2ndSpawn)
+            if (!m_HasDone2ndSpawn && m_Helpers.Count > 0)
             {
                 if (m_Helpers.Where(bc => bc.Alive && !bc.Deleted).Count() == 0)
                 {
-                    SpawnHelpers();
+                    Timer.DelayCall(TimeSpan.FromSeconds(5), SpawnHelpers);
                     m_HasDone2ndSpawn = true;
                 }
             }
