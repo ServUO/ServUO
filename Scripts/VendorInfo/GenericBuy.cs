@@ -42,6 +42,11 @@ namespace Server.Mobiles
             this.m_Hue = hue;
             this.m_Args = args;
 
+            if(Siege.SiegeShard)
+            {
+                m_Price *= 3;
+            }
+
             if (name == null)
                 this.m_Name = itemID < 0x4000 ? (1020000 + itemID).ToString() : (1078872 + itemID).ToString();
             else

@@ -35,7 +35,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1045113); // That item is already blessed
                 }
-                else if (item.LootType != LootType.Regular)
+                else if (item.LootType != LootType.Regular || (Siege.SiegeShard && Server.SkillHandlers.Imbuing.GetTotalMods(item) > 0))
                 {
                     from.SendLocalizedMessage(1045114); // You can not bless that item
                 }

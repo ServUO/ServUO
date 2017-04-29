@@ -116,11 +116,6 @@ namespace Server.Spells.SkillMasteries
             }
         }
 
-        public override void SendCastEffect()
-        {
-            Caster.FixedEffect(0x37C4, 5, (int)(GetCastDelay().TotalSeconds * 28), 4, 2);
-        }
-
 		public override void GetCastSkills( out double min, out double max )
 		{
             min = RequiredSkill;

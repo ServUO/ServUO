@@ -233,7 +233,7 @@ namespace Server.Mobiles
             else if (DateTime.UtcNow > m_NextArea && 0.1 > Utility.RandomDouble())
                 DoAreaAttack();
 
-            if (!m_HasDone2ndSpawn)
+            if (!m_HasDone2ndSpawn && m_Helpers.Count > 0)
             {
                 if (m_Helpers.Where(bc => bc.Alive && !bc.Deleted).Count() == 0)
                 {

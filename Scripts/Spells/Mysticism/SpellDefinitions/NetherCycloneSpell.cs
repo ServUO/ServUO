@@ -25,39 +25,57 @@ namespace Server.Spells.Mysticism
 
 		public override void OnCast()
 		{
-			Caster.Target = new MysticSpellTarget( this, TargetFlags.Harmful );
+			Caster.Target = new MysticSpellTarget(this, true, TargetFlags.None);
 		}
 
-		public override void OnTarget( Object o )
+		public override void OnTarget( object o )
 		{
-			Mobile target = o as Mobile;
+            IPoint3D p = o as IPoint3D;
 
-			if ( target == null )
-			{
-				return;
-			}
-			else if ( CheckHSequence( target ) )
-			{
+			if (p != null && CheckSequence())
+            {
+                Map map = Caster.Map;
 
-				Map map = Caster.Map;
+                if (map != null)
+                {
+                    List<Mobile> targets = new List<Mobile>();
 
-				if ( map != null )
-				{
-					List<Mobile> targets = new List<Mobile>();
+                    Rectangle2D effectArea = new Rectangle2D(p.X - 3, p.Y - 3, 6, 6);
+                    IPooledEnumerable eable = map.GetMobilesInBounds(effectArea);
 
-                    IPooledEnumerable eable = target.GetMobilesInRange(3);
                     foreach (Mobile m in eable)
                     {
-                        if (Caster != m && target.InLOS(m) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
+                        if (Caster != m && Caster.InLOS(m) && SpellHelper.ValidIndirectTarget(Caster, m) && Caster.CanBeHarmful(m, false))
                             targets.Add(m);
                     }
                     eable.Free();
 
-					for ( int i = 0; i < targets.Count; ++i )
-					{
-						Mobile m = targets[i];
+                    Effects.PlaySound(p, map, 0x64F);
 
-						m.FixedParticles( 0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255 );
+                    for (int x = effectArea.X; x <= effectArea.X + effectArea.Width; x++)
+                    {
+                        for (int y = effectArea.Y; y <= effectArea.Y + effectArea.Height; y++)
+                        {
+                            if (x == effectArea.X && y == effectArea.Y ||
+                                x >= effectArea.X + effectArea.Width - 1 && y >= effectArea.Y + effectArea.Height - 1 ||
+                                y >= effectArea.Y + effectArea.Height - 1 && x == effectArea.X ||
+                                y == effectArea.Y && x >= effectArea.X + effectArea.Width - 1)
+                                continue;
+
+                            Point3D pn = new Point3D(x, y, map.GetAverageZ(x, y));
+                            Timer.DelayCall<Point3D>(TimeSpan.FromMilliseconds(Utility.RandomMinMax(100, 300)), pnt =>
+                            {
+                                Effects.SendLocationEffect(pnt, map, 0x375A, 8, 11, 0x49A, 0);
+                            },
+                                pn);
+                        }
+                    }
+
+                    for (int i = 0; i < targets.Count; ++i)
+                    {
+                        Mobile m = targets[i];
+
+                        m.FixedParticles(0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255);
 
                         double damage = (((Caster.Skills[CastSkill].Value + (Caster.Skills[DamageSkill].Value / 2)) * .66) + Utility.RandomMinMax(1, 6));
 
@@ -67,7 +85,7 @@ namespace Server.Spells.Mysticism
                         double manaSap = (damage / 3);
                         double mod = m.Skills[SkillName.MagicResist].Value - ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 2);
 
-                        if(mod > 0)
+                        if (mod > 0)
                         {
                             mod /= 100;
 
@@ -87,12 +105,10 @@ namespace Server.Spells.Mysticism
                             }
                         });
 
-                        Effects.PlaySound(target.Location, map, 0x654);
-                        Effects.PlaySound(target.Location, map, 0x654);
-                        Effects.SendLocationParticles(EffectItem.Create(target.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
-					}
-				}
-			}
+                        Effects.SendLocationParticles(EffectItem.Create(m.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
+                    }
+                }
+            }
 
 			FinishSequence();
 		}

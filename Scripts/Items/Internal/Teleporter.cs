@@ -234,6 +234,9 @@ namespace Server.Items
 				m.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
 				return false;
 			}
+            else if (Siege.SiegeShard && m_MapDest == Map.Trammel)
+            {
+            }
 
 			return true;
 		}

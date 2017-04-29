@@ -21,10 +21,17 @@ namespace Server.Gumps
             m_Scroll = scroll;
             m_Weapon = weapon;
 
-            int font = 0x7FFF;
+            int font = 0x07FF;
 
-            AddBackground(0, 0, 170, 200, 9270);
-            AddAlphaRegion(10, 10, 150, 180);
+            AddBackground(0, 0, 260, 187, 3600);
+            AddAlphaRegion(5, 15, 242, 170);
+
+            AddImageTiled(220, 15, 30, 162, 10464);
+
+            AddItem(0, 3, 6882);
+            AddItem(-8, 170, 6880);
+            AddItem(185, 3, 6883);
+            AddItem(192, 170, 6881);
 
             AddHtmlLocalized(20, 22, 150, 16, 1080133, font, false, false); //Select Enchant
 
