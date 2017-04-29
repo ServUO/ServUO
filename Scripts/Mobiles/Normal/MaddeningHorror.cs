@@ -39,8 +39,6 @@ namespace Server.Mobiles
 
             this.Fame = 23000;
             this.Karma = -23000;
-
-            this.QLPoints = 25;
         }
 
         public MaddeningHorror(Serial serial)

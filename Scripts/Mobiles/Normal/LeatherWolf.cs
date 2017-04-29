@@ -47,8 +47,6 @@ namespace Server.Mobiles
             this.Karma = -4500;
 
             this.Tamable = false;
-
-            this.QLPoints = 30;
         }
 
         public LeatherWolf(Serial serial)

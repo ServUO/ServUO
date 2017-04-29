@@ -50,8 +50,6 @@ namespace Server.Mobiles
             this.Fame = 2500;
             this.Karma = -2500;
 
-            this.QLPoints = 8;
-
             this.AddItem(new Boots(Utility.RandomNeutralHue()));
             this.AddItem(new FancyShirt());
             this.AddItem(new Bandana());

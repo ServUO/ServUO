@@ -35,8 +35,6 @@ namespace Server.Mobiles
             this.Fame = 3000; 
             this.Karma = -3000;
 
-            this.QLPoints = 15;
-
             this.PackNecroReg(10, 15); /// Stratics didn't specify
         }
 

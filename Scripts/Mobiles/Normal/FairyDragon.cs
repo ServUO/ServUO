@@ -52,7 +52,6 @@ namespace Server.Mobiles
             Karma = 15000;
 
             VirtualArmor = 39;
-            QLPoints = 2;
         }
 
         public FairyDragon(Serial serial)

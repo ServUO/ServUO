@@ -9,7 +9,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public DarkWisp()
-            : base(AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "a wisp";
             this.Body = 165;
@@ -42,7 +42,6 @@ namespace Server.Mobiles
             this.Karma = -4000;
 
             this.VirtualArmor = 40;
-            this.QLPoints = 8;
 
             this.AddItem(new LightSource());
         }
@@ -59,13 +58,13 @@ namespace Server.Mobiles
                 return InhumanSpeech.Wisp;
             }
         }
-        public override Ethics.Ethic EthicAllegiance
+        /*public override Ethics.Ethic EthicAllegiance
         {
             get
             {
                 return Ethics.Ethic.Evil;
             }
-        }
+        }*/
         public override TimeSpan ReacquireDelay
         {
             get

@@ -44,7 +44,6 @@ namespace Server.Mobiles
             this.Karma = -6500;
 
             this.VirtualArmor = 56;
-            this.QLPoints = 50;
 
             this.PackItem(new EssenceBalance());
 			

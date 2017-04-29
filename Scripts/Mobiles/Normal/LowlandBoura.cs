@@ -46,8 +46,6 @@ namespace Server.Mobiles
             ControlSlots = 3;
             MinTameSkill = 19.1;
 
-			QLPoints = 10;
-
             Fame = 5000;
             Karma = 5000; //Lose Karma for killing
 
