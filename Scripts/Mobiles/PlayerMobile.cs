@@ -1143,6 +1143,11 @@ namespace Server.Mobiles
 				((PlayerMobile)from).ClaimAutoStabledPets();
 			}
 
+            else if (Siege.SiegeShard && from.Map == Map.Trammel && from.AccessLevel == AccessLevel.Player)
+            {
+                from.Map = Map.Felucca;
+            }
+
             if (((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle")) || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
             {
                 StormLevelGump menu = new StormLevelGump(from);
