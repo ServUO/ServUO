@@ -101,12 +101,14 @@ namespace Server
         /// <returns>False fails travel check. True must pass other travel checks in SpellHelper.cs</returns>
         public static bool CheckTravel(Mobile m, Point3D p, Map map, TravelCheckType type)
         {
+            if (m.AccessLevel > AccessLevel.Player)
+                return true;
+
             switch (type)
             {
                 case TravelCheckType.RecallFrom:
                 case TravelCheckType.RecallTo:
                     {
-                        m.SendLocalizedMessage(501802); // Thy spell doth not appear to work...
                         return false;
                     }
                 case TravelCheckType.GateFrom:
@@ -127,7 +129,7 @@ namespace Server
 
         public static bool CanTravelTo(Mobile m, Point3D p, Map map)
         {
-            return Region.Find(p, map) is DungeonRegion || SpellHelper.IsAnyT2A(map, p) || SpellHelper.IsIlshenar(map, p);
+            return !(Region.Find(p, map) is DungeonRegion) && !SpellHelper.IsAnyT2A(map, p) && !SpellHelper.IsIlshenar(map, p);
         }
 
         public static Dictionary<PlayerMobile, Dictionary<Skill, DateTime>> ROTTable { get; set; }
@@ -259,13 +261,19 @@ namespace Server
         private static Type[] _NoSellList =
         {
             typeof(BaseIngot),
-            typeof(BaseBoard),
+            typeof(BaseWoodBoard),
             typeof(BaseLog),
             typeof(BaseLeather),
             typeof(BaseHides),
             typeof(Cloth),
             typeof(BoltOfCloth),
-            typeof(UncutCloth)
+            typeof(UncutCloth),
+            typeof(Wool),
+            typeof(Cotton),
+            typeof(Flax),
+            typeof(SpoolOfThread),
+            typeof(Feather),
+            typeof(Shaft)
         };
 
         public static void TryBlessItem(PlayerMobile pm, object targeted)
