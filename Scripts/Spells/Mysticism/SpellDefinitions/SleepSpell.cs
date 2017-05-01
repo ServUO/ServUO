@@ -105,17 +105,27 @@ namespace Server.Spells.Mysticism
         public class SleepTimer : Timer
         {
             private Mobile m_Target;
+            private DateTime m_EndTime;
 
-            public  SleepTimer(Mobile target, TimeSpan duration) : base(duration)
+            public SleepTimer(Mobile target, TimeSpan duration)
+                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
             {
+                m_EndTime = DateTime.UtcNow + duration;
                 m_Target = target;
-                this.Start();
+                Start();
             }
 
             protected override void OnTick()
             {
-                EndSleep(m_Target);
-                this.Stop();
+                if (m_EndTime < DateTime.UtcNow)
+                {
+                    EndSleep(m_Target);
+                    Stop();
+                }
+                else
+                {
+                    m_Target.FixedParticles(0x376A, 1, 15, 9502, 97, 3, (EffectLayer)255);
+                }
             }
         }
 

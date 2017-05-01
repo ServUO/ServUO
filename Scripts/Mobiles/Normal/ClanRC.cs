@@ -40,8 +40,6 @@ namespace Server.Mobiles
             Karma = -1500;
 
             VirtualArmor = 48;
-
-            QLPoints = 5;
         }
 
         public ClanRC(Serial serial)

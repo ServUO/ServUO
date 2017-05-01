@@ -50,7 +50,7 @@ namespace Server.Mobiles
 
 			Fame = 7500;
 			Karma = -7500;
-			QLPoints = 20;
+
 			Tamable = !isFriend;
 			MinTameSkill = 107.1;
 			ControlSlots = 2;

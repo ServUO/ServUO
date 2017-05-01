@@ -47,7 +47,6 @@ namespace Server.Mobiles
             this.Karma = -10000;
 
             this.VirtualArmor = 55;
-            this.QLPoints = 50;
         }
 
         public FireDaemonRenowned(Serial serial)

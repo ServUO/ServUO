@@ -38,8 +38,6 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 4;
             MinTameSkill = 95.1;
-
-            QLPoints = 15;
         }
 
         public Skree(Serial serial)

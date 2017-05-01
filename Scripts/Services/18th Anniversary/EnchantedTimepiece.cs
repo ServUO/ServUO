@@ -67,7 +67,7 @@ namespace Server.Items
             if (hour > 12)
                 hour -= 12;
 
-            int id = 0x9BBA + (hour - 1);
+            int id = 0x9BBA + Math.Max(0, (hour - 1));
 
             if (id != ItemID)
                 ItemID = id;
@@ -86,7 +86,7 @@ namespace Server.Items
                 if (hour > 12)
                     hour -= 12;
 
-                id = 0x9BBA + (hour - 1);
+                id = 0x9BBA + Math.Max(0, (hour - 1));
             }
 
             return id;

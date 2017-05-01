@@ -11,10 +11,7 @@ namespace Server.Spells.Mysticism
 	{
         public override SpellCircle Circle { get { return SpellCircle.First; } }
 
-        public override TimeSpan GetCastDelay()
-        {
-            return TimeSpan.FromTicks(base.GetCastDelay().Ticks * 5);
-        }
+        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(5); } }
 
 		private static SpellInfo m_Info = new SpellInfo(
 				"Healing Stone", "Kal In Mani",
