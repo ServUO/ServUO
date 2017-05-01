@@ -2688,27 +2688,27 @@ namespace Server.Items
 
 				if (physChance != 0 && physChance > Utility.Random(100))
 				{
-					DoAreaAttack(attacker, defender, 0x10E, 50, 100, 0, 0, 0, 0);
+					DoAreaAttack(attacker, defender, damageGiven, 0x10E, 50, 100, 0, 0, 0, 0);
 				}
 
 				if (fireChance != 0 && fireChance > Utility.Random(100))
 				{
-					DoAreaAttack(attacker, defender, 0x11D, 1160, 0, 100, 0, 0, 0);
+					DoAreaAttack(attacker, defender, damageGiven, 0x11D, 1160, 0, 100, 0, 0, 0);
 				}
 
 				if (coldChance != 0 && coldChance > Utility.Random(100))
 				{
-					DoAreaAttack(attacker, defender, 0x0FC, 2100, 0, 0, 100, 0, 0);
+					DoAreaAttack(attacker, defender, damageGiven, 0x0FC, 2100, 0, 0, 100, 0, 0);
 				}
 
 				if (poisChance != 0 && poisChance > Utility.Random(100))
 				{
-					DoAreaAttack(attacker, defender, 0x205, 1166, 0, 0, 0, 100, 0);
+					DoAreaAttack(attacker, defender, damageGiven, 0x205, 1166, 0, 0, 0, 100, 0);
 				}
 
 				if (nrgyChance != 0 && nrgyChance > Utility.Random(100))
 				{
-					DoAreaAttack(attacker, defender, 0x1F1, 120, 0, 0, 0, 0, 100);
+					DoAreaAttack(attacker, defender, damageGiven, 0x1F1, 120, 0, 0, 0, 0, 100);
 				}
 
 				int maChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitMagicArrow) * propertyBonus);
@@ -3044,7 +3044,7 @@ namespace Server.Items
 		}
 
 		public virtual void DoAreaAttack(
-			Mobile from, Mobile defender, int sound, int hue, int phys, int fire, int cold, int pois, int nrgy)
+			Mobile from, Mobile defender, int damageGiven, int sound, int hue, int phys, int fire, int cold, int pois, int nrgy)
 		{
 			Map map = from.Map;
 
@@ -3071,26 +3071,13 @@ namespace Server.Items
 
 			Effects.PlaySound(from.Location, map, sound);
 
-			// TODO: What is the damage calculation?
-
 			for (int i = 0; i < list.Count; ++i)
 			{
 				Mobile m = list[i];
 
-				double scalar = (11 - from.GetDistanceToSqrt(m)) / 10;
-
-				if (scalar > 1.0)
-				{
-					scalar = 1.0;
-				}
-				else if (scalar < 0.0)
-				{
-					continue;
-				}
-
-				from.DoHarmful(m, true);
+    			from.DoHarmful(m, true);
 				m.FixedEffect(0x3779, 1, 15, hue, 0);
-				AOS.Damage(m, from, (int)(GetBaseDamage(from) * scalar), phys, fire, cold, pois, nrgy);
+				AOS.Damage(m, from, (int)(damageGiven / 2), phys, fire, cold, pois, nrgy);
 			}
 		}
 		#endregion
