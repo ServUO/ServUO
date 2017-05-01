@@ -63,6 +63,7 @@ namespace Server.Items
 
     public class MonsterStatuetteInfo
     {
+        public static MonsterStatuetteInfo[] Table { get { return m_Table; } }
         private static readonly MonsterStatuetteInfo[] m_Table = new MonsterStatuetteInfo[]
         {
             /* Crocodile */			new MonsterStatuetteInfo(1041249, 0x20DA, 660),
