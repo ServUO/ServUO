@@ -45,8 +45,6 @@ namespace Server.Mobiles
             Tamable = false;
             ControlSlots = 1;
             MinTameSkill = 59.1;
-
-            QLPoints = 3;
         }
 
         public CoralSnake(Serial serial)

@@ -728,6 +728,12 @@ namespace Server
 		private NetState m_NetState;
 		private bool m_Female, m_Warmode, m_Hidden, m_Blessed, m_Flying;
 		private int m_StatCap;
+		private int m_StrCap;
+		private int m_DexCap;
+		private int m_IntCap;
+		private int m_StrMaxCap;
+		private int m_DexMaxCap;
+		private int m_IntMaxCap;
 		private int m_Str, m_Dex, m_Int;
 		private int m_Hits, m_Stam, m_Mana;
 		private int m_Fame, m_Karma;
@@ -5771,6 +5777,17 @@ namespace Server
 
 			switch (version)
 			{
+                case 34:
+                    {
+						m_StrCap = reader.ReadInt();
+						m_DexCap = reader.ReadInt();
+						m_IntCap = reader.ReadInt();
+						m_StrMaxCap = reader.ReadInt();
+						m_DexMaxCap = reader.ReadInt();
+						m_IntMaxCap = reader.ReadInt();
+
+                        goto case 33;
+                    }
                 case 33:
                     {
                         m_SpecialSlayerMechanics = reader.ReadBool();
@@ -6001,6 +6018,16 @@ namespace Server
 					}
 				case 0:
 					{
+						if (version < 34)
+						{
+                            m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
+                            m_DexCap = Config.Get("PlayerCaps.DexCap", 125);
+                            m_IntCap = Config.Get("PlayerCaps.IntCap", 125);
+                            m_StrMaxCap = Config.Get("PlayerCaps.StrMaxCap", 150);
+                            m_DexMaxCap = Config.Get("PlayerCaps.DexMaxCap", 150);
+                            m_IntMaxCap = Config.Get("PlayerCaps.IntMaxCap", 150);
+						}
+
 						if (version < 21)
 						{
 							m_Stabled = new List<Mobile>();
@@ -6018,7 +6045,7 @@ namespace Server
 
 						if (version < 3)
 						{
-							m_StatCap = 225;
+                            m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
 						}
 
 						if (version < 15)
@@ -6259,7 +6286,14 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(33); // version
+			writer.Write(34); // version
+
+			writer.Write(m_StrCap);
+			writer.Write(m_DexCap);
+			writer.Write(m_IntCap);
+			writer.Write(m_StrMaxCap);
+			writer.Write(m_DexMaxCap);
+			writer.Write(m_IntMaxCap);
 
             writer.Write(m_SpecialSlayerMechanics);
 
@@ -10836,7 +10870,13 @@ namespace Server
 
 		public void DefaultMobileInit()
 		{
-            m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225); ;
+            m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
+            m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
+            m_DexCap = Config.Get("PlayerCaps.DexCap", 125);
+            m_IntCap = Config.Get("PlayerCaps.IntCap", 125);
+            m_StrMaxCap = Config.Get("PlayerCaps.StrMaxCap", 150);
+            m_DexMaxCap = Config.Get("PlayerCaps.DexMaxCap", 150);
+            m_IntMaxCap = Config.Get("PlayerCaps.IntMaxCap", 150);
 			m_FollowersMax = 5;
 			m_Skills = new Skills(this);
 			m_Items = new List<Item>();
@@ -12417,6 +12457,48 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
+		public int StrCap
+		{
+			get { return m_StrCap; }
+			set { m_StrCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int DexCap
+		{
+			get { return m_DexCap; }
+			set { m_DexCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int IntCap
+		{
+			get { return m_IntCap; }
+			set { m_IntCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int StrMaxCap
+		{
+			get { return m_StrMaxCap; }
+			set { m_StrMaxCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int DexMaxCap
+		{
+			get { return m_DexMaxCap; }
+			set { m_DexMaxCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int IntMaxCap
+		{
+			get { return m_IntMaxCap; }
+			set { IntMaxCap = value; }
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public virtual bool Meditating { get; set; }
 
 		[CommandProperty(AccessLevel.Decorator)]
@@ -12446,3 +12528,4 @@ namespace Server
 		{ }
 	}
 }
+    

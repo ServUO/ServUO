@@ -54,7 +54,7 @@ namespace Server.Spells.Mysticism
 
         public override void SendCastEffect()
         {
-            Caster.FixedEffect(0x37C4, 5, (int)(GetCastDelay().TotalSeconds * 28), 0x484, 4);
+            Caster.FixedEffect(0x37C4, 87, (int)(GetCastDelay().TotalSeconds * 28), 0x66C, 3);
         }
 
         public override int GetMana()

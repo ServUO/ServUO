@@ -1788,7 +1788,7 @@ namespace Server.Mobiles
 			{
 				if (Core.ML && IsPlayer())
 				{
-					return Math.Min(base.Str, 150);
+					return Math.Min(base.Str, StrMaxCap);
 				}
 
 				return base.Str;
@@ -1803,7 +1803,7 @@ namespace Server.Mobiles
 			{
 				if (Core.ML && IsPlayer())
 				{
-					return Math.Min(base.Int, 150);
+					return Math.Min(base.Int, IntMaxCap);
 				}
 
 				return base.Int;
@@ -1818,7 +1818,7 @@ namespace Server.Mobiles
 			{
 				if (Core.ML && IsPlayer())
 				{
-					return Math.Min(base.Dex, 150);
+					return Math.Min(base.Dex, DexMaxCap);
 				}
 
 				return base.Dex;
@@ -6493,7 +6493,7 @@ namespace Server.Mobiles
 				{
 					BaseCreature pet = AllFollowers[i] as BaseCreature;
 
-					if (pet == null || pet.ControlMaster == null)
+					if (pet == null || pet.ControlMaster == null || pet.Allured)
 					{
 						continue;
 					}

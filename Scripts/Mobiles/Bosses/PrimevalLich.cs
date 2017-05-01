@@ -51,7 +51,6 @@ namespace Server.Mobiles
             this.Karma = -22500;
 
             this.VirtualArmor = 80;
-            this.QLPoints = 150;
         }
 
         public PrimevalLich(Serial serial)

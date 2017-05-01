@@ -45,8 +45,6 @@ namespace Server.Mobiles
 
             VirtualArmor = 40;
 
-            QLPoints = 3;
-
             if (0.25 > Utility.RandomDouble())
                 PackItem(new DaemonBone(10));
         }

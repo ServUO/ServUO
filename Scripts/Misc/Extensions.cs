@@ -136,7 +136,7 @@ namespace Server
 
         public static List<Item> GetItems(this Region region)
         {
-            if (region == null)
+            if (region == null || region.Sectors == null)
                 return null;
 
             List<Item> list = new List<Item>();
@@ -178,7 +178,7 @@ namespace Server
 
         public static int GetItemCount(this Region region)
         {
-            if (region == null)
+            if (region == null || region.Sectors == null)
             {
                 return 0;
             }
@@ -195,7 +195,7 @@ namespace Server
 
         public static int GetItemCount(this Region region, Func<Item, bool> predicate)
         {
-            if (region == null)
+            if (region == null || region.Sectors == null)
             {
                 return 0;
             }
@@ -212,7 +212,7 @@ namespace Server
 
         public static List<BaseMulti> GetMultis(this Region region)
         {
-            if (region == null)
+            if (region == null || region.Sectors == null)
             {
                 return null;
             }

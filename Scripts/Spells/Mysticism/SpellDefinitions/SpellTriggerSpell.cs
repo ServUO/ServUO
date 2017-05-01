@@ -30,7 +30,21 @@ namespace Server.Spells.Mysticism
             if (Caster.HasGump(typeof(SpellTriggerGump)))
                 Caster.CloseGump(typeof(SpellTriggerGump));
 
-            Caster.SendGump(new SpellTriggerGump(this, Caster));
+            var gump = new SpellTriggerGump(this, Caster);
+            int serial = gump.Serial;
+
+            Caster.SendGump(gump);
+
+            Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
+                {
+                    var current = Caster.FindGump(typeof(SpellTriggerGump));
+
+                    if (current != null && current.Serial == serial)
+                    {
+                        Caster.CloseGump(typeof(EnchantSpellGump));
+                        FinishSequence();
+                    }
+                });
         }
 
         private class SpellTriggerGump : Gump
@@ -42,11 +56,6 @@ namespace Server.Spells.Mysticism
                 : base(60, 36)
             {
                 m_Spell = spell;
-
-                Closable = true;
-                Disposable = false;
-                Dragable = false;
-                Resizable = false;
 
                 AddPage(0);
 

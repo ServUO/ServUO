@@ -35,8 +35,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 92.5, 94.6);
             SetSkill(SkillName.Hiding, 110.3, 119.9);
             SetSkill(SkillName.Stealth, 110.5, 119.6);
-
-            QLPoints = 5;
         }
 
         public TrapdoorSpider(Serial serial) : base(serial)

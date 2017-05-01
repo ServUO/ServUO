@@ -1,4 +1,3 @@
-/* 	Based on Rikktor, still to get detailed information on the Abyssal Infernal */
 using System;
 using System.Collections;
 using Server.Engines.CannedEvil;
@@ -44,7 +43,6 @@ namespace Server.Mobiles
             this.Karma = -22500;
 
             this.VirtualArmor = 40;
-            this.QLPoints = 150;
         }
 
         public AbyssalInfernal(Serial serial)

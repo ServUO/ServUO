@@ -43,7 +43,6 @@ namespace Server.Items
         private bool m_Active;
         private CorgulWarpRegion m_WarpRegion;
         private CorgulRegion m_BossRegion;
-        //private CorgulIslandMap m_IslandMap;
         private Point3D m_WarpPoint;
         private DateTime m_DeadLine;
         private Mobile m_Boss;
@@ -67,12 +66,7 @@ namespace Server.Items
         public CorgulWarpRegion WarpRegion { get { return m_WarpRegion; } }
         public CorgulRegion BossRegion { get { return m_BossRegion; } }
 
-        //[CommandProperty(AccessLevel.GameMaster)]
-        //public CorgulIslandMap IslandMap { get { return m_IslandMap; } }
-
         private Type[] m_Keys = new Type[] { typeof(TreasureMap), typeof(WorldMap) };
-
-        //private List<Type> m_Dropped = new List<Type>();
 
         public static Point3D SpawnLoc = new Point3D(6431, 1236, 10);
 
