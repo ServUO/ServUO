@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Server.Spells;
 using Server.Mobiles;
 using Server.Items;
@@ -13,15 +14,98 @@ namespace Server
     {
         public static bool SiegeShard = Config.Get("Siege.IsSiege", false);
         public static int CharacterSlots = Config.Get("Siege.CharacterSlots", 1);
+        public static string FilePath = Path.Combine("Saves", "Siege.bin");
 
         public static int StatsPerDay = 15;
 
         public static void Configure()
         {
-            ROTTable = new Dictionary<PlayerMobile, Dictionary<Skill, DateTime>>();
+            ROTTable = new Dictionary<PlayerMobile, Dictionary<SkillName, DateTime>>();
             StatsTable = new Dictionary<PlayerMobile, int>();
 
             EventSink.AfterWorldSave += OnAfterSave;
+
+            EventSink.WorldSave += OnSave;
+            EventSink.WorldLoad += OnLoad;
+        }
+
+        public static void OnSave(WorldSaveEventArgs e)
+        {
+            Persistence.Serialize(
+                FilePath,
+                writer =>
+                {
+                    writer.Write((int)0);
+
+                    writer.Write(LastReset);
+
+                    writer.Write(ROTTable.Count);
+                    foreach(KeyValuePair<PlayerMobile, Dictionary<SkillName, DateTime>> kvp in ROTTable)
+                    {
+                        writer.Write(kvp.Key);
+                        writer.Write(kvp.Value.Count);
+
+                        foreach (KeyValuePair<SkillName, DateTime> kvp2 in kvp.Value)
+                        {
+                            writer.Write((int)kvp2.Key);
+                            writer.Write(kvp2.Value);
+                        }
+                    }
+
+                    writer.Write(StatsTable.Count);
+                    foreach (KeyValuePair<PlayerMobile, int> kvp in StatsTable)
+                    {
+                        writer.Write(kvp.Key);
+                        writer.Write(kvp.Value);
+                    }
+                });
+        }
+
+        public static void OnLoad()
+        {
+            Persistence.Deserialize(
+                FilePath,
+                reader =>
+                {
+                    int version = reader.ReadInt();
+
+                    LastReset = reader.ReadDateTime();
+
+                    int count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        PlayerMobile pm = reader.ReadMobile() as PlayerMobile;
+                        Dictionary<SkillName, DateTime> dict = new Dictionary<SkillName, DateTime>();
+
+                        int c = reader.ReadInt();
+                        for (int j = 0; j < c; j++)
+                        {
+                            SkillName sk = (SkillName)reader.ReadInt();
+                            DateTime next = reader.ReadDateTime();
+
+                            dict[sk] = next;
+                        }
+
+                        if (pm != null)
+                        {
+                            ROTTable[pm] = dict;
+                        }
+                    }
+
+                    count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        PlayerMobile pm = reader.ReadMobile() as PlayerMobile;
+                        int total = reader.ReadInt();
+
+                        if (pm != null)
+                        {
+                            StatsTable[pm] = total;
+                        }
+                    }
+
+                    CheckTime();
+                });
         }
 
         public static void Initialize()
@@ -30,7 +114,7 @@ namespace Server
             {
                 CommandSystem.Register("ResetROT", AccessLevel.GameMaster, e =>
                     {
-                        LastReset = DateTime.UtcNow;
+                        LastReset = DateTime.Now;
 
                         e.Mobile.SendMessage("Rate over Time reset!");
                     });
@@ -39,7 +123,7 @@ namespace Server
                     {
                         Mobile m = e.Mobile;
 
-                        foreach (KeyValuePair<PlayerMobile, Dictionary<Skill, DateTime>> kvp in ROTTable)
+                        foreach (KeyValuePair<PlayerMobile, Dictionary<SkillName, DateTime>> kvp in ROTTable)
                         {
                             Console.WriteLine("Player: {0}", kvp.Key.Name);
                             int stats = 0;
@@ -52,13 +136,13 @@ namespace Server
                             Console.WriteLine("Stats gained today: {0} of {1}", stats, StatsPerDay.ToString());
 
                             Utility.PushColor(ConsoleColor.Magenta);
-                            foreach (KeyValuePair<Skill, DateTime> kvp2 in kvp.Value)
+                            foreach (KeyValuePair<SkillName, DateTime> kvp2 in kvp.Value)
                             {
-                                int pergain = MinutesPerGain(kvp.Key, kvp2.Key);
+                                int pergain = MinutesPerGain(kvp.Key, kvp.Key.Skills[kvp2.Key]);
                                 DateTime last = kvp2.Value;
                                 DateTime next = last + TimeSpan.FromMinutes(pergain);
 
-                                string nextg = next < DateTime.UtcNow ? "now" : "in " + ((int)(next - DateTime.UtcNow).TotalMinutes).ToString() + " minutes";
+                                string nextg = next < DateTime.Now ? "now" : "in " + ((int)(next - DateTime.Now).TotalMinutes).ToString() + " minutes";
 
                                 Console.WriteLine("   {0}: last gained {1}, can gain {2} (every {3} minutes)", kvp2.Key.ToString(), last.ToShortTimeString(), nextg, pergain.ToString());
                             }
@@ -132,7 +216,7 @@ namespace Server
             return !(Region.Find(p, map) is DungeonRegion) && !SpellHelper.IsAnyT2A(map, p) && !SpellHelper.IsIlshenar(map, p);
         }
 
-        public static Dictionary<PlayerMobile, Dictionary<Skill, DateTime>> ROTTable { get; set; }
+        public static Dictionary<PlayerMobile, Dictionary<SkillName, DateTime>> ROTTable { get; set; }
         public static Dictionary<PlayerMobile, int> StatsTable { get; set; }
 
         public static DateTime LastReset { get; set; }
@@ -162,12 +246,14 @@ namespace Server
             }
         }
 
-        public static bool CheckSkillGain(PlayerMobile pm, int minutesPerSkill, Skill sk)
+        public static bool CheckSkillGain(PlayerMobile pm, int minutesPerSkill, Skill skill)
         {
             if (minutesPerSkill == 0)
             {
                 return true;
             }
+
+            SkillName sk = skill.SkillName;
 
             if (ROTTable.ContainsKey(pm))
             {
@@ -175,9 +261,9 @@ namespace Server
                 {
                     DateTime lastGain = ROTTable[pm][sk];
 
-                    if (lastGain + TimeSpan.FromMinutes(minutesPerSkill) < DateTime.UtcNow)
+                    if (lastGain + TimeSpan.FromMinutes(minutesPerSkill) < DateTime.Now)
                     {
-                        ROTTable[pm][sk] = DateTime.UtcNow;
+                        ROTTable[pm][sk] = DateTime.Now;
                         return true;
                     }
 
@@ -185,22 +271,22 @@ namespace Server
                 }
                 else
                 {
-                    ROTTable[pm][sk] = DateTime.UtcNow;
+                    ROTTable[pm][sk] = DateTime.Now;
                     return true;
                 }
             }
             else
             {
-                ROTTable[pm] = new Dictionary<Skill, DateTime>();
+                ROTTable[pm] = new Dictionary<SkillName, DateTime>();
             }
 
-            ROTTable[pm][sk] = DateTime.UtcNow;
+            ROTTable[pm][sk] = DateTime.Now;
             return true;
         }
 
-        public static int MinutesPerGain(Mobile m, Skill sk)
+        public static int MinutesPerGain(Mobile m, Skill skill)
         {
-            double value = sk.Base;
+            double value = skill.Base;
 
             if (value < 70.0)
             {
@@ -253,6 +339,11 @@ namespace Server
             {
                 if (t == type || t.IsSubclassOf(type))
                     return false;
+            }
+
+            if (Core.SA)
+            {
+                return t != typeof(BlankScroll);
             }
 
             return true;
