@@ -60,7 +60,7 @@ namespace Server.Mobiles
                     if (target != null && target.InRange(this, 10))
                     {
                         AngryFire(target);
-                        m_NextAbilityTime = DateTime.Now + TimeSpan.FromSeconds(Utility.RandomMinMax(10, 30));
+                        m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(10, 30));
                     }
                 }
             }
