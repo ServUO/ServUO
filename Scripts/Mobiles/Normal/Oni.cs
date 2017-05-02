@@ -53,7 +53,7 @@ namespace Server.Mobiles
 
             if (!BardPacified)
             {
-                if (DateTime.Now >= m_NextAbilityTime)
+                if (DateTime.UtcNow >= m_NextAbilityTime)
                 {
                     Mobile target = this.Combatant as Mobile;
 
