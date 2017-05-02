@@ -162,8 +162,16 @@ namespace Server.Engines.InstancedPeerless
             if (map == null || map == Map.Internal)
             {
                 // Error, lets move to luna bank just incase
-                BaseCreature.TeleportPets(m, new Point3D(989, 520, -50), Map.Malas);
-                m.MoveToWorld(new Point3D(989, 520, -50), Map.Malas);
+                if (m.Murderer)
+                {
+                    BaseCreature.TeleportPets(m, new Point3D(1459, 1629, 0), Map.Felucca);
+                    m.MoveToWorld(new Point3D(1459, 1629, 0), Map.Felucca);
+                }
+                else
+                {
+                    BaseCreature.TeleportPets(m, new Point3D(989, 520, -50), Map.Malas);
+                    m.MoveToWorld(new Point3D(989, 520, -50), Map.Malas);
+                }
             }
             else
             {
