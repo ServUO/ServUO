@@ -311,11 +311,6 @@ namespace Server.SkillHandlers
 
                 from.Backpack.ConsumeTotal(primary, primResAmount);
 
-                if (i is BaseWeapon) ((BaseWeapon)i).TimesImbued += 1;
-                if (i is BaseArmor) ((BaseArmor)i).TimesImbued += 1;
-                if (i is BaseJewel) ((BaseJewel)i).TimesImbued += 1;
-                if (i is BaseClothing) ((BaseClothing)i).TimesImbued += 1;
-
                 if (success >= Utility.RandomDouble() || mod < 0 || mod > 180)
                 {
                     if(from.AccessLevel == AccessLevel.Player)
@@ -325,10 +320,6 @@ namespace Server.SkillHandlers
                         from.Backpack.ConsumeTotal(special, specResAmount);
 
                     from.SendLocalizedMessage(1079775); // You successfully imbue the item!
-                    if (i is BaseWeapon) ((BaseWeapon)i).IsImbued = true;
-                    if (i is BaseArmor) ((BaseArmor)i).IsImbued = true;
-                    if (i is BaseJewel) ((BaseJewel)i).IsImbued = true;
-                    if (i is BaseClothing) ((BaseClothing)i).IsImbued = true;
 
                     from.PlaySound(0x5D1);
                     Effects.SendLocationParticles(
@@ -340,6 +331,7 @@ namespace Server.SkillHandlers
                     if (i is BaseWeapon)
                     {
                         BaseWeapon wep = i as BaseWeapon;
+                        wep.TimesImbued++;
                         wep.WeaponAttributes.SelfRepair = 0;
 
                         if (prop is AosAttribute)
@@ -421,6 +413,7 @@ namespace Server.SkillHandlers
                     else if (itemRef == 3)
                     {
                         BaseArmor arm = i as BaseArmor;
+                        arm.TimesImbued++;
                         arm.ArmorAttributes.SelfRepair = 0;
 
                         if (prop is AosWeaponAttribute && (AosWeaponAttribute)prop == AosWeaponAttribute.DurabilityBonus)
@@ -464,6 +457,7 @@ namespace Server.SkillHandlers
                     else if (itemRef == 4)
                     {
                         BaseShield shield = i as BaseShield;
+                        shield.TimesImbued++;
                         shield.ArmorAttributes.SelfRepair = 0;
 
                         if (prop is AosWeaponAttribute && (AosWeaponAttribute)prop == AosWeaponAttribute.DurabilityBonus)
@@ -497,6 +491,7 @@ namespace Server.SkillHandlers
                     else if (i is BaseHat)
                     {
                         BaseHat hat = i as BaseHat;
+                        hat.TimesImbued++;
 
                         if (prop is AosAttribute)
                             hat.Attributes[(AosAttribute)prop] = value;
@@ -521,6 +516,7 @@ namespace Server.SkillHandlers
                     else if (i is BaseJewel)
                     {
                         BaseJewel jewel = i as BaseJewel;
+                        jewel.TimesImbued++;
 
                         if (jewel.MaxHitPoints <= 0 && jewel.TimesImbued >= 1)
                         {
@@ -576,8 +572,7 @@ namespace Server.SkillHandlers
                     }
 
                     i.InvalidateProperties();
-                }
-                // == FAILURE == 
+                } 
                 else
                 {
                     from.SendLocalizedMessage(1079774); // Fail
@@ -705,7 +700,7 @@ namespace Server.SkillHandlers
 
 			    resAmount -= res.Amount;
 
-			    @from.AddToBackpack(res);
+			    from.AddToBackpack(res);
 		    }
 
 		    item.Delete();
@@ -791,73 +786,64 @@ namespace Server.SkillHandlers
         {
             ImbuingDefinition def = Imbuing.Table[mod];
 
-            int Max = def.MaxIntensity;
-            int Inc = def.IncAmount;
+            int max = def.MaxIntensity;
+            int inc = def.IncAmount;
 
             if (item is BaseJewel && mod == 12)
-                Max /= 2;
+                max /= 2;
 
-            if (Max == 1 && Inc == 0)
+            if (max == 1 && inc == 0)
                 return 10;
 
-            double v = value / ((double)Max / 10);
-            double newV = Math.Floor(v);
+            double v = Math.Floor(value / ((double)max / 10));
 
-            if (newV > 10) newV = 10;
-            if (newV < 1) newV = 1;
+            if (v > 10) v = 10;
+            if (v < 1) v = 1;
 
-            return (int)newV;
+            return (int)v;
         }
 
         public static int GetPrimaryAmount(Item item, int mod, int value)
         {
             ImbuingDefinition def = Imbuing.Table[mod];
 
-            int Max = def.MaxIntensity;
-            int Inc = def.IncAmount;
-            
+            int max = def.MaxIntensity;
+            int inc = def.IncAmount;
 
             if (item is BaseJewel && mod == 12)
-                Max /= 2;
+                max /= 2;
 
-            if (Max == 1 && Inc == 0)
+            if (max == 1 && inc == 0)
                 return 5;
 
-            double v = value / ((double)Max / 5.0);
-            double newV = Math.Floor(v);
+            double v = Math.Floor(value / ((double)max / 5.0));
 
-            if (newV > 5) newV = 5;
-            if (newV < 1) newV = 1;
+            if (v > 5) v = 5;
+            if (v < 1) v = 1;
 
-            return (int)newV;
+            return (int)v;
         }
 
         public static int GetSpecialAmount(Item item, int mod, int value)
         {
             ImbuingDefinition def = Imbuing.Table[mod];
 
-            int Max = def.MaxIntensity;
-            int Inc = def.IncAmount;
-            int MWeight = def.Weight;
+            int max = def.MaxIntensity;
+            int inc = def.IncAmount;
 
-            double currentIntensity = ((double)MWeight / (double)Max * value);
-            currentIntensity = Math.Floor(currentIntensity);
+            int intensity = (int)(((double)value / (double)max) * 100);
 
-            if (currentIntensity == MWeight)
-                return 10;
-            else if (MWeight - currentIntensity >= 1 && currentIntensity > 90 )
+            if (intensity >= 100)
             {
-                if (Max < 10)
-                    return 0;
-                else if (Max >= 16 && Max <= 89)
-                    return 5;
-                else if (Max > 90 && Max <= 100)
-                    return (int)currentIntensity - 90;
-                else
-                    return 3;
+                return 10;
             }
-            else
-                return 0;
+
+            else if (intensity >= 1 && intensity > 90)
+            {
+                return intensity - 90;
+            }
+
+            return 0;
         }
 
         [Usage("GetTotalMods")]
@@ -1618,9 +1604,12 @@ namespace Server.SkillHandlers
 
         public static int GetAttributeName(object o)
         {
-            int mod = GetMod(o);
+            return GetAttributeName(GetMod(o));
+        }
 
-            if (Imbuing.Table.ContainsKey(mod))
+        public static int GetAttributeName(int mod)
+        {
+            if (Table.ContainsKey(mod))
             {
                 return m_Table[mod].AttributeName;
             }
@@ -1632,7 +1621,7 @@ namespace Server.SkillHandlers
         {
             int mod = GetMod(o);
 
-            if (Imbuing.Table.ContainsKey(mod))
+            if (Table.ContainsKey(mod))
             {
                 return m_Table[mod].MaxIntensity;
             }
@@ -1987,9 +1976,6 @@ namespace Server.SkillHandlers
 
         public static int GetModForAttribute(string str)
         {
-            /*if (str == "BalancedWeapon")
-                return 61;*/
-
             if (str == "WeaponVelocity")
                 return 60;
 

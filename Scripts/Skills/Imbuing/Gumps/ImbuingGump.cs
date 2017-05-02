@@ -33,45 +33,34 @@ namespace Server.Gumps
             context.ImbMenu_Cat = 0;
 
             AddPage(0);
-            AddBackground(0, 0, 540, 340, 5054);
+            AddBackground(0, 0, 520, 310, 5054);
+            AddImageTiled(10, 10, 500, 290, 2624);
+            AddImageTiled(10, 30, 500, 10, 5058);
+            AddImageTiled(10, 270, 500, 10, 5058);
+            AddAlphaRegion(10, 10, 520, 310);
 
-            AddImageTiled(10, 10, 520, 25, 2624);
+            AddHtmlLocalized(10, 12, 520, 20, 1079588, LabelColor, false, false); //<CENTER>IMBUING MENU</CENTER>
 
-            AddImageTiled(10, 35, 520, 10, 5124);
-            AddAlphaRegion(10, 35, 520, 10);
+            AddButton(15, 60, 4005, 4007, 10005, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 60, 430, 20, 1080432, LabelColor, false, false); //Imbue Item - Adds or modifies an item property on an item
 
-            AddImageTiled(10, 45, 520, 245, 2624);
+            AddButton(15, 90, 4005, 4007, 10006, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 90, 430, 20, 1113622, LabelColor, false, false); //Reimbue Last - Repeats the last imbuing attempt
 
-            AddImageTiled(10, 290, 520, 10, 5124);
-            AddAlphaRegion(10, 290, 520, 10);
+            AddButton(15, 120, 4005, 4007, 10007, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 120, 430, 20, 1113571, LabelColor, false, false); //Imbue Last Item - Auto targets the last imbued item
 
-            AddImageTiled(10, 300, 520, 20, 2624);
+            AddButton(15, 150, 4005, 4007, 10008, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 150, 430, 20, 1114274, LabelColor, false, false); //Imbue Last Property - Imbues a new item with the last property
 
-            AddImageTiled(10, 320, 520, 10, 2624);
-            AddAlphaRegion(10, 320, 520, 10);
+            AddButton(15, 180, 4005, 4007, 10010, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 180, 470, 20, 1080431, LabelColor, false, false); //Unravel Item - Extracts magical ingredients from an item, destroying it
 
-            AddHtmlLocalized(10, 14, 520, 16, 1079588, LabelColor, false, false); //<CENTER>IMBUING MENU</CENTER>
+            AddButton(15, 210, 4005, 4007, 10011, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 210, 430, 20, 1114275, LabelColor, false, false); //Unravel Container - Unravels all items in a container
 
-            AddButton(25, 66, 4017, 4018, 10005, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(66, 68, 430, 18, 1080423, LabelColor, false, false); //IMBUE ITEM: Adds or modifies a magic item property on the targeted item.<BR>UNRAVEL ITEM: Extracts one or more magical ingredients from an item. The targeted item is DESTROYED in the process.<BR>REIMBUE LAST: Reimbues the last item with the last property/intensity<BR>REIMBUE ITEM: Auto targets the last imbued item
-
-            AddButton(25, 95, 4017, 4018, 10006, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(66, 97, 430, 18, 1113622, LabelColor, false, false); //Reimbue Last - Repeats the last imbuing attempt
-
-            AddButton(25, 124, 4017, 4018, 10007, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(66, 126, 430, 18, 1113571, LabelColor, false, false); //Imbue Last Item - Auto targets the last imbued item
-
-            AddButton(25, 153, 4017, 4018, 10008, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(66, 155, 430, 18, 1114274, LabelColor, false, false); //Imbue Last Property - Imbues a new item with the last property
-
-            AddButton(25, 184, 4017, 4018, 10010, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(66, 186, 430, 18, 1080431, LabelColor, false, false); //Unravel Item - Extracts magical ingredients from an item, destroying it
-
-            AddButton(25, 213, 4017, 4018, 10011, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(66, 215, 430, 18, 1114275, LabelColor, false, false); //Unravel Container - Unravels all items in a container
-
-            AddButton(19, 300, 4017, 4018, 10002, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(58, 300, 50, 16, 1006045, FontColor, false, false); //CANCEL
+            AddButton(15, 280, 4017, 4019, 10002, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 280, 50, 20, 1011012, FontColor, false, false); //CANCEL
 
         }
 
