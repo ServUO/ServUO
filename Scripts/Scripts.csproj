@@ -1727,6 +1727,7 @@
     <Compile Include="Items\Addons\Aquarium\Rewards\WaterloggedBoots.cs" />
     <Compile Include="Misc\UntamedPetsCleaning.cs" />
     <Compile Include="Misc\WorldLocationInfo.cs" />
+    <Compile Include="Mobiles\AI\BaseAbilityHelper.cs" />
     <Compile Include="Mobiles\AI\PaladinAI.cs" />
     <Compile Include="Mobiles\Bosses\AbyssalInfernal.cs" />
     <Compile Include="Mobiles\Bosses\Barracoon.cs" />
@@ -1835,6 +1836,7 @@
     <Compile Include="Mobiles\Normal\BlackSolenWarrior.cs" />
     <Compile Include="Mobiles\Normal\BlackSolenWorker.cs" />
     <Compile Include="Mobiles\Normal\BloodElemental.cs" />
+    <Compile Include="Mobiles\Normal\Windrunner.cs" />
     <Compile Include="Mobiles\Normal\StygianDrake.cs" />
     <Compile Include="Mobiles\Normal\CrimsonDrake.cs" />
     <Compile Include="Mobiles\Normal\PlatinumDrake.cs" />
