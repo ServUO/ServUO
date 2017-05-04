@@ -4974,7 +4974,7 @@ namespace Server.Mobiles
 				}
 			}
 
-            if (Core.TOL)
+            if (TestCenter.Enabled && Core.TOL)
             {
                 Server.Engines.VvV.VvVPlayerEntry entry = Server.Engines.Points.PointsSystem.ViceVsVirtue.GetPlayerEntry<Server.Engines.VvV.VvVPlayerEntry>(this);
 
