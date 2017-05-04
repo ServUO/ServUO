@@ -258,6 +258,8 @@ namespace Server.Mobiles
 
         #region Points System
         private PointsSystemProps _PointsSystemProps;
+        private BODProps _BODProps;
+        private AccountGoldProps _AccountGold;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public PointsSystemProps PointSystems
@@ -268,6 +270,44 @@ namespace Server.Mobiles
                     _PointsSystemProps = new PointsSystemProps(this);
 
                 return _PointsSystemProps;
+            }
+            set
+            {
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public BODProps BODData
+        {
+            get
+            {
+                if (_BODProps == null)
+                {
+                    _BODProps = new BODProps(this);
+                }
+                else
+                {
+                    _BODProps.CheckChanges();
+                }
+
+                return _BODProps;
+            }
+            set
+            {
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public AccountGoldProps AccountGold
+        {
+            get
+            {
+                if (_AccountGold == null)
+                {
+                    _AccountGold = new AccountGoldProps(this);
+                }
+
+                return _AccountGold;
             }
             set
             {
