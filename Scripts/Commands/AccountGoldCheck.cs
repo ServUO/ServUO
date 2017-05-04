@@ -31,8 +31,6 @@ namespace Server.Items
                         currency += account.TotalCurrency;
                     }
 
-                    table.OrderBy(kvp => kvp.Value);
-
                     using (StreamWriter op = new StreamWriter("TotalAccountGold.txt", true))
                     {
                         foreach (var kvp in table.OrderBy(k => -k.Value))
