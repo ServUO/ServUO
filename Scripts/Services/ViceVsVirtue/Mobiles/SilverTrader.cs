@@ -67,7 +67,7 @@ namespace Server.Engines.VvV
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && InRange(m.Location, 3))
+            if (ViceVsVirtueSystem.Enabled && m is PlayerMobile && InRange(m.Location, 3))
             {
                 if (ViceVsVirtueSystem.IsVvV(m))
                 {
