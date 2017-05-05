@@ -3135,6 +3135,31 @@ namespace Server.Mobiles
 
 		public virtual bool CanDetectHidden { get { return m_Mobile.Skills[SkillName.DetectHidden].Value > 0; } }
 
+        public virtual bool AfterThink()
+        {
+            if (CanDetectHidden && Core.TickCount - m_NextDetectHidden >= 0)
+            {
+                DetectHidden();
+
+                // Not exactly OSI style, approximation.
+                int delay = (15000 / m_Mobile.Int);
+
+                if (delay > 60)
+                {
+                    delay = 60;
+                }
+
+                int min = delay * (9 / 10); // 13s at 1000 int, 33s at 400 int, 54s at <250 int
+                int max = delay * (10 / 9); // 16s at 1000 int, 41s at 400 int, 66s at <250 int
+
+                m_NextDetectHidden = Core.TickCount +
+                    (int)TimeSpan.FromSeconds(Utility.RandomMinMax(min, max)).TotalMilliseconds;
+
+                return true;
+            }
+            return false;
+        }
+
 		/*
         *  The Timer object
         */
@@ -3217,24 +3242,7 @@ namespace Server.Mobiles
 					}
 				}
 
-				if (m_Owner.CanDetectHidden && Core.TickCount - m_Owner.m_NextDetectHidden >= 0)
-				{
-					m_Owner.DetectHidden();
-
-					// Not exactly OSI style, approximation.
-					int delay = (15000 / m_Owner.m_Mobile.Int);
-
-					if (delay > 60)
-					{
-						delay = 60;
-					}
-
-					int min = delay * (9 / 10); // 13s at 1000 int, 33s at 400 int, 54s at <250 int
-					int max = delay * (10 / 9); // 16s at 1000 int, 41s at 400 int, 66s at <250 int
-
-					m_Owner.m_NextDetectHidden = Core.TickCount +
-												 (int)TimeSpan.FromSeconds(Utility.RandomMinMax(min, max)).TotalMilliseconds;
-				}
+				m_Owner.AfterThink();
 			}
 		}
 	}
