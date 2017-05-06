@@ -37,7 +37,9 @@ namespace Server.Engines.VvV
         public static int VirtueHue = 2124; //TODO: Get
         public static int ViceHue = 2118; //TODO: Get
 
-        public static bool Enabled = true;
+        public static bool Enabled = Config.Get("VvV.Enabled", true);
+        public static int StartSilver = Config.Get("VvV.StartSilver", 2000);
+
         public static ViceVsVirtueSystem Instance { get; set; }
 
         public override TextDefinition Name { get { return new TextDefinition("Vice Vs Virtue"); } }
@@ -724,6 +726,9 @@ namespace Server.Engines.VvV
 
         public static void CreateSilverTraders()
         {
+            if (!Enabled)
+                return;
+
             Map map = Map.Felucca;
 
             foreach (CityInfo info in CityInfo.Infos.Values)
@@ -781,7 +786,7 @@ namespace Server.Engines.VvV
             {
                 if (!_Active && value)
                 {
-                    Points = 2000.0;
+                    Points = ViceVsVirtueSystem.StartSilver;
                 }
 
                 _Active = value;
