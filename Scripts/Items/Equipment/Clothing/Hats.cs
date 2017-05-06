@@ -1207,8 +1207,10 @@ namespace Server.Items
         }
     }
 
-    public class BearMask : BaseHat
+    public class BearMask : BaseHat, IRepairable
     {
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
         public override int BasePhysicalResistance
         {
             get
@@ -1299,8 +1301,10 @@ namespace Server.Items
         }
     }
 
-    public class DeerMask : BaseHat
+    public class DeerMask : BaseHat, IRepairable
     {
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
         public override int BasePhysicalResistance
         {
             get
@@ -1391,8 +1395,10 @@ namespace Server.Items
         }
     }
 
-    public class HornedTribalMask : BaseHat
+    public class HornedTribalMask : BaseHat, IRepairable
     {
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
         public override int BasePhysicalResistance
         {
             get
@@ -1483,8 +1489,10 @@ namespace Server.Items
         }
     }
 
-    public class TribalMask : BaseHat
+    public class TribalMask : BaseHat, IRepairable
     {
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
         public override int BasePhysicalResistance
         {
             get
