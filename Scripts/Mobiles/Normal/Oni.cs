@@ -5,6 +5,8 @@ namespace Server.Mobiles
     [CorpseName("an oni corpse")]
     public class Oni : BaseCreature
     {
+        private DateTime m_NextAbilityTime;
+
         [Constructable]
         public Oni()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -42,17 +44,44 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < .33)
                 this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-            // TODO: Brain (0x1CF0) or Skull (0x1AE3) or Body Part (0x1CE3)
         }
 
-        /* TODO: Angry Fire
-        * cliloc 1070823
-        * Action: 4 4 1 true false 1
-        * Damage: 50-85, 60 phys, 20 fire, 20 nrgy according to the guide
-        * With 45/49/70 res I got 48
-        *  50: 30/10/10 -> 16 + 5 + 3 = 24
-        *  85: 51/17/17 -> 28 + 8 + 5 = 41
-        */
+        public override void OnThink()
+        {
+            if (Combatant == null)
+                return;
+
+            if (!BardPacified)
+            {
+                if (DateTime.UtcNow >= m_NextAbilityTime)
+                {
+                    Mobile target = this.Combatant as Mobile;
+
+                    if (target != null && target.InRange(this, 10))
+                    {
+                        AngryFire(target);
+                        m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(10, 30));
+                    }
+                }
+            }
+
+            base.OnThink();
+        }
+
+        #region AngryFire
+        private void AngryFire(Mobile defender)
+        {
+            int damage = defender.Hits / 2;
+
+            AOS.Damage(defender, this, damage, 60, 20, 0, 0, 20);
+
+            defender.FixedParticles(0x3709, 10, 30, 5052, EffectLayer.LeftFoot);
+            defender.PlaySound(0x208);
+
+            defender.SendLocalizedMessage(1070823); // The creature hits you with its Angry Fire.            
+        }
+        #endregion
+
         public Oni(Serial serial)
             : base(serial)
         {

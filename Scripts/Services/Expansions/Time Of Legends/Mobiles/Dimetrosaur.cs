@@ -11,7 +11,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public Dimetrosaur()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, .2, .4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .2, .4)
         {
             this.Name = "a dimetrosaur";
             this.Body = 1285;
