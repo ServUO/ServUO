@@ -2277,28 +2277,27 @@ namespace Server.Items
             }
 
 			#region Enemy of One
-			if (!attacker.Player)
-			{
-				var enemyOfOneContext = EnemyOfOneSpell.GetContext(defender);
+			var enemyOfOneContext = EnemyOfOneSpell.GetContext(defender);
 
-				if (enemyOfOneContext != null && !enemyOfOneContext.IsWaitingForEnemy && !enemyOfOneContext.IsEnemy(attacker))
-					percentageBonus += 100;
-			}
-			else if (!defender.Player)
-			{
-				var enemyOfOneContext = EnemyOfOneSpell.GetContext(attacker);
+            if (enemyOfOneContext != null && !enemyOfOneContext.IsWaitingForEnemy && !enemyOfOneContext.IsEnemy(attacker))
+            {
+                percentageBonus += 100;
+            }
+            else
+            {
+                enemyOfOneContext = EnemyOfOneSpell.GetContext(attacker);
 
-				if (enemyOfOneContext != null)
-				{
-					enemyOfOneContext.OnHit(defender);
+                if (enemyOfOneContext != null)
+                {
+                    enemyOfOneContext.OnHit(defender);
 
-					if (enemyOfOneContext.IsEnemy(defender))
-					{
-						defender.FixedEffect(0x37B9, 10, 5, 1160, 0);
-						percentageBonus += enemyOfOneContext.DamageScalar;
-					}
-				}
-			}
+                    if (enemyOfOneContext.IsEnemy(defender))
+                    {
+                        defender.FixedEffect(0x37B9, 10, 5, 1160, 0);
+                        percentageBonus += enemyOfOneContext.DamageScalar;
+                    }
+                }
+            }
 			#endregion
 
 			int packInstinctBonus = GetPackInstinctBonus(attacker, defender);

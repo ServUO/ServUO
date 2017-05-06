@@ -4,8 +4,10 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefTinkering), typeof(GargishGlasses), true)]
-    public class ElvenGlasses : BaseArmor
+    public class ElvenGlasses : BaseArmor, IRepairable
     {
+        public CraftSystem RepairSystem { get { return DefTinkering.CraftSystem; } }
+
         private AosWeaponAttributes m_AosWeaponAttributes;
         [Constructable]
         public ElvenGlasses()
