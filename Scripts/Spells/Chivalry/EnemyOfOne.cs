@@ -94,7 +94,7 @@ namespace Server.Spells.Chivalry
             return m_Table.ContainsKey(m);
         }
 
-        private static void RemoveEffect(Mobile m)
+        public static void RemoveEffect(Mobile m)
         {
             if (m_Table.ContainsKey(m))
             {
@@ -114,14 +114,15 @@ namespace Server.Spells.Chivalry
         {
             if (NameCache == null)
                 NameCache = new Dictionary<Type, string>();
-
-            NameCache[typeof(PlayerMobile)] = "players";
-
-            EventSink.MobileCreated += CacheName;
         }
 
         public static string GetTypeName(Mobile defender)
         {
+            if (defender is PlayerMobile || (defender is BaseCreature && ((BaseCreature)defender).GetMaster() is PlayerMobile))
+            {
+                return defender.Name;
+            }
+
             Type t = defender.GetType();
 
             if (NameCache.ContainsKey(t))
@@ -130,19 +131,6 @@ namespace Server.Spells.Chivalry
             }
 
             return AddNameToCache(t);
-        }
-
-        public static void CacheName(MobileCreatedEventArgs e)
-        {
-            if(NameCache.ContainsKey(e.Mobile.GetType()))
-                return;
-
-            BaseCreature bc = e.Mobile as BaseCreature;
-
-            if (bc != null && !bc.Blessed && !bc.IsInvulnerable && (bc.Owners == null || bc.Owners.Count == 0))
-            {
-                AddNameToCache(bc.GetType());
-            }
         }
 
         public static string AddNameToCache(Type t)
@@ -187,6 +175,8 @@ namespace Server.Spells.Chivalry
 		private int m_DamageScalar;
         private string m_TypeName;
 
+        private Mobile m_PlayerOrPet;
+
 		public Mobile Owner { get { return m_Owner; } }
 		public Timer Timer { get { return m_Timer; } }
 		public Type TargetType { get { return m_TargetType; } }
@@ -206,7 +196,19 @@ namespace Server.Spells.Chivalry
 
 		public bool IsEnemy(Mobile m)
 		{
-			return m_TargetType == m.GetType();
+            if (m_PlayerOrPet != null)
+            {
+                if (m_PlayerOrPet == m)
+                {
+                    return true;
+                }
+            }
+            else if (m_TargetType == m.GetType())
+            {
+                return true;
+            }
+
+            return false;
 		}
 
 		public void OnCast()
@@ -214,17 +216,24 @@ namespace Server.Spells.Chivalry
 			UpdateBuffInfo();
 		}
 
+        private void UpdateDamage()
+        {
+            var chivalry = (int)m_Owner.Skills.Chivalry.Value;
+            m_DamageScalar = 10 + ((chivalry - 40) * 9) / 10;
+
+            if (m_PlayerOrPet != null)
+                m_DamageScalar /= 2;
+        }
+
 		private void UpdateBuffInfo()
 		{
-			// TODO: display friendly name attribute when target is not null.
-            if (m_TargetType == null || TypeName == null)
+            if (m_TypeName == null)
             {
                 BuffInfo.AddBuff(m_Owner, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075902, m_Expire - DateTime.UtcNow, m_Owner, string.Format("{0}\t{1}", m_DamageScalar, "100")));
             }
             else
             {
                 BuffInfo.AddBuff(m_Owner, new BuffInfo(BuffIcon.EnemyOfOne, 1075653, 1075654, m_Expire - DateTime.UtcNow, m_Owner, string.Format("{0}\t{1}\t{2}\t{3}", m_DamageScalar, TypeName, ".", "100")));
-                //+~1_PERCENT~% damage to ~2_TEMPLATES~~3_EXTRA~<br>+~4_PERCENT~% damage to you from anything except ~2_TEMPLATES~~3_EXTRA~
             }
 		}
 
@@ -232,19 +241,40 @@ namespace Server.Spells.Chivalry
 		{
 			if (m_TargetType == null)
 			{
-				m_TargetType = defender.GetType();
                 m_TypeName = EnemyOfOneSpell.GetTypeName(defender);
 
-				if (Core.SA)
-				{
-					// Odd but OSI recalculates when the target changes...
-					var chivalry = (int)m_Owner.Skills.Chivalry.Value;
-					m_DamageScalar = 10 + ((chivalry - 40) * 9) / 10;
-				}
+                if (defender is PlayerMobile || (defender is BaseCreature && ((BaseCreature)defender).GetMaster() is PlayerMobile))
+                {
+                    m_PlayerOrPet = defender;
+                    TimeSpan duration = TimeSpan.FromSeconds(8);
 
+                    if (DateTime.UtcNow + duration < m_Expire)
+                    {
+                        m_Expire = DateTime.UtcNow + duration;
+                    }
+
+                    if (m_Timer != null)
+                    {
+                        m_Timer.Stop();
+                        m_Timer = null;
+                    }
+
+                    m_Timer = Timer.DelayCall(duration, EnemyOfOneSpell.RemoveEffect, m_Owner);
+                }
+                else
+                {
+                    m_TargetType = defender.GetType();
+                }
+
+                UpdateDamage();
 				DeltaEnemies();
 				UpdateBuffInfo();
 			}
+            else if (Core.SA)
+            {
+                // Odd but OSI recalculates when the target changes...
+                UpdateDamage();
+            }
 		}
 
 		public void OnRemoved()
@@ -261,8 +291,17 @@ namespace Server.Spells.Chivalry
 		{
 			foreach (var m in m_Owner.GetMobilesInRange(18))
 			{
-				if (m.GetType() == m_TargetType)
-					m.Delta(MobileDelta.Noto);
+                if (m_PlayerOrPet != null)
+                {
+                    if (m == m_PlayerOrPet)
+                    {
+                        m.Delta(MobileDelta.Noto);
+                    }
+                }
+                else if (m.GetType() == m_TargetType)
+                {
+                    m.Delta(MobileDelta.Noto);
+                }
 			}
 		}
 	}
