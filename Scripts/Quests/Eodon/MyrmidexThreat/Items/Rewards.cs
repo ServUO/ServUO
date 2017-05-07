@@ -244,7 +244,7 @@ namespace Server.Items
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
-            this.m_SecureLevel = (SecureLevel)reader.ReadInt();  // If you have not save world with above line in Serialuze(), you should not add this line.
+            this.m_SecureLevel = (SecureLevel)reader.ReadInt();  // If you have not saved world with above line in Serialize(), you should not add this line.
 		}
 	}
 	
