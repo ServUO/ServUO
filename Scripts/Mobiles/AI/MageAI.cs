@@ -791,37 +791,9 @@ namespace Server.Mobiles
                     Action = ActionType.Guard;
                 }
             }
-            // We only want enemies we know want to attack us, not those we want to attack
-            else if (AcquireFocusMob(m_Mobile.RangePerception, FightMode.Aggressor, false, false, true) || c != null)
-            {
-                // If I found a new target, set it as my combatant
-                if (m_Mobile.FocusMob != null)
-                {
-                    m_Mobile.Combatant = m_Mobile.FocusMob;
-                    c = m_Mobile.Combatant as Mobile;
-                    m_Mobile.FocusMob = null;
-                }
-
-                // If my combatant is bad, guard
-                if (c == null || c.Deleted || c.Map != m_Mobile.Map ||
-                    m_Mobile.GetDistanceToSqrt(c) > m_Mobile.RangePerception * 2)
-                {
-                    m_Mobile.DebugSay("I have lost him");
-                    m_Mobile.Combatant = null;
-                    Action = ActionType.Guard;
-                    return true;
-                }
-
-                m_Mobile.DebugSay("I am scared of {0}", c.Name);
-                RunFrom(c);
-
-                if (m_Mobile.Poisoned && Utility.Random(0, 5) == 0)
-                    new CureSpell(m_Mobile, null).Cast();
-            }
             else
             {
-                m_Mobile.DebugSay("Area seems clear, but my guard is up");
-                Action = ActionType.Guard;
+                base.DoActionFlee();
             }
 
             return true;
