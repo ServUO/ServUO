@@ -209,7 +209,7 @@ namespace Server.Items
 
                     BaseHouse house = BaseHouse.FindHouseAt(this);
 
-                    if (house != null && house.Addons.Contains(this))
+                    if (house != null && house.Addons.ContainsKey(this))
                     {
                         house.Addons.Remove(this);
                     }

@@ -49,11 +49,9 @@ namespace Server.Spells.Third
             {
                 SpellHelper.Turn(this.Caster, m);
 
-                SpellHelper.AddStatBonus(this.Caster, m, StatType.Str);
-                SpellHelper.DisableSkillCheck = true;
-				SpellHelper.AddStatBonus(this.Caster, m, StatType.Dex);
-				SpellHelper.AddStatBonus(this.Caster, m, StatType.Int);
-                SpellHelper.DisableSkillCheck = false;
+                SpellHelper.AddStatBonus(this.Caster, m, false, StatType.Str);
+				SpellHelper.AddStatBonus(this.Caster, m, true, StatType.Dex);
+				SpellHelper.AddStatBonus(this.Caster, m, true, StatType.Int);
 
 				int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
 				TimeSpan length = SpellHelper.GetDuration(this.Caster, m);

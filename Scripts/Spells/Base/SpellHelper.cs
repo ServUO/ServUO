@@ -311,9 +311,9 @@ namespace Server.Spells
             return true;
         }
 
-        public static bool AddStatBonus(Mobile caster, Mobile target, StatType type)
+        public static bool AddStatBonus(Mobile caster, Mobile target, bool blockSkill, StatType type)
         {
-            return AddStatBonus(caster, target, type, GetOffset(caster, target, type, false), GetDuration(caster, target));
+            return AddStatBonus(caster, target, type, GetOffset(caster, target, type, false, blockSkill), GetDuration(caster, target));
         }
 
         public static bool AddStatBonus(Mobile caster, Mobile target, StatType type, int bonus, TimeSpan duration)
@@ -331,9 +331,9 @@ namespace Server.Spells
             return true;
         }
 
-        public static bool AddStatCurse(Mobile caster, Mobile target, StatType type)
+        public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, bool blockSkill)
         {
-            return AddStatCurse(caster, target, type, GetOffset(caster, target, type, true), TimeSpan.Zero);
+            return AddStatCurse(caster, target, type, GetOffset(caster, target, type, true, blockSkill), TimeSpan.Zero);
         }
 
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, int curse, TimeSpan duration)
@@ -349,7 +349,6 @@ namespace Server.Spells
 			offset *= -1;
 
             target.AddStatMod(new StatMod(type, name, offset, TimeSpan.Zero));
-			//Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
 			return true;
         }
 
@@ -368,18 +367,13 @@ namespace Server.Spells
             return TimeSpan.FromSeconds(caster.Skills[SkillName.Magery].Value * 1.2);
         }
 
-        private static bool m_DisableSkillCheck;
-
-        public static bool DisableSkillCheck
+        public static int GetCurseOffset(Mobile m, StatType type)
         {
-            get
-            {
-                return m_DisableSkillCheck;
-            }
-            set
-            {
-                m_DisableSkillCheck = value;
-            }
+            string name = String.Format("[Magic] {0} Curse", type);
+
+            StatMod mod = m.GetStatMod(name);
+
+            return mod != null ? mod.Offset : 0;
         }
 
         public static double GetOffsetScalar(Mobile caster, Mobile target, bool curse)
@@ -399,11 +393,11 @@ namespace Server.Spells
             return percent;
         }
 
-        public static int GetOffset(Mobile caster, Mobile target, StatType type, bool curse)
+        public static int GetOffset(Mobile caster, Mobile target, StatType type, bool curse, bool blockSkill)
         {
             if (Core.AOS)
             {
-                if (!m_DisableSkillCheck)
+                if (!blockSkill)
                 {
                     caster.CheckSkill(SkillName.EvalInt, 0.0, 120.0);
 

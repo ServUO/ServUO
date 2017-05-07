@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Server.Multis;
 using Server.Network;
 using Server.Prompts;
@@ -9,7 +9,7 @@ namespace Server.Gumps
     public class HouseListGump : Gump
     {
         private readonly BaseHouse m_House;
-        public HouseListGump(int number, ArrayList list, BaseHouse house, bool accountOf)
+        public HouseListGump(int number, List<Mobile> list, BaseHouse house, bool accountOf)
             : base(20, 30)
         {
             if (house.Deleted)
@@ -48,7 +48,7 @@ namespace Server.Gumps
                         }
                     }
 
-                    Mobile m = (Mobile)list[i];
+                    Mobile m = list[i];
 
                     string name;
 
@@ -74,11 +74,11 @@ namespace Server.Gumps
     public class HouseRemoveGump : Gump
     {
         private readonly BaseHouse m_House;
-        private readonly ArrayList m_List;
-        private readonly ArrayList m_Copy;
+        private readonly List<Mobile> m_List;
+        private readonly List<Mobile> m_Copy;
         private readonly int m_Number;
         private readonly bool m_AccountOf;
-        public HouseRemoveGump(int number, ArrayList list, BaseHouse house, bool accountOf)
+        public HouseRemoveGump(int number, List<Mobile> list, BaseHouse house, bool accountOf)
             : base(20, 30)
         {
             if (house.Deleted)
@@ -104,7 +104,7 @@ namespace Server.Gumps
 
             if (list != null)
             {
-                this.m_Copy = new ArrayList(list);
+                this.m_Copy = new List<Mobile>(list);
 
                 for (int i = 0; i < list.Count; ++i)
                 {
@@ -125,7 +125,7 @@ namespace Server.Gumps
                         }
                     }
 
-                    Mobile m = (Mobile)list[i];
+                    Mobile m = list[i];
 
                     string name;
 
@@ -210,13 +210,13 @@ namespace Server.Gumps
 
             if (this.m_House.Sign != null)
             {
-                ArrayList lines = this.Wrap(this.m_House.Sign.GetName());
+                var lines = this.Wrap(this.m_House.Sign.GetName());
 
                 if (lines != null)
                 {
                     for (int i = 0, y = (101 - (lines.Count * 14)) / 2; i < lines.Count; ++i, y += 14)
                     {
-                        string s = (string)lines[i];
+                        string s = lines[i];
 
                         this.AddLabel(130 + ((143 - (s.Length * 8)) / 2), y, 0, s);
                     }
@@ -652,13 +652,13 @@ namespace Server.Gumps
             }
         }
 
-        private ArrayList Wrap(string value)
+        private List<string> Wrap(string value)
         {
             if (value == null || (value = value.Trim()).Length <= 0)
                 return null;
 
             string[] values = value.Split(' ');
-            ArrayList list = new ArrayList();
+            List<string> list = new List<string>();
             string current = "";
 
             for (int i = 0; i < values.Length; ++i)

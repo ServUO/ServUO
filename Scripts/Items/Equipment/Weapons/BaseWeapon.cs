@@ -3004,7 +3004,7 @@ namespace Server.Items
 			int percentage = -10; //(int)(SpellHelper.GetOffsetScalar(Caster, m, true) * 100);
 			string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
 
-            Server.Spells.Fourth.CurseSpell.AddEffect(defender, duration);
+            Server.Spells.Fourth.CurseSpell.AddEffect(defender, duration, 10, 10, 10);
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, duration, defender, args));
 		}
 
