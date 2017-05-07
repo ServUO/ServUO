@@ -5,6 +5,8 @@ using Server.Gumps;
 using System.Collections.Generic;
 using Server.Engines.Quests;
 using Server.Network;
+using Server.ContextMenus;
+using Server.Multis;
 
 namespace Server.Items
 {
@@ -81,10 +83,11 @@ namespace Server.Items
         }
     }
 
-	public class MoonstoneCrystal : Item
+	public class MoonstoneCrystal : Item, ISecurable
 	{
 		public static Dictionary<int, Point3D> Locations { get; set; }
-		
+        private SecureLevel m_SecureLevel;
+     
 		public static void Initialize()
 		{
 			Locations = new Dictionary<int, Point3D>();
@@ -102,6 +105,25 @@ namespace Server.Items
 			Locations[1156716] = new Point3D(269, 1726, 80); // Britannian Encampment
 		}
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public SecureLevel Level
+        {
+            get
+            {
+                return this.m_SecureLevel;
+            }
+            set
+            {
+                this.m_SecureLevel = value;
+            }
+        }
+ 
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            base.GetContextMenuEntries(from, list);
+            SetSecureLevelEntry.AddTo(from, this, list);
+        }
+     
         public override int LabelNumber { get { return 1124143; } } // Moonstone Crystal
 		
 		[Constructable]
@@ -215,12 +237,14 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 			writer.Write(0);
+            writer.Write((int)this.m_SecureLevel);  // At first, need to save world with this line before next starting.
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int version = reader.ReadInt();
+            this.m_SecureLevel = (SecureLevel)reader.ReadInt();  // If you have not saved world with above line in Serialize(), you should not add this line.
 		}
 	}
 	

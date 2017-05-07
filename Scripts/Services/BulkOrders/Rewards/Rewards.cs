@@ -1822,7 +1822,7 @@ namespace Server.Engines.BulkOrders
             RewardCollection.Add(new BODCollectionItem(0x975, 1152661, CraftResources.GetHue(CraftResource.YewWood), 300, Cauldron, 2));
             RewardCollection.Add(new BODCollectionItem(0x975, 1152657, CraftResources.GetHue(CraftResource.Gold), 310, Cauldron, 3));
             RewardCollection.Add(new BODCollectionItem(0x9E26, 1157218, 0, 325, CraftsmanTalisman, 25)); // todo: Get id
-            RewardCollection.Add(new BODCollectionItem(0x975, 1152657, CraftResources.GetHue(CraftResource.Agapite), 350, Cauldron, 4));
+            RewardCollection.Add(new BODCollectionItem(0x975, 1152658, CraftResources.GetHue(CraftResource.Agapite), 350, Cauldron, 4));
             RewardCollection.Add(new BODCollectionItem(0x975, 1152662, CraftResources.GetHue(CraftResource.Heartwood), 360, Cauldron, 5));
             RewardCollection.Add(new BODCollectionItem(0x9E26, 1157265, 0, 375, CraftsmanTalisman, 50)); // todo: Get id
             RewardCollection.Add(new BODCollectionItem(0x182B, 1157278, 2731, 400, NaturalDye, 1));
