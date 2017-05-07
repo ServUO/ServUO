@@ -31,10 +31,7 @@ namespace Server.Mobiles
 
 			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
-				if (m_Mobile.Debug)
-				{
-					m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
-				}
+				m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
@@ -55,10 +52,10 @@ namespace Server.Mobiles
 
 		public override bool DoActionCombat()
 		{
-			Mobile combatant = m_Mobile.Combatant as Mobile;
+			Mobile c = m_Mobile.Combatant as Mobile;
 
-			if (combatant == null || combatant.Deleted || combatant.Map != m_Mobile.Map || !combatant.Alive ||
-				combatant.IsDeadBondedPet)
+			if (c == null || c.Deleted || c.Map != m_Mobile.Map || !c.Alive ||
+				c.IsDeadBondedPet)
 			{
 				m_Mobile.DebugSay("My combatant is gone, so my guard is up");
 
@@ -72,7 +69,7 @@ namespace Server.Mobiles
 				TryToTeleport();
 			}
 
-			if (!m_Mobile.InRange(combatant, m_Mobile.RangePerception))
+			if (!m_Mobile.InRange(c, m_Mobile.RangePerception))
 			{
 				// They are somewhat far away, can we find something else?
 				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
@@ -80,14 +77,14 @@ namespace Server.Mobiles
 					m_Mobile.Combatant = m_Mobile.FocusMob;
 					m_Mobile.FocusMob = null;
 				}
-				else if (!m_Mobile.InRange(combatant, m_Mobile.RangePerception * 3))
+				else if (!m_Mobile.InRange(c, m_Mobile.RangePerception * 3))
 				{
 					m_Mobile.Combatant = null;
 				}
 
-				combatant = m_Mobile.Combatant as Mobile;
+				c = m_Mobile.Combatant as Mobile;
 
-				if (combatant == null)
+				if (c == null)
 				{
 					m_Mobile.DebugSay("My combatant has fled, so I am on guard");
 					Action = ActionType.Guard;
@@ -96,37 +93,31 @@ namespace Server.Mobiles
 				}
 			}
 
-			/*if ( !m_Mobile.InLOS( combatant ) )
+			/*if ( !m_Mobile.InLOS( c ) )
             {
             if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
             {
-            m_Mobile.Combatant = combatant = m_Mobile.FocusMob;
+            m_Mobile.Combatant = c = m_Mobile.FocusMob;
             m_Mobile.FocusMob = null;
             }
             }*/
 
-			if (MoveTo(combatant, true, m_Mobile.RangeFight))
+			if (MoveTo(c, true, m_Mobile.RangeFight))
 			{
-				m_Mobile.Direction = m_Mobile.GetDirectionTo(combatant);
+				m_Mobile.Direction = m_Mobile.GetDirectionTo(c);
 			}
 			else if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
-				if (m_Mobile.Debug)
-				{
-					m_Mobile.DebugSay("My move is blocked, so I am going to attack {0}", m_Mobile.FocusMob.Name);
-				}
+				m_Mobile.DebugSay("My move is blocked, so I am going to attack {0}", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
 
 				return true;
 			}
-			else if (m_Mobile.GetDistanceToSqrt(combatant) > m_Mobile.RangePerception + 1)
+			else if (m_Mobile.GetDistanceToSqrt(c) > m_Mobile.RangePerception + 1)
 			{
-				if (m_Mobile.Debug)
-				{
-					m_Mobile.DebugSay("I cannot find {0}, so my guard is up", combatant.Name);
-				}
+				m_Mobile.DebugSay("I cannot find {0}, so my guard is up", c.Name);
 
 				Action = ActionType.Guard;
 
@@ -134,47 +125,38 @@ namespace Server.Mobiles
 			}
 			else
 			{
-				if (m_Mobile.Debug)
-				{
-					m_Mobile.DebugSay("I should be closer to {0}", combatant.Name);
-				}
+				m_Mobile.DebugSay("I should be closer to {0}", c.Name);
 			}
 
-			if (!m_Mobile.Controlled && !m_Mobile.Summoned)
-			{
-				if (m_Mobile.Hits < m_Mobile.HitsMax * 20 / 100)
-				{
-					// We are low on health, should we flee?
-					bool flee = false;
+            if (!m_Mobile.Controlled && !m_Mobile.Summoned && m_Mobile.CanFlee)
+            {
+/*                // When we have no ammo, we flee
+                Container pack = m_Mobile.Backpack;
 
-					if (m_Mobile.Hits < combatant.Hits)
-					{
-						// We are more hurt than them
-						int diff = combatant.Hits - m_Mobile.Hits;
-
-						flee = (Utility.Random(0, 100) < (10 + diff)); // (10 + diff)% chance to flee
-					}
-					else
-					{
-						flee = Utility.Random(0, 100) < 10; // 10% chance to flee
-					}
-
-					if (flee)
-					{
-						if (m_Mobile.Debug)
-						{
-							m_Mobile.DebugSay("I am going to flee from {0}", combatant.Name);
-						}
-
-						Action = ActionType.Flee;
-
+                if (pack == null || pack.FindItemByType(typeof(Arrow)) == null)
+                {
+                    Action = ActionType.Flee;
+                    if (Utility.RandomDouble() < teleportChance + 0.1)
+                    {
+                        TryToTeleport();
+                    }
+                    return true;
+                }
+*/
+                if (m_Mobile.Hits < m_Mobile.HitsMax * 20 / 100)
+                {
+                    // We are low on health, should we flee?
+                    if (Utility.Random(100) <= Math.Max(10, 10 + c.Hits - m_Mobile.Hits))
+                    {
+                        m_Mobile.DebugSay("I am going to flee from {0}", c.Name);
+                        Action = ActionType.Flee;
 						if (Utility.RandomDouble() < teleportChance + 0.1)
 						{
 							TryToTeleport();
 						}
-					}
-				}
-			}
+                    }
+                }
+            }
 
 			return true;
 		}
@@ -183,10 +165,7 @@ namespace Server.Mobiles
 		{
 			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
-				if (m_Mobile.Debug)
-				{
-					m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
-				}
+				m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
@@ -201,27 +180,31 @@ namespace Server.Mobiles
 
 		public override bool DoActionFlee()
 		{
-			if (m_Mobile.Hits > m_Mobile.HitsMax / 2)
+            Mobile c = m_Mobile.Combatant as Mobile;
+
+//            Container pack = m_Mobile.Backpack;
+//            bool hasAmmo = !(pack == null || pack.FindItemByType(typeof(Arrow)) == null);
+// They can shoot even with no ammo!
+
+			if (/*hasAmmo && */m_Mobile.Hits > m_Mobile.HitsMax / 2)
 			{
-				m_Mobile.DebugSay("I am stronger now, so I will continue fighting");
-				Action = ActionType.Combat;
+                // If I have a target, go back and fight them
+                if (c != null)
+                {
+                    m_Mobile.DebugSay("I am stronger now, reengaging {0}", c.Name);
+                    Action = ActionType.Combat;
+                }
+                else
+                {
+                    m_Mobile.DebugSay("I am stronger now, my guard is up");
+                    Action = ActionType.Guard;
+                }
 			}
 			else
 			{
-				m_Mobile.FocusMob = m_Mobile.Combatant as Mobile;
-
 				PerformHide();
 
-				if (WalkMobileRange(m_Mobile.FocusMob, 1, false, m_Mobile.RangePerception * 2, m_Mobile.RangePerception * 3))
-				{
-					m_Mobile.DebugSay("I Have fled");
-					Action = ActionType.Guard;
-					return true;
-				}
-				else
-				{
-					m_Mobile.DebugSay("I am fleeing!");
-				}
+				base.DoActionFlee();
 			}
 
 			return true;
@@ -283,7 +266,7 @@ namespace Server.Mobiles
 			// normalize vector
 			double dpx = (dx) / l;
 			double dpy = (dy) / l;
-			// move 
+			// move
 			px += (int)(dpx * (4 + Utility.Random(3)));
 			py += (int)(dpy * (4 + Utility.Random(3)));
 
