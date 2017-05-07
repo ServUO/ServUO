@@ -1098,28 +1098,49 @@ namespace Server.Mobiles
 
 		public virtual bool DoActionFlee()
 		{
-			Mobile from = m_Mobile.FocusMob as Mobile;
+			Mobile c = m_Mobile.Combatant as Mobile;
 
-			if (from == null || from.Deleted || from.Map != m_Mobile.Map)
-			{
-				m_Mobile.DebugSay("I have lost him");
-				Action = ActionType.Guard;
-				return true;
-			}
+            // We only want enemies we know want to attack us, not those we want to attack
+            if (AcquireFocusMob(m_Mobile.RangePerception, FightMode.Aggressor, false, false, true) || c != null)
+            {
+                // If I found a new target, set it as my combatant
+                if (m_Mobile.FocusMob != null)
+                {
+                    m_Mobile.Combatant = m_Mobile.FocusMob;
+                    c = m_Mobile.Combatant as Mobile;
+                    m_Mobile.FocusMob = null;
+                }
 
-			if (WalkMobileRange(from, 1, true, m_Mobile.RangePerception * 2, m_Mobile.RangePerception * 3))
-			{
-				m_Mobile.DebugSay("I have fled");
-				Action = ActionType.Guard;
-				return true;
-			}
-			else
-			{
-				m_Mobile.DebugSay("I am fleeing!");
-			}
+                // If my combatant is bad, guard
+                if (c == null || c.Deleted || c.Map != m_Mobile.Map)
+                {
+                    m_Mobile.DebugSay("I have lost him");
+                    m_Mobile.Combatant = null;
+                    Action = ActionType.Guard;
+                    return true;
+                }
+
+                if (WalkMobileRange(c, 1, ShouldRun, m_Mobile.RangePerception * 2, m_Mobile.RangePerception * 3))
+                {
+                    m_Mobile.DebugSay("I have fled");
+                    Action = ActionType.Guard;
+                    return true;
+                }
+                else
+                {
+                    m_Mobile.DebugSay("I am scared of {0}", c.Name);
+                }
+            }
+            else
+            {
+                m_Mobile.DebugSay("Area seems clear, but my guard is up");
+                Action = ActionType.Guard;
+            }
 
 			return true;
 		}
+
+		public virtual bool ShouldRun { get { return m_Mobile.AllowedStealthSteps <= 0 ; } }
 
 		public virtual bool DoActionInteract()
 		{
