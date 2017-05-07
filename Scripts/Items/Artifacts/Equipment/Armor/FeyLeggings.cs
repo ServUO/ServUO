@@ -2,14 +2,23 @@ using System;
 
 namespace Server.Items
 {
-    public class FeyLeggings : ChainLegs
+    public class FeyLeggings : ChainLegs, ICanBeElfOrHuman
 	{
 		public override bool IsArtifact { get { return true; } }
+
+        private bool _ElfOnly;
+        public override Race RequiredRace { get { return _ElfOnly ? Race.Elf : null; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ElfOnly { get { return _ElfOnly; } set { _ElfOnly = value; InvalidateProperties(); } }
+
         [Constructable]
         public FeyLeggings()
         {
             this.Attributes.BonusHits = 6;
             this.Attributes.DefendChance = 20;
+
+            _ElfOnly = true;
 
             this.ArmorAttributes.MageArmor = 1;
         }
@@ -75,18 +84,14 @@ namespace Server.Items
                 return 255;
             }
         }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Elf;
-            }
-        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
+
+            writer.Write(_ElfOnly);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -94,6 +99,16 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+            switch (version)
+            {
+                case 1:
+                    _ElfOnly = reader.ReadBool();
+                    break;
+                case 0:
+                    _ElfOnly = true;
+                    break;
+            }
         }
     }
 }
