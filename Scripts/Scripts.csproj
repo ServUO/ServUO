@@ -10541,9 +10541,6 @@
     <Compile Include="Items\Resource\MedusaDarkScales.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Functional\MedusaLairAltar.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Quest\MedusaLairMasterKey.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10557,9 +10554,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Weapons\PetrifiedSnake.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Quest\RareSerpentEgg.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Talismans\Slither.cs">
@@ -10647,12 +10641,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\Bosses\StygianDragon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Functional\StygianDragonAltar.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Quest\StygianDragonMasterKey.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\CitadelAltar.cs">
