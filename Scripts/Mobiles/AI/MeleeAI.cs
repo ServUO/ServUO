@@ -135,7 +135,7 @@ namespace Server.Mobiles
             if (m_Mobile.Hits > (m_Mobile.HitsMax / 2))
             {
                 // If I have a target, go back and fight them
-                if (c != null)
+                if (c != null && m_Mobile.GetDistanceToSqrt(c) <= m_Mobile.RangePerception * 2)
                 {
                     m_Mobile.DebugSay("I am stronger now, reengaging {0}", c.Name);
                     Action = ActionType.Combat;
