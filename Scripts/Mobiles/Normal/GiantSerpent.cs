@@ -1,5 +1,6 @@
 using System;
 using Server.Items;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -104,7 +105,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -115,10 +116,45 @@ namespace Server.Mobiles
 
             if (this.BaseSoundID == -1)
                 this.BaseSoundID = 219;
+
+            if (version == 0 && !_FixedSpawners)
+            {
+                _FixedSpawners = true;
+                Timer.DelayCall(TimeSpan.FromSeconds(10), FixSpawners);
+            }
+        }
+
+        private static bool _FixedSpawners = false;
+
+        private void FixSpawners()
+        {
+            long tc = Core.TickCount;
+            Console.Write("Replacing spawner entries GiantSerpent1234 with SerpentNest...");
+            foreach (var spawner in World.Items.Values.OfType<XmlSpawner>())
+            {
+                bool changed = false;
+                foreach (XmlSpawner.SpawnObject obj in spawner.SpawnObjects)
+                {
+                    if (obj.TypeName != null)
+                    {
+                        string name = obj.TypeName.ToLower();
+
+                        if (name == "giantserpent1" || name == "giantserpent2" || name == "giantserpent3" || name == "giantserpent4")
+                        {
+                            obj.TypeName = "SerpentNest";
+                        }
+                    }
+                }
+
+                if (changed)
+                    spawner.DoRespawn = true;
+            }
+            Console.Write("Done!");
+            Console.WriteLine("Took {0} milliseconds.", Core.TickCount - tc);
         }
     }
 
-    [CorpseName("a giant serpent corpse")]
+    /*[CorpseName("a giant serpent corpse")]
     [TypeAlias("Server.Mobiles.Serpant")]
     public class GiantSerpent1 : BaseCreature
     {
@@ -616,5 +652,5 @@ namespace Server.Mobiles
             if (this.BaseSoundID == -1)
                 this.BaseSoundID = 219;
         }
-    }
+    }*/
 }
