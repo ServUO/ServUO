@@ -31,8 +31,10 @@ namespace Server
                 typeof(OrcBomber),
                 typeof(OrcBrute),
                 typeof(OrcCaptain),
+                typeof(OrcChopper),
                 typeof(OrcishLord),
                 typeof(OrcishMage),
+                typeof(OrcScout),
                 typeof(SpawnedOrcishLord)
             },
             new Type[]
