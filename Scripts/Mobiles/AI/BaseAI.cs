@@ -1120,7 +1120,7 @@ namespace Server.Mobiles
                     return true;
                 }
 
-                if (WalkMobileRange(c, 1, ShouldRun, m_Mobile.RangePerception * 2, m_Mobile.RangePerception * 3))
+                if (WalkMobileRange(c, 1, true, m_Mobile.RangePerception * 2, m_Mobile.RangePerception * 3))
                 {
                     m_Mobile.DebugSay("I have fled");
                     Action = ActionType.Guard;
@@ -1139,8 +1139,6 @@ namespace Server.Mobiles
 
 			return true;
 		}
-
-		public virtual bool ShouldRun { get { return m_Mobile.AllowedStealthSteps <= 0 ; } }
 
 		public virtual bool DoActionInteract()
 		{
@@ -2337,13 +2335,13 @@ namespace Server.Mobiles
 
 			int delay = (int)(TransformMoveDelay(m_Mobile.CurrentSpeed) * 1000);
 
-			var mounted = m_Mobile.Mounted || m_Mobile.Flying;
-			var running = (mounted && delay <= Mobile.RunMount) || (!mounted && delay <= Mobile.RunFoot);
+            bool mounted = (m_Mobile.Mounted || m_Mobile.Flying);
+            bool running = mounted ? (delay < Mobile.WalkMount) : (delay < Mobile.WalkFoot);
 
-			if (running)
-			{
-				d |= Direction.Running;
-			}
+            if (running)
+            {
+                d |= Direction.Running;
+            }
 
 			// This makes them always move one step, never any direction changes
 			m_Mobile.Direction = d;
