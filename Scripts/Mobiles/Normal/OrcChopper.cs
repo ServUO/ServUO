@@ -11,68 +11,68 @@ namespace Server.Mobiles
         public OrcChopper()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an Orc Chopper";
-            this.Body = 7;
-            this.BaseSoundID = 0x45A;
-            this.Hue = 0x96D;
+            Name = "an orc chopper";
+            Body = 7;
+            BaseSoundID = 0x45A;
+            Hue = 0x96D;
 
-            this.SetStr(147, 245);
-            this.SetDex(101, 135);
-            this.SetInt(86, 110);
+            SetStr(147, 245);
+            SetDex(101, 135);
+            SetInt(86, 110);
 
-            this.SetHits(97, 139);
+            SetHits(97, 139);
 
-            this.SetDamage(4, 13);
+            SetDamage(4, 13);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 25, 35);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Cold, 15, 25);
-            this.SetResistance(ResistanceType.Poison, 15, 25);
-            this.SetResistance(ResistanceType.Energy, 25, 30);
+            SetResistance(ResistanceType.Physical, 25, 35);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Cold, 15, 25);
+            SetResistance(ResistanceType.Poison, 15, 25);
+            SetResistance(ResistanceType.Energy, 25, 30);
 
-            this.SetSkill(SkillName.MagicResist, 60.1, 85.0);
-            this.SetSkill(SkillName.Swords, 75.1, 90.0);
-            this.SetSkill(SkillName.Tactics, 60.1, 85.0);
+            SetSkill(SkillName.MagicResist, 60.1, 85.0);
+            SetSkill(SkillName.Swords, 75.1, 90.0);
+            SetSkill(SkillName.Tactics, 60.1, 85.0);
 
-            this.Fame = 4500;
-            this.Karma = -4500;
+            Fame = 4500;
+            Karma = -4500;
 
-            this.VirtualArmor = 54;
+            VirtualArmor = 54;
 
-            this.PackItem(new Log(Utility.RandomMinMax(1, 10)));
-            this.PackItem(new Board(Utility.RandomMinMax(10, 20)));
-            this.PackItem(new ExecutionersAxe());
+            PackItem(new Log(Utility.RandomMinMax(1, 10)));
+            PackItem(new Board(Utility.RandomMinMax(10, 20)));
+            PackItem(new ExecutionersAxe());
 
             // TODO: Skull?
             switch (Utility.Random(7))
             {
                 case 0:
-                    this.PackItem(new Arrow());
+                    PackItem(new Arrow());
                     break;
                 case 1:
-                    this.PackItem(new Lockpick());
+                    PackItem(new Lockpick());
                     break;
                 case 2:
-                    this.PackItem(new Shaft());
+                    PackItem(new Shaft());
                     break;
                 case 3:
-                    this.PackItem(new Ribs());
+                    PackItem(new Ribs());
                     break;
                 case 4:
-                    this.PackItem(new Bandage());
+                    PackItem(new Bandage());
                     break;
                 case 5:
-                    this.PackItem(new BeverageBottle(BeverageType.Wine));
+                    PackItem(new BeverageBottle(BeverageType.Wine));
                     break;
                 case 6:
-                    this.PackItem(new Jug(BeverageType.Cider));
+                    PackItem(new Jug(BeverageType.Cider));
                     break;
             }
 
             if (Core.AOS)
-                this.PackItem(Loot.RandomNecromancyReagent());
+                PackItem(Loot.RandomNecromancyReagent());
 
             if (0.5 > Utility.RandomDouble())
                 PackItem(new Yeast());
@@ -104,6 +104,9 @@ namespace Server.Mobiles
                 return 1;
             }
         }
+
+        public override TribeType Tribe { get { return TribeType.Orc; } }
+
         public override OppositionGroup OppositionGroup
         {
             get
@@ -141,7 +144,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager, 2);
+            AddLoot(LootPack.Meager, 2);
         }
 
         public override bool IsEnemy(Mobile m)
