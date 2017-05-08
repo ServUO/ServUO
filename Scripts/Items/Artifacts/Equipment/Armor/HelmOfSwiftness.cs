@@ -2,19 +2,29 @@ using System;
 
 namespace Server.Items
 {
-    public class HelmOfSwiftness : WingedHelm
+    public class HelmOfSwiftness : WingedHelm, ICanBeElfOrHuman
 	{
 		public override bool IsArtifact { get { return true; } }
+
+        private bool _ElfOnly;
+        public override Race RequiredRace { get { return _ElfOnly ? Race.Elf : null; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ElfOnly { get { return _ElfOnly; } set { _ElfOnly = value; InvalidateProperties(); } }
+
         [Constructable]
         public HelmOfSwiftness()
             : base()
         {
-            this.Hue = 0x592;
-			
-            this.Attributes.BonusInt = 5;
-            this.Attributes.CastSpeed = 1;
-            this.Attributes.CastRecovery = 2;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 0x592;
+            ItemID = 0x2689;
+
+            _ElfOnly = true;
+
+            Attributes.BonusInt = 5;
+            Attributes.CastSpeed = 1;
+            Attributes.CastRecovery = 2;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public HelmOfSwiftness(Serial serial)
@@ -82,7 +92,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
+
+            writer.Write(_ElfOnly);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -90,6 +102,21 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
+
+            switch (version)
+            {
+                case 1:
+                    _ElfOnly = reader.ReadBool();
+                    break;
+                case 0:
+                    _ElfOnly = true;
+                    break;
+            }
+
+            if (ItemID != 0x2689)
+            {
+                ItemID = 0x2689;
+            }
         }
     }
 }

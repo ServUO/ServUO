@@ -321,7 +321,7 @@ namespace Server.Items
                                     else if (west)
                                         banner = new Banner(this.m_ItemID + 1);
 										
-                                    house.Addons.Add(banner);
+                                    house.Addons[banner] = from;
 
                                     banner.IsRewardItem = this.m_Banner.IsRewardItem;
                                     banner.MoveToWorld(p3d, map);
@@ -394,7 +394,7 @@ namespace Server.Items
 						
                     if (banner != null)
                     {
-                        this.m_House.Addons.Add(banner);
+                        this.m_House.Addons[banner] = sender.Mobile;
 
                         banner.IsRewardItem = this.m_Banner.IsRewardItem;
                         banner.MoveToWorld(this.m_Location, sender.Mobile.Map);

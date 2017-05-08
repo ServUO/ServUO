@@ -16,12 +16,7 @@ namespace Server.Items
         {
             CommandSystem.Register("CheckAccountGold", AccessLevel.Administrator, e =>
                 {
-                    int totalaccounts = 0;
-                    long totalcurrency = 0;
-
-                    string name = null;
                     double currency = 0.0;
-                    string currencyString = null;
 
                     var table = new Dictionary<string, long>();
 

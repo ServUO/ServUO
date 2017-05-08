@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public PolarBearMask()
         {
-            this.Hue = 0x481;
+            this.Hue = Utility.RandomBool() ? 0x481 : 0x47E;
 
             this.ClothingAttributes.SelfRepair = 3;
 

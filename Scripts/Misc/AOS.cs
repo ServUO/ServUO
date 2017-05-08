@@ -257,11 +257,6 @@ namespace Server
 
             if (fire > 0 && totalDamage > 0)
                 SwarmContext.CheckRemove(m);
-
-            if (totalDamage > 0)
-            {
-                Spells.Mysticism.SleepSpell.OnDamage(m);
-            }
             #endregion
 
             #region Skill Mastery Spells
@@ -310,6 +305,9 @@ namespace Server
 
             if (ManaPhasingOrb.IsInManaPhase(m))
                 ManaPhasingOrb.RemoveFromTable(m);
+
+            Spells.Mysticism.SleepSpell.OnDamage(m);
+            Spells.Mysticism.PurgeMagicSpell.OnMobileDoDamage(from);
             #endregion
 
             return totalDamage;

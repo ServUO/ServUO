@@ -113,8 +113,8 @@ namespace Server.Items
             this.Delete();
             HolidayTree tree = new HolidayTree(from, type, loc);
             BaseHouse house = BaseHouse.FindHouseAt(tree);
-            if (house != null) 
-                house.Addons.Add(tree);
+            if (house != null)
+                house.Addons[tree] = from;
         }
 
         public override void OnDoubleClick(Mobile from)

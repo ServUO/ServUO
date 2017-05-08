@@ -219,7 +219,7 @@ namespace Server.Items
                         {
                             house = BaseHouse.FindHouseAt(p3d, map, id.Height);
 
-                            if (house != null && house.IsOwner(from))
+                            if (house != null && house.IsCoOwner(from))
                             {
                                 bool north = BaseAddon.IsWall(p3d.X, p3d.Y - 1, p3d.Z, map);
                                 bool west = BaseAddon.IsWall(p3d.X - 1, p3d.Y, p3d.Z, map);
@@ -238,7 +238,7 @@ namespace Server.Items
                                     else if (west)
                                         head = new DragonHead(this.m_ItemID);
 
-                                    house.Addons.Add(head);
+                                    house.Addons[head] = from;
 
                                     head.MoveToWorld(p3d, map);
 
@@ -304,7 +304,7 @@ namespace Server.Items
 
                     if (head != null)
                     {
-                        this.m_House.Addons.Add(head);
+                        this.m_House.Addons[head] = sender.Mobile;
 
                         head.MoveToWorld(this.m_Location, sender.Mobile.Map);
 

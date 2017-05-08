@@ -891,6 +891,11 @@ namespace Server.Spells
 				scalar = 1.0;
 			}
 
+            if (Mysticism.PurgeMagicSpell.IsUnderCurseEffects(Caster))
+            {
+                scalar += .5;
+            }
+
 			// Lower Mana Cost = 40%
 			int lmc = AosAttributes.GetValue(m_Caster, AosAttribute.LowerManaCost);
 

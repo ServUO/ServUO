@@ -344,7 +344,7 @@ namespace Server.Items
                                     else if (west)
                                         shield = new DecorativeShield(GetWestItemID(this.m_ItemID));
 										
-                                    house.Addons.Add(shield);
+                                    house.Addons[shield] = from;
 
                                     shield.IsRewardItem = this.m_Shield.IsRewardItem;
                                     shield.MoveToWorld(p3d, map);
@@ -416,7 +416,7 @@ namespace Server.Items
 						
                     if (shield != null)
                     {
-                        this.m_House.Addons.Add(shield);
+                        this.m_House.Addons[shield] = sender.Mobile;
 
                         shield.IsRewardItem = this.m_Shield.IsRewardItem;
                         shield.MoveToWorld(this.m_Location, sender.Mobile.Map);

@@ -151,7 +151,7 @@ namespace Server.Items
                         addon.MoveToWorld(new Point3D(p), map);
 
                         if (house != null)
-                            house.Addons.Add(addon);
+                            house.Addons[addon] = from;
                         else if (boat != null)
                             boat.AddAddon(addon);
 
