@@ -22,6 +22,8 @@ namespace Server.Mobiles
             this.Name = "Ice Wyrm";
             this.Hue = 2729;
             this.Body = 180;
+			
+			this.SetResistance(ResistanceType.Cold, 100);
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
@@ -73,8 +75,8 @@ namespace Server.Mobiles
 
                     if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
                     {
-                        Item item = new IceWyrmScale();
-
+						Item item = new IceWyrmScale();
+						
                         if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
                         {
                             m.BankBox.DropItem(item);
@@ -93,7 +95,7 @@ namespace Server.Mobiles
         public override int Meat { get { return 20; } }
         public override int Hides { get { return 25; } }
         public override HideType HideType { get { return HideType.Barbed; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat | FoodType.Gold; } }
+        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
         public override bool CanAngerOnTame { get { return true; } }
         public override bool CanRummageCorpses { get { return true; } }
 

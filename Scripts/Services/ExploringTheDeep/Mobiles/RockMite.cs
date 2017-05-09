@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Server.Mobiles
 {
@@ -36,6 +36,8 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 88.5, 119.6);
             this.SetSkill(SkillName.Tactics, 84.9, 112.9);
             this.SetSkill(SkillName.Wrestling, 82.7, 119.8);
+			this.SetSkill(SkillName.Parry, 90.0, 100.0);
+			this.SetSkill(SkillName.DetectHidden, 42.9);
 
             this.Fame = 3500;
             this.Karma = -3500;
@@ -84,6 +86,8 @@ namespace Server.Mobiles
         {
             return base.IsEnemy(m);
         }
+		
+		// Tail Swipe
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {

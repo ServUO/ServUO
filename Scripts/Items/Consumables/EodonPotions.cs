@@ -780,7 +780,7 @@ namespace Server.Items
         [Constructable]
         public BlueCorn(int amount)
         {
-            Hue = 1282;
+            Hue = 1284;
             Amount = amount;
         }
 
@@ -802,12 +802,23 @@ namespace Server.Items
         }
     }
 
-    public class BlueCornStock : Item
+    public class CornStock : Item
     {
+        public override int LabelNumber { get { return 1035639; } } // corn stalk
+        private int m_Used;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Used
+        {
+            get { return m_Used; }
+            set { m_Used = value; }
+        }
+
         [Constructable]
-        public BlueCornStock()
+        public CornStock()
             : base(3197)
         {
+            m_Used = Utility.RandomMinMax(1, 4);
             Movable = false;
         }
 
@@ -815,17 +826,37 @@ namespace Server.Items
         {
             if (from.InRange(this.Location, 3))
             {
-                var corn = new BlueCorn(Utility.RandomMinMax(1, 5));
-                from.AddToBackpack(corn);
-                from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156736, "#1156737", from.NetState);
+                Item corn;
 
-                Delete();
+                if (Utility.RandomDouble() < 0.70)
+                {
+                    corn = new EarOfCorn(1);
+                    from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156736, "#1156737", from.NetState);
+                }
+                else
+                {
+                    corn = new BlueCorn(1);
+                    from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156736, "#1156733", from.NetState);
+                }
+
+                from.AddToBackpack(corn);
+
+                if (Used > 1)
+                {
+                    Used--;
+                }
+                else
+                {
+                    Delete();
+                }
             }
             else
-                from.SendLocalizedMessage(500295); // You are too far away to do that.
+            {
+                from.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+            }
         }
 
-        public BlueCornStock(Serial serial)
+        public CornStock(Serial serial)
             : base(serial)
         {
         }
@@ -834,12 +865,16 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0);
+
+            writer.Write((int)m_Used);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            m_Used = reader.ReadInt();
         }
     }
 

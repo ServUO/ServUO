@@ -3196,9 +3196,12 @@
     <Compile Include="Services\ExploringTheDeep\Items\QuestItems\CanvassRobe.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Decorate\CusteauPerronHouseDoor.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\CaptainsLogScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\CousteauPerronScroll.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\CusteauPerronNote.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Decorate\IceCrystals.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\QuestItems\IceWyrmScale.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\EliseTrentScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\JosefSkimmonsScroll.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\JournalScroll.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\LedgerScroll.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\LiamDeFoeScroll.cs" />
@@ -10541,9 +10544,6 @@
     <Compile Include="Items\Resource\MedusaDarkScales.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Functional\MedusaLairAltar.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Quest\MedusaLairMasterKey.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10557,9 +10557,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Weapons\PetrifiedSnake.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Quest\RareSerpentEgg.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Talismans\Slither.cs">
@@ -10647,12 +10644,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\Bosses\StygianDragon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Functional\StygianDragonAltar.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Quest\StygianDragonMasterKey.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\CitadelAltar.cs">

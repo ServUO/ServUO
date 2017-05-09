@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -15,8 +16,15 @@ namespace Server.Items
             this.Hue = 5185;
             this.LootType = LootType.Blessed;
         }
-
-        public override void GetProperties(ObjectPropertyList list)
+		
+		public override void OnDoubleClick(Mobile from)
+        {
+			base.OnDoubleClick(from);			
+			
+			from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154241); // *It is a beautifully and masterfully crafted blade. The hilt bears the family crest of the former owner*
+        }
+		
+		public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 

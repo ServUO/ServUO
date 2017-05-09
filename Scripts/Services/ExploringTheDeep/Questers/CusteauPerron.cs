@@ -103,8 +103,8 @@ namespace Server.Mobiles
                 {
                     pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CollectTheComponent;
                     dropped.Delete();
-
-                    pm.SendGump(new CousteauPerronPlansGump(pm));                    
+                    pm.SendGump(new CousteauPerronPlansGump(pm));
+                    pm.AddToBackpack(new CusteauPerronNote());
                 }
                 else
                 {
@@ -329,7 +329,6 @@ namespace Server.Gumps
             {
                 case 0:
                     {
-                        from.AddToBackpack(new CusteauPerronNote());
                         break;
                     }
             }
