@@ -10,44 +10,44 @@ namespace Server.Mobiles
         [Constructable]
         public FrostDragon() : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a frost dragon";
-            this.Body = Utility.RandomList(12, 59);
-            this.BaseSoundID = 362;
+            Name = "a frost dragon";
+            Body = Utility.RandomList(12, 59);
+            BaseSoundID = 362;
 
-            this.Hue = Utility.RandomMinMax(1319, 1327);
+            Hue = Utility.RandomMinMax(1319, 1327);
 
-            this.SetStr(1300, 1400);
-            this.SetDex(100, 125);
-            this.SetInt(600, 700);
+            SetStr(1300, 1400);
+            SetDex(100, 125);
+            SetInt(600, 700);
 
-            this.SetHits(2050, 2250);
+            SetHits(2050, 2250);
 
-            this.SetDamage(24, 33);
+            SetDamage(24, 33);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Cold, 50);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Cold, 50);
 
-            this.SetResistance(ResistanceType.Physical, 85, 92);
-            this.SetResistance(ResistanceType.Fire, 55, 70);
-            this.SetResistance(ResistanceType.Cold, 85, 95);
-            this.SetResistance(ResistanceType.Poison, 65, 70);
-            this.SetResistance(ResistanceType.Energy, 65, 75);
+            SetResistance(ResistanceType.Physical, 85, 92);
+            SetResistance(ResistanceType.Fire, 55, 70);
+            SetResistance(ResistanceType.Cold, 85, 95);
+            SetResistance(ResistanceType.Poison, 65, 70);
+            SetResistance(ResistanceType.Energy, 65, 75);
 
-            this.SetSkill(SkillName.EvalInt, 50, 60);
-            this.SetSkill(SkillName.Magery, 120, 130);
-            this.SetSkill(SkillName.MagicResist, 115, 135);
-            this.SetSkill(SkillName.Tactics, 120, 135);
-            this.SetSkill(SkillName.Wrestling, 120, 130);
-            this.SetSkill(SkillName.Meditation, 1, 50);
+            SetSkill(SkillName.EvalInt, 50, 60);
+            SetSkill(SkillName.Magery, 120, 130);
+            SetSkill(SkillName.MagicResist, 115, 135);
+            SetSkill(SkillName.Tactics, 120, 135);
+            SetSkill(SkillName.Wrestling, 120, 130);
+            SetSkill(SkillName.Meditation, 1, 50);
 
-            this.Fame = 25000;
-            this.Karma = -25000;
+            Fame = 25000;
+            Karma = -25000;
 
-            this.VirtualArmor = 60;
+            VirtualArmor = 60;
 
-            this.Tamable = true;
-            this.ControlSlots = 5;
-            this.MinTameSkill = 105.0;
+            Tamable = true;
+            ControlSlots = 5;
+            MinTameSkill = 105.0;
         }
 
         public override void GenerateLoot()
@@ -61,10 +61,15 @@ namespace Server.Mobiles
             return WeaponAbility.BleedAttack;
         }
 
+        public override void OnAfterTame(Mobile tamer)
+        {
+            Title = null;
+        }
+
         public override bool CanAngerOnTame { get { return true; } }
         public override bool StatLossAfterTame { get { return true; } }
-        public override bool ReacquireOnMovement { get { return !this.Controlled; } }
-        public override bool AutoDispel { get { return !this.Controlled; } }
+        public override bool ReacquireOnMovement { get { return !Controlled; } }
+        public override bool AutoDispel { get { return !Controlled; } }
         public override int TreasureMapLevel { get { return 4; } }
         public override int Meat { get { return 19; } }
         public override int Hides { get { return 33; } }
@@ -77,7 +82,7 @@ namespace Server.Mobiles
         public override int BreathColdDamage { get { return 100; } }
         public override int BreathEffectHue { get { return 1264; } }
 
-        public override bool CanAreaDamage { get { return !this.Controlled; } }
+        public override bool CanAreaDamage { get { return !Controlled; } }
         public override int AreaDamageRange { get { return 10; } }
         public override double AreaDamageScalar { get { return 1.0; } }
         public override double AreaDamageChance { get { return 1.0; } }
@@ -88,7 +93,7 @@ namespace Server.Mobiles
 
         public override void AreaDamageEffect(Mobile m)
         {
-            m.FixedParticles(0x374A, 10, 30, 5052, this.Hue, 0, EffectLayer.Waist);
+            m.FixedParticles(0x374A, 10, 30, 5052, Hue, 0, EffectLayer.Waist);
             m.PlaySound(0x5C6);
         }
 
