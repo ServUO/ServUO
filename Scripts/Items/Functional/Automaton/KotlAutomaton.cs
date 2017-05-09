@@ -74,19 +74,7 @@ namespace Server.Items
             Karma = -14000;
 
             ControlSlots = 4;
-        }
-
-        // Missing Wrestling Mastery Ability
-
-        public override WeaponAbility GetWeaponAbility()
-        {
-            switch (Utility.Random(2))
-            {
-                default:
-                case 0: return WeaponAbility.Disarm;
-                case 1: return WeaponAbility.ParalyzingBlow;
-            }
-        }
+        }       
 
         public override void GenerateLoot()
         {
@@ -177,6 +165,8 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        // Missing Wrestling Mastery Ability
 
         public override double WeaponAbilityChance { get { return 0.33; } }
 
