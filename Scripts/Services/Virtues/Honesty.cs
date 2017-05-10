@@ -48,7 +48,6 @@ namespace Server.Services.Virtues
 
 		public static void Initialize()
 		{
-			EventSink.ItemCreated += OnItemCreated;
 			EventSink.ItemDeleted += OnItemDeleted;
 			EventSink.AfterWorldSave += OnAfterSave;
 
@@ -67,6 +66,8 @@ namespace Server.Services.Virtues
                     }
                 }
             }
+
+            GenerateHonestyItems();
 		}
 
 		private static void OnItemCreated(ItemCreatedEventArgs e)
@@ -128,6 +129,16 @@ namespace Server.Services.Virtues
 
 		private static void GenerateHonestyItems()
 		{
+            bool initial = _Items.Count == 0;
+            long ticks = Core.TickCount;
+
+            if (initial)
+            {
+                Utility.PushColor(ConsoleColor.Yellow);
+                Console.Write("Honesty Items generating:");
+                Utility.PopColor();
+            }
+
 			try
 			{
 				var count = MaxGeneration - _Items.Count;
@@ -228,9 +239,17 @@ namespace Server.Services.Virtues
 			catch (Exception e)
 			{
 				Utility.PushColor(ConsoleColor.Red);
+                Console.WriteLine(" Failed!");
 				Console.WriteLine(e);
 				Utility.PopColor();
 			}
+
+            if (initial)
+            {
+                Utility.PushColor(ConsoleColor.Green);
+                Console.WriteLine(" Done, took {0} milliseconds!", Core.TickCount - ticks);
+                Utility.PopColor();
+            }
 		}
 
 		private static Point3D? GetValidLocation(Map map)

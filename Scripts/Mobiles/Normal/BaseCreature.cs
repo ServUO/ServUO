@@ -1831,13 +1831,6 @@ namespace Server.Mobiles
             }
             #endregion
 
-            #region Skill Mastery
-            SkillMasterySpell spell = SkillMasterySpell.GetHarmfulSpell(this, typeof(TribulationSpell));
-
-            if (spell != null)
-                spell.DoDamage(this, amount);
-            #endregion
-
             base.OnDamage(amount, from, willKill);
         }
 
