@@ -720,6 +720,7 @@ namespace Server.Mobiles
 
         public virtual void BreathStart(IDamageable target)
         {
+            RevealingAction();
             BreathStallMovement();
             BreathPlayAngerSound();
             BreathPlayAngerAnimation();
@@ -749,6 +750,7 @@ namespace Server.Mobiles
 
         public virtual void BreathEffect_Callback(object state)
         {
+            RevealingAction();
             IDamageable target = (IDamageable)state;
 
             if (!target.Alive || !CanBeHarmful(target))
@@ -6810,7 +6812,7 @@ namespace Server.Mobiles
         #endregion
 
         #region TeleportTo
-        private long _NextTeleport;
+        private long m_NextTeleport;
 
         public virtual bool TeleportsTo { get { return false; } }
         public virtual TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(5); } }
@@ -6818,7 +6820,7 @@ namespace Server.Mobiles
         public virtual double TeleportProb { get { return 0.25; } }
         public virtual bool TeleportsPets { get { return false; } }
 
-        private static int[] _Offsets = new int[]
+        private static int[] m_Offsets = new int[]
 			{
 				-1, -1,
 				-1,  0,
@@ -6845,10 +6847,10 @@ namespace Server.Mobiles
 
                     Point3D to = this.Location;
 
-                    for (int i = 0; i < _Offsets.Length; i += 2)
+                    for (int i = 0; i < m_Offsets.Length; i += 2)
                     {
-                        int x = this.X + _Offsets[(offset + i) % _Offsets.Length];
-                        int y = this.Y + _Offsets[(offset + i + 1) % _Offsets.Length];
+                        int x = this.X + m_Offsets[(offset + i) % m_Offsets.Length];
+                        int y = this.Y + m_Offsets[(offset + i + 1) % m_Offsets.Length];
 
                         if (this.Map.CanSpawnMobile(x, y, this.Z))
                         {
@@ -6973,6 +6975,17 @@ namespace Server.Mobiles
         {
             long tc = Core.TickCount;
 
+            if (HasAura && tc >= m_NextAura)
+            {
+                AuraDamage();
+                m_NextAura = tc + (int)AuraInterval.TotalMilliseconds;
+            }
+
+            if (Paralyzed || Frozen)
+            {
+                return;
+            }
+
             if (EnableRummaging && CanRummageCorpses && !Summoned && !Controlled && tc >= m_NextRummageTime)
             {
                 double min, max;
@@ -7050,12 +7063,6 @@ namespace Server.Mobiles
                 m_FailedReturnHome = 0;
             }
 
-            if (HasAura && tc >= m_NextAura)
-            {
-                AuraDamage();
-                m_NextAura = tc + (int)AuraInterval.TotalMilliseconds;
-            }
-
             if (Combatant != null && CanDiscord && tc >= m_NextDiscord && 0.33 > Utility.RandomDouble())
             {
                 if (DoDiscord())
@@ -7078,10 +7085,10 @@ namespace Server.Mobiles
                     m_NextProvoke = tc + (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
             }
 
-            if (Combatant != null && TeleportsTo && tc >= _NextTeleport)
+            if (Combatant != null && TeleportsTo && tc >= m_NextTeleport)
             {
                 TryTeleport();
-                _NextTeleport = tc + (int)TeleportDuration.TotalMilliseconds;
+                m_NextTeleport = tc + (int)TeleportDuration.TotalMilliseconds;
             }
 
             if (CanFindPlayer && CanDetectHidden && Core.TickCount >= m_NextFindPlayer)
