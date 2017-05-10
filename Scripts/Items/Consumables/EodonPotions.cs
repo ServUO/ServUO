@@ -802,7 +802,7 @@ namespace Server.Items
         }
     }
 
-    public class CornStock : Item
+    public class CornStalk : Item
     {
         public override int LabelNumber { get { return 1035639; } } // corn stalk
         private int m_Used;
@@ -815,7 +815,7 @@ namespace Server.Items
         }
 
         [Constructable]
-        public CornStock()
+        public CornStalk()
             : base(3197)
         {
             m_Used = Utility.RandomMinMax(1, 4);
@@ -856,7 +856,7 @@ namespace Server.Items
             }
         }
 
-        public CornStock(Serial serial)
+        public CornStalk(Serial serial)
             : base(serial)
         {
         }
