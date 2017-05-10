@@ -259,16 +259,6 @@ namespace Server
                 SwarmContext.CheckRemove(m);
             #endregion
 
-            #region Skill Mastery Spells
-            SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
-
-            if (spell != null)
-                spell.AbsorbDamage(ref totalDamage);
-
-            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
-            SkillMasterySpell.OnCasterDamaged(m, from, ref totalDamage);
-            #endregion
-
             if (keepAlive && totalDamage > m.Hits)
                 totalDamage = m.Hits;
 
@@ -296,6 +286,11 @@ namespace Server
             #endregion
 
             m.Damage(totalDamage, from, true, false);
+
+            #region Skill Mastery Spells
+            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
+            SkillMasterySpell.OnDamaged(m, from, ref totalDamage);
+            #endregion
 
             #region Stygian Abyss
             if (m.Spell != null)
