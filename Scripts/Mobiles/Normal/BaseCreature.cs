@@ -7112,10 +7112,10 @@ namespace Server.Mobiles
         {
             Corpse toRummage = null;
 
-            IPooledEnumerable eable = GetItemsInRange(2);
+            IPooledEnumerable eable = Map.GetItemsInRange(Location, 2);
             foreach (Item item in eable)
             {
-                if (item is Corpse && item.Items.Count > 0)
+                if (item is Corpse && ((Corpse)item).Items.Count > 0)
                 {
                     toRummage = (Corpse)item;
                     break;
@@ -7146,7 +7146,7 @@ namespace Server.Mobiles
 
                 Lift(item, item.Amount, out rejected, out reason);
 
-                if (!rejected && Drop(this, new Point3D(-1, -1, 0)))
+                if (!rejected && Drop(pack, new Point3D(-1, -1, 0)))
                 {
                     // *rummages through a corpse and takes an item*
                     PublicOverheadMessage(MessageType.Emote, 0x3B2, 1008086);

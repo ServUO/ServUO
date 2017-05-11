@@ -160,11 +160,7 @@ namespace Server.Spells.SkillMasteries
                 victim.FixedParticles(0x374A, 10, 15, 5038, 1181, 0, EffectLayer.Head);
 			}
 		}
-		
-		/// <summary>
-		/// Called in AOS.cs - HCI Malus
-		/// </summary>
-		/// <returns></returns>
+
 		public override int PropertyBonus()
 		{
 			return m_PropertyBonus;
