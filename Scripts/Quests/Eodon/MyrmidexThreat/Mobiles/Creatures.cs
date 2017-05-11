@@ -711,32 +711,41 @@ namespace Server.Mobiles
 
         [Constructable]
         public IgnisFatalis()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.15, 0.3)
+            : base(AIType.AI_Spellweaving, FightMode.Closest, 10, 1, 0.15, 0.3)
         {
-            Body = 0x104;
+            Body = 0x105;
             Name = "Ignis Fatalis";
             BaseSoundID = 0x56B;
 
-            SetHits(250);
-            SetStr(100, 150);
+            SetHits(500);
+            SetStr(350, 360);
             SetDex(100, 150);
-            SetInt(100, 150);
+            SetInt(580, 620);
 
-            SetDamage(15, 18);
+            SetDamage(15, 22);
 
-            SetDamageType(ResistanceType.Physical, 50);
-            SetDamageType(ResistanceType.Energy, 50);
+            SetDamageType(ResistanceType.Physical, 0);
+            SetDamageType(ResistanceType.Energy, 100);
 
             SetResistance(ResistanceType.Physical, 40, 50);
             SetResistance(ResistanceType.Fire, 40, 50);
-            SetResistance(ResistanceType.Cold, 40, 50);
-            SetResistance(ResistanceType.Poison, 40, 50);
-            SetResistance(ResistanceType.Energy, 70, 80);
+            SetResistance(ResistanceType.Cold, 60, 70);
+            SetResistance(ResistanceType.Poison, 70, 80);
+            SetResistance(ResistanceType.Energy, 100);
 
-            SetSkill(SkillName.Wrestling, 70, 100);
-            SetSkill(SkillName.Tactics, 70, 100);
-            SetSkill(SkillName.MagicResist, 70, 100);
+            SetSkill(SkillName.Wrestling, 100);
+            SetSkill(SkillName.Tactics, 100);
+            SetSkill(SkillName.MagicResist, 100);
+            SetSkill(SkillName.DetectHidden, 100.0);
+            SetSkill(SkillName.Magery, 100.0);
+            SetSkill(SkillName.EvalInt, 100.0);
+            SetSkill(SkillName.Meditation, 100.0);
+            SetSkill(SkillName.Focus, 100.0);
+            SetSkill(SkillName.Spellweaving, 100.0);
         }
+
+        public virtual bool HasAura { get { return true; } }
+        public virtual int AuraEnergyDamage { get { return 100; } }
 
         public IgnisFatalis(Serial serial)
             : base(serial)

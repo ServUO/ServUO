@@ -208,7 +208,9 @@ namespace Server.Engines.BulkOrders
 
         public virtual int ComputePoints(LargeBOD bod)
         {
-            return this.ComputePoints(bod.AmountMax, bod.RequireExceptional, bod.Material, bod.Entries.Length, bod.Entries[0].Details.Type);
+            Type type = bod.Entries == null || bod.Entries.Length == 0 ? null : bod.Entries[0].Details.Type;
+
+            return this.ComputePoints(bod.AmountMax, bod.RequireExceptional, bod.Material, bod.Entries.Length, type);
         }
 
         public virtual int ComputeGold(SmallBOD bod)
@@ -238,7 +240,7 @@ namespace Server.Engines.BulkOrders
         {
             for (int i = 0; i < types.Length; ++i)
             {
-                if (types[i].Contains(type))
+                if (type == null || types[i].Contains(type))
                     return types[i].Points;
             }
 

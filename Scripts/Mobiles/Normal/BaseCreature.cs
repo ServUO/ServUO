@@ -720,6 +720,7 @@ namespace Server.Mobiles
 
         public virtual void BreathStart(IDamageable target)
         {
+            RevealingAction();
             BreathStallMovement();
             BreathPlayAngerSound();
             BreathPlayAngerAnimation();
@@ -749,6 +750,7 @@ namespace Server.Mobiles
 
         public virtual void BreathEffect_Callback(object state)
         {
+            RevealingAction();
             IDamageable target = (IDamageable)state;
 
             if (!target.Alive || !CanBeHarmful(target))
@@ -1827,13 +1829,6 @@ namespace Server.Mobiles
             {
                 LevelItemManager.CheckItems(from, this);
             }
-            #endregion
-
-            #region Skill Mastery
-            SkillMasterySpell spell = SkillMasterySpell.GetHarmfulSpell(this, typeof(TribulationSpell));
-
-            if (spell != null)
-                spell.DoDamage(this, amount);
             #endregion
 
             base.OnDamage(amount, from, willKill);
@@ -6810,7 +6805,7 @@ namespace Server.Mobiles
         #endregion
 
         #region TeleportTo
-        private long _NextTeleport;
+        private long m_NextTeleport;
 
         public virtual bool TeleportsTo { get { return false; } }
         public virtual TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(5); } }
@@ -6818,7 +6813,7 @@ namespace Server.Mobiles
         public virtual double TeleportProb { get { return 0.25; } }
         public virtual bool TeleportsPets { get { return false; } }
 
-        private static int[] _Offsets = new int[]
+        private static int[] m_Offsets = new int[]
 			{
 				-1, -1,
 				-1,  0,
@@ -6845,10 +6840,10 @@ namespace Server.Mobiles
 
                     Point3D to = this.Location;
 
-                    for (int i = 0; i < _Offsets.Length; i += 2)
+                    for (int i = 0; i < m_Offsets.Length; i += 2)
                     {
-                        int x = this.X + _Offsets[(offset + i) % _Offsets.Length];
-                        int y = this.Y + _Offsets[(offset + i + 1) % _Offsets.Length];
+                        int x = this.X + m_Offsets[(offset + i) % m_Offsets.Length];
+                        int y = this.Y + m_Offsets[(offset + i + 1) % m_Offsets.Length];
 
                         if (this.Map.CanSpawnMobile(x, y, this.Z))
                         {
@@ -6911,11 +6906,80 @@ namespace Server.Mobiles
         }
         #endregion
 
+        private long m_NextFindPlayer;
+
+        public virtual bool CanDetectHidden { get { return Skills[SkillName.DetectHidden].Value > 0; } }
+        public virtual bool CanFindPlayer { get { return true; } }
+
+        public virtual int FindPlayerDelayBase { get { return (15000 / Int); } }
+        public virtual int FindPlayerDelayMax { get { return 60; } }
+        public virtual int FindPlayerDelayMin { get { return 5; } }
+        public virtual int FindPlayerDelayHigh { get { return 10; } }
+        public virtual int FindPlayerDelayLow { get { return 9; } }
+
+        // This does NOT actually use the skill. Just uses the skill values for a distinct ability.
+        public virtual void TryFindPlayer()
+        {
+            if (Deleted || Map == null)
+            {
+                return;
+            }
+
+            DebugSay("Checking for hidden players");
+
+            double srcSkill = Skills[SkillName.DetectHidden].Value;
+
+            if (srcSkill <= 0)
+            {
+                return;
+            }
+
+            IPooledEnumerable eable = GetMobilesInRange(RangePerception);
+            foreach (Mobile trg in eable)
+            {
+                if (trg != this && trg.Player && trg.Alive && trg.Hidden && trg.IsPlayer() && InLOS(trg))
+                {
+                    DebugSay("Trying to detect {0}", trg.Name);
+
+                    double trgHiding = trg.Skills[SkillName.Hiding].Value / 2.9;
+                    double trgStealth = trg.Skills[SkillName.Stealth].Value / 1.8;
+
+                    double chance = srcSkill / 1.2 - Math.Min(trgHiding, trgStealth);
+
+                    if (chance < srcSkill / 10)
+                    {
+                        chance = srcSkill / 10;
+                    }
+
+                    chance /= 100;
+
+                    if (chance > Utility.RandomDouble())
+                    {
+                        trg.RevealingAction();
+                        trg.SendLocalizedMessage(500814); // You have been revealed!
+                    }
+                }
+            }
+
+            eable.Free();
+        }
+
         public virtual void OnThink()
         {
             long tc = Core.TickCount;
 
-            if (EnableRummaging && CanRummageCorpses && !Summoned && !Controlled && tc - m_NextRummageTime >= 0)
+            if (HasAura && tc >= m_NextAura)
+            {
+                AuraDamage();
+                m_NextAura = tc + (int)AuraInterval.TotalMilliseconds;
+            }
+
+            if (Paralyzed || Frozen)
+            {
+                return;
+            }
+
+            if (EnableRummaging && CanRummageCorpses && !Summoned && !Controlled && tc >= m_NextRummageTime)
             {
                 double min, max;
 
@@ -6934,13 +6998,14 @@ namespace Server.Mobiles
                 m_NextRummageTime = tc + (int)TimeSpan.FromMinutes(delay).TotalMilliseconds;
             }
 
-            if (CanBreath && tc - m_NextBreathTime >= 0)
+            if (CanBreath && tc >= m_NextBreathTime)
             // tested: controlled dragons do breath fire, what about summoned skeletal dragons?
             {
                 IDamageable target = Combatant;
 
-                if (target != null && target.Alive && (!(target is Mobile) || !((Mobile)target).IsDeadBondedPet) && CanBeHarmful(target) && target.Map == Map &&
-                    !IsDeadBondedPet && InRange(target, BreathRange) && InLOS(target) && !BardPacified)
+                if (target != null && target.Alive && (!(target is Mobile) || !((Mobile)target).IsDeadBondedPet) &&
+                    CanBeHarmful(target) && target.Map == Map && !IsDeadBondedPet &&
+                    InRange(target, BreathRange) && InLOS(target) && !BardPacified)
                 {
                     if ((Core.TickCount - m_NextBreathTime) < 30000 && Utility.RandomBool())
                     {
@@ -6948,9 +7013,8 @@ namespace Server.Mobiles
                     }
 
                     m_NextBreathTime = tc +
-                                       (int)
-                                       TimeSpan.FromSeconds(BreathMinDelay + ((Utility.RandomDouble() * (BreathMaxDelay - BreathMinDelay))))
-                                               .TotalMilliseconds;
+                        (int)TimeSpan.FromSeconds(BreathMinDelay + ((Utility.RandomDouble() *
+                        (BreathMaxDelay - BreathMinDelay)))).TotalMilliseconds;
                 }
             }
 
@@ -6958,14 +7022,14 @@ namespace Server.Mobiles
             {
                 Mobile owner = ControlMaster;
 
-                if (owner != null && CanHealOwner && tc - m_NextHealOwnerTime >= 0 && CanBeBeneficial(owner, true, true) &&
+                if (owner != null && CanHealOwner && tc >= m_NextHealOwnerTime && CanBeBeneficial(owner, true, true) &&
                     owner.Map == Map && InRange(owner, HealStartRange) && InLOS(owner) && owner.Hits < HealOwnerTrigger * owner.HitsMax)
                 {
                     HealStart(owner);
 
                     m_NextHealOwnerTime = tc + (int)TimeSpan.FromSeconds(HealOwnerInterval).TotalMilliseconds;
                 }
-                else if (CanHeal && tc - m_NextHealTime >= 0 && CanBeBeneficial(this) && (Hits < HealTrigger * HitsMax || Poisoned))
+                else if (CanHeal && tc >= m_NextHealTime && CanBeBeneficial(this) && (Hits < HealTrigger * HitsMax || Poisoned))
                 {
                     HealStart(this);
 
@@ -6992,27 +7056,21 @@ namespace Server.Mobiles
                 m_FailedReturnHome = 0;
             }
 
-            if (HasAura && tc - m_NextAura >= 0)
-            {
-                AuraDamage();
-                m_NextAura = tc + (int)AuraInterval.TotalMilliseconds;
-            }
-
-            if (Combatant != null && CanDiscord && tc - m_NextDiscord >= 0 && 0.33 > Utility.RandomDouble())
+            if (Combatant != null && CanDiscord && tc >= m_NextDiscord && 0.33 > Utility.RandomDouble())
             {
                 if (DoDiscord())
                     m_NextDiscord = tc + (int)DiscordInterval.TotalMilliseconds;
                 else
                     m_NextDiscord = tc + (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
             }
-            else if (Combatant != null && CanPeace && tc - m_NextPeace >= 0 && 0.33 > Utility.RandomDouble())
+            else if (Combatant != null && CanPeace && tc >= m_NextPeace && 0.33 > Utility.RandomDouble())
             {
                 if (DoPeace())
                     m_NextPeace = tc + (int)PeaceInterval.TotalMilliseconds;
                 else
                     m_NextPeace = tc + (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
             }
-            else if (Combatant != null && CanProvoke && tc - m_NextProvoke >= 0 && 0.33 > Utility.RandomDouble())
+            else if (Combatant != null && CanProvoke && tc >= m_NextProvoke && 0.33 > Utility.RandomDouble())
             {
                 if (DoProvoke())
                     m_NextProvoke = tc + (int)ProvokeInterval.TotalMilliseconds;
@@ -7020,10 +7078,33 @@ namespace Server.Mobiles
                     m_NextProvoke = tc + (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
             }
 
-            if (Combatant != null && TeleportsTo && tc - _NextTeleport >= 0)
+            if (Combatant != null && TeleportsTo && tc >= m_NextTeleport)
             {
                 TryTeleport();
-                _NextTeleport = tc + (int)TeleportDuration.TotalMilliseconds;
+                m_NextTeleport = tc + (int)TeleportDuration.TotalMilliseconds;
+            }
+
+            if (CanFindPlayer && CanDetectHidden && Core.TickCount >= m_NextFindPlayer)
+            {
+                TryFindPlayer();
+
+                // Not exactly OSI style, approximation.
+                int delay = FindPlayerDelayBase;
+
+                if (delay > FindPlayerDelayMax)
+                {
+                    delay = FindPlayerDelayMax; // 60s max at 250 int
+                }
+                else if (delay < FindPlayerDelayMin)
+                {
+                    delay = FindPlayerDelayMin; // 5s min at 3000 int
+                }
+
+                int min = delay * (FindPlayerDelayLow / FindPlayerDelayHigh); // 13s at 1000 int, 33s at 400 int, 54s at <250 int
+                int max = delay * (FindPlayerDelayHigh / FindPlayerDelayLow); // 16s at 1000 int, 41s at 400 int, 66s at <250 int
+
+                m_NextFindPlayer = Core.TickCount +
+                    (int)TimeSpan.FromSeconds(Utility.RandomMinMax(min, max)).TotalMilliseconds;
             }
         }
 

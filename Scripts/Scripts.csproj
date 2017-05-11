@@ -770,6 +770,7 @@
     </Compile>
     <Compile Include="Items\Functional\AcidVine.cs" />
     <Compile Include="Items\Functional\Automaton\AutomatonActuator.cs" />
+    <Compile Include="Items\Functional\Automaton\AutomatonStatue.cs" />
     <Compile Include="Items\Functional\Automaton\BlackrockAutomaton.cs" />
     <Compile Include="Items\Functional\Automaton\BlackrockAutomatonHead.cs" />
     <Compile Include="Items\Functional\Automaton\BlackrockMoonstone.cs" />
@@ -1728,7 +1729,6 @@
     <Compile Include="Items\Addons\Aquarium\Rewards\WaterloggedBoots.cs" />
     <Compile Include="Misc\UntamedPetsCleaning.cs" />
     <Compile Include="Misc\WorldLocationInfo.cs" />
-    <Compile Include="Mobiles\AI\BaseAbilityHelper.cs" />
     <Compile Include="Mobiles\AI\PaladinAI.cs" />
     <Compile Include="Mobiles\Bosses\AbyssalInfernal.cs" />
     <Compile Include="Mobiles\Bosses\Barracoon.cs" />
@@ -3196,9 +3196,12 @@
     <Compile Include="Services\ExploringTheDeep\Items\QuestItems\CanvassRobe.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Decorate\CusteauPerronHouseDoor.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\CaptainsLogScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\CousteauPerronScroll.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\CusteauPerronNote.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Decorate\IceCrystals.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\QuestItems\IceWyrmScale.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\EliseTrentScroll.cs" />
+    <Compile Include="Services\ExploringTheDeep\Items\Scroll\JosefSkimmonsScroll.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\JournalScroll.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\LedgerScroll.cs" />
     <Compile Include="Services\ExploringTheDeep\Items\Scroll\LiamDeFoeScroll.cs" />
@@ -9708,6 +9711,7 @@
     <Compile Include="Services\PointsSystems\BlackthornData.cs" />
     <Compile Include="Services\PointsSystems\CasinoData.cs" />
     <Compile Include="Services\PointsSystems\DespiseCrystals.cs" />
+    <Compile Include="Services\PointsSystems\KotlCityData.cs" />
     <Compile Include="Services\PointsSystems\PlayerMobileProps.cs" />
     <Compile Include="Services\PointsSystems\PointsSystem.cs" />
     <Compile Include="Services\PointsSystems\QueensLoyalty.cs" />
@@ -9914,7 +9918,6 @@
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameCrystal.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameTeleporter.cs" />
     <Compile Include="Services\Revamped Dungeons\Shame Revamped\ShameWall.cs" />
-    <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\ExodusPeerless\ExodusPeerlessAltar.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExodusNexus.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\ExoticToolkit.cs" />
     <Compile Include="Services\Revamped Dungeons\TheExodusEncounter\Items\KeypunchReader.cs" />
@@ -10541,9 +10544,6 @@
     <Compile Include="Items\Resource\MedusaDarkScales.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Functional\MedusaLairAltar.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Items\Quest\MedusaLairMasterKey.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10557,9 +10557,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Weapons\PetrifiedSnake.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Quest\RareSerpentEgg.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Talismans\Slither.cs">
@@ -10647,12 +10644,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mobiles\Bosses\StygianDragon.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Functional\StygianDragonAltar.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Items\Quest\StygianDragonMasterKey.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\CitadelAltar.cs">

@@ -13,8 +13,8 @@ namespace Server.Items
             this.Weight = 1.0;
             this.LootType = LootType.Blessed;
         }
-
-        public override void GetProperties(ObjectPropertyList list)
+		
+		public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 

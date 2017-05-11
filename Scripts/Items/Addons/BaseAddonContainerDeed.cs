@@ -152,7 +152,7 @@ namespace Server.Items
                     if (res == AddonFitResult.Valid)
                     {
                         this.m_Deed.Delete();
-                        house.Addons.Add(addon);
+                        house.Addons[addon] = from;
                         house.AddSecure(from, addon);
                     }
                     else

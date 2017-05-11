@@ -183,13 +183,6 @@ namespace Server.Spells
 
 			damage = AOS.Scale(damage, (int)(scalar * 100));
 
-            #region Skill Mastery
-            SkillMasterySpell spell = SkillMasterySpell.GetHarmfulSpell(Caster, typeof(TribulationSpell));
-
-            if (spell != null)
-                spell.AbsorbDamage(ref damage);
-            #endregion
-
 			return damage / 100;
 		}
 
@@ -890,6 +883,11 @@ namespace Server.Spells
 			{
 				scalar = 1.0;
 			}
+
+            if (Mysticism.PurgeMagicSpell.IsUnderCurseEffects(Caster))
+            {
+                scalar += .5;
+            }
 
 			// Lower Mana Cost = 40%
 			int lmc = AosAttributes.GetValue(m_Caster, AosAttribute.LowerManaCost);

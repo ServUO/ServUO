@@ -257,21 +257,6 @@ namespace Server
 
             if (fire > 0 && totalDamage > 0)
                 SwarmContext.CheckRemove(m);
-
-            if (totalDamage > 0)
-            {
-                Spells.Mysticism.SleepSpell.OnDamage(m);
-            }
-            #endregion
-
-            #region Skill Mastery Spells
-            SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
-
-            if (spell != null)
-                spell.AbsorbDamage(ref totalDamage);
-
-            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
-            SkillMasterySpell.OnCasterDamaged(m, from, ref totalDamage);
             #endregion
 
             if (keepAlive && totalDamage > m.Hits)
@@ -302,6 +287,11 @@ namespace Server
 
             m.Damage(totalDamage, from, true, false);
 
+            #region Skill Mastery Spells
+            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
+            SkillMasterySpell.OnDamaged(m, from, ref totalDamage);
+            #endregion
+
             #region Stygian Abyss
             if (m.Spell != null)
                 ((Spell)m.Spell).CheckCasterDisruption(true, phys, fire, cold, pois, nrgy);
@@ -310,6 +300,9 @@ namespace Server
 
             if (ManaPhasingOrb.IsInManaPhase(m))
                 ManaPhasingOrb.RemoveFromTable(m);
+
+            Spells.Mysticism.SleepSpell.OnDamage(m);
+            Spells.Mysticism.PurgeMagicSpell.OnMobileDoDamage(from);
             #endregion
 
             return totalDamage;

@@ -355,7 +355,7 @@ namespace Server.Items
                         switch (res)
                         {
                             case AddonFitResult.Valid:
-                                PlaceDoor(door, p, map, house);
+                                PlaceDoor(from, door, p, map, house);
                                 return;
                             case AddonFitResult.Blocked:
                                 from.SendLocalizedMessage(500269); // You cannot build that there.
@@ -384,12 +384,12 @@ namespace Server.Items
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
         }
 
-        public void PlaceDoor(Item door, IPoint3D p, Map map, BaseHouse house)
+        public void PlaceDoor(Mobile from, Item door, IPoint3D p, Map map, BaseHouse house)
         {
             door.MoveToWorld(new Point3D(p), map);
 
             if (house != null)
-                house.Addons.Add(door);
+                house.Addons[door] = from;
 
             this.Delete();
         }
@@ -407,7 +407,7 @@ namespace Server.Items
 
             if (house != null)
             {
-                System.Collections.ArrayList doors = house.Doors;
+                var doors = house.Doors;
 
                 for (int i = 0; i < doors.Count; ++i)
                 {
@@ -553,7 +553,7 @@ namespace Server.Items
         {
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
-            if (house != null && house.IsOwner(from) && house.Addons.Contains(this))
+            if (house != null && (house.IsOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
             {
                 Effects.PlaySound(GetWorldLocation(), Map, 0x3B3);
                 from.SendLocalizedMessage(500461); // You destroy the item.
@@ -644,7 +644,7 @@ namespace Server.Items
         {
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
-            if (house != null && house.IsOwner(from) && house.Addons.Contains(this))
+            if (house != null && (house.IsOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
             {
                 Effects.PlaySound(GetWorldLocation(), Map, 0x3B3);
                 from.SendLocalizedMessage(500461); // You destroy the item.

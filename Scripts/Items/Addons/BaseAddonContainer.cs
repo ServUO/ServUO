@@ -260,7 +260,7 @@ namespace Server.Items
 
             if (house != null)
             {
-                ArrayList doors = house.Doors;
+                var doors = house.Doors;
 
                 for (int i = 0; i < doors.Count; ++i)
                 {

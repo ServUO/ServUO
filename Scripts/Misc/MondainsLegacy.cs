@@ -11,6 +11,11 @@ using Server.Network;
 
 namespace Server
 {
+    public interface ICanBeElfOrHuman
+    {
+        bool ElfOnly { get; set; }
+    }
+
     public static class MondainsLegacy
     {
         private static readonly Type[] m_PigmentList = new Type[]
@@ -344,7 +349,7 @@ namespace Server
 
         public static bool CheckArtifactChance(Mobile m, BaseCreature bc)
         {
-            if (!Core.ML)
+            if (!Core.ML || bc is BasePeerless) // Peerless drops to the corpse, this will handled elsewhere
                 return false;
 
             return Paragon.CheckArtifactChance(m, bc);
@@ -356,6 +361,7 @@ namespace Server
 
             if (item == null)
                 return;
+
 			m.PlaySound(0x5B4);
 
             if (m.AddToBackpack(item))
@@ -373,6 +379,16 @@ namespace Server
                 // Item was placed at feet by m.AddToBackpack
                 m.SendLocalizedMessage(1072523); // You find an artifact, but your backpack and bank are too full to hold it.
             }
+        }
+
+        public static void DropPeerlessMinor(Container peerlessCorpse)
+        {
+            Item item = Activator.CreateInstance(m_Artifacts[Utility.Random(m_Artifacts.Length)]) as Item;
+
+            if (item is ICanBeElfOrHuman)
+                ((ICanBeElfOrHuman)item).ElfOnly = false;
+
+            peerlessCorpse.DropItem(item);
         }
 
         public static bool CheckML(Mobile from)

@@ -1,9 +1,12 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class TheRobeOfBritanniaAri : BaseOuterTorso
-	{
+    public class TheRobeOfBritanniaAri : BaseOuterTorso, IRepairable
+    {
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
 		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public TheRobeOfBritanniaAri()

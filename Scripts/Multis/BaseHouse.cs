@@ -299,12 +299,12 @@ namespace Server.Multis
 
         public virtual void KillVendors()
         {
-            ArrayList list = new ArrayList(PlayerVendors);
+            List<Mobile> list = new List<Mobile>(PlayerVendors);
 
             foreach (PlayerVendor vendor in list)
                 vendor.Destroy(true);
 
-            list = new ArrayList(PlayerBarkeepers);
+            list = new List<Mobile>(PlayerBarkeepers);
 
             foreach (PlayerBarkeeper barkeeper in list)
                 barkeeper.Delete();
@@ -344,30 +344,30 @@ namespace Server.Multis
         private HouseRegion m_Region;
         private HouseSign m_Sign;
         private TrashBarrel m_Trash;
-        private ArrayList m_Doors;
+        private List<Item> m_Doors;
 
         private Mobile m_Owner;
 
-        private ArrayList m_Access;
-        private ArrayList m_Bans;
-        private ArrayList m_CoOwners;
-        private ArrayList m_Friends;
+        private List<Mobile> m_Access;
+        private List<Mobile> m_Bans;
+        private List<Mobile> m_CoOwners;
+        private List<Mobile> m_Friends;
 
-        private readonly ArrayList m_PlayerVendors = new ArrayList();
-        private readonly ArrayList m_PlayerBarkeepers = new ArrayList();
+        private readonly List<Mobile> m_PlayerVendors = new List<Mobile>();
+        private readonly List<Mobile> m_PlayerBarkeepers = new List<Mobile>();
 
         private Dictionary<Item, Mobile> m_LockDowns;
-        private ArrayList m_VendorRentalContracts;
-        private ArrayList m_Secures;
+        private List<Item> m_VendorRentalContracts;
+        private List<SecureInfo> m_Secures;
 
-        private ArrayList m_Addons;
-        private ArrayList m_Carpets;
+        private Dictionary<Item, Mobile> m_Addons;
+        private List<Item> m_Carpets;
 
-        private readonly ArrayList m_VendorInventories = new ArrayList();
-        private readonly ArrayList m_RelocatedEntities = new ArrayList();
+        private readonly List<VendorInventory> m_VendorInventories = new List<VendorInventory>();
+        private readonly List<RelocatedEntity> m_RelocatedEntities = new List<RelocatedEntity>();
 
         private MovingCrate m_MovingCrate;
-        private ArrayList m_InternalizedVendors;
+        private List<Mobile> m_InternalizedVendors;
 
         private int m_MaxLockDowns;
         private int m_MaxSecures;
@@ -429,7 +429,7 @@ namespace Server.Multis
             fromLockdowns = 0;
             fromMovingCrate = 0;
 
-            ArrayList list = m_Secures;
+            List<SecureInfo> list = m_Secures;
 
             if (list != null)
             {
@@ -574,7 +574,7 @@ namespace Server.Multis
         {
             get
             {
-                foreach (Item item in Addons)
+                foreach (Item item in Addons.Keys)
                 {
                     if (item is BaseAddonContainer || item is RaisedGardenSmallAddon || item is RaisedGardenLargeAddon || item is RaisedGardenEastAddon || item is RaisedGardenSouthAddon)
                         return true;
@@ -590,7 +590,7 @@ namespace Server.Multis
         {
             get
             {
-                foreach (Item item in Addons)
+                foreach (Item item in Addons.Keys)
                 {
                     if (item is AuctionSafe && ((AuctionSafe)item).Auction != null && ((AuctionSafe)item).Auction.OnGoing)
                         return true;
@@ -601,9 +601,9 @@ namespace Server.Multis
         }
         #endregion
 
-        public ArrayList AvailableVendorsFor(Mobile m)
+        public List<Mobile> AvailableVendorsFor(Mobile m)
         {
-            ArrayList list = new ArrayList();
+            List<Mobile> list = new List<Mobile>();
 
             foreach (PlayerVendor vendor in PlayerVendors)
             {
@@ -688,7 +688,7 @@ namespace Server.Multis
 
             Secures.Clear();
 
-            foreach (Item addon in Addons)
+            foreach (Item addon in Addons.Keys)
             {
                 if (!addon.Deleted)
                 {
@@ -789,7 +789,7 @@ namespace Server.Multis
                     list.Add(item, Owner);
             }
 
-            foreach (Item item in Addons)
+            foreach (Item item in Addons.Keys)
             {
                 if (item.Parent == null && item.Map != Map.Internal)
                     list.Add(item, Owner);
@@ -1324,19 +1324,19 @@ namespace Server.Multis
             m_BuiltOn = DateTime.UtcNow;
             m_LastTraded = DateTime.MinValue;
 
-            m_Doors = new ArrayList();
+            m_Doors = new List<Item>();
             m_LockDowns = new Dictionary<Item, Mobile>();
-            m_Secures = new ArrayList();
-            m_Addons = new ArrayList();
-            m_Carpets = new ArrayList();
+            m_Secures = new List<SecureInfo>();
+            m_Addons = new Dictionary<Item, Mobile>();
+            m_Carpets = new List<Item>();
 
-            m_CoOwners = new ArrayList();
-            m_Friends = new ArrayList();
-            m_Bans = new ArrayList();
-            m_Access = new ArrayList();
+            m_CoOwners = new List<Mobile>();
+            m_Friends = new List<Mobile>();
+            m_Bans = new List<Mobile>();
+            m_Access = new List<Mobile>();
 
-            m_VendorRentalContracts = new ArrayList();
-            m_InternalizedVendors = new ArrayList();
+            m_VendorRentalContracts = new List<Item>();
+            m_InternalizedVendors = new List<Mobile>();
 
             m_Owner = owner;
 
@@ -2593,7 +2593,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)17); // version
+            writer.Write((int)18); // version
 
             writer.WriteItemList(m_Carpets, true);
 
@@ -2627,7 +2627,7 @@ namespace Server.Multis
             writer.WriteEncodedInt(m_VendorInventories.Count);
             for (int i = 0; i < m_VendorInventories.Count; i++)
             {
-                VendorInventory inventory = (VendorInventory)m_VendorInventories[i];
+                VendorInventory inventory = m_VendorInventories[i];
                 inventory.Serialize(writer);
             }
 
@@ -2643,7 +2643,13 @@ namespace Server.Multis
             writer.Write(m_BuiltOn);
             writer.Write(m_LastTraded);
 
-            writer.WriteItemList(m_Addons, true);
+            //writer.WriteItemList(m_Addons, true);
+            writer.Write(m_Addons.Count);
+            foreach (var kvp in m_Addons)
+            {
+                writer.Write(kvp.Key);
+                writer.Write(kvp.Value);
+            }
 
             writer.Write(m_Secures.Count);
 
@@ -2713,9 +2719,10 @@ namespace Server.Multis
 
             switch (version)
             {
+                case 18: // version 18, converted addons list to dictionary
                 case 17:
                     {
-                        m_Carpets = reader.ReadItemList();
+                        m_Carpets = reader.ReadStrongItemList();
                         goto case 16;
                     }
                 case 16: // version 16, converted lockdown list to dictionary
@@ -2740,8 +2747,8 @@ namespace Server.Multis
                 case 13: // removed ban location serialization
                 case 12:
                     {
-                        m_VendorRentalContracts = reader.ReadItemList();
-                        m_InternalizedVendors = reader.ReadMobileList();
+                        m_VendorRentalContracts = reader.ReadStrongItemList();
+                        m_InternalizedVendors = reader.ReadStrongMobileList();
 
                         int relocatedCount = reader.ReadEncodedInt();
                         for (int i = 0; i < relocatedCount; i++)
@@ -2788,7 +2795,7 @@ namespace Server.Multis
                     }
                 case 7:
                     {
-                        m_Access = reader.ReadMobileList();
+                        m_Access = reader.ReadStrongMobileList();
                         goto case 6;
                     }
                 case 6:
@@ -2800,13 +2807,36 @@ namespace Server.Multis
                 case 5: // just removed fields
                 case 4:
                     {
-                        m_Addons = reader.ReadItemList();
+                        m_Addons = new Dictionary<Item, Mobile>();
+
+                        if (version < 18)
+                        {
+                            var list = reader.ReadStrongItemList();
+                            foreach (var item in list)
+                            {
+                                m_Addons[item] = Owner;
+                            }
+                        }
+                        else
+                        {
+                            int c = reader.ReadInt();
+                            for (int i = 0; i < c; i++)
+                            {
+                                var item = reader.ReadItem();
+                                var mob = reader.ReadMobile();
+
+                                if (item != null && mob != null)
+                                {
+                                    m_Addons[item] = mob;
+                                }
+                            }
+                        }
                         goto case 3;
                     }
                 case 3:
                     {
                         count = reader.ReadInt();
-                        m_Secures = new ArrayList(count);
+                        m_Secures = new List<SecureInfo>(count);
 
                         for (int i = 0; i < count; ++i)
                         {
@@ -2835,22 +2865,22 @@ namespace Server.Multis
                 case 0:
                     {
                         if (version < 17)
-                            m_Carpets = new ArrayList();
+                            m_Carpets = new List<Item>();
 
                         if (version < 14)
                             m_RelativeBanLocation = BaseBanLocation;
 
                         if (version < 12)
                         {
-                            m_VendorRentalContracts = new ArrayList();
-                            m_InternalizedVendors = new ArrayList();
+                            m_VendorRentalContracts = new List<Item>();
+                            m_InternalizedVendors = new List<Mobile>();
                         }
 
                         if (version < 4)
-                            m_Addons = new ArrayList();
+                            m_Addons = new Dictionary<Item, Mobile>();
 
                         if (version < 7)
-                            m_Access = new ArrayList();
+                            m_Access = new List<Mobile>();
 
                         if (version < 8)
                             m_Price = DefaultPrice;
@@ -2867,20 +2897,20 @@ namespace Server.Multis
 
                         UpdateRegion();
 
-                        m_CoOwners = reader.ReadMobileList();
-                        m_Friends = reader.ReadMobileList();
-                        m_Bans = reader.ReadMobileList();
+                        m_CoOwners = reader.ReadStrongMobileList();
+                        m_Friends = reader.ReadStrongMobileList();
+                        m_Bans = reader.ReadStrongMobileList();
 
                         m_Sign = reader.ReadItem() as HouseSign;
                         m_Trash = reader.ReadItem() as TrashBarrel;
 
-                        m_Doors = reader.ReadItemList();
+                        m_Doors = reader.ReadStrongItemList();
 
                         m_LockDowns = new Dictionary<Item, Mobile>();
 
                         if (version < 16)
                         {
-                            ArrayList list = reader.ReadItemList();
+                            List<Item> list = reader.ReadStrongItemList();
 
                             foreach (Item item in list)
                             {
@@ -2909,8 +2939,8 @@ namespace Server.Multis
 
                         if (version < 3)
                         {
-                            ArrayList items = reader.ReadItemList();
-                            m_Secures = new ArrayList(items.Count);
+                            List<Item> items = reader.ReadStrongItemList();
+                            m_Secures = new List<SecureInfo>(items.Count);
 
                             for (int i = 0; i < items.Count; ++i)
                             {
@@ -3178,7 +3208,7 @@ namespace Server.Multis
                 return m_Region;
             }
         }
-        public ArrayList CoOwners
+        public List<Mobile> CoOwners
         {
             get
             {
@@ -3189,7 +3219,7 @@ namespace Server.Multis
                 m_CoOwners = value;
             }
         }
-        public ArrayList Friends
+        public List<Mobile> Friends
         {
             get
             {
@@ -3200,7 +3230,7 @@ namespace Server.Multis
                 m_Friends = value;
             }
         }
-        public ArrayList Access
+        public List<Mobile> Access
         {
             get
             {
@@ -3211,7 +3241,7 @@ namespace Server.Multis
                 m_Access = value;
             }
         }
-        public ArrayList Bans
+        public List<Mobile> Bans
         {
             get
             {
@@ -3222,7 +3252,7 @@ namespace Server.Multis
                 m_Bans = value;
             }
         }
-        public ArrayList Doors
+        public List<Item> Doors
         {
             get
             {
@@ -3269,7 +3299,7 @@ namespace Server.Multis
                 {
                     for (int i = 0; i < m_Secures.Count; ++i)
                     {
-                        SecureInfo info = (SecureInfo)m_Secures[i];
+                        SecureInfo info = m_Secures[i];
 
                         if (info.Item.Deleted)
                             continue;
@@ -3294,7 +3324,7 @@ namespace Server.Multis
                 {
                     for (int i = 0; i < m_Secures.Count; i++)
                     {
-                        SecureInfo info = (SecureInfo)m_Secures[i];
+                        SecureInfo info = m_Secures[i];
 
                         if (info.Item.Deleted)
                             continue;
@@ -3307,9 +3337,9 @@ namespace Server.Multis
             }
         }
 
-        public ArrayList Carpets { get { return m_Carpets; } set { m_Carpets = value; } }
+        public List<Item> Carpets { get { return m_Carpets; } set { m_Carpets = value; } }
 
-        public ArrayList Addons
+        public Dictionary<Item, Mobile> Addons
         {
             get
             {
@@ -3320,6 +3350,7 @@ namespace Server.Multis
                 m_Addons = value;
             }
         }
+
         public Dictionary<Item, Mobile> LockDowns
         {
             get
@@ -3327,7 +3358,8 @@ namespace Server.Multis
                 return m_LockDowns;
             }
         }
-        public ArrayList Secures
+
+        public List<SecureInfo> Secures
         {
             get
             {
@@ -3345,35 +3377,35 @@ namespace Server.Multis
                 m_Sign = value;
             }
         }
-        public ArrayList PlayerVendors
+        public List<Mobile> PlayerVendors
         {
             get
             {
                 return m_PlayerVendors;
             }
         }
-        public ArrayList PlayerBarkeepers
+        public List<Mobile> PlayerBarkeepers
         {
             get
             {
                 return m_PlayerBarkeepers;
             }
         }
-        public ArrayList VendorRentalContracts
+        public List<Item> VendorRentalContracts
         {
             get
             {
                 return m_VendorRentalContracts;
             }
         }
-        public ArrayList VendorInventories
+        public List<VendorInventory> VendorInventories
         {
             get
             {
                 return m_VendorInventories;
             }
         }
-        public ArrayList RelocatedEntities
+        public List<RelocatedEntity> RelocatedEntities
         {
             get
             {
@@ -3391,7 +3423,7 @@ namespace Server.Multis
                 m_MovingCrate = value;
             }
         }
-        public ArrayList InternalizedVendors
+        public List<Mobile> InternalizedVendors
         {
             get
             {
@@ -3547,7 +3579,7 @@ namespace Server.Multis
             {
                 for (int i = 0; i < m_Secures.Count; ++i)
                 {
-                    SecureInfo info = (SecureInfo)m_Secures[i];
+                    SecureInfo info = m_Secures[i];
 
                     if (info.Item is StrongBox)
                     {
@@ -3567,9 +3599,9 @@ namespace Server.Multis
 
             if (m_Addons != null)
             {
-                for (int i = 0; i < m_Addons.Count; ++i)
+                foreach(var kvp in m_Addons)
                 {
-                    Item item = (Item)m_Addons[i];
+                    Item item = kvp.Key;
 
                     if (item != null)
                     {
@@ -3623,7 +3655,7 @@ namespace Server.Multis
                 }
             }
 
-            ArrayList inventories = new ArrayList(VendorInventories);
+            List<VendorInventory> inventories = new List<VendorInventory>(VendorInventories);
 
             foreach (VendorInventory inventory in inventories)
                 inventory.Delete();
@@ -3910,7 +3942,7 @@ namespace Server.Multis
             bool contains = false;
 
             for (int i = 0; !contains && i < m_Secures.Count; ++i)
-                contains = (((SecureInfo)m_Secures[i]).Item == item);
+                contains = m_Secures[i].Item == item;
 
             return contains;
         }
@@ -4421,11 +4453,11 @@ namespace Server.Multis
             }
             else
             {
-                ArrayList list = house.Secures;
+                List<SecureInfo> list = house.Secures;
 
                 for (int i = 0; sec == null && list != null && i < list.Count; ++i)
                 {
-                    SecureInfo si = (SecureInfo)list[i];
+                    SecureInfo si = list[i];
 
                     if (si.Item == item)
                         sec = si;

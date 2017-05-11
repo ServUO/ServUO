@@ -4,8 +4,10 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefTinkering), typeof(GargishGlasses), true)]
-    public class Glasses : BaseArmor
+    public class Glasses : BaseArmor, IRepairable
 	{
+        public CraftSystem RepairSystem { get { return DefTinkering.CraftSystem; } }
+
 		public override bool IsArtifact { get { return true; } }
         private AosWeaponAttributes m_AosWeaponAttributes;
 

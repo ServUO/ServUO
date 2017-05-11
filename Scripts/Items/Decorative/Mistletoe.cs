@@ -306,7 +306,7 @@ namespace Server.Items
                 addon.ItemID = itemID;
                 addon.MoveToWorld(loc, from.Map);
 
-                house.Addons.Add(addon);
+                house.Addons[addon] = from;
                 this.Delete();
             }
         }

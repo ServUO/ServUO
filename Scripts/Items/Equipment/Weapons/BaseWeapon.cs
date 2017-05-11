@@ -2277,28 +2277,27 @@ namespace Server.Items
             }
 
 			#region Enemy of One
-			if (!attacker.Player)
-			{
-				var enemyOfOneContext = EnemyOfOneSpell.GetContext(defender);
+			var enemyOfOneContext = EnemyOfOneSpell.GetContext(defender);
 
-				if (enemyOfOneContext != null && !enemyOfOneContext.IsWaitingForEnemy && !enemyOfOneContext.IsEnemy(attacker))
-					percentageBonus += 100;
-			}
-			else if (!defender.Player)
-			{
-				var enemyOfOneContext = EnemyOfOneSpell.GetContext(attacker);
+            if (enemyOfOneContext != null && !enemyOfOneContext.IsWaitingForEnemy && !enemyOfOneContext.IsEnemy(attacker))
+            {
+                percentageBonus += 100;
+            }
+            else
+            {
+                enemyOfOneContext = EnemyOfOneSpell.GetContext(attacker);
 
-				if (enemyOfOneContext != null)
-				{
-					enemyOfOneContext.OnHit(defender);
+                if (enemyOfOneContext != null)
+                {
+                    enemyOfOneContext.OnHit(defender);
 
-					if (enemyOfOneContext.IsEnemy(defender))
-					{
-						defender.FixedEffect(0x37B9, 10, 5, 1160, 0);
-						percentageBonus += enemyOfOneContext.DamageScalar;
-					}
-				}
-			}
+                    if (enemyOfOneContext.IsEnemy(defender))
+                    {
+                        defender.FixedEffect(0x37B9, 10, 5, 1160, 0);
+                        percentageBonus += enemyOfOneContext.DamageScalar;
+                    }
+                }
+            }
 			#endregion
 
 			int packInstinctBonus = GetPackInstinctBonus(attacker, defender);
@@ -3005,7 +3004,7 @@ namespace Server.Items
 			int percentage = -10; //(int)(SpellHelper.GetOffsetScalar(Caster, m, true) * 100);
 			string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
 
-            Server.Spells.Fourth.CurseSpell.AddEffect(defender, duration);
+            Server.Spells.Fourth.CurseSpell.AddEffect(defender, duration, 10, 10, 10);
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, duration, defender, args));
 		}
 

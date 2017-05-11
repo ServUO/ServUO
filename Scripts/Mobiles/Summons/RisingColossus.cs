@@ -1,3 +1,4 @@
+using Server.Items;
 using System;
 
 namespace Server.Mobiles
@@ -68,6 +69,18 @@ namespace Server.Mobiles
         public override int GetHurtSound()
         {
             return 0x629;
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            switch (Utility.Random(2))
+            {
+                default:
+                case 0:
+                    return WeaponAbility.ArmorIgnore;
+                case 1:
+                    return WeaponAbility.CrushingBlow;
+            }
         }
 
         public override bool BleedImmune { get { return true; } }

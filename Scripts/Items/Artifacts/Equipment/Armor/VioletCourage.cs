@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public VioletCourage()
         {
-            this.Hue = 0x486;
+            this.Hue = Utility.RandomBool() ? 0x486 : 0x490;
             this.Attributes.Luck = 95;
             this.Attributes.DefendChance = 15;
             this.ArmorAttributes.LowerStatReq = 100;
