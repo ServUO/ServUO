@@ -65,9 +65,9 @@ namespace Server.Services.Virtues
                         }
                     }
                 }
-            }
 
-            GenerateHonestyItems();
+                GenerateHonestyItems();
+            }
 		}
 
 		private static void OnItemCreated(ItemCreatedEventArgs e)
@@ -294,7 +294,7 @@ namespace Server.Services.Virtues
         {
             item.HonestyRegion = _Regions[Utility.Random(_Regions.Length)];
 
-            if (!String.IsNullOrWhiteSpace(item.HonestyRegion) && BaseVendor.AllVendors.Count > 0)
+            if (!String.IsNullOrWhiteSpace(item.HonestyRegion) && BaseVendor.AllVendors.Count >= 10)
             {
                 var attempts = BaseVendor.AllVendors.Count / 10;
 
