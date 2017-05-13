@@ -294,7 +294,7 @@ namespace Server.Services.Virtues
         {
             item.HonestyRegion = _Regions[Utility.Random(_Regions.Length)];
 
-            if (!String.IsNullOrWhiteSpace(item.HonestyRegion))
+            if (!String.IsNullOrWhiteSpace(item.HonestyRegion) && BaseVendor.AllVendors.Count > 0)
             {
                 var attempts = BaseVendor.AllVendors.Count / 10;
 
