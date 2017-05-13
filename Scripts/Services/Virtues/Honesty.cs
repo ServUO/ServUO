@@ -206,23 +206,6 @@ namespace Server.Services.Virtues
 							continue;
 						}
 
-						item.HonestyRegion = _Regions[Utility.Random(_Regions.Length)];
-
-						if (!String.IsNullOrWhiteSpace(item.HonestyRegion))
-						{
-							var attempts = BaseVendor.AllVendors.Count / 10;
-
-							BaseVendor m;
-
-							do
-							{
-								m = BaseVendor.AllVendors[Utility.Random(BaseVendor.AllVendors.Count)];
-							}
-							while ((m == null || m.Map != map || !m.Region.IsPartOf(item.HonestyRegion)) && --attempts >= 0);
-
-							item.HonestyOwner = m;
-						}
-
 						ItemFlags.SetTaken(item, false);
 
 						item.MoveToWorld(loc.Value, map);
@@ -306,6 +289,26 @@ namespace Server.Services.Virtues
 
 			return null;
 		}
+
+        public static void AssignOwner(Item item)
+        {
+            item.HonestyRegion = _Regions[Utility.Random(_Regions.Length)];
+
+            if (!String.IsNullOrWhiteSpace(item.HonestyRegion))
+            {
+                var attempts = BaseVendor.AllVendors.Count / 10;
+
+                BaseVendor m;
+
+                do
+                {
+                    m = BaseVendor.AllVendors[Utility.Random(BaseVendor.AllVendors.Count)];
+                }
+                while ((m == null || m.Map != item.Map || !m.Region.IsPartOf(item.HonestyRegion)) && --attempts >= 0);
+
+                item.HonestyOwner = m;
+            }
+        }
 	}
 
 	public class HonestyChest : Container
