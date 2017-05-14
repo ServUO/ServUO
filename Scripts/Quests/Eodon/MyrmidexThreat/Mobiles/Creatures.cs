@@ -744,8 +744,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Spellweaving, 100.0);
         }
 
-        public virtual bool HasAura { get { return true; } }
-        public virtual int AuraEnergyDamage { get { return 100; } }
+        public override bool HasAura { get { return true; } }
+        public override int AuraEnergyDamage { get { return 100; } }
 
         public IgnisFatalis(Serial serial)
             : base(serial)
