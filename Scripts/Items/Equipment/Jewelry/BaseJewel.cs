@@ -991,7 +991,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(10); // version
+            writer.Write(11); // version
+
+            writer.Write(m_SetPhysicalBonus);
+            writer.Write(m_SetFireBonus);
+            writer.Write(m_SetColdBonus);
+            writer.Write(m_SetPoisonBonus);
+            writer.Write(m_SetEnergyBonus);
 
             writer.Write(m_PlayerConstructed);
 
@@ -1056,6 +1062,15 @@ namespace Server.Items
 
             switch (version)
             {
+                case 11:
+                    {
+                        m_SetPhysicalBonus = reader.ReadInt();
+                        m_SetFireBonus = reader.ReadInt();
+                        m_SetColdBonus = reader.ReadInt();
+                        m_SetPoisonBonus = reader.ReadInt();
+                        m_SetEnergyBonus = reader.ReadInt();
+                        goto case 10;
+                    }
                 case 10:
                     {
                         m_PlayerConstructed = reader.ReadBool();
@@ -1340,6 +1355,78 @@ namespace Server.Items
             set
             {
                 m_LastEquipped = value;
+            }
+        }
+
+        private int m_SetPhysicalBonus, m_SetFireBonus, m_SetColdBonus, m_SetPoisonBonus, m_SetEnergyBonus;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPhysicalBonus
+        {
+            get
+            {
+                return m_SetPhysicalBonus;
+            }
+            set
+            {
+                m_SetPhysicalBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetFireBonus
+        {
+            get
+            {
+                return m_SetFireBonus;
+            }
+            set
+            {
+                m_SetFireBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetColdBonus
+        {
+            get
+            {
+                return m_SetColdBonus;
+            }
+            set
+            {
+                m_SetColdBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPoisonBonus
+        {
+            get
+            {
+                return m_SetPoisonBonus;
+            }
+            set
+            {
+                m_SetPoisonBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetEnergyBonus
+        {
+            get
+            {
+                return m_SetEnergyBonus;
+            }
+            set
+            {
+                m_SetEnergyBonus = value;
+                InvalidateProperties();
             }
         }
 

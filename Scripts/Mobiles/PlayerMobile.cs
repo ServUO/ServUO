@@ -987,13 +987,13 @@ namespace Server.Mobiles
                     continue;
                 }
 
-                bool setitem = item is ISetItem;
+                ISetItem setItem = item as ISetItem;
 
-                Resistances[0] += setitem ? ((ISetItem)item).SetResistBonus(ResistanceType.Physical) : item.PhysicalResistance;
-                Resistances[1] += setitem ? ((ISetItem)item).SetResistBonus(ResistanceType.Fire) : item.FireResistance;
-                Resistances[2] += setitem ? ((ISetItem)item).SetResistBonus(ResistanceType.Cold) : item.ColdResistance;
-                Resistances[3] += setitem ? ((ISetItem)item).SetResistBonus(ResistanceType.Poison) : item.PoisonResistance;
-                Resistances[4] += setitem ? ((ISetItem)item).SetResistBonus(ResistanceType.Energy) : item.EnergyResistance;
+                Resistances[0] += setItem != null && setItem.SetEquipped ? setItem.SetResistBonus(ResistanceType.Physical) : item.PhysicalResistance;
+                Resistances[1] += setItem != null && setItem.SetEquipped ? setItem.SetResistBonus(ResistanceType.Fire) : item.FireResistance;
+                Resistances[2] += setItem != null && setItem.SetEquipped ? setItem.SetResistBonus(ResistanceType.Cold) : item.ColdResistance;
+                Resistances[3] += setItem != null && setItem.SetEquipped ? setItem.SetResistBonus(ResistanceType.Poison) : item.PoisonResistance;
+                Resistances[4] += setItem != null && setItem.SetEquipped ? setItem.SetResistBonus(ResistanceType.Energy) : item.EnergyResistance;
             }
 
             for (int i = 0; i < Resistances.Length; ++i)

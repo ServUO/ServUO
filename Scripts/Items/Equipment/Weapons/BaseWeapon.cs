@@ -3790,8 +3790,38 @@ namespace Server.Items
 			SetSaveFlag(ref sflags, SetFlag.LastEquipped, m_LastEquipped);
 			SetSaveFlag(ref sflags, SetFlag.SetEquipped, m_SetEquipped);
 			SetSaveFlag(ref sflags, SetFlag.SetSelfRepair, m_SetSelfRepair != 0);
+            SetSaveFlag(ref sflags, SetFlag.PhysicalBonus, m_SetPhysicalBonus != 0);
+            SetSaveFlag(ref sflags, SetFlag.FireBonus, m_SetFireBonus != 0);
+            SetSaveFlag(ref sflags, SetFlag.ColdBonus, m_SetColdBonus != 0);
+            SetSaveFlag(ref sflags, SetFlag.PoisonBonus, m_SetPoisonBonus != 0);
+            SetSaveFlag(ref sflags, SetFlag.EnergyBonus, m_SetEnergyBonus != 0);
 
 			writer.WriteEncodedInt((int)sflags);
+
+            if (GetSaveFlag(sflags, SetFlag.PhysicalBonus))
+            {
+                writer.WriteEncodedInt((int)m_SetPhysicalBonus);
+            }
+
+            if (GetSaveFlag(sflags, SetFlag.FireBonus))
+            {
+                writer.WriteEncodedInt((int)m_SetFireBonus);
+            }
+
+            if (GetSaveFlag(sflags, SetFlag.ColdBonus))
+            {
+                writer.WriteEncodedInt((int)m_SetColdBonus);
+            }
+
+            if (GetSaveFlag(sflags, SetFlag.PoisonBonus))
+            {
+                writer.WriteEncodedInt((int)m_SetPoisonBonus);
+            }
+
+            if (GetSaveFlag(sflags, SetFlag.EnergyBonus))
+            {
+                writer.WriteEncodedInt((int)m_SetEnergyBonus);
+            }
 
 			if (GetSaveFlag(sflags, SetFlag.Attributes))
 			{
@@ -4094,6 +4124,11 @@ namespace Server.Items
 			LastEquipped = 0x00000010,
 			SetEquipped = 0x00000020,
 			SetSelfRepair = 0x00000040,
+            PhysicalBonus = 0x00000080,
+            FireBonus = 0x00000100,
+            ColdBonus = 0x00000200,
+            PoisonBonus = 0x00000400,
+            EnergyBonus = 0x00000800,
 		}
 		#endregion
 
@@ -4148,6 +4183,30 @@ namespace Server.Items
 						m_Slayer3 = (TalismanSlayerName)reader.ReadInt();
 
 						SetFlag flags = (SetFlag)reader.ReadEncodedInt();
+                        if (GetSaveFlag(flags, SetFlag.PhysicalBonus))
+                        {
+                            m_SetPhysicalBonus = reader.ReadEncodedInt();
+                        }
+
+                        if (GetSaveFlag(flags, SetFlag.FireBonus))
+                        {
+                            m_SetFireBonus = reader.ReadEncodedInt();
+                        }
+
+                        if (GetSaveFlag(flags, SetFlag.ColdBonus))
+                        {
+                            m_SetColdBonus = reader.ReadEncodedInt();
+                        }
+
+                        if (GetSaveFlag(flags, SetFlag.PoisonBonus))
+                        {
+                            m_SetPoisonBonus = reader.ReadEncodedInt();
+                        }
+
+                        if (GetSaveFlag(flags, SetFlag.EnergyBonus))
+                        {
+                            m_SetEnergyBonus = reader.ReadEncodedInt();
+                        }
 
 						if (GetSaveFlag(flags, SetFlag.Attributes))
 						{
@@ -6093,6 +6152,7 @@ namespace Server.Items
 		private AosAttributes m_SetAttributes;
 		private AosSkillBonuses m_SetSkillBonuses;
 		private int m_SetSelfRepair;
+        private int m_SetPhysicalBonus, m_SetFireBonus, m_SetColdBonus, m_SetPoisonBonus, m_SetEnergyBonus;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public AosAttributes SetAttributes { get { return m_SetAttributes; } set { } }
@@ -6110,6 +6170,76 @@ namespace Server.Items
 				InvalidateProperties();
 			}
 		}
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPhysicalBonus
+        {
+            get
+            {
+                return m_SetPhysicalBonus;
+            }
+            set
+            {
+                m_SetPhysicalBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetFireBonus
+        {
+            get
+            {
+                return m_SetFireBonus;
+            }
+            set
+            {
+                m_SetFireBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetColdBonus
+        {
+            get
+            {
+                return m_SetColdBonus;
+            }
+            set
+            {
+                m_SetColdBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPoisonBonus
+        {
+            get
+            {
+                return m_SetPoisonBonus;
+            }
+            set
+            {
+                m_SetPoisonBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetEnergyBonus
+        {
+            get
+            {
+                return m_SetEnergyBonus;
+            }
+            set
+            {
+                m_SetEnergyBonus = value;
+                InvalidateProperties();
+            }
+        }
 
 		public virtual void GetSetProperties(ObjectPropertyList list)
 		{
