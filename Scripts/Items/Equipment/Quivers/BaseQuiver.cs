@@ -91,7 +91,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Attributes;
+                return m_Attributes;
             }
             set
             {
@@ -103,7 +103,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_AosSkillBonuses;
+                return m_AosSkillBonuses;
             }
             set
             {
@@ -115,7 +115,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Resistances;
+                return m_Resistances;
             }
             set
             {
@@ -127,12 +127,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Capacity;
+                return m_Capacity;
             }
             set
             {
-                this.m_Capacity = value;
-                this.InvalidateProperties();
+                m_Capacity = value;
+                InvalidateProperties();
             }
         }
 
@@ -155,12 +155,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_WeightReduction;
+                return m_WeightReduction;
             }
             set
             {
-                this.m_WeightReduction = value;
-                this.InvalidateProperties();
+                m_WeightReduction = value;
+                InvalidateProperties();
             }
         }
 
@@ -169,12 +169,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_DamageIncrease;
+                return m_DamageIncrease;
             }
             set
             {
-                this.m_DamageIncrease = value;
-                this.InvalidateProperties();
+                m_DamageIncrease = value;
+                InvalidateProperties();
             }
         }
 
@@ -187,12 +187,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Crafter;
+                return m_Crafter;
             }
             set
             {
-                this.m_Crafter = value;
-                this.InvalidateProperties();
+                m_Crafter = value;
+                InvalidateProperties();
             }
         }
 
@@ -201,12 +201,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Quality;
+                return m_Quality;
             }
             set
             {
-                this.m_Quality = value;
-                this.InvalidateProperties();
+                m_Quality = value;
+                InvalidateProperties();
             }
         }
 
@@ -215,11 +215,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_PlayerConstructed;
+                return m_PlayerConstructed;
             }
             set
             {
-                this.m_PlayerConstructed = value;
+                m_PlayerConstructed = value;
             }
         }
 		
@@ -227,7 +227,7 @@ namespace Server.Items
         {
             get
             {
-                return this.Items.Count > 0 ? this.Items[0] : null;
+                return Items.Count > 0 ? Items[0] : null;
             }
         }
 
@@ -239,16 +239,16 @@ namespace Server.Items
         public BaseQuiver(int itemID)
             : base(itemID)
         {
-            this.Weight = 2.0;
-            this.Capacity = 500;
-            this.Layer = Layer.Cloak;
+            Weight = 2.0;
+            Capacity = 500;
+            Layer = Layer.Cloak;
 
-            this.m_Attributes = new AosAttributes(this);
-            this.m_AosSkillBonuses = new AosSkillBonuses(this);
-            this.m_Resistances = new AosElementAttributes(this);
-            this.m_SetAttributes = new AosAttributes(this);
-            this.m_SetSkillBonuses = new AosSkillBonuses(this);
-            this.DamageIncrease = 10;
+            m_Attributes = new AosAttributes(this);
+            m_AosSkillBonuses = new AosSkillBonuses(this);
+            m_Resistances = new AosElementAttributes(this);
+            m_SetAttributes = new AosAttributes(this);
+            m_SetSkillBonuses = new AosSkillBonuses(this);
+            DamageIncrease = 10;
             IsArrowAmmo = true;
         }
 
@@ -264,14 +264,14 @@ namespace Server.Items
             if (quiver == null)
                 return;
 
-            quiver.m_Attributes = new AosAttributes(newItem, this.m_Attributes);
-            quiver.m_AosSkillBonuses = new AosSkillBonuses(newItem, this.m_AosSkillBonuses);
-            quiver.m_Resistances = new AosElementAttributes(newItem, this.m_Resistances);
+            quiver.m_Attributes = new AosAttributes(newItem, m_Attributes);
+            quiver.m_AosSkillBonuses = new AosSkillBonuses(newItem, m_AosSkillBonuses);
+            quiver.m_Resistances = new AosElementAttributes(newItem, m_Resistances);
         }
 
         public override void UpdateTotal(Item sender, TotalType type, int delta)
         {
-            this.InvalidateProperties();
+            InvalidateProperties();
 
             base.UpdateTotal(sender, type, delta);
         }
@@ -281,7 +281,7 @@ namespace Server.Items
             int total = base.GetTotal(type);
 
             if (type == TotalType.Weight)
-                total -= total * this.m_WeightReduction / 100;
+                total -= total * m_WeightReduction / 100;
 
             return total;
         }
@@ -294,7 +294,7 @@ namespace Server.Items
         public bool CheckType(Item item)
         {
             Type type = item.GetType();
-            Item ammo = this.Ammo;
+            Item ammo = Ammo;
 
             if (ammo != null)
             {
@@ -315,7 +315,7 @@ namespace Server.Items
 
         public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
         {
-            if (!this.CheckType(item))
+            if (!CheckType(item))
             {
                 if (message)
                     m.SendLocalizedMessage(1074836); // The container can not hold that type of object.
@@ -332,9 +332,9 @@ namespace Server.Items
                     return false;
             }
 
-            if (this.Items.Count < this.DefaultMaxItems)
+            if (Items.Count < DefaultMaxItems)
             {
-                if (item.Amount <= this.m_Capacity)
+                if (item.Amount <= m_Capacity)
                     return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
 
                 return false;
@@ -352,7 +352,7 @@ namespace Server.Items
         {
             base.AddItem(dropped);
 
-            this.InvalidateWeight();
+            InvalidateWeight();
             IsArrowAmmo = dropped is Arrow;
         }
 		
@@ -360,7 +360,7 @@ namespace Server.Items
         {
             base.RemoveItem(dropped);
 
-            this.InvalidateWeight();
+            InvalidateWeight();
         }
 		
         public override void OnAdded(object parent)
@@ -369,8 +369,8 @@ namespace Server.Items
             {
                 Mobile mob = (Mobile)parent;
 
-                this.m_Attributes.AddStatBonuses(mob);
-                this.m_AosSkillBonuses.AddTo(mob);
+                m_Attributes.AddStatBonuses(mob);
+                m_AosSkillBonuses.AddTo(mob);
 
                 BaseRanged ranged = mob.Weapon as BaseRanged;
 
@@ -378,14 +378,14 @@ namespace Server.Items
                     ranged.InvalidateProperties();
 
                 #region Mondain's Legacy Sets
-                if (this.IsSetItem)
+                if (IsSetItem)
                 {
-                    this.m_SetEquipped = SetHelper.FullSetEquipped(mob, this.SetID, this.Pieces);
+                    m_SetEquipped = SetHelper.FullSetEquipped(mob, SetID, Pieces);
 
-                    if (this.m_SetEquipped)
+                    if (m_SetEquipped)
                     {
-                        this.m_LastEquipped = true;
-                        SetHelper.AddSetBonus(mob, this.SetID);
+                        m_LastEquipped = true;
+                        SetHelper.AddSetBonus(mob, SetID);
                     }
                 }
                 #endregion
@@ -398,12 +398,12 @@ namespace Server.Items
             {
                 Mobile mob = (Mobile)parent;
 
-                this.m_Attributes.RemoveStatBonuses(mob);
-                this.m_AosSkillBonuses.Remove();
+                m_Attributes.RemoveStatBonuses(mob);
+                m_AosSkillBonuses.Remove();
 
                 #region Mondain's Legacy Sets
-                if (this.IsSetItem && this.m_SetEquipped)
-                    SetHelper.RemoveSetBonus(mob, this.SetID, this);
+                if (IsSetItem && m_SetEquipped)
+                    SetHelper.RemoveSetBonus(mob, SetID, this);
                 #endregion
             }
         }
@@ -411,10 +411,10 @@ namespace Server.Items
         public override bool OnDragLift(Mobile from)
         {
             #region Mondain's Legacy Sets
-            if (this.Parent is Mobile && from == this.Parent)
+            if (Parent is Mobile && from == Parent)
             {
-                if (this.IsSetItem && this.m_SetEquipped)
-                    SetHelper.RemoveSetBonus(from, this.SetID, this);
+                if (IsSetItem && m_SetEquipped)
+                    SetHelper.RemoveSetBonus(from, SetID, this);
             }
             #endregion
 
@@ -426,7 +426,7 @@ namespace Server.Items
             #region Stygian Abyss
             if (m.Race == Race.Gargoyle)
             {
-                m.SendLocalizedMessage(1111708); // Gargoyles can't wear this.
+                m.SendLocalizedMessage(1111708); // Gargoyles can't wear 
                 return false;
             }
             #endregion
@@ -472,11 +472,11 @@ namespace Server.Items
         public virtual int BasePoisonResistance { get { return 0; } }
         public virtual int BaseEnergyResistance { get { return 0; } }
 
-        public override int PhysicalResistance { get { return this.BasePhysicalResistance + this.m_Resistances.Physical; } }
-        public override int FireResistance { get { return this.BaseFireResistance + this.m_Resistances.Fire; } }
-        public override int ColdResistance { get { return this.BaseColdResistance + this.m_Resistances.Cold; } }
-        public override int PoisonResistance { get { return this.BasePoisonResistance + this.m_Resistances.Poison; } }
-        public override int EnergyResistance { get { return this.BaseEnergyResistance + this.m_Resistances.Energy; } }
+        public override int PhysicalResistance { get { return BasePhysicalResistance + m_Resistances.Physical; } }
+        public override int FireResistance { get { return BaseFireResistance + m_Resistances.Fire; } }
+        public override int ColdResistance { get { return BaseColdResistance + m_Resistances.Cold; } }
+        public override int PoisonResistance { get { return BasePoisonResistance + m_Resistances.Poison; } }
+        public override int EnergyResistance { get { return BaseEnergyResistance + m_Resistances.Energy; } }
 
         public override void AddWeightProperty(ObjectPropertyList list)
         {
@@ -495,35 +495,35 @@ namespace Server.Items
                 list.Add(1153213, OwnerName);
             }
 
-            if (this.m_Crafter != null)
+            if (m_Crafter != null)
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
-            if (this.m_Quality == ItemQuality.Exceptional)
+            if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1063341); // exceptional
 
-            this.m_AosSkillBonuses.GetProperties(list);
+            m_AosSkillBonuses.GetProperties(list);
 
-            Item ammo = this.Ammo;
+            Item ammo = Ammo;
 
             if (ammo != null)
             {
                 if (ammo is Arrow)
-                    list.Add(1075265, "{0}\t{1}", ammo.Amount, this.Capacity); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ arrows
+                    list.Add(1075265, "{0}\t{1}", ammo.Amount, Capacity); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ arrows
                 else if (ammo is Bolt)
-                    list.Add(1075266, "{0}\t{1}", ammo.Amount, this.Capacity); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ bolts
+                    list.Add(1075266, "{0}\t{1}", ammo.Amount, Capacity); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ bolts
             }
             else
-                list.Add(1075265, "{0}\t{1}", 0, this.Capacity); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ arrows
+                list.Add(1075265, "{0}\t{1}", 0, Capacity); // Ammo: ~1_QUANTITY~/~2_CAPACITY~ arrows
 
             int prop;
 
-            if ((prop = this.m_DamageIncrease) != 0)
+            if ((prop = m_DamageIncrease) != 0)
                 list.Add(1074762, prop.ToString()); // Damage modifier: ~1_PERCENT~%
 			
             int phys, fire, cold, pois, nrgy, chaos, direct;
             phys = fire = cold = pois = nrgy = chaos = direct = 0;
 
-            this.AlterBowDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
+            AlterBowDamage(ref phys, ref fire, ref cold, ref pois, ref nrgy, ref chaos, ref direct);
 
             if (phys != 0)
                 list.Add(1060403, phys.ToString()); // physical damage ~1_val~%
@@ -546,84 +546,84 @@ namespace Server.Items
             if (direct != 0)
                 list.Add(1079978, direct.ToString()); // Direct Damage: ~1_PERCENT~%
 
-            if ((prop = this.m_Attributes.DefendChance) != 0)
+            if ((prop = m_Attributes.DefendChance) != 0)
                 list.Add(1060408, prop.ToString()); // defense chance increase ~1_val~%
 
-            if ((prop = this.m_Attributes.BonusDex) != 0)
+            if ((prop = m_Attributes.BonusDex) != 0)
                 list.Add(1060409, prop.ToString()); // dexterity bonus ~1_val~
 
-            if ((prop = this.m_Attributes.EnhancePotions) != 0)
+            if ((prop = m_Attributes.EnhancePotions) != 0)
                 list.Add(1060411, prop.ToString()); // enhance potions ~1_val~%
 
-            if ((prop = this.m_Attributes.CastRecovery) != 0)
+            if ((prop = m_Attributes.CastRecovery) != 0)
                 list.Add(1060412, prop.ToString()); // faster cast recovery ~1_val~
 
-            if ((prop = this.m_Attributes.CastSpeed) != 0)
+            if ((prop = m_Attributes.CastSpeed) != 0)
                 list.Add(1060413, prop.ToString()); // faster casting ~1_val~
 
-            if ((prop = this.m_Attributes.AttackChance) != 0)
+            if ((prop = m_Attributes.AttackChance) != 0)
                 list.Add(1060415, prop.ToString()); // hit chance increase ~1_val~%
 
-            if ((prop = this.m_Attributes.BonusHits) != 0)
+            if ((prop = m_Attributes.BonusHits) != 0)
                 list.Add(1060431, prop.ToString()); // hit point increase ~1_val~
 
-            if ((prop = this.m_Attributes.BonusInt) != 0)
+            if ((prop = m_Attributes.BonusInt) != 0)
                 list.Add(1060432, prop.ToString()); // intelligence bonus ~1_val~
 
-            if ((prop = this.m_Attributes.LowerManaCost) != 0)
+            if ((prop = m_Attributes.LowerManaCost) != 0)
                 list.Add(1060433, prop.ToString()); // lower mana cost ~1_val~%
 
-            if ((prop = this.m_Attributes.LowerRegCost) != 0)
+            if ((prop = m_Attributes.LowerRegCost) != 0)
                 list.Add(1060434, prop.ToString()); // lower reagent cost ~1_val~%	
 
-            if ((prop = this.m_Attributes.Luck) != 0)
+            if ((prop = m_Attributes.Luck) != 0)
                 list.Add(1060436, prop.ToString()); // luck ~1_val~
 
-            if ((prop = this.m_Attributes.BonusMana) != 0)
+            if ((prop = m_Attributes.BonusMana) != 0)
                 list.Add(1060439, prop.ToString()); // mana increase ~1_val~
 
-            if ((prop = this.m_Attributes.RegenMana) != 0)
+            if ((prop = m_Attributes.RegenMana) != 0)
                 list.Add(1060440, prop.ToString()); // mana regeneration ~1_val~
 
-            if ((prop = this.m_Attributes.NightSight) != 0)
+            if ((prop = m_Attributes.NightSight) != 0)
                 list.Add(1060441); // night sight
 
-            if ((prop = this.m_Attributes.ReflectPhysical) != 0)
+            if ((prop = m_Attributes.ReflectPhysical) != 0)
                 list.Add(1060442, prop.ToString()); // reflect physical damage ~1_val~%
 
-            if ((prop = this.m_Attributes.RegenStam) != 0)
+            if ((prop = m_Attributes.RegenStam) != 0)
                 list.Add(1060443, prop.ToString()); // stamina regeneration ~1_val~
 
-            if ((prop = this.m_Attributes.RegenHits) != 0)
+            if ((prop = m_Attributes.RegenHits) != 0)
                 list.Add(1060444, prop.ToString()); // hit point regeneration ~1_val~
 
-            if ((prop = this.m_Attributes.SpellDamage) != 0)
+            if ((prop = m_Attributes.SpellDamage) != 0)
                 list.Add(1060483, prop.ToString()); // spell damage increase ~1_val~%
 
-            if ((prop = this.m_Attributes.BonusStam) != 0)
+            if ((prop = m_Attributes.BonusStam) != 0)
                 list.Add(1060484, prop.ToString()); // stamina increase ~1_val~
 
-            if ((prop = this.m_Attributes.BonusStr) != 0)
+            if ((prop = m_Attributes.BonusStr) != 0)
                 list.Add(1060485, prop.ToString()); // strength bonus ~1_val~
 
-            if ((prop = this.m_Attributes.WeaponSpeed) != 0)
+            if ((prop = m_Attributes.WeaponSpeed) != 0)
                 list.Add(1060486, prop.ToString()); // swing speed increase ~1_val~%
 
-            if ((prop = this.m_Attributes.LowerAmmoCost) > 0)
+            if ((prop = m_Attributes.LowerAmmoCost) > 0)
                 list.Add(1075208, prop.ToString()); // Lower Ammo Cost ~1_Percentage~%
 
             #region Mondain's Legacy Sets
-            if (this.IsSetItem)
+            if (IsSetItem)
             {
-                list.Add(1073491, this.Pieces.ToString()); // Part of a Weapon/Armor Set (~1_val~ pieces)
+                list.Add(1073491, Pieces.ToString()); // Part of a Weapon/Armor Set (~1_val~ pieces)
 
                 if (SetID == SetItem.Bestial)
                     list.Add(1151541, BestialSetHelper.GetTotalBerserk(this).ToString()); // Berserk ~1_VAL~
 
-                if (this.BardMasteryBonus)
+                if (BardMasteryBonus)
                     list.Add(1151553); // Activate: Bard Mastery Bonus x2<br>(Effect: 1 min. Cooldown: 30 min.)
 
-                if (this.m_SetEquipped)
+                if (m_SetEquipped)
                 {
                     list.Add(1073492); // Full Weapon/Armor Set Present					
                     SetHelper.GetSetProperties(list, this);
@@ -638,13 +638,13 @@ namespace Server.Items
             if (ammo != null)
                 weight = ammo.Weight * ammo.Amount;
 
-            list.Add(1072241, "{0}\t{1}\t{2}\t{3}", this.Items.Count, this.DefaultMaxItems, (int)weight, this.DefaultMaxWeight); // Contents: ~1_COUNT~/~2_MAXCOUNT items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
+            list.Add(1072241, "{0}\t{1}\t{2}\t{3}", Items.Count, DefaultMaxItems, (int)weight, DefaultMaxWeight); // Contents: ~1_COUNT~/~2_MAXCOUNT items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
 
-            if ((prop = this.m_WeightReduction) != 0)
+            if ((prop = m_WeightReduction) != 0)
                 list.Add(1072210, prop.ToString()); // Weight reduction: ~1_PERCENTAGE~%	
 
             #region Mondain's Legacy Sets
-            if (this.IsSetItem && !this.m_SetEquipped)
+            if (IsSetItem && !m_SetEquipped)
             {
                 list.Add(1072378); // <br>Only when full set is present:				
                 SetHelper.GetSetProperties(list, this);
@@ -664,6 +664,15 @@ namespace Server.Items
 
         public int SetResistBonus(ResistanceType resist)
         {
+            switch (resist)
+            {
+                case ResistanceType.Physical: return PhysicalResistance;
+                case ResistanceType.Fire: return FireResistance;
+                case ResistanceType.Cold: return ColdResistance;
+                case ResistanceType.Poison: return PoisonResistance;
+                case ResistanceType.Energy: return EnergyResistance;
+            }
+
             return 0;
         }
         
@@ -691,11 +700,16 @@ namespace Server.Items
             Capacity = 0x00000040,
 
             #region Mondain's Legacy Sets
-            SetAttributes = 0x00000100,
-            SetHue = 0x00000200,
-            LastEquipped = 0x00000400,
-            SetEquipped = 0x00000800,
+            SetAttributes =      0x00000100,
+            SetHue =             0x00000200,
+            LastEquipped =       0x00000400,
+            SetEquipped =        0x00000800,
             SetSkillAttributes = 0x00002000,
+            SetPhysical =      0x00004000,
+            SetFire =          0x00008000,
+            SetCold =          0x00010000,
+            SetPoison =        0x00020000,
+            SetEnergy =        0x00040000,
             #endregion
 
             DamageIncrease = 0x00000080
@@ -729,60 +743,80 @@ namespace Server.Items
             m_AosSkillBonuses.Serialize(writer);
             m_Resistances.Serialize(writer);
 
-            SetSaveFlag(ref flags, SaveFlag.Attributes, !this.m_Attributes.IsEmpty);
-            //SetSaveFlag(ref flags, SaveFlag.LowerAmmoCost, this.m_LowerAmmoCost != 0);
-            SetSaveFlag(ref flags, SaveFlag.WeightReduction, this.m_WeightReduction != 0);
-            SetSaveFlag(ref flags, SaveFlag.DamageIncrease, this.m_DamageIncrease != 0);
-            SetSaveFlag(ref flags, SaveFlag.Crafter, this.m_Crafter != null);
+            SetSaveFlag(ref flags, SaveFlag.Attributes, !m_Attributes.IsEmpty);
+            //SetSaveFlag(ref flags, SaveFlag.LowerAmmoCost, m_LowerAmmoCost != 0);
+            SetSaveFlag(ref flags, SaveFlag.WeightReduction, m_WeightReduction != 0);
+            SetSaveFlag(ref flags, SaveFlag.DamageIncrease, m_DamageIncrease != 0);
+            SetSaveFlag(ref flags, SaveFlag.Crafter, m_Crafter != null);
             SetSaveFlag(ref flags, SaveFlag.Quality, true);
-            SetSaveFlag(ref flags, SaveFlag.Capacity, this.m_Capacity > 0);
+            SetSaveFlag(ref flags, SaveFlag.Capacity, m_Capacity > 0);
 
             #region Mondain's Legacy Sets
-            SetSaveFlag(ref flags, SaveFlag.SetAttributes, !this.m_SetAttributes.IsEmpty);
-            SetSaveFlag(ref flags, SaveFlag.SetSkillAttributes, !this.m_SetSkillBonuses.IsEmpty);
-            SetSaveFlag(ref flags, SaveFlag.SetHue, this.m_SetHue != 0);
-            SetSaveFlag(ref flags, SaveFlag.LastEquipped, this.m_LastEquipped);
-            SetSaveFlag(ref flags, SaveFlag.SetEquipped, this.m_SetEquipped);
+            SetSaveFlag(ref flags, SaveFlag.SetAttributes, !m_SetAttributes.IsEmpty);
+            SetSaveFlag(ref flags, SaveFlag.SetSkillAttributes, !m_SetSkillBonuses.IsEmpty);
+            SetSaveFlag(ref flags, SaveFlag.SetHue, m_SetHue != 0);
+            SetSaveFlag(ref flags, SaveFlag.LastEquipped, m_LastEquipped);
+            SetSaveFlag(ref flags, SaveFlag.SetEquipped, m_SetEquipped);
+            SetSaveFlag(ref flags, SaveFlag.SetPhysical, m_SetPhysicalBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetFire, m_SetFireBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetCold, m_SetColdBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetPoison, m_SetPoisonBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetEnergy, m_SetEnergyBonus != 0);
             #endregion
 
             writer.WriteEncodedInt((int)flags);
 
             if (GetSaveFlag(flags, SaveFlag.Attributes))
-                this.m_Attributes.Serialize(writer);
+                m_Attributes.Serialize(writer);
 
             //if (GetSaveFlag(flags, SaveFlag.LowerAmmoCost))
-            //    writer.Write((int)this.m_LowerAmmoCost);
+            //    writer.Write((int)m_LowerAmmoCost);
 
             if (GetSaveFlag(flags, SaveFlag.WeightReduction))
-                writer.Write((int)this.m_WeightReduction);
+                writer.Write((int)m_WeightReduction);
 
             if (GetSaveFlag(flags, SaveFlag.DamageIncrease))
-                writer.Write((int)this.m_DamageIncrease);
+                writer.Write((int)m_DamageIncrease);
 
             if (GetSaveFlag(flags, SaveFlag.Crafter))
-                writer.Write((Mobile)this.m_Crafter);
+                writer.Write((Mobile)m_Crafter);
 
             if (GetSaveFlag(flags, SaveFlag.Quality))
-                writer.Write((int)this.m_Quality);
+                writer.Write((int)m_Quality);
 
             if (GetSaveFlag(flags, SaveFlag.Capacity))
-                writer.Write((int)this.m_Capacity);
+                writer.Write((int)m_Capacity);
 
             #region Mondain's Legacy Sets
+            if (GetSaveFlag(flags, SaveFlag.SetPhysical))
+                writer.WriteEncodedInt((int)m_SetPhysicalBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetFire))
+                writer.WriteEncodedInt((int)m_SetFireBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetCold))
+                writer.WriteEncodedInt((int)m_SetColdBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetPoison))
+                writer.WriteEncodedInt((int)m_SetPoisonBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetEnergy))
+                writer.WriteEncodedInt((int)m_SetEnergyBonus);
+
             if (GetSaveFlag(flags, SaveFlag.SetAttributes))
-                this.m_SetAttributes.Serialize(writer);
+                m_SetAttributes.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.SetSkillAttributes))
-                this.m_SetSkillBonuses.Serialize(writer);
+                m_SetSkillBonuses.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.SetHue))
-                writer.Write((int)this.m_SetHue);
+                writer.Write((int)m_SetHue);
 
             if (GetSaveFlag(flags, SaveFlag.LastEquipped))
-                writer.Write((bool)this.m_LastEquipped);
+                writer.Write((bool)m_LastEquipped);
 
             if (GetSaveFlag(flags, SaveFlag.SetEquipped))
-                writer.Write((bool)this.m_SetEquipped);
+                writer.Write((bool)m_SetEquipped);
             #endregion
         }
 
@@ -826,47 +860,62 @@ namespace Server.Items
                         SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
 
                         if (GetSaveFlag(flags, SaveFlag.Attributes))
-                            this.m_Attributes = new AosAttributes(this, reader);
+                            m_Attributes = new AosAttributes(this, reader);
                         else
-                            this.m_Attributes = new AosAttributes(this);
+                            m_Attributes = new AosAttributes(this);
 
                         if (version < 3 && GetSaveFlag(flags, SaveFlag.LowerAmmoCost))
                             m_Attributes.LowerAmmoCost = reader.ReadInt();
 
                         if (GetSaveFlag(flags, SaveFlag.WeightReduction))
-                            this.m_WeightReduction = reader.ReadInt();
+                            m_WeightReduction = reader.ReadInt();
 
                         if (GetSaveFlag(flags, SaveFlag.DamageIncrease))
-                            this.m_DamageIncrease = reader.ReadInt();
+                            m_DamageIncrease = reader.ReadInt();
 
                         if (GetSaveFlag(flags, SaveFlag.Crafter))
-                            this.m_Crafter = reader.ReadMobile();
+                            m_Crafter = reader.ReadMobile();
 
                         if (GetSaveFlag(flags, SaveFlag.Quality))
-                            this.m_Quality = (ItemQuality)reader.ReadInt();
+                            m_Quality = (ItemQuality)reader.ReadInt();
 
                         if (GetSaveFlag(flags, SaveFlag.Capacity))
-                            this.m_Capacity = reader.ReadInt();
+                            m_Capacity = reader.ReadInt();
 
                         #region Mondain's Legacy Sets
+                        if (GetSaveFlag(flags, SaveFlag.SetPhysical))
+                            m_SetPhysicalBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetFire))
+                            m_SetFireBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetCold))
+                            m_SetColdBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetPoison))
+                            m_SetPoisonBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetEnergy))
+                            m_SetEnergyBonus = reader.ReadEncodedInt();
+
                         if (GetSaveFlag(flags, SaveFlag.SetAttributes))
-                            this.m_SetAttributes = new AosAttributes(this, reader);
+                            m_SetAttributes = new AosAttributes(this, reader);
                         else
-                            this.m_SetAttributes = new AosAttributes(this);
+                            m_SetAttributes = new AosAttributes(this);
 
                         if (GetSaveFlag(flags, SaveFlag.SetSkillAttributes))
-                            this.m_SetSkillBonuses = new AosSkillBonuses(this, reader);
+                            m_SetSkillBonuses = new AosSkillBonuses(this, reader);
                         else
-                            this.m_SetSkillBonuses = new AosSkillBonuses(this);
+                            m_SetSkillBonuses = new AosSkillBonuses(this);
 
                         if (GetSaveFlag(flags, SaveFlag.SetHue))
-                            this.m_SetHue = reader.ReadInt();
+                            m_SetHue = reader.ReadInt();
 
                         if (GetSaveFlag(flags, SaveFlag.LastEquipped))
-                            this.m_LastEquipped = reader.ReadBool();
+                            m_LastEquipped = reader.ReadBool();
 
                         if (GetSaveFlag(flags, SaveFlag.SetEquipped))
-                            this.m_SetEquipped = reader.ReadBool();
+                            m_SetEquipped = reader.ReadBool();
                         #endregion
 
                         break;
@@ -880,9 +929,9 @@ namespace Server.Items
 
         public void InvalidateWeight()
         {
-            if (this.RootParent is Mobile)
+            if (RootParent is Mobile)
             {
-                Mobile m = (Mobile)this.RootParent;
+                Mobile m = (Mobile)RootParent;
 
                 m.UpdateTotals();
             }
@@ -891,10 +940,10 @@ namespace Server.Items
         #region ICraftable
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ItemQuality)quality;
+            Quality = (ItemQuality)quality;
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
             return quality;
         }
@@ -921,7 +970,7 @@ namespace Server.Items
         {
             get
             {
-                return (this.SetID == SetItem.Virtuoso);
+                return (SetID == SetItem.Virtuoso);
             }
         }
 
@@ -929,7 +978,7 @@ namespace Server.Items
         {
             get
             {
-                return this.SetID != SetItem.None;
+                return SetID != SetItem.None;
             }
         }
 
@@ -942,12 +991,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_SetHue;
+                return m_SetHue;
             }
             set
             {
-                this.m_SetHue = value;
-                this.InvalidateProperties();
+                m_SetHue = value;
+                InvalidateProperties();
             }
         }
 
@@ -955,11 +1004,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_SetEquipped;
+                return m_SetEquipped;
             }
             set
             {
-                this.m_SetEquipped = value;
+                m_SetEquipped = value;
             }
         }
 
@@ -967,11 +1016,83 @@ namespace Server.Items
         {
             get
             {
-                return this.m_LastEquipped;
+                return m_LastEquipped;
             }
             set
             {
-                this.m_LastEquipped = value;
+                m_LastEquipped = value;
+            }
+        }
+
+        private int m_SetPhysicalBonus, m_SetFireBonus, m_SetColdBonus, m_SetPoisonBonus, m_SetEnergyBonus;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPhysicalBonus
+        {
+            get
+            {
+                return m_SetPhysicalBonus;
+            }
+            set
+            {
+                m_SetPhysicalBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetFireBonus
+        {
+            get
+            {
+                return m_SetFireBonus;
+            }
+            set
+            {
+                m_SetFireBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetColdBonus
+        {
+            get
+            {
+                return m_SetColdBonus;
+            }
+            set
+            {
+                m_SetColdBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPoisonBonus
+        {
+            get
+            {
+                return m_SetPoisonBonus;
+            }
+            set
+            {
+                m_SetPoisonBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetEnergyBonus
+        {
+            get
+            {
+                return m_SetEnergyBonus;
+            }
+            set
+            {
+                m_SetEnergyBonus = value;
+                InvalidateProperties();
             }
         }
 
@@ -983,7 +1104,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_SetAttributes;
+                return m_SetAttributes;
             }
             set
             {
@@ -995,7 +1116,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_SetSkillBonuses;
+                return m_SetSkillBonuses;
             }
             set
             {

@@ -116,6 +116,9 @@ namespace Server.Items
                 dropped.HonestyPickup = DateTime.UtcNow;
                 dropped.StartHonestyTimer();
 
+                if (dropped.HonestyOwner == null)
+                    Server.Services.Virtues.Honesty.AssignOwner(dropped);
+
                 from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
             }
 
@@ -153,6 +156,9 @@ namespace Server.Items
             {
                 item.HonestyPickup = DateTime.UtcNow;
                 item.StartHonestyTimer();
+
+                if (item.HonestyOwner == null)
+                    Server.Services.Virtues.Honesty.AssignOwner(item);
 
                 from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
             }

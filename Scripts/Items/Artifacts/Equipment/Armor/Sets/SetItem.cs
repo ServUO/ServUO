@@ -43,6 +43,13 @@ namespace Server
         bool LastEquipped { get; set; }
         AosAttributes SetAttributes { get; }
         AosSkillBonuses SetSkillBonuses { get; }
+
+        int SetPhysicalBonus { get; }
+        int SetFireBonus { get; }
+        int SetColdBonus { get; }
+        int SetPoisonBonus { get; }
+        int SetEnergyBonus { get; }
+
         int SetResistBonus(ResistanceType type);
     }
 
@@ -172,6 +179,8 @@ namespace Server
 
             if (!self)
                 Remove(from, setID, item);
+
+            from.UpdateResistances();
         }
 
         public static void Remove(Mobile from, SetItem setID, Item item)
@@ -231,10 +240,12 @@ namespace Server
                         }
 
                         setItem.SetEquipped = true;
-                        to.Items[i].InvalidateProperties();
+                        Timer.DelayCall<Item>(item => item.InvalidateProperties(), to.Items[i]);
                     }
                 }
             }
+
+            to.UpdateResistances();
 
             Effects.PlaySound(to.Location, to.Map, 0x1F7);
             to.FixedParticles(0x376A, 9, 32, 5030, EffectLayer.Waist);
@@ -337,6 +348,27 @@ namespace Server
             }
 
             return SlayerName.None;
+        }
+
+        public static int GetSetTotalResist(Mobile m, ResistanceType resist)
+        {
+            int total = 0;
+
+            foreach (Item item in m.Items.Where(i => i is ISetItem && ((ISetItem)i).IsSetItem && ((ISetItem)i).SetEquipped))
+            {
+                ISetItem sItem = item as ISetItem;
+
+                switch (resist)
+                {
+                    case ResistanceType.Physical: total += item.PhysicalResistance + sItem.SetPhysicalBonus; break;
+                    case ResistanceType.Fire: total += item.FireResistance + sItem.SetFireBonus; break;
+                    case ResistanceType.Cold: total += item.ColdResistance + sItem.SetColdBonus; break;
+                    case ResistanceType.Poison: total += item.PoisonResistance + sItem.SetPoisonBonus; break;
+                    case ResistanceType.Energy: total += item.EnergyResistance + sItem.SetEnergyBonus; break;
+                }
+            }
+
+            return total;
         }
     }
 }

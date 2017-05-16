@@ -110,9 +110,8 @@ namespace Server.SkillHandlers
 		{
 			for (int i = 0; i < bc.Skills.Length; ++i)
 			{
+                bc.Skills[i].Cap = Math.Max(100.0, bc.Skills[i].Base * capScalar);
 				bc.Skills[i].Base *= scalar;
-
-				bc.Skills[i].Cap = Math.Max(100.0, bc.Skills[i].Cap * capScalar);
 
 				if (bc.Skills[i].Base > bc.Skills[i].Cap)
 				{
@@ -443,14 +442,6 @@ namespace Server.SkillHandlers
 								{
 									ScaleStats(m_Creature, 0.50);
 								}
-
-                                foreach (Skill sk in m_Creature.Skills)
-                                {
-                                    if (sk.Base > 100)
-                                        sk.Cap = sk.Base;
-                                    else
-                                        sk.Cap = 100;
-                                }
 							}
 
 							if (alreadyOwned)

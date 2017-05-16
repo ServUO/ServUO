@@ -31,6 +31,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 15; } }        
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
+        public override CraftResource DefaultResource { get { return CraftResource.None; } }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -81,6 +82,7 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 15; } }
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
+        public override CraftResource DefaultResource { get { return CraftResource.None; } }
 
         public override void Serialize(GenericWriter writer)
         {

@@ -1567,8 +1567,8 @@
     <CentreZ>-43</CentreZ>
     <Range>20</Range>
     <MaxCount>20</MaxCount>
-    <MinDelay>2</MinDelay>
-    <MaxDelay>3</MaxDelay>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
     <DelayInSec>False</DelayInSec>
     <Duration>0</Duration>
     <DespawnTime>0</DespawnTime>
@@ -3122,8 +3122,8 @@
     <CentreZ>-43</CentreZ>
     <Range>5</Range>
     <MaxCount>3</MaxCount>
-    <MinDelay>0</MinDelay>
-    <MaxDelay>0</MaxDelay>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
     <DelayInSec>False</DelayInSec>
     <Duration>0</Duration>
     <DespawnTime>0</DespawnTime>
