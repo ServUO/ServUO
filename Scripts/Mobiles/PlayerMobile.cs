@@ -33,6 +33,7 @@ using Server.Regions;
 using Server.SkillHandlers;
 using Server.Spells;
 using Server.Spells.Bushido;
+using Server.Spells.First;
 using Server.Spells.Fifth;
 using Server.Spells.Fourth;
 using Server.Spells.Necromancy;
@@ -946,7 +947,7 @@ namespace Server.Mobiles
                 max = CorpseSkinSpell.GetResistMalus(this);
             }
 
-            if (Core.ML && this.Race == Race.Elf && type == ResistanceType.Energy)
+            if (Core.ML && Race == Race.Elf && type == ResistanceType.Energy)
                 max += 5; //Intended to go after the 60 max from curse
 
             return max;
@@ -1019,7 +1020,7 @@ namespace Server.Mobiles
 
 		protected override void OnRaceChange(Race oldRace)
 		{
-            if (oldRace == Race.Gargoyle && this.Flying)
+            if (oldRace == Race.Gargoyle && Flying)
             {
                 Flying = false;
                 Send(SpeedControl.Disable);
@@ -1780,7 +1781,7 @@ namespace Server.Mobiles
 
 				if (Core.AOS)
 				{
-					strBase = Str; //this.Str already includes GetStatOffset/str
+					strBase = Str; //Str already includes GetStatOffset/str
 					strOffs = AosAttributes.GetValue(this, AosAttribute.BonusHits);
 
 					if (Core.ML && strOffs > 25 && IsPlayer())
@@ -2198,7 +2199,7 @@ namespace Server.Mobiles
 					list.Add(new CallbackEntry(6157, CancelProtection));
 				}
 
-                Region r = Region.Find(this.Location, this.Map);
+                Region r = Region.Find(Location, Map);
 
                 #region Void Pool
                 if (r is Server.Engines.VoidPool.VoidPoolRegion && ((Server.Engines.VoidPool.VoidPoolRegion)r).Controller != null)
@@ -2206,7 +2207,7 @@ namespace Server.Mobiles
                 #endregion
 
                 #region TOL Shadowguard
-                if (Server.Engines.Shadowguard.ShadowguardController.GetInstance(this.Location, this.Map) != null)
+                if (Server.Engines.Shadowguard.ShadowguardController.GetInstance(Location, Map) != null)
                     list.Add(new Server.Engines.Shadowguard.ExitEntry(this));
                 #endregion
 
@@ -2957,7 +2958,7 @@ namespace Server.Mobiles
 				}
 				else if (to.Backpack == null || !to.Backpack.CheckHold(to, item, false, checkItems, plusItems, plusWeight))
 				{
-					msgNum = 1004039; // The recipient of this trade would not be able to carry this.
+					msgNum = 1004039; // The recipient of this trade would not be able to carry 
 				}
 				else
 				{
@@ -3255,35 +3256,38 @@ namespace Server.Mobiles
 					deathRobe.Delete();
 				}
 
-                if (this.NetState != null && this.NetState.IsEnhancedClient)
+                if (NetState != null && NetState.IsEnhancedClient)
                 {
                     List<BaseHealer> listHealers = new List<BaseHealer>();
                     List<MondainQuester> listQuesters = new List<MondainQuester>();
-                    foreach (Mobile m_mobile in World.Mobiles.Values)
-                    {
-                        MondainQuester mQuester = m_mobile as MondainQuester;
-                        if (mQuester != null)
-                            listQuesters.Add(mQuester);
 
-                        BaseHealer mHealer = m_mobile as BaseHealer;
-                        if (mHealer != null)
-                            listHealers.Add(mHealer);
+                    foreach (var vendor in World.Mobiles.Values.OfType<BaseVendor>().Where(v => v is MondainQuester || v is BaseHealer))
+                    {
+                        if (vendor is MondainQuester)
+                            listQuesters.Add((MondainQuester)vendor);
+
+                        if (vendor is BaseHealer)
+                            listHealers.Add((BaseHealer)vendor);
                     }
 
-                    if (this.Corpse != null)
-                        this.NetState.Send(new DisplayWaypoint(this.Corpse.Serial, this.Corpse.X, this.Corpse.Y, this.Corpse.Z, this.Corpse.Map.MapID, WaypointType.Corpse, this.Name));
+                    if (Corpse != null)
+                    {
+                        NetState.Send(new DisplayWaypoint(Corpse.Serial, Corpse.X, Corpse.Y, Corpse.Z, Corpse.Map.MapID, WaypointType.Corpse, Name));
+                    }
 
                     foreach (BaseHealer healer in listHealers)
-                        this.NetState.Send(new RemoveWaypoint(healer.Serial));
+                    {
+                        NetState.Send(new RemoveWaypoint(healer.Serial));
+                    }
 
                     foreach (MondainQuester quester in listQuesters)
                     {
-                        string name = string.Empty;
-                        if (quester.Name != null)
-                            name += quester.Name;
+                        string name = quester.Name;
+
                         if (quester.Title != null)
                             name += " " + quester.Title;
-                        this.Send(new DisplayWaypoint(quester.Serial, quester.X, quester.Y, quester.Z, quester.Map.MapID, WaypointType.QuestGiver, name));
+
+                        Send(new DisplayWaypoint(quester.Serial, quester.X, quester.Y, quester.Z, quester.Map.MapID, WaypointType.QuestGiver, name));
                     }
                 }
 
@@ -3311,10 +3315,10 @@ namespace Server.Mobiles
 
         public override double GetRacialSkillBonus(SkillName skill)
         {
-            if (Core.ML && this.Race == Race.Human)
+            if (Core.ML && Race == Race.Human)
                 return 20.0;
 
-            if (Core.SA && this.Race == Race.Gargoyle)
+            if (Core.SA && Race == Race.Gargoyle)
             {
                 if (skill == SkillName.Imbuing)
                     return 30.0;
@@ -3358,7 +3362,7 @@ namespace Server.Mobiles
         	{
             		get
             		{
-                		if (this.Alive)
+                		if (Alive)
                 		{
                     			if (base.Criminal)
                         			BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.CriminalStatus, 1153802, 1153828));
@@ -3562,6 +3566,11 @@ namespace Server.Mobiles
 			IncognitoSpell.StopTimer(this);
 			DisguiseTimers.RemoveTimer(this);
 
+            WeakenSpell.RemoveEffects(this);
+            ClumsySpell.RemoveEffects(this);
+            FeeblemindSpell.RemoveEffects(this);
+            CurseSpell.RemoveEffect(this);
+
 			EndAction(typeof(PolymorphSpell));
 			EndAction(typeof(IncognitoSpell));
 
@@ -3654,37 +3663,42 @@ namespace Server.Mobiles
 			}
             #endregion
 
-            if (this.NetState != null && this.NetState.IsEnhancedClient)
+            if (NetState != null && NetState.IsEnhancedClient)
             {
                 List<BaseHealer> listHealers = new List<BaseHealer>();
                 List<MondainQuester> listQuesters = new List<MondainQuester>();
 
-                foreach (Mobile m_mobile in World.Mobiles.Values)
+                foreach (var vendor in World.Mobiles.Values.OfType<BaseVendor>().Where(v => v is MondainQuester || v is BaseHealer))
                 {
-                    MondainQuester mQuester = m_mobile as MondainQuester;
-                    if (mQuester != null)
-                        listQuesters.Add(mQuester);
+                    if (vendor is MondainQuester)
+                        listQuesters.Add((MondainQuester)vendor);
 
-                    BaseHealer mHealer = m_mobile as BaseHealer;
-                    if (mHealer != null)
-                        listHealers.Add(mHealer);
+                    if (vendor is BaseHealer)
+                        listHealers.Add((BaseHealer)vendor);
                 }
 
                 foreach (BaseHealer healer in listHealers)
                 {
-                    string name = string.Empty;
-                    if (healer.Name != null)
-                        name += healer.Name;
+                    string name = healer.Name;
+
                     if (healer.Title != null)
                         name += " " + healer.Title;
-                    this.NetState.Send(new DisplayWaypoint(healer.Serial, healer.X, healer.Y, healer.Z, healer.Map.MapID, WaypointType.Resurrection, name));
+
+                    NetState.Send(new DisplayWaypoint(healer.Serial, healer.X, healer.Y, healer.Z, healer.Map.MapID, WaypointType.Resurrection, name));
                 }
 
                 foreach (MondainQuester quester in listQuesters)
-                    this.NetState.Send(new RemoveWaypoint(quester.Serial));
+                {
+                    NetState.Send(new RemoveWaypoint(quester.Serial));
+                }
 
-                if (this.Corpse != null)
-                    this.NetState.Send(new RemoveWaypoint(this.Corpse.Serial));
+                if (Corpse != null)
+                {
+                    NetState.Send(new RemoveWaypoint(Corpse.Serial));
+                }
+
+                ColUtility.Free(listHealers);
+                ColUtility.Free(listQuesters);
             }
 
             if (m_BuffTable != null)
@@ -3929,7 +3943,7 @@ namespace Server.Mobiles
 				{
 					if (g.Alliance != null && g.Alliance.IsMember(g))
 					{
-						//g.Alliance.AllianceTextMessage( hue, "[Alliance][{0}]: {1}", this.Name, text );
+						//g.Alliance.AllianceTextMessage( hue, "[Alliance][{0}]: {1}", Name, text );
 						g.Alliance.AllianceChat(this, text);
 						SendToStaffMessage(this, "[Alliance]: {0}", text);
 
@@ -5448,7 +5462,7 @@ namespace Server.Mobiles
             }
 
             BaseGuild guild = Guild;
-            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && this.Map == Faction.Facet;
+            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && Map == Faction.Facet;
 
             if (!vvv && m_OverheadTitle != null)
             {
@@ -6599,7 +6613,7 @@ namespace Server.Mobiles
 
 		public void ClaimAutoStabledPets()
 		{
-			if (!PetAutoStable || !this.Region.AllowAutoClaim(this) || m_AutoStabled.Count <= 0)
+			if (!PetAutoStable || !Region.AllowAutoClaim(this) || m_AutoStabled.Count <= 0)
 			{
 				return;
 			}
