@@ -700,11 +700,16 @@ namespace Server.Items
             Capacity = 0x00000040,
 
             #region Mondain's Legacy Sets
-            SetAttributes = 0x00000100,
-            SetHue = 0x00000200,
-            LastEquipped = 0x00000400,
-            SetEquipped = 0x00000800,
+            SetAttributes =      0x00000100,
+            SetHue =             0x00000200,
+            LastEquipped =       0x00000400,
+            SetEquipped =        0x00000800,
             SetSkillAttributes = 0x00002000,
+            SetPhysical =      0x00004000,
+            SetFire =          0x00008000,
+            SetCold =          0x00010000,
+            SetPoison =        0x00020000,
+            SetEnergy =        0x00040000,
             #endregion
 
             DamageIncrease = 0x00000080
@@ -752,6 +757,11 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.SetHue, m_SetHue != 0);
             SetSaveFlag(ref flags, SaveFlag.LastEquipped, m_LastEquipped);
             SetSaveFlag(ref flags, SaveFlag.SetEquipped, m_SetEquipped);
+            SetSaveFlag(ref flags, SaveFlag.SetPhysical, m_SetPhysicalBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetFire, m_SetFireBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetCold, m_SetColdBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetPoison, m_SetPoisonBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.SetEnergy, m_SetEnergyBonus != 0);
             #endregion
 
             writer.WriteEncodedInt((int)flags);
@@ -778,6 +788,21 @@ namespace Server.Items
                 writer.Write((int)m_Capacity);
 
             #region Mondain's Legacy Sets
+            if (GetSaveFlag(flags, SaveFlag.SetPhysical))
+                writer.WriteEncodedInt((int)m_SetPhysicalBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetFire))
+                writer.WriteEncodedInt((int)m_SetFireBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetCold))
+                writer.WriteEncodedInt((int)m_SetColdBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetPoison))
+                writer.WriteEncodedInt((int)m_SetPoisonBonus);
+
+            if (GetSaveFlag(flags, SaveFlag.SetEnergy))
+                writer.WriteEncodedInt((int)m_SetEnergyBonus);
+
             if (GetSaveFlag(flags, SaveFlag.SetAttributes))
                 m_SetAttributes.Serialize(writer);
 
@@ -858,6 +883,21 @@ namespace Server.Items
                             m_Capacity = reader.ReadInt();
 
                         #region Mondain's Legacy Sets
+                        if (GetSaveFlag(flags, SaveFlag.SetPhysical))
+                            m_SetPhysicalBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetFire))
+                            m_SetFireBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetCold))
+                            m_SetColdBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetPoison))
+                            m_SetPoisonBonus = reader.ReadEncodedInt();
+
+                        if (GetSaveFlag(flags, SaveFlag.SetEnergy))
+                            m_SetEnergyBonus = reader.ReadEncodedInt();
+
                         if (GetSaveFlag(flags, SaveFlag.SetAttributes))
                             m_SetAttributes = new AosAttributes(this, reader);
                         else
@@ -981,6 +1021,78 @@ namespace Server.Items
             set
             {
                 m_LastEquipped = value;
+            }
+        }
+
+        private int m_SetPhysicalBonus, m_SetFireBonus, m_SetColdBonus, m_SetPoisonBonus, m_SetEnergyBonus;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPhysicalBonus
+        {
+            get
+            {
+                return m_SetPhysicalBonus;
+            }
+            set
+            {
+                m_SetPhysicalBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetFireBonus
+        {
+            get
+            {
+                return m_SetFireBonus;
+            }
+            set
+            {
+                m_SetFireBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetColdBonus
+        {
+            get
+            {
+                return m_SetColdBonus;
+            }
+            set
+            {
+                m_SetColdBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetPoisonBonus
+        {
+            get
+            {
+                return m_SetPoisonBonus;
+            }
+            set
+            {
+                m_SetPoisonBonus = value;
+                InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SetEnergyBonus
+        {
+            get
+            {
+                return m_SetEnergyBonus;
+            }
+            set
+            {
+                m_SetEnergyBonus = value;
+                InvalidateProperties();
             }
         }
 

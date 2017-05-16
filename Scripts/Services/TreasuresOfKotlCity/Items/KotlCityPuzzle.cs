@@ -58,21 +58,22 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         private void RandomizeOrder()
         {
-            if (_Order == null)
-                _Order = new List<int>();
-            else
-                _Order.Clear();
+            _Order = new List<int>();
+            var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            int count = Utility.RandomMinMax(5, 10);
 
-            _Order = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             int ran = 0;
 
-            for (int i = 0; i < 50; i++)
+            do
             {
-                ran = _Order[Utility.Random(_Order.Count)];
+                ran = list[Utility.Random(list.Count)];
 
-                _Order.Remove(ran);
-                _Order.Insert(0, ran);
+                _Order.Add(ran);
+                list.Remove(ran);
             }
+            while (_Order.Count < count);
+
+            ColUtility.Free(list);
         }
 
         private void Reset()
@@ -85,7 +86,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (_Complete)
+            if (_Complete || !from.InRange(component, 2))
                 return;
 
             if (_Order == null)
@@ -100,10 +101,11 @@ namespace Server.Engines.TreasuresOfKotlCity
                 if (comp.Offset.X == _Order[_Index])
                 {
                     comp.Active = false;
+                   
                     _Fails = 0;
                     from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1157028, from.NetState); // *You activate the switch!*
 
-                    if (Components.OfType<KotlCityPuzzleComponent>().FirstOrDefault(c => c.Active) == null)
+                    if (_Order.Count - 1 == _Index)
                     {
                         Complete = true;
 
@@ -122,6 +124,10 @@ namespace Server.Engines.TreasuresOfKotlCity
                                 });
                         }
                     }
+                    else
+                    {
+                        _Index++;
+                    }
                 }
                 else
                 {
@@ -132,7 +138,7 @@ namespace Server.Engines.TreasuresOfKotlCity
                     from.PlaySound(0x665);
                     from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1157029, from.NetState); // *The switch shorts out and electrocutes you! You are vulnerable to more energy damage in your shocked state!*
 
-                    if (_Fails > 5 && _Fails > Utility.Random(10))
+                    if (_Fails > 5 && _Fails > Utility.Random(15))
                     {
                         component.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1157031, from.NetState); // *Circuit Fault! Generating new circuit sequence!*
                         Reset();
