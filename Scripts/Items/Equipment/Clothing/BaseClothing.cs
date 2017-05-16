@@ -2250,7 +2250,7 @@ namespace Server.Items
                 if (m_SetEnergyBonus != 0)
                     list.Add(1072386, m_SetEnergyBonus.ToString()); // energy resist +~1_val~%			
             }
-            else if (m_SetEquipped && RootParentEntity is Mobile)
+            else if (m_SetEquipped && SetID == SetItem.Virtue && RootParentEntity is Mobile)
             {
                 Mobile m = (Mobile)RootParentEntity;
 
