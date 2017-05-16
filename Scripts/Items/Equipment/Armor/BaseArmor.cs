@@ -1475,7 +1475,7 @@ namespace Server.Items
                         else if (armor.RequiredRace == Race.Gargoyle)
                             m.SendLocalizedMessage(1111707); // Only gargoyles can wear 
                         else
-                            m.SendMessage("Only {0} may use ", armor.RequiredRace.PluralName);
+                            m.SendMessage("Only {0} may use this.", armor.RequiredRace.PluralName);
 
                         m.AddToBackpack(armor);
                     }
@@ -1484,7 +1484,7 @@ namespace Server.Items
                         if (armor.AllowFemaleWearer)
                             m.SendLocalizedMessage(1010388); // Only females can wear 
                         else
-                            m.SendMessage("You may not wear ");
+                            m.SendMessage("You may not wear this.");
 
                         m.AddToBackpack(armor);
                     }
@@ -1493,7 +1493,7 @@ namespace Server.Items
                         if (armor.AllowMaleWearer)
                             m.SendLocalizedMessage(1063343); // Only males can wear 
                         else
-                            m.SendMessage("You may not wear ");
+                            m.SendMessage("You may not wear this.");
 
                         m.AddToBackpack(armor);
                     }
@@ -2402,7 +2402,7 @@ namespace Server.Items
                     else if (RequiredRace == Race.Gargoyle)
                         from.SendLocalizedMessage(1111707); // Only gargoyles can wear 
                     else
-                        from.SendMessage("Only {0} may use ", RequiredRace.PluralName);
+                        from.SendMessage("Only {0} may use this.", RequiredRace.PluralName);
 
                     return false;
                 }
@@ -2411,7 +2411,7 @@ namespace Server.Items
                     if (AllowFemaleWearer)
                         from.SendLocalizedMessage(1010388); // Only females can wear 
                     else
-                        from.SendMessage("You may not wear ");
+                        from.SendMessage("You may not wear this.");
 
                     return false;
                 }
@@ -2420,7 +2420,7 @@ namespace Server.Items
                     if (AllowMaleWearer)
                         from.SendLocalizedMessage(1063343); // Only males can wear 
                     else
-                        from.SendMessage("You may not wear ");
+                        from.SendMessage("You may not wear this.");
 
                     return false;
                 }
