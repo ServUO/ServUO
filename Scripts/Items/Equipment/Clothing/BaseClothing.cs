@@ -635,18 +635,18 @@ namespace Server.Items
                 #region Stygian Abyss
                 if (from.Race == Race.Gargoyle && !CanBeWornByGargoyles)
                 {
-                    from.SendLocalizedMessage(1111708); // Gargoyles can't wear 
+                    from.SendLocalizedMessage(1111708); // Gargoyles can't wear this.
                     return false;
                 }
                 #endregion
                 else if (RequiredRace != null && from.Race != RequiredRace && !morph)
                 {
                     if (RequiredRace == Race.Elf)
-                        from.SendLocalizedMessage(1072203); // Only Elves may use 
+                        from.SendLocalizedMessage(1072203); // Only Elves may use this.
                     else if (RequiredRace == Race.Gargoyle)
-                        from.SendLocalizedMessage(1111707); // Only gargoyles can wear 
+                        from.SendLocalizedMessage(1111707); // Only gargoyles can wear this.
                     else
-                        from.SendMessage("Only {0} may use ", RequiredRace.PluralName);
+                        from.SendMessage("Only {0} may use this.", RequiredRace.PluralName);
 
                     return false;
                 }
@@ -655,16 +655,16 @@ namespace Server.Items
                     if (AllowFemaleWearer)
                         from.SendLocalizedMessage(1010388); // Only females can wear 
                     else
-                        from.SendMessage("You may not wear ");
+                        from.SendMessage("You may not wear this.");
 
                     return false;
                 }
                 else if (!AllowFemaleWearer && from.Female)
                 {
                     if (AllowMaleWearer)
-                        from.SendLocalizedMessage(1063343); // Only males can wear 
+                        from.SendLocalizedMessage(1063343); // Only males can wear this.
                     else
-                        from.SendMessage("You may not wear ");
+                        from.SendMessage("You may not wear this.");
 
                     return false;
                 }
@@ -799,7 +799,7 @@ namespace Server.Items
                     #region Stygian Abyss
                     if (m.Race == Race.Gargoyle && !clothing.CanBeWornByGargoyles)
                     {
-                        m.SendLocalizedMessage(1111708); // Gargoyles can't wear 
+                        m.SendLocalizedMessage(1111708); // Gargoyles can't wear this.
                         m.AddToBackpack(clothing);
                     }
                     #endregion
@@ -807,31 +807,31 @@ namespace Server.Items
                     if (clothing.RequiredRace != null && m.Race != clothing.RequiredRace)
                     {
                         if (clothing.RequiredRace == Race.Elf)
-                            m.SendLocalizedMessage(1072203); // Only Elves may use 
+                            m.SendLocalizedMessage(1072203); // Only Elves may use this.
                         #region Stygian Abyss
                         else if (clothing.RequiredRace == Race.Gargoyle)
-                            m.SendLocalizedMessage(1111707); // Only gargoyles can wear 
+                            m.SendLocalizedMessage(1111707); // Only gargoyles can wear this.
                         #endregion
                         else
-                            m.SendMessage("Only {0} may use ", clothing.RequiredRace.PluralName);
+                            m.SendMessage("Only {0} may use this.", clothing.RequiredRace.PluralName);
 
                         m.AddToBackpack(clothing);
                     }
                     else if (!clothing.AllowMaleWearer && !m.Female && m.AccessLevel < AccessLevel.GameMaster)
                     {
                         if (clothing.AllowFemaleWearer)
-                            m.SendLocalizedMessage(1010388); // Only females can wear 
+                            m.SendLocalizedMessage(1010388); // Only females can wear this.
                         else
-                            m.SendMessage("You may not wear ");
+                            m.SendMessage("You may not wear this.");
 
                         m.AddToBackpack(clothing);
                     }
                     else if (!clothing.AllowFemaleWearer && m.Female && m.AccessLevel < AccessLevel.GameMaster)
                     {
                         if (clothing.AllowMaleWearer)
-                            m.SendLocalizedMessage(1063343); // Only males can wear 
+                            m.SendLocalizedMessage(1063343); // Only males can wear this.
                         else
-                            m.SendMessage("You may not wear ");
+                            m.SendMessage("You may not wear this.");
 
                         m.AddToBackpack(clothing);
                     }
