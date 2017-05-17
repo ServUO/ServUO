@@ -978,6 +978,9 @@
     </Compile>
     <Compile Include="Items\Tools\ChestOfSending.cs" />
     <Compile Include="Items\Tools\ForgedMetalOfArtifacts.cs" />
+    <Compile Include="Items\Tools\MetallicLeatherDyeTub.cs" />
+    <Compile Include="Items\Tools\MetallicDyeTub.cs" />
+    <Compile Include="Items\Tools\MetallicClothDyeTub.cs" />
     <Compile Include="Items\Tools\PenOfWisdom.cs" />
     <Compile Include="Items\Tools\PetBondingPotion.cs" />
     <Compile Include="Items\Tools\RunicMalletAndChisel.cs" />

@@ -439,6 +439,8 @@ namespace Server.Engines.VeteranRewards
                 new RewardList(RewardInterval, 5, new RewardEntry[]
                 {
                     new RewardEntry(specialDyeTubs, 1049741, typeof(StatuetteDyeTub)),
+                    new RewardEntry(specialDyeTubs, 1153495, typeof(MetallicLeatherDyeTub)),
+                    new RewardEntry(specialDyeTubs, 1150067, typeof(MetallicDyeTub)),
                     new RewardEntry(cloaksAndRobes, 1049731, typeof(RewardCloak), JetBlack, 1049763),
                     new RewardEntry(cloaksAndRobes, 1049732, typeof(RewardRobe), JetBlack, 1049762),
                     new RewardEntry(cloaksAndRobes, 1080377, typeof(RewardDress), Expansion.ML, JetBlack, 1080377),
