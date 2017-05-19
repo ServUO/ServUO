@@ -60,7 +60,11 @@ namespace Server.Items
         TigerCub,
         SakkhranBirdOfPrey,
         Exodus,
-        TerathanMatriarch
+        TerathanMatriarch,
+        FleshRenderer,
+        CrystalElemental,
+        DarkFather,
+        PlatinumDragon
     }
 
     public class MonsterStatuetteInfo
@@ -120,6 +124,10 @@ namespace Server.Items
             /* SakkhranBirdOfPrey */new MonsterStatuetteInfo(1156699, 0x276A, 0x4FE),
             /* Exodus */            new MonsterStatuetteInfo(1153594, 0x4C08, new int[] { 0x301, 0x302, 0x303, 0x304 }),
             /* Terathan Matriarch */new MonsterStatuetteInfo(1113800, 0x212C, 599),
+            /* Flesh Renderer */    new MonsterStatuetteInfo(1155746, 0x262F, new int[] { 0x34C, 0x354 }),
+            /* Crystal Elemental */ new MonsterStatuetteInfo(1155747, 0x2620, 278),
+            /* Dark Father */       new MonsterStatuetteInfo(1155748, 0x2632, 0x165),
+            /* Platinum Dragon */   new MonsterStatuetteInfo(1155745, 0x2635, new int[] { 0x2C1, 0x2C3 }),
         };
         private readonly int m_LabelNumber;
         private readonly int m_ItemID;
