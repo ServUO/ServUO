@@ -10,8 +10,6 @@ namespace Server.Engines.CannedEvil
         Venom,
         Pain,
         Greed,
-        Death,
-        Terror,
-        Infuse
+        Death
     }
 }

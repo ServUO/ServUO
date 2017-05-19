@@ -1374,7 +1374,15 @@ namespace Server
 			return (num < bound2 + allowance && num > bound1 - allowance);
 		}
 
-		public static void AssignRandomHair(Mobile m)
+        public static double GetDistanceToSqrt(Point3D p1, Point3D p2)
+        {
+            int xDelta = p1.X - p2.X;
+            int yDelta = p1.Y - p2.Y;
+
+            return Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
+        }
+
+        public static void AssignRandomHair(Mobile m)
 		{
 			AssignRandomHair(m, true);
 		}
