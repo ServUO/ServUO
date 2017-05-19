@@ -191,7 +191,7 @@ namespace Server.Items
 
         [Constructable]
         public GargishClothKilt(int hue)
-            : base(0x0408, Layer.OuterLegs, hue)
+            : base(0x0408, Layer.Gloves, hue)
         {
             this.Weight = 2.0;
         }
@@ -238,6 +238,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (Layer != Layer.Gloves)
+                Layer = Layer.Gloves;
         }
     }
 
