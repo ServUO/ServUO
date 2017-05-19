@@ -13,16 +13,16 @@ namespace Server.Engines.VeteranRewards
 
     public class RewardSystem
     {
-		public static bool Enabled = Config.Get("VetRewards.Enabled", true);
+        public static bool Enabled = Config.Get("VetRewards.Enabled", true);
         public static bool SkillCapRewards = Config.Get("VetRewards.SkillCapRewards", true);
         public static int SkillCap = Config.Get("PlayerCaps.TotalSkillCap", 7000);
         public static int SkillCapBonus = Config.Get("VetRewards.SkillCapBonus", 200);
         public static int SkillCapBonusLevels = Config.Get("VetRewards.SkillCapBonusLevels", 4);
         public static float SkillCapBonusIncrement = SkillCapBonus / SkillCapBonusLevels;
         public static TimeSpan RewardInterval = Config.Get("VetRewards.RewardInterval", TimeSpan.FromDays(30.0d));
-		public static int StartingLevel = Config.Get("VetRewards.StartingLevel", 0);
+        public static int StartingLevel = Config.Get("VetRewards.StartingLevel", 0);
 
-		private static RewardCategory[] m_Categories;
+        private static RewardCategory[] m_Categories;
         private static RewardList[] m_Lists;
         public static RewardCategory[] Categories
         {
@@ -86,9 +86,9 @@ namespace Server.Engines.VeteranRewards
                 return false;
             }
 
-			TimeSpan totalTime = (DateTime.UtcNow - acct.Created) + TimeSpan.FromDays(RewardInterval.TotalDays * StartingLevel);
+            TimeSpan totalTime = (DateTime.UtcNow - acct.Created) + TimeSpan.FromDays(RewardInterval.TotalDays * StartingLevel);
 
-			ts = (list.Age - totalTime);
+            ts = (list.Age - totalTime);
 
 
             if (ts <= TimeSpan.Zero)
@@ -116,7 +116,7 @@ namespace Server.Engines.VeteranRewards
             if (level < 0)
                 level = 0;
 
-			level += StartingLevel;
+            level += StartingLevel;
 
             return level;
         }
@@ -381,9 +381,9 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(houseAddOns,    1072216, typeof(ContestMiniHouseDeed), Expansion.SE, MiniHouseType.ChurchAtNight),
                     new RewardEntry(miscellaneous,  1076155, typeof(RedSoulstone),         Expansion.ML),
                     new RewardEntry(miscellaneous,  1080523, typeof(CommodityDeedBox),     Expansion.ML),
-			        new RewardEntry(miscellaneous, 1113945,  typeof(CrystalPortal),        Expansion.SA),
-			        new RewardEntry(miscellaneous, 1150074,  typeof(CorruptedCrystalPortal), Expansion.SA),
-                    new RewardEntry( houseAddOns,  1156371,  typeof( Server.Engines.Auction.AuctionSafeDeed ), Expansion.TOL )
+                    new RewardEntry(miscellaneous,  1113945,  typeof(CrystalPortal),        Expansion.SA),
+                    new RewardEntry(miscellaneous,  1150074,  typeof(CorruptedCrystalPortal), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1156371,  typeof(Server.Engines.Auction.AuctionSafeDeed), Expansion.TOL)
                 }),
                 new RewardList(RewardInterval, 2, new RewardEntry[]
                 {
@@ -394,9 +394,9 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(cloaksAndRobes, 1006016, typeof(RewardCloak), Golden, 1041292),
                     new RewardEntry(cloaksAndRobes, 1006017, typeof(RewardRobe), Golden, 1041293),
                     new RewardEntry(cloaksAndRobes, 1080368, typeof(RewardDress), Expansion.ML, Golden, 1080368),
-                    new RewardEntry(houseAddOns, 1006048, typeof(BannerDeed)),
-                    new RewardEntry(houseAddOns, 1006049, typeof(FlamingHeadDeed)),
-                    new RewardEntry(houseAddOns, 1080409, typeof(MinotaurStatueDeed), Expansion.ML)
+                    new RewardEntry(houseAddOns,    1006048, typeof(BannerDeed)),
+                    new RewardEntry(houseAddOns,    1006049, typeof(FlamingHeadDeed)),
+                    new RewardEntry(houseAddOns,    1080409, typeof(MinotaurStatueDeed), Expansion.ML)
                 }),
                 new RewardList(RewardInterval, 3, new RewardEntry[]
                 {
@@ -412,7 +412,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(etherealSteeds, 1006019, typeof(EtherealHorse)),
                     new RewardEntry(etherealSteeds, 1006051, typeof(EtherealLlama)),
                     new RewardEntry(etherealSteeds, 1006050, typeof(EtherealOstard)),
-                    new RewardEntry(houseAddOns, 1080407, typeof(PottedCactusDeed), Expansion.ML)
+                    new RewardEntry(houseAddOns,    1080407, typeof(PottedCactusDeed), Expansion.ML)
                 }),
                 new RewardList(RewardInterval, 4, new RewardEntry[]
                 {
@@ -432,9 +432,9 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(etherealSteeds, 1049746, typeof(EtherealKirin)),
                     new RewardEntry(etherealSteeds, 1049745, typeof(EtherealUnicorn)),
                     new RewardEntry(etherealSteeds, 1049747, typeof(EtherealRidgeback)),
-                    new RewardEntry(houseAddOns, 1049737, typeof(DecorativeShieldDeed)),
-                    new RewardEntry(houseAddOns, 1049738, typeof(HangingSkeletonDeed)),
-                    new RewardEntry(miscellaneous, 1098160, typeof(Server.Engines.Plants.SeedBox))
+                    new RewardEntry(houseAddOns,    1049737, typeof(DecorativeShieldDeed)),
+                    new RewardEntry(houseAddOns,    1049738, typeof(HangingSkeletonDeed)),
+                    new RewardEntry(miscellaneous,  1098160, typeof(Server.Engines.Plants.SeedBox))
                 }),
                 new RewardList(RewardInterval, 5, new RewardEntry[]
                 {
@@ -461,15 +461,15 @@ namespace Server.Engines.VeteranRewards
                 }),
                 new RewardList(RewardInterval, 6, new RewardEntry[]
                 {
-                    new RewardEntry(houseAddOns,	1076188, typeof(CharacterStatueMaker), Expansion.ML, StatueType.Jade),
-                    new RewardEntry(houseAddOns,	1076189, typeof(CharacterStatueMaker), Expansion.ML, StatueType.Marble),
-                    new RewardEntry(houseAddOns,	1076190, typeof(CharacterStatueMaker), Expansion.ML, StatueType.Bronze),
-                    new RewardEntry(houseAddOns,	1080527, typeof(RewardBrazierDeed), Expansion.ML)
+                    new RewardEntry(houseAddOns,    1076188, typeof(CharacterStatueMaker), Expansion.ML, StatueType.Jade),
+                    new RewardEntry(houseAddOns,    1076189, typeof(CharacterStatueMaker), Expansion.ML, StatueType.Marble),
+                    new RewardEntry(houseAddOns,    1076190, typeof(CharacterStatueMaker), Expansion.ML, StatueType.Bronze),
+                    new RewardEntry(houseAddOns,    1080527, typeof(RewardBrazierDeed), Expansion.ML)
                 }),
                 new RewardList(RewardInterval, 7, new RewardEntry[]
                 {
-                    new RewardEntry(houseAddOns,	1076157, typeof(CannonDeed),           Expansion.ML),
-                    new RewardEntry(houseAddOns,	1080550, typeof(TreeStumpDeed),        Expansion.ML),
+                    new RewardEntry(houseAddOns,    1076157, typeof(CannonDeed),           Expansion.ML),
+                    new RewardEntry(houseAddOns,    1080550, typeof(TreeStumpDeed),        Expansion.ML),
                     new RewardEntry(houseAddOns,    1123504, typeof(SewingMachineDeed),    Expansion.TOL),
                     new RewardEntry(houseAddOns,    1123577, typeof(SmithingPressDeed),    Expansion.TOL),
                     new RewardEntry(houseAddOns,    1156369, typeof(SpinningLatheDeed),    Expansion.TOL),
@@ -477,55 +477,57 @@ namespace Server.Engines.VeteranRewards
                 }),
                 new RewardList(RewardInterval, 8, new RewardEntry[]
                 {
-                    new RewardEntry(miscellaneous,	1076158, typeof(WeaponEngravingTool), Expansion.ML),
-                    new RewardEntry( houseAddOns,   "Davies' Locker (South)", typeof(DaviesLockerAddonDeed), Expansion.SA, true),
-                    new RewardEntry( houseAddOns,   "Davies' Locker (East)", typeof(DaviesLockerAddonDeed), Expansion.SA, false),
+                    new RewardEntry(miscellaneous,  1076158, typeof(WeaponEngravingTool), Expansion.ML),
+                    new RewardEntry(houseAddOns,   "Davies' Locker (South)", typeof(DaviesLockerAddonDeed), Expansion.SA, true),
+                    new RewardEntry(houseAddOns,   "Davies' Locker (East)", typeof(DaviesLockerAddonDeed), Expansion.SA, false),
                 }),
                 new RewardList(RewardInterval, 9, new RewardEntry[]
                 {
-                    new RewardEntry(etherealSteeds,	1076159, typeof(RideablePolarBear), Expansion.ML),
-                    new RewardEntry(houseAddOns, 1080549, typeof(WallBannerDeed), Expansion.ML)
+                    new RewardEntry(etherealSteeds, 1076159, typeof(RideablePolarBear), Expansion.ML),
+                    new RewardEntry(houseAddOns,    1080549, typeof(WallBannerDeed), Expansion.ML)
                 }),
                 new RewardList(RewardInterval, 10, new RewardEntry[]
                 {
-                    new RewardEntry(monsterStatues,	1080520, typeof(MonsterStatuette), Expansion.ML, MonsterStatuetteType.Harrower),
-                    new RewardEntry(monsterStatues,	1080521, typeof(MonsterStatuette), Expansion.ML, MonsterStatuetteType.Efreet),
-                    new RewardEntry(cloaksAndRobes,	1080382, typeof(RewardCloak), Expansion.ML, Pink, 1080382),
-                    new RewardEntry(cloaksAndRobes,	1080380, typeof(RewardRobe), Expansion.ML, Pink, 1080380),
-                    new RewardEntry(cloaksAndRobes,	1080378, typeof(RewardDress), Expansion.ML, Pink, 1080378),
-                    new RewardEntry(cloaksAndRobes,	1080383, typeof(RewardCloak), Expansion.ML, Crimson, 1080383),
-                    new RewardEntry(cloaksAndRobes,	1080381, typeof(RewardRobe), Expansion.ML, Crimson, 1080381),
-                    new RewardEntry(cloaksAndRobes,	1080379, typeof(RewardDress), Expansion.ML, Crimson, 1080379),
-                    new RewardEntry(etherealSteeds,	1080386, typeof(EtherealCuSidhe), Expansion.ML),
+                    new RewardEntry(monsterStatues, 1080520, typeof(MonsterStatuette), Expansion.ML, MonsterStatuetteType.Harrower),
+                    new RewardEntry(monsterStatues, 1080521, typeof(MonsterStatuette), Expansion.ML, MonsterStatuetteType.Efreet),
+                    new RewardEntry(cloaksAndRobes, 1080382, typeof(RewardCloak), Expansion.ML, Pink, 1080382),
+                    new RewardEntry(cloaksAndRobes, 1080380, typeof(RewardRobe), Expansion.ML, Pink, 1080380),
+                    new RewardEntry(cloaksAndRobes, 1080378, typeof(RewardDress), Expansion.ML, Pink, 1080378),
+                    new RewardEntry(cloaksAndRobes, 1080383, typeof(RewardCloak), Expansion.ML, Crimson, 1080383),
+                    new RewardEntry(cloaksAndRobes, 1080381, typeof(RewardRobe), Expansion.ML, Crimson, 1080381),
+                    new RewardEntry(cloaksAndRobes, 1080379, typeof(RewardDress), Expansion.ML, Crimson, 1080379),
+                    new RewardEntry(etherealSteeds, 1080386, typeof(EtherealCuSidhe), Expansion.ML),
                     new RewardEntry(houseAddOns,    1080548, typeof(MiningCartDeed), Expansion.ML),
                     new RewardEntry(houseAddOns,    1080397, typeof(AnkhOfSacrificeDeed), Expansion.ML),
 
-                    new RewardEntry( houseAddOns,       1150090, typeof( SkullRugEastAddonDeed ), Expansion.SA ),
-                    new RewardEntry( houseAddOns,       1150089, typeof( SkullRugSouthAddonDeed ), Expansion.SA ),
-                    new RewardEntry( houseAddOns,       1150092, typeof( RoseRugEastAddonDeed ), Expansion.SA ),
-                    new RewardEntry( houseAddOns,       1150091, typeof( RoseRugSouthAddonDeed ), Expansion.SA ),
-                    new RewardEntry( houseAddOns,       1150094, typeof( DolphinRugEastAddonDeed ), Expansion.SA ),
-                    new RewardEntry( houseAddOns,       1150093, typeof( DolphinRugSouthAddonDeed ), Expansion.SA ),
-                        
-                    new RewardEntry( miscellaneous,		1150424, typeof( ChestOfSending ), Expansion.SA ),
+                    new RewardEntry(houseAddOns,    1150090, typeof(SkullRugEastAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1150089, typeof(SkullRugSouthAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1150092, typeof(RoseRugEastAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1150091, typeof(RoseRugSouthAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1150094, typeof(DolphinRugEastAddonDeed), Expansion.SA),
+                    new RewardEntry(houseAddOns,    1150093, typeof(DolphinRugSouthAddonDeed), Expansion.SA),
+
+                    new RewardEntry( miscellaneous, 1150424, typeof(ChestOfSending), Expansion.SA),
                 }),
                 new RewardList(RewardInterval, 11, new RewardEntry[]
                 {
-                    new RewardEntry(etherealSteeds,	1113908, typeof(EtherealReptalon), Expansion.ML),
+                    new RewardEntry(etherealSteeds, 1113908, typeof(EtherealReptalon), Expansion.ML),
 
-                    new RewardEntry(miscellaneous,	1113814, typeof(EtherealRetouchingTool), Expansion.SA),
+                    new RewardEntry(miscellaneous,  1113814, typeof(EtherealRetouchingTool), Expansion.SA),
                 }),
                 new RewardList(RewardInterval, 12, new RewardEntry[]
                 {
-                    new RewardEntry( etherealSteeds,1113813, typeof(EtherealHiryu), Expansion.ML),
+                    new RewardEntry(etherealSteeds, 1113813, typeof(EtherealHiryu), Expansion.ML),
                 }),
                 new RewardList(RewardInterval, 13, new RewardEntry[]
                 {
-                    new RewardEntry( etherealSteeds, 1150006, typeof(EtherealBoura), Expansion.SA),
+                    new RewardEntry(etherealSteeds, 1150006, typeof(EtherealBoura), Expansion.SA),
                 }),
                 new RewardList(RewardInterval, 15, new RewardEntry[]
                 {
-                    new RewardEntry( etherealSteeds, 1154589, typeof(EtherealTiger), Expansion.TOL),
+                    new RewardEntry(etherealSteeds, 1154589, typeof(EtherealTiger), Expansion.TOL),
+                    new RewardEntry(etherealSteeds, 1155723, typeof(EtherealAncientHellHound), Expansion.TOL),
+                    new RewardEntry(etherealSteeds, 1157081, typeof(EtherealTarantula), Expansion.TOL),
                 }),
             };
         }
