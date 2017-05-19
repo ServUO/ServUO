@@ -58,7 +58,9 @@ namespace Server.Items
         Navrey,
         DragonTurtle,
         TigerCub,
-        SakkhranBirdOfPrey
+        SakkhranBirdOfPrey,
+        Exodus,
+        TerathanMatriarch
     }
 
     public class MonsterStatuetteInfo
@@ -105,17 +107,19 @@ namespace Server.Items
             /* Minotaur */			new MonsterStatuetteInfo(1031657, 0x2D89, 0x596),
             /* Black Cat */		    new MonsterStatuetteInfo(1096928, 0x4688, 0x69),
             /* HalloweenGhoul */	new MonsterStatuetteInfo(1076782, 0x2109, 0x482),
-            /* Slasher of Veils */  new MonsterStatuetteInfo( 1113624, 0x42A0, 0x632 ),
-            /* Stygian Dragon   */  new MonsterStatuetteInfo( 1113625, 0x42A6, 0x63E ),
-            /* Medusa */            new MonsterStatuetteInfo( 1113626, 0x4298, 0x612 ),
-            /* Primeval Lich */     new MonsterStatuetteInfo( 1113627, 0x429A, 0x61E ),
-            /* Abyssal Infernal */  new MonsterStatuetteInfo( 1113628, 0x4287, 1492 ), 
-            /* ArchDemon */         new MonsterStatuetteInfo( 1112411, 0x20D3, 357 ), 
-            /* FireAnt */           new MonsterStatuetteInfo( 1113801, 0x42A7, 849 ),
-            /* Navrey Night-Eyes */ new MonsterStatuetteInfo( 1153593, 0x4C07, 0x61A ),
-            /* Dragon Turtle */     new MonsterStatuetteInfo( 1156367, 0x9848, 362 ),
-            /* Tiger Cub     */     new MonsterStatuetteInfo( 1156517, 0x9CA7, 0x69 ),
-            /* SakkhranBirdOfPrey */new MonsterStatuetteInfo( 1156699, 0x276A, 0x4FE ),
+            /* Slasher of Veils */  new MonsterStatuetteInfo(1113624, 0x42A0, 0x632),
+            /* Stygian Dragon   */  new MonsterStatuetteInfo(1113625, 0x42A6, 0x63E),
+            /* Medusa */            new MonsterStatuetteInfo(1113626, 0x4298, 0x612),
+            /* Primeval Lich */     new MonsterStatuetteInfo(1113627, 0x429A, 0x61E),
+            /* Abyssal Infernal */  new MonsterStatuetteInfo(1113628, 0x4287, 1492), 
+            /* ArchDemon */         new MonsterStatuetteInfo(1112411, 0x20D3, 357), 
+            /* FireAnt */           new MonsterStatuetteInfo(1113801, 0x42A7, 1006),
+            /* Navrey Night-Eyes */ new MonsterStatuetteInfo(1153593, 0x4C07, new int[] { 0x61B, 0x61C, 0x61D, 0x61E }),
+            /* Dragon Turtle */     new MonsterStatuetteInfo(1156367, 0x9848, 362),
+            /* Tiger Cub     */     new MonsterStatuetteInfo(1156517, 0x9CA7, 0x69),
+            /* SakkhranBirdOfPrey */new MonsterStatuetteInfo(1156699, 0x276A, 0x4FE),
+            /* Exodus */            new MonsterStatuetteInfo(1153594, 0x4C08, new int[] { 0x301, 0x302, 0x303, 0x304 }),
+            /* Terathan Matriarch */new MonsterStatuetteInfo(1113800, 0x212C, 599),
         };
         private readonly int m_LabelNumber;
         private readonly int m_ItemID;

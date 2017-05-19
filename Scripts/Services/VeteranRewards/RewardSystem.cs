@@ -348,6 +348,8 @@ namespace Server.Engines.VeteranRewards
             const int JetBlack = 0x001;
             const int Pink = 0x490;
             const int Crimson = 0x485;
+            const int GreenForest = 0x4A9;
+            const int RoyalBlue = 0x538;
 
             m_Lists = new RewardList[]
             {
@@ -490,16 +492,22 @@ namespace Server.Engines.VeteranRewards
                 {
                     new RewardEntry(monsterStatues, 1080520, typeof(MonsterStatuette), Expansion.ML, MonsterStatuetteType.Harrower),
                     new RewardEntry(monsterStatues, 1080521, typeof(MonsterStatuette), Expansion.ML, MonsterStatuetteType.Efreet),
+
                     new RewardEntry(cloaksAndRobes, 1080382, typeof(RewardCloak), Expansion.ML, Pink, 1080382),
                     new RewardEntry(cloaksAndRobes, 1080380, typeof(RewardRobe), Expansion.ML, Pink, 1080380),
+                    new RewardEntry(cloaksAndRobes, 1113898, typeof(RewardGargishFancyRobe), Pink, 1113898),
+                    new RewardEntry(cloaksAndRobes, 1113899, typeof(RewardGargishRobe), Pink, 1113899),
                     new RewardEntry(cloaksAndRobes, 1080378, typeof(RewardDress), Expansion.ML, Pink, 1080378),
                     new RewardEntry(cloaksAndRobes, 1080383, typeof(RewardCloak), Expansion.ML, Crimson, 1080383),
                     new RewardEntry(cloaksAndRobes, 1080381, typeof(RewardRobe), Expansion.ML, Crimson, 1080381),
+                    new RewardEntry(cloaksAndRobes, 1113900, typeof(RewardGargishFancyRobe), Crimson, 1113900),
+                    new RewardEntry(cloaksAndRobes, 1113901, typeof(RewardGargishRobe), Crimson, 1113901),
                     new RewardEntry(cloaksAndRobes, 1080379, typeof(RewardDress), Expansion.ML, Crimson, 1080379),
+
                     new RewardEntry(etherealSteeds, 1080386, typeof(EtherealCuSidhe), Expansion.ML),
+
                     new RewardEntry(houseAddOns,    1080548, typeof(MiningCartDeed), Expansion.ML),
                     new RewardEntry(houseAddOns,    1080397, typeof(AnkhOfSacrificeDeed), Expansion.ML),
-
                     new RewardEntry(houseAddOns,    1150090, typeof(SkullRugEastAddonDeed), Expansion.SA),
                     new RewardEntry(houseAddOns,    1150089, typeof(SkullRugSouthAddonDeed), Expansion.SA),
                     new RewardEntry(houseAddOns,    1150092, typeof(RoseRugEastAddonDeed), Expansion.SA),
@@ -512,16 +520,36 @@ namespace Server.Engines.VeteranRewards
                 new RewardList(RewardInterval, 11, new RewardEntry[]
                 {
                     new RewardEntry(etherealSteeds, 1113908, typeof(EtherealReptalon), Expansion.ML),
+                    
+                    new RewardEntry(cloaksAndRobes, 1113902, typeof(RewardCloak), GreenForest, 1113902),
+                    new RewardEntry(cloaksAndRobes, 1113903, typeof(RewardDress), GreenForest, 1113903),
+                    new RewardEntry(cloaksAndRobes, 1113904, typeof(RewardRobe), GreenForest, 1113904),
+                    new RewardEntry(cloaksAndRobes, 1113905, typeof(RewardGargishFancyRobe), GreenForest, 1113905),
+                    new RewardEntry(cloaksAndRobes, 1113906, typeof(RewardGargishRobe), GreenForest, 1113906),
+
+                    new RewardEntry(monsterStatues, 1113800, typeof(MonsterStatuette), MonsterStatuetteType.TerathanMatriarch , Expansion.ML),                    
+                    new RewardEntry(monsterStatues, 1153593, typeof(MonsterStatuette), MonsterStatuetteType.Navrey , Expansion.SA),
 
                     new RewardEntry(miscellaneous,  1113814, typeof(EtherealRetouchingTool), Expansion.SA),
                 }),
                 new RewardList(RewardInterval, 12, new RewardEntry[]
                 {
                     new RewardEntry(etherealSteeds, 1113813, typeof(EtherealHiryu), Expansion.ML),
+                    
+                    new RewardEntry(cloaksAndRobes, 1113910, typeof(RewardCloak), RoyalBlue, 1113910),
+                    new RewardEntry(cloaksAndRobes, 1113911, typeof(RewardDress), RoyalBlue, 1113911),
+                    new RewardEntry(cloaksAndRobes, 1113912, typeof(RewardRobe), RoyalBlue, 1113912),
+                    new RewardEntry(cloaksAndRobes, 1113913, typeof(RewardGargishFancyRobe), RoyalBlue, 1113913),
+                    new RewardEntry(cloaksAndRobes, 1113914, typeof(RewardGargishRobe), RoyalBlue, 1113914),
+
+                    new RewardEntry(monsterStatues, 1113801, typeof(MonsterStatuette), MonsterStatuetteType.FireAnt , Expansion.SA),
+
+                    new RewardEntry(houseAddOns,    1113954, typeof(AllegiancePouch)),
                 }),
                 new RewardList(RewardInterval, 13, new RewardEntry[]
                 {
                     new RewardEntry(etherealSteeds, 1150006, typeof(EtherealBoura), Expansion.SA),
+                    new RewardEntry(monsterStatues, 1153594, typeof(MonsterStatuette), MonsterStatuetteType.Exodus , Expansion.SA),
                 }),
                 new RewardList(RewardInterval, 15, new RewardEntry[]
                 {
