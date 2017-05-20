@@ -138,7 +138,6 @@
     <Compile Include=".\QuestArrow.cs" />
     <Compile Include=".\Race.cs" />
     <Compile Include=".\Region.cs" />
-    <Compile Include=".\ScriptCompiler.cs" />
     <Compile Include=".\Sector.cs" />
     <Compile Include=".\SecureTrade.cs" />
     <Compile Include=".\Serial.cs" />
@@ -190,6 +189,15 @@
     <Compile Include="PromptExtensions.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Items\VirtualCheck.cs" />
+    <Compile Include="Scripts\CodeDomCompiler.cs" />
+    <Compile Include="Scripts\CompilerResultsRenderer.cs" />
+    <Compile Include="Scripts\CSharpCompiler.cs" />
+    <Compile Include="Scripts\Library.cs" />
+    <Compile Include="Scripts\ICompiler.cs" />
+    <Compile Include="Scripts\ScriptCompiler.cs" />
+    <Compile Include="Scripts\TypeCache.cs" />
+    <Compile Include="Scripts\TypeTable.cs" />
+    <Compile Include="Scripts\VBCompiler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="servuo.ico" />
