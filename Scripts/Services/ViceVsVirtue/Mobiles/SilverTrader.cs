@@ -136,7 +136,6 @@ namespace Server.Engines.VvV
             new Type[] { typeof(MaceAndShieldGlasses), typeof(GargishMaceAndShieldGlasses) },
             new Type[] { typeof(WizardsCrystalGlasses), typeof(GargishWizardsCrystalGlasses) },
             new Type[] { typeof(FoldedSteelGlasses), typeof(GargishFoldedSteelGlasses) },
-            new Type[] { typeof(WizardsCrystalGlasses), typeof(GargishWizardsCrystalGlasses) },
         };
 
         public override bool OnDragDrop(Mobile from, Item dropped)
@@ -164,6 +163,25 @@ namespace Server.Engines.VvV
                                         if (item is GargishCrimsonCincture)
                                         {
                                             ((GargishCrimsonCincture)item).Attributes.BonusDex = 10;
+                                        }
+
+                                        if (item is GargishMaceAndShieldGlasses)
+                                        {
+                                            ((GargishMaceAndShieldGlasses)item).Attributes.WeaponDamage = 10;
+                                        }
+
+                                        if (item is GargishFoldedSteelGlasses)
+                                        {
+                                            ((GargishFoldedSteelGlasses)item).Attributes.DefendChance = 25;
+                                        }
+
+                                        if (item is GargishWizardsCrystalGlasses)
+                                        {
+                                            ((GargishWizardsCrystalGlasses)item).PhysicalBonus = 5;                                            
+                                            ((GargishWizardsCrystalGlasses)item).FireBonus = 5;                                            
+                                            ((GargishWizardsCrystalGlasses)item).ColdBonus = 5;                                            
+                                            ((GargishWizardsCrystalGlasses)item).PoisonBonus = 5;                                            
+                                            ((GargishWizardsCrystalGlasses)item).EnergyBonus = 5;
                                         }
 
                                         from.AddToBackpack(item);

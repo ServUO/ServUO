@@ -685,16 +685,16 @@ namespace Server.Engines.Craft
                 index = this.AddCraft(typeof(GargishClothKiltArmor), 1111748, 1021031, 82.9, 132.9, typeof(Cloth), 1044286, 6, 1044463);
                 this.SetNeededExpansion(index, Expansion.SA);
 
-                index = this.AddCraft(typeof(FemaleGargishClothArms), 1111748, 1021027, 87.1, 137.1, typeof(Cloth), 1044286, 8, 1044463);
+                index = this.AddCraft(typeof(FemaleGargishClothArmsArmor), 1111748, 1021027, 87.1, 137.1, typeof(Cloth), 1044286, 8, 1044463);
                 this.SetNeededExpansion(index, Expansion.SA);
 
-                index = this.AddCraft(typeof(FemaleGargishClothChest), 1111748, 1021029, 94.0, 144.0, typeof(Cloth), 1044286, 8, 1044463);
+                index = this.AddCraft(typeof(FemaleGargishClothChestArmor), 1111748, 1021029, 94.0, 144.0, typeof(Cloth), 1044286, 8, 1044463);
                 this.SetNeededExpansion(index, Expansion.SA);
 
-                index = this.AddCraft(typeof(FemaleGargishClothLegs), 1111748, 1021033, 91.2, 141.2, typeof(Cloth), 1044286, 10, 1044463);
+                index = this.AddCraft(typeof(FemaleGargishClothLegsArmor), 1111748, 1021033, 91.2, 141.2, typeof(Cloth), 1044286, 10, 1044463);
                 this.SetNeededExpansion(index, Expansion.SA);
 
-                index = this.AddCraft(typeof(FemaleGargishClothKilt), 1111748, 1021031, 82.9, 132.9, typeof(Cloth), 1044286, 6, 1044463);
+                index = this.AddCraft(typeof(FemaleGargishClothKiltArmor), 1111748, 1021031, 82.9, 132.9, typeof(Cloth), 1044286, 6, 1044463);
                 this.SetNeededExpansion(index, Expansion.SA);
 
                 index = this.AddCraft(typeof(GargishClothWingArmor), 1111748, 1115393, 65.0, 90.0, typeof(Cloth), 1044286, 12, 1044463);
