@@ -1,28 +1,33 @@
-/* Based on Neira, still to get detailed information on the Primeval Lich */
 using System;
 using System.Collections;
 using Server.Engines.CannedEvil;
 using Server.Items;
+using System.Collections.Generic;
+using Server.Network;
+using System.Linq;
 
 namespace Server.Mobiles
 {
+    [CorpseName("a Primeval Lich corpse")]
     public class PrimevalLich : BaseChampion
     {
         private DateTime m_NextDiscordTime;
+        private DateTime m_NextAbilityTime;
+        private Timer m_Timer;
+
         [Constructable]
         public PrimevalLich()
             : base(AIType.AI_NecroMage)
         {
-            this.Name = "The Primeval Lich";
+            this.Name = "Primeval Lich";
             this.Body = 830;
 
-            this.SetStr(500, 600);
-            this.SetDex(130, 140);
-            this.SetInt(1000, 1200);
+            this.SetStr(500);
+            this.SetDex(100);
+            this.SetInt(1000);
 
-            this.SetHits(20000);
-            this.SetStam(130, 140);
-            this.SetMana(4500, 5500);
+            this.SetHits(30000);
+            this.SetMana(5000);
 
             this.SetDamage(17, 21);
 
@@ -32,10 +37,10 @@ namespace Server.Mobiles
             this.SetDamageType(ResistanceType.Energy, 20);
             this.SetDamageType(ResistanceType.Poison, 20);
 
-            this.SetResistance(ResistanceType.Physical, 20);
-            this.SetResistance(ResistanceType.Fire, 20);
-            this.SetResistance(ResistanceType.Cold, 20);
-            this.SetResistance(ResistanceType.Poison, 20);
+            this.SetResistance(ResistanceType.Physical, 30);
+            this.SetResistance(ResistanceType.Fire, 30);
+            this.SetResistance(ResistanceType.Cold, 30);
+            this.SetResistance(ResistanceType.Poison, 30);
             this.SetResistance(ResistanceType.Energy, 20);
 
             this.SetSkill(SkillName.EvalInt, 90, 120.0);
@@ -47,10 +52,13 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.Tactics, 90, 120);
             this.SetSkill(SkillName.Wrestling, 100, 120);
 
-            this.Fame = 22500;
-            this.Karma = -22500;
+            this.Fame = 28000;
+            this.Karma = -28000;
 
             this.VirtualArmor = 80;
+
+            m_Timer = new TeleportTimer(this);
+            m_Timer.Start();
         }
 
         public PrimevalLich(Serial serial)
@@ -58,48 +66,19 @@ namespace Server.Mobiles
         {
         }
 
-        public virtual int DiscordDuration
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public virtual int DiscordMinDelay
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public virtual int DiscordMaxDelay
-        {
-            get
-            {
-                return 22;
-            }
-        }
-        public virtual double DiscordModifier
-        {
-            get
-            {
-                return 0.28;
-            }
-        }
-        public virtual int PerceptionRange
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override ChampionSkullType SkullType
-        {
-            get
-            {
-                return ChampionSkullType.Infuse;
-            }
-        }
+        public override int GetAttackSound() { return 0x61E; }
+        public override int GetDeathSound() { return 0x61F; }
+        public override int GetHurtSound() { return 0x620; }
+        public override int GetIdleSound() { return 0x621; }
+
+        public override bool CanRummageCorpses { get { return true; } }
+        public override bool BleedImmune { get { return true; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool ShowFameTitle { get { return false; } }
+        public override bool ClickTitle { get { return false; } }
+
+        public override ChampionSkullType SkullType { get { return ChampionSkullType.None; } }
+
         public override Type[] UniqueList
         {
             get
@@ -127,56 +106,8 @@ namespace Server.Mobiles
             {
                 return new MonsterStatuetteType[] { };
             }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.SE;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return Core.SE;
-            }
-        }
-        public override bool Uncalmable
-        {
-            get
-            {
-                return Core.SE;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override bool ShowFameTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        }        
+
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 3);
@@ -195,66 +126,339 @@ namespace Server.Mobiles
         {
             this.ForceReacquire();
             this.BeginFlee(TimeSpan.FromSeconds(2.5));
-        }
-
-        public override int GetIdleSound()
-        {
-            return 0x622;
-        }
-
-        public override int GetAngerSound()
-        {
-            return 0x61F;
-        }
-
-        public override int GetDeathSound()
-        {
-            return 0x620;
-        }
-
-        public override int GetHurtSound()
-        {
-            return 0x621;
-        }
+        }       
 
         public override void OnThink()
         {
-            if (this.m_NextDiscordTime <= DateTime.UtcNow)
+            if (m_NextDiscordTime <= DateTime.UtcNow)
             {
-                Mobile target = this.Combatant as Mobile;
+                Mobile target = Combatant as Mobile;
 
-                if (target != null && target.InRange(this, this.PerceptionRange) && this.CanBeHarmful(target))
+                if (target != null && target.InRange(this, 8) && this.CanBeHarmful(target))
                     this.Discord(target);
             }
         }
 
+        public override void OnGotMeleeAttack(Mobile attacker)
+        {
+            base.OnGotMeleeAttack(attacker);
+
+            if (0.05 >= Utility.RandomDouble())
+                this.SpawnShadowDwellers(attacker);
+        }
+
+        public override void AlterDamageScalarFrom(Mobile caster, ref double scalar)
+        {
+            if (0.05 >= Utility.RandomDouble())
+                this.SpawnShadowDwellers(caster);
+        }
+
+        public override void OnGaveMeleeAttack(Mobile defender)
+        {
+            base.OnGaveMeleeAttack(defender);
+
+            if (DateTime.UtcNow > m_NextAbilityTime && 0.2 > Utility.RandomDouble())
+            {
+                switch (Utility.Random(2))
+                {
+                    case 0: BlastRadius(); break;
+                    case 1: Lightning(); break;
+                }
+
+                m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(25, 35));
+            }
+        }
+
+        #region Blast Radius
+        private static readonly int BlastRange = 16;
+
+        private static readonly double[] BlastChance = new double[]
+            {
+                0.0, 0.0, 0.05, 0.95, 0.95, 0.95, 0.05, 0.95, 0.95,
+                0.95, 0.05, 0.95, 0.95, 0.95, 0.05, 0.95, 0.95
+            };
+
+        private void BlastRadius()
+        {
+            // TODO: Based on OSI taken videos, not accurate, but an aproximation
+
+            Point3D loc = this.Location;
+
+            for (int x = -BlastRange; x <= BlastRange; x++)
+            {
+                for (int y = -BlastRange; y <= BlastRange; y++)
+                {
+                    Point3D p = new Point3D(loc.X + x, loc.Y + y, loc.Z);
+                    int dist = (int)Math.Round(Utility.GetDistanceToSqrt(loc, p));
+
+                    if (dist <= BlastRange && BlastChance[dist] > Utility.RandomDouble())
+                    {
+                        Timer.DelayCall(TimeSpan.FromSeconds(0.1 * dist), new TimerCallback(
+                            delegate
+                            {
+                                int hue = Utility.RandomList(90, 95);
+
+                                Effects.SendPacket(loc, this.Map, new HuedEffect(EffectType.FixedXYZ, Serial.Zero, Serial.Zero, 0x3709, p, p, 20, 30, true, false, hue, 4));
+                            }
+                        ));
+                    }
+                }
+            }
+
+            PlaySound(0x64C);
+
+            foreach (Mobile m in this.GetMobilesInRange(BlastRange))
+            {
+                if (this != m && this.GetDistanceToSqrt(m) <= BlastRange && CanBeHarmful(m))
+                {
+                    if (m is ShadowDweller)
+                        continue;
+
+                    DoHarmful(m);
+
+                    double damage = m.Hits * 0.6;
+
+                    if (damage < 100.0)
+                        damage = 100.0;
+                    else if (damage > 200.0)
+                        damage = 200.0;
+
+                    this.DoHarmful(m);
+
+                    AOS.Damage(m, this, (int)damage, 0, 0, 0, 0, 100);
+                }
+            }
+        }
+        #endregion
+
+        #region Lightning
+        private void Lightning()
+        {
+            int count = 0;
+
+            foreach (Mobile m in this.GetMobilesInRange(BlastRange))
+            {
+                if (m is ShadowDweller)
+                    continue;
+
+                if (m.IsPlayer() && this.GetDistanceToSqrt(m) <= BlastRange && CanBeHarmful(m))
+                {
+                    DoHarmful(m);
+
+                    Effects.SendBoltEffect(m, false, 0);
+                    Effects.PlaySound(m, m.Map, 0x51D);
+
+                    double damage = m.Hits * 0.6;
+
+                    if (damage < 100.0)
+                        damage = 100.0;
+                    else if (damage > 200.0)
+                        damage = 200.0;
+
+                    AOS.Damage(m, this, (int)damage, 0, 0, 0, 0, 100);
+
+                    count++;
+
+                    if (count >= 6)
+                        break;
+                }
+            }
+        }
+        #endregion
+
+        #region Teleport
+        private class TeleportTimer : Timer
+        {
+            private Mobile m_Owner;
+
+            private static int[] m_Offsets = new int[]
+            {
+                -1, -1,
+                -1,  0,
+                -1,  1,
+                0, -1,
+                0,  1,
+                1, -1,
+                1,  0,
+                1,  1
+            };
+
+            public TeleportTimer(Mobile owner)
+                : base(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(5.0))
+            {
+                m_Owner = owner;
+            }
+
+            protected override void OnTick()
+            {
+                if (m_Owner.Deleted)
+                {
+                    Stop();
+                    return;
+                }
+
+                Map map = m_Owner.Map;
+
+                if (map == null)
+                    return;
+
+                if (0.25 < Utility.RandomDouble())
+                    return;
+
+                Mobile toTeleport = null;
+
+                foreach (Mobile m in m_Owner.GetMobilesInRange(BlastRange))
+                {
+                    if (m != m_Owner && m.IsPlayer() && m_Owner.CanBeHarmful(m) && m_Owner.CanSee(m))
+                    {
+                        if (m is ShadowDweller)
+                            continue;
+
+                        toTeleport = m;
+                        break;
+                    }
+                }
+
+                if (toTeleport != null)
+                {
+                    int offset = Utility.Random(8) * 2;
+
+                    Point3D to = m_Owner.Location;
+
+                    for (int i = 0; i < m_Offsets.Length; i += 2)
+                    {
+                        int x = m_Owner.X + m_Offsets[(offset + i) % m_Offsets.Length];
+                        int y = m_Owner.Y + m_Offsets[(offset + i + 1) % m_Offsets.Length];
+
+                        if (map.CanSpawnMobile(x, y, m_Owner.Z))
+                        {
+                            to = new Point3D(x, y, m_Owner.Z);
+                            break;
+                        }
+                        else
+                        {
+                            int z = map.GetAverageZ(x, y);
+
+                            if (map.CanSpawnMobile(x, y, z))
+                            {
+                                to = new Point3D(x, y, z);
+                                break;
+                            }
+                        }
+                    }
+
+                    Mobile m = toTeleport;
+
+                    Point3D from = m.Location;
+
+                    m.Location = to;
+
+                    Server.Spells.SpellHelper.Turn(m_Owner, toTeleport);
+                    Server.Spells.SpellHelper.Turn(toTeleport, m_Owner);
+
+                    m.ProcessDelta();
+
+                    Effects.SendLocationParticles(EffectItem.Create(from, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+                    Effects.SendLocationParticles(EffectItem.Create(to, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
+
+                    m.PlaySound(0x1FE);
+
+                    m_Owner.Combatant = toTeleport;
+                }
+            }
+        }
+        #endregion
+
+        #region Unholy Touch
+        private static Dictionary<Mobile, Timer> m_UnholyTouched = new Dictionary<Mobile, Timer>();
+
         public void Discord(Mobile target)
         {
-            if (Utility.RandomDouble() < 0.9)
+            if (Utility.RandomDouble() < 0.9 && !m_UnholyTouched.ContainsKey(target))
             {
-                target.AddSkillMod(new TimedSkillMod(SkillName.Magery, true, target.Skills.Magery.Base * this.DiscordModifier * -1, TimeSpan.FromSeconds(this.DiscordDuration)));
-                target.AddSkillMod(new TimedSkillMod(SkillName.Necromancy, true, target.Skills.Necromancy.Base * this.DiscordModifier * -1, TimeSpan.FromSeconds(this.DiscordDuration)));
-                target.AddSkillMod(new TimedSkillMod(SkillName.Tactics, true, target.Skills.Tactics.Base * this.DiscordModifier * -1, TimeSpan.FromSeconds(this.DiscordDuration)));
-                target.AddSkillMod(new TimedSkillMod(SkillName.Swords, true, target.Skills.Swords.Base * this.DiscordModifier * -1, TimeSpan.FromSeconds(this.DiscordDuration)));
-                target.AddSkillMod(new TimedSkillMod(SkillName.Meditation, true, target.Skills.Meditation.Base * this.DiscordModifier * -1, TimeSpan.FromSeconds(this.DiscordDuration)));
-                target.AddSkillMod(new TimedSkillMod(SkillName.Focus, true, target.Skills.Focus.Base * this.DiscordModifier * -1, TimeSpan.FromSeconds(this.DiscordDuration)));
-                target.AddSkillMod(new TimedSkillMod(SkillName.Chivalry, true, target.Skills.Chivalry.Base * this.DiscordModifier * -1, TimeSpan.FromSeconds(this.DiscordDuration)));
-                target.AddSkillMod(new TimedSkillMod(SkillName.Wrestling, true, target.Skills.Wrestling.Base * this.DiscordModifier * -1, TimeSpan.FromSeconds(this.DiscordDuration)));
-                target.AddSkillMod(new TimedSkillMod(SkillName.Spellweaving, true, target.Skills.Spellweaving.Base * this.DiscordModifier * -1, TimeSpan.FromSeconds(this.DiscordDuration)));
+                int scalar = (int)(20 - (target.Skills[SkillName.MagicResist].Value / 10));
 
-                Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), (int)this.DiscordDuration, new TimerStateCallback(Animate), target);
+                ArrayList mods = new ArrayList();
 
-                target.SendMessage("The Lich's touch weakens all of your fighting skills!");
-                target.PlaySound(0x458);////
+                if (target.PhysicalResistance > 0)
+                {
+                    mods.Add(new ResistanceMod(ResistanceType.Physical, target.PhysicalResistance - scalar));
+                }
+
+                if (target.FireResistance > 0)
+                {
+                    mods.Add(new ResistanceMod(ResistanceType.Fire, target.FireResistance - scalar));
+                }
+
+                if (target.ColdResistance > 0)
+                {
+                    mods.Add(new ResistanceMod(ResistanceType.Cold, target.ColdResistance - scalar));
+                }
+
+                if (target.PoisonResistance > 0)
+                {
+                    mods.Add(new ResistanceMod(ResistanceType.Poison, target.PoisonResistance - scalar));
+                }
+
+                if (target.EnergyResistance > 0)
+                {
+                    mods.Add(new ResistanceMod(ResistanceType.Energy, target.EnergyResistance - scalar));
+                }
+
+                for (int i = 0; i < target.Skills.Length; ++i)
+                {
+                    if (target.Skills[i].Value > 0)
+                    {
+                        mods.Add(new DefaultSkillMod((SkillName)i, true, target.Skills[i].Value - scalar));                        
+                    }
+                }
+                
+                target.PlaySound(0x458);
+
+                ApplyMods(target, mods);
+
+                m_UnholyTouched[target] = Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerCallback(
+                    delegate
+                    {
+                        ClearMods(target, mods);
+
+                        m_UnholyTouched.Remove(target);
+                    }));
             }
-            else
-            {
-                target.SendMessage("The Lich barely misses touching you, saving you from harm!"); 
-                target.PlaySound(0x458);/////
-            }
 
-            this.m_NextDiscordTime = DateTime.UtcNow + TimeSpan.FromSeconds(this.DiscordMinDelay + Utility.RandomDouble() * this.DiscordMaxDelay);
+            m_NextDiscordTime = DateTime.UtcNow + TimeSpan.FromSeconds(5 + Utility.RandomDouble() * 22);
         }
+
+        private static void ApplyMods(Mobile from, ArrayList mods)
+        {
+            for (int i = 0; i < mods.Count; ++i)
+            {
+                object mod = mods[i];
+
+                if (mod is ResistanceMod)
+                    from.AddResistanceMod((ResistanceMod)mod);
+                else if (mod is StatMod)
+                    from.AddStatMod((StatMod)mod);
+                else if (mod is SkillMod)
+                    from.AddSkillMod((SkillMod)mod);
+            }
+        }
+
+        private static void ClearMods(Mobile from, ArrayList mods)
+        {
+            for (int i = 0; i < mods.Count; ++i)
+            {
+                object mod = mods[i];
+
+                if (mod is ResistanceMod)
+                    from.RemoveResistanceMod((ResistanceMod)mod);
+                else if (mod is StatMod)
+                    from.RemoveStatMod(((StatMod)mod).Name);
+                else if (mod is SkillMod)
+                    from.RemoveSkillMod((SkillMod)mod);
+            }
+        }
+        #endregion
 
         public void SpawnShadowDwellers(Mobile target)
         {
@@ -292,179 +496,19 @@ namespace Server.Mobiles
             }
         }
 
-        public override void AlterDamageScalarFrom(Mobile caster, ref double scalar)
-        {
-            if (0.05 >= Utility.RandomDouble())
-                this.SpawnShadowDwellers(caster);
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (0.8 >= Utility.RandomDouble())
-                this.Lightning();
-        }
-
-        public void Lightning()
-        {
-            Map map = this.Map;
-
-            if (map == null)
-                return;
-
-            ArrayList targets = new ArrayList();
-
-            foreach (Mobile m in this.GetMobilesInRange(15))
-            {
-                if (m == this || !this.CanBeHarmful(m))
-                    continue;
-
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
-                    targets.Add(m);
-                else if (m.Player)
-                    targets.Add(m);
-            }
-
-            this.PlaySound(0x2A);
-
-            for (int i = 0; i < targets.Count; ++i)
-            {
-                Mobile m = (Mobile)targets[i];
-
-                double damage = m.Hits * 0.6;
-
-                if (damage < 100.0)
-                    damage = 100.0;
-                else if (damage > 200.0)
-                    damage = 200.0;
-
-                this.DoHarmful(m);
-
-                AOS.Damage(m, this, (int)damage, 0, 0, 100, 0, 0);
-
-                if (m.Alive && m.Body.IsHuman && !m.Mounted)
-                    m.Animate(20, 7, 1, true, false, 0); // take hit
-            }
-        }
-
-        public override void OnGotMeleeAttack(Mobile attacker)
-        {
-            base.OnGotMeleeAttack(attacker);
-
-            if (0.05 >= Utility.RandomDouble())
-                this.SpawnShadowDwellers(attacker);
-        }
-
-        public override void OnDamagedBySpell(Mobile attacker)
-        {
-            if (this.Map != null && attacker != this && 0.05 > Utility.RandomDouble())
-            {
-                this.Combatant = attacker;
-                this.Map = attacker.Map;
-                this.Location = attacker.Location;
-
-                switch (Utility.Random(4))
-                {
-                    case 0:
-                        attacker.Location = new Point3D(6974, 994,-15);
-                        break;
-                    case 1:
-                        attacker.Location = new Point3D(6977, 1025, -15);
-                        break;
-                    case 2:
-                        attacker.Location = new Point3D(7020, 1027, -15);
-                        break;
-                    case 3:
-                        attacker.Location = new Point3D(6999, 978, -15);
-                        break;
-                }
-                attacker.SendMessage("You are teleported away, the Lich is Taunting you!");
-                AOS.Damage(attacker, Utility.RandomMinMax(50, 65), 0, 100, 0, 0, 0);
-                attacker.MoveToWorld(attacker.Location, attacker.Map);
-                attacker.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
-                attacker.PlaySound(0x1FE);
-            }
-
-            base.OnDamagedBySpell(attacker);
-
-            this.DoCounter(attacker);
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-        }
 
-        private void Animate(object state)
-        {
-            if (state is Mobile)
-            {
-                Mobile mob = (Mobile)state;
-
-                mob.FixedEffect(0x376A, 1, 32);
-            }
-        }
-
-        private void DoCounter(Mobile attacker)
-        {
-            if (this.Map == null)
-                return;
-
-            if (attacker is BaseCreature && ((BaseCreature)attacker).BardProvoked)
-                return;
-
-            if (0.20 > Utility.RandomDouble())
-            {
-                Mobile target = null;
-
-                if (attacker is BaseCreature)
-                {
-                    Mobile m = ((BaseCreature)attacker).GetMaster();
-
-                    if (m != null)
-                        target = m;
-                }
-
-                if (target == null || !target.InRange(this, 15))
-                    target = attacker;
-
-                this.Animate(10, 4, 1, true, false, 0);
-
-                ArrayList targets = new ArrayList();
-
-                foreach (Mobile m in target.GetMobilesInRange(8))
-                {
-                    if (m == this || !this.CanBeHarmful(m))
-                        continue;
-
-                    if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
-                        targets.Add(m);
-                    else if (m.Player && m.Alive)
-                        targets.Add(m);
-                }
-
-                for (int i = 0; i < targets.Count; ++i)
-                {
-                    Mobile m = (Mobile)targets[i];
-
-                    this.DoHarmful(m);
-
-                    AOS.Damage(m, this, Utility.RandomMinMax(35, 45), true, 0, 0, 100, 0, 0);
-
-                    m.FixedParticles(0x36E4, 1, 10, 0x1F78, 0x47F, 0, (EffectLayer)255);
-                    m.ApplyPoison(this, Poison.Lethal);
-                }
-            }
+            m_Timer = new TeleportTimer(this);
+            m_Timer.Start();
         }
     }
 }

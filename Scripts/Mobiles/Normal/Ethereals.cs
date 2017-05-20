@@ -989,6 +989,44 @@ namespace Server.Mobiles
         }
     }
 
+    public class EtherealAncientHellHound : EtherealMount
+    {
+        public override int LabelNumber { get { return 1155723; } } // Ancient Hell Hound Statuette
+
+        [Constructable]
+        public EtherealAncientHellHound()
+            : base(0x3FFD, 0x3EC9)
+        {
+            EtherealHue = 0;
+            OriginalHue = 0;
+        }
+
+        public EtherealAncientHellHound(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)1); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                EtherealHue = 0;
+                OriginalHue = 0;
+            }
+        }
+    }
+
     public class EtherealTiger : EtherealMount
     {
         [Constructable]
