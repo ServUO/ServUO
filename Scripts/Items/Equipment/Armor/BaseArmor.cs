@@ -3407,7 +3407,7 @@ namespace Server.Items
                 if (m_SetEnergyBonus != 0)
                     list.Add(1072386, m_SetEnergyBonus.ToString()); // energy resist +~1_val~%		
             }
-            else if (m_SetEquipped && SetID == SetItem.Virtue && RootParentEntity is Mobile)
+            else if (m_SetEquipped && SetHelper.ResistsBonusPerPiece(this) && RootParentEntity is Mobile)
             {
                 Mobile m = (Mobile)RootParentEntity;
 
@@ -3452,7 +3452,7 @@ namespace Server.Items
 
         public int SetResistBonus(ResistanceType resist)
         {
-            if(SetID == SetItem.Virtue)
+            if (SetHelper.ResistsBonusPerPiece(this))
             {
                 switch (resist)
                 {
