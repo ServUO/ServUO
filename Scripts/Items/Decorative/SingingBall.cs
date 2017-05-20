@@ -26,6 +26,8 @@ namespace Server.Items
         {
             Weight = 10.0;
             LootType = LootType.Blessed;
+
+            Light = LightType.Circle300;
         }
 
         public SingingBall(Serial serial) : base(serial)

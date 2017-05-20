@@ -63,11 +63,11 @@ namespace Server.Mobiles
 
         [Constructable]
         public GMEthereal(EtherealTypes type)
-            : base(0,0)
+            : base(0,0,0)
         {
-            this.EthyType = type;
-            this.LootType = LootType.Blessed;
-            this.Hue = 2406;
+            EthyType = type;
+            LootType = LootType.Blessed;
+            Hue = 2406;
         }
 
         public GMEthereal(Serial serial)
@@ -102,15 +102,17 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_EthyType;
+                return m_EthyType;
             }
             set
             {
                 if ((int)value > EthyItemTypes.Length)
                     return;
-                this.m_EthyType = value;
-                this.MountedID = EthyItemTypes[(int)value].MountedID;
-                this.RegularID = EthyItemTypes[(int)value].RegularID;
+                m_EthyType = value;
+
+                TransparentMountedID = EthyItemTypes[(int)value].MountedID;
+                NonTransparentMountedID = TransparentMountedID;
+                StatueID = EthyItemTypes[(int)value].RegularID;
             }
         }
         public override string DefaultName
@@ -137,33 +139,40 @@ namespace Server.Mobiles
                     from.SendLocalizedMessage(1042317, "", 0x41); // You may not ride at this time
                 else if (Multis.DesignContext.Check(from))
                 {
-                    if (!this.Deleted && this.Rider == null && this.IsChildOf(from.Backpack))
+                    if (!Deleted && Rider == null && IsChildOf(from.Backpack))
                     {
-                        this.Rider = from;
-                        if (this.MountedID == 16051)
-                            this.Rider.CanSwim = true;
+                        Rider = from;
+                        if (MountedID == 16051)
+                            Rider.CanSwim = true;
                     }
                 }
             }
             else
             {
-                from.SendMessage("Players cannot ride this. Sorry, BALEETED!");
-                this.Delete();
+                from.SendMessage("Players cannot ride  Sorry, BALEETED!");
+                Delete();
             }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
-            writer.Write((int)this.m_EthyType);
+            writer.Write((int)1); // version
+            writer.Write((int)m_EthyType);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            this.m_EthyType = (EtherealTypes)reader.ReadInt();
+            EthyType = (EtherealTypes)reader.ReadInt();
+
+            if (version == 0)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(1), () => Transparent = false);
+
+                StatueHue = 2406;
+            }
         }
 
         public struct EtherealInfo
@@ -172,8 +181,8 @@ namespace Server.Mobiles
             public int MountedID;
             public EtherealInfo(int id, int mid)
             {
-                this.RegularID = id;
-                this.MountedID = mid;
+                RegularID = id;
+                MountedID = mid;
             }
         }
     }
@@ -181,7 +190,7 @@ namespace Server.Mobiles
     public class GMEthVirtual : EtherealMount
     {
         public GMEthVirtual(int id, int mid)
-            : base(id, mid)
+            : base(id, mid, 0)
         {
         }
 
@@ -198,7 +207,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            this.Delete();
+            Delete();
         }
     }
 }
