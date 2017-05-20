@@ -12495,7 +12495,7 @@ namespace Server
 		public int IntMaxCap
 		{
 			get { return m_IntMaxCap; }
-			set { IntMaxCap = value; }
+			set { m_IntMaxCap = value; }
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
