@@ -5250,7 +5250,10 @@ namespace Server.Mobiles
         private bool m_NoKillAwards;
         private bool m_NoLootOnDeath;
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool NoKillAwards { get { return m_NoKillAwards; } set { m_NoKillAwards = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool NoLootOnDeath { get { return m_NoLootOnDeath; } set { m_NoLootOnDeath = value; } }
 
         public int ComputeBonusDamage(List<DamageEntry> list, Mobile m)
