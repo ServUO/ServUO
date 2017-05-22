@@ -129,6 +129,8 @@ namespace Server.Services.Virtues
 
 		private static void GenerateHonestyItems()
 		{
+            CheckChests();
+
             bool initial = _Items.Count == 0;
             long ticks = Core.TickCount;
 
@@ -309,6 +311,44 @@ namespace Server.Services.Virtues
                 item.HonestyOwner = m;
             }
         }
+
+        private static void CheckChests()
+        {
+            foreach (var loc in _ChestLocations)
+            {
+                CheckLocation(loc, Map.Trammel);
+                CheckLocation(loc, Map.Felucca);
+            }
+        }
+
+        private static void CheckLocation(Point3D pnt, Map map)
+        {
+            IPooledEnumerable eable = map.GetItemsInRange(pnt, 0);
+
+            foreach (Item item in eable)
+            {
+                if (item is HonestyChest)
+                {
+                    eable.Free();
+                    return;
+                }
+            }
+
+            var chest = new HonestyChest();
+            chest.MoveToWorld(pnt, map);
+        }
+
+        private static Point3D[] _ChestLocations =
+        {
+            new Point3D(1809, 2825, 0),
+            new Point3D(1323, 3768, 0),
+            new Point3D(3784, 2247, 20),
+            new Point3D(591, 2144, 0),
+            new Point3D(1648, 1603, 20),
+            new Point3D(2509, 544, 0),
+            new Point3D(4463, 1156, 0),
+            new Point3D(650, 824, 0),
+        };
 	}
 
 	public class HonestyChest : Container
@@ -319,6 +359,7 @@ namespace Server.Services.Virtues
 		public HonestyChest()
 			: base(0x9A9)
 		{
+            Movable = false;
 		}
 
 		public HonestyChest(Serial serial)

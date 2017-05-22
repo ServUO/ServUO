@@ -350,6 +350,17 @@ namespace Server
             return SlayerName.None;
         }
 
+        public static bool ResistsBonusPerPiece(ISetItem item)
+        {
+            switch (item.SetID)
+            {
+                default: return false;
+                case SetItem.Virtue:
+                case SetItem.Aloron:
+                case SetItem.Darden: return true;
+            }
+        }
+
         public static int GetSetTotalResist(Mobile m, ResistanceType resist)
         {
             int total = 0;
