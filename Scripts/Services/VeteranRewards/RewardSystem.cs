@@ -600,6 +600,8 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(etherealSteeds, 1154589, typeof(EtherealTiger), Expansion.TOL),
                     new RewardEntry(etherealSteeds, 1155723, typeof(EtherealAncientHellHound), Expansion.TOL),
                     new RewardEntry(etherealSteeds, 1157081, typeof(EtherealTarantula), Expansion.TOL),
+
+                    new RewardEntry(houseAddOns,    1153491, typeof(GardenShedDeed), Expansion.TOL),
                 }),
             };
         }

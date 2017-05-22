@@ -2152,6 +2152,23 @@ namespace Server.Multis
 
                     item.Movable = false;
 
+                    if (item is GardenShedAddon)
+                    {
+                        GardenShedAddonSecond ad = ((GardenShedAddon)item).SecondContainer as GardenShedAddonSecond;
+
+                        SecureInfo info2 = new SecureInfo((Container)ad, SecureLevel.Owner);
+
+                        ad.IsLockedDown = false;
+                        ad.IsSecure = true;
+
+                        m_Secures.Add(info2);
+
+                        if (m_LockDowns.ContainsKey(ad))
+                            m_LockDowns.Remove(ad);
+
+                        ad.Movable = false;
+                    }
+
                     m.CloseGump(typeof (SetSecureLevelGump));
                     m.SendGump(new Gumps.SetSecureLevelGump(m_Owner, info, this));
                 }
