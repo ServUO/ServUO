@@ -56,15 +56,15 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseAddonContainer SecondContainer
         {
-            get { return this.m_SecondContainer; }
-            set { this.m_SecondContainer = value; }
+            get { return m_SecondContainer; }
+            set { m_SecondContainer = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D Offset
         {
-            get { return this.m_Offset; }
-            set { this.m_Offset = value; }
+            get { return m_Offset; }
+            set { m_Offset = value; }
         }
 
         [Constructable]
@@ -108,9 +108,9 @@ namespace Server.Items
         {
             base.OnLocationChange(old);
 
-            if (this.SecondContainer != null)
+            if (SecondContainer != null)
             {
-                SecondContainer.MoveToWorld(new Point3D(this.X + m_Offset.X, this.Y + m_Offset.Y, this.Z + m_Offset.Z), this.Map);
+                SecondContainer.MoveToWorld(new Point3D(X + m_Offset.X, Y + m_Offset.Y, Z + m_Offset.Z), Map);
             }
         }
 
@@ -118,12 +118,12 @@ namespace Server.Items
         {
             base.OnMapChange();
 
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            if (this.SecondContainer != null)
+            if (SecondContainer != null)
             {
-                SecondContainer.Map = this.Map;
+                SecondContainer.Map = Map;
             }
         }
 
@@ -202,8 +202,8 @@ namespace Server.Items
         {
             base.OnAfterDelete();
 
-            if (this.m_MainContainer != null)
-                this.m_MainContainer.Delete();
+            if (m_MainContainer != null)
+                m_MainContainer.Delete();
         }
 
         public override void OnChop(Mobile from)
