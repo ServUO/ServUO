@@ -45,7 +45,7 @@ namespace Server.Mobiles
             this.Karma = -2500;
 
             this.Tamable = true;
-            this.ControlSlots = 2;
+            this.ControlSlots = 4;
             this.MinTameSkill = 47.1;            
 
             if (!this.Controlled)
