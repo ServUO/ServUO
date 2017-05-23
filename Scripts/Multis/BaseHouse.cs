@@ -422,6 +422,27 @@ namespace Server.Multis
             return (int)(hpe.Lockdowns * BonusStorageScalar);
         }
 
+        private Type[] _NoItemCountTable = new Type[]
+        {
+            typeof(Engines.Plants.SeedBox),       typeof(GardenShedAddon),
+            typeof(GardenShedAddonSecond)
+        };
+
+        // Not Included Storage
+        public virtual bool CheckStorage(Item item)
+        {
+            Type type = item.GetType();
+
+            bool contains = false;
+
+            for (int i = 0; !contains && i < _NoItemCountTable.Length; ++i)
+            {
+                contains = (type == _NoItemCountTable[i]);
+            }
+
+            return contains;
+        }
+
         public virtual int GetAosCurSecures(out int fromSecures, out int fromVendors, out int fromLockdowns, out int fromMovingCrate)
         {
             fromSecures = 0;
@@ -437,8 +458,10 @@ namespace Server.Multis
                 {
                     SecureInfo si = (SecureInfo)list[i];
 
-                    if(!(si.Item is Server.Engines.Plants.SeedBox))
+                    if (!CheckStorage(si.Item))
+                    {
                         fromSecures += si.Item.TotalItems;
+                    }
                 }
 
                 fromLockdowns += list.Count;
@@ -2151,6 +2174,23 @@ namespace Server.Multis
                         m_LockDowns.Remove(item);
 
                     item.Movable = false;
+
+                    if (item is GardenShedAddon)
+                    {
+                        GardenShedAddonSecond ad = ((GardenShedAddon)item).SecondContainer as GardenShedAddonSecond;
+
+                        SecureInfo info2 = new SecureInfo((Container)ad, SecureLevel.Owner);
+
+                        ad.IsLockedDown = false;
+                        ad.IsSecure = true;
+
+                        m_Secures.Add(info2);
+
+                        if (m_LockDowns.ContainsKey(ad))
+                            m_LockDowns.Remove(ad);
+
+                        ad.Movable = false;
+                    }
 
                     m.CloseGump(typeof (SetSecureLevelGump));
                     m.SendGump(new Gumps.SetSecureLevelGump(m_Owner, info, this));
