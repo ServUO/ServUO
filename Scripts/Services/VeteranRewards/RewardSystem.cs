@@ -362,7 +362,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(cloaksAndRobes, 1006009, typeof(RewardCloak), Bronze, 1041286),
                     new RewardEntry(cloaksAndRobes, 1006010, typeof(RewardRobe), Bronze, 1041287),
                     new RewardEntry(cloaksAndRobes, 1113874, typeof(RewardGargishFancyRobe), Expansion.SA, Bronze, 1113874),
-                    new RewardEntry(cloaksAndRobes, 1113875, typeof(RewardGargishRobe), Bronze, 1113875, Expansion.SA),
+                    new RewardEntry(cloaksAndRobes, 1113875, typeof(RewardGargishRobe), Expansion.SA, Bronze, 1113875),
                     new RewardEntry(cloaksAndRobes, 1080366, typeof(RewardDress), Expansion.ML, Bronze, 1080366),
                     new RewardEntry(cloaksAndRobes, 1006011, typeof(RewardCloak), Copper, 1041288),
                     new RewardEntry(cloaksAndRobes, 1006012, typeof(RewardRobe), Copper, 1041289),
