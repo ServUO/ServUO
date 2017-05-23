@@ -422,6 +422,27 @@ namespace Server.Multis
             return (int)(hpe.Lockdowns * BonusStorageScalar);
         }
 
+        private Type[] _Table = new Type[]
+        {
+            typeof(Engines.Plants.SeedBox),       typeof(GardenShedAddon),
+            typeof(GardenShedAddonSecond)
+        };
+
+        // Not Included Storage
+        public virtual bool CheckStorage(Item item)
+        {
+            Type type = item.GetType();
+
+            bool contains = false;
+
+            for (int i = 0; !contains && i < _Table.Length; ++i)
+            {
+                contains = (type == _Table[i]);
+            }
+
+            return contains;
+        }
+
         public virtual int GetAosCurSecures(out int fromSecures, out int fromVendors, out int fromLockdowns, out int fromMovingCrate)
         {
             fromSecures = 0;
@@ -437,8 +458,10 @@ namespace Server.Multis
                 {
                     SecureInfo si = (SecureInfo)list[i];
 
-                    if(!(si.Item is Server.Engines.Plants.SeedBox))
+                    if (!CheckStorage(si.Item))
+                    {
                         fromSecures += si.Item.TotalItems;
+                    }
                 }
 
                 fromLockdowns += list.Count;

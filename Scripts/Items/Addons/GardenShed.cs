@@ -208,6 +208,9 @@ namespace Server.Items
 
         public override void OnChop(Mobile from)
         {
+            if (m_MainContainer == null)
+                return;
+
             if (!m_MainContainer.IsSecure)
             {
                 base.OnChop(from);
