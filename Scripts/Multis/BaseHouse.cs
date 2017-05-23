@@ -422,7 +422,7 @@ namespace Server.Multis
             return (int)(hpe.Lockdowns * BonusStorageScalar);
         }
 
-        private Type[] _Table = new Type[]
+        private Type[] _NoItemCountTable = new Type[]
         {
             typeof(Engines.Plants.SeedBox),       typeof(GardenShedAddon),
             typeof(GardenShedAddonSecond)
@@ -435,9 +435,9 @@ namespace Server.Multis
 
             bool contains = false;
 
-            for (int i = 0; !contains && i < _Table.Length; ++i)
+            for (int i = 0; !contains && i < _NoItemCountTable.Length; ++i)
             {
-                contains = (type == _Table[i]);
+                contains = (type == _NoItemCountTable[i]);
             }
 
             return contains;
