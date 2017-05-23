@@ -25,33 +25,33 @@ namespace Server.Mobiles
         {
             int random = Utility.Random(4);
 
-            this.Body = m_IDs[random * 2];
-            this.ItemID = m_IDs[random * 2 + 1];
-            this.BaseSoundID = 0xA8;
+            Body = m_IDs[random * 2];
+            ItemID = m_IDs[random * 2 + 1];
+            BaseSoundID = 0xA8;
 
-            this.SetStr(22, 98);
-            this.SetDex(56, 75);
-            this.SetInt(6, 10);
+            SetStr(22, 98);
+            SetDex(56, 75);
+            SetInt(6, 10);
 
-            this.SetHits(28, 45);
-            this.SetMana(0);
+            SetHits(28, 45);
+            SetMana(0);
 
-            this.SetDamage(3, 4);
+            SetDamage(3, 4);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 15, 20);
+            SetResistance(ResistanceType.Physical, 15, 20);
 
-            this.SetSkill(SkillName.MagicResist, 25.1, 30.0);
-            this.SetSkill(SkillName.Tactics, 29.3, 44.0);
-            this.SetSkill(SkillName.Wrestling, 29.3, 44.0);
+            SetSkill(SkillName.MagicResist, 25.1, 30.0);
+            SetSkill(SkillName.Tactics, 29.3, 44.0);
+            SetSkill(SkillName.Wrestling, 29.3, 44.0);
 
-            this.Fame = 300;
-            this.Karma = 300;
+            Fame = 300;
+            Karma = 300;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 29.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 29.1;
         }
 
         public Horse(Serial serial)

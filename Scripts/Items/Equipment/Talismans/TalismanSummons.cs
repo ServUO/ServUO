@@ -19,7 +19,11 @@ namespace Server.Mobiles
 	{
 		public BaseTalismanSummon()
 			: base(AIType.AI_Melee, FightMode.None, 10, 1, 0.2, 0.4)
-		{ }
+		{
+            SetHits(100);
+            SetInt(100);
+            SetDex(100);
+        }
 
 		public BaseTalismanSummon(Serial serial)
 			: base(serial)
@@ -27,7 +31,6 @@ namespace Server.Mobiles
 
 		public override bool Commandable { get { return false; } }
 		public override bool InitialInnocent { get { return true; } }
-		public override bool IsInvulnerable { get { return true; } }
 
 		public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
 		{

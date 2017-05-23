@@ -1182,6 +1182,7 @@ namespace Server.Mobiles
 			if (from is PlayerMobile)
 			{
 				((PlayerMobile)from).ClaimAutoStabledPets();
+                ((PlayerMobile)from).ValidateEquipment();
 			}
 
             if (((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle")) || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
@@ -3270,7 +3271,7 @@ namespace Server.Mobiles
                             listHealers.Add((BaseHealer)vendor);
                     }
 
-                    if (Corpse != null)
+                    if (Corpse != null && Corpse.Map != null)
                     {
                         NetState.Send(new DisplayWaypoint(Corpse.Serial, Corpse.X, Corpse.Y, Corpse.Z, Corpse.Map.MapID, WaypointType.Corpse, Name));
                     }
