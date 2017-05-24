@@ -13,35 +13,35 @@ namespace Server.Mobiles
         public Sheep()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a sheep";
-            this.Body = 0xCF;
-            this.BaseSoundID = 0xD6;
+            Name = "a sheep";
+            Body = 0xCF;
+            BaseSoundID = 0xD6;
 
-            this.SetStr(19);
-            this.SetDex(25);
-            this.SetInt(5);
+            SetStr(19);
+            SetDex(25);
+            SetInt(5);
 
-            this.SetHits(12);
-            this.SetMana(0);
+            SetHits(12);
+            SetMana(0);
 
-            this.SetDamage(1, 2);
+            SetDamage(1, 2);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 5, 10);
+            SetResistance(ResistanceType.Physical, 5, 10);
 
-            this.SetSkill(SkillName.MagicResist, 5.0);
-            this.SetSkill(SkillName.Tactics, 6.0);
-            this.SetSkill(SkillName.Wrestling, 5.0);
+            SetSkill(SkillName.MagicResist, 5.0);
+            SetSkill(SkillName.Tactics, 6.0);
+            SetSkill(SkillName.Wrestling, 5.0);
 
-            this.Fame = 300;
-            this.Karma = 0;
+            Fame = 300;
+            Karma = 0;
 
-            this.VirtualArmor = 6;
+            VirtualArmor = 6;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 11.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 11.1;
         }
 
         public Sheep(Serial serial)
@@ -54,12 +54,12 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_NextWoolTime;
+                return m_NextWoolTime;
             }
             set
             {
-                this.m_NextWoolTime = value;
-                this.Body = (DateTime.UtcNow >= this.m_NextWoolTime) ? 0xCF : 0xDF;
+                m_NextWoolTime = value;
+                Body = (DateTime.UtcNow >= m_NextWoolTime) ? 0xCF : 0xDF;
             }
         }
         public override int Meat
@@ -87,20 +87,20 @@ namespace Server.Mobiles
         {
             get
             {
-                return (this.Body == 0xCF ? 3 : 0);
+                return (Body == 0xCF ? 3 : 0);
             }
         }
         public void Carve(Mobile from, Item item)
         {
-            if (DateTime.UtcNow < this.m_NextWoolTime)
+            if (DateTime.UtcNow < m_NextWoolTime)
             {
                 // This sheep is not yet ready to be shorn.
-                this.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500449, from.NetState);
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500449, from.NetState);
                 return;
             }
 
             from.SendLocalizedMessage(500452); // You place the gathered wool into your backpack.
-            from.AddToBackpack(new Wool(this.Map == Map.Felucca ? 2 : 1));
+            from.AddToBackpack(new Wool(Map == Map.Felucca ? 2 : 1));
 
             if (from is PlayerMobile)
             {
@@ -119,13 +119,13 @@ namespace Server.Mobiles
                 }
             }
 
-            this.NextWoolTime = DateTime.UtcNow + TimeSpan.FromHours(3.0); // TODO: Proper time delay
+            NextWoolTime = DateTime.UtcNow + TimeSpan.FromHours(3.0); // TODO: Proper time delay
         }
 
         public override void OnThink()
         {
             base.OnThink();
-            this.Body = (DateTime.UtcNow >= this.m_NextWoolTime) ? 0xCF : 0xDF;
+            Body = (DateTime.UtcNow >= m_NextWoolTime) ? 0xCF : 0xDF;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -134,7 +134,7 @@ namespace Server.Mobiles
 
             writer.Write((int)1);
 
-            writer.WriteDeltaTime(this.m_NextWoolTime);
+            writer.WriteDeltaTime(m_NextWoolTime);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -147,7 +147,7 @@ namespace Server.Mobiles
             {
                 case 1:
                     {
-                        this.NextWoolTime = reader.ReadDeltaTime();
+                        NextWoolTime = reader.ReadDeltaTime();
                         break;
                     }
             }

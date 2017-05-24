@@ -100,7 +100,9 @@ namespace Server.Engines.Shadowguard
 
                 foreach (DamageStore ds in rights.Where(s => s.m_HasRight))
                 {
-                    int chance = 1000 + (ds.m_Mobile.Luck / 15);
+                    int luck = ds.m_Mobile is PlayerMobile ? ((PlayerMobile)ds.m_Mobile).RealLuck : ds.m_Mobile.Luck;
+
+                    int chance = 1000 + (luck / 15);
 
                     if (chance > Utility.Random(5000))
                     {
