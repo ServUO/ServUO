@@ -42,7 +42,7 @@ namespace Server.Engines.Despise
 		{
 			if(mob is PlayerMobile)
 			{
-                int chance = ArtifactChance + (int)Math.Min(10, mob.Luck / 180);
+                int chance = ArtifactChance + (int)Math.Min(10, ((PlayerMobile)mob).Luck / 180);
 
                 if (chance >= Utility.Random(100))
                 {
