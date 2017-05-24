@@ -472,7 +472,7 @@ namespace Server.Engines.Harvest
                         if (sos.IsAncient)
                             chest.Hue = 0x481;
 
-                        TreasureMapChest.Fill(chest, from.Luck, Math.Max(1, Math.Min(4, sos.Level)), true, from.Map);
+                        TreasureMapChest.Fill(chest, from is PlayerMobile ? ((PlayerMobile)from).RealLuck : from.Luck, Math.Max(1, Math.Min(4, sos.Level)), true, from.Map);
                         sos.OnSOSComplete(chest);
 
                         if (sos.IsAncient)
