@@ -11,48 +11,48 @@ namespace Server.Mobiles
         public BakeKitsune()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a bake kitsune";
-            this.Body = 246;
+            Name = "a bake kitsune";
+            Body = 246;
 
-            this.SetStr(171, 220);
-            this.SetDex(126, 145);
-            this.SetInt(376, 425);
+            SetStr(171, 220);
+            SetDex(126, 145);
+            SetInt(376, 425);
 
-            this.SetHits(301, 350);
+            SetHits(301, 350);
 
-            this.SetDamage(15, 22);
+            SetDamage(15, 22);
 
-            this.SetDamageType(ResistanceType.Physical, 70);
-            this.SetDamageType(ResistanceType.Energy, 30);
+            SetDamageType(ResistanceType.Physical, 70);
+            SetDamageType(ResistanceType.Energy, 30);
 
-            this.SetResistance(ResistanceType.Physical, 40, 60);
-            this.SetResistance(ResistanceType.Fire, 70, 90);
-            this.SetResistance(ResistanceType.Cold, 40, 60);
-            this.SetResistance(ResistanceType.Poison, 40, 60);
-            this.SetResistance(ResistanceType.Energy, 40, 60);
+            SetResistance(ResistanceType.Physical, 40, 60);
+            SetResistance(ResistanceType.Fire, 70, 90);
+            SetResistance(ResistanceType.Cold, 40, 60);
+            SetResistance(ResistanceType.Poison, 40, 60);
+            SetResistance(ResistanceType.Energy, 40, 60);
 
-            this.SetSkill(SkillName.EvalInt, 80.1, 90.0);
-            this.SetSkill(SkillName.Magery, 80.1, 90.0);
-            this.SetSkill(SkillName.MagicResist, 80.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 70.1, 90.0);
-            this.SetSkill(SkillName.Wrestling, 50.1, 55.0);
+            SetSkill(SkillName.EvalInt, 80.1, 90.0);
+            SetSkill(SkillName.Magery, 80.1, 90.0);
+            SetSkill(SkillName.MagicResist, 80.1, 100.0);
+            SetSkill(SkillName.Tactics, 70.1, 90.0);
+            SetSkill(SkillName.Wrestling, 50.1, 55.0);
 
-            this.Fame = 8000;
-            this.Karma = -8000;
+            Fame = 8000;
+            Karma = -8000;
 
-            this.Tamable = true;
-            this.ControlSlots = 2;
-            this.MinTameSkill = 80.7;
+            Tamable = true;
+            ControlSlots = 2;
+            MinTameSkill = 80.7;
 
             if (Utility.RandomDouble() < .25)
-                this.PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
+                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override int Meat
@@ -107,13 +107,13 @@ namespace Server.Mobiles
 
         public override void OnCombatantChange()
         {
-            if (this.Combatant == null && !this.IsBodyMod && !this.Controlled && this.m_DisguiseTimer == null && Utility.RandomBool())
-                this.m_DisguiseTimer = Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(15, 30)), new TimerCallback(Disguise));
+            if (Combatant == null && !IsBodyMod && !Controlled && m_DisguiseTimer == null && Utility.RandomBool())
+                m_DisguiseTimer = Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(15, 30)), new TimerCallback(Disguise));
         }
 
         public override bool OnBeforeDeath()
         {
-            this.RemoveDisguise();
+            RemoveDisguise();
 
             return base.OnBeforeDeath();
         }
@@ -123,77 +123,77 @@ namespace Server.Mobiles
 
         public void Disguise()
         {
-            if (this.Combatant != null || this.IsBodyMod || this.Controlled)
+            if (Combatant != null || IsBodyMod || Controlled)
                 return;
 
-            this.FixedEffect(0x376A, 8, 32);
-            this.PlaySound(0x1FE);
+            FixedEffect(0x376A, 8, 32);
+            PlaySound(0x1FE);
 
-            this.Female = Utility.RandomBool();
+            Female = Utility.RandomBool();
 
-            if (this.Female)
+            if (Female)
             {
-                this.BodyMod = 0x191;
-                this.Name = NameList.RandomName("female");
+                BodyMod = 0x191;
+                Name = NameList.RandomName("female");
             }
             else
             {
-                this.BodyMod = 0x190;
-                this.Name = NameList.RandomName("male");
+                BodyMod = 0x190;
+                Name = NameList.RandomName("male");
             }
 
-            this.Title = "the mystic llama herder";
-            this.Hue = Race.Human.RandomSkinHue();
-            this.HairItemID = Race.Human.RandomHair(this);
-            this.HairHue = Race.Human.RandomHairHue();
-            this.FacialHairItemID = Race.Human.RandomFacialHair(this);
-            this.FacialHairHue = this.HairHue;
+            Title = "the mystic llama herder";
+            Hue = Race.Human.RandomSkinHue();
+            HairItemID = Race.Human.RandomHair(this);
+            HairHue = Race.Human.RandomHairHue();
+            FacialHairItemID = Race.Human.RandomFacialHair(this);
+            FacialHairHue = HairHue;
 
             switch ( Utility.Random(4) )
             {
                 case 0:
-                    this.AddItem(new Shoes(Utility.RandomNeutralHue()));
+                    AddItem(new Shoes(Utility.RandomNeutralHue()));
                     break;
                 case 1:
-                    this.AddItem(new Boots(Utility.RandomNeutralHue()));
+                    AddItem(new Boots(Utility.RandomNeutralHue()));
                     break;
                 case 2:
-                    this.AddItem(new Sandals(Utility.RandomNeutralHue()));
+                    AddItem(new Sandals(Utility.RandomNeutralHue()));
                     break;
                 case 3:
-                    this.AddItem(new ThighBoots(Utility.RandomNeutralHue()));
+                    AddItem(new ThighBoots(Utility.RandomNeutralHue()));
                     break;
             }
 
-            this.AddItem(new Robe(Utility.RandomNondyedHue()));
+            AddItem(new Robe(Utility.RandomNondyedHue()));
 
-            this.m_DisguiseTimer = null;
-            this.m_DisguiseTimer = Timer.DelayCall(TimeSpan.FromSeconds(75), new TimerCallback(RemoveDisguise));
+            m_DisguiseTimer = null;
+            m_DisguiseTimer = Timer.DelayCall(TimeSpan.FromSeconds(75), new TimerCallback(RemoveDisguise));
         }
 
         public void RemoveDisguise()
         {
-            if (!this.IsBodyMod)
+            if (!IsBodyMod)
                 return;
 			
-            this.Name = "a bake kitsune";
-            this.Title = null;
-            this.BodyMod = 0;
-            this.Hue = 0;
-            this.HairItemID = 0;
-            this.HairHue = 0;
-            this.FacialHairItemID = 0;
-            this.FacialHairHue = 0;
+            Name = "a bake kitsune";
+            Title = null;
+            BodyMod = 0;
+            Hue = 0;
+            HairItemID = 0;
+            HairHue = 0;
+            FacialHairItemID = 0;
+            FacialHairHue = 0;
 
-            this.DeleteItemOnLayer(Layer.OuterTorso);
-            this.DeleteItemOnLayer(Layer.Shoes);
+            DeleteItemOnLayer(Layer.OuterTorso);
+            DeleteItemOnLayer(Layer.Shoes);
 
-            this.m_DisguiseTimer = null;
+            m_DisguiseTimer = null;
         }
 
         public void DeleteItemOnLayer(Layer layer)
         {
-            Item item = this.FindItemOnLayer(layer);
+            Item item = FindItemOnLayer(layer);
 
             if (item != null)
                 item.Delete();
@@ -241,33 +241,33 @@ namespace Server.Mobiles
             public ExpireTimer(Mobile m, Mobile from)
                 : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
             {
-                this.m_Mobile = m;
-                this.m_From = from;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Mobile = m;
+                m_From = from;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             public void DoExpire()
             {
-                this.Stop();
-                m_Table.Remove(this.m_Mobile);
+                Stop();
+                m_Table.Remove(m_Mobile);
             }
 
             public void DrainLife()
             {
-                if (this.m_Mobile.Alive)
-                    this.m_Mobile.Damage(2, this.m_From);
+                if (m_Mobile.Alive)
+                    m_Mobile.Damage(2, m_From);
                 else
-                    this.DoExpire();
+                    DoExpire();
             }
 
             protected override void OnTick()
             {
-                this.DrainLife();
+                DrainLife();
 
-                if (++this.m_Count >= 5)
+                if (++m_Count >= 5)
                 {
-                    this.DoExpire();
-                    this.m_Mobile.SendLocalizedMessage(1070824); // The creature's rage subsides.
+                    DoExpire();
+                    m_Mobile.SendLocalizedMessage(1070824); // The creature's rage subsides.
                 }
             }
         }
@@ -313,13 +313,13 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (version == 0 && this.PhysicalResistance > 60)
+            if (version == 0 && PhysicalResistance > 60)
             {
-                this.SetResistance(ResistanceType.Physical, 40, 60);
-                this.SetResistance(ResistanceType.Fire, 70, 90);
-                this.SetResistance(ResistanceType.Cold, 40, 60);
-                this.SetResistance(ResistanceType.Poison, 40, 60);
-                this.SetResistance(ResistanceType.Energy, 40, 60);
+                SetResistance(ResistanceType.Physical, 40, 60);
+                SetResistance(ResistanceType.Fire, 70, 90);
+                SetResistance(ResistanceType.Cold, 40, 60);
+                SetResistance(ResistanceType.Poison, 40, 60);
+                SetResistance(ResistanceType.Energy, 40, 60);
             }
 
             Timer.DelayCall(TimeSpan.Zero, new TimerCallback(RemoveDisguise));

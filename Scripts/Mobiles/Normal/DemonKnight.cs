@@ -182,7 +182,7 @@ namespace Server.Mobiles
              
             double gpoints = pm.GauntletPoints;
 
-            pm.GauntletPoints += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100))/2;
+            pm.GauntletPoints += (int)(bc.Fame * (1 + Math.Sqrt(pm.RealLuck) / 100))/2;
 
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
@@ -200,8 +200,10 @@ namespace Server.Mobiles
 
                     if (ran >= m_RewardTable.Length)
                     {
+                        int luck = killer is PlayerMobile ? ((PlayerMobile)killer).RealLuck : killer.Luck;
+
                         i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
-                        RunicReforging.GenerateRandomArtifactItem(i, killer.Luck, Utility.RandomMinMax(1000, 1200));
+                        RunicReforging.GenerateRandomArtifactItem(i, luck, Utility.RandomMinMax(1000, 1200));
                         NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(i);
 
                         if (attrs != null)
