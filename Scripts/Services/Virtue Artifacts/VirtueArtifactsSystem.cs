@@ -52,7 +52,7 @@ namespace Server.Misc
             
             double vapoints = pm.VASTotalMonsterFame;
 
-            pm.VASTotalMonsterFame += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100));
+            pm.VASTotalMonsterFame += (int)(bc.Fame * (1 + Math.Sqrt(pm.RealLuck) / 100));
 
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
