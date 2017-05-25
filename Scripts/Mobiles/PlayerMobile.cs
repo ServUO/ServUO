@@ -46,6 +46,7 @@ using System.Linq;
 using Server.Spells.SkillMasteries;
 
 using RankDefinition = Server.Guilds.RankDefinition;
+using Server.Engines.Shadowguard;
 #endregion
 
 namespace Server.Mobiles
@@ -1184,7 +1185,7 @@ namespace Server.Mobiles
 				((PlayerMobile)from).ClaimAutoStabledPets();
 			}
 
-            if (((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle")) || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
+            if (((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle")) || from.Region.IsPartOf<ShadowguardRegion>() || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
             {
                 StormLevelGump menu = new StormLevelGump(from);
                 menu.BeginClose();
