@@ -49,11 +49,11 @@ namespace Server.Mobiles
             this.Fame = 3000;
             this.Karma = -3000;
 
-            this.AddImmovableItem(new MercutiosCutlass());
-            this.AddItem(new ChainChest());
-            this.AddItem(Loot.RandomShield());
-            this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
-            this.AddItem(new Boots(Utility.RandomNeutralHue()));
+            this.AddImmovableItem(new Cutlass());
+            this.AddImmovableItem(new ChainChest());
+            this.AddImmovableItem(Loot.RandomShield());
+            this.AddImmovableItem(new ShortPants(Utility.RandomNeutralHue()));
+            this.AddImmovableItem(new Boots(Utility.RandomNeutralHue()));
 
             Utility.AssignRandomHair(this);
 
