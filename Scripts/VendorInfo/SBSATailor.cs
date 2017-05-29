@@ -43,14 +43,14 @@ namespace Server.Mobiles
                 this.Add(new GenericBuyInfo(typeof(GargishRobe), 32, 20, 0x4000, 0));
                 this.Add(new GenericBuyInfo(typeof(GargishFancyRobe), 46, 20, 0x4002, 0));
 
-                this.Add(new GenericBuyInfo(typeof(GargishClothArms), 61, 20, 0x403, 0));
-                this.Add(new GenericBuyInfo(typeof(GargishClothArms), 60, 20, 0x404, 0));
-                this.Add(new GenericBuyInfo(typeof(GargishClothChest), 80, 20, 0x405, 0));
-                this.Add(new GenericBuyInfo(typeof(GargishClothChest), 85, 20, 0x406, 0));
-                this.Add(new GenericBuyInfo(typeof(GargishClothLegs), 60, 20, 0x409, 0));
-                this.Add(new GenericBuyInfo(typeof(GargishClothLegs), 65, 20, 0x40A, 0));
-                this.Add(new GenericBuyInfo(typeof(GargishClothKilt), 61, 20, 0x407, 0));
-                this.Add(new GenericBuyInfo(typeof(GargishClothKilt), 65, 20, 0x408, 0));
+                this.Add(new GenericBuyInfo(typeof(FemaleGargishClothArmsArmor), 62, 20, 0x403, 0));
+                this.Add(new GenericBuyInfo(typeof(GargishClothArmsArmor), 61, 20, 0x404, 0));
+                this.Add(new GenericBuyInfo(typeof(FemaleGargishClothChestArmor), 83, 20, 0x405, 0));
+                this.Add(new GenericBuyInfo(typeof(GargishClothChestArmor), 78, 20, 0x406, 0));
+                this.Add(new GenericBuyInfo(typeof(FemaleGargishClothLegsArmor), 71, 20, 0x409, 0));
+                this.Add(new GenericBuyInfo(typeof(GargishClothLegsArmor), 66, 20, 0x40A, 0));
+                this.Add(new GenericBuyInfo(typeof(FemaleGargishClothKiltArmor), 57, 20, 0x407, 0));
+                this.Add(new GenericBuyInfo(typeof(GargishClothKiltArmor), 56, 20, 0x408, 0));
 
             }
         }
@@ -70,14 +70,14 @@ namespace Server.Mobiles
 
                 this.Add(typeof(GargishRobe), 16);
                 this.Add(typeof(GargishFancyRobe), 23);
-                this.Add(typeof(GargishClothArms), 30);
-                this.Add(typeof(GargishClothArms), 30);
-                this.Add(typeof(GargishClothChest), 40);
-                this.Add(typeof(GargishClothChest), 42);
-                this.Add(typeof(GargishClothLegs), 30);
-                this.Add(typeof(GargishClothLegs), 32);
-                this.Add(typeof(GargishClothKilt), 30);
-                this.Add(typeof(GargishClothKilt), 32);
+                this.Add(typeof(FemaleGargishClothArmsArmor), 30);
+                this.Add(typeof(GargishClothArmsArmor), 30);
+                this.Add(typeof(FemaleGargishClothChestArmor), 40);
+                this.Add(typeof(GargishClothChestArmor), 42);
+                this.Add(typeof(FemaleGargishClothLegsArmor), 30);
+                this.Add(typeof(GargishClothLegsArmor), 32);
+                this.Add(typeof(FemaleGargishClothKiltArmor), 30);
+                this.Add(typeof(GargishClothKiltArmor), 32);
             }
         }
     }
