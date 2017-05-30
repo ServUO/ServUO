@@ -2115,7 +2115,6 @@ namespace Server.Mobiles
 			{
 				SBInfo sbInfo = sbInfos[i];
 				var buyInfo = sbInfo.BuyInfo;
-                var sellInfo = sbInfo.SellInfo;
 
 				for (int j = 0; buyInfo != null && j < buyInfo.Count; ++j)
 				{
@@ -2148,7 +2147,7 @@ namespace Server.Mobiles
 							break;
 					}
 
-					if (doubled > 0 || bought > 0)
+					if (doubled > 0 || bought > 0 || sold > 0)
 					{
 						writer.WriteEncodedInt(1 + ((j * sbInfos.Count) + i));
 						writer.WriteEncodedInt(doubled);
@@ -2156,11 +2155,6 @@ namespace Server.Mobiles
                         writer.WriteEncodedInt(sold);
 					}
 				}
-
-                if (sellInfo != null)
-                {
-
-                }
 			}
 
 			writer.WriteEncodedInt(0);
