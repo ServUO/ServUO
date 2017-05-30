@@ -582,7 +582,7 @@ namespace Server.Mobiles
 
 									if (m_Mobile.CheckControlChance(e.Mobile))
 									{
-										
+
 										m_Mobile.ControlOrder = OrderType.Guard;
                                         m_Mobile.ControlTarget = null;
 									}
@@ -711,7 +711,7 @@ namespace Server.Mobiles
 									{
                                         m_Mobile.ControlOrder = OrderType.Guard;
                                         m_Mobile.ControlTarget = null;
-										
+
 									}
 
 									return;
@@ -1098,25 +1098,44 @@ namespace Server.Mobiles
 
 		public virtual bool DoActionFlee()
 		{
-			Mobile from = m_Mobile.FocusMob as Mobile;
+			Mobile c = m_Mobile.Combatant as Mobile;
 
-			if (from == null || from.Deleted || from.Map != m_Mobile.Map)
-			{
-				m_Mobile.DebugSay("I have lost him");
-				Action = ActionType.Guard;
-				return true;
-			}
+            // We only want enemies we know want to attack us, not those we want to attack
+            if (AcquireFocusMob(m_Mobile.RangePerception, FightMode.Aggressor, false, false, true) || c != null)
+            {
+                // If I found a new target, set it as my combatant
+                if (m_Mobile.FocusMob != null)
+                {
+                    m_Mobile.Combatant = m_Mobile.FocusMob;
+                    c = m_Mobile.Combatant as Mobile;
+                    m_Mobile.FocusMob = null;
+                }
 
-			if (WalkMobileRange(from, 1, true, m_Mobile.RangePerception * 2, m_Mobile.RangePerception * 3))
-			{
-				m_Mobile.DebugSay("I have fled");
-				Action = ActionType.Guard;
-				return true;
-			}
-			else
-			{
-				m_Mobile.DebugSay("I am fleeing!");
-			}
+                // If my combatant is bad, guard
+                if (c == null || c.Deleted || c.Map != m_Mobile.Map)
+                {
+                    m_Mobile.DebugSay("I have lost him");
+                    m_Mobile.Combatant = null;
+                    Action = ActionType.Guard;
+                    return true;
+                }
+
+                if (WalkMobileRange(c, 1, true, m_Mobile.RangePerception * 2, m_Mobile.RangePerception * 3))
+                {
+                    m_Mobile.DebugSay("I have fled");
+                    Action = ActionType.Guard;
+                    return true;
+                }
+                else
+                {
+                    m_Mobile.DebugSay("I am scared of {0}", c.Name);
+                }
+            }
+            else
+            {
+                m_Mobile.DebugSay("Area seems clear, but my guard is up");
+                Action = ActionType.Guard;
+            }
 
 			return true;
 		}
@@ -1326,7 +1345,7 @@ namespace Server.Mobiles
 
 					if (WalkMobileRange(m_Mobile.ControlMaster, 1, bRun, 0, 1))
 					{
-						if (m_Mobile.Combatant is Mobile && !m_Mobile.Combatant.Deleted && 
+						if (m_Mobile.Combatant is Mobile && !m_Mobile.Combatant.Deleted &&
                             m_Mobile.Combatant.Alive && (!(m_Mobile.Combatant is Mobile) || !((Mobile)m_Mobile.Combatant).IsDeadBondedPet))
 						{
 							m_Mobile.Warmode = true;
@@ -2316,17 +2335,17 @@ namespace Server.Mobiles
 
 			int delay = (int)(TransformMoveDelay(m_Mobile.CurrentSpeed) * 1000);
 
-			var mounted = m_Mobile.Mounted || m_Mobile.Flying;
-			var running = (mounted && delay <= Mobile.RunMount) || (!mounted && delay <= Mobile.RunFoot);
+            bool mounted = (m_Mobile.Mounted || m_Mobile.Flying);
+            bool running = mounted ? (delay < Mobile.WalkMount) : (delay < Mobile.WalkFoot);
 
-			if (running)
-			{
-				d |= Direction.Running;
-			}
-            
+            if (running)
+            {
+                d |= Direction.Running;
+            }
+
 			// This makes them always move one step, never any direction changes
 			m_Mobile.Direction = d;
-            
+
 			m_NextMove += delay;
 
 			if (Core.TickCount - m_NextMove > 0)
@@ -2645,12 +2664,12 @@ namespace Server.Mobiles
 
 		/*
         *  Walk at range distance from mobile
-        * 
+        *
         *	iSteps : Number of steps
         *	bRun   : Do we run
         *	iWantDistMin : The minimum distance we want to be
         *  iWantDistMax : The maximum distance we want to be
-        * 
+        *
         */
 
 		public virtual bool WalkMobileRange(IPoint3D p, int iSteps, bool bRun, int iWantDistMin, int iWantDistMax)
@@ -2738,13 +2757,13 @@ namespace Server.Mobiles
 
 		/*
         * Here we check to acquire a target from our surronding
-        * 
+        *
         *  iRange : The range
         *  acqType : A type of acquire we want (closest, strongest, etc)
         *  bPlayerOnly : Don't bother with other creatures or NPCs, want a player
         *  bFacFriend : Check people in my faction
         *  bFacFoe : Check people in other factions
-        * 
+        *
         */
 
 		public virtual bool AcquireFocusMob(int iRange, FightMode acqType, bool bPlayerOnly, bool bFacFriend, bool bFacFoe)
@@ -2835,8 +2854,8 @@ namespace Server.Mobiles
 						continue;
 					}
 
-					// Let's not target ourselves...
-					if (m == m_Mobile || m is BaseFamiliar)
+					// Let's not target ourself...
+					if (m == m_Mobile)
 					{
 						continue;
 					}
@@ -2860,24 +2879,9 @@ namespace Server.Mobiles
 					}
 
 					// Can't acquire a target we can't see.
-					if (!m_Mobile.CanSee(m))
+					if (!m_Mobile.CanSee(m) || !m_Mobile.InLOS(m))
 					{
 						continue;
-					}
-
-					if (m_Mobile.Summoned && m_Mobile.SummonMaster != null)
-					{
-						// If this is a summon, it can't target its controller.
-						if (m == m_Mobile.SummonMaster)
-							continue;
-
-						// It also must abide by harmful spell rules if the master is a player.
-						if (m_Mobile.SummonMaster is PlayerMobile && !Server.Spells.SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
-							continue;
-
-						// Players animated creatures cannot attack other players directly.
-						if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
-							continue;
 					}
 
 					// If we only want faction friends
@@ -2892,6 +2896,27 @@ namespace Server.Mobiles
 					// Don't ignore friends we want to and can help
 					else if (!bFacFriend || !m_Mobile.IsFriend(m))
 					{
+						// Let's not target a familiar...
+						if (m is BaseFamiliar)
+						{
+							continue;
+						}
+
+						if (m_Mobile.Summoned && m_Mobile.SummonMaster != null)
+						{
+							// If this is a summon, it can't target its controller.
+							if (m == m_Mobile.SummonMaster)
+								continue;
+
+							// It also must abide by harmful spell rules if the master is a player.
+							if (m_Mobile.SummonMaster is PlayerMobile && !Server.Spells.SpellHelper.ValidIndirectTarget(m_Mobile.SummonMaster, m))
+								continue;
+
+							// Players animated creatures cannot attack other players directly.
+							if (m is PlayerMobile && m_Mobile.IsAnimatedDead && m_Mobile.SummonMaster is PlayerMobile)
+								continue;
+						}
+
 						// Ignore anyone we can't hurt
 						if (!m_Mobile.CanBeHarmful(m, false))
 						{
@@ -2915,7 +2940,7 @@ namespace Server.Mobiles
 							}
 */
 							if (acqType == FightMode.Aggressor || acqType == FightMode.Evil || acqType == FightMode.Good
-                                || (m is BaseCreature && ((BaseCreature)m).Summoned))
+								|| (m is BaseCreature && ((BaseCreature)m).Summoned))
 							{
 
 								//Ignore anyone under EtherealVoyage
@@ -2925,7 +2950,7 @@ namespace Server.Mobiles
 								}
 
 								// Ignore players with activated honor
-								if (m is PlayerMobile && ((PlayerMobile)m).HonorActive && !(m_Mobile.Combatant == m))
+								if (m is PlayerMobile && ((PlayerMobile)m).HonorActive && m_Mobile.Combatant != m)
 								{
 									continue;
 								}
@@ -2934,17 +2959,17 @@ namespace Server.Mobiles
 								bool bValid = (m_Mobile.GetFactionAllegiance(m) == BaseCreature.Allegiance.Enemy ||
 											  m_Mobile.GetEthicAllegiance(m) == BaseCreature.Allegiance.Enemy);
 
-								BaseCreature c = m as BaseCreature;
-
 								// We want a special FightMode enemy
 								if (!bValid)
 								{
+									BaseCreature c = m as BaseCreature;
+
 									// We want a karma enemy
 									if (acqType == FightMode.Evil)
 									{
-										if (c != null && c.Controlled && c.ControlMaster != null)
+										if (c != null && c.GetMaster() != null)
 										{
-											bValid = (c.ControlMaster.Karma < 0);
+											bValid = (c.GetMaster().Karma < 0);
 										}
 										else
 										{
@@ -2954,9 +2979,9 @@ namespace Server.Mobiles
 									// We want a karma enemy
 									else if (acqType == FightMode.Good)
 									{
-										if (c != null && c.Controlled && c.ControlMaster != null)
+										if (c != null && c.GetMaster() != null)
 										{
-											bValid = (c.ControlMaster.Karma > 0);
+											bValid = (c.GetMaster().Karma > 0);
 										}
 										else
 										{
@@ -2981,7 +3006,7 @@ namespace Server.Mobiles
 
 					theirVal = m_Mobile.GetFightModeRanking(m, acqType, bPlayerOnly);
 
-					if (theirVal > val && m_Mobile.InLOS(m))
+					if (theirVal > val)
 					{
 						newFocusMob = m;
 						val = theirVal;
@@ -2996,14 +3021,14 @@ namespace Server.Mobiles
 			return (m_Mobile.FocusMob != null);
 		}
 
-		private bool IsHostile(Mobile from)
+		public bool IsHostile(Mobile from)
 		{
-			int count = Math.Max(m_Mobile.Aggressors.Count, m_Mobile.Aggressed.Count);
-
 			if (m_Mobile.Combatant == from || from.Combatant == m_Mobile)
 			{
 				return true;
 			}
+
+			int count = Math.Max(m_Mobile.Aggressors.Count, m_Mobile.Aggressed.Count);
 
 			if (count > 0)
 			{
@@ -3135,6 +3160,10 @@ namespace Server.Mobiles
 
 		public virtual bool CanDetectHidden { get { return m_Mobile.Skills[SkillName.DetectHidden].Value > 0; } }
 
+        public virtual void AfterThink()
+        {
+        }
+
 		/*
         *  The Timer object
         */
@@ -3217,24 +3246,7 @@ namespace Server.Mobiles
 					}
 				}
 
-				if (m_Owner.CanDetectHidden && Core.TickCount - m_Owner.m_NextDetectHidden >= 0)
-				{
-					m_Owner.DetectHidden();
-
-					// Not exactly OSI style, approximation.
-					int delay = (15000 / m_Owner.m_Mobile.Int);
-
-					if (delay > 60)
-					{
-						delay = 60;
-					}
-
-					int min = delay * (9 / 10); // 13s at 1000 int, 33s at 400 int, 54s at <250 int
-					int max = delay * (10 / 9); // 16s at 1000 int, 41s at 400 int, 66s at <250 int
-
-					m_Owner.m_NextDetectHidden = Core.TickCount +
-												 (int)TimeSpan.FromSeconds(Utility.RandomMinMax(min, max)).TotalMilliseconds;
-				}
+                m_Owner.AfterThink();
 			}
 		}
 	}

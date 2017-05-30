@@ -37,7 +37,7 @@ namespace Server.Engines.Points
                     DungeonPoints[damager] = 0;
 
                 int fame = victim.Fame / 2;
-                DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(damager.Luck) / 100));
+                DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(((PlayerMobile)damager).RealLuck) / 100));
 
                 int x = DungeonPoints[damager];
                 const double A = 0.000863316841;

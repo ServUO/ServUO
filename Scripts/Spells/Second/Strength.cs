@@ -49,7 +49,7 @@ namespace Server.Spells.Second
             {
                 SpellHelper.Turn(this.Caster, m);
 
-				SpellHelper.AddStatBonus(this.Caster, m, StatType.Str);
+				SpellHelper.AddStatBonus(this.Caster, m, false, StatType.Str);
 				int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
 				TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
 				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Strength, 1075845, length, m, percentage.ToString()));

@@ -541,7 +541,7 @@ namespace Server
 
 				Console.WriteLine(" - Press return to exit, or R to try again.");
 
-				if (Insensitive.Equals(Console.ReadLine(), "R"))
+                if (Console.ReadKey(true).Key != ConsoleKey.R)
 				{
 					return;
 				}

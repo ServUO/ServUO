@@ -42,8 +42,6 @@ namespace Server.Mobiles
             Fame = 2500;
             Karma = -2500;
 
-            QLPoints = 25;
-
             PackItem(new RawRibs(5));
             //	VirtualArmor = 16;
         }

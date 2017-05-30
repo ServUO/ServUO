@@ -9,18 +9,11 @@ namespace Server.Items
 {
     public delegate void InstrumentPickedCallback(Mobile from, BaseInstrument instrument);
 
-    public enum InstrumentQuality
-    {
-        Low,
-        Regular,
-        Exceptional
-    }
-
-    public abstract class BaseInstrument : Item, ICraftable, ISlayer
+    public abstract class BaseInstrument : Item, ICraftable, ISlayer, IQuality
     {
         private int m_WellSound, m_BadlySound;
         private SlayerName m_Slayer, m_Slayer2;
-        private InstrumentQuality m_Quality;
+        private ItemQuality m_Quality;
         private Mobile m_Crafter;
         private int m_UsesRemaining;
 
@@ -29,11 +22,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_WellSound;
+                return m_WellSound;
             }
             set
             {
-                this.m_WellSound = value;
+                m_WellSound = value;
             }
         }
 
@@ -42,11 +35,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_BadlySound;
+                return m_BadlySound;
             }
             set
             {
-                this.m_BadlySound = value;
+                m_BadlySound = value;
             }
         }
 
@@ -55,12 +48,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Slayer;
+                return m_Slayer;
             }
             set
             {
-                this.m_Slayer = value;
-                this.InvalidateProperties();
+                m_Slayer = value;
+                InvalidateProperties();
             }
         }
 
@@ -69,42 +62,45 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Slayer2;
+                return m_Slayer2;
             }
             set
             {
-                this.m_Slayer2 = value;
-                this.InvalidateProperties();
+                m_Slayer2 = value;
+                InvalidateProperties();
             }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public InstrumentQuality Quality
+        public ItemQuality Quality
         {
             get
             {
-                return this.m_Quality;
+                return m_Quality;
             }
             set
             {
-                this.UnscaleUses();
-                this.m_Quality = value;
-                this.InvalidateProperties();
-                this.ScaleUses();
+                UnscaleUses();
+                m_Quality = value;
+                InvalidateProperties();
+                ScaleUses();
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool PlayerConstructed { get { return m_Crafter != null; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
         {
             get
             {
-                return this.m_Crafter;
+                return m_Crafter;
             }
             set
             {
-                this.m_Crafter = value;
-                this.InvalidateProperties();
+                m_Crafter = value;
+                InvalidateProperties();
             }
         }
 
@@ -136,13 +132,13 @@ namespace Server.Items
         {
             get
             {
-                this.CheckReplenishUses();
-                return this.m_UsesRemaining;
+                CheckReplenishUses();
+                return m_UsesRemaining;
             }
             set
             {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
+                m_UsesRemaining = value;
+                InvalidateProperties();
             }
         }
 
@@ -153,12 +149,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_LastReplenished;
+                return m_LastReplenished;
             }
             set
             {
-                this.m_LastReplenished = value;
-                this.CheckReplenishUses();
+                m_LastReplenished = value;
+                CheckReplenishUses();
             }
         }
 
@@ -168,14 +164,14 @@ namespace Server.Items
         {
             get
             {
-                return this.m_ReplenishesCharges;
+                return m_ReplenishesCharges;
             }
             set 
             {
-                if (value != this.m_ReplenishesCharges && value)
-                    this.m_LastReplenished = DateTime.UtcNow;
+                if (value != m_ReplenishesCharges && value)
+                    m_LastReplenished = DateTime.UtcNow;
 
-                this.m_ReplenishesCharges = value; 
+                m_ReplenishesCharges = value; 
             }
         }
 
@@ -185,23 +181,23 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.ItemID = 0xEB2;
-                        this.SuccessSound = 0x45;
-                        this.FailureSound = 0x46;
+                        ItemID = 0xEB2;
+                        SuccessSound = 0x45;
+                        FailureSound = 0x46;
                         break;
                     }
                 case 1:
                     {
-                        this.ItemID = 0xEB3;
-                        this.SuccessSound = 0x4C;
-                        this.FailureSound = 0x4D;
+                        ItemID = 0xEB3;
+                        SuccessSound = 0x4C;
+                        FailureSound = 0x4D;
                         break;
                     }
                 default:
                     {
-                        this.ItemID = 0xE9C;
-                        this.SuccessSound = 0x38;
-                        this.FailureSound = 0x39;
+                        ItemID = 0xE9C;
+                        SuccessSound = 0x38;
+                        FailureSound = 0x39;
                         break;
                     }
             }
@@ -209,40 +205,40 @@ namespace Server.Items
 
         public void CheckReplenishUses()
         {
-            this.CheckReplenishUses(true);
+            CheckReplenishUses(true);
         }
 
         public void CheckReplenishUses(bool invalidate)
         {
-            if (!this.m_ReplenishesCharges || this.m_UsesRemaining >= this.InitMaxUses)
+            if (!m_ReplenishesCharges || m_UsesRemaining >= InitMaxUses)
                 return;
 
-            if (this.m_LastReplenished + this.ChargeReplenishRate < DateTime.UtcNow)
+            if (m_LastReplenished + ChargeReplenishRate < DateTime.UtcNow)
             {
-                TimeSpan timeDifference = DateTime.UtcNow - this.m_LastReplenished;
+                TimeSpan timeDifference = DateTime.UtcNow - m_LastReplenished;
 
-                this.m_UsesRemaining = Math.Min(this.m_UsesRemaining + (int)(timeDifference.Ticks / this.ChargeReplenishRate.Ticks), this.InitMaxUses);	//How rude of TimeSpan to not allow timespan division.
-                this.m_LastReplenished = DateTime.UtcNow;
+                m_UsesRemaining = Math.Min(m_UsesRemaining + (int)(timeDifference.Ticks / ChargeReplenishRate.Ticks), InitMaxUses);	//How rude of TimeSpan to not allow timespan division.
+                m_LastReplenished = DateTime.UtcNow;
 
                 if (invalidate)
-                    this.InvalidateProperties();
+                    InvalidateProperties();
             }
         }
 
         public void ScaleUses()
         {
-            this.UsesRemaining = (this.UsesRemaining * this.GetUsesScalar()) / 100;
+            UsesRemaining = (UsesRemaining * GetUsesScalar()) / 100;
             //InvalidateProperties();
         }
 
         public void UnscaleUses()
         {
-            this.UsesRemaining = (this.UsesRemaining * 100) / this.GetUsesScalar();
+            UsesRemaining = (UsesRemaining * 100) / GetUsesScalar();
         }
 
         public int GetUsesScalar()
         {
-            if (this.m_Quality == InstrumentQuality.Exceptional)
+            if (m_Quality == ItemQuality.Exceptional)
                 return 200;
 
             return 100;
@@ -251,16 +247,16 @@ namespace Server.Items
         public void ConsumeUse(Mobile from)
         {
             // TODO: Confirm what must happen here?
-            if (this.UsesRemaining > 1)
+            if (UsesRemaining > 1)
             {
-                --this.UsesRemaining;
+                --UsesRemaining;
             }
             else
             {
                 if (from != null)
                     from.SendLocalizedMessage(502079); // The instrument played its last tune.
 
-                this.Delete();
+                Delete();
             }
         }
 
@@ -397,12 +393,12 @@ namespace Server.Items
         {
             double val = GetBaseDifficulty(targ);
 
-            if (this.m_Quality == InstrumentQuality.Exceptional)
+            if (m_Quality == ItemQuality.Exceptional)
                 val -= 5.0; // 10%
 
-            if (this.m_Slayer != SlayerName.None)
+            if (m_Slayer != SlayerName.None)
             {
-                SlayerEntry entry = SlayerGroup.GetEntryByName(this.m_Slayer);
+                SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer);
 
                 if (entry != null)
                 {
@@ -413,9 +409,9 @@ namespace Server.Items
                 }
             }
 
-            if (this.m_Slayer2 != SlayerName.None)
+            if (m_Slayer2 != SlayerName.None)
             {
-                SlayerEntry entry = SlayerGroup.GetEntryByName(this.m_Slayer2);
+                SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer2);
 
                 if (entry != null)
                 {
@@ -438,51 +434,51 @@ namespace Server.Items
         {
             RandomInstrument();
 
-            UsesRemaining = Utility.RandomMinMax(this.InitMinUses, this.InitMaxUses);
+            UsesRemaining = Utility.RandomMinMax(InitMinUses, InitMaxUses);
         }
 
         public BaseInstrument(int itemID, int wellSound, int badlySound)
             : base(itemID)
         {
-            this.m_WellSound = wellSound;
-            this.m_BadlySound = badlySound;
+            m_WellSound = wellSound;
+            m_BadlySound = badlySound;
 
-            UsesRemaining = Utility.RandomMinMax(this.InitMinUses, this.InitMaxUses);
+            UsesRemaining = Utility.RandomMinMax(InitMinUses, InitMaxUses);
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
-            int oldUses = this.m_UsesRemaining;
-            this.CheckReplenishUses(false);
+            int oldUses = m_UsesRemaining;
+            CheckReplenishUses(false);
 
             base.GetProperties(list);
 
-            if (this.m_Crafter != null)
+            if (m_Crafter != null)
 				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
-            if (this.m_Quality == InstrumentQuality.Exceptional)
+            if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1060636); // exceptional
 
-            list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
 
-            if (this.m_ReplenishesCharges)
+            if (m_ReplenishesCharges)
                 list.Add(1070928); // Replenish Charges
 
-            if (this.m_Slayer != SlayerName.None)
+            if (m_Slayer != SlayerName.None)
             {
-                SlayerEntry entry = SlayerGroup.GetEntryByName(this.m_Slayer);
+                SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer);
                 if (entry != null)
                     list.Add(entry.Title);
             }
 
-            if (this.m_Slayer2 != SlayerName.None)
+            if (m_Slayer2 != SlayerName.None)
             {
-                SlayerEntry entry = SlayerGroup.GetEntryByName(this.m_Slayer2);
+                SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer2);
                 if (entry != null)
                     list.Add(entry.Title);
             }
 
-            if (this.m_UsesRemaining != oldUses)
+            if (m_UsesRemaining != oldUses)
                 Timer.DelayCall(TimeSpan.Zero, new TimerCallback(InvalidateProperties));
         }
 
@@ -490,51 +486,51 @@ namespace Server.Items
         {
             ArrayList attrs = new ArrayList();
 
-            if (this.DisplayLootType)
+            if (DisplayLootType)
             {
-                if (this.LootType == LootType.Blessed)
+                if (LootType == LootType.Blessed)
                     attrs.Add(new EquipInfoAttribute(1038021)); // blessed
-                else if (this.LootType == LootType.Cursed)
+                else if (LootType == LootType.Cursed)
                     attrs.Add(new EquipInfoAttribute(1049643)); // cursed
             }
 
-            if (this.m_Quality == InstrumentQuality.Exceptional)
-                attrs.Add(new EquipInfoAttribute(1018305 - (int)this.m_Quality));
+            if (m_Quality == ItemQuality.Exceptional)
+                attrs.Add(new EquipInfoAttribute(1018305 - (int)m_Quality));
 
-            if (this.m_ReplenishesCharges)
+            if (m_ReplenishesCharges)
                 attrs.Add(new EquipInfoAttribute(1070928)); // Replenish Charges
 
             // TODO: Must this support item identification?
-            if (this.m_Slayer != SlayerName.None)
+            if (m_Slayer != SlayerName.None)
             {
-                SlayerEntry entry = SlayerGroup.GetEntryByName(this.m_Slayer);
+                SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer);
                 if (entry != null)
                     attrs.Add(new EquipInfoAttribute(entry.Title));
             }
 
-            if (this.m_Slayer2 != SlayerName.None)
+            if (m_Slayer2 != SlayerName.None)
             {
-                SlayerEntry entry = SlayerGroup.GetEntryByName(this.m_Slayer2);
+                SlayerEntry entry = SlayerGroup.GetEntryByName(m_Slayer2);
                 if (entry != null)
                     attrs.Add(new EquipInfoAttribute(entry.Title));
             }
 
             int number;
 
-            if (this.Name == null)
+            if (Name == null)
             {
-                number = this.LabelNumber;
+                number = LabelNumber;
             }
             else
             {
-                this.LabelTo(from, this.Name);
+                LabelTo(from, Name);
                 number = 1041000;
             }
 
-            if (attrs.Count == 0 && this.Crafter == null && this.Name != null)
+            if (attrs.Count == 0 && Crafter == null && Name != null)
                 return;
 
-            EquipmentInfo eqInfo = new EquipmentInfo(number, this.m_Crafter, false, (EquipInfoAttribute[])attrs.ToArray(typeof(EquipInfoAttribute)));
+            EquipmentInfo eqInfo = new EquipmentInfo(number, m_Crafter, false, (EquipInfoAttribute[])attrs.ToArray(typeof(EquipInfoAttribute)));
 
             from.Send(new DisplayEquipmentInfo(this, eqInfo));
         }
@@ -550,20 +546,20 @@ namespace Server.Items
 
             writer.Write((int)3); // version
 
-            writer.Write(this.m_ReplenishesCharges);
-            if (this.m_ReplenishesCharges)
-                writer.Write(this.m_LastReplenished);
+            writer.Write(m_ReplenishesCharges);
+            if (m_ReplenishesCharges)
+                writer.Write(m_LastReplenished);
 
-            writer.Write(this.m_Crafter);
+            writer.Write(m_Crafter);
 
-            writer.WriteEncodedInt((int)this.m_Quality);
-            writer.WriteEncodedInt((int)this.m_Slayer);
-            writer.WriteEncodedInt((int)this.m_Slayer2);
+            writer.WriteEncodedInt((int)m_Quality);
+            writer.WriteEncodedInt((int)m_Slayer);
+            writer.WriteEncodedInt((int)m_Slayer2);
 
-            writer.WriteEncodedInt((int)this.UsesRemaining);
+            writer.WriteEncodedInt((int)UsesRemaining);
 
-            writer.WriteEncodedInt((int)this.m_WellSound);
-            writer.WriteEncodedInt((int)this.m_BadlySound);
+            writer.WriteEncodedInt((int)m_WellSound);
+            writer.WriteEncodedInt((int)m_BadlySound);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -576,58 +572,58 @@ namespace Server.Items
             {
                 case 3:
                     {
-                        this.m_ReplenishesCharges = reader.ReadBool();
+                        m_ReplenishesCharges = reader.ReadBool();
 
-                        if (this.m_ReplenishesCharges)
-                            this.m_LastReplenished = reader.ReadDateTime();
+                        if (m_ReplenishesCharges)
+                            m_LastReplenished = reader.ReadDateTime();
 
                         goto case 2;
                     }
                 case 2:
                     {
-                        this.m_Crafter = reader.ReadMobile();
+                        m_Crafter = reader.ReadMobile();
 
-                        this.m_Quality = (InstrumentQuality)reader.ReadEncodedInt();
-                        this.m_Slayer = (SlayerName)reader.ReadEncodedInt();
-                        this.m_Slayer2 = (SlayerName)reader.ReadEncodedInt();
+                        m_Quality = (ItemQuality)reader.ReadEncodedInt();
+                        m_Slayer = (SlayerName)reader.ReadEncodedInt();
+                        m_Slayer2 = (SlayerName)reader.ReadEncodedInt();
 
-                        this.UsesRemaining = reader.ReadEncodedInt();
+                        UsesRemaining = reader.ReadEncodedInt();
 
-                        this.m_WellSound = reader.ReadEncodedInt();
-                        this.m_BadlySound = reader.ReadEncodedInt();
+                        m_WellSound = reader.ReadEncodedInt();
+                        m_BadlySound = reader.ReadEncodedInt();
 					
                         break;
                     }
                 case 1:
                     {
-                        this.m_Crafter = reader.ReadMobile();
+                        m_Crafter = reader.ReadMobile();
 
-                        this.m_Quality = (InstrumentQuality)reader.ReadEncodedInt();
-                        this.m_Slayer = (SlayerName)reader.ReadEncodedInt();
+                        m_Quality = (ItemQuality)reader.ReadEncodedInt();
+                        m_Slayer = (SlayerName)reader.ReadEncodedInt();
 
-                        this.UsesRemaining = reader.ReadEncodedInt();
+                        UsesRemaining = reader.ReadEncodedInt();
 
-                        this.m_WellSound = reader.ReadEncodedInt();
-                        this.m_BadlySound = reader.ReadEncodedInt();
+                        m_WellSound = reader.ReadEncodedInt();
+                        m_BadlySound = reader.ReadEncodedInt();
 
                         break;
                     }
                 case 0:
                     {
-                        this.m_WellSound = reader.ReadInt();
-                        this.m_BadlySound = reader.ReadInt();
-                        this.UsesRemaining = Utility.RandomMinMax(this.InitMinUses, this.InitMaxUses);
+                        m_WellSound = reader.ReadInt();
+                        m_BadlySound = reader.ReadInt();
+                        UsesRemaining = Utility.RandomMinMax(InitMinUses, InitMaxUses);
 
                         break;
                     }
             }
 
-            this.CheckReplenishUses();
+            CheckReplenishUses();
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!from.InRange(this.GetWorldLocation(), 1))
+            if (!from.InRange(GetWorldLocation(), 1))
             {
                 from.SendLocalizedMessage(500446); // That is too far away.
             }
@@ -639,9 +635,9 @@ namespace Server.Items
                 new InternalTimer(from).Start();
 
                 if (CheckMusicianship(from))
-                    this.PlayInstrumentWell(from);
+                    PlayInstrumentWell(from);
                 else
-                    this.PlayInstrumentBadly(from);
+                    PlayInstrumentBadly(from);
             }
             else
             {
@@ -658,12 +654,12 @@ namespace Server.Items
 
         public void PlayInstrumentWell(Mobile from)
         {
-            from.PlaySound(this.m_WellSound);
+            from.PlaySound(m_WellSound);
         }
 
         public void PlayInstrumentBadly(Mobile from)
         {
-            from.PlaySound(this.m_BadlySound);
+            from.PlaySound(m_BadlySound);
         }
 
         private class InternalTimer : Timer
@@ -673,23 +669,23 @@ namespace Server.Items
             public InternalTimer(Mobile from)
                 : base(TimeSpan.FromSeconds(6.0))
             {
-                this.m_From = from;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_From = from;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             protected override void OnTick()
             {
-                this.m_From.EndAction(typeof(BaseInstrument));
+                m_From.EndAction(typeof(BaseInstrument));
             }
         }
         #region ICraftable Members
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (InstrumentQuality)quality;
+            Quality = (ItemQuality)quality;
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
             return quality;
         }

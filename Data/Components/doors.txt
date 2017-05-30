@@ -1,7 +1,7 @@
 int	int	int	int	int	int	int	int	int	int	string
-										
+
 Category	Piece1	Piece2	Piece3	Piece4	Piece5	Piece6	Piece7	Piece8	FeatureMask	Comment
-										
+
 0	1657	1659	1653	1655	1661	1663	1665	1667	0	Metal Door
 1	8177	8179	8173	8175	8181	8183	8185	8187	0	Metal Gate
 2	1689	1691	1685	1687	1693	1695	1697	1699	0	Rattan Door

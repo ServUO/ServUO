@@ -28,13 +28,15 @@ namespace Server.Spells.SkillMasteries
 		public override double UpKeep { get { return 10; } }
 		public override int RequiredMana{ get { return 24; } }
 		public override bool PartyEffects { get { return false; } }
-        public override double TickTime { get { return 1.5; } }
+        public override double TickTime { get { return 2.0; } }
 
         public override SkillName CastSkill { get { return SkillName.Discordance; } }
 
         private int m_PropertyBonus;
         private double m_DamageChance;
+        private double m_DamageFactor;
         private double m_SlayerBonus;
+        private int m_Rounds;
 
 		public TribulationSpell( Mobile caster, Item scroll ) : base(caster, scroll, m_Info)
 		{
@@ -75,19 +77,20 @@ namespace Server.Spells.SkillMasteries
                 SpellHelper.Turn(Caster, m);
 
                 Target = m;
-                //Caster.SendLocalizedMessage(1234567); //TODO: Message?
 
                 HarmfulSpell(m);
 
                 m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
 
-                m_PropertyBonus = (int)Math.Max(5, ((BaseSkillBonus * 23) + (CollectiveBonus * 8))) * -1;
-                m_DamageChance = Math.Max(20.0, (Caster.Skills[DamageSkill].Value / 2.0)) / 100;
-                m_SlayerBonus = 1;
+                double cast = Caster.Skills[CastSkill].Value;
+                double dam = Caster.Skills[DamageSkill].Value;
 
-                string args = String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, (int)(m_DamageChance * 100));
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.TribulationTarget, 1115740, 1115743, args.ToString()));
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.TribulationCaster, 1115740, 1115742, args.ToString()));
+                m_Rounds = (int)(5 + ((cast - 90) * .3667) + (14 * (int)CollectiveBonus)); // 5 - 11 (14)
+
+                m_PropertyBonus = (int)((5 + ((cast - 90) * .567)) + (14 * (int)CollectiveBonus));          // 5 - 22 (36)
+                m_DamageChance = Math.Max(15, ((dam / 10) * 5)) + (24 * (int)CollectiveBonus);              // 15 - 60 (84)
+                m_DamageFactor = Math.Max(8, ((cast / 10) * 2.667)) + (18 * (int)CollectiveBonus);          // 8 - 32 (50)
+                m_SlayerBonus = 1;
 
                 ISlayer slayer = Instrument as ISlayer;
 
@@ -102,6 +105,15 @@ namespace Server.Spells.SkillMasteries
                     }
                 }
 
+                if(m.Player)
+                {
+                    // ~1_HCI~% Hit Chance.<br>~2_SDI~% Spell Damage.<br>Damage taken has a ~3_EXP~% chance to cause additional burst of physical damage.<br>
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.TribulationTarget, 1115740, 1115742, String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, (int)m_DamageChance)));
+                }
+
+                // Target: ~1_val~ <br> Damage Factor: ~2_val~% <br> Damage Chance: ~3_val~%
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.TribulationCaster, 1115740, 1151388, String.Format("{0}\t{1}\t{2}", m.Name, (int)m_DamageFactor, (int)m_DamageChance)));
+
                 BeginTimer();
             }
 			
@@ -113,6 +125,14 @@ namespace Server.Spells.SkillMasteries
             if(Target != null && Target.Alive && Target.Map != null)
                 Target.FixedEffect(0x376A, 1, 32);
 
+            m_Rounds--;
+
+            if (m_Rounds <= 0)
+            {
+                Expire();
+                return false;
+            }
+
             return base.OnTick();
         }
 
@@ -122,54 +142,41 @@ namespace Server.Spells.SkillMasteries
             BuffInfo.RemoveBuff(Caster, BuffIcon.TribulationCaster);
         }
 		
-		/// <summary>
-		/// Called in BaseCreature.cs - Damage after damage
-		/// </summary>
-		/// <param name="victim"></param>
-		/// <param name="damageTaken"></param>
-		public override void DoDamage(Mobile victim, int damageTaken)
+        public override void OnTargetDamaged(Mobile attacker, Mobile victim, int damageTaken)
 		{
-			if(m_NextDamage > DateTime.UtcNow || !Caster.Player)
+			if(m_NextDamage > DateTime.UtcNow)
 				return;
 				
-            if (m_DamageChance > Utility.RandomDouble())
+            if (m_DamageChance / 100 > Utility.RandomDouble())
 			{
-				double mod = Math.Max(20, ((Caster.Skills[CastSkill].Value / 120) * 60));
-				mod /= 100;
-				int damage = (int)(damageTaken * mod);
-				
-				double reduce = DamageModifier(victim);
-				
-				damage -= (int)(damage * reduce);
+                m_NextDamage = DateTime.UtcNow + TimeSpan.FromSeconds(1);
+
+				int damage = (int)((double)damageTaken * (m_DamageFactor / 100));
+
+                damage = (int)((double)damage * DamageModifier(victim));
                 damage = (int)((double)damage * m_SlayerBonus);
-                
-                AOS.Damage(victim, Caster, damage, 100, 0, 0, 0, 0);
-				
-				m_NextDamage = DateTime.UtcNow + TimeSpan.FromSeconds(1);
+
+                AOS.Damage(victim, Caster, damage, 0, 0, 0, 0, 0, 0, 100);
+                victim.FixedParticles(0x374A, 10, 15, 5038, 1181, 0, EffectLayer.Head);
 			}
 		}
-		
-		/// <summary>
-		/// Called in AOS.cs - HCI Malus
-		/// </summary>
-		/// <returns></returns>
+
 		public override int PropertyBonus()
 		{
 			return m_PropertyBonus;
 		}
-		
-		/// <summary>
-		/// Called in Spell.cs - absorbed damage after all modifiers
-		/// </summary>
-		/// <param name="damage"></param>
-		public override void AbsorbDamage(ref int damage)
-		{
-			double mod = (BaseSkillBonus * 25) + (CollectiveBonus * 8);
-			mod /= 100;
-			
-			damage -= (int)(damage * mod);
-		}
-		
+
+        public override double CollectiveBonus
+        {
+            get
+            {
+                double bonus = Caster.Skills[SkillName.Musicianship].Base + Caster.Skills[SkillName.Discordance].Base +
+                    Caster.Skills[SkillName.Provocation].Base + Caster.Skills[SkillName.Peacemaking].Base;
+
+                return (bonus / 4) / 120;
+            }
+        }
+
 		private class InternalTarget : Target
 		{
 			private TribulationSpell m_Owner;

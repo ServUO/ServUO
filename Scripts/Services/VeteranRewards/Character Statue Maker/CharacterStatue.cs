@@ -638,7 +638,7 @@ namespace Server.Mobiles
 
         public static AddonFitResult CheckDoors(Point3D p, int height, BaseHouse house)
         {
-            ArrayList doors = house.Doors;
+            List<Item> doors = house.Doors;
 
             for (int i = 0; i < doors.Count; i ++)
             {
@@ -686,7 +686,7 @@ namespace Server.Mobiles
                     CharacterStatue statue = new CharacterStatue(from, this.m_Type);
                     CharacterStatuePlinth plinth = new CharacterStatuePlinth(statue);
 
-                    house.Addons.Add(plinth);
+                    house.Addons[plinth] = from;
 
                     if (this.m_Maker is IRewardItem)
                         statue.IsRewardItem = ((IRewardItem)this.m_Maker).IsRewardItem;

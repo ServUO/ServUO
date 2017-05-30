@@ -459,13 +459,6 @@ namespace Server.Engines.Craft
             this.AddCraft(typeof(QuarterStaff), 1044566, 1023721, 73.6, 98.6, typeof(Board), 1044041, 6, 1044351);
             this.AddCraft(typeof(GnarledStaff), 1044566, 1025112, 78.9, 103.9, typeof(Board), 1044041, 7, 1044351);
 
-            /*if (!Core.AOS)	//Duplicate Entries to preserve ordering depending on era
-            {
-                index = this.AddCraft(typeof(FishingPole), 1044566, 1023519, 68.4, 93.4, typeof(Board), 1044041, 5, 1044351); //This is in the categor of Other during AoS
-                this.AddSkill(index, SkillName.Tailoring, 40.0, 45.0);
-                this.AddRes(index, typeof(Cloth), 1044286, 5, 1044287);
-            }*/
-
             if (Core.SE)
             {
                 index = this.AddCraft(typeof(Bokuto), 1044566, 1030227, 70.0, 95.0, typeof(Board), 1044041, 6, 1044351);

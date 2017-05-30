@@ -80,6 +80,11 @@ namespace Server.Mobiles
                 }
             }
 
+            if (GivesMLMinorArtifact && 0.5 > Utility.RandomDouble())
+            {
+                MondainsLegacy.DropPeerlessMinor(c);
+            }
+
             if (this.m_Altar != null)
                 this.m_Altar.OnPeerlessDeath();
         }

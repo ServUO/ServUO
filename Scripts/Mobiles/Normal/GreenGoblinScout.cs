@@ -48,8 +48,6 @@ namespace Server.Mobiles
 
 			Fame = 1500;
 			Karma = -1500;
-
-            QLPoints = 10;
 		}
 
 		public GreenGoblinScout(Serial serial)

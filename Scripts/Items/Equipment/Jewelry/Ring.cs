@@ -1,4 +1,5 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
@@ -65,8 +66,10 @@ namespace Server.Items
         }
     }
 
-    public class SilverRing : BaseRing
+    public class SilverRing : BaseRing, IRepairable
     {
+        public CraftSystem RepairSystem { get { return DefTinkering.CraftSystem; } }
+
         [Constructable]
         public SilverRing()
             : base(0x1F09)

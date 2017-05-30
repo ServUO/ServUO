@@ -44,8 +44,6 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 65.1;
-
-            QLPoints = 20;
         }
 
         public StoneSlith(Serial serial)

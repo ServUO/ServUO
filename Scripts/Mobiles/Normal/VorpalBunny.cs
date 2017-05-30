@@ -10,40 +10,40 @@ namespace Server.Mobiles
         public VorpalBunny()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a vorpal bunny";
-            this.Body = 205;
-            this.Hue = 0x480;
+            Name = "a vorpal bunny";
+            Body = 205;
+            Hue = 0x480;
 
-            this.SetStr(15);
-            this.SetDex(2000);
-            this.SetInt(1000);
+            SetStr(15);
+            SetDex(2000);
+            SetInt(1000);
 
-            this.SetHits(2000);
-            this.SetStam(500);
-            this.SetMana(0);
+            SetHits(2000);
+            SetStam(500);
+            SetMana(0);
 
-            this.SetDamage(1);
+            SetDamage(1);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetSkill(SkillName.MagicResist, 200.0);
-            this.SetSkill(SkillName.Tactics, 5.0);
-            this.SetSkill(SkillName.Wrestling, 5.0);
+            SetSkill(SkillName.MagicResist, 200.0);
+            SetSkill(SkillName.Tactics, 5.0);
+            SetSkill(SkillName.Wrestling, 5.0);
 
-            this.Fame = 1000;
-            this.Karma = 0;
+            Fame = 1000;
+            Karma = 0;
 
-            this.VirtualArmor = 4;
+            VirtualArmor = 4;
 
             int carrots = Utility.RandomMinMax(5, 10);
-            this.PackItem(new Carrot(carrots));
+            PackItem(new Carrot(carrots));
 
             if (Utility.Random(5) == 0)
-                this.PackItem(new BrightlyColoredEggs());
+                PackItem(new BrightlyColoredEggs());
 
-            this.PackStatue();
+            PackStatue();
 
-            this.DelayBeginTunnel();
+            DelayBeginTunnel();
         }
 
         public VorpalBunny(Serial serial)
@@ -74,8 +74,8 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public virtual void DelayBeginTunnel()
@@ -85,14 +85,14 @@ namespace Server.Mobiles
 
         public virtual void BeginTunnel()
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            new BunnyHole().MoveToWorld(this.Location, this.Map);
+            new BunnyHole().MoveToWorld(Location, Map);
 
-            this.Frozen = true;
-            this.Say("* The bunny begins to dig a tunnel back to its underground lair *");
-            this.PlaySound(0x247);
+            Frozen = true;
+            Say("* The bunny begins to dig a tunnel back to its underground lair *");
+            PlaySound(0x247);
 
             Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerCallback(Delete));
         }
@@ -125,7 +125,7 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            this.DelayBeginTunnel();
+            DelayBeginTunnel();
         }
 
         public class BunnyHole : Item
@@ -133,9 +133,9 @@ namespace Server.Mobiles
             public BunnyHole()
                 : base(0x913)
             {
-                this.Movable = false;
-                this.Hue = 1;
-                this.Name = "a mysterious rabbit hole";
+                Movable = false;
+                Hue = 1;
+                Name = "a mysterious rabbit hole";
 
                 Timer.DelayCall(TimeSpan.FromSeconds(40.0), new TimerCallback(Delete));
             }
@@ -158,7 +158,7 @@ namespace Server.Mobiles
 
                 int version = reader.ReadInt();
 
-                this.Delete();
+                Delete();
             }
         }
     }

@@ -6,11 +6,11 @@ namespace Server.Mobiles
     [CorpseName("a najasaurus corpse")]
     public class Najasaurus : BaseCreature
     {
-        public override bool AttacksFocus { get { return true; } }
+        public override bool AttacksFocus { get { return !Controlled; } }
 
         [Constructable]
         public Najasaurus()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, .2, .4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .2, .4)
         {
             this.Name = "a najasaurus";
             this.Body = 1289;

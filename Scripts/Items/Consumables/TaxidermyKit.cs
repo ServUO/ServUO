@@ -617,7 +617,7 @@ namespace Server.Items
                         else if (m_DeedNumber == 1113568)
                             trophy.Hue = 1032;
 
-						house.Addons.Add( trophy );
+                        house.Addons[trophy] = from;
 						Delete();
 					}
 				}

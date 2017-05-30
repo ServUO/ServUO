@@ -52,7 +52,6 @@ namespace Server.Mobiles
 			Karma = -6000;
 
 			VirtualArmor = 40;
-            QLPoints = 8;
 		}
 
 		public override void GenerateLoot()

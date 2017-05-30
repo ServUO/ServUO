@@ -1,4 +1,5 @@
 ﻿using System;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -14,8 +15,15 @@ namespace Server.Items
             this.Hue = 2729;
             this.Weight = 20.0;
         }
-
-        public override void GetProperties(ObjectPropertyList list)
+		
+		public override void OnDoubleClick(Mobile from)
+        {
+			base.OnDoubleClick(from);			
+			
+			from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154225); // *You run your hand across the scale, it is cold to the touch and smooth like glass. You decide to take it to the Master Tinker*
+        }
+		
+		public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 

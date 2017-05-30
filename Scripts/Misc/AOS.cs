@@ -257,25 +257,12 @@ namespace Server
 
             if (fire > 0 && totalDamage > 0)
                 SwarmContext.CheckRemove(m);
-
-            if (totalDamage > 0)
-            {
-                Spells.Mysticism.SleepSpell.OnDamage(m);
-            }
-            #endregion
-
-            #region Skill Mastery Spells
-            SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
-
-            if (spell != null)
-                spell.AbsorbDamage(ref totalDamage);
-
-            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
-            SkillMasterySpell.OnCasterDamaged(m, from, ref totalDamage);
             #endregion
 
             if (keepAlive && totalDamage > m.Hits)
                 totalDamage = m.Hits;
+
+            SpiritualityVirtue.GetDamageReduction(m, ref totalDamage);
 
             if (from != null && !from.Deleted && from.Alive)
             {
@@ -302,6 +289,11 @@ namespace Server
 
             m.Damage(totalDamage, from, true, false);
 
+            #region Skill Mastery Spells
+            ManaShieldSpell.CheckManaShield(m, ref totalDamage);
+            SkillMasterySpell.OnDamaged(m, from, ref totalDamage);
+            #endregion
+
             #region Stygian Abyss
             if (m.Spell != null)
                 ((Spell)m.Spell).CheckCasterDisruption(true, phys, fire, cold, pois, nrgy);
@@ -310,6 +302,9 @@ namespace Server
 
             if (ManaPhasingOrb.IsInManaPhase(m))
                 ManaPhasingOrb.RemoveFromTable(m);
+
+            Spells.Mysticism.SleepSpell.OnDamage(m);
+            Spells.Mysticism.PurgeMagicSpell.OnMobileDoDamage(from);
             #endregion
 
             return totalDamage;
@@ -509,7 +504,7 @@ namespace Server
 
                 // attacker gets 10% bonus when they're under divine fury
                 if (DivineFurySpell.UnderEffect(m))
-                    value += m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 20 : 10;
+                    value += DivineFurySpell.GetDamageBonus(m);
 
                 // Horrific Beast transformation gives a +25% bonus to damage.
                 if (TransformationSpellHelper.UnderTransformation(m, typeof(HorrificBeastSpell)))
@@ -613,7 +608,7 @@ namespace Server
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
-                    value += m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 15 : 10;
+                    value += DivineFurySpell.GetWeaponSpeedBonus(m);
 
                 value += HonorableExecution.GetSwingBonus(m);
 
@@ -656,7 +651,7 @@ namespace Server
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
-                    value += m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 15 : 10;                    
+                    value += DivineFurySpell.GetAttackBonus(m);                   
 
                 if (BaseWeapon.CheckAnimal(m, typeof(GreyWolf)) || BaseWeapon.CheckAnimal(m, typeof(BakeKitsune)))
                     value += 20; // attacker gets 20% bonus when under Wolf or Bake Kitsune form
@@ -698,7 +693,7 @@ namespace Server
                     value -= 60;
 
                 if (DivineFurySpell.UnderEffect(m))
-                    value -= m.Skills[SkillName.Chivalry].Value >= 120.0 && m.Karma >= 10000 ? 10 : 20;
+                    value -= DivineFurySpell.GetDefendMalus(m);
 
                 if (HitLower.IsUnderDefenseEffect(m))
                     value -= 25; // Under Hit Lower Defense effect -> 25% malus

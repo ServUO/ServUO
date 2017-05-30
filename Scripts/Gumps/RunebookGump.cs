@@ -60,6 +60,8 @@ namespace Server.Gumps
                 return 1102;
             else if (map == Map.Tokuno)
                 return 1154;
+            else if (map == Map.TerMur)
+                return 1645;
 
             return 0;
         }

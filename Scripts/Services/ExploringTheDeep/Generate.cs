@@ -283,6 +283,15 @@ namespace Server.Engines.ExploringTheDeep
             scroll = new JournalScroll();
             scroll.MoveToWorld(new Point3D(2578, 1120, 0), Map.Trammel);
 
+            scroll = new JosefSkimmonsScroll();
+            scroll.MoveToWorld(new Point3D(2632, 2085, 21), Map.Trammel);
+
+            scroll = new CousteauPerronScroll();
+            scroll.MoveToWorld(new Point3D(2632, 2081, 12), Map.Trammel);
+
+            scroll = new EliseTrentScroll();
+            scroll.MoveToWorld(new Point3D(2636, 2082, 16), Map.Trammel);
+
             scroll = new SorcerersScroll();
             scroll.MoveToWorld(new Point3D(101, 42, -22), Map.Ilshenar);
             #endregion

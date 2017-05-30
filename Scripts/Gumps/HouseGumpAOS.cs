@@ -44,7 +44,7 @@ namespace Server.Gumps
         private const int LabelHue = 0x481;
         private const int HighlightedLabelHue = 0x64;
 
-        private ArrayList m_List;
+        private List<Mobile> m_List;
 
         private string GetOwnerName()
         {
@@ -90,12 +90,12 @@ namespace Server.Gumps
             this.AddHtmlLocalized(x + 35, y, 240, 20, number, enabled ? LabelColor : DisabledColor, false, false);
         }
 
-        public void AddList(ArrayList list, int button, bool accountOf, bool leadingStar, Mobile from)
+        public void AddList(List<Mobile> list, int button, bool accountOf, bool leadingStar, Mobile from)
         {
             if (list == null)
                 return;
 
-            this.m_List = new ArrayList(list);
+            this.m_List = new List<Mobile>(list);
 
             int lastPage = 0;
             int index = 0;
@@ -119,7 +119,7 @@ namespace Server.Gumps
                     lastPage = page;
                 }
 
-                Mobile m = (Mobile)list[i];
+                Mobile m = list[i];
 
                 string name;
                 int labelHue = LabelHue;
@@ -739,10 +739,10 @@ namespace Server.Gumps
 
                         house.MoveAllToCrate();
 
-                        newHouse.Friends = new ArrayList(house.Friends);
-                        newHouse.CoOwners = new ArrayList(house.CoOwners);
-                        newHouse.Bans = new ArrayList(house.Bans);
-                        newHouse.Access = new ArrayList(house.Access);
+                        newHouse.Friends = new List<Mobile>(house.Friends);
+                        newHouse.CoOwners = new List<Mobile>(house.CoOwners);
+                        newHouse.Bans = new List<Mobile>(house.Bans);
+                        newHouse.Access = new List<Mobile>(house.Access);
                         newHouse.BuiltOn = house.BuiltOn;
                         newHouse.LastTraded = house.LastTraded;
                         newHouse.Public = house.Public;

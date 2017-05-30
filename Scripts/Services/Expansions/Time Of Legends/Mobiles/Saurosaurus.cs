@@ -6,7 +6,7 @@ namespace Server.Mobiles
     [CorpseName("a saurosaurus corpse")]
     public class Saurosaurus : BaseCreature
     {
-        public override bool AttacksFocus { get { return true; } }
+        public override bool AttacksFocus { get { return !Controlled; } }
 
         [Constructable]
         public Saurosaurus() : base(AIType.AI_Mage, FightMode.Closest, 10, 1, .2, .4)

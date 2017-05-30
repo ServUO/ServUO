@@ -20,33 +20,34 @@ namespace Server.Mobiles
         {
             m_Instances.Add(this);
 
-            this.Body = 0x2EA;
+            this.Body = 0x311;
+			this.Hue = 33072;
             this.Name = "Djinn";
 
-            this.SetStr(476, 505);
-            this.SetDex(76, 95);
-            this.SetInt(301, 325);
+            this.SetStr(320, 500);
+            this.SetDex(200, 300);
+            this.SetInt(600, 700);
 
-            this.SetHits(586, 603);
+            this.SetHits(2003);
 
-            this.SetDamage(16, 20);
+            this.SetDamage(11, 13);
 
             this.SetDamageType(ResistanceType.Physical, 0);
-            this.SetDamageType(ResistanceType.Fire, 40);
-            this.SetDamageType(ResistanceType.Energy, 60);
+            this.SetDamageType(ResistanceType.Fire, 50);
+            this.SetDamageType(ResistanceType.Energy, 50);
 
-            this.SetResistance(ResistanceType.Physical, 45, 60);
-            this.SetResistance(ResistanceType.Fire, 50, 60);
+            this.SetResistance(ResistanceType.Physical, 50, 60);
+            this.SetResistance(ResistanceType.Fire, 60, 70);
             this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            this.SetResistance(ResistanceType.Poison, 30, 40);
+            this.SetResistance(ResistanceType.Energy, 80, 90);
 
             this.SetSkill(SkillName.Wrestling, 60.0, 80.0);
-            this.SetSkill(SkillName.Tactics, 70.0, 80.0);
-            this.SetSkill(SkillName.MagicResist, 100.0, 110.0);
-            this.SetSkill(SkillName.Magery, 120.0, 130.0);
-            this.SetSkill(SkillName.EvalInt, 100.0, 110.0);
-            this.SetSkill(SkillName.Meditation, 100.0, 110.0);
+            this.SetSkill(SkillName.Tactics, 60.0, 80.0);
+            this.SetSkill(SkillName.MagicResist, 60.0, 80.0);
+            this.SetSkill(SkillName.Magery, 100.0, 120.0);
+            this.SetSkill(SkillName.EvalInt, 60.0, 110.0);
+			this.SetSkill(SkillName.DetectHidden, 55.0);
 
             this.Fame = 15000;
             this.Karma = -15000;
@@ -56,6 +57,11 @@ namespace Server.Mobiles
 
             this.m_Timer = new SummonEfreetTimer(this);
             this.m_Timer.Start();
+        }
+		
+		public override void GenerateLoot()
+        {
+            this.AddLoot(LootPack.FilthyRich);
         }
 
         public override void OnDeath(Container c)
@@ -70,8 +76,8 @@ namespace Server.Mobiles
 
                     if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                     {
-                        Item item = new AquaGem();
-
+						Item item = new AquaGem();
+						
                         if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
                         {
                             m.BankBox.DropItem(item);

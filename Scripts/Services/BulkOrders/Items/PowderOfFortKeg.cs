@@ -22,7 +22,7 @@ namespace Server.Items
 
         [Constructable]
         public PowderOfFortKeg(int uses)
-            : base(0x9E7E)
+            : base(6871)
         {
             _Charges = uses;
 
@@ -61,7 +61,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.Backpack != null && IsChildOf(from.Backpack))
+            if (from.Backpack != null && IsChildOf(from.Backpack) && Charges > 0)
             {
                 PowderOfTemperament powder = from.Backpack.FindItemByType(typeof(PowderOfTemperament)) as PowderOfTemperament;
 
@@ -81,6 +81,8 @@ namespace Server.Items
 
                         return;
                     }
+
+                    Charges--;
                 }
 
                 from.PlaySound(0x247);
@@ -145,6 +147,9 @@ namespace Server.Items
             int version = reader.ReadInt();
 
             _Charges = reader.ReadInt();
+
+            if (ItemID != 6871)
+                ItemID = 6871;
         }
     }
 }

@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,11 +31,11 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(Wasabi), 2, 20, 0x24E8, 0));
-                this.Add(new GenericBuyInfo(typeof(Wasabi), 2, 20, 0x24E9, 0));
-                this.Add(new GenericBuyInfo(typeof(BentoBox), 6, 20, 0x2836, 0));
-                this.Add(new GenericBuyInfo(typeof(BentoBox), 6, 20, 0x2837, 0));
-                this.Add(new GenericBuyInfo(typeof(GreenTeaBasket), 2, 20, 0x284B, 0));
+                Add(new GenericBuyInfo(typeof(Wasabi), 2, 20, 0x24E8, 0));
+                Add(new GenericBuyInfo(typeof(Wasabi), 2, 20, 0x24E9, 0));
+                Add(new GenericBuyInfo(typeof(BentoBox), 6, 20, 0x2836, 0));
+                Add(new GenericBuyInfo(typeof(BentoBox), 6, 20, 0x2837, 0));
+                Add(new GenericBuyInfo(typeof(GreenTeaBasket), 2, 20, 0x284B, 0));
             }
         }
 
@@ -43,9 +43,9 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(Wasabi), 1);
-                this.Add(typeof(BentoBox), 3);
-                this.Add(typeof(GreenTeaBasket), 1);
+                Add(typeof(Wasabi), 1);
+                Add(typeof(BentoBox), 3);
+                Add(typeof(GreenTeaBasket), 1);
             }
         }
     }

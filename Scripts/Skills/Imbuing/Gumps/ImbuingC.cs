@@ -110,94 +110,91 @@ namespace Server.Gumps
 
             // ------------------------------ Gump Menu -------------------------------------------------------------
             AddPage(0);
-            AddBackground(0, 0, 540, 450, 5054);
-            AddImageTiled(10, 10, 520, 430, 2624);
+            AddBackground(0, 0, 520, 440, 5054);
+            AddImageTiled(10, 10, 500, 420, 2624);
 
-            AddImageTiled(10, 35, 520, 10, 5058);
-            AddImageTiled(260, 45, 15, 290, 5058);
-            AddImageTiled(10, 185, 520, 10, 5058);
-            AddImageTiled(10, 335, 520, 10, 5058);
-            AddImageTiled(10, 405, 520, 10, 5058);
+            AddImageTiled(10, 30, 500, 10, 5058);
+            AddImageTiled(250, 40, 10, 290, 5058);
+            AddImageTiled(10, 180, 500, 10, 5058);
+            AddImageTiled(10, 330, 500, 10, 5058);
+            AddImageTiled(10, 400, 500, 10, 5058);
 
-            AddAlphaRegion(10, 10, 520, 430);
+            AddAlphaRegion(10, 10, 500, 420);
 
-            AddHtmlLocalized(10, 13, 520, 18, 1079717, LabelColor, false, false); //<CENTER>IMBUING CONFIRMATION</CENTER>
-            AddHtmlLocalized(57, 49, 200, 18, 1114269, LabelColor, false, false); //PROPERTY INFORMATION
+            AddHtmlLocalized(10, 12, 520, 20, 1079717, LabelColor, false, false); //<CENTER>IMBUING CONFIRMATION</CENTER>
+            AddHtmlLocalized(50, 50, 200, 20, 1114269, LabelColor, false, false); //PROPERTY INFORMATION
 
-            // - Attribute to Imbue
-            AddHtmlLocalized(30, 80, 80, 17, 1114270, LabelColor, false, false);  //Property:
-            AddHtmlLocalized(100, 80, 150, 17, m_Definition.AttributeName, LabelColor, false, false);
+            AddHtmlLocalized(25, 80, 80, 20, 1114270, LabelColor, false, false);  //Property:
+            AddHtmlLocalized(95, 80, 150, 20, m_Definition.AttributeName, LabelColor, false, false);
+
+            AddHtmlLocalized(25, 100, 80, 20, 1114271, LabelColor, false, false); // Replaces:
+            int replace = WhatReplacesWhat(m_Mod, m_Item);
+
+            if (replace > 0)
+            {
+                AddHtmlLocalized(95, 100, 150, 20, replace, LabelColor, false, false);
+            }
 
             // - Weight Modifier
-            AddHtmlLocalized(30, 120, 80, 17, 1114272, 0xFFFFFF, false, false);   //Weight:
+            AddHtmlLocalized(25, 120, 80, 20, 1114272, 0xFFFFFF, false, false);   //Weight:
+            AddLabel(95, 120, 1153, String.Format("{0}x", ((double)m_Definition.Weight / 100.0).ToString("0.0")));
 
-            double w = (double)m_Definition.Weight / 100.0;
-            AddHtml(90, 120, 80, 17, String.Format("<BASEFONT COLOR=#CCCCFF> {0}x", w), false, false);
-
-            AddHtmlLocalized(30, 140, 80, 17, 1114273, LabelColor, false, false);   //Intensity:
-            AddHtml(90, 140, 80, 17, String.Format("<BASEFONT COLOR=#CCCCFF> {0}%", currentIntensity), false, false);
+            AddHtmlLocalized(25, 140, 80, 20, 1114273, LabelColor, false, false);   //Intensity:
+            AddLabel(95, 140, 1153, String.Format("{0}%", currentIntensity));
 
             // - Materials needed
-            AddHtmlLocalized(10, 199, 255, 18, 1044055, LabelColor, false, false); //<CENTER>MATERIALS</CENTER>
-            AddHtmlLocalized(40, 230, 180, 17, m_Definition.PrimaryName, LabelColor, false, false);
-            AddHtml(210, 230, 40, 17, String.Format("<BASEFONT COLOR=#CCCCFF> {0}", m_PrimResAmount.ToString()), false, false);
-            AddHtmlLocalized(40, 255, 180, 17, m_Definition.GemName, LabelColor, false, false);
-            AddHtml(210, 255, 40, 17, String.Format("<BASEFONT COLOR=#CCCCFF> {0}", m_GemAmount.ToString()), false, false);
+            AddHtmlLocalized(10, 200, 245, 20, 1044055, LabelColor, false, false); //<CENTER>MATERIALS</CENTER>
+
+            AddHtmlLocalized(40, 230, 180, 20, m_Definition.PrimaryName, LabelColor, false, false);
+            AddLabel(210, 230, 1153, m_PrimResAmount.ToString());
+
+            AddHtmlLocalized(40, 255, 180, 20, m_Definition.GemName, LabelColor, false, false);
+            AddLabel(210, 255, 1153, m_GemAmount.ToString());
+
             if (m_SpecResAmount > 0)
             {
                 AddHtmlLocalized(40, 280, 180, 17, m_Definition.SpecialName, LabelColor, false, false);
-                AddHtml(210, 280, 40, 17, String.Format("<BASEFONT COLOR=#CCCCFF> {0}", m_SpecResAmount.ToString()), false, false);
+                AddLabel(210, 280, 1153, m_SpecResAmount.ToString());
             }
 
             // - Mod Description
-            AddHtmlLocalized(290, 65, 215, 110, m_Definition.Description, LabelColor, false, false); 
+            AddHtmlLocalized(280, 55, 200, 110, m_Definition.Description, LabelColor, false, false); 
 
-            AddHtmlLocalized(365, 199, 150, 18, 1113650, LabelColor, false, false); //RESULTS
+            AddHtmlLocalized(350, 200, 150, 20, 1113650, LabelColor, false, false); //RESULTS
 			
-            AddHtmlLocalized(288, 220, 150, 17, 1113645, LabelColor, false, false);                                 //Properties:
-            AddHtml(443, 220, 80, 17, String.Format("<BASEFONT COLOR=#CCFFCC> {0}/5", m_TotalProps + 1), false, false);
-            AddHtmlLocalized(288, 240, 150, 17, 1113646, LabelColor, false, false);                                   //Total Property Weight:
-            AddHtml(443, 240, 80, 17, String.Format("<BASEFONT COLOR=#CCFFCC> {0}/{1}", m_TotalItemWeight + (int)m_PropWeight, m_MaxWeight), false, false);
+            AddHtmlLocalized(280, 220, 150, 20, 1113645, LabelColor, false, false); //Properties:
+            AddLabel(430, 220, m_TotalProps + 1 >= 5 ? 54 : 64, String.Format("{0}/5", m_TotalProps + 1));
 
-            // - Times Imbued
-            AddHtmlLocalized(288, 260, 150, 17, 1113647, LabelColor, false, false);                                   //Times Imbued:
-            AddHtml(443, 260, 80, 17, String.Format("<BASEFONT COLOR=#CCFFCC> {0}/20", timesImbued + 1), false, false);
+            int projWeight = m_TotalItemWeight + m_PropWeight;
+            AddHtmlLocalized(280, 240, 150, 20, 1113646, LabelColor, false, false); //Total Property Weight:
+            AddLabel(430, 240, projWeight >= m_MaxWeight ? 54 : 64, String.Format("{0}/{1}", projWeight, m_MaxWeight));
 
-            // - Name of Attribute to be Replaced
-            int replace = WhatReplacesWhat(m_Mod, m_Item);
-            AddHtmlLocalized(30, 100, 80, 17, 1114271, LabelColor, false, false);
-            if (replace <= 0)
-                replace = m_Definition.AttributeName;
-
-            AddHtmlLocalized(100, 100, 150, 17, replace, LabelColor, false, false);
+            AddHtmlLocalized(280, 260, 150, 20, 1113647, LabelColor, false, false); //Times Imbued:
+            AddLabel(430, 260, timesImbued >= 20 ? 54 : 64, String.Format("{0}/20", timesImbued));
 
             // ===== CALCULATE DIFFICULTY =====
             double dif;
             double suc = Imbuing.GetSuccessChance(from, item, m_TotalItemWeight, m_PropWeight, out dif);
+            int color = 64;
 
-            int Succ = Convert.ToInt32(suc);
-            string color;
-
-            // = Imbuing Success Chance % 
-            AddHtmlLocalized(305, 300, 150, 17, 1044057, 0xFFFFFF, false, false);
-            if (Succ <= 1) color = "#FF5511";
-            else if (Succ > 1 && Succ < 10) color = "#EE6611";
-            else if (Succ >= 10 && Succ < 20) color = "#DD7711";
-            else if (Succ >= 20 && Succ < 30) color = "#CC8811";
-            else if (Succ >= 30 && Succ < 40) color = "#BB9911";
-            else if (Succ >= 40 && Succ < 50) color = "#AAAA11";
-            else if (Succ >= 50 && Succ < 60) color = "#99BB11";
-            else if (Succ >= 60 && Succ < 70) color = "#88CC11";
-            else if (Succ >= 70 && Succ < 80) color = "#77DD11";
-            else if (Succ >= 80 && Succ < 90) color = "#66EE11";
-            else if (Succ >= 90 && Succ < 100) color = "#55FF11";
-            else if (Succ >= 100) color = "#01FF01";
-            else color = "#FFFFFF";
+            AddHtmlLocalized(300, 300, 150, 20, 1044057, 0xFFFFFF, false, false); // Success Chance:
 
             if (suc > 100) suc = 100;
             if (suc < 0) suc = 0;
 
-            AddHtml(430, 300, 80, 17, String.Format("<BASEFONT COLOR={0}>\t{1}%", color, suc), false, false);
+            if (suc < 75.0)
+            {
+                if (suc >= 50.0)
+                {
+                    color = 54;
+                }
+                else
+                {
+                    color = 46;
+                }
+            }
+
+            AddLabel(420, 300, color, String.Format("{0}%", suc.ToString("0.0")));
 
             // - Attribute Level
             if (maxInt > 1)
@@ -207,51 +204,48 @@ namespace Server.Gumps
                     m_Value = 1;
 
                 // = New Value:
-                AddHtmlLocalized(245, 350, 100, 17, 1062300, LabelColor, false, false); 
-                // - Mage Weapon Value ( i.e [Mage Weapon -25] )
-                if (m_Mod == 41)
-					AddHtml(254, 374, 50, 17, String.Format("<BASEFONT COLOR=#CCCCFF> -{0}", 30 - m_Value), false, false);
-                // - Show Property Value as % ( i.e [Hit Fireball 25%] )
-                else if (maxInt <= 8 || m_Mod == 21 || m_Mod == 17) 
-                    AddHtml(254, 374, 50, 17, String.Format("<BASEFONT COLOR=#CCCCFF> {0}", m_Value), false, false);
-                // - Show Property Value as just Number ( i.e [Mana Regen 2] )
-                else
-					AddHtml(254, 374, 50, 17, String.Format("<BASEFONT COLOR=#CCCCFF> {0}%", m_Value), false, false);
+                AddHtmlLocalized(235, 350, 100, 17, 1062300, LabelColor, false, false); // New Value:
+
+                if (m_Mod == 41)                                     // - Mage Weapon Value ( i.e [Mage Weapon -25] )
+                    AddHtml(240, 368, 40, 20, String.Format("<CENTER><BASEFONT COLOR=#CCCCFF> -{0}</CENTER>", 30 - m_Value), false, false);
+                else if (maxInt <= 8 || m_Mod == 21 || m_Mod == 17)  // - Show Property Value as just Number ( i.e [Mana Regen 2] )
+                    AddHtml(240, 368, 40, 20, String.Format("<CENTER><BASEFONT COLOR=#CCCCFF> {0}</CENTER>", m_Value), false, false);
+                else                                                 // - Show Property Value as % ( i.e [Hit Fireball 25%] )
+                    AddHtml(240, 368, 40, 20, String.Format("<CENTER><BASEFONT COLOR=#CCCCFF> {0}%</CENTER>", m_Value), false, false);
 
                 // == Buttons ==
-                //0x1467???
-                AddButton(192, 376, 5230, 5230, 10053, GumpButtonType.Reply, 0); // To Minimum Value
-                AddButton(211, 376, 5230, 5230, 10052, GumpButtonType.Reply, 0); // Dec Value by %
-                AddButton(230, 376, 5230, 5230, 10051, GumpButtonType.Reply, 0); // dec value by 1
+                AddButton(180, 370, 5230, 5230, 10053, GumpButtonType.Reply, 0); // To Minimum Value
+                AddButton(200, 370, 5230, 5230, 10052, GumpButtonType.Reply, 0); // Dec Value by %
+                AddButton(220, 370, 5230, 5230, 10051, GumpButtonType.Reply, 0); // dec value by 1
 
-                AddButton(331, 376, 5230, 5230, 10056, GumpButtonType.Reply, 0); //To Maximum Value
-                AddButton(312, 376, 5230, 5230, 10055, GumpButtonType.Reply, 0); // Inc Value by %
-                AddButton(293, 376, 5230, 5230, 10054, GumpButtonType.Reply, 0); // inc Value by 1
+                AddButton(320, 370, 5230, 5230, 10056, GumpButtonType.Reply, 0); //To Maximum Value
+                AddButton(300, 370, 5230, 5230, 10055, GumpButtonType.Reply, 0); // Inc Value by %
+                AddButton(280, 370, 5230, 5230, 10054, GumpButtonType.Reply, 0); // inc Value by 1
 
-                AddLabel(341, 374, 0, ">");
-                AddLabel(337, 374, 0, ">");
-                AddLabel(333, 374, 0, ">");
+                AddLabel(322, 368, 0, ">");
+                AddLabel(326, 368, 0, ">");
+                AddLabel(330, 368, 0, ">");
 
-                AddLabel(320, 374, 0, ">");
-                AddLabel(316, 374, 0, ">");
+                AddLabel(304, 368, 0, ">");
+                AddLabel(308, 368, 0, ">");
 
-                AddLabel(298, 374, 0, ">");
+                AddLabel(286, 368, 0, ">");
 
-                AddLabel(235, 374, 0, "<");
+                AddLabel(226, 368, 0, "<");
 
-                AddLabel(216, 374, 0, "<");
-                AddLabel(212, 374, 0, "<");
+                AddLabel(203, 368, 0, "<");
+                AddLabel(207, 368, 0, "<");
 
-                AddLabel(199, 374, 0, "<");
-                AddLabel(195, 374, 0, "<");
-                AddLabel(191, 374, 0, "<");
+                AddLabel(181, 368, 0, "<");
+                AddLabel(185, 368, 0, "<");
+                AddLabel(189, 368, 0, "<");
             }
 
-            AddButton(19, 416, 4005, 4007, 10099, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(58, 417,  100, 18, 1114268, LabelColor, false, false);           //Back 
+            AddButton(15, 410, 4005, 4007, 10099, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(50, 410,  100, 18, 1114268, LabelColor, false, false);           //Back 
 
-            AddButton(400, 416, 4005, 4007, 10100, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(439, 417, 120, 18, 1114267, LabelColor, false, false);         //Imbue Item
+            AddButton(390, 410, 4005, 4007, 10100, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(425, 410, 120, 18, 1114267, LabelColor, false, false);         //Imbue Item
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
@@ -392,6 +386,11 @@ namespace Server.Gumps
         // =========== Check if Choosen Attribute Replaces Another =================
         public static int WhatReplacesWhat(int mod, Item item)
         {
+            if (Imbuing.GetValueForMod(item, mod) > 0)
+            {
+                return Imbuing.GetAttributeName(mod);
+            }
+
             if (item is BaseWeapon)
             {
                 BaseWeapon i = item as BaseWeapon;
@@ -433,24 +432,6 @@ namespace Server.Gumps
                     else if (i.WeaponAttributes.HitEnergyArea > 0)
                         return GetNameForAttribute(AosWeaponAttribute.HitEnergyArea);
                 }
-                // OnHitLeech replace OnHitLeech
-                /*if (mod >= 25 && mod <= 27)
-                {
-                    if (i.WeaponAttributes.HitLeechHits > 0)
-                        return GetNameForAttribute(AosWeaponAttribute.HitLeechHits);
-                    else if (i.WeaponAttributes.HitLeechStam > 0)
-                        return GetNameForAttribute(AosWeaponAttribute.HitLeechStam);
-                    else if (i.WeaponAttributes.HitLeechMana > 0)
-                        return GetNameForAttribute(AosWeaponAttribute.HitLeechMana);
-                }
-                // HitLower replace HitLower 
-                if (mod >= 28 && mod <= 29)
-                {
-                    if (i.WeaponAttributes.HitLowerAttack > 0)
-                        return GetNameForAttribute(AosWeaponAttribute.HitLowerAttack);
-                    else if (i.WeaponAttributes.HitLowerDefend > 0)
-                        return GetNameForAttribute(AosWeaponAttribute.HitLowerDefend);
-                }*/
             }
             if (item is BaseJewel)
             {

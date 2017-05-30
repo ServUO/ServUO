@@ -59,27 +59,36 @@ namespace Server.Mobiles
                 case 3: PackItem(new VengefulSpiritScroll()); break;
 			}
 
-            switch ( Utility.Random(3) )
+            switch (Utility.Random(4))
             {
                 case 0:
                     {
-                        this.BodyValue = 116;
-                        this.ItemID = 16039;
+                        BodyValue = 116;
+                        ItemID = 16039;
                         break;
                     }
                 case 1:
                     {
-                        this.BodyValue = 178;
-                        this.ItemID = 16041;
+                        BodyValue = 177;
+                        ItemID = 16053;
                         break;
                     }
                 case 2:
                     {
-                        this.BodyValue = 179;
-                        this.ItemID = 16055;
+                        BodyValue = 178;
+                        ItemID = 16041;
+                        break;
+                    }
+                case 3:
+                    {
+                        BodyValue = 179;
+                        ItemID = 16055;
                         break;
                     }
             }
+
+            if (Utility.RandomDouble() < 0.05)
+                Hue = 1910;
 
             this.PackItem(new SulfurousAsh(Utility.RandomMinMax(3, 5)));
         }

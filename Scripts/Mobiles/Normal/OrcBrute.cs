@@ -10,47 +10,47 @@ namespace Server.Mobiles
         public OrcBrute()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Body = 189;
+            Body = 189;
 
-            this.Name = "an orc brute";
-            this.BaseSoundID = 0x45A;
+            Name = "an orc brute";
+            BaseSoundID = 0x45A;
 
-            this.SetStr(767, 945);
-            this.SetDex(66, 75);
-            this.SetInt(46, 70);
+            SetStr(767, 945);
+            SetDex(66, 75);
+            SetInt(46, 70);
 
-            this.SetHits(476, 552);
+            SetHits(476, 552);
 
-            this.SetDamage(20, 25);
+            SetDamage(20, 25);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Fire, 40, 50);
-            this.SetResistance(ResistanceType.Cold, 25, 35);
-            this.SetResistance(ResistanceType.Poison, 25, 35);
-            this.SetResistance(ResistanceType.Energy, 25, 35);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 40, 50);
+            SetResistance(ResistanceType.Cold, 25, 35);
+            SetResistance(ResistanceType.Poison, 25, 35);
+            SetResistance(ResistanceType.Energy, 25, 35);
 
-            this.SetSkill(SkillName.Macing, 90.1, 100.0);
-            this.SetSkill(SkillName.MagicResist, 125.1, 140.0);
-            this.SetSkill(SkillName.Tactics, 90.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 90.1, 100.0);
+            SetSkill(SkillName.Macing, 90.1, 100.0);
+            SetSkill(SkillName.MagicResist, 125.1, 140.0);
+            SetSkill(SkillName.Tactics, 90.1, 100.0);
+            SetSkill(SkillName.Wrestling, 90.1, 100.0);
 
-            this.Fame = 15000;
-            this.Karma = -15000;
+            Fame = 15000;
+            Karma = -15000;
 
-            this.VirtualArmor = 50;
+            VirtualArmor = 50;
 
             Item ore = new ShadowIronOre(25);
             ore.ItemID = 0x19B9;
-            this.PackItem(ore);
-            this.PackItem(new IronIngot(10));
+            PackItem(ore);
+            PackItem(new IronIngot(10));
 
             if (0.05 > Utility.RandomDouble())
-                this.PackItem(new OrcishKinMask());
+                PackItem(new OrcishKinMask());
 
             if (0.2 > Utility.RandomDouble())
-                this.PackItem(new BolaBall());
+                PackItem(new BolaBall());
 
             PackItem(new Yeast());
         }
@@ -107,8 +107,8 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Rich);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Rich);
         }
 
         public override bool IsEnemy(Mobile m)
@@ -139,7 +139,7 @@ namespace Server.Mobiles
             if (caster == this)
                 return;
 
-            this.SpawnOrcLord(caster);
+            SpawnOrcLord(caster);
         }
 
         public void SpawnOrcLord(Mobile target)
@@ -151,7 +151,7 @@ namespace Server.Mobiles
 
             int orcs = 0;
 
-            foreach (Mobile m in this.GetMobilesInRange(10))
+            foreach (Mobile m in GetMobilesInRange(10))
             {
                 if (m is OrcishLord)
                     ++orcs;
@@ -161,7 +161,7 @@ namespace Server.Mobiles
             {
                 BaseCreature orc = new SpawnedOrcishLord();
 
-                orc.Team = this.Team;
+                orc.Team = Team;
 
                 Point3D loc = target.Location;
                 bool validLocation = false;
@@ -172,8 +172,8 @@ namespace Server.Mobiles
                     int y = target.Y + Utility.Random(3) - 1;
                     int z = map.GetAverageZ(x, y);
 
-                    if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
-                        loc = new Point3D(x, y, this.Z);
+                    if (validLocation = map.CanFit(x, y, Z, 16, false, false))
+                        loc = new Point3D(x, y, Z);
                     else if (validLocation = map.CanFit(x, y, z, 16, false, false))
                         loc = new Point3D(x, y, z);
                 }

@@ -811,8 +811,8 @@ namespace Server.Engines.Shadowguard
             {
                 Point3D p = encounter.SpawnPoints[1];
                 encounter.ConvertOffset(ref p);
-                from.MoveToWorld(p, Map.TerMur);
                 BaseCreature.TeleportPets(from, p, from.Map);
+                from.MoveToWorld(p, Map.TerMur);
             }
 		}
 		

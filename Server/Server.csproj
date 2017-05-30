@@ -186,7 +186,6 @@
     <Compile Include="Gumps\KRGumpLabel.cs" />
     <Compile Include="Gumps\RelayInfo.cs" />
     <Compile Include="Persistence\Persistence.cs" />
-    <Compile Include="Berserk.cs" />
     <Compile Include="PromptExtensions.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Items\VirtualCheck.cs" />

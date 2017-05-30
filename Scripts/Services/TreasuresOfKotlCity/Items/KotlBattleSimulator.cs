@@ -12,7 +12,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public static KotlBattleSimulator Instance { get; set; }
 
         public static int Levels = 7;
-        public static Rectangle2D SpawnBounds = new Rectangle2D(512, 2280, 63, 55);
+        public static Rectangle2D SpawnBounds = new Rectangle2D(500, 2272, 87, 71);
         public static Type[] SpawnTypes = new Type[] { typeof(SpectralKotlWarrior), typeof(SpectralMyrmidexWarrior) };
 
         public static TimeSpan NextSpawnDuration { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(2, 25)); } }
@@ -149,7 +149,15 @@ namespace Server.Engines.TreasuresOfKotlCity
             }
             while (!Map.TerMur.CanSpawnMobile(loc));
 
-            BaseCreature bc = Activator.CreateInstance(SpawnTypes[Utility.Random(SpawnTypes.Length)]) as BaseCreature;
+            bool strong = Map.Tiles.GetStaticTiles(loc.X, loc.Y, true).Length > 0;
+            BaseCreature bc;
+
+            switch (Utility.Random(2))
+            {
+                default:
+                case 0: bc = new SpectralKotlWarrior(strong); break;
+                case 1: bc = new SpectralMyrmidexWarrior(strong); break;
+            }
 
             if (bc != null)
             {
