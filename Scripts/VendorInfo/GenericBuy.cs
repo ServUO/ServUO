@@ -141,7 +141,7 @@ namespace Server.Mobiles
             set { m_Stackable = value; }
         }
 
-        public bool EconomyItem { get { return Core.AOS && BaseVendor.UseVendorEconomy && m_Stackable; } }
+        public bool EconomyItem { get { return Core.AOS && !Siege.SiegeShard && BaseVendor.UseVendorEconomy && m_Stackable; } }
 
         public int Price
         {
