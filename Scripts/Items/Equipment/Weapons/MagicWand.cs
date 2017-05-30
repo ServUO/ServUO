@@ -1,9 +1,12 @@
 using System;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    public class MagicWand : BaseBashing
+    public class MagicWand : BaseBashing, IRepairable
     {
+        public CraftSystem RepairSystem { get { return DefCarpentry.CraftSystem; } }
+
         [Constructable]
         public MagicWand()
             : base(0xDF2)

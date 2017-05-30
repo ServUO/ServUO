@@ -6,7 +6,6 @@ namespace Server.Mobiles
     [CorpseName("an goblin corpse")]
     public class EnslavedGreenGoblinAlchemist : BaseCreature
     {
-        //public override InhumanSpeech SpeechType{ get{ return InhumanSpeech.Orc; } }
         [Constructable]
         public EnslavedGreenGoblinAlchemist()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -42,7 +41,6 @@ namespace Server.Mobiles
             this.Karma = -1500;
 
             this.VirtualArmor = 28;
-            this.QLPoints = 8;
 
             // loot 30-40 gold, magic item, gem, essence control,gob blood
             switch ( Utility.Random(20) )

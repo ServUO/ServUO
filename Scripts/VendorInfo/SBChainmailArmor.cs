@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,9 +31,9 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(ChainCoif), 17, 20, 0x13BB, 0));
-                this.Add(new GenericBuyInfo(typeof(ChainChest), 143, 20, 0x13BF, 0));
-                this.Add(new GenericBuyInfo(typeof(ChainLegs), 149, 20, 0x13BE, 0));
+                Add(new GenericBuyInfo(typeof(ChainCoif), 17, 20, 0x13BB, 0));
+                Add(new GenericBuyInfo(typeof(ChainChest), 143, 20, 0x13BF, 0));
+                Add(new GenericBuyInfo(typeof(ChainLegs), 149, 20, 0x13BE, 0));
             }
         }
 
@@ -41,9 +41,9 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(ChainCoif), 6);
-                this.Add(typeof(ChainChest), 71);
-                this.Add(typeof(ChainLegs), 74);
+                Add(typeof(ChainCoif), 6);
+                Add(typeof(ChainChest), 71);
+                Add(typeof(ChainLegs), 74);
             }
         }
     }

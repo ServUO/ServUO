@@ -29,11 +29,11 @@ namespace Server.Items
 			SetAttributes.LowerManaCost = 20;
             SetSelfRepair = 3;
 
-            SetPhysicalBonus = 6;
-            SetFireBonus = 7;
-            SetColdBonus = 7;
-            SetPoisonBonus = 7;
-            SetEnergyBonus = 7;
+            SetPhysicalBonus = 9;
+            SetFireBonus = 8;
+            SetColdBonus = 8;
+            SetPoisonBonus = 8;
+            SetEnergyBonus = 8;
 		}
 
         public override void GetProperties(ObjectPropertyList list)

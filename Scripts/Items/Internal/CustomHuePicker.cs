@@ -11,39 +11,33 @@ namespace Server.Items
         private readonly int m_Name;
         private readonly string m_NameString;
         private readonly int[] m_Hues;
+        private readonly int m_Item;
+        private readonly int m_ItemHues;
+
         public CustomHueGroup(int name, int[] hues)
         {
-            this.m_Name = name;
-            this.m_Hues = hues;
+            m_Name = name;
+            m_Hues = hues;
         }
 
         public CustomHueGroup(string name, int[] hues)
         {
-            this.m_NameString = name;
-            this.m_Hues = hues;
+            m_NameString = name;
+            m_Hues = hues;
         }
 
-        public int Name
+        public CustomHueGroup(int item, int itemhues, int[] hues)
         {
-            get
-            {
-                return this.m_Name;
-            }
+            m_Item = item;
+            m_ItemHues = itemhues;
+            m_Hues = hues;
         }
-        public string NameString
-        {
-            get
-            {
-                return this.m_NameString;
-            }
-        }
-        public int[] Hues
-        {
-            get
-            {
-                return this.m_Hues;
-            }
-        }
+
+        public int Name { get { return m_Name; } }
+        public string NameString { get { return m_NameString; } }
+        public int[] Hues { get { return m_Hues; } }
+        public int Item { get { return m_Item; } }
+        public int ItemHues { get { return m_ItemHues; } }
     }
 
     public class CustomHuePicker
@@ -94,58 +88,67 @@ namespace Server.Items
             /* Yellows */
             new CustomHueGroup(1018343, new int[] { 2213, 2214, 2215, 2216, 2217, 2218 })
         }, true);
+
+        public static readonly CustomHuePicker MetallicDyeTub = new CustomHuePicker(new CustomHueGroup[]
+        {
+            
+            new CustomHueGroup(5138, 545, new int[] { 2501, 2502, 2503, 2504, 2505, 2506, 2507, 2508, 2509, 2510, 2511, 2512 }),
+            
+            new CustomHueGroup(5138, 550, new int[] { 2513, 2514, 2515, 2516, 2517, 2518, 2519, 2520, 2521, 2522, 2523, 2524 }),
+           
+            new CustomHueGroup(5138, 555, new int[] { 2525, 2526, 2527, 2528, 2529, 2530, 2531, 2532, 2533, 2534, 2535, 2536 }),
+            
+            new CustomHueGroup(5138, 560, new int[] { 2537, 2538, 2539, 2540, 2541, 2542, 2543, 2544, 2545, 2546, 2547, 2548 }),
+            
+            new CustomHueGroup(5138, 565, new int[] { 2549, 2550, 2551, 2552, 2553, 2554, 2555, 2556, 2557, 2558, 2559, 2560 }),
+            
+            new CustomHueGroup(5138, 570, new int[] { 2561, 2562, 2563, 2564, 2565, 2566, 2567, 2568, 2569, 2570, 2571, 2572 }),
+            
+            new CustomHueGroup(5138, 595, new int[] { 2573, 2574, 2575, 2576, 2577, 2578, 2579, 2580, 2581, 2582, 2583, 2584 }),
+            
+            new CustomHueGroup(5138, 601, new int[] { 2585, 2586, 2587, 2588, 2589, 2590, 2591, 2592, 2593, 2594, 2595, 2596 }),
+            
+            new CustomHueGroup(5138, 606, new int[] { 2597, 2598, 2599, 2600, 2601, 2602, 2603, 2604, 2605, 2606, 2607, 2608 }),
+            
+            new CustomHueGroup(5138, 726, new int[] { 2609, 2610, 2611, 2612, 2613, 2614, 2615, 2616, 2617, 2618, 2619, 2620 }),
+            
+            new CustomHueGroup(5138, 730, new int[] { 2621, 2622, 2623, 2624, 2625, 2626, 2627, 2628, 2629, 2630, 2631, 2632 }),
+            
+            new CustomHueGroup(5138, 735, new int[] { 2633, 2634, 2635, 2636, 2637, 2638, 2639, 2640, 2641, 2642, 2643, 2644 }),
+
+            new CustomHueGroup(5138, 805, new int[] { 2651, 2652, 2653, 2654, 2655, 2656, 2657, 2658, 2659, 2660, 2661, 2662 })
+
+        }, true);
+
         private readonly CustomHueGroup[] m_Groups;
         private readonly bool m_DefaultSupported;
         private readonly int m_Title;
         private readonly string m_TitleString;
+
         public CustomHuePicker(CustomHueGroup[] groups, bool defaultSupported)
         {
-            this.m_Groups = groups;
-            this.m_DefaultSupported = defaultSupported;
+            m_Groups = groups;
+            m_DefaultSupported = defaultSupported;
         }
 
         public CustomHuePicker(CustomHueGroup[] groups, bool defaultSupported, int title)
         {
-            this.m_Groups = groups;
-            this.m_DefaultSupported = defaultSupported;
-            this.m_Title = title;
+            m_Groups = groups;
+            m_DefaultSupported = defaultSupported;
+            m_Title = title;
         }
 
         public CustomHuePicker(CustomHueGroup[] groups, bool defaultSupported, string title)
         {
-            this.m_Groups = groups;
-            this.m_DefaultSupported = defaultSupported;
-            this.m_TitleString = title;
+            m_Groups = groups;
+            m_DefaultSupported = defaultSupported;
+            m_TitleString = title;
         }
 
-        public bool DefaultSupported
-        {
-            get
-            {
-                return this.m_DefaultSupported;
-            }
-        }
-        public CustomHueGroup[] Groups
-        {
-            get
-            {
-                return this.m_Groups;
-            }
-        }
-        public int Title
-        {
-            get
-            {
-                return this.m_Title;
-            }
-        }
-        public string TitleString
-        {
-            get
-            {
-                return this.m_TitleString;
-            }
-        }
+        public bool DefaultSupported { get { return m_DefaultSupported; } }
+        public CustomHueGroup[] Groups { get { return m_Groups; } }
+        public int Title { get { return m_Title; } }
+        public string TitleString { get { return m_TitleString; } }
     }
 
     public class CustomHuePickerGump : Gump
@@ -154,16 +157,25 @@ namespace Server.Items
         private readonly CustomHuePicker m_Definition;
         private readonly CustomHuePickerCallback m_Callback;
         private readonly object m_State;
+
         public CustomHuePickerGump(Mobile from, CustomHuePicker definition, CustomHuePickerCallback callback, object state)
             : base(50, 50)
         {
-            this.m_From = from;
-            this.m_Definition = definition;
-            this.m_Callback = callback;
-            this.m_State = state;
+            m_From = from;
+            m_Definition = definition;
+            m_Callback = callback;
+            m_State = state;
 
-            this.RenderBackground();
-            this.RenderCategories();
+            if (definition == CustomHuePicker.MetallicDyeTub)
+            {
+                RenderMetallicBackground();
+                RenderMetallicCategories();
+            }
+            else
+            {
+                RenderBackground();
+                RenderCategories();
+            }
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -178,15 +190,15 @@ namespace Server.Items
                         {
                             int index = switches[0];
 
-                            int group = index % this.m_Definition.Groups.Length;
-                            index /= this.m_Definition.Groups.Length;
+                            int group = index % m_Definition.Groups.Length;
+                            index /= m_Definition.Groups.Length;
 
-                            if (group >= 0 && group < this.m_Definition.Groups.Length)
+                            if (group >= 0 && group < m_Definition.Groups.Length)
                             {
-                                int[] hues = this.m_Definition.Groups[group].Hues;
+                                int[] hues = m_Definition.Groups[group].Hues;
 
                                 if (index >= 0 && index < hues.Length)
-                                    this.m_Callback(this.m_From, this.m_State, hues[index]);
+                                    m_Callback(m_From, m_State, hues[index]);
                             }
                         }
 
@@ -194,8 +206,8 @@ namespace Server.Items
                     }
                 case 2: // Default
                     {
-                        if (this.m_Definition.DefaultSupported)
-                            this.m_Callback(this.m_From, this.m_State, 0);
+                        if (m_Definition.DefaultSupported)
+                            m_Callback(m_From, m_State, 0);
 
                         break;
                     }
@@ -204,55 +216,99 @@ namespace Server.Items
 
         private int GetRadioID(int group, int index)
         {
-            return (index * this.m_Definition.Groups.Length) + group;
+            return (index * m_Definition.Groups.Length) + group;
         }
 
         private void RenderBackground()
         {
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(0, 0, 450, 450, 5054);
-            this.AddBackground(10, 10, 430, 430, 3000);
+            AddBackground(0, 0, 450, 450, 5054);
+            AddBackground(10, 10, 430, 430, 3000);
 
-            if (this.m_Definition.TitleString != null)
-                this.AddHtml(20, 30, 400, 25, this.m_Definition.TitleString, false, false);
-            else if (this.m_Definition.Title > 0)
-                this.AddHtmlLocalized(20, 30, 400, 25, this.m_Definition.Title, false, false);
+            if (m_Definition.TitleString != null)
+                AddHtml(20, 30, 400, 25, m_Definition.TitleString, false, false);
+            else if (m_Definition.Title > 0)
+                AddHtmlLocalized(20, 30, 400, 25, m_Definition.Title, false, false);
 
-            this.AddButton(20, 400, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(55, 400, 200, 25, 1011036, false, false); // OKAY
+            AddButton(20, 400, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(55, 400, 200, 25, 1011036, false, false); // OKAY
 
-            if (this.m_Definition.DefaultSupported)
+            if (m_Definition.DefaultSupported)
             {
-                this.AddButton(200, 400, 4005, 4007, 2, GumpButtonType.Reply, 0);
-                this.AddLabel(235, 400, 0, "DEFAULT");
+                AddButton(200, 400, 4005, 4007, 2, GumpButtonType.Reply, 0);
+                AddLabel(235, 400, 0, "DEFAULT");
             }
-        }
+        }        
 
         private void RenderCategories()
         {
-            CustomHueGroup[] groups = this.m_Definition.Groups;
+            CustomHueGroup[] groups = m_Definition.Groups;
 
             for (int i = 0; i < groups.Length; ++i)
             {
-                this.AddButton(30, 85 + (i * 25), 5224, 5224, 0, GumpButtonType.Page, 1 + i);
+                AddButton(30, 85 + (i * 25), 5224, 5224, 0, GumpButtonType.Page, 1 + i);
 
                 if (groups[i].NameString != null)
-                    this.AddHtml(55, 85 + (i * 25), 200, 25, groups[i].NameString, false, false);
+                    AddHtml(55, 85 + (i * 25), 200, 25, groups[i].NameString, false, false);
                 else
-                    this.AddHtmlLocalized(55, 85 + (i * 25), 200, 25, groups[i].Name, false, false);
+                    AddHtmlLocalized(55, 85 + (i * 25), 200, 25, groups[i].Name, false, false);
             }
 
             for (int i = 0; i < groups.Length; ++i)
             {
-                this.AddPage(1 + i);
+                AddPage(1 + i);
 
                 int[] hues = groups[i].Hues;
 
                 for (int j = 0; j < hues.Length; ++j)
                 {
-                    this.AddRadio(260, 90 + (j * 25), 210, 211, false, this.GetRadioID(i, j));
-                    this.AddLabel(278, 90 + (j * 25), hues[j] - 1, "*****");
+                    AddRadio(260, 90 + (j * 25), 210, 211, false, GetRadioID(i, j));
+                    AddLabel(278, 90 + (j * 25), hues[j] - 1, "*****");
+                }
+            }
+        }
+
+        private void RenderMetallicBackground()
+        {
+            AddPage(0);
+
+            AddBackground(0, 0, 450, 450, 5054);
+            AddBackground(10, 10, 430, 430, 3000);
+
+            AddHtmlLocalized(60, 20, 400, 25, 1150063, false, false); // Base/Shadow Color
+            AddHtmlLocalized(260, 20, 400, 25, 1150064, false, false); // Highlight Color
+
+            AddButton(20, 400, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(55, 400, 200, 25, 1011036, false, false); // OKAY
+
+            if (m_Definition.DefaultSupported)
+            {
+                AddButton(200, 400, 4005, 4007, 2, GumpButtonType.Reply, 0);
+                AddLabel(235, 400, 0, "DEFAULT");
+            }
+        }
+
+        private void RenderMetallicCategories()
+        {
+            CustomHueGroup[] groups = m_Definition.Groups;
+
+            for (int i = 0; i < groups.Length; ++i)
+            {
+                AddButton(30, 65 + (i * 25), 5224, 5224, 0, GumpButtonType.Page, 1 + i);
+                AddItem(55, 65 + (i * 25), groups[i].Item, groups[i].ItemHues);
+            }
+
+            for (int i = 0; i < groups.Length; ++i)
+            {
+                AddPage(1 + i);
+
+                int[] hues = groups[i].Hues;
+
+                for (int j = 0; j < hues.Length; ++j)
+                {
+                    AddRadio(260, 70 + (j * 25), 210, 211, false, GetRadioID(i, j));
+                    AddItem(278, 70 + (j * 25), 5138, hues[j]);
                 }
             }
         }

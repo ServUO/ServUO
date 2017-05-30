@@ -3,7 +3,7 @@ using Server;
 
 namespace Server.Items
 {
-    public class WardensArmorOfAugmentation : GargishLeatherWingArmor
+    public class WardensArmorOfAugmentation : GargishLeatherWingArmor, ITokunoDyable
     {
         public override bool IsArtifact { get { return true; } }
         public override int LabelNumber { get { return 1115515; } } // Warden's Armor Of Augmentation

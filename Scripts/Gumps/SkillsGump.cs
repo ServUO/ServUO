@@ -60,7 +60,7 @@ namespace Server.Gumps
             int y = BorderSize + OffsetSize;
 
             this.AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
-            this.AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, skill.Name);
+            this.AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, String.Format("{0}  [{1}]", skill.Name, skill.Cap));
             x += EntryWidth + OffsetSize;
 
             if (SetGumpID != 0)

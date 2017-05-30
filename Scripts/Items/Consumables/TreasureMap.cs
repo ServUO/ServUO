@@ -963,9 +963,15 @@ namespace Server.Items
                         break;
                     }
             }
+
             if (Core.AOS && m_Decoder != null && LootType == LootType.Regular)
             {
                 LootType = LootType.Blessed;
+            }
+
+            if (Pins.Count == 0)
+            {
+                AddWorldPin(ChestLocation.X, ChestLocation.Y);
             }
         }
 

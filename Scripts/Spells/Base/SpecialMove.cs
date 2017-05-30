@@ -135,7 +135,14 @@ namespace Server.Spells
             }
 
             if (!Server.Spells.Necromancy.MindRotSpell.GetMindRotScalar(m, ref scalar))
+            {
                 scalar = 1.0;
+            }
+
+            if (Server.Spells.Mysticism.PurgeMagicSpell.IsUnderCurseEffects(m))
+            {
+                scalar += .5;
+            }
 
             // Lower Mana Cost = 40%
             int lmc = Math.Min(AosAttributes.GetValue(m, AosAttribute.LowerManaCost), 40);

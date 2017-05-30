@@ -39,7 +39,6 @@ namespace Server.Mobiles
             this.Karma = -1500;
 
             this.VirtualArmor = 48;
-            this.QLPoints = 5;
         }
 
         public ClanSH(Serial serial)

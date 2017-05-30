@@ -36,8 +36,6 @@ namespace Server.Mobiles
             AddItem(new Bow());
             PackItem(new Arrow(Utility.RandomMinMax(60, 80)));
             PackItem(new Apple(5));
-
-            QLPoints = 5;
         }
 
         public Gremlin(Serial serial)

@@ -95,8 +95,11 @@ namespace Server.SkillHandlers
                 {
                     Item item = (Item)target;
 
-                    if (item.HonestyItem && item.HonestyOwner != null)
+                    if (item.HonestyItem)
                     {
+                        if (item.HonestyOwner == null)
+                            Server.Services.Virtues.Honesty.AssignOwner(item);
+
                         string region = item.HonestyRegion == null ? "an unknown place" : item.HonestyRegion;
 
                         if (from.Skills.Forensics.Value >= 65)

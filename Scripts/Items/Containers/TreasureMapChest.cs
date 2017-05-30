@@ -92,7 +92,7 @@ namespace Server.Items
 
             if (owner != null)
             {
-                luck = owner.Luck;
+                luck = owner is PlayerMobile ? ((PlayerMobile)owner).RealLuck : owner.Luck;
                 map = owner.Map;
             }
 

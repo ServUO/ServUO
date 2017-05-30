@@ -429,6 +429,11 @@ namespace Server.Misc
             if (Core.AOS && (target.Blessed || (target is BaseVendor && ((BaseVendor)target).IsInvulnerable) || target is PlayerVendor || target is TownCrier))
                 return Notoriety.Invulnerable;
 
+            var context = EnemyOfOneSpell.GetContext(source);
+
+            if (context != null && context.IsEnemy(target))
+                return Notoriety.Enemy;
+
             #region Dueling
             if (source is PlayerMobile && target is PlayerMobile)
             {
@@ -460,14 +465,6 @@ namespace Server.Misc
                         return Notoriety.CanBeAttacked;
                     else
                         return MobileNotoriety(source, master);
-                }
-
-                if (!bc.Summoned && !bc.Controlled)
-                {
-                    var context = EnemyOfOneSpell.GetContext( source );
-
-                    if ( context != null && context.IsEnemy(target) )
-                        return Notoriety.Enemy;
                 }
             }
 

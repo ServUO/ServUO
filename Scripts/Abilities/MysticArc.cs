@@ -10,6 +10,7 @@ namespace Server.Items
         private readonly int m_Damage = 15;
         private Mobile m_Target;
         private Mobile m_Mobile;
+
         public override int BaseMana
         {
             get
@@ -17,6 +18,7 @@ namespace Server.Items
                 return 20;
             }
         }
+
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
             if (!this.CheckMana(attacker, true) && defender != null)
@@ -43,25 +45,7 @@ namespace Server.Items
             if (targets.Count > 0)
                 this.m_Target = targets[Utility.Random(targets.Count)];
 
-            /*
-            Mobile m = null;
-
-            foreach( DamageEntry de in attacker.DamageEntries )
-            {
-            m = Mobile.GetDamagerFrom( de );
-
-            if ( m != null )
-            {
-            if ( defender != m && defender.InRange( m, 3 ) )
-            {
-            m_Target = m;
-            break;
-            }
-            }
-            }
-            */
-
-            AOS.Damage(defender, attacker, this.m_Damage, 0, 0, 0, 0, 100);
+            AOS.Damage(defender, attacker, this.m_Damage, 0, 0, 0, 0, 0, 100);
 
             if (this.m_Target != null)
             {

@@ -41,8 +41,6 @@ namespace Server.Mobiles
 
             VirtualArmor = 24;
 
-            QLPoints = 2;
-
             PackItem(new SulfurousAsh());
         }
 

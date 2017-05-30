@@ -259,7 +259,7 @@ namespace Server.Items
 								
                                 if (north || west)
                                 {
-                                    house.Addons.Add(head);	
+                                    house.Addons[head] = from;	
 
                                     head.IsRewardItem = this.m_Head.IsRewardItem;
                                     head.MoveToWorld(p3d, map);

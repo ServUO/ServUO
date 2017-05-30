@@ -35,8 +35,6 @@ namespace Server.Mobiles
             Tamable = false;
             ControlSlots = 1;
             MinTameSkill = 80.7;
-
-            QLPoints = 30;
         }
 
         public override int DragonBlood { get { return 6; } }

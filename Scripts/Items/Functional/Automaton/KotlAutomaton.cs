@@ -67,13 +67,14 @@ namespace Server.Items
             SetSkill(SkillName.MagicResist, 121.0, 126.7);
             SetSkill(SkillName.Tactics, 82.0, 94.8);
             SetSkill(SkillName.Wrestling, 94.4, 108.4);
-            SetSkill(SkillName.Bushido, 50.1);
+            SetSkill(SkillName.DetectHidden, 40.0);
+            SetSkill(SkillName.Parry, 70.0, 80.0);
 
             Fame = 14000;
             Karma = -14000;
 
             ControlSlots = 4;
-        }
+        }       
 
         public override void GenerateLoot()
         {
@@ -164,6 +165,8 @@ namespace Server.Items
             : base(serial)
         {
         }
+
+        // Missing Wrestling Mastery Ability
 
         public override double WeaponAbilityChance { get { return 0.33; } }
 

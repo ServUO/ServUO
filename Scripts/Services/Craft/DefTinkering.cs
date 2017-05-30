@@ -18,7 +18,7 @@ namespace Server.Engines.Craft
         ScrappersCompendium = 453,
         HoveringWisp = 454,
 
-        KotlPowerCoil = 455,
+        KotlPowerCore = 455,
 
         // doom
         BraceletOfPrimalConsumption = 456,
@@ -348,6 +348,7 @@ namespace Server.Engines.Craft
             this.AddCraft(typeof(SledgeHammer), 1044046, 1024021, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             this.AddCraft(typeof(Inshave), 1044046, 1024326, 30.0, 80.0, typeof(IronIngot), 1044036, 2, 1044037);
             this.AddCraft(typeof(Pickaxe), 1044046, 1023718, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
+            this.AddCraft(typeof(Pitchfork), 1044046, 1023719, 40.0, 90.0, typeof(IronIngot), 1044036, 4, 1044037);
             this.AddCraft(typeof(Lockpick), 1044046, 1025371, 45.0, 95.0, typeof(IronIngot), 1044036, 1, 1044037);
             this.AddCraft(typeof(Skillet), 1044046, 1044567, 30.0, 80.0, typeof(IronIngot), 1044036, 4, 1044037);
             this.AddCraft(typeof(FlourSifter), 1044046, 1024158, 50.0, 100.0, typeof(IronIngot), 1044036, 3, 1044037);
@@ -532,11 +533,11 @@ namespace Server.Engines.Craft
             SetDisplayID(index, 1659);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(KotlPowerCoil), 1044050, 1124171, 85.0, 135.0, typeof(WorkableGlass), 1154170, 5, 1154171);
+            index = AddCraft(typeof(KotlPowerCore), 1044050, 1124179, 85.0, 135.0, typeof(WorkableGlass), 1154170, 5, 1154171);
             AddRes(index, typeof(CopperWire), 1026265, 5, 1150700);
             AddRes(index, typeof(IronIngot), 1044036, 100, 1044253);
             AddRes(index, typeof(MoonstoneCrystalShard), 1124142, 5, 1156701);
-            AddRecipe(index, (int)TinkerRecipes.KotlPowerCoil);
+            AddRecipe(index, (int)TinkerRecipes.KotlPowerCore);
             SetNeededExpansion(index, Expansion.TOL);
             #endregion
 

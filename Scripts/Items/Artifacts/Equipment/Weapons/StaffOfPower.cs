@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public StaffOfPower()
         {
-            this.Hue = 0x4F2;
+            this.Hue = Utility.RandomBool() ? 0x4F2 : 0x4EF;
             this.WeaponAttributes.MageWeapon = 15;
             this.Attributes.SpellChanneling = 1;
             this.Attributes.SpellDamage = 5;

@@ -550,7 +550,10 @@ namespace Server
 
         public static BaseJewel RandomJewelry(bool isStygian = false)
         {
-            return Construct(isStygian ? m_SAJewelryTypes : m_JewelryTypes) as BaseJewel;
+            if (isStygian)
+                return Construct(m_SAJewelryTypes, m_JewelryTypes) as BaseJewel;
+            else
+                return Construct(m_JewelryTypes) as BaseJewel;
         }
 
         public static BaseArmor RandomArmor(bool inTokuno = false, bool isMondain = false, bool isStygian = false)

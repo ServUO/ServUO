@@ -157,8 +157,27 @@ namespace Server.Engines.InstancedPeerless
 
 		public void Kick( Mobile m )
 		{
-			BaseCreature.TeleportPets( m, m_Owner.ExitLocation, m_Owner.Map );
-			m.MoveToWorld( m_Owner.ExitLocation, m_Owner.Map );
+            Map map = m_Owner.Map;
+
+            if (map == null || map == Map.Internal)
+            {
+                // Error, lets move to luna bank just incase
+                if (m.Murderer)
+                {
+                    BaseCreature.TeleportPets(m, new Point3D(1459, 1629, 0), Map.Felucca);
+                    m.MoveToWorld(new Point3D(1459, 1629, 0), Map.Felucca);
+                }
+                else
+                {
+                    BaseCreature.TeleportPets(m, new Point3D(989, 520, -50), Map.Malas);
+                    m.MoveToWorld(new Point3D(989, 520, -50), Map.Malas);
+                }
+            }
+            else
+            {
+                BaseCreature.TeleportPets(m, m_Owner.ExitLocation, map);
+                m.MoveToWorld(m_Owner.ExitLocation, map);
+            }
 
 			RemoveFighter( m );
 		}

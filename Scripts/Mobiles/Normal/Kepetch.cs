@@ -36,8 +36,6 @@ namespace Server.Mobiles
             this.SetSkill(SkillName.MagicResist, 89.9, 97.4);
             this.SetSkill(SkillName.Tactics, 117.4, 123.5);
             this.SetSkill(SkillName.Wrestling, 107.7, 113.9);
-
-            this.QLPoints = 10;
         }
 
         public Kepetch(Serial serial)

@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,14 +31,14 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(ExecutionersAxe), 30, 20, 0xF45, 0));
-                this.Add(new GenericBuyInfo(typeof(BattleAxe), 26, 20, 0xF47, 0));
-                this.Add(new GenericBuyInfo(typeof(TwoHandedAxe), 32, 20, 0x1443, 0));
-                this.Add(new GenericBuyInfo(typeof(Axe), 40, 20, 0xF49, 0));
-                this.Add(new GenericBuyInfo(typeof(DoubleAxe), 52, 20, 0xF4B, 0));
-                this.Add(new GenericBuyInfo(typeof(Pickaxe), 22, 20, 0xE86, 0));
-                this.Add(new GenericBuyInfo(typeof(LargeBattleAxe), 33, 20, 0x13FB, 0));
-                this.Add(new GenericBuyInfo(typeof(WarAxe), 29, 20, 0x13B0, 0));
+                Add(new GenericBuyInfo(typeof(ExecutionersAxe), 30, 20, 0xF45, 0));
+                Add(new GenericBuyInfo(typeof(BattleAxe), 26, 20, 0xF47, 0));
+                Add(new GenericBuyInfo(typeof(TwoHandedAxe), 32, 20, 0x1443, 0));
+                Add(new GenericBuyInfo(typeof(Axe), 40, 20, 0xF49, 0));
+                Add(new GenericBuyInfo(typeof(DoubleAxe), 52, 20, 0xF4B, 0));
+                Add(new GenericBuyInfo(typeof(Pickaxe), 22, 20, 0xE86, 0));
+                Add(new GenericBuyInfo(typeof(LargeBattleAxe), 33, 20, 0x13FB, 0));
+                Add(new GenericBuyInfo(typeof(WarAxe), 29, 20, 0x13B0, 0));
             }
         }
 
@@ -46,14 +46,14 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(BattleAxe), 13);
-                this.Add(typeof(DoubleAxe), 26);
-                this.Add(typeof(ExecutionersAxe), 15);
-                this.Add(typeof(LargeBattleAxe), 16);
-                this.Add(typeof(Pickaxe), 11);
-                this.Add(typeof(TwoHandedAxe), 16);
-                this.Add(typeof(WarAxe), 14);
-                this.Add(typeof(Axe), 20);
+                Add(typeof(BattleAxe), 13);
+                Add(typeof(DoubleAxe), 26);
+                Add(typeof(ExecutionersAxe), 15);
+                Add(typeof(LargeBattleAxe), 16);
+                Add(typeof(Pickaxe), 11);
+                Add(typeof(TwoHandedAxe), 16);
+                Add(typeof(WarAxe), 14);
+                Add(typeof(Axe), 20);
             }
         }
     }

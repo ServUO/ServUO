@@ -8,6 +8,8 @@ namespace Server.Items
     {
         private bool m_IsRewardItem;
         private StatueType m_Type;
+
+        [Constructable]
         public CharacterStatueMaker(StatueType type)
             : base(0x32F0)
         {

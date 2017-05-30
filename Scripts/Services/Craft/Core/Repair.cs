@@ -104,128 +104,9 @@ namespace Server.Engines.Craft
                 return true;
             }
 
-            private bool IsSpecialClothing(BaseClothing clothing)
+            private bool CheckSpecial(Item item)
             {
-                if (clothing is IRepairable && ((IRepairable)clothing).RepairSystem == m_CraftSystem)
-                    return true;
-
-                // Clothing repairable but not craftable
-                if (this.m_CraftSystem is DefTailoring)
-                {
-                    return (clothing is BearMask) ||
-                           (clothing is DeerMask) ||
-                           (clothing is TheMostKnowledgePerson) ||
-                           (clothing is TheRobeOfBritanniaAri) ||
-                           (clothing is EmbroideredOakLeafCloak);
-                }
-
-                return false;
-            }
-
-            private bool IsSpecialWeapon(BaseWeapon weapon)
-            {
-                if (weapon is IRepairable && ((IRepairable)weapon).RepairSystem == m_CraftSystem)
-                    return true;
-
-                // Weapons repairable but not craftable
-                if (this.m_CraftSystem is DefTinkering)
-                {
-                    return (weapon is Cleaver) ||
-                           (weapon is Hatchet) ||
-                           (weapon is Pickaxe) ||
-                           (weapon is ButcherKnife) ||
-                           (weapon is SkinningKnife);
-                }
-                else if (this.m_CraftSystem is DefCarpentry)
-                {
-                    return (weapon is Club) ||
-                           (weapon is BlackStaff) ||
-                           (weapon is MagicWand)
-                    #region Temporary
-                        // TODO: Make these items craftable
-                           ||
-                           (weapon is WildStaff);
-                    #endregion
-                }
-                else if (this.m_CraftSystem is DefBlacksmithy)
-                {
-                    return (weapon is Pitchfork)
-                    #region Temporary
-                        // TODO: Make these items craftable
-                           ||
-                           (weapon is RadiantScimitar) ||
-                           (weapon is WarCleaver) ||
-                           (weapon is ElvenSpellblade) ||
-                           (weapon is AssassinSpike) ||
-                           (weapon is Leafblade) ||
-                           (weapon is RuneBlade) ||
-                           (weapon is ElvenMachete) ||
-                           (weapon is OrnateAxe) ||
-                           (weapon is DiamondMace);
-                    #endregion
-                }
-                #region Temporary
-                // TODO: Make these items craftable
-                else if (this.m_CraftSystem is DefBowFletching)
-                {
-                    return (weapon is ElvenCompositeLongbow) ||
-                           (weapon is MagicalShortbow);
-                }
-                #endregion
-
-                return false;
-            }
-
-            private bool IsSpecialJewel(BaseJewel jewel)
-            {
-                return jewel is SilverBracelet || jewel is SilverRing;
-            }
-
-            private bool IsSpecialArmor(BaseArmor armor)
-            {
-                // Armor repairable but not craftable
-                #region Temporary
-                // TODO: Make these items craftable
-                if (this.m_CraftSystem is DefTailoring)
-                {
-                    return (armor is LeafTonlet) ||
-                           (armor is LeafArms) ||
-                           (armor is LeafChest) ||
-                           (armor is LeafGloves) ||
-                           (armor is LeafGorget) ||
-                           (armor is LeafLegs) ||
-                           (armor is HideChest) ||
-                           (armor is HideGloves) ||
-                           (armor is HideGorget) ||
-                           (armor is HidePants) ||
-                           (armor is HidePauldrons);
-                }
-                else if (this.m_CraftSystem is DefCarpentry)
-                {
-                    return (armor is WingedHelm) ||
-                           (armor is RavenHelm) ||
-                           (armor is VultureHelm) ||
-                           (armor is WoodlandArms) ||
-                           (armor is WoodlandChest) ||
-                           (armor is WoodlandGloves) ||
-                           (armor is WoodlandGorget) ||
-                           (armor is WoodlandLegs);
-                }
-                else if (this.m_CraftSystem is DefBlacksmithy)
-                {
-                    return (armor is Circlet) ||
-                           (armor is RoyalCirclet) ||
-                           (armor is GemmedCirclet);
-                }
-                else if (this.m_CraftSystem is DefTinkering)
-                {
-                    return (armor is Glasses) ||
-                           (armor is ElvenGlasses) ||
-                           (armor is GargishGlasses);
-                }
-                #endregion
-
-                return false;
+                return item is IRepairable && ((IRepairable)item).RepairSystem == m_CraftSystem;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -291,7 +172,7 @@ namespace Server.Engines.Craft
                                     toWeaken = 3;
                             }
 
-                            if (this.m_CraftSystem.CraftItems.SearchForSubclass(weapon.GetType()) == null && !this.IsSpecialWeapon(weapon))
+                            if (this.m_CraftSystem.CraftItems.SearchForSubclass(weapon.GetType()) == null && !CheckSpecial(weapon))
                             {
                                 number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                             }
@@ -360,7 +241,7 @@ namespace Server.Engines.Craft
                                     toWeaken = 3;
                             }
 
-                            if (this.m_CraftSystem.CraftItems.SearchForSubclass(armor.GetType()) == null && !this.IsSpecialArmor(armor))
+                            if (this.m_CraftSystem.CraftItems.SearchForSubclass(armor.GetType()) == null && !CheckSpecial(armor))
                             {
                                 number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                             }
@@ -425,7 +306,7 @@ namespace Server.Engines.Craft
                                     toWeaken = 3;
                             }
 
-                            if (m_CraftSystem.CraftItems.SearchForSubclass(jewel.GetType()) == null && !IsSpecialJewel(jewel))
+                            if (m_CraftSystem.CraftItems.SearchForSubclass(jewel.GetType()) == null && !CheckSpecial(jewel))
                             {
                                 number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                             }
@@ -490,7 +371,7 @@ namespace Server.Engines.Craft
                                     toWeaken = 3;
                             }
 
-                            if (this.m_CraftSystem.CraftItems.SearchForSubclass(clothing.GetType()) == null && !this.IsSpecialClothing(clothing) && !((targeted is TribalMask) || (targeted is HornedTribalMask)))
+                            if (this.m_CraftSystem.CraftItems.SearchForSubclass(clothing.GetType()) == null && !CheckSpecial(clothing))
                             {
                                 number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                             }

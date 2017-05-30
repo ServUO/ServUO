@@ -20,15 +20,15 @@ namespace Server.Mobiles
             m_Instances.Add(this);
 
             this.Name = "Obsidian Wyvern";
-            this.Body = 46;
-            this.Hue = 1175;
+            this.Body = 0x2E;
+            this.Hue = 1910;
             this.BaseSoundID = 362;
 
-            this.SetStr(1377);
-            this.SetDex(125);
-            this.SetInt(780);
+            this.SetStr(1377, 1450);
+            this.SetDex(125, 180);
+            this.SetInt(780, 900);
 
-            this.SetHits(1225);
+            this.SetHits(1225, 1400);
 
             this.SetDamage(29, 35);
 
@@ -36,17 +36,19 @@ namespace Server.Mobiles
             this.SetDamageType(ResistanceType.Fire, 25);
 
             this.SetResistance(ResistanceType.Physical, 67);
-            this.SetResistance(ResistanceType.Fire, 82);
-            this.SetResistance(ResistanceType.Cold, 72);
-            this.SetResistance(ResistanceType.Poison, 62);
-            this.SetResistance(ResistanceType.Energy, 66);
+            this.SetResistance(ResistanceType.Fire, 80, 90);
+            this.SetResistance(ResistanceType.Cold, 70, 80);
+            this.SetResistance(ResistanceType.Poison, 60, 70);
+            this.SetResistance(ResistanceType.Energy, 60, 70);
 
-            this.SetSkill(SkillName.Magery, 108.7);
-            this.SetSkill(SkillName.Meditation, 87.6);
-            this.SetSkill(SkillName.EvalInt, 113.5);
-            this.SetSkill(SkillName.Wrestling, 111.8);
-            this.SetSkill(SkillName.Tactics, 119.6);
-            this.SetSkill(SkillName.MagicResist, 130.8);
+            this.SetSkill(SkillName.Magery, 108.7, 115.0);
+            this.SetSkill(SkillName.Meditation, 60.0, 87.6);
+            this.SetSkill(SkillName.EvalInt, 110.0, 115.0);
+            this.SetSkill(SkillName.Wrestling, 110.0, 115.0);
+            this.SetSkill(SkillName.Tactics, 119.6, 125.0);
+            this.SetSkill(SkillName.MagicResist, 115.0, 130.8);
+			this.SetSkill(SkillName.Parry, 75.0, 85.0);
+			this.SetSkill(SkillName.DetectHidden, 100.0);
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
@@ -101,8 +103,8 @@ namespace Server.Mobiles
 
                     if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                     {
-                        Item item = new WillemHartesHat();
-
+						Item item = new WillemHartesHat();
+						
                         if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
                         {
                             m.BankBox.DropItem(item);
@@ -122,6 +124,7 @@ namespace Server.Mobiles
         public override Poison HitPoison { get { return Poison.Deadly; } }
         public override bool AutoDispel { get { return true; } }
         public override bool BardImmune { get { return true; } }
+		public override FoodType FavoriteFood { get { return FoodType.Meat; } }
 
         public override void GenerateLoot()
         {

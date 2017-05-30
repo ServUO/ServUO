@@ -24,7 +24,7 @@ namespace Server.Spells.First
             return m_Table.ContainsKey(m);
         }
 
-        public static void RemoveEffects(Mobile m)
+        public static void RemoveEffects(Mobile m, bool removeMod = true)
         {
             if (m_Table.ContainsKey(m))
             {
@@ -36,7 +36,9 @@ namespace Server.Spells.First
                 }
 
                 BuffInfo.RemoveBuff(m, BuffIcon.Clumsy);
-                m.RemoveStatMod("[Magic] Dex Curse");
+
+                if (removeMod)
+                    m.RemoveStatMod("[Magic] Dex Curse");
 
                 m_Table.Remove(m);
             }
@@ -66,10 +68,9 @@ namespace Server.Spells.First
 
                 SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
 
-				SpellHelper.AddStatCurse(this.Caster, m, StatType.Dex);
-				int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
-				TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
-				BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Clumsy, 1075831, length, m, percentage.ToString()));
+                int oldOffset = SpellHelper.GetCurseOffset(m, StatType.Dex);
+				SpellHelper.AddStatCurse(this.Caster, m, StatType.Dex, false);
+                int newOffset = SpellHelper.GetCurseOffset(m, StatType.Dex);
 
 				if (m.Spell != null)
                     m.Spell.OnCasterHurt();
@@ -81,7 +82,20 @@ namespace Server.Spells.First
 
                 this.HarmfulSpell(m);
 
-                m_Table[m] = Timer.DelayCall<Mobile>(length, RemoveEffects, m);
+                if (newOffset < oldOffset)
+                {
+                    int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
+                    TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+                    BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Clumsy, 1075831, length, m, percentage.ToString()));
+
+                    if (m_Table.ContainsKey(m))
+                        m_Table[m].Stop();
+
+                    m_Table[m] = Timer.DelayCall(length, () =>
+                        {
+                            RemoveEffects(m);
+                        });
+                }
             }
 
             this.FinishSequence();

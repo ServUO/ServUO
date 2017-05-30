@@ -326,8 +326,8 @@ namespace Server.Items
                                         banner = new HangingSkeleton(this.m_ItemID);
                                     else if (west)
                                         banner = new HangingSkeleton(GetWestItemID(this.m_ItemID));
-										
-                                    house.Addons.Add(banner);
+
+                                    house.Addons[banner] = from;
 
                                     banner.IsRewardItem = this.m_Skeleton.IsRewardItem;
                                     banner.MoveToWorld(p3d, map);
@@ -400,7 +400,7 @@ namespace Server.Items
 						
                     if (banner != null)
                     {
-                        this.m_House.Addons.Add(banner);
+                        m_House.Addons[banner] = sender.Mobile;
 
                         banner.IsRewardItem = this.m_Skeleton.IsRewardItem;
                         banner.MoveToWorld(this.m_Location, sender.Mobile.Map);

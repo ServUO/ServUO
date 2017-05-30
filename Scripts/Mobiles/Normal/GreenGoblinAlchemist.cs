@@ -43,8 +43,6 @@ namespace Server.Mobiles
 
             VirtualArmor = 28;
 
-            QLPoints = 10;
-
             // loot 60 gold, magic item, gem, bola ball, liquar,gob blood
             switch ( Utility.Random(20) )
             {

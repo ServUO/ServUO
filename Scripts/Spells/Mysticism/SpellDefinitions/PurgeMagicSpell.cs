@@ -64,7 +64,7 @@ namespace Server.Spells.Mysticism
             }
             else if (m_ImmuneTable.ContainsKey(target) || m_CurseTable.ContainsKey(target))
             {
-                Caster.SendMessage("You may not use the Purge Magic spell while they are under its curse.");
+                Caster.SendLocalizedMessage(1080119); // Your Purge Magic has been resisted!
             }
             else if (CheckHSequence(target))
             {
@@ -240,7 +240,7 @@ namespace Server.Spells.Mysticism
 
         public static void OnMobileDoDamage(Mobile from)
         {
-            if (m_CurseTable.ContainsKey(from))
+            if (from != null && m_CurseTable.ContainsKey(from))
                 RemoveCurse(from);
         }
 

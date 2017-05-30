@@ -398,7 +398,8 @@ namespace Server.Engines.Harvest
 
             if (boat || !NiterDeposit.HasBeenChecked(bank))
             {
-                double bonus = (from.Skills[SkillName.Mining].Value / 9999) + ((double)from.Luck / 150000);
+                int luck = from is PlayerMobile ? ((PlayerMobile)from).RealLuck : from.Luck;
+                double bonus = (from.Skills[SkillName.Mining].Value / 9999) + ((double)luck / 150000);
 
                 if (boat)
                     bonus -= (bonus * .33);
@@ -410,7 +411,7 @@ namespace Server.Engines.Harvest
                 {
                     int size = Utility.RandomMinMax(1, 5);
 
-                    if (from.Luck / 2500 > Utility.RandomDouble())
+                    if (luck / 2500 > Utility.RandomDouble())
                         size++;
 
                     NiterDeposit niter = new NiterDeposit(size);

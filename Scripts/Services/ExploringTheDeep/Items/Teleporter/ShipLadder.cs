@@ -20,10 +20,22 @@ namespace Server.Items
         public ShipLadder(Serial serial)
             : base(serial)
         {
-        }       
+        }
+
+        public override void OnDoubleClickDead(Mobile from)
+        {
+            if (from.InRange(this.Location, 2))
+            {
+                Server.Mobiles.BaseCreature.TeleportPets(from, m_PointDest, from.Map);
+                from.MoveToWorld(m_PointDest, m_Map);
+            }
+        }
 
         public override void OnDoubleClick(Mobile from)
         {
+            if (!from.Alive)
+                return;
+
             if (from.InRange(this.Location, 2))
             {
                 Server.Mobiles.BaseCreature.TeleportPets(from, m_PointDest, from.Map);
