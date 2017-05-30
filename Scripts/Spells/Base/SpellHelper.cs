@@ -1287,6 +1287,11 @@ namespace Server.Spells
 
         public static void Heal(int amount, Mobile target, Mobile from, bool message)
         {
+            if (amount > 0 && target != from && from is PlayerMobile && target is PlayerMobile)
+            {
+                SpiritualityVirtue.OnHeal(from, amount);
+            }
+
             //TODO: All Healing *spells* go through ArcaneEmpowerment
             target.Heal(amount, from, message);
         }

@@ -121,8 +121,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public void Activate()
         {
-            Console.WriteLine("Active: {0}; Stations: {1}", Stations.Where(s => s.Active).Count(), Stations.Count);
-            if (Link && Stations.Where(s => s.Active).Count() == Stations.Count)
+            if (Link && Stations != null && Stations.Where(s => s.Active).Count() == Stations.Count)
             {
                 if (!KotlBattleSimulator.Instance.Active)
                 {

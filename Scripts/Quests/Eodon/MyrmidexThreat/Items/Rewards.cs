@@ -248,16 +248,17 @@ namespace Server.Items
 		}
 	}
 	
-	public class KotlPowerCoil : Item
+    [TypeAlias("Server.Items.KotlPowerCoil")]
+	public class KotlPowerCore : Item
 	{
-		public override int LabelNumber { get { return 1124171; } } // Kotl Power Coil
+        public override int LabelNumber { get { return 1124179; } } // Kotl Power Core
 
 		[Constructable]
-		public KotlPowerCoil() : base(40147)
+		public KotlPowerCore() : base(40147)
 		{
 		}
 		
-		public KotlPowerCoil(Serial serial) : base(serial)
+		public KotlPowerCore(Serial serial) : base(serial)
 		{
 		}
 		
