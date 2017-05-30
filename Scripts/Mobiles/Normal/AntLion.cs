@@ -10,41 +10,41 @@ namespace Server.Mobiles
         public AntLion()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an ant lion";
-            this.Body = 787;
-            this.BaseSoundID = 1006;
+            Name = "an ant lion";
+            Body = 787;
+            BaseSoundID = 1006;
 
-            this.SetStr(296, 320);
-            this.SetDex(81, 105);
-            this.SetInt(36, 60);
+            SetStr(296, 320);
+            SetDex(81, 105);
+            SetInt(36, 60);
 
-            this.SetHits(151, 162);
+            SetHits(151, 162);
 
-            this.SetDamage(7, 21);
+            SetDamage(7, 21);
 
-            this.SetDamageType(ResistanceType.Physical, 70);
-            this.SetDamageType(ResistanceType.Poison, 30);
+            SetDamageType(ResistanceType.Physical, 70);
+            SetDamageType(ResistanceType.Poison, 30);
 
-            this.SetResistance(ResistanceType.Physical, 45, 60);
-            this.SetResistance(ResistanceType.Fire, 25, 35);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 30, 35);
+            SetResistance(ResistanceType.Physical, 45, 60);
+            SetResistance(ResistanceType.Fire, 25, 35);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 30, 35);
 
-            this.SetSkill(SkillName.MagicResist, 70.0);
-            this.SetSkill(SkillName.Tactics, 90.0);
-            this.SetSkill(SkillName.Wrestling, 90.0);
+            SetSkill(SkillName.MagicResist, 70.0);
+            SetSkill(SkillName.Tactics, 90.0);
+            SetSkill(SkillName.Wrestling, 90.0);
 
-            this.Fame = 4500;
-            this.Karma = -4500;
+            Fame = 4500;
+            Karma = -4500;
 
-            this.VirtualArmor = 45;
+            VirtualArmor = 45;
 
-            this.PackItem(new Bone(3));
-            this.PackItem(new FertileDirt(Utility.RandomMinMax(1, 5)));
+            PackItem(new Bone(3));
+            PackItem(new FertileDirt(Utility.RandomMinMax(1, 5)));
 
             if (Core.ML && Utility.RandomDouble() < .33)
-                this.PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
+                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
 
             Item orepile = null; /* no trust, no love :( */
 
@@ -65,7 +65,7 @@ namespace Server.Mobiles
             }
             orepile.Amount = Utility.RandomMinMax(1, 10);
             orepile.ItemID = 0x19B9;
-            this.PackItem(orepile);
+            PackItem(orepile);
             // TODO: skeleton
 			
 			if ( 0.07 >= Utility.RandomDouble() )
@@ -111,7 +111,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.Average, 2);
         }
 
         public override void Serialize(GenericWriter writer)

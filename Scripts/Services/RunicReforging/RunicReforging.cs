@@ -1633,7 +1633,17 @@ namespace Server.Items
                     ((IDurability)item).HitPoints = 255;
                 }
 
-                ApplyItemPower(item, false);
+                ItemPower power = ApplyItemPower(item, false);
+
+                if (artifact && power < ItemPower.LesserArtifact)
+                {
+                    int extra = 5000;
+                    do
+                    {
+                        ApplyRunicAttributes(item, perclow, perchigh, ref extra, 0, luckchance);
+                    }
+                    while (ApplyItemPower(item, false) < ItemPower.LesserArtifact);
+                }
             }
         }
 
@@ -2014,16 +2024,20 @@ namespace Server.Items
                 ((BaseClothing)item).BlockRepair = true;
         }
 
-        public static void ApplyItemPower(Item item, bool playermade)
+        public static ItemPower ApplyItemPower(Item item, bool playermade)
         {
+            ItemPower ip = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
+
             if (item is BaseWeapon)
-                ((BaseWeapon)item).ItemPower = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
+                ((BaseWeapon)item).ItemPower = ip;
             else if (item is BaseArmor)
-                ((BaseArmor)item).ItemPower = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
+                ((BaseArmor)item).ItemPower = ip;
             else if (item is BaseJewel)
-                ((BaseJewel)item).ItemPower = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
+                ((BaseJewel)item).ItemPower = ip;
             else if (item is BaseClothing)
-                ((BaseClothing)item).ItemPower = GetItemPower(item, Imbuing.GetTotalWeight(item), Imbuing.GetTotalMods(item), playermade);
+                ((BaseClothing)item).ItemPower = ip;
+
+            return ip;
         }
 
         public static ItemPower GetItemPower(Item item, int weight, int totalMods, bool playermade)

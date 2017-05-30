@@ -18,7 +18,7 @@ namespace Server.Engines.Craft
         ScrappersCompendium = 453,
         HoveringWisp = 454,
 
-        KotlPowerCoil = 455,
+        KotlPowerCore = 455,
 
         // doom
         BraceletOfPrimalConsumption = 456,
@@ -533,11 +533,11 @@ namespace Server.Engines.Craft
             SetDisplayID(index, 1659);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(KotlPowerCoil), 1044050, 1124171, 85.0, 135.0, typeof(WorkableGlass), 1154170, 5, 1154171);
+            index = AddCraft(typeof(KotlPowerCore), 1044050, 1124179, 85.0, 135.0, typeof(WorkableGlass), 1154170, 5, 1154171);
             AddRes(index, typeof(CopperWire), 1026265, 5, 1150700);
             AddRes(index, typeof(IronIngot), 1044036, 100, 1044253);
             AddRes(index, typeof(MoonstoneCrystalShard), 1124142, 5, 1156701);
-            AddRecipe(index, (int)TinkerRecipes.KotlPowerCoil);
+            AddRecipe(index, (int)TinkerRecipes.KotlPowerCore);
             SetNeededExpansion(index, Expansion.TOL);
             #endregion
 

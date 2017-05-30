@@ -106,6 +106,19 @@ namespace Server.Items
         {
         }
 
+        public override void OnAfterDuped(Item newItem)
+        {
+            Food food = newItem as Food;
+
+            if (food == null)
+                return;
+
+            food.PlayerConstructed = m_PlayerConstructed;
+            food.Poisoner = m_Poisoner;
+            food.Poison = m_Poison;
+            food.Quality = _Quality;
+        }
+
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
         {
             Quality = (ItemQuality)quality;

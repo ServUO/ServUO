@@ -158,8 +158,7 @@ namespace Server.Misc
 
             //25000 for 1/100 chance, 10 hyrus
             //1500, 1/1000 chance, 20 lizard men for that chance.
-
-            pm.ToTTotalMonsterFame += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100)));
+            pm.ToTTotalMonsterFame += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(pm.RealLuck) / 100)));
 
             //This is the Exponentional regression with only 2 datapoints.
             //A log. func would also work, but it didn't make as much sense.

@@ -242,6 +242,11 @@ namespace Server.Gumps
                     }
                 }
 
+                if (m_Healer != from && m_Healer is PlayerMobile && from is PlayerMobile)
+                {
+                    SpiritualityVirtue.OnHeal(m_Healer, 50);
+                }
+
                 if (from.Fame > 0)
                 {
                     int amount = from.Fame / 10;

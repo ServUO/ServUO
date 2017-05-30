@@ -34,6 +34,11 @@ namespace Server.Mobiles
 
 	public abstract class BaseVendor : BaseCreature, IVendor
 	{
+        public static bool UseVendorEconomy = Config.Get("Vendors.UseVendorEconomy", true);
+        public static int BuyItemChange = Config.Get("Vendors.BuyItemChange", 1000);
+        public static int SellItemChange = Config.Get("Vendors.SellItemChange", 1000);
+        public static int EconomyStockAmount = Config.Get("Vendors.EconomyStockAmount", 1000);
+
 		public static List<BaseVendor> AllVendors { get; private set; }
 
 		static BaseVendor()
@@ -852,6 +857,20 @@ namespace Server.Mobiles
 		}
 		#endregion
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ForceRestock
+        {
+            get { return false; }
+            set
+            {
+                if (value)
+                {
+                    Restock();
+                    Say("Restocked!");
+                }
+            }
+        }
+
 		public virtual void Restock()
 		{
 			m_LastRestock = DateTime.UtcNow;
@@ -968,7 +987,7 @@ namespace Server.Mobiles
 				{
 					if (ssi.IsSellable(item))
 					{
-						price = ssi.GetBuyPriceFor(item);
+						price = ssi.GetBuyPriceFor(item, this);
 						name = ssi.GetNameFor(item);
 						break;
 					}
@@ -1114,7 +1133,7 @@ namespace Server.Mobiles
 
 						if (item.IsStandardLoot() && item.Movable && ssi.IsSellable(item))
 						{
-							table[item] = new SellItemState(item, ssi.GetSellPriceFor(item), ssi.GetNameFor(item));
+							table[item] = new SellItemState(item, ssi.GetSellPriceFor(item, this), ssi.GetNameFor(item));
 						}
 					}
 				}
@@ -1407,6 +1426,8 @@ namespace Server.Mobiles
 			{
 				Item item = (Item)o;
 
+                bii.OnBought(this, amount);
+
 				if (item.Stackable)
 				{
 					item.Amount = amount;
@@ -1444,6 +1465,8 @@ namespace Server.Mobiles
 			else if (o is Mobile)
 			{
 				Mobile m = (Mobile)o;
+
+                bii.OnBought(this, amount);
 
 				m.Direction = (Direction)Utility.Random(8);
 				m.MoveToWorld(buyer.Location, buyer.Map);
@@ -1540,7 +1563,7 @@ namespace Server.Mobiles
 							{
 								if (ssi.IsResellable(item))
 								{
-									totalCost += (double)ssi.GetBuyPriceFor(item) * amount;
+									totalCost += (double)ssi.GetBuyPriceFor(item, this) * amount;
 									validBuy.Add(buy);
 									break;
 								}
@@ -1987,14 +2010,16 @@ namespace Server.Mobiles
 						{
 							bool found = false;
 
-							foreach (IBuyItemInfo bii in buyInfo)
+							foreach (var bii in buyInfo)
 							{
 								if (bii.Restock(resp.Item, amount))
 								{
+                                    bii.OnSold(this, amount);
+
 									resp.Item.Consume(amount);
 									found = true;
 
-									break;
+                                    break;
 								}
 							}
 
@@ -2036,7 +2061,7 @@ namespace Server.Mobiles
 							}
 						}
 
-						GiveGold += ssi.GetSellPriceFor(resp.Item) * amount;
+						GiveGold += ssi.GetSellPriceFor(resp.Item, this) * amount;
 						break;
 					}
 				}
@@ -2078,7 +2103,7 @@ namespace Server.Mobiles
 		{
 			base.Serialize(writer);
 
-			writer.Write(2); // version
+			writer.Write(3); // version
 
             writer.Write(BribeMultiplier);
             writer.Write(NextMultiplierDecay);
@@ -2097,6 +2122,8 @@ namespace Server.Mobiles
 
 					int maxAmount = gbi.MaxAmount;
 					int doubled = 0;
+                    int bought = gbi.TotalBought;
+                    int sold = gbi.TotalSold;
 
 					switch (maxAmount)
 					{
@@ -2120,10 +2147,12 @@ namespace Server.Mobiles
 							break;
 					}
 
-					if (doubled > 0)
+					if (doubled > 0 || bought > 0 || sold > 0)
 					{
 						writer.WriteEncodedInt(1 + ((j * sbInfos.Count) + i));
 						writer.WriteEncodedInt(doubled);
+                        writer.WriteEncodedInt(bought);
+                        writer.WriteEncodedInt(sold);
 					}
 				}
 			}
@@ -2154,6 +2183,7 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 3:
                 case 2:
                     BribeMultiplier = reader.ReadInt();
                     NextMultiplierDecay = reader.ReadDateTime();
@@ -2166,6 +2196,14 @@ namespace Server.Mobiles
 						while ((index = reader.ReadEncodedInt()) > 0)
 						{
 							int doubled = reader.ReadEncodedInt();
+                            int bought = 0;
+                            int sold = 0;
+
+                            if (version >= 3)
+                            {
+                                bought = reader.ReadEncodedInt();
+                                sold = reader.ReadEncodedInt();
+                            }
 
 							if (sbInfos != null)
 							{
@@ -2186,6 +2224,8 @@ namespace Server.Mobiles
 
 										switch (doubled)
 										{
+                                            case 0:
+                                                break;
 											case 1:
 												amount = 40;
 												break;
@@ -2206,7 +2246,17 @@ namespace Server.Mobiles
 												break;
 										}
 
-										gbi.Amount = gbi.MaxAmount = amount;
+                                        if (version == 2 && gbi.Stackable)
+                                        {
+                                            gbi.Amount = gbi.MaxAmount = BaseVendor.EconomyStockAmount;
+                                        }
+                                        else
+                                        {
+                                            gbi.Amount = gbi.MaxAmount = amount;
+                                        }
+
+                                        gbi.TotalBought = bought;
+                                        gbi.TotalSold = sold;
 									}
 								}
 							}
@@ -2315,10 +2365,10 @@ namespace Server
 		string GetNameFor(Item item);
 
 		//get price for an item which the player is selling
-		int GetSellPriceFor(Item item);
+		int GetSellPriceFor(Item item, BaseVendor vendor);
 
 		//get price for an item which the player is buying
-		int GetBuyPriceFor(Item item);
+		int GetBuyPriceFor(Item item, BaseVendor vendor);
 
 		//can we sell this item to this vendor?
 		bool IsSellable(Item item);
@@ -2338,6 +2388,13 @@ namespace Server
 		int ControlSlots { get; }
 
 		int PriceScalar { get; set; }
+
+        bool Stackable { get; set; }
+        int TotalBought { get; set; }
+        int TotalSold { get; set; }
+
+        void OnBought(BaseVendor vendor, int amount);
+        void OnSold(BaseVendor vendor, int amount);
 
 		//display price of the item
 		int Price { get; }

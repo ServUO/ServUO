@@ -262,6 +262,8 @@ namespace Server
             if (keepAlive && totalDamage > m.Hits)
                 totalDamage = m.Hits;
 
+            SpiritualityVirtue.GetDamageReduction(m, ref totalDamage);
+
             if (from != null && !from.Deleted && from.Alive)
             {
                 int reflectPhys = AosAttributes.GetValue(m, AosAttribute.ReflectPhysical);
