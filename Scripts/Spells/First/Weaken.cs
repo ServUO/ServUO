@@ -34,7 +34,7 @@ namespace Server.Spells.First
                 BuffInfo.RemoveBuff(m, BuffIcon.Weaken);
 
                 if(removeMod)
-                    m.RemoveStatMod("[Magic] Dex Curse");
+                    m.RemoveStatMod("[Magic] Str Curse");
 
                 m_Table.Remove(m);
             }

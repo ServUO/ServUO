@@ -603,6 +603,7 @@
     <Compile Include="Items\Addons\DungeonHitchingPost.cs" />
     <Compile Include="Items\Addons\GeoffreyCampAddon.cs" />
     <Compile Include="Items\Addons\HitchingPost.cs" />
+    <Compile Include="Items\Addons\GardenShed.cs" />
     <Compile Include="Items\Addons\LighthouseAddon.cs" />
     <Compile Include="Items\Addons\NexusAddon.cs" />
     <Compile Include="Items\Addons\RoseRug.cs" />
@@ -2664,12 +2665,6 @@
     <Compile Include="Items\Books\BookOfCircles.cs" />
     <Compile Include="Mobiles\Normal\GargoyleGuardian.cs" />
     <Compile Include="Items\Books\ShrineMantra.cs" />
-    <Compile Include="Gumps\SQ1Gump.cs" />
-    <Compile Include="Gumps\SQ2Gump.cs" />
-    <Compile Include="Gumps\SQ3Gump.cs" />
-    <Compile Include="Gumps\SQ4Gump.cs" />
-    <Compile Include="Gumps\SQ5Gump.cs" />
-    <Compile Include="Gumps\SQGump.cs" />
     <Compile Include="Mobiles\NPCs\Agralem.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\AbyssReaver.cs" />
     <Compile Include="Mobiles\NPCs\Aliabeth.cs" />

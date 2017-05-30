@@ -148,11 +148,18 @@ namespace Server.Items
                         from.SendLocalizedMessage(500271); // You cannot build near the door.
                     else if (res == AddonFitResult.NoWall)
                         from.SendLocalizedMessage(500268); // This object needs to be mounted on something.
-					
+
                     if (res == AddonFitResult.Valid)
                     {
                         this.m_Deed.Delete();
-                        house.Addons[addon] = from;
+                        house.Addons[addon] = from;                        
+
+                        if (addon is GardenShedAddon)
+                        {
+                            GardenShedAddon ad = addon as GardenShedAddon;
+                            house.Addons[ad.SecondContainer] = from;
+                        }
+
                         house.AddSecure(from, addon);
                     }
                     else

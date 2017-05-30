@@ -235,7 +235,7 @@ namespace Server.Spells.Mysticism
                 }
             }
 
-            m_ImmuneTable.Add(from, new ImmuneTimer(from, TimeSpan.FromSeconds(16)));
+            m_ImmuneTable[from] = new ImmuneTimer(from, TimeSpan.FromSeconds(16));
         }
 
         public static void OnMobileDoDamage(Mobile from)

@@ -20,29 +20,32 @@ namespace Server.Mobiles
             this.SetDex(87, 103);
             this.SetInt(25, 30);
 
-            this.SetHits(1866, 1908);
+            this.SetHits(1800, 2000);
             this.SetMana(315, 343);
 
             this.SetDamage(20, 24);
 
             this.SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 65, 74);
-            this.SetResistance(ResistanceType.Fire, 51, 60);
+            this.SetResistance(ResistanceType.Physical, 65, 75);
+            this.SetResistance(ResistanceType.Fire, 50, 60);
             this.SetResistance(ResistanceType.Cold, 60, 70);
-            this.SetResistance(ResistanceType.Poison, 50, 58);
-            this.SetResistance(ResistanceType.Energy, 51, 57);
+            this.SetResistance(ResistanceType.Poison, 50, 60);
+            this.SetResistance(ResistanceType.Energy, 50, 60);
 
             this.SetSkill(SkillName.MagicResist, 68.7, 75.0);
             this.SetSkill(SkillName.Anatomy, 98.0, 100.6);
             this.SetSkill(SkillName.Tactics, 95.8, 100.9);
             this.SetSkill(SkillName.Wrestling, 100.2, 109.0);
+            this.SetSkill(SkillName.Parry, 100.0, 110.0);
+            this.SetSkill(SkillName.Ninjitsu, 100.2, 109.0);
+            this.SetSkill(SkillName.DetectHidden, 50.0);
 
             this.Fame = 2500;
             this.Karma = -2500;
 
             this.Tamable = true;
-            this.ControlSlots = 2;
+            this.ControlSlots = 4;
             this.MinTameSkill = 47.1;            
 
             if (!this.Controlled)
@@ -125,56 +128,29 @@ namespace Server.Mobiles
             this.Hidden = true;
             this.CantWalk = true;
         }
-        
-        public override bool IsScaredOfScaryThings
+
+        public override bool IsScaredOfScaryThings { get { return false; } }
+        public override bool IsBondable { get { return false; } }
+        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
+        public override bool BleedImmune { get { return true; } }
+        public override bool DeleteOnRelease { get { return true; } }
+        public override bool BardImmune { get { return !Core.AOS || this.Controlled; } }
+        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool CanAngerOnTame { get { return true; } }
+        public override bool StatLossAfterTame { get { return true; } }
+
+        public override WeaponAbility GetWeaponAbility()
         {
-            get
+            switch (Utility.Random(2))
             {
-                return false;
+                default:
+                case 1:
+                    return WeaponAbility.DualWield;
+                case 2:
+                    return WeaponAbility.ForceOfNature;
             }
         }
-        public override bool IsBondable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat | FoodType.FruitsAndVegies;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool DeleteOnRelease
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return !Core.AOS || this.Controlled;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Gems, 2);

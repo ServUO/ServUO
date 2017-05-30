@@ -2615,22 +2615,26 @@ namespace Server.Items
 					{
 						int toHeal = Utility.RandomMinMax(0, (int)(AOS.Scale(damageGiven, lifeLeech) * 0.3));
 
-						#region High Seas
-						if (defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura)
-						{
-							AOS.Damage(attacker, defender, toHeal, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
-							attacker.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
-						}
-						else
-							attacker.Hits += toHeal;
-						#endregion
+                        if (defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura)
+                        {
+                            AOS.Damage(attacker, defender, toHeal, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
+                            attacker.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
+                        }
+                        else
+                        {
+                            attacker.Hits += toHeal;
+                        }
 					}
 
                     if (toHealCursedWeaponSpell != 0 && !(defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura))
+                    {
                         attacker.Hits += toHealCursedWeaponSpell;
+                    }
 
                     if (toHealVampiricEmbraceSpell != 0 && !(defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura))
+                    {
                         attacker.Hits += toHealVampiricEmbraceSpell;
+                    }
 
                     if (manaLeech != 0)
 					{
@@ -2639,6 +2643,16 @@ namespace Server.Items
 				}
 				else // Old formulas
 				{
+                    if (toHealCursedWeaponSpell != 0)
+                    {
+                        attacker.Hits += toHealCursedWeaponSpell;
+                    }
+
+                    if (toHealVampiricEmbraceSpell != 0)
+                    {
+                        attacker.Hits += toHealVampiricEmbraceSpell;
+                    }
+
 					if (lifeLeech != 0)
 					{
 						attacker.Hits += AOS.Scale(damageGiven, lifeLeech);
@@ -2651,7 +2665,7 @@ namespace Server.Items
 					}
 				}
 
-				if (lifeLeech != 0 || stamLeech != 0 || manaLeech != 0)
+                if (lifeLeech != 0 || stamLeech != 0 || manaLeech != 0 || toHealCursedWeaponSpell != 0 || toHealVampiricEmbraceSpell != 0)
 				{
 					attacker.PlaySound(0x44D);
 				}
@@ -6280,11 +6294,11 @@ namespace Server.Items
         }
     }
 
-	public enum CheckSlayerResult
-	{
-		None,
-		Slayer,
-        	SuperSlayer,
-		Opposition
-	}
+    public enum CheckSlayerResult
+    {
+        None,
+        Slayer,
+        SuperSlayer,
+        Opposition
+    }
 }

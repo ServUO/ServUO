@@ -171,9 +171,10 @@ namespace Server.Mobiles
 
             if (!Core.AOS)
                 return;
-            //CHeck if players are in the region with the bosses
-            if ( pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm))
+
+            if ( pm == null || bc == null || bc.NoKillAwards/*|| !CheckLocation(bc) || !CheckLocation(pm)*/)
                 return;
+
             //Make sure its a boss we killed!!
             bool boss = bc is Impaler || bc is DemonKnight || bc is DarknightCreeper || bc is FleshRenderer  || bc is ShadowKnight || bc is AbysmalHorror;
             if (!boss)
@@ -181,7 +182,7 @@ namespace Server.Mobiles
              
             double gpoints = pm.GauntletPoints;
 
-            pm.GauntletPoints += (int)(bc.Fame * (1 + Math.Sqrt(pm.Luck) / 100))/2;
+            pm.GauntletPoints += (int)(bc.Fame * (1 + Math.Sqrt(pm.RealLuck) / 100))/2;
 
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
@@ -189,7 +190,7 @@ namespace Server.Mobiles
             double chance = A * Math.Pow(10, B * gpoints);
             double roll = Utility.RandomDouble();
 
-            if (chance > roll )
+            if (chance > roll)
             {
                 Item i = null;
 
@@ -199,13 +200,20 @@ namespace Server.Mobiles
 
                     if (ran >= m_RewardTable.Length)
                     {
+                        int luck = killer is PlayerMobile ? ((PlayerMobile)killer).RealLuck : killer.Luck;
+
                         i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
-                        RunicReforging.GenerateRandomArtifactItem(i, killer.Luck, Utility.RandomMinMax(1000, 1200));
+                        RunicReforging.GenerateRandomArtifactItem(i, luck, Utility.RandomMinMax(1000, 1200));
                         NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(i);
 
                         if (attrs != null)
                         {
                             attrs.Prized = 1;
+                            attrs.Brittle = 0;
+                            attrs.Massive = 0;
+                            attrs.Unwieldly = 0;
+                            attrs.Antique = 0;
+                            attrs.NoRepair = 0;
                         }
                     }
                     else

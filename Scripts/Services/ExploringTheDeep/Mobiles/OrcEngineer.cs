@@ -25,7 +25,7 @@ namespace Server.Mobiles
             this.SetDex(200, 210);
             this.SetInt(200, 210);
 
-            this.SetHits(3520);
+            this.SetHits(3500, 3700);
 
             this.SetDamage(8, 14);
 
@@ -37,10 +37,11 @@ namespace Server.Mobiles
             this.SetResistance(ResistanceType.Poison, 60);
             this.SetResistance(ResistanceType.Energy, 65, 70);
 
-            this.SetSkill(SkillName.Anatomy, 20);
-            this.SetSkill(SkillName.MagicResist, 72.6);
-            this.SetSkill(SkillName.Tactics, 114.6);
-            this.SetSkill(SkillName.Wrestling, 115.5);
+            this.SetSkill(SkillName.Parry, 100.0, 110.0);
+            this.SetSkill(SkillName.MagicResist, 70.0, 80.0);
+            this.SetSkill(SkillName.Tactics, 110.0, 120.0);
+            this.SetSkill(SkillName.Wrestling, 120.0, 130.0);
+            this.SetSkill(SkillName.DetectHidden, 100.0, 110.0);
 
             this.Fame = 1500;
             this.Karma = -1500;

@@ -11,7 +11,7 @@ namespace Server.Items
         public NictitatingLens()
             : base()
         {
-            this.Hue = 1939;
+            this.Hue = 1916;
             this.Weight = 2.0;
             this.LootType = LootType.Blessed;
         }
@@ -65,7 +65,7 @@ namespace Server.Items
         public GargishNictitatingLens()
             : base()
         {
-            this.Hue = 1939;
+            this.Hue = 1916;
             this.Weight = 2.0;
             this.LootType = LootType.Blessed;
         }

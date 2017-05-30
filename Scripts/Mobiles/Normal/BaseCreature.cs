@@ -5250,7 +5250,10 @@ namespace Server.Mobiles
         private bool m_NoKillAwards;
         private bool m_NoLootOnDeath;
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool NoKillAwards { get { return m_NoKillAwards; } set { m_NoKillAwards = value; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool NoLootOnDeath { get { return m_NoLootOnDeath; } set { m_NoLootOnDeath = value; } }
 
         public int ComputeBonusDamage(List<DamageEntry> list, Mobile m)
@@ -5556,7 +5559,12 @@ namespace Server.Mobiles
             if (SpellHelper.IsEodon(c.Map, c.Location))
             {
                 double chance = (double)bc.Fame / 1000000;
-                int luck = bc.LastKiller != null ? bc.LastKiller.Luck : 0;
+                int luck = 0;
+
+                if (bc.LastKiller != null)
+                {
+                    luck = bc.LastKiller is PlayerMobile ? ((PlayerMobile)bc.LastKiller).RealLuck : bc.LastKiller.Luck;
+                }
 
                 if (luck > 0)
                     chance += (double)luck / 152000;

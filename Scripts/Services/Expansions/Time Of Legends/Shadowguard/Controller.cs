@@ -654,14 +654,20 @@ namespace Server.Engines.Shadowguard
 
                 if (encounter == null)
                 {
-                    ShadowguardEncounter.MovePlayer(m, Instance.KickLocation, true);
+                    StormLevelGump menu = new StormLevelGump(m);
+                    menu.BeginClose();
+                    m.SendGump(menu);
                 }
                 else if (m != encounter.PartyLeader)
                 {
                     Party p = Party.Get(encounter.PartyLeader);
 
                     if (p == null || !p.Contains(m))
-                        ShadowguardEncounter.MovePlayer(m, Instance.KickLocation, true);
+                    {
+                        StormLevelGump menu = new StormLevelGump(m);
+                        menu.BeginClose();
+                        m.SendGump(menu);
+                    }
                 }
             }
         }

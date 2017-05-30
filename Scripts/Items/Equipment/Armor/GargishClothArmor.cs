@@ -137,8 +137,6 @@ namespace Server.Items
         {
         }
 
-        public override bool AllowMaleWearer { get { return false; } }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -273,8 +271,6 @@ namespace Server.Items
             Hue = hue;
             Weight = 2.0;
         }
-
-        public override bool AllowMaleWearer { get { return false; } }
 
         public FemaleGargishClothChestArmor(Serial serial)
             : base(serial)
@@ -421,8 +417,6 @@ namespace Server.Items
         {
         }
 
-        public override bool AllowMaleWearer { get { return false; } }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -562,8 +556,6 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override bool AllowMaleWearer { get { return false; } }
 
         public override void Serialize(GenericWriter writer)
         {
