@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,10 +31,10 @@ namespace Server.Mobiles
         { 
             public InternalBuyInfo() 
             { 
-                this.Add(new GenericBuyInfo(typeof(Drums), 21, (10), 0x0E9C, 0)); 
-                this.Add(new GenericBuyInfo(typeof(Tambourine), 21, (10), 0x0E9E, 0)); 
-                this.Add(new GenericBuyInfo(typeof(LapHarp), 21, (10), 0x0EB2, 0)); 
-                this.Add(new GenericBuyInfo(typeof(Lute), 21, (10), 0x0EB3, 0)); 
+                Add(new GenericBuyInfo(typeof(Drums), 21, (10), 0x0E9C, 0)); 
+                Add(new GenericBuyInfo(typeof(Tambourine), 21, (10), 0x0E9E, 0)); 
+                Add(new GenericBuyInfo(typeof(LapHarp), 21, (10), 0x0EB2, 0)); 
+                Add(new GenericBuyInfo(typeof(Lute), 21, (10), 0x0EB3, 0)); 
             }
         }
 
@@ -42,11 +42,11 @@ namespace Server.Mobiles
         { 
             public InternalSellInfo() 
             { 
-                this.Add(typeof(LapHarp), 10); 
-                this.Add(typeof(Lute), 10); 
-                this.Add(typeof(Drums), 10); 
-                this.Add(typeof(Harp), 10); 
-                this.Add(typeof(Tambourine), 10); 
+                Add(typeof(LapHarp), 10); 
+                Add(typeof(Lute), 10); 
+                Add(typeof(Drums), 10); 
+                Add(typeof(Harp), 10); 
+                Add(typeof(Tambourine), 10); 
             }
         }
     }

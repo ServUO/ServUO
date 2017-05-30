@@ -6,6 +6,7 @@ using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
 using System.Linq;
+using Server.Engines.Craft;
 
 
 namespace Server.Items
@@ -277,6 +278,10 @@ namespace Server.Items
             }
         }
 
+        public virtual void OnSkillTransfered(Mobile from)
+        {
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (!this.CheckUse(from))
@@ -487,6 +492,8 @@ namespace Server.Items
                 Effects.SendMovingParticles(new Entity(Server.Serial.Zero, new Point3D(from.X - 6, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
 
                 Effects.SendTargetParticles(from, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
+
+                m_Stone.OnSkillTransfered(from);
             }
 
             private void CheckSkill(Mobile from)
@@ -890,7 +897,7 @@ namespace Server.Items
         }
     }
 
-    public class SoulstoneFragment : SoulStone, IUsesRemaining
+    public class SoulstoneFragment : SoulStone, IUsesRemaining, ICraftable
     {
         private int m_UsesRemaining;
 
@@ -945,6 +952,14 @@ namespace Server.Items
             {
                 this.m_UsesRemaining = value;
                 this.InvalidateProperties();
+            }
+        }
+
+        public override void OnSkillTransfered(Mobile from)
+        {
+            if (String.IsNullOrEmpty(Account))
+            {
+                Account = from.Account.Username;
             }
         }
 
@@ -1013,6 +1028,13 @@ namespace Server.Items
             set
             {
             }
+        }
+
+        public int OnCraft( int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            UsesRemaining = 1;
+            Hue = 1150;
+            return quality;
         }
     }
 

@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,14 +31,14 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(PlateHatsuburi), 76, 20, 0x2775, 0));
-                this.Add(new GenericBuyInfo(typeof(HeavyPlateJingasa), 76, 20, 0x2777, 0));
-                this.Add(new GenericBuyInfo(typeof(DecorativePlateKabuto), 95, 20, 0x2778, 0));
-                this.Add(new GenericBuyInfo(typeof(PlateDo), 310, 20, 0x277D, 0));
-                this.Add(new GenericBuyInfo(typeof(PlateHiroSode), 222, 20, 0x2780, 0));
-                this.Add(new GenericBuyInfo(typeof(PlateSuneate), 224, 20, 0x2788, 0));
-                this.Add(new GenericBuyInfo(typeof(PlateHaidate), 235, 20, 0x278D, 0));
-                this.Add(new GenericBuyInfo(typeof(ChainHatsuburi), 76, 20, 0x2774, 0));
+                Add(new GenericBuyInfo(typeof(PlateHatsuburi), 76, 20, 0x2775, 0));
+                Add(new GenericBuyInfo(typeof(HeavyPlateJingasa), 76, 20, 0x2777, 0));
+                Add(new GenericBuyInfo(typeof(DecorativePlateKabuto), 95, 20, 0x2778, 0));
+                Add(new GenericBuyInfo(typeof(PlateDo), 310, 20, 0x277D, 0));
+                Add(new GenericBuyInfo(typeof(PlateHiroSode), 222, 20, 0x2780, 0));
+                Add(new GenericBuyInfo(typeof(PlateSuneate), 224, 20, 0x2788, 0));
+                Add(new GenericBuyInfo(typeof(PlateHaidate), 235, 20, 0x278D, 0));
+                Add(new GenericBuyInfo(typeof(ChainHatsuburi), 76, 20, 0x2774, 0));
             }
         }
 
@@ -46,14 +46,14 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(PlateHatsuburi), 38);
-                this.Add(typeof(HeavyPlateJingasa), 38);
-                this.Add(typeof(DecorativePlateKabuto), 47);
-                this.Add(typeof(PlateDo), 155);
-                this.Add(typeof(PlateHiroSode), 111);
-                this.Add(typeof(PlateSuneate), 112);
-                this.Add(typeof(PlateHaidate), 117);
-                this.Add(typeof(ChainHatsuburi), 38);
+                Add(typeof(PlateHatsuburi), 38);
+                Add(typeof(HeavyPlateJingasa), 38);
+                Add(typeof(DecorativePlateKabuto), 47);
+                Add(typeof(PlateDo), 155);
+                Add(typeof(PlateHiroSode), 111);
+                Add(typeof(PlateSuneate), 112);
+                Add(typeof(PlateHaidate), 117);
+                Add(typeof(ChainHatsuburi), 38);
             }
         }
     }

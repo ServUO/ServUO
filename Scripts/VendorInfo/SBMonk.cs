@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -32,7 +32,7 @@ namespace Server.Mobiles
             public InternalBuyInfo()
             {
                 if (Core.AOS)
-                    this.Add(new GenericBuyInfo(typeof(MonkRobe), 136, 20, 0x2687, 0x21E));
+                    Add(new GenericBuyInfo(typeof(MonkRobe), 136, 20, 0x2687, 0x21E));
             }
         }
 

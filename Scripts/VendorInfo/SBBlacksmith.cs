@@ -30,8 +30,8 @@ namespace Server.Mobiles
         public class InternalBuyInfo : List<GenericBuyInfo> 
         { 
             public InternalBuyInfo() 
-            { 
-                this.Add(new GenericBuyInfo(typeof(IronIngot), 5, 16, 0x1BF2, 0));
+            {
+                this.Add(new GenericBuyInfo(typeof(IronIngot), 5, 16, 0x1BF2, 0, true));
                 this.Add(new GenericBuyInfo(typeof(Tongs), 13, 14, 0xFBB, 0)); 
  
                 this.Add(new GenericBuyInfo(typeof(BronzeShield), 66, 20, 0x1B72, 0));
@@ -127,7 +127,7 @@ namespace Server.Mobiles
                     this.Add(new GenericBuyInfo(typeof(BladedStaff), 40, 20, 0x26BD, 0));
                 }
 
-                Add(new GenericBuyInfo("1154005", typeof(MalleableAlloy), 50, 500, 7139, 2949));
+                Add(new GenericBuyInfo("1154005", typeof(MalleableAlloy), 50, 500, 7139, 2949, true));
             }
         }
 

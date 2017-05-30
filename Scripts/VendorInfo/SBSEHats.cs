@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,9 +31,9 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(Kasa), 31, 20, 0x2798, 0));
-                this.Add(new GenericBuyInfo(typeof(LeatherJingasa), 11, 20, 0x2776, 0));
-                this.Add(new GenericBuyInfo(typeof(ClothNinjaHood), 33, 20, 0x278F, 0));
+                Add(new GenericBuyInfo(typeof(Kasa), 31, 20, 0x2798, 0));
+                Add(new GenericBuyInfo(typeof(LeatherJingasa), 11, 20, 0x2776, 0));
+                Add(new GenericBuyInfo(typeof(ClothNinjaHood), 33, 20, 0x278F, 0));
             }
         }
 
@@ -41,9 +41,9 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(Kasa), 15);
-                this.Add(typeof(LeatherJingasa), 5);
-                this.Add(typeof(ClothNinjaHood), 16);
+                Add(typeof(Kasa), 15);
+                Add(typeof(LeatherJingasa), 5);
+                Add(typeof(ClothNinjaHood), 16);
             }
         }
     }

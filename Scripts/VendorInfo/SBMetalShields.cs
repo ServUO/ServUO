@@ -16,14 +16,14 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_SellInfo;
+                return m_SellInfo;
             }
         }
         public override List<GenericBuyInfo> BuyInfo
         {
             get
             {
-                return this.m_BuyInfo;
+                return m_BuyInfo;
             }
         }
 
@@ -31,12 +31,12 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo(typeof(BronzeShield), 66, 20, 0x1B72, 0));
-                this.Add(new GenericBuyInfo(typeof(Buckler), 50, 20, 0x1B73, 0));
-                this.Add(new GenericBuyInfo(typeof(MetalKiteShield), 123, 20, 0x1B74, 0));
-                this.Add(new GenericBuyInfo(typeof(HeaterShield), 231, 20, 0x1B76, 0));
-                this.Add(new GenericBuyInfo(typeof(WoodenKiteShield), 70, 20, 0x1B78, 0));
-                this.Add(new GenericBuyInfo(typeof(MetalShield), 121, 20, 0x1B7B, 0));
+                Add(new GenericBuyInfo(typeof(BronzeShield), 66, 20, 0x1B72, 0));
+                Add(new GenericBuyInfo(typeof(Buckler), 50, 20, 0x1B73, 0));
+                Add(new GenericBuyInfo(typeof(MetalKiteShield), 123, 20, 0x1B74, 0));
+                Add(new GenericBuyInfo(typeof(HeaterShield), 231, 20, 0x1B76, 0));
+                Add(new GenericBuyInfo(typeof(WoodenKiteShield), 70, 20, 0x1B78, 0));
+                Add(new GenericBuyInfo(typeof(MetalShield), 121, 20, 0x1B7B, 0));
             }
         }
 
@@ -44,12 +44,12 @@ namespace Server.Mobiles
         {
             public InternalSellInfo()
             {
-                this.Add(typeof(Buckler), 25);
-                this.Add(typeof(BronzeShield), 33);
-                this.Add(typeof(MetalShield), 60);
-                this.Add(typeof(MetalKiteShield), 62);
-                this.Add(typeof(HeaterShield), 115);
-                this.Add(typeof(WoodenKiteShield), 35);
+                Add(typeof(Buckler), 25);
+                Add(typeof(BronzeShield), 33);
+                Add(typeof(MetalShield), 60);
+                Add(typeof(MetalKiteShield), 62);
+                Add(typeof(HeaterShield), 115);
+                Add(typeof(WoodenKiteShield), 35);
             }
         }
     }
