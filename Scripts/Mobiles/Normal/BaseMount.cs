@@ -154,17 +154,17 @@ namespace Server.Mobiles
 
         public static void Dismount(Mobile dismounted)
         {
-            Dismount(dismounted, dismounted, BlockMountType.None, TimeSpan.FromSeconds(0), false);
+            Dismount(dismounted, dismounted, BlockMountType.None, TimeSpan.MinValue, false);
         }
 
         public static void Dismount(Mobile dismounter, Mobile dismounted, BlockMountType blockmounttype, TimeSpan delay)
         {
-            Dismount(dismounter, dismounted, blockmounttype, TimeSpan.FromSeconds(0), true);
+            Dismount(dismounter, dismounted, blockmounttype, TimeSpan.MinValue, true);
         }
 
         public static void Dismount(Mobile dismounter, Mobile dismounted, BlockMountType blockmounttype, TimeSpan delay, bool message)
         {
-            if (!dismounted.Mounted)
+            if (!dismounted.Mounted && !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted) && !dismounted.Flying)
                 return;
 
             if (dismounted is ChaosDragoonElite)
@@ -177,12 +177,13 @@ namespace Server.Mobiles
             if (mount != null)
             {
                 mount.Rider = null;
-                BaseMount.SetMountPrevention(dismounted, blockmounttype, delay);
 
                 if (message)
                     dismounted.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
-                    
-                BuffInfo.AddBuff(dismounted, new BuffInfo(BuffIcon.DismountPrevention, 1075635, 1075636, delay, dismounted));
+            }
+            else if (Core.ML && Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted))
+            {
+                Spells.Ninjitsu.AnimalForm.RemoveContext(dismounted, true);
             }
             else if (dismounted.Flying)
             {
@@ -193,9 +194,15 @@ namespace Server.Mobiles
                     dismounted.Animate(61, 10, 1, true, false, 0);
                 }
             }
-            else if (Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted))
+            else
             {
-                Spells.Ninjitsu.AnimalForm.RemoveContext(dismounted, true);
+                return;
+            }
+
+            if (delay != TimeSpan.MinValue)
+            {
+                BuffInfo.AddBuff(dismounted, new BuffInfo(BuffIcon.DismountPrevention, 1075635, 1075636, delay, dismounted));
+                BaseMount.SetMountPrevention(dismounted, blockmounttype, delay);
             }
         }
 
@@ -402,9 +409,9 @@ namespace Server.Mobiles
             if (!Multis.DesignContext.Check(from))
                 return;
 
-            if (from.HasTrade)
+            if (from.HasTrade || !Server.Items.RidingSwipe.CanMount(this))
             {
-                from.SendLocalizedMessage(1042317, "", 0x41); // You may not ride at this time
+                from.SendLocalizedMessage(1042317); // You may not ride at this time
                 return;
             }
 

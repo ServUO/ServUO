@@ -53,14 +53,16 @@ namespace Server.Items
 
             IMount mount = defender.Mount;
 
-            if (mount == null && !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender) && !defender.Flying)
+            if (mount == null && !defender.Flying && (!Core.ML || !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender)))
             {
                 attacker.SendLocalizedMessage(1060848); // This attack only works on mounted or flying targets
                 return;
             }
 
             if (!this.CheckMana(attacker, true))
+            {
                 return;
+            }
 
             if (Core.ML && attacker is LesserHiryu && 0.8 >= Utility.RandomDouble())
             {
@@ -69,32 +71,25 @@ namespace Server.Items
 
             attacker.SendLocalizedMessage(1060082); // The force of your attack has dislodged them from their mount!
 
-            if (defender.Flying)
-                defender.SendLocalizedMessage(1113590, attacker.Name); // You have been grounded by ~1_NAME~!
-			else if ( attacker.Mounted )
-				defender.SendLocalizedMessage( 1062315 ); // You fall off your mount!
-			else
-				defender.SendLocalizedMessage( 1060083 ); // You fall off of your mount and take damage!
-
             defender.PlaySound(0x140);
             defender.FixedParticles(0x3728, 10, 15, 9955, EffectLayer.Waist);
 
             if (defender is PlayerMobile)
             {
-                if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
+                if (Core.ML && Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
                 {
                     defender.SendLocalizedMessage(1114066, attacker.Name); // ~1_NAME~ knocked you out of animal form!
-                }
-                else if (defender.Mounted)
-                {
-                    defender.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
                 }
                 else if (defender.Flying)
                 {
                     defender.SendLocalizedMessage(1113590, attacker.Name); // You have been grounded by ~1_NAME~!
                 }
+                else if (defender.Mounted)
+                {
+                    defender.SendLocalizedMessage(1060083); // You fall off of your mount and take damage!
+                }
 
-                (defender as PlayerMobile).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(10), true);
+                ((PlayerMobile)defender).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(10), true);
             }
             else if (mount != null)
             {
@@ -103,7 +98,7 @@ namespace Server.Items
 
             if (attacker is PlayerMobile)
             {
-                (attacker as PlayerMobile).SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), false);
+                ((PlayerMobile)attacker).SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), false);
             }
             else if (Core.ML && attacker is BaseCreature)
             {
@@ -116,9 +111,11 @@ namespace Server.Items
                     pm.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), false);
                 }
             }
-				
+
             if (!attacker.Mounted)
+            {
                 AOS.Damage(defender, attacker, Utility.RandomMinMax(15, 25), 100, 0, 0, 0, 0);
+            }
         }
     }
 }

@@ -106,7 +106,6 @@ namespace Server.Items
             Mobile from = (Mobile)states[0];
             Mobile to = (Mobile)states[1];
 			
-
             if (Core.AOS)
                 new Bola().MoveToWorld(to.Location, to.Map);
 
@@ -116,37 +115,33 @@ namespace Server.Items
                 from.SendLocalizedMessage(1042047); // You fail to knock the rider from its mount.
 
             IMount mt = to.Mount;
-			AnimalFormContext context = AnimalForm.GetContext( to );
-            
-			if ( mt != null && !( to is ChaosDragoon || to is ChaosDragoonElite ) )
-			{
-				mt.Rider = null;
 
-				to.SendLocalizedMessage( 1040023 ); // You have been knocked off of your mount!
-				from.SendMessage("You knock them from their mount!");
-			}
-
-            if (to is PlayerMobile)
+            if ((mt != null || to.Flying || (Core.ML && Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to))) && !(to is ChaosDragoon || to is ChaosDragoonElite))
             {
-                if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to))
+                from.SendMessage("You knock them from their mount!");
+
+                if (to is PlayerMobile)
                 {
-                    to.SendLocalizedMessage(1114066, from.Name); // ~1_NAME~ knocked you out of animal form!
-                }
-                else if (to.Mounted)
-                {
-                    to.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
-                }
-                else if (to.Flying)
-                {
-                    to.SendMessage(1113590, from.Name); // You have been grounded by ~1_NAME~!
+                    if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to))
+                    {
+                        to.SendLocalizedMessage(1114066, from.Name); // ~1_NAME~ knocked you out of animal form!
+                    }
+                    else if (to.Mounted)
+                    {
+                        to.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
+                    }
+                    else if (to.Flying)
+                    {
+                        to.SendMessage(1113590, from.Name); // You have been grounded by ~1_NAME~!
+                    }
+
+                    ((PlayerMobile)to).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(Core.ML ? 10 : 3), true);
                 }
 
-                (to as PlayerMobile).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(Core.ML ? 10 : 3), true);
-            }
-
-            if (Core.AOS && from is PlayerMobile) /* only failsafe, attacker should already be dismounted */
-            {
-                (from as PlayerMobile).SetMountBlock(BlockMountType.BolaRecovery, TimeSpan.FromSeconds(Core.ML ? 10 : 3), true);
+                if (Core.AOS && from is PlayerMobile) /* only failsafe, attacker should already be dismounted */
+                {
+                    ((PlayerMobile)from).SetMountBlock(BlockMountType.BolaRecovery, TimeSpan.FromSeconds(Core.ML ? 10 : 3), false);
+                }
             }
 
             Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(ReleaseBolaLock), from);
@@ -186,7 +181,7 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(1070902); // You can't use this while in an animal form!
                     }
-                    else if (!to.Mounted)
+                    else if (!to.Mounted && !to.Flying && (!Core.ML || !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(to)))
                     {
                         from.SendLocalizedMessage(1049628); // You have no reason to throw a bola at that.
                     }
@@ -211,8 +206,8 @@ namespace Server.Items
 
                         from.DoHarmful(to);
 
-                        if (Core.AOS)
-                            BaseMount.SetMountPrevention(from, BlockMountType.BolaRecovery, TimeSpan.FromSeconds(3.0));
+                        //if (Core.AOS)
+                        //    BaseMount.SetMountPrevention(from, BlockMountType.BolaRecovery, TimeSpan.FromSeconds(3.0));
 
                         this.m_Bola.Consume();
 
