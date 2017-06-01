@@ -21,7 +21,7 @@ namespace Server.Services.Virtues
 	{
         public static bool Enabled = Config.Get("Honesty.Enabled", true);
         public static int MaxGeneration = Config.Get("Honesty.MaxGeneration", 1000);
-        public static bool TrammelGeneration = Config.Get("Honesty.TrammelGeneration", true);
+        public static bool TrammelGeneration = Siege.SiegeShard ? false : Config.Get("Honesty.TrammelGeneration", true);
 
 		private static readonly string[] _Regions =
 		{

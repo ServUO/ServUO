@@ -270,11 +270,25 @@ namespace Server.Misc
             if (skill.Base < skill.Cap && skill.Lock == SkillLock.Up)
             {
                 int toGain = 1;
+                Skills skills = from.Skills;
+
+                if (from is PlayerMobile && Siege.SiegeShard)
+                {
+                    int minsPerGain = Siege.MinutesPerGain(from, skill);
+
+                    if (minsPerGain > 0)
+                    {
+                        if (skills.Total + toGain <= skills.Cap && Siege.CheckSkillGain((PlayerMobile)from, minsPerGain, skill))
+                        {
+                            skill.BaseFixedPoint += toGain;
+                        }
+
+                        return;
+                    }
+                }
 
                 if (skill.Base <= 10.0)
                     toGain = Utility.Random(4) + 1;
-
-                Skills skills = from.Skills;
 
                 #region Mondain's Legacy
                 if (from is PlayerMobile)
@@ -338,12 +352,11 @@ namespace Server.Misc
                 Server.Engines.Quests.QuestHelper.CheckSkill((PlayerMobile)from, skill);
             #endregion
 
-
-            if (skill.Lock == SkillLock.Up)
+            if (skill.Lock == SkillLock.Up && (!Siege.SiegeShard || !(from is PlayerMobile) || Siege.CanGainStat((PlayerMobile)from)))
             {
                 SkillInfo info = skill.Info;
 
-				// Old gain mechanic
+                // Old gain mechanic
 				if (!Core.ML)
 				{
 					if (from.StrLock == StatLockType.Up && (info.StrGain / 33.3) > Utility.RandomDouble())
@@ -460,8 +473,14 @@ namespace Server.Misc
                         }
 
                         if (CanRaise(from, Stat.Str))
+                        {
                             ++from.RawStr;
 
+                            if (Siege.SiegeShard && from is PlayerMobile)
+                            {
+                                Siege.IncreaseStat((PlayerMobile)from);
+                            }
+                        }
                         break;
                     }
                 case Stat.Dex:
@@ -475,8 +494,14 @@ namespace Server.Misc
                         }
 
                         if (CanRaise(from, Stat.Dex))
+                        {
                             ++from.RawDex;
 
+                            if (Siege.SiegeShard && from is PlayerMobile)
+                            {
+                                Siege.IncreaseStat((PlayerMobile)from);
+                            }
+                        }
                         break;
                     }
                 case Stat.Int:
@@ -490,8 +515,14 @@ namespace Server.Misc
                         }
 
                         if (CanRaise(from, Stat.Int))
+                        {
                             ++from.RawInt;
 
+                            if (Siege.SiegeShard && from is PlayerMobile)
+                            {
+                                Siege.IncreaseStat((PlayerMobile)from);
+                            }
+                        }
                         break;
                     }
             }

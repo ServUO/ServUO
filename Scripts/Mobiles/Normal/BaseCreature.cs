@@ -3645,7 +3645,7 @@ namespace Server.Mobiles
 
         public virtual bool CheckTeach(SkillName skill, Mobile from)
         {
-            if (!CanTeach)
+            if (!CanTeach || Siege.SiegeShard)
             {
                 return false;
             }

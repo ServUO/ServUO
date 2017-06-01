@@ -909,6 +909,12 @@ namespace Server.Engines.Craft
                 Mobile from = this.m_TrapCraft.From;
                 BaseTool tool = this.m_TrapCraft.Tool;
 
+                if (Siege.SiegeShard)
+                {
+                    AOS.Damage(from, Utility.RandomMinMax(80, 120), 50, 50, 0, 0, 0);
+                    message = 502902; // You fail to set the trap, and inadvertantly hurt yourself in the process.
+                }
+
                 if (tool != null && !tool.Deleted && tool.UsesRemaining > 0)
                     from.SendGump(new CraftGump(from, this.m_TrapCraft.CraftSystem, tool, message));
                 else if (message > 0)

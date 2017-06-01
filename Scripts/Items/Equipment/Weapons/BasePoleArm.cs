@@ -7,12 +7,9 @@ namespace Server.Items
 {
     public abstract class BasePoleArm : BaseMeleeWeapon
     {
-        private int m_UsesRemaining;
-        private bool m_ShowUsesRemaining;
         public BasePoleArm(int itemID)
             : base(itemID)
         {
-            this.m_UsesRemaining = 150;
         }
 
         public BasePoleArm(Serial serial)
@@ -55,6 +52,7 @@ namespace Server.Items
                 return WeaponAnimation.Slash2H;
             }
         }
+        
         public virtual HarvestSystem HarvestSystem
         {
             get
@@ -62,32 +60,7 @@ namespace Server.Items
                 return Lumberjacking.System;
             }
         }
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int UsesRemaining
-        {
-            get
-            {
-                return this.m_UsesRemaining;
-            }
-            set
-            {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
-            }
-        }
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool ShowUsesRemaining
-        {
-            get
-            {
-                return this.m_ShowUsesRemaining;
-            }
-            set
-            {
-                this.m_ShowUsesRemaining = value;
-                this.InvalidateProperties();
-            }
-        }
+       
         public override void OnDoubleClick(Mobile from)
         {
             if (this.HarvestSystem == null)
@@ -111,11 +84,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
-
-            writer.Write((bool)this.m_ShowUsesRemaining);
-
-            writer.Write((int)this.m_UsesRemaining);
+            writer.Write((int)3); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -126,21 +95,22 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 3:
+                    break;
                 case 2:
                     {
-                        this.m_ShowUsesRemaining = reader.ReadBool();
+                        if(version == 2)
+                            ShowUsesRemaining = reader.ReadBool();
                         goto case 1;
                     }
                 case 1:
                     {
-                        this.m_UsesRemaining = reader.ReadInt();
+                        if(version == 2)
+                            UsesRemaining = reader.ReadInt();
                         goto case 0;
                     }
                 case 0:
                     {
-                        if (this.m_UsesRemaining < 1)
-                            this.m_UsesRemaining = 150;
-
                         break;
                     }
             }

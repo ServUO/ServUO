@@ -3077,7 +3077,8 @@ namespace Server.Items
 
                 if (Core.ML && !(this is BaseShield) && !craftItem.ForceNonExceptional)
                 {
-                    int bonus = (int)(from.Skills.ArmsLore.Value / 20);
+                    double div = Siege.SiegeShard ? 12.5 : 20;
+                    int bonus = (int)(from.Skills.ArmsLore.Value / div);
 
                     for (int i = 0; i < bonus; i++)
                     {

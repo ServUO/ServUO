@@ -56,7 +56,11 @@ namespace Server.Items
 
             int count = 0;
 
-            count += MoonGen(PMList.Trammel);
+            if (!Siege.SiegeShard)
+            {
+                count += MoonGen(PMList.Trammel);
+            }
+
             count += MoonGen(PMList.Felucca);
             count += MoonGen(PMList.Ilshenar);
             count += MoonGen(PMList.Malas);
@@ -303,6 +307,7 @@ namespace Server.Items
                 Core.TOL ? new PMEntry(new Point3D(719, 1863, 40), 1156262) : new PMEntry(new Point3D(926, 3989, -36), 1112572), // Valley of Eodon
                 // Holy City
             });
+
         public static readonly PMList[] UORLists = new PMList[] { Trammel, Felucca };
         public static readonly PMList[] UORListsYoung = new PMList[] { Trammel };
         public static readonly PMList[] LBRLists = new PMList[] { Trammel, Felucca, Ilshenar };
@@ -315,6 +320,7 @@ namespace Server.Items
         public static readonly PMList[] SAListsYoung = new PMList[] { Trammel, Ilshenar, Malas, Tokuno, TerMur };
         public static readonly PMList[] RedLists = new PMList[] { Felucca };
         public static readonly PMList[] SigilLists = new PMList[] { Felucca };
+
         private readonly int m_Number;
         private readonly int m_SelNumber;
         private readonly Map m_Map;
@@ -401,7 +407,7 @@ namespace Server.Items
                 {
                     checkLists = PMList.SigilLists;
                 }
-                else if (mobile.Murderer)
+                else if (mobile.Murderer && !Siege.SiegeShard)
                 {
                     checkLists = PMList.RedLists;
                 }
@@ -471,6 +477,9 @@ namespace Server.Items
 
             for (int i = 0; i < checkLists.Length; ++i)
             {
+                if (Siege.SiegeShard && checkLists[i].Number == 1012000) // Trammel
+                    continue;
+
                 AddButton(10, 35 + (i * 25), 2117, 2118, 0, GumpButtonType.Page, Array.IndexOf(m_Lists, checkLists[i]) + 1);
                 AddHtmlLocalized(30, 35 + (i * 25), 150, 20, checkLists[i].Number, false, false);
             }
@@ -531,7 +540,7 @@ namespace Server.Items
                 m_Mobile.SendLocalizedMessage(1019002); // You are too far away to use the gate.
                 return;
             }
-            else if (m_Mobile.Player && m_Mobile.Murderer && list.Map != Map.Felucca)
+            else if (m_Mobile.Player && m_Mobile.Murderer && list.Map != Map.Felucca && !Siege.SiegeShard)
             {
                 m_Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 return;
