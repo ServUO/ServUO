@@ -57,6 +57,11 @@ namespace Server.Mobiles
                 m_MaxAmount = m_Amount = amount;
             }
 
+            if(Siege.SiegeShard)
+            {
+                m_Price *= 3;
+            }
+
             if (name == null)
                 m_Name = itemID < 0x4000 ? (1020000 + itemID).ToString() : (1078872 + itemID).ToString();
             else
@@ -136,7 +141,7 @@ namespace Server.Mobiles
             set { m_Stackable = value; }
         }
 
-        public bool EconomyItem { get { return Core.AOS && BaseVendor.UseVendorEconomy && m_Stackable; } }
+        public bool EconomyItem { get { return BaseVendor.UseVendorEconomy && m_Stackable; } }
 
         public int Price
         {

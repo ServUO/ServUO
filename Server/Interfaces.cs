@@ -50,7 +50,7 @@ namespace Server
 
 	public interface ICarvable
 	{
-		void Carve(Mobile from, Item item);
+		bool Carve(Mobile from, Item item);
 	}
 
 	public interface IWeapon

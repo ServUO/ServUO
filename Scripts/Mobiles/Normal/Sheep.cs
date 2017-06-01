@@ -90,13 +90,13 @@ namespace Server.Mobiles
                 return (Body == 0xCF ? 3 : 0);
             }
         }
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
             if (DateTime.UtcNow < m_NextWoolTime)
             {
                 // This sheep is not yet ready to be shorn.
                 PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500449, from.NetState);
-                return;
+                return false;
             }
 
             from.SendLocalizedMessage(500452); // You place the gathered wool into your backpack.
@@ -120,6 +120,8 @@ namespace Server.Mobiles
             }
 
             NextWoolTime = DateTime.UtcNow + TimeSpan.FromHours(3.0); // TODO: Proper time delay
+
+            return true;
         }
 
         public override void OnThink()

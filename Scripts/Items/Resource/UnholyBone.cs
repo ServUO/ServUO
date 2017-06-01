@@ -29,7 +29,7 @@ namespace Server.Items
                 return "unholy bone";
             }
         }
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
             Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x48F);
             Effects.SendLocationEffect(this.GetWorldLocation(), this.Map, 0x3728, 10, 10, 0, 0);
@@ -46,7 +46,6 @@ namespace Server.Items
                 gold.MoveToWorld(this.GetWorldLocation(), this.Map);
 
                 this.Delete();
-
                 this.m_Timer.Stop();
             }
             else
@@ -56,6 +55,8 @@ namespace Server.Items
                 else
                     from.SendMessage("You damage the bone pile.");
             }
+
+            return true;
         }
 
         public override void Serialize(GenericWriter writer)

@@ -46,7 +46,7 @@ namespace Server.Mobiles
             //	VirtualArmor = 16;
         }
 
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
             if (!GatheredFur)
             {
@@ -61,10 +61,14 @@ namespace Server.Mobiles
                 {
                     from.SendLocalizedMessage(1112360); // You place the gathered kepetch fur into your backpack.
                     GatheredFur = true;
+
+                    return true;
                 }
             }
             else
                 from.SendLocalizedMessage(1112358); // The Kepetch nimbly escapes your attempts to shear its mane.
+
+            return false;
         }
 
         public override void OnCarve(Mobile from, Corpse corpse, Item with)

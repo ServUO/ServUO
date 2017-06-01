@@ -38,9 +38,10 @@ namespace Server.Items
                 return 1041112;
             }
         }// a big fish
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
             base.ScissorHelper(from, new RawFishSteak(), Math.Max(16, (int)this.Weight) / 4, false);
+            return true;
         }
 
         public override void GetProperties(ObjectPropertyList list)

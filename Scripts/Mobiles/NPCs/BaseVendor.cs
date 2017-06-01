@@ -34,7 +34,7 @@ namespace Server.Mobiles
 
 	public abstract class BaseVendor : BaseCreature, IVendor
 	{
-        public static bool UseVendorEconomy = Config.Get("Vendors.UseVendorEconomy", true);
+        public static bool UseVendorEconomy = Core.AOS && !Siege.SiegeShard;
         public static int BuyItemChange = Config.Get("Vendors.BuyItemChange", 1000);
         public static int SellItemChange = Config.Get("Vendors.SellItemChange", 1000);
         public static int EconomyStockAmount = Config.Get("Vendors.EconomyStockAmount", 1000);
@@ -64,7 +64,7 @@ namespace Server.Mobiles
         public override bool UseSmartAI { get { return true; } }
 
 		public virtual bool IsActiveVendor { get { return true; } }
-		public virtual bool IsActiveBuyer { get { return IsActiveVendor; } } // response to vendor SELL
+		public virtual bool IsActiveBuyer { get { return IsActiveVendor && !Siege.SiegeShard; } } // response to vendor SELL
 		public virtual bool IsActiveSeller { get { return IsActiveVendor; } } // repsonse to vendor BUY
 		public virtual bool HasHonestyDiscount { get { return true; } }
 
@@ -933,6 +933,11 @@ namespace Server.Mobiles
 				GenericBuyInfo gbi = (GenericBuyInfo)buyItem;
 				IEntity disp = gbi.GetDisplayEntity();
 
+                if (Siege.SiegeShard && !Siege.VendorCanSell(gbi.Type))
+                {
+                    continue;
+                }
+
 				list.Add(
 					new BuyItemState(
 						buyItem.Name,
@@ -979,6 +984,11 @@ namespace Server.Mobiles
 			for (int i = 0; i < playerItems.Count; ++i)
 			{
 				Item item = playerItems[i];
+
+                if (Siege.SiegeShard && !Siege.VendorCanSell(item.GetType()))
+                {
+                    continue;
+                }
 
 				int price = 0;
 				string name = null;
