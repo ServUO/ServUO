@@ -1412,22 +1412,13 @@ namespace Server.Multis
                     LandTile landTile = map.Tiles.GetLandTile(tx, ty);
                     StaticTile[] tiles = map.Tiles.GetStaticTiles(tx, ty, true);
 
-                    //if (tiles.Length > 0 && IsExcludedTile(tiles) && !Contains(tiles[0].X, tiles[0].Y))
-                    //    continue;
-
                     bool hasWater = false;
+                    int dif = Math.Abs(landTile.Z - p.Z);
 
-                    if (landTile.Z == p.Z && ((landTile.ID >= 168 && landTile.ID <= 171) || (landTile.ID >= 310 && landTile.ID <= 311)))
+                    if ((dif >= 0 && dif <= 1) && ((landTile.ID >= 168 && landTile.ID <= 171) || (landTile.ID >= 310 && landTile.ID <= 311)))
                         hasWater = true;
 
                     int z = p.Z;
-
-                    //int landZ = 0, landAvg = 0, landTop = 0;
-
-                    //map.GetAverageZ( tx, ty, ref landZ, ref landAvg, ref landTop );
-
-                    //if ( !landTile.Ignored && top > landZ && landTop > z )
-                    //	return false;
 
                     for (int i = 0; i < tiles.Length; ++i)
                     {
