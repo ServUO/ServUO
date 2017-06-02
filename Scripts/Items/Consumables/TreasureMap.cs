@@ -816,6 +816,11 @@ namespace Server.Items
                 SendLocalizedMessageTo(from, 503017); // The treasure is marked by the red pin. Grab a shovel and go dig it up!
             }
 
+            if (Pins.Count == 0)
+            {
+                AddWorldPin(ChestLocation.X, ChestLocation.Y);
+            }
+
             from.PlaySound(0x249);
             base.DisplayTo(from);
         }
@@ -967,11 +972,6 @@ namespace Server.Items
             if (Core.AOS && m_Decoder != null && LootType == LootType.Regular)
             {
                 LootType = LootType.Blessed;
-            }
-
-            if (Pins.Count == 0)
-            {
-                AddWorldPin(ChestLocation.X, ChestLocation.Y);
             }
         }
 

@@ -12,7 +12,7 @@ namespace Server.Items
 
         [Constructable]
         public GargishClothArmsArmor(int hue)
-            : base(0x4060)
+            : base(0x404)
         {
             Hue = hue;
             Weight = 2.0;
@@ -126,7 +126,7 @@ namespace Server.Items
 
         [Constructable]
         public FemaleGargishClothArmsArmor(int hue)
-            : base(0x405F)
+            : base(0x403)
         {
             Hue = hue;
             Weight = 2.0;
@@ -136,8 +136,6 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override bool AllowMaleWearer { get { return false; } }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -162,7 +160,7 @@ namespace Server.Items
 
         [Constructable]
         public GargishClothChestArmor(int hue)
-            : base(0x4062)
+            : base(0x406)
         {
             Hue = hue;
             Weight = 2.0;
@@ -268,13 +266,11 @@ namespace Server.Items
 
         [Constructable]
         public FemaleGargishClothChestArmor(int hue)
-            : base(0x4061)
+            : base(0x405)
         {
             Hue = hue;
             Weight = 2.0;
         }
-
-        public override bool AllowMaleWearer { get { return false; } }
 
         public FemaleGargishClothChestArmor(Serial serial)
             : base(serial)
@@ -304,7 +300,7 @@ namespace Server.Items
 
         [Constructable]
         public GargishClothLegsArmor(int hue)
-            : base(0x4066)
+            : base(0x40A)
         {
             Hue = hue;
             Weight = 2.0;
@@ -410,7 +406,7 @@ namespace Server.Items
 
         [Constructable]
         public FemaleGargishClothLegsArmor(int hue)
-            : base(0x4065)
+            : base(0x409)
         {
             Hue = hue;
             Weight = 2.0;
@@ -420,8 +416,6 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override bool AllowMaleWearer { get { return false; } }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -446,7 +440,7 @@ namespace Server.Items
 
         [Constructable]
         public GargishClothKiltArmor(int hue)
-            : base(0x4064)
+            : base(0x408)
         {
             Hue = hue;
             Weight = 2.0;
@@ -552,7 +546,7 @@ namespace Server.Items
 
         [Constructable]
         public FemaleGargishClothKiltArmor(int hue)
-            : base(0x4063)
+            : base(0x407)
         {
             Hue = hue;
             Weight = 2.0;
@@ -562,8 +556,6 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override bool AllowMaleWearer { get { return false; } }
 
         public override void Serialize(GenericWriter writer)
         {

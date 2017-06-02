@@ -5,165 +5,164 @@ using Server.Mobiles;
 
 namespace Server.Engines.Shadowguard
 {
-	public class ShadowguardPirate : BaseCreature
-	{
-		public ShadowguardPirate() : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
-		{
-			Name = NameList.RandomName( "male" );
-			Title = "the Pirate";
-		
-			Body = 0x190;
-			Hue = Utility.RandomSkinHue();
-			
-			SetStr( 386, 400 );
-			SetDex( 151, 165 );
-			SetInt( 161, 175 );
+    public class ShadowguardPirate : BaseCreature
+    {
+        public ShadowguardPirate() : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+        {
+            Name = NameList.RandomName("male");
+            Title = "the Pirate";
+
+            Body = 0x190;
+            Hue = Utility.RandomSkinHue();
+
+            SetStr(386, 400);
+            SetDex(151, 165);
+            SetInt(161, 175);
 
             SetHits(1200);
- 
-			SetDamage( 15, 21 );
- 
-			SetDamageType( ResistanceType.Physical, 100 );
- 
-			SetResistance( ResistanceType.Physical, 35, 45 );
-			SetResistance( ResistanceType.Fire, 25, 30 );
-			SetResistance( ResistanceType.Cold, 25, 30 );
-			SetResistance( ResistanceType.Poison, 10, 20 );
-			SetResistance( ResistanceType.Energy, 10, 20 );
 
-			SetSkill( SkillName.Anatomy, 125.0 );
-			SetSkill( SkillName.Fencing, 46.0, 77.5 );
-			SetSkill( SkillName.Macing, 35.0, 57.5 );
-			SetSkill( SkillName.Poisoning, 60.0, 82.5 );
-			SetSkill( SkillName.MagicResist, 83.5, 92.5 );
-			SetSkill( SkillName.Swords, 125.0 );
-			SetSkill( SkillName.Tactics, 125.0 );
-			SetSkill( SkillName.Lumberjacking, 125.0 );
+            SetDamage(15, 21);
 
-			Fame = 1000;
-			Karma = -1000;
+            SetDamageType(ResistanceType.Physical, 100);
+
+            SetResistance(ResistanceType.Physical, 35, 45);
+            SetResistance(ResistanceType.Fire, 25, 30);
+            SetResistance(ResistanceType.Cold, 25, 30);
+            SetResistance(ResistanceType.Poison, 10, 20);
+            SetResistance(ResistanceType.Energy, 10, 20);
+
+            SetSkill(SkillName.Anatomy, 125.0);
+            SetSkill(SkillName.Fencing, 46.0, 77.5);
+            SetSkill(SkillName.Macing, 35.0, 57.5);
+            SetSkill(SkillName.Poisoning, 60.0, 82.5);
+            SetSkill(SkillName.MagicResist, 83.5, 92.5);
+            SetSkill(SkillName.Swords, 125.0);
+            SetSkill(SkillName.Tactics, 125.0);
+            SetSkill(SkillName.Lumberjacking, 125.0);
+
+            Fame = 1000;
+            Karma = -1000;
 
             AddItem(new ExecutionersAxe());
-		   
-			AddItem( new Boots( Utility.RandomNeutralHue() ) );
-            AddItem( new ShortPants() );
-			AddItem( new FancyShirt());
-			AddItem( new TricorneHat());
-		
-			Fame = 5000;
-			Karma = -5000;
-			
-			Utility.AssignRandomHair( this );
-		}
+
+            AddItem(new Boots(Utility.RandomNeutralHue()));
+            AddItem(new ShortPants());
+            AddItem(new FancyShirt());
+            AddItem(new TricorneHat());
+
+            Fame = 5000;
+            Karma = -5000;
+
+            Utility.AssignRandomHair(this);
+        }
 
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich, 3);
         }
-		
-		public override bool AlwaysMurderer{ get{ return true; } }
-		
-		public ShadowguardPirate(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
-	
-	public class ShantyThePirate : ShadowguardPirate
-	{
-		[Constructable]
-		public ShantyThePirate() 
-		{
-			Name = "Shanty";
+
+        public override bool AlwaysMurderer { get { return true; } }
+
+        public ShadowguardPirate(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class ShantyThePirate : ShadowguardPirate
+    {
+        [Constructable]
+        public ShantyThePirate()
+        {
+            Name = "Shanty";
 
             SetHits(10000);
-			
-			SetSkill( SkillName.Fencing, 120.0 );
-			SetSkill( SkillName.Macing,  120.0 );
-			SetSkill( SkillName.MagicResist,  120.0 );
-			SetSkill( SkillName.Swords,  120.0 );
-			SetSkill( SkillName.Tactics,  120.0 );
-			SetSkill( SkillName.Wrestling,  120.0 );
-			
-			Fame = 15000;
-			Karma = -15000;
-		}
+
+            SetSkill(SkillName.Fencing, 120.0);
+            SetSkill(SkillName.Macing, 120.0);
+            SetSkill(SkillName.MagicResist, 120.0);
+            SetSkill(SkillName.Swords, 120.0);
+            SetSkill(SkillName.Tactics, 120.0);
+            SetSkill(SkillName.Wrestling, 120.0);
+
+            Fame = 15000;
+            Karma = -15000;
+        }
 
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.FilthyRich, 3);
         }
 
-		public ShantyThePirate(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
-	
-	public class VileWaterElemental : WaterElemental
-	{
-		public VileWaterElemental()
-		{
-			Name = "a vile water elemental";
-            Hue = 2723;
+        public ShantyThePirate(Serial serial) : base(serial)
+        {
+        }
 
-            Body = 164;
-		}
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class VileWaterElemental : WaterElemental
+    {
+        public VileWaterElemental()
+        {
+            Name = "a vile water elemental";
+            Hue = 1916;
+            Body = 13;
+        }
 
         public override bool DeleteCorpseOnDeath { get { return true; } }
 
         public override bool OnBeforeDeath()
-		{
+        {
             FountainEncounter encounter = ShadowguardController.GetEncounter(this.Location, this.Map) as FountainEncounter;
 
-			if(encounter != null)
-			{
-				var canal = new ShadowguardCanal();
+            if (encounter != null)
+            {
+                var canal = new ShadowguardCanal();
                 canal.MoveToWorld(this.Location, this.Map);
                 encounter.AddShadowguardCanal(canal);
-			}
+            }
 
             return base.OnBeforeDeath();
-		}
-		
-		public VileWaterElemental(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
+        }
+
+        public VileWaterElemental(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 
     public class HurricaneElemental : VileWaterElemental
     {
@@ -171,22 +170,32 @@ namespace Server.Engines.Shadowguard
         public HurricaneElemental()
         {
             Name = "a hurricane elemental";
+            Body = 16;
 
-            SetHits(6000);            
-            SetDex(250);
-            SetInt(2400);
+            SetStr(400, 500);
+            SetDex(140, 250);
+            SetInt(130, 150);
 
-            SetSkill(SkillName.Wrestling, 125.0);
-            SetSkill(SkillName.Tactics, 125.0);
-            SetSkill(SkillName.Magery, 100.0);
-            SetSkill(SkillName.EvalInt, 150.0);
-            SetSkill(SkillName.Meditation, 120.0);
+            SetHits(550, 700);
+            SetMana(650, 750);
 
-            SetResistance(ResistanceType.Physical, 35, 45);
-            SetResistance(ResistanceType.Fire, 25, 30);
-            SetResistance(ResistanceType.Cold, 80, 99);
-            SetResistance(ResistanceType.Poison, 40, 50);
-            SetResistance(ResistanceType.Energy, 40, 50);
+            SetDamage(14, 16);
+
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Cold, 50);
+
+            SetResistance(ResistanceType.Physical, 50, 60);
+            SetResistance(ResistanceType.Fire, 45, 55);
+            SetResistance(ResistanceType.Cold, 60, 70);
+            SetResistance(ResistanceType.Poison, 70, 80);
+            SetResistance(ResistanceType.Energy, 40, 60);
+
+            SetSkill(SkillName.Wrestling, 95.0, 110.0);
+            SetSkill(SkillName.Tactics, 95.0, 110.0);
+            SetSkill(SkillName.Magery, 95.0, 110.0);
+            SetSkill(SkillName.EvalInt, 95.0, 110.0);
+            SetSkill(SkillName.Parry, 95.0, 110.0);
+            SetSkill(SkillName.DetectHidden, 63.0);
         }
 
         public HurricaneElemental(Serial serial)
@@ -206,81 +215,128 @@ namespace Server.Engines.Shadowguard
             int version = reader.ReadInt();
         }
     }
-	
-	public class VileTreefellow : FeralTreefellow
-	{
-		[Constructable]
-		public VileTreefellow()
-		{
-			Name = "a vile treefellow";
-		}
+
+    public class VileTreefellow : FeralTreefellow
+    {
+        [Constructable]
+        public VileTreefellow()
+        {
+            Name = "a vile treefellow";
+
+            SetDamage(12, 16);
+
+            //Missing Attr - Hit Point Reg: 35, Mana Reg: 20
+
+            SetResistance(ResistanceType.Physical, 2);
+            SetResistance(ResistanceType.Cold, 5);
+            SetResistance(ResistanceType.Poison, 3);
+            SetResistance(ResistanceType.Energy, 2);
+
+            SetSkill(SkillName.MagicResist, 40.1, 55.0);
+            SetSkill(SkillName.Tactics, 65.1, 90.0);
+            SetSkill(SkillName.Wrestling, 65.1, 105.0);
+            SetSkill(SkillName.Poisoning, 100.0);
+            SetSkill(SkillName.DetectHidden, 40.0, 45.0);
+            SetSkill(SkillName.Parry, 55.0, 60.0);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            switch (Utility.Random(2))
+            {
+                default:
+                case 0:
+                    return WeaponAbility.Dismount;
+                case 1:
+                    return WeaponAbility.ForceOfNature;
+            }
+        }
+
+        public override void OnGaveMeleeAttack(Mobile defender)
+        {
+            base.OnGaveMeleeAttack(defender);
+
+            Paralyze(defender);
+        }
+
+        #region Paralyze
+        private void Paralyze(Mobile defender)
+        {
+            defender.Paralyze(TimeSpan.FromSeconds(Utility.Random(3)));
+
+            defender.FixedEffect(0x376A, 6, 1);
+            defender.PlaySound(0x204);
+
+            defender.SendLocalizedMessage(1060164); // The attack has temporarily paralyzed you!
+        }
+        #endregion
 
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich, 3);
         }
 
-		public VileTreefellow(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
-
-    [CorpseName("a magical corpse")]
-	public class EnsorcelledArmor : BaseCreature
-	{
-        public ArmoryEncounter Encounter { get; set;}
-
-        [Constructable]
-		public EnsorcelledArmor() : this(null)
+        public VileTreefellow(Serial serial) : base(serial)
         {
         }
 
-		[Constructable]
-		public EnsorcelledArmor(ArmoryEncounter encounter) : base(AIType.AI_Melee, FightMode.Weakest, 10, 1, 0.2, 0.4)
-		{
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    [CorpseName("a magical corpse")]
+    public class EnsorcelledArmor : BaseCreature
+    {
+        public ArmoryEncounter Encounter { get; set; }
+
+        [Constructable]
+        public EnsorcelledArmor() : this(null)
+        {
+        }
+
+        [Constructable]
+        public EnsorcelledArmor(ArmoryEncounter encounter) : base(AIType.AI_Melee, FightMode.Weakest, 10, 1, 0.2, 0.4)
+        {
             Encounter = encounter;
-			Name = "ensorcelled armor";
+            Name = "ensorcelled armor";
             BaseSoundID = 412;
 
-			Body = 0x190; 
-			SetStr( 386, 400 );
-			SetDex( 151, 165 );
-			SetInt( 161, 175 );
- 
-			SetDamage( 15, 21 );
- 
-			SetDamageType( ResistanceType.Physical, 100 );
- 
-			SetResistance( ResistanceType.Physical, 35, 45 );
-			SetResistance( ResistanceType.Fire, 25, 30 );
-			SetResistance( ResistanceType.Cold, 25, 30 );
-			SetResistance( ResistanceType.Poison, 10, 20 );
-			SetResistance( ResistanceType.Energy, 10, 20 );
+            Body = 0x190;
+            SetStr(386, 400);
+            SetDex(151, 165);
+            SetInt(161, 175);
 
-			SetSkill( SkillName.Anatomy, 125.0 );
-			SetSkill( SkillName.Fencing, 46.0, 77.5 );
-			SetSkill( SkillName.Macing, 35.0, 57.5 );
-			SetSkill( SkillName.Poisoning, 60.0, 82.5 );
-			SetSkill( SkillName.MagicResist, 83.5, 92.5 );
-			SetSkill( SkillName.Swords, 125.0 );
-			SetSkill( SkillName.Tactics, 125.0 );
-			SetSkill( SkillName.Lumberjacking, 125.0 );
+            SetDamage(15, 21);
+
+            SetDamageType(ResistanceType.Physical, 100);
+
+            SetResistance(ResistanceType.Physical, 35, 45);
+            SetResistance(ResistanceType.Fire, 25, 30);
+            SetResistance(ResistanceType.Cold, 25, 30);
+            SetResistance(ResistanceType.Poison, 10, 20);
+            SetResistance(ResistanceType.Energy, 10, 20);
+
+            SetSkill(SkillName.Anatomy, 125.0);
+            SetSkill(SkillName.Fencing, 46.0, 77.5);
+            SetSkill(SkillName.Macing, 35.0, 57.5);
+            SetSkill(SkillName.Poisoning, 60.0, 82.5);
+            SetSkill(SkillName.MagicResist, 83.5, 92.5);
+            SetSkill(SkillName.Swords, 125.0);
+            SetSkill(SkillName.Tactics, 125.0);
+            SetSkill(SkillName.Lumberjacking, 125.0);
 
             var helm = new CloseHelm();
             helm.Hue = 0x96D;
-			AddItem(helm);
+            AddItem(helm);
 
             var arms = new PlateArms();
             arms.Hue = 0x96D;
@@ -310,9 +366,9 @@ namespace Server.Engines.Shadowguard
 
             Fame = 8500;
             Karma = -8500;
-		}
-		
-		public override bool AlwaysMurderer{ get{ return true; } }
+        }
+
+        public override bool AlwaysMurderer { get { return true; } }
 
         public override void OnDeath(Container c)
         {
@@ -326,64 +382,88 @@ namespace Server.Engines.Shadowguard
         {
             this.AddLoot(LootPack.Rich, 3);
         }
-		
-		public EnsorcelledArmor(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
-	
-	public class VileDrake : Drake
-	{
-		public VileDrake()
-		{
-			Name = "a vile drake";
-		}
-		
-		public override void OnDeath(Container c)
-		{
+
+        public EnsorcelledArmor(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
+
+    public class VileDrake : Drake
+    {
+        public VileDrake()
+        {
+            Name = "a vile drake";
+
+            SetResistance(ResistanceType.Physical, 50, 60);
+            SetResistance(ResistanceType.Fire, 80, 90);
+            SetResistance(ResistanceType.Cold, 80, 90);
+            SetResistance(ResistanceType.Poison, 90, 100);
+            SetResistance(ResistanceType.Energy, 70, 80);
+
+            SetSkill(SkillName.MagicResist, 65.0, 80.0);
+            SetSkill(SkillName.Tactics, 65.0, 90.0);
+            SetSkill(SkillName.Wrestling, 110.0, 130.0);
+            SetSkill(SkillName.DetectHidden, 50.6);
+            SetSkill(SkillName.Parry, 65.0, 75.0);
+        }
+
+        public override WeaponAbility GetWeaponAbility()
+        {
+            switch (Utility.Random(2))
+            {
+                default:
+                case 0:
+                    return WeaponAbility.DoubleStrike;
+                case 1:
+                    return WeaponAbility.TalonStrike;
+            }
+        }
+
+        public override void OnDeath(Container c)
+        {
             BelfryEncounter encounter = ShadowguardController.GetEncounter(c.Location, c.Map) as BelfryEncounter;
 
             if (encounter != null)
-			{
-				c.DropItem(new MagicDrakeWing());
-			}
-			
-			base.OnDeath(c);
-		}
+            {
+                c.DropItem(new MagicDrakeWing());
+            }
+
+            base.OnDeath(c);
+        }
 
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich, 3);
         }
-		
-		public VileDrake(Serial serial) : base(serial)
-		{
-		}
-		
-		public override void Serialize(GenericWriter writer)
-		{
-			base.Serialize(writer);
-			writer.Write(0);
-		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
-		}
-	}
+
+        public VileDrake(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 
     public class ShadowguardGreaterDragon : GreaterDragon
     {
@@ -392,6 +472,18 @@ namespace Server.Engines.Shadowguard
             Tamable = false;
 
             SetHits(9800, 10999);
+
+            //Missing Attr - Hit Point Reg: 20, Stamina Reg: 43, Mana Reg: 43
+
+            SetDamage(29, 38);
+
+            SetSkill(SkillName.EvalInt, 110.0, 145.0);
+            SetSkill(SkillName.Magery, 110.0, 145.0);
+            SetSkill(SkillName.MagicResist, 110.0, 150.0);
+            SetSkill(SkillName.Tactics, 110.0, 155.0);
+            SetSkill(SkillName.Wrestling, 115.0, 155.0);
+            SetSkill(SkillName.DetectHidden, 120.0);
+            SetSkill(SkillName.Parry, 120.0);
         }
 
         public override double TeleportChance { get { return 0; } }
@@ -537,36 +629,36 @@ namespace Server.Engines.Shadowguard
             Name = "Minax";
             Title = "the Enchantress";
 
-            Body = 0x191; 
+            Body = 0x191;
             Hue = Race.RandomSkinHue();
             HairItemID = 0x203C;
             HairHue = Race.RandomHairHue();
 
-			SetStr( 386, 400 );
-			SetDex( 151, 165 );
-			SetInt( 161, 175 );
- 
-			SetDamage( 15, 21 );
- 
-			SetDamageType( ResistanceType.Physical, 100 );
- 
-			SetResistance( ResistanceType.Physical, 35, 45 );
-			SetResistance( ResistanceType.Fire, 25, 30 );
-			SetResistance( ResistanceType.Cold, 25, 30 );
-			SetResistance( ResistanceType.Poison, 10, 20 );
-			SetResistance( ResistanceType.Energy, 10, 20 );
+            SetStr(386, 400);
+            SetDex(151, 165);
+            SetInt(161, 175);
+
+            SetDamage(15, 21);
+
+            SetDamageType(ResistanceType.Physical, 100);
+
+            SetResistance(ResistanceType.Physical, 35, 45);
+            SetResistance(ResistanceType.Fire, 25, 30);
+            SetResistance(ResistanceType.Cold, 25, 30);
+            SetResistance(ResistanceType.Poison, 10, 20);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
             SetSkill(SkillName.Magery, 125.0);
             SetSkill(SkillName.EvalInt, 125.0);
             SetSkill(SkillName.Meditation, 125.0);
-			SetSkill( SkillName.Anatomy, 125.0 );
-			SetSkill( SkillName.Fencing, 46.0, 77.5 );
-			SetSkill( SkillName.Macing, 35.0, 57.5 );
-			SetSkill( SkillName.Poisoning, 60.0, 82.5 );
-			SetSkill( SkillName.MagicResist, 83.5, 92.5 );
-			SetSkill( SkillName.Swords, 125.0 );
-			SetSkill( SkillName.Tactics, 125.0 );
-			SetSkill( SkillName.Lumberjacking, 125.0 );
+            SetSkill(SkillName.Anatomy, 125.0);
+            SetSkill(SkillName.Fencing, 46.0, 77.5);
+            SetSkill(SkillName.Macing, 35.0, 57.5);
+            SetSkill(SkillName.Poisoning, 60.0, 82.5);
+            SetSkill(SkillName.MagicResist, 83.5, 92.5);
+            SetSkill(SkillName.Swords, 125.0);
+            SetSkill(SkillName.Tactics, 125.0);
+            SetSkill(SkillName.Lumberjacking, 125.0);
 
             SetWearable(new Cloak(), 1157);
             SetWearable(new Boots(), 1175);

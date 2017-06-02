@@ -37,7 +37,7 @@ namespace Server.Mobiles
             int price = 0;
             m_Table.TryGetValue(item.GetType(), out price);
 
-            if (Core.AOS && !Siege.SiegeShard && BaseVendor.UseVendorEconomy)
+            if (BaseVendor.UseVendorEconomy)
             {
                 IBuyItemInfo buyInfo = vendor.GetBuyInfo().OfType<GenericBuyInfo>().FirstOrDefault(info => info.EconomyItem && info.Type == item.GetType());
 
