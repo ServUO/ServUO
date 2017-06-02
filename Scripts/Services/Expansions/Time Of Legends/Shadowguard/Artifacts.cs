@@ -456,6 +456,8 @@ namespace Server.Items
 	
 		public override int InitMinHits{ get{ return 255; } }
         public override int InitMaxHits{ get{ return 255; } }
+        
+        public override int FireResistance { get { return 5; } }
 	
 		[Constructable]
 		public JumusSacredHideGargoyle () 
@@ -465,7 +467,6 @@ namespace Server.Items
 			Attributes.WeaponDamage = 20;
 
             AbsorptionAttributes.EaterPoison = 15;
-			FireBonus = 5;
 		}
 		
 		public JumusSacredHideGargoyle (Serial serial) : base(serial)
