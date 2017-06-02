@@ -429,6 +429,7 @@ namespace Server.Items
 			Attributes.CastRecovery = 1;
 			Attributes.WeaponDamage = 20;
 
+            SAAbsorptionAttributes.EaterPoison = 15;
             Resistances.Fire = 5;
 		}
 		
@@ -462,7 +463,8 @@ namespace Server.Items
 			Attributes.SpellDamage = 5;
 			Attributes.CastRecovery = 1;
 			Attributes.WeaponDamage = 20;
-			
+
+            AbsorptionAttributes.EaterPoison = 15;
 			FireBonus = 5;
 		}
 		
