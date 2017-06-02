@@ -77,6 +77,10 @@ namespace Server.Mobiles
                 pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CollectTheComponentComplete;
                 m.AddToBackpack(new UnknownShipwreck());
             }
+            else if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponentComplete)
+            {
+                pm.SendGump(new HeplerPaulsonCollectCompleteGump(m));
+            }
             else
             {
                 if (!m.HasGump(typeof(HeplerPaulsonCompleteGump)))

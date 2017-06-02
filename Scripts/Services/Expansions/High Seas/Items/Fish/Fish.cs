@@ -18,10 +18,10 @@ namespace Server.Items
             Stackable = true;
         }
 
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
             if (Parent is ShippingCrate && !((ShippingCrate)Parent).CheckCarve(this))
-                return;
+                return false;
 
             Item newItem = GetCarved;
 
@@ -29,6 +29,8 @@ namespace Server.Items
                 base.ScissorHelper(from, newItem, GetCarvedAmount);
             else
                 base.ScissorHelper(from, new RawFishSteak(), 2);
+
+            return true;
         }
 
         public static int GetCrabID()

@@ -82,7 +82,7 @@ namespace Server.Mobiles
             get { return (Body == 0x2CB ? 3 : 0); }
         }
 
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
             if (!GatheredFur)
             {
@@ -97,10 +97,14 @@ namespace Server.Mobiles
                 {
                     from.SendLocalizedMessage(1112353); // You place the gathered boura fur into your backpack.
                     GatheredFur = true;
+
+                    return true;
                 }
             }
             else
                 from.SendLocalizedMessage(1112354); // The boura glares at you and will not let you shear its fur.
+
+            return false;
         }
 
         public override void OnCarve(Mobile from, Corpse corpse, Item with)

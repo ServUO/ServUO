@@ -36,7 +36,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return TimeSpan.FromDays(7.0);
+                return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(7.0);
             }
         }
         public override void InitOutfit()
@@ -51,7 +51,7 @@ namespace Server.Mobiles
 
         public override bool CheckCustomReqs(PlayerMobile pm)
         {
-            if (pm.Young)
+            if (pm.Young && !Siege.SiegeShard)
             {
                 this.SayTo(pm, 502089); // You cannot be a member of the Thieves' Guild while you are Young.
                 return false;

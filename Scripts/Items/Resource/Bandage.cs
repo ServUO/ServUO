@@ -550,6 +550,10 @@ namespace Server.Items
                         toHeal = 1;
                         healerNumber = 500968; // You apply the bandages, but they barely help.
                     }
+                    else if (m_Patient != m_Healer && m_Patient is PlayerMobile && m_Healer is PlayerMobile)
+                    {
+                        SpiritualityVirtue.OnHeal(m_Healer, (int)toHeal);
+                    }
 
                     m_Patient.Heal((int)toHeal, m_Healer, false);
                 }

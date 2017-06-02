@@ -444,7 +444,7 @@ namespace Server.Items
         public GargishFancyRobe(int hue)
             : base(0x4002, Layer.OuterTorso, hue)
         {
-            this.Weight = 1.0;
+            this.Weight = 3.0;
         }
 
         public GargishFancyRobe(Serial serial)
@@ -495,7 +495,7 @@ namespace Server.Items
         public GargishRobe(int hue)
             : base(0x4000, Layer.OuterTorso, hue)
         {
-            this.Weight = 1.0;
+            this.Weight = 3.0;
         }
 
         public GargishRobe(Serial serial)

@@ -345,6 +345,10 @@ namespace Server.Engines.Craft
                 SetItemHue(index, 2103);
                 SetNeededExpansion(index, Expansion.SA);
 
+                index = AddCraft(typeof(CrystalGranules), 1044495, 1112329, 75.0, 100.0, typeof(ShimmeringCrystals), 1075095, 1, 1044253);
+                SetItemHue(index, 2625);
+                SetNeededExpansion(index, Expansion.SA);
+
                 index = AddCraft(typeof(SoftenedReeds), 1044495, 1112249, 75.0, 100.0, typeof(DryReeds), 1112248, 1, 1112250);
                 AddRes(index, typeof(ScouringToxin), 1112292, 2, 1112326);
                 SetRequireResTarget(index);

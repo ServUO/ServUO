@@ -122,6 +122,14 @@ namespace Server.Items
                 from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
             }
 
+            if (Siege.SiegeShard && this != from.Backpack && from is PlayerMobile && ((PlayerMobile)from).BlessedItem != null && ((PlayerMobile)from).BlessedItem == dropped)
+            {
+                ((PlayerMobile)from).BlessedItem = null;
+                dropped.LootType = LootType.Regular;
+
+                from.SendLocalizedMessage(1075292, dropped.Name != null ? dropped.Name : "#" + dropped.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
+            }
+
             return true;
         }
 
@@ -161,6 +169,14 @@ namespace Server.Items
                     Server.Services.Virtues.Honesty.AssignOwner(item);
 
                 from.SendLocalizedMessage(1151536); // You have three hours to turn this item in for Honesty credit, otherwise it will cease to be a quest item.
+            }
+
+            if (Siege.SiegeShard && this != from.Backpack && from is PlayerMobile && ((PlayerMobile)from).BlessedItem != null && ((PlayerMobile)from).BlessedItem == item)
+            {
+                ((PlayerMobile)from).BlessedItem = null;
+                item.LootType = LootType.Regular;
+
+                from.SendLocalizedMessage(1075292, item.Name != null ? item.Name : "#" + item.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
             }
 
             return true;

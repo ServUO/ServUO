@@ -425,8 +425,8 @@ namespace Server.Engines.Craft
 
             #region Stygian Abyss
             if (Core.SA)
-            {                
-                AddCraft(typeof(BlankScroll), 1044294, ("Blank Scroll"), 50.0, 100.0, typeof(WoodPulp), 1113136, 1, 1044378);
+            {
+                AddCraft(typeof(BlankScroll), 1044294, 1023636, 50.0, 100.0, typeof(WoodPulp), 1113136, 1, 1044378);
 
                 index = AddCraft(typeof(ScrollBinderDeed), 1044294, 1113135, 75.0, 125.0, typeof(WoodPulp), 1113136, 1, 1044253);
                 SetNeededExpansion(index, Expansion.SA);

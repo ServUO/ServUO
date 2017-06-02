@@ -24,9 +24,10 @@ namespace Server.Items
         {
         }
 
-        public void Carve(Mobile from, Item item)
+        public bool Carve(Mobile from, Item item)
         {
             base.ScissorHelper(from, new RawFishSteak(), 4);
+            return true;
         }
 
         public override void Serialize(GenericWriter writer)
