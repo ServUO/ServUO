@@ -128,14 +128,6 @@ namespace Server.SkillHandlers
 				: base(Core.AOS ? 3 : 2, false, TargetFlags.None)
 			{ }
 
-			public virtual void ResetPacify(object obj)
-			{
-				if (obj is BaseCreature)
-				{
-					((BaseCreature)obj).BardPacified = true;
-				}
-			}
-
 			protected override void OnTargetFinish(Mobile from)
 			{
 				if (m_SetSkillTime)
@@ -220,16 +212,20 @@ namespace Server.SkillHandlers
 								creature.PlaySound(creature.GetAngerSound());
 								creature.Direction = creature.GetDirectionTo(from);
 
-								if (creature.BardPacified && Utility.RandomDouble() > .24)
-								{
-									Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(ResetPacify), creature);
-								}
-								else
-								{
-									creature.BardEndTime = DateTime.UtcNow;
-								}
+                                if (Core.SA)
+                                {
+                                    if (creature.BardPacified && Utility.RandomDouble() > .24)
+                                    {
+                                        Timer.DelayCall<BaseCreature>(TimeSpan.FromSeconds(2.0), 
+                                            bc => bc.BardPacified = true);
+                                    }
+                                    else
+                                    {
+                                        creature.BardEndTime = DateTime.UtcNow;
+                                    }
 
-								creature.BardPacified = false;
+                                    creature.BardPacified = false;
+                                }
 
 								if (creature.AIObject != null)
 								{
