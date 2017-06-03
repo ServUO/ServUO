@@ -212,7 +212,7 @@ namespace Server.SkillHandlers
 								creature.PlaySound(creature.GetAngerSound());
 								creature.Direction = creature.GetDirectionTo(from);
 
-                                if (Core.SA)
+                                if (!Core.SA)
                                 {
                                     if (creature.BardPacified && Utility.RandomDouble() > .24)
                                     {

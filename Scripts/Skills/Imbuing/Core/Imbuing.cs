@@ -723,54 +723,23 @@ namespace Server.SkillHandlers
         {
             IQuality quality = item as IQuality;
 
+            if (quality != null && quality.Quality == ItemQuality.Exceptional)
+                maxWeight += 50;
+
             if (item is BaseWeapon)
             {
                 BaseWeapon itemToImbue = item as BaseWeapon;
 
-                if (quality != null && quality.Quality == ItemQuality.Exceptional)
-                {
-                    if (itemToImbue is BaseRanged)
-                        return 550;
-                    else if (itemToImbue.Layer == Layer.TwoHanded)
-                        return 600;
-                    else
-                        return 500;
-
-                }
-                else if (quality != null && quality.Quality == ItemQuality.Normal)
-                {
-                    if (itemToImbue is BaseRanged)
-                        return 500;
-                    else if (itemToImbue.Layer == Layer.TwoHanded)
-                        return 550;
-                    else
-                        return 450;
-                }
-                else
-                    return 450;
-            }
-            else if (item is BaseArmor)
-            {
-                BaseArmor itemToImbue = item as BaseArmor;
-
-                if (quality != null && quality.Quality == ItemQuality.Exceptional)
-                    return 500;
-                else if (quality != null && quality.Quality == ItemQuality.Normal)
-                    return 450;
-            }
-            else if (item is BaseHat)
-            {
-                BaseHat itemToImbue = item as BaseHat;
-
-                if (quality != null && quality.Quality == ItemQuality.Exceptional)
-                    return 500;
-                else if (quality != null && quality.Quality == ItemQuality.Normal)
-                    return 450;
-
+                if (itemToImbue is BaseThrown)
+                    maxWeight += 0;
+                else if (itemToImbue is BaseRanged)
+                    maxWeight += 50;
+                else if (itemToImbue.Layer == Layer.TwoHanded)
+                    maxWeight += 100;
             }
             else if (item is BaseJewel)
             {
-                return 500;
+                maxWeight = 500;
             }
 
             return 450;
