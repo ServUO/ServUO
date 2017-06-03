@@ -727,7 +727,7 @@ namespace Server.SkillHandlers
 
             IQuality quality = item as IQuality;
 
-            if (quality.Quality == ItemQuality.Exceptional)
+            if (quality != null && quality.Quality == ItemQuality.Exceptional)
                 maxWeight += 50;
 
             if (item is BaseWeapon)
