@@ -98,10 +98,8 @@ namespace Server.Spells.Mysticism
                     if (toHealMod > 0 && curseLevel > 0)
                     {
                         // Each Curse reduces healing by 3 points + 1% per curse level.
-                        int toHealMod1 = toHealMod - (curseLevel * 3);
-                        int toHealMod2 = toHealMod - (int)(toHealMod * (curseLevel / 100.0));
-
-                        toHealMod -= toHealMod1 + toHealMod2;
+                        toHealMod = toHealMod - (curseLevel * 3);
+                        toHealMod = toHealMod - (int)((double)toHealMod * ((double)curseLevel / 100.0));
                     }
 
                     if (toHealMod > 0)

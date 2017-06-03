@@ -19,8 +19,6 @@ namespace Server.SkillHandlers
     {
         public static void Initialize()
         {
-            //LoadImbuingDefinitions();
-
             SkillInfo.Table[(int)SkillName.Imbuing].Callback = new SkillUseCallback(OnUse);
 
             CommandSystem.Register("GetTotalWeight", AccessLevel.GameMaster, new CommandEventHandler(GetTotalWeight_OnCommand));
@@ -723,8 +721,6 @@ namespace Server.SkillHandlers
 
         public static int GetMaxWeight(object item)
         {
-            int maxWeight = 450;
-
             IQuality quality = item as IQuality;
 
             if (item is BaseWeapon)
@@ -749,7 +745,6 @@ namespace Server.SkillHandlers
                         return 550;
                     else
                         return 450;
-
                 }
                 else
                     return 450;
@@ -759,19 +754,18 @@ namespace Server.SkillHandlers
                 BaseArmor itemToImbue = item as BaseArmor;
 
                 if (quality != null && quality.Quality == ItemQuality.Exceptional)
-                    maxWeight = 500;
+                    return 500;
                 else if (quality != null && quality.Quality == ItemQuality.Normal)
-                    maxWeight = 450;
-
+                    return 450;
             }
             else if (item is BaseHat)
             {
                 BaseHat itemToImbue = item as BaseHat;
 
                 if (quality != null && quality.Quality == ItemQuality.Exceptional)
-                    maxWeight = 500;
+                    return 500;
                 else if (quality != null && quality.Quality == ItemQuality.Normal)
-                    maxWeight = 450;
+                    return 450;
 
             }
             else if (item is BaseJewel)
@@ -779,7 +773,7 @@ namespace Server.SkillHandlers
                 return 500;
             }
 
-            return maxWeight;
+            return 450;
         }
 
         public static int GetGemAmount(Item item, int mod, int value)
@@ -1392,7 +1386,6 @@ namespace Server.SkillHandlers
         private static Dictionary<int, ImbuingDefinition> m_Table;
         public static Dictionary<int, ImbuingDefinition> Table { get { return m_Table; } }
 
-        //public static void LoadImbuingDefinitions()
         static Imbuing()
         {
             m_Table = new Dictionary<int, ImbuingDefinition>();
