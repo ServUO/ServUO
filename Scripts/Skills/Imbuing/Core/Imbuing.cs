@@ -721,6 +721,8 @@ namespace Server.SkillHandlers
 
         public static int GetMaxWeight(object item)
         {
+            int maxWeight = 450;
+
             IQuality quality = item as IQuality;
 
             if (quality != null && quality.Quality == ItemQuality.Exceptional)
@@ -742,7 +744,7 @@ namespace Server.SkillHandlers
                 maxWeight = 500;
             }
 
-            return 450;
+            return maxWeight;
         }
 
         public static int GetGemAmount(Item item, int mod, int value)
