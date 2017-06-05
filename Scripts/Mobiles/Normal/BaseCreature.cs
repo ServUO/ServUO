@@ -2811,7 +2811,12 @@ namespace Server.Mobiles
 
                             if (master != null && master == from) //So friends can't start the bonding process
                             {
-                                if (m_dMinTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_dMinTameSkill ||
+                                if (this is Lasher || this is Windrunner)
+                                {
+                                    IsBonded = true;
+                                    from.SendLocalizedMessage(1049666); // Your pet has bonded with you!
+                                }
+                                else if (m_dMinTameSkill <= 29.1 || master.Skills[SkillName.AnimalTaming].Base >= m_dMinTameSkill ||
                                     OverrideBondingReqs() || (Core.ML && master.Skills[SkillName.AnimalTaming].Value >= m_dMinTameSkill))
                                 {
                                     if (BondingBegin == DateTime.MinValue)

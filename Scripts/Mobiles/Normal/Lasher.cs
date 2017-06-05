@@ -3,16 +3,16 @@ using Server.Gumps;
 
 namespace Server.Mobiles
 {
-    public class WindrunnerStatue : Item
+    public class LasherStatue : Item
     {
-        public override int LabelNumber { get { return 1124685; } } // Windrunner
+        public override int LabelNumber { get { return 1157214; } } // Lasher
 
         [Constructable]
-        public WindrunnerStatue() 
-            : base(0x9ED5)
+        public LasherStatue() 
+            : base(0x9E35)
         {
         }
-        public WindrunnerStatue(Serial serial)
+        public LasherStatue(Serial serial)
             : base(serial)
         {
         }
@@ -38,18 +38,18 @@ namespace Server.Mobiles
         }
     }
 
-    [CorpseName("a Windrunner corpse")]
-    public class Windrunner : BaseMount
+    [CorpseName("a Lasher corpse")]
+    public class Lasher : BaseMount
     {
         [Constructable]
-        public Windrunner()
-            : this("Windrunner")
+        public Lasher()
+            : this("Lasher")
         {
         }
 
         [Constructable]
-        public Windrunner(string name)
-            : base(name, 1410, 16076, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+        public Lasher(string name)
+            : base(name, 1407, 16075, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             this.BaseSoundID = 0xA8;
 
@@ -81,14 +81,14 @@ namespace Server.Mobiles
             this.ControlSlots = 1;
         }
 
-        public Windrunner(Serial serial)
+        public Lasher(Serial serial)
             : base(serial)
         {
         }
 
         public override int Meat { get { return 3; } }
         public override int Hides { get { return 10; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; } }
 
         public override void Serialize(GenericWriter writer)
         {
