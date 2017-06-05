@@ -589,7 +589,15 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile InitialFocus
         {
-            get { return m_InitialFocus; }
+            get 
+            {
+                if (m_InitialFocus != null && (!m_InitialFocus.Alive || m_InitialFocus.Deleted))
+                {
+                    m_InitialFocus = null;
+                }
+
+                return m_InitialFocus;
+            }
             set { m_InitialFocus = value; }
         }
 
@@ -602,15 +610,17 @@ namespace Server.Mobiles
             }
             set
             {
+                Mobile initialFocus = InitialFocus;
+
                 if (base.Combatant == null)
                 {
                     if (value is Mobile && AttacksFocus)
-                        m_InitialFocus = (Mobile)value;
+                        InitialFocus = (Mobile)value;
                 }
-                else if (AttacksFocus && m_InitialFocus != null && value != m_InitialFocus && !m_InitialFocus.Hidden && InRange(m_InitialFocus.Location, this.RangePerception))
+                else if (AttacksFocus && initialFocus != null && value != initialFocus && !initialFocus.Hidden && InRange(initialFocus.Location, this.RangePerception))
                 {
                     //Keeps focus
-                    base.Combatant = m_InitialFocus;
+                    base.Combatant = initialFocus;
                     return;
                 }
 
