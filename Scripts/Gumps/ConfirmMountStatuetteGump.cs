@@ -20,20 +20,21 @@ namespace Server.Gumps
             if (m_Item == null || m_Item.Deleted)
                 return;
 
+            BaseMount m = null;
+
             if (m_Item is WindrunnerStatue)
             {
-                BaseMount m = new Windrunner();
-                m.SetControlMaster(from);
-                m.MoveToWorld(from.Location, from.Map);
+                m = new Windrunner();
             }
 
             if (m_Item is LasherStatue)
             {
-                BaseMount m = new Lasher();
-                m.SetControlMaster(from);
-                m.MoveToWorld(from.Location, from.Map);
+                m = new Lasher();
             }
 
+            m.SetControlMaster(from);
+            m.IsBonded = true;
+            m.MoveToWorld(from.Location, from.Map);
             m_Item.Delete();
         }
     }
