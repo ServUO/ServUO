@@ -772,6 +772,7 @@
     <Compile Include="Items\Artifacts\Decorative\BaseDecorationArtifact.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Items\Equipment\Weapons\PaladinSword.cs" />
     <Compile Include="Items\Functional\AcidVine.cs" />
     <Compile Include="Items\Functional\Automaton\AutomatonActuator.cs" />
     <Compile Include="Items\Functional\Automaton\AutomatonStatue.cs" />
