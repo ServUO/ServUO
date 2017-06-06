@@ -52,24 +52,7 @@ namespace Server.Items
             m_Table.Remove(m);
         }
 
-        /*public override bool CheckSkills( Mobile from )
-        {
-        if ( !base.CheckSkills( from ) )
-        return false;
-
-        if ( !(from.Weapon is Fists) )
-        return true;
-
-        Skill skill = from.Skills[SkillName.Anatomy];
-
-        if ( skill != null && skill.Base >= 80.0 )
-        return true;
-
-        from.SendLocalizedMessage( 1061811 ); // You lack the required anatomy skill to perform that attack!
-
-        return false;
-        }*/
-        public override bool RequiresTactics(Mobile from)
+        public override bool RequiresSecondarySkill(Mobile from)
         {
             BaseWeapon weapon = from.Weapon as BaseWeapon;
 

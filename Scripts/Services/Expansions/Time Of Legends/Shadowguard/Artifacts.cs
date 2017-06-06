@@ -1016,4 +1016,41 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
     }
+
+    public class MocapotlsObsidianSword : PaladinSword
+    {
+        public override int LabelNumber { get { return 1156131; } } // Moctapotl's Obsidian Sword
+
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
+
+        [Constructable]
+        public MocapotlsObsidianSword()
+        {
+            WeaponAttributes.HitHarm = 50;
+            WeaponAttributes.HitPhysicalArea = 50;
+            WeaponAttributes.HitLeechStam = 100;
+            WeaponAttributes.SplinteringWeapon = 20;
+            Attributes.WeaponDamage = 75;
+
+            Hue = 1932;
+        }
+
+        public MocapotlsObsidianSword(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }
+    }
 }

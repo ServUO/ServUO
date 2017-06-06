@@ -27,7 +27,7 @@ namespace Server.Items
                 return 1.25;
             }
         }
-        public override bool RequiresTactics(Mobile from)
+        public override bool RequiresSecondarySkill(Mobile from)
         {
             return false;
         }
