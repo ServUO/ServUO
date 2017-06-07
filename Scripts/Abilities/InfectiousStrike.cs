@@ -25,9 +25,10 @@ namespace Server.Items
                 return 20;
             }
         }
-        public override bool RequiresTactics(Mobile from)
+
+        public override SkillName GetSecondarySkill(Mobile from)
         {
-            return false;
+            return SkillName.Poisoning;
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)

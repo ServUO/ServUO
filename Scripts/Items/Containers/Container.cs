@@ -25,7 +25,7 @@ namespace Server.Items
         {
             get
             {
-                if (this.IsSecure)
+                if (IsSecure)
                     return 0;
 
                 return base.DefaultMaxWeight;
@@ -37,14 +37,14 @@ namespace Server.Items
 		[CommandProperty(AccessLevel.GameMaster)]
 		public string EngravedText
 		{
-			get { return this.m_EngravedText; }
+			get { return m_EngravedText; }
 			set
 			{
 				if (value != null)
-					this.m_EngravedText = value;
+					m_EngravedText = value;
 				else
-					this.m_EngravedText = string.Empty;
-				this.InvalidateProperties();
+					m_EngravedText = string.Empty;
+				InvalidateProperties();
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace Server.Items
 
         public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
         {
-            if (this.IsSecure && !BaseHouse.CheckHold(m, this, item, message, checkItems, plusItems, plusWeight))
+            if (IsSecure && !BaseHouse.CheckHold(m, this, item, message, checkItems, plusItems, plusWeight))
                 return false;
 
             return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
@@ -66,7 +66,7 @@ namespace Server.Items
 
         public override bool CheckItemUse(Mobile from, Item item)
         {
-            if (this.IsDecoContainer && item is BaseBook)
+            if (IsDecoContainer && item is BaseBook)
                 return true;
 
             return base.CheckItemUse(from, item);
@@ -80,7 +80,7 @@ namespace Server.Items
 
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
-            if (!this.CheckHold(from, dropped, sendFullMessage, true))
+            if (!CheckStack(from, dropped) && !CheckHold(from, dropped, sendFullMessage, true))
                 return false;
 
             BaseHouse house = BaseHouse.FindHouseAt(this);
@@ -97,7 +97,7 @@ namespace Server.Items
                     return false;
             }
 
-            List<Item> list = this.Items;
+            List<Item> list = Items;
 
             for (int i = 0; i < list.Count; ++i)
             {
@@ -107,7 +107,7 @@ namespace Server.Items
                     return true;
             }
 
-            this.DropItem(dropped);
+            DropItem(dropped);
 
             ItemFlags.SetTaken(dropped, true);
 
@@ -135,7 +135,7 @@ namespace Server.Items
 
         public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
         {
-            if (!this.CheckHold(from, item, true, true))
+            if (!CheckHold(from, item, true, true))
                 return false;
 
             BaseHouse house = BaseHouse.FindHouseAt(this);
@@ -154,9 +154,9 @@ namespace Server.Items
 
             item.Location = new Point3D(p.X, p.Y, 0);
 
-            this.AddItem(item);
+            AddItem(item);
 
-            from.SendSound(this.GetDroppedSound(item), this.GetWorldLocation());
+            from.SendSound(GetDroppedSound(item), GetWorldLocation());
 
             ItemFlags.SetTaken(item, true);
 
@@ -198,14 +198,14 @@ namespace Server.Items
         {
             base.UpdateTotal(sender, type, delta);
 
-            if (type == TotalType.Weight && this.RootParent is Mobile)
-                ((Mobile)this.RootParent).InvalidateProperties();
+            if (type == TotalType.Weight && RootParent is Mobile)
+                ((Mobile)RootParent).InvalidateProperties();
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.IsStaff() || from.InRange(this.GetWorldLocation(), 2) || this.RootParent is PlayerVendor)
-                this.Open(from);
+            if (from.IsStaff() || from.InRange(GetWorldLocation(), 2) || RootParent is PlayerVendor)
+                Open(from);
             else
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
         }
@@ -214,22 +214,22 @@ namespace Server.Items
 		{
 			base.AddNameProperty(list);
 
-			if(!String.IsNullOrEmpty(this.EngravedText))
+			if(!String.IsNullOrEmpty(EngravedText))
 			{
-				list.Add(1072305, this.EngravedText); // Engraved: ~1_INSCRIPTION~
+				list.Add(1072305, EngravedText); // Engraved: ~1_INSCRIPTION~
 			}
 		}
 
 		public virtual void Open(Mobile from)
         {
-            this.DisplayTo(from);
+            DisplayTo(from);
         }
 
         public void CheckBank(BankBox bank, Mobile from)
         {
             if (AccountGold.Enabled && bank.Owner == from && from.Account != null)
             {
-                List<BankCheck> checks = new List<BankCheck>(this.Items.OfType<BankCheck>());
+                List<BankCheck> checks = new List<BankCheck>(Items.OfType<BankCheck>());
 
                 foreach (BankCheck check in checks)
                 {
@@ -279,10 +279,10 @@ namespace Server.Items
         [Constructable]
         public CreatureBackpack(string name)
         {
-            this.Name = name;
-            this.Layer = Layer.Backpack;
-            this.Hue = 5;
-            this.Weight = 3.0;
+            Name = name;
+            Layer = Layer.Backpack;
+            Hue = 5;
+            Weight = 3.0;
         }
 
         public CreatureBackpack(Serial serial)
@@ -292,16 +292,16 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (this.Name != null)
-                list.Add(1075257, this.Name); // Contents of ~1_PETNAME~'s pack.
+            if (Name != null)
+                list.Add(1075257, Name); // Contents of ~1_PETNAME~'s pack.
             else
                 base.AddNameProperty(list);
         }
 
         public override void OnItemRemoved(Item item)
         {
-            if (this.Items.Count == 0)
-                this.Delete();
+            if (Items.Count == 0)
+                Delete();
 
             base.OnItemRemoved(item);
         }
@@ -339,7 +339,7 @@ namespace Server.Items
             int version = reader.ReadInt();
 
             if (version == 0)
-                this.Weight = 13.0;
+                Weight = 13.0;
         }
     }
 
@@ -348,8 +348,8 @@ namespace Server.Items
         [Constructable]
         public StrongBackpack()
         {
-            this.Layer = Layer.Backpack;
-            this.Weight = 13.0;
+            Layer = Layer.Backpack;
+            Weight = 13.0;
         }
 
         public StrongBackpack(Serial serial)
@@ -371,7 +371,7 @@ namespace Server.Items
 
         public override bool CheckContentDisplay(Mobile from)
         {
-            object root = this.RootParent;
+            object root = RootParent;
 
             if (root is BaseCreature && ((BaseCreature)root).Controlled && ((BaseCreature)root).ControlMaster == from)
                 return true;
@@ -393,7 +393,7 @@ namespace Server.Items
             int version = reader.ReadInt();
 
             if (version == 0)
-                this.Weight = 13.0;
+                Weight = 13.0;
         }
     }
 
@@ -403,8 +403,8 @@ namespace Server.Items
         public Backpack()
             : base(0xE75)
         {
-            this.Layer = Layer.Backpack;
-            this.Weight = 3.0;
+            Layer = Layer.Backpack;
+            Weight = 3.0;
         }
 
         public Backpack(Serial serial)
@@ -418,7 +418,7 @@ namespace Server.Items
             {
                 if (Core.ML)
                 {
-                    Mobile m = this.ParentEntity as Mobile;
+                    Mobile m = ParentEntity as Mobile;
                     if (m != null && m.Player && m.Backpack == this)
                     {
                         return 550;
@@ -436,10 +436,10 @@ namespace Server.Items
         }
         public bool Dye(Mobile from, DyeTub sender)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return false;
 
-            this.Hue = sender.DyedHue;
+            Hue = sender.DyedHue;
 
             return true;
         }
@@ -457,8 +457,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.ItemID == 0x9B2)
-                this.ItemID = 0xE75;
+            if (version == 0 && ItemID == 0x9B2)
+                ItemID = 0xE75;
         }
     }
 
@@ -468,7 +468,7 @@ namespace Server.Items
         public Pouch()
             : base(0xE79)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Pouch(Serial serial)
@@ -496,7 +496,7 @@ namespace Server.Items
         public BaseBagBall(int itemID)
             : base(itemID)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public BaseBagBall(Serial serial)
@@ -506,10 +506,10 @@ namespace Server.Items
 
         public bool Dye(Mobile from, DyeTub sender)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return false;
 
-            this.Hue = sender.DyedHue;
+            Hue = sender.DyedHue;
 
             return true;
         }
@@ -591,7 +591,7 @@ namespace Server.Items
         public Bag()
             : base(0xE76)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public Bag(Serial serial)
@@ -601,10 +601,10 @@ namespace Server.Items
 
         public bool Dye(Mobile from, DyeTub sender)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return false;
 
-            this.Hue = sender.DyedHue;
+            Hue = sender.DyedHue;
 
             return true;
         }
@@ -630,7 +630,7 @@ namespace Server.Items
         public Barrel()
             : base(0xE77)
         {
-            this.Weight = 25.0;
+            Weight = 25.0;
         }
 
         public Barrel(Serial serial)
@@ -651,8 +651,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 0.0)
-                this.Weight = 25.0;
+            if (Weight == 0.0)
+                Weight = 25.0;
         }
     }
 
@@ -662,7 +662,7 @@ namespace Server.Items
         public Keg()
             : base(0xE7F)
         {
-            this.Weight = 15.0;
+            Weight = 15.0;
         }
 
         public Keg(Serial serial)
@@ -691,7 +691,7 @@ namespace Server.Items
         public PicnicBasket()
             : base(0xE7A)
         {
-            this.Weight = 2.0; // Stratics doesn't know weight
+            Weight = 2.0; // Stratics doesn't know weight
         }
 
         public PicnicBasket(Serial serial)
@@ -720,7 +720,7 @@ namespace Server.Items
         public Basket()
             : base(0x990)
         {
-            this.Weight = 1.0; // Stratics doesn't know weight
+            Weight = 1.0; // Stratics doesn't know weight
         }
 
         public Basket(Serial serial)
@@ -751,7 +751,7 @@ namespace Server.Items
         public WoodenBox()
             : base(0x9AA)
         {
-            this.Weight = 4.0;
+            Weight = 4.0;
         }
 
         public WoodenBox(Serial serial)
@@ -782,7 +782,7 @@ namespace Server.Items
         public SmallCrate()
             : base(0x9A9)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public SmallCrate(Serial serial)
@@ -803,8 +803,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 4.0)
-                this.Weight = 2.0;
+            if (Weight == 4.0)
+                Weight = 2.0;
         }
     }
 
@@ -816,7 +816,7 @@ namespace Server.Items
         public MediumCrate()
             : base(0xE3F)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public MediumCrate(Serial serial)
@@ -837,8 +837,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 6.0)
-                this.Weight = 2.0;
+            if (Weight == 6.0)
+                Weight = 2.0;
         }
     }
 
@@ -850,7 +850,7 @@ namespace Server.Items
         public LargeCrate()
             : base(0xE3D)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public LargeCrate(Serial serial)
@@ -871,8 +871,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 8.0)
-                this.Weight = 1.0;
+            if (Weight == 8.0)
+                Weight = 1.0;
         }
     }
 
@@ -904,8 +904,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.Weight == 3)
-                this.Weight = -1;
+            if (version == 0 && Weight == 3)
+                Weight = -1;
         }
     }
 
@@ -937,8 +937,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.Weight == 25)
-                this.Weight = -1;
+            if (version == 0 && Weight == 25)
+                Weight = -1;
         }
     }
 
@@ -970,8 +970,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.Weight == 25)
-                this.Weight = -1;
+            if (version == 0 && Weight == 25)
+                Weight = -1;
         }
     }
 
@@ -983,7 +983,7 @@ namespace Server.Items
         public WoodenChest()
             : base(0xe43)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public WoodenChest(Serial serial)
@@ -1004,8 +1004,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 15.0)
-                this.Weight = 2.0;
+            if (Weight == 15.0)
+                Weight = 2.0;
         }
     }
 
@@ -1037,8 +1037,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.Weight == 15)
-                this.Weight = -1;
+            if (version == 0 && Weight == 15)
+                Weight = -1;
         }
     }
 
@@ -1070,8 +1070,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.Weight == 15)
-                this.Weight = -1;
+            if (version == 0 && Weight == 15)
+                Weight = -1;
         }
     }
 
@@ -1103,8 +1103,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.Weight == 15)
-                this.Weight = -1;
+            if (version == 0 && Weight == 15)
+                Weight = -1;
         }
     }
 
@@ -1116,7 +1116,7 @@ namespace Server.Items
         public WoodenFootLocker()
             : base(0x2811)
         {
-            this.GumpID = 0x10B;
+            GumpID = 0x10B;
         }
 
         public WoodenFootLocker(Serial serial)
@@ -1137,11 +1137,11 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.Weight == 15)
-                this.Weight = -1;
+            if (version == 0 && Weight == 15)
+                Weight = -1;
 			
             if (version < 2)
-                this.GumpID = 0x10B;
+                GumpID = 0x10B;
         }
     }
 
@@ -1173,8 +1173,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version == 0 && this.Weight == 15)
-                this.Weight = -1;
+            if (version == 0 && Weight == 15)
+                Weight = -1;
         }
     }
 }

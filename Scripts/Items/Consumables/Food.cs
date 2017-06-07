@@ -155,12 +155,9 @@ namespace Server.Items
             }
         }
 
-        public override bool StackWith(Mobile from, Item dropped, bool playSound)
+        public override bool WillStack(Mobile from, Item dropped)
         {
-            if (dropped is Food && ((Food)dropped).PlayerConstructed == PlayerConstructed)
-                return base.StackWith(from, dropped, playSound);
-            else
-                return false;
+            return dropped is Food && ((Food)dropped).PlayerConstructed == PlayerConstructed && base.WillStack(from, dropped);
         }
 
 		public override void AddNameProperty(ObjectPropertyList list)

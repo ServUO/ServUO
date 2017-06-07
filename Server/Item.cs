@@ -2017,9 +2017,7 @@ namespace Server
 
         public virtual bool StackWith(Mobile from, Item dropped, bool playSound)
         {
-            if (dropped.Stackable && Stackable && dropped.GetType() == GetType() && dropped.ItemID == ItemID &&
-                dropped.Hue == Hue && dropped.Name == Name && (dropped.Amount + Amount) <= 60000 && dropped != this &&
-                !dropped.Nontransferable && !Nontransferable)
+            if (WillStack(from, dropped))
             {
                 if (m_LootType != dropped.m_LootType)
                 {
@@ -2045,6 +2043,13 @@ namespace Server
             }
 
             return false;
+        }
+
+        public virtual bool WillStack(Mobile from, Item dropped)
+        {
+            return dropped.Stackable && Stackable && dropped.GetType() == GetType() && dropped.ItemID == ItemID &&
+                dropped.Hue == Hue && dropped.Name == Name && dropped.Amount + Amount <= 60000 && dropped != this &&
+                !dropped.Nontransferable && !Nontransferable;
         }
 
         public virtual bool OnDragDrop(Mobile from, Item dropped)

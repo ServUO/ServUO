@@ -18,25 +18,20 @@ namespace Server.Items
                 return Core.TOL ? 30 : 35;
             }
         }
-        public override bool CheckSkills(Mobile from)
-        {
-            if (this.GetSkill(from, SkillName.Ninjitsu) < 50.0 && this.GetSkill(from, SkillName.Bushido) < 50.0)
-            {
-                from.SendLocalizedMessage(1063347, "50"); // You need ~1_SKILL_REQUIREMENT~ Bushido or Ninjitsu skill to perform that attack!
-                return false;
-            }
 
-            return base.CheckSkills(from);
+        public override SkillName GetSecondarySkill(Mobile from)
+        {
+            return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            this.Use(attacker, defender);
+            Use(attacker, defender);
         }
 
         public override void OnMiss(Mobile attacker, Mobile defender)
         {
-            this.Use(attacker, defender);
+            Use(attacker, defender);
         }
 
         public override bool Validate(Mobile from)
@@ -57,7 +52,7 @@ namespace Server.Items
 
         public void Use(Mobile attacker, Mobile defender)
         {
-            if (!this.Validate(attacker) || !this.CheckMana(attacker, true) || attacker.Weapon == null)	//sanity
+            if (!Validate(attacker) || !CheckMana(attacker, true) || attacker.Weapon == null)	//sanity
                 return;
 
             ClearCurrentAbility(attacker);

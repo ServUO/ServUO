@@ -68,7 +68,7 @@ namespace Server.Items
             return true;
         }
 
-        public virtual bool RequiresTactics(Mobile from)
+        public virtual bool RequiresSecondarySkill(Mobile from)
         {
             return true;
         }
@@ -77,37 +77,42 @@ namespace Server.Items
         {
             BaseWeapon weapon = from.Weapon as BaseWeapon;
 
-            if (weapon != null && weapon.PrimaryAbility == this || weapon.PrimaryAbility == Bladeweave)
+            if (weapon != null && (weapon.PrimaryAbility == this || weapon.PrimaryAbility == Bladeweave))
                 return 70.0;
-            else if (weapon != null && weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave)
+            else if (weapon != null && (weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave))
                 return 90.0;
 
             return 200.0;
         }
 
-        public virtual double GetRequiredTactics(Mobile from)
+        public virtual double GetRequiredSecondarySkill(Mobile from)
         {
-            if (!this.RequiresTactics(from))
+            if (!RequiresSecondarySkill(from))
                 return 0.0;
 
             BaseWeapon weapon = from.Weapon as BaseWeapon;
 
-            if (weapon != null && weapon.PrimaryAbility == this || weapon.PrimaryAbility == Bladeweave)
+            if (weapon != null && (weapon.PrimaryAbility == this || weapon.PrimaryAbility == Bladeweave))
                 return Core.TOL ? 30.0 : 70.0;
-            else if (weapon != null && weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave)
+            else if (weapon != null && (weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave))
                 return Core.TOL ? 60.0 : 90.0;
 
             return 200.0;
         }
 
+        public virtual SkillName GetSecondarySkill(Mobile from)
+        {
+            return SkillName.Tactics;
+        }
+
         public virtual int CalculateMana(Mobile from)
         {
-            int mana = this.BaseMana;
+            int mana = BaseMana;
 
-            double skillTotal = this.GetSkill(from, SkillName.Swords) + this.GetSkill(from, SkillName.Macing) +
-                                this.GetSkill(from, SkillName.Fencing) + this.GetSkill(from, SkillName.Archery) + this.GetSkill(from, SkillName.Parry) +
-                                this.GetSkill(from, SkillName.Lumberjacking) + this.GetSkill(from, SkillName.Stealth) +
-                                this.GetSkill(from, SkillName.Poisoning) + this.GetSkill(from, SkillName.Bushido) + this.GetSkill(from, SkillName.Ninjitsu);
+            double skillTotal = GetSkill(from, SkillName.Swords) + GetSkill(from, SkillName.Macing) +
+                                GetSkill(from, SkillName.Fencing) + GetSkill(from, SkillName.Archery) + GetSkill(from, SkillName.Parry) +
+                                GetSkill(from, SkillName.Lumberjacking) + GetSkill(from, SkillName.Stealth) +
+                                GetSkill(from, SkillName.Poisoning) + GetSkill(from, SkillName.Bushido) + GetSkill(from, SkillName.Ninjitsu);
 
             if (skillTotal >= 300.0)
                 mana -= 10;
@@ -149,13 +154,23 @@ namespace Server.Items
 
             Skill skill = from.Skills[weapon.Skill];
 
-            double reqSkill = this.GetRequiredSkill(from);
-            double reqTactics = this.GetRequiredTactics(from);
+            double reqSkill = GetRequiredSkill(from);
+            double reqSecondarySkill = GetRequiredSecondarySkill(from);
+            SkillName secondarySkill = Core.TOL ? GetSecondarySkill(from) : SkillName.Tactics;
 
-            if (Core.ML && from.Skills[SkillName.Tactics].Base < reqTactics)
+            if (Core.ML && from.Skills[secondarySkill].Base < reqSecondarySkill)
             {
-                from.SendLocalizedMessage(Core.TOL ? 1157351 : 1079308, reqSkill.ToString()); // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack
-                                                                                              // You need ~1_SKILL_REQUIREMENT~ tactics skill to perform that attack
+                int loc = GetSkillLocalization(secondarySkill);
+
+                if (loc == 1060184)
+                {
+                    from.SendLocalizedMessage(loc);
+                }
+                else
+                {
+                    from.SendLocalizedMessage(loc, reqSecondarySkill.ToString());
+                }
+
                 return false;
             }
 
@@ -167,7 +182,7 @@ namespace Server.Items
                 return true;
             /* </UBWS> */
 
-            if (reqTactics != 0.0 && !Core.TOL)
+            if (reqSecondarySkill != 0.0 && !Core.TOL)
             {
                 from.SendLocalizedMessage(1079308, reqSkill.ToString()); // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack
             }
@@ -179,9 +194,24 @@ namespace Server.Items
             return false;
         }
 
+        private int GetSkillLocalization(SkillName skill)
+        {
+            switch (skill)
+            {
+                default: return Core.TOL ? 1157351 : 1079308;
+                    // You need ~1_SKILL_REQUIREMENT~ weapon and tactics skill to perform that attack                                                             
+                    // You need ~1_SKILL_REQUIREMENT~ tactics skill to perform that attack
+                case SkillName.Bushido:
+                case SkillName.Ninjitsu: return 1063347;
+                    // You need ~1_SKILL_REQUIREMENT~ Bushido or Ninjitsu skill to perform that attack!
+                case SkillName.Poisoning: return 1060184;
+                    // You lack the required poisoning to perform that attack
+            }
+        }
+
         public virtual bool CheckSkills(Mobile from)
         {
-            return this.CheckWeaponSkill(from);
+            return CheckWeaponSkill(from);
         }
 
         public virtual double GetSkill(Mobile from, SkillName skillName)
@@ -196,7 +226,7 @@ namespace Server.Items
 
         public virtual bool CheckMana(Mobile from, bool consume)
         {
-            int mana = this.CalculateMana(from);
+            int mana = CalculateMana(from);
 
             if (from.Mana < mana)
             {
@@ -233,7 +263,7 @@ namespace Server.Items
             if (state == null)
                 return false;
 
-            if (this.RequiresSE && !state.SupportsExpansion(Expansion.SE))
+            if (RequiresSE && !state.SupportsExpansion(Expansion.SE))
             {
                 from.SendLocalizedMessage(1063456); // You must upgrade to Samurai Empire in order to use that ability.
                 return false;
@@ -305,7 +335,7 @@ namespace Server.Items
                 return false;
             #endregion
 
-            return this.CheckSkills(from) && this.CheckMana(from, false);
+            return CheckSkills(from) && CheckMana(from, false);
         }
 
         private static readonly WeaponAbility[] m_Abilities = new WeaponAbility[33]
@@ -541,14 +571,14 @@ namespace Server.Items
             public WeaponAbilityTimer(Mobile from)
                 : base(TimeSpan.FromSeconds(3.0))
             {
-                this.m_Mobile = from;
+                m_Mobile = from;
 
-                this.Priority = TimerPriority.TwentyFiveMS;
+                Priority = TimerPriority.TwentyFiveMS;
             }
 
             protected override void OnTick()
             {
-                RemoveContext(this.m_Mobile);
+                RemoveContext(m_Mobile);
             }
         }
 
@@ -560,13 +590,13 @@ namespace Server.Items
             {
                 get
                 {
-                    return this.m_Timer;
+                    return m_Timer;
                 }
             }
 
             public WeaponAbilityContext(Timer timer)
             {
-                this.m_Timer = timer;
+                m_Timer = timer;
             }
         }
     }

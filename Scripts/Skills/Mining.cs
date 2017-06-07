@@ -221,7 +221,7 @@ namespace Server.Engines.Harvest
                 PlayerMobile pm = from as PlayerMobile;
 
                 if (pm != null && pm.GemMining && pm.ToggleMiningGem && from.Skills[SkillName.Mining].Base >= 100.0 && 0.1 > Utility.RandomDouble())
-                    return Loot.RandomGem().GetType();
+                    return Loot.GemTypes[Utility.Random(Loot.GemTypes.Length)];
 
                 double chance = tool is RockHammer ? 0.50 : 0.15;
 
