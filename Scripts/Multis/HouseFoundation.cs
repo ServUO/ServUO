@@ -868,7 +868,7 @@ namespace Server.Multis
 
             if (ns.IsEnhancedClient)
             {
-                Timer.DelayCall(TimeSpan.Zero, ECEndConfirmCommit, owner); 
+                RefreshHouse(owner);
             }
         }
 
@@ -1182,51 +1182,26 @@ namespace Server.Multis
         }
 
         #region Enhanced Client
-        public void ECEndConfirmCommit(Mobile from)
+        public void RefreshHouse(Mobile owner)
         {
-            if (this.Deleted)
-                return;
-
-            // Commit design state : Construct a copy of the current design state
             DesignState copyState = new DesignState(DesignState);
 
             // Commit design state : Clear visible fixtures
-            ClearFixtures(from);
+            ClearFixtures(owner);
 
             // Commit design state : Melt fixtures from constructed state
             copyState.MeltFixtures();
 
             // Commit design state : Add melted fixtures from constructed state
-            AddFixtures(from, copyState.Fixtures);
+            AddFixtures(owner, copyState.Fixtures);
 
             // Commit design state : Assign constructed state to foundation
             CurrentState = copyState;
 
-            // Remove design context
-            DesignContext.Remove(from);
-
-            // Notify the client that customization has ended
-            from.Send(new EndHouseCustomization(this));
-
-            // Notify the core that the foundation has changed and should be resent to all clients
             Delta(ItemDelta.Update);
             ProcessDelta();
-            CurrentState.SendDetailedInfoTo(from.NetState);
+            CurrentState.SendDetailedInfoTo(owner.NetState);
 
-            // If a signpost is needed, add it
-            CheckSignpost();
-
-            // Eject all from house
-            from.RevealingAction();
-
-            foreach (Item item in GetItems())
-                item.Location = BanLocation;
-
-            foreach (Mobile mobile in GetMobiles())
-                mobile.Location = BanLocation;
-
-            // Restore relocated entities
-            RestoreRelocatedEntities();
         }
         #endregion
 

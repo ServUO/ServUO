@@ -4065,7 +4065,9 @@ namespace Server
 					continue;
 				}
 
-				if ((item.Insured || item.LootType == LootType.Blessed) && item.Parent == this && item.Layer != Layer.Mount)
+                pack.FreePosition(item.GridLocation);
+
+                if ((item.Insured || item.LootType == LootType.Blessed) && item.Parent == this && item.Layer != Layer.Mount)
 				{
 					equip.Add(item);
 				}
@@ -4096,7 +4098,9 @@ namespace Server
 				{
 					Item item = packCopy[i];
 
-					DeathMoveResult res = GetInventoryMoveResultFor(item);
+                    pack.FreePosition(item.GridLocation);
+
+                    DeathMoveResult res = GetInventoryMoveResultFor(item);
 
 					if (res == DeathMoveResult.MoveToCorpse)
 					{
