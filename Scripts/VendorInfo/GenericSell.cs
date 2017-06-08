@@ -32,12 +32,17 @@ namespace Server.Mobiles
             m_Types = null;
         }
 
+        public int GetSellPriceFor(Item item)
+        {
+            return GetSellPriceFor(item, null);
+        }
+
         public int GetSellPriceFor(Item item, BaseVendor vendor)
         {
             int price = 0;
             m_Table.TryGetValue(item.GetType(), out price);
 
-            if (BaseVendor.UseVendorEconomy)
+            if (vendor != null && BaseVendor.UseVendorEconomy)
             {
                 IBuyItemInfo buyInfo = vendor.GetBuyInfo().OfType<GenericBuyInfo>().FirstOrDefault(info => info.EconomyItem && info.Type == item.GetType());
 
@@ -111,6 +116,11 @@ namespace Server.Mobiles
             }
 
             return price;
+        }
+
+        public int GetBuyPriceFor(Item item)
+        {
+            return GetBuyPriceFor(item, null);
         }
 
         public int GetBuyPriceFor(Item item, BaseVendor vendor)

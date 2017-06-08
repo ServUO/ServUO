@@ -2375,9 +2375,11 @@ namespace Server
 		string GetNameFor(Item item);
 
 		//get price for an item which the player is selling
+        int GetSellPriceFor(Item item);
 		int GetSellPriceFor(Item item, BaseVendor vendor);
 
 		//get price for an item which the player is buying
+        int GetBuyPriceFor(Item item);
 		int GetBuyPriceFor(Item item, BaseVendor vendor);
 
 		//can we sell this item to this vendor?

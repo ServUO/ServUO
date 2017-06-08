@@ -157,18 +157,18 @@ namespace Server.Engines.Plants
 			LabelTo( from, 1061916 ); // Choose a bowl of dirt to plant this seed in.
 		}
 
-		public override bool StackWith( Mobile from, Item dropped, bool playSound )
-		{
-			if ( dropped is Seed )
-			{
-				Seed other = (Seed)dropped;
+        public override bool WillStack(Mobile from, Item dropped)
+        {
+            if (dropped is Seed)
+            {
+                Seed other = (Seed)dropped;
 
-				if ( other.PlantType == m_PlantType && other.PlantHue == m_PlantHue && other.ShowType == m_ShowType )
-					return base.StackWith( from, dropped, playSound );
-			}
+                if (other.PlantType == m_PlantType && other.PlantHue == m_PlantHue && other.ShowType == m_ShowType)
+                    return base.WillStack(from, dropped);
+            }
 
-			return false;
-		}
+            return false;
+        }
 
 		public override void OnAfterDuped( Item newItem )
 		{

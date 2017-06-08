@@ -33,12 +33,9 @@ namespace Server.Items
             Amount = amount;
         }
 
-        public override bool StackWith(Mobile from, Item dropped, bool playSound)
+        public override bool WillStack(Mobile from, Item dropped)
         {
-            if (dropped is GorgonLense && ((GorgonLense)dropped).LenseType == m_LenseType)
-                return base.StackWith(from, dropped, playSound);
-
-            return false;
+            return dropped is GorgonLense && ((GorgonLense)dropped).LenseType == m_LenseType && base.WillStack(from, dropped);
         }
 
         public override void OnAfterDuped(Item newItem)

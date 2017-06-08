@@ -19,8 +19,6 @@ namespace Server.SkillHandlers
     {
         public static void Initialize()
         {
-            //LoadImbuingDefinitions();
-
             SkillInfo.Table[(int)SkillName.Imbuing].Callback = new SkillUseCallback(OnUse);
 
             CommandSystem.Register("GetTotalWeight", AccessLevel.GameMaster, new CommandEventHandler(GetTotalWeight_OnCommand));
@@ -1359,7 +1357,6 @@ namespace Server.SkillHandlers
         private static Dictionary<int, ImbuingDefinition> m_Table;
         public static Dictionary<int, ImbuingDefinition> Table { get { return m_Table; } }
 
-        //public static void LoadImbuingDefinitions()
         static Imbuing()
         {
             m_Table = new Dictionary<int, ImbuingDefinition>();

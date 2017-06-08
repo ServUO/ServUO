@@ -1257,6 +1257,19 @@ namespace Server.Engines.Shadowguard
                 Drakes = null;
             }
 
+            if (Bells != null)
+            {
+                List<Item> list = new List<Item>(Bells.Where(b => b != null && !b.Deleted));
+
+                foreach (var bell in list)
+                    bell.Delete();
+
+                ColUtility.Free(list);
+                ColUtility.Free(Bells);
+
+                Bells = null;
+            }
+
 			if(Dragon != null && Dragon.Alive)
 				Dragon.Delete();
 				

@@ -25,6 +25,11 @@ namespace Server.Items
 
         public override int AccuracyBonus { get { return -15; } }
 
+        public override SkillName GetSecondarySkill(Mobile from)
+        {
+            return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
+        }
+
         public static bool IsBlocking(Mobile m)
         {
             return _Table != null && _Table.ContainsKey(m);
@@ -102,17 +107,6 @@ namespace Server.Items
                 if (_Table.Count == 0)
                     _Table = null;
             }
-        }
-
-        public override bool CheckSkills(Mobile from)
-        {
-            if (this.GetSkill(from, SkillName.Ninjitsu) < 50.0 && this.GetSkill(from, SkillName.Bushido) < 50.0)
-            {
-                from.SendLocalizedMessage(1063347, "50"); // You need ~1_SKILL_REQUIREMENT~ Bushido or Ninjitsu skill to perform that attack!
-                return false;
-            }
-
-            return base.CheckSkills(from);
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)

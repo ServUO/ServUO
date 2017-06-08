@@ -23,7 +23,7 @@ namespace Server.Items
             }
         }
 
-        public override bool RequiresTactics(Mobile from)
+        public override bool RequiresSecondarySkill(Mobile from)
         {
             BaseWeapon weapon = from.Weapon as BaseWeapon;
 
