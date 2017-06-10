@@ -296,7 +296,8 @@ namespace Server.Spells.SkillMasteries
 
             protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
             {
-                from.SendLocalizedMessage(1156110); // Your ability was canceled. 
+                from.SendLocalizedMessage(1156110); // Your ability was canceled.
+                Spell.FinishSequence();
             }
         }
     }
@@ -336,6 +337,7 @@ namespace Server.Spells.SkillMasteries
         {
             if (info.ButtonID == 0)
             {
+                Spell.FinishSequence();
                 state.Mobile.SendLocalizedMessage(1156110); // Your ability was canceled. 
                 return;
             }
