@@ -2993,7 +2993,6 @@
     <Compile Include="Services\CleanUpBritannia\Items\PrimordialDecay.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\NocturneEarrings.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\SacrificeVirtueTile.cs" />
-    <Compile Include="Services\CleanUpBritannia\Items\SherryTheMouseStatue.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\SnakeSkinBoots.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\OrnateElvenTapestry.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\SophisticatedElvenTapestry.cs" />

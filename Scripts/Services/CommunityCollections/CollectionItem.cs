@@ -16,8 +16,9 @@ namespace Server
         private readonly int m_Hue;
         private readonly double m_Points;
         private readonly bool m_QuestItem;
+        private readonly object[] m_Args;
 
-        public CollectionItem(Type type, int itemID, int tooltip, int hue, double points, bool questitem = false)
+        public CollectionItem(Type type, int itemID, int tooltip, int hue, double points, bool questitem = false, params object[] args)
         {
             this.m_Type = type;
             this.m_ItemID = itemID;
@@ -25,6 +26,7 @@ namespace Server
             this.m_Hue = hue;
             this.m_Points = points;
             this.m_QuestItem = questitem;
+            this.m_Args = args;
 
             Rectangle2D rec;
 
@@ -118,6 +120,14 @@ namespace Server
             get
             {
                 return this.m_Points;
+            }
+        }
+
+        public object[] Args
+        {
+            get
+            {
+                return this.m_Args;
             }
         }
 

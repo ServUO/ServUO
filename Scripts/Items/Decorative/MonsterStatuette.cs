@@ -111,6 +111,7 @@ namespace Server.Items
             /* Minotaur */			new MonsterStatuetteInfo(1031657, 0x2D89, 0x596),
             /* Black Cat */		    new MonsterStatuetteInfo(1096928, 0x4688, 0x69),
             /* HalloweenGhoul */	new MonsterStatuetteInfo(1076782, 0x2109, 0x482),
+            /* SherryTheMouse */	new MonsterStatuetteInfo(1080171, 0x20D0, 0x0CE),
             /* Slasher of Veils */  new MonsterStatuetteInfo(1113624, 0x42A0, 0x632),
             /* Stygian Dragon   */  new MonsterStatuetteInfo(1113625, 0x42A6, 0x63E),
             /* Medusa */            new MonsterStatuetteInfo(1113626, 0x4298, 0x612),

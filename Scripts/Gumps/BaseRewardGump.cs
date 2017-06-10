@@ -161,7 +161,7 @@ namespace Server.Gumps
 
         public virtual void OnConfirmed(CollectionItem citem, int index)
         {
-            Item item = Activator.CreateInstance(citem.Type) as Item;
+            Item item = Activator.CreateInstance(citem.Type, citem.Args) as Item;
 
             if (item != null)
             {
