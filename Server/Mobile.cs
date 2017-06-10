@@ -7233,6 +7233,11 @@ namespace Server
 			return null;
 		}
 
+        public TGump FindGump<TGump>() where TGump : Gump
+        {
+            return FindGump(typeof(TGump)) as TGump;
+        }
+
 		public bool CloseGump(Type type)
 		{
 			if (m_NetState != null)
