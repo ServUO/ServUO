@@ -2958,6 +2958,7 @@
     <Compile Include="Services\CleanUpBritannia\Creatures\TheCleanupOfficer.cs" />
     <Compile Include="Services\CleanUpBritannia\Gumps.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\RefinementAmalgamator.cs" />
+    <Compile Include="Services\CleanUpBritannia\Items\SherryTheMouseStatue.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\VollemHeldInCrystal.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\Beehive.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\BootsOfTheCrystalHydra.cs" />
