@@ -3,6 +3,7 @@ using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -70,6 +71,7 @@ namespace Server.Items
     public class MonsterStatuetteInfo
     {
         public static MonsterStatuetteInfo[] Table { get { return m_Table; } }
+
         private static readonly MonsterStatuetteInfo[] m_Table = new MonsterStatuetteInfo[]
         {
             /* Crocodile */			new MonsterStatuetteInfo(1041249, 0x20DA, 660),
@@ -130,44 +132,29 @@ namespace Server.Items
             /* Dark Father */       new MonsterStatuetteInfo(1155748, 0x2632, 0x165),
             /* Platinum Dragon */   new MonsterStatuetteInfo(1155745, 0x2635, new int[] { 0x2C1, 0x2C3 }),
         };
+
         private readonly int m_LabelNumber;
         private readonly int m_ItemID;
         private readonly int[] m_Sounds;
+
         public MonsterStatuetteInfo(int labelNumber, int itemID, int baseSoundID)
         {
-            this.m_LabelNumber = labelNumber;
-            this.m_ItemID = itemID;
-            this.m_Sounds = new int[] { baseSoundID, baseSoundID + 1, baseSoundID + 2, baseSoundID + 3, baseSoundID + 4 };
+            m_LabelNumber = labelNumber;
+            m_ItemID = itemID;
+            m_Sounds = new int[] { baseSoundID, baseSoundID + 1, baseSoundID + 2, baseSoundID + 3, baseSoundID + 4 };
         }
 
         public MonsterStatuetteInfo(int labelNumber, int itemID, int[] sounds)
         {
-            this.m_LabelNumber = labelNumber;
-            this.m_ItemID = itemID;
-            this.m_Sounds = sounds;
+            m_LabelNumber = labelNumber;
+            m_ItemID = itemID;
+            m_Sounds = sounds;
         }
 
-        public int LabelNumber
-        {
-            get
-            {
-                return this.m_LabelNumber;
-            }
-        }
-        public int ItemID
-        {
-            get
-            {
-                return this.m_ItemID;
-            }
-        }
-        public int[] Sounds
-        {
-            get
-            {
-                return this.m_Sounds;
-            }
-        }
+        public int LabelNumber { get { return m_LabelNumber; } }
+        public int ItemID { get { return m_ItemID; } }
+        public int[] Sounds { get { return m_Sounds; } }
+
         public static MonsterStatuetteInfo GetInfo(MonsterStatuetteType type)
         {
             int v = (int)type;
@@ -184,6 +171,8 @@ namespace Server.Items
         private MonsterStatuetteType m_Type;
         private bool m_TurnedOn;
         private bool m_IsRewardItem;
+        private Timer m_NewsTimer;
+
         [Constructable]
         public MonsterStatuette()
             : this(MonsterStatuetteType.Crocodile)
@@ -194,16 +183,16 @@ namespace Server.Items
         public MonsterStatuette(MonsterStatuetteType type)
             : base(MonsterStatuetteInfo.GetInfo(type).ItemID)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
 
-            this.m_Type = type;
+            m_Type = type;
 
-            if (this.m_Type == MonsterStatuetteType.Slime)
-                this.Hue = Utility.RandomSlimeHue();
-            else if (this.m_Type == MonsterStatuetteType.RedDeath)
-                this.Hue = 0x21;
-            else if (this.m_Type == MonsterStatuetteType.HalloweenGhoul)
-                this.Hue = 0xF4;
+            if (m_Type == MonsterStatuetteType.Slime)
+                Hue = Utility.RandomSlimeHue();
+            else if (m_Type == MonsterStatuetteType.RedDeath)
+                Hue = 0x21;
+            else if (m_Type == MonsterStatuetteType.HalloweenGhoul)
+                Hue = 0xF4;
             else if (m_Type == MonsterStatuetteType.ArchDemon)
                 Hue = 2021;
             else if (m_Type == MonsterStatuetteType.SakkhranBirdOfPrey)
@@ -220,6 +209,47 @@ namespace Server.Items
             }
         }
 
+        public override bool HandlesOnSpeech { get { return m_Type == MonsterStatuetteType.SherryTheMouse; } }
+
+        public override void OnSpeech(SpeechEventArgs e)
+        {
+            if (m_TurnedOn && HandlesOnSpeech && IsLockedDown && e.HasKeyword(0x30) && e.Mobile.Alive && e.Mobile.InLOS(Location) && e.Mobile.InRange(this, 12)) // *news*
+            {
+                TownCrierEntry tce = GlobalTownCrierEntryList.Instance.GetRandomEntry();
+
+                if (tce == null)
+                {
+                    PublicOverheadMessage(MessageType.Regular, 0x3B2, 1005643); // I have no news at this time.
+                }
+                else
+                {
+                    m_NewsTimer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(3.0), new TimerStateCallback(ShoutNews_Callback), new object[] { tce, 0 });
+
+                    PublicOverheadMessage(MessageType.Regular, 0x3B2, 502978); // Some of the latest news!
+                }
+            }
+        }
+
+        private void ShoutNews_Callback(object state)
+        {
+            object[] states = (object[])state;
+            TownCrierEntry tce = (TownCrierEntry)states[0];
+            int index = (int)states[1];
+
+            if (index < 0 || index >= tce.Lines.Length)
+            {
+                if (m_NewsTimer != null)
+                    m_NewsTimer.Stop();
+
+                m_NewsTimer = null;
+            }
+            else
+            {
+                PublicOverheadMessage(MessageType.Regular, 0x3B2, false, tce.Lines[index]);
+                states[1] = index + 1;
+            }
+        }
+
         public MonsterStatuette(Serial serial)
             : base(serial)
         {
@@ -228,48 +258,34 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {
-            get
-            {
-                return this.m_IsRewardItem;
-            }
-            set
-            {
-                this.m_IsRewardItem = value;
-            }
+            get { return m_IsRewardItem; }
+            set { m_IsRewardItem = value; }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool TurnedOn
         {
-            get
-            {
-                return this.m_TurnedOn;
-            }
-            set
-            {
-                this.m_TurnedOn = value;
-                this.InvalidateProperties();
-            }
+            get { return m_TurnedOn; }
+            set { m_TurnedOn = value; InvalidateProperties(); }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public MonsterStatuetteType Type
         {
-            get
-            {
-                return this.m_Type;
-            }
+            get { return m_Type; }
             set
             {
                 MonsterStatuetteType old = m_Type;
 
-                this.m_Type = value;
-                this.ItemID = MonsterStatuetteInfo.GetInfo(this.m_Type).ItemID;
+                m_Type = value;
+                ItemID = MonsterStatuetteInfo.GetInfo(m_Type).ItemID;
 
-                if (this.m_Type == MonsterStatuetteType.Slime)
-                    this.Hue = Utility.RandomSlimeHue();
-                else if (this.m_Type == MonsterStatuetteType.RedDeath)
-                    this.Hue = 0x21;
-                else if (this.m_Type == MonsterStatuetteType.HalloweenGhoul)
-                    this.Hue = 0xF4;
+                if (m_Type == MonsterStatuetteType.Slime)
+                    Hue = Utility.RandomSlimeHue();
+                else if (m_Type == MonsterStatuetteType.RedDeath)
+                    Hue = 0x21;
+                else if (m_Type == MonsterStatuetteType.HalloweenGhoul)
+                    Hue = 0xF4;
                 else if (m_Type != old && m_Type == MonsterStatuetteType.SakkhranBirdOfPrey)
                 {
                     double ran = Utility.RandomDouble();
@@ -283,40 +299,37 @@ namespace Server.Items
                         Hue = 2309;
                 }
                 else
-                    this.Hue = 0;
+                    Hue = 0;
 
-                this.InvalidateProperties();
+                InvalidateProperties();
             }
         }
         public override int LabelNumber
         {
             get
             {
-                return MonsterStatuetteInfo.GetInfo(this.m_Type).LabelNumber;
+                return MonsterStatuetteInfo.GetInfo(m_Type).LabelNumber;
             }
         }
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+
+        public override double DefaultWeight { get { return 1.0; } }
+
         public override bool HandlesOnMovement
         {
             get
             {
-                return this.m_TurnedOn && this.IsLockedDown;
+                return this.m_TurnedOn && IsLockedDown;
             }
         }
+
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.m_TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
+            if (m_TurnedOn && IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, Location, 2) && !Utility.InRange(oldLocation, Location, 2))
             {
-                int[] sounds = MonsterStatuetteInfo.GetInfo(this.m_Type).Sounds;
+                int[] sounds = MonsterStatuetteInfo.GetInfo(m_Type).Sounds;
 
                 if (sounds.Length > 0)
-                    Effects.PlaySound(this.Location, this.Map, sounds[Utility.Random(sounds.Length)]);
+                    Effects.PlaySound(Location, Map, sounds[Utility.Random(sounds.Length)]);
             }
 
             base.OnMovement(m, oldLocation);
@@ -327,9 +340,9 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (Core.ML && this.m_IsRewardItem)
-                list.Add(RewardSystem.GetRewardYearLabel(this, new object[] { this.m_Type })); // X Year Veteran Reward
+                list.Add(RewardSystem.GetRewardYearLabel(this, new object[] { m_Type })); // X Year Veteran Reward
 
-            if (this.m_TurnedOn)
+            if (m_TurnedOn)
                 list.Add(502695); // turned on
             else
                 list.Add(502696); // turned off
@@ -344,7 +357,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsOwner(from))
+            if (IsOwner(from))
             {
                 OnOffGump onOffGump = new OnOffGump(this);
                 from.SendGump(onOffGump);
@@ -358,27 +371,25 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
 
-            writer.WriteEncodedInt((int)this.m_Type);
-            writer.Write((bool)this.m_TurnedOn);
-            writer.Write((bool)this.m_IsRewardItem);
+            writer.WriteEncodedInt((int)m_Type);
+            writer.Write((bool)m_TurnedOn);
+            writer.Write((bool)m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch ( version )
             {
                 case 0:
                     {
-                        this.m_Type = (MonsterStatuetteType)reader.ReadEncodedInt();
-                        this.m_TurnedOn = reader.ReadBool();
-                        this.m_IsRewardItem = reader.ReadBool();
+                        m_Type = (MonsterStatuetteType)reader.ReadEncodedInt();
+                        m_TurnedOn = reader.ReadBool();
+                        m_IsRewardItem = reader.ReadBool();
                         break;
                     }
             }
@@ -387,20 +398,21 @@ namespace Server.Items
         private class OnOffGump : Gump
         {
             private readonly MonsterStatuette m_Statuette;
+
             public OnOffGump(MonsterStatuette statuette)
                 : base(150, 200)
             {
-                this.m_Statuette = statuette;
+                m_Statuette = statuette;
 
-                this.AddBackground(0, 0, 300, 150, 0xA28);
+                AddBackground(0, 0, 300, 150, 0xA28);
 
-                this.AddHtmlLocalized(45, 20, 300, 35, statuette.TurnedOn ? 1011035 : 1011034, false, false); // [De]Activate this item
+                AddHtmlLocalized(45, 20, 300, 35, statuette.TurnedOn ? 1011035 : 1011034, false, false); // [De]Activate this item
 
-                this.AddButton(40, 53, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 55, 65, 35, 1011036, false, false); // OKAY
+                AddButton(40, 53, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(80, 55, 65, 35, 1011036, false, false); // OKAY
 
-                this.AddButton(150, 53, 0xFA5, 0xFA7, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(190, 55, 100, 35, 1011012, false, false); // CANCEL
+                AddButton(150, 53, 0xFA5, 0xFA7, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(190, 55, 100, 35, 1011012, false, false); // CANCEL
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
@@ -409,8 +421,8 @@ namespace Server.Items
 
                 if (info.ButtonID == 1)
                 {
-                    bool newValue = !this.m_Statuette.TurnedOn;
-                    this.m_Statuette.TurnedOn = newValue;
+                    bool newValue = !m_Statuette.TurnedOn;
+                    m_Statuette.TurnedOn = newValue;
 
                     if (newValue && !this.m_Statuette.IsLockedDown)
                         from.SendLocalizedMessage(502693); // Remember, this only works when locked down.

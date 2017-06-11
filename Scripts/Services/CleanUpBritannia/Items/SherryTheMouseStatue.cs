@@ -21,7 +21,7 @@ namespace Server.Items
 
         public override void OnSpeech(SpeechEventArgs e)
         {
-            if (IsLockedDown && e.HasKeyword(0x30) && e.Mobile.Alive && e.Mobile.InLOS(this.Location) && e.Mobile.InRange(this, 12)) // *news*
+            if (IsLockedDown && e.HasKeyword(0x30) && e.Mobile.Alive && e.Mobile.InLOS(Location) && e.Mobile.InRange(this, 12)) // *news*
             {
                 TownCrierEntry tce = GlobalTownCrierEntryList.Instance.GetRandomEntry();
 
