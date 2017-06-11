@@ -3,7 +3,6 @@ using Server.Engines.VeteranRewards;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
-using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -171,7 +170,6 @@ namespace Server.Items
         private MonsterStatuetteType m_Type;
         private bool m_TurnedOn;
         private bool m_IsRewardItem;
-        private Timer m_NewsTimer;
 
         [Constructable]
         public MonsterStatuette()
@@ -206,47 +204,6 @@ namespace Server.Items
                     Hue = 2525;
                 else
                     Hue = 2309;
-            }
-        }
-
-        public override bool HandlesOnSpeech { get { return m_Type == MonsterStatuetteType.SherryTheMouse; } }
-
-        public override void OnSpeech(SpeechEventArgs e)
-        {
-            if (m_TurnedOn && HandlesOnSpeech && IsLockedDown && e.HasKeyword(0x30) && e.Mobile.Alive && e.Mobile.InLOS(Location) && e.Mobile.InRange(this, 12)) // *news*
-            {
-                TownCrierEntry tce = GlobalTownCrierEntryList.Instance.GetRandomEntry();
-
-                if (tce == null)
-                {
-                    PublicOverheadMessage(MessageType.Regular, 0x3B2, 1005643); // I have no news at this time.
-                }
-                else
-                {
-                    m_NewsTimer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(3.0), new TimerStateCallback(ShoutNews_Callback), new object[] { tce, 0 });
-
-                    PublicOverheadMessage(MessageType.Regular, 0x3B2, 502978); // Some of the latest news!
-                }
-            }
-        }
-
-        private void ShoutNews_Callback(object state)
-        {
-            object[] states = (object[])state;
-            TownCrierEntry tce = (TownCrierEntry)states[0];
-            int index = (int)states[1];
-
-            if (index < 0 || index >= tce.Lines.Length)
-            {
-                if (m_NewsTimer != null)
-                    m_NewsTimer.Stop();
-
-                m_NewsTimer = null;
-            }
-            else
-            {
-                PublicOverheadMessage(MessageType.Regular, 0x3B2, false, tce.Lines[index]);
-                states[1] = index + 1;
             }
         }
 
@@ -318,7 +275,7 @@ namespace Server.Items
         {
             get
             {
-                return this.m_TurnedOn && IsLockedDown;
+                return m_TurnedOn && IsLockedDown;
             }
         }
 
@@ -339,7 +296,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (Core.ML && this.m_IsRewardItem)
+            if (Core.ML && m_IsRewardItem)
                 list.Add(RewardSystem.GetRewardYearLabel(this, new object[] { m_Type })); // X Year Veteran Reward
 
             if (m_TurnedOn)
@@ -424,7 +381,7 @@ namespace Server.Items
                     bool newValue = !m_Statuette.TurnedOn;
                     m_Statuette.TurnedOn = newValue;
 
-                    if (newValue && !this.m_Statuette.IsLockedDown)
+                    if (newValue && !m_Statuette.IsLockedDown)
                         from.SendLocalizedMessage(502693); // Remember, this only works when locked down.
                 }
                 else
