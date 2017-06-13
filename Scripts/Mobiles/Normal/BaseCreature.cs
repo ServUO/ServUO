@@ -5014,12 +5014,43 @@ namespace Server.Mobiles
         {
         }
 
+        #region SetWearable
         public virtual void SetWearable(Item item)
         {
-            SetWearable(item, removeConflicting: true);
+            SetWearable(item, -1, 0.0, true);
         }
 
-        public virtual void SetWearable(Item item, int hue = -1, double dropChance = 0.0, bool removeConflicting = false)
+        public virtual void SetWearable(Item item, int hue)
+        {
+            SetWearable(item, hue, 0.0, true);
+        }
+
+        public virtual void SetWearable(Item item, double dropChance)
+        {
+            SetWearable(item, -1, dropChance, true);
+        }
+
+        public virtual void SetWearable(Item item, int hue, double dropChance)
+        {
+            SetWearable(item, hue, dropChance, true);
+        }
+
+        public virtual void SetWearable(Item item, bool removeConflicting)
+        {
+            SetWearable(item, -1, 0.0, true);
+        }
+
+        public virtual void SetWearable(Item item, int hue, bool removeConflicting)
+        {
+            SetWearable(item, hue, 0.0, true);
+        }
+
+        public virtual void SetWearable(Item item, double dropChance, bool removeConflicting)
+        {
+            SetWearable(item, -1, dropChance, true);
+        }
+
+        public virtual void SetWearable(Item item, int hue, double dropChance, bool removeConflicting)
         {
             if (!EquipItem(item))
             {
@@ -5057,6 +5088,7 @@ namespace Server.Mobiles
 
             item.Movable = dropChance > Utility.RandomDouble();
         }
+        #endregion
 
         public override void OnDoubleClick(Mobile from)
         {
