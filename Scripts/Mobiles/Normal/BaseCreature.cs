@@ -986,6 +986,11 @@ namespace Server.Mobiles
 
         public virtual bool CheckFlee()
         {
+            if (HitsMax >= 500)
+            {
+                return false;
+            }
+
             if (m_EndFlee == DateTime.MinValue)
             {
                 return false;
@@ -5009,10 +5014,43 @@ namespace Server.Mobiles
         {
         }
 
-        public virtual void SetWearable(Item item, int hue = -1, double dropChance = 0.0)
+        public virtual void SetWearable(Item item)
+        {
+            SetWearable(item, removeConflicting: true);
+        }
+
+        public virtual void SetWearable(Item item, int hue = -1, double dropChance = 0.0, bool removeConflicting = false)
         {
             if (!EquipItem(item))
-                PackItem(item);
+            {
+                if (removeConflicting)
+                {
+                    Item i = FindItemOnLayer(item.Layer);
+
+                    if (i != null)
+                    {
+                        if (Backpack == null)
+                            i.Delete();
+                        else
+                            PackItem(i);
+                    }
+
+                    if (!EquipItem(item))
+                    {
+                        if (Backpack == null)
+                            item.Delete();
+                        else
+                            PackItem(item);
+                    }
+                }
+                else
+                {
+                    if (Backpack == null)
+                        item.Delete();
+                    else
+                        PackItem(item);
+                }
+            }
 
             if (hue > -1)
                 item.Hue = hue;

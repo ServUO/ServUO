@@ -902,6 +902,8 @@ namespace Server.Items
             base.OnRemoved(parent);
         }
 
+        public DateTime NextSelfRepair { get; set; }
+
         public virtual int OnHit(BaseWeapon weapon, int damageTaken)
         {
             if (m_MaxHitPoints == 0)
@@ -918,9 +920,13 @@ namespace Server.Items
 
             if (chance >= Utility.Random(100)) // 25% chance to lower durability
             {
-                if (Core.AOS && m_AosClothingAttributes.SelfRepair + (IsSetItem && m_SetEquipped ? m_SetSelfRepair : 0) > Utility.Random(10))
+                int selfRepair = !Core.AOS ? 0 : m_AosClothingAttributes.SelfRepair + (IsSetItem && m_SetEquipped ? m_SetSelfRepair : 0);
+
+                if (selfRepair > 0 && NextSelfRepair < DateTime.UtcNow)
                 {
-                    HitPoints += 2;
+                    HitPoints += selfRepair;
+
+                    NextSelfRepair = DateTime.UtcNow + TimeSpan.FromSeconds(60);
                 }
                 else
                 {

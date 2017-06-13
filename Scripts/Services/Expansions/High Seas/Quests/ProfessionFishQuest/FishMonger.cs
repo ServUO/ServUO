@@ -29,10 +29,13 @@ namespace Server.Mobiles
             Hue = Race.RandomSkinHue();      
             Race.RandomHair(this);
             HairHue = Race.RandomHairHue();
+        }
 
-            AddItem(new ShortPants());
-            AddItem(new Shirt());
-            AddItem(new Sandals());
+        public override void InitOutfit()
+        {
+            SetWearable(new ShortPants());
+            SetWearable(new Shirt());
+            SetWearable(new Sandals());
         }
 
         public override void OnTalk(PlayerMobile player)

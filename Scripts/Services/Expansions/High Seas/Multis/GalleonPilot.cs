@@ -83,19 +83,19 @@ namespace Server.Mobiles
             {
 
                 if (Utility.Random(2) == 0)
-                    EquipItem(new Kasa(GetRandomHue()));
+                    SetWearable(new Kasa(GetRandomHue()));
                 if (Utility.Random(2) == 0)
-                    EquipItem(new Obi(GetRandomHue()));
+                    SetWearable(new Obi(GetRandomHue()));
                 if (Utility.RandomDouble() < 0.25)
                 {
                     if (Female)
-                        EquipItem(new FemaleKimono(GetRandomHue()));
+                        SetWearable(new FemaleKimono(GetRandomHue()));
                     else
                     {
                         if (Utility.Random(2) == 0)
-                            EquipItem(new MaleKimono(GetRandomHue()));
+                            SetWearable(new MaleKimono(GetRandomHue()));
                         else
-                            EquipItem(new Kamishimo(GetRandomHue()));
+                            SetWearable(new Kamishimo(GetRandomHue()));
                     }
                 }
                 else
@@ -104,23 +104,23 @@ namespace Server.Mobiles
                     {
                         case 0:
                             {
-                                EquipItem(new FancyShirt(GetRandomHue()));
-                                EquipItem(new JinBaori(GetRandomHue())); break;
+                                SetWearable(new FancyShirt(GetRandomHue()));
+                                SetWearable(new JinBaori(GetRandomHue())); break;
                             }
-                        case 1: EquipItem(new HakamaShita(GetRandomHue())); break;
+                        case 1: SetWearable(new HakamaShita(GetRandomHue())); break;
 
                     }
                     switch (Utility.Random(2))
                     {
-                        case 0: EquipItem(new Hakama(GetRandomHue())); break;
-                        case 1: EquipItem(new TattsukeHakama(GetRandomHue())); break;
+                        case 0: SetWearable(new Hakama(GetRandomHue())); break;
+                        case 1: SetWearable(new TattsukeHakama(GetRandomHue())); break;
 
                     }
                 }
                 switch (Utility.Random(2))
                 {
-                    case 0: EquipItem(new Sandals(GetShoeHue())); break;
-                    case 1: EquipItem(new Waraji(GetShoeHue())); break;
+                    case 0: SetWearable(new Sandals(GetShoeHue())); break;
+                    case 1: SetWearable(new Waraji(GetShoeHue())); break;
 
                 }
             }
@@ -128,19 +128,19 @@ namespace Server.Mobiles
             {
                 switch (Utility.Random(3))
                 {
-                    case 0: EquipItem(new FancyShirt(GetRandomHue())); break;
-                    case 1: EquipItem(new Doublet(GetRandomHue())); break;
-                    case 2: EquipItem(new Shirt(GetRandomHue())); break;
+                    case 0: SetWearable(new FancyShirt(GetRandomHue())); break;
+                    case 1: SetWearable(new Doublet(GetRandomHue())); break;
+                    case 2: SetWearable(new Shirt(GetRandomHue())); break;
                 }
 
 
 
                 switch (Utility.Random(4))
                 {
-                    case 0: EquipItem(new Shoes(GetShoeHue())); break;
-                    case 1: EquipItem(new Boots(GetShoeHue())); break;
-                    case 2: EquipItem(new Sandals(GetShoeHue())); break;
-                    case 3: EquipItem(new ThighBoots(GetShoeHue())); break;
+                    case 0: SetWearable(new Shoes(GetShoeHue())); break;
+                    case 1: SetWearable(new Boots(GetShoeHue())); break;
+                    case 2: SetWearable(new Sandals(GetShoeHue())); break;
+                    case 3: SetWearable(new ThighBoots(GetShoeHue())); break;
                 }
 
 
@@ -149,20 +149,20 @@ namespace Server.Mobiles
                 {
                     switch (Utility.Random(6))
                     {
-                        case 0: EquipItem(new ShortPants(GetRandomHue())); break;
+                        case 0: SetWearable(new ShortPants(GetRandomHue())); break;
                         case 1:
-                        case 2: EquipItem(new Kilt(GetRandomHue())); break;
+                        case 2: SetWearable(new Kilt(GetRandomHue())); break;
                         case 3:
                         case 4:
-                        case 5: EquipItem(new Skirt(GetRandomHue())); break;
+                        case 5: SetWearable(new Skirt(GetRandomHue())); break;
                     }
                 }
                 else
                 {
                     switch (Utility.Random(2))
                     {
-                        case 0: EquipItem(new LongPants(GetRandomHue())); break;
-                        case 1: EquipItem(new ShortPants(GetRandomHue())); break;
+                        case 0: SetWearable(new LongPants(GetRandomHue())); break;
+                        case 1: SetWearable(new ShortPants(GetRandomHue())); break;
                     }
                 }
             }
