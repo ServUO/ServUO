@@ -6618,7 +6618,7 @@ namespace Server
 
 		public virtual int MaxWeight { get { return int.MaxValue; } }
 
-		public void AddItem(Item item)
+		public virtual void AddItem(Item item)
 		{
 			if (item == null || item.Deleted)
 			{

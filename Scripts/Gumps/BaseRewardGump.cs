@@ -26,7 +26,7 @@ namespace Server.Gumps
             }
         }
 
-        public BaseRewardGump(Mobile owner, PlayerMobile user, List<CollectionItem> col, int title, double points = 0.0)
+        public BaseRewardGump(Mobile owner, PlayerMobile user, List<CollectionItem> col, int title, double points = -1.0)
             : base(50, 50)
 		{
             user.CloseGump(typeof(BaseRewardGump));
@@ -55,10 +55,10 @@ namespace Server.Gumps
 			Index = 0;
             Page = 1;
 
-            if (points > 0)
-                Points = points;
-            else
+            if (points == -1)
                 Points = GetPoints(user);
+            else
+                Points = points;
 
 			AddHtmlLocalized(70, 35, 270, 20, Title, 0x1, false, false);
             AddHtmlLocalized(50, 65, 150, 20, 1072843, 0x1, false, false); // Your Reward Points:

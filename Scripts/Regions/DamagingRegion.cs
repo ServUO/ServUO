@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Xml;
 using Server.Network;
+using Server.Mobiles;
 
 namespace Server.Regions
 {
@@ -38,7 +39,7 @@ namespace Server.Regions
         {
             get
             {
-                return this.m_Table;
+                return m_Table;
             }
         }
         public override void OnEnter(Mobile m)
@@ -47,13 +48,13 @@ namespace Server.Regions
 		
             if (m.Player && m.Alive && m.IsPlayer())
             {
-                if (this.EnterSound > 0)
-                    m.PlaySound(this.EnterSound);
+                if (EnterSound > 0)
+                    m.PlaySound(EnterSound);
 				
-                if (this.EnterMessage > 0)	
-                    m.SendLocalizedMessage(this.EnterMessage); 
+                if (EnterMessage > 0)	
+                    m.SendLocalizedMessage(EnterMessage); 
 				
-                this.StartTimer(m);
+                StartTimer(m);
             }
         }
 
@@ -61,35 +62,35 @@ namespace Server.Regions
         {
             base.OnLocationChanged(m, oldLocation);
 			
-            this.StopTimer(m);
+            StopTimer(m);
 			
             if (m.Player && m.Alive && m.IsPlayer())
-                this.StartTimer(m);
+                StartTimer(m);
         }
 
         public override void OnExit(Mobile m)
         {
             base.OnExit(m);
 			
-            this.StopTimer(m);
+            StopTimer(m);
         }
 
         public void StartTimer(Mobile m)
         {
-            if (this.m_Table == null)
-                this.m_Table = new Hashtable();
+            if (m_Table == null)
+                m_Table = new Hashtable();
 				
-            this.m_Table[m] = Timer.DelayCall(TimeSpan.Zero, this.DamageInterval, new TimerStateCallback(Damage), m);
+            m_Table[m] = Timer.DelayCall(TimeSpan.Zero, DamageInterval, new TimerStateCallback(Damage), m);
         }
 
         public void StopTimer(Mobile m)
         {
-            if (this.m_Table == null)
-                this.m_Table = new Hashtable();
+            if (m_Table == null)
+                m_Table = new Hashtable();
 				
-            if (this.m_Table[m] != null)
+            if (m_Table[m] != null)
             {
-                Timer timer = (Timer)this.m_Table[m];
+                Timer timer = (Timer)m_Table[m];
 				
                 timer.Stop();
             }
@@ -98,13 +99,13 @@ namespace Server.Regions
         public void Damage(object state)
         {
             if (state is Mobile)
-                this.Damage((Mobile)state);			
+                Damage((Mobile)state);			
         }
 
         public virtual void Damage(Mobile m)
         {
             if (m.Player && !m.Alive)
-                this.StopTimer(m);
+                StopTimer(m);
 				
             m.RevealingAction();
         }
@@ -152,9 +153,22 @@ namespace Server.Regions
         public override void Damage(Mobile m)
         {
             base.Damage(m);
-			
+
             if (m.NetState != null)
-                AOS.Damage(m, Utility.Random(2, 3), 0, 0, 100, 0, 0);
+            {
+                int dmg = Utility.Random(2, 3);
+
+                if (m is PlayerMobile)
+                {
+
+                    PlayerMobile pm = m as PlayerMobile;
+
+                    dmg = (int)drNO.ThieveItems.BalmOfProtection.HandleDamage(pm, dmg);
+
+                }
+
+                AOS.Damage(m, dmg, 0, 0, 100, 0, 0);
+            }
         }
     }
 
