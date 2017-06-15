@@ -5014,81 +5014,28 @@ namespace Server.Mobiles
         {
         }
 
-        #region SetWearable
-        public virtual void SetWearable(Item item)
+        
+        public virtual void SetWearable(Item item, int hue = -1, double dropChance = 0.0)
         {
-            SetWearable(item, -1, 0.0, true);
-        }
-
-        public virtual void SetWearable(Item item, int hue)
-        {
-            SetWearable(item, hue, 0.0, true);
-        }
-
-        public virtual void SetWearable(Item item, double dropChance)
-        {
-            SetWearable(item, -1, dropChance, true);
-        }
-
-        public virtual void SetWearable(Item item, int hue, double dropChance)
-        {
-            SetWearable(item, hue, dropChance, true);
-        }
-
-        public virtual void SetWearable(Item item, bool removeConflicting)
-        {
-            SetWearable(item, -1, 0.0, true);
-        }
-
-        public virtual void SetWearable(Item item, int hue, bool removeConflicting)
-        {
-            SetWearable(item, hue, 0.0, true);
-        }
-
-        public virtual void SetWearable(Item item, double dropChance, bool removeConflicting)
-        {
-            SetWearable(item, -1, dropChance, true);
-        }
-
-        public virtual void SetWearable(Item item, int hue, double dropChance, bool removeConflicting)
-        {
-            if (!EquipItem(item))
-            {
-                if (removeConflicting)
-                {
-                    Item i = FindItemOnLayer(item.Layer);
-
-                    if (i != null)
-                    {
-                        if (Backpack == null)
-                            i.Delete();
-                        else
-                            PackItem(i);
-                    }
-
-                    if (!EquipItem(item))
-                    {
-                        if (Backpack == null)
-                            item.Delete();
-                        else
-                            PackItem(item);
-                    }
-                }
-                else
-                {
-                    if (Backpack == null)
-                        item.Delete();
-                    else
-                        PackItem(item);
-                }
-            }
-
             if (hue > -1)
                 item.Hue = hue;
 
             item.Movable = dropChance > Utility.RandomDouble();
+
+            AddItem(item);
         }
-        #endregion
+
+        public override sealed void AddItem(Item item)
+        {
+            if (item == null || item.Deleted || !item.CanEquip(this) || !CheckEquip(item) || !OnEquip(item) || !item.OnEquip(this))
+            {
+                PackItem(item);
+            }
+            else
+            {
+                base.AddItem(item);
+            }
+        }
 
         public override void OnDoubleClick(Mobile from)
         {

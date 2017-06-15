@@ -37,7 +37,7 @@ namespace Server.Mobiles
         public static bool UseVendorEconomy = Core.AOS && !Siege.SiegeShard;
         public static int BuyItemChange = Config.Get("Vendors.BuyItemChange", 1000);
         public static int SellItemChange = Config.Get("Vendors.SellItemChange", 1000);
-        public static int EconomyStockAmount = Config.Get("Vendors.EconomyStockAmount", 1000);
+        public static int EconomyStockAmount = Config.Get("Vendors.EconomyStockAmount", 500);
 
 		public static List<BaseVendor> AllVendors { get; private set; }
 
