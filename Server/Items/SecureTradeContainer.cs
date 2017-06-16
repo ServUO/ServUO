@@ -21,8 +21,9 @@ namespace Server.Items
 			: base(0x1E5E)
 		{
 			m_Trade = trade;
-
 			Movable = false;
+
+            Layer = Layer.SecureTrade;
 		}
 
 		public SecureTradeContainer(Serial serial)
