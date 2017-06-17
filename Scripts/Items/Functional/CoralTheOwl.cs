@@ -5,11 +5,14 @@ using Server.Network;
 
 namespace Server.Items
 {
-	public class CoralTheOwl : Item
+    public class CoralTheOwl : Item, Server.Engines.VeteranRewards.IRewardItem
 	{
         public override int LabelNumber { get { return 1123603; } } // Coral the Owl
 
         private Timer m_NewsTimer;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem { get; set; }
 
         [Constructable]
         public CoralTheOwl() : base(0x9A9B)
@@ -21,7 +24,8 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1076217); // 1st Year Veteran Reward
+            if(IsRewardItem)
+                list.Add(1076217); // 1st Year Veteran Reward
         }
 
         public override bool HandlesOnSpeech { get { return true; } }
@@ -73,7 +77,9 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 1 ); // version
+
+            writer.Write(IsRewardItem);
 		}
 		
 		public override void Deserialize( GenericReader reader )
@@ -81,6 +87,18 @@ namespace Server.Items
 			base.Deserialize( reader );
 
 			int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    IsRewardItem = reader.ReadBool();
+                    break;
+                case 0:
+                    break;
+            }
+
+            if (version == 0)
+                IsRewardItem = true;
 		}
 	}
 }

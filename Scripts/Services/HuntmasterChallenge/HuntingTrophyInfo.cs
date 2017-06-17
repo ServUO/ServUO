@@ -16,12 +16,14 @@ namespace Server.Engines.HuntsmasterChallenge
         Walrus,
         Alligator,
         Eagle,
-        MyrmidexDrone,
+        MyrmidexLarvae,
         Najasaurus,
         Anchisaur,
         Allosaurus,
         Dimetrosaur,
-        Saurosaurus
+        Saurosaurus,
+        Tiger,
+        MyrmidexDrone
     }
 
     public enum MeasuredBy
@@ -49,12 +51,15 @@ namespace Server.Engines.HuntsmasterChallenge
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Eagle,       typeof(Eagle),          0x9A36, new TextDefinition(1072461), 5,   15,   MeasuredBy.Wingspan));
         
             // Pub 91 Additions - Not Yet yo
-            m_Infos.Add(new HuntingTrophyInfo(HuntType.MyrmidexDrone,   typeof(MyrmidexDrone),  0x9C00, new TextDefinition(1156134), 400, 800, MeasuredBy.Weight, true));
+            m_Infos.Add(new HuntingTrophyInfo(HuntType.MyrmidexDrone,   typeof(MyrmidexLarvae), 0x9C00, new TextDefinition(1156276), 200, 400, MeasuredBy.Weight, true));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Najasaurus,      typeof(Najasaurus),     0x9C02, new TextDefinition(1156283), 400, 800, MeasuredBy.Weight, true));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Anchisaur,       typeof(Anchisaur),      0x9C08, new TextDefinition(1156284), 400, 800, MeasuredBy.Weight));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Allosaurus,      typeof(Allosaurus),     0x9C0A, new TextDefinition(1156280), 400, 800, MeasuredBy.Weight));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Dimetrosaur,     typeof(Dimetrosaur),    0x9C0C, new TextDefinition(1156279), 400, 800, MeasuredBy.Weight));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Saurosaurus,     typeof(Saurosaurus),    0x9C0E, new TextDefinition(1156289), 400, 800, MeasuredBy.Weight));
+
+            m_Infos.Add(new HuntingTrophyInfo(HuntType.MyrmidexDrone,   typeof(MyrmidexDrone),  0x9DA6, new TextDefinition(1156134), 300, 600, MeasuredBy.Weight));
+            m_Infos.Add(new HuntingTrophyInfo(HuntType.Saurosaurus,     typeof(WildTiger),      0x9DA4, new TextDefinition(1156286), 400, 800, MeasuredBy.Weight));
         }
 
         private HuntType m_HuntType;
