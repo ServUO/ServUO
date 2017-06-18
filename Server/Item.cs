@@ -2374,7 +2374,7 @@ namespace Server
             }
         }
 
-        public virtual bool ForceShowProperties { get { return false; } }
+        public virtual bool ForceShowProperties { get { return IsLockedDown || IsSecure; } }
 
         public virtual int GetPacketFlags()
         {
