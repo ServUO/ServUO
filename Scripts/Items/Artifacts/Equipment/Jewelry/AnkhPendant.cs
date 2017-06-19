@@ -31,7 +31,7 @@ namespace Server.Items
         public AnkhPendant()
             : base(0x3BB5)
         {
-            Hue = Utility.RandomDouble() ? 2213 : 0;
+            Hue = Utility.RandomBool() ? 2213 : 0;
         }
 
         public static void EventSink_Speech(SpeechEventArgs e)
