@@ -21,6 +21,7 @@ namespace Server.Engines.HuntsmasterChallenge
         [Constructable]
 		public HuntMaster() : base ( "the huntmaster" )
 		{
+            SpeechHue = 0x3B2;
 		}
 		
 		public override void OnDoubleClick(Mobile from)

@@ -478,7 +478,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E2A);
+            return new MasterCraftsmanTalisman(type, 0x9E2A, SkillName.Blacksmith);
         }
         #endregion
 
@@ -843,7 +843,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CreateCraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E25);
+            return new MasterCraftsmanTalisman(type, 0x9E25, SkillName.Tailoring);
         }
 
         #endregion
@@ -1017,7 +1017,7 @@ namespace Server.Engines.BulkOrders
         {
             RewardCollection = new List<CollectionItem>();
 
-            RewardCollection.Add(new BODCollectionItem(0xE9B, 1157219, 0, 10, TinkerTools));
+            RewardCollection.Add(new BODCollectionItem(0x1EBC, 1157219, 0, 10, TinkerTools));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157186, 0, 25, RewardTitle, 5));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157187, 0, 50, RewardTitle, 6));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157190, 0, 210, RewardTitle, 9));
@@ -1070,7 +1070,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E2B);
+            return new MasterCraftsmanTalisman(type, 0x9E2B, SkillName.Tinkering);
         }
         #endregion
 
@@ -1261,7 +1261,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E2C);
+            return new MasterCraftsmanTalisman(type, 0x9E2C, SkillName.Carpentry);
         }
         #endregion
 
@@ -1421,7 +1421,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E28);
+            return new MasterCraftsmanTalisman(type, 0x9E28, SkillName.Inscribe);
         }
 
         private static Item ImprovementTalisman(int type)
@@ -1544,7 +1544,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E27);
+            return new MasterCraftsmanTalisman(type, 0x9E27, SkillName.Cooking);
         }
 
         private static Item CreateItem(int type)
@@ -1682,7 +1682,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E29);
+            return new MasterCraftsmanTalisman(type, 0x9E29, SkillName.Fletching);
         }
 
         private static Item CreateRunicFletcherTools(int type)
@@ -1813,7 +1813,7 @@ namespace Server.Engines.BulkOrders
         {
             RewardCollection = new List<CollectionItem>();
 
-            RewardCollection.Add(new BODCollectionItem(0xE9B, 1157201, 0, 10, MortarAndPestle));
+            RewardCollection.Add(new BODCollectionItem(0xE9B, 1157219, 0, 10, MortarAndPestle));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157183, 0, 25, RewardTitle, 20));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157202, 0, 50, RewardTitle, 21));
             RewardCollection.Add(new BODCollectionItem(0x14F0, 1157203, 0, 210, RewardTitle, 22));
@@ -1860,7 +1860,7 @@ namespace Server.Engines.BulkOrders
 
         private static Item CraftsmanTalisman(int type)
         {
-            return new MasterCraftsmanTalisman(type, 0x9E26);
+            return new MasterCraftsmanTalisman(type, 0x9E26, SkillName.Alchemy);
         }
         #endregion
 

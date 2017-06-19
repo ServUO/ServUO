@@ -5,7 +5,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class PrismaticLenses : Glasses
+    public class PrismaticLenses : Glasses, ITokunoDyable
     {
         public override int LabelNumber { get { return 1152716; } } // Prismatic Lenses
         public override int InitMinHits { get { return 255; } }

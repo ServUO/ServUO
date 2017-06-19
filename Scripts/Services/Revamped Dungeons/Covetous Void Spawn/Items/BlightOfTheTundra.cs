@@ -5,7 +5,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class BlightOfTheTundra : CompositeBow
+    public class BlightOfTheTundra : CompositeBow, ITokunoDyable
     {
         public override int LabelNumber { get { return 1152727; } } // Blight of the Tundra
 
@@ -58,7 +58,7 @@ namespace Server.Items
         }
     }
 
-    public class GargishBlightOfTheTundra : SoulGlaive
+    public class GargishBlightOfTheTundra : SoulGlaive, ITokunoDyable
     {
         public override int LabelNumber { get { return 1152727; } } // Blight of the Tundra
 

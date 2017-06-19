@@ -5,8 +5,6 @@ namespace Server.Items
 {
     public class GuaranteedSpellbookImprovementTalisman : BaseTalisman
     {
-        public override int LabelNumber { get { return 1157212; } } // Guaranteed Spellbook Improvement
-
         [Constructable]
         public GuaranteedSpellbookImprovementTalisman()
             : this(10)
@@ -20,8 +18,18 @@ namespace Server.Items
             Charges = charges;
 
             Skill = SkillName.Inscribe;
-            ExceptionalBonus = BaseTalisman.GetRandomExceptional();
             SuccessBonus = BaseTalisman.GetRandomSuccessful();
+            ExceptionalBonus = BaseTalisman.GetRandomExceptional();
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if (Charges > 0)
+                list.Add(1049116, Charges.ToString()); // [ Charges: ~1_CHARGES~ ]
+
+            list.Add(1157212); // Crafting Failure Protection
         }
 
         public GuaranteedSpellbookImprovementTalisman(Serial serial)
