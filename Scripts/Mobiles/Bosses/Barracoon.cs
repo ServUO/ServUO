@@ -264,6 +264,7 @@ namespace Server.Mobiles
                             loc = new Point3D(x, y, z);
                     }
 
+                    rat.IsChampionSpawn = true;
                     rat.MoveToWorld(loc, map);
                     rat.Combatant = target;
                 }
