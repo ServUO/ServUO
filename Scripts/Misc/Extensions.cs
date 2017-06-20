@@ -91,6 +91,8 @@ namespace Server.Items
             {
                 ns.Send(new MessageLocalized(item.Serial, item.ItemID, MessageType.Regular, 0x3B2, 3, number, "", args));
             }
+            
+            eable.Free();
         }
 
         public static void SendLocalizedMessage(this Item item, MessageType type, int number, AffixType affixType, string affix, string args)
@@ -104,6 +106,8 @@ namespace Server.Items
             {
                 ns.Send(new MessageLocalizedAffix(item.Serial, item.ItemID, type, 0x3B2, 3, number, "", affixType, affix, args));
             }
+            
+            eable.Free();
         }
 
         public static bool InLOS(this Item item, Point3D target)
