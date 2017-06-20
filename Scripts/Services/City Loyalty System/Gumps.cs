@@ -122,7 +122,7 @@ namespace Server.Engines.CityLoyalty
 
             if (!CityLoyaltySystem.IsSetup())
                 return;
-            Console.WriteLine(info.ButtonID.ToString());
+
             switch (info.ButtonID)
             {
                 case 0: break;
@@ -337,7 +337,7 @@ namespace Server.Engines.CityLoyalty
 			
 			AddHtmlLocalized(200, 120, 150, 16, CityLoyaltySystem.RatingLocalization(Citizenship.GetMinimumRating(Title)), false, false);
             AddHtml(200, 140, 150, 16, Citizenship.GetTitleCost(Title).ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")), false, false);
-            Console.WriteLine("Title Rating: {0}, My Rating: {1}", rating, Citizenship.GetLoyaltyRating(User));
+
             if (gold > Banker.GetBalance(User))
             {
                 AddHtmlLocalized(30, 180, 280, 80, 1152902, false, false);
