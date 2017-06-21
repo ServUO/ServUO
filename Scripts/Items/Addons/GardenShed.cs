@@ -245,7 +245,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1153491; } } // Garden Shed Deed
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public void IsRewardItem { get; set; }
+        public bool IsRewardItem { get; set; }
 
         private bool m_East;
 
