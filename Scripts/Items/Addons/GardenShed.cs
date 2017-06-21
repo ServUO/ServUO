@@ -3,6 +3,7 @@ using Server.Gumps;
 using Server.Network;
 using Server.ContextMenus;
 using System.Collections.Generic;
+using Server.Engines.VeteranRewards;
 
 namespace Server.Items
 {
@@ -238,10 +239,13 @@ namespace Server.Items
         }
     }
 
-    public class GardenShedDeed : BaseAddonContainerDeed
+    public class GardenShedDeed : BaseAddonContainerDeed, IRewardItem
     {
         public override BaseAddonContainer Addon { get { return new GardenShedAddon(m_East); } }
         public override int LabelNumber { get { return 1153491; } } // Garden Shed Deed
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public void IsRewardItem { get; set; }
 
         private bool m_East;
 
@@ -270,7 +274,8 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1113805);
+            if(IsRewardItem)
+                list.Add(1113805); // 15th Year Veteran Reward
         }
 
         private void SendTarget(Mobile m)
@@ -281,13 +286,18 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
+
+            writer.Write(IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
+
+            if (version > 0)
+                IsRewardItem = reader.ReadBool();
         }
 
         private class InternalGump : Gump
