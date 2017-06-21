@@ -350,6 +350,9 @@ namespace Server
 
         public static bool VendorCanSell(Type t)
         {
+            if(t == null)
+                return false;
+            
             foreach (var type in _NoSellList)
             {
                 if (t == type || t.IsSubclassOf(type))

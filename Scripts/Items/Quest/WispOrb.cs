@@ -54,11 +54,13 @@ namespace Server.Engines.Despise
 					m_Pet.Unlink(); 
 					//m_Pet = null;
 				}
-				else
-				{
-					m_Pet = value; 
-					m_Pet.Link(this);
-				}
+                else
+                {
+                    m_Pet = value;
+
+                    if (m_Pet != null)
+                        m_Pet.Link(this);
+                }
 
                 InvalidateHue();
                 InvalidateProperties();

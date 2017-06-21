@@ -1055,6 +1055,7 @@ namespace Server.Items
     public class RewardGargishRobe : BaseOuterTorso, IRewardItem
     {
         public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
 
         private int m_LabelNumber;
         private bool m_IsRewardItem;
@@ -1166,6 +1167,7 @@ namespace Server.Items
     public class RewardGargishFancyRobe : BaseOuterTorso, IRewardItem
     {
         public override Race RequiredRace { get { return Race.Gargoyle; } }
+        public override bool CanBeWornByGargoyles { get { return true; } }
 
         private int m_LabelNumber;
         private bool m_IsRewardItem;
