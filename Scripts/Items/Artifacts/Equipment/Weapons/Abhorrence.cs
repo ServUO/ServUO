@@ -29,8 +29,8 @@ namespace Server.Items
             phys = pois = cold = chaos = direct = fire = 0;
         }
 
-        public override int InitMinHits { get { return 163; } }
-        public override int InitMaxHits { get { return 163; } }
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         public Abhorrence(Serial serial)
             : base(serial)

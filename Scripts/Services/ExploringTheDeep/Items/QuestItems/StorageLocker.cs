@@ -227,12 +227,12 @@ namespace Server.Items
             this.m_RestartTimer = new RestartTimer(this, ts);
             this.m_RestartTimer.Start();
         }
-        
-        public override void OnAfterDelete()
-        {
-            base.OnAfterDelete();
 
-            Stop();                
+        public override void OnDelete()
+        {
+            Stop();
+
+            base.OnDelete();
         }
 
         public override void Serialize(GenericWriter writer)

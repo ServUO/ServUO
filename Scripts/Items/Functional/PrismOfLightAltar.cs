@@ -96,12 +96,21 @@ namespace Server.Items
             return id;
         }
 
-        public bool TryDrop(Mobile from, Item item, int id)
+        public bool TryDrop(Mobile from, Item item, PrismOfLightPillar c)
         {
+            int id = c.ID;
+
             if (id >= 0 && id < Keys.Length && item != null)
             {
                 if (item.GetType() == Keys[id])
+                {
+                    if (Items.Count < Keys.Length)
+                    {
+                        c.Hue = 36;
+                    }
+
                     return OnDragDrop(from, item);
+                }
             }
 
             return false;
@@ -177,15 +186,13 @@ namespace Server.Items
                 return false;
             }
 
-            if (!m_Altar.TryDrop(from, dropped, m_ID))
+            if (!m_Altar.TryDrop(from, dropped, this))
             {
                 from.SendLocalizedMessage(1072682); // This is not the proper key.
                 return false;
             }
             else
             {
-                Hue = 36;
-
                 return true;
             }
         }
