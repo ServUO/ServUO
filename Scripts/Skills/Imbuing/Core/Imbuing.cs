@@ -76,14 +76,6 @@ namespace Server.SkillHandlers
                 from.SendLocalizedMessage(1079576); // You cannot imbue this item.
             else if (IsInNonImbueList(item.GetType()))
                 from.SendLocalizedMessage(1079576); // You cannot imbue this item.
-            else if (item is BaseWeapon && ((BaseWeapon)item).TimesImbued >= 20)
-                from.SendMessage("This item has been modified too many times and cannot be imbued any further.");
-            else if (item is BaseArmor && ((BaseArmor)item).TimesImbued >= 20)
-                from.SendMessage("This item has been modified too many times and cannot be imbued any further.");
-            else if (item is BaseJewel && ((BaseJewel)item).TimesImbued >= 20)
-                from.SendMessage("This item has been modified too many times and cannot be imbued any further.");
-            else if (item is BaseHat && ((BaseHat)item).TimesImbued >= 20)
-                from.SendMessage("This item has been modified too many times and cannot be imbued any further.");
             else
                 return true;
 
@@ -898,6 +890,9 @@ namespace Server.SkillHandlers
                 if (wep.Slayer2 != SlayerName.None)
                     total += 1;
 
+                if (wep.Slayer3 != TalismanSlayerName.None)
+                    total += 1;
+
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
                 {
                     SAAbsorptionAttribute attr = (SAAbsorptionAttribute)i;
@@ -1143,6 +1138,9 @@ namespace Server.SkillHandlers
 
                 if (((BaseWeapon)item).Slayer2 != SlayerName.None)
                     weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer2, mod, 1);
+
+                if (((BaseWeapon)item).Slayer3 != TalismanSlayerName.None)
+                    weight += GetIntensityForAttribute(item, ((BaseWeapon)item).Slayer3, mod, 1);
 
                 if(((BaseWeapon)item).SearingWeapon)
                     weight += GetIntensityForAttribute(item, "SearingWeapon", mod, 1);
@@ -1446,6 +1444,11 @@ namespace Server.SkillHandlers
 			m_Table[125] = new ImbuingDefinition(SlayerName.ArachnidDoom,	    1060458, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(SpiderCarapace),     1, 0, 1111983);
 			m_Table[126] = new ImbuingDefinition(SlayerName.ElementalBan,	    1060464, 130, 	typeof(RelicFragment),      typeof(Ruby), 		    typeof(VialOfVitriol), 	    1, 0, 1111985);
             m_Table[127] = new ImbuingDefinition(SlayerName.Fey,                1070855, 130,   typeof(RelicFragment),      typeof(Ruby),           typeof(FeyWings),           1, 0, 1154652);
+
+            m_Table[128] = new ImbuingDefinition(SlayerName.Dinosaur,           1156240, 130, null, null, null, 1, 0, -1);
+            m_Table[129] = new ImbuingDefinition(SlayerName.Myrmidex,           1156241, 130, null, null, null, 1, 0, -1);
+            m_Table[130] = new ImbuingDefinition(SlayerName.Eodon,              1156126, 130, null, null, null, 1, 0, -1);
+            m_Table[131] = new ImbuingDefinition(SlayerName.EodonTribe,         1156347, 130, null, null, null, 1, 0, -1);
 
             // Talisman Slayers
             m_Table[135] = new ImbuingDefinition(TalismanSlayerName.Bear,       1072504, 130, null, null, null, 1, 0, 0);
