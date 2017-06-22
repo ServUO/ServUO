@@ -345,7 +345,7 @@ namespace Server.Items
 
                 m_Mobile.SendGump(new ConfirmCallbackGump((PlayerMobile)m_Mobile, m_Mobile.Skills[skill].Info.Name, 1155611, null, confirm: (pm, state) =>
                     {
-                        if (m_Ring != null && !m_Ring.Deleted && m_Ring.SkillBonuses.GetBonus(2) == 0)
+                        if (m_Ring != null && m_Ring.IsChildOf(pm.Backpack) && !m_Ring.Deleted && m_Ring.SkillBonuses.GetBonus(2) == 0)
                         {
                             m_Ring.SkillBonuses.SetValues(2, skill, 20.0);
 

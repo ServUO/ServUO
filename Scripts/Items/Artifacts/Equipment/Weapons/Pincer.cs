@@ -27,6 +27,9 @@ namespace Server.Items
             cold = nrgy = chaos = direct = pois = 0;
         }
 
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
+
         public Pincer(Serial serial)
             : base(serial)
         {
@@ -68,6 +71,9 @@ namespace Server.Items
             phys = 30; fire = 70;
             cold = nrgy = chaos = direct = pois = 0;
         }
+
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         public GargishPincer(Serial serial)
             : base(serial)

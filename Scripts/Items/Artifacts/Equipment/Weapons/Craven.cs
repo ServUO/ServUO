@@ -27,8 +27,8 @@ namespace Server.Items
             nrgy = pois = chaos = direct = fire = 0;
         }
 
-        public override int InitMinHits { get { return 118; } }
-        public override int InitMaxHits { get { return 118; } }
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
 
         public Craven(Serial serial)
             : base(serial)

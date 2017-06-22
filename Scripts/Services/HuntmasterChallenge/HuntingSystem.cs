@@ -248,8 +248,15 @@ namespace Server.Engines.HuntsmasterChallenge
             {
                 foreach (HuntingKillEntry killEntry in kvp.Value)
                 {
-                    if(killEntry.Owner != null)
-                        m_UnclaimedWinners[killEntry.Owner] = killEntry;
+                    Mobile owner = killEntry.Owner;
+
+                    if (owner != null)
+                    {
+                        if (!m_UnclaimedWinners.ContainsKey(owner))
+                            m_UnclaimedWinners[owner] = 1;
+                        else
+                            m_UnclaimedWinners[owner]++;
+                    }
                 }
             }
 			
@@ -265,13 +272,23 @@ namespace Server.Engines.HuntsmasterChallenge
 		public bool CheckUnclaimedEntry(Mobile from)
 		{
             List<Mobile> copy = new List<Mobile>(m_UnclaimedWinners.Keys);
+
 			foreach(Mobile m in copy)
 			{
 				if(m == from)
 				{
-					ClaimWin(from, m_UnclaimedWinners[m]);
-				
-					m_UnclaimedWinners.Remove(m);
+					ClaimWin(from);
+                    m_UnclaimedWinners[from]--;
+
+                    if (m_UnclaimedWinners[from] <= 0)
+                    {
+                        m_UnclaimedWinners.Remove(m);
+                    }
+                    else
+                    {
+                        m.SendMessage("You still have {0} rewards to claim!", m_UnclaimedWinners[m].ToString());
+                    }
+
 					return true;
 				}
 			}
@@ -279,12 +296,15 @@ namespace Server.Engines.HuntsmasterChallenge
 			return false;
 		}
 		
-		private void ClaimWin(Mobile from, HuntingKillEntry entry)
+		private void ClaimWin(Mobile from)
 		{
-			TryDropItemTo(from, new HarvestersBlade());
-            TryDropItemTo(from, new HuntmastersRewardTitleDeed());
-			TryDropItemTo(from, new RangersGuildSash());
-            TryDropItemTo(from, new HornOfPlenty());
+            switch (Utility.Random(4))
+            {
+                case 0: TryDropItemTo(from, new HarvestersBlade()); break;
+                case 1: TryDropItemTo(from, new HuntmastersRewardTitleDeed()); break;
+                case 2: TryDropItemTo(from, new RangersGuildSash()); break;
+                case 3: TryDropItemTo(from, new HornOfPlenty()); break;
+            }
 		}
 		
 		private void TryDropItemTo(Mobile from, Item item)
@@ -305,8 +325,8 @@ namespace Server.Engines.HuntsmasterChallenge
 		private Dictionary<HuntType, List<HuntingKillEntry>> m_Leaders;
 		public Dictionary<HuntType, List<HuntingKillEntry>> Leaders { get { return m_Leaders; } }
 
-        private Dictionary<Mobile, HuntingKillEntry> m_UnclaimedWinners = new Dictionary<Mobile, HuntingKillEntry>();
-        public Dictionary<Mobile, HuntingKillEntry> UnclaimedWinners { get { return m_UnclaimedWinners; } }
+        private Dictionary<Mobile, int> m_UnclaimedWinners = new Dictionary<Mobile, int>();
+        public Dictionary<Mobile, int> UnclaimedWinners { get { return m_UnclaimedWinners; } }
 		
 		private Dictionary<HuntType, List<HuntingKillEntry>> m_Top10;
 		public Dictionary<HuntType, List<HuntingKillEntry>> Top10 { get { return m_Top10; } }
@@ -318,17 +338,17 @@ namespace Server.Engines.HuntsmasterChallenge
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write((int)0);
+			writer.Write((int)1);
 
             writer.Write(m_Active);
             writer.Write(m_SeasonBegins);
             writer.Write(m_SeasonEnds);
 
 			writer.Write(m_UnclaimedWinners.Count);
-            foreach (KeyValuePair<Mobile, HuntingKillEntry> kvp in m_UnclaimedWinners)
+            foreach (KeyValuePair<Mobile, int> kvp in m_UnclaimedWinners)
             {
                 writer.Write(kvp.Key);
-                kvp.Value.Serialize(writer);
+                writer.Write(kvp.Value);
             }
 				
 			writer.Write(m_Top10.Count);
@@ -368,10 +388,19 @@ namespace Server.Engines.HuntsmasterChallenge
 			for(int i = 0; i < count; i++)
 			{
                 Mobile m = reader.ReadMobile();
-				HuntingKillEntry entry = new HuntingKillEntry(reader);
+                int c = 1;
+
+                if (v == 0)
+                {
+                    new HuntingKillEntry(reader);
+                }
+                else
+                {
+                    c = reader.ReadInt();
+                }
 
 				if(m != null)
-					m_UnclaimedWinners[m] = entry;
+					m_UnclaimedWinners[m] = c;
 			}
 			
 			count = reader.ReadInt();

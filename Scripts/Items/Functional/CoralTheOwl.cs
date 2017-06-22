@@ -1,27 +1,38 @@
-﻿using System;
+using System;
+using Server;
 using Server.Mobiles;
 using Server.Network;
 
 namespace Server.Items
 {
-    public class SherryTheMouseStatue : Item
-    {
-        public override int LabelNumber { get { return 1080171; } } // Sherry the Mouse Statue
+    public class CoralTheOwl : Item, Server.Engines.VeteranRewards.IRewardItem
+	{
+        public override int LabelNumber { get { return 1123603; } } // Coral the Owl
+
         private Timer m_NewsTimer;
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsRewardItem { get; set; }
+
         [Constructable]
-        public SherryTheMouseStatue()
-            : base(0x20D0)
+        public CoralTheOwl() : base(0x9A9B)
         {
             LootType = LootType.Blessed;
-            Weight = 1.0;
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            if(IsRewardItem)
+                list.Add(1076217); // 1st Year Veteran Reward
         }
 
         public override bool HandlesOnSpeech { get { return true; } }
 
         public override void OnSpeech(SpeechEventArgs e)
         {
-            if (IsLockedDown && e.HasKeyword(0x30) && e.Mobile.Alive && e.Mobile.InLOS(Location) && e.Mobile.InRange(this, 12)) // *news*
+            if (IsLockedDown && e.HasKeyword(0x30) && e.Mobile.Alive && e.Mobile.InLOS(this.Location) && e.Mobile.InRange(this, 12)) // *news*
             {
                 TownCrierEntry tce = GlobalTownCrierEntryList.Instance.GetRandomEntry();
 
@@ -58,21 +69,36 @@ namespace Server.Items
             }
         }
 
-        public SherryTheMouseStatue(Serial serial)
-            : base(serial)
-        {
-        }
-        
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.Write((int)0); // version
-        }
+		public CoralTheOwl( Serial serial ) : base( serial )
+		{
+		}	
+		
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            int version = reader.ReadInt();
-        }
-    }
+			writer.Write( (int) 1 ); // version
+
+            writer.Write(IsRewardItem);
+		}
+		
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+
+            switch (version)
+            {
+                case 1:
+                    IsRewardItem = reader.ReadBool();
+                    break;
+                case 0:
+                    break;
+            }
+
+            if (version == 0)
+                IsRewardItem = true;
+		}
+	}
 }

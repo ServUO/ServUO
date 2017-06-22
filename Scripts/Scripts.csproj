@@ -795,6 +795,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\ChickenLizardEgg.cs" />
+    <Compile Include="Items\Functional\CoralTheOwl.cs" />
     <Compile Include="Items\Functional\DragonTurtleEgg.cs" />
     <Compile Include="Items\Functional\EtherealRetouchingTool.cs" />
     <Compile Include="Items\Functional\HouseCraftables.cs" />
@@ -984,6 +985,7 @@
     </Compile>
     <Compile Include="Items\Tools\ChestOfSending.cs" />
     <Compile Include="Items\Tools\ForgedMetalOfArtifacts.cs" />
+    <Compile Include="Items\Tools\GreaterBraceletOfBinding.cs" />
     <Compile Include="Items\Tools\MetallicLeatherDyeTub.cs" />
     <Compile Include="Items\Tools\MetallicDyeTub.cs" />
     <Compile Include="Items\Tools\MetallicClothDyeTub.cs" />
@@ -2958,6 +2960,7 @@
     <Compile Include="Services\CleanUpBritannia\Creatures\TheCleanupOfficer.cs" />
     <Compile Include="Services\CleanUpBritannia\Gumps.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\RefinementAmalgamator.cs" />
+    <Compile Include="Services\CleanUpBritannia\Items\SherryTheMouseStatue.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\VollemHeldInCrystal.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\Beehive.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\BootsOfTheCrystalHydra.cs" />
@@ -2993,7 +2996,6 @@
     <Compile Include="Services\CleanUpBritannia\Items\PrimordialDecay.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\NocturneEarrings.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\SacrificeVirtueTile.cs" />
-    <Compile Include="Services\CleanUpBritannia\Items\SherryTheMouseStatue.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\SnakeSkinBoots.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\OrnateElvenTapestry.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\SophisticatedElvenTapestry.cs" />

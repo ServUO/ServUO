@@ -1,384 +1,363 @@
 using System;
 using Server;
+using System.Collections.Generic;
+using Server.Regions;
 
 namespace Server.Items
 {
-	public class AnkhPendant : BaseNecklace
-	{
-		private static bool AllowIlshenarShrines = false;
-		private bool m_IsUseful;
-        public override bool IsArtifact { get { return true; } }
+    public enum VirtueType
+    {
+        None = 0,
+        Honesty = 1,
+        Compassion = 2,
+        Valor = 3,
+        Justice = 4,
+        Sacrafice = 5,
+        Honor = 6,
+        Spirituality = 7,
+        Humility = 8
+    }
 
-        public override int LabelNumber{ get{ return 1079525; } } // Ankh Pendant
-		private DateTime m_LastUse;
-		public int VirtueEffect;
-		private Timer m_Timer;
+    public class AnkhPendant : BaseNecklace
+    {
+        public static void Initialize()
+        {
+            EventSink.Speech += new SpeechEventHandler(EventSink_Speech);
+        }
 
-		[CommandProperty( AccessLevel.GameMaster )]
-		public bool IsUseful
+        public override int LabelNumber { get { return 1079525; } } // Ankh Pendant
+
+        [Constructable]
+        public AnkhPendant()
+            : base(0x3BB5)
+        {
+            Hue = Utility.RandomBool() ? 2213 : 0;
+        }
+
+        public static void EventSink_Speech(SpeechEventArgs e)
+        {
+            Mobile from = e.Mobile;
+            Item ankh = from.FindItemOnLayer(Layer.Neck);
+
+            if (!(ankh is AnkhPendant))
+                return;
+
+            string str = e.Speech.ToLower();
+            VirtueType t = VirtueType.None;
+
+            if (str == "ahm")
+                t = VirtueType.Honesty;
+            else if (str == "mu")
+                t = VirtueType.Compassion;
+            else if (str == "ra")
+                t = VirtueType.Valor;
+            else if (str == "beh")
+                t = VirtueType.Justice;
+            else if (str == "cah")
+                t = VirtueType.Sacrafice;
+            else if (str == "summ")
+                t = VirtueType.Honor;
+            else if (str == "om")
+                t = VirtueType.Spirituality;
+            else if (str == "lum")
+                t = VirtueType.Humility;
+
+            if (t != VirtueType.None && CheckShrine(t, from))
+                ApplyBonus(t, from);
+        }
+
+        public static int GetHitsRegenModifier(Mobile from)
+        {
+            if (!m_Table.ContainsKey(from))
+                return 0;
+
+            if (CheckExpired(from))
+                return 0;
+
+            AnkhPendantBonusContext context = m_Table[from];
+
+            if (context == null)
+                return 0;
+
+            switch (context.VType)
+            {
+                case VirtueType.Honesty: break;
+                case VirtueType.Compassion:
+                    return 2;
+                case VirtueType.Valor: break;
+                case VirtueType.Justice:
+                    return context.DoBump ? 2 : 1;
+                case VirtueType.Sacrafice:
+                    return context.DoBump ? 2 : 1;
+                case VirtueType.Honor: break;
+                case VirtueType.Spirituality:
+                    return context.DoBump ? 2 : 1;
+                case VirtueType.Humility:
+                    if (context.Random == 0)
+                        return 3;
+                    break;
+            }
+            return 0;
+        }
+
+        public static int GetStamRegenModifier(Mobile from)
+        {
+            if (!m_Table.ContainsKey(from))
+                return 0;
+
+            if (CheckExpired(from))
+                return 0;
+
+            AnkhPendantBonusContext context = m_Table[from];
+
+            if (context == null)
+                return 0;
+
+            switch (context.VType)
+            {
+                case VirtueType.Honesty: break;
+                case VirtueType.Compassion: break;
+                case VirtueType.Valor:
+                    return 2;
+                case VirtueType.Justice:
+                    break;
+                case VirtueType.Sacrafice:
+                    return context.DoBump ? 2 : 1;
+                case VirtueType.Honor:
+                    return context.DoBump ? 2 : 1;
+                case VirtueType.Spirituality:
+                    return context.DoBump2 ? 2 : 1;
+                case VirtueType.Humility:
+                    if (context.Random == 1)
+                        return 3;
+                    break;
+            }
+            return 0;
+        }
+
+        public static int GetManaRegenModifier(Mobile from)
+        {
+            if (!m_Table.ContainsKey(from))
+                return 0;
+
+            if (CheckExpired(from))
+                return 0;
+
+            AnkhPendantBonusContext context = m_Table[from];
+
+            if (context == null)
+                return 0;
+
+            switch (context.VType)
+            {
+                case VirtueType.Honesty:
+                    return 2;
+                case VirtueType.Compassion: break;
+                case VirtueType.Valor:
+                    break;
+                case VirtueType.Justice:
+                    return context.DoBump ? 2 : 1;
+                case VirtueType.Sacrafice:
+                    break;
+                case VirtueType.Honor:
+                    return context.DoBump ? 2 : 1;
+                case VirtueType.Spirituality:
+                    return context.DoBump3 ? 2 : 1;
+                case VirtueType.Humility:
+                    if (context.Random == 2)
+                        return 3;
+                    break;
+            }
+            return 0;
+        }
+
+        public static bool CheckExpired(Mobile from)
+        {
+            if (m_Table.ContainsKey(from) && m_Table[from].Expired)
+            {
+                AddToCooldown(from);
+                return true;
+            }
+            return false;
+        }
+
+        public static bool CheckShrine(VirtueType t, Mobile from)
+        {
+            Region r = from.Region;
+            Map map = from.Map;
+
+            if (r is DungeonRegion || r is TownRegion || (map != Map.Trammel && map != Map.Felucca))
+                return false;
+
+            bool atShrine = false;
+
+            for (int i = 0; i < m_ShrineLocs.Length; i++)
+            {
+                if (m_ShrineLocs[i].Contains(new Point2D(from.X, from.Y)) && (int)t == i + 1)
+                {
+                    atShrine = true;
+                    break;
+                }
+            }
+
+            if (atShrine)
+            {
+                if (IsUnderEffects(from))
+                {
+                    from.SendLocalizedMessage(1079544, String.Format("#{0}", GetCliloc(m_Table[from].VType)));
+                    return false;
+                }
+
+                if (IsWaitingCooldown(from))
+                {
+                    TimeSpan ts = DateTime.UtcNow - m_Cooldown[from];
+
+                    if (ts.TotalHours >= 1)
+                        from.SendLocalizedMessage(1079550, ((int)ts.TotalHours).ToString()); //You can improve your fortunes again in about ~1_TIME~ hours.
+                    else
+                        from.SendLocalizedMessage(1079547); //Your fortunes are about to improve.
+
+                    return false;
+                }
+            }
+
+            return atShrine;
+        }
+
+        private static Rectangle2D[] m_ShrineLocs = new Rectangle2D[]
 		{
-			get { return m_IsUseful; }
-			set { m_IsUseful = value; }
-		}
-
-		[Constructable]
-		public AnkhPendant() : base( 0x3BB5 ) //15285
-		{
-			Weight = 0.1;
-			VirtueEffect = 0;
-			m_IsUseful = false;
-		}
-
-		public override bool HandlesOnSpeech{ get{ return (Parent is Mobile); } }
-
-		public override void OnSpeech( SpeechEventArgs e )
-		{
-			if ( !e.Handled && Parent is Mobile )
-			{
-				Mobile m = Parent as Mobile;
-
-				if ( e.Mobile.Serial != m.Serial )
-					return;
-
-				string theirwords = e.Speech;
-				theirwords.ToLower();
-				int chant = 99;
-
-				for ( int i = 0; i < m_ShrineMantra.Length; i++ )
-				{
-					if ( theirwords == m_ShrineMantra[i] )
-						chant = i;
-				}
-
-				if ( chant >= m_ShrineMantra.Length )
-					return;
-
-				bool disabled = false;
-				Point3D[] place = m_BritanniaShrines;
-
-				if ( e.Mobile.Map == Map.Ilshenar )
-				{
-					if ( !AllowIlshenarShrines )
-						disabled = true;
-					else
-						place = m_IllshShrines;
-				}
-				else if ( e.Mobile.Map != Map.Felucca && e.Mobile.Map != Map.Trammel )
-					disabled = true;
-
-				if ( disabled == true )
-					return;
-
-				bool rightplace = false;
-
-				foreach ( Mobile mobile in e.Mobile.Map.GetMobilesInRange( place[chant], 5 ) )
-					if ( mobile != null )
-						if ( mobile.Serial == e.Mobile.Serial )
-							rightplace = true;
-
-				if ( rightplace == true )
-				{
-					GiveBonus( chant, e.Mobile );
-					e.Handled = true;
-				}
-			}
-		}
-
-		public void GiveBonus( int chant, Mobile from )
-		{
-			if ( VirtueEffect == chant )
-				from.SendLocalizedMessage( 1079544, String.Format( "{0}" ,m_ShrineWords[chant]) ); // You already feel ~1_VIRTUE~ from your earlier contemplation of the virtues.
-
-			TimeSpan delay = m_LastUse - DateTime.UtcNow;
-
-			if ( delay < TimeSpan.Zero )
-				delay = TimeSpan.Zero;
-
-			if ( delay > TimeSpan.Zero )
-			{
-				int seconds = (int)delay.TotalSeconds;
-				int minutes = 0;
-				int hours = 0;
-
-				if ( seconds >= 60 )
-					minutes = (seconds + 59) / 60;
-
-				if ( minutes >= 60 )
-					hours = (seconds + 3599) / 3600;
-
-				if ( hours > 1 )
-					from.SendLocalizedMessage( 1079566, String.Format( "{0}", hours ) ); // You feel as if you should contemplate what you've learned for another ~1_TIME~ hours.
-				else if ( hours == 1 )
-					from.SendLocalizedMessage( 1079565 ); // You feel as if you should contemplate what you've learned for another hour or so.
-				else if ( minutes > 0 )
-					from.SendLocalizedMessage( 1079568, String.Format( "{0}", minutes ) ); // You feel as if you should contemplate what you've learned for another ~1_TIME~ minutes.
-				else if ( seconds > 0 )
-					from.SendLocalizedMessage( 1079567, String.Format( "{0}", seconds ) ); // You feel almost ready to learn more about the virtue again.
-
-				return;
-			}
-
-			double chance = Utility.RandomDouble();
-
-			switch ( chant )
-			{
-				case 0: //Compassion
-				{
-					Attributes.RegenHits = 2;
-					break;
-				}
-				case 1: //Honesty
-				{
-					Attributes.RegenMana = 2;
-					break;
-				}
-				case 2: //Honor
-				{
-					Attributes.RegenStam = (chance >= 0.75) ? 2 : 1;
-					Attributes.RegenMana = (chance <= 0.25) ? 2 : 1;
-					break;
-				}
-				case 3: //Humility
-				{
-					if ( chance >= 0.66 )
-						Attributes.RegenHits = 3;
-					else if ( chance >= 0.33 )
-						Attributes.RegenStam = 3;
-					else
-						Attributes.RegenMana = 3;
-
-					break;
-				}
-				case 4: //Justice
-				{
-					Attributes.RegenHits = (chance >= 0.75) ? 2 : 1;
-					Attributes.RegenMana = (chance <= 0.25) ? 2 : 1;
-					break;
-				}
-				case 5: //Sacrifice
-				{
-					Attributes.RegenHits = (chance >= 0.75) ? 2 : 1;
-					Attributes.RegenStam = (chance <= 0.25) ? 2 : 1;
-					break;
-				}
-				case 6: //Spirituality
-				{
-					Attributes.RegenHits = (chance >= 0.25) ? 2 : 1;
-					chance = Utility.RandomDouble();
-					Attributes.RegenStam = (chance >= 0.25) ? 2 : 1;
-					chance = Utility.RandomDouble();
-					Attributes.RegenMana = (chance >= 0.25) ? 2 : 1;
-					break;
-				}
-				case 7: //Valor
-				{
-					Attributes.RegenStam = 2;
-					break;
-				}
-			}
-
-			if ( IsUseful )
-			{
-				Attributes.RegenHits *= 3;
-				Attributes.RegenStam *= 3;
-				Attributes.RegenMana *= 3;
-			}
-
-			m_LastUse = DateTime.UtcNow + TimeSpan.FromMinutes( 61 );
-			VirtueEffect = chant;
-
-			Timer timer = new InternalTimer( this );
-			timer.Start();
-			m_Timer = timer;
-
-			from.SendLocalizedMessage( 1079546, String.Format( "{0}", m_ShrineWords[chant] ) ); // Contemplating at the shrine has left you feeling more ~1_VIRTUE~.
-		}
-
-		private static readonly string[] m_ShrineMantra = new string[]
-		{
-			"mu mu mu", //Compassion
-			"ahm ahm ahm", //Honesty
-			"summ summ summ", //Honor
-			"lum lum lum", //Humility
-			"beh beh beh", //Justice
-			"cah cah cah", //Sacrifice
-			"om om om", //Spirituality
-			"ra ra ra" //Valor
+			new Rectangle2D(4208, 563, 2, 2), //Honesty
+			new Rectangle2D(1857, 874, 2, 2), //Compassion
+			new Rectangle2D(2491, 3930, 2, 2), //Valor
+			new Rectangle2D(1300, 633, 2, 2), //Justice
+			new Rectangle2D(3354, 289, 2, 2), //Sacrafice
+			new Rectangle2D(1726, 3527, 2, 2), //Honor
+			new Rectangle2D(1605, 2489, 2, 2), //Spirituality
+			new Rectangle2D(4273, 3696, 2, 2), //Humility
 		};
 
-		private static readonly Point3D[] m_BritanniaShrines = new Point3D[]
-		{
-			new Point3D( 1857, 865, -1 ), //Compassion
-			new Point3D( 4264, 3707, 0 ), //Honesty
-			new Point3D( 1732, 3528, 0 ), //Honor
-			new Point3D( 4220, 563, 36 ), //Humilty
-			new Point3D( 1300, 644, 8 ), //Justice
-			new Point3D( 3355, 302, 9 ), //Sacrifice
-			new Point3D( 1606, 2490, 5 ), //Spirituality
-			new Point3D( 2500, 3931, 3 ) //Valor
-		};
+        private static void ApplyBonus(VirtueType t, Mobile from)
+        {
+            m_Table[from] = new AnkhPendantBonusContext(from, t);
 
-		private static readonly Point3D[] m_IllshShrines = new Point3D[]
-		{
-			new Point3D( 1222, 474, -17 ), //Compassion
-			new Point3D( 718, 1360, -60), //Honesty
-			new Point3D( 744, 724, -28 ), //Honor
-			new Point3D( 297, 1014, -19 ), //Humilty
-			new Point3D( 986, 1006, -36 ), //Justice
-			new Point3D( 1180, 1288, -30 ), //Sacrifice
-			new Point3D( 1538, 1341, -3 ), //Spirituality
-			new Point3D( 528, 223, -38 ) //Valor
-		};
+            from.Delta(MobileDelta.WeaponDamage);
 
-		public static readonly string[] m_ShrineWords = new string[]
-		{
-			"compassionate",
-			"just",
-			"charitable",
-			"honest",
-			"honorable",
-			"humble",
-			"spiritual",
-			"valorous",
-			"virtuous"
-		};
+            from.SendLocalizedMessage(1079546, String.Format("#{0}", GetCliloc(t)));
+        }
 
-		public AnkhPendant( Serial serial ) : base( serial )
-		{
-		}
+        private static int GetCliloc(VirtueType t)
+        {
+            switch (t)
+            {
+                default:
+                case VirtueType.Honesty: return 1079539;
+                case VirtueType.Compassion: return 1079535;
+                case VirtueType.Valor: return 1079543;
+                case VirtueType.Justice: return 1079536;
+                case VirtueType.Sacrafice: return 1079538;
+                case VirtueType.Honor: return 1079540;
+                case VirtueType.Spirituality: return 1079542;
+                case VirtueType.Humility: return 1079541;
+            }
+        }
 
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+        public static bool IsUnderEffects(Mobile from)
+        {
+            return m_Table.ContainsKey(from);
+        }
 
-			writer.Write( (int) 0 ); // version
+        public static bool IsWaitingCooldown(Mobile from)
+        {
+            if (m_Cooldown.ContainsKey(from) && m_Cooldown[from] < DateTime.UtcNow)
+                m_Cooldown.Remove(from);
 
-			writer.Write( (bool)m_IsUseful );
-		}
+            return m_Cooldown.ContainsKey(from);
+        }
 
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
+        public static void AddToCooldown(Mobile from)
+        {
+            if (m_Table.ContainsKey(from))
+                m_Table.Remove(from);
 
-			int version = reader.ReadInt();
+            from.Delta(MobileDelta.WeaponDamage);
 
-			Attributes.RegenHits = 0;
-			Attributes.RegenStam = 0;
-			Attributes.RegenMana = 0;
-			VirtueEffect = 0;
-			m_IsUseful = reader.ReadBool();
-		}
+            if (from.NetState != null)
+                from.SendLocalizedMessage(1079553); //The effects of meditating at the shrine have worn off.	
 
-		private class InternalTimer : Timer
-		{
-			private AnkhPendant m_From;
-			private int m_Count;
+            m_Cooldown[from] = DateTime.UtcNow + TimeSpan.FromHours(24);
+        }
 
-			public InternalTimer( AnkhPendant from ) : base( TimeSpan.FromMinutes( 5 ) )
-			{
-				m_From = from;
-			}
+        private static Dictionary<Mobile, AnkhPendantBonusContext> m_Table = new Dictionary<Mobile, AnkhPendantBonusContext>();
+        private static Dictionary<Mobile, DateTime> m_Cooldown = new Dictionary<Mobile, DateTime>();
 
-			protected override void OnTick()
-			{
-				m_Count++;
+        private class AnkhPendantBonusContext
+        {
+            private Mobile m_Mobile;
+            private VirtueType m_Type;
+            private int m_Random;
+            private bool m_DoBump;
+            private bool m_DoBump2;
+            private bool m_DoBump3;
+            private DateTime m_Expires;
 
-				if ( m_Count >= 12 )
-				{
-					if ( m_From != null )
-					{
-						m_From.Attributes.RegenHits = 0;
-						m_From.Attributes.RegenStam = 0;
-						m_From.Attributes.RegenMana = 0;
-						m_From.VirtueEffect = 0;
+            public VirtueType VType { get { return m_Type; } }
+            public bool DoBump { get { return m_DoBump; } }
+            public bool DoBump2 { get { return m_DoBump2; } }
+            public bool DoBump3 { get { return m_DoBump3; } }
+            public int Random { get { return m_Random; } }
 
-						if ( m_From.Parent is Mobile )
-						{
-							Mobile m = m_From.Parent as Mobile;
-							m.SendLocalizedMessage( 1079553 ); // The effects of meditating at the shrine have worn off.
-						}
-					}
+            public bool Expired { get { return DateTime.UtcNow > m_Expires; } }
 
-					Stop();
-				}
-			}
-		}
+            public AnkhPendantBonusContext(Mobile from, VirtueType type)
+            {
+                m_Mobile = from;
+                m_Type = type;
+                m_Random = -1;
+                m_Expires = DateTime.UtcNow + TimeSpan.FromMinutes(60);
 
-	}
+                switch (type)
+                {
+                    case VirtueType.Honesty:
+                    case VirtueType.Compassion:
+                    case VirtueType.Valor: break;
+                    case VirtueType.Humility:
+                        m_Random = Utility.Random(3);
+                        break;
+                    case VirtueType.Justice:
+                    case VirtueType.Sacrafice:
+                    case VirtueType.Honor:
+                        m_DoBump = Utility.RandomBool();
+                        break;
+                    case VirtueType.Spirituality:
+                        m_DoBump = 0.25 > Utility.RandomDouble();
+                        m_DoBump2 = 0.25 > Utility.RandomDouble();
+                        m_DoBump3 = 0.25 > Utility.RandomDouble();
+                        break;
+
+                }
+            }
+        }
+
+        public AnkhPendant(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)1);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            if (version == 0)
+                reader.ReadBool();
+        }
+    }
 }
-
-/*
-Five on Friday: http://www.uo.com/fof/fiveonfriday79.html
-
-"What does the ankh necklace do? Is it just for show?"
-As a number of alert players have pointed our, should you visit one of 
-the Shrines of the Virtues and meditate (chant a mantra) there, 
-you will receive a system message having to do with that virtue. 
-But what does it mean? 
-
-The ankh will give a bonus to one or more of the 3 regeneration stats 
-that will last for 1 hour. The bonus can only be activated once per 
-day. Each of the shrines will give a unique bonus combination to 
-regeneration stats based on the virtue for that particular shrine 
-(this is based on the 3 principles). 
-
-Each principle is related to a regeneration stat as follows:
-
-Truth - Mana Regeneration
-Love - Hit Point Regeneration
-Courage - Stamina Regeneration
-Each virtue will give the following bonus to regeneration stats as follows: 
-
-Honesty +2 Mana Regen
-Compassion +2 HP Regen
-Valor +2 Stamina Regen
-Justice +1 Mana Regen, +1 HP Regen (50% chance to get one regen bumped up to +2) 
-Sacrifice +1 HP Regen, +1 Stamina Regen (50% chance to get one regen bumped up to +2) 
-Honor +1 Mana Regen, +1 Stamina Regen (50% chance to get one regen bumped up to +2) 
-Spirituality +1 All Regens (25% chance (3 independent rolls) to get each regen bumped up to +2) 
-Humility +3 Random Regen
-
-***
-
-IsUseful?
-
-Private joke to my self, your welcome to learn what it means.
-
-
-And I quote
-"The event uses the Guaranteed Reward Point system, 
-which was created for the Treasures of Tokuno event"
-...
-"The overall loot drop chance for this event will be lower than ToT, ..."
-
-
-Lets look at two of the nonweapon LESSER ToT items and the Ankh Pendant
-
-AncientFarmersKasa
-	Resistances: 0/5/9/5/5
-	BonusStr +5
-	BonusStam +5
-	RegenStam +5
-	AnimalLore +5.0
-
-GlovesOfTheSun
-	Resistances: 2/4/3/3/3 //Can it be enhanced?
-	RegenHits +2
-	NightSight
-	LowerManaCost +5%
-	LowerRegCost +18%
-
-Ankh Pendant
-	Resistances: 0/0/0/0/0
-	RegenHits/Stam/Mana
-		Random one has +3 for one hour. OR
-		One of your choice has +2 for one hour. OR
-		Any two of your choice has +1 for one hour, one of which may be could possible be increaed to +2. OR
-		+1 in all three regen stats, with the remote possiblity one or two of them become +2 bonuses.
-	Downsides: Works for one hour per day (not 24/7 like magic loot), must recall to a shrine to activate.
-
-
-You give up your entire neck slot for that?
-You have got to be kidding me.
-
-*/

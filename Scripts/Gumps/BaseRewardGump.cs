@@ -26,7 +26,7 @@ namespace Server.Gumps
             }
         }
 
-        public BaseRewardGump(Mobile owner, PlayerMobile user, List<CollectionItem> col, int title, double points = 0.0)
+        public BaseRewardGump(Mobile owner, PlayerMobile user, List<CollectionItem> col, int title, double points = -1.0)
             : base(50, 50)
 		{
             user.CloseGump(typeof(BaseRewardGump));
@@ -55,10 +55,10 @@ namespace Server.Gumps
 			Index = 0;
             Page = 1;
 
-            if (points > 0)
-                Points = points;
-            else
+            if (points == -1)
                 Points = GetPoints(user);
+            else
+                Points = points;
 
 			AddHtmlLocalized(70, 35, 270, 20, Title, 0x1, false, false);
             AddHtmlLocalized(50, 65, 150, 20, 1072843, 0x1, false, false); // Your Reward Points:
@@ -78,20 +78,6 @@ namespace Server.Gumps
 		public void DisplayRewardPage()
 		{
             AddPage(Page);
-
-            if (Page > 1)
-            {
-                AddButton(150, 335, 0x15E3, 0x15E7, 0, GumpButtonType.Page, Page - 1);
-                AddHtmlLocalized(170, 335, 60, 20, 1074880, 0x1, false, false); // Previous			
-            }
-
-            Page++;
-
-            if (!LastPage())
-            {
-                AddButton(300, 335, 0x15E1, 0x15E5, 0, GumpButtonType.Page, Page);
-                AddHtmlLocalized(240, 335, 60, 20, 1072854, 0x1, false, false); // <div align=right>Next</div>
-            }
 			
 			int offset = 110;
             int next = 0;
@@ -137,6 +123,20 @@ namespace Server.Gumps
                 else
                     next = 0;
 			}
+
+            if (Page > 1)
+            {
+                AddButton(150, 335, 0x15E3, 0x15E7, 0, GumpButtonType.Page, Page - 1);
+                AddHtmlLocalized(170, 335, 60, 20, 1074880, 0x1, false, false); // Previous			
+            }
+
+            Page++;
+
+            if (!LastPage())
+            {
+                AddButton(300, 335, 0x15E1, 0x15E5, 0, GumpButtonType.Page, Page);
+                AddHtmlLocalized(240, 335, 60, 20, 1072854, 0x1, false, false); // <div align=right>Next</div>
+            }
 		}
 		
 		public override void OnResponse(Server.Network.NetState state, RelayInfo info)
@@ -206,7 +206,7 @@ namespace Server.Gumps
 
         public virtual bool LastPage()
         {
-            if (Index + 1 >= Collection.Count)
+            if (Index >= Collection.Count - 1)
                 return true;
 
             int offset = 110;

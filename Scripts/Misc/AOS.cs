@@ -728,10 +728,13 @@ namespace Server
 
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Hits))
                     value += 10;
-                #endregion
 
                 if (SearingWeaponContext.HasContext(m))
                     value -= m is PlayerMobile ? 20 : 60;
+                #endregion
+
+                //Virtue Artifacts
+                value += AnkhPendant.GetHitsRegenModifier(m);
             }
             else if (attribute == AosAttribute.RegenStam)
             {
@@ -742,6 +745,9 @@ namespace Server
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Stam))
                     value += 10;
                 #endregion
+
+                //Virtue Artifacts
+                value += AnkhPendant.GetStamRegenModifier(m);
             }
             else if (attribute == AosAttribute.RegenMana)
             {
@@ -757,6 +763,9 @@ namespace Server
                 if (SurgeShield.IsUnderEffects(m, SurgeType.Mana))
                     value += 10;
                 #endregion
+
+                //Virtue Artifacts
+                value += AnkhPendant.GetManaRegenModifier(m);
             }
             else if (attribute == AosAttribute.BonusDex)
             {

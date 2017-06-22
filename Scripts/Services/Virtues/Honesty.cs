@@ -144,6 +144,10 @@ namespace Server.Services.Virtues
 			try
 			{
 				var count = MaxGeneration - _Items.Count;
+
+                if (count < 0)
+                    count = 0;
+
 				var spawned = new Item[count];
 
 				for (var i = 0; i < spawned.Length; i++)

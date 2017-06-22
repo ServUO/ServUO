@@ -63,6 +63,7 @@ namespace Server.Engines.Despise
         public DateTime NextBossEncounter
         {
             get { return m_NextBossEncounter; }
+            set { m_NextBossEncounter = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -130,7 +131,6 @@ namespace Server.Engines.Despise
             EndTimer();
 
             m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), new TimerCallback(OnTick));
-            m_Timer.Priority = TimerPriority.OneSecond;
 
             m_LowerRegion = new DespiseRegion("Despise Lower", m_LowerLevelBounds, true);
             m_EvilRegion = new DespiseRegion("Despise Evil", m_EvilBounds);
@@ -163,32 +163,6 @@ namespace Server.Engines.Despise
             m_GoodRegion = null;
             m_StartRegion = null;
         }
-
-        /*private void BuildSpawners()
-        {
-            if(m_Spawners == null)
-                m_Spawners = new List<XmlSpawner>();
-            else
-                m_Spawners.Clear();
-
-            foreach (Sector sector in m_LowerRegion.Sectors)
-            {
-                if (sector == null || sector.Items == null)
-                    continue;
-
-                List<Item> list = new List<Item>(sector.Items);
-
-                foreach (Item item in list)
-                {
-                    if(item is XmlSpawner && item.Name != null && item.Name.ToLower().IndexOf("despiserevamp") >= 0)
-                    {
-                        m_Spawners.Add((XmlSpawner)item);
-                    }
-                }
-            }
-
-            Console.WriteLine("Loaded {0} spawners for despise lower level", m_Spawners.Count);
-        }*/
 
         private void OnTick()
         {
@@ -242,6 +216,7 @@ namespace Server.Engines.Despise
                 }
             }
 
+            ColUtility.Free(players);
             m_SequenceAlignment = strongest;
 
             Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerCallback(BeginSequence));
@@ -321,19 +296,9 @@ namespace Server.Engines.Despise
 
                 foreach (XmlSpawner spawner in useList)
                     spawner.DoRespawn = true;
+
+                ColUtility.Free(useList);
             }
-            /*string lookfor = "good";
-
-            if(m_SequenceAlignment == Alignment.Good)
-                lookfor = "evil";
-
-            foreach (XmlSpawner spawner in m_Spawners)
-            {
-                if (reset && spawner.Running)
-                    spawner.DoReset = true;
-                else if (spawner.Name != null && spawner.Name.ToLower().IndexOf(lookfor) >= 0)
-                    spawner.DoRespawn = true;
-            }*/
         }
         #endregion
 
@@ -359,7 +324,6 @@ namespace Server.Engines.Despise
 
             m_Boss.MoveToWorld(BossLocation, Map.Trammel);
             m_DeadLine = DateTime.UtcNow + DeadLineDuration;
-            //m_NextBossEncounter = DateTime.MinValue;
 
             BeginSequenceTimer();
             KickFromBossRegion(false);
@@ -720,7 +684,6 @@ namespace Server.Engines.Despise
 
                     if (m != null && points > 0)
                         Server.Engines.Points.PointsSystem.DespiseCrystals.ConvertFromOldSystem((PlayerMobile)m, points);
-                        //m_PointsTable[m] = points;
                 }
             }
 

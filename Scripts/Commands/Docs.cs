@@ -475,7 +475,10 @@ namespace Server.Commands
 			DocumentKeywords();
 			DocumentBodies();
 
-			DocumentBulkOrders();
+            if (!BulkOrderSystem.NewSystemEnabled)
+            {
+                DocumentBulkOrders();
+            }
 
 			m_Types = new Dictionary<Type, TypeInfo>();
 			m_Namespaces = new Dictionary<string, List<TypeInfo>>();

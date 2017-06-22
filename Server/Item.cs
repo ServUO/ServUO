@@ -190,9 +190,15 @@ namespace Server
         Bank = 0x1D,
 
         /// <summary>
-        ///     Last valid layer. Equivalent to <c>Layer.Bank</c>.
+        /// Unused, using this layer makes you invisible to other players. Strange.
         /// </summary>
-        LastValid = 0x1D
+        /// 
+        Reserved_1 = 0x1E,
+
+        /// <summary>
+        ///     Secure Trade Layer
+        /// </summary>
+        SecureTrade = 0x1F,
     }
 
     /// <summary>
@@ -2368,7 +2374,7 @@ namespace Server
             }
         }
 
-        public virtual bool ForceShowProperties { get { return false; } }
+        public virtual bool ForceShowProperties { get { return IsLockedDown || IsSecure; } }
 
         public virtual int GetPacketFlags()
         {

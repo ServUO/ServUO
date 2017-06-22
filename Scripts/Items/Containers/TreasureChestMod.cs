@@ -338,7 +338,7 @@ namespace Server.Items
 			for( int i = Utility.Random( 1, 2 ); i > 1; i-- )
 				AddLoot( Loot.RandomJewelry() );
 			
-			DropItem( new MagicCrystalBall() );
+			//DropItem( new MagicCrystalBall() );
 
 			// Magic clothing (not implemented)
 			

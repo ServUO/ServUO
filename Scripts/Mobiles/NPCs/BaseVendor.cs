@@ -37,7 +37,7 @@ namespace Server.Mobiles
         public static bool UseVendorEconomy = Core.AOS && !Siege.SiegeShard;
         public static int BuyItemChange = Config.Get("Vendors.BuyItemChange", 1000);
         public static int SellItemChange = Config.Get("Vendors.SellItemChange", 1000);
-        public static int EconomyStockAmount = Config.Get("Vendors.EconomyStockAmount", 1000);
+        public static int EconomyStockAmount = Config.Get("Vendors.EconomyStockAmount", 500);
 
 		public static List<BaseVendor> AllVendors { get; private set; }
 
@@ -306,7 +306,7 @@ namespace Server.Mobiles
 			pack.Layer = Layer.ShopBuy;
 			pack.Movable = false;
 			pack.Visible = false;
-			AddItem(pack);
+            AddItem(pack);
 
 			pack = new Backpack();
 			pack.Layer = Layer.ShopResale;
@@ -740,29 +740,29 @@ namespace Server.Mobiles
 			switch (Utility.Random(3))
 			{
 				case 0:
-					AddItem(new FancyShirt(GetRandomHue()));
+					SetWearable(new FancyShirt(GetRandomHue()));
 					break;
 				case 1:
-					AddItem(new Doublet(GetRandomHue()));
+					SetWearable(new Doublet(GetRandomHue()));
 					break;
 				case 2:
-					AddItem(new Shirt(GetRandomHue()));
+					SetWearable(new Shirt(GetRandomHue()));
 					break;
 			}
 
 			switch (ShoeType)
 			{
 				case VendorShoeType.Shoes:
-					AddItem(new Shoes(GetShoeHue()));
+					SetWearable(new Shoes(GetShoeHue()));
 					break;
 				case VendorShoeType.Boots:
-					AddItem(new Boots(GetShoeHue()));
+					SetWearable(new Boots(GetShoeHue()));
 					break;
 				case VendorShoeType.Sandals:
-					AddItem(new Sandals(GetShoeHue()));
+					SetWearable(new Sandals(GetShoeHue()));
 					break;
 				case VendorShoeType.ThighBoots:
-					AddItem(new ThighBoots(GetShoeHue()));
+					SetWearable(new ThighBoots(GetShoeHue()));
 					break;
 			}
 
@@ -781,16 +781,16 @@ namespace Server.Mobiles
 				switch (Utility.Random(6))
 				{
 					case 0:
-						AddItem(new ShortPants(GetRandomHue()));
+						SetWearable(new ShortPants(GetRandomHue()));
 						break;
 					case 1:
 					case 2:
-						AddItem(new Kilt(GetRandomHue()));
+						SetWearable(new Kilt(GetRandomHue()));
 						break;
 					case 3:
 					case 4:
 					case 5:
-						AddItem(new Skirt(GetRandomHue()));
+						SetWearable(new Skirt(GetRandomHue()));
 						break;
 				}
 			}
@@ -799,10 +799,10 @@ namespace Server.Mobiles
 				switch (Utility.Random(2))
 				{
 					case 0:
-						AddItem(new LongPants(GetRandomHue()));
+						SetWearable(new LongPants(GetRandomHue()));
 						break;
 					case 1:
-						AddItem(new ShortPants(GetRandomHue()));
+						SetWearable(new ShortPants(GetRandomHue()));
 						break;
 				}
 			}
@@ -828,13 +828,13 @@ namespace Server.Mobiles
 				switch (Utility.Random(2))
 				{
 					case 0:
-						AddItem(new FemaleGargishClothLegs(GetRandomHue()));
-						AddItem(new FemaleGargishClothKilt(GetRandomHue()));
-						AddItem(new FemaleGargishClothChest(GetRandomHue()));
+						SetWearable(new FemaleGargishClothLegs(GetRandomHue()));
+						SetWearable(new FemaleGargishClothKilt(GetRandomHue()));
+						SetWearable(new FemaleGargishClothChest(GetRandomHue()));
 						break;
 					case 1:
-						AddItem(new FemaleGargishClothKilt(GetRandomHue()));
-						AddItem(new FemaleGargishClothChest(GetRandomHue()));
+						SetWearable(new FemaleGargishClothKilt(GetRandomHue()));
+						SetWearable(new FemaleGargishClothChest(GetRandomHue()));
 						break;
 				}
 			}
@@ -843,13 +843,13 @@ namespace Server.Mobiles
 				switch (Utility.Random(2))
 				{
 					case 0:
-						AddItem(new MaleGargishClothLegs(GetRandomHue()));
-						AddItem(new MaleGargishClothKilt(GetRandomHue()));
-						AddItem(new MaleGargishClothChest(GetRandomHue()));
+						SetWearable(new MaleGargishClothLegs(GetRandomHue()));
+						SetWearable(new MaleGargishClothKilt(GetRandomHue()));
+						SetWearable(new MaleGargishClothChest(GetRandomHue()));
 						break;
 					case 1:
-						AddItem(new MaleGargishClothKilt(GetRandomHue()));
-						AddItem(new MaleGargishClothChest(GetRandomHue()));
+						SetWearable(new MaleGargishClothKilt(GetRandomHue()));
+						SetWearable(new MaleGargishClothChest(GetRandomHue()));
 						break;
 				}
 			}
@@ -1078,7 +1078,7 @@ namespace Server.Mobiles
 				pack.Layer = Layer.ShopBuy;
 				pack.Movable = false;
 				pack.Visible = false;
-				AddItem(pack);
+				SetWearable(pack);
 			}
 
 			from.Send(new EquipUpdate(pack));
@@ -1098,7 +1098,7 @@ namespace Server.Mobiles
 				pack.Layer = Layer.ShopResale;
 				pack.Movable = false;
 				pack.Visible = false;
-				AddItem(pack);
+				SetWearable(pack);
 			}
 
 			from.Send(new EquipUpdate(pack));

@@ -6618,7 +6618,7 @@ namespace Server
 
 		public virtual int MaxWeight { get { return int.MaxValue; } }
 
-		public void AddItem(Item item)
+		public virtual void AddItem(Item item)
 		{
 			if (item == null || item.Deleted)
 			{
@@ -7232,6 +7232,11 @@ namespace Server
 
 			return null;
 		}
+
+        public TGump FindGump<TGump>() where TGump : Gump
+        {
+            return FindGump(typeof(TGump)) as TGump;
+        }
 
 		public bool CloseGump(Type type)
 		{

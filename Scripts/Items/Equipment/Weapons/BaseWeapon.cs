@@ -2048,8 +2048,9 @@ namespace Server.Items
 		}
 
 		private static bool m_InDoubleStrike;
-
 		public static bool InDoubleStrike { get { return m_InDoubleStrike; } set { m_InDoubleStrike = value; } }
+
+        public DateTime NextSelfRepair { get; set; }
 
 		public void OnHit(Mobile attacker, IDamageable damageable)
 		{
@@ -2185,10 +2186,13 @@ namespace Server.Items
                     attacker.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500263); // *Acid blood scars your weapon!*
                 }
 
-                if (Core.AOS &&
-                    m_AosWeaponAttributes.SelfRepair + (IsSetItem && m_SetEquipped ? m_SetSelfRepair : 0) > Utility.Random(10))
+                int selfRepair = !Core.AOS ? 0 : m_AosWeaponAttributes.SelfRepair + (IsSetItem && m_SetEquipped ? m_SetSelfRepair : 0);
+
+                if (selfRepair > 0 && NextSelfRepair < DateTime.UtcNow)
                 {
-                    HitPoints += 2;
+                    HitPoints += selfRepair;
+
+                    NextSelfRepair = DateTime.UtcNow + TimeSpan.FromSeconds(60);
                 }
                 else
                 {
