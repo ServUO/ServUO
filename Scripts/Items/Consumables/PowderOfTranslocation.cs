@@ -87,7 +87,7 @@ namespace Server.Items
                     {
                         MessageHelper.SendLocalizedMessageTo(this.m_Powder, from, 1054137, 0x59); // This item cannot absorb any more powder of translocation.
                     }
-                    else if (transItem.Recharges >= transItem.MaxRecharges)
+                    else if (transItem.MaxRecharges != -1 && transItem.Recharges >= transItem.MaxRecharges)
                     {
                         MessageHelper.SendLocalizedMessageTo(this.m_Powder, from, 1054138, 0x59); // This item has been oversaturated with powder of translocation and can no longer be recharged.
                     }

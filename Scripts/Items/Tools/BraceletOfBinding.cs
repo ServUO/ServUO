@@ -72,22 +72,25 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxCharges
+        public virtual int MaxCharges
         {
             get
             {
                 return 20;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxRecharges
+        public virtual int MaxRecharges
         {
             get
             {
                 return 255;
             }
         }
+
         public virtual string TranslocationItemName
         {
             get
@@ -95,6 +98,7 @@ namespace Server.Items
                 return "bracelet of binding";
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public string Inscription
         {
