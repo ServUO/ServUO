@@ -5,7 +5,6 @@ namespace Server.Items
     [Flipable(0x2684, 0x2683)]
     public class HoodedShroudOfShadows : BaseOuterTorso
 	{
-		public override bool IsArtifact { get { return true; } }
         [Constructable]
         public HoodedShroudOfShadows()
             : this(0x455)
