@@ -132,7 +132,7 @@ namespace Server.Gumps
 
             Page++;
 
-            if (!LastPage())
+            if (Index < Collection.Count)
             {
                 AddButton(300, 335, 0x15E1, 0x15E5, 0, GumpButtonType.Page, Page);
                 AddHtmlLocalized(240, 335, 60, 20, 1072854, 0x1, false, false); // <div align=right>Next</div>
@@ -204,9 +204,9 @@ namespace Server.Gumps
             return max;
         }
 
-        public virtual bool LastPage()
+        /*public virtual bool LastPage()
         {
-            if (Index >= Collection.Count - 1)
+            if (Index > Collection.Count - 1)
                 return true;
 
             int offset = 110;
@@ -215,15 +215,15 @@ namespace Server.Gumps
             {
                 CollectionItem item = Collection[i];
 
-                int next = Math.Max(item.Height, 20);
-                offset += 5 + Math.Max(item.Height, 20);
+                int next = Math.Max(item.Height, YDist);
+                offset += 5 + Math.Max(item.Height, YDist);
 
-                if (offset + next >= 300)
+                if (offset + next >= 320)
                     return false;
             }
 
             return true;
-        }
+        }*/
 	}
 	
 	public class aConfirmRewardGump : BaseConfirmGump

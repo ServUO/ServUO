@@ -388,6 +388,7 @@ namespace Server.Mobiles
 				if (m.Map != Map.Internal || m.Account != null ||
 					(m is IMount && ((IMount)m).Rider != null) ||
                     (m is GalleonPilot) ||
+                    (GenericBuyInfo.IsDisplayCache(m)) ||
 					(m is BaseCreature && ((BaseCreature)m).IsStabled))
 					return true;
 

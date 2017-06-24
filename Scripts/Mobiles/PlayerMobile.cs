@@ -1493,6 +1493,8 @@ namespace Server.Mobiles
 			{
 				InvalidateMyRunUO();
 			}
+
+            InvalidateProperties();
 		}
 
 		private static void Disconnect(object state)
