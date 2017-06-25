@@ -65,11 +65,11 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_ConfinedRoaming;
+                return m_ConfinedRoaming;
             }
             set
             {
-                this.m_ConfinedRoaming = value;
+                m_ConfinedRoaming = value;
             }
         }
 
@@ -78,11 +78,11 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_HasBeenAdvanced;
+                return m_HasBeenAdvanced;
             }
             set
             {
-                this.m_HasBeenAdvanced = value;
+                m_HasBeenAdvanced = value;
             }
         }
 
@@ -90,22 +90,22 @@ namespace Server.Engines.CannedEvil
         public ChampionSpawn()
             : base(0xBD2)
         {
-            this.Movable = false;
-            this.Visible = false;
+            Movable = false;
+            Visible = false;
 
-            this.m_Creatures = new List<Mobile>();
-            this.m_RedSkulls = new List<Item>();
-            this.m_WhiteSkulls = new List<Item>();
+            m_Creatures = new List<Mobile>();
+            m_RedSkulls = new List<Item>();
+            m_WhiteSkulls = new List<Item>();
 
-            this.m_Platform = new ChampionPlatform(this);
-            this.m_Altar = new ChampionAltar(this);
-            this.m_Idol = new IdolOfTheChampion(this);
+            m_Platform = new ChampionPlatform(this);
+            m_Altar = new ChampionAltar(this);
+            m_Idol = new IdolOfTheChampion(this);
 
-            this.m_ExpireDelay = TimeSpan.FromMinutes(10.0);
-            this.m_RestartDelay = TimeSpan.FromMinutes(10.0);
+            m_ExpireDelay = TimeSpan.FromMinutes(10.0);
+            m_RestartDelay = TimeSpan.FromMinutes(10.0);
 
-            this.m_DamageEntries = new Dictionary<Mobile, int>();
-			this.m_RandomizeType = false;
+            m_DamageEntries = new Dictionary<Mobile, int>();
+			m_RandomizeType = false;
 
             SpawnRadius = 35;
             SpawnMod = 1;
@@ -116,19 +116,19 @@ namespace Server.Engines.CannedEvil
         public void SetInitialSpawnArea()
         {
             //Previous default used to be 24;
-            this.SpawnArea = new Rectangle2D(new Point2D(this.X - SpawnRadius, this.Y - SpawnRadius),
-				new Point2D(this.X + SpawnRadius, this.Y + SpawnRadius));
+            SpawnArea = new Rectangle2D(new Point2D(X - SpawnRadius, Y - SpawnRadius),
+				new Point2D(X + SpawnRadius, Y + SpawnRadius));
         }
 
         public void UpdateRegion()
         {
-            if (this.m_Region != null)
-                this.m_Region.Unregister();
+            if (m_Region != null)
+                m_Region.Unregister();
 
-            if (!this.Deleted && this.Map != Map.Internal)
+            if (!Deleted && Map != Map.Internal)
             {
-                this.m_Region = new ChampionSpawnRegion(this);
-                this.m_Region.Register();
+                m_Region = new ChampionSpawnRegion(this);
+                m_Region.Register();
             }
         }
 
@@ -137,11 +137,11 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_RandomizeType;
+                return m_RandomizeType;
             }
             set
             {
-                this.m_RandomizeType = value;
+                m_RandomizeType = value;
             }
         }
 
@@ -150,12 +150,12 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_Kills;
+                return m_Kills;
             }
             set
             {
-                this.m_Kills = value;
-                this.InvalidateProperties();
+                m_Kills = value;
+                InvalidateProperties();
             }
         }
 
@@ -164,13 +164,13 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_SpawnArea;
+                return m_SpawnArea;
             }
             set
             {
-                this.m_SpawnArea = value;
-                this.InvalidateProperties();
-                this.UpdateRegion();
+                m_SpawnArea = value;
+                InvalidateProperties();
+                UpdateRegion();
             }
         }
 
@@ -179,11 +179,11 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_RestartDelay;
+                return m_RestartDelay;
             }
             set
             {
-                this.m_RestartDelay = value;
+                m_RestartDelay = value;
             }
         }
 
@@ -192,7 +192,7 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_RestartTime;
+                return m_RestartTime;
             }
         }
 
@@ -201,11 +201,11 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_ExpireDelay;
+                return m_ExpireDelay;
             }
             set
             {
-                this.m_ExpireDelay = value;
+                m_ExpireDelay = value;
             }
         }
 
@@ -214,11 +214,11 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_ExpireTime;
+                return m_ExpireTime;
             }
             set
             {
-                this.m_ExpireTime = value;
+                m_ExpireTime = value;
             }
         }
 
@@ -227,12 +227,12 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
-                this.InvalidateProperties();
+                m_Type = value;
+                InvalidateProperties();
             }
         }
 
@@ -241,18 +241,18 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_Active;
+                return m_Active;
             }
             set
             {
                 if (value)
-                    this.Start();
+                    Start();
                 else
-                    this.Stop();
+                    Stop();
 
                 PrimevalLichPuzzle.Update(this);
 				
-                this.InvalidateProperties();
+                InvalidateProperties();
             }
         }
 
@@ -261,11 +261,11 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_Champion;
+                return m_Champion;
             }
             set
             {
-                this.m_Champion = value;
+                m_Champion = value;
             }
         }
 
@@ -274,17 +274,17 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_RedSkulls.Count;
+                return m_RedSkulls.Count;
             }
             set
             {
-                for (int i = this.m_RedSkulls.Count - 1; i >= value; --i)
+                for (int i = m_RedSkulls.Count - 1; i >= value; --i)
                 {
-                    this.m_RedSkulls[i].Delete();
-                    this.m_RedSkulls.RemoveAt(i);
+                    m_RedSkulls[i].Delete();
+                    m_RedSkulls.RemoveAt(i);
                 }
 
-                for (int i = this.m_RedSkulls.Count; i < value; ++i)
+                for (int i = m_RedSkulls.Count; i < value; ++i)
                 {
                     Item skull = new Item(0x1854);
 
@@ -292,12 +292,12 @@ namespace Server.Engines.CannedEvil
                     skull.Movable = false;
                     skull.Light = LightType.Circle150;
 
-                    skull.MoveToWorld(this.GetRedSkullLocation(i), this.Map);
+                    skull.MoveToWorld(GetRedSkullLocation(i), Map);
 
-                    this.m_RedSkulls.Add(skull);
+                    m_RedSkulls.Add(skull);
                 }
 
-                this.InvalidateProperties();
+                InvalidateProperties();
             }
         }
 
@@ -312,27 +312,27 @@ namespace Server.Engines.CannedEvil
 
         public bool IsChampionSpawn(Mobile m)
         {
-            return this.m_Creatures.Contains(m);
+            return m_Creatures.Contains(m);
         }
 
         public void SetWhiteSkullCount(int val)
         {
-            for (int i = this.m_WhiteSkulls.Count - 1; i >= val; --i)
+            for (int i = m_WhiteSkulls.Count - 1; i >= val; --i)
             {
-                this.m_WhiteSkulls[i].Delete();
-                this.m_WhiteSkulls.RemoveAt(i);
+                m_WhiteSkulls[i].Delete();
+                m_WhiteSkulls.RemoveAt(i);
             }
 
-            for (int i = this.m_WhiteSkulls.Count; i < val; ++i)
+            for (int i = m_WhiteSkulls.Count; i < val; ++i)
             {
                 Item skull = new Item(0x1854);
 
                 skull.Movable = false;
                 skull.Light = LightType.Circle150;
 
-                skull.MoveToWorld(this.GetWhiteSkullLocation(i), this.Map);
+                skull.MoveToWorld(GetWhiteSkullLocation(i), Map);
 
-                this.m_WhiteSkulls.Add(skull);
+                m_WhiteSkulls.Add(skull);
 
                 Effects.PlaySound(skull.Location, skull.Map, 0x29);
                 Effects.SendLocationEffect(new Point3D(skull.X + 1, skull.Y + 1, skull.Z), skull.Map, 0x3728, 10);
@@ -341,97 +341,97 @@ namespace Server.Engines.CannedEvil
 
         public void Start()
         {
-            if (this.m_Active || this.Deleted)
+            if (m_Active || Deleted)
                 return;
 
-            this.m_Active = true;
-            this.m_HasBeenAdvanced = false;
+            m_Active = true;
+            m_HasBeenAdvanced = false;
 
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = new SliceTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new SliceTimer(this);
+            m_Timer.Start();
 
-            if (this.m_RestartTimer != null)
-                this.m_RestartTimer.Stop();
+            if (m_RestartTimer != null)
+                m_RestartTimer.Stop();
 
-            this.m_RestartTimer = null;
+            m_RestartTimer = null;
 
-            if (this.m_Altar != null)
+            if (m_Altar != null)
             {
-                if (this.m_Champion != null)
-                    this.m_Altar.Hue = 0x26;
+                if (m_Champion != null)
+                    m_Altar.Hue = 0x26;
                 else
-                    this.m_Altar.Hue = 0;
+                    m_Altar.Hue = 0;
             }
 
-            if (this.m_Platform != null)
-                this.m_Platform.Hue = 0x452;
+            if (m_Platform != null)
+                m_Platform.Hue = 0x452;
 
             PrimevalLichPuzzle.Update(this);
         }
 
         public void Stop()
         {
-            if (!this.m_Active || this.Deleted)
+            if (!m_Active || Deleted)
                 return;
 
-            this.m_Active = false;
-            this.m_HasBeenAdvanced = false;
+            m_Active = false;
+            m_HasBeenAdvanced = false;
 
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
 
-            if (this.m_RestartTimer != null)
-                this.m_RestartTimer.Stop();
+            if (m_RestartTimer != null)
+                m_RestartTimer.Stop();
 
-            this.m_RestartTimer = null;
+            m_RestartTimer = null;
 
-            if (this.m_Altar != null)
-                this.m_Altar.Hue = 0;
+            if (m_Altar != null)
+                m_Altar.Hue = 0;
 
-            if (this.m_Platform != null)
-                this.m_Platform.Hue = 0x497;
+            if (m_Platform != null)
+                m_Platform.Hue = 0x497;
 
             PrimevalLichPuzzle.Update(this);
         }
 
         public void BeginRestart(TimeSpan ts)
         {
-            if (this.m_RestartTimer != null)
-                this.m_RestartTimer.Stop();
+            if (m_RestartTimer != null)
+                m_RestartTimer.Stop();
 
-            this.m_RestartTime = DateTime.UtcNow + ts;
+            m_RestartTime = DateTime.UtcNow + ts;
 
-            this.m_RestartTimer = new RestartTimer(this, ts);
-            this.m_RestartTimer.Start();
+            m_RestartTimer = new RestartTimer(this, ts);
+            m_RestartTimer.Start();
         }
 
         public void EndRestart()
         {
-            if (this.RandomizeType)
+            if (RandomizeType)
             {
                 switch (Utility.Random(5))
                 {
                     case 0:
-                        this.Type = ChampionSpawnType.Abyss; break;
+                        Type = ChampionSpawnType.Abyss; break;
                     case 1:
-                        this.Type = ChampionSpawnType.Arachnid; break;
+                        Type = ChampionSpawnType.Arachnid; break;
                     case 2:
-                        this.Type = ChampionSpawnType.ColdBlood; break;
+                        Type = ChampionSpawnType.ColdBlood; break;
                     case 3:
-                        this.Type = ChampionSpawnType.VerminHorde; break;
+                        Type = ChampionSpawnType.VerminHorde; break;
                     case 4:
-                        this.Type = ChampionSpawnType.UnholyTerror; break;
+                        Type = ChampionSpawnType.UnholyTerror; break;
                 }
             }
 
-            this.m_HasBeenAdvanced = false;
+            m_HasBeenAdvanced = false;
 
-            this.Start();
+            Start();
         }
 
         #region Scroll of Transcendence
@@ -515,53 +515,53 @@ namespace Server.Engines.CannedEvil
 
         public void OnSlice()
         {
-            if (!this.m_Active || this.Deleted)
+            if (!m_Active || Deleted)
                 return;
 
 			int currentRank = Rank;
 
-            if (this.m_Champion != null)
+            if (m_Champion != null)
             {
-                if (this.m_Champion.Deleted)
+                if (m_Champion.Deleted)
                 {
-                    this.RegisterDamageTo(this.m_Champion);
+                    RegisterDamageTo(m_Champion);
 
-                    if (this.m_Champion is BaseChampion)
-                        this.AwardArtifact(((BaseChampion)this.m_Champion).GetArtifact());
+                    if (m_Champion is BaseChampion)
+                        AwardArtifact(((BaseChampion)m_Champion).GetArtifact());
 
-                    this.m_DamageEntries.Clear();
+                    m_DamageEntries.Clear();
 
-                    if (this.m_Platform != null)
-                        this.m_Platform.Hue = 0x497;
+                    if (m_Platform != null)
+                        m_Platform.Hue = 0x497;
 
-                    if (this.m_Altar != null)
+                    if (m_Altar != null)
                     {
-                        this.m_Altar.Hue = 0;
+                        m_Altar.Hue = 0;
 
-                        if (!Core.ML || this.Map == Map.Felucca)
+                        if (!Core.ML || Map == Map.Felucca)
                         {
-                            new StarRoomGate(true, this.m_Altar.Location, this.m_Altar.Map);
+                            new StarRoomGate(true, m_Altar.Location, m_Altar.Map);
                         }
                     }
 
-                    this.m_Champion = null;
-                    this.Stop();
+                    m_Champion = null;
+                    Stop();
 
 					if(AutoRestart)
-						this.BeginRestart(this.m_RestartDelay);
+						BeginRestart(m_RestartDelay);
                 }
                 else if (m_Champion.Alive && m_Champion.GetDistanceToSqrt(this) > MaxStrayDistance)
                 {
-                    this.m_Champion.MoveToWorld(new Point3D(this.X, this.Y, this.Z - 15), this.Map);
+                    m_Champion.MoveToWorld(new Point3D(X, Y, Z - 15), Map);
                 }
             }
             else
             {
-                int kills = this.m_Kills;
+                int kills = m_Kills;
 
-                for (int i = 0; i < this.m_Creatures.Count; ++i)
+                for (int i = 0; i < m_Creatures.Count; ++i)
                 {
-                    Mobile m = this.m_Creatures[i];
+                    Mobile m = m_Creatures[i];
 
                     if (m.Deleted)
                     {
@@ -569,16 +569,16 @@ namespace Server.Engines.CannedEvil
                         {
                             ((Corpse)m.Corpse).BeginDecay(TimeSpan.FromMinutes(1));
                         }
-                        this.m_Creatures.RemoveAt(i);
+                        m_Creatures.RemoveAt(i);
                         --i;
 
 						int rankOfMob = GetRankFor(m);
 						if(rankOfMob == currentRank)
-							++this.m_Kills;
+							++m_Kills;
 
                         Mobile killer = m.FindMostRecentDamager(false);
 
-                        this.RegisterDamageTo(m);
+                        RegisterDamageTo(m);
 
                         if (killer is BaseCreature)
                             killer = ((BaseCreature)killer).GetMaster();
@@ -588,7 +588,7 @@ namespace Server.Engines.CannedEvil
                             #region Scroll of Transcendence
                             if (Core.ML)
                             {
-                                if (this.Map == Map.Felucca)
+                                if (Map == Map.Felucca)
                                 {
                                     if (Utility.RandomDouble() < ChampionSystem.ScrollChance)
                                     {
@@ -596,7 +596,7 @@ namespace Server.Engines.CannedEvil
 
                                         if (Utility.RandomDouble() < ChampionSystem.TranscendenceChance)
                                         {
-                                            ScrollofTranscendence SoTF = this.CreateRandomSoT(true);
+                                            ScrollofTranscendence SoTF = CreateRandomSoT(true);
                                             GiveScrollTo(pm, (SpecialScroll)SoTF);
                                         }
                                         else
@@ -607,12 +607,12 @@ namespace Server.Engines.CannedEvil
                                     }
                                 }
 
-                                if (this.Map == Map.Ilshenar || this.Map == Map.Tokuno || this.Map == Map.Malas)
+                                if (Map == Map.Ilshenar || Map == Map.Tokuno || Map == Map.Malas)
                                 {
                                     if (Utility.RandomDouble() < 0.0015)
                                     {
                                         killer.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
-                                        ScrollofTranscendence SoTT = this.CreateRandomSoT(false);
+                                        ScrollofTranscendence SoTT = CreateRandomSoT(false);
                                         killer.AddToBackpack(SoTT);
                                     }
                                 }
@@ -637,7 +637,7 @@ namespace Server.Engines.CannedEvil
 
                                 PlayerMobile.ChampionTitleInfo info = ((PlayerMobile)killer).ChampionTitles;
 
-                                info.Award(this.m_Type, mobSubLevel);
+                                info.Award(m_Type, mobSubLevel);
 
                                 Server.Engines.CityLoyalty.CityLoyaltySystem.OnSpawnCreatureKilled(m as BaseCreature, mobSubLevel);
                             }
@@ -646,75 +646,75 @@ namespace Server.Engines.CannedEvil
                 }
 
                 // Only really needed once.
-                if (this.m_Kills > kills)
-                    this.InvalidateProperties();
+                if (m_Kills > kills)
+                    InvalidateProperties();
 
-                double n = this.m_Kills / (double)this.MaxKills;
+                double n = m_Kills / (double)MaxKills;
                 int p = (int)(n * 100);
 
                 if (p >= 90)
-                    this.AdvanceLevel();
+                    AdvanceLevel();
                 else if (p > 0)
-                    this.SetWhiteSkullCount(p / 20);
+                    SetWhiteSkullCount(p / 20);
 
-                if (DateTime.UtcNow >= this.m_ExpireTime)
-                    this.Expire();
+                if (DateTime.UtcNow >= m_ExpireTime)
+                    Expire();
 
-                this.Respawn();
+                Respawn();
             }
         }
 
         public void AdvanceLevel()
         {
-            this.m_ExpireTime = DateTime.UtcNow + this.m_ExpireDelay;
+            m_ExpireTime = DateTime.UtcNow + m_ExpireDelay;
 
-            if (this.Level < 16)
+            if (Level < 16)
             {
-                this.m_Kills = 0;
-                ++this.Level;
-                this.InvalidateProperties();
-                this.SetWhiteSkullCount(0);
+                m_Kills = 0;
+                ++Level;
+                InvalidateProperties();
+                SetWhiteSkullCount(0);
 
-                if (this.m_Altar != null)
+                if (m_Altar != null)
                 {
-                    Effects.PlaySound(this.m_Altar.Location, this.m_Altar.Map, 0x29);
-                    Effects.SendLocationEffect(new Point3D(this.m_Altar.X + 1, this.m_Altar.Y + 1, this.m_Altar.Z), this.m_Altar.Map, 0x3728, 10);
+                    Effects.PlaySound(m_Altar.Location, m_Altar.Map, 0x29);
+                    Effects.SendLocationEffect(new Point3D(m_Altar.X + 1, m_Altar.Y + 1, m_Altar.Z), m_Altar.Map, 0x3728, 10);
                 }
             }
             else
             {
-                this.SpawnChampion();
+                SpawnChampion();
             }
         }
 
         public void SpawnChampion()
         {
-            if (this.m_Altar != null)
-                this.m_Altar.Hue = 0x26;
+            if (m_Altar != null)
+                m_Altar.Hue = 0x26;
 
-            if (this.m_Platform != null)
-                this.m_Platform.Hue = 0x452;
+            if (m_Platform != null)
+                m_Platform.Hue = 0x452;
 
-            this.m_Kills = 0;
-            this.Level = 0;
-            this.InvalidateProperties();
-            this.SetWhiteSkullCount(0);
+            m_Kills = 0;
+            Level = 0;
+            InvalidateProperties();
+            SetWhiteSkullCount(0);
 
             try
             {
-                this.m_Champion = Activator.CreateInstance(ChampionSpawnInfo.GetInfo(this.m_Type).Champion) as Mobile;
+                m_Champion = Activator.CreateInstance(ChampionSpawnInfo.GetInfo(m_Type).Champion) as Mobile;
             }
             catch
             {
             }
 
-            if (this.m_Champion != null)
-                this.m_Champion.MoveToWorld(new Point3D(this.X, this.Y, this.Z - 15), this.Map);
+            if (m_Champion != null)
+                m_Champion.MoveToWorld(new Point3D(X, Y, Z - 15), Map);
         }
 
         public void Respawn()
         {
-            if (!this.m_Active || this.Deleted || this.m_Champion != null)
+            if (!m_Active || Deleted || m_Champion != null)
                 return;
 
 			int currentLevel = Level;
@@ -726,8 +726,8 @@ namespace Server.Engines.CannedEvil
 				maxSpawn = 3;
 
 			int spawnRadius = (int)(SpawnRadius * ChampionSystem.SpawnRadiusModForLevel(Level));
-			Rectangle2D spawnBounds = new Rectangle2D(new Point2D(this.X - spawnRadius, this.Y - spawnRadius),
-				new Point2D(this.X + spawnRadius, this.Y + spawnRadius));
+			Rectangle2D spawnBounds = new Rectangle2D(new Point2D(X - spawnRadius, Y - spawnRadius),
+				new Point2D(X + spawnRadius, Y + spawnRadius));
 
 			int mobCount = 0;
 			foreach(Mobile m in m_Creatures)
@@ -738,7 +738,7 @@ namespace Server.Engines.CannedEvil
 
 			while (mobCount <= maxSpawn)
             {
-                Mobile m = this.Spawn();
+                Mobile m = Spawn();
 
                 if (m == null)
                     return;
@@ -746,10 +746,10 @@ namespace Server.Engines.CannedEvil
                 Point3D loc = GetSpawnLocation(spawnBounds, spawnRadius);
 
                 // Allow creatures to turn into Paragons at Ilshenar champions.
-                m.OnBeforeSpawn(loc, this.Map);
+                m.OnBeforeSpawn(loc, Map);
 
-                this.m_Creatures.Add(m);
-                m.MoveToWorld(loc, this.Map);
+                m_Creatures.Add(m);
+                m.MoveToWorld(loc, Map);
 				++mobCount;
 
                 if (m is BaseCreature)
@@ -758,9 +758,9 @@ namespace Server.Engines.CannedEvil
                     bc.Tamable = false;
                     bc.IsChampionSpawn = true;
 
-                    if (!this.m_ConfinedRoaming)
+                    if (!m_ConfinedRoaming)
                     {
-                        bc.Home = this.Location;
+                        bc.Home = Location;
 						bc.RangeHome = spawnRadius;
                     }
                     else
@@ -788,10 +788,10 @@ namespace Server.Engines.CannedEvil
 
         public Point3D GetSpawnLocation(Rectangle2D rect, int range)
         {
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null)
-                return this.Location;
+                return Location;
 
 			int cx = Location.X;
 			int cy = Location.Y;
@@ -808,17 +808,17 @@ namespace Server.Engines.CannedEvil
 				//if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range * range)
 				//	continue;
 
-                int z = this.Map.GetAverageZ(x, y);
+                int z = Map.GetAverageZ(x, y);
 
-                if (this.Map.CanSpawnMobile(new Point2D(x, y), z))
+                if (Map.CanSpawnMobile(new Point2D(x, y), z))
                     return new Point3D(x, y, z);
 
                 /* try @ platform Z if map z fails */
-                else if (this.Map.CanSpawnMobile(new Point2D(x, y), this.m_Platform.Location.Z))
-                    return new Point3D(x, y, this.m_Platform.Location.Z);
+                else if (Map.CanSpawnMobile(new Point2D(x, y), m_Platform.Location.Z))
+                    return new Point3D(x, y, m_Platform.Location.Z);
             }
 
-            return this.Location;
+            return Location;
         }
 
         public int Rank
@@ -831,7 +831,7 @@ namespace Server.Engines.CannedEvil
 
         public int GetRankFor(Mobile m)
         {
-            Type[][] types = ChampionSpawnInfo.GetInfo(this.m_Type).SpawnTypes;
+            Type[][] types = ChampionSpawnInfo.GetInfo(m_Type).SpawnTypes;
             Type t = m.GetType();
 
             for (int i = 0; i < types.GetLength(0); i++)
@@ -850,12 +850,12 @@ namespace Server.Engines.CannedEvil
 
         public Mobile Spawn()
         {
-            Type[][] types = ChampionSpawnInfo.GetInfo(this.m_Type).SpawnTypes;
+            Type[][] types = ChampionSpawnInfo.GetInfo(m_Type).SpawnTypes;
 
 			int v = Rank;
 
             if (v >= 0 && v < types.Length)
-                return this.Spawn(types[v]);
+                return Spawn(types[v]);
 
             return null;
         }
@@ -874,22 +874,22 @@ namespace Server.Engines.CannedEvil
 
         public void Expire()
         {
-            this.m_Kills = 0;
+            m_Kills = 0;
 
-            if (this.m_WhiteSkulls.Count == 0)
+            if (m_WhiteSkulls.Count == 0)
             {
                 // They didn't even get 20%, go back a level
-                if (this.Level > 0)
-                    --this.Level;
+                if (Level > 0)
+                    --Level;
 
-                this.InvalidateProperties();
+                InvalidateProperties();
             }
             else
             {
-                this.SetWhiteSkullCount(0);
+                SetWhiteSkullCount(0);
             }
 
-            this.m_ExpireTime = DateTime.UtcNow + this.m_ExpireDelay;
+            m_ExpireTime = DateTime.UtcNow + m_ExpireDelay;
         }
 
         public Point3D GetRedSkullLocation(int index)
@@ -917,7 +917,7 @@ namespace Server.Engines.CannedEvil
                 y = 14 - index;
             }
 
-            return new Point3D(this.X + x, this.Y + y, this.Z - 15);
+            return new Point3D(X + x, Y + y, Z - 15);
         }
 
         public Point3D GetWhiteSkullLocation(int index)
@@ -945,7 +945,7 @@ namespace Server.Engines.CannedEvil
                     break;
             }
 
-            return new Point3D(this.X + x, this.Y + y, this.Z - 15);
+            return new Point3D(X + x, Y + y, Z - 15);
         }
 
         public override void AddNameProperty(ObjectPropertyList list)
@@ -957,12 +957,12 @@ namespace Server.Engines.CannedEvil
         {
             base.GetProperties(list);
 
-            if (this.m_Active)
+            if (m_Active)
             {
                 list.Add(1060742); // active
-                list.Add(1060658, "Type\t{0}", this.m_Type); // ~1_val~: ~2_val~
-                list.Add(1060659, "Level\t{0}", this.Level); // ~1_val~: ~2_val~
-                list.Add(1060660, "Kills\t{0} of {1} ({2:F1}%)", this.m_Kills, this.MaxKills, 100.0 * ((double)this.m_Kills / this.MaxKills)); // ~1_val~: ~2_val~
+                list.Add(1060658, "Type\t{0}", m_Type); // ~1_val~: ~2_val~
+                list.Add(1060659, "Level\t{0}", Level); // ~1_val~: ~2_val~
+                list.Add(1060660, "Kills\t{0} of {1} ({2:F1}%)", m_Kills, MaxKills, 100.0 * ((double)m_Kills / MaxKills)); // ~1_val~: ~2_val~
                 //list.Add( 1060661, "Spawn Range\t{0}", m_SpawnRange ); // ~1_val~: ~2_val~
             }
             else
@@ -973,10 +973,10 @@ namespace Server.Engines.CannedEvil
 
         public override void OnSingleClick(Mobile from)
         {
-            if (this.m_Active)
-                this.LabelTo(from, "{0} (Active; Level: {1}; Kills: {2}/{3})", this.m_Type, this.Level, this.m_Kills, this.MaxKills);
+            if (m_Active)
+                LabelTo(from, "{0} (Active; Level: {1}; Kills: {2}/{3})", m_Type, Level, m_Kills, MaxKills);
             else
-                this.LabelTo(from, "{0} (Inactive)", this.m_Type);
+                LabelTo(from, "{0} (Inactive)", m_Type);
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -986,113 +986,113 @@ namespace Server.Engines.CannedEvil
 
         public override void OnLocationChange(Point3D oldLoc)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            if (this.m_Platform != null)
-                this.m_Platform.Location = new Point3D(this.X, this.Y, this.Z - 20);
+            if (m_Platform != null)
+                m_Platform.Location = new Point3D(X, Y, Z - 20);
 
-            if (this.m_Altar != null)
-                this.m_Altar.Location = new Point3D(this.X, this.Y, this.Z - 15);
+            if (m_Altar != null)
+                m_Altar.Location = new Point3D(X, Y, Z - 15);
 
-            if (this.m_Idol != null)
-                this.m_Idol.Location = new Point3D(this.X, this.Y, this.Z - 15);
+            if (m_Idol != null)
+                m_Idol.Location = new Point3D(X, Y, Z - 15);
 
-            if (this.m_RedSkulls != null)
+            if (m_RedSkulls != null)
             {
-                for (int i = 0; i < this.m_RedSkulls.Count; ++i)
-                    this.m_RedSkulls[i].Location = this.GetRedSkullLocation(i);
+                for (int i = 0; i < m_RedSkulls.Count; ++i)
+                    m_RedSkulls[i].Location = GetRedSkullLocation(i);
             }
 
-            if (this.m_WhiteSkulls != null)
+            if (m_WhiteSkulls != null)
             {
-                for (int i = 0; i < this.m_WhiteSkulls.Count; ++i)
-                    this.m_WhiteSkulls[i].Location = this.GetWhiteSkullLocation(i);
+                for (int i = 0; i < m_WhiteSkulls.Count; ++i)
+                    m_WhiteSkulls[i].Location = GetWhiteSkullLocation(i);
             }
 
-            this.m_SpawnArea.X += this.Location.X - oldLoc.X;
-            this.m_SpawnArea.Y += this.Location.Y - oldLoc.Y;
+            m_SpawnArea.X += Location.X - oldLoc.X;
+            m_SpawnArea.Y += Location.Y - oldLoc.Y;
 
-            this.UpdateRegion();
+            UpdateRegion();
         }
 
         public override void OnMapChange()
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            if (this.m_Platform != null)
-                this.m_Platform.Map = this.Map;
+            if (m_Platform != null)
+                m_Platform.Map = Map;
 
-            if (this.m_Altar != null)
-                this.m_Altar.Map = this.Map;
+            if (m_Altar != null)
+                m_Altar.Map = Map;
 
-            if (this.m_Idol != null)
-                this.m_Idol.Map = this.Map;
+            if (m_Idol != null)
+                m_Idol.Map = Map;
 
-            if (this.m_RedSkulls != null)
+            if (m_RedSkulls != null)
             {
-                for (int i = 0; i < this.m_RedSkulls.Count; ++i)
-                    this.m_RedSkulls[i].Map = this.Map;
+                for (int i = 0; i < m_RedSkulls.Count; ++i)
+                    m_RedSkulls[i].Map = Map;
             }
 
-            if (this.m_WhiteSkulls != null)
+            if (m_WhiteSkulls != null)
             {
-                for (int i = 0; i < this.m_WhiteSkulls.Count; ++i)
-                    this.m_WhiteSkulls[i].Map = this.Map;
+                for (int i = 0; i < m_WhiteSkulls.Count; ++i)
+                    m_WhiteSkulls[i].Map = Map;
             }
 
-            this.UpdateRegion();
+            UpdateRegion();
         }
 
         public override void OnAfterDelete()
         {
             base.OnAfterDelete();
 
-            if (this.m_Platform != null)
-                this.m_Platform.Delete();
+            if (m_Platform != null)
+                m_Platform.Delete();
 
-            if (this.m_Altar != null)
-                this.m_Altar.Delete();
+            if (m_Altar != null)
+                m_Altar.Delete();
 
-            if (this.m_Idol != null)
-                this.m_Idol.Delete();
+            if (m_Idol != null)
+                m_Idol.Delete();
 
-            if (this.m_RedSkulls != null)
+            if (m_RedSkulls != null)
             {
-                for (int i = 0; i < this.m_RedSkulls.Count; ++i)
-                    this.m_RedSkulls[i].Delete();
+                for (int i = 0; i < m_RedSkulls.Count; ++i)
+                    m_RedSkulls[i].Delete();
 
-                this.m_RedSkulls.Clear();
+                m_RedSkulls.Clear();
             }
 
-            if (this.m_WhiteSkulls != null)
+            if (m_WhiteSkulls != null)
             {
-                for (int i = 0; i < this.m_WhiteSkulls.Count; ++i)
-                    this.m_WhiteSkulls[i].Delete();
+                for (int i = 0; i < m_WhiteSkulls.Count; ++i)
+                    m_WhiteSkulls[i].Delete();
 
-                this.m_WhiteSkulls.Clear();
+                m_WhiteSkulls.Clear();
             }
 
-            if (this.m_Creatures != null)
+            if (m_Creatures != null)
             {
-                for (int i = 0; i < this.m_Creatures.Count; ++i)
+                for (int i = 0; i < m_Creatures.Count; ++i)
                 {
-                    Mobile mob = this.m_Creatures[i];
+                    Mobile mob = m_Creatures[i];
 
                     if (!mob.Player)
                         mob.Delete();
                 }
 
-                this.m_Creatures.Clear();
+                m_Creatures.Clear();
             }
 
-            if (this.m_Champion != null && !this.m_Champion.Player)
-                this.m_Champion.Delete();
+            if (m_Champion != null && !m_Champion.Player)
+                m_Champion.Delete();
 
-            this.Stop();
+            Stop();
 
-            this.UpdateRegion();
+            UpdateRegion();
         }
 
         public ChampionSpawn(Serial serial)
@@ -1117,7 +1117,7 @@ namespace Server.Engines.CannedEvil
                 if (master != null)
                     damager = master;
 
-                this.RegisterDamage(damager, de.DamageGiven);
+                RegisterDamage(damager, de.DamageGiven);
             }
         }
 
@@ -1126,10 +1126,10 @@ namespace Server.Engines.CannedEvil
             if (from == null || !from.Player)
                 return;
 
-            if (this.m_DamageEntries.ContainsKey(from))
-                this.m_DamageEntries[from] += amount;
+            if (m_DamageEntries.ContainsKey(from))
+                m_DamageEntries[from] += amount;
             else
-                this.m_DamageEntries.Add(from, amount);
+                m_DamageEntries.Add(from, amount);
         }
 
         public void AwardArtifact(Item artifact)
@@ -1141,9 +1141,9 @@ namespace Server.Engines.CannedEvil
 
             Dictionary<Mobile, int> validEntries = new Dictionary<Mobile, int>();
 
-            foreach (KeyValuePair<Mobile, int> kvp in this.m_DamageEntries)
+            foreach (KeyValuePair<Mobile, int> kvp in m_DamageEntries)
             {
-                if (this.IsEligible(kvp.Key, artifact))
+                if (IsEligible(kvp.Key, artifact))
                 {
                     validEntries.Add(kvp.Key, kvp.Value);
                     totalDamage += kvp.Value;
@@ -1160,7 +1160,7 @@ namespace Server.Engines.CannedEvil
 
                 if (totalDamage >= randomDamage)
                 {
-                    this.GiveArtifact(kvp.Key, artifact);
+                    GiveArtifact(kvp.Key, artifact);
                     return;
                 }
             }
@@ -1185,7 +1185,7 @@ namespace Server.Engines.CannedEvil
 
         public bool IsEligible(Mobile m, Item Artifact)
         {
-            return m.Player && m.Alive && m.Region != null && m.Region == this.m_Region && m.Backpack != null && m.Backpack.CheckHold(m, Artifact, false);
+            return m.Player && m.Alive && m.Region != null && m.Region == m_Region && m.Backpack != null && m.Backpack.CheckHold(m, Artifact, false);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -1202,46 +1202,46 @@ namespace Server.Engines.CannedEvil
 			writer.Write(SpawnMod);
 			writer.Write(SpawnRadius);
 
-            writer.Write(this.m_DamageEntries.Count);
-            foreach (KeyValuePair<Mobile, int> kvp in this.m_DamageEntries)
+            writer.Write(m_DamageEntries.Count);
+            foreach (KeyValuePair<Mobile, int> kvp in m_DamageEntries)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
             }
 
-            writer.Write(this.m_ConfinedRoaming);
-            writer.WriteItem<IdolOfTheChampion>(this.m_Idol);
-            writer.Write(this.m_HasBeenAdvanced);
-            writer.Write(this.m_SpawnArea);
+            writer.Write(m_ConfinedRoaming);
+            writer.WriteItem<IdolOfTheChampion>(m_Idol);
+            writer.Write(m_HasBeenAdvanced);
+            writer.Write(m_SpawnArea);
 
-            writer.Write(this.m_RandomizeType);
+            writer.Write(m_RandomizeType);
 
             // writer.Write( m_SpawnRange );
-            writer.Write(this.m_Kills);
+            writer.Write(m_Kills);
 
-            writer.Write((bool)this.m_Active);
-            writer.Write((int)this.m_Type);
-            writer.Write(this.m_Creatures, true);
-            writer.Write(this.m_RedSkulls, true);
-            writer.Write(this.m_WhiteSkulls, true);
-            writer.WriteItem<ChampionPlatform>(this.m_Platform);
-            writer.WriteItem<ChampionAltar>(this.m_Altar);
-            writer.Write(this.m_ExpireDelay);
-            writer.WriteDeltaTime(this.m_ExpireTime);
-            writer.Write(this.m_Champion);
-            writer.Write(this.m_RestartDelay);
+            writer.Write((bool)m_Active);
+            writer.Write((int)m_Type);
+            writer.Write(m_Creatures, true);
+            writer.Write(m_RedSkulls, true);
+            writer.Write(m_WhiteSkulls, true);
+            writer.WriteItem<ChampionPlatform>(m_Platform);
+            writer.WriteItem<ChampionAltar>(m_Altar);
+            writer.Write(m_ExpireDelay);
+            writer.WriteDeltaTime(m_ExpireTime);
+            writer.Write(m_Champion);
+            writer.Write(m_RestartDelay);
 
-            writer.Write(this.m_RestartTimer != null);
+            writer.Write(m_RestartTimer != null);
 
-            if (this.m_RestartTimer != null)
-                writer.WriteDeltaTime(this.m_RestartTime);
+            if (m_RestartTimer != null)
+                writer.WriteDeltaTime(m_RestartTime);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            this.m_DamageEntries = new Dictionary<Mobile, int>();
+            m_DamageEntries = new Dictionary<Mobile, int>();
 
             int version = reader.ReadInt();
 
@@ -1270,28 +1270,28 @@ namespace Server.Engines.CannedEvil
                             if (m == null)
                                 continue;
 
-                            this.m_DamageEntries.Add(m, damage);
+                            m_DamageEntries.Add(m, damage);
                         }
 
                         goto case 4;
                     }
                 case 4:
                     {
-                        this.m_ConfinedRoaming = reader.ReadBool();
-                        this.m_Idol = reader.ReadItem<IdolOfTheChampion>();
-                        this.m_HasBeenAdvanced = reader.ReadBool();
+                        m_ConfinedRoaming = reader.ReadBool();
+                        m_Idol = reader.ReadItem<IdolOfTheChampion>();
+                        m_HasBeenAdvanced = reader.ReadBool();
 
                         goto case 3;
                     }
                 case 3:
                     {
-                        this.m_SpawnArea = reader.ReadRect2D();
+                        m_SpawnArea = reader.ReadRect2D();
 
                         goto case 2;
                     }
                 case 2:
                     {
-                        this.m_RandomizeType = reader.ReadBool();
+                        m_RandomizeType = reader.ReadBool();
 
                         goto case 1;
                     }
@@ -1301,46 +1301,46 @@ namespace Server.Engines.CannedEvil
                         {
                             int oldRange = reader.ReadInt();
 
-                            this.m_SpawnArea = new Rectangle2D(new Point2D(this.X - oldRange, this.Y - oldRange), new Point2D(this.X + oldRange, this.Y + oldRange));
+                            m_SpawnArea = new Rectangle2D(new Point2D(X - oldRange, Y - oldRange), new Point2D(X + oldRange, Y + oldRange));
                         }
 
-                        this.m_Kills = reader.ReadInt();
+                        m_Kills = reader.ReadInt();
 
                         goto case 0;
                     }
                 case 0:
                     {
                         if (version < 1)
-                            this.m_SpawnArea = new Rectangle2D(new Point2D(this.X - 24, this.Y - 24), new Point2D(this.X + 24, this.Y + 24));	//Default was 24
+                            m_SpawnArea = new Rectangle2D(new Point2D(X - 24, Y - 24), new Point2D(X + 24, Y + 24));	//Default was 24
 
                         bool active = reader.ReadBool();
-                        this.m_Type = (ChampionSpawnType)reader.ReadInt();
-                        this.m_Creatures = reader.ReadStrongMobileList();
-                        this.m_RedSkulls = reader.ReadStrongItemList();
-                        this.m_WhiteSkulls = reader.ReadStrongItemList();
-                        this.m_Platform = reader.ReadItem<ChampionPlatform>();
-                        this.m_Altar = reader.ReadItem<ChampionAltar>();
-                        this.m_ExpireDelay = reader.ReadTimeSpan();
-                        this.m_ExpireTime = reader.ReadDeltaTime();
-                        this.m_Champion = reader.ReadMobile();
-                        this.m_RestartDelay = reader.ReadTimeSpan();
+                        m_Type = (ChampionSpawnType)reader.ReadInt();
+                        m_Creatures = reader.ReadStrongMobileList();
+                        m_RedSkulls = reader.ReadStrongItemList();
+                        m_WhiteSkulls = reader.ReadStrongItemList();
+                        m_Platform = reader.ReadItem<ChampionPlatform>();
+                        m_Altar = reader.ReadItem<ChampionAltar>();
+                        m_ExpireDelay = reader.ReadTimeSpan();
+                        m_ExpireTime = reader.ReadDeltaTime();
+                        m_Champion = reader.ReadMobile();
+                        m_RestartDelay = reader.ReadTimeSpan();
 
                         if (reader.ReadBool())
                         {
-                            this.m_RestartTime = reader.ReadDeltaTime();
-                            this.BeginRestart(this.m_RestartTime - DateTime.UtcNow);
+                            m_RestartTime = reader.ReadDeltaTime();
+                            BeginRestart(m_RestartTime - DateTime.UtcNow);
                         }
 
                         if (version < 4)
                         {
-                            this.m_Idol = new IdolOfTheChampion(this);
-                            this.m_Idol.MoveToWorld(new Point3D(this.X, this.Y, this.Z - 15), this.Map);
+                            m_Idol = new IdolOfTheChampion(this);
+                            m_Idol.MoveToWorld(new Point3D(X, Y, Z - 15), Map);
                         }
 
-                        if (this.m_Platform == null || this.m_Altar == null || this.m_Idol == null)
-                            this.Delete();
+                        if (m_Platform == null || m_Altar == null || m_Idol == null)
+                            Delete();
                         else if (active)
-                            this.Start();
+                            Start();
 
                         break;
                     }
@@ -1474,14 +1474,14 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_Spawn;
+                return m_Spawn;
             }
         }
 
         public ChampionSpawnRegion(ChampionSpawn spawn)
             : base(null, spawn.Map, Region.Find(spawn.Location, spawn.Map), spawn.SpawnArea)
         {
-            this.m_Spawn = spawn;
+            m_Spawn = spawn;
         }
 
         public override bool AllowHousing(Mobile from, Point3D p)
@@ -1492,7 +1492,7 @@ namespace Server.Engines.CannedEvil
         public override void AlterLightLevel(Mobile m, ref int global, ref int personal)
         {
             base.AlterLightLevel(m, ref global, ref personal);
-            global = Math.Max(global, 1 + this.m_Spawn.Level);	//This is a guesstimate.  TODO: Verify & get exact values // OSI testing: at 2 red skulls, light = 0x3 ; 1 red = 0x3.; 3 = 8; 9 = 0xD 8 = 0xD 12 = 0x12 10 = 0xD
+            global = Math.Max(global, 1 + m_Spawn.Level);	//This is a guesstimate.  TODO: Verify & get exact values // OSI testing: at 2 red skulls, light = 0x3 ; 1 red = 0x3.; 3 = 8; 9 = 0xD 8 = 0xD 12 = 0x12 10 = 0xD
         }
     }
 
@@ -1504,7 +1504,7 @@ namespace Server.Engines.CannedEvil
         {
             get
             {
-                return this.m_Spawn;
+                return m_Spawn;
             }
         }
 
@@ -1519,16 +1519,16 @@ namespace Server.Engines.CannedEvil
         public IdolOfTheChampion(ChampionSpawn spawn)
             : base(0x1F18)
         {
-            this.m_Spawn = spawn;
-            this.Movable = false;
+            m_Spawn = spawn;
+            Movable = false;
         }
 
         public override void OnAfterDelete()
         {
             base.OnAfterDelete();
 
-            if (this.m_Spawn != null)
-                this.m_Spawn.Delete();
+            if (m_Spawn != null)
+                m_Spawn.Delete();
         }
 
         public IdolOfTheChampion(Serial serial)
@@ -1542,7 +1542,7 @@ namespace Server.Engines.CannedEvil
 
             writer.Write((int)0); // version
 
-            writer.Write(this.m_Spawn);
+            writer.Write(m_Spawn);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1555,10 +1555,10 @@ namespace Server.Engines.CannedEvil
             {
                 case 0:
                     {
-                        this.m_Spawn = reader.ReadItem() as ChampionSpawn;
+                        m_Spawn = reader.ReadItem() as ChampionSpawn;
 
-                        if (this.m_Spawn == null)
-                            this.Delete();
+                        if (m_Spawn == null)
+                            Delete();
 
                         break;
                     }
