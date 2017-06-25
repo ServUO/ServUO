@@ -32,6 +32,7 @@ using Server.Targeting;
 using System.Linq;
 using Server.Spells.SkillMasteries;
 using Server.Prompts;
+using Server.Engines.MiniChamps;
 #endregion
 
 namespace Server.Mobiles
@@ -275,6 +276,9 @@ namespace Server.Mobiles
         private int m_FailedReturnHome; /* return to home failure counter */
 
         private bool m_IsChampionSpawn;
+        
+        private bool m_IsMiniChampionSpawn;
+        private MiniChampType m_MiniChampionType;
 
         private Mobile m_InitialFocus;
         #endregion
@@ -571,6 +575,20 @@ namespace Server.Mobiles
 
                 InvalidateProperties();
             }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsMiniChampionSpawn
+        {
+            get { return m_IsMiniChampionSpawn; }
+            set { m_IsMiniChampionSpawn = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public MiniChampType MiniChampionType
+        {
+            get { return m_MiniChampionType; }
+            set { m_MiniChampionType = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -2178,7 +2196,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(21); // version
+            writer.Write(22); // version
 
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
@@ -2308,6 +2326,9 @@ namespace Server.Mobiles
 
             // Mondain's Legacy version 19
             writer.Write(m_Allured);
+
+            writer.Write((bool)m_IsMiniChampionSpawn);
+            writer.Write((int)m_MiniChampionType);
         }
 
         private static readonly double[] m_StandardActiveSpeeds = new[] { 0.175, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8 };
@@ -2582,6 +2603,12 @@ namespace Server.Mobiles
             if (version <= 20)
             {
                 reader.ReadInt();
+            }
+
+            if (version >= 22)
+            {
+                m_IsMiniChampionSpawn = reader.ReadBool();
+                m_MiniChampionType = (MiniChampType)reader.ReadInt();
             }
 
             if (version <= 14 && m_Paragon && Hue == 0x31)
@@ -5246,6 +5273,19 @@ namespace Server.Mobiles
             {
                 m_HasGeneratedLoot = true;
                 GenerateLoot(false);
+            }
+
+            if (!Summoned && !m_HasGeneratedLoot && IsMiniChampionSpawn && Fame > Utility.Random(100000))
+            {
+                Type essenceType = MiniChampInfo.GetInfo(MiniChampionType).EssenceType;
+
+                Item essence = null;
+
+                try { essence = (Item)Activator.CreateInstance(essenceType); }
+                catch { }
+
+                if (essence != null)
+                    PackItem(essence);
             }
 
             if (!NoKillAwards && Region.IsPartOf("Doom"))

@@ -42,8 +42,7 @@ namespace Server.Mobiles
             this.Karma = -7500;
 
             this.VirtualArmor = 44;
-
-            this.PackItem(new EssenceBalance());
+            
             this.PackReg(6);
 
             if (0.02 > Utility.RandomDouble())

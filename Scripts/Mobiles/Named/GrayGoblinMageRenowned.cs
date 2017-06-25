@@ -43,8 +43,6 @@ namespace Server.Mobiles
             this.Karma = -1500;
 
             this.VirtualArmor = 28;
-
-            this.PackItem(new EssenceControl());
 			
             switch ( Utility.Random(20) )
             {

@@ -44,8 +44,6 @@ namespace Server.Mobiles
             this.Karma = -22500;
 
             this.VirtualArmor = 80;
-		
-            this.PackItem(new EssencePersistence());
         }
 
         public SkeletalDragonRenowned(Serial serial)
