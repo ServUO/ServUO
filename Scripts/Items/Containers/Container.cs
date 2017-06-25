@@ -83,6 +83,12 @@ namespace Server.Items
             if (!CheckStack(from, dropped) && !CheckHold(from, dropped, sendFullMessage, true))
                 return false;
 
+            if (dropped.QuestItem && from.Backpack != this)
+            {
+                from.SendLocalizedMessage(1074769); // An item must be in your backpack (and not in a container within) to be toggled as a quest item.
+                return false;
+            }
+
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
             if (house != null && house.IsLockedDown(this))
@@ -137,6 +143,12 @@ namespace Server.Items
         {
             if (!CheckHold(from, item, true, true))
                 return false;
+
+            if (item.QuestItem && from.Backpack != this)
+            {
+                from.SendLocalizedMessage(1074769); // An item must be in your backpack (and not in a container within) to be toggled as a quest item.
+                return false;
+            }
 
             BaseHouse house = BaseHouse.FindHouseAt(this);
 

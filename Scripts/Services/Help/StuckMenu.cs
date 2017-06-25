@@ -305,6 +305,9 @@ namespace Server.Menus.Questions
                     else
                         destMap = this.m_Mobile.Murderer ? Map.Felucca : Map.Trammel;
 
+                    if (destMap == Map.Trammel && Siege.SiegeShard)
+                        destMap = Map.Felucca;
+
                     if (m_Mobile.Map != Map.Internal)
                     {
                         Mobiles.BaseCreature.TeleportPets(this.m_Mobile, dest, destMap);

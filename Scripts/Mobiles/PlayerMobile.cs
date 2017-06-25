@@ -1493,6 +1493,8 @@ namespace Server.Mobiles
 			{
 				InvalidateMyRunUO();
 			}
+
+            InvalidateProperties();
 		}
 
 		private static void Disconnect(object state)
@@ -3346,25 +3348,6 @@ namespace Server.Mobiles
 				#endregion
 			}
 		}
-
-        public override sealed void AddItem(Item item)
-        {
-            if (item == null || item.Deleted || !item.CanEquip(this) || !CheckEquip(item) || !OnEquip(item) || !item.OnEquip(this))
-            {
-                if (Backpack == null)
-                {
-                    var pack = new Backpack();
-                    pack.Movable = false;
-                    pack.AddItem(pack);
-                }
-
-                Backpack.DropItem(item);
-            }
-            else
-            {
-                base.AddItem(item);
-            }
-        }
 
 		public override double RacialSkillBonus
 		{

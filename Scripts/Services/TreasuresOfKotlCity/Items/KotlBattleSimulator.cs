@@ -182,7 +182,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // Version
+            writer.Write(1); // Version
 
             writer.Write(_Active);
             writer.Write(Level);
@@ -226,6 +226,26 @@ namespace Server.Engines.TreasuresOfKotlCity
 
                     Spawn.Add(bc);
                 }
+            }
+
+            // Teleporter Fix
+            if (version == 0)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(20), () =>
+                    {
+                        if (Map != null)
+                        {
+                            IPooledEnumerable eable = Map.GetItemsInRange(new Point3D(644, 2308, 0), 0);
+
+                            foreach (Item i in eable)
+                            {
+                                if (i is Teleporter)
+                                {
+                                    ((Teleporter)i).PointDest = new Point3D(543, 2479, 2);
+                                }
+                            }
+                        }
+                    });
             }
         }
     }

@@ -49,7 +49,7 @@ namespace Server.Engines.CannedEvil
 
 				Point3D p = FindGoldLocation(m_Map, m_Location, m_PilesMax / 8);
 				Gold g = new Gold(m_MinAmount, m_MaxAmount);
-				g.DropToWorld(p, this.m_Map);
+				g.MoveToWorld(p, this.m_Map);
 
 				switch (Utility.Random(3))
 				{
