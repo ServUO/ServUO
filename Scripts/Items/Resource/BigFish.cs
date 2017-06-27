@@ -5,12 +5,14 @@ namespace Server.Items
     public class BigFish : Item, ICarvable
     {
         private Mobile m_Fisher;
+        private DateTime m_DateCaught;
+
         [Constructable]
         public BigFish()
             : base(0x09CC)
         {
-            this.Weight = Utility.RandomMinMax(3, 200);	//TODO: Find correct formula.  max on OSI currently 200, OSI dev says it's not 200 as max, and ~ 1/1,000,000 chance to get highest
-            this.Hue = Utility.RandomBool() ? 0x847 : 0x58C;
+            Weight = Utility.RandomMinMax(3, 200);	//TODO: Find correct formula.  max on OSI currently 200, OSI dev says it's not 200 as max, and ~ 1/1,000,000 chance to get highest
+            Hue = Utility.RandomBool() ? 0x847 : 0x58C;
         }
 
         public BigFish(Serial serial)
@@ -23,14 +25,18 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Fisher;
+                return m_Fisher;
             }
             set
             {
-                this.m_Fisher = value;
-                this.InvalidateProperties();
+                m_Fisher = value;
+                InvalidateProperties();
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime DateCaught { get { return m_DateCaught; } set { m_DateCaught = value; } }
+
         public override int LabelNumber
         {
             get
@@ -40,7 +46,7 @@ namespace Server.Items
         }// a big fish
         public bool Carve(Mobile from, Item item)
         {
-            base.ScissorHelper(from, new RawFishSteak(), Math.Max(16, (int)this.Weight) / 4, false);
+            base.ScissorHelper(from, new RawFishSteak(), Math.Max(16, (int)Weight) / 4, false);
             return true;
         }
 
@@ -48,12 +54,15 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.Weight >= 20)
+            if (Weight >= 20)
             {
-                if (this.m_Fisher != null)
-                    list.Add(1070857, this.m_Fisher.Name); // Caught by ~1_fisherman~
+                if (m_Fisher != null)
+                    list.Add(1070857, m_Fisher.Name); // Caught by ~1_fisherman~
 
-                list.Add(1070858, ((int)this.Weight).ToString()); // ~1_weight~ stones
+                if (m_DateCaught != DateTime.MinValue)
+                    list.Add(1049644, m_DateCaught.ToShortDateString()); // [~1_stuff~]
+
+                list.Add(1070858, ((int)Weight).ToString()); // ~1_weight~ stones
             }
         }
 
@@ -61,9 +70,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write((int)2); // version
 
-            writer.Write((Mobile)this.m_Fisher);
+            writer.Write(m_DateCaught);
+            writer.Write((Mobile)m_Fisher);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -74,14 +84,19 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 2:
+                    {
+                        m_DateCaught = reader.ReadDateTime();
+                        goto case 1;
+                    }
                 case 1:
                     {
-                        this.m_Fisher = reader.ReadMobile();
+                        m_Fisher = reader.ReadMobile();
                         break;
                     }
                 case 0:
                     {
-                        this.Weight = Utility.RandomMinMax(3, 200);
+                        Weight = Utility.RandomMinMax(3, 200);
                         break;
                     }
             }

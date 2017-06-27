@@ -274,13 +274,15 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	
+
+    [Flipable(40253, 40252)]
 	public class EodonianWallMap : Item
 	{
 		public override int LabelNumber { get { return 1156690; } } // Wall Map of Eodon
 
 		[Constructable]
-		public EodonianWallMap() : base(11635)
+        public EodonianWallMap()
+            : base(40253)
 		{
 		}
 		
