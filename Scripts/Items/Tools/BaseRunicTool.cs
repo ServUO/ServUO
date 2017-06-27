@@ -337,12 +337,10 @@ namespace Server.Items
                         ApplyElementalDamage(weapon, min, max);
                         break;
                     case 25:
-                        BaseRanged brb = weapon as BaseRanged;
-                        brb.Balanced = true;
+                        ((BaseRanged)weapon).Balanced = true;
                         break;
                     case 26:
-                        BaseRanged brv = weapon as BaseRanged;
-                    	brv.Velocity = (Utility.RandomMinMax(2,50));
+                        ApplyVelocityAttribute((BaseRanged)weapon, min, max, 2, 50, 2);
                    		break;
                 }
             }
@@ -905,6 +903,11 @@ namespace Server.Items
         private static void ApplyAttribute(AosElementAttributes attrs, int min, int max, AosElementAttribute attr, int low, int high, int scale)
         {
             attrs[attr] = Scale(min, max, low / scale, high / scale) * scale;
+        }
+
+        private static void ApplyVelocityAttribute(BaseRanged ranged, int min, int max, int low, int high, int scale)
+        {
+            ranged.Velocity = Scale(min, max, low / scale, high / scale) * scale;
         }
 
         public static void ApplyElementalDamage(BaseWeapon weapon, int min, int max)

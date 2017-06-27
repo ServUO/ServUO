@@ -569,6 +569,7 @@ namespace Server.Engines.Harvest
                 from.SendLocalizedMessage(1042635); // Your fishing pole bends as you pull a big fish from the depths!
 
                 ((BigFish)item).Fisher = from;
+                ((BigFish)item).DateCaught = DateTime.Now;
             }
 
             #region Stygian Abyss
