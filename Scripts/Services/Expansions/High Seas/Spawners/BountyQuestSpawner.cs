@@ -451,17 +451,6 @@ namespace Server.Engines.Quests
                 {
                     Item item = RunicReforging.GenerateRandomItem(galleon);
 
-                    /*if (item is BaseWeapon)
-                        BaseRunicTool.ApplyAttributesTo((BaseWeapon)item, false, 0, Utility.RandomMinMax(1, 6), 10, 100);
-                    else if (item is BaseArmor)
-                        BaseRunicTool.ApplyAttributesTo((BaseArmor)item, false, 0, Utility.RandomMinMax(1, 6), 10, 100);
-                    else if (item is BaseHat)
-                        BaseRunicTool.ApplyAttributesTo((BaseHat)item, false, 0, Utility.RandomMinMax(1, 6), 10, 100);
-                    else if (item is BaseJewel)
-                        BaseRunicTool.ApplyAttributesTo((BaseJewel)item, false, 0, Utility.RandomMinMax(1, 6), 10, 100);
-                    else
-                        item.Delete();*/
-
                     if (item != null)
                         hold.DropItem(item);
                 }

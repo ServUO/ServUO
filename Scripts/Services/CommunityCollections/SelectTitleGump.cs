@@ -24,12 +24,12 @@ namespace Server.Gumps
 			
             this.AddHtmlLocalized(20, 15, 230, 20, 1073994, 0x1, false, false); // Your title will be:
 			
-            if (page > -1 && page < from.CollectionTitles.Count)
+            if (page > -1 && page < from.RewardTitles.Count)
             {
-                if (from.CollectionTitles[page] is int)
-                    this.AddHtmlLocalized(20, 35, 230, 40, (int)from.CollectionTitles[page], 0x32, true, false);
-                else if (from.CollectionTitles[page] is string)
-                    this.AddHtml(20, 35, 230, 40, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", 0x32, (string)from.CollectionTitles[page]), true, false);
+                if (from.RewardTitles[page] is int)
+                    this.AddHtmlLocalized(20, 35, 230, 40, (int)from.RewardTitles[page], 0x32, true, false);
+                else if (from.RewardTitles[page] is string)
+                    this.AddHtml(20, 35, 230, 40, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", 0x32, (string)from.RewardTitles[page]), true, false);
             }
             else
                 this.AddHtmlLocalized(20, 35, 230, 40, 1073995, 0x32, true, false);
@@ -52,12 +52,12 @@ namespace Server.Gumps
             switch ( info.ButtonID )
             {
                 case (int)Buttons.Accept:
-                    this.m_From.SelectCollectionTitle(this.m_Page);
+                    this.m_From.SelectRewardTitle(this.m_Page);
                     break;
                 case (int)Buttons.Next: 
-                    if (this.m_Page == this.m_From.CollectionTitles.Count - 1)
+                    if (this.m_Page == this.m_From.RewardTitles.Count - 1)
                         this.m_From.SendGump(new SelectTitleGump(this.m_From, -1));
-                    else if (this.m_Page < this.m_From.CollectionTitles.Count - 1 && this.m_Page > - 1)
+                    else if (this.m_Page < this.m_From.RewardTitles.Count - 1 && this.m_Page > - 1)
                         this.m_From.SendGump(new SelectTitleGump(this.m_From, this.m_Page + 1));
                     else
                         this.m_From.SendGump(new SelectTitleGump(this.m_From, 0));	

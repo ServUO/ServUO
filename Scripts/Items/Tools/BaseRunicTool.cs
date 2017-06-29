@@ -45,7 +45,7 @@ namespace Server.Items
         };
         private static readonly BitArray m_Props = new BitArray(MaxProperties);
         private static readonly int[] m_Possible = new int[MaxProperties];
-        private static bool m_IsRunicTool;
+        private static bool m_PlayerMade;
         private static int m_LuckChance;
         private const int MaxProperties = 32;
         public BaseRunicTool(CraftResource resource, int itemID)
@@ -134,9 +134,9 @@ namespace Server.Items
             ApplyAttributesTo(pole, true, 0, attributeCount, min, max);
         }
 
-        public static void ApplyAttributesTo(FishingPole pole, bool isRunicTool, int luckChance, int attributeCount, int min, int max)
+        public static void ApplyAttributesTo(FishingPole pole, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
-            m_IsRunicTool = isRunicTool;
+            m_PlayerMade = playerMade;
             m_LuckChance = luckChance;
 
             AosAttributes primary = pole.Attributes;
@@ -181,9 +181,15 @@ namespace Server.Items
             ApplyAttributesTo(weapon, false, 0, attributeCount, min, max);
         }
 
-        public static void ApplyAttributesTo(BaseWeapon weapon, bool isRunicTool, int luckChance, int attributeCount, int min, int max)
+        public static void ApplyAttributesTo(BaseWeapon weapon, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
-            m_IsRunicTool = isRunicTool;
+            if (!playerMade && RandomItemGenerator.Enabled)
+            {
+                RandomItemGenerator.GenerateRandomItem(weapon, luckChance, attributeCount, min, max);
+                return;
+            }
+
+            m_PlayerMade = playerMade;
             m_LuckChance = luckChance;
 
             AosAttributes primary = weapon.Attributes;
@@ -375,9 +381,15 @@ namespace Server.Items
             ApplyAttributesTo(armor, false, 0, attributeCount, min, max);
         }
 
-        public static void ApplyAttributesTo(BaseArmor armor, bool isRunicTool, int luckChance, int attributeCount, int min, int max)
+        public static void ApplyAttributesTo(BaseArmor armor, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
-            m_IsRunicTool = isRunicTool;
+            if (!playerMade && RandomItemGenerator.Enabled)
+            {
+                RandomItemGenerator.GenerateRandomItem(armor, luckChance, attributeCount, min, max);
+                return;
+            }
+
+            m_PlayerMade = playerMade;
             m_LuckChance = luckChance;
 
             AosAttributes primary = armor.Attributes;
@@ -502,9 +514,15 @@ namespace Server.Items
             ApplyAttributesTo(hat, false, 0, attributeCount, min, max);
         }
 
-        public static void ApplyAttributesTo(BaseHat hat, bool isRunicTool, int luckChance, int attributeCount, int min, int max)
+        public static void ApplyAttributesTo(BaseHat hat, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
-            m_IsRunicTool = isRunicTool;
+            if (!playerMade && RandomItemGenerator.Enabled)
+            {
+                RandomItemGenerator.GenerateRandomItem(hat, luckChance, attributeCount, min, max);
+                return;
+            }
+
+            m_PlayerMade = playerMade;
             m_LuckChance = luckChance;
 
             AosAttributes primary = hat.Attributes;
@@ -588,9 +606,15 @@ namespace Server.Items
             ApplyAttributesTo(jewelry, false, 0, attributeCount, min, max);
         }
 
-        public static void ApplyAttributesTo(BaseJewel jewelry, bool isRunicTool, int luckChance, int attributeCount, int min, int max)
+        public static void ApplyAttributesTo(BaseJewel jewelry, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
-            m_IsRunicTool = isRunicTool;
+            if (!playerMade && RandomItemGenerator.Enabled)
+            {
+                RandomItemGenerator.GenerateRandomItem(jewelry, luckChance, attributeCount, min, max);
+                return;
+            }
+
+            m_PlayerMade = playerMade;
             m_LuckChance = luckChance;
 
             AosAttributes primary = jewelry.Attributes;
@@ -689,9 +713,9 @@ namespace Server.Items
             ApplyAttributesTo(spellbook, false, 0, attributeCount, min, max);
         }
 
-        public static void ApplyAttributesTo(Spellbook spellbook, bool isRunicTool, int luckChance, int attributeCount, int min, int max)
+        public static void ApplyAttributesTo(Spellbook spellbook, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
-            m_IsRunicTool = isRunicTool;
+            m_PlayerMade = playerMade;
             m_LuckChance = luckChance;
 
             AosAttributes primary = spellbook.Attributes;
@@ -826,7 +850,7 @@ namespace Server.Items
         {
             int percent;
 
-            if (m_IsRunicTool)
+            if (m_PlayerMade)
             {
                 percent = Utility.RandomMinMax(min, max);
             }

@@ -1404,7 +1404,7 @@ namespace Server.Items
         /// This can be called from lootpack once loot pack conversions are implemented (if need be)
         /// </summary>
         /// <param name="item">item to mutate</param>
-        /// <param name="killer">who killed them. Their luck is taken into account</param>
+        /// <param name="luck">adjust luck chance</param>
         /// <param name="minBudget"></param>
         /// <param name="maxBudget"></param>
         /// <returns></returns>
@@ -1423,14 +1423,14 @@ namespace Server.Items
         /// Called in DemonKnight.cs for forcing rad items
         /// </summary>
         /// <param name="item"></param>
-        /// <param name="luck"></param>
+        /// <param name="luck">raw luck</param>
         /// <param name="artifact"></param>
         /// <returns></returns>
         public static bool GenerateRandomArtifactItem(Item item, int luck, int budget)
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
-                GenerateRandomItem(item, null, budget, luck, ChooseRandomPrefix(item), ChooseRandomSuffix(item), artifact: true);
+                GenerateRandomItem(item, null, budget, LootPack.GetLuckChance(luck), ChooseRandomPrefix(item), ChooseRandomSuffix(item), artifact: true);
                 return true;
             }
             return false;
@@ -1441,7 +1441,7 @@ namespace Server.Items
             Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
 
             if (item != null)
-                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), GetLuckForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
+                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChance(GetLuckForKiller(creature)), ReforgedPrefix.None, ReforgedSuffix.None);
 
             return item;
         }
@@ -1453,7 +1453,7 @@ namespace Server.Items
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
-                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), GetLuckForKiller(creature), ReforgedPrefix.None, ReforgedSuffix.None);
+                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChance(GetLuckForKiller(creature)), ReforgedPrefix.None, ReforgedSuffix.None);
                 return true;
             }
 
@@ -1464,7 +1464,7 @@ namespace Server.Items
         {
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
-                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), GetLuckForKiller(creature), prefix, suffix);
+                GenerateRandomItem(item, killer, Math.Max(100, GetDifficultyFor(creature)), LootPack.GetLuckChance(GetLuckForKiller(creature)), prefix, suffix);
                 return true;
             }
             return false;
@@ -1484,7 +1484,7 @@ namespace Server.Items
             if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
             {
                 int budget = Utility.RandomMinMax(minBudget, maxBudget);
-                GenerateRandomItem(item, null, budget, luck, ReforgedPrefix.None, ReforgedSuffix.None, map);
+                GenerateRandomItem(item, null, budget, LootPack.GetLuckChance(luck), ReforgedPrefix.None, ReforgedSuffix.None, map);
                 return true;
             }
             return false;
@@ -1500,7 +1500,7 @@ namespace Server.Items
         /// <param name="forcedprefix"></param>
         /// <param name="forcedsuffix"></param>
         /// <param name="map"></param>
-        public static void GenerateRandomItem(Item item, Mobile killer, int basebudget, int luck, ReforgedPrefix forcedprefix, ReforgedSuffix forcedsuffix, Map map = null, bool artifact = false)
+        public static void GenerateRandomItem(Item item, Mobile killer, int basebudget, int luckchance, ReforgedPrefix forcedprefix, ReforgedSuffix forcedsuffix, Map map = null, bool artifact = false)
         {
             if (map == null && killer != null)
                 map = killer.Map;
@@ -1508,7 +1508,7 @@ namespace Server.Items
             if (item != null)
             {
                 int budget = basebudget;
-                int luckchance = LootPack.GetLuckChance(luck);
+                int rawLuck = killer != null ? killer is PlayerMobile ? ((PlayerMobile)killer).RealLuck : killer.Luck : 0;
 
                 int mods = 0;
                 int perclow = 0;
@@ -1527,16 +1527,11 @@ namespace Server.Items
                 {
                     int budgetBonus = 0;
 
-                    if (killer != null || luck > 0)
+                    if (killer != null)
                     {
                         if (map != null && map.Rules == MapRules.FeluccaRules)
                         {
-                            luck += RandomItemGenerator.FeluccaLuckBonus;
                             budgetBonus = RandomItemGenerator.FeluccaBudgetBonus;
-                        }
-                        else
-                        {
-                            luck += 240;
                         }
                     }
 
@@ -1545,7 +1540,7 @@ namespace Server.Items
                     double perc = 0.0;
                     double highest = 0.0;
                     
-                    for (int i = 0; i < 1 + (luck / 600); i++)
+                    for (int i = 0; i < 1 + (rawLuck / 600); i++)
                     {
                         perc = (100.0 - Math.Sqrt(Utility.RandomMinMax(0, 10000))) / 100.0;
 
@@ -1561,7 +1556,7 @@ namespace Server.Items
                     budget = Utility.RandomMinMax(basebudget - (basebudget / divisor), (int)(basebudget + (toAdd * perc))) + budgetBonus;
 
                     // Gives a rare chance for a high end item to drop on a low budgeted monster
-                    if (luck > 0 && budget <= 550 && LootPack.CheckLuck(luckchance / 6))
+                    if (rawLuck > 0 && budget <= 550 && LootPack.CheckLuck(luckchance / 6))
                     {
                         budget = Utility.RandomMinMax(600, 1150);
                     }

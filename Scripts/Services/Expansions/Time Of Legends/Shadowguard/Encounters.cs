@@ -1404,11 +1404,11 @@ namespace Server.Engines.Shadowguard
                 foreach (PartyMemberInfo info in p.Members)
                 {
                     if (info.Mobile is PlayerMobile && info.Mobile.Region.IsPartOf<ShadowguardRegion>())
-                        ((PlayerMobile)info.Mobile).AddCollectionTitle(1156318); // Destroyer of the Time Rift
+                        ((PlayerMobile)info.Mobile).AddRewardTitle(1156318); // Destroyer of the Time Rift
                 }
             }
             else if (m is PlayerMobile)
-                ((PlayerMobile)m).AddCollectionTitle(1156318); // Destroyer of the Time Rift
+                ((PlayerMobile)m).AddRewardTitle(1156318); // Destroyer of the Time Rift
         }
 		
 		public override void ClearItems()

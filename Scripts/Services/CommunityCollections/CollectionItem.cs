@@ -104,7 +104,7 @@ namespace Server
 
         public override void OnGiveReward(PlayerMobile to, IComunityCollection collection, int hue)
         {
-            if (to.AddCollectionTitle(m_Title))
+            if (to.AddRewardTitle(m_Title))
             {
                 if (m_Title is int)
                     to.SendLocalizedMessage(1073625, "#" + (int)m_Title); // The title "~1_TITLE~" has been bestowed upon you. 

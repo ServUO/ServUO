@@ -2144,7 +2144,7 @@ namespace Server.Mobiles
                     {
                         QuestHelper.GetContextMenuEntries(list);
 
-                        if (m_CollectionTitles.Count > 0)
+                        if (m_RewardTitles.Count > 0)
                             list.Add(new CallbackEntry(6229, new ContextCallback(ShowChangeTitle)));
                     }
                     #endregion
@@ -3927,7 +3927,7 @@ namespace Server.Mobiles
 			m_Chains = new Dictionary<QuestChain, BaseChain>();
 			m_DoneQuests = new List<QuestRestartInfo>();
 			m_Collections = new Dictionary<Collection, int>();
-			m_CollectionTitles = new List<object>();
+			m_RewardTitles = new List<object>();
 
 			m_PeacedUntil = DateTime.UtcNow;
 			#endregion
@@ -4124,7 +4124,14 @@ namespace Server.Mobiles
 
 		public override int Luck { get { return AosAttributes.GetValue(this, AosAttribute.Luck); } }
 
-        public int RealLuck { get { return Luck + TenthAnniversarySculpture.GetLuckBonus(this) + FountainOfFortune.GetLuckBonus(this); } }
+        public int RealLuck { 
+            get
+            {
+                int facetBonus = this.Map == Map.Felucca ? RandomItemGenerator.FeluccaLuckBonus : 250;
+
+                return Luck + TenthAnniversarySculpture.GetLuckBonus(this) + FountainOfFortune.GetLuckBonus(this) + facetBonus;
+            }
+        }
 
 		public override bool IsHarmfulCriminal(IDamageable damageable)
 		{
@@ -4271,7 +4278,7 @@ namespace Server.Mobiles
 						m_Chains = QuestReader.Chains(reader);
 
 						m_Collections = new Dictionary<Collection, int>();
-						m_CollectionTitles = new List<object>();
+						m_RewardTitles = new List<object>();
 
 						for (int i = reader.ReadInt(); i > 0; i--)
 						{
@@ -4280,7 +4287,7 @@ namespace Server.Mobiles
 
 						for (int i = reader.ReadInt(); i > 0; i--)
 						{
-							m_CollectionTitles.Add(QuestReader.Object(reader));
+							m_RewardTitles.Add(QuestReader.Object(reader));
 						}
 
 						m_SelectedTitle = reader.ReadInt();
@@ -4560,9 +4567,9 @@ namespace Server.Mobiles
 				m_Collections = new Dictionary<Collection, int>();
 			}
 
-			if (m_CollectionTitles == null)
+			if (m_RewardTitles == null)
 			{
-				m_CollectionTitles = new List<object>();
+				m_RewardTitles = new List<object>();
 			}
 			#endregion
 
@@ -4693,17 +4700,17 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (m_CollectionTitles == null)
+			if (m_RewardTitles == null)
 			{
 				writer.Write(0);
 			}
 			else
 			{
-				writer.Write(m_CollectionTitles.Count);
+				writer.Write(m_RewardTitles.Count);
 
-				for (int i = 0; i < m_CollectionTitles.Count; i++)
+				for (int i = 0; i < m_RewardTitles.Count; i++)
 				{
-					QuestWriter.Object(writer, m_CollectionTitles[i]);
+					QuestWriter.Object(writer, m_RewardTitles[i]);
 				}
 			}
 
@@ -4965,23 +4972,23 @@ namespace Server.Mobiles
             }
 
 			#region Mondain's Legacy Titles
-			if (Core.ML && m_CollectionTitles != null && m_SelectedTitle > -1)
+			if (Core.ML && m_RewardTitles != null && m_SelectedTitle > -1)
 			{
-				if (m_SelectedTitle < m_CollectionTitles.Count)
+				if (m_SelectedTitle < m_RewardTitles.Count)
 				{
-					if (m_CollectionTitles[m_SelectedTitle] is int)
+					if (m_RewardTitles[m_SelectedTitle] is int)
 					{
                         string cust = null;
-                        if ((int)m_CollectionTitles[m_SelectedTitle] == 1154017 && Server.Engines.CityLoyalty.CityLoyaltySystem.HasCustomTitle(this, out cust))
+                        if ((int)m_RewardTitles[m_SelectedTitle] == 1154017 && Server.Engines.CityLoyalty.CityLoyaltySystem.HasCustomTitle(this, out cust))
                         {
                             list.Add(1154017, cust); // ~1_TITLE~ of ~2_CITY~
                         }
 						else
-                            list.Add((int)m_CollectionTitles[m_SelectedTitle]);
+                            list.Add((int)m_RewardTitles[m_SelectedTitle]);
 					}
-					else if (m_CollectionTitles[m_SelectedTitle] is string)
+					else if (m_RewardTitles[m_SelectedTitle] is string)
 					{
-                        list.Add(1070722, (string)m_CollectionTitles[m_SelectedTitle]);
+                        list.Add(1070722, (string)m_RewardTitles[m_SelectedTitle]);
 					}
 				}
 			}
@@ -5304,27 +5311,27 @@ namespace Server.Mobiles
 		}
 
 		private Dictionary<Collection, int> m_Collections;
-		private List<object> m_CollectionTitles;
+		private List<object> m_RewardTitles;
 		private int m_SelectedTitle;
 
 		public Dictionary<Collection, int> Collections { get { return m_Collections; } }
 
-		public List<object> CollectionTitles { get { return m_CollectionTitles; } }
+		public List<object> RewardTitles { get { return m_RewardTitles; } }
 
         public int SelectedTitle { get { return m_SelectedTitle; } }
 
-        public bool RemoveCollectionTitle(object o, bool silent)
+        public bool RemoveRewardTitle(object o, bool silent)
         {
-            if (m_CollectionTitles.Contains(o))
+            if (m_RewardTitles.Contains(o))
             {
-                int i = m_CollectionTitles.IndexOf(o);
+                int i = m_RewardTitles.IndexOf(o);
 
                 if (i == m_SelectedTitle)
-                    SelectCollectionTitle(-1, silent);
+                    SelectRewardTitle(-1, silent);
                 else if (i > m_SelectedTitle)
-                    SelectCollectionTitle(m_SelectedTitle - 1, silent);
+                    SelectRewardTitle(m_SelectedTitle - 1, silent);
 
-                m_CollectionTitles.Remove(o);
+                m_RewardTitles.Remove(o);
 
                 return true;
             }
@@ -5365,27 +5372,27 @@ namespace Server.Mobiles
 			}
 		}
 
-		public void SelectCollectionTitle(int num, bool silent = false)
+		public void SelectRewardTitle(int num, bool silent = false)
 		{
 			if (num == -1)
 			{
 				m_SelectedTitle = num;
                 if (!silent) SendLocalizedMessage(1074010); // You elect to hide your Reward Title.
 			}
-            else if (num < m_CollectionTitles.Count && num >= -1)
+            else if (num < m_RewardTitles.Count && num >= -1)
             {
                 if (m_SelectedTitle != num)
                 {
                     m_SelectedTitle = num;
 
-                    if (m_CollectionTitles[num] is int && !silent)
+                    if (m_RewardTitles[num] is int && !silent)
                     {
-                        SendLocalizedMessage(1074008, "#" + (int)m_CollectionTitles[num]);
+                        SendLocalizedMessage(1074008, "#" + (int)m_RewardTitles[num]);
                         // You change your Reward Title to "~1_TITLE~".
                     }
-                    else if (m_CollectionTitles[num] is string && !silent)
+                    else if (m_RewardTitles[num] is string && !silent)
                     {
-                        SendLocalizedMessage(1074008, (string)m_CollectionTitles[num]); // You change your Reward Title to "~1_TITLE~".
+                        SendLocalizedMessage(1074008, (string)m_RewardTitles[num]); // You change your Reward Title to "~1_TITLE~".
                     }
                 }
                 else if (!silent)
@@ -5397,17 +5404,17 @@ namespace Server.Mobiles
 			InvalidateProperties();
 		}
 
-		public bool AddCollectionTitle(object title)
+		public bool AddRewardTitle(object title)
 		{
-			if (m_CollectionTitles == null)
+			if (m_RewardTitles == null)
 			{
-				m_CollectionTitles = new List<object>();
+				m_RewardTitles = new List<object>();
 			}
 
-			if (title != null && !m_CollectionTitles.Contains(title))
+			if (title != null && !m_RewardTitles.Contains(title))
 			{
-				m_CollectionTitles.Add(title);
-				//m_SelectedTitle = m_CollectionTitles.Count - 1;
+				m_RewardTitles.Add(title);
+				//m_SelectedTitle = m_RewardTitles.Count - 1;
 				InvalidateProperties();
 				return true;
 			}

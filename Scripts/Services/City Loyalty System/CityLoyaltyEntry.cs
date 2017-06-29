@@ -92,10 +92,10 @@ namespace Server.Engines.CityLoyalty
 		{
             foreach (int i in Enum.GetValues(typeof(CityTitle)))
             {
-                Player.RemoveCollectionTitle(CityLoyaltySystem.GetTitleLocalization(Player, (CityTitle)i, City), true);
+                Player.RemoveRewardTitle(CityLoyaltySystem.GetTitleLocalization(Player, (CityTitle)i, City), true);
             }
 
-            Player.RemoveCollectionTitle(1154017, true);
+            Player.RemoveRewardTitle(1154017, true);
 
 			IsCitizen = false;
             Titles = CityTitle.None;
@@ -106,7 +106,7 @@ namespace Server.Engines.CityLoyalty
             if ((Titles & title) == 0)
             {
                 int loc = CityLoyaltySystem.GetTitleLocalization(Player, title, City);
-                Player.AddCollectionTitle(loc);
+                Player.AddRewardTitle(loc);
 
                 Titles |= title;
                 Player.SendLocalizedMessage(1073625, String.Format("#{0}", loc.ToString())); // The title "~1_TITLE~" has been bestowed upon you.

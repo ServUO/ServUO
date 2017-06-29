@@ -682,7 +682,7 @@ namespace Server.Gumps
                 y += 22;
             }
 
-            if (User.CollectionTitles != null && User.CollectionTitles.Count > 0)
+            if (User.RewardTitles != null && User.RewardTitles.Count > 0)
             {
                 AddHtmlLocalized(55, y, 160, 16, 1115034, 0xFFFF, false, false); // Rewards
                 AddCallbackButton(20, y, 4005, 4007, 402, GumpButtonType.Reply, 0, b =>
@@ -753,7 +753,7 @@ namespace Server.Gumps
                         title = Titles.GetSkillTitle(User, User.Skills[(SkillName)TitleSelected]);
                         User.SubtitleSkillTitle = title;
 
-                        User.SelectCollectionTitle(-1, true);
+                        User.SelectRewardTitle(-1, true);
                         User.DisplayGuildTitle = false;
 
                         Refresh(false);
@@ -789,13 +789,13 @@ namespace Server.Gumps
                         if (User.SubtitleSkillTitle != null)
                             User.SubtitleSkillTitle = null;
 
-                        User.SelectCollectionTitle(-1, true);
+                        User.SelectRewardTitle(-1, true);
 
                         Refresh(false);
                     });
                 }
             }  
-            else if (Category == TitleCategory.RewardTitles && User.CollectionTitles != null && User.CollectionTitles.Count > 0)
+            else if (Category == TitleCategory.RewardTitles && User.RewardTitles != null && User.RewardTitles.Count > 0)
             {
                 if (!ShowingDescription || TitleSelected == -1)
                 {
@@ -804,9 +804,9 @@ namespace Server.Gumps
 
                     AddPage(page);
 
-                    for (int i = 0; i < User.CollectionTitles.Count; i++)
+                    for (int i = 0; i < User.RewardTitles.Count; i++)
                     {
-                        object title = User.CollectionTitles[i];
+                        object title = User.RewardTitles[i];
 
                         if (title is int)
                         {
@@ -833,9 +833,9 @@ namespace Server.Gumps
                         CheckPage(ref index, ref page);
                     }
                 }
-                else if (TitleSelected >= 0 && User.CollectionTitles != null && TitleSelected < User.CollectionTitles.Count)
+                else if (TitleSelected >= 0 && User.RewardTitles != null && TitleSelected < User.RewardTitles.Count)
                 {
-                    object title = User.CollectionTitles[TitleSelected];
+                    object title = User.RewardTitles[TitleSelected];
                     object description = GetRewardTitleInfo(title);
 
                     if (description is int)
@@ -867,7 +867,7 @@ namespace Server.Gumps
                         AddHtmlLocalized(225, 315, 200, 16, 1115036, 0xFFFF, false, false); // TITLE APPLIED
                         Refresh(false);
 
-                        User.SelectCollectionTitle(TitleSelected, true);
+                        User.SelectRewardTitle(TitleSelected, true);
 
                         if (User.SubtitleSkillTitle != null)
                             User.SubtitleSkillTitle = null;
@@ -977,7 +977,7 @@ namespace Server.Gumps
                     break;
                 case TitleType.SubTitles:
                     User.SubtitleSkillTitle = null;
-                    User.SelectCollectionTitle(-1, true);
+                    User.SelectRewardTitle(-1, true);
                     User.CurrentVeteranTitle = -1;
                     User.DisplayGuildTitle = false;
                     break;
@@ -1106,7 +1106,7 @@ namespace Server.Gumps
 
         public List<int> GetCityTitles()
         {
-            IEnumerable<int> list = User.CollectionTitles.OfType<int>().Where(i => IsCityTitle(i));
+            IEnumerable<int> list = User.RewardTitles.OfType<int>().Where(i => IsCityTitle(i));
 
             if (list != null)
                 return list.ToList();

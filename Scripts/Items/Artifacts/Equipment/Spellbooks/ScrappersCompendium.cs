@@ -59,7 +59,7 @@ namespace Server.Items
             if (Utility.RandomDouble() < 0.5)
                 count = 0;
             else
-                BaseRunicTool.ApplyAttributesTo(this, false, 0, count, 70, 80);
+                BaseRunicTool.ApplyAttributesTo(this, true, 0, count, 70, 80);
 				
             this.Attributes.SpellDamage = 25;
             this.Attributes.LowerManaCost = 10;
