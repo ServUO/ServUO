@@ -1,3 +1,4 @@
+
 using System;
 using Server;
 using Server.Mobiles;
@@ -192,15 +193,15 @@ namespace Server.Engines.CityLoyalty
         {
             switch (entry.Completed)
             {
-                case 1: entry.Player.AddCollectionTitle((int)TradeTitle.Trader); break;
-                case 25: entry.Player.AddCollectionTitle((int)TradeTitle.Exporter); break;
-                case 50: entry.Player.AddCollectionTitle((int)TradeTitle.Broker); break;
-                case 100: entry.Player.AddCollectionTitle((int)TradeTitle.Tycoon); break;
-                case 150: entry.Player.AddCollectionTitle((int)TradeTitle.Magnate); break;
+                case 1: entry.Player.AddRewardTitle((int)TradeTitle.Trader); break;
+                case 25: entry.Player.AddRewardTitle((int)TradeTitle.Exporter); break;
+                case 50: entry.Player.AddRewardTitle((int)TradeTitle.Broker); break;
+                case 100: entry.Player.AddRewardTitle((int)TradeTitle.Tycoon); break;
+                case 150: entry.Player.AddRewardTitle((int)TradeTitle.Magnate); break;
             }
 
             if(entry.CompletedSlim == 50)
-                entry.Player.AddCollectionTitle((int)TradeTitle.Smuggler);
+                entry.Player.AddRewardTitle((int)TradeTitle.Smuggler);
         }
 
         public override void OnPlayerAdded(PlayerMobile m)

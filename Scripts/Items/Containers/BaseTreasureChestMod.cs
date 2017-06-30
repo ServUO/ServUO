@@ -82,7 +82,7 @@ namespace Server.Items
             if (item == null)
                 return;
 
-            if (Core.SA && Server.Mobiles.RandomItemGenerator.Enabled)
+            if (Core.SA && RandomItemGenerator.Enabled)
             {
                 int min, max;
                 TreasureMapChest.GetRandomItemStat(out min, out max);

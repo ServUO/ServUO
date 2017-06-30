@@ -23,8 +23,8 @@ namespace Server.Items
 
                     if (pm != null)
                     {
-                        if ((Title.Number > 0 && pm.AddCollectionTitle(Title.Number)) ||
-                             Title.String != null && pm.AddCollectionTitle(Title.String))
+                        if ((Title.Number > 0 && pm.AddRewardTitle(Title.Number)) ||
+                             Title.String != null && pm.AddRewardTitle(Title.String))
                         {
 
                             pm.SendLocalizedMessage(1155605, Title.ToString());  //Thou hath been bestowed the title ~1_TITLE~!

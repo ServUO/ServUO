@@ -160,7 +160,7 @@ namespace Server.Items
                 else
                     item = Loot.RandomArmorOrShieldOrWeapon();
 
-                if (item != null && Core.HS && Server.Mobiles.RandomItemGenerator.Enabled)
+                if (item != null && Core.HS && RandomItemGenerator.Enabled)
                 {
                     int min, max;
                     TreasureMapChest.GetRandomItemStat(out min, out max);

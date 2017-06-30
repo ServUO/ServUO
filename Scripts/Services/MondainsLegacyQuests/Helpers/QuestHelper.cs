@@ -79,8 +79,8 @@ namespace Server.Engines.Quests
                     for (int k = pQuest.Objectives.Count - 1; k >= 0; k --)
                     {
                         BaseObjective obj = pQuest.Objectives[k];
-						
-                        if (type == obj.Type())
+
+                        if (type == obj.Type() && (quest.ChainID == QuestChain.None || quest.ChainID == pQuest.ChainID))
                             return false;					
                     }
                 }

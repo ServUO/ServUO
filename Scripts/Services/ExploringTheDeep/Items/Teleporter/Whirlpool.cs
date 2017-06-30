@@ -245,8 +245,7 @@ namespace Server.Items
             BaseCreature.TeleportPets(m, p, map);
 
             if (m is PlayerMobile)
-                ((PlayerMobile)m).AddCollectionTitle(1154505); // Salvager of the Deep
-
+                ((PlayerMobile)m).AddRewardTitle(1154505); // Salvager of the Deep
 
             bool sendEffect = (!m.Hidden || m.IsPlayer());
 

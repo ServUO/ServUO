@@ -304,105 +304,134 @@ namespace Server.Engines.BulkOrders
             else if (f.Type == 2 && !isLarge)
                 return false;
 
-            switch ( f.Material )
+            if (BulkOrderSystem.NewSystemEnabled)
             {
-                default:
-                case 0:
-                    return true;
-                case 1:
-                    return deedType == BODType.Smith;
-                case 2:
-                    return deedType == BODType.Tailor;
-                case 3:
-                    return deedType == BODType.Tinkering;
-                case 4:
-                    return deedType == BODType.Carpentry;
-                case 5:
-                    return deedType == BODType.Fletching;
-                case 6:
-                    return deedType == BODType.Alchemy;
-                case 7:
-                    return deedType == BODType.Inscription;
-                case 8:
-                    return deedType == BODType.Cooking;
-                case 9:
-                    return (mat == BulkMaterialType.None && deedType == BODType.Smith);
-                case 10:
-                    return (mat == BulkMaterialType.DullCopper);
-                case 11:
-                    return (mat == BulkMaterialType.ShadowIron);
-                case 12:
-                    return (mat == BulkMaterialType.Copper);
-                case 13:
-                    return (mat == BulkMaterialType.Bronze);
-                case 14:
-                    return (mat == BulkMaterialType.Gold);
-                case 15:
-                    return (mat == BulkMaterialType.Agapite);
-                case 16:
-                    return (mat == BulkMaterialType.Verite);
-                case 17:
-                    return (mat == BulkMaterialType.Valorite);
+                switch (f.Material)
+                {
+                    default:
+                    case 0:
+                        return true;
+                    case 1:
+                        return deedType == BODType.Smith;
+                    case 2:
+                        return deedType == BODType.Tailor;
+                    case 3:
+                        return deedType == BODType.Tinkering;
+                    case 4:
+                        return deedType == BODType.Carpentry;
+                    case 5:
+                        return deedType == BODType.Fletching;
+                    case 6:
+                        return deedType == BODType.Alchemy;
+                    case 7:
+                        return deedType == BODType.Inscription;
+                    case 8:
+                        return deedType == BODType.Cooking;
+                    case 9:
+                        return (mat == BulkMaterialType.None && deedType == BODType.Smith);
+                    case 10:
+                        return (mat == BulkMaterialType.DullCopper);
+                    case 11:
+                        return (mat == BulkMaterialType.ShadowIron);
+                    case 12:
+                        return (mat == BulkMaterialType.Copper);
+                    case 13:
+                        return (mat == BulkMaterialType.Bronze);
+                    case 14:
+                        return (mat == BulkMaterialType.Gold);
+                    case 15:
+                        return (mat == BulkMaterialType.Agapite);
+                    case 16:
+                        return (mat == BulkMaterialType.Verite);
+                    case 17:
+                        return (mat == BulkMaterialType.Valorite);
 
-                case 18:
-                    return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Cloth);
-                case 19:
-                    return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Leather);
-                case 20:
-                    return (mat == BulkMaterialType.Spined);
-                case 21:
-                    return (mat == BulkMaterialType.Horned);
-                case 22:
-                    return (mat == BulkMaterialType.Barbed);
+                    case 18:
+                        return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Cloth);
+                    case 19:
+                        return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Leather);
+                    case 20:
+                        return (mat == BulkMaterialType.Spined);
+                    case 21:
+                        return (mat == BulkMaterialType.Horned);
+                    case 22:
+                        return (mat == BulkMaterialType.Barbed);
 
-                case 23: // Tinkering
-                    return (mat == BulkMaterialType.None && deedType == BODType.Tinkering);
-                case 24:
-                    return (mat == BulkMaterialType.DullCopper);
-                case 25:
-                    return (mat == BulkMaterialType.ShadowIron);
-                case 26:
-                    return (mat == BulkMaterialType.Copper);
-                case 27:
-                    return (mat == BulkMaterialType.Bronze);
-                case 28:
-                    return (mat == BulkMaterialType.Gold);
-                case 29:
-                    return (mat == BulkMaterialType.Agapite);
-                case 30:
-                    return (mat == BulkMaterialType.Verite);
-                case 31:
-                    return (mat == BulkMaterialType.Valorite);
+                    case 23: // Tinkering
+                        return (mat == BulkMaterialType.None && deedType == BODType.Tinkering);
+                    case 24:
+                        return (mat == BulkMaterialType.DullCopper);
+                    case 25:
+                        return (mat == BulkMaterialType.ShadowIron);
+                    case 26:
+                        return (mat == BulkMaterialType.Copper);
+                    case 27:
+                        return (mat == BulkMaterialType.Bronze);
+                    case 28:
+                        return (mat == BulkMaterialType.Gold);
+                    case 29:
+                        return (mat == BulkMaterialType.Agapite);
+                    case 30:
+                        return (mat == BulkMaterialType.Verite);
+                    case 31:
+                        return (mat == BulkMaterialType.Valorite);
 
-                case 32: // Carpentry
-                    return (mat == BulkMaterialType.None && deedType == BODType.Carpentry);
-                case 33:
-                    return (mat == BulkMaterialType.OakWood);
-                case 34:
-                    return (mat == BulkMaterialType.AshWood);
-                case 35:
-                    return (mat == BulkMaterialType.YewWood);
-                case 36:
-                    return (mat == BulkMaterialType.Bloodwood);
-                case 37:
-                    return (mat == BulkMaterialType.Heartwood);
-                case 38:
-                    return (mat == BulkMaterialType.Frostwood);
+                    case 32: // Carpentry
+                        return (mat == BulkMaterialType.None && deedType == BODType.Carpentry);
+                    case 33:
+                        return (mat == BulkMaterialType.OakWood);
+                    case 34:
+                        return (mat == BulkMaterialType.AshWood);
+                    case 35:
+                        return (mat == BulkMaterialType.YewWood);
+                    case 36:
+                        return (mat == BulkMaterialType.Bloodwood);
+                    case 37:
+                        return (mat == BulkMaterialType.Heartwood);
+                    case 38:
+                        return (mat == BulkMaterialType.Frostwood);
 
-                case 39: // Fletching
-                    return (mat == BulkMaterialType.None && deedType == BODType.Fletching);
-                case 40:
-                    return (mat == BulkMaterialType.OakWood);
-                case 41:
-                    return (mat == BulkMaterialType.AshWood);
-                case 42:
-                    return (mat == BulkMaterialType.YewWood);
-                case 43:
-                    return (mat == BulkMaterialType.Bloodwood);
-                case 44:
-                    return (mat == BulkMaterialType.Heartwood);
-                case 45:
-                    return (mat == BulkMaterialType.Frostwood);
+                    case 39: // Fletching
+                        return (mat == BulkMaterialType.None && deedType == BODType.Fletching);
+                    case 40:
+                        return (mat == BulkMaterialType.OakWood);
+                    case 41:
+                        return (mat == BulkMaterialType.AshWood);
+                    case 42:
+                        return (mat == BulkMaterialType.YewWood);
+                    case 43:
+                        return (mat == BulkMaterialType.Bloodwood);
+                    case 44:
+                        return (mat == BulkMaterialType.Heartwood);
+                    case 45:
+                        return (mat == BulkMaterialType.Frostwood);
+                }
+            }
+            else
+            {
+                switch (f.Material)
+                {
+                    default:
+                    case 0: return true;
+                    case 1: return (deedType == BODType.Smith);
+                    case 2: return (deedType == BODType.Tailor);
+
+                    case 3: return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Iron);
+                    case 4: return (mat == BulkMaterialType.DullCopper);
+                    case 5: return (mat == BulkMaterialType.ShadowIron);
+                    case 6: return (mat == BulkMaterialType.Copper);
+                    case 7: return (mat == BulkMaterialType.Bronze);
+                    case 8: return (mat == BulkMaterialType.Gold);
+                    case 9: return (mat == BulkMaterialType.Agapite);
+                    case 10: return (mat == BulkMaterialType.Verite);
+                    case 11: return (mat == BulkMaterialType.Valorite);
+
+                    case 12: return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Cloth);
+                    case 13: return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Leather);
+                    case 14: return (mat == BulkMaterialType.Spined);
+                    case 15: return (mat == BulkMaterialType.Horned);
+                    case 16: return (mat == BulkMaterialType.Barbed);
+                }
             }
         }
 

@@ -16,9 +16,6 @@ namespace Server.Items
         public bool IsFull { get { return Friends.FirstOrDefault(entry => entry == null) != null; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public override int MaxCharges { get { return 999; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
         public override int MaxRecharges { get { return -1; } }
 
         [Constructable]

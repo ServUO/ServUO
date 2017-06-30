@@ -73,9 +73,9 @@ namespace Server.Engines.Quests
 		{
 			if (item != null)
 			{
-				if (Core.SA && Mobiles.RandomItemGenerator.Enabled)
+				if (Core.SA && RandomItemGenerator.Enabled)
 				{
-					RunicReforging.GenerateRandomItem(item, 0, 0, 700);
+					RunicReforging.GenerateRandomItem(item, 0, 10, 850);
 				}
 				else
 				{

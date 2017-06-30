@@ -765,7 +765,7 @@ namespace Server.Engines.CityLoyalty
 
                 if (Server.Guilds.BaseGuildGump.CheckProfanity(text) && text.Trim().Length > 3)
                 {
-                    User.AddCollectionTitle(1154017); // ~1_TITLE~ of ~2_CITY~
+                    User.AddRewardTitle(1154017); // ~1_TITLE~ of ~2_CITY~
                     entry.CustomTitle = text.Trim();
 
                     if(User != Citizen)
