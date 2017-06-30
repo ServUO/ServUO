@@ -71,9 +71,18 @@ namespace Server.SkillHandlers
 			else
 			{
 				int range = (int)targ.GetDistanceToSqrt(from);
-				int maxRange = BaseInstrument.GetBardRange(from, SkillName.Discordance);
-
-				if (from.Map != targ.Map || range > maxRange)
+                int maxRange = BaseInstrument.GetBardRange(from, SkillName.Discordance);
+                Map targetMap = targ.Map;
+                
+                if(targ is BaseMount && ((BaseMount)targ).Rider != null)
+                {
+                    Mobile rider = ((BaseMount)targ).Rider;
+                
+                    range = (int)rider.GetDistanceToSqrt(from);
+                    targetMap = rider.Map
+                }
+                
+				if (from.Map != targMap || range > maxRange)
 				{
 					ends = true;
 				}
