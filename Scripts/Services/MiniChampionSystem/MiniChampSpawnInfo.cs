@@ -76,11 +76,14 @@ namespace Server.Engines.MiniChamps
 
                 bc.Home = Owner.Location;
                 bc.RangeHome = Owner.SpawnRange;
-                bc.IsMiniChampionSpawn = true;
-                bc.MiniChampionType = Owner.Type;
                 bc.Tamable = false;
                 bc.OnBeforeSpawn(loc, map);
                 bc.MoveToWorld(loc, map);
+
+                if (bc.Fame > Utility.Random(100000) || bc is BaseRenowned)
+                {
+                    DropEssence(bc);
+                }
 
                 Creatures.Add(bc);
 
@@ -90,6 +93,21 @@ namespace Server.Engines.MiniChamps
             }
 
             return spawned;
+        }
+
+        private void DropEssence(BaseCreature bc)
+        {
+            Type essenceType = MiniChampInfo.GetInfo(Owner.Type).EssenceType;
+
+            Item essence = null;
+
+            try { essence = (Item)Activator.CreateInstance(essenceType); }
+            catch { }
+
+            if (essence != null)
+            {
+                bc.PackItem(essence);
+            }
         }
 
         public void AddProperties(ObjectPropertyList list, int cliloc)
