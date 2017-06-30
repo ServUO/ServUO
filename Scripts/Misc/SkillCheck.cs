@@ -17,6 +17,8 @@ namespace Server.Misc
         private static double PlayerChanceToGainStats;
         private static double PetChanceToGainStats;
 
+        public static bool GGSActive { get { return !Siege.SiegeShard; } }
+
         public static void Configure()
         {
             m_StatGainDelayEnabled = Config.Get("PlayerCaps.EnablePlayerStatTimeDelay", false);
@@ -177,7 +179,7 @@ namespace Server.Misc
 
             if (AllowGain(from, skill, amObj))
             {
-                if (from.Alive && (gc >= Utility.RandomDouble() || skill.Base < 10.0))
+                if (from.Alive && (gc >= Utility.RandomDouble() || skill.Base < 10.0 || CheckGGS(from, skill)))
                 {
                     Gain(from, skill);
                     if (from.SkillsTotal >= 4500 || skill.Base >= 80.0)
@@ -278,9 +280,17 @@ namespace Server.Misc
 
                     if (minsPerGain > 0)
                     {
-                        if (skills.Total + toGain <= skills.Cap && Siege.CheckSkillGain((PlayerMobile)from, minsPerGain, skill))
+                        if (Siege.CheckSkillGain((PlayerMobile)from, minsPerGain, skill))
                         {
-                            skill.BaseFixedPoint += toGain;
+                            if (from is PlayerMobile)
+                            {
+                                CheckReduceSkill((PlayerMobile)from, skills, toGain, skill);
+                            }
+
+                            if (skills.Total + toGain <= skills.Cap)
+                            {
+                                skill.BaseFixedPoint += toGain;
+                            }
                         }
 
                         return;
@@ -291,38 +301,19 @@ namespace Server.Misc
                     toGain = Utility.Random(4) + 1;
 
                 #region Mondain's Legacy
-                if (from is PlayerMobile)
-                    if (Server.Engines.Quests.QuestHelper.EnhancedSkill((PlayerMobile)from, skill))
-                        toGain *= Utility.RandomMinMax(2, 4);
+                if (from is PlayerMobile && Server.Engines.Quests.QuestHelper.EnhancedSkill((PlayerMobile)from, skill))
+                {
+                    toGain *= Utility.RandomMinMax(2, 4);
+                }
                 #endregion
 
                 #region Scroll of Alacrity
-
-                if (from is PlayerMobile)
+                if (from is PlayerMobile && skill.SkillName == ((PlayerMobile)from).AcceleratedSkill && ((PlayerMobile)from).AcceleratedStart > DateTime.UtcNow)
                 {
-                    PlayerMobile pm = from as PlayerMobile;
-
-                    if (pm != null && skill.SkillName == pm.AcceleratedSkill && pm.AcceleratedStart > DateTime.UtcNow)
-                    {
-                        pm.SendLocalizedMessage(1077956); // You are infused with intense energy. You are under the effects of an accelerated skillgain scroll.
-                        toGain = Utility.RandomMinMax(2, 5);
-                    }
+                    ((PlayerMobile)from).SendLocalizedMessage(1077956); // You are infused with intense energy. You are under the effects of an accelerated skillgain scroll.
+                    toGain = Utility.RandomMinMax(2, 5);
                 }
                 #endregion
-
-                if (from.Player && (skills.Total / skills.Cap) >= Utility.RandomDouble())//( skills.Total >= skills.Cap )
-                {
-                    for (int i = 0; i < skills.Length; ++i)
-                    {
-                        Skill toLower = skills[i];
-
-                        if (toLower != skill && toLower.Lock == SkillLock.Down && toLower.BaseFixedPoint >= toGain)
-                        {
-                            toLower.BaseFixedPoint -= toGain;
-                            break;
-                        }
-                    }
-                }
 
                 #region Skill Masteries
                 else if (from is BaseCreature && (((BaseCreature)from).Controlled || ((BaseCreature)from).Summoned))
@@ -341,9 +332,17 @@ namespace Server.Misc
                 }
                 #endregion
 
+                if (from is PlayerMobile)
+                {
+                    CheckReduceSkill((PlayerMobile)from, skills, toGain, skill);
+                }
+
                 if (!from.Player || (skills.Total + toGain) <= skills.Cap)
                 {
                     skill.BaseFixedPoint += toGain;
+
+                    if(from is PlayerMobile)
+                        UpdateGGS(from, skill);
                 }
             }
 
@@ -370,6 +369,23 @@ namespace Server.Misc
 				{
 					TryStatGain(info, from);
 				}
+            }
+        }
+
+        private static void CheckReduceSkill(PlayerMobile pm, Skills skills, int toGain, Skill gainSKill)
+        {
+            if (skills.Total / skills.Cap >= Utility.RandomDouble())
+            {
+                for (int i = 0; i < skills.Length; ++i)
+                {
+                    Skill toLower = skills[i];
+
+                    if (toLower != gainSKill && toLower.Lock == SkillLock.Down && toLower.BaseFixedPoint >= toGain)
+                    {
+                        toLower.BaseFixedPoint -= toGain;
+                        break;
+                    }
+                }
             }
         }
 
@@ -584,5 +600,57 @@ namespace Server.Misc
 			}
 			return true;
 		}
+
+        private static bool CheckGGS(Mobile from, Skill skill)
+        {
+            if (!GGSActive)
+                return false;
+
+            if (from is PlayerMobile && skill.NextGGSGain < DateTime.UtcNow)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static void UpdateGGS(Mobile from, Skill skill)
+        {
+            if (!GGSActive)
+                return;
+
+            int list = (int)Math.Min(GGSTable.Length - 1, skill.Base / 5);
+            int column = from.Skills.Total >= 7000 ? 2 : from.Skills.Total >= 3500 ? 1 : 0;
+
+            skill.NextGGSGain = DateTime.UtcNow + TimeSpan.FromMinutes(GGSTable[list][column]);
+        }
+
+        private static int[][] GGSTable =
+        {
+            new int[] { 1, 3, 5 }, // 0.0 - 4.9
+            new int[] { 4, 10, 18 },
+            new int[] { 7, 17, 30 },
+            new int[] { 9, 24, 44 },
+            new int[] { 12, 31, 57 },
+            new int[] { 14, 38, 90 },
+            new int[] { 17, 45, 84 },
+            new int[] { 20, 52, 96 },
+            new int[] { 23, 60, 106 },
+            new int[] { 25, 66, 120 },
+            new int[] { 27, 72, 138 },
+            new int[] { 33, 90, 162 },
+            new int[] { 55, 150, 264 },
+            new int[] { 78, 216, 390 },
+            new int[] { 114, 294, 540 },
+            new int[] { 144, 384, 708 },
+            new int[] { 180, 492, 900 },
+            new int[] { 228, 606, 1116 },
+            new int[] { 276, 744, 1356 },
+            new int[] { 336, 894, 1620 },
+            new int[] { 396, 1056, 1920 },
+            new int[] { 468, 1242, 2280 },
+            new int[] { 540, 1440, 2580 },
+            new int[] { 618, 1662, 3060 },
+        };
     }
 }

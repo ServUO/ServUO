@@ -288,6 +288,17 @@ namespace Server.Engines.VvV
 
             protected override void OnTick()
             {
+                if (_Tick < 0)
+                {
+                    _Tick = 0;
+                }
+
+                if (_Tick >= _Locs.Length)
+                {
+                    Altar.Complete(Occupier);
+                    Stop();
+                }
+
                 Point3D p = _Locs[_Tick];
 
                 Effects.SendLocationEffect(new Point3D(Altar.X + p.X, Altar.Y + p.Y, Altar.Z + p.Z), Altar.Map, 0x3709, 30, 10);
@@ -310,12 +321,6 @@ namespace Server.Engines.VvV
                 }
 
                 _Tick++;
-
-                if (_Tick >= _Locs.Length)
-                {
-                    Altar.Complete(Occupier);
-                    Stop();
-                }
             }
 
             private Point3D[] _Locs =

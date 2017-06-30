@@ -1880,6 +1880,102 @@ namespace Server.Items
         }
     }
 
+    public class OrcMask : BaseHat, IRepairable
+    {
+        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+
+        public override int BasePhysicalResistance
+        {
+            get
+            {
+                return 1;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 1;
+            }
+        }
+        public override int BaseColdResistance
+        {
+            get
+            {
+                return 7;
+            }
+        }
+        public override int BasePoisonResistance
+        {
+            get
+            {
+                return 7;
+            }
+        }
+        public override int BaseEnergyResistance
+        {
+            get
+            {
+                return 8;
+            }
+        }
+
+        public override int InitMinHits
+        {
+            get
+            {
+                return 20;
+            }
+        }
+        public override int InitMaxHits
+        {
+            get
+            {
+                return 30;
+            }
+        }
+
+        public override bool Dye(Mobile from, DyeTub sender)
+        {
+            from.SendLocalizedMessage(sender.FailMessage);
+            return false;
+        }
+
+        public override int LabelNumber
+        {
+            get
+            {
+                return 1025147; // orc mask
+            }
+        }
+
+        [Constructable]
+        public OrcMask()
+            : base(0x141B)
+        {
+            this.Weight = 2.0;
+        }
+
+        public OrcMask(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+        }
+    }
+
     public class SavageMask : BaseHat
     {
         public override int BasePhysicalResistance

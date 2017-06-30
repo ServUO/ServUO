@@ -381,9 +381,11 @@ namespace Server.Items
                 this.WeaponAttributes.HitLeechMana = 50;
 		}
 	}
-	
-	public class HawkwindsRobe : BaseOuterTorso
+
+    public class HawkwindsRobe : BaseOuterTorso, Server.Engines.Craft.IRepairable
 	{
+        public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefTailoring.CraftSystem; } }
+
 		public override int LabelNumber { get { return 1156299; } } 
 	
 		public override int InitMinHits{ get{ return 255; } }

@@ -4923,6 +4923,12 @@ namespace Server
                 return false;
             }
 
+            if (QuestItem)
+            {
+                from.SendLocalizedMessage(1074769); // An item must be in your backpack (and not in a container within) to be toggled as a quest item.
+                return false;
+            }
+
             Map map = from.Map;
 
             if (map == null)

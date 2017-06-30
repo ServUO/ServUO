@@ -130,7 +130,7 @@ namespace Server.Commands
             tele = new Teleporter(new Point3D(542, 2479, 0), map);
             tele.MoveToWorld(new Point3D(643, 2308, 0), map);
 
-            tele = new Teleporter(new Point3D(543, 1479, 2), map);
+            tele = new Teleporter(new Point3D(543, 2479, 2), map);
             tele.MoveToWorld(new Point3D(644, 2308, 0), map);
 
             tele = new Teleporter(new Point3D(631, 2423, -20), map);

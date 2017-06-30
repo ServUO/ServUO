@@ -73,18 +73,6 @@ namespace Server.Mobiles
             return WeaponAbility.ConcussionBlow;
         }
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            Region r = Region.Find(c.Location, c.Map);
-
-            if(r.IsPartOf("Lava Caldera"))
-                c.DropItem(new EssencePassion());
-            else
-                c.DropItem(new EssenceOrder());
-        }
-
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.FilthyRich, 2);
