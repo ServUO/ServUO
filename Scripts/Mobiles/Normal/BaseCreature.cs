@@ -275,7 +275,7 @@ namespace Server.Mobiles
         private int m_FailedReturnHome; /* return to home failure counter */
 
         private bool m_IsChampionSpawn;
-        
+
         private Mobile m_InitialFocus;
         #endregion
 
@@ -2178,7 +2178,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(22); // version
+            writer.Write(21); // version
 
             writer.Write((int)m_CurrentAI);
             writer.Write((int)m_DefaultAI);
@@ -5247,19 +5247,6 @@ namespace Server.Mobiles
                 m_HasGeneratedLoot = true;
                 GenerateLoot(false);
             }
-
-            /*if (!Summoned && !m_HasGeneratedLoot && IsMiniChampionSpawn && Fame > Utility.Random(100000))
-            {
-                Type essenceType = MiniChampInfo.GetInfo(MiniChampionType).EssenceType;
-
-                Item essence = null;
-
-                try { essence = (Item)Activator.CreateInstance(essenceType); }
-                catch { }
-
-                if (essence != null)
-                    PackItem(essence);
-            }*/
 
             if (!NoKillAwards && Region.IsPartOf("Doom"))
             {
