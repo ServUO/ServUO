@@ -44,8 +44,7 @@ namespace Server.Mobiles
             this.Karma = -4500;
 
             this.VirtualArmor = 40;
-
-            this.PackItem(new EssencePrecision());
+            
             this.PackItem(new SulfurousAsh(3));
 
             this.AddItem(new LightSource());
