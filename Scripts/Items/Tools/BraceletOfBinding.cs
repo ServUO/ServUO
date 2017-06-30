@@ -74,11 +74,11 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int MaxCharges
+        public int MaxCharges
         {
             get
             {
-                return 20;
+                return 999;
             }
         }
 
@@ -87,7 +87,7 @@ namespace Server.Items
         {
             get
             {
-                return 255;
+                return -1;
             }
         }
 
