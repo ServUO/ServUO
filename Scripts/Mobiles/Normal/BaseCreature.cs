@@ -589,7 +589,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile InitialFocus
         {
-            get 
+            get
             {
                 if (m_InitialFocus != null && (!m_InitialFocus.Alive || m_InitialFocus.Deleted))
                 {
@@ -1169,6 +1169,24 @@ namespace Server.Mobiles
 				return a.IsEnemy(m);
 			}
 
+			if (m is BaseGuard)
+			{
+				return false;
+			}
+
+			if (Combatant != m)
+			{
+                if (m is PlayerMobile && ((PlayerMobile)m).HonorActive)
+                {
+                    return false;
+                }
+
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
+                {
+                    return false;
+                }
+			}
+
 			if (Core.TOL)
 			{
 				if (Tribe != TribeType.None && IsTribeEnemy(m))
@@ -1186,10 +1204,46 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (m is BaseGuard)
-			{
-				return false;
-			}
+            BaseCreature c = m as BaseCreature;
+
+            // Are we a non-aggressive FightMode?
+            if (FightMode == FightMode.Aggressor || FightMode == FightMode.Evil || FightMode == FightMode.Good)
+            {
+                // Faction Opposed Players/Pets are my enemies
+                if (GetFactionAllegiance(m) == BaseCreature.Allegiance.Enemy)
+                {
+                    return true;
+                }
+
+                // Ethic Opposed Players/Pets are my enemies
+                if (GetEthicAllegiance(m) == BaseCreature.Allegiance.Enemy)
+                {
+                    return true;
+                }
+
+                // Negative Karma are my enemies
+                if (FightMode == FightMode.Evil)
+                {
+                    if (c != null && c.GetMaster() != null)
+                    {
+                        return (c.GetMaster().Karma < 0);
+                    }
+                    return (m.Karma < 0);
+                }
+
+                // Positive Karma are my enemies
+                if (FightMode == FightMode.Good)
+                {
+                    if (c != null && c.GetMaster() != null)
+                    {
+                        return (c.GetMaster().Karma > 0);
+                    }
+                    return (m.Karma > 0);
+                }
+
+                // Others are not my enemies
+                return false;
+            }
 
 			// Faction Allied Players/Pets are not my enemies
 			if (GetFactionAllegiance(m) == Allegiance.Ally)
@@ -1206,22 +1260,10 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			if (m is PlayerMobile && ((PlayerMobile)m).HonorActive)
-			{
-				return false;
-			}
-
-			if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
-			{
-				return false;
-			}
-
 			if (!(m is BaseCreature))
 			{
 				return true;
 			}
-
-			BaseCreature c = (BaseCreature)m;
 
 			if (c.IsMilitiaFighter)
 			{
@@ -1231,12 +1273,13 @@ namespace Server.Mobiles
 			BaseCreature t = this;
 
 			// Summons should have same rules as their master
-			if (c.Summoned && c.SummonMaster != null && c.SummonMaster is BaseCreature)
+			if (c.m_bSummoned && c.SummonMaster != null && c.SummonMaster is BaseCreature)
 			{
 				c = c.SummonMaster as BaseCreature;
 			}
 
-			if (t.Summoned && t.SummonMaster != null && t.SummonMaster is BaseCreature)
+			// Summons should have same rules as their master
+			if (t.m_bSummoned && t.SummonMaster != null && t.SummonMaster is BaseCreature)
 			{
 				t = t.SummonMaster as BaseCreature;
 			}
@@ -1255,7 +1298,9 @@ namespace Server.Mobiles
 */
 			// If I'm summoned/controlled and they aren't summoned/controlled, they are my enemy
 			// If I'm not summoned/controlled and they are summoned/controlled, they are my enemy
-			return ((t.m_bSummoned || t.m_bControlled) != (c.m_bSummoned || c.m_bControlled));
+            // Summoned creatures must have masters to count as summoned here
+			return (((t.m_bSummoned && t.SummonMaster != null) || t.m_bControlled) !=
+                ((c.m_bSummoned && c.SummonMaster != null) || c.m_bControlled));
 		}
 
         public override string ApplyNameSuffix(string suffix)
@@ -5014,7 +5059,7 @@ namespace Server.Mobiles
         {
         }
 
-        
+
         public virtual void SetWearable(Item item, int hue = -1, double dropChance = 0.0)
         {
             if (hue > -1)
