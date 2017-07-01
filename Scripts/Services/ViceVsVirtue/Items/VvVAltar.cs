@@ -288,7 +288,10 @@ namespace Server.Engines.VvV
 
             protected override void OnTick()
             {
-                if (_Tick < 0) _Tick = 0;
+                if (_Tick < 0)
+                {
+                    _Tick = 0;
+                }
 
                 if (_Tick >= _Locs.Length)
                 {
