@@ -82,7 +82,7 @@ namespace Server.SkillHandlers
                     targetMap = rider.Map;
                 }
                 
-				if (from.Map != targMap || range > maxRange)
+				if (from.Map != targetMap || range > maxRange)
 				{
 					ends = true;
 				}
