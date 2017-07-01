@@ -288,15 +288,13 @@ namespace Server.Engines.VvV
 
             protected override void OnTick()
             {
-                if (_Tick < 0)
-                {
-                    _Tick = 0;
-                }
+                if (_Tick < 0) _Tick = 0;
 
                 if (_Tick >= _Locs.Length)
                 {
                     Altar.Complete(Occupier);
                     Stop();
+                    return;
                 }
 
                 Point3D p = _Locs[_Tick];
@@ -321,6 +319,12 @@ namespace Server.Engines.VvV
                 }
 
                 _Tick++;
+
+                if (_Tick >= _Locs.Length)
+                {
+                    Altar.Complete(Occupier);
+                    Stop();
+                }
             }
 
             private Point3D[] _Locs =
