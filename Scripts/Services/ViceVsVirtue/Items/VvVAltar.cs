@@ -297,6 +297,7 @@ namespace Server.Engines.VvV
                 {
                     Altar.Complete(Occupier);
                     Stop();
+                    return;
                 }
 
                 Point3D p = _Locs[_Tick];
@@ -321,6 +322,12 @@ namespace Server.Engines.VvV
                 }
 
                 _Tick++;
+
+                if (_Tick >= _Locs.Length)
+                {
+                    Altar.Complete(Occupier);
+                    Stop();
+                }
             }
 
             private Point3D[] _Locs =
