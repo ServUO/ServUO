@@ -79,7 +79,7 @@ namespace Server.SkillHandlers
                     Mobile rider = ((BaseMount)targ).Rider;
                 
                     range = (int)rider.GetDistanceToSqrt(from);
-                    targetMap = rider.Map
+                    targetMap = rider.Map;
                 }
                 
 				if (from.Map != targMap || range > maxRange)
