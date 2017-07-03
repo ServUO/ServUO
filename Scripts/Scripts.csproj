@@ -880,6 +880,7 @@
     <Compile Include="Items\Artifacts\Equipment\Armor\WardedDemonboneBracers.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\WardensArmorOfAugmentation.cs" />
     <Compile Include="Items\Resource\BloodOfTheDarkFather.cs" />
+    <Compile Include="Items\Resource\SmallFish.cs" />
     <Compile Include="Items\Resource\WorkableGlass.cs" />
     <Compile Include="Items\Tools\BaseHarvestTool.cs">
       <SubType>Code</SubType>
@@ -3273,6 +3274,7 @@
     <Compile Include="Services\HuntmasterChallenge\HuntingSystem.cs" />
     <Compile Include="Services\HuntmasterChallenge\HuntingTrophyInfo.cs" />
     <Compile Include="Services\HuntmasterChallenge\HuntMaster.cs" />
+    <Compile Include="Services\HuntmasterChallenge\HuntMasterRewardGump.cs" />
     <Compile Include="Services\HuntmasterChallenge\HuntTrophy.cs" />
     <Compile Include="Services\HuntmasterChallenge\KillEntry.cs" />
     <Compile Include="Services\HuntmasterChallenge\RewardItems.cs" />
