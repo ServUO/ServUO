@@ -29,11 +29,9 @@ namespace Server.Engines.CleanUpBritannia
             return PointsSystem.CleanUpBritannia.GetPoints(m);
         }
 
-        public override void OnConfirmed(CollectionItem citem, int index)
+        public override void RemovePoints(double points)
         {
-            base.OnConfirmed(citem, index);
-
-            PointsSystem.CleanUpBritannia.DeductPoints(User, citem.Points);
+            PointsSystem.CleanUpBritannia.DeductPoints(User, points);
         }
     }
 }

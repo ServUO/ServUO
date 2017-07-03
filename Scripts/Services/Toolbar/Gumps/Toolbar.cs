@@ -80,7 +80,7 @@ namespace Services.Toolbar.Gumps
 				x = offset + ((i % _Info.Rows) * 110);
 				y = offset + (int)(Math.Floor((double)(i / _Info.Rows)) * 24) + cy;
 
-                if (ns.IsEnhancedClient)
+                if (ns != null && ns.IsEnhancedClient)
                 {
                     AddButton(x + 1, y, 2435, 2436, temp + 10, GumpButtonType.Reply, 0);//4005, 4007
                 }

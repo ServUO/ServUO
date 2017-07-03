@@ -6,7 +6,10 @@ namespace Server.Items
 {
     public class PowderOfTemperament : Item, IUsesRemaining
     {
+        public static bool CanPOFJewelry = Config.Get("Loot.CanPOFJewelry", false);
+
         private int m_UsesRemaining;
+
         [Constructable]
         public PowderOfTemperament()
             : this(10)
@@ -17,9 +20,9 @@ namespace Server.Items
         public PowderOfTemperament(int charges)
             : base(4102)
         {
-            this.Weight = 1.0;
-            this.Hue = 2419;
-            this.UsesRemaining = charges;
+            Weight = 1.0;
+            Hue = 2419;
+            UsesRemaining = charges;
         }
 
         public PowderOfTemperament(Serial serial)
@@ -32,12 +35,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_UsesRemaining;
+                return m_UsesRemaining;
             }
             set
             {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
+                m_UsesRemaining = value;
+                InvalidateProperties();
             }
         }
         public bool ShowUsesRemaining
@@ -62,7 +65,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.Write((int)0);
-            writer.Write((int)this.m_UsesRemaining);
+            writer.Write((int)m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -75,7 +78,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_UsesRemaining = reader.ReadInt();
+                        m_UsesRemaining = reader.ReadInt();
                         break;
                     }
             }
@@ -85,24 +88,24 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
         public virtual void DisplayDurabilityTo(Mobile m)
         {
-            this.LabelToAffix(m, 1017323, AffixType.Append, ": " + this.m_UsesRemaining.ToString()); // Durability
+            LabelToAffix(m, 1017323, AffixType.Append, ": " + m_UsesRemaining.ToString()); // Durability
         }
 
         public override void OnSingleClick(Mobile from)
         {
-            this.DisplayDurabilityTo(from);
+            DisplayDurabilityTo(from);
 
             base.OnSingleClick(from);
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
                 from.Target = new InternalTarget(this);
             else
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
@@ -114,12 +117,12 @@ namespace Server.Items
             public InternalTarget(PowderOfTemperament powder)
                 : base(2, false, TargetFlags.None)
             {
-                this.m_Powder = powder;
+                m_Powder = powder;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Powder.Deleted || this.m_Powder.UsesRemaining <= 0)
+                if (m_Powder.Deleted || m_Powder.UsesRemaining <= 0)
                 {
                     from.SendLocalizedMessage(1049086); // You have used up your powder of temperament.
                     return;
@@ -131,7 +134,7 @@ namespace Server.Items
                     bool noGo = false;
                     int antique = 0;
 
-                    if (!Server.Engines.Craft.Repair.AllowsRepair(item, null))
+                    if (!Server.Engines.Craft.Repair.AllowsRepair(item, null) || (item is BaseJewel && !CanPOFJewelry))
                     {
                         from.SendLocalizedMessage(1049083); // You cannot use the powder on that item.
                         return;
@@ -183,7 +186,7 @@ namespace Server.Items
                             return;
                         }
 
-                        if ((item.IsChildOf(from.Backpack) || (Core.ML && item.Parent == from)) && this.m_Powder.IsChildOf(from.Backpack))
+                        if ((item.IsChildOf(from.Backpack) || (Core.ML && item.Parent == from)) && m_Powder.IsChildOf(from.Backpack))
                         {
                             int origMaxHP = wearable.MaxHitPoints;
                             int origCurHP = wearable.HitPoints;
@@ -225,12 +228,12 @@ namespace Server.Items
                                         from.SendLocalizedMessage(1049084); // You successfully use the powder on the item.
                                         from.PlaySound(0x247);
 
-                                        --this.m_Powder.UsesRemaining;
+                                        --m_Powder.UsesRemaining;
 
-                                        if (this.m_Powder.UsesRemaining <= 0)
+                                        if (m_Powder.UsesRemaining <= 0)
                                         {
                                             from.SendLocalizedMessage(1049086); // You have used up your powder of fortifying.
-                                            this.m_Powder.Delete();
+                                            m_Powder.Delete();
                                         }
                                     }
                                     else

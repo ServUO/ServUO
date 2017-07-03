@@ -22,11 +22,9 @@ namespace Server.Engines.Blackthorn
             return PointsSystem.Blackthorn.GetPoints(m);
         }
 
-        public override void OnConfirmed(CollectionItem citem, int index)
+        public override void RemovePoints(double points)
         {
-            base.OnConfirmed(citem, index);
-
-            PointsSystem.Blackthorn.DeductPoints(User, citem.Points);
+            PointsSystem.Blackthorn.DeductPoints(User, points);
         }
 	}
 }
