@@ -269,55 +269,22 @@ namespace Server.Engines.HuntsmasterChallenge
             HuntingDisplayTrophy.InvalidateDisplayTrophies();
 		}
 		
-		public bool CheckUnclaimedEntry(Mobile from)
+		public bool CheckUnclaimedEntry(Mobile from, Mobile vendor)
 		{
             List<Mobile> copy = new List<Mobile>(m_UnclaimedWinners.Keys);
 
 			foreach(Mobile m in copy)
 			{
-				if(m == from)
+				if(m == from && m is PlayerMobile)
 				{
-					ClaimWin(from);
-                    m_UnclaimedWinners[from]--;
-
-                    if (m_UnclaimedWinners[from] <= 0)
-                    {
-                        m_UnclaimedWinners.Remove(m);
-                    }
-                    else
-                    {
-                        m.SendMessage("You still have {0} rewards to claim!", m_UnclaimedWinners[m].ToString());
-                    }
-
-					return true;
+                    m.SendGump(new HuntmasterRewardGump(vendor, (PlayerMobile)m));
+                    return true;
 				}
 			}
 			
 			return false;
 		}
 		
-		private void ClaimWin(Mobile from)
-		{
-            switch (Utility.Random(4))
-            {
-                case 0: TryDropItemTo(from, new HarvestersBlade()); break;
-                case 1: TryDropItemTo(from, new HuntmastersRewardTitleDeed()); break;
-                case 2: TryDropItemTo(from, new RangersGuildSash()); break;
-                case 3: TryDropItemTo(from, new HornOfPlenty()); break;
-            }
-		}
-		
-		private void TryDropItemTo(Mobile from, Item item)
-		{
-			if(from.Backpack == null || !from.Backpack.TryDropItem(from, item, false))
-			{
-				from.BankBox.DropItem(item);
-				from.SendMessage("A reward item has been placed in your bankbox.");
-			}
-			else
-				from.SendMessage("A reward item has been placed in your backpack."); 
-		}
-	
 		public HuntingSystem(Serial serial) : base(serial)
 		{
 		}
