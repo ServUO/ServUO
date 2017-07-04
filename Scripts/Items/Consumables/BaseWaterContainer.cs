@@ -6,7 +6,7 @@
         public BaseWaterContainer(int Item_Id, bool filled)
             : base(Item_Id)
         {
-            this.m_Quantity = (filled) ? this.MaxQuantity : 0;
+            m_Quantity = (filled) ? MaxQuantity : 0;
         }
 
         public BaseWaterContainer(Serial serial)
@@ -29,7 +29,7 @@
         {
             get
             {
-                return (this.m_Quantity <= 0);
+                return (m_Quantity <= 0);
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -37,7 +37,7 @@
         {
             get
             {
-                return (this.m_Quantity >= this.MaxQuantity);
+                return (m_Quantity >= MaxQuantity);
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -45,33 +45,33 @@
         {
             get
             {
-                return this.m_Quantity;
+                return m_Quantity;
             }
             set
             {
-                if (value != this.m_Quantity)
+                if (value != m_Quantity)
                 {
-                    this.m_Quantity = (value < 1) ? 0 : (value > this.MaxQuantity) ? this.MaxQuantity : value;
+                    m_Quantity = (value < 1) ? 0 : (value > MaxQuantity) ? MaxQuantity : value;
 
-                    this.Movable = (!this.IsLockedDown) ? this.IsEmpty : false;
+                    Movable = (!IsLockedDown) ? IsEmpty : false;
 
-                    this.ItemID = (this.IsEmpty) ? this.voidItem_ID : this.fullItem_ID;
+                    ItemID = (IsEmpty) ? voidItem_ID : fullItem_ID;
 
-                    if (!this.IsEmpty)
+                    if (!IsEmpty)
                     {
-                        IEntity rootParent = this.RootParentEntity;
+                        IEntity rootParent = RootParentEntity;
 
                         if (rootParent != null && rootParent.Map != null && rootParent.Map != Map.Internal)
-                            this.MoveToWorld(rootParent.Location, rootParent.Map);
+                            MoveToWorld(rootParent.Location, rootParent.Map);
                     }
 
-                    this.InvalidateProperties();
+                    InvalidateProperties();
                 }
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsEmpty)
+            if (IsEmpty)
             {
                 base.OnDoubleClick(from);
             }
@@ -79,45 +79,49 @@
 
         public override void OnSingleClick(Mobile from)
         {
-            if (this.IsEmpty)
+            if (IsEmpty)
             {
                 base.OnSingleClick(from);
             }
             else
             {
-                if (this.Name == null)
-                    this.LabelTo(from, this.LabelNumber);
+                if (Name == null)
+                    LabelTo(from, LabelNumber);
                 else
-                    this.LabelTo(from, this.Name);
+                    LabelTo(from, Name);
             }
         }
 
         public override void OnAosSingleClick(Mobile from)
         {
-            if (this.IsEmpty)
+            if (IsEmpty)
             {
                 base.OnAosSingleClick(from);
             }
             else
             {
-                if (this.Name == null)
-                    this.LabelTo(from, this.LabelNumber);
+                if (Name == null)
+                    LabelTo(from, LabelNumber);
                 else
-                    this.LabelTo(from, this.Name);
+                    LabelTo(from, Name);
             }
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
-            if (this.IsEmpty)
+            if (IsEmpty)
             {
                 base.GetProperties(list);
+            }
+            else
+            {
+                AddNameProperty(list);
             }
         }
 
         public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
         {
-            if (!this.IsEmpty)
+            if (!IsEmpty)
             {
                 return false;
             }
@@ -130,7 +134,7 @@
             base.Serialize(writer);
 
             writer.Write((int)0); // version
-            writer.Write((int)this.m_Quantity);
+            writer.Write((int)m_Quantity);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -138,7 +142,7 @@
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            this.m_Quantity = reader.ReadInt();
+            m_Quantity = reader.ReadInt();
         }
     }
 }

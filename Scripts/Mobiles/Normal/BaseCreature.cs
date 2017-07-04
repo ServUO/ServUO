@@ -589,7 +589,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile InitialFocus
         {
-            get 
+            get
             {
                 if (m_InitialFocus != null && (!m_InitialFocus.Alive || m_InitialFocus.Deleted))
                 {
@@ -1169,6 +1169,24 @@ namespace Server.Mobiles
 				return a.IsEnemy(m);
 			}
 
+			if (m is BaseGuard)
+			{
+				return false;
+			}
+
+			if (Combatant != m)
+			{
+                if (m is PlayerMobile && ((PlayerMobile)m).HonorActive)
+                {
+                    return false;
+                }
+
+                if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
+                {
+                    return false;
+                }
+			}
+
 			if (Core.TOL)
 			{
 				if (Tribe != TribeType.None && IsTribeEnemy(m))
@@ -1186,10 +1204,46 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (m is BaseGuard)
-			{
-				return false;
-			}
+            BaseCreature c = m as BaseCreature;
+
+            // Are we a non-aggressive FightMode?
+            if (FightMode == FightMode.Aggressor || FightMode == FightMode.Evil || FightMode == FightMode.Good)
+            {
+                // Faction Opposed Players/Pets are my enemies
+                if (GetFactionAllegiance(m) == BaseCreature.Allegiance.Enemy)
+                {
+                    return true;
+                }
+
+                // Ethic Opposed Players/Pets are my enemies
+                if (GetEthicAllegiance(m) == BaseCreature.Allegiance.Enemy)
+                {
+                    return true;
+                }
+
+                // Negative Karma are my enemies
+                if (FightMode == FightMode.Evil)
+                {
+                    if (c != null && c.GetMaster() != null)
+                    {
+                        return (c.GetMaster().Karma < 0);
+                    }
+                    return (m.Karma < 0);
+                }
+
+                // Positive Karma are my enemies
+                if (FightMode == FightMode.Good)
+                {
+                    if (c != null && c.GetMaster() != null)
+                    {
+                        return (c.GetMaster().Karma > 0);
+                    }
+                    return (m.Karma > 0);
+                }
+
+                // Others are not my enemies
+                return false;
+            }
 
 			// Faction Allied Players/Pets are not my enemies
 			if (GetFactionAllegiance(m) == Allegiance.Ally)
@@ -1206,22 +1260,10 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			if (m is PlayerMobile && ((PlayerMobile)m).HonorActive)
-			{
-				return false;
-			}
-
-			if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
-			{
-				return false;
-			}
-
 			if (!(m is BaseCreature))
 			{
 				return true;
 			}
-
-			BaseCreature c = (BaseCreature)m;
 
 			if (c.IsMilitiaFighter)
 			{
@@ -1231,12 +1273,13 @@ namespace Server.Mobiles
 			BaseCreature t = this;
 
 			// Summons should have same rules as their master
-			if (c.Summoned && c.SummonMaster != null && c.SummonMaster is BaseCreature)
+			if (c.m_bSummoned && c.SummonMaster != null && c.SummonMaster is BaseCreature)
 			{
 				c = c.SummonMaster as BaseCreature;
 			}
 
-			if (t.Summoned && t.SummonMaster != null && t.SummonMaster is BaseCreature)
+			// Summons should have same rules as their master
+			if (t.m_bSummoned && t.SummonMaster != null && t.SummonMaster is BaseCreature)
 			{
 				t = t.SummonMaster as BaseCreature;
 			}
@@ -1255,7 +1298,9 @@ namespace Server.Mobiles
 */
 			// If I'm summoned/controlled and they aren't summoned/controlled, they are my enemy
 			// If I'm not summoned/controlled and they are summoned/controlled, they are my enemy
-			return ((t.m_bSummoned || t.m_bControlled) != (c.m_bSummoned || c.m_bControlled));
+            // Summoned creatures must have masters to count as summoned here
+			return (((t.m_bSummoned && t.SummonMaster != null) || t.m_bControlled) !=
+                ((c.m_bSummoned && c.SummonMaster != null) || c.m_bControlled));
 		}
 
         public override string ApplyNameSuffix(string suffix)
@@ -1926,6 +1971,8 @@ namespace Server.Mobiles
             int scales = Scales;
             int dragonblood = DragonBlood;
 
+            bool special = with is SkinningKnife || with is ButchersWarCleaver || with is HarvestersBlade;
+
             if ((feathers == 0 && wool == 0 && meat == 0 && hides == 0 && scales == 0) || Summoned || IsBonded || corpse.Animated)
             {
                 if (corpse.Animated)
@@ -1957,67 +2004,79 @@ namespace Server.Mobiles
                     }
                 }
 
+                if (with is HarvestersBlade)
+                {
+                    feathers = (int)Math.Ceiling((double)feathers * 1.1);
+                    wool = (int)Math.Ceiling((double)wool * 1.1);
+                    hides = (int)Math.Ceiling((double)hides * 1.1);
+                    meat = (int)Math.Ceiling((double)meat * 1.1);
+                    scales = (int)Math.Ceiling((double)scales * 1.1);
+                }
+
                 new Blood(0x122D).MoveToWorld(corpse.Location, corpse.Map);
 
                 if (feathers != 0)
                 {
-                    corpse.AddCarvedItem(new Feather(feathers), from);
-                    from.SendLocalizedMessage(500479); // You pluck the bird. The feathers are now on the corpse.
+                    var feather = new Feather(feathers);
+                    if (!special || !from.PlaceInBackpack(feather))
+                    {
+                        corpse.AddCarvedItem(feather, from);
+                        from.SendLocalizedMessage(500479); // You pluck the bird. The feathers are now on the corpse.
+                    }
+                    else
+                        from.SendLocalizedMessage(1114097); // You pluck the bird and place the feathers in your backpack.
                 }
 
                 if (wool != 0)
                 {
-                    corpse.AddCarvedItem(new TaintedWool(wool), from);
-                    from.SendLocalizedMessage(500483); // You shear it, and the wool is now on the corpse.
+                    var w = new TaintedWool(wool);
+                    if (!special || !from.PlaceInBackpack(w))
+                    {
+                        corpse.AddCarvedItem(w, from);
+                        from.SendLocalizedMessage(500483); // You shear it, and the wool is now on the corpse.
+                    }
+                    else
+                        from.SendLocalizedMessage(1114099); // You shear the creature and put the resources in your backpack.
                 }
 
                 if (meat != 0)
                 {
+                    Item m = null;
                     if (MeatType == MeatType.Ribs)
-                    {
-                        corpse.AddCarvedItem(new RawRibs(meat), from);
-                    }
+                        m = new RawRibs(meat);
                     else if (MeatType == MeatType.Bird)
-                    {
-                        corpse.AddCarvedItem(new RawBird(meat), from);
-                    }
+                        m = new RawBird(meat);
                     else if (MeatType == MeatType.LambLeg)
-                    {
-                        corpse.AddCarvedItem(new RawLambLeg(meat), from);
-                    }
+                        m = new RawLambLeg(meat);
 
-                    from.SendLocalizedMessage(500467); // You carve some meat, which remains on the corpse.
+                    if (m != null && (!special || !from.PlaceInBackpack(m)))
+                    {
+                        corpse.AddCarvedItem(m, from);
+                        from.SendLocalizedMessage(500467); // You carve some meat, which remains on the corpse.
+                    }
+                    else if (m != null)
+                        from.SendLocalizedMessage(1114101); // You carve some meat and put it in your backpack.
                 }
 
                 if (hides != 0)
                 {
-                    Item holding = from.Weapon as Item;
-
-                    if (Core.AOS && (holding is SkinningKnife || with is ButchersWarCleaver))
+                    if (Core.AOS && special)
                     {
                         Item leather = null;
 
                         switch (HideType)
                         {
-                            case HideType.Regular:
-                                leather = new Leather(hides);
-                                break;
-                            case HideType.Spined:
-                                leather = new SpinedLeather(hides);
-                                break;
-                            case HideType.Horned:
-                                leather = new HornedLeather(hides);
-                                break;
-                            case HideType.Barbed:
-                                leather = new BarbedLeather(hides);
-                                break;
+                            case HideType.Regular: leather = new Leather(hides); break;
+                            case HideType.Spined: leather = new SpinedLeather(hides); break;
+                            case HideType.Horned: leather = new HornedLeather(hides); break;
+                            case HideType.Barbed: leather = new BarbedLeather(hides); break;
                         }
 
                         if (leather != null)
                         {
                             if (!from.PlaceInBackpack(leather))
                             {
-                                corpse.DropItem(leather);
+                                corpse.AddCarvedItem(leather, from);
                                 from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
                             }
                             else
@@ -2029,21 +2088,13 @@ namespace Server.Mobiles
                     else
                     {
                         if (HideType == HideType.Regular)
-                        {
-                            corpse.DropItem(new Hides(hides));
-                        }
+                            corpse.AddCarvedItem(new Hides(hides), from);
                         else if (HideType == HideType.Spined)
-                        {
-                            corpse.DropItem(new SpinedHides(hides));
-                        }
+                            corpse.AddCarvedItem(new SpinedHides(hides), from);
                         else if (HideType == HideType.Horned)
-                        {
-                            corpse.DropItem(new HornedHides(hides));
-                        }
+                            corpse.AddCarvedItem(new HornedHides(hides), from);
                         else if (HideType == HideType.Barbed)
-                        {
-                            corpse.DropItem(new BarbedHides(hides));
-                        }
+                            corpse.AddCarvedItem(new BarbedHides(hides), from);
 
                         from.SendLocalizedMessage(500471); // You skin it, and the hides are now in the corpse.
                     }
@@ -2051,47 +2102,60 @@ namespace Server.Mobiles
 
                 if (scales != 0)
                 {
-                    ScaleType sc = ScaleType;
+                    ScaleType sc = this.ScaleType;
+                    List<Item> list = new List<Item>();
 
                     switch (sc)
                     {
-                        case ScaleType.Red:
-                            corpse.AddCarvedItem(new RedScales(scales), from);
-                            break;
-                        case ScaleType.Yellow:
-                            corpse.AddCarvedItem(new YellowScales(scales), from);
-                            break;
-                        case ScaleType.Black:
-                            corpse.AddCarvedItem(new BlackScales(scales), from);
-                            break;
-                        case ScaleType.Green:
-                            corpse.AddCarvedItem(new GreenScales(scales), from);
-                            break;
-                        case ScaleType.White:
-                            corpse.AddCarvedItem(new WhiteScales(scales), from);
-                            break;
-                        case ScaleType.Blue:
-                            corpse.AddCarvedItem(new BlueScales(scales), from);
-                            break;
+                        case ScaleType.Red: list.Add(new RedScales(scales)); break;
+                        case ScaleType.Yellow: list.Add(new YellowScales(scales)); break;
+                        case ScaleType.Black: list.Add(new BlackScales(scales)); break;
+                        case ScaleType.Green: list.Add(new GreenScales(scales)); break;
+                        case ScaleType.White: list.Add(new WhiteScales(scales)); break;
+                        case ScaleType.Blue: list.Add(new BlueScales(scales)); break;
                         case ScaleType.All:
                             {
-                                corpse.AddCarvedItem(new RedScales(scales), from);
-                                corpse.AddCarvedItem(new YellowScales(scales), from);
-                                corpse.AddCarvedItem(new BlackScales(scales), from);
-                                corpse.AddCarvedItem(new GreenScales(scales), from);
-                                corpse.AddCarvedItem(new WhiteScales(scales), from);
-                                corpse.AddCarvedItem(new BlueScales(scales), from);
+                                list.Add(new RedScales(scales));
+                                list.Add(new YellowScales(scales));
+                                list.Add(new BlackScales(scales));
+                                list.Add(new GreenScales(scales));
+                                list.Add(new WhiteScales(scales));
+                                list.Add(new BlueScales(scales));
                                 break;
                             }
                     }
 
-                    from.SendMessage("You cut away some scales, but they remain on the corpse.");
+                    bool onCorpse = false;
+                    bool inPack = false;
+
+                    foreach (Item s in list)
+                    {
+                        if (!special || !from.PlaceInBackpack(s))
+                        {
+                            corpse.AddCarvedItem(s, from);
+                            onCorpse = true;
+                        }
+                        else
+                            inPack = true;
+                    }
+
+                    list.Clear();
+
+                    if (onCorpse)
+                        from.SendLocalizedMessage(1079284); // You cut away some scales, but they remain on the corpse.
+
+                    if (inPack)
+                        from.SendLocalizedMessage(1114098); // You cut away some scales and put them in your backpack.
                 }
 
                 if (dragonblood != 0)
                 {
-                    corpse.AddCarvedItem(new DragonBlood(dragonblood), from);
-                    from.SendLocalizedMessage(500467); // You carve some meat, which remains on the corpse.
+                    Item db = new DragonBlood(dragonblood);
+
+                    if (!special || !from.PlaceInBackpack(db))
+                    {
+                        corpse.AddCarvedItem(db, from);
+                    }
                 }
 
                 corpse.Carved = true;
@@ -5014,7 +5078,7 @@ namespace Server.Mobiles
         {
         }
 
-        
+
         public virtual void SetWearable(Item item, int hue = -1, double dropChance = 0.0)
         {
             if (hue > -1)

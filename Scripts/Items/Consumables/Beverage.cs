@@ -1341,6 +1341,10 @@ namespace Server.Items
                     EndlessDecanter.HandleThrow(this, (WaterElemental)targ, from);
                 }
             }
+            else if (this is Pitcher && this.Content == BeverageType.Water && targ is FillableBarrel)
+            {
+                ((FillableBarrel)targ).Pour(from, this);
+            }
             else
             {
                 from.SendLocalizedMessage(500846); // Can't pour it there.
