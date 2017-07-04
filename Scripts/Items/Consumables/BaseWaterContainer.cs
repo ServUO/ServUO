@@ -6,7 +6,7 @@
         public BaseWaterContainer(int Item_Id, bool filled)
             : base(Item_Id)
         {
-            m_Quantity = (filled) ? MaxQuantity : 0;
+            Quantity = (filled) ? MaxQuantity : 0;
         }
 
         public BaseWaterContainer(Serial serial)

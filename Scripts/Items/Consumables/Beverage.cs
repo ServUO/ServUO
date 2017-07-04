@@ -1341,9 +1341,16 @@ namespace Server.Items
                     EndlessDecanter.HandleThrow(this, (WaterElemental)targ, from);
                 }
             }
-            else if (this is Pitcher && this.Content == BeverageType.Water && targ is FillableBarrel)
+            else if (this is Pitcher && this.Content == BeverageType.Water)
             {
-                ((FillableBarrel)targ).Pour(from, this);
+                if (targ is FillableBarrel)
+                {
+                    ((FillableBarrel)targ).Pour(from, this);
+                }
+                else if (targ is Barrel)
+                {
+                    ((Barrel)targ).Pour(from, this);
+                }
             }
             else
             {
