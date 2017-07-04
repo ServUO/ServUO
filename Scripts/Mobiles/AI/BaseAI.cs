@@ -2764,6 +2764,7 @@ namespace Server.Mobiles
         *  bFacFriend : Check people in my faction
         *  bFacFoe : Check people in other factions
         *
+        * Note: Never use a differing acqType for enemy targeting! It only checks using creature's fightmode!
         */
 
 		public virtual bool AcquireFocusMob(int iRange, FightMode acqType, bool bPlayerOnly, bool bFacFriend, bool bFacFoe)
@@ -2823,8 +2824,14 @@ namespace Server.Mobiles
 			if (acqType == FightMode.Aggressor && m_Mobile.Aggressors.Count == 0 && m_Mobile.Aggressed.Count == 0 &&
 				m_Mobile.FactionAllegiance == null && m_Mobile.EthicAllegiance == null)
 			{
-				m_Mobile.FocusMob = null;
-				return false;
+                if ((Core.TOL && m_Mobile.Tribe == TribeType.None) || (!Core.TOL && m_Mobile.OppositionGroup == null))
+                {
+                    if ((XmlIsEnemy)XmlAttach.FindAttachment(m_Mobile, typeof(XmlIsEnemy)) == null)
+                    {
+                        m_Mobile.FocusMob = null;
+                        return false;
+                    }
+                }
 			}
 
 			if (m_Mobile.NextReacquireTime > Core.TickCount)
@@ -2939,65 +2946,8 @@ namespace Server.Mobiles
 								continue;
 							}
 */
-							if (acqType == FightMode.Aggressor || acqType == FightMode.Evil || acqType == FightMode.Good
-								|| (m is BaseCreature && ((BaseCreature)m).Summoned))
-							{
-
-								//Ignore anyone under EtherealVoyage
-								if (TransformationSpellHelper.UnderTransformation(m, typeof(EtherealVoyageSpell)))
-								{
-									continue;
-								}
-
-								// Ignore players with activated honor
-								if (m is PlayerMobile && ((PlayerMobile)m).HonorActive && m_Mobile.Combatant != m)
-								{
-									continue;
-								}
-
-								// We want a faction/ethic enemy
-								bool bValid = (m_Mobile.GetFactionAllegiance(m) == BaseCreature.Allegiance.Enemy ||
-											  m_Mobile.GetEthicAllegiance(m) == BaseCreature.Allegiance.Enemy);
-
-								// We want a special FightMode enemy
-								if (!bValid)
-								{
-									BaseCreature c = m as BaseCreature;
-
-									// We want a karma enemy
-									if (acqType == FightMode.Evil)
-									{
-										if (c != null && c.GetMaster() != null)
-										{
-											bValid = (c.GetMaster().Karma < 0);
-										}
-										else
-										{
-											bValid = (m.Karma < 0);
-										}
-									}
-									// We want a karma enemy
-									else if (acqType == FightMode.Good)
-									{
-										if (c != null && c.GetMaster() != null)
-										{
-											bValid = (c.GetMaster().Karma > 0);
-										}
-										else
-										{
-											bValid = (m.Karma > 0);
-										}
-									}
-
-									// Ignore Invalid targets
-									if (!bValid)
-									{
-										continue;
-									}
-								}
-							}
-							// Ignore any non-enemy (We are an Aggressive FightMode)
-							else if (!m_Mobile.IsEnemy(m))
+							// Ignore any non-enemy
+							if (!m_Mobile.IsEnemy(m))
 							{
 								continue;
 							}
