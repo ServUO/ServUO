@@ -645,6 +645,27 @@ namespace Server.Items
             Weight = 25.0;
         }
 
+        public void Pour(Mobile from, BaseBeverage beverage)
+        {
+            if (beverage.Content == BeverageType.Water)
+            {
+                if (Items.Count > 0)
+                {
+                    from.SendLocalizedMessage(500848); // Couldn't pour it there.  It was already full.
+                    beverage.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0, 500841, from.NetState); // that has somethign in it.
+                }
+                else
+                {
+                    var barrel = new WaterBarrel();
+                    barrel.Movable = false;
+                    barrel.MoveToWorld(Location, Map);
+
+                    beverage.Pour_OnTarget(from, barrel);
+                    Delete();
+                }
+            }
+        }
+
         public Barrel(Serial serial)
             : base(serial)
         {
