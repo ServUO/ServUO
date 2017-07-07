@@ -80,7 +80,7 @@ namespace Server.Items
 
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
-            if (!CheckStack(from, dropped) && !CheckHold(from, dropped, sendFullMessage, true))
+            if (!CheckHold(from, dropped, sendFullMessage, CheckStack(from, dropped)))
                 return false;
 
             if (dropped.QuestItem && from.Backpack != this)
