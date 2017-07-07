@@ -1205,9 +1205,9 @@ namespace Server.Mobiles
 
             BaseCreature c = m as BaseCreature;
 
-            // Are we a non-aggressive FightMode?
+            // Are we a non-aggressive FightMode or are they an uncontrolled Summon?
             if (FightMode == FightMode.Aggressor || FightMode == FightMode.Evil || FightMode == FightMode.Good ||
-                (c.m_bSummoned && !c.m_bControlled && c.SummonMaster != null))
+                (c != null && c.m_bSummoned && !c.m_bControlled && c.SummonMaster != null))
             {
                 // Faction Opposed Players/Pets are my enemies
                 if (GetFactionAllegiance(m) == BaseCreature.Allegiance.Enemy)
