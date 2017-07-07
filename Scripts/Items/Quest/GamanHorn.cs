@@ -14,11 +14,11 @@ namespace Server.Items
         public GamanHorns(int amount)
             : base(0x1084)
         {
-            this.LootType = LootType.Blessed;
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Weight = 1;
-            this.Hue = 0x395;
+            LootType = LootType.Blessed;
+            Stackable = true;
+            Amount = amount;
+            Weight = 1;
+            Hue = 0x395;
         }
 
         public GamanHorns(Serial serial)

@@ -1018,7 +1018,6 @@ namespace Server.Mobiles
         public const int MaxOwners = 5;
 
         public virtual OppositionGroup OppositionGroup { get { return null; } }
-        public virtual bool IsMilitiaFighter { get { return false; } }
 
         // Tribe Opposition stuff
         public virtual TribeType Tribe{ get{ return TribeType.None ; } } // What opposition list am I in?
@@ -1265,7 +1264,7 @@ namespace Server.Mobiles
 				return true;
 			}
 
-			if (c.IsMilitiaFighter)
+            if (c is Server.Engines.Quests.Haven.MilitiaFighter)
 			{
 				return true;
 			}

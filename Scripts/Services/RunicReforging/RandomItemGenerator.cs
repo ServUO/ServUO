@@ -63,10 +63,10 @@ namespace Server.Items
         /// <param name="maxIntensity"></param>
         public static void GenerateRandomItem(Item item, int luckChance, int attributeCount, int minIntensity, int maxIntensity)
         {
-            int min = attributeCount * minIntensity;
+            int min = (attributeCount * 2) * minIntensity;
             min = min + (int)((double)min * ((double)Utility.RandomMinMax(1, 4) / 10));
 
-            int max = attributeCount * maxIntensity;
+            int max = (attributeCount * 2) * maxIntensity;
             max = max + (int)((double)max * ((double)Utility.RandomMinMax(1, 4) / 10));
 
             RunicReforging.GenerateRandomItem(item, luckChance, min, max);
