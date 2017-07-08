@@ -11,8 +11,18 @@ namespace Server.Items
         public BigFish()
             : base(0x09CC)
         {
-            Weight = Utility.RandomMinMax(3, 200);	//TODO: Find correct formula.  max on OSI currently 200, OSI dev says it's not 200 as max, and ~ 1/1,000,000 chance to get highest
+            Weight = Math.Max(20, GetWeight());
+
             Hue = Utility.RandomBool() ? 0x847 : 0x58C;
+        }
+
+        private int GetWeight()
+        {
+            int v = Utility.RandomMinMax(0, 10000);
+            v = (int)Math.Sqrt(v);
+            v = 100 - v;
+
+            return (int)(225.0 * ((double)v / 100));
         }
 
         public BigFish(Serial serial)
