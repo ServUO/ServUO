@@ -167,6 +167,14 @@ namespace Server.Mobiles
                             {
                                 m_From.SendGump(new SmallBODAcceptGump(m_From, (SmallBOD)bulkOrder));
                             }
+                            else if (bulkOrder == null)
+                            {
+                                Console.WriteLine("BOD is null");
+                            }
+                            else
+                            {
+                                Console.WriteLine("BOD: {0}", bulkOrder);
+                            }
                         }
                         else
                         {
