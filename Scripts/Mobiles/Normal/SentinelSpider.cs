@@ -40,12 +40,6 @@ namespace Server.Mobiles
 			Karma = -775;
 
 			VirtualArmor = 28; 
-
-			Tamable = true;
-			ControlSlots = 3;
-			MinTameSkill = 74.7;
-
-			//PackItem( new SpidersSilk( 7 ) );
 		}
 
 		public override void GenerateLoot()

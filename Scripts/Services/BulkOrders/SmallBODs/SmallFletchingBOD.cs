@@ -101,7 +101,7 @@ namespace Server.Engines.BulkOrders
             double theirSkill = m.Skills[SkillName.Fletching].Base;
             bool useMaterials = false;
 
-            if (.20 > Utility.RandomDouble())
+            if (theirSkill < 30.0 || .20 > Utility.RandomDouble())
             {
                 entries = SmallBulkEntry.FletchingSmallsRegular;
             }
