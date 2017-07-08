@@ -3,6 +3,7 @@ using Server.Targeting;
 using Server.Gumps;
 using Server.Network;
 using System.Collections.Generic;
+using Server.Multis;
 
 namespace Server.Items
 {
@@ -84,6 +85,16 @@ namespace Server.Items
             this.m_UsesRemaining = reader.ReadInt();
         }
 
+        public bool CheckAccess(Mobile m, Runebook book)
+        {
+            if (!book.IsLockedDown || m.AccessLevel >= AccessLevel.GameMaster)
+                return true;
+
+            BaseHouse house = BaseHouse.FindHouseAt(book);
+
+            return house != null && house.IsCoOwner(m);
+        }
+
         private class SourceTarget : Target
         {
             private readonly PenOfWisdom m_Pen;
@@ -103,7 +114,7 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(1115329); // Runebooks you wish to copy must be in your backpack.
                     }
-                    else if (!book.CheckAccess(from) && !book.Movable)
+                    else if (!m_Pen.CheckAccess(from, book) && !book.Movable)
                     {
                         from.SendLocalizedMessage(1115332); // Only the house owner and co-owners can copy the lockdowned runebook with the Pen.
                     }
@@ -143,7 +154,7 @@ namespace Server.Items
             {
                 if (targ is Runebook)
                 {
-                    Runebook book = targ as Runebook;                   
+                    Runebook book = targ as Runebook;
 
                     if (!book.IsChildOf(from.Backpack))
                     {
@@ -160,7 +171,7 @@ namespace Server.Items
                     else
                     {
                         if (!from.HasGump(typeof(PenOfWisdomGump)))
-                            from.SendGump(new PenOfWisdomGump(from, m_Pen, m_SourceBook, book, null));                    
+                            from.SendGump(new PenOfWisdomGump(from, m_Pen, m_SourceBook, book, null));
                     }
                 }
                 else
@@ -209,9 +220,9 @@ namespace Server.Items
             AddBackground(4, 39, 391, 313, 9200);
             AddImageTiled(8, 45, 380, 53, 2624);
             AddHtmlLocalized(7, 50, 380, 53, 1115428, String.Format("{0}\t{1}\t{2}\t{3}", m_MarkScrollAmount.ToString(), m_RuneAmount.ToString(), m_Checked.Count, m_Blank.ToString()), 0xFFFFFF, false, false); // <CENTER>Pen of Wisdom<br>(Mark Scrolls: ~1_VAL~, Runes: ~2_VAL~ | Selected: ~3_VAL~, Blank: ~4_VAL~)</CENTER>
-          
+
             AddImageTiled(8, 101, 188, 220, 2624);
-            AddImageTiled(199, 101, 188, 220, 2624);            
+            AddImageTiled(199, 101, 188, 220, 2624);
             AddButton(12, 325, 4017, 4018, 20, GumpButtonType.Reply, 0);
             AddLabel(48, 325, 2100, @"Cancel");
             AddButton(153, 325, 4011, 4012, 21, GumpButtonType.Reply, 0);
@@ -220,21 +231,21 @@ namespace Server.Items
             AddLabel(344, 325, 2100, @"Okay");
 
             string description;
-             
+
             for (int i = 0; i < sourcebook.Entries.Count; i++)
             {
                 description = sourcebook.Entries[i].Description;
 
                 if (description == null)
                 {
-                    if (i < 10)
+                    if (i + 1 < 10)
                     {
                         description = "0" + (i + 1).ToString();
                     }
                     else
                     {
                         description = (i + 1).ToString();
-                    }                    
+                    }
                 }
 
                 if (i < 8)
@@ -244,16 +255,16 @@ namespace Server.Items
                 }
                 else
                 {
-                    AddButton(205, 110 + i * 25, m_Checked.Contains(sourcebook.Entries[i]) ? 211 : 210, m_Checked.Contains(sourcebook.Entries[i]) ? 210 : 211, i, GumpButtonType.Reply, 0);
-                    AddLabel(235, 110 + i * 25, RunebookGump.GetMapHue(sourcebook.Entries[i].Map), String.Format("{0}", description));
-                }               
+                    AddButton(205, 110 + ((i - 8) * 25), m_Checked.Contains(sourcebook.Entries[i]) ? 211 : 210, m_Checked.Contains(sourcebook.Entries[i]) ? 210 : 211, i, GumpButtonType.Reply, 0);
+                    AddLabel(235, 110 + ((i - 8) * 25), RunebookGump.GetMapHue(sourcebook.Entries[i].Map), String.Format("{0}", description));
+                }
             }
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             if (this.m_Checked == null)
-                return;            
+                return;
 
             Mobile from = sender.Mobile;
 
