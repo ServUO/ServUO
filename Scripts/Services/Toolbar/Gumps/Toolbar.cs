@@ -32,11 +32,6 @@ namespace Services.Toolbar.Gumps
 		public ToolbarGump(ToolbarInfo info, Mobile m)
 			: base(0, 28)
 		{
-            if (m.NetState == null)
-            {
-                return;
-            }
-
 			_Info = info;
 
 			if (_Info.Lock)
