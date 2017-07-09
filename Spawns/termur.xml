@@ -1639,49 +1639,6 @@
     <Objects2>GargishRefugee:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Switch2</Name>
-    <UniqueId>3aa42f73-6c3a-4d08-b9de-4af5cdf2d6b0</UniqueId>
-    <Map>TerMur</Map>
-    <X>37</X>
-    <Y>206</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>42</CentreX>
-    <CentreY>211</CentreY>
-    <CentreZ>-5</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>5</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>2</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <SpeechTrigger>anord</SpeechTrigger>
-    <InContainer>False</InContainer>
-    <MinRefractory>0.166666666666667</MinRefractory>
-    <MaxRefractory>0.166666666666667</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>True</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>SET,Bar2/DoReset/true:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SET,Bar2,xmlspawner/running/true:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Korpre 6</Name>
     <UniqueId>3b899101-20e9-4d28-b5d6-98e0d80868b9</UniqueId>
     <Map>TerMur</Map>
@@ -3404,49 +3361,6 @@
     <Objects2>rotworm:MX=4:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=mimic:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=bloodelemental:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Switch3</Name>
-    <UniqueId>70e18159-061f-43ac-b142-09ad9b1aed96</UniqueId>
-    <Map>TerMur</Map>
-    <X>23</X>
-    <Y>206</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>28</CentreX>
-    <CentreY>211</CentreY>
-    <CentreZ>-5</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>5</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>2</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <SpeechTrigger>ord</SpeechTrigger>
-    <InContainer>False</InContainer>
-    <MinRefractory>0.166666666666667</MinRefractory>
-    <MaxRefractory>0.166666666666667</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>True</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>SET,Br3/DoReset/true:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SET,Br3,xmlspawner/running/true:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>Gargish Bazaar3</Name>
     <UniqueId>712fa441-5207-4984-bedb-5d5193d7a734</UniqueId>
     <Map>TerMur</Map>
@@ -3655,49 +3569,6 @@
     <IsRunning>False</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2 />
-  </Points>
-  <Points>
-    <Name>Br3</Name>
-    <UniqueId>77577769-9e66-4dfa-a3df-cf32bf849ca8</UniqueId>
-    <Map>TerMur</Map>
-    <X>32</X>
-    <Y>207</Y>
-    <Width>7</Width>
-    <Height>0</Height>
-    <CentreX>35</CentreX>
-    <CentreY>208</CentreY>
-    <CentreZ>0</CentreZ>
-    <Range>5</Range>
-    <MaxCount>31</MaxCount>
-    <MinDelay>30</MinDelay>
-    <MaxDelay>30</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <ObjectPropertyItemName>Switch3,XmlSpawner</ObjectPropertyItemName>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>True</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>#XFILL ; AbyssBarrier:MX=6:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>Bloodworm 1</Name>
@@ -4496,49 +4367,7 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>Navrey:MX=1:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Undead Gargoyle's</Name>
-    <UniqueId>94715c99-b45e-4d98-bc56-264dde2593e1</UniqueId>
-    <Map>TerMur</Map>
-    <X>987</X>
-    <Y>3848</Y>
-    <Width>20</Width>
-    <Height>20</Height>
-    <CentreX>997</CentreX>
-    <CentreY>3858</CentreY>
-    <CentreZ>-42</CentreZ>
-    <Range>5</Range>
-    <MaxCount>20</MaxCount>
-    <MinDelay>2</MinDelay>
-    <MaxDelay>2</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>1320</TODStart>
-    <TODEnd>419.983333333333</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>False</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>effeteputridgargoyle:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=putridundeadgargoyle:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=gargoyleshade:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=EffeteUndeadGargoyle:MX=5:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
+  </Points>  
   <Points>
     <Name>ter abyss hydra/silverserpent</Name>
     <UniqueId>94b10543-2f9e-4570-8bcc-bcc2c78ea003</UniqueId>
@@ -5000,50 +4829,7 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>enragedearthelemental/hue/33:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Barrier1</Name>
-    <UniqueId>a8405c2f-ed44-44c9-a7b0-250e4d8a78c9</UniqueId>
-    <Map>TerMur</Map>
-    <X>33</X>
-    <Y>204</Y>
-    <Width>5</Width>
-    <Height>3</Height>
-    <CentreX>35</CentreX>
-    <CentreY>207</CentreY>
-    <CentreZ>0</CentreZ>
-    <Range>5</Range>
-    <MaxCount>15</MaxCount>
-    <MinDelay>30</MinDelay>
-    <MaxDelay>30</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <ObjectPropertyItemName>Switch1,XmlSpawner</ObjectPropertyItemName>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>True</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>#XFILL ; static,0x398C:MX=15:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
+  </Points>  
   <Points>
     <Name>NewCharTerMurArmorQuest</Name>
     <UniqueId>aa1b228a-15c2-4da7-856f-0f3cb32baa01</UniqueId>
@@ -5085,49 +4871,7 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>chickenlizard:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Abyss 1</Name>
-    <UniqueId>ab4fc9e7-c06d-4d4a-aeed-84f09b3bdab6</UniqueId>
-    <Map>TerMur</Map>
-    <X>36</X>
-    <Y>31</Y>
-    <Width>2</Width>
-    <Height>6</Height>
-    <CentreX>36</CentreX>
-    <CentreY>36</CentreY>
-    <CentreZ>-1</CentreZ>
-    <Range>5</Range>
-    <MaxCount>21</MaxCount>
-    <MinDelay>2</MinDelay>
-    <MaxDelay>2</MaxDelay>
-    <DelayInSec>False</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0.00833333333333333</DespawnTime>
-    <ProximityRange>6</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0.166666666666667</MinRefractory>
-    <MaxRefractory>0.166666666666667</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>True</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>#XFILL ; static, 16883:MX=21:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
+  </Points>  
   <Points>
     <Name>Wolf spider 2</Name>
     <UniqueId>adf7d505-71e1-4779-91e9-73c9923efd67</UniqueId>
@@ -6894,49 +6638,6 @@
     <Objects2>SentinelSpider:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
-    <Name>Switch1</Name>
-    <UniqueId>eb9b9635-b3fb-48a8-8b65-e07dda4ab0e8</UniqueId>
-    <Map>TerMur</Map>
-    <X>23</X>
-    <Y>207</Y>
-    <Width>10</Width>
-    <Height>10</Height>
-    <CentreX>28</CentreX>
-    <CentreY>212</CentreY>
-    <CentreZ>-5</CentreZ>
-    <Range>5</Range>
-    <MaxCount>2</MaxCount>
-    <MinDelay>5</MinDelay>
-    <MaxDelay>5</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>2</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <TriggerProbability>1</TriggerProbability>
-    <SpeechTrigger>ord</SpeechTrigger>
-    <InContainer>False</InContainer>
-    <MinRefractory>0.166666666666667</MinRefractory>
-    <MaxRefractory>0.166666666666667</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>True</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>False</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>SET,Barrier1/DoReset/true:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SET,Barrier1,xmlspawner/running/true:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
     <Name>SA Spider Isle</Name>
     <UniqueId>ed181ddb-8f7f-4c77-b261-108cd65a9ed1</UniqueId>
     <Map>TerMur</Map>
@@ -7229,49 +6930,6 @@
     <IsRunning>True</IsRunning>
     <IsHomeRangeRelative>True</IsHomeRangeRelative>
     <Objects2>lavaelemental:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=lavalizard:MX=2:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=lavasnake:MX=3:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
-  </Points>
-  <Points>
-    <Name>Bar2</Name>
-    <UniqueId>f81d5b37-be37-4eaa-9b76-51ea1acd14ad</UniqueId>
-    <Map>TerMur</Map>
-    <X>33</X>
-    <Y>203</Y>
-    <Width>5</Width>
-    <Height>4</Height>
-    <CentreX>34</CentreX>
-    <CentreY>208</CentreY>
-    <CentreZ>0</CentreZ>
-    <Range>5</Range>
-    <MaxCount>18</MaxCount>
-    <MinDelay>30</MinDelay>
-    <MaxDelay>30</MaxDelay>
-    <DelayInSec>True</DelayInSec>
-    <Duration>0</Duration>
-    <DespawnTime>0</DespawnTime>
-    <ProximityRange>-1</ProximityRange>
-    <ProximityTriggerSound>500</ProximityTriggerSound>
-    <ObjectPropertyItemName>Switch2,XmlSpawner</ObjectPropertyItemName>
-    <TriggerProbability>1</TriggerProbability>
-    <InContainer>False</InContainer>
-    <MinRefractory>0</MinRefractory>
-    <MaxRefractory>0</MaxRefractory>
-    <TODStart>0</TODStart>
-    <TODEnd>0</TODEnd>
-    <TODMode>0</TODMode>
-    <KillReset>1</KillReset>
-    <ExternalTriggering>False</ExternalTriggering>
-    <SequentialSpawning>-1</SequentialSpawning>
-    <AllowGhostTriggering>False</AllowGhostTriggering>
-    <AllowNPCTriggering>False</AllowNPCTriggering>
-    <SpawnOnTrigger>True</SpawnOnTrigger>
-    <SmartSpawning>True</SmartSpawning>
-    <TickReset>False</TickReset>
-    <Team>0</Team>
-    <Amount>1</Amount>
-    <IsGroup>True</IsGroup>
-    <IsRunning>True</IsRunning>
-    <IsHomeRangeRelative>True</IsHomeRangeRelative>
-    <Objects2>#XFILL ; static, 0x3967:MX=18:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
   </Points>
   <Points>
     <Name>ter firegargoyle</Name>

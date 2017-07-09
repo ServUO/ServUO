@@ -4157,7 +4157,6 @@ namespace Server
 						{
 							animPacket = Packet.Acquire(new DeathAnimation(this, c));
 						}
-						;
 
 						state.Send(animPacket);
 

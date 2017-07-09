@@ -1018,7 +1018,6 @@ namespace Server.Mobiles
         public const int MaxOwners = 5;
 
         public virtual OppositionGroup OppositionGroup { get { return null; } }
-        public virtual bool IsMilitiaFighter { get { return false; } }
 
         // Tribe Opposition stuff
         public virtual TribeType Tribe{ get{ return TribeType.None ; } } // What opposition list am I in?
@@ -1206,8 +1205,9 @@ namespace Server.Mobiles
 
             BaseCreature c = m as BaseCreature;
 
-            // Are we a non-aggressive FightMode?
-            if (FightMode == FightMode.Aggressor || FightMode == FightMode.Evil || FightMode == FightMode.Good)
+            // Are we a non-aggressive FightMode or are they an uncontrolled Summon?
+            if (FightMode == FightMode.Aggressor || FightMode == FightMode.Evil || FightMode == FightMode.Good ||
+                (c != null && c.m_bSummoned && !c.m_bControlled && c.SummonMaster != null))
             {
                 // Faction Opposed Players/Pets are my enemies
                 if (GetFactionAllegiance(m) == BaseCreature.Allegiance.Enemy)
@@ -1265,7 +1265,7 @@ namespace Server.Mobiles
 				return true;
 			}
 
-			if (c.IsMilitiaFighter)
+            if (c is Server.Engines.Quests.Haven.MilitiaFighter)
 			{
 				return true;
 			}

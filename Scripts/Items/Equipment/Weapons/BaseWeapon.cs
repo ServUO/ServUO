@@ -265,7 +265,7 @@ namespace Server.Items
                 if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
                     return base.DefaultWeight;
 
-                return base.DefaultWeight * 3;
+                return 50;
             }
         }
 
@@ -600,7 +600,15 @@ namespace Server.Items
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int StrRequirement
 		{
-            get { return Math.Min(110, (int)((double)(m_StrReq == -1 ? Core.AOS ? AosStrengthReq : OldStrengthReq : m_StrReq) * (m_NegativeAttributes.Massive > 0 ? 1.5 : 1))); }
+            get 
+            {
+                if (m_NegativeAttributes.Massive > 0)
+                {
+                    return 125;
+                }
+
+                return m_StrReq == -1 ? Core.AOS ? AosStrengthReq : OldStrengthReq : m_StrReq;
+            }
 			set
 			{
 				m_StrReq = value;
@@ -5092,7 +5100,7 @@ namespace Server.Items
 
 			if (!String.IsNullOrEmpty(m_EngravedText))
 			{
-				list.Add(1062613, m_EngravedText);
+                list.Add(1062613, Utility.FixHtml(m_EngravedText));
 			}
 			/* list.Add( 1062613, Utility.FixHtml( m_EngravedText ) ); */
 		}

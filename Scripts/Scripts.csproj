@@ -3008,6 +3008,7 @@
     <Compile Include="Services\CleanUpBritannia\Items\NaturesTears.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\NestWithEggs.cs" />
     <Compile Include="Services\CleanUpBritannia\Items\YuccaTree.cs" />
+    <Compile Include="Services\CommunityCollections\CommunityCollectionGump.cs" />
     <Compile Include="Services\Doom\GaryRoom.cs" />
     <Compile Include="Services\Doom\GuardianRoom.cs" />
     <Compile Include="Services\Ethics\Core\Persistence.cs" />
@@ -9021,9 +9022,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\CommunityCollections\CollectionsSystem.cs" />
-    <Compile Include="Services\CommunityCollections\ComunityCollectionGump.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\CommunityCollections\ConfirmRewardGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -9995,6 +9993,23 @@
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Mobile\WrongPrisoner.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\MysteriousTunnel.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\WrongMazeWall.cs" />
+    <Compile Include="Services\Tomb of Kings\Arisen Invasion\ArisenController.cs" />
+    <Compile Include="Services\Tomb of Kings\Chambers\Chamber.cs" />
+    <Compile Include="Services\Tomb of Kings\Chambers\ChamberBarrier.cs" />
+    <Compile Include="Services\Tomb of Kings\Chambers\ChamberLever.cs" />
+    <Compile Include="Services\Tomb of Kings\Chambers\ChamberSpawner.cs" />
+    <Compile Include="Services\Tomb of Kings\Chambers\ChamberSwitch.cs" />
+    <Compile Include="Services\Tomb of Kings\Generation.cs" />
+    <Compile Include="Services\Tomb of Kings\SacredQuestBlocker.cs" />
+    <Compile Include="Services\Tomb of Kings\Serpent%27s Breath\EnergyBarrier.cs" />
+    <Compile Include="Services\Tomb of Kings\Serpent%27s Breath\FireBarrier.cs" />
+    <Compile Include="Services\Tomb of Kings\Serpent%27s Breath\FlameOfChaos.cs" />
+    <Compile Include="Services\Tomb of Kings\Serpent%27s Breath\FlameOfOrder.cs" />
+    <Compile Include="Services\Tomb of Kings\Serpent%27s Breath\SBMessageTrigger.cs" />
+    <Compile Include="Services\Tomb of Kings\ToKBridgeRegion.cs" />
+    <Compile Include="Services\Tomb of Kings\ToKTeleporter.cs" />
+    <Compile Include="Services\Tomb of Kings\TombOfKingsRegion.cs" />
+    <Compile Include="Services\Tomb of Kings\TombOfKingsSecretDoor.cs" />
     <Compile Include="Services\TreasuresOfKotlCity\Generate.cs" />
     <Compile Include="Services\TreasuresOfKotlCity\Items\EnergyTile.cs" />
     <Compile Include="Services\TreasuresOfKotlCity\Items\Journals.cs" />

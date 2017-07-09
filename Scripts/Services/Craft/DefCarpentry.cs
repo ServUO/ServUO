@@ -57,6 +57,14 @@ namespace Server.Engines.Craft
             }// <CENTER>CARPENTRY MENU</CENTER>
         }
 
+        public override CraftECA ECA
+        {
+            get
+            {
+                return CraftECA.ChanceMinusSixtyToFourtyFive;
+            }
+        }
+
         private static CraftSystem m_CraftSystem;
 
         public static CraftSystem CraftSystem
@@ -467,7 +475,7 @@ namespace Server.Engines.Craft
                 index = this.AddCraft(typeof(Fukiya), 1044566, 1030229, 60.0, 85.0, typeof(Board), 1044041, 6, 1044351);
                 this.SetNeededExpansion(index, Expansion.SE);
 
-                index = this.AddCraft(typeof(Tetsubo), 1044566, 1030225, 80.0, 140.3, typeof(Board), 1044041, 10, 1044351);
+                index = this.AddCraft(typeof(Tetsubo), 1044566, 1030225, 80.0, 105.0, typeof(Board), 1044041, 10, 1044351);
                 this.SetNeededExpansion(index, Expansion.SE);
             }
 
@@ -520,8 +528,8 @@ namespace Server.Engines.Craft
             }
             #endregion
 
-            this.AddCraft(typeof(Club), 1044566, 1025043, 65.0, 115.0, typeof(Board), 1044041, 9, 1044351);
-            this.AddCraft(typeof(BlackStaff), 1044566, 1023568, 81.5, 141.8, typeof(Board), 1044041, 9, 1044351);
+            this.AddCraft(typeof(Club), 1044566, 1025043, 65.0, 90.0, typeof(Board), 1044041, 9, 1044351);
+            this.AddCraft(typeof(BlackStaff), 1044566, 1023568, 81.5, 106.5, typeof(Board), 1044041, 9, 1044351);
 
             index = AddCraft(typeof(KotlBlackRod), 1044566, 1156990, 100.0, 160.0, typeof(Board), 1044041, 20, 1044351);
             this.AddRes(index, typeof(BlackrockMoonstone), 1156993, 1, 1156992);

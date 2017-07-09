@@ -185,8 +185,8 @@ namespace Server.Items
 				
                 if (from.InRange(this.Location, 2) && from is PlayerMobile && this.CanDonate((PlayerMobile)from))
                 {
-                    from.CloseGump(typeof(ComunityCollectionGump));
-                    from.SendGump(new ComunityCollectionGump((PlayerMobile)from, this, this.Location));
+                    from.CloseGump(typeof(CommunityCollectionGump));
+                    from.SendGump(new CommunityCollectionGump((PlayerMobile)from, this, this.Location));
                 }
                 else
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
@@ -290,8 +290,8 @@ namespace Server.Items
 			
             reward.OnGiveReward(player, this, hue);
 
-			player.CloseGump(typeof(ComunityCollectionGump));
-            player.SendGump(new ComunityCollectionGump(player, this, this.Location));
+			player.CloseGump(typeof(CommunityCollectionGump));
+            player.SendGump(new CommunityCollectionGump(player, this, this.Location));
         }
 		
         public virtual void DonatePet(PlayerMobile player, BaseCreature pet)

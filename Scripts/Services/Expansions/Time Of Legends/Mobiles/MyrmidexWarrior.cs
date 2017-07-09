@@ -63,7 +63,7 @@ namespace Server.Mobiles
         public override Poison HitPoison { get { return Poison.Deadly; } }
         public override Poison PoisonImmune { get { return Poison.Deadly; } }
 
-        public override bool PlayerRangeSensitive
+        /*public override bool PlayerRangeSensitive
         {
             get
             {
@@ -75,7 +75,7 @@ namespace Server.Mobiles
 
                 return base.PlayerRangeSensitive;
             }
-        }
+        }*/
 
         private void AddImmovableItem(Item item)
         {

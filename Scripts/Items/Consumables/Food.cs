@@ -166,7 +166,7 @@ namespace Server.Items
 
 			if (!String.IsNullOrEmpty(EngravedText))
 			{
-				list.Add(1072305, EngravedText); // Engraved: ~1_INSCRIPTION~
+				list.Add(1072305, Utility.FixHtml(EngravedText)); // Engraved: ~1_INSCRIPTION~
 			}
 		}
 

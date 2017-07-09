@@ -552,7 +552,7 @@ namespace Server.Items
                     }
                     else if (m_Patient != m_Healer && m_Patient is PlayerMobile && m_Healer is PlayerMobile)
                     {
-                        SpiritualityVirtue.OnHeal(m_Healer, (int)toHeal);
+                        SpiritualityVirtue.OnHeal(m_Healer, Math.Min((int)toHeal, m_Patient.HitsMax - m_Patient.Hits));
                     }
 
                     m_Patient.Heal((int)toHeal, m_Healer, false);

@@ -80,7 +80,7 @@ namespace Server.Items
 
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
-            if (!CheckStack(from, dropped) && !CheckHold(from, dropped, sendFullMessage, true))
+            if (!CheckHold(from, dropped, sendFullMessage, CheckStack(from, dropped)))
                 return false;
 
             if (dropped.QuestItem && from.Backpack != this)
@@ -228,7 +228,7 @@ namespace Server.Items
 
 			if(!String.IsNullOrEmpty(EngravedText))
 			{
-				list.Add(1072305, EngravedText); // Engraved: ~1_INSCRIPTION~
+                list.Add(1072305, Utility.FixHtml(EngravedText)); // Engraved: ~1_INSCRIPTION~
 			}
 		}
 
@@ -643,6 +643,27 @@ namespace Server.Items
             : base(0xE77)
         {
             Weight = 25.0;
+        }
+
+        public void Pour(Mobile from, BaseBeverage beverage)
+        {
+            if (beverage.Content == BeverageType.Water)
+            {
+                if (Items.Count > 0)
+                {
+                    from.SendLocalizedMessage(500848); // Couldn't pour it there.  It was already full.
+                    beverage.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0, 500841, from.NetState); // that has somethign in it.
+                }
+                else
+                {
+                    var barrel = new WaterBarrel();
+                    barrel.Movable = false;
+                    barrel.MoveToWorld(Location, Map);
+
+                    beverage.Pour_OnTarget(from, barrel);
+                    Delete();
+                }
+            }
         }
 
         public Barrel(Serial serial)

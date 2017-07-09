@@ -57,19 +57,19 @@ namespace Server.Mobiles
 
         public override bool InitialInnocent { get { return true; } }
 
-        public override bool PlayerRangeSensitive
+        /*public override bool PlayerRangeSensitive
         {
             get
             {
                 if (this.Region != null && this.Region.IsPartOf<BattleRegion>())
                 {
                     if (((BattleRegion)this.Region).Spawner != null)
-                        return !((BattleRegion)this.Region).Spawner.HasPlayers();
+                       return !((BattleRegion)this.Region).Spawner.HasPlayers();
                 }
 
                 return base.PlayerRangeSensitive;
             }
-        }
+        }*/
 
         private void AddImmovableItem(Item item)
         {
