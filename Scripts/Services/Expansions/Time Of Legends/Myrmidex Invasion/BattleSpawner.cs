@@ -15,7 +15,8 @@ namespace Server.Engines.MyrmidexInvasion
         public const int WaveDuration = 180;
         public const int MinCredit = 25;
 
-        public static bool Active = true;
+        private bool _Active;
+
         public static BattleSpawner Instance { get; set; }
 
         private Rectangle2D MyrmidexLeg = new Rectangle2D(949, 1776, 59, 136);
@@ -38,6 +39,40 @@ namespace Server.Engines.MyrmidexInvasion
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BattleFlag TribalFlag { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Active
+        {
+            get { return _Active; }
+            set
+            {
+                if (_Active && !value)
+                {
+                    _Active = false;
+
+                    if (Timer != null)
+                    {
+                        Timer.Stop();
+                        Timer = null;
+                    }
+
+                    Reset();
+                }
+                else if (!_Active && value)
+                {
+                    _Active = true;
+
+                    if (Timer != null)
+                    {
+                        Timer.Stop();
+                        Timer = null;
+                    }
+
+                    Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), OnTick);
+                    Timer.Start();
+                }
+            }
+        }
 
         public Dictionary<int, List<BaseCreature>> MyrmidexTeam { get; set; }
         public Dictionary<int, List<BaseCreature>> TribeTeam { get; set; }
@@ -65,6 +100,8 @@ namespace Server.Engines.MyrmidexInvasion
 
             Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), OnTick);
             Timer.Start();
+
+            _Active = true;
         }
 
         public static void Initialize()
@@ -86,6 +123,9 @@ namespace Server.Engines.MyrmidexInvasion
         {
             if (MyrmidexFlag == null || TribalFlag == null)
                 AssignFlags();
+
+            if (!_Active)
+                return;
 
             CheckPlayers();
             CheckAdvance();
@@ -117,30 +157,79 @@ namespace Server.Engines.MyrmidexInvasion
 
         public void CheckAdvance()
         {
-            List<BaseCreature> list = GetAll(Allegiance.Myrmidex);
+            List<BaseCreature> myrmidex = GetAll(Allegiance.Myrmidex);
+            List<BaseCreature> tribes = GetAll(Allegiance.Tribes);
+
             IEnumerable<PlayerMobile> winners = null;
 
-            foreach (BaseCreature bc in list.Where(b => IsInMyrmidexObjective(b.Location) && 0.25 > Utility.RandomDouble()))
+            Dictionary<int, BaseCreature> hasBreached = new Dictionary<int, BaseCreature>();
+            bool opposedBreach = false;
+
+            IPooledEnumerable eable = this.Map.GetMobilesInBounds(_MyrmidexObjective);
+
+            foreach (Mobile m in eable)
             {
-                ClearWave(Allegiance.Myrmidex, GetWave(MyrmidexTeam, bc));
+                if (m is BaseCreature && tribes.Contains((BaseCreature)m))
+                {
+                    opposedBreach = true;
+                    break; // once its opposed, no winner
+                }
+                else if (m is BaseCreature && myrmidex.Contains((BaseCreature)m))
+                {
+                    int wave = GetWave(MyrmidexTeam, ((BaseCreature)m));
+
+                    hasBreached[wave] = (BaseCreature)m;
+                }
+            }
+
+            if (hasBreached.Count > 0 && !opposedBreach)
+            {
+                foreach (var kvp in hasBreached)
+                {
+                    ClearWave(Allegiance.Myrmidex, GetWave(MyrmidexTeam, kvp.Value));
+                }
+
                 winners = GetPlayers(Allegiance.Myrmidex);
                 RegionMessage(1156630); // The Myrmidex are victorious!  If you are allied to the Myrmidex visit the Tinker in the Barrab village to continue the quest!  Otherwise, continue the fight until your team is victorious!
-                break;
             }
+
+            eable.Free();
+            hasBreached.Clear();
+            opposedBreach = false;
 
             if (winners == null)
             {
-                ColUtility.Free(list);
-                list = GetAll(Allegiance.Tribes);
+                eable = this.Map.GetMobilesInBounds(_TribalObjective);
 
-                foreach (BaseCreature bc in list.Where(b => IsInTribalObjective(b.Location) && 0.25 > Utility.RandomDouble()))
+                foreach (Mobile m in eable)
                 {
-                    ClearWave(Allegiance.Tribes, GetWave(TribeTeam, bc));
+                    if (m is BaseCreature && myrmidex.Contains((BaseCreature)m))
+                    {
+                        opposedBreach = true;
+                        break; // once its opposed, no winner
+                    }
+                    else if (m is BaseCreature && tribes.Contains((BaseCreature)m))
+                    {
+                        int wave = GetWave(TribeTeam, ((BaseCreature)m));
+
+                        hasBreached[wave] = (BaseCreature)m;
+                    }
+                }
+
+                if (hasBreached.Count > 0 && !opposedBreach)
+                {
+                    foreach (var kvp in hasBreached)
+                    {
+                        ClearWave(Allegiance.Tribes, GetWave(TribeTeam, kvp.Value));
+                    }
+
                     winners = GetPlayers(Allegiance.Tribes);
-                    RegionMessage(1156631); // The Eodonians are victorious!  If you are allied to the Eodonians visit the Tinker in the Barrab village to continue the quest!  Otherwise, continue the fight until your team is victorious!
-                    break;
+                    RegionMessage(1156631); // The Eodonians are victorious!  If you are allied to the Eodonians visit Professor Raffkin in Sir Geoffrey's camp to continue the quest! Otherwise, continue the fight until your team is victorious!
                 }
             }
+
+            eable.Free();
+            hasBreached.Clear();
 
             if (winners != null)
             {
@@ -156,7 +245,8 @@ namespace Server.Engines.MyrmidexInvasion
                 });
             }
 
-            ColUtility.Free(list);
+            ColUtility.Free(myrmidex);
+            ColUtility.Free(tribes);
         }
 
         private void ClearWave(Allegiance allegiance, int wave)
@@ -245,7 +335,7 @@ namespace Server.Engines.MyrmidexInvasion
                 for (int i = 0; i < WaveCount; i++)
                 {
                     BaseCreature bc;
-                    Type type = _MyrmidexTypes[Utility.Random(_MyrmidexTypes.Length)];
+                    Type type = _MyrmidexTypes[wave][Utility.Random(_MyrmidexTypes[wave].Length)];
 
                     if (type.IsSubclassOf(typeof(BaseEodonTribesman)))
                         bc = Activator.CreateInstance(type, new object[] { EodonTribe.Barrab }) as BaseCreature;
@@ -283,7 +373,7 @@ namespace Server.Engines.MyrmidexInvasion
                 for (int i = 0; i < WaveCount; i++)
                 {
                     BaseCreature bc;
-                    Type type = _TribeTypes[Utility.Random(_TribeTypes.Length)];
+                    Type type = _TribeTypes[wave][Utility.Random(_TribeTypes[wave].Length)];
 
                     if (type.IsSubclassOf(typeof(BaseEodonTribesman)))
                     {
@@ -459,14 +549,18 @@ namespace Server.Engines.MyrmidexInvasion
             });
         }
 
-        private Type[] _MyrmidexTypes =
+        private Type[][] _MyrmidexTypes =
         {
-            typeof(MyrmidexDrone), typeof(MyrmidexWarrior), typeof(TribeWarrior), typeof(TribeShaman)
+            new Type[] { typeof(MyrmidexDrone) }, 
+            new Type[] { typeof(MyrmidexWarrior), typeof(TribeWarrior) },
+            new Type[] { typeof(MyrmidexWarrior), typeof(TribeWarrior), typeof(TribeShaman) }
         };
 
-        private Type[] _TribeTypes =
+        private Type[][] _TribeTypes =
         {
-            typeof(BritannianInfantry)
+            new Type[] { typeof(BritannianInfantry) },
+            new Type[] { typeof(BritannianInfantry), typeof(TribeWarrior) },
+            new Type[] { typeof(BritannianInfantry), typeof(TribeWarrior), typeof(TribeShaman) }
         };
 
         public void AssignNavPoints()
@@ -706,6 +800,19 @@ namespace Server.Engines.MyrmidexInvasion
             }
         }
 
+        public override void Delete()
+        {
+            Reset();
+
+            if (Timer != null)
+            {
+                Timer.Stop();
+                Timer = null;
+            }
+
+            base.Delete();
+        }
+
         public BattleSpawner(Serial serial)
             : base(serial)
         {
@@ -714,7 +821,9 @@ namespace Server.Engines.MyrmidexInvasion
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1);
+            writer.Write(2);
+
+            writer.Write(_Active);
 
             writer.Write(MyrmidexTeam.Count);
             foreach (KeyValuePair<int, List<BaseCreature>> kvp in MyrmidexTeam)
@@ -750,6 +859,15 @@ namespace Server.Engines.MyrmidexInvasion
             MyrmidexTeam = new Dictionary<int, List<BaseCreature>>();
             TribeTeam = new Dictionary<int, List<BaseCreature>>();
             Players = new Dictionary<PlayerMobile, int>();
+
+            if (v > 1)
+            {
+                _Active = reader.ReadBool();
+            }
+            else
+            {
+                _Active = true;
+            }
 
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++)
@@ -801,18 +919,12 @@ namespace Server.Engines.MyrmidexInvasion
                     Players[pm] = score;
             }
 
-            if (Active)
+            if (_Active)
             {
                 Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), OnTick);
                 Timer.Start();
 
                 Timer.DelayCall(TimeSpan.FromSeconds(10), AssignNavPoints);
-            }
-            else
-            {
-                MyrmidexTeam.Clear();
-                TribeTeam.Clear();
-                Players.Clear();
             }
 
             if (v == 0)

@@ -60,7 +60,7 @@ namespace Server.Mobiles
             Utility.AssignRandomHair(this);
         }
 
-        public override bool PlayerRangeSensitive
+        /*public override bool PlayerRangeSensitive
         {
             get
             {
@@ -72,7 +72,7 @@ namespace Server.Mobiles
 
                 return base.PlayerRangeSensitive;
             }
-        }
+        }*/
 
         private void AddImmovableItem(Item item)
         {

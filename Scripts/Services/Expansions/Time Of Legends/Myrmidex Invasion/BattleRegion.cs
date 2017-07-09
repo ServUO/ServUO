@@ -23,7 +23,7 @@ namespace Server.Engines.MyrmidexInvasion
 
             bool nomaster = m is BaseCreature && ((BaseCreature)m).GetMaster() == null;
 
-            if (BattleSpawner.Active && nomaster && Spawner != null)
+            if (BattleSpawner.Instance != null && BattleSpawner.Instance.Active && nomaster && Spawner != null)
             {
                 Timer.DelayCall<BaseCreature>(TimeSpan.FromSeconds(.25), Spawner.RegisterDeath, (BaseCreature)m);
             }
