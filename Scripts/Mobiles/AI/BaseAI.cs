@@ -2103,10 +2103,9 @@ namespace Server.Mobiles
             // Part 1: Delete Familiar check
             BaseCreature m = m_Mobile;
             Map map = m.Map;
-            Mobile mr = m.ControlMaster;
-            Map mrMap = mr.Map;
+            Mobile master = m.ControlMaster;
 
-            if (mr == null || mr.Deleted || mrMap == null || mrMap == Map.Internal)
+            if (master == null || master.Deleted)
             {
                 if (map != null && map != Map.Internal)
                 {
@@ -2133,53 +2132,54 @@ namespace Server.Mobiles
             }
 
             // Part 2: Teleport to master check
-            Point3D m_Loc = Point3D.Zero;
+            Point3D mLoc = Point3D.Zero;
+            Map mrMap = master.Map;
 
-            if (map != mrMap)
+            if (map != mrMap && mrMap != null && mrMap != Map.Internal)
             {
                 m.Map = mrMap;
-                m.SetLocation(mr.Location, true);
+                m.SetLocation(master.Location, true);
             }
-            else if (!m.InRange(mr.Location, m.RangePerception))
+            else if (!m.InRange(master.Location, m.RangePerception))
             {
                 int range = (int)(m.RangeHome / 2 + 1);
-                int x = (m.X > mr.X) ? (mr.X + range) : (mr.X - range);
-                int y = (m.Y > mr.Y) ? (mr.Y + range) : (mr.Y - range);
+                int x = (m.X > master.X) ? (master.X + range) : (master.X - range);
+                int y = (m.Y > master.Y) ? (master.Y + range) : (master.Y - range);
 
                 for (int i = 0; i < 10; i++)
                 {
-                    m_Loc.X = x + Utility.RandomMinMax(-1, 1);
-                    m_Loc.Y = y + Utility.RandomMinMax(-1, 1);
+                    mLoc.X = x + Utility.RandomMinMax(-1, 1);
+                    mLoc.Y = y + Utility.RandomMinMax(-1, 1);
 
-                    m_Loc.Z = map.GetAverageZ(m_Loc.X, m_Loc.Y);
+                    mLoc.Z = map.GetAverageZ(mLoc.X, mLoc.Y);
 
-                    if (map.CanSpawnMobile(m_Loc))
+                    if (map.CanSpawnMobile(mLoc))
                     {
                         break;
                     }
 
-                    m_Loc = mr.Location;
+                    mLoc = master.Location;
                 }
 
-                m.SetLocation(m_Loc, true);
+                m.SetLocation(mLoc, true);
             }
 
             //Part 3: Attack master's target check
 
             // Don't attack your familiar!
-            if (mr.Combatant == m)
+            if (master.Combatant == m)
             {
-                mr.Combatant = null;
+                master.Combatant = null;
             }
 
             // Don't attack my master!
-            if (m.Combatant == mr)
+            if (m.Combatant == master)
             {
                 m.Combatant = null;
             }
 
             // Only attack my master's combatant, and only if he's in range
-            m.Combatant = GetFamiliarCombatant(mr.Combatant, mr);
+            m.Combatant = GetFamiliarCombatant(master.Combatant, master);
 
             int delay = (int)(TransformMoveDelay(m.CurrentSpeed) * 1000);
             bool mounted = m.Mounted || m.Flying;
@@ -2188,18 +2188,18 @@ namespace Server.Mobiles
             // Do I lack a combatant?
             if (m.Combatant == null)
             {
-                m.ControlTarget = mr;
+                m.ControlTarget = master;
 
-                if (WalkMobileRange(mr, 1, bRun, 0, 1) &&
-                    m.Direction != m.GetDirectionTo(mr) &&
+                if (WalkMobileRange(master, 1, bRun, 0, 1) &&
+                    m.Direction != m.GetDirectionTo(master) &&
                     (m.LastMoveTime + 500) < Core.TickCount)
                 {
-                    m.Direction = m.GetDirectionTo(mr);
+                    m.Direction = m.GetDirectionTo(master);
                 }
 
-                if (m_LastHidden != mr.Hidden)
+                if (m_LastHidden != master.Hidden)
                 {
-                    m.Hidden = m_LastHidden = mr.Hidden;
+                    m.Hidden = m_LastHidden = master.Hidden;
                 }
 
                 if (m.ControlOrder != OrderType.Heel)
