@@ -29,6 +29,7 @@ namespace Server
 			Decorate.Generate("sa", "Data/Decoration/Stygian Abyss/Felucca", Map.Felucca);
 
             NavreysController.GenNavery(e.Mobile);
+            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "GenToK");
             Server.Engines.CannedEvil.PrimevalLichPuzzle.GenLichPuzzle(e.Mobile);
 
             e.Mobile.SendMessage("Stygian Abyss world generation complete.");

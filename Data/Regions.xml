@@ -2832,10 +2832,13 @@
       <rect x="901" y="574" width="53" height="40" />
       <go x="924" y="595" z="-14" />
     </region>
-    <region type="StygianAbyssRegion" priority="50" name="Tomb of Kings">
+    <region type="TombOfKingsRegion" priority="50" name="Tomb of Kings">
       <rect x="1" y="111" width="69" height="137" />
-      <rect x="10" y="12" width="49" height="108" />
+	    <rect x="10" y="12" width="49" height="108" />
       <go x="35" y="226" z="-14" />
+		  <region type="ToKBridgeRegion" name="ToK Bridge" priority="150">
+			  <rect x="32" y="29" width="11" height="9" />
+		  </region>
     </region>
     <region type="StygianAbyssRegion" priority="100" name="GreatApeLair">
       <rect x="832" y="1363" width="106" height="111" zmin="-25" />
