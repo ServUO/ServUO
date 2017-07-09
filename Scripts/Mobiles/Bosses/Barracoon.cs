@@ -12,48 +12,48 @@ namespace Server.Mobiles
         public Barracoon()
             : base(AIType.AI_Melee)
         {
-            this.Name = "Barracoon";
-            this.Title = "the piper";
-            this.Body = 0x190;
-            this.Hue = 0x83EC;
+            Name = "Barracoon";
+            Title = "the piper";
+            Body = 0x190;
+            Hue = 0x83EC;
 
-            this.SetStr(283, 425);
-            this.SetDex(72, 150);
-            this.SetInt(505, 750);
+            SetStr(283, 425);
+            SetDex(72, 150);
+            SetInt(505, 750);
 
-            this.SetHits(12000);
-            this.SetStam(102, 300);
-            this.SetMana(505, 750);
+            SetHits(12000);
+            SetStam(102, 300);
+            SetMana(505, 750);
 
-            this.SetDamage(29, 38);
+            SetDamage(29, 38);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 65, 75);
-            this.SetResistance(ResistanceType.Fire, 70, 80);
-            this.SetResistance(ResistanceType.Cold, 65, 80);
-            this.SetResistance(ResistanceType.Poison, 70, 75);
-            this.SetResistance(ResistanceType.Energy, 70, 80);
+            SetResistance(ResistanceType.Physical, 65, 75);
+            SetResistance(ResistanceType.Fire, 70, 80);
+            SetResistance(ResistanceType.Cold, 65, 80);
+            SetResistance(ResistanceType.Poison, 70, 75);
+            SetResistance(ResistanceType.Energy, 70, 80);
 
-            this.SetSkill(SkillName.MagicResist, 100.0);
-            this.SetSkill(SkillName.Tactics, 118.3, 120.2);
-            this.SetSkill(SkillName.Wrestling, 118.4, 122.7);
+            SetSkill(SkillName.MagicResist, 100.0);
+            SetSkill(SkillName.Tactics, 118.3, 120.2);
+            SetSkill(SkillName.Wrestling, 118.4, 122.7);
 
-            this.Fame = 22500;
-            this.Karma = -22500;
+            Fame = 22500;
+            Karma = -22500;
 
-            this.VirtualArmor = 70;
+            VirtualArmor = 70;
 
-            this.AddItem(new FancyShirt(Utility.RandomGreenHue()));
-            this.AddItem(new LongPants(Utility.RandomYellowHue()));
-            this.AddItem(new JesterHat(Utility.RandomPinkHue()));
-            this.AddItem(new Cloak(Utility.RandomPinkHue()));
-            this.AddItem(new Sandals());
+            AddItem(new FancyShirt(Utility.RandomGreenHue()));
+            AddItem(new LongPants(Utility.RandomYellowHue()));
+            AddItem(new JesterHat(Utility.RandomPinkHue()));
+            AddItem(new Cloak(Utility.RandomPinkHue()));
+            AddItem(new Sandals());
 
-            this.HairItemID = 0x203B; // Short Hair
-            this.HairHue = 0x94;
+            HairItemID = 0x203B; // Short Hair
+            HairHue = 0x94;
 
-            this.m_SpecialSlayerMechanics = true;
+            m_SpecialSlayerMechanics = true;
         }
 
         public Barracoon(Serial serial)
@@ -174,7 +174,7 @@ namespace Server.Mobiles
         }
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.UltraRich, 3);
         }
 
         public void Polymorph(Mobile m)
@@ -208,14 +208,14 @@ namespace Server.Mobiles
 
         public void SpawnRatmen(Mobile target)
         {
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null)
                 return;
 
             int rats = 0;
 
-            foreach (Mobile m in this.GetMobilesInRange(10))
+            foreach (Mobile m in GetMobilesInRange(10))
             {
                 if (m is Ratman || m is RatmanArcher || m is RatmanMage)
                     ++rats;
@@ -223,7 +223,7 @@ namespace Server.Mobiles
 
             if (rats < 16)
             {
-                this.PlaySound(0x3D);
+                PlaySound(0x3D);
 
                 int newRats = Utility.RandomMinMax(3, 6);
 
@@ -247,19 +247,19 @@ namespace Server.Mobiles
                             break;
                     }
 
-                    rat.Team = this.Team;
+                    rat.Team = Team;
 
                     bool validLocation = false;
-                    Point3D loc = this.Location;
+                    Point3D loc = Location;
 
                     for (int j = 0; !validLocation && j < 10; ++j)
                     {
-                        int x = this.X + Utility.Random(3) - 1;
-                        int y = this.Y + Utility.Random(3) - 1;
+                        int x = X + Utility.Random(3) - 1;
+                        int y = Y + Utility.Random(3) - 1;
                         int z = map.GetAverageZ(x, y);
 
-                        if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
-                            loc = new Point3D(x, y, this.Z);
+                        if (validLocation = map.CanFit(x, y, Z, 16, false, false))
+                            loc = new Point3D(x, y, Z);
                         else if (validLocation = map.CanFit(x, y, z, 16, false, false))
                             loc = new Point3D(x, y, z);
                     }
@@ -276,27 +276,34 @@ namespace Server.Mobiles
             if (target == null || target.Deleted) //sanity
                 return;
             if (0.6 >= Utility.RandomDouble()) // 60% chance to polymorph attacker into a ratman
-                this.Polymorph(target);
+                Polymorph(target);
 
             if (0.1 >= Utility.RandomDouble()) // 10% chance to more ratmen
-                this.SpawnRatmen(target);
+                SpawnRatmen(target);
 
-            if (0.05 >= Utility.RandomDouble() && !this.IsBodyMod) // 5% chance to polymorph into a ratman
-                this.Polymorph(this);
+            if (0.05 >= Utility.RandomDouble() && !IsBodyMod) // 5% chance to polymorph into a ratman
+                Polymorph(this);
         }
 
         public override void OnGotMeleeAttack(Mobile attacker)
         {
             base.OnGotMeleeAttack(attacker);
 
-            this.DoSpecialAbility(attacker);
+            DoSpecialAbility(attacker);
         }
 
         public override void OnGaveMeleeAttack(Mobile defender)
         {
             base.OnGaveMeleeAttack(defender);
 
-            this.DoSpecialAbility(defender);
+            DoSpecialAbility(defender);
+        }
+
+        public override void OnDamagedBySpell(Mobile from)
+        {
+            base.OnDamagedBySpell(from);
+
+            DoSpecialAbility(from);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -321,22 +328,22 @@ namespace Server.Mobiles
             public ExpirePolymorphTimer(Mobile owner)
                 : base(TimeSpan.FromMinutes(3.0)) //3.0
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
 
-                this.Priority = TimerPriority.OneSecond;
+                Priority = TimerPriority.OneSecond;
             }
 
             protected override void OnTick()
             {
-                if (!this.m_Owner.CanBeginAction(typeof(PolymorphSpell)))
+                if (!m_Owner.CanBeginAction(typeof(PolymorphSpell)))
                 {
-                    this.m_Owner.BodyMod = 0;
-                    this.m_Owner.HueMod = -1;
-                    this.m_Owner.EndAction(typeof(PolymorphSpell));
-                    if (this.m_Owner.SlayerVulnerabilities != null)
+                    m_Owner.BodyMod = 0;
+                    m_Owner.HueMod = -1;
+                    m_Owner.EndAction(typeof(PolymorphSpell));
+                    if (m_Owner.SlayerVulnerabilities != null)
                     {
-                        this.m_Owner.SlayerVulnerabilities.Remove("Vermin");
-                        this.m_Owner.SlayerVulnerabilities.Remove("Repond");    
+                        m_Owner.SlayerVulnerabilities.Remove("Vermin");
+                        m_Owner.SlayerVulnerabilities.Remove("Repond");    
                     }
                 }
             }

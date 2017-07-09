@@ -2959,11 +2959,11 @@ namespace Server
             if (Prized > 0)
                 list.Add(1154910);
 
-            if (Massive > 0)
-                list.Add(1038003);
+            //if (Massive > 0)
+            //    list.Add(1038003);
 
-            if (Unwieldly > 0)
-                list.Add(1154909);
+            //if (Unwieldly > 0)
+            //    list.Add(1154909);
 
             if (Antique > 0)
                 list.Add(1076187);

@@ -823,7 +823,7 @@ namespace Server.Items
 
 			if (m_EngravedText != null)
 			{
-				list.Add(1072305, m_EngravedText); // Engraved: ~1_INSCRIPTION~
+                list.Add(1072305, Utility.FixHtml(m_EngravedText)); // Engraved: ~1_INSCRIPTION~
 			}
 
 			if (m_Crafter != null)
