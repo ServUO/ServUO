@@ -58,26 +58,6 @@ namespace Server.Mobiles
         public override Poison HitPoison { get { return Poison.Regular; } }
         public override Poison PoisonImmune { get { return Poison.Regular; } }
 
-        /*public override bool PlayerRangeSensitive
-        {
-            get
-            {
-                if (this.Region != null && this.Region.IsPartOf<BattleRegion>())
-                {
-                    if (((BattleRegion)this.Region).Spawner != null)
-                        return !((BattleRegion)this.Region).Spawner.HasPlayers();
-                }
-
-                return base.PlayerRangeSensitive;
-            }
-        }*/
-
-        private void AddImmovableItem(Item item)
-        {
-            item.LootType = LootType.Blessed;
-            SetWearable(item);
-        }
-
         public override bool IsEnemy(Mobile m)
         {
             if (MyrmidexInvasionSystem.Active && MyrmidexInvasionSystem.IsAlliedWithEodonTribes(m))
