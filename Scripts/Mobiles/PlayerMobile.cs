@@ -1462,8 +1462,18 @@ namespace Server.Mobiles
 							from.AddToBackpack(item);
 							moved = true;
 						}
-					}
-				}
+                    }
+
+                    #region Vice Vs Virtue
+                    IVvVItem vvvItem = item as IVvVItem;
+
+                    if (vvvItem != null && vvvItem.IsVvVItem && !Engines.VvV.ViceVsVirtueSystem.IsVvV(from))
+                    {
+                        from.AddToBackpack(item);
+                        moved = true;
+                    }
+                    #endregion
+                }
 
 				if (moved)
 				{

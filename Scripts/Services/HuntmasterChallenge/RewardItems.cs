@@ -12,6 +12,7 @@ namespace Server.Items
 		[Constructable]
 		public HarvestersBlade()
 		{
+            Hue = 1191;
 			Attributes.SpellChanneling = 1;
 		}
 	
@@ -22,13 +23,16 @@ namespace Server.Items
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
-			writer.Write((int)0);
+			writer.Write((int)1);
 		}
 		
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
 			int v = reader.ReadInt();
+
+            if(v == 0)
+                Hue = 1191;
 		}
 	}
 	

@@ -26,7 +26,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write((int)1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -34,6 +34,14 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                if (Weight == -1)
+                {
+                    Weight = 1;
+                }
+            }
         }
     }
 
@@ -43,7 +51,7 @@ namespace Server.Items
         public GoldRing()
             : base(0x108a)
         {
-            this.Weight = 0.1;
+            //Weight = 0.1;
         }
 
         public GoldRing(Serial serial)
@@ -74,7 +82,7 @@ namespace Server.Items
         public SilverRing()
             : base(0x1F09)
         {
-            this.Weight = 0.1;
+            //Weight = 0.1;
         }
 
         public SilverRing(Serial serial)
