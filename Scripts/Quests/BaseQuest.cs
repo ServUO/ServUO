@@ -132,7 +132,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_Objectives;
+                return m_Objectives;
             }
         }
 		
@@ -140,7 +140,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_Rewards;
+                return m_Rewards;
             }
         }
 		
@@ -148,11 +148,11 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_Owner;
+                return m_Owner;
             }
             set
             {
-                this.m_Owner = value;
+                m_Owner = value;
             }
         }
 		
@@ -160,11 +160,11 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_Quester;
+                return m_Quester;
             }
             set
             {
-                this.m_Quester = value;
+                m_Quester = value;
             }
         }
 		
@@ -172,7 +172,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_Quester is BaseQuestItem ? (BaseQuestItem)this.m_Quester : null;
+                return m_Quester is BaseQuestItem ? (BaseQuestItem)m_Quester : null;
             }
         }
 		
@@ -180,7 +180,7 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_Quester is MondainQuester ? (MondainQuester)this.m_Quester : null;
+                return m_Quester is MondainQuester ? (MondainQuester)m_Quester : null;
             }
         }
 		
@@ -188,21 +188,21 @@ namespace Server.Engines.Quests
         {
             get
             {
-                for (int i = 0; i < this.m_Objectives.Count; i++)
+                for (int i = 0; i < m_Objectives.Count; i++)
                 {
-                    if (this.m_Objectives[i].Completed)
+                    if (m_Objectives[i].Completed)
                     {
-                        if (!this.AllObjectives)
+                        if (!AllObjectives)
                             return true;
                     }
                     else
                     {
-                        if (this.AllObjectives)
+                        if (AllObjectives)
                             return false;
                     }
                 }
 
-                return this.AllObjectives;
+                return AllObjectives;
             }
         }
 		
@@ -210,51 +210,51 @@ namespace Server.Engines.Quests
         {
             get
             {
-                for (int i = 0; i < this.m_Objectives.Count; i++)
+                for (int i = 0; i < m_Objectives.Count; i++)
                 {
-                    if (this.m_Objectives[i].Failed)
+                    if (m_Objectives[i].Failed)
                     {
-                        if (this.AllObjectives)
+                        if (AllObjectives)
                             return true;
                     }
                     else
                     {
-                        if (!this.AllObjectives)
+                        if (!AllObjectives)
                             return false;
                     }
                 }
 				
-                return !this.AllObjectives;
+                return !AllObjectives;
             }
         }
 		
         public BaseQuest()
         { 
-            this.m_Objectives = new List<BaseObjective>();
-            this.m_Rewards = new List<BaseReward>();
+            m_Objectives = new List<BaseObjective>();
+            m_Rewards = new List<BaseReward>();
         }
 		
         public void StartTimer()
         {
-            if (this.m_Timer != null)
+            if (m_Timer != null)
                 return;
 
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), new TimerCallback(Slice));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), new TimerCallback(Slice));
         }
 		
         public void StopTimer()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
         }
 		
         public virtual void Slice()
         {
-            for (int i = 0; i < this.m_Objectives.Count; i ++)
+            for (int i = 0; i < m_Objectives.Count; i ++)
             {
-                BaseObjective obj = this.m_Objectives[i];
+                BaseObjective obj = m_Objectives[i];
 
                 obj.UpdateTime();
             }
@@ -267,46 +267,46 @@ namespace Server.Engines.Quests
 		
         public virtual void UpdateChain()
         {
-            if (this.ChainID != QuestChain.None && this.StartingMobile != null)
+            if (ChainID != QuestChain.None && StartingMobile != null)
             {
-                if (this.m_Owner.Chains.ContainsKey(this.ChainID))
+                if (m_Owner.Chains.ContainsKey(ChainID))
                 {
-                    BaseChain chain = this.m_Owner.Chains[this.ChainID];
+                    BaseChain chain = m_Owner.Chains[ChainID];
 					
-                    chain.CurrentQuest = this.GetType();
-                    chain.Quester = this.StartingMobile.GetType();
+                    chain.CurrentQuest = GetType();
+                    chain.Quester = StartingMobile.GetType();
                 }
                 else
                 {
-                    this.m_Owner.Chains.Add(this.ChainID, new BaseChain(this.GetType(), this.StartingMobile.GetType()));		
+                    m_Owner.Chains.Add(ChainID, new BaseChain(GetType(), StartingMobile.GetType()));		
                 }
             }
         }
 		
         public virtual void OnAccept()
         {
-            this.m_Owner.PlaySound(this.AcceptSound);
-            this.m_Owner.SendLocalizedMessage(1049019); // You have accepted the Quest.
-            this.m_Owner.Quests.Add(this);
+            m_Owner.PlaySound(AcceptSound);
+            m_Owner.SendLocalizedMessage(1049019); // You have accepted the Quest.
+            m_Owner.Quests.Add(this);
 			
             // give items if any		
-            for (int i = 0; i < this.m_Objectives.Count; i ++)
+            for (int i = 0; i < m_Objectives.Count; i ++)
             {
-                BaseObjective objective = this.m_Objectives[i];
+                BaseObjective objective = m_Objectives[i];
 				
                 objective.OnAccept();
             }
 			
-            if (this.m_Quester is BaseEscort)
+            if (m_Quester is BaseEscort)
             {
-                BaseEscort escort = (BaseEscort)this.m_Quester;
+                BaseEscort escort = (BaseEscort)m_Quester;
 				
-                if (escort.SetControlMaster(this.m_Owner))
+                if (escort.SetControlMaster(m_Owner))
                 {
                     escort.Quest = this;					
                     escort.LastSeenEscorter = DateTime.UtcNow;
                     escort.StartFollow();
-                    escort.AddHash(this.Owner);
+                    escort.AddHash(Owner);
 
                     Region region = escort.GetDestination();
 
@@ -315,56 +315,56 @@ namespace Server.Engines.Quests
                     else
                         escort.Say(1042806, "destination"); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
 
-                    this.m_Owner.LastEscortTime = DateTime.UtcNow;
+                    m_Owner.LastEscortTime = DateTime.UtcNow;
                 }
             }
 			
             // tick tack	
-            this.StartTimer();
+            StartTimer();
         }
 		
         public virtual void OnRefuse()
         { 
-            if (!QuestHelper.FirstChainQuest(this, this.Quester))
-                this.UpdateChain();			
+            if (!QuestHelper.FirstChainQuest(this, Quester))
+                UpdateChain();			
         }
 		
         public virtual void OnResign(bool resignChain)
         { 
-            this.m_Owner.PlaySound(this.ResignSound);	
+            m_Owner.PlaySound(ResignSound);	
 			
             // update chain
-            if (!resignChain && !QuestHelper.FirstChainQuest(this, this.Quester))
-                this.UpdateChain();	
+            if (!resignChain && !QuestHelper.FirstChainQuest(this, Quester))
+                UpdateChain();	
 										
             // delete items	that were given on quest start
-            for (int i = 0; i < this.m_Objectives.Count; i ++)
+            for (int i = 0; i < m_Objectives.Count; i ++)
             { 
-                if (this.m_Objectives[i] is ObtainObjective)
+                if (m_Objectives[i] is ObtainObjective)
                 {
-                    ObtainObjective obtain = (ObtainObjective)this.m_Objectives[i];
+                    ObtainObjective obtain = (ObtainObjective)m_Objectives[i];
 					
-                    QuestHelper.RemoveStatus(this.m_Owner, obtain.Obtain);
+                    QuestHelper.RemoveStatus(m_Owner, obtain.Obtain);
                 }
-                else if (this.m_Objectives[i] is DeliverObjective)
+                else if (m_Objectives[i] is DeliverObjective)
                 {
-                    DeliverObjective deliver = (DeliverObjective)this.m_Objectives[i];
+                    DeliverObjective deliver = (DeliverObjective)m_Objectives[i];
 					
-                    QuestHelper.DeleteItems(this.m_Owner, deliver.Delivery, deliver.MaxProgress, true);
+                    QuestHelper.DeleteItems(m_Owner, deliver.Delivery, deliver.MaxProgress, true);
                 }
             }
 			
             // delete escorter
-            if (this.m_Quester is BaseEscort)
+            if (m_Quester is BaseEscort)
             {
-                BaseEscort escort = (BaseEscort)this.m_Quester;
+                BaseEscort escort = (BaseEscort)m_Quester;
 
                 escort.Say(1005653); // Hmmm.  I seem to have lost my master.
                 escort.PlaySound(0x5B3);
-                escort.BeginDelete(this.m_Owner);
+                escort.BeginDelete(m_Owner);
             }
 			
-            this.RemoveQuest(resignChain);
+            RemoveQuest(resignChain);
         }
 		
         public virtual void InProgress()
@@ -373,18 +373,18 @@ namespace Server.Engines.Quests
 		
         public virtual void OnCompleted()
         { 
-            this.m_Owner.SendLocalizedMessage(1072273, null, 0x23); // You've completed a quest!  Don't forget to collect your reward.							
-            this.m_Owner.PlaySound(this.CompleteSound);
+            m_Owner.SendLocalizedMessage(1072273, null, 0x23); // You've completed a quest!  Don't forget to collect your reward.							
+            m_Owner.PlaySound(CompleteSound);
         }
 		
         public virtual void GiveRewards()
         { 
             // give rewards
-            for (int i = 0; i < this.m_Rewards.Count; i ++)
+            for (int i = 0; i < m_Rewards.Count; i ++)
             { 
-                Type type = this.m_Rewards[i].Type;
+                Type type = m_Rewards[i].Type;
 				
-                this.m_Rewards[i].GiveReward();
+                m_Rewards[i].GiveReward();
 				
                 if (type == null)
                     continue;
@@ -404,38 +404,38 @@ namespace Server.Engines.Quests
                 { 
                     if (reward.Stackable)
                     {
-                        reward.Amount = this.m_Rewards[i].Amount;
-                        this.m_Rewards[i].Amount = 1;
+                        reward.Amount = m_Rewards[i].Amount;
+                        m_Rewards[i].Amount = 1;
                     }
 					
-                    for (int j = 0; j < this.m_Rewards[i].Amount; j ++)
+                    for (int j = 0; j < m_Rewards[i].Amount; j ++)
                     {
-                        if (!this.m_Owner.PlaceInBackpack(reward))
+                        if (!m_Owner.PlaceInBackpack(reward))
                         {
-                            reward.MoveToWorld(this.m_Owner.Location);
+                            reward.MoveToWorld(m_Owner.Location, m_Owner.Map);
                         }
 						
-                        if (this.m_Rewards[i].Name is int)
-                            this.m_Owner.SendLocalizedMessage(1074360, "#" + (int)this.m_Rewards[i].Name); // You receive a reward: ~1_REWARD~
-                        else if (this.m_Rewards[i].Name is string)
-                            this.m_Owner.SendLocalizedMessage(1074360, (string)this.m_Rewards[i].Name); // You receive a reward: ~1_REWARD~		
+                        if (m_Rewards[i].Name is int)
+                            m_Owner.SendLocalizedMessage(1074360, "#" + (int)m_Rewards[i].Name); // You receive a reward: ~1_REWARD~
+                        else if (m_Rewards[i].Name is string)
+                            m_Owner.SendLocalizedMessage(1074360, (string)m_Rewards[i].Name); // You receive a reward: ~1_REWARD~		
                     }
                 }
             }
 			
             // remove quest
-            if (this.NextQuest == null)
-                this.RemoveQuest(true);
+            if (NextQuest == null)
+                RemoveQuest(true);
             else
-                this.RemoveQuest();
+                RemoveQuest();
 			
             // offer next quest if present
-            if (this.NextQuest != null)
+            if (NextQuest != null)
             {
-                BaseQuest quest = QuestHelper.RandomQuest(this.m_Owner, new Type[] { this.NextQuest }, this.StartingMobile);
+                BaseQuest quest = QuestHelper.RandomQuest(m_Owner, new Type[] { NextQuest }, StartingMobile);
 					
-                if (quest != null && quest.ChainID == this.ChainID)
-                    this.m_Owner.SendGump(new MondainQuestGump(quest));
+                if (quest != null && quest.ChainID == ChainID)
+                    m_Owner.SendGump(new MondainQuestGump(quest));
             }
 
             Server.Engines.Points.PointsSystem.HandleQuest(Owner, this);
@@ -461,57 +461,57 @@ namespace Server.Engines.Quests
 		
         public virtual void AddObjective(BaseObjective objective)
         {
-            if (this.m_Objectives == null)
-                this.m_Objectives = new List<BaseObjective>();
+            if (m_Objectives == null)
+                m_Objectives = new List<BaseObjective>();
 			
             if (objective != null)
             {
                 objective.Quest = this;
-                this.m_Objectives.Add(objective);
+                m_Objectives.Add(objective);
             }
         }
 		
         public virtual void AddReward(BaseReward reward)
         {
-            if (this.m_Rewards == null)
-                this.m_Rewards = new List<BaseReward>();
+            if (m_Rewards == null)
+                m_Rewards = new List<BaseReward>();
 				
             if (reward != null)
             {
                 reward.Quest = this;
-                this.m_Rewards.Add(reward);
+                m_Rewards.Add(reward);
             }
         }
 		
         public virtual void RemoveQuest()
         {
-            this.RemoveQuest(false);
+            RemoveQuest(false);
         }
 		
         public virtual void RemoveQuest(bool removeChain)
         {
-            this.StopTimer();
+            StopTimer();
 			
             if (removeChain)
-                this.m_Owner.Chains.Remove(this.ChainID);
+                m_Owner.Chains.Remove(ChainID);
 			
-            if (this.Completed && (this.RestartDelay > TimeSpan.Zero || this.ForceRemember || this.DoneOnce) && this.NextQuest == null)
+            if (Completed && (RestartDelay > TimeSpan.Zero || ForceRemember || DoneOnce) && NextQuest == null)
             {
-                Type type = this.GetType();	
+                Type type = GetType();	
 				
-                if (this.ChainID != QuestChain.None)
+                if (ChainID != QuestChain.None)
                     type = QuestHelper.FindFirstChainQuest(this);
 
-                QuestHelper.Delay(this.Owner, type, this.RestartDelay);
+                QuestHelper.Delay(Owner, type, RestartDelay);
             }
 			
-            QuestHelper.RemoveAcceleratedSkillgain(this.Owner);
+            QuestHelper.RemoveAcceleratedSkillgain(Owner);
 				
-            for (int i = this.m_Owner.Quests.Count - 1; i >= 0; i --)
+            for (int i = m_Owner.Quests.Count - 1; i >= 0; i --)
             {
-                if (this.m_Owner.Quests[i] == this)
+                if (m_Owner.Quests[i] == this)
                 {
-                    this.m_Owner.Quests.RemoveAt(i);
+                    m_Owner.Quests.RemoveAt(i);
 					
                     break;
                 }
@@ -532,22 +532,22 @@ namespace Server.Engines.Quests
         {
             writer.WriteEncodedInt((int)0); // version	
 			
-            if (this.m_Quester == null)
+            if (m_Quester == null)
                 writer.Write((int)0x0);
-            else if (this.m_Quester is Mobile)
+            else if (m_Quester is Mobile)
             {
                 writer.Write((int)0x1);
-                writer.Write((Mobile)this.m_Quester);
+                writer.Write((Mobile)m_Quester);
             }
-            else if (this.m_Quester is Item)
+            else if (m_Quester is Item)
             {
                 writer.Write((int)0x2);
-                writer.Write((Item)this.m_Quester);
+                writer.Write((Item)m_Quester);
             }
 							
-            for (int i = 0; i < this.m_Objectives.Count; i ++)
+            for (int i = 0; i < m_Objectives.Count; i ++)
             {
-                BaseObjective objective = this.m_Objectives[i];
+                BaseObjective objective = m_Objectives[i];
 				
                 objective.Serialize(writer);
             }
@@ -560,32 +560,32 @@ namespace Server.Engines.Quests
             switch ( reader.ReadInt() )
             {
                 case 0x0:
-                    this.m_Quester = null;
+                    m_Quester = null;
                     break;
                 case 0x1:
-                    this.m_Quester = reader.ReadMobile() as MondainQuester;
+                    m_Quester = reader.ReadMobile() as MondainQuester;
                     break;
                 case 0x2:
-                    this.m_Quester = reader.ReadItem() as BaseQuestItem;
+                    m_Quester = reader.ReadItem() as BaseQuestItem;
                     break;
             }
 			
-            if (this.m_Quester is BaseEscort)
+            if (m_Quester is BaseEscort)
             {
-                BaseEscort escort = (BaseEscort)this.m_Quester;
+                BaseEscort escort = (BaseEscort)m_Quester;
 				
                 escort.Quest = this;
             }
-            else if (this.m_Quester is BaseQuestItem)
+            else if (m_Quester is BaseQuestItem)
             {
-                BaseQuestItem item = (BaseQuestItem)this.m_Quester;
+                BaseQuestItem item = (BaseQuestItem)m_Quester;
 				
                 item.Quest = this;
             }
 			
-            for (int i = 0; i < this.m_Objectives.Count; i ++)
+            for (int i = 0; i < m_Objectives.Count; i ++)
             {
-                BaseObjective objective = this.m_Objectives[i];
+                BaseObjective objective = m_Objectives[i];
 				
                 objective.Deserialize(reader);
             }
