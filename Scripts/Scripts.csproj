@@ -784,6 +784,7 @@
     <Compile Include="Items\Functional\Automaton\InoperativeAutomatonHead.cs" />
     <Compile Include="Items\Functional\Automaton\KotlAutomaton.cs" />
     <Compile Include="Items\Functional\Automaton\KotlAutomatonHead.cs" />
+    <Compile Include="Items\Functional\BaseArtifactLight.cs" />
     <Compile Include="Items\Functional\BaseDecayingItem.cs" />
     <Compile Include="Items\Functional\BaseDoor.cs">
       <SubType>Code</SubType>
