@@ -901,4 +901,225 @@ namespace Server.Items
         }
     }
     #endregion
+
+    #region Publish 97 Stealables
+    [FlipableAttribute(40681, 40682)]
+    public class HangingPlatemailArms : BaseDecorationArtifact
+    {
+        public override int LabelNumber { get { return 1124703; } } // Hanging Platemail
+        public override bool IsArtifact { get { return true; } }
+        public override int ArtifactRarity { get { return 8; } }
+
+        [Constructable]
+        public HangingPlatemailArms()
+            : base(40681)
+        {
+        }
+
+        public HangingPlatemailArms(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
+        }
+    }
+
+    [FlipableAttribute(40683, 40684)]
+    public class HangingPlatemailLeggings : BaseDecorationArtifact
+    {
+        public override int LabelNumber { get { return 1124703; } } // Hanging Platemail
+        public override bool IsArtifact { get { return true; } }
+        public override int ArtifactRarity { get { return 8; } }
+
+        [Constructable]
+        public HangingPlatemailLeggings()
+            : base(40683)
+        {
+        }
+
+        public HangingPlatemailLeggings(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
+        }
+    }
+
+    [FlipableAttribute(40679, 40680)]
+    public class HangingPlatemailTunic : BaseDecorationArtifact
+    {
+        public override int LabelNumber { get { return 1124703; } } // Hanging Platemail
+        public override bool IsArtifact { get { return true; } }
+        public override int ArtifactRarity { get { return 8; } }
+
+        [Constructable]
+        public HangingPlatemailTunic()
+            : base(40679)
+        {
+        }
+
+        public HangingPlatemailTunic(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
+        }
+    }
+
+    [FlipableAttribute(40677, 40678)]
+    public class ArcaneTable : BaseDecorationArtifact
+    {
+        public override int LabelNumber { get { return 1124701; } } // Table
+        public override bool IsArtifact { get { return true; } }
+        public override int ArtifactRarity { get { return 9; } }
+
+        [Constructable]
+        public ArcaneTable()
+            : base(40677)
+        {
+        }
+
+        public ArcaneTable(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
+        }
+    }
+
+    [FlipableAttribute(40675, 40676)]
+    public class ArtifactBookshelf : BaseDecorationArtifact
+    {
+        public override int LabelNumber { get { return 1124699; } } // Bookshelf
+        public override bool IsArtifact { get { return true; } }
+        public override int ArtifactRarity { get { return 9; } }
+
+        [Constructable]
+        public ArtifactBookshelf()
+            : base(40675)
+        {
+        }
+
+        public ArtifactBookshelf(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
+        }
+    }
+
+    [Flipable]
+    public class IncenseBurner : BaseArtifactLight
+    {
+        public override int LabelNumber { get { return Burning ? 1124691 : 1124709; } } // Incense / Incense Burner
+        public override bool IsArtifact { get { return true; } }
+        public override int ArtifactRarity { get { return 12; } }
+
+        [Constructable]
+        public IncenseBurner() : base(40685)
+        {
+            Duration = TimeSpan.Zero;
+            Burning = false;
+            Light = LightType.Circle300;
+            Weight = 10.0;
+        }
+
+        public IncenseBurner(Serial serial) : base(serial)
+        {
+        }
+
+        public override int LitItemID
+        {
+            get { return ItemID == 40685 ? 40667 : 40671; }
+        }
+
+        public override int UnlitItemID
+        {
+            get { return ItemID == 40667 ? 40685 : 40686; }
+        }
+
+        public void Flip()
+        {
+            Light = LightType.Circle300;
+
+            switch (this.ItemID)
+            {
+                case 40685:
+                    ItemID = 40686;
+                    break;//unlit
+                case 40667:
+                    ItemID = 40671;
+                    break;//lit
+                case 40686:
+                    ItemID = 40685;
+                    break;//unlit
+                case 40671:
+                    ItemID = 40667;
+                    break;//lit
+            }
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadEncodedInt();
+        }
+    }
+    #endregion
 }
