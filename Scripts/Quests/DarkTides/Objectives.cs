@@ -230,6 +230,7 @@ namespace Server.Engines.Quests.Necro
                 {
                     this.System.From.SendLocalizedMessage(1060113); // You instinctively will your familiar to fetch the scroll for you.
                     hmf.TargetLocation = new Point2D(1076, 450);
+                    hmf.ControlOrder = OrderType.Fetch;
                 }
             }
         }
