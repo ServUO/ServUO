@@ -2104,8 +2104,9 @@ namespace Server.Mobiles
             BaseCreature m = m_Mobile;
             Map map = m.Map;
             Mobile master = m.ControlMaster;
+            Map mrMap = master.Map;
 
-            if (master == null || master.Deleted)
+            if (master == null || master.Deleted || mrMap == null || mrMap == Map.Internal)
             {
                 if (map != null && map != Map.Internal)
                 {
@@ -2133,9 +2134,8 @@ namespace Server.Mobiles
 
             // Part 2: Teleport to master check
             Point3D mLoc = Point3D.Zero;
-            Map mrMap = master.Map;
 
-            if (map != mrMap && mrMap != null && mrMap != Map.Internal)
+            if (map != mrMap)
             {
                 m.Map = mrMap;
                 m.SetLocation(master.Location, true);
@@ -2234,12 +2234,7 @@ namespace Server.Mobiles
                 return null;
             }
 
-            if (((BaseFamiliar)m_Mobile).AttacksMastersTarget && master.InRange(mc.Location, m_Mobile.RangeHome))
-            {
-                return mc;
-            }
-
-            if (m_Mobile.InRange(master, 1) && (master.InRange(mc.Location, 1) || m_Mobile.InRange(mc.Location, 1)))
+            if (m_Mobile.InRange(master, 1) && master.InRange(mc.Location, 1))
             {
                 return mc;
             }
