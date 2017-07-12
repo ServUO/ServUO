@@ -1526,6 +1526,8 @@ namespace Server.Mobiles
 				ScrollofAlacrity.AlacrityEnd(e.Mobile);
 			}
 			#endregion
+
+            BaseFamiliar.OnLogout(e.Mobile as PlayerMobile);
 		}
 
 		private static void EventSink_Connected(ConnectedEventArgs e)

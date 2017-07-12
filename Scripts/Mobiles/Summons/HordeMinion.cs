@@ -8,7 +8,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using Server.Engines.Quests;
+using Server.Engines.Quests.Necro;
 using Server.ContextMenus;
 using Server.Gumps;
 using Server.Items;
@@ -21,6 +22,13 @@ namespace Server.Mobiles
 	public class HordeMinionFamiliar : BaseFamiliar
 	{
 		public override bool DisplayWeight { get { return true; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public override OrderType ControlOrder
+        {
+            get { return m_QuestOverride ? OrderType.None : OrderType.Come; }
+            set { }
+        }
 
 		public HordeMinionFamiliar()
 		{
@@ -65,9 +73,60 @@ namespace Server.Mobiles
 		}
 
 		private DateTime m_NextPickup;
+        private bool m_QuestOverride;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool QuestOverride
+        {
+            get { return m_QuestOverride; }
+            set
+            {
+                if (!m_QuestOverride && value)
+                {
+                    Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
+                        {
+                            if (m_QuestOverride)
+                                m_QuestOverride = false;
+                        });
+                }
+
+                m_QuestOverride = value;
+            }
+        }
 
 		public override void OnThink()
 		{
+            if (ControlMaster != null && QuestOverride)
+            {
+                if (this.X == 1076 && this.Y == 450)
+                {
+                    AIObject.MoveTo(ControlMaster, false, 1);
+
+                    PlayerMobile pm = ControlMaster as PlayerMobile;
+
+                    if (pm != null)
+                    {
+                        QuestSystem qs = pm.Quest;
+
+                        if (qs is DarkTidesQuest)
+                        {
+                            QuestObjective obj = qs.FindObjective(typeof(FetchAbraxusScrollObjective));
+
+                            if (obj != null && !obj.Completed)
+                            {
+                                AddToBackpack(new ScrollOfAbraxus());
+                                obj.Complete();
+
+                                CurrentSpeed = 0.1;
+                                QuestOverride = false;
+                            }
+                        }
+                    }
+                }
+
+                return;
+            }
+
 			base.OnThink();
 
 			if (DateTime.UtcNow < m_NextPickup)

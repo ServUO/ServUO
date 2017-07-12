@@ -3334,7 +3334,7 @@ namespace Server.Mobiles
         public Point3D ControlDest { get { return m_ControlDest; } set { m_ControlDest = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public OrderType ControlOrder
+        public virtual OrderType ControlOrder
         {
             get { return m_ControlOrder; }
             set

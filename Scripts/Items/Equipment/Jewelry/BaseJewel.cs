@@ -608,7 +608,7 @@ namespace Server.Items
 
             if (chance >= Utility.Random(100)) // 25% chance to lower durability
             {
-                int wear = Utility.Random(2);
+                int wear = 1;
 
                 if (wear > 0)
                 {
