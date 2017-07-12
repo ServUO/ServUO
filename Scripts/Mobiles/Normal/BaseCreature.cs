@@ -3135,7 +3135,7 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual Point3D Home { get { return m_pHome; } set { m_pHome = value; } }
+        public Point3D Home { get { return m_pHome; } set { m_pHome = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Controlled
