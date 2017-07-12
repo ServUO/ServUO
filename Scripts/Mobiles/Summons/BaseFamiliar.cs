@@ -142,11 +142,6 @@ namespace Server.Mobiles
 
             if (RangeCheck())
             {
-                if (ControlOrder != OrderType.Come)
-                {
-                    ControlOrder = OrderType.Come;
-                }
-
                 if (AIObject != null && AIObject.WalkMobileRange(master, 5, true, 1, 1))
                 {
                     if (master.Combatant != null && master.InRange(master.Combatant, 1) && Core.TickCount > m_NextMove)
@@ -177,17 +172,17 @@ namespace Server.Mobiles
                         }
                         else
                         {
-                            CurrentSpeed = .04;
+                            CurrentSpeed = .1;
                         }
                     }
                     else if (master.Combatant == null)
                     {
-                        CurrentSpeed = .04;
+                        CurrentSpeed = .1;
                     }
                 }
                 else
                 {
-                    CurrentSpeed = .01;
+                    CurrentSpeed = .1;
                 }
             }
 		}
