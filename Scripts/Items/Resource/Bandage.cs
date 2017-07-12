@@ -142,6 +142,7 @@ namespace Server.Items
 					{
 						if (BandageContext.BeginHeal(from, (Mobile)targeted, m_Bandage is EnhancedBandage) != null)
 						{
+                            NegativeAttributes.OnCombatAction(from);
 							m_Bandage.Consume();
 						}
 					}
@@ -154,6 +155,7 @@ namespace Server.Items
 				{
 					if (((PlagueBeastInnard)targeted).OnBandage(from))
 					{
+                        NegativeAttributes.OnCombatAction(from);
 						m_Bandage.Consume();
 					}
 				}

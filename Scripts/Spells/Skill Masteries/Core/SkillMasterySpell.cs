@@ -147,6 +147,11 @@ namespace Server.Spells.SkillMasteries
             Caster.RevealingAction();
             int upkeep = ScaleUpkeep();
 
+            if (0.10 > Utility.RandomDouble())
+            {
+                NegativeAttributes.OnCombatAction(Caster);
+            }
+
             if ((Caster is PlayerMobile && Caster.NetState == null) || Expires < DateTime.UtcNow)
                 Expire();
             else if (Target != null && !Target.Alive)
