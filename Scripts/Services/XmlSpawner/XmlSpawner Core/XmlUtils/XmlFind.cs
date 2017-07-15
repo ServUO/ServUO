@@ -427,6 +427,9 @@ namespace Server.Mobiles
 
                     if (i is BoatMountItem || i is Server.Factions.FactionPersistence || i is Server.Misc.TreasuresOfTokunoPersistence || i is StealableArtifactsSpawner)
                         return true;
+
+                    if (i is ArisenController)
+                        return true;
 				}
 
 			return false;

@@ -1276,6 +1276,8 @@ namespace Server.Network
 
 					if (m != null)
 					{
+                        m.CloseAllGumps();
+
 						m.NetState = null;
 						ns.m_Mobile = null;
 					}

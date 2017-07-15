@@ -1742,6 +1742,11 @@ namespace Server.Mobiles
 			InvalidateMyRunUO();
 		}
 
+        private BaseWeapon m_LastWeapon;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public BaseWeapon LastWeapon { get { return m_LastWeapon; } set { m_LastWeapon = value; } }
+
 		public override void OnItemRemoved(Item item)
 		{
 			base.OnItemRemoved(item);
@@ -1752,6 +1757,11 @@ namespace Server.Mobiles
 				Stam = Stam;
 				Mana = Mana;
 			}
+
+            if (item is BaseWeapon)
+            {
+                m_LastWeapon = item as BaseWeapon;
+            }
 
 			if (NetState != null)
 			{

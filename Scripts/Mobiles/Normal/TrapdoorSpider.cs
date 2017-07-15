@@ -5,11 +5,16 @@ namespace Server.Mobiles
     [CorpseName("a trapdoor spider corpse")]
     public class TrapdoorSpider : BaseCreature
     {
+
+        public override bool CanStealth { get { return true; } } //Stays Hidden until Combatant in range.
+
         [Constructable]
-        public TrapdoorSpider() : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+        public TrapdoorSpider()
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a trapdoor spider";
             Body = 737;
+            Hidden = true; //Spawns Hidden
 
             SetStr(100, 104);
             SetDex(162, 165);
@@ -37,33 +42,35 @@ namespace Server.Mobiles
             SetSkill(SkillName.Stealth, 110.5, 119.6);
         }
 
-        public TrapdoorSpider(Serial serial) : base(serial)
+        public TrapdoorSpider(Serial serial)
+            : base(serial)
         {
         }
 
-        public override WeaponAbility GetWeaponAbility()
+        //Can Flush them out of Hiding
+        public override void OnDamage(int amount, Mobile from, bool willKill)
         {
-            return WeaponAbility.ShadowStrike;
+            RevealingAction();
+            base.OnDamage(amount, from, willKill);
+        }
+
+        public override void OnDamagedBySpell(Mobile from)
+        {
+            RevealingAction();
+            base.OnDamagedBySpell(from);
+        }
+
+        public override int TreasureMapLevel
+        {
+            get
+            {
+                return 2;
+            }
         }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.01)
-            {
-                c.DropItem(new LuckyCoin());
-            }
-
-            if (Utility.RandomDouble() < 0.05)
-            {
-                c.DropItem(new TatteredAncientScroll());
-            }
         }
 
         public override int GetIdleSound()
@@ -84,6 +91,50 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 1603;
+        }
+
+        public override void OnThink()
+        {
+
+            if (!this.Alive || this.Deleted)
+            {
+                return;
+            }
+
+            if (!this.Hidden)
+            {
+                double chance = 0.05;
+
+                if (this.Hits < 20)
+                {
+                    chance = 0.1;
+                }
+
+                if (this.Poisoned)
+                {
+                    chance = 0.01;
+                }
+
+                if (Utility.RandomDouble() < chance)
+                {
+                    HideSelf();
+                }
+                base.OnThink();
+            }
+        }
+
+        private void HideSelf()
+        {
+            if (Core.TickCount >= this.NextSkillTime)
+            {
+                Effects.SendLocationParticles(
+                    EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+
+                this.PlaySound(0x22F);
+                this.Hidden = true;
+
+                this.UseSkill(SkillName.Stealth);
+            }
         }
 
         public override void Serialize(GenericWriter writer)

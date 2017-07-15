@@ -2982,7 +2982,7 @@ namespace Server
 
             var list = new List<Item>();
 
-            foreach (var item in m.Items.Where(i => i is IWearableDurability))
+            foreach (var item in m.Items.Where(i => i is IDurability))
             {
                 NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(item);
 
