@@ -2874,6 +2874,7 @@ namespace Server.Items
 			}
 
             BaseFamiliar.OnHit(attacker, damageable);
+            WhiteTigerFormSpell.OnHit(attacker, defender);
 			XmlAttach.OnWeaponHit(this, attacker, defender, damageGiven);
 		}
 

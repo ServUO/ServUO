@@ -2865,9 +2865,9 @@ namespace Server.Multis
                                 var item = reader.ReadItem();
                                 var mob = reader.ReadMobile();
 
-                                if (item != null && mob != null)
+                                if (item != null)
                                 {
-                                    m_Addons[item] = mob;
+                                    m_Addons[item] = mob != null ? mob : Owner;
                                 }
                             }
                         }

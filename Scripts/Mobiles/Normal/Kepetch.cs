@@ -1,6 +1,7 @@
 using System;
 using Server.Items;
 using Server.Network;
+using System.Collections;
 
 namespace Server.Mobiles
 {
@@ -11,7 +12,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public Kepetch()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "a kepetch";
             this.Body = 726;
@@ -86,7 +87,6 @@ namespace Server.Mobiles
                 {
                     from.SendLocalizedMessage(1112360); // You place the gathered kepetch fur into your backpack.
                     GatheredFur = true;
-
                     return true;
                 }
             }
@@ -131,6 +131,103 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 1543;
+        }
+
+        // To Do: Infected Wound (5 +5(every 20 seconds)damage) 
+
+        public override void OnGaveMeleeAttack(Mobile defender)
+        {
+            if (Utility.RandomDouble() < 0.05)
+            {
+                //defender.SendLocalizedMessage(1113211); //The kepetch gives you a particularly vicious bite! 
+                defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, false,
+                "The kepetch gives you a particularly vicious bite!");
+                defender.PlaySound(0x133);
+                defender.FixedParticles(0x377A, 244, 25, 9950, 31, 0, EffectLayer.Waist);
+
+                BeginBleed(defender, this);
+            }
+        }
+
+        private static Hashtable m_Table = new Hashtable();
+        private static Hashtable m_BleedTable = new Hashtable();
+
+        public static bool IsBleeding(Mobile m)
+        {
+            return m_BleedTable.Contains(m);
+        }
+
+        public static void BeginBleed(Mobile m, Mobile from)
+        {
+            Timer t = (Timer)m_BleedTable[m];
+
+            if (t != null)
+                t.Stop();
+
+            t = new InternalBleedTimer(from, m);
+            m_BleedTable[m] = t;
+
+            t.Start();
+        }
+
+        public static void DoBleed(Mobile m, Mobile from, int level)
+        {
+            if (m.Alive)
+            {
+                int damage = Utility.RandomMinMax(level, level * 1);//2
+
+                if (!m.Player)
+                    damage *= 2;
+
+                m.PlaySound(0x133);
+                m.Damage(damage, from);
+
+                Blood blood = new Blood();
+
+                blood.ItemID = Utility.Random(0x122A, 5);
+
+                blood.MoveToWorld(m.Location, m.Map);
+            }
+            else
+            {
+                EndBleed(m, false);
+            }
+        }
+
+        public static void EndBleed(Mobile m, bool message)
+        {
+            Timer t = (Timer)m_BleedTable[m];
+
+            if (t == null)
+                return;
+
+            t.Stop();
+            m_Table.Remove(m);
+
+            m.SendLocalizedMessage(1113365); // Your wounds have been mended.
+        }
+
+        private class InternalBleedTimer : Timer
+        {
+            private Mobile m_From;
+            private Mobile m_Mobile;
+            private int m_Count;
+
+            public InternalBleedTimer(Mobile from, Mobile m)
+                : base(TimeSpan.FromSeconds(20.0), TimeSpan.FromSeconds(20.0))
+            {
+                m_From = from;
+                m_Mobile = m;
+                Priority = TimerPriority.TwoFiftyMS;
+            }
+
+            protected override void OnTick()
+            {
+                DoBleed(m_Mobile, m_From, 5 + 5 * m_Count);
+
+                if (++m_Count == 5)
+                    EndBleed(m_Mobile, true);
+            }
         }
 
         public override void Serialize(GenericWriter writer)

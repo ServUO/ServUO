@@ -994,6 +994,7 @@
     <Compile Include="Items\Tools\PenOfWisdom.cs" />
     <Compile Include="Items\Tools\PetBondingPotion.cs" />
     <Compile Include="Items\Tools\RunicMalletAndChisel.cs" />
+    <Compile Include="Misc\EquipLastWeapon.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Items\Artifacts\Equipment\Glasses\Glasses.cs">
       <SubType>Code</SubType>

@@ -304,7 +304,7 @@ namespace Server.Engines.CityLoyalty
 
                 GenericBuyInfo info = buyInfo[Utility.Random(buyInfo.Length)] as GenericBuyInfo;
 
-                if (!(info is BeverageBuyInfo) && !(info is AnimalBuyInfo) && info != null && info.Type != null && info.Args == null)
+                if (!(info is BeverageBuyInfo) && !(info is AnimalBuyInfo) && info != null && info.Type != null && info.Args == null && info.Price < 5000)
                 {
                     list.Clear();
                     list.TrimExcess();
