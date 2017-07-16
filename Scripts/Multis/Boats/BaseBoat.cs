@@ -546,7 +546,6 @@ namespace Server.Multis
 
         public override void OnLocationChange(Point3D old)
         {
-
             if (m_TillerMan != null)
             {
                 if (m_TillerMan is Mobile && (Math.Abs(X - old.X) > 1 || Math.Abs(Y - old.Y) > 1))
@@ -1758,6 +1757,7 @@ namespace Server.Multis
             else
             {
                 List<ISpawnable> toMove = GetMovingEntities();
+                List<Mobile> toPush = new List<Mobile>();
 
                 if (m_TillerMan != null && m_TillerMan is ISpawnable && !toMove.Contains((ISpawnable)m_TillerMan))
                     toMove.Add((ISpawnable)m_TillerMan);
@@ -1796,12 +1796,21 @@ namespace Server.Multis
                     {
                         Mobile m = (Mobile)e;
 
-                        m.NoMoveHS = true;
+                        if (m is BaseCreature && m.CanSwim)
+                        {
+                            toPush.Add(m);
+                        }
+                        else
+                        {
+                            m.NoMoveHS = true;
 
-                        if (!IsComponentItem((ISpawnable)m) && !(m is BaseSeaChampion))
-                            m.Location = new Point3D(m.X + xOffset, m.Y + yOffset, m.Z);
+                            if (!IsComponentItem((ISpawnable)m) && !(m is BaseSeaChampion))
+                                m.Location = new Point3D(m.X + xOffset, m.Y + yOffset, m.Z);
+                        }
                     }
                 }
+
+                PushMobiles(toPush);
 
                 NoMoveHS = true;
                 Location = new Point3D(X + xOffset, Y + yOffset, Z);
@@ -1815,8 +1824,7 @@ namespace Server.Multis
                 }
 
                 NoMoveHS = false;
-                toMove.Clear();
-                toMove.TrimExcess();
+                ColUtility.Free(toMove);
             }
 
             return true;
@@ -1966,6 +1974,83 @@ namespace Server.Multis
             SetFacingComponents(m_Facing, old, false);
 
             return true;
+        }
+
+        public void PushMobiles(List<Mobile> list)
+        {
+            if (list == null || list.Count == 0 || Map == null)
+            {
+                return;
+            }
+
+            List<Point3D> validatedTiles = new List<Point3D>();
+
+            foreach (var m in list)
+            {
+                if (m is BaseCreature && ((BaseCreature)m).CanFly)
+                {
+                    BaseBoat boat = BaseBoat.FindBoatAt(m);
+
+                    if (boat != null)
+                    {
+                        if (boat is BaseGalleon)
+                        {
+                            m.Z = m.Z + ((BaseGalleon)boat).ZSurface;
+                        }
+                        else
+                        {
+                            m.Z = m.Z + 3;
+                        }
+                    }
+
+                    return;
+                }
+
+                for (int x = m.X - 1; x <= m.X + 1; x++)
+                {
+                    for (int y = m.Y - 1; y <= m.Y + 1; y++)
+                    {
+                        if (x == m.X && y == m.Y)
+                            continue;
+
+                        if (BaseBoat.FindBoatAt(new Point2D(x, y), Map) == null)
+                        {
+                            Point3D p = new Point3D(x, y, Z);
+                            MovementPath path = new MovementPath(m, p);
+
+                            if (path.Success)
+                            {
+                                validatedTiles.Add(p);
+                            }
+                        }
+                    }
+                }
+
+                if (validatedTiles.Count == 0)
+                {
+                    BaseBoat boat = BaseBoat.FindBoatAt(m);
+
+                    if (boat != null)
+                    {
+                        if (boat is BaseGalleon)
+                        {
+                            m.Z = m.Z + ((BaseGalleon)boat).ZSurface;
+                        }
+                        else
+                        {
+                            m.Z = m.Z + 3;
+                        }
+                    }
+                }
+                else
+                {
+                    Point3D p = validatedTiles[Utility.Random(validatedTiles.Count)];
+
+                    m.MoveToWorld(p, Map);
+
+                    ColUtility.Free(validatedTiles);
+                }
+            }
         }
 
         private class MoveTimer : Timer
@@ -2429,7 +2514,7 @@ namespace Server.Multis
                 return base.GetWorldPacketFor(state);
         }*/
 
-        private Packet m_ContainerPacket;
+        /*private Packet m_ContainerPacket;
 
         private object _PacketLock = new object();
 
@@ -2461,7 +2546,7 @@ namespace Server.Multis
                 Packet.Release(ref m_ContainerPacket);
 
             base.ReleaseWorldPackets(); 
-        }
+        }*/
 
         public sealed class MoveBoatHS : Packet
         {
