@@ -9995,6 +9995,7 @@
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Mobile\WrongPrisoner.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\MysteriousTunnel.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\WrongMazeWall.cs" />
+    <Compile Include="Services\RunicReforging\ReforgingContext.cs" />
     <Compile Include="Services\Tomb of Kings\Arisen Invasion\ArisenController.cs" />
     <Compile Include="Services\Tomb of Kings\Chambers\Chamber.cs" />
     <Compile Include="Services\Tomb of Kings\Chambers\ChamberBarrier.cs" />

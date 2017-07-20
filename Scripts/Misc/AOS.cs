@@ -2973,7 +2973,7 @@ namespace Server
                 list.Add(1151782);
         }
 
-        public const double CombatDecayChance = 0.05;
+        public const double CombatDecayChance = 0.02;
 
         public static void OnCombatAction(Mobile m)
         {
@@ -3001,15 +3001,17 @@ namespace Server
 
                 if (dur.HitPoints >= 1)
                 {
-                    dur.HitPoints--;
-                }
-                else
-                {
-                    if (dur.HitPoints > 0)
+                    if (dur.HitPoints >= 4)
+                    {
+                        dur.HitPoints -= 4;
+                    }
+                    else
                     {
                         dur.HitPoints = 0;
                     }
-
+                }
+                else
+                {
                     if (dur.MaxHitPoints > 1)
                     {
                         dur.MaxHitPoints--;
