@@ -534,10 +534,10 @@ namespace Server.Mobiles
 
         public void CheckCrew()
         {
-            if (m_Galleon == null)
+            if (m_Galleon == null || m_Crew == null || Map == null || Map == Map.Internal)
                 return;
 
-            List<Mobile> crew = new List<Mobile>(m_Crew.Where(m => m.Alive && m.Map != null && m.Map != Map.Internal));
+            List<Mobile> crew = new List<Mobile>(m_Crew.Where(m => m != null && m.Alive && m.Map != null && m.Map != Map.Internal));
 
             if (m_Galleon.Pilot != null)
                 crew.Add(m_Galleon.Pilot);
