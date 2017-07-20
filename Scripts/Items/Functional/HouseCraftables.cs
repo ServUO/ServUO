@@ -157,7 +157,7 @@ namespace Server.Items
         }
 
         public override BaseAddonDeed Deed { get { return new CraftableHouseAddonDeed(AddonType); } }
-        public override bool RestrictToClassicHouses { get { return true; } }
+        //public override bool RestrictToClassicHouses { get { return true; } }
         public override bool RetainDeedHue { get { return true; } }
 
         [Constructable]

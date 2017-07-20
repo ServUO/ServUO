@@ -224,6 +224,7 @@ namespace Server.Items
             return atShrine;
         }
 
+        public static Rectangle2D[] ShrineLocs { get { return m_ShrineLocs; } }
         private static Rectangle2D[] m_ShrineLocs = new Rectangle2D[]
 		{
 			new Rectangle2D(4208, 563, 2, 2), //Honesty
