@@ -6,96 +6,36 @@ namespace Server.Items
 {
     public class ProspectorsTool : BaseBashing
     {
+        public override int LabelNumber { get { return 1049065; } } // prospector's tool
+
         [Constructable]
         public ProspectorsTool()
             : base(0xFB4)
         {
-            Weight = 9.0;
+            Weight = 10.0;
             UsesRemaining = 50;
+            ShowUsesRemaining = true;
         }
 
         public ProspectorsTool(Serial serial)
             : base(serial)
         {
-        }
+        }        
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049065;
-            }
-        }// prospector's tool
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.CrushingBlow;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.ShadowStrike;
-            }
-        }
-        public override int AosStrengthReq
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int AosMinDamage
-        {
-            get
-            {
-                return 13;
-            }
-        }
-        public override int AosMaxDamage
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int AosSpeed
-        {
-            get
-            {
-                return 33;
-            }
-        }
-        public override int OldStrengthReq
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int OldMinDamage
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int OldMaxDamage
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int OldSpeed
-        {
-            get
-            {
-                return 33;
-            }
-        }
+        public override WeaponAbility PrimaryAbility { get { return WeaponAbility.CrushingBlow; } }
+        public override WeaponAbility SecondaryAbility { get { return WeaponAbility.ShadowStrike; } }
+        public override int AosStrengthReq { get { return 40; } }
+        public override int AosMinDamage { get { return 13; } }
+        public override int AosMaxDamage { get { return 15; } }
+        public override int AosSpeed { get { return 33; } }
+        public override float MlSpeed { get { return 3.25f; } }
+        public override int OldStrengthReq { get { return 10; } }
+        public override int OldMinDamage { get { return 6; } }
+        public override int OldMaxDamage { get { return 8; } }
+        public override int OldSpeed { get { return 33; } }
+        public override int InitMinHits { get { return 31; } }
+        public override int InitMaxHits { get { return 60; } }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack) || Parent == from)
@@ -181,14 +121,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch ( version )
