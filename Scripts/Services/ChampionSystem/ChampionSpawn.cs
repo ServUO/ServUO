@@ -1469,6 +1469,11 @@ namespace Server.Engines.CannedEvil
 
     public class ChampionSpawnRegion : BaseRegion
     {
+        public static void Initialize()
+        {
+            EventSink.Logout += OnLogout;
+        }
+
         public override bool YoungProtected
         {
             get
@@ -1502,6 +1507,52 @@ namespace Server.Engines.CannedEvil
         {
             base.AlterLightLevel(m, ref global, ref personal);
             global = Math.Max(global, 1 + m_Spawn.Level);	//This is a guesstimate.  TODO: Verify & get exact values // OSI testing: at 2 red skulls, light = 0x3 ; 1 red = 0x3.; 3 = 8; 9 = 0xD 8 = 0xD 12 = 0x12 10 = 0xD
+        }
+
+        public override bool OnMoveInto(Mobile m, Direction d, Point3D newLocation, Point3D oldLocation)
+        {
+            if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted))
+            {
+                return false;
+            }
+
+            return base.OnMoveInto(m, d, newLocation, oldLocation);
+        }
+
+        public static void OnLogout(LogoutEventArgs e)
+        {
+            Mobile m = e.Mobile;
+
+            if (m is PlayerMobile && m.AccessLevel == AccessLevel.Player)
+            {
+                if (m.Alive && m.Backpack != null)
+                {
+                    var list = new List<Item>(m.Backpack.Items.Where(i => i.LootType == LootType.Cursed));
+
+                    foreach (var item in list)
+                    {
+                        item.MoveToWorld(m.Location, m.Map);
+                    }
+
+                    ColUtility.Free(list);
+                }
+
+                Timer.DelayCall(TimeSpan.FromMilliseconds(250), () =>
+                    {
+                        Map map = m.LogoutMap;
+
+                        if (map != Server.Map.Trammel && map != Server.Map.Felucca)
+                        {
+                            map = Server.Map.Trammel;
+                        }
+
+                        var loc = AnkhPendant.ShrineLocs[Utility.Random(AnkhPendant.ShrineLocs.Length)];
+                        Point3D p = loc.GetRandomSpawnPoint(map);
+
+                        m.LogoutLocation = p;
+                        m.LogoutMap = map;
+                    });
+            }
         }
     }
 
