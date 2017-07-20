@@ -178,6 +178,15 @@ namespace Server.Mobiles
             return base.OnBeforeDeath();
         }
 
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            NecromancerSpellbook book = new NecromancerSpellbook();
+            book.Content = (1ul << book.BookCount) - 1;
+            c.DropItem(book);
+        }
+
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             this.CheckSpeedBoost();

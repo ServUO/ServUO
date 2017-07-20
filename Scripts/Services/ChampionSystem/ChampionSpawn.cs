@@ -380,6 +380,15 @@ namespace Server.Engines.CannedEvil
             m_Active = false;
             m_HasBeenAdvanced = false;
 
+            // We must despawn all the creatures.
+            if (m_Creatures != null)
+            {
+                for (int i = 0; i < m_Creatures.Count; ++i)
+                    m_Creatures[i].Delete();
+
+                m_Creatures.Clear();
+            }
+
             if (m_Timer != null)
                 m_Timer.Stop();
 
