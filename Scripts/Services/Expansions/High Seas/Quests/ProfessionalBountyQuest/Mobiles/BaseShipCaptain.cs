@@ -208,9 +208,9 @@ namespace Server.Mobiles
             if (gal == null)
                 return;
 
-            List<ISpawnable> list = gal.GetObjectsOnBoard();
+            List<IEntity> list = gal.GetEntitiesOnBoard();
 
-            foreach (ISpawnable i in list)
+            foreach (var i in list)
             {
                 if (i is PlayerMobile)
                 {

@@ -762,18 +762,18 @@ namespace Server.Multis
             return SlowDriftInterval;
         }
 
-        public override bool IsComponentItem(ISpawnable spawnable)
+        public override bool IsComponentItem(IEntity entity)
         {
-            if (!(spawnable is Item))
+            if (!(entity is Item))
                 return false;
 
-            Item item = (Item)spawnable;
+            Item item = (Item)entity;
 
             if (m_MooringLines.Contains(item) || m_Cannons.Contains(item) || m_CannonTiles.Contains(item)
                 || m_FillerTiles.Contains(item) || m_HoldTiles.Contains(item) || m_Addons.Contains(item) || item == m_Wheel || item == m_GalleonHold)
                 return true;
 
-            return base.IsComponentItem(spawnable);
+            return base.IsComponentItem(entity);
         }
 
         public override void OnAfterDelete()

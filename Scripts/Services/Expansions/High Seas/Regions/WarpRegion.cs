@@ -73,7 +73,7 @@ namespace Server.Regions
                 return;
 
             Map map = this.Map;
-            List<ISpawnable> list = boat.GetObjectsOnBoard();
+            List<IEntity> list = boat.GetEntitiesOnBoard();
             List<PlayerMobile> pms = new List<PlayerMobile>();
             bool hasMap = false;
 

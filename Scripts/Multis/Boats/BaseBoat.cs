@@ -8,6 +8,7 @@ using Server.Network;
 using Server.Mobiles;
 using Server.Regions;
 using System.Linq;
+using System.IO;
 
 namespace Server.Multis
 {
@@ -24,8 +25,6 @@ namespace Server.Multis
                                                                      new Rectangle2D(6272, 1088, 319, 319)};
         private static Rectangle2D[] m_IlshWrap = new Rectangle2D[] { new Rectangle2D(16, 16, 2304 - 32, 1600 - 32) };
         private static Rectangle2D[] m_TokunoWrap = new Rectangle2D[] { new Rectangle2D(16, 16, 1448 - 32, 1448 - 32) };
-
-        //private static TimeSpan BoatDecayDelay = TimeSpan.FromDays( 9.0 );
 
         public static BaseBoat FindBoatAt(IEntity entity)
         {
@@ -835,10 +834,10 @@ namespace Server.Multis
             if (map == null || map == Map.Internal)
                 return DryDockResult.Items;
 
-            List<ISpawnable> list = GetMovingEntities();
+            List<IEntity> list = GetEntitiesOnBoard();
             DryDockResult res = DryDockResult.Valid;
 
-            foreach (ISpawnable o in list)
+            foreach (IEntity o in list)
             {
                 if (o == this || IsComponentItem(o) || o is EffectItem || o == m_TillerMan)
                     continue;
@@ -1476,7 +1475,7 @@ namespace Server.Multis
 
         public virtual bool CheckItem(int itemID, Item item, Point3D p)
         {
-            return Contains(item) || item is BaseMulti || item.ItemID > TileData.MaxItemValue || !item.Visible || /*[s7] Fix Corpses Block Boats*/  item is Corpse || IsComponentItem((ISpawnable)item) || item is EffectItem;
+            return Contains(item) || item is BaseMulti || item.ItemID > TileData.MaxItemValue || !item.Visible || /*[s7] Fix Corpses Block Boats*/  item is Corpse || IsComponentItem((IEntity)item) || item is EffectItem;
         }
 
         public virtual bool CanMoveOver(Item item)
@@ -1756,17 +1755,36 @@ namespace Server.Multis
             }
             else
             {
-                List<ISpawnable> toMove = GetMovingEntities();
+                List<IEntity> toMove = GetEntitiesOnBoard();
                 List<Mobile> toPush = new List<Mobile>();
 
-                if (m_TillerMan != null && m_TillerMan is ISpawnable && !toMove.Contains((ISpawnable)m_TillerMan))
-                    toMove.Add((ISpawnable)m_TillerMan);
+                if (m_TillerMan != null && m_TillerMan is IEntity && !toMove.Contains((IEntity)m_TillerMan))
+                    toMove.Add((IEntity)m_TillerMan);
 
+                // boat moves
+                NoMoveHS = true;
+                Location = new Point3D(X + xOffset, Y + yOffset, Z);
+
+                // entities move
+                foreach (var e in toMove)
+                {
+                    e.NoMoveHS = true;
+                    e.Location = new Point3D(e.X + xOffset, e.Y + yOffset, e.Z);
+                }
+
+                // restore nomove
+                foreach (var e in toMove)
+                    e.NoMoveHS = false;
+
+                NoMoveHS = false;
+
+                // packet created
                 MoveBoatHS smooth = new MoveBoatHS(this, d, clientSpeed, toMove, xOffset, yOffset);
                 smooth.SetStatic();
 
-                // Packet must be sent before actual locations are changed
                 IPooledEnumerable eable = Map.GetClientsInRange(Location, GetMaxUpdateRange());
+
+                // packets sent
                 foreach (NetState ns in eable)
                 {
                     Mobile m = ns.Mobile;
@@ -1781,49 +1799,6 @@ namespace Server.Multis
                 eable.Free();
                 smooth.Release();
 
-                foreach (ISpawnable e in toMove)
-                {
-                    if (e is Item)
-                    {
-                        Item item = (Item)e;
-
-                        item.NoMoveHS = true;
-
-                        if (!IsComponentItem((ISpawnable)item) && (!CanMoveOver(item)))
-                            item.Location = new Point3D(item.X + xOffset, item.Y + yOffset, item.Z);
-                    }
-                    else if (e is Mobile)
-                    {
-                        Mobile m = (Mobile)e;
-
-                        if (m is BaseCreature && m.CanSwim)
-                        {
-                            toPush.Add(m);
-                        }
-                        else
-                        {
-                            m.NoMoveHS = true;
-
-                            if (!IsComponentItem((ISpawnable)m) && !(m is BaseSeaChampion))
-                                m.Location = new Point3D(m.X + xOffset, m.Y + yOffset, m.Z);
-                        }
-                    }
-                }
-
-                PushMobiles(toPush);
-
-                NoMoveHS = true;
-                Location = new Point3D(X + xOffset, Y + yOffset, Z);
-
-                foreach (ISpawnable e in toMove)
-                {
-                    if (e is Item)
-                        ((Item)e).NoMoveHS = false;
-                    else if (e is Mobile)
-                        ((Mobile)e).NoMoveHS = false;
-                }
-
-                NoMoveHS = false;
                 ColUtility.Free(toMove);
             }
 
@@ -1832,17 +1807,17 @@ namespace Server.Multis
 
         public void Teleport(int xOffset, int yOffset, int zOffset)
         {
-            List<ISpawnable> toMove = GetMovingEntities();
+            List<IEntity> toMove = GetEntitiesOnBoard();
 
             Location = new Point3D(X + xOffset, Y + yOffset, Z + zOffset);
 
-            foreach (ISpawnable e in toMove)
+            foreach (IEntity e in toMove)
             {
                 if (e is Item)
                 {
                     Item item = (Item)e;
 
-                    if (IsComponentItem((ISpawnable)item) || (CanMoveOver(item)))
+                    if (IsComponentItem((IEntity)item) || (CanMoveOver(item)))
                         continue;
 
                     item.Location = new Point3D(item.X + xOffset, item.Y + yOffset, item.Z + zOffset);
@@ -1851,7 +1826,7 @@ namespace Server.Multis
                 {
                     Mobile m = (Mobile)e;
 
-                    if (IsComponentItem((ISpawnable)m) || m is BaseSeaChampion || m == m_TillerMan)
+                    if (IsComponentItem((IEntity)m) || m is BaseSeaChampion || m == m_TillerMan)
                         continue;
 
                     m.Location = new Point3D(m.X + xOffset, m.Y + yOffset, m.Z + zOffset);
@@ -2260,7 +2235,7 @@ namespace Server.Multis
                 ((CorgulWarpRegion)o).CheckEnter(this);
         }
 
-        public virtual bool IsComponentItem(ISpawnable item)
+        public virtual bool IsComponentItem(IEntity item)
         {
             if (item == null)
                 return false;
@@ -2270,9 +2245,9 @@ namespace Server.Multis
             return false;
         }
 
-        public List<ISpawnable> GetMovingEntities()
+        public List<IEntity> GetEntitiesOnBoard()
         {
-            List<ISpawnable> list = new List<ISpawnable>();
+            List<IEntity> list = new List<IEntity>();
 
             Map map = Map;
 
@@ -2282,75 +2257,52 @@ namespace Server.Multis
             MultiComponentList mcl = Components;
 
             IPooledEnumerable eable = map.GetObjectsInBounds(new Rectangle2D(X + mcl.Min.X, Y + mcl.Min.Y, mcl.Width, mcl.Height));
+            
             foreach (object o in eable)
             {
-                if (o is Item)
+                if (o is IEntity)
                 {
-                    Item item = (Item)o;
+                    IEntity e = o as IEntity;
 
-                    if (Contains(item) && item.Visible && item.Z >= Z)
-                        list.Add(item);
-                }
-                else if (o is Mobile)
-                {
-                    Mobile m = (Mobile)o;
-
-                    if (Contains(m))
-                        list.Add(m);
+                    if (Contains(e) && e.Z >= Z && !list.Contains(e))
+                        list.Add(e);
                 }
             }
+
             eable.Free();
             return list;
         }
 
         public List<Item> GetItemsOnBoard()
         {
-            List<Item> list = new List<Item>();
-            List<ISpawnable> spawnables = GetObjectsOnBoard();
+            /*List<Item> list = new List<Item>();
+            List<IEntity> entities = GetEntitiesOnBoard();
 
-            foreach(ISpawnable s in spawnables.Where(spawnable => spawnable is Item))
+            foreach (IEntity s in entities.Where(entity => entity is Item))
             {
                 list.Add(s as Item);
             }
 
             spawnables.Clear();
-            spawnables.TrimExcess();
-
-            return list;
-        }
-
-        public List<ISpawnable> GetObjectsOnBoard()
-        {
-            List<ISpawnable> list = new List<ISpawnable>();
-
-            if (this.Map == null || this.Map == Map.Internal)
-                return list;
-
-            MultiComponentList mcl = Components;
-            IPooledEnumerable eable = this.Map.GetObjectsInBounds(new Rectangle2D(X + mcl.Min.X, Y + mcl.Min.Y, mcl.Width, mcl.Height));
-
-            foreach (object o in eable)
-            {
-                if (o != this && o is ISpawnable && !list.Contains((ISpawnable)o))
-                    list.Add((ISpawnable)o);
-            }
-            eable.Free();
+            spawnables.TrimExcess();*/
+            List<Item> list = GetEntitiesOnBoard().OfType<Item>().ToList();
 
             return list;
         }
 
         public List<Mobile> GetMobilesOnBoard()
         {
-            List<Mobile> list = new List<Mobile>();
-            List<ISpawnable> spawnables = GetObjectsOnBoard();
+            /*List<Mobile> list = new List<Mobile>();
+            List<IEntity> spawnables = GetEntitiesOnBoard();
 
-            foreach (ISpawnable s in spawnables.Where(spawnable => spawnable is Mobile && this.Contains(spawnable.X, spawnable.Z)))
+            foreach (IEntity s in spawnables.Where(spawnable => spawnable is Mobile && this.Contains(spawnable.X, spawnable.Z)))
             {
                 list.Add(s as Mobile);
             }
 
             spawnables.Clear();
-            spawnables.TrimExcess();
+            spawnables.TrimExcess();*/
+            List<Mobile> list = GetEntitiesOnBoard().OfType<Mobile>().ToList();
 
             return list;
         }
@@ -2550,7 +2502,48 @@ namespace Server.Multis
 
         public sealed class MoveBoatHS : Packet
         {
-            public MoveBoatHS(BaseBoat boat, Direction d, int speed, List<ISpawnable> ents, int xOffset, int yOffset)
+            public MoveBoatHS(BaseBoat boat, Direction d, int speed, List<IEntity> ents, int xOffset, int yOffset)
+                : base(0xF6)
+            {
+                EnsureCapacity(3 + 15 + ents.Count * 10);
+
+                m_Stream.Write((int)boat.Serial);
+                m_Stream.Write((byte)speed);
+                m_Stream.Write((byte)d);
+                m_Stream.Write((byte)boat.Facing);
+                m_Stream.Write((short)(boat.X + xOffset));
+                m_Stream.Write((short)(boat.Y + yOffset));
+                m_Stream.Write((short)boat.Z);
+                m_Stream.Write((short)0); // count placeholder
+
+                var cp = m_Stream.Seek(0, SeekOrigin.Current);
+                short length = 0;
+
+                m_Stream.Write(length);
+
+                foreach (var ent in ents.Where(e => e != boat))
+                {
+                    m_Stream.Write((int)ent.Serial);
+                    m_Stream.Write((short)(ent.X + xOffset));
+                    m_Stream.Write((short)(ent.Y + yOffset));
+                    m_Stream.Write((short)ent.Z);
+
+                    ++length;
+                }
+
+                m_Stream.Seek(cp, SeekOrigin.Begin);
+                m_Stream.Write(length);
+
+                length *= 10;
+
+                m_Stream.Seek(1, SeekOrigin.Begin);
+                m_Stream.Write(length);
+            }
+        }
+        
+        /*public sealed class MoveBoatHS : Packet
+        {
+            public MoveBoatHS(BaseBoat boat, Direction d, int speed, List<IEntity> ents, int xOffset, int yOffset)
                 : base(0xF6)
             {
                 EnsureCapacity(3 + 15 + ents.Count * 10);
@@ -2566,7 +2559,7 @@ namespace Server.Multis
 
                 int count = 0;
 
-                foreach (ISpawnable ent in ents)
+                foreach (IEntity ent in ents)
                 {
                     m_Stream.Write((int)ent.Serial);
                     m_Stream.Write((short)(ent.X + xOffset));
@@ -2578,13 +2571,13 @@ namespace Server.Multis
                 m_Stream.Seek(16, System.IO.SeekOrigin.Begin);
                 m_Stream.Write((short)count);
             }
-        }
+        }*/
 
         public sealed class DisplayBoatHS : Packet
         {
             public DisplayBoatHS(BaseBoat boat) : base(0xF7)
             {
-                List<ISpawnable> ents = boat.GetMovingEntities();
+                List<IEntity> ents = boat.GetEntitiesOnBoard();
 
                 EnsureCapacity(5 + ents.Count * 26);
                 m_Stream.Write((short)ents.Count);

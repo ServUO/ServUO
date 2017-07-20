@@ -60,9 +60,9 @@ namespace Server.Items
 
         public void DockBoat(BaseBoat boat, BaseHouse house)
         {
-            List<ISpawnable> list = boat.GetMovingEntities();
+            List<IEntity> list = boat.GetEntitiesOnBoard();
 
-            foreach (ISpawnable o in list)
+            foreach (var o in list)
             {
                 if (!(o is Item) || o == this || boat.IsComponentItem(o) || o is EffectItem || o == boat.TillerMan)
                     continue;
