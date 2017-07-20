@@ -224,18 +224,23 @@ namespace Server
             LoadSettings();
         }
 
-        public static bool FindItem(int x, int y, int z, Map map, Item test)
+        public static bool FindItem(int x, int y, int z, Map map, int itemID)
         {
-            return FindItem(new Point3D(x, y, z), map, test);
+            return FindItem(new Point3D(x, y, z), map, itemID);
         }
 
-        public static bool FindItem(Point3D p, Map map, Item test)
+        public static bool FindItem(int x, int y, int z, Map map, Item test)
+        {
+            return FindItem(new Point3D(x, y, z), map, test.ItemID);
+        }
+
+        public static bool FindItem(Point3D p, Map map, int itemID)
         {
             IPooledEnumerable eable = map.GetItemsInRange(p);
 
             foreach (Item item in eable)
             {
-                if (item.Z == p.Z && item.ItemID == test.ItemID)
+                if (item.Z == p.Z && item.ItemID == itemID)
                 {
                     eable.Free();
                     return true;
@@ -280,6 +285,18 @@ namespace Server
             }
             catch
             {
+            }
+
+            if (!FindItem(new Point3D(1431, 1696, 0), Map.Trammel, 0x307F))
+            {
+                var addon = new ArcaneCircleAddon();
+                addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Trammel);
+            }
+
+            if (!FindItem(new Point3D(1431, 1696, 0), Map.Felucca, 0x307F))
+            {
+                var addon = new ArcaneCircleAddon();
+                addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Felucca);
             }
         }
 

@@ -18,8 +18,8 @@ namespace Server.Items
             {
                 return new Type[]
                 {
-                    typeof(CrushedCrystals), typeof(BrokenCrystals), typeof(PiecesOfCrystal),
-                    typeof(JaggedCrystals), typeof(ScatteredCrystals), typeof(ShatteredCrystals)
+                    typeof(JaggedCrystals), typeof(BrokenCrystals), typeof(PiecesOfCrystal),
+                    typeof(CrushedCrystals), typeof(ScatteredCrystals), typeof(ShatteredCrystals)
                 };
             }
         }
@@ -122,7 +122,7 @@ namespace Server.Items
         public override int LabelNumber { get { return 1024643; } } // pedestal
         private PrismOfLightAltar m_Altar;
         private int m_ID;
-        private int m_Hue;
+        private int m_OrgHue;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public PrismOfLightAltar Altar
@@ -147,11 +147,11 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int OrgHue
         {
-            get { return m_Hue; }
+            get { return m_OrgHue; }
             set
             {
-                m_Hue = value;
-                Hue = m_Hue;
+                m_OrgHue = value;
+                Hue = m_OrgHue;
                 InvalidateProperties();
             }
         }
@@ -202,7 +202,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write((int)1); // version
 
-            writer.Write((int)m_Hue);
+            writer.Write((int)m_OrgHue);
 
             writer.Write((int)m_ID);
             writer.Write((Item)m_Altar);            
@@ -217,7 +217,7 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        m_Hue = reader.ReadInt();
+                        m_OrgHue = reader.ReadInt();
                         goto case 0;
                     }
                 case 0:
@@ -231,8 +231,8 @@ namespace Server.Items
 
             if (version < 1)
             {
-                if (m_Hue == 0)
-                    m_Hue = Hue;
+                if (m_OrgHue == 0)
+                    m_OrgHue = Hue;
 
                 if (!m_Altar.Pedestals.Contains(this))
                     m_Altar.Pedestals.Add(this);
