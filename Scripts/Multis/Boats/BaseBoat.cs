@@ -2499,7 +2499,12 @@ namespace Server.Multis
             if (NoMoveHS || Map == null)
                 return;
 
-            IPooledEnumerable eable = Map.GetClientsInRange(Location, 70);
+            IPooledEnumerable eable = Map.GetClientsInRange(Location, Core.GlobalRadarRange);
+
+            foreach (NetState state in eable)
+            {
+
+            }
         }
 
         public sealed class MoveBoatHS : Packet

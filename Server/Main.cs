@@ -35,6 +35,7 @@ namespace Server
 
 			GlobalMaxUpdateRange = 24;
 			GlobalUpdateRange = 18;
+            GlobalRadarRange = 72;
 		}
 
 		private static bool _Crashed;
@@ -662,6 +663,7 @@ namespace Server
 
 		public static int GlobalUpdateRange { get; set; }
 		public static int GlobalMaxUpdateRange { get; set; }
+        public static int GlobalRadarRange { get; set; }
 		
 		private static int m_ItemCount, m_MobileCount, m_CustomsCount;
 
