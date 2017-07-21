@@ -85,9 +85,9 @@ namespace Server.Spells.Necromancy
         }
         public override bool CheckCast()
         {
-            if (this.Caster.Skills.SpiritSpeak.Value < 100.0)
+            if (Caster.Skills.SpiritSpeak.Value < 100.0)
             {
-                this.Caster.SendLocalizedMessage(1072112); // You must have GM Spirit Speak to use this spell
+                Caster.SendLocalizedMessage(1072112); // You must have GM Spirit Speak to use this spell
                 return false;
             }
 
@@ -101,22 +101,22 @@ namespace Server.Spells.Necromancy
 
         public override void OnCast()
         {
-            ChampionSpawnRegion r = this.Caster.Region.GetRegion(typeof(ChampionSpawnRegion)) as ChampionSpawnRegion;
+            ChampionSpawnRegion r = Caster.Region.GetRegion(typeof(ChampionSpawnRegion)) as ChampionSpawnRegion;
 
-            if (r == null || !this.Caster.InRange(r.ChampionSpawn, Range))
+            if (r == null || !Caster.InRange(r.ChampionSpawn, Range))
             {
-                this.Caster.SendLocalizedMessage(1072111); // You are not in a valid exorcism region.
+                Caster.SendLocalizedMessage(1072111); // You are not in a valid exorcism region.
             }
-            else if (this.CheckSequence())
+            else if (CheckSequence())
             {
-                Map map = this.Caster.Map;
+                Map map = Caster.Map;
 
                 if (map != null)
                 {
                     List<Mobile> targets = new List<Mobile>();
 
                     foreach (Mobile m in r.ChampionSpawn.GetMobilesInRange(Range))
-                        if (this.IsValidTarget(m))
+                        if (IsValidTarget(m))
                             targets.Add(m);
 
                     for (int i = 0; i < targets.Count; ++i)
@@ -124,19 +124,18 @@ namespace Server.Spells.Necromancy
                         Mobile m = targets[i];
 
                         //Suprisingly, no sparkle type effects
+                        Point3D p = GetNearestShrine(m, ref map);
 
-                        m.Location = GetNearestShrine(m);
+                        m.MoveToWorld(p, map);
                     }
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
-        private static Point3D GetNearestShrine(Mobile m)
+        public static Point3D GetNearestShrine(Mobile m, ref Map map)
         {
-            Map map = m.Map;
-
             Point3D[] locList;
 
             if (map == Map.Felucca || map == Map.Trammel)
@@ -148,7 +147,11 @@ namespace Server.Spells.Necromancy
             else if (map == Map.Malas)
                 locList = m_MalasLocs;
             else
-                locList = new Point3D[0];
+            {
+                // No map, lets use trammel
+                locList = m_BritanniaLocs;
+                map = Map.Trammel;
+            }
 
             Point3D closest = Point3D.Zero;
             double minDist = double.MaxValue;
@@ -188,13 +191,13 @@ namespace Server.Spells.Necromancy
 
             Party p = Party.Get(m);
 
-            if (p != null && p.Contains(this.Caster))
+            if (p != null && p.Contains(Caster))
                 return false;
 
-            if (m.Guild != null && this.Caster.Guild != null)
+            if (m.Guild != null && Caster.Guild != null)
             {
                 Guild mGuild = m.Guild as Guild;
-                Guild cGuild = this.Caster.Guild as Guild;
+                Guild cGuild = Caster.Guild as Guild;
 
                 if (mGuild.IsAlly(cGuild))
                     return false;
@@ -205,7 +208,7 @@ namespace Server.Spells.Necromancy
 
             Faction f = Faction.Find(m);
 
-            if (Faction.Facet == m.Map && f != null && f == Faction.Find(this.Caster))
+            if (Faction.Facet == m.Map && f != null && f == Faction.Find(Caster))
                 return false;
 
             return true;
