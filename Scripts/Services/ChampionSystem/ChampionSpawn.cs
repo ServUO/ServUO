@@ -1514,7 +1514,7 @@ namespace Server.Engines.CannedEvil
         {
             Mobile m = e.Mobile;
 
-            if (m is PlayerMobile && m.AccessLevel == AccessLevel.Player)
+            if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel == AccessLevel.Player)
             {
                 if (m.Alive && m.Backpack != null)
                 {
@@ -1529,20 +1529,40 @@ namespace Server.Engines.CannedEvil
                 }
 
                 Timer.DelayCall(TimeSpan.FromMilliseconds(250), () =>
+                {
+                    Map map = m.LogoutMap;
+
+                    if (map != Server.Map.Trammel && map != Server.Map.Felucca)
                     {
-                        Map map = m.LogoutMap;
+                        map = Server.Map.Trammel;
+                    }
 
-                        if (map != Server.Map.Trammel && map != Server.Map.Felucca)
-                        {
-                            map = Server.Map.Trammel;
-                        }
+                    var loc = AnkhPendant.ShrineLocs[Utility.Random(AnkhPendant.ShrineLocs.Length)];
+                    Point3D p = loc.GetRandomSpawnPoint(map);
 
-                        var loc = AnkhPendant.ShrineLocs[Utility.Random(AnkhPendant.ShrineLocs.Length)];
-                        Point3D p = loc.GetRandomSpawnPoint(map);
+                    m.LogoutLocation = p;
+                    m.LogoutMap = map;
+                });
+            }
+        }
 
-                        m.LogoutLocation = p;
-                        m.LogoutMap = map;
-                    });
+        public static void OnLogin(LoginEventArgs e)
+        {
+            Mobile m = e.Mobile;
+
+            if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && m.Region.IsPartOf<ChampionSpawnRegion>())
+            {
+                Map map = m.LogoutMap;
+
+                if (map != Server.Map.Trammel && map != Server.Map.Felucca)
+                {
+                    map = Server.Map.Trammel;
+                }
+
+                var loc = AnkhPendant.ShrineLocs[Utility.Random(AnkhPendant.ShrineLocs.Length)];
+                Point3D p = loc.GetRandomSpawnPoint(map);
+
+                m.MoveToWorld(p, map);
             }
         }
     }
