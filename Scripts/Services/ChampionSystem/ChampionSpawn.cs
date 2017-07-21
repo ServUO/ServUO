@@ -513,6 +513,8 @@ namespace Server.Engines.CannedEvil
             }
         }
 
+        private DateTime _NextGhostCheck;
+
         public void OnSlice()
         {
             if (!m_Active || Deleted)
@@ -661,6 +663,26 @@ namespace Server.Engines.CannedEvil
                     Expire();
 
                 Respawn();
+            }
+
+            if (m_Timer != null && m_Timer.Running && _NextGhostCheck < DateTime.UtcNow)
+            {
+                foreach (var ghost in m_Region.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
+                {
+                    Map map = ghost.Map;
+
+                    if (map != Map.Trammel && map != Map.Felucca)
+                    {
+                        map = Map.Trammel;
+                    }
+
+                    var loc = AnkhPendant.ShrineLocs[Utility.Random(AnkhPendant.ShrineLocs.Length)];
+                    Point3D p = loc.GetRandomSpawnPoint(map);
+
+                    ghost.MoveToWorld(p, map);
+                }
+
+                _NextGhostCheck = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(5, 8));
             }
         }
 
@@ -1552,7 +1574,7 @@ namespace Server.Engines.CannedEvil
 
             if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && m.Region.IsPartOf<ChampionSpawnRegion>())
             {
-                Map map = m.LogoutMap;
+                Map map = m.Map;
 
                 if (map != Server.Map.Trammel && map != Server.Map.Felucca)
                 {
