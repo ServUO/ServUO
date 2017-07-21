@@ -93,7 +93,6 @@ namespace Server.Multis
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 502482); // Where do you wish to place the ship?
 
                 from.SendGump(new BoatPlacementGump(this, from));
-                //from.Target = new InternalTarget( this );
             }
 		}
 
@@ -149,7 +148,10 @@ namespace Server.Multis
                     boat.ItemID = itemID;
 
                     if (boat is BaseGalleon)
+                    {
                         ((BaseGalleon)boat).SecurityEntry = new SecurityEntry((BaseGalleon)boat);
+                        ((BaseGalleon)boat).BaseBoatHue = RandomBasePaintHue();
+                    }
 
                     if (boat.IsClassicBoat)
                     {
@@ -181,6 +183,16 @@ namespace Server.Multis
 				}
 			}
 		}
+
+        private int RandomBasePaintHue()
+        {
+            if (0.6 > Utility.RandomDouble())
+            {
+                return Utility.RandomMinMax(1701, 1754);
+            }
+
+            return Utility.RandomMinMax(1801, 1908);
+        }
 
 		/*private class InternalTarget : MultiTarget
 		{

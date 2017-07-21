@@ -1808,16 +1808,6 @@ namespace Server.Multis
                     {
                         e.Location = new Point3D(e.X + xOffset, e.Y + yOffset, e.Z);
                     }
-                    /*if (e is Mobile)
-                    {
-                        ((Mobile)e).Location = new Point3D(e.X + xOffset, e.Y + yOffset, e.Z);
-                        ((Mobile)e).NoMoveHS = false;
-                    }
-                    if (e is Item)
-                    {
-                        ((Item)e).Location = new Point3D(e.X + xOffset, e.Y + yOffset, e.Z);
-                        ((Item)e).NoMoveHS = false;
-                    }*/
                 }
 
                 NoMoveHS = false;
@@ -2303,36 +2293,12 @@ namespace Server.Multis
 
         public List<Item> GetItemsOnBoard()
         {
-            /*List<Item> list = new List<Item>();
-            List<IEntity> entities = GetEntitiesOnBoard();
-
-            foreach (IEntity s in entities.Where(entity => entity is Item))
-            {
-                list.Add(s as Item);
-            }
-
-            spawnables.Clear();
-            spawnables.TrimExcess();*/
-            List<Item> list = GetEntitiesOnBoard().OfType<Item>().ToList();
-
-            return list;
+            return GetEntitiesOnBoard().OfType<Item>().ToList();
         }
 
         public List<Mobile> GetMobilesOnBoard()
         {
-            /*List<Mobile> list = new List<Mobile>();
-            List<IEntity> spawnables = GetEntitiesOnBoard();
-
-            foreach (IEntity s in spawnables.Where(spawnable => spawnable is Mobile && Contains(spawnable.X, spawnable.Z)))
-            {
-                list.Add(s as Mobile);
-            }
-
-            spawnables.Clear();
-            spawnables.TrimExcess();*/
-            List<Mobile> list = GetEntitiesOnBoard().OfType<Mobile>().ToList();
-
-            return list;
+            return GetEntitiesOnBoard().OfType<Mobile>().ToList();
         }
 
         public void TillerManSay(object message)
@@ -2528,6 +2494,14 @@ namespace Server.Multis
             base.ReleaseWorldPackets(); 
         }*/
 
+        public virtual void SendWorldPacketAfterMove()
+        {
+            if (NoMoveHS || Map == null)
+                return;
+
+            IPooledEnumerable eable = Map.GetClientsInRange(Location, 70);
+        }
+
         public sealed class MoveBoatHS : Packet
         {
             public MoveBoatHS(BaseBoat boat, Direction d, int speed, List<IEntity> ents, int xOffset, int yOffset)
@@ -2567,38 +2541,6 @@ namespace Server.Multis
                 m_Stream.Write(length);
             }
         }
-        
-        /*public sealed class MoveBoatHS : Packet
-        {
-            public MoveBoatHS(BaseBoat boat, Direction d, int speed, List<IEntity> ents, int xOffset, int yOffset)
-                : base(0xF6)
-            {
-                EnsureCapacity(3 + 15 + ents.Count * 10);
-
-                m_Stream.Write((int)boat.Serial);
-                m_Stream.Write((byte)speed);
-                m_Stream.Write((byte)d);
-                m_Stream.Write((byte)boat.Facing);
-                m_Stream.Write((short)(boat.X + xOffset));
-                m_Stream.Write((short)(boat.Y + yOffset));
-                m_Stream.Write((short)boat.Z);
-                m_Stream.Write((short)0); // count placeholder
-
-                int count = 0;
-
-                foreach (IEntity ent in ents)
-                {
-                    m_Stream.Write((int)ent.Serial);
-                    m_Stream.Write((short)(ent.X + xOffset));
-                    m_Stream.Write((short)(ent.Y + yOffset));
-                    m_Stream.Write((short)ent.Z);
-                    ++count;
-                }
-
-                m_Stream.Seek(16, System.IO.SeekOrigin.Begin);
-                m_Stream.Write((short)count);
-            }
-        }*/
 
         public sealed class DisplayBoatHS : Packet
         {

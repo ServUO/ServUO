@@ -170,16 +170,16 @@ namespace Server.Multis
             HoldItem hold8 = AddHoldTile(new HoldItem(GalleonHold, m_HoldIDs[dir][7]));
             HoldItem hold9 = AddHoldTile(new HoldItem(GalleonHold, m_HoldIDs[dir][8]));
 
-            Static fill1 = AddFillerTile(new Static(m_FillerIDs[dir][0]));
-            Static fill2 = AddFillerTile(new Static(m_FillerIDs[dir][1]));
-            Static fill3 = AddFillerTile(new Static(m_FillerIDs[dir][2]));
-            Static fill4 = AddFillerTile(new Static(m_FillerIDs[dir][3]));
-            Static fill6 = AddFillerTile(new Static(m_FillerIDs[dir][4]));
-            Static fill7 = AddFillerTile(new Static(m_FillerIDs[dir][5]));
-            Static fill8 = AddFillerTile(new Static(m_FillerIDs[dir][6]));
-            Static fill9 = AddFillerTile(new Static(m_FillerIDs[dir][7]));
-            Static fill10 = AddFillerTile(new Static(m_FillerIDs[dir][8]));
-            Static fill11 = AddFillerTile(new Static(m_FillerIDs[dir][9]));
+            HoldItem fill1 = AddHoldTile(new HoldItem(GalleonHold, m_FillerIDs[dir][0]));
+            HoldItem fill2 = AddHoldTile(new HoldItem(GalleonHold, m_FillerIDs[dir][1]));
+            HoldItem fill3 = AddHoldTile(new HoldItem(GalleonHold, m_FillerIDs[dir][2]));
+            HoldItem fill4 = AddHoldTile(new HoldItem(GalleonHold, m_FillerIDs[dir][3]));
+            HoldItem fill6 = AddHoldTile(new HoldItem(GalleonHold, m_FillerIDs[dir][4]));
+            HoldItem fill7 = AddHoldTile(new HoldItem(GalleonHold, m_FillerIDs[dir][5]));
+            HoldItem fill8 = AddHoldTile(new HoldItem(GalleonHold, m_FillerIDs[dir][6]));
+            HoldItem fill9 = AddHoldTile(new HoldItem(GalleonHold, m_FillerIDs[dir][7]));
+            HoldItem fill10 = AddHoldTile(new HoldItem(GalleonHold, m_FillerIDs[dir][8]));
+            HoldItem fill11 = AddHoldTile(new HoldItem(GalleonHold, m_FillerIDs[dir][9]));
 
             switch (direction)
             {
