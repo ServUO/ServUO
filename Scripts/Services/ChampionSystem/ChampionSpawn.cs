@@ -1537,7 +1537,7 @@ namespace Server.Engines.CannedEvil
         {
             Mobile m = e.Mobile;
 
-            if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() /*&& m.AccessLevel == AccessLevel.Player*/)
+            if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel == AccessLevel.Player)
             {
                 if (m.Alive && m.Backpack != null)
                 {
