@@ -349,12 +349,12 @@ namespace Server.Multis
             return false;
         }
 
-        public override bool CanMoveOver(Item item)
+        public override bool CanMoveOver(IEntity entity)
         {
-            if (item.Z <= this.Z && !item.ItemData.Impassable && item.ItemData.Height < ZSurface / 2)
+            if (entity.Z <= this.Z && entity is Item && !((Item)entity).ItemData.Impassable && ((Item)entity).ItemData.Height < ZSurface / 2)
                 return true;
 
-            return base.CanMoveOver(item);
+            return base.CanMoveOver(entity);
         }
 
         public bool TryMarkRune(RecallRune rune, Mobile from)

@@ -333,7 +333,7 @@ namespace Server.Mobiles
                             int damage = Utility.RandomMinMax(MinBoatDamage, MaxBoatDamage);
                             galleon.OnTakenDamage(this, damage);
 
-                            galleon.StartMove(dir, 1,0x2, BaseBoat.SlowDriftInterval, true, false);
+                            galleon.StartMove(dir, 1,0x2, galleon.SlowDriftInterval, true, false);
                             m_HasPushed = true;
                         }
                         continue;
