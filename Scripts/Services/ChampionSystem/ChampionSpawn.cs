@@ -5,6 +5,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Regions;
 using System.Linq;
+using Server.Spells.Necromancy;
 
 namespace Server.Engines.CannedEvil
 {
@@ -679,16 +680,16 @@ namespace Server.Engines.CannedEvil
                 foreach (var ghost in m_Region.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
                 {
                     Map map = ghost.Map;
+                    Point3D loc = ExorcismSpell.GetNearestShrine(ghost, ref map);
 
-                    if (map != Map.Trammel && map != Map.Felucca)
+                    if (loc != Point3D.Zero)
                     {
-                        map = Map.Trammel;
+                        ghost.MoveToWorld(loc, map);
                     }
-
-                    var loc = AnkhPendant.ShrineLocs[Utility.Random(AnkhPendant.ShrineLocs.Length)];
-                    Point3D p = loc.GetRandomSpawnPoint(map);
-
-                    ghost.MoveToWorld(p, map);
+                    else
+                    {
+                        ghost.MoveToWorld(new Point3D(989, 520, -50), Map.Malas);
+                    }
                 }
 
                 _NextGhostCheck = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(5, 8));
@@ -1563,16 +1564,18 @@ namespace Server.Engines.CannedEvil
                 {
                     Map map = m.LogoutMap;
 
-                    if (map != Server.Map.Trammel && map != Server.Map.Felucca)
+                    Point3D loc = ExorcismSpell.GetNearestShrine(m, ref map);
+
+                    if (loc != Point3D.Zero)
                     {
-                        map = Server.Map.Trammel;
+                        m.LogoutLocation = loc;
+                        m.LogoutMap = map;
                     }
-
-                    var loc = AnkhPendant.ShrineLocs[Utility.Random(AnkhPendant.ShrineLocs.Length)];
-                    Point3D p = loc.GetRandomSpawnPoint(map);
-
-                    m.LogoutLocation = p;
-                    m.LogoutMap = map;
+                    else
+                    {
+                        m.LogoutLocation = new Point3D(989, 520, -50);
+                        m.LogoutMap = Map.Malas;
+                    }
                 });
             }
         }
@@ -1584,16 +1587,16 @@ namespace Server.Engines.CannedEvil
             if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && m.Region.IsPartOf<ChampionSpawnRegion>())
             {
                 Map map = m.Map;
+                Point3D loc = ExorcismSpell.GetNearestShrine(m, ref map);
 
-                if (map != Server.Map.Trammel && map != Server.Map.Felucca)
+                if (loc != Point3D.Zero)
                 {
-                    map = Server.Map.Trammel;
+                    m.MoveToWorld(loc, map);
                 }
-
-                var loc = AnkhPendant.ShrineLocs[Utility.Random(AnkhPendant.ShrineLocs.Length)];
-                Point3D p = loc.GetRandomSpawnPoint(map);
-
-                m.MoveToWorld(p, map);
+                else
+                {
+                    m.MoveToWorld(new Point3D(989, 520, -50), Map.Malas);
+                }
             }
         }
     }
