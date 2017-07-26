@@ -8,10 +8,9 @@ namespace Server.Items
 	
         [Constructable]
         public WallofHungryMouths()
-            : base(0x1B76)
         {
             this.Weight = 8.0;
-            this.Hue = 1845;
+            this.Hue = 1034;
 
             this.AbsorptionAttributes.EaterEnergy = 20;
             this.AbsorptionAttributes.EaterPoison = 20;
