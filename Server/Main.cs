@@ -34,8 +34,8 @@ namespace Server
 			DataDirectories = new List<string>();
 
 			GlobalMaxUpdateRange = 24;
-			GlobalUpdateRange = 18;
-            GlobalRadarRange = 72;
+			GlobalUpdateRange = 24;
+            GlobalRadarRange = 37;
 		}
 
 		private static bool _Crashed;

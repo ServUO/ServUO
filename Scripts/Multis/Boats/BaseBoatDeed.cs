@@ -193,37 +193,5 @@ namespace Server.Multis
 
             return Utility.RandomMinMax(1801, 1908);
         }
-
-		/*private class InternalTarget : MultiTarget
-		{
-			private BaseBoatDeed m_Deed;
-
-			public InternalTarget( BaseBoatDeed deed ) : base( deed.MultiID, deed.Offset )
-			{
-				m_Deed = deed;
-			}
-
-			protected override void OnTarget( Mobile from, object o )
-			{
-				IPoint3D ip = o as IPoint3D;
-
-				if ( ip != null )
-				{
-					if ( ip is Item )
-						ip = ((Item)ip).GetWorldTop();
-
-					Point3D p = new Point3D( ip );
-
-					Region region = Region.Find( p, from.Map );
-
-					if ( region.IsPartOf( typeof( DungeonRegion ) ) )
-						from.SendLocalizedMessage( 502488 ); // You can not place a ship inside a dungeon.
-					else if ( region.IsPartOf( typeof( HouseRegion ) ) || region.IsPartOf( typeof( ChampionSpawnRegion ) ) )
-						from.SendLocalizedMessage( 1042549 ); // A boat may not be placed in this area.
-					else
-						m_Deed.OnPlacement( from, p );
-				}
-			}
-		}*/
 	}
 }

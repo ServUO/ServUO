@@ -4,6 +4,7 @@ using Server.Multis;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Misc;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -187,18 +188,13 @@ namespace Server.Mobiles
 
             if (boat != null)
             {
-                List<Mobile> mobs = boat.GetMobilesOnBoard();
-
-                foreach (Mobile mob in mobs)
+                foreach (var mob in boat.GetMobilesOnBoard().Where(m => CanBeHarmful(m, false) && m.Alive))
                 {
-                    if (CanBeHarmful(mob, false) && mob.Alive)
-                    {
-                        double damage = Math.Max(40, Utility.RandomMinMax(50, 100) * ((double)Hits / (double)HitsMax));
+                    double damage = Math.Max(40, Utility.RandomMinMax(50, 100) * ((double)Hits / (double)HitsMax));
 
-                        mob.BoltEffect(0);
-                        AOS.Damage((Mobile)mob, this, (int)damage, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
-                        mob.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
-                    }
+                    mob.BoltEffect(0);
+                    AOS.Damage((Mobile)mob, this, (int)damage, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
+                    mob.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
                 }
             }
         }

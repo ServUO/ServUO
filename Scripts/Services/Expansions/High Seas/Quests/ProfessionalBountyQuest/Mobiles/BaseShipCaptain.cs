@@ -10,7 +10,6 @@ namespace Server.Mobiles
 {
     public class BaseShipCaptain : BaseCreature
     {
-        public static readonly TimeSpan MoveFrequency = TimeSpan.FromSeconds(2);
         public static readonly TimeSpan DeleteAfterDeath = TimeSpan.FromMinutes(15);
         public static readonly TimeSpan ResumeTime = TimeSpan.FromSeconds(Utility.RandomMinMax(30, 45));
         public static readonly TimeSpan DecayRetry = TimeSpan.FromSeconds(30);
@@ -38,7 +37,7 @@ namespace Server.Mobiles
         public DateTime NextMoveCheck { get { return m_NextMoveCheck; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextCrewCheck { get { return m_NextCrewCheck; } }
+        public DateTime NextCrewCheck { get { return m_NextCrewCheck; } set { m_NextCrewCheck = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SpawnZone Zone { get { return m_Zone; } set { m_Zone = value; } }
@@ -208,15 +207,10 @@ namespace Server.Mobiles
             if (gal == null)
                 return;
 
-            List<IEntity> list = gal.GetEntitiesOnBoard();
-
-            foreach (var i in list)
+            if (gal.PlayerCount() > 0)
             {
-                if (i is PlayerMobile)
-                {
-                    Timer.DelayCall(DecayRetry, new TimerStateCallback(TryDecayGalleon), gal);
-                    return;
-                }
+                Timer.DelayCall(DecayRetry, new TimerStateCallback(TryDecayGalleon), gal);
+                return;
             }
 
             if (gal != null && !gal.Deleted)
@@ -230,10 +224,15 @@ namespace Server.Mobiles
         }
 
         private DateTime m_StopTime;
+        private bool m_WillResume;
 
         public void ResumeCourseTimed(TimeSpan ts, bool check)
         {
-            Timer.DelayCall(ts, new TimerCallback(ResumeCourse));
+            if (!m_WillResume)
+            {
+                Timer.DelayCall(ts, new TimerCallback(ResumeCourse));
+                m_WillResume = true;
+            }
         }
 
         public void ResumeCourse()
@@ -241,6 +240,7 @@ namespace Server.Mobiles
             if (m_Galleon != null)
             {
                 m_Galleon.StartCourse(false, false);
+                m_WillResume = false;
                 m_OnCourse = true;
             }
         }
@@ -539,25 +539,14 @@ namespace Server.Mobiles
 
             List<Mobile> crew = new List<Mobile>(m_Crew.Where(m => m != null && m.Alive && m.Map != null && m.Map != Map.Internal));
 
-            if (m_Galleon.Pilot != null)
-                crew.Add(m_Galleon.Pilot);
+            if (m_Galleon.GalleonPilot != null)
+                crew.Add(m_Galleon.GalleonPilot);
 
             crew.Add(this);
 
             foreach (var crewman in crew)
             {
-                StaticTile[] staticTiles = Map.Tiles.GetStaticTiles(crewman.X, crewman.Y, true);
-                bool hasSurface = false;
-
-                foreach (var tile in staticTiles)
-                {
-                    if (tile.Z == crewman.Z && TileData.ItemTable[tile.ID & TileData.MaxItemValue].Surface)
-                    {
-                        hasSurface = true;
-                    }
-                }
-
-                if (!hasSurface)
+                if(!m_Galleon.Contains(crewman))
                 {
                     crewman.MoveToWorld(new Point3D(m_Galleon.X + Utility.RandomList(-1, 1), m_Galleon.Y + Utility.RandomList(-1, 0, 1), m_Galleon.ZSurface), this.Map);
                 }
@@ -565,6 +554,69 @@ namespace Server.Mobiles
 
             ColUtility.Free(crew);
             m_NextCrewCheck = DateTime.UtcNow + TimeSpan.FromMinutes(30);
+        }
+
+        public void CheckBlock(StaticTile tile, Point3D p)
+        {
+            BaseBoat check = BaseBoat.FindBoatAt(p, Map);
+
+            if (check != null)
+                CheckBlock(check, p);
+        }
+
+        public void CheckBlock(IEntity e, Point3D loc)
+        {
+            if (m_Galleon == null || !m_OnCourse || IsInBattle())
+            {
+                return;
+            }
+
+            if (loc == Point3D.Zero)
+            {
+                loc = e.Location;
+            }
+
+            BaseBoat check = BaseBoat.FindBoatAt(new Point3D(e), Map);
+
+            if ((check != null && check != m_Galleon) || e is BaseCreature)
+            {
+                Direction d = Utility.GetDirection(m_Galleon, e);
+
+                int blockX = e.X;
+                int blockY = e.Y;
+
+                int x = m_Galleon.X;
+                int y = m_Galleon.Y;
+                Direction toMove = Direction.North;
+
+                switch (m_Galleon.Facing)
+                {
+                    case Direction.North:
+                        toMove = blockX > x ? Direction.West : Direction.East;
+                        break;
+                    case Direction.East:
+                        toMove = blockY > y ? Direction.North : Direction.South;
+                        break;
+                    case Direction.South:
+                        toMove = blockX < x ? Direction.East : Direction.West;
+                        break;
+                    case Direction.West:
+                        toMove = blockY < y ? Direction.South : Direction.North;
+                        break;
+                }
+
+                Movement.Movement.Offset(toMove, ref x, ref y);
+
+                int speed;
+                toMove = m_Galleon.GetMovementFor(x, y, out speed);
+
+                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                    {
+                        m_Galleon.StartMove(toMove, false);
+                    });
+
+                ResumeCourseTimed(TimeSpan.FromSeconds(11), true);
+            }
         }
 
         public BaseShipCaptain(Serial serial)

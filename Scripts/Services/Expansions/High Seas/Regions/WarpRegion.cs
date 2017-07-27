@@ -4,6 +4,7 @@ using Server.Multis;
 using Server.Items;
 using Server.Mobiles;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Regions
 {
@@ -73,26 +74,23 @@ namespace Server.Regions
                 return;
 
             Map map = this.Map;
-            List<IEntity> list = boat.GetEntitiesOnBoard();
+
             List<PlayerMobile> pms = new List<PlayerMobile>();
             bool hasMap = false;
 
-            foreach (ISpawnable i in list)
+            foreach (var i in boat.GetEntitiesOnBoard().OfType<PlayerMobile>().Where(pm => pm.NetState != null))
             {
-                if (i is PlayerMobile && ((PlayerMobile)i).NetState != null)
+                pms.Add((PlayerMobile)i);
+                PlayerMobile pm = (PlayerMobile)i;
+
+                if (pm.Backpack == null)
+                    continue;
+
+                Item item = pm.Backpack.FindItemByType(typeof(CorgulIslandMap));
+                if (item != null && item is CorgulIslandMap && this.Contains(((CorgulIslandMap)item).DestinationPoint))
                 {
-                    pms.Add((PlayerMobile)i);
-                    PlayerMobile pm = (PlayerMobile)i;
-
-                    if (pm.Backpack == null)
-                        continue;
-
-                    Item item = pm.Backpack.FindItemByType(typeof(CorgulIslandMap));
-                    if (item != null && item is CorgulIslandMap && this.Contains(((CorgulIslandMap)item).DestinationPoint))
-                    {
-                        hasMap = true;
-                        break;
-                    }
+                    hasMap = true;
+                    break;
                 }
             }
 

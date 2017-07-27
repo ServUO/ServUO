@@ -266,6 +266,7 @@ namespace Server.Mobiles
                 if (level == SecurityLevel.Captain)
                 {
                     list.Add(new SecuritySettingsEntry(this, from));
+                    list.Add(new DefaultSecuritySettings(this, from));
                 }
             }
             else
@@ -277,7 +278,7 @@ namespace Server.Mobiles
             private GalleonPilot m_Pilot;
             private Mobile m_From;
 
-            public EmergencyRepairEntry(GalleonPilot pilot, Mobile from) : base (1116589, 3)
+            public EmergencyRepairEntry(GalleonPilot pilot, Mobile from) : base (1116589, 5)
             {
                 m_Pilot = pilot;
                 m_From = from;
@@ -308,7 +309,7 @@ namespace Server.Mobiles
             private Mobile m_From;
 
             public ShipRepairEntry(GalleonPilot pilot, Mobile from)
-                : base(1116590, 3)
+                : base(1116590, 5)
             {
                 m_Pilot = pilot;
                 m_From = from;
@@ -334,7 +335,7 @@ namespace Server.Mobiles
             private Mobile m_From;
 
             public RenameShipEntry(GalleonPilot pilot, Mobile from)
-                : base(1111680, 3)
+                : base(1111680, 5)
             {
                 m_Pilot = pilot;
                 m_From = from;
@@ -353,7 +354,7 @@ namespace Server.Mobiles
             private Mobile m_From;
 
             public RelocateTillermanEntry(GalleonPilot pilot, Mobile from)
-                : base(1061829, 3)
+                : base(1061829, 5)
             {
                 m_Pilot = pilot;
                 m_From = from;
@@ -437,7 +438,7 @@ namespace Server.Mobiles
             private Mobile m_From;
 
             public SecuritySettingsEntry(GalleonPilot pilot, Mobile from)
-                : base(1149786, 3)
+                : base(1149786, 5)
             {
                 m_Pilot = pilot;
                 m_From = from;
@@ -447,6 +448,31 @@ namespace Server.Mobiles
             {
                 if(m_Pilot != null && m_Pilot.Galleon != null && !m_From.HasGump(typeof(ShipSecurityGump)))
                     m_From.SendGump(new ShipSecurityGump(m_From, m_Pilot.Galleon));
+            }
+        }
+
+        private class DefaultSecuritySettings : ContextMenuEntry
+        {
+            private GalleonPilot m_Pilot;
+            private Mobile m_From;
+
+            public DefaultSecuritySettings(GalleonPilot pilot, Mobile from)
+                : base(1060700, 5) // Reset Security
+            {
+                m_Pilot = pilot;
+                m_From = from;
+            }
+
+            public override void OnClick()
+            {
+                if (m_Pilot != null && m_Pilot.Galleon != null)
+                {
+                    m_From.SendGump(new BasicConfirmGump<BaseGalleon>(new TextDefinition(1116618), (m, boat) => // Are you sure you wish to clear your ship's access list?
+                        {
+                            boat.SecurityEntry.SetToDefault();
+
+                        }, m_Pilot.Galleon));
+                }
             }
         }
 

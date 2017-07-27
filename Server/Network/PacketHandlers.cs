@@ -1733,6 +1733,22 @@ namespace Server.Network
 		{
             int range = pvSrc.ReadByte();
 
+            //            min   max  default
+            /* 640x480    5     18   15
+             * 800x600    5     18   18
+             * 1024x768   5     24   24
+             * 1152x864   5     24   24 
+             * 1280x720   5     24   24
+             */
+
+            int old = state.UpdateRange;
+            state.UpdateRange = range;
+
+            if (state.Mobile != null)
+            {
+                state.Mobile.OnUpdateRangeChanged(old, range);
+            }
+
             state.Send(ChangeUpdateRange.Instantiate(range));
 		}
 
@@ -1922,7 +1938,7 @@ namespace Server.Network
 				{
 					Mobile m = World.FindMobile(s);
 
-					if (m != null && from.CanSee(m) && Utility.InUpdateRange(from, m))
+					if (m != null && from.CanSee(m) && from.InUpdateRange(m))
 					{
 						m.SendPropertiesTo(from);
 					}
@@ -1932,7 +1948,7 @@ namespace Server.Network
 					Item item = World.FindItem(s);
 
 					if (item != null && !item.Deleted && from.CanSee(item) &&
-						Utility.InUpdateRange(from.Location, item.GetWorldLocation()))
+                        from.InUpdateRange(item.GetWorldLocation()))
 					{
 						item.SendPropertiesTo(from);
 					}
@@ -1955,7 +1971,7 @@ namespace Server.Network
 			{
 				Mobile m = World.FindMobile(s);
 
-				if (m != null && from.CanSee(m) && Utility.InUpdateRange(from, m))
+                if (m != null && from.CanSee(m) && from.InUpdateRange(m))
 				{
 					m.SendPropertiesTo(from);
 				}
@@ -1965,7 +1981,7 @@ namespace Server.Network
 				Item item = World.FindItem(s);
 
 				if (item != null && !item.Deleted && from.CanSee(item) &&
-					Utility.InUpdateRange(from.Location, item.GetWorldLocation()))
+                    from.InUpdateRange(item.GetWorldLocation()))
 				{
 					item.SendPropertiesTo(from);
 				}

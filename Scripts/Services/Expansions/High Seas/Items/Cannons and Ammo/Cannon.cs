@@ -8,6 +8,7 @@ using Server.Gumps;
 using Server.Misc;
 using Server.Multis;
 using Server.Engines.Quests;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -577,25 +578,23 @@ namespace Server.Items
                     shooter.DoHarmful(victim);
                 else
                 {
-                    List<Mobile> mobs = target.GetMobilesOnBoard();
                     List<Mobile> candidates = new List<Mobile>();
                     SecurityLevel highest = SecurityLevel.Passenger;
 
-                    foreach (Mobile mob in mobs)
+                    foreach (var mob in target.GetMobilesOnBoard().OfType<PlayerMobile>().Where(pm => shooter.CanBeHarmful(pm, false)))
                     {
-                        if (mob is PlayerMobile && shooter.CanBeHarmful(mob, false))
-                        {
-                            if (m_Galleon.GetSecurityLevel(mob) > highest)
-                                candidates.Insert(0, mob);
-                            else
-                                candidates.Add(mob);
-                        }
+                        if (m_Galleon.GetSecurityLevel(mob) > highest)
+                            candidates.Insert(0, mob);
+                        else
+                            candidates.Add(mob);
                     }
 
                     if (candidates.Count > 0)
                         shooter.DoHarmful(candidates[0]);
                     else if (victim != null && shooter.IsHarmfulCriminal(victim))
                         shooter.CriminalAction(false);
+
+                    ColUtility.Free(candidates);
                 }
 
                 if (m_Galleon.Map != null)
