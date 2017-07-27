@@ -29,7 +29,7 @@ namespace Server
 			{ }
 		}
 
-		private static readonly string _FilePath = Path.Combine("Saves", "WeakEntityCollection", "WeakEntityCollection.bin");
+		private static readonly string _FilePath = Path.Combine(Core.SavesDirectory, "WeakEntityCollection", "WeakEntityCollection.bin");
 
 		private static readonly Dictionary<string, EntityCollection> _Collections =
 			new Dictionary<string, EntityCollection>(StringComparer.OrdinalIgnoreCase);

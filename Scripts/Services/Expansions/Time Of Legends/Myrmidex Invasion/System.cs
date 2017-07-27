@@ -22,7 +22,7 @@ namespace Server.Engines.MyrmidexInvasion
 	{
         public static readonly bool Active = true;
 
-        public static string FilePath = Path.Combine("Saves", "MyrmidexInvasion.bin");
+        public static string FilePath = Path.Combine(Core.SavesDirectory, "MyrmidexInvasion.bin");
 		public static MyrmidexInvasionSystem System { get; set; }
 		
 		public static List<AllianceEntry> AllianceEntries { get; set; }

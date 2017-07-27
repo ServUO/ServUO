@@ -360,18 +360,20 @@ namespace Server.Engines.XmlSpawner2
 			}
 		}
 
+		public static string SavesDirectory => Path.Combine(Core.SavesDirectory, "Attachments");
+
 		public static void Save(WorldSaveEventArgs e)
 		{
 			if (XmlAttach.MobileAttachments == null && XmlAttach.ItemAttachments == null) return;
 
 			CleanUp();
 
-			if (!Directory.Exists("Saves/Attachments"))
-				Directory.CreateDirectory("Saves/Attachments");
+			if (!Directory.Exists(SavesDirectory))
+				Directory.CreateDirectory(SavesDirectory);
 
-			string filePath = Path.Combine("Saves/Attachments", "Attachments.bin");        // the attachment serializations
-			string imaPath = Path.Combine("Saves/Attachments", "Attachments.ima");         // the item/mob attachment tables
-			string fpiPath = Path.Combine("Saves/Attachments", "Attachments.fpi");        // the file position indices
+			string filePath = Path.Combine(SavesDirectory, "Attachments.bin");        // the attachment serializations
+			string imaPath = Path.Combine(SavesDirectory, "Attachments.ima");         // the item/mob attachment tables
+			string fpiPath = Path.Combine(SavesDirectory, "Attachments.fpi");        // the file position indices
 
 			BinaryFileWriter writer = null;
 			BinaryFileWriter imawriter = null;
@@ -519,9 +521,9 @@ namespace Server.Engines.XmlSpawner2
 
 		public static void Load()
 		{
-			string filePath = Path.Combine("Saves/Attachments", "Attachments.bin");    // the attachment serializations
-			string imaPath = Path.Combine("Saves/Attachments", "Attachments.ima");     // the item/mob attachment tables
-			string fpiPath = Path.Combine("Saves/Attachments", "Attachments.fpi");     // the file position indices
+			string filePath = Path.Combine(SavesDirectory, "Attachments.bin");    // the attachment serializations
+			string imaPath = Path.Combine(SavesDirectory, "Attachments.ima");     // the item/mob attachment tables
+			string fpiPath = Path.Combine(SavesDirectory, "Attachments.fpi");     // the file position indices
 
 			if (!File.Exists(filePath))
 			{

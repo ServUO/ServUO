@@ -73,7 +73,7 @@ namespace Server.Engines.Distillation
 		}
 
         #region Serialize/Deserialize Persistence
-        private static string FilePath = Path.Combine("Saves", "CraftContext", "DistillationContexts.bin");
+        private static string FilePath = Path.Combine(Core.SavesDirectory, "CraftContext", "DistillationContexts.bin");
 
         public static void Configure()
         {

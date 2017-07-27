@@ -105,7 +105,7 @@ namespace Server
 
 		public static MultiTextWriter MultiConsoleOut { get; private set; }
 
-		/* 
+		/*
 		 * DateTime.Now and DateTime.UtcNow are based on actual system clock time.
 		 * The resolution is acceptable but large clock jumps are possible and cause issues.
 		 * GetTickCount and GetTickCount64 have poor resolution.
@@ -216,6 +216,16 @@ namespace Server
 
 				return _BaseDirectory;
 			}
+		}
+
+		public static string LogsDirectory => ConfigurablePath("Logs.Directory", "Logs");
+		public static string SavesDirectory => ConfigurablePath("Saves.Directory", "Saves");
+		public static string BackupsDirectory => ConfigurablePath("Backups.Directory", "Backups");
+
+		private static string ConfigurablePath(string configKey, string defaultPath)
+		{
+			return Config.Get(configKey, Path.Combine("{BaseDirectory}", defaultPath))
+				.Replace("{BaseDirectory}", BaseDirectory);
 		}
 
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -402,12 +412,10 @@ namespace Server
 			{
 				if (Service)
 				{
-					if (!Directory.Exists("Logs"))
-					{
-						Directory.CreateDirectory("Logs");
-					}
+					if (!Directory.Exists(Core.LogsDirectory))
+						Directory.CreateDirectory(Core.LogsDirectory);
 
-					Console.SetOut(MultiConsoleOut = new MultiTextWriter(new FileLogger("Logs/Console.log")));
+					Console.SetOut(MultiConsoleOut = new MultiTextWriter(new FileLogger(Path.Combine(Core.LogsDirectory, "Console.log"))));
 				}
 				else
 				{
@@ -662,7 +670,7 @@ namespace Server
 
 		public static int GlobalUpdateRange { get; set; }
 		public static int GlobalMaxUpdateRange { get; set; }
-		
+
 		private static int m_ItemCount, m_MobileCount, m_CustomsCount;
 
 		public static int ScriptItems { get { return m_ItemCount; } }
@@ -709,7 +717,7 @@ namespace Server
 					{
 						warningSb = new StringBuilder();
 
-						warningSb.AppendLine("       - No serialization constructor");
+						warningSb.AppendLine("	   - No serialization constructor");
 					}
 
 					if (
@@ -722,7 +730,7 @@ namespace Server
 							warningSb = new StringBuilder();
 						}
 
-						warningSb.AppendLine("       - No Serialize() method");
+						warningSb.AppendLine("	   - No Serialize() method");
 					}
 
 					if (
@@ -735,7 +743,7 @@ namespace Server
 							warningSb = new StringBuilder();
 						}
 
-						warningSb.AppendLine("       - No Deserialize() method");
+						warningSb.AppendLine("	   - No Deserialize() method");
 					}
 
 					if (warningSb != null && warningSb.Length > 0)
@@ -764,7 +772,7 @@ namespace Server
 					{
 						warningSb = new StringBuilder();
 
-						warningSb.AppendLine("       - No serialization constructor");
+						warningSb.AppendLine("	   - No serialization constructor");
 					}
 
 					if (
@@ -777,7 +785,7 @@ namespace Server
 							warningSb = new StringBuilder();
 						}
 
-						warningSb.AppendLine("       - No Serialize() method");
+						warningSb.AppendLine("	   - No Serialize() method");
 					}
 
 					if (
@@ -790,7 +798,7 @@ namespace Server
 							warningSb = new StringBuilder();
 						}
 
-						warningSb.AppendLine("       - No Deserialize() method");
+						warningSb.AppendLine("	   - No Deserialize() method");
 					}
 
 					if (warningSb != null && warningSb.Length > 0)
@@ -840,7 +848,7 @@ namespace Server
 						new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
 			{
 				writer.WriteLine(">>>Logging started on {0}.", DateTime.UtcNow.ToString("f"));
-				//f = Tuesday, April 10, 2001 3:51 PM 
+				//f = Tuesday, April 10, 2001 3:51 PM
 			}
 
 			_NewLine = true;

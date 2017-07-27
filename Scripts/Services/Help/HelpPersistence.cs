@@ -14,7 +14,7 @@ namespace Server.Engines.Help
 {
 	public static class HelpPersistence
 	{
-		private static readonly string _FilePath = Path.Combine("Saves", "Help", "Pages.bin");
+		private static readonly string _FilePath = Path.Combine(Core.SavesDirectory, "Help", "Pages.bin");
 
 
 		[CallPriority(900)]
