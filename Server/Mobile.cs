@@ -3378,7 +3378,7 @@ namespace Server
 				{
 					NetState ns = m.NetState;
 
-					if (ns != null && InUpdateRange(m.m_Location) && m.CanSee(this))
+					if (ns != null && m.InUpdateRange(m_Location) && m.CanSee(this))
 					{
 						if (ns.StygianAbyss)
 						{
@@ -9879,9 +9879,8 @@ namespace Server
 					// Check to see if we are attached to a client
 					if (ourState != null)
 					{
-						var eeable = map.GetObjectsInRange(newLocation, Core.GlobalMaxUpdateRange);
-
 						// We are attached to a client, so it's a bit more complex. We need to send new items and people to ourself, and ourself to other clients
+                        var eeable = map.GetObjectsInRange(newLocation, Core.GlobalMaxUpdateRange);
 
 						foreach (IEntity o in eeable)
 						{
@@ -9986,7 +9985,7 @@ namespace Server
 						// We're not attached to a client, so simply send an Incoming
 						foreach (NetState ns in eable)
 						{
-							if (((isTeleport && (!ns.HighSeas || !m_NoMoveHS)) || !Utility.InUpdateRange(ns.Mobile, oldLocation, ns.Mobile.Location)) &&
+                            if (((isTeleport && (!ns.HighSeas || !m_NoMoveHS)) || (!ns.Mobile.InUpdateRange(oldLocation) && ns.Mobile.InUpdateRange(newLocation))) &&
 								ns.Mobile.CanSee(this))
 							{
 								ns.Send(MobileIncoming.Create(ns, ns.Mobile, this));

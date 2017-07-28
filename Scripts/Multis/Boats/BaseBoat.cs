@@ -547,9 +547,9 @@ namespace Server.Multis
         {
             if (m_TillerMan != null)
             {
-                if (m_TillerMan is Mobile && (Math.Abs(X - old.X) > 1 || Math.Abs(Y - old.Y) > 1))
+                /*if (m_TillerMan is Mobile && (Math.Abs(X - old.X) > 1 || Math.Abs(Y - old.Y) > 1))
                     ((Mobile)m_TillerMan).Location = new Point3D(X + (((Mobile)m_TillerMan).X - old.X), Y + (((Mobile)m_TillerMan).Y - old.Y), Z + (((Mobile)m_TillerMan).Z - old.Z));
-                else if (m_TillerMan is Item)
+                else*/ if (m_TillerMan is Item)
                     ((Item)m_TillerMan).Location = new Point3D(X + (((Item)m_TillerMan).X - old.X), Y + (((Item)m_TillerMan).Y - old.Y), Z + (((Item)m_TillerMan).Z - old.Z));
             }
 
@@ -1787,7 +1787,7 @@ namespace Server.Multis
                     e.NoMoveHS = true;
 
                 // packet created
-                MoveBoatHS smooth = new MoveBoatHS(this, d, clientSpeed, toMove, xOffset, yOffset);
+                MoveBoatHS smooth = new MoveBoatHS(this, d, clientSpeed, xOffset, yOffset);
                 smooth.SetStatic();
 
                 IPooledEnumerable eable = Map.GetClientsInRange(Location, Core.GlobalUpdateRange);
@@ -1804,20 +1804,20 @@ namespace Server.Multis
                         ns.Send(smooth);
                 }
 
-                Location = new Point3D(X + xOffset, Y + yOffset, Z);
-
                 // entities move/restores packet
                 foreach (var ent in toMove.Where(e => !IsComponentItem(e) && !CanMoveOver(e)))
                 {
                     ent.Location = new Point3D(ent.X + xOffset, ent.Y + yOffset, ent.Z);
                 }
 
+                Location = new Point3D(X + xOffset, Y + yOffset, Z);
+
                 NoMoveHS = false;
 
                 foreach (var e in toMove)
                     e.NoMoveHS = false;
 
-                SendContainerPacket(toMove);
+                SendContainerPacket();
 
                 eable.Free();
                 smooth.Release();
@@ -1828,14 +1828,12 @@ namespace Server.Multis
 
         public void Teleport(int xOffset, int yOffset, int zOffset)
         {
-            IEnumerable<IEntity> toMove = GetEntitiesOnBoard();
+            foreach (var ent in GetEntitiesOnBoard().Where(e => !IsComponentItem(e) && !CanMoveOver(e)))
+            {
+                ent.Location = new Point3D(ent.X + xOffset, ent.Y + yOffset, ent.Z);
+            }
 
             Location = new Point3D(X + xOffset, Y + yOffset, Z + zOffset);
-
-            foreach (var e in toMove.Where(e => !IsComponentItem(e) && !CanMoveOver(e) && e != m_TillerMan))
-            {
-                e.Location = new Point3D(e.X + xOffset, e.Y + yOffset, e.Z + zOffset);
-            }
         }
 
         public virtual bool SetFacing(Direction facing)
@@ -2363,11 +2361,6 @@ namespace Server.Multis
 
         public virtual void SendContainerPacket()
         {
-            SendContainerPacket(GetEntitiesOnBoard());
-        }
-
-        public virtual void SendContainerPacket(IEnumerable<IEntity> entities)
-        {
             if (!NewBoatMovement || NoMoveHS || Map == null)
                 return;
 
@@ -2377,17 +2370,23 @@ namespace Server.Multis
 
             foreach (NetState state in eable)
             {
-                if(!state.HighSeas || state.Mobile == null || state.Mobile.InRange(Location, Core.GlobalUpdateRange))
+                if(!state.HighSeas || state.Mobile == null || state.Mobile.InUpdateRange(Location))
                     continue;
 
                 state.Send(RemovePacket);
-                state.Send(GetPacketContainer(entities));
+
+                foreach (var item in GetItemsOnBoard())
+                {
+                    state.Send(item.RemovePacket);
+                }
+
+                state.Send(GetPacketContainer(GetEntitiesOnBoard()));
             }
         }
 
         public sealed class MoveBoatHS : Packet
         {
-            public MoveBoatHS(BaseBoat boat, Direction d, int speed, IEnumerable<IEntity> ents, int xOffset, int yOffset)
+            public MoveBoatHS(BaseBoat boat, Direction d, int speed, int xOffset, int yOffset)
                 : base(0xF6)
             {
                 EnsureCapacity(18);
@@ -2405,7 +2404,7 @@ namespace Server.Multis
 
                 m_Stream.Write(length);
 
-                foreach (var ent in ents.Where(e => e != boat))
+                foreach (var ent in boat.GetEntitiesOnBoard().Where(e => e != boat))
                 {
                     m_Stream.Write((int)ent.Serial);
                     m_Stream.Write((short)(ent.X + xOffset));
@@ -2427,14 +2426,14 @@ namespace Server.Multis
 
         public class PacketContainer : Packet
         {
-            public PacketContainer(IEnumerable<IEntity> list)
+            public PacketContainer(IEnumerable<IEntity> entities)
                 : base(0xF7)
             {
                 EnsureCapacity(5);
                 short c = 0;
                 m_Stream.Write(c);
 
-                foreach (var entity in list)
+                foreach (var entity in entities)
                 {
                     var itemID = 0;
                     short amount = 0x01;
