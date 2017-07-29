@@ -23,7 +23,7 @@ namespace Server.Mobiles
         }
 
 		public override bool CanBeParagon { get { return false; } }
-        public virtual bool DropPrimer { get { return true; } }
+        public virtual bool DropPrimer { get { return Core.TOL; } }
 
         public override bool Unprovokable
         {
