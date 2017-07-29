@@ -89,11 +89,11 @@ namespace Server.Items
         private int m_GorgonLenseCharges;
         private LenseType m_GorgonLenseType;
 
-        private int m_PhysImbuing;
-        private int m_FireImbuing;
-        private int m_ColdImbuing;
-        private int m_PoisonImbuing;
-        private int m_EnergyImbuing;
+        private int m_PhysNonImbuing;
+        private int m_FireNonImbuing;
+        private int m_ColdNonImbuing;
+        private int m_PoisonNonImbuing;
+        private int m_EnergyNonImbuing;
         #endregion
 
         #region Runic Reforging
@@ -242,34 +242,34 @@ namespace Server.Items
             set { m_GorgonLenseType = value; InvalidateProperties(); }
         }
 
-        public int PhysImbuing
+        public int PhysNonImbuing
         {
-            get { return m_PhysImbuing; }
-            set { m_PhysImbuing = value; }
+            get { return m_PhysNonImbuing; }
+            set { m_PhysNonImbuing = value; }
         }
 
-        public int FireImbuing
+        public int FireNonImbuing
         {
-            get { return m_FireImbuing; }
-            set { m_FireImbuing = value; }
+            get { return m_FireNonImbuing; }
+            set { m_FireNonImbuing = value; }
         }
 
-        public int ColdImbuing
+        public int ColdNonImbuing
         {
-            get { return m_ColdImbuing; }
-            set { m_ColdImbuing = value; }
+            get { return m_ColdNonImbuing; }
+            set { m_ColdNonImbuing = value; }
         }
 
-        public int PoisonImbuing
+        public int PoisonNonImbuing
         {
-            get { return m_PoisonImbuing; }
-            set { m_PoisonImbuing = value; }
+            get { return m_PoisonNonImbuing; }
+            set { m_PoisonNonImbuing = value; }
         }
 
-        public int EnergyImbuing
+        public int EnergyNonImbuing
         {
-            get { return m_EnergyImbuing; }
-            set { m_EnergyImbuing = value; }
+            get { return m_EnergyNonImbuing; }
+            set { m_EnergyNonImbuing = value; }
         }
         #endregion
 
@@ -1539,11 +1539,11 @@ namespace Server.Items
             writer.Write(m_GorgonLenseCharges);
             writer.Write((int)m_GorgonLenseType);
 
-            writer.Write(m_PhysImbuing);
-            writer.Write(m_FireImbuing);
-            writer.Write(m_ColdImbuing);
-            writer.Write(m_PoisonImbuing);
-            writer.Write(m_EnergyImbuing);
+            writer.Write(m_PhysNonImbuing);
+            writer.Write(m_FireNonImbuing);
+            writer.Write(m_ColdNonImbuing);
+            writer.Write(m_PoisonNonImbuing);
+            writer.Write(m_EnergyNonImbuing);
 
             // Version 6
             writer.Write((int)m_TimesImbued);
@@ -1694,11 +1694,11 @@ namespace Server.Items
                         m_GorgonLenseCharges = reader.ReadInt();
                         m_GorgonLenseType = (LenseType)reader.ReadInt();
 
-                        m_PhysImbuing = reader.ReadInt();
-                        m_FireImbuing = reader.ReadInt();
-                        m_ColdImbuing = reader.ReadInt();
-                        m_PoisonImbuing = reader.ReadInt();
-                        m_EnergyImbuing = reader.ReadInt();
+                        m_PhysNonImbuing = reader.ReadInt();
+                        m_FireNonImbuing = reader.ReadInt();
+                        m_ColdNonImbuing = reader.ReadInt();
+                        m_PoisonNonImbuing = reader.ReadInt();
+                        m_EnergyNonImbuing = reader.ReadInt();
                         goto case 6;
                     }
                 case 6:
@@ -1978,11 +1978,11 @@ namespace Server.Items
             }
 
             #region Stygian Abyss
-            m_PhysImbuing = m_AosResistances.Physical;
-            m_FireImbuing = m_AosResistances.Fire;
-            m_ColdImbuing = m_AosResistances.Cold;
-            m_PoisonImbuing = m_AosResistances.Poison;
-            m_EnergyImbuing = m_AosResistances.Energy;
+            m_PhysNonImbuing = m_AosResistances.Physical;
+            m_FireNonImbuing = m_AosResistances.Fire;
+            m_ColdNonImbuing = m_AosResistances.Cold;
+            m_PoisonNonImbuing = m_AosResistances.Poison;
+            m_EnergyNonImbuing = m_AosResistances.Energy;
             #endregion
 
             InvalidateProperties();

@@ -38,6 +38,8 @@ namespace Server.Mobiles
         public static int BuyItemChange = Config.Get("Vendors.BuyItemChange", 1000);
         public static int SellItemChange = Config.Get("Vendors.SellItemChange", 1000);
         public static int EconomyStockAmount = Config.Get("Vendors.EconomyStockAmount", 500);
+        public static TimeSpan DelayRestock = TimeSpan.FromMinutes(Config.Get("Vendors.RestockDelay", 60));
+        public static int MaxSell = Config.Get("Vendors.MaxSell", 500);
 
 		public static List<BaseVendor> AllVendors { get; private set; }
 
@@ -45,8 +47,6 @@ namespace Server.Mobiles
 		{
 			AllVendors = new List<BaseVendor>(0x4000);
 		}
-
-		private const int MaxSell = 500;
 
 		protected abstract List<SBInfo> SBInfos { get; }
 
@@ -341,7 +341,7 @@ namespace Server.Mobiles
 
 		public DateTime LastRestock { get { return m_LastRestock; } set { m_LastRestock = value; } }
 
-		public virtual TimeSpan RestockDelay { get { return TimeSpan.FromHours(1); } }
+        public virtual TimeSpan RestockDelay { get { return DelayRestock; } }
 
 		public Container BuyPack
 		{

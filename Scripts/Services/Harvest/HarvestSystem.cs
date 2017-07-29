@@ -221,28 +221,28 @@ namespace Server.Engines.Harvest
 								}
 							}
                         }
-
-                        // Siege rules will take into account axes and polearms used for lumberjacking
-                        if (tool is IUsesRemaining && (tool is BaseHarvestTool || tool is Pickaxe || tool is SturdyPickaxe || tool is GargoylesPickaxe || Siege.SiegeShard))
-                        {
-                            IUsesRemaining toolWithUses = (IUsesRemaining)tool;
-
-                            toolWithUses.ShowUsesRemaining = true;
-
-                            if (toolWithUses.UsesRemaining > 0)
-                                --toolWithUses.UsesRemaining;
-
-                            if (toolWithUses.UsesRemaining < 1)
-                            {
-                                tool.Delete();
-                                def.SendMessageTo(from, def.ToolBrokeMessage);
-                            }
-                        }
                     }
 
                     #region High Seas
                     OnToolUsed(from, tool, item != null);
                     #endregion
+                }
+
+                // Siege rules will take into account axes and polearms used for lumberjacking
+                if (tool is IUsesRemaining && (tool is BaseHarvestTool || tool is Pickaxe || tool is SturdyPickaxe || tool is GargoylesPickaxe || Siege.SiegeShard))
+                {
+                    IUsesRemaining toolWithUses = (IUsesRemaining)tool;
+
+                    toolWithUses.ShowUsesRemaining = true;
+
+                    if (toolWithUses.UsesRemaining > 0)
+                        --toolWithUses.UsesRemaining;
+
+                    if (toolWithUses.UsesRemaining < 1)
+                    {
+                        tool.Delete();
+                        def.SendMessageTo(from, def.ToolBrokeMessage);
+                    }
                 }
             }
 
