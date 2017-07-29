@@ -1339,9 +1339,9 @@ namespace Server.Items
 
 			writer.Write(1); // version
 
-			writer.Write((int)m_Flags);
             writer.Write(DisableMessage);
-		}
+            writer.Write((int)m_Flags);
+        }
 
 		public override void Deserialize(GenericReader reader)
 		{
