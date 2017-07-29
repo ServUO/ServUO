@@ -16,6 +16,7 @@ namespace Server.Multis
 		private string m_ShipName;
         private Direction m_Direction;
         private BaseBoat m_BoatItem;
+
         #region High Seas
         private SecurityEntry m_SecurityEntry;
         private PilotEntry m_PilotEntry;
@@ -57,6 +58,8 @@ namespace Server.Multis
 
             m_Direction = Direction.North;
             m_BoatItem = boat;
+
+            Hue = boat.Hue;
 		}
 
         public override void OnAfterDelete()

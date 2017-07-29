@@ -80,6 +80,7 @@ namespace Server.Items
     public class HoldItem : Item
     {
         public override int LabelNumber { get { return 1149699; } }
+        public override bool ForceShowProperties { get { return true; } }
 
         private GalleonHold m_Hold;
 
@@ -92,20 +93,19 @@ namespace Server.Items
             Movable = false;
         }
 
-        //public override bool HandlesOnMovement { get { return true; } }
-
-        /*public override void OnMovement(Mobile m, Point3D oldLocation)
-        {
-            if(m_Hold != null)
-                m_Hold.Close(m);
-        }*/
-
         public override void OnDoubleClick(Mobile from)
         {
             if (m_Hold == null || m_Hold.Galleon == null || !from.InRange(this.Location, 2))
                 return;
 
             m_Hold.OnDoubleClick(from);
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1072241, String.Format("{0}\t{1}\t{2}\t{3}", Hold.TotalItems, Hold.MaxItems, Hold.TotalWeight, Hold.MaxWeight)); // Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
         }
 
         public HoldItem(Serial serial) : base(serial) { }

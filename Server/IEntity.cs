@@ -13,10 +13,11 @@ namespace Server
 	public interface IEntity : IPoint3D, IComparable, IComparable<IEntity>
 	{
 		Serial Serial { get; }
-		Point3D Location { get; }
+        Point3D Location { get; set; }
 		Map Map { get; }
 
 		bool Deleted { get; }
+        bool NoMoveHS { get; set; }
 
 		void Delete();
 		void ProcessDelta();
@@ -64,7 +65,7 @@ namespace Server
 
 		public Serial Serial { get { return m_Serial; } }
 
-		public Point3D Location { get { return m_Location; } }
+        public Point3D Location { get { return m_Location; } set { } }
 
 		public int X { get { return m_Location.X; } }
 
@@ -75,6 +76,8 @@ namespace Server
 		public Map Map { get { return m_Map; } }
 
 		public bool Deleted { get { return m_Deleted; } }
+
+        public bool NoMoveHS { get; set; }
 
 		public void Delete()
 		{

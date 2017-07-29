@@ -64,7 +64,7 @@
  * dimensions of their game window beyond the client's limits.
  * (This can also be beneficial for shards that mainly target the Enhanced client)
  */
-//#define Map_UseMaxRange
+#define Map_UseMaxRange
 
 /*
  * Map_PoolFixColumn

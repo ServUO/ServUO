@@ -1783,13 +1783,13 @@ namespace Server
 
                     if (oldLocation.m_X != 0)
                     {
-                        var eable = m_Map.GetClientsInRange(oldLocation, GetMaxUpdateRange());
+                        var eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalMaxUpdateRange);
 
                         foreach (NetState state in eable)
                         {
                             Mobile m = state.Mobile;
 
-                            if (m.InRange(oldLocation, GetUpdateRange(m)))
+                            if (m.InUpdateRange(oldLocation))
                             {
                                 state.Send(RemovePacket);
                             }
@@ -1825,13 +1825,13 @@ namespace Server
 
                 if (m_Map != null)
                 {
-                    var eable = m_Map.GetClientsInRange(m_Location, GetMaxUpdateRange());
+                    var eable = m_Map.GetClientsInRange(m_Location, Core.GlobalMaxUpdateRange);
 
                     foreach (NetState state in eable)
                     {
                         Mobile m = state.Mobile;
 
-                        if (m.CanSee(this) && m.InRange(m_Location, GetUpdateRange(m)))
+                        if (m.CanSee(this) && m.InUpdateRange(m_Location))
                         {
                             SendInfoTo(state);
                         }
@@ -1853,13 +1853,13 @@ namespace Server
 
                 if (oldLocation.m_X != 0)
                 {
-                    eable = m_Map.GetClientsInRange(oldLocation, GetMaxUpdateRange());
+                    eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalMaxUpdateRange);
 
                     foreach (NetState state in eable)
                     {
                         Mobile m = state.Mobile;
 
-                        if (!m.InRange(location, GetUpdateRange(m)))
+                        if (!m.InUpdateRange(location))
                         {
                             state.Send(RemovePacket);
                         }
@@ -1875,13 +1875,13 @@ namespace Server
 
                 ReleaseWorldPackets();
 
-                eable = m_Map.GetClientsInRange(m_Location, GetMaxUpdateRange());
+                eable = m_Map.GetClientsInRange(m_Location, Core.GlobalMaxUpdateRange);
 
                 foreach (NetState state in eable)
                 {
                     Mobile m = state.Mobile;
 
-                    if (m.CanSee(this) && m.InRange(m_Location, GetUpdateRange(m)))
+                    if (m.CanSee(this) && m.InUpdateRange(m_Location))
                     {
                         SendInfoTo(state);
                     }
@@ -2339,7 +2339,7 @@ namespace Server
                     {
                         Point3D worldLoc = GetWorldLocation();
 
-                        var eable = m_Map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                        var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                         foreach (NetState state in eable)
                         {
@@ -3541,12 +3541,12 @@ namespace Server
 
         public virtual int GetMaxUpdateRange()
         {
-            return 18;
+            return 24;
         }
 
         public virtual int GetUpdateRange(Mobile m)
         {
-            return 18;
+            return m.NetState == null ? Core.GlobalUpdateRange : m.NetState.UpdateRange;
         }
 
         public void SendInfoTo(NetState state)
@@ -4098,13 +4098,13 @@ namespace Server
                     Packet p = null;
                     Point3D worldLoc = GetWorldLocation();
 
-                    var eable = map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                    var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                     foreach (NetState state in eable)
                     {
                         Mobile m = state.Mobile;
 
-                        if (m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                        if (m.CanSee(this) && m.InUpdateRange(worldLoc))
                         {
                             if (m_Parent == null)
                             {
@@ -4161,13 +4161,13 @@ namespace Server
                         Packet p = null;
                         Point3D worldLoc = GetWorldLocation();
 
-                        var eable = map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                        var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                         foreach (NetState state in eable)
                         {
                             Mobile m = state.Mobile;
 
-                            if (m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                            if (m.CanSee(this) && m.InUpdateRange(worldLoc))
                             {
                                 //if ( sendOPLUpdate )
                                 //	state.Send( RemovePacket );
@@ -4196,13 +4196,13 @@ namespace Server
                 if (sendOPLUpdate)
                 {
                     Point3D worldLoc = GetWorldLocation();
-                    var eable = map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                    var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                     foreach (NetState state in eable)
                     {
                         Mobile m = state.Mobile;
 
-                        if (m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                        if (m.CanSee(this) && m.InUpdateRange(worldLoc))
                         {
                             state.Send(OPLPacket);
                         }
@@ -4325,13 +4325,13 @@ namespace Server
                 Packet p = null;
                 Point3D worldLoc = GetWorldLocation();
 
-                var eable = m_Map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                 foreach (NetState state in eable)
                 {
                     Mobile m = state.Mobile;
 
-                    if (m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                    if (m.CanSee(this) && m.InUpdateRange(worldLoc))
                     {
                         if (p == null)
                         {
@@ -4369,13 +4369,13 @@ namespace Server
                 Packet p = null;
                 Point3D worldLoc = GetWorldLocation();
 
-                var eable = m_Map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                 foreach (NetState state in eable)
                 {
                     Mobile m = state.Mobile;
 
-                    if (m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
+                    if (m.CanSee(this) && m.InUpdateRange(worldLoc))
                     {
                         if (p == null)
                         {
@@ -4524,13 +4524,13 @@ namespace Server
 
                             if (m_Location.m_X != 0)
                             {
-                                eable = m_Map.GetClientsInRange(oldLocation, GetMaxUpdateRange());
+                                eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalMaxUpdateRange);
 
                                 foreach (NetState state in eable)
                                 {
                                     Mobile m = state.Mobile;
 
-                                    if (!m.InRange(value, GetUpdateRange(m)))
+                                    if (!m.InUpdateRange(value))
                                     {
                                         state.Send(RemovePacket);
                                     }
@@ -4545,13 +4545,13 @@ namespace Server
 
                             SetLastMoved();
 
-                            eable = m_Map.GetClientsInRange(m_Location, GetMaxUpdateRange());
+                            eable = m_Map.GetClientsInRange(m_Location, Core.GlobalMaxUpdateRange);
 
                             foreach (NetState state in eable)
                             {
                                 Mobile m = state.Mobile;
 
-                                if (m.CanSee(this) && m.InRange(m_Location, GetUpdateRange(m)) &&
+                                if (m.CanSee(this) && m.InUpdateRange(m_Location) &&
                                     (!state.HighSeas || !m_NoMoveHS || (m_DeltaFlags & ItemDelta.Update) != 0 ||
                                      !m.InRange(oldLoc, GetUpdateRange(m))))
                                 {
@@ -5235,13 +5235,13 @@ namespace Server
             {
                 Point3D worldLoc = GetWorldLocation();
 
-                var eable = m_Map.GetClientsInRange(worldLoc, GetMaxUpdateRange());
+                var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                 foreach (NetState state in eable)
                 {
                     Mobile m = state.Mobile;
 
-                    if (m.InRange(worldLoc, GetUpdateRange(m)))
+                    if (m.InUpdateRange(worldLoc))
                     {
                         state.Send(RemovePacket);
                     }

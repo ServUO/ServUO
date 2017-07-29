@@ -337,6 +337,8 @@ namespace Server.Network
 
 		public static int MenuCap { get { return m_MenuCap; } set { m_MenuCap = value; } }
 
+        public int UpdateRange { get; set; }
+
 		public void WriteConsole(string text)
 		{
 			Console.WriteLine("Client: {0}: {1}", this, text);
@@ -536,6 +538,7 @@ namespace Server.Network
 			}
 
 			m_ConnectedOn = DateTime.UtcNow;
+            UpdateRange = Core.GlobalUpdateRange;
 
 			if (m_CreatedCallback != null)
 			{
