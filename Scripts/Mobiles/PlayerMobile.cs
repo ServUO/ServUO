@@ -1462,8 +1462,18 @@ namespace Server.Mobiles
 							from.AddToBackpack(item);
 							moved = true;
 						}
-					}
-				}
+                    }
+
+                    #region Vice Vs Virtue
+                    IVvVItem vvvItem = item as IVvVItem;
+
+                    if (vvvItem != null && vvvItem.IsVvVItem && !Engines.VvV.ViceVsVirtueSystem.IsVvV(from))
+                    {
+                        from.AddToBackpack(item);
+                        moved = true;
+                    }
+                    #endregion
+                }
 
 				if (moved)
 				{
@@ -1516,6 +1526,8 @@ namespace Server.Mobiles
 				ScrollofAlacrity.AlacrityEnd(e.Mobile);
 			}
 			#endregion
+
+            BaseFamiliar.OnLogout(e.Mobile as PlayerMobile);
 		}
 
 		private static void EventSink_Connected(ConnectedEventArgs e)
@@ -1730,6 +1742,11 @@ namespace Server.Mobiles
 			InvalidateMyRunUO();
 		}
 
+        private BaseWeapon m_LastWeapon;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public BaseWeapon LastWeapon { get { return m_LastWeapon; } set { m_LastWeapon = value; } }
+
 		public override void OnItemRemoved(Item item)
 		{
 			base.OnItemRemoved(item);
@@ -1740,6 +1757,11 @@ namespace Server.Mobiles
 				Stam = Stam;
 				Mana = Mana;
 			}
+
+            if (item is BaseWeapon)
+            {
+                m_LastWeapon = item as BaseWeapon;
+            }
 
 			if (NetState != null)
 			{

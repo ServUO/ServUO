@@ -784,6 +784,7 @@
     <Compile Include="Items\Functional\Automaton\InoperativeAutomatonHead.cs" />
     <Compile Include="Items\Functional\Automaton\KotlAutomaton.cs" />
     <Compile Include="Items\Functional\Automaton\KotlAutomatonHead.cs" />
+    <Compile Include="Items\Functional\BaseArtifactLight.cs" />
     <Compile Include="Items\Functional\BaseDecayingItem.cs" />
     <Compile Include="Items\Functional\BaseDoor.cs">
       <SubType>Code</SubType>
@@ -993,6 +994,7 @@
     <Compile Include="Items\Tools\PenOfWisdom.cs" />
     <Compile Include="Items\Tools\PetBondingPotion.cs" />
     <Compile Include="Items\Tools\RunicMalletAndChisel.cs" />
+    <Compile Include="Misc\EquipLastWeapon.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Items\Artifacts\Equipment\Glasses\Glasses.cs">
       <SubType>Code</SubType>
@@ -9993,6 +9995,7 @@
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Mobile\WrongPrisoner.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\MysteriousTunnel.cs" />
     <Compile Include="Services\Revamped Dungeons\WrongDungeon\Items\WrongMazeWall.cs" />
+    <Compile Include="Services\RunicReforging\ReforgingContext.cs" />
     <Compile Include="Services\Tomb of Kings\Arisen Invasion\ArisenController.cs" />
     <Compile Include="Services\Tomb of Kings\Chambers\Chamber.cs" />
     <Compile Include="Services\Tomb of Kings\Chambers\ChamberBarrier.cs" />

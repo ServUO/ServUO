@@ -5,6 +5,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Regions;
 using System.Linq;
+using Server.Spells.Necromancy;
 
 namespace Server.Engines.CannedEvil
 {
@@ -380,6 +381,15 @@ namespace Server.Engines.CannedEvil
             m_Active = false;
             m_HasBeenAdvanced = false;
 
+            // We must despawn all the creatures.
+            if (m_Creatures != null)
+            {
+                for (int i = 0; i < m_Creatures.Count; ++i)
+                    m_Creatures[i].Delete();
+
+                m_Creatures.Clear();
+            }
+
             if (m_Timer != null)
                 m_Timer.Stop();
 
@@ -512,6 +522,8 @@ namespace Server.Engines.CannedEvil
                 }
             }
         }
+
+        private DateTime _NextGhostCheck;
 
         public void OnSlice()
         {
@@ -661,6 +673,26 @@ namespace Server.Engines.CannedEvil
                     Expire();
 
                 Respawn();
+            }
+
+            if (m_Timer != null && m_Timer.Running && _NextGhostCheck < DateTime.UtcNow)
+            {
+                foreach (var ghost in m_Region.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
+                {
+                    Map map = ghost.Map;
+                    Point3D loc = ExorcismSpell.GetNearestShrine(ghost, ref map);
+
+                    if (loc != Point3D.Zero)
+                    {
+                        ghost.MoveToWorld(loc, map);
+                    }
+                    else
+                    {
+                        ghost.MoveToWorld(new Point3D(989, 520, -50), Map.Malas);
+                    }
+                }
+
+                _NextGhostCheck = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(5, 8));
             }
         }
 
@@ -1460,6 +1492,11 @@ namespace Server.Engines.CannedEvil
 
     public class ChampionSpawnRegion : BaseRegion
     {
+        public static void Initialize()
+        {
+            EventSink.Logout += OnLogout;
+        }
+
         public override bool YoungProtected
         {
             get
@@ -1493,6 +1530,74 @@ namespace Server.Engines.CannedEvil
         {
             base.AlterLightLevel(m, ref global, ref personal);
             global = Math.Max(global, 1 + m_Spawn.Level);	//This is a guesstimate.  TODO: Verify & get exact values // OSI testing: at 2 red skulls, light = 0x3 ; 1 red = 0x3.; 3 = 8; 9 = 0xD 8 = 0xD 12 = 0x12 10 = 0xD
+        }
+
+        public override bool OnMoveInto(Mobile m, Direction d, Point3D newLocation, Point3D oldLocation)
+        {
+            if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted))
+            {
+                return false;
+            }
+
+            return base.OnMoveInto(m, d, newLocation, oldLocation);
+        }
+
+        public static void OnLogout(LogoutEventArgs e)
+        {
+            Mobile m = e.Mobile;
+
+            if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel == AccessLevel.Player)
+            {
+                if (m.Alive && m.Backpack != null)
+                {
+                    var list = new List<Item>(m.Backpack.Items.Where(i => i.LootType == LootType.Cursed));
+
+                    foreach (var item in list)
+                    {
+                        item.MoveToWorld(m.Location, m.Map);
+                    }
+
+                    ColUtility.Free(list);
+                }
+
+                Timer.DelayCall(TimeSpan.FromMilliseconds(250), () =>
+                {
+                    Map map = m.LogoutMap;
+
+                    Point3D loc = ExorcismSpell.GetNearestShrine(m, ref map);
+
+                    if (loc != Point3D.Zero)
+                    {
+                        m.LogoutLocation = loc;
+                        m.LogoutMap = map;
+                    }
+                    else
+                    {
+                        m.LogoutLocation = new Point3D(989, 520, -50);
+                        m.LogoutMap = Map.Malas;
+                    }
+                });
+            }
+        }
+
+        public static void OnLogin(LoginEventArgs e)
+        {
+            Mobile m = e.Mobile;
+
+            if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && m.Region.IsPartOf<ChampionSpawnRegion>())
+            {
+                Map map = m.Map;
+                Point3D loc = ExorcismSpell.GetNearestShrine(m, ref map);
+
+                if (loc != Point3D.Zero)
+                {
+                    m.MoveToWorld(loc, map);
+                }
+                else
+                {
+                    m.MoveToWorld(new Point3D(989, 520, -50), Map.Malas);
+                }
+            }
         }
     }
 

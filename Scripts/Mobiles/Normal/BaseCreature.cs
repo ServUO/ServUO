@@ -673,6 +673,7 @@ namespace Server.Mobiles
         public virtual bool AttacksFocus { get { return false; } }
         public virtual bool ShowSpellMantra { get { return false; } }
         public virtual bool FreezeOnCast { get { return ShowSpellMantra; } }
+        public virtual bool CanFly { get { return false; } }
 
         #region High Seas
         public virtual bool TaintedLifeAura { get { return false; } }
@@ -870,8 +871,6 @@ namespace Server.Mobiles
         }
         #endregion
 
-        public virtual bool CanFly { get { return false; } }
-
         #region Spill Acid
         public void SpillAcid(int Amount)
         {
@@ -968,6 +967,43 @@ namespace Server.Mobiles
 
                 Hits += toDrain;
                 m.Damage(toDrain, this);
+            }
+        }
+        #endregion
+
+        #region Colossal Blow
+        public virtual bool DoesColossalBlow { get { return false; } }
+        public virtual double ColossalBlowChance { get { return 0.3; } }
+        public virtual TimeSpan ColossalBlowDuration { get { return TimeSpan.FromSeconds(5); } }
+
+        public bool _Stunning;
+
+        public virtual void DoColossalBlow(Mobile defender)
+        {
+            _Stunning = true;
+
+            defender.Animate(21, 6, 1, true, false, 0);
+            PlaySound(0xEE);
+            defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1070696); // You have been stunned by a colossal blow!
+
+            BaseWeapon weapon = Weapon as BaseWeapon;
+
+            if (weapon != null)
+                weapon.OnHit(this, defender);
+
+            if (defender.Alive)
+            {
+                defender.Frozen = true;
+
+                Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(5.0), victim =>
+                    {
+                        victim.Frozen = false;
+                        victim.Combatant = null;
+                        victim.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1070695); // You recover your senses.
+
+                        _Stunning = false;
+
+                    }, defender);
             }
         }
         #endregion
@@ -3334,7 +3370,7 @@ namespace Server.Mobiles
         public Point3D ControlDest { get { return m_ControlDest; } set { m_ControlDest = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public OrderType ControlOrder
+        public virtual OrderType ControlOrder
         {
             get { return m_ControlOrder; }
             set
@@ -3504,6 +3540,11 @@ namespace Server.Mobiles
             if (DrainsLife && DrainsLifeChance >= Utility.RandomDouble())
             {
                 DrainLife();
+            }
+
+            if (DoesColossalBlow && !_Stunning && ColossalBlowChance > Utility.RandomDouble())
+            {
+                DoColossalBlow(defender);
             }
         }
 

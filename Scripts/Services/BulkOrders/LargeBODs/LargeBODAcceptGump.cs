@@ -72,6 +72,17 @@ namespace Server.Engines.BulkOrders
             this.AddHtmlLocalized(310, 216 + (entries.Length * 24), 120, 20, 1011012, 0x7FFF, false, false); // CANCEL
         }
 
+        public override void OnServerClose(NetState owner)
+        {
+            Timer.DelayCall(() =>
+                {
+                    if (m_Deed.Map == null || m_Deed.Map == Map.Internal)
+                    {
+                        m_Deed.Delete();
+                    }
+                });
+        }
+
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             if (info.ButtonID == 1) // Ok

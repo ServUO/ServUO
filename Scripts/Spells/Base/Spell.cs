@@ -129,6 +129,11 @@ namespace Server.Spells
             {
                 ((IDamageableItem)d).OnHarmfulSpell(m_Caster);
             }
+
+            NegativeAttributes.OnCombatAction(Caster);
+
+            if (d is Mobile && (Mobile)d != m_Caster)
+                NegativeAttributes.OnCombatAction((Mobile)d);
 		}
 
 		public Spell(Mobile caster, Item scroll, SpellInfo info)

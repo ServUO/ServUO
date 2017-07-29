@@ -6,9 +6,10 @@
 
 #region References
 using System.Collections.Generic;
-
+using System;
 using Server.ContextMenus;
 using Server.Items;
+using Server.Spells.Necromancy;
 #endregion
 
 namespace Server.Mobiles
@@ -16,6 +17,30 @@ namespace Server.Mobiles
 	public abstract class BaseFamiliar : BaseCreature
 	{
 		private bool m_LastHidden;
+        private long m_NextMove;
+
+        private DateTime m_SeperationStart;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime SeperationStart
+        {
+            get { return m_SeperationStart; }
+            set { m_SeperationStart = value; }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public override IDamageable Combatant
+        {
+            get { return null; }
+            set { }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public override OrderType ControlOrder
+        {
+            get { return OrderType.Come; }
+            set { }
+        }
 
 		public BaseFamiliar()
 			: base(AIType.AI_Melee, FightMode.Closest, 10, 1, -1, -1)
@@ -30,48 +55,69 @@ namespace Server.Mobiles
 		public override bool Commandable { get { return false; } }
 		public override bool PlayerRangeSensitive { get { return false; } }
 
-        public virtual bool AttacksMastersTarget { get { return false; } }
+        public virtual bool RangeCheck()
+        {
+            Mobile master = ControlMaster;
 
-		public virtual void RangeCheck()
-		{
-			if (!Deleted && ControlMaster != null && !ControlMaster.Deleted)
-			{
-				int range = (RangeHome - 2);
+            if (Deleted || master == null || master.Deleted)
+                return false;
 
-				if (!InRange(ControlMaster.Location, RangeHome))
-				{
-					Mobile master = ControlMaster;
+            int dist = (int)master.GetDistanceToSqrt(Location);
 
-					Point3D m_Loc = Point3D.Zero;
+            if (master.Map != Map || dist > 15)
+            {
+                if (m_SeperationStart == DateTime.MinValue)
+                {
+                    m_SeperationStart = DateTime.UtcNow + TimeSpan.FromMinutes(60);
+                }
+                else if (m_SeperationStart < DateTime.UtcNow)
+                {
+                    Delete();
+                }
 
-					if (Map == master.Map)
-					{
-						int x = (X > master.X) ? (master.X + range) : (master.X - range);
-						int y = (Y > master.Y) ? (master.Y + range) : (master.Y - range);
+                return false;
+            }
 
-						for (int i = 0; i < 10; i++)
-						{
-							m_Loc.X = x + Utility.RandomMinMax(-1, 1);
-							m_Loc.Y = y + Utility.RandomMinMax(-1, 1);
+            if (m_SeperationStart != DateTime.MinValue)
+            {
+                m_SeperationStart = DateTime.MinValue;
+            }
 
-							m_Loc.Z = Map.GetAverageZ(m_Loc.X, m_Loc.Y);
+            int range = (RangeHome / 2);
 
-							if (Map.CanSpawnMobile(m_Loc))
-							{
-								break;
-							}
+            if (!InRange(ControlMaster.Location, RangeHome))
+            {
+                Point3D loc = Point3D.Zero;
 
-							m_Loc = master.Location;
-						}
+                if (Map == master.Map)
+                {
+                    int x = (X > master.X) ? (master.X + range) : (master.X - range);
+                    int y = (Y > master.Y) ? (master.Y + range) : (master.Y - range);
 
-						if (!Deleted)
-						{
-							SetLocation(m_Loc, true);
-						}
-					}
-				}
-			}
-		}
+                    for (int i = 0; i < 10; i++)
+                    {
+                        loc.X = x + Utility.RandomMinMax(-1, 1);
+                        loc.Y = y + Utility.RandomMinMax(-1, 1);
+
+                        loc.Z = Map.GetAverageZ(loc.X, loc.Y);
+
+                        if (Map.CanSpawnMobile(loc))
+                        {
+                            break;
+                        }
+
+                        loc = master.Location;
+                    }
+
+                    if (!Deleted)
+                    {
+                        SetLocation(loc, true);
+                    }
+                }
+            }
+
+            return true;
+        }
 
 		public override void OnThink()
 		{
@@ -89,67 +135,56 @@ namespace Server.Mobiles
 				return;
 			}
 
-            if (AttacksMastersTarget)
-            {
-                if (Combatant == null)
-                {
-                    if (master.Combatant != null)
-                    {
-                        Combatant = master.Combatant;
-                    }
-                }
-                else
-                {
-                    if (Combatant.Deleted)
-                    {
-                        Combatant = null;
-                    }
-
-                    return;
-                }
-            }
-
-			RangeCheck();
-
 			if (m_LastHidden != master.Hidden)
 			{
 				Hidden = m_LastHidden = master.Hidden;
 			}
 
-			if (AIObject != null && AIObject.WalkMobileRange(master, 5, true, 1, 1))
-			{
-                if ((master.Combatant !=null) && (InRange(master.Combatant, 1)))
+            if (RangeCheck())
+            {
+                if (AIObject != null && AIObject.WalkMobileRange(master, 5, true, 1, 1))
                 {
-		            Warmode = master.Warmode;
-		            Combatant = master.Combatant;
+                    if (master.Combatant != null && master.InRange(master.Combatant, 1) && Core.TickCount > m_NextMove)
+                    {
+                        IDamageable combatant = master.Combatant;
 
-		            CurrentSpeed = 0.10;
-			    }
+                        if (!InRange(combatant.Location, 1))
+                        {
+                            for (int x = combatant.X - 1; x <= combatant.X + 1; x++)
+                            {
+                                for (int y = combatant.Y - 1; y <= combatant.Y + 1; y++)
+                                {
+                                    if (x == combatant.X && y == combatant.Y)
+                                    {
+                                        continue;
+                                    }
 
-                if ((master.Combatant !=null) && (!InRange(master.Combatant, 1)))
-                {
-                    Warmode = false;
-                    FocusMob = null;
-                    Combatant = null;
-                    CurrentSpeed = 0.01;
+                                    Point2D p = new Point2D(x, y);
+
+                                    if (InRange(p, 1) && master.InRange(p, 1))
+                                    {
+                                        CurrentSpeed = .01;
+                                        AIObject.MoveTo(new Point3D(x, y, Map.GetAverageZ(x, y)), false, 0);
+                                        m_NextMove = Core.TickCount + 500;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            CurrentSpeed = .1;
+                        }
+                    }
+                    else if (master.Combatant == null)
+                    {
+                        CurrentSpeed = .1;
+                    }
                 }
-
-                if (master.Combatant == null)
+                else
                 {
-                    Warmode = false;
-                    FocusMob = null;
-                    Combatant = null;
-                    CurrentSpeed = 0.01;
+                    CurrentSpeed = .1;
                 }
             }
-			else
-			{
-				Warmode = false;
-				FocusMob = null;
-                Combatant = null;
-
-				CurrentSpeed = .01;
-			}
 		}
 
 		public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -196,6 +231,27 @@ namespace Server.Mobiles
 				}
 			}
 		}
+
+        public static void OnHit(Mobile attacker, IDamageable defender)
+        {
+            BaseCreature check = (BaseCreature)SummonFamiliarSpell.Table[attacker];
+
+            if (check != null && check is BaseFamiliar && check.Weapon != null && check.InRange(defender.Location, check.Weapon.MaxRange))
+            {
+                check.Weapon.OnSwing(check, defender);
+            }
+        }
+
+        public static void OnLogout(PlayerMobile pm)
+        {
+            if (pm == null)
+                return;
+
+            BaseCreature check = (BaseCreature)SummonFamiliarSpell.Table[pm];
+
+            if (check != null)
+                check.Delete();
+        }
 
 		public override void Serialize(GenericWriter writer)
 		{

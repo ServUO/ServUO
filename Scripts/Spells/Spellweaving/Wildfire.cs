@@ -40,19 +40,19 @@ namespace Server.Spells.Spellweaving
         }
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Point3D p)
         {
-            if (!this.Caster.CanSee(p))
+            if (!Caster.CanSee(p))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (this.CheckSequence())
+            else if (CheckSequence())
             {
-                int level = GetFocusLevel(this.Caster);
-                double skill = this.Caster.Skills[this.CastSkill].Value;
+                int level = GetFocusLevel(Caster);
+                double skill = Caster.Skills[CastSkill].Value;
 
                 int tiles = 2 + level;
                 int damage = 15 + level;
@@ -65,19 +65,21 @@ namespace Server.Spells.Spellweaving
                         if (p.X == x && p.Y == y)
                             continue;
 							
-                        Point3D p3d = new Point3D(x, y, this.Caster.Map.GetAverageZ(x, y));
+                        Point3D p3d = new Point3D(x, y, Caster.Map.GetAverageZ(x, y));
 					
                         if (CanFitFire(p3d, Caster))
-                            new FireItem(duration).MoveToWorld(p3d, this.Caster.Map);
+                            new FireItem(duration).MoveToWorld(p3d, Caster.Map);
                     }
                 }
 				
-                Effects.PlaySound(p, this.Caster.Map, 0x5CF);
-				
-                new InternalTimer(this.Caster, p, damage, tiles, duration).Start();
+                Effects.PlaySound(p, Caster.Map, 0x5CF);
+
+                NegativeAttributes.OnCombatAction(Caster);
+
+                new InternalTimer(Caster, p, damage, tiles, duration).Start();
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private bool CanFitFire(Point3D p, Mobile caster)
@@ -103,20 +105,20 @@ namespace Server.Spells.Spellweaving
             public InternalTarget(WildfireSpell owner)
                 : base(12, true, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile m, object o)
             {
                 if (o is IPoint3D)
                 {
-                    this.m_Owner.Target(new Point3D((IPoint3D)o));
+                    m_Owner.Target(new Point3D((IPoint3D)o));
                 }
             }
 
             protected override void OnTargetFinish(Mobile m)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
 
@@ -132,33 +134,33 @@ namespace Server.Spells.Spellweaving
             public InternalTimer(Mobile owner, Point3D location, int damage, int range, int duration)
                 : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), duration)
             {
-                this.m_Owner = owner;
-                this.m_Location = location;
-                this.m_Damage = damage;
-                this.m_Range = range;
-                this.m_LifeSpan = duration;
-                this.m_Map = owner.Map;
+                m_Owner = owner;
+                m_Location = location;
+                m_Damage = damage;
+                m_Range = range;
+                m_LifeSpan = duration;
+                m_Map = owner.Map;
             }
 
             protected override void OnTick()
             { 
-                if (this.m_Owner == null || m_Map == null || m_Map == Map.Internal)
+                if (m_Owner == null || m_Map == null || m_Map == Map.Internal)
                     return;
 					
-                this.m_LifeSpan -= 1;
+                m_LifeSpan -= 1;
 
                 List<Mobile> list = GetTargets();
 
                 foreach (Mobile m in list)
                 {
-                    this.m_Owner.DoHarmful(m);
+                    m_Owner.DoHarmful(m);
 					
-                    if (this.m_Owner.Map.CanFit(m.Location, 12, true, false))
-                        new FireItem(this.m_LifeSpan).MoveToWorld(m.Location, m.Map);
+                    if (m_Owner.Map.CanFit(m.Location, 12, true, false))
+                        new FireItem(m_LifeSpan).MoveToWorld(m.Location, m.Map);
 						
                     Effects.PlaySound(m.Location, m.Map, 0x5CF);
 					
-                    AOS.Damage(m, this.m_Owner, this.m_Damage, 0, 100, 0, 0, 0);	
+                    AOS.Damage(m, m_Owner, m_Damage, 0, 100, 0, 0, 0);	
                 }
 
                 list.Clear();
@@ -167,14 +169,14 @@ namespace Server.Spells.Spellweaving
             private List<Mobile> GetTargets()
             {
                 List<Mobile> targets = new List<Mobile>();
-                IPooledEnumerable eable = this.m_Map.GetMobilesInRange(this.m_Location, this.m_Range);
+                IPooledEnumerable eable = m_Map.GetMobilesInRange(m_Location, m_Range);
 
                 foreach (Mobile m in eable)
                 {
                     if (BaseHouse.FindHouseAt(m.Location, m.Map, 20) != null)
                         continue;
 
-                    if (m != this.m_Owner && SpellHelper.ValidIndirectTarget(this.m_Owner, m) && this.m_Owner.CanBeHarmful(m, false))
+                    if (m != m_Owner && SpellHelper.ValidIndirectTarget(m_Owner, m) && m_Owner.CanBeHarmful(m, false))
                         targets.Add(m);
                 }
 
@@ -188,7 +190,7 @@ namespace Server.Spells.Spellweaving
             public FireItem(int duration)
                 : base(Utility.RandomBool() ? 0x398C : 0x3996)
             {
-                this.Movable = false;
+                Movable = false;
                 Timer.DelayCall(TimeSpan.FromSeconds(duration), new TimerCallback(Delete));
             }
 

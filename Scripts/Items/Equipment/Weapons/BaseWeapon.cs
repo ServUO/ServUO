@@ -2187,7 +2187,7 @@ namespace Server.Items
             bool acidicTarget = MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
 
             if ((m_AosAttributes.SpellChanneling == 0 || MaxRange > 1) &&
-                (acidicTarget || (defender != null && splintering) || Utility.Random(250) <= chance))    // Stratics says 50% chance, seems more like 4%..
+                (acidicTarget || (defender != null && splintering) || Utility.Random(20) <= chance))    // Stratics says 50% chance, seems more like 4%..
             {
                 if (MaxRange <= 1 && acidicTarget)
                 {
@@ -2873,6 +2873,8 @@ namespace Server.Items
 				}
 			}
 
+            BaseFamiliar.OnHit(attacker, damageable);
+            WhiteTigerFormSpell.OnHit(attacker, defender);
 			XmlAttach.OnWeaponHit(this, attacker, defender, damageGiven);
 		}
 

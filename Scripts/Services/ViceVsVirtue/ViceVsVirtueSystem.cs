@@ -177,6 +177,7 @@ namespace Server.Engines.VvV
                 entry.Active = false;
                 entry.ResignExpiration = DateTime.MinValue;
                 pm.Delta(MobileDelta.Noto);
+                pm.ValidateEquipment();
             }
         }
 

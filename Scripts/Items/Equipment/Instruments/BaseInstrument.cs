@@ -631,8 +631,10 @@ namespace Server.Items
             {
                 SetInstrument(from, this);
 
-                // Delay of 7 second before beign able to play another instrument again
-                new InternalTimer(from).Start();
+                Timer.DelayCall(TimeSpan.FromMilliseconds(1000), () =>
+                    {
+                        from.EndAction(typeof(BaseInstrument));
+                    });
 
                 if (CheckMusicianship(from))
                     PlayInstrumentWell(from);
@@ -662,22 +664,6 @@ namespace Server.Items
             from.PlaySound(m_BadlySound);
         }
 
-        private class InternalTimer : Timer
-        {
-            private readonly Mobile m_From;
-
-            public InternalTimer(Mobile from)
-                : base(TimeSpan.FromSeconds(6.0))
-            {
-                m_From = from;
-                Priority = TimerPriority.TwoFiftyMS;
-            }
-
-            protected override void OnTick()
-            {
-                m_From.EndAction(typeof(BaseInstrument));
-            }
-        }
         #region ICraftable Members
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)

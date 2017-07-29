@@ -20,6 +20,7 @@ namespace Server.Mobiles
         private DateTime m_NextCannonShot;
         private DateTime m_NextMoveCheck;
         private DateTime m_ActionTime;
+        private DateTime m_NextCrewCheck;
         private SpawnZone m_Zone;
         private bool m_Blockade;
         private List<Mobile> m_Crew = new List<Mobile>();
@@ -35,6 +36,9 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextMoveCheck { get { return m_NextMoveCheck; } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextCrewCheck { get { return m_NextCrewCheck; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SpawnZone Zone { get { return m_Zone; } set { m_Zone = value; } }
@@ -254,6 +258,11 @@ namespace Server.Mobiles
             // Ship is fucked without his captain!!!
             if (!m_Galleon.Contains(this))
                 return;
+
+            if (m_NextCrewCheck < DateTime.UtcNow)
+            {
+                CheckCrew();
+            }
 
             if (!IsInBattle())
             {
@@ -523,6 +532,41 @@ namespace Server.Mobiles
                 item.Delete();
         }
 
+        public void CheckCrew()
+        {
+            if (m_Galleon == null || m_Crew == null || Map == null || Map == Map.Internal)
+                return;
+
+            List<Mobile> crew = new List<Mobile>(m_Crew.Where(m => m != null && m.Alive && m.Map != null && m.Map != Map.Internal));
+
+            if (m_Galleon.Pilot != null)
+                crew.Add(m_Galleon.Pilot);
+
+            crew.Add(this);
+
+            foreach (var crewman in crew)
+            {
+                StaticTile[] staticTiles = Map.Tiles.GetStaticTiles(crewman.X, crewman.Y, true);
+                bool hasSurface = false;
+
+                foreach (var tile in staticTiles)
+                {
+                    if (tile.Z == crewman.Z && TileData.ItemTable[tile.ID & TileData.MaxItemValue].Surface)
+                    {
+                        hasSurface = true;
+                    }
+                }
+
+                if (!hasSurface)
+                {
+                    crewman.MoveToWorld(new Point3D(m_Galleon.X + Utility.RandomList(-1, 1), m_Galleon.Y + Utility.RandomList(-1, 0, 1), m_Galleon.ZSurface), this.Map);
+                }
+            }
+
+            ColUtility.Free(crew);
+            m_NextCrewCheck = DateTime.UtcNow + TimeSpan.FromMinutes(30);
+        }
+
         public BaseShipCaptain(Serial serial)
             : base(serial)
         {
@@ -566,6 +610,11 @@ namespace Server.Mobiles
 
             if (!m_Blockade)
                 ResumeCourseTimed(TimeSpan.FromSeconds(15), true);
+
+            if (m_Galleon != null)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(30), CheckCrew);
+            }
 
             m_NextMoveCheck = DateTime.UtcNow;
             m_NextCannonShot = DateTime.UtcNow;

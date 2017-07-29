@@ -15,6 +15,7 @@ using Server.Spells.Spellweaving;
 using Server.SkillHandlers;
 using Server.Engines.CityLoyalty;
 using Server.Spells.SkillMasteries;
+using System.Linq;
 
 namespace Server
 {
@@ -2970,6 +2971,62 @@ namespace Server
 
             if (NoRepair > 0)
                 list.Add(1151782);
+        }
+
+        public const double CombatDecayChance = 0.02;
+
+        public static void OnCombatAction(Mobile m)
+        {
+            if (m == null || !m.Alive)
+                return;
+
+            var list = new List<Item>();
+
+            foreach (var item in m.Items.Where(i => i is IDurability))
+            {
+                NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(item);
+
+                if (attrs != null && attrs.Antique > 0 && CombatDecayChance > Utility.RandomDouble())
+                {
+                    list.Add(item);
+                }
+            }
+
+            foreach (var item in list)
+            {
+                IDurability dur = item as IDurability;
+
+                if (dur == null)
+                    continue;
+
+                if (dur.HitPoints >= 1)
+                {
+                    if (dur.HitPoints >= 4)
+                    {
+                        dur.HitPoints -= 4;
+                    }
+                    else
+                    {
+                        dur.HitPoints = 0;
+                    }
+                }
+                else
+                {
+                    if (dur.MaxHitPoints > 1)
+                    {
+                        dur.MaxHitPoints--;
+
+                        if (item.Parent is Mobile)
+                            ((Mobile)item.Parent).LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                    }
+                    else
+                    {
+                        item.Delete();
+                    }
+                }
+            }
+
+            ColUtility.Free(list);
         }
 
         public int this[NegativeAttribute attribute]

@@ -67,6 +67,8 @@ namespace Server.Mobiles
         }
 
         public override int DragonBlood { get { return 8; } }
+        public override bool DoesColossalBlow { get { return true; } }
+
         public override HideType HideType
         {
             get { return HideType.Horned; }
@@ -144,45 +146,6 @@ namespace Server.Mobiles
             base.OnDeath(c);
 
             c.DropItem(new BouraSkin());
-        }
-
-        public override void OnGaveMeleeAttack(Mobile defender)
-        {
-            base.OnGaveMeleeAttack(defender);
-
-            if (!m_Stunning && 0.3 > Utility.RandomDouble())
-            {
-                m_Stunning = true;
-
-                defender.Animate(21, 6, 1, true, false, 0);
-                PlaySound(0xEE);
-                defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, false,
-                    "You have been stunned by a colossal blow!");
-
-                var weapon = Weapon as BaseWeapon;
-                if (weapon != null)
-                    weapon.OnHit(this, defender);
-
-                if (defender.Alive)
-                {
-                    defender.Frozen = true;
-                    Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerStateCallback(Recover_Callback), defender);
-                }
-            }
-        }
-
-        private void Recover_Callback(object state)
-        {
-            var defender = state as Mobile;
-
-            if (defender != null)
-            {
-                defender.Frozen = false;
-                defender.Combatant = null;
-                defender.LocalOverheadMessage(MessageType.Regular, 0x3B2, false, "You recover your senses.");
-            }
-
-            m_Stunning = false;
         }
 
         public override void Serialize(GenericWriter writer)
