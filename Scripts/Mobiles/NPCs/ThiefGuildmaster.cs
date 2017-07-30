@@ -39,7 +39,7 @@ namespace Server.Mobiles
                 return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(7.0);
             }
         }
-        public virtual TimeSpan JoinGameAge
+        public override TimeSpan JoinGameAge
         {
             get
             {
