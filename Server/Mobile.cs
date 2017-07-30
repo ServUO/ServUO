@@ -7462,8 +7462,11 @@ namespace Server
 
         public virtual void OnUpdateRangeChanged(int oldRange, int newRange)
         {
-            ClearScreen();
-            SendEverything();
+            if (oldRange != newRange)
+            {
+                ClearScreen();
+                SendEverything();
+            }
         }
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]

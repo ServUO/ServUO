@@ -100,11 +100,11 @@ namespace Server.Items
 
         private int m_TimesImbued;
         private bool m_IsImbued;
-        private int m_PhysImbuing;
-        private int m_FireImbuing;
-        private int m_ColdImbuing;
-        private int m_PoisonImbuing;
-        private int m_EnergyImbuing;
+        private int m_PhysNonImbuing;
+        private int m_FireNonImbuing;
+        private int m_ColdNonImbuing;
+        private int m_PoisonNonImbuing;
+        private int m_EnergyNonImbuing;
         #endregion
 
         private AosAttributes m_AosAttributes;
@@ -633,38 +633,38 @@ namespace Server.Items
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PhysImbuing
+        public int PhysNonImbuing
         {
-            get { return m_PhysImbuing; }
-            set { m_PhysImbuing = value; }
+            get { return m_PhysNonImbuing; }
+            set { m_PhysNonImbuing = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int FireImbuing
+        public int FireNonImbuing
         {
-            get { return m_FireImbuing; }
-            set { m_FireImbuing = value; }
+            get { return m_FireNonImbuing; }
+            set { m_FireNonImbuing = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ColdImbuing
+        public int ColdNonImbuing
         {
-            get { return m_ColdImbuing; }
-            set { m_ColdImbuing = value; }
+            get { return m_ColdNonImbuing; }
+            set { m_ColdNonImbuing = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PoisonImbuing
+        public int PoisonNonImbuing
         {
-            get { return m_PoisonImbuing; }
-            set { m_PoisonImbuing = value; }
+            get { return m_PoisonNonImbuing; }
+            set { m_PoisonNonImbuing = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int EnergyImbuing
+        public int EnergyNonImbuing
         {
-            get { return m_EnergyImbuing; }
-            set { m_EnergyImbuing = value; }
+            get { return m_EnergyNonImbuing; }
+            set { m_EnergyNonImbuing = value; }
         }
         #endregion
 
@@ -826,8 +826,11 @@ namespace Server.Items
                 if (m_Resource != value)
                 {
                     UnscaleDurability();
+                    CraftResource old = m_Resource;
 
                     m_Resource = value;
+
+                    ApplyResourceResistances(old);
 
                     if (CraftItem.RetainsColor(GetType()))
                     {
@@ -1196,7 +1199,7 @@ namespace Server.Items
         {
             get
             {
-                return BasePhysicalResistance + GetProtOffset() + GetResourceAttrs().ArmorPhysicalResist + m_PhysicalBonus;
+                return BasePhysicalResistance + GetProtOffset() + m_PhysicalBonus;
             }
         }
 
@@ -1204,7 +1207,7 @@ namespace Server.Items
         {
             get
             {
-                return BaseFireResistance + GetProtOffset() + GetResourceAttrs().ArmorFireResist + m_FireBonus;
+                return BaseFireResistance + GetProtOffset() + m_FireBonus;
             }
         }
 
@@ -1212,7 +1215,7 @@ namespace Server.Items
         {
             get
             {
-                return BaseColdResistance + GetProtOffset() + GetResourceAttrs().ArmorColdResist + m_ColdBonus;
+                return BaseColdResistance + GetProtOffset() + m_ColdBonus;
             }
         }
 
@@ -1220,7 +1223,7 @@ namespace Server.Items
         {
             get
             {
-                return BasePoisonResistance + GetProtOffset() + GetResourceAttrs().ArmorPoisonResist + m_PoisonBonus;
+                return BasePoisonResistance + GetProtOffset() + m_PoisonBonus;
             }
         }
 
@@ -1228,7 +1231,7 @@ namespace Server.Items
         {
             get
             {
-                return BaseEnergyResistance + GetProtOffset() + GetResourceAttrs().ArmorEnergyResist + m_EnergyBonus;
+                return BaseEnergyResistance + GetProtOffset() + m_EnergyBonus;
             }
         }
 
@@ -1306,9 +1309,47 @@ namespace Server.Items
             InvalidateProperties();
         }
 
-        public CraftAttributeInfo GetResourceAttrs()
+        private void ApplyResourceResistances(CraftResource oldResource)
         {
-            CraftResourceInfo info = CraftResources.GetInfo(m_Resource);
+            CraftAttributeInfo info;
+
+            if (oldResource > CraftResource.None)
+            {
+                info = GetResourceAttrs(oldResource);
+
+                // Remove old bonus
+                m_PhysicalBonus = Math.Max(0, m_PhysicalBonus - info.ArmorPhysicalResist);
+                m_FireBonus = Math.Max(0, m_FireBonus - info.ArmorFireResist);
+                m_ColdBonus = Math.Max(0, m_ColdBonus - info.ArmorColdResist);
+                m_PoisonBonus = Math.Max(0, m_PoisonBonus - info.ArmorPoisonResist);
+                m_EnergyBonus = Math.Max(0, m_EnergyBonus - info.ArmorEnergyResist);
+
+                m_PhysNonImbuing = Math.Max(0, PhysNonImbuing - info.ArmorPhysicalResist);
+                m_FireNonImbuing = Math.Max(0, m_FireNonImbuing - info.ArmorFireResist);
+                m_ColdNonImbuing = Math.Max(0, m_ColdNonImbuing - info.ArmorColdResist);
+                m_PoisonNonImbuing = Math.Max(0, m_PoisonNonImbuing - info.ArmorPoisonResist);
+                m_EnergyNonImbuing = Math.Max(0, m_EnergyNonImbuing - info.ArmorEnergyResist);
+            }
+
+            info = GetResourceAttrs(m_Resource);
+
+            // add new bonus
+            m_PhysicalBonus += info.ArmorPhysicalResist;
+            m_FireBonus += info.ArmorFireResist;
+            m_ColdBonus += info.ArmorColdResist;
+            m_PoisonBonus += info.ArmorPoisonResist;
+            m_EnergyBonus += info.ArmorEnergyResist;
+
+            m_PhysNonImbuing += info.ArmorPhysicalResist;
+            m_FireNonImbuing += info.ArmorFireResist;
+            m_ColdNonImbuing += info.ArmorColdResist;
+            m_PoisonNonImbuing += info.ArmorPoisonResist;
+            m_EnergyNonImbuing += info.ArmorEnergyResist;
+        }
+
+        public CraftAttributeInfo GetResourceAttrs(CraftResource res)
+        {
+            CraftResourceInfo info = CraftResources.GetInfo(res);
 
             if (info == null)
                 return CraftAttributeInfo.Blank;
@@ -1661,7 +1702,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)12); // version
+            writer.Write((int)13); // version
 
             writer.Write(_VvVItem);
             writer.Write(_Owner);
@@ -1689,11 +1730,11 @@ namespace Server.Items
             writer.Write(m_GorgonLenseCharges);
             writer.Write((int)m_GorgonLenseType);
 
-            writer.Write(m_PhysImbuing);
-            writer.Write(m_FireImbuing);
-            writer.Write(m_ColdImbuing);
-            writer.Write(m_PoisonImbuing);
-            writer.Write(m_EnergyImbuing);
+            writer.Write(m_PhysNonImbuing);
+            writer.Write(m_FireNonImbuing);
+            writer.Write(m_ColdNonImbuing);
+            writer.Write(m_PoisonNonImbuing);
+            writer.Write(m_EnergyNonImbuing);
 
             // Version 8
             writer.Write((int)m_TimesImbued);
@@ -1874,6 +1915,7 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 13:
                 case 12:
                     {
                         _VvVItem = reader.ReadBool();
@@ -1908,11 +1950,11 @@ namespace Server.Items
                         m_GorgonLenseCharges = reader.ReadInt();
                         m_GorgonLenseType = (LenseType)reader.ReadInt();
 
-                        m_PhysImbuing = reader.ReadInt();
-                        m_FireImbuing = reader.ReadInt();
-                        m_ColdImbuing = reader.ReadInt();
-                        m_PoisonImbuing = reader.ReadInt();
-                        m_EnergyImbuing = reader.ReadInt();
+                        m_PhysNonImbuing = reader.ReadInt();
+                        m_FireNonImbuing = reader.ReadInt();
+                        m_ColdNonImbuing = reader.ReadInt();
+                        m_PoisonNonImbuing = reader.ReadInt();
+                        m_EnergyNonImbuing = reader.ReadInt();
                         goto case 8;
                     }
                 case 8:
@@ -2288,6 +2330,9 @@ namespace Server.Items
 
             if (version < 7)
                 m_PlayerConstructed = true; // we don't know, so, assume it's crafted
+
+            if (version < 13)
+                ApplyResourceResistances(CraftResource.None);
         }
 
         public virtual CraftResource DefaultResource
@@ -3112,11 +3157,11 @@ namespace Server.Items
                     }
 
                     #region Stygian Abyss
-                    m_PhysImbuing = m_PhysicalBonus;
-                    m_FireImbuing = m_FireBonus;
-                    m_ColdImbuing = m_ColdBonus;
-                    m_PoisonImbuing = m_PoisonBonus;
-                    m_EnergyImbuing = m_EnergyBonus;
+                    m_PhysNonImbuing = m_PhysicalBonus;
+                    m_FireNonImbuing = m_FireBonus;
+                    m_ColdNonImbuing = m_ColdBonus;
+                    m_PoisonNonImbuing = m_PoisonBonus;
+                    m_EnergyNonImbuing = m_EnergyBonus;
                     #endregion
 
                     from.CheckSkill(SkillName.ArmsLore, 0, 100);

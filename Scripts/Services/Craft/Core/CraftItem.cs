@@ -40,6 +40,11 @@ namespace Server.Engines.Craft
 
 	public class CraftItem
 	{
+        /*this delegate will handle all crafting functions, 
+         * such as resource check, actual crafting, etc. 
+         * For use for abnormal crafting, ie combine cloth, etc.*/
+        public Action<Mobile, CraftItem, BaseTool> TryCraft { get; set; }
+
 		private readonly CraftResCol m_arCraftRes;
 		private readonly CraftSkillCol m_arCraftSkill;
 		private readonly Type m_Type;

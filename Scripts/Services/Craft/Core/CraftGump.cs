@@ -465,6 +465,12 @@ namespace Server.Engines.Craft
 
         public void CraftItem(CraftItem item)
         {
+            if (item.TryCraft != null)
+            {
+                item.TryCraft(m_From, item, m_Tool);
+                return;
+            }
+
             int num = this.m_CraftSystem.CanCraft(this.m_From, this.m_Tool, item.ItemType);
 
             if (num > 0)

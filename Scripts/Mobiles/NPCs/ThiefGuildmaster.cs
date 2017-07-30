@@ -39,6 +39,13 @@ namespace Server.Mobiles
                 return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(7.0);
             }
         }
+        public override TimeSpan JoinGameAge
+        {
+            get
+            {
+                return Siege.SiegeShard ? TimeSpan.FromDays(0.0) : TimeSpan.FromDays(2.0);
+            }
+        }
         public override void InitOutfit()
         {
             base.InitOutfit();
@@ -61,7 +68,7 @@ namespace Server.Mobiles
                 this.SayTo(pm, 501050); // This guild is for cunning thieves, not oafish cutthroats.
                 return false;
             }
-            else if (pm.Skills[SkillName.Stealing].Base < 60.0)
+            else if (pm.Skills[SkillName.Stealing].Base < 60.0 && !Siege.SiegeShard)
             {
                 this.SayTo(pm, 501051); // You must be at least a journeyman pickpocket to join this elite organization.
                 return false;

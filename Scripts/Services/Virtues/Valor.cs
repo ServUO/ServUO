@@ -58,6 +58,7 @@ namespace Server
             else
             {
                 VirtueLevel vl = VirtueHelper.GetLevel(from, VirtueName.Valor);
+
                 if (idol.Spawn.Active)
                 {
                     if (idol.Spawn.Champion != null)	//TODO: Message?
@@ -107,7 +108,7 @@ namespace Server
                         VirtueHelper.Atrophy(from, VirtueName.Valor, 11000);
                         from.SendLocalizedMessage(1054037); // Your challenge is heard by the Champion of this region! Beware its wrath!
                         idol.Spawn.EndRestart();
-                        idol.Spawn.HasBeenAdvanced = true;
+                        //idol.Spawn.HasBeenAdvanced = true;
                     }
                     else
                     {

@@ -509,51 +509,17 @@ namespace Server.Engines.VendorSearhing
             {
                 default: break;
                 case 1:
-                    if (VendorMap.SetLocation != Point3D.Zero)
-                    {
-                        User.Frozen = true;
-
-                        DoRecall(VendorMap.SetLocation, VendorMap.SetMap);
-                        User.PublicOverheadMessage(MessageType.Spell, User.SpeechHue, true, "Kal Ort Por", false);
-                    }
-                    else if (!VendorMap.CheckVendor())
+                    if (!VendorMap.CheckVendor())
                     {
                         User.SendLocalizedMessage(1154643); // That item is no longer for sale.
                     }
-                    else if (Banker.Withdraw(User, Cost, true))
-                    {
-                        User.Frozen = true;
-
-                        VendorMap.SetLocation = User.Location;
-                        VendorMap.SetMap = User.Map;
-
-                        User.PublicOverheadMessage(MessageType.Spell, User.SpeechHue, true, "Kal Ort Por", false);
-                        DoRecall(VendorMap.GetVendorLocation(), VendorMap.GetVendorMap());
-                    }
                     else
-                        User.SendLocalizedMessage(1019022); // You do not have enough gold.
+                    {
+                        new Server.Spells.Fourth.RecallSpell(User, null, VendorMap).Cast();
+                    }
+
                     break;
             }
-        }
-
-        private void DoRecall(Point3D loc, Map map)
-        {
-            Timer.DelayCall(TimeSpan.FromSeconds(1.5), () =>
-            {
-                User.Frozen = false;
-
-                if (VendorMap.CheckVendor())
-                {
-                    User.PlaySound(0x1FC);
-                    User.MoveToWorld(loc, map);
-                    User.PlaySound(0x1FC);
-
-                    if (loc == VendorMap.SetLocation && !VendorMap.Deleted)
-                        VendorMap.Delete();
-                }
-                else
-                    User.SendLocalizedMessage(1154700); // Item no longer for sale.
-            });
         }
     }
 }

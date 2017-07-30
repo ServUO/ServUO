@@ -17,8 +17,13 @@ namespace Server.Spells.Fourth
             Reagent.BlackPearl,
             Reagent.Bloodmoss,
             Reagent.MandrakeRoot);
+
         private readonly RunebookEntry m_Entry;
         private readonly Runebook m_Book;
+        private readonly VendorSearchMap m_SearchMap;
+
+        public bool NoSkillRequirement { get { return (Core.SE && (m_Book != null || m_SearchMap != null)) || TransformationSpellHelper.UnderTransformation(Caster, typeof(WraithFormSpell)); } }
+
         public RecallSpell(Mobile caster, Item scroll)
             : this(caster, scroll, null, null)
         {
@@ -31,6 +36,12 @@ namespace Server.Spells.Fourth
             m_Book = book;
         }
 
+        public RecallSpell(Mobile caster, Item scroll, VendorSearchMap map)
+            : base(caster, scroll, m_Info)
+        {
+            m_SearchMap = map;
+        }
+
         public override SpellCircle Circle
         {
             get
@@ -40,9 +51,7 @@ namespace Server.Spells.Fourth
         }
         public override void GetCastSkills(out double min, out double max)
         {
-            if (TransformationSpellHelper.UnderTransformation(Caster, typeof(WraithFormSpell)))
-                min = max = 0;
-            else if (Core.SE && m_Book != null)	//recall using Runebook charge
+            if (NoSkillRequirement)	//recall using Runebook charge, wraith form or using vendor search map
                 min = max = 0;
             else
                 base.GetCastSkills(out min, out max);
@@ -50,10 +59,26 @@ namespace Server.Spells.Fourth
 
         public override void OnCast()
         {
-            if (m_Entry == null)
+            if (m_Entry == null && m_SearchMap == null)
                 Caster.Target = new InternalTarget(this);
             else
-                Effect(m_Entry.Location, m_Entry.Map, true, m_Entry.Galleon != null);
+            {
+                Point3D loc;
+                Map map;
+
+                if (m_Entry != null)
+                {
+                    loc = m_Entry.Location;
+                    map = m_Entry.Map;
+                }
+                else
+                {
+                    loc = m_SearchMap.SetLocation != Point3D.Zero ? m_SearchMap.SetLocation : m_SearchMap.GetVendorLocation();
+                    map = m_SearchMap.SetMap != null ? m_SearchMap.SetMap : m_SearchMap.GetVendorMap();
+                }
+
+                Effect(loc, map, true, m_Entry != null && m_Entry.Galleon != null);
+            }
         }
 
         public override bool CheckCast()
@@ -144,6 +169,9 @@ namespace Server.Spells.Fourth
 
                 if (m_Book != null)
                     --m_Book.CurCharges;
+
+                if (m_SearchMap != null)
+                    m_SearchMap.OnBeforeTravel(Caster);
 
                 Caster.PlaySound(0x1FC);
                 Caster.MoveToWorld(loc, map);
