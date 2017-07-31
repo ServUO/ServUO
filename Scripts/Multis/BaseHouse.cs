@@ -2090,7 +2090,7 @@ namespace Server.Multis
                 {
                     m.SendLocalizedMessage(1010418); // You did not lock this down, and you are not able to release 
                 }
-                else
+                else if (CanRelease(m, item))
                 {
                     item.PublicOverheadMessage(Server.Network.MessageType.Label, 0x3B2, 501657);//[no longer locked down]
                     SetLockdown(m, item, false);
@@ -2245,7 +2245,7 @@ namespace Server.Multis
 
         public void ReleaseSecure(Mobile m, Item item)
         {
-            if (m_Secures == null || !IsOwner(m) || item is StrongBox || !IsActive)
+            if (m_Secures == null || !IsOwner(m) || item is StrongBox || !IsActive || !CanRelease(m, item))
                 return;
 
             for (int i = 0; i < m_Secures.Count; ++i)
@@ -2262,8 +2262,8 @@ namespace Server.Multis
                         item.Movable = false;
                     else
                     #endregion
-
                         item.Movable = true;
+
                     item.SetLastMoved();
                     item.PublicOverheadMessage(Server.Network.MessageType.Label, 0x3B2, 501656);//[no longer secure]
                     m_Secures.RemoveAt(i);
@@ -2272,6 +2272,23 @@ namespace Server.Multis
             }
 
             m.SendLocalizedMessage(501717);//This isn't secure...
+        }
+
+        private bool CanRelease(Mobile from, Item item)
+        {
+            if (item is Container)
+            {
+                foreach (var i in item.Items)
+                {
+                    if (i is CraftableHouseItem || i is CraftableMetalHouseDoor || i is CraftableStoneHouseDoor)
+                    {
+                        from.SendLocalizedMessage(1010417); // You may not release this at this time.
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         public override bool Decays

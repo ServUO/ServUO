@@ -8,16 +8,24 @@ namespace Server.Mobiles
     {
         [Constructable]
         public BladeSpirits()
+            : this(false)
+        {
+        }
+
+        [Constructable]
+        public BladeSpirits(bool summoned)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.3, 0.6)
         {
             this.Name = "a blade spirit";
             this.Body = 574;
 
-            this.SetStr(150);
-            this.SetDex(150);
+            bool weak = summoned && Siege.SiegeShard;
+
+            this.SetStr(weak ? 100 : 150);
+            this.SetDex(weak ? 100 : 150);
             this.SetInt(100);
 
-            this.SetHits((Core.SE) ? 160 : 80);
+            this.SetHits((Core.SE && !weak) ? 160 : 80);
             this.SetStam(250);
             this.SetMana(0);
 

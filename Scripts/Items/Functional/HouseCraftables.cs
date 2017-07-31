@@ -6,7 +6,7 @@ using Server.Multis;
 
 namespace Server.Items
 {
-    public enum CraftableAddonType
+    public enum CraftableItemType
     {
         // Walls
         RoughWindowless,
@@ -37,73 +37,7 @@ namespace Server.Items
         EndCurledMetalSignHanger,
     }
 
-    public class CraftableHouseAddonComponent : AddonComponent, IFlipable
-    {
-        public int NorthID { get { return 0; } }
-        public int WestID { get { return 0; } }
-
-        public CraftableHouseAddonComponent(int id)
-            : base(id)
-        {
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1153494); // House Only
-        }
-
-        public void OnFlip()
-        {
-            CraftableHouseAddon addon = Addon as CraftableHouseAddon;
-            int[] list = CraftableHouseAddon.IDs[(int)addon.AddonType];
-            //Utility.WriteLine(ConsoleColor.Yellow, String.Format("Trying to Flip: {0} / ID Length: {1}", addon.CanFlip ? "YES" : "NO", list.Length));
-
-            if (addon != null && addon.CanFlip && list.Length > 2)
-            {
-                for (int i = 1; i < list.Length; i++)
-                {
-                    int id = list[i];
-
-                    if (this.ItemID == id)
-                    {
-                        if (i >= list.Length - 1)
-                        {
-                            this.ItemID = list[1];
-                            break;
-                        }
-                        else
-                        {
-                            this.ItemID = list[i + 1];
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        public CraftableHouseAddonComponent(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write((int)0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    public class CraftableHouseAddon : BaseAddon
+    public class CraftableHouseItem : Item, IFlipable, ICraftable
     {
         public static int[][] IDs =
 		{
@@ -132,6 +66,12 @@ namespace Server.Items
 			new int[] { 1155854, 2977, 2978 },              // EndCurledMetalSignHanger
 		};
 
+        private CraftableItemType _Type;
+        private CraftResource _Resource;
+
+        public int NorthID { get { return 0; } }
+        public int WestID { get { return 0; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CanFlip
         {
@@ -143,10 +83,24 @@ namespace Server.Items
             }
         }
 
-        private CraftableAddonType _Type;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public CraftResource Resource
+        {
+            get { return _Resource; }
+            set
+            {
+                if (_Resource != value)
+                {
+                    _Resource = value;
+                    Hue = CraftResources.GetHue(_Resource);
+
+                    InvalidateProperties();
+                }
+            }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftableAddonType AddonType
+        public CraftableItemType ItemType
         {
             get { return _Type; }
             set
@@ -156,24 +110,142 @@ namespace Server.Items
             }
         }
 
-        public override BaseAddonDeed Deed { get { return new CraftableHouseAddonDeed(AddonType); } }
-        //public override bool RestrictToClassicHouses { get { return true; } }
-        public override bool RetainDeedHue { get { return true; } }
+        public CraftableHouseItem()
+            : base(1)
+        {
+        }
 
         [Constructable]
-        public CraftableHouseAddon(CraftableAddonType type)
+        public CraftableHouseItem(CraftableItemType type) 
+            : base(IDs[(int)type][1])
         {
-            AddComponent(new CraftableHouseAddonComponent(IDs[(int)type][1]), 0, 0, 0);
             _Type = type;
         }
 
         public void InvalidateID()
         {
-            if (Components.Count > 0)
-                Components[0].ItemID = IDs[(int)_Type][1];
+            ItemID = IDs[(int)_Type][1];
         }
 
-        public CraftableHouseAddon(Serial serial)
+        public void OnFlip()
+        {
+            int[] list = IDs[(int)_Type];
+
+            if (CanFlip && list.Length > 2)
+            {
+                for (int i = 1; i < list.Length; i++)
+                {
+                    int id = list[i];
+
+                    if (this.ItemID == id)
+                    {
+                        if (i >= list.Length - 1)
+                        {
+                            ItemID = list[1];
+                            break;
+                        }
+                        else
+                        {
+                            ItemID = list[i + 1];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1153494); // House Only
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            if (craftItem != null && craftItem.Data is CraftableItemType)
+            {
+                ItemType = (CraftableItemType)craftItem.Data;
+
+                Type resourceType = typeRes;
+
+                if (resourceType == null)
+                    resourceType = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(resourceType);
+            }
+
+            return quality;
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (!CraftResources.IsStandard(_Resource))
+            {
+                list.Add(1050039, String.Format("#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource).ToString(), GetNameString())); // ~1_NUMBER~ ~2_ITEMNAME~
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
+        private string GetNameString()
+        {
+            string name = Name;
+
+            if (name == null)
+            {
+                name = String.Format("#{0}", LabelNumber);
+            }
+
+            return name;
+        }
+
+        public override bool DropToWorld(Mobile from, Point3D p)
+        {
+            BaseHouse h = BaseHouse.FindHouseAt(p, from.Map, ItemData.Height);
+
+            if (h != null && h.IsCoOwner(from))
+            {
+                return base.DropToWorld(from, p);
+            }
+
+            if (from.Backpack == null || !from.Backpack.TryDropItem(from, this, false))
+            {
+                Delete();
+            }
+
+            return false;
+        }
+
+        public override bool DropToMobile(Mobile from, Mobile target, Point3D p)
+        {
+            if (target.Backpack is StrongBackpack)
+            {
+                return false;
+            }
+
+            return base.DropToMobile(from, target, p);
+        }
+
+        public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
+        {
+            if (target.Movable || target is StrongBackpack)
+                return false;
+
+            return base.OnDroppedInto(from, target, p);
+        }
+
+        public override bool OnDroppedOnto(Mobile from, Item target)
+        {
+            if (target is Container && target.Movable || target is StrongBackpack)
+                return false;
+
+            return base.OnDroppedOnto(from, target);
+        }
+
+        public CraftableHouseItem(Serial serial)
             : base(serial)
         {
         }
@@ -191,48 +263,141 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            _Type = (CraftableAddonType)reader.ReadInt();
+            _Type = (CraftableItemType)reader.ReadInt();
+        }
+
+        public static void Replace(Item oldItem, CraftableItemType type)
+        {
+            BaseAddon addon = oldItem is AddonComponent ? ((AddonComponent)oldItem).Addon : null;
+
+            var item = new CraftableHouseItem(type);
+
+            if (oldItem.Parent is Container)
+            {
+                ((Container)oldItem.Parent).DropItem(item);
+            }
+            else
+            {
+                BaseHouse house = BaseHouse.FindHouseAt(oldItem);
+
+                item.MoveToWorld(oldItem.Location, oldItem.Map);
+
+                item.IsLockedDown = oldItem.IsLockedDown;
+                item.IsSecure = oldItem.IsSecure;
+                item.Movable = oldItem.Movable;
+
+                if (house != null)
+                {
+                    if (house.LockDowns.ContainsKey(oldItem))
+                    {
+                        house.LockDowns.Remove(oldItem);
+                        house.LockDowns.Add(item, house.Owner);
+                    }
+                    else if (house.IsSecure(oldItem))
+                    {
+                        house.ReleaseSecure(house.Owner, oldItem);
+                        house.AddSecure(house.Owner, item);
+                    }
+                    else if (addon != null)
+                    {
+                        if (house.Addons.ContainsKey(addon))
+                        {
+                            house.Addons.Remove(addon);
+                        }
+
+                        house.LockDowns.Add(item, house.Owner);
+                    }
+                }
+
+                item.InvalidateProperties();
+            }
+
+            if (addon != null)
+                addon.Delete();
+            else
+                oldItem.Delete();
         }
     }
 
-    public class CraftableHouseAddonDeed : BaseAddonDeed, ICraftable
+    public class CraftableHouseAddonComponent : AddonComponent
     {
-        public CraftableAddonType AddonType { get; set; }
-        public override BaseAddon Addon { get { return new CraftableHouseAddon(AddonType); } }
-
-        public override int LabelNumber
+        public CraftableHouseAddonComponent(int id)
+            : base(id)
         {
-            get
-            {
-                return CraftableHouseAddon.IDs[(int)AddonType][0];
-            }
         }
+
+        public CraftableHouseAddonComponent(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+
+            Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
+            {
+                if (Addon is CraftableHouseAddon)
+                    CraftableHouseItem.Replace(this, ((CraftableHouseAddon)Addon).ItemType);
+            });
+        }
+    }
+
+    public class CraftableHouseAddon : BaseAddon
+    {
+        public CraftableItemType ItemType { get; set; }
+        public override BaseAddonDeed Deed { get { return null; } }
+
+        public CraftableHouseAddon()
+        {
+        }
+
+        public CraftableHouseAddon(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write((int)0); // version
+            writer.Write((int)ItemType);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            int version = reader.ReadInt();
+            ItemType = (CraftableItemType)reader.ReadInt();
+        }
+    }
+
+    public class CraftableHouseAddonDeed : BaseAddonDeed
+    {
+        public CraftableItemType ItemType { get; set; }
+        public override BaseAddon Addon { get { return null; } }
 
         public CraftableHouseAddonDeed()
         {
         }
 
-        [Constructable]
-        public CraftableHouseAddonDeed(CraftableAddonType type)
+        public CraftableHouseAddonDeed(CraftableItemType type)
         {
-            AddonType = type;
         }
 
-        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        public override void OnDoubleClick(Mobile m)
         {
-            if (craftItem != null && craftItem.Data is CraftableAddonType)
-            {
-                AddonType = (CraftableAddonType)craftItem.Data;
-            }
-
-            return quality;
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1153494); // House Only
         }
 
         public CraftableHouseAddonDeed(Serial serial)
@@ -245,7 +410,7 @@ namespace Server.Items
             base.Serialize(writer);
 
             writer.Write((int)0); // version
-            writer.Write((int)AddonType);
+            writer.Write((int)ItemType);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -253,35 +418,17 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            AddonType = (CraftableAddonType)reader.ReadInt();
+            ItemType = (CraftableItemType)reader.ReadInt();
+
+            Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
+                {
+                    CraftableHouseItem.Replace(this, ItemType);
+                });
         }
     }
 
-    public class CraftableHouseDoorDeed : Item, ICraftable
+    public class CraftableHouseDoorDeed : Item
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                switch (this.Type)
-                {
-                    default:
-                    case DoorType.StoneDoor_S_In: return 1156078;
-                    case DoorType.StoneDoor_S_Out: return 1156348;
-                    case DoorType.StoneDoor_E_In: return 1156349;
-                    case DoorType.StoneDoor_E_Out: return 1156079;
-                    case DoorType.LeftMetalDoor_S_In: return 1156080;
-                    case DoorType.RightMetalDoor_S_In: return 1156081;
-                    case DoorType.LeftMetalDoor_E_In: return 1156352;
-                    case DoorType.RightMetalDoor_E_In: return 1156353;
-                    case DoorType.LeftMetalDoor_S_Out: return 1156350;
-                    case DoorType.RightMetalDoor_S_Out: return 1156351;
-                    case DoorType.LeftMetalDoor_E_Out: return 1156082;
-                    case DoorType.RightMetalDoor_E_Out: return 1156083;
-                }
-            }
-        }
-
         [CommandProperty(AccessLevel.GameMaster)]
         public DoorType Type { get; set; }
 
@@ -303,13 +450,11 @@ namespace Server.Items
             }
         }
 
-        [Constructable]
         public CraftableHouseDoorDeed()
             : base(0x14F0)
         {
         }
 
-        [Constructable]
         public CraftableHouseDoorDeed(DoorType type)
             : base(0x14F0)
         {
@@ -321,7 +466,11 @@ namespace Server.Items
         {
         }
 
-        public override void OnDoubleClick(Mobile from)
+        public override void OnDoubleClick(Mobile m)
+        {
+        }
+
+        /*public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack))
             {
@@ -341,9 +490,9 @@ namespace Server.Items
                         Item door;
 
                         if (this.Type < DoorType.LeftMetalDoor_S_In)
-                            door = new CraftableStoneHouseDoor(this.Type, GetDoorFacing(this.Type));
+                            door = new CraftableStoneHouseDoor(this.Type, CraftableMetalHouseDoor.GetDoorFacing(this.Type));
                         else
-                            door = new CraftableMetalHouseDoor(this.Type, GetDoorFacing(this.Type));
+                            door = new CraftableMetalHouseDoor(this.Type, CraftableMetalHouseDoor.GetDoorFacing(this.Type));
 
                         if (door is CraftableMetalHouseDoor)
                             ((CraftableMetalHouseDoor)door).Resource = _Resource;
@@ -427,24 +576,7 @@ namespace Server.Items
             }
 
             return AddonFitResult.Valid;
-        }
-
-        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
-        {
-            if (craftItem != null && craftItem.Data is DoorType)
-            {
-                this.Type = (DoorType)craftItem.Data;
-
-                Type resourceType = typeRes;
-
-                if (resourceType == null)
-                    resourceType = craftItem.Resources.GetAt(0).ItemType;
-
-                Resource = CraftResources.GetFromType(resourceType);
-            }
-
-            return quality;
-        }
+        }*/
 
         public override void Serialize(GenericWriter writer)
         {
@@ -462,26 +594,52 @@ namespace Server.Items
             int version = reader.ReadInt();
             this.Type = (DoorType)reader.ReadInt();
             _Resource = (CraftResource)reader.ReadInt();
+
+            Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
+            {
+                Replace();
+            });
         }
 
-        public static DoorFacing GetDoorFacing(DoorType type)
+        public void Replace()
         {
-            switch (type)
+            BaseDoor door;
+
+            if (this.Type < DoorType.LeftMetalDoor_S_In)
+                door = new CraftableStoneHouseDoor(this.Type, CraftableMetalHouseDoor.GetDoorFacing(this.Type));
+            else
+                door = new CraftableMetalHouseDoor(this.Type, CraftableMetalHouseDoor.GetDoorFacing(this.Type));
+
+            if(door is IResource)
+                ((IResource)door).Resource = _Resource;
+
+            if (Parent is Container)
             {
-                default:
-                case DoorType.StoneDoor_S_In: return DoorFacing.EastCW;
-                case DoorType.StoneDoor_S_Out: return DoorFacing.WestCW;
-                case DoorType.StoneDoor_E_In: return DoorFacing.NorthCW;
-                case DoorType.StoneDoor_E_Out: return DoorFacing.SouthCW;
-                case DoorType.LeftMetalDoor_S_In: return DoorFacing.WestCCW;
-                case DoorType.RightMetalDoor_S_In: return DoorFacing.EastCW;
-                case DoorType.LeftMetalDoor_E_In: return DoorFacing.SouthCCW;
-                case DoorType.RightMetalDoor_E_In: return DoorFacing.NorthCW;
-                case DoorType.LeftMetalDoor_S_Out: return DoorFacing.WestCW;
-                case DoorType.RightMetalDoor_S_Out: return DoorFacing.EastCCW;
-                case DoorType.LeftMetalDoor_E_Out: return DoorFacing.SouthCW;
-                case DoorType.RightMetalDoor_E_Out: return DoorFacing.NorthCCW;
+                ((Container)Parent).DropItem(door);
             }
+            else
+            {
+                BaseHouse house = BaseHouse.FindHouseAt(this);
+
+                door.MoveToWorld(Location, Map);
+
+                door.IsLockedDown = IsLockedDown;
+                door.IsSecure = IsSecure;
+                door.Movable = Movable;
+
+                if (house != null && house.LockDowns.ContainsKey(this))
+                {
+                    house.LockDowns.Remove(this);
+                    house.LockDowns.Add(door, house.Owner);
+                }
+                else if (house != null && house.IsSecure(this))
+                {
+                    house.ReleaseSecure(house.Owner, this);
+                    house.AddSecure(house.Owner, door);
+                }
+            }
+
+            Delete();
         }
     }
 
@@ -499,10 +657,9 @@ namespace Server.Items
         LeftMetalDoor_E_In,
         RightMetalDoor_E_Out,
         RightMetalDoor_E_In
-
     }
 
-    public class CraftableMetalHouseDoor : MetalHouseDoor, IChopable
+    public class CraftableMetalHouseDoor : MetalHouseDoor, ICraftable
     {
         public DoorType Type { get; set; }
 
@@ -547,30 +704,127 @@ namespace Server.Items
             : base(facing)
         {
             this.Type = type;
+            Movable = true;
         }
 
-        public virtual void OnChop(Mobile from)
+        public static Item Create(Mobile m, CraftItem craftItem, BaseTool tool)
         {
-            BaseHouse house = BaseHouse.FindHouseAt(this);
+            DoorType type = DoorType.LeftMetalDoor_S_In;
 
-            if (house != null && (house.IsOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
+            if (craftItem.Data is DoorType)
             {
-                Effects.PlaySound(GetWorldLocation(), Map, 0x3B3);
-                from.SendLocalizedMessage(500461); // You destroy the item.
-
-                Delete();
-
-                house.Addons.Remove(this);
-                var deed = new CraftableHouseDoorDeed();
-
-                deed.Type = this.Type;
-                deed.Resource = _Resource;
-
-                if (deed != null)
-                {
-                    from.AddToBackpack(deed);
-                }
+                type = (DoorType)craftItem.Data;
             }
+
+            return new CraftableMetalHouseDoor(type, GetDoorFacing(type));
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            if (craftItem != null)
+            {
+                Type resourceType = typeRes;
+
+                if (resourceType == null)
+                    resourceType = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(resourceType);
+            }
+
+            return quality;
+        }
+
+        public static DoorFacing GetDoorFacing(DoorType type)
+        {
+            switch (type)
+            {
+                default:
+                case DoorType.StoneDoor_S_In: return DoorFacing.EastCW;
+                case DoorType.StoneDoor_S_Out: return DoorFacing.WestCW;
+                case DoorType.StoneDoor_E_In: return DoorFacing.NorthCW;
+                case DoorType.StoneDoor_E_Out: return DoorFacing.SouthCW;
+                case DoorType.LeftMetalDoor_S_In: return DoorFacing.WestCCW;
+                case DoorType.RightMetalDoor_S_In: return DoorFacing.EastCW;
+                case DoorType.LeftMetalDoor_E_In: return DoorFacing.SouthCCW;
+                case DoorType.RightMetalDoor_E_In: return DoorFacing.NorthCW;
+                case DoorType.LeftMetalDoor_S_Out: return DoorFacing.WestCW;
+                case DoorType.RightMetalDoor_S_Out: return DoorFacing.EastCCW;
+                case DoorType.LeftMetalDoor_E_Out: return DoorFacing.SouthCW;
+                case DoorType.RightMetalDoor_E_Out: return DoorFacing.NorthCCW;
+            }
+        }
+
+        public override void Use(Mobile from)
+        {
+            if (!Movable)
+                base.Use(from);
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (!CraftResources.IsStandard(_Resource))
+            {
+                list.Add(1050039, String.Format("#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource).ToString(), GetNameString())); // ~1_NUMBER~ ~2_ITEMNAME~
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
+        private string GetNameString()
+        {
+            string name = Name;
+
+            if (name == null)
+            {
+                name = String.Format("#{0}", LabelNumber);
+            }
+
+            return name;
+        }
+
+        public override bool DropToWorld(Mobile from, Point3D p)
+        {
+            BaseHouse h = BaseHouse.FindHouseAt(p, from.Map, ItemData.Height);
+
+            if (h != null && !(h is HouseFoundation) && h.IsCoOwner(from))
+            {
+                return base.DropToWorld(from, p);
+            }
+
+            if (from.Backpack == null || !from.Backpack.TryDropItem(from, this, false))
+            {
+                Delete();
+            }
+
+            return false;
+        }
+
+        public override bool DropToMobile(Mobile from, Mobile target, Point3D p)
+        {
+            if (target.Backpack is StrongBackpack)
+            {
+                return false;
+            }
+
+            return base.DropToMobile(from, target, p);
+        }
+
+        public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
+        {
+            if (target.Movable || target is StrongBackpack)
+                return false;
+
+            return base.OnDroppedInto(from, target, p);
+        }
+
+        public override bool OnDroppedOnto(Mobile from, Item target)
+        {
+            if (target is Container && target.Movable || target is StrongBackpack)
+                return false;
+
+            return base.OnDroppedOnto(from, target);
         }
 
         public CraftableMetalHouseDoor(Serial serial)
@@ -582,7 +836,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
             writer.Write((int)this.Type);
             writer.Write((int)_Resource);
         }
@@ -594,10 +848,27 @@ namespace Server.Items
             int version = reader.ReadInt();
             this.Type = (DoorType)reader.ReadInt();
             _Resource = (CraftResource)reader.ReadInt();
+
+            if (version == 0)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
+                    {
+                        BaseHouse house = BaseHouse.FindHouseAt(this);
+
+                        if (house != null && house.Addons.ContainsKey(this))
+                        {
+                            house.Addons.Remove(this);
+                            house.LockDowns[this] = house.Owner;
+
+                            IsLockedDown = true;
+                            Movable = false;
+                        }
+                    });
+            }
         }
     }
 
-    public class CraftableStoneHouseDoor : BaseHouseDoor, IChopable
+    public class CraftableStoneHouseDoor : BaseHouseDoor, ICraftable
     {
         public DoorType Type { get; set; }
 
@@ -638,32 +909,107 @@ namespace Server.Items
             : base(facing, 0x324 + (2 * (int)facing), 0x325 + (2 * (int)facing), 0xED, 0xF4, BaseDoor.GetOffset(facing))
         {
             this.Type = type;
+            Movable = true;
         }
 
-        public virtual void OnChop(Mobile from)
+        public static Item Create(Mobile m, CraftItem craftItem, BaseTool tool)
         {
-            BaseHouse house = BaseHouse.FindHouseAt(this);
+            DoorType type = DoorType.StoneDoor_S_In;
 
-            if (house != null && (house.IsOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
+            if (craftItem.Data is DoorType)
             {
-                Effects.PlaySound(GetWorldLocation(), Map, 0x3B3);
-                from.SendLocalizedMessage(500461); // You destroy the item.
-
-                Delete();
-
-                house.Addons.Remove(this);
-                var deed = new CraftableHouseDoorDeed();
-
-                if (deed != null)
-                {
-                    deed.Type = this.Type;
-
-                    if (deed is CraftableHouseDoorDeed)
-                        ((CraftableHouseDoorDeed)deed).Resource = _Resource;
-
-                    from.AddToBackpack(deed);
-                }
+                type = (DoorType)craftItem.Data;
             }
+
+            return new CraftableStoneHouseDoor(type, CraftableMetalHouseDoor.GetDoorFacing(type));
+        }
+
+        public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, BaseTool tool, CraftItem craftItem, int resHue)
+        {
+            if (craftItem != null)
+            {
+                Type resourceType = typeRes;
+
+                if (resourceType == null)
+                    resourceType = craftItem.Resources.GetAt(0).ItemType;
+
+                Resource = CraftResources.GetFromType(resourceType);
+            }
+
+            return quality;
+        }
+
+        public override void Use(Mobile from)
+        {
+            if (!Movable)
+                base.Use(from);
+        }
+
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (!CraftResources.IsStandard(_Resource))
+            {
+                list.Add(1050039, String.Format("#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource).ToString(), GetNameString())); // ~1_NUMBER~ ~2_ITEMNAME~
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
+        private string GetNameString()
+        {
+            string name = Name;
+
+            if (name == null)
+            {
+                name = String.Format("#{0}", LabelNumber);
+            }
+
+            return name;
+        }
+
+        public override bool DropToWorld(Mobile from, Point3D p)
+        {
+            BaseHouse h = BaseHouse.FindHouseAt(p, from.Map, ItemData.Height);
+
+            if (h != null && !(h is HouseFoundation) && h.IsCoOwner(from))
+            {
+                return base.DropToWorld(from, p);
+            }
+
+            if (from.Backpack == null || !from.Backpack.TryDropItem(from, this, false))
+            {
+                Delete();
+            }
+
+            return false;
+        }
+
+        public override bool DropToMobile(Mobile from, Mobile target, Point3D p)
+        {
+            if (target.Backpack is StrongBackpack)
+            {
+                return false;
+            }
+
+            return base.DropToMobile(from, target, p);
+        }
+
+        public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
+        {
+            if (target.Movable || target is StrongBackpack)
+                return false;
+
+            return base.OnDroppedInto(from, target, p);
+        }
+
+        public override bool OnDroppedOnto(Mobile from, Item target)
+        {
+            if (target is Container && target.Movable || target is StrongBackpack)
+                return false;
+
+            return base.OnDroppedOnto(from, target);
         }
 
         public CraftableStoneHouseDoor(Serial serial)
@@ -675,7 +1021,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write((int)1);
             writer.Write((int)this.Type);
             writer.Write((int)_Resource);
         }
@@ -687,6 +1033,23 @@ namespace Server.Items
             int version = reader.ReadInt();
             this.Type = (DoorType)reader.ReadInt();
             _Resource = (CraftResource)reader.ReadInt();
+
+            if (version == 0)
+            {
+                Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
+                {
+                    BaseHouse house = BaseHouse.FindHouseAt(this);
+
+                    if (house != null && house.Addons.ContainsKey(this))
+                    {
+                        house.Addons.Remove(this);
+                        house.LockDowns[this] = house.Owner;
+
+                        IsLockedDown = true;
+                        Movable = false;
+                    }
+                });
+            }
         }
     }
 }

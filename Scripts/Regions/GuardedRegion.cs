@@ -206,7 +206,7 @@ namespace Server.Regions
 		{
 			base.OnGotBeneficialAction(helper, helped);
 
-			if (IsDisabled())
+			if (IsDisabled() || Siege.SiegeShard)
 			{
 				return;
 			}
