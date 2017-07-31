@@ -2124,7 +2124,7 @@ namespace Server.Multis
 
         public virtual IEnumerable<IEntity> GetComponents()
         {
-            return null;
+            yield break;
         }
 
         public void CheckExit(object o)
