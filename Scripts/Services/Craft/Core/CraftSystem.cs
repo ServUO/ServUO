@@ -481,6 +481,12 @@ namespace Server.Engines.Craft
             craftItem.TryCraft = action;
         }
 
+        public void AddCreateItem(int index, Func<Mobile, CraftItem, BaseTool, Item> func)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.CreateItem = func;
+        }
+
         public void SetSubRes(Type type, string name)
         {
             m_CraftSubRes.ResType = type;

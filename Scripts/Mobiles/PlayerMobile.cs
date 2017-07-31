@@ -3243,6 +3243,12 @@ namespace Server.Mobiles
 				m_SentHonorContext.OnSourceBeneficialAction(target);
 			}
 
+            if (Siege.SiegeShard)
+            {
+                Criminal = true;
+                return;
+            }
+
 			base.OnBeneficialAction(target, isCriminal);
 		}
 

@@ -7,50 +7,57 @@ namespace Server.Mobiles
     public class EnergyVortex : BaseCreature
     {
         [Constructable]
-        public EnergyVortex()
+        public EnergyVortex() : this(false)
+        {
+        }
+
+        [Constructable]
+        public EnergyVortex(bool summoned)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an energy vortex";
+            Name = "an energy vortex";
 
             if (Core.SE && 0.002 > Utility.RandomDouble()) // Per OSI FoF, it's a 1/500 chance.
             {
                 // Llama vortex!
-                this.Body = 0xDC;
-                this.Hue = 0x76;
+                Body = 0xDC;
+                Hue = 0x76;
             }
             else
             {
-                this.Body = 164;
+                Body = 164;
             }
 
-            this.SetStr(200);
-            this.SetDex(200);
-            this.SetInt(100);
+            bool weak = summoned && Siege.SiegeShard;
 
-            this.SetHits((Core.SE) ? 140 : 70);
-            this.SetStam(250);
-            this.SetMana(0);
+            SetStr(weak ? 100 : 200);
+            SetDex(weak ? 150 : 200);
+            SetInt(100);
 
-            this.SetDamage(14, 17);
+            SetHits((Core.SE && !weak) ? 140 : 70);
+            SetStam(250);
+            SetMana(0);
 
-            this.SetDamageType(ResistanceType.Physical, 0);
-            this.SetDamageType(ResistanceType.Energy, 100);
+            SetDamage(weak ? 10 : 14, weak ? 13 : 17);
 
-            this.SetResistance(ResistanceType.Physical, 60, 70);
-            this.SetResistance(ResistanceType.Fire, 40, 50);
-            this.SetResistance(ResistanceType.Cold, 40, 50);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 90, 100);
+            SetDamageType(ResistanceType.Physical, 0);
+            SetDamageType(ResistanceType.Energy, 100);
 
-            this.SetSkill(SkillName.MagicResist, 99.9);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 120.0);
+            SetResistance(ResistanceType.Physical, 60, 70);
+            SetResistance(ResistanceType.Fire, 40, 50);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 90, 100);
 
-            this.Fame = 0;
-            this.Karma = 0;
+            SetSkill(SkillName.MagicResist, 99.9);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 120.0);
 
-            this.VirtualArmor = 40;
-            this.ControlSlots = (Core.SE) ? 2 : 1;
+            Fame = 0;
+            Karma = 0;
+
+            VirtualArmor = 40;
+            ControlSlots = (Core.SE) ? 2 : 1;
         }
 
         public EnergyVortex(Serial serial)
@@ -62,7 +69,7 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.Summoned;
+                return Summoned;
             }
         }
         public override bool AlwaysMurderer
@@ -102,7 +109,7 @@ namespace Server.Mobiles
         }
         public override double GetFightModeRanking(Mobile m, FightMode acqType, bool bPlayerOnly)
         {
-            return (m.Int + m.Skills[SkillName.Magery].Value) / Math.Max(this.GetDistanceToSqrt(m), 1.0);
+            return (m.Int + m.Skills[SkillName.Magery].Value) / Math.Max(GetDistanceToSqrt(m), 1.0);
         }
 
         public override int GetAngerSound()
@@ -117,11 +124,11 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if (Core.SE && this.Summoned)
+            if (Core.SE && Summoned)
             {
                 ArrayList spirtsOrVortexes = new ArrayList();
 
-                foreach (Mobile m in this.GetMobilesInRange(5))
+                foreach (Mobile m in GetMobilesInRange(5))
                 {
                     if (m is EnergyVortex || m is BladeSpirits)
                     {
@@ -134,7 +141,7 @@ namespace Server.Mobiles
                 {
                     int index = Utility.Random(spirtsOrVortexes.Count);
                     //TODO: Confim if it's the dispel with all the pretty effects or just a Deletion of it.
-                    this.Dispel(((Mobile)spirtsOrVortexes[index]));
+                    Dispel(((Mobile)spirtsOrVortexes[index]));
                     spirtsOrVortexes.RemoveAt(index);
                 }
             }
@@ -155,8 +162,8 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (this.BaseSoundID == 263)
-                this.BaseSoundID = 0;
+            if (BaseSoundID == 263)
+                BaseSoundID = 0;
         }
     }
 }
