@@ -547,9 +547,9 @@ namespace Server.Multis
         {
             if (m_TillerMan != null)
             {
-                /*if (m_TillerMan is Mobile && (Math.Abs(X - old.X) > 1 || Math.Abs(Y - old.Y) > 1))
+                if (m_TillerMan is Mobile && (Math.Abs(X - old.X) > 1 || Math.Abs(Y - old.Y) > 1))
                     ((Mobile)m_TillerMan).Location = new Point3D(X + (((Mobile)m_TillerMan).X - old.X), Y + (((Mobile)m_TillerMan).Y - old.Y), Z + (((Mobile)m_TillerMan).Z - old.Z));
-                else*/ if (m_TillerMan is Item)
+                else if (m_TillerMan is Item)
                     ((Item)m_TillerMan).Location = new Point3D(X + (((Item)m_TillerMan).X - old.X), Y + (((Item)m_TillerMan).Y - old.Y), Z + (((Item)m_TillerMan).Z - old.Z));
             }
 
@@ -1828,7 +1828,7 @@ namespace Server.Multis
 
         public void Teleport(int xOffset, int yOffset, int zOffset)
         {
-            foreach (var ent in GetEntitiesOnBoard().Where(e => !IsComponentItem(e) && !CanMoveOver(e)))
+            foreach (var ent in GetEntitiesOnBoard().Where(e => !IsComponentItem(e) && !CanMoveOver(e) && e != m_TillerMan))
             {
                 ent.Location = new Point3D(ent.X + xOffset, ent.Y + yOffset, ent.Z);
             }
