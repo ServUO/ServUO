@@ -24,6 +24,7 @@ using Server.Spells.Ninjitsu;
 using Server.Spells.Sixth;
 using Server.Spells.Spellweaving;
 using Server.Spells.SkillMasteries;
+using System.Linq;
 #endregion
 
 namespace Server.Items
@@ -1841,57 +1842,50 @@ namespace Server.Items
 
 			if (!blocked)
 			{
-                Layer randomLayer = Layer.FirstValid;
-                Item armorItem = null;
+                IWearableDurability toHit = GetRandomValidItem(defender) as IWearableDurability;
 
-                for (int i = 0; i < 10; i++)
-                {
-                    randomLayer = _DamageLayers[Utility.Random(_DamageLayers.Length)];
-                    armorItem = defender.FindItemOnLayer(randomLayer);
-
-                    if (armorItem is IWearableDurability)
-                        break;
-                }
-
-                IWearableDurability armor = armorItem as IWearableDurability;
-
-				if (armor != null)
+				if (toHit != null)
 				{
-					armor.OnHit(this, damage); // call OnHit to lose durability
-					damage -= XmlAttach.OnArmorHit(attacker, defender, armorItem, this, originalDamage);
+                    toHit.OnHit(this, damage); // call OnHit to lose durability
+                    damage -= XmlAttach.OnArmorHit(attacker, defender, (Item)toHit, this, originalDamage);
 				}
 			}
 
 			return damage;
 		}
 
-        private Layer[] _DamageLayers =
+        private Item GetRandomValidItem(Mobile m)
         {
+            Item[] items = m.Items.Where(item => _DamageLayers.Contains(item.Layer) && item is IWearableDurability).ToArray();
+
+            if (items.Length == 0)
+                return null;
+
+            return items[Utility.Random(items.Length)];
+        }
+
+        private List<Layer> _DamageLayers = new List<Layer>()
+        {
+            Layer.FirstValid,
             Layer.OneHanded,
+            Layer.TwoHanded,
+            Layer.Shoes,
+            Layer.Pants,
+            Layer.Shirt,
+            Layer.Helm,
+            Layer.Gloves,
+            Layer.Ring,
             Layer.Talisman,
-            Layer.InnerLegs,
-            Layer.InnerTorso,
-            Layer.MiddleTorso,
+            Layer.Neck,
             Layer.Waist,
+            Layer.InnerTorso,
+            Layer.Bracelet,
+            Layer.MiddleTorso,
+            Layer.Earrings,
             Layer.Cloak,
             Layer.OuterTorso,
-            Layer.Ring,
-            Layer.Bracelet,
-            Layer.Earrings,
-            Layer.Neck,
-            Layer.Neck,
-            Layer.Gloves,
-            Layer.Gloves,
-            Layer.Arms,
-            Layer.Arms,
-            Layer.Helm,
-            Layer.Helm,
-            Layer.Pants,
-            Layer.Pants,
-            Layer.Pants,
-            Layer.Shirt,
-            Layer.Shirt,
-            Layer.Shirt
+            Layer.OuterLegs,
+            Layer.InnerLegs,
         };
 
 		public virtual int AbsorbDamage(Mobile attacker, Mobile defender, int damage)
@@ -2184,10 +2178,10 @@ namespace Server.Items
             }
 
             double chance = NegativeAttributes.Antique > 0 ? 5 : 0;
-            bool acidicTarget = MaxRange <= 1 && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
+            bool acidicTarget = MaxRange <= 1 && !(this is Fists) && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
 
             if ((m_AosAttributes.SpellChanneling == 0 || MaxRange > 1) &&
-                (acidicTarget || (defender != null && splintering) || Utility.Random(20) <= chance))    // Stratics says 50% chance, seems more like 4%..
+                (acidicTarget || (defender != null && splintering) || Utility.Random(10) <= chance))    // Stratics says 50% chance, seems more like 4%..
             {
                 if (MaxRange <= 1 && acidicTarget)
                 {

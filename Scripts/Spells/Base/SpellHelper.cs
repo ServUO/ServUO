@@ -1308,7 +1308,6 @@ namespace Server.Spells
                 SpiritualityVirtue.OnHeal(from, realAmount);
             }
 
-            //TODO: All Healing *spells* go through ArcaneEmpowerment
             target.Heal(amount, from, message);
         }
 

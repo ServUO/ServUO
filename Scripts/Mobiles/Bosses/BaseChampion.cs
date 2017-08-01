@@ -203,24 +203,29 @@ namespace Server.Mobiles
                 GivePowerScrollTo(m, ps, this);
             }
 
-            // Randomize - Primers
-            for (int i = 0; i < toGive.Count; ++i)
+            if (Core.TOL)
             {
-                int rand = Utility.Random(toGive.Count);
-                Mobile hold = toGive[i];
-                toGive[i] = toGive[rand];
-                toGive[rand] = hold;
+                // Randomize - Primers
+                for (int i = 0; i < toGive.Count; ++i)
+                {
+                    int rand = Utility.Random(toGive.Count);
+                    Mobile hold = toGive[i];
+                    toGive[i] = toGive[rand];
+                    toGive[rand] = hold;
+                }
+
+                for (int i = 0; i < ChampionSystem.PowerScrollAmount; ++i)
+                {
+                    Mobile m = toGive[i % toGive.Count];
+
+                    SkillMasteryPrimer p = CreateRandomPrimer();
+                    m.SendLocalizedMessage(1156209); // You have received a mastery primer!
+
+                    GivePowerScrollTo(m, p, this);
+                }
             }
 
-            for (int i = 0; i < ChampionSystem.PowerScrollAmount; ++i)
-            {
-                Mobile m = toGive[i % toGive.Count];
-
-                SkillMasteryPrimer p = CreateRandomPrimer();
-                m.SendLocalizedMessage(1156209); // You have received a mastery primer!
-
-                GivePowerScrollTo(m, p, this);
-            }
+            ColUtility.Free(toGive);
         }
 
         public override bool OnBeforeDeath()

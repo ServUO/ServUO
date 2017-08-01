@@ -688,11 +688,15 @@ namespace Server.Items
         public static int Scale(int min, int max, int perclow, int perchigh, int luckchance, bool playerMade)
         {
             int percent;
-            
-            if(playerMade)
-                percent = Utility.RandomMinMax(perclow * 100, perchigh * 100);
+
+            if (playerMade)
+            {
+                percent = Utility.RandomMinMax(perclow, perchigh);
+            }
             else
-                percent = Utility.RandomMinMax(0, perchigh * 100);
+            {
+                percent = Utility.RandomMinMax(0, perchigh);
+            }
 
             if (LootPack.CheckLuck(luckchance))
                 percent += 10;
@@ -1797,7 +1801,7 @@ namespace Server.Items
                         mods = Math.Max(minmods, GetProperties(maxmods));
 
                         perchigh = 100;
-                        perclow = Utility.RandomMinMax(61, 71);
+                        perclow = Utility.RandomMinMax(50, 70);
                     }
 
                     if (perchigh > 100) perchigh = 100;

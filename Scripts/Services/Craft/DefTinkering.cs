@@ -469,68 +469,76 @@ namespace Server.Engines.Craft
             #endregion
 
             #region TOL
-            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155851, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-            SetData(index, CraftableAddonType.CurledMetalSignHanger);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155851, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.CurledMetalSignHanger);
             SetDisplayID(index, 2971);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155852, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-            SetData(index, CraftableAddonType.FlourishedMetalSignHanger);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155852, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.FlourishedMetalSignHanger);
             SetDisplayID(index, 2973);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155853, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-            SetData(index, CraftableAddonType.InwardCurledMetalSignHanger);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155853, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.InwardCurledMetalSignHanger);
             SetDisplayID(index, 2975);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseAddonDeed), 1044050, 1155854, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
-            SetData(index, CraftableAddonType.EndCurledMetalSignHanger);
+            index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155854, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
+            SetData(index, CraftableItemType.EndCurledMetalSignHanger);
             SetDisplayID(index, 2977);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156080, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156080, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.LeftMetalDoor_S_In);
             SetDisplayID(index, 1653);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156081, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156081, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.RightMetalDoor_S_In);
             SetDisplayID(index, 1659);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156082, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156082, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.LeftMetalDoor_E_Out);
             SetDisplayID(index, 1660);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156083, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156083, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.RightMetalDoor_E_Out);
             SetDisplayID(index, 1663);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
             index = AddCraft(typeof(WallSafeDeed), 1044050, 1155860, 0.0, 0.0, typeof(IronIngot), 1044036, 20, 1044253);
             ForceNonExceptional(index);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156352, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156352, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.LeftMetalDoor_E_In);
             SetDisplayID(index, 1660);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156353, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156353, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.RightMetalDoor_E_In);
             SetDisplayID(index, 1663);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156350, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156350, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.LeftMetalDoor_S_Out);
             SetDisplayID(index, 1653);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
-            index = AddCraft(typeof(CraftableHouseDoorDeed), 1044050, 1156351, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
+            index = AddCraft(typeof(CraftableMetalHouseDoor), 1044050, 1156351, 85.0, 135.0, typeof(IronIngot), 1044036, 50, 1044253);
             SetData(index, DoorType.RightMetalDoor_S_Out);
             SetDisplayID(index, 1659);
+            AddCreateItem(index, CraftableMetalHouseDoor.Create);
             SetNeededExpansion(index, Expansion.TOL);
 
             index = AddCraft(typeof(KotlPowerCore), 1044050, 1124179, 85.0, 135.0, typeof(WorkableGlass), 1154170, 5, 1154171);

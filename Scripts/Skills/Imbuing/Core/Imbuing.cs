@@ -430,11 +430,11 @@ namespace Server.SkillHandlers
 
                             switch (attr)
                             {
-                                case AosElementAttribute.Physical: arm.PhysicalBonus = value; arm.PhysImbuing = 0; break;
-                                case AosElementAttribute.Fire: arm.FireBonus = value; arm.FireImbuing = 0; break;
-                                case AosElementAttribute.Cold: arm.ColdBonus = value; arm.ColdImbuing = 0; break;
-                                case AosElementAttribute.Poison: arm.PoisonBonus = value; arm.PoisonImbuing = 0; break;
-                                case AosElementAttribute.Energy: arm.EnergyBonus = value; arm.EnergyImbuing = 0; break;
+                                case AosElementAttribute.Physical: arm.PhysicalBonus = value; arm.PhysNonImbuing = 0; break;
+                                case AosElementAttribute.Fire: arm.FireBonus = value; arm.FireNonImbuing = 0; break;
+                                case AosElementAttribute.Cold: arm.ColdBonus = value; arm.ColdNonImbuing = 0; break;
+                                case AosElementAttribute.Poison: arm.PoisonBonus = value; arm.PoisonNonImbuing = 0; break;
+                                case AosElementAttribute.Energy: arm.EnergyBonus = value; arm.EnergyNonImbuing = 0; break;
                             }
                         }
 
@@ -495,11 +495,11 @@ namespace Server.SkillHandlers
 
                             switch (attr)
                             {
-                                case AosElementAttribute.Physical: hat.Resistances.Physical = value; hat.PhysImbuing = 0; break;
-                                case AosElementAttribute.Fire: hat.Resistances.Fire = value; hat.FireImbuing = 0; break;
-                                case AosElementAttribute.Cold: hat.Resistances.Cold = value; hat.ColdImbuing = 0; break;
-                                case AosElementAttribute.Poison: hat.Resistances.Poison = value; hat.PoisonImbuing = 0; break;
-                                case AosElementAttribute.Energy: hat.Resistances.Energy = value; hat.EnergyImbuing = 0; break;
+                                case AosElementAttribute.Physical: hat.Resistances.Physical = value; hat.PhysNonImbuing = 0; break;
+                                case AosElementAttribute.Fire: hat.Resistances.Fire = value; hat.FireNonImbuing = 0; break;
+                                case AosElementAttribute.Cold: hat.Resistances.Cold = value; hat.ColdNonImbuing = 0; break;
+                                case AosElementAttribute.Poison: hat.Resistances.Poison = value; hat.PoisonNonImbuing = 0; break;
+                                case AosElementAttribute.Energy: hat.Resistances.Energy = value; hat.EnergyNonImbuing = 0; break;
                             }
                         }
                     }
@@ -708,6 +708,11 @@ namespace Server.SkillHandlers
                     return GetPropRange(item, attr)[1];
             }
 
+            if ((item is BaseArmor || item is BaseHat) && def.Attribute is AosElementAttribute)
+            {
+                return GetPropRange(item, (AosElementAttribute)def.Attribute)[1];
+            }
+
             return def.MaxIntensity;
         }
 
@@ -842,12 +847,12 @@ namespace Server.SkillHandlers
                     if (wep.Attributes[attr] > 0)
                     {
                         if (!(prop is AosAttribute) || ((AosAttribute)prop) != attr)
-                            total += 1;
+                            total++;
                     }
                     else if (wep.Attributes[attr] == 0 && attr == AosAttribute.CastSpeed && wep.Attributes[AosAttribute.SpellChanneling] > 0)
                     {
                         if(!(prop is AosAttribute) || (AosAttribute)prop != attr)
-                            total += 1;
+                            total++;
                     }
                 }
 
@@ -866,7 +871,7 @@ namespace Server.SkillHandlers
                             continue;
 
                         if (!(prop is AosWeaponAttribute) || ((AosWeaponAttribute)prop) != attr)
-                            total += 1;
+                            total++;
                     }
                 }
 
@@ -880,18 +885,18 @@ namespace Server.SkillHandlers
                     if (wep.ExtendedWeaponAttributes[attr] > 0)
                     {
                         if (!(prop is AosWeaponAttribute) || ((ExtendedWeaponAttribute)prop) != attr)
-                            total += 1;
+                            total++;
                     }
                 }
 
                 if (wep.Slayer != SlayerName.None && (!(prop is SlayerName) || ((SlayerName)prop) != wep.Slayer))
-                    total += 1;
+                    total++;
 
                 if (wep.Slayer2 != SlayerName.None)
-                    total += 1;
+                    total++;
 
                 if (wep.Slayer3 != TalismanSlayerName.None)
-                    total += 1;
+                    total++;
 
                 foreach (int i in Enum.GetValues(typeof(SAAbsorptionAttribute)))
                 {
@@ -903,7 +908,7 @@ namespace Server.SkillHandlers
                     if (wep.AbsorptionAttributes[attr] > 0)
                     {
                         if (!(prop is SAAbsorptionAttribute) || ((SAAbsorptionAttribute)prop) != attr)
-                            total += 1;
+                            total++;
                     }
                 }
 
@@ -932,22 +937,22 @@ namespace Server.SkillHandlers
                     if (armor.Attributes[attr] > 0)
                     {
                         if (!(prop is AosAttribute) || ((AosAttribute)prop) != attr)
-                            total += 1;
+                            total++;
                     }
                     else if (armor.Attributes[attr] == 0 && attr == AosAttribute.CastSpeed && armor.Attributes[AosAttribute.SpellChanneling] > 0)
                     {
                         if (!(prop is AosAttribute) || (AosAttribute)prop == attr)
-                            total += 1;
+                            total++;
                     }
                 }
 
                 total += GetSkillBonuses(armor.SkillBonuses, prop);
 
-                if (armor.PhysicalBonus > armor.PhysImbuing && mod != 51) { total += 1; }
-                if (armor.FireBonus > armor.FireImbuing && mod != 52) { total += 1; }
-                if (armor.ColdBonus > armor.ColdImbuing && mod != 53) { total += 1; }
-                if (armor.PoisonBonus > armor.PoisonImbuing && mod != 54) { total += 1; }
-                if (armor.EnergyBonus > armor.EnergyImbuing && mod != 55) { total += 1; }
+                if (armor.PhysicalBonus > armor.PhysNonImbuing && mod != 51) { total++; }
+                if (armor.FireBonus > armor.FireNonImbuing && mod != 52) { total++; }
+                if (armor.ColdBonus > armor.ColdNonImbuing && mod != 53) { total++; }
+                if (armor.PoisonBonus > armor.PoisonNonImbuing && mod != 54) { total++; }
+                if (armor.EnergyBonus > armor.EnergyNonImbuing && mod != 55) { total++; }
 
                 foreach (int i in Enum.GetValues(typeof(AosArmorAttribute)))
                 {
@@ -959,7 +964,7 @@ namespace Server.SkillHandlers
                     if (armor.ArmorAttributes[attr] > 0)
                     {
                         if (!(prop is AosArmorAttribute) || ((AosArmorAttribute)prop) != attr)
-                            total += 1;
+                            total++;
                     }
                 }
 
@@ -974,7 +979,7 @@ namespace Server.SkillHandlers
                     if (armor.AbsorptionAttributes[attr] > 0)
                     {
                         if (!(prop is SAAbsorptionAttribute) || ((SAAbsorptionAttribute)prop) != attr)
-                            total += 1;
+                            total++;
                     }
                 }
             }
@@ -992,7 +997,7 @@ namespace Server.SkillHandlers
                     if (j.Attributes[attr] > 0)
                     {
                         if (!(prop is AosAttribute) || ((AosAttribute)prop) != attr)
-                            total += 1;
+                            total++;
                     }
                 }
 
@@ -1006,17 +1011,17 @@ namespace Server.SkillHandlers
                     if (j.AbsorptionAttributes[attr] > 0)
                     {
                         if (!(prop is SAAbsorptionAttribute) || ((SAAbsorptionAttribute)prop) != attr)
-                            total += 1;
+                            total++;
                     }
                 }
 
                 total += GetSkillBonuses(j.SkillBonuses, prop);
 
-                if (j.Resistances.Physical > 0 && mod != 51) { total += 1; }
-                if (j.Resistances.Fire > 0 && mod != 52) { total += 1; }
-                if (j.Resistances.Cold > 0 && mod != 53) { total += 1; }
-                if (j.Resistances.Poison > 0 && mod != 54) { total += 1; }
-                if (j.Resistances.Energy > 0 && mod != 55) { total += 1; }
+                if (j.Resistances.Physical > 0 && mod != 51) { total++; }
+                if (j.Resistances.Fire > 0 && mod != 52) { total++; }
+                if (j.Resistances.Cold > 0 && mod != 53) { total++; }
+                if (j.Resistances.Poison > 0 && mod != 54) { total++; }
+                if (j.Resistances.Energy > 0 && mod != 55) { total++; }
             }
             else if (item is BaseHat)
             {
@@ -1032,7 +1037,7 @@ namespace Server.SkillHandlers
                     if (h.Attributes[attr] > 0)
                     {
                         if (!(prop is AosAttribute) || ((AosAttribute)prop) != attr)
-                            total += 1;
+                            total++;
                     }
                 }
 
@@ -1046,17 +1051,17 @@ namespace Server.SkillHandlers
                     if (h.SAAbsorptionAttributes[attr] > 0)
                     {
                         if (!(prop is SAAbsorptionAttribute) || ((SAAbsorptionAttribute)prop) != attr)
-                            total += 1;
+                            total++;
                     }
                 }
 
                 total += GetSkillBonuses(h.SkillBonuses, prop);
 
-                if (h.Resistances.Physical > h.PhysImbuing && mod != 51) { total += 1; }
-                if (h.Resistances.Fire > h.FireImbuing && mod != 52) { total += 1; }
-                if (h.Resistances.Cold > h.ColdImbuing && mod != 53) { total += 1; }
-                if (h.Resistances.Poison > h.PoisonImbuing && mod != 54) { total += 1; }
-                if (h.Resistances.Energy > h.EnergyImbuing && mod != 55) { total += 1; }
+                if (h.Resistances.Physical > h.PhysNonImbuing && mod != 51) { total++; }
+                if (h.Resistances.Fire > h.FireNonImbuing && mod != 52) { total++; }
+                if (h.Resistances.Cold > h.ColdNonImbuing && mod != 53) { total++; }
+                if (h.Resistances.Poison > h.PoisonNonImbuing && mod != 54) { total++; }
+                if (h.Resistances.Energy > h.EnergyNonImbuing && mod != 55) { total++; }
             }
 
             return total;
@@ -1154,7 +1159,7 @@ namespace Server.SkillHandlers
                 }
             }
             
-            if (item is BaseArmor)
+            if (item is BaseArmor && mod >= 51 && mod <= 55)
             {
                 weight += CheckResists((BaseArmor)item, mod);
             }
@@ -1215,23 +1220,24 @@ namespace Server.SkillHandlers
         private static int CheckResists(BaseArmor i, int mod)
         {
             double weight = 0;
+            int max = GetMaxIntensity(i, Imbuing.Table[mod]);
 
-            if (i.Quality != ItemQuality.Exceptional)
+            /*if (i.Quality != ItemQuality.Exceptional)
             {
-                if (i.PhysicalBonus > 0) { if (mod != 51) { weight += ((double)(100.0 / 15.0) * (double)i.PhysicalBonus); } }
-                if (i.FireBonus > 0) { if (mod != 52) { weight += ((double)(100.0 / 15.0) * (double)i.FireBonus); } }
-                if (i.ColdBonus > 0) { if (mod != 53) { weight += ((double)(100.0 / 15.0) * (double)i.ColdBonus); } }
-                if (i.PoisonBonus > 0) { if (mod != 54) { weight += ((double)(100.0 / 15.0) * (double)i.PoisonBonus); } }
-                if (i.EnergyBonus > 0) { if (mod != 55) { weight += ((double)(100.0 / 15.0) * (double)i.EnergyBonus); } }
+                if (i.PhysicalBonus > 0) { if (mod != 51) { weight += ((double)(100.0 / max) * (double)i.PhysicalBonus); } }
+                if (i.FireBonus > 0) { if (mod != 52) { weight += ((double)(100.0 / max) * (double)i.FireBonus); } }
+                if (i.ColdBonus > 0) { if (mod != 53) { weight += ((double)(100.0 / max) * (double)i.ColdBonus); } }
+                if (i.PoisonBonus > 0) { if (mod != 54) { weight += ((double)(100.0 / max) * (double)i.PoisonBonus); } }
+                if (i.EnergyBonus > 0) { if (mod != 55) { weight += ((double)(100.0 / max) * (double)i.EnergyBonus); } }
             }
             else if (i.Quality == ItemQuality.Exceptional)
-            {
-                if (i.PhysicalBonus > i.PhysImbuing) { if (mod != 51) { weight += ((double)(100.0 / 15.0) * (double)(i.PhysicalBonus - i.PhysImbuing)); } }
-                if (i.FireBonus > i.FireImbuing) { if (mod != 52) { weight += ((double)(100.0 / 15.0) * (double)(i.FireBonus - i.FireImbuing)); } }
-                if (i.ColdBonus > i.ColdImbuing) { if (mod != 53) { weight += ((double)(100.0 / 15.0) * (double)(i.ColdBonus - i.ColdImbuing)); } }
-                if (i.PoisonBonus > i.PoisonImbuing) { if (mod != 54) { weight += ((double)(100.0 / 15.0) * (double)(i.PoisonBonus - i.PoisonImbuing)); } }
-                if (i.EnergyBonus > i.EnergyImbuing) { if (mod != 55) { weight += ((double)(100.0 / 15.0) * (double)(i.EnergyBonus - i.EnergyImbuing)); } }
-            }
+            {*/
+                if (i.PhysicalBonus > i.PhysNonImbuing) { if (mod != 51) { weight += ((double)(100.0 / max) * (double)(i.PhysicalBonus - i.PhysNonImbuing)); } }
+                if (i.FireBonus > i.FireNonImbuing) { if (mod != 52) { weight += ((double)(100.0 / max) * (double)(i.FireBonus - i.FireNonImbuing)); } }
+                if (i.ColdBonus > i.ColdNonImbuing) { if (mod != 53) { weight += ((double)(100.0 / max) * (double)(i.ColdBonus - i.ColdNonImbuing)); } }
+                if (i.PoisonBonus > i.PoisonNonImbuing) { if (mod != 54) { weight += ((double)(100.0 / max) * (double)(i.PoisonBonus - i.PoisonNonImbuing)); } }
+                if (i.EnergyBonus > i.EnergyNonImbuing) { if (mod != 55) { weight += ((double)(100.0 / max) * (double)(i.EnergyBonus - i.EnergyNonImbuing)); } }
+            //}
 
             return (int)Math.Round(weight);
         }
@@ -1753,11 +1759,15 @@ namespace Server.SkillHandlers
                 BaseWeapon wep = item as BaseWeapon;
                 BaseJewel jewel = item as BaseJewel;
 
-                if (wep != null && attr is AosWeaponAttribute && (mod == 25 || mod == 27))
+                if (item is BaseWeapon && attr is AosWeaponAttribute && (mod == 25 || mod == 27))
                 {
-                    max = GetPropRange(wep, (AosWeaponAttribute)attr)[1];
+                    max = GetPropRange((BaseWeapon)item, (AosWeaponAttribute)attr)[1];
                 }
-                else if (jewel != null && attr is AosAttribute && (AosAttribute)attr == AosAttribute.WeaponDamage)
+                else if(item is BaseArmor && attr is AosElementAttribute)
+                {
+                    max = GetPropRange((BaseArmor)item, (AosElementAttribute)attr)[1];
+                }
+                else if (item is BaseJewel && attr is AosAttribute && (AosAttribute)attr == AosAttribute.WeaponDamage)
                 {
                     max = 25;
                 }
@@ -2104,6 +2114,28 @@ namespace Server.SkillHandlers
             return new int[] { 1, 15 };
         }
 
+        public static int[] GetPropRange(Item item, AosElementAttribute attr)
+        {
+            int index = GetArmorIndex(item);
+
+            if (index < 0 || index > _MaxResistArmorTable.Length) // Default Value
+                return new int[] { 1, 15 };
+
+            int attrIndex;
+
+            switch (attr)
+            {
+                default:
+                case AosElementAttribute.Physical: attrIndex = 0; break;
+                case AosElementAttribute.Fire: attrIndex = 1; break;
+                case AosElementAttribute.Cold: attrIndex = 2; break;
+                case AosElementAttribute.Poison: attrIndex = 3; break;
+                case AosElementAttribute.Energy: attrIndex = 4; break;
+            }
+
+            return new int[] { 1, _MaxResistArmorTable[index][attrIndex] };
+        }
+
         public static int[] GetPropRange(Item item, ExtendedWeaponAttribute attr)
         {
             switch (attr)
@@ -2115,6 +2147,78 @@ namespace Server.SkillHandlers
                 case ExtendedWeaponAttribute.HitSwarm: return new int[] { 1, 20 };
             }
         }
+
+        private static int GetArmorIndex(Item item)
+        {
+            if (item is BaseHat)
+                return 0;
+
+            BaseArmor armor = item as BaseArmor;
+
+            if (armor != null)
+            {
+                if (item.Layer == Layer.Helm)
+                    return 13;
+
+                if (armor.MaterialType == ArmorMaterialType.Dragon)
+                    return 12;
+
+                if (armor is GargishStoneKilt || armor is GargishStoneChest || armor is GargishStoneLegs || armor is GargishStoneArms || armor is GargishStoneAmulet)
+                    return 11;
+
+                if (armor is WoodlandGorget || armor is WoodlandLegs || armor is WoodlandGloves || armor is WoodlandChest || armor is WoodlandArms)
+                    return 10;
+
+                if (armor is HidePants || armor is HidePauldrons || armor is HideGorget || armor is HideFemaleChest || armor is HideGloves || armor is HideChest)
+                    return 9;
+
+                if (armor is LeafLegs || armor is LeafTonlet || armor is LeafGorget || armor is LeafGloves || armor is LeafArms || armor is LeafChest)
+                    return 8;
+
+                if (armor is PlateSuneate || armor is PlateMempo || armor is PlateHiroSode || armor is PlateHatsuburi || armor is PlateHaidate || armor is PlateDo || armor is PlateBattleKabuto)
+                    return 7;
+
+                if (armor.MaterialType == ArmorMaterialType.Plate)
+                    return 6;
+
+                if (armor.MaterialType == ArmorMaterialType.Chainmail)
+                    return 5;
+
+                if (armor.MaterialType == ArmorMaterialType.Ringmail)
+                    return 4;
+
+                if (armor.MaterialType == ArmorMaterialType.Bone)
+                    return 3;
+
+                if (armor.MaterialType == ArmorMaterialType.Leather || armor is StuddedMempo || armor is StuddedSuneate || armor is StuddedHiroSode ||
+                    armor is StuddedHaidate || armor is StuddedDo)
+                    return 2;
+
+                if (armor.MaterialType == ArmorMaterialType.Studded)
+                    return 1;
+            }
+
+            return -1; // Studded Armor
+        }
+
+        private static int[][] _MaxResistArmorTable = 
+        {
+            new int[] { 20, 22, 21, 21, 21 }, // cloth *hats
+            new int[] { 17, 19, 18, 18, 19 }, // studded leather
+            new int[] { 17, 19, 18, 18, 18 }, // leather & samurai studded leather
+            new int[] { 18, 18, 19, 17, 19 }, // bone
+            new int[] { 18, 18, 16, 20, 18 }, // ringmail
+            new int[] { 19, 19, 19, 16, 17 }, // chain
+            new int[] { 20, 18, 17, 18, 17 }, // platemail
+            new int[] { 20, 17, 17, 17, 19 }, // platemail/samurai
+            new int[] { 17, 18, 17, 19, 19 }, // leaf
+            new int[] { 18, 18, 19, 18, 17 }, // hide
+            new int[] { 20, 16, 17, 17, 20 }, // woodland
+            new int[] { 21, 21, 19, 23, 21 }, // stone
+            new int[] { 18, 18, 18, 18, 18 }, // dragon
+            new int[] { 22, 17, 17, 17, 17 }, // helmets
+
+        };
         #endregion
     }
 }        

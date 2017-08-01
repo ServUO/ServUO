@@ -3243,6 +3243,12 @@ namespace Server.Mobiles
 				m_SentHonorContext.OnSourceBeneficialAction(target);
 			}
 
+            if (Siege.SiegeShard)
+            {
+                Criminal = true;
+                return;
+            }
+
 			base.OnBeneficialAction(target, isCriminal);
 		}
 
@@ -4144,14 +4150,14 @@ namespace Server.Mobiles
 
 		public List<Mobile> PermaFlags { get { return m_PermaFlags; } }
 
-		public override int Luck { get { return AosAttributes.GetValue(this, AosAttribute.Luck); } }
+        public override int Luck { get { return AosAttributes.GetValue(this, AosAttribute.Luck) + TenthAnniversarySculpture.GetLuckBonus(this); } }
 
         public int RealLuck { 
             get
             {
                 int facetBonus = this.Map == Map.Felucca ? RandomItemGenerator.FeluccaLuckBonus : 250;
 
-                return Luck + TenthAnniversarySculpture.GetLuckBonus(this) + FountainOfFortune.GetLuckBonus(this) + facetBonus;
+                return Luck + FountainOfFortune.GetLuckBonus(this) + facetBonus;
             }
         }
 

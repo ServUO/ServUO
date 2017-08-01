@@ -132,12 +132,6 @@ namespace Server.Mobiles
 
             c.DropItem(new DoubleAxe());
 
-            if (Core.ML)
-            {
-                if (Utility.RandomDouble() < 0.05)
-                    c.DropItem(new StoutWhip());
-            }
-
             if (Utility.RandomDouble() < 0.1)
                 c.DropItem(new EvilOrcHelm());
         }

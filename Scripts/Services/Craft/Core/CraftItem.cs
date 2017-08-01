@@ -40,6 +40,19 @@ namespace Server.Engines.Craft
 
 	public class CraftItem
 	{
+        /// <summary>
+        /// this delegate will handle all crafting functions, 
+        /// such as resource check, actual crafting, etc. 
+        /// For use for abnormal crafting, ie combine cloth, etc.
+        /// </summary>
+        public Action<Mobile, CraftItem, BaseTool> TryCraft { get; set; }
+
+        /// <summary>
+        /// this func will create complex items that may require args, or other
+        /// things to create that Activator may not be able to accomidate.
+        /// </summary>
+        public Func<Mobile, CraftItem, BaseTool, Item> CreateItem { get; set; }
+
 		private readonly CraftResCol m_arCraftRes;
 		private readonly CraftSkillCol m_arCraftSkill;
 		private readonly Type m_Type;
@@ -1631,10 +1644,14 @@ namespace Server.Engines.Craft
 					item = new IndecipherableMap();
 					from.SendLocalizedMessage(1070800); // The map you create becomes mysteriously indecipherable.
 				}
-				else
-				{
-					item = Activator.CreateInstance(ItemType) as Item;
-				}
+                else if (CreateItem != null)
+                {
+                    item = CreateItem(from, this, tool);
+                }
+                else
+                {
+                    item = Activator.CreateInstance(ItemType) as Item;
+                }
 
 				if (item != null)
 				{

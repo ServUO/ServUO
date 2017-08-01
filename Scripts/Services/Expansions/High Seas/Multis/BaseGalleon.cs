@@ -63,6 +63,8 @@ namespace Server.Multis
 
         private Dictionary<Item, Item> _InternalCannon;
 
+        public List<Item> FillerTiles { get { return m_FillerTiles; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile GalleonPilot { get { return m_GalleonPilot; } }
 
@@ -349,12 +351,12 @@ namespace Server.Multis
             return false;
         }
 
-        public override bool CanMoveOver(Item item)
+        public override bool CanMoveOver(IEntity entity)
         {
-            if (item.Z <= this.Z && !item.ItemData.Impassable && item.ItemData.Height < ZSurface / 2)
+            if (entity.Z <= this.Z && entity is Item && !((Item)entity).ItemData.Impassable && ((Item)entity).ItemData.Height < ZSurface / 2)
                 return true;
 
-            return base.CanMoveOver(item);
+            return base.CanMoveOver(entity);
         }
 
         public bool TryMarkRune(RecallRune rune, Mobile from)
@@ -426,14 +428,29 @@ namespace Server.Multis
             if (Owner != null)
             {
                 if (bankbox)
-                    Owner.BankBox.DropItem(rune);
+                {
+                    if (!Owner.BankBox.TryDropItem(Owner, rune, false))
+                    {
+                        GalleonHold.DropItem(rune);
+                        Owner.SendLocalizedMessage(1149579); //A rune to your ship could not be created in your bank box. It has been placed in the ship's cargo hold instead.
+                    }
+                    else
+                    {
+                        Owner.SendLocalizedMessage(1149581); //A recall rune for your new ship has been placed in your bank box.
+                    }
+                }
                 else
-                    Owner.AddToBackpack(rune);
-
-                if (bankbox)
-                    Owner.SendLocalizedMessage(1149581); //A recall rune for your new ship has been placed in your bank box.
-                else
-                    Owner.SendLocalizedMessage(1149580); //A recall rune to your ship has been placed in your backpack.
+                {
+                    if (Owner.Backpack == null || !Owner.Backpack.TryDropItem(Owner, rune, false))
+                    {
+                        GalleonHold.DropItem(rune);
+                        Owner.SendLocalizedMessage(1149577); //A recall rune for your new ship could not be created in your backpack. It has been placed in the ship hold instead.
+                    }
+                    else
+                    {
+                        Owner.SendLocalizedMessage(1149581); //A recall rune for your new ship has been placed in your bank box.
+                    }
+                }
             }
             else
                 rune.Delete();
@@ -510,19 +527,13 @@ namespace Server.Multis
             //TODO: Damage packets?
             if (damager != null)
             {
-                List<Mobile> list = GetMobilesOnBoard();
-
-                foreach(Mobile m in list.Where(mobile => mobile is PlayerMobile && mobile.NetState != null && HasAccess(mobile)))
+                foreach (var m in GetMobilesOnBoard().OfType<PlayerMobile>().Where(mobile => mobile.NetState != null && HasAccess(mobile)))
                 {
                     m.SendMessage(33, "Your ship has recieved {0} damage from {1}.", damage, damager.Name);
                 }
 
-                list.Clear();
-                list.TrimExcess();
-
                 if (damager is PlayerMobile && damager.NetState != null)
                     damager.SendMessage(33, "You have inflicted {0} to {1}.", damage, ShipName == null ? "an unnamed ship" : ShipName);
-
             }
 
             if (m_Hits < 0)
@@ -762,18 +773,18 @@ namespace Server.Multis
             return SlowDriftInterval;
         }
 
-        public override bool IsComponentItem(ISpawnable spawnable)
+        public override bool IsComponentItem(IEntity entity)
         {
-            if (!(spawnable is Item))
+            if (!(entity is Item))
                 return false;
 
-            Item item = (Item)spawnable;
+            Item item = (Item)entity;
 
             if (m_MooringLines.Contains(item) || m_Cannons.Contains(item) || m_CannonTiles.Contains(item)
                 || m_FillerTiles.Contains(item) || m_HoldTiles.Contains(item) || m_Addons.Contains(item) || item == m_Wheel || item == m_GalleonHold)
                 return true;
 
-            return base.IsComponentItem(spawnable);
+            return base.IsComponentItem(entity);
         }
 
         public override void OnAfterDelete()
@@ -967,16 +978,28 @@ namespace Server.Multis
             return check;
         }
 
-        public override List<Item> GetComponents()
+        public override IEnumerable<IEntity> GetComponents()
         {
-            List<Item> list = new List<Item>();
-            list.AddRange(m_CannonTiles);
-            list.AddRange(m_FillerTiles);
-            list.AddRange(m_HoldTiles);
-            list.AddRange(m_MooringLines);
-            list.Add(m_GalleonHold);
-            list.Add(m_Wheel);
-            return list;
+            foreach (var item in m_CannonTiles)
+                yield return item;
+
+            foreach (var item in m_FillerTiles)
+                yield return item;
+
+            foreach (var item in m_HoldTiles)
+                yield return item;
+
+            foreach (var item in m_MooringLines)
+                yield return item;
+
+            if(m_GalleonHold != null)
+                yield return m_GalleonHold;
+
+            if(m_Wheel != null)
+                yield return m_Wheel;
+
+            if(m_GalleonPilot != null)
+                yield return m_GalleonPilot;
         }
 
         public int GetValueForDirection(Direction direction)
