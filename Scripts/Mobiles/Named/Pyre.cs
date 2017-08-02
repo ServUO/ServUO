@@ -47,6 +47,11 @@ namespace Server.Mobiles
             }
         }
 
+        public override bool GivesMLMinorArtifact
+        {
+            get { return true; }
+        }
+
         public Pyre(Serial serial)
             : base(serial)
         {
@@ -61,13 +66,6 @@ namespace Server.Mobiles
 
         }
 
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override int TreasureMapLevel
         {
             get

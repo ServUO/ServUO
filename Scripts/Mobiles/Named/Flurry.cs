@@ -49,6 +49,11 @@ namespace Server.Mobiles
             }
         }
 
+        public override bool GivesMLMinorArtifact
+        {
+            get { return true; }
+        }
+
         public Flurry(Serial serial)
             : base(serial)
         {

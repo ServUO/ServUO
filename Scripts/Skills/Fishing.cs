@@ -144,6 +144,18 @@ namespace Server.Engines.Harvest
 			new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } )
 		};
 
+        private static MutateEntry[] m_SiegeMutateTable = new MutateEntry[]
+		{
+			new MutateEntry( 80.0,  80.0,  1865.0,  true, typeof( SpecialFishingNet ) ),
+            new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } ),
+			new MutateEntry( 100.0,  80.0,  1865.0,  true, typeof( MessageInABottle ) ),			
+			new MutateEntry( 80.0,  80.0,  4080.0,  true, typeof( BigFish ) ),
+			new MutateEntry( 0.0, 125.0, -2375.0, false, typeof( PrizedFish ), typeof( WondrousFish ), typeof( TrulyRareFish ), typeof( PeculiarFish ) ),
+			new MutateEntry( 0.0, 105.0,  -420.0, false, typeof( Boots ), typeof( Shoes ), typeof( Sandals ), typeof( ThighBoots ) ),
+            new MutateEntry( 80.0,  80.0, 2500.0, false, typeof( MudPuppy ), typeof( RedHerring) ),
+			new MutateEntry( 0.0, 200.0,  -200.0, false, new Type[1]{ null } )
+		};
+
         private static MutateEntry[] m_LavaMutateTable = new MutateEntry[]
         {
             new MutateEntry( 0.0,  80.0,  1500,   false, typeof(StoneFootwear)),
@@ -260,16 +272,18 @@ namespace Server.Engines.Harvest
             double skillBase = from.Skills[SkillName.Fishing].Base;
             double skillValue = from.Skills[SkillName.Fishing].Value;
 
-            for (int i = 0; i < m_MutateTable.Length; ++i)
+            var table = Siege.SiegeShard ? m_SiegeMutateTable : m_MutateTable;
+
+            for (int i = 0; i < table.Length; ++i)
             {
-                // RedHerring/MudPuppy
+                MutateEntry entry = m_MutateTable[i];
+
+                // RedHerring / MudPuppy
                 if (i == 6 && (from.Region == null || !from.Region.IsPartOf("Underworld")))
                     continue;
 
                 if (junkproof && i == 5 && 0.80 >= Utility.RandomDouble())
                     continue;
-
-                MutateEntry entry = m_MutateTable[i];
 
                 if (!deepWater && entry.m_DeepWater)
                     continue;
@@ -284,14 +298,6 @@ namespace Server.Engines.Harvest
             }
 
             return type;
-        }
-
-        private static Map SafeMap(Map map)
-        {
-            if (map == null || map == Map.Internal)
-                return Map.Trammel;
-
-            return map;
         }
 
         public override bool CheckResources(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)
