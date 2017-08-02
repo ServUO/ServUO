@@ -1754,7 +1754,7 @@ namespace Server.Items
 
 		public virtual bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
 		{
-            if (!CheckHold(from, dropped, sendFullMessage, CheckStack(from, dropped)))
+            if (!CheckHold(from, dropped, sendFullMessage, !CheckStack(from, dropped)))
             {
                 return false;
             }
