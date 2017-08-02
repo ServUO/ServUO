@@ -6,10 +6,13 @@ namespace Server.Misc
 {
     public class AttackMessage
     {
-        private static readonly TimeSpan Delay = TimeSpan.FromMinutes(1.0);
+        private static readonly TimeSpan Delay = TimeSpan.FromMinutes(2.0);
         private const string AggressorFormat = "You are attacking {0}!";
         private const string AggressedFormat = "{0} is attacking you!";
         private const int Hue = 0x22;
+
+        public static TimeSpan CombatHeatDelay { get { return Delay; } }
+
         public static void Initialize()
         {
             EventSink.AggressiveAction += new AggressiveActionEventHandler(EventSink_AggressiveAction);
@@ -29,8 +32,8 @@ namespace Server.Misc
                 aggressed.LocalOverheadMessage(MessageType.Regular, Hue, true, String.Format(AggressedFormat, aggressor.Name));
             }
 
-            BuffInfo.AddBuff(aggressor, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, TimeSpan.FromMinutes(2), aggressor, true));
-            BuffInfo.AddBuff(aggressed, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, TimeSpan.FromMinutes(2), aggressed, true));
+            BuffInfo.AddBuff(aggressor, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Delay, aggressor, true));
+            BuffInfo.AddBuff(aggressed, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Delay, aggressed, true));
         }
 
         public static bool CheckAggressions(Mobile m1, Mobile m2)

@@ -139,7 +139,7 @@ namespace Server
                 return 2402;
 
             if (value >= 30000)
-                value = 20000;	//Sanity
+                value = 30000;	//Sanity
 				
             int vl;
 			

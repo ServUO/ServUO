@@ -47,7 +47,13 @@ namespace Server.Mobiles
             if (0.2 >= Utility.RandomDouble())
                 this.PackItem(new ExecutionersCap());
 
-            this.PackItem(new Vines());
+            PackItem(new Vines());  //this is correct
+            PackItem(new FertileDirt(Utility.RandomMinMax(1, 10)));
+
+            if (Utility.RandomDouble() < 0.10)
+            {
+                PackItem(new DecorativeVines());
+            }
         }
 
         public WhippingVine(Serial serial)

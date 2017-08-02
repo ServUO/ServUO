@@ -6,21 +6,6 @@ using Server.Mobiles;
 using Server.Gumps;
 using Server.Targeting;
 
-/*
-"Combat Training" gives the option to give your pet "Empowerment", "Berserk" or "Consume Damage". Active Meditation can no longer be maintained during the use of "Combat Training".
- Not sure what "Combat Training: Empowerment" does yet, but sometimes when the pet is hit when under Empowerment, a bronzish sparkle briefly appears on the pet, no idea what this does.
- "Combat Training: Berserk", with further testing, appears to grant a 20-25% damage increase, and when the pet is low health (45% or below), grants extreme Stamina Regeneration.
- "Combat Training: Consume Damage" is incredibly powerful at 120 Taming/120 Lore. With Consume Damage on my fully trained Greater Dragon, he was able to take on an Ancient Wyrm Paragon
- along with 3 Wyverns at the same time, and they could barely even scratch him. I didn't have to vet him at all, and he never went below 80% Health the whole fight, which went on for about 5-10 minutes.
- "Combat Training: Consume Damage" does not appear to function in PvP.
- * 
- * "Combat Training" has been clarified by the devs in Part 3, and the observations i've made previously were only part of the Mastery's function. Some of the Mastery's appear to have changed, or gained more function.
-    "Empowerment" acts very similar to Consume Damage, in that it makes your pet very tanky (which was not the case prior to Part 3). This is because for a period of time your pet will store damage taken, and then use that store of damage to boost it's own damage output, both melee and magical (+DI/+SDI).
- "Berserk" has been changed to function exactly like the "Berserk" property from the Bestial Set. For 8 seconds, the more damage a pet takes, the more damage reduction it gains, and the more melee damage it deals. This effect has a 60 second cooldown. 
- The short duration and long cooldown make this ability rather pointless in comparison to Empowerment or Consume Damage.
- "Consume Damage" makes your pet very tanky. Your pet will store damage taken to increase it's HCI and Regeneration.
- Active Meditation can no longer be maintained while using Combat Training.*/
-
 namespace Server.Spells.SkillMasteries
 {
     public enum TrainingType
@@ -289,6 +274,12 @@ namespace Server.Spells.SkillMasteries
                 {
                     Spell.Caster.FixedEffect(0x3779, 10, 20, 1270, 0);
                     Spell.Caster.SendSound(0x64E);
+
+                    int taming = (int)from.Skills[SkillName.AnimalTaming].Value;
+                    int lore = (int)from.Skills[SkillName.AnimalLore].Value;
+
+                    from.CheckTargetSkill(SkillName.AnimalTaming, (BaseCreature)targeted, taming - 25, taming + 25);
+                    from.CheckTargetSkill(SkillName.AnimalLore, (BaseCreature)targeted, lore - 25, lore + 25);
 
                     from.SendGump(new ChooseTrainingGump(from, (BaseCreature)targeted, Spell));
                 }

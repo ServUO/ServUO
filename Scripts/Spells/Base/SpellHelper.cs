@@ -213,19 +213,21 @@ namespace Server.Spells
             }
         }
 
-        private static readonly TimeSpan CombatHeatDelay = TimeSpan.FromSeconds(30.0);
         private static readonly bool RestrictTravelCombat = true;
 
+        //TODO: Check if aggressor leaves facet, if heat is removed
         public static bool CheckCombat(Mobile m)
         {
             if (!RestrictTravelCombat)
                 return false;
 
+            TimeSpan delay = Server.Misc.AttackMessage.CombatHeatDelay;
+
             for (int i = 0; i < m.Aggressed.Count; ++i)
             {
                 AggressorInfo info = m.Aggressed[i];
 
-                if (info.Defender.Player && (DateTime.UtcNow - info.LastCombatTime) < CombatHeatDelay)
+                if (info.Defender.Player && (DateTime.UtcNow - info.LastCombatTime) < delay)
                     return true;
             }
 
@@ -235,7 +237,7 @@ namespace Server.Spells
                 {
                     AggressorInfo info = m.Aggressors[i];
 
-                    if (info.Attacker.Player && (DateTime.UtcNow - info.LastCombatTime) < CombatHeatDelay)
+                    if (info.Attacker.Player && (DateTime.UtcNow - info.LastCombatTime) < delay)
                         return true;
                 }
             }

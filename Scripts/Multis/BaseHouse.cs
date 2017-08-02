@@ -1263,6 +1263,8 @@ namespace Server.Multis
                 return true;
             else if (item is RewardBrazier)
                 return true;
+            else if (item is TenthAnniversarySculpture)
+                return true;
 
             return false;
         }

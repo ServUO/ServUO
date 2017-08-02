@@ -48,6 +48,11 @@ namespace Server.Mobiles
             }
         }
 
+        public override bool GivesMLMinorArtifact
+        {
+            get { return true; }
+        }
+
         public Grim(Serial serial)
             : base(serial)
         {
