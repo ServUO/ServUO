@@ -64,6 +64,9 @@ namespace Server.Items
 
         public override bool OnBeforeSwing(Mobile attacker, Mobile defender)
         {
+            if(defender == null)
+                return false;
+                
             if (defender.Paralyzed)
             {
                 attacker.SendLocalizedMessage(1061923); // The target is already frozen.
