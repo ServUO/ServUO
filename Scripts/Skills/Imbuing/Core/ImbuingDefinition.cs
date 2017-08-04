@@ -67,7 +67,7 @@ namespace Server.SkillHandlers
             if (type == typeof(Amethyst)) return 1023862;
 
             if (type == typeof(RelicFragment)) return 1031699;
-            if (type == typeof(EnchantEssence)) return 1031698;
+            if (type == typeof(EnchantedEssence)) return 1031698;
             if (type == typeof(MagicalResidue)) return 1031697;
 
             if (type == typeof(DarkSapphire)) return 1032690;

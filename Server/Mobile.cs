@@ -9907,46 +9907,48 @@ namespace Server
 							{
 								Mobile m = (Mobile)o;
 
-								if (!Utility.InUpdateRange(this, newLocation, m.m_Location))
-								{
-									continue;
-								}
+                                if (!Utility.InUpdateRange(this, newLocation, m.m_Location) &&
+                                    !Utility.InUpdateRange(m, newLocation, m.m_Location))
+                                {
+                                    continue;
+                                }
 
-								bool inOldRange = Utility.InUpdateRange(this, oldLocation, m.m_Location);
+                                bool inMyOldRange = Utility.InUpdateRange(this, oldLocation, m.m_Location);
+                                bool inThierOldRange = Utility.InUpdateRange(m, oldLocation, m.m_Location);
 
-								if (m.m_NetState != null && ((isTeleport && (!m.m_NetState.HighSeas || !m_NoMoveHS)) || !inOldRange) &&
-									m.CanSee(this))
-								{
-									m.m_NetState.Send(MobileIncoming.Create(m.m_NetState, m, this));
+                                if (m.m_NetState != null && ((isTeleport && (!m.m_NetState.HighSeas || !m_NoMoveHS)) || !inThierOldRange) &&
+                                    m.CanSee(this))
+                                {
+                                    m.m_NetState.Send(MobileIncoming.Create(m.m_NetState, m, this));
 
-									if (m.m_NetState.StygianAbyss)
-									{
-										if (m_Poison != null)
-										{
-											m.m_NetState.Send(new HealthbarPoison(this));
-										}
+                                    if (m.m_NetState.StygianAbyss)
+                                    {
+                                        if (m_Poison != null)
+                                        {
+                                            m.m_NetState.Send(new HealthbarPoison(this));
+                                        }
 
-										if (m_Blessed || m_YellowHealthbar)
-										{
-											m.m_NetState.Send(new HealthbarYellow(this));
-										}
-									}
+                                        if (m_Blessed || m_YellowHealthbar)
+                                        {
+                                            m.m_NetState.Send(new HealthbarYellow(this));
+                                        }
+                                    }
 
-									if (IsDeadBondedPet)
-									{
-										m.m_NetState.Send(new BondedStatus(0, m_Serial, 1));
-									}
+                                    if (IsDeadBondedPet)
+                                    {
+                                        m.m_NetState.Send(new BondedStatus(0, m_Serial, 1));
+                                    }
 
-									if (ObjectPropertyList.Enabled)
-									{
-										m.m_NetState.Send(OPLPacket);
+                                    if (ObjectPropertyList.Enabled)
+                                    {
+                                        m.m_NetState.Send(OPLPacket);
 
-										//foreach ( Item item in m_Items )
-										//	m.m_NetState.Send( item.OPLPacket );
-									}
-								}
+                                        //foreach ( Item item in m_Items )
+                                        //	m.m_NetState.Send( item.OPLPacket );
+                                    }
+                                }
 
-								if (!inOldRange && CanSee(m))
+                                if (!inMyOldRange && CanSee(m))
 								{
 									ourState.Send(MobileIncoming.Create(ourState, this, m));
 
