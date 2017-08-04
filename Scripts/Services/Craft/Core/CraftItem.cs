@@ -1577,8 +1577,6 @@ namespace Server.Engines.Craft
 					return;
 				}
 
-				tool.UsesRemaining--;
-
 				if (craftSystem is DefBlacksmithy)
 				{
 					AncientSmithyHammer hammer = from.FindItemOnLayer(Layer.OneHanded) as AncientSmithyHammer;
@@ -1609,28 +1607,6 @@ namespace Server.Engines.Craft
 						#endregion
 					}
 				}
-
-				#region Mondain's Legacy
-				if (tool is HammerOfHephaestus)
-				{
-					if (tool.UsesRemaining < 1)
-					{
-						tool.UsesRemaining = 0;
-					}
-				}
-				else
-				{
-					if (tool.UsesRemaining < 1 && tool.BreakOnDepletion)
-					{
-						toolBroken = true;
-					}
-
-					if (toolBroken)
-					{
-						tool.Delete();
-					}
-				}
-				#endregion
 
 				int num = 0;
 
@@ -1782,6 +1758,30 @@ namespace Server.Engines.Craft
                     AutoCraftTimer.OnSuccessfulCraft(from);
 					//from.PlaySound( 0x57 );
 				}
+
+                tool.UsesRemaining--;
+
+                #region Mondain's Legacy
+                if (tool is HammerOfHephaestus)
+                {
+                    if (tool.UsesRemaining < 1)
+                    {
+                        tool.UsesRemaining = 0;
+                    }
+                }
+                #endregion
+                else
+                {
+                    if (tool.UsesRemaining < 1 && tool.BreakOnDepletion)
+                    {
+                        toolBroken = true;
+                    }
+
+                    if (toolBroken)
+                    {
+                        tool.Delete();
+                    }
+                }
 
 				if (num == 0)
 				{

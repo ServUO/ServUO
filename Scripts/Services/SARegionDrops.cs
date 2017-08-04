@@ -72,7 +72,7 @@ namespace Server.Services
                             c.DropItem(new DelicateScales());
                             break;
                         case 7:
-                            c.DropItem(new SeedRenewal());
+                            c.DropItem(new SeedOfRenewal());
                             break;
                         case 8:
                             c.DropItem(new CrushedGlass());

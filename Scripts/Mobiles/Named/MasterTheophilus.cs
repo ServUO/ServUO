@@ -72,13 +72,13 @@ namespace Server.Mobiles
 
         }
 
-        public override bool GivesMLMinorArtifact
+        /*public override bool GivesMLMinorArtifact
         {
             get
             {
                 return true;
             }
-        }
+        }*/
         public override bool AllureImmune
         {
             get

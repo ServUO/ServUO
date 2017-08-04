@@ -8,7 +8,7 @@ namespace Server.Engines.Quests
         public KnowledgeoftheSoulforge()
             : base()
         { 
-            this.AddObjective(new ObtainObjective(typeof(EnchantEssence), "Enchanted Essence", 50, 0x2DB2));
+            this.AddObjective(new ObtainObjective(typeof(EnchantedEssence), "Enchanted Essence", 50, 0x2DB2));
           						
             this.AddReward(new BaseReward(typeof(ScrollBox), 1, "Knowledge"));
         }

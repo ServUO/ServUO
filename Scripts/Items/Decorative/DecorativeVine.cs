@@ -2,35 +2,37 @@ using System;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.SeedRenewal")]
-    public class SeedOfRenewal : Item
+    public class DecorativeVines : Item
     {
         [Constructable]
-        public SeedOfRenewal()
-            : this(1)
+        public DecorativeVines()
+            : this(Utility.Random(4))
         {
         }
 
         [Constructable]
-        public SeedOfRenewal(int amount)
-            : base(0x5736)
+        public DecorativeVines(int v)
+            : base(0x2CF9)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            if (v < 0 || v > 3)
+                v = 0;
+
+            this.ItemID += v;
+            this.Weight = 1.0;
         }
 
-        public SeedOfRenewal(Serial serial)
+        public DecorativeVines(Serial serial)
             : base(serial)
         {
         }
 
-        public override int LabelNumber
+        public override bool ForceShowProperties
         {
             get
             {
-                return 1113345;
+                return ObjectPropertyList.Enabled;
             }
-        }// seed of renewal
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

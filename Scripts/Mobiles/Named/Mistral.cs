@@ -50,6 +50,11 @@ namespace Server.Mobiles
             }
         }
 
+        public override bool GivesMLMinorArtifact
+        {
+            get { return true; }
+        }
+
         public Mistral(Serial serial)
             : base(serial)
         {
