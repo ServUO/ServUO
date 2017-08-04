@@ -187,7 +187,7 @@ namespace Server.Engines.Plants
                     {
                         if (Utility.RandomDouble() < 0.05)
                         {
-                            Item Rseed = new SeedRenewal();
+                            Item Rseed = new SeedOfRenewal();
  
                             if (from.PlaceInBackpack(Rseed))
                             {

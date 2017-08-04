@@ -284,23 +284,24 @@ namespace Server.Items
         }
     }
 
-    public class EnchantEssence : Item
+    [TypeAlias("Server.Items.EnchantEssence")]
+    public class EnchantedEssence : Item
     {
         [Constructable]
-        public EnchantEssence()
+        public EnchantedEssence()
             : this(1)
         {
         }
 
         [Constructable]
-        public EnchantEssence(int amount)
+        public EnchantedEssence(int amount)
             : base(0x2DB2)
         {
             Stackable = true;
             Amount = amount;
         }
 
-        public EnchantEssence(Serial serial)
+        public EnchantedEssence(Serial serial)
             : base(serial)
         {
         }

@@ -2,23 +2,24 @@ using System;
 
 namespace Server.Items
 {
-    public class SeedRenewal : Item
+    [TypeAlias("Server.Items.SeedRenewal")]
+    public class SeedOfRenewal : Item
     {
         [Constructable]
-        public SeedRenewal()
+        public SeedOfRenewal()
             : this(1)
         {
         }
 
         [Constructable]
-        public SeedRenewal(int amount)
+        public SeedOfRenewal(int amount)
             : base(0x5736)
         {
             this.Stackable = true;
             this.Amount = amount;
         }
 
-        public SeedRenewal(Serial serial)
+        public SeedOfRenewal(Serial serial)
             : base(serial)
         {
         }
