@@ -2666,8 +2666,8 @@
     <Compile Include="Items\Consumables\BaseExplodingTarPotion.cs" />
     <Compile Include="Items\Consumables\ExplodingTarPotion.cs" />
     <Compile Include="Mobiles\NPCs\Gretchen.cs" />
-    <Compile Include="Items\Containers\BagOfJewels.cs" />
-    <Compile Include="Items\Artifacts\Decorative\DeBoorShield.cs" />
+    <Compile Include="Items\Quest\BagOfJewels.cs" />
+    <Compile Include="Items\Quest\DeBoorShield.cs" />
     <Compile Include="Items\Artifacts\Consumables\GobletOfCelebration.cs" />
     <Compile Include="Quests\HonorOfDeBoorsQuest.cs" />
     <Compile Include="Items\Addons\PotteryWheelAddon.cs" />
