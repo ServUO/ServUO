@@ -2281,7 +2281,7 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((short)item.Y);
             m_Stream.Write((byte)item.GridLocation);
             m_Stream.Write(parentSerial);
-			m_Stream.Write((ushort)(item.QuestItem ? Item.QuestItemHue : item.Hue));
+			m_Stream.Write((ushort)(item.QuestItem ? item.QuestItemHue : item.Hue));
 		}
 	}
 
@@ -2310,7 +2310,7 @@ m_Stream.Write( (int) renderMode );
 			m_Stream.Write((short)item.Y);
             m_Stream.Write((byte)item.GridLocation);
             m_Stream.Write(parentSerial);
-			m_Stream.Write((ushort)(item.QuestItem ? Item.QuestItemHue : item.Hue));
+			m_Stream.Write((ushort)(item.QuestItem ? item.QuestItemHue : item.Hue));
 		}
 	}
 
@@ -2351,7 +2351,7 @@ m_Stream.Write( (int) renderMode );
 					m_Stream.Write((short)loc.m_Y);
                     m_Stream.Write((byte)child.GridLocation);
                     m_Stream.Write(beheld.Serial);
-					m_Stream.Write((ushort)(child.QuestItem ? Item.QuestItemHue : child.Hue));
+					m_Stream.Write((ushort)(child.QuestItem ? child.QuestItemHue : child.Hue));
 
 					++written;
 				}
@@ -2399,7 +2399,7 @@ m_Stream.Write( (int) renderMode );
 					m_Stream.Write((short)loc.m_Y);
                     m_Stream.Write((byte)child.GridLocation);
                     m_Stream.Write(beheld.Serial);
-					m_Stream.Write((ushort)(child.QuestItem ? Item.QuestItemHue : child.Hue));
+					m_Stream.Write((ushort)(child.QuestItem ? child.QuestItemHue : child.Hue));
 
 					++written;
 				}
