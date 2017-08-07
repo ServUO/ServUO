@@ -1248,7 +1248,6 @@ namespace Server.Mobiles
             return 0x28;
         }
 
-        public override bool TaintedLifeAura { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
         public override bool BleedImmune { get { return true; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
