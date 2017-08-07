@@ -328,13 +328,18 @@ namespace Server.Items
             {
                 if (IsArrowAmmo && item is Bolt)
                     return false;
+
                 if (!IsArrowAmmo && item is Arrow)
                     return false;
             }
 
-            if (Items.Count < DefaultMaxItems)
+            if (!checkItems || Items.Count < DefaultMaxItems)
             {
-                if (item.Amount <= m_Capacity)
+                int currentAmount = 0;
+
+                Items.ForEach(i => currentAmount += i.Amount);
+
+                if (item.Amount + currentAmount <= m_Capacity)
                     return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
 
                 return false;

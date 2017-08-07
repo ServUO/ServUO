@@ -2,9 +2,11 @@ using Server;
 using System;
 using System.Collections.Generic;
 using Server.Mobiles;
+using Server.Engines.Craft;
 
 namespace Server.Items
 {
+    [Alterable(typeof(DefTinkering), typeof(GargishPrismaticLenses))]
     public class PrismaticLenses : Glasses, ITokunoDyable
     {
         public override int LabelNumber { get { return 1152716; } } // Prismatic Lenses

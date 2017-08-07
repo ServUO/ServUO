@@ -3243,7 +3243,7 @@ namespace Server.Mobiles
 				m_SentHonorContext.OnSourceBeneficialAction(target);
 			}
 
-            if (Siege.SiegeShard)
+            if (Siege.SiegeShard && isCriminal)
             {
                 Criminal = true;
                 return;
