@@ -93,15 +93,7 @@ namespace Server.Gumps
             m_MaxWeight = Imbuing.GetMaxWeight(m_Item);
 			
             // = Times Item has been Imbued
-            int timesImbued = 0;
-            if (m_Item is BaseWeapon) 
-                timesImbued = ((BaseWeapon)m_Item).TimesImbued;
-            if (m_Item is BaseArmor)
-                timesImbued = ((BaseArmor)m_Item).TimesImbued;
-            if (m_Item is BaseJewel)
-                timesImbued = ((BaseJewel)m_Item).TimesImbued;
-            if (m_Item is BaseHat)
-                timesImbued = ((BaseHat)m_Item).TimesImbued;
+            int timesImbued = Imbuing.TimesImbued(m_Item);
 
             // = Check Ingredients needed at the current Intensity
             m_GemAmount = Imbuing.GetGemAmount(m_Item, m_Mod, m_Value);
@@ -370,12 +362,12 @@ namespace Server.Gumps
             }
         }
 
-        public void SendGumpDelayed(Mobile from)
+        public static void SendGumpDelayed(Mobile from)
         {
             Timer.DelayCall(TimeSpan.FromSeconds(1.5), new TimerStateCallback(SendGump_Callback), from);
         }
 
-        public void SendGump_Callback(object o)
+        public static void SendGump_Callback(object o)
         {
             Mobile from = o as Mobile;
 

@@ -2126,12 +2126,19 @@ namespace Server.Engines.ConPVP
 
                 if (cash > 0)
                 {
-                    item = new BankCheck(cash);
-
-                    if (!mob.PlaceInBackpack(item))
-                        mob.BankBox.DropItem(item);
-
                     mob.SendMessage("You have been awarded a {0} trophy and {1:N0}gp for your participation in this tournament.", rank.ToString().ToLower(), cash);
+
+                    if (!Core.TOL)
+                    {
+                        item = new BankCheck(cash);
+
+                        if (!mob.PlaceInBackpack(item))
+                            mob.BankBox.DropItem(item);
+                    }
+                    else
+                    {
+                        Banker.Deposit(mob, cash, true);
+                    }
                 }
                 else
                 {

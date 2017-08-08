@@ -2,6 +2,7 @@ using System;
 using Server.Items;
 using Server.Multis;
 using Server.Network;
+using Server.Mobiles;
 
 namespace Server.Gumps
 {
@@ -12,21 +13,21 @@ namespace Server.Gumps
         public ConfirmHouseResize(Mobile mobile, BaseHouse house)
             : base(110, 100)
         {
-            this.m_Mobile = mobile;
-            this.m_House = house;
+            m_Mobile = mobile;
+            m_House = house;
 
             mobile.CloseGump(typeof(ConfirmHouseResize));
 
-            this.Closable = false;
+            Closable = false;
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(0, 0, 420, 280, 0x13BE);
-            this.AddImageTiled(10, 10, 400, 20, 0xA40);
-            this.AddAlphaRegion(10, 10, 400, 20);
-            this.AddHtmlLocalized(10, 10, 400, 20, 1060635, 0x7800, false, false); // <CENTER>WARNING</CENTER>
-            this.AddImageTiled(10, 40, 400, 200, 0xA40);
-            this.AddAlphaRegion(10, 40, 400, 200);
+            AddBackground(0, 0, 420, 280, 0x13BE);
+            AddImageTiled(10, 10, 400, 20, 0xA40);
+            AddAlphaRegion(10, 10, 400, 20);
+            AddHtmlLocalized(10, 10, 400, 20, 1060635, 0x7800, false, false); // <CENTER>WARNING</CENTER>
+            AddImageTiled(10, 40, 400, 200, 0xA40);
+            AddAlphaRegion(10, 40, 400, 200);
 
             /* You are attempting to resize your house. You will be refunded the house's 
             value directly to your bank box. All items in the house will *remain behind* 
@@ -36,30 +37,30 @@ namespace Server.Gumps
             will not un-condemn any other houses on your account. If you have other, 
             grandfathered houses, this action *WILL* condemn them. Are you sure you wish 
             to continue?*/
-            this.AddHtmlLocalized(10, 40, 400, 200, 1080196, 0x7F00, false, true); 
+            AddHtmlLocalized(10, 40, 400, 200, 1080196, 0x7F00, false, true); 
 
-            this.AddImageTiled(10, 250, 400, 20, 0xA40);
-            this.AddAlphaRegion(10, 250, 400, 20);
-            this.AddButton(10, 250, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
-            this.AddButton(210, 250, 0xFA5, 0xFA7, 0, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(40, 250, 170, 20, 1011036, 0x7FFF, false, false); // OKAY
-            this.AddHtmlLocalized(240, 250, 170, 20, 1011012, 0x7FFF, false, false); // CANCEL
+            AddImageTiled(10, 250, 400, 20, 0xA40);
+            AddAlphaRegion(10, 250, 400, 20);
+            AddButton(10, 250, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
+            AddButton(210, 250, 0xFA5, 0xFA7, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(40, 250, 170, 20, 1011036, 0x7FFF, false, false); // OKAY
+            AddHtmlLocalized(240, 250, 170, 20, 1011012, 0x7FFF, false, false); // CANCEL
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            if (info.ButtonID == 1 && !this.m_House.Deleted)
+            if (info.ButtonID == 1 && !m_House.Deleted)
             {
-                if (this.m_House.IsOwner(this.m_Mobile))
+                if (m_House.IsOwner(m_Mobile))
                 {
-                    if (this.m_House.MovingCrate != null || this.m_House.InternalizedVendors.Count > 0)
+                    if (m_House.MovingCrate != null || m_House.InternalizedVendors.Count > 0)
                     {
-                        this.m_Mobile.SendLocalizedMessage(1080455); // You can not resize your house at this time. Please remove all items fom the moving crate and try again.
+                        m_Mobile.SendLocalizedMessage(1080455); // You can not resize your house at this time. Please remove all items fom the moving crate and try again.
                         return;
                     }
-                    else if (!Guilds.Guild.NewGuildSystem && this.m_House.FindGuildstone() != null)
+                    else if (!Guilds.Guild.NewGuildSystem && m_House.FindGuildstone() != null)
                     {
-                        this.m_Mobile.SendLocalizedMessage(501389); // You cannot redeed a house with a guildstone inside.
+                        m_Mobile.SendLocalizedMessage(501389); // You cannot redeed a house with a guildstone inside.
                         return;
                     }
                     /*else if ( m_House.PlayerVendors.Count > 0 )
@@ -67,82 +68,91 @@ namespace Server.Gumps
                     m_Mobile.SendLocalizedMessage( 503236 ); // You need to collect your vendor's belongings before moving.
                     return;
                     }*/
-                    else if (this.m_House.HasRentedVendors && this.m_House.VendorInventories.Count > 0)
+                    else if (m_House.HasRentedVendors && m_House.VendorInventories.Count > 0)
                     {
-                        this.m_Mobile.SendLocalizedMessage(1062679); // You cannot do that that while you still have contract vendors or unclaimed contract vendor inventory in your house.
+                        m_Mobile.SendLocalizedMessage(1062679); // You cannot do that that while you still have contract vendors or unclaimed contract vendor inventory in your house.
                         return;
                     }
-                    else if (this.m_House.HasRentedVendors)
+                    else if (m_House.HasRentedVendors)
                     {
-                        this.m_Mobile.SendLocalizedMessage(1062680); // You cannot do that that while you still have contract vendors in your house.
+                        m_Mobile.SendLocalizedMessage(1062680); // You cannot do that that while you still have contract vendors in your house.
                         return;
                     }
-                    else if (this.m_House.VendorInventories.Count > 0)
+                    else if (m_House.VendorInventories.Count > 0)
                     {
-                        this.m_Mobile.SendLocalizedMessage(1062681); // You cannot do that that while you still have unclaimed contract vendor inventory in your house.
+                        m_Mobile.SendLocalizedMessage(1062681); // You cannot do that that while you still have unclaimed contract vendor inventory in your house.
                         return;
                     }
 
-                    if (this.m_Mobile.AccessLevel >= AccessLevel.GameMaster)
+                    if (m_Mobile.AccessLevel >= AccessLevel.GameMaster)
                     {
-                        this.m_Mobile.SendMessage("You do not get a refund for your house as you are not a player");
-                        this.m_House.RemoveKeys(this.m_Mobile);
-                        new TempNoHousingRegion(this.m_House, this.m_Mobile);
-                        this.m_House.Delete();
+                        m_Mobile.SendMessage("You do not get a refund for your house as you are not a player");
+                        m_House.RemoveKeys(m_Mobile);
+                        new TempNoHousingRegion(m_House, m_Mobile);
+                        m_House.Delete();
                     }
                     else
                     {
                         Item toGive = null;
 
-                        if (this.m_House.IsAosRules)
+                        if (m_House.IsAosRules)
                         {
-                            if (this.m_House.Price > 0)
-                                toGive = new BankCheck(this.m_House.Price);
+                            if (m_House.Price > 0)
+                            {
+                                if (Core.TOL)
+                                {
+                                    toGive = new BankCheck(m_House.Price);
+                                }
+                                else
+                                {
+                                    Banker.Deposit(m_Mobile, m_House.Price, true);
+                                }
+                            }
                             else
-                                toGive = this.m_House.GetDeed();
+                                toGive = m_House.GetDeed();
                         }
                         else
                         {
-                            toGive = this.m_House.GetDeed();
+                            toGive = m_House.GetDeed();
 
-                            if (toGive == null && this.m_House.Price > 0)
-                                toGive = new BankCheck(this.m_House.Price);
+                            if (toGive == null && m_House.Price > 0)
+                                toGive = new BankCheck(m_House.Price);
                         }
 
                         if (toGive != null)
                         {
-                            BankBox box = this.m_Mobile.BankBox;
+                            BankBox box = m_Mobile.BankBox;
 
-                            if (box.TryDropItem(this.m_Mobile, toGive, false))
+                            if (box.TryDropItem(m_Mobile, toGive, false))
                             {
                                 if (toGive is BankCheck)
-                                    this.m_Mobile.SendLocalizedMessage(1060397, ((BankCheck)toGive).Worth.ToString()); // ~1_AMOUNT~ gold has been deposited into your bank box.
+                                    m_Mobile.SendLocalizedMessage(1060397, ((BankCheck)toGive).Worth.ToString()); // ~1_AMOUNT~ gold has been deposited into your bank box.
 
-                                this.m_House.RemoveKeys(this.m_Mobile);
-                                new TempNoHousingRegion(this.m_House, this.m_Mobile);
-                                this.m_House.Delete();
+                                m_House.RemoveKeys(m_Mobile);
+                                new TempNoHousingRegion(m_House, m_Mobile);
+                                m_House.Delete();
                             }
                             else
                             {
                                 toGive.Delete();
-                                this.m_Mobile.SendLocalizedMessage(500390); // Your bank box is full.
+                                m_Mobile.SendLocalizedMessage(500390); // Your bank box is full.
                             }
                         }
                         else
                         {
-                            this.m_Mobile.SendMessage("Unable to refund house.");
+                            m_Mobile.SendMessage("Unable to refund house.");
                         }
                     }
                 }
                 else
                 {
-                    this.m_Mobile.SendLocalizedMessage(501320); // Only the house owner may do this.
+                    m_Mobile.SendLocalizedMessage(501320); // Only the house owner may do 
                 }
             }
             else if (info.ButtonID == 0)
             {
-                this.m_Mobile.CloseGump(typeof(ConfirmHouseResize));
-                this.m_Mobile.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Customize, this.m_Mobile, this.m_House));
+                m_Mobile.CloseGump(typeof(ConfirmHouseResize));
+                m_Mobile.SendGump(new HouseGumpAOS(HouseGumpPageAOS.Customize, m_Mobile, m_House));
             }
         }
     }
