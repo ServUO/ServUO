@@ -20,7 +20,7 @@ namespace Server.Regions
                 return;
 
             if (Map == Map.Felucca && (IsPartOf("Britain") || IsPartOf("Moonglow") || IsPartOf("Britain") || IsPartOf("Jhelom") || IsPartOf("Yew") || IsPartOf("Minoc") || IsPartOf("Trinsic") ||
-                IsPartOf("SkaraBrae") || IsPartOf("NewMagincia") || IsPartOf("Vesper")))
+                IsPartOf("Skara Brae") || IsPartOf("Magincia") || IsPartOf("Vesper")))
             {
                 if (m.HasGump(typeof(BattleWarningGump)))
                 {
