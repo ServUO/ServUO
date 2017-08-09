@@ -229,13 +229,13 @@ namespace Server.Items
                                         {
                                             User.SendLocalizedMessage(1151772); // You must be wearing this item to bind to another character.
                                         }
-                                        else if (pm.HasGump(typeof(ConfirmBindGump)))
-                                        {
-                                            User.SendLocalizedMessage(1151833); // You may not get confirmation from this player at this time.
-                                        }
                                         else if (pmBrac == null)
                                         {
                                             User.SendLocalizedMessage(1151771); // The target player must be wearing a Bracelet of Binding or Greater Bracelet of Binding for the device to work.
+                                        }
+                                        else if (pm.HasGump(typeof(ConfirmBindGump)) || (pmBrac is GreaterBraceletOfBinding && ((GreaterBraceletOfBinding)pmBrac).Pending != null))
+                                        {
+                                            User.SendLocalizedMessage(1151833); // You may not get confirmation from this player at this time.
                                         }
                                         else if ((pmBrac is GreaterBraceletOfBinding && ((GreaterBraceletOfBinding)pmBrac).IsFull) || (!(pmBrac is GreaterBraceletOfBinding) && pmBrac.Bound != null))
                                         {
