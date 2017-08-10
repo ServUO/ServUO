@@ -114,6 +114,36 @@ namespace Server.Mobiles
             set { this.m_Fisher = value; }
         }
 
+        public override int DefaultHitsRegen
+        {
+            get
+            {
+                int regen = base.DefaultHitsRegen;
+
+                return IsParagon ? regen : regen += 40;
+            }
+        }
+
+        public override int DefaultStamRegen
+        {
+            get
+            {
+                int regen = base.DefaultStamRegen;
+
+                return IsParagon ? regen : regen += 40;
+            }
+        }
+
+        public override int DefaultManaRegen
+        {
+            get
+            {
+                int regen = base.DefaultManaRegen;
+
+                return IsParagon ? regen : regen += 40;
+            }
+        }
+
         public override bool HasBreath { get { return true; } }
         public override int BreathPhysicalDamage { get { return 70; } }
         public override int BreathColdDamage { get { return 30; } }
