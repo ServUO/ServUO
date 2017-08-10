@@ -1,0 +1,138 @@
+using System;
+using Server;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Server.Items
+{
+	public static class WrongDamageingItem
+	{
+		public static string FilePath = Path.Combine("Saves", "WrongDamageing.bin"); // TODO: Proper name/directory
+		
+		public static void Configure()
+		{
+			EventSink.ItemDeleted += OnDelete;
+			EventSink.OnItemUse += OnUse;
+			
+			EventSink.WorldSave += OnSave;
+            EventSink.WorldLoad += OnLoad;
+			
+			Items = new List<Item>();
+		}
+		
+		public static List<Item> Items { get; set; }
+		
+		public static Item Create()
+		{
+			Item loot = Loot.RandomWeaponShieldArmorJewel(); // TODO: this
+			
+			loot.Hue = 0x1234; // TODO: Get 
+			
+			AddItem(loot);
+		}
+		
+		public static void CheckTimer()
+		{
+			if(Items.Count > 0)
+			{
+				if(Timer == null)
+				{
+					Timer = Timer.DelayCall(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3), OnTick);
+				}
+			}
+			else if(Timer != null)
+			{
+				Timer.Stop();
+				Timer = null;
+			}
+		}
+		
+		public static void OnTick()
+		{
+			Items.ForEach(item =>
+			{
+				if(!item.Deleted && item.RootParent is Mobile)
+				{
+					AOS.Damage((Mobile)item.RootParent, null, 0, 100, 0, 0, 0, 0); // TODO: This
+				}
+			});
+		}
+		
+		// This needs a hook in basearmor, baseweapon, basejewel and baseclothing
+		public static void GetProperties(Item item, ObjectPropertyList list)
+		{
+			if(Items.Contains(item))
+			{
+				list.Add(13245679); // Get Cliloc
+			}
+		}
+		
+		public static void AddItem(Item item)
+		{
+			if(!Items.Contains(item))
+			{
+				Items.Add(item);
+				CheckTimer();
+			}
+		}
+		
+		public static void OnDeleted(ItemDeleteEvenArgs e)
+		{
+			Item item = e.Item;
+			
+			if(Items.Contains(item))
+			{
+				Items.Remove(item);
+				CheckTimer();
+			}
+		}
+		
+		public static void OnUse(OnItemUseEventArgs e)
+		{
+			if(Items.Contains(e.Item)
+			{
+				Item item = e.Item;
+				Mobile m = e.Mobile;
+				
+				// TODO: tele out?
+			}
+		}
+		
+		 public static void OnSave(WorldSaveEventArgs e)
+        {
+            Persistence.Serialize(
+                FilePath,
+                writer =>
+                {
+                    writer.Write(0);
+
+                    writer.Write(Items.Count);
+                    Items.ForEach(item =>
+                    {
+                        writer.Write(item);
+                    });
+                });
+        }
+
+        public static void OnLoad()
+		{
+			Persistence.Deserialize(
+				FilePath,
+				reader =>
+				{
+					int version = reader.ReadInt();
+					int count = reader.ReadInt();
+					
+					for(int i = 0; i < count; i++)
+					{
+						Item item = reader.ReadInt();
+						
+						if(item != null)
+						{
+							Items.Add(item);
+						}
+					}	
+				});
+		}
+	}
+}
