@@ -44,6 +44,11 @@ namespace Server.Mobiles
             this.ControlSlots = 2;
         }
 
+        public override bool GivesMLMinorArtifact
+        {
+            get { return true; }
+        }
+
         public Tempest(Serial serial)
             : base(serial)
         {

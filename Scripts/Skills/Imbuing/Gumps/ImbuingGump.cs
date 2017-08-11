@@ -318,15 +318,14 @@ namespace Server.Gumps
 
         public static int GetItemRef(object i)
         {
-            int ir = 0;
-            if (i is BaseWeapon) { ir = 1; }
-            if (i is BaseRanged) { ir = 2; }
-            if (i is BaseArmor) { ir = 3; }
-            if (i is BaseShield) { ir = 4; }
-            if (i is BaseHat) { ir = 5; }
-            if (i is BaseJewel) { ir = 6; }
+            if (i is BaseWeapon) return 1;
+            if (i is BaseRanged) return 2;
+            if (i is BaseArmor) return 3;
+            if (i is BaseShield) return 4;
+            if (i is BaseHat) return 5;
+            if (i is BaseJewel) return 6;
 
-            return ir;
+            return 0;
         }
 
         public static void ImbueStep1(Mobile from, Item it)
@@ -365,85 +364,19 @@ namespace Server.Gumps
                 PlayerMobile pm = from as PlayerMobile;
                 ImbuingContext context = Imbuing.GetContext(pm);
 
-                int Imod = context.Imbue_Mod;
-                int ImodInt = context.Imbue_ModInt;
+                int mod = context.Imbue_Mod;
+                int modInt = context.Imbue_ModInt;
 
                 Item it = o as Item;
 
-                if (!Imbuing.CanImbueItem(pm, it) || !Imbuing.OnBeforeImbue(from, it, Imod, ImodInt))
+                if (!Imbuing.CanImbueItem(pm, it) || !Imbuing.OnBeforeImbue(from, it, mod, modInt) || !Imbuing.CanImbueProperty(from, it, mod))
+                {
+                    from.SendGump(new ImbuingGump(from));
                     return;
+                }
 
-                // = Check Last Mod can be applied to Targeted Item Type
-                if (o is BaseMeleeWeapon)
-                {
-                    if (Imod == 1 || Imod == 2 || Imod == 12 || Imod == 13 || Imod == 16 || Imod == 21 || Imod == 22 || (Imod >= 25 && Imod <= 41) || Imod >= 101)
-                    {
-                        Imbuing.ImbueItem(from, it, Imod, ImodInt);
-                        from.SendGump(new ImbuingGump(from));
-                        return;
-                    }
-                    else
-                        from.SendMessage("The selected item cannot be Imbued with the last Property..");
-                }
-                else if (o is BaseRanged)
-                {
-                    if (Imod == 1 || Imod == 2 || Imod == 12 || Imod == 13 || Imod == 16 || Imod == 21 || Imod == 22 || Imod == 60 || Imod == 61 || (Imod >= 25 && Imod <= 41) || Imod >= 101)
-                    {
-                        Imbuing.ImbueItem(from, it, Imod, ImodInt);
-                        from.SendGump(new ImbuingGump(from));
-                        return;
-                    }
-                    else
-                        from.SendMessage("The selected item cannot be Imbued with the last Property..");
-                }
-                else if (o is BaseShield)
-                {
-                    if (Imod == 1 || Imod == 2 || Imod == 19 || Imod == 16 || Imod == 22 || Imod == 24 || Imod == 42)
-                    {
-                        Imbuing.ImbueItem(from, it, Imod, ImodInt);
-                        from.SendGump(new ImbuingGump(from));
-                        return;
-                    }
-                    else
-                        from.SendMessage("The selected item cannot be Imbued with the last Property..");
-                }
-                else if (o is BaseArmor)
-                {
-                    if (Imod == 3 || Imod == 4 || Imod == 5 || Imod == 9 || Imod == 10 || Imod == 11 || Imod == 21 || Imod == 23 || (Imod >= 17 && Imod <= 19))
-                    {
-                        Imbuing.ImbueItem(from, it, Imod, ImodInt);
-                        from.SendGump(new ImbuingGump(from));
-                        return;
-                    }
-                    else
-                        from.SendMessage("The selected item cannot be Imbued with the last Property..");
-                }
-                else if (o is BaseHat)
-                {
-                    if (Imod == 3 || Imod == 4 || Imod == 5 || Imod == 9 || Imod == 10 || Imod == 11 || Imod == 21 || Imod == 23 || (Imod >= 17 && Imod <= 19))
-                    {
-                        Imbuing.ImbueItem(from, it, Imod, ImodInt);
-                        from.SendGump(new ImbuingGump(from));
-                        return;
-                    }
-                    else
-                        from.SendMessage("The selected item cannot be Imbued with the last Property..");
-                }
-                else if (o is BaseJewel)
-                {
-                    if (Imod == 1 || Imod == 2 || Imod == 6 || Imod == 7 || Imod == 8 || Imod == 12 || Imod == 10 || Imod == 11 || Imod == 20 || Imod == 21 || Imod == 23 || Imod == 21 || (Imod >= 14 && Imod <= 18) || (Imod >= 51 && Imod <= 55) || Imod >= 151)
-                    {
-                        Imbuing.ImbueItem(from, it, Imod, ImodInt);
-                        from.SendGump(new ImbuingGump(from));
-                        return;
-                    }
-                    else
-                        from.SendMessage("The selected item cannot be Imbued with the last Property..");
-                }
-                else
-                    from.SendMessage("The selected item cannot be Imbued with the last Property..");
-
-                return;
+                Imbuing.ImbueItem(from, it, mod, modInt);
+                ImbuingGumpC.SendGumpDelayed(from);
             }
         }
     }

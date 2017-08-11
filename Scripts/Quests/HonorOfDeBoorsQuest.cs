@@ -1,7 +1,6 @@
 using System;
 using Server;
 using Server.Items;
-using Server.Mobiles;
 
 namespace Server.Engines.Quests
 {
@@ -14,22 +13,23 @@ namespace Server.Engines.Quests
         /* The Honor of the De Boors */
         public override object Title { get { return 1075416; } }
 
-        /*I beg your pardon, but will you listen to my story? My family, the de Boors family, have been jewel traders
-         * as far back as anyone can remember. Alas, by the time I was born, we had fallen on hard times.
-         * <br>To survive, I have had to sell much of my family’s property. Most of it was meaningless, but I regret
-         * that a few years ago I made a terrible mistake. I pawned a shield bearing my family’s coat of arms to a
-         * loan shark. That shield was borne into battle by Jaan de Boors, the founder of our house! It has no value
-         * to anyone, but that blackguard won’t believe I have no money. He wants a fortune in jewels before he will 
-         * return it.<br>Now I have learned that I am dying. Soon I will be gone, and my lineage with me. For the sake
-         * of what little honor is left to me and my family name, I cannot bear to leave our ancestral shield in the
-         * hands of that villain. Will you help me recover it?<br> */
+        /* I beg your pardon, but will you listen to my story? My family, the de Boors family, have been jewel traders
+		as far back as anyone can remember. Alas, by the time I was born, we had fallen on hard times.
+		To survive, I have had to sell much of my family’s property. Most of it was meaningless, but I regret that a
+		few years ago I made a terrible mistake. I pawned a shield bearing my family’s coat of arms to a loan shark.
+		That shield was borne into battle by Jaan de Boors, the founder of our house! It has no value to anyone, but
+		that blackguard won’t believe I have no money. He wants a fortune in jewels before he will return it.
+		Now I have learned that I am dying. Soon I will be gone, and my lineage with me. For the sake of what little
+		honor is left to me and my family name, I cannot bear to leave our ancestral shield in the hands of that villain.
+		Will you help me recover it? */
         public override object Description { get { return 1075417; } }
 
         /* I know how much I am asking. Please, can you not help a dying man restore his family’s honor? */
         public override object Refuse { get { return 1075419; } }
 
-        /* Gather them quickly. Who knows how long Derek has to live? */
-        public override object Uncomplete { get { return 1075418; } }
+        /* Are you sure? You are very kind. Many of the monsters around here, when slain, are found to have jewels in their stomachs.
+		From innocents they have eaten, no doubt. */
+        public override object Uncomplete { get { return 1075420; } }
 
         /* You have done it! Bless you! I do appreciate this very much! Though, will you do me one last favor? */
         public override object Complete { get { return 1075421; } }
@@ -37,24 +37,22 @@ namespace Server.Engines.Quests
         public HonorOfDeBoorsQuest()
             : base()
         {
-            AddObjective(new ObtainObjective(typeof(Diamond), "Diamond", 10, 0xF26));
-            AddObjective(new ObtainObjective(typeof(Emerald), "Emerald", 10, 0xF10));
-            AddObjective(new ObtainObjective(typeof(Ruby), "Ruby", 10, 0xF13));
+            AddObjective(new ObtainObjective(typeof(Diamond), "Diamonds", 10));
+            AddObjective(new ObtainObjective(typeof(Ruby), "Rubies", 10));
+            AddObjective(new ObtainObjective(typeof(Emerald), "Emeralds", 10));
 
-            AddReward(new BaseReward(1075416)); // The Honor of the De Boors
+            AddReward(new BaseReward(1075418)); // Gather them quickly. Who knows how long Derek has to live?
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
@@ -63,6 +61,7 @@ namespace Server.Engines.Quests
     {
         public override QuestChain ChainID { get { return QuestChain.HonorOfDeBoors; } }
         public override Type NextQuest { get { return typeof(SavedHonorQuest); } }
+        public override bool DoneOnce { get { return true; } }
 
         /* Jack the Villain */
         public override object Title { get { return 1075422; } }
@@ -82,22 +81,25 @@ namespace Server.Engines.Quests
         public JackTheVillainQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(BagOfJewels), "Bag of Jewels", 1, typeof(JackLoanShark), "Jack the Loan Shark"));
+            AddObjective(new DeliverObjective(typeof(BagOfJewels), "Bag of Jewels", 1, typeof(JackLoanShark), "Jack the Loan Shark"));
 
-            AddReward(new BaseReward(1075416)); // The Honor of the De Boors
+            AddReward(new BaseReward(1075424)); // Deliver the bag of jewels to the loan shark.
+        }
+
+        public override void OnCompleted()
+        {
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
@@ -105,6 +107,7 @@ namespace Server.Engines.Quests
     public class SavedHonorQuest : BaseQuest
     {
         public override QuestChain ChainID { get { return QuestChain.HonorOfDeBoors; } }
+        public override bool DoneOnce { get { return true; } }
 
         /* Saved Honor */
         public override object Title { get { return 1075428; } }
@@ -127,7 +130,7 @@ namespace Server.Engines.Quests
         public SavedHonorQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(DeBoorShield), "Ancestral Shield", 1, typeof(DerekMerchant), "Derek the Merchant"));
+            AddObjective(new DeliverObjective(typeof(DeBoorShield), "Ancestral Shield", 1, typeof(DerekMerchant), "Derek the Merchant"));
 
             AddReward(new BaseReward(typeof(GobletOfCelebration), 1075309)); // Goblet of Celebration
         }
@@ -135,28 +138,23 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
-	
-	public class DerekMerchant : MondainQuester
-	{
+
+    public class DerekMerchant : MondainQuester
+    {
         public override Type[] Quests
         {
             get
             {
-                return new Type[] 
-		{ 
-			typeof( HonorOfDeBoorsQuest )
-		};
+                return new Type[] { typeof( HonorOfDeBoorsQuest ) };
             }
         }
 
@@ -164,10 +162,6 @@ namespace Server.Engines.Quests
         public DerekMerchant()
             : base("Derek", "the Merchant")
         {
-            if (!(this is MondainQuester))
-
-                this.Name = "Derek";
-            this.Title = "the Merchant";
         }
 
         public DerekMerchant(Serial serial)
@@ -182,49 +176,42 @@ namespace Server.Engines.Quests
             Female = false;
             Race = Race.Human;
 
-            Hue = 33814;
-            HairItemID = 0x203B;
-            HairHue = 1141;
+            Hue = 0x8406;
+            HairItemID = 0x2048;
+            HairHue = 0x473;
+            FacialHairItemID = 0x204B;
+            FacialHairHue = 0x473;
         }
 
-        	public override void InitOutfit()
-		{
-			AddItem( new ShortPants(743) );
-			AddItem( new Shirt(193) );
-			AddItem( new Shoes(593) );
-            AddItem(new Cap(308));
-
-			PackGold( 100, 200 );
-            Blessed = true;
+        public override void InitOutfit()
+        {
+            AddItem(new Shoes());
+            AddItem(new LongPants(0x901));
+            AddItem(new FancyShirt(0x5F4));
+            AddItem(new Backpack());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class JackLoanShark : MondainQuester
-	{
+    {
         public override Type[] Quests { get { return null; } }  //JackTheVillainQuest
-    
+
         [Constructable]
         public JackLoanShark()
             : base("Jack", "the Loan Shark")
         {
-            if (!(this is MondainQuester))
-
-                this.Name = "Jack";
-            this.Title = "the Loan Shark";
         }
 
         public JackLoanShark(Serial serial)
@@ -239,39 +226,31 @@ namespace Server.Engines.Quests
             Female = false;
             Race = Race.Human;
 
-            Hue = 33814;
-            HairItemID = 0x203C;
-            HairHue = 2413;
-            FacialHairItemID = 0x2040;
-            FacialHairHue = 2413;
+            Hue = 0x83EC;
+            HairItemID = 0x2045;
+            HairHue = 0x464;
+            FacialHairItemID = 0x204B;
+            FacialHairHue = 0x464;
         }
 
-        	public override void InitOutfit()
-		{
-			AddItem( new LongPants(97) );
-			AddItem( new FancyShirt() );
-			AddItem( new Boots(742) );
-			AddItem( new FeatheredHat(43) );
-            AddItem( new Cloak(248) );
-
-			PackGold( 100, 200 );
-            Blessed = true;
+        public override void InitOutfit()
+        {
+            AddItem(new Dagger());
+            AddItem(new ThighBoots(0x901));
+            AddItem(new LongPants(0x521));
+            AddItem(new FancyShirt(0x5A7));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 }
-
-

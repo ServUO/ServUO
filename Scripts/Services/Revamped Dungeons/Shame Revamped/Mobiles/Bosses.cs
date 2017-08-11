@@ -30,6 +30,9 @@ namespace Server.Mobiles
 
         public override void Damage(int amount, Mobile from, bool informMount, bool checkfizzle)
         {
+            if (from == null)
+                return;
+
             if (Altar == null || Altar.Summoner == null)
                 base.Damage(amount, from, informMount, checkfizzle);
             else
@@ -159,7 +162,7 @@ namespace Server.Mobiles
             Name = "an flame elemental";
             Body = 15;
             BaseSoundID = 838;
-            Hue = 1196;
+            Hue = 1161;
 
             SetStr(420, 460);
             SetDex(160, 210);
@@ -168,7 +171,7 @@ namespace Server.Mobiles
             SetHits(700, 800);
             SetMana(1000, 1300);
 
-            SetDamage(18, 20);
+            SetDamage(13, 15);
 
             SetDamageType(ResistanceType.Physical, 25);
             SetDamageType(ResistanceType.Fire, 75);
@@ -185,12 +188,20 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 100, 145);
             SetSkill(SkillName.EvalInt, 90, 140);
             SetSkill(SkillName.Meditation, 80, 120);
+            SetSkill(SkillName.Parry, 100, 120);
 
             Fame = 4500;
             Karma = -4500;
 
             PackItem(new SulfurousAsh(5));
         }
+
+        public override bool HasBreath { get { return true; } } // fire breath enabled
+        public override bool HasAura { get { return true; } }
+        public override int AuraRange { get { return 5; } }
+        public override int AuraBaseDamage { get { return 7; } }
+        public override int AuraFireDamage { get { return 100; } }
+        public override int AuraEnergyDamage { get { return 100; } }
 
         public override void GenerateLoot()
         {
@@ -233,6 +244,7 @@ namespace Server.Mobiles
             Name = "an wind elemental";
             Body = 13;
             BaseSoundID = 655;
+            Hue = 33765;
 
             SetStr(370, 460);
             SetDex(160, 250);

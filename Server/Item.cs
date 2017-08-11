@@ -3712,7 +3712,9 @@ namespace Server
             }
         }
 
-        public const int QuestItemHue = 0x4EA; // Hmmmm... "for EA"?
+        public virtual bool HiddenQuestItemHue { get; set; }
+
+        public int QuestItemHue { get { return (HiddenQuestItemHue ? Hue : 0x04EA); } }
 
         public virtual bool Nontransferable { get { return QuestItem; } }
 

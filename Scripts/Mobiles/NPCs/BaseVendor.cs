@@ -807,7 +807,8 @@ namespace Server.Mobiles
 				}
 			}
 
-			PackGold(100, 200);
+            if(!Siege.SiegeShard)
+			    PackGold(100, 200);
 		}
 
 		#region SA
@@ -853,7 +854,9 @@ namespace Server.Mobiles
 						break;
 				}
 			}
-			PackGold(100, 200);
+
+            if(!Siege.SiegeShard)
+			    PackGold(100, 200);
 		}
 		#endregion
 

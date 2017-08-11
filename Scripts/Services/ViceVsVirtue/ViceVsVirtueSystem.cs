@@ -605,6 +605,9 @@ namespace Server.Engines.VvV
             if (to is BaseCreature && ((BaseCreature)to).GetMaster() is PlayerMobile)
                 to = ((BaseCreature)to).GetMaster();
 
+            if (from == to)
+                return false;
+
             VvVPlayerEntry fromentry = Instance.GetPlayerEntry<VvVPlayerEntry>(from);
             VvVPlayerEntry toentry = Instance.GetPlayerEntry<VvVPlayerEntry>(to);
 

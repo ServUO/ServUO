@@ -1,3 +1,5 @@
+using Server.Mobiles;
+
 namespace Server.Items
 {
     public class GamblingStone : Item
@@ -7,8 +9,8 @@ namespace Server.Items
         public GamblingStone()
             : base(0xED4)
         {
-            this.Movable = false;
-            this.Hue = 0x56;
+            Movable = false;
+            Hue = 0x56;
         }
 
         public GamblingStone(Serial serial)
@@ -21,12 +23,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_GamblePot;
+                return m_GamblePot;
             }
             set
             {
-                this.m_GamblePot = value;
-                this.InvalidateProperties();
+                m_GamblePot = value;
+                InvalidateProperties();
             }
         }
         public override string DefaultName
@@ -40,13 +42,13 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add("Jackpot: {0}gp", this.m_GamblePot);
+            list.Add("Jackpot: {0}gp", m_GamblePot);
         }
 
         public override void OnSingleClick(Mobile from)
         {
             base.OnSingleClick(from);
-            base.LabelTo(from, "Jackpot: {0}gp", this.m_GamblePot);
+            base.LabelTo(from, "Jackpot: {0}gp", m_GamblePot);
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -55,8 +57,8 @@ namespace Server.Items
 
             if (pack != null && pack.ConsumeTotal(typeof(Gold), 250))
             {
-                this.m_GamblePot += 150;
-                this.InvalidateProperties();
+                m_GamblePot += 150;
+                InvalidateProperties();
 
                 int roll = Utility.Random(1200);
 
@@ -64,18 +66,32 @@ namespace Server.Items
                 {
                     int maxCheck = 1000000;
 
-                    from.SendMessage(0x35, "You win the {0}gp jackpot!", this.m_GamblePot);
+                    from.SendMessage(0x35, "You win the {0}gp jackpot!", m_GamblePot);
 
-                    while (this.m_GamblePot > maxCheck)
+                    while (m_GamblePot > maxCheck)
                     {
-                        from.AddToBackpack(new BankCheck(maxCheck));
+                        if (!Core.TOL)
+                        {
+                            from.AddToBackpack(new BankCheck(maxCheck));
+                        }
+                        else
+                        {
+                            Banker.Deposit(from, maxCheck, true);
+                        }
 
-                        this.m_GamblePot -= maxCheck;
+                        m_GamblePot -= maxCheck;
                     }
 
-                    from.AddToBackpack(new BankCheck(this.m_GamblePot));
+                    if (!Core.TOL)
+                    {
+                        from.AddToBackpack(new BankCheck(m_GamblePot));
+                    }
+                    else
+                    {
+                        Banker.Deposit(from, m_GamblePot, true);
+                    }
 
-                    this.m_GamblePot = 2500;
+                    m_GamblePot = 2500;
                 }
                 else if (roll <= 20) // Chance for a regbag
                 {
@@ -85,12 +101,28 @@ namespace Server.Items
                 else if (roll <= 40) // Chance for gold
                 {
                     from.SendMessage(0x35, "You win 1500gp!");
-                    from.AddToBackpack(new BankCheck(1500));
+
+                    if (!Core.TOL)
+                    {
+                        from.AddToBackpack(new BankCheck(1500));
+                    }
+                    else
+                    {
+                        Banker.Deposit(from, 1500, true);
+                    }
                 }
                 else if (roll <= 100) // Another chance for gold
                 {
                     from.SendMessage(0x35, "You win 1000gp!");
-                    from.AddToBackpack(new BankCheck(1000));
+
+                    if (!Core.TOL)
+                    {
+                        from.AddToBackpack(new BankCheck(1000));
+                    }
+                    else
+                    {
+                        Banker.Deposit(from, 1000, true);
+                    }
                 }
                 else // Loser!
                 {
@@ -99,7 +131,7 @@ namespace Server.Items
             }
             else
             {
-                from.SendMessage(0x22, "You need at least 250gp in your backpack to use this.");
+                from.SendMessage(0x22, "You need at least 250gp in your backpack to use ");
             }
         }
 
@@ -109,7 +141,7 @@ namespace Server.Items
 
             writer.Write((int)0); // version
 
-            writer.Write((int)this.m_GamblePot);
+            writer.Write((int)m_GamblePot);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -122,7 +154,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_GamblePot = reader.ReadInt();
+                        m_GamblePot = reader.ReadInt();
 
                         break;
                     }

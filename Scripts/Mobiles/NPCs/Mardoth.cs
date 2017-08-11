@@ -161,7 +161,15 @@ namespace Server.Engines.Quests.Necro
 
                                 cont.DropItem(weapon);
 
-                                cont.DropItem(new BankCheck(2000));
+                                if (!Core.TOL)
+                                {
+                                    cont.DropItem(new BankCheck(2000));
+                                }
+                                else
+                                {
+                                    Banker.Deposit(player, 2000, true);
+                                }
+
                                 cont.DropItem(new EnchantedSextant());
 
                                 if (!player.PlaceInBackpack(cont))
