@@ -34,7 +34,13 @@ namespace Server.SkillHandlers
         public int IncAmount { get { return m_IncAmount; } }
         public int Description { get { return m_Description; } }
 
-        public ImbuingDefinition(object attribute, int attributeName, int weight, Type pRes, Type gRes, Type spRes, int mInt, int inc, int desc)
+        public bool Melee { get; set; }
+        public bool Ranged { get; set; }
+        public bool Armor { get; set; }
+        public bool Shield { get; set; }
+        public bool Jewels { get; set; }
+
+        public ImbuingDefinition(object attribute, int attributeName, int weight, Type pRes, Type gRes, Type spRes, int mInt, int inc, int desc, bool melee = false, bool ranged = false, bool armor = false, bool shield = false, bool jewels = false)
         {
             m_Attribute = attribute;
             m_AttributeName = attributeName;
@@ -50,6 +56,12 @@ namespace Server.SkillHandlers
             m_MaxIntensity = mInt;
             m_IncAmount = inc;
             m_Description = desc;
+
+            Melee = melee;
+            Ranged = ranged;
+            Armor = armor;
+            Shield = shield;
+            Jewels = jewels;
         }
 
         public int GetLocalization(Type type)

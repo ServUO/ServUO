@@ -10,8 +10,8 @@ namespace Server.Engines.Quests
         public NewHavenAlchemistEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Alchemist"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Alchemist"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Alchemist in The bottled Imp */
@@ -66,8 +66,8 @@ namespace Server.Engines.Quests
         public NewHavenBardEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Bard"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Bard"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Bard */
@@ -123,8 +123,8 @@ namespace Server.Engines.Quests
         public NewHavenWarriorEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Warrior"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Warrior"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Warrior */
@@ -179,8 +179,8 @@ namespace Server.Engines.Quests
         public NewHavenTailorEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Tailor"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Tailor"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Tailor */
@@ -235,8 +235,8 @@ namespace Server.Engines.Quests
         public NewHavenCarpenterEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Carpenter"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Carpenter"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Carpenter */
@@ -291,8 +291,8 @@ namespace Server.Engines.Quests
         public NewHavenMapmakerEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Mapmaker"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Mapmaker"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Mapmaker */
@@ -348,8 +348,8 @@ namespace Server.Engines.Quests
         public NewHavenMageEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Mage"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Mage"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Mage */
@@ -405,8 +405,8 @@ namespace Server.Engines.Quests
         public NewHavenInnEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Inn"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Inn"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Inn */
@@ -461,8 +461,8 @@ namespace Server.Engines.Quests
         public NewHavenFarmEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Farm"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Farm"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Farm */
@@ -517,8 +517,8 @@ namespace Server.Engines.Quests
         public NewHavenDocksEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Docks"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Docks"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Docks */
@@ -573,8 +573,8 @@ namespace Server.Engines.Quests
         public NewHavenBowyerEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Bowyer"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Bowyer"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Bowyer */
@@ -629,8 +629,8 @@ namespace Server.Engines.Quests
         public NewHavenBankEscortQuest()
             : base()
         { 
-            this.AddObjective(new EscortObjective("the New Haven Bank"));		  
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
+            AddObjective(new EscortObjective("the New Haven Bank"));		  
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577)); 
         }
 
         /* An escort to the New Haven Bank */
@@ -697,6 +697,7 @@ namespace Server.Engines.Quests
             typeof(NewHavenBowyerEscortQuest),
             typeof(NewHavenBankEscortQuest)
         };
+
         private static readonly string[] m_Destinations = new string[]
         {
             "the New Haven Alchemist",
@@ -712,10 +713,17 @@ namespace Server.Engines.Quests
             "the New Haven Bowyer",
             "the New Haven Bank"
         };
+
         private int m_Quest;
+
         public NewHavenEscortable()
-            : base()
+            : this(Utility.Random(12))
         { 
+        }
+
+        public NewHavenEscortable(int quest)
+        {
+            m_Quest = quest;
         }
 
         public NewHavenEscortable(Serial serial)
@@ -727,17 +735,17 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return new Type[] { m_Quests[this.m_Quest] };
+                return new Type[] { m_Quests[m_Quest] };
             }
         }
         public override void Advertise()
         {
-            this.Say(Utility.RandomMinMax(1072301, 1072303));
+            Say(Utility.RandomMinMax(1072301, 1072303));
         }
 
         public override Region GetDestination()
         {
-            return QuestHelper.FindRegion(m_Destinations[this.m_Quest]);
+            return QuestHelper.FindRegion(m_Destinations[m_Quest]);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -746,7 +754,7 @@ namespace Server.Engines.Quests
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write(this.m_Quest);
+            writer.Write(m_Quest);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -755,7 +763,7 @@ namespace Server.Engines.Quests
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Quest = reader.ReadInt();
+            m_Quest = reader.ReadInt();
         }
     }
 
@@ -764,9 +772,9 @@ namespace Server.Engines.Quests
         [Constructable]
         public NewHavenMerchant()
         {
-            this.Title = "the merchant";
-            this.SetSkill(SkillName.ItemID, 55.0, 78.0);
-            this.SetSkill(SkillName.ArmsLore, 55, 78);
+            Title = "the merchant";
+            SetSkill(SkillName.ItemID, 55.0, 78.0);
+            SetSkill(SkillName.ArmsLore, 55, 78);
         }
 
         public NewHavenMerchant(Serial serial)
@@ -790,25 +798,25 @@ namespace Server.Engines.Quests
         }
         public override void InitOutfit()
         {
-            if (this.Female)
-                this.AddItem(new PlainDress());
+            if (Female)
+                AddItem(new PlainDress());
             else
-                this.AddItem(new Shirt(this.GetRandomHue()));
+                AddItem(new Shirt(GetRandomHue()));
 
-            int lowHue = this.GetRandomHue();
+            int lowHue = GetRandomHue();
 
-            this.AddItem(new ThighBoots());
+            AddItem(new ThighBoots());
 
-            if (this.Female)
-                this.AddItem(new FancyDress(lowHue));
+            if (Female)
+                AddItem(new FancyDress(lowHue));
             else
-                this.AddItem(new FancyShirt(lowHue));
-            this.AddItem(new LongPants(lowHue));
+                AddItem(new FancyShirt(lowHue));
+            AddItem(new LongPants(lowHue));
 
-            if (!this.Female)
-                this.AddItem(new BodySash(lowHue));
+            if (!Female)
+                AddItem(new BodySash(lowHue));
 
-            this.PackGold(200, 250);
+            PackGold(200, 250);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -831,13 +839,13 @@ namespace Server.Engines.Quests
         [Constructable]
         public NewHavenMage()
         {
-            this.Title = "the mage";
+            Title = "the mage";
 
-            this.SetSkill(SkillName.EvalInt, 80.0, 100.0);
-            this.SetSkill(SkillName.Inscribe, 80.0, 100.0);
-            this.SetSkill(SkillName.Magery, 80.0, 100.0);
-            this.SetSkill(SkillName.Meditation, 80.0, 100.0);
-            this.SetSkill(SkillName.MagicResist, 80.0, 100.0);
+            SetSkill(SkillName.EvalInt, 80.0, 100.0);
+            SetSkill(SkillName.Inscribe, 80.0, 100.0);
+            SetSkill(SkillName.Magery, 80.0, 100.0);
+            SetSkill(SkillName.Meditation, 80.0, 100.0);
+            SetSkill(SkillName.MagicResist, 80.0, 100.0);
         }
 
         public NewHavenMage(Serial serial)
@@ -861,18 +869,18 @@ namespace Server.Engines.Quests
         }
         public override void InitOutfit()
         {
-            this.AddItem(new Robe(this.GetRandomHue()));
+            AddItem(new Robe(GetRandomHue()));
 
-            int lowHue = this.GetRandomHue();
+            int lowHue = GetRandomHue();
 
-            this.AddItem(new ShortPants(lowHue));
+            AddItem(new ShortPants(lowHue));
 
-            if (this.Female)
-                this.AddItem(new ThighBoots(lowHue));
+            if (Female)
+                AddItem(new ThighBoots(lowHue));
             else
-                this.AddItem(new Boots(lowHue));
+                AddItem(new Boots(lowHue));
 
-            this.PackGold(200, 250);
+            PackGold(200, 250);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -895,7 +903,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public NewHavenMessenger()
         {
-            this.Title = "the messenger";
+            Title = "the messenger";
         }
 
         public NewHavenMessenger(Serial serial)
@@ -912,37 +920,37 @@ namespace Server.Engines.Quests
         }
         public override void InitOutfit()
         {
-            if (this.Female)
-                this.AddItem(new PlainDress());
+            if (Female)
+                AddItem(new PlainDress());
             else
-                this.AddItem(new Shirt(this.GetRandomHue()));
+                AddItem(new Shirt(GetRandomHue()));
 
-            int lowHue = this.GetRandomHue();
+            int lowHue = GetRandomHue();
 
-            this.AddItem(new ShortPants(lowHue));
+            AddItem(new ShortPants(lowHue));
 
-            if (this.Female)
-                this.AddItem(new Boots(lowHue));
+            if (Female)
+                AddItem(new Boots(lowHue));
             else
-                this.AddItem(new Shoes(lowHue));
+                AddItem(new Shoes(lowHue));
 
             switch ( Utility.Random(4) )
             {
                 case 0:
-                    this.AddItem(new ShortHair(Utility.RandomHairHue()));
+                    AddItem(new ShortHair(Utility.RandomHairHue()));
                     break;
                 case 1:
-                    this.AddItem(new TwoPigTails(Utility.RandomHairHue()));
+                    AddItem(new TwoPigTails(Utility.RandomHairHue()));
                     break;
                 case 2:
-                    this.AddItem(new ReceedingHair(Utility.RandomHairHue()));
+                    AddItem(new ReceedingHair(Utility.RandomHairHue()));
                     break;
                 case 3:
-                    this.AddItem(new KrisnaHair(Utility.RandomHairHue()));
+                    AddItem(new KrisnaHair(Utility.RandomHairHue()));
                     break;
             }
 
-            this.PackGold(200, 250);
+            PackGold(200, 250);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -965,7 +973,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public NewHavenSeekerOfAdventure()
         {
-            this.Title = "the seeker of adventure";
+            Title = "the seeker of adventure";
         }
 
         public NewHavenSeekerOfAdventure(Serial serial)
@@ -982,28 +990,28 @@ namespace Server.Engines.Quests
         }
         public override void InitOutfit()
         {
-            if (this.Female)
-                this.AddItem(new FancyDress(this.GetRandomHue()));
+            if (Female)
+                AddItem(new FancyDress(GetRandomHue()));
             else
-                this.AddItem(new FancyShirt(this.GetRandomHue()));
+                AddItem(new FancyShirt(GetRandomHue()));
 
-            int lowHue = this.GetRandomHue();
+            int lowHue = GetRandomHue();
 
-            this.AddItem(new ShortPants(lowHue));
+            AddItem(new ShortPants(lowHue));
 
-            if (this.Female)
-                this.AddItem(new ThighBoots(lowHue));
+            if (Female)
+                AddItem(new ThighBoots(lowHue));
             else
-                this.AddItem(new Boots(lowHue));
+                AddItem(new Boots(lowHue));
 
-            if (!this.Female)
-                this.AddItem(new BodySash(lowHue));
+            if (!Female)
+                AddItem(new BodySash(lowHue));
 
-            this.AddItem(new Cloak(this.GetRandomHue()));
+            AddItem(new Cloak(GetRandomHue()));
 
-            this.AddItem(new Longsword());
+            AddItem(new Longsword());
 
-            this.PackGold(100, 150);
+            PackGold(100, 150);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -1026,11 +1034,11 @@ namespace Server.Engines.Quests
         [Constructable]
         public NewHavenNoble()
         {
-            this.Title = "the noble";
+            Title = "the noble";
 
-            this.SetSkill(SkillName.Parry, 80.0, 100.0);
-            this.SetSkill(SkillName.Swords, 80.0, 100.0);
-            this.SetSkill(SkillName.Tactics, 80.0, 100.0);
+            SetSkill(SkillName.Parry, 80.0, 100.0);
+            SetSkill(SkillName.Swords, 80.0, 100.0);
+            SetSkill(SkillName.Tactics, 80.0, 100.0);
         }
 
         public NewHavenNoble(Serial serial)
@@ -1054,29 +1062,29 @@ namespace Server.Engines.Quests
         }
         public override void InitOutfit()
         {
-            if (this.Female)
-                this.AddItem(new FancyDress());
+            if (Female)
+                AddItem(new FancyDress());
             else
-                this.AddItem(new FancyShirt(this.GetRandomHue()));
+                AddItem(new FancyShirt(GetRandomHue()));
 
-            int lowHue = this.GetRandomHue();
+            int lowHue = GetRandomHue();
 
-            this.AddItem(new ShortPants(lowHue));
+            AddItem(new ShortPants(lowHue));
 
-            if (this.Female)
-                this.AddItem(new ThighBoots(lowHue));
+            if (Female)
+                AddItem(new ThighBoots(lowHue));
             else
-                this.AddItem(new Boots(lowHue));
+                AddItem(new Boots(lowHue));
 
-            if (!this.Female)
-                this.AddItem(new BodySash(lowHue));
+            if (!Female)
+                AddItem(new BodySash(lowHue));
 
-            this.AddItem(new Cloak(this.GetRandomHue()));
+            AddItem(new Cloak(GetRandomHue()));
 
-            if (!this.Female)
-                this.AddItem(new Longsword());
+            if (!Female)
+                AddItem(new Longsword());
 
-            this.PackGold(200, 250);
+            PackGold(200, 250);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -1099,10 +1107,10 @@ namespace Server.Engines.Quests
         [Constructable]
         public NewHavenBrideGroom()
         {
-            if (this.Female)
-                this.Title = "the bride";
+            if (Female)
+                Title = "the bride";
             else
-                this.Title = "the groom";
+                Title = "the groom";
         }
 
         public NewHavenBrideGroom(Serial serial)
@@ -1119,28 +1127,28 @@ namespace Server.Engines.Quests
         }
         public override void InitOutfit()
         {
-            if (this.Female)
-                this.AddItem(new FancyDress());
+            if (Female)
+                AddItem(new FancyDress());
             else
-                this.AddItem(new FancyShirt());
+                AddItem(new FancyShirt());
 
-            int lowHue = this.GetRandomHue();
+            int lowHue = GetRandomHue();
 
-            this.AddItem(new LongPants(lowHue));
+            AddItem(new LongPants(lowHue));
 
-            if (this.Female)
-                this.AddItem(new Shoes(lowHue));
+            if (Female)
+                AddItem(new Shoes(lowHue));
             else
-                this.AddItem(new Boots(lowHue));
+                AddItem(new Boots(lowHue));
 
             if (Utility.RandomBool())
-                this.HairItemID = 0x203B;
+                HairItemID = 0x203B;
             else
-                this.HairItemID = 0x203C;
+                HairItemID = 0x203C;
 
-            this.HairHue = this.Race.RandomHairHue();
+            HairHue = Race.RandomHairHue();
 
-            this.PackGold(200, 250);
+            PackGold(200, 250);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -1163,7 +1171,7 @@ namespace Server.Engines.Quests
         [Constructable]
         public NewHavenPeasant()
         {
-            this.Title = "the peasant";
+            Title = "the peasant";
         }
 
         public NewHavenPeasant(Serial serial)
@@ -1180,23 +1188,23 @@ namespace Server.Engines.Quests
         }
         public override void InitOutfit()
         {
-            if (this.Female)
-                this.AddItem(new PlainDress());
+            if (Female)
+                AddItem(new PlainDress());
             else
-                this.AddItem(new Shirt(this.GetRandomHue()));
+                AddItem(new Shirt(GetRandomHue()));
 
-            int lowHue = this.GetRandomHue();
+            int lowHue = GetRandomHue();
 
-            this.AddItem(new ShortPants(lowHue));
+            AddItem(new ShortPants(lowHue));
 
-            if (this.Female)
-                this.AddItem(new Boots(lowHue));
+            if (Female)
+                AddItem(new Boots(lowHue));
             else
-                this.AddItem(new Shoes(lowHue));
+                AddItem(new Shoes(lowHue));
 
             Utility.AssignRandomHair(this);
 
-            this.PackGold(200, 250);
+            PackGold(200, 250);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -1222,46 +1230,46 @@ namespace Server.Engines.Quests
         public NewHavenHealer()
             : base()
         {
-            this.Title = "the wandering healer";
+            Title = "the wandering healer";
 
-            this.AI = AIType.AI_Mage;
-            this.ActiveSpeed = 0.2;
-            this.PassiveSpeed = 0.8;
-            this.RangePerception = BaseCreature.DefaultRangePerception;
-            this.FightMode = FightMode.Aggressor;
+            AI = AIType.AI_Mage;
+            ActiveSpeed = 0.2;
+            PassiveSpeed = 0.8;
+            RangePerception = BaseCreature.DefaultRangePerception;
+            FightMode = FightMode.Aggressor;
 
-            this.SpeechHue = 0;
+            SpeechHue = 0;
 
-            this.SetStr(304, 400);
-            this.SetDex(102, 150);
-            this.SetInt(204, 300);
+            SetStr(304, 400);
+            SetDex(102, 150);
+            SetInt(204, 300);
 
-            this.SetDamage(10, 23);
+            SetDamage(10, 23);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 40, 50);
-            this.SetResistance(ResistanceType.Cold, 40, 50);
-            this.SetResistance(ResistanceType.Poison, 40, 50);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            SetResistance(ResistanceType.Physical, 40, 50);
+            SetResistance(ResistanceType.Fire, 40, 50);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 40, 50);
+            SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.Anatomy, 75.0, 97.5);
-            this.SetSkill(SkillName.EvalInt, 82.0, 100.0);
-            this.SetSkill(SkillName.Healing, 75.0, 97.5);
-            this.SetSkill(SkillName.Magery, 82.0, 100.0);
-            this.SetSkill(SkillName.MagicResist, 82.0, 100.0);
-            this.SetSkill(SkillName.Tactics, 82.0, 100.0);
-            this.SetSkill(SkillName.Camping, 80.0, 100.0);
-            this.SetSkill(SkillName.Forensics, 80.0, 100.0);
-            this.SetSkill(SkillName.SpiritSpeak, 80.0, 100.0);
+            SetSkill(SkillName.Anatomy, 75.0, 97.5);
+            SetSkill(SkillName.EvalInt, 82.0, 100.0);
+            SetSkill(SkillName.Healing, 75.0, 97.5);
+            SetSkill(SkillName.Magery, 82.0, 100.0);
+            SetSkill(SkillName.MagicResist, 82.0, 100.0);
+            SetSkill(SkillName.Tactics, 82.0, 100.0);
+            SetSkill(SkillName.Camping, 80.0, 100.0);
+            SetSkill(SkillName.Forensics, 80.0, 100.0);
+            SetSkill(SkillName.SpiritSpeak, 80.0, 100.0);
 
-            this.Fame = 1000;
-            this.Karma = 10000;
+            Fame = 1000;
+            Karma = 10000;
 
-            this.PackItem(new Bandage(Utility.RandomMinMax(5, 10)));
-            this.PackItem(new HealPotion());
-            this.PackItem(new CurePotion());
+            PackItem(new Bandage(Utility.RandomMinMax(5, 10)));
+            PackItem(new HealPotion());
+            PackItem(new CurePotion());
         }
 
         public NewHavenHealer(Serial serial)
@@ -1304,21 +1312,21 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(this.GetShoeHue()));
-            this.AddItem(new Robe(Utility.RandomYellowHue()));
-            this.AddItem(new GnarledStaff());
+            AddItem(new Sandals(GetShoeHue()));
+            AddItem(new Robe(Utility.RandomYellowHue()));
+            AddItem(new GnarledStaff());
         }
 
         public virtual bool CheckResurrect(Mobile m)
         {
             if (m.Criminal)
             {
-                this.Say(501222); // Thou art a criminal.  I shall not resurrect thee.
+                Say(501222); // Thou art a criminal.  I shall not resurrect thee.
                 return false;
             }
             else if (m.Murderer)
             {
-                this.Say(501223); // Thou'rt not a decent and good person. I shall not resurrect thee.
+                Say(501223); // Thou'rt not a decent and good person. I shall not resurrect thee.
                 return false;
             }
 
@@ -1327,8 +1335,8 @@ namespace Server.Engines.Quests
 
         public virtual void OfferResurrection(Mobile m)
         {
-            this.Direction = this.GetDirectionTo(m);
-            this.Say(501224); // Thou hast strayed from the path of virtue, but thou still deservest a second chance.
+            Direction = GetDirectionTo(m);
+            Say(501224); // Thou hast strayed from the path of virtue, but thou still deservest a second chance.
 
             m.PlaySound(0x214);
             m.FixedEffect(0x376A, 10, 16);
@@ -1339,11 +1347,11 @@ namespace Server.Engines.Quests
 
         public virtual void OfferHeal(PlayerMobile m)
         {
-            this.Direction = this.GetDirectionTo(m);
+            Direction = GetDirectionTo(m);
 
             if (m.CheckYoungHealTime())
             {
-                this.Say(501229); // You look like you need some healing my child.
+                Say(501229); // You look like you need some healing my child.
 
                 m.PlaySound(0x1F2);
                 m.FixedEffect(0x376A, 9, 32);
@@ -1352,30 +1360,30 @@ namespace Server.Engines.Quests
             }
             else
             {
-                this.Say(501228); // I can do no more for you at this time.
+                Say(501228); // I can do no more for you at this time.
             }
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (!m.Frozen && DateTime.UtcNow >= this.m_NextResurrect && this.InRange(m, 4) && !this.InRange(oldLocation, 4) && this.InLOS(m))
+            if (!m.Frozen && DateTime.UtcNow >= m_NextResurrect && InRange(m, 4) && !InRange(oldLocation, 4) && InLOS(m))
             {
                 if (!m.Alive)
                 {
-                    this.m_NextResurrect = DateTime.UtcNow + ResurrectDelay;
+                    m_NextResurrect = DateTime.UtcNow + ResurrectDelay;
 
                     if (m.Map == null || !m.Map.CanFit(m.Location, 16, false, false))
                     {
                         m.SendLocalizedMessage(502391); // Thou can not be resurrected there!
                     }
-                    else if (this.CheckResurrect(m))
+                    else if (CheckResurrect(m))
                     {
-                        this.OfferResurrection(m);
+                        OfferResurrection(m);
                     }
                 }
-                else if (this.HealsYoungPlayers && m.Hits < m.HitsMax && m is PlayerMobile && ((PlayerMobile)m).Young)
+                else if (HealsYoungPlayers && m.Hits < m.HitsMax && m is PlayerMobile && ((PlayerMobile)m).Young)
                 {
-                    this.OfferHeal((PlayerMobile)m);
+                    OfferHeal((PlayerMobile)m);
                 }
             }
         }

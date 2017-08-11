@@ -81,7 +81,7 @@ namespace Server.Mobiles
         ToggleCutClippings = 0x01000000,
 		ToggleCutReeds = 0x02000000,
 		MechanicalLife = 0x04000000,
-        HumilityHunt = 0x08000000,
+        Unused = 0x08000000,
         ToggleCutTopiaries = 0x10000000,
         HasValiantStatReward = 0x20000000,
         RefuseTrades = 0x40000000,
@@ -518,47 +518,6 @@ namespace Server.Mobiles
 
 		public Map SSSeedMap { get { return m_SSSeedMap; } set { m_SSSeedMap = value; } }
         #endregion
-
-        #endregion
-
-        #region Humility
-        public bool HumilityHunt
-        {
-            get { return GetFlag(PlayerFlag.HumilityHunt); }
-            set
-            {
-                SetFlag(PlayerFlag.HumilityHunt, value);
-                if (value)
-                {
-                    foreach (ResistanceMod rm in _HumilityMods)
-                    {
-                        AddResistanceMod(rm);
-                    }
-                    BuffInfo info = new BuffInfo(BuffIcon.Humility, 1155807, 1155806, "-70");
-                    BuffInfo.AddBuff(this, info);
-
-                }
-                else
-                {
-                    foreach (ResistanceMod rm in _HumilityMods)
-                    {
-                        RemoveResistanceMod(rm);
-                    }
-                    BuffInfo.RemoveBuff(this, BuffIcon.Humility);
-                }
-            }
-        }
-
-        public DateTime HumilityHuntLastEnded;
-
-	    private readonly List<ResistanceMod> _HumilityMods = new List<ResistanceMod>()
-        {
-            new ResistanceMod(ResistanceType.Physical, -70),
-            new ResistanceMod(ResistanceType.Fire, -70),
-            new ResistanceMod(ResistanceType.Energy, -70),
-            new ResistanceMod(ResistanceType.Cold, -70),
-            new ResistanceMod(ResistanceType.Poison, -70)
-        };
 
         #endregion
 
@@ -3243,7 +3202,7 @@ namespace Server.Mobiles
 				m_SentHonorContext.OnSourceBeneficialAction(target);
 			}
 
-            if (Siege.SiegeShard)
+            if (Siege.SiegeShard && isCriminal)
             {
                 Criminal = true;
                 return;
@@ -4675,7 +4634,6 @@ namespace Server.Mobiles
 			}
 
 			CheckKillDecay();
-            HumilityHunt = false;
             CheckAtrophies(this);
 
 			base.Serialize(writer);

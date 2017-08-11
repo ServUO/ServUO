@@ -67,7 +67,7 @@ namespace Server.Engines.VoidPool
                 case 1: return new GargishPrismaticLenses();
                 case 2: return new Brightblade();
                 case 3: return new GargishBrightblade();
-                case 4: return new BraceletOfProtection();
+                case 4: return new BraceletOfProtection(false);
                 case 5: return new BlightOfTheTundra(false);
                 case 6: return new GargishBlightOfTheTundra(false);
                 case 7: return new Hephaestus(false);

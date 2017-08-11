@@ -45,7 +45,7 @@ namespace Server
             else if (v >= vmax)
                 vl = 3;
             else
-                vl = (v + 9999) / 10000;
+                vl = (v + 10000) / 10000;
 
             return (VirtueLevel)vl;
         }
