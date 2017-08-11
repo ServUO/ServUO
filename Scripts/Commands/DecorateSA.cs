@@ -31,6 +31,7 @@ namespace Server
             NavreysController.GenNavery(e.Mobile);
             CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "GenToK");
             Server.Engines.CannedEvil.PrimevalLichPuzzle.GenLichPuzzle(e.Mobile);
+            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "GenSutek");
 
             e.Mobile.SendMessage("Stygian Abyss world generation complete.");
         }

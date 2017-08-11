@@ -143,7 +143,6 @@ namespace Server.Commands
         private static readonly Type typeofHintItem = typeof(HintItem);
         private static readonly Type typeofCannon = typeof(Cannon);
         private static readonly Type typeofSerpentPillar = typeof(SerpentPillar);
-        private static readonly Type typeofSutekQuestResource = typeof(SutekQuestResource);
 
         public Item Construct()
         {
@@ -475,33 +474,6 @@ namespace Server.Commands
                         item = (Item)Activator.CreateInstance(this.m_Type, new object[] { content });
                     else
                         item = (Item)Activator.CreateInstance(this.m_Type);
-                }
-                else if (typeofSutekQuestResource.IsAssignableFrom(this.m_Type))
-                {
-                    SutekResourceType type = SutekResourceType.BarrelHoops;
-                    bool fill = false;
-
-                    for (int i = 0; !fill && i < this.m_Params.Length; ++i)
-                    {
-                        if (this.m_Params[i].StartsWith("ResourceType"))
-                        {
-                            int indexOf = this.m_Params[i].IndexOf('=');
-
-                            if (indexOf >= 0)
-                            {
-                                type = (SutekResourceType)Enum.Parse(typeof(SutekResourceType), this.m_Params[i].Substring(++indexOf), true);
-                                fill = true;
-                            }
-                        }
-                    }
-
-                    if (fill)
-                        item = (Item)Activator.CreateInstance(this.m_Type, new object[] { type });
-                    else
-                        item = (Item)Activator.CreateInstance(this.m_Type);
-
-                    if (0 != this.m_ItemID)
-                        item.ItemID = this.m_ItemID;
                 }
                 else if (this.m_Type.IsSubclassOf(typeofBaseDoor))
                 {

@@ -14,7 +14,7 @@ namespace Server.Mobiles
         public static Dictionary<Mobile, Timer> Table { get; private set; }
 
         [Constructable]
-        public MudPie() 
+        public MudPie()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.2)
         {
             Name = "a mud pie";
@@ -44,15 +44,15 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 65, 85);
             SetSkill(SkillName.Wrestling, 65, 85);
 
-            Fame = 3500;
-            Karma = -3500;
+            Fame = 500;
+            Karma = -500;
 
             PackReg(1, 2);
             PackGem(1, 2);
 
             PackItem(new ExecutionersCap());
 
-            if(0.33 > Utility.RandomDouble())
+            if (0.33 > Utility.RandomDouble())
                 PackItem(new ExecutionersCap());
         }
 
@@ -85,9 +85,9 @@ namespace Server.Mobiles
             if (!Table.ContainsKey(from))
             {
                 Table[from] = Timer.DelayCall(TimeSpan.FromSeconds(5), () =>
-                    {
-                        EndEffects(from);
-                    });
+                {
+                    EndEffects(from);
+                });
 
                 from.Send(SpeedControl.WalkSpeed);
                 from.SendLocalizedMessage(1150886); // Splashes from the creature encrust your weapon and equipment, slowing your movement.
@@ -158,12 +158,12 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Poison, 55, 60);
             SetResistance(ResistanceType.Energy, 45, 55);
 
-            SetSkill(SkillName.MagicResist, 65, 85);
-            SetSkill(SkillName.Tactics, 65, 85);
-            SetSkill(SkillName.Wrestling, 65, 85);
+            SetSkill(SkillName.MagicResist, 100.0);
+            SetSkill(SkillName.Tactics, 80.0, 96.0);
+            SetSkill(SkillName.Wrestling, 80.0, 97.0);
 
-            Fame = 3500;
-            Karma = -3500;
+            Fame = 4000;
+            Karma = -4000;
 
             PackReg(1, 2);
             PackGem(1, 2);
@@ -213,52 +213,53 @@ namespace Server.Mobiles
         public ShameWall Wall { get; set; }
 
         [Constructable]
-        public CaveTroll() : this(null) 
+        public CaveTroll() : this(null)
         {
         }
 
         [Constructable]
         public CaveTroll(ShameWall wall)
-		{
-			Name = "a cave troll";
+        {
+            Name = "a cave troll";
             BodyValue = 0x1;
             FightMode = FightMode.Aggressor;
 
-			if(wall != null)
-				Title = "the wall guardian";
+            if (wall != null)
+                Title = "the wall guardian";
 
-            Hue = 2016;
-			Wall = wall;
+            Hue = 638;
+            Wall = wall;
 
-			SetStr( 180, 210 );
-			SetDex( 120, 150 );
-			SetInt( 40, 70 );
+            SetStr(180, 210);
+            SetDex(107, 205);
+            SetInt(40, 70);
 
-			SetHits( 700, 900 );
+            SetHits(638, 978);
 
-			SetDamage( 15, 17 );
+            SetDamage(15, 17);
 
-			SetDamageType( ResistanceType.Physical, 100 );
+            SetDamageType(ResistanceType.Physical, 100);
 
-			SetResistance( ResistanceType.Physical, 55, 65 );
-			SetResistance( ResistanceType.Fire, 45, 55 );
-			SetResistance( ResistanceType.Cold, 45, 55 );
-			SetResistance( ResistanceType.Poison, 35, 45 );
-			SetResistance( ResistanceType.Energy, 35, 45 );
+            SetResistance(ResistanceType.Physical, 55, 65);
+            SetResistance(ResistanceType.Fire, 45, 55);
+            SetResistance(ResistanceType.Cold, 45, 55);
+            SetResistance(ResistanceType.Poison, 35, 45);
+            SetResistance(ResistanceType.Energy, 35, 45);
 
-			SetSkill( SkillName.MagicResist, 70, 90 );
-			SetSkill( SkillName.Tactics, 80, 110 );
-			SetSkill( SkillName.Wrestling, 80, 110 );
+            SetSkill(SkillName.MagicResist, 70, 90);
+            SetSkill(SkillName.Tactics, 80, 110);
+            SetSkill(SkillName.Wrestling, 80, 110);
+            SetSkill(SkillName.DetectHidden, 100.0);
 
-			Fame = 3500;
-			Karma = -3500;
-			
-			//PackItem(new Potash(Utility.RandomMinMax(1, 5)));
-			//PackItem(new Charcoal(Utility.RandomMinMax(1, 5)));
-			//PackItem(new Saltpeter(Utility.RandomMinMax(1, 5)));
+            Fame = 3500;
+            Karma = -3500;
+
+            //PackItem(new Potash(Utility.RandomMinMax(1, 5)));
+            //PackItem(new Charcoal(Utility.RandomMinMax(1, 5)));
+            //PackItem(new Saltpeter(Utility.RandomMinMax(1, 5)));
             //PackItem(new BlackPowder(Utility.RandomMinMax(1, 5)));
-			PackGem(1);
-		}
+            PackGem(1);
+        }
 
         public override MeatType MeatType { get { return MeatType.Ribs; } }
         public override int Meat { get { return 2; } }
@@ -306,7 +307,7 @@ namespace Server.Mobiles
         public ClayGolem()
         {
             Name = "a clay golem";
-            Hue = 1191;
+            Hue = 654;
 
             SetStr(450, 600);
             SetDex(100, 150);
@@ -327,6 +328,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 150, 200);
             SetSkill(SkillName.Tactics, 80, 120);
             SetSkill(SkillName.Wrestling, 80, 110);
+            SetSkill(SkillName.Parry, 70, 80);
+            SetSkill(SkillName.DetectHidden, 70.0, 80.0);
 
             Fame = 4500;
             Karma = -4500;
@@ -373,7 +376,7 @@ namespace Server.Mobiles
         public GreaterEarthElemental()
         {
             Name = "a greater earth elemental";
-            Hue = 1190;
+            Hue = 1143;
 
             SetHits(500, 600);
 
@@ -386,11 +389,11 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Energy, 25, 35);
 
             SetSkill(SkillName.MagicResist, 40, 70);
-            SetSkill(SkillName.Tactics, 70, 900);
-            SetSkill(SkillName.Wrestling, 80, 100);
+            SetSkill(SkillName.Tactics, 70, 90);
+            SetSkill(SkillName.Wrestling, 80, 95);
 
-            Fame = 3500;
-            Karma = -3500;
+            Fame = 2500;
+            Karma = -2500;
         }
 
         public override void OnDeath(Container c)
@@ -434,7 +437,7 @@ namespace Server.Mobiles
         public MudElemental()
         {
             Name = "a mud elemental";
-            Hue = 2012;
+            Hue = 542;
 
             SetStr(400, 550);
             SetHits(650, 850);
@@ -444,14 +447,15 @@ namespace Server.Mobiles
             SetDamageType(ResistanceType.Fire, 50);
 
             SetResistance(ResistanceType.Physical, 50, 65);
-            SetResistance(ResistanceType.Fire, 35, 45);
-            SetResistance(ResistanceType.Cold, 35, 45);
-            SetResistance(ResistanceType.Poison, 45, 55);
-            SetResistance(ResistanceType.Energy, 25, 35);
+            SetResistance(ResistanceType.Fire, 55, 65);
+            SetResistance(ResistanceType.Cold, 45, 50);
+            SetResistance(ResistanceType.Poison, 55, 65);
+            SetResistance(ResistanceType.Energy, 50, 60);
 
-            SetSkill(SkillName.MagicResist, 40, 70);
-            SetSkill(SkillName.Tactics, 70, 90);
-            SetSkill(SkillName.Wrestling, 80, 100);
+            SetSkill(SkillName.MagicResist, 100);
+            SetSkill(SkillName.Tactics, 100);
+            SetSkill(SkillName.Wrestling, 120);
+            SetSkill(SkillName.Parry, 120);
 
             Fame = 3500;
             Karma = -3500;
@@ -561,10 +565,10 @@ namespace Server.Mobiles
         [Constructable]
         public MoltenEarthElemental()
         {
-            Hue = 1192;
+            Hue = 442;
             Name = "a molten earth elemental";
 
-            SetStr(400, 500);
+            SetStr(400, 550);
             SetHits(1200, 1400);
             SetDamage(17, 19);
 
@@ -580,9 +584,10 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 100);
             SetSkill(SkillName.Tactics, 100);
             SetSkill(SkillName.Wrestling, 120);
+            SetSkill(SkillName.Parry, 120);
 
-            Fame = 4500;
-            Karma = -4500;
+            Fame = 5000;
+            Karma = -5000;
         }
 
         public override void OnDeath(Container c)
@@ -595,7 +600,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-           // AddLoot(LootPack.Random(400, 500, 3, 400, 650));
+            // AddLoot(LootPack.Random(400, 500, 3, 400, 650));
             this.AddLoot(LootPack.Rich, 2);
         }
 
@@ -709,43 +714,43 @@ namespace Server.Mobiles
 
         [Constructable]
         public BurningMage() : base(AIType.AI_Mage, FightMode.Weakest, 10, 1, 0.4, 0.2)
-		{
+        {
             Name = NameList.RandomName("male");
-			Title = "the burning";
-			SetStr(100, 125);
+            Title = "the burning";
+            SetStr(100, 125);
 
             BodyValue = 0x190;
             Hue = 1281;
-			
-			SetHits(3000);
-			SetMana(600, 800);
-			SetDamage(10, 15);
 
-			SetDamageType( ResistanceType.Physical, 50 );
-			SetDamageType( ResistanceType.Fire, 50 );
-			
-			SetResistance( ResistanceType.Physical, 50, 60 );
-			SetResistance( ResistanceType.Fire, 50, 60 );
-			SetResistance( ResistanceType.Cold, 50, 60 );
-			SetResistance( ResistanceType.Poison, 50, 60 );
-			SetResistance( ResistanceType.Energy, 50, 60 );
+            SetHits(3000);
+            SetMana(600, 800);
+            SetDamage(10, 15);
 
-			SetSkill( SkillName.MagicResist, 125, 140 );
-			SetSkill( SkillName.Tactics, 100, 120 );
-			SetSkill( SkillName.Wrestling, 110, 130 );
-			SetSkill( SkillName.Magery, 120, 130 );
-			SetSkill( SkillName.EvalInt, 120, 130 );
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Fire, 50);
+
+            SetResistance(ResistanceType.Physical, 50, 60);
+            SetResistance(ResistanceType.Fire, 50, 60);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 50, 60);
+            SetResistance(ResistanceType.Energy, 50, 60);
+
+            SetSkill(SkillName.MagicResist, 125, 140);
+            SetSkill(SkillName.Tactics, 100, 120);
+            SetSkill(SkillName.Wrestling, 110, 130);
+            SetSkill(SkillName.Magery, 120, 130);
+            SetSkill(SkillName.EvalInt, 120, 130);
 
             AddItem(new Robe(1156));
             AddItem(new Sandals());
 
-			PackReg(31);
+            PackReg(31);
 
             Utility.AssignRandomHair(this);
 
             Fame = 22000;
             Karma = -22000;
-		}
+        }
 
         public override bool CanRummageCorpses { get { return true; } }
         public override bool AlwaysMurderer { get { return true; } }
@@ -759,7 +764,7 @@ namespace Server.Mobiles
                 c.DropItem(new ShameCrystal(4));
         }
 
-        public override void OnDamagedBySpell( Mobile from )
+        public override void OnDamagedBySpell(Mobile from)
         {
             base.OnDamagedBySpell(from);
 
@@ -1204,39 +1209,39 @@ namespace Server.Mobiles
         [Constructable]
         public ChaosVortex()
             : base(AIType.AI_Melee, FightMode.Weakest, 10, 1, 0.4, 0.2)
-		{
+        {
             Name = "a chaos vortex";
-			Body = 164;
-			//TODO: Hue
-			
-			SetStr(450);
-			SetDex(200);
-			SetInt(100);
-			
-			SetHits(27000);
-			SetMana(0);
-			
-			SetDamage(21, 23);
+            Body = 164;
+            Hue = 34212;
 
-			SetDamageType( ResistanceType.Physical, 20 );
-			SetDamageType( ResistanceType.Fire, 20 );
-			SetDamageType( ResistanceType.Cold, 20 );
-			SetDamageType( ResistanceType.Poison, 20);
-			SetDamageType( ResistanceType.Energy, 20 );
-			
-			SetResistance( ResistanceType.Physical, 65, 75 );
-			SetResistance( ResistanceType.Fire, 65, 75 );
-			SetResistance( ResistanceType.Cold, 65, 75 );
-			SetResistance( ResistanceType.Poison, 65, 75 );
-			SetResistance( ResistanceType.Energy, 65, 75 );
+            SetStr(450);
+            SetDex(200);
+            SetInt(100);
 
-			SetSkill( SkillName.MagicResist, 100, 110 );
-			SetSkill( SkillName.Tactics, 110, 130 );
-			SetSkill( SkillName.Wrestling, 124, 140 );
-			
-			Fame = 22500;
-			Karma = -22500;
-		}
+            SetHits(27000);
+            SetMana(0);
+
+            SetDamage(21, 23);
+
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Cold, 20);
+            SetDamageType(ResistanceType.Poison, 20);
+            SetDamageType(ResistanceType.Energy, 20);
+
+            SetResistance(ResistanceType.Physical, 65, 75);
+            SetResistance(ResistanceType.Fire, 65, 75);
+            SetResistance(ResistanceType.Cold, 65, 75);
+            SetResistance(ResistanceType.Poison, 65, 75);
+            SetResistance(ResistanceType.Energy, 65, 75);
+
+            SetSkill(SkillName.MagicResist, 100, 110);
+            SetSkill(SkillName.Tactics, 110, 130);
+            SetSkill(SkillName.Wrestling, 124, 140);
+
+            Fame = 22500;
+            Karma = -22500;
+        }
 
         public override int GetAngerSound()
         {
@@ -1349,34 +1354,35 @@ namespace Server.Mobiles
     {
         [Constructable]
         public UnboundEnergyVortex() : base(AIType.AI_Melee, FightMode.Weakest, 10, 1, 0.4, 0.2)
-		{
+        {
             Name = "an unbound energy vortex";
-			Body = 164;
-			
-			SetStr(450);
-			SetDex(200);
-			SetInt(100);
-			
-			SetHits(20000);
-			SetMana(0);
-			
-			SetDamage(21, 23);
+            Body = 20;
 
-			SetDamageType( ResistanceType.Physical, 100 );
-			
-			SetResistance( ResistanceType.Physical, 65, 75 );
-			SetResistance( ResistanceType.Fire, 65, 75 );
-			SetResistance( ResistanceType.Cold, 65, 75 );
-			SetResistance( ResistanceType.Poison, 65, 75 );
-			SetResistance( ResistanceType.Energy, 65, 75 );
+            SetStr(450);
+            SetDex(200);
+            SetInt(100);
 
-			SetSkill( SkillName.MagicResist, 100, 110 );
-			SetSkill( SkillName.Tactics, 110, 130 );
-			SetSkill( SkillName.Wrestling, 124, 140 );
-			
-			Fame = 22500;
-			Karma = -22500;
-		}
+            SetHits(20000);
+            SetMana(0);
+
+            SetDamage(21, 23);
+
+            SetDamageType(ResistanceType.Physical, 0);
+            SetDamageType(ResistanceType.Energy, 100);
+
+            SetResistance(ResistanceType.Physical, 65, 75);
+            SetResistance(ResistanceType.Fire, 65, 75);
+            SetResistance(ResistanceType.Cold, 65, 75);
+            SetResistance(ResistanceType.Poison, 65, 75);
+            SetResistance(ResistanceType.Energy, 100);
+
+            SetSkill(SkillName.MagicResist, 100, 110);
+            SetSkill(SkillName.Tactics, 110, 130);
+            SetSkill(SkillName.Wrestling, 124, 140);
+
+            Fame = 22500;
+            Karma = -22500;
+        }
 
         public override bool AlwaysMurderer { get { return true; } }
         public override bool BleedImmune { get { return true; } }
@@ -1459,7 +1465,7 @@ namespace Server.Mobiles
             if (0.33 > Utility.RandomDouble() && Region.Find(c.Location, c.Map).IsPartOf("Shame"))
                 c.DropItem(new ShameCrystal(5));
 
-            if(0.2 > Utility.RandomDouble())
+            if (0.2 > Utility.RandomDouble())
                 c.DropItem(new VoidCore());
         }
 
@@ -1492,43 +1498,46 @@ namespace Server.Mobiles
     {
         [Constructable]
         public DiseasedBloodElemental()
-		{
-			Name = "a diseased blood elemental";
-            Hue = 1194;
+        {
+            Name = "a diseased blood elemental";
+            Body = 0x9F;
+            Hue = 1779;
 
-			SetStr(650, 750);
-			SetDex(70, 80);
-			SetInt(300, 400);
-			
-			SetHits(2500, 2700);
-			SetMana(1400, 1600);
-			
-			SetDamage(19, 27);
+            SetStr(650, 750);
+            SetDex(70, 80);
+            SetInt(300, 400);
 
-			SetDamageType( ResistanceType.Poison, 50 );
-			SetDamageType( ResistanceType.Energy, 50 );
-			
-			SetResistance( ResistanceType.Physical, 65, 75 );
-			SetResistance( ResistanceType.Fire, 55, 65 );
-			SetResistance( ResistanceType.Cold, 50, 60 );
-			SetResistance( ResistanceType.Poison, 60, 70 );
-			SetResistance( ResistanceType.Energy, 50, 60 );
+            SetHits(2500, 2700);
+            SetMana(1400, 1600);
 
-			SetSkill( SkillName.MagicResist, 110, 125 );
-			SetSkill( SkillName.Tactics, 130, 140 );
-			SetSkill( SkillName.Wrestling, 120, 140 );
-			SetSkill( SkillName.Poisoning, 100 );
-			SetSkill( SkillName.Magery, 110, 120 );
-			SetSkill( SkillName.EvalInt, 115, 130 );
-			SetSkill( SkillName.Meditation, 1130, 155 );
-			
-			PackReg(7, 11);
+            SetDamage(19, 27);
+
+            SetDamageType(ResistanceType.Poison, 50);
+            SetDamageType(ResistanceType.Energy, 50);
+
+            SetResistance(ResistanceType.Physical, 65, 75);
+            SetResistance(ResistanceType.Fire, 55, 65);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 60, 70);
+            SetResistance(ResistanceType.Energy, 50, 60);
+
+            SetSkill(SkillName.MagicResist, 110, 125);
+            SetSkill(SkillName.Tactics, 130, 140);
+            SetSkill(SkillName.Wrestling, 120, 140);
+            SetSkill(SkillName.Poisoning, 100);
+            SetSkill(SkillName.Magery, 110, 120);
+            SetSkill(SkillName.EvalInt, 115, 130);
+            SetSkill(SkillName.Meditation, 130, 155);
+            SetSkill(SkillName.DetectHidden, 80.0);
+            SetSkill(SkillName.Parry, 90.0, 100.0);
+
+            PackReg(7, 11);
 
             int scrolls = Utility.RandomMinMax(4, 6);
-			
-			Fame = 8500;
-			Karma = -8500;
-		}
+
+            Fame = 8500;
+            Karma = -8500;
+        }
 
         public override bool AutoDispel { get { return true; } }
         public override double AutoDispelChance { get { return 1.0; } }
@@ -1538,9 +1547,9 @@ namespace Server.Mobiles
         public override Poison PoisonImmune { get { return Poison.Parasitic; } }
 
         public override WeaponAbility GetWeaponAbility()
-		{
-		    return WeaponAbility.BleedAttack;
-		}
+        {
+            return WeaponAbility.BleedAttack;
+        }
 
         public override void OnDeath(Container c)
         {
@@ -1609,10 +1618,10 @@ namespace Server.Mobiles
         }
 
         public override void GenerateLoot()
-		{
+        {
             //AddLoot(LootPack.Random(175, 225, 2, 300, 600));
             this.AddLoot(LootPack.Rich, 1);
-		}
+        }
 
         public override void OnDeath(Container c)
         {
@@ -1645,6 +1654,8 @@ namespace Server.Mobiles
         [Constructable]
         public ShameGreaterPoisonElemental()
         {
+            Hue = 32854;
+
             SetStr(400, 500);
             SetDex(170, 175);
             SetInt(400, 450);
@@ -1668,14 +1679,16 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 90, 110);
             SetSkill(SkillName.EvalInt, 90, 100);
             SetSkill(SkillName.Meditation, 100, 120);
+            SetSkill(SkillName.DetectHidden, 85.1);
+            SetSkill(SkillName.Parry, 80, 100);
         }
 
         public override void GenerateLoot()
-		{
+        {
             //AddLoot(LootPack.Random(550, 650, 5, 400, 750));
             this.AddLoot(LootPack.UltraRich, 1);
             this.AddLoot(LootPack.FilthyRich, 1);
-		}
+        }
 
         public override void OnDeath(Container c)
         {
@@ -1735,11 +1748,11 @@ namespace Server.Mobiles
         }
 
         public override void GenerateLoot()
-		{
+        {
             //AddLoot(LootPack.Random(550, 650, 5, 400, 750));
             this.AddLoot(LootPack.UltraRich, 1);
             this.AddLoot(LootPack.FilthyRich, 1);
-		}
+        }
 
         public override void OnDeath(Container c)
         {
